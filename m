@@ -1,26 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:21:46 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:43566 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:22:05 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:43567 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817294AbaA0UUtK37Vl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jan 2014 21:20:49 +0100
+        id S6827297AbaA0UU7Blvsy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jan 2014 21:20:59 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 04/58] MIPS: futex: Add EVA support for futex operations
-Date:   Mon, 27 Jan 2014 20:18:51 +0000
-Message-ID: <1390853985-14246-5-git-send-email-markos.chandras@imgtec.com>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 05/58] MIPS: uapi: inst: Add new EVA opcodes
+Date:   Mon, 27 Jan 2014 20:18:52 +0000
+Message-ID: <1390853985-14246-6-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_01_27_20_20_44
+X-SEF-Processed: 7_3_0_01192__2014_01_27_20_20_54
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39122
+X-archive-position: 39123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,54 +38,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use LLE/SCE instructions for performing an address translation for
-userspace when EVA is enabled.
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/futex.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/mips/include/uapi/asm/inst.h | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
-index 6ea1581..2a572e1 100644
---- a/arch/mips/include/asm/futex.h
-+++ b/arch/mips/include/asm/futex.h
-@@ -12,6 +12,7 @@
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index b39ba25..9ce652e 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -73,10 +73,16 @@ enum spec2_op {
+ enum spec3_op {
+ 	ext_op, dextm_op, dextu_op, dext_op,
+ 	ins_op, dinsm_op, dinsu_op, dins_op,
+-	lx_op = 0x0a,
+-	bshfl_op = 0x20,
+-	dbshfl_op = 0x24,
+-	rdhwr_op = 0x3b
++	lx_op     = 0x0a, lwle_op   = 0x19,
++	lwre_op   = 0x1a, cachee_op = 0x1b,
++	sbe_op    = 0x1c, she_op    = 0x1d,
++	sce_op    = 0x1e, swe_op    = 0x1f,
++	bshfl_op  = 0x20, swle_op   = 0x21,
++	swre_op   = 0x22, prefe_op  = 0x23,
++	dbshfl_op = 0x24, lbue_op   = 0x28,
++	lhue_op   = 0x29, lbe_op    = 0x2c,
++	lhe_op    = 0x2d, lle_op    = 0x2e,
++	lwe_op    = 0x2f, rdhwr_op  = 0x3b
+ };
  
- #include <linux/futex.h>
- #include <linux/uaccess.h>
-+#include <asm/asm.h>
- #include <asm/barrier.h>
- #include <asm/errno.h>
- #include <asm/war.h>
-@@ -49,11 +50,11 @@
- 		"	.set	push				\n"	\
- 		"	.set	noat				\n"	\
- 		"	.set	mips3				\n"	\
--		"1:	ll	%1, %4	# __futex_atomic_op	\n"	\
-+		"1:	"user_ll("%1", "%4")" # __futex_atomic_op\n"	\
- 		"	.set	mips0				\n"	\
- 		"	" insn	"				\n"	\
- 		"	.set	mips3				\n"	\
--		"2:	sc	$1, %2				\n"	\
-+		"2:	"user_sc("$1", "%2")"			\n"	\
- 		"	beqz	$1, 1b				\n"	\
- 		__WEAK_LLSC_MB						\
- 		"3:						\n"	\
-@@ -174,12 +175,12 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
- 		"	.set	push					\n"
- 		"	.set	noat					\n"
- 		"	.set	mips3					\n"
--		"1:	ll	%1, %3					\n"
-+		"1:	"user_ll("%1", "%3")"				\n"
- 		"	bne	%1, %z4, 3f				\n"
- 		"	.set	mips0					\n"
- 		"	move	$1, %z5					\n"
- 		"	.set	mips3					\n"
--		"2:	sc	$1, %2					\n"
-+		"2:	"user_sc("$1", "%2")"				\n"
- 		"	beqz	$1, 1b					\n"
- 		__WEAK_LLSC_MB
- 		"3:							\n"
+ /*
 -- 
 1.8.5.3

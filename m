@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 16:28:30 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:4463 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 16:28:50 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:4471 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824805AbaA0P1d3KN2w (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jan 2014 16:27:33 +0100
+        id S6825311AbaA0P14q4OyB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jan 2014 16:27:56 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 09/15] mips: don't assume 64-bit FP registers for context switch
-Date:   Mon, 27 Jan 2014 15:23:08 +0000
-Message-ID: <1390836194-26286-10-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 10/15] mips: add MSA register definitions & access
+Date:   Mon, 27 Jan 2014 15:23:09 +0000
+Message-ID: <1390836194-26286-11-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.7.12.4
 In-Reply-To: <1390836194-26286-1-git-send-email-paul.burton@imgtec.com>
 References: <1390836194-26286-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.152.22]
-X-SEF-Processed: 7_3_0_01192__2014_01_27_15_27_28
+X-SEF-Processed: 7_3_0_01192__2014_01_27_15_27_51
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39103
+X-archive-position: 39104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,400 +37,358 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When saving or restoring scalar FP context we want to access the least
-significant 64 bits of each FP register. When the FP registers are 64
-bits wide that is trivially the start of the registers value in memory.
-However when the FP registers are wider this equivalence will no longer
-be true for big endian systems. Define a new set of offset macros for
-the least significant 64 bits of each saved FP register within thread
-context, and make use of them when saving and restoring scalar FP
-context.
+This patch introduces definitions for the MSA control registers and
+functions which allow access to both the control & vector registers. If
+the toolchain being used to build the kernel includes support for MSA
+then this patch will make use of that support & use MSA instructions
+directly. However toolchain support for MSA is very new & far from a
+point where it can be reasonably expected that everyone building the
+kernel uses a toolchain with support. Thus fallbacks using .word
+assembler directives are also provided for now as a temporary measure.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/asmmacro-32.h | 128 ++++++++++++++++++------------------
- arch/mips/include/asm/asmmacro.h    | 128 ++++++++++++++++++------------------
- arch/mips/kernel/asm-offsets.c      |  66 +++++++++++++++++++
- 3 files changed, 194 insertions(+), 128 deletions(-)
+ arch/mips/Makefile               |   5 ++
+ arch/mips/include/asm/asmmacro.h | 121 +++++++++++++++++++++++++++
+ arch/mips/include/asm/mipsregs.h |   1 +
+ arch/mips/include/asm/msa.h      | 171 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 298 insertions(+)
+ create mode 100644 arch/mips/include/asm/msa.h
 
-diff --git a/arch/mips/include/asm/asmmacro-32.h b/arch/mips/include/asm/asmmacro-32.h
-index 70e1f17..e38c281 100644
---- a/arch/mips/include/asm/asmmacro-32.h
-+++ b/arch/mips/include/asm/asmmacro-32.h
-@@ -14,75 +14,75 @@
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 873a0ca..86522e5 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -119,6 +119,11 @@ cflags-$(CONFIG_CPU_MICROMIPS) += $(call cc-option,-mmicromips)
+ cflags-$(CONFIG_SB1XXX_CORELIS)	+= $(call cc-option,-mno-sched-prolog) \
+ 				   -fno-omit-frame-pointer
  
- 	.macro	fpu_save_single thread tmp=t0
- 	cfc1	\tmp,  fcr31
--	swc1	$f0,  THREAD_FPR0(\thread)
--	swc1	$f1,  THREAD_FPR1(\thread)
--	swc1	$f2,  THREAD_FPR2(\thread)
--	swc1	$f3,  THREAD_FPR3(\thread)
--	swc1	$f4,  THREAD_FPR4(\thread)
--	swc1	$f5,  THREAD_FPR5(\thread)
--	swc1	$f6,  THREAD_FPR6(\thread)
--	swc1	$f7,  THREAD_FPR7(\thread)
--	swc1	$f8,  THREAD_FPR8(\thread)
--	swc1	$f9,  THREAD_FPR9(\thread)
--	swc1	$f10, THREAD_FPR10(\thread)
--	swc1	$f11, THREAD_FPR11(\thread)
--	swc1	$f12, THREAD_FPR12(\thread)
--	swc1	$f13, THREAD_FPR13(\thread)
--	swc1	$f14, THREAD_FPR14(\thread)
--	swc1	$f15, THREAD_FPR15(\thread)
--	swc1	$f16, THREAD_FPR16(\thread)
--	swc1	$f17, THREAD_FPR17(\thread)
--	swc1	$f18, THREAD_FPR18(\thread)
--	swc1	$f19, THREAD_FPR19(\thread)
--	swc1	$f20, THREAD_FPR20(\thread)
--	swc1	$f21, THREAD_FPR21(\thread)
--	swc1	$f22, THREAD_FPR22(\thread)
--	swc1	$f23, THREAD_FPR23(\thread)
--	swc1	$f24, THREAD_FPR24(\thread)
--	swc1	$f25, THREAD_FPR25(\thread)
--	swc1	$f26, THREAD_FPR26(\thread)
--	swc1	$f27, THREAD_FPR27(\thread)
--	swc1	$f28, THREAD_FPR28(\thread)
--	swc1	$f29, THREAD_FPR29(\thread)
--	swc1	$f30, THREAD_FPR30(\thread)
--	swc1	$f31, THREAD_FPR31(\thread)
-+	swc1	$f0,  THREAD_FPR0_LS64(\thread)
-+	swc1	$f1,  THREAD_FPR1_LS64(\thread)
-+	swc1	$f2,  THREAD_FPR2_LS64(\thread)
-+	swc1	$f3,  THREAD_FPR3_LS64(\thread)
-+	swc1	$f4,  THREAD_FPR4_LS64(\thread)
-+	swc1	$f5,  THREAD_FPR5_LS64(\thread)
-+	swc1	$f6,  THREAD_FPR6_LS64(\thread)
-+	swc1	$f7,  THREAD_FPR7_LS64(\thread)
-+	swc1	$f8,  THREAD_FPR8_LS64(\thread)
-+	swc1	$f9,  THREAD_FPR9_LS64(\thread)
-+	swc1	$f10, THREAD_FPR10_LS64(\thread)
-+	swc1	$f11, THREAD_FPR11_LS64(\thread)
-+	swc1	$f12, THREAD_FPR12_LS64(\thread)
-+	swc1	$f13, THREAD_FPR13_LS64(\thread)
-+	swc1	$f14, THREAD_FPR14_LS64(\thread)
-+	swc1	$f15, THREAD_FPR15_LS64(\thread)
-+	swc1	$f16, THREAD_FPR16_LS64(\thread)
-+	swc1	$f17, THREAD_FPR17_LS64(\thread)
-+	swc1	$f18, THREAD_FPR18_LS64(\thread)
-+	swc1	$f19, THREAD_FPR19_LS64(\thread)
-+	swc1	$f20, THREAD_FPR20_LS64(\thread)
-+	swc1	$f21, THREAD_FPR21_LS64(\thread)
-+	swc1	$f22, THREAD_FPR22_LS64(\thread)
-+	swc1	$f23, THREAD_FPR23_LS64(\thread)
-+	swc1	$f24, THREAD_FPR24_LS64(\thread)
-+	swc1	$f25, THREAD_FPR25_LS64(\thread)
-+	swc1	$f26, THREAD_FPR26_LS64(\thread)
-+	swc1	$f27, THREAD_FPR27_LS64(\thread)
-+	swc1	$f28, THREAD_FPR28_LS64(\thread)
-+	swc1	$f29, THREAD_FPR29_LS64(\thread)
-+	swc1	$f30, THREAD_FPR30_LS64(\thread)
-+	swc1	$f31, THREAD_FPR31_LS64(\thread)
- 	sw	\tmp, THREAD_FCR31(\thread)
- 	.endm
- 
- 	.macro	fpu_restore_single thread tmp=t0
- 	lw	\tmp, THREAD_FCR31(\thread)
--	lwc1	$f0,  THREAD_FPR0(\thread)
--	lwc1	$f1,  THREAD_FPR1(\thread)
--	lwc1	$f2,  THREAD_FPR2(\thread)
--	lwc1	$f3,  THREAD_FPR3(\thread)
--	lwc1	$f4,  THREAD_FPR4(\thread)
--	lwc1	$f5,  THREAD_FPR5(\thread)
--	lwc1	$f6,  THREAD_FPR6(\thread)
--	lwc1	$f7,  THREAD_FPR7(\thread)
--	lwc1	$f8,  THREAD_FPR8(\thread)
--	lwc1	$f9,  THREAD_FPR9(\thread)
--	lwc1	$f10, THREAD_FPR10(\thread)
--	lwc1	$f11, THREAD_FPR11(\thread)
--	lwc1	$f12, THREAD_FPR12(\thread)
--	lwc1	$f13, THREAD_FPR13(\thread)
--	lwc1	$f14, THREAD_FPR14(\thread)
--	lwc1	$f15, THREAD_FPR15(\thread)
--	lwc1	$f16, THREAD_FPR16(\thread)
--	lwc1	$f17, THREAD_FPR17(\thread)
--	lwc1	$f18, THREAD_FPR18(\thread)
--	lwc1	$f19, THREAD_FPR19(\thread)
--	lwc1	$f20, THREAD_FPR20(\thread)
--	lwc1	$f21, THREAD_FPR21(\thread)
--	lwc1	$f22, THREAD_FPR22(\thread)
--	lwc1	$f23, THREAD_FPR23(\thread)
--	lwc1	$f24, THREAD_FPR24(\thread)
--	lwc1	$f25, THREAD_FPR25(\thread)
--	lwc1	$f26, THREAD_FPR26(\thread)
--	lwc1	$f27, THREAD_FPR27(\thread)
--	lwc1	$f28, THREAD_FPR28(\thread)
--	lwc1	$f29, THREAD_FPR29(\thread)
--	lwc1	$f30, THREAD_FPR30(\thread)
--	lwc1	$f31, THREAD_FPR31(\thread)
-+	lwc1	$f0,  THREAD_FPR0_LS64(\thread)
-+	lwc1	$f1,  THREAD_FPR1_LS64(\thread)
-+	lwc1	$f2,  THREAD_FPR2_LS64(\thread)
-+	lwc1	$f3,  THREAD_FPR3_LS64(\thread)
-+	lwc1	$f4,  THREAD_FPR4_LS64(\thread)
-+	lwc1	$f5,  THREAD_FPR5_LS64(\thread)
-+	lwc1	$f6,  THREAD_FPR6_LS64(\thread)
-+	lwc1	$f7,  THREAD_FPR7_LS64(\thread)
-+	lwc1	$f8,  THREAD_FPR8_LS64(\thread)
-+	lwc1	$f9,  THREAD_FPR9_LS64(\thread)
-+	lwc1	$f10, THREAD_FPR10_LS64(\thread)
-+	lwc1	$f11, THREAD_FPR11_LS64(\thread)
-+	lwc1	$f12, THREAD_FPR12_LS64(\thread)
-+	lwc1	$f13, THREAD_FPR13_LS64(\thread)
-+	lwc1	$f14, THREAD_FPR14_LS64(\thread)
-+	lwc1	$f15, THREAD_FPR15_LS64(\thread)
-+	lwc1	$f16, THREAD_FPR16_LS64(\thread)
-+	lwc1	$f17, THREAD_FPR17_LS64(\thread)
-+	lwc1	$f18, THREAD_FPR18_LS64(\thread)
-+	lwc1	$f19, THREAD_FPR19_LS64(\thread)
-+	lwc1	$f20, THREAD_FPR20_LS64(\thread)
-+	lwc1	$f21, THREAD_FPR21_LS64(\thread)
-+	lwc1	$f22, THREAD_FPR22_LS64(\thread)
-+	lwc1	$f23, THREAD_FPR23_LS64(\thread)
-+	lwc1	$f24, THREAD_FPR24_LS64(\thread)
-+	lwc1	$f25, THREAD_FPR25_LS64(\thread)
-+	lwc1	$f26, THREAD_FPR26_LS64(\thread)
-+	lwc1	$f27, THREAD_FPR27_LS64(\thread)
-+	lwc1	$f28, THREAD_FPR28_LS64(\thread)
-+	lwc1	$f29, THREAD_FPR29_LS64(\thread)
-+	lwc1	$f30, THREAD_FPR30_LS64(\thread)
-+	lwc1	$f31, THREAD_FPR31_LS64(\thread)
- 	ctc1	\tmp, fcr31
- 	.endm
- 
++ifeq ($(CONFIG_CPU_HAS_MSA),y)
++toolchain-msa			:= $(call cc-option-yn,-mhard-float -mfp64 -mmsa)
++cflags-$(toolchain-msa)		+= -DTOOLCHAIN_SUPPORTS_MSA
++endif
++
+ #
+ # CPU-dependent compiler/assembler options for optimization.
+ #
 diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 3220c93..2aa713f 100644
+index 2aa713f..c759501 100644
 --- a/arch/mips/include/asm/asmmacro.h
 +++ b/arch/mips/include/asm/asmmacro.h
-@@ -64,44 +64,44 @@
- 
- 	.macro	fpu_save_16even thread tmp=t0
- 	cfc1	\tmp, fcr31
--	sdc1	$f0,  THREAD_FPR0(\thread)
--	sdc1	$f2,  THREAD_FPR2(\thread)
--	sdc1	$f4,  THREAD_FPR4(\thread)
--	sdc1	$f6,  THREAD_FPR6(\thread)
--	sdc1	$f8,  THREAD_FPR8(\thread)
--	sdc1	$f10, THREAD_FPR10(\thread)
--	sdc1	$f12, THREAD_FPR12(\thread)
--	sdc1	$f14, THREAD_FPR14(\thread)
--	sdc1	$f16, THREAD_FPR16(\thread)
--	sdc1	$f18, THREAD_FPR18(\thread)
--	sdc1	$f20, THREAD_FPR20(\thread)
--	sdc1	$f22, THREAD_FPR22(\thread)
--	sdc1	$f24, THREAD_FPR24(\thread)
--	sdc1	$f26, THREAD_FPR26(\thread)
--	sdc1	$f28, THREAD_FPR28(\thread)
--	sdc1	$f30, THREAD_FPR30(\thread)
-+	sdc1	$f0,  THREAD_FPR0_LS64(\thread)
-+	sdc1	$f2,  THREAD_FPR2_LS64(\thread)
-+	sdc1	$f4,  THREAD_FPR4_LS64(\thread)
-+	sdc1	$f6,  THREAD_FPR6_LS64(\thread)
-+	sdc1	$f8,  THREAD_FPR8_LS64(\thread)
-+	sdc1	$f10, THREAD_FPR10_LS64(\thread)
-+	sdc1	$f12, THREAD_FPR12_LS64(\thread)
-+	sdc1	$f14, THREAD_FPR14_LS64(\thread)
-+	sdc1	$f16, THREAD_FPR16_LS64(\thread)
-+	sdc1	$f18, THREAD_FPR18_LS64(\thread)
-+	sdc1	$f20, THREAD_FPR20_LS64(\thread)
-+	sdc1	$f22, THREAD_FPR22_LS64(\thread)
-+	sdc1	$f24, THREAD_FPR24_LS64(\thread)
-+	sdc1	$f26, THREAD_FPR26_LS64(\thread)
-+	sdc1	$f28, THREAD_FPR28_LS64(\thread)
-+	sdc1	$f30, THREAD_FPR30_LS64(\thread)
- 	sw	\tmp, THREAD_FCR31(\thread)
+@@ -196,4 +196,125 @@
+ 	 .word	0x41800000 | (\rt << 16) | (\rd << 11) | (\u << 5) | (\sel)
  	.endm
  
- 	.macro	fpu_save_16odd thread
- 	.set	push
- 	.set	mips64r2
--	sdc1	$f1,  THREAD_FPR1(\thread)
--	sdc1	$f3,  THREAD_FPR3(\thread)
--	sdc1	$f5,  THREAD_FPR5(\thread)
--	sdc1	$f7,  THREAD_FPR7(\thread)
--	sdc1	$f9,  THREAD_FPR9(\thread)
--	sdc1	$f11, THREAD_FPR11(\thread)
--	sdc1	$f13, THREAD_FPR13(\thread)
--	sdc1	$f15, THREAD_FPR15(\thread)
--	sdc1	$f17, THREAD_FPR17(\thread)
--	sdc1	$f19, THREAD_FPR19(\thread)
--	sdc1	$f21, THREAD_FPR21(\thread)
--	sdc1	$f23, THREAD_FPR23(\thread)
--	sdc1	$f25, THREAD_FPR25(\thread)
--	sdc1	$f27, THREAD_FPR27(\thread)
--	sdc1	$f29, THREAD_FPR29(\thread)
--	sdc1	$f31, THREAD_FPR31(\thread)
-+	sdc1	$f1,  THREAD_FPR1_LS64(\thread)
-+	sdc1	$f3,  THREAD_FPR3_LS64(\thread)
-+	sdc1	$f5,  THREAD_FPR5_LS64(\thread)
-+	sdc1	$f7,  THREAD_FPR7_LS64(\thread)
-+	sdc1	$f9,  THREAD_FPR9_LS64(\thread)
-+	sdc1	$f11, THREAD_FPR11_LS64(\thread)
-+	sdc1	$f13, THREAD_FPR13_LS64(\thread)
-+	sdc1	$f15, THREAD_FPR15_LS64(\thread)
-+	sdc1	$f17, THREAD_FPR17_LS64(\thread)
-+	sdc1	$f19, THREAD_FPR19_LS64(\thread)
-+	sdc1	$f21, THREAD_FPR21_LS64(\thread)
-+	sdc1	$f23, THREAD_FPR23_LS64(\thread)
-+	sdc1	$f25, THREAD_FPR25_LS64(\thread)
-+	sdc1	$f27, THREAD_FPR27_LS64(\thread)
-+	sdc1	$f29, THREAD_FPR29_LS64(\thread)
-+	sdc1	$f31, THREAD_FPR31_LS64(\thread)
- 	.set	pop
- 	.endm
- 
-@@ -117,44 +117,44 @@
- 
- 	.macro	fpu_restore_16even thread tmp=t0
- 	lw	\tmp, THREAD_FCR31(\thread)
--	ldc1	$f0,  THREAD_FPR0(\thread)
--	ldc1	$f2,  THREAD_FPR2(\thread)
--	ldc1	$f4,  THREAD_FPR4(\thread)
--	ldc1	$f6,  THREAD_FPR6(\thread)
--	ldc1	$f8,  THREAD_FPR8(\thread)
--	ldc1	$f10, THREAD_FPR10(\thread)
--	ldc1	$f12, THREAD_FPR12(\thread)
--	ldc1	$f14, THREAD_FPR14(\thread)
--	ldc1	$f16, THREAD_FPR16(\thread)
--	ldc1	$f18, THREAD_FPR18(\thread)
--	ldc1	$f20, THREAD_FPR20(\thread)
--	ldc1	$f22, THREAD_FPR22(\thread)
--	ldc1	$f24, THREAD_FPR24(\thread)
--	ldc1	$f26, THREAD_FPR26(\thread)
--	ldc1	$f28, THREAD_FPR28(\thread)
--	ldc1	$f30, THREAD_FPR30(\thread)
-+	ldc1	$f0,  THREAD_FPR0_LS64(\thread)
-+	ldc1	$f2,  THREAD_FPR2_LS64(\thread)
-+	ldc1	$f4,  THREAD_FPR4_LS64(\thread)
-+	ldc1	$f6,  THREAD_FPR6_LS64(\thread)
-+	ldc1	$f8,  THREAD_FPR8_LS64(\thread)
-+	ldc1	$f10, THREAD_FPR10_LS64(\thread)
-+	ldc1	$f12, THREAD_FPR12_LS64(\thread)
-+	ldc1	$f14, THREAD_FPR14_LS64(\thread)
-+	ldc1	$f16, THREAD_FPR16_LS64(\thread)
-+	ldc1	$f18, THREAD_FPR18_LS64(\thread)
-+	ldc1	$f20, THREAD_FPR20_LS64(\thread)
-+	ldc1	$f22, THREAD_FPR22_LS64(\thread)
-+	ldc1	$f24, THREAD_FPR24_LS64(\thread)
-+	ldc1	$f26, THREAD_FPR26_LS64(\thread)
-+	ldc1	$f28, THREAD_FPR28_LS64(\thread)
-+	ldc1	$f30, THREAD_FPR30_LS64(\thread)
- 	ctc1	\tmp, fcr31
- 	.endm
- 
- 	.macro	fpu_restore_16odd thread
- 	.set	push
- 	.set	mips64r2
--	ldc1	$f1,  THREAD_FPR1(\thread)
--	ldc1	$f3,  THREAD_FPR3(\thread)
--	ldc1	$f5,  THREAD_FPR5(\thread)
--	ldc1	$f7,  THREAD_FPR7(\thread)
--	ldc1	$f9,  THREAD_FPR9(\thread)
--	ldc1	$f11, THREAD_FPR11(\thread)
--	ldc1	$f13, THREAD_FPR13(\thread)
--	ldc1	$f15, THREAD_FPR15(\thread)
--	ldc1	$f17, THREAD_FPR17(\thread)
--	ldc1	$f19, THREAD_FPR19(\thread)
--	ldc1	$f21, THREAD_FPR21(\thread)
--	ldc1	$f23, THREAD_FPR23(\thread)
--	ldc1	$f25, THREAD_FPR25(\thread)
--	ldc1	$f27, THREAD_FPR27(\thread)
--	ldc1	$f29, THREAD_FPR29(\thread)
--	ldc1	$f31, THREAD_FPR31(\thread)
-+	ldc1	$f1,  THREAD_FPR1_LS64(\thread)
-+	ldc1	$f3,  THREAD_FPR3_LS64(\thread)
-+	ldc1	$f5,  THREAD_FPR5_LS64(\thread)
-+	ldc1	$f7,  THREAD_FPR7_LS64(\thread)
-+	ldc1	$f9,  THREAD_FPR9_LS64(\thread)
-+	ldc1	$f11, THREAD_FPR11_LS64(\thread)
-+	ldc1	$f13, THREAD_FPR13_LS64(\thread)
-+	ldc1	$f15, THREAD_FPR15_LS64(\thread)
-+	ldc1	$f17, THREAD_FPR17_LS64(\thread)
-+	ldc1	$f19, THREAD_FPR19_LS64(\thread)
-+	ldc1	$f21, THREAD_FPR21_LS64(\thread)
-+	ldc1	$f23, THREAD_FPR23_LS64(\thread)
-+	ldc1	$f25, THREAD_FPR25_LS64(\thread)
-+	ldc1	$f27, THREAD_FPR27_LS64(\thread)
-+	ldc1	$f29, THREAD_FPR29_LS64(\thread)
-+	ldc1	$f31, THREAD_FPR31_LS64(\thread)
- 	.set	pop
- 	.endm
- 
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index 0c2e853..f454d7b 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -168,6 +168,72 @@ void output_thread_fpu_defines(void)
- 	OFFSET(THREAD_FPR30, task_struct, thread.fpu.fpr[30]);
- 	OFFSET(THREAD_FPR31, task_struct, thread.fpu.fpr[31]);
- 
-+	/* the least significant 64 bits of each FP register */
-+	OFFSET(THREAD_FPR0_LS64, task_struct,
-+	       thread.fpu.fpr[0].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR1_LS64, task_struct,
-+	       thread.fpu.fpr[1].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR2_LS64, task_struct,
-+	       thread.fpu.fpr[2].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR3_LS64, task_struct,
-+	       thread.fpu.fpr[3].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR4_LS64, task_struct,
-+	       thread.fpu.fpr[4].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR5_LS64, task_struct,
-+	       thread.fpu.fpr[5].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR6_LS64, task_struct,
-+	       thread.fpu.fpr[6].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR7_LS64, task_struct,
-+	       thread.fpu.fpr[7].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR8_LS64, task_struct,
-+	       thread.fpu.fpr[8].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR9_LS64, task_struct,
-+	       thread.fpu.fpr[9].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR10_LS64, task_struct,
-+	       thread.fpu.fpr[10].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR11_LS64, task_struct,
-+	       thread.fpu.fpr[11].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR12_LS64, task_struct,
-+	       thread.fpu.fpr[12].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR13_LS64, task_struct,
-+	       thread.fpu.fpr[13].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR14_LS64, task_struct,
-+	       thread.fpu.fpr[14].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR15_LS64, task_struct,
-+	       thread.fpu.fpr[15].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR16_LS64, task_struct,
-+	       thread.fpu.fpr[16].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR17_LS64, task_struct,
-+	       thread.fpu.fpr[17].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR18_LS64, task_struct,
-+	       thread.fpu.fpr[18].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR19_LS64, task_struct,
-+	       thread.fpu.fpr[19].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR20_LS64, task_struct,
-+	       thread.fpu.fpr[20].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR21_LS64, task_struct,
-+	       thread.fpu.fpr[21].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR22_LS64, task_struct,
-+	       thread.fpu.fpr[22].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR23_LS64, task_struct,
-+	       thread.fpu.fpr[23].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR24_LS64, task_struct,
-+	       thread.fpu.fpr[24].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR25_LS64, task_struct,
-+	       thread.fpu.fpr[25].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR26_LS64, task_struct,
-+	       thread.fpu.fpr[26].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR27_LS64, task_struct,
-+	       thread.fpu.fpr[27].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR28_LS64, task_struct,
-+	       thread.fpu.fpr[28].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR29_LS64, task_struct,
-+	       thread.fpu.fpr[29].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR30_LS64, task_struct,
-+	       thread.fpu.fpr[30].val64[FPR_IDX(64, 0)]);
-+	OFFSET(THREAD_FPR31_LS64, task_struct,
-+	       thread.fpu.fpr[31].val64[FPR_IDX(64, 0)]);
++#ifdef TOOLCHAIN_SUPPORTS_MSA
++	.macro	ld_d	wd, off, base
++	.set	push
++	.set	mips32r2
++	.set	msa
++	ld.d	$w\wd, \off(\base)
++	.set	pop
++	.endm
 +
- 	OFFSET(THREAD_FCR31, task_struct, thread.fpu.fcr31);
- 	BLANK();
- }
++	.macro	st_d	wd, off, base
++	.set	push
++	.set	mips32r2
++	.set	msa
++	st.d	$w\wd, \off(\base)
++	.set	pop
++	.endm
++
++	.macro	copy_u_w	rd, ws, n
++	.set	push
++	.set	mips32r2
++	.set	msa
++	copy_u.w \rd, $w\ws[\n]
++	.set	pop
++	.endm
++
++	.macro	copy_u_d	rd, ws, n
++	.set	push
++	.set	mips64r2
++	.set	msa
++	copy_u.d \rd, $w\ws[\n]
++	.set	pop
++	.endm
++
++	.macro	insert_w	wd, n, rs
++	.set	push
++	.set	mips32r2
++	.set	msa
++	insert.w $w\wd[\n], \rs
++	.set	pop
++	.endm
++
++	.macro	insert_d	wd, n, rs
++	.set	push
++	.set	mips64r2
++	.set	msa
++	insert.d $w\wd[\n], \rs
++	.set	pop
++	.endm
++#else
++	/*
++	 * Temporary until all toolchains in use include MSA support.
++	 */
++	.macro	cfcmsa	rd, cs
++	.set	push
++	.set	noat
++	.word	0x787e0059 | (\cs << 11)
++	move	\rd, $1
++	.set	pop
++	.endm
++
++	.macro	ctcmsa	cd, rs
++	.set	push
++	.set	noat
++	move	$1, \rs
++	.word	0x783e0819 | (\cd << 6)
++	.set	pop
++	.endm
++
++	.macro	ld_d	wd, off, base
++	.set	push
++	.set	noat
++	add	$1, \base, \off
++	.word	0x78000823 | (\wd << 6)
++	.set	pop
++	.endm
++
++	.macro	st_d	wd, off, base
++	.set	push
++	.set	noat
++	add	$1, \base, \off
++	.word	0x78000827 | (\wd << 6)
++	.set	pop
++	.endm
++
++	.macro	copy_u_w	rd, ws, n
++	.set	push
++	.set	noat
++	.word	0x78f00059 | (\n << 16) | (\ws << 11)
++	/* move triggers an assembler bug... */
++	or	\rd, $1, zero
++	.set	pop
++	.endm
++
++	.macro	copy_u_d	rd, ws, n
++	.set	push
++	.set	noat
++	.word	0x78f80059 | (\n << 16) | (\ws << 11)
++	/* move triggers an assembler bug... */
++	or	\rd, $1, zero
++	.set	pop
++	.endm
++
++	.macro	insert_w	wd, n, rs
++	.set	push
++	.set	noat
++	/* move triggers an assembler bug... */
++	or	$1, \rs, zero
++	.word	0x79300819 | (\n << 16) | (\wd << 6)
++	.set	pop
++	.endm
++
++	.macro	insert_d	wd, n, rs
++	.set	push
++	.set	noat
++	/* move triggers an assembler bug... */
++	or	$1, \rs, zero
++	.word	0x79380819 | (\n << 16) | (\wd << 6)
++	.set	pop
++	.endm
++#endif
++
+ #endif /* _ASM_ASMMACRO_H */
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index bbc3dd4..f440c27 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1883,6 +1883,7 @@ change_c0_##name(unsigned int change, unsigned int newbits)	\
+ __BUILD_SET_C0(status)
+ __BUILD_SET_C0(cause)
+ __BUILD_SET_C0(config)
++__BUILD_SET_C0(config5)
+ __BUILD_SET_C0(intcontrol)
+ __BUILD_SET_C0(intctl)
+ __BUILD_SET_C0(srsmap)
+diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
+new file mode 100644
+index 0000000..a306ea8
+--- /dev/null
++++ b/arch/mips/include/asm/msa.h
+@@ -0,0 +1,171 @@
++/*
++ * Copyright (C) 2013 Imagination Technologies
++ * Author: Paul Burton <paul.burton@imgtec.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++#ifndef _ASM_MSA_H
++#define _ASM_MSA_H
++
++#include <asm/mipsregs.h>
++
++static inline void enable_msa(void)
++{
++	if (cpu_has_msa)
++		set_c0_config5(MIPS_CONF5_MSAEN);
++}
++
++static inline void disable_msa(void)
++{
++	if (cpu_has_msa)
++		clear_c0_config5(MIPS_CONF5_MSAEN);
++}
++
++static inline int is_msa_enabled(void)
++{
++	if (!cpu_has_msa)
++		return 0;
++
++	return read_c0_config5() & MIPS_CONF5_MSAEN;
++}
++
++#ifdef TOOLCHAIN_SUPPORTS_MSA
++
++#define __BUILD_MSA_CTL_REG(name, cs)				\
++static inline unsigned int read_msa_##name(void)		\
++{								\
++	unsigned int reg;					\
++	__asm__ __volatile__(					\
++	"	.set	push\n"					\
++	"	.set	msa\n"					\
++	"	cfcmsa	%0, $" #cs "\n"				\
++	"	.set	pop\n"					\
++	: "=r"(reg));						\
++	return reg;						\
++}								\
++								\
++static inline void write_msa_##name(unsigned int val)		\
++{								\
++	__asm__ __volatile__(					\
++	"	.set	push\n"					\
++	"	.set	msa\n"					\
++	"	cfcmsa	$" #cs ", %0\n"				\
++	"	.set	pop\n"					\
++	: : "r"(val));						\
++}
++
++#else /* !TOOLCHAIN_SUPPORTS_MSA */
++
++/*
++ * Define functions using .word for the c[ft]cmsa instructions in order to
++ * allow compilation with toolchains that do not support MSA. Once all
++ * toolchains in use support MSA these can be removed.
++ */
++
++#define __BUILD_MSA_CTL_REG(name, cs)				\
++static inline unsigned int read_msa_##name(void)		\
++{								\
++	unsigned int reg;					\
++	__asm__ __volatile__(					\
++	"	.set	push\n"					\
++	"	.set	noat\n"					\
++	"	.word	0x787e0059 | (" #cs " << 11)\n"		\
++	"	move	%0, $1\n"				\
++	"	.set	pop\n"					\
++	: "=r"(reg));						\
++	return reg;						\
++}								\
++								\
++static inline void write_msa_##name(unsigned int val)		\
++{								\
++	__asm__ __volatile__(					\
++	"	.set	push\n"					\
++	"	.set	noat\n"					\
++	"	move	$1, %0\n"				\
++	"	.word	0x783e0819 | (" #cs " << 6)\n"		\
++	"	.set	pop\n"					\
++	: : "r"(val));						\
++}
++
++#endif /* !TOOLCHAIN_SUPPORTS_MSA */
++
++#define MSA_IR		0
++#define MSA_CSR		1
++#define MSA_ACCESS	2
++#define MSA_SAVE	3
++#define MSA_MODIFY	4
++#define MSA_REQUEST	5
++#define MSA_MAP		6
++#define MSA_UNMAP	7
++
++__BUILD_MSA_CTL_REG(ir, 0)
++__BUILD_MSA_CTL_REG(csr, 1)
++__BUILD_MSA_CTL_REG(access, 2)
++__BUILD_MSA_CTL_REG(save, 3)
++__BUILD_MSA_CTL_REG(modify, 4)
++__BUILD_MSA_CTL_REG(request, 5)
++__BUILD_MSA_CTL_REG(map, 6)
++__BUILD_MSA_CTL_REG(unmap, 7)
++
++/* MSA Implementation Register (MSAIR) */
++#define MSA_IR_REVB		0
++#define MSA_IR_REVF		(_ULCAST_(0xff) << MSA_IR_REVB)
++#define MSA_IR_PROCB		8
++#define MSA_IR_PROCF		(_ULCAST_(0xff) << MSA_IR_PROCB)
++#define MSA_IR_WRPB		16
++#define MSA_IR_WRPF		(_ULCAST_(0x1) << MSA_IR_WRPB)
++
++/* MSA Control & Status Register (MSACSR) */
++#define MSA_CSR_RMB		0
++#define MSA_CSR_RMF		(_ULCAST_(0x3) << MSA_CSR_RMB)
++#define MSA_CSR_RM_NEAREST	0
++#define MSA_CSR_RM_TO_ZERO	1
++#define MSA_CSR_RM_TO_POS	2
++#define MSA_CSR_RM_TO_NEG	3
++#define MSA_CSR_FLAGSB		2
++#define MSA_CSR_FLAGSF		(_ULCAST_(0x1f) << MSA_CSR_FLAGSB)
++#define MSA_CSR_FLAGS_IB	2
++#define MSA_CSR_FLAGS_IF	(_ULCAST_(0x1) << MSA_CSR_FLAGS_IB)
++#define MSA_CSR_FLAGS_UB	3
++#define MSA_CSR_FLAGS_UF	(_ULCAST_(0x1) << MSA_CSR_FLAGS_UB)
++#define MSA_CSR_FLAGS_OB	4
++#define MSA_CSR_FLAGS_OF	(_ULCAST_(0x1) << MSA_CSR_FLAGS_OB)
++#define MSA_CSR_FLAGS_ZB	5
++#define MSA_CSR_FLAGS_ZF	(_ULCAST_(0x1) << MSA_CSR_FLAGS_ZB)
++#define MSA_CSR_FLAGS_VB	6
++#define MSA_CSR_FLAGS_VF	(_ULCAST_(0x1) << MSA_CSR_FLAGS_VB)
++#define MSA_CSR_ENABLESB	7
++#define MSA_CSR_ENABLESF	(_ULCAST_(0x1f) << MSA_CSR_ENABLESB)
++#define MSA_CSR_ENABLES_IB	7
++#define MSA_CSR_ENABLES_IF	(_ULCAST_(0x1) << MSA_CSR_ENABLES_IB)
++#define MSA_CSR_ENABLES_UB	8
++#define MSA_CSR_ENABLES_UF	(_ULCAST_(0x1) << MSA_CSR_ENABLES_UB)
++#define MSA_CSR_ENABLES_OB	9
++#define MSA_CSR_ENABLES_OF	(_ULCAST_(0x1) << MSA_CSR_ENABLES_OB)
++#define MSA_CSR_ENABLES_ZB	10
++#define MSA_CSR_ENABLES_ZF	(_ULCAST_(0x1) << MSA_CSR_ENABLES_ZB)
++#define MSA_CSR_ENABLES_VB	11
++#define MSA_CSR_ENABLES_VF	(_ULCAST_(0x1) << MSA_CSR_ENABLES_VB)
++#define MSA_CSR_CAUSEB		12
++#define MSA_CSR_CAUSEF		(_ULCAST_(0x3f) << MSA_CSR_CAUSEB)
++#define MSA_CSR_CAUSE_IB	12
++#define MSA_CSR_CAUSE_IF	(_ULCAST_(0x1) << MSA_CSR_CAUSE_IB)
++#define MSA_CSR_CAUSE_UB	13
++#define MSA_CSR_CAUSE_UF	(_ULCAST_(0x1) << MSA_CSR_CAUSE_UB)
++#define MSA_CSR_CAUSE_OB	14
++#define MSA_CSR_CAUSE_OF	(_ULCAST_(0x1) << MSA_CSR_CAUSE_OB)
++#define MSA_CSR_CAUSE_ZB	15
++#define MSA_CSR_CAUSE_ZF	(_ULCAST_(0x1) << MSA_CSR_CAUSE_ZB)
++#define MSA_CSR_CAUSE_VB	16
++#define MSA_CSR_CAUSE_VF	(_ULCAST_(0x1) << MSA_CSR_CAUSE_VB)
++#define MSA_CSR_CAUSE_EB	17
++#define MSA_CSR_CAUSE_EF	(_ULCAST_(0x1) << MSA_CSR_CAUSE_EB)
++#define MSA_CSR_NXB		18
++#define MSA_CSR_NXF		(_ULCAST_(0x1) << MSA_CSR_NXB)
++#define MSA_CSR_FSB		24
++#define MSA_CSR_FSF		(_ULCAST_(0x1) << MSA_CSR_FSB)
++
++#endif /* _ASM_MSA_H */
 -- 
 1.8.5.3

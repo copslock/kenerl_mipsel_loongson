@@ -1,15 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:38:56 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:44846 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:39:15 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:44847 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870568AbaA0U2DZNNca (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6870569AbaA0U2D3I0-A (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 27 Jan 2014 21:28:03 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 56/58] MIPS: malta: malta-init: Fix System Controller memory mapping for EVA
-Date:   Mon, 27 Jan 2014 20:19:43 +0000
-Message-ID: <1390853985-14246-57-git-send-email-markos.chandras@imgtec.com>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 57/58] MIPS: malta: Add support for SMP EVA
+Date:   Mon, 27 Jan 2014 20:19:44 +0000
+Message-ID: <1390853985-14246-58-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
@@ -21,7 +20,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39175
+X-archive-position: 39176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,43 +37,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Allow secondary cores to program their segment control registers
+during smp bootstrap code. This enables EVA on Malta SMP
+configurations
 
-Shift System Controller memory mapping to 0x80000000
-
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/mti-malta/malta-init.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/mips/include/asm/mach-malta/kernel-entry-init.h | 6 ++++++
+ arch/mips/kernel/head.S                              | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
-index fcebfce..deb1d7b 100644
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -238,10 +238,23 @@ mips_pci_controller:
- 			  MSC01_PCI_SWAP_BYTESWAP << MSC01_PCI_SWAP_MEM_SHF |
- 			  MSC01_PCI_SWAP_BYTESWAP << MSC01_PCI_SWAP_BAR0_SHF);
- #endif
-+#ifndef CONFIG_EVA
- 		/* Fix up target memory mapping.  */
- 		MSC_READ(MSC01_PCI_BAR0, mask);
- 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask & MSC01_PCI_BAR0_SIZE_MSK);
-+#else
-+		/*
-+		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
-+		 * in transparent addressing mode, starting from 0x80000000.
-+		 */
-+		mask = PHYS_OFFSET | (1<<3);
-+		MSC_WRITE(MSC01_PCI_BAR0, mask);
- 
-+		mask = PHYS_OFFSET;
-+		MSC_WRITE(MSC01_PCI_HEAD4, mask);
-+		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
-+		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
+diff --git a/arch/mips/include/asm/mach-malta/kernel-entry-init.h b/arch/mips/include/asm/mach-malta/kernel-entry-init.h
+index 9bace9c..7c5e17a 100644
+--- a/arch/mips/include/asm/mach-malta/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-malta/kernel-entry-init.h
+@@ -154,6 +154,12 @@ nonsc_processor:
+  * Do SMP slave processor setup necessary before we can safely execute C code.
+  */
+ 	.macro	smp_slave_setup
++#ifdef CONFIG_EVA
++	sync
++	ehb
++	mfc0    t1, CP0_CONFIG
++	eva_entry
 +#endif
- 		/* Don't handle target retries indefinitely.  */
- 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
- 		    MSC01_PCI_CFG_MAXRTRY_MSK)
+ 	.endm
+ 
+ #endif /* __ASM_MACH_MIPS_KERNEL_ENTRY_INIT_H */
+diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
+index 7b6a5b3..e712dcf 100644
+--- a/arch/mips/kernel/head.S
++++ b/arch/mips/kernel/head.S
+@@ -175,8 +175,8 @@ NESTED(smp_bootstrap, 16, sp)
+ 	DMT	10	# dmt t2 /* t0, t1 are used by CLI and setup_c0_status() */
+ 	jal	mips_ihb
+ #endif /* CONFIG_MIPS_MT_SMTC */
+-	setup_c0_status_sec
+ 	smp_slave_setup
++	setup_c0_status_sec
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 	andi	t2, t2, VPECONTROL_TE
+ 	beqz	t2, 2f
 -- 
 1.8.5.3

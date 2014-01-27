@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:29:31 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:43596 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:29:50 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:43605 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870548AbaA0UXrEVk3B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jan 2014 21:23:47 +0100
+        id S6870550AbaA0UXuRCT6A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jan 2014 21:23:50 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 28/58] MIPS: asm: uaccess: Add EVA support to copy_{in, to,from}_user
-Date:   Mon, 27 Jan 2014 20:19:15 +0000
-Message-ID: <1390853985-14246-29-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 29/58] MIPS: asm: uaccess: Add EVA support for str*_user operations
+Date:   Mon, 27 Jan 2014 20:19:16 +0000
+Message-ID: <1390853985-14246-30-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_01_27_20_23_42
+X-SEF-Processed: 7_3_0_01192__2014_01_27_20_23_45
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39146
+X-archive-position: 39147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,293 +37,235 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the EVA specific functions from memcpy.S to perform
-userspace operations. When get_fs() == get_ds() the usual load/store
-instructions are used because the destination address is located in
-the kernel address space region. Otherwise, the EVA specifc load/store
-instructions are used which will go through th TLB to perform the virtual
-to physical translation for the userspace address.
+The str*_user functions are used to securely access NULL terminated
+strings from userland. Therefore, it's necessary to use the appropriate
+EVA function. However, if the string is in kernel space, then the normal
+instructions are being used to access it. The __str*_kernel_asm and
+__str*_user_asm symbols are the same for non-EVA mode so there is no
+functional change for the non-EVA kernels.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/uaccess.h | 191 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 171 insertions(+), 20 deletions(-)
+ arch/mips/include/asm/uaccess.h | 172 +++++++++++++++++++++++++++-------------
+ 1 file changed, 119 insertions(+), 53 deletions(-)
 
 diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index 59bbebb..fe72837 100644
+index fe72837..da52765 100644
 --- a/arch/mips/include/asm/uaccess.h
 +++ b/arch/mips/include/asm/uaccess.h
-@@ -781,6 +781,7 @@ extern void __put_user_unaligned_unknown(void);
+@@ -1246,16 +1246,28 @@ __strncpy_from_user(char *__to, const char __user *__from, long __len)
+ {
+ 	long res;
  
- extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+-	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		"move\t$5, %2\n\t"
+-		"move\t$6, %3\n\t"
+-		__MODULE_JAL(__strncpy_from_user_nocheck_asm)
+-		"move\t%0, $2"
+-		: "=r" (res)
+-		: "r" (__to), "r" (__from), "r" (__len)
+-		: "$2", "$3", "$4", "$5", "$6", __UA_t0, "$31", "memory");
++	if (segment_eq(get_fs(), get_ds())) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			"move\t$6, %3\n\t"
++			__MODULE_JAL(__strncpy_from_kernel_nocheck_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (__to), "r" (__from), "r" (__len)
++			: "$2", "$3", "$4", "$5", "$6", __UA_t0, "$31", "memory");
++	} else {
++		might_fault();
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			"move\t$6, %3\n\t"
++			__MODULE_JAL(__strncpy_from_user_nocheck_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (__to), "r" (__from), "r" (__len)
++			: "$2", "$3", "$4", "$5", "$6", __UA_t0, "$31", "memory");
++	}
  
-+#ifndef CONFIG_EVA
- #define __invoke_copy_to_user(to, from, n)				\
- ({									\
- 	register void __user *__cu_to_r __asm__("$4");			\
-@@ -799,6 +800,11 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
- 	__cu_len_r;							\
- })
+ 	return res;
+ }
+@@ -1283,16 +1295,28 @@ strncpy_from_user(char *__to, const char __user *__from, long __len)
+ {
+ 	long res;
  
-+#define __invoke_copy_to_kernel(to, from, n)				\
-+	__invoke_copy_to_user(to, from, n)
-+
-+#endif
-+
- /*
-  * __copy_to_user: - Copy a block of data into user space, with less checking.
-  * @to:	  Destination address, in user space.
-@@ -823,7 +829,12 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
- 	might_fault();							\
--	__cu_len = __invoke_copy_to_user(__cu_to, __cu_from, __cu_len); \
-+	if (segment_eq(get_fs(), get_ds()))				\
-+		__cu_len = __invoke_copy_to_kernel(__cu_to, __cu_from,	\
-+						   __cu_len);		\
-+	else								\
-+		__cu_len = __invoke_copy_to_user(__cu_to, __cu_from,	\
-+						 __cu_len);		\
- 	__cu_len;							\
- })
+-	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		"move\t$5, %2\n\t"
+-		"move\t$6, %3\n\t"
+-		__MODULE_JAL(__strncpy_from_user_asm)
+-		"move\t%0, $2"
+-		: "=r" (res)
+-		: "r" (__to), "r" (__from), "r" (__len)
+-		: "$2", "$3", "$4", "$5", "$6", __UA_t0, "$31", "memory");
++	if (segment_eq(get_fs(), get_ds())) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			"move\t$6, %3\n\t"
++			__MODULE_JAL(__strncpy_from_kernel_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (__to), "r" (__from), "r" (__len)
++			: "$2", "$3", "$4", "$5", "$6", __UA_t0, "$31", "memory");
++	} else {
++		might_fault();
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			"move\t$6, %3\n\t"
++			__MODULE_JAL(__strncpy_from_user_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (__to), "r" (__from), "r" (__len)
++			: "$2", "$3", "$4", "$5", "$6", __UA_t0, "$31", "memory");
++	}
  
-@@ -838,7 +849,12 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	__cu_len = __invoke_copy_to_user(__cu_to, __cu_from, __cu_len); \
-+	if (segment_eq(get_fs(), get_ds()))				\
-+		__cu_len = __invoke_copy_to_kernel(__cu_to, __cu_from,	\
-+						   __cu_len);		\
-+	else								\
-+		__cu_len = __invoke_copy_to_user(__cu_to, __cu_from,	\
-+						 __cu_len);		\
- 	__cu_len;							\
- })
+ 	return res;
+ }
+@@ -1302,14 +1326,24 @@ static inline long __strlen_user(const char __user *s)
+ {
+ 	long res;
  
-@@ -851,8 +867,14 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	__cu_len = __invoke_copy_from_user_inatomic(__cu_to, __cu_from, \
--						    __cu_len);		\
-+	if (segment_eq(get_fs(), get_ds()))				\
-+		__cu_len = __invoke_copy_from_kernel_inatomic(__cu_to,	\
-+							      __cu_from,\
-+							      __cu_len);\
-+	else								\
-+		__cu_len = __invoke_copy_from_user_inatomic(__cu_to,	\
-+							    __cu_from,	\
-+							    __cu_len);	\
- 	__cu_len;							\
- })
+-	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		__MODULE_JAL(__strlen_user_nocheck_asm)
+-		"move\t%0, $2"
+-		: "=r" (res)
+-		: "r" (s)
+-		: "$2", "$4", __UA_t0, "$31");
++	if (segment_eq(get_fs(), get_ds())) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			__MODULE_JAL(__strlen_kernel_nocheck_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s)
++			: "$2", "$4", __UA_t0, "$31");
++	} else {
++		might_fault();
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			__MODULE_JAL(__strlen_user_nocheck_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s)
++			: "$2", "$4", __UA_t0, "$31");
++	}
  
-@@ -878,14 +900,23 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	if (access_ok(VERIFY_WRITE, __cu_to, __cu_len)) {		\
--		might_fault();						\
--		__cu_len = __invoke_copy_to_user(__cu_to, __cu_from,	\
--						 __cu_len);		\
-+	if (segment_eq(get_fs(), get_ds())) {				\
-+		__cu_len = __invoke_copy_to_kernel(__cu_to,		\
-+						   __cu_from,		\
-+						   __cu_len);		\
-+	} else {							\
-+		if (access_ok(VERIFY_WRITE, __cu_to, __cu_len)) {       \
-+			might_fault();                                  \
-+			__cu_len = __invoke_copy_to_user(__cu_to,	\
-+							 __cu_from,	\
-+							 __cu_len);     \
-+		}							\
- 	}								\
- 	__cu_len;							\
- })
+ 	return res;
+ }
+@@ -1332,14 +1366,24 @@ static inline long strlen_user(const char __user *s)
+ {
+ 	long res;
  
-+#ifndef CONFIG_EVA
-+
- #define __invoke_copy_from_user(to, from, n)				\
- ({									\
- 	register void *__cu_to_r __asm__("$4");				\
-@@ -909,6 +940,17 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_len_r;							\
- })
+-	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		__MODULE_JAL(__strlen_user_asm)
+-		"move\t%0, $2"
+-		: "=r" (res)
+-		: "r" (s)
+-		: "$2", "$4", __UA_t0, "$31");
++	if (segment_eq(get_fs(), get_ds())) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			__MODULE_JAL(__strlen_kernel_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s)
++			: "$2", "$4", __UA_t0, "$31");
++	} else {
++		might_fault();
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			__MODULE_JAL(__strlen_kernel_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s)
++			: "$2", "$4", __UA_t0, "$31");
++	}
  
-+#define __invoke_copy_from_kernel(to, from, n)				\
-+	__invoke_copy_from_user(to, from, n)
-+
-+/* For userland <-> userland operations */
-+#define ___invoke_copy_in_user(to, from, n)				\
-+	__invoke_copy_from_user(to, from, n)
-+
-+/* For kernel <-> kernel operations */
-+#define ___invoke_copy_in_kernel(to, from, n)				\
-+	__invoke_copy_from_user(to, from, n)
-+
- #define __invoke_copy_from_user_inatomic(to, from, n)			\
- ({									\
- 	register void *__cu_to_r __asm__("$4");				\
-@@ -932,6 +974,97 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_len_r;							\
- })
+ 	return res;
+ }
+@@ -1349,15 +1393,26 @@ static inline long __strnlen_user(const char __user *s, long n)
+ {
+ 	long res;
  
-+#define __invoke_copy_from_kernel_inatomic(to, from, n)			\
-+	__invoke_copy_from_user_inatomic(to, from, n)			\
-+
-+#else
-+
-+/* EVA specific functions */
-+
-+extern size_t __copy_user_inatomic_eva(void *__to, const void *__from,
-+				       size_t __n);
-+extern size_t __copy_from_user_eva(void *__to, const void *__from,
-+				   size_t __n);
-+extern size_t __copy_to_user_eva(void *__to, const void *__from,
-+				 size_t __n);
-+extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
-+
-+#define __invoke_copy_from_user_eva_generic(to, from, n, func_ptr)	\
-+({									\
-+	register void *__cu_to_r __asm__("$4");				\
-+	register const void __user *__cu_from_r __asm__("$5");		\
-+	register long __cu_len_r __asm__("$6");				\
-+									\
-+	__cu_to_r = (to);						\
-+	__cu_from_r = (from);						\
-+	__cu_len_r = (n);						\
-+	__asm__ __volatile__(						\
-+	".set\tnoreorder\n\t"						\
-+	__MODULE_JAL(func_ptr)						\
-+	".set\tnoat\n\t"						\
-+	__UA_ADDU "\t$1, %1, %2\n\t"					\
-+	".set\tat\n\t"							\
-+	".set\treorder"							\
-+	: "+r" (__cu_to_r), "+r" (__cu_from_r), "+r" (__cu_len_r)	\
-+	:								\
-+	: "$8", "$9", "$10", "$11", "$12", "$14", "$15", "$24", "$31",	\
-+	  DADDI_SCRATCH, "memory");					\
-+	__cu_len_r;							\
-+})
-+
-+#define __invoke_copy_to_user_eva_generic(to, from, n, func_ptr)	\
-+({									\
-+	register void *__cu_to_r __asm__("$4");				\
-+	register const void __user *__cu_from_r __asm__("$5");		\
-+	register long __cu_len_r __asm__("$6");				\
-+									\
-+	__cu_to_r = (to);						\
-+	__cu_from_r = (from);						\
-+	__cu_len_r = (n);						\
-+	__asm__ __volatile__(						\
-+	__MODULE_JAL(func_ptr)						\
-+	: "+r" (__cu_to_r), "+r" (__cu_from_r), "+r" (__cu_len_r)	\
-+	:								\
-+	: "$8", "$9", "$10", "$11", "$12", "$14", "$15", "$24", "$31",	\
-+	  DADDI_SCRATCH, "memory");					\
-+	__cu_len_r;							\
-+})
-+
-+/*
-+ * Source or destination address is in userland. We need to go through
-+ * the TLB
-+ */
-+#define __invoke_copy_from_user(to, from, n)				\
-+	__invoke_copy_from_user_eva_generic(to, from, n, __copy_from_user_eva)
-+
-+#define __invoke_copy_from_user_inatomic(to, from, n)			\
-+	__invoke_copy_from_user_eva_generic(to, from, n,		\
-+					    __copy_user_inatomic_eva)
-+
-+#define __invoke_copy_to_user(to, from, n)				\
-+	__invoke_copy_to_user_eva_generic(to, from, n, __copy_to_user_eva)
-+
-+#define ___invoke_copy_in_user(to, from, n)				\
-+	__invoke_copy_from_user_eva_generic(to, from, n, __copy_in_user_eva)
-+
-+/*
-+ * Source or destination address in the kernel. We are not going through
-+ * the TLB
-+ */
-+#define __invoke_copy_from_kernel(to, from, n)				\
-+	__invoke_copy_from_user_eva_generic(to, from, n, __copy_user)
-+
-+#define __invoke_copy_from_kernel_inatomic(to, from, n)			\
-+	__invoke_copy_from_user_eva_generic(to, from, n, __copy_user_inatomic)
-+
-+#define __invoke_copy_to_kernel(to, from, n)				\
-+	__invoke_copy_to_user_eva_generic(to, from, n, __copy_user)
-+
-+#define ___invoke_copy_in_kernel(to, from, n)				\
-+	__invoke_copy_from_user_eva_generic(to, from, n, __copy_user)
-+
-+#endif /* CONFIG_EVA */
-+
- /*
-  * __copy_from_user: - Copy a block of data from user space, with less checking.
-  * @to:	  Destination address, in kernel space.
-@@ -989,10 +1122,17 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	if (access_ok(VERIFY_READ, __cu_from, __cu_len)) {		\
--		might_fault();						\
--		__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,	\
--						   __cu_len);		\
-+	if (segment_eq(get_fs(), get_ds())) {				\
-+		__cu_len = __invoke_copy_from_kernel(__cu_to,		\
-+						     __cu_from,		\
-+						     __cu_len);		\
-+	} else {							\
-+		if (access_ok(VERIFY_READ, __cu_from, __cu_len)) {	\
-+			might_fault();                                  \
-+			__cu_len = __invoke_copy_from_user(__cu_to,	\
-+							   __cu_from,	\
-+							   __cu_len);   \
-+		}							\
- 	}								\
- 	__cu_len;							\
- })
-@@ -1006,9 +1146,14 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	might_fault();							\
--	__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,		\
--					   __cu_len);			\
-+	if (segment_eq(get_fs(), get_ds())) {				\
-+		__cu_len = ___invoke_copy_in_kernel(__cu_to, __cu_from,	\
-+						    __cu_len);		\
-+	} else {							\
-+		might_fault();						\
-+		__cu_len = ___invoke_copy_in_user(__cu_to, __cu_from,	\
-+						  __cu_len);		\
-+	}								\
- 	__cu_len;							\
- })
+-	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		"move\t$5, %2\n\t"
+-		__MODULE_JAL(__strnlen_user_nocheck_asm)
+-		"move\t%0, $2"
+-		: "=r" (res)
+-		: "r" (s), "r" (n)
+-		: "$2", "$4", "$5", __UA_t0, "$31");
++	if (segment_eq(get_fs(), get_ds())) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			__MODULE_JAL(__strnlen_kernel_nocheck_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s), "r" (n)
++			: "$2", "$4", "$5", __UA_t0, "$31");
++	} else {
++		might_fault();
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			__MODULE_JAL(__strnlen_user_nocheck_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s), "r" (n)
++			: "$2", "$4", "$5", __UA_t0, "$31");
++	}
  
-@@ -1021,11 +1166,17 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	if (likely(access_ok(VERIFY_READ, __cu_from, __cu_len) &&	\
--		   access_ok(VERIFY_WRITE, __cu_to, __cu_len))) {	\
--		might_fault();						\
--		__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,	\
--						   __cu_len);		\
-+	if (segment_eq(get_fs(), get_ds())) {				\
-+		__cu_len = ___invoke_copy_in_kernel(__cu_to,__cu_from,	\
-+						    __cu_len);		\
-+	} else {							\
-+		if (likely(access_ok(VERIFY_READ, __cu_from, __cu_len) &&\
-+			   access_ok(VERIFY_WRITE, __cu_to, __cu_len))) {\
-+			might_fault();					\
-+			__cu_len = ___invoke_copy_in_user(__cu_to,	\
-+							  __cu_from,	\
-+							  __cu_len);	\
-+		}							\
- 	}								\
- 	__cu_len;							\
- })
+ 	return res;
+ }
+@@ -1381,14 +1436,25 @@ static inline long strnlen_user(const char __user *s, long n)
+ 	long res;
+ 
+ 	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		"move\t$5, %2\n\t"
+-		__MODULE_JAL(__strnlen_user_asm)
+-		"move\t%0, $2"
+-		: "=r" (res)
+-		: "r" (s), "r" (n)
+-		: "$2", "$4", "$5", __UA_t0, "$31");
++	if (segment_eq(get_fs(), get_ds())) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			__MODULE_JAL(__strnlen_kernel_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s), "r" (n)
++			: "$2", "$4", "$5", __UA_t0, "$31");
++	} else {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, %2\n\t"
++			__MODULE_JAL(__strnlen_user_asm)
++			"move\t%0, $2"
++			: "=r" (res)
++			: "r" (s), "r" (n)
++			: "$2", "$4", "$5", __UA_t0, "$31");
++	}
+ 
+ 	return res;
+ }
 -- 
 1.8.5.3

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:37:41 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:44846 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:38:01 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:44847 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827335AbaA0U2DD7WPt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6831301AbaA0U2DIVkzt (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 27 Jan 2014 21:28:03 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 53/58] MIPS: malta: malta-memory: Add support for the 'ememsize' variable
-Date:   Mon, 27 Jan 2014 20:19:40 +0000
-Message-ID: <1390853985-14246-54-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 52/58] MIPS: malta: spaces.h: Add spaces.h file for Malta (EVA)
+Date:   Mon, 27 Jan 2014 20:19:39 +0000
+Message-ID: <1390853985-14246-53-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
@@ -20,7 +20,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39171
+X-archive-position: 39172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,106 +37,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The 'ememsize' variable is used to denote the real RAM which is
-present on the Malta board. This is different compared to 'memsize'
-which is capped to 256MB. The 'ememsize' is used to get the actual
-physical memory when setting up the Malta memory layout. This only
-makes sense in case the core operates in the EVA mode, and it's
-ignored otherwise.
+Add a spaces.h file for Malta to override certain memory macros
+when operating in EVA mode.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/fw/fw.h      |  2 +-
- arch/mips/mti-malta/malta-memory.c | 36 +++++++++++++++++++++++++++---------
- 2 files changed, 28 insertions(+), 10 deletions(-)
+ arch/mips/include/asm/mach-malta/spaces.h | 46 +++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-malta/spaces.h
 
-diff --git a/arch/mips/include/asm/fw/fw.h b/arch/mips/include/asm/fw/fw.h
-index d6c50a7..f3e6978 100644
---- a/arch/mips/include/asm/fw/fw.h
-+++ b/arch/mips/include/asm/fw/fw.h
-@@ -38,7 +38,7 @@ extern int *_fw_envp;
- 
- extern void fw_init_cmdline(void);
- extern char *fw_getcmdline(void);
--extern fw_memblock_t *fw_getmdesc(void);
-+extern fw_memblock_t *fw_getmdesc(int);
- extern void fw_meminit(void);
- extern char *fw_getenv(char *name);
- extern unsigned long fw_getenvl(char *name);
-diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
-index 1f73d63..cd04008 100644
---- a/arch/mips/mti-malta/malta-memory.c
-+++ b/arch/mips/mti-malta/malta-memory.c
-@@ -24,22 +24,30 @@ static fw_memblock_t mdesc[FW_MAX_MEMBLOCKS];
- /* determined physical memory size, not overridden by command line args	 */
- unsigned long physical_memsize = 0L;
- 
--fw_memblock_t * __init fw_getmdesc(void)
-+fw_memblock_t * __init fw_getmdesc(int eva)
- {
--	char *memsize_str, *ptr;
--	unsigned int memsize;
-+	char *memsize_str, *ememsize_str __maybe_unused = NULL, *ptr;
-+	unsigned long memsize, ememsize __maybe_unused = 0;
- 	static char cmdline[COMMAND_LINE_SIZE] __initdata;
--	long val;
- 	int tmp;
- 
- 	/* otherwise look in the environment */
+diff --git a/arch/mips/include/asm/mach-malta/spaces.h b/arch/mips/include/asm/mach-malta/spaces.h
+new file mode 100644
+index 0000000..d7e5497
+--- /dev/null
++++ b/arch/mips/include/asm/mach-malta/spaces.h
+@@ -0,0 +1,46 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2014 Imagination Technologies Ltd.
++ */
 +
- 	memsize_str = fw_getenv("memsize");
--	if (!memsize_str) {
-+	if (memsize_str)
-+		tmp = kstrtol(memsize_str, 0, &memsize);
-+	if (eva) {
-+	/* Look for ememsize for EVA */
-+		ememsize_str = fw_getenv("ememsize");
-+		if (ememsize_str)
-+			tmp = kstrtol(ememsize_str, 0, &ememsize);
-+	}
-+	if (!memsize && !ememsize) {
- 		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
- 		physical_memsize = 0x02000000;
- 	} else {
--		tmp = kstrtol(memsize_str, 0, &val);
--		physical_memsize = (unsigned long)val;
-+		/* If ememsize is set, then set physical_memsize to that */
-+		physical_memsize = ememsize ? : memsize;
- 	}
- 
- #ifdef CONFIG_CPU_BIG_ENDIAN
-@@ -54,12 +62,22 @@ fw_memblock_t * __init fw_getmdesc(void)
- 	ptr = strstr(cmdline, "memsize=");
- 	if (ptr && (ptr != cmdline) && (*(ptr - 1) != ' '))
- 		ptr = strstr(ptr, " memsize=");
-+	/* And now look for ememsize */
-+	if (eva) {
-+		ptr = strstr(cmdline, "ememsize=");
-+		if (ptr && (ptr != cmdline) && (*(ptr - 1) != ' '))
-+			ptr = strstr(ptr, " ememsize=");
-+	}
- 
- 	if (ptr)
--		memsize = memparse(ptr + 8, &ptr);
-+		memsize = memparse(ptr + 8 + (eva ? 1 : 0), &ptr);
- 	else
- 		memsize = physical_memsize;
- 
-+	/* Last 64K for HIGHMEM arithmetics */
-+	if (memsize > 0x7fff0000)
-+		memsize = 0x7fff0000;
++#ifndef _ASM_MALTA_SPACES_H
++#define _ASM_MALTA_SPACES_H
 +
- 	memset(mdesc, 0, sizeof(mdesc));
- 
- 	mdesc[0].type = fw_dontuse;
-@@ -109,7 +127,7 @@ void __init fw_meminit(void)
- {
- 	fw_memblock_t *p;
- 
--	p = fw_getmdesc();
-+	p = fw_getmdesc(config_enabled(CONFIG_EVA));
- 
- 	while (p->size) {
- 		long type;
++#ifdef CONFIG_EVA
++
++/*
++ * Traditional Malta Board Memory Map for EVA
++ *
++ * 0x00000000 - 0x0fffffff: 1st RAM region, 256MB
++ * 0x10000000 - 0x1bffffff: GIC and CPC Control Registers
++ * 0x1c000000 - 0x1fffffff: I/O And Flash
++ * 0x20000000 - 0x7fffffff: 2nd RAM region, 1.5GB
++ * 0x80000000 - 0xffffffff: Physical memory aliases to 0x0 (2GB)
++ *
++ * The kernel is still located in 0x80000000(kseg0). However,
++ * the physical mask has been shifted to 0x80000000 which exploits the alias
++ * on the Malta board. As a result of which, we override the __pa_symbol
++ * to peform direct mapping from virtual to physical addresses. In other
++ * words, the 0x80000000 virtual address maps to 0x80000000 physical address
++ * which in turn aliases to 0x0. We do this in order to be able to use a flat
++ * 2GB of memory (0x80000000 - 0xffffffff) so we can avoid the I/O hole in
++ * 0x10000000 - 0x1fffffff.
++ * The last 64KB of physical memory are reserved for correct HIGHMEM
++ * macros arithmetics.
++ *
++ */
++
++#define PAGE_OFFSET	_AC(0x0, UL)
++#define PHYS_OFFSET	_AC(0x80000000, UL)
++#define HIGHMEM_START	_AC(0xffff0000, UL)
++
++#define __pa_symbol(x)	(RELOC_HIDE((unsigned long)(x), 0))
++
++#endif /* CONFIG_EVA */
++
++#include <asm/mach-generic/spaces.h>
++
++#endif /* _ASM_MALTA_SPACES_H */
 -- 
 1.8.5.3

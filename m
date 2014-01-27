@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:27:31 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:43586 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:27:54 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:43587 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6831312AbaA0UXGsPMiy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jan 2014 21:23:06 +0100
+        id S6860900AbaA0UXJ3Kjfq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jan 2014 21:23:09 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 22/58] MIPS: lib: memset: Add EVA support for the __bzero function.
-Date:   Mon, 27 Jan 2014 20:19:09 +0000
-Message-ID: <1390853985-14246-23-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 23/58] MIPS: asm: uaccess: Add instruction argument to __{put,get}_user_asm
+Date:   Mon, 27 Jan 2014 20:19:10 +0000
+Message-ID: <1390853985-14246-24-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_01_27_20_23_01
+X-SEF-Processed: 7_3_0_01192__2014_01_27_20_23_04
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39140
+X-archive-position: 39141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,78 +37,107 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Build the __bzero function using the EVA load/store instructions
-when operating in the EVA mode. This function is only used when
-accessing user code so there is no need to build two distinct symbols
-for user and kernel operations respectively.
+In preparation for EVA support, an instruction argument is needed
+for the __get_user_asm{,_ll32} functions to allow instruction overrides in
+EVA mode. Even though EVA only works for MIPS 32-bit, both codepaths are
+changed (32-bit and 64-bit) for consistency reasons.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/lib/memset.S | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/uaccess.h | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
-index 05fac19..7b0e546 100644
---- a/arch/mips/lib/memset.S
-+++ b/arch/mips/lib/memset.S
-@@ -37,13 +37,24 @@
- #define LEGACY_MODE 1
- #define EVA_MODE    2
- 
-+/*
-+ * No need to protect it with EVA #ifdefery. The generated block of code
-+ * will never be assembled if EVA is not enabled.
-+ */
-+#define __EVAFY(insn, reg, addr) __BUILD_EVA_INSN(insn##e, reg, addr)
-+#define ___BUILD_EVA_INSN(insn, reg, addr) __EVAFY(insn, reg, addr)
-+
- #define EX(insn,reg,addr,handler)			\
--9:	insn	reg, addr;				\
-+	.if \mode == LEGACY_MODE;			\
-+9:		insn	reg, addr;			\
-+	.else;						\
-+9:		___BUILD_EVA_INSN(insn, reg, addr);	\
-+	.endif;						\
- 	.section __ex_table,"a";			\
- 	PTR	9b, handler;				\
- 	.previous
- 
--	.macro	f_fill64 dst, offset, val, fixup
-+	.macro	f_fill64 dst, offset, val, fixup, mode
- 	EX(LONG_S, \val, (\offset +  0 * STORSIZE)(\dst), \fixup)
- 	EX(LONG_S, \val, (\offset +  1 * STORSIZE)(\dst), \fixup)
- 	EX(LONG_S, \val, (\offset +  2 * STORSIZE)(\dst), \fixup)
-@@ -119,7 +130,7 @@
- 	.set		reorder
- 1:	PTR_ADDIU	a0, 64
- 	R10KCBARRIER(0(ra))
--	f_fill64 a0, -64, FILL64RG, .Lfwd_fixup\@
-+	f_fill64 a0, -64, FILL64RG, .Lfwd_fixup\@, \mode
- 	bne		t1, a0, 1b
- 	.set		noreorder
- 
-@@ -144,7 +155,7 @@
- 	.set		noreorder
- 	.set		nomacro
- 	/* ... but first do longs ... */
--	f_fill64 a0, -64, FILL64RG, .Lpartial_fixup\@
-+	f_fill64 a0, -64, FILL64RG, .Lpartial_fixup\@, \mode
- 2:	.set		pop
- 	andi		a2, STORMASK		/* At most one long to go */
- 
-@@ -225,5 +236,13 @@ LEAF(memset)
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index f3fa375..5ba3933 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -223,10 +223,10 @@ struct __large_struct { unsigned long buf[100]; };
+  * for 32 bit mode and old iron.
+  */
+ #ifdef CONFIG_32BIT
+-#define __GET_USER_DW(val, ptr) __get_user_asm_ll32(val, ptr)
++#define __GET_USER_DW(val, insn, ptr) __get_user_asm_ll32(val, insn, ptr)
  #endif
- 	or		a1, t1
- 1:
-+#ifndef CONFIG_EVA
- FEXPORT(__bzero)
-+#endif
- 	__BUILD_BZERO LEGACY_MODE
-+
-+#ifdef CONFIG_EVA
-+LEAF(__bzero)
-+	__BUILD_BZERO EVA_MODE
-+END(__bzero)
-+#endif
+ #ifdef CONFIG_64BIT
+-#define __GET_USER_DW(val, ptr) __get_user_asm(val, "ld", ptr)
++#define __GET_USER_DW(val, insn, ptr) __get_user_asm(val, "ld", ptr)
+ #endif
+ 
+ extern void __get_user_unknown(void);
+@@ -237,7 +237,7 @@ do {									\
+ 	case 1: __get_user_asm(val, "lb", ptr); break;			\
+ 	case 2: __get_user_asm(val, "lh", ptr); break;			\
+ 	case 4: __get_user_asm(val, "lw", ptr); break;			\
+-	case 8: __GET_USER_DW(val, ptr); break;				\
++	case 8: __GET_USER_DW(val, "lw", ptr); break;			\
+ 	default: __get_user_unknown(); break;				\
+ 	}								\
+ } while (0)
+@@ -287,7 +287,7 @@ do {									\
+ /*
+  * Get a long long 64 using 32 bit registers.
+  */
+-#define __get_user_asm_ll32(val, addr)					\
++#define __get_user_asm_ll32(val, insn, addr)				\
+ {									\
+ 	union {								\
+ 		unsigned long long	l;				\
+@@ -295,8 +295,8 @@ do {									\
+ 	} __gu_tmp;							\
+ 									\
+ 	__asm__ __volatile__(						\
+-	"1:	lw	%1, (%3)				\n"	\
+-	"2:	lw	%D1, 4(%3)				\n"	\
++	"1:	" insn "	%1, (%3)			\n"	\
++	"2:	" insn "	%D1, 4(%3)			\n"	\
+ 	"3:							\n"	\
+ 	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+@@ -320,10 +320,10 @@ do {									\
+  * for 32 bit mode and old iron.
+  */
+ #ifdef CONFIG_32BIT
+-#define __PUT_USER_DW(ptr) __put_user_asm_ll32(ptr)
++#define __PUT_USER_DW(insn, ptr) __put_user_asm_ll32(insn, ptr)
+ #endif
+ #ifdef CONFIG_64BIT
+-#define __PUT_USER_DW(ptr) __put_user_asm("sd", ptr)
++#define __PUT_USER_DW(insn, ptr) __put_user_asm("sd", ptr)
+ #endif
+ 
+ #define __put_user_nocheck(x, ptr, size)				\
+@@ -337,7 +337,7 @@ do {									\
+ 	case 1: __put_user_asm("sb", ptr); break;			\
+ 	case 2: __put_user_asm("sh", ptr); break;			\
+ 	case 4: __put_user_asm("sw", ptr); break;			\
+-	case 8: __PUT_USER_DW(ptr); break;				\
++	case 8: __PUT_USER_DW("sw", ptr); break;			\
+ 	default: __put_user_unknown(); break;				\
+ 	}								\
+ 	__pu_err;							\
+@@ -355,7 +355,7 @@ do {									\
+ 		case 1: __put_user_asm("sb", __pu_addr); break;		\
+ 		case 2: __put_user_asm("sh", __pu_addr); break;		\
+ 		case 4: __put_user_asm("sw", __pu_addr); break;		\
+-		case 8: __PUT_USER_DW(__pu_addr); break;		\
++		case 8: __PUT_USER_DW("sw", __pu_addr); break;		\
+ 		default: __put_user_unknown(); break;			\
+ 		}							\
+ 	}								\
+@@ -380,11 +380,11 @@ do {									\
+ 	  "i" (-EFAULT));						\
+ }
+ 
+-#define __put_user_asm_ll32(ptr)					\
++#define __put_user_asm_ll32(insn, ptr)					\
+ {									\
+ 	__asm__ __volatile__(						\
+-	"1:	sw	%2, (%3)	# __put_user_asm_ll32	\n"	\
+-	"2:	sw	%D2, 4(%3)				\n"	\
++	"1:	" insn "	%2, (%3)# __put_user_asm_ll32	\n"	\
++	"2:	" insn "	%D2, 4(%3)			\n"	\
+ 	"3:							\n"	\
+ 	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
 -- 
 1.8.5.3

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 16:25:27 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:4448 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 16:27:24 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:4441 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825311AbaA0PYrhYsHf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jan 2014 16:24:47 +0100
+        id S6823097AbaA0P1PYMtWC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jan 2014 16:27:15 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 05/15] mips: replace hardcoded 32 with NUM_FPU_REGS in ptrace
-Date:   Mon, 27 Jan 2014 15:23:04 +0000
-Message-ID: <1390836194-26286-6-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 07/15] mips: don't assume 64-bit FP registers for dump_{,task_}fpu
+Date:   Mon, 27 Jan 2014 15:23:06 +0000
+Message-ID: <1390836194-26286-8-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.7.12.4
 In-Reply-To: <1390836194-26286-1-git-send-email-paul.burton@imgtec.com>
 References: <1390836194-26286-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.152.22]
-X-SEF-Processed: 7_3_0_01192__2014_01_27_15_24_42
+X-SEF-Processed: 7_3_0_01192__2014_01_27_15_27_06
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39099
+X-archive-position: 39100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,58 +37,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-NUM_FPU_REGS just makes it clearer what's going on, rather than the
-magic hard coded 32.
+This code assumed that saved FP registers are 64 bits wide, an
+assumption which will no longer be true once MSA is introduced. This
+patch modifies the code to copy the lower 64 bits of each register in
+turn, which is safe for any FP register width >= 64 bits.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/kernel/signal.c   | 4 ++--
- arch/mips/kernel/signal32.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/process.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index e0178e1..0f97c7d 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -69,7 +69,7 @@ static int copy_fp_to_sigcontext(struct sigcontext __user *sc)
- 	int i;
- 	int err = 0;
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 6ae540e..2f01f3d 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -157,7 +157,13 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
+ /* Fill in the fpu structure for a core dump.. */
+ int dump_fpu(struct pt_regs *regs, elf_fpregset_t *r)
+ {
+-	memcpy(r, &current->thread.fpu, sizeof(current->thread.fpu));
++	int i;
++
++	for (i = 0; i < NUM_FPU_REGS; i++)
++		memcpy(&r[i], &current->thread.fpu.fpr[i], sizeof(*r));
++
++	memcpy(&r[NUM_FPU_REGS], &current->thread.fpu.fcr31,
++	       sizeof(current->thread.fpu.fcr31));
  
--	for (i = 0; i < 32; i++) {
-+	for (i = 0; i < NUM_FPU_REGS; i++) {
- 		err |=
- 		    __put_user(get_fpr64(&current->thread.fpu.fpr[i], 0),
- 			       &sc->sc_fpregs[i]);
-@@ -85,7 +85,7 @@ static int copy_fp_from_sigcontext(struct sigcontext __user *sc)
- 	int err = 0;
- 	u64 fpr_val;
+ 	return 1;
+ }
+@@ -192,7 +198,13 @@ int dump_task_regs(struct task_struct *tsk, elf_gregset_t *regs)
  
--	for (i = 0; i < 32; i++) {
-+	for (i = 0; i < NUM_FPU_REGS; i++) {
- 		err |= __get_user(fpr_val, &sc->sc_fpregs[i]);
- 		set_fpr64(&current->thread.fpu.fpr[i], 0, fpr_val);
- 	}
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index aec5821..bae2e6e 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -84,7 +84,7 @@ static int copy_fp_to_sigcontext32(struct sigcontext32 __user *sc)
- 	int err = 0;
- 	int inc = test_thread_flag(TIF_32BIT_FPREGS) ? 2 : 1;
+ int dump_task_fpu(struct task_struct *t, elf_fpregset_t *fpr)
+ {
+-	memcpy(fpr, &t->thread.fpu, sizeof(current->thread.fpu));
++	int i;
++
++	for (i = 0; i < NUM_FPU_REGS; i++)
++		memcpy(&fpr[i], &t->thread.fpu.fpr[i], sizeof(*fpr));
++
++	memcpy(&fpr[NUM_FPU_REGS], &t->thread.fpu.fcr31,
++	       sizeof(t->thread.fpu.fcr31));
  
--	for (i = 0; i < 32; i += inc) {
-+	for (i = 0; i < NUM_FPU_REGS; i += inc) {
- 		err |=
- 		    __put_user(get_fpr64(&current->thread.fpu.fpr[i], 0),
- 			       &sc->sc_fpregs[i]);
-@@ -101,7 +101,7 @@ static int copy_fp_from_sigcontext32(struct sigcontext32 __user *sc)
- 	int inc = test_thread_flag(TIF_32BIT_FPREGS) ? 2 : 1;
- 	u64 fpr_val;
- 
--	for (i = 0; i < 32; i += inc) {
-+	for (i = 0; i < NUM_FPU_REGS; i += inc) {
- 		err |= __get_user(fpr_val, &sc->sc_fpregs[i]);
- 		set_fpr64(&current->thread.fpu.fpr[i], 0, fpr_val);
- 	}
+ 	return 1;
+ }
 -- 
 1.8.5.3

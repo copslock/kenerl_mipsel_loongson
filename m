@@ -1,45 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2014 07:27:06 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:57900 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2014 15:21:35 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:8041 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822668AbaA1G1Dh5Vdo convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Jan 2014 07:27:03 +0100
-From:   Raghu Gandham <Raghu.Gandham@imgtec.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-CC:     "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] Input: i8042-io - Exclude mips platforms when
- allocating/deallocating IO regions.
-Thread-Topic: [PATCH] Input: i8042-io - Exclude mips platforms when
- allocating/deallocating IO regions.
-Thread-Index: AQHPGgBYG66oCx9jPE6mIF95ddBIvJqYEzKA//+fccCAAPlRAIAA4b2AgAAbOiA=
-Date:   Tue, 28 Jan 2014 06:25:39 +0000
-Message-ID: <E2EE47005FA75F44B80E1019FDD2EBBB6E394CB2@BADAG02.ba.imgtec.org>
-References: <1390676514-30880-1-git-send-email-raghu.gandham@imgtec.com>
- <20140126214952.GD18840@core.coreip.homeip.net>
- <E2EE47005FA75F44B80E1019FDD2EBBB6E38B06D@BADAG02.ba.imgtec.org>
- <20140127065638.GB11945@core.coreip.homeip.net>
- <20140127202435.GA589@drone.musicnaut.iki.fi>
-In-Reply-To: <20140127202435.GA589@drone.musicnaut.iki.fi>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.150.93]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S6823127AbaA1OVbwEP-4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Jan 2014 15:21:31 +0100
+Date:   Tue, 28 Jan 2014 14:20:19 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 14/15] mips: panic if vector register partitioning is
+ implemented
+Message-ID: <20140128142019.GE43648@pburton-linux.le.imgtec.org>
+References: <1390836194-26286-1-git-send-email-paul.burton@imgtec.com>
+ <1390836194-26286-15-git-send-email-paul.burton@imgtec.com>
+ <52E6A7B5.2040505@gmail.com>
+ <20140127193908.GL970@pburton-linux.le.imgtec.org>
+ <52E6B9D7.8030208@gmail.com>
 MIME-Version: 1.0
-X-SEF-Processed: 7_3_0_01192__2014_01_28_06_26_58
-Return-Path: <Raghu.Gandham@imgtec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <52E6B9D7.8030208@gmail.com>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+X-Originating-IP: [192.168.154.79]
+X-SEF-Processed: 7_3_0_01192__2014_01_28_14_21_25
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39181
+X-archive-position: 39182
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Raghu.Gandham@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,64 +43,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Aaro,
-
-> 
-> On Sun, Jan 26, 2014 at 10:56:38PM -0800, Dmitry Torokhov wrote:
-> > On Mon, Jan 27, 2014 at 12:32:36AM +0000, Raghu Gandham wrote:
-> > > > On Sat, Jan 25, 2014 at 11:01:54AM -0800, Raghu Gandham wrote:
-> > > > > The standard IO regions are already reserved by the platform
-> > > > > code on most MIPS devices(malta, cobalt, sni). The Commit
-> > > > > 197a1e96c8be5b6005145af3a4c0e45e2d651444
-> > > > > ("Input: i8042-io - fix up region handling on MIPS") introduced
-> > > > > a bug on these MIPS platforms causing i8042 driver to fail when
-> > > > > trying to reserve IO ports.
-> > > > > Prior to the above mentioned commit request_region is skipped on
-> > > > > MIPS but release_region is called.
-> > > > >
-> > > > > This patch reverts commit
-> > > > > 197a1e96c8be5b6005145af3a4c0e45e2d651444
-> > > > > and also avoids calling release_region for MIPS.
-> > > >
-> > > > The problem is that IO regions are reserved on _most_, but not
-> > > > _all_ devices.
-> > > > MIPS should figure out what they want to do with i8042 registers
-> > > > and be consistent on all devices.
-> > >
-> > > Please examine the attached patch which went upstream in April of 2004.
-> > > Since then it had been a convention not to call request_region
-> > > routine in
-> > > i8042 for MIPS. The attached patch had a glitch that it guarded
-> > > request_region in i8042-io.h but skipped guarding release_region in
-> > > i8042-io.h. I believe that the issue Aaro saw was due to this
-> > > glitch. Below is the error quoted in Aaro's commit message.
-> > >
-> > >     [    2.112000] Trying to free nonexistent resource <0000000000000060-
-> 000000000000006f>
-> > >
-> > > My patch reinstates the convention followed on MIPS devices along
-> > > with fixing Aaro's issue.
+On Mon, Jan 27, 2014 at 11:56:07AM -0800, David Daney wrote:
+> ....
+> On 01/27/2014 11:39 AM, Paul Burton wrote:
+> >On Mon, Jan 27, 2014 at 10:38:45AM -0800, David Daney wrote:
+> >>....
+> >>On 01/27/2014 07:23 AM, Paul Burton wrote:
+> >>>No current systems implementing MSA include support for vector register
+> >>>partitioning which makes it somewhat difficult to implement support for
+> >>>it in the kernel. Thus for the moment the kernel includes no such
+> >>>support. However if the kernel were to be run on a system which
+> >>>implemented register partitioning then it would not function correctly,
+> >>>mishandling MSA disabled exceptions. Calling panic when run on a system
+> >>>with vector register partitioning implemented ensures that we're not
+> >>>caught out by this later but instead reminded to implement support once
+> >>>such a system is available.
+> >>>
+> >>>Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> >>>---
+> >>>  arch/mips/kernel/cpu-probe.c | 6 +++++-
+> >>>  1 file changed, 5 insertions(+), 1 deletion(-)
+> >>>
+> >>>diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> >>>index 852e085..003ba3c 100644
+> >>>--- a/arch/mips/kernel/cpu-probe.c
+> >>>+++ b/arch/mips/kernel/cpu-probe.c
+> >>>@@ -1193,9 +1193,13 @@ void cpu_probe(void)
+> >>>  	else
+> >>>  		c->srsets = 1;
+> >>>
+> >>>-	if (cpu_has_msa)
+> >>>+	if (cpu_has_msa) {
+> >>>  		c->msa_id = cpu_get_msa_id();
+> >>>
+> >>>+		if (c->msa_id & MSA_IR_WRPF)
+> >>>+			panic("Vector register partitioning unimplemented!");
+> >>
+> >>You should probably use a WARN_ON() instead.  There is no reason to crash
+> >>the kernel for this condition is there?
+> >>
 > >
-> > I assume that Aaro did test his patch and on his box request_region()
-> > succeeds. That would indicate that various MIPS sub-arches still not
-> > settled on the topic.
+> >Well mapping vector registers reuses the MSA disabled exception, so if
+> >the kernel were to continue with my current code & userland were to
+> >execute an MSA instruction I believe it would appear to hang. [...]
 > 
-> request_region() succeeds on Loongson and OCTEON.
+> The CPU probing things are called so early that any panic() or BUG() here
+> will result in absolutely no console output as this code is called before
+> any console drivers are enabled.
 
-This would mean that before your patch in oct of 2012, Loongson and Octeon 
-were not reserving the IO space for i8042.
+Fair point, I'd overlooked that. v2 on its way.
+
+Paul
 
 > 
-> On OCTEONs without PCI, request_region() will fail which is correct as there
-> is no I/O space.
+> So the choice is really:
 > 
-> I wasn't aware of that 2004 patch (it pre-dates GIT history of mainline Linux).
-> Why the regions are already reserved by the platform code?
-
-The only information I have is the comment before request_region in i8042-io.h that
-touching data register on some platforms is flaky.  If your patch was primarily aimed at
-addressing the error message from release_region, the current patch I uploaded should
-also take care of it too. 
-
-Thanks,
-Raghu
+> panic(): No output on console and system is frozen/locked-up.
+> 
+> WARN(): Nice stack trace on console, theoretical lockup once userspace code
+> starts executing.
+> 
+> You can probably guess which I think is the better option.
+> 
+> >
+> >Thanks,
+> >     Paul
+> >
+> >>>+	}
+> >>>+
+> >>>  	cpu_probe_vmbits(c);
+> >>>
+> >>>  #ifdef CONFIG_64BIT
+> >>>
+> >>
+> >>
+> >>To report this email as SPAM, please forward it to spam@websense.com
+> >
+> >
+> >
+> 
+> 
+> To report this email as SPAM, please forward it to spam@websense.com

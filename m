@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2014 17:21:37 +0100 (CET)
-Received: from mail1.windriver.com ([147.11.146.13]:64985 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823127AbaA1QVeHigGI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Jan 2014 17:21:34 +0100
-Received: from ALA-HCB.corp.ad.wrs.com (ala-hcb.corp.ad.wrs.com [147.11.189.41])
-        by mail1.windriver.com (8.14.5/8.14.5) with ESMTP id s0SGLHUo000909
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Tue, 28 Jan 2014 08:21:18 -0800 (PST)
-Received: from [128.224.146.65] (128.224.146.65) by ALA-HCB.corp.ad.wrs.com
- (147.11.189.41) with Microsoft SMTP Server id 14.2.347.0; Tue, 28 Jan 2014
- 08:21:18 -0800
-Message-ID: <52E7D918.5020704@windriver.com>
-Date:   Tue, 28 Jan 2014 11:21:44 -0500
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
-MIME-Version: 1.0
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        <linux-arch@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-m68k@vger.kernel.org>, <rusty@rustcorp.com.au>,
-        <linux-ia64@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-s390@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <torvalds@linux-foundation.org>, <gregkh@linuxfoundation.org>,
-        <linux-alpha@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <akpm@linux-foundation.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH RFC 00/73] tree-wide: clean up some no longer required
- #include <linux/init.h>
-References: <1390339396-3479-1-git-send-email-paul.gortmaker@windriver.com>      <20140122180023.dd90d34cba38d9f9ac516349@canb.auug.org.au>      <20140123003838.GA10182@windriver.com> <1390878783.3872.63.camel@pasglop>
-In-Reply-To: <1390878783.3872.63.camel@pasglop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2014 10:59:23 +0100 (CET)
+Received: from mail.linux-iscsi.org ([67.23.28.174]:34830 "EHLO
+        linux-iscsi.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823075AbaA2J7SymnJz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Jan 2014 10:59:18 +0100
+Received: from [192.168.1.68] (75-37-193-228.lightspeed.lsatca.sbcglobal.net [75.37.193.228])
+        (using SSLv3 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: nab)
+        by linux-iscsi.org (Postfix) with ESMTPSA id E1E8822D9A6;
+        Wed, 29 Jan 2014 09:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=linux-iscsi.org;
+        s=default.private; t=1390988304; bh=+kHj+ovqUasn/Eu6RF+umuFc/kT/7JJ
+        l/epFaRG23u0=; h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+         References:Content-Type:Mime-Version:Content-Transfer-Encoding;
+        b=srEXhKROv9c94nA7bnAot7/XCD6f7k52m88oCoPJiZjegAoAOeghU/RZ899vOccG4
+        dGOqLFzGhPWwfO0QR5hcWGPuFp9GFH2ok2NYgAliiDlH2+EMbIgWAuPcBI2d16deQvq
+        s9VRfAVoy3IifikY7mTAX/VmP8wYAzMnZZkOSyY=
+Message-ID: <1390989698.17325.73.camel@haakon3.risingtidesystems.com>
+Subject: Re: [target:for-next 51/51] ERROR:
+ "__cmpxchg_called_with_bad_pointer" undefined!
+From:   "Nicholas A. Bellinger" <nab@linux-iscsi.org>
+To:     kbuild test robot <fengguang.wu@intel.com>
+Cc:     kbuild-all@01.org, target-devel <target-devel@vger.kernel.org>,
+        linux-mips@linux-mips.org
+Date:   Wed, 29 Jan 2014 02:01:38 -0800
+In-Reply-To: <52e8a4ef.ROAJSlpOaZtBxfoG%fengguang.wu@intel.com>
+References: <52e8a4ef.ROAJSlpOaZtBxfoG%fengguang.wu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4-1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [128.224.146.65]
-Return-Path: <Paul.Gortmaker@windriver.com>
+Return-Path: <nab@linux-iscsi.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39184
+X-archive-position: 39185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: nab@linux-iscsi.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,57 +51,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14-01-27 10:13 PM, Benjamin Herrenschmidt wrote:
-> On Wed, 2014-01-22 at 19:38 -0500, Paul Gortmaker wrote:
+On Wed, 2014-01-29 at 14:51 +0800, kbuild test robot wrote:
+> tree:   git://git.kernel.org/pub/scm/linux/kernel/git/nab/target-pending.git for-next
+> head:   7769401d351d54d5cbcb6400ec60c0b916e87a7e
+> commit: 7769401d351d54d5cbcb6400ec60c0b916e87a7e [51/51] target: Fix percpu_ref_put race in transport_lun_remove_cmd
+> config: make ARCH=mips allmodconfig
 > 
->> Thanks, it was a great help as it uncovered a few issues in fringe arch
->> that I didn't have toolchains for, and I've fixed all of those up.
->>
->> I've noticed that powerpc has been un-buildable for a while now; I have
->> used this hack patch locally so I could run the ppc defconfigs to check
->> that I didn't break anything.  Maybe useful for linux-next in the
->> interim?  It is a hack patch -- Not-Signed-off-by: Paul Gortmaker.  :)
+> All error/warnings:
 > 
-> Can you and/or Aneesh submit that as a proper patch (with S-O-B
-> etc...) ?
+> >> ERROR: "__cmpxchg_called_with_bad_pointer" undefined!
+> 
 
-I'd updated toolchains and didn't realize it was still broken.  Patch sent.
+So MIPS doesn't like typedef bool as 1-byte char being used for cmpxchg
+-> ll/sc instructions..
 
-http://patchwork.ozlabs.org/patch/314749/
+Fixing this up now by making se_cmd->lun_ref_active use a single word
+instead.
 
-Paul.
---
+Thanks Fengguang!
 
-> 
-> Thanks !
-> 
-> Cheers,
-> Ben.
-> 
->> Paul.
->> --
->>
->> diff --git a/arch/powerpc/include/asm/pgtable-ppc64.h b/arch/powerpc/include/asm/pgtable-ppc64.h
->> index d27960c89a71..d0f070a2b395 100644
->> --- a/arch/powerpc/include/asm/pgtable-ppc64.h
->> +++ b/arch/powerpc/include/asm/pgtable-ppc64.h
->> @@ -560,9 +560,9 @@ extern void pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
->>  			    pmd_t *pmdp);
->>  
->>  #define pmd_move_must_withdraw pmd_move_must_withdraw
->> -typedef struct spinlock spinlock_t;
->> -static inline int pmd_move_must_withdraw(spinlock_t *new_pmd_ptl,
->> -					 spinlock_t *old_pmd_ptl)
->> +struct spinlock;
->> +static inline int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
->> +					 struct spinlock *old_pmd_ptl)
->>  {
->>  	/*
->>  	 * Archs like ppc64 use pgtable to store per pmd
->>
->> _______________________________________________
->> Linuxppc-dev mailing list
->> Linuxppc-dev@lists.ozlabs.org
->> https://lists.ozlabs.org/listinfo/linuxppc-dev
-> 
-> 
+--nab
+
+diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+index d284186..909dacb 100644
+--- a/include/target/target_core_base.h
++++ b/include/target/target_core_base.h
+@@ -552,7 +552,7 @@ struct se_cmd {
+        void                    *priv;
+ 
+        /* Used for lun->lun_ref counting */
+-       bool                    lun_ref_active;
++       int                     lun_ref_active;
+ 
+        /* DIF related members */
+        enum target_prot_op     prot_op;

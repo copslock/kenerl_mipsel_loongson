@@ -1,44 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2014 10:59:23 +0100 (CET)
-Received: from mail.linux-iscsi.org ([67.23.28.174]:34830 "EHLO
-        linux-iscsi.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823075AbaA2J7SymnJz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Jan 2014 10:59:18 +0100
-Received: from [192.168.1.68] (75-37-193-228.lightspeed.lsatca.sbcglobal.net [75.37.193.228])
-        (using SSLv3 with cipher AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: nab)
-        by linux-iscsi.org (Postfix) with ESMTPSA id E1E8822D9A6;
-        Wed, 29 Jan 2014 09:38:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=linux-iscsi.org;
-        s=default.private; t=1390988304; bh=+kHj+ovqUasn/Eu6RF+umuFc/kT/7JJ
-        l/epFaRG23u0=; h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-         References:Content-Type:Mime-Version:Content-Transfer-Encoding;
-        b=srEXhKROv9c94nA7bnAot7/XCD6f7k52m88oCoPJiZjegAoAOeghU/RZ899vOccG4
-        dGOqLFzGhPWwfO0QR5hcWGPuFp9GFH2ok2NYgAliiDlH2+EMbIgWAuPcBI2d16deQvq
-        s9VRfAVoy3IifikY7mTAX/VmP8wYAzMnZZkOSyY=
-Message-ID: <1390989698.17325.73.camel@haakon3.risingtidesystems.com>
-Subject: Re: [target:for-next 51/51] ERROR:
- "__cmpxchg_called_with_bad_pointer" undefined!
-From:   "Nicholas A. Bellinger" <nab@linux-iscsi.org>
-To:     kbuild test robot <fengguang.wu@intel.com>
-Cc:     kbuild-all@01.org, target-devel <target-devel@vger.kernel.org>,
-        linux-mips@linux-mips.org
-Date:   Wed, 29 Jan 2014 02:01:38 -0800
-In-Reply-To: <52e8a4ef.ROAJSlpOaZtBxfoG%fengguang.wu@intel.com>
-References: <52e8a4ef.ROAJSlpOaZtBxfoG%fengguang.wu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.4.4-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <nab@linux-iscsi.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2014 14:10:11 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:8066 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827305AbaA2NKIsU4Wb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Jan 2014 14:10:08 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: mm: c-r4k: Detect instruction cache aliases
+Date:   Wed, 29 Jan 2014 13:10:09 +0000
+Message-ID: <1391001009-19580-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.47]
+X-SEF-Processed: 7_3_0_01192__2014_01_29_13_10_02
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39185
+X-archive-position: 39186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nab@linux-iscsi.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,37 +35,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2014-01-29 at 14:51 +0800, kbuild test robot wrote:
-> tree:   git://git.kernel.org/pub/scm/linux/kernel/git/nab/target-pending.git for-next
-> head:   7769401d351d54d5cbcb6400ec60c0b916e87a7e
-> commit: 7769401d351d54d5cbcb6400ec60c0b916e87a7e [51/51] target: Fix percpu_ref_put race in transport_lun_remove_cmd
-> config: make ARCH=mips allmodconfig
-> 
-> All error/warnings:
-> 
-> >> ERROR: "__cmpxchg_called_with_bad_pointer" undefined!
-> 
+The *Aptiv cores can use the CONF7/IAR bit to detect if the core
+has hardware support to remove instruction cache aliasing.
 
-So MIPS doesn't like typedef bool as 1-byte char being used for cmpxchg
--> ll/sc instructions..
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/include/asm/mipsregs.h | 3 +++
+ arch/mips/mm/c-r4k.c             | 5 ++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-Fixing this up now by making se_cmd->lun_ref_active use a single word
-instead.
-
-Thanks Fengguang!
-
---nab
-
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index d284186..909dacb 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -552,7 +552,7 @@ struct se_cmd {
-        void                    *priv;
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index bbc3dd4..0c74617 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -653,6 +653,9 @@
  
-        /* Used for lun->lun_ref counting */
--       bool                    lun_ref_active;
-+       int                     lun_ref_active;
+ #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
  
-        /* DIF related members */
-        enum target_prot_op     prot_op;
++#define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
++#define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
++
+ /*  EntryHI bit definition */
+ #define MIPS_ENTRYHI_EHINV	(_ULCAST_(1) << 10)
+ 
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 13b549a..e790524 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1110,7 +1110,10 @@ static void probe_pcache(void)
+ 	case CPU_PROAPTIV:
+ 		if (current_cpu_type() == CPU_74K)
+ 			alias_74k_erratum(c);
+-		if ((read_c0_config7() & (1 << 16))) {
++		if (!(read_c0_config7() & MIPS_CONF7_IAR))
++			if (c->icache.waysize > PAGE_SIZE)
++				c->icache.flags |= MIPS_CACHE_ALIASES;
++		if (read_c0_config7() & MIPS_CONF7_AR) {
+ 			/* effectively physically indexed dcache,
+ 			   thus no virtual aliases. */
+ 			c->dcache.flags |= MIPS_CACHE_PINDEX;
+-- 
+1.8.5.3

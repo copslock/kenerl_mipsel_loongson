@@ -1,31 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2014 18:17:12 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:8019 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827334AbaA2RRK2K6VN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Jan 2014 18:17:10 +0100
-Message-ID: <52E93795.8000205@imgtec.com>
-Date:   Wed, 29 Jan 2014 17:17:09 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.1
-MIME-Version: 1.0
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: mm: c-r4k: Detect instruction cache aliases
-References: <1391001009-19580-1-git-send-email-markos.chandras@imgtec.com> <52E9029C.80300@cogentembedded.com> <52E90525.7010704@imgtec.com> <52E94404.8050303@cogentembedded.com>
-In-Reply-To: <52E94404.8050303@cogentembedded.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_01_29_17_17_04
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2014 19:12:23 +0100 (CET)
+Received: from mail-ee0-f46.google.com ([74.125.83.46]:56186 "EHLO
+        mail-ee0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827341AbaA2SL7Xu9PE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Jan 2014 19:11:59 +0100
+Received: by mail-ee0-f46.google.com with SMTP id c13so1085526eek.33
+        for <linux-mips@linux-mips.org>; Wed, 29 Jan 2014 10:11:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=JbNtYazkpQw8JdoV0CPCrnZMptc9OiiI84FGOr4wW1Y=;
+        b=oOi8unfWA6i0j7Az24hijEedivNED3FSQw0U1Z6ceoJ/B16auy5p8mSXdT1msXP93S
+         5H1Kd5h4KscyL5U5u+u1wK31cgdJn/m0CsZx9rWJdxVVNxESCsGL2YQPbap9Ev7CjkfD
+         cFJ9fVSgwxd0q841BEsAk3hGhcmDVzWEPxKZKcuylIL7gPICOi5t4Zaz1UeY4brSeYP5
+         diVANT0P4Efha8gWJ0REi911il7lcv3/JjLG9BvX89FfBhOhNyfzWXdnCrwvf+tQZpFf
+         VsacP6/Aov+7NSWovYxcKiFxjGLN8mDWztI9AFyy6Ducq/EPb0C5XsEFox6v9q5/j/wu
+         +YvA==
+X-Received: by 10.14.204.9 with SMTP id g9mr4011440eeo.82.1391019113770;
+        Wed, 29 Jan 2014 10:11:53 -0800 (PST)
+Received: from flagship.roarinelk.net (62-47-46-135.adsl.highway.telekom.at. [62.47.46.135])
+        by mx.google.com with ESMTPSA id 8sm6467456eef.1.2014.01.29.10.11.51
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Jan 2014 10:11:52 -0800 (PST)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] MIPS: Alchemy: fix DB1100 GPIO registration
+Date:   Wed, 29 Jan 2014 19:11:46 +0100
+Message-Id: <1391019106-25613-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.8.5.3
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39190
+X-archive-position: 39191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,52 +50,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/29/2014 06:10 PM, Sergei Shtylyov wrote:
-> Hello.
->
-> On 01/29/2014 04:41 PM, Markos Chandras wrote:
->
->>>> The *Aptiv cores can use the CONF7/IAR bit to detect if the core
->>>> has hardware support to remove instruction cache aliasing.
->
->>>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->>>> ---
->>>> This patch is for the upstream-sfr/mips-for-linux-next tree
->>> [...]
->
->>>> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
->>>> index 13b549a..e790524 100644
->>>> --- a/arch/mips/mm/c-r4k.c
->>>> +++ b/arch/mips/mm/c-r4k.c
->>>> @@ -1110,7 +1110,10 @@ static void probe_pcache(void)
->>>>       case CPU_PROAPTIV:
->>>>           if (current_cpu_type() == CPU_74K)
->>>>               alias_74k_erratum(c);
->>>> -        if ((read_c0_config7() & (1 << 16))) {
->>>> +        if (!(read_c0_config7() & MIPS_CONF7_IAR))
->>>> +            if (c->icache.waysize > PAGE_SIZE)
->
->>>     Why not fold these to a single *if*?
->
->> I suppose I could do that. Thanks
->
->>>> +                c->icache.flags |= MIPS_CACHE_ALIASES;
->>>> +        if (read_c0_config7() & MIPS_CONF7_AR) {
->
->>>     You didn't document this change. Ideally, it should be in a separate
->>> patch.
->
->> Nothing has changed. Instead of using the '16' magic value, I just
->> documented
->> that bit along with the IAR one.
->
->     You should have noted that in the changelog, at least.
->
-> WBR, Sergei
->
->
+With CONFIG_GPIOLIB=y gpios need to be requested before they can be
+modified.  Request the SD carddetect pins, and drop the SPI direction
+setup, as the driver does that for us anyway.  This gets rid of a
+lot of WARN_ON()s triggered by GPIO core, and restores functionality
+of the touschreen controller.
 
-Ok I will submit a v2 soon. Thanks for the review.
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+ arch/mips/alchemy/devboards/db1000.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
+diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
+index 11f3ad2..5483906 100644
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -534,13 +534,10 @@ static int __init db1000_dev_init(void)
+ 		s0 = AU1100_GPIO1_INT;
+ 		s1 = AU1100_GPIO4_INT;
+ 
++		gpio_request(19, "sd0_cd");
++		gpio_request(20, "sd1_cd");
+ 		gpio_direction_input(19);	/* sd0 cd# */
+ 		gpio_direction_input(20);	/* sd1 cd# */
+-		gpio_direction_input(21);	/* touch pendown# */
+-		gpio_direction_input(207);	/* SPI MISO */
+-		gpio_direction_output(208, 0);	/* SPI MOSI */
+-		gpio_direction_output(209, 1);	/* SPI SCK */
+-		gpio_direction_output(210, 1);	/* SPI CS# */
+ 
+ 		/* spi_gpio on SSI0 pins */
+ 		pfc = __raw_readl((void __iomem *)SYS_PINFUNC);
 -- 
-markos
+1.8.5.3

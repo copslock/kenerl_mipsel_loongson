@@ -1,31 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jan 2014 18:36:30 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:31787 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823073AbaA3Rg1t5AVx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Jan 2014 18:36:27 +0100
-Message-ID: <52EA8D77.2050804@imgtec.com>
-Date:   Thu, 30 Jan 2014 17:35:51 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Feb 2014 17:16:27 +0100 (CET)
+Received: from mail-pb0-f41.google.com ([209.85.160.41]:36120 "EHLO
+        mail-pb0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824814AbaBAQQZme0h4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Feb 2014 17:16:25 +0100
+Received: by mail-pb0-f41.google.com with SMTP id up15so5570347pbc.0
+        for <linux-mips@linux-mips.org>; Sat, 01 Feb 2014 08:16:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to:content-type;
+        bh=y6RhKiBLuzQfB2NeIJkCKbLRoMPBjqY6KnrTxWoTtkg=;
+        b=ihC9F4wHipT2tMlwX4adglwGa7EeXDm/VlDpTli+4OXARIcZLvLcklit4zzC7NbCap
+         eJHX3Zep7gKSWUJ390AT/DQzLX6BaaqSiyA01ycDK3je9ENSj8fSuRFCXmWF/76ZTmv2
+         eVnCZW+YlZrpa0ab63Cou8y9jvVSRkyLvmI9moxdH2slG/I47L1hkyVTQcqVahB2OWJn
+         oDHZbenBl9Q+MfYkuY+31vjerCwPWl4OYD7qS9dIPXNniG6ccnNPkQ7f7QKYXu37bkoJ
+         q8MZ0g6wMjJwr6oS21wJRthx2ckVyjoKHu3SdUIWErP+VBGL3RAKo52Sdf/4NlT41tNH
+         J8MA==
+X-Received: by 10.66.142.170 with SMTP id rx10mr27520561pab.117.1391271378596;
+ Sat, 01 Feb 2014 08:16:18 -0800 (PST)
 MIME-Version: 1.0
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: mm: c-r4k: Detect instruction cache aliases
-References: <52E93795.8000205@imgtec.com> <1391102489-1403-1-git-send-email-markos.chandras@imgtec.com> <52EA9AEB.5090606@cogentembedded.com>
-In-Reply-To: <52EA9AEB.5090606@cogentembedded.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_01_30_17_36_22
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: by 10.70.24.34 with HTTP; Sat, 1 Feb 2014 08:15:58 -0800 (PST)
+From:   Tom Li <biergaizi2009@gmail.com>
+Date:   Sun, 2 Feb 2014 00:15:58 +0800
+Message-ID: <CAB6YEzX0_EupSDn=HQP_cPSBO6JG6bpZnRcguZpcUJAHNdNzhg@mail.gmail.com>
+Subject: Regression since 3.8: a DMA cache change break rtl8187 USB wireless
+ on Loongson
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <biergaizi2009@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39197
+X-archive-position: 39200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: biergaizi2009@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,38 +47,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/30/2014 06:33 PM, Sergei Shtylyov wrote:
-> Hello.
->
-> On 01/30/2014 08:21 PM, Markos Chandras wrote:
->
->> The *Aptiv cores can use the CONF7/IAR bit to detect if the core
->> has hardware support to remove instruction cache aliasing.
->
->> This also defines the CONF7/AR bit in order to avoid using
->> the '16' magic number.
->
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> [...]
->
->> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
->> index 13b549a..8017f6e 100644
->> --- a/arch/mips/mm/c-r4k.c
->> +++ b/arch/mips/mm/c-r4k.c
->> @@ -1110,7 +1110,10 @@ static void probe_pcache(void)
->>       case CPU_PROAPTIV:
->>           if (current_cpu_type() == CPU_74K)
->>               alias_74k_erratum(c);
->> -        if ((read_c0_config7() & (1 << 16))) {
->> +        if (!(read_c0_config7() & MIPS_CONF7_IAR) &&
->> +            (c->icache.waysize > PAGE_SIZE))
->> +                c->icache.flags |= MIPS_CACHE_ALIASES;
->
->      Sigh, you forgot to "outdent" this statement by a tab... :-(
->
-> WBR, Sergei
->
-Indeed I did :) I will make sure the one committed will be fixed properly.
+According to Bug #54391[0], the rtl8187 USB wireless card on
+YeeLoong 8089D laptop / Loongson platform is broken since Linux 3.8.0.
 
--- 
-markos
+The driver cause a kernel panic when receiving frames.
+Many users' on Loongson-dev mailing confirmed the issue is 100% reproduced.
+
+After a git bisect, I confirmed
+a16dad7763420a3b46cff1e703a9070827796cfc (MIPS: Fix potencial corruption)
+Caused the issue. After reverted the commit, the wireless is working again
+even in the latest 3.12 kernel.
+
+But rtl8187 driver doesn't use DMA directly.
+
+After discuss with Stanislaw Gruszka, it maybe caused by:
+
+- USB host controller driver misusing the DMA API
+- A Loongson hardware-related issue, some alignment instructions
+should be added back
+
+YeeLoong 8089D uses a AMD CS5536 controller
+
+> 00:0e.4 USB controller: Advanced Micro Devices, Inc. [AMD] CS5536 [Geode companion] OHC (rev 02)
+> 00:0e.5 USB controller: Advanced Micro Devices, Inc. [AMD] CS5536 [Geode companion] EHC (rev 02)
+
+And they use PCI abstraction provide by ohci-pci and ehci-pci.
+
+
+More information is avaliable here:
+
+[0]: https://bugzilla.kernel.org/show_bug.cgi?id=54391
+
+Thanks,
+
+Tom Li.

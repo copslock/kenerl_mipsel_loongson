@@ -1,78 +1,400 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Feb 2014 19:35:54 +0100 (CET)
-Received: from filtteri6.pp.htv.fi ([213.243.153.189]:52645 "EHLO
-        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822136AbaBCSfuBiJ7T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Feb 2014 19:35:50 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 8F15656F98A;
-        Mon,  3 Feb 2014 20:35:47 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
-        with ESMTP id raIT8y2Ttpfw; Mon,  3 Feb 2014 20:35:43 +0200 (EET)
-Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id 65BE65BC017;
-        Mon,  3 Feb 2014 20:35:42 +0200 (EET)
-Date:   Mon, 3 Feb 2014 20:35:06 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 0/2] MIPS/staging: Probe octeon-usb driver via device-tree
-Message-ID: <20140203183506.GE589@drone.musicnaut.iki.fi>
-References: <1386100012-6077-1-git-send-email-ddaney.cavm@gmail.com>
- <20131204232953.GA7698@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20131204232953.GA7698@kroah.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
-Return-Path: <aaro.koskinen@iki.fi>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39202
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: David Daney <david.daney@cavium.com>
+Date: Mon, 3 Feb 2014 19:39:01 +0200
+Subject: [PATCH] staging: octeon-usb: Probe via device tree populated platform
+ device.
+Message-ID: <20140203173901.Kic2YN_xu30QivIGUpVJ-1L-NQpOVCFQp8KXO0Wkwwo@z>
 
-Hi,
+Extract clocking parameters from the device tree, and remove now dead
+code and types.
 
-On Wed, Dec 04, 2013 at 03:29:53PM -0800, Greg Kroah-Hartman wrote:
-> On Tue, Dec 03, 2013 at 11:46:50AM -0800, David Daney wrote:
-> > From: David Daney <david.daney@cavium.com>
-> > 
-> > Tested against both EdgeRouter LITE (no bootloader supplied device
-> > tree), and ebb5610 (device tree supplied by bootloader).
-> > 
-> > The patch set is spread across both the MIPS and staging trees, so it
-> > would be great if Ralf could merge at least the MIPS parts, if not
-> > both parts.
-> 
-> That's fine with me:
-> 
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Daney <david.daney@cavium.com>
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ drivers/staging/octeon-usb/octeon-hcd.c | 273 ++++++++++++++------------------
+ 1 file changed, 116 insertions(+), 157 deletions(-)
 
-It seems only the MIPS part was merged, and as a result the OCTEON
-USB build is now broken in 3.14-rc1.
-
-Would it be possible to merge the missing part through the staging
-tree? The original is here: http://patchwork.linux-mips.org/patch/6186/
-The below one is rebased for 3.14-rc1 and tested on EdgeRouter Lite.
-
-A.
-
----8<---
+diff --git a/drivers/staging/octeon-usb/octeon-hcd.c b/drivers/staging/octeon-usb/octeon-hcd.c
+index 47e0a91238a1..5a001d9b4252 100644
+--- a/drivers/staging/octeon-usb/octeon-hcd.c
++++ b/drivers/staging/octeon-usb/octeon-hcd.c
+@@ -275,13 +275,6 @@ enum cvmx_usb_pipe_flags {
+  */
+ #define MAX_TRANSFER_PACKETS	((1<<10)-1)
+ 
+-enum {
+-	USB_CLOCK_TYPE_REF_12,
+-	USB_CLOCK_TYPE_REF_24,
+-	USB_CLOCK_TYPE_REF_48,
+-	USB_CLOCK_TYPE_CRYSTAL_12,
+-};
+-
+ /**
+  * Logical transactions may take numerous low level
+  * transactions, especially when splits are concerned. This
+@@ -471,19 +464,6 @@ struct octeon_hcd {
+ /* Returns the IO address to push/pop stuff data from the FIFOs */
+ #define USB_FIFO_ADDRESS(channel, usb_index) (CVMX_USBCX_GOTGCTL(usb_index) + ((channel)+1)*0x1000)
+ 
+-static int octeon_usb_get_clock_type(void)
+-{
+-	switch (cvmx_sysinfo_get()->board_type) {
+-	case CVMX_BOARD_TYPE_BBGW_REF:
+-	case CVMX_BOARD_TYPE_LANAI2_A:
+-	case CVMX_BOARD_TYPE_LANAI2_U:
+-	case CVMX_BOARD_TYPE_LANAI2_G:
+-	case CVMX_BOARD_TYPE_UBNT_E100:
+-		return USB_CLOCK_TYPE_CRYSTAL_12;
+-	}
+-	return USB_CLOCK_TYPE_REF_48;
+-}
+-
+ /**
+  * Read a USB 32bit CSR. It performs the necessary address swizzle
+  * for 32bit CSRs and logs the value in a readable format if
+@@ -582,37 +562,6 @@ static inline int __cvmx_usb_get_data_pid(struct cvmx_usb_pipe *pipe)
+ 		return 0; /* Data0 */
+ }
+ 
+-
+-/**
+- * Return the number of USB ports supported by this Octeon
+- * chip. If the chip doesn't support USB, or is not supported
+- * by this API, a zero will be returned. Most Octeon chips
+- * support one usb port, but some support two ports.
+- * cvmx_usb_initialize() must be called on independent
+- * struct cvmx_usb_state.
+- *
+- * Returns: Number of port, zero if usb isn't supported
+- */
+-static int cvmx_usb_get_num_ports(void)
+-{
+-	int arch_ports = 0;
+-
+-	if (OCTEON_IS_MODEL(OCTEON_CN56XX))
+-		arch_ports = 1;
+-	else if (OCTEON_IS_MODEL(OCTEON_CN52XX))
+-		arch_ports = 2;
+-	else if (OCTEON_IS_MODEL(OCTEON_CN50XX))
+-		arch_ports = 1;
+-	else if (OCTEON_IS_MODEL(OCTEON_CN31XX))
+-		arch_ports = 1;
+-	else if (OCTEON_IS_MODEL(OCTEON_CN30XX))
+-		arch_ports = 1;
+-	else
+-		arch_ports = 0;
+-
+-	return arch_ports;
+-}
+-
+ /**
+  * Initialize a USB port for use. This must be called before any
+  * other access to the Octeon USB port is made. The port starts
+@@ -628,41 +577,16 @@ static int cvmx_usb_get_num_ports(void)
+  * Returns: 0 or a negative error code.
+  */
+ static int cvmx_usb_initialize(struct cvmx_usb_state *usb,
+-			       int usb_port_number)
++			       int usb_port_number,
++			       enum cvmx_usb_initialize_flags flags)
+ {
+ 	union cvmx_usbnx_clk_ctl usbn_clk_ctl;
+ 	union cvmx_usbnx_usbp_ctl_status usbn_usbp_ctl_status;
+-	enum cvmx_usb_initialize_flags flags = 0;
+ 	int i;
+ 
+ 	/* At first allow 0-1 for the usb port number */
+ 	if ((usb_port_number < 0) || (usb_port_number > 1))
+ 		return -EINVAL;
+-	/* For all chips except 52XX there is only one port */
+-	if (!OCTEON_IS_MODEL(OCTEON_CN52XX) && (usb_port_number > 0))
+-		return -EINVAL;
+-	/* Try to determine clock type automatically */
+-	if (octeon_usb_get_clock_type() == USB_CLOCK_TYPE_CRYSTAL_12) {
+-		/* Only 12 MHZ crystals are supported */
+-		flags |= CVMX_USB_INITIALIZE_FLAGS_CLOCK_XO_XI;
+-	} else {
+-		flags |= CVMX_USB_INITIALIZE_FLAGS_CLOCK_XO_GND;
+-
+-		switch (octeon_usb_get_clock_type()) {
+-		case USB_CLOCK_TYPE_REF_12:
+-			flags |= CVMX_USB_INITIALIZE_FLAGS_CLOCK_12MHZ;
+-			break;
+-		case USB_CLOCK_TYPE_REF_24:
+-			flags |= CVMX_USB_INITIALIZE_FLAGS_CLOCK_24MHZ;
+-			break;
+-		case USB_CLOCK_TYPE_REF_48:
+-			flags |= CVMX_USB_INITIALIZE_FLAGS_CLOCK_48MHZ;
+-			break;
+-		default:
+-			return -EINVAL;
+-			break;
+-		}
+-	}
+ 
+ 	memset(usb, 0, sizeof(*usb));
+ 	usb->init_flags = flags;
+@@ -3431,7 +3355,6 @@ static int octeon_usb_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
+ 	return 0;
+ }
+ 
+-
+ static const struct hc_driver octeon_hc_driver = {
+ 	.description		= "Octeon USB",
+ 	.product_desc		= "Octeon Host Controller",
+@@ -3448,15 +3371,74 @@ static const struct hc_driver octeon_hc_driver = {
+ 	.hub_control		= octeon_usb_hub_control,
+ };
+ 
+-
+-static int octeon_usb_driver_probe(struct device *dev)
++static int octeon_usb_probe(struct platform_device *pdev)
+ {
+ 	int status;
+-	int usb_num = to_platform_device(dev)->id;
+-	int irq = platform_get_irq(to_platform_device(dev), 0);
++	int initialize_flags;
++	int usb_num;
++	struct resource *res_mem;
++	struct device_node *usbn_node;
++	int irq = platform_get_irq(pdev, 0);
++	struct device *dev = &pdev->dev;
+ 	struct octeon_hcd *priv;
+ 	struct usb_hcd *hcd;
+ 	unsigned long flags;
++	u32 clock_rate = 48000000;
++	bool is_crystal_clock = false;
++	const char *clock_type;
++	int i;
++
++	if (dev->of_node == NULL) {
++		dev_err(dev, "Error: empty of_node\n");
++		return -ENXIO;
++	}
++	usbn_node = dev->of_node->parent;
++
++	i = of_property_read_u32(usbn_node,
++				 "refclk-frequency", &clock_rate);
++	if (i) {
++		dev_err(dev, "No USBN \"refclk-frequency\"\n");
++		return -ENXIO;
++	}
++	switch (clock_rate) {
++	case 12000000:
++		initialize_flags = CVMX_USB_INITIALIZE_FLAGS_CLOCK_12MHZ;
++		break;
++	case 24000000:
++		initialize_flags = CVMX_USB_INITIALIZE_FLAGS_CLOCK_24MHZ;
++		break;
++	case 48000000:
++		initialize_flags = CVMX_USB_INITIALIZE_FLAGS_CLOCK_48MHZ;
++		break;
++	default:
++		dev_err(dev, "Illebal USBN \"refclk-frequency\" %u\n", clock_rate);
++		return -ENXIO;
++
++	}
++
++	i = of_property_read_string(usbn_node,
++				    "refclk-type", &clock_type);
++
++	if (!i && strcmp("crystal", clock_type) == 0)
++		is_crystal_clock = true;
++
++	if (is_crystal_clock)
++		initialize_flags |= CVMX_USB_INITIALIZE_FLAGS_CLOCK_XO_XI;
++	else
++		initialize_flags |= CVMX_USB_INITIALIZE_FLAGS_CLOCK_XO_GND;
++
++	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (res_mem == NULL) {
++		dev_err(dev, "found no memory resource\n");
++		return -ENXIO;
++	}
++	usb_num = (res_mem->start >> 44) & 1;
++
++	if (irq < 0) {
++		/* Defective device tree, but we know how to fix it. */
++		irq_hw_number_t hwirq = usb_num ? (1 << 6) + 17 : 56;
++		irq = irq_create_mapping(NULL, hwirq);
++	}
+ 
+ 	/*
+ 	 * Set the DMA mask to 64bits so we get buffers already translated for
+@@ -3465,6 +3447,26 @@ static int octeon_usb_driver_probe(struct device *dev)
+ 	dev->coherent_dma_mask = ~0;
+ 	dev->dma_mask = &dev->coherent_dma_mask;
+ 
++	/*
++	 * Only cn52XX and cn56XX have DWC_OTG USB hardware and the
++	 * IOB priority registers.  Under heavy network load USB
++	 * hardware can be starved by the IOB causing a crash.  Give
++	 * it a priority boost if it has been waiting more than 400
++	 * cycles to avoid this situation.
++	 *
++	 * Testing indicates that a cnt_val of 8192 is not sufficient,
++	 * but no failures are seen with 4096.  We choose a value of
++	 * 400 to give a safety factor of 10.
++	 */
++	if (OCTEON_IS_MODEL(OCTEON_CN52XX) || OCTEON_IS_MODEL(OCTEON_CN56XX)) {
++		union cvmx_iob_n2c_l2c_pri_cnt pri_cnt;
++
++		pri_cnt.u64 = 0;
++		pri_cnt.s.cnt_enb = 1;
++		pri_cnt.s.cnt_val = 400;
++		cvmx_write_csr(CVMX_IOB_N2C_L2C_PRI_CNT, pri_cnt.u64);
++	}
++
+ 	hcd = usb_create_hcd(&octeon_hc_driver, dev, dev_name(dev));
+ 	if (!hcd) {
+ 		dev_dbg(dev, "Failed to allocate memory for HCD\n");
+@@ -3478,7 +3480,7 @@ static int octeon_usb_driver_probe(struct device *dev)
+ 	tasklet_init(&priv->dequeue_tasklet, octeon_usb_urb_dequeue_work, (unsigned long)priv);
+ 	INIT_LIST_HEAD(&priv->dequeue_list);
+ 
+-	status = cvmx_usb_initialize(&priv->usb, usb_num);
++	status = cvmx_usb_initialize(&priv->usb, usb_num, initialize_flags);
+ 	if (status) {
+ 		dev_dbg(dev, "USB initialization failed with %d\n", status);
+ 		kfree(hcd);
+@@ -3492,7 +3494,7 @@ static int octeon_usb_driver_probe(struct device *dev)
+ 	cvmx_usb_poll(&priv->usb);
+ 	spin_unlock_irqrestore(&priv->lock, flags);
+ 
+-	status = usb_add_hcd(hcd, irq, IRQF_SHARED);
++	status = usb_add_hcd(hcd, irq, 0);
+ 	if (status) {
+ 		dev_dbg(dev, "USB add HCD failed with %d\n", status);
+ 		kfree(hcd);
+@@ -3500,14 +3502,15 @@ static int octeon_usb_driver_probe(struct device *dev)
+ 	}
+ 	device_wakeup_enable(hcd->self.controller);
+ 
+-	dev_dbg(dev, "Registered HCD for port %d on irq %d\n", usb_num, irq);
++	dev_info(dev, "Registered HCD for port %d on irq %d\n", usb_num, irq);
+ 
+ 	return 0;
+ }
+ 
+-static int octeon_usb_driver_remove(struct device *dev)
++static int octeon_usb_remove(struct platform_device *pdev)
+ {
+ 	int status;
++	struct device *dev = &pdev->dev;
+ 	struct usb_hcd *hcd = dev_get_drvdata(dev);
+ 	struct octeon_hcd *priv = hcd_to_octeon(hcd);
+ 	unsigned long flags;
+@@ -3525,85 +3528,41 @@ static int octeon_usb_driver_remove(struct device *dev)
+ 	return 0;
+ }
+ 
+-static struct device_driver octeon_usb_driver = {
+-	.name	= "OcteonUSB",
+-	.bus	= &platform_bus_type,
+-	.probe	= octeon_usb_driver_probe,
+-	.remove	= octeon_usb_driver_remove,
++static struct of_device_id octeon_usb_match[] = {
++	{
++		.compatible = "cavium,octeon-5750-usbc",
++	},
++	{},
+ };
+ 
++static struct platform_driver octeon_usb_driver = {
++	.driver = {
++		.name       = "OcteonUSB",
++		.owner		= THIS_MODULE,
++		.of_match_table = octeon_usb_match,
++	},
++	.probe      = octeon_usb_probe,
++	.remove     = octeon_usb_remove,
++};
+ 
+-#define MAX_USB_PORTS   10
+-static struct platform_device *pdev_glob[MAX_USB_PORTS];
+-static int octeon_usb_registered;
+-static int __init octeon_usb_module_init(void)
++static int __init octeon_usb_driver_init(void)
+ {
+-	int num_devices = cvmx_usb_get_num_ports();
+-	int device;
+-
+-	if (usb_disabled() || num_devices == 0)
+-		return -ENODEV;
+-
+-	if (driver_register(&octeon_usb_driver))
+-		return -ENOMEM;
+-
+-	octeon_usb_registered = 1;
+-
+-	/*
+-	 * Only cn52XX and cn56XX have DWC_OTG USB hardware and the
+-	 * IOB priority registers.  Under heavy network load USB
+-	 * hardware can be starved by the IOB causing a crash.  Give
+-	 * it a priority boost if it has been waiting more than 400
+-	 * cycles to avoid this situation.
+-	 *
+-	 * Testing indicates that a cnt_val of 8192 is not sufficient,
+-	 * but no failures are seen with 4096.  We choose a value of
+-	 * 400 to give a safety factor of 10.
+-	 */
+-	if (OCTEON_IS_MODEL(OCTEON_CN52XX) || OCTEON_IS_MODEL(OCTEON_CN56XX)) {
+-		union cvmx_iob_n2c_l2c_pri_cnt pri_cnt;
+-
+-		pri_cnt.u64 = 0;
+-		pri_cnt.s.cnt_enb = 1;
+-		pri_cnt.s.cnt_val = 400;
+-		cvmx_write_csr(CVMX_IOB_N2C_L2C_PRI_CNT, pri_cnt.u64);
+-	}
+-
+-	for (device = 0; device < num_devices; device++) {
+-		struct resource irq_resource;
+-		struct platform_device *pdev;
+-		memset(&irq_resource, 0, sizeof(irq_resource));
+-		irq_resource.start = (device == 0) ? OCTEON_IRQ_USB0 : OCTEON_IRQ_USB1;
+-		irq_resource.end = irq_resource.start;
+-		irq_resource.flags = IORESOURCE_IRQ;
+-		pdev = platform_device_register_simple((char *)octeon_usb_driver.  name, device, &irq_resource, 1);
+-		if (IS_ERR(pdev)) {
+-			driver_unregister(&octeon_usb_driver);
+-			octeon_usb_registered = 0;
+-			return PTR_ERR(pdev);
+-		}
+-		if (device < MAX_USB_PORTS)
+-			pdev_glob[device] = pdev;
++	if (usb_disabled())
++		return 0;
+ 
+-	}
+-	return 0;
++	return platform_driver_register(&octeon_usb_driver);
+ }
++module_init(octeon_usb_driver_init);
+ 
+-static void __exit octeon_usb_module_cleanup(void)
++static void __exit octeon_usb_driver_exit(void)
+ {
+-	int i;
++	if (usb_disabled())
++		return;
+ 
+-	for (i = 0; i < MAX_USB_PORTS; i++)
+-		if (pdev_glob[i]) {
+-			platform_device_unregister(pdev_glob[i]);
+-			pdev_glob[i] = NULL;
+-		}
+-	if (octeon_usb_registered)
+-		driver_unregister(&octeon_usb_driver);
++	platform_driver_unregister(&octeon_usb_driver);
+ }
++module_exit(octeon_usb_driver_exit);
+ 
+ MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Cavium Networks <support@caviumnetworks.com>");
+-MODULE_DESCRIPTION("Cavium Networks Octeon USB Host driver.");
+-module_init(octeon_usb_module_init);
+-module_exit(octeon_usb_module_cleanup);
++MODULE_AUTHOR("Cavium, Inc. <support@cavium.com>");
++MODULE_DESCRIPTION("Cavium Inc. OCTEON USB Host driver.");
+-- 
+1.8.3.3

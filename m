@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2014 16:57:32 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:57760 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2014 19:27:41 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58277 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6834791AbaBDP5amw4Gm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 4 Feb 2014 16:57:30 +0100
+        id S6817974AbaBDS1fcI0bG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 4 Feb 2014 19:27:35 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s14FvRhl017016;
-        Tue, 4 Feb 2014 16:57:27 +0100
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s14IRUCB023783;
+        Tue, 4 Feb 2014 19:27:30 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s14FvQkH017015;
-        Tue, 4 Feb 2014 16:57:26 +0100
-Date:   Tue, 4 Feb 2014 16:57:26 +0100
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s14IRP9h023777;
+        Tue, 4 Feb 2014 19:27:25 +0100
+Date:   Tue, 4 Feb 2014 19:27:25 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
-Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+To:     "Nicholas A. Bellinger" <nab@linux-iscsi.org>
+Cc:     kbuild test robot <fengguang.wu@intel.com>, kbuild-all@01.org,
+        target-devel <target-devel@vger.kernel.org>,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH v2] MIPS: mm: c-r4k: Detect instruction cache aliases
-Message-ID: <20140204155726.GE19285@linux-mips.org>
-References: <52E93795.8000205@imgtec.com>
- <1391102489-1403-1-git-send-email-markos.chandras@imgtec.com>
- <52EA9AEB.5090606@cogentembedded.com>
- <52EA8D77.2050804@imgtec.com>
+Subject: Re: [target:for-next 51/51] ERROR:
+ "__cmpxchg_called_with_bad_pointer" undefined!
+Message-ID: <20140204182725.GF19285@linux-mips.org>
+References: <52e8a4ef.ROAJSlpOaZtBxfoG%fengguang.wu@intel.com>
+ <1390989698.17325.73.camel@haakon3.risingtidesystems.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <52EA8D77.2050804@imgtec.com>
+In-Reply-To: <1390989698.17325.73.camel@haakon3.risingtidesystems.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39207
+X-archive-position: 39208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,40 +46,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 30, 2014 at 05:35:51PM +0000, Markos Chandras wrote:
+On Wed, Jan 29, 2014 at 02:01:38AM -0800, Nicholas A. Bellinger wrote:
 
-> >>The *Aptiv cores can use the CONF7/IAR bit to detect if the core
-> >>has hardware support to remove instruction cache aliasing.
-> >
-> >>This also defines the CONF7/AR bit in order to avoid using
-> >>the '16' magic number.
-> >
-> >>Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> >[...]
-> >
-> >>diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> >>index 13b549a..8017f6e 100644
-> >>--- a/arch/mips/mm/c-r4k.c
-> >>+++ b/arch/mips/mm/c-r4k.c
-> >>@@ -1110,7 +1110,10 @@ static void probe_pcache(void)
-> >>      case CPU_PROAPTIV:
-> >>          if (current_cpu_type() == CPU_74K)
-> >>              alias_74k_erratum(c);
-> >>-        if ((read_c0_config7() & (1 << 16))) {
-> >>+        if (!(read_c0_config7() & MIPS_CONF7_IAR) &&
-> >>+            (c->icache.waysize > PAGE_SIZE))
-> >>+                c->icache.flags |= MIPS_CACHE_ALIASES;
-> >
-> >     Sigh, you forgot to "outdent" this statement by a tab... :-(
-> >
-> >WBR, Sergei
-> >
-> Indeed I did :) I will make sure the one committed will be fixed properly.
+> On Wed, 2014-01-29 at 14:51 +0800, kbuild test robot wrote:
+> > tree:   git://git.kernel.org/pub/scm/linux/kernel/git/nab/target-pending.git for-next
+> > head:   7769401d351d54d5cbcb6400ec60c0b916e87a7e
+> > commit: 7769401d351d54d5cbcb6400ec60c0b916e87a7e [51/51] target: Fix percpu_ref_put race in transport_lun_remove_cmd
+> > config: make ARCH=mips allmodconfig
+> > 
+> > All error/warnings:
+> > 
+> > >> ERROR: "__cmpxchg_called_with_bad_pointer" undefined!
+> > 
 > 
+> So MIPS doesn't like typedef bool as 1-byte char being used for cmpxchg
+> -> ll/sc instructions..
+> 
+> Fixing this up now by making se_cmd->lun_ref_active use a single word
+> instead.
 
-I fixed that in my commit along with the non-Linux-codingstyle compliant
-comment.
+Thanks, looking good.
 
-Thanks,
+Note that this is a hardware restriction on LL/SC rsp. LLD/SCD which only
+operate on natually aligned four rsp. eight byte operands.  Could fixed
+but would slow down and inflate every invocation of cmpxchg() which is
+currently an inline function and I feel a bit uneasy about hardware
+behaviour when mixing LL/SC rsp. LLD/SCD with conventional loads and
+stores.
 
   Ralf

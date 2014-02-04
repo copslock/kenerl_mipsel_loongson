@@ -1,39 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2014 19:27:41 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:58277 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6817974AbaBDS1fcI0bG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 4 Feb 2014 19:27:35 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s14IRUCB023783;
-        Tue, 4 Feb 2014 19:27:30 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s14IRP9h023777;
-        Tue, 4 Feb 2014 19:27:25 +0100
-Date:   Tue, 4 Feb 2014 19:27:25 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Nicholas A. Bellinger" <nab@linux-iscsi.org>
-Cc:     kbuild test robot <fengguang.wu@intel.com>, kbuild-all@01.org,
-        target-devel <target-devel@vger.kernel.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [target:for-next 51/51] ERROR:
- "__cmpxchg_called_with_bad_pointer" undefined!
-Message-ID: <20140204182725.GF19285@linux-mips.org>
-References: <52e8a4ef.ROAJSlpOaZtBxfoG%fengguang.wu@intel.com>
- <1390989698.17325.73.camel@haakon3.risingtidesystems.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2014 19:42:01 +0100 (CET)
+Received: from merlin.infradead.org ([205.233.59.134]:44560 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825631AbaBDSl6N2mHU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Feb 2014 19:41:58 +0100
+Received: from dhcp-077-248-225-117.chello.nl ([77.248.225.117] helo=laptop)
+        by merlin.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1WAkwS-0004Yy-I0; Tue, 04 Feb 2014 18:41:52 +0000
+Received: by laptop (Postfix, from userid 1000)
+        id A7CA110872145; Tue,  4 Feb 2014 19:41:50 +0100 (CET)
+Date:   Tue, 4 Feb 2014 19:41:50 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     David Daney <ddaney@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Paul McKenney <paulmck@linux.vnet.ibm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: mips octeon memory model questions
+Message-ID: <20140204184150.GB5002@laptop.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1390989698.17325.73.camel@haakon3.risingtidesystems.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2012-12-30)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39208
+X-archive-position: 39209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,32 +44,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 29, 2014 at 02:01:38AM -0800, Nicholas A. Bellinger wrote:
+Hi all,
 
-> On Wed, 2014-01-29 at 14:51 +0800, kbuild test robot wrote:
-> > tree:   git://git.kernel.org/pub/scm/linux/kernel/git/nab/target-pending.git for-next
-> > head:   7769401d351d54d5cbcb6400ec60c0b916e87a7e
-> > commit: 7769401d351d54d5cbcb6400ec60c0b916e87a7e [51/51] target: Fix percpu_ref_put race in transport_lun_remove_cmd
-> > config: make ARCH=mips allmodconfig
-> > 
-> > All error/warnings:
-> > 
-> > >> ERROR: "__cmpxchg_called_with_bad_pointer" undefined!
-> > 
-> 
-> So MIPS doesn't like typedef bool as 1-byte char being used for cmpxchg
-> -> ll/sc instructions..
-> 
-> Fixing this up now by making se_cmd->lun_ref_active use a single word
-> instead.
+I have a number of questions in regards to commit 6b07d38aaa520ce.
 
-Thanks, looking good.
+Given that the octeon doesn't reorder reads; the following:
 
-Note that this is a hardware restriction on LL/SC rsp. LLD/SCD which only
-operate on natually aligned four rsp. eight byte operands.  Could fixed
-but would slow down and inflate every invocation of cmpxchg() which is
-currently an inline function and I feel a bit uneasy about hardware
-behaviour when mixing LL/SC rsp. LLD/SCD with conventional loads and
-stores.
+"      sync
+       ll ...
+       .
+       .
+       .
+       sc ...
+       .
+       .
+       sync
 
-  Ralf
+  The second SYNC was redundant, but harmless.  "
+
+Still doesn't make sense, because if we need the first sync to stop
+writes from being re-ordered with the ll-sc, we also need the second
+sync to avoid the same.
+
+Suppose:
+   STORE a
+   sync
+   LL-SC b
+   (not a sync)
+   STORE c
+
+What avoids this becoming visible as:
+
+  a
+  c
+  b
+
+?
+
+Then there is:
+
+"       syncw;syncw
+        ll
+        .
+        .
+        .
+        sc
+        .
+        .
+
+    Has identical semantics to the first sequence, but is much faster.
+    The SYNCW orders the writes, and the SC will not complete successfully
+    until the write is committed to the coherent memory system.  So at the
+    end all preceeding writes have been committed.  Since Octeon does not
+    do speculative reads, this functions as a full barrier."
+
+Read Documentation/memory-barrier.txt:TRANSITIVITY, the above doesn't
+sound like syncw is actually multi-copy atomic, and therefore doesn't
+provide transitivity, and therefore is not a valid sequence for
+operations that are supposed to imply a full memory-barrier.
+
+Please as to explain.

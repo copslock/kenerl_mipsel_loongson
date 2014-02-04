@@ -1,36 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Feb 2014 21:07:19 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39343 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821116AbaBCUHRUYcxl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Feb 2014 21:07:17 +0100
-Received: from localhost (65-114-90-17.dia.static.qwest.net [65.114.90.17])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D04D4885;
-        Mon,  3 Feb 2014 20:07:08 +0000 (UTC)
-Date:   Mon, 3 Feb 2014 21:08:42 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     devel@driverdev.osuosl.org, David Daney <ddaney.cavm@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 0/2] MIPS/staging: Probe octeon-usb driver via device-tree
-Message-ID: <20140203200842.GC7717@kroah.com>
-References: <1386100012-6077-1-git-send-email-ddaney.cavm@gmail.com>
- <20131204232953.GA7698@kroah.com>
- <20140203183506.GE589@drone.musicnaut.iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2014 10:00:36 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:3565 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822902AbaBDJAeBUkOb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 4 Feb 2014 10:00:34 +0100
+Message-ID: <52F0AC3E.5050806@imgtec.com>
+Date:   Tue, 4 Feb 2014 09:00:46 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140203183506.GE589@drone.musicnaut.iki.fi>
-User-Agent: Mutt/1.5.22 (2013-10-16)
-Return-Path: <gregkh@linuxfoundation.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 00/58] Add support for Enhanced Virtual Addressing
+References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com> <52E94A85.3040602@gmail.com>
+In-Reply-To: <52E94A85.3040602@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.47]
+X-SEF-Processed: 7_3_0_01192__2014_02_04_09_00_28
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39203
+X-archive-position: 39204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,33 +38,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Feb 03, 2014 at 08:35:06PM +0200, Aaro Koskinen wrote:
-> Hi,
-> 
-> On Wed, Dec 04, 2013 at 03:29:53PM -0800, Greg Kroah-Hartman wrote:
-> > On Tue, Dec 03, 2013 at 11:46:50AM -0800, David Daney wrote:
-> > > From: David Daney <david.daney@cavium.com>
-> > > 
-> > > Tested against both EdgeRouter LITE (no bootloader supplied device
-> > > tree), and ebb5610 (device tree supplied by bootloader).
-> > > 
-> > > The patch set is spread across both the MIPS and staging trees, so it
-> > > would be great if Ralf could merge at least the MIPS parts, if not
-> > > both parts.
-> > 
-> > That's fine with me:
-> > 
-> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
-> It seems only the MIPS part was merged, and as a result the OCTEON
-> USB build is now broken in 3.14-rc1.
-> 
-> Would it be possible to merge the missing part through the staging
-> tree? The original is here: http://patchwork.linux-mips.org/patch/6186/
-> The below one is rebased for 3.14-rc1 and tested on EdgeRouter Lite.
+Hi David,
 
-Sure, I can queue it up for 3.14, and will do so in a few days.
+I have some comments
 
-thanks,
+On 01/29/2014 06:37 PM, David Daney wrote:
+> This whole thing seems very messy.  I see a couple of problems:
+>
+> 1) There are if(CONFIG_EVA) ... else ... endif  all over the place.  It
+> is very ugly.
+>
+> 2) You cannot have a signel kernel with both EVA and non-EVA support.
 
-greg k-h
+
+Unfortunately, I don't think using eva=1 or whatever in the kernel 
+command line would work. First of all, there is board specific init code 
+long before the command line is available. See patch #51. At that point, 
+the kernel command line is not 'exposed' yet so there is no way to tell 
+if you are booting in EVA or non-EVA mode.
+
+>
+> Have you considered just tagging all the instructions that touch the
+> user address space, and patching them at system boot with their EVA
+> equivalents if EVA support is desired?
+
+I don't think this is possible (or maybe i don't understand your 
+proposal). Consider for example the copy_user function in memcpy.S. This 
+function does copy_{to,from,in} user/kernel depending on the supplied 
+virtual address. There is no way to tell in advance if a 'lb' 
+instruction will load from kernel or user space. This is only possible 
+during runtime by examining the get_fs() == get_ds() status. Therefore, 
+it's necessary to have 4 variants of this functions replacing only the 
+'store' or 'load' instructions that you really need to. For example
+
+- load from user, store to kernel
+- load from kernel, store to user
+- load from user, store to user
+- load from kernel, store to kernel
+
+As you can see, static replacement of the instructions with the EVA ones 
+during boot will not work as expected.
+
+This is the reason I converted these functions to macros, so all the 
+variants will be a simple 3 line assembler code that only replaces the 
+instructions you are really interested in.
+
+-- 
+markos

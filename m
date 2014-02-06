@@ -1,32 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2014 11:36:32 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:54718 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824283AbaBFKg1c4jvv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Feb 2014 11:36:27 +0100
-Date:   Thu, 6 Feb 2014 10:35:05 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: fpu.h: fix build when CONFIG_BUG is not set
-Message-ID: <20140206103505.GE54230@pburton-linux.le.imgtec.org>
-References: <1391630744-32648-1-git-send-email-aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2014 12:45:37 +0100 (CET)
+Received: from merlin.infradead.org ([205.233.59.134]:36847 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822997AbaBFLpdBP0E2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Feb 2014 12:45:33 +0100
+Received: from dhcp-077-248-225-117.chello.nl ([77.248.225.117] helo=twins)
+        by merlin.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1WBNOT-0004TV-BU; Thu, 06 Feb 2014 11:45:21 +0000
+Received: by twins (Postfix, from userid 1000)
+        id B64E98278359; Thu,  6 Feb 2014 12:45:17 +0100 (CET)
+Date:   Thu, 6 Feb 2014 12:45:17 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Paul McKenney <paulmck@linux.vnet.ibm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: mips octeon memory model questions
+Message-ID: <20140206114517.GI4941@twins.programming.kicks-ass.net>
+References: <20140204184150.GB5002@laptop.programming.kicks-ass.net>
+ <52F144C3.1080705@caviumnetworks.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1391630744-32648-1-git-send-email-aaro.koskinen@iki.fi>
-User-Agent: Mutt/1.5.22 (2013-10-16)
-X-Originating-IP: [192.168.154.79]
-X-SEF-Processed: 7_3_0_01192__2014_02_06_10_36_21
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <52F144C3.1080705@caviumnetworks.com>
+User-Agent: Mutt/1.5.21 (2012-12-30)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39223
+X-archive-position: 39224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,37 +46,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Feb 05, 2014 at 10:05:44PM +0200, Aaro Koskinen wrote:
-> __enable_fpu produces a build failure when CONFIG_BUG is not set:
-> 
-> In file included from arch/mips/kernel/cpu-probe.c:24:0:
-> arch/mips/include/asm/fpu.h: In function '__enable_fpu':
-> arch/mips/include/asm/fpu.h:77:1: error: control reaches end of non-void function [-Werror=return-type]
-> 
-> This is regression introduced in 3.14-rc1. Fix that.
-> 
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> ---
->  arch/mips/include/asm/fpu.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-> index cfe092fc720d..6b9749540edf 100644
-> --- a/arch/mips/include/asm/fpu.h
-> +++ b/arch/mips/include/asm/fpu.h
-> @@ -74,6 +74,8 @@ static inline int __enable_fpu(enum fpu_mode mode)
->  	default:
->  		BUG();
->  	}
-> +
-> +	return SIGFPE;
->  }
->  
->  #define __disable_fpu()							\
-> -- 
-> 1.8.5.3
-> 
+On Tue, Feb 04, 2014 at 11:51:31AM -0800, David Daney wrote:
+> On OCTEON, SC implies a SYNC operation for the target memory location. So
+> the "SC b" is ordered before any writes that come after the SC.
 
-Looks good to me, thanks for catching that.
+Ah, that makes it all come together. I was thrown by octeon initially
+having WEAK_REORDERING_BEYOND_LLSC set and thus thinking there were no
+implied barriers.
 
-Paul
+Thanks David.

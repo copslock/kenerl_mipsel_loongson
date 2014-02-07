@@ -1,31 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2014 17:30:30 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:40125 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817088AbaBGQa27SxcV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Feb 2014 17:30:28 +0100
-Message-ID: <52F50A18.7020008@imgtec.com>
-Date:   Fri, 7 Feb 2014 10:30:16 -0600
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2014 21:44:07 +0100 (CET)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:39926 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827305AbaBGUoEb8RC3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Feb 2014 21:44:04 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id AAFC25A73C5;
+        Fri,  7 Feb 2014 22:44:01 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id p7pp0IshlkGw; Fri,  7 Feb 2014 22:43:56 +0200 (EET)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id 8A8825BC01B;
+        Fri,  7 Feb 2014 22:43:58 +0200 (EET)
+Date:   Fri, 7 Feb 2014 22:43:08 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH 1/2] MIPS: fix CONFIG_* error in fpu code
+Message-ID: <20140207204308.GA573@drone.musicnaut.iki.fi>
+References: <1391783493-6806-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Add 1074K CPU support explicitly.
-References: <1389992630-64139-1-git-send-email-Steven.Hill@imgtec.com> <20140207130737.GG19285@linux-mips.org>
-In-Reply-To: <20140207130737.GG19285@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.159.108]
-X-SEF-Processed: 7_3_0_01192__2014_02_07_16_30_23
-Return-Path: <Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1391783493-6806-1-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39232
+X-archive-position: 39233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,20 +51,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/07/2014 07:07 AM, Ralf Baechle wrote:
-> On Fri, Jan 17, 2014 at 03:03:50PM -0600, Steven J. Hill wrote:
->
->> The 1074K is a multiprocessing coherent processing system (CPS) based
->> on modified 74K cores. This patch makes the 1074K an actual unique
->> CPU type, instead of a 74K derivative, which it is not.
->>
->> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
->> Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->
-> I've also come to the conclusion that this seems to be the right
-> thing.  I'm still undecided on the urgency, 3.14 or later?  For now I'm
-> going to drop this into the 3.15 queue.
->
-It is kind of urgent, so please get it into 3.14 is possible. Thanks.
+On Fri, Feb 07, 2014 at 10:31:32PM +0800, Huacai Chen wrote:
+> Commit 597ce1723e0f (MIPS: Support for 64-bit FP with O32 binaries)
+> brings some CONFIG_MIPS64, but CONFIG_MIPS64 doesn't exist in any
+> Kconfig file. I guess the correct thing is CONFIG_64BIT, so fix it.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
-Steve
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+A.

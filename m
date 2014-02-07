@@ -1,50 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2014 15:32:27 +0100 (CET)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:42299 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831298AbaBGOcNfvdd0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Feb 2014 15:32:13 +0100
-Received: by mail-pb0-f51.google.com with SMTP id un15so3318339pbc.10
-        for <multiple recipients>; Fri, 07 Feb 2014 06:32:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=psmOotXvUueHLwKnvOfYZn6X5/rklD2gKURvzeYBFrU=;
-        b=qzW0bcY6awMwd992lKCrUYMMQOZvg+ZerJFJQdGaqgO2+uowSSrBXi0fzK0L/3DViM
-         wLqq9mWCGZMfG43OXveD+Viy6SA+Pi/D0+5wLZt7o+pUN1pzyrpPL7u9MyxB7QN/wqp1
-         Yjy8LHGNydupNVXs+Inp1STsgM6CmDDPZCDGPiJkdjlhzq5tTloHC96Fmu8cL1n0hf50
-         3sVM6eltKLvWNXzp7qn3JWw13vv6edUkXEf7ad1yOwMGozHNfog/ptaYJzJ3c8lN0Eeu
-         baKWw/36IykN+yvhVStnQFECgNMpPGoET3aAEtbYQrgPb2oiJN6wl5Kpfec5mmgOp9iU
-         CVEg==
-X-Received: by 10.68.0.99 with SMTP id 3mr20050868pbd.68.1391783527033;
-        Fri, 07 Feb 2014 06:32:07 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id mo2sm14257612pbc.6.2014.02.07.06.31.57
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 07 Feb 2014 06:32:06 -0800 (PST)
-From:   Huacai Chen <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2014 17:30:30 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:40125 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817088AbaBGQa27SxcV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Feb 2014 17:30:28 +0100
+Message-ID: <52F50A18.7020008@imgtec.com>
+Date:   Fri, 7 Feb 2014 10:30:16 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
+MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 2/2] MIPS: fpu: fix conflict of register usage
-Date:   Fri,  7 Feb 2014 22:31:33 +0800
-Message-Id: <1391783493-6806-2-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1391783493-6806-1-git-send-email-chenhc@lemote.com>
-References: <1391783493-6806-1-git-send-email-chenhc@lemote.com>
-Return-Path: <chenhuacai@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Add 1074K CPU support explicitly.
+References: <1389992630-64139-1-git-send-email-Steven.Hill@imgtec.com> <20140207130737.GG19285@linux-mips.org>
+In-Reply-To: <20140207130737.GG19285@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.159.108]
+X-SEF-Processed: 7_3_0_01192__2014_02_07_16_30_23
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39231
+X-archive-position: 39232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,54 +38,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In _restore_fp_context/_restore_fp_context32, t0 is used for both
-CP0_Status and CP1_FCSR. This is a mistake and cause FP exeception on
-boot, so fix it.
+On 02/07/2014 07:07 AM, Ralf Baechle wrote:
+> On Fri, Jan 17, 2014 at 03:03:50PM -0600, Steven J. Hill wrote:
+>
+>> The 1074K is a multiprocessing coherent processing system (CPS) based
+>> on modified 74K cores. This patch makes the 1074K an actual unique
+>> CPU type, instead of a 74K derivative, which it is not.
+>>
+>> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+>> Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>
+> I've also come to the conclusion that this seems to be the right
+> thing.  I'm still undecided on the urgency, 3.14 or later?  For now I'm
+> going to drop this into the 3.15 queue.
+>
+It is kind of urgent, so please get it into 3.14 is possible. Thanks.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/kernel/r4k_fpu.S |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-index 253b2fb..40bc159 100644
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -146,7 +146,7 @@ LEAF(_save_fp_context32)
-  *  - cp1 status/control register
-  */
- LEAF(_restore_fp_context)
--	EX	lw t0, SC_FPC_CSR(a0)
-+	EX	lw t1, SC_FPC_CSR(a0)
- 
- #if defined(CONFIG_64BIT) || defined(CONFIG_MIPS32_R2)
- 	.set	push
-@@ -191,7 +191,7 @@ LEAF(_restore_fp_context)
- 	EX	ldc1 $f26, SC_FPREGS+208(a0)
- 	EX	ldc1 $f28, SC_FPREGS+224(a0)
- 	EX	ldc1 $f30, SC_FPREGS+240(a0)
--	ctc1	t0, fcr31
-+	ctc1	t1, fcr31
- 	jr	ra
- 	 li	v0, 0					# success
- 	END(_restore_fp_context)
-@@ -199,7 +199,7 @@ LEAF(_restore_fp_context)
- #ifdef CONFIG_MIPS32_COMPAT
- LEAF(_restore_fp_context32)
- 	/* Restore an o32 sigcontext.  */
--	EX	lw t0, SC32_FPC_CSR(a0)
-+	EX	lw t1, SC32_FPC_CSR(a0)
- 
- 	mfc0	t0, CP0_STATUS
- 	sll	t0, t0, 5
-@@ -239,7 +239,7 @@ LEAF(_restore_fp_context32)
- 	EX	ldc1 $f26, SC32_FPREGS+208(a0)
- 	EX	ldc1 $f28, SC32_FPREGS+224(a0)
- 	EX	ldc1 $f30, SC32_FPREGS+240(a0)
--	ctc1	t0, fcr31
-+	ctc1	t1, fcr31
- 	jr	ra
- 	 li	v0, 0					# success
- 	END(_restore_fp_context32)
--- 
-1.7.7.3
+Steve

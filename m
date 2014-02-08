@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Feb 2014 05:56:01 +0100 (CET)
-Received: from mail.active-venture.com ([67.228.131.205]:57324 "EHLO
-        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825709AbaBHEzszWWDY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Feb 2014 05:55:48 +0100
-Received: (qmail 4956 invoked by uid 399); 8 Feb 2014 04:55:42 -0000
-Received: from unknown (HELO server.roeck-us.net) (linux@roeck-us.net@108.223.40.66)
-  by mail.active-venture.com with ESMTPAM; 8 Feb 2014 04:55:42 -0000
-X-Originating-IP: 108.223.40.66
-X-Sender: linux@roeck-us.net
-Message-ID: <52F5B8CE.1000808@roeck-us.net>
-Date:   Fri, 07 Feb 2014 20:55:42 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
-MIME-Version: 1.0
-To:     Huacai Chen <chenhuacai@gmail.com>
-CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: Commit 597ce1723 (MIPS: Support for 64-bit FP with O32 binaries)
- causing qemu hang with mips64 kernels
-References: <52F5A6EE.7020000@roeck-us.net> <CAAhV-H7GbarXPb2uye1jiH+caAL4vWTVBeGY77Yf0tvdpGJtiA@mail.gmail.com>
-In-Reply-To: <CAAhV-H7GbarXPb2uye1jiH+caAL4vWTVBeGY77Yf0tvdpGJtiA@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Feb 2014 22:47:07 +0100 (CET)
+Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6]:62071 "EHLO
+        cpsmtpb-ews03.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822188AbaBHVrErPdKL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Feb 2014 22:47:04 +0100
+Received: from cpsps-ews25.kpnxchange.com ([10.94.84.191]) by cpsmtpb-ews03.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 8 Feb 2014 22:46:59 +0100
+Received: from CPSMTPM-TLF104.kpnxchange.com ([195.121.3.7]) by cpsps-ews25.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 8 Feb 2014 22:46:58 +0100
+Received: from [192.168.1.105] ([82.169.24.127]) by CPSMTPM-TLF104.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 8 Feb 2014 22:46:58 +0100
+Message-ID: <1391896018.19595.12.camel@x220>
+Subject: [PATCH] MIPS: no need to select ARCH_SUPPORTS_MSI
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Jayachandran C <jchandra@broadcom.com>,
+        John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Sat, 08 Feb 2014 22:46:58 +0100
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.3 (3.10.3-1.fc20) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-Path: <linux@roeck-us.net>
+X-OriginalArrivalTime: 08 Feb 2014 21:46:58.0653 (UTC) FILETIME=[4ACE18D0:01CF2517]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39251
+X-archive-position: 39252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,56 +44,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/07/2014 07:57 PM, Huacai Chen wrote:
-> Hi,
->
-> Maybe you can try this:
-> http://patchwork.linux-mips.org/patch/6506/
-> http://patchwork.linux-mips.org/patch/6507/
->
-With those two patches applied the problem is gone.
+Commit c24a8a7a9988 ("MIPS: Netlogic: Add MSI support for XLP") added
+"select ARCH_SUPPORTS_MSI". But the Kconfig symbol ARCH_SUPPORTS_MSI was
+already removed in v3.12, so that select is a nop. Drop it.
 
-Thanks a lot!
+Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+---
+Untested.
 
-Guenter
+It was commit ebd97be635bf ("PCI: remove ARCH_SUPPORTS_MSI kconfig
+option") that removed this Kconfig symbol.
 
-> On Sat, Feb 8, 2014 at 11:39 AM, Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> Hi all,
->>
->> in 3.14-rc1, my mips64 qemu test fails. The image boots and then hangs.
->> Bisect points to commit 597ce1723 (MIPS: Support for 64-bit FP with O32
->> binaries).
->> Reverting this commit fixes the problem. Disabling MIPS_O32_FP64_SUPPORT
->> in my test image does _not_ solve the problem. The qemu version does not
->> seem
->> to make a difference; I tested with qemu 1.6.0 and 1.7.0.
->>
->> Console log output is available in
->> http://server.roeck-us.net:8010/builders/qemu-mips64-master/builds/34/steps/buildcommand/logs/stdio
->>
->> When the problem is seen, the emulation hangs as can be seen in the log,
->> and the qemu process consumes 100% CPU until it is killed.
->>
->> qemu command line is
->>
->> qemu-system-mips64 -kernel vmlinux -M malta -hda
->> core-image-minimal-qemumips64.ext3 \
->> -vga cirrus -usb -usbdevice wacom-tablet -no-reboot -m 128 --append
->> "root=/dev/hda \
->> rw mem=128M console=ttyS0 console=tty" -nographic
->>
->> The same configuration works fine with earlier kernels. I'll be happy to
->> provide
->> the detailed configuration as well as the root file system for testing if
->> needed.
->>
->> Obviously I have no idea if this is a problem with the patch or with qemu.
->> If there is anything I can do to help tracking down the problem further,
->> please let me know.
->>
->> Thanks,
->> Guenter
->>
->
->
+ arch/mips/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index dcae3a7..b3bf596 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -782,7 +782,6 @@ config NLM_XLP_BOARD
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+ 	select IRQ_CPU
+-	select ARCH_SUPPORTS_MSI
+ 	select ZONE_DMA32 if 64BIT
+ 	select SYNC_R4K
+ 	select SYS_HAS_EARLY_PRINTK
+-- 
+1.8.5.3

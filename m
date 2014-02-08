@@ -1,45 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2014 21:47:39 +0100 (CET)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:57815 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827305AbaBGUrhK-gPL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Feb 2014 21:47:37 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 60D0221BA18;
-        Fri,  7 Feb 2014 22:47:36 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id 2P29S02VWVTw; Fri,  7 Feb 2014 22:47:31 +0200 (EET)
-Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id 5C89E5BC004;
-        Fri,  7 Feb 2014 22:47:31 +0200 (EET)
-Date:   Fri, 7 Feb 2014 22:46:41 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: fpu: fix conflict of register usage
-Message-ID: <20140207204641.GB573@drone.musicnaut.iki.fi>
-References: <1391783493-6806-1-git-send-email-chenhc@lemote.com>
- <1391783493-6806-2-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Feb 2014 04:39:35 +0100 (CET)
+Received: from mail.active-venture.com ([67.228.131.205]:53081 "EHLO
+        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823014AbaBHDjdR-SF2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Feb 2014 04:39:33 +0100
+Received: (qmail 48688 invoked by uid 399); 8 Feb 2014 03:39:26 -0000
+Received: from unknown (HELO server.roeck-us.net) (linux@roeck-us.net@108.223.40.66)
+  by mail.active-venture.com with ESMTPAM; 8 Feb 2014 03:39:26 -0000
+X-Originating-IP: 108.223.40.66
+X-Sender: linux@roeck-us.net
+Message-ID: <52F5A6EE.7020000@roeck-us.net>
+Date:   Fri, 07 Feb 2014 19:39:26 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1391783493-6806-2-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
-Return-Path: <aaro.koskinen@iki.fi>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Commit 597ce1723 (MIPS: Support for 64-bit FP with O32 binaries)
+ causing qemu hang with mips64 kernels
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39234
+X-archive-position: 39235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,17 +42,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Feb 07, 2014 at 10:31:33PM +0800, Huacai Chen wrote:
-> In _restore_fp_context/_restore_fp_context32, t0 is used for both
-> CP0_Status and CP1_FCSR. This is a mistake and cause FP exeception on
-> boot, so fix it.
-> 
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Hi all,
 
-This fixes a major regression (kernel panic during boot) on Loongson2.
+in 3.14-rc1, my mips64 qemu test fails. The image boots and then hangs.
+Bisect points to commit 597ce1723 (MIPS: Support for 64-bit FP with O32 binaries).
+Reverting this commit fixes the problem. Disabling MIPS_O32_FP64_SUPPORT
+in my test image does _not_ solve the problem. The qemu version does not seem
+to make a difference; I tested with qemu 1.6.0 and 1.7.0.
 
-Many thanks for the fix,
+Console log output is available in
+http://server.roeck-us.net:8010/builders/qemu-mips64-master/builds/34/steps/buildcommand/logs/stdio
 
-A.
+When the problem is seen, the emulation hangs as can be seen in the log,
+and the qemu process consumes 100% CPU until it is killed.
+
+qemu command line is
+
+qemu-system-mips64 -kernel vmlinux -M malta -hda core-image-minimal-qemumips64.ext3 \
+-vga cirrus -usb -usbdevice wacom-tablet -no-reboot -m 128 --append "root=/dev/hda \
+rw mem=128M console=ttyS0 console=tty" -nographic
+
+The same configuration works fine with earlier kernels. I'll be happy to provide
+the detailed configuration as well as the root file system for testing if needed.
+
+Obviously I have no idea if this is a problem with the patch or with qemu.
+If there is anything I can do to help tracking down the problem further,
+please let me know.
+
+Thanks,
+Guenter

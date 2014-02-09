@@ -1,38 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Feb 2014 19:48:50 +0100 (CET)
-Received: from mail.sigma-star.at ([95.130.255.111]:52757 "EHLO
-        mail.sigma-star.at" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6826064AbaBISscTCTDp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 9 Feb 2014 19:48:32 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.sigma-star.at (Postfix) with ESMTP id 8024C16B42AB;
-        Sun,  9 Feb 2014 19:48:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mail.sigma-star.at
-Received: from mail.sigma-star.at ([127.0.0.1])
-        by localhost (mail.sigma-star.at [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bbgKstMdMjYe; Sun,  9 Feb 2014 19:48:35 +0100 (CET)
-Received: from linux.site (richard.vpn.sigmapriv.at [10.3.0.5])
-        by mail.sigma-star.at (Postfix) with ESMTPSA id B948316B42A5;
-        Sun,  9 Feb 2014 19:48:34 +0100 (CET)
-From:   Richard Weinberger <richard@nod.at>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org (open list:MIPS),
-        linux-kernel@vger.kernel.org (open list)
-Cc:     Richard Weinberger <richard@nod.at>
-Subject: [PATCH 11/28] Remove ARCH_SUPPORTS_MSI
-Date:   Sun,  9 Feb 2014 19:47:49 +0100
-Message-Id: <1391971686-9517-12-git-send-email-richard@nod.at>
-X-Mailer: git-send-email 1.8.4.2
-In-Reply-To: <1391971686-9517-1-git-send-email-richard@nod.at>
-References: <1391971686-9517-1-git-send-email-richard@nod.at>
-Return-Path: <richard@nod.at>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Feb 2014 20:45:59 +0100 (CET)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:32837 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825747AbaBITp5MC6VX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 9 Feb 2014 20:45:57 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 703D956FA72;
+        Sun,  9 Feb 2014 21:45:56 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id NjXINPy92eLt; Sun,  9 Feb 2014 21:45:52 +0200 (EET)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 614985BC002;
+        Sun,  9 Feb 2014 21:45:52 +0200 (EET)
+Date:   Sun, 9 Feb 2014 21:45:01 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     Paul Bolle <pebolle@tiscali.nl>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Replace CONFIG_MIPS64 and CONFIG_MIPS32_R2
+Message-ID: <20140209194501.GD573@drone.musicnaut.iki.fi>
+References: <1391952745.25424.6.camel@x220>
+ <CAOiHx=mi3sW7C0ZGwAhobRryikMs=Hj0UL19ENuUMECqk0EW5g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOiHx=mi3sW7C0ZGwAhobRryikMs=Hj0UL19ENuUMECqk0EW5g@mail.gmail.com>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39256
+X-archive-position: 39257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: richard@nod.at
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,24 +50,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The symbol is an orphan, get rid of it.
+Hi,
 
-Signed-off-by: Richard Weinberger <richard@nod.at>
----
- arch/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+On Sun, Feb 09, 2014 at 05:26:59PM +0100, Jonas Gorski wrote:
+> On Sun, Feb 9, 2014 at 2:32 PM, Paul Bolle <pebolle@tiscali.nl> wrote:
+> > Commit 597ce1723e0f ("MIPS: Support for 64-bit FP with O32 binaries")
+> > introduced references to two undefined Kconfig macros. CONFIG_MIPS32_R2
+> > should clearly be replaced with CONFIG_CPU_MIPS32_R2. And CONFIG_MIPS64
+> > should apparently be replaced with CONFIG_64BIT.
+> 
+> While I agree about the CONFIG_MIPS64 => CONFIG_64BIT replacement, I
+> wonder if CONFIG_MIPS32_R2 shouldn't rather be CONFIG_CPU_MIPSR2
+> (maybe even the existing CONFIG_CPU_MIPS32_R2 are wrong here).
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 792bd22..5b08fe9 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -782,7 +782,6 @@ config NLM_XLP_BOARD
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select IRQ_CPU
--	select ARCH_SUPPORTS_MSI
- 	select ZONE_DMA32 if 64BIT
- 	select SYNC_R4K
- 	select SYS_HAS_EARLY_PRINTK
--- 
-1.8.4.2
+FYI, the 64BIT part is already fixed by
+<http://patchwork.linux-mips.org/patch/6506/>. I guess these two changes
+could be separate patches.
+
+A.

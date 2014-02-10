@@ -1,78 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2014 02:12:53 +0100 (CET)
-Received: from mailout2.samsung.com ([203.254.224.25]:20749 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822672AbaBJBMuCiMYV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Feb 2014 02:12:50 +0100
-Received: from epcpsbgr5.samsung.com
- (u145.gpu120.samsung.co.kr [203.254.230.145])
- by mailout2.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTP id <0N0R000EQA139160@mailout2.samsung.com>; Mon,
- 10 Feb 2014 10:12:39 +0900 (KST)
-Received: from epcpsbgm2.samsung.com ( [203.254.230.49])
-        by epcpsbgr5.samsung.com (EPCPMTA) with SMTP id F4.DD.14803.78728F25; Mon,
- 10 Feb 2014 10:12:39 +0900 (KST)
-X-AuditID: cbfee691-b7efc6d0000039d3-ea-52f827879770
-Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm2.samsung.com (EPCPMTA)
- with SMTP id 6D.96.28157.78728F25; Mon, 10 Feb 2014 10:12:39 +0900 (KST)
-Received: from DOJG1HAN03 ([12.23.120.99])
- by mmp2.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTPA id <0N0R00FXXA128L50@mmp2.samsung.com>; Mon,
- 10 Feb 2014 10:12:38 +0900 (KST)
-From:   Jingoo Han <jg1.han@samsung.com>
-To:     'Ralf Baechle' <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        'Jingoo Han' <jg1.han@samsung.com>,
-        'Lars-Peter Clausen' <lars@metafoo.de>
-References: <003901cf25fc$73002790$590076b0$%han@samsung.com>
-In-reply-to: <003901cf25fc$73002790$590076b0$%han@samsung.com>
-Subject: [PATCH 4/7] MIPS: jz4740: don't select HAVE_PWM
-Date:   Mon, 10 Feb 2014 10:12:38 +0900
-Message-id: <003d01cf25fd$309c58a0$91d509e0$%han@samsung.com>
-MIME-version: 1.0
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7bit
-X-Mailer: Microsoft Office Outlook 12.0
-Thread-index: Ac8l/GYGhOsBgXmsQoSPhLhnprg0iAAAIq5w
-Content-language: ko
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrIIsWRmVeSWpSXmKPExsVy+t8zQ9129R9BBt+/S1hcXniJ1WLJ5Pms
-        Fpd3zWGzmDB1ErvFpT0qDqweR1euZfJY8uYQq0ffllWMHp83yQWwRHHZpKTmZJalFunbJXBl
-        dFycyl6wjrXi9tUelgbGtSxdjBwcEgImEqeeqHQxcgKZYhIX7q1n62Lk4hASWMYoMeHyIzaI
-        hInEl3mXWSAS0xklei58har6xSix41cbK0gVm4CaxJcvh9lBbBEBDYmzB1vBipgFOhklFv/+
-        BJYQErCVmNuwH8zmFLCTmLf0G1izsICFxIf7K8DWsQioSmy9+gUszgtUP+3WVhYIW1Dix+R7
-        YDazgJbE+p3HmSBseYnNa94yQ7yjLvHory6IKSJgJPHltThEhYjEvhfvGEHOkRC4xC7x/fcq
-        FohVAhLfJh+ChoSsxKYDzBAPS0ocXHGDZQKjxCwki2chWTwLyeJZSFYsYGRZxSiaWpBcUJyU
-        XmSqV5yYW1yal66XnJ+7iRESnRN3MN4/YH2IMRlo/URmKdHkfGB055XEGxqbGVmYmpgaG5lb
-        mpEmrCTOm/4oKUhIID2xJDU7NbUgtSi+qDQntfgQIxMHp1QDoynbsVUH/vH+PRvxWvfSPo0t
-        f2Nq285+M/xbMCuGTebNrK/vXm7ImdeUrlGj4fvmUWDbrDVP9X/JPxHU1mS56LBdNM0jmN18
-        7qpOgy5O48YpQvHifnK1p7efcHQsK9eeMr8ldsF6+6VtTb9W8fsxVRfOTTix/FUCa/vKWcv/
-        mE6OT898U+H/RImlOCPRUIu5qDgRAMk23InkAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPKsWRmVeSWpSXmKPExsVy+t9jQd129R9BBmvmi1pcXniJ1WLJ5Pms
-        Fpd3zWGzmDB1ErvFpT0qDqweR1euZfJY8uYQq0ffllWMHp83yQWwRDUw2mSkJqakFimk5iXn
-        p2TmpdsqeQfHO8ebmhkY6hpaWpgrKeQl5qbaKrn4BOi6ZeYA7VVSKEvMKQUKBSQWFyvp22Ga
-        EBripmsB0xih6xsSBNdjZIAGEtYxZnRcnMpesI614vbVHpYGxrUsXYycHBICJhJf5l2GssUk
-        Ltxbz9bFyMUhJDCdUaLnwlco5xejxI5fbawgVWwCahJfvhxmB7FFBDQkzh5sBStiFuhklFj8
-        +xNYQkjAVmJuw34wm1PATmLe0m9gzcICFhIf7q9gA7FZBFQltl79AhbnBaqfdmsrC4QtKPFj
-        8j0wm1lAS2L9zuNMELa8xOY1b5m7GDmATlWXePRXF8QUETCS+PJaHKJCRGLfi3eMExiFZiEZ
-        NAvJoFlIBs1C0rKAkWUVo2hqQXJBcVJ6rpFecWJucWleul5yfu4mRnD0P5PewbiqweIQowAH
-        oxIP744/34OEWBPLiitzDzFKcDArifC+vAsU4k1JrKxKLcqPLyrNSS0+xJgM9OdEZinR5Hxg
-        YsoriTc0NjEzsjQyszAyMTcnTVhJnPdgq3WgkEB6YklqdmpqQWoRzBYmDk6pBka2sklTb9w9
-        rpX598nyti8TTujOKNnDbmXikPNE6VWbr3ZooZ/hTkHn6LbU4/mGM6S3x6a6xir9eeq2quqR
-        1NS74d/FeqdrPTK/3X2Xgf3mNVv/XwcYH2V39iY9+SI2v5r7k13PrRUudRvbK/8eve7w8ZHF
-        xG/NaxcUvD5mG1Z09adCiJdL5xolluKMREMt5qLiRAB00v/3QgMAAA==
-DLP-Filter: Pass
-X-MTR:  20000000000000000@CPGS
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2014 02:15:02 +0100 (CET)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:28267 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822672AbaBJBO5qb4n8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Feb 2014 02:14:57 +0100
+Received: from 172.24.2.119 (EHLO szxeml209-edg.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id BRB49701;
+        Mon, 10 Feb 2014 09:14:26 +0800 (CST)
+Received: from SZXEML404-HUB.china.huawei.com (10.82.67.59) by
+ szxeml209-edg.china.huawei.com (172.24.2.184) with Microsoft SMTP Server
+ (TLS) id 14.3.158.1; Mon, 10 Feb 2014 09:14:11 +0800
+Received: from [127.0.0.1] (10.177.27.212) by szxeml404-hub.china.huawei.com
+ (10.82.67.59) with Microsoft SMTP Server id 14.3.158.1; Mon, 10 Feb 2014
+ 09:14:01 +0800
+Message-ID: <52F827D3.5080906@huawei.com>
+Date:   Mon, 10 Feb 2014 09:13:55 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
+MIME-Version: 1.0
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        David Laight <David.Laight@ACULAB.COM>
+CC:     "'Tony Prisk'" <linux@prisktech.co.nz>,
+        John Stultz <john.stultz@linaro.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Kevin Hilman <khilman@deeprootsystems.com>,
+        "linux@lists.openrisc.net" <linux@openrisc.net>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Daniel Walker <dwalker@fifo99.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        "Jonas Bonn" <jonas@southpole.se>,
+        Kukjin Kim <kgene.kim@samsung.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Richard Weinberger <richard@nod.at>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        "Ingo Molnar" <mingo@redhat.com>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        David Brown <davidb@codeaurora.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Mike Frysinger <vapier@gentoo.org>,
+        "user-mode-linux-devel@lists.sourceforge.net" 
+        <user-mode-linux-devel@lists.sourceforge.net>,
+        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        Jeff Dike <jdike@addtoit.com>, Barry Song <baohua@kernel.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "user-mode-linux-user@lists.sourceforge.net" 
+        <user-mode-linux-user@lists.sourceforge.net>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "davinci-linux-open-source@linux.davincidsp.com" 
+        <davinci-linux-open-source@linux.davincidsp.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Jim Cromie <jim.cromie@gmail.com>,
+        "microblaze-uclinux@itee.uq.edu.au" 
+        <microblaze-uclinux@itee.uq.edu.au>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Bryan Huntsman" <bryanh@codeaurora.org>,
+        "uclinux-dist-devel@blackfin.uclinux.org" 
+        <uclinux-dist-devel@blackfin.uclinux.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 2/2] clocksource: Make clocksource register functions
+ void
+References: <1390461166-36440-1-git-send-email-wangyijing@huawei.com> <52E0C889.6000106@prisktech.co.nz> <063D6719AE5E284EB5DD2968C1650D6D46489C@AcuExch.aculab.com> <alpine.DEB.2.02.1402052139560.24986@ionos.tec.linutronix.de>
+In-Reply-To: <alpine.DEB.2.02.1402052139560.24986@ionos.tec.linutronix.de>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.27.212]
 X-CFilter-Loop: Reflected
-Return-Path: <jg1.han@samsung.com>
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39261
+X-archive-position: 39262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jg1.han@samsung.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,27 +95,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The HAVE_PWM symbol is only for legacy platforms that provide
-the PWM API without using the generic framework. The jz4740
-platform uses the generic PWM framework, after the commit "f6b8a57
-pwm: Add Ingenic JZ4740 support".
+On 2014/2/6 4:40, Thomas Gleixner wrote:
+> Yijing,
+> 
+> On Thu, 23 Jan 2014, David Laight wrote:
+> 
+>> From: Linuxppc-dev Tony Prisk
+>>> On 23/01/14 20:12, Yijing Wang wrote:
+>>>> Currently, clocksource_register() and __clocksource_register_scale()
+>>>> functions always return 0, it's pointless, make functions void.
+>>>> And remove the dead code that check the clocksource_register_hz()
+>>>> return value.
+>>> ......
+>>>> -static inline int clocksource_register_hz(struct clocksource *cs, u32 hz)
+>>>> +static inline void clocksource_register_hz(struct clocksource *cs, u32 hz)
+>>>>   {
+>>>>   	return __clocksource_register_scale(cs, 1, hz);
+>>>>   }
+>>>
+>>> This doesn't make sense - you are still returning a value on a function
+>>> declared void, and the return is now from a function that doesn't return
+>>> anything either ?!?!
+>>> Doesn't this throw a compile-time warning??
+>>
+>> It depends on the compiler.
+>> Recent gcc allow it.
+>> I don't know if it is actually valid C though.
+>>
+>> There is no excuse for it on lines like the above though.
+> 
+> Can you please resend with that fixed against 3.14-rc1 ?
 
-Signed-off-by: Jingoo Han <jg1.han@samsung.com>
----
- arch/mips/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+OK, I will resend later.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index dcae3a7..d132603 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -235,7 +235,6 @@ config MACH_JZ4740
- 	select IRQ_CPU
- 	select ARCH_REQUIRE_GPIOLIB
- 	select SYS_HAS_EARLY_PRINTK
--	select HAVE_PWM
- 	select HAVE_CLK
- 	select GENERIC_IRQ_CHIP
- 
+Thanks!
+Yijing.
+
+
+> 
+> .
+> 
+
+
 -- 
-1.7.10.4
+Thanks!
+Yijing

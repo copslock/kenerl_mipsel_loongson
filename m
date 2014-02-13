@@ -1,32 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Feb 2014 12:28:51 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:10849 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817179AbaBML2stGeIJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Feb 2014 12:28:48 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: =?UTF-8?q?=5BPATCH=20v2=2015/15=5D=20mips=3A=20save/restore=20MSA=20context=20around=20signals?=
-Date:   Thu, 13 Feb 2014 11:27:42 +0000
-Message-ID: <1392290862-18017-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 1.7.12.4
-In-Reply-To: <1390836194-26286-16-git-send-email-paul.burton@imgtec.com>
-References: <1390836194-26286-16-git-send-email-paul.burton@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.152.22]
-X-SEF-Processed: 7_3_0_01192__2014_02_13_11_28_43
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Feb 2014 13:09:51 +0100 (CET)
+Received: from mail-pd0-f178.google.com ([209.85.192.178]:61991 "EHLO
+        mail-pd0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823001AbaBMMJpYv1Sl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Feb 2014 13:09:45 +0100
+Received: by mail-pd0-f178.google.com with SMTP id fp1so1751916pdb.9
+        for <multiple recipients>; Thu, 13 Feb 2014 04:09:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=QU8bCugbzr7GZPmUV4XEVHPZ/jio/l+bt9YAKa0p21E=;
+        b=Dh3lAba53hGze6eQF2nWCnrl9p12rmkR1Fua19bD8l5aqSMeFenQK/ZN0DS2CzF3B2
+         fnw9fmI4SQZh8qMf0DF3dQjqFmCRdv8kyJyZbenK9dx6ZVqw/oxRUqq7CkGk15sh23b7
+         OhFlOMQnRxI2V3Kq7D5ov4+MyOOvr+tYdcUabpypdhUOSPXkjOPzJjBG0OKhk6wG2nUq
+         MnWwsIlCfBxDTomq2oNfGWozJCWDw04ZxvQSqTSDJKis1Xypqly4pCjZlw5JYBOXgMKF
+         jrxw5YYnV52OfWQj9ZDPkd4dFwHBzWlAHXud6kU0+hE5rjPFBAe7t5ufodPeKVvz/uqm
+         zniw==
+X-Received: by 10.68.196.226 with SMTP id ip2mr1359389pbc.106.1392293378155;
+        Thu, 13 Feb 2014 04:09:38 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPSA id f5sm13421356pat.11.2014.02.13.04.09.28
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 13 Feb 2014 04:09:36 -0800 (PST)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: [PATCH V18 00/13] MIPS: Add Loongson-3 based machines support
+Date:   Thu, 13 Feb 2014 20:08:50 +0800
+Message-Id: <1392293343-5453-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39283
+X-archive-position: 39284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,670 +56,198 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch extends sigcontext in order to hold the most significant 64
-bits of each vector register in addition to the MSA control & status
-register. The least significant 64 bits are already saved as the scalar
-FP context. This makes things a little awkward since the least & most
-significant 64 bits of each vector register are not contiguous in
-memory. Thus the copy_u & insert instructions are used to transfer the
-values of the most significant 64 bits via GP registers.
+This patchset is prepared for the next 3.15 release for Linux/MIPS.
+Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2 compatible
+and has the same IMP field (0x6300) as Loongson-2. These patches make
+Linux kernel support Loongson-3 CPU and Loongson-3 based computers
+(including Laptop, Mini-ITX, All-In-One PC, etc.)
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+V1 -> V2:
+1, Split the first patch to two patches, one is constant definition and
+   the other is CPU probing, cache initializing, etc.
+2, Remove Kconfig options in the first 9 patches and put all of them in
+   the 10th patch.
+3, Use "make savedefconfig" to generate the new default config file.
+4, Rework serial port support to use PORT and PORT_M macros.
+5, Fix some compile warnings.
+
+V2 -> V3:
+1, Improve cache flushing code (use cpu_has_coherent_cache macro and
+   remove #ifdef clauses).
+2, Improve platform-specific code to correctly set driver's dma_mask/
+   coherent_dma_mask so no longer need workarounds for each driver (
+   SATA, graphics card, sound card, etc.)
+3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
+4, Improve CPU hotplug code and split the poweroff failure related code
+   to another patch (this issue affect all MIPS CPU, not only Loongson).
+5, Some other small fixes.
+
+V3 -> V4:
+1, Include swiotlb.h in radeon_ttm.c if SWIOTLB configured.
+2, Remove "Reviewed-by" in patches which are added by mistake.
+3, Sync the code to upstream.
+
+V4 -> V5:
+1, Split the drm patch to three patches.
+2, Use platform-specific pincfgs to replace old alsa quirks.
+
+V5 -> V6:
+1, For better management, two non-Loongson-specific patches are sent
+   independently.
+2, Introduce cpu_has_coherent_cache feature and split cache flushing
+   changes to a separate patch.
+3, Remove PRID_IMP_LOONGSON3 and use PRID_IMP_LOONGSON2 since they are
+   the same.
+4, Don't define RTC_ALWAYS_BCD for Loongson-3 since BCD format can be
+   checked by RTC_CONTROL at runtime.
+5, Don't modify dma-default.c for Loongson since it is unnecessary.
+6, Don't define SAREA_MAX since it is useless.
+7, Increase the default boost of internal mic for Lemote A1004.
+8, Fix a #ifdef issue in dma-coherence.h.
+9, Some other small fixes.
+
+V6 -> V7:
+1, Fix boot failure when NR_CPUS is more than present cpus.
+2, Fix error messages after poweroff & reboot.
+3, Update the default config file.
+4, Sync the code to upstream.
+
+V7 -> V8:
+1, Add WEAK_ORDERING/WEAK_REORDERING_BEYOND_LLSC for Loongson-3.
+2, Fix a deadlock of cpu-hotplug.
+3, Include swiotlb.h in arch-specific code to avoid driver modification.
+4, Remove the patch "drm: Handle io prot correctly for MIPS" since it
+   is already in upstream code.
+5, Remove the patch "ALSA: HDA: Make hda sound card usable for Loongson"
+   since it is already in upstream code.
+6, Use LZMA compression and do some adjustment of config file to reduce
+   kernel size.
+
+V8 -> V9:
+1, Fix spurious IPI interrupt.
+2, remove __dev* attributes since CONFIG_HOTPLUG is going away as an option.
+3, Use dev_info() to print messages in fixup-loongson3.c.
+4, Update the default config file.
+5, Sync the code to upstream.
+
+V9 -> V10:
+1, Rework "Introduce and use cpu_has_coherent_cache feature".
+2, Handle the case that System BIOS doesn't contain a VGA BIOS.
+3, Sync the code to upstream (mostly indentation adjustment).
+
+V10 -> V11:
+1, Remove normal labels and useless nops in inline assembler.
+2, Sync the code to upstream (Prepared for 3.12).
+
+V11 -> V12:
+1, Delete __cpuinit usage;
+2, Remove the third patch since it is contentious;
+3, Sync the code to upstream (Prepared for 3.13).
+
+V12 -> V13:
+1, Rework addrspace.h and spaces.h;
+2, Move the modification of Platform from patch 1 to patch 12;
+3, Sync the code to upstream (the mips-for-linux-next branch, for 3.13).
+
+V13 -> V14:
+1, Avoid spurious interrupt from serial port;
+2, Drop CONFIG_LOONGSON_BIGMEM and use CONFIG_SWIOTLB directly;
+3, Sync the code to upstream (the mips-for-linux-next branch, for 3.14).
+
+V14 -> V15:
+1, Fix duplicate ARCH_SPARSEMEM_ENABLE in Kconfig.
+
+V15 -> V16:
+1, Fix all coding style errors and most of warnings;
+2, Make dma address translation simple and elegant;
+3, Fix potential bugs in swiotlb code;
+4, Rename UEFI firmware interface to LEFI;
+5, Remove 32-bit kernel support temporarily;
+6, Some other small fixes (thanks to Aurelien Jarno).
+
+V16 -> V17:
+1, Kconfig adjustment;
+2, Make some functions static;
+3, Capitalize macros in smp code;
+4, Make dma-swiotlb.c more simple;
+5, Some other small fixes (thanks to Aurelien Jarno and Alex Smith).
+
+V17 -> V18:
+1, Fix two Loongson 2 breakages.
+2, Tested and Reviewed by Alex Smith.
+
+Huacai Chen(13):
+ MIPS: Loongson: Rename PRID_IMP_LOONGSON1 and PRID_IMP_LOONGSON2.
+ MIPS: Loongson: Add basic Loongson-3 definition.
+ MIPS: Loongson: Add basic Loongson-3 CPU support.
+ MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+ MIPS: Loongson: Add UEFI-like firmware interface (LEFI) support.
+ MIPS: Loongson 3: Add HT-linked PCI support.
+ MIPS: Loongson 3: Add IRQ init and dispatch support.
+ MIPS: Loongson 3: Add serial port support.
+ MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+ MIPS: Loongson: Add Loongson-3 Kconfig options.
+ MIPS: Loongson 3: Add Loongson-3 SMP support.
+ MIPS: Loongson 3: Add CPU hotplug support.
+ MIPS: Loongson: Add a Loongson-3 default config file.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hua Yan <yanh@lemote.com> 
 ---
-Changes in v2:
-  - Conditionalise MSA sigcontext save/restore calls upon cpu_has_msa
-    in addition to used_math in order to avoid them for kernels without
-    MSA support. Fixes link errors such as:
-
-        arch/mips/built-in.o: In function `restore_sigcontext':
-        (.text+0x7500): undefined reference to `_restore_msa_context'
-        make: *** [vmlinux] Error 1
-
-  - Include asm/msa.h in signal32.c to avoid build errors such as:
-
-          CC      arch/mips/kernel/signal32.o
-        arch/mips/kernel/signal32.c: In function ‘protected_restore_fp_context32’:
-arch/mips/kernel/signal32.c:191:5: error: implicit declaration of function ‘enable_msa’ [-Werror=implicit-function-declaration]
-arch/mips/kernel/signal32.c:195:5: error: implicit declaration of function ‘disable_msa’ [-Werror=implicit-function-declaration]
-arch/mips/kernel/signal32.c: In function ‘setup_sigcontext32’:
-arch/mips/kernel/signal32.c:242:2: error: implicit declaration of function ‘thread_msa_context_live’ [-Werror=implicit-function-declaration]
----
- arch/mips/include/asm/sigcontext.h      |   2 +
- arch/mips/include/uapi/asm/sigcontext.h |   8 ++
- arch/mips/kernel/asm-offsets.c          |   3 +
- arch/mips/kernel/r4k_fpu.S              | 213 ++++++++++++++++++++++++++++++++
- arch/mips/kernel/signal.c               |  73 +++++++++--
- arch/mips/kernel/signal32.c             |  74 +++++++++--
- 6 files changed, 357 insertions(+), 16 deletions(-)
-
-diff --git a/arch/mips/include/asm/sigcontext.h b/arch/mips/include/asm/sigcontext.h
-index eeeb0f4..f54bdbe 100644
---- a/arch/mips/include/asm/sigcontext.h
-+++ b/arch/mips/include/asm/sigcontext.h
-@@ -32,6 +32,8 @@ struct sigcontext32 {
- 	__u32		sc_lo2;
- 	__u32		sc_hi3;
- 	__u32		sc_lo3;
-+	__u64		sc_msaregs[32];	/* Most significant 64 bits */
-+	__u32		sc_msa_csr;
- };
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 || _MIPS_SIM == _MIPS_SIM_NABI32 */
- #endif /* _ASM_SIGCONTEXT_H */
-diff --git a/arch/mips/include/uapi/asm/sigcontext.h b/arch/mips/include/uapi/asm/sigcontext.h
-index 6c9906f..681c176 100644
---- a/arch/mips/include/uapi/asm/sigcontext.h
-+++ b/arch/mips/include/uapi/asm/sigcontext.h
-@@ -12,6 +12,10 @@
- #include <linux/types.h>
- #include <asm/sgidefs.h>
- 
-+/* Bits which may be set in sc_used_math */
-+#define USEDMATH_FP	(1 << 0)
-+#define USEDMATH_MSA	(1 << 1)
-+
- #if _MIPS_SIM == _MIPS_SIM_ABI32
- 
- /*
-@@ -37,6 +41,8 @@ struct sigcontext {
- 	unsigned long		sc_lo2;
- 	unsigned long		sc_hi3;
- 	unsigned long		sc_lo3;
-+	unsigned long long	sc_msaregs[32];	/* Most significant 64 bits */
-+	unsigned long		sc_msa_csr;
- };
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
-@@ -70,6 +76,8 @@ struct sigcontext {
- 	__u32	sc_used_math;
- 	__u32	sc_dsp;
- 	__u32	sc_reserved;
-+	__u64	sc_msaregs[32];
-+	__u32	sc_msa_csr;
- };
- 
- 
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index f454d7b..ace6814 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -294,6 +294,7 @@ void output_sc_defines(void)
- 	OFFSET(SC_LO2, sigcontext, sc_lo2);
- 	OFFSET(SC_HI3, sigcontext, sc_hi3);
- 	OFFSET(SC_LO3, sigcontext, sc_lo3);
-+	OFFSET(SC_MSAREGS, sigcontext, sc_msaregs);
- 	BLANK();
- }
- #endif
-@@ -308,6 +309,7 @@ void output_sc_defines(void)
- 	OFFSET(SC_MDLO, sigcontext, sc_mdlo);
- 	OFFSET(SC_PC, sigcontext, sc_pc);
- 	OFFSET(SC_FPC_CSR, sigcontext, sc_fpc_csr);
-+	OFFSET(SC_MSAREGS, sigcontext, sc_msaregs);
- 	BLANK();
- }
- #endif
-@@ -319,6 +321,7 @@ void output_sc32_defines(void)
- 	OFFSET(SC32_FPREGS, sigcontext32, sc_fpregs);
- 	OFFSET(SC32_FPC_CSR, sigcontext32, sc_fpc_csr);
- 	OFFSET(SC32_FPC_EIR, sigcontext32, sc_fpc_eir);
-+	OFFSET(SC32_MSAREGS, sigcontext32, sc_msaregs);
- 	BLANK();
- }
- #endif
-diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-index 253b2fb..752b50a 100644
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -13,6 +13,7 @@
-  * Copyright (C) 1999, 2001 Silicon Graphics, Inc.
-  */
- #include <asm/asm.h>
-+#include <asm/asmmacro.h>
- #include <asm/errno.h>
- #include <asm/fpregdef.h>
- #include <asm/mipsregs.h>
-@@ -245,6 +246,218 @@ LEAF(_restore_fp_context32)
- 	END(_restore_fp_context32)
- #endif
- 
-+#ifdef CONFIG_CPU_HAS_MSA
-+
-+	.macro	save_sc_msareg	wr, off, sc, tmp
-+#ifdef CONFIG_64BIT
-+	copy_u_d \tmp, \wr, 1
-+	EX sd	\tmp, (\off+(\wr*8))(\sc)
-+#elif defined(CONFIG_CPU_LITTLE_ENDIAN)
-+	copy_u_w \tmp, \wr, 2
-+	EX sw	\tmp, (\off+(\wr*8)+0)(\sc)
-+	copy_u_w \tmp, \wr, 3
-+	EX sw	\tmp, (\off+(\wr*8)+4)(\sc)
-+#else /* CONFIG_CPU_BIG_ENDIAN */
-+	copy_u_w \tmp, \wr, 2
-+	EX sw	\tmp, (\off+(\wr*8)+4)(\sc)
-+	copy_u_w \tmp, \wr, 3
-+	EX sw	\tmp, (\off+(\wr*8)+0)(\sc)
-+#endif
-+	.endm
-+
-+/*
-+ * int _save_msa_context(struct sigcontext *sc)
-+ *
-+ * Save the upper 64 bits of each vector register along with the MSA_CSR
-+ * register into sc. Returns zero on success, else non-zero.
-+ */
-+LEAF(_save_msa_context)
-+	save_sc_msareg	0, SC_MSAREGS, a0, t0
-+	save_sc_msareg	1, SC_MSAREGS, a0, t0
-+	save_sc_msareg	2, SC_MSAREGS, a0, t0
-+	save_sc_msareg	3, SC_MSAREGS, a0, t0
-+	save_sc_msareg	4, SC_MSAREGS, a0, t0
-+	save_sc_msareg	5, SC_MSAREGS, a0, t0
-+	save_sc_msareg	6, SC_MSAREGS, a0, t0
-+	save_sc_msareg	7, SC_MSAREGS, a0, t0
-+	save_sc_msareg	8, SC_MSAREGS, a0, t0
-+	save_sc_msareg	9, SC_MSAREGS, a0, t0
-+	save_sc_msareg	10, SC_MSAREGS, a0, t0
-+	save_sc_msareg	11, SC_MSAREGS, a0, t0
-+	save_sc_msareg	12, SC_MSAREGS, a0, t0
-+	save_sc_msareg	13, SC_MSAREGS, a0, t0
-+	save_sc_msareg	14, SC_MSAREGS, a0, t0
-+	save_sc_msareg	15, SC_MSAREGS, a0, t0
-+	save_sc_msareg	16, SC_MSAREGS, a0, t0
-+	save_sc_msareg	17, SC_MSAREGS, a0, t0
-+	save_sc_msareg	18, SC_MSAREGS, a0, t0
-+	save_sc_msareg	19, SC_MSAREGS, a0, t0
-+	save_sc_msareg	20, SC_MSAREGS, a0, t0
-+	save_sc_msareg	21, SC_MSAREGS, a0, t0
-+	save_sc_msareg	22, SC_MSAREGS, a0, t0
-+	save_sc_msareg	23, SC_MSAREGS, a0, t0
-+	save_sc_msareg	24, SC_MSAREGS, a0, t0
-+	save_sc_msareg	25, SC_MSAREGS, a0, t0
-+	save_sc_msareg	26, SC_MSAREGS, a0, t0
-+	save_sc_msareg	27, SC_MSAREGS, a0, t0
-+	save_sc_msareg	28, SC_MSAREGS, a0, t0
-+	save_sc_msareg	29, SC_MSAREGS, a0, t0
-+	save_sc_msareg	30, SC_MSAREGS, a0, t0
-+	save_sc_msareg	31, SC_MSAREGS, a0, t0
-+	jr	ra
-+	 li	v0, 0
-+	END(_save_msa_context)
-+
-+#ifdef CONFIG_MIPS32_COMPAT
-+
-+/*
-+ * int _save_msa_context32(struct sigcontext32 *sc)
-+ *
-+ * Save the upper 64 bits of each vector register along with the MSA_CSR
-+ * register into sc. Returns zero on success, else non-zero.
-+ */
-+LEAF(_save_msa_context32)
-+	save_sc_msareg	0, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	1, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	2, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	3, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	4, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	5, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	6, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	7, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	8, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	9, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	10, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	11, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	12, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	13, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	14, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	15, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	16, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	17, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	18, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	19, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	20, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	21, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	22, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	23, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	24, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	25, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	26, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	27, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	28, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	29, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	30, SC32_MSAREGS, a0, t0
-+	save_sc_msareg	31, SC32_MSAREGS, a0, t0
-+	jr	ra
-+	 li	v0, 0
-+	END(_save_msa_context32)
-+
-+#endif /* CONFIG_MIPS32_COMPAT */
-+
-+	.macro restore_sc_msareg	wr, off, sc, tmp
-+#ifdef CONFIG_64BIT
-+	EX ld	\tmp, (\off+(\wr*8))(\sc)
-+	insert_d \wr, 1, \tmp
-+#elif defined(CONFIG_CPU_LITTLE_ENDIAN)
-+	EX lw	\tmp, (\off+(\wr*8)+0)(\sc)
-+	insert_w \wr, 2, \tmp
-+	EX lw	\tmp, (\off+(\wr*8)+4)(\sc)
-+	insert_w \wr, 3, \tmp
-+#else /* CONFIG_CPU_BIG_ENDIAN */
-+	EX lw	\tmp, (\off+(\wr*8)+4)(\sc)
-+	insert_w \wr, 2, \tmp
-+	EX lw	\tmp, (\off+(\wr*8)+0)(\sc)
-+	insert_w \wr, 3, \tmp
-+#endif
-+	.endm
-+
-+/*
-+ * int _restore_msa_context(struct sigcontext *sc)
-+ */
-+LEAF(_restore_msa_context)
-+	restore_sc_msareg	0, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	1, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	2, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	3, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	4, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	5, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	6, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	7, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	8, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	9, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	10, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	11, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	12, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	13, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	14, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	15, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	16, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	17, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	18, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	19, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	20, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	21, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	22, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	23, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	24, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	25, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	26, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	27, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	28, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	29, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	30, SC_MSAREGS, a0, t0
-+	restore_sc_msareg	31, SC_MSAREGS, a0, t0
-+	jr	ra
-+	 li	v0, 0
-+	END(_restore_msa_context)
-+
-+#ifdef CONFIG_MIPS32_COMPAT
-+
-+/*
-+ * int _restore_msa_context32(struct sigcontext32 *sc)
-+ */
-+LEAF(_restore_msa_context32)
-+	restore_sc_msareg	0, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	1, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	2, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	3, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	4, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	5, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	6, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	7, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	8, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	9, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	10, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	11, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	12, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	13, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	14, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	15, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	16, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	17, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	18, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	19, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	20, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	21, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	22, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	23, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	24, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	25, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	26, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	27, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	28, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	29, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	30, SC32_MSAREGS, a0, t0
-+	restore_sc_msareg	31, SC32_MSAREGS, a0, t0
-+	jr	ra
-+	 li	v0, 0
-+	END(_restore_msa_context32)
-+
-+#endif /* CONFIG_MIPS32_COMPAT */
-+
-+#endif /* CONFIG_CPU_HAS_MSA */
-+
- 	.set	reorder
- 
- 	.type	fault@function
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index 0f97c7d..fd61700 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -30,6 +30,7 @@
- #include <linux/bitops.h>
- #include <asm/cacheflush.h>
- #include <asm/fpu.h>
-+#include <asm/msa.h>
- #include <asm/sim.h>
- #include <asm/ucontext.h>
- #include <asm/cpu-features.h>
-@@ -46,6 +47,9 @@ static int (*restore_fp_context)(struct sigcontext __user *sc);
- extern asmlinkage int _save_fp_context(struct sigcontext __user *sc);
- extern asmlinkage int _restore_fp_context(struct sigcontext __user *sc);
- 
-+extern asmlinkage int _save_msa_context(struct sigcontext __user *sc);
-+extern asmlinkage int _restore_msa_context(struct sigcontext __user *sc);
-+
- struct sigframe {
- 	u32 sf_ass[4];		/* argument save space for o32 */
- 	u32 sf_pad[2];		/* Was: signal trampoline */
-@@ -95,19 +99,59 @@ static int copy_fp_from_sigcontext(struct sigcontext __user *sc)
- }
- 
- /*
-+ * These functions will save only the upper 64 bits of the vector registers,
-+ * since the lower 64 bits have already been saved as the scalar FP context.
-+ */
-+static int copy_msa_to_sigcontext(struct sigcontext __user *sc)
-+{
-+	int i;
-+	int err = 0;
-+
-+	for (i = 0; i < NUM_FPU_REGS; i++) {
-+		err |=
-+		    __put_user(get_fpr64(&current->thread.fpu.fpr[i], 1),
-+			       &sc->sc_msaregs[i]);
-+	}
-+	err |= __put_user(current->thread.fpu.msacsr, &sc->sc_msa_csr);
-+
-+	return err;
-+}
-+
-+static int copy_msa_from_sigcontext(struct sigcontext __user *sc)
-+{
-+	int i;
-+	int err = 0;
-+	u64 val;
-+
-+	for (i = 0; i < NUM_FPU_REGS; i++) {
-+		err |= __get_user(val, &sc->sc_msaregs[i]);
-+		set_fpr64(&current->thread.fpu.fpr[i], 1, val);
-+	}
-+	err |= __get_user(current->thread.fpu.msacsr, &sc->sc_msa_csr);
-+
-+	return err;
-+}
-+
-+/*
-  * Helper routines
-  */
--static int protected_save_fp_context(struct sigcontext __user *sc)
-+static int protected_save_fp_context(struct sigcontext __user *sc,
-+				     unsigned used_math)
- {
- 	int err;
-+	bool save_msa = cpu_has_msa && (used_math & USEDMATH_MSA);
- 	while (1) {
- 		lock_fpu_owner();
- 		if (is_fpu_owner()) {
- 			err = save_fp_context(sc);
-+			if (save_msa && !err)
-+				err = _save_msa_context(sc);
- 			unlock_fpu_owner();
- 		} else {
- 			unlock_fpu_owner();
- 			err = copy_fp_to_sigcontext(sc);
-+			if (save_msa && !err)
-+				err = copy_msa_to_sigcontext(sc);
- 		}
- 		if (likely(!err))
- 			break;
-@@ -121,17 +165,28 @@ static int protected_save_fp_context(struct sigcontext __user *sc)
- 	return err;
- }
- 
--static int protected_restore_fp_context(struct sigcontext __user *sc)
-+static int protected_restore_fp_context(struct sigcontext __user *sc,
-+					unsigned used_math)
- {
- 	int err, tmp __maybe_unused;
-+	bool restore_msa = cpu_has_msa && (used_math & USEDMATH_MSA);
- 	while (1) {
- 		lock_fpu_owner();
- 		if (is_fpu_owner()) {
- 			err = restore_fp_context(sc);
-+			if (restore_msa && !err) {
-+				enable_msa();
-+				err = _restore_msa_context(sc);
-+			} else {
-+				/* signal handler may have used MSA */
-+				disable_msa();
-+			}
- 			unlock_fpu_owner();
- 		} else {
- 			unlock_fpu_owner();
- 			err = copy_fp_from_sigcontext(sc);
-+			if (!err && (used_math & USEDMATH_MSA))
-+				err = copy_msa_from_sigcontext(sc);
- 		}
- 		if (likely(!err))
- 			break;
-@@ -172,7 +227,8 @@ int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
- 		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
- 	}
- 
--	used_math = !!used_math();
-+	used_math = used_math() ? USEDMATH_FP : 0;
-+	used_math |= thread_msa_context_live() ? USEDMATH_MSA : 0;
- 	err |= __put_user(used_math, &sc->sc_used_math);
- 
- 	if (used_math) {
-@@ -180,7 +236,7 @@ int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
- 		 * Save FPU state to signal context. Signal handler
- 		 * will "inherit" current FPU state.
- 		 */
--		err |= protected_save_fp_context(sc);
-+		err |= protected_save_fp_context(sc, used_math);
- 	}
- 	return err;
- }
-@@ -205,14 +261,14 @@ int fpcsr_pending(unsigned int __user *fpcsr)
- }
- 
- static int
--check_and_restore_fp_context(struct sigcontext __user *sc)
-+check_and_restore_fp_context(struct sigcontext __user *sc, unsigned used_math)
- {
- 	int err, sig;
- 
- 	err = sig = fpcsr_pending(&sc->sc_fpc_csr);
- 	if (err > 0)
- 		err = 0;
--	err |= protected_restore_fp_context(sc);
-+	err |= protected_restore_fp_context(sc, used_math);
- 	return err ?: sig;
- }
- 
-@@ -252,9 +308,10 @@ int restore_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
- 	if (used_math) {
- 		/* restore fpu context if we have used it before */
- 		if (!err)
--			err = check_and_restore_fp_context(sc);
-+			err = check_and_restore_fp_context(sc, used_math);
- 	} else {
--		/* signal handler may have used FPU.  Give it up. */
-+		/* signal handler may have used FPU or MSA. Disable them. */
-+		disable_msa();
- 		lose_fpu(0);
- 	}
- 
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index bae2e6e..299f956 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -30,6 +30,7 @@
- #include <asm/sim.h>
- #include <asm/ucontext.h>
- #include <asm/fpu.h>
-+#include <asm/msa.h>
- #include <asm/war.h>
- #include <asm/vdso.h>
- #include <asm/dsp.h>
-@@ -42,6 +43,9 @@ static int (*restore_fp_context32)(struct sigcontext32 __user *sc);
- extern asmlinkage int _save_fp_context32(struct sigcontext32 __user *sc);
- extern asmlinkage int _restore_fp_context32(struct sigcontext32 __user *sc);
- 
-+extern asmlinkage int _save_msa_context32(struct sigcontext32 __user *sc);
-+extern asmlinkage int _restore_msa_context32(struct sigcontext32 __user *sc);
-+
- /*
-  * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
-  */
-@@ -111,19 +115,59 @@ static int copy_fp_from_sigcontext32(struct sigcontext32 __user *sc)
- }
- 
- /*
-+ * These functions will save only the upper 64 bits of the vector registers,
-+ * since the lower 64 bits have already been saved as the scalar FP context.
-+ */
-+static int copy_msa_to_sigcontext32(struct sigcontext32 __user *sc)
-+{
-+	int i;
-+	int err = 0;
-+
-+	for (i = 0; i < NUM_FPU_REGS; i++) {
-+		err |=
-+		    __put_user(get_fpr64(&current->thread.fpu.fpr[i], 1),
-+			       &sc->sc_msaregs[i]);
-+	}
-+	err |= __put_user(current->thread.fpu.msacsr, &sc->sc_msa_csr);
-+
-+	return err;
-+}
-+
-+static int copy_msa_from_sigcontext32(struct sigcontext32 __user *sc)
-+{
-+	int i;
-+	int err = 0;
-+	u64 val;
-+
-+	for (i = 0; i < NUM_FPU_REGS; i++) {
-+		err |= __get_user(val, &sc->sc_msaregs[i]);
-+		set_fpr64(&current->thread.fpu.fpr[i], 1, val);
-+	}
-+	err |= __get_user(current->thread.fpu.msacsr, &sc->sc_msa_csr);
-+
-+	return err;
-+}
-+
-+/*
-  * sigcontext handlers
-  */
--static int protected_save_fp_context32(struct sigcontext32 __user *sc)
-+static int protected_save_fp_context32(struct sigcontext32 __user *sc,
-+				       unsigned used_math)
- {
- 	int err;
-+	bool save_msa = cpu_has_msa && (used_math & USEDMATH_MSA);
- 	while (1) {
- 		lock_fpu_owner();
- 		if (is_fpu_owner()) {
- 			err = save_fp_context32(sc);
-+			if (save_msa && !err)
-+				err = _save_msa_context32(sc);
- 			unlock_fpu_owner();
- 		} else {
- 			unlock_fpu_owner();
- 			err = copy_fp_to_sigcontext32(sc);
-+			if (save_msa && !err)
-+				err = copy_msa_to_sigcontext32(sc);
- 		}
- 		if (likely(!err))
- 			break;
-@@ -137,17 +181,28 @@ static int protected_save_fp_context32(struct sigcontext32 __user *sc)
- 	return err;
- }
- 
--static int protected_restore_fp_context32(struct sigcontext32 __user *sc)
-+static int protected_restore_fp_context32(struct sigcontext32 __user *sc,
-+					  unsigned used_math)
- {
- 	int err, tmp __maybe_unused;
-+	bool restore_msa = cpu_has_msa && (used_math & USEDMATH_MSA);
- 	while (1) {
- 		lock_fpu_owner();
- 		if (is_fpu_owner()) {
- 			err = restore_fp_context32(sc);
-+			if (restore_msa && !err) {
-+				enable_msa();
-+				err = _restore_msa_context32(sc);
-+			} else {
-+				/* signal handler may have used MSA */
-+				disable_msa();
-+			}
- 			unlock_fpu_owner();
- 		} else {
- 			unlock_fpu_owner();
- 			err = copy_fp_from_sigcontext32(sc);
-+			if (restore_msa && !err)
-+				err = copy_msa_from_sigcontext32(sc);
- 		}
- 		if (likely(!err))
- 			break;
-@@ -186,7 +241,8 @@ static int setup_sigcontext32(struct pt_regs *regs,
- 		err |= __put_user(mflo3(), &sc->sc_lo3);
- 	}
- 
--	used_math = !!used_math();
-+	used_math = used_math() ? USEDMATH_FP : 0;
-+	used_math |= thread_msa_context_live() ? USEDMATH_MSA : 0;
- 	err |= __put_user(used_math, &sc->sc_used_math);
- 
- 	if (used_math) {
-@@ -194,20 +250,21 @@ static int setup_sigcontext32(struct pt_regs *regs,
- 		 * Save FPU state to signal context.  Signal handler
- 		 * will "inherit" current FPU state.
- 		 */
--		err |= protected_save_fp_context32(sc);
-+		err |= protected_save_fp_context32(sc, used_math);
- 	}
- 	return err;
- }
- 
- static int
--check_and_restore_fp_context32(struct sigcontext32 __user *sc)
-+check_and_restore_fp_context32(struct sigcontext32 __user *sc,
-+			       unsigned used_math)
- {
- 	int err, sig;
- 
- 	err = sig = fpcsr_pending(&sc->sc_fpc_csr);
- 	if (err > 0)
- 		err = 0;
--	err |= protected_restore_fp_context32(sc);
-+	err |= protected_restore_fp_context32(sc, used_math);
- 	return err ?: sig;
- }
- 
-@@ -244,9 +301,10 @@ static int restore_sigcontext32(struct pt_regs *regs,
- 	if (used_math) {
- 		/* restore fpu context if we have used it before */
- 		if (!err)
--			err = check_and_restore_fp_context32(sc);
-+			err = check_and_restore_fp_context32(sc, used_math);
- 	} else {
--		/* signal handler may have used FPU.  Give it up. */
-+		/* signal handler may have used FPU or MSA. Disable them. */
-+		disable_msa();
- 		lose_fpu(0);
- 	}
- 
--- 
-1.8.5.3
+ arch/mips/Kconfig                                  |   29 ++-
+ arch/mips/configs/loongson3_defconfig              |  348 ++++++++++++++++
+ arch/mips/include/asm/addrspace.h                  |    2 +
+ arch/mips/include/asm/bootinfo.h                   |   24 +-
+ arch/mips/include/asm/cpu-type.h                   |    4 +
+ arch/mips/include/asm/cpu.h                        |    9 +-
+ arch/mips/include/asm/dma-mapping.h                |    5 +
+ arch/mips/include/asm/mach-loongson/boot_param.h   |  159 +++++++
+ .../mips/include/asm/mach-loongson/dma-coherence.h |   22 +-
+ arch/mips/include/asm/mach-loongson/irq.h          |   44 ++
+ arch/mips/include/asm/mach-loongson/loongson.h     |   28 +-
+ arch/mips/include/asm/mach-loongson/machine.h      |    6 +
+ arch/mips/include/asm/mach-loongson/pci.h          |    5 +
+ arch/mips/include/asm/mach-loongson/spaces.h       |   13 +
+ arch/mips/include/asm/module.h                     |    2 +
+ arch/mips/include/asm/pgtable-bits.h               |    9 +
+ arch/mips/include/asm/smp.h                        |    1 +
+ arch/mips/kernel/cpu-probe.c                       |   16 +-
+ arch/mips/loongson/Kconfig                         |   47 +++
+ arch/mips/loongson/Makefile                        |    6 +
+ arch/mips/loongson/Platform                        |    1 +
+ arch/mips/loongson/common/Makefile                 |    5 +
+ arch/mips/loongson/common/dma-swiotlb.c            |  137 ++++++
+ arch/mips/loongson/common/env.c                    |   62 +++-
+ arch/mips/loongson/common/init.c                   |   12 +-
+ arch/mips/loongson/common/machtype.c               |    4 +
+ arch/mips/loongson/common/mem.c                    |   42 ++
+ arch/mips/loongson/common/pci.c                    |    6 +-
+ arch/mips/loongson/common/reset.c                  |   21 +
+ arch/mips/loongson/common/serial.c                 |   26 +-
+ arch/mips/loongson/common/setup.c                  |    8 +-
+ arch/mips/loongson/common/uart_base.c              |    9 +-
+ arch/mips/loongson/loongson-3/Makefile             |    6 +
+ arch/mips/loongson/loongson-3/irq.c                |  125 ++++++
+ arch/mips/loongson/loongson-3/smp.c                |  434 ++++++++++++++++++++
+ arch/mips/loongson/loongson-3/smp.h                |   29 ++
+ arch/mips/mm/c-r4k.c                               |   59 +++
+ arch/mips/mm/tlb-r4k.c                             |    5 +-
+ arch/mips/mm/tlbex.c                               |    1 +
+ arch/mips/pci/Makefile                             |    1 +
+ arch/mips/pci/fixup-loongson3.c                    |   66 +++
+ arch/mips/pci/ops-loongson3.c                      |  101 +++++
+ 42 files changed, 1877 insertions(+), 62 deletions(-)
+ create mode 100644 arch/mips/configs/loongson3_defconfig
+ create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+ create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+ create mode 100644 arch/mips/loongson/loongson-3/Makefile
+ create mode 100644 arch/mips/loongson/loongson-3/irq.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.h
+ create mode 100644 arch/mips/pci/fixup-loongson3.c
+ create mode 100644 arch/mips/pci/ops-loongson3.c
+--
+1.7.7.3

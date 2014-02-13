@@ -1,48 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Feb 2014 17:48:30 +0100 (CET)
-Received: from mail-ea0-f175.google.com ([209.85.215.175]:59728 "EHLO
-        mail-ea0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827441AbaBMQs1tCJXV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Feb 2014 17:48:27 +0100
-Received: by mail-ea0-f175.google.com with SMTP id n15so2451493ead.6
-        for <multiple recipients>; Thu, 13 Feb 2014 08:48:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=2241Q3hN//Ib4KNWFLxFCChEzIN9kejc8+eY10/1w6I=;
-        b=Gk6awRvQR3dnt0h+VCU3g9mmu0BqGHHPXKQB5LX9eT00as6eoU0TfAwAazWzzYICpn
-         B/JFX4Hk5CXsZEoYGc6YdEVMqqTzMSRiXQ2ynskT+pBelzOdnu3RFtJsWo5bngHhHIov
-         kV5VZ0tjuRg+OyO75I9AENpVHQilnL3JbemDnI800c/Zs1CC7qfxU1dEelohfosMlhh/
-         5TiUKfAJyQnmjoWBDSCM6enE2UaSYUlEFQJGwjNAaKnBarRdJh9pU3bya1kAqh1X9bQg
-         7qt+gs25cFMtCyYl0ealgtxHVAEKsYVZIL5JHqmhIJ9+hdBo3uWTY0MXP12CfznlIEbP
-         xdkA==
-X-Received: by 10.15.10.73 with SMTP id f49mr3213012eet.2.1392310102436;
-        Thu, 13 Feb 2014 08:48:22 -0800 (PST)
-Received: from linux-x91w.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id y47sm8867153eel.14.2014.02.13.08.48.20
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 13 Feb 2014 08:48:21 -0800 (PST)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [3.14 FIX][PATCH] MIPS: BCM47XX: Check all (32) GPIOs when looking for a pin
-Date:   Thu, 13 Feb 2014 17:48:12 +0100
-Message-Id: <1392310092-27365-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Feb 2014 18:27:46 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:10962 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6867079AbaBMR1kItha- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Feb 2014 18:27:40 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        <linux-next@vger.kernel.org>, <linux-kernel@linux-mips.org>
+Subject: [PATCH] samples/seccomp/Makefile: Do not build tests if cross-compiling for MIPS
+Date:   Thu, 13 Feb 2014 17:27:40 +0000
+Message-ID: <1392312460-24902-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.5.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+X-Originating-IP: [192.168.154.47]
+X-SEF-Processed: 7_3_0_01192__2014_02_13_17_27_34
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39298
+X-archive-position: 39299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,30 +37,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Broadcom boards support 32 GPIOs and NVRAM may have entires for higher
-ones too. Example:
-gpio23=wombo_reset
+The Makefile is designed to use the host toolchain so it may be
+unsafe to build the tests if the kernel has been configured and built
+for another architecture. This fixes a build problem when the kernel has
+been configured and built for the MIPS architecture but the host is
+not MIPS (cross-compiled). The MIPS syscalls are only defined
+if one of the following is true:
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
-Preferably this should go as a fix for 3.14. It's really trivial and
-allows support for some devices that require reset by GPIO after boot.
----
- arch/mips/bcm47xx/nvram.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+1) _MIPS_SIM == _MIPS_SIM_ABI64
+2) _MIPS_SIM == _MIPS_SIM_ABI32
+3) _MIPS_SIM == _MIPS_SIM_NABI32
 
-diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index 6decb27..2bed73a 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/arch/mips/bcm47xx/nvram.c
-@@ -196,7 +196,7 @@ int bcm47xx_nvram_gpio_pin(const char *name)
- 	char nvram_var[10];
- 	char buf[30];
+Of course, none of these make sense on a non-MIPS toolchain and the
+following build problem occurs when building on a non-MIPS host.
+
+linux/usr/include/linux/kexec.h:50:
+userspace cannot reference function or variable defined in the kernel
+samples/seccomp/bpf-direct.c: In function ‘emulator’:
+samples/seccomp/bpf-direct.c:76:17: error:
+‘__NR_write’ undeclared (first use in this function)
+
+Cc: linux-next@vger.kernel.org
+Cc: linux-kernel@linux-mips.org
+Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This problem is only reproducible on the linux-next tree at the moment
+---
+ samples/seccomp/Makefile | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/samples/seccomp/Makefile b/samples/seccomp/Makefile
+index 7203e66..f6bda1c 100644
+--- a/samples/seccomp/Makefile
++++ b/samples/seccomp/Makefile
+@@ -17,9 +17,14 @@ HOSTCFLAGS_bpf-direct.o += -I$(objtree)/usr/include
+ HOSTCFLAGS_bpf-direct.o += -idirafter $(objtree)/include
+ bpf-direct-objs := bpf-direct.o
  
--	for (i = 0; i < 16; i++) {
-+	for (i = 0; i < 32; i++) {
- 		err = snprintf(nvram_var, sizeof(nvram_var), "gpio%i", i);
- 		if (err <= 0)
- 			continue;
++# MIPS system calls are defined based on the -mabi that is passed
++# to the toolchain which may or may not be a valid option
++# for the host toolchain. So disable tests if target architecture
++# is mips but the host isn't.
++ifndef CONFIG_MIPS
+ # Try to match the kernel target.
+-ifndef CONFIG_64BIT
+ ifndef CROSS_COMPILE
++ifndef CONFIG_64BIT
+ 
+ # s390 has -m31 flag to build 31 bit binaries
+ ifndef CONFIG_S390
+@@ -40,3 +45,4 @@ endif
+ 
+ # Tell kbuild to always build the programs
+ always := $(hostprogs-y)
++endif
 -- 
-1.8.4.5
+1.8.5.4

@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2014 02:34:11 +0100 (CET)
-Received: from mail-wi0-f182.google.com ([209.85.212.182]:40249 "EHLO
-        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6868549AbaBNBeHOIH0N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Feb 2014 02:34:07 +0100
-Received: by mail-wi0-f182.google.com with SMTP id f8so9478756wiw.3
-        for <multiple recipients>; Thu, 13 Feb 2014 17:34:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=mOVe9JtYil+EibkSI7G+9udHsZCjL/0QzkbKa5B+ckc=;
-        b=NZmxS7pIpFV9HV+wx5PHdto/G0PX6ZOxkLoVieKP0Wm4W/MtPaHltOF+WeK6At5vHE
-         QDuckUAf3Vw7PELyeQJx1dTnmf8NaCOIEGittUEmitg+zMp5QMH33af4Sa3MDM9XAnSE
-         sk8w0riK5Y10v9W9RV5cJtY83MAb7Dseb4EuNRBJkCK3pu42qwtuLVEna2aqmi7/3pKF
-         HVaGCvShqri8f098bCq6cZ8z59dd9QNFTn8Kjk1bcaEDrLPYUnrJDIyVjFww4Dc3HdO5
-         obzCcPbEWj1XN/2nnGQKYR5AZyB0wdqCKDkKG9dZVlWRyv7AG3qxE+5ZAGp9SEuZtMUM
-         1BtQ==
-X-Received: by 10.194.178.135 with SMTP id cy7mr646024wjc.21.1392341641488;
- Thu, 13 Feb 2014 17:34:01 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2014 08:58:12 +0100 (CET)
+Received: from hall.aurel32.net ([195.154.112.97]:39530 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6815749AbaBNH6G3L4D3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Feb 2014 08:58:06 +0100
+Received: from [195.76.232.154] (helo=ohm.rr44.fr)
+        by hall.aurel32.net with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1WEDer-0001O3-5w; Fri, 14 Feb 2014 08:58:01 +0100
+Received: from aurel32 by ohm.rr44.fr with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1WEDeh-000668-UW; Fri, 14 Feb 2014 08:57:52 +0100
+Date:   Fri, 14 Feb 2014 08:57:51 +0100
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: Re: [PATCH V18 09/13] MIPS: Loongson: Add swiotlb to support big
+ memory (>4GB)
+Message-ID: <20140214075751.GA8116@ohm.rr44.fr>
+References: <1392293343-5453-1-git-send-email-chenhc@lemote.com>
+ <1392293343-5453-10-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Received: by 10.194.80.2 with HTTP; Thu, 13 Feb 2014 17:33:31 -0800 (PST)
-In-Reply-To: <52FD0F46.6040503@gmail.com>
-References: <1392312460-24902-1-git-send-email-markos.chandras@imgtec.com> <52FD0F46.6040503@gmail.com>
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-Date:   Thu, 13 Feb 2014 20:33:31 -0500
-X-Google-Sender-Auth: qbcvSjML7RjpgbiaPGCH6lhLPt4
-Message-ID: <CAP=VYLr1D-DQz8U4naa5aEL_AFa_JkO5e+TgFSxpsd_2t3dahQ@mail.gmail.com>
-Subject: Re: [PATCH] samples/seccomp/Makefile: Do not build tests if
- cross-compiling for MIPS
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        linux-kernel@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <paul.gortmaker@gmail.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <1392293343-5453-10-git-send-email-chenhc@lemote.com>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39302
+X-archive-position: 39303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,77 +52,282 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Feb 13, 2014 at 1:30 PM, David Daney <ddaney.cavm@gmail.com> wrote:
-> Really I think we should add a Kconfig item for this and disable the whole
-> directory for targets that do not support it.
+On Thu, Feb 13, 2014 at 08:08:59PM +0800, Huacai Chen wrote:
+> This is probably a workaround because Loongson doesn't support DMA
+> address above 4GB. If memory is more than 4GB, CONFIG_SWIOTLB and
+> ZONE_DMA32 should be selected. In this way, DMA pages are allocated
+> below 4GB preferably.
+> 
+> However, CONFIG_SWIOTLB+ZONE_DMA32 is not enough, so, we provide a
+> platform-specific dma_map_ops::set_dma_mask() to make sure each
+> driver's dma_mask and coherent_dma_mask is below 32-bit.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+> Signed-off-by: Hua Yan <yanh@lemote.com>
+> Tested-by: Alex Smith <alex.smith@imgtec.com>
+> Reviewed-by: Alex Smith <alex.smith@imgtec.com>
+> ---
+>  arch/mips/include/asm/dma-mapping.h                |    5 +
+>  .../mips/include/asm/mach-loongson/dma-coherence.h |   22 +++-
+>  arch/mips/loongson/common/Makefile                 |    5 +
+>  arch/mips/loongson/common/dma-swiotlb.c            |  137 ++++++++++++++++++++
+>  4 files changed, 168 insertions(+), 1 deletions(-)
+>  create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+> 
+> diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+> index 84238c5..06412aa 100644
+> --- a/arch/mips/include/asm/dma-mapping.h
+> +++ b/arch/mips/include/asm/dma-mapping.h
+> @@ -49,9 +49,14 @@ static inline int dma_mapping_error(struct device *dev, u64 mask)
+>  static inline int
+>  dma_set_mask(struct device *dev, u64 mask)
+>  {
+> +	struct dma_map_ops *ops = get_dma_ops(dev);
+> +
+>  	if(!dev->dma_mask || !dma_supported(dev, mask))
+>  		return -EIO;
+>  
+> +	if (ops->set_dma_mask)
+> +		return ops->set_dma_mask(dev, mask);
+> +
+>  	*dev->dma_mask = mask;
+>  
+>  	return 0;
+> diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+> index aeb2c05..6a90275 100644
+> --- a/arch/mips/include/asm/mach-loongson/dma-coherence.h
+> +++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+> @@ -11,24 +11,40 @@
+>  #ifndef __ASM_MACH_LOONGSON_DMA_COHERENCE_H
+>  #define __ASM_MACH_LOONGSON_DMA_COHERENCE_H
+>  
+> +#ifdef CONFIG_SWIOTLB
+> +#include <linux/swiotlb.h>
+> +#endif
+> +
+>  struct device;
+>  
+> +extern dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
+> +extern phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
+>  static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+>  					  size_t size)
+>  {
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +	return virt_to_phys(addr);
+> +#else
+>  	return virt_to_phys(addr) | 0x80000000;
+> +#endif
+>  }
+>  
+>  static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+>  					       struct page *page)
+>  {
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +	return page_to_phys(page);
+> +#else
+>  	return page_to_phys(page) | 0x80000000;
+> +#endif
+>  }
+>  
+>  static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+>  	dma_addr_t dma_addr)
+>  {
+> -#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+> +#if defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_64BIT)
+> +	return dma_addr;
+> +#elif defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+>  	return (dma_addr > 0x8fffffff) ? dma_addr : (dma_addr & 0x0fffffff);
+>  #else
+>  	return dma_addr & 0x7fffffff;
+> @@ -55,7 +71,11 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+>  
+>  static inline int plat_device_is_coherent(struct device *dev)
+>  {
+> +#ifdef CONFIG_DMA_NONCOHERENT
+>  	return 0;
+> +#else
+> +	return 1;
+> +#endif /* CONFIG_DMA_NONCOHERENT */
+>  }
+>  
+>  #endif /* __ASM_MACH_LOONGSON_DMA_COHERENCE_H */
+> diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+> index 9e4484c..0bb9cc9 100644
+> --- a/arch/mips/loongson/common/Makefile
+> +++ b/arch/mips/loongson/common/Makefile
+> @@ -26,3 +26,8 @@ obj-$(CONFIG_CS5536) += cs5536/
+>  #
+>  
+>  obj-$(CONFIG_LOONGSON_SUSPEND) += pm.o
+> +
+> +#
+> +# Big Memory (SWIOTLB) Support
+> +#
+> +obj-$(CONFIG_SWIOTLB) += dma-swiotlb.o
+> diff --git a/arch/mips/loongson/common/dma-swiotlb.c b/arch/mips/loongson/common/dma-swiotlb.c
+> new file mode 100644
+> index 0000000..dcf7d0b
+> --- /dev/null
+> +++ b/arch/mips/loongson/common/dma-swiotlb.c
+> @@ -0,0 +1,137 @@
+> +#include <linux/mm.h>
+> +#include <linux/init.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/scatterlist.h>
+> +#include <linux/swiotlb.h>
+> +#include <linux/bootmem.h>
+> +
+> +#include <asm/bootinfo.h>
+> +#include <dma-coherence.h>
+> +
+> +static void *loongson_dma_alloc_coherent(struct device *dev, size_t size,
+> +		dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
+> +{
+> +	void *ret;
+> +
+> +	if (dma_alloc_from_coherent(dev, size, dma_handle, &ret))
+> +		return ret;
+> +
+> +	/* ignore region specifiers */
+> +	gfp &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
+> +
+> +#ifdef CONFIG_ISA
+> +	if (dev == NULL)
+> +		gfp |= __GFP_DMA;
+> +	else
+> +#endif
+> +#ifdef CONFIG_ZONE_DMA
+> +	if (dev->coherent_dma_mask < DMA_BIT_MASK(32))
+> +		gfp |= __GFP_DMA;
+> +	else
+> +#endif
+> +#ifdef CONFIG_ZONE_DMA32
+> +	 /* Loongson-3 only support DMA in the memory below 4GB now */
+> +	if (dev->coherent_dma_mask < DMA_BIT_MASK(40))
+> +		gfp |= __GFP_DMA32;
 
-Can we do something based on  CONFIG_CROSS_COMPILE vs. adding more Kconfig?
+This code doesn't match the comment above, nor the patch description.
 
-Paul.
---
+If the Loongson-3 CPU really doesn't support DMA above 4GB, the if test
+with DMA_BIT_MASK(40) should be removed and __GFP_DMA32 always set.
+Not selecting it means the DMA buffer might be allocated above 4GB and
+that the bounce buffer will be use instead. This is works, but has a 
+cost in performances.
 
->
-> David Daney
->
->
->
-> On 02/13/2014 09:27 AM, Markos Chandras wrote:
->>
->> The Makefile is designed to use the host toolchain so it may be
->> unsafe to build the tests if the kernel has been configured and built
->> for another architecture. This fixes a build problem when the kernel has
->> been configured and built for the MIPS architecture but the host is
->> not MIPS (cross-compiled). The MIPS syscalls are only defined
->> if one of the following is true:
->>
->> 1) _MIPS_SIM == _MIPS_SIM_ABI64
->> 2) _MIPS_SIM == _MIPS_SIM_ABI32
->> 3) _MIPS_SIM == _MIPS_SIM_NABI32
->>
->> Of course, none of these make sense on a non-MIPS toolchain and the
->> following build problem occurs when building on a non-MIPS host.
->>
->> linux/usr/include/linux/kexec.h:50:
->> userspace cannot reference function or variable defined in the kernel
->> samples/seccomp/bpf-direct.c: In function 'emulator':
->> samples/seccomp/bpf-direct.c:76:17: error:
->> '__NR_write' undeclared (first use in this function)
->>
->> Cc: linux-next@vger.kernel.org
->> Cc: linux-kernel@linux-mips.org
->> Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> ---
->> This problem is only reproducible on the linux-next tree at the moment
->> ---
->>   samples/seccomp/Makefile | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/samples/seccomp/Makefile b/samples/seccomp/Makefile
->> index 7203e66..f6bda1c 100644
->> --- a/samples/seccomp/Makefile
->> +++ b/samples/seccomp/Makefile
->> @@ -17,9 +17,14 @@ HOSTCFLAGS_bpf-direct.o += -I$(objtree)/usr/include
->>   HOSTCFLAGS_bpf-direct.o += -idirafter $(objtree)/include
->>   bpf-direct-objs := bpf-direct.o
->>   +# MIPS system calls are defined based on the -mabi that is passed
->> +# to the toolchain which may or may not be a valid option
->> +# for the host toolchain. So disable tests if target architecture
->> +# is mips but the host isn't.
->> +ifndef CONFIG_MIPS
->>   # Try to match the kernel target.
->> -ifndef CONFIG_64BIT
->>   ifndef CROSS_COMPILE
->> +ifndef CONFIG_64BIT
->>     # s390 has -m31 flag to build 31 bit binaries
->>   ifndef CONFIG_S390
->> @@ -40,3 +45,4 @@ endif
->>     # Tell kbuild to always build the programs
->>   always := $(hostprogs-y)
->> +endif
->
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-next" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+If the Loongson-3 CPU does support DMA up to 40 bit, the comment and 
+the patch description should be adjusted instead.
+
+> +	else
+> +#endif
+> +	;
+> +	gfp |= __GFP_NORETRY;
+> +
+> +	ret = swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
+> +	mb();
+> +	return ret;
+> +}
+> +
+> +static void loongson_dma_free_coherent(struct device *dev, size_t size,
+> +		void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
+> +{
+> +	int order = get_order(size);
+> +
+> +	if (dma_release_from_coherent(dev, order, vaddr))
+> +		return;
+> +
+> +	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
+> +}
+> +
+> +static dma_addr_t loongson_dma_map_page(struct device *dev, struct page *page,
+> +				unsigned long offset, size_t size,
+> +				enum dma_data_direction dir,
+> +				struct dma_attrs *attrs)
+> +{
+> +	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
+> +					dir, attrs);
+> +	mb();
+> +	return daddr;
+> +}
+> +
+> +static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
+> +				int nents, enum dma_data_direction dir,
+> +				struct dma_attrs *attrs)
+> +{
+> +	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, NULL);
+> +	mb();
+> +
+> +	return r;
+> +}
+> +
+> +static void loongson_dma_sync_single_for_device(struct device *dev,
+> +				dma_addr_t dma_handle, size_t size,
+> +				enum dma_data_direction dir)
+> +{
+> +	swiotlb_sync_single_for_device(dev, dma_handle, size, dir);
+> +	mb();
+> +}
+> +
+> +static void loongson_dma_sync_sg_for_device(struct device *dev,
+> +				struct scatterlist *sg, int nents,
+> +				enum dma_data_direction dir)
+> +{
+> +	swiotlb_sync_sg_for_device(dev, sg, nents, dir);
+> +	mb();
+> +}
+> +
+> +static int loongson_dma_set_mask(struct device *dev, u64 mask)
+> +{
+> +	/* Loongson doesn't support DMA above 32-bit */
+> +	if (mask > DMA_BIT_MASK(32)) {
+> +		*dev->dma_mask = DMA_BIT_MASK(32);
+> +		return -EIO;
+> +	}
+> +
+> +	*dev->dma_mask = mask;
+> +
+> +	return 0;
+> +}
+> +
+> +dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
+> +{
+> +	return paddr;
+> +}
+> +
+> +phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
+> +{
+> +	return daddr;
+> +}
+> +
+> +static struct dma_map_ops loongson_dma_map_ops = {
+> +	.alloc = loongson_dma_alloc_coherent,
+> +	.free = loongson_dma_free_coherent,
+> +	.map_page = loongson_dma_map_page,
+> +	.unmap_page = swiotlb_unmap_page,
+> +	.map_sg = loongson_dma_map_sg,
+> +	.unmap_sg = swiotlb_unmap_sg_attrs,
+> +	.sync_single_for_cpu = swiotlb_sync_single_for_cpu,
+> +	.sync_single_for_device = loongson_dma_sync_single_for_device,
+> +	.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
+> +	.sync_sg_for_device = loongson_dma_sync_sg_for_device,
+> +	.mapping_error = swiotlb_dma_mapping_error,
+> +	.dma_supported = swiotlb_dma_supported,
+> +	.set_dma_mask = loongson_dma_set_mask
+> +};
+> +
+> +void __init plat_swiotlb_setup(void)
+> +{
+> +	swiotlb_init(1);
+> +	mips_dma_map_ops = &loongson_dma_map_ops;
+> +}
+
+Beside the point above, this patch looks fine and also a lot cleaner
+than in V16.
+
+Thanks,
+Aurelien
+
+
+-- 
+Aurelien Jarno                          GPG: 1024D/F1BCDB73
+aurelien@aurel32.net                 http://www.aurel32.net

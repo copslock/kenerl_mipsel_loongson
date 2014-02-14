@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2014 08:58:12 +0100 (CET)
-Received: from hall.aurel32.net ([195.154.112.97]:39530 "EHLO hall.aurel32.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2014 08:58:34 +0100 (CET)
+Received: from hall.aurel32.net ([195.154.112.97]:39531 "EHLO hall.aurel32.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815749AbaBNH6G3L4D3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6822682AbaBNH6GgZ31B (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 14 Feb 2014 08:58:06 +0100
 Received: from [195.76.232.154] (helo=ohm.rr44.fr)
         by hall.aurel32.net with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
         (Exim 4.80)
         (envelope-from <aurelien@aurel32.net>)
-        id 1WEDer-0001O3-5w; Fri, 14 Feb 2014 08:58:01 +0100
+        id 1WEDeu-0001O5-H3; Fri, 14 Feb 2014 08:58:04 +0100
 Received: from aurel32 by ohm.rr44.fr with local (Exim 4.80)
         (envelope-from <aurelien@aurel32.net>)
-        id 1WEDeh-000668-UW; Fri, 14 Feb 2014 08:57:52 +0100
-Date:   Fri, 14 Feb 2014 08:57:51 +0100
+        id 1WEDel-00066E-Cb; Fri, 14 Feb 2014 08:57:55 +0100
+Date:   Fri, 14 Feb 2014 08:57:55 +0100
 From:   Aurelien Jarno <aurelien@aurel32.net>
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -20,22 +20,20 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V18 09/13] MIPS: Loongson: Add swiotlb to support big
- memory (>4GB)
-Message-ID: <20140214075751.GA8116@ohm.rr44.fr>
+Subject: Re: [PATCH V18 00/13] MIPS: Add Loongson-3 based machines support
+Message-ID: <20140214075755.GA8497@ohm.rr44.fr>
 References: <1392293343-5453-1-git-send-email-chenhc@lemote.com>
- <1392293343-5453-10-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <1392293343-5453-10-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1392293343-5453-1-git-send-email-chenhc@lemote.com>
 X-Mailer: Mutt 1.5.21 (2010-09-15)
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39303
+X-archive-position: 39304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,281 +50,154 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Feb 13, 2014 at 08:08:59PM +0800, Huacai Chen wrote:
-> This is probably a workaround because Loongson doesn't support DMA
-> address above 4GB. If memory is more than 4GB, CONFIG_SWIOTLB and
-> ZONE_DMA32 should be selected. In this way, DMA pages are allocated
-> below 4GB preferably.
+On Thu, Feb 13, 2014 at 08:08:50PM +0800, Huacai Chen wrote:
+> This patchset is prepared for the next 3.15 release for Linux/MIPS.
+> Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2 compatible
+> and has the same IMP field (0x6300) as Loongson-2. These patches make
+> Linux kernel support Loongson-3 CPU and Loongson-3 based computers
+> (including Laptop, Mini-ITX, All-In-One PC, etc.)
 > 
-> However, CONFIG_SWIOTLB+ZONE_DMA32 is not enough, so, we provide a
-> platform-specific dma_map_ops::set_dma_mask() to make sure each
-> driver's dma_mask and coherent_dma_mask is below 32-bit.
+> V1 -> V2:
+> 1, Split the first patch to two patches, one is constant definition and
+>    the other is CPU probing, cache initializing, etc.
+> 2, Remove Kconfig options in the first 9 patches and put all of them in
+>    the 10th patch.
+> 3, Use "make savedefconfig" to generate the new default config file.
+> 4, Rework serial port support to use PORT and PORT_M macros.
+> 5, Fix some compile warnings.
+> 
+> V2 -> V3:
+> 1, Improve cache flushing code (use cpu_has_coherent_cache macro and
+>    remove #ifdef clauses).
+> 2, Improve platform-specific code to correctly set driver's dma_mask/
+>    coherent_dma_mask so no longer need workarounds for each driver (
+>    SATA, graphics card, sound card, etc.)
+> 3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
+> 4, Improve CPU hotplug code and split the poweroff failure related code
+>    to another patch (this issue affect all MIPS CPU, not only Loongson).
+> 5, Some other small fixes.
+> 
+> V3 -> V4:
+> 1, Include swiotlb.h in radeon_ttm.c if SWIOTLB configured.
+> 2, Remove "Reviewed-by" in patches which are added by mistake.
+> 3, Sync the code to upstream.
+> 
+> V4 -> V5:
+> 1, Split the drm patch to three patches.
+> 2, Use platform-specific pincfgs to replace old alsa quirks.
+> 
+> V5 -> V6:
+> 1, For better management, two non-Loongson-specific patches are sent
+>    independently.
+> 2, Introduce cpu_has_coherent_cache feature and split cache flushing
+>    changes to a separate patch.
+> 3, Remove PRID_IMP_LOONGSON3 and use PRID_IMP_LOONGSON2 since they are
+>    the same.
+> 4, Don't define RTC_ALWAYS_BCD for Loongson-3 since BCD format can be
+>    checked by RTC_CONTROL at runtime.
+> 5, Don't modify dma-default.c for Loongson since it is unnecessary.
+> 6, Don't define SAREA_MAX since it is useless.
+> 7, Increase the default boost of internal mic for Lemote A1004.
+> 8, Fix a #ifdef issue in dma-coherence.h.
+> 9, Some other small fixes.
+> 
+> V6 -> V7:
+> 1, Fix boot failure when NR_CPUS is more than present cpus.
+> 2, Fix error messages after poweroff & reboot.
+> 3, Update the default config file.
+> 4, Sync the code to upstream.
+> 
+> V7 -> V8:
+> 1, Add WEAK_ORDERING/WEAK_REORDERING_BEYOND_LLSC for Loongson-3.
+> 2, Fix a deadlock of cpu-hotplug.
+> 3, Include swiotlb.h in arch-specific code to avoid driver modification.
+> 4, Remove the patch "drm: Handle io prot correctly for MIPS" since it
+>    is already in upstream code.
+> 5, Remove the patch "ALSA: HDA: Make hda sound card usable for Loongson"
+>    since it is already in upstream code.
+> 6, Use LZMA compression and do some adjustment of config file to reduce
+>    kernel size.
+> 
+> V8 -> V9:
+> 1, Fix spurious IPI interrupt.
+> 2, remove __dev* attributes since CONFIG_HOTPLUG is going away as an option.
+> 3, Use dev_info() to print messages in fixup-loongson3.c.
+> 4, Update the default config file.
+> 5, Sync the code to upstream.
+> 
+> V9 -> V10:
+> 1, Rework "Introduce and use cpu_has_coherent_cache feature".
+> 2, Handle the case that System BIOS doesn't contain a VGA BIOS.
+> 3, Sync the code to upstream (mostly indentation adjustment).
+> 
+> V10 -> V11:
+> 1, Remove normal labels and useless nops in inline assembler.
+> 2, Sync the code to upstream (Prepared for 3.12).
+> 
+> V11 -> V12:
+> 1, Delete __cpuinit usage;
+> 2, Remove the third patch since it is contentious;
+> 3, Sync the code to upstream (Prepared for 3.13).
+> 
+> V12 -> V13:
+> 1, Rework addrspace.h and spaces.h;
+> 2, Move the modification of Platform from patch 1 to patch 12;
+> 3, Sync the code to upstream (the mips-for-linux-next branch, for 3.13).
+> 
+> V13 -> V14:
+> 1, Avoid spurious interrupt from serial port;
+> 2, Drop CONFIG_LOONGSON_BIGMEM and use CONFIG_SWIOTLB directly;
+> 3, Sync the code to upstream (the mips-for-linux-next branch, for 3.14).
+> 
+> V14 -> V15:
+> 1, Fix duplicate ARCH_SPARSEMEM_ENABLE in Kconfig.
+> 
+> V15 -> V16:
+> 1, Fix all coding style errors and most of warnings;
+> 2, Make dma address translation simple and elegant;
+> 3, Fix potential bugs in swiotlb code;
+> 4, Rename UEFI firmware interface to LEFI;
+> 5, Remove 32-bit kernel support temporarily;
+> 6, Some other small fixes (thanks to Aurelien Jarno).
+> 
+> V16 -> V17:
+> 1, Kconfig adjustment;
+> 2, Make some functions static;
+> 3, Capitalize macros in smp code;
+> 4, Make dma-swiotlb.c more simple;
+> 5, Some other small fixes (thanks to Aurelien Jarno and Alex Smith).
+> 
+> V17 -> V18:
+> 1, Fix two Loongson 2 breakages.
+> 2, Tested and Reviewed by Alex Smith.
+> 
+> Huacai Chen(13):
+>  MIPS: Loongson: Rename PRID_IMP_LOONGSON1 and PRID_IMP_LOONGSON2.
+>  MIPS: Loongson: Add basic Loongson-3 definition.
+>  MIPS: Loongson: Add basic Loongson-3 CPU support.
+>  MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+>  MIPS: Loongson: Add UEFI-like firmware interface (LEFI) support.
+>  MIPS: Loongson 3: Add HT-linked PCI support.
+>  MIPS: Loongson 3: Add IRQ init and dispatch support.
+>  MIPS: Loongson 3: Add serial port support.
+>  MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+>  MIPS: Loongson: Add Loongson-3 Kconfig options.
+>  MIPS: Loongson 3: Add Loongson-3 SMP support.
+>  MIPS: Loongson 3: Add CPU hotplug support.
+>  MIPS: Loongson: Add a Loongson-3 default config file.
 > 
 > Signed-off-by: Huacai Chen <chenhc@lemote.com>
 > Signed-off-by: Hongliang Tao <taohl@lemote.com>
-> Signed-off-by: Hua Yan <yanh@lemote.com>
-> Tested-by: Alex Smith <alex.smith@imgtec.com>
-> Reviewed-by: Alex Smith <alex.smith@imgtec.com>
-> ---
->  arch/mips/include/asm/dma-mapping.h                |    5 +
->  .../mips/include/asm/mach-loongson/dma-coherence.h |   22 +++-
->  arch/mips/loongson/common/Makefile                 |    5 +
->  arch/mips/loongson/common/dma-swiotlb.c            |  137 ++++++++++++++++++++
->  4 files changed, 168 insertions(+), 1 deletions(-)
->  create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
-> 
-> diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-> index 84238c5..06412aa 100644
-> --- a/arch/mips/include/asm/dma-mapping.h
-> +++ b/arch/mips/include/asm/dma-mapping.h
-> @@ -49,9 +49,14 @@ static inline int dma_mapping_error(struct device *dev, u64 mask)
->  static inline int
->  dma_set_mask(struct device *dev, u64 mask)
->  {
-> +	struct dma_map_ops *ops = get_dma_ops(dev);
-> +
->  	if(!dev->dma_mask || !dma_supported(dev, mask))
->  		return -EIO;
->  
-> +	if (ops->set_dma_mask)
-> +		return ops->set_dma_mask(dev, mask);
-> +
->  	*dev->dma_mask = mask;
->  
->  	return 0;
-> diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h b/arch/mips/include/asm/mach-loongson/dma-coherence.h
-> index aeb2c05..6a90275 100644
-> --- a/arch/mips/include/asm/mach-loongson/dma-coherence.h
-> +++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
-> @@ -11,24 +11,40 @@
->  #ifndef __ASM_MACH_LOONGSON_DMA_COHERENCE_H
->  #define __ASM_MACH_LOONGSON_DMA_COHERENCE_H
->  
-> +#ifdef CONFIG_SWIOTLB
-> +#include <linux/swiotlb.h>
-> +#endif
-> +
->  struct device;
->  
-> +extern dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
-> +extern phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
->  static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
->  					  size_t size)
->  {
-> +#ifdef CONFIG_CPU_LOONGSON3
-> +	return virt_to_phys(addr);
-> +#else
->  	return virt_to_phys(addr) | 0x80000000;
-> +#endif
->  }
->  
->  static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
->  					       struct page *page)
->  {
-> +#ifdef CONFIG_CPU_LOONGSON3
-> +	return page_to_phys(page);
-> +#else
->  	return page_to_phys(page) | 0x80000000;
-> +#endif
->  }
->  
->  static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
->  	dma_addr_t dma_addr)
->  {
-> -#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
-> +#if defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_64BIT)
-> +	return dma_addr;
-> +#elif defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
->  	return (dma_addr > 0x8fffffff) ? dma_addr : (dma_addr & 0x0fffffff);
->  #else
->  	return dma_addr & 0x7fffffff;
-> @@ -55,7 +71,11 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
->  
->  static inline int plat_device_is_coherent(struct device *dev)
->  {
-> +#ifdef CONFIG_DMA_NONCOHERENT
->  	return 0;
-> +#else
-> +	return 1;
-> +#endif /* CONFIG_DMA_NONCOHERENT */
->  }
->  
->  #endif /* __ASM_MACH_LOONGSON_DMA_COHERENCE_H */
-> diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
-> index 9e4484c..0bb9cc9 100644
-> --- a/arch/mips/loongson/common/Makefile
-> +++ b/arch/mips/loongson/common/Makefile
-> @@ -26,3 +26,8 @@ obj-$(CONFIG_CS5536) += cs5536/
->  #
->  
->  obj-$(CONFIG_LOONGSON_SUSPEND) += pm.o
-> +
-> +#
-> +# Big Memory (SWIOTLB) Support
-> +#
-> +obj-$(CONFIG_SWIOTLB) += dma-swiotlb.o
-> diff --git a/arch/mips/loongson/common/dma-swiotlb.c b/arch/mips/loongson/common/dma-swiotlb.c
-> new file mode 100644
-> index 0000000..dcf7d0b
-> --- /dev/null
-> +++ b/arch/mips/loongson/common/dma-swiotlb.c
-> @@ -0,0 +1,137 @@
-> +#include <linux/mm.h>
-> +#include <linux/init.h>
-> +#include <linux/dma-mapping.h>
-> +#include <linux/scatterlist.h>
-> +#include <linux/swiotlb.h>
-> +#include <linux/bootmem.h>
-> +
-> +#include <asm/bootinfo.h>
-> +#include <dma-coherence.h>
-> +
-> +static void *loongson_dma_alloc_coherent(struct device *dev, size_t size,
-> +		dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
-> +{
-> +	void *ret;
-> +
-> +	if (dma_alloc_from_coherent(dev, size, dma_handle, &ret))
-> +		return ret;
-> +
-> +	/* ignore region specifiers */
-> +	gfp &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
-> +
-> +#ifdef CONFIG_ISA
-> +	if (dev == NULL)
-> +		gfp |= __GFP_DMA;
-> +	else
-> +#endif
-> +#ifdef CONFIG_ZONE_DMA
-> +	if (dev->coherent_dma_mask < DMA_BIT_MASK(32))
-> +		gfp |= __GFP_DMA;
-> +	else
-> +#endif
-> +#ifdef CONFIG_ZONE_DMA32
-> +	 /* Loongson-3 only support DMA in the memory below 4GB now */
-> +	if (dev->coherent_dma_mask < DMA_BIT_MASK(40))
-> +		gfp |= __GFP_DMA32;
+> Signed-off-by: Hua Yan <yanh@lemote.com> 
 
-This code doesn't match the comment above, nor the patch description.
+Thanks a lot for this new patchset. Unfortunately I have not been able
+to test it yet. It looks ok to me except for patch 08 for which I still
+think something needs to be fixed. You can add on all the other patches:
 
-If the Loongson-3 CPU really doesn't support DMA above 4GB, the if test
-with DMA_BIT_MASK(40) should be removed and __GFP_DMA32 always set.
-Not selecting it means the DMA buffer might be allocated above 4GB and
-that the bounce buffer will be use instead. This is works, but has a 
-cost in performances.
-
-If the Loongson-3 CPU does support DMA up to 40 bit, the comment and 
-the patch description should be adjusted instead.
-
-> +	else
-> +#endif
-> +	;
-> +	gfp |= __GFP_NORETRY;
-> +
-> +	ret = swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
-> +	mb();
-> +	return ret;
-> +}
-> +
-> +static void loongson_dma_free_coherent(struct device *dev, size_t size,
-> +		void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
-> +{
-> +	int order = get_order(size);
-> +
-> +	if (dma_release_from_coherent(dev, order, vaddr))
-> +		return;
-> +
-> +	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
-> +}
-> +
-> +static dma_addr_t loongson_dma_map_page(struct device *dev, struct page *page,
-> +				unsigned long offset, size_t size,
-> +				enum dma_data_direction dir,
-> +				struct dma_attrs *attrs)
-> +{
-> +	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
-> +					dir, attrs);
-> +	mb();
-> +	return daddr;
-> +}
-> +
-> +static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
-> +				int nents, enum dma_data_direction dir,
-> +				struct dma_attrs *attrs)
-> +{
-> +	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, NULL);
-> +	mb();
-> +
-> +	return r;
-> +}
-> +
-> +static void loongson_dma_sync_single_for_device(struct device *dev,
-> +				dma_addr_t dma_handle, size_t size,
-> +				enum dma_data_direction dir)
-> +{
-> +	swiotlb_sync_single_for_device(dev, dma_handle, size, dir);
-> +	mb();
-> +}
-> +
-> +static void loongson_dma_sync_sg_for_device(struct device *dev,
-> +				struct scatterlist *sg, int nents,
-> +				enum dma_data_direction dir)
-> +{
-> +	swiotlb_sync_sg_for_device(dev, sg, nents, dir);
-> +	mb();
-> +}
-> +
-> +static int loongson_dma_set_mask(struct device *dev, u64 mask)
-> +{
-> +	/* Loongson doesn't support DMA above 32-bit */
-> +	if (mask > DMA_BIT_MASK(32)) {
-> +		*dev->dma_mask = DMA_BIT_MASK(32);
-> +		return -EIO;
-> +	}
-> +
-> +	*dev->dma_mask = mask;
-> +
-> +	return 0;
-> +}
-> +
-> +dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
-> +{
-> +	return paddr;
-> +}
-> +
-> +phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
-> +{
-> +	return daddr;
-> +}
-> +
-> +static struct dma_map_ops loongson_dma_map_ops = {
-> +	.alloc = loongson_dma_alloc_coherent,
-> +	.free = loongson_dma_free_coherent,
-> +	.map_page = loongson_dma_map_page,
-> +	.unmap_page = swiotlb_unmap_page,
-> +	.map_sg = loongson_dma_map_sg,
-> +	.unmap_sg = swiotlb_unmap_sg_attrs,
-> +	.sync_single_for_cpu = swiotlb_sync_single_for_cpu,
-> +	.sync_single_for_device = loongson_dma_sync_single_for_device,
-> +	.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
-> +	.sync_sg_for_device = loongson_dma_sync_sg_for_device,
-> +	.mapping_error = swiotlb_dma_mapping_error,
-> +	.dma_supported = swiotlb_dma_supported,
-> +	.set_dma_mask = loongson_dma_set_mask
-> +};
-> +
-> +void __init plat_swiotlb_setup(void)
-> +{
-> +	swiotlb_init(1);
-> +	mips_dma_map_ops = &loongson_dma_map_ops;
-> +}
-
-Beside the point above, this patch looks fine and also a lot cleaner
-than in V16.
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
 
 Thanks,
 Aurelien
-
 
 -- 
 Aurelien Jarno                          GPG: 1024D/F1BCDB73

@@ -1,34 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Feb 2014 14:22:04 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:19760 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Feb 2014 15:49:51 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:13491 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6869247AbaBQNWC2ee5L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Feb 2014 14:22:02 +0100
-Message-ID: <53020D12.6060000@imgtec.com>
-Date:   Mon, 17 Feb 2014 13:22:26 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+        id S6869250AbaBQOtrfBdUG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Feb 2014 15:49:47 +0100
+From:   Alex Smith <alex.smith@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Alex Smith <alex.smith@imgtec.com>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org [3.13]>
+Subject: [PATCH] MIPS: O32/32-bit: Fix bug which can cause incorrect system call restarts
+Date:   Mon, 17 Feb 2014 14:49:17 +0000
+Message-ID: <1392648557-7174-1-git-send-email-alex.smith@imgtec.com>
+X-Mailer: git-send-email 1.8.5.4
 MIME-Version: 1.0
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        David Daney <ddaney.cavm@gmail.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>
-Subject: Re: [PATCH] samples/seccomp/Makefile: Do not build tests if cross-compiling
- for MIPS
-References: <1392312460-24902-1-git-send-email-markos.chandras@imgtec.com> <52FD0F46.6040503@gmail.com> <CAP=VYLr1D-DQz8U4naa5aEL_AFa_JkO5e+TgFSxpsd_2t3dahQ@mail.gmail.com>
-In-Reply-To: <CAP=VYLr1D-DQz8U4naa5aEL_AFa_JkO5e+TgFSxpsd_2t3dahQ@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_02_17_13_21_55
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.76]
+X-SEF-Processed: 7_3_0_01192__2014_02_17_14_49_40
+Return-Path: <Alex.Smith@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39331
+X-archive-position: 39333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: alex.smith@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,31 +36,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/14/2014 01:33 AM, Paul Gortmaker wrote:
-> On Thu, Feb 13, 2014 at 1:30 PM, David Daney <ddaney.cavm@gmail.com> wrote:
->> Really I think we should add a Kconfig item for this and disable the whole
->> directory for targets that do not support it.
->
-> Can we do something based on  CONFIG_CROSS_COMPILE vs. adding more Kconfig?
->
-> Paul.
-> --
+On 32-bit/O32, pt_regs has a padding area at the beginning into which the
+syscall arguments passed via the user stack are copied. 4 arguments
+totalling 16 bytes are copied to offset 16 bytes into this area, however
+the area is only 24 bytes long. This means the last 2 arguments overwrite
+pt_regs->regs[{0,1}].
 
-Hi Paul,
+If a syscall function returns an error, handle_sys stores the original
+syscall number in pt_regs->regs[0] for syscall restart. signal.c checks
+whether regs[0] is non-zero, if it is it will check whether the syscall
+return value is one of the ERESTART* codes to see if it must be
+restarted.
 
-I am not sure how this would solve anything. CONFIG_CROSS_COMPILE could 
-be empty, but you can still use 'make CROSS_COMPILE=mips-linux-foobar-' 
-or whatever to cross-compile for MIPS. So using this symbol to disable 
-tests does not seem right to me.
+Should a syscall be made that results in a non-zero value being copied
+off the user stack into regs[0], and then returns a positive (non-error)
+value that matches one of the ERESTART* error codes, this can be mistaken
+for requiring a syscall restart.
 
-Another Kconfig symbol should be more appropriate but as far as I can 
-see MIPS is the only architecture which has this problem (or I may have 
-missed all{yes,mod}config failures from other architectures).
+While the possibility for this to occur has always existed, it is made
+much more likely to occur by commit 46e12c07b3b9 ("MIPS: O32 / 32-bit:
+Always copy 4 stack arguments."), since now every syscall will copy 4
+arguments and overwrite regs[0], rather than just those with 7 or 8
+arguments.
 
-I still think that an "ifndef CONFIG_MIPS" is good enough for now until 
-more architectures suffer from this problem in the future. So far (and 
-looking at the git history of that file) other architectures managed to 
-workaround this.
+Since that commit, booting Debian under a 32-bit MIPS kernel almost
+always results in a hang early in boot, due to a wait4 syscall returning
+a PID that matches one of the ERESTART* codes, which then causes an
+incorrect restart of the syscall.
 
+The problem is fixed by increasing the size of the padding area so that
+arguments copied off the stack will not overwrite pt_regs->regs[{0,1}].
+Also removed a comment in handle_sys which is no longer relevant after
+the aforementioned commit.
+
+Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org [3.13]
+---
+ arch/mips/include/asm/ptrace.h | 2 +-
+ arch/mips/kernel/scall32-o32.S | 2 --
+ arch/mips/kernel/smtc-asm.S    | 4 ++--
+ 3 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 7bba9da..6d019ca 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -23,7 +23,7 @@
+ struct pt_regs {
+ #ifdef CONFIG_32BIT
+ 	/* Pad bytes for argument save space on the stack. */
+-	unsigned long pad0[6];
++	unsigned long pad0[8];
+ #endif
+ 
+ 	/* Saved main processor registers. */
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index a5b14f4..4220c2d 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -66,8 +66,6 @@ NESTED(handle_sys, PT_SIZE, sp)
+ 
+ 	/*
+ 	 * Ok, copy the args from the luser stack to the kernel stack.
+-	 * t3 is the precomputed number of instruction bytes needed to
+-	 * load or store arguments 6-8.
+ 	 */
+ 
+ 	.set    push
+diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
+index 2866863..c4f0cd9 100644
+--- a/arch/mips/kernel/smtc-asm.S
++++ b/arch/mips/kernel/smtc-asm.S
+@@ -43,8 +43,8 @@ CAN WE PROVE THAT WE WON'T DO THIS IF INTS DISABLED??
+  * to invoke the scheduler and return as appropriate.
+  */
+ 
+-#define PT_PADSLOT4 (PT_R0-8)
+-#define PT_PADSLOT5 (PT_R0-4)
++#define PT_PADSLOT4 (PT_R0-16)
++#define PT_PADSLOT5 (PT_R0-12)
+ 
+ 	.text
+ 	.align 5
 -- 
-markos
+1.8.5.4

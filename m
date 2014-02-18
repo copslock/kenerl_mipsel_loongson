@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Feb 2014 19:39:13 +0100 (CET)
-Received: from mail-ea0-f169.google.com ([209.85.215.169]:53991 "EHLO
-        mail-ea0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823911AbaBRSjHdr7pj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Feb 2014 19:39:07 +0100
-Received: by mail-ea0-f169.google.com with SMTP id h10so8188358eak.28
-        for <linux-mips@linux-mips.org>; Tue, 18 Feb 2014 10:39:02 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Feb 2014 19:39:32 +0100 (CET)
+Received: from mail-ee0-f47.google.com ([74.125.83.47]:48201 "EHLO
+        mail-ee0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824766AbaBRSjIXflpE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Feb 2014 19:39:08 +0100
+Received: by mail-ee0-f47.google.com with SMTP id d49so7868897eek.6
+        for <linux-mips@linux-mips.org>; Tue, 18 Feb 2014 10:39:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=sokHbN1W/dQk5FGhTIQ6yIWZJuiZ2HKEtMKrj8xClPU=;
-        b=WiM8sQPvq4O7f7vKaM4sxBlX2T3tncWTar6rJ9NEoS8481Nv+5JknqHxYtEb+9I5p4
-         tNJX+eA/juJ76L/m6GWn+ENpaqRS++5TumWm8FT9L61fpUVfSi8qrcBKiToqwGjSKskm
-         orMI3ce0OznTNQa1Yb5B7jZOezOgc60xmbRZ0DVaYMpmiSTIOX6j7mxJH694OQiDf45+
-         +aj0AuwzeOPZZKw3DCA/Jk7yYp534Fo9+HLLUIicJM35rj/nJ317YE0gwf8VBlldu/xY
-         U6xg5ppf857ck2KLqI2ZEqE1L5XiEYa5KpjvVn+yXarD85oZcrgQqxtsIedVtuh0ta92
-         O1Yg==
-X-Received: by 10.15.23.194 with SMTP id h42mr35190206eeu.32.1392748742252;
-        Tue, 18 Feb 2014 10:39:02 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=B/UvgUc+FaRRufn/Qf+t/04fRkXFUL1Rt8tQSnFo0h4=;
+        b=qHy/xbfCF0aUksJ3NYIiPtw2vYRAA4jc6wW7/LJBWKRjmiLULttusG6AcDsHqxFi6S
+         bHBcHg7XrjOo6T49Qv8BydEVxbbfag+kurX7NQ8L11zDsCujCT5x4QBwVOJ3J2cxiS2c
+         o5V6J6qjyLPSj2F4AHUbgv+6dTdnKL+1m43SvLECqV3spERD6GMVvPibf0fKJbQRn5+V
+         41+Qx+lCF89rsN6Jwt/8QIui5b9HCt0/66nCrbOLPfFdkWqTCLb86UeY+ip+14U+zYDN
+         H45fbi3A5ZENw8ExnnK3AEVsGLzr1DkxNorNywmHvJwxFgeUeRYtZoxfyWH7KV+309E9
+         zxsw==
+X-Received: by 10.14.204.9 with SMTP id g9mr5647581eeo.82.1392748743117;
+        Tue, 18 Feb 2014 10:39:03 -0800 (PST)
 Received: from localhost.localdomain (p54B21680.dip0.t-ipconnect.de. [84.178.22.128])
-        by mx.google.com with ESMTPSA id j42sm73785779eep.21.2014.02.18.10.39.01
+        by mx.google.com with ESMTPSA id j42sm73785779eep.21.2014.02.18.10.39.02
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 18 Feb 2014 10:39:01 -0800 (PST)
+        Tue, 18 Feb 2014 10:39:02 -0800 (PST)
 From:   Manuel Lauss <manuel.lauss@gmail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [RFC PATCH 0/3] MIPS: Alchemy: single kernel for all devboards
-Date:   Tue, 18 Feb 2014 19:38:52 +0100
-Message-Id: <1392748735-16745-1-git-send-email-manuel.lauss@gmail.com>
+Subject: [RFC PATCH 1/3] MIPS: extend DMA_MAYBE_COHERENT logic to DMA_NONCOHERENT use
+Date:   Tue, 18 Feb 2014 19:38:53 +0100
+Message-Id: <1392748735-16745-2-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.8.5.5
+In-Reply-To: <1392748735-16745-1-git-send-email-manuel.lauss@gmail.com>
+References: <1392748735-16745-1-git-send-email-manuel.lauss@gmail.com>
 Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39335
+X-archive-position: 39336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,52 +52,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patchset removes the last hurdles to supporting all DB/PB Develoboards
-in a single kernel image.   The main issue is that on earlier chips
-(Au1000, Au1500, Au1100) some peripherals, notably the USB blocks, aren't
-fully dma coherent and need manual cache massaging to work properly.
-For these parts DMA_NONCOHERENT is used.
-Newer variants starting with the Au1550 work fine without any additional
-software intervention and use DMA_COHERENT by default.
+setting DMA_MAYBE_COHERENT gives a platform the opportunity to select
+use of cache ops at boot.
 
-The first patch extends the already existing DMA_MAYBE_COHERENT logic to
-also cover the parts which are already compiled when DMA_NONCOHERENT is
-enabled.  The second patch then uses the "coherentio" variable which
-DMA_MAYBE_COHERENT exports and sets it based on CPU subtype.
-The third patch finally unifies support for all Alchemy devboards.
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+ arch/mips/include/asm/io.h | 4 ++--
+ arch/mips/mm/c-r4k.c       | 6 +++---
+ arch/mips/mm/cache.c       | 4 ++--
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-I'm not really sure if patch #1 is even the correct way to do it; however
-based on my understanding of what DMA_MAYBE_COHERENT is supposed to do I
-actually thought that it's a logical extension.  But I'm not sure and
-don't have a MALTA board to test it on.  Hence the RFC.
-
-Thanks,
-        Manuel Lauss
-
-Manuel Lauss (3):
-  MIPS: extend DMA_MAYBE_COHERENT logic to DMA_NONCOHERENT use
-  MIPS: Alchemy: determine cohereny at runtime based on cpu type
-  MIPS: Alchemy: unify Devboard support.
-
- arch/mips/Kconfig                    |   1 +
- arch/mips/alchemy/Kconfig            |  22 ++-----
- arch/mips/alchemy/Platform           |  16 ++---
- arch/mips/alchemy/common/setup.c     |  10 +++
- arch/mips/alchemy/devboards/Makefile |   4 +-
- arch/mips/alchemy/devboards/db1000.c |  47 ++++----------
- arch/mips/alchemy/devboards/db1200.c |   9 +++
- arch/mips/alchemy/devboards/db1235.c |  94 ---------------------------
- arch/mips/alchemy/devboards/db1300.c |   6 +-
- arch/mips/alchemy/devboards/db1550.c |  10 ++-
- arch/mips/alchemy/devboards/db1xxx.c | 121 +++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/io.h           |   4 +-
- arch/mips/mm/c-r4k.c                 |   6 +-
- arch/mips/mm/cache.c                 |   4 +-
- arch/mips/pci/pci-alchemy.c          |   5 +-
- drivers/spi/spi-au1550.c             |   9 +++
- 16 files changed, 197 insertions(+), 171 deletions(-)
- delete mode 100644 arch/mips/alchemy/devboards/db1235.c
- create mode 100644 arch/mips/alchemy/devboards/db1xxx.c
-
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 3321dd5..e221d1d 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -584,7 +584,7 @@ static inline void memcpy_toio(volatile void __iomem *dst, const void *src, int
+  *
+  * This API used to be exported; it now is for arch code internal use only.
+  */
+-#ifdef CONFIG_DMA_NONCOHERENT
++#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+ 
+ extern void (*_dma_cache_wback_inv)(unsigned long start, unsigned long size);
+ extern void (*_dma_cache_wback)(unsigned long start, unsigned long size);
+@@ -603,7 +603,7 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
+ #define dma_cache_inv(start,size)	\
+ 	do { (void) (start); (void) (size); } while (0)
+ 
+-#endif /* CONFIG_DMA_NONCOHERENT */
++#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
+ 
+ /*
+  * Read a 32-bit register that requires a 64-bit read cycle on the bus.
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index c14259e..a3d97e1 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -617,7 +617,7 @@ static void r4k_flush_icache_range(unsigned long start, unsigned long end)
+ 	instruction_hazard();
+ }
+ 
+-#ifdef CONFIG_DMA_NONCOHERENT
++#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+ 
+ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ {
+@@ -688,7 +688,7 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 	bc_inv(addr, size);
+ 	__sync();
+ }
+-#endif /* CONFIG_DMA_NONCOHERENT */
++#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
+ 
+ /*
+  * While we're protected against bad userland addresses we don't care
+@@ -1492,7 +1492,7 @@ void r4k_cache_init(void)
+ 	flush_icache_range	= r4k_flush_icache_range;
+ 	local_flush_icache_range	= local_r4k_flush_icache_range;
+ 
+-#if defined(CONFIG_DMA_NONCOHERENT)
++#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+ 	if (coherentio) {
+ 		_dma_cache_wback_inv	= (void *)cache_noop;
+ 		_dma_cache_wback	= (void *)cache_noop;
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index fde7e56..e422b38 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -49,7 +49,7 @@ EXPORT_SYMBOL_GPL(local_flush_data_cache_page);
+ EXPORT_SYMBOL(flush_data_cache_page);
+ EXPORT_SYMBOL(flush_icache_all);
+ 
+-#ifdef CONFIG_DMA_NONCOHERENT
++#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+ 
+ /* DMA cache operations. */
+ void (*_dma_cache_wback_inv)(unsigned long start, unsigned long size);
+@@ -58,7 +58,7 @@ void (*_dma_cache_inv)(unsigned long start, unsigned long size);
+ 
+ EXPORT_SYMBOL(_dma_cache_wback_inv);
+ 
+-#endif /* CONFIG_DMA_NONCOHERENT */
++#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
+ 
+ /*
+  * We could optimize the case where the cache argument is not BCACHE but
 -- 
 1.8.5.5

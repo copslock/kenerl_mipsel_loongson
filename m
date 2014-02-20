@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 14:37:51 +0100 (CET)
-Received: from mail-ea0-f180.google.com ([209.85.215.180]:33466 "EHLO
-        mail-ea0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6871399AbaBTNht0wdWK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Feb 2014 14:37:49 +0100
-Received: by mail-ea0-f180.google.com with SMTP id o10so898047eaj.25
-        for <linux-mips@linux-mips.org>; Thu, 20 Feb 2014 05:37:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=p7gfcSQIjo1jiolpAgs/tkfXLsRmd6bvpZjewg+4/5s=;
-        b=mF2O3XS6mri/o5UYY5re3Yr0aql60i3GcUoPtGgYfy/vdDwrHqr2vLD9vVaIaiFAI5
-         HOp+YoShW+qJeyq2gzI7uWR6hm39GX3eJv82gq+SQZDn+Gxpu5aG5ycHa0n6e19kH54G
-         iSxqKEyuGbFOhEMgq2NAcx/bgNPHyqsVhh6MqQkPlYjzgVQqvJk+uMv5m+N+j2v/mxtw
-         z9QFkwwdsxyCJ/LjKTsOXKQDGu2oggR8vh69cDjALK52kYJtVsVni4CrUUA6cB00Fu2v
-         ZpCHvjs5soFTd7IjI5EFNwMMcYAsVQIk2E/nJYpDRwu9gAdFJfOrVSs6yco1b7qpEuNu
-         oG0Q==
-X-Received: by 10.14.119.197 with SMTP id n45mr1847894eeh.93.1392903464126;
-        Thu, 20 Feb 2014 05:37:44 -0800 (PST)
-Received: from localhost.localdomain (p54B231AB.dip0.t-ipconnect.de. [84.178.49.171])
-        by mx.google.com with ESMTPSA id d9sm13909753eei.9.2014.02.20.05.37.43
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 20 Feb 2014 05:37:43 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH] MIPS: Alchemy: fix unchecked kstrtoul return value
-Date:   Thu, 20 Feb 2014 14:37:40 +0100
-Message-Id: <1392903460-19986-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.8.5.5
-Return-Path: <manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 14:41:28 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:46469 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6871399AbaBTNl0vNX0d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Feb 2014 14:41:26 +0100
+Date:   Thu, 20 Feb 2014 13:41:20 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CC:     <linux-mips@linux-mips.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 09/10] cpuidle: declare cpuidle_dev in cpuidle.h
+Message-ID: <20140220134118.GT25765@pburton-linux.le.imgtec.org>
+References: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com>
+ <1389794137-11361-10-git-send-email-paul.burton@imgtec.com>
+ <53060496.6000303@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <53060496.6000303@linaro.org>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+X-Originating-IP: [192.168.154.79]
+X-SEF-Processed: 7_3_0_01192__2014_02_20_13_41_21
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39352
+X-archive-position: 39353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,46 +42,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-enabled __must_check logic triggers a build error for mtx1 and gpr
-in the prom init code.  Fix by checking the kstrtoul() return value.
+On Thu, Feb 20, 2014 at 02:35:18PM +0100, Daniel Lezcano wrote:
+> On 01/15/2014 02:55 PM, Paul Burton wrote:
+> >Declaring this allows drivers which need to initialise each struct
+> >cpuidle_device at initialisation time to make use of the structures
+> >already defined in cpuidle.c, rather than having to wastefully define
+> >their own.
+> >
+> >Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> >Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> >Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> >Cc: linux-pm@vger.kernel.org
+> >---
+> >  include/linux/cpuidle.h | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> >diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
+> >index 50fcbb0..bab4f33 100644
+> >--- a/include/linux/cpuidle.h
+> >+++ b/include/linux/cpuidle.h
+> >@@ -84,6 +84,7 @@ struct cpuidle_device {
+> >  };
+> >
+> >  DECLARE_PER_CPU(struct cpuidle_device *, cpuidle_devices);
+> >+DECLARE_PER_CPU(struct cpuidle_device, cpuidle_dev);
+> 
+> 
+> Nak. When a device is registered, it is assigned to the cpuidle_devices
+> pointer and the backend driver should use it.
+> 
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
- arch/mips/alchemy/board-gpr.c  | 4 +---
- arch/mips/alchemy/board-mtx1.c | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+Yes, but then if the driver needs to initialise the coupled_cpus mask
+then it cannot do so until after the device has been registered. During
+registration the cpuidle_coupled_register_device will then see the empty
+coupled_cpus mask & do nothing. The only other ways around this would be
+for the driver to define its own per-cpu struct cpuidle_device (which as
+I state in the commit message seems wasteful when cpuidle already
+defined them), or for cpuidle_coupled_register_device to be called later
+after the driver had a chance to modify devices via the cpuidle_devices
+pointers.
 
-diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
-index 9edc35f..acf9a2a 100644
---- a/arch/mips/alchemy/board-gpr.c
-+++ b/arch/mips/alchemy/board-gpr.c
-@@ -53,10 +53,8 @@ void __init prom_init(void)
- 	prom_init_cmdline();
- 
- 	memsize_str = prom_getenv("memsize");
--	if (!memsize_str)
-+	if (!memsize_str || kstrtoul(memsize_str, 0, &memsize))
- 		memsize = 0x04000000;
--	else
--		strict_strtoul(memsize_str, 0, &memsize);
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
- }
- 
-diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
-index 9969dba..25a59a2 100644
---- a/arch/mips/alchemy/board-mtx1.c
-+++ b/arch/mips/alchemy/board-mtx1.c
-@@ -52,10 +52,8 @@ void __init prom_init(void)
- 	prom_init_cmdline();
- 
- 	memsize_str = prom_getenv("memsize");
--	if (!memsize_str)
-+	if (!memsize_str || kstrtoul(memsize_str, 0, &memsize))
- 		memsize = 0x04000000;
--	else
--		strict_strtoul(memsize_str, 0, &memsize);
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
- }
- 
--- 
-1.8.5.5
+Paul
+
+> 
+> 
+> -- 
+>  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> 
+> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+> <http://twitter.com/#!/linaroorg> Twitter |
+> <http://www.linaro.org/linaro-blog/> Blog
+> 

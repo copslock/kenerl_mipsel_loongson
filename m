@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 15:00:23 +0100 (CET)
-Received: from mail-ea0-f174.google.com ([209.85.215.174]:50801 "EHLO
-        mail-ea0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6871406AbaBTN7kqrGW7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Feb 2014 14:59:40 +0100
-Received: by mail-ea0-f174.google.com with SMTP id m10so691668eaj.33
-        for <linux-mips@linux-mips.org>; Thu, 20 Feb 2014 05:59:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 15:00:45 +0100 (CET)
+Received: from mail-ea0-f177.google.com ([209.85.215.177]:47262 "EHLO
+        mail-ea0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6871409AbaBTN7mMSQiJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Feb 2014 14:59:42 +0100
+Received: by mail-ea0-f177.google.com with SMTP id h14so911493eaj.22
+        for <linux-mips@linux-mips.org>; Thu, 20 Feb 2014 05:59:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=HNWrnKIAqOzQ60yNbiBgTdmuAN0iQ/QUQCE4TN50FFU=;
-        b=pmPPZkqYCEtOi48FDBSNxd37wAgqVXl1OujkjduSqbEEx6jwJH1FFu21XjkxrGUEE7
-         8snjXPLPeVmRUUTpUvob9R1apMJkz7VkXRQdfCoZCArR6nDePLUWK/7LAFESjSAiquQL
-         ivF5R3Eojn/6ABNhvx6ZhPH6x1wK3XbDF+tKCdSCMHpfTdyTiqmzy5J3c86Dlqwl3n3d
-         k2oz5rTnA8DNnanRRkFhTLR5xRTDTLPzwE2cYQkGUc9bIW1jCfDii+IFvcoa0YKCRVdN
-         1udTi6jJhm9J9OkS4XO5yA7QG6835Y5NZDhhpieWXxm5KtCgWgfiu7OCX1xcj/h6Xdt3
-         RsFA==
-X-Received: by 10.14.0.132 with SMTP id 4mr1931283eeb.95.1392904775030;
-        Thu, 20 Feb 2014 05:59:35 -0800 (PST)
+        bh=ebmWAtYLvNek1e+aOFIimoRFLVCk7DzV4tch1FQzR9U=;
+        b=VhCMkYu6bUa6HlZJkLN5CNVSDnykPkcA6qgRYly7Luk4FGgbmJsLk1+cQZKM66ogyh
+         B8GPg0fTUCdYxziwDpSpgXD9PnIVxgGwQBcF6l9liGx63KiYULbST9JPuof8ZKAcaZPG
+         w9Y4W7/7ZYHaV4V2FklT9JyRjG5S1jGU+qgOJ41TYvYTwALWfjtSVkWF0VhGyaUuw9kW
+         jHoK4cUbACXhk/VqEMhWkFHBSb5EWX3iU+58rCDOh5JwCqM7sIo8zKOMJN4hkkOPXvEQ
+         N/BV1z7Rz1K396/XCBt0oxYXWbMduHlYJ67mZNOeebig+GHBgUlMBky5sY9ZBDA4sZV+
+         u+WA==
+X-Received: by 10.14.221.201 with SMTP id r49mr2080143eep.104.1392904776671;
+        Thu, 20 Feb 2014 05:59:36 -0800 (PST)
 Received: from localhost.localdomain (p54B231AB.dip0.t-ipconnect.de. [84.178.49.171])
-        by mx.google.com with ESMTPSA id n41sm14102379eeg.16.2014.02.20.05.59.34
+        by mx.google.com with ESMTPSA id n41sm14102379eeg.16.2014.02.20.05.59.35
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 20 Feb 2014 05:59:34 -0800 (PST)
+        Thu, 20 Feb 2014 05:59:36 -0800 (PST)
 From:   Manuel Lauss <manuel.lauss@gmail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v2 2/3] MIPS: Alchemy: determine cohereny at runtime based on cpu type
-Date:   Thu, 20 Feb 2014 14:59:23 +0100
-Message-Id: <1392904764-5432-3-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH v2 3/3] MIPS: Alchemy: unify Devboard support.
+Date:   Thu, 20 Feb 2014 14:59:24 +0100
+Message-Id: <1392904764-5432-4-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.8.5.5
 In-Reply-To: <1392904764-5432-1-git-send-email-manuel.lauss@gmail.com>
 References: <1392904764-5432-1-git-send-email-manuel.lauss@gmail.com>
@@ -35,7 +35,7 @@ Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39357
+X-archive-position: 39358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,133 +52,1568 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-All Alchemy chips have coherent DMA, but for example the USB or AC97
-peripherals on the Au1000/1500/1100 are not.
-This patch uses DMA_MAYBE_COHERENT on Alchemy and sets coherentio based
-on CPU type.
+This patch merges support for all DB1xxx and PB1xxx
+boards into a single image, along with a new single defconfig
+for them.
+
+Run-tested on DB1300 and DB1500.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
-v2: no changes
+v2: added a db1xxx_defconfig to replace the 2 obsolete ones.
 
- arch/mips/Kconfig                |  1 +
- arch/mips/alchemy/Kconfig        |  5 -----
- arch/mips/alchemy/common/setup.c | 10 ++++++++++
- arch/mips/pci/pci-alchemy.c      |  5 ++---
- 4 files changed, 13 insertions(+), 8 deletions(-)
+ arch/mips/alchemy/Kconfig            |  17 +-
+ arch/mips/alchemy/Platform           |  16 +-
+ arch/mips/alchemy/devboards/Makefile |   4 +-
+ arch/mips/alchemy/devboards/db1000.c |  47 +---
+ arch/mips/alchemy/devboards/db1200.c |   9 +
+ arch/mips/alchemy/devboards/db1235.c |  94 --------
+ arch/mips/alchemy/devboards/db1300.c |   6 +-
+ arch/mips/alchemy/devboards/db1550.c |  10 +-
+ arch/mips/alchemy/devboards/db1xxx.c | 121 ++++++++++
+ arch/mips/configs/db1000_defconfig   | 359 -----------------------------
+ arch/mips/configs/db1235_defconfig   | 434 -----------------------------------
+ arch/mips/configs/db1xxx_defconfig   | 248 ++++++++++++++++++++
+ drivers/spi/spi-au1550.c             |   9 +
+ 13 files changed, 425 insertions(+), 949 deletions(-)
+ delete mode 100644 arch/mips/alchemy/devboards/db1235.c
+ create mode 100644 arch/mips/alchemy/devboards/db1xxx.c
+ delete mode 100644 arch/mips/configs/db1000_defconfig
+ delete mode 100644 arch/mips/configs/db1235_defconfig
+ create mode 100644 arch/mips/configs/db1xxx_defconfig
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index dcae3a7..623fd96 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -62,6 +62,7 @@ config MIPS_ALCHEMY
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select IRQ_CPU
-+	select DMA_MAYBE_COHERENT	# Au1000,1500,1100 aren't, rest is
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_APM_EMULATION
 diff --git a/arch/mips/alchemy/Kconfig b/arch/mips/alchemy/Kconfig
-index 7032ac7..4138672 100644
+index 4138672..ef53681 100644
 --- a/arch/mips/alchemy/Kconfig
 +++ b/arch/mips/alchemy/Kconfig
-@@ -20,7 +20,6 @@ choice
- 
- config MIPS_MTX1
- 	bool "4G Systems MTX-1 board"
--	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select ALCHEMY_GPIOINT_AU1000
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-@@ -29,7 +28,6 @@ config MIPS_MTX1
- config MIPS_DB1000
- 	bool "Alchemy DB1000/DB1500/DB1100 PB1500/1100 boards"
- 	select ALCHEMY_GPIOINT_AU1000
--	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-@@ -39,13 +37,11 @@ config MIPS_DB1235
- 	bool "Alchemy DB1200/PB1200/DB1300/DB1550/PB1550 boards"
- 	select ARCH_REQUIRE_GPIOLIB
- 	select HW_HAS_PCI
--	select DMA_COHERENT
+@@ -25,20 +25,17 @@ config MIPS_MTX1
  	select SYS_SUPPORTS_LITTLE_ENDIAN
  	select SYS_HAS_EARLY_PRINTK
+ 
+-config MIPS_DB1000
+-	bool "Alchemy DB1000/DB1500/DB1100 PB1500/1100 boards"
+-	select ALCHEMY_GPIOINT_AU1000
+-	select HW_HAS_PCI
+-	select SYS_SUPPORTS_BIG_ENDIAN
+-	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select SYS_HAS_EARLY_PRINTK
+-
+-config MIPS_DB1235
+-	bool "Alchemy DB1200/PB1200/DB1300/DB1550/PB1550 boards"
++config MIPS_DB1XXX
++	bool "Alchemy DB1XXX / PB1XXX boards"
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select HW_HAS_PCI
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_HAS_EARLY_PRINTK
++	help
++	  Select this option if you have one of the following Alchemy
++	  development boards:  DB1000 DB1500 DB1100 DB1550 DB1200 DB1300
++			       PB1500 PB1100 PB1550 PB1200
++	  Board type is autodetected during boot.
  
  config MIPS_XXS1500
  	bool "MyCable XXS1500 board"
--	select DMA_NONCOHERENT
- 	select ALCHEMY_GPIOINT_AU1000
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_HAS_EARLY_PRINTK
-@@ -54,7 +50,6 @@ config MIPS_GPR
- 	bool "Trapeze ITS GPR board"
- 	select ALCHEMY_GPIOINT_AU1000
- 	select HW_HAS_PCI
--	select DMA_NONCOHERENT
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_HAS_EARLY_PRINTK
+diff --git a/arch/mips/alchemy/Platform b/arch/mips/alchemy/Platform
+index b3afcdd..33c9da3 100644
+--- a/arch/mips/alchemy/Platform
++++ b/arch/mips/alchemy/Platform
+@@ -5,18 +5,12 @@ platform-$(CONFIG_MIPS_ALCHEMY) += alchemy/common/
  
-diff --git a/arch/mips/alchemy/common/setup.c b/arch/mips/alchemy/common/setup.c
-index 62b4e7b..566a174 100644
---- a/arch/mips/alchemy/common/setup.c
-+++ b/arch/mips/alchemy/common/setup.c
-@@ -30,6 +30,7 @@
- #include <linux/jiffies.h>
- #include <linux/module.h>
  
-+#include <asm/dma-coherence.h>
- #include <asm/mipsregs.h>
- #include <asm/time.h>
+ #
+-# AMD Alchemy Db1000/Db1500/Pb1500/Db1100/Pb1100 eval boards
++# AMD Alchemy Db1000/Db1500/Pb1500/Db1100/Pb1100
++#             Db1550/Pb1550/Db1200/Pb1200/Db1300
+ #
+-platform-$(CONFIG_MIPS_DB1000)	+= alchemy/devboards/
+-cflags-$(CONFIG_MIPS_DB1000)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
+-load-$(CONFIG_MIPS_DB1000)	+= 0xffffffff80100000
+-
+-#
+-# AMD Alchemy Db1200/Pb1200/Db1550/Pb1550/Db1300 eval boards
+-#
+-platform-$(CONFIG_MIPS_DB1235)	+= alchemy/devboards/
+-cflags-$(CONFIG_MIPS_DB1235)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
+-load-$(CONFIG_MIPS_DB1235)	+= 0xffffffff80100000
++platform-$(CONFIG_MIPS_DB1XXX)	+= alchemy/devboards/
++cflags-$(CONFIG_MIPS_DB1XXX)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
++load-$(CONFIG_MIPS_DB1XXX)	+= 0xffffffff80100000
  
-@@ -59,6 +60,15 @@ void __init plat_mem_setup(void)
- 		/* Clear to obtain best system bus performance */
- 		clear_c0_config(1 << 19); /* Clear Config[OD] */
+ #
+ # 4G-Systems MTX-1 "MeshCube" wireless router
+diff --git a/arch/mips/alchemy/devboards/Makefile b/arch/mips/alchemy/devboards/Makefile
+index 15bf730..9da3659 100644
+--- a/arch/mips/alchemy/devboards/Makefile
++++ b/arch/mips/alchemy/devboards/Makefile
+@@ -2,7 +2,5 @@
+ # Alchemy Develboards
+ #
  
-+	hw_coherentio = 0;
-+	coherentio = 1;
+-obj-y += bcsr.o platform.o
++obj-y += bcsr.o platform.o db1000.o db1200.o db1300.o db1550.o db1xxx.o
+ obj-$(CONFIG_PM)		+= pm.o
+-obj-$(CONFIG_MIPS_DB1000)	+= db1000.o
+-obj-$(CONFIG_MIPS_DB1235)	+= db1235.o db1200.o db1300.o db1550.o
+diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
+index 5483906..92dd929 100644
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -41,42 +41,27 @@
+ 
+ #define F_SWAPPED (bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1000_SWAPBOOT)
+ 
+-struct pci_dev;
++const char *get_system_type(void);
+ 
+-static const char *board_type_str(void)
++int __init db1000_board_setup(void)
+ {
++	/* initialize board register space */
++	bcsr_init(DB1000_BCSR_PHYS_ADDR,
++		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
++
+ 	switch (BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI))) {
+ 	case BCSR_WHOAMI_DB1000:
+-		return "DB1000";
+ 	case BCSR_WHOAMI_DB1500:
+-		return "DB1500";
+ 	case BCSR_WHOAMI_DB1100:
+-		return "DB1100";
+ 	case BCSR_WHOAMI_PB1500:
+ 	case BCSR_WHOAMI_PB1500R2:
+-		return "PB1500";
+ 	case BCSR_WHOAMI_PB1100:
+-		return "PB1100";
+-	default:
+-		return "(unknown)";
++		pr_info("AMD Alchemy %s Board\n", get_system_type());
++		return 0;
+ 	}
++	return -ENODEV;
+ }
+ 
+-const char *get_system_type(void)
+-{
+-	return board_type_str();
+-}
+-
+-void __init board_setup(void)
+-{
+-	/* initialize board register space */
+-	bcsr_init(DB1000_BCSR_PHYS_ADDR,
+-		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
+-
+-	printk(KERN_INFO "AMD Alchemy %s Board\n", board_type_str());
+-}
+-
+-
+ static int db1500_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
+ {
+ 	if ((slot < 12) || (slot > 13) || pin == 0)
+@@ -114,17 +99,10 @@ static struct platform_device db1500_pci_host_dev = {
+ 	.resource	= alchemy_pci_host_res,
+ };
+ 
+-static int __init db1500_pci_init(void)
++int __init db1500_pci_setup(void)
+ {
+-	int id = BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI));
+-	if ((id == BCSR_WHOAMI_DB1500) || (id == BCSR_WHOAMI_PB1500) ||
+-	    (id == BCSR_WHOAMI_PB1500R2))
+-		return platform_device_register(&db1500_pci_host_dev);
+-	return 0;
++	return platform_device_register(&db1500_pci_host_dev);
+ }
+-/* must be arch_initcall; MIPS PCI scans busses in a subsys_initcall */
+-arch_initcall(db1500_pci_init);
+-
+ 
+ static struct resource au1100_lcd_resources[] = {
+ 	[0] = {
+@@ -513,7 +491,7 @@ static struct platform_device *db1100_devs[] = {
+ 	&db1000_irda_dev,
+ };
+ 
+-static int __init db1000_dev_init(void)
++int __init db1000_dev_setup(void)
+ {
+ 	int board = BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI));
+ 	int c0, c1, d0, d1, s0, s1, flashsize = 32,  twosocks = 1;
+@@ -623,4 +601,3 @@ static int __init db1000_dev_init(void)
+ 	db1x_register_norflash(flashsize << 20, 4 /* 32bit */, F_SWAPPED);
+ 	return 0;
+ }
+-device_initcall(db1000_dev_init);
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index a84d98b..a60d0a3 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -89,6 +89,15 @@ int __init db1200_board_setup(void)
+ 		return -ENODEV;
+ 
+ 	whoami = bcsr_read(BCSR_WHOAMI);
++	switch (BCSR_WHOAMI_BOARD(whoami)) {
++	case BCSR_WHOAMI_PB1200_DDR1:
++	case BCSR_WHOAMI_PB1200_DDR2:
++	case BCSR_WHOAMI_DB1200:
++		break;
++	default:
++		return -ENODEV;
++	}
++
+ 	printk(KERN_INFO "Alchemy/AMD/RMI %s Board, CPLD Rev %d"
+ 		"  Board-ID %d	Daughtercard ID %d\n", get_system_type(),
+ 		(whoami >> 4) & 0xf, (whoami >> 8) & 0xf, whoami & 0xf);
+diff --git a/arch/mips/alchemy/devboards/db1235.c b/arch/mips/alchemy/devboards/db1235.c
+deleted file mode 100644
+index bac19dc..0000000
+--- a/arch/mips/alchemy/devboards/db1235.c
++++ /dev/null
+@@ -1,94 +0,0 @@
+-/*
+- * DB1200/PB1200 / DB1550 / DB1300 board support.
+- *
+- * These 4 boards can reliably be supported in a single kernel image.
+- */
+-
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-
+-int __init db1200_board_setup(void);
+-int __init db1200_dev_setup(void);
+-int __init db1300_board_setup(void);
+-int __init db1300_dev_setup(void);
+-int __init db1550_board_setup(void);
+-int __init db1550_dev_setup(void);
+-int __init db1550_pci_setup(int);
+-
+-static const char *board_type_str(void)
+-{
+-	switch (BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI))) {
+-	case BCSR_WHOAMI_PB1200_DDR1:
+-	case BCSR_WHOAMI_PB1200_DDR2:
+-		return "PB1200";
+-	case BCSR_WHOAMI_DB1200:
+-		return "DB1200";
+-	case BCSR_WHOAMI_DB1300:
+-		return "DB1300";
+-	case BCSR_WHOAMI_DB1550:
+-		return "DB1550";
+-	case BCSR_WHOAMI_PB1550_SDR:
+-	case BCSR_WHOAMI_PB1550_DDR:
+-		return "PB1550";
+-	default:
+-		return "(unknown)";
+-	}
+-}
+-
+-const char *get_system_type(void)
+-{
+-	return board_type_str();
+-}
+-
+-void __init board_setup(void)
+-{
+-	int ret;
+-
+-	switch (alchemy_get_cputype()) {
+-	case ALCHEMY_CPU_AU1550:
+-		ret = db1550_board_setup();
+-		break;
+-	case ALCHEMY_CPU_AU1200:
+-		ret = db1200_board_setup();
+-		break;
+-	case ALCHEMY_CPU_AU1300:
+-		ret = db1300_board_setup();
+-		break;
+-	default:
+-		pr_err("unsupported CPU on board\n");
+-		ret = -ENODEV;
+-	}
+-	if (ret)
+-		panic("cannot initialize board support");
+-}
+-
+-int __init db1235_arch_init(void)
+-{
+-	int id = BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI));
+-	if (id == BCSR_WHOAMI_DB1550)
+-		return db1550_pci_setup(0);
+-	else if ((id == BCSR_WHOAMI_PB1550_SDR) ||
+-		 (id == BCSR_WHOAMI_PB1550_DDR))
+-		return db1550_pci_setup(1);
+-
+-	return 0;
+-}
+-arch_initcall(db1235_arch_init);
+-
+-int __init db1235_dev_init(void)
+-{
+-	switch (BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI))) {
+-	case BCSR_WHOAMI_PB1200_DDR1:
+-	case BCSR_WHOAMI_PB1200_DDR2:
+-	case BCSR_WHOAMI_DB1200:
+-		return db1200_dev_setup();
+-	case BCSR_WHOAMI_DB1300:
+-		return db1300_dev_setup();
+-	case BCSR_WHOAMI_DB1550:
+-	case BCSR_WHOAMI_PB1550_SDR:
+-	case BCSR_WHOAMI_PB1550_DDR:
+-		return db1550_dev_setup();
+-	}
+-	return 0;
+-}
+-device_initcall(db1235_dev_init);
+diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
+index 6167e73..509602c 100644
+--- a/arch/mips/alchemy/devboards/db1300.c
++++ b/arch/mips/alchemy/devboards/db1300.c
+@@ -759,11 +759,15 @@ int __init db1300_board_setup(void)
+ {
+ 	unsigned short whoami;
+ 
+-	db1300_gpio_config();
+ 	bcsr_init(DB1300_BCSR_PHYS_ADDR,
+ 		  DB1300_BCSR_PHYS_ADDR + DB1300_BCSR_HEXLED_OFS);
+ 
+ 	whoami = bcsr_read(BCSR_WHOAMI);
++	if (BCSR_WHOAMI_BOARD(whoami) != BCSR_WHOAMI_DB1300)
++		return -ENODEV;
++
++	db1300_gpio_config();
++
+ 	printk(KERN_INFO "NetLogic DBAu1300 Development Platform.\n\t"
+ 		"BoardID %d   CPLD Rev %d   DaughtercardID %d\n",
+ 		BCSR_WHOAMI_BOARD(whoami), BCSR_WHOAMI_CPLD(whoami),
+diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
+index 016cdda..bbd8d98 100644
+--- a/arch/mips/alchemy/devboards/db1550.c
++++ b/arch/mips/alchemy/devboards/db1550.c
+@@ -62,10 +62,16 @@ int __init db1550_board_setup(void)
+ 		  DB1550_BCSR_PHYS_ADDR + DB1550_BCSR_HEXLED_OFS);
+ 
+ 	whoami = bcsr_read(BCSR_WHOAMI); /* PB1550 hexled offset differs */
+-	if ((BCSR_WHOAMI_BOARD(whoami) == BCSR_WHOAMI_PB1550_SDR) ||
+-	    (BCSR_WHOAMI_BOARD(whoami) == BCSR_WHOAMI_PB1550_DDR))
++	switch (BCSR_WHOAMI_BOARD(whoami)) {
++	case BCSR_WHOAMI_PB1550_SDR:
++	case BCSR_WHOAMI_PB1550_DDR:
+ 		bcsr_init(PB1550_BCSR_PHYS_ADDR,
+ 			  PB1550_BCSR_PHYS_ADDR + PB1550_BCSR_HEXLED_OFS);
++	case BCSR_WHOAMI_DB1550:
++		break;
++	default:
++		return -ENODEV;
++	}
+ 
+ 	pr_info("Alchemy/AMD %s Board, CPLD Rev %d Board-ID %d	"	\
+ 		"Daughtercard ID %d\n", get_system_type(),
+diff --git a/arch/mips/alchemy/devboards/db1xxx.c b/arch/mips/alchemy/devboards/db1xxx.c
+new file mode 100644
+index 0000000..2d47f95
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/db1xxx.c
+@@ -0,0 +1,121 @@
++/*
++ * Alchemy DB/PB1xxx board support.
++ */
++
++#include <asm/mach-au1x00/au1000.h>
++#include <asm/mach-db1x00/bcsr.h>
++
++int __init db1000_board_setup(void);
++int __init db1000_dev_setup(void);
++int __init db1500_pci_setup(void);
++int __init db1200_board_setup(void);
++int __init db1200_dev_setup(void);
++int __init db1300_board_setup(void);
++int __init db1300_dev_setup(void);
++int __init db1550_board_setup(void);
++int __init db1550_dev_setup(void);
++int __init db1550_pci_setup(int);
++
++static const char *board_type_str(void)
++{
++	switch (BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI))) {
++	case BCSR_WHOAMI_DB1000:
++		return "DB1000";
++	case BCSR_WHOAMI_DB1500:
++		return "DB1500";
++	case BCSR_WHOAMI_DB1100:
++		return "DB1100";
++	case BCSR_WHOAMI_PB1500:
++	case BCSR_WHOAMI_PB1500R2:
++		return "PB1500";
++	case BCSR_WHOAMI_PB1100:
++		return "PB1100";
++	case BCSR_WHOAMI_PB1200_DDR1:
++	case BCSR_WHOAMI_PB1200_DDR2:
++		return "PB1200";
++	case BCSR_WHOAMI_DB1200:
++		return "DB1200";
++	case BCSR_WHOAMI_DB1300:
++		return "DB1300";
++	case BCSR_WHOAMI_DB1550:
++		return "DB1550";
++	case BCSR_WHOAMI_PB1550_SDR:
++	case BCSR_WHOAMI_PB1550_DDR:
++		return "PB1550";
++	default:
++		return "(unknown)";
++	}
++}
++
++const char *get_system_type(void)
++{
++	return board_type_str();
++}
++
++void __init board_setup(void)
++{
++	int ret;
++
 +	switch (alchemy_get_cputype()) {
 +	case ALCHEMY_CPU_AU1000:
 +	case ALCHEMY_CPU_AU1500:
 +	case ALCHEMY_CPU_AU1100:
-+		coherentio = 0;
++		ret = db1000_board_setup();
++		break;
++	case ALCHEMY_CPU_AU1550:
++		ret = db1550_board_setup();
++		break;
++	case ALCHEMY_CPU_AU1200:
++		ret = db1200_board_setup();
++		break;
++	case ALCHEMY_CPU_AU1300:
++		ret = db1300_board_setup();
++		break;
++	default:
++		pr_err("unsupported CPU on board\n");
++		ret = -ENODEV;
++	}
++	if (ret)
++		panic("cannot initialize board support");
++}
++
++static int __init db1xxx_arch_init(void)
++{
++	int id = BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI));
++	if (id == BCSR_WHOAMI_DB1550)
++		return db1550_pci_setup(0);
++	else if ((id == BCSR_WHOAMI_PB1550_SDR) ||
++		 (id == BCSR_WHOAMI_PB1550_DDR))
++		return db1550_pci_setup(1);
++	else if ((id == BCSR_WHOAMI_DB1500) || (id == BCSR_WHOAMI_PB1500) ||
++		 (id == BCSR_WHOAMI_PB1500R2))
++		return db1500_pci_setup();
++
++	return 0;
++}
++arch_initcall(db1xxx_arch_init);
++
++static int __init db1xxx_dev_init(void)
++{
++	switch (BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI))) {
++	case BCSR_WHOAMI_DB1000:
++	case BCSR_WHOAMI_DB1500:
++	case BCSR_WHOAMI_DB1100:
++	case BCSR_WHOAMI_PB1500:
++	case BCSR_WHOAMI_PB1500R2:
++	case BCSR_WHOAMI_PB1100:
++		return db1000_dev_setup();
++	case BCSR_WHOAMI_PB1200_DDR1:
++	case BCSR_WHOAMI_PB1200_DDR2:
++	case BCSR_WHOAMI_DB1200:
++		return db1200_dev_setup();
++	case BCSR_WHOAMI_DB1300:
++		return db1300_dev_setup();
++	case BCSR_WHOAMI_DB1550:
++	case BCSR_WHOAMI_PB1550_SDR:
++	case BCSR_WHOAMI_PB1550_DDR:
++		return db1550_dev_setup();
++	}
++	return 0;
++}
++device_initcall(db1xxx_dev_init);
+diff --git a/arch/mips/configs/db1000_defconfig b/arch/mips/configs/db1000_defconfig
+deleted file mode 100644
+index bac26b9..0000000
+--- a/arch/mips/configs/db1000_defconfig
++++ /dev/null
+@@ -1,359 +0,0 @@
+-CONFIG_MIPS=y
+-CONFIG_MIPS_ALCHEMY=y
+-CONFIG_MIPS_DB1000=y
+-CONFIG_SCHED_OMIT_FRAME_POINTER=y
+-CONFIG_TICK_ONESHOT=y
+-CONFIG_NO_HZ=y
+-CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_HZ_100=y
+-CONFIG_HZ=100
+-CONFIG_PREEMPT_NONE=y
+-CONFIG_EXPERIMENTAL=y
+-CONFIG_BROKEN_ON_SMP=y
+-CONFIG_INIT_ENV_ARG_LIMIT=32
+-CONFIG_CROSS_COMPILE=""
+-CONFIG_LOCALVERSION="-db1x00"
+-CONFIG_LOCALVERSION_AUTO=y
+-CONFIG_KERNEL_LZMA=y
+-CONFIG_DEFAULT_HOSTNAME="db1x00"
+-CONFIG_SWAP=y
+-CONFIG_SYSVIPC=y
+-CONFIG_SYSVIPC_SYSCTL=y
+-CONFIG_FHANDLE=y
+-CONFIG_AUDIT=y
+-CONFIG_TINY_RCU=y
+-CONFIG_LOG_BUF_SHIFT=18
+-CONFIG_NAMESPACES=y
+-CONFIG_UTS_NS=y
+-CONFIG_IPC_NS=y
+-CONFIG_USER_NS=y
+-CONFIG_PID_NS=y
+-CONFIG_NET_NS=y
+-CONFIG_SYSCTL=y
+-CONFIG_EXPERT=y
+-CONFIG_KALLSYMS=y
+-CONFIG_KALLSYMS_ALL=y
+-CONFIG_HOTPLUG=y
+-CONFIG_PRINTK=y
+-CONFIG_BUG=y
+-CONFIG_ELF_CORE=y
+-CONFIG_BASE_FULL=y
+-CONFIG_FUTEX=y
+-CONFIG_EPOLL=y
+-CONFIG_SIGNALFD=y
+-CONFIG_TIMERFD=y
+-CONFIG_EVENTFD=y
+-CONFIG_SHMEM=y
+-CONFIG_AIO=y
+-CONFIG_EMBEDDED=y
+-CONFIG_HAVE_PERF_EVENTS=y
+-CONFIG_PERF_USE_VMALLOC=y
+-CONFIG_PCI_QUIRKS=y
+-CONFIG_SLAB=y
+-CONFIG_SLABINFO=y
+-CONFIG_BLOCK=y
+-CONFIG_LBDAF=y
+-CONFIG_BLK_DEV_BSG=y
+-CONFIG_BLK_DEV_BSGLIB=y
+-CONFIG_IOSCHED_NOOP=y
+-CONFIG_DEFAULT_NOOP=y
+-CONFIG_DEFAULT_IOSCHED="noop"
+-CONFIG_FREEZER=y
+-CONFIG_PCI=y
+-CONFIG_PCI_DOMAINS=y
+-CONFIG_PCCARD=y
+-CONFIG_PCMCIA=y
+-CONFIG_PCMCIA_LOAD_CIS=y
+-CONFIG_PCMCIA_ALCHEMY_DEVBOARD=y
+-CONFIG_BINFMT_ELF=y
+-CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS=y
+-CONFIG_SUSPEND=y
+-CONFIG_SUSPEND_FREEZER=y
+-CONFIG_PM_SLEEP=y
+-CONFIG_PM_RUNTIME=y
+-CONFIG_PM=y
+-CONFIG_NET=y
+-CONFIG_PACKET=y
+-CONFIG_UNIX=y
+-CONFIG_XFRM=y
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-CONFIG_IP_PNP=y
+-CONFIG_IP_PNP_DHCP=y
+-CONFIG_IP_PNP_BOOTP=y
+-CONFIG_IP_PNP_RARP=y
+-CONFIG_NET_IPIP=y
+-CONFIG_INET_TUNNEL=y
+-CONFIG_INET_LRO=y
+-CONFIG_TCP_CONG_CUBIC=y
+-CONFIG_DEFAULT_TCP_CONG="cubic"
+-CONFIG_IPV6=y
+-CONFIG_INET6_XFRM_MODE_TRANSPORT=y
+-CONFIG_INET6_XFRM_MODE_TUNNEL=y
+-CONFIG_INET6_XFRM_MODE_BEET=y
+-CONFIG_IPV6_SIT=y
+-CONFIG_IPV6_NDISC_NODETYPE=y
+-CONFIG_STP=y
+-CONFIG_GARP=y
+-CONFIG_BRIDGE=y
+-CONFIG_BRIDGE_IGMP_SNOOPING=y
+-CONFIG_VLAN_8021Q=y
+-CONFIG_VLAN_8021Q_GVRP=y
+-CONFIG_LLC=y
+-CONFIG_LLC2=y
+-CONFIG_DNS_RESOLVER=y
+-CONFIG_BT=y
+-CONFIG_BT_L2CAP=y
+-CONFIG_BT_SCO=y
+-CONFIG_BT_RFCOMM=y
+-CONFIG_BT_RFCOMM_TTY=y
+-CONFIG_BT_BNEP=y
+-CONFIG_BT_BNEP_MC_FILTER=y
+-CONFIG_BT_BNEP_PROTO_FILTER=y
+-CONFIG_BT_HIDP=y
+-CONFIG_BT_HCIBTUSB=y
+-CONFIG_UEVENT_HELPER_PATH=""
+-CONFIG_STANDALONE=y
+-CONFIG_PREVENT_FIRMWARE_BUILD=y
+-CONFIG_FW_LOADER=y
+-CONFIG_MTD=y
+-CONFIG_MTD_CMDLINE_PARTS=y
+-CONFIG_MTD_CHAR=y
+-CONFIG_MTD_BLKDEVS=y
+-CONFIG_MTD_BLOCK=y
+-CONFIG_MTD_CFI=y
+-CONFIG_MTD_GEN_PROBE=y
+-CONFIG_MTD_CFI_ADV_OPTIONS=y
+-CONFIG_MTD_CFI_NOSWAP=y
+-CONFIG_MTD_CFI_GEOMETRY=y
+-CONFIG_MTD_MAP_BANK_WIDTH_1=y
+-CONFIG_MTD_MAP_BANK_WIDTH_2=y
+-CONFIG_MTD_MAP_BANK_WIDTH_4=y
+-CONFIG_MTD_CFI_I1=y
+-CONFIG_MTD_CFI_I2=y
+-CONFIG_MTD_CFI_I4=y
+-CONFIG_MTD_CFI_I8=y
+-CONFIG_MTD_CFI_INTELEXT=y
+-CONFIG_MTD_CFI_AMDSTD=y
+-CONFIG_MTD_CFI_UTIL=y
+-CONFIG_MTD_PHYSMAP=y
+-CONFIG_SCSI_MOD=y
+-CONFIG_SCSI=y
+-CONFIG_SCSI_DMA=y
+-CONFIG_SCSI_PROC_FS=y
+-CONFIG_BLK_DEV_SD=y
+-CONFIG_CHR_DEV_SG=y
+-CONFIG_SCSI_MULTI_LUN=y
+-CONFIG_SCSI_CONSTANTS=y
+-CONFIG_ATA=y
+-CONFIG_ATA_VERBOSE_ERROR=y
+-CONFIG_ATA_SFF=y
+-CONFIG_ATA_BMDMA=y
+-CONFIG_PATA_HPT37X=y
+-CONFIG_PATA_PCMCIA=y
+-CONFIG_MD=y
+-CONFIG_BLK_DEV_DM=y
+-CONFIG_FIREWIRE=y
+-CONFIG_FIREWIRE_OHCI=y
+-CONFIG_FIREWIRE_OHCI_DEBUG=y
+-CONFIG_FIREWIRE_NET=y
+-CONFIG_NETDEVICES=y
+-CONFIG_MII=y
+-CONFIG_PHYLIB=y
+-CONFIG_NET_ETHERNET=y
+-CONFIG_MIPS_AU1X00_ENET=y
+-CONFIG_NET_PCMCIA=y
+-CONFIG_PCMCIA_3C589=y
+-CONFIG_PCMCIA_PCNET=y
+-CONFIG_PPP=y
+-CONFIG_PPP_MULTILINK=y
+-CONFIG_PPP_FILTER=y
+-CONFIG_PPP_ASYNC=y
+-CONFIG_PPP_SYNC_TTY=y
+-CONFIG_PPP_DEFLATE=y
+-CONFIG_PPP_BSDCOMP=y
+-CONFIG_PPP_MPPE=y
+-CONFIG_PPPOE=y
+-CONFIG_INPUT=y
+-CONFIG_INPUT_EVDEV=y
+-CONFIG_INPUT_MISC=y
+-CONFIG_INPUT_UINPUT=y
+-CONFIG_VT=y
+-CONFIG_CONSOLE_TRANSLATIONS=y
+-CONFIG_VT_CONSOLE=y
+-CONFIG_HW_CONSOLE=y
+-CONFIG_UNIX98_PTYS=y
+-CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
+-CONFIG_DEVKMEM=y
+-CONFIG_SERIAL_8250=y
+-CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_SERIAL_8250_NR_UARTS=4
+-CONFIG_SERIAL_8250_RUNTIME_UARTS=4
+-CONFIG_SERIAL_CORE=y
+-CONFIG_SERIAL_CORE_CONSOLE=y
+-CONFIG_TTY_PRINTK=y
+-CONFIG_DEVPORT=y
+-CONFIG_ARCH_WANT_OPTIONAL_GPIOLIB=y
+-CONFIG_FB=y
+-CONFIG_FB_CFB_FILLRECT=y
+-CONFIG_FB_CFB_COPYAREA=y
+-CONFIG_FB_CFB_IMAGEBLIT=y
+-CONFIG_FB_AU1100=y
+-CONFIG_DUMMY_CONSOLE=y
+-CONFIG_FRAMEBUFFER_CONSOLE=y
+-CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
+-CONFIG_FONTS=y
+-CONFIG_FONT_8x16=y
+-CONFIG_SOUND=y
+-CONFIG_SND=y
+-CONFIG_SND_TIMER=y
+-CONFIG_SND_PCM=y
+-CONFIG_SND_JACK=y
+-CONFIG_SND_SEQUENCER=y
+-CONFIG_SND_HRTIMER=y
+-CONFIG_SND_SEQ_HRTIMER_DEFAULT=y
+-CONFIG_SND_DYNAMIC_MINORS=y
+-CONFIG_SND_VMASTER=y
+-CONFIG_SND_AC97_CODEC=y
+-CONFIG_SND_SOC=y
+-CONFIG_SND_SOC_AC97_BUS=y
+-CONFIG_SND_SOC_AU1XAUDIO=y
+-CONFIG_SND_SOC_AU1XAC97C=y
+-CONFIG_SND_SOC_DB1000=y
+-CONFIG_SND_SOC_AC97_CODEC=y
+-CONFIG_AC97_BUS=y
+-CONFIG_HID_SUPPORT=y
+-CONFIG_HID=y
+-CONFIG_HIDRAW=y
+-CONFIG_USB_HID=y
+-CONFIG_USB_SUPPORT=y
+-CONFIG_USB=y
+-CONFIG_USB_EHCI_HCD=y
+-CONFIG_USB_EHCI_ROOT_HUB_TT=y
+-CONFIG_USB_EHCI_TT_NEWSCHED=y
+-CONFIG_USB_OHCI_HCD=y
+-CONFIG_USB_OHCI_HCD_PLATFORM=y
+-CONFIG_USB_UHCI_HCD=y
+-CONFIG_USB_STORAGE=y
+-CONFIG_NEW_LEDS=y
+-CONFIG_LEDS_CLASS=y
+-CONFIG_LEDS_TRIGGERS=y
+-CONFIG_RTC_LIB=y
+-CONFIG_RTC_CLASS=y
+-CONFIG_RTC_HCTOSYS=y
+-CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
+-CONFIG_RTC_INTF_SYSFS=y
+-CONFIG_RTC_INTF_PROC=y
+-CONFIG_RTC_INTF_DEV=y
+-CONFIG_RTC_DRV_AU1XXX=y
+-CONFIG_EXT4_FS=y
+-CONFIG_EXT4_USE_FOR_EXT23=y
+-CONFIG_EXT4_FS_XATTR=y
+-CONFIG_EXT4_FS_POSIX_ACL=y
+-CONFIG_EXT4_FS_SECURITY=y
+-CONFIG_JBD2=y
+-CONFIG_FS_MBCACHE=y
+-CONFIG_FS_POSIX_ACL=y
+-CONFIG_EXPORTFS=y
+-CONFIG_FILE_LOCKING=y
+-CONFIG_FSNOTIFY=y
+-CONFIG_DNOTIFY=y
+-CONFIG_INOTIFY_USER=y
+-CONFIG_GENERIC_ACL=y
+-CONFIG_PROC_FS=y
+-CONFIG_PROC_KCORE=y
+-CONFIG_PROC_SYSCTL=y
+-CONFIG_SYSFS=y
+-CONFIG_TMPFS=y
+-CONFIG_TMPFS_POSIX_ACL=y
+-CONFIG_TMPFS_XATTR=y
+-CONFIG_MISC_FILESYSTEMS=y
+-CONFIG_JFFS2_FS=y
+-CONFIG_JFFS2_FS_DEBUG=0
+-CONFIG_JFFS2_FS_WRITEBUFFER=y
+-CONFIG_JFFS2_SUMMARY=y
+-CONFIG_JFFS2_FS_XATTR=y
+-CONFIG_JFFS2_FS_POSIX_ACL=y
+-CONFIG_JFFS2_FS_SECURITY=y
+-CONFIG_JFFS2_COMPRESSION_OPTIONS=y
+-CONFIG_JFFS2_ZLIB=y
+-CONFIG_JFFS2_LZO=y
+-CONFIG_JFFS2_RTIME=y
+-CONFIG_JFFS2_RUBIN=y
+-CONFIG_JFFS2_CMODE_PRIORITY=y
+-CONFIG_SQUASHFS=y
+-CONFIG_SQUASHFS_ZLIB=y
+-CONFIG_SQUASHFS_LZO=y
+-CONFIG_SQUASHFS_XZ=y
+-CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
+-CONFIG_NETWORK_FILESYSTEMS=y
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V3=y
+-CONFIG_NFS_V4=y
+-CONFIG_NFS_V4_1=y
+-CONFIG_PNFS_FILE_LAYOUT=y
+-CONFIG_PNFS_BLOCK=y
+-CONFIG_ROOT_NFS=y
+-CONFIG_NFS_USE_KERNEL_DNS=y
+-CONFIG_NFS_USE_NEW_IDMAPPER=y
+-CONFIG_NFSD=y
+-CONFIG_NFSD_V2_ACL=y
+-CONFIG_NFSD_V3=y
+-CONFIG_NFSD_V3_ACL=y
+-CONFIG_NFSD_V4=y
+-CONFIG_LOCKD=y
+-CONFIG_LOCKD_V4=y
+-CONFIG_NFS_ACL_SUPPORT=y
+-CONFIG_NFS_COMMON=y
+-CONFIG_SUNRPC=y
+-CONFIG_SUNRPC_GSS=y
+-CONFIG_SUNRPC_BACKCHANNEL=y
+-CONFIG_MSDOS_PARTITION=y
+-CONFIG_NLS=y
+-CONFIG_NLS_DEFAULT="iso8859-1"
+-CONFIG_NLS_CODEPAGE_437=y
+-CONFIG_NLS_CODEPAGE_850=y
+-CONFIG_NLS_CODEPAGE_1250=y
+-CONFIG_NLS_ASCII=y
+-CONFIG_NLS_ISO8859_1=y
+-CONFIG_NLS_ISO8859_15=y
+-CONFIG_NLS_UTF8=y
+-CONFIG_HAVE_ARCH_KGDB=y
+-CONFIG_EARLY_PRINTK=y
+-CONFIG_CMDLINE_BOOL=y
+-CONFIG_CMDLINE="noirqdebug rootwait root=/dev/sda1 rootfstype=ext4 console=ttyS0,115200 video=au1100fb:panel:CRT_800x600_16"
+-CONFIG_DEBUG_ZBOOT=y
+-CONFIG_KEYS=y
+-CONFIG_KEYS_DEBUG_PROC_KEYS=y
+-CONFIG_SECURITYFS=y
+-CONFIG_DEFAULT_SECURITY_DAC=y
+-CONFIG_DEFAULT_SECURITY=""
+-CONFIG_CRYPTO=y
+-CONFIG_CRYPTO_ALGAPI=y
+-CONFIG_CRYPTO_ALGAPI2=y
+-CONFIG_CRYPTO_AEAD2=y
+-CONFIG_CRYPTO_BLKCIPHER=y
+-CONFIG_CRYPTO_BLKCIPHER2=y
+-CONFIG_CRYPTO_HASH=y
+-CONFIG_CRYPTO_HASH2=y
+-CONFIG_CRYPTO_RNG=y
+-CONFIG_CRYPTO_RNG2=y
+-CONFIG_CRYPTO_PCOMP2=y
+-CONFIG_CRYPTO_MANAGER=y
+-CONFIG_CRYPTO_MANAGER2=y
+-CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
+-CONFIG_CRYPTO_WORKQUEUE=y
+-CONFIG_CRYPTO_ECB=y
+-CONFIG_CRYPTO_SHA1=y
+-CONFIG_CRYPTO_AES=y
+-CONFIG_CRYPTO_ANSI_CPRNG=y
+-CONFIG_BITREVERSE=y
+-CONFIG_CRC_CCITT=y
+-CONFIG_CRC16=y
+-CONFIG_CRC_ITU_T=y
+-CONFIG_CRC32=y
+-CONFIG_ZLIB_INFLATE=y
+-CONFIG_ZLIB_DEFLATE=y
+-CONFIG_LZO_COMPRESS=y
+-CONFIG_LZO_DECOMPRESS=y
+-CONFIG_XZ_DEC=y
+diff --git a/arch/mips/configs/db1235_defconfig b/arch/mips/configs/db1235_defconfig
+deleted file mode 100644
+index 28e49f2..0000000
+--- a/arch/mips/configs/db1235_defconfig
++++ /dev/null
+@@ -1,434 +0,0 @@
+-CONFIG_MIPS_ALCHEMY=y
+-CONFIG_MIPS_DB1235=y
+-CONFIG_COMPACTION=y
+-CONFIG_KSM=y
+-CONFIG_HZ_100=y
+-CONFIG_EXPERIMENTAL=y
+-CONFIG_LOCALVERSION="-db1235"
+-CONFIG_KERNEL_LZMA=y
+-CONFIG_DEFAULT_HOSTNAME="db1235"
+-CONFIG_SYSVIPC=y
+-CONFIG_POSIX_MQUEUE=y
+-CONFIG_BSD_PROCESS_ACCT=y
+-CONFIG_BSD_PROCESS_ACCT_V3=y
+-CONFIG_FHANDLE=y
+-CONFIG_TASKSTATS=y
+-CONFIG_TASK_DELAY_ACCT=y
+-CONFIG_AUDIT=y
+-CONFIG_AUDIT_LOGINUID_IMMUTABLE=y
+-CONFIG_NO_HZ=y
+-CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_LOG_BUF_SHIFT=16
+-CONFIG_NAMESPACES=y
+-CONFIG_EMBEDDED=y
+-CONFIG_SLAB=y
+-CONFIG_JUMP_LABEL=y
+-CONFIG_PARTITION_ADVANCED=y
+-CONFIG_LDM_PARTITION=y
+-CONFIG_EFI_PARTITION=y
+-CONFIG_PCI=y
+-CONFIG_PCCARD=y
+-CONFIG_PCMCIA_ALCHEMY_DEVBOARD=y
+-CONFIG_PM_RUNTIME=y
+-CONFIG_NET=y
+-CONFIG_PACKET=y
+-CONFIG_UNIX=y
+-CONFIG_UNIX_DIAG=y
+-CONFIG_XFRM_USER=y
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-CONFIG_IP_ADVANCED_ROUTER=y
+-CONFIG_IP_MULTIPLE_TABLES=y
+-CONFIG_IP_ROUTE_MULTIPATH=y
+-CONFIG_IP_ROUTE_VERBOSE=y
+-CONFIG_IP_PNP=y
+-CONFIG_IP_PNP_DHCP=y
+-CONFIG_IP_PNP_BOOTP=y
+-CONFIG_IP_PNP_RARP=y
+-CONFIG_NET_IPIP=y
+-CONFIG_NET_IPGRE_DEMUX=y
+-CONFIG_NET_IPGRE=y
+-CONFIG_NET_IPGRE_BROADCAST=y
+-CONFIG_IP_MROUTE=y
+-CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
+-CONFIG_IP_PIMSM_V1=y
+-CONFIG_IP_PIMSM_V2=y
+-CONFIG_ARPD=y
+-CONFIG_SYN_COOKIES=y
+-CONFIG_NET_IPVTI=y
+-CONFIG_INET_AH=y
+-CONFIG_INET_ESP=y
+-CONFIG_INET_IPCOMP=y
+-CONFIG_INET_UDP_DIAG=y
+-CONFIG_TCP_CONG_ADVANCED=y
+-CONFIG_TCP_CONG_HSTCP=y
+-CONFIG_TCP_CONG_HYBLA=y
+-CONFIG_TCP_CONG_SCALABLE=y
+-CONFIG_TCP_CONG_LP=y
+-CONFIG_TCP_CONG_VENO=y
+-CONFIG_TCP_CONG_YEAH=y
+-CONFIG_TCP_CONG_ILLINOIS=y
+-CONFIG_DEFAULT_HYBLA=y
+-CONFIG_TCP_MD5SIG=y
+-CONFIG_IPV6_PRIVACY=y
+-CONFIG_IPV6_ROUTER_PREF=y
+-CONFIG_IPV6_ROUTE_INFO=y
+-CONFIG_IPV6_OPTIMISTIC_DAD=y
+-CONFIG_INET6_AH=y
+-CONFIG_INET6_ESP=y
+-CONFIG_INET6_IPCOMP=y
+-CONFIG_IPV6_MIP6=y
+-CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=y
+-CONFIG_IPV6_SIT_6RD=y
+-CONFIG_IPV6_TUNNEL=y
+-CONFIG_IPV6_MULTIPLE_TABLES=y
+-CONFIG_IPV6_SUBTREES=y
+-CONFIG_IPV6_MROUTE=y
+-CONFIG_IPV6_MROUTE_MULTIPLE_TABLES=y
+-CONFIG_IPV6_PIMSM_V2=y
+-CONFIG_NETFILTER=y
+-CONFIG_NF_CONNTRACK=y
+-CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CONNTRACK_TIMEOUT=y
+-CONFIG_NF_CONNTRACK_TIMESTAMP=y
+-CONFIG_NF_CT_PROTO_DCCP=y
+-CONFIG_NF_CT_PROTO_SCTP=y
+-CONFIG_NF_CT_PROTO_UDPLITE=y
+-CONFIG_NF_CONNTRACK_AMANDA=y
+-CONFIG_NF_CONNTRACK_FTP=y
+-CONFIG_NF_CONNTRACK_H323=y
+-CONFIG_NF_CONNTRACK_IRC=y
+-CONFIG_NF_CONNTRACK_NETBIOS_NS=y
+-CONFIG_NF_CONNTRACK_SNMP=y
+-CONFIG_NF_CONNTRACK_PPTP=y
+-CONFIG_NF_CONNTRACK_SANE=y
+-CONFIG_NF_CONNTRACK_SIP=y
+-CONFIG_NF_CONNTRACK_TFTP=y
+-CONFIG_NF_CT_NETLINK=y
+-CONFIG_NF_CT_NETLINK_TIMEOUT=y
+-CONFIG_NF_CT_NETLINK_HELPER=y
+-CONFIG_NETFILTER_NETLINK_QUEUE_CT=y
+-CONFIG_NETFILTER_XT_TARGET_CLASSIFY=y
+-CONFIG_NETFILTER_XT_TARGET_CONNMARK=y
+-CONFIG_NETFILTER_XT_TARGET_HMARK=y
+-CONFIG_NETFILTER_XT_TARGET_IDLETIMER=y
+-CONFIG_NETFILTER_XT_TARGET_LED=y
+-CONFIG_NETFILTER_XT_TARGET_LOG=y
+-CONFIG_NETFILTER_XT_TARGET_MARK=y
+-CONFIG_NETFILTER_XT_TARGET_NFLOG=y
+-CONFIG_NETFILTER_XT_TARGET_NFQUEUE=y
+-CONFIG_NETFILTER_XT_TARGET_TEE=y
+-CONFIG_NETFILTER_XT_TARGET_TCPMSS=y
+-CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
+-CONFIG_NETFILTER_XT_MATCH_CLUSTER=y
+-CONFIG_NETFILTER_XT_MATCH_COMMENT=y
+-CONFIG_NETFILTER_XT_MATCH_CONNBYTES=y
+-CONFIG_NETFILTER_XT_MATCH_CONNLIMIT=y
+-CONFIG_NETFILTER_XT_MATCH_CONNMARK=y
+-CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
+-CONFIG_NETFILTER_XT_MATCH_CPU=y
+-CONFIG_NETFILTER_XT_MATCH_DCCP=y
+-CONFIG_NETFILTER_XT_MATCH_DEVGROUP=y
+-CONFIG_NETFILTER_XT_MATCH_DSCP=y
+-CONFIG_NETFILTER_XT_MATCH_ESP=y
+-CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=y
+-CONFIG_NETFILTER_XT_MATCH_HELPER=y
+-CONFIG_NETFILTER_XT_MATCH_IPRANGE=y
+-CONFIG_NETFILTER_XT_MATCH_LENGTH=y
+-CONFIG_NETFILTER_XT_MATCH_LIMIT=y
+-CONFIG_NETFILTER_XT_MATCH_MAC=y
+-CONFIG_NETFILTER_XT_MATCH_MARK=y
+-CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y
+-CONFIG_NETFILTER_XT_MATCH_NFACCT=y
+-CONFIG_NETFILTER_XT_MATCH_OSF=y
+-CONFIG_NETFILTER_XT_MATCH_OWNER=y
+-CONFIG_NETFILTER_XT_MATCH_POLICY=y
+-CONFIG_NETFILTER_XT_MATCH_PHYSDEV=y
+-CONFIG_NETFILTER_XT_MATCH_PKTTYPE=y
+-CONFIG_NETFILTER_XT_MATCH_QUOTA=y
+-CONFIG_NETFILTER_XT_MATCH_RATEEST=y
+-CONFIG_NETFILTER_XT_MATCH_REALM=y
+-CONFIG_NETFILTER_XT_MATCH_RECENT=y
+-CONFIG_NETFILTER_XT_MATCH_SCTP=y
+-CONFIG_NETFILTER_XT_MATCH_STATE=y
+-CONFIG_NETFILTER_XT_MATCH_STATISTIC=y
+-CONFIG_NETFILTER_XT_MATCH_STRING=y
+-CONFIG_NETFILTER_XT_MATCH_TCPMSS=y
+-CONFIG_NETFILTER_XT_MATCH_TIME=y
+-CONFIG_NETFILTER_XT_MATCH_U32=y
+-CONFIG_NF_CONNTRACK_IPV4=y
+-CONFIG_IP_NF_IPTABLES=y
+-CONFIG_IP_NF_MATCH_AH=y
+-CONFIG_IP_NF_MATCH_ECN=y
+-CONFIG_IP_NF_MATCH_RPFILTER=y
+-CONFIG_IP_NF_MATCH_TTL=y
+-CONFIG_IP_NF_FILTER=y
+-CONFIG_IP_NF_TARGET_REJECT=y
+-CONFIG_IP_NF_TARGET_ULOG=y
+-CONFIG_NF_NAT=y
+-CONFIG_IP_NF_TARGET_MASQUERADE=y
+-CONFIG_IP_NF_TARGET_NETMAP=y
+-CONFIG_IP_NF_TARGET_REDIRECT=y
+-CONFIG_IP_NF_MANGLE=y
+-CONFIG_IP_NF_TARGET_CLUSTERIP=y
+-CONFIG_IP_NF_TARGET_ECN=y
+-CONFIG_IP_NF_TARGET_TTL=y
+-CONFIG_IP_NF_RAW=y
+-CONFIG_IP_NF_ARPTABLES=y
+-CONFIG_IP_NF_ARPFILTER=y
+-CONFIG_IP_NF_ARP_MANGLE=y
+-CONFIG_NF_CONNTRACK_IPV6=y
+-CONFIG_IP6_NF_IPTABLES=y
+-CONFIG_IP6_NF_MATCH_AH=y
+-CONFIG_IP6_NF_MATCH_EUI64=y
+-CONFIG_IP6_NF_MATCH_FRAG=y
+-CONFIG_IP6_NF_MATCH_OPTS=y
+-CONFIG_IP6_NF_MATCH_HL=y
+-CONFIG_IP6_NF_MATCH_IPV6HEADER=y
+-CONFIG_IP6_NF_MATCH_MH=y
+-CONFIG_IP6_NF_MATCH_RPFILTER=y
+-CONFIG_IP6_NF_MATCH_RT=y
+-CONFIG_IP6_NF_TARGET_HL=y
+-CONFIG_IP6_NF_FILTER=y
+-CONFIG_IP6_NF_TARGET_REJECT=y
+-CONFIG_IP6_NF_MANGLE=y
+-CONFIG_IP6_NF_RAW=y
+-CONFIG_BRIDGE_NF_EBTABLES=y
+-CONFIG_BRIDGE_EBT_BROUTE=y
+-CONFIG_BRIDGE_EBT_T_FILTER=y
+-CONFIG_BRIDGE_EBT_T_NAT=y
+-CONFIG_BRIDGE_EBT_802_3=y
+-CONFIG_BRIDGE_EBT_AMONG=y
+-CONFIG_BRIDGE_EBT_ARP=y
+-CONFIG_BRIDGE_EBT_IP=y
+-CONFIG_BRIDGE_EBT_IP6=y
+-CONFIG_BRIDGE_EBT_LIMIT=y
+-CONFIG_BRIDGE_EBT_MARK=y
+-CONFIG_BRIDGE_EBT_PKTTYPE=y
+-CONFIG_BRIDGE_EBT_STP=y
+-CONFIG_BRIDGE_EBT_VLAN=y
+-CONFIG_BRIDGE_EBT_ARPREPLY=y
+-CONFIG_BRIDGE_EBT_DNAT=y
+-CONFIG_BRIDGE_EBT_MARK_T=y
+-CONFIG_BRIDGE_EBT_REDIRECT=y
+-CONFIG_BRIDGE_EBT_SNAT=y
+-CONFIG_BRIDGE_EBT_LOG=y
+-CONFIG_BRIDGE_EBT_NFLOG=y
+-CONFIG_L2TP=y
+-CONFIG_L2TP_V3=y
+-CONFIG_L2TP_IP=y
+-CONFIG_L2TP_ETH=y
+-CONFIG_BRIDGE=y
+-CONFIG_VLAN_8021Q=y
+-CONFIG_VLAN_8021Q_GVRP=y
+-CONFIG_LLC2=y
+-CONFIG_NET_SCHED=y
+-CONFIG_NET_SCH_CBQ=y
+-CONFIG_NET_SCH_HTB=y
+-CONFIG_NET_SCH_HFSC=y
+-CONFIG_NET_SCH_PRIO=y
+-CONFIG_NET_SCH_MULTIQ=y
+-CONFIG_NET_SCH_RED=y
+-CONFIG_NET_SCH_SFB=y
+-CONFIG_NET_SCH_SFQ=y
+-CONFIG_NET_SCH_TEQL=y
+-CONFIG_NET_SCH_TBF=y
+-CONFIG_NET_SCH_GRED=y
+-CONFIG_NET_SCH_DSMARK=y
+-CONFIG_NET_SCH_NETEM=y
+-CONFIG_NET_SCH_DRR=y
+-CONFIG_NET_SCH_MQPRIO=y
+-CONFIG_NET_SCH_CHOKE=y
+-CONFIG_NET_SCH_QFQ=y
+-CONFIG_NET_SCH_CODEL=y
+-CONFIG_NET_SCH_FQ_CODEL=y
+-CONFIG_NET_SCH_INGRESS=y
+-CONFIG_NET_SCH_PLUG=y
+-CONFIG_NET_CLS_BASIC=y
+-CONFIG_NET_CLS_TCINDEX=y
+-CONFIG_NET_CLS_ROUTE4=y
+-CONFIG_NET_CLS_FW=y
+-CONFIG_NET_CLS_U32=y
+-CONFIG_CLS_U32_PERF=y
+-CONFIG_CLS_U32_MARK=y
+-CONFIG_NET_CLS_RSVP=y
+-CONFIG_NET_CLS_RSVP6=y
+-CONFIG_NET_CLS_FLOW=y
+-CONFIG_NET_EMATCH=y
+-CONFIG_NET_EMATCH_CMP=y
+-CONFIG_NET_EMATCH_NBYTE=y
+-CONFIG_NET_EMATCH_U32=y
+-CONFIG_NET_EMATCH_META=y
+-CONFIG_NET_EMATCH_TEXT=y
+-CONFIG_NET_CLS_ACT=y
+-CONFIG_NET_ACT_POLICE=y
+-CONFIG_NET_ACT_GACT=y
+-CONFIG_GACT_PROB=y
+-CONFIG_NET_ACT_MIRRED=y
+-CONFIG_NET_ACT_NAT=y
+-CONFIG_NET_ACT_PEDIT=y
+-CONFIG_NET_ACT_SIMP=y
+-CONFIG_NET_ACT_SKBEDIT=y
+-CONFIG_NET_ACT_CSUM=y
+-CONFIG_NET_CLS_IND=y
+-CONFIG_BT=y
+-CONFIG_BT_RFCOMM=y
+-CONFIG_BT_RFCOMM_TTY=y
+-CONFIG_BT_BNEP=y
+-CONFIG_BT_BNEP_MC_FILTER=y
+-CONFIG_BT_BNEP_PROTO_FILTER=y
+-CONFIG_BT_HIDP=y
+-CONFIG_BT_HCIBTUSB=y
+-CONFIG_CFG80211=y
+-CONFIG_CFG80211_CERTIFICATION_ONUS=y
+-CONFIG_CFG80211_WEXT=y
+-CONFIG_MAC80211=y
+-CONFIG_MAC80211_LEDS=y
+-CONFIG_RFKILL=y
+-CONFIG_RFKILL_INPUT=y
+-CONFIG_DEVTMPFS=y
+-CONFIG_DEVTMPFS_MOUNT=y
+-CONFIG_MTD=y
+-CONFIG_MTD_CHAR=y
+-CONFIG_MTD_BLOCK=y
+-CONFIG_MTD_CFI=y
+-CONFIG_MTD_CFI_AMDSTD=y
+-CONFIG_MTD_PHYSMAP=y
+-CONFIG_MTD_M25P80=y
+-CONFIG_MTD_NAND=y
+-CONFIG_MTD_NAND_PLATFORM=y
+-CONFIG_EEPROM_AT24=y
+-CONFIG_EEPROM_AT25=y
+-CONFIG_IDE=y
+-CONFIG_BLK_DEV_IDE_AU1XXX=y
+-CONFIG_BLK_DEV_SD=y
+-CONFIG_CHR_DEV_SG=y
+-CONFIG_SCSI_MULTI_LUN=y
+-CONFIG_ATA=y
+-CONFIG_PATA_HPT37X=y
+-CONFIG_PATA_PCMCIA=y
+-CONFIG_PATA_PLATFORM=y
+-CONFIG_NETDEVICES=y
+-CONFIG_MIPS_AU1X00_ENET=y
+-CONFIG_SMC91X=y
+-CONFIG_SMSC911X=y
+-CONFIG_AMD_PHY=y
+-CONFIG_SMSC_PHY=y
+-CONFIG_RT2X00=y
+-CONFIG_RT73USB=y
+-CONFIG_INPUT_EVDEV=y
+-CONFIG_INPUT_TOUCHSCREEN=y
+-CONFIG_TOUCHSCREEN_WM97XX=y
+-CONFIG_INPUT_MISC=y
+-CONFIG_INPUT_UINPUT=y
+-CONFIG_SERIAL_8250=y
+-CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_TTY_PRINTK=y
+-CONFIG_I2C=y
+-CONFIG_I2C_CHARDEV=y
+-CONFIG_I2C_AU1550=y
+-CONFIG_SPI=y
+-CONFIG_SPI_AU1550=y
+-CONFIG_GPIO_SYSFS=y
+-CONFIG_SENSORS_ADM1025=y
+-CONFIG_SENSORS_LM70=y
+-CONFIG_SOUND=y
+-CONFIG_SND=y
+-CONFIG_SND_HRTIMER=y
+-CONFIG_SND_DYNAMIC_MINORS=y
+-CONFIG_SND_SOC=y
+-CONFIG_SND_SOC_AU1XPSC=y
+-CONFIG_SND_SOC_DB1200=y
+-CONFIG_HIDRAW=y
+-CONFIG_UHID=y
+-CONFIG_USB_HIDDEV=y
+-CONFIG_USB=y
+-CONFIG_USB_DYNAMIC_MINORS=y
+-CONFIG_USB_EHCI_HCD=y
+-CONFIG_USB_EHCI_HCD_PLATFORM=y
+-CONFIG_USB_EHCI_ROOT_HUB_TT=y
+-CONFIG_USB_OHCI_HCD=y
+-CONFIG_USB_OHCI_HCD_PLATFORM=y
+-CONFIG_USB_STORAGE=y
+-CONFIG_MMC=y
+-CONFIG_MMC_AU1X=y
+-CONFIG_NEW_LEDS=y
+-CONFIG_LEDS_CLASS=y
+-CONFIG_RTC_CLASS=y
+-CONFIG_RTC_DRV_AU1XXX=y
+-CONFIG_EXT4_FS=y
+-CONFIG_EXT4_FS_POSIX_ACL=y
+-CONFIG_EXT4_FS_SECURITY=y
+-CONFIG_XFS_FS=y
+-CONFIG_XFS_POSIX_ACL=y
+-CONFIG_VFAT_FS=y
+-CONFIG_TMPFS=y
+-CONFIG_TMPFS_POSIX_ACL=y
+-CONFIG_CONFIGFS_FS=y
+-CONFIG_JFFS2_FS=y
+-CONFIG_JFFS2_SUMMARY=y
+-CONFIG_JFFS2_FS_XATTR=y
+-CONFIG_JFFS2_COMPRESSION_OPTIONS=y
+-CONFIG_JFFS2_LZO=y
+-CONFIG_JFFS2_CMODE_FAVOURLZO=y
+-CONFIG_SQUASHFS=y
+-CONFIG_SQUASHFS_LZO=y
+-CONFIG_SQUASHFS_XZ=y
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V3_ACL=y
+-CONFIG_NFS_V4=y
+-CONFIG_NFS_V4_1=y
+-CONFIG_NFS_V4_1_IMPLEMENTATION_ID_DOMAIN="kernel.org"
+-CONFIG_ROOT_NFS=y
+-CONFIG_NFSD=y
+-CONFIG_NFSD_V3_ACL=y
+-CONFIG_NFSD_V4=y
+-CONFIG_NLS_CODEPAGE_437=y
+-CONFIG_NLS_CODEPAGE_850=y
+-CONFIG_NLS_CODEPAGE_852=y
+-CONFIG_NLS_CODEPAGE_1250=y
+-CONFIG_NLS_ASCII=y
+-CONFIG_NLS_ISO8859_1=y
+-CONFIG_NLS_ISO8859_2=y
+-CONFIG_NLS_ISO8859_15=y
+-CONFIG_NLS_UTF8=y
+-CONFIG_MAGIC_SYSRQ=y
+-CONFIG_STRIP_ASM_SYMS=y
+-CONFIG_SECURITYFS=y
+-CONFIG_CRYPTO_USER=y
+-CONFIG_CRYPTO_NULL=y
+-CONFIG_CRYPTO_CRYPTD=y
+-CONFIG_CRYPTO_CCM=y
+-CONFIG_CRYPTO_GCM=y
+-CONFIG_CRYPTO_CTS=y
+-CONFIG_CRYPTO_LRW=y
+-CONFIG_CRYPTO_PCBC=y
+-CONFIG_CRYPTO_XTS=y
+-CONFIG_CRYPTO_XCBC=y
+-CONFIG_CRYPTO_VMAC=y
+-CONFIG_CRYPTO_MD4=y
+-CONFIG_CRYPTO_MICHAEL_MIC=y
+-CONFIG_CRYPTO_RMD128=y
+-CONFIG_CRYPTO_RMD160=y
+-CONFIG_CRYPTO_RMD256=y
+-CONFIG_CRYPTO_RMD320=y
+-CONFIG_CRYPTO_SHA256=y
+-CONFIG_CRYPTO_SHA512=y
+-CONFIG_CRYPTO_TGR192=y
+-CONFIG_CRYPTO_WP512=y
+-CONFIG_CRYPTO_ANUBIS=y
+-CONFIG_CRYPTO_BLOWFISH=y
+-CONFIG_CRYPTO_CAMELLIA=y
+-CONFIG_CRYPTO_CAST5=y
+-CONFIG_CRYPTO_CAST6=y
+-CONFIG_CRYPTO_FCRYPT=y
+-CONFIG_CRYPTO_KHAZAD=y
+-CONFIG_CRYPTO_SALSA20=y
+-CONFIG_CRYPTO_SEED=y
+-CONFIG_CRYPTO_SERPENT=y
+-CONFIG_CRYPTO_TEA=y
+-CONFIG_CRYPTO_TWOFISH=y
+-CONFIG_CRYPTO_ZLIB=y
+-CONFIG_CRYPTO_LZO=y
+-CONFIG_CRYPTO_USER_API_HASH=y
+-CONFIG_CRYPTO_USER_API_SKCIPHER=y
+diff --git a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
+new file mode 100644
+index 0000000..3bccd5b
+--- /dev/null
++++ b/arch/mips/configs/db1xxx_defconfig
+@@ -0,0 +1,248 @@
++CONFIG_MIPS_ALCHEMY=y
++CONFIG_MIPS_DB1XXX=y
++CONFIG_CMA=y
++CONFIG_CMA_DEBUG=y
++CONFIG_HZ_100=y
++CONFIG_LOCALVERSION="-db1xxx"
++CONFIG_KERNEL_XZ=y
++CONFIG_DEFAULT_HOSTNAME="db1xxx"
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_FHANDLE=y
++CONFIG_AUDIT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_CGROUPS=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CGROUP_DEVICE=y
++CONFIG_CPUSETS=y
++CONFIG_CGROUP_CPUACCT=y
++CONFIG_RESOURCE_COUNTERS=y
++CONFIG_MEMCG=y
++CONFIG_MEMCG_SWAP=y
++CONFIG_MEMCG_KMEM=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_CFS_BANDWIDTH=y
++CONFIG_RT_GROUP_SCHED=y
++CONFIG_BLK_CGROUP=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_EMBEDDED=y
++CONFIG_SLAB=y
++CONFIG_BLK_DEV_BSGLIB=y
++CONFIG_PARTITION_ADVANCED=y
++CONFIG_DEFAULT_NOOP=y
++CONFIG_PCI=y
++CONFIG_PCI_REALLOC_ENABLE_AUTO=y
++CONFIG_PCCARD=y
++CONFIG_PCMCIA_ALCHEMY_DEVBOARD=y
++CONFIG_PM_RUNTIME=y
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_PACKET_DIAG=y
++CONFIG_UNIX=y
++CONFIG_UNIX_DIAG=y
++CONFIG_XFRM_USER=y
++CONFIG_XFRM_SUB_POLICY=y
++CONFIG_XFRM_MIGRATE=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_FIB_TRIE_STATS=y
++CONFIG_NET_IPIP=y
++CONFIG_NET_IPGRE_DEMUX=y
++CONFIG_NET_IPGRE=y
++CONFIG_NET_IPGRE_BROADCAST=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=y
++CONFIG_INET_ESP=y
++CONFIG_INET_IPCOMP=y
++CONFIG_INET_UDP_DIAG=y
++CONFIG_TCP_CONG_ADVANCED=y
++CONFIG_TCP_CONG_VENO=y
++CONFIG_DEFAULT_VENO=y
++CONFIG_IPV6_ROUTER_PREF=y
++CONFIG_IPV6_ROUTE_INFO=y
++CONFIG_IPV6_OPTIMISTIC_DAD=y
++CONFIG_INET6_AH=y
++CONFIG_INET6_ESP=y
++CONFIG_INET6_IPCOMP=y
++CONFIG_IPV6_MIP6=y
++CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=y
++CONFIG_IPV6_VTI=y
++CONFIG_IPV6_SIT_6RD=y
++CONFIG_IPV6_GRE=y
++CONFIG_IPV6_MULTIPLE_TABLES=y
++CONFIG_IPV6_SUBTREES=y
++CONFIG_IPV6_MROUTE=y
++CONFIG_IPV6_MROUTE_MULTIPLE_TABLES=y
++CONFIG_IPV6_PIMSM_V2=y
++CONFIG_BRIDGE=y
++CONFIG_NETLINK_MMAP=y
++CONFIG_NETLINK_DIAG=y
++CONFIG_IRDA=y
++CONFIG_IRLAN=y
++CONFIG_IRCOMM=y
++CONFIG_IRDA_ULTRA=y
++CONFIG_IRDA_CACHE_LAST_LSAP=y
++CONFIG_IRDA_FAST_RR=y
++CONFIG_AU1000_FIR=y
++CONFIG_BT=y
++CONFIG_BT_RFCOMM=y
++CONFIG_BT_RFCOMM_TTY=y
++CONFIG_BT_BNEP=y
++CONFIG_BT_BNEP_MC_FILTER=y
++CONFIG_BT_BNEP_PROTO_FILTER=y
++CONFIG_BT_HIDP=y
++CONFIG_BT_HCIBTUSB=y
++CONFIG_CFG80211=y
++CONFIG_CFG80211_WEXT=y
++CONFIG_MAC80211=y
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++CONFIG_MTD=y
++CONFIG_MTD_CMDLINE_PARTS=y
++CONFIG_MTD_BLOCK=y
++CONFIG_MTD_CFI=y
++CONFIG_MTD_CFI_ADV_OPTIONS=y
++CONFIG_MTD_CFI_AMDSTD=y
++CONFIG_MTD_PHYSMAP=y
++CONFIG_MTD_M25P80=y
++CONFIG_MTD_SST25L=y
++CONFIG_MTD_NAND=y
++CONFIG_MTD_NAND_ECC_BCH=y
++CONFIG_MTD_NAND_AU1550=y
++CONFIG_MTD_NAND_PLATFORM=y
++CONFIG_EEPROM_AT24=y
++CONFIG_EEPROM_AT25=y
++CONFIG_IDE=y
++CONFIG_IDE_TASK_IOCTL=y
++CONFIG_BLK_DEV_IDE_AU1XXX=y
++CONFIG_SCSI_TGT=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++CONFIG_SCSI_MULTI_LUN=y
++CONFIG_ATA=y
++CONFIG_PATA_HPT37X=y
++CONFIG_PATA_HPT3X2N=y
++CONFIG_PATA_PCMCIA=y
++CONFIG_PATA_PLATFORM=y
++CONFIG_NETDEVICES=y
++CONFIG_NLMON=y
++CONFIG_PCMCIA_3C589=y
++CONFIG_MIPS_AU1X00_ENET=y
++CONFIG_SMC91X=y
++CONFIG_SMSC911X=y
++CONFIG_AMD_PHY=y
++CONFIG_SMSC_PHY=y
++CONFIG_INPUT_EVDEV=y
++CONFIG_KEYBOARD_GPIO=y
++CONFIG_INPUT_TOUCHSCREEN=y
++CONFIG_TOUCHSCREEN_ADS7846=y
++CONFIG_TOUCHSCREEN_WM97XX=y
++CONFIG_INPUT_MISC=y
++CONFIG_INPUT_UINPUT=y
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_TTY_PRINTK=y
++CONFIG_I2C=y
++CONFIG_I2C_CHARDEV=y
++CONFIG_I2C_AU1550=y
++CONFIG_SPI=y
++CONFIG_SPI_AU1550=y
++CONFIG_SPI_GPIO=y
++CONFIG_SENSORS_ADM1025=y
++CONFIG_SENSORS_LM70=y
++CONFIG_FB=y
++CONFIG_FB_AU1100=y
++CONFIG_FB_AU1200=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_SEQUENCER=y
++CONFIG_SND_HRTIMER=y
++CONFIG_SND_DYNAMIC_MINORS=y
++CONFIG_SND_AC97_POWER_SAVE=y
++CONFIG_SND_AC97_POWER_SAVE_DEFAULT=1
++CONFIG_SND_SOC=y
++CONFIG_SND_SOC_AU1XPSC=y
++CONFIG_SND_SOC_AU1XAUDIO=y
++CONFIG_SND_SOC_DB1000=y
++CONFIG_SND_SOC_DB1200=y
++CONFIG_HIDRAW=y
++CONFIG_UHID=y
++CONFIG_HID_LOGITECH=y
++CONFIG_HID_LOGITECH_DJ=y
++CONFIG_USB_HIDDEV=y
++CONFIG_USB=y
++CONFIG_USB_DYNAMIC_MINORS=y
++CONFIG_USB_OTG=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_ROOT_HUB_TT=y
++CONFIG_USB_EHCI_HCD_PLATFORM=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_USB_STORAGE=y
++CONFIG_MMC=y
++CONFIG_MMC_CLKGATE=y
++CONFIG_SDIO_UART=y
++CONFIG_MMC_AU1X=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_AU1XXX=y
++CONFIG_FIRMWARE_MEMMAP=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++CONFIG_XFS_FS=y
++CONFIG_XFS_POSIX_ACL=y
++CONFIG_FANOTIFY=y
++CONFIG_FUSE_FS=y
++CONFIG_CUSE=y
++CONFIG_VFAT_FS=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++CONFIG_CONFIGFS_FS=y
++CONFIG_JFFS2_FS=y
++CONFIG_JFFS2_SUMMARY=y
++CONFIG_JFFS2_COMPRESSION_OPTIONS=y
++CONFIG_JFFS2_LZO=y
++CONFIG_JFFS2_RUBIN=y
++CONFIG_SQUASHFS=y
++CONFIG_SQUASHFS_FILE_DIRECT=y
++CONFIG_SQUASHFS_XATTR=y
++CONFIG_SQUASHFS_LZO=y
++CONFIG_SQUASHFS_XZ=y
++CONFIG_F2FS_FS=y
++CONFIG_F2FS_FS_SECURITY=y
++CONFIG_NFS_FS=y
++CONFIG_NFS_V3_ACL=y
++CONFIG_NFS_V4=y
++CONFIG_NFS_V4_1=y
++CONFIG_NFS_V4_2=y
++CONFIG_NFS_V4_1_IMPLEMENTATION_ID_DOMAIN="local"
++CONFIG_NFS_V4_1_MIGRATION=y
++CONFIG_NFSD=y
++CONFIG_NFSD_V3_ACL=y
++CONFIG_NFSD_V4=y
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_CODEPAGE_850=y
++CONFIG_NLS_CODEPAGE_852=y
++CONFIG_NLS_CODEPAGE_1250=y
++CONFIG_NLS_ASCII=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_NLS_ISO8859_2=y
++CONFIG_NLS_ISO8859_15=y
++CONFIG_NLS_UTF8=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_SECURITYFS=y
++CONFIG_CRYPTO_USER=y
++CONFIG_CRYPTO_CRYPTD=y
++CONFIG_CRYPTO_USER_API_HASH=y
++CONFIG_CRYPTO_USER_API_SKCIPHER=y
++CONFIG_CRC32_SLICEBY4=y
++CONFIG_FONTS=y
++CONFIG_FONT_8x8=y
+diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
+index c4141c9..2ca4ee2 100644
+--- a/drivers/spi/spi-au1550.c
++++ b/drivers/spi/spi-au1550.c
+@@ -999,6 +999,15 @@ static int __init au1550_spi_init(void)
+ 	 * create memory device with 8 bits dev_devwidth
+ 	 * needed for proper byte ordering to spi fifo
+ 	 */
++	switch (alchemy_get_cputype()) {
++	case ALCHEMY_CPU_AU1550:
++	case ALCHEMY_CPU_AU1200:
++	case ALCHEMY_CPU_AU1300:
++		break;
++	default:
++		return -ENODEV;
 +	}
 +
- 	board_setup();	/* board specific setup */
- 
- 	/* IO/MEM resources. */
-diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
-index d1faece..563d1f6 100644
---- a/arch/mips/pci/pci-alchemy.c
-+++ b/arch/mips/pci/pci-alchemy.c
-@@ -16,6 +16,7 @@
- #include <linux/syscore_ops.h>
- #include <linux/vmalloc.h>
- 
-+#include <asm/dma-coherence.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/tlbmisc.h>
- 
-@@ -411,17 +412,15 @@ static int alchemy_pci_probe(struct platform_device *pdev)
- 	}
- 	ctx->alchemy_pci_ctrl.io_map_base = (unsigned long)virt_io;
- 
--#ifdef CONFIG_DMA_NONCOHERENT
- 	/* Au1500 revisions older than AD have borked coherent PCI */
- 	if ((alchemy_get_cputype() == ALCHEMY_CPU_AU1500) &&
--	    (read_c0_prid() < 0x01030202)) {
-+	    (read_c0_prid() < 0x01030202) && !coherentio) {
- 		val = __raw_readl(ctx->regs + PCI_REG_CONFIG);
- 		val |= PCI_CONFIG_NC;
- 		__raw_writel(val, ctx->regs + PCI_REG_CONFIG);
- 		wmb();
- 		dev_info(&pdev->dev, "non-coherent PCI on Au1500 AA/AB/AC\n");
- 	}
--#endif
- 
- 	if (pd->board_map_irq)
- 		ctx->board_map_irq = pd->board_map_irq;
+ 	if (usedma) {
+ 		ddma_memid = au1xxx_ddma_add_device(&au1550_spi_mem_dbdev);
+ 		if (!ddma_memid)
 -- 
 1.8.5.5

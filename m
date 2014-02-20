@@ -1,52 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 14:53:15 +0100 (CET)
-Received: from mail-wg0-f50.google.com ([74.125.82.50]:33943 "EHLO
-        mail-wg0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6871402AbaBTNxMfPIv- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Feb 2014 14:53:12 +0100
-Received: by mail-wg0-f50.google.com with SMTP id z12so1460512wgg.17
-        for <linux-mips@linux-mips.org>; Thu, 20 Feb 2014 05:53:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=krWV4wIwMt2vOOVchccY7t0usiOpH3rJHPT/DMVPLjI=;
-        b=HOLlNNhK+9hlunecztg6ZJKQNjq6y4+OCPO30yAgkXHfa8Ntv3ailtFBYKD8xMtabz
-         NVQsVgzAVvzwlCaI6Ub+8pCWPAEVC8vg8JFR5ZJw8aC3aqUP6J7bJd9x+zcD+gNEanMG
-         TM/GBm8ulZPvxsrG//NG0bbaD4yio9HSk992w6CJ6M1nNeRNBDPBTmd8W3W3EgetKLcf
-         9ZF4fvtv5yrMRq4rhFdL8bk0hD9uEHH+9b0cx6gAfhNy3iT5S+j6Qj8j32OCXDvIEINV
-         Yhxe7KV112kUsx/LJIxxUdxgsjDRO3oBjVJaw8EX+rMfxXGkiFfzDYeUk8JfHRnCFEIO
-         hSpg==
-X-Gm-Message-State: ALoCoQmWW4HgtlosmWTsGTLLcpX1cY4KFOSGJZpNVDTycgqPcBMrqzIGwTjt66dJZ6DTmFqQmZes
-X-Received: by 10.194.62.206 with SMTP id a14mr2285975wjs.26.1392904387251;
-        Thu, 20 Feb 2014 05:53:07 -0800 (PST)
-Received: from [192.168.1.150] (AToulouse-654-1-343-25.w90-55.abo.wanadoo.fr. [90.55.62.25])
-        by mx.google.com with ESMTPSA id br10sm9114518wjb.3.2014.02.20.05.53.05
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 14:59:41 +0100 (CET)
+Received: from mail-ea0-f174.google.com ([209.85.215.174]:60709 "EHLO
+        mail-ea0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6871402AbaBTN7ja3kvh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Feb 2014 14:59:39 +0100
+Received: by mail-ea0-f174.google.com with SMTP id m10so688052eaj.19
+        for <linux-mips@linux-mips.org>; Thu, 20 Feb 2014 05:59:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=Izu+iptr4n/3U5eiaT1WJz+gdrw/AiJo/VFUpkfenjM=;
+        b=WXX3W+NlvohyJpd8vCChjJQwqQkn7MdFPjcyjFo+U71XauZiopvuk8T159dpLmNQ4H
+         9mSsVIhWGsT8KqXjb5a6USfWKGrxe3DwpmBGVm2pMnVdGfBzP+Jexdonc83DLdrJyVzk
+         NaVQaSrjD0mVqjmXApM0wM/woEXk9i8+oR0CEl88P7GTBo43lgDTbLhIrQSCOqIi8E4N
+         mrwjl2lQTX9lZRclASh559VMv1ZjAhnTm2lDPTgwuoNC4ehFHU4i2b1RGDn1n9YxVz5O
+         U0uFlGedN9EjwDhxtxWLXC15/53ITOH6YcEeUHIBjqj4nxQ62dojQEbARy9GSsP2kKmt
+         d0ag==
+X-Received: by 10.14.110.198 with SMTP id u46mr2135648eeg.20.1392904773381;
+        Thu, 20 Feb 2014 05:59:33 -0800 (PST)
+Received: from localhost.localdomain (p54B231AB.dip0.t-ipconnect.de. [84.178.49.171])
+        by mx.google.com with ESMTPSA id n41sm14102379eeg.16.2014.02.20.05.59.32
         for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 20 Feb 2014 05:53:06 -0800 (PST)
-Message-ID: <530608C2.3070507@linaro.org>
-Date:   Thu, 20 Feb 2014 14:53:06 +0100
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
-MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     linux-mips@linux-mips.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH 09/10] cpuidle: declare cpuidle_dev in cpuidle.h
-References: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com> <1389794137-11361-10-git-send-email-paul.burton@imgtec.com> <53060496.6000303@linaro.org> <20140220134118.GT25765@pburton-linux.le.imgtec.org>
-In-Reply-To: <20140220134118.GT25765@pburton-linux.le.imgtec.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.lezcano@linaro.org>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 20 Feb 2014 05:59:32 -0800 (PST)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH v2 0/3] MIPS: Alchemy: single kernel for all devboards
+Date:   Thu, 20 Feb 2014 14:59:21 +0100
+Message-Id: <1392904764-5432-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.8.5.5
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39354
+X-archive-position: 39355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,69 +50,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/20/2014 02:41 PM, Paul Burton wrote:
-> On Thu, Feb 20, 2014 at 02:35:18PM +0100, Daniel Lezcano wrote:
->> On 01/15/2014 02:55 PM, Paul Burton wrote:
->>> Declaring this allows drivers which need to initialise each struct
->>> cpuidle_device at initialisation time to make use of the structures
->>> already defined in cpuidle.c, rather than having to wastefully define
->>> their own.
->>>
->>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->>> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
->>> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
->>> Cc: linux-pm@vger.kernel.org
->>> ---
->>>   include/linux/cpuidle.h | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
->>> index 50fcbb0..bab4f33 100644
->>> --- a/include/linux/cpuidle.h
->>> +++ b/include/linux/cpuidle.h
->>> @@ -84,6 +84,7 @@ struct cpuidle_device {
->>>   };
->>>
->>>   DECLARE_PER_CPU(struct cpuidle_device *, cpuidle_devices);
->>> +DECLARE_PER_CPU(struct cpuidle_device, cpuidle_dev);
->>
->>
->> Nak. When a device is registered, it is assigned to the cpuidle_devices
->> pointer and the backend driver should use it.
->>
->
-> Yes, but then if the driver needs to initialise the coupled_cpus mask
-> then it cannot do so until after the device has been registered. During
-> registration the cpuidle_coupled_register_device will then see the empty
-> coupled_cpus mask & do nothing. The only other ways around this would be
-> for the driver to define its own per-cpu struct cpuidle_device (which as
-> I state in the commit message seems wasteful when cpuidle already
-> defined them), or for cpuidle_coupled_register_device to be called later
-> after the driver had a chance to modify devices via the cpuidle_devices
-> pointers.
+This patchset removes the last hurdles to supporting all DB/PB Develoboards
+in a single kernel image.   The main issue is that on earlier chips
+(Au1000, Au1500, Au1100) some peripherals, notably the USB blocks, aren't
+fully dma coherent and need manual cache massaging to work properly.
+For these parts DMA_NONCOHERENT is used.
+Newer variants starting with the Au1550 work fine without any additional
+software intervention and use DMA_COHERENT by default.
 
-Yeah. I understand why you wanted to declare these cpu variables.
+The first patch extends the already existing DMA_MAYBE_COHERENT logic to
+also cover the parts which are already compiled when DMA_NONCOHERENT is
+enabled.  The second patch then uses the "coherentio" variable which
+DMA_MAYBE_COHERENT exports and sets it based on CPU subtype.
+The third patch finally unifies support for all Alchemy devboards.
 
-The mips cpuidle driver sounds like a bit particular. I believe I need 
-some clarification on the behavior of the hardware to understand 
-correctly the driver. Could you explain how the couples act vs the cpu ? 
-And why cpu_sibling is used instead of cpu_possible_mask ?
+I'm not really sure if patch #1 is even the correct way to do it; however
+based on my understanding of what DMA_MAYBE_COHERENT is supposed to do I
+actually thought that it's a logical extension.  But I'm not sure and
+don't have a MALTA board to test it on.  Hence the RFC.
+
+v2: new defconfig replacing two oobsolete ones, some function renaming
+
+Thanks,
+        Manuel Lauss
 
 
+Manuel Lauss (3):
+  MIPS: extend DMA_MAYBE_COHERENT logic to DMA_NONCOHERENT use
+  MIPS: Alchemy: determine cohereny at runtime based on cpu type
+  MIPS: Alchemy: unify Devboard support.
 
->> --
->>   <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
->>
->> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
->> <http://twitter.com/#!/linaroorg> Twitter |
->> <http://www.linaro.org/linaro-blog/> Blog
->>
->
-
+ arch/mips/Kconfig                    |   1 +
+ arch/mips/alchemy/Kconfig            |  22 +-
+ arch/mips/alchemy/Platform           |  16 +-
+ arch/mips/alchemy/common/setup.c     |  10 +
+ arch/mips/alchemy/devboards/Makefile |   4 +-
+ arch/mips/alchemy/devboards/db1000.c |  47 +---
+ arch/mips/alchemy/devboards/db1200.c |   9 +
+ arch/mips/alchemy/devboards/db1235.c |  94 --------
+ arch/mips/alchemy/devboards/db1300.c |   6 +-
+ arch/mips/alchemy/devboards/db1550.c |  10 +-
+ arch/mips/alchemy/devboards/db1xxx.c | 121 ++++++++++
+ arch/mips/configs/db1000_defconfig   | 359 -----------------------------
+ arch/mips/configs/db1235_defconfig   | 434 -----------------------------------
+ arch/mips/configs/db1xxx_defconfig   | 248 ++++++++++++++++++++
+ arch/mips/include/asm/io.h           |   4 +-
+ arch/mips/mm/c-r4k.c                 |   6 +-
+ arch/mips/mm/cache.c                 |   4 +-
+ arch/mips/pci/pci-alchemy.c          |   5 +-
+ drivers/spi/spi-au1550.c             |   9 +
+ 19 files changed, 445 insertions(+), 964 deletions(-)
+ delete mode 100644 arch/mips/alchemy/devboards/db1235.c
+ create mode 100644 arch/mips/alchemy/devboards/db1xxx.c
+ delete mode 100644 arch/mips/configs/db1000_defconfig
+ delete mode 100644 arch/mips/configs/db1235_defconfig
+ create mode 100644 arch/mips/configs/db1xxx_defconfig
 
 -- 
-  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+1.8.5.5

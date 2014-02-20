@@ -1,30 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 15:02:45 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:47672 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 15:03:08 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:47675 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6871416AbaBTOA1hpFZm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Feb 2014 15:00:27 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 2/5] MIPS: Malta: Enable DEVTMPFS
-Date:   Thu, 20 Feb 2014 14:00:25 +0000
-Message-ID: <1392904828-12969-3-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.9.0
-In-Reply-To: <1392904828-12969-1-git-send-email-markos.chandras@imgtec.com>
-References: <1392904828-12969-1-git-send-email-markos.chandras@imgtec.com>
+        id S6871417AbaBTOAjp33vh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Feb 2014 15:00:39 +0100
+Date:   Thu, 20 Feb 2014 14:00:33 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CC:     <linux-mips@linux-mips.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 09/10] cpuidle: declare cpuidle_dev in cpuidle.h
+Message-ID: <20140220140033.GU25765@pburton-linux.le.imgtec.org>
+References: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com>
+ <1389794137-11361-10-git-send-email-paul.burton@imgtec.com>
+ <53060496.6000303@linaro.org>
+ <20140220134118.GT25765@pburton-linux.le.imgtec.org>
+ <530608C2.3070507@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_02_20_14_00_22
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <530608C2.3070507@linaro.org>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+X-Originating-IP: [192.168.154.79]
+X-SEF-Processed: 7_3_0_01192__2014_02_20_14_00_34
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39364
+X-archive-position: 39365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,105 +43,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Recent versions of udev and systemd require the kernel
-to be compiled with CONFIG_DEVTMPFS in order to populate
-the /dev directory. Most MIPS platforms have it enabled by
-default, so enable it for Malta configs as well.
+On Thu, Feb 20, 2014 at 02:53:06PM +0100, Daniel Lezcano wrote:
+> On 02/20/2014 02:41 PM, Paul Burton wrote:
+> >On Thu, Feb 20, 2014 at 02:35:18PM +0100, Daniel Lezcano wrote:
+> >>On 01/15/2014 02:55 PM, Paul Burton wrote:
+> >>>Declaring this allows drivers which need to initialise each struct
+> >>>cpuidle_device at initialisation time to make use of the structures
+> >>>already defined in cpuidle.c, rather than having to wastefully define
+> >>>their own.
+> >>>
+> >>>Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> >>>Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> >>>Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> >>>Cc: linux-pm@vger.kernel.org
+> >>>---
+> >>>  include/linux/cpuidle.h | 1 +
+> >>>  1 file changed, 1 insertion(+)
+> >>>
+> >>>diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
+> >>>index 50fcbb0..bab4f33 100644
+> >>>--- a/include/linux/cpuidle.h
+> >>>+++ b/include/linux/cpuidle.h
+> >>>@@ -84,6 +84,7 @@ struct cpuidle_device {
+> >>>  };
+> >>>
+> >>>  DECLARE_PER_CPU(struct cpuidle_device *, cpuidle_devices);
+> >>>+DECLARE_PER_CPU(struct cpuidle_device, cpuidle_dev);
+> >>
+> >>
+> >>Nak. When a device is registered, it is assigned to the cpuidle_devices
+> >>pointer and the backend driver should use it.
+> >>
+> >
+> >Yes, but then if the driver needs to initialise the coupled_cpus mask
+> >then it cannot do so until after the device has been registered. During
+> >registration the cpuidle_coupled_register_device will then see the empty
+> >coupled_cpus mask & do nothing. The only other ways around this would be
+> >for the driver to define its own per-cpu struct cpuidle_device (which as
+> >I state in the commit message seems wasteful when cpuidle already
+> >defined them), or for cpuidle_coupled_register_device to be called later
+> >after the driver had a chance to modify devices via the cpuidle_devices
+> >pointers.
+> 
+> Yeah. I understand why you wanted to declare these cpu variables.
+> 
+> The mips cpuidle driver sounds like a bit particular. I believe I need some
+> clarification on the behavior of the hardware to understand correctly the
+> driver. Could you explain how the couples act vs the cpu ? And why
+> cpu_sibling is used instead of cpu_possible_mask ?
+> 
+> 
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/configs/malta_defconfig           | 1 +
- arch/mips/configs/malta_kvm_defconfig       | 1 +
- arch/mips/configs/malta_kvm_guest_defconfig | 1 +
- arch/mips/configs/maltaaprp_defconfig       | 1 +
- arch/mips/configs/maltasmtc_defconfig       | 1 +
- arch/mips/configs/maltasmvp_defconfig       | 1 +
- arch/mips/configs/maltaup_defconfig         | 1 +
- 7 files changed, 7 insertions(+)
+Sure. The CPUs that are coupled are actually VPEs (Virtual Processor
+Elements) within a single core. They share the compute resource (ALUs
+etc) of the core but have their own register state, ie. they're a form
+of simultaneous multithreading.
 
-diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
-index bc494b2..6bb89a3 100644
---- a/arch/mips/configs/malta_defconfig
-+++ b/arch/mips/configs/malta_defconfig
-@@ -223,6 +223,7 @@ CONFIG_MAC80211_RC_DEFAULT_PID=y
- CONFIG_MAC80211_MESH=y
- CONFIG_RFKILL=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
- CONFIG_CONNECTOR=m
- CONFIG_MTD=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
-index 041e41b..bc19ebb 100644
---- a/arch/mips/configs/malta_kvm_defconfig
-+++ b/arch/mips/configs/malta_kvm_defconfig
-@@ -225,6 +225,7 @@ CONFIG_MAC80211_RC_DEFAULT_PID=y
- CONFIG_MAC80211_MESH=y
- CONFIG_RFKILL=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
- CONFIG_CONNECTOR=m
- CONFIG_MTD=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/mips/configs/malta_kvm_guest_defconfig b/arch/mips/configs/malta_kvm_guest_defconfig
-index bf186df..e36681c 100644
---- a/arch/mips/configs/malta_kvm_guest_defconfig
-+++ b/arch/mips/configs/malta_kvm_guest_defconfig
-@@ -224,6 +224,7 @@ CONFIG_MAC80211_RC_DEFAULT_PID=y
- CONFIG_MAC80211_MESH=y
- CONFIG_RFKILL=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
- CONFIG_CONNECTOR=m
- CONFIG_MTD=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/mips/configs/maltaaprp_defconfig b/arch/mips/configs/maltaaprp_defconfig
-index 90b1725..fb042ce 100644
---- a/arch/mips/configs/maltaaprp_defconfig
-+++ b/arch/mips/configs/maltaaprp_defconfig
-@@ -78,6 +78,7 @@ CONFIG_NET_CLS_ACT=y
- CONFIG_NET_ACT_POLICE=y
- CONFIG_NET_CLS_IND=y
- # CONFIG_WIRELESS is not set
-+CONFIG_DEVTMPFS=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_IDE=y
-diff --git a/arch/mips/configs/maltasmtc_defconfig b/arch/mips/configs/maltasmtc_defconfig
-index 991da9f..4e59730 100644
---- a/arch/mips/configs/maltasmtc_defconfig
-+++ b/arch/mips/configs/maltasmtc_defconfig
-@@ -79,6 +79,7 @@ CONFIG_NET_CLS_ACT=y
- CONFIG_NET_ACT_POLICE=y
- CONFIG_NET_CLS_IND=y
- # CONFIG_WIRELESS is not set
-+CONFIG_DEVTMPFS=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_IDE=y
-diff --git a/arch/mips/configs/maltasmvp_defconfig b/arch/mips/configs/maltasmvp_defconfig
-index 1dafe79..e867c9a 100644
---- a/arch/mips/configs/maltasmvp_defconfig
-+++ b/arch/mips/configs/maltasmvp_defconfig
-@@ -81,6 +81,7 @@ CONFIG_NET_CLS_ACT=y
- CONFIG_NET_ACT_POLICE=y
- CONFIG_NET_CLS_IND=y
- # CONFIG_WIRELESS is not set
-+CONFIG_DEVTMPFS=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_IDE=y
-diff --git a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
-index b8a97a2..6234464 100644
---- a/arch/mips/configs/maltaup_defconfig
-+++ b/arch/mips/configs/maltaup_defconfig
-@@ -77,6 +77,7 @@ CONFIG_NET_CLS_ACT=y
- CONFIG_NET_ACT_POLICE=y
- CONFIG_NET_CLS_IND=y
- # CONFIG_WIRELESS is not set
-+CONFIG_DEVTMPFS=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_IDE=y
--- 
-1.8.5.5
+Coherence within a MIPS Coherent Processing System is a property of the
+core rather than of an individual VPE (since the VPEs within a core
+share the same L1 caches). So for idle states which are non-coherent the
+VPEs within the core are coupled. That covers all idle states beyond a
+simple "wait" instruction - clock gating or powering down a core
+requires it to become non-coherent first.
+
+cpu_sibling_mask is already setup to indicate which CPUs (VPEs) are
+within the same core as each other, which is why it is simply copied for
+coupled_cpus.
+
+Paul

@@ -1,42 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 10:40:11 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:21298 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2014 10:58:44 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:23191 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6871357AbaBTJkFJjnpZ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Feb 2014 10:40:05 +0100
-From:   Qais Yousef <Qais.Yousef@imgtec.com>
-To:     Viller Hsiao <villerhsiao@gmail.com>
-CC:     Steven Rostedt <rostedt@goodmis.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [PATCH] MIPS: ftrace: Fix icache flush range error
-Thread-Topic: [PATCH] MIPS: ftrace: Fix icache flush range error
-Thread-Index: AQHPLYKmtXKbQf1ZoEy1oTk70KTxUZq8t8AQgAC7JICAAG9M8A==
-Date:   Thu, 20 Feb 2014 09:39:09 +0000
-Message-ID: <392C4BDEFF12D14FA57A3F30B283D7D140C25B@LEMAIL01.le.imgtec.org>
-References: <1392821678-18556-1-git-send-email-villerhsiao@gmail.com>
-        <392C4BDEFF12D14FA57A3F30B283D7D140AE3A@LEMAIL01.le.imgtec.org>
- <CAA1JSYKzssWBFkgtgQTpk3H49jDToefOmAey-X-5Ztt508e7iw@mail.gmail.com>
-In-Reply-To: <CAA1JSYKzssWBFkgtgQTpk3H49jDToefOmAey-X-5Ztt508e7iw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.154.95]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S6871367AbaBTJ6mabQEW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Feb 2014 10:58:42 +0100
+Date:   Thu, 20 Feb 2014 09:57:32 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CC:     <linux-mips@linux-mips.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 08/10] MIPS: support use of cpuidle
+Message-ID: <20140220095732.GO25765@pburton-linux.le.imgtec.org>
+References: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com>
+ <1389794137-11361-9-git-send-email-paul.burton@imgtec.com>
+ <5305C24A.1070006@linaro.org>
 MIME-Version: 1.0
-X-SEF-Processed: 7_3_0_01192__2014_02_20_09_39_13
-Return-Path: <Qais.Yousef@imgtec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5305C24A.1070006@linaro.org>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+X-Originating-IP: [192.168.154.79]
+X-SEF-Processed: 7_3_0_01192__2014_02_20_09_57_45
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39349
+X-archive-position: 39350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Qais.Yousef@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,178 +42,133 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> -----Original Message-----
-> From: Viller Hsiao [mailto:villerhsiao@gmail.com]
-> Sent: 20 February 2014 02:54
-> To: Qais Yousef
-> Cc: Steven Rostedt; Frederic Weisbecker; Ingo Molnar; Ralf Baechle; linux-
-> mips@linux-mips.org
-> Subject: Re: [PATCH] MIPS: ftrace: Fix icache flush range error
+On Thu, Feb 20, 2014 at 09:52:26AM +0100, Daniel Lezcano wrote:
+> On 01/15/2014 02:55 PM, Paul Burton wrote:
+> >This patch lays the groundwork for MIPS platforms to make use of the
+> >cpuidle framework. The arch_cpu_idle function simply calls cpuidle &
+> >falls back to the regular cpu_wait path if cpuidle should fail (eg. if
+> >it's not selected or no driver is registered). A generic cpuidle state
+> >for the wait instruction is introduced, intended to ease use of the wait
+> >instruction from cpuidle drivers and reduce code duplication.
 > 
-> On Wed, Feb 19, 2014 at 11:51 PM, Qais Yousef <Qais.Yousef@imgtec.com>
-> wrote:
-> >> -----Original Message-----
-> >> From: linux-mips-bounce@linux-mips.org
-> >> [mailto:linux-mips-bounce@linux- mips.org] On Behalf Of Viller Hsiao
-> >> Sent: 19 February 2014 14:55
-> >> To: linux-mips@linux-mips.org
-> >> Cc: Viller Hsiao; Steven Rostedt; Frederic Weisbecker; Ingo Molnar;
-> >> Ralf Baechle
-> >> Subject: [PATCH] MIPS: ftrace: Fix icache flush range error
-> >>
-> >>
-> >> In 32-bit machine, the start address of flushing icache is wrong
-> >> after calculated address of 2nd modified instruction in function
-> >> tracer. The start address is shifted
-> >> 4 bytes from ordinary calculation.
-> >>
-> >> This causes problem when the address of 1st instruction is the last
-> >> word of one cache line. It will not be flushed at this case.
-> >>
-> >> Signed-off-by: Viller Hsiao <villerhsiao@gmail.com>
-> >> ---
-> >>  arch/mips/kernel/ftrace.c | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-> >> index
-> >> 185ba25..5bdc535 100644
-> >> --- a/arch/mips/kernel/ftrace.c
-> >> +++ b/arch/mips/kernel/ftrace.c
-> >> @@ -107,12 +107,12 @@ static int ftrace_modify_code_2(unsigned long
-> >> ip, unsigned int new_code1,
-> >>                               unsigned int new_code2)  {
-> >>       int faulted;
-> >> +     unsigned long ip2 = ip + 4;
-> >
-> > I think better to omit this variable...
-> >
-> >>
-> >>       safe_store_code(new_code1, ip, faulted);
-> >>       if (unlikely(faulted))
-> >>               return -EFAULT;
-> >> -     ip += 4;
-> >> -     safe_store_code(new_code2, ip, faulted);
-> >> +     safe_store_code(new_code2, ip2, faulted);
-> >
-> > And just do the addition directly here instead.
-> >
+> Hi,
 > 
-> Replacing ip2 to (ip + 4) causes compilation error because of the same
-> naming of symbolic operand and its input variable in safe_store().
-> ----
-> arch/mips/kernel/ftrace.c:114:29: error: expected identifier before '(' token
->   safe_store_code(new_code2, (ip + 4), faulted);
->                              ^
-> /home/villerhsiao/official/linux-torvalds/arch/mips/include/asm/ftrace.h:61:6:
-> note: in definition of macro 'safe_store'
->    : [dst] "r" (dst), [src] "r" (src)\
->       ^
-> arch/mips/kernel/ftrace.c:114:2: note: in expansion of macro 'safe_store_code'
->   safe_store_code(new_code2, (ip + 4), faulted);
->   ^
-> /home/villerhsiao/official/linux-torvalds/arch/mips/include/asm/ftrace.h:61:11:
-> error: expected ':' or ')' before string constant
->    : [dst] "r" (dst), [src] "r" (src)\
->            ^
-> /home/villerhsiao/official/linux-torvalds/arch/mips/include/asm/ftrace.h:69:2:
-> note: in expansion of macro 'safe_store'
->   safe_store(STR(sw), src, dst, error)
->   ^
-> arch/mips/kernel/ftrace.c:114:2: note: in expansion of macro 'safe_store_code'
->   safe_store_code(new_code2, (ip + 4), faulted);
->   ^
-> ----
-> If so, I will suggest to add the following patch to resolve it, (not
-> verified yet and I will do it before upload)
+> What is the status of this patchset ? Still need comments ?
+> 
+> Thanks
+>   -- Daniel
 > 
 
-It looks good to me generally. Please apply this patch before your original fix and resend.
+It's present in Ralf's current mips-for-linux-next branch, and in
+linux-next from next-20140210 up to todays next-20140220. So I presume
+barring any problems it should make it into 3.15.
 
 Thanks,
-Qais
+    Paul
 
-> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-> index ce35c9a..ec031e8 100644
-> --- a/arch/mips/include/asm/ftrace.h
-> +++ b/arch/mips/include/asm/ftrace.h
-> @@ -19,15 +19,15 @@
->  extern void _mcount(void);
->  #define mcount _mcount
-> 
-> -#define safe_load(load, src, dst, error) \
-> +#define safe_load(load, source, dest, error) \
->  do { \
->   asm volatile ( \
->   "1: " load " %[" STR(dst) "], 0(%[" STR(src) "])\n"\
-> - "   li %[" STR(error) "], 0\n" \
-> + "   li %[" STR(err) "], 0\n" \
->   "2:\n" \
->   \
->   ".section .fixup, \"ax\"\n" \
-> - "3: li %[" STR(error) "], 1\n" \
-> + "3: li %[" STR(err) "], 1\n" \
->   "   j 2b\n" \
->   ".previous\n" \
->   \
-> @@ -35,21 +35,21 @@ do { \
->   STR(PTR) "\t1b, 3b\n\t" \
->   ".previous\n" \
->   \
-> - : [dst] "=&r" (dst), [error] "=r" (error)\
-> - : [src] "r" (src) \
-> + : [dst] "=&r" (dest), [err] "=r" (error)\
-> + : [src] "r" (source) \
->   : "memory" \
->   ); \
->  } while (0)
-> 
-> -#define safe_store(store, src, dst, error) \
-> +#define safe_store(store, source, dest, error) \
->  do { \
->   asm volatile ( \
->   "1: " store " %[" STR(src) "], 0(%[" STR(dst) "])\n"\
-> - "   li %[" STR(error) "], 0\n" \
-> + "   li %[" STR(err) "], 0\n" \
->   "2:\n" \
->   \
->   ".section .fixup, \"ax\"\n" \
-> - "3: li %[" STR(error) "], 1\n" \
-> + "3: li %[" STR(err) "], 1\n" \
->   "   j 2b\n" \
->   ".previous\n" \
->   \
-> @@ -57,8 +57,8 @@ do { \
->   STR(PTR) "\t1b, 3b\n\t" \
->   ".previous\n" \
->   \
-> - : [error] "=r" (error) \
-> - : [dst] "r" (dst), [src] "r" (src)\
-> + : [err] "=r" (error) \
-> + : [dst] "r" (dest), [src] "r" (source)\
->   : "memory" \
->   ); \
->  } while (0)
-> 
-> >>       if (unlikely(faulted))
-> >>               return -EFAULT;
-> >>       flush_icache_range(ip, ip + 8); /* original ip + 12 */
 > >
-> > Care to fix this comment by removing it? I can't rationalise it and made me
-> confused for a bit.
-> > If you do remove it please mention the change in the commit message.
-> Ok. I will check it.
+> >Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> >Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> >Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> >Cc: linux-pm@vger.kernel.org
+> >---
+> >  arch/mips/Kconfig            |  2 ++
+> >  arch/mips/include/asm/idle.h | 14 ++++++++++++++
+> >  arch/mips/kernel/idle.c      | 20 +++++++++++++++++++-
+> >  3 files changed, 35 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> >index 5bc27c0..95f2f11 100644
+> >--- a/arch/mips/Kconfig
+> >+++ b/arch/mips/Kconfig
+> >@@ -1838,6 +1838,8 @@ config CPU_R4K_CACHE_TLB
+> >  	bool
+> >  	default y if !(CPU_R3000 || CPU_R8000 || CPU_SB1 || CPU_TX39XX || CPU_CAVIUM_OCTEON)
+> >
+> >+source "drivers/cpuidle/Kconfig"
+> >+
+> >  choice
+> >  	prompt "MIPS MT options"
+> >
+> >diff --git a/arch/mips/include/asm/idle.h b/arch/mips/include/asm/idle.h
+> >index d192158..d9f932d 100644
+> >--- a/arch/mips/include/asm/idle.h
+> >+++ b/arch/mips/include/asm/idle.h
+> >@@ -1,6 +1,7 @@
+> >  #ifndef __ASM_IDLE_H
+> >  #define __ASM_IDLE_H
+> >
+> >+#include <linux/cpuidle.h>
+> >  #include <linux/linkage.h>
+> >
+> >  extern void (*cpu_wait)(void);
+> >@@ -20,4 +21,17 @@ static inline int address_is_in_r4k_wait_irqoff(unsigned long addr)
+> >  	       addr < (unsigned long)__pastwait;
+> >  }
+> >
+> >+extern int mips_cpuidle_wait_enter(struct cpuidle_device *dev,
+> >+				   struct cpuidle_driver *drv, int index);
+> >+
+> >+#define MIPS_CPUIDLE_WAIT_STATE {\
+> >+	.enter			= mips_cpuidle_wait_enter,\
+> >+	.exit_latency		= 1,\
+> >+	.target_residency	= 1,\
+> >+	.power_usage		= UINT_MAX,\
+> >+	.flags			= CPUIDLE_FLAG_TIME_VALID,\
+> >+	.name			= "wait",\
+> >+	.desc			= "MIPS wait",\
+> >+}
+> >+
+> >  #endif /* __ASM_IDLE_H  */
+> >diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
+> >index 3553243..64e91e4 100644
+> >--- a/arch/mips/kernel/idle.c
+> >+++ b/arch/mips/kernel/idle.c
+> >@@ -11,6 +11,7 @@
+> >   * as published by the Free Software Foundation; either version
+> >   * 2 of the License, or (at your option) any later version.
+> >   */
+> >+#include <linux/cpuidle.h>
+> >  #include <linux/export.h>
+> >  #include <linux/init.h>
+> >  #include <linux/irqflags.h>
+> >@@ -239,7 +240,7 @@ static void smtc_idle_hook(void)
+> >  #endif
+> >  }
+> >
+> >-void arch_cpu_idle(void)
+> >+static void mips_cpu_idle(void)
+> >  {
+> >  	smtc_idle_hook();
+> >  	if (cpu_wait)
+> >@@ -247,3 +248,20 @@ void arch_cpu_idle(void)
+> >  	else
+> >  		local_irq_enable();
+> >  }
+> >+
+> >+void arch_cpu_idle(void)
+> >+{
+> >+	if (cpuidle_idle_call())
+> >+		mips_cpu_idle();
+> >+}
+> >+
+> >+#ifdef CONFIG_CPU_IDLE
+> >+
+> >+int mips_cpuidle_wait_enter(struct cpuidle_device *dev,
+> >+			    struct cpuidle_driver *drv, int index)
+> >+{
+> >+	mips_cpu_idle();
+> >+	return index;
+> >+}
+> >+
+> >+#endif
+> >
 > 
-> >
-> > Nice catch by the way.
-> >
-> > Cheers,
-> > Qais
-> >
-> >> --
-> >> 1.8.4.3
-> >>
-> >
 > 
-> Best Regards,
-> Viller
+> -- 
+>  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> 
+> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+> <http://twitter.com/#!/linaroorg> Twitter |
+> <http://www.linaro.org/linaro-blog/> Blog
+> 

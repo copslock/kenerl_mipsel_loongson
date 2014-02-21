@@ -1,52 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2014 23:27:30 +0100 (CET)
-Received: from mail-qa0-f45.google.com ([209.85.216.45]:50218 "EHLO
-        mail-qa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823119AbaBUW1214HjU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Feb 2014 23:27:28 +0100
-Received: by mail-qa0-f45.google.com with SMTP id m5so4068545qaj.18
-        for <linux-mips@linux-mips.org>; Fri, 21 Feb 2014 14:27:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version:content-type;
-        bh=TlyuP9kFfR1sT6ErVEj7CKIELpHnDcGRNjizsUopOTE=;
-        b=Sfdbci7qed4TqG54SNq1fNGlB89tXj4Co+hVot5rOOTwW4c0INZ6QRRlROgsOOvUbD
-         kyW1lAd/rkXU42EAEI31pxcJ24O1aaU9eFAncVbUnvH+vKyHRe30H+QpHqOxrJtgQpLT
-         eXy12BLzf/g1jPzTAVnwAlA+Zh8RsleW/o+2M4CxiaTiCdNZ3bkeA++h6eDrS6aId17J
-         gKIQ2jn1PQrlBAUBHLYswAxCAeDS74P947BoBl7cKwPifKy3F4RCFoa8TZDb7tS9r6TV
-         QQGjyMvntl6kxNskw4zYhjGfawpW29wt9R20Y/PoVL+K4TaWDPLQQrbNpA+a9R4+6Gf9
-         zb2Q==
-X-Gm-Message-State: ALoCoQn8R3vX/Qhg4MNlJXc8EDHm8U9Aj4AUXrB0xw1e5nOuho4weKMOumeH7+Vg2Pdxb5onxoMY
-X-Received: by 10.224.67.193 with SMTP id s1mr13504385qai.53.1393021642447;
-        Fri, 21 Feb 2014 14:27:22 -0800 (PST)
-Received: from xanadu.home (modemcable177.143-130-66.mc.videotron.ca. [66.130.143.177])
-        by mx.google.com with ESMTPSA id u10sm16764298qar.21.2014.02.21.14.27.21
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 21 Feb 2014 14:27:21 -0800 (PST)
-Date:   Fri, 21 Feb 2014 17:27:20 -0500 (EST)
-From:   Nicolas Pitre <nicolas.pitre@linaro.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Paul Burton <paul.burton@imgtec.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-pm@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] cpuidle/mips: remove redundant cpuidle_idle_call()
-In-Reply-To: <20140221214428.GJ19285@linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1402211719140.17677@knanqh.ubzr>
-References: <alpine.LFD.2.11.1402171101060.17677@knanqh.ubzr> <20140221214428.GJ19285@linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2014 00:47:29 +0100 (CET)
+Received: from mail-ob0-f174.google.com ([209.85.214.174]:64042 "EHLO
+        mail-ob0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816887AbaBUXr1LKfrf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Feb 2014 00:47:27 +0100
+Received: by mail-ob0-f174.google.com with SMTP id uy5so5160758obc.33
+        for <multiple recipients>; Fri, 21 Feb 2014 15:47:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=2Wo0wTsoaL3LgAKG4dl93p3sGDXyU47ZHqMbWbLh2wE=;
+        b=Gvmf5BuKc+jxeioI2BszJO6G6kNqQ573mEHIEgTTMBkGrhKxsb6FzT/AHVScffd5QW
+         ySAHtIxX6wgNnltpo2Y6OiR53aLK+cEVT7hw28fHzVVLjNvqD6QX1fgOaJ6+gBR3XiZL
+         cvTD88+/8Xkk9o/TB0uMR2MfSXovbhg2nndmqyvdaqBzPR+ux066+N2YE4F5FMkN8QKD
+         vjNc0CBA1yMBmJzlqg4FQJIumeLW+yGANa+Ce60EJNBaIPAcqUKrDtxYucWS30sljak1
+         ijBd4dVwbKI3JIfJyywb2AlT3b+vjOzuSwjWodH9Mpv8LDOIVRXTi3QIEi4UK59VYy2/
+         MwSg==
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <nicolas.pitre@linaro.org>
+X-Received: by 10.182.40.201 with SMTP id z9mr8389275obk.45.1393026440708;
+ Fri, 21 Feb 2014 15:47:20 -0800 (PST)
+Received: by 10.76.172.65 with HTTP; Fri, 21 Feb 2014 15:47:20 -0800 (PST)
+Date:   Fri, 21 Feb 2014 20:47:20 -0300
+Message-ID: <CAEZm4MLr-Eic7uaiDd+KdbJsFsqrSd5AkKX7HHoSQUQ0AyRxyw@mail.gmail.com>
+Subject: [BUG] Build error due -fstack-protector-strong not supported by compiler
+From:   Juan Emilio Ledesma Torres <jueleto@gmail.com>
+To:     Kees Cook <keescook@chromium.org>,
+        "Cc: Arjan van de Ven" <arjan@linux.intel.com>,
+        "Cc: Michal Marek" <mmarek@suse.cz>,
+        "Cc: Russell King" <linux@arm.linux.org.uk>,
+        "Cc: Ralf Baechle" <ralf@linux-mips.org>,
+        "Cc: Paul Mundt" <lethal@linux-sh.org>,
+        "Cc: James Hogan" <james.hogan@imgtec.com>,
+        "Cc: Stephen Rothwell" <sfr@canb.auug.org.au>,
+        "Cc: Shawn Guo" <shawn.guo@linaro.org>,
+        "Cc: Linus Torvalds" <torvalds@linux-foundation.org>,
+        "Cc: Andrew Morton" <akpm@linux-foundation.org>,
+        "Cc: Peter Zijlstra" <peterz@infradead.org>,
+        "Cc: Thomas Gleixner" <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-arch@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <jueleto@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39368
+X-archive-position: 39369
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nicolas.pitre@linaro.org
+X-original-sender: jueleto@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,21 +59,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 21 Feb 2014, Ralf Baechle wrote:
+Hello,
 
-> On Mon, Feb 17, 2014 at 11:09:45AM -0500, Nicolas Pitre wrote:
-> 
-> > I noticed commit c0b5d598aefda in linux-next adds a call to 
-> > cpuidle_idle_call().  At the same time we're rationalizing the idle 
-> > handling code in order to integrate it with the scheduler proper.  
-> > Please note that a similar patch to the one below will be necessary once 
-> > everything gets merged together.
-> 
-> So how shall we merge this patch, shall I fold it into c0b5d598aefda or?
+When building latest Torvalds tree (HEAD d158fc7f) on a x86_64 machine
+using the attached defconfig I got the following build error:
 
-Merging it on your side is probably the best option.  There would be a 
-window in mainline during which the callback registered with cpuidle 
-won't be invoked, but that is not worse than the v3.13 behavior.
+/home/pc12/linux/arch/x86/Makefile:118: stack-protector enabled but
+compiler support broken
+Makefile:614: Cannot use CONFIG_CC_STACKPROTECTOR_STRONG:
+-fstack-protector-strong not supported by compiler
 
+Makefile:614: Cannot use CONFIG_CC_STACKPROTECTOR_STRONG:
+-fstack-protector-strong not supported by compiler
+make[1]: No se hace nada para <<all>>.
+make[1]: No se hace nada para <<relocs>>.
+  CHK     include/config/kernel.release
+  CHK     include/generated/uapi/linux/version.h
+  CHK     include/generated/utsrelease.h
+  CC      kernel/bounds.s
+cc1: error: the command line option is not recognized '-fstack-protector-strong'
+make[1]: *** [kernel/bounds.s] Error 1
+make: *** [prepare0] Error 2
 
-Nicolas
+I had already reported the bug on bugzilla [0] but I'm also reporting
+here for completeness.
+
+Bisecting this break was introduced on commit 19952a92
+("stackprotector: Unify the HAVE_CC_STACKPROTECTOR logic between
+architectures")
+
+I don't know if this problem is with the above commit or with my
+compiler (gcc (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3)
+
+[0]: https://bugzilla.kernel.org/show_bug.cgi?id=70951
+
+-- 
+
+Best regards,
+Juan Ledesma

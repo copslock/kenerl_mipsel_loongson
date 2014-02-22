@@ -1,52 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2014 00:47:29 +0100 (CET)
-Received: from mail-ob0-f174.google.com ([209.85.214.174]:64042 "EHLO
-        mail-ob0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816887AbaBUXr1LKfrf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Feb 2014 00:47:27 +0100
-Received: by mail-ob0-f174.google.com with SMTP id uy5so5160758obc.33
-        for <multiple recipients>; Fri, 21 Feb 2014 15:47:20 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2014 08:34:30 +0100 (CET)
+Received: from mail-pb0-f41.google.com ([209.85.160.41]:56475 "EHLO
+        mail-pb0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6815989AbaBVHe1rybt5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Feb 2014 08:34:27 +0100
+Received: by mail-pb0-f41.google.com with SMTP id up15so4447976pbc.0
+        for <multiple recipients>; Fri, 21 Feb 2014 23:34:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        bh=2Wo0wTsoaL3LgAKG4dl93p3sGDXyU47ZHqMbWbLh2wE=;
-        b=Gvmf5BuKc+jxeioI2BszJO6G6kNqQ573mEHIEgTTMBkGrhKxsb6FzT/AHVScffd5QW
-         ySAHtIxX6wgNnltpo2Y6OiR53aLK+cEVT7hw28fHzVVLjNvqD6QX1fgOaJ6+gBR3XiZL
-         cvTD88+/8Xkk9o/TB0uMR2MfSXovbhg2nndmqyvdaqBzPR+ux066+N2YE4F5FMkN8QKD
-         vjNc0CBA1yMBmJzlqg4FQJIumeLW+yGANa+Ce60EJNBaIPAcqUKrDtxYucWS30sljak1
-         ijBd4dVwbKI3JIfJyywb2AlT3b+vjOzuSwjWodH9Mpv8LDOIVRXTi3QIEi4UK59VYy2/
-         MwSg==
-MIME-Version: 1.0
-X-Received: by 10.182.40.201 with SMTP id z9mr8389275obk.45.1393026440708;
- Fri, 21 Feb 2014 15:47:20 -0800 (PST)
-Received: by 10.76.172.65 with HTTP; Fri, 21 Feb 2014 15:47:20 -0800 (PST)
-Date:   Fri, 21 Feb 2014 20:47:20 -0300
-Message-ID: <CAEZm4MLr-Eic7uaiDd+KdbJsFsqrSd5AkKX7HHoSQUQ0AyRxyw@mail.gmail.com>
-Subject: [BUG] Build error due -fstack-protector-strong not supported by compiler
-From:   Juan Emilio Ledesma Torres <jueleto@gmail.com>
-To:     Kees Cook <keescook@chromium.org>,
-        "Cc: Arjan van de Ven" <arjan@linux.intel.com>,
-        "Cc: Michal Marek" <mmarek@suse.cz>,
-        "Cc: Russell King" <linux@arm.linux.org.uk>,
-        "Cc: Ralf Baechle" <ralf@linux-mips.org>,
-        "Cc: Paul Mundt" <lethal@linux-sh.org>,
-        "Cc: James Hogan" <james.hogan@imgtec.com>,
-        "Cc: Stephen Rothwell" <sfr@canb.auug.org.au>,
-        "Cc: Shawn Guo" <shawn.guo@linaro.org>,
-        "Cc: Linus Torvalds" <torvalds@linux-foundation.org>,
-        "Cc: Andrew Morton" <akpm@linux-foundation.org>,
-        "Cc: Peter Zijlstra" <peterz@infradead.org>,
-        "Cc: Thomas Gleixner" <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, linux-arch@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <jueleto@gmail.com>
+        h=from:to:cc:subject:date:message-id;
+        bh=UH4u6ztrD2dtXxICDSg8iklVfSqNdxtcgVV8Z+TzaUs=;
+        b=DFC/nrPtvdZsrf8PmMTitKT5gDKHWfFuuzRIztdXy+reqyV5MLXdFqaHX1U8I6yCqN
+         yq1+aqpH9A3KQFK2NlhPwr7MR0tlMAxa6sMixgxeDeLdU4jcAS1uEplkzzF/goUTIU2t
+         65nxv3xBHfIvoWkFyKUqWfLDRrO/Y+xPXcNJnfFRqGoJvWgYGiBu50PuaS3xND44OTxr
+         CxUepe1AXTOsKCdHXCndCM/JLiJ+kHWAbxKESabjy3K123moy3rdsEze4Hzq1lV3RRvH
+         kbcurrI8Qwe13+QJCCWcJwZBjz2AUXVTifFgyJ9zRAyPIL6pLPHOkDS0qcBHXLMZkRzc
+         7zcA==
+X-Received: by 10.66.148.230 with SMTP id tv6mr13848848pab.155.1393054460989;
+        Fri, 21 Feb 2014 23:34:20 -0800 (PST)
+Received: from localhost.localdomain (42-72-119-126.dynamic-ip.hinet.net. [42.72.119.126])
+        by mx.google.com with ESMTPSA id n6sm28331046pbj.22.2014.02.21.23.34.13
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 21 Feb 2014 23:34:20 -0800 (PST)
+From:   Viller Hsiao <villerhsiao@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Viller Hsiao <villerhsiao@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Qais Yousef <Qais.Yousef@imgtec.com>
+Subject: 
+Date:   Sat, 22 Feb 2014 15:31:56 +0800
+Message-Id: <1393054318-27356-1-git-send-email-villerhsiao@gmail.com>
+X-Mailer: git-send-email 1.8.4.3
+Return-Path: <villerhsiao@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39369
+X-archive-position: 39370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jueleto@gmail.com
+X-original-sender: villerhsiao@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,41 +55,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+Subject: [PATCH v2 0/2] MIPS: ftrace: Fix icache flush issue
 
-When building latest Torvalds tree (HEAD d158fc7f) on a x86_64 machine
-using the attached defconfig I got the following build error:
+In 32-bit mode, the start address of flushing icache is wrong because
+of error address calculation. It causes system crash at boot when
+dynamic function trace is enabled. This issue existed since linux-3.8.
 
-/home/pc12/linux/arch/x86/Makefile:118: stack-protector enabled but
-compiler support broken
-Makefile:614: Cannot use CONFIG_CC_STACKPROTECTOR_STRONG:
--fstack-protector-strong not supported by compiler
+In the patch set, I fixed the flushing range and refined the macros
+used by it to pass compilation.
 
-Makefile:614: Cannot use CONFIG_CC_STACKPROTECTOR_STRONG:
--fstack-protector-strong not supported by compiler
-make[1]: No se hace nada para <<all>>.
-make[1]: No se hace nada para <<relocs>>.
-  CHK     include/config/kernel.release
-  CHK     include/generated/uapi/linux/version.h
-  CHK     include/generated/utsrelease.h
-  CC      kernel/bounds.s
-cc1: error: the command line option is not recognized '-fstack-protector-strong'
-make[1]: *** [kernel/bounds.s] Error 1
-make: *** [prepare0] Error 2
+Patch 1 is tried to improve the usability of some macros such that
+we can make patch 2 cleaner. Patch 2 fixes this issue.
 
-I had already reported the bug on bugzilla [0] but I'm also reporting
-here for completeness.
+This patch set is based on commit 7d3f1a5 of mips-for-linux-next branch.
 
-Bisecting this break was introduced on commit 19952a92
-("stackprotector: Unify the HAVE_CC_STACKPROTECTOR logic between
-architectures")
+Viller Hsiao (2):
+  MIPS: ftrace: Tweak safe_load()/safe_store() macros
+  MIPS: ftrace: Fix icache flush range error
 
-I don't know if this problem is with the above commit or with my
-compiler (gcc (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3)
-
-[0]: https://bugzilla.kernel.org/show_bug.cgi?id=70951
+ arch/mips/include/asm/ftrace.h | 20 ++++++++++----------
+ arch/mips/kernel/ftrace.c      |  5 ++---
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
 -- 
-
-Best regards,
-Juan Ledesma
+1.8.4.3

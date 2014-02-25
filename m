@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2014 15:39:37 +0100 (CET)
-Received: from mail-wi0-f180.google.com ([209.85.212.180]:60557 "EHLO
-        mail-wi0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827297AbaBYOjedS3kR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Feb 2014 15:39:34 +0100
-Received: by mail-wi0-f180.google.com with SMTP id hm4so815191wib.1
-        for <linux-mips@linux-mips.org>; Tue, 25 Feb 2014 06:39:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2014 16:33:53 +0100 (CET)
+Received: from mail-wg0-f51.google.com ([74.125.82.51]:50013 "EHLO
+        mail-wg0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6831299AbaBYPduDw8FC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Feb 2014 16:33:50 +0100
+Received: by mail-wg0-f51.google.com with SMTP id a1so549720wgh.10
+        for <linux-mips@linux-mips.org>; Tue, 25 Feb 2014 07:33:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
          :cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=G2i3NOsQzSgDiFrnhwrfAOcB3zQV4fRHJpayeJlWWv4=;
-        b=jSLay6nP1ArVa7CqHH83HAGjUC7uWf+UKTalsmDqaUOyUCdwZrZjISCXeA2V1hcmNY
-         SxRUcRbuTvmiANWvx2T+Hy8XPc675V1FcAX1MPkIbCmnaBjOt1aG9sD7ss5NZ/bZmYGm
-         +IVRFsRBm/jxRbIw2XqIzqWOENjw70J94NNQfh9D+xriRil8l0+ylpwK7bgELf+FXX1h
-         ZVQRXxGJqvVA7aKm2FOQC6zIF4CodAvnCc5VSTjuOFMaMFkK5Y8oie9Rr5m616ICgaYI
-         LiVkC8sudLXn55s1StPHHrbU6CnEsNu3zmB+O61O96brpBkfRDgMznmAjbebE1NXoIue
-         WCvg==
-X-Gm-Message-State: ALoCoQmqPk3PUKCu8ViF8OyQw/l7gUT2EV+s8Mlkq6QJ+vFCaCubSPFGxVmp8uME0KA+3mHi5AtD
-X-Received: by 10.180.219.44 with SMTP id pl12mr3489717wic.12.1393339168794;
-        Tue, 25 Feb 2014 06:39:28 -0800 (PST)
+        bh=0iCg2xybOIQeLDf7atvb+3KQKV6PQLkyeWUI8c4xXB8=;
+        b=YQZwOwLlMt90Th/0MmIeS0QktqOrbD7aU1X4nnIAxUw8NMsk/dXxeIB1xoLE4j/mFX
+         tZNf4yMDhUKQuAeyGHqt1BwxBw3rV9F1E053Qu7Png7F8EFpM0HwGttw25AT5yF5Ak3B
+         fFH20Q/iPZh5WG0iVUgiYn5iXObBTp+DxveCvRF/yRYXmxrKgebTekqzbnVNucpTuybK
+         FyfIpRN46mRkCyDGf+ZWR82CXe3vWheLxp8bZOcVApUAcc+CuoH0I8jVScpkSh76IJ7g
+         93kSeM9hIrOt5kA0gPMEEl4HZLds5wWoaH/y9eKpZ6a5zPIop0i02SIl5OsHmPxTFcKE
+         xGtw==
+X-Gm-Message-State: ALoCoQnv9iQtcMrg5PirKrSStROtPRejAJA/0V3lGvliryRNKO65QjZ6vjdhJf4HaLvT+lNFE163
+X-Received: by 10.180.19.138 with SMTP id f10mr3655076wie.11.1393342424622;
+        Tue, 25 Feb 2014 07:33:44 -0800 (PST)
 Received: from [192.168.1.150] (AToulouse-654-1-343-25.w90-55.abo.wanadoo.fr. [90.55.62.25])
-        by mx.google.com with ESMTPSA id br10sm51255266wjb.3.2014.02.25.06.39.27
+        by mx.google.com with ESMTPSA id t6sm1148113wix.4.2014.02.25.07.33.43
         for <multiple recipients>
         (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 25 Feb 2014 06:39:28 -0800 (PST)
-Message-ID: <530CAB22.5030506@linaro.org>
-Date:   Tue, 25 Feb 2014 15:39:30 +0100
+        Tue, 25 Feb 2014 07:33:44 -0800 (PST)
+Message-ID: <530CB7DA.7060305@linaro.org>
+Date:   Tue, 25 Feb 2014 16:33:46 +0100
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
 User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     linux-mips@linux-mips.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH 09/10] cpuidle: declare cpuidle_dev in cpuidle.h
-References: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com> <1389794137-11361-10-git-send-email-paul.burton@imgtec.com> <53060496.6000303@linaro.org> <20140220134118.GT25765@pburton-linux.le.imgtec.org> <530608C2.3070507@linaro.org> <20140220140033.GU25765@pburton-linux.le.imgtec.org>
-In-Reply-To: <20140220140033.GU25765@pburton-linux.le.imgtec.org>
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-pm@vger.kernel.org
+Subject: Re: [PATCH 10/10] cpuidle: cpuidle driver for MIPS CPS
+References: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com> <1389794137-11361-11-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1389794137-11361-11-git-send-email-paul.burton@imgtec.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39379
+X-archive-position: 39380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,81 +58,665 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/20/2014 03:00 PM, Paul Burton wrote:
-> On Thu, Feb 20, 2014 at 02:53:06PM +0100, Daniel Lezcano wrote:
->> On 02/20/2014 02:41 PM, Paul Burton wrote:
->>> On Thu, Feb 20, 2014 at 02:35:18PM +0100, Daniel Lezcano wrote:
->>>> On 01/15/2014 02:55 PM, Paul Burton wrote:
->>>>> Declaring this allows drivers which need to initialise each struct
->>>>> cpuidle_device at initialisation time to make use of the structures
->>>>> already defined in cpuidle.c, rather than having to wastefully define
->>>>> their own.
->>>>>
->>>>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->>>>> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
->>>>> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
->>>>> Cc: linux-pm@vger.kernel.org
->>>>> ---
->>>>>   include/linux/cpuidle.h | 1 +
->>>>>   1 file changed, 1 insertion(+)
->>>>>
->>>>> diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
->>>>> index 50fcbb0..bab4f33 100644
->>>>> --- a/include/linux/cpuidle.h
->>>>> +++ b/include/linux/cpuidle.h
->>>>> @@ -84,6 +84,7 @@ struct cpuidle_device {
->>>>>   };
->>>>>
->>>>>   DECLARE_PER_CPU(struct cpuidle_device *, cpuidle_devices);
->>>>> +DECLARE_PER_CPU(struct cpuidle_device, cpuidle_dev);
->>>>
->>>>
->>>> Nak. When a device is registered, it is assigned to the cpuidle_devices
->>>> pointer and the backend driver should use it.
->>>>
->>>
->>> Yes, but then if the driver needs to initialise the coupled_cpus mask
->>> then it cannot do so until after the device has been registered. During
->>> registration the cpuidle_coupled_register_device will then see the empty
->>> coupled_cpus mask & do nothing. The only other ways around this would be
->>> for the driver to define its own per-cpu struct cpuidle_device (which as
->>> I state in the commit message seems wasteful when cpuidle already
->>> defined them), or for cpuidle_coupled_register_device to be called later
->>> after the driver had a chance to modify devices via the cpuidle_devices
->>> pointers.
->>
->> Yeah. I understand why you wanted to declare these cpu variables.
->>
->> The mips cpuidle driver sounds like a bit particular. I believe I need some
->> clarification on the behavior of the hardware to understand correctly the
->> driver. Could you explain how the couples act vs the cpu ? And why
->> cpu_sibling is used instead of cpu_possible_mask ?
->>
->>
+On 01/15/2014 02:55 PM, Paul Burton wrote:
+> This patch introduces a cpuidle driver implementation for the MIPS
+> Coherent Processing System (ie. Coherence Manager, Cluster Power
+> Controller). It allows for use of the following idle states:
 >
-> Sure. The CPUs that are coupled are actually VPEs (Virtual Processor
-> Elements) within a single core. They share the compute resource (ALUs
-> etc) of the core but have their own register state, ie. they're a form
-> of simultaneous multithreading.
+>   - Coherent wait. This is the usual MIPS wait instruction.
 >
-> Coherence within a MIPS Coherent Processing System is a property of the
-> core rather than of an individual VPE (since the VPEs within a core
-> share the same L1 caches). So for idle states which are non-coherent the
-> VPEs within the core are coupled. That covers all idle states beyond a
-> simple "wait" instruction - clock gating or powering down a core
-> requires it to become non-coherent first.
+>   - Non-coherent wait. In this state a core will disable coherency with
+>     the rest of the system before running the wait instruction. This
+>     eliminates coherence interventions which would typically be used to
+>     keep cores coherent.
 >
-> cpu_sibling_mask is already setup to indicate which CPUs (VPEs) are
-> within the same core as each other, which is why it is simply copied for
-> coupled_cpus.
+> These two states lay the groundwork for deeper states to be implemented
+> later, since all deeper states require the core to become non-coherent.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: linux-pm@vger.kernel.org
+> ---
+>   drivers/cpuidle/Kconfig            |   5 +
+>   drivers/cpuidle/Kconfig.mips       |  14 +
+>   drivers/cpuidle/Makefile           |   3 +
+>   drivers/cpuidle/cpuidle-mips-cps.c | 545 +++++++++++++++++++++++++++++++++++++
+>   4 files changed, 567 insertions(+)
+>   create mode 100644 drivers/cpuidle/Kconfig.mips
+>   create mode 100644 drivers/cpuidle/cpuidle-mips-cps.c
+>
+> diff --git a/drivers/cpuidle/Kconfig b/drivers/cpuidle/Kconfig
+> index b3fb81d..11ff281 100644
+> --- a/drivers/cpuidle/Kconfig
+> +++ b/drivers/cpuidle/Kconfig
+> @@ -35,6 +35,11 @@ depends on ARM
+>   source "drivers/cpuidle/Kconfig.arm"
+>   endmenu
+>
+> +menu "MIPS CPU Idle Drivers"
+> +depends on MIPS
+> +source "drivers/cpuidle/Kconfig.mips"
+> +endmenu
+> +
+>   endif
+>
+>   config ARCH_NEEDS_CPU_IDLE_COUPLED
+> diff --git a/drivers/cpuidle/Kconfig.mips b/drivers/cpuidle/Kconfig.mips
+> new file mode 100644
+> index 0000000..dc96691
+> --- /dev/null
+> +++ b/drivers/cpuidle/Kconfig.mips
+> @@ -0,0 +1,14 @@
+> +#
+> +# MIPS CPU Idle drivers
+> +#
+> +
+> +config MIPS_CPS_CPUIDLE
+> +	bool "Support for MIPS Coherent Processing Systems"
+> +	depends on SYS_SUPPORTS_MIPS_CPS && CPU_MIPSR2 && !MIPS_MT_SMTC
+> +	select ARCH_NEEDS_CPU_IDLE_COUPLED if MIPS_MT
+> +	select MIPS_CM
+> +	help
+> +	  Select this option to enable CPU idle driver for systems based
+> +	  around the MIPS Coherent Processing System architecture - that
+> +	  is, those with a Coherence Manager & optionally a Cluster
+> +	  Power Controller.
+> diff --git a/drivers/cpuidle/Makefile b/drivers/cpuidle/Makefile
+> index 527be28..693cd95 100644
+> --- a/drivers/cpuidle/Makefile
+> +++ b/drivers/cpuidle/Makefile
+> @@ -13,3 +13,6 @@ obj-$(CONFIG_ARM_KIRKWOOD_CPUIDLE)	+= cpuidle-kirkwood.o
+>   obj-$(CONFIG_ARM_ZYNQ_CPUIDLE)		+= cpuidle-zynq.o
+>   obj-$(CONFIG_ARM_U8500_CPUIDLE)         += cpuidle-ux500.o
+>   obj-$(CONFIG_ARM_AT91_CPUIDLE)          += cpuidle-at91.o
+> +
+> +# MIPS SoC drivers
+> +obj-$(CONFIG_MIPS_CPS_CPUIDLE)		+= cpuidle-mips-cps.o
+> diff --git a/drivers/cpuidle/cpuidle-mips-cps.c b/drivers/cpuidle/cpuidle-mips-cps.c
+> new file mode 100644
+> index 0000000..a78bfb4
+> --- /dev/null
+> +++ b/drivers/cpuidle/cpuidle-mips-cps.c
+> @@ -0,0 +1,545 @@
+> +/*
+> + * Copyright (C) 2013 Imagination Technologies
+> + * Author: Paul Burton <paul.burton@imgtec.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms of the GNU General Public License as published by the
+> + * Free Software Foundation;  either version 2 of the  License, or (at your
+> + * option) any later version.
+> + */
+> +
+> +#include <linux/cpuidle.h>
+> +#include <linux/init.h>
+> +#include <linux/kconfig.h>
+> +#include <linux/slab.h>
+> +
+> +#include <asm/cacheflush.h>
+> +#include <asm/cacheops.h>
+> +#include <asm/idle.h>
+> +#include <asm/mips-cm.h>
+> +#include <asm/mipsmtregs.h>
+> +#include <asm/uasm.h>
 
-Hi Paul,
+The convention is to not include headers from arch. These headers 
+shouldn't appear in this driver.
 
-thanks for the explanation.
+> +/*
+> + * The CM & CPC can only handle coherence & power control on a per-core basis,
+> + * thus in an MT system the VPEs within each core are coupled and can only
+> + * enter or exit states requiring CM or CPC assistance in unison.
+> + */
+> +#ifdef CONFIG_MIPS_MT
+> +# define coupled_coherence cpu_has_mipsmt
+> +#else
+> +# define coupled_coherence 0
+> +#endif
+> +
+> +/*
+> + * cps_nc_entry_fn - type of a generated non-coherent state entry function
+> + * @vpe_mask: a bitmap of online coupled VPEs, excluding this one
+> + * @online: the count of online coupled VPEs (weight of vpe_mask + 1)
+> + *
+> + * The code entering & exiting non-coherent states is generated at runtime
+> + * using uasm, in order to ensure that the compiler cannot insert a stray
+> + * memory access at an unfortunate time and to allow the generation of optimal
+> + * core-specific code particularly for cache routines. If coupled_coherence
+> + * is non-zero, returns the number of VPEs that were in the wait state at the
+> + * point this VPE left it. Returns garbage if coupled_coherence is zero.
+> + */
+> +typedef unsigned (*cps_nc_entry_fn)(unsigned vpe_mask, unsigned online);
+> +
+> +/*
+> + * The entry point of the generated non-coherent wait entry/exit function.
+> + * Actually per-core rather than per-CPU.
+> + */
+> +static DEFINE_PER_CPU_READ_MOSTLY(cps_nc_entry_fn, ncwait_asm_enter);
+> +
+> +/*
+> + * Indicates the number of coupled VPEs ready to operate in a non-coherent
+> + * state. Actually per-core rather than per-CPU.
+> + */
+> +static DEFINE_PER_CPU_ALIGNED(u32, nc_ready_count);
+> +
+> +/* A somewhat arbitrary number of labels & relocs for uasm */
+> +static struct uasm_label labels[32] __initdata;
+> +static struct uasm_reloc relocs[32] __initdata;
+> +
+> +/* CPU dependant sync types */
+> +static unsigned stype_intervention;
+> +static unsigned stype_memory;
+> +static unsigned stype_ordering;
+> +
+> +enum mips_reg {
+> +	zero, at, v0, v1, a0, a1, a2, a3,
+> +	t0, t1, t2, t3, t4, t5, t6, t7,
+> +	s0, s1, s2, s3, s4, s5, s6, s7,
+> +	t8, t9, k0, k1, gp, sp, fp, ra,
+> +};
+> +
+> +static int cps_ncwait_enter(struct cpuidle_device *dev,
+> +			    struct cpuidle_driver *drv, int index)
+> +{
+> +	unsigned core = cpu_data[dev->cpu].core;
+> +	unsigned online, first_cpu, num_left;
+> +	cpumask_var_t coupled_mask, vpe_mask;
+> +
+> +	if (!alloc_cpumask_var(&coupled_mask, GFP_KERNEL))
+> +		return -ENOMEM;
+> +
+> +	if (!alloc_cpumask_var(&vpe_mask, GFP_KERNEL)) {
+> +		free_cpumask_var(coupled_mask);
+> +		return -ENOMEM;
+> +	}
 
-   -- Daniel
+You can't do that in this function where the local irqs are disabled. 
+IMO, if you set CONFIG_CPUMASK_OFFSTACK and CONFIG_DEBUG_ATOMIC_SLEEP, 
+you should see a kernel warning.
+
+> +	/* Calculate which coupled CPUs (VPEs) are online */
+> +#ifdef CONFIG_MIPS_MT
+> +	cpumask_and(coupled_mask, cpu_online_mask, &dev->coupled_cpus);
+> +	first_cpu = cpumask_first(coupled_mask);
+> +	online = cpumask_weight(coupled_mask);
+> +	cpumask_clear_cpu(dev->cpu, coupled_mask);
+> +	cpumask_shift_right(vpe_mask, coupled_mask,
+> +			    cpumask_first(&dev->coupled_cpus));
+
+What is the purpose of this computation ?
+
+> +#else
+> +	cpumask_clear(coupled_mask);
+> +	cpumask_clear(vpe_mask);
+> +	first_cpu = dev->cpu;
+> +	online = 1;
+> +#endif
+
+first_cpu is not used.
+
+> +	/*
+> +	 * Run the generated entry code. Note that we assume the number of VPEs
+> +	 * within this core does not exceed the width in bits of a long. Since
+> +	 * MVPConf0.PVPE is 4 bits wide this seems like a safe assumption.
+> +	 */
+> +	num_left = per_cpu(ncwait_asm_enter, core)(vpe_mask->bits[0], online);
+> +
+> +	/*
+> +	 * If this VPE is the first to leave the non-coherent wait state then
+> +	 * it needs to wake up any coupled VPEs still running their wait
+> +	 * instruction so that they return to cpuidle,
+
+Why is it needed ? Can't the other cpus stay idle ?
+
+>        * which can then complete
+> +	 * coordination between the coupled VPEs & provide the governor with
+> +	 * a chance to reflect on the length of time the VPEs were in the
+> +	 * idle state.
+> +	 */
+> +	if (coupled_coherence && (num_left == online))
+> +		arch_send_call_function_ipi_mask(coupled_mask);
+
+Except there is no choice due to hardware limitations, I don't think 
+this is valid.
+
+> +	free_cpumask_var(vpe_mask);
+> +	free_cpumask_var(coupled_mask);
+> +	return index;
+> +}
+> +
+> +static struct cpuidle_driver cps_driver = {
+> +	.name			= "cpc_cpuidle",
+> +	.owner			= THIS_MODULE,
+> +	.states = {
+> +		MIPS_CPUIDLE_WAIT_STATE,
+> +		{
+> +			.enter	= cps_ncwait_enter,
+> +			.exit_latency		= 200,
+> +			.target_residency	= 450,
+> +			.flags	= CPUIDLE_FLAG_TIME_VALID,
+> +			.name	= "nc-wait",
+> +			.desc	= "non-coherent MIPS wait",
+> +		},
+> +	},
+> +	.state_count		= 2,
+> +	.safe_state_index	= 0,
+> +};
 
 
+
+> +static void __init cps_gen_cache_routine(u32 **pp, struct uasm_label **pl,
+> +					 struct uasm_reloc **pr,
+> +					 const struct cache_desc *cache,
+> +					 unsigned op, int lbl)
+> +{
+> +	unsigned cache_size = cache->ways << cache->waybit;
+> +	unsigned i;
+> +	const unsigned unroll_lines = 32;
+> +
+> +	/* If the cache isn't present this function has it easy */
+> +	if (cache->flags & MIPS_CACHE_NOT_PRESENT)
+> +		return;
+> +
+> +	/* Load base address */
+> +	UASM_i_LA(pp, t0, (long)CKSEG0);
+> +
+> +	/* Calculate end address */
+> +	if (cache_size < 0x8000)
+> +		uasm_i_addiu(pp, t1, t0, cache_size);
+> +	else
+> +		UASM_i_LA(pp, t1, (long)(CKSEG0 + cache_size));
+> +
+> +	/* Start of cache op loop */
+> +	uasm_build_label(pl, *pp, lbl);
+> +
+> +	/* Generate the cache ops */
+> +	for (i = 0; i < unroll_lines; i++)
+> +		uasm_i_cache(pp, op, i * cache->linesz, t0);
+> +
+> +	/* Update the base address */
+> +	uasm_i_addiu(pp, t0, t0, unroll_lines * cache->linesz);
+> +
+> +	/* Loop if we haven't reached the end address yet */
+> +	uasm_il_bne(pp, pr, t0, t1, lbl);
+> +	uasm_i_nop(pp);
+> +}
+> +
+> +static void * __init cps_gen_entry_code(struct cpuidle_device *dev)
+> +{
+> +	unsigned core = cpu_data[dev->cpu].core;
+> +	struct uasm_label *l = labels;
+> +	struct uasm_reloc *r = relocs;
+> +	u32 *buf, *p;
+> +	const unsigned r_vpemask = a0;
+> +	const unsigned r_online = a1;
+> +	const unsigned r_pcount = t6;
+> +	const unsigned r_pcohctl = t7;
+> +	const unsigned max_instrs = 256;
+> +	enum {
+> +		lbl_incready = 1,
+> +		lbl_lastvpe,
+> +		lbl_vpehalt_loop,
+> +		lbl_vpehalt_poll,
+> +		lbl_vpehalt_next,
+> +		lbl_disable_coherence,
+> +		lbl_invicache,
+> +		lbl_flushdcache,
+> +		lbl_vpeactivate_loop,
+> +		lbl_vpeactivate_next,
+> +		lbl_wait,
+> +		lbl_decready,
+> +	};
+> +
+> +	/* Allocate a buffer to hold the generated code */
+> +	p = buf = kcalloc(max_instrs, sizeof(u32), GFP_KERNEL);
+> +	if (!buf)
+> +		return NULL;
+> +
+> +	/* Clear labels & relocs ready for (re)use */
+> +	memset(labels, 0, sizeof(labels));
+> +	memset(relocs, 0, sizeof(relocs));
+> +
+> +	/*
+> +	 * Load address of the CM GCR_CL_COHERENCE register. This is done early
+> +	 * because it's needed in both the enable & disable coherence steps but
+> +	 * in the coupled case the enable step will only run on one VPE.
+> +	 */
+> +	UASM_i_LA(&p, r_pcohctl, (long)addr_gcr_cl_coherence());
+> +
+> +	if (coupled_coherence) {
+> +		/* Load address of nc_ready_count */
+> +		UASM_i_LA(&p, r_pcount, (long)&per_cpu(nc_ready_count, core));
+> +
+> +		/* Increment nc_ready_count */
+> +		uasm_build_label(&l, p, lbl_incready);
+> +		uasm_i_sync(&p, stype_ordering);
+> +		uasm_i_ll(&p, t1, 0, r_pcount);
+> +		uasm_i_addiu(&p, t2, t1, 1);
+> +		uasm_i_sc(&p, t2, 0, r_pcount);
+> +		uasm_il_beqz(&p, &r, t2, lbl_incready);
+> +		uasm_i_addiu(&p, t1, t1, 1);
+> +
+> +		/*
+> +		 * If this is the last VPE to become ready for non-coherence
+> +		 * then it should branch below.
+> +		 */
+> +		uasm_il_beq(&p, &r, t1, r_online, lbl_lastvpe);
+> +		uasm_i_nop(&p);
+> +
+> +		/*
+> +		 * Otherwise this is not the last VPE to become ready for
+> +		 * non-coherence. It needs to wait until coherence has been
+> +		 * disabled before executing a wait instruction, otherwise it
+> +		 * may return from wait quickly & re-enable coherence causing
+> +		 * a race with the VPE disabling coherence. It can't simply
+> +		 * poll the CPC sequencer for a non-coherent state as that
+> +		 * would race with any other VPE which may spot the
+> +		 * non-coherent state, run wait, return quickly & re-enable
+> +		 * coherence before this VPE ever saw the non-coherent state.
+> +		 * Instead this VPE will halt its TC such that it ceases to
+> +		 * execute for the moment.
+> +		 */
+> +		uasm_i_addiu(&p, t0, zero, TCHALT_H);
+> +		uasm_i_mtc0(&p, t0, 2, 4); /* TCHalt */
+> +
+> +		/* instruction_hazard(), to ensure the TC halts */
+> +		UASM_i_LA(&p, t0, (long)p + 12);
+> +		uasm_i_jr_hb(&p, t0);
+> +		uasm_i_nop(&p);
+> +
+> +		/*
+> +		 * The VPE which disables coherence will then clear the halt
+> +		 * bit for this VPE's TC once coherence has been disabled and
+> +		 * it can safely proceed to execute the wait instruction.
+> +		 */
+> +		uasm_il_b(&p, &r, lbl_wait);
+> +		uasm_i_nop(&p);
+> +
+> +		/*
+> +		 * The last VPE to increment nc_ready_count will continue from
+> +		 * here and must spin until all other VPEs within the core have
+> +		 * been halted, at which point it can be sure that it is safe
+> +		 * to disable coherence.
+> +		 *
+> +		 *   t0: number of VPEs left to handle
+> +		 *   t1: (shifted) mask of online VPEs
+> +		 *   t2: current VPE index
+> +		 */
+> +		uasm_build_label(&l, p, lbl_lastvpe);
+> +		uasm_i_addiu(&p, t0, r_online, -1);
+> +		uasm_il_beqz(&p, &r, t0, lbl_disable_coherence);
+> +		uasm_i_move(&p, t1, r_vpemask);
+> +		uasm_i_move(&p, t2, zero);
+> +
+> +		/*
+> +		 * Now loop through all VPEs within the core checking whether
+> +		 * they are online & not this VPE, which can be determined by
+> +		 * checking the vpe_mask argument. If a VPE is offline or is
+> +		 * this VPE, skip it.
+> +		 */
+> +		uasm_build_label(&l, p, lbl_vpehalt_loop);
+> +		uasm_i_andi(&p, t3, t1, 1);
+> +		uasm_il_beqz(&p, &r, t3, lbl_vpehalt_next);
+> +
+> +		/* settc(vpe) */
+> +		uasm_i_mfc0(&p, t3, 1, 1); /* VPEControl */
+> +		uasm_i_ins(&p, t3, t2, 0, 8);
+> +		uasm_i_mtc0(&p, t3, 1, 1); /* VPEControl */
+> +		uasm_i_ehb(&p);
+> +
+> +		/*
+> +		 * It's very likely that the VPE has already halted itself
+> +		 * by now, but there's theoretically a chance that it may not
+> +		 * have. Wait until the VPE's TC is halted.
+> +		 */
+> +		uasm_build_label(&l, p, lbl_vpehalt_poll);
+> +		uasm_i_mftc0(&p, t3, 2, 4); /* TCHalt */
+> +		uasm_il_beqz(&p, &r, t3, lbl_vpehalt_poll);
+> +		uasm_i_nop(&p);
+> +
+> +		/* Decrement the count of VPEs to be handled */
+> +		uasm_i_addiu(&p, t0, t0, -1);
+> +
+> +		/* Proceed to the next VPE, if there is one */
+> +		uasm_build_label(&l, p, lbl_vpehalt_next);
+> +		uasm_i_srl(&p, t1, t1, 1);
+> +		uasm_il_bnez(&p, &r, t0, lbl_vpehalt_loop);
+> +		uasm_i_addiu(&p, t2, t2, 1);
+> +	}
+> +
+> +	/*
+> +	 * This is the point of no return - this VPE will now proceed to
+> +	 * disable coherence. At this point we *must* be sure that no other
+> +	 * VPE within the core will interfere with the L1 dcache.
+> +	 */
+> +	uasm_build_label(&l, p, lbl_disable_coherence);
+> +
+> +	/* Completion barrier */
+> +	uasm_i_sync(&p, stype_memory);
+> +
+> +	/* Invalidate the L1 icache */
+> +	cps_gen_cache_routine(&p, &l, &r, &cpu_data[dev->cpu].icache,
+> +			      Index_Invalidate_I, lbl_invicache);
+> +
+> +	/* Writeback & invalidate the L1 dcache */
+> +	cps_gen_cache_routine(&p, &l, &r, &cpu_data[dev->cpu].dcache,
+> +			      Index_Writeback_Inv_D, lbl_flushdcache);
+> +
+> +	/*
+> +	 * Disable all but self interventions. The load from COHCTL is defined
+> +	 * by the interAptiv & proAptiv SUMs as ensuring that the operation
+> +	 * resulting from the preceeding store is complete.
+> +	 */
+> +	uasm_i_addiu(&p, t0, zero, 1 << cpu_data[dev->cpu].core);
+> +	uasm_i_sw(&p, t0, 0, r_pcohctl);
+> +	uasm_i_lw(&p, t0, 0, r_pcohctl);
+> +
+> +	/* Sync to ensure previous interventions are complete */
+> +	uasm_i_sync(&p, stype_intervention);
+> +
+> +	/* Disable coherence */
+> +	uasm_i_sw(&p, zero, 0, r_pcohctl);
+> +	uasm_i_lw(&p, t0, 0, r_pcohctl);
+> +
+> +	if (coupled_coherence) {
+> +		/*
+> +		 * Now that coherence is disabled it is safe for all VPEs to
+> +		 * proceed with executing their wait instruction, so this VPE
+> +		 * will go ahead and clear the halt bit of the TCs associated
+> +		 * with all other online VPEs within the core. Start by
+> +		 * initialising variables used throughout the loop, and
+> +		 * skipping the loop entirely if there are no VPEs to handle.
+> +		 *
+> +		 *   t0: number of VPEs left to handle
+> +		 *   t1: (shifted) mask of online VPEs
+> +		 *   t2: current VPE index
+> +		 */
+> +		uasm_i_addiu(&p, t0, r_online, -1);
+> +		uasm_il_beqz(&p, &r, t0, lbl_wait);
+> +		uasm_i_move(&p, t1, r_vpemask);
+> +		uasm_i_move(&p, t2, zero);
+> +
+> +		/*
+> +		 * Now loop through all VPEs within the core checking whether
+> +		 * they are online & not this VPE, which can be determined by
+> +		 * checking the vpe_mask argument. If a VPE is offline or is
+> +		 * this VPE, skip it.
+> +		 */
+> +		uasm_build_label(&l, p, lbl_vpeactivate_loop);
+> +		uasm_i_andi(&p, t3, t1, 1);
+> +		uasm_il_beqz(&p, &r, t3, lbl_vpeactivate_next);
+> +
+> +		/* settc(vpe) */
+> +		uasm_i_mfc0(&p, t3, 1, 1); /* VPEControl */
+> +		uasm_i_ins(&p, t3, t2, 0, 8);
+> +		uasm_i_mtc0(&p, t3, 1, 1); /* VPEControl */
+> +		uasm_i_ehb(&p);
+> +
+> +		/* Clear TCHalt */
+> +		uasm_i_mttc0(&p, zero, 2, 4); /* TCHalt */
+> +
+> +		/* Decrement the count of VPEs to be handled */
+> +		uasm_i_addiu(&p, t0, t0, -1);
+> +
+> +		/* Proceed to the next VPE, if there is one */
+> +		uasm_build_label(&l, p, lbl_vpeactivate_next);
+> +		uasm_i_srl(&p, t1, t1, 1);
+> +		uasm_il_bnez(&p, &r, t0, lbl_vpeactivate_loop);
+> +		uasm_i_addiu(&p, t2, t2, 1);
+> +	}
+> +
+> +	/* Now perform our wait */
+> +	uasm_build_label(&l, p, lbl_wait);
+> +	uasm_i_wait(&p, 0);
+> +
+> +	/*
+> +	 * Re-enable coherence. Note that all coupled VPEs will run this, the
+> +	 * first will actually re-enable coherence & the rest will just be
+> +	 * performing a rather unusual nop.
+> +	 */
+> +	uasm_i_addiu(&p, t0, zero, CM_GCR_Cx_COHERENCE_COHDOMAINEN_MSK);
+> +	uasm_i_sw(&p, t0, 0, r_pcohctl);
+> +	uasm_i_lw(&p, t0, 0, r_pcohctl);
+> +
+> +	/* Ordering barrier */
+> +	uasm_i_sync(&p, stype_ordering);
+> +
+> +	if (coupled_coherence) {
+> +		/* Decrement nc_ready_count */
+> +		uasm_build_label(&l, p, lbl_decready);
+> +		uasm_i_sync(&p, stype_ordering);
+> +		uasm_i_ll(&p, t1, 0, r_pcount);
+> +		uasm_i_addiu(&p, t2, t1, -1);
+> +		uasm_i_sc(&p, t2, 0, r_pcount);
+> +		uasm_il_beqz(&p, &r, t2, lbl_decready);
+> +		uasm_i_move(&p, v0, t1);
+> +	}
+> +
+> +	/* The core is coherent, time to return to C code */
+> +	uasm_i_jr(&p, ra);
+> +	uasm_i_nop(&p);
+> +
+> +	/* Ensure the code didn't exceed the resources allocated for it */
+> +	BUG_ON((p - buf) > max_instrs);
+> +	BUG_ON((l - labels) > ARRAY_SIZE(labels));
+> +	BUG_ON((r - relocs) > ARRAY_SIZE(relocs));
+> +
+> +	/* Patch branch offsets */
+> +	uasm_resolve_relocs(relocs, labels);
+> +
+> +	/* Flush the icache */
+> +	local_flush_icache_range((unsigned long)buf, (unsigned long)p);
+> +
+> +	return buf;
+> +}
+
+The two functions above should go to somewhere in arch/mips.
+
+> +
+> +static void __init cps_cpuidle_unregister(void)
+> +{
+> +	int cpu;
+> +	struct cpuidle_device *device;
+> +	cps_nc_entry_fn *fn;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		device = &per_cpu(cpuidle_dev, cpu);
+> +		cpuidle_unregister_device(device);
+> +
+> +		/* Free entry code */
+> +		fn = &per_cpu(ncwait_asm_enter, cpu_data[cpu].core);
+> +		kfree(*fn);
+> +		*fn = NULL;
+> +	}
+> +
+> +	cpuidle_unregister_driver(&cps_driver);
+> +}
+> +
+> +static int __init cps_cpuidle_init(void)
+> +{
+> +	int err, cpu, core, i;
+> +	struct cpuidle_device *device;
+> +	void *core_entry;
+> +
+> +	/*
+> +	 * If interrupts were enabled whilst running the wait instruction then
+> +	 * the VPE may end up processing interrupts whilst non-coherent.
+> +	 */
+> +	if (cpu_wait != r4k_wait_irqoff) {
+> +		pr_warn("cpuidle-cps requires that masked interrupts restart the CPU pipeline following a wait\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	/* Detect appropriate sync types for the system */
+> +	switch (current_cpu_data.cputype) {
+> +	case CPU_INTERAPTIV:
+> +	case CPU_PROAPTIV:
+> +		stype_intervention = 0x2;
+> +		stype_memory = 0x3;
+> +		stype_ordering = 0x10;
+> +		break;
+> +
+> +	default:
+> +		pr_warn("cpuidle-cps using heavyweight sync 0\n");
+> +	}
+> +
+> +	/*
+> +	 * Set the coupled flag on the appropriate states if this system
+> +	 * requires it.
+> +	 */
+> +	if (coupled_coherence)
+> +		for (i = 1; i < cps_driver.state_count; i++)
+> +			cps_driver.states[i].flags |= CPUIDLE_FLAG_COUPLED;
+
+I am not sure CPUIDLE_FLAG_COUPLED is the solution for this driver. 
+IIUC, with the IPI above and the wakeup sync with the couple states, 
+this driver is waking up everybody instead of sleeping as much as possible.
+
+I would recommend to have a look at a different approach, like the one 
+used for cpuidle-ux500.c.
+
+> +
+> +	err = cpuidle_register_driver(&cps_driver);
+> +	if (err) {
+> +		pr_err("Failed to register CPS cpuidle driver\n");
+> +		return err;
+> +	}
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		core = cpu_data[cpu].core;
+> +		device = &per_cpu(cpuidle_dev, cpu);
+> +		device->cpu = cpu;
+> +#ifdef CONFIG_MIPS_MT
+> +		cpumask_copy(&device->coupled_cpus, &cpu_sibling_map[cpu]);
+> +#endif
+> +		if (!per_cpu(ncwait_asm_enter, core)) {
+> +			core_entry = cps_gen_entry_code(device);
+> +			if (!core_entry) {
+> +				pr_err("Failed to generate core %u entry\n",
+> +				       core);
+> +				err = -ENOMEM;
+> +				goto err_out;
+> +			}
+> +			per_cpu(ncwait_asm_enter, core) = core_entry;
+> +		}
+> +
+> +		err = cpuidle_register_device(device);
+> +		if (err) {
+> +			pr_err("Failed to register CPU%d cpuidle device\n",
+> +			       cpu);
+> +			goto err_out;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +err_out:
+> +	cps_cpuidle_unregister();
+> +	return err;
+> +}
+> +device_initcall(cps_cpuidle_init);
+>
 
 
 -- 

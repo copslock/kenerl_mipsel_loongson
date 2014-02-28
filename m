@@ -1,53 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Feb 2014 11:58:39 +0100 (CET)
-Received: from demumfd001.nsn-inter.net ([93.183.12.32]:12057 "EHLO
-        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816759AbaB1K6gmri2L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Feb 2014 11:58:36 +0100
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd001.nsn-inter.net (8.12.11.20060308/8.12.11) with ESMTP id s1SAwQXc012744
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-        Fri, 28 Feb 2014 11:58:26 +0100
-Received: from DEMUHTC002.nsn-intra.net ([10.159.42.33])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id s1SAwEfT002371
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Fri, 28 Feb 2014 11:58:26 +0100
-Received: from DEMUMBX011.nsn-intra.net ([169.254.11.77]) by
- DEMUHTC002.nsn-intra.net ([10.159.42.33]) with mapi id 14.03.0123.003; Fri,
- 28 Feb 2014 11:58:17 +0100
-From:   "Huttunen, Janne (NSN - FI/Espoo)" <janne.huttunen@nsn.com>
-To:     Vincent Wen <vincentwenlinux@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "cernekee@gmail.com" <cernekee@gmail.com>
-Subject: ignore
-Thread-Topic: ignore
-Thread-Index: AQHPNHP8Ba+tnC6DlkS3C9q5Gqbd8w==
-Date:   Fri, 28 Feb 2014 10:58:17 +0000
-Message-ID: <0985E9499D0C974CBD44B955086C8B8F1662CFA8@DEMUMBX011.nsn-intra.net>
-References: <1393583074-26201-1-git-send-email-janne.huttunen@nsn.com>
-In-Reply-To: <1393583074-26201-1-git-send-email-janne.huttunen@nsn.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.144.36.169]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Feb 2014 14:15:50 +0100 (CET)
+Received: from mail-ee0-f43.google.com ([74.125.83.43]:61741 "EHLO
+        mail-ee0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816199AbaB1NPrndF2z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Feb 2014 14:15:47 +0100
+Received: by mail-ee0-f43.google.com with SMTP id e53so2039132eek.2
+        for <multiple recipients>; Fri, 28 Feb 2014 05:15:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=mhd3n9nwtA+CTWJ0AkGYhmZvPkwKWm480T7zt2ufsQ8=;
+        b=0U4MgWhLHRLSTDEHp//v1A93G0TjHiUHJPF0/iULQOlqyFwPSXXQmF9KS7gZn08XQy
+         EWTsx2eGQN7fDye4wx/5zx5d2iMrEx44HMZ21pICWjFQ00r0Pddpj7lOxGNYDi9L169V
+         4VTd4+9NKjnRsvsFyQYnutokzDXAD8CeAiIWZypGiOwwSVfzPWH2hEEauQwNdCC7UTuZ
+         sGCJrLCswR8j4KxalUx7RsC1ZAs1cg3mYHrDZnt8c/sbgAAmc/8nGwdAGhcmqDLSwaIe
+         nWMtbXDg2PZ5/O6ccygdmt6bg4avewUBUzL/Tku60Digs8YveCs63ce1QimLum0DCx3x
+         8JEQ==
 MIME-Version: 1.0
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 222
-X-purgate-ID: 151667::1393585106-00005322-95C823F0/0-0/0-0
-Return-Path: <janne.huttunen@nsn.com>
+X-Received: by 10.204.94.199 with SMTP id a7mr10721bkn.25.1393593341953; Fri,
+ 28 Feb 2014 05:15:41 -0800 (PST)
+Received: by 10.204.169.76 with HTTP; Fri, 28 Feb 2014 05:15:41 -0800 (PST)
+In-Reply-To: <530C186D.3050602@roeck-us.net>
+References: <52F5A6EE.7020000@roeck-us.net>
+        <CAAhV-H7GbarXPb2uye1jiH+caAL4vWTVBeGY77Yf0tvdpGJtiA@mail.gmail.com>
+        <52F5B8CE.1000808@roeck-us.net>
+        <530C186D.3050602@roeck-us.net>
+Date:   Fri, 28 Feb 2014 21:15:41 +0800
+Message-ID: <CAAhV-H5+6BFr4Or8LP4T=td4eqsBvTsenaX0UgR6kqcUnxe6hA@mail.gmail.com>
+Subject: Re: Commit 597ce1723 (MIPS: Support for 64-bit FP with O32 binaries)
+ causing qemu hang with mips64 kernels
+From:   Huacai Chen <chenhuacai@gmail.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39386
+X-archive-position: 39387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: janne.huttunen@nsn.com
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,6 +57,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ClNvcnJ5LCBteSBwcmV2aW91cyBtYWlsIHdhcyBzZW50IHRvIHlvdSBhdXRvbWF0aWNhbGx5IGJ5
-Cm15IG1pcy1jb25maWd1cmVkICdnaXQtc2VuZC1lbWFpbCcuIFBsZWFzZSBpZ25vcmUgaXQsIG9y
-CmlmIHlvdSBkaWQgbm90IHJlY2VpdmUgaXQsIGlnbm9yZSB0aGlzIG9uZS4KCgo=
+Hi, Ralf,
+
+Could these two patches be merged in 3.14 (there is an updated
+version: http://patchwork.linux-mips.org/patch/6550/ and
+http://patchwork.linux-mips.org/patch/6551/)?
+
+And by the way, is the V19 of Loongson-3's patchset good enough to be
+merged in 3.15?
+
+Huacai
+
+On Tue, Feb 25, 2014 at 12:13 PM, Guenter Roeck <linux@roeck-us.net> wrote:
+> On 02/07/2014 08:55 PM, Guenter Roeck wrote:
+>>
+>> On 02/07/2014 07:57 PM, Huacai Chen wrote:
+>>>
+>>> Hi,
+>>>
+>>> Maybe you can try this:
+>>> http://patchwork.linux-mips.org/patch/6506/
+>>> http://patchwork.linux-mips.org/patch/6507/
+>>>
+>> With those two patches applied the problem is gone.
+>>
+>
+> Any idea if and when those patches may find their way upstream ?
+> 3.14-rc4 still has the problem.
+>
+> Thanks,
+> Guenter
+>
+>
+>> Thanks a lot!
+>>
+>> Guenter
+>>
+>>> On Sat, Feb 8, 2014 at 11:39 AM, Guenter Roeck <linux@roeck-us.net>
+>>> wrote:
+>>>>
+>>>>
+>>>> Hi all,
+>>>>
+>>>> in 3.14-rc1, my mips64 qemu test fails. The image boots and then hangs.
+>>>> Bisect points to commit 597ce1723 (MIPS: Support for 64-bit FP with O32
+>>>> binaries).
+>>>> Reverting this commit fixes the problem. Disabling MIPS_O32_FP64_SUPPORT
+>>>> in my test image does _not_ solve the problem. The qemu version does not
+>>>> seem
+>>>> to make a difference; I tested with qemu 1.6.0 and 1.7.0.
+>>>>
+>>>> Console log output is available in
+>>>>
+>>>> http://server.roeck-us.net:8010/builders/qemu-mips64-master/builds/34/steps/buildcommand/logs/stdio
+>>>>
+>>>> When the problem is seen, the emulation hangs as can be seen in the log,
+>>>> and the qemu process consumes 100% CPU until it is killed.
+>>>>
+>>>> qemu command line is
+>>>>
+>>>> qemu-system-mips64 -kernel vmlinux -M malta -hda
+>>>> core-image-minimal-qemumips64.ext3 \
+>>>> -vga cirrus -usb -usbdevice wacom-tablet -no-reboot -m 128 --append
+>>>> "root=/dev/hda \
+>>>> rw mem=128M console=ttyS0 console=tty" -nographic
+>>>>
+>>>> The same configuration works fine with earlier kernels. I'll be happy to
+>>>> provide
+>>>> the detailed configuration as well as the root file system for testing
+>>>> if
+>>>> needed.
+>>>>
+>>>> Obviously I have no idea if this is a problem with the patch or with
+>>>> qemu.
+>>>> If there is anything I can do to help tracking down the problem further,
+>>>> please let me know.
+>>>>
+>>>> Thanks,
+>>>> Guenter
+>>>>
+>>>
+>>>
+>>
+>

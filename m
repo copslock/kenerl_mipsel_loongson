@@ -1,25 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Mar 2014 17:50:16 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:52777 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Mar 2014 17:50:35 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:52783 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860900AbaCBQtoAlefc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Mar 2014 17:49:44 +0100
+        with ESMTP id S6865308AbaCBQtuD3Don (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Mar 2014 17:49:50 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id A750D7E25;
-        Sun,  2 Mar 2014 17:49:43 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 991E47E25;
+        Sun,  2 Mar 2014 17:49:49 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id OtfAiyLmI94F; Sun,  2 Mar 2014 17:49:40 +0100 (CET)
+        with ESMTP id 6XVyymV1YyFy; Sun,  2 Mar 2014 17:49:45 +0100 (CET)
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 4DA917E27;
+        by hauke-m.de (Postfix) with ESMTPSA id 87FF67E2C;
         Sun,  2 Mar 2014 17:49:32 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org, zajec5@gmail.com,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 3/4] MIPS: BCM47XX: add detection and GPIO config for Siemens SE505v2
-Date:   Sun,  2 Mar 2014 17:49:28 +0100
-Message-Id: <1393778969-21066-3-git-send-email-hauke@hauke-m.de>
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Cody P Schafer <devel@codyps.com>
+Subject: [PATCH 4/4] MIPS: BCM47XX: add Belkin F7Dxxxx board detection
+Date:   Sun,  2 Mar 2014 17:49:29 +0100
+Message-Id: <1393778969-21066-4-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1393778969-21066-1-git-send-email-hauke@hauke-m.de>
 References: <1393778969-21066-1-git-send-email-hauke@hauke-m.de>
@@ -27,7 +28,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39395
+X-archive-position: 39396
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,94 +45,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This adds board detection for the Siemens SE505v2 and the led gpio
-configuration. This board does not have any buttons.
-This is based on OpenWrt broadcom-diag and Manuel Munz's nvram dump.
+From: Cody P Schafer <devel@codyps.com>
 
+Add a few Belkin F7Dxxxx entries, with F7D4401 sourced from online
+documentation and the "F7D7302" being observed. F7D3301, F7D3302, and
+F7D4302 are reasonable guesses which are unlikely to cause
+mis-detection.
+
+Signed-off-by: Cody P Schafer <devel@codyps.com>
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/board.c                          |   17 +++++++++++++++++
- arch/mips/bcm47xx/leds.c                           |   12 ++++++++++++
- arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h |    2 ++
- 3 files changed, 31 insertions(+)
+ arch/mips/bcm47xx/board.c                          |    4 ++++
+ arch/mips/bcm47xx/buttons.c                        |    4 ++++
+ arch/mips/bcm47xx/leds.c                           |    4 ++++
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h |    4 ++++
+ 4 files changed, 16 insertions(+)
 
 diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
-index 1913fa2..1ddc643 100644
+index 1ddc643..cb5ff13 100644
 --- a/arch/mips/bcm47xx/board.c
 +++ b/arch/mips/bcm47xx/board.c
-@@ -182,6 +182,13 @@ struct bcm47xx_board_type_list3 bcm47xx_board_list_board[] __initconst = {
+@@ -72,7 +72,11 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_hardware_version[] __initcons
+ 	{{BCM47XX_BOARD_ASUS_WL500W, "Asus WL500W"}, "WL500gW-"},
+ 	{{BCM47XX_BOARD_ASUS_WL520GC, "Asus WL520GC"}, "WL520GC-"},
+ 	{{BCM47XX_BOARD_ASUS_WL520GU, "Asus WL520GU"}, "WL520GU-"},
++	{{BCM47XX_BOARD_BELKIN_F7D3301, "Belkin F7D3301"}, "F7D3301"},
++	{{BCM47XX_BOARD_BELKIN_F7D3302, "Belkin F7D3302"}, "F7D3302"},
+ 	{{BCM47XX_BOARD_BELKIN_F7D4301, "Belkin F7D4301"}, "F7D4301"},
++	{{BCM47XX_BOARD_BELKIN_F7D4302, "Belkin F7D4302"}, "F7D4302"},
++	{{BCM47XX_BOARD_BELKIN_F7D4401, "Belkin F7D4401"}, "F7D4401"},
  	{ {0}, NULL},
  };
  
-+/* boardtype, boardrev */
-+static const
-+struct bcm47xx_board_type_list2 bcm47xx_board_list_board_type_rev[] __initconst = {
-+	{{BCM47XX_BOARD_SIEMENS_SE505V2, "Siemens SE505 V2"}, "0x0101", "0x10"},
-+	{ {0}, NULL},
-+};
-+
- static const
- struct bcm47xx_board_type bcm47xx_board_unknown[] __initconst = {
- 	{BCM47XX_BOARD_UNKNOWN, "Unknown Board"},
-@@ -275,6 +282,16 @@ static __init const struct bcm47xx_board_type *bcm47xx_board_get_nvram(void)
- 				return &e3->board;
- 		}
- 	}
-+
-+	if (bcm47xx_nvram_getenv("boardtype", buf1, sizeof(buf1)) >= 0 &&
-+	    bcm47xx_nvram_getenv("boardrev", buf2, sizeof(buf2)) >= 0 &&
-+    	    bcm47xx_nvram_getenv("boardnum", buf3, sizeof(buf3)) ==  -ENOENT) {
-+		for (e2 = bcm47xx_board_list_board_type_rev; e2->value1; e2++) {
-+			if (!strcmp(buf1, e2->value1) &&
-+			    !strcmp(buf2, e2->value2))
-+				return &e2->board;
-+		}
-+	}
- 	return bcm47xx_board_unknown;
- }
+diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
+index f165887..49a1ce0 100644
+--- a/arch/mips/bcm47xx/buttons.c
++++ b/arch/mips/bcm47xx/buttons.c
+@@ -420,7 +420,11 @@ int __init bcm47xx_buttons_register(void)
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wlhdd);
+ 		break;
+ 
++	case BCM47XX_BOARD_BELKIN_F7D3301:
++	case BCM47XX_BOARD_BELKIN_F7D3302:
+ 	case BCM47XX_BOARD_BELKIN_F7D4301:
++	case BCM47XX_BOARD_BELKIN_F7D4302:
++	case BCM47XX_BOARD_BELKIN_F7D4401:
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_belkin_f7d4301);
+ 		break;
  
 diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index d741175..8bacc37 100644
+index 8bacc37..adcb547 100644
 --- a/arch/mips/bcm47xx/leds.c
 +++ b/arch/mips/bcm47xx/leds.c
-@@ -383,6 +383,14 @@ bcm47xx_leds_netgear_wnr834bv2[] __initconst = {
- 	BCM47XX_GPIO_LED(7, "unk", "connected", 0, LEDS_GPIO_DEFSTATE_OFF),
- };
- 
-+/* Siemens */
-+static const struct gpio_led
-+bcm47xx_leds_siemens_se505v2[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(5, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
- /* SimpleTech */
- 
- static const struct gpio_led
-@@ -562,6 +570,10 @@ void __init bcm47xx_leds_register(void)
- 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr834bv2);
+@@ -457,7 +457,11 @@ void __init bcm47xx_leds_register(void)
+ 		bcm47xx_set_pdata(bcm47xx_leds_asus_wlhdd);
  		break;
  
-+	case BCM47XX_BOARD_SIEMENS_SE505V2:
-+		bcm47xx_set_pdata(bcm47xx_leds_siemens_se505v2);
-+		break;
-+
- 	case BCM47XX_BOARD_SIMPLETECH_SIMPLESHARE:
- 		bcm47xx_set_pdata(bcm47xx_leds_simpletech_simpleshare);
++	case BCM47XX_BOARD_BELKIN_F7D3301:
++	case BCM47XX_BOARD_BELKIN_F7D3302:
+ 	case BCM47XX_BOARD_BELKIN_F7D4301:
++	case BCM47XX_BOARD_BELKIN_F7D4302:
++	case BCM47XX_BOARD_BELKIN_F7D4401:
+ 		bcm47xx_set_pdata(bcm47xx_leds_belkin_f7d4301);
  		break;
+ 
 diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-index a564a9f..60d3742 100644
+index 60d3742..bba7399 100644
 --- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
 +++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-@@ -94,6 +94,8 @@ enum bcm47xx_board {
+@@ -27,7 +27,11 @@ enum bcm47xx_board {
+ 	BCM47XX_BOARD_ASUS_WL700GE,
+ 	BCM47XX_BOARD_ASUS_WLHDD,
  
- 	BCM47XX_BOARD_PHICOMM_M1,
++	BCM47XX_BOARD_BELKIN_F7D3301,
++	BCM47XX_BOARD_BELKIN_F7D3302,
+ 	BCM47XX_BOARD_BELKIN_F7D4301,
++	BCM47XX_BOARD_BELKIN_F7D4302,
++	BCM47XX_BOARD_BELKIN_F7D4401,
  
-+	BCM47XX_BOARD_SIEMENS_SE505V2,
-+
- 	BCM47XX_BOARD_SIMPLETECH_SIMPLESHARE,
- 
- 	BCM47XX_BOARD_ZTE_H218N,
+ 	BCM47XX_BOARD_BUFFALO_WBR2_G54,
+ 	BCM47XX_BOARD_BUFFALO_WHR2_A54G54,
 -- 
 1.7.10.4

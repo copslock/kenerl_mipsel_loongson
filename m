@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Mar 2014 17:50:35 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:52783 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6865308AbaCBQtuD3Don (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Mar 2014 17:49:50 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 991E47E25;
-        Sun,  2 Mar 2014 17:49:49 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6XVyymV1YyFy; Sun,  2 Mar 2014 17:49:45 +0100 (CET)
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 87FF67E2C;
-        Sun,  2 Mar 2014 17:49:32 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, zajec5@gmail.com,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Cody P Schafer <devel@codyps.com>
-Subject: [PATCH 4/4] MIPS: BCM47XX: add Belkin F7Dxxxx board detection
-Date:   Sun,  2 Mar 2014 17:49:29 +0100
-Message-Id: <1393778969-21066-4-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1393778969-21066-1-git-send-email-hauke@hauke-m.de>
-References: <1393778969-21066-1-git-send-email-hauke@hauke-m.de>
-Return-Path: <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2014 15:05:44 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.114]:59463 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822287AbaCCOFkPjvFB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Mar 2014 15:05:40 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 36F7FFE77B0A4;
+        Mon,  3 Mar 2014 14:05:32 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Mon, 3 Mar 2014 14:05:34 +0000
+Received: from [192.168.154.47] (192.168.154.47) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 3 Mar
+ 2014 14:05:33 +0000
+Message-ID: <53148C5A.7020101@imgtec.com>
+Date:   Mon, 3 Mar 2014 14:06:18 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH 3/5] MIPS: Set page size to 16KB for malta SMP defconfigs
+References: <1392904828-12969-1-git-send-email-markos.chandras@imgtec.com> <1392904828-12969-4-git-send-email-markos.chandras@imgtec.com> <20140221173829.GI19285@linux-mips.org>
+In-Reply-To: <20140221173829.GI19285@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.47]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39396
+X-archive-position: 39397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,85 +46,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Cody P Schafer <devel@codyps.com>
+On 02/21/2014 05:38 PM, Ralf Baechle wrote:
+> On Thu, Feb 20, 2014 at 02:00:26PM +0000, Markos Chandras wrote:
+>
+>> From: Paul Burton <paul.burton@imgtec.com>
+>>
+>> For Malta defconfigs which may run on an SMP configuration without
+>> hardware cache anti-aliasing, a 16KB page size is a safer default.
+>> Most notably at the moment it will avoid cache aliasing issues for
+>> multicore proAptiv systems.
+>
+> You're aware that this may cause binary compatibility issues with old
+> userland?  So far the defaults were chosen to maximise compatibility
+> over performance.
+>
+>    Ralf
+>
+Hi Ralf,
 
-Add a few Belkin F7Dxxxx entries, with F7D4401 sourced from online
-documentation and the "F7D7302" being observed. F7D3301, F7D3302, and
-F7D4302 are reasonable guesses which are unlikely to cause
-mis-detection.
+Are you referring to programs hard coding the page size to 4k instead of 
+using the getpagesize()? Well yes this could be a problem. But is that a 
+real problem? We are changing the default value so whoever has such an 
+old userland can easily switch to the 4k page size. It may also be a 
+good opportunity to expose such application and get the fixed properly 
+:) But if that's not acceptable, we can drop the patch. Paul what do you 
+think?
 
-Signed-off-by: Cody P Schafer <devel@codyps.com>
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- arch/mips/bcm47xx/board.c                          |    4 ++++
- arch/mips/bcm47xx/buttons.c                        |    4 ++++
- arch/mips/bcm47xx/leds.c                           |    4 ++++
- arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h |    4 ++++
- 4 files changed, 16 insertions(+)
-
-diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
-index 1ddc643..cb5ff13 100644
---- a/arch/mips/bcm47xx/board.c
-+++ b/arch/mips/bcm47xx/board.c
-@@ -72,7 +72,11 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_hardware_version[] __initcons
- 	{{BCM47XX_BOARD_ASUS_WL500W, "Asus WL500W"}, "WL500gW-"},
- 	{{BCM47XX_BOARD_ASUS_WL520GC, "Asus WL520GC"}, "WL520GC-"},
- 	{{BCM47XX_BOARD_ASUS_WL520GU, "Asus WL520GU"}, "WL520GU-"},
-+	{{BCM47XX_BOARD_BELKIN_F7D3301, "Belkin F7D3301"}, "F7D3301"},
-+	{{BCM47XX_BOARD_BELKIN_F7D3302, "Belkin F7D3302"}, "F7D3302"},
- 	{{BCM47XX_BOARD_BELKIN_F7D4301, "Belkin F7D4301"}, "F7D4301"},
-+	{{BCM47XX_BOARD_BELKIN_F7D4302, "Belkin F7D4302"}, "F7D4302"},
-+	{{BCM47XX_BOARD_BELKIN_F7D4401, "Belkin F7D4401"}, "F7D4401"},
- 	{ {0}, NULL},
- };
- 
-diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
-index f165887..49a1ce0 100644
---- a/arch/mips/bcm47xx/buttons.c
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -420,7 +420,11 @@ int __init bcm47xx_buttons_register(void)
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wlhdd);
- 		break;
- 
-+	case BCM47XX_BOARD_BELKIN_F7D3301:
-+	case BCM47XX_BOARD_BELKIN_F7D3302:
- 	case BCM47XX_BOARD_BELKIN_F7D4301:
-+	case BCM47XX_BOARD_BELKIN_F7D4302:
-+	case BCM47XX_BOARD_BELKIN_F7D4401:
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_belkin_f7d4301);
- 		break;
- 
-diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index 8bacc37..adcb547 100644
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -457,7 +457,11 @@ void __init bcm47xx_leds_register(void)
- 		bcm47xx_set_pdata(bcm47xx_leds_asus_wlhdd);
- 		break;
- 
-+	case BCM47XX_BOARD_BELKIN_F7D3301:
-+	case BCM47XX_BOARD_BELKIN_F7D3302:
- 	case BCM47XX_BOARD_BELKIN_F7D4301:
-+	case BCM47XX_BOARD_BELKIN_F7D4302:
-+	case BCM47XX_BOARD_BELKIN_F7D4401:
- 		bcm47xx_set_pdata(bcm47xx_leds_belkin_f7d4301);
- 		break;
- 
-diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-index 60d3742..bba7399 100644
---- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-@@ -27,7 +27,11 @@ enum bcm47xx_board {
- 	BCM47XX_BOARD_ASUS_WL700GE,
- 	BCM47XX_BOARD_ASUS_WLHDD,
- 
-+	BCM47XX_BOARD_BELKIN_F7D3301,
-+	BCM47XX_BOARD_BELKIN_F7D3302,
- 	BCM47XX_BOARD_BELKIN_F7D4301,
-+	BCM47XX_BOARD_BELKIN_F7D4302,
-+	BCM47XX_BOARD_BELKIN_F7D4401,
- 
- 	BCM47XX_BOARD_BUFFALO_WBR2_G54,
- 	BCM47XX_BOARD_BUFFALO_WHR2_A54G54,
 -- 
-1.7.10.4
+markos

@@ -1,40 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Mar 2014 18:01:34 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:55757 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6818703AbaCDRBbGeEz2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 4 Mar 2014 18:01:31 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s24H1Sam029696;
-        Tue, 4 Mar 2014 18:01:28 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s24H1RPb029695;
-        Tue, 4 Mar 2014 18:01:27 +0100
-Date:   Tue, 4 Mar 2014 18:01:27 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/5] MIPS: Set page size to 16KB for malta SMP defconfigs
-Message-ID: <20140304170127.GR13415@linux-mips.org>
-References: <1392904828-12969-1-git-send-email-markos.chandras@imgtec.com>
- <1392904828-12969-4-git-send-email-markos.chandras@imgtec.com>
- <20140221173829.GI19285@linux-mips.org>
- <53148C5A.7020101@imgtec.com>
- <20140303142921.GF13880@pburton-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Mar 2014 22:07:40 +0100 (CET)
+Received: from mail-ie0-f171.google.com ([209.85.223.171]:44422 "EHLO
+        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822315AbaCDVHjAFKxL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Mar 2014 22:07:39 +0100
+Received: by mail-ie0-f171.google.com with SMTP id ar20so112005iec.16
+        for <linux-mips@linux-mips.org>; Tue, 04 Mar 2014 13:07:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=subject:to:from:cc:date:message-id:user-agent:mime-version
+         :content-type:content-transfer-encoding;
+        bh=jDm/9v+Pwe5j6Yd43IIhyAJ3wfAnVhFxnhB3KFJtD8w=;
+        b=NPtpzmLrXloYkiDkknXl71xM5L/vzTS5POhq+lhaEhyRv5C4p+oYgrvBqPJHPtkkLX
+         AQ4y1my2V992n52DHON3/eb4HVAxbOMMm/aXezCQnOCtEP22Hqzrh+Jfsg5j4WwNi90o
+         5eNjrBFKOz+DO9loE+Otbua9e6iAcOV4SCSv4hBbJB6SMwrkENmb5XYFKg+tK6kzLHOF
+         LY9T5cIUGA97cQnzdgvGELiHzKgmgODgboG54VwOVdrXJvgk/NM0qT6ZKTtkCi7BD/26
+         xmosei/t6g+dtdLS+oCfpNIayVt9d6dqrK86z50exVTc/TD1ZDM8N8dlCNX0dYERjB6J
+         aZ4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:from:cc:date:message-id:user-agent
+         :mime-version:content-type:content-transfer-encoding;
+        bh=jDm/9v+Pwe5j6Yd43IIhyAJ3wfAnVhFxnhB3KFJtD8w=;
+        b=NKmbP6sd2TDVoc8BSvHn0ERy0D9ob0XHDYXZM6H1BAb32ALUXQ/+b2cBHaaxXUxRTF
+         RA+sDCV6UGKKCqd4MfPTOw1gdegJ5Yp213KOpyAJ7kI+jwt/sCP9Caprho3l0NpYVpKV
+         qmF5TJe651KtYQvQA78cGbWhu3wQWA98sLdE/NZhNUenw5h9aGeO47Of3qHtkMWk44Vg
+         N+7MfAboiWLNfEMbVgQJGvHGeTWFJwN94Ql3yWxxxRcUwNSImJ9WzlLBFQPqvd/iSkKs
+         /h5R52jxWDWgMaqVQ/O8UStQH59NBdooTK/2GkHiA2mg4mzyGZb6pP7NbG8KZqzwAzfD
+         DQPQ==
+X-Gm-Message-State: ALoCoQlGUJbjjfV1aR9GSePz4v7aE2G2/oVDQlCSLtkeFX4llQnaYEjXB/SOtPW/z3XtAIRVFAORPVZu1RAYB0BlND53t3Z6LivztkXnR3zEOdQ1rmHWaIfyQsCKgMpbUSReug6jh4O7OLpSlgWMatnPhsW0nFG0nye2N0Q5jl4U4UlXOJrClYDP/MaSkmPJ0MDycqDGE2cIDsyVl4A8QIiy0XI+FF7lwQ==
+X-Received: by 10.43.129.70 with SMTP id hh6mr1547114icc.68.1393967252639;
+        Tue, 04 Mar 2014 13:07:32 -0800 (PST)
+Received: from localhost ([172.16.49.180])
+        by mx.google.com with ESMTPSA id ai4sm53562251igd.3.2014.03.04.13.07.31
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 04 Mar 2014 13:07:32 -0800 (PST)
+Subject: [PATCH 0/2] sched: Removed unused mc_capable() and smt_capable()
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org
+Date:   Tue, 04 Mar 2014 14:07:31 -0700
+Message-ID: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com>
+User-Agent: StGit/0.16
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140303142921.GF13880@pburton-linux.le.imgtec.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39406
+X-archive-position: 39408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,50 +70,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 03, 2014 at 02:29:21PM +0000, Paul Burton wrote:
+This is just cleanup of a couple unused interfaces and (for sparc64) a
+supporting variable.
 
-> On Mon, Mar 03, 2014 at 02:06:18PM +0000, Markos Chandras wrote:
-> > On 02/21/2014 05:38 PM, Ralf Baechle wrote:
-> > >On Thu, Feb 20, 2014 at 02:00:26PM +0000, Markos Chandras wrote:
-> > >
-> > >>From: Paul Burton <paul.burton@imgtec.com>
-> > >>
-> > >>For Malta defconfigs which may run on an SMP configuration without
-> > >>hardware cache anti-aliasing, a 16KB page size is a safer default.
-> > >>Most notably at the moment it will avoid cache aliasing issues for
-> > >>multicore proAptiv systems.
-> > >
-> > >You're aware that this may cause binary compatibility issues with old
-> > >userland?  So far the defaults were chosen to maximise compatibility
-> > >over performance.
-> > >
-> > >   Ralf
-> > >
-> > Hi Ralf,
-> > 
-> > Are you referring to programs hard coding the page size to 4k instead of
-> > using the getpagesize()? Well yes this could be a problem. But is that a
-> > real problem? We are changing the default value so whoever has such an old
-> > userland can easily switch to the 4k page size. It may also be a good
-> > opportunity to expose such application and get the fixed properly :) But if
-> > that's not acceptable, we can drop the patch. Paul what do you think?
-> > 
-> > -- 
-> > markos
-> 
-> I think the potential backwards compatibility issue is probably not a
-> huge issue for Malta, but that it would make sense to dig deeper into
-> why proAptiv SMP systems don't run correctly with 4KB pages. You don't
-> actually have to look very far to find userland which depends upon 4KB
-> pages (*cough* android *cough*). I consider this patch an acceptable
-> workaround for the proAptiv problem on Malta, but I don't know enough
-> at the moment to say whether there's a proper fix.
+---
 
-The issue I was refering to is that certain older binutils are creating
-ELF segments of insufficient alignment for large page sizes to work.
+Bjorn Helgaas (2):
+      sched: Remove unused mc_capable() and smt_capable()
+      sparc64: Remove unused sparc64_multi_core
 
-Hardcoded page size is another problem - one should think that after
-iterating through every power of two starting with like 512 bytes
-programmers have sprung a clue.
 
-  Ralf
+ arch/arm/include/asm/topology.h      |    3 ---
+ arch/ia64/include/asm/topology.h     |    1 -
+ arch/mips/include/asm/topology.h     |    4 ----
+ arch/powerpc/include/asm/topology.h  |    1 -
+ arch/sparc/include/asm/smp_64.h      |    1 -
+ arch/sparc/include/asm/topology_64.h |    2 --
+ arch/sparc/kernel/mdesc.c            |    4 ----
+ arch/sparc/kernel/prom_64.c          |    3 ---
+ arch/sparc/kernel/smp_64.c           |    2 --
+ arch/x86/include/asm/topology.h      |    6 ------
+ 10 files changed, 27 deletions(-)

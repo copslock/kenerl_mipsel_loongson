@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Mar 2014 22:07:59 +0100 (CET)
-Received: from mail-ie0-f172.google.com ([209.85.223.172]:49666 "EHLO
-        mail-ie0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831266AbaCDVHpRAt6v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Mar 2014 22:07:45 +0100
-Received: by mail-ie0-f172.google.com with SMTP id as1so112287iec.17
-        for <linux-mips@linux-mips.org>; Tue, 04 Mar 2014 13:07:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Mar 2014 22:08:18 +0100 (CET)
+Received: from mail-ig0-f180.google.com ([209.85.213.180]:40222 "EHLO
+        mail-ig0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6831267AbaCDVHwoBHh4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Mar 2014 22:07:52 +0100
+Received: by mail-ig0-f180.google.com with SMTP id hl1so2477867igb.1
+        for <linux-mips@linux-mips.org>; Tue, 04 Mar 2014 13:07:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=subject:to:from:cc:date:message-id:in-reply-to:references
          :user-agent:mime-version:content-type:content-transfer-encoding;
-        bh=fSZ+FbvWAnYHF30y9n/+7+iEs9DzHxQQN704PrDyoac=;
-        b=c1JMSqwQhYPqL51SwRoFpE+fFlQ+EfJPGel8HqL4wFnHyYgh+xpuaCDiAcgqctaB99
-         IVZiVwDGxX1rYRYiy8MY/z1nq9pZPL1jNRP9r9JSugx0ot4kMIJY5hJm/iSDL2+p0xiP
-         soWY6b2D3B35bESfuwWjk8n4LvSWYOsXJ2wed//qlqEi08CErBolRFAGI3DiFh9ZCDeJ
-         oSMG3j7Bv2vGrmbzKKVBKtYyW0PV5o0VAmYgK6JxLbTayn6Wf+B/aDj43WXQuuM+5UXu
-         KVG/26NUtjCJOGoEWy6fUYWE7HXQdoO20APPLFZqjrXcdMYRiLAwZtbu/K5tCukhewgG
-         HW6w==
+        bh=4jK++tivuiCXS3fMuEA3P8BmPtUwCjNt1WnsxIiJq0Y=;
+        b=Ad6B9xuBtpFtAARDZhH53YfIJYcsGdyzy88t3XjnAZgwE0wZyiwJdnceoWAiVDc1B0
+         zDEsKPcZWHhxFCU//0oeTaBIOuNlvfz6zJaklidICRfJ0efiUA2F7ButUQIuxPMckACl
+         xvDDURKn7UJ+k3NM6r0nxk9oQKualWWcaNmlgYqfKZgxWwa7ZCHGp0hIzSVqH2JtxkGF
+         yDbvT/z07ED/B3+yjzYnm+CijeVknLxYvVI5ihvlhuOTj33zN1U9i1I4mVHROr/QbUYP
+         0NmYHvzRDV3d4FLuEBmHFPKLL0dwdLmJfAv9Z460DwenCv+f86XSip6h2kTSJCPFceO4
+         oGCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:from:cc:date:message-id:in-reply-to
          :references:user-agent:mime-version:content-type
          :content-transfer-encoding;
-        bh=fSZ+FbvWAnYHF30y9n/+7+iEs9DzHxQQN704PrDyoac=;
-        b=Z8+kq+cMEnz8rp4c/7y7gxhmYYvoETeR93TvryGdmTBKXQr22XZpd0FitbgHGiWTRG
-         EjAjD3moQ/m5tpHzaBU7SEa8cNgzp0CK9QqS7zQl8WQSrFPYnF/StCBLq/s23NMFHxp7
-         Mpa1GKEECi+2f0aSRCyxG43+LR0n5S6KeVLCndwY0sfry0YUcXxPWKzQlAlDv0CHmfq+
-         hRee5EorDgk1hRFHMgBG/rSUWouw5Q08+lO19yDCBXerSlrJ+8lnZ8Kwt3ScukRZstBh
-         fzbflEH5967wLNnyAJiDetHZj6OODnxeSSj6/kUW/fEijb/cUdTMbI2RYFyJzNwzYzl6
-         X22A==
-X-Gm-Message-State: ALoCoQlBNQj01xaAnI2vc0qzYSAT9hwr8frjT15Ivb/8YDzXHxRAp7ot04Tm5NJ/+W3YeIx1uDF2dqpagR0E7POGDWAejvil9v3wWyBG6Ybg5fHBFLos6I/eHTG5JstK47OFR5Ag6wBUQzwHf000q20C7bzdTyIVg6uFk1E7HBcPWE+J5N1Gb7PzSTlCckdpkpuFTD3jxHmezuK1Q+AaZBywiEFwwRoa/w==
-X-Received: by 10.50.78.229 with SMTP id e5mr30708180igx.24.1393967259102;
-        Tue, 04 Mar 2014 13:07:39 -0800 (PST)
+        bh=4jK++tivuiCXS3fMuEA3P8BmPtUwCjNt1WnsxIiJq0Y=;
+        b=Y+qRFqsl7lxSQUtFxLBoWTaVqxSS9w4qTcCL+Vu4xVvGPTkt5ps9sG1jKkieQMkf7X
+         PMLqlNEtsdLU+och2kaSj+7ycggIJASf9Ld5okYnWAOy1+5FmBsRFWpQnqAPGAkxk+4L
+         AGRukGuzkzicXXP1ccJQM9GNScdurDx8r3v7YwB8ebv89M4wsXcotgeA7q6qjd/5yZdd
+         O3Ena7XP3Ds3WNEqH58yiwf/RYTbKfhDAVrMVMZdsyWuAA2BwthI5ErpUHCuvMRYjYGu
+         X1gjUlaGsFngT5V1/x0nCJj19unhC10EyZ6BQMsaMq1WjEPMnhzO6OoO/3BnC68ROAnH
+         kljg==
+X-Gm-Message-State: ALoCoQlCDXrBWlBbkhxU93QVskFJags6ihik4URuNhlxvunO7S1IO5MKLeDqQ5x9MUyzIwAO0gkQDmsGHuVNA9pBSWOzI1Yc9W7gxgNOuP5Pd7I5/CJNHA3GtkXMRUcKOWQmxQiRUVb54FZQU8UrXaG4SeKPmC5v3wI+PUUfFE94XLSa506FZ5jbM4wT63h+4duX9tEVIPS8MRJ5lzLpV1dbgfjz8ZyKgQ==
+X-Received: by 10.42.54.67 with SMTP id q3mr1502537icg.21.1393967266662;
+        Tue, 04 Mar 2014 13:07:46 -0800 (PST)
 Received: from localhost ([172.16.49.180])
-        by mx.google.com with ESMTPSA id r4sm53578317igh.1.2014.03.04.13.07.38
+        by mx.google.com with ESMTPSA id dz8sm53557969igb.5.2014.03.04.13.07.44
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 04 Mar 2014 13:07:38 -0800 (PST)
-Subject: [PATCH 1/2] sched: Remove unused mc_capable() and smt_capable()
+        Tue, 04 Mar 2014 13:07:45 -0800 (PST)
+Subject: [PATCH 2/2] sparc64: Remove unused sparc64_multi_core
 To:     Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>
 From:   Bjorn Helgaas <bhelgaas@google.com>
@@ -44,8 +44,8 @@ Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org,
         sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-arm-kernel@lists.infradead.org
-Date:   Tue, 04 Mar 2014 14:07:37 -0700
-Message-ID: <20140304210737.16893.54289.stgit@bhelgaas-glaptop.roam.corp.google.com>
+Date:   Tue, 04 Mar 2014 14:07:44 -0700
+Message-ID: <20140304210744.16893.75929.stgit@bhelgaas-glaptop.roam.corp.google.com>
 In-Reply-To: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com>
 References: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com>
 User-Agent: StGit/0.16
@@ -56,7 +56,7 @@ Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39409
+X-archive-position: 39410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,100 +73,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove mc_capable() and smt_capable().  Neither is used.
+Remove sparc64_multi_core because it's not used any more.
 
-Both were added by 5c45bf279d37 ("sched: mc/smt power savings sched
-policy").  Uses of both were removed by 8e7fbcbc22c1 ("sched: Remove stale
-power aware scheduling remnants and dysfunctional knobs").
+It was added by a2f9f6bbb30e ("Fix {mc,smt}_capable()"), and the last uses
+were removed by e637d96bf462 ("sched: Remove unused mc_capable() and
+smt_capable()").
 
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
- arch/arm/include/asm/topology.h      |    3 ---
- arch/ia64/include/asm/topology.h     |    1 -
- arch/mips/include/asm/topology.h     |    4 ----
- arch/powerpc/include/asm/topology.h  |    1 -
- arch/sparc/include/asm/topology_64.h |    2 --
- arch/x86/include/asm/topology.h      |    6 ------
- 6 files changed, 17 deletions(-)
+ arch/sparc/include/asm/smp_64.h |    1 -
+ arch/sparc/kernel/mdesc.c       |    4 ----
+ arch/sparc/kernel/prom_64.c     |    3 ---
+ arch/sparc/kernel/smp_64.c      |    2 --
+ 4 files changed, 10 deletions(-)
 
-diff --git a/arch/arm/include/asm/topology.h b/arch/arm/include/asm/topology.h
-index 58b8b84adcd2..2fe85fff5cca 100644
---- a/arch/arm/include/asm/topology.h
-+++ b/arch/arm/include/asm/topology.h
-@@ -20,9 +20,6 @@ extern struct cputopo_arm cpu_topology[NR_CPUS];
- #define topology_core_cpumask(cpu)	(&cpu_topology[cpu].core_sibling)
- #define topology_thread_cpumask(cpu)	(&cpu_topology[cpu].thread_sibling)
+diff --git a/arch/sparc/include/asm/smp_64.h b/arch/sparc/include/asm/smp_64.h
+index dd3bef4b9896..05710393959f 100644
+--- a/arch/sparc/include/asm/smp_64.h
++++ b/arch/sparc/include/asm/smp_64.h
+@@ -32,7 +32,6 @@
  
--#define mc_capable()	(cpu_topology[0].socket_id != -1)
--#define smt_capable()	(cpu_topology[0].thread_id != -1)
--
- void init_cpu_topology(void);
- void store_cpu_topology(unsigned int cpuid);
- const struct cpumask *cpu_coregroup_mask(int cpu);
-diff --git a/arch/ia64/include/asm/topology.h b/arch/ia64/include/asm/topology.h
-index a2496e449b75..5cb55a1e606b 100644
---- a/arch/ia64/include/asm/topology.h
-+++ b/arch/ia64/include/asm/topology.h
-@@ -77,7 +77,6 @@ void build_cpu_to_node_map(void);
- #define topology_core_id(cpu)			(cpu_data(cpu)->core_id)
- #define topology_core_cpumask(cpu)		(&cpu_core_map[cpu])
- #define topology_thread_cpumask(cpu)		(&per_cpu(cpu_sibling_map, cpu))
--#define smt_capable() 				(smp_num_siblings > 1)
- #endif
- 
- extern void arch_fix_phys_package_id(int num, u32 slot);
-diff --git a/arch/mips/include/asm/topology.h b/arch/mips/include/asm/topology.h
-index 12609a17dc8b..20ea4859c822 100644
---- a/arch/mips/include/asm/topology.h
-+++ b/arch/mips/include/asm/topology.h
-@@ -10,8 +10,4 @@
- 
- #include <topology.h>
- 
--#ifdef CONFIG_SMP
--#define smt_capable()	(smp_num_siblings > 1)
--#endif
--
- #endif /* __ASM_TOPOLOGY_H */
-diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-index d0b5fca6b077..c9202151079f 100644
---- a/arch/powerpc/include/asm/topology.h
-+++ b/arch/powerpc/include/asm/topology.h
-@@ -99,7 +99,6 @@ static inline int prrn_is_enabled(void)
- 
- #ifdef CONFIG_SMP
- #include <asm/cputable.h>
--#define smt_capable()		(cpu_has_feature(CPU_FTR_SMT))
- 
- #ifdef CONFIG_PPC64
- #include <asm/smp.h>
-diff --git a/arch/sparc/include/asm/topology_64.h b/arch/sparc/include/asm/topology_64.h
-index 1754390a426f..a2d10fc64faf 100644
---- a/arch/sparc/include/asm/topology_64.h
-+++ b/arch/sparc/include/asm/topology_64.h
-@@ -42,8 +42,6 @@ static inline int pcibus_to_node(struct pci_bus *pbus)
- #define topology_core_id(cpu)			(cpu_data(cpu).core_id)
- #define topology_core_cpumask(cpu)		(&cpu_core_map[cpu])
- #define topology_thread_cpumask(cpu)		(&per_cpu(cpu_sibling_map, cpu))
--#define mc_capable()				(sparc64_multi_core)
--#define smt_capable()				(sparc64_multi_core)
- #endif /* CONFIG_SMP */
- 
+ DECLARE_PER_CPU(cpumask_t, cpu_sibling_map);
  extern cpumask_t cpu_core_map[NR_CPUS];
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index d35f24e231cd..9bcc724cafdd 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -133,12 +133,6 @@ static inline void arch_fix_phys_package_id(int num, u32 slot)
- struct pci_bus;
- void x86_pci_root_bus_resources(int bus, struct list_head *resources);
+-extern int sparc64_multi_core;
+ 
+ extern void arch_send_call_function_single_ipi(int cpu);
+ extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
+diff --git a/arch/sparc/kernel/mdesc.c b/arch/sparc/kernel/mdesc.c
+index b90bf23e3aab..a1a4400d4025 100644
+--- a/arch/sparc/kernel/mdesc.c
++++ b/arch/sparc/kernel/mdesc.c
+@@ -896,10 +896,6 @@ void mdesc_fill_in_cpu_data(cpumask_t *mask)
+ 
+ 	mdesc_iterate_over_cpus(fill_in_one_cpu, NULL, mask);
  
 -#ifdef CONFIG_SMP
--#define mc_capable()	((boot_cpu_data.x86_max_cores > 1) && \
--			(cpumask_weight(cpu_core_mask(0)) != nr_cpu_ids))
--#define smt_capable()			(smp_num_siblings > 1)
+-	sparc64_multi_core = 1;
 -#endif
 -
- #ifdef CONFIG_NUMA
- extern int get_mp_bus_to_node(int busnum);
- extern void set_mp_bus_to_node(int busnum, int node);
+ 	hp = mdesc_grab();
+ 
+ 	set_core_ids(hp);
+diff --git a/arch/sparc/kernel/prom_64.c b/arch/sparc/kernel/prom_64.c
+index 6b39125eb927..9a690d39c01b 100644
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -555,9 +555,6 @@ static void *fill_in_one_cpu(struct device_node *dp, int cpuid, int arg)
+ 
+ 		cpu_data(cpuid).core_id = portid + 1;
+ 		cpu_data(cpuid).proc_id = portid;
+-#ifdef CONFIG_SMP
+-		sparc64_multi_core = 1;
+-#endif
+ 	} else {
+ 		cpu_data(cpuid).dcache_size =
+ 			of_getintprop_default(dp, "dcache-size", 16 * 1024);
+diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+index b085311dcd0e..9781048161ab 100644
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -53,8 +53,6 @@
+ 
+ #include "cpumap.h"
+ 
+-int sparc64_multi_core __read_mostly;
+-
+ DEFINE_PER_CPU(cpumask_t, cpu_sibling_map) = CPU_MASK_NONE;
+ cpumask_t cpu_core_map[NR_CPUS] __read_mostly =
+ 	{ [0 ... NR_CPUS-1] = CPU_MASK_NONE };

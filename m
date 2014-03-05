@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2014 05:37:16 +0100 (CET)
-Received: from gate.crashing.org ([63.228.1.57]:38884 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816879AbaCEEhMOZiDE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Mar 2014 05:37:12 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id s254aJgG009213;
-        Tue, 4 Mar 2014 22:36:20 -0600
-Message-ID: <1393994178.11372.2.camel@pasglop>
-Subject: Re: [PATCH 1/2] sched: Remove unused mc_capable() and smt_capable()
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2014 12:16:24 +0100 (CET)
+Received: from merlin.infradead.org ([205.233.59.134]:38165 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823083AbaCELQVq95lO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Mar 2014 12:16:21 +0100
+Received: from dhcp-077-248-225-117.chello.nl ([77.248.225.117] helo=twins)
+        by merlin.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1WL9oA-00051P-AY; Wed, 05 Mar 2014 11:16:18 +0000
+Received: by twins (Postfix, from userid 1000)
+        id C3A78827883B; Wed,  5 Mar 2014 12:16:15 +0100 (CET)
+Date:   Wed, 5 Mar 2014 12:16:15 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
 To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
+Cc:     Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
         linux-ia64@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Date:   Wed, 05 Mar 2014 15:36:18 +1100
-In-Reply-To: <20140304210737.16893.54289.stgit@bhelgaas-glaptop.roam.corp.google.com>
+Subject: Re: [PATCH 0/2] sched: Removed unused mc_capable() and smt_capable()
+Message-ID: <20140305111615.GV9987@twins.programming.kicks-ass.net>
 References: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com>
-         <20140304210737.16893.54289.stgit@bhelgaas-glaptop.roam.corp.google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.11.90 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <benh@kernel.crashing.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com>
+User-Agent: Mutt/1.5.21 (2012-12-30)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39415
+X-archive-position: 39416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,13 +44,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2014-03-04 at 14:07 -0700, Bjorn Helgaas wrote:
-> Remove mc_capable() and smt_capable().  Neither is used.
+On Tue, Mar 04, 2014 at 02:07:31PM -0700, Bjorn Helgaas wrote:
+> This is just cleanup of a couple unused interfaces and (for sparc64) a
+> supporting variable.
 > 
-> Both were added by 5c45bf279d37 ("sched: mc/smt power savings sched
-> policy").  Uses of both were removed by 8e7fbcbc22c1 ("sched: Remove stale
-> power aware scheduling remnants and dysfunctional knobs").
-> 
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Thanks!

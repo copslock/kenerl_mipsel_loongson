@@ -1,37 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2014 12:16:24 +0100 (CET)
-Received: from merlin.infradead.org ([205.233.59.134]:38165 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823083AbaCELQVq95lO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Mar 2014 12:16:21 +0100
-Received: from dhcp-077-248-225-117.chello.nl ([77.248.225.117] helo=twins)
-        by merlin.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1WL9oA-00051P-AY; Wed, 05 Mar 2014 11:16:18 +0000
-Received: by twins (Postfix, from userid 1000)
-        id C3A78827883B; Wed,  5 Mar 2014 12:16:15 +0100 (CET)
-Date:   Wed, 5 Mar 2014 12:16:15 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/2] sched: Removed unused mc_capable() and smt_capable()
-Message-ID: <20140305111615.GV9987@twins.programming.kicks-ass.net>
-References: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2014 22:28:14 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:42039 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6831270AbaCEV2MlE7Yk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 Mar 2014 22:28:12 +0100
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s25LS2qG010809
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Wed, 5 Mar 2014 16:28:02 -0500
+Received: from madcap2.tricolour.ca (vpn-49-50.rdu2.redhat.com [10.10.49.50])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s25LRupD018777;
+        Wed, 5 Mar 2014 16:27:57 -0500
+From:   Richard Guy Briggs <rgb@redhat.com>
+To:     linux-audit@redhat.com, linux-kernel@vger.kernel.org
+Cc:     Richard Guy Briggs <rgb@redhat.com>, eparis@redhat.com,
+        sgrubb@redhat.com, oleg@redhat.com,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        linux-ia64@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
+        linux-mips@linux-mips.org, linux@openrisc.net,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arch@vger.kernel.org
+Subject: [PATCH 0/6][RFC] audit: standardize and simplify syscall_get_arch()
+Date:   Wed,  5 Mar 2014 16:27:01 -0500
+Message-Id: <cover.1393974970.git.rgb@redhat.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <rgb@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39416
+X-archive-position: 39418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: rgb@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,9 +47,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 04, 2014 at 02:07:31PM -0700, Bjorn Helgaas wrote:
-> This is just cleanup of a couple unused interfaces and (for sparc64) a
-> supporting variable.
-> 
+Each arch that supports audit requires syscall_get_arch() to able to log
+and identify architecture-dependent syscall numbers.  The information is used
+in at least two different subsystems, so standardize it in the same call across
+all arches.
 
-Thanks!
+Use the standardized syscall_get_arch() locally to add the arch to the
+AUDIT_SECCOMP record to identify which syscall was issued.
+
+Since all the callers of syscall_get_arch() presently pass "current" and none
+of the arch-specific syscall_get_arch() implementations use the regs parameter,
+call syscall_get_arch() locally where it is needed and drop passing around
+arch, current and regs in __audit_syscall_entry() and audit_syscall_entry().
+
+Compiles and runs on i686, x86_64, ppc, ppc64, s390, s390x, manually tested in
+an x86_64 VM.  aarch64 will be added soon.
+
+Richard Guy Briggs (6):
+  syscall: define syscall_get_arch() for each audit-supported arch
+  audit: add arch field to seccomp event log
+  audit: __audit_syscall_entry: ignore arch arg and call
+    syscall_get_arch() directly
+  audit: drop arch from audit_syscall_entry() interface
+  audit: drop args from syscall_get_arch() interface
+  audit: drop arch from __audit_syscall_entry() interface
+
+ arch/arm/include/asm/syscall.h        |    5 ++---
+ arch/arm/kernel/ptrace.c              |    2 +-
+ arch/ia64/include/asm/syscall.h       |    6 ++++++
+ arch/ia64/kernel/ptrace.c             |    2 +-
+ arch/microblaze/include/asm/syscall.h |    5 +++++
+ arch/microblaze/kernel/ptrace.c       |    2 +-
+ arch/mips/include/asm/syscall.h       |    6 +++---
+ arch/mips/kernel/ptrace.c             |    3 +--
+ arch/openrisc/include/asm/syscall.h   |    5 +++++
+ arch/openrisc/kernel/ptrace.c         |    2 +-
+ arch/parisc/include/asm/syscall.h     |   11 +++++++++++
+ arch/parisc/kernel/ptrace.c           |    5 ++---
+ arch/powerpc/include/asm/syscall.h    |   12 ++++++++++++
+ arch/powerpc/kernel/ptrace.c          |    6 ++----
+ arch/s390/include/asm/syscall.h       |    7 +++----
+ arch/s390/kernel/ptrace.c             |    4 +---
+ arch/sh/include/asm/syscall.h         |   16 ++++++++++++++++
+ arch/sh/kernel/ptrace_32.c            |   13 +------------
+ arch/sh/kernel/ptrace_64.c            |   16 +---------------
+ arch/sparc/include/asm/syscall.h      |    7 +++++++
+ arch/sparc/kernel/ptrace_64.c         |    5 +----
+ arch/um/kernel/ptrace.c               |    3 +--
+ arch/x86/ia32/ia32entry.S             |   12 ++++++------
+ arch/x86/include/asm/syscall.h        |   10 ++++------
+ arch/x86/kernel/entry_32.S            |   11 +++++------
+ arch/x86/kernel/entry_64.S            |   11 +++++------
+ arch/x86/kernel/ptrace.c              |    6 ++----
+ arch/xtensa/kernel/ptrace.c           |    2 +-
+ include/asm-generic/syscall.h         |    6 ++----
+ include/linux/audit.h                 |    9 ++++-----
+ include/uapi/linux/audit.h            |    1 +
+ kernel/auditsc.c                      |    6 ++++--
+ kernel/seccomp.c                      |    4 ++--
+ 33 files changed, 120 insertions(+), 101 deletions(-)

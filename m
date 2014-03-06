@@ -1,39 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 19:05:00 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.89.28.114]:38863 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6853544AbaCFSE5xRVcq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Mar 2014 19:04:57 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 5689116F94D1D
-        for <linux-mips@linux-mips.org>; Thu,  6 Mar 2014 18:04:49 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 6 Mar
- 2014 18:04:52 +0000
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Thu, 6 Mar 2014 18:04:51 +0000
-Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Thu, 6 Mar 2014 18:04:51 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH] MIPS: clear hazard barrier after changing MSAEn
-Date:   Thu, 6 Mar 2014 18:04:27 +0000
-Message-ID: <1394129067-20457-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 1.8.5.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 20:55:32 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:47057 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816887AbaCFTzax0oiV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Mar 2014 20:55:30 +0100
+Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s26JtFiP021468
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 6 Mar 2014 14:55:15 -0500
+Received: from madcap2.tricolour.ca (vpn-50-3.rdu2.redhat.com [10.10.50.3])
+        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s26JtB0g006460
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Thu, 6 Mar 2014 14:55:12 -0500
+Date:   Thu, 6 Mar 2014 14:55:10 -0500
+From:   Richard Guy Briggs <rgb@redhat.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+Cc:     linux-audit@redhat.com, linux-kernel@vger.kernel.org,
+        eparis@redhat.com, sgrubb@redhat.com, oleg@redhat.com,
+        linux-mips@linux-mips.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/6][RFC] syscall: define syscall_get_arch() for each
+ audit-supported arch
+Message-ID: <20140306195510.GA16640@madcap2.tricolour.ca>
+References: <cover.1393974970.git.rgb@redhat.com>
+ <cb88576237b1bc4fc7981200c2c23ae05790db0d.1393974970.git.rgb@redhat.com>
+ <531833F0.8080300@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.79]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <531833F0.8080300@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
+Return-Path: <rgb@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39434
+X-archive-position: 39436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: rgb@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,48 +52,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Changing MSAEn on the MIPS P5600 core creates an execution hazard which
-must be cleared before any subsequent MSA instructions are executed.
-This is similar to the FPU with which MSA is linked. Since all cores
-with MSA support are >MIPSR2 the {en,dis}able_fpu_hazard macros will
-always expand to the ehb instruction required, so they are simply
-re-used.
+On 14/03/06, Markos Chandras wrote:
+> Hi Richard,
 
-Reported-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Tested-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
-This patch would ideally be applied as a fixup to "mips: add MSA
-register definitions & access".
----
- arch/mips/include/asm/msa.h | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Hi Markos,
 
-diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
-index d7fd8e1..a2aba6c 100644
---- a/arch/mips/include/asm/msa.h
-+++ b/arch/mips/include/asm/msa.h
-@@ -17,14 +17,18 @@ extern void _restore_msa(struct task_struct *);
- 
- static inline void enable_msa(void)
- {
--	if (cpu_has_msa)
-+	if (cpu_has_msa) {
- 		set_c0_config5(MIPS_CONF5_MSAEN);
-+		enable_fpu_hazard();
-+	}
- }
- 
- static inline void disable_msa(void)
- {
--	if (cpu_has_msa)
-+	if (cpu_has_msa) {
- 		clear_c0_config5(MIPS_CONF5_MSAEN);
-+		disable_fpu_hazard();
-+	}
- }
- 
- static inline int is_msa_enabled(void)
--- 
-1.8.5.3
+> On 03/05/2014 09:27 PM, Richard Guy Briggs wrote:
+> >Each arch that supports audit requires syscall_get_arch() to able to log and
+> >identify architecture-dependent syscall numbers.  The information is used in at
+> >least two different subsystems, so standardize it in the same call across all
+> >arches.
+> >
+> >Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> >
+> >---
+> >diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
+> >index 81c8913..41ecde4 100644
+> >--- a/arch/mips/include/asm/syscall.h
+> >+++ b/arch/mips/include/asm/syscall.h
+> >@@ -103,7 +103,7 @@ extern const unsigned long sysn32_call_table[];
+> >
+> >  static inline int __syscall_get_arch(void)
+> >  {
+> >-	int arch = EM_MIPS;
+> >+	int arch = AUDIT_ARCH_MIPS;
+> >  #ifdef CONFIG_64BIT
+> >  	arch |=  __AUDIT_ARCH_64BIT;
+> >  #endif
+> >@@ -113,4 +113,10 @@ static inline int __syscall_get_arch(void)
+> >  	return arch;
+> >  }
+> >
+> >+static inline int syscall_get_arch(struct task_struct *task,
+> >+				   struct pt_regs *regs)
+> >+{
+> >+	return __syscall_get_arch();
+> >+}
+> >+
+> >  #endif	/* __ASM_MIPS_SYSCALL_H */
+> 
+> This is already fixed for MIPS
+> 
+> http://patchwork.linux-mips.org/patch/6398/
+> 
+> The code is in linux-next targeting 3.15 as far as I can tell.
+
+Ok, good to see that it is pretty much the same approach.
+
+My patchset is based on 3.13 (as I assume this patch is), so that
+conflict will be sorted out once I add to linux-next...
+
+> markos
+
+- RGB
+
+--
+Richard Guy Briggs <rbriggs@redhat.com>
+Senior Software Engineer, Kernel Security, AMER ENG Base Operating Systems, Red Hat
+Remote, Ottawa, Canada
+Voice: +1.647.777.2635, Internal: (81) 32635, Alt: +1.613.693.0684x3545

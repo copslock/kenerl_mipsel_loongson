@@ -1,45 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2014 22:30:26 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:54665 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6853544AbaCEV3TMj8RY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Mar 2014 22:29:19 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s25LSkdB010987
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 5 Mar 2014 16:28:46 -0500
-Received: from madcap2.tricolour.ca (vpn-49-50.rdu2.redhat.com [10.10.49.50])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s25LRupJ018777;
-        Wed, 5 Mar 2014 16:28:36 -0500
-From:   Richard Guy Briggs <rgb@redhat.com>
-To:     linux-audit@redhat.com, linux-kernel@vger.kernel.org
-Cc:     Richard Guy Briggs <rgb@redhat.com>, eparis@redhat.com,
-        sgrubb@redhat.com, oleg@redhat.com,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        linux-ia64@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
-        linux-mips@linux-mips.org, linux@openrisc.net,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-arch@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, rostedt@goodmis.org, peterz@infradead.org
-Subject: [PATCH 6/6][RFC] audit: drop arch from __audit_syscall_entry() interface
-Date:   Wed,  5 Mar 2014 16:27:07 -0500
-Message-Id: <fdcaea27c06177b1d5a23b08e42c5e68bbdc8e76.1393974970.git.rgb@redhat.com>
-In-Reply-To: <cover.1393974970.git.rgb@redhat.com>
-References: <cover.1393974970.git.rgb@redhat.com>
-In-Reply-To: <cover.1393974970.git.rgb@redhat.com>
-References: <cover.1393974970.git.rgb@redhat.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <rgb@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 03:24:10 +0100 (CET)
+Received: from e39.co.us.ibm.com ([32.97.110.160]:59074 "EHLO
+        e39.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825493AbaCFCYHp512v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Mar 2014 03:24:07 +0100
+Received: from /spool/local
+        by e39.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <preeti@linux.vnet.ibm.com>;
+        Wed, 5 Mar 2014 19:24:00 -0700
+Received: from d03dlp03.boulder.ibm.com (9.17.202.179)
+        by e39.co.us.ibm.com (192.168.1.139) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 5 Mar 2014 19:23:59 -0700
+Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+        by d03dlp03.boulder.ibm.com (Postfix) with ESMTP id 6779119D8036
+        for <linux-mips@linux-mips.org>; Wed,  5 Mar 2014 19:23:56 -0700 (MST)
+Received: from d03av02.boulder.ibm.com (d03av02.boulder.ibm.com [9.17.195.168])
+        by b03cxnp08028.gho.boulder.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id s262Nwu39961862
+        for <linux-mips@linux-mips.org>; Thu, 6 Mar 2014 03:23:58 +0100
+Received: from d03av02.boulder.ibm.com (localhost [127.0.0.1])
+        by d03av02.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id s262Nuoq014205
+        for <linux-mips@linux-mips.org>; Wed, 5 Mar 2014 19:23:58 -0700
+Received: from [9.124.31.42] (preeti.in.ibm.com [9.124.31.42])
+        by d03av02.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id s262Nqo4013862;
+        Wed, 5 Mar 2014 19:23:53 -0700
+Message-ID: <5317DB5B.60109@linux.vnet.ibm.com>
+Date:   Thu, 06 Mar 2014 07:50:11 +0530
+From:   Preeti U Murthy <preeti@linux.vnet.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120717 Thunderbird/14.0
+MIME-Version: 1.0
+To:     Bjorn Helgaas <bhelgaas@google.com>
+CC:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] sched: Remove unused mc_capable() and smt_capable()
+References: <20140304210621.16893.8772.stgit@bhelgaas-glaptop.roam.corp.google.com> <20140304210737.16893.54289.stgit@bhelgaas-glaptop.roam.corp.google.com>
+In-Reply-To: <20140304210737.16893.54289.stgit@bhelgaas-glaptop.roam.corp.google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 14030602-9332-0000-0000-000000071326
+Return-Path: <preeti@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39424
+X-archive-position: 39426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rgb@redhat.com
+X-original-sender: preeti@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,138 +62,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since arch is found locally in __audit_syscall_entry(), there is no need to
-pass it in as a parameter.  Delete it from the parameter list.
+On 03/05/2014 02:37 AM, Bjorn Helgaas wrote:
+> Remove mc_capable() and smt_capable().  Neither is used.
+> 
+> Both were added by 5c45bf279d37 ("sched: mc/smt power savings sched
+> policy").  Uses of both were removed by 8e7fbcbc22c1 ("sched: Remove stale
+> power aware scheduling remnants and dysfunctional knobs").
+> 
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>  arch/arm/include/asm/topology.h      |    3 ---
+>  arch/ia64/include/asm/topology.h     |    1 -
+>  arch/mips/include/asm/topology.h     |    4 ----
+>  arch/powerpc/include/asm/topology.h  |    1 -
+>  arch/sparc/include/asm/topology_64.h |    2 --
+>  arch/x86/include/asm/topology.h      |    6 ------
+>  6 files changed, 17 deletions(-)
+> 
+> diff --git a/arch/arm/include/asm/topology.h b/arch/arm/include/asm/topology.h
+> index 58b8b84adcd2..2fe85fff5cca 100644
+> --- a/arch/arm/include/asm/topology.h
+> +++ b/arch/arm/include/asm/topology.h
+> @@ -20,9 +20,6 @@ extern struct cputopo_arm cpu_topology[NR_CPUS];
+>  #define topology_core_cpumask(cpu)	(&cpu_topology[cpu].core_sibling)
+>  #define topology_thread_cpumask(cpu)	(&cpu_topology[cpu].thread_sibling)
+>  
+> -#define mc_capable()	(cpu_topology[0].socket_id != -1)
+> -#define smt_capable()	(cpu_topology[0].thread_id != -1)
+> -
+>  void init_cpu_topology(void);
+>  void store_cpu_topology(unsigned int cpuid);
+>  const struct cpumask *cpu_coregroup_mask(int cpu);
+> diff --git a/arch/ia64/include/asm/topology.h b/arch/ia64/include/asm/topology.h
+> index a2496e449b75..5cb55a1e606b 100644
+> --- a/arch/ia64/include/asm/topology.h
+> +++ b/arch/ia64/include/asm/topology.h
+> @@ -77,7 +77,6 @@ void build_cpu_to_node_map(void);
+>  #define topology_core_id(cpu)			(cpu_data(cpu)->core_id)
+>  #define topology_core_cpumask(cpu)		(&cpu_core_map[cpu])
+>  #define topology_thread_cpumask(cpu)		(&per_cpu(cpu_sibling_map, cpu))
+> -#define smt_capable() 				(smp_num_siblings > 1)
+>  #endif
+>  
+>  extern void arch_fix_phys_package_id(int num, u32 slot);
+> diff --git a/arch/mips/include/asm/topology.h b/arch/mips/include/asm/topology.h
+> index 12609a17dc8b..20ea4859c822 100644
+> --- a/arch/mips/include/asm/topology.h
+> +++ b/arch/mips/include/asm/topology.h
+> @@ -10,8 +10,4 @@
+>  
+>  #include <topology.h>
+>  
+> -#ifdef CONFIG_SMP
+> -#define smt_capable()	(smp_num_siblings > 1)
+> -#endif
+> -
+>  #endif /* __ASM_TOPOLOGY_H */
+> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+> index d0b5fca6b077..c9202151079f 100644
+> --- a/arch/powerpc/include/asm/topology.h
+> +++ b/arch/powerpc/include/asm/topology.h
+> @@ -99,7 +99,6 @@ static inline int prrn_is_enabled(void)
+>  
+>  #ifdef CONFIG_SMP
+>  #include <asm/cputable.h>
+> -#define smt_capable()		(cpu_has_feature(CPU_FTR_SMT))
+>  
+>  #ifdef CONFIG_PPC64
+>  #include <asm/smp.h>
+> diff --git a/arch/sparc/include/asm/topology_64.h b/arch/sparc/include/asm/topology_64.h
+> index 1754390a426f..a2d10fc64faf 100644
+> --- a/arch/sparc/include/asm/topology_64.h
+> +++ b/arch/sparc/include/asm/topology_64.h
+> @@ -42,8 +42,6 @@ static inline int pcibus_to_node(struct pci_bus *pbus)
+>  #define topology_core_id(cpu)			(cpu_data(cpu).core_id)
+>  #define topology_core_cpumask(cpu)		(&cpu_core_map[cpu])
+>  #define topology_thread_cpumask(cpu)		(&per_cpu(cpu_sibling_map, cpu))
+> -#define mc_capable()				(sparc64_multi_core)
+> -#define smt_capable()				(sparc64_multi_core)
+>  #endif /* CONFIG_SMP */
+>  
+>  extern cpumask_t cpu_core_map[NR_CPUS];
+> diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+> index d35f24e231cd..9bcc724cafdd 100644
+> --- a/arch/x86/include/asm/topology.h
+> +++ b/arch/x86/include/asm/topology.h
+> @@ -133,12 +133,6 @@ static inline void arch_fix_phys_package_id(int num, u32 slot)
+>  struct pci_bus;
+>  void x86_pci_root_bus_resources(int bus, struct list_head *resources);
+>  
+> -#ifdef CONFIG_SMP
+> -#define mc_capable()	((boot_cpu_data.x86_max_cores > 1) && \
+> -			(cpumask_weight(cpu_core_mask(0)) != nr_cpu_ids))
+> -#define smt_capable()			(smp_num_siblings > 1)
+> -#endif
+> -
+>  #ifdef CONFIG_NUMA
+>  extern int get_mp_bus_to_node(int busnum);
+>  extern void set_mp_bus_to_node(int busnum, int node);
+> 
 
-x86* was the only arch to call __audit_syscall_entry() directly and did so from
-assembly code.
-
-Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-
----
-Can I get some constructive scrutiny from the x86 asm guys here?  It has been a
-long time since I've played with x86 assembly code (and never x86_64).  I've
-done automated build/regression tests on i686 and x86_64, and I've done manual
-tests on an x86_64 virtual machine and everything appears to work fine.  Thanks!
-
- arch/x86/ia32/ia32entry.S  |   12 ++++++------
- arch/x86/kernel/entry_32.S |   11 +++++------
- arch/x86/kernel/entry_64.S |   11 +++++------
- include/linux/audit.h      |    7 ++-----
- kernel/auditsc.c           |    2 +-
- 5 files changed, 19 insertions(+), 24 deletions(-)
-
-diff --git a/arch/x86/ia32/ia32entry.S b/arch/x86/ia32/ia32entry.S
-index 4299eb0..f5bdd28 100644
---- a/arch/x86/ia32/ia32entry.S
-+++ b/arch/x86/ia32/ia32entry.S
-@@ -186,12 +186,12 @@ sysexit_from_sys_call:
- 
- #ifdef CONFIG_AUDITSYSCALL
- 	.macro auditsys_entry_common
--	movl %esi,%r9d			/* 6th arg: 4th syscall arg */
--	movl %edx,%r8d			/* 5th arg: 3rd syscall arg */
--	/* (already in %ecx)		   4th arg: 2nd syscall arg */
--	movl %ebx,%edx			/* 3rd arg: 1st syscall arg */
--	movl %eax,%esi			/* 2nd arg: syscall number */
--	movl $AUDIT_ARCH_I386,%edi	/* 1st arg: audit arch */
-+	movl %esi,%r8d			/* 5th arg: 4th syscall arg */
-+	movl %ecx,%r9d			/*swap with edx*/
-+	movl %edx,%ecx			/* 4th arg: 3rd syscall arg */
-+	movl %r9d,%edx			/* 3rd arg: 2nd syscall arg */
-+	movl %ebx,%esi			/* 2nd arg: 1st syscall arg */
-+	movl %eax,%edi			/* 1st arg: syscall number */
- 	call __audit_syscall_entry
- 	movl RAX-ARGOFFSET(%rsp),%eax	/* reload syscall number */
- 	cmpq $(IA32_NR_syscalls-1),%rax
-diff --git a/arch/x86/kernel/entry_32.S b/arch/x86/kernel/entry_32.S
-index a2a4f46..078053e 100644
---- a/arch/x86/kernel/entry_32.S
-+++ b/arch/x86/kernel/entry_32.S
-@@ -456,12 +456,11 @@ sysenter_audit:
- 	jnz syscall_trace_entry
- 	addl $4,%esp
- 	CFI_ADJUST_CFA_OFFSET -4
--	/* %esi already in 8(%esp)	   6th arg: 4th syscall arg */
--	/* %edx already in 4(%esp)	   5th arg: 3rd syscall arg */
--	/* %ecx already in 0(%esp)	   4th arg: 2nd syscall arg */
--	movl %ebx,%ecx			/* 3rd arg: 1st syscall arg */
--	movl %eax,%edx			/* 2nd arg: syscall number */
--	movl $AUDIT_ARCH_I386,%eax	/* 1st arg: audit arch */
-+	movl %esi,4(%esp)		/* 5th arg: 4th syscall arg */
-+	movl %edx,(%esp)		/* 4th arg: 3rd syscall arg */
-+	/* %ecx already in %ecx		   3rd arg: 2nd syscall arg */
-+	movl %ebx,%edx			/* 2nd arg: 1st syscall arg */
-+	/* %eax already in %eax		   1st arg: syscall number */
- 	call __audit_syscall_entry
- 	pushl_cfi %ebx
- 	movl PT_EAX(%esp),%eax		/* reload syscall number */
-diff --git a/arch/x86/kernel/entry_64.S b/arch/x86/kernel/entry_64.S
-index 1e96c36..8292ff7 100644
---- a/arch/x86/kernel/entry_64.S
-+++ b/arch/x86/kernel/entry_64.S
-@@ -694,12 +694,11 @@ badsys:
- 	 * jump back to the normal fast path.
- 	 */
- auditsys:
--	movq %r10,%r9			/* 6th arg: 4th syscall arg */
--	movq %rdx,%r8			/* 5th arg: 3rd syscall arg */
--	movq %rsi,%rcx			/* 4th arg: 2nd syscall arg */
--	movq %rdi,%rdx			/* 3rd arg: 1st syscall arg */
--	movq %rax,%rsi			/* 2nd arg: syscall number */
--	movl $AUDIT_ARCH_X86_64,%edi	/* 1st arg: audit arch */
-+	movq %r10,%r8			/* 5th arg: 4th syscall arg */
-+	movq %rdx,%rcx			/* 4th arg: 3rd syscall arg */
-+	movq %rsi,%rdx			/* 3rd arg: 2nd syscall arg */
-+	movq %rdi,%rsi			/* 2nd arg: 1st syscall arg */
-+	movq %rax,%rdi			/* 1st arg: syscall number */
- 	call __audit_syscall_entry
- 	LOAD_ARGS 0		/* reload call-clobbered registers */
- 	jmp system_call_fastpath
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index ee452f1..278bc9d 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -27,8 +27,6 @@
- #include <linux/ptrace.h>
- #include <uapi/linux/audit.h>
- 
--#include <asm/syscall.h>
--
- struct audit_sig_info {
- 	uid_t		uid;
- 	pid_t		pid;
-@@ -100,8 +98,7 @@ extern void audit_log_session_info(struct audit_buffer *ab);
- 				/* Public API */
- extern int  audit_alloc(struct task_struct *task);
- extern void __audit_free(struct task_struct *task);
--extern void __audit_syscall_entry(int arch,
--				  int major, unsigned long a0, unsigned long a1,
-+extern void __audit_syscall_entry(int major, unsigned long a0, unsigned long a1,
- 				  unsigned long a2, unsigned long a3);
- extern void __audit_syscall_exit(int ret_success, long ret_value);
- extern struct filename *__audit_reusename(const __user char *uptr);
-@@ -133,7 +130,7 @@ static inline void audit_syscall_entry(int major, unsigned long a0,
- 				       unsigned long a3)
- {
- 	if (unlikely(current->audit_context))
--		__audit_syscall_entry(syscall_get_arch(), major, a0, a1, a2, a3);
-+		__audit_syscall_entry(major, a0, a1, a2, a3);
- }
- static inline void audit_syscall_exit(void *pt_regs)
- {
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 565f7b7..a4e4447 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -1445,7 +1445,7 @@ void __audit_free(struct task_struct *tsk)
-  * will only be written if another part of the kernel requests that it
-  * be written).
-  */
--void __audit_syscall_entry(int arch, int major,
-+void __audit_syscall_entry(int major,
- 			 unsigned long a1, unsigned long a2,
- 			 unsigned long a3, unsigned long a4)
- {
--- 
-1.7.1
+Reviewed-by: Preeti U Murthy <preeti@linux.vnet.ibm.com>
+> _______________________________________________
+> Linuxppc-dev mailing list
+> Linuxppc-dev@lists.ozlabs.org
+> https://lists.ozlabs.org/listinfo/linuxppc-dev
+> 

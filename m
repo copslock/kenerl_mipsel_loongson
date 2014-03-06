@@ -1,44 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 11:30:39 +0100 (CET)
-Received: from alius.ayous.org ([89.238.89.44]:56352 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 11:58:30 +0100 (CET)
+Received: from mail.skyhub.de ([78.46.96.112]:35358 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825697AbaCFKag1EHke (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Mar 2014 11:30:36 +0100
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <aba@ayous.org>)
-        id 1WLVZG-00012r-Qu; Thu, 06 Mar 2014 10:30:23 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@ayous.org>)
-        id 1WLVZB-00087d-ES; Thu, 06 Mar 2014 11:30:17 +0100
-Date:   Thu, 6 Mar 2014 11:30:17 +0100
-From:   Andreas Barth <aba@ayous.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V19 00/13] MIPS: Add Loongson-3 based machines support
-Message-ID: <20140306103017.GX16461@mails.so.argh.org>
-References: <1392537690-5961-1-git-send-email-chenhc@lemote.com>
+        id S6822287AbaCFK620KDaZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Mar 2014 11:58:28 +0100
+X-Virus-Scanned: Nedap ESD1 at mail.skyhub.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=alien8.de; s=alien8;
+        t=1394103507; bh=XNcwaTGirH4Xe5XomBZ9WbZEeXHS1ubRLU5oVB3f4j0=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:Content-Transfer-Encoding:In-Reply-To; b=nTgxnB0jXscW
+        99QcjVWIsMwOOH9u5YG0a+PL9fkC/PPGTcLoRi4dzMp4FGiaL4tIhqmlQ1LGQnK6bbM
+        HLl+Tg36Wjogk5eoqEg0xasC8nLkqP5XD+Uody4wCWqr3iiOFSHhvG5JPdpzcPTfwBX
+        AFQf+39LZXIfSL5We3IzYuKcY=
+Received: from mail.skyhub.de ([127.0.0.1])
+        by localhost (door.skyhub.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id OxYlJonoCDPo; Thu,  6 Mar 2014 11:58:27 +0100 (CET)
+Received: from liondog.tnic (p4FF1C440.dip0.t-ipconnect.de [79.241.196.64])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 421C21D96BD;
+        Thu,  6 Mar 2014 11:58:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=alien8.de; s=alien8;
+        t=1394103507; bh=XNcwaTGirH4Xe5XomBZ9WbZEeXHS1ubRLU5oVB3f4j0=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:Content-Transfer-Encoding:In-Reply-To; b=nTgxnB0jXscW
+        99QcjVWIsMwOOH9u5YG0a+PL9fkC/PPGTcLoRi4dzMp4FGiaL4tIhqmlQ1LGQnK6bbM
+        HLl+Tg36Wjogk5eoqEg0xasC8nLkqP5XD+Uody4wCWqr3iiOFSHhvG5JPdpzcPTfwBX
+        AFQf+39LZXIfSL5We3IzYuKcY=
+Received: by liondog.tnic (Postfix, from userid 1000)
+        id 8BD7F10020D; Thu,  6 Mar 2014 11:58:21 +0100 (CET)
+Date:   Thu, 6 Mar 2014 11:58:21 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Nick Krause <nickkrause@sympatico.ca>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Patch[Kernel 3.13.5]
+Message-ID: <20140306105821.GA24636@pd.tnic>
+References: <SNT145-W1141791FC5F60B7E0788170A5880@phx.gbl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1392537690-5961-1-git-send-email-chenhc@lemote.com>
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aba@ayous.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <SNT145-W1141791FC5F60B7E0788170A5880@phx.gbl>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <bp@alien8.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39429
+X-archive-position: 39430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@ayous.org
+X-original-sender: bp@alien8.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,217 +65,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi together,
+On Thu, Mar 06, 2014 at 04:00:04AM +0000, Nick Krause wrote:
+> Here is my first patch, adding a break point to fix bug 60845, case fallout through on switch 
+> in arch/mips/pci/msi-octeon.c.
+> 
+> --- //home/nick/linux-3.13.5/arch/mips/pci/msi-octeon.c.orig    2014-03-05 22:48:19.084372515 -0500
+> +++ //home/nick/linux-3.13.5/arch/mips/pci/msi-octeon.c    2014-03-05 22:48:48.388372344 -0500
+> @@ -150,6 +150,7 @@ msi_irq_allocated:
+>          msg.address_lo =
+>              ((128ul << 20) + CVMX_PCI_MSI_RCV) & 0xffffffff;
+>          msg.address_hi = ((128ul << 20) + CVMX_PCI_MSI_RCV)>> 32;
+> +        break;
+>      case OCTEON_DMA_BAR_TYPE_BIG:
+>          /* When using big bar, Bar 0 is based at 0 */
+>          msg.address_lo = (0 + CVMX_PCI_MSI_RCV) & 0xffffffff;
+> Got one error no maintainer otherwise not issues with coding style.
 
-looking at the review comment it seems to me like this patch set could
-go into mainline now. Or am I missing something?
+Looks like a real bug you've found, as e8635b484f644 still has the
+"break" in there.
 
-Would be good if we could get into the next merge cycle.
+However, if you want to learn how to prepare patches properly, take a
+look at Documentation/SubmittingPatches.
 
+There it also says how to find out who exactly to send this patch to:
 
-Andi
+$ ./scripts/get_maintainer.pl -f arch/mips/pci/msi-octeon.c
+Ralf Baechle <ralf@linux-mips.org> (supporter:MIPS)
+linux-mips@linux-mips.org (open list:MIPS)
 
+I've CCed them.
 
-* Huacai Chen (chenhc@lemote.com) [140216 09:03]:
-> This patchset is prepared for the next 3.15 release for Linux/MIPS.
-> Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2 compatible
-> and has the same IMP field (0x6300) as Loongson-2. These patches make
-> Linux kernel support Loongson-3 CPU and Loongson-3 based computers
-> (including Laptop, Mini-ITX, All-In-One PC, etc.)
-> 
-> V1 -> V2:
-> 1, Split the first patch to two patches, one is constant definition and
->    the other is CPU probing, cache initializing, etc.
-> 2, Remove Kconfig options in the first 9 patches and put all of them in
->    the 10th patch.
-> 3, Use "make savedefconfig" to generate the new default config file.
-> 4, Rework serial port support to use PORT and PORT_M macros.
-> 5, Fix some compile warnings.
-> 
-> V2 -> V3:
-> 1, Improve cache flushing code (use cpu_has_coherent_cache macro and
->    remove #ifdef clauses).
-> 2, Improve platform-specific code to correctly set driver's dma_mask/
->    coherent_dma_mask so no longer need workarounds for each driver (
->    SATA, graphics card, sound card, etc.)
-> 3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
-> 4, Improve CPU hotplug code and split the poweroff failure related code
->    to another patch (this issue affect all MIPS CPU, not only Loongson).
-> 5, Some other small fixes.
-> 
-> V3 -> V4:
-> 1, Include swiotlb.h in radeon_ttm.c if SWIOTLB configured.
-> 2, Remove "Reviewed-by" in patches which are added by mistake.
-> 3, Sync the code to upstream.
-> 
-> V4 -> V5:
-> 1, Split the drm patch to three patches.
-> 2, Use platform-specific pincfgs to replace old alsa quirks.
-> 
-> V5 -> V6:
-> 1, For better management, two non-Loongson-specific patches are sent
->    independently.
-> 2, Introduce cpu_has_coherent_cache feature and split cache flushing
->    changes to a separate patch.
-> 3, Remove PRID_IMP_LOONGSON3 and use PRID_IMP_LOONGSON2 since they are
->    the same.
-> 4, Don't define RTC_ALWAYS_BCD for Loongson-3 since BCD format can be
->    checked by RTC_CONTROL at runtime.
-> 5, Don't modify dma-default.c for Loongson since it is unnecessary.
-> 6, Don't define SAREA_MAX since it is useless.
-> 7, Increase the default boost of internal mic for Lemote A1004.
-> 8, Fix a #ifdef issue in dma-coherence.h.
-> 9, Some other small fixes.
-> 
-> V6 -> V7:
-> 1, Fix boot failure when NR_CPUS is more than present cpus.
-> 2, Fix error messages after poweroff & reboot.
-> 3, Update the default config file.
-> 4, Sync the code to upstream.
-> 
-> V7 -> V8:
-> 1, Add WEAK_ORDERING/WEAK_REORDERING_BEYOND_LLSC for Loongson-3.
-> 2, Fix a deadlock of cpu-hotplug.
-> 3, Include swiotlb.h in arch-specific code to avoid driver modification.
-> 4, Remove the patch "drm: Handle io prot correctly for MIPS" since it
->    is already in upstream code.
-> 5, Remove the patch "ALSA: HDA: Make hda sound card usable for Loongson"
->    since it is already in upstream code.
-> 6, Use LZMA compression and do some adjustment of config file to reduce
->    kernel size.
-> 
-> V8 -> V9:
-> 1, Fix spurious IPI interrupt.
-> 2, remove __dev* attributes since CONFIG_HOTPLUG is going away as an option.
-> 3, Use dev_info() to print messages in fixup-loongson3.c.
-> 4, Update the default config file.
-> 5, Sync the code to upstream.
-> 
-> V9 -> V10:
-> 1, Rework "Introduce and use cpu_has_coherent_cache feature".
-> 2, Handle the case that System BIOS doesn't contain a VGA BIOS.
-> 3, Sync the code to upstream (mostly indentation adjustment).
-> 
-> V10 -> V11:
-> 1, Remove normal labels and useless nops in inline assembler.
-> 2, Sync the code to upstream (Prepared for 3.12).
-> 
-> V11 -> V12:
-> 1, Delete __cpuinit usage;
-> 2, Remove the third patch since it is contentious;
-> 3, Sync the code to upstream (Prepared for 3.13).
-> 
-> V12 -> V13:
-> 1, Rework addrspace.h and spaces.h;
-> 2, Move the modification of Platform from patch 1 to patch 12;
-> 3, Sync the code to upstream (the mips-for-linux-next branch, for 3.13).
-> 
-> V13 -> V14:
-> 1, Avoid spurious interrupt from serial port;
-> 2, Drop CONFIG_LOONGSON_BIGMEM and use CONFIG_SWIOTLB directly;
-> 3, Sync the code to upstream (the mips-for-linux-next branch, for 3.14).
-> 
-> V14 -> V15:
-> 1, Fix duplicate ARCH_SPARSEMEM_ENABLE in Kconfig.
-> 
-> V15 -> V16:
-> 1, Fix all coding style errors and most of warnings;
-> 2, Make dma address translation simple and elegant;
-> 3, Fix potential bugs in swiotlb code;
-> 4, Rename UEFI firmware interface to LEFI;
-> 5, Remove 32-bit kernel support temporarily;
-> 6, Some other small fixes (thanks to Aurelien Jarno).
-> 
-> V16 -> V17:
-> 1, Kconfig adjustment;
-> 2, Make some functions static;
-> 3, Capitalize macros in smp code;
-> 4, Make dma-swiotlb.c more simple;
-> 5, Some other small fixes (thanks to Aurelien Jarno and Alex Smith).
-> 
-> V17 -> V18:
-> 1, Fix two Loongson 2 breakages.
-> 2, Tested and Reviewed by Alex Smith.
-> 
-> V18 -> V19:
-> 1, Rewrite the commit message of the dma-swiotlb patch.
-> 2, LEFI export the dma_mask_bits, which make it possible to support
->    both 32-bit and 40-bit DMA.
-> 
-> Huacai Chen(13):
->  MIPS: Loongson: Rename PRID_IMP_LOONGSON1 and PRID_IMP_LOONGSON2.
->  MIPS: Loongson: Add basic Loongson-3 definition.
->  MIPS: Loongson: Add basic Loongson-3 CPU support.
->  MIPS: Loongson 3: Add Lemote-3A machtypes definition.
->  MIPS: Loongson: Add UEFI-like firmware interface (LEFI) support.
->  MIPS: Loongson 3: Add HT-linked PCI support.
->  MIPS: Loongson 3: Add IRQ init and dispatch support.
->  MIPS: Loongson 3: Add serial port support.
->  MIPS: Loongson: Add swiotlb to support All-Memory DMA.
->  MIPS: Loongson: Add Loongson-3 Kconfig options.
->  MIPS: Loongson 3: Add Loongson-3 SMP support.
->  MIPS: Loongson 3: Add CPU hotplug support.
->  MIPS: Loongson: Add a Loongson-3 default config file.
-> 
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Hongliang Tao <taohl@lemote.com>
-> Signed-off-by: Hua Yan <yanh@lemote.com> 
-> ---
->  arch/mips/Kconfig                                  |   29 ++-
->  arch/mips/configs/loongson3_defconfig              |  348 ++++++++++++++++
->  arch/mips/include/asm/addrspace.h                  |    2 +
->  arch/mips/include/asm/bootinfo.h                   |   24 +-
->  arch/mips/include/asm/cpu-type.h                   |    4 +
->  arch/mips/include/asm/cpu.h                        |    9 +-
->  arch/mips/include/asm/dma-mapping.h                |    5 +
->  arch/mips/include/asm/mach-loongson/boot_param.h   |  163 ++++++++
->  .../mips/include/asm/mach-loongson/dma-coherence.h |   22 +-
->  arch/mips/include/asm/mach-loongson/irq.h          |   44 ++
->  arch/mips/include/asm/mach-loongson/loongson.h     |   28 +-
->  arch/mips/include/asm/mach-loongson/machine.h      |    6 +
->  arch/mips/include/asm/mach-loongson/pci.h          |    5 +
->  arch/mips/include/asm/mach-loongson/spaces.h       |   13 +
->  arch/mips/include/asm/module.h                     |    2 +
->  arch/mips/include/asm/pgtable-bits.h               |    9 +
->  arch/mips/include/asm/smp.h                        |    1 +
->  arch/mips/kernel/cpu-probe.c                       |   16 +-
->  arch/mips/loongson/Kconfig                         |   47 +++
->  arch/mips/loongson/Makefile                        |    6 +
->  arch/mips/loongson/Platform                        |    1 +
->  arch/mips/loongson/common/Makefile                 |    5 +
->  arch/mips/loongson/common/dma-swiotlb.c            |  136 ++++++
->  arch/mips/loongson/common/env.c                    |   67 +++-
->  arch/mips/loongson/common/init.c                   |   12 +-
->  arch/mips/loongson/common/machtype.c               |    4 +
->  arch/mips/loongson/common/mem.c                    |   42 ++
->  arch/mips/loongson/common/pci.c                    |    6 +-
->  arch/mips/loongson/common/reset.c                  |   21 +
->  arch/mips/loongson/common/serial.c                 |   26 +-
->  arch/mips/loongson/common/setup.c                  |    8 +-
->  arch/mips/loongson/common/uart_base.c              |    9 +-
->  arch/mips/loongson/loongson-3/Makefile             |    6 +
->  arch/mips/loongson/loongson-3/irq.c                |  125 ++++++
->  arch/mips/loongson/loongson-3/smp.c                |  434 ++++++++++++++++++++
->  arch/mips/loongson/loongson-3/smp.h                |   29 ++
->  arch/mips/mm/c-r4k.c                               |   59 +++
->  arch/mips/mm/tlb-r4k.c                             |    5 +-
->  arch/mips/mm/tlbex.c                               |    1 +
->  arch/mips/pci/Makefile                             |    1 +
->  arch/mips/pci/fixup-loongson3.c                    |   66 +++
->  arch/mips/pci/ops-loongson3.c                      |  101 +++++
->  42 files changed, 1885 insertions(+), 62 deletions(-)
->  create mode 100644 arch/mips/configs/loongson3_defconfig
->  create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
->  create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
->  create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
->  create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
->  create mode 100644 arch/mips/loongson/loongson-3/Makefile
->  create mode 100644 arch/mips/loongson/loongson-3/irq.c
->  create mode 100644 arch/mips/loongson/loongson-3/smp.c
->  create mode 100644 arch/mips/loongson/loongson-3/smp.h
->  create mode 100644 arch/mips/pci/fixup-loongson3.c
->  create mode 100644 arch/mips/pci/ops-loongson3.c
-> --
-> 1.7.7.3
-> 
-> 
+-- 
+Regards/Gruss,
+    Boris.
+
+Sent from a fat crate under my desk. Formatting is fine.
+--

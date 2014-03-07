@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 20:55:32 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:47057 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816887AbaCFTzax0oiV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Mar 2014 20:55:30 +0100
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s26JtFiP021468
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 6 Mar 2014 14:55:15 -0500
-Received: from madcap2.tricolour.ca (vpn-50-3.rdu2.redhat.com [10.10.50.3])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s26JtB0g006460
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Thu, 6 Mar 2014 14:55:12 -0500
-Date:   Thu, 6 Mar 2014 14:55:10 -0500
-From:   Richard Guy Briggs <rgb@redhat.com>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
-Cc:     linux-audit@redhat.com, linux-kernel@vger.kernel.org,
-        eparis@redhat.com, sgrubb@redhat.com, oleg@redhat.com,
-        linux-mips@linux-mips.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/6][RFC] syscall: define syscall_get_arch() for each
- audit-supported arch
-Message-ID: <20140306195510.GA16640@madcap2.tricolour.ca>
-References: <cover.1393974970.git.rgb@redhat.com>
- <cb88576237b1bc4fc7981200c2c23ae05790db0d.1393974970.git.rgb@redhat.com>
- <531833F0.8080300@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2014 02:05:51 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.114]:48683 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823083AbaCGBFtllZKH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Mar 2014 02:05:49 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 2E447860E8839
+        for <linux-mips@linux-mips.org>; Fri,  7 Mar 2014 01:05:40 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 7 Mar
+ 2014 01:05:43 +0000
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Fri, 7 Mar 2014 01:05:43 +0000
+Received: from fun-lab.mips.com (192.168.136.61) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 6 Mar
+ 2014 17:05:41 -0800
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <paul.burton@imgtec.com>, <Leonid.Yegoshin@imgtec.com>,
+        <Steven.Hill@imgtec.com>, Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Subject: [PATCH] MIPS FPU emulator: Fix prefx detection and COP1X function field definition
+Date:   Thu, 6 Mar 2014 17:05:27 -0800
+Message-ID: <1394154327-16677-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <531833F0.8080300@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-Return-Path: <rgb@redhat.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.136.61]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39436
+X-archive-position: 39438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rgb@redhat.com
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,62 +47,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14/03/06, Markos Chandras wrote:
-> Hi Richard,
+From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 
-Hi Markos,
+When running applications which contain the instruction "prefx" on FPU-less
+CPUs, a message "Illegal instruction" will be seen. This instruction is
+supposed to be ignored by the FPU emulator. However, its current detection
+and function field encoding are incorrect. This patch fix the issue.
 
-> On 03/05/2014 09:27 PM, Richard Guy Briggs wrote:
-> >Each arch that supports audit requires syscall_get_arch() to able to log and
-> >identify architecture-dependent syscall numbers.  The information is used in at
-> >least two different subsystems, so standardize it in the same call across all
-> >arches.
-> >
-> >Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-> >
-> >---
-> >diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-> >index 81c8913..41ecde4 100644
-> >--- a/arch/mips/include/asm/syscall.h
-> >+++ b/arch/mips/include/asm/syscall.h
-> >@@ -103,7 +103,7 @@ extern const unsigned long sysn32_call_table[];
-> >
-> >  static inline int __syscall_get_arch(void)
-> >  {
-> >-	int arch = EM_MIPS;
-> >+	int arch = AUDIT_ARCH_MIPS;
-> >  #ifdef CONFIG_64BIT
-> >  	arch |=  __AUDIT_ARCH_64BIT;
-> >  #endif
-> >@@ -113,4 +113,10 @@ static inline int __syscall_get_arch(void)
-> >  	return arch;
-> >  }
-> >
-> >+static inline int syscall_get_arch(struct task_struct *task,
-> >+				   struct pt_regs *regs)
-> >+{
-> >+	return __syscall_get_arch();
-> >+}
-> >+
-> >  #endif	/* __ASM_MIPS_SYSCALL_H */
-> 
-> This is already fixed for MIPS
-> 
-> http://patchwork.linux-mips.org/patch/6398/
-> 
-> The code is in linux-next targeting 3.15 as far as I can tell.
+Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+---
+ arch/mips/include/uapi/asm/inst.h | 4 ++--
+ arch/mips/math-emu/cp1emu.c       | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-Ok, good to see that it is pretty much the same approach.
-
-My patchset is based on 3.13 (as I assume this patch is), so that
-conflict will be sorted out once I add to linux-next...
-
-> markos
-
-- RGB
-
---
-Richard Guy Briggs <rbriggs@redhat.com>
-Senior Software Engineer, Kernel Security, AMER ENG Base Operating Systems, Red Hat
-Remote, Ottawa, Canada
-Voice: +1.647.777.2635, Internal: (81) 32635, Alt: +1.613.693.0684x3545
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index b39ba25..0832fac 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -163,8 +163,8 @@ enum cop1_sdw_func {
+  */
+ enum cop1x_func {
+ 	lwxc1_op     =	0x00, ldxc1_op	   =  0x01,
+-	pfetch_op    =	0x07, swxc1_op	   =  0x08,
+-	sdxc1_op     =	0x09, madd_s_op	   =  0x20,
++	swxc1_op     =  0x08, sdxc1_op	   =  0x09,
++	pfetch_op    =	0x0f, madd_s_op	   =  0x20,
+ 	madd_d_op    =	0x21, madd_e_op	   =  0x22,
+ 	msub_s_op    =	0x28, msub_d_op	   =  0x29,
+ 	msub_e_op    =	0x2a, nmadd_s_op   =  0x30,
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 506925b..0b4e2e3 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -1538,10 +1538,10 @@ static int fpux_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 		break;
+ 	}
+ 
+-	case 0x7:		/* 7 */
+-		if (MIPSInst_FUNC(ir) != pfetch_op) {
++	case 0x3:
++		if (MIPSInst_FUNC(ir) != pfetch_op)
+ 			return SIGILL;
+-		}
++
+ 		/* ignore prefx operation */
+ 		break;
+ 
+-- 
+1.8.5.3

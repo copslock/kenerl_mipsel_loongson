@@ -1,49 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2014 20:21:35 +0100 (CET)
-Received: from 0.mx.nanl.de ([217.115.11.12]:49620 "EHLO mail.nanl.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6868511AbaCJTVdFEssJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Mar 2014 20:21:33 +0100
-Received: from mail-qc0-f176.google.com (mail-qc0-f176.google.com [209.85.216.176])
-        by mail.nanl.de (Postfix) with ESMTPSA id 200044602C;
-        Mon, 10 Mar 2014 19:21:15 +0000 (UTC)
-Received: by mail-qc0-f176.google.com with SMTP id m20so8220893qcx.7
-        for <multiple recipients>; Mon, 10 Mar 2014 12:21:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=DOvOB8Stv3ZEIZlE640x6SG5fhXif5iw5+PkmhAaWn4=;
-        b=AiBaYWhuH7GGgYES0rK6KmvX0PsYSjptunvw2t88KXsXVypb4cIhLfHg7TDfOTkM/I
-         fpl89FCaLVKEA76qqlQJ4Oe+Ww7/6lIQpm1hMlRjsgrSvypXY7Utv74iMpJl9GraU+xF
-         q1w/Qrtt1DjL+yEJtoWiyP7eBmPdWHulGbaHU1SJLC4evMnEGSM0e4GBUOPvCwYZqaY9
-         R85rV9YwyD8XFE9sz7Xg7XYmogfZTeDrCawHaZ7Sn0NX15U/hGa7Ii6HewmR9n4GXiLE
-         0iQ4oaeAF8F9qWvFThR6yFXrAQk5ofTva3RQjTaUCch/g5JVHhR4WVz9ipK/QI1yzIdK
-         qaFg==
-X-Received: by 10.224.13.142 with SMTP id c14mr10172419qaa.76.1394479287361;
- Mon, 10 Mar 2014 12:21:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Mar 2014 09:46:59 +0100 (CET)
+Received: from mail-pd0-f169.google.com ([209.85.192.169]:35611 "EHLO
+        mail-pd0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823060AbaCKIqxph4WN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Mar 2014 09:46:53 +0100
+Received: by mail-pd0-f169.google.com with SMTP id fp1so8293381pdb.0
+        for <multiple recipients>; Tue, 11 Mar 2014 01:46:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:date:message-id:subject:from:to:cc:content-type;
+        bh=If55j25gdereD/prH3lMcnQpjyf69nofs5tPMSkDgoo=;
+        b=ddCdLW/qj/o5FEAMQ6GhHMVpLHWeSVENSKYjX/Flbco+T+ReU0EuFl80ZxBNBVfFPV
+         RfW7d4zuklauXHve8tbPs37EvGHamXVFklnRFpYhQDyg399TBoO/0eCVQm51jYC9xY1v
+         iitkvzWrIJvk2cMiQiXGL0OpboJR7B9+tQ9rT9r9Ww1pkwdr1lltcI0uM+si0jZetqBS
+         L6rfQjx/ES3ZLFLMXom/PwgY71vU79T37VJAknRSVLr5XTyuo8FzN3P6v4lRffrAoYy5
+         bBEsu0NrHi02uSyDvxsm9Ivb2n4ikxjtGLHEVs1wuuEFepAFH8+iWhveqxFurUZ1MVAN
+         x6Tw==
 MIME-Version: 1.0
-Received: by 10.140.24.81 with HTTP; Mon, 10 Mar 2014 12:21:07 -0700 (PDT)
-In-Reply-To: <CAP=VYLribDoh9LyQuNr-RxmRdaVxqNqzCCSAgMxKoZKWd2b1YA@mail.gmail.com>
-References: <1393940084-29518-1-git-send-email-markos.chandras@imgtec.com> <CAP=VYLribDoh9LyQuNr-RxmRdaVxqNqzCCSAgMxKoZKWd2b1YA@mail.gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 10 Mar 2014 20:21:07 +0100
-Message-ID: <CAOiHx=mNtTv01CyjC=rXKzTeF79sbBqnZBQWbWXAkKnrGeZrng@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Add support for the M5150 processor
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
+X-Received: by 10.68.136.133 with SMTP id qa5mr46088066pbb.63.1394527603412;
+ Tue, 11 Mar 2014 01:46:43 -0700 (PDT)
+Received: by 10.70.28.195 with HTTP; Tue, 11 Mar 2014 01:46:43 -0700 (PDT)
+Date:   Tue, 11 Mar 2014 09:46:43 +0100
+X-Google-Sender-Auth: cwHGwTgSYvNDcrQ6w2l3DYTvCRs
+Message-ID: <CAMuHMdVspeUUMCfiuf4g5iQ6uryZMKLqsR9WLHQ6=GygTtv9-Q@mail.gmail.com>
+Subject: [-next] error: 'PRID_IMP_M5150' undeclared (first use in this function)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux-Next <linux-next@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39446
+X-archive-position: 39450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,37 +51,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 10, 2014 at 6:43 PM, Paul Gortmaker
-<paul.gortmaker@windriver.com> wrote:
-> On Tue, Mar 4, 2014 at 8:34 AM, Markos Chandras
-> <markos.chandras@imgtec.com> wrote:
->> Hi,
->>
->> This patchset adds support for the recently announced M5150 processor
->> http://imgtec.com/mips/mips-series5-mclass-m51xx.asp?NewsID=804
->
-> I'm going to skip the bisect, and make a guess that this patchset causes
-> the following build failures on all pre-existing mips boards:
->
-> arch/mips/kernel/cpu-probe.c:856:7: error: 'PRID_IMP_M5150' undeclared
-> (first use in this function)
-> arch/mips/kernel/cpu-probe.c:857:16: error: 'CPU_M5150' undeclared
-> (first use in this function)
-> make[3]: *** [arch/mips/kernel/cpu-probe.o] Error 1
->
-> See this link as one of the many linux-next mips failures:
->
-> http://kisskb.ellerman.id.au/kisskb/buildresult/10701712/
+Hi Ralf,
 
+http://kisskb.ellerman.id.au/kisskb/buildresult/10701849/
+arch/mips/kernel/cpu-probe.c:856:7: error: 'PRID_IMP_M5150' undeclared
+(first use in this function)
+arch/mips/kernel/cpu-probe.c:857:16: error: 'CPU_M5150' undeclared
+(first use in this function)
 
-Looking at mips-next and patchwork, the problem isn't the patchset
-itself, but rather that only the third patch was applied.
+Apparently you've applied on patch [3/3] of the series, and forgot the 2
+prerequisites?
 
-Ralf, I think you missed the following two patches :)
+https://patchwork.linux-mips.org/patch/6595/
+https://patchwork.linux-mips.org/patch/6596/
 
-http://patchwork.linux-mips.org/patch/6595/
-http://patchwork.linux-mips.org/patch/6596/
+Gr{oetje,eeting}s,
 
+                        Geert
 
-Regards
-Jonas
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

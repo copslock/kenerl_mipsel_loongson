@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2014 00:02:28 +0100 (CET)
-Received: from mail.active-venture.com ([67.228.131.205]:52611 "EHLO
-        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6870548AbaCLXC0BNKbi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Mar 2014 00:02:26 +0100
-Received: (qmail 91432 invoked by uid 399); 12 Mar 2014 23:02:19 -0000
-Received: from unknown (HELO server.roeck-us.net) (linux@roeck-us.net@108.223.40.66)
-  by mail.active-venture.com with ESMTPAM; 12 Mar 2014 23:02:19 -0000
-X-Originating-IP: 108.223.40.66
-X-Sender: linux@roeck-us.net
-Message-ID: <5320E77A.20900@roeck-us.net>
-Date:   Wed, 12 Mar 2014 16:02:18 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2014 00:31:50 +0100 (CET)
+Received: from alius.ayous.org ([89.238.89.44]:41146 "EHLO alius.ayous.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822283AbaCLXbswGcMZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Mar 2014 00:31:48 +0100
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <aba@ayous.org>)
+        id 1WNsch-0006N8-UM; Wed, 12 Mar 2014 23:31:44 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@ayous.org>)
+        id 1WNscc-0005yX-Fr; Thu, 13 Mar 2014 00:31:38 +0100
+Date:   Thu, 13 Mar 2014 00:31:38 +0100
+From:   Andreas Barth <aba@ayous.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: Re: [PATCH V19 00/13] MIPS: Add Loongson-3 based machines support
+Message-ID: <20140312233138.GY12772@mails.so.argh.org>
+References: <1392537690-5961-1-git-send-email-chenhc@lemote.com> <20140306103017.GX16461@mails.so.argh.org> <532076A7.1040606@phrozen.org>
 MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Paul Bolle <pebolle@tiscali.nl>,
-        Huacai Chen <chenhc@lemote.com>, Andreas Barth <aba@ayous.org>
-Subject: Re: [PATCH RESEND 2/2] MIPS: fpu: fix conflict of register usage
-References: <1394664067-17712-1-git-send-email-aaro.koskinen@iki.fi> <1394664067-17712-3-git-send-email-aaro.koskinen@iki.fi>
-In-Reply-To: <1394664067-17712-3-git-send-email-aaro.koskinen@iki.fi>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <532076A7.1040606@phrozen.org>
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <aba@ayous.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39461
+X-archive-position: 39462
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: aba@ayous.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,18 +51,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/12/2014 03:41 PM, Aaro Koskinen wrote:
-> From: Huacai Chen <chenhc@lemote.com>
->
-> In _restore_fp_context/_restore_fp_context32, t0 is used for both
-> CP0_Status and CP1_FCSR. This is a mistake and cause FP exeception on
-> boot, so fix it.
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Tested-by: Andreas Barth <aba@ayous.org>
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+* John Crispin (john@phrozen.org) [140312 16:01]:
+>    Andi,
+>    can we get a reviewed-by from you ?
 
-With qemu-system-mips64:
+As discussed on IRC I don't think I fullfill the criteria for a
+Reviewed-by (because I haven't done a technical review of the code;
+however based on the existing reviews I'm convinved this patch series
+does fullfill the criteria for inclusion into the mainline kernel, but
+Reviewed-by is more than just that), but you could add
+Tested-by: Andreas Barth <aba@ayous.org>
+if you consider that useful.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+
+Andi

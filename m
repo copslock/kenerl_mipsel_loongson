@@ -1,27 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Mar 2014 14:06:31 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.89.28.115]:60807 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Mar 2014 14:07:07 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.114]:47476 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817059AbaCNNG01qqdi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Mar 2014 14:06:26 +0100
+        with ESMTP id S6825716AbaCNNG133ZDC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Mar 2014 14:06:27 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DD09CCE513C38;
-        Fri, 14 Mar 2014 13:06:17 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 1CE42D57109A0;
+        Fri, 14 Mar 2014 13:06:19 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 14 Mar
+ 2014 13:06:21 +0000
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Fri, 14 Mar 2014 13:06:20 +0000
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Fri, 14 Mar 2014 13:06:21 +0000
 Received: from jhogan-linux.le.imgtec.org (192.168.154.65) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Fri, 14 Mar 2014 13:06:19 +0000
+ 14.3.174.1; Fri, 14 Mar 2014 13:06:20 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, Gleb Natapov <gleb@kernel.org>,
-        "Paolo Bonzini" <pbonzini@redhat.com>
+        Paolo Bonzini <pbonzini@redhat.com>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Sanjay Lal <sanjayl@kymasys.com>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>
-Subject: [PATCH 0/4] MIPS: KVM: RI + RDHWR handling fixes
-Date:   Fri, 14 Mar 2014 13:06:06 +0000
-Message-ID: <1394802370-20487-1-git-send-email-james.hogan@imgtec.com>
+        <kvm@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH 1/4] MIPS: KVM: Pass reserved instruction exceptions to guest
+Date:   Fri, 14 Mar 2014 13:06:07 +0000
+Message-ID: <1394802370-20487-2-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 1.8.1.2
+In-Reply-To: <1394802370-20487-1-git-send-email-james.hogan@imgtec.com>
+References: <1394802370-20487-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.65]
@@ -29,7 +34,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39468
+X-archive-position: 39469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,37 +51,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Some misc KVM RI/RDHWR handling fixes.
+Previously a reserved instruction exception while in guest code would
+cause a KVM internal error if kvm_mips_handle_ri() didn't recognise the
+instruction (including a RDHWR from an unrecognised hardware register).
 
-Patch 1 prevents a reserved instruction (RI) exception from taking out
-the entire guest (e.g. crashme inevitably causes lots of these). If the
-hypervisor can't handle the RI, it can just emulate a guest RI exception
-instead so the guest OS can handle it. I've marked this one for stable
-since it allows guest userland to take out the VM.
+However the guest OS should really have the opportunity to catch the
+exception so that it can take the appropriate actions such as sending a
+SIGILL to the guest user process or emulating the instruction itself.
 
-Patch 3 fixes the RDHWR emulation to actually consult HWREna so that the
-guest can catch exceptions of implemented RDHWR if it desires. I've not
-marked this for stable since Linux at least enables the hardware
-registers with HWREna anyway.
+Therefore in these cases emulate a guest RI exception and only return
+EMULATE_FAIL if that fails, being careful to revert the PC first in case
+the exception occurred in a branch delay slot in which case the PC will
+already point to the branch target.
 
-Patch 2 and 4 are cleanups that I noticed while writing patch 3.
+Also turn the printk messages relating to these cases into kvm_debug
+messages so that they aren't usually visible.
 
+This allows crashme to run in the guest without killing the entire VM.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Gleb Natapov <gleb@kernel.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Sanjay Lal <sanjayl@kymasys.com>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+ arch/mips/kvm/kvm_mips_emul.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-James Hogan (4):
-  MIPS: KVM: Pass reserved instruction exceptions to guest
-  MIPS: KVM: asm/kvm_host.h: Clean up whitespace
-  MIPS: KVM: Consult HWREna before emulating RDHWR
-  MIPS: KVM: Remove dead code in CP0 emulation
-
- arch/mips/include/asm/kvm_host.h | 417 ++++++++++++++++++++-------------------
- arch/mips/kvm/kvm_mips_emul.c    |  40 ++--
- 2 files changed, 229 insertions(+), 228 deletions(-)
-
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 4b6274b47f33..e75ef8219caf 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -1571,17 +1571,17 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
+ 			arch->gprs[rt] = kvm_read_c0_guest_userlocal(cop0);
+ #else
+ 			/* UserLocal not implemented */
+-			er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
++			er = EMULATE_FAIL;
+ #endif
+ 			break;
+ 
+ 		default:
+-			printk("RDHWR not supported\n");
++			kvm_debug("RDHWR %#x not supported @ %p\n", rd, opc);
+ 			er = EMULATE_FAIL;
+ 			break;
+ 		}
+ 	} else {
+-		printk("Emulate RI not supported @ %p: %#x\n", opc, inst);
++		kvm_debug("Emulate RI not supported @ %p: %#x\n", opc, inst);
+ 		er = EMULATE_FAIL;
+ 	}
+ 
+@@ -1590,6 +1590,7 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
+ 	 */
+ 	if (er == EMULATE_FAIL) {
+ 		vcpu->arch.pc = curr_pc;
++		er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
+ 	}
+ 	return er;
+ }
 -- 
 1.8.1.2

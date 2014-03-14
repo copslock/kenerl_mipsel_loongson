@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2014 16:22:33 +0100 (CET)
-Received: from mail-oa0-f46.google.com ([209.85.219.46]:41474 "EHLO
-        mail-oa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817294AbaCMPWbSpd2i convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Mar 2014 16:22:31 +0100
-Received: by mail-oa0-f46.google.com with SMTP id i7so1187656oag.5
-        for <multiple recipients>; Thu, 13 Mar 2014 08:22:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=9Uo49VGvMjrYeopgvtW8Xii9vr8zGN46jXCd2TplNJc=;
-        b=TZNotD7nLbGbpHx3pxIjw6jbW5sw8Yf204IpH/LAX4X6JdfwiSz3fJTWujn3mmcQxT
-         Dbf6obuS0L/3XQZRegqtB7WxsWg+LGVwruneX6ZAS2umuGfNSDGmxvK+jYl1eIODloRf
-         on3If0EmAN7BjWBpz2/clR07QP/7X61lcq34VCsLcD7xW5/t1ZtrAfv/xRvsLoU74/is
-         GbBUjZCoUO1EoRc9wpoMOvh79PcC8CIA4j+zEoi6CNAP4b7CCDBlc+YThnZECuZGgDw8
-         mDGvqpja5UAUrbT4q7VHSTgqwQZrVGwsGYwNUU1/GHOJGgVLNfpwYCbvGUItvqY2WAAh
-         Bieg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Mar 2014 13:08:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.115]:52000 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823120AbaCNMIU5Hj2L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Mar 2014 13:08:20 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8365D4E9F5600;
+        Fri, 14 Mar 2014 12:08:12 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Fri, 14 Mar 2014 12:08:14 +0000
+Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
+ LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
+ 14.03.0174.001; Fri, 14 Mar 2014 12:08:14 +0000
+From:   Qais Yousef <Qais.Yousef@imgtec.com>
+To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Ralf Baechle (ralf@linux-mips.org)" <ralf@linux-mips.org>
+Subject: RE: [PATCH v2] mips/include/asm/mipsregs.h: include linux/types.h
+Thread-Topic: [PATCH v2] mips/include/asm/mipsregs.h: include linux/types.h
+Thread-Index: AQHO9MQBVSoSkhh8OU6mAEq/bcnOUprhEOxA
+Date:   Fri, 14 Mar 2014 12:08:13 +0000
+Message-ID: <392C4BDEFF12D14FA57A3F30B283D7D14152C8@LEMAIL01.le.imgtec.org>
+References: <1386582585-20867-1-git-send-email-qais.yousef@imgtec.com>
+In-Reply-To: <1386582585-20867-1-git-send-email-qais.yousef@imgtec.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.154.95]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Received: by 10.182.92.231 with SMTP id cp7mr745986obb.82.1394724137229;
- Thu, 13 Mar 2014 08:22:17 -0700 (PDT)
-Received: by 10.76.33.230 with HTTP; Thu, 13 Mar 2014 08:22:17 -0700 (PDT)
-In-Reply-To: <CACna6ryED3bATWzR9uZOyyhcEbOLtCpvQ3D3MOa8R-_5pE0_2Q@mail.gmail.com>
-References: <1392310092-27365-1-git-send-email-zajec5@gmail.com>
-        <CACna6ryED3bATWzR9uZOyyhcEbOLtCpvQ3D3MOa8R-_5pE0_2Q@mail.gmail.com>
-Date:   Thu, 13 Mar 2014 16:22:17 +0100
-Message-ID: <CACna6rwaCU8Z6TUsA_28JSTb+2HXGnWoCnO7Ab-9tDUX5VqCqg@mail.gmail.com>
-Subject: Re: [3.14 FIX][PATCH] MIPS: BCM47XX: Check all (32) GPIOs when
- looking for a pin
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39463
+X-archive-position: 39467
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: Qais.Yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,12 +52,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-02-28 7:27 GMT+01:00 Rafał Miłecki <zajec5@gmail.com>:
-> 2014-02-13 17:48 GMT+01:00 Rafał Miłecki <zajec5@gmail.com>:
->> Broadcom boards support 32 GPIOs and NVRAM may have entires for higher
->> ones too. Example:
->> gpio23=wombo_reset
->
-> Ping? Guys?
-
-Anyone? I've posted this patch a month ago.
+Q2FuIHdlIGluY2x1ZGUgdGhpcyBwYXRjaCBpbiB0aGUgbmV4dCAzLjEwIGFuZCBmb3J3YXJkIHN0
+YWJsZSByZWxlYXNlcyBwbGVhc2U/DQoNCkl0J3MgYWxyZWFkeSBpbiBMaW51cycgdHJlZSB1bmRl
+ciBjb21taXQgaWQ6IDg3Yzk5MjAzZmVhODk3ZmJkZDg0YjY4MWFkOWZjZWQyNTE3ZGNmOTgNCg0K
+VGhhbmtzLA0KUWFpcw0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFFh
+aXMgWW91c2VmDQo+IFNlbnQ6IDA5IERlY2VtYmVyIDIwMTMgMDk6NTANCj4gVG86IGxpbnV4LW1p
+cHNAbGludXgtbWlwcy5vcmcNCj4gQ2M6IFFhaXMgWW91c2VmDQo+IFN1YmplY3Q6IFtQQVRDSCB2
+Ml0gbWlwcy9pbmNsdWRlL2FzbS9taXBzcmVncy5oOiBpbmNsdWRlIGxpbnV4L3R5cGVzLmgNCj4g
+DQo+IFRoZSBmaWxlIHVzZXMgdTE2IHR5cGUgYnV0IGRvZXNuJ3QgaW5jbHVkZSBpdHMgZGVmaW5p
+dGlvbiBleHBsaWNpdGx5DQo+IA0KPiBJIHdhcyBnZXR0aW5nIHRoaXMgZXJyb3Igd2hlbiBpbmNs
+dWRpbmcgdGhpcyBoZWFkZXIgaW4gbXkgZHJpdmVyOg0KPiANCj4gICBhcmNoL21pcHMvaW5jbHVk
+ZS9hc20vbWlwc3JlZ3MuaDo2NDQ6MzM6IGVycm9yOiB1bmtub3duIHR5cGUgbmFtZSDigJh1MTbi
+gJkNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFFhaXMgWW91c2VmIDxxYWlzLnlvdXNlZkBpbWd0ZWMu
+Y29tPg0KPiBSZXZpZXdlZC1ieTogU3RldmVuIEouIEhpbGwgPFN0ZXZlbi5IaWxsQGltZ3RlYy5j
+b20+DQo+IC0tLQ0KPiBjaGFuZ2VzIHNpbmNlIHYxOg0KPiAJLSBpbmNsdWRlIGxpbnV4L3R5cGVz
+LmggaW5zdGVhZCBvZiBzL3UxNi91bnNpZ25lZCBzaG9ydC8NCj4gCS0gYW1lbmQgY29tbWl0IG1l
+c3NhZ2UgYWNjb3JkaW5nbHkNCj4gDQo+ICBhcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3Mu
+aCB8ICAgIDEgKw0KPiAgMSBmaWxlcyBjaGFuZ2VkLCAxIGluc2VydGlvbnMoKyksIDAgZGVsZXRp
+b25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21pcHNyZWdz
+LmgNCj4gYi9hcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3MuaA0KPiBpbmRleCBlMDMzMTQx
+Li44NjQ3OWJiIDEwMDY0NA0KPiAtLS0gYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3Mu
+aA0KPiArKysgYi9hcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3MuaA0KPiBAQCAtMTQsNiAr
+MTQsNyBAQA0KPiAgI2RlZmluZSBfQVNNX01JUFNSRUdTX0gNCj4gDQo+ICAjaW5jbHVkZSA8bGlu
+dXgvbGlua2FnZS5oPg0KPiArI2luY2x1ZGUgPGxpbnV4L3R5cGVzLmg+DQo+ICAjaW5jbHVkZSA8
+YXNtL2hhemFyZHMuaD4NCj4gICNpbmNsdWRlIDxhc20vd2FyLmg+DQo+IA0KPiAtLQ0KPiAxLjcu
+MQ0KDQo=

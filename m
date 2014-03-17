@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2014 08:41:38 +0100 (CET)
-Received: from bes.se.axis.com ([195.60.68.10]:41496 "EHLO bes.se.axis.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824787AbaCQHl1nhVOx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Mar 2014 08:41:27 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id 78DED2E4CB
-        for <linux-mips@linux-mips.org>; Mon, 17 Mar 2014 08:41:20 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id 5vTfVoPseFhJ for <linux-mips@linux-mips.org>;
-        Mon, 17 Mar 2014 08:41:19 +0100 (CET)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id CD03A2E4C8
-        for <linux-mips@linux-mips.org>; Mon, 17 Mar 2014 08:41:19 +0100 (CET)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id ADD7C916
-        for <linux-mips@linux-mips.org>; Mon, 17 Mar 2014 08:41:19 +0100 (CET)
-Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
-        by boulder.se.axis.com (Postfix) with ESMTP id A15E4CEF
-        for <linux-mips@linux-mips.org>; Mon, 17 Mar 2014 08:41:19 +0100 (CET)
-Received: from lnxlarper.se.axis.com (lnxlarper.se.axis.com [10.88.41.1])
-        by seth.se.axis.com (Postfix) with ESMTP id 9F4A73E048;
-        Mon, 17 Mar 2014 08:41:19 +0100 (CET)
-Received: by lnxlarper.se.axis.com (Postfix, from userid 20456)
-        id 726924205B; Mon, 17 Mar 2014 08:41:19 +0100 (CET)
-From:   Lars Persson <lars.persson@axis.com>
-To:     linux-mips@linux-mips.org
-Cc:     Lars Persson <larper@axis.com>
-Subject: [PATCH] MIPS: Fix syscall tracing interface
-Date:   Mon, 17 Mar 2014 08:40:21 +0100
-Message-Id: <1395042021-6186-1-git-send-email-larper@axis.com>
-X-Mailer: git-send-email 1.7.2.5
-Return-Path: <lars.persson@axis.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2014 10:27:07 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.115]:47591 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817552AbaCQJ1FbtGnm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Mar 2014 10:27:05 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 2D474F9E1F107;
+        Mon, 17 Mar 2014 09:26:58 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Mon, 17 Mar 2014 09:26:59 +0000
+Received: from [192.168.154.136] (192.168.154.136) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 17 Mar
+ 2014 09:26:59 +0000
+Message-ID: <5326BFE1.2060400@imgtec.com>
+Date:   Mon, 17 Mar 2014 09:26:57 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+MIME-Version: 1.0
+To:     Lars Persson <lars.persson@axis.com>, <linux-mips@linux-mips.org>
+CC:     Lars Persson <larper@axis.com>
+Subject: Re: [PATCH] MIPS: Fix syscall tracing interface
+References: <1395042021-6186-1-git-send-email-larper@axis.com>
+In-Reply-To: <1395042021-6186-1-git-send-email-larper@axis.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.136]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39478
+X-archive-position: 39479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars.persson@axis.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,54 +46,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS syscall tracing interface had multiple bugs
-that made it completely unusable.
+Hi Lars,
 
-Signed-off-by: Lars Persson <larper@axis.com>
----
- arch/mips/include/asm/syscall.h |   16 +++-------------
- 1 files changed, 3 insertions(+), 13 deletions(-)
+On 03/17/2014 07:40 AM, Lars Persson wrote:
+> The MIPS syscall tracing interface had multiple bugs
+> that made it completely unusable.
+>
+> Signed-off-by: Lars Persson <larper@axis.com>
 
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index 81c8913..8d08b6f 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -39,14 +39,14 @@ static inline unsigned long mips_get_syscall_arg(unsigned long *arg,
- 
- #ifdef CONFIG_32BIT
- 	case 4: case 5: case 6: case 7:
--		return get_user(*arg, (int *)usp + 4 * n);
-+		return get_user(*arg, (int *)usp + n);
- #endif
- 
- #ifdef CONFIG_64BIT
- 	case 4: case 5: case 6: case 7:
- #ifdef CONFIG_MIPS32_O32
- 		if (test_thread_flag(TIF_32BIT_REGS))
--			return get_user(*arg, (int *)usp + 4 * n);
-+			return get_user(*arg, (int *)usp + n);
- 		else
- #endif
- 			*arg = regs->regs[4 + n];
-@@ -83,18 +83,8 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 					 unsigned int i, unsigned int n,
- 					 unsigned long *args)
- {
--	unsigned long arg;
--	int ret;
--
- 	while (n--)
--		ret |= mips_get_syscall_arg(&arg, task, regs, i++);
--
--	/*
--	 * No way to communicate an error because this is a void function.
--	 */
--#if 0
--	return ret;
--#endif
-+		mips_get_syscall_arg(args++, task, regs, i++);
- }
- 
- extern const unsigned long sys_call_table[];
+The last part of your patch will conflict with
+
+http://patchwork.linux-mips.org/patch/6402/
+
+which is already in the linux-next tree.
+
+The rest of the changes look reasonable to me.
+
+I believe it is best if you base your patches on 
+upstream-sfr/mips-for-linux-next[1] branch.
+
+[1] 
+http://git.linux-mips.org/?p=ralf/upstream-sfr.git;a=shortlog;h=refs/heads/mips-for-linux-next
+
 -- 
-1.7.2.5
+markos

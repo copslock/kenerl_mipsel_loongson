@@ -1,42 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2014 15:41:13 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.89.28.115]:41449 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6867486AbaCQOlKc1asu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Mar 2014 15:41:10 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 566CA34EC0F5D;
-        Mon, 17 Mar 2014 14:41:02 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 17 Mar
- 2014 14:41:04 +0000
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Mon, 17 Mar 2014 14:41:04 +0000
-Received: from [192.168.154.136] (192.168.154.136) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 17 Mar
- 2014 14:41:03 +0000
-Message-ID: <5327097E.4090709@imgtec.com>
-Date:   Mon, 17 Mar 2014 14:41:02 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2014 15:56:50 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:56272 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6867611AbaCQO4svyWvg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Mar 2014 15:56:48 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s2HEuivP013437;
+        Mon, 17 Mar 2014 15:56:44 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s2HEufGC013402;
+        Mon, 17 Mar 2014 15:56:41 +0100
+Date:   Mon, 17 Mar 2014 15:56:41 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Viller Hsiao <villerhsiao@gmail.com>
+Cc:     linux-mips@linux-mips.org, rostedt@goodmis.org, fweisbec@gmail.com,
+        mingo@redhat.com, Qais.Yousef@imgtec.com
+Subject: Re: [PATCH v2 1/2] MIPS: ftrace: Tweak safe_load()/safe_store()
+ macros
+Message-ID: <20140317145641.GN19285@linux-mips.org>
+References: <1393055209-28251-1-git-send-email-villerhsiao@gmail.com>
+ <1393055209-28251-2-git-send-email-villerhsiao@gmail.com>
 MIME-Version: 1.0
-To:     Lars Persson <lars.persson@axis.com>, <linux-mips@linux-mips.org>
-CC:     Lars Persson <larper@axis.com>
-Subject: Re: [PATCH v2] MIPS: Fix syscall tracing interface
-References: <1395054853-3465-1-git-send-email-larper@axis.com>
-In-Reply-To: <1395054853-3465-1-git-send-email-larper@axis.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.136]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1393055209-28251-2-git-send-email-villerhsiao@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39482
+X-archive-position: 39483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,44 +45,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Lars,
+On Sat, Feb 22, 2014 at 03:46:48PM +0800, Viller Hsiao wrote:
 
-On 03/17/2014 11:14 AM, Lars Persson wrote:
-> Fix pointer computation for stack-based arguments.
->
-> Signed-off-by: Lars Persson <larper@axis.com>
-> ---
->   arch/mips/include/asm/syscall.h |    4 ++--
->   1 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-> index c71e40a..6c488c8 100644
-> --- a/arch/mips/include/asm/syscall.h
-> +++ b/arch/mips/include/asm/syscall.h
-> @@ -51,14 +51,14 @@ static inline unsigned long mips_get_syscall_arg(unsigned long *arg,
->
->   #ifdef CONFIG_32BIT
->   	case 4: case 5: case 6: case 7:
-> -		return get_user(*arg, (int *)usp + 4 * n);
-> +		return get_user(*arg, (int *)usp + n);
->   #endif
->
->   #ifdef CONFIG_64BIT
->   	case 4: case 5: case 6: case 7:
->   #ifdef CONFIG_MIPS32_O32
->   		if (test_thread_flag(TIF_32BIT_REGS))
-> -			return get_user(*arg, (int *)usp + 4 * n);
-> +			return get_user(*arg, (int *)usp + n);
->   		else
->   #endif
->   			*arg = regs->regs[4 + n];
->
+> Due to name collision in ftrace safe_load and safe_store macros,
+> these macros cannot take expressions as operands.
+> 
+> For example, compiler will complain for a macro call like the following:
+>   safe_store_code(new_code2, ip + 4, faulted);
+> 
+>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
+>      : [dst] "r" (dst), [src] "r" (src)\
+>         ^
+>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
+>     safe_store_code(new_code2, ip + 4, faulted);
+>     ^
+>   arch/mips/kernel/ftrace.c:118:32: error: undefined named operand 'ip + 4'
+>     safe_store_code(new_code2, ip + 4, faulted);
+>                                   ^
+>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
+>      : [dst] "r" (dst), [src] "r" (src)\
+>         ^
+>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
+>     safe_store_code(new_code2, ip + 4, faulted);
+>     ^
+> 
+> This patch tweaks variable naming in those macros to allow flexible
+> operands.
 
-Thanks for the v2.
+Interesting catch - and while I think your patch indeed is an improvment
+nobody seems to have observed this in a kernel tree, so I'm going to treat
+this as a non-urgent improvment and queue it for 3.15.
 
-It looks good to me but I haven't tested it.
+If this can be triggered in any -stable or v3.14-rc7 tree, please let me
+know.
 
-Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
+Thanks,
 
--- 
-markos
+  Ralf

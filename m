@@ -1,49 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2014 01:04:56 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:49554 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867486AbaCRAEw7ha-k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2014 01:04:52 +0100
-Received: by mail-pa0-f49.google.com with SMTP id lj1so6418292pab.36
-        for <multiple recipients>; Mon, 17 Mar 2014 17:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=hEqPr+PVSDKYAkabl+4LLk1gg5h+NKwJf0ShtzlflUs=;
-        b=wQ7IX9Unc/d8DoijBzwRehVOS6g5UjiG+VUQr3ZxXxs7GQ8emKhi81vR+KWM01GXt6
-         Dq6n27jT1OU5QJlqbcLhGVSM7GhxLIYQPL7qTskLHsepzEdM7AV9+RqIweJ/LAfEV1AN
-         GLC3XRnQxzTmYWHZs/1lvtZ3CdRSfz82ZeFEGuJGYuTHA2K81zY4JSfRhfACcjkzykcO
-         rbqQsqPTaZrMNLM0vtD3Mp9PF/q+8dIPbOiqLZJNB7euslC3pV5lB9c/FL5cB+w1Kgbj
-         y6lyZ0qYCk8tCwaEZzYgjXSMXrd7djJG4S3pDOTKSLKIbXhd0SOOpp85zED8BgvqCHm2
-         xI5Q==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2014 05:48:44 +0100 (CET)
+Received: from mail1.windriver.com ([147.11.146.13]:47182 "EHLO
+        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816906AbaCREsktxg3r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2014 05:48:40 +0100
+Received: from ALA-HCB.corp.ad.wrs.com (ala-hcb.corp.ad.wrs.com [147.11.189.41])
+        by mail1.windriver.com (8.14.5/8.14.5) with ESMTP id s2I4mCbT006071
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Mon, 17 Mar 2014 21:48:12 -0700 (PDT)
+Received: from pek-wyang1-d1.wrs.com (128.224.162.170) by
+ ALA-HCB.corp.ad.wrs.com (147.11.189.41) with Microsoft SMTP Server id
+ 14.3.169.1; Mon, 17 Mar 2014 21:48:11 -0700
+From:   <Wei.Yang@windriver.com>
+To:     <wei.yang@windriver.com>, <david.daney@cavium.com>,
+        <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <andreas.herrmann@caviumnetworks.com>
+Subject: [PATCH V2] mips/octeon_3xxx: Fix a warning on octeon_3xxx
+Date:   Tue, 18 Mar 2014 12:48:04 +0800
+Message-ID: <1395118084-24018-1-git-send-email-Wei.Yang@windriver.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-X-Received: by 10.66.66.66 with SMTP id d2mr29478859pat.80.1395101085986; Mon,
- 17 Mar 2014 17:04:45 -0700 (PDT)
-Received: by 10.70.43.144 with HTTP; Mon, 17 Mar 2014 17:04:45 -0700 (PDT)
-In-Reply-To: <20140317145641.GN19285@linux-mips.org>
-References: <1393055209-28251-1-git-send-email-villerhsiao@gmail.com>
-        <1393055209-28251-2-git-send-email-villerhsiao@gmail.com>
-        <20140317145641.GN19285@linux-mips.org>
-Date:   Tue, 18 Mar 2014 08:04:45 +0800
-Message-ID: <CAA1JSY+0_4Vb9y0T+oWdZRKPEpy08soa05kNT=7Hw9+qfPG5DQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] MIPS: ftrace: Tweak safe_load()/safe_store() macros
-From:   Viller Hsiao <villerhsiao@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        =?ISO-8859-1?Q?Fr=E9d=E9ric_Weisbecker?= <fweisbec@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Qais Yousef <Qais.Yousef@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <villerhsiao@gmail.com>
+Content-Type: text/plain
+Return-Path: <Wei.Yang@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39485
+X-archive-position: 39486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: villerhsiao@gmail.com
+X-original-sender: Wei.Yang@windriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,52 +41,115 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 17, 2014 at 10:56 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Sat, Feb 22, 2014 at 03:46:48PM +0800, Viller Hsiao wrote:
->
->> Due to name collision in ftrace safe_load and safe_store macros,
->> these macros cannot take expressions as operands.
->>
->> For example, compiler will complain for a macro call like the following:
->>   safe_store_code(new_code2, ip + 4, faulted);
->>
->>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
->>      : [dst] "r" (dst), [src] "r" (src)\
->>         ^
->>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
->>     safe_store_code(new_code2, ip + 4, faulted);
->>     ^
->>   arch/mips/kernel/ftrace.c:118:32: error: undefined named operand 'ip + 4'
->>     safe_store_code(new_code2, ip + 4, faulted);
->>                                   ^
->>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
->>      : [dst] "r" (dst), [src] "r" (src)\
->>         ^
->>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
->>     safe_store_code(new_code2, ip + 4, faulted);
->>     ^
->>
->> This patch tweaks variable naming in those macros to allow flexible
->> operands.
->
-> Interesting catch - and while I think your patch indeed is an improvment
-> nobody seems to have observed this in a kernel tree, so I'm going to treat
-> this as a non-urgent improvment and queue it for 3.15.
->
-> If this can be triggered in any -stable or v3.14-rc7 tree, please let me
-> know.
->
-> Thanks,
->
->   Ralf
+From: Yang Wei <Wei.Yang@windriver.com>
 
-Hi Ralf,
+Since the xlate of interrupts property of GPIO on octeon 3xxx
+does not success, so the following warning would be triggerred.
 
-If you get plan to merge it later, please help to handle another patch
-in the patchset at the same time,
-   [PATCH v2 2/2] MIPS: ftrace: Fix icache flush range error
+WARNING: CPU: 1 PID: 1 at drivers/of/platform.c:173 of_device_alloc+0x294/0x2a0()
+Modules linked in:
+CPU: 1 PID: 1 Comm: swapper/0 Not tainted 3.14.0-rc6- #11
+Stack : ffffffff81a20000 0000000000000001 0000000000000004 ffffffff81b50000
+      0000000000000001 0000000000000000 0000000000000000 ffffffff8119e878
+      ffffffff81a20000 ffffffff8119ee98 0000000000000000 0000000000000000
+      ffffffff81b30000 ffffffff81b20000 ffffffff81932900 ffffffff81a11077
+      ffffffff81b27a08 800000041f8704a8 0000000000000001 0000000000000001
+      0000000000000000 800000041fbf7438 0000000000000001 ffffffff81800d90
+      800000041f85fa68 ffffffff8114a60c 0000000000000000 ffffffff811a0838
+      800000041f870000 800000041f85f980 0000000000000001 ffffffff81805080
+      0000000000000000 0000000000000000 0000000000000000 0000000000000000
+      0000000000000000 ffffffff81122620 0000000000000000 0000000000000000
+      ...
+Call Trace:
+[<ffffffff81122620>] show_stack+0xc0/0xe0
+[<ffffffff81805080>] dump_stack+0x8c/0xe0
+[<ffffffff8114a7ac>] warn_slowpath_common+0x94/0xc8
+[<ffffffff81693b1c>] of_device_alloc+0x294/0x2a0
+[<ffffffff81693b74>] of_platform_device_create_pdata+0x4c/0xf0
+[<ffffffff81693d58>] of_platform_bus_create+0x128/0x1a8
+[<ffffffff81693da0>] of_platform_bus_create+0x170/0x1a8
+[<ffffffff81693e8c>] of_platform_bus_probe+0xb4/0x110
+[<ffffffff81100598>] do_one_initcall+0xe8/0x130
+[<ffffffff81a92c5c>] kernel_init_freeable+0x1d4/0x2bc
+[<ffffffff817fe140>] kernel_init+0x20/0x118
+[<ffffffff8111d024>] ret_from_kernel_thread+0x14/0x1c
 
-Or the 2nd one might have compilation error shown in this commit
-message. Sorry for the inconvenience.
+Signed-off-by: Yang Wei <Wei.Yang@windriver.com> 
+---
 
-Viller
+Changes:
+ 
+In v2:
+Hi David,
+
+According to your suggestion, I modify octeon-irq.c so that it doesn't try to reserve these numbers to fix this issue in v2.
+How about is it?:-)
+
+Thanks
+Wei
+
+
+ arch/mips/cavium-octeon/octeon-irq.c |   25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 25fbfae..31c76b1 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -975,10 +975,6 @@ static int octeon_irq_ciu_xlat(struct irq_domain *d,
+ 	if (ciu > 1 || bit > 63)
+ 		return -EINVAL;
+ 
+-	/* These are the GPIO lines */
+-	if (ciu == 0 && bit >= 16 && bit < 32)
+-		return -EINVAL;
+-
+ 	*out_hwirq = (ciu << 6) | bit;
+ 	*out_type = 0;
+ 
+@@ -1010,6 +1006,13 @@ static int octeon_irq_ciu_map(struct irq_domain *d,
+ 	if (line > 1 || octeon_irq_ciu_to_irq[line][bit] != 0)
+ 		return -EINVAL;
+ 
++	/*
++	 * If the irq is reserved for GPIO, we set virq to 0 so
++	 * that GPIO would be able to map it.
++	 */
++	if (line == 0 && bit >= 16 && bit <32)
++		virq = 0;
++
+ 	if (octeon_irq_ciu_is_edge(line, bit))
+ 		octeon_irq_set_ciu_mapping(virq, line, bit, 0,
+ 					   octeon_irq_ciu_chip,
+@@ -1525,10 +1528,6 @@ static int octeon_irq_ciu2_xlat(struct irq_domain *d,
+ 	ciu = intspec[0];
+ 	bit = intspec[1];
+ 
+-	/* Line 7  are the GPIO lines */
+-	if (ciu > 6 || bit > 63)
+-		return -EINVAL;
+-
+ 	*out_hwirq = (ciu << 6) | bit;
+ 	*out_type = 0;
+ 
+@@ -1570,10 +1569,16 @@ static int octeon_irq_ciu2_map(struct irq_domain *d,
+ 	if (!octeon_irq_virq_in_range(virq))
+ 		return -EINVAL;
+ 
+-	/* Line 7  are the GPIO lines */
+-	if (line > 6 || octeon_irq_ciu_to_irq[line][bit] != 0)
++	if (octeon_irq_ciu_to_irq[line][bit] != 0)
+ 		return -EINVAL;
+ 
++	/*
++	 * Line 7 are the GPIO lines, we set virq to 0 so
++	 * that GPIO would be able to map it
++	 */
++	if (line > 6 || bit > 63)
++		virq = 0;
++
+ 	if (octeon_irq_ciu2_is_edge(line, bit))
+ 		octeon_irq_set_ciu_mapping(virq, line, bit, 0,
+ 					   &octeon_irq_chip_ciu2,
+-- 
+1.7.9.5

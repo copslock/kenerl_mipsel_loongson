@@ -1,34 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2014 05:48:44 +0100 (CET)
-Received: from mail1.windriver.com ([147.11.146.13]:47182 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816906AbaCREsktxg3r (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2014 05:48:40 +0100
-Received: from ALA-HCB.corp.ad.wrs.com (ala-hcb.corp.ad.wrs.com [147.11.189.41])
-        by mail1.windriver.com (8.14.5/8.14.5) with ESMTP id s2I4mCbT006071
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Mon, 17 Mar 2014 21:48:12 -0700 (PDT)
-Received: from pek-wyang1-d1.wrs.com (128.224.162.170) by
- ALA-HCB.corp.ad.wrs.com (147.11.189.41) with Microsoft SMTP Server id
- 14.3.169.1; Mon, 17 Mar 2014 21:48:11 -0700
-From:   <Wei.Yang@windriver.com>
-To:     <wei.yang@windriver.com>, <david.daney@cavium.com>,
-        <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, <andreas.herrmann@caviumnetworks.com>
-Subject: [PATCH V2] mips/octeon_3xxx: Fix a warning on octeon_3xxx
-Date:   Tue, 18 Mar 2014 12:48:04 +0800
-Message-ID: <1395118084-24018-1-git-send-email-Wei.Yang@windriver.com>
-X-Mailer: git-send-email 1.7.9.5
-MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Wei.Yang@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2014 08:39:15 +0100 (CET)
+Received: from mail-pd0-f178.google.com ([209.85.192.178]:33657 "EHLO
+        mail-pd0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816759AbaCRHjMpLht2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2014 08:39:12 +0100
+Received: by mail-pd0-f178.google.com with SMTP id x10so6747981pdj.9
+        for <multiple recipients>; Tue, 18 Mar 2014 00:39:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=cjzsumlad3UROUJXbIJduoEC+FFCcjre1Epk8RbO4Gs=;
+        b=Y7WLxzTY9yHS9Rcw5IjnKdhUDv/074jj+kRY4vhxKKZl0CQYLOgqVRp2Vp/H7rlpAr
+         P3kfbnK2oLrDP3+VrkBOhlS+K8iFUjdyQgTXGXByXLfh95blPkvHOaVOt6ZXHdaOggI+
+         At/5EwnpcAMzu2IfrMc669my8HrEwcxkaI05VrcxmoQA5m6m21B6HEJUtP2a01u1xuLF
+         RWGGbv40LHi4eoJUhhFag8/qWdvM4iB/APM2isfUMhnSnCGJFj+6c4PLvEr2G3T+Ndo/
+         LAYGfT4uW3vKYKUgl2N20y2Jj/YuP2NlAfK083PPkFX2gEQ2hXQdDtvKHketaIH7porM
+         5PcA==
+X-Received: by 10.67.4.169 with SMTP id cf9mr31250138pad.45.1395128346043;
+        Tue, 18 Mar 2014 00:39:06 -0700 (PDT)
+Received: from localhost.localdomain (42-74-21-171.dynamic-ip.hinet.net. [42.74.21.171])
+        by mx.google.com with ESMTPSA id it4sm49826111pbc.39.2014.03.18.00.38.59
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 18 Mar 2014 00:39:02 -0700 (PDT)
+From:   Viller Hsiao <villerhsiao@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     rostedt@goodmis.org, fweisbec@gmail.com, mingo@redhat.com,
+        ralf@linux-mips.org, Qais.Yousef@imgtec.com,
+        Viller Hsiao <villerhsiao@gmail.com>
+Subject: [PATCH v3 0/2] MIPS: ftrace: Fix icache flush issue
+Date:   Tue, 18 Mar 2014 15:38:28 +0800
+Message-Id: <1395128308-31909-1-git-send-email-villerhsiao@gmail.com>
+X-Mailer: git-send-email 1.8.4.3
+Return-Path: <villerhsiao@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39486
+X-archive-position: 39487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Wei.Yang@windriver.com
+X-original-sender: villerhsiao@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,115 +52,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Yang Wei <Wei.Yang@windriver.com>
+In 32-bit mode, the start address of flushing icache is wrong because
+of error address calculation. It causes system crash at boot when
+dynamic function trace is enabled. This issue existed since linux-3.8.
 
-Since the xlate of interrupts property of GPIO on octeon 3xxx
-does not success, so the following warning would be triggerred.
+In the patch set, I fixed the flushing range and refined the macros
+used by it to pass compilation.
 
-WARNING: CPU: 1 PID: 1 at drivers/of/platform.c:173 of_device_alloc+0x294/0x2a0()
-Modules linked in:
-CPU: 1 PID: 1 Comm: swapper/0 Not tainted 3.14.0-rc6- #11
-Stack : ffffffff81a20000 0000000000000001 0000000000000004 ffffffff81b50000
-      0000000000000001 0000000000000000 0000000000000000 ffffffff8119e878
-      ffffffff81a20000 ffffffff8119ee98 0000000000000000 0000000000000000
-      ffffffff81b30000 ffffffff81b20000 ffffffff81932900 ffffffff81a11077
-      ffffffff81b27a08 800000041f8704a8 0000000000000001 0000000000000001
-      0000000000000000 800000041fbf7438 0000000000000001 ffffffff81800d90
-      800000041f85fa68 ffffffff8114a60c 0000000000000000 ffffffff811a0838
-      800000041f870000 800000041f85f980 0000000000000001 ffffffff81805080
-      0000000000000000 0000000000000000 0000000000000000 0000000000000000
-      0000000000000000 ffffffff81122620 0000000000000000 0000000000000000
-      ...
-Call Trace:
-[<ffffffff81122620>] show_stack+0xc0/0xe0
-[<ffffffff81805080>] dump_stack+0x8c/0xe0
-[<ffffffff8114a7ac>] warn_slowpath_common+0x94/0xc8
-[<ffffffff81693b1c>] of_device_alloc+0x294/0x2a0
-[<ffffffff81693b74>] of_platform_device_create_pdata+0x4c/0xf0
-[<ffffffff81693d58>] of_platform_bus_create+0x128/0x1a8
-[<ffffffff81693da0>] of_platform_bus_create+0x170/0x1a8
-[<ffffffff81693e8c>] of_platform_bus_probe+0xb4/0x110
-[<ffffffff81100598>] do_one_initcall+0xe8/0x130
-[<ffffffff81a92c5c>] kernel_init_freeable+0x1d4/0x2bc
-[<ffffffff817fe140>] kernel_init+0x20/0x118
-[<ffffffff8111d024>] ret_from_kernel_thread+0x14/0x1c
-
-Signed-off-by: Yang Wei <Wei.Yang@windriver.com> 
----
-
-Changes:
- 
-In v2:
-Hi David,
-
-According to your suggestion, I modify octeon-irq.c so that it doesn't try to reserve these numbers to fix this issue in v2.
-How about is it?:-)
-
-Thanks
-Wei
+Patch 1 is tried to improve the usability of some macros such that
+we can make patch 2 cleaner. Patch 2 fixes this issue.
 
 
- arch/mips/cavium-octeon/octeon-irq.c |   25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+v3 version tweaks some words from v2 to let it more readable.
 
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index 25fbfae..31c76b1 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -975,10 +975,6 @@ static int octeon_irq_ciu_xlat(struct irq_domain *d,
- 	if (ciu > 1 || bit > 63)
- 		return -EINVAL;
- 
--	/* These are the GPIO lines */
--	if (ciu == 0 && bit >= 16 && bit < 32)
--		return -EINVAL;
--
- 	*out_hwirq = (ciu << 6) | bit;
- 	*out_type = 0;
- 
-@@ -1010,6 +1006,13 @@ static int octeon_irq_ciu_map(struct irq_domain *d,
- 	if (line > 1 || octeon_irq_ciu_to_irq[line][bit] != 0)
- 		return -EINVAL;
- 
-+	/*
-+	 * If the irq is reserved for GPIO, we set virq to 0 so
-+	 * that GPIO would be able to map it.
-+	 */
-+	if (line == 0 && bit >= 16 && bit <32)
-+		virq = 0;
-+
- 	if (octeon_irq_ciu_is_edge(line, bit))
- 		octeon_irq_set_ciu_mapping(virq, line, bit, 0,
- 					   octeon_irq_ciu_chip,
-@@ -1525,10 +1528,6 @@ static int octeon_irq_ciu2_xlat(struct irq_domain *d,
- 	ciu = intspec[0];
- 	bit = intspec[1];
- 
--	/* Line 7  are the GPIO lines */
--	if (ciu > 6 || bit > 63)
--		return -EINVAL;
--
- 	*out_hwirq = (ciu << 6) | bit;
- 	*out_type = 0;
- 
-@@ -1570,10 +1569,16 @@ static int octeon_irq_ciu2_map(struct irq_domain *d,
- 	if (!octeon_irq_virq_in_range(virq))
- 		return -EINVAL;
- 
--	/* Line 7  are the GPIO lines */
--	if (line > 6 || octeon_irq_ciu_to_irq[line][bit] != 0)
-+	if (octeon_irq_ciu_to_irq[line][bit] != 0)
- 		return -EINVAL;
- 
-+	/*
-+	 * Line 7 are the GPIO lines, we set virq to 0 so
-+	 * that GPIO would be able to map it
-+	 */
-+	if (line > 6 || bit > 63)
-+		virq = 0;
-+
- 	if (octeon_irq_ciu2_is_edge(line, bit))
- 		octeon_irq_set_ciu_mapping(virq, line, bit, 0,
- 					   &octeon_irq_chip_ciu2,
+This patch set is based on mips-for-linux-next branch.
+
+Viller Hsiao (2):
+  MIPS: ftrace: Tweak safe_load()/safe_store() macros
+  MIPS: ftrace: Fix icache flush range error
+
+ arch/mips/include/asm/ftrace.h | 20 ++++++++++----------
+ arch/mips/kernel/ftrace.c      |  5 ++---
+ 2 files changed, 12 insertions(+), 13 deletions(-)
+
 -- 
-1.7.9.5
+1.8.4.3

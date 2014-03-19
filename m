@@ -1,54 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 04:06:03 +0100 (CET)
-Received: from mail.lemote.com ([222.92.8.138]:54753 "EHLO mail.lemote.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867575AbaCSDF6jT60x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Mar 2014 04:05:58 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mail.lemote.com (Postfix) with ESMTP id E15CF22E4D;
-        Wed, 19 Mar 2014 11:05:48 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from mail.lemote.com ([127.0.0.1])
-        by localhost (mail.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ayxfY4XCqzkm; Wed, 19 Mar 2014 11:05:34 +0800 (CST)
-Received: from mail.lemote.com (localhost [127.0.0.1])
-        (Authenticated sender: chenhc@lemote.com)
-        by mail.lemote.com (Postfix) with ESMTPA id B748F202F2;
-        Wed, 19 Mar 2014 11:05:33 +0800 (CST)
-Received: from 222.92.8.142
-        (SquirrelMail authenticated user chenhc)
-        by mail.lemote.com with HTTP;
-        Wed, 19 Mar 2014 11:05:34 +0800
-Message-ID: <f863ed85ae872f0e3f7b00fb485ed457.squirrel@mail.lemote.com>
-In-Reply-To: <20140318145911.GE17197@linux-mips.org>
-References: <1392537690-5961-1-git-send-email-chenhc@lemote.com>
-    <1392537690-5961-8-git-send-email-chenhc@lemote.com>
-    <20140318145911.GE17197@linux-mips.org>
-Date:   Wed, 19 Mar 2014 11:05:34 +0800
-Subject: Re: [PATCH V19 07/13] MIPS: Loongson 3: Add IRQ init and dispatch
- support
-From:   =?gb2312?Q?=22=B3=C2=BB=AA=B2=C5=22?= <chenhc@lemote.com>
-To:     "Ralf Baechle" <ralf@linux-mips.org>
-Cc:     "John Crispin" <john@phrozen.org>,
-        "Steven J. Hill" <steven.hill@imgtec.com>,
-        "Aurelien Jarno" <aurelien@aurel32.net>, linux-mips@linux-mips.org,
-        "Fuxin Zhang" <zhangfx@lemote.com>,
-        "Zhangjin Wu" <wuzhangjin@gmail.com>,
-        "Hongliang Tao" <taohl@lemote.com>, "Hua Yan" <yanh@lemote.com>
-User-Agent: SquirrelMail/1.4.22
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 07:43:31 +0100 (CET)
+Received: from mail-oa0-f49.google.com ([209.85.219.49]:34815 "EHLO
+        mail-oa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821115AbaCSGn3Rwpqy convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Mar 2014 07:43:29 +0100
+Received: by mail-oa0-f49.google.com with SMTP id h16so2623415oag.22
+        for <multiple recipients>; Tue, 18 Mar 2014 23:43:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=4ycbFsFQ+fdBZk44wf3Te2/7qrwHDhbsbE3dFc3sjg0=;
+        b=ujlbJRwVQFb5fAePiZK9nqJONIxca96290omOjkeFK4Dq7EQyhp/swrin2gjA4EXkX
+         JIsD8cH3hWJMeJZ9vxCvbgn5jFVfgEdNLjxVeXJknQ6txu5Y5/XOh2hD0nNGRCR7BUf+
+         KytCditlkpBTSce7ZsCkF8Jy7V8ZH1gARZCl9fOImuZpdQ1XVovPndV/A9fUkSZEnvmj
+         tSrCjKajnYv9wECyfQKHDDopz+lXhuCGDmh24t1MCipnfsk4Bk/KdcJMYttkvtua0ZX9
+         qRXM60Mqh4fSKVWBWY3VOGlh1gPRXVOlTHrLPfIXs0E6Lo6jAWWa+4GL6VfmUf/SfHG2
+         D8Dg==
 MIME-Version: 1.0
-Content-Type: text/plain;charset=gb2312
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-Return-Path: <chenhc@lemote.com>
+X-Received: by 10.182.194.103 with SMTP id hv7mr552051obc.30.1395211397226;
+ Tue, 18 Mar 2014 23:43:17 -0700 (PDT)
+Received: by 10.76.33.230 with HTTP; Tue, 18 Mar 2014 23:43:17 -0700 (PDT)
+In-Reply-To: <53237502.20305@hauke-m.de>
+References: <1392310092-27365-1-git-send-email-zajec5@gmail.com>
+        <53237502.20305@hauke-m.de>
+Date:   Wed, 19 Mar 2014 07:43:17 +0100
+Message-ID: <CACna6rwzB_eD+SfTo6gc20ec9O4-0+6R5ZajgEMuqx6fzHnumg@mail.gmail.com>
+Subject: Re: [3.14 FIX][PATCH] MIPS: BCM47XX: Check all (32) GPIOs when
+ looking for a pin
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39499
+X-archive-position: 39500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,62 +55,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> On Sun, Feb 16, 2014 at 04:01:24PM +0800, Huacai Chen wrote:
+2014-03-14 22:30 GMT+01:00 Hauke Mehrtens <hauke@hauke-m.de>:
+> On 02/13/2014 05:48 PM, Rafał Miłecki wrote:
+>> Broadcom boards support 32 GPIOs and NVRAM may have entires for higher
+>> ones too. Example:
+>> gpio23=wombo_reset
+>>
+>> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 >
->> +#define LOONGSON_HT1_INT_VECTOR_BASE	(LOONGSON_HT1_CFG_BASE + 0x80)
->> +#define LOONGSON_HT1_INT_EN_BASE	(LOONGSON_HT1_CFG_BASE + 0xa0)
->> +#define LOONGSON_HT1_INT_VECTOR(n)	\
->> +		LOONGSON3_REG32(LOONGSON_HT1_INT_VECTOR_BASE, 4 * n)
->> +#define LOONGSON_HT1_INTN_EN(n)		\
->> +		LOONGSON3_REG32(LOONGSON_HT1_INT_EN_BASE, 4 * n)
->
-> Doing math on macro arguments without parenthesis is dangerous,  please
-> use (n) instead.
->
->> +
->> +#define LOONGSON_INT_ROUTER_OFFSET	0x1400
->> +#define LOONGSON_INT_ROUTER_INTEN	\
->> +	  LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET +
->> 0x24)
->> +#define LOONGSON_INT_ROUTER_INTENSET	\
->> +	  LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET +
->> 0x28)
->> +#define LOONGSON_INT_ROUTER_INTENCLR	\
->> +	  LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET +
->> 0x2c)
->> +#define LOONGSON_INT_ROUTER_ENTRY(n)	\
->> +	  LOONGSON3_REG8(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + n)
->> +#define LOONGSON_INT_ROUTER_LPC		LOONGSON_INT_ROUTER_ENTRY(0x0a)
->> +#define LOONGSON_INT_ROUTER_HT1(n)	LOONGSON_INT_ROUTER_ENTRY(n + 0x18)
->
-> These two also.
->
->> +static void ht_irqdispatch(void)
->> +{
->> +	unsigned int i, irq;
->> +	unsigned int ht_irq[] = {1, 3, 4, 5, 6, 7, 8, 12, 14, 15};
->> +
->> +	irq = LOONGSON_HT1_INT_VECTOR(0);
->> +	LOONGSON_HT1_INT_VECTOR(0) = irq; /* Acknowledge the IRQs */
->> +
->> +	for (i = 0; i < ARRAY_SIZE(ht_irq); i++) {
->> +		if (irq & (0x1 << ht_irq[i]))
->> +			do_IRQ(ht_irq[i]);
->> +	}
->> +}
->
-> Ouch.
->
-> Initializing an array like this in C will generate code which at runtime
-> initializes the ht_irq[] array each time ht_irqdispatch is invoked
-> and slowing this function to a crawl.
->
-> You want to make either move the definition of this array out of the
-> function body or make it "static const unsigned int ht_irq[] ..." to
-> avoid this.
-Since there are several patches have problem, and the first one is
-merged, I will send a V20 patchset without the first one ASAP.
+> Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
 
->
->   Ralf
->
+Ralf: could you get it for 3.15 at least, please?

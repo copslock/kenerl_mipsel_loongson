@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Mar 2014 00:02:33 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:51265 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6842534AbaCSXCarJmNS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Mar 2014 00:02:30 +0100
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s2JN2QeB006223
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 19 Mar 2014 19:02:26 -0400
-Received: from [10.10.53.247] (vpn-53-247.rdu2.redhat.com [10.10.53.247])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s2JN2OFW006594;
-        Wed, 19 Mar 2014 19:02:25 -0400
-Message-ID: <1395270144.10106.0.camel@localhost>
-Subject: Re: [PATCH 3/4] ARCH: AUDIT: implement syscall_get_arch for all
- arches
-From:   Eric Paris <eparis@redhat.com>
-To:     Matt Turner <mattst88@gmail.com>
-Cc:     linux-audit@redhat.com, linux-ia64@vger.kernel.org,
-        microblaze-uclinux@itee.uq.edu.au,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linux@openrisc.net,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Date:   Wed, 19 Mar 2014 19:02:24 -0400
-In-Reply-To: <CAEdQ38Ex47GxhN1ZZMu+RETpWs-ENbfCr8v=6iFg9p_QWaa9zw@mail.gmail.com>
-References: <1395266643-3139-1-git-send-email-eparis@redhat.com>
-         <1395266643-3139-3-git-send-email-eparis@redhat.com>
-         <CAEdQ38Ex47GxhN1ZZMu+RETpWs-ENbfCr8v=6iFg9p_QWaa9zw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-Return-Path: <eparis@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Mar 2014 00:12:57 +0100 (CET)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:56190 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6842534AbaCSXMyDWXMa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Mar 2014 00:12:54 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 5643821B944;
+        Thu, 20 Mar 2014 01:12:52 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id VBWyye6srjzR; Thu, 20 Mar 2014 01:12:47 +0200 (EET)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id 5E0725BC005;
+        Thu, 20 Mar 2014 01:12:47 +0200 (EET)
+Date:   Thu, 20 Mar 2014 01:11:27 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>, ralf@linux-mips.org,
+        "Yang,Wei" <Wei.Yang@windriver.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: octeon: Fix warning in of_device_alloc on cn3xxx
+Message-ID: <20140319231126.GA19187@drone.musicnaut.iki.fi>
+References: <1395118084-24018-1-git-send-email-Wei.Yang@windriver.com>
+ <532968AD.4010402@windriver.com>
+ <20140319162008.GA4368@alberich>
+ <5329E343.60309@caviumnetworks.com>
+ <20140319220330.GC4368@alberich>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20140319220330.GC4368@alberich>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39516
+X-archive-position: 39517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eparis@redhat.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,13 +51,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2014-03-19 at 15:19 -0700, Matt Turner wrote:
-> On Wed, Mar 19, 2014 at 3:04 PM, Eric Paris <eparis@redhat.com> wrote:
-> > For all arches which support audit implement syscall_get_arch()
-> 
-> support audit -- is that AUDIT_ARCH? If so, alpha gained support
-> recently, so I think this patch needs to handle alpha too?
+Hi,
 
-Absolutely right.  I broke Alpha (in the next patch).  Will fix.
+On Wed, Mar 19, 2014 at 11:03:30PM +0100, Andreas Herrmann wrote:
+> Starting with commit 3da5278727a895d49a601f67fd49dffa0b80f9a5 (of/irq:
+> Rework of_irq_count()) the following warning is triggered on octeon
+> cn3xxx:
 
--Eric
+[...]
+
+> Reported-by: Yang Wei <wei.yang@windriver.com>
+> Cc: David Daney <david.daney@caviumnetworks.com>
+> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+Thanks,
+
+A.

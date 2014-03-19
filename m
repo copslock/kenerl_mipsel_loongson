@@ -1,43 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 19:35:55 +0100 (CET)
-Received: from mail-bn1lp0139.outbound.protection.outlook.com ([207.46.163.139]:10565
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6816543AbaCSSe4a2clV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Mar 2014 19:34:56 +0100
-Received: from BLUPRD0711HT004.namprd07.prod.outlook.com (10.255.120.39) by
- CO1PR07MB394.namprd07.prod.outlook.com (10.141.74.13) with Microsoft SMTP
- Server (TLS) id 15.0.898.11; Wed, 19 Mar 2014 18:34:46 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.120.39) with Microsoft SMTP Server (TLS) id 14.16.423.0; Wed, 19 Mar
- 2014 18:34:44 +0000
-Message-ID: <5329E343.60309@caviumnetworks.com>
-Date:   Wed, 19 Mar 2014 11:34:43 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 19:42:54 +0100 (CET)
+Received: from mail-pb0-f47.google.com ([209.85.160.47]:48359 "EHLO
+        mail-pb0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816543AbaCSSmwaEGYC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Mar 2014 19:42:52 +0100
+Received: by mail-pb0-f47.google.com with SMTP id up15so9312713pbc.20
+        for <multiple recipients>; Wed, 19 Mar 2014 11:42:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=d7d48lP9NUV5o6UKTgMoV7eFCTm78gcSSS4G7GyERbo=;
+        b=prDxhOPzgPA8+AB6mMcGulc7c3Wwe+k7PJD25wHbgKG6xxgQUax1hACEI9Dvbc6+8q
+         jjLwncywIhoFzM9urEi5i5i7quwDU4QEo+ulcDb+9BjxiWC74BqqPU5pCUy8P3dTPXWF
+         snBWInlInS78PCuasdE+d4TGaIiPqNkLnPQI2huXii4kZi8V4fAL1pp0B772DwGD61qs
+         YiiVOUhxo9nySCxvVrWhJX145i+Rf4WKSYee9PBgPmdqvqyE1R2M5KCKrmGQWLFBHYCQ
+         rKe/FFKkTHjTPPRynDZP3vTS9Tl6HFSieYJOAg3/cqXwW/BlDInuXRuOJe39YhSmvulC
+         J/8w==
 MIME-Version: 1.0
-To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-CC:     "Yang,Wei" <Wei.Yang@windriver.com>, <david.daney@cavium.com>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH V2] mips/octeon_3xxx: Fix a warning on octeon_3xxx
-References: <1395118084-24018-1-git-send-email-Wei.Yang@windriver.com> <532968AD.4010402@windriver.com> <20140319162008.GA4368@alberich>
-In-Reply-To: <20140319162008.GA4368@alberich>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-Forefront-PRVS: 01559F388D
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019001)(6009001)(428001)(24454002)(199002)(189002)(51704005)(377454003)(479174003)(36756003)(69226001)(66066001)(64126003)(76796001)(81342001)(77096001)(31966008)(79102001)(59766001)(77982001)(65806001)(20776003)(63696002)(23676002)(65956001)(81542001)(47776003)(80022001)(74502001)(47446002)(49866001)(74706001)(95416001)(83506001)(97336001)(87266001)(93136001)(56816005)(74876001)(90146001)(4396001)(85306002)(95666003)(50466002)(97186001)(575784001)(87936001)(53416003)(92566001)(81686001)(92726001)(85852003)(81816001)(54316002)(56776001)(93516002)(94946001)(76482001)(80976001)(50986001)(74662001)(47736001)(47976001)(46102001)(83072002)(33656001)(53806001)(51856001)(83322001)(74366001)(54356001);DIR:OUT;SFP:1102;SCL:1;SRVR:CO1PR07MB394;H:BLUPRD0711HT004.namprd07.prod.outlook.com;FPR:F225D0BE.BD394715.8DD33E7F.4EFAB701.202DE;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (: caviumnetworks.com does not designate permitted sender
- hosts)
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+X-Received: by 10.68.227.4 with SMTP id rw4mr42676713pbc.3.1395254566078; Wed,
+ 19 Mar 2014 11:42:46 -0700 (PDT)
+Received: by 10.70.48.138 with HTTP; Wed, 19 Mar 2014 11:42:45 -0700 (PDT)
+In-Reply-To: <20140317145641.GN19285@linux-mips.org>
+References: <1393055209-28251-1-git-send-email-villerhsiao@gmail.com>
+        <1393055209-28251-2-git-send-email-villerhsiao@gmail.com>
+        <20140317145641.GN19285@linux-mips.org>
+Date:   Wed, 19 Mar 2014 19:42:45 +0100
+X-Google-Sender-Auth: HdzLhfH-D3agPVnhFDB0c6b7ok4
+Message-ID: <CAMuHMdV5OWjMrJDhDmzHJpcXNoJ+9cjgF9QAbp4OVvr+jDH2iw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] MIPS: ftrace: Tweak safe_load()/safe_store() macros
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Viller Hsiao <villerhsiao@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        =?UTF-8?B?RnLDqWTDqXJpYyBXZWlzYmVja2Vy?= <fweisbec@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>, Qais.Yousef@imgtec.com
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39508
+X-archive-position: 39509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,56 +57,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/19/2014 09:20 AM, Andreas Herrmann wrote:
-> On Wed, Mar 19, 2014 at 05:51:41PM +0800, Yang,Wei wrote:
->> ping.
->
-> I think, that the proper solution to avoid this warning is
-> to fix the DTS information.
->
+Hi Ralf,
 
-Just for the record:  The DTS is reflecting the actual routing of the 
-signals within the SoC.  So I would argue that we shouldn't change it 
-for these two reasons:
-
-1) It accurately reflects reality.
-
-2) There are deployed bootloaders that supply this to the kernel that 
-are difficult to change.
-
-
-> The warning started to trigger since commit
-> 3da5278727a895d49a601f67fd49dffa0b80f9a5 (of/irq: Rework of_irq_count())
-> was introduced.
+On Mon, Mar 17, 2014 at 3:56 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Sat, Feb 22, 2014 at 03:46:48PM +0800, Viller Hsiao wrote:
 >
-> This changed of_irq_count() like this:
->
->   -       while (of_irq_to_resource(dev, nr, NULL))
->   +       while (of_irq_parse_one(dev, nr, &irq) == 0)
->
-> Since then the code maps IRQs listed in the gpio-controller device
-> node to its interrupt-parent, I think.
->
-> Before this patch those interrupts weren't mapped at this point.
->
-> I think both patches are fine to avoid the warning.  With the new
-> version kind of a redundant mapping of GPIO interrupts happens (which
-> will be overridden for an GPIO IRQ as soon as it is really used).
-> This makes me think that the warning makes sense and the DTS needs to
-> be fixed. (We should not use octeon_irq_ciu_xlat/octeon_irq_ciu_map
-> for GPIO lines.)
->
-> I might be wrong but maybe specifying an interrupt-parent for the
-> gpio-controller (and thus listing the GPIO IRQs in the gpio-controller
-> device node) was not a good choice.
->
-
-Andreas has a slightly modified version of the V2 patch that we tested, 
-and it seems to work.  I think we should go with that instead of the V2 
-patch.
-
-David Daney
-
-
->
+>> Due to name collision in ftrace safe_load and safe_store macros,
+>> these macros cannot take expressions as operands.
 >>
+>> For example, compiler will complain for a macro call like the following:
+>>   safe_store_code(new_code2, ip + 4, faulted);
+>>
+>>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
+>>      : [dst] "r" (dst), [src] "r" (src)\
+>>         ^
+>>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
+>>     safe_store_code(new_code2, ip + 4, faulted);
+>>     ^
+>>   arch/mips/kernel/ftrace.c:118:32: error: undefined named operand 'ip + 4'
+>>     safe_store_code(new_code2, ip + 4, faulted);
+>>                                   ^
+>>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
+>>      : [dst] "r" (dst), [src] "r" (src)\
+>>         ^
+>>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
+>>     safe_store_code(new_code2, ip + 4, faulted);
+>>     ^
+>>
+>> This patch tweaks variable naming in those macros to allow flexible
+>> operands.
+>
+> Interesting catch - and while I think your patch indeed is an improvment
+> nobody seems to have observed this in a kernel tree, so I'm going to treat
+> this as a non-urgent improvment and queue it for 3.15.
+>
+> If this can be triggered in any -stable or v3.14-rc7 tree, please let me
+> know.
+
+Mips/allmodconfig started to fail _after_ v3.14-rc7:
+
+http://kisskb.ellerman.id.au/kisskb/buildresult/10807340/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

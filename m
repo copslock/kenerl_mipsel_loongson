@@ -1,50 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 19:42:54 +0100 (CET)
-Received: from mail-pb0-f47.google.com ([209.85.160.47]:48359 "EHLO
-        mail-pb0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816543AbaCSSmwaEGYC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Mar 2014 19:42:52 +0100
-Received: by mail-pb0-f47.google.com with SMTP id up15so9312713pbc.20
-        for <multiple recipients>; Wed, 19 Mar 2014 11:42:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=d7d48lP9NUV5o6UKTgMoV7eFCTm78gcSSS4G7GyERbo=;
-        b=prDxhOPzgPA8+AB6mMcGulc7c3Wwe+k7PJD25wHbgKG6xxgQUax1hACEI9Dvbc6+8q
-         jjLwncywIhoFzM9urEi5i5i7quwDU4QEo+ulcDb+9BjxiWC74BqqPU5pCUy8P3dTPXWF
-         snBWInlInS78PCuasdE+d4TGaIiPqNkLnPQI2huXii4kZi8V4fAL1pp0B772DwGD61qs
-         YiiVOUhxo9nySCxvVrWhJX145i+Rf4WKSYee9PBgPmdqvqyE1R2M5KCKrmGQWLFBHYCQ
-         rKe/FFKkTHjTPPRynDZP3vTS9Tl6HFSieYJOAg3/cqXwW/BlDInuXRuOJe39YhSmvulC
-         J/8w==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 21:49:41 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:39261 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6860908AbaCSUtj1PEvS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Mar 2014 21:49:39 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s2JKnXit007864;
+        Wed, 19 Mar 2014 21:49:33 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s2JKnVYV007863;
+        Wed, 19 Mar 2014 21:49:31 +0100
+Date:   Wed, 19 Mar 2014 21:49:31 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Raghu Gandham <Raghu.Gandham@imgtec.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: [PATCH] Input: i8042-io - Exclude mips platforms when
+ allocating/deallocating IO regions.
+Message-ID: <20140319204931.GI17197@linux-mips.org>
+References: <1390676514-30880-1-git-send-email-raghu.gandham@imgtec.com>
+ <20140126214952.GD18840@core.coreip.homeip.net>
+ <E2EE47005FA75F44B80E1019FDD2EBBB6E38B06D@BADAG02.ba.imgtec.org>
+ <20140127065638.GB11945@core.coreip.homeip.net>
+ <20140127202435.GA589@drone.musicnaut.iki.fi>
+ <E2EE47005FA75F44B80E1019FDD2EBBB6E394CB2@BADAG02.ba.imgtec.org>
 MIME-Version: 1.0
-X-Received: by 10.68.227.4 with SMTP id rw4mr42676713pbc.3.1395254566078; Wed,
- 19 Mar 2014 11:42:46 -0700 (PDT)
-Received: by 10.70.48.138 with HTTP; Wed, 19 Mar 2014 11:42:45 -0700 (PDT)
-In-Reply-To: <20140317145641.GN19285@linux-mips.org>
-References: <1393055209-28251-1-git-send-email-villerhsiao@gmail.com>
-        <1393055209-28251-2-git-send-email-villerhsiao@gmail.com>
-        <20140317145641.GN19285@linux-mips.org>
-Date:   Wed, 19 Mar 2014 19:42:45 +0100
-X-Google-Sender-Auth: HdzLhfH-D3agPVnhFDB0c6b7ok4
-Message-ID: <CAMuHMdV5OWjMrJDhDmzHJpcXNoJ+9cjgF9QAbp4OVvr+jDH2iw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] MIPS: ftrace: Tweak safe_load()/safe_store() macros
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Viller Hsiao <villerhsiao@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        =?UTF-8?B?RnLDqWTDqXJpYyBXZWlzYmVja2Vy?= <fweisbec@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>, Qais.Yousef@imgtec.com
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E2EE47005FA75F44B80E1019FDD2EBBB6E394CB2@BADAG02.ba.imgtec.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39509
+X-archive-position: 39510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,54 +53,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+On Tue, Jan 28, 2014 at 06:25:39AM +0000, Raghu Gandham wrote:
+> Date:   Tue, 28 Jan 2014 06:25:39 +0000
+> From: Raghu Gandham <Raghu.Gandham@imgtec.com>
+> To: Aaro Koskinen <aaro.koskinen@iki.fi>, Dmitry Torokhov
+>  <dmitry.torokhov@gmail.com>
+> CC: "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+>  "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+>  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+> Subject: RE: [PATCH] Input: i8042-io - Exclude mips platforms when
+>  allocating/deallocating IO regions.
+> Content-Type: text/plain; charset="us-ascii"
+> 
+> Hi Aaro,
+> 
+> > 
+> > On Sun, Jan 26, 2014 at 10:56:38PM -0800, Dmitry Torokhov wrote:
+> > > On Mon, Jan 27, 2014 at 12:32:36AM +0000, Raghu Gandham wrote:
+> > > > > On Sat, Jan 25, 2014 at 11:01:54AM -0800, Raghu Gandham wrote:
+> > > > > > The standard IO regions are already reserved by the platform
+> > > > > > code on most MIPS devices(malta, cobalt, sni). The Commit
+> > > > > > 197a1e96c8be5b6005145af3a4c0e45e2d651444
+> > > > > > ("Input: i8042-io - fix up region handling on MIPS") introduced
+> > > > > > a bug on these MIPS platforms causing i8042 driver to fail when
+> > > > > > trying to reserve IO ports.
+> > > > > > Prior to the above mentioned commit request_region is skipped on
+> > > > > > MIPS but release_region is called.
+> > > > > >
+> > > > > > This patch reverts commit
+> > > > > > 197a1e96c8be5b6005145af3a4c0e45e2d651444
+> > > > > > and also avoids calling release_region for MIPS.
+> > > > >
+> > > > > The problem is that IO regions are reserved on _most_, but not
+> > > > > _all_ devices.
+> > > > > MIPS should figure out what they want to do with i8042 registers
+> > > > > and be consistent on all devices.
+> > > >
+> > > > Please examine the attached patch which went upstream in April of 2004.
+> > > > Since then it had been a convention not to call request_region
+> > > > routine in
+> > > > i8042 for MIPS. The attached patch had a glitch that it guarded
+> > > > request_region in i8042-io.h but skipped guarding release_region in
+> > > > i8042-io.h. I believe that the issue Aaro saw was due to this
+> > > > glitch. Below is the error quoted in Aaro's commit message.
+> > > >
+> > > >     [    2.112000] Trying to free nonexistent resource <0000000000000060-
+> > 000000000000006f>
+> > > >
+> > > > My patch reinstates the convention followed on MIPS devices along
+> > > > with fixing Aaro's issue.
+> > >
+> > > I assume that Aaro did test his patch and on his box request_region()
+> > > succeeds. That would indicate that various MIPS sub-arches still not
+> > > settled on the topic.
+> > 
+> > request_region() succeeds on Loongson and OCTEON.
+> 
+> This would mean that before your patch in oct of 2012, Loongson and Octeon 
+> were not reserving the IO space for i8042.
+> 
+> > 
+> > On OCTEONs without PCI, request_region() will fail which is correct as there
+> > is no I/O space.
+> > 
+> > I wasn't aware of that 2004 patch (it pre-dates GIT history of mainline Linux).
+> > Why the regions are already reserved by the platform code?
+> 
+> The only information I have is the comment before request_region in i8042-io.h that
+> touching data register on some platforms is flaky.  If your patch was primarily aimed at
+> addressing the error message from release_region, the current patch I uploaded should
+> also take care of it too. 
 
-On Mon, Mar 17, 2014 at 3:56 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Sat, Feb 22, 2014 at 03:46:48PM +0800, Viller Hsiao wrote:
->
->> Due to name collision in ftrace safe_load and safe_store macros,
->> these macros cannot take expressions as operands.
->>
->> For example, compiler will complain for a macro call like the following:
->>   safe_store_code(new_code2, ip + 4, faulted);
->>
->>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
->>      : [dst] "r" (dst), [src] "r" (src)\
->>         ^
->>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
->>     safe_store_code(new_code2, ip + 4, faulted);
->>     ^
->>   arch/mips/kernel/ftrace.c:118:32: error: undefined named operand 'ip + 4'
->>     safe_store_code(new_code2, ip + 4, faulted);
->>                                   ^
->>   arch/mips/include/asm/ftrace.h:61:6: note: in definition of macro 'safe_store'
->>      : [dst] "r" (dst), [src] "r" (src)\
->>         ^
->>   arch/mips/kernel/ftrace.c:118:2: note: in expansion of macro 'safe_store_code'
->>     safe_store_code(new_code2, ip + 4, faulted);
->>     ^
->>
->> This patch tweaks variable naming in those macros to allow flexible
->> operands.
->
-> Interesting catch - and while I think your patch indeed is an improvment
-> nobody seems to have observed this in a kernel tree, so I'm going to treat
-> this as a non-urgent improvment and queue it for 3.15.
->
-> If this can be triggered in any -stable or v3.14-rc7 tree, please let me
-> know.
+I think the patch (http://patchwork.linux-mips.org/patch/6419/) should be
+applied.  The argumentation for reserving ports in the platform code are
+the same as on x86 - touch the registers and bad things may happen.  This
+is because a fair number of older MIPS platforms were based on x86 chipsets
+or at least are using very similar designs.
 
-Mips/allmodconfig started to fail _after_ v3.14-rc7:
+The fact that on certain platforms such as Loongson, some Octeon systems
+and others the request_region() call to reserve the keyboard call succeeds
+is by accident not design.
 
-http://kisskb.ellerman.id.au/kisskb/buildresult/10807340/
+I wish i8042.c was a real platform driver, not using platform_create_bundle.
+That would leave a natural place in the arch/platform code to deal with
+I/O port allocation and platform_device creation, as necessary for a
+platform.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+  Ralf

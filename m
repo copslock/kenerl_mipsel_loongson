@@ -1,36 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 23:04:29 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:16810 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6819678AbaCSWE1K8aiU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Mar 2014 23:04:27 +0100
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s2JM4Kq9007771
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 19 Mar 2014 18:04:21 -0400
-Received: from paris.rdu.redhat.com (paris.rdu.redhat.com [10.13.136.28])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s2JM4Bpa016082;
-        Wed, 19 Mar 2014 18:04:17 -0400
-From:   Eric Paris <eparis@redhat.com>
-To:     linux-audit@redhat.com
-Cc:     Eric Paris <eparis@redhat.com>, linux-ia64@vger.kernel.org,
-        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
-        linux@openrisc.net, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: [PATCH 3/4] ARCH: AUDIT: implement syscall_get_arch for all arches
-Date:   Wed, 19 Mar 2014 18:04:02 -0400
-Message-Id: <1395266643-3139-3-git-send-email-eparis@redhat.com>
-In-Reply-To: <1395266643-3139-1-git-send-email-eparis@redhat.com>
-References: <1395266643-3139-1-git-send-email-eparis@redhat.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-Return-Path: <eparis@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2014 23:12:19 +0100 (CET)
+Received: from mail-bn1lp0140.outbound.protection.outlook.com ([207.46.163.140]:13647
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6819678AbaCSWMQkMM4N (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Mar 2014 23:12:16 +0100
+Received: from BY2PRD0711HT002.namprd07.prod.outlook.com (10.255.88.165) by
+ CO2PR0701MB792.namprd07.prod.outlook.com (10.141.246.22) with Microsoft SMTP
+ Server (TLS) id 15.0.893.10; Wed, 19 Mar 2014 22:12:08 +0000
+Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
+ (10.255.88.165) with Microsoft SMTP Server (TLS) id 14.16.423.0; Wed, 19 Mar
+ 2014 22:12:07 +0000
+Message-ID: <532A1637.5080803@caviumnetworks.com>
+Date:   Wed, 19 Mar 2014 15:12:07 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        <ralf@linux-mips.org>
+CC:     "Yang,Wei" <Wei.Yang@windriver.com>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: octeon: Fix warning in of_device_alloc on cn3xxx
+References: <1395118084-24018-1-git-send-email-Wei.Yang@windriver.com> <532968AD.4010402@windriver.com> <20140319162008.GA4368@alberich> <5329E343.60309@caviumnetworks.com> <20140319220330.GC4368@alberich>
+In-Reply-To: <20140319220330.GC4368@alberich>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-Forefront-PRVS: 01559F388D
+X-Forefront-Antispam-Report: =?utf-8?B?U0ZWOk5TUE07U0ZTOigxMDAxOTAwMSkoNjAwOTAwMSkoNDI4MDAxKSgyNDQ1?=
+ =?utf-8?B?NDAwMikoNDc5MTc0MDAzKSgzNzc0NTQwMDMpKDUxNzA0MDA1KSgxNjQwNTQw?=
+ =?utf-8?B?MDMpKDE4OTAwMikoMTk5MDAyKSg3Njc5NjAwMSkoOTM1MTYwMDIpKDg1MzA2?=
+ =?utf-8?B?MDAyKSg5NDk0NjAwMSkoOTMxMzYwMDEpKDU5ODk2MDAxKSg1OTc2NjAwMSko?=
+ =?utf-8?B?Nzc5ODIwMDEpKDM2NzU2MDAzKSg2MzY5NjAwMikoNDM5NjAwMSkoNzkxMDIw?=
+ =?utf-8?B?MDEpKDY0MTI2MDAzKSgxNTk3NTQ0NTAwNikoNDk4NjYwMDEpKDU3NTc4NDAw?=
+ =?utf-8?B?MSkoMjM2NzYwMDIpKDgxODE2MDAxKSg5NTQxNjAwMSkoOTI3MjYwMDEpKDY1?=
+ =?utf-8?B?ODA2MDAxKSg4MDAyMjAwMSkoNzcwOTYwMDEpKDY1OTU2MDAxKSg0Nzc3NjAw?=
+ =?utf-8?B?MykoNDc5NzYwMDEpKDQ3NzM2MDAxKSg2NjA2NjAwMSkoNTA5ODYwMDEpKDU0?=
+ =?utf-8?B?MzU2MDAxKSg3NjQ4MjAwMSkoMTUyMDIzNDUwMDMpKDk3MzM2MDAxKSg1MzQx?=
+ =?utf-8?B?NjAwMykoODM1MDYwMDEpKDc0ODc2MDAxKSg1Njc3NjAwMSkoMTUzOTU3MjUw?=
+ =?utf-8?B?MDMpKDMzNjU2MDAxKSg3NDY2MjAwMSkoMzE5NjYwMDgpKDk3MTg2MDAxKSg0?=
+ =?utf-8?B?NjEwMjAwMSkoOTU2NjYwMDMpKDc0NTAyMDAxKSg0NzQ0NjAwMikoNTM4MDYw?=
+ =?utf-8?B?MDEpKDgxMzQyMDAxKSg4MTU0MjAwMSkoODA5NzYwMDEpKDE5NTgwMzk1MDAz?=
+ =?utf-8?B?KSg4MzMyMjAwMSkoNTQzMTYwMDIpKDUxODU2MDAxKSg4MTY4NjAwMSkoMTk1?=
+ =?utf-8?B?ODA0MDUwMDEpKDkyNTY2MDAxKSg4NzkzNjAwMSkoNjkyMjYwMDEpKDUwNDY2?=
+ =?utf-8?B?MDAyKSg3NDcwNjAwMSkoNzQzNjYwMDEpKDg1ODUyMDAzKSg1NjgxNjAwNSko?=
+ =?utf-8?B?ODMwNzIwMDIpKDkwMTQ2MDAxKSgzMjU2MzAwMSkoNjYwNjI5NTAwMik7RElS?=
+ =?utf-8?B?Ok9VVDtTRlA6MTEwMjtTQ0w6MTtTUlZSOkNPMlBSMDcwMU1CNzkyO0g6Qlky?=
+ =?utf-8?B?UFJEMDcxMUhUMDAyLm5hbXByZDA3LnByb2Qub3V0bG9vay5jb207Q0xJUDo2?=
+ =?utf-8?B?NC4yLjMuMTk1O0ZQUjpFMjZDRjM0RC5FMDExOTQ4OS5DQ0MxRTJCNy45QUU4?=
+ =?utf-8?B?NUFDQS4yMDQyMztNTFY6c2Z2O1BUUjpJbmZvTm9SZWNvcmRzO01YOjE7QTox?=
+ =?utf-8?Q?;LANG:en;?=
+Received-SPF: None (: caviumnetworks.com does not designate permitted sender
+ hosts)
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39512
+X-archive-position: 39513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eparis@redhat.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,199 +72,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For all arches which support audit implement syscall_get_arch()
-They are all pretty easy and straight forward, stolen from how the call
-to audit_syscall_entry() determines the arch.
+On 03/19/2014 03:03 PM, Andreas Herrmann wrote:
+>
+> Starting with commit 3da5278727a895d49a601f67fd49dffa0b80f9a5 (of/irq:
+> Rework of_irq_count()) the following warning is triggered on octeon
+> cn3xxx:
+>
+> [    0.887281] WARNING: CPU: 0 PID: 1 at drivers/of/platform.c:171 of_device_alloc+0x228/0x230()
+> [    0.895642] Modules linked in:
+> [    0.898689] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 3.14.0-rc7-00012-g9ae51f2-dirty #41
+> [    0.906860] Stack : c8b439581166d96e ffffffff816b0000 0000000040808000 ffffffff81185ddc
+> [    0.906860] 	  0000000000000000 0000000000000000 0000000000000000 000000000000000b
+> [    0.906860] 	  000000000000000a 000000000000000a 0000000000000000 0000000000000000
+> [    0.906860] 	  ffffffff81740000 ffffffff81720000 ffffffff81615900 ffffffff816b0177
+> [    0.906860] 	  ffffffff81727d10 800000041f868fb0 0000000000000001 0000000000000000
+> [    0.906860] 	  0000000000000000 0000000000000038 0000000000000001 ffffffff81568484
+> [    0.906860] 	  800000041f86faa8 ffffffff81145ddc 0000000000000000 ffffffff811873f4
+> [    0.906860] 	  800000041f868b88 800000041f86f9c0 0000000000000000 ffffffff81569c9c
+> [    0.906860] 	  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> [    0.906860] 	  0000000000000000 ffffffff811205e0 0000000000000000 0000000000000000
+> [    0.906860] 	  ...
+> [    0.971695] Call Trace:
+> [    0.974139] [<ffffffff811205e0>] show_stack+0x68/0x80
+> [    0.979183] [<ffffffff81569c9c>] dump_stack+0x8c/0xe0
+> [    0.984196] [<ffffffff81145efc>] warn_slowpath_common+0x84/0xb8
+> [    0.990110] [<ffffffff81436888>] of_device_alloc+0x228/0x230
+> [    0.995726] [<ffffffff814368d8>] of_platform_device_create_pdata+0x48/0xd0
+> [    1.002593] [<ffffffff81436a94>] of_platform_bus_create+0x134/0x1e8
+> [    1.008837] [<ffffffff81436af8>] of_platform_bus_create+0x198/0x1e8
+> [    1.015064] [<ffffffff81436cc4>] of_platform_bus_probe+0xa4/0x100
+> [    1.021149] [<ffffffff81100570>] do_one_initcall+0xd8/0x128
+> [    1.026701] [<ffffffff816e2a10>] kernel_init_freeable+0x144/0x210
+> [    1.032753] [<ffffffff81564bc4>] kernel_init+0x14/0x110
+> [    1.037973] [<ffffffff8111bb44>] ret_from_kernel_thread+0x14/0x1c
+>
+> With this commit the kernel starts mapping the interrupts listed for
+> gpio-controller node. irq_domain_ops for CIU (octeon_irq_ciu_map and
+> octeon_irq_ciu_xlat) refuse to handle the GPIO lines (returning -EINVAL)
+> and this is causing above warning in of_device_alloc().
+>
+> Modify irq_domain_ops for CIU and CIU2 to "gracefully handle" GPIO
+> lines (neither return error code nor call octeon_irq_set_ciu_mapping
+> for it). This should avoid the warning.
+>
+> (As before the real setup for GPIO lines will happen using
+> irq_domain_ops of gpio-controller.)
+>
+> This patch is based on Wei's patch v2 (see
+> http://marc.info/?l=linux-mips&m=139511814813247).
+>
+> Reported-by: Yang Wei <wei.yang@windriver.com>
+> Cc: David Daney <david.daney@caviumnetworks.com>
 
-Signed-off-by: Eric Paris <eparis@redhat.com>
-Cc: linux-ia64@vger.kernel.org
-Cc: microblaze-uclinux@itee.uq.edu.au
-Cc: linux-mips@linux-mips.org
-Cc: linux@lists.openrisc.net
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: sparclinux@vger.kernel.org
----
- arch/ia64/include/asm/syscall.h       |  6 ++++++
- arch/microblaze/include/asm/syscall.h |  5 +++++
- arch/mips/include/asm/syscall.h       |  2 +-
- arch/openrisc/include/asm/syscall.h   |  5 +++++
- arch/parisc/include/asm/syscall.h     | 11 +++++++++++
- arch/powerpc/include/asm/syscall.h    | 12 ++++++++++++
- arch/sparc/include/asm/syscall.h      |  8 ++++++++
- include/uapi/linux/audit.h            |  1 +
- 8 files changed, 49 insertions(+), 1 deletion(-)
+Thanks Andreas and Yang Wei.
 
-diff --git a/arch/ia64/include/asm/syscall.h b/arch/ia64/include/asm/syscall.h
-index a7ff1c6..1d0b875 100644
---- a/arch/ia64/include/asm/syscall.h
-+++ b/arch/ia64/include/asm/syscall.h
-@@ -13,6 +13,7 @@
- #ifndef _ASM_SYSCALL_H
- #define _ASM_SYSCALL_H	1
- 
-+#include <uapi/linux/audit.h>
- #include <linux/sched.h>
- #include <linux/err.h>
- 
-@@ -79,4 +80,9 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 
- 	ia64_syscall_get_set_arguments(task, regs, i, n, args, 1);
- }
-+
-+static inline int syscall_get_arch(void)
-+{
-+	return AUDIT_ARCH_IA64;
-+}
- #endif	/* _ASM_SYSCALL_H */
-diff --git a/arch/microblaze/include/asm/syscall.h b/arch/microblaze/include/asm/syscall.h
-index 9bc4317..53cfaf3 100644
---- a/arch/microblaze/include/asm/syscall.h
-+++ b/arch/microblaze/include/asm/syscall.h
-@@ -1,6 +1,7 @@
- #ifndef __ASM_MICROBLAZE_SYSCALL_H
- #define __ASM_MICROBLAZE_SYSCALL_H
- 
-+#include <uapi/linux/audit.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <asm/ptrace.h>
-@@ -99,4 +100,8 @@ static inline void syscall_set_arguments(struct task_struct *task,
- asmlinkage long do_syscall_trace_enter(struct pt_regs *regs);
- asmlinkage void do_syscall_trace_leave(struct pt_regs *regs);
- 
-+static inline int syscall_get_arch(void)
-+{
-+	return AUDIT_ARCH_MICROBLAZE;
-+}
- #endif /* __ASM_MICROBLAZE_SYSCALL_H */
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index fc556d8..992b6ab 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -103,7 +103,7 @@ extern const unsigned long sysn32_call_table[];
- 
- static inline int syscall_get_arch(void)
- {
--	int arch = EM_MIPS;
-+	int arch = AUDIT_ARCH_MIPS;
- #ifdef CONFIG_64BIT
- 	arch |=  __AUDIT_ARCH_64BIT;
- #endif
-diff --git a/arch/openrisc/include/asm/syscall.h b/arch/openrisc/include/asm/syscall.h
-index b752bb6..2db9f1c 100644
---- a/arch/openrisc/include/asm/syscall.h
-+++ b/arch/openrisc/include/asm/syscall.h
-@@ -19,6 +19,7 @@
- #ifndef __ASM_OPENRISC_SYSCALL_H__
- #define __ASM_OPENRISC_SYSCALL_H__
- 
-+#include <uapi/linux/audit.h>
- #include <linux/err.h>
- #include <linux/sched.h>
- 
-@@ -71,4 +72,8 @@ syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
- 	memcpy(&regs->gpr[3 + i], args, n * sizeof(args[0]));
- }
- 
-+static inline int syscall_get_arch(void)
-+{
-+	return AUDIT_ARCH_OPENRISC;
-+}
- #endif
-diff --git a/arch/parisc/include/asm/syscall.h b/arch/parisc/include/asm/syscall.h
-index 8bdfd2c..a5eba95 100644
---- a/arch/parisc/include/asm/syscall.h
-+++ b/arch/parisc/include/asm/syscall.h
-@@ -3,6 +3,8 @@
- #ifndef _ASM_PARISC_SYSCALL_H_
- #define _ASM_PARISC_SYSCALL_H_
- 
-+#include <uapi/linux/audit.h>
-+#include <linux/compat.h>
- #include <linux/err.h>
- #include <asm/ptrace.h>
- 
-@@ -37,4 +39,13 @@ static inline void syscall_get_arguments(struct task_struct *tsk,
- 	}
- }
- 
-+static inline int syscall_get_arch(void)
-+{
-+	int arch = AUDIT_ARCH_PARISC;
-+#ifdef CONFIG_64BIT
-+	if (!is_compat_task())
-+		arch = AUDIT_ARCH_PARISC64;
-+#endif
-+	return arch;
-+}
- #endif /*_ASM_PARISC_SYSCALL_H_*/
-diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-index b54b2ad..4271544 100644
---- a/arch/powerpc/include/asm/syscall.h
-+++ b/arch/powerpc/include/asm/syscall.h
-@@ -13,6 +13,8 @@
- #ifndef _ASM_SYSCALL_H
- #define _ASM_SYSCALL_H	1
- 
-+#include <uapi/linux/audit.h>
-+#include <linux/compat.h>
- #include <linux/sched.h>
- 
- /* ftrace syscalls requires exporting the sys_call_table */
-@@ -86,4 +88,14 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	memcpy(&regs->gpr[3 + i], args, n * sizeof(args[0]));
- }
- 
-+static inline int syscall_get_arch(void)
-+{
-+	int arch = AUDIT_ARCH_PPC;
-+
-+#ifdef CONFIG_PPC64
-+	if (!is_32bit_task())
-+		arch = AUDIT_ARCH_PPC64;
-+#endif
-+	return arch;
-+}
- #endif	/* _ASM_SYSCALL_H */
-diff --git a/arch/sparc/include/asm/syscall.h b/arch/sparc/include/asm/syscall.h
-index 025a02a..fed3d51 100644
---- a/arch/sparc/include/asm/syscall.h
-+++ b/arch/sparc/include/asm/syscall.h
-@@ -1,9 +1,11 @@
- #ifndef __ASM_SPARC_SYSCALL_H
- #define __ASM_SPARC_SYSCALL_H
- 
-+#include <uapi/linux/audit.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <asm/ptrace.h>
-+#include <asm/thread_info.h>
- 
- /*
-  * The syscall table always contains 32 bit pointers since we know that the
-@@ -124,4 +126,10 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 		regs->u_regs[UREG_I0 + i + j] = args[j];
- }
- 
-+static inline int syscall_get_arch(void)
-+{
-+	return test_thread_flag(TIF_32BIT) ? AUDIT_ARCH_SPARC
-+					   : AUDIT_ARCH_SPARC64;
-+}
-+
- #endif /* __ASM_SPARC_SYSCALL_H */
-diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
-index 9af01d7..8496cfa 100644
---- a/include/uapi/linux/audit.h
-+++ b/include/uapi/linux/audit.h
-@@ -343,6 +343,7 @@ enum {
- #define AUDIT_ARCH_IA64		(EM_IA_64|__AUDIT_ARCH_64BIT|__AUDIT_ARCH_LE)
- #define AUDIT_ARCH_M32R		(EM_M32R)
- #define AUDIT_ARCH_M68K		(EM_68K)
-+#define AUDIT_ARCH_MICROBLAZE	(EM_MICROBLAZE)
- #define AUDIT_ARCH_MIPS		(EM_MIPS)
- #define AUDIT_ARCH_MIPSEL	(EM_MIPS|__AUDIT_ARCH_LE)
- #define AUDIT_ARCH_MIPS64	(EM_MIPS|__AUDIT_ARCH_64BIT)
--- 
-1.8.5.3
+FWIW:
+
+Tested and...
+
+Acked-by: David Daney <david.daney@cavium.com>
+
+
+Ralf et al.  If you are sending more patches for 3.14, this would be a 
+good candidate.
+
+Thanks,
+David Daney
+
+> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+> ---
+>   arch/mips/cavium-octeon/octeon-irq.c |   22 ++++++++++++----------
+>   1 file changed, 12 insertions(+), 10 deletions(-)
+>
+> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+> index 25fbfae..c2bb4f8 100644
+> --- a/arch/mips/cavium-octeon/octeon-irq.c
+> +++ b/arch/mips/cavium-octeon/octeon-irq.c
+[...]

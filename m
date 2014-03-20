@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Mar 2014 12:06:50 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:37357 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821117AbaCTLGqY0Z7w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Mar 2014 12:06:46 +0100
-Received: from [95.69.23.227] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1WQao7-0000Qx-Hz; Thu, 20 Mar 2014 11:06:43 +0000
-Date:   Thu, 20 Mar 2014 11:06:38 +0000
-From:   =?iso-8859-1?Q?Lu=EDs?= Henriques <luis.henriques@canonical.com>
-To:     Qais Yousef <Qais.Yousef@imgtec.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "Ralf Baechle (ralf@linux-mips.org)" <ralf@linux-mips.org>
-Subject: Re: [PATCH v2] mips/include/asm/mipsregs.h: include linux/types.h
-Message-ID: <20140320110638.GC3709@hercules>
-References: <1386582585-20867-1-git-send-email-qais.yousef@imgtec.com>
- <392C4BDEFF12D14FA57A3F30B283D7D14152C8@LEMAIL01.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Mar 2014 12:33:10 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:41920 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6853518AbaCTLdIXzbQ3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Mar 2014 12:33:08 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s2KBX61V013673;
+        Thu, 20 Mar 2014 12:33:06 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s2KBX5pO013672;
+        Thu, 20 Mar 2014 12:33:05 +0100
+Date:   Thu, 20 Mar 2014 12:33:05 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Jim Quinlan <jim2101024@gmail.com>, linux-mips@linux-mips.org,
+        cernekee@gmail.com
+Subject: Re: [PATCH] MIPS: make local_irq_disable macro safe for non-mipsr2
+Message-ID: <20140320113305.GK17197@linux-mips.org>
+References: <1385584490-20589-1-git-send-email-jim2101024@gmail.com>
+ <52965CF2.20005@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <392C4BDEFF12D14FA57A3F30B283D7D14152C8@LEMAIL01.le.imgtec.org>
-Return-Path: <luis.henriques@canonical.com>
+In-Reply-To: <52965CF2.20005@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39521
+X-archive-position: 39522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,56 +44,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 14, 2014 at 12:08:13PM +0000, Qais Yousef wrote:
-> Can we include this patch in the next 3.10 and forward stable releases please?
-> 
-> It's already in Linus' tree under commit id: 87c99203fea897fbdd84b681ad9fced2517dcf98
-> 
-> Thanks,
-> Qais
+On Wed, Nov 27, 2013 at 12:58:26PM -0800, David Daney wrote:
 
-Thank you, I'm queuing it for the 3.11 kernel.
-
-Cheers,
---
-Luís
-
-> > -----Original Message-----
-> > From: Qais Yousef
-> > Sent: 09 December 2013 09:50
-> > To: linux-mips@linux-mips.org
-> > Cc: Qais Yousef
-> > Subject: [PATCH v2] mips/include/asm/mipsregs.h: include linux/types.h
-> > 
-> > The file uses u16 type but doesn't include its definition explicitly
-> > 
-> > I was getting this error when including this header in my driver:
-> > 
-> >   arch/mips/include/asm/mipsregs.h:644:33: error: unknown type name ‘u16’
-> > 
-> > Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-> > Reviewed-by: Steven J. Hill <Steven.Hill@imgtec.com>
-> > ---
-> > changes since v1:
-> > 	- include linux/types.h instead of s/u16/unsigned short/
-> > 	- amend commit message accordingly
-> > 
-> >  arch/mips/include/asm/mipsregs.h |    1 +
-> >  1 files changed, 1 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/arch/mips/include/asm/mipsregs.h
-> > b/arch/mips/include/asm/mipsregs.h
-> > index e033141..86479bb 100644
-> > --- a/arch/mips/include/asm/mipsregs.h
-> > +++ b/arch/mips/include/asm/mipsregs.h
-> > @@ -14,6 +14,7 @@
-> >  #define _ASM_MIPSREGS_H
-> > 
-> >  #include <linux/linkage.h>
-> > +#include <linux/types.h>
+> On 11/27/2013 12:34 PM, Jim Quinlan wrote:
+> >For non-mipsr2 processors, the local_irq_disable contains an mfc0-mtc0
+> >pair with instructions inbetween.  With preemption enabled, this sequence
+> >may get preempted and effect a stale value of CP0_STATUS when executing
+> >the mtc0 instruction.  This commit avoids this scenario by incrementing
+> >the preempt count before the mfc0 and decrementing it after the mtc9.
+> >
+> >Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+> >---
+> >  arch/mips/include/asm/asmmacro.h |   11 +++++++++++
+> >  1 files changed, 11 insertions(+), 0 deletions(-)
+> >
+> >diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
+> >index 6c8342a..3f809a4 100644
+> >--- a/arch/mips/include/asm/asmmacro.h
+> >+++ b/arch/mips/include/asm/asmmacro.h
+> >@@ -9,6 +9,7 @@
+> >  #define _ASM_ASMMACRO_H
+> >
 > >  #include <asm/hazards.h>
-> >  #include <asm/war.h>
-> > 
-> > --
-> > 1.7.1
+> >+//#include <asm/asm-offsets.h>
 > 
+> I'm guessing it didn't pass checkpatch.pl
+> 
+> >
+> >  #ifdef CONFIG_32BIT
+> >  #include <asm/asmmacro-32.h>
+> >@@ -54,11 +55,21 @@
+> >  	.endm
+> >
+> >  	.macro	local_irq_disable reg=t0
+> >+#ifdef CONFIG_PREEMPT
+> >+	lw      \reg, TI_PRE_COUNT($28)
+> >+	addi    \reg, \reg, 1
+> >+	sw      \reg, TI_PRE_COUNT($28)
+> >+#endif
+> 
+> Does this need to be atomic?
+> 
+> More importantly, how does that prevent the problem you describe?
+> 
+> An interrupt can still occur between the mfc0 and mtc0 causing
+> Status bits to be changed.  What bits do we care about?  is it IM*,
+> I doubt you would see CU* changing.
+> 
+> Which bits are getting clobbered that shouldn't be?
+> 
+> 
+> >  	mfc0	\reg, CP0_STATUS
+> >  	ori	\reg, \reg, 1
+> >  	xori	\reg, \reg, 1
+> >  	mtc0	\reg, CP0_STATUS
+> >  	irq_disable_hazard
+> >+#ifdef CONFIG_PREEMPT
+> >+	lw      \reg, TI_PRE_COUNT($28)
+> >+	addi    \reg, \reg, -1
+> >+	sw      \reg, TI_PRE_COUNT($28)
+> >+#endif
+> >  	.endm
+> >  #endif /* CONFIG_MIPS_MT_SMTC */
+
+This patch is sorting out the part that were missed by e97c5b6098 [MIPS:
+Make irqflags.h functions preempt-safe for non-mipsr2 cpus].
+
+This races are easy to hit on systems that use irq-cpu.c, that is the
+IM bits directly to process device interrupts.  This for example was
+the reason for the '99 vintage patch 94f05bab9b [The CPO_STATUS interrupt
+mask patch].  Preemption just made the hole lots bigger.
+
+  Ralf

@@ -1,36 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 11:07:33 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:46294 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6826484AbaCUKHbgC0sl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Mar 2014 11:07:31 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s2LA7SZS014376;
-        Fri, 21 Mar 2014 11:07:28 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s2LA7RiB014375;
-        Fri, 21 Mar 2014 11:07:27 +0100
-Date:   Fri, 21 Mar 2014 11:07:27 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@codesourcery.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: copy_to_user_page: Avoid ptrace(2) I-cache
- incoherency
-Message-ID: <20140321100727.GJ4365@linux-mips.org>
-References: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 11:44:56 +0100 (CET)
+Received: from mail-pb0-f46.google.com ([209.85.160.46]:64306 "EHLO
+        mail-pb0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826888AbaCUKowXpvLy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Mar 2014 11:44:52 +0100
+Received: by mail-pb0-f46.google.com with SMTP id rq2so2233456pbb.19
+        for <multiple recipients>; Fri, 21 Mar 2014 03:44:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=kNeZIpQpQFzOoEtuoDa8lrUrbJCZ+jzyMYPDOyBrwhs=;
+        b=BRYJY0XOKXtZLu8LS5dzOP0LIijqEdz9EXXDdTmHLXSZG4+2cUDB1N3z/vBvQ7SS3D
+         vGnLRlyhN2pXWaLqqvoxNyo2dGZDFyBXJaRt/TGgx4/ApzTbayC0p06svQsimJsn7iNF
+         VN83nYewOj+dTzjO+Wwd3s4R6741BZrmLm3iimYjS3ZvZ6TQMMNwVL4UQtehOWOjDzqh
+         pZgFWdSudPVwnTMgmSgPvKeU9ipj97bt8Jtvq0iHL+n33yNDkzGKynkyffLuBdjBrLTD
+         eJKgqD2r+mI21ce/IUhogk1fPel/fkbwwSIPk4aIUr76hoOVyPZrBxWpkCgM/L5gGIii
+         9rkg==
+X-Received: by 10.68.36.41 with SMTP id n9mr51754476pbj.99.1395398682538;
+        Fri, 21 Mar 2014 03:44:42 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPSA id ac5sm9144592pbc.37.2014.03.21.03.44.26
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 21 Mar 2014 03:44:40 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: [PATCH V20 00/12] MIPS: Add Loongson-3 based machines support
+Date:   Fri, 21 Mar 2014 18:43:58 +0800
+Message-Id: <1395398650-19292-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39524
+X-archive-position: 39525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,89 +56,208 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 07, 2013 at 06:35:54PM +0000, Maciej W. Rozycki wrote:
+This patchset is prepared for the next 3.15 release for Linux/MIPS.
+Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2 compatible
+and has the same IMP field (0x6300) as Loongson-2. These patches make
+Linux kernel support Loongson-3 CPU and Loongson-3 based computers
+(including Laptop, Mini-ITX, All-In-One PC, etc.)
 
-> We currently support no MIPS processor that has its I-cache coherent with 
-> the D-cache, no such processor may even exist.  We apparently have two 
-> configurations that have fully coherent D-caches and therefore set 
-> cpu_has_ic_fills_f_dc, and these are the Alchemy and NetLogic processor 
-> families.  I have checked relevant CPU documentation I was able to track 
-> down and in both cases the respective documents[1][2] clearly state that 
-> the I-cache provides no hardware coherency and whenever instructions in 
-> memory are modified then the I-cache has to be synchronized by software 
-> even though the D-caches are fully coherent.
+V1 -> V2:
+1, Split the first patch to two patches, one is constant definition and
+   the other is CPU probing, cache initializing, etc.
+2, Remove Kconfig options in the first 9 patches and put all of them in
+   the 10th patch.
+3, Use "make savedefconfig" to generate the new default config file.
+4, Rework serial port support to use PORT and PORT_M macros.
+5, Fix some compile warnings.
 
-No, cpu_has_ic_fills_f_dc doesn't mean the D-cache is coherent but rather
-that the I-cache is refilled from the D-cache if there was a hit.  This
-means there is no need to write back the D-cache to S-cache or even memory
-which is saving some time.
+V2 -> V3:
+1, Improve cache flushing code (use cpu_has_coherent_cache macro and
+   remove #ifdef clauses).
+2, Improve platform-specific code to correctly set driver's dma_mask/
+   coherent_dma_mask so no longer need workarounds for each driver (
+   SATA, graphics card, sound card, etc.)
+3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
+4, Improve CPU hotplug code and split the poweroff failure related code
+   to another patch (this issue affect all MIPS CPU, not only Loongson).
+5, Some other small fixes.
 
-> Therefore we cannot ever avoid the call to flush_cache_page in 
-> copy_to_user_page and here is a change that reflects this observation.  
-> The implementation of flush_cache_page may then choose freely whether it 
-> needs to perform a full cache synchronization with D-cache writeback and 
-> invalidation requests or whether a lone I-cache invalidation will suffice.  
-> The c-r4k.c implementation already respects the setting of 
-> cpu_has_ic_fills_f_dc and avoids touching the D-cache unless necessary.
-> 
-> The lack of I-cache synchronization is typically seen in debugging 
-> sessions e.g. with GDB where software breakpoints are used.  When such a 
-> breakpoint is hit and subsequently replaced using a ptrace(2) call with 
-> the original instruction, the BREAK instruction previously executed 
-> sometimes remains in the I-cache and causes the breakpoint just removed to 
-> hit again regardless, resulting in a spurious SIGTRAP signal delivery that 
-> debuggers typically complain about (e.g. "Program received signal SIGTRAP, 
-> Trace/breakpoint trap" in the case of GDB).  Of course the I-cache line 
-> containing the BREAK instruction may have since been randomly replaced, in 
-> which case no problem occurs.
-> 
-> [1] "AMD Alchemy Au1200 Processor Data Book", AMD Alchemy, January, 2005, 
->     Publication ID: 32798A
-> 
-> [2] "XLP Processor Family Programming Reference Manual", NetLogic 
->     Microsystems, Revision Level 1.10, February, 2011, Document Number 
->     10724V110PM-CR (regrettably not publicly available)
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
-> ---
-> Ralf,
-> 
->  Please apply.  I've seen these SIGTRAPs in some NetLogic GDB testing and 
-> the removal of this cpu_has_ic_fills_f_dc condition from copy_to_user_page 
-> is really necessary; also the Au1200 document is very explicit about the 
-> requirement of I-cache invalidation in software (see Section 2.3.7.3 
-> "Instruction Cache Coherency").
+V3 -> V4:
+1, Include swiotlb.h in radeon_ttm.c if SWIOTLB configured.
+2, Remove "Reviewed-by" in patches which are added by mistake.
+3, Sync the code to upstream.
 
-You found a bug and yes, the fix you sent improves things a bit.  But
-there is also the cache on a cache coherent system where a page might
-be marked for a delayed cache flush with SetPageDcacheDirty(), then
-flushed by flush_cache_page() before eventually the delayed cacheflush
-flushes it once more for a good meassure.
+V4 -> V5:
+1, Split the drm patch to three patches.
+2, Use platform-specific pincfgs to replace old alsa quirks.
 
-What do you think about below patch to also deal with the duplicate flushing?
+V5 -> V6:
+1, For better management, two non-Loongson-specific patches are sent
+   independently.
+2, Introduce cpu_has_coherent_cache feature and split cache flushing
+   changes to a separate patch.
+3, Remove PRID_IMP_LOONGSON3 and use PRID_IMP_LOONGSON2 since they are
+   the same.
+4, Don't define RTC_ALWAYS_BCD for Loongson-3 since BCD format can be
+   checked by RTC_CONTROL at runtime.
+5, Don't modify dma-default.c for Loongson since it is unnecessary.
+6, Don't define SAREA_MAX since it is useless.
+7, Increase the default boost of internal mic for Lemote A1004.
+8, Fix a #ifdef issue in dma-coherence.h.
+9, Some other small fixes.
 
-  Ralf
+V6 -> V7:
+1, Fix boot failure when NR_CPUS is more than present cpus.
+2, Fix error messages after poweroff & reboot.
+3, Update the default config file.
+4, Sync the code to upstream.
 
- arch/mips/mm/init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+V7 -> V8:
+1, Add WEAK_ORDERING/WEAK_REORDERING_BEYOND_LLSC for Loongson-3.
+2, Fix a deadlock of cpu-hotplug.
+3, Include swiotlb.h in arch-specific code to avoid driver modification.
+4, Remove the patch "drm: Handle io prot correctly for MIPS" since it
+   is already in upstream code.
+5, Remove the patch "ALSA: HDA: Make hda sound card usable for Loongson"
+   since it is already in upstream code.
+6, Use LZMA compression and do some adjustment of config file to reduce
+   kernel size.
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 6b59617..80072ef 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -227,13 +227,13 @@ void copy_to_user_page(struct vm_area_struct *vma,
- 		void *vto = kmap_coherent(page, vaddr) + (vaddr & ~PAGE_MASK);
- 		memcpy(vto, src, len);
- 		kunmap_coherent();
-+		if (vma->vm_flags & VM_EXEC)
-+			flush_cache_page(vma, vaddr, page_to_pfn(page));
- 	} else {
- 		memcpy(dst, src, len);
- 		if (cpu_has_dc_aliases)
- 			SetPageDcacheDirty(page);
- 	}
--	if ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc)
--		flush_cache_page(vma, vaddr, page_to_pfn(page));
- }
- 
- void copy_from_user_page(struct vm_area_struct *vma,
+V8 -> V9:
+1, Fix spurious IPI interrupt.
+2, remove __dev* attributes since CONFIG_HOTPLUG is going away as an option.
+3, Use dev_info() to print messages in fixup-loongson3.c.
+4, Update the default config file.
+5, Sync the code to upstream.
+
+V9 -> V10:
+1, Rework "Introduce and use cpu_has_coherent_cache feature".
+2, Handle the case that System BIOS doesn't contain a VGA BIOS.
+3, Sync the code to upstream (mostly indentation adjustment).
+
+V10 -> V11:
+1, Remove normal labels and useless nops in inline assembler.
+2, Sync the code to upstream (Prepared for 3.12).
+
+V11 -> V12:
+1, Delete __cpuinit usage;
+2, Remove the third patch since it is contentious;
+3, Sync the code to upstream (Prepared for 3.13).
+
+V12 -> V13:
+1, Rework addrspace.h and spaces.h;
+2, Move the modification of Platform from patch 1 to patch 12;
+3, Sync the code to upstream (the mips-for-linux-next branch, for 3.13).
+
+V13 -> V14:
+1, Avoid spurious interrupt from serial port;
+2, Drop CONFIG_LOONGSON_BIGMEM and use CONFIG_SWIOTLB directly;
+3, Sync the code to upstream (the mips-for-linux-next branch, for 3.14).
+
+V14 -> V15:
+1, Fix duplicate ARCH_SPARSEMEM_ENABLE in Kconfig.
+
+V15 -> V16:
+1, Fix all coding style errors and most of warnings;
+2, Make dma address translation simple and elegant;
+3, Fix potential bugs in swiotlb code;
+4, Rename UEFI firmware interface to LEFI;
+5, Remove 32-bit kernel support temporarily;
+6, Some other small fixes (thanks to Aurelien Jarno).
+
+V16 -> V17:
+1, Kconfig adjustment;
+2, Make some functions static;
+3, Capitalize macros in smp code;
+4, Make dma-swiotlb.c more simple;
+5, Some other small fixes (thanks to Aurelien Jarno and Alex Smith).
+
+V17 -> V18:
+1, Fix two Loongson 2 breakages.
+2, Tested and Reviewed by Alex Smith.
+
+V18 -> V19:
+1, Rewrite the commit message of the dma-swiotlb patch.
+2, LEFI export the dma_mask_bits, which make it possible to support
+   both 32-bit and 40-bit DMA.
+
+V19 -> V20:
+1, Rewrite inline assembly code in cpu-hotplug.
+2, Remove the first patch since it has been merged.
+3, Update the default config file.
+4, Some other small fixes (thanks to Ralf Baechle).
+
+Huacai Chen(12):
+ MIPS: Loongson: Add basic Loongson-3 definition.
+ MIPS: Loongson: Add basic Loongson-3 CPU support.
+ MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+ MIPS: Loongson: Add UEFI-like firmware interface (LEFI) support.
+ MIPS: Loongson 3: Add HT-linked PCI support.
+ MIPS: Loongson 3: Add IRQ init and dispatch support.
+ MIPS: Loongson 3: Add serial port support.
+ MIPS: Loongson: Add swiotlb to support All-Memory DMA.
+ MIPS: Loongson: Add Loongson-3 Kconfig options.
+ MIPS: Loongson 3: Add Loongson-3 SMP support.
+ MIPS: Loongson 3: Add CPU hotplug support.
+ MIPS: Loongson: Add a Loongson-3 default config file.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hua Yan <yanh@lemote.com> 
+---
+ arch/mips/Kconfig                                  |   29 ++-
+ arch/mips/configs/loongson3_defconfig              |  362 ++++++++++++++++
+ arch/mips/include/asm/addrspace.h                  |    2 +
+ arch/mips/include/asm/bootinfo.h                   |   24 +-
+ arch/mips/include/asm/cpu-type.h                   |    4 +
+ arch/mips/include/asm/cpu.h                        |    5 +-
+ arch/mips/include/asm/dma-mapping.h                |    5 +
+ arch/mips/include/asm/mach-loongson/boot_param.h   |  163 +++++++
+ .../mips/include/asm/mach-loongson/dma-coherence.h |   22 +-
+ arch/mips/include/asm/mach-loongson/irq.h          |   44 ++
+ arch/mips/include/asm/mach-loongson/loongson.h     |   28 +-
+ arch/mips/include/asm/mach-loongson/machine.h      |    6 +
+ arch/mips/include/asm/mach-loongson/pci.h          |    5 +
+ arch/mips/include/asm/mach-loongson/spaces.h       |   13 +
+ arch/mips/include/asm/module.h                     |    2 +
+ arch/mips/include/asm/pgtable-bits.h               |    9 +
+ arch/mips/include/asm/smp.h                        |    1 +
+ arch/mips/kernel/cpu-probe.c                       |   12 +-
+ arch/mips/loongson/Kconfig                         |   47 ++
+ arch/mips/loongson/Makefile                        |    6 +
+ arch/mips/loongson/Platform                        |    1 +
+ arch/mips/loongson/common/Makefile                 |    5 +
+ arch/mips/loongson/common/dma-swiotlb.c            |  136 ++++++
+ arch/mips/loongson/common/env.c                    |   67 +++-
+ arch/mips/loongson/common/init.c                   |   10 +-
+ arch/mips/loongson/common/machtype.c               |    4 +
+ arch/mips/loongson/common/mem.c                    |   42 ++
+ arch/mips/loongson/common/pci.c                    |    6 +-
+ arch/mips/loongson/common/reset.c                  |   21 +
+ arch/mips/loongson/common/serial.c                 |   26 +-
+ arch/mips/loongson/common/setup.c                  |    8 +-
+ arch/mips/loongson/common/uart_base.c              |    9 +-
+ arch/mips/loongson/loongson-3/Makefile             |    6 +
+ arch/mips/loongson/loongson-3/irq.c                |  126 ++++++
+ arch/mips/loongson/loongson-3/smp.c                |  443 ++++++++++++++++++++
+ arch/mips/loongson/loongson-3/smp.h                |   29 ++
+ arch/mips/mm/c-r4k.c                               |   59 +++
+ arch/mips/mm/tlb-r4k.c                             |    5 +-
+ arch/mips/mm/tlbex.c                               |    1 +
+ arch/mips/pci/Makefile                             |    1 +
+ arch/mips/pci/fixup-loongson3.c                    |   66 +++
+ arch/mips/pci/ops-loongson3.c                      |  101 +++++
+ 42 files changed, 1903 insertions(+), 58 deletions(-)
+ create mode 100644 arch/mips/configs/loongson3_defconfig
+ create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+ create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+ create mode 100644 arch/mips/loongson/loongson-3/Makefile
+ create mode 100644 arch/mips/loongson/loongson-3/irq.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.h
+ create mode 100644 arch/mips/pci/fixup-loongson3.c
+ create mode 100644 arch/mips/pci/ops-loongson3.c
+--
+1.7.7.3

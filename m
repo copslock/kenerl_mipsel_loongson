@@ -1,50 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 10:08:24 +0100 (CET)
-Received: from mail-ee0-f45.google.com ([74.125.83.45]:43239 "EHLO
-        mail-ee0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815989AbaCUJIV502Of (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Mar 2014 10:08:21 +0100
-Received: by mail-ee0-f45.google.com with SMTP id d17so1560360eek.4
-        for <multiple recipients>; Fri, 21 Mar 2014 02:08:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=56CDS9tx36kGzrhm1qIhJzF6aROylnT6BnK/djkqdkI=;
-        b=Pue3Qo96eXR47RrsZ9jO8dTK1mtwVhbKLYne0xCEyCp2S+72N19dXmdC5A2JjcGiqy
-         WxcWbkrLFSc5rbjckyoHpu4kqKhGh01FF0OQ9UK7kUbt34Ksi6XJYNqldISfSCy98ml8
-         lz1JLIvHsihKPAsK0YmXN07q8jjgcItQmRtcCQvhEsxQ14zsa9Xo2OruWghnTl1v66Wd
-         nPsLb4NgPxwRXgozn+n55dHylE4lTi/WW9nUbvQFB6kAvGw38VNniFtwtE1e92+eySb4
-         0oxlYSk5B21sdjGOlefiJgk1HZi1l6f/teHWwjSIPULOMAUsAjqOjPm+VdDiwPVk8n34
-         UlFw==
-X-Received: by 10.15.54.70 with SMTP id s46mr14360398eew.83.1395392896555;
-        Fri, 21 Mar 2014 02:08:16 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id u1sm10240532eex.31.2014.03.21.02.08.14
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 21 Mar 2014 02:08:15 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH V3] MIPS: BCM47XX: Add new file for device specific workarounds
-Date:   Fri, 21 Mar 2014 10:08:08 +0100
-Message-Id: <1395392888-29945-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-In-Reply-To: <1391286733-14333-1-git-send-email-zajec5@gmail.com>
-References: <1391286733-14333-1-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 11:07:33 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:46294 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6826484AbaCUKHbgC0sl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Mar 2014 11:07:31 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s2LA7SZS014376;
+        Fri, 21 Mar 2014 11:07:28 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s2LA7RiB014375;
+        Fri, 21 Mar 2014 11:07:27 +0100
+Date:   Fri, 21 Mar 2014 11:07:27 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@codesourcery.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: copy_to_user_page: Avoid ptrace(2) I-cache
+ incoherency
+Message-ID: <20140321100727.GJ4365@linux-mips.org>
+References: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39523
+X-archive-position: 39524
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,93 +43,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
-V2: Drop pr_debug for devices we don't need workarounds for. It was too
-    load and not useful at all.
-V3: Use gpio_request_one in WNR3500L workaround. In V2 we were directly
-    calling gpio_set_value, which doesn't guarantee GPIO to be in OUT
-    direction.
+On Thu, Nov 07, 2013 at 06:35:54PM +0000, Maciej W. Rozycki wrote:
 
-Hauke: does V3 still get your ack?
----
- arch/mips/bcm47xx/Makefile          |  2 +-
- arch/mips/bcm47xx/bcm47xx_private.h |  3 +++
- arch/mips/bcm47xx/setup.c           |  1 +
- arch/mips/bcm47xx/workarounds.c     | 31 +++++++++++++++++++++++++++++++
- 4 files changed, 36 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/bcm47xx/workarounds.c
+> We currently support no MIPS processor that has its I-cache coherent with 
+> the D-cache, no such processor may even exist.  We apparently have two 
+> configurations that have fully coherent D-caches and therefore set 
+> cpu_has_ic_fills_f_dc, and these are the Alchemy and NetLogic processor 
+> families.  I have checked relevant CPU documentation I was able to track 
+> down and in both cases the respective documents[1][2] clearly state that 
+> the I-cache provides no hardware coherency and whenever instructions in 
+> memory are modified then the I-cache has to be synchronized by software 
+> even though the D-caches are fully coherent.
 
-diff --git a/arch/mips/bcm47xx/Makefile b/arch/mips/bcm47xx/Makefile
-index 4688b6a..d58c51b 100644
---- a/arch/mips/bcm47xx/Makefile
-+++ b/arch/mips/bcm47xx/Makefile
-@@ -4,4 +4,4 @@
- #
- 
- obj-y				+= irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
--obj-y				+= board.o buttons.o leds.o
-+obj-y				+= board.o buttons.o leds.o workarounds.o
-diff --git a/arch/mips/bcm47xx/bcm47xx_private.h b/arch/mips/bcm47xx/bcm47xx_private.h
-index 5c94ace..0194c3b 100644
---- a/arch/mips/bcm47xx/bcm47xx_private.h
-+++ b/arch/mips/bcm47xx/bcm47xx_private.h
-@@ -9,4 +9,7 @@ int __init bcm47xx_buttons_register(void);
- /* leds.c */
- void __init bcm47xx_leds_register(void);
- 
-+/* workarounds.c */
-+void __init bcm47xx_workarounds(void);
-+
- #endif
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index b847d03..63a4b0e 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -282,6 +282,7 @@ static int __init bcm47xx_register_bus_complete(void)
+No, cpu_has_ic_fills_f_dc doesn't mean the D-cache is coherent but rather
+that the I-cache is refilled from the D-cache if there was a hit.  This
+means there is no need to write back the D-cache to S-cache or even memory
+which is saving some time.
+
+> Therefore we cannot ever avoid the call to flush_cache_page in 
+> copy_to_user_page and here is a change that reflects this observation.  
+> The implementation of flush_cache_page may then choose freely whether it 
+> needs to perform a full cache synchronization with D-cache writeback and 
+> invalidation requests or whether a lone I-cache invalidation will suffice.  
+> The c-r4k.c implementation already respects the setting of 
+> cpu_has_ic_fills_f_dc and avoids touching the D-cache unless necessary.
+> 
+> The lack of I-cache synchronization is typically seen in debugging 
+> sessions e.g. with GDB where software breakpoints are used.  When such a 
+> breakpoint is hit and subsequently replaced using a ptrace(2) call with 
+> the original instruction, the BREAK instruction previously executed 
+> sometimes remains in the I-cache and causes the breakpoint just removed to 
+> hit again regardless, resulting in a spurious SIGTRAP signal delivery that 
+> debuggers typically complain about (e.g. "Program received signal SIGTRAP, 
+> Trace/breakpoint trap" in the case of GDB).  Of course the I-cache line 
+> containing the BREAK instruction may have since been randomly replaced, in 
+> which case no problem occurs.
+> 
+> [1] "AMD Alchemy Au1200 Processor Data Book", AMD Alchemy, January, 2005, 
+>     Publication ID: 32798A
+> 
+> [2] "XLP Processor Family Programming Reference Manual", NetLogic 
+>     Microsystems, Revision Level 1.10, February, 2011, Document Number 
+>     10724V110PM-CR (regrettably not publicly available)
+> 
+> Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
+> ---
+> Ralf,
+> 
+>  Please apply.  I've seen these SIGTRAPs in some NetLogic GDB testing and 
+> the removal of this cpu_has_ic_fills_f_dc condition from copy_to_user_page 
+> is really necessary; also the Au1200 document is very explicit about the 
+> requirement of I-cache invalidation in software (see Section 2.3.7.3 
+> "Instruction Cache Coherency").
+
+You found a bug and yes, the fix you sent improves things a bit.  But
+there is also the cache on a cache coherent system where a page might
+be marked for a delayed cache flush with SetPageDcacheDirty(), then
+flushed by flush_cache_page() before eventually the delayed cacheflush
+flushes it once more for a good meassure.
+
+What do you think about below patch to also deal with the duplicate flushing?
+
+  Ralf
+
+ arch/mips/mm/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 6b59617..80072ef 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -227,13 +227,13 @@ void copy_to_user_page(struct vm_area_struct *vma,
+ 		void *vto = kmap_coherent(page, vaddr) + (vaddr & ~PAGE_MASK);
+ 		memcpy(vto, src, len);
+ 		kunmap_coherent();
++		if (vma->vm_flags & VM_EXEC)
++			flush_cache_page(vma, vaddr, page_to_pfn(page));
+ 	} else {
+ 		memcpy(dst, src, len);
+ 		if (cpu_has_dc_aliases)
+ 			SetPageDcacheDirty(page);
  	}
- 	bcm47xx_buttons_register();
- 	bcm47xx_leds_register();
-+	bcm47xx_workarounds();
+-	if ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc)
+-		flush_cache_page(vma, vaddr, page_to_pfn(page));
+ }
  
- 	fixed_phy_add(PHY_POLL, 0, &bcm47xx_fixed_phy_status);
- 	return 0;
-diff --git a/arch/mips/bcm47xx/workarounds.c b/arch/mips/bcm47xx/workarounds.c
-new file mode 100644
-index 0000000..e81ce46
---- /dev/null
-+++ b/arch/mips/bcm47xx/workarounds.c
-@@ -0,0 +1,31 @@
-+#include "bcm47xx_private.h"
-+
-+#include <linux/gpio.h>
-+#include <bcm47xx_board.h>
-+#include <bcm47xx.h>
-+
-+static void __init bcm47xx_workarounds_netgear_wnr3500l(void)
-+{
-+	const int usb_power = 12;
-+	int err;
-+
-+	err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
-+	if (err)
-+		pr_err("Failed to request USB power gpio: %d\n", err);
-+	else
-+		gpio_free(usb_power);
-+}
-+
-+void __init bcm47xx_workarounds(void)
-+{
-+	enum bcm47xx_board board = bcm47xx_board_get();
-+
-+	switch (board) {
-+	case BCM47XX_BOARD_NETGEAR_WNR3500L:
-+		bcm47xx_workarounds_netgear_wnr3500l();
-+		break;
-+	default:
-+		/* No workaround(s) needed */
-+		break;
-+	}
-+}
--- 
-1.8.4.5
+ void copy_from_user_page(struct vm_area_struct *vma,

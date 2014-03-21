@@ -1,38 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 16:21:48 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.89.28.114]:49517 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6861299AbaCUPVYmiixH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Mar 2014 16:21:24 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E5166B3A6FB3
-        for <linux-mips@linux-mips.org>; Fri, 21 Mar 2014 15:21:13 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Fri, 21 Mar 2014 15:21:16 +0000
-Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Fri, 21 Mar 2014 15:21:10 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 2/2] MIPS: Malta: support powering down
-Date:   Fri, 21 Mar 2014 15:20:32 +0000
-Message-ID: <1395415232-42288-2-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 1.8.5.3
-In-Reply-To: <1395415232-42288-1-git-send-email-paul.burton@imgtec.com>
-References: <1395415232-42288-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 17:56:23 +0100 (CET)
+Received: from mail-ie0-f176.google.com ([209.85.223.176]:40404 "EHLO
+        mail-ie0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817179AbaCUQ4VQz7g8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Mar 2014 17:56:21 +0100
+Received: by mail-ie0-f176.google.com with SMTP id rd18so2737737iec.35
+        for <multiple recipients>; Fri, 21 Mar 2014 09:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=xHL6g0K6lyeqmNeQOXliVks+WjbdVhlap8zlKXegWLo=;
+        b=XSXkeXFiBO2y1E2d2hySnSZPx2QK9u12QAxQhwq4M1KTORx8aLcv+EavGgi47/1UH0
+         UIknPvZcH+wZh7wjhd65Bv3olhf4uzklwPjRkcqPfTzeb91pZ5/hGWYMJGCET8DVs7iQ
+         PX1jqLdF7/l9ATcVuzu13es1YCTYBM9W+Lt0OSMLHnuOJSyi/ETEmld3hUBHdKuUx2t5
+         wVIiBzD4eX6AtLyMSGHqnC0IO047MhjwtG8jvma1Ojeal4hZkasp4otnCYPgcv/bMqXY
+         5ftYhjLF3kIoHZw8mFvl7zflyL0uiVi+mDwSd+FOk49UjITqKA9GMXaIMphr9EecfE2t
+         6Krg==
+X-Received: by 10.50.80.11 with SMTP id n11mr3971469igx.36.1395420974742;
+        Fri, 21 Mar 2014 09:56:14 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id rj10sm4523277igc.8.2014.03.21.09.56.13
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 21 Mar 2014 09:56:14 -0700 (PDT)
+Message-ID: <532C6F2C.40009@gmail.com>
+Date:   Fri, 21 Mar 2014 09:56:12 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.79]
-Return-Path: <Paul.Burton@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     "Maciej W. Rozycki" <macro@codesourcery.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: copy_to_user_page: Avoid ptrace(2) I-cache incoherency
+References: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk> <20140321100727.GJ4365@linux-mips.org>
+In-Reply-To: <20140321100727.GJ4365@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39539
+X-archive-position: 39540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,153 +57,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch makes the mips_machine_halt function (used as _machine_halt &
-pm_power_off) actually power down the Malta via the PIIX4. It may then
-be powered back up by pressing the "ON/NMI" button (S4) on the board.
+On 03/21/2014 03:07 AM, Ralf Baechle wrote:
+> On Thu, Nov 07, 2013 at 06:35:54PM +0000, Maciej W. Rozycki wrote:
+>
+>> We currently support no MIPS processor that has its I-cache coherent with
+>> the D-cache, no such processor may even exist.  We apparently have two
+>> configurations that have fully coherent D-caches and therefore set
+>> cpu_has_ic_fills_f_dc, and these are the Alchemy and NetLogic processor
+>> families.  I have checked relevant CPU documentation I was able to track
+>> down and in both cases the respective documents[1][2] clearly state that
+>> the I-cache provides no hardware coherency and whenever instructions in
+>> memory are modified then the I-cache has to be synchronized by software
+>> even though the D-caches are fully coherent.
+>
+> No, cpu_has_ic_fills_f_dc doesn't mean the D-cache is coherent but rather
+> that the I-cache is refilled from the D-cache if there was a hit.  This
+> means there is no need to write back the D-cache to S-cache or even memory
+> which is saving some time.
+>
+>> Therefore we cannot ever avoid the call to flush_cache_page in
+>> copy_to_user_page and here is a change that reflects this observation.
+>> The implementation of flush_cache_page may then choose freely whether it
+>> needs to perform a full cache synchronization with D-cache writeback and
+>> invalidation requests or whether a lone I-cache invalidation will suffice.
+>> The c-r4k.c implementation already respects the setting of
+>> cpu_has_ic_fills_f_dc and avoids touching the D-cache unless necessary.
+>>
+>> The lack of I-cache synchronization is typically seen in debugging
+>> sessions e.g. with GDB where software breakpoints are used.  When such a
+>> breakpoint is hit and subsequently replaced using a ptrace(2) call with
+>> the original instruction, the BREAK instruction previously executed
+>> sometimes remains in the I-cache and causes the breakpoint just removed to
+>> hit again regardless, resulting in a spurious SIGTRAP signal delivery that
+>> debuggers typically complain about (e.g. "Program received signal SIGTRAP,
+>> Trace/breakpoint trap" in the case of GDB).  Of course the I-cache line
+>> containing the BREAK instruction may have since been randomly replaced, in
+>> which case no problem occurs.
+>>
+>> [1] "AMD Alchemy Au1200 Processor Data Book", AMD Alchemy, January, 2005,
+>>      Publication ID: 32798A
+>>
+>> [2] "XLP Processor Family Programming Reference Manual", NetLogic
+>>      Microsystems, Revision Level 1.10, February, 2011, Document Number
+>>      10724V110PM-CR (regrettably not publicly available)
+>>
+>> Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
+>> ---
+>> Ralf,
+>>
+>>   Please apply.  I've seen these SIGTRAPs in some NetLogic GDB testing and
+>> the removal of this cpu_has_ic_fills_f_dc condition from copy_to_user_page
+>> is really necessary; also the Au1200 document is very explicit about the
+>> requirement of I-cache invalidation in software (see Section 2.3.7.3
+>> "Instruction Cache Coherency").
+>
+> You found a bug and yes, the fix you sent improves things a bit.  But
+> there is also the cache on a cache coherent system where a page might
+> be marked for a delayed cache flush with SetPageDcacheDirty(), then
+> flushed by flush_cache_page() before eventually the delayed cacheflush
+> flushes it once more for a good meassure.
+>
+> What do you think about below patch to also deal with the duplicate flushing?
+>
 
-Tested-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
- arch/mips/include/asm/mips-boards/piix4.h |  9 ++++
- arch/mips/mti-malta/malta-reset.c         | 71 +++++++++++++++++++++++++++++--
- arch/mips/pci/fixup-malta.c               |  6 +++
- 3 files changed, 83 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-boards/piix4.h b/arch/mips/include/asm/mips-boards/piix4.h
-index 9cf5404..a44faf4 100644
---- a/arch/mips/include/asm/mips-boards/piix4.h
-+++ b/arch/mips/include/asm/mips-boards/piix4.h
-@@ -55,4 +55,13 @@
- #define PIIX4_FUNC3_PMREGMISC			0x80
- #define   PIIX4_FUNC3_PMREGMISC_EN			(1 << 0)
- 
-+/* Power Management IO Space */
-+#define PIIX4_FUNC3IO_PMSTS			0x00
-+#define   PIIX4_FUNC3IO_PMSTS_PWRBTN_STS		(1 << 8)
-+#define PIIX4_FUNC3IO_PMCNTRL			0x04
-+#define   PIIX4_FUNC3IO_PMCNTRL_SUS_EN			(1 << 13)
-+
-+/* Data for magic special PCI cycle */
-+#define PIIX4_SUSPEND_MAGIC			0x00120002
-+
- #endif /* __ASM_MIPS_BOARDS_PIIX4_H */
-diff --git a/arch/mips/mti-malta/malta-reset.c b/arch/mips/mti-malta/malta-reset.c
-index d627d4b..ef04c8b 100644
---- a/arch/mips/mti-malta/malta-reset.c
-+++ b/arch/mips/mti-malta/malta-reset.c
-@@ -6,10 +6,13 @@
-  * Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-  */
-+#include <linux/delay.h>
- #include <linux/io.h>
-+#include <linux/pci.h>
- #include <linux/pm.h>
- 
- #include <asm/reboot.h>
-+#include <asm/mips-boards/piix4.h>
- 
- #define SOFTRES_REG	0x1f000500
- #define GORESET		0x42
-@@ -24,10 +27,72 @@ static void mips_machine_restart(char *command)
- 
- static void mips_machine_halt(void)
- {
--	unsigned int __iomem *softres_reg =
--		ioremap(SOFTRES_REG, sizeof(unsigned int));
-+	struct pci_bus *bus;
-+	struct pci_dev *dev;
-+	int spec_devid, res;
-+	int io_region = PCI_BRIDGE_RESOURCES;
-+	resource_size_t io;
-+	u16 sts;
- 
--	__raw_writel(GORESET, softres_reg);
-+	/* Find the PIIX4 PM device */
-+	dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
-+			     PCI_DEVICE_ID_INTEL_82371AB_3, PCI_ANY_ID,
-+			     PCI_ANY_ID, NULL);
-+	if (!dev) {
-+		printk("Failed to find PIIX4 PM\n");
-+		goto fail;
-+	}
-+
-+	/* Request access to the PIIX4 PM IO registers */
-+	res = pci_request_region(dev, io_region, "PIIX4 PM IO registers");
-+	if (res) {
-+		printk("Failed to request PIIX4 PM IO registers (%d)\n", res);
-+		goto fail_dev_put;
-+	}
-+
-+	/* Find the offset to the PIIX4 PM IO registers */
-+	io = pci_resource_start(dev, io_region);
-+
-+	/* Ensure the power button status is clear */
-+	while (1) {
-+		sts = inw(io + PIIX4_FUNC3IO_PMSTS);
-+		if (!(sts & PIIX4_FUNC3IO_PMSTS_PWRBTN_STS))
-+			break;
-+		outw(sts, io + PIIX4_FUNC3IO_PMSTS);
-+	}
-+
-+	/* Enable entry to suspend */
-+	outw(PIIX4_FUNC3IO_PMCNTRL_SUS_EN, io + PIIX4_FUNC3IO_PMCNTRL);
-+
-+	/* If the special cycle occurs too soon this doesn't work... */
-+	mdelay(10);
-+
-+	/* Find a reference to the PCI bus */
-+	bus = pci_find_next_bus(NULL);
-+	if (!bus) {
-+		printk("Failed to find PCI bus\n");
-+		goto fail_release_region;
-+	}
-+
-+	/*
-+	 * The PIIX4 will enter the suspend state only after seeing a special
-+	 * cycle with the correct magic data on the PCI bus. Generate that
-+	 * cycle now.
-+	 */
-+	spec_devid = PCI_DEVID(0, PCI_DEVFN(0x1f, 0x7));
-+	pci_bus_write_config_dword(bus, spec_devid, 0, PIIX4_SUSPEND_MAGIC);
-+
-+	/* Give the system some time to power down */
-+	mdelay(1000);
-+
-+	/* If all went well this will never execute */
-+fail_release_region:
-+	pci_release_region(dev, io_region);
-+fail_dev_put:
-+	pci_dev_put(dev);
-+fail:
-+	printk("Failed to power down, resetting\n");
-+	mips_machine_restart(NULL);
- }
- 
- static int __init mips_reboot_setup(void)
-diff --git a/arch/mips/pci/fixup-malta.c b/arch/mips/pci/fixup-malta.c
-index 2f9e52a..40e920c 100644
---- a/arch/mips/pci/fixup-malta.c
-+++ b/arch/mips/pci/fixup-malta.c
-@@ -68,6 +68,7 @@ static void malta_piix_func0_fixup(struct pci_dev *pdev)
- {
- 	unsigned char reg_val;
- 	u32 reg_val32;
-+	u16 reg_val16;
- 	/* PIIX PIRQC[A:D] irq mappings */
- 	static int piixirqmap[PIIX4_FUNC0_PIRQRC_IRQ_ROUTING_MAX] = {
- 		0,  0,	0,  3,
-@@ -107,6 +108,11 @@ static void malta_piix_func0_fixup(struct pci_dev *pdev)
- 	pci_read_config_byte(pdev, PIIX4_FUNC0_SERIRQC, &reg_val);
- 	reg_val |= PIIX4_FUNC0_SERIRQC_EN | PIIX4_FUNC0_SERIRQC_CONT;
- 	pci_write_config_byte(pdev, PIIX4_FUNC0_SERIRQC, reg_val);
-+
-+	/* Enable response to special cycles */
-+	pci_read_config_word(pdev, PCI_COMMAND, &reg_val16);
-+	pci_write_config_word(pdev, PCI_COMMAND,
-+			      reg_val16 | PCI_COMMAND_SPECIAL);
- }
- 
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82371AB_0,
--- 
-1.8.5.3
+The problem only happens when modifying target executable code through 
+the ptrace() system call.
+
+For all cases where a program is modifying its own executable memory, we 
+require that it make the special mips cacheflush system call.
+
+I don't object to modifying this file, but I wonder if the call to the 
+flushing function should be pushed up into the ptrace() code.
+
+David Daney
+
+
+>    Ralf
+>
+>   arch/mips/mm/init.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+> index 6b59617..80072ef 100644
+> --- a/arch/mips/mm/init.c
+> +++ b/arch/mips/mm/init.c
+> @@ -227,13 +227,13 @@ void copy_to_user_page(struct vm_area_struct *vma,
+>   		void *vto = kmap_coherent(page, vaddr) + (vaddr & ~PAGE_MASK);
+>   		memcpy(vto, src, len);
+>   		kunmap_coherent();
+> +		if (vma->vm_flags & VM_EXEC)
+> +			flush_cache_page(vma, vaddr, page_to_pfn(page));
+>   	} else {
+>   		memcpy(dst, src, len);
+>   		if (cpu_has_dc_aliases)
+>   			SetPageDcacheDirty(page);
+>   	}
+> -	if ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc)
+> -		flush_cache_page(vma, vaddr, page_to_pfn(page));
+>   }
+>
+>   void copy_from_user_page(struct vm_area_struct *vma,
+>
+>

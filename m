@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 17:56:23 +0100 (CET)
-Received: from mail-ie0-f176.google.com ([209.85.223.176]:40404 "EHLO
-        mail-ie0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817179AbaCUQ4VQz7g8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Mar 2014 17:56:21 +0100
-Received: by mail-ie0-f176.google.com with SMTP id rd18so2737737iec.35
-        for <multiple recipients>; Fri, 21 Mar 2014 09:56:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=xHL6g0K6lyeqmNeQOXliVks+WjbdVhlap8zlKXegWLo=;
-        b=XSXkeXFiBO2y1E2d2hySnSZPx2QK9u12QAxQhwq4M1KTORx8aLcv+EavGgi47/1UH0
-         UIknPvZcH+wZh7wjhd65Bv3olhf4uzklwPjRkcqPfTzeb91pZ5/hGWYMJGCET8DVs7iQ
-         PX1jqLdF7/l9ATcVuzu13es1YCTYBM9W+Lt0OSMLHnuOJSyi/ETEmld3hUBHdKuUx2t5
-         wVIiBzD4eX6AtLyMSGHqnC0IO047MhjwtG8jvma1Ojeal4hZkasp4otnCYPgcv/bMqXY
-         5ftYhjLF3kIoHZw8mFvl7zflyL0uiVi+mDwSd+FOk49UjITqKA9GMXaIMphr9EecfE2t
-         6Krg==
-X-Received: by 10.50.80.11 with SMTP id n11mr3971469igx.36.1395420974742;
-        Fri, 21 Mar 2014 09:56:14 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id rj10sm4523277igc.8.2014.03.21.09.56.13
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 21 Mar 2014 09:56:14 -0700 (PDT)
-Message-ID: <532C6F2C.40009@gmail.com>
-Date:   Fri, 21 Mar 2014 09:56:12 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 18:37:37 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:14806 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817552AbaCURhfN7lq7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Mar 2014 18:37:35 +0100
+Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s2LHbSx4015715
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 21 Mar 2014 13:37:28 -0400
+Received: from madcap2.tricolour.ca (vpn-59-180.rdu2.redhat.com [10.10.59.180])
+        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s2LHbNgR019203
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Fri, 21 Mar 2014 13:37:25 -0400
+Date:   Fri, 21 Mar 2014 13:37:23 -0400
+From:   Richard Guy Briggs <rgb@redhat.com>
+To:     Eric Paris <eparis@redhat.com>
+Cc:     linux-audit@redhat.com, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-s390@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org, linux390@de.ibm.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] syscall_get_arch: remove useless function arguments
+Message-ID: <20140321173723.GA16467@madcap2.tricolour.ca>
+References: <1394573578-2558-1-git-send-email-eparis@redhat.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Maciej W. Rozycki" <macro@codesourcery.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: copy_to_user_page: Avoid ptrace(2) I-cache incoherency
-References: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk> <20140321100727.GJ4365@linux-mips.org>
-In-Reply-To: <20140321100727.GJ4365@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1394573578-2558-1-git-send-email-eparis@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
+Return-Path: <rgb@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39540
+X-archive-position: 39541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: rgb@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,106 +48,178 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/21/2014 03:07 AM, Ralf Baechle wrote:
-> On Thu, Nov 07, 2013 at 06:35:54PM +0000, Maciej W. Rozycki wrote:
->
->> We currently support no MIPS processor that has its I-cache coherent with
->> the D-cache, no such processor may even exist.  We apparently have two
->> configurations that have fully coherent D-caches and therefore set
->> cpu_has_ic_fills_f_dc, and these are the Alchemy and NetLogic processor
->> families.  I have checked relevant CPU documentation I was able to track
->> down and in both cases the respective documents[1][2] clearly state that
->> the I-cache provides no hardware coherency and whenever instructions in
->> memory are modified then the I-cache has to be synchronized by software
->> even though the D-caches are fully coherent.
->
-> No, cpu_has_ic_fills_f_dc doesn't mean the D-cache is coherent but rather
-> that the I-cache is refilled from the D-cache if there was a hit.  This
-> means there is no need to write back the D-cache to S-cache or even memory
-> which is saving some time.
->
->> Therefore we cannot ever avoid the call to flush_cache_page in
->> copy_to_user_page and here is a change that reflects this observation.
->> The implementation of flush_cache_page may then choose freely whether it
->> needs to perform a full cache synchronization with D-cache writeback and
->> invalidation requests or whether a lone I-cache invalidation will suffice.
->> The c-r4k.c implementation already respects the setting of
->> cpu_has_ic_fills_f_dc and avoids touching the D-cache unless necessary.
->>
->> The lack of I-cache synchronization is typically seen in debugging
->> sessions e.g. with GDB where software breakpoints are used.  When such a
->> breakpoint is hit and subsequently replaced using a ptrace(2) call with
->> the original instruction, the BREAK instruction previously executed
->> sometimes remains in the I-cache and causes the breakpoint just removed to
->> hit again regardless, resulting in a spurious SIGTRAP signal delivery that
->> debuggers typically complain about (e.g. "Program received signal SIGTRAP,
->> Trace/breakpoint trap" in the case of GDB).  Of course the I-cache line
->> containing the BREAK instruction may have since been randomly replaced, in
->> which case no problem occurs.
->>
->> [1] "AMD Alchemy Au1200 Processor Data Book", AMD Alchemy, January, 2005,
->>      Publication ID: 32798A
->>
->> [2] "XLP Processor Family Programming Reference Manual", NetLogic
->>      Microsystems, Revision Level 1.10, February, 2011, Document Number
->>      10724V110PM-CR (regrettably not publicly available)
->>
->> Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
->> ---
->> Ralf,
->>
->>   Please apply.  I've seen these SIGTRAPs in some NetLogic GDB testing and
->> the removal of this cpu_has_ic_fills_f_dc condition from copy_to_user_page
->> is really necessary; also the Au1200 document is very explicit about the
->> requirement of I-cache invalidation in software (see Section 2.3.7.3
->> "Instruction Cache Coherency").
->
-> You found a bug and yes, the fix you sent improves things a bit.  But
-> there is also the cache on a cache coherent system where a page might
-> be marked for a delayed cache flush with SetPageDcacheDirty(), then
-> flushed by flush_cache_page() before eventually the delayed cacheflush
-> flushes it once more for a good meassure.
->
-> What do you think about below patch to also deal with the duplicate flushing?
->
+On 14/03/11, Eric Paris wrote:
+> Every caller of syscall_get_arch() uses current for the task and no
+> implementors of the function need args.  So just get rid of both of
+> those things.  Admittedly, since these are inline functions we aren't
+> wasting stack space, but it just makes the prototypes better.
+> 
+> Signed-off-by: Eric Paris <eparis@redhat.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-mips@linux-mips.org
+> Cc: linux390@de.ibm.com
+> Cc: x86@kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-arch@vger.kernel.org
 
+Acked-by: Richard Guy Briggs <rgb@redhat.com>
 
-The problem only happens when modifying target executable code through 
-the ptrace() system call.
+> ---
+>  arch/arm/include/asm/syscall.h  | 3 +--
+>  arch/mips/include/asm/syscall.h | 2 +-
+>  arch/mips/kernel/ptrace.c       | 2 +-
+>  arch/s390/include/asm/syscall.h | 5 ++---
+>  arch/x86/include/asm/syscall.h  | 8 +++-----
+>  include/asm-generic/syscall.h   | 4 +---
+>  kernel/seccomp.c                | 4 ++--
+>  7 files changed, 11 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/arm/include/asm/syscall.h b/arch/arm/include/asm/syscall.h
+> index 73ddd72..ed805f1 100644
+> --- a/arch/arm/include/asm/syscall.h
+> +++ b/arch/arm/include/asm/syscall.h
+> @@ -103,8 +103,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
+>  	memcpy(&regs->ARM_r0 + i, args, n * sizeof(args[0]));
+>  }
+>  
+> -static inline int syscall_get_arch(struct task_struct *task,
+> -				   struct pt_regs *regs)
+> +static inline int syscall_get_arch(void)
+>  {
+>  	/* ARM tasks don't change audit architectures on the fly. */
+>  	return AUDIT_ARCH_ARM;
+> diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
+> index 81c8913..625e709 100644
+> --- a/arch/mips/include/asm/syscall.h
+> +++ b/arch/mips/include/asm/syscall.h
+> @@ -101,7 +101,7 @@ extern const unsigned long sys_call_table[];
+>  extern const unsigned long sys32_call_table[];
+>  extern const unsigned long sysn32_call_table[];
+>  
+> -static inline int __syscall_get_arch(void)
+> +static inline int syscall_get_arch(void)
+>  {
+>  	int arch = EM_MIPS;
+>  #ifdef CONFIG_64BIT
+> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+> index b52e1d2..65ba622 100644
+> --- a/arch/mips/kernel/ptrace.c
+> +++ b/arch/mips/kernel/ptrace.c
+> @@ -671,7 +671,7 @@ asmlinkage void syscall_trace_enter(struct pt_regs *regs)
+>  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+>  		trace_sys_enter(regs, regs->regs[2]);
+>  
+> -	audit_syscall_entry(__syscall_get_arch(),
+> +	audit_syscall_entry(syscall_get_arch(),
+>  			    regs->regs[2],
+>  			    regs->regs[4], regs->regs[5],
+>  			    regs->regs[6], regs->regs[7]);
+> diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
+> index cd29d2f..bebc0bd 100644
+> --- a/arch/s390/include/asm/syscall.h
+> +++ b/arch/s390/include/asm/syscall.h
+> @@ -89,11 +89,10 @@ static inline void syscall_set_arguments(struct task_struct *task,
+>  		regs->orig_gpr2 = args[0];
+>  }
+>  
+> -static inline int syscall_get_arch(struct task_struct *task,
+> -				   struct pt_regs *regs)
+> +static inline int syscall_get_arch(void)
+>  {
+>  #ifdef CONFIG_COMPAT
+> -	if (test_tsk_thread_flag(task, TIF_31BIT))
+> +	if (test_tsk_thread_flag(current, TIF_31BIT))
+>  		return AUDIT_ARCH_S390;
+>  #endif
+>  	return sizeof(long) == 8 ? AUDIT_ARCH_S390X : AUDIT_ARCH_S390;
+> diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
+> index aea284b..7e6d0c4 100644
+> --- a/arch/x86/include/asm/syscall.h
+> +++ b/arch/x86/include/asm/syscall.h
+> @@ -91,8 +91,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
+>  	memcpy(&regs->bx + i, args, n * sizeof(args[0]));
+>  }
+>  
+> -static inline int syscall_get_arch(struct task_struct *task,
+> -				   struct pt_regs *regs)
+> +static inline int syscall_get_arch(void)
+>  {
+>  	return AUDIT_ARCH_I386;
+>  }
+> @@ -221,8 +220,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
+>  		}
+>  }
+>  
+> -static inline int syscall_get_arch(struct task_struct *task,
+> -				   struct pt_regs *regs)
+> +static inline int syscall_get_arch(void)
+>  {
+>  #ifdef CONFIG_IA32_EMULATION
+>  	/*
+> @@ -234,7 +232,7 @@ static inline int syscall_get_arch(struct task_struct *task,
+>  	 *
+>  	 * x32 tasks should be considered AUDIT_ARCH_X86_64.
+>  	 */
+> -	if (task_thread_info(task)->status & TS_COMPAT)
+> +	if (task_thread_info(current)->status & TS_COMPAT)
+>  		return AUDIT_ARCH_I386;
+>  #endif
+>  	/* Both x32 and x86_64 are considered "64-bit". */
+> diff --git a/include/asm-generic/syscall.h b/include/asm-generic/syscall.h
+> index 5b09392..d401e54 100644
+> --- a/include/asm-generic/syscall.h
+> +++ b/include/asm-generic/syscall.h
+> @@ -144,8 +144,6 @@ void syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+>  
+>  /**
+>   * syscall_get_arch - return the AUDIT_ARCH for the current system call
+> - * @task:	task of interest, must be in system call entry tracing
+> - * @regs:	task_pt_regs() of @task
+>   *
+>   * Returns the AUDIT_ARCH_* based on the system call convention in use.
+>   *
+> @@ -155,5 +153,5 @@ void syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+>   * Architectures which permit CONFIG_HAVE_ARCH_SECCOMP_FILTER must
+>   * provide an implementation of this.
+>   */
+> -int syscall_get_arch(struct task_struct *task, struct pt_regs *regs);
+> +int syscall_get_arch(void);
+>  #endif	/* _ASM_SYSCALL_H */
+> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+> index b7a1004..eda2da3 100644
+> --- a/kernel/seccomp.c
+> +++ b/kernel/seccomp.c
+> @@ -95,7 +95,7 @@ u32 seccomp_bpf_load(int off)
+>  	if (off == BPF_DATA(nr))
+>  		return syscall_get_nr(current, regs);
+>  	if (off == BPF_DATA(arch))
+> -		return syscall_get_arch(current, regs);
+> +		return syscall_get_arch();
+>  	if (off >= BPF_DATA(args[0]) && off < BPF_DATA(args[6])) {
+>  		unsigned long value;
+>  		int arg = (off - BPF_DATA(args[0])) / sizeof(u64);
+> @@ -351,7 +351,7 @@ static void seccomp_send_sigsys(int syscall, int reason)
+>  	info.si_code = SYS_SECCOMP;
+>  	info.si_call_addr = (void __user *)KSTK_EIP(current);
+>  	info.si_errno = reason;
+> -	info.si_arch = syscall_get_arch(current, task_pt_regs(current));
+> +	info.si_arch = syscall_get_arch();
+>  	info.si_syscall = syscall;
+>  	force_sig_info(SIGSYS, &info, current);
+>  }
+> -- 
+> 1.8.5.3
+> 
+> --
+> Linux-audit mailing list
+> Linux-audit@redhat.com
+> https://www.redhat.com/mailman/listinfo/linux-audit
 
-For all cases where a program is modifying its own executable memory, we 
-require that it make the special mips cacheflush system call.
+- RGB
 
-I don't object to modifying this file, but I wonder if the call to the 
-flushing function should be pushed up into the ptrace() code.
-
-David Daney
-
-
->    Ralf
->
->   arch/mips/mm/init.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-> index 6b59617..80072ef 100644
-> --- a/arch/mips/mm/init.c
-> +++ b/arch/mips/mm/init.c
-> @@ -227,13 +227,13 @@ void copy_to_user_page(struct vm_area_struct *vma,
->   		void *vto = kmap_coherent(page, vaddr) + (vaddr & ~PAGE_MASK);
->   		memcpy(vto, src, len);
->   		kunmap_coherent();
-> +		if (vma->vm_flags & VM_EXEC)
-> +			flush_cache_page(vma, vaddr, page_to_pfn(page));
->   	} else {
->   		memcpy(dst, src, len);
->   		if (cpu_has_dc_aliases)
->   			SetPageDcacheDirty(page);
->   	}
-> -	if ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc)
-> -		flush_cache_page(vma, vaddr, page_to_pfn(page));
->   }
->
->   void copy_from_user_page(struct vm_area_struct *vma,
->
->
+--
+Richard Guy Briggs <rbriggs@redhat.com>
+Senior Software Engineer, Kernel Security, AMER ENG Base Operating Systems, Red Hat
+Remote, Ottawa, Canada
+Voice: +1.647.777.2635, Internal: (81) 32635, Alt: +1.613.693.0684x3545

@@ -1,34 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2014 22:47:14 +0100 (CET)
-Received: from snt0-omc3-s42.snt0.hotmail.com ([65.54.51.79]:19941 "EHLO
-        snt0-omc3-s42.snt0.hotmail.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816383AbaCVVrMgE1P0 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 22 Mar 2014 22:47:12 +0100
-Received: from SNT145-W98 ([65.55.90.135]) by snt0-omc3-s42.snt0.hotmail.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Sat, 22 Mar 2014 14:47:06 -0700
-X-TMN:  [XXg/WSBJU+CNLw4mULoiK/xH9VLgw5fY]
-X-Originating-Email: [nickkrause@sympatico.ca]
-Message-ID: <SNT145-W982FA6E38A0213DE61456DA5780@phx.gbl>
-From:   Nick Krause <nickkrause@sympatico.ca>
-To:     "ralf@linux-mips.org" <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: PATCH[60485 Bug adding breakpoint]
-Date:   Sat, 22 Mar 2014 21:47:06 +0000
-Importance: Normal
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2014 23:41:59 +0100 (CET)
+Received: from mail-lb0-f181.google.com ([209.85.217.181]:47015 "EHLO
+        mail-lb0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816877AbaCVWlvyr1Qw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Mar 2014 23:41:51 +0100
+Received: by mail-lb0-f181.google.com with SMTP id c11so2670370lbj.12
+        for <linux-mips@linux-mips.org>; Sat, 22 Mar 2014 15:41:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=jfqS3HrlVWnHU2IDtsY0UKMW7ylYrRZSoElKBTjIK00=;
+        b=Zvbp+wEmXqI2FXeglvF95RgsozxaMaOgp5gVeMI2GSFdoyyV6bA1z3nuPO6Hkc5zKk
+         NqneO0p5H7NgYAkigxuszbCr+yfGkEyuCPJunthdD+CUk8QD/2gM8rVDthOWTLx9xYX1
+         fbf/kQlhgxUMRa2I1iIizv+nqOhs+ygpNgZhjHFkr7z97ktcsqDr15VhHp9TwgFsrs+2
+         MWoqxkU+q3SyAMtVbTGCgFjaXiopujwnU6cHR5h84dQ+R/lMtGtvBzcAUCNFUYyFmz6h
+         cpeqVIE2cfOsZU7x/MUW5sLH0rjJLeDkyL9dfLa9S2IG+o1n/dnor2yjcZylSlW0oFZu
+         txsQ==
+X-Gm-Message-State: ALoCoQkDWV1DbqEDHKxpjrCjXVS0iETowNs6M8BnV24ExobjNNCdfOdzU+M2qBVHsFfHAKcDjp/w
+X-Received: by 10.112.160.200 with SMTP id xm8mr37220014lbb.24.1395528106281;
+        Sat, 22 Mar 2014 15:41:46 -0700 (PDT)
+Received: from wasted.cogentembedded.com (ppp83-237-60-105.pppoe.mtu-net.ru. [83.237.60.105])
+        by mx.google.com with ESMTPSA id u4sm8835261laj.2.2014.03.22.15.41.45
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sat, 22 Mar 2014 15:41:45 -0700 (PDT)
+Message-ID: <532E1FB1.9000606@cogentembedded.com>
+Date:   Sun, 23 Mar 2014 02:41:37 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
 MIME-Version: 1.0
-X-OriginalArrivalTime: 22 Mar 2014 21:47:06.0269 (UTC) FILETIME=[44B1B4D0:01CF4618]
-Return-Path: <nickkrause@sympatico.ca>
+To:     Kees Cook <keescook@chromium.org>
+CC:     Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Sanjay Lal <sanjayl@kymasys.com>,
+        John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mips: export icache_flush_range
+References: <20140322154720.GA23863@www.outflux.net>    <532E0486.3010702@cogentembedded.com>   <532E053C.90007@cogentembedded.com>     <532E0699.2080303@cogentembedded.com> <CAGXu5jLUueSb2u_Ki+nEL1CaBzyZyT1+7rhCB-0ZGB0nD5cT4g@mail.gmail.com>
+In-Reply-To: <CAGXu5jLUueSb2u_Ki+nEL1CaBzyZyT1+7rhCB-0ZGB0nD5cT4g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39553
+X-archive-position: 39555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nickkrause@sympatico.ca
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,110 +63,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Here is my new patch as corrected for the the bug 60845.
-https://bugzilla.kernel.org/show_bug.cgi?id=60845
-This is the link to the bug and my comments / conversation on to get the corrections needed.
-Below is my patch for the bug, please let me know if it gets added finally .
+On 03/23/2014 12:05 AM, Kees Cook wrote:
 
---- linux-3.13.6/arch/mips/pci/msi-octeon.c.orig    2014-03-22 17:32:44.762754254 -0400
-+++ linux-3.13.6/arch/mips/pci/msi-octeon.c    2014-03-22 17:34:19.974753699 -0400
-@@ -150,6 +150,7 @@ msi_irq_allocated:
-         msg.address_lo =
-             ((128ul << 20) + CVMX_PCI_MSI_RCV) & 0xffffffff;
-         msg.address_hi = ((128ul << 20) + CVMX_PCI_MSI_RCV)>> 32;
-+        break;
-     case OCTEON_DMA_BAR_TYPE_BIG:
-         /* When using big bar, Bar 0 is based at 0 */
-         msg.address_lo = (0 + CVMX_PCI_MSI_RCV) & 0xffffffff;
-Signed-off-by: nickkrause@sympatico.ca
-Nick
- 		 	   		  
-From macro@linux-mips.org Sat Mar 22 23:21:05 2014
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2014 23:21:07 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:50931 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816015AbaCVWVFDKnWt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Mar 2014 23:21:05 +0100
-Date:   Sat, 22 Mar 2014 22:21:04 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Add 1074K CPU support explicitly.
-In-Reply-To: <1389992630-64139-1-git-send-email-Steven.Hill@imgtec.com>
-Message-ID: <alpine.LFD.2.10.1403222210230.21669@eddie.linux-mips.org>
-References: <1389992630-64139-1-git-send-email-Steven.Hill@imgtec.com>
-User-Agent: Alpine 2.10 (LFD 1266 2009-07-14)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39554
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
-Content-Length: 1451
-Lines: 49
+>>>>> The lkdtm module performs tests against executable memory ranges, so
+>>>>> it needs to flush the icache for proper behaviors. Other architectures
+>>>>> already export this, so do the same for MIPS.
 
-On Fri, 17 Jan 2014, Steven J. Hill wrote:
+>>>>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>>>>> ---
+>>>>> This is currently untested! I'm building a MIPS cross-compiler now...
+>>>>> If someone can validate this fixes the build when lkdtm is a module,
+>>>>> that would be appreciated. :)
+>>>>> ---
+>>>>>    arch/mips/mm/cache.c |    1 +
+>>>>>    1 file changed, 1 insertion(+)
 
-> From: "Steven J. Hill" <Steven.Hill@imgtec.com>
-> 
-> The 1074K is a multiprocessing coherent processing system (CPS) based
-> on modified 74K cores. This patch makes the 1074K an actual unique
-> CPU type, instead of a 74K derivative, which it is not.
-> 
-> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-> Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> ---
-[...]
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 13b549a..7184363 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -1106,9 +1106,10 @@ static void probe_pcache(void)
->  	case CPU_34K:
->  	case CPU_74K:
->  	case CPU_1004K:
-> +	case CPU_1074K:
->  	case CPU_INTERAPTIV:
->  	case CPU_PROAPTIV:
-> -		if (current_cpu_type() == CPU_74K)
-> +		if ((c->cputype == CPU_74K) || (c->cputype == CPU_1074K))
->  			alias_74k_erratum(c);
->  		if ((read_c0_config7() & (1 << 16))) {
->  			/* effectively physically indexed dcache,
+>>>>> diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+>>>>> index fde7e56d13fe..b3f1df13d9f6 100644
+>>>>> --- a/arch/mips/mm/cache.c
+>>>>> +++ b/arch/mips/mm/cache.c
+>>>>> @@ -38,6 +38,7 @@ void (*__flush_kernel_vmap_range)(unsigned long vaddr,
+>>>>> int
+>>>>> size);
+>>>>>    void (*__invalidate_kernel_vmap_range)(unsigned long vaddr, int size);
+>>>>>
+>>>>>    EXPORT_SYMBOL_GPL(__flush_kernel_vmap_range);
+>>>>> +EXPORT_SYMBOL_GPL(flush_icache_range);
 
- Hmm, wouldn't it make sense to avoid the repeated condition check and 
-make it:
+>>>>      Have you run this thru scripts/checkpatch.pl? It would have told you
+>>>> that
+>>>> an export should immediately follow the corresponding function body,
+>>>> AFAIK.
 
-	case CPU_74K:
-	case CPU_1074K:
-		alias_74k_erratum(c);
-		/* Fall through. */
-	case CPU_M14KC:
-	case CPU_M14KEC:
-	case CPU_24K:
-	case CPU_34K:
- 	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- 		if ((read_c0_config7() & (1 << 16))) {
- 			/* effectively physically indexed dcache,
-	
-or suchlike instead?  Also why `c->cputype == CPU_74K' rather than 
-`current_cpu_type() == CPU_74K'?
+>>>      Hm, it doesn't now but definitely used to...
 
-  Maciej
+>>     Decided to check Documentation/CodingStyle, and it still codifies this:
+
+>> In source files, separate functions with one blank line.  If the function is
+>> exported, the EXPORT* macro for it should follow immediately after the
+>> closing
+>> function brace line.  E.g.:
+
+>> int system_is_up(void)
+>> {
+>>          return system_state == SYSTEM_RUNNING;
+>> }
+>> EXPORT_SYMBOL(system_is_up);
+
+> Yup, thanks. I know the style, but it seemed from the source file that
+> the style was to declare the function pointers in bulk, and then
+> explicitly export them in the next section, so I continued that style.
+> For example:
+
+> void (*flush_cache_sigtramp)(unsigned long addr);
+> void (*local_flush_data_cache_page)(void * addr);
+> void (*flush_data_cache_page)(unsigned long addr);
+> void (*flush_icache_all)(void);
+
+> EXPORT_SYMBOL_GPL(local_flush_data_cache_page);
+> EXPORT_SYMBOL(flush_data_cache_page);
+> EXPORT_SYMBOL(flush_icache_all);
+
+> Regardless, I'm happy to stick it in the middle of the function
+> pointers if that's preferred.
+
+    Ah, that's a variable! I didn't realize that. Looking into checkpatch.pl, 
+it should warn about variables as well though... but it doesn't.
+
+> -Kees
+
+WBR, Sergei

@@ -1,48 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2014 10:22:48 +0100 (CET)
-Received: from mail-pb0-f45.google.com ([209.85.160.45]:48340 "EHLO
-        mail-pb0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816015AbaCVJWomr-qp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Mar 2014 10:22:44 +0100
-Received: by mail-pb0-f45.google.com with SMTP id uo5so3417156pbc.32
-        for <multiple recipients>; Sat, 22 Mar 2014 02:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=/OY0Rk+oGH9Q6QVcxl1PA6TXMAiI6jiwRaoTz5XDlIk=;
-        b=TDJuxV5xKcrIJYVMBjIjqZIz87OgAlBj9ubGbpqx0V/TcYeoMbMLxM5CahTW66IqBx
-         /70yTI/dM60ATGXD+qf9CqN9Wy4+xBkyh+ABLvUExd/T8S63hNGfKHIRtds9af6NFkCB
-         hF4W/fLRiWChsvlTt4HOr2oRc4uD+ECrOGkKqMp70PDos7YTelIMlzITGFK4yyBMrHBg
-         Q/jUg27mnaarTyPpYdJ9TgjeB2+Q7/1BbVZp53WA28sgDzBbRJlZ/JtRxiPvDEiK0pZ2
-         48qH/DVU9CLJJq1VcvpGd6tsE+2Vk7h6na9KzjtxeaBCcS3WzprM4BHWU+7srRcfmJNV
-         xILQ==
-X-Received: by 10.68.36.41 with SMTP id n9mr57700405pbj.99.1395480157659;
-        Sat, 22 Mar 2014 02:22:37 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id rk15sm39233449pab.37.2014.03.22.02.22.06
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sat, 22 Mar 2014 02:22:37 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Hibernate: flush TLB entries in swsusp_arch_resume()
-Date:   Sat, 22 Mar 2014 17:21:44 +0800
-Message-Id: <1395480105-24622-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-Return-Path: <chenhuacai@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2014 16:47:40 +0100 (CET)
+Received: from smtp.outflux.net ([198.145.64.163]:55659 "EHLO smtp.outflux.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816503AbaCVPrh4mAY8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 22 Mar 2014 16:47:37 +0100
+Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with ESMTP id s2MFlLZK025965;
+        Sat, 22 Mar 2014 08:47:21 -0700
+Date:   Sat, 22 Mar 2014 08:47:20 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Sanjay Lal <sanjayl@kymasys.com>,
+        John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] mips: export icache_flush_range
+Message-ID: <20140322154720.GA23863@www.outflux.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-MIMEDefang-Filter: outflux$Revision: 1.316 $
+X-HELO: www.outflux.net
+X-Scanned-By: MIMEDefang 2.71 on 10.2.0.1
+Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39545
+X-archive-position: 39546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,34 +42,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The original MIPS hibernate code flushes cache and TLB entries in
-swsusp_arch_resume(). But they are removed in Commit 44eeab67416711
-(MIPS: Hibernation: Remove SMP TLB and cacheflushing code.). A cross-
-CPU flush is surely unnecessary because all but the local CPU have
-already been disabled. But a local flush (at least the TLB flush) is
-needed. When we do hibernation on Loongson-3 with an E1000E NIC, it is
-very easy to produce a kernel panic (kernel page fault, or unaligned
-access). The root cause is E1000E driver use vzalloc_node() to allocate
-pages, the stale TLB entries of the booting kernel will be misused by
-the resumed target kernel.
+The lkdtm module performs tests against executable memory ranges, so
+it needs to flush the icache for proper behaviors. Other architectures
+already export this, so do the same for MIPS.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: <stable@vger.kernel.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/mips/power/hibernate.S |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+This is currently untested! I'm building a MIPS cross-compiler now...
+If someone can validate this fixes the build when lkdtm is a module,
+that would be appreciated. :)
+---
+ arch/mips/mm/cache.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-index 7e0277a..32a7c82 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -43,6 +43,7 @@ LEAF(swsusp_arch_resume)
- 	bne t1, t3, 1b
- 	PTR_L t0, PBE_NEXT(t0)
- 	bnez t0, 0b
-+	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
- 	PTR_LA t0, saved_regs
- 	PTR_L ra, PT_R31(t0)
- 	PTR_L sp, PT_R29(t0)
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index fde7e56d13fe..b3f1df13d9f6 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -38,6 +38,7 @@ void (*__flush_kernel_vmap_range)(unsigned long vaddr, int size);
+ void (*__invalidate_kernel_vmap_range)(unsigned long vaddr, int size);
+ 
+ EXPORT_SYMBOL_GPL(__flush_kernel_vmap_range);
++EXPORT_SYMBOL_GPL(flush_icache_range);
+ 
+ /* MIPS specific cache operations */
+ void (*flush_cache_sigtramp)(unsigned long addr);
 -- 
-1.7.7.3
+1.7.9.5
+
+
+-- 
+Kees Cook
+Chrome OS Security

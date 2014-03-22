@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2014 20:18:26 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:35085 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6853518AbaCUTSWmNYXS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Mar 2014 20:18:22 +0100
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s2LJIEvU030966
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 21 Mar 2014 15:18:14 -0400
-Received: from madcap2.tricolour.ca (vpn-59-180.rdu2.redhat.com [10.10.59.180])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s2LJI9TD015853
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Fri, 21 Mar 2014 15:18:11 -0400
-Date:   Fri, 21 Mar 2014 15:18:08 -0400
-From:   Richard Guy Briggs <rgb@redhat.com>
-To:     Eric Paris <eparis@redhat.com>
-Cc:     linux-audit@redhat.com, linux-mips@linux-mips.org, x86@kernel.org,
-        linux-ia64@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, microblaze-uclinux@itee.uq.edu.au,
-        linux@openrisc.net, linux-sh@vger.kernel.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 4/4] ARCH: AUDIT: audit_syscall_entry() should not
- require the arch
-Message-ID: <20140321191808.GF16467@madcap2.tricolour.ca>
-References: <1395266643-3139-1-git-send-email-eparis@redhat.com>
- <1395266643-3139-4-git-send-email-eparis@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1395266643-3139-4-git-send-email-eparis@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-Return-Path: <rgb@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2014 10:22:48 +0100 (CET)
+Received: from mail-pb0-f45.google.com ([209.85.160.45]:48340 "EHLO
+        mail-pb0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816015AbaCVJWomr-qp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Mar 2014 10:22:44 +0100
+Received: by mail-pb0-f45.google.com with SMTP id uo5so3417156pbc.32
+        for <multiple recipients>; Sat, 22 Mar 2014 02:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=/OY0Rk+oGH9Q6QVcxl1PA6TXMAiI6jiwRaoTz5XDlIk=;
+        b=TDJuxV5xKcrIJYVMBjIjqZIz87OgAlBj9ubGbpqx0V/TcYeoMbMLxM5CahTW66IqBx
+         /70yTI/dM60ATGXD+qf9CqN9Wy4+xBkyh+ABLvUExd/T8S63hNGfKHIRtds9af6NFkCB
+         hF4W/fLRiWChsvlTt4HOr2oRc4uD+ECrOGkKqMp70PDos7YTelIMlzITGFK4yyBMrHBg
+         Q/jUg27mnaarTyPpYdJ9TgjeB2+Q7/1BbVZp53WA28sgDzBbRJlZ/JtRxiPvDEiK0pZ2
+         48qH/DVU9CLJJq1VcvpGd6tsE+2Vk7h6na9KzjtxeaBCcS3WzprM4BHWU+7srRcfmJNV
+         xILQ==
+X-Received: by 10.68.36.41 with SMTP id n9mr57700405pbj.99.1395480157659;
+        Sat, 22 Mar 2014 02:22:37 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPSA id rk15sm39233449pab.37.2014.03.22.02.22.06
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Sat, 22 Mar 2014 02:22:37 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: Hibernate: flush TLB entries in swsusp_arch_resume()
+Date:   Sat, 22 Mar 2014 17:21:44 +0800
+Message-Id: <1395480105-24622-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39544
+X-archive-position: 39545
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rgb@redhat.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,398 +55,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14/03/19, Eric Paris wrote:
-> We have a function where the arch can be queried, syscall_get_arch().
-> So rather than have every single piece of arch specific code use and/or
-> duplicate syscall_get_arch(), just have the audit code use the
-> syscall_get_arch() code.
-> 
-> Signed-off-by: Eric Paris <eparis@redhat.com>
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: microblaze-uclinux@itee.uq.edu.au
-> Cc: linux-mips@linux-mips.org
-> Cc: linux@lists.openrisc.net
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: user-mode-linux-devel@lists.sourceforge.net
-> Cc: linux-xtensa@linux-xtensa.org
-> Cc: x86@kernel.org
+The original MIPS hibernate code flushes cache and TLB entries in
+swsusp_arch_resume(). But they are removed in Commit 44eeab67416711
+(MIPS: Hibernation: Remove SMP TLB and cacheflushing code.). A cross-
+CPU flush is surely unnecessary because all but the local CPU have
+already been disabled. But a local flush (at least the TLB flush) is
+needed. When we do hibernation on Loongson-3 with an E1000E NIC, it is
+very easy to produce a kernel panic (kernel page fault, or unaligned
+access). The root cause is E1000E driver use vzalloc_node() to allocate
+pages, the stale TLB entries of the booting kernel will be misused by
+the resumed target kernel.
 
-Acked-by: Richard Guy Briggs <rgb@redhat.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: <stable@vger.kernel.org>
+---
+ arch/mips/power/hibernate.S |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-> ---
->  arch/alpha/kernel/ptrace.c      |  2 +-
->  arch/arm/kernel/ptrace.c        |  4 ++--
->  arch/ia64/kernel/ptrace.c       |  2 +-
->  arch/microblaze/kernel/ptrace.c |  3 +--
->  arch/mips/kernel/ptrace.c       |  4 +---
->  arch/openrisc/kernel/ptrace.c   |  3 +--
->  arch/parisc/kernel/ptrace.c     |  9 +++------
->  arch/powerpc/kernel/ptrace.c    |  7 ++-----
->  arch/s390/kernel/ptrace.c       |  4 +---
->  arch/sh/kernel/ptrace_32.c      | 14 +-------------
->  arch/sh/kernel/ptrace_64.c      | 17 +----------------
->  arch/sparc/kernel/ptrace_64.c   |  9 ++-------
->  arch/um/kernel/ptrace.c         |  3 +--
->  arch/x86/kernel/ptrace.c        |  8 ++------
->  arch/x86/um/asm/ptrace.h        |  4 ----
->  arch/xtensa/kernel/ptrace.c     |  2 +-
->  include/linux/audit.h           |  7 ++++---
->  17 files changed, 25 insertions(+), 77 deletions(-)
-> 
-> diff --git a/arch/alpha/kernel/ptrace.c b/arch/alpha/kernel/ptrace.c
-> index 86d8351..d9ee817 100644
-> --- a/arch/alpha/kernel/ptrace.c
-> +++ b/arch/alpha/kernel/ptrace.c
-> @@ -321,7 +321,7 @@ asmlinkage unsigned long syscall_trace_enter(void)
->  	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
->  	    tracehook_report_syscall_entry(current_pt_regs()))
->  		ret = -1UL;
-> -	audit_syscall_entry(AUDIT_ARCH_ALPHA, regs->r0, regs->r16, regs->r17, regs->r18, regs->r19);
-> +	audit_syscall_entry(regs->r0, regs->r16, regs->r17, regs->r18, regs->r19);
->  	return ret ?: current_pt_regs()->r0;
->  }
->  
-> diff --git a/arch/arm/kernel/ptrace.c b/arch/arm/kernel/ptrace.c
-> index 0dd3b79..c9d2b34 100644
-> --- a/arch/arm/kernel/ptrace.c
-> +++ b/arch/arm/kernel/ptrace.c
-> @@ -943,8 +943,8 @@ asmlinkage int syscall_trace_enter(struct pt_regs *regs, int scno)
->  	if (test_thread_flag(TIF_SYSCALL_TRACEPOINT))
->  		trace_sys_enter(regs, scno);
->  
-> -	audit_syscall_entry(AUDIT_ARCH_ARM, scno, regs->ARM_r0, regs->ARM_r1,
-> -			    regs->ARM_r2, regs->ARM_r3);
-> +	audit_syscall_entry(scno, regs->ARM_r0, regs->ARM_r1, regs->ARM_r2,
-> +			    regs->ARM_r3);
->  
->  	return scno;
->  }
-> diff --git a/arch/ia64/kernel/ptrace.c b/arch/ia64/kernel/ptrace.c
-> index b7a5fff..6f54d51 100644
-> --- a/arch/ia64/kernel/ptrace.c
-> +++ b/arch/ia64/kernel/ptrace.c
-> @@ -1219,7 +1219,7 @@ syscall_trace_enter (long arg0, long arg1, long arg2, long arg3,
->  		ia64_sync_krbs();
->  
->  
-> -	audit_syscall_entry(AUDIT_ARCH_IA64, regs.r15, arg0, arg1, arg2, arg3);
-> +	audit_syscall_entry(regs.r15, arg0, arg1, arg2, arg3);
->  
->  	return 0;
->  }
-> diff --git a/arch/microblaze/kernel/ptrace.c b/arch/microblaze/kernel/ptrace.c
-> index 39cf508..bb10637 100644
-> --- a/arch/microblaze/kernel/ptrace.c
-> +++ b/arch/microblaze/kernel/ptrace.c
-> @@ -147,8 +147,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
->  		 */
->  		ret = -1L;
->  
-> -	audit_syscall_entry(EM_MICROBLAZE, regs->r12, regs->r5, regs->r6,
-> -			    regs->r7, regs->r8);
-> +	audit_syscall_entry(regs->r12, regs->r5, regs->r6, regs->r7, regs->r8);
->  
->  	return ret ?: regs->r12;
->  }
-> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-> index 65ba622..c06bb82 100644
-> --- a/arch/mips/kernel/ptrace.c
-> +++ b/arch/mips/kernel/ptrace.c
-> @@ -671,9 +671,7 @@ asmlinkage void syscall_trace_enter(struct pt_regs *regs)
->  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
->  		trace_sys_enter(regs, regs->regs[2]);
->  
-> -	audit_syscall_entry(syscall_get_arch(),
-> -			    regs->regs[2],
-> -			    regs->regs[4], regs->regs[5],
-> +	audit_syscall_entry(regs->regs[2], regs->regs[4], regs->regs[5],
->  			    regs->regs[6], regs->regs[7]);
->  }
->  
-> diff --git a/arch/openrisc/kernel/ptrace.c b/arch/openrisc/kernel/ptrace.c
-> index 71a2a0c..4f59fa4 100644
-> --- a/arch/openrisc/kernel/ptrace.c
-> +++ b/arch/openrisc/kernel/ptrace.c
-> @@ -187,8 +187,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
->  		 */
->  		ret = -1L;
->  
-> -	audit_syscall_entry(AUDIT_ARCH_OPENRISC, regs->gpr[11],
-> -			    regs->gpr[3], regs->gpr[4],
-> +	audit_syscall_entry(regs->gpr[11], regs->gpr[3], regs->gpr[4],
->  			    regs->gpr[5], regs->gpr[6]);
->  
->  	return ret ? : regs->gpr[11];
-> diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
-> index e842ee2..7481457 100644
-> --- a/arch/parisc/kernel/ptrace.c
-> +++ b/arch/parisc/kernel/ptrace.c
-> @@ -276,14 +276,11 @@ long do_syscall_trace_enter(struct pt_regs *regs)
->  
->  #ifdef CONFIG_64BIT
->  	if (!is_compat_task())
-> -		audit_syscall_entry(AUDIT_ARCH_PARISC64,
-> -			regs->gr[20],
-> -			regs->gr[26], regs->gr[25],
-> -			regs->gr[24], regs->gr[23]);
-> +		audit_syscall_entry(regs->gr[20], regs->gr[26], regs->gr[25],
-> +				    regs->gr[24], regs->gr[23]);
->  	else
->  #endif
-> -		audit_syscall_entry(AUDIT_ARCH_PARISC,
-> -			regs->gr[20] & 0xffffffff,
-> +		audit_syscall_entry(regs->gr[20] & 0xffffffff,
->  			regs->gr[26] & 0xffffffff,
->  			regs->gr[25] & 0xffffffff,
->  			regs->gr[24] & 0xffffffff,
-> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
-> index 2e3d2bf..524a943 100644
-> --- a/arch/powerpc/kernel/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace.c
-> @@ -1788,14 +1788,11 @@ long do_syscall_trace_enter(struct pt_regs *regs)
->  
->  #ifdef CONFIG_PPC64
->  	if (!is_32bit_task())
-> -		audit_syscall_entry(AUDIT_ARCH_PPC64,
-> -				    regs->gpr[0],
-> -				    regs->gpr[3], regs->gpr[4],
-> +		audit_syscall_entry(regs->gpr[0], regs->gpr[3], regs->gpr[4],
->  				    regs->gpr[5], regs->gpr[6]);
->  	else
->  #endif
-> -		audit_syscall_entry(AUDIT_ARCH_PPC,
-> -				    regs->gpr[0],
-> +		audit_syscall_entry(regs->gpr[0],
->  				    regs->gpr[3] & 0xffffffff,
->  				    regs->gpr[4] & 0xffffffff,
->  				    regs->gpr[5] & 0xffffffff,
-> diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-> index e65c91c..2e2e7bb5 100644
-> --- a/arch/s390/kernel/ptrace.c
-> +++ b/arch/s390/kernel/ptrace.c
-> @@ -812,9 +812,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
->  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
->  		trace_sys_enter(regs, regs->gprs[2]);
->  
-> -	audit_syscall_entry(is_compat_task() ?
-> -				AUDIT_ARCH_S390 : AUDIT_ARCH_S390X,
-> -			    regs->gprs[2], regs->orig_gpr2,
-> +	audit_syscall_entry(regs->gprs[2], regs->orig_gpr2,
->  			    regs->gprs[3], regs->gprs[4],
->  			    regs->gprs[5]);
->  out:
-> diff --git a/arch/sh/kernel/ptrace_32.c b/arch/sh/kernel/ptrace_32.c
-> index 668c816..c1a6b89 100644
-> --- a/arch/sh/kernel/ptrace_32.c
-> +++ b/arch/sh/kernel/ptrace_32.c
-> @@ -484,17 +484,6 @@ long arch_ptrace(struct task_struct *child, long request,
->  	return ret;
->  }
->  
-> -static inline int audit_arch(void)
-> -{
-> -	int arch = EM_SH;
-> -
-> -#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> -	arch |= __AUDIT_ARCH_LE;
-> -#endif
-> -
-> -	return arch;
-> -}
-> -
->  asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
->  {
->  	long ret = 0;
-> @@ -513,8 +502,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
->  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
->  		trace_sys_enter(regs, regs->regs[0]);
->  
-> -	audit_syscall_entry(audit_arch(), regs->regs[3],
-> -			    regs->regs[4], regs->regs[5],
-> +	audit_syscall_entry(regs->regs[3], regs->regs[4], regs->regs[5],
->  			    regs->regs[6], regs->regs[7]);
->  
->  	return ret ?: regs->regs[0];
-> diff --git a/arch/sh/kernel/ptrace_64.c b/arch/sh/kernel/ptrace_64.c
-> index af90339..5cea973 100644
-> --- a/arch/sh/kernel/ptrace_64.c
-> +++ b/arch/sh/kernel/ptrace_64.c
-> @@ -504,20 +504,6 @@ asmlinkage int sh64_ptrace(long request, long pid,
->  	return sys_ptrace(request, pid, addr, data);
->  }
->  
-> -static inline int audit_arch(void)
-> -{
-> -	int arch = EM_SH;
-> -
-> -#ifdef CONFIG_64BIT
-> -	arch |= __AUDIT_ARCH_64BIT;
-> -#endif
-> -#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> -	arch |= __AUDIT_ARCH_LE;
-> -#endif
-> -
-> -	return arch;
-> -}
-> -
->  asmlinkage long long do_syscall_trace_enter(struct pt_regs *regs)
->  {
->  	long long ret = 0;
-> @@ -536,8 +522,7 @@ asmlinkage long long do_syscall_trace_enter(struct pt_regs *regs)
->  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
->  		trace_sys_enter(regs, regs->regs[9]);
->  
-> -	audit_syscall_entry(audit_arch(), regs->regs[1],
-> -			    regs->regs[2], regs->regs[3],
-> +	audit_syscall_entry(regs->regs[1], regs->regs[2], regs->regs[3],
->  			    regs->regs[4], regs->regs[5]);
->  
->  	return ret ?: regs->regs[9];
-> diff --git a/arch/sparc/kernel/ptrace_64.c b/arch/sparc/kernel/ptrace_64.c
-> index c13c9f2..9ddc492 100644
-> --- a/arch/sparc/kernel/ptrace_64.c
-> +++ b/arch/sparc/kernel/ptrace_64.c
-> @@ -1076,13 +1076,8 @@ asmlinkage int syscall_trace_enter(struct pt_regs *regs)
->  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
->  		trace_sys_enter(regs, regs->u_regs[UREG_G1]);
->  
-> -	audit_syscall_entry((test_thread_flag(TIF_32BIT) ?
-> -			     AUDIT_ARCH_SPARC :
-> -			     AUDIT_ARCH_SPARC64),
-> -			    regs->u_regs[UREG_G1],
-> -			    regs->u_regs[UREG_I0],
-> -			    regs->u_regs[UREG_I1],
-> -			    regs->u_regs[UREG_I2],
-> +	audit_syscall_entry(regs->u_regs[UREG_G1], regs->u_regs[UREG_I0],
-> +			    regs->u_regs[UREG_I1], regs->u_regs[UREG_I2],
->  			    regs->u_regs[UREG_I3]);
->  
->  	return ret;
-> diff --git a/arch/um/kernel/ptrace.c b/arch/um/kernel/ptrace.c
-> index 694d551..62435ef 100644
-> --- a/arch/um/kernel/ptrace.c
-> +++ b/arch/um/kernel/ptrace.c
-> @@ -165,8 +165,7 @@ static void send_sigtrap(struct task_struct *tsk, struct uml_pt_regs *regs,
->   */
->  void syscall_trace_enter(struct pt_regs *regs)
->  {
-> -	audit_syscall_entry(HOST_AUDIT_ARCH,
-> -			    UPT_SYSCALL_NR(&regs->regs),
-> +	audit_syscall_entry(UPT_SYSCALL_NR(&regs->regs),
->  			    UPT_SYSCALL_ARG1(&regs->regs),
->  			    UPT_SYSCALL_ARG2(&regs->regs),
->  			    UPT_SYSCALL_ARG3(&regs->regs),
-> diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
-> index 7461f50..46dfba6 100644
-> --- a/arch/x86/kernel/ptrace.c
-> +++ b/arch/x86/kernel/ptrace.c
-> @@ -1488,15 +1488,11 @@ long syscall_trace_enter(struct pt_regs *regs)
->  		trace_sys_enter(regs, regs->orig_ax);
->  
->  	if (IS_IA32)
-> -		audit_syscall_entry(AUDIT_ARCH_I386,
-> -				    regs->orig_ax,
-> -				    regs->bx, regs->cx,
-> +		audit_syscall_entry(regs->orig_ax, regs->bx, regs->cx,
->  				    regs->dx, regs->si);
->  #ifdef CONFIG_X86_64
->  	else
-> -		audit_syscall_entry(AUDIT_ARCH_X86_64,
-> -				    regs->orig_ax,
-> -				    regs->di, regs->si,
-> +		audit_syscall_entry(regs->orig_ax, regs->di, regs->si,
->  				    regs->dx, regs->r10);
->  #endif
->  
-> diff --git a/arch/x86/um/asm/ptrace.h b/arch/x86/um/asm/ptrace.h
-> index 54f8102..e59eef2 100644
-> --- a/arch/x86/um/asm/ptrace.h
-> +++ b/arch/x86/um/asm/ptrace.h
-> @@ -47,8 +47,6 @@ struct user_desc;
->  
->  #ifdef CONFIG_X86_32
->  
-> -#define HOST_AUDIT_ARCH AUDIT_ARCH_I386
-> -
->  extern int ptrace_get_thread_area(struct task_struct *child, int idx,
->                                    struct user_desc __user *user_desc);
->  
-> @@ -57,8 +55,6 @@ extern int ptrace_set_thread_area(struct task_struct *child, int idx,
->  
->  #else
->  
-> -#define HOST_AUDIT_ARCH AUDIT_ARCH_X86_64
-> -
->  #define PT_REGS_R8(r) UPT_R8(&(r)->regs)
->  #define PT_REGS_R9(r) UPT_R9(&(r)->regs)
->  #define PT_REGS_R10(r) UPT_R10(&(r)->regs)
-> diff --git a/arch/xtensa/kernel/ptrace.c b/arch/xtensa/kernel/ptrace.c
-> index 562fac6..4d54b48 100644
-> --- a/arch/xtensa/kernel/ptrace.c
-> +++ b/arch/xtensa/kernel/ptrace.c
-> @@ -342,7 +342,7 @@ void do_syscall_trace_enter(struct pt_regs *regs)
->  		do_syscall_trace();
->  
->  #if 0
-> -	audit_syscall_entry(current, AUDIT_ARCH_XTENSA..);
-> +	audit_syscall_entry(...);
->  #endif
->  }
->  
-> diff --git a/include/linux/audit.h b/include/linux/audit.h
-> index 4b2983e..62c9d98 100644
-> --- a/include/linux/audit.h
-> +++ b/include/linux/audit.h
-> @@ -26,6 +26,7 @@
->  #include <linux/sched.h>
->  #include <linux/ptrace.h>
->  #include <uapi/linux/audit.h>
-> +#include <asm/syscall.h>
->  
->  struct audit_sig_info {
->  	uid_t		uid;
-> @@ -135,12 +136,12 @@ static inline void audit_free(struct task_struct *task)
->  	if (unlikely(task->audit_context))
->  		__audit_free(task);
->  }
-> -static inline void audit_syscall_entry(int arch, int major, unsigned long a0,
-> +static inline void audit_syscall_entry(int major, unsigned long a0,
->  				       unsigned long a1, unsigned long a2,
->  				       unsigned long a3)
->  {
->  	if (unlikely(current->audit_context))
-> -		__audit_syscall_entry(arch, major, a0, a1, a2, a3);
-> +		__audit_syscall_entry(syscall_get_arch(), major, a0, a1, a2, a3);
->  }
->  static inline void audit_syscall_exit(void *pt_regs)
->  {
-> @@ -316,7 +317,7 @@ static inline int audit_alloc(struct task_struct *task)
->  }
->  static inline void audit_free(struct task_struct *task)
->  { }
-> -static inline void audit_syscall_entry(int arch, int major, unsigned long a0,
-> +static inline void audit_syscall_entry(int major, unsigned long a0,
->  				       unsigned long a1, unsigned long a2,
->  				       unsigned long a3)
->  { }
-> -- 
-> 1.8.5.3
-> 
-> --
-> Linux-audit mailing list
-> Linux-audit@redhat.com
-> https://www.redhat.com/mailman/listinfo/linux-audit
-
-- RGB
-
---
-Richard Guy Briggs <rbriggs@redhat.com>
-Senior Software Engineer, Kernel Security, AMER ENG Base Operating Systems, Red Hat
-Remote, Ottawa, Canada
-Voice: +1.647.777.2635, Internal: (81) 32635, Alt: +1.613.693.0684x3545
+diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
+index 7e0277a..32a7c82 100644
+--- a/arch/mips/power/hibernate.S
++++ b/arch/mips/power/hibernate.S
+@@ -43,6 +43,7 @@ LEAF(swsusp_arch_resume)
+ 	bne t1, t3, 1b
+ 	PTR_L t0, PBE_NEXT(t0)
+ 	bnez t0, 0b
++	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
+ 	PTR_LA t0, saved_regs
+ 	PTR_L ra, PT_R31(t0)
+ 	PTR_L sp, PT_R29(t0)
+-- 
+1.7.7.3

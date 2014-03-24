@@ -1,26 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2014 11:23:34 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.89.28.114]:49544 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2014 11:24:17 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.114]:49577 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816503AbaCXKVnqPcmp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Mar 2014 11:21:43 +0100
+        with ESMTP id S6824764AbaCXKVw2bDnq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Mar 2014 11:21:52 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 261EFC351266C
-        for <linux-mips@linux-mips.org>; Mon, 24 Mar 2014 10:21:36 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 24 Mar
- 2014 10:21:37 +0000
+        by Websense Email Security Gateway with ESMTPS id EEB5577CEFEF8
+        for <linux-mips@linux-mips.org>; Mon, 24 Mar 2014 10:21:44 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Mon, 24 Mar 2014 10:21:37 +0000
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Mon, 24 Mar 2014 10:21:46 +0000
 Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Mon, 24 Mar 2014 10:21:37 +0000
+ 14.3.174.1; Mon, 24 Mar 2014 10:21:46 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 09/12] MIPS: Malta: GIC IPIs may be used without MT
-Date:   Mon, 24 Mar 2014 10:19:32 +0000
-Message-ID: <1395656375-9300-10-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 10/12] MIPS: fix warning when including smp-ops.h with CONFIG_SMP=n
+Date:   Mon, 24 Mar 2014 10:19:33 +0000
+Message-ID: <1395656375-9300-11-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1395656375-9300-1-git-send-email-paul.burton@imgtec.com>
 References: <1395656375-9300-1-git-send-email-paul.burton@imgtec.com>
@@ -31,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39569
+X-archive-position: 39570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,79 +45,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It's perfectly valid to use SMP on a non-MT CPU and use the GIC for
-IPIs. Set them up conditional upon CONFIG_MIPS_GIC_IPI rather than
-CONFIG_MIPS_MT_SMP.
+The gic_send_ipi_mask function declared in smp-ops.h takes a struct
+cpumask argument, but linux/cpumask.h is only included within an #ifdef
+CONFIG_SMP. Move the gic_ function declarations within that #ifdef too
+to fix warnings during build such as:
 
+In file included from arch/mips/fw/arc/init.c:15:0:
+/mnt/buildbot/kernel/mips/slave/mips-linux__allno_/build/arch/mips/include/asm/smp-ops.h:62:44:
+warning: 'struct cpumask' declared inside parameter list [enabled by
+default]
+ extern void gic_send_ipi_mask(const struct cpumask *mask, unsigned int
+action);
+
+Reported-by: Markos Chandras <markos.chandras@imgtec.com>
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/mti-malta/malta-int.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ arch/mips/include/asm/smp-ops.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index 1b90fd8..b71ee80 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -286,10 +286,6 @@ asmlinkage void plat_irq_dispatch(void)
- 
- #ifdef CONFIG_MIPS_MT_SMP
- 
--
--#define GIC_MIPS_CPU_IPI_RESCHED_IRQ	3
--#define GIC_MIPS_CPU_IPI_CALL_IRQ	4
--
- #define MIPS_CPU_IPI_RESCHED_IRQ 0	/* SW int 0 for resched */
- #define C_RESCHED C_SW0
- #define MIPS_CPU_IPI_CALL_IRQ 1		/* SW int 1 for resched */
-@@ -306,6 +302,13 @@ static void ipi_call_dispatch(void)
- 	do_IRQ(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_CALL_IRQ);
+diff --git a/arch/mips/include/asm/smp-ops.h b/arch/mips/include/asm/smp-ops.h
+index a042d24..73d35b1 100644
+--- a/arch/mips/include/asm/smp-ops.h
++++ b/arch/mips/include/asm/smp-ops.h
+@@ -45,6 +45,9 @@ static inline void plat_smp_setup(void)
+ 	mp_ops->smp_setup();
  }
  
-+#endif /* CONFIG_MIPS_MT_SMP */
++extern void gic_send_ipi_single(int cpu, unsigned int action);
++extern void gic_send_ipi_mask(const struct cpumask *mask, unsigned int action);
 +
-+#ifdef CONFIG_MIPS_GIC_IPI
-+
-+#define GIC_MIPS_CPU_IPI_RESCHED_IRQ	3
-+#define GIC_MIPS_CPU_IPI_CALL_IRQ	4
-+
- static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
- {
- #ifdef CONFIG_MIPS_VPE_APSP_API_CMP
-@@ -336,7 +339,7 @@ static struct irqaction irq_call = {
- 	.flags		= IRQF_PERCPU,
- 	.name		= "IPI_call"
- };
--#endif /* CONFIG_MIPS_MT_SMP */
-+#endif /* CONFIG_MIPS_GIC_IPI */
+ #else /* !CONFIG_SMP */
  
- static int gic_resched_int_base;
- static int gic_call_int_base;
-@@ -416,7 +419,7 @@ static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS] = {
- };
- #undef X
+ struct plat_smp_ops;
+@@ -60,9 +63,6 @@ static inline void register_smp_ops(struct plat_smp_ops *ops)
  
--#if defined(CONFIG_MIPS_MT_SMP)
-+#ifdef CONFIG_MIPS_GIC_IPI
- static void __init fill_ipi_map1(int baseintr, int cpu, int cpupin)
+ #endif /* !CONFIG_SMP */
+ 
+-extern void gic_send_ipi_single(int cpu, unsigned int action);
+-extern void gic_send_ipi_mask(const struct cpumask *mask, unsigned int action);
+-
+ static inline int register_up_smp_ops(void)
  {
- 	int intr = baseintr + cpu;
-@@ -532,7 +535,7 @@ void __init arch_init_irq(void)
- 	if (gic_present) {
- 		/* FIXME */
- 		int i;
--#if defined(CONFIG_MIPS_MT_SMP)
-+#if defined(CONFIG_MIPS_GIC_IPI)
- 		gic_call_int_base = GIC_NUM_INTRS -
- 			(NR_CPUS - nr_cpu_ids) * 2 - nr_cpu_ids;
- 		gic_resched_int_base = gic_call_int_base - nr_cpu_ids;
-@@ -547,7 +550,7 @@ void __init arch_init_irq(void)
- 				(i | (0x1 << MSC01_SC_CFG_GICENA_SHF));
- 			pr_debug("GIC Enabled\n");
- 		}
--#if defined(CONFIG_MIPS_MT_SMP)
-+#if defined(CONFIG_MIPS_GIC_IPI)
- 		/* set up ipi interrupts */
- 		if (cpu_has_vint) {
- 			set_vi_handler(MIPSCPU_INT_IPI0, malta_ipi_irqdispatch);
+ #ifdef CONFIG_SMP_UP
 -- 
 1.8.5.3

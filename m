@@ -1,53 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Mar 2014 20:01:51 +0100 (CET)
-Received: from mail-ob0-f172.google.com ([209.85.214.172]:44303 "EHLO
-        mail-ob0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816671AbaCWTBpvdkEI convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2014 01:19:38 +0100 (CET)
+Received: from snt0-omc2-s6.snt0.hotmail.com ([65.55.90.81]:56930 "EHLO
+        snt0-omc2-s6.snt0.hotmail.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816503AbaCXATgaBS44 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 23 Mar 2014 20:01:45 +0100
-Received: by mail-ob0-f172.google.com with SMTP id wm4so4838804obc.31
-        for <multiple recipients>; Sun, 23 Mar 2014 12:01:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=YKjid3vwGHe43DCyLMVemGlfFKge0G7TyOP3veIeV1A=;
-        b=KcwR2wRte7znj4BpjAhFErDkVUk7Kml37jQXaArMWeBYxYuu8nDAiTncInWi0HdoPd
-         zw5xn+C5aJ+WbyrNnqqVm/K3nSg2cgLlLg8DS5T0w4VZRYRoz5si9IkIZTCJGVS/npr7
-         pTyAmdd91fP/hPfxaE3/iOyygqY2p71rf4fA24wBqxlXO0nkLYviGHpIf5oOltPessrD
-         nJf9L0kDWkHB/3kcNbexNkRuSQUgZXvxYdJKBvGIAJw22SQzBEwMS+FoAzMltjy7HkFd
-         rb4vcKDlGloziH0kIT3IyDR1eUT3RZYZZ3cMs/mwwh3j+HLOjO/vAcKfSeYNr91E+1iB
-         AsrQ==
-X-Received: by 10.182.233.45 with SMTP id tt13mr23341286obc.9.1395601295655;
-        Sun, 23 Mar 2014 12:01:35 -0700 (PDT)
-Received: from lenovo.localnet (ip68-5-18-231.oc.oc.cox.net. [68.5.18.231])
-        by mx.google.com with ESMTPSA id yu5sm49955562oeb.11.2014.03.23.12.01.33
-        for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sun, 23 Mar 2014 12:01:34 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        blogic@openwrt.org
-Subject: Re: [PATCH 2/2] MIPS: fix DECStation build for L1_CACHE_SHIFT value
-Date:   Sun, 23 Mar 2014 12:01:31 -0700
-Message-ID: <4353562.NNfMoORRNC@lenovo>
-Organization: OpenWrt
-User-Agent: KMail/4.11.5 (Linux/3.11.0-18-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <alpine.LFD.2.10.1403230203410.21669@eddie.linux-mips.org>
-References: <1390327294-2618-1-git-send-email-florian@openwrt.org> <1390327294-2618-2-git-send-email-florian@openwrt.org> <alpine.LFD.2.10.1403230203410.21669@eddie.linux-mips.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
+        Mon, 24 Mar 2014 01:19:36 +0100
+Received: from SNT145-W36 ([65.55.90.71]) by snt0-omc2-s6.snt0.hotmail.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Sun, 23 Mar 2014 17:19:30 -0700
+X-TMN:  [sIKfB2j6wHrHoVJGy7HWRHps55OXq1S3]
+X-Originating-Email: [nickkrause@sympatico.ca]
+Message-ID: <SNT145-W3682AF4AA1AE6F941FDC1BA57A0@phx.gbl>
+From:   Nick Krause <nickkrause@sympatico.ca>
+To:     "alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+Subject: RE: PATCH[60485 Bug adding breakpoint]
+Date:   Mon, 24 Mar 2014 00:19:29 +0000
+Importance: Normal
+In-Reply-To: <SNT145-W982FA6E38A0213DE61456DA5780@phx.gbl>
+References: <SNT145-W982FA6E38A0213DE61456DA5780@phx.gbl>
 Content-Type: text/plain; charset="iso-8859-1"
-Return-Path: <f.fainelli@gmail.com>
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-OriginalArrivalTime: 24 Mar 2014 00:19:30.0137 (UTC) FILETIME=[B946FC90:01CF46F6]
+Return-Path: <nickkrause@sympatico.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39558
+X-archive-position: 39559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: nickkrause@sympatico.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,41 +44,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le dimanche 23 mars 2014, 02:16:27 Maciej W. Rozycki a écrit :
-> On Tue, 21 Jan 2014, Florian Fainelli wrote:
-> > When support for the DECStation is enabled, it will default to use a
-> > MIPS R3000 class processor. This will cause an intentional build failure
-> > to popup because MIPS_L1_CACHE_SHIFT and cpu_dcache_line_size()
-> > disagree. Fix this by selecting MIPS_L1_CACHE_SHIFT_2 when we build
-> > targetting a MIPS R3000 CPU to fix that build failure and satisfy all
-> > requirements.
-> 
->  Thanks for your contribution.  However I just built a pristine ToT LMO
-> kernel for an R3000 DECstation and that went fine, I got no error.  Can
-> you provide me with a way to reproduce the problem?
 
-The build failure was only transient, in conjunction wit this patch applied:
 
-http://www.linux-mips.org/archives/linux-mips/2014-01/msg00183.html
 
-which was then reverted.
 
-> 
->  I am not opposed to your change per se, it may make sense regardless.
-> However using a value of MIPS_L1_CACHE_SHIFT that is too high results in
-> wasting some memory, but should otherwise be safe I believe, so I'm not
-> really convinced adding this config infrastructure is going to pay off.
+Here is my new patch as corrected for the the bug 60845.
+https://bugzilla.kernel.org/show_bug.cgi?id=60845
+This is the link to the bug and my comments / conversation on to get the corrections needed.
+ Below is my patch for the bug, please let me know if it gets added finally Alan .
 
-Not quite sure what "infrastructure" you are referring to here.
+ --- linux-3.13.6/arch/mips/pci/msi-octeon.c.orig    2014-03-22 17:32:44.762754254 -0400
+ +++ linux-3.13.6/arch/mips/pci/msi-octeon.c    2014-03-22 17:34:19.974753699 -0400
+ @@ -150,6 +150,7 @@ msi_irq_allocated:
+          msg.address_lo =
+              ((128ul << 20) + CVMX_PCI_MSI_RCV) & 0xffffffff;
+          msg.address_hi = ((128ul << 20) + CVMX_PCI_MSI_RCV)>> 32;
+ +        break;
+      case OCTEON_DMA_BAR_TYPE_BIG:
+        /* When using big bar, Bar 0 is based at 0 */
+          msg.address_lo = (0 + CVMX_PCI_MSI_RCV) & 0xffffffff; Signed-off-by: nickkrause@sympatico.ca
+Nick
 
-MIPS_L1_CACHE_SHIFT_<N> is just a bunch of Kconfig symbols that platform can 
-select, to avoid an ever-growing list of:
 
-default 5 if MIPS_FOO && MIPS_BAR && MIPS_BAZ
+ 		 	   		  
+From Paul.Burton@imgtec.com Mon Mar 24 11:20:00 2014
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2014 11:20:03 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.114]:49249 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816503AbaCXKUAcLLTm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Mar 2014 11:20:00 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 2B55DDDC4CE6F
+        for <linux-mips@linux-mips.org>; Mon, 24 Mar 2014 10:19:52 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 24 Mar
+ 2014 10:19:54 +0000
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Mon, 24 Mar 2014 10:19:53 +0000
+Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Mon, 24 Mar 2014 10:19:53 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 00/12] CPS SMP fixes
+Date:   Mon, 24 Mar 2014 10:19:23 +0000
+Message-ID: <1395656375-9300-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.79]
+Return-Path: <Paul.Burton@imgtec.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 39560
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: paul.burton@imgtec.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
+Content-Length: 1487
+Lines: 35
 
-I think that this patch is still applicable as it makes it more accurate which 
-L1_CACHE_SHIFT_SIZE is really required for a given CPU configuration 
-DECSstation, and will avoid overbooking that value when R3000 CPUs are 
-configured/used specifically here.
+This series provides a few fixes & cleanups mostly related to the
+MIPS CPS SMP implementation, fixing a few potential build errors &
+allowing use on cores without the MT ASE & without CONFIG_MIPS_MT.
+The final two patches fix use on big endian systems.
+
+Paul Burton (12):
+  MIPS: add cpu_vpe_id macro
+  MIPS: provide empty mips_mt_set_cpuoptions when CONFIG_MIPS_MT=n
+  MIPS: fix core number detection for MT cores
+  MIPS: remove ifdef around core number probe
+  MIPS: smp-cmp: remove incorrect core number probe
+  MIPS: smp-cps: fix build when CONFIG_MIPS_MT_SMP=n
+  MIPS: smp-cps: don't run MT instructions if cpu doesn't have MT
+  MIPS: smp-mt: use common GIC IPI implementation
+  MIPS: Malta: GIC IPIs may be used without MT
+  MIPS: fix warning when including smp-ops.h with CONFIG_SMP=n
+  MIPS: CM: use __raw_ memory access functions
+  MIPS: CPC: use __raw_ memory access functions
+
+ arch/mips/Kconfig                |  1 +
+ arch/mips/include/asm/cpu-info.h |  6 ++++++
+ arch/mips/include/asm/mips-cm.h  |  4 ++--
+ arch/mips/include/asm/mips-cpc.h |  4 ++--
+ arch/mips/include/asm/mips_mt.h  |  5 +++++
+ arch/mips/include/asm/smp-ops.h  |  6 +++---
+ arch/mips/kernel/cpu-probe.c     |  7 ++++---
+ arch/mips/kernel/smp-cmp.c       |  3 +--
+ arch/mips/kernel/smp-cps.c       | 14 ++++++++++----
+ arch/mips/kernel/smp-mt.c        | 23 +----------------------
+ arch/mips/mti-malta/malta-int.c  | 19 +++++++++++--------
+ 11 files changed, 46 insertions(+), 46 deletions(-)
+
 -- 
-Florian
+1.8.5.3

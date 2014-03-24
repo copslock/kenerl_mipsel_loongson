@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2014 11:21:46 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.89.28.115]:45052 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2014 11:22:06 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.89.28.114]:49444 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823033AbaCXKU6xmmW8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Mar 2014 11:20:58 +0100
+        with ESMTP id S6823009AbaCXKVHcRclb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Mar 2014 11:21:07 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A4A60496353D7
-        for <linux-mips@linux-mips.org>; Mon, 24 Mar 2014 10:20:47 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id B760BE26FAC0C
+        for <linux-mips@linux-mips.org>; Mon, 24 Mar 2014 10:20:59 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 24 Mar
+ 2014 10:21:01 +0000
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Mon, 24 Mar 2014 10:20:48 +0000
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Mon, 24 Mar 2014 10:21:01 +0000
 Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Mon, 24 Mar 2014 10:20:48 +0000
+ 14.3.174.1; Mon, 24 Mar 2014 10:21:00 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 05/12] MIPS: smp-cmp: remove incorrect core number probe
-Date:   Mon, 24 Mar 2014 10:19:28 +0000
-Message-ID: <1395656375-9300-6-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 06/12] MIPS: smp-cps: fix build when CONFIG_MIPS_MT_SMP=n
+Date:   Mon, 24 Mar 2014 10:19:29 +0000
+Message-ID: <1395656375-9300-7-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1395656375-9300-1-git-send-email-paul.burton@imgtec.com>
 References: <1395656375-9300-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39565
+X-archive-position: 39566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,35 +48,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This probing is already done by decode_configs as part of cpu_probe, and
-furthermore the implementation here was incorrect for any MT core with
-a number of VPEs other than 2.
+The vpe_id field of struct cpuinfo_mips is only present when one of
+CONFIG_MIPS_MT_{SMP,SMTC} is enabled. Use the new cpu_vpe_id macro to
+read the vpe_id field if present & avoid the build error if it isn't.
+When setting vpe_id, #ifdef on CONFIG_MIPS_MT_SMP since smp-cps.c is
+never compiled with CONFIG_MIPS_MT_SMTC.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/kernel/smp-cmp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Feel free to apply this as a fixup to "MIPS: Coherent Processing System
+SMP implementation", though it relies upon "MIPS: add cpu_vpe_id macro"
+being applied first.
+---
+ arch/mips/kernel/smp-cps.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
-index 594660e..3ef55fb7 100644
---- a/arch/mips/kernel/smp-cmp.c
-+++ b/arch/mips/kernel/smp-cmp.c
-@@ -41,7 +41,7 @@
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index 2998906..4b812c1 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -120,7 +120,9 @@ static void __init cps_smp_setup(void)
  
- static void cmp_init_secondary(void)
- {
--	struct cpuinfo_mips *c = &current_cpu_data;
-+	struct cpuinfo_mips *c __maybe_unused = &current_cpu_data;
+ 		for (v = 0; v < min_t(int, core_vpes, NR_CPUS - nvpes); v++) {
+ 			cpu_data[nvpes + v].core = c;
++#ifdef CONFIG_MIPS_MT_SMP
+ 			cpu_data[nvpes + v].vpe_id = v;
++#endif
+ 		}
  
- 	/* Assume GIC is present */
- 	change_c0_status(ST0_IM, STATUSF_IP3 | STATUSF_IP4 | STATUSF_IP6 |
-@@ -49,7 +49,6 @@ static void cmp_init_secondary(void)
+ 		nvpes += core_vpes;
+@@ -239,7 +241,7 @@ static void cps_boot_secondary(int cpu, struct task_struct *idle)
+ 	int err;
  
- 	/* Enable per-cpu interrupts: platform specific */
+ 	cfg.core = cpu_data[cpu].core;
+-	cfg.vpe = cpu_data[cpu].vpe_id;
++	cfg.vpe = cpu_vpe_id(&cpu_data[cpu]);
+ 	cfg.pc = (unsigned long)&smp_bootstrap;
+ 	cfg.sp = __KSTK_TOS(idle);
+ 	cfg.gp = (unsigned long)task_thread_info(idle);
+@@ -276,7 +278,7 @@ static void cps_init_secondary(void)
+ 	dmt();
  
--	c->core = (read_c0_ebase() >> 1) & 0x1ff;
- #if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
- 	if (cpu_has_mipsmt)
- 		c->vpe_id = (read_c0_tcbind() >> TCBIND_CURVPE_SHIFT) &
+ 	/* TODO: revisit this assumption once hotplug is implemented */
+-	if (current_cpu_data.vpe_id == 0)
++	if (cpu_vpe_id(&current_cpu_data) == 0)
+ 		init_core();
+ 
+ 	change_c0_status(ST0_IM, STATUSF_IP3 | STATUSF_IP4 |
 -- 
 1.8.5.3

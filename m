@@ -1,39 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2014 12:47:25 +0100 (CET)
-Received: from mail-vc0-f170.google.com ([209.85.220.170]:45690 "EHLO
-        mail-vc0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822098AbaC1LrW65rWL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Mar 2014 12:47:22 +0100
-Received: by mail-vc0-f170.google.com with SMTP id hu19so5864451vcb.1
-        for <linux-mips@linux-mips.org>; Fri, 28 Mar 2014 04:47:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        bh=rHmwKBIdvzFdcs7ERysTqGeHQJ9vfie5AyPXksaW1M0=;
-        b=NkK1LUT5yXCtFrHHK9wyAfhy/309mxU31CdvlpvZsdN4Ua2qgG7+03pj5598Xksk/T
-         jVUszK84N56IvYPAaFAevSPZfaXfOO5TqgWKViIFXopeKzwmT7KJ3Hr4H+umAEIdthoI
-         uX6jV175KjI8PYEv51znTFYZHpc4XcHm8eGgER8x96J+Vtt573vgWXMG7gM2njXLw6Ge
-         WXrdw8TLfRDwx4WW5PD+EUMG0hNnREZlCaxgEZ3VLdgIdQeYJvhSqZcNAyu1omFpMlDB
-         hIPHlDsnzCoyZN5YYwS8wHNfuvPUHa4IlLULdT2AolYt5qSWVXABspCY+SNNdUvS2xqG
-         /zvQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2014 00:51:34 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:40974 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817387AbaCaWvch2Oai (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2014 00:51:32 +0200
+Date:   Mon, 31 Mar 2014 23:51:30 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org
+Subject: [PATCH] DEC: Bus error handler <asm/cpu-type.h> fixes
+Message-ID: <alpine.LFD.2.11.1403312343350.27402@eddie.linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-X-Received: by 10.52.164.237 with SMTP id yt13mr5765125vdb.18.1396007236834;
- Fri, 28 Mar 2014 04:47:16 -0700 (PDT)
-Received: by 10.220.77.8 with HTTP; Fri, 28 Mar 2014 04:47:16 -0700 (PDT)
-Date:   Fri, 28 Mar 2014 11:47:16 +0000
-Message-ID: <CAF9eJuk4SGfXevEz9C+AU5sQeRMSJqESt_coaP4taCH+ck9btA@mail.gmail.com>
-Subject: Fedora MIPS opportunity
-From:   Graham Whaley <graham.whaley@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <graham.whaley@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39593
+X-archive-position: 39596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: graham.whaley@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,19 +33,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-(resend, plaintext this time!)
-First, thanks to Ralf for confirming it is OK to post this.
+Commit 69f24d1784b631b81a54eb57c49bf46536dd2382 [MIPS: Optimize 
+current_cpu_type() for better code.] missed an update for two DECstation 
+bus error support files that now do not build, this is a fix.
 
-Imagination/MIPS is hiring Fedora engineers. Please see:
-http://www.imgtec.com/corporate/vacancy_detail.asp?VacancyID=2286
-for details, and feel free to pm me if you have any questions.
-All applications have to go via the website.
-
-The role presently says location 'Leeds,UK', but that is meant to say
-'worldwide', and will be fixed.
-Imagination has 22 offices across the globe, and the present
-kernel/distro group is spread across 4 continents.
-
-Of course, volunteers for FedoraMIPS will be more than welcomed :-)
-
-Graham (graham.whaley@imgtec.com)
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+linux-dec-cpu-type.patch
+Index: linux-20140329-4maxp64/arch/mips/dec/ecc-berr.c
+===================================================================
+--- linux-20140329-4maxp64.orig/arch/mips/dec/ecc-berr.c
++++ linux-20140329-4maxp64/arch/mips/dec/ecc-berr.c
+@@ -21,6 +21,7 @@
+ #include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ #include <asm/cpu.h>
++#include <asm/cpu-type.h>
+ #include <asm/irq_regs.h>
+ #include <asm/processor.h>
+ #include <asm/ptrace.h>
+Index: linux-20140329-4maxp64/arch/mips/dec/kn02xa-berr.c
+===================================================================
+--- linux-20140329-4maxp64.orig/arch/mips/dec/kn02xa-berr.c
++++ linux-20140329-4maxp64/arch/mips/dec/kn02xa-berr.c
+@@ -19,6 +19,7 @@
+ #include <linux/types.h>
+ 
+ #include <asm/addrspace.h>
++#include <asm/cpu-type.h>
+ #include <asm/irq_regs.h>
+ #include <asm/ptrace.h>
+ #include <asm/traps.h>

@@ -1,18 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2014 02:06:22 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:41133 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2014 02:31:00 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41174 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822105AbaDAAGUifcjU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2014 02:06:20 +0200
-Date:   Tue, 1 Apr 2014 01:06:20 +0100 (BST)
+        by eddie.linux-mips.org with ESMTP id S6822151AbaDAAa4YV0Dm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2014 02:30:56 +0200
+Date:   Tue, 1 Apr 2014 01:30:56 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-cc:     linux-mips@linux-mips.org, blogic@openwrt.org
-Subject: Re: [PATCH 2/2] MIPS: fix DECStation build for L1_CACHE_SHIFT
- value
-In-Reply-To: <1390327294-2618-2-git-send-email-florian@openwrt.org>
-Message-ID: <alpine.LFD.2.11.1404010105130.27402@eddie.linux-mips.org>
-References: <1390327294-2618-1-git-send-email-florian@openwrt.org> <1390327294-2618-2-git-send-email-florian@openwrt.org>
+To:     Levente Kurusa <levex@linux.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+cc:     LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] tc: account for device_register() failure
+In-Reply-To: <52863D5E.7080606@linux.com>
+Message-ID: <alpine.LFD.2.11.1404010108270.27402@eddie.linux-mips.org>
+References: <52863D5E.7080606@linux.com>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -20,7 +19,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39602
+X-archive-position: 39603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,19 +36,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 21 Jan 2014, Florian Fainelli wrote:
+On Fri, 15 Nov 2013, Levente Kurusa wrote:
 
-> When support for the DECStation is enabled, it will default to use a
-> MIPS R3000 class processor. This will cause an intentional build failure
-> to popup because MIPS_L1_CACHE_SHIFT and cpu_dcache_line_size()
-> disagree. Fix this by selecting MIPS_L1_CACHE_SHIFT_2 when we build
-> targetting a MIPS R3000 CPU to fix that build failure and satisfy all
-> requirements.
+> This patch makes the TURBOchannel driver bail out if the call
+> to device_register() failed.
 > 
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> Signed-off-by: Levente Kurusa <levex@linux.com>
 
 Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
 
- This actually boots -- Ralf, please apply.
+This fixes some build warnings:
+
+drivers/tc/tc.c: In function 'tc_bus_add_devices':
+drivers/tc/tc.c:132: warning: ignoring return value of 'device_register', 
+declared with attribute warn_unused_result
+drivers/tc/tc.c: In function 'tc_init':
+drivers/tc/tc.c:151: warning: ignoring return value of 'device_register', 
+declared with attribute warn_unused_result
+
+Levente, thanks for your fix and apologies for the long RTT -- can you 
+please resend your patch to <linux-mips@linux-mips.org> and Ralf so that 
+it'll be pulled via the MIPS tree?  I'll post a follow-up update to fix 
+some issues with `tc_init' that I noticed thanks to your change.
+
+> ---
+>  tc.c |   10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/tc/tc.c b/drivers/tc/tc.c
+> index a8aaf6a..6b3a038 100644
+> --- a/drivers/tc/tc.c
+> +++ b/drivers/tc/tc.c
+> @@ -129,7 +129,10 @@ static void __init tc_bus_add_devices(struct tc_bus *tbus)
+> 
+>  		tc_device_get_irq(tdev);
+> 
+> -		device_register(&tdev->dev);
+> +		if (device_register(&tdev->dev)) {
+> +			put_device(&tdev->dev);
+> +			goto out_err;
+> +		}
+>  		list_add_tail(&tdev->node, &tbus->devices);
+> 
+>  out_err:
+> @@ -148,7 +151,10 @@ static int __init tc_init(void)
+> 
+>  	INIT_LIST_HEAD(&tc_bus.devices);
+>  	dev_set_name(&tc_bus.dev, "tc");
+> -	device_register(&tc_bus.dev);
+> +	if (device_register(&tc_bus.dev)) {
+> +		put_device(&tc_bus.dev);
+> +		return 0;	
+> +	}
+> 
+>  	if (tc_bus.info.slot_size) {
+>  		unsigned int tc_clock = tc_get_speed(&tc_bus) / 100000;
+> 
 
   Maciej

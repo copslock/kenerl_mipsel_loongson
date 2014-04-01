@@ -1,29 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2014 02:31:00 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:41174 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822151AbaDAAa4YV0Dm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2014 02:30:56 +0200
-Date:   Tue, 1 Apr 2014 01:30:56 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Levente Kurusa <levex@linux.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-cc:     LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] tc: account for device_register() failure
-In-Reply-To: <52863D5E.7080606@linux.com>
-Message-ID: <alpine.LFD.2.11.1404010108270.27402@eddie.linux-mips.org>
-References: <52863D5E.7080606@linux.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2014 15:03:53 +0200 (CEST)
+Received: from mail-vc0-f182.google.com ([209.85.220.182]:63856 "EHLO
+        mail-vc0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822151AbaDANDsje0Sq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2014 15:03:48 +0200
+Received: by mail-vc0-f182.google.com with SMTP id ks9so9881674vcb.13
+        for <multiple recipients>; Tue, 01 Apr 2014 06:03:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=7kotVtZpUSfX+4YUtCcFBgeHewZrwi2JufgpoWQ5/h0=;
+        b=jIXvdu1YyQpFd7GbsqaXbjLQDTUe9qhGh53aJHZxsHulwM3rg8jDk+KC3AsHvR2UVO
+         gsS5mY8O48gtwwbsB9JX691SzCDvDlTqowiA1qlMqIFkVO6KvblXsrtB2a5etIGIzUW0
+         BcGVx1GWiJLtX08iQC0HeHj0kYCm8P81xBBzG5y+H5yskgdnhxIf4WiRoKRTo9yZoULI
+         /K5X9Je9zDL4rSu3M/DtclOeGYikbESgRBIVvJojU3o0+1nMu8CJvf2gf9gctuv3Ffgc
+         V3lryIuur7EkmBXolj0mKOh8iaQ307Cq1lYWIxLGRszLB8k2hW5UAU0iPMy4V1cPJTnO
+         yJrQ==
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+X-Received: by 10.52.119.178 with SMTP id kv18mr718919vdb.39.1396357422083;
+ Tue, 01 Apr 2014 06:03:42 -0700 (PDT)
+Received: by 10.220.203.68 with HTTP; Tue, 1 Apr 2014 06:03:42 -0700 (PDT)
+In-Reply-To: <alpine.LFD.2.11.1404010108270.27402@eddie.linux-mips.org>
+References: <52863D5E.7080606@linux.com>
+        <alpine.LFD.2.11.1404010108270.27402@eddie.linux-mips.org>
+Date:   Tue, 1 Apr 2014 15:03:42 +0200
+X-Google-Sender-Auth: 3aSvAo7JLW5mnkCxFkQKMDTksU0
+Message-ID: <CAAsK9AH51aXUjfTUYMFbssRwZk6_J8BPktgJn9ZKZtX_r3FufQ@mail.gmail.com>
+Subject: Re: [PATCH] tc: account for device_register() failure
+From:   Levente Kurusa <levex@linux.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <ilevex.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39603
+X-archive-position: 39605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: levex@linux.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,61 +53,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 15 Nov 2013, Levente Kurusa wrote:
+Hi,
 
-> This patch makes the TURBOchannel driver bail out if the call
-> to device_register() failed.
-> 
-> Signed-off-by: Levente Kurusa <levex@linux.com>
+2014-04-01 2:30 GMT+02:00 Maciej W. Rozycki <macro@linux-mips.org>:
+> On Fri, 15 Nov 2013, Levente Kurusa wrote:
+>
+>> This patch makes the TURBOchannel driver bail out if the call
+>> to device_register() failed.
+>>
+>> Signed-off-by: Levente Kurusa <levex@linux.com>
+>
+> Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
+>
+> This fixes some build warnings:
+>
+> drivers/tc/tc.c: In function 'tc_bus_add_devices':
+> drivers/tc/tc.c:132: warning: ignoring return value of 'device_register',
+> declared with attribute warn_unused_result
+> drivers/tc/tc.c: In function 'tc_init':
+> drivers/tc/tc.c:151: warning: ignoring return value of 'device_register',
+> declared with attribute warn_unused_result
+>
+> Levente, thanks for your fix and apologies for the long RTT -- can you
+> please resend your patch to <linux-mips@linux-mips.org> and Ralf so that
+> it'll be pulled via the MIPS tree?  I'll post a follow-up update to fix
+> some issues with `tc_init' that I noticed thanks to your change.
 
-Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
+Sure, I will repost in a few hours, I just need to get home.
+Thanks for the Ack!
 
-This fixes some build warnings:
+> [...]
 
-drivers/tc/tc.c: In function 'tc_bus_add_devices':
-drivers/tc/tc.c:132: warning: ignoring return value of 'device_register', 
-declared with attribute warn_unused_result
-drivers/tc/tc.c: In function 'tc_init':
-drivers/tc/tc.c:151: warning: ignoring return value of 'device_register', 
-declared with attribute warn_unused_result
-
-Levente, thanks for your fix and apologies for the long RTT -- can you 
-please resend your patch to <linux-mips@linux-mips.org> and Ralf so that 
-it'll be pulled via the MIPS tree?  I'll post a follow-up update to fix 
-some issues with `tc_init' that I noticed thanks to your change.
-
-> ---
->  tc.c |   10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tc/tc.c b/drivers/tc/tc.c
-> index a8aaf6a..6b3a038 100644
-> --- a/drivers/tc/tc.c
-> +++ b/drivers/tc/tc.c
-> @@ -129,7 +129,10 @@ static void __init tc_bus_add_devices(struct tc_bus *tbus)
-> 
->  		tc_device_get_irq(tdev);
-> 
-> -		device_register(&tdev->dev);
-> +		if (device_register(&tdev->dev)) {
-> +			put_device(&tdev->dev);
-> +			goto out_err;
-> +		}
->  		list_add_tail(&tdev->node, &tbus->devices);
-> 
->  out_err:
-> @@ -148,7 +151,10 @@ static int __init tc_init(void)
-> 
->  	INIT_LIST_HEAD(&tc_bus.devices);
->  	dev_set_name(&tc_bus.dev, "tc");
-> -	device_register(&tc_bus.dev);
-> +	if (device_register(&tc_bus.dev)) {
-> +		put_device(&tc_bus.dev);
-> +		return 0;	
-> +	}
-> 
->  	if (tc_bus.info.slot_size) {
->  		unsigned int tc_clock = tc_get_speed(&tc_bus) / 100000;
-> 
-
-  Maciej
+--
+Regards,
+Levente Kurusa

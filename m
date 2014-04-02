@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2014 10:53:40 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.89.28.114]:47801 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816676AbaDBIxi1-eBS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2014 10:53:38 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B6DA93877DCB3;
-        Wed,  2 Apr 2014 09:53:29 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Wed, 2 Apr 2014 09:53:32 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Wed, 2 Apr 2014 09:53:31 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        Steve Glendinning <steve.glendinning@shawell.net>,
-        Ben Boeckel <mathstuf@gmail.com>,
-        "Jeff Kirsher" <jeffrey.t.kirsher@intel.com>,
-        "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jeffrey Deans <Jeffrey.Deans@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2014 12:01:11 +0200 (CEST)
+Received: from mail-wg0-f48.google.com ([74.125.82.48]:48429 "EHLO
+        mail-wg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822274AbaDBKBEq5-q1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2014 12:01:04 +0200
+Received: by mail-wg0-f48.google.com with SMTP id l18so8590863wgh.31
+        for <multiple recipients>; Wed, 02 Apr 2014 03:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=kyCwXzzoXoJI1m1ydderMYnm6GuI/ZMpKa3zZjaKh4Q=;
+        b=ys5ZfGknDCPIpAwWx/kGOHOKkbBiU5bqjk25YJOQ2vfeSzBugF63S1PwEgN39tnP0t
+         DJuYWq9UfnzhdlZoUIKV/SbPwfcSm+6+wQkotg2cumIef22cmRkCM3I5xtK9zBwq6R94
+         7TdDB+tGWTsMK7UDhswP/7Y7TtVFcECGDhFIMGWOUQ5nNolaKUKPzSyFzh/fxYV/5bI3
+         Fg/i2zqxO4tXbOy7saWSqfrl3jxVrYANMNXxEaNeadVHGvJc2eJ11RmpqIrdVlbmntQy
+         IhPwyt7ABzqgowiyvnHGQZqrWIyf500k2V49cGqMaN3D/Ez6pkQE+5e3q4TV/biHH6s1
+         vS7g==
+X-Received: by 10.180.219.66 with SMTP id pm2mr27261739wic.60.1396432859130;
+        Wed, 02 Apr 2014 03:00:59 -0700 (PDT)
+Received: from localhost.localdomain (sagv5.gyakg.u-szeged.hu. [160.114.18.70])
+        by mx.google.com with ESMTPSA id cb5sm3391904eeb.18.2014.04.02.03.00.57
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 02 Apr 2014 03:00:58 -0700 (PDT)
+From:   Levente Kurusa <levex@linux.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: lib: iomap: Use __mem_{read,write}{b,w,l} for MMIO
-Date:   Wed, 2 Apr 2014 09:53:24 +0100
-Message-ID: <1396428804-31075-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.9.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.67]
-Return-Path: <Markos.Chandras@imgtec.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Levente Kurusa <levex@linux.com>
+Subject: [PATCH RESEND] tc: account for device_register() failure
+Date:   Wed,  2 Apr 2014 12:00:37 +0200
+Message-Id: <1396432837-10549-1-git-send-email-levex@linux.com>
+X-Mailer: git-send-email 1.7.9.5
+Return-Path: <ilevex.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39606
+X-archive-position: 39607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: levex@linux.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,159 +53,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Using the __raw_{read,write}{b,w,l} functions to perform
-repeatable MMIO could result in problems if the host bus
-does not match the endianness of the PCI/ISA. This problem
-is visible on big-endian SEAD3 configurations after commit
-2925f6c0c7af32720dcbadc586463aeceb6baa22
-"net: smc911x: use io{read,write}*_rep accessors". This effectively
-moves away from using the __mem_* variants to __raw_* ones
-and causes a kernel bug as follows:
+This patch makes the TURBOchannel driver bail out if the call
+to device_register() failed.
 
-Call Trace:
-CPU 0 Unable to handle kernel paging request at virtual address 00000000,
-epc == 00000000, ra == 8012b3b0
-Oops[#1]:
-Cpu 0
-$ 0   : 00000000 00000065 00000000 00000004
-$ 4   : 00000000 00000000 9a82dd60 00000000
-$ 8   : 00000000 00000000 a00ae278 00000007
-$12   : 0000000e 00000011 804c4228 ffff9411
-$16   : 00000100 00000000 80560000 807fc6d0
-$20   : 807fc8d0 807fcad0 807fbec0 00000100
-$24   : 00009150 80109be0
-$28   : 9a82c000 9a82dd28 00000001 8012b3b0
-Hi    : 00000000
-Lo    : 00000000
-epc   : 00000000   (null)
-    Not tainted
-ra    : 8012b3b0 call_timer_fn.isra.39+0x24/0x84
-Status: 10009503    KERNEL EXL IE
-Cause : 00800808
-BadVA : 00000000
-PrId  : 00019c20 (MIPS M14Kc)
-Modules linked in:
-Process swapper (pid: 1, threadinfo=9a82c000, task=9a82ba18, tls=00000000)
-Stack : 00000040 00000000 00000007 8056732c 80580000 00000001 9a82dd60 00200200
-        80560000 8012b598 8056732c 80580000 00000001 00000000 9a82dd60 9a82dd60
-        00000000 807fbd44 807fbd40 805664e0 0000000a 80800000 00000004 80125924
-        0000fda0 000007f0 80000000 00000001 80800000 007f0000 00200140 80166338
-        00000000 8100fda0 0000fda0 000007f0 80000000 00000001 80800000 007f0000
-        ...
-Call Trace:
-[<8012b598>] run_timer_softirq+0x188/0x1f4
-[<80125924>] __do_softirq+0xc4/0x18c
-[<80166338>] handle_percpu_irq+0x54/0x84
-[<80125aa4>] do_softirq+0x68/0x70
-[<80103b50>] do_IRQ+0x18/0x28
-[<80125d1c>] irq_exit+0x94/0xc0
-[<80125aa4>] do_softirq+0x68/0x70
-[<80102130>] ret_from_irq+0x0/0x4
-[<80102130>] ret_from_irq+0x0/0x4
-[<80125d1c>] irq_exit+0x94/0xc0
-[<803165b0>] __bzero+0xd4/0x164
-[<80346d0c>] mem32_serial_out+0x0/0x1c
-[<8010d4ac>] free_init_pages+0x98/0xfc
-[<80180a08>] free_hot_cold_page+0x2c/0x1c4
-[<80180bd8>] __free_pages+0x38/0x98
-[<8010d4a0>] free_init_pages+0x8c/0xfc
-[<8010d4ac>] free_init_pages+0x98/0xfc
-[<8049fb04>] kernel_init+0x28/0x15c
-[<80147484>] schedule_tail+0x1c/0x60
-[<8049fadc>] kernel_init+0x0/0x15c
-[<80102178>] ret_from_kernel_thread+0x14/0x1c
-[<8040a06f>] skb_pad+0xe7/0x13c
-
-CC: Steve Glendinning <steve.glendinning@shawell.net>
-CC: Ben Boeckel <mathstuf@gmail.com>
-CC: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
-CC: David S. Miller <davem@davemloft.net>
-CC: netdev@vger.kernel.org
-CC: Jeffrey Deans <Jeffrey.Deans@imgtec.com>
-CC: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Levente Kurusa <levex@linux.com>
 ---
-It seems there are some inconsistencies on how the readsl/writesl and the
-io{read,write}*_rep functions are implemented on MIPS. The former do
-byte-swapping whereas the later do not. However, the way I read the commit
-message from 2925f6c0c7af32720dcbadc586463aeceb6baa22, is  that the
-io{read,write}*_rep functions are drop-in replacements for the readsl/writesl
-ones which is not the case here. Or maybe there is something wrong with the
-driver? Or maybe the SEAD3 board needs 'SWAP_IO_SPACE if CPU_BIG_ENDIAN'?
-
-Assuming the patch is correct, it needs to be backported to >=3.8
-kernels.
+Resending as per Maciej's request to proper list and
+people.
 ---
- arch/mips/lib/iomap.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ tc.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/lib/iomap.c b/arch/mips/lib/iomap.c
-index e3acb2d..9f4bc52 100644
---- a/arch/mips/lib/iomap.c
-+++ b/arch/mips/lib/iomap.c
-@@ -97,14 +97,14 @@ EXPORT_SYMBOL(iowrite32be);
- 
- /*
-  * These are the "repeat MMIO read/write" functions.
-- * Note the "__raw" accesses, since we don't want to
-- * convert to CPU byte order. We write in "IO byte
-- * order" (we also don't have IO barriers).
-+ * Note the "__mem" accesses, since we want to convert
-+ * to CPU byte order if the host bus happens to not match the
-+ * endianness of PCI/ISA (see mach-generic/mangle-port.h).
-  */
- static inline void mmio_insb(void __iomem *addr, u8 *dst, int count)
- {
- 	while (--count >= 0) {
--		u8 data = __raw_readb(addr);
-+		u8 data = __mem_readb(addr);
- 		*dst = data;
- 		dst++;
- 	}
-@@ -113,7 +113,7 @@ static inline void mmio_insb(void __iomem *addr, u8 *dst, int count)
- static inline void mmio_insw(void __iomem *addr, u16 *dst, int count)
- {
- 	while (--count >= 0) {
--		u16 data = __raw_readw(addr);
-+		u16 data = __mem_readw(addr);
- 		*dst = data;
- 		dst++;
- 	}
-@@ -122,7 +122,7 @@ static inline void mmio_insw(void __iomem *addr, u16 *dst, int count)
- static inline void mmio_insl(void __iomem *addr, u32 *dst, int count)
- {
- 	while (--count >= 0) {
--		u32 data = __raw_readl(addr);
-+		u32 data = __mem_readl(addr);
- 		*dst = data;
- 		dst++;
- 	}
-@@ -131,7 +131,7 @@ static inline void mmio_insl(void __iomem *addr, u32 *dst, int count)
- static inline void mmio_outsb(void __iomem *addr, const u8 *src, int count)
- {
- 	while (--count >= 0) {
--		__raw_writeb(*src, addr);
-+		__mem_writeb(*src, addr);
- 		src++;
- 	}
- }
-@@ -139,7 +139,7 @@ static inline void mmio_outsb(void __iomem *addr, const u8 *src, int count)
- static inline void mmio_outsw(void __iomem *addr, const u16 *src, int count)
- {
- 	while (--count >= 0) {
--		__raw_writew(*src, addr);
-+		__mem_writew(*src, addr);
- 		src++;
- 	}
- }
-@@ -147,7 +147,7 @@ static inline void mmio_outsw(void __iomem *addr, const u16 *src, int count)
- static inline void mmio_outsl(void __iomem *addr, const u32 *src, int count)
- {
- 	while (--count >= 0) {
--		__raw_writel(*src, addr);
-+		__mem_writel(*src, addr);
- 		src++;
- 	}
- }
--- 
-1.9.1
+diff --git a/drivers/tc/tc.c b/drivers/tc/tc.c
+index a8aaf6a..6b3a038 100644
+--- a/drivers/tc/tc.c
++++ b/drivers/tc/tc.c
+@@ -129,7 +129,10 @@ static void __init tc_bus_add_devices(struct tc_bus *tbus)
+
+ 		tc_device_get_irq(tdev);
+
+-		device_register(&tdev->dev);
++		if (device_register(&tdev->dev)) {
++			put_device(&tdev->dev);
++			goto out_err;
++		}
+ 		list_add_tail(&tdev->node, &tbus->devices);
+
+ out_err:
+@@ -148,7 +151,10 @@ static int __init tc_init(void)
+
+ 	INIT_LIST_HEAD(&tc_bus.devices);
+ 	dev_set_name(&tc_bus.dev, "tc");
+-	device_register(&tc_bus.dev);
++	if (device_register(&tc_bus.dev)) {
++		put_device(&tc_bus.dev);
++		return 0;	
++	}
+
+ 	if (tc_bus.info.slot_size) {
+ 		unsigned int tc_clock = tc_get_speed(&tc_bus) / 100000;

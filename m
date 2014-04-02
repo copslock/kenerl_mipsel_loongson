@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2014 12:01:11 +0200 (CEST)
-Received: from mail-wg0-f48.google.com ([74.125.82.48]:48429 "EHLO
-        mail-wg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822274AbaDBKBEq5-q1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2014 12:01:04 +0200
-Received: by mail-wg0-f48.google.com with SMTP id l18so8590863wgh.31
-        for <multiple recipients>; Wed, 02 Apr 2014 03:00:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2014 12:13:29 +0200 (CEST)
+Received: from mail-we0-f175.google.com ([74.125.82.175]:35201 "EHLO
+        mail-we0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816676AbaDBKN0qtOaB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2014 12:13:26 +0200
+Received: by mail-we0-f175.google.com with SMTP id q58so7451827wes.6
+        for <multiple recipients>; Wed, 02 Apr 2014 03:13:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=kyCwXzzoXoJI1m1ydderMYnm6GuI/ZMpKa3zZjaKh4Q=;
-        b=ys5ZfGknDCPIpAwWx/kGOHOKkbBiU5bqjk25YJOQ2vfeSzBugF63S1PwEgN39tnP0t
-         DJuYWq9UfnzhdlZoUIKV/SbPwfcSm+6+wQkotg2cumIef22cmRkCM3I5xtK9zBwq6R94
-         7TdDB+tGWTsMK7UDhswP/7Y7TtVFcECGDhFIMGWOUQ5nNolaKUKPzSyFzh/fxYV/5bI3
-         Fg/i2zqxO4tXbOy7saWSqfrl3jxVrYANMNXxEaNeadVHGvJc2eJ11RmpqIrdVlbmntQy
-         IhPwyt7ABzqgowiyvnHGQZqrWIyf500k2V49cGqMaN3D/Ez6pkQE+5e3q4TV/biHH6s1
-         vS7g==
-X-Received: by 10.180.219.66 with SMTP id pm2mr27261739wic.60.1396432859130;
-        Wed, 02 Apr 2014 03:00:59 -0700 (PDT)
-Received: from localhost.localdomain (sagv5.gyakg.u-szeged.hu. [160.114.18.70])
-        by mx.google.com with ESMTPSA id cb5sm3391904eeb.18.2014.04.02.03.00.57
+        h=from:to:subject:date:message-id;
+        bh=v8zv2drUdFdGWLUStoRnU3CvFy0wXIXrXJNGdi0mszg=;
+        b=nfY80Ebd6+Wo6fWY3Nc48apznWsL6JCg7RLYz2N9JhEeprA79UPKDeAoBVSAettFsF
+         fu6SD3E1BhqrwvCfG0jhGA7As68zBIHGWmtMTD8pChw9O0Aq/CUOAB8J5i4F7BwGBgKh
+         8bmfog6G85YnxoPK8GnsQ+SNp8VQsq3K4sVKVmSp2BQ5CIQEBG+ziRuzSFdFtPf8PJ7M
+         o3qFkw0cL/iv33B6YvYF68bzuJuv/ylb/dbH1mo7eIIugOLwcrsfL2Y6VgXLLOsH761j
+         LOEeh7fvJuviBKR1lDNitRhZxA6NaGC19wKEYVyn7r+e26vgZ0Tpl9ZX8VgH6nGbNB01
+         3C/g==
+X-Received: by 10.194.92.228 with SMTP id cp4mr11999714wjb.81.1396433601311;
+        Wed, 02 Apr 2014 03:13:21 -0700 (PDT)
+Received: from localhost.localdomain (p57A34F13.dip0.t-ipconnect.de. [87.163.79.19])
+        by mx.google.com with ESMTPSA id w1sm3463877eel.16.2014.04.02.03.13.19
         for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 02 Apr 2014 03:00:58 -0700 (PDT)
-From:   Levente Kurusa <levex@linux.com>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Levente Kurusa <levex@linux.com>
-Subject: [PATCH RESEND] tc: account for device_register() failure
-Date:   Wed,  2 Apr 2014 12:00:37 +0200
-Message-Id: <1396432837-10549-1-git-send-email-levex@linux.com>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <ilevex.linux@gmail.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 02 Apr 2014 03:13:20 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     linux-audit@redhat.com, Steve Grubb <sgrubb@redhat.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Eric Paris <eparis@redhat.com>
+Subject: [RESEND PATCH 0/2] MIPS syscall auditing patches
+Date:   Wed,  2 Apr 2014 12:13:14 +0200
+Message-Id: <1396433596-612624-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39607
+X-archive-position: 39608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: levex@linux.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,42 +52,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch makes the TURBOchannel driver bail out if the call
-to device_register() failed.
+From: Ralf Baechle <ralf@linux-mips.org>
 
-Signed-off-by: Levente Kurusa <levex@linux.com>
----
-Resending as per Maciej's request to proper list and
-people.
----
- tc.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Hello,
 
-diff --git a/drivers/tc/tc.c b/drivers/tc/tc.c
-index a8aaf6a..6b3a038 100644
---- a/drivers/tc/tc.c
-+++ b/drivers/tc/tc.c
-@@ -129,7 +129,10 @@ static void __init tc_bus_add_devices(struct tc_bus *tbus)
+This is a resend of the syscall auditing patches for MIPS, as sent by
+Ralf Baechle almost 3 years ago [1].  I've rediffed them against latest
+linux kernels and audit userland trunk. 
 
- 		tc_device_get_irq(tdev);
+Here's what Ralf said then:
 
--		device_register(&tdev->dev);
-+		if (device_register(&tdev->dev)) {
-+			put_device(&tdev->dev);
-+			goto out_err;
-+		}
- 		list_add_tail(&tdev->node, &tbus->devices);
+>>>
+This is the first cut of the MIPS auditing patches.  MIPS doesn't quite
+fit into the existing pattern of other architectures and I'd appreciate
+your comments and maybe even an Acked-by for the kernel part so I can
+feed that upstream.
 
- out_err:
-@@ -148,7 +151,10 @@ static int __init tc_init(void)
+  Ralf
+<<<
 
- 	INIT_LIST_HEAD(&tc_bus.devices);
- 	dev_set_name(&tc_bus.dev, "tc");
--	device_register(&tc_bus.dev);
-+	if (device_register(&tc_bus.dev)) {
-+		put_device(&tc_bus.dev);
-+		return 0;	
-+	}
+Comments welcome!
+Thanks,
+        Manuel Lauss
 
- 	if (tc_bus.info.slot_size) {
- 		unsigned int tc_clock = tc_get_speed(&tc_bus) / 100000;
+[1] https://www.redhat.com/archives/linux-audit/2011-June/msg00027.html

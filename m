@@ -1,38 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2014 21:20:46 +0200 (CEST)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:50827 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816676AbaDCTUmQ8gT6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Apr 2014 21:20:42 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id E50DB19BFC7;
-        Thu,  3 Apr 2014 22:20:39 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id IiiJs4p0tZlK; Thu,  3 Apr 2014 22:20:34 +0300 (EEST)
-Received: from cooljazz.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id ACFF35BC004;
-        Thu,  3 Apr 2014 22:20:34 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        cpufreq@vger.kernel.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, stable@vger.kernel.org
-Subject: [PATCH v2] MIPS/loongson2_cpufreq: fix CPU clock rate setting
-Date:   Thu,  3 Apr 2014 22:24:01 +0300
-Message-Id: <1396553041-29951-1-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 1.9.0
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2014 23:02:02 +0200 (CEST)
+Received: from [217.156.156.69] ([217.156.156.69]:2520 "EHLO
+        mailapp01.imgtec.com" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6816635AbaDCVB7exitU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Apr 2014 23:01:59 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 6D7EC59711447
+        for <linux-mips@linux-mips.org>; Thu,  3 Apr 2014 17:52:15 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 3 Apr
+ 2014 17:52:17 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Thu, 3 Apr 2014 17:52:17 +0100
+Received: from fun-lab.mips.com (192.168.136.61) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 3 Apr
+ 2014 09:52:15 -0700
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <Steven.Hill@imgtec.com>, <james.hogan@imgtec.com>,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Subject: [PATCH] MIPS: math-emu: Add IEEE754 exception statistics to debugfs
+Date:   Thu, 3 Apr 2014 09:52:12 -0700
+Message-ID: <1396543932-30051-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.136.61]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39630
+X-archive-position: 39631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,71 +47,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson2 has been using (incorrectly) kHz for cpu_clk rate. This has
-been unnoticed, as loongson2_cpufreq was the only place where the rate
-was set/get. After commit 652ed95d5fa6074b3c4ea245deb0691f1acb6656
-(cpufreq: introduce cpufreq_generic_get() routine) things however broke,
-and now loops_per_jiffy adjustments are incorrect (1000 times too long).
-The patch fixes this by changing cpu_clk rate to Hz.
+From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: stable@vger.kernel.org
+Sometimes it's useful to let the user, while doing performance research,
+know what in the IEEE754 exceptions has caused many times of FP emulation
+when running a specific application. This patch adds 5 more files to
+/sys/kernel/debug/mips/fpuemustats/, whose filenames begin with "ieee754".
+These stats are in addition to the existing cp1ops, cp1xops, errors, loads
+and stores, which may not be useful in understanding the reasons of ieee754
+exceptions.
+
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 ---
+ arch/mips/include/asm/fpu_emulator.h |  5 +++++
+ arch/mips/math-emu/cp1emu.c          | 41 ++++++++++++++++++++++++++++--------
+ 2 files changed, 37 insertions(+), 9 deletions(-)
 
-	v2: Initialize rate_khz when it's declared.
-
-	v1: http://marc.info/?t=139646562700001&r=1&w=2
-
- arch/mips/loongson/lemote-2f/clock.c | 5 +++--
- drivers/cpufreq/loongson2_cpufreq.c  | 4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
-index aed32b8..7d8c9cc 100644
---- a/arch/mips/loongson/lemote-2f/clock.c
-+++ b/arch/mips/loongson/lemote-2f/clock.c
-@@ -91,6 +91,7 @@ EXPORT_SYMBOL(clk_put);
+diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
+index 2abb587..0ab4a3c 100644
+--- a/arch/mips/include/asm/fpu_emulator.h
++++ b/arch/mips/include/asm/fpu_emulator.h
+@@ -36,6 +36,11 @@ struct mips_fpu_emulator_stats {
+ 	local_t cp1ops;
+ 	local_t cp1xops;
+ 	local_t errors;
++	local_t ieee754_inexact;
++	local_t ieee754_underflow;
++	local_t ieee754_overflow;
++	local_t ieee754_zerodiv;
++	local_t ieee754_invalidop;
+ };
  
- int clk_set_rate(struct clk *clk, unsigned long rate)
- {
-+	unsigned int rate_khz = rate / 1000;
- 	int ret = 0;
- 	int regval;
- 	int i;
-@@ -111,10 +112,10 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
- 		if (loongson2_clockmod_table[i].frequency ==
- 		    CPUFREQ_ENTRY_INVALID)
- 			continue;
--		if (rate == loongson2_clockmod_table[i].frequency)
-+		if (rate_khz == loongson2_clockmod_table[i].frequency)
+ DECLARE_PER_CPU(struct mips_fpu_emulator_stats, fpuemustats);
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 0b4e2e3..f630b74 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -1444,14 +1444,22 @@ static int fpux_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 			SPTOREG(fd, MIPSInst_FD(ir));
+ 
+ 		      copcsr:
+-			if (ieee754_cxtest(IEEE754_INEXACT))
++			if (ieee754_cxtest(IEEE754_INEXACT)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_inexact);
+ 				rcsr |= FPU_CSR_INE_X | FPU_CSR_INE_S;
+-			if (ieee754_cxtest(IEEE754_UNDERFLOW))
++			}
++			if (ieee754_cxtest(IEEE754_UNDERFLOW)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_underflow);
+ 				rcsr |= FPU_CSR_UDF_X | FPU_CSR_UDF_S;
+-			if (ieee754_cxtest(IEEE754_OVERFLOW))
++			}
++			if (ieee754_cxtest(IEEE754_OVERFLOW)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_overflow);
+ 				rcsr |= FPU_CSR_OVF_X | FPU_CSR_OVF_S;
+-			if (ieee754_cxtest(IEEE754_INVALID_OPERATION))
++			}
++			if (ieee754_cxtest(IEEE754_INVALID_OPERATION)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_invalidop);
+ 				rcsr |= FPU_CSR_INV_X | FPU_CSR_INV_S;
++			}
+ 
+ 			ctx->fcr31 = (ctx->fcr31 & ~FPU_CSR_ALL_X) | rcsr;
+ 			if ((ctx->fcr31 >> 5) & ctx->fcr31 & FPU_CSR_ALL_E) {
+@@ -1660,16 +1668,26 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 				goto copcsr;
+ 			}
+ 		      copcsr:
+-			if (ieee754_cxtest(IEEE754_INEXACT))
++			if (ieee754_cxtest(IEEE754_INEXACT)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_inexact);
+ 				rcsr |= FPU_CSR_INE_X | FPU_CSR_INE_S;
+-			if (ieee754_cxtest(IEEE754_UNDERFLOW))
++			}
++			if (ieee754_cxtest(IEEE754_UNDERFLOW)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_underflow);
+ 				rcsr |= FPU_CSR_UDF_X | FPU_CSR_UDF_S;
+-			if (ieee754_cxtest(IEEE754_OVERFLOW))
++			}
++			if (ieee754_cxtest(IEEE754_OVERFLOW)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_overflow);
+ 				rcsr |= FPU_CSR_OVF_X | FPU_CSR_OVF_S;
+-			if (ieee754_cxtest(IEEE754_ZERO_DIVIDE))
++			}
++			if (ieee754_cxtest(IEEE754_ZERO_DIVIDE)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_zerodiv);
+ 				rcsr |= FPU_CSR_DIV_X | FPU_CSR_DIV_S;
+-			if (ieee754_cxtest(IEEE754_INVALID_OPERATION))
++			}
++			if (ieee754_cxtest(IEEE754_INVALID_OPERATION)) {
++				MIPS_FPU_EMU_INC_STATS(ieee754_invalidop);
+ 				rcsr |= FPU_CSR_INV_X | FPU_CSR_INV_S;
++			}
  			break;
- 	}
--	if (rate != loongson2_clockmod_table[i].frequency)
-+	if (rate_khz != loongson2_clockmod_table[i].frequency)
- 		return -ENOTSUPP;
  
- 	clk->rate = rate;
-diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
-index b6581ab..807d006 100644
---- a/drivers/cpufreq/loongson2_cpufreq.c
-+++ b/drivers/cpufreq/loongson2_cpufreq.c
-@@ -62,7 +62,7 @@ static int loongson2_cpufreq_target(struct cpufreq_policy *policy,
- 	set_cpus_allowed_ptr(current, &cpus_allowed);
- 
- 	/* setting the cpu frequency */
--	clk_set_rate(policy->clk, freq);
-+	clk_set_rate(policy->clk, freq * 1000);
+ 			/* unary conv ops */
+@@ -2179,6 +2197,11 @@ static int __init debugfs_fpuemu(void)
+ 	FPU_STAT_CREATE(cp1ops);
+ 	FPU_STAT_CREATE(cp1xops);
+ 	FPU_STAT_CREATE(errors);
++	FPU_STAT_CREATE(ieee754_inexact);
++	FPU_STAT_CREATE(ieee754_underflow);
++	FPU_STAT_CREATE(ieee754_overflow);
++	FPU_STAT_CREATE(ieee754_zerodiv);
++	FPU_STAT_CREATE(ieee754_invalidop);
  
  	return 0;
  }
-@@ -92,7 +92,7 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	     i++)
- 		loongson2_clockmod_table[i].frequency = (rate * i) / 8;
- 
--	ret = clk_set_rate(cpuclk, rate);
-+	ret = clk_set_rate(cpuclk, rate * 1000);
- 	if (ret) {
- 		clk_put(cpuclk);
- 		return ret;
 -- 
-1.9.0
+1.8.5.3

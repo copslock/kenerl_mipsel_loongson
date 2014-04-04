@@ -1,45 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 10:52:22 +0200 (CEST)
-Received: from filtteri5.pp.htv.fi ([213.243.153.188]:57773 "EHLO
-        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822271AbaDDIwUTu8Hj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 10:52:20 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri5.pp.htv.fi (Postfix) with ESMTP id E6B205A70AE;
-        Fri,  4 Apr 2014 11:52:14 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
-        with ESMTP id VPQFYyjkt8fZ; Fri,  4 Apr 2014 11:52:08 +0300 (EEST)
-Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id 5826A5BC015;
-        Fri,  4 Apr 2014 11:52:11 +0300 (EEST)
-Date:   Fri, 4 Apr 2014 11:48:05 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 13:48:23 +0200 (CEST)
+Received: from mail-lb0-f173.google.com ([209.85.217.173]:57980 "EHLO
+        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822263AbaDDLsQFGspV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 13:48:16 +0200
+Received: by mail-lb0-f173.google.com with SMTP id p9so2345976lbv.4
+        for <linux-mips@linux-mips.org>; Fri, 04 Apr 2014 04:48:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=P+7QbRIavGrDhJJuZ5s7bhFzMGp89SW/mMxH89sbPaU=;
+        b=f5ICWYYwCLl6nCQaT/znMx98oHSUhtEMrcX2ERtXl7eTGLePYiktBwoO0pWj5ahfgk
+         OntZbZbINgFOjlw1b8/CsVmJ+/5frOX+Pt9eb6IQVvUw0WnbI/pejJkq1wBs/F3m0Bw6
+         oJz/1RSpAnwfNZsoOr+gb4otATs7AeMsX/KT4deLfHEeG9OmVAPrULC9MchWaD2xJ1ME
+         xRa2yRaQi4GY+mpoVOjEpXVpANuh7wZHPPKbyhc6N4CyY5N31ZdKGofqnbiRuGy63qUy
+         rQtGa6kHu9mRANRdf+Ee0CAK5UQR8JOHwCEBO50aydICE+khRbplVYbyVR+/MUX4iE2j
+         PDjQ==
+X-Gm-Message-State: ALoCoQnI+iLvU++FiwOhmNTqveMm+tBrz2mAJkMM6+oDDxmF2mmE0YU4cfqaxeRSHN75V0x/KL3o
+X-Received: by 10.153.7.69 with SMTP id da5mr1339705lad.38.1396612090370;
+        Fri, 04 Apr 2014 04:48:10 -0700 (PDT)
+Received: from [192.168.2.4] (ppp83-237-56-180.pppoe.mtu-net.ru. [83.237.56.180])
+        by mx.google.com with ESMTPSA id zf7sm7665158lab.7.2014.04.04.04.48.08
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 04 Apr 2014 04:48:09 -0700 (PDT)
+Message-ID: <533E9C03.9060808@cogentembedded.com>
+Date:   Fri, 04 Apr 2014 15:48:19 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+MIME-Version: 1.0
+To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
+CC:     John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH 7/9] MIPS: Loongson: Make CPU name more clear
-Message-ID: <20140404084805.GA7558@drone.musicnaut.iki.fi>
-References: <1396599104-24370-1-git-send-email-chenhc@lemote.com>
- <1396599104-24370-8-git-send-email-chenhc@lemote.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1396599104-24370-8-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
-Return-Path: <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH 1/9] MIPS: Support hard limit of cpu count (nr_cpu_ids)
+References: <1396599104-24370-1-git-send-email-chenhc@lemote.com> <1396599104-24370-2-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1396599104-24370-2-git-send-email-chenhc@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39650
+X-archive-position: 39651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,55 +62,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 04, 2014 at 04:11:42PM +0800, Huacai Chen wrote:
-> Make names in /proc/cpuinfo more human-readable, Since GCC support the
-> new-style names for a long time, this may not break -march=native any
-> more.
+Hello.
 
-NACK. There isn't a GCC release available yet that supports
-new Loongson 2 names. You need to wait until such release is made
-and everyone starts using it. That will take maybe 5-10 years.
+On 04-04-2014 12:11, Huacai Chen wrote:
 
-A.
+> On MIPS currently, only the soft limit of cpu count (maxcpus) has its
+> effect, this patch enable the hard limit (nr_cpus) as well. Processor
+> cores which greater than maxcpus and less than nr_cpus can be taken up
+> via cpu hotplug. The code is borrowed from X86.
 
 > Signed-off-by: Huacai Chen <chenhc@lemote.com>
 > ---
->  arch/mips/kernel/cpu-probe.c |    8 ++++----
->  1 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index 585f996..2576d53 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -742,23 +742,23 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
->  		switch (c->processor_id & PRID_REV_MASK) {
->  		case PRID_REV_LOONGSON2E:
->  			c->cputype = CPU_LOONGSON2;
-> -			__cpu_name[cpu] = "ICT Loongson-2";
-> +			__cpu_name[cpu] = "ICT Loongson-2E";
->  			set_elf_platform(cpu, "loongson2e");
->  			break;
->  		case PRID_REV_LOONGSON2F:
->  			c->cputype = CPU_LOONGSON2;
-> -			__cpu_name[cpu] = "ICT Loongson-2";
-> +			__cpu_name[cpu] = "ICT Loongson-2F";
->  			set_elf_platform(cpu, "loongson2f");
->  			break;
->  		case PRID_REV_LOONGSON3A:
->  			c->cputype = CPU_LOONGSON3;
-> -			__cpu_name[cpu] = "ICT Loongson-3";
-> +			__cpu_name[cpu] = "ICT Loongson-3A";
->  			set_elf_platform(cpu, "loongson3a");
->  			break;
->  		case PRID_REV_LOONGSON3B_R1:
->  		case PRID_REV_LOONGSON3B_R2:
->  			c->cputype = CPU_LOONGSON3;
-> -			__cpu_name[cpu] = "ICT Loongson-3";
-> +			__cpu_name[cpu] = "ICT Loongson-3B";
->  			set_elf_platform(cpu, "loongson3b");
->  			break;
->  		}
-> -- 
-> 1.7.7.3
-> 
-> 
+>   arch/mips/kernel/setup.c |   18 ++++++++++++++++++
+>   1 files changed, 18 insertions(+), 0 deletions(-)
+
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index a842154..7ffda01 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -729,6 +729,23 @@ static void __init resource_init(void)
+>   	}
+>   }
+>
+> +static void __init prefill_possible_map(void)
+> +{
+> +#ifdef CONFIG_SMP
+> +	int i, possible = num_possible_cpus();
+> +
+> +	if (possible > nr_cpu_ids)
+> +		possible = nr_cpu_ids;
+> +
+> +	for (i = 0; i < possible; i++)
+> +		set_cpu_possible(i, true);
+> +	for (; i < NR_CPUS; i++)
+> +		set_cpu_possible(i, false);
+> +
+> +	nr_cpu_ids = possible;
+> +#endif
+ > +}
+ > +
+
+    #ifdef's in the function body are ugly. Instead I'm suggesting:
+
+#ifdef CONFIG_SMP
+static void __init prefill_possible_map(void)
+{
+[...]
+}
+#else
+static inline void prefill_possible_map(void) {}
+#endif
+
+WBR, Sergei

@@ -1,15 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 04:32:32 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:53758 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 04:32:58 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:53764 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816900AbaDDCc3ljLuN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 04:32:29 +0200
-Date:   Fri, 4 Apr 2014 03:32:29 +0100 (BST)
+        by eddie.linux-mips.org with ESMTP id S6816900AbaDDCcyU0EgH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 04:32:54 +0200
+Date:   Fri, 4 Apr 2014 03:32:54 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH v2 2/3] MIPS: __strncpy_from_user_asm CPU_DADDI_WORKAROUNDS
- bug fix
-Message-ID: <alpine.LFD.2.11.1404040311580.18978@eddie.linux-mips.org>
+Subject: [PATCH v2 3/3] MIPS: csum_partial.S CPU_DADDI_WORKAROUNDS bug fix
+Message-ID: <alpine.LFD.2.11.1404040315480.18978@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -17,7 +16,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39638
+X-archive-position: 39639
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,57 +33,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This corrects assembler warnings and broken code generated in 
-__strncpy_from_user_asm:
+This change reverts most of commit 
+60724ca59eda766a30be57aec6b49bc3e2bead91 [MIPS: IP checksums: Remove 
+unncessary .set pseudos] that introduced warnings with the 
+CPU_DADDI_WORKAROUNDS option set:
 
-arch/mips/lib/strncpy_user.S: Assembler messages:
-arch/mips/lib/strncpy_user.S:52: Warning: Macro instruction expanded into 
-multiple instructions in a branch delay slot
+arch/mips/lib/csum_partial.S: Assembler messages:
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:467: Warning: used $3 with ".set at=$3"
+[...]
+arch/mips/lib/csum_partial.S:577: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:577: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:577: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:601: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:601: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:601: Warning: used $3 with ".set at=$3"
+arch/mips/lib/csum_partial.S:601: Warning: used $3 with ".set at=$3"
+[and so on, and so on...]
 
-with the CPU_DADDI_WORKAROUNDS option set.  The function schedules delay 
-slots manually where there is really no need to as GAS is happy to do it 
-all itself, so undo it all and remove `.set noreorder'.
+The warnings are benign and good code is produced regardless because no 
+macros that'd use the assembler's temporary register are involved, however 
+the `.set noat' directives removed by the commit referred are crucial to 
+guarantee this is still going to be the case after any changes in the 
+future.  Therefore they need to be brought back to place which this 
+change does.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
-linux-mips-strncpy-user-nodaddi-fix.patch
-Index: linux-20140404-4maxp64/arch/mips/lib/strncpy_user.S
+linux-mips-csum-partial-nodaddi-fix.patch
+Index: linux-20140404-4maxp64/arch/mips/lib/csum_partial.S
 ===================================================================
---- linux-20140404-4maxp64.orig/arch/mips/lib/strncpy_user.S
-+++ linux-20140404-4maxp64/arch/mips/lib/strncpy_user.S
-@@ -35,7 +35,6 @@ LEAF(__strncpy_from_\func\()_asm)
- 	bnez		v0, .Lfault\@
+--- linux-20140404-4maxp64.orig/arch/mips/lib/csum_partial.S
++++ linux-20140404-4maxp64/arch/mips/lib/csum_partial.S
+@@ -56,14 +56,20 @@
+ #define UNIT(unit)  ((unit)*NBYTES)
  
- FEXPORT(__strncpy_from_\func\()_nocheck_asm)
--	.set		noreorder
- 	move		t0, zero
- 	move		v1, a1
- .ifeqs "\func","kernel"
-@@ -45,21 +44,21 @@ FEXPORT(__strncpy_from_\func\()_nocheck_
- .endif
- 	PTR_ADDIU	v1, 1
- 	R10KCBARRIER(0(ra))
-+	sb		v0, (a0)
- 	beqz		v0, 2f
--	 sb		v0, (a0)
- 	PTR_ADDIU	t0, 1
-+	PTR_ADDIU	a0, 1
- 	bne		t0, a2, 1b
--	 PTR_ADDIU	a0, 1
- 2:	PTR_ADDU	v0, a1, t0
- 	xor		v0, a1
- 	bltz		v0, .Lfault\@
--	 nop
-+	move		v0, t0
- 	jr		ra			# return n
--	 move		v0, t0
- 	END(__strncpy_from_\func\()_asm)
+ #define ADDC(sum,reg)						\
++	.set	push;						\
++	.set	noat;						\
+ 	ADD	sum, reg;					\
+ 	sltu	v1, sum, reg;					\
+ 	ADD	sum, v1;					\
++	.set	pop
  
--.Lfault\@: jr		ra
--	  li		v0, -EFAULT
-+.Lfault\@:
-+	li		v0, -EFAULT
-+	jr		ra
+ #define ADDC32(sum,reg)						\
++	.set	push;						\
++	.set	noat;						\
+ 	addu	sum, reg;					\
+ 	sltu	v1, sum, reg;					\
+ 	addu	sum, v1;					\
++	.set	pop
  
- 	.section	__ex_table,"a"
- 	PTR		1b, .Lfault\@
+ #define CSUM_BIGCHUNK1(src, offset, sum, _t0, _t1, _t2, _t3)	\
+ 	LOAD	_t0, (offset + UNIT(0))(src);			\
+@@ -710,6 +716,8 @@ LEAF(csum_partial)
+ 	ADDC(sum, t2)
+ .Ldone\@:
+ 	/* fold checksum */
++	.set	push
++	.set	noat
+ #ifdef USE_DOUBLE
+ 	dsll32	v1, sum, 0
+ 	daddu	sum, v1
+@@ -732,6 +740,7 @@ LEAF(csum_partial)
+ 	or	sum, sum, t0
+ 1:
+ #endif
++	.set	pop
+ 	.set reorder
+ 	ADDC32(sum, psum)
+ 	jr	ra

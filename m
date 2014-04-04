@@ -1,55 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 13:48:23 +0200 (CEST)
-Received: from mail-lb0-f173.google.com ([209.85.217.173]:57980 "EHLO
-        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822263AbaDDLsQFGspV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 13:48:16 +0200
-Received: by mail-lb0-f173.google.com with SMTP id p9so2345976lbv.4
-        for <linux-mips@linux-mips.org>; Fri, 04 Apr 2014 04:48:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=P+7QbRIavGrDhJJuZ5s7bhFzMGp89SW/mMxH89sbPaU=;
-        b=f5ICWYYwCLl6nCQaT/znMx98oHSUhtEMrcX2ERtXl7eTGLePYiktBwoO0pWj5ahfgk
-         OntZbZbINgFOjlw1b8/CsVmJ+/5frOX+Pt9eb6IQVvUw0WnbI/pejJkq1wBs/F3m0Bw6
-         oJz/1RSpAnwfNZsoOr+gb4otATs7AeMsX/KT4deLfHEeG9OmVAPrULC9MchWaD2xJ1ME
-         xRa2yRaQi4GY+mpoVOjEpXVpANuh7wZHPPKbyhc6N4CyY5N31ZdKGofqnbiRuGy63qUy
-         rQtGa6kHu9mRANRdf+Ee0CAK5UQR8JOHwCEBO50aydICE+khRbplVYbyVR+/MUX4iE2j
-         PDjQ==
-X-Gm-Message-State: ALoCoQnI+iLvU++FiwOhmNTqveMm+tBrz2mAJkMM6+oDDxmF2mmE0YU4cfqaxeRSHN75V0x/KL3o
-X-Received: by 10.153.7.69 with SMTP id da5mr1339705lad.38.1396612090370;
-        Fri, 04 Apr 2014 04:48:10 -0700 (PDT)
-Received: from [192.168.2.4] (ppp83-237-56-180.pppoe.mtu-net.ru. [83.237.56.180])
-        by mx.google.com with ESMTPSA id zf7sm7665158lab.7.2014.04.04.04.48.08
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 16:33:35 +0200 (CEST)
+Received: from mail-we0-f172.google.com ([74.125.82.172]:47223 "EHLO
+        mail-we0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822264AbaDDOddXDyV4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 16:33:33 +0200
+Received: by mail-we0-f172.google.com with SMTP id t61so3578707wes.3
+        for <linux-mips@linux-mips.org>; Fri, 04 Apr 2014 07:33:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=7bdRhXJI7z9CccARmH5Exl+B0g7ZWpYqZu5HB2fMB8c=;
+        b=B+XGhGqvQ4w6vUPfzGYlZJ0IUukFuXyneE6XE3ZbUQhsSLqcjssOYEHrAsClbdusIm
+         f7HDKC6AKc8oXSWMjMdyFJ8dnTWDKbM2858aNeL7KxaFAuRh8luoQoYkKZhmSBAsMKVn
+         U6ANmlHltOo55AxUADkAKMj82J9ABrk9Y3/NdDAPZgD4c30HWXvgFqvkg9K5Y0YeH3ZQ
+         dOjh/6ryd7F9CMYL+aSDeM1C4dN2U0sJxEPc/lAT79XWnHCwfaCN2trsJjdFw46DMsrz
+         z94PqmsUqjwOkaWZGArTWJdef0insk/yygWyovY/yyEnVT9q0AmgF2rOuYlZx00hVGTt
+         Aogg==
+X-Received: by 10.180.38.41 with SMTP id d9mr5059123wik.9.1396622008024;
+        Fri, 04 Apr 2014 07:33:28 -0700 (PDT)
+Received: from localhost.localdomain (p57A35AD1.dip0.t-ipconnect.de. [87.163.90.209])
+        by mx.google.com with ESMTPSA id x45sm19945862eef.15.2014.04.04.07.33.26
         for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 04 Apr 2014 04:48:09 -0700 (PDT)
-Message-ID: <533E9C03.9060808@cogentembedded.com>
-Date:   Fri, 04 Apr 2014 15:48:19 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
-MIME-Version: 1.0
-To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
-CC:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH 1/9] MIPS: Support hard limit of cpu count (nr_cpu_ids)
-References: <1396599104-24370-1-git-send-email-chenhc@lemote.com> <1396599104-24370-2-git-send-email-chenhc@lemote.com>
-In-Reply-To: <1396599104-24370-2-git-send-email-chenhc@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 04 Apr 2014 07:33:27 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] MIPS: Alchemy: Default to noncoherent IO on Au1200 AB w. USB
+Date:   Fri,  4 Apr 2014 16:33:23 +0200
+Message-Id: <1396622004-157911-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39651
+X-archive-position: 39652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,55 +50,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+CONFIG_DMA_COHERENT is no longer set; default to noncoherent io on
+Au1200 revision AB if USB is enabled.
 
-On 04-04-2014 12:11, Huacai Chen wrote:
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+ arch/mips/alchemy/common/setup.c |  7 +++++++
+ arch/mips/alchemy/common/usb.c   | 26 ++------------------------
+ 2 files changed, 9 insertions(+), 24 deletions(-)
 
-> On MIPS currently, only the soft limit of cpu count (maxcpus) has its
-> effect, this patch enable the hard limit (nr_cpus) as well. Processor
-> cores which greater than maxcpus and less than nr_cpus can be taken up
-> via cpu hotplug. The code is borrowed from X86.
-
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->   arch/mips/kernel/setup.c |   18 ++++++++++++++++++
->   1 files changed, 18 insertions(+), 0 deletions(-)
-
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index a842154..7ffda01 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -729,6 +729,23 @@ static void __init resource_init(void)
->   	}
->   }
->
-> +static void __init prefill_possible_map(void)
-> +{
-> +#ifdef CONFIG_SMP
-> +	int i, possible = num_possible_cpus();
-> +
-> +	if (possible > nr_cpu_ids)
-> +		possible = nr_cpu_ids;
-> +
-> +	for (i = 0; i < possible; i++)
-> +		set_cpu_possible(i, true);
-> +	for (; i < NR_CPUS; i++)
-> +		set_cpu_possible(i, false);
-> +
-> +	nr_cpu_ids = possible;
-> +#endif
- > +}
- > +
-
-    #ifdef's in the function body are ugly. Instead I'm suggesting:
-
-#ifdef CONFIG_SMP
-static void __init prefill_possible_map(void)
-{
-[...]
-}
-#else
-static inline void prefill_possible_map(void) {}
-#endif
-
-WBR, Sergei
+diff --git a/arch/mips/alchemy/common/setup.c b/arch/mips/alchemy/common/setup.c
+index 566a174..577b0be 100644
+--- a/arch/mips/alchemy/common/setup.c
++++ b/arch/mips/alchemy/common/setup.c
+@@ -67,6 +67,13 @@ void __init plat_mem_setup(void)
+ 	case ALCHEMY_CPU_AU1500:
+ 	case ALCHEMY_CPU_AU1100:
+ 		coherentio = 0;
++		break;
++	case ALCHEMY_CPU_AU1200:
++		/* Au1200 AB USB does not support coherent memory */
++		if (IS_ENABLED(CONFIG_USB) &&
++		    (!(read_c0_prid() & PRID_REV_MASK)))
++			coherentio = 0;
++		break;
+ 	}
+ 
+ 	board_setup();	/* board specific setup */
+diff --git a/arch/mips/alchemy/common/usb.c b/arch/mips/alchemy/common/usb.c
+index 2adc7ed..d193dbe 100644
+--- a/arch/mips/alchemy/common/usb.c
++++ b/arch/mips/alchemy/common/usb.c
+@@ -355,47 +355,25 @@ static inline void __au1200_udc_control(void __iomem *base, int enable)
+ 	}
+ }
+ 
+-static inline int au1200_coherency_bug(void)
+-{
+-#if defined(CONFIG_DMA_COHERENT)
+-	/* Au1200 AB USB does not support coherent memory */
+-	if (!(read_c0_prid() & PRID_REV_MASK)) {
+-		printk(KERN_INFO "Au1200 USB: this is chip revision AB !!\n");
+-		printk(KERN_INFO "Au1200 USB: update your board or re-configure"
+-				 " the kernel\n");
+-		return -ENODEV;
+-	}
+-#endif
+-	return 0;
+-}
+-
+ static inline int au1200_usb_control(int block, int enable)
+ {
+ 	void __iomem *base =
+ 			(void __iomem *)KSEG1ADDR(AU1200_USB_CTL_PHYS_ADDR);
+-	int ret = 0;
+ 
+ 	switch (block) {
+ 	case ALCHEMY_USB_OHCI0:
+-		ret = au1200_coherency_bug();
+-		if (ret && enable)
+-			goto out;
+ 		__au1200_ohci_control(base, enable);
+ 		break;
+ 	case ALCHEMY_USB_UDC0:
+ 		__au1200_udc_control(base, enable);
+ 		break;
+ 	case ALCHEMY_USB_EHCI0:
+-		ret = au1200_coherency_bug();
+-		if (ret && enable)
+-			goto out;
+ 		__au1200_ehci_control(base, enable);
+ 		break;
+ 	default:
+-		ret = -ENODEV;
++		return -ENODEV;
+ 	}
+-out:
+-	return ret;
++	return 0;
+ }
+ 
+ 
+-- 
+1.9.1

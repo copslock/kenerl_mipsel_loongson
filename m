@@ -1,45 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 16:33:54 +0200 (CEST)
-Received: from mail-wg0-f45.google.com ([74.125.82.45]:52811 "EHLO
-        mail-wg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822276AbaDDOdeTm2mR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 16:33:34 +0200
-Received: by mail-wg0-f45.google.com with SMTP id l18so3530672wgh.4
-        for <linux-mips@linux-mips.org>; Fri, 04 Apr 2014 07:33:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2014 18:45:56 +0200 (CEST)
+Received: from mail-ig0-f169.google.com ([209.85.213.169]:43045 "EHLO
+        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822272AbaDDQpxtmkI0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2014 18:45:53 +0200
+Received: by mail-ig0-f169.google.com with SMTP id h18so2136027igc.4
+        for <multiple recipients>; Fri, 04 Apr 2014 09:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=3sJyhoUCbMGHOLPMgq3QU1Vkf+iw7iDPpQDE+YV2ZZE=;
-        b=cr9XMHMHP3QdLvLGcu+vEqkvMZHmolO9O4lkjQdwBxMC94471+nC5D/YSDdboPgVN8
-         NWOh7sMUIPG70mAHLZPuo6+e4p9CSq7456CIKSoayIkdyLYHjGsx0rZvuyRaaop2Mf6R
-         XQEoVUN49BNc6qr73unDiaixjXsqZmQlq7kMWw+EXDwqogpSbSPvI5jBDdq09HASiKWe
-         WKrew7oCMvFnohTZOFBTK1JTeTLkqv0AW8RFGTs7ks0Yd+WK+n2vpjpVUqKJek7LZW3J
-         395r61GXPhxRGDNUWnGPLz5aazGteueGYx+IfuEQq2jqyQsIAc0mAoP74SsJy/7qMQs5
-         S/aQ==
-X-Received: by 10.180.76.142 with SMTP id k14mr5019582wiw.21.1396622009014;
-        Fri, 04 Apr 2014 07:33:29 -0700 (PDT)
-Received: from localhost.localdomain (p57A35AD1.dip0.t-ipconnect.de. [87.163.90.209])
-        by mx.google.com with ESMTPSA id x45sm19945862eef.15.2014.04.04.07.33.28
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=9q/wv4dnhPBxuHyoA68S/LhhYp9+7uAJw0Fm+BqDIW4=;
+        b=FktYjVly1Z3Xid1XARLdKTf5XzXopioTHGleun/jOH/aCAnc52JIEDCn74XBEdcQGJ
+         rKKztCoTUL0I0FM3YErRDkVeqMyyr28aJTh4gIGBPc2SQAgVrvpwMCc0YJPKBSeAvShO
+         bJhRTHsn0rEFTh6bjjftpu42yilCHKGNwdjr/lRivwfyiXWNGfLbyFNIAXrqxL7PjcSH
+         KcmqXcH/4aDtnuxQrDp0x1P3IoRyaAg4zi0OWBtx/IEPhvG1FEu2mF5m7uaCtPmq75/A
+         DNCLOJyvFr0Hd5MubaZ01KoboVwLnoymkUwpn7u7uGRlUhsfV7c/RZ0/PYyPcz04aNjL
+         db2g==
+X-Received: by 10.50.44.115 with SMTP id d19mr4123698igm.1.1396629947355;
+        Fri, 04 Apr 2014 09:45:47 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id b8sm7166242igx.3.2014.04.04.09.45.45
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 04 Apr 2014 07:33:28 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH] MIPS: Alchemy: devboards: sit and spin after poweroff
-Date:   Fri,  4 Apr 2014 16:33:24 +0200
-Message-Id: <1396622004-157911-2-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1396622004-157911-1-git-send-email-manuel.lauss@gmail.com>
-References: <1396622004-157911-1-git-send-email-manuel.lauss@gmail.com>
-Return-Path: <manuel.lauss@gmail.com>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 04 Apr 2014 09:45:46 -0700 (PDT)
+Message-ID: <533EE1B9.2040805@gmail.com>
+Date:   Fri, 04 Apr 2014 09:45:45 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH 5/9] MIPS: Add numa api support
+References: <1396599104-24370-1-git-send-email-chenhc@lemote.com> <1396599104-24370-6-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1396599104-24370-6-git-send-email-chenhc@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39653
+X-archive-position: 39654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,34 +61,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-earlier boards don't implement the poweroff bit in CPLD, instead let the cpu
-spin in the wait function.
+On 04/04/2014 01:11 AM, Huacai Chen wrote:
+> Enable sys_mbind()/sys_get_mempolicy()/sys_set_mempolicy() for O32, N32,
+> and N64 ABIs.
+>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
- arch/mips/alchemy/devboards/platform.c | 3 +++
- 1 file changed, 3 insertions(+)
+NACK.
 
-diff --git a/arch/mips/alchemy/devboards/platform.c b/arch/mips/alchemy/devboards/platform.c
-index 8df86eb..be139a0 100644
---- a/arch/mips/alchemy/devboards/platform.c
-+++ b/arch/mips/alchemy/devboards/platform.c
-@@ -11,6 +11,7 @@
- #include <linux/pm.h>
- 
- #include <asm/bootinfo.h>
-+#include <asm/idle.h>
- #include <asm/reboot.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-db1x00/bcsr.h>
-@@ -53,6 +54,8 @@ static void db1x_power_off(void)
- {
- 	bcsr_write(BCSR_RESETS, 0);
- 	bcsr_write(BCSR_SYSTEM, BCSR_SYSTEM_PWROFF | BCSR_SYSTEM_RESET);
-+	while (1)		/* sit and spin */
-+		cpu_wait();
- }
- 
- static void db1x_reset(char *c)
--- 
-1.9.1
+You need compat versions of the syscalls...
+
+Also current migrate_pages and move_pages syscalls need to use the 
+compat wrappers for 32-bit ABIs.
+
+David Daney
+
+
+> ---
+>   arch/mips/kernel/scall32-o32.S |    4 ++--
+>   arch/mips/kernel/scall64-64.S  |    4 ++--
+>   arch/mips/kernel/scall64-n32.S |    6 +++---
+>   arch/mips/kernel/scall64-o32.S |    6 +++---
+>   4 files changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+> index fdc70b4..7f7e2fb 100644
+> --- a/arch/mips/kernel/scall32-o32.S
+> +++ b/arch/mips/kernel/scall32-o32.S
+> @@ -495,8 +495,8 @@ EXPORT(sys_call_table)
+>   	PTR	sys_tgkill
+>   	PTR	sys_utimes
+>   	PTR	sys_mbind
+> -	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+> -	PTR	sys_ni_syscall			/* 4270 sys_set_mempolicy */
+> +	PTR	sys_get_mempolicy
+> +	PTR	sys_set_mempolicy		/* 4270 */
+>   	PTR	sys_mq_open
+>   	PTR	sys_mq_unlink
+>   	PTR	sys_mq_timedsend
+> diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+> index dd99c328..a4baf06 100644
+> --- a/arch/mips/kernel/scall64-64.S
+> +++ b/arch/mips/kernel/scall64-64.S
+> @@ -347,8 +347,8 @@ EXPORT(sys_call_table)
+>   	PTR	sys_tgkill			/* 5225 */
+>   	PTR	sys_utimes
+>   	PTR	sys_mbind
+> -	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+> -	PTR	sys_ni_syscall			/* sys_set_mempolicy */
+> +	PTR	sys_get_mempolicy
+> +	PTR	sys_set_mempolicy
+>   	PTR	sys_mq_open			/* 5230 */
+>   	PTR	sys_mq_unlink
+>   	PTR	sys_mq_timedsend
+> diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+> index f68d2f4..92db19e 100644
+> --- a/arch/mips/kernel/scall64-n32.S
+> +++ b/arch/mips/kernel/scall64-n32.S
+> @@ -339,9 +339,9 @@ EXPORT(sysn32_call_table)
+>   	PTR	compat_sys_clock_nanosleep
+>   	PTR	sys_tgkill
+>   	PTR	compat_sys_utimes		/* 6230 */
+> -	PTR	sys_ni_syscall			/* sys_mbind */
+> -	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+> -	PTR	sys_ni_syscall			/* sys_set_mempolicy */
+> +	PTR	sys_mbind
+> +	PTR	sys_get_mempolicy
+> +	PTR	sys_set_mempolicy
+
+Here
+
+
+>   	PTR	compat_sys_mq_open
+>   	PTR	sys_mq_unlink			/* 6235 */
+>   	PTR	compat_sys_mq_timedsend
+> diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+> index 70f6ace..0230429 100644
+> --- a/arch/mips/kernel/scall64-o32.S
+> +++ b/arch/mips/kernel/scall64-o32.S
+> @@ -473,9 +473,9 @@ EXPORT(sys32_call_table)
+>   	PTR	compat_sys_clock_nanosleep	/* 4265 */
+>   	PTR	sys_tgkill
+>   	PTR	compat_sys_utimes
+> -	PTR	sys_ni_syscall			/* sys_mbind */
+> -	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+> -	PTR	sys_ni_syscall			/* 4270 sys_set_mempolicy */
+> +	PTR	sys_mbind
+> +	PTR	sys_get_mempolicy
+> +	PTR	sys_set_mempolicy		/* 4270 */
+
+And Here.
+
+
+>   	PTR	compat_sys_mq_open
+>   	PTR	sys_mq_unlink
+>   	PTR	compat_sys_mq_timedsend
+>

@@ -1,42 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Apr 2014 16:36:12 +0200 (CEST)
-Received: from forward20.mail.yandex.net ([95.108.253.145]:46454 "EHLO
-        forward20.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816288AbaDEOgKRApO4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Apr 2014 16:36:10 +0200
-Received: from web6j.yandex.ru (web6j.yandex.ru [5.45.198.47])
-        by forward20.mail.yandex.net (Yandex) with ESMTP id 4ADCC1043AEB
-        for <linux-mips@linux-mips.org>; Sat,  5 Apr 2014 18:36:04 +0400 (MSK)
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by web6j.yandex.ru (Yandex) with ESMTP id 03F93370004D;
-        Sat,  5 Apr 2014 18:36:03 +0400 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1396708564; bh=lpgngFkOzocZO3YE6/vlVle/cYUVSJR3De8KNHNIUFk=;
-        h=From:To:In-Reply-To:References:Subject:Date;
-        b=XL/owM2QhZ715hMxRV9WMt6tnVZPr6sbqFCZ+TcIkH6SbZejyAPvZmLNFUQh59Dhr
-         28apmZislSy3y2Q1dPre8teZrUl2nj7FbMemdj3mE4jyseRf6Qii+o063Cr3menTKY
-         +5FRh+hu3KFZcWhYjpOaJYl72ppDNUoiPd+V8guo=
-Received: from ppp83-237-37-145.pppoe.mtu-net.ru (ppp83-237-37-145.pppoe.mtu-net.ru [83.237.37.145]) by web6j.yandex.ru with HTTP;
-        Sat, 05 Apr 2014 18:36:03 +0400
-From:   kr kr <kr-jiffy@yandex.ru>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <6183191396702064@web14j.yandex.ru>
-References: <6183191396702064@web14j.yandex.ru>
-Subject: Re: [MIPS Malta 5kc] Re-flashing using BDI 2000 problem.
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Apr 2014 20:52:03 +0200 (CEST)
+Received: from mail-qa0-f43.google.com ([209.85.216.43]:36310 "EHLO
+        mail-qa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817040AbaDESwAg2YZ7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Apr 2014 20:52:00 +0200
+Received: by mail-qa0-f43.google.com with SMTP id j15so4385714qaq.2
+        for <multiple recipients>; Sat, 05 Apr 2014 11:51:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=WAYOuWuNTJbq5uhick26a3h6AEcqnTqSSyf+sb42MR0=;
+        b=yGYZ+7+rPczIycoxBeDcotBjbSKIIcNRdZy0yPNH5BMuond7For/G41HGYsPNQULyj
+         sa3Ph7Ql78NfIe6V8Ml8VUafl790F/IDn6PKCrOdzt6TnKHMkqh8+NOrW+Z/AdsC7aoT
+         mUGif5WR2q0jBai/7Ao8spsorfSsxpS4nNhfw9O3BUFzJKAs5JmKE/xse2RsHq4iqaWp
+         bN22nJwMIqoeXY/TwxQHgWXJ5HD9xYqFbIouIN2ER66v9zR/TthgEvCyZFiQsOzO6Hmn
+         jN7JbgCl/DkTwEWeOjvM44omO5+WDbfOAYRyIKqUWuQopniF4zrF4S7+Z/DqhynShryW
+         nS6A==
+X-Received: by 10.224.72.12 with SMTP id k12mr4158948qaj.81.1396723914299;
+ Sat, 05 Apr 2014 11:51:54 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <2042591396708563@web6j.yandex.ru>
-X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date:   Sat, 05 Apr 2014 18:36:03 +0400
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8
-Return-Path: <kr-jiffy@yandex.ru>
+Received: by 10.229.207.65 with HTTP; Sat, 5 Apr 2014 11:51:34 -0700 (PDT)
+In-Reply-To: <1396599104-24370-9-git-send-email-chenhc@lemote.com>
+References: <1396599104-24370-1-git-send-email-chenhc@lemote.com> <1396599104-24370-9-git-send-email-chenhc@lemote.com>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Sat, 5 Apr 2014 11:51:34 -0700
+Message-ID: <CAEdQ38F-WHEUFqACwGGNGsWQFqTjwwk2ZwNis8zbNWff2xT8Vw@mail.gmail.com>
+Subject: Re: [PATCH 8/9] MIPS: Loongson-3: Enable the COP2 usage
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <mattst88@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39657
+X-archive-position: 39658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kr-jiffy@yandex.ru
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,17 +56,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I think, I've got it...
+On Fri, Apr 4, 2014 at 1:11 AM, Huacai Chen <chenhc@lemote.com> wrote:
+> Loongson-3 has some specific instructions (MMI/SIMD) in coprocessor 2.
+> COP2 isn't independent because it share COP1 (FPU)'s registers. This
+> patch enable the COP2 usage so user-space programs can use the MMI/SIMD
+> instructions. When COP2 exception happens, we enable both COP1 (FPU)
+> and COP2, only in this way the fp context can be saved and restored
+> correctly.
 
-05.04.2014, 16:48, "kr kr" <kr-jiffy@yandex.ru>:
-> Hello,
->
-> I've been trying to re-flash mips malta 5kc board (the real board,  not quemu) with a yamon image, using Abatron bdi 2000. No success yet.
-> JP1 jumper (MFWR) on the board is closed, S5 switch is set to: 1 - "open", 2 - "closed" (BE mode),  3 - "open", 4 - "open". On board display shows "Power on".
->
-> From the user manual for Malta board:
-> "Note: Address 1FC0.0010 is “special”, in the sense that when the software read this address it is overridden and does NOT decode to an address in Flash, but rather to register address REVISION. This is 
-> done to ensure future compatibility - all MIPS Technologies boards will be able to identify their hardware environment and configure themselves accordingly. Reads from address 1E00.0010 will decode to an 
-> address in Flash."
+Is there a Loongson 3 programmers manual somewhere, similar to
+Loongson2FUserGuide.pdf?
 
-have just had a closer look to yamon's __reset_vector function.
+I optimized pixman for Loongson 2E/2F using their SIMD instructions.
+I've compiled pixman for Loongson 3A and I see some new instructions
+being used in the disassembly, but I have no Loongson 3 system to test
+on. At minimum, having a manual would be nice.
+
+Thanks,
+Matt

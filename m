@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Apr 2014 22:42:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:32814 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Apr 2014 22:46:08 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:32826 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816019AbaDFUmth20pN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Apr 2014 22:42:49 +0200
-Date:   Sun, 6 Apr 2014 21:42:49 +0100 (BST)
+        by eddie.linux-mips.org with ESMTP id S6816019AbaDFUqFZcbg8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Apr 2014 22:46:05 +0200
+Date:   Sun, 6 Apr 2014 21:46:05 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: __delay ABI-dependent subtraction simplification
-Message-ID: <alpine.LFD.2.11.1404062132180.15266@eddie.linux-mips.org>
+Subject: [PATCH] DEC: Only select the R4k clock event/source on R4k systems
+Message-ID: <alpine.LFD.2.11.1404062143010.15266@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -16,7 +16,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39669
+X-archive-position: 39670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,39 +33,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This small update to the previous fix to __delay removes a conditional 
-around the ABI-dependent subtraction operation within an inline asm in 
-favor to the standard <asm/asm.h> LONG_SUBU macro.  No change in code 
-produced.
+R3k systems have no R4k timer so there's no point in pulling code that's 
+going to be dead.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
-Here again checkpatch.pl complains, but I fail to see the point.
-linux-mips-delay-str.patch
-Index: linux-20140329-4maxp64/arch/mips/lib/delay.c
+linux-dec-r3k-clock.patch
+Index: linux-20140329-3maxp/arch/mips/Kconfig
 ===================================================================
---- linux-20140329-4maxp64.orig/arch/mips/lib/delay.c
-+++ linux-20140329-4maxp64/arch/mips/lib/delay.c
-@@ -11,7 +11,9 @@
- #include <linux/module.h>
- #include <linux/param.h>
- #include <linux/smp.h>
-+#include <linux/stringify.h>
- 
-+#include <asm/asm.h>
- #include <asm/compiler.h>
- #include <asm/war.h>
- 
-@@ -27,11 +29,7 @@ void __delay(unsigned long loops)
- 	"	.set	noreorder				\n"
- 	"	.align	3					\n"
- 	"1:	bnez	%0, 1b					\n"
--#if BITS_PER_LONG == 32
--	"	subu	%0, %1					\n"
--#else
--	"	dsubu	%0, %1					\n"
--#endif
-+	"	 " __stringify(LONG_SUBU) "	%0, %1		\n"
- 	"	.set	reorder					\n"
- 	: "=r" (loops)
- 	: GCC_DADDI_IMM_ASM() (1), "0" (loops));
+--- linux-20140329-3maxp.orig/arch/mips/Kconfig
++++ linux-20140329-3maxp/arch/mips/Kconfig
+@@ -168,9 +168,9 @@ config MACH_DECSTATION
+ 	bool "DECstations"
+ 	select BOOT_ELF32
+ 	select CEVT_DS1287
+-	select CEVT_R4K
++	select CEVT_R4K if CPU_R4X00
+ 	select CSRC_IOASIC
+-	select CSRC_R4K
++	select CSRC_R4K if CPU_R4X00
+ 	select CPU_DADDI_WORKAROUNDS if 64BIT
+ 	select CPU_R4000_WORKAROUNDS if 64BIT
+ 	select CPU_R4400_WORKAROUNDS if 64BIT

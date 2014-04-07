@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2014 15:58:41 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:60150 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816886AbaDGN6ixcEQ9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Apr 2014 15:58:38 +0200
-Received: from ALA-HCB.corp.ad.wrs.com (ala-hcb.corp.ad.wrs.com [147.11.189.41])
-        by mail.windriver.com (8.14.5/8.14.5) with ESMTP id s37Dw56x025632
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Mon, 7 Apr 2014 06:58:05 -0700 (PDT)
-Received: from [128.224.56.57] (128.224.56.57) by ALA-HCB.corp.ad.wrs.com
- (147.11.189.41) with Microsoft SMTP Server id 14.3.169.1; Mon, 7 Apr 2014
- 06:58:04 -0700
-Message-ID: <5342AEEF.4080503@windriver.com>
-Date:   Mon, 7 Apr 2014 09:58:07 -0400
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2014 16:49:47 +0200 (CEST)
+Received: from mail-we0-f174.google.com ([74.125.82.174]:34351 "EHLO
+        mail-we0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816615AbaDGOto6LYVs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Apr 2014 16:49:44 +0200
+Received: by mail-we0-f174.google.com with SMTP id t60so7016515wes.33
+        for <linux-mips@linux-mips.org>; Mon, 07 Apr 2014 07:49:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=RnSHQaEC5SvRwGuRQaYW521cZeX+0Z/D4PoTxK7xF3M=;
+        b=i97gOLXv1hPStRuZFQ80ltqQ+t+OL4XnfA9pAKgdDdf8TTrDk0Rgj9JHIP+AhwaJzH
+         o01I7R2HKAZTKMVqrcmIAxkrtz2a9nAUqoyHOm2pXz4baVevI9ZuEikq+zL9skyBwTwW
+         a2EhfPcNI5zVbkXwmqWjYcrrKHM5NVAryf1iMczmyJ9eXIIMofsUesah8x4NZEoFRS4L
+         wp9+FuoLcmmgG74v2jsqZzJxw+hNoO5FQG6arHZgSfkP9VxrJ0i21RhLWVL4Ki6wfMcj
+         iD89fG1bbw9YcpzfrwXrWuf6K2cwi8dEY6PA0PRmd1Ij4byEkNeFE4uypouwW03W+td7
+         aDZA==
+X-Received: by 10.180.98.67 with SMTP id eg3mr5698933wib.38.1396882179575;
+ Mon, 07 Apr 2014 07:49:39 -0700 (PDT)
 MIME-Version: 1.0
-To:     Kees Cook <keescook@chromium.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Sanjay Lal <sanjayl@kymasys.com>,
-        John Crispin <blogic@openwrt.org>, <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mips: export icache_flush_range
-References: <20140322154720.GA23863@www.outflux.net> <CAGXu5jL+o4dG+ruUDh-+5LY=iD0veWaimBUq3cJBtuCiNbYt1A@mail.gmail.com>
-In-Reply-To: <CAGXu5jL+o4dG+ruUDh-+5LY=iD0veWaimBUq3cJBtuCiNbYt1A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [128.224.56.57]
-Return-Path: <Paul.Gortmaker@windriver.com>
+Received: by 10.216.148.136 with HTTP; Mon, 7 Apr 2014 07:48:58 -0700 (PDT)
+In-Reply-To: <20140407135315.GX14803@pburton-linux.le.imgtec.org>
+References: <1396868224-252888-1-git-send-email-manuel.lauss@gmail.com>
+ <1396868224-252888-2-git-send-email-manuel.lauss@gmail.com> <20140407135315.GX14803@pburton-linux.le.imgtec.org>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Mon, 7 Apr 2014 16:48:58 +0200
+Message-ID: <CAOLZvyEZvVQb-3UdXtZa3P8V+fckqT4aCUY9=aKrkdX_GNGc1g@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 2/2] MIPS: make FPU emulator optional
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39678
+X-archive-position: 39679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,55 +51,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14-03-22 03:05 PM, Kees Cook wrote:
-> On Sat, Mar 22, 2014 at 9:47 AM, Kees Cook <keescook@chromium.org> wrote:
->> The lkdtm module performs tests against executable memory ranges, so
->> it needs to flush the icache for proper behaviors. Other architectures
->> already export this, so do the same for MIPS.
->>
->> Signed-off-by: Kees Cook <keescook@chromium.org>
->> ---
->> This is currently untested! I'm building a MIPS cross-compiler now...
->> If someone can validate this fixes the build when lkdtm is a module,
->> that would be appreciated. :)
-> 
-> Okay, now tested. I reproduced the failure and this patch fixes it. :)
+On Mon, Apr 7, 2014 at 3:53 PM, Paul Burton <paul.burton@imgtec.com> wrote:
+> On Mon, Apr 07, 2014 at 12:57:04PM +0200, Manuel Lauss wrote:
+>> This small patch makes the MIPS FPU emulator optional. The kernel
+>> kills float-users on systems without a hardware FPU by sending a SIGILL.
+>
+> One issue with this is that if someone runs a kernel with the FPU
+> emulator disabled on hardware that has an FPU, they're likely to hit
+> seemingly odd behaviour where FP works just fine until they hit a
+> condition the hardware doesn't support. To make it clear that using FP
+> without the emulator is a bad idea, perhaps it would be safer to disable
+> FP entirely rather than only the emulator? Then userland can die the
+> first time it uses FP instead of when it happens to operate on a
+> denormal.
 
-Just checking if this happened to fall through the cracks.
-The most recent (Apr4) linux-next build for mips still fails
-with this error.
+Very good point, I understand.
+How about this addon-patch?  I don't want to sprinkle the whole codebase
+with #ifdef MIPS_FPU_SUPPORT lines.
+Untested, since I don't have any hardware with FPU.
 
-http://kisskb.ellerman.id.au/kisskb/buildresult/10877159/
 
-Paul.
---
+> Unless there are FPUs which never generate an unimplemented operation
+> exception, in which case perhaps more Kconfig is needed to identify such
+> systems & allow the emulator to be disabled for those only.
 
-> 
-> -Kees
-> 
->> ---
->>  arch/mips/mm/cache.c |    1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
->> index fde7e56d13fe..b3f1df13d9f6 100644
->> --- a/arch/mips/mm/cache.c
->> +++ b/arch/mips/mm/cache.c
->> @@ -38,6 +38,7 @@ void (*__flush_kernel_vmap_range)(unsigned long vaddr, int size);
->>  void (*__invalidate_kernel_vmap_range)(unsigned long vaddr, int size);
->>
->>  EXPORT_SYMBOL_GPL(__flush_kernel_vmap_range);
->> +EXPORT_SYMBOL_GPL(flush_icache_range);
->>
->>  /* MIPS specific cache operations */
->>  void (*flush_cache_sigtramp)(unsigned long addr);
->> --
->> 1.7.9.5
->>
->>
->> --
->> Kees Cook
->> Chrome OS Security
-> 
-> 
-> 
+I'd rather keep the simple patch I sent, and maybe hide the option behind
+CONFIG_EXPERT so only people who want to save space and know what
+they're doing can disable it (e.g. OpenWRT).
+
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 3924396..52de5b8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2482,19 +2482,16 @@ config MIPS_O32_FP64_SUPPORT
+
+          If unsure, say N.
+
+-config MIPS_FPU_EMULATOR
+-       bool "MIPS FPU Emulator"
++config MIPS_FPU_SUPPORT
++       bool "MIPS FPU Support"
+        default y
+        help
+-         This option lets you disable the built-in MIPS FPU (Coprocessor 1)
+-         emulator, which handles floating-point instructions on processors
+-         without a hardware FPU.  It is generally a good idea to keep the
+-         emulator built-in, unless you are perfectly sure you have a
+-         complete soft-float environment.  With the emulator disabled, all
+-         users of float operations will be killed with an illegal instr-
+-         uction exception.
++         Enable support for floating point math, be it hardware FPU or the
++         kernels' FPU emulator.  With this option disabled, any user of
++         float math will be killed by illegal instruction exception,
++         regardless of the availability of hardware floating point support.
+
+-         Say Y, please.
++         Say Y, unless you have a pure soft-float userspace.
+
+ config USE_OF
+        bool
+diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
+index c5203bb..ed68719 100644
+--- a/arch/mips/include/asm/fpu.h
++++ b/arch/mips/include/asm/fpu.h
+@@ -156,13 +156,14 @@ static inline int init_fpu(void)
+        int ret = 0;
+
+        preempt_disable();
+-       if (cpu_has_fpu) {
+-               ret = __own_fpu();
+-               if (!ret)
+-                       _init_fpu();
+-       } else if (IS_ENABLED(CONFIG_MIPS_FPU_EMULATOR))
+-               fpu_emulator_init_fpu();
+-       else
++       if (IS_ENABLED(CONFIG_MIPS_FPU_SUPPORT)) {
++               if (cpu_has_fpu) {
++                       ret = __own_fpu();
++                       if (!ret)
++                               _init_fpu();
++               } else
++                       fpu_emulator_init_fpu();
++       } else
+                ret = SIGILL;
+
+        preempt_enable();
+
+
+Thanks,
+       Mano

@@ -1,49 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2014 20:10:46 +0200 (CEST)
-Received: from mail-ie0-f172.google.com ([209.85.223.172]:61074 "EHLO
-        mail-ie0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816199AbaDGSKpM9Ry8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Apr 2014 20:10:45 +0200
-Received: by mail-ie0-f172.google.com with SMTP id as1so6593177iec.31
-        for <linux-mips@linux-mips.org>; Mon, 07 Apr 2014 11:10:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=TRIwjzHLo8cDBNdbM52o/ePABAl24r2JgKGcZEjoU7Y=;
-        b=wSC6/W6wLiPqVCVGhrjMpbJgzCazcsbmuqgEMCA+0ycd4r+2bWzTfO3aGxBmGXt13m
-         nd/rwxCwUpjjnISirkGbHSnOpuhnILoTaFwyoa39AYRyM++9A9IwxTr013aUTYt3VA/w
-         vygEORZ3ds4Uro7gSZI3R2wgvid6IU2H3QNHc4ur42OwuAqwNul2Z/hsgmSTS15J1MNt
-         3AtAe35zP7teoiYG1D81+lWp0tdU7lusgV4Pg+LbhFQKCI2rAvggnRX/p+ti3phyMuuw
-         w8RDBlot0PRf1yqPH78vXX/q13StBq7JI/hQ9cdWJosWRAakvuj7IlZFJkjHos43eyXf
-         Cuxw==
-X-Received: by 10.50.43.170 with SMTP id x10mr21724149igl.20.1396894238666;
-        Mon, 07 Apr 2014 11:10:38 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id jy4sm31286562igb.17.2014.04.07.11.10.37
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 07 Apr 2014 11:10:38 -0700 (PDT)
-Message-ID: <5342EA1C.3010605@gmail.com>
-Date:   Mon, 07 Apr 2014 11:10:36 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 00:23:01 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:51335 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816886AbaDGWW6HJtbe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Apr 2014 00:22:58 +0200
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1WXHwP-0000dj-00; Tue, 08 Apr 2014 00:22:57 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id B430F1BB731; Tue,  8 Apr 2014 00:19:20 +0200 (CEST)
+Date:   Tue, 8 Apr 2014 00:19:20 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] DEC/SNI: O32 wrapper stack switching fixes
+Message-ID: <20140407221920.GA9418@alpha.franken.de>
+References: <alpine.LFD.2.11.1403312351450.27402@eddie.linux-mips.org>
 MIME-Version: 1.0
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [RFC PATCH v5 2/2] MIPS: optional floating point support
-References: <1396893214-298664-1-git-send-email-manuel.lauss@gmail.com> <1396893214-298664-2-git-send-email-manuel.lauss@gmail.com>
-In-Reply-To: <1396893214-298664-2-git-send-email-manuel.lauss@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1403312351450.27402@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39689
+X-archive-position: 39690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,30 +41,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/07/2014 10:53 AM, Manuel Lauss wrote:
-[...]
-> +#else	/* no CONFIG_MIPS_FPU_SUPPORT */
-> +static inline int do_dsemulret(struct pt_regs *xcp)
-> +{
-> +	return 0;	/* 0 means error, should never get here anyway */
-> +}
-> +
-> +static inline int fpu_emulator_cop1Handler(struct pt_regs *xcp,
-> +				struct mips_fpu_struct *ctx, int has_fpu,
-> +				void *__user *fault_addr)
-> +{
-> +	return SIGILL;	/* we don't speak MIPS FPU */
+On Tue, Apr 01, 2014 at 12:14:41AM +0100, Maciej W. Rozycki wrote:
+>  Please verify this works for your system.
 
-In a message in the other branch, Ralf suggested emitting very ugly 
-messages in the case that something tries to use the FPU.
+works on a RM200 system (after removing stupid EARLY_CRAP_8250 select).
 
-This code doesn't quite satisfy that request.
+Only strange thing I see is
 
+WARNING: CPU: 0 PID: 0 at /home/tsbogend/mips/work/linux/arch/mips/mm/uasm.c:97 build_insn+0x4c4/0x570()
+Micro-assembler field overflow
 
-> +}
-> +#endif	/* CONFIG_MIPS_FPU_SUPPORT */
-> +
->   int process_fpemu_return(int sig, void __user *fault_addr);
->
->   /*
->
+Happens twice one for build_clear_cache() and build_copy_cache(). 
+CPU is is R4600PC 2.0.
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

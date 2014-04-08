@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 16:44:41 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:45729 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6821285AbaDHOojpBh4c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Apr 2014 16:44:39 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s38Eib9H001472;
-        Tue, 8 Apr 2014 16:44:37 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s38EiaN8001471;
-        Tue, 8 Apr 2014 16:44:36 +0200
-Date:   Tue, 8 Apr 2014 16:44:36 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/2] Remove SMTC Support
-Message-ID: <20140408144436.GT17197@linux-mips.org>
-References: <1396954750-24762-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 17:09:00 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.89.28.115]:47067 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6821285AbaDHPI5Wx3wx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 17:08:57 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 65A80CA4361F9
+        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 16:08:48 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Tue, 8 Apr 2014 16:08:50 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.89) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Tue, 8 Apr 2014 16:08:49 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 0/2] sead3 defconfig updates
+Date:   Tue, 8 Apr 2014 16:09:01 +0100
+Message-ID: <1396969743-454-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1396954750-24762-1-git-send-email-markos.chandras@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.89]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39724
+X-archive-position: 39725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,20 +43,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 08, 2014 at 11:59:08AM +0100, Markos Chandras wrote:
+Hi,
 
-> This patchset removes the MIPS SMTC support.
+This patchset regenerates the sead3 defconfigs and enables DEVTMPFS.
 
-While not really a fix I've applied this to my 3.15 fix branch.  At least
-it will avoid us having to fix it up for 3.15 :-)
+DEVTMPFS is already enabled on Malta defconfigs since
+68f30ba7f8b9d666d1218eec97822ade0f23d9c3
 
-That said, SMTC was a remarkable hack and ingenious proof of the MT
-architecture.
+Markos Chandras (2):
+  MIPS: regenerate sead3 defconfigs
+  MIPS: sead3: Enable DEVTMPFS
 
-Still a sore spot is CONFIG_MIPS_MT_FPAFF with all its uglyness it
-scatters over the tree, in particular the wrapper around the syscall
-entry point.  I wonder if nowadays with the work that's been done on
-supporting inhomogenous SMP systems (ARM biglittle) there's now a
-better way to handle this sort of issue.
+ arch/mips/configs/sead3_defconfig      | 2 +-
+ arch/mips/configs/sead3micro_defconfig | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-  Ralf
+-- 
+1.9.1

@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 12:54:37 +0200 (CEST)
-Received: from mail-ee0-f44.google.com ([74.125.83.44]:61168 "EHLO
-        mail-ee0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822085AbaDHKyOyY9xy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 12:54:14 +0200
-Received: by mail-ee0-f44.google.com with SMTP id e49so521995eek.31
-        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 03:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=4/+wq7tJlljPttMeWVPvesqqV69AAsHI0rd2mD5w9kk=;
-        b=RutzU82qe/v44SucWa8+Qizbeca82wbXJlbBSfDScpvmNhe4xlmt7Fv0InSGxk1jvf
-         AEKNMgpFGWdmdbawHNtHaBwJ+MHBO6WDlSSD3WdGgW2OmNFgfZL0f09KA5zWzNqfaP47
-         1q2pQwIpCcOrobhry34OVbyi2x+hYDYLXKsjH4guLX8s2FuIRRPDPcDtfwyawsdrLLqI
-         +VixfVqv5bq4uIRRi53EMrcv1qalWWtaAlUzT0DNqlYYB91XP3dmOOgMxiV0XdacGq+z
-         v3y/RliyYCWIkQdJptu3XnUQyn4d6XYqqhPd1HRuPoG8vdGPtY7meTNbRkzxsn7GfyIg
-         vRkA==
-X-Received: by 10.15.43.77 with SMTP id w53mr3764397eev.10.1396954449680;
-        Tue, 08 Apr 2014 03:54:09 -0700 (PDT)
-Received: from localhost.localdomain (p4FD8D7E8.dip0.t-ipconnect.de. [79.216.215.232])
-        by mx.google.com with ESMTPSA id w12sm3860178eez.36.2014.04.08.03.54.08
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 08 Apr 2014 03:54:09 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v6 2/2] MIPS: optional floating point support
-Date:   Tue,  8 Apr 2014 12:54:04 +0200
-Message-Id: <1396954444-392675-2-git-send-email-manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 12:59:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.89.28.115]:52149 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816019AbaDHK7H44N1b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 12:59:07 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id DDC1F3371D56D
+        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 11:58:58 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Tue, 8 Apr
+ 2014 11:59:00 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Tue, 8 Apr 2014 11:59:00 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.89) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Tue, 8 Apr 2014 11:58:59 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 0/2] Remove SMTC Support
+Date:   Tue, 8 Apr 2014 11:59:08 +0100
+Message-ID: <1396954750-24762-1-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1396954444-392675-1-git-send-email-manuel.lauss@gmail.com>
-References: <1396954444-392675-1-git-send-email-manuel.lauss@gmail.com>
-Return-Path: <manuel.lauss@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.89]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39697
+X-archive-position: 39698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,139 +46,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This small patch makes the floating point support and the FPU-emulator
-optional.  A Warning will be printed once when first use of floating
-point is detected.
+Hi,
 
-Disabling fpu support shrinks vmlinux by about 54kBytes (32bit,
-optimizing for size), and it is mainly useful for embedded devices
-which have no need for float math (e.g. routers).
+This patchset removes the MIPS SMTC support.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-v6: complain in kernel log about first attempted use of float ops.
-v5: now disable float support completely to avoid sudden program crashes
-    on buggy fpus when the fpu emulator cannot take over (suggested by
-    Paul Burton).
-v4: rediffed because of patch 1/2, should now work with micromips as well
-v3: updated patch description with size savings.
-v2: incorporated changes suggested by Jonas Gorski
-    force the fpu emulator on for micromips: relocating the parts
-    of the mmips code in the emulator to other areas would be a
-    much larger change; I went the cheap route instead with this.
+It's for the upstream-sfr/mips-for-linux-next tree
 
- arch/mips/Kbuild                     |  2 +-
- arch/mips/Kconfig                    | 11 +++++++++++
- arch/mips/include/asm/fpu.h          | 25 +++++++++++++++++--------
- arch/mips/include/asm/fpu_emulator.h | 15 +++++++++++++++
- 4 files changed, 44 insertions(+), 9 deletions(-)
+Markos Chandras (2):
+  MIPS: Remove SMTC Support
+  MIPS: Kconfig: Make MIPS_MT_SMP a regular Kconfig symbol
 
-diff --git a/arch/mips/Kbuild b/arch/mips/Kbuild
-index d2cfe45..730e0a7 100644
---- a/arch/mips/Kbuild
-+++ b/arch/mips/Kbuild
-@@ -16,7 +16,7 @@ obj- := $(platform-)
- 
- obj-y += kernel/
- obj-y += mm/
--obj-y += math-emu/
-+obj-$(CONFIG_MIPS_FPU_SUPPORT) += math-emu/
- 
- ifdef CONFIG_KVM
- obj-y += kvm/
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9b53358..c8040db 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2482,6 +2482,17 @@ config MIPS_O32_FP64_SUPPORT
- 
- 	  If unsure, say N.
- 
-+config MIPS_FPU_SUPPORT
-+	bool "MIPS FPU Support"
-+	default y
-+	help
-+	  Support for floating point registers and FP-hardware, and also
-+	  the in-kernel FPU emulator.  Disabling this option will result
-+	  in all uses of floating point hardware to be killed with an
-+	  illegal instruction exception, and about a 50kB smaller kernel.
-+
-+	  Say Y.
-+
- config USE_OF
- 	bool
- 	select OF
-diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-index 4d86b72..c3d418d 100644
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -154,17 +154,26 @@ static inline void lose_fpu(int save)
- static inline int init_fpu(void)
- {
- 	int ret = 0;
-+	static int first = 1;
- 
--	preempt_disable();
--	if (cpu_has_fpu) {
--		ret = __own_fpu();
--		if (!ret)
--			_init_fpu();
-+	if (IS_ENABLED(CONFIG_MIPS_FPU_SUPPORT)) {
-+		preempt_disable();
-+		if (cpu_has_fpu) {
-+			ret = __own_fpu();
-+			if (!ret)
-+				_init_fpu();
-+		} else
-+			fpu_emulator_init_fpu();
-+		preempt_enable();
- 	} else {
--		fpu_emulator_init_fpu();
-+		if (likely(first)) {
-+			first = 0;
-+			pr_err("FPU support disabled, but FPU use "
-+			       "detected! Make sure you have a "
-+			       "softfloat userspace!\n");
-+		}
-+		ret = SIGILL;
- 	}
--
--	preempt_enable();
- 	return ret;
- }
- 
-diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 283e6f3..552a054 100644
---- a/arch/mips/include/asm/fpu_emulator.h
-+++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -27,6 +27,7 @@
- #include <asm/inst.h>
- #include <asm/local.h>
- 
-+#ifdef CONFIG_MIPS_FPU_SUPPORT
- #ifdef CONFIG_DEBUG_FS
- 
- struct mips_fpu_emulator_stats {
-@@ -57,6 +58,20 @@ extern int do_dsemulret(struct pt_regs *xcp);
- extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
- 				    struct mips_fpu_struct *ctx, int has_fpu,
- 				    void *__user *fault_addr);
-+#else	/* no CONFIG_MIPS_FPU_SUPPORT */
-+static inline int do_dsemulret(struct pt_regs *xcp)
-+{
-+	return 0;	/* 0 means error, should never get here anyway */
-+}
-+
-+static inline int fpu_emulator_cop1Handler(struct pt_regs *xcp,
-+				struct mips_fpu_struct *ctx, int has_fpu,
-+				void *__user *fault_addr)
-+{
-+	return SIGILL;	/* we don't speak MIPS FPU */
-+}
-+#endif	/* CONFIG_MIPS_FPU_SUPPORT */
-+
- int process_fpemu_return(int sig, void __user *fault_addr);
- 
- /*
+ arch/mips/Kconfig                                  |   64 +-
+ arch/mips/Kconfig.debug                            |    9 -
+ arch/mips/configs/maltasmtc_defconfig              |  196 ---
+ arch/mips/include/asm/asmmacro.h                   |   22 +-
+ arch/mips/include/asm/cpu-info.h                   |   11 +-
+ arch/mips/include/asm/fixmap.h                     |    4 -
+ arch/mips/include/asm/irq.h                        |   96 --
+ arch/mips/include/asm/irqflags.h                   |   31 +-
+ .../include/asm/mach-malta/kernel-entry-init.h     |   30 -
+ .../include/asm/mach-sead3/kernel-entry-init.h     |   31 -
+ arch/mips/include/asm/mips_mt.h                    |    2 +-
+ arch/mips/include/asm/mipsregs.h                   |  132 --
+ arch/mips/include/asm/mmu_context.h                |  108 +-
+ arch/mips/include/asm/module.h                     |    8 +-
+ arch/mips/include/asm/ptrace.h                     |    3 -
+ arch/mips/include/asm/r4kcache.h                   |    2 +-
+ arch/mips/include/asm/smtc.h                       |   78 -
+ arch/mips/include/asm/smtc_ipi.h                   |  129 --
+ arch/mips/include/asm/smtc_proc.h                  |   23 -
+ arch/mips/include/asm/stackframe.h                 |  196 +--
+ arch/mips/include/asm/thread_info.h                |   11 +-
+ arch/mips/include/asm/time.h                       |    5 +-
+ arch/mips/kernel/Makefile                          |    2 -
+ arch/mips/kernel/asm-offsets.c                     |    3 -
+ arch/mips/kernel/cevt-r4k.c                        |   15 -
+ arch/mips/kernel/cevt-smtc.c                       |  324 -----
+ arch/mips/kernel/cpu-probe.c                       |    2 +-
+ arch/mips/kernel/entry.S                           |   38 -
+ arch/mips/kernel/genex.S                           |   55 +-
+ arch/mips/kernel/head.S                            |   58 +-
+ arch/mips/kernel/i8259.c                           |    4 -
+ arch/mips/kernel/idle.c                            |   10 -
+ arch/mips/kernel/irq-msc01.c                       |    5 -
+ arch/mips/kernel/irq.c                             |   18 -
+ arch/mips/kernel/mips-mt-fpaff.c                   |    2 +-
+ arch/mips/kernel/mips-mt.c                         |   18 +-
+ arch/mips/kernel/proc.c                            |    1 -
+ arch/mips/kernel/process.c                         |    7 -
+ arch/mips/kernel/r4k_switch.S                      |   33 -
+ arch/mips/kernel/rtlx-mt.c                         |    1 -
+ arch/mips/kernel/smp-cmp.c                         |    9 +-
+ arch/mips/kernel/smp.c                             |   13 -
+ arch/mips/kernel/smtc-asm.S                        |  133 --
+ arch/mips/kernel/smtc-proc.c                       |  102 --
+ arch/mips/kernel/smtc.c                            | 1528 --------------------
+ arch/mips/kernel/sync-r4k.c                        |   17 -
+ arch/mips/kernel/time.c                            |    1 -
+ arch/mips/kernel/traps.c                           |   72 +-
+ arch/mips/kernel/vpe-mt.c                          |   14 +-
+ arch/mips/lantiq/irq.c                             |    4 +-
+ arch/mips/lib/mips-atomic.c                        |   46 +-
+ arch/mips/mm/c-r4k.c                               |    4 +-
+ arch/mips/mm/init.c                                |   54 +-
+ arch/mips/mm/tlb-r4k.c                             |   19 -
+ arch/mips/mti-malta/Makefile                       |    3 -
+ arch/mips/mti-malta/malta-init.c                   |    5 -
+ arch/mips/mti-malta/malta-int.c                    |   19 -
+ arch/mips/mti-malta/malta-setup.c                  |    4 -
+ arch/mips/mti-malta/malta-smtc.c                   |  162 ---
+ arch/mips/pmcs-msp71xx/Makefile                    |    1 -
+ arch/mips/pmcs-msp71xx/msp_irq.c                   |   12 +-
+ arch/mips/pmcs-msp71xx/msp_irq_cic.c               |   10 +-
+ arch/mips/pmcs-msp71xx/msp_irq_per.c               |    6 +-
+ arch/mips/pmcs-msp71xx/msp_setup.c                 |    8 -
+ arch/mips/pmcs-msp71xx/msp_smtc.c                  |  104 --
+ 65 files changed, 53 insertions(+), 4084 deletions(-)
+ delete mode 100644 arch/mips/configs/maltasmtc_defconfig
+ delete mode 100644 arch/mips/include/asm/smtc.h
+ delete mode 100644 arch/mips/include/asm/smtc_ipi.h
+ delete mode 100644 arch/mips/include/asm/smtc_proc.h
+ delete mode 100644 arch/mips/kernel/cevt-smtc.c
+ delete mode 100644 arch/mips/kernel/smtc-asm.S
+ delete mode 100644 arch/mips/kernel/smtc-proc.c
+ delete mode 100644 arch/mips/kernel/smtc.c
+ delete mode 100644 arch/mips/mti-malta/malta-smtc.c
+ delete mode 100644 arch/mips/pmcs-msp71xx/msp_smtc.c
+
 -- 
 1.9.1

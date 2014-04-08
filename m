@@ -1,39 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 13:52:24 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:58512 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6820489AbaDHLv6vCJN1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Apr 2014 13:51:58 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 08F58283EC3
-        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 13:51:13 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qg0-f49.google.com (mail-qg0-f49.google.com [209.85.192.49])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 7B737280041
-        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 13:51:11 +0200 (CEST)
-Received: by mail-qg0-f49.google.com with SMTP id e89so755387qgf.22
-        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 04:51:54 -0700 (PDT)
-X-Received: by 10.224.131.132 with SMTP id x4mr3524657qas.97.1396957914413;
- Tue, 08 Apr 2014 04:51:54 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 16:43:31 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45721 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816417AbaDHOn2SMlWK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 16:43:28 +0200
+Date:   Tue, 8 Apr 2014 15:43:28 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Matt Turner <mattst88@gmail.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/3] MIPS: __delay CPU_DADDI_WORKAROUNDS bug fix
+In-Reply-To: <CAEdQ38GaAvF+arbHQnuo3WJdeoKGUbUZ3dS+OQpffhi7dxvP+A@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1404081542220.2730@eddie.linux-mips.org>
+References: <alpine.LFD.2.11.1404010020510.27402@eddie.linux-mips.org> <CAEdQ38GaAvF+arbHQnuo3WJdeoKGUbUZ3dS+OQpffhi7dxvP+A@mail.gmail.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Received: by 10.140.109.97 with HTTP; Tue, 8 Apr 2014 04:51:34 -0700 (PDT)
-In-Reply-To: <1396957079-403359-2-git-send-email-manuel.lauss@gmail.com>
-References: <1396957079-403359-1-git-send-email-manuel.lauss@gmail.com> <1396957079-403359-2-git-send-email-manuel.lauss@gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Tue, 8 Apr 2014 13:51:34 +0200
-Message-ID: <CAOiHx=kKhtr-Q=JEgSVdEhbuaWqcL9jB0QQFckFGn6KF11YOLg@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] MIPS: optional floating point support
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39722
+X-archive-position: 39723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,49 +36,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 8, 2014 at 1:37 PM, Manuel Lauss <manuel.lauss@gmail.com> wrote:
-> (snip)
-> diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-> index 4d86b72..954f52d 100644
-> --- a/arch/mips/include/asm/fpu.h
-> +++ b/arch/mips/include/asm/fpu.h
-> @@ -155,16 +155,24 @@ static inline int init_fpu(void)
->  {
->         int ret = 0;
->
-> -       preempt_disable();
-> -       if (cpu_has_fpu) {
-> -               ret = __own_fpu();
-> -               if (!ret)
-> -                       _init_fpu();
-> +       if (IS_ENABLED(CONFIG_MIPS_FPU_SUPPORT)) {
-> +               preempt_disable();
-> +               if (cpu_has_fpu) {
-> +                       ret = __own_fpu();
-> +                       if (!ret)
-> +                               _init_fpu();
-> +               } else {
-> +                       fpu_emulator_init_fpu();
-> +               }
-> +               preempt_enable();
->         } else {
-> -               fpu_emulator_init_fpu();
-> +               static int first = 1;
+On Wed, 2 Apr 2014, Matt Turner wrote:
 
-I really hate to nitpick again but ... empty line after variable
-definition, please?
+> No comments about the patch. I'm simply curious why you don't use git?
 
-> +               if (likely(first)) {
-> +                       first = 0;
-> +                       pr_err("FPU support disabled, but FPU use detected!\n");
-> +               }
-> +               ret = SIGILL;
->         }
-> -
-> -       preempt_enable();
->         return ret;
->  }
+ The tools I use work just fine for me, I don't feel compelled to switch.
 
-
-Regards
-Jonas
+  Maciej

@@ -1,43 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 20:39:38 +0200 (CEST)
-Received: from mail-qg0-f45.google.com ([209.85.192.45]:51144 "EHLO
-        mail-qg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817327AbaDHSjf5nME3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 20:39:35 +0200
-Received: by mail-qg0-f45.google.com with SMTP id j5so1204210qga.32
-        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 11:39:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=FBDpjCQaaii3JqBUAuTEQsIILnmAkzJAuB7RSPh+Szg=;
-        b=G1PQUpF+8q2wUHiVPXn5Spc9McXAEARImR2mi3MTixb38RGVjNEv7Zvgvfu2xrz86G
-         bHfE/LwwhGfRAPNnb+ByFmXa8+Jt6nBDfeOn3X5YUMXVjpJDEVZ+df0QFbyJFmuQBBBP
-         bdbHjURv9CMouFtXnz4x6pM4n9wrvUK09r+BWGd4LOM3sZ2n6O88MgyHhH/Jo9PzPKjd
-         iFbZViWppOG6gCH/s65Lzr29m7lMHtjQdrr8oia7xltD96AQjqBYNFDOQQtIUQQbpCOo
-         foo61Qy1oh0IkksaQztnYsSoxKCvwVnVw8T6slUa08WPYzh5rYHsk352oSXyhDH31e4B
-         4asw==
-X-Received: by 10.224.47.130 with SMTP id n2mr6863110qaf.26.1396982369872;
- Tue, 08 Apr 2014 11:39:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2014 00:49:09 +0200 (CEST)
+Received: from gateway01.websitewelcome.com ([67.18.53.19]:42057 "EHLO
+        gateway01.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821285AbaDHWtHEPJ0g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Apr 2014 00:49:07 +0200
+Received: by gateway01.websitewelcome.com (Postfix, from userid 5007)
+        id 12D1AD41A9326; Tue,  8 Apr 2014 17:49:05 -0500 (CDT)
+Received: from gator3163.hostgator.com (gator3163.hostgator.com [50.87.144.199])
+        by gateway01.websitewelcome.com (Postfix) with ESMTP id EC0CED41A9275
+        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 17:49:04 -0500 (CDT)
+Received: from [216.239.45.67] (port=51876 helo=kkissell.mtv.corp.google.com)
+        by gator3163.hostgator.com with esmtpsa (TLSv1:DHE-RSA-CAMELLIA256-SHA:256)
+        (Exim 4.80.1)
+        (envelope-from <kevink@paralogos.com>)
+        id 1WXepE-0000p0-1f
+        for linux-mips@linux-mips.org; Tue, 08 Apr 2014 17:49:04 -0500
+Message-ID: <53447CDF.3000902@paralogos.com>
+Date:   Tue, 08 Apr 2014 15:49:03 -0700
+From:   "Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-Received: by 10.96.79.69 with HTTP; Tue, 8 Apr 2014 11:38:49 -0700 (PDT)
-In-Reply-To: <1396957635-27071-1-git-send-email-markos.chandras@imgtec.com>
-References: <1396957635-27071-1-git-send-email-markos.chandras@imgtec.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Tue, 8 Apr 2014 11:38:49 -0700
-Message-ID: <CAGVrzcZXUWmWO3iuDGPPtKaT1O5qr50LpeSPPHxFCqovkQXzag@mail.gmail.com>
-Subject: Re: [PATCH 00/14] Initial BPF-JIT support for MIPS
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 0/2] Remove SMTC Support
+References: <1396954750-24762-1-git-send-email-markos.chandras@imgtec.com> <20140408144436.GT17197@linux-mips.org>
+In-Reply-To: <20140408144436.GT17197@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator3163.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+X-BWhitelist: no
+X-Source-IP: 216.239.45.67
+X-Exim-ID: 1WXepE-0000p0-1f
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (kkissell.mtv.corp.google.com) [216.239.45.67]:51876
+X-Source-Auth: kevink@kevink.net
+X-Email-Count: 5
+X-Source-Cap: a2tpc3NlbGw7a2tpc3NlbGw7Z2F0b3IzMTYzLmhvc3RnYXRvci5jb20=
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39730
+X-archive-position: 39731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,70 +61,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
-
-2014-04-08 4:47 GMT-07:00 Markos Chandras <markos.chandras@imgtec.com>:
-> Hi,
+On 04/08/2014 07:44 AM, Ralf Baechle wrote:
+> On Tue, Apr 08, 2014 at 11:59:08AM +0100, Markos Chandras wrote:
 >
-> This adds support for BPF-JIT for MIPS. Tested on mips32 LE/BE and mips64 BE
-> with a few networking tools such as tcpdump and dhcp but not all opcodes have
-> been tested as far as I can tell. There are a few optimizations left to be made
-> (fastpath for load operations instead of calling the helper functions) but
-> these can be added later on. If someone has complex network setups in place and
-> would like to give it a try, that would be much appreciated.
+>> This patchset removes the MIPS SMTC support.
+> While not really a fix I've applied this to my 3.15 fix branch.  At least
+> it will avoid us having to fix it up for 3.15 :-)
 >
-> This patchset is for the upstream-sfr/mips-for-linux-next tree
+> That said, SMTC was a remarkable hack and ingenious proof of the MT
+> architecture.
+Sigh. I was rather proud of it.  If it's being excised (and I don't 
+begrudge people the right to deprecate it), I guess it means I can 
+unsubscribe from the mailing list, as supporting MT hacks was the main 
+reason I hung around at all after leaving MIPS.
+> Still a sore spot is CONFIG_MIPS_MT_FPAFF with all its uglyness it
+> scatters over the tree, in particular the wrapper around the syscall
+> entry point.  I wonder if nowadays with the work that's been done on
+> supporting inhomogenous SMP systems (ARM biglittle) there's now a
+> better way to handle this sort of issue.
+Even at the time, I'd identified a cleaner way to deal with this sort of 
+thing, but the maintainer for the code in question wouldn't give me the 
+time of day, so I solved the problem as well as the politics of Linux 
+allowed.  As I understand it, the MIPS FP Affinity hack still 
+outperformed some rather more complex solutions that contemporary 
+inhomogeneous (is that different from heterogeneous?) MT machines (e.g. 
+Niagara) were using.
 
-You should have probably CC'd netdev@vger.kernel.org to get their
-review on the specific JIT implementation.
-
-BPF_JIT is made conditional to MIPS32/64R2 processors, I could not
-spot easily in the implementation whether this is because you are
-using r2-only instructions, or this is just the targets you tested. Is
-there any chance to make that work on MIPS32r1 CPUs for instance?
-Those are used in low-end devices which could benefit from such a
-performance boost.
-
-Thanks!
-
->
-> Markos Chandras (14):
->   MIPS: uasm: Add u3u2u1 instruction builders
->   MIPS: uasm: Add u2u1 instruction builders
->   MIPS: uasm: Add sllv uasm instruction
->   MIPS: uasm: Add srlv uasm instruction
->   MIPS: uasm: Add divu uasm instruction
->   MIPS: uasm: Add mfhi uasm instruction
->   MIPS: uasm: Add jalr uasm instruction
->   MIPS: uasm: Add sltiu uasm instruction
->   MIPS: uasm: Add sltu uasm instruction
->   MIPS: uasm: Add wsbh uasm instruction
->   MIPS: uasm: Add lh uam instruction
->   MIPS: uasm: Add mul uasm instruction
->   MIPS: net: Add BPF JIT
->   MIPS: Enable the BPF_JIT symbol for MIPS
->
->  arch/mips/Kbuild                  |    1 +
->  arch/mips/Kconfig                 |    1 +
->  arch/mips/include/asm/uasm.h      |   16 +
->  arch/mips/include/uapi/asm/inst.h |   17 +
->  arch/mips/mm/uasm-micromips.c     |   10 +
->  arch/mips/mm/uasm-mips.c          |   10 +
->  arch/mips/mm/uasm.c               |   39 +-
->  arch/mips/net/Makefile            |    3 +
->  arch/mips/net/bpf_jit.c           | 1327 +++++++++++++++++++++++++++++++++++++
->  arch/mips/net/bpf_jit.h           |   45 ++
->  10 files changed, 1462 insertions(+), 7 deletions(-)
->  create mode 100644 arch/mips/net/Makefile
->  create mode 100644 arch/mips/net/bpf_jit.c
->  create mode 100644 arch/mips/net/bpf_jit.h
->
-> --
-> 1.9.1
->
->
-
-
-
--- 
-Florian
+/K.

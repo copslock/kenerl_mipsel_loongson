@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 12:54:17 +0200 (CEST)
-Received: from mail-ee0-f52.google.com ([74.125.83.52]:33313 "EHLO
-        mail-ee0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816019AbaDHKyODe-8C (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 12:54:37 +0200 (CEST)
+Received: from mail-ee0-f44.google.com ([74.125.83.44]:61168 "EHLO
+        mail-ee0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822085AbaDHKyOyY9xy (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 12:54:14 +0200
-Received: by mail-ee0-f52.google.com with SMTP id e49so530867eek.11
-        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 03:54:08 -0700 (PDT)
+Received: by mail-ee0-f44.google.com with SMTP id e49so521995eek.31
+        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 03:54:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=z2KI2qAWMdiTwXXS+pIQYY8+tZxpBKshYyNoiN1I3UA=;
-        b=jQivxi6uz5CWPOEg+ljt5QAC8LnaDnn7FWbSCBmdoPqL7U0x57rn+7HCLebyPjCLMA
-         TVIpatQzerde5iveW7JMWVSv1+KABztrxxSytR4kBHMLQPX47lcTnOmOVeJwhmO8IHEO
-         bPc1kWq8MMUH+FxQ75FXFWc4DuExcu2M0AyFZpzFM0KgibSGsYSCC3px8eqE2XPaHCN2
-         hzUXs4MOSQL52QVKmtVabs41KPtsSsgQqBN7VUTuhGZ1aI7uX8fs6Jh943Bn7XE4eLRE
-         u16l6jE2a+klVVESVN3svz5hR4Up9CGbnxI4KtJNQDiRvqAOxrWYqjDeThMl/8HkN42s
-         eWmg==
-X-Received: by 10.14.87.201 with SMTP id y49mr2350189eee.62.1396954448530;
-        Tue, 08 Apr 2014 03:54:08 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=4/+wq7tJlljPttMeWVPvesqqV69AAsHI0rd2mD5w9kk=;
+        b=RutzU82qe/v44SucWa8+Qizbeca82wbXJlbBSfDScpvmNhe4xlmt7Fv0InSGxk1jvf
+         AEKNMgpFGWdmdbawHNtHaBwJ+MHBO6WDlSSD3WdGgW2OmNFgfZL0f09KA5zWzNqfaP47
+         1q2pQwIpCcOrobhry34OVbyi2x+hYDYLXKsjH4guLX8s2FuIRRPDPcDtfwyawsdrLLqI
+         +VixfVqv5bq4uIRRi53EMrcv1qalWWtaAlUzT0DNqlYYB91XP3dmOOgMxiV0XdacGq+z
+         v3y/RliyYCWIkQdJptu3XnUQyn4d6XYqqhPd1HRuPoG8vdGPtY7meTNbRkzxsn7GfyIg
+         vRkA==
+X-Received: by 10.15.43.77 with SMTP id w53mr3764397eev.10.1396954449680;
+        Tue, 08 Apr 2014 03:54:09 -0700 (PDT)
 Received: from localhost.localdomain (p4FD8D7E8.dip0.t-ipconnect.de. [79.216.215.232])
-        by mx.google.com with ESMTPSA id w12sm3860178eez.36.2014.04.08.03.54.07
+        by mx.google.com with ESMTPSA id w12sm3860178eez.36.2014.04.08.03.54.08
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 08 Apr 2014 03:54:07 -0700 (PDT)
+        Tue, 08 Apr 2014 03:54:09 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@gmail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v6 1/2] MIPS: move mmips branch support code out of the fpu emu code
-Date:   Tue,  8 Apr 2014 12:54:03 +0200
-Message-Id: <1396954444-392675-1-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH v6 2/2] MIPS: optional floating point support
+Date:   Tue,  8 Apr 2014 12:54:04 +0200
+Message-Id: <1396954444-392675-2-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1396954444-392675-1-git-send-email-manuel.lauss@gmail.com>
+References: <1396954444-392675-1-git-send-email-manuel.lauss@gmail.com>
 Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39696
+X-archive-position: 39697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,485 +52,139 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-moves mm_isBranchInstr() from math-emu code to branch code.  Required
-for a follow-on patch to disable the math-emu code completely.
+This small patch makes the floating point support and the FPU-emulator
+optional.  A Warning will be printed once when first use of floating
+point is detected.
+
+Disabling fpu support shrinks vmlinux by about 54kBytes (32bit,
+optimizing for size), and it is mainly useful for embedded devices
+which have no need for float math (e.g. routers).
 
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
-v4/5/6: initial release, no changes
+v6: complain in kernel log about first attempted use of float ops.
+v5: now disable float support completely to avoid sudden program crashes
+    on buggy fpus when the fpu emulator cannot take over (suggested by
+    Paul Burton).
+v4: rediffed because of patch 1/2, should now work with micromips as well
+v3: updated patch description with size savings.
+v2: incorporated changes suggested by Jonas Gorski
+    force the fpu emulator on for micromips: relocating the parts
+    of the mmips code in the emulator to other areas would be a
+    much larger change; I went the cheap route instead with this.
 
- arch/mips/include/asm/branch.h       |   2 +
- arch/mips/include/asm/fpu_emulator.h |   2 -
- arch/mips/kernel/branch.c            | 200 +++++++++++++++++++++++++++++++++++
- arch/mips/math-emu/cp1emu.c          | 198 ----------------------------------
- 4 files changed, 202 insertions(+), 200 deletions(-)
+ arch/mips/Kbuild                     |  2 +-
+ arch/mips/Kconfig                    | 11 +++++++++++
+ arch/mips/include/asm/fpu.h          | 25 +++++++++++++++++--------
+ arch/mips/include/asm/fpu_emulator.h | 15 +++++++++++++++
+ 4 files changed, 44 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/include/asm/branch.h b/arch/mips/include/asm/branch.h
-index e28a3e0..1c6b5c2 100644
---- a/arch/mips/include/asm/branch.h
-+++ b/arch/mips/include/asm/branch.h
-@@ -17,6 +17,8 @@ extern int __compute_return_epc_for_insn(struct pt_regs *regs,
- 					 union mips_instruction insn);
- extern int __microMIPS_compute_return_epc(struct pt_regs *regs);
- extern int __MIPS16e_compute_return_epc(struct pt_regs *regs);
-+int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
-+		     unsigned long *contpc);
+diff --git a/arch/mips/Kbuild b/arch/mips/Kbuild
+index d2cfe45..730e0a7 100644
+--- a/arch/mips/Kbuild
++++ b/arch/mips/Kbuild
+@@ -16,7 +16,7 @@ obj- := $(platform-)
  
+ obj-y += kernel/
+ obj-y += mm/
+-obj-y += math-emu/
++obj-$(CONFIG_MIPS_FPU_SUPPORT) += math-emu/
  
- static inline int delay_slot(struct pt_regs *regs)
+ ifdef CONFIG_KVM
+ obj-y += kvm/
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 9b53358..c8040db 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2482,6 +2482,17 @@ config MIPS_O32_FP64_SUPPORT
+ 
+ 	  If unsure, say N.
+ 
++config MIPS_FPU_SUPPORT
++	bool "MIPS FPU Support"
++	default y
++	help
++	  Support for floating point registers and FP-hardware, and also
++	  the in-kernel FPU emulator.  Disabling this option will result
++	  in all uses of floating point hardware to be killed with an
++	  illegal instruction exception, and about a 50kB smaller kernel.
++
++	  Say Y.
++
+ config USE_OF
+ 	bool
+ 	select OF
+diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
+index 4d86b72..c3d418d 100644
+--- a/arch/mips/include/asm/fpu.h
++++ b/arch/mips/include/asm/fpu.h
+@@ -154,17 +154,26 @@ static inline void lose_fpu(int save)
+ static inline int init_fpu(void)
+ {
+ 	int ret = 0;
++	static int first = 1;
+ 
+-	preempt_disable();
+-	if (cpu_has_fpu) {
+-		ret = __own_fpu();
+-		if (!ret)
+-			_init_fpu();
++	if (IS_ENABLED(CONFIG_MIPS_FPU_SUPPORT)) {
++		preempt_disable();
++		if (cpu_has_fpu) {
++			ret = __own_fpu();
++			if (!ret)
++				_init_fpu();
++		} else
++			fpu_emulator_init_fpu();
++		preempt_enable();
+ 	} else {
+-		fpu_emulator_init_fpu();
++		if (likely(first)) {
++			first = 0;
++			pr_err("FPU support disabled, but FPU use "
++			       "detected! Make sure you have a "
++			       "softfloat userspace!\n");
++		}
++		ret = SIGILL;
+ 	}
+-
+-	preempt_enable();
+ 	return ret;
+ }
+ 
 diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 2abb587..283e6f3 100644
+index 283e6f3..552a054 100644
 --- a/arch/mips/include/asm/fpu_emulator.h
 +++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -58,8 +58,6 @@ extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
+@@ -27,6 +27,7 @@
+ #include <asm/inst.h>
+ #include <asm/local.h>
+ 
++#ifdef CONFIG_MIPS_FPU_SUPPORT
+ #ifdef CONFIG_DEBUG_FS
+ 
+ struct mips_fpu_emulator_stats {
+@@ -57,6 +58,20 @@ extern int do_dsemulret(struct pt_regs *xcp);
+ extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
  				    struct mips_fpu_struct *ctx, int has_fpu,
  				    void *__user *fault_addr);
- int process_fpemu_return(int sig, void __user *fault_addr);
--int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
--		     unsigned long *contpc);
- 
- /*
-  * Instruction inserted following the badinst to further tag the sequence
-diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
-index 4d78bf4..47eadf0 100644
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -19,6 +19,13 @@
- #include <asm/ptrace.h>
- #include <asm/uaccess.h>
- 
-+/* microMIPS bitfields */
-+#define MM_POOL32A_MINOR_MASK	0x3f
-+#define MM_POOL32A_MINOR_SHIFT	0x6
-+
-+/* (microMIPS) Convert 16-bit register encoding to 32-bit register encoding. */
-+static const unsigned int reg16to32map[8] = {16, 17, 2, 3, 4, 5, 6, 7};
-+
- /*
-  * Calculate and return exception PC in case of branch delay slot
-  * for microMIPS and MIPS16e. It does not clear the ISA mode bit.
-@@ -48,6 +55,199 @@ int __isa_exception_epc(struct pt_regs *regs)
- 	return epc;
- }
- 
-+int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
-+		     unsigned long *contpc)
++#else	/* no CONFIG_MIPS_FPU_SUPPORT */
++static inline int do_dsemulret(struct pt_regs *xcp)
 +{
-+	union mips_instruction insn = (union mips_instruction)dec_insn.insn;
-+	int bc_false = 0;
-+	unsigned int fcr31;
-+	unsigned int bit;
-+
-+	if (!cpu_has_mmips)
-+		return 0;
-+
-+	switch (insn.mm_i_format.opcode) {
-+	case mm_pool32a_op:
-+		if ((insn.mm_i_format.simmediate & MM_POOL32A_MINOR_MASK) ==
-+		    mm_pool32axf_op) {
-+			switch (insn.mm_i_format.simmediate >>
-+				MM_POOL32A_MINOR_SHIFT) {
-+			case mm_jalr_op:
-+			case mm_jalrhb_op:
-+			case mm_jalrs_op:
-+			case mm_jalrshb_op:
-+				if (insn.mm_i_format.rt != 0)	/* Not mm_jr */
-+					regs->regs[insn.mm_i_format.rt] =
-+						regs->cp0_epc +
-+						dec_insn.pc_inc +
-+						dec_insn.next_pc_inc;
-+				*contpc = regs->regs[insn.mm_i_format.rs];
-+				return 1;
-+			}
-+		}
-+		break;
-+	case mm_pool32i_op:
-+		switch (insn.mm_i_format.rt) {
-+		case mm_bltzals_op:
-+		case mm_bltzal_op:
-+			regs->regs[31] = regs->cp0_epc +
-+				dec_insn.pc_inc +
-+				dec_insn.next_pc_inc;
-+			/* Fall through */
-+		case mm_bltz_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] < 0)
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					(insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			return 1;
-+		case mm_bgezals_op:
-+		case mm_bgezal_op:
-+			regs->regs[31] = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			/* Fall through */
-+		case mm_bgez_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] >= 0)
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					(insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			return 1;
-+		case mm_blez_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					(insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			return 1;
-+		case mm_bgtz_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					(insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			return 1;
-+		case mm_bc2f_op:
-+		case mm_bc1f_op:
-+			bc_false = 1;
-+			/* Fall through */
-+		case mm_bc2t_op:
-+		case mm_bc1t_op:
-+			preempt_disable();
-+			if (is_fpu_owner())
-+				asm volatile("cfc1\t%0,$31" : "=r" (fcr31));
-+			else
-+				fcr31 = current->thread.fpu.fcr31;
-+			preempt_enable();
-+
-+			if (bc_false)
-+				fcr31 = ~fcr31;
-+
-+			bit = (insn.mm_i_format.rs >> 2);
-+			bit += (bit != 0);
-+			bit += 23;
-+			if (fcr31 & (1 << bit))
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc +
-+					(insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc +
-+					dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			return 1;
-+		}
-+		break;
-+	case mm_pool16c_op:
-+		switch (insn.mm_i_format.rt) {
-+		case mm_jalr16_op:
-+		case mm_jalrs16_op:
-+			regs->regs[31] = regs->cp0_epc +
-+				dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			/* Fall through */
-+		case mm_jr16_op:
-+			*contpc = regs->regs[insn.mm_i_format.rs];
-+			return 1;
-+		}
-+		break;
-+	case mm_beqz16_op:
-+		if ((long)regs->regs[reg16to32map[insn.mm_b1_format.rs]] == 0)
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc +
-+				(insn.mm_b1_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+	case mm_bnez16_op:
-+		if ((long)regs->regs[reg16to32map[insn.mm_b1_format.rs]] != 0)
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc +
-+				(insn.mm_b1_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+	case mm_b16_op:
-+		*contpc = regs->cp0_epc + dec_insn.pc_inc +
-+			 (insn.mm_b0_format.simmediate << 1);
-+		return 1;
-+	case mm_beq32_op:
-+		if (regs->regs[insn.mm_i_format.rs] ==
-+		    regs->regs[insn.mm_i_format.rt])
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc +
-+				(insn.mm_i_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc +
-+				dec_insn.next_pc_inc;
-+		return 1;
-+	case mm_bne32_op:
-+		if (regs->regs[insn.mm_i_format.rs] !=
-+		    regs->regs[insn.mm_i_format.rt])
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc +
-+				(insn.mm_i_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc +
-+				dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+	case mm_jalx32_op:
-+		regs->regs[31] = regs->cp0_epc +
-+			dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		*contpc = regs->cp0_epc + dec_insn.pc_inc;
-+		*contpc >>= 28;
-+		*contpc <<= 28;
-+		*contpc |= (insn.j_format.target << 2);
-+		return 1;
-+	case mm_jals32_op:
-+	case mm_jal32_op:
-+		regs->regs[31] = regs->cp0_epc +
-+			dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		/* Fall through */
-+	case mm_j32_op:
-+		*contpc = regs->cp0_epc + dec_insn.pc_inc;
-+		*contpc >>= 27;
-+		*contpc <<= 27;
-+		*contpc |= (insn.j_format.target << 1);
-+		set_isa16_mode(*contpc);
-+		return 1;
-+	}
-+	return 0;
++	return 0;	/* 0 means error, should never get here anyway */
 +}
 +
++static inline int fpu_emulator_cop1Handler(struct pt_regs *xcp,
++				struct mips_fpu_struct *ctx, int has_fpu,
++				void *__user *fault_addr)
++{
++	return SIGILL;	/* we don't speak MIPS FPU */
++}
++#endif	/* CONFIG_MIPS_FPU_SUPPORT */
++
+ int process_fpemu_return(int sig, void __user *fault_addr);
+ 
  /*
-  * Compute return address and emulate branch in microMIPS mode after an
-  * exception only. It does not handle compact branches/jumps and cannot
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 7b3c9ac..8f36146 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -83,8 +83,6 @@ DEFINE_PER_CPU(struct mips_fpu_emulator_stats, fpuemustats);
- #define modeindex(v) ((v) & FPU_CSR_RM)
- 
- /* microMIPS bitfields */
--#define MM_POOL32A_MINOR_MASK	0x3f
--#define MM_POOL32A_MINOR_SHIFT	0x6
- #define MM_MIPS32_COND_FC	0x30
- 
- /* Convert Mips rounding mode (0..3) to IEEE library modes. */
-@@ -116,9 +114,6 @@ static const unsigned int fpucondbit[8] = {
- };
- #endif
- 
--/* (microMIPS) Convert 16-bit register encoding to 32-bit register encoding. */
--static const unsigned int reg16to32map[8] = {16, 17, 2, 3, 4, 5, 6, 7};
--
- /* (microMIPS) Convert certain microMIPS instructions to MIPS32 format. */
- static const int sd_format[] = {16, 17, 0, 0, 0, 0, 0, 0};
- static const int sdps_format[] = {16, 17, 22, 0, 0, 0, 0, 0};
-@@ -466,199 +461,6 @@ static int microMIPS32_to_MIPS32(union mips_instruction *insn_ptr)
- 	return 0;
- }
- 
--int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
--		     unsigned long *contpc)
--{
--	union mips_instruction insn = (union mips_instruction)dec_insn.insn;
--	int bc_false = 0;
--	unsigned int fcr31;
--	unsigned int bit;
--
--	if (!cpu_has_mmips)
--		return 0;
--
--	switch (insn.mm_i_format.opcode) {
--	case mm_pool32a_op:
--		if ((insn.mm_i_format.simmediate & MM_POOL32A_MINOR_MASK) ==
--		    mm_pool32axf_op) {
--			switch (insn.mm_i_format.simmediate >>
--				MM_POOL32A_MINOR_SHIFT) {
--			case mm_jalr_op:
--			case mm_jalrhb_op:
--			case mm_jalrs_op:
--			case mm_jalrshb_op:
--				if (insn.mm_i_format.rt != 0)	/* Not mm_jr */
--					regs->regs[insn.mm_i_format.rt] =
--						regs->cp0_epc +
--						dec_insn.pc_inc +
--						dec_insn.next_pc_inc;
--				*contpc = regs->regs[insn.mm_i_format.rs];
--				return 1;
--			}
--		}
--		break;
--	case mm_pool32i_op:
--		switch (insn.mm_i_format.rt) {
--		case mm_bltzals_op:
--		case mm_bltzal_op:
--			regs->regs[31] = regs->cp0_epc +
--				dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
--			/* Fall through */
--		case mm_bltz_op:
--			if ((long)regs->regs[insn.mm_i_format.rs] < 0)
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					(insn.mm_i_format.simmediate << 1);
--			else
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					dec_insn.next_pc_inc;
--			return 1;
--		case mm_bgezals_op:
--		case mm_bgezal_op:
--			regs->regs[31] = regs->cp0_epc +
--					dec_insn.pc_inc +
--					dec_insn.next_pc_inc;
--			/* Fall through */
--		case mm_bgez_op:
--			if ((long)regs->regs[insn.mm_i_format.rs] >= 0)
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					(insn.mm_i_format.simmediate << 1);
--			else
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					dec_insn.next_pc_inc;
--			return 1;
--		case mm_blez_op:
--			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					(insn.mm_i_format.simmediate << 1);
--			else
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					dec_insn.next_pc_inc;
--			return 1;
--		case mm_bgtz_op:
--			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					(insn.mm_i_format.simmediate << 1);
--			else
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					dec_insn.next_pc_inc;
--			return 1;
--		case mm_bc2f_op:
--		case mm_bc1f_op:
--			bc_false = 1;
--			/* Fall through */
--		case mm_bc2t_op:
--		case mm_bc1t_op:
--			preempt_disable();
--			if (is_fpu_owner())
--				asm volatile("cfc1\t%0,$31" : "=r" (fcr31));
--			else
--				fcr31 = current->thread.fpu.fcr31;
--			preempt_enable();
--
--			if (bc_false)
--				fcr31 = ~fcr31;
--
--			bit = (insn.mm_i_format.rs >> 2);
--			bit += (bit != 0);
--			bit += 23;
--			if (fcr31 & (1 << bit))
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc +
--					(insn.mm_i_format.simmediate << 1);
--			else
--				*contpc = regs->cp0_epc +
--					dec_insn.pc_inc + dec_insn.next_pc_inc;
--			return 1;
--		}
--		break;
--	case mm_pool16c_op:
--		switch (insn.mm_i_format.rt) {
--		case mm_jalr16_op:
--		case mm_jalrs16_op:
--			regs->regs[31] = regs->cp0_epc +
--				dec_insn.pc_inc + dec_insn.next_pc_inc;
--			/* Fall through */
--		case mm_jr16_op:
--			*contpc = regs->regs[insn.mm_i_format.rs];
--			return 1;
--		}
--		break;
--	case mm_beqz16_op:
--		if ((long)regs->regs[reg16to32map[insn.mm_b1_format.rs]] == 0)
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc +
--				(insn.mm_b1_format.simmediate << 1);
--		else
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc + dec_insn.next_pc_inc;
--		return 1;
--	case mm_bnez16_op:
--		if ((long)regs->regs[reg16to32map[insn.mm_b1_format.rs]] != 0)
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc +
--				(insn.mm_b1_format.simmediate << 1);
--		else
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc + dec_insn.next_pc_inc;
--		return 1;
--	case mm_b16_op:
--		*contpc = regs->cp0_epc + dec_insn.pc_inc +
--			 (insn.mm_b0_format.simmediate << 1);
--		return 1;
--	case mm_beq32_op:
--		if (regs->regs[insn.mm_i_format.rs] ==
--		    regs->regs[insn.mm_i_format.rt])
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc +
--				(insn.mm_i_format.simmediate << 1);
--		else
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
--		return 1;
--	case mm_bne32_op:
--		if (regs->regs[insn.mm_i_format.rs] !=
--		    regs->regs[insn.mm_i_format.rt])
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc +
--				(insn.mm_i_format.simmediate << 1);
--		else
--			*contpc = regs->cp0_epc +
--				dec_insn.pc_inc + dec_insn.next_pc_inc;
--		return 1;
--	case mm_jalx32_op:
--		regs->regs[31] = regs->cp0_epc +
--			dec_insn.pc_inc + dec_insn.next_pc_inc;
--		*contpc = regs->cp0_epc + dec_insn.pc_inc;
--		*contpc >>= 28;
--		*contpc <<= 28;
--		*contpc |= (insn.j_format.target << 2);
--		return 1;
--	case mm_jals32_op:
--	case mm_jal32_op:
--		regs->regs[31] = regs->cp0_epc +
--			dec_insn.pc_inc + dec_insn.next_pc_inc;
--		/* Fall through */
--	case mm_j32_op:
--		*contpc = regs->cp0_epc + dec_insn.pc_inc;
--		*contpc >>= 27;
--		*contpc <<= 27;
--		*contpc |= (insn.j_format.target << 1);
--		set_isa16_mode(*contpc);
--		return 1;
--	}
--	return 0;
--}
--
- /*
-  * Redundant with logic already in kernel/branch.c,
-  * embedded in compute_return_epc.  At some point,
 -- 
 1.9.1

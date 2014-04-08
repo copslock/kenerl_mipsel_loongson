@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 13:03:50 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.89.28.115]:53429 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822092AbaDHLDqUf4Ft (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 13:03:46 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 231E3A9A2694;
-        Tue,  8 Apr 2014 12:03:38 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Tue, 8 Apr 2014 12:03:39 +0100
-Received: from [192.168.154.89] (192.168.154.89) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 8 Apr
- 2014 12:03:36 +0100
-Message-ID: <5343D799.2040203@imgtec.com>
-Date:   Tue, 8 Apr 2014 12:03:53 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 13:15:49 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:55829 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823967AbaDHLPYZAv60 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Apr 2014 13:15:24 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id F2674280041
+        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 13:14:35 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qc0-f175.google.com (mail-qc0-f175.google.com [209.85.216.175])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 77A20281628
+        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 13:14:34 +0200 (CEST)
+Received: by mail-qc0-f175.google.com with SMTP id e16so745269qcx.34
+        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 04:15:18 -0700 (PDT)
+X-Received: by 10.229.214.74 with SMTP id gz10mr3487957qcb.19.1396955718442;
+ Tue, 08 Apr 2014 04:15:18 -0700 (PDT)
 MIME-Version: 1.0
-To:     <linux-mips@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 1/2] MIPS: Remove SMTC Support
-References: <1396954750-24762-1-git-send-email-markos.chandras@imgtec.com> <1396954750-24762-2-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1396954750-24762-2-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.89]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: by 10.140.109.97 with HTTP; Tue, 8 Apr 2014 04:14:58 -0700 (PDT)
+In-Reply-To: <1396954444-392675-2-git-send-email-manuel.lauss@gmail.com>
+References: <1396954444-392675-1-git-send-email-manuel.lauss@gmail.com> <1396954444-392675-2-git-send-email-manuel.lauss@gmail.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Tue, 8 Apr 2014 13:14:58 +0200
+Message-ID: <CAOiHx=mQkpFn-Ys2hpDY1DGMLA9zTCoUC2ixRBqwg7i7n-t8vg@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] MIPS: optional floating point support
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39701
+X-archive-position: 39702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,23 +46,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/08/2014 11:59 AM, Markos Chandras wrote:
-> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-> index 037a44d..e12843a 100644
-> --- a/arch/mips/kernel/proc.c
-> +++ b/arch/mips/kernel/proc.c
-> @@ -124,7 +124,6 @@ static int show_cpuinfo(struct seq_file *m, void *v)
->   	seq_printf(m, "kscratch registers\t: %d\n",
->   		      hweight8(cpu_data[n].kscratch_mask));
->   	seq_printf(m, "core\t\t\t: %d\n", cpu_data[n].core);
-> -
+On Tue, Apr 8, 2014 at 12:54 PM, Manuel Lauss <manuel.lauss@gmail.com> wrote:
+> This small patch makes the floating point support and the FPU-emulator
+> optional.  A Warning will be printed once when first use of floating
+> point is detected.
+>
+> Disabling fpu support shrinks vmlinux by about 54kBytes (32bit,
+> optimizing for size), and it is mainly useful for embedded devices
+> which have no need for float math (e.g. routers).
+>
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
 
-Hi Ralf,
+(snip)
 
-This change was not intentional. It's due to a bad merge conflict 
-resolution. Could you please fix this before you merge this patch?
+> diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
+> index 4d86b72..c3d418d 100644
+> --- a/arch/mips/include/asm/fpu.h
+> +++ b/arch/mips/include/asm/fpu.h
+> @@ -154,17 +154,26 @@ static inline void lose_fpu(int save)
+>  static inline int init_fpu(void)
+>  {
+>         int ret = 0;
+> +       static int first = 1;
 
-Thanks!
+This one could go into the else branch of (IS_ENABLED(CONFIG_MIPS_FPU_SUPPORT)).
 
--- 
-markos
+>
+> -       preempt_disable();
+> -       if (cpu_has_fpu) {
+> -               ret = __own_fpu();
+> -               if (!ret)
+> -                       _init_fpu();
+> +       if (IS_ENABLED(CONFIG_MIPS_FPU_SUPPORT)) {
+> +               preempt_disable();
+> +               if (cpu_has_fpu) {
+> +                       ret = __own_fpu();
+> +                       if (!ret)
+> +                               _init_fpu();
+> +               } else
+> +                       fpu_emulator_init_fpu();
+
+Braces belong on all branches of a conditional, see Chapter 3 of CodingStyle.
+
+> +               preempt_enable();
+>         } else {
+> -               fpu_emulator_init_fpu();
+> +               if (likely(first)) {
+> +                       first = 0;
+> +                       pr_err("FPU support disabled, but FPU use "
+> +                              "detected! Make sure you have a "
+> +                              "softfloat userspace!\n");
+
+Don't split strings, it makes it hard to grep for and they have a
+special exception to exceed the normal 80 characters per line limit
+(Checkpatch does not complain about it). See also Chapter 2 of
+CodingStyle.
+
+Apart from that it looks okay to me.
+
+
+Regards
+
+Jonas

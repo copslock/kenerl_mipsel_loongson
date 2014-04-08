@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 20:27:35 +0200 (CEST)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:63262 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817664AbaDHS1dnriDN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 20:27:33 +0200
-Received: by mail-ee0-f49.google.com with SMTP id c41so1003517eek.8
-        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 11:27:28 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2014 20:39:38 +0200 (CEST)
+Received: from mail-qg0-f45.google.com ([209.85.192.45]:51144 "EHLO
+        mail-qg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817327AbaDHSjf5nME3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Apr 2014 20:39:35 +0200
+Received: by mail-qg0-f45.google.com with SMTP id j5so1204210qga.32
+        for <linux-mips@linux-mips.org>; Tue, 08 Apr 2014 11:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=1nz6Zj9rxRDDbypeWPd59gWqdQXmsjKzEvOXjf0PHsg=;
-        b=GffnUx3aqp24V2L2fnUGvbVHm/nIAk7puyTT99DhQCrx2Ye6YfGxIJuw09+SdWDTlo
-         sYnCIy0klMUDx4pDgSdDCkXBp4Kr57y63No7qWY5jQR9zXy9FGewE6E+d9MHxHaL35UC
-         8jEQi6lBb6CdKT91bGpmmWxW5bjLDRiWqTWFkb0cMLKCvgbC1YbJgxLa7bYzyARnm+2l
-         wjShblercu/V4xidNtk59BU2JiV9ybC4DMSB0oGos8Xhszxp84ESvHJcKUAYaRc/n2y4
-         6i6NSIV/iXGpUlQ5pUVvChXzRIeCbFTe316nwbEd+jWcTXRsOtgRkAkVVfWEeN6zJwCn
-         efBg==
-X-Received: by 10.14.4.201 with SMTP id 49mr6261595eej.13.1396981648442;
-        Tue, 08 Apr 2014 11:27:28 -0700 (PDT)
-Received: from localhost.localdomain (p4FD8D7E8.dip0.t-ipconnect.de. [79.216.215.232])
-        by mx.google.com with ESMTPSA id h47sm6183397eey.13.2014.04.08.11.27.26
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 08 Apr 2014 11:27:27 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v8 2/2] MIPS: optional floating point support
-Date:   Tue,  8 Apr 2014 20:27:22 +0200
-Message-Id: <1396981642-407998-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <manuel.lauss@gmail.com>
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=FBDpjCQaaii3JqBUAuTEQsIILnmAkzJAuB7RSPh+Szg=;
+        b=G1PQUpF+8q2wUHiVPXn5Spc9McXAEARImR2mi3MTixb38RGVjNEv7Zvgvfu2xrz86G
+         bHfE/LwwhGfRAPNnb+ByFmXa8+Jt6nBDfeOn3X5YUMXVjpJDEVZ+df0QFbyJFmuQBBBP
+         bdbHjURv9CMouFtXnz4x6pM4n9wrvUK09r+BWGd4LOM3sZ2n6O88MgyHhH/Jo9PzPKjd
+         iFbZViWppOG6gCH/s65Lzr29m7lMHtjQdrr8oia7xltD96AQjqBYNFDOQQtIUQQbpCOo
+         foo61Qy1oh0IkksaQztnYsSoxKCvwVnVw8T6slUa08WPYzh5rYHsk352oSXyhDH31e4B
+         4asw==
+X-Received: by 10.224.47.130 with SMTP id n2mr6863110qaf.26.1396982369872;
+ Tue, 08 Apr 2014 11:39:29 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.96.79.69 with HTTP; Tue, 8 Apr 2014 11:38:49 -0700 (PDT)
+In-Reply-To: <1396957635-27071-1-git-send-email-markos.chandras@imgtec.com>
+References: <1396957635-27071-1-git-send-email-markos.chandras@imgtec.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Date:   Tue, 8 Apr 2014 11:38:49 -0700
+Message-ID: <CAGVrzcZXUWmWO3iuDGPPtKaT1O5qr50LpeSPPHxFCqovkQXzag@mail.gmail.com>
+Subject: Re: [PATCH 00/14] Initial BPF-JIT support for MIPS
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39729
+X-archive-position: 39730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,140 +50,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This small patch makes the floating point support and the FPU-emulator
-optional.  A Warning will be printed once when first use of floating
-point is detected.
+Hi,
 
-Disabling fpu support shrinks vmlinux by about 54kBytes (32bit,
-optimizing for size), and it is mainly useful for embedded devices
-which have no need for float math (e.g. routers).
+2014-04-08 4:47 GMT-07:00 Markos Chandras <markos.chandras@imgtec.com>:
+> Hi,
+>
+> This adds support for BPF-JIT for MIPS. Tested on mips32 LE/BE and mips64 BE
+> with a few networking tools such as tcpdump and dhcp but not all opcodes have
+> been tested as far as I can tell. There are a few optimizations left to be made
+> (fastpath for load operations instead of calling the helper functions) but
+> these can be added later on. If someone has complex network setups in place and
+> would like to give it a try, that would be much appreciated.
+>
+> This patchset is for the upstream-sfr/mips-for-linux-next tree
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-v8: more codingstyle
-v7: codingstyle, checkpatch (Jonas Gorski)
-v6: complain in kernel log about first attempted use of float ops.
-v5: now disable float support completely to avoid sudden program crashes
-    on buggy fpus when the fpu emulator cannot take over (suggested by
-    Paul Burton).
-v4: rediffed because of patch 1/2, should now work with micromips as well
-v3: updated patch description with size savings.
-v2: incorporated changes suggested by Jonas Gorski
-    force the fpu emulator on for micromips: relocating the parts
-    of the mmips code in the emulator to other areas would be a
-    much larger change; I went the cheap route instead with this.
+You should have probably CC'd netdev@vger.kernel.org to get their
+review on the specific JIT implementation.
 
- arch/mips/Kbuild                     |  2 +-
- arch/mips/Kconfig                    | 11 +++++++++++
- arch/mips/include/asm/fpu.h          | 25 +++++++++++++++++--------
- arch/mips/include/asm/fpu_emulator.h | 15 +++++++++++++++
- 4 files changed, 44 insertions(+), 9 deletions(-)
+BPF_JIT is made conditional to MIPS32/64R2 processors, I could not
+spot easily in the implementation whether this is because you are
+using r2-only instructions, or this is just the targets you tested. Is
+there any chance to make that work on MIPS32r1 CPUs for instance?
+Those are used in low-end devices which could benefit from such a
+performance boost.
 
-diff --git a/arch/mips/Kbuild b/arch/mips/Kbuild
-index d2cfe45..730e0a7 100644
---- a/arch/mips/Kbuild
-+++ b/arch/mips/Kbuild
-@@ -16,7 +16,7 @@ obj- := $(platform-)
- 
- obj-y += kernel/
- obj-y += mm/
--obj-y += math-emu/
-+obj-$(CONFIG_MIPS_FPU_SUPPORT) += math-emu/
- 
- ifdef CONFIG_KVM
- obj-y += kvm/
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9b53358..c8040db 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2482,6 +2482,17 @@ config MIPS_O32_FP64_SUPPORT
- 
- 	  If unsure, say N.
- 
-+config MIPS_FPU_SUPPORT
-+	bool "MIPS FPU Support"
-+	default y
-+	help
-+	  Support for floating point registers and FP-hardware, and also
-+	  the in-kernel FPU emulator.  Disabling this option will result
-+	  in all uses of floating point hardware to be killed with an
-+	  illegal instruction exception, and about a 50kB smaller kernel.
-+
-+	  Say Y.
-+
- config USE_OF
- 	bool
- 	select OF
-diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-index 4d86b72..eb36bbf 100644
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -155,16 +155,25 @@ static inline int init_fpu(void)
- {
- 	int ret = 0;
- 
--	preempt_disable();
--	if (cpu_has_fpu) {
--		ret = __own_fpu();
--		if (!ret)
--			_init_fpu();
-+	if (IS_ENABLED(CONFIG_MIPS_FPU_SUPPORT)) {
-+		preempt_disable();
-+		if (cpu_has_fpu) {
-+			ret = __own_fpu();
-+			if (!ret)
-+				_init_fpu();
-+		} else {
-+			fpu_emulator_init_fpu();
-+		}
-+		preempt_enable();
- 	} else {
--		fpu_emulator_init_fpu();
--	}
-+		static int first = 1;
- 
--	preempt_enable();
-+		if (likely(first)) {
-+			first = 0;
-+			pr_err("FPU support disabled, but FPU use detected!\n");
-+		}
-+		ret = SIGILL;
-+	}
- 	return ret;
- }
- 
-diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 283e6f3..552a054 100644
---- a/arch/mips/include/asm/fpu_emulator.h
-+++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -27,6 +27,7 @@
- #include <asm/inst.h>
- #include <asm/local.h>
- 
-+#ifdef CONFIG_MIPS_FPU_SUPPORT
- #ifdef CONFIG_DEBUG_FS
- 
- struct mips_fpu_emulator_stats {
-@@ -57,6 +58,20 @@ extern int do_dsemulret(struct pt_regs *xcp);
- extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
- 				    struct mips_fpu_struct *ctx, int has_fpu,
- 				    void *__user *fault_addr);
-+#else	/* no CONFIG_MIPS_FPU_SUPPORT */
-+static inline int do_dsemulret(struct pt_regs *xcp)
-+{
-+	return 0;	/* 0 means error, should never get here anyway */
-+}
-+
-+static inline int fpu_emulator_cop1Handler(struct pt_regs *xcp,
-+				struct mips_fpu_struct *ctx, int has_fpu,
-+				void *__user *fault_addr)
-+{
-+	return SIGILL;	/* we don't speak MIPS FPU */
-+}
-+#endif	/* CONFIG_MIPS_FPU_SUPPORT */
-+
- int process_fpemu_return(int sig, void __user *fault_addr);
- 
- /*
+Thanks!
+
+>
+> Markos Chandras (14):
+>   MIPS: uasm: Add u3u2u1 instruction builders
+>   MIPS: uasm: Add u2u1 instruction builders
+>   MIPS: uasm: Add sllv uasm instruction
+>   MIPS: uasm: Add srlv uasm instruction
+>   MIPS: uasm: Add divu uasm instruction
+>   MIPS: uasm: Add mfhi uasm instruction
+>   MIPS: uasm: Add jalr uasm instruction
+>   MIPS: uasm: Add sltiu uasm instruction
+>   MIPS: uasm: Add sltu uasm instruction
+>   MIPS: uasm: Add wsbh uasm instruction
+>   MIPS: uasm: Add lh uam instruction
+>   MIPS: uasm: Add mul uasm instruction
+>   MIPS: net: Add BPF JIT
+>   MIPS: Enable the BPF_JIT symbol for MIPS
+>
+>  arch/mips/Kbuild                  |    1 +
+>  arch/mips/Kconfig                 |    1 +
+>  arch/mips/include/asm/uasm.h      |   16 +
+>  arch/mips/include/uapi/asm/inst.h |   17 +
+>  arch/mips/mm/uasm-micromips.c     |   10 +
+>  arch/mips/mm/uasm-mips.c          |   10 +
+>  arch/mips/mm/uasm.c               |   39 +-
+>  arch/mips/net/Makefile            |    3 +
+>  arch/mips/net/bpf_jit.c           | 1327 +++++++++++++++++++++++++++++++++++++
+>  arch/mips/net/bpf_jit.h           |   45 ++
+>  10 files changed, 1462 insertions(+), 7 deletions(-)
+>  create mode 100644 arch/mips/net/Makefile
+>  create mode 100644 arch/mips/net/bpf_jit.c
+>  create mode 100644 arch/mips/net/bpf_jit.h
+>
+> --
+> 1.9.1
+>
+>
+
+
+
 -- 
-1.9.1
+Florian

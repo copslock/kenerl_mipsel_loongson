@@ -1,36 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2014 10:48:38 +0200 (CEST)
-Received: from cpsmtpb-ews09.kpnxchange.com ([213.75.39.14]:59992 "EHLO
-        cpsmtpb-ews09.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821191AbaDIIsgKuEeV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Apr 2014 10:48:36 +0200
-Received: from cpsps-ews15.kpnxchange.com ([10.94.84.182]) by cpsmtpb-ews09.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 9 Apr 2014 10:48:30 +0200
-Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews15.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 9 Apr 2014 10:48:30 +0200
-Received: from [192.168.10.106] ([195.240.213.44]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 9 Apr 2014 10:48:29 +0200
-Message-ID: <1397033309.22767.8.camel@x220>
-Subject: MIPS: Remove last traces of SMTC Support too?
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Markos Chandras <markos.chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Date:   Wed, 09 Apr 2014 10:48:29 +0200
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2014 10:54:54 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.89.28.115]:56876 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6821191AbaDIIyw40-YO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Apr 2014 10:54:52 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id BBD0845D25C91;
+        Wed,  9 Apr 2014 09:54:43 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Wed, 9 Apr
+ 2014 09:54:45 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Wed, 9 Apr 2014 09:54:45 +0100
+Received: from [192.168.154.89] (192.168.154.89) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 9 Apr
+ 2014 09:54:44 +0100
+Message-ID: <53450AE7.802@imgtec.com>
+Date:   Wed, 9 Apr 2014 09:55:03 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+MIME-Version: 1.0
+To:     Florian Fainelli <f.fainelli@gmail.com>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 00/14] Initial BPF-JIT support for MIPS
+References: <1396957635-27071-1-git-send-email-markos.chandras@imgtec.com> <CAGVrzcZXUWmWO3iuDGPPtKaT1O5qr50LpeSPPHxFCqovkQXzag@mail.gmail.com>
+In-Reply-To: <CAGVrzcZXUWmWO3iuDGPPtKaT1O5qr50LpeSPPHxFCqovkQXzag@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 09 Apr 2014 08:48:30.0009 (UTC) FILETIME=[7B11A290:01CF53D0]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+X-Originating-IP: [192.168.154.89]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39736
+X-archive-position: 39737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,72 +49,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The patch "MIPS: Remove SMTC Support" landed in linux-next (see
-next-20140409). A quick grep of the tree suggests a follow up is needed
-(a sort-of-patch is pasted below).
+Hi Florian,
 
-Is a similar follow up queued somewhere? If not, should I submit a patch
-or should I wait with doing that until "MIPS: Remove SMTC Support" hits
-mainline?
+On 04/08/2014 07:38 PM, Florian Fainelli wrote:
+> Hi,
+>
+> 2014-04-08 4:47 GMT-07:00 Markos Chandras <markos.chandras@imgtec.com>:
+>> Hi,
+>>
+>> This adds support for BPF-JIT for MIPS. Tested on mips32 LE/BE and mips64 BE
+>> with a few networking tools such as tcpdump and dhcp but not all opcodes have
+>> been tested as far as I can tell. There are a few optimizations left to be made
+>> (fastpath for load operations instead of calling the helper functions) but
+>> these can be added later on. If someone has complex network setups in place and
+>> would like to give it a try, that would be much appreciated.
+>>
+>> This patchset is for the upstream-sfr/mips-for-linux-next tree
+>
+> You should have probably CC'd netdev@vger.kernel.org to get their
+> review on the specific JIT implementation.
+>
+> BPF_JIT is made conditional to MIPS32/64R2 processors, I could not
+> spot easily in the implementation whether this is because you are
+> using r2-only instructions, or this is just the targets you tested. Is
+> there any chance to make that work on MIPS32r1 CPUs for instance?
+> Those are used in low-end devices which could benefit from such a
+> performance boost.
+>
+> Thanks!
+>
+>>
 
+I used in fact only R2 devices. I also use R2 specific instructions such 
+as "ins" and "wsbh". I haven't really considered supporting older ISAs 
+for a couple of reasons. R2 has been around for a long time so a ~7y old 
+device is probably R2 capable. Furthermore, I was not sure whether 
+mips32/64R1 devices are likely to run the latest kernel (and/or use 
+BPF-JIT at all). But I could easily be wrong.
+Having said that, it's possible to support R1 devices but I'd like to 
+avoid the overhead so a few #ifdefs are needed in the code. My personal 
+preference is to support R2 in the initial patch, and add R1 support 
+later on (along with the optimizations I have in mind).
 
-Paul Bolle
----
- arch/mips/configs/maltasmtc_defconfig | 196 --------------------
- arch/mips/include/asm/cpu-info.h      |   2 +-
- arch/mips/include/asm/smtc.h          |  78 --------
- arch/mips/include/asm/smtc_ipi.h      | 129 --------------
- arch/mips/include/asm/smtc_proc.h     |  23 ---
- arch/mips/kernel/cevt-smtc.c          | 324 ----------------------------------
- arch/mips/kernel/smtc-asm.S           | 133 --------------
- arch/mips/kernel/smtc-proc.c          | 102 -----------
- arch/mips/pmcs-msp71xx/msp_smtc.c     | 104 -----------
- 9 files changed, 1 insertion(+), 1090 deletions(-)
- delete mode 100644 arch/mips/configs/maltasmtc_defconfig
- delete mode 100644 arch/mips/include/asm/smtc.h
- delete mode 100644 arch/mips/include/asm/smtc_ipi.h
- delete mode 100644 arch/mips/include/asm/smtc_proc.h
- delete mode 100644 arch/mips/kernel/cevt-smtc.c
- delete mode 100644 arch/mips/kernel/smtc-asm.S
- delete mode 100644 arch/mips/kernel/smtc-proc.c
- delete mode 100644 arch/mips/pmcs-msp71xx/msp_smtc.c
-
-diff --git a/arch/mips/configs/maltasmtc_defconfig b/arch/mips/configs/maltasmtc_defconfig
-deleted file mode 100644
-index eb316447588c..000000000000
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index 2f6812b901b0..04088cf4e519 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -108,7 +108,7 @@ struct proc_cpuinfo_notifier_args {
- 	unsigned long n;
- };
- 
--#if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
-+#if defined(CONFIG_MIPS_MT_SMP)
- # define cpu_vpe_id(cpuinfo)	((cpuinfo)->vpe_id)
- #else
- # define cpu_vpe_id(cpuinfo)	0
-diff --git a/arch/mips/include/asm/smtc.h b/arch/mips/include/asm/smtc.h
-deleted file mode 100644
-index e56b439b7871..000000000000
-diff --git a/arch/mips/include/asm/smtc_ipi.h b/arch/mips/include/asm/smtc_ipi.h
-deleted file mode 100644
-index 15278dbd7e79..000000000000
-diff --git a/arch/mips/include/asm/smtc_proc.h b/arch/mips/include/asm/smtc_proc.h
-deleted file mode 100644
-index 25da651f1f5f..000000000000
-diff --git a/arch/mips/kernel/cevt-smtc.c b/arch/mips/kernel/cevt-smtc.c
-deleted file mode 100644
-index b6cf0a60d896..000000000000
-diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
-deleted file mode 100644
-index 2866863a39df..000000000000
-diff --git a/arch/mips/kernel/smtc-proc.c b/arch/mips/kernel/smtc-proc.c
-deleted file mode 100644
-index 38635a996cbf..000000000000
-diff --git a/arch/mips/pmcs-msp71xx/msp_smtc.c b/arch/mips/pmcs-msp71xx/msp_smtc.c
-deleted file mode 100644
-index 6b5607fce279..000000000000
 -- 
-1.9.0
+markos

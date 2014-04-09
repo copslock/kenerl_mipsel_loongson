@@ -1,54 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2014 00:49:09 +0200 (CEST)
-Received: from gateway01.websitewelcome.com ([67.18.53.19]:42057 "EHLO
-        gateway01.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821285AbaDHWtHEPJ0g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Apr 2014 00:49:07 +0200
-Received: by gateway01.websitewelcome.com (Postfix, from userid 5007)
-        id 12D1AD41A9326; Tue,  8 Apr 2014 17:49:05 -0500 (CDT)
-Received: from gator3163.hostgator.com (gator3163.hostgator.com [50.87.144.199])
-        by gateway01.websitewelcome.com (Postfix) with ESMTP id EC0CED41A9275
-        for <linux-mips@linux-mips.org>; Tue,  8 Apr 2014 17:49:04 -0500 (CDT)
-Received: from [216.239.45.67] (port=51876 helo=kkissell.mtv.corp.google.com)
-        by gator3163.hostgator.com with esmtpsa (TLSv1:DHE-RSA-CAMELLIA256-SHA:256)
-        (Exim 4.80.1)
-        (envelope-from <kevink@paralogos.com>)
-        id 1WXepE-0000p0-1f
-        for linux-mips@linux-mips.org; Tue, 08 Apr 2014 17:49:04 -0500
-Message-ID: <53447CDF.3000902@paralogos.com>
-Date:   Tue, 08 Apr 2014 15:49:03 -0700
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2014 07:19:44 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:62617 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6821191AbaDIFTlwdMeY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Apr 2014 07:19:41 +0200
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP; 08 Apr 2014 22:14:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.97,823,1389772800"; 
+   d="scan'208";a="517340896"
+Received: from unknown (HELO wfg-t420.sh.intel.com) ([10.239.13.119])
+  by orsmga002.jf.intel.com with ESMTP; 08 Apr 2014 22:19:29 -0700
+Received: from wfg by wfg-t420.sh.intel.com with local (Exim 4.77)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1WXkv3-0007ed-A1; Wed, 09 Apr 2014 13:19:29 +0800
+Date:   Wed, 9 Apr 2014 13:19:29 +0800
+From:   Fengguang Wu <fengguang.wu@intel.com>
+To:     Michal Marek <mmarek@suse.cz>
+Cc:     kbuild-all@01.org,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed
+ option -mr10k-cache-barrier=store.  Stop.
+Message-ID: <20140409051929.GA29246@localhost>
+References: <534138d9.RISUZQYUMS8U8s42%fengguang.wu@intel.com>
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/2] Remove SMTC Support
-References: <1396954750-24762-1-git-send-email-markos.chandras@imgtec.com> <20140408144436.GT17197@linux-mips.org>
-In-Reply-To: <20140408144436.GT17197@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator3163.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-BWhitelist: no
-X-Source-IP: 216.239.45.67
-X-Exim-ID: 1WXepE-0000p0-1f
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (kkissell.mtv.corp.google.com) [216.239.45.67]:51876
-X-Source-Auth: kevink@kevink.net
-X-Email-Count: 5
-X-Source-Cap: a2tpc3NlbGw7a2tpc3NlbGw7Z2F0b3IzMTYzLmhvc3RnYXRvci5jb20=
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <534138d9.RISUZQYUMS8U8s42%fengguang.wu@intel.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <fengguang.wu@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39731
+X-archive-position: 39733
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,30 +48,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/08/2014 07:44 AM, Ralf Baechle wrote:
-> On Tue, Apr 08, 2014 at 11:59:08AM +0100, Markos Chandras wrote:
->
->> This patchset removes the MIPS SMTC support.
-> While not really a fix I've applied this to my 3.15 fix branch.  At least
-> it will avoid us having to fix it up for 3.15 :-)
->
-> That said, SMTC was a remarkable hack and ingenious proof of the MT
-> architecture.
-Sigh. I was rather proud of it.  If it's being excised (and I don't 
-begrudge people the right to deprecate it), I guess it means I can 
-unsubscribe from the mailing list, as supporting MT hacks was the main 
-reason I hung around at all after leaving MIPS.
-> Still a sore spot is CONFIG_MIPS_MT_FPAFF with all its uglyness it
-> scatters over the tree, in particular the wrapper around the syscall
-> entry point.  I wonder if nowadays with the work that's been done on
-> supporting inhomogenous SMP systems (ARM biglittle) there's now a
-> better way to handle this sort of issue.
-Even at the time, I'd identified a cleaner way to deal with this sort of 
-thing, but the maintainer for the code in question wouldn't give me the 
-time of day, so I solved the problem as well as the politics of Linux 
-allowed.  As I understand it, the MIPS FP Affinity hack still 
-outperformed some rather more complex solutions that contemporary 
-inhomogeneous (is that different from heterogeneous?) MT machines (e.g. 
-Niagara) were using.
+tree:   git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   04535d273ee3edacd9551b2512b4e939ba20277f
+commit: e4d6152b520184be87aa65cb7035bf87acd27c14 Merge branch 'kconfig' of git://git.kernel.org/pub/scm/linux/kernel/git/mmarek/kbuild-2.6
+date:   3 years, 8 months ago
+config: make ARCH=mips ip28_defconfig
 
-/K.
+All error/warnings:
+
+>> arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed option -mr10k-cache-barrier=store.  Stop.
+   make: *** [sub-make] Error 2
+
+vim +29 arch/mips/sgi-ip22/Platform
+
+b9dbdce1 Ralf Baechle 2010-08-05  13  load-$(CONFIG_SGI_IP22)		+= 0xffffffff88002000
+b9dbdce1 Ralf Baechle 2010-08-05  14  endif
+b9dbdce1 Ralf Baechle 2010-08-05  15  ifdef CONFIG_64BIT
+b9dbdce1 Ralf Baechle 2010-08-05  16  load-$(CONFIG_SGI_IP22)		+= 0xffffffff88004000
+b9dbdce1 Ralf Baechle 2010-08-05  17  endif
+b9dbdce1 Ralf Baechle 2010-08-05  18  
+b9dbdce1 Ralf Baechle 2010-08-05  19  #
+b9dbdce1 Ralf Baechle 2010-08-05  20  # SGI IP28 (Indigo2 R10k)
+b9dbdce1 Ralf Baechle 2010-08-05  21  #
+b9dbdce1 Ralf Baechle 2010-08-05  22  # Set the load address to >= 0xa800000020080000 if you want to leave space for
+b9dbdce1 Ralf Baechle 2010-08-05  23  # symmon, 0xa800000020004000 for production kernels ?  Note that the value must
+b9dbdce1 Ralf Baechle 2010-08-05  24  # be 16kb aligned or the handling of the current variable will break.
+b9dbdce1 Ralf Baechle 2010-08-05  25  # Simplified: what IP22 does at 128MB+ in ksegN, IP28 does at 512MB+ in xkphys
+b9dbdce1 Ralf Baechle 2010-08-05  26  #
+b9dbdce1 Ralf Baechle 2010-08-05  27  ifdef CONFIG_SGI_IP28
+b9dbdce1 Ralf Baechle 2010-08-05  28    ifeq ($(call cc-option-yn,-mr10k-cache-barrier=store), n)
+b9dbdce1 Ralf Baechle 2010-08-05 @29        $(error gcc doesn't support needed option -mr10k-cache-barrier=store)
+b9dbdce1 Ralf Baechle 2010-08-05  30    endif
+b9dbdce1 Ralf Baechle 2010-08-05  31  endif
+b9dbdce1 Ralf Baechle 2010-08-05  32  platform-$(CONFIG_SGI_IP28)		+= sgi-ip22/
+b9dbdce1 Ralf Baechle 2010-08-05  33  cflags-$(CONFIG_SGI_IP28)	+= -mr10k-cache-barrier=store -I$(srctree)/arch/mips/include/asm/mach-ip28
+b9dbdce1 Ralf Baechle 2010-08-05  34  load-$(CONFIG_SGI_IP28)		+= 0xa800000020004000
+
+
+
+---
+0-DAY kernel build testing backend              Open Source Technology Center
+http://lists.01.org/mailman/listinfo/kbuild                 Intel Corporation

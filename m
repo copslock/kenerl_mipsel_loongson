@@ -1,36 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2014 10:24:47 +0200 (CEST)
-Received: from pax.zz.de ([88.198.69.77]:36829 "EHLO pax.zz.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6819445AbaDIIYqE4IiN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Apr 2014 10:24:46 +0200
-Received: by pax.zz.de (Postfix, from userid 1000)
-        id 653A3D009B; Wed,  9 Apr 2014 10:24:45 +0200 (CEST)
-Date:   Wed, 9 Apr 2014 10:24:45 +0200
-From:   Florian Lohoff <f@zz.de>
-To:     Fengguang Wu <fengguang.wu@intel.com>
-Cc:     Michal Marek <mmarek@suse.cz>, kbuild-all@01.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed
- option -mr10k-cache-barrier=store.  Stop.
-Message-ID: <20140409082445.GC1438@pax.zz.de>
-References: <534138d9.RISUZQYUMS8U8s42%fengguang.wu@intel.com>
- <20140409051929.GA29246@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2014 10:25:18 +0200 (CEST)
+Received: from [159.226.40.154] ([159.226.40.154]:18753 "EHLO loongson.cn"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6819445AbaDIIZMW0kb4 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Apr 2014 10:25:12 +0200
+Received: by ajax-webmail-mail.loongson.cn (Coremail) ; Wed, 9 Apr 2014
+ 16:23:48 +0800 (GMT+08:00)
+Date:   Wed, 9 Apr 2014 16:23:48 +0800 (GMT+08:00)
+From:   chengxiuzhi@loongson.cn
+To:     =?UTF-8?B?IumZiOWNjuaJjSI=?= <chenhc@lemote.com>
+Cc:     "Matt Turner" <mattst88@gmail.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "John Crispin" <john@phrozen.org>,
+        "Steven J. Hill" <steven.hill@imgtec.com>,
+        "Aurelien Jarno" <aurelien@aurel32.net>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Fuxin Zhang" <zhangfx@lemote.com>,
+        "Zhangjin Wu" <wuzhangjin@gmail.com>
+Message-ID: <40a09947.333.1454595fc03.Coremail.chengxiuzhi@loongson.cn>
+In-Reply-To: <2cc0b93d3a84977f4a2929aa0c2bfb4b.squirrel@mail.lemote.com>
+References: <1396599104-24370-1-git-send-email-chenhc@lemote.com>
+ <1396599104-24370-9-git-send-email-chenhc@lemote.com>
+ <CAEdQ38F-WHEUFqACwGGNGsWQFqTjwwk2ZwNis8zbNWff2xT8Vw@mail.gmail.com>
+ <2cc0b93d3a84977f4a2929aa0c2bfb4b.squirrel@mail.lemote.com>
+Subject: Re: Re: [PATCH 8/9] MIPS: Loongson-3: Enable the COP2 usage
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="4jXrM3lyYWu4nBt5"
-Content-Disposition: inline
-In-Reply-To: <20140409051929.GA29246@localhost>
-Organization: rfc822 - pure communication
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <flo@pax.zz.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [114.242.206.180]
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT2.1.7a build
+ 20121108(18385.4661.4609) Copyright (c) 2002-2014 www.mailtech.cn loongson
+X-SendMailWithSms: false
+X-CM-TRANSID: AQAAf_DxH5SUA0VTiSMAAA--.127W
+X-CM-SenderInfo: xfkh0wh0lx6x3l6o00pqjv00gofq/1tbiAQAJBFEBqWEOQgAAsY
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+Return-Path: <chengxiuzhi@loongson.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39734
+X-archive-position: 39735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f@zz.de
+X-original-sender: chengxiuzhi@loongson.cn
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,62 +57,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---4jXrM3lyYWu4nBt5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Wed, Apr 09, 2014 at 01:19:29PM +0800, Fengguang Wu wrote:
-> b9dbdce1 Ralf Baechle 2010-08-05  27  ifdef CONFIG_SGI_IP28
-> b9dbdce1 Ralf Baechle 2010-08-05  28    ifeq ($(call cc-option-yn,-mr10k-=
-cache-barrier=3Dstore), n)
-> b9dbdce1 Ralf Baechle 2010-08-05 @29        $(error gcc doesn't support n=
-eeded option -mr10k-cache-barrier=3Dstore)
-> b9dbdce1 Ralf Baechle 2010-08-05  30    endif
-> b9dbdce1 Ralf Baechle 2010-08-05  31  endif
-> b9dbdce1 Ralf Baechle 2010-08-05  32  platform-$(CONFIG_SGI_IP28)		+=3D s=
-gi-ip22/
-> b9dbdce1 Ralf Baechle 2010-08-05  33  cflags-$(CONFIG_SGI_IP28)	+=3D -mr1=
-0k-cache-barrier=3Dstore -I$(srctree)/arch/mips/include/asm/mach-ip28
-> b9dbdce1 Ralf Baechle 2010-08-05  34  load-$(CONFIG_SGI_IP28)		+=3D 0xa80=
-0000020004000
-
-Its IP28 only fixes in gcc see here:
-
-http://gcc.gnu.org/ml/gcc-patches/2008-09/msg00041.html
-
-Most likely they never made it into gcc upstream but they are
-necessary working around the r10k speculative stores on non
-cache coherent machines like the IP28.
-
-Flo
---=20
-Florian Lohoff                                                 f@zz.de
-
---4jXrM3lyYWu4nBt5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iQIVAwUBU0UDzZDdQSDLCfIvAQglqg//e3eA+lZE+TLqUvIGNrcf+YqpqcA3LlFr
-xA+EsfeGlrK22/iBFm5WCMdxz9K7plkfIxLG0zZpCbJ8f4bQ5N2GSFaYxhaxRFhD
-+q5HTYjPUYjhJ2eeRvRRy7R8v4qSD4klxAh6ClfxEam83Abm27o2eFxP4Pkf5cH6
-sS68BKf3jS4QgcNSVsDXRfnMMfqDTj7rJPgwLhZVeRnv87NRYMlQsFjQqeSty+VP
-VflFqEonjMv2wUM5oxu+eqk7fom+j27xXQpjWuF05UfzcrwQOKjBUETjykHXepkX
-tAo1YDzNuqYZWu54dOLOVOamISdYHGBzwwJK1zOIhW+IfSqO9AOcvc6auTg+6Zv7
-05Dcr5EjEFZPyNYjp1lmsJ1ewWmAzUaYUVMfZ9WIOqSMgqcChtni0SKox95Xrd7p
-Dh6t+sjWq3LYN7O0NOF1nGnQCBXEpehp/4De4TZZJVjFxW/99ib848ILZyyJc6rG
-7bDdatWaN83fX4of/RbCS9QqzNtcFjrAuRiWmJQER0cMBsnPS5U9u7MUhkNSVUfh
-f2z00dX6psv/BvBAmJLYwqSlfqLTAhkLD2ruglg3WMZL/E4f9rSRP1IBqQuElGj2
-s+tNQdNa75pa1Gs6wxjvasPcGbbUddtxHV/Mv0AGYsJCGLfkeFjETMiEAUatHTYA
-5zm+0X8/v7I=
-=24d0
------END PGP SIGNATURE-----
-
---4jXrM3lyYWu4nBt5--
+Hi Matt,
+  
+The different instructions between 2F and 3A is:
+ madd instruction: 2F has two operands , 3A has three ones
+The English version of Loongson3A usermanualis not available now, I will translating part of it and email you ASAP. 
+Regards,
+xiuzhi
+> 
+> To Matt,
+> 
+> At first thank you very much for your pixman work. In my opinion, Loongson-3
+> has the same MMI/SIMD instructions as Loongson-2. The only difference is
+> that Loongson-2's MMI/SIMD trigger COP1 exception, and Loongson-3's MMI/SIMD
+> trigger COP2 exception, so we need this patch to make pixman work fine.
+> 
+> To Xiuzhi,
+> 
+> Do you have an English version of Loongson-3's user mannual? I think that
+> will be very useful for Matt.
+> 
+> Huacai
+> 
+> > On Fri, Apr 4, 2014 at 1:11 AM, Huacai Chen <chenhc@lemote.com> wrote:
+> >> Loongson-3 has some specific instructions (MMI/SIMD) in coprocessor 2.
+> >> COP2 isn't independent because it share COP1 (FPU)'s registers. This
+> >> patch enable the COP2 usage so user-space programs can use the MMI/SIMD
+> >> instructions. When COP2 exception happens, we enable both COP1 (FPU)
+> >> and COP2, only in this way the fp context can be saved and restored
+> >> correctly.
+> >
+> > Is there a Loongson 3 programmers manual somewhere, similar to
+> > Loongson2FUserGuide.pdf?
+> >
+> > I optimized pixman for Loongson 2E/2F using their SIMD instructions.
+> > I've compiled pixman for Loongson 3A and I see some new instructions
+> > being used in the disassembly, but I have no Loongson 3 system to test
+> > on. At minimum, having a manual would be nice.
+> >
+> > Thanks,
+> > Matt
+> >
+> 
+> 

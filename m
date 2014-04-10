@@ -1,48 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 05:02:32 +0200 (CEST)
-Received: from qmta15.westchester.pa.mail.comcast.net ([76.96.59.228]:39651
-        "EHLO qmta15.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821115AbaDJDC2uhu3b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Apr 2014 05:02:28 +0200
-Received: from omta06.westchester.pa.mail.comcast.net ([76.96.62.51])
-        by qmta15.westchester.pa.mail.comcast.net with comcast
-        id o2rC1n00316LCl05F32LvE; Thu, 10 Apr 2014 03:02:20 +0000
-Received: from [192.168.1.13] ([50.190.84.14])
-        by omta06.westchester.pa.mail.comcast.net with comcast
-        id o32L1n0050JZ7Re3S32Lrl; Thu, 10 Apr 2014 03:02:20 +0000
-Message-ID: <534609B2.5070808@gentoo.org>
-Date:   Wed, 09 Apr 2014 23:02:10 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 05:41:10 +0200 (CEST)
+Received: from mail-qc0-f174.google.com ([209.85.216.174]:54346 "EHLO
+        mail-qc0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822149AbaDJDlGDxg2I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Apr 2014 05:41:06 +0200
+Received: by mail-qc0-f174.google.com with SMTP id c9so3728953qcz.19
+        for <linux-mips@linux-mips.org>; Wed, 09 Apr 2014 20:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=WNQAmnCpw/tAMC/cLzM44s8abALRrUVsYzyflSUpgOI=;
+        b=P5rsLUYsUZexrffgoqJEVQIUb/fEpElKIa4Sl/Q/qzOS0Zg3mDKY8JmEfcuKjx9aM6
+         gVh1z6NXEUfy+7W1acLQNheNf7guz4Um8Y4/9thhnPFOf44Qak222H6pZe3f1sstKEPJ
+         6trwoi2kJHnSA7Yd205Y2oUYnQz8XVKpPhfJOux4Wld1j1jfM/keZOfgGRK/jYUAg8DK
+         k4ceTw73ei8Yh9l2yyb7BTB8Tv5hzcEpWBZrLvW8uoIp5Crk3BEM/Rlvk3CZy/6EfVtC
+         uOchHNY3zSEixmref4r/layt34xYa/+CpaL8md2fOw7MJQwN3yzwy/r2AEi5R+Yu2yWJ
+         A2yQ==
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed
- option -mr10k-cache-barrier=store.  Stop.
-References: <534138d9.RISUZQYUMS8U8s42%fengguang.wu@intel.com> <20140409051929.GA29246@localhost> <20140409082445.GC1438@pax.zz.de> <20140409133229.GA22315@alpha.franken.de> <20140409231345.GC8370@localhost> <5345DB6A.7060004@gentoo.org> <20140410003806.GV17197@linux-mips.org>
-In-Reply-To: <20140410003806.GV17197@linux-mips.org>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1397098940;
-        bh=zsIEtfTqdB2nzrv0uJfG0meOJgWc4ccz9dkVdM3WCmw=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=G3yK2c+yNiww7T7huomtv7r7cv04Q11ip3QaPDclF/ufdK7D6jq+MXzigXSmnRBrY
-         kxeI5KH8RgR5pw27IXhipntCOJhx0tQEwwNMJPI4H90NyIu2qnwq3rBSUtcdzRXJtN
-         Qz7Vq3rjngsSw/LfpKYlgfT38t2OMeUNkSQmNDzMODXVjxrwmCqydvHsqnR/E5Xeg9
-         m7t55ONGTOU5bT22BpKeT+1uxmG1K09fkIbsNkovAICp9NTXCKBiyG57DfHy9QVFQy
-         tet3dBPCEaby45ZY1l8PRlD4Ep8FDlSV2Uhmh0aBmcCrSOkfHL2SqAZ661g7+kVL6e
-         evVlJb79lDxWw==
-Return-Path: <kumba@gentoo.org>
+X-Received: by 10.224.79.72 with SMTP id o8mr17704679qak.20.1397101259771;
+ Wed, 09 Apr 2014 20:40:59 -0700 (PDT)
+Received: by 10.96.158.132 with HTTP; Wed, 9 Apr 2014 20:40:59 -0700 (PDT)
+In-Reply-To: <1397059208-27096-1-git-send-email-markos.chandras@imgtec.com>
+References: <1396957635-27071-14-git-send-email-markos.chandras@imgtec.com>
+        <1397059208-27096-1-git-send-email-markos.chandras@imgtec.com>
+Date:   Wed, 9 Apr 2014 20:40:59 -0700
+Message-ID: <CAADnVQLUKnHOjz55s_W+aVZrsWcJ7-UavJTCnFF7PRzLLnwVyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 13/14] MIPS: net: Add BPF JIT
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org, "David S. Miller" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Daniel Borkmann <dborkman@redhat.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <alexei.starovoitov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39755
+X-archive-position: 39756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: alexei.starovoitov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,45 +53,273 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/09/2014 20:38, Ralf Baechle wrote:
-> On Wed, Apr 09, 2014 at 07:44:42PM -0400, Joshua Kinard wrote:
-> 
->> If you weren't using a mips64 compiler, that's probably the issue.  R10000
->> processors are 64-bit only, so a 'mips' toolchain probably doesn't include
->> the R10K cache-barrier code, causing that option to fail.
-> 
-> No - there's no mode switch.  An R10000 will happily run 32-bit code
-> otherwise 32 bit kernels wouldn't work.  32 bit code just doesn't use
-> 64 bit addressing, instructions or the upper 32 bit of the 64 bit registers.
-> 
-> $ mips-linux-gcc -mr10k-cache-barrier=store -c -O2 -o c.o c.c
-> c.c:1:0: error: ‘-mr10k-cache-barrier’ requires a target that provides the ‘cache’ instruction
-> [...]
-> 
-> When adding an option like -mips32 the compilation will succeed.
+On Wed, Apr 9, 2014 at 9:00 AM, Markos Chandras
+<markos.chandras@imgtec.com> wrote:
+> This adds initial support for BPF-JIT on MIPS
 
-Odd, I thought R10K systems were locked to booting 64-bit kernels only.  At
-least the Octane was when it was bootable.  Not sure about IP27.
+Great work!
 
-Maybe that's another one of ARCS' ingenious features...
+btw, net-next is closed and we're waiting to submit classic+internal
+BPF testsuite
+that would have helped in testing and benchmarking.
 
+> Benchmarking:
+> - BPF-JIT Disabled
+> real    1m38.005s
+> - BPF-JIT Enabled
+> real    1m35.215s
 
->> Are you configuring for IP22 (Indy, Indigo2 R4x00), or IP28 (R10000)?  Note,
->> IP26 (R8000) is not supported in Linux.  I think OpenBSD got it working, though.
-> 
-> Wish I'd have a box ....
+it's hard to see the difference in a such setup.
+In bpf only tests we see 4-20x speedup from jit.
+I think mips arch should see something similar.
 
-They do pop up on eBay from time-to-time.  UPS destroyed the case mine came
-in, though.  I've got it in a closet, with duct tape holding the teal skins
-on.  It does boot to the PROM, but the RTC is probably dead by now.
+Few questions:
+- why did you implement only this small set of bpf extensions?
+  was there a use case or they were easier comparing to others?
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
+- this patch set depends on 12 other patches.
+  would be easier to review if the whole set is cc-ed to netdev
 
-"The past tempts us, the present confuses us, the future frightens us.  And
-our lives slip away, moment by moment, lost in that vast, terrible in-between."
+- did you consider doing jit over internal bpf?
+  all bpf extensions support would have come for free and it would work
+  for seccomp and tracing filters in the future.
 
---Emperor Turhan, Centauri Republic
+Few comments:
+
+> +#define RSIZE  (sizeof(unsigned long))
+> +#define ptr typeof(unsigned long)
+
+these are odd looking macros.
+
+> +static inline void emit_bcond(int cond, unsigned int reg1, unsigned int reg2,
+> +                            unsigned int imm, struct jit_ctx *ctx)
+> +{
+> +       if (ctx->target != NULL) {
+> +               u32 *p = &ctx->target[ctx->idx];
+> +
+> +               switch (cond) {
+> +               case MIPS_COND_EQ:
+> +                       uasm_i_beq(&p, reg1, reg2, imm);
+> +                       break;
+> +               case MIPS_COND_NE:
+> +                       uasm_i_bne(&p, reg1, reg2, imm);
+> +                       break;
+> +               case MIPS_COND_ALL:
+> +                       uasm_i_b(&p, imm);
+> +                       break;
+> +               default:
+> +                       pr_warn("%s: Unhandled branch conditional: %d\n",
+> +                               __func__, cond);
+
+shouldn't it be BUG_ON instead?
+can it spam kernel logs?
+
+> +static bool is_load_to_a(u16 inst)
+> +{
+> +       switch (inst) {
+> +       case BPF_S_LD_W_LEN:
+> +       case BPF_S_LD_W_ABS:
+> +       case BPF_S_LD_H_ABS:
+> +       case BPF_S_LD_B_ABS:
+> +       case BPF_S_ANC_CPU:
+> +       case BPF_S_ANC_IFINDEX:
+> +       case BPF_S_ANC_MARK:
+> +       case BPF_S_ANC_PROTOCOL:
+> +       case BPF_S_ANC_RXHASH:
+> +       case BPF_S_ANC_VLAN_TAG:
+> +       case BPF_S_ANC_VLAN_TAG_PRESENT:
+> +       case BPF_S_ANC_QUEUE:
+
+it seems this switch() statement handles more extensions
+that actually jitted later. Future proofing?
+
+> +static void save_bpf_jit_regs(struct jit_ctx *ctx, unsigned offset)
+> +{
+> +       int i = 0, real_off = 0;
+> +       u32 sflags, tmp_flags;
+> +
+> +       /* Adjust the stack pointer */
+> +       emit_stack_offset(-align_sp(offset), ctx);
+> +
+> +       if (ctx->flags & SEEN_CALL) {
+> +               /* Argument save area */
+> +               if (config_enabled(CONFIG_64BIT))
+> +                       /* Bottom of current frame */
+> +                       real_off = align_sp(offset) - RSIZE;
+> +               else
+> +                       /* Top of previous frame */
+> +                       real_off = align_sp(offset) + RSIZE;
+> +               emit_store_stack_reg(MIPS_R_A0, r_sp, real_off, ctx);
+> +               emit_store_stack_reg(MIPS_R_A1, r_sp, real_off + RSIZE, ctx);
+> +
+> +               real_off = 0;
+> +       }
+> +
+> +       tmp_flags = sflags = ctx->flags >> SEEN_SREG_SFT;
+> +       /* sflags is essentially a bitmap */
+> +       pr_debug("%s: register flags: 0x%08x\n", __func__, tmp_flags);
+
+that will spam logs. please remove.
+
+> +       while (tmp_flags) {
+> +               if ((sflags >> i) & 0x1) {
+> +                       pr_debug("%s: preserving register %d\n", __func__,
+> +                                MIPS_R_S0 + i);
+
+likewise.
+
+> +static void restore_bpf_jit_regs(struct jit_ctx *ctx,
+> +                                unsigned int offset)
+> +{
+> +       int i, real_off = 0;
+> +       u32 sflags, tmp_flags;
+> +
+> +       if (ctx->flags & SEEN_CALL) {
+> +               if (config_enabled(CONFIG_64BIT))
+> +                       /* Bottom of current frame */
+> +                       real_off = align_sp(offset) - RSIZE;
+> +               else
+> +                       /* Top of previous frame */
+> +                       real_off = align_sp(offset) + RSIZE;
+> +               emit_load_stack_reg(MIPS_R_A0, r_sp, real_off, ctx);
+> +               emit_load_stack_reg(MIPS_R_A1, r_sp, real_off + RSIZE, ctx);
+> +
+> +               real_off = 0;
+> +       }
+> +
+> +       tmp_flags = sflags = ctx->flags >> SEEN_SREG_SFT;
+> +       /* sflags is a bitmap */
+> +       pr_debug("%s: register flags: 0x%08x\n", __func__, tmp_flags);
+
+likewise. please remove.
+
+> +       i = 0;
+> +       while (tmp_flags) {
+> +               if ((sflags >> i) & 0x1) {
+> +                       pr_debug("%s: restoring register %d\n", __func__,
+> +                                MIPS_R_S0 + i);
+
+likewise.
+
+> +static u64 jit_get_skb_b(struct sk_buff *skb, unsigned offset)
+> +{
+> +       u8 ret;
+> +       int err;
+> +
+> +       err = skb_copy_bits(skb, offset, &ret, 1);
+> +
+> +       return (u64)err << 32 | ret;
+> +}
+
+negative offsets are not supported intentionally?
+
+> +static int build_body(struct jit_ctx *ctx)
+> +{
+> +       void *load_func[] = {jit_get_skb_b, jit_get_skb_h, jit_get_skb_w};
+> +       const struct sk_filter *prog = ctx->skf;
+> +       const struct sock_filter *inst;
+> +       unsigned int i, off, load_order, condt;
+> +       u32 k, b_off __maybe_unused;
+> +
+> +       for (i = 0; i < prog->len; i++) {
+> +               inst = &(prog->insns[i]);
+> +               pr_debug("%s: code->0x%02x, jt->0x%x, jf->0x%x, k->0x%x\n",
+> +                        __func__, inst->code, inst->jt, inst->jf, inst->k);
+
+please remove.
+
+> +load_ind:
+> +                       update_on_xread(ctx);
+> +                       ctx->flags |= SEEN_OFF | SEEN_X;
+> +                       emit_addiu(r_off, r_X, k, ctx);
+> +               goto load_common;
+
+needs extra tab of formatting
+
+> +               case BPF_S_ANC_VLAN_TAG_PRESENT:
+> +                       ctx->flags |= SEEN_SKB | SEEN_S0 | SEEN_A;
+> +                       BUILD_BUG_ON(FIELD_SIZEOF(struct sk_buff,
+> +                                                 vlan_tci) != 2);
+> +                       off = offsetof(struct sk_buff, vlan_tci);
+> +                       emit_half_load(r_s0, r_skb, off, ctx);
+> +                       if (inst->code == BPF_S_ANC_VLAN_TAG)
+
+this branch can never be hit. Did you miss 'case VLAN_TAG' few lines above?
+
+> +                               emit_and(r_A, r_s0, VLAN_VID_MASK, ctx);
+> +                       else
+> +                               emit_and(r_A, r_s0, VLAN_TAG_PRESENT, ctx);
+> +                       break;
+> +               case BPF_S_ANC_QUEUE:
+> +                       ctx->flags |= SEEN_SKB | SEEN_A;
+> +                       BUILD_BUG_ON(FIELD_SIZEOF(struct sk_buff,
+> +                                                 queue_mapping) != 2);
+> +                       BUILD_BUG_ON(offsetof(struct sk_buff,
+> +                                             queue_mapping) > 0xff);
+> +                       off = offsetof(struct sk_buff, queue_mapping);
+> +                       emit_half_load(r_A, r_skb, off, ctx);
+> +                       break;
+> +               default:
+> +                       pr_warn("%s: Unhandled opcode: 0x%02x\n", __FILE__,
+> +                               inst->code);
+
+that will spam the logs. please remove.
+
+> +                       return -1;
+> +               }
+> +       }
+> +
+> +       /* compute offsets only during the first pass */
+> +       if (ctx->target == NULL)
+> +               ctx->offsets[i] = ctx->idx * 4;
+> +
+> +       return 0;
+> +
+> +}
+> +
+> +int bpf_jit_enable __read_mostly;
+> +
+> +void bpf_jit_compile(struct sk_filter *fp)
+> +{
+> +       struct jit_ctx ctx;
+> +       unsigned int alloc_size, tmp_idx;
+> +
+> +       if (!bpf_jit_enable)
+> +               return;
+> +
+> +       memset(&ctx, 0, sizeof(ctx));
+> +
+> +       ctx.offsets = kcalloc(fp->len, sizeof(*ctx.offsets), GFP_KERNEL);
+> +       if (ctx.offsets == NULL)
+> +               return;
+> +
+> +       ctx.skf = fp;
+> +
+> +       if (unlikely(build_body(&ctx)))
+
+why 'unlikely'? this jit doesn't support all extensions
+so it may very well be 'likely' for some use cases.
+
+> +               goto out;
+> +
+> +       tmp_idx = ctx.idx;
+> +       build_prologue(&ctx);
+> +       ctx.prologue_bytes = (ctx.idx - tmp_idx) * 4;
+> +       /* just to complete the ctx.idx count */
+> +       build_epilogue(&ctx);
+> +
+> +       alloc_size = 4 * ctx.idx;
+> +       ctx.target = module_alloc(alloc_size);
+> +       if (ctx.target == NULL)
+> +               goto out;
+> +
+> +       /* Clean it */
+> +       memset(ctx.target, 0, alloc_size);
+> +
+> +       ctx.idx = 0;
+> +
+> +       /* Generate the actual JIT code */
+> +       build_prologue(&ctx);
+> +       build_body(&ctx);
+
+do you want to add BUG_ON to make sure that 2nd build_body() succeeds?

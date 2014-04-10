@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 15:21:24 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:56267 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816019AbaDJNVW4Fwce (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Apr 2014 15:21:22 +0200
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1WYEuv-0005WN-00; Thu, 10 Apr 2014 15:21:21 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id 015051D109; Thu, 10 Apr 2014 15:21:08 +0200 (CEST)
-Date:   Thu, 10 Apr 2014 15:21:08 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Fengguang Wu <fengguang.wu@intel.com>
-Cc:     Florian Lohoff <f@zz.de>, Michal Marek <mmarek@suse.cz>,
-        kbuild-all@01.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed
- option -mr10k-cache-barrier=store.  Stop.
-Message-ID: <20140410132108.GA23466@alpha.franken.de>
-References: <534138d9.RISUZQYUMS8U8s42%fengguang.wu@intel.com>
- <20140409051929.GA29246@localhost>
- <20140409082445.GC1438@pax.zz.de>
- <20140409133229.GA22315@alpha.franken.de>
- <20140409231345.GC8370@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 17:19:47 +0200 (CEST)
+Received: from mail-qc0-f169.google.com ([209.85.216.169]:39605 "EHLO
+        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822166AbaDJPTpdBrN3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Apr 2014 17:19:45 +0200
+Received: by mail-qc0-f169.google.com with SMTP id i17so4570801qcy.0
+        for <linux-mips@linux-mips.org>; Thu, 10 Apr 2014 08:19:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=gi0uNmrlqGVJRjS1zBbnaAmLj+LrqOwfTAeS0+MW2WE=;
+        b=GuWz25cEbLdDNW2Wh/Tw5L0SRo5Pa5hAbjhMCveMvdBkjSS+2A9JrqGuAAsKMTesUO
+         vEs+cspwxaiLskkwFEZDHMybNDAH6YK7diqQS+Y3XmuMVbl84xVueme2EAGOOuKxKRU9
+         5Bop6CsGuouXC+3czjZ8R+5uriiErWdguXdHfwSby88rVWXxWWY/IZQDg70vLFGYHOEt
+         hhh/hM7I1zwSp/fwHPYCdmCNpk79vHEYFfqsHkzpbbR9lRSBLBB2LmBcW17qS447UtNY
+         gFrqrNcnnSzexMf97jIUJmYlO5DNLxX+H7LedmctnFgLyt5xS1CWH7wAkmg7ZDu8VwJN
+         CFwA==
+X-Received: by 10.224.92.75 with SMTP id q11mr21601467qam.56.1397143179283;
+ Thu, 10 Apr 2014 08:19:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140409231345.GC8370@localhost>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <tsbogend@alpha.franken.de>
+Received: by 10.96.147.163 with HTTP; Thu, 10 Apr 2014 08:18:58 -0700 (PDT)
+In-Reply-To: <CAF9eJum5BXjnOunSYOCwXOtMZNVUUZrxjfdwsbfhQQajRzG_HQ@mail.gmail.com>
+References: <CAF9eJum5BXjnOunSYOCwXOtMZNVUUZrxjfdwsbfhQQajRzG_HQ@mail.gmail.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Date:   Thu, 10 Apr 2014 08:18:58 -0700
+Message-ID: <CAGVrzcb_=UFSezcP2OqD-g34hSina4mE2cmUnGaVWbnzPmoH4Q@mail.gmail.com>
+Subject: Re: ELC2014, SanJose - anybody going?
+To:     Graham Whaley <graham.whaley@gmail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39764
+X-archive-position: 39765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,20 +50,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 10, 2014 at 07:13:45AM +0800, Fengguang Wu wrote:
-> > Iirc it went into 4.4.0.
-> 
-> That's interesting. I'm using the cross compiler
-> 
->         gcc-4.6.3-nolibc/mips-linux
+Hi,
 
-well the feature went into the gcc codebase 2008 according to ChangeLog-2008.
+2014-04-10 4:14 GMT-07:00 Graham Whaley <graham.whaley@gmail.com>:
+> Hi,
+>  Anybody intending to be at ELC2014 at the end of the month in
+> SanJose? I'll be there (with a couple of other Imagination kernel
+> folks). I'm up for a meet/beer/chat etc.
 
-The mips64 cross compiler from FC19 (4.7.2) supports r10k-cache-barriers
-out of the box.
-
-Thomas.
-
+I will be there, would be nice to meet you guys in person!
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Florian

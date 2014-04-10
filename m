@@ -1,42 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 10:06:47 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.89.28.114]:54064 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6821703AbaDJIGounyz5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Apr 2014 10:06:44 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 8D4047E8A0C39;
-        Thu, 10 Apr 2014 09:06:35 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Thu, 10 Apr 2014 09:06:37 +0100
-Received: from [192.168.154.89] (192.168.154.89) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 10 Apr
- 2014 09:06:36 +0100
-Message-ID: <5346511F.2020808@imgtec.com>
-Date:   Thu, 10 Apr 2014 09:06:55 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 12:47:54 +0200 (CEST)
+Received: from mail-ie0-f180.google.com ([209.85.223.180]:37582 "EHLO
+        mail-ie0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816019AbaDJKrtKcl6y convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Apr 2014 12:47:49 +0200
+Received: by mail-ie0-f180.google.com with SMTP id as1so3742670iec.11
+        for <multiple recipients>; Thu, 10 Apr 2014 03:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=6FoiOa9Oah9UACDJGYm/BJNaClu+qzNHkYPxHr1wiAw=;
+        b=s3NcahPZEiAfVsek6GwBBoW8h5F69WQLCpkN4Y3OEHiiPayR2hOzqWh0F++wyKiuSV
+         6A09hFsguV4H0P5JuZYtlM+TICPmB+vbCGElrL4uPovlj0Ls2hekFivkHIjQ1oVLyvQB
+         qbG1B/bsGpX9waLViy/hzEIqFtKl4qAx9fM2D0mAgGkypIboaqjckcVIHLtHbsHmp4Pz
+         Qc6LhsT0aaJ0UlHRNRQhcEL78dTj0TJoSl9NVvm0SsH70f8/WXbEqorqHcVzl75ZQDIO
+         DRQSXgl/LhC9oNab2QaglCDJ9CFPV3D/ZonIFiOCgo/0Nn+Wfc0ScdOipnPfJd738IF9
+         uazQ==
 MIME-Version: 1.0
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-CC:     <linux-mips@linux-mips.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Daniel Borkmann <dborkman@redhat.com>
-Subject: Re: [PATCH v2 13/14] MIPS: net: Add BPF JIT
-References: <1396957635-27071-14-git-send-email-markos.chandras@imgtec.com>     <1397059208-27096-1-git-send-email-markos.chandras@imgtec.com> <CAADnVQLUKnHOjz55s_W+aVZrsWcJ7-UavJTCnFF7PRzLLnwVyQ@mail.gmail.com>
-In-Reply-To: <CAADnVQLUKnHOjz55s_W+aVZrsWcJ7-UavJTCnFF7PRzLLnwVyQ@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.89]
-Return-Path: <Markos.Chandras@imgtec.com>
+X-Received: by 10.42.76.140 with SMTP id e12mr41893ick.83.1397126862694; Thu,
+ 10 Apr 2014 03:47:42 -0700 (PDT)
+Received: by 10.64.27.161 with HTTP; Thu, 10 Apr 2014 03:47:42 -0700 (PDT)
+In-Reply-To: <621ab4a5012d8ae1eebc5dc47393f864.squirrel@mail.lemote.com>
+References: <1396599104-24370-1-git-send-email-chenhc@lemote.com>
+        <1396599104-24370-6-git-send-email-chenhc@lemote.com>
+        <533EE1B9.2040805@gmail.com>
+        <621ab4a5012d8ae1eebc5dc47393f864.squirrel@mail.lemote.com>
+Date:   Thu, 10 Apr 2014 18:47:42 +0800
+X-Google-Sender-Auth: aK7v1_5W1SIqsU312pBoSpXEYKw
+Message-ID: <CAAhV-H4inc8sCfWo3J3p7=BGYOZFEbntzO81fP+JvO115j6bvQ@mail.gmail.com>
+Subject: Re: [PATCH 5/9] MIPS: Add numa api support
+From:   Huacai Chen <chenhc@lemote.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <steven.hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39759
+X-archive-position: 39760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,225 +62,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alexei,
+Hi, David,
 
-On 04/10/2014 04:40 AM, Alexei Starovoitov wrote:
-> On Wed, Apr 9, 2014 at 9:00 AM, Markos Chandras
-> <markos.chandras@imgtec.com> wrote:
->> This adds initial support for BPF-JIT on MIPS
+After some code reading, I have some understanding about compat
+syscall, please tell me whether I'm correct.
+1, compat syscall is only needed by n32/o32 userspace on 64-bit kernel.
+2, compat syscall is only needed when there are arguments in pointer type.
+3, compat syscall is only needed when pointer arguments are
+array/struct/union for reading (reading means get_user or
+copy_from_user), or pointer arguments are array/struct/union/long
+integer for writing (writing means put_user or copy_to_user).
+
+If my understanding is correct, then in this patch, get_mempolicy()
+need to use the compat version for n32/o32 on 64-bit kernel, mbind()
+and set_mempolicy() can use the normal version in all cases. But when
+I reading the X86 code, it seems like only o32 on 64-bit kernel need a
+compat version (I assume i386/X32/X64 on X86 is the same as
+o32/n32/n64 on MIPS).
+
+Please give some information, thanks.
+
+Huacai
+
+On Sat, Apr 5, 2014 at 8:54 AM, "陈华才" <chenhc@lemote.com> wrote:
+> Excuse me, what's the compat version exactly means? Or how to produce a
+> problem  without a compat version? It seems everything works fine just
+> with this patch.
 >
-> Great work!
+> Huacai
 >
-> btw, net-next is closed and we're waiting to submit classic+internal
-> BPF testsuite
-> that would have helped in testing and benchmarking.
-
-That would be very useful thanks.
-
+>> On 04/04/2014 01:11 AM, Huacai Chen wrote:
+>>> Enable sys_mbind()/sys_get_mempolicy()/sys_set_mempolicy() for O32, N32,
+>>> and N64 ABIs.
+>>>
+>>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>>
+>> NACK.
+>>
+>> You need compat versions of the syscalls...
+>>
+>> Also current migrate_pages and move_pages syscalls need to use the
+>> compat wrappers for 32-bit ABIs.
+>>
+>> David Daney
+>>
+>>
+>>> ---
+>>>   arch/mips/kernel/scall32-o32.S |    4 ++--
+>>>   arch/mips/kernel/scall64-64.S  |    4 ++--
+>>>   arch/mips/kernel/scall64-n32.S |    6 +++---
+>>>   arch/mips/kernel/scall64-o32.S |    6 +++---
+>>>   4 files changed, 10 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/arch/mips/kernel/scall32-o32.S
+>>> b/arch/mips/kernel/scall32-o32.S
+>>> index fdc70b4..7f7e2fb 100644
+>>> --- a/arch/mips/kernel/scall32-o32.S
+>>> +++ b/arch/mips/kernel/scall32-o32.S
+>>> @@ -495,8 +495,8 @@ EXPORT(sys_call_table)
+>>>      PTR     sys_tgkill
+>>>      PTR     sys_utimes
+>>>      PTR     sys_mbind
+>>> -    PTR     sys_ni_syscall                  /* sys_get_mempolicy */
+>>> -    PTR     sys_ni_syscall                  /* 4270 sys_set_mempolicy */
+>>> +    PTR     sys_get_mempolicy
+>>> +    PTR     sys_set_mempolicy               /* 4270 */
+>>>      PTR     sys_mq_open
+>>>      PTR     sys_mq_unlink
+>>>      PTR     sys_mq_timedsend
+>>> diff --git a/arch/mips/kernel/scall64-64.S
+>>> b/arch/mips/kernel/scall64-64.S
+>>> index dd99c328..a4baf06 100644
+>>> --- a/arch/mips/kernel/scall64-64.S
+>>> +++ b/arch/mips/kernel/scall64-64.S
+>>> @@ -347,8 +347,8 @@ EXPORT(sys_call_table)
+>>>      PTR     sys_tgkill                      /* 5225 */
+>>>      PTR     sys_utimes
+>>>      PTR     sys_mbind
+>>> -    PTR     sys_ni_syscall                  /* sys_get_mempolicy */
+>>> -    PTR     sys_ni_syscall                  /* sys_set_mempolicy */
+>>> +    PTR     sys_get_mempolicy
+>>> +    PTR     sys_set_mempolicy
+>>>      PTR     sys_mq_open                     /* 5230 */
+>>>      PTR     sys_mq_unlink
+>>>      PTR     sys_mq_timedsend
+>>> diff --git a/arch/mips/kernel/scall64-n32.S
+>>> b/arch/mips/kernel/scall64-n32.S
+>>> index f68d2f4..92db19e 100644
+>>> --- a/arch/mips/kernel/scall64-n32.S
+>>> +++ b/arch/mips/kernel/scall64-n32.S
+>>> @@ -339,9 +339,9 @@ EXPORT(sysn32_call_table)
+>>>      PTR     compat_sys_clock_nanosleep
+>>>      PTR     sys_tgkill
+>>>      PTR     compat_sys_utimes               /* 6230 */
+>>> -    PTR     sys_ni_syscall                  /* sys_mbind */
+>>> -    PTR     sys_ni_syscall                  /* sys_get_mempolicy */
+>>> -    PTR     sys_ni_syscall                  /* sys_set_mempolicy */
+>>> +    PTR     sys_mbind
+>>> +    PTR     sys_get_mempolicy
+>>> +    PTR     sys_set_mempolicy
+>>
+>> Here
+>>
+>>
+>>>      PTR     compat_sys_mq_open
+>>>      PTR     sys_mq_unlink                   /* 6235 */
+>>>      PTR     compat_sys_mq_timedsend
+>>> diff --git a/arch/mips/kernel/scall64-o32.S
+>>> b/arch/mips/kernel/scall64-o32.S
+>>> index 70f6ace..0230429 100644
+>>> --- a/arch/mips/kernel/scall64-o32.S
+>>> +++ b/arch/mips/kernel/scall64-o32.S
+>>> @@ -473,9 +473,9 @@ EXPORT(sys32_call_table)
+>>>      PTR     compat_sys_clock_nanosleep      /* 4265 */
+>>>      PTR     sys_tgkill
+>>>      PTR     compat_sys_utimes
+>>> -    PTR     sys_ni_syscall                  /* sys_mbind */
+>>> -    PTR     sys_ni_syscall                  /* sys_get_mempolicy */
+>>> -    PTR     sys_ni_syscall                  /* 4270 sys_set_mempolicy */
+>>> +    PTR     sys_mbind
+>>> +    PTR     sys_get_mempolicy
+>>> +    PTR     sys_set_mempolicy               /* 4270 */
+>>
+>> And Here.
+>>
+>>
+>>>      PTR     compat_sys_mq_open
+>>>      PTR     sys_mq_unlink
+>>>      PTR     compat_sys_mq_timedsend
+>>>
+>>
+>>
 >
->> Benchmarking:
->> - BPF-JIT Disabled
->> real    1m38.005s
->> - BPF-JIT Enabled
->> real    1m35.215s
 >
-> it's hard to see the difference in a such setup.
-> In bpf only tests we see 4-20x speedup from jit.
-> I think mips arch should see something similar.
 >
-> Few questions:
-> - why did you implement only this small set of bpf extensions?
->    was there a use case or they were easier comparing to others?
-
-I assume you are referring to the BPF_S_ANC_* opcodes? I may have 
-overlooked something. I just compared that to ARM and it seems i 
-implemented the same extensions, but it seems I lack a few compared to x86.
-
->
-> - this patch set depends on 12 other patches.
->    would be easier to review if the whole set is cc-ed to netdev
-
-The rest of the patches add uasm instructions so they are not netdev@ 
-related. An example of such patch is here.
-http://patchwork.linux-mips.org/patch/6725/
-
->
-> - did you consider doing jit over internal bpf?
->    all bpf extensions support would have come for free and it would work
->    for seccomp and tracing filters in the future.
->
-Is this the recommended way? (could you point me to some info about 
-internal bpf+jit). I pretty much did that other architectures are doing 
-at the moment.
-
-> Few comments:
->
->> +#define RSIZE  (sizeof(unsigned long))
->> +#define ptr typeof(unsigned long)
->
-> these are odd looking macros.
->
-Indeed but the code is aimed to run in 32 and 64-bit processors so i 
-needed some kind of abstraction. I open to suggestions.
-
->> +static inline void emit_bcond(int cond, unsigned int reg1, unsigned int reg2,
->> +                            unsigned int imm, struct jit_ctx *ctx)
->> +{
->> +       if (ctx->target != NULL) {
->> +               u32 *p = &ctx->target[ctx->idx];
->> +
->> +               switch (cond) {
->> +               case MIPS_COND_EQ:
->> +                       uasm_i_beq(&p, reg1, reg2, imm);
->> +                       break;
->> +               case MIPS_COND_NE:
->> +                       uasm_i_bne(&p, reg1, reg2, imm);
->> +                       break;
->> +               case MIPS_COND_ALL:
->> +                       uasm_i_b(&p, imm);
->> +                       break;
->> +               default:
->> +                       pr_warn("%s: Unhandled branch conditional: %d\n",
->> +                               __func__, cond);
->
-> shouldn't it be BUG_ON instead?
-> can it spam kernel logs?
-
-BUG_ON() can be disabled (CONFIG_BUG) so spamming the log was 
-intentional to make sure this will not go unnoticed.
-
->
->> +static bool is_load_to_a(u16 inst)
->> +{
->> +       switch (inst) {
->> +       case BPF_S_LD_W_LEN:
->> +       case BPF_S_LD_W_ABS:
->> +       case BPF_S_LD_H_ABS:
->> +       case BPF_S_LD_B_ABS:
->> +       case BPF_S_ANC_CPU:
->> +       case BPF_S_ANC_IFINDEX:
->> +       case BPF_S_ANC_MARK:
->> +       case BPF_S_ANC_PROTOCOL:
->> +       case BPF_S_ANC_RXHASH:
->> +       case BPF_S_ANC_VLAN_TAG:
->> +       case BPF_S_ANC_VLAN_TAG_PRESENT:
->> +       case BPF_S_ANC_QUEUE:
->
-> it seems this switch() statement handles more extensions
-> that actually jitted later. Future proofing?
-
-It's likely i overlooked something again. I will double check.
-
->
->> +static void save_bpf_jit_regs(struct jit_ctx *ctx, unsigned offset)
->> +{
->> +       int i = 0, real_off = 0;
->> +       u32 sflags, tmp_flags;
->> +
->> +       /* Adjust the stack pointer */
->> +       emit_stack_offset(-align_sp(offset), ctx);
->> +
->> +       if (ctx->flags & SEEN_CALL) {
->> +               /* Argument save area */
->> +               if (config_enabled(CONFIG_64BIT))
->> +                       /* Bottom of current frame */
->> +                       real_off = align_sp(offset) - RSIZE;
->> +               else
->> +                       /* Top of previous frame */
->> +                       real_off = align_sp(offset) + RSIZE;
->> +               emit_store_stack_reg(MIPS_R_A0, r_sp, real_off, ctx);
->> +               emit_store_stack_reg(MIPS_R_A1, r_sp, real_off + RSIZE, ctx);
->> +
->> +               real_off = 0;
->> +       }
->> +
->> +       tmp_flags = sflags = ctx->flags >> SEEN_SREG_SFT;
->> +       /* sflags is essentially a bitmap */
->> +       pr_debug("%s: register flags: 0x%08x\n", __func__, tmp_flags);
->
-> that will spam logs. please remove.
-
-This will only spam the logs if you build with -DDEBUG. This is an 
-unlikely build situation so spamming the logs is desired because if you 
-added -DDEBUG yourself, you need to see as many details as you want 
-(same for the rest of pr_debug() calls)
-
-
->
->> +static u64 jit_get_skb_b(struct sk_buff *skb, unsigned offset)
->> +{
->> +       u8 ret;
->> +       int err;
->> +
->> +       err = skb_copy_bits(skb, offset, &ret, 1);
->> +
->> +       return (u64)err << 32 | ret;
->> +}
->
-> negative offsets are not supported intentionally?
-I am sorry. I don't understand what you mean (and this code is identical 
-to ARM)
-
->> +load_ind:
->> +                       update_on_xread(ctx);
->> +                       ctx->flags |= SEEN_OFF | SEEN_X;
->> +                       emit_addiu(r_off, r_X, k, ctx);
->> +               goto load_common;
->
-> needs extra tab of formatting
-Thanks. I will fix it.
-
->
->> +               case BPF_S_ANC_VLAN_TAG_PRESENT:
->> +                       ctx->flags |= SEEN_SKB | SEEN_S0 | SEEN_A;
->> +                       BUILD_BUG_ON(FIELD_SIZEOF(struct sk_buff,
->> +                                                 vlan_tci) != 2);
->> +                       off = offsetof(struct sk_buff, vlan_tci);
->> +                       emit_half_load(r_s0, r_skb, off, ctx);
->> +                       if (inst->code == BPF_S_ANC_VLAN_TAG)
->
-> this branch can never be hit. Did you miss 'case VLAN_TAG' few lines above?
-
-Indeed I did...
-
-
->> +
->> +       ctx.skf = fp;
->> +
->> +       if (unlikely(build_body(&ctx)))
->
-> why 'unlikely'? this jit doesn't support all extensions
-> so it may very well be 'likely' for some use cases.
-
-I will remove it once I add the missing extensions.
-
->
->> +               goto out;
->> +
->> +       tmp_idx = ctx.idx;
->> +       build_prologue(&ctx);
->> +       ctx.prologue_bytes = (ctx.idx - tmp_idx) * 4;
->> +       /* just to complete the ctx.idx count */
->> +       build_epilogue(&ctx);
->> +
->> +       alloc_size = 4 * ctx.idx;
->> +       ctx.target = module_alloc(alloc_size);
->> +       if (ctx.target == NULL)
->> +               goto out;
->> +
->> +       /* Clean it */
->> +       memset(ctx.target, 0, alloc_size);
->> +
->> +       ctx.idx = 0;
->> +
->> +       /* Generate the actual JIT code */
->> +       build_prologue(&ctx);
->> +       build_body(&ctx);
->
-> do you want to add BUG_ON to make sure that 2nd build_body() succeeds?
-If the first one managed to succeed why would the second one fail?
-
-Thanks for the review!
-
--- 
-markos

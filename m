@@ -1,44 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 14:46:15 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52373 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6821091AbaDJMqNhwvjQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Apr 2014 14:46:13 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s3ACkCqf030126;
-        Thu, 10 Apr 2014 14:46:12 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s3ACkCW7030125;
-        Thu, 10 Apr 2014 14:46:12 +0200
-Date:   Thu, 10 Apr 2014 14:46:12 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Miod Vallat <miod@online.fr>
-Cc:     linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2014 15:21:24 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:56267 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816019AbaDJNVW4Fwce (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Apr 2014 15:21:22 +0200
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1WYEuv-0005WN-00; Thu, 10 Apr 2014 15:21:21 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id 015051D109; Thu, 10 Apr 2014 15:21:08 +0200 (CEST)
+Date:   Thu, 10 Apr 2014 15:21:08 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Fengguang Wu <fengguang.wu@intel.com>
+Cc:     Florian Lohoff <f@zz.de>, Michal Marek <mmarek@suse.cz>,
+        kbuild-all@01.org,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed
  option -mr10k-cache-barrier=store.  Stop.
-Message-ID: <20140410124612.GX17197@linux-mips.org>
+Message-ID: <20140410132108.GA23466@alpha.franken.de>
 References: <534138d9.RISUZQYUMS8U8s42%fengguang.wu@intel.com>
  <20140409051929.GA29246@localhost>
  <20140409082445.GC1438@pax.zz.de>
  <20140409133229.GA22315@alpha.franken.de>
  <20140409231345.GC8370@localhost>
- <5345DB6A.7060004@gentoo.org>
- <20140410003806.GV17197@linux-mips.org>
- <534609B2.5070808@gentoo.org>
- <loom.20140410T140715-346@post.gmane.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <loom.20140410T140715-346@post.gmane.org>
+In-Reply-To: <20140409231345.GC8370@localhost>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39763
+X-archive-position: 39764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,22 +48,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 10, 2014 at 12:10:41PM +0000, Miod Vallat wrote:
-
-> > Odd, I thought R10K systems were locked to booting 64-bit kernels only.  At
-> > least the Octane was when it was bootable.  Not sure about IP27.
+On Thu, Apr 10, 2014 at 07:13:45AM +0800, Fengguang Wu wrote:
+> > Iirc it went into 4.4.0.
 > 
-> The Octane needs a 64-bit ARCS and kernel only because none of its
-> physical memory is addressable with KSEG0/KSEG1.
+> That's interesting. I'm using the cross compiler
 > 
-> > >> IP26 (R8000) is not supported in Linux.  I think OpenBSD got it
-> working, though.
-> 
-> For some very limited value of working (it boots single-user but does not
-> last long due to page table corruption).
+>         gcc-4.6.3-nolibc/mips-linux
 
-The R8000 is infamous for its buggyness.  In a silent night in Mountain View
-you can still hear SGI IRIX developers' curses echoing from distant
-mountains ...
+well the feature went into the gcc codebase 2008 according to ChangeLog-2008.
 
-  Ralf
+The mips64 cross compiler from FC19 (4.7.2) supports r10k-cache-barriers
+out of the box.
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Apr 2014 02:27:29 +0200 (CEST)
-Received: from mail-pb0-f48.google.com ([209.85.160.48]:61656 "EHLO
-        mail-pb0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822449AbaDMAZ1d7NCp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Apr 2014 02:25:27 +0200
-Received: by mail-pb0-f48.google.com with SMTP id md12so6829283pbc.21
-        for <multiple recipients>; Sat, 12 Apr 2014 17:25:21 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Apr 2014 02:27:48 +0200 (CEST)
+Received: from mail-pd0-f171.google.com ([209.85.192.171]:34430 "EHLO
+        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6832653AbaDMAZedcsPw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Apr 2014 02:25:34 +0200
+Received: by mail-pd0-f171.google.com with SMTP id r10so6705460pdi.16
+        for <multiple recipients>; Sat, 12 Apr 2014 17:25:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=RbQlM406ZBJneO5CmnTLm1SRvWu4suekiwbzb8Fdtxo=;
-        b=tRORn+C4umUcae7l5DQDF4A6OnpcvoA3n3/GkWUh11+S80oNhUqZBJ5vF2hVpU/s4i
-         0Geg+s3PtLVCqeK5IbLpTuhrqxk9fLbS/qfTNtFTgIPLLbhJs072qet3De/bMyARJ+M9
-         Co0LhDKR1NcGTl2H2725SqcwcaNn7unZrD/tkfKiWUo+MK5o27HDAHANH/4PVxvKkeeu
-         f5Cnie1B4yFNKvHz+khv6UhSlttknMsJuVkqvB/K5vFxwNL9d02tHL5li8EiUCEIxI8G
-         YIbeuQPAHCaaEbPShup0xfOt8oGwqIAWE0XVqNz4E/ae+Y7GwhOrWV6G1mXiQGpvZtIz
-         RceQ==
-X-Received: by 10.68.198.97 with SMTP id jb1mr35649548pbc.104.1397348721015;
-        Sat, 12 Apr 2014 17:25:21 -0700 (PDT)
+        bh=LlOE57YNuRzDkiWABcinkmjCmdSc5PvMHjfpX1DWiu4=;
+        b=chJGZgH75pVNWIYN1vzZuC3lB2Mg6cQFJF/mHvXBPxNHOZdQWrgBDASyzO02j1SdnM
+         3/FssXEKKvQlXDbAaRU63FXjZ/MTt2lHqakux8nMC+XY0yoKftY0GTN0UN/Q+B0W25ZL
+         Uw5r4q4HA48KDDjHKFSY0ItiRwQvRAZnhXQ2QQ0hnpTiAQgNZzlF/WT/WQNLB6pEPAFT
+         78usuRzGeepoMX+lFB79Y8DDkzsCQ8abKDr1Qp5qvfwKlYbqXUs2vT/MjNYUHAAJOlZ6
+         dp2KBM8AoIQpT4+VVpd2eu9KiHGXm7L+x4XWSiMJ2MZ661RLwXuKjLlaFy6zmMA+JvcW
+         JLbg==
+X-Received: by 10.66.216.137 with SMTP id oq9mr35475134pac.97.1397348728341;
+        Sat, 12 Apr 2014 17:25:28 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id sh5sm24474879pbc.21.2014.04.12.17.25.14
+        by mx.google.com with ESMTPSA id sh5sm24474879pbc.21.2014.04.12.17.25.22
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sat, 12 Apr 2014 17:25:20 -0700 (PDT)
+        Sat, 12 Apr 2014 17:25:27 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
@@ -30,9 +30,9 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 6/8] MIPS: Add Loongson-3B support
-Date:   Sun, 13 Apr 2014 08:24:20 +0800
-Message-Id: <1397348662-22502-7-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V2 7/8] MIPS: Loongson-3: Enable the COP2 usage
+Date:   Sun, 13 Apr 2014 08:24:21 +0800
+Message-Id: <1397348662-22502-8-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1397348662-22502-1-git-send-email-chenhc@lemote.com>
 References: <1397348662-22502-1-git-send-email-chenhc@lemote.com>
@@ -40,7 +40,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39789
+X-archive-position: 39790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,714 +57,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3B is a 8-cores processor. In general it looks like there are
-two Loongson-3A integrated in one chip: 8 cores are separated into two
-groups (two NUMA node), each node has its own local memory.
-
-Of course there are some differences between one Loongson-3B and two
-Loongson-3A. E.g., the base addresses of IPI registers of each node are
-not the same; Loongson-3A use ChipConfig register to enable/disable
-clock, but Loongson-3B use FreqControl register instead.
-
-There are two revision of Loongson-3B, the first revision is called as
-Loongson-3B1000, whose frequency is 1GHz and has a PRid 0x6306, the
-second revision is called as Loongson-3B1500, whose frequency is 1.5GHz
-and has a PRid 0x6307. Both revisions has a bug that clock cannot be
-disabled at runtime, but this will be fixed in future.
+Loongson-3 has some specific instructions (MMI/SIMD) in coprocessor 2.
+COP2 isn't independent because it share COP1 (FPU)'s registers. This
+patch enable the COP2 usage so user-space programs can use the MMI/SIMD
+instructions. When COP2 exception happens, we enable both COP1 (FPU)
+and COP2, only in this way the fp context can be saved and restored
+correctly.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/cpu.h                      |    2 +
- arch/mips/include/asm/mach-loongson/boot_param.h |    1 +
- arch/mips/include/asm/mach-loongson/loongson.h   |    4 +
- arch/mips/kernel/cpu-probe.c                     |    6 +
- arch/mips/loongson/common/env.c                  |   31 ++-
- arch/mips/loongson/loongson-3/irq.c              |   26 ++-
- arch/mips/loongson/loongson-3/smp.c              |  387 ++++++++++++++++------
- arch/mips/loongson/loongson-3/smp.h              |   37 +-
- 8 files changed, 372 insertions(+), 122 deletions(-)
+ arch/mips/include/asm/cop2.h            |    8 ++++
+ arch/mips/loongson/loongson-3/Makefile  |    2 +-
+ arch/mips/loongson/loongson-3/cop2-ex.c |   63 +++++++++++++++++++++++++++++++
+ 3 files changed, 72 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/loongson/loongson-3/cop2-ex.c
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 530eb8b..630a4c6 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -232,6 +232,8 @@
- #define PRID_REV_LOONGSON2E	0x0002
- #define PRID_REV_LOONGSON2F	0x0003
- #define PRID_REV_LOONGSON3A	0x0005
-+#define PRID_REV_LOONGSON3B_R1	0x0006
-+#define PRID_REV_LOONGSON3B_R2	0x0007
+diff --git a/arch/mips/include/asm/cop2.h b/arch/mips/include/asm/cop2.h
+index c1516cc..d035298 100644
+--- a/arch/mips/include/asm/cop2.h
++++ b/arch/mips/include/asm/cop2.h
+@@ -32,6 +32,14 @@ extern void nlm_cop2_restore(struct nlm_cop2_state *);
+ #define cop2_present		1
+ #define cop2_lazy_restore	0
  
- /*
-  * Older processors used to encode processor version and revision in two
-diff --git a/arch/mips/include/asm/mach-loongson/boot_param.h b/arch/mips/include/asm/mach-loongson/boot_param.h
-index 8b06c96..3388fc5 100644
---- a/arch/mips/include/asm/mach-loongson/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson/boot_param.h
-@@ -163,4 +163,5 @@ struct loongson_system_configuration {
- 
- extern struct efi_memory_map_loongson *loongson_memmap;
- extern struct loongson_system_configuration loongson_sysconf;
-+extern int cpuhotplug_workaround;
- #endif
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index a1c76ca..92bf76c 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -255,6 +255,10 @@ static inline void do_perfcnt_IRQ(void)
- extern u64 loongson_chipcfg[MAX_PACKAGES];
- #define LOONGSON_CHIPCFG(id) (*(volatile u32 *)(loongson_chipcfg[id]))
- 
-+/* Freq Control register of each physical cpu package, PRid >= Loongson-3B */
-+extern u64 loongson_freqctrl[MAX_PACKAGES];
-+#define LOONGSON_FREQCTRL(id) (*(volatile u32 *)(loongson_freqctrl[id]))
++#elif defined(CONFIG_CPU_LOONGSON3)
 +
- /* pcimap */
- 
- #define LOONGSON_PCIMAP_PCIMAP_LO0	0x0000003f
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 6e8fb85..585f996 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -755,6 +755,12 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
- 			break;
-+		case PRID_REV_LOONGSON3B_R1:
-+		case PRID_REV_LOONGSON3B_R2:
-+			c->cputype = CPU_LOONGSON3;
-+			__cpu_name[cpu] = "ICT Loongson-3";
-+			set_elf_platform(cpu, "loongson3b");
-+			break;
- 		}
- 
- 		set_isa(c, MIPS_CPU_ISA_III);
-diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index 33a13b9..f152285 100644
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
-@@ -28,6 +28,10 @@ struct efi_memory_map_loongson *loongson_memmap;
- struct loongson_system_configuration loongson_sysconf;
- 
- u64 loongson_chipcfg[MAX_PACKAGES] = {0xffffffffbfc00180};
-+u64 loongson_freqctrl[MAX_PACKAGES];
++#define cop2_save(r)
++#define cop2_restore(r)
 +
-+unsigned long long smp_group[4];
-+int cpuhotplug_workaround = 0;
- 
- #define parse_even_earlier(res, option, p)				\
- do {									\
-@@ -82,10 +86,32 @@ void __init prom_init_env(void)
- 	if (ecpu->cputype == Loongson_3A) {
- 		loongson_sysconf.cores_per_node = 4;
- 		loongson_sysconf.cores_per_package = 4;
-+		smp_group[0] = 0x900000003ff01000;
-+		smp_group[1] = 0x900010003ff01000;
-+		smp_group[2] = 0x900020003ff01000;
-+		smp_group[3] = 0x900030003ff01000;
- 		loongson_chipcfg[0] = 0x900000001fe00180;
- 		loongson_chipcfg[1] = 0x900010001fe00180;
- 		loongson_chipcfg[2] = 0x900020001fe00180;
- 		loongson_chipcfg[3] = 0x900030001fe00180;
-+		loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
-+	} else if (ecpu->cputype == Loongson_3B) {
-+		loongson_sysconf.cores_per_node = 4; /* One chip has 2 nodes */
-+		loongson_sysconf.cores_per_package = 8;
-+		smp_group[0] = 0x900000003ff01000;
-+		smp_group[1] = 0x900010003ff05000;
-+		smp_group[2] = 0x900020003ff09000;
-+		smp_group[3] = 0x900030003ff0d000;
-+		loongson_chipcfg[0] = 0x900000001fe00180;
-+		loongson_chipcfg[1] = 0x900020001fe00180;
-+		loongson_chipcfg[2] = 0x900040001fe00180;
-+		loongson_chipcfg[3] = 0x900060001fe00180;
-+		loongson_freqctrl[0] = 0x900000001fe001d0;
-+		loongson_freqctrl[1] = 0x900020001fe001d0;
-+		loongson_freqctrl[2] = 0x900040001fe001d0;
-+		loongson_freqctrl[3] = 0x900060001fe001d0;
-+		loongson_sysconf.ht_control_base = 0x90001EFDFB000000;
-+		cpuhotplug_workaround = 1;
- 	} else {
- 		loongson_sysconf.cores_per_node = 1;
- 		loongson_sysconf.cores_per_package = 1;
-@@ -111,7 +137,6 @@ void __init prom_init_env(void)
- 	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
- 	loongson_sysconf.suspend_addr = boot_p->reset_system.DoSuspend;
- 
--	loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
- 	loongson_sysconf.vgabios_addr = boot_p->efi.smbios.vga_bios;
- 	pr_debug("Shutdown Addr: %llx, Restart Addr: %llx, VBIOS Addr: %llx\n",
- 		loongson_sysconf.poweroff_addr, loongson_sysconf.restart_addr,
-@@ -129,6 +154,10 @@ void __init prom_init_env(void)
- 		case PRID_REV_LOONGSON3A:
- 			cpu_clock_freq = 900000000;
- 			break;
-+		case PRID_REV_LOONGSON3B_R1:
-+		case PRID_REV_LOONGSON3B_R2:
-+			cpu_clock_freq = 1000000000;
-+			break;
- 		default:
- 			cpu_clock_freq = 100000000;
- 			break;
-diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
-index f240828..ca1c62a 100644
---- a/arch/mips/loongson/loongson-3/irq.c
-+++ b/arch/mips/loongson/loongson-3/irq.c
-@@ -7,6 +7,8 @@
- #include <asm/i8259.h>
- #include <asm/mipsregs.h>
- 
-+#include "smp.h"
++#define cop2_present		1
++#define cop2_lazy_restore	1
 +
- unsigned int ht_irq[] = {1, 3, 4, 5, 6, 7, 8, 12, 14, 15};
+ #else
  
- static void ht_irqdispatch(void)
-@@ -53,9 +55,15 @@ static inline void mask_loongson_irq(struct irq_data *d)
- 	/* Workaround: UART IRQ may deliver to any core */
- 	if (d->irq == LOONGSON_UART_IRQ) {
- 		int cpu = smp_processor_id();
--
--		LOONGSON_INT_ROUTER_INTENCLR = 1 << 10;
--		LOONGSON_INT_ROUTER_LPC = 0x10 + (1<<cpu);
-+		int node_id = cpu / loongson_sysconf.cores_per_node;
-+		int core_id = cpu % loongson_sysconf.cores_per_node;
-+		u64 intenclr_addr = smp_group[node_id] |
-+			(u64)(&LOONGSON_INT_ROUTER_INTENCLR);
-+		u64 introuter_lpc_addr = smp_group[node_id] |
-+			(u64)(&LOONGSON_INT_ROUTER_LPC);
+ #define cop2_present		0
+diff --git a/arch/mips/loongson/loongson-3/Makefile b/arch/mips/loongson/loongson-3/Makefile
+index 471b0f2a..b4df775 100644
+--- a/arch/mips/loongson/loongson-3/Makefile
++++ b/arch/mips/loongson/loongson-3/Makefile
+@@ -1,7 +1,7 @@
+ #
+ # Makefile for Loongson-3 family machines
+ #
+-obj-y			+= irq.o
++obj-y			+= irq.o cop2-ex.o
+ 
+ obj-$(CONFIG_SMP)	+= smp.o
+ 
+diff --git a/arch/mips/loongson/loongson-3/cop2-ex.c b/arch/mips/loongson/loongson-3/cop2-ex.c
+new file mode 100644
+index 0000000..9182e8d
+--- /dev/null
++++ b/arch/mips/loongson/loongson-3/cop2-ex.c
+@@ -0,0 +1,63 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2014 Lemote Corporation.
++ *   written by Huacai Chen <chenhc@lemote.com>
++ *
++ * based on arch/mips/cavium-octeon/cpu.c
++ * Copyright (C) 2009 Wind River Systems,
++ *   written by Ralf Baechle <ralf@linux-mips.org>
++ */
++#include <linux/init.h>
++#include <linux/sched.h>
++#include <linux/notifier.h>
 +
-+		*(volatile u32 *)intenclr_addr = 1 << 10;
-+		*(volatile u8 *)introuter_lpc_addr = 0x10 + (1<<core_id);
- 	}
- }
- 
-@@ -64,9 +72,15 @@ static inline void unmask_loongson_irq(struct irq_data *d)
- 	/* Workaround: UART IRQ may deliver to any core */
- 	if (d->irq == LOONGSON_UART_IRQ) {
- 		int cpu = smp_processor_id();
--
--		LOONGSON_INT_ROUTER_INTENSET = 1 << 10;
--		LOONGSON_INT_ROUTER_LPC = 0x10 + (1<<cpu);
-+		int node_id = cpu / loongson_sysconf.cores_per_node;
-+		int core_id = cpu % loongson_sysconf.cores_per_node;
-+		u64 intenset_addr = smp_group[node_id] |
-+			(u64)(&LOONGSON_INT_ROUTER_INTENSET);
-+		u64 introuter_lpc_addr = smp_group[node_id] |
-+			(u64)(&LOONGSON_INT_ROUTER_LPC);
++#include <asm/fpu.h>
++#include <asm/cop2.h>
++#include <asm/current.h>
++#include <asm/mipsregs.h>
 +
-+		*(volatile u32 *)intenset_addr = 1 << 10;
-+		*(volatile u8 *)introuter_lpc_addr = 0x10 + (1<<core_id);
- 	}
- 
- 	set_c0_status(0x100 << (d->irq - MIPS_CPU_IRQ_BASE));
-diff --git a/arch/mips/loongson/loongson-3/smp.c b/arch/mips/loongson/loongson-3/smp.c
-index f99122c..8089f5f 100644
---- a/arch/mips/loongson/loongson-3/smp.c
-+++ b/arch/mips/loongson/loongson-3/smp.c
-@@ -31,6 +31,12 @@
- DEFINE_PER_CPU(int, cpu_state);
- DEFINE_PER_CPU(uint32_t, core0_c0count);
- 
-+static void *ipi_set0_regs[16];
-+static void *ipi_clear0_regs[16];
-+static void *ipi_status0_regs[16];
-+static void *ipi_en0_regs[16];
-+static void *ipi_mailbox_buf[16];
-+
- /* read a 32bit value from ipi register */
- #define loongson3_ipi_read32(addr) readl(addr)
- /* read a 64bit value from ipi register */
-@@ -48,100 +54,185 @@ DEFINE_PER_CPU(uint32_t, core0_c0count);
- 		__wbflush();			\
- 	} while (0)
- 
--static void *ipi_set0_regs[] = {
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + SET0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + SET0),
--};
-+static void ipi_set0_regs_init(void)
++static int loongson_cu2_call(struct notifier_block *nfb, unsigned long action,
++	void *data)
 +{
-+	ipi_set0_regs[0] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + SET0);
-+	ipi_set0_regs[1] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + SET0);
-+	ipi_set0_regs[2] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + SET0);
-+	ipi_set0_regs[3] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + SET0);
-+	ipi_set0_regs[4] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + SET0);
-+	ipi_set0_regs[5] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + SET0);
-+	ipi_set0_regs[6] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + SET0);
-+	ipi_set0_regs[7] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + SET0);
-+	ipi_set0_regs[8] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + SET0);
-+	ipi_set0_regs[9] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + SET0);
-+	ipi_set0_regs[10] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + SET0);
-+	ipi_set0_regs[11] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + SET0);
-+	ipi_set0_regs[12] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + SET0);
-+	ipi_set0_regs[13] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + SET0);
-+	ipi_set0_regs[14] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + SET0);
-+	ipi_set0_regs[15] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + SET0);
-+}
- 
--static void *ipi_clear0_regs[] = {
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + CLEAR0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + CLEAR0),
--};
-+static void ipi_clear0_regs_init(void)
-+{
-+	ipi_clear0_regs[0] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + CLEAR0);
-+	ipi_clear0_regs[1] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + CLEAR0);
-+	ipi_clear0_regs[2] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + CLEAR0);
-+	ipi_clear0_regs[3] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + CLEAR0);
-+	ipi_clear0_regs[4] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + CLEAR0);
-+	ipi_clear0_regs[5] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + CLEAR0);
-+	ipi_clear0_regs[6] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + CLEAR0);
-+	ipi_clear0_regs[7] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + CLEAR0);
-+	ipi_clear0_regs[8] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + CLEAR0);
-+	ipi_clear0_regs[9] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + CLEAR0);
-+	ipi_clear0_regs[10] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + CLEAR0);
-+	ipi_clear0_regs[11] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + CLEAR0);
-+	ipi_clear0_regs[12] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + CLEAR0);
-+	ipi_clear0_regs[13] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + CLEAR0);
-+	ipi_clear0_regs[14] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + CLEAR0);
-+	ipi_clear0_regs[15] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + CLEAR0);
-+}
- 
--static void *ipi_status0_regs[] = {
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + STATUS0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + STATUS0),
--};
-+static void ipi_status0_regs_init(void)
-+{
-+	ipi_status0_regs[0] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + STATUS0);
-+	ipi_status0_regs[1] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + STATUS0);
-+	ipi_status0_regs[2] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + STATUS0);
-+	ipi_status0_regs[3] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + STATUS0);
-+	ipi_status0_regs[4] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + STATUS0);
-+	ipi_status0_regs[5] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + STATUS0);
-+	ipi_status0_regs[6] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + STATUS0);
-+	ipi_status0_regs[7] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + STATUS0);
-+	ipi_status0_regs[8] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + STATUS0);
-+	ipi_status0_regs[9] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + STATUS0);
-+	ipi_status0_regs[10] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + STATUS0);
-+	ipi_status0_regs[11] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + STATUS0);
-+	ipi_status0_regs[12] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + STATUS0);
-+	ipi_status0_regs[13] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + STATUS0);
-+	ipi_status0_regs[14] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + STATUS0);
-+	ipi_status0_regs[15] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + STATUS0);
-+}
- 
--static void *ipi_en0_regs[] = {
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + EN0),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + EN0),
--};
-+static void ipi_en0_regs_init(void)
-+{
-+	ipi_en0_regs[0] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + EN0);
-+	ipi_en0_regs[1] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + EN0);
-+	ipi_en0_regs[2] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + EN0);
-+	ipi_en0_regs[3] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + EN0);
-+	ipi_en0_regs[4] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + EN0);
-+	ipi_en0_regs[5] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + EN0);
-+	ipi_en0_regs[6] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + EN0);
-+	ipi_en0_regs[7] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + EN0);
-+	ipi_en0_regs[8] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + EN0);
-+	ipi_en0_regs[9] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + EN0);
-+	ipi_en0_regs[10] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + EN0);
-+	ipi_en0_regs[11] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + EN0);
-+	ipi_en0_regs[12] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + EN0);
-+	ipi_en0_regs[13] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + EN0);
-+	ipi_en0_regs[14] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + EN0);
-+	ipi_en0_regs[15] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + EN0);
-+}
- 
--static void *ipi_mailbox_buf[] = {
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + BUF),
--	(void *)(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + BUF),
--};
-+static void ipi_mailbox_buf_init(void)
-+{
-+	ipi_mailbox_buf[0] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE0_OFFSET + BUF);
-+	ipi_mailbox_buf[1] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE1_OFFSET + BUF);
-+	ipi_mailbox_buf[2] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE2_OFFSET + BUF);
-+	ipi_mailbox_buf[3] = (void *)
-+		(SMP_CORE_GROUP0_BASE + SMP_CORE3_OFFSET + BUF);
-+	ipi_mailbox_buf[4] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE0_OFFSET + BUF);
-+	ipi_mailbox_buf[5] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE1_OFFSET + BUF);
-+	ipi_mailbox_buf[6] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE2_OFFSET + BUF);
-+	ipi_mailbox_buf[7] = (void *)
-+		(SMP_CORE_GROUP1_BASE + SMP_CORE3_OFFSET + BUF);
-+	ipi_mailbox_buf[8] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE0_OFFSET + BUF);
-+	ipi_mailbox_buf[9] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE1_OFFSET + BUF);
-+	ipi_mailbox_buf[10] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE2_OFFSET + BUF);
-+	ipi_mailbox_buf[11] = (void *)
-+		(SMP_CORE_GROUP2_BASE + SMP_CORE3_OFFSET + BUF);
-+	ipi_mailbox_buf[12] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE0_OFFSET + BUF);
-+	ipi_mailbox_buf[13] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE1_OFFSET + BUF);
-+	ipi_mailbox_buf[14] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE2_OFFSET + BUF);
-+	ipi_mailbox_buf[15] = (void *)
-+		(SMP_CORE_GROUP3_BASE + SMP_CORE3_OFFSET + BUF);
-+}
- 
- /*
-  * Simple enough, just poke the appropriate ipi register
-@@ -248,6 +339,11 @@ static void __init loongson3_smp_setup(void)
- 		__cpu_number_map[i] = ++num;
- 		__cpu_logical_map[num] = i;
- 	}
-+	ipi_set0_regs_init();
-+	ipi_clear0_regs_init();
-+	ipi_status0_regs_init();
-+	ipi_en0_regs_init();
-+	ipi_mailbox_buf_init();
- 	pr_info("Detected %i available secondary CPU(s)\n", num);
- }
- 
-@@ -322,7 +418,7 @@ static void loongson3_cpu_die(unsigned int cpu)
-  * flush all L1 entries at first. Then, another core (usually Core 0) can
-  * safely disable the clock of the target core. loongson3_play_dead() is
-  * called via CKSEG1 (uncached and unmmaped) */
--static void loongson3_play_dead(int *state_addr)
-+static void loongson3a_play_dead(int *state_addr)
- {
- 	register int val;
- 	register long cpuid, core, node, count;
-@@ -384,6 +480,70 @@ static void loongson3_play_dead(int *state_addr)
- 		: "a1");
- }
- 
-+static void loongson3b_play_dead(int *state_addr)
-+{
-+	register int val;
-+	register long cpuid, core, node, count;
-+	register void *addr, *base, *initfunc;
++	int fpu_enabled;
++	int fr = !test_thread_flag(TIF_32BIT_FPREGS);
 +
-+	__asm__ __volatile__(
-+		"   .set push                     \n"
-+		"   .set noreorder                \n"
-+		"   li %[addr], 0x80000000        \n" /* KSEG0 */
-+		"1: cache 0, 0(%[addr])           \n" /* flush L1 ICache */
-+		"   cache 0, 1(%[addr])           \n"
-+		"   cache 0, 2(%[addr])           \n"
-+		"   cache 0, 3(%[addr])           \n"
-+		"   cache 1, 0(%[addr])           \n" /* flush L1 DCache */
-+		"   cache 1, 1(%[addr])           \n"
-+		"   cache 1, 2(%[addr])           \n"
-+		"   cache 1, 3(%[addr])           \n"
-+		"   addiu %[sets], %[sets], -1    \n"
-+		"   bnez  %[sets], 1b             \n"
-+		"   addiu %[addr], %[addr], 0x20  \n"
-+		"   li    %[val], 0x7             \n" /* *state_addr = CPU_DEAD; */
-+		"   sw    %[val], (%[state_addr]) \n"
-+		"   sync                          \n"
-+		"   cache 21, (%[state_addr])     \n" /* flush entry of *state_addr */
-+		"   .set pop                      \n"
-+		: [addr] "=&r" (addr), [val] "=&r" (val)
-+		: [state_addr] "r" (state_addr),
-+		  [sets] "r" (cpu_data[smp_processor_id()].dcache.sets));
++	switch (action) {
++	case CU2_EXCEPTION:
++		preempt_disable();
++		fpu_enabled = read_c0_status() & ST0_CU1;
++		if (!fr)
++			set_c0_status(ST0_CU1 | ST0_CU2);
++		else
++			set_c0_status(ST0_CU1 | ST0_CU2 | ST0_FR);
++		enable_fpu_hazard();
++		KSTK_STATUS(current) |= (ST0_CU1 | ST0_CU2);
++		if (fr)
++			KSTK_STATUS(current) |= ST0_FR;
++		else
++			KSTK_STATUS(current) &= ~ST0_FR;
++		/* If FPU is enabled, we needn't init or restore fp */
++		if(!fpu_enabled) {
++			set_thread_flag(TIF_USEDFPU);
++			if (!used_math()) {
++				_init_fpu();
++				set_used_math();
++			} else
++				_restore_fp(current);
++		}
++		preempt_enable();
 +
-+	__asm__ __volatile__(
-+		"   .set push                         \n"
-+		"   .set noreorder                    \n"
-+		"   .set mips64                       \n"
-+		"   mfc0  %[cpuid], $15, 1            \n"
-+		"   andi  %[cpuid], 0x3ff             \n"
-+		"   dli   %[base], 0x900000003ff01000 \n"
-+		"   andi  %[core], %[cpuid], 0x3      \n"
-+		"   sll   %[core], 8                  \n" /* get core id */
-+		"   or    %[base], %[base], %[core]   \n"
-+		"   andi  %[node], %[cpuid], 0xc      \n"
-+		"   dsll  %[node], 42                 \n" /* get node id */
-+		"   or    %[base], %[base], %[node]   \n"
-+		"   dsrl  %[node], 30                 \n" /* 15:14 */
-+		"   or    %[base], %[base], %[node]   \n"
-+		"1: li    %[count], 0x100             \n" /* wait for init loop */
-+		"2: bnez  %[count], 2b                \n" /* limit mailbox access */
-+		"   addiu %[count], -1                \n"
-+		"   ld    %[initfunc], 0x20(%[base])  \n" /* get PC via mailbox */
-+		"   beqz  %[initfunc], 1b             \n"
-+		"   nop                               \n"
-+		"   ld    $sp, 0x28(%[base])          \n" /* get SP via mailbox */
-+		"   ld    $gp, 0x30(%[base])          \n" /* get GP via mailbox */
-+		"   ld    $a1, 0x38(%[base])          \n"
-+		"   jr    %[initfunc]                 \n" /* jump to initial PC */
-+		"   nop                               \n"
-+		"   .set pop                          \n"
-+		: [core] "=&r" (core), [node] "=&r" (node),
-+		  [base] "=&r" (base), [cpuid] "=&r" (cpuid),
-+		  [count] "=&r" (count), [initfunc] "=&r" (initfunc)
-+		: /* No Input */
-+		: "a1");
-+}
-+
- void play_dead(void)
- {
- 	int *state_addr;
-@@ -391,31 +551,64 @@ void play_dead(void)
- 	void (*play_dead_at_ckseg1)(int *);
- 
- 	idle_task_exit();
--	play_dead_at_ckseg1 =
--		(void *)CKSEG1ADDR((unsigned long)loongson3_play_dead);
-+	switch (loongson_sysconf.cputype) {
-+	case Loongson_3A:
-+	default:
-+		play_dead_at_ckseg1 =
-+			(void *)CKSEG1ADDR((unsigned long)loongson3a_play_dead);
-+		break;
-+	case Loongson_3B:
-+		play_dead_at_ckseg1 =
-+			(void *)CKSEG1ADDR((unsigned long)loongson3b_play_dead);
-+		break;
++		return NOTIFY_STOP;	/* Don't call default notifier */
 +	}
- 	state_addr = &per_cpu(cpu_state, cpu);
- 	mb();
- 	play_dead_at_ckseg1(state_addr);
- }
- 
-+void loongson3_disable_clock(int cpu)
-+{
-+	uint64_t core_id = cpu_data[cpu].core;
-+	uint64_t package_id = cpu_data[cpu].package;
 +
-+	if (loongson_sysconf.cputype == Loongson_3A) {
-+		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
-+	} else if (loongson_sysconf.cputype == Loongson_3B) {
-+		if (!cpuhotplug_workaround)
-+			LOONGSON_FREQCTRL(package_id) &= ~(1 << (core_id * 4 + 3));
-+	}
++	return NOTIFY_OK;		/* Let default notifier send signals */
 +}
 +
-+void loongson3_enable_clock(int cpu)
++static int __init loongson_cu2_setup(void)
 +{
-+	uint64_t core_id = cpu_data[cpu].core;
-+	uint64_t package_id = cpu_data[cpu].package;
-+
-+	if (loongson_sysconf.cputype == Loongson_3A) {
-+		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
-+	} else if (loongson_sysconf.cputype == Loongson_3B) {
-+		if (!cpuhotplug_workaround)
-+			LOONGSON_FREQCTRL(package_id) |= 1 << (core_id * 4 + 3);
-+	}
++	return cu2_notifier(loongson_cu2_call, 0);
 +}
-+
- #define CPU_POST_DEAD_FROZEN	(CPU_POST_DEAD | CPU_TASKS_FROZEN)
- static int loongson3_cpu_callback(struct notifier_block *nfb,
- 	unsigned long action, void *hcpu)
- {
- 	unsigned int cpu = (unsigned long)hcpu;
--	uint64_t core_id = cpu_data[cpu].core;
--	uint64_t package_id = cpu_data[cpu].package;
- 
- 	switch (action) {
- 	case CPU_POST_DEAD:
- 	case CPU_POST_DEAD_FROZEN:
- 		pr_info("Disable clock for CPU#%d\n", cpu);
--		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
-+		loongson3_disable_clock(cpu);
- 		break;
- 	case CPU_UP_PREPARE:
- 	case CPU_UP_PREPARE_FROZEN:
- 		pr_info("Enable clock for CPU#%d\n", cpu);
--		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
-+		loongson3_enable_clock(cpu);
- 		break;
- 	}
- 
-diff --git a/arch/mips/loongson/loongson-3/smp.h b/arch/mips/loongson/loongson-3/smp.h
-index 3453e8c..d98ff65 100644
---- a/arch/mips/loongson/loongson-3/smp.h
-+++ b/arch/mips/loongson/loongson-3/smp.h
-@@ -1,29 +1,30 @@
- #ifndef __LOONGSON_SMP_H_
- #define __LOONGSON_SMP_H_
- 
--/* for Loongson-3A smp support */
-+/* for Loongson-3 smp support */
-+extern unsigned long long smp_group[4];
- 
- /* 4 groups(nodes) in maximum in numa case */
--#define  SMP_CORE_GROUP0_BASE    0x900000003ff01000
--#define  SMP_CORE_GROUP1_BASE    0x900010003ff01000
--#define  SMP_CORE_GROUP2_BASE    0x900020003ff01000
--#define  SMP_CORE_GROUP3_BASE    0x900030003ff01000
-+#define SMP_CORE_GROUP0_BASE	(smp_group[0])
-+#define SMP_CORE_GROUP1_BASE	(smp_group[1])
-+#define SMP_CORE_GROUP2_BASE	(smp_group[2])
-+#define SMP_CORE_GROUP3_BASE	(smp_group[3])
- 
- /* 4 cores in each group(node) */
--#define  SMP_CORE0_OFFSET  0x000
--#define  SMP_CORE1_OFFSET  0x100
--#define  SMP_CORE2_OFFSET  0x200
--#define  SMP_CORE3_OFFSET  0x300
-+#define SMP_CORE0_OFFSET  0x000
-+#define SMP_CORE1_OFFSET  0x100
-+#define SMP_CORE2_OFFSET  0x200
-+#define SMP_CORE3_OFFSET  0x300
- 
- /* ipi registers offsets */
--#define  STATUS0  0x00
--#define  EN0      0x04
--#define  SET0     0x08
--#define  CLEAR0   0x0c
--#define  STATUS1  0x10
--#define  MASK1    0x14
--#define  SET1     0x18
--#define  CLEAR1   0x1c
--#define  BUF      0x20
-+#define STATUS0  0x00
-+#define EN0      0x04
-+#define SET0     0x08
-+#define CLEAR0   0x0c
-+#define STATUS1  0x10
-+#define MASK1    0x14
-+#define SET1     0x18
-+#define CLEAR1   0x1c
-+#define BUF      0x20
- 
- #endif
++early_initcall(loongson_cu2_setup);
 -- 
 1.7.7.3

@@ -1,50 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Apr 2014 02:28:09 +0200 (CEST)
-Received: from mail-pb0-f46.google.com ([209.85.160.46]:52679 "EHLO
-        mail-pb0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834670AbaDMAZlJMiJ9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Apr 2014 02:25:41 +0200
-Received: by mail-pb0-f46.google.com with SMTP id rq2so6838167pbb.19
-        for <multiple recipients>; Sat, 12 Apr 2014 17:25:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Apr 2014 10:13:20 +0200 (CEST)
+Received: from mail-la0-f43.google.com ([209.85.215.43]:64086 "EHLO
+        mail-la0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816900AbaDMINR4OtZ2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Apr 2014 10:13:17 +0200
+Received: by mail-la0-f43.google.com with SMTP id e16so4730711lan.2
+        for <multiple recipients>; Sun, 13 Apr 2014 01:13:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=f17LMrrDTBrBkAQXcUS7A6JuB6f49IQKFsC4Lh8NVbE=;
-        b=uSSec1TCH8pu5+RUr705VmM4/2zVRbNi9RRpVMKgpAwWcOaZXU1202++P7w39GUJJ8
-         w8PDYHPoPpsbrz7v0Avca5rHtg21uckLirmbNUr6qa/UJxHN03C7pPgyWe9SL6iowa5J
-         EGviBh185v7tyqm+6Kf5sNop4KD6TyCESIp7mVUjBKhm7y/YZqGc4ZGQriez0gQ3Hzlm
-         fu+tNCsOobPWR6VFTyyxu0+0EPWuLJ8sNZ/g2dCWq6H/lfYiiCm1TYU+H/zbvUyjztjO
-         FdP4f9TQzPapT7+yqUtTpqHSYPQus9FL/aIwA3aW5m+gpujUQvzL7lKtPov3Gsgh+4Aw
-         S+Pw==
-X-Received: by 10.69.2.2 with SMTP id bk2mr35775324pbd.75.1397348734949;
-        Sat, 12 Apr 2014 17:25:34 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id sh5sm24474879pbc.21.2014.04.12.17.25.28
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sat, 12 Apr 2014 17:25:34 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 8/8] MIPS: Loongson: Rename CONFIG_LEMOTE_MACH3A to CONFIG_LOONGSON_MACH3X
-Date:   Sun, 13 Apr 2014 08:24:22 +0800
-Message-Id: <1397348662-22502-9-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1397348662-22502-1-git-send-email-chenhc@lemote.com>
-References: <1397348662-22502-1-git-send-email-chenhc@lemote.com>
-Return-Path: <chenhuacai@gmail.com>
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=SJK8yWIO5bZXeSekpyi4k+GqDsLCw4g+JcuwDfQudao=;
+        b=clwqIQuvVvoF2D8wdgPYiVRzmB4dWqbbOzJOPH5qJw7RXFsqVdJ9hvruLxVCDFetz7
+         UMJ3SwUqdRhzzlCfHQUY5Sqr/BWpksT8XhhMdmzlT3zPPp1i7iQkNMUvRCnaDjAGBV4D
+         T8rks1N64bEluYkLfpgovMt9K5TY8tWPmsWpsEye6+XJaHdCvnbpsVquTOevJhDrDyai
+         WzJhjC6t5L0ak4dd+gU0chqVyTiUpn6hC10Iy2TB0qPWpi4pcRsH+vW8FUe/65ha0yfU
+         WUTI/1iQn99QKYao3UVL1o4OLm/Pl90Y8ZOJoYd261gvcMlnXgFKndU6zHaGLO4zQOiF
+         uzDA==
+MIME-Version: 1.0
+X-Received: by 10.152.1.8 with SMTP id 8mr24165213lai.1.1397376792350; Sun, 13
+ Apr 2014 01:13:12 -0700 (PDT)
+Received: by 10.152.198.166 with HTTP; Sun, 13 Apr 2014 01:13:12 -0700 (PDT)
+In-Reply-To: <1397228303-7689-1-git-send-email-Steven.Hill@imgtec.com>
+References: <1397228303-7689-1-git-send-email-Steven.Hill@imgtec.com>
+Date:   Sun, 13 Apr 2014 10:13:12 +0200
+X-Google-Sender-Auth: 6frfZ2ARzguuA61uwsVU0nSUBx0
+Message-ID: <CAMuHMdV=WWE1iWG5M0-+nE+EOrdjnC8adbYqL+2hWF1_1Oj9MA@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Add microMIPS MSA support.
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39791
+X-archive-position: 39792
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,96 +52,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since this CONFIG option will be used for both Loongson-3A/3B machines,
-and not all Loongson-3 machines are produced by Lemote, we rename
-CONFIG_LEMOTE_MACH3A to CONFIG_LOONGSON_MACH3X.
+Hi Stephen,
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/configs/loongson3_defconfig         |    2 +-
- arch/mips/include/asm/mach-loongson/machine.h |    4 ++--
- arch/mips/loongson/Kconfig                    |    8 ++++----
- arch/mips/loongson/Platform                   |    2 +-
- arch/mips/pci/Makefile                        |    2 +-
- 5 files changed, 9 insertions(+), 9 deletions(-)
+On Fri, Apr 11, 2014 at 4:58 PM, Steven J. Hill <Steven.Hill@imgtec.com> wrote:
+> --- a/arch/mips/include/asm/asmmacro.h
+> +++ b/arch/mips/include/asm/asmmacro.h
+> @@ -273,7 +273,12 @@
+>         .macro  cfcmsa  rd, cs
+>         .set    push
+>         .set    noat
+> +#ifdef CONFIG_CPU_MICROMIPS
+> +       .insn
+> +       .word   0x587e0056 | (\cs << 11)
+> +#else
+>         .word   0x787e0059 | (\cs << 11)
+> +#endif
 
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
-index ea1761f..130e31b 100644
---- a/arch/mips/configs/loongson3_defconfig
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_MACH_LOONGSON=y
- CONFIG_SWIOTLB=y
--CONFIG_LEMOTE_MACH3A=y
-+CONFIG_LOONGSON_MACH3X=y
- CONFIG_CPU_LOONGSON3=y
- CONFIG_64BIT=y
- CONFIG_PAGE_SIZE_16KB=y
-diff --git a/arch/mips/include/asm/mach-loongson/machine.h b/arch/mips/include/asm/mach-loongson/machine.h
-index 1b1f592..228e3784 100644
---- a/arch/mips/include/asm/mach-loongson/machine.h
-+++ b/arch/mips/include/asm/mach-loongson/machine.h
-@@ -24,10 +24,10 @@
- 
- #endif
- 
--#ifdef CONFIG_LEMOTE_MACH3A
-+#ifdef CONFIG_LOONGSON_MACH3X
- 
- #define LOONGSON_MACHTYPE MACH_LEMOTE_A1101
- 
--#endif /* CONFIG_LEMOTE_MACH3A */
-+#endif /* CONFIG_LOONGSON_MACH3X */
- 
- #endif /* __ASM_MACH_LOONGSON_MACHINE_H */
-diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
-index 976c858..1c1595b 100644
---- a/arch/mips/loongson/Kconfig
-+++ b/arch/mips/loongson/Kconfig
-@@ -60,8 +60,8 @@ config LEMOTE_MACH2F
- 	  These family machines include fuloong2f mini PC, yeeloong2f notebook,
- 	  LingLoong allinone PC and so forth.
- 
--config LEMOTE_MACH3A
--	bool "Lemote Loongson 3A family machines"
-+config LOONGSON_MACH3X
-+	bool "Generic Loongson 3 family machines"
- 	select ARCH_SPARSEMEM_ENABLE
- 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
- 	select BOOT_ELF32
-@@ -87,8 +87,8 @@ config LEMOTE_MACH3A
- 	select ZONE_DMA32
- 	select LEFI_FIRMWARE_INTERFACE
- 	help
--		Lemote Loongson 3A family machines utilize the 3A revision of
--		Loongson processor and RS780/SBX00 chipset.
-+		Generic Loongson 3 family machines utilize the 3A/3B revision
-+		of Loongson processor and RS780/SBX00 chipset.
- endchoice
- 
- config CS5536
-diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
-index 6205372..0ac20eb 100644
---- a/arch/mips/loongson/Platform
-+++ b/arch/mips/loongson/Platform
-@@ -30,4 +30,4 @@ platform-$(CONFIG_MACH_LOONGSON) += loongson/
- cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson -mno-branch-likely
- load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
- load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
--load-$(CONFIG_CPU_LOONGSON3) += 0xffffffff80200000
-+load-$(CONFIG_LOONGSON_MACH3X) += 0xffffffff80200000
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index d61138a..afb5324 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -29,7 +29,7 @@ obj-$(CONFIG_LASAT)		+= pci-lasat.o
- obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
- obj-$(CONFIG_LEMOTE_FULOONG2E)	+= fixup-fuloong2e.o ops-loongson2.o
- obj-$(CONFIG_LEMOTE_MACH2F)	+= fixup-lemote2f.o ops-loongson2.o
--obj-$(CONFIG_LEMOTE_MACH3A)	+= fixup-loongson3.o ops-loongson3.o
-+obj-$(CONFIG_LOONGSON_MACH3X)	+= fixup-loongson3.o ops-loongson3.o
- obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o pci-malta.o
- obj-$(CONFIG_PMC_MSP7120_GW)	+= fixup-pmcmsp.o ops-pmcmsp.o
- obj-$(CONFIG_PMC_MSP7120_EVAL)	+= fixup-pmcmsp.o ops-pmcmsp.o
--- 
-1.7.7.3
+Personally, I would like it more if you would use the CFCMSA_INSN
+macro in the code above. This allows to get rid of all but one #ifdef,
+and avoids mistakes in the parameter parts (e.g. "| (\cs << 11)").
+
+> diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
+> index a2aba6c..fd76b3b 100644
+> --- a/arch/mips/include/asm/msa.h
+> +++ b/arch/mips/include/asm/msa.h
+> @@ -96,6 +96,13 @@ static inline void write_msa_##name(unsigned int val)                \
+>   * allow compilation with toolchains that do not support MSA. Once all
+>   * toolchains in use support MSA these can be removed.
+>   */
+> +#ifdef CONFIG_CPU_MICROMIPS
+> +#define CFCMSA_INSN    0x587e0056
+> +#define CTCMSA_INSN    0x583e0816
+> +#else
+> +#define CFCMSA_INSN    0x787e0059
+> +#define CTCMSA_INSN    0x783e0819
+> +#endif
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

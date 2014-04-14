@@ -1,42 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2014 15:26:55 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:48680 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817054AbaDNN0x2qHrl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Apr 2014 15:26:53 +0200
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s3EDQlWa013681
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Apr 2014 09:26:47 -0400
-Received: from dhcp-26-207.brq.redhat.com (dhcp-26-119.brq.redhat.com [10.34.26.119])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s3EDQg2d031339
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Mon, 14 Apr 2014 09:26:45 -0400
-Date:   Mon, 14 Apr 2014 15:28:35 +0200
-From:   Alexander Gordeev <agordeev@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH 2/2] PCI/MSI: Phase out pci_enable_msi_block()
-Message-ID: <20140414132834.GA9164@dhcp-26-207.brq.redhat.com>
-References: <cover.1397458024.git.agordeev@redhat.com>
- <0b08613dc17cd608c1babc1f42b8919f60e1093f.1397458024.git.agordeev@redhat.com>
- <20140414120921.GA32132@dhcp-26-207.brq.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2014 16:48:30 +0200 (CEST)
+Received: from mail-ee0-f50.google.com ([74.125.83.50]:59453 "EHLO
+        mail-ee0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825633AbaDNOs2Uuhmj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Apr 2014 16:48:28 +0200
+Received: by mail-ee0-f50.google.com with SMTP id c13so6826847eek.9
+        for <multiple recipients>; Mon, 14 Apr 2014 07:48:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=kY0wusbHLm54RQfEtQlV3/sLEKtqH3fQrh199hvfWgQ=;
+        b=j3Ac/hnA407BAVzYsKirtzzv+5sVYiDMp4oa2xVHf7fVXNzfsCAiif30qsnkam2JTV
+         o3/5X2Lb2i4Zw4uPaSwe5E88711AaWoQagZXTvetsCIUeRReL8TFCD09HTVsrnxtQxfR
+         EpwH9BdP8CV2j7PJ3XLWO+xn1DafRmRWw+fSK9G6tVMrv4MA0y1c5cgJnSxzvKWds0HP
+         k4AuixwODzEpjG4VydSIKSlF7zOusYJmzILx5lcOcOjxO5ndkxRO/yk8HCq/KIGRHC3D
+         Km/v7iZdgINZqXGhmklFaB/EXzfljseTKztlIu+wykJhN6kEVGz8M2vld1R5Qv7MOiGs
+         mpww==
+X-Received: by 10.15.36.6 with SMTP id h6mr4530730eev.54.1397486902976;
+        Mon, 14 Apr 2014 07:48:22 -0700 (PDT)
+Received: from alberich ([2.171.76.237])
+        by mx.google.com with ESMTPSA id x45sm41549517eeu.23.2014.04.14.07.48.21
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 14 Apr 2014 07:48:22 -0700 (PDT)
+Date:   Mon, 14 Apr 2014 16:48:18 +0200
+From:   Andreas Herrmann <herrmann.der.user@googlemail.com>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Subject: Re: [PATCH V2 1/8] MIPS: Support hard limit of cpu count (nr_cpu_ids)
+Message-ID: <20140414144818.GA10997@alberich>
+References: <1397348662-22502-1-git-send-email-chenhc@lemote.com>
+ <1397348662-22502-2-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20140414120921.GA32132@dhcp-26-207.brq.redhat.com>
+In-Reply-To: <1397348662-22502-2-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-Return-Path: <agordeev@redhat.com>
+Return-Path: <herrmann.der.user@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39797
+X-archive-position: 39798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agordeev@redhat.com
+X-original-sender: herrmann.der.user@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,174 +63,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There are no users of pci_enable_msi_block() function have
-left. Obsolete it in favor of pci_enable_msi_range() and
-pci_enable_msi_exact() functions.
+On Sun, Apr 13, 2014 at 08:24:15AM +0800, Huacai Chen wrote:
+> On MIPS currently, only the soft limit of cpu count (maxcpus) has its
+> effect, this patch enable the hard limit (nr_cpus) as well. Processor
+> cores which greater than maxcpus and less than nr_cpus can be taken up
+> via cpu hotplug. The code is borrowed from X86.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
-Up until now, when enabling MSI mode for a device a single
-successful call to arch_msi_check_device() was followed by
-a single call to arch_setup_msi_irqs() function.
+Reviewed-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 
-Yet, if arch_msi_check_device() returned success we should be
-able to call arch_setup_msi_irqs() multiple times - while it
-returns a number of MSI vectors that could have been allocated
-(a third state).
+W/o this patch nr_cpus had no effect and all CPUs present on a chip
+(even if greater than or equal to nr_cpus) could be taken online with
+CPU hotplug.  W/o the patch nr_cpus took effect.
 
-This update makes use of the assumption described above. It
-could have broke things had the architectures done any pre-
-allocations or switch to some state in a call to function
-arch_msi_check_device(). But because arch_msi_check_device()
-is expected stateless and MSI resources are allocated in a
-follow-up call to arch_setup_msi_irqs() we should be fine.
+Only nitpick: I find the name of the function somehow misleading.
+I think it's rather a kind of fixup (to factor in nr_cpus) after
+platform smp_setup might have already "prefilled"
+cpu_possible_mask. At least in case of cavium-octeon this is the case.
 
-Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
-Cc: linux-mips@linux-mips.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: x86@kernel.org
-Cc: linux-pci@vger.kernel.org
----
- drivers/pci/msi.c   |   79 +++++++++++++++++++++-----------------------------
- include/linux/pci.h |    5 +--
- 2 files changed, 34 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 955ab79..fc669ab 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -883,50 +883,6 @@ int pci_msi_vec_count(struct pci_dev *dev)
- }
- EXPORT_SYMBOL(pci_msi_vec_count);
- 
--/**
-- * pci_enable_msi_block - configure device's MSI capability structure
-- * @dev: device to configure
-- * @nvec: number of interrupts to configure
-- *
-- * Allocate IRQs for a device with the MSI capability.
-- * This function returns a negative errno if an error occurs.  If it
-- * is unable to allocate the number of interrupts requested, it returns
-- * the number of interrupts it might be able to allocate.  If it successfully
-- * allocates at least the number of interrupts requested, it returns 0 and
-- * updates the @dev's irq member to the lowest new interrupt number; the
-- * other interrupt numbers allocated to this device are consecutive.
-- */
--int pci_enable_msi_block(struct pci_dev *dev, int nvec)
--{
--	int status, maxvec;
--
--	if (dev->current_state != PCI_D0)
--		return -EINVAL;
--
--	maxvec = pci_msi_vec_count(dev);
--	if (maxvec < 0)
--		return maxvec;
--	if (nvec > maxvec)
--		return maxvec;
--
--	status = pci_msi_check_device(dev, nvec, PCI_CAP_ID_MSI);
--	if (status)
--		return status;
--
--	WARN_ON(!!dev->msi_enabled);
--
--	/* Check whether driver already requested MSI-X irqs */
--	if (dev->msix_enabled) {
--		dev_info(&dev->dev, "can't enable MSI "
--			 "(MSI-X already enabled)\n");
--		return -EINVAL;
--	}
--
--	status = msi_capability_init(dev, nvec);
--	return status;
--}
--EXPORT_SYMBOL(pci_enable_msi_block);
--
- void pci_msi_shutdown(struct pci_dev *dev)
- {
- 	struct msi_desc *desc;
-@@ -1132,14 +1088,45 @@ void pci_msi_init_pci_dev(struct pci_dev *dev)
-  **/
- int pci_enable_msi_range(struct pci_dev *dev, int minvec, int maxvec)
- {
--	int nvec = maxvec;
-+	int nvec;
- 	int rc;
- 
-+	if (dev->current_state != PCI_D0)
-+		return -EINVAL;
-+
-+	WARN_ON(!!dev->msi_enabled);
-+
-+	/* Check whether driver already requested MSI-X irqs */
-+	if (dev->msix_enabled) {
-+		dev_info(&dev->dev,
-+			 "can't enable MSI (MSI-X already enabled)\n");
-+		return -EINVAL;
-+	}
-+
- 	if (maxvec < minvec)
- 		return -ERANGE;
- 
-+	nvec = pci_msi_vec_count(dev);
-+	if (nvec < 0)
-+		return nvec;
-+	else if (nvec < minvec)
-+		return -EINVAL;
-+	else if (nvec > maxvec)
-+		nvec = maxvec;
-+
-+	do {
-+		rc = pci_msi_check_device(dev, nvec, PCI_CAP_ID_MSI);
-+		if (rc < 0) {
-+			return rc;
-+		} else if (rc > 0) {
-+			if (rc < minvec)
-+				return -ENOSPC;
-+			nvec = rc;
-+		}
-+	} while (rc);
-+
- 	do {
--		rc = pci_enable_msi_block(dev, nvec);
-+		rc = msi_capability_init(dev, nvec);
- 		if (rc < 0) {
- 			return rc;
- 		} else if (rc > 0) {
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index aab57b4..499755e 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1158,7 +1158,6 @@ struct msix_entry {
- 
- #ifdef CONFIG_PCI_MSI
- int pci_msi_vec_count(struct pci_dev *dev);
--int pci_enable_msi_block(struct pci_dev *dev, int nvec);
- void pci_msi_shutdown(struct pci_dev *dev);
- void pci_disable_msi(struct pci_dev *dev);
- int pci_msix_vec_count(struct pci_dev *dev);
-@@ -1188,8 +1187,6 @@ static inline int pci_enable_msix_exact(struct pci_dev *dev,
- }
- #else
- static inline int pci_msi_vec_count(struct pci_dev *dev) { return -ENOSYS; }
--static inline int pci_enable_msi_block(struct pci_dev *dev, int nvec)
--{ return -ENOSYS; }
- static inline void pci_msi_shutdown(struct pci_dev *dev) { }
- static inline void pci_disable_msi(struct pci_dev *dev) { }
- static inline int pci_msix_vec_count(struct pci_dev *dev) { return -ENOSYS; }
-@@ -1244,7 +1241,7 @@ static inline void pcie_set_ecrc_checking(struct pci_dev *dev) { }
- static inline void pcie_ecrc_get_policy(char *str) { }
- #endif
- 
--#define pci_enable_msi(pdev)	pci_enable_msi_block(pdev, 1)
-+#define pci_enable_msi(pdev)	pci_enable_msi_exact(pdev, 1)
- 
- #ifdef CONFIG_HT_IRQ
- /* The functions a driver should call */
--- 
-1.7.7.6
+Thanks,
+Andreas
 
--- 
-Regards,
-Alexander Gordeev
-agordeev@redhat.com
+> ---
+>  arch/mips/kernel/setup.c |   20 ++++++++++++++++++++
+>  1 files changed, 20 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index a842154..2f01201 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -729,6 +729,25 @@ static void __init resource_init(void)
+>  	}
+>  }
+>  
+> +#ifdef CONFIG_SMP
+> +static void __init prefill_possible_map(void)
+> +{
+> +	int i, possible = num_possible_cpus();
+> +
+> +	if (possible > nr_cpu_ids)
+> +		possible = nr_cpu_ids;
+> +
+> +	for (i = 0; i < possible; i++)
+> +		set_cpu_possible(i, true);
+> +	for (; i < NR_CPUS; i++)
+> +		set_cpu_possible(i, false);
+> +
+> +	nr_cpu_ids = possible;
+> +}
+> +#else
+> +static inline void prefill_possible_map(void) {}
+> +#endif
+> +
+>  void __init setup_arch(char **cmdline_p)
+>  {
+>  	cpu_probe();
+> @@ -752,6 +771,7 @@ void __init setup_arch(char **cmdline_p)
+>  
+>  	resource_init();
+>  	plat_smp_setup();
+> +	prefill_possible_map();
+>  
+>  	cpu_cache_init();
+>  }
+> -- 
+> 1.7.7.3
+> 
+> 

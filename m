@@ -1,28 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2014 23:07:04 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:48525 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6834703AbaDOVHCGB095 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Apr 2014 23:07:02 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <Steven.Hill@imgtec.com>)
-        id 1WaAZD-0001qk-Rk; Tue, 15 Apr 2014 16:06:55 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH v3] MIPS: Add microMIPS MSA support.
-Date:   Tue, 15 Apr 2014 16:06:49 -0500
-Message-Id: <1397596009-22175-1-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2014 00:44:12 +0200 (CEST)
+Received: from sema.semaphore.gr ([78.46.194.137]:41138 "EHLO
+        sema.semaphore.gr" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6834862AbaDOWoKG2glI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2014 00:44:10 +0200
+Received: from albert.lan (ppp079166063152.access.hol.gr [79.166.63.152])
+        (using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: stratosk)
+        by sema.semaphore.gr (Postfix) with ESMTPSA id 1D3EA83830;
+        Wed, 16 Apr 2014 00:26:11 +0200 (CEST)
+Message-ID: <534DB206.1080004@semaphore.gr>
+Date:   Wed, 16 Apr 2014 01:26:14 +0300
+From:   Stratos Karafotis <stratosk@semaphore.gr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+CC:     John Crispin <blogic@openwrt.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 4/8] mips: lemote 2f: Use cpufreq_for_each_entry macro
+ for iteration
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <stratosk@semaphore.gr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39803
+X-archive-position: 39804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: stratosk@semaphore.gr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,163 +46,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@imgtec.com>
+The cpufreq core now supports the cpufreq_for_each_entry macro helper
+for iteration over the cpufreq_frequency_table, so use it.
 
-This patch adds support for the microMIPS implementation
-of the MSA instructions.
+It should have no functional changes.
 
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-Reviewed-by: Paul Burton <Paul.Burton@imgtec.com>
+Signed-off-by: Stratos Karafotis <stratosk@semaphore.gr>
 ---
-v2: Clean up macros to use less #ifdef's.
-v3: Fix typos in #define usage.
+ arch/mips/loongson/lemote-2f/clock.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
- arch/mips/include/asm/asmmacro.h |   40 ++++++++++++++++++++++++++++++--------
- arch/mips/include/asm/msa.h      |   13 +++++++++++--
- 2 files changed, 43 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index b464b8b..5166b09 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -267,13 +267,35 @@
- 	.set	pop
- 	.endm
- #else
-+
-+#ifdef CONFIG_CPU_MICROMIPS
-+#define CFC_MSA_INSN		0x587e0056
-+#define CTC_MSA_INSN		0x583e0816
-+#define LDD_MSA_INSN		0x58000837
-+#define STD_MSA_INSN		0x5800083f
-+#define COPY_UW_MSA_INSN	0x58f00056
-+#define COPY_UD_MSA_INSN	0x58f80056
-+#define INSERT_W_MSA_INSN	0x59300816
-+#define INSERT_D_MSA_INSN	0x59380816
-+#else
-+#define CFC_MSA_INSN		0x787e0059
-+#define CTC_MSA_INSN		0x783e0819
-+#define LDD_MSA_INSN		0x78000823
-+#define STD_MSA_INSN		0x78000827
-+#define COPY_UW_MSA_INSN	0x78f00059
-+#define COPY_UD_MSA_INSN	0x78f80059
-+#define INSERT_W_MSA_INSN	0x79300819
-+#define INSERT_D_MSA_INSN	0x79380819
-+#endif
-+
- 	/*
- 	 * Temporary until all toolchains in use include MSA support.
- 	 */
- 	.macro	cfcmsa	rd, cs
- 	.set	push
- 	.set	noat
--	.word	0x787e0059 | (\cs << 11)
-+	.insn
-+	.word	CFC_MSA_INSN | (\cs << 11)
- 	move	\rd, $1
- 	.set	pop
- 	.endm
-@@ -282,7 +304,7 @@
- 	.set	push
- 	.set	noat
- 	move	$1, \rs
--	.word	0x783e0819 | (\cd << 6)
-+	.word	CTC_MSA_INSN | (\cd << 6)
- 	.set	pop
- 	.endm
+diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
+index e1f427f..1eed38e 100644
+--- a/arch/mips/loongson/lemote-2f/clock.c
++++ b/arch/mips/loongson/lemote-2f/clock.c
+@@ -91,9 +91,9 @@ EXPORT_SYMBOL(clk_put);
  
-@@ -290,7 +312,7 @@
- 	.set	push
- 	.set	noat
- 	add	$1, \base, \off
--	.word	0x78000823 | (\wd << 6)
-+	.word	LDD_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
+ int clk_set_rate(struct clk *clk, unsigned long rate)
+ {
++	struct cpufreq_frequency_table *pos;
+ 	int ret = 0;
+ 	int regval;
+-	int i;
  
-@@ -298,14 +320,15 @@
- 	.set	push
- 	.set	noat
- 	add	$1, \base, \off
--	.word	0x78000827 | (\wd << 6)
-+	.word	STD_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
+ 	if (likely(clk->ops && clk->ops->set_rate)) {
+ 		unsigned long flags;
+@@ -106,22 +106,16 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+ 	if (unlikely(clk->flags & CLK_RATE_PROPAGATES))
+ 		propagate_rate(clk);
  
- 	.macro	copy_u_w	rd, ws, n
- 	.set	push
- 	.set	noat
--	.word	0x78f00059 | (\n << 16) | (\ws << 11)
-+	.insn
-+	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
- 	/* move triggers an assembler bug... */
- 	or	\rd, $1, zero
- 	.set	pop
-@@ -314,7 +337,8 @@
- 	.macro	copy_u_d	rd, ws, n
- 	.set	push
- 	.set	noat
--	.word	0x78f80059 | (\n << 16) | (\ws << 11)
-+	.insn
-+	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
- 	/* move triggers an assembler bug... */
- 	or	\rd, $1, zero
- 	.set	pop
-@@ -325,7 +349,7 @@
- 	.set	noat
- 	/* move triggers an assembler bug... */
- 	or	$1, \rs, zero
--	.word	0x79300819 | (\n << 16) | (\wd << 6)
-+	.word	INSERT_W_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
+-	for (i = 0; loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END;
+-	     i++) {
+-		if (loongson2_clockmod_table[i].frequency ==
+-		    CPUFREQ_ENTRY_INVALID)
+-			continue;
+-		if (rate == loongson2_clockmod_table[i].frequency)
++	cpufreq_for_each_valid_entry(pos, loongson2_clockmod_table)
++		if (rate == pos->frequency)
+ 			break;
+-	}
+-	if (rate != loongson2_clockmod_table[i].frequency)
++	if (rate != pos->frequency)
+ 		return -ENOTSUPP;
  
-@@ -334,7 +358,7 @@
- 	.set	noat
- 	/* move triggers an assembler bug... */
- 	or	$1, \rs, zero
--	.word	0x79380819 | (\n << 16) | (\wd << 6)
-+	.word	INSERT_D_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
- #endif
-diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
-index a2aba6c..52450a0 100644
---- a/arch/mips/include/asm/msa.h
-+++ b/arch/mips/include/asm/msa.h
-@@ -96,6 +96,13 @@ static inline void write_msa_##name(unsigned int val)		\
-  * allow compilation with toolchains that do not support MSA. Once all
-  * toolchains in use support MSA these can be removed.
-  */
-+#ifdef CONFIG_CPU_MICROMIPS
-+#define CFC_MSA_INSN	0x587e0056
-+#define CTC_MSA_INSN	0x583e0816
-+#else
-+#define CFC_MSA_INSN	0x787e0059
-+#define CTC_MSA_INSN	0x783e0819
-+#endif
+ 	clk->rate = rate;
  
- #define __BUILD_MSA_CTL_REG(name, cs)				\
- static inline unsigned int read_msa_##name(void)		\
-@@ -104,7 +111,8 @@ static inline unsigned int read_msa_##name(void)		\
- 	__asm__ __volatile__(					\
- 	"	.set	push\n"					\
- 	"	.set	noat\n"					\
--	"	.word	0x787e0059 | (" #cs " << 11)\n"		\
-+	"	.insn\n"					\
-+	"	.word	#CFC_MSA_INSN | (" #cs " << 11)\n"	\
- 	"	move	%0, $1\n"				\
- 	"	.set	pop\n"					\
- 	: "=r"(reg));						\
-@@ -117,7 +125,8 @@ static inline void write_msa_##name(unsigned int val)		\
- 	"	.set	push\n"					\
- 	"	.set	noat\n"					\
- 	"	move	$1, %0\n"				\
--	"	.word	0x783e0819 | (" #cs " << 6)\n"		\
-+	"	.insn\n"					\
-+	"	.word	#CTC_MSA_INSN | (" #cs " << 6)\n"	\
- 	"	.set	pop\n"					\
- 	: : "r"(val));						\
- }
+ 	regval = LOONGSON_CHIPCFG0;
+-	regval = (regval & ~0x7) |
+-		(loongson2_clockmod_table[i].driver_data - 1);
++	regval = (regval & ~0x7) | (pos->driver_data - 1);
+ 	LOONGSON_CHIPCFG0 = regval;
+ 
+ 	return ret;
 -- 
-1.7.10.4
+1.9.0

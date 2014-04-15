@@ -1,47 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2014 13:44:39 +0200 (CEST)
-Received: from mail-la0-f43.google.com ([209.85.215.43]:43794 "EHLO
-        mail-la0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834862AbaDOLofoROnN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Apr 2014 13:44:35 +0200
-Received: by mail-la0-f43.google.com with SMTP id e16so6721176lan.2
-        for <linux-mips@linux-mips.org>; Tue, 15 Apr 2014 04:44:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=uzRtMOWFc9uHs9N1K8FHj2ZQvdFIxTUYw3R5Ofp9Qho=;
-        b=XWqJoROCM0mIGb2kMNUkCwYNdpRceCIE6M3TU41tIFC5MjCwCNUp/sAr0177/Y0FNs
-         jeTwhZ4ZcYrrH4WHh/EBKEnhzK0ZmIoE2PEwp8btwd2qmwj2nfKpSGYlrEVaWX+c+ZuL
-         6R81f42ak4golOPCzIXHkkLV5qOqtQw6gydP+woUCciNZOCtTh94N9EbYnBUo1GFHxH7
-         4Lqf16bwLnKr7pQyQh3230z/S9b7lbhwy33KRsRlk/ThCQlZI1KpUR9eUGqIAOUTgnI8
-         VZbU9Lv14tOw8WiAZEU/bpxwPIWV9//VRxWeVkoPjf5n7u8lzTLzi3J9iata5RjcxPJo
-         NGog==
-MIME-Version: 1.0
-X-Received: by 10.152.4.41 with SMTP id h9mr932852lah.43.1397562270165; Tue,
- 15 Apr 2014 04:44:30 -0700 (PDT)
-Received: by 10.152.198.166 with HTTP; Tue, 15 Apr 2014 04:44:30 -0700 (PDT)
-In-Reply-To: <1397561816-9289-1-git-send-email-geert@linux-m68k.org>
-References: <1397561816-9289-1-git-send-email-geert@linux-m68k.org>
-Date:   Tue, 15 Apr 2014 13:44:30 +0200
-X-Google-Sender-Auth: NSk1XDhfRi_r4cXuDNiz6IXYWA0
-Message-ID: <CAMuHMdVTg2DAkvoSh=TkhFMs3WV-3FR0-VqfO6jd5c06aYTT6g@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v3.15-rc1
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2014 23:00:12 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:48517 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6818702AbaDOVAGHZbNk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Apr 2014 23:00:06 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1WaASU-0001qV-Ug; Tue, 15 Apr 2014 15:59:58 -0500
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [PATCH v2] MIPS: Add microMIPS MSA support.
+Date:   Tue, 15 Apr 2014 15:59:42 -0500
+Message-Id: <1397595582-14577-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39801
+X-archive-position: 39802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,107 +35,162 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 15, 2014 at 1:36 PM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v3.15-rc1[1] compared to v3.14[2].
->
-> Summarized:
->   - build errors: +30/-3
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-> 30 regressions:
+This patch adds support for the microMIPS implementation
+of the MSA instructions.
 
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_ANDCOND' undeclared (first use in this function):  => 178:17,
-100:16
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_AVPN' undeclared (first use in this function):  => 213:16, 99:16,
-177:17
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_BULK_REMOVE' undeclared (first use in this function):  => 268:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_CEDE' undeclared (first use in this function):  => 272:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_CPPR' undeclared (first use in this function):  => 279:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_ENTER' undeclared (first use in this function):  => 262:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_EOI' undeclared (first use in this function):  => 280:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_EXACT' undeclared (first use in this function):  => 56:6
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_IPI' undeclared (first use in this function):  => 281:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_IPOLL' undeclared (first use in this function):  => 282:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_NOT_FOUND' undeclared (first use in this function):  => 211:8, 97:8
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_PARAMETER' undeclared (first use in this function):  => 155:10
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_PROTECT' undeclared (first use in this function):  => 266:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_PTEG_FULL' undeclared (first use in this function):  => 55:8
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_PUT_TCE' undeclared (first use in this function):  => 270:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_REMOVE' undeclared (first use in this function):  => 264:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_RTAS' undeclared (first use in this function):  => 287:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_SUCCESS' undeclared (first use in this function):  => 108:8, 229:8,
-141:12, 75:8
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_TOO_HARD' undeclared (first use in this function):  => 246:12
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_XIRR' undeclared (first use in this function):  => 278:7
-  + /scratch/kisskb/src/arch/powerpc/kvm/book3s_pr_papr.c: error:
-'H_XIRR_X' undeclared (first use in this function):  => 283:7
-  + /scratch/kisskb/src/include/linux/kvm_host.h: error: array
-subscript is above array bounds [-Werror=array-bounds]:  => 436:19
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Reviewed-by: Paul Burton <Paul.Burton@imgtec.com>
+---
+v2: Clean up macros to use less #ifdef's.
 
-powerpc-randconfig
+ arch/mips/include/asm/asmmacro.h |   40 ++++++++++++++++++++++++++++++--------
+ arch/mips/include/asm/msa.h      |   13 +++++++++++--
+ 2 files changed, 43 insertions(+), 10 deletions(-)
 
-  + /scratch/kisskb/src/drivers/cpufreq/powernv-cpufreq.c: error:
-implicit declaration of function 'cpu_sibling_mask'
-[-Werror=implicit-function-declaration]:  => 241:2
-
-ppc64_defconfig
-
-  + /scratch/kisskb/src/drivers/spi/spi-bfin5xx.c: error: implicit
-declaration of function 'gpio_direction_output'
-[-Werror=implicit-function-declaration]:  => 1102:4
-  + /scratch/kisskb/src/drivers/spi/spi-bfin5xx.c: error: implicit
-declaration of function 'gpio_free'
-[-Werror=implicit-function-declaration]:  => 1130:3
-  + /scratch/kisskb/src/drivers/spi/spi-bfin5xx.c: error: implicit
-declaration of function 'gpio_request'
-[-Werror=implicit-function-declaration]:  => 1097:4
-  + /scratch/kisskb/src/drivers/spi/spi-bfin5xx.c: error: implicit
-declaration of function 'gpio_set_value'
-[-Werror=implicit-function-declaration]:  => 169:3
-
-BF537-STAMP_defconfig
-
-  + error: "__invalidate_icache_range" [drivers/misc/lkdtm.ko]
-undefined!:  => N/A
-
-xtensa-allmodconfig (fix available, IIRC)
-
-  + error: "flush_icache_range" [drivers/misc/lkdtm.ko] undefined!:  => N/A
-
-mips-allmodconfig (fix available, IIRC)
-
-  + error: No rule to make target drivers/scsi/aic7xxx/aicasm/*.[chyl]:  => N/A
-
-x86_64-randconfig
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvald
+diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
+index b464b8b..587a3db 100644
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -267,13 +267,35 @@
+ 	.set	pop
+ 	.endm
+ #else
++
++#ifdef CONFIG_CPU_MICROMIPS
++#define CFC_MSA_INSN		0x587e0056
++#define CTC_MSA_INSN		0x583e0816
++#define LDD_MSA_INSN		0x58000837
++#define STD_MSA_INSN		0x5800083f
++#define COPY_UW_MSA_INSN	0x58f00056
++#define COPY_UD_MSA_INSN	0x58f80056
++#define INSERT_W_MSA_INSN	0x59300816
++#define INSERT_D_MSA_INSN	0x59380816
++#else
++#define CFC_MSA_INSN		0x787e0059
++#define CTC_MSA_INSN		0x783e0819
++#define LDD_MSA_INSN		0x78000823
++#define STD_MSA_INSN		0x78000827
++#define COPY_UW_MSA_INSN	0x78f00059
++#define COPY_UD_MSA_INSN	0x78f80059
++#define INSERT_W_MSA_INSN	0x79300819
++#define INSERT_D_MSA_INSN	0x79380819
++#endif
++
+ 	/*
+ 	 * Temporary until all toolchains in use include MSA support.
+ 	 */
+ 	.macro	cfcmsa	rd, cs
+ 	.set	push
+ 	.set	noat
+-	.word	0x787e0059 | (\cs << 11)
++	.insn
++	.word	CFCMSA_INSN | (\cs << 11)
+ 	move	\rd, $1
+ 	.set	pop
+ 	.endm
+@@ -282,7 +304,7 @@
+ 	.set	push
+ 	.set	noat
+ 	move	$1, \rs
+-	.word	0x783e0819 | (\cd << 6)
++	.word	CTCMSA_INSN | (\cd << 6)
+ 	.set	pop
+ 	.endm
+ 
+@@ -290,7 +312,7 @@
+ 	.set	push
+ 	.set	noat
+ 	add	$1, \base, \off
+-	.word	0x78000823 | (\wd << 6)
++	.word	LDD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+ 
+@@ -298,14 +320,15 @@
+ 	.set	push
+ 	.set	noat
+ 	add	$1, \base, \off
+-	.word	0x78000827 | (\wd << 6)
++	.word	STD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+ 
+ 	.macro	copy_u_w	rd, ws, n
+ 	.set	push
+ 	.set	noat
+-	.word	0x78f00059 | (\n << 16) | (\ws << 11)
++	.insn
++	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
+ 	/* move triggers an assembler bug... */
+ 	or	\rd, $1, zero
+ 	.set	pop
+@@ -314,7 +337,8 @@
+ 	.macro	copy_u_d	rd, ws, n
+ 	.set	push
+ 	.set	noat
+-	.word	0x78f80059 | (\n << 16) | (\ws << 11)
++	.insn
++	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
+ 	/* move triggers an assembler bug... */
+ 	or	\rd, $1, zero
+ 	.set	pop
+@@ -325,7 +349,7 @@
+ 	.set	noat
+ 	/* move triggers an assembler bug... */
+ 	or	$1, \rs, zero
+-	.word	0x79300819 | (\n << 16) | (\wd << 6)
++	.word	INSERT_W_MSA_INSN | (\n << 16) | (\wd << 6)
+ 	.set	pop
+ 	.endm
+ 
+@@ -334,7 +358,7 @@
+ 	.set	noat
+ 	/* move triggers an assembler bug... */
+ 	or	$1, \rs, zero
+-	.word	0x79380819 | (\n << 16) | (\wd << 6)
++	.word	INSERT_D_MSA_INSN | (\n << 16) | (\wd << 6)
+ 	.set	pop
+ 	.endm
+ #endif
+diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
+index a2aba6c..52450a0 100644
+--- a/arch/mips/include/asm/msa.h
++++ b/arch/mips/include/asm/msa.h
+@@ -96,6 +96,13 @@ static inline void write_msa_##name(unsigned int val)		\
+  * allow compilation with toolchains that do not support MSA. Once all
+  * toolchains in use support MSA these can be removed.
+  */
++#ifdef CONFIG_CPU_MICROMIPS
++#define CFC_MSA_INSN	0x587e0056
++#define CTC_MSA_INSN	0x583e0816
++#else
++#define CFC_MSA_INSN	0x787e0059
++#define CTC_MSA_INSN	0x783e0819
++#endif
+ 
+ #define __BUILD_MSA_CTL_REG(name, cs)				\
+ static inline unsigned int read_msa_##name(void)		\
+@@ -104,7 +111,8 @@ static inline unsigned int read_msa_##name(void)		\
+ 	__asm__ __volatile__(					\
+ 	"	.set	push\n"					\
+ 	"	.set	noat\n"					\
+-	"	.word	0x787e0059 | (" #cs " << 11)\n"		\
++	"	.insn\n"					\
++	"	.word	#CFC_MSA_INSN | (" #cs " << 11)\n"	\
+ 	"	move	%0, $1\n"				\
+ 	"	.set	pop\n"					\
+ 	: "=r"(reg));						\
+@@ -117,7 +125,8 @@ static inline void write_msa_##name(unsigned int val)		\
+ 	"	.set	push\n"					\
+ 	"	.set	noat\n"					\
+ 	"	move	$1, %0\n"				\
+-	"	.word	0x783e0819 | (" #cs " << 6)\n"		\
++	"	.insn\n"					\
++	"	.word	#CTC_MSA_INSN | (" #cs " << 6)\n"	\
+ 	"	.set	pop\n"					\
+ 	: : "r"(val));						\
+ }
+-- 
+1.7.10.4

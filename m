@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2014 23:00:12 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:48517 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2014 23:07:04 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:48525 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6818702AbaDOVAGHZbNk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Apr 2014 23:00:06 +0200
+        with ESMTP id S6834703AbaDOVHCGB095 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Apr 2014 23:07:02 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <Steven.Hill@imgtec.com>)
-        id 1WaASU-0001qV-Ug; Tue, 15 Apr 2014 15:59:58 -0500
+        id 1WaAZD-0001qk-Rk; Tue, 15 Apr 2014 16:06:55 -0500
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org
-Subject: [PATCH v2] MIPS: Add microMIPS MSA support.
-Date:   Tue, 15 Apr 2014 15:59:42 -0500
-Message-Id: <1397595582-14577-1-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.8.3.2
+Subject: [PATCH v3] MIPS: Add microMIPS MSA support.
+Date:   Tue, 15 Apr 2014 16:06:49 -0500
+Message-Id: <1397596009-22175-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.10.4
 Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39802
+X-archive-position: 39803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,13 +44,14 @@ Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 Reviewed-by: Paul Burton <Paul.Burton@imgtec.com>
 ---
 v2: Clean up macros to use less #ifdef's.
+v3: Fix typos in #define usage.
 
  arch/mips/include/asm/asmmacro.h |   40 ++++++++++++++++++++++++++++++--------
  arch/mips/include/asm/msa.h      |   13 +++++++++++--
  2 files changed, 43 insertions(+), 10 deletions(-)
 
 diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index b464b8b..587a3db 100644
+index b464b8b..5166b09 100644
 --- a/arch/mips/include/asm/asmmacro.h
 +++ b/arch/mips/include/asm/asmmacro.h
 @@ -267,13 +267,35 @@
@@ -86,7 +87,7 @@ index b464b8b..587a3db 100644
  	.set	noat
 -	.word	0x787e0059 | (\cs << 11)
 +	.insn
-+	.word	CFCMSA_INSN | (\cs << 11)
++	.word	CFC_MSA_INSN | (\cs << 11)
  	move	\rd, $1
  	.set	pop
  	.endm
@@ -95,7 +96,7 @@ index b464b8b..587a3db 100644
  	.set	noat
  	move	$1, \rs
 -	.word	0x783e0819 | (\cd << 6)
-+	.word	CTCMSA_INSN | (\cd << 6)
++	.word	CTC_MSA_INSN | (\cd << 6)
  	.set	pop
  	.endm
  

@@ -1,26 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2014 14:58:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.89.28.114]:60668 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2014 14:59:20 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.89.28.115]:55942 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6834703AbaDPM5UlzXpH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2014 14:57:20 +0200
+        with ESMTP id S6837153AbaDPM6hF1pCh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2014 14:58:37 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 08F0CC1A9346E
-        for <linux-mips@linux-mips.org>; Wed, 16 Apr 2014 13:57:11 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Wed, 16 Apr
- 2014 13:57:13 +0100
+        by Websense Email Security Gateway with ESMTPS id 23244DEA29946
+        for <linux-mips@linux-mips.org>; Wed, 16 Apr 2014 13:58:28 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Wed, 16 Apr 2014 13:57:13 +0100
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Wed, 16 Apr 2014 13:58:30 +0100
 Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Wed, 16 Apr 2014 13:57:12 +0100
+ 14.3.174.1; Wed, 16 Apr 2014 13:58:29 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 14/39] MIPS: CPC: provide locking functions
-Date:   Wed, 16 Apr 2014 13:53:05 +0100
-Message-ID: <1397652810-4336-15-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 15/39] MIPS: add kmap_noncoherent to wire a cached non-coherent TLB entry
+Date:   Wed, 16 Apr 2014 13:53:06 +0100
+Message-ID: <1397652810-4336-16-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1397652810-4336-1-git-send-email-paul.burton@imgtec.com>
 References: <1397652810-4336-1-git-send-email-paul.burton@imgtec.com>
@@ -31,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39821
+X-archive-position: 39822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,102 +45,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch provides functions to lock & unlock access to the
-"core-other" register region of the CPC. Without performing appropriate
-locking it is possible for code using this region to be preempted or to
-race with code on another VPE within the same core, with one changing
-the core which the "core-other" region is acting upon at an inopportune
-time for the other.
+This is identical to kmap_coherent apart from the cache coherency
+attribute used for the TLB entry, so kmap_coherent is abstracted to
+kmap_prot which is then called for both kmap_coherent &
+kmap_noncoherent. This will be used by a subsequent patch.
 
+Suggested-by: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/mips-cpc.h | 27 +++++++++++++++++++++++++++
- arch/mips/kernel/mips-cpc.c      | 26 ++++++++++++++++++++++++++
- 2 files changed, 53 insertions(+)
+ arch/mips/include/asm/cacheflush.h |  6 ++++++
+ arch/mips/include/asm/pgtable.h    |  2 ++
+ arch/mips/mm/init.c                | 14 ++++++++++++--
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-cpc.h b/arch/mips/include/asm/mips-cpc.h
-index c5bb609..e139a53 100644
---- a/arch/mips/include/asm/mips-cpc.h
-+++ b/arch/mips/include/asm/mips-cpc.h
-@@ -152,4 +152,31 @@ BUILD_CPC_Cx_RW(other,		0x10)
- #define CPC_Cx_OTHER_CORENUM_SHF		16
- #define CPC_Cx_OTHER_CORENUM_MSK		(_ULCAST_(0xff) << 16)
+diff --git a/arch/mips/include/asm/cacheflush.h b/arch/mips/include/asm/cacheflush.h
+index 69468de..e08381a 100644
+--- a/arch/mips/include/asm/cacheflush.h
++++ b/arch/mips/include/asm/cacheflush.h
+@@ -113,6 +113,12 @@ unsigned long run_uncached(void *func);
  
-+#ifdef CONFIG_MIPS_CPC
+ extern void *kmap_coherent(struct page *page, unsigned long addr);
+ extern void kunmap_coherent(void);
++extern void *kmap_noncoherent(struct page *page, unsigned long addr);
 +
-+/**
-+ * mips_cpc_lock_other - lock access to another core
-+ * core: the other core to be accessed
-+ *
-+ * Call before operating upon a core via the 'other' register region in
-+ * order to prevent the region being moved during access. Must be followed
-+ * by a call to mips_cpc_unlock_other.
-+ */
-+extern void mips_cpc_lock_other(unsigned int core);
-+
-+/**
-+ * mips_cpc_unlock_other - unlock access to another core
-+ *
-+ * Call after operating upon another core via the 'other' register region.
-+ * Must be called after mips_cpc_lock_other.
-+ */
-+extern void mips_cpc_unlock_other(void);
-+
-+#else /* !CONFIG_MIPS_CPC */
-+
-+static inline void mips_cpc_lock_other(unsigned int core) { }
-+static inline void mips_cpc_unlock_other(void) { }
-+
-+#endif /* !CONFIG_MIPS_CPC */
-+
- #endif /* __MIPS_ASM_MIPS_CPC_H__ */
-diff --git a/arch/mips/kernel/mips-cpc.c b/arch/mips/kernel/mips-cpc.c
-index c9dc674..2368fc5 100644
---- a/arch/mips/kernel/mips-cpc.c
-+++ b/arch/mips/kernel/mips-cpc.c
-@@ -15,6 +15,10 @@
++static inline void kunmap_noncoherent(void)
++{
++	kunmap_coherent();
++}
  
- void __iomem *mips_cpc_base;
+ #define ARCH_HAS_FLUSH_KERNEL_DCACHE_PAGE
+ static inline void flush_kernel_dcache_page(struct page *page)
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index 008324d..539ddd1 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -32,6 +32,8 @@ struct vm_area_struct;
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
+ 				 _PAGE_GLOBAL | _page_cachable_default)
++#define PAGE_KERNEL_NC	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
++				 _PAGE_GLOBAL | _CACHE_CACHABLE_NONCOHERENT)
+ #define PAGE_USERIO	__pgprot(_PAGE_PRESENT | (cpu_has_rixi ? 0 : _PAGE_READ) | _PAGE_WRITE | \
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL_UNCACHED __pgprot(_PAGE_PRESENT | __READABLE | \
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 4fc74c7..c40a194 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -114,7 +114,7 @@ static void __init kmap_coherent_init(void)
+ static inline void kmap_coherent_init(void) {}
+ #endif
  
-+static DEFINE_PER_CPU_ALIGNED(spinlock_t, cpc_core_lock);
-+
-+static DEFINE_PER_CPU_ALIGNED(unsigned long, cpc_core_lock_flags);
-+
- phys_t __weak mips_cpc_phys_base(void)
+-void *kmap_coherent(struct page *page, unsigned long addr)
++static void *kmap_prot(struct page *page, unsigned long addr, pgprot_t prot)
  {
- 	u32 cpc_base;
-@@ -39,6 +43,10 @@ phys_t __weak mips_cpc_phys_base(void)
- int mips_cpc_probe(void)
- {
- 	phys_t addr;
-+	unsigned cpu;
-+
-+	for_each_possible_cpu(cpu)
-+		spin_lock_init(&per_cpu(cpc_core_lock, cpu));
- 
- 	addr = mips_cpc_phys_base();
- 	if (!addr)
-@@ -50,3 +58,21 @@ int mips_cpc_probe(void)
- 
- 	return 0;
+ 	enum fixed_addresses idx;
+ 	unsigned long vaddr, flags, entrylo;
+@@ -133,7 +133,7 @@ void *kmap_coherent(struct page *page, unsigned long addr)
+ 	idx += in_interrupt() ? FIX_N_COLOURS : 0;
+ #endif
+ 	vaddr = __fix_to_virt(FIX_CMAP_END - idx);
+-	pte = mk_pte(page, PAGE_KERNEL);
++	pte = mk_pte(page, prot);
+ #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
+ 	entrylo = pte.pte_high;
+ #else
+@@ -171,6 +171,16 @@ void *kmap_coherent(struct page *page, unsigned long addr)
+ 	return (void*) vaddr;
  }
-+
-+void mips_cpc_lock_other(unsigned int core)
+ 
++void *kmap_coherent(struct page *page, unsigned long addr)
 +{
-+	unsigned curr_core;
-+	preempt_disable();
-+	curr_core = current_cpu_data.core;
-+	spin_lock_irqsave(&per_cpu(cpc_core_lock, curr_core),
-+			  per_cpu(cpc_core_lock_flags, curr_core));
-+	write_cpc_cl_other(core << CPC_Cx_OTHER_CORENUM_SHF);
++	return kmap_prot(page, addr, PAGE_KERNEL);
 +}
 +
-+void mips_cpc_unlock_other(void)
++void *kmap_noncoherent(struct page *page, unsigned long addr)
 +{
-+	unsigned curr_core = current_cpu_data.core;
-+	spin_unlock_irqrestore(&per_cpu(cpc_core_lock, curr_core),
-+			       per_cpu(cpc_core_lock_flags, curr_core));
-+	preempt_enable();
++	return kmap_prot(page, addr, PAGE_KERNEL_NC);
 +}
++
+ void kunmap_coherent(void)
+ {
+ #ifndef CONFIG_MIPS_MT_SMTC
 -- 
 1.8.5.3

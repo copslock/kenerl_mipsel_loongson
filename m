@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2014 14:56:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.89.28.115]:54927 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2014 14:56:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.89.28.115]:54959 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6837156AbaDPMzgzvyJA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2014 14:55:36 +0200
+        with ESMTP id S6837158AbaDPMzmsEKQG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2014 14:55:42 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2A398694FA6D0
-        for <linux-mips@linux-mips.org>; Wed, 16 Apr 2014 13:55:28 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 3E716B0DC3139
+        for <linux-mips@linux-mips.org>; Wed, 16 Apr 2014 13:55:34 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Wed, 16 Apr
+ 2014 13:55:36 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Wed, 16 Apr 2014 13:55:29 +0100
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Wed, 16 Apr 2014 13:55:35 +0100
 Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Wed, 16 Apr 2014 13:55:29 +0100
+ 14.3.174.1; Wed, 16 Apr 2014 13:55:35 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 07/39] MIPS: allow GIC clockevent device config from other CPUs
-Date:   Wed, 16 Apr 2014 13:52:58 +0100
-Message-ID: <1397652810-4336-8-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 08/39] MIPS: mark R4K clockevent device with CLOCK_EVT_FEAT_C3STOP
+Date:   Wed, 16 Apr 2014 13:52:59 +0100
+Message-ID: <1397652810-4336-9-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1397652810-4336-1-git-send-email-paul.burton@imgtec.com>
 References: <1397652810-4336-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39814
+X-archive-position: 39815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,68 +48,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch allows the GIC clockevent device for a CPU to be configured
-by another CPU. This makes GIC clockevent devices suitable for use as
-the tick broadcast device, where formerly the GIC timer local to the
-configuring CPU would have been configured incorrectly.
+When a core enters a clock off or power down state its CP0 counter will
+be stopped along with it.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/gic.h |  1 +
- arch/mips/kernel/cevt-gic.c |  2 +-
- arch/mips/kernel/irq-gic.c  | 15 +++++++++++++++
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ arch/mips/kernel/cevt-r4k.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
-index 0827166..10f6a99 100644
---- a/arch/mips/include/asm/gic.h
-+++ b/arch/mips/include/asm/gic.h
-@@ -380,6 +380,7 @@ extern unsigned int gic_compare_int (void);
- extern cycle_t gic_read_count(void);
- extern cycle_t gic_read_compare(void);
- extern void gic_write_compare(cycle_t cnt);
-+extern void gic_write_cpu_compare(cycle_t cnt, int cpu);
- extern void gic_send_ipi(unsigned int intr);
- extern unsigned int plat_ipi_call_int_xlate(unsigned int);
- extern unsigned int plat_ipi_resched_int_xlate(unsigned int);
-diff --git a/arch/mips/kernel/cevt-gic.c b/arch/mips/kernel/cevt-gic.c
-index 925bae5..6093716 100644
---- a/arch/mips/kernel/cevt-gic.c
-+++ b/arch/mips/kernel/cevt-gic.c
-@@ -26,7 +26,7 @@ static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 50d3f5a..7820d5d 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -195,7 +195,8 @@ int r4k_clockevent_init(void)
+ 	cd = &per_cpu(mips_clockevent_device, cpu);
  
- 	cnt = gic_read_count();
- 	cnt += (u64)delta;
--	gic_write_compare(cnt);
-+	gic_write_cpu_compare(cnt, cpumask_first(evt->cpumask));
- 	res = ((int)(gic_read_count() - cnt) >= 0) ? -ETIME : 0;
- 	return res;
- }
-diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
-index 8520dad..88e4c32 100644
---- a/arch/mips/kernel/irq-gic.c
-+++ b/arch/mips/kernel/irq-gic.c
-@@ -54,6 +54,21 @@ void gic_write_compare(cycle_t cnt)
- 				(int)(cnt & 0xffffffff));
- }
+ 	cd->name		= "MIPS";
+-	cd->features		= CLOCK_EVT_FEAT_ONESHOT;
++	cd->features		= CLOCK_EVT_FEAT_ONESHOT |
++				  CLOCK_EVT_FEAT_C3STOP;
  
-+void gic_write_cpu_compare(cycle_t cnt, int cpu)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+
-+	GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), cpu);
-+	GICWRITE(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_HI),
-+				(int)(cnt >> 32));
-+	GICWRITE(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_LO),
-+				(int)(cnt & 0xffffffff));
-+
-+	local_irq_restore(flags);
-+}
-+
- cycle_t gic_read_compare(void)
- {
- 	unsigned int hi, lo;
+ 	clockevent_set_clock(cd, mips_hpt_frequency);
+ 
 -- 
 1.8.5.3

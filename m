@@ -1,47 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Apr 2014 09:23:25 +0200 (CEST)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:38501 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834702AbaDQHXB24CIc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Apr 2014 09:23:01 +0200
-Received: by mail-pd0-f180.google.com with SMTP id v10so69280pde.11
-        for <multiple recipients>; Thu, 17 Apr 2014 00:22:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Apr 2014 12:54:19 +0200 (CEST)
+Received: from mail-ee0-f51.google.com ([74.125.83.51]:57877 "EHLO
+        mail-ee0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821221AbaDQKyRDEytR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Apr 2014 12:54:17 +0200
+Received: by mail-ee0-f51.google.com with SMTP id c13so515253eek.10
+        for <multiple recipients>; Thu, 17 Apr 2014 03:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=MkfiHWpMwY0wrVxwyOJJHJ39meIk2AZ/5hHAoQe4N6o=;
-        b=Ik1oTxSwEfxY5Nwlw1gwzxnPd7c8h2TlEAg0KySj4YARwebgM7TzGjFJND9PPgmI4F
-         o5P/vkn6Ur5FwFgFXB/PQ1igaFkreIjKGsoqX5Hl/o5FXltjTYvCCj/N81yI2M0Y/JUC
-         ykeM5VLGhlwfGasRZ3tzSrrvvbqro6S2nKlZqy5zcOCV+SlUYMiJiCk45MdckH1we8XW
-         Lcu+BGDeW+r6ymYOoeK4RfXE4ic7U4nrdR89BKMCIxvnooCW/5AZvAoAurUS9OJDueVa
-         tiH4J/2APxa6LUa5l8IubRM6iTbNHYqDuBvhfa6/nTDZx850Wylvy1Wbnwd8RSvU4/62
-         WdoQ==
-X-Received: by 10.68.189.68 with SMTP id gg4mr13778203pbc.42.1397719374894;
-        Thu, 17 Apr 2014 00:22:54 -0700 (PDT)
-Received: from localhost.localdomain (cpe-98-154-223-43.socal.res.rr.com. [98.154.223.43])
-        by mx.google.com with ESMTPSA id yx3sm51572778pbb.6.2014.04.17.00.22.53
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=lug0nCpJeWlHHyu1KqsraO4ES+k0kRwGxYp7KOL9huw=;
+        b=mnvre90x8IjPB7FmBY9nzRqm7vXz3PyWfb/i8wuQZlp1EBxBwcju+zw6g4bokKQ+Ue
+         76FXTTWZhONpSapaqdu+2/0xgVBsA0jTtgJ0nI6mWsr9EU16fNLVMjQ7XHIPn6cUQqKv
+         rGGrOWLd49OB+wUzuPnsFhuBYnqFKdS3PPvzbUCXW37o7gaF/X4Rn8ZyfQt2sEp16lXf
+         9Ks4RbyO12Y/Jg6Gw1EicEUkX62Jf38e+KBJFlJKEr7RriYwZ++ZwPkQ33uMwwQS/FAH
+         KTZCeC6rwq4T07bpDKwRaNnt3tKZgem4oGQu06/w8TLTR93+bqEAYvyUMTFnsMhXC/UA
+         5/4w==
+X-Received: by 10.14.3.69 with SMTP id 45mr3964366eeg.68.1397732051636;
+        Thu, 17 Apr 2014 03:54:11 -0700 (PDT)
+Received: from localhost (port-7483.pppoe.wtnet.de. [84.46.29.88])
+        by mx.google.com with ESMTPSA id q49sm66291834eem.34.2014.04.17.03.54.09
         for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 17 Apr 2014 00:22:54 -0700 (PDT)
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Linux Kernel <linux-kernel@vger.kernel.org>
-Cc:     Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marex@denx.de>, <linux-mtd@lists.infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 3/5] mips: defconfigs: add MTD_SPI_NOR (new dependency for M25P80)
-Date:   Thu, 17 Apr 2014 00:21:47 -0700
-Message-Id: <1397719309-2022-4-git-send-email-computersforpeace@gmail.com>
-X-Mailer: git-send-email 1.8.3.2
-In-Reply-To: <1397719309-2022-1-git-send-email-computersforpeace@gmail.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 17 Apr 2014 03:54:10 -0700 (PDT)
+Date:   Thu, 17 Apr 2014 12:53:03 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Brian Norris <computersforpeace@gmail.com>
+Cc:     Linux Kernel <linux-kernel@vger.kernel.org>,
+        Marek Vasut <marex@denx.de>, linux-mtd@lists.infradead.org,
+        Russell King <linux@arm.linux.org.uk>,
+        Shawn Guo <shawn.guo@freescale.com>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Olof Johansson <olof@lixom.net>,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        Steven Miao <realmz6@gmail.com>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
+Subject: Re: [PATCH 0/5] defconfigs: add MTD_SPI_NOR (dependency for M25P80)
+Message-ID: <20140417105302.GA32603@ulmo>
 References: <1397719309-2022-1-git-send-email-computersforpeace@gmail.com>
-Return-Path: <computersforpeace@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
+Content-Disposition: inline
+In-Reply-To: <1397719309-2022-1-git-send-email-computersforpeace@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39848
+X-archive-position: 39849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: thierry.reding@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,78 +70,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-These defconfigs contain the CONFIG_M25P80 symbol, which is now
-dependent on the MTD_SPI_NOR symbol. Add CONFIG_MTD_SPI_NOR to the
-relevant defconfigs.
 
-At the same time, drop the now-nonexistent CONFIG_MTD_CHAR symbol.
+--azLHFNyN32YCQGCU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Brian Norris <computersforpeace@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
----
-This change is based on l2-mtd.git/spinor, which is based on 3.15-rc1:
+On Thu, Apr 17, 2014 at 12:21:44AM -0700, Brian Norris wrote:
+> Hi all,
+>=20
+> We are introducing a new SPI-NOR library/framework for MTD, to support va=
+rious
+> types of SPI-NOR flash controllers which require (or benefit from) intima=
+te
+> knowledge of the flash interface, rather than just the relatively dumb SPI
+> interface. This library borrows much of the m25p80 driver for its abstrac=
+tion
+> and moves this code into a spi-nor module.
 
-  git://git.infradead.org/l2-mtd.git +spinor
+If this is a common library, then the more common approach to solve this
+would be to have each driver that uses it to select MTD_SPI_NOR rather
+than depend on it. That way you can drop this whole series to update the
+default configurations.
 
- arch/mips/configs/ath79_defconfig  | 3 +--
- arch/mips/configs/db1xxx_defconfig | 1 +
- arch/mips/configs/rt305x_defconfig | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Thierry
 
-diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
-index e3a3836508ec..134879c1310a 100644
---- a/arch/mips/configs/ath79_defconfig
-+++ b/arch/mips/configs/ath79_defconfig
-@@ -46,7 +46,6 @@ CONFIG_MTD=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_REDBOOT_DIRECTORY_BLOCK=-2
- CONFIG_MTD_CMDLINE_PARTS=y
--CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
- CONFIG_MTD_JEDECPROBE=y
-@@ -54,7 +53,7 @@ CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_COMPLEX_MAPPINGS=y
- CONFIG_MTD_PHYSMAP=y
- CONFIG_MTD_M25P80=y
--# CONFIG_M25PXX_USE_FAST_READ is not set
-+CONFIG_MTD_SPI_NOR=y
- CONFIG_NETDEVICES=y
- # CONFIG_NET_PACKET_ENGINE is not set
- CONFIG_ATH_COMMON=m
-diff --git a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
-index c99b6eeda90b..a64b30b96a0d 100644
---- a/arch/mips/configs/db1xxx_defconfig
-+++ b/arch/mips/configs/db1xxx_defconfig
-@@ -113,6 +113,7 @@ CONFIG_MTD_NAND=y
- CONFIG_MTD_NAND_ECC_BCH=y
- CONFIG_MTD_NAND_AU1550=y
- CONFIG_MTD_NAND_PLATFORM=y
-+CONFIG_MTD_SPI_NOR=y
- CONFIG_EEPROM_AT24=y
- CONFIG_EEPROM_AT25=y
- CONFIG_SCSI_TGT=y
-diff --git a/arch/mips/configs/rt305x_defconfig b/arch/mips/configs/rt305x_defconfig
-index d1741bcf8949..d14ae2fa7d13 100644
---- a/arch/mips/configs/rt305x_defconfig
-+++ b/arch/mips/configs/rt305x_defconfig
-@@ -81,7 +81,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FIRMWARE_IN_KERNEL is not set
- CONFIG_MTD=y
- CONFIG_MTD_CMDLINE_PARTS=y
--CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
- CONFIG_MTD_CFI_AMDSTD=y
-@@ -89,6 +88,7 @@ CONFIG_MTD_COMPLEX_MAPPINGS=y
- CONFIG_MTD_PHYSMAP=y
- CONFIG_MTD_PHYSMAP_OF=y
- CONFIG_MTD_M25P80=y
-+CONFIG_MTD_SPI_NOR=y
- CONFIG_EEPROM_93CX6=m
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
--- 
-1.8.3.2
+--azLHFNyN32YCQGCU
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTT7KNAAoJEN0jrNd/PrOhzhQP/3ocjlUpPSUcBT7myTaYn8dC
+zbZ0Zp5MO34d42OXHqfYC0q6LiCYp4I6xQDn8usqKBxpHd1dBAirD0z7Ofp3nAo5
+JwH+vr8zDZNTZcQd5W/LRI90fa/9qVNytVFNSEbmeNUop74+yhnQb//rq3YCskEZ
+v8rHJpH7uaJUPeVTsvrbmtW/9ZW5+ofFWj2JffogOyC4NY/oOldXl4gsOcP+PuF7
+gFdIn+D+hyEa2ZLjdeYD9lIvmLHczXhda0KPDZO31gDQyHvgMt+goUUgtWlqfHv+
+8cuKJjhHeMhMYtdZByrYRRVuhlafZlLJ2PqmunFCgsd/1P9Ww+k+nZJASw8jFqbd
+nGxDcgXG/4vfiFj0HMZoR/cWh845wYrWXdzaZdmY0bjiHEsz1ip+OVNq5ACq+d+L
+9posY8HH1btDrrcJEsce4DTHTJsAYdeX0oik8DK+gHi5no7sd8Twd2ZjJaZxtwXk
+pH+RZqVa3Wrj68vCXuyTZSFZb/QC/ZttUgW5YhfVcQJcsOC02+LRKOIbu0Em8hMq
+3sdsgTImKHFAEdWm4oNOHlOPN4nk/tMRo3nrCUV4Pb+yaCelIBlKo/9JLK0JfDQJ
+/qPtjG0OAPJYmHmwPcSB57kA/MZlF6RnNI1V8CHWOCQm94NwGirKBropQ/9yLxs7
+lrnTat974tXvX/gLJ7Do
+=Xz6I
+-----END PGP SIGNATURE-----
+
+--azLHFNyN32YCQGCU--

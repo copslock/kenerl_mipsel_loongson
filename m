@@ -1,51 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2014 15:50:10 +0200 (CEST)
-Received: from mail-lb0-f182.google.com ([209.85.217.182]:40058 "EHLO
-        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822100AbaDSNuBHmWPL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Apr 2014 15:50:01 +0200
-Received: by mail-lb0-f182.google.com with SMTP id n15so2128441lbi.27
-        for <linux-mips@linux-mips.org>; Sat, 19 Apr 2014 06:49:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=a1qEWOiiQEHgyZ/tpqXVHTHzeBBTzVUAAkJgqHOZ66w=;
-        b=GPTIOM9FmhfbUEsnAYGhl4XuzssT2BQc6n/lGTmkMrFyqelDObEcl9chry1G0jkkOX
-         tO9WriSeS+MdYKJB+qp56GQcwCRP1NFj6K20NDUZI9Ex5yXVSXwgTcjCTJHC+uxSTmCt
-         HqD5O3NujTLgg/bk5axJqlnbldGPHpeACCDsVWgBK3xpuEZocS3x65GQTEOR0wWXYeeQ
-         7QgQCeLSmybQqFCNHztrv8UU6HHnVQGiN/tN45jeDfyXta8NV/U71+GzlKvoyZCQXVA9
-         Pt8XtbgFMcjWU2c7aakSPGZmGNCiatajlHEfT7ZRfaCFo/1t+Qrr3BgQAGsDgUYbEwZY
-         1WqQ==
-X-Gm-Message-State: ALoCoQl0vSqiSbF35w4B5dttmB9FDDWaUYFsA7EAhX+W/kQsUVCl819J1icJGr42/1H98dT1yWL7
-X-Received: by 10.112.89.10 with SMTP id bk10mr77598lbb.64.1397915395283;
-        Sat, 19 Apr 2014 06:49:55 -0700 (PDT)
-Received: from [192.168.2.4] (ppp85-140-143-140.pppoe.mtu-net.ru. [85.140.143.140])
-        by mx.google.com with ESMTPSA id dl4sm30851878lbc.4.2014.04.19.06.49.53
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 19 Apr 2014 06:49:54 -0700 (PDT)
-Message-ID: <53527F01.30003@cogentembedded.com>
-Date:   Sat, 19 Apr 2014 17:49:53 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2014 17:39:12 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:54088 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816414AbaDSPjKRlprl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Apr 2014 17:39:10 +0200
+Date:   Sat, 19 Apr 2014 16:39:10 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: Malta: support powering down
+In-Reply-To: <1395415232-42288-2-git-send-email-paul.burton@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1404191624180.11598@eddie.linux-mips.org>
+References: <1395415232-42288-1-git-send-email-paul.burton@imgtec.com> <1395415232-42288-2-git-send-email-paul.burton@imgtec.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-To:     Prem Karat <pkarat@mvista.com>, linux-mips@linux-mips.org
-CC:     ddaney.cavm@gmail.com
-Subject: Re: [RFC PATCH 1/1] MIPS: Enable VDSO randomization.
-References: <20140419093302.GH2717@064904.mvista.com>
-In-Reply-To: <20140419093302.GH2717@064904.mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39865
+X-archive-position: 39866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,41 +35,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Fri, 21 Mar 2014, Paul Burton wrote:
 
-On 19-04-2014 13:33, Prem Karat wrote:
-
-> Based on commit 1091458d09e1a (mmap randomization)
-
-> For 32-bit address spaces randomize within a
-> 16MB space, for 64-bit within a 256MB space.
-
-> Signed-off-by: Prem Karat <pkarat@mvista.com>
+> This patch makes the mips_machine_halt function (used as _machine_halt &
+> pm_power_off) actually power down the Malta via the PIIX4. It may then
+> be powered back up by pressing the "ON/NMI" button (S4) on the board.
+> 
+> Tested-by: James Hogan <james.hogan@imgtec.com>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
 [...]
+> diff --git a/arch/mips/mti-malta/malta-reset.c b/arch/mips/mti-malta/malta-reset.c
+> index d627d4b..ef04c8b 100644
+> --- a/arch/mips/mti-malta/malta-reset.c
+> +++ b/arch/mips/mti-malta/malta-reset.c
+> @@ -24,10 +27,72 @@ static void mips_machine_restart(char *command)
+>  
+>  static void mips_machine_halt(void)
+>  {
 
-> @@ -67,7 +69,18 @@ subsys_initcall(init_vdso);
->
->   static unsigned long vdso_addr(unsigned long start)
->   {
-> -	return STACK_TOP;
-> +	unsigned long offset = 0UL;
-> +
-> +	if (current->flags & PF_RANDOMIZE) {
-> +		offset = get_random_int();
-> +		offset = offset << PAGE_SHIFT;
+ First of all, shouldn't all of this stuff be wired into 
+mips_machine_power_off rather than mips_machine_halt?  I would have 
+thought mips_machine_halt is supposed to get back to the console monitor 
+prompt (YAMON in this case) without restarting or powering off the system, 
+and if that's impossible, then loop indefinitely (that's the -H vs -P 
+action option to shutdown(8); see the details in the manual).
 
-    Why not:
-
-		offset <<= PAGE_SHIFT;
-
-> +		if (TASK_IS_32BIT_ADDR)
-> +			offset &= 0xfffffful;
-> +		else
-> +			offset &= 0xffffffful;
+> -	unsigned int __iomem *softres_reg =
+> -		ioremap(SOFTRES_REG, sizeof(unsigned int));
+> +	struct pci_bus *bus;
+> +	struct pci_dev *dev;
+> +	int spec_devid, res;
+> +	int io_region = PCI_BRIDGE_RESOURCES;
+> +	resource_size_t io;
+> +	u16 sts;
+>  
+> -	__raw_writel(GORESET, softres_reg);
+> +	/* Find the PIIX4 PM device */
+> +	dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
+> +			     PCI_DEVICE_ID_INTEL_82371AB_3, PCI_ANY_ID,
+> +			     PCI_ANY_ID, NULL);
+> +	if (!dev) {
+> +		printk("Failed to find PIIX4 PM\n");
+> +		goto fail;
 > +	}
 > +
-> +	return (STACK_TOP + offset);
+> +	/* Request access to the PIIX4 PM IO registers */
+> +	res = pci_request_region(dev, io_region, "PIIX4 PM IO registers");
+> +	if (res) {
+> +		printk("Failed to request PIIX4 PM IO registers (%d)\n", res);
+> +		goto fail_dev_put;
+> +	}
 
-    Parens not needed.
+ Shouldn't the handle on the device and the resource be requested early 
+on, where mips_machine_halt (mips_machine_power_off) is installed as the 
+halt (power-off) handler?  Especially requesting the resource here seems 
+to make little sense to me -- we're about to kill the box, so why bother 
+verifying whether it's going to interfere with a random driver?
 
-WBR, Sergei
+> +
+> +	/* Find the offset to the PIIX4 PM IO registers */
+> +	io = pci_resource_start(dev, io_region);
+> +
+> +	/* Ensure the power button status is clear */
+> +	while (1) {
+> +		sts = inw(io + PIIX4_FUNC3IO_PMSTS);
+> +		if (!(sts & PIIX4_FUNC3IO_PMSTS_PWRBTN_STS))
+> +			break;
+> +		outw(sts, io + PIIX4_FUNC3IO_PMSTS);
+> +	}
+> +
+> +	/* Enable entry to suspend */
+> +	outw(PIIX4_FUNC3IO_PMCNTRL_SUS_EN, io + PIIX4_FUNC3IO_PMCNTRL);
+> +
+> +	/* If the special cycle occurs too soon this doesn't work... */
+> +	mdelay(10);
+> +
+> +	/* Find a reference to the PCI bus */
+> +	bus = pci_find_next_bus(NULL);
+> +	if (!bus) {
+> +		printk("Failed to find PCI bus\n");
+> +		goto fail_release_region;
+> +	}
+> +
+> +	/*
+> +	 * The PIIX4 will enter the suspend state only after seeing a special
+> +	 * cycle with the correct magic data on the PCI bus. Generate that
+> +	 * cycle now.
+> +	 */
+> +	spec_devid = PCI_DEVID(0, PCI_DEVFN(0x1f, 0x7));
+> +	pci_bus_write_config_dword(bus, spec_devid, 0, PIIX4_SUSPEND_MAGIC);
+
+ I know all the three of the GT-64120/64120A, Bonito and SOC-it system 
+controllers support software generation of PCI special cycles, but is the 
+method the same across them all?
+
+  Maciej

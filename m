@@ -1,30 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2014 00:59:20 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54646 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821198AbaDSW7Q1bG4J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 20 Apr 2014 00:59:16 +0200
-Date:   Sat, 19 Apr 2014 23:59:16 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Alessandro Zummo <a.zummo@towertech.it>
-cc:     linux-mips@linux-mips.org, rtc-linux@googlegroups.com,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] DEC: Switch DECstation systems to rtc-cmos
-In-Reply-To: <alpine.LFD.2.11.1404192224250.11598@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1404192338050.11598@eddie.linux-mips.org>
-References: <alpine.LFD.2.11.1404192224250.11598@eddie.linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2014 01:23:26 +0200 (CEST)
+Received: from qmta14.westchester.pa.mail.comcast.net ([76.96.59.212]:43056
+        "EHLO qmta14.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818667AbaDSXXQIPurV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 20 Apr 2014 01:23:16 +0200
+Received: from omta04.westchester.pa.mail.comcast.net ([76.96.62.35])
+        by qmta14.westchester.pa.mail.comcast.net with comcast
+        id ryi21n0080ldTLk5EzP8kL; Sat, 19 Apr 2014 23:23:08 +0000
+Received: from [192.168.1.13] ([50.190.84.14])
+        by omta04.westchester.pa.mail.comcast.net with comcast
+        id rzP81n00J0JZ7Re01zP8r7; Sat, 19 Apr 2014 23:23:08 +0000
+Message-ID: <53530544.3010308@gentoo.org>
+Date:   Sat, 19 Apr 2014 19:22:44 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] RTC: rtc-cmos: drivers/char/rtc.c features for DECstation
+ support
+References: <alpine.LFD.2.11.1404192224250.11598@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1404192224250.11598@eddie.linux-mips.org>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1397949788;
+        bh=OXuLKeT8cY/HSjdASHcCKALPV8//RvDc3hslRlH1Z44=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=Aa6eL3eDslp/w1DToLDSiTC5L7x3m/+9wIQE4wtK6cFhKhPb0gux4KDfmHIfSbxrN
+         t2Ac8GG29pLBDO1yg7udjhuv75vatGR5mnZW5nFuUki5Liepwxzn0UR372RoNBa6V+
+         0uDlewzGBu/nrQDNTE1gAmln64BQP+RFHUY8Wb28VWpgDBxqEuLY5N2EB9wgzj5DHc
+         GYnvQgAhsChV3Ta3tPquaMGuO8yVf59SaL/Ulh/6nIPOHN+V2CtwhmVOSTDta9TOvW
+         rzQy8hXSpfu2ET+vbsy3X5z2x4HIjEzXNahlQegA8IEL4LLveEHpFMstrtd0M2w6kC
+         2Bgyhf+XEhLMg==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39870
+X-archive-position: 39871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,80 +54,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This adds an RTC platform device for DECstation systems so that they can 
-use the rtc-cmos driver for their RTC device.
+On 04/19/2014 18:58, Maciej W. Rozycki wrote:
+> This brings in drivers/char/rtc.c functionality required for DECstation 
+> and, should the maintainers decide to switch, Alpha systems to use 
+> rtc-cmos.
+> 
+> Specifically these features are made available:
+> 
+[snip]
+> * The ability to use the RTC periodic interrupt as a system clock device,
+>   which is implemented by arch/mips/kernel/cevt-ds1287.c for DECstation 
+>   systems and takes the RTC interrupt away from the RTC driver.  
+>   Eventually hooking back to the clock device's interrupt handler should 
+>   be possible for the purpose of the alarm clock and possibly also 
+>   update-in-progress interrupt, but this is not done by this change.
 
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
----
-Ralf,
+I had this implemented myself in the DS1685 driver I've still yet to send in
+(for SGI IP32).  But the upper-level RTC code for periodic and update
+interrupts was removed sometime between 2.6.39 and 3.0 and uses the kernel's
+hrtimers to replace it.  No idea if they'll ever re-add that code for RTC
+drivers that can use the hardware implementation instead.
 
- This part requires the other change or it won't build at all, so it can't 
-be pushed to the LMO tree by itself.  I'm not sure which route, either RTC 
-or LMO, will be the best for upstreaming this patch pair, but surely the 
-rtc-cmos part will have to be reviewed first.
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
 
-  Maciej
+"The past tempts us, the present confuses us, the future frightens us.  And
+our lives slip away, moment by moment, lost in that vast, terrible in-between."
 
-linux-dec-rtc.patch
-Index: linux-20140404-3maxp/arch/mips/dec/Makefile
-===================================================================
---- linux-20140404-3maxp.orig/arch/mips/dec/Makefile
-+++ linux-20140404-3maxp/arch/mips/dec/Makefile
-@@ -3,7 +3,7 @@
- #
- 
- obj-y		:= ecc-berr.o int-handler.o ioasic-irq.o kn01-berr.o \
--		   kn02-irq.o kn02xa-berr.o reset.o setup.o time.o
-+		   kn02-irq.o kn02xa-berr.o platform.o reset.o setup.o time.o
- 
- obj-$(CONFIG_TC)		+= tc.o
- obj-$(CONFIG_CPU_HAS_WB)	+= wbflush.o
-Index: linux-20140404-3maxp/arch/mips/dec/platform.c
-===================================================================
---- /dev/null
-+++ linux-20140404-3maxp/arch/mips/dec/platform.c
-@@ -0,0 +1,44 @@
-+/*
-+ *	DEC platform devices.
-+ *
-+ *	Copyright (c) 2014  Maciej W. Rozycki
-+ *
-+ *	This program is free software; you can redistribute it and/or
-+ *	modify it under the terms of the GNU General Public License
-+ *	as published by the Free Software Foundation; either version
-+ *	2 of the License, or (at your option) any later version.
-+ */
-+
-+#include <linux/ioport.h>
-+#include <linux/kernel.h>
-+#include <linux/mc146818rtc.h>
-+#include <linux/platform_device.h>
-+
-+static struct resource dec_rtc_resources[] = {
-+	{
-+		.name = "rtc",
-+		.flags = IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct cmos_rtc_board_info dec_rtc_info = {
-+	.flags = CMOS_RTC_FLAGS_NOFREQ,
-+	.address_space = 64,
-+};
-+
-+static struct platform_device dec_rtc_device = {
-+	.name = "rtc_cmos",
-+	.id = PLATFORM_DEVID_NONE,
-+	.dev.platform_data = &dec_rtc_info,
-+	.resource = dec_rtc_resources,
-+	.num_resources = ARRAY_SIZE(dec_rtc_resources),
-+};
-+
-+static int __init dec_add_devices(void)
-+{
-+	dec_rtc_resources[0].start = RTC_PORT(0);
-+	dec_rtc_resources[0].end = RTC_PORT(0) + dec_kn_slot_size - 1;
-+	return platform_device_register(&dec_rtc_device);
-+}
-+
-+device_initcall(dec_add_devices);
+--Emperor Turhan, Centauri Republic

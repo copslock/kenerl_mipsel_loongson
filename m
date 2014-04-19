@@ -1,49 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2014 02:49:45 +0200 (CEST)
-Received: from mail-ve0-f181.google.com ([209.85.128.181]:58757 "EHLO
-        mail-ve0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822290AbaDSAtjthYK4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Apr 2014 02:49:39 +0200
-Received: by mail-ve0-f181.google.com with SMTP id oy12so3924377veb.40
-        for <multiple recipients>; Fri, 18 Apr 2014 17:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=DfVpD0KRlDV1lZVvpHPC8X0Coty+ty/7Ba9aR4qpiDQ=;
-        b=Gy/nq+h+YgZohxnDe3w2iUbhcdA8v00k2eNDVxXhD567XIFqzMC5Ges16pyovD+5hJ
-         Y+/IQaznE7wyH0hlKXKd3rvv2jp5JIZG4L3ruupMx7MrW7KutbcjkJz6rgyaEgep8/y1
-         oiLo2m60P9JYvokYL1Nvfmn6Gkok/tvGkqPa9W1lM7a7HZlfkEqRrSr7GrG8pM9YPToc
-         7+h0AWqlJ/2UJgEGTLAPjX4euirDTGsBkbsFmb6RKP4PqWNXKQQ8oWJ9E3izJY7B19BT
-         cBU+6WH+JYBbNA2NaD6MGUgeddBl7p2x1lhqmvB9uujpF/A4mWLBIhuVtu/KVcBjtjgP
-         q6ZA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2014 11:33:16 +0200 (CEST)
+Received: from mail-pa0-f46.google.com ([209.85.220.46]:53293 "EHLO
+        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816900AbaDSJdNqoS1j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Apr 2014 11:33:13 +0200
+Received: by mail-pa0-f46.google.com with SMTP id kx10so2166136pab.5
+        for <linux-mips@linux-mips.org>; Sat, 19 Apr 2014 02:33:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-type:content-disposition:user-agent;
+        bh=85cH4Lgz8yBC1ubIwphaETVZaVdXJH+h72Zwxwdicjo=;
+        b=fb5q98OBP1DnEAemgnUdCVRs6FL41Hoo3CovxvRAXNrrPGCUPmzqixJ104sZQKRkEW
+         bJSeV6nbv7wLm+RAXHTUz1RrLe3lYO2Q6/M+jAkVAbCZgNnR5/Gli+QyGqymKqZyAlPa
+         Gi/SEBW6KDmuH5zGUs6edPlRkR9ONJOJFzP/08YbA5LVUm5YCLu+jDvuNlKyendTmQ6N
+         9WfJxxTghz55btNWJyxS8LjP93eHz8U5UmY4cmlVt3xg6Goq9C5Lss12spha9cmXpFQ1
+         6DX01ojs/NWZ8GlcHVHB0az8kmG3VpKjiHkD3jithSDLQ6HhaZSTtkwhGlC0MWwdyvmg
+         KVoQ==
+X-Gm-Message-State: ALoCoQlPmJf2684KT25jqql8+GlU7B7q624upj7xCfzCTfLeLSKA7Vyvv5czXlRxa9q0y0CqgjZG
+X-Received: by 10.66.147.202 with SMTP id tm10mr26638450pab.75.1397899987319;
+        Sat, 19 Apr 2014 02:33:07 -0700 (PDT)
+Received: from localhost ([111.93.218.67])
+        by mx.google.com with ESMTPSA id te2sm154206812pac.25.2014.04.19.02.33.05
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Sat, 19 Apr 2014 02:33:06 -0700 (PDT)
+Date:   Sat, 19 Apr 2014 15:03:02 +0530
+From:   Prem Karat <pkarat@mvista.com>
+To:     linux-mips@linux-mips.org
+Cc:     ddaney.cavm@gmail.com
+Subject: [RFC PATCH 1/1] MIPS: Enable VDSO randomization.
+Message-ID: <20140419093302.GH2717@064904.mvista.com>
 MIME-Version: 1.0
-X-Received: by 10.52.173.165 with SMTP id bl5mr14374335vdc.13.1397868573397;
- Fri, 18 Apr 2014 17:49:33 -0700 (PDT)
-Received: by 10.58.23.234 with HTTP; Fri, 18 Apr 2014 17:49:33 -0700 (PDT)
-In-Reply-To: <CAGVrzcZLUgpZZKAHjPSWaBs6w1XoegLaoWUAaMYUD9zW9yzq0w@mail.gmail.com>
-References: <1397719309-2022-1-git-send-email-computersforpeace@gmail.com>
-        <1397719309-2022-4-git-send-email-computersforpeace@gmail.com>
-        <CAGVrzcZLUgpZZKAHjPSWaBs6w1XoegLaoWUAaMYUD9zW9yzq0w@mail.gmail.com>
-Date:   Fri, 18 Apr 2014 17:49:33 -0700
-Message-ID: <CAN8TOE90nh1v_84FSvF8MrN=eR-dOcXAYiOLeqRqXd3JCjfAzw@mail.gmail.com>
-Subject: Re: [PATCH 3/5] mips: defconfigs: add MTD_SPI_NOR (new dependency for M25P80)
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Linux Kernel <linux-kernel@vger.kernel.org>,
-        Marek Vasut <marex@denx.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <computersforpeace@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pkarat@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39862
+X-archive-position: 39863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: pkarat@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,23 +55,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 18, 2014 at 5:24 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> 2014-04-17 0:21 GMT-07:00 Brian Norris <computersforpeace@gmail.com>:
->> These defconfigs contain the CONFIG_M25P80 symbol, which is now
->> dependent on the MTD_SPI_NOR symbol. Add CONFIG_MTD_SPI_NOR to the
->> relevant defconfigs.
->
-> so CONFIG_M25P80 should select CONFIG_MTD_SPI_NOR, right? in that
-> case, I do not think this is needed at all, as it would be
-> automatically picked up during the build and if someone refreshes the
-> defconfigs, although it cannot hurt.
+Based on commit 1091458d09e1a (mmap randomization)
 
-Can you reply to the cover letter? 3 people have made the same
-comment, and I had a rebuttal that I'm not sure if anyone considered
-yet.
+For 32-bit address spaces randomize within a
+16MB space, for 64-bit within a 256MB space.
 
-(And it wouldn't be picked up by 'savedefconfig', since it saves a
-minimal .config; when one symbol 'select's another, the latter is not
-needed in the defconfig)
+Signed-off-by: Prem Karat <pkarat@mvista.com>
+---
+ arch/mips/kernel/vdso.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Brian
+diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+index 0f1af58..b49c705 100644
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -16,9 +16,11 @@
+ #include <linux/elf.h>
+ #include <linux/vmalloc.h>
+ #include <linux/unistd.h>
++#include <linux/random.h>
+ 
+ #include <asm/vdso.h>
+ #include <asm/uasm.h>
++#include <asm/processor.h>
+ 
+ /*
+  * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
+@@ -67,7 +69,18 @@ subsys_initcall(init_vdso);
+ 
+ static unsigned long vdso_addr(unsigned long start)
+ {
+-	return STACK_TOP;
++	unsigned long offset = 0UL;
++
++	if (current->flags & PF_RANDOMIZE) {
++		offset = get_random_int();
++		offset = offset << PAGE_SHIFT;
++		if (TASK_IS_32BIT_ADDR)
++			offset &= 0xfffffful;
++		else
++			offset &= 0xffffffful;
++	}
++
++	return (STACK_TOP + offset);
+ }
+ 
+ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+-- 
+1.7.9.5

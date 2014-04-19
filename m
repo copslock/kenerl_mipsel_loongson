@@ -1,48 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2014 12:50:05 +0200 (CEST)
-Received: from mail-ee0-f47.google.com ([74.125.83.47]:45133 "EHLO
-        mail-ee0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816199AbaDSKuDIzKrN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Apr 2014 12:50:03 +0200
-Received: by mail-ee0-f47.google.com with SMTP id b15so2294668eek.34
-        for <multiple recipients>; Sat, 19 Apr 2014 03:49:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2014 15:50:10 +0200 (CEST)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:40058 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822100AbaDSNuBHmWPL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Apr 2014 15:50:01 +0200
+Received: by mail-lb0-f182.google.com with SMTP id n15so2128441lbi.27
+        for <linux-mips@linux-mips.org>; Sat, 19 Apr 2014 06:49:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=ZOtZ9cWdBXmswao3W+/zNwuhYAv6rc/B2hLnOrWUAlo=;
-        b=HhA7iKYuYsunKPF/6qu8ufUyc5NLWi3mLVeEmfiQu/3683UIOF9bg530D8hfqbUh2P
-         8ly3E3rHKtxSxnBr1IL0o47ofEGkJf1vtox+0UvNgSZF0f7qy2mywCCnarqYtuL6AzTM
-         CGiCA4cAAFhHWFERM8FhpMVZFAgUPBpYtIZP307xIi+5f9rdNB3i6LfASjqdLfMEPwls
-         j/AxNdN4v4WATQ0oKTUWfiHXfwN61ScL8OcNgWrPgMlfz9bFYJtmiQ2UbF4UoH6lAQ/v
-         +D1Vy/6O8lMmjfI4KzGKy0/SPzAGyaIGVSgn7W4w4zAGEQhmFhSlK+sz980GPLPFrVGF
-         Ey7w==
-X-Received: by 10.15.43.132 with SMTP id x4mr29725041eev.59.1397904597657;
-        Sat, 19 Apr 2014 03:49:57 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id m8sm84655583eeg.11.2014.04.19.03.49.56
+        bh=a1qEWOiiQEHgyZ/tpqXVHTHzeBBTzVUAAkJgqHOZ66w=;
+        b=GPTIOM9FmhfbUEsnAYGhl4XuzssT2BQc6n/lGTmkMrFyqelDObEcl9chry1G0jkkOX
+         tO9WriSeS+MdYKJB+qp56GQcwCRP1NFj6K20NDUZI9Ex5yXVSXwgTcjCTJHC+uxSTmCt
+         HqD5O3NujTLgg/bk5axJqlnbldGPHpeACCDsVWgBK3xpuEZocS3x65GQTEOR0wWXYeeQ
+         7QgQCeLSmybQqFCNHztrv8UU6HHnVQGiN/tN45jeDfyXta8NV/U71+GzlKvoyZCQXVA9
+         Pt8XtbgFMcjWU2c7aakSPGZmGNCiatajlHEfT7ZRfaCFo/1t+Qrr3BgQAGsDgUYbEwZY
+         1WqQ==
+X-Gm-Message-State: ALoCoQl0vSqiSbF35w4B5dttmB9FDDWaUYFsA7EAhX+W/kQsUVCl819J1icJGr42/1H98dT1yWL7
+X-Received: by 10.112.89.10 with SMTP id bk10mr77598lbb.64.1397915395283;
+        Sat, 19 Apr 2014 06:49:55 -0700 (PDT)
+Received: from [192.168.2.4] (ppp85-140-143-140.pppoe.mtu-net.ru. [85.140.143.140])
+        by mx.google.com with ESMTPSA id dl4sm30851878lbc.4.2014.04.19.06.49.53
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 19 Apr 2014 03:49:56 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH][next: 3.16] MIPS: BCM47XX: Slightly clean memory detection
-Date:   Sat, 19 Apr 2014 12:49:46 +0200
-Message-Id: <1397904586-9773-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sat, 19 Apr 2014 06:49:54 -0700 (PDT)
+Message-ID: <53527F01.30003@cogentembedded.com>
+Date:   Sat, 19 Apr 2014 17:49:53 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+To:     Prem Karat <pkarat@mvista.com>, linux-mips@linux-mips.org
+CC:     ddaney.cavm@gmail.com
+Subject: Re: [RFC PATCH 1/1] MIPS: Enable VDSO randomization.
+References: <20140419093302.GH2717@064904.mvista.com>
+In-Reply-To: <20140419093302.GH2717@064904.mvista.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39864
+X-archive-position: 39865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,45 +58,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Patch was tested on devices with 64 MiB and 256 MiB of RAM.
-It documents every part nicely and drops this hacky part of code:
-max = off | ((128 << 20) - 1);
+Hello.
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/prom.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+On 19-04-2014 13:33, Prem Karat wrote:
 
-diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
-index 0af808d..1a03a2f 100644
---- a/arch/mips/bcm47xx/prom.c
-+++ b/arch/mips/bcm47xx/prom.c
-@@ -69,15 +69,18 @@ static __init void prom_init_mem(void)
- 	 * BCM47XX uses 128MB for addressing the ram, if the system contains
- 	 * less that that amount of ram it remaps the ram more often into the
- 	 * available space.
--	 * Accessing memory after 128MB will cause an exception.
--	 * max contains the biggest possible address supported by the platform.
--	 * If the method wants to try something above we assume 128MB ram.
- 	 */
--	off = (unsigned long)prom_init;
--	max = off | ((128 << 20) - 1);
--	for (mem = (1 << 20); mem < (128 << 20); mem += (1 << 20)) {
--		if ((off + mem) > max) {
--			mem = (128 << 20);
-+
-+	/* Physical address, without mapping to any kernel segment */
-+	off = CPHYSADDR((unsigned long)prom_init);
-+
-+	/* Accessing memory after 128 MiB will cause an exception */
-+	max = 128 << 20;
-+
-+	for (mem = 1 << 20; mem < max; mem += 1 << 20) {
-+		/* Loop condition may be not enough, off may be over 1 MiB */
-+		if (off + mem >= max) {
-+			mem = max;
- 			printk(KERN_DEBUG "assume 128MB RAM\n");
- 			break;
- 		}
--- 
-1.8.4.5
+> Based on commit 1091458d09e1a (mmap randomization)
+
+> For 32-bit address spaces randomize within a
+> 16MB space, for 64-bit within a 256MB space.
+
+> Signed-off-by: Prem Karat <pkarat@mvista.com>
+[...]
+
+> @@ -67,7 +69,18 @@ subsys_initcall(init_vdso);
+>
+>   static unsigned long vdso_addr(unsigned long start)
+>   {
+> -	return STACK_TOP;
+> +	unsigned long offset = 0UL;
+> +
+> +	if (current->flags & PF_RANDOMIZE) {
+> +		offset = get_random_int();
+> +		offset = offset << PAGE_SHIFT;
+
+    Why not:
+
+		offset <<= PAGE_SHIFT;
+
+> +		if (TASK_IS_32BIT_ADDR)
+> +			offset &= 0xfffffful;
+> +		else
+> +			offset &= 0xffffffful;
+> +	}
+> +
+> +	return (STACK_TOP + offset);
+
+    Parens not needed.
+
+WBR, Sergei

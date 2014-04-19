@@ -1,28 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2014 17:39:12 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54088 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816414AbaDSPjKRlprl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Apr 2014 17:39:10 +0200
-Date:   Sat, 19 Apr 2014 16:39:10 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: Malta: support powering down
-In-Reply-To: <1395415232-42288-2-git-send-email-paul.burton@imgtec.com>
-Message-ID: <alpine.LFD.2.11.1404191624180.11598@eddie.linux-mips.org>
-References: <1395415232-42288-1-git-send-email-paul.burton@imgtec.com> <1395415232-42288-2-git-send-email-paul.burton@imgtec.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2014 00:56:32 +0200 (CEST)
+Received: from mail-ig0-f182.google.com ([209.85.213.182]:46553 "EHLO
+        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816671AbaDSW43vl11o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 20 Apr 2014 00:56:29 +0200
+Received: by mail-ig0-f182.google.com with SMTP id uy17so666349igb.3
+        for <linux-mips@linux-mips.org>; Sat, 19 Apr 2014 15:56:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:subject:references
+         :in-reply-to:content-type:content-transfer-encoding;
+        bh=aoEf6lxtlBP2YZvFtj8Y+D9mvk6rlSHzlnRXBxOSSlw=;
+        b=GZRJbB4VhqVIK7+Iq26EQKoDE1ZdFPKsdJN9AMLTrFkF60aP8RgPBPDP5flTeAHHVV
+         mlnA6dkFzsdYMynajuAWgDY0lWVMogE/VyzpFYNnA+17zISXvTZFLKt59V+JYMEuuB0P
+         ktNNmw8J2M/7Isbb/aucb2yAIPsQJi9ulSWWU52BCr+TnERkll7ylhXKhHwNeSE+v+RC
+         44Pswewd7thJPSNQIwwyVSscmLD0sYhVOZkxh+9oQxjwtaWUhPCgRAf08ccAiJX753OZ
+         Au3CuGytxKhU/A5UW0Z7W3SYwPe51GDwT8OEeSTIQiuUKAfof7oDerOw0znL126FBJQa
+         eVyQ==
+X-Received: by 10.50.22.37 with SMTP id a5mr12911949igf.30.1397948183359;
+        Sat, 19 Apr 2014 15:56:23 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id kr5sm8245489igb.9.2014.04.19.15.56.22
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Sat, 19 Apr 2014 15:56:22 -0700 (PDT)
+Message-ID: <5352FF15.2080003@gmail.com>
+Date:   Sat, 19 Apr 2014 15:56:21 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     Prem Karat <pkarat@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: [RFC PATCH 1/1] MIPS: Enable VDSO randomization.
+References: <20140419093302.GH2717@064904.mvista.com>
+In-Reply-To: <20140419093302.GH2717@064904.mvista.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39866
+X-archive-position: 39868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,99 +55,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 21 Mar 2014, Paul Burton wrote:
+On 04/19/2014 02:33 AM, Prem Karat wrote:
+> Based on commit 1091458d09e1a (mmap randomization)
+>
+> For 32-bit address spaces randomize within a
+> 16MB space, for 64-bit within a 256MB space.
+>
 
-> This patch makes the mips_machine_halt function (used as _machine_halt &
-> pm_power_off) actually power down the Malta via the PIIX4. It may then
-> be powered back up by pressing the "ON/NMI" button (S4) on the board.
-> 
-> Tested-by: James Hogan <james.hogan@imgtec.com>
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+How was it tested (i.e. what workload did you run to verify that the 
+kernel still functions with this change)?
+
+> Signed-off-by: Prem Karat <pkarat@mvista.com>
 > ---
-[...]
-> diff --git a/arch/mips/mti-malta/malta-reset.c b/arch/mips/mti-malta/malta-reset.c
-> index d627d4b..ef04c8b 100644
-> --- a/arch/mips/mti-malta/malta-reset.c
-> +++ b/arch/mips/mti-malta/malta-reset.c
-> @@ -24,10 +27,72 @@ static void mips_machine_restart(char *command)
->  
->  static void mips_machine_halt(void)
->  {
-
- First of all, shouldn't all of this stuff be wired into 
-mips_machine_power_off rather than mips_machine_halt?  I would have 
-thought mips_machine_halt is supposed to get back to the console monitor 
-prompt (YAMON in this case) without restarting or powering off the system, 
-and if that's impossible, then loop indefinitely (that's the -H vs -P 
-action option to shutdown(8); see the details in the manual).
-
-> -	unsigned int __iomem *softres_reg =
-> -		ioremap(SOFTRES_REG, sizeof(unsigned int));
-> +	struct pci_bus *bus;
-> +	struct pci_dev *dev;
-> +	int spec_devid, res;
-> +	int io_region = PCI_BRIDGE_RESOURCES;
-> +	resource_size_t io;
-> +	u16 sts;
->  
-> -	__raw_writel(GORESET, softres_reg);
-> +	/* Find the PIIX4 PM device */
-> +	dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
-> +			     PCI_DEVICE_ID_INTEL_82371AB_3, PCI_ANY_ID,
-> +			     PCI_ANY_ID, NULL);
-> +	if (!dev) {
-> +		printk("Failed to find PIIX4 PM\n");
-> +		goto fail;
+>   arch/mips/kernel/vdso.c |   15 ++++++++++++++-
+>   1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+> index 0f1af58..b49c705 100644
+> --- a/arch/mips/kernel/vdso.c
+> +++ b/arch/mips/kernel/vdso.c
+> @@ -16,9 +16,11 @@
+>   #include <linux/elf.h>
+>   #include <linux/vmalloc.h>
+>   #include <linux/unistd.h>
+> +#include <linux/random.h>
+>
+>   #include <asm/vdso.h>
+>   #include <asm/uasm.h>
+> +#include <asm/processor.h>
+>
+>   /*
+>    * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
+> @@ -67,7 +69,18 @@ subsys_initcall(init_vdso);
+>
+>   static unsigned long vdso_addr(unsigned long start)
+>   {
+> -	return STACK_TOP;
+> +	unsigned long offset = 0UL;
+> +
+> +	if (current->flags & PF_RANDOMIZE) {
+> +		offset = get_random_int();
+> +		offset = offset << PAGE_SHIFT;
+> +		if (TASK_IS_32BIT_ADDR)
+> +			offset &= 0xfffffful;
+> +		else
+> +			offset &= 0xffffffful;
 > +	}
 > +
-> +	/* Request access to the PIIX4 PM IO registers */
-> +	res = pci_request_region(dev, io_region, "PIIX4 PM IO registers");
-> +	if (res) {
-> +		printk("Failed to request PIIX4 PM IO registers (%d)\n", res);
-> +		goto fail_dev_put;
-> +	}
+> +	return (STACK_TOP + offset);
 
- Shouldn't the handle on the device and the resource be requested early 
-on, where mips_machine_halt (mips_machine_power_off) is installed as the 
-halt (power-off) handler?  Especially requesting the resource here seems 
-to make little sense to me -- we're about to kill the box, so why bother 
-verifying whether it's going to interfere with a random driver?
+How can you be sure this address doesn't collide with, or otherwise 
+interfere with, the stack?
 
-> +
-> +	/* Find the offset to the PIIX4 PM IO registers */
-> +	io = pci_resource_start(dev, io_region);
-> +
-> +	/* Ensure the power button status is clear */
-> +	while (1) {
-> +		sts = inw(io + PIIX4_FUNC3IO_PMSTS);
-> +		if (!(sts & PIIX4_FUNC3IO_PMSTS_PWRBTN_STS))
-> +			break;
-> +		outw(sts, io + PIIX4_FUNC3IO_PMSTS);
-> +	}
-> +
-> +	/* Enable entry to suspend */
-> +	outw(PIIX4_FUNC3IO_PMCNTRL_SUS_EN, io + PIIX4_FUNC3IO_PMCNTRL);
-> +
-> +	/* If the special cycle occurs too soon this doesn't work... */
-> +	mdelay(10);
-> +
-> +	/* Find a reference to the PCI bus */
-> +	bus = pci_find_next_bus(NULL);
-> +	if (!bus) {
-> +		printk("Failed to find PCI bus\n");
-> +		goto fail_release_region;
-> +	}
-> +
-> +	/*
-> +	 * The PIIX4 will enter the suspend state only after seeing a special
-> +	 * cycle with the correct magic data on the PCI bus. Generate that
-> +	 * cycle now.
-> +	 */
-> +	spec_devid = PCI_DEVID(0, PCI_DEVFN(0x1f, 0x7));
-> +	pci_bus_write_config_dword(bus, spec_devid, 0, PIIX4_SUSPEND_MAGIC);
 
- I know all the three of the GT-64120/64120A, Bonito and SOC-it system 
-controllers support software generation of PCI special cycles, but is the 
-method the same across them all?
+Also, as mentioned by Sergei, run checkpatch.pl to catch obvious 
+stylistic problems before submitting patches.
 
-  Maciej
+Thanks,
+David Daney
+
+>   }
+>
+>   int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+>

@@ -1,47 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2014 01:23:26 +0200 (CEST)
-Received: from qmta14.westchester.pa.mail.comcast.net ([76.96.59.212]:43056
-        "EHLO qmta14.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818667AbaDSXXQIPurV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 20 Apr 2014 01:23:16 +0200
-Received: from omta04.westchester.pa.mail.comcast.net ([76.96.62.35])
-        by qmta14.westchester.pa.mail.comcast.net with comcast
-        id ryi21n0080ldTLk5EzP8kL; Sat, 19 Apr 2014 23:23:08 +0000
-Received: from [192.168.1.13] ([50.190.84.14])
-        by omta04.westchester.pa.mail.comcast.net with comcast
-        id rzP81n00J0JZ7Re01zP8r7; Sat, 19 Apr 2014 23:23:08 +0000
-Message-ID: <53530544.3010308@gentoo.org>
-Date:   Sat, 19 Apr 2014 19:22:44 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] RTC: rtc-cmos: drivers/char/rtc.c features for DECstation
- support
-References: <alpine.LFD.2.11.1404192224250.11598@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1404192224250.11598@eddie.linux-mips.org>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1397949788;
-        bh=OXuLKeT8cY/HSjdASHcCKALPV8//RvDc3hslRlH1Z44=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=Aa6eL3eDslp/w1DToLDSiTC5L7x3m/+9wIQE4wtK6cFhKhPb0gux4KDfmHIfSbxrN
-         t2Ac8GG29pLBDO1yg7udjhuv75vatGR5mnZW5nFuUki5Liepwxzn0UR372RoNBa6V+
-         0uDlewzGBu/nrQDNTE1gAmln64BQP+RFHUY8Wb28VWpgDBxqEuLY5N2EB9wgzj5DHc
-         GYnvQgAhsChV3Ta3tPquaMGuO8yVf59SaL/Ulh/6nIPOHN+V2CtwhmVOSTDta9TOvW
-         rzQy8hXSpfu2ET+vbsy3X5z2x4HIjEzXNahlQegA8IEL4LLveEHpFMstrtd0M2w6kC
-         2Bgyhf+XEhLMg==
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2014 04:26:58 +0200 (CEST)
+Received: from g2t2353.austin.hp.com ([15.217.128.52]:1055 "EHLO
+        g2t2353.austin.hp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6815860AbaDTC0zsUjhd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 20 Apr 2014 04:26:55 +0200
+Received: from g2t2360.austin.hp.com (g2t2360.austin.hp.com [16.197.8.247])
+        by g2t2353.austin.hp.com (Postfix) with ESMTP id 41150312;
+        Sun, 20 Apr 2014 02:26:48 +0000 (UTC)
+Received: from buesod1.americas.hpqcorp.net.net (unknown [16.212.160.186])
+        by g2t2360.austin.hp.com (Postfix) with ESMTP id F3E9946;
+        Sun, 20 Apr 2014 02:26:46 +0000 (UTC)
+From:   Davidlohr Bueso <davidlohr@hp.com>
+To:     akpm@linux-foundation.org
+Cc:     zeus@gnu.org, aswin@hp.com, davidlohr@hp.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: [PATCH 3/6] mips: call find_vma with the mmap_sem held
+Date:   Sat, 19 Apr 2014 19:26:28 -0700
+Message-Id: <1397960791-16320-4-git-send-email-davidlohr@hp.com>
+X-Mailer: git-send-email 1.8.1.4
+In-Reply-To: <1397960791-16320-1-git-send-email-davidlohr@hp.com>
+References: <1397960791-16320-1-git-send-email-davidlohr@hp.com>
+Return-Path: <davidlohr@hp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39871
+X-archive-position: 39872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: davidlohr@hp.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,34 +41,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/19/2014 18:58, Maciej W. Rozycki wrote:
-> This brings in drivers/char/rtc.c functionality required for DECstation 
-> and, should the maintainers decide to switch, Alpha systems to use 
-> rtc-cmos.
-> 
-> Specifically these features are made available:
-> 
-[snip]
-> * The ability to use the RTC periodic interrupt as a system clock device,
->   which is implemented by arch/mips/kernel/cevt-ds1287.c for DECstation 
->   systems and takes the RTC interrupt away from the RTC driver.  
->   Eventually hooking back to the clock device's interrupt handler should 
->   be possible for the purpose of the alarm clock and possibly also 
->   update-in-progress interrupt, but this is not done by this change.
+Performing vma lookups without taking the mm->mmap_sem is asking
+for trouble. While doing the search, the vma in question can be
+modified or even removed before returning to the caller. Take the
+lock (exclusively) in order to avoid races while iterating through
+the vmacache and/or rbtree.
 
-I had this implemented myself in the DS1685 driver I've still yet to send in
-(for SGI IP32).  But the upper-level RTC code for periodic and update
-interrupts was removed sometime between 2.6.39 and 3.0 and uses the kernel's
-hrtimers to replace it.  No idea if they'll ever re-add that code for RTC
-drivers that can use the hardware implementation instead.
+Updates two functions:
+  - process_fpemu_return()
+  - cteon_flush_cache_sigtramp()
 
+This patch is completely *untested*.
+
+Signed-off-by: Davidlohr Bueso <davidlohr@hp.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/kernel/traps.c | 2 ++
+ arch/mips/mm/c-octeon.c  | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 074e857..c51bd20 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -712,10 +712,12 @@ int process_fpemu_return(int sig, void __user *fault_addr)
+ 		si.si_addr = fault_addr;
+ 		si.si_signo = sig;
+ 		if (sig == SIGSEGV) {
++			down_read(&current->mm->mmap_sem);
+ 			if (find_vma(current->mm, (unsigned long)fault_addr))
+ 				si.si_code = SEGV_ACCERR;
+ 			else
+ 				si.si_code = SEGV_MAPERR;
++			up_read(&current->mm->mmap_sem);
+ 		} else {
+ 			si.si_code = BUS_ADRERR;
+ 		}
+diff --git a/arch/mips/mm/c-octeon.c b/arch/mips/mm/c-octeon.c
+index f41a5c5..05b1d7c 100644
+--- a/arch/mips/mm/c-octeon.c
++++ b/arch/mips/mm/c-octeon.c
+@@ -137,8 +137,10 @@ static void octeon_flush_cache_sigtramp(unsigned long addr)
+ {
+ 	struct vm_area_struct *vma;
+ 
++	down_read(&current->mm->mmap_sem);
+ 	vma = find_vma(current->mm, addr);
+ 	octeon_flush_icache_all_cores(vma);
++	up_read(&current->mm->mmap_sem);
+ }
+ 
+ 
 -- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And
-our lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+1.8.1.4

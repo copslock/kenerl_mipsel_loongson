@@ -1,42 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2014 11:00:07 +0200 (CEST)
-Received: from plane.gmane.org ([80.91.229.3]:48148 "EHLO plane.gmane.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6819447AbaDUJAFWcLLa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Apr 2014 11:00:05 +0200
-Received: from list by plane.gmane.org with local (Exim 4.69)
-        (envelope-from <sgi-linux-mips@m.gmane.org>)
-        id 1WcA56-0000Rq-BD
-        for linux-mips@linux-mips.org; Mon, 21 Apr 2014 11:00:04 +0200
-Received: from 94.199.121.226 ([94.199.121.226])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Mon, 21 Apr 2014 11:00:04 +0200
-Received: from holger by 94.199.121.226 with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Mon, 21 Apr 2014 11:00:04 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To:     linux-mips@linux-mips.org
-From:   Holger Freyther <holger@freyther.de>
-Subject: Re: [PATCH 0/2] Implement =?utf-8?b?cGVyZl9jYWxsY2hhaW5fdXNlcg==?=
-Date:   Mon, 21 Apr 2014 08:51:16 +0000 (UTC)
-Message-ID: <loom.20140421T105026-95@post.gmane.org>
-References: <1313022966-28152-1-git-send-email-zecke@selfish.org> <loom.20110822T193146-370@post.gmane.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: sea.gmane.org
-User-Agent: Loom/3.14 (http://gmane.org/)
-X-Loom-IP: 94.199.121.226 (Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36)
-Return-Path: <sgi-linux-mips@m.gmane.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2014 11:29:17 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:40600 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818667AbaDUJ3Ol0y67 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Apr 2014 11:29:14 +0200
+Received: from bl6-53-42.dsl.telepac.pt ([82.155.53.42] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1WcAXI-00033d-I9; Mon, 21 Apr 2014 09:29:12 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, Gleb Natapov <gleb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sanjay Lal <sanjayl@kymasys.com>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.11.y.z extended stable] Patch "MIPS: KVM: Pass reserved instruction exceptions to guest" has been added to staging queue
+Date:   Mon, 21 Apr 2014 10:29:11 +0100
+Message-Id: <1398072551-15456-1-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.11
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39875
+X-archive-position: 39876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: holger@freyther.de
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,12 +41,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Holger Freyther <zecke <at> selfish.org> writes:
+This is a note to let you know that I have just added a patch titled
 
+    MIPS: KVM: Pass reserved instruction exceptions to guest
 
-> 
-> Comments? Should this go somewhere else?
+to the linux-3.11.y-queue branch of the 3.11.y.z extended stable tree 
+which can be found at:
 
-looking at the latest kernel userspace backtrace support does
-not appear to be implemented for perf? Do you intend to support
-it anytime soon?
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.11.y-queue
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.11.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Luis
+
+------

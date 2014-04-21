@@ -1,53 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2014 23:29:58 +0200 (CEST)
-Received: from mail-out.m-online.net ([212.18.0.9]:59510 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815921AbaDUV3y5hKp3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Apr 2014 23:29:54 +0200
-Received: from frontend1.mail.m-online.net (unknown [192.168.8.180])
-        by mail-out.m-online.net (Postfix) with ESMTP id 3gCLf414v0z4KK36;
-        Mon, 21 Apr 2014 23:29:47 +0200 (CEST)
-X-Auth-Info: 4orBAbtNI5hwJA61HdUBhJQ/+k6wYLVxqnnl4tbppoA=
-Received: from chi.localnet (unknown [195.140.253.167])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2014 01:01:55 +0200 (CEST)
+Received: from sema.semaphore.gr ([78.46.194.137]:59996 "EHLO
+        sema.semaphore.gr" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6825887AbaDUXBtJlhsG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2014 01:01:49 +0200
+Received: from albert.lan (ppp079166063152.access.hol.gr [79.166.63.152])
+        (using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
-        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 3gCLf367qKzbbfT;
-        Mon, 21 Apr 2014 23:29:47 +0200 (CEST)
-From:   Marek Vasut <marex@denx.de>
-To:     Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH 0/5] defconfigs: add MTD_SPI_NOR (dependency for M25P80)
-Date:   Mon, 21 Apr 2014 16:52:39 +0200
-User-Agent: KMail/1.13.7 (Linux/3.13-trunk-amd64; KDE/4.11.3; x86_64; ; )
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        linux-mtd@lists.infradead.org,
-        Russell King <linux@arm.linux.org.uk>,
-        Shawn Guo <shawn.guo@freescale.com>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Olof Johansson <olof@lixom.net>,
-        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-        Steven Miao <realmz6@gmail.com>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-References: <1397719309-2022-1-git-send-email-computersforpeace@gmail.com> <20140417105302.GA32603@ulmo> <20140418063054.GK5512@norris-Latitude-E6410>
-In-Reply-To: <20140418063054.GK5512@norris-Latitude-E6410>
+        (Authenticated sender: stratosk)
+        by sema.semaphore.gr (Postfix) with ESMTPSA id AD4E082730;
+        Tue, 22 Apr 2014 01:01:43 +0200 (CEST)
+Message-ID: <5355A35A.5080001@semaphore.gr>
+Date:   Tue, 22 Apr 2014 02:01:46 +0300
+From:   Stratos Karafotis <stratosk@semaphore.gr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     John Crispin <blogic@openwrt.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Subject: [PATCH v4 4/8] mips: lemote 2f: Use cpufreq_for_each_entry macro
+ for iteration
+References: <534DB206.1080004@semaphore.gr>
+In-Reply-To: <534DB206.1080004@semaphore.gr>
+X-Forwarded-Message-Id: <534DB206.1080004@semaphore.gr>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Message-Id: <201404211652.39704.marex@denx.de>
-Return-Path: <marex@denx.de>
+Return-Path: <stratosk@semaphore.gr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39879
+X-archive-position: 39880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marex@denx.de
+X-original-sender: stratosk@semaphore.gr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,43 +50,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday, April 18, 2014 at 08:30:54 AM, Brian Norris wrote:
-> Hi,
-> 
-> On Thu, Apr 17, 2014 at 12:53:03PM +0200, Thierry Reding wrote:
-> > On Thu, Apr 17, 2014 at 12:21:44AM -0700, Brian Norris wrote:
-> > > We are introducing a new SPI-NOR library/framework for MTD, to support
-> > > various types of SPI-NOR flash controllers which require (or benefit
-> > > from) intimate knowledge of the flash interface, rather than just the
-> > > relatively dumb SPI interface. This library borrows much of the m25p80
-> > > driver for its abstraction and moves this code into a spi-nor module.
-> > 
-> > If this is a common library, then the more common approach to solve this
-> > would be to have each driver that uses it to select MTD_SPI_NOR rather
-> > than depend on it. That way you can drop this whole series to update the
-> > default configurations.
-> 
-> But does MTD_SPI_NOR (and drivers/mtd/spi-nor/) qualify as a "library"
-> or as a "subsystem"? I thought the latter were typically expected to be
-> user-selectable options, not automatically-"select"ed.
+The cpufreq core now supports the cpufreq_for_each_entry macro helper
+for iteration over the cpufreq_frequency_table, so use it.
 
-I agree the "subsystem" is user-selectable while the "library" is to be 
-'select'ed .
+It should have no functional changes.
 
-> I would say that, except for its age, MTD_SPI_NOR is very similar in to
-> MTD_NAND (driver/mtd/nand/), which I'd consider a kind of subsystem, and
-> which users must select before they are asked about drivers which fall
-> under its category.
-> 
-> Perhaps my usage of the word "library" in the description was a mistake,
-> as I don't exactly consider it like a library in the sense of many other
-> "select"ed libraries.
+Signed-off-by: Stratos Karafotis <stratosk@semaphore.gr>
+---
+ arch/mips/loongson/lemote-2f/clock.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-It did look like a library to me at first, but it's rather a subsystem that 
-contains a small library in it. Thus, I retract my previous comment about using 
-'select' and add :
+diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
+index e1f427f..1eed38e 100644
+--- a/arch/mips/loongson/lemote-2f/clock.c
++++ b/arch/mips/loongson/lemote-2f/clock.c
+@@ -91,9 +91,9 @@ EXPORT_SYMBOL(clk_put);
 
-Acked-by: Marek Vasut <marex@denx.de>
+ int clk_set_rate(struct clk *clk, unsigned long rate)
+ {
++	struct cpufreq_frequency_table *pos;
+ 	int ret = 0;
+ 	int regval;
+-	int i;
 
-Best regards,
-Marek Vasut
+ 	if (likely(clk->ops && clk->ops->set_rate)) {
+ 		unsigned long flags;
+@@ -106,22 +106,16 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+ 	if (unlikely(clk->flags & CLK_RATE_PROPAGATES))
+ 		propagate_rate(clk);
+
+-	for (i = 0; loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END;
+-	     i++) {
+-		if (loongson2_clockmod_table[i].frequency ==
+-		    CPUFREQ_ENTRY_INVALID)
+-			continue;
+-		if (rate == loongson2_clockmod_table[i].frequency)
++	cpufreq_for_each_valid_entry(pos, loongson2_clockmod_table)
++		if (rate == pos->frequency)
+ 			break;
+-	}
+-	if (rate != loongson2_clockmod_table[i].frequency)
++	if (rate != pos->frequency)
+ 		return -ENOTSUPP;
+
+ 	clk->rate = rate;
+
+ 	regval = LOONGSON_CHIPCFG0;
+-	regval = (regval & ~0x7) |
+-		(loongson2_clockmod_table[i].driver_data - 1);
++	regval = (regval & ~0x7) | (pos->driver_data - 1);
+ 	LOONGSON_CHIPCFG0 = regval;
+
+ 	return ret;
+-- 
+1.9.0

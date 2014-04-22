@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2014 22:46:51 +0200 (CEST)
-Received: from smtp-out-121.synserver.de ([212.40.185.121]:1117 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2014 22:47:12 +0200 (CEST)
+Received: from smtp-out-121.synserver.de ([212.40.185.121]:1110 "EHLO
         smtp-out-072.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6834667AbaDVUqtCdWu- (ORCPT
+        by eddie.linux-mips.org with ESMTP id S6834671AbaDVUqt38Ihm (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2014 22:46:49 +0200
-Received: (qmail 18475 invoked by uid 0); 22 Apr 2014 20:46:43 -0000
+Received: (qmail 18515 invoked by uid 0); 22 Apr 2014 20:46:44 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@metafoo.de
 X-SynServer-PPID: 18380
 Received: from ppp-188-174-45-35.dynamic.mnet-online.de (HELO lars-adi-laptop.fritz.box) [188.174.45.35]
-  by 217.119.54.96 with SMTP; 22 Apr 2014 20:46:43 -0000
+  by 217.119.54.96 with SMTP; 22 Apr 2014 20:46:44 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Mark Brown <broonie@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 1/6] ASoC: jz4740: Remove Makefile entry for removed file
-Date:   Tue, 22 Apr 2014 22:46:31 +0200
-Message-Id: <1398199596-23649-1-git-send-email-lars@metafoo.de>
+Subject: [PATCH 2/6] ASoC: qi_lb60: Set fully_routed flag
+Date:   Tue, 22 Apr 2014 22:46:32 +0200
+Message-Id: <1398199596-23649-2-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.8.0
+In-Reply-To: <1398199596-23649-1-git-send-email-lars@metafoo.de>
+References: <1398199596-23649-1-git-send-email-lars@metafoo.de>
 Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39891
+X-archive-position: 39892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,31 +42,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 0406a40a0 ("ASoC: jz4740: Use the generic dmaengine PCM driver")
-jz4740-pcm.c file, but neglected to remove the Makefile entries.
+The routes for this sound card are fully specified, so set the fully_routed
+flag. This allows us to remove the manual snd_soc_dapm_nc_pin() calls.
 
-Fixes: 0406a40a0 ("ASoC: jz4740: Use the generic dmaengine PCM driver")
-Reported-by: kbuild test robot <fengguang.wu@intel.com>
-Reported-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 ---
- sound/soc/jz4740/Makefile | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/jz4740/qi_lb60.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/sound/soc/jz4740/Makefile b/sound/soc/jz4740/Makefile
-index be873c1..d32c540 100644
---- a/sound/soc/jz4740/Makefile
-+++ b/sound/soc/jz4740/Makefile
-@@ -1,10 +1,8 @@
- #
- # Jz4740 Platform Support
- #
--snd-soc-jz4740-objs := jz4740-pcm.o
- snd-soc-jz4740-i2s-objs := jz4740-i2s.o
+diff --git a/sound/soc/jz4740/qi_lb60.c b/sound/soc/jz4740/qi_lb60.c
+index 82b5f37..8dd3568 100644
+--- a/sound/soc/jz4740/qi_lb60.c
++++ b/sound/soc/jz4740/qi_lb60.c
+@@ -57,9 +57,6 @@ static int qi_lb60_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 	struct snd_soc_dapm_context *dapm = &codec->dapm;
+ 	int ret;
  
--obj-$(CONFIG_SND_JZ4740_SOC) += snd-soc-jz4740.o
- obj-$(CONFIG_SND_JZ4740_SOC_I2S) += snd-soc-jz4740-i2s.o
+-	snd_soc_dapm_nc_pin(dapm, "LIN");
+-	snd_soc_dapm_nc_pin(dapm, "RIN");
+-
+ 	ret = snd_soc_dai_set_fmt(cpu_dai, QI_LB60_DAIFMT);
+ 	if (ret < 0) {
+ 		dev_err(codec->dev, "Failed to set cpu dai format: %d\n", ret);
+@@ -89,6 +86,7 @@ static struct snd_soc_card qi_lb60 = {
+ 	.num_dapm_widgets = ARRAY_SIZE(qi_lb60_widgets),
+ 	.dapm_routes = qi_lb60_routes,
+ 	.num_dapm_routes = ARRAY_SIZE(qi_lb60_routes),
++	.fully_routed = true,
+ };
  
- # Jz4740 Machine Support
+ static const struct gpio qi_lb60_gpios[] = {
 -- 
 1.8.0

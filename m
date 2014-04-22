@@ -1,42 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2014 22:19:56 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:50656 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834661AbaDVUTq1n1br (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2014 22:19:46 +0200
-Received: from c-67-160-228-185.hsd1.ca.comcast.net ([67.160.228.185] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <kamal@canonical.com>)
-        id 1Wch5y-000590-GT; Tue, 22 Apr 2014 20:15:10 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1Wch5w-0003VS-Ir; Tue, 22 Apr 2014 13:15:08 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Huacai Chen <chenhc@lemote.com>, John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.8 106/133] MIPS: Hibernate: Flush TLB entries in swsusp_arch_resume()
-Date:   Tue, 22 Apr 2014 13:14:04 -0700
-Message-Id: <1398197671-12786-107-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1398197671-12786-1-git-send-email-kamal@canonical.com>
-References: <1398197671-12786-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.8
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2014 22:46:51 +0200 (CEST)
+Received: from smtp-out-121.synserver.de ([212.40.185.121]:1117 "EHLO
+        smtp-out-072.synserver.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6834667AbaDVUqtCdWu- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2014 22:46:49 +0200
+Received: (qmail 18475 invoked by uid 0); 22 Apr 2014 20:46:43 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 18380
+Received: from ppp-188-174-45-35.dynamic.mnet-online.de (HELO lars-adi-laptop.fritz.box) [188.174.45.35]
+  by 217.119.54.96 with SMTP; 22 Apr 2014 20:46:43 -0000
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 1/6] ASoC: jz4740: Remove Makefile entry for removed file
+Date:   Tue, 22 Apr 2014 22:46:31 +0200
+Message-Id: <1398199596-23649-1-git-send-email-lars@metafoo.de>
+X-Mailer: git-send-email 1.8.0
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39890
+X-archive-position: 39891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,50 +40,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.8.13.22 -stable review patch.  If anyone has any objections, please let me know.
+Commit 0406a40a0 ("ASoC: jz4740: Use the generic dmaengine PCM driver")
+jz4740-pcm.c file, but neglected to remove the Makefile entries.
 
-------------------
-
-From: Huacai Chen <chenhc@lemote.com>
-
-commit c14af233fbe279d0e561ecf84f1208b1bae087ef upstream.
-
-The original MIPS hibernate code flushes cache and TLB entries in
-swsusp_arch_resume(). But they are removed in Commit 44eeab67416711
-(MIPS: Hibernation: Remove SMP TLB and cacheflushing code.). A cross-
-CPU flush is surely unnecessary because all but the local CPU have
-already been disabled. But a local flush (at least the TLB flush) is
-needed. When we do hibernation on Loongson-3 with an E1000E NIC, it is
-very easy to produce a kernel panic (kernel page fault, or unaligned
-access). The root cause is E1000E driver use vzalloc_node() to allocate
-pages, the stale TLB entries of the booting kernel will be misused by
-the resumed target kernel.
-
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/6643/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+Fixes: 0406a40a0 ("ASoC: jz4740: Use the generic dmaengine PCM driver")
+Reported-by: kbuild test robot <fengguang.wu@intel.com>
+Reported-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 ---
- arch/mips/power/hibernate.S | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/jz4740/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-index 61e2558..63bc9e5 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -43,6 +43,7 @@ LEAF(swsusp_arch_resume)
- 	bne t1, t3, 1b
- 	PTR_L t0, PBE_NEXT(t0)
- 	bnez t0, 0b
-+	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
- 	PTR_LA t0, saved_regs
- 	PTR_L ra, PT_R31(t0)
- 	PTR_L sp, PT_R29(t0)
+diff --git a/sound/soc/jz4740/Makefile b/sound/soc/jz4740/Makefile
+index be873c1..d32c540 100644
+--- a/sound/soc/jz4740/Makefile
++++ b/sound/soc/jz4740/Makefile
+@@ -1,10 +1,8 @@
+ #
+ # Jz4740 Platform Support
+ #
+-snd-soc-jz4740-objs := jz4740-pcm.o
+ snd-soc-jz4740-i2s-objs := jz4740-i2s.o
+ 
+-obj-$(CONFIG_SND_JZ4740_SOC) += snd-soc-jz4740.o
+ obj-$(CONFIG_SND_JZ4740_SOC_I2S) += snd-soc-jz4740-i2s.o
+ 
+ # Jz4740 Machine Support
 -- 
-1.9.1
+1.8.0

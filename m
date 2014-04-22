@@ -1,52 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2014 15:26:36 +0200 (CEST)
-Received: from mail-ee0-f46.google.com ([74.125.83.46]:50711 "EHLO
-        mail-ee0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817913AbaDVN0PlFd1- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2014 15:26:15 +0200
-Received: by mail-ee0-f46.google.com with SMTP id t10so4635867eei.19
-        for <multiple recipients>; Tue, 22 Apr 2014 06:26:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=usdcjit+jb2omBcHZIXY4GH1gZy7ynnc8LjxvnDtApo=;
-        b=kHs/wj2mvkiOlhV3TJmf0G50bJF7BRhrb+OP62m2/HLLxAXheYDZwb89hHHyb8Nq1i
-         9iFKz0XZF/t4czyVxF6CVo7Dw9QQrO0k09dXIEJbXj409kQxVknYz1DbeWNSAcUAwx9t
-         YAgw3FfVitpswWADMZVwV1LX5UdRhoB1HXOLIzYUNYnbZYmuFrLMdnh9/DK9DRYc927d
-         JRdfz9ChNAMZobcEXO5rcYugRnhc90DrZyQwFhuQiUdqAs3ZtSPKt2EgpAIBSyWbImTV
-         rcWt0AtxsUVa2/URqLviq5Eg2/h3na/J/vtoLlSGgvReR5lsRoV8FswbfvW8swx4qXOo
-         Pp8w==
-X-Received: by 10.14.211.66 with SMTP id v42mr55456337eeo.31.1398173163261;
-        Tue, 22 Apr 2014 06:26:03 -0700 (PDT)
-Received: from alberich ([2.171.76.237])
-        by mx.google.com with ESMTPSA id a4sm113053405eep.12.2014.04.22.06.26.01
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 22 Apr 2014 06:26:02 -0700 (PDT)
-Date:   Tue, 22 Apr 2014 15:25:59 +0200
-From:   Andreas Herrmann <herrmann.der.user@googlemail.com>
-To:     Davidlohr Bueso <davidlohr@hp.com>
-Cc:     akpm@linux-foundation.org, zeus@gnu.org, aswin@hp.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/6] mips: call find_vma with the mmap_sem held
-Message-ID: <20140422132559.GD10997@alberich>
-References: <1397960791-16320-1-git-send-email-davidlohr@hp.com>
- <1397960791-16320-4-git-send-email-davidlohr@hp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2014 16:42:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.89.28.114]:50839 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817074AbaDVOmHhfZ5o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2014 16:42:07 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 5ABB121133E1A;
+        Tue, 22 Apr 2014 15:41:57 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Tue, 22 Apr 2014 15:42:00 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.57) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.174.1; Tue, 22 Apr 2014 15:41:59 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Eric Paris <eparis@redhat.com>, Paul Moore <pmoore@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.15] MIPS: Add new AUDIT_ARCH token for the N32 ABI on MIPS64
+Date:   Tue, 22 Apr 2014 15:40:36 +0100
+Message-ID: <1398177636-10442-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.9.2
+In-Reply-To: <1397550996-14805-1-git-send-email-markos.chandras@imgtec.com>
+References: <1397550996-14805-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1397960791-16320-4-git-send-email-davidlohr@hp.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <herrmann.der.user@googlemail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.57]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39888
+X-archive-position: 39889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: herrmann.der.user@googlemail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,68 +48,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Apr 19, 2014 at 07:26:28PM -0700, Davidlohr Bueso wrote:
-> Performing vma lookups without taking the mm->mmap_sem is asking
-> for trouble. While doing the search, the vma in question can be
-> modified or even removed before returning to the caller. Take the
-> lock (exclusively) in order to avoid races while iterating through
-> the vmacache and/or rbtree.
-> 
-> Updates two functions:
->   - process_fpemu_return()
->   - cteon_flush_cache_sigtramp()
-> 
-> This patch is completely *untested*.
-> 
-> Signed-off-by: Davidlohr Bueso <davidlohr@hp.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
+A MIPS64 kernel may support ELF files for all 3 MIPS ABIs
+(O32, N32, N64). Furthermore, the AUDIT_ARCH_MIPS{,EL}64 token
+does not provide enough information about the ABI for the 64-bit
+process. As a result of which, userland needs to use complex
+seccomp filters to decide whether a syscall belongs to the o32 or n32
+or n64 ABI. Therefore, a new arch token for MIPS64/n32 is added so it
+can be used by seccomp to explicitely set syscall filters for this ABI.
 
-Tested-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Link: http://sourceforge.net/p/libseccomp/mailman/message/32239040/
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Eric Paris <eparis@redhat.com>
+Cc: Paul Moore <pmoore@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+Ralf, can we please have this in 3.15 (Assuming it's ACK'd)?
 
+Thanks a lot!
+---
+ arch/mips/include/asm/syscall.h |  2 ++
+ include/uapi/linux/audit.h      | 12 ++++++++++++
+ 2 files changed, 14 insertions(+)
 
-Thanks,
-
-Andreas
-
-> ---
->  arch/mips/kernel/traps.c | 2 ++
->  arch/mips/mm/c-octeon.c  | 2 ++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index 074e857..c51bd20 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -712,10 +712,12 @@ int process_fpemu_return(int sig, void __user *fault_addr)
->  		si.si_addr = fault_addr;
->  		si.si_signo = sig;
->  		if (sig == SIGSEGV) {
-> +			down_read(&current->mm->mmap_sem);
->  			if (find_vma(current->mm, (unsigned long)fault_addr))
->  				si.si_code = SEGV_ACCERR;
->  			else
->  				si.si_code = SEGV_MAPERR;
-> +			up_read(&current->mm->mmap_sem);
->  		} else {
->  			si.si_code = BUS_ADRERR;
->  		}
-> diff --git a/arch/mips/mm/c-octeon.c b/arch/mips/mm/c-octeon.c
-> index f41a5c5..05b1d7c 100644
-> --- a/arch/mips/mm/c-octeon.c
-> +++ b/arch/mips/mm/c-octeon.c
-> @@ -137,8 +137,10 @@ static void octeon_flush_cache_sigtramp(unsigned long addr)
->  {
->  	struct vm_area_struct *vma;
->  
-> +	down_read(&current->mm->mmap_sem);
->  	vma = find_vma(current->mm, addr);
->  	octeon_flush_icache_all_cores(vma);
-> +	up_read(&current->mm->mmap_sem);
->  }
->  
->  
-> -- 
-> 1.8.1.4
-> 
-> 
+diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
+index c6e9cd2..17960fe 100644
+--- a/arch/mips/include/asm/syscall.h
++++ b/arch/mips/include/asm/syscall.h
+@@ -133,6 +133,8 @@ static inline int syscall_get_arch(void)
+ #ifdef CONFIG_64BIT
+ 	if (!test_thread_flag(TIF_32BIT_REGS))
+ 		arch |= __AUDIT_ARCH_64BIT;
++	if (test_thread_flag(TIF_32BIT_ADDR))
++		arch |= __AUDIT_ARCH_CONVENTION_MIPS64_N32;
+ #endif
+ #if defined(__LITTLE_ENDIAN)
+ 	arch |=  __AUDIT_ARCH_LE;
+diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
+index 11917f7..1b1efdd 100644
+--- a/include/uapi/linux/audit.h
++++ b/include/uapi/linux/audit.h
+@@ -331,9 +331,17 @@ enum {
+ #define AUDIT_FAIL_PRINTK	1
+ #define AUDIT_FAIL_PANIC	2
+ 
++/*
++ * These bits disambiguate different calling conventions that share an
++ * ELF machine type, bitness, and endianness
++ */
++#define __AUDIT_ARCH_CONVENTION_MASK 0x30000000
++#define __AUDIT_ARCH_CONVENTION_MIPS64_N32 0x20000000
++
+ /* distinguish syscall tables */
+ #define __AUDIT_ARCH_64BIT 0x80000000
+ #define __AUDIT_ARCH_LE	   0x40000000
++
+ #define AUDIT_ARCH_ALPHA	(EM_ALPHA|__AUDIT_ARCH_64BIT|__AUDIT_ARCH_LE)
+ #define AUDIT_ARCH_ARM		(EM_ARM|__AUDIT_ARCH_LE)
+ #define AUDIT_ARCH_ARMEB	(EM_ARM)
+@@ -346,7 +354,11 @@ enum {
+ #define AUDIT_ARCH_MIPS		(EM_MIPS)
+ #define AUDIT_ARCH_MIPSEL	(EM_MIPS|__AUDIT_ARCH_LE)
+ #define AUDIT_ARCH_MIPS64	(EM_MIPS|__AUDIT_ARCH_64BIT)
++#define AUDIT_ARCH_MIPS64N32	(EM_MIPS|__AUDIT_ARCH_64BIT|\
++				 __AUDIT_ARCH_CONVENTION_MIPS64_N32)
+ #define AUDIT_ARCH_MIPSEL64	(EM_MIPS|__AUDIT_ARCH_64BIT|__AUDIT_ARCH_LE)
++#define AUDIT_ARCH_MIPSEL64N32	(EM_MIPS|__AUDIT_ARCH_64BIT|__AUDIT_ARCH_LE\
++				 __AUDIT_ARCH_CONVENTION_MIPS64_N32)
+ #define AUDIT_ARCH_OPENRISC	(EM_OPENRISC)
+ #define AUDIT_ARCH_PARISC	(EM_PARISC)
+ #define AUDIT_ARCH_PARISC64	(EM_PARISC|__AUDIT_ARCH_64BIT)
+-- 
+1.9.2

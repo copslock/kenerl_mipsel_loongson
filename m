@@ -1,49 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2014 13:34:37 +0200 (CEST)
-Received: from mail-ob0-f171.google.com ([209.85.214.171]:52531 "EHLO
-        mail-ob0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819447AbaDWLeej0dy1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Apr 2014 13:34:34 +0200
-Received: by mail-ob0-f171.google.com with SMTP id uy5so862360obc.16
-        for <linux-mips@linux-mips.org>; Wed, 23 Apr 2014 04:34:28 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2014 13:40:27 +0200 (CEST)
+Received: from mail-oa0-f49.google.com ([209.85.219.49]:56955 "EHLO
+        mail-oa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819447AbaDWLkYRLcDe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Apr 2014 13:40:24 +0200
+Received: by mail-oa0-f49.google.com with SMTP id o6so854275oag.36
+        for <linux-mips@linux-mips.org>; Wed, 23 Apr 2014 04:40:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=TGRGrLeLCXlbiQgCvtThQ9FnWi2XiUuQfv6jfd/9UDk=;
-        b=PflDYmH0TL6c2exv2bibJMa1JsTppeCvVl5Vf5ziucCXX6Qfe2gl11afoNui9beXKW
-         3D6MGt/ojOATU7KPGT/qsmGcTu8w77xPKxWlwz1DAigW6ooRlXCkqgQUXCExyvkPgDN+
-         UzU2k6xxMPQO0yajNGnvMtXFQPHuA1fUNESJm6nxhgoMW29ekcgf43tL5abyhrFDbUo0
-         lIHuixSpg3cdYrvCVWr6Xp7RMvcdkTD9O2UBkm+LP56Z3lmXHPh/boIyc6OqPEoSu2rr
-         41jhLThr9fqrw4gRzYResYwCuDNo76CqDUYekvCGP05ufZdnLJLNMLfzhyjVeR2fREVe
-         e4uw==
-X-Gm-Message-State: ALoCoQkVmhRywZnIM7uOP40C/DQA8rA+C3VHHjSp4LNpqYKWwEvr9+LDctFTyvGAsvwcPBKb0SQl
+        bh=lwcWICQ9q/8CuOrhGjwJd8k7fotcD3hI1QPtKdpRkMI=;
+        b=fi4KCVUzUDjPNrM56hWjfd1SaECM3nrbjZpdajXUB6RxuQ1iX8sXCOgNaMnrQIZHUo
+         rUGYYZeoJ6USWojngGSGAWaSnhsL5o3r5+yHloqRO2FCRI70eSAxTzskbVVy5KaDfJgA
+         OkqXzyyhnTw9T7KsxLCuW1XdOctWKckITvuPehUvlqW8Adtrqol/QgEPvC8/gGHx5g/A
+         W8WsbEDkHItLMS8/h/Rtat+2HjflaTHQE7BwQDBA3QnPA34zSvx17STetqfJKPeuKBED
+         QiZkw05N/Zv9ERHGQpIavaG+8EXTxwRlq+CH6v+FtHUm+4LSukVJL+FhvnrXIWz/KmtB
+         OBiQ==
+X-Gm-Message-State: ALoCoQnd2PYAV0xG3FGvBPV7KeOPFcHHNNRK9focBCC9IyDEqLovijp7YDc/o+6ClrM2m6AFOMJT
 MIME-Version: 1.0
-X-Received: by 10.60.92.170 with SMTP id cn10mr338937oeb.76.1398252868188;
- Wed, 23 Apr 2014 04:34:28 -0700 (PDT)
-Received: by 10.76.124.165 with HTTP; Wed, 23 Apr 2014 04:34:28 -0700 (PDT)
+X-Received: by 10.182.126.137 with SMTP id my9mr1443042obb.61.1398253216006;
+ Wed, 23 Apr 2014 04:40:16 -0700 (PDT)
+Received: by 10.76.124.165 with HTTP; Wed, 23 Apr 2014 04:40:15 -0700 (PDT)
 X-Originating-IP: [217.156.156.35]
-In-Reply-To: <CAMuHMdU75HO=JUgb_wm7OCXDEEUL_=GGjkTMy0WzA+VyFuKa=g@mail.gmail.com>
-References: <1398251857-16290-1-git-send-email-james.hogan@imgtec.com>
-        <CAMuHMdU75HO=JUgb_wm7OCXDEEUL_=GGjkTMy0WzA+VyFuKa=g@mail.gmail.com>
-Date:   Wed, 23 Apr 2014 12:34:28 +0100
-X-Google-Sender-Auth: k3Y1AcC8MTb9JLQcOIJWBMA37j8
-Message-ID: <CAAG0J99-KD95L5fZzZ0Dpi5y9spsK=p85MKBUWZWaOg_hMnOng@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Wire up renameat2 syscall
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Markos Chandras <markos.chandras@imgtec.com>
+In-Reply-To: <1397211951-20549-8-git-send-email-miklos@szeredi.hu>
+References: <1397211951-20549-1-git-send-email-miklos@szeredi.hu>
+        <1397211951-20549-8-git-send-email-miklos@szeredi.hu>
+Date:   Wed, 23 Apr 2014 12:40:15 +0100
+Message-ID: <CAAG0J9-jgw5FVrOnqnTwVdK8XxbTZx6X2zvjWXjXiELeEuFQ9w@mail.gmail.com>
+Subject: Re: [PATCH 07/15] mips: add renameat2 syscall
+From:   James Hogan <james@albanarts.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     linux-arch@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Miklos Szeredi <mszeredi@suse.cz>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <james@albanarts.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39910
+X-archive-position: 39911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: james@albanarts.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,17 +55,139 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Geert,
+(cc'ing linux-mips list)
 
-On 23 April 2014 12:25, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Wed, Apr 23, 2014 at 1:17 PM, James Hogan <james.hogan@imgtec.com> wrote:
->> Wire up for MIPS the new renameat2 system call added in commit
->> 520c8b165052 (vfs: add renameat2 syscall) merged in v3.15-rc1.
+On 11 April 2014 11:25, Miklos Szeredi <miklos@szeredi.hu> wrote:
+> From: Miklos Szeredi <mszeredi@suse.cz>
 >
-> Miklos already wired this up for all architectures, cfr. the MIPS version
-> sent to lkml and linux-arch: https://lkml.org/lkml/2014/4/11/196
+> Signed-off-by: Miklos Szeredi <mszeredi@suse.cz>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
 
-Ah yes, I missed that!
+Identical to the patch I just sent to linux-mips, so:
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
-Thanks
+Cheers
 James
+
+> ---
+>  arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
+>  arch/mips/kernel/scall32-o32.S      |  1 +
+>  arch/mips/kernel/scall64-64.S       |  1 +
+>  arch/mips/kernel/scall64-n32.S      |  1 +
+>  arch/mips/kernel/scall64-o32.S      |  1 +
+>  5 files changed, 13 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+> index d6e154a9e6a5..5805414777e0 100644
+> --- a/arch/mips/include/uapi/asm/unistd.h
+> +++ b/arch/mips/include/uapi/asm/unistd.h
+> @@ -371,16 +371,17 @@
+>  #define __NR_finit_module              (__NR_Linux + 348)
+>  #define __NR_sched_setattr             (__NR_Linux + 349)
+>  #define __NR_sched_getattr             (__NR_Linux + 350)
+> +#define __NR_renameat2                 (__NR_Linux + 351)
+>
+>  /*
+>   * Offset of the last Linux o32 flavoured syscall
+>   */
+> -#define __NR_Linux_syscalls            350
+> +#define __NR_Linux_syscalls            351
+>
+>  #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+>
+>  #define __NR_O32_Linux                 4000
+> -#define __NR_O32_Linux_syscalls                350
+> +#define __NR_O32_Linux_syscalls                351
+>
+>  #if _MIPS_SIM == _MIPS_SIM_ABI64
+>
+> @@ -699,16 +700,17 @@
+>  #define __NR_getdents64                        (__NR_Linux + 308)
+>  #define __NR_sched_setattr             (__NR_Linux + 309)
+>  #define __NR_sched_getattr             (__NR_Linux + 310)
+> +#define __NR_renameat2                 (__NR_Linux + 311)
+>
+>  /*
+>   * Offset of the last Linux 64-bit flavoured syscall
+>   */
+> -#define __NR_Linux_syscalls            310
+> +#define __NR_Linux_syscalls            311
+>
+>  #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+>
+>  #define __NR_64_Linux                  5000
+> -#define __NR_64_Linux_syscalls         310
+> +#define __NR_64_Linux_syscalls         311
+>
+>  #if _MIPS_SIM == _MIPS_SIM_NABI32
+>
+> @@ -1031,15 +1033,16 @@
+>  #define __NR_finit_module              (__NR_Linux + 312)
+>  #define __NR_sched_setattr             (__NR_Linux + 313)
+>  #define __NR_sched_getattr             (__NR_Linux + 314)
+> +#define __NR_renameat2                 (__NR_Linux + 315)
+>
+>  /*
+>   * Offset of the last N32 flavoured syscall
+>   */
+> -#define __NR_Linux_syscalls            314
+> +#define __NR_Linux_syscalls            315
+>
+>  #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+>
+>  #define __NR_N32_Linux                 6000
+> -#define __NR_N32_Linux_syscalls                314
+> +#define __NR_N32_Linux_syscalls                315
+>
+>  #endif /* _UAPI_ASM_UNISTD_H */
+> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+> index fdc70b400442..3245474f19d5 100644
+> --- a/arch/mips/kernel/scall32-o32.S
+> +++ b/arch/mips/kernel/scall32-o32.S
+> @@ -577,3 +577,4 @@ EXPORT(sys_call_table)
+>         PTR     sys_finit_module
+>         PTR     sys_sched_setattr
+>         PTR     sys_sched_getattr               /* 4350 */
+> +       PTR     sys_renameat2
+> diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+> index dd99c3285aea..be2fedd4ae33 100644
+> --- a/arch/mips/kernel/scall64-64.S
+> +++ b/arch/mips/kernel/scall64-64.S
+> @@ -430,4 +430,5 @@ EXPORT(sys_call_table)
+>         PTR     sys_getdents64
+>         PTR     sys_sched_setattr
+>         PTR     sys_sched_getattr               /* 5310 */
+> +       PTR     sys_renameat2
+>         .size   sys_call_table,.-sys_call_table
+> diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+> index f68d2f4f0090..c1dbcda4b816 100644
+> --- a/arch/mips/kernel/scall64-n32.S
+> +++ b/arch/mips/kernel/scall64-n32.S
+> @@ -423,4 +423,5 @@ EXPORT(sysn32_call_table)
+>         PTR     sys_finit_module
+>         PTR     sys_sched_setattr
+>         PTR     sys_sched_getattr
+> +       PTR     sys_renameat2                   /* 6315 */
+>         .size   sysn32_call_table,.-sysn32_call_table
+> diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+> index 70f6acecd928..f1343ccd7ed7 100644
+> --- a/arch/mips/kernel/scall64-o32.S
+> +++ b/arch/mips/kernel/scall64-o32.S
+> @@ -556,4 +556,5 @@ EXPORT(sys32_call_table)
+>         PTR     sys_finit_module
+>         PTR     sys_sched_setattr
+>         PTR     sys_sched_getattr               /* 4350 */
+> +       PTR     sys_renameat2
+>         .size   sys32_call_table,.-sys32_call_table
+> --
+> 1.8.1.4
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-arch" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
+
+-- 
+James Hogan

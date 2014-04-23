@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2014 03:19:16 +0200 (CEST)
-Received: from mail-oa0-f43.google.com ([209.85.219.43]:47331 "EHLO
-        mail-oa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825879AbaDWBS4LMtTL (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2014 03:19:37 +0200 (CEST)
+Received: from mail-oa0-f41.google.com ([209.85.219.41]:63593 "EHLO
+        mail-oa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834662AbaDWBS4th3Ys (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 23 Apr 2014 03:18:56 +0200
-Received: by mail-oa0-f43.google.com with SMTP id eb12so302312oac.2
-        for <multiple recipients>; Tue, 22 Apr 2014 18:18:49 -0700 (PDT)
+Received: by mail-oa0-f41.google.com with SMTP id j17so305321oag.0
+        for <multiple recipients>; Tue, 22 Apr 2014 18:18:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=QaF2swIeaiUdOP5eZeMAhxU0mCQK5nfAsD60oyTQe/w=;
-        b=ZFlijuHH/jJ0HewVP4Liuscu2jlSc52yjBrF8QvgfLvrM3rgFr2sdpdxhdPSKxbB1M
-         z3YtRnixUA8kBBiGzamE2jvOaFqEEH49ujPbi/JoXh9JQlD/Fv4d7OS7cLASsktLY4LX
-         mZoZPLc154GcteLSOy3x3woN8romNZNgjwEv0YR2OsQYUD6+C5GIro0KD3ubrayNC226
-         HYYPgUEa7Mof2K4HJ3PvxF2VjVWWui/ul9kVvW/t25pHVw6iZRQP3H4BmF/ec5fjk2CD
-         i5+lPn+xGvwFSj9wPP9QeKAsOh5fExtkAZAsJkQ2FYNiaKWkyMqVKaHJo1ND7G4sm9wE
-         x/Wg==
-X-Received: by 10.182.113.227 with SMTP id jb3mr7474431obb.3.1398215929881;
-        Tue, 22 Apr 2014 18:18:49 -0700 (PDT)
+        bh=dSCgEF9kkQTelE+MPGydXXd1hf/yI18QJKh19H0/nsk=;
+        b=HUpimh/BYK1W+5eioEZ9130VTmi5VT7Bjbo/ahk4Xu5YrxQqbkJDHkJO0YrLfRcmYM
+         nMMWsqU9zDbatViHkKxiGqZkyjQrq5VOKE6Sk9jyvqljpiMyjL+2ZwWEy9t1hQfa3R4P
+         6VikITk57xA18MpvjsAiz3nNRcn0TtU9jkLZJrW9Z1w3Mp7xZg4TDmdyyLVJx+DUh213
+         YPhWjaPEk+/46XhJaBJ1zDRwkBzCFuVYnuKHZQzNq4icp3AkHYP0DNp7OQsKKOviN67p
+         80FQN33vopKWIL5qPA2cEK//4iuxItVYe8XAGykujuvXd+dGeAI4Ytb+g+ibnJa4lpMm
+         StDw==
+X-Received: by 10.182.87.42 with SMTP id u10mr39446736obz.22.1398215930813;
+        Tue, 22 Apr 2014 18:18:50 -0700 (PDT)
 Received: from localhost.localdomain (72-48-77-163.dyn.grandenetworks.net. [72.48.77.163])
-        by mx.google.com with ESMTPSA id f1sm184735295oej.5.2014.04.22.18.18.48
+        by mx.google.com with ESMTPSA id f1sm184735295oej.5.2014.04.22.18.18.49
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 22 Apr 2014 18:18:49 -0700 (PDT)
+        Tue, 22 Apr 2014 18:18:50 -0700 (PDT)
 From:   Rob Herring <robherring2@gmail.com>
 To:     Grant Likely <grant.likely@linaro.org>,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 Cc:     Rob Herring <robh@kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org
-Subject: [PATCH v2 01/21] mips: octeon: convert to use unflatten_and_copy_device_tree
-Date:   Tue, 22 Apr 2014 20:18:01 -0500
-Message-Id: <1398215901-25609-2-git-send-email-robherring2@gmail.com>
+Subject: [PATCH v2 02/21] mips: lantiq: copy built-in DTB out of init section
+Date:   Tue, 22 Apr 2014 20:18:02 -0500
+Message-Id: <1398215901-25609-3-git-send-email-robherring2@gmail.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1398215901-25609-1-git-send-email-robherring2@gmail.com>
 References: <1398215901-25609-1-git-send-email-robherring2@gmail.com>
@@ -37,7 +37,7 @@ Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39901
+X-archive-position: 39902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,72 +56,43 @@ X-list: linux-mips
 
 From: Rob Herring <robh@kernel.org>
 
-The octeon FDT code can be simplified by using
-unflatten_and_copy_device_tree function. This removes all accesses to
-FDT header data by the arch code.
+The existing code is buggy because built-in DTBs are in init memory.
+Fix this by using the unflatten_and_copy_device_tree function.
+
+This removes all accesses to FDT header data by the arch code.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
-v2: fix build error
+v2: no change
 
- arch/mips/cavium-octeon/setup.c | 20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+ arch/mips/lantiq/prom.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index 331b837..f1bec00 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -1053,36 +1053,26 @@ void prom_free_prom_memory(void)
- int octeon_prune_device_tree(void);
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 19686c5..cdea687 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -76,18 +76,7 @@ void __init plat_mem_setup(void)
  
- extern const char __dtb_octeon_3xxx_begin;
--extern const char __dtb_octeon_3xxx_end;
- extern const char __dtb_octeon_68xx_begin;
--extern const char __dtb_octeon_68xx_end;
  void __init device_tree_init(void)
  {
--	int dt_size;
--	struct boot_param_header *fdt;
-+	const void *fdt;
- 	bool do_prune;
- 
- 	if (octeon_bootinfo->minor_version >= 3 && octeon_bootinfo->fdt_addr) {
- 		fdt = phys_to_virt(octeon_bootinfo->fdt_addr);
- 		if (fdt_check_header(fdt))
- 			panic("Corrupt Device Tree passed to kernel.");
--		dt_size = be32_to_cpu(fdt->totalsize);
- 		do_prune = false;
- 	} else if (OCTEON_IS_MODEL(OCTEON_CN68XX)) {
--		fdt = (struct boot_param_header *)&__dtb_octeon_68xx_begin;
--		dt_size = &__dtb_octeon_68xx_end - &__dtb_octeon_68xx_begin;
-+		fdt = &__dtb_octeon_68xx_begin;
- 		do_prune = true;
- 	} else {
--		fdt = (struct boot_param_header *)&__dtb_octeon_3xxx_begin;
--		dt_size = &__dtb_octeon_3xxx_end - &__dtb_octeon_3xxx_begin;
-+		fdt = &__dtb_octeon_3xxx_begin;
- 		do_prune = true;
- 	}
- 
--	/* Copy the default tree from init memory. */
--	initial_boot_params = early_init_dt_alloc_memory_arch(dt_size, 8);
--	if (initial_boot_params == NULL)
--		panic("Could not allocate initial_boot_params");
--	memcpy(initial_boot_params, fdt, dt_size);
-+	initial_boot_params = (void *)fdt;
- 
- 	if (do_prune) {
- 		octeon_prune_device_tree();
-@@ -1090,7 +1080,7 @@ void __init device_tree_init(void)
- 	} else {
- 		pr_info("Using passed Device Tree.\n");
- 	}
+-	unsigned long base, size;
+-
+-	if (!initial_boot_params)
+-		return;
+-
+-	base = virt_to_phys((void *)initial_boot_params);
+-	size = be32_to_cpu(initial_boot_params->totalsize);
+-
+-	/* Before we do anything, lets reserve the dt blob */
+-	reserve_bootmem(base, size, BOOTMEM_DEFAULT);
+-
 -	unflatten_device_tree();
 +	unflatten_and_copy_device_tree();
  }
  
- static int __initdata disable_octeon_edac_p;
+ void __init prom_init(void)
 -- 
 1.9.1

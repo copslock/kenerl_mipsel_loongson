@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2014 17:25:09 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2014 17:25:29 +0200 (CEST)
 Received: from mailapp01.imgtec.com ([195.89.28.114]:39839 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6843043AbaDYPUocER70 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Apr 2014 17:20:44 +0200
+        with ESMTP id S6843054AbaDYPUpivYi- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Apr 2014 17:20:45 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A4F1265B13305;
-        Fri, 25 Apr 2014 16:20:34 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id E250935C749C8;
+        Fri, 25 Apr 2014 16:20:40 +0100 (IST)
 Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Fri, 25 Apr
- 2014 16:20:37 +0100
+ 2014 16:20:43 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Fri, 25 Apr 2014 16:20:37 +0100
+ 14.3.181.6; Fri, 25 Apr 2014 16:20:43 +0100
 Received: from jhogan-linux.le.imgtec.org (192.168.154.65) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Fri, 25 Apr 2014 16:20:37 +0100
+ 14.3.174.1; Fri, 25 Apr 2014 16:20:43 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Gleb Natapov <gleb@kernel.org>, <kvm@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         <linux-mips@linux-mips.org>, Sanjay Lal <sanjayl@kymasys.com>
-Subject: [PATCH 10/21] MIPS: KVM: Migrate hrtimer to follow VCPU
-Date:   Fri, 25 Apr 2014 16:19:53 +0100
-Message-ID: <1398439204-26171-11-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 18/21] MIPS: KVM: Fix kvm_debug bit-rottage
+Date:   Fri, 25 Apr 2014 16:20:01 +0100
+Message-ID: <1398439204-26171-19-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 1.8.1.2
 In-Reply-To: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com>
 References: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com>
@@ -34,7 +34,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39937
+X-archive-position: 39938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,12 +51,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When a VCPU is scheduled in on a different CPU, refresh the hrtimer used
-for emulating count/compare so that it gets migrated to the same CPU.
-
-This should prevent a timer interrupt occurring on a different CPU to
-where the guest it relates to is running, which would cause the guest
-timer interrupt not to be delivered until after the next guest exit.
+Fix build errors when DEBUG is defined in arch/mips/kvm/.
+ - The DEBUG code in kvm_mips_handle_tlbmod() was missing some variables.
+ - The DEBUG code in kvm_mips_host_tlb_write() was conditional on an
+   undefined "debug" variable.
+ - The DEBUG code in kvm_mips_host_tlb_inv() accessed asid_map directly
+   rather than using kvm_mips_get_user_asid(). Also fixed brace
+   placement.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -66,67 +67,60 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: Sanjay Lal <sanjayl@kymasys.com>
 ---
- arch/mips/include/asm/kvm_host.h |  1 +
- arch/mips/kvm/kvm_mips_emul.c    | 17 +++++++++++++++++
- arch/mips/kvm/kvm_tlb.c          |  6 ++++++
- 3 files changed, 24 insertions(+)
+ arch/mips/kvm/kvm_mips_emul.c |  6 +++++-
+ arch/mips/kvm/kvm_tlb.c       | 14 +++++---------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 90e1c0005ff4..f56bb699506e 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -705,6 +705,7 @@ extern enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
- 							 struct kvm_run *run);
- 
- enum emulation_result kvm_mips_emulate_count(struct kvm_vcpu *vcpu);
-+void kvm_mips_migrate_count(struct kvm_vcpu *vcpu);
- 
- enum emulation_result kvm_mips_check_privilege(unsigned long cause,
- 					       uint32_t *opc,
 diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index bad31c6235d4..7be7317be45d 100644
+index fcbc5ff6c347..ba7519b78985 100644
 --- a/arch/mips/kvm/kvm_mips_emul.c
 +++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -249,6 +249,23 @@ enum emulation_result kvm_mips_emulate_count(struct kvm_vcpu *vcpu)
- 	return er;
- }
- 
-+/**
-+ * kvm_mips_migrate_count() - Migrate timer.
-+ * @vcpu:	Virtual CPU.
-+ *
-+ * Migrate CP0_Count hrtimer to the current CPU by cancelling and restarting it
-+ * if it was running prior to being cancelled.
-+ *
-+ * Must be called when the VCPU is migrated to a different CPU to ensure that
-+ * timer expiry during guest execution interrupts the guest and causes the
-+ * interrupt to be delivered in a timely manner.
-+ */
-+void kvm_mips_migrate_count(struct kvm_vcpu *vcpu)
-+{
-+	if (hrtimer_cancel(&vcpu->arch.comparecount_timer))
-+		hrtimer_restart(&vcpu->arch.comparecount_timer);
-+}
-+
- enum emulation_result kvm_mips_emul_eret(struct kvm_vcpu *vcpu)
+@@ -1882,8 +1882,12 @@ kvm_mips_handle_tlbmod(unsigned long cause, uint32_t *opc,
+ 		       struct kvm_run *run, struct kvm_vcpu *vcpu)
  {
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
+ 	enum emulation_result er = EMULATE_DONE;
+-
+ #ifdef DEBUG
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	unsigned long entryhi = (vcpu->arch.host_cp0_badvaddr & VPN2_MASK) |
++				(kvm_read_c0_guest_entryhi(cop0) & ASID_MASK);
++	int index;
++
+ 	/*
+ 	 * If address not in the guest TLB, then we are in trouble
+ 	 */
 diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
-index 9d371ee0a755..1f61fe6739da 100644
+index 1f61fe6739da..53a39d32b5e0 100644
 --- a/arch/mips/kvm/kvm_tlb.c
 +++ b/arch/mips/kvm/kvm_tlb.c
-@@ -691,6 +691,12 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	if (vcpu->arch.last_sched_cpu != cpu) {
- 		kvm_info("[%d->%d]KVM VCPU[%d] switch\n",
- 			 vcpu->arch.last_sched_cpu, cpu, vcpu->vcpu_id);
-+		/*
-+		 * Migrate the timer interrupt to the current CPU so that it
-+		 * always interrupts the guest and synchronously triggers a
-+		 * guest timer interrupt.
-+		 */
-+		kvm_mips_migrate_count(vcpu);
- 	}
+@@ -233,12 +233,9 @@ kvm_mips_host_tlb_write(struct kvm_vcpu *vcpu, unsigned long entryhi,
+ 	tlbw_use_hazard();
  
- 	if (!newasid) {
+ #ifdef DEBUG
+-	if (debug) {
+-		kvm_debug("@ %#lx idx: %2d [entryhi(R): %#lx] "
+-			  "entrylo0(R): 0x%08lx, entrylo1(R): 0x%08lx\n",
+-			  vcpu->arch.pc, idx, read_c0_entryhi(),
+-			  read_c0_entrylo0(), read_c0_entrylo1());
+-	}
++	kvm_debug("@ %#lx idx: %2d [entryhi(R): %#lx] entrylo0(R): 0x%08lx, entrylo1(R): 0x%08lx\n",
++		  vcpu->arch.pc, idx, read_c0_entryhi(),
++		  read_c0_entrylo0(), read_c0_entrylo1());
+ #endif
+ 
+ 	/* Flush D-cache */
+@@ -507,10 +504,9 @@ int kvm_mips_host_tlb_inv(struct kvm_vcpu *vcpu, unsigned long va)
+ 	local_irq_restore(flags);
+ 
+ #ifdef DEBUG
+-	if (idx > 0) {
++	if (idx > 0)
+ 		kvm_debug("%s: Invalidated entryhi %#lx @ idx %d\n", __func__,
+-			  (va & VPN2_MASK) | (vcpu->arch.asid_map[va & ASID_MASK] & ASID_MASK), idx);
+-	}
++			  (va & VPN2_MASK) | kvm_mips_get_user_asid(vcpu), idx);
+ #endif
+ 
+ 	return 0;
 -- 
 1.8.1.2

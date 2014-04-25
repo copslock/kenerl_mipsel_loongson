@@ -1,56 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2014 21:23:05 +0200 (CEST)
-Received: from mail-wi0-f173.google.com ([209.85.212.173]:46839 "EHLO
-        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6843063AbaDYTXCp59Lv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Apr 2014 21:23:02 +0200
-Received: by mail-wi0-f173.google.com with SMTP id z2so3173332wiv.6
-        for <linux-mips@linux-mips.org>; Fri, 25 Apr 2014 12:22:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :organization:user-agent:in-reply-to:references:mime-version
-         :content-type;
-        bh=S4VoxxEMfdemUOcWxjYVwtcGQH5QlU7wsEecwMQcZkg=;
-        b=Nga+U9qXy6i7k+CBi6O81pgDxyNm3VdJsKk/LBGIGGgLcr3q53AMRUGKabcs7yN0C6
-         77CHrYGBCpqm71OtltxcI5NmN5WvJB+qdzOAtiDcuJR4Br76xQsIDZpwML5crlOXtZ+D
-         Gqi7Ygsa2YN4rDykKMEHfYv+VF1LX3Txz4r3jua58toT5m9qPSWoOXvrucLdU+ddxcDA
-         d9ZdBRjmlan1J/TIgq+MB2Y4KBGl6i4Ws3IMIALu4a1zRNAUa/NXtfNX3qCui7Ua4xpC
-         zWhrhDDhgXJX370zvfnr6Y/JyEAeea/I5Pi5p+eWbSpzD4Xl1sMdnmpUnYE7XnsnByug
-         fUvA==
-X-Gm-Message-State: ALoCoQm/bEdXzr6+562krC8SAOeu0bCtS7i0JIV+rkYPfiHYSBeDEDE07EfIXIEnUsRxRp36sYCw
-X-Received: by 10.194.222.227 with SMTP id qp3mr8002513wjc.37.1398453776934;
-        Fri, 25 Apr 2014 12:22:56 -0700 (PDT)
-Received: from radagast.localnet (jahogan.plus.com. [212.159.75.221])
-        by mx.google.com with ESMTPSA id co9sm12502457wjb.22.2014.04.25.12.22.54
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 25 Apr 2014 12:22:55 -0700 (PDT)
-From:   James Hogan <james.hogan@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Sanjay Lal <sanjayl@kymasys.com>
-Subject: Re: [PATCH 04/21] MIPS: KVM: Fix CP0_EBASE KVM register id
-Date:   Fri, 25 Apr 2014 20:22:40 +0100
-Message-ID: <6139466.gSWQB3IZPa@radagast>
-Organization: Imagination Technologies
-User-Agent: KMail/4.11.5 (Linux/3.14.0+; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <535A8F22.4090402@caviumnetworks.com>
-References: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com> <1398439204-26171-5-git-send-email-james.hogan@imgtec.com> <535A8F22.4090402@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2014 22:16:32 +0200 (CEST)
+Received: from sema.semaphore.gr ([78.46.194.137]:42954 "EHLO
+        sema.semaphore.gr" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6843074AbaDYUQ2PFNQ0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Apr 2014 22:16:28 +0200
+Received: from albert.lan (ppp079166063152.access.hol.gr [79.166.63.152])
+        (using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: stratosk)
+        by sema.semaphore.gr (Postfix) with ESMTPSA id 2F70782C92;
+        Fri, 25 Apr 2014 22:16:23 +0200 (CEST)
+Message-ID: <535AC299.5020202@semaphore.gr>
+Date:   Fri, 25 Apr 2014 23:16:25 +0300
+From:   Stratos Karafotis <stratosk@semaphore.gr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1475874.trHGXRUAiO"; micalg="pgp-sha1"; protocol="application/pgp-signature"
-Return-Path: <james@albanarts.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     John Crispin <blogic@openwrt.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Subject: [PATCH v5 4/8] mips: lemote 2f: Use cpufreq_for_each_entry macro
+ for iteration
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <stratosk@semaphore.gr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39952
+X-archive-position: 39953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: stratosk@semaphore.gr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,74 +47,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The cpufreq core now supports the cpufreq_for_each_entry macro helper
+for iteration over the cpufreq_frequency_table, so use it.
 
---nextPart1475874.trHGXRUAiO
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+It should have no functional changes.
 
-Hi David,
+Signed-off-by: Stratos Karafotis <stratosk@semaphore.gr>
+---
+ arch/mips/loongson/lemote-2f/clock.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-On Friday 25 April 2014 09:36:50 David Daney wrote:
-> On 04/25/2014 08:19 AM, James Hogan wrote:
-> > -#define KVM_REG_MIPS_CP0_EBASE=09=09MIPS_CP0_64(15, 1)
-> > +#define KVM_REG_MIPS_CP0_EBASE=09=09MIPS_CP0_32(15, 1)
->=20
-> According to:
->=20
->   MIPS=AE Architecture Reference Manual
->    Volume III: The MIPS64=AE and
-> microMIPS64TM Privileged Resource
-> Architecture
->=20
-> Document Number: MD00089
-> Revision 5.02
-> April 30, 2013
->=20
-> In section 9.39 EBase Register (CP0 Register 15, Select 1), we see th=
-at
-> EBase can be either 32-bits or 64-bits wide.
->=20
-> I would recommend leaving this as a 64-bit wide register, so that CPU=
-
-> implementations with the wider EBase can be supported.
-
-Yes, you're quite right. I should have checked that one for carefully (=
-I did=20
-think it was a bit odd for it to be 32bit on MIPS64). I'll drop this pa=
-tch.
-
-Thanks
-James
-
->=20
-> Alternately, probe for the width and use the appropriate 32-bit or
-> 64-bit to more closely reflect reality.
->=20
-> >   #define KVM_REG_MIPS_CP0_CONFIG=09=09MIPS_CP0_32(16, 0)
-> >   #define KVM_REG_MIPS_CP0_CONFIG1=09MIPS_CP0_32(16, 1)
-> >   #define KVM_REG_MIPS_CP0_CONFIG2=09MIPS_CP0_32(16, 2)
-
---nextPart1475874.trHGXRUAiO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAABAgAGBQJTWrYOAAoJEKHZs+irPybfsrEP/3bnml+heYrpVKp+JGLiDNGm
-lD3n14J7Kzcaq8FWFINHXsAYc0nL+U23K3iPCN/nycc5fqQqpR+VTv/xkGPTa5g/
-FUaFFNtH1Z7jUzTqwCmLL8X6gnhmXCP2tMV2nm0ltMCk+HloqwTS6eRo3/LISYOE
-ifW95Tji5yH/3im9Wz8nHaB5p7bRcOF3AdCYSW/MRhTnzTnwTe3LliWyTsa6rHhs
-UW/l7Y20WgdTWWA61NLpMUnP3UkscUjiRg4QK4utKKTzgbGWhEbNAt8DSPyjwXrg
-3Ua54U63Oafx1M10LU/oWIo1aRGEswGjrfTCLhBd3L0hnTAUsbMzZfAqcEQzNlkI
-ptZQ8fZip06QdNkJWLONp8RF/Hv4IuzaNyEetoV+E9fxRzOp9FAMB/HNMJmknc77
-Tlb0CJuKs8PuKf8lAsZL6aVEBDSZjorogL3X6sLJRR+fqR/AYm4UXw2X9h0ZCFL1
-9b/Mg9/oLKYLe5uUqgNrZk9dlGuXJcO4MJUsfl4ZZDLvW9w+wNBMsX9wtJ366h+m
-I7e6X4di4Wpc/Ciyb/BSZZK4YF/zeSoIds+0tK/nt8GGD3L9+jfsJe+gJo6h8VSM
-/jeOM3CPz7SLbeBTPlZYUnYwgcQp19VttftUG/JCByNw1SsAbI2ja0BwSv+mJcyC
-aaGepKIq4ZtGO2scK2Ad
-=am+u
------END PGP SIGNATURE-----
-
---nextPart1475874.trHGXRUAiO--
+diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
+index e1f427f..1eed38e 100644
+--- a/arch/mips/loongson/lemote-2f/clock.c
++++ b/arch/mips/loongson/lemote-2f/clock.c
+@@ -91,9 +91,9 @@ EXPORT_SYMBOL(clk_put);
+ 
+ int clk_set_rate(struct clk *clk, unsigned long rate)
+ {
++	struct cpufreq_frequency_table *pos;
+ 	int ret = 0;
+ 	int regval;
+-	int i;
+ 
+ 	if (likely(clk->ops && clk->ops->set_rate)) {
+ 		unsigned long flags;
+@@ -106,22 +106,16 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+ 	if (unlikely(clk->flags & CLK_RATE_PROPAGATES))
+ 		propagate_rate(clk);
+ 
+-	for (i = 0; loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END;
+-	     i++) {
+-		if (loongson2_clockmod_table[i].frequency ==
+-		    CPUFREQ_ENTRY_INVALID)
+-			continue;
+-		if (rate == loongson2_clockmod_table[i].frequency)
++	cpufreq_for_each_valid_entry(pos, loongson2_clockmod_table)
++		if (rate == pos->frequency)
+ 			break;
+-	}
+-	if (rate != loongson2_clockmod_table[i].frequency)
++	if (rate != pos->frequency)
+ 		return -ENOTSUPP;
+ 
+ 	clk->rate = rate;
+ 
+ 	regval = LOONGSON_CHIPCFG0;
+-	regval = (regval & ~0x7) |
+-		(loongson2_clockmod_table[i].driver_data - 1);
++	regval = (regval & ~0x7) | (pos->driver_data - 1);
+ 	LOONGSON_CHIPCFG0 = regval;
+ 
+ 	return ret;
+-- 
+1.9.0

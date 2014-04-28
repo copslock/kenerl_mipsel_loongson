@@ -1,30 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2014 13:37:14 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:55313 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822188AbaD1LhImkMTf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Apr 2014 13:37:08 +0200
-Date:   Mon, 28 Apr 2014 12:37:08 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     David Miller <davem@davemloft.net>
-cc:     Ralf Baechle <ralf@linux-mips.org>, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next RESEND 2/2] FDDI: DEC FDDIcontroller 700
- TURBOchannel card support
-In-Reply-To: <20140427.191346.2115795102984045600.davem@davemloft.net>
-Message-ID: <alpine.LFD.2.11.1404280048540.11598@eddie.linux-mips.org>
-References: <alpine.LFD.2.11.1404250159220.11598@eddie.linux-mips.org> <20140427.191346.2115795102984045600.davem@davemloft.net>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2014 14:02:30 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:10421 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822188AbaD1MC1EF98G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Apr 2014 14:02:27 +0200
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s3SC24YX026449
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 28 Apr 2014 08:02:04 -0400
+Received: from yakj.usersys.redhat.com (ovpn-112-50.ams2.redhat.com [10.36.112.50])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s3SC20FO029130;
+        Mon, 28 Apr 2014 08:02:01 -0400
+Message-ID: <535E4338.9010801@redhat.com>
+Date:   Mon, 28 Apr 2014 14:02:00 +0200
+From:   Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>,
+        Sanjay Lal <sanjayl@kymasys.com>
+Subject: Re: [PATCH 00/21] MIPS: KVM: Fixes and guest timer rewrite
+References: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com>
+In-Reply-To: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39961
+X-archive-position: 39962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,199 +48,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 27 Apr 2014, David Miller wrote:
+Il 25/04/2014 17:19, James Hogan ha scritto:
+> Here are a range of MIPS KVM T&E fixes for v3.16. They can also be found
+> on my kvm_mips_queue branch here:
+> git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/kvm-mips.git
+>
+> They originally served to allow it to work better on Ingenic XBurst
+> cores which have some peculiarities which break non-portable assumptions
+> in the MIPS KVM implementation (patches 1-3, 11).
+>
+> Fixing guest CP0_Count emulation to work without a running host
+> CP0_Count (patch 11) however required a rewrite of the timer emulation
+> code to use the kernel monotonic time instead, which needed doing anyway
+> since basing it directly off the host CP0_Count was broken. Various bugs
+> were fixed in the process (patches 8-10) and improvements made thanks to
+> valuable feedback from Paolo Bonzini for the last QEMU MIPS/KVM patchset
+> (patches 4-7, 13-15).
+>
+> Finally there are some misc cleanups which I did along the way (patches
+> 16-21).
+>
+> Only the first patch (fixes MIPS KVM with 4K pages) is marked for
+> stable. For KVM to work on XBurst it needs the timer rework which is a
+> fairly complex change, so there's little point marking any of the XBurst
+> specific changes for stable.
+>
+> All feedback welcome!
+>
+> Patches 1-3:
+> 	Fix KVM/MIPS with 4K pages, missing RDHWR SYNCI (XBurst),
+> 	unmoving CP0_Random (XBurst).
+> Patches 4-7:
+> 	Add EPC, Count, Compare guest CP0 registers to KVM register
+> 	ioctl interface.
+> Patches 8-10:
+> 	Fix a few potential races relating to timers.
+> Patches 11-12:
+> 	Rewrite guest timer emulation to use ktime_get().
+> Patches 13-15:
+> 	Add KVM virtual registers for controlling guest timer, including
+> 	master timer disable, nanosecond bias, and timer frequency.
+> Patches 16-21:
+> 	Cleanups.
+>
+> James Hogan (21):
+>   MIPS: KVM: Allocate at least 16KB for exception handlers
+>   MIPS: KVM: Use local_flush_icache_range to fix RI on XBurst
+>   MIPS: KVM: Use tlb_write_random
+>   MIPS: KVM: Fix CP0_EBASE KVM register id
+>   MIPS: KVM: Add CP0_EPC KVM register access
+>   MIPS: KVM: Move KVM_{GET,SET}_ONE_REG definitions into kvm_host.h
+>   MIPS: KVM: Add CP0_Count/Compare KVM register access
+>   MIPS: KVM: Deliver guest interrupts after local_irq_disable()
+>   MIPS: KVM: Fix timer race modifying guest CP0_Cause
+>   MIPS: KVM: Migrate hrtimer to follow VCPU
+>   MIPS: KVM: Rewrite count/compare timer emulation
+>   MIPS: KVM: Override guest kernel timer frequency directly
+>   MIPS: KVM: Add master disable count interface
+>   MIPS: KVM: Add nanosecond count bias KVM register
+>   MIPS: KVM: Add count frequency KVM register
+>   MIPS: KVM: Make kvm_mips_comparecount_{func,wakeup} static
+>   MIPS: KVM: Whitespace fixes in kvm_mips_callbacks
+>   MIPS: KVM: Fix kvm_debug bit-rottage
+>   MIPS: KVM: Remove ifdef DEBUG around kvm_debug
+>   MIPS: KVM: Quieten kvm_info() logging
+>   MIPS: KVM: Remove redundant NULL checks before kfree()
+>
+>  arch/mips/Kconfig                 |  12 +-
+>  arch/mips/include/asm/kvm_host.h  | 185 +++++++++---
+>  arch/mips/include/uapi/asm/kvm.h  |  40 +++
+>  arch/mips/kvm/kvm_locore.S        |  32 --
+>  arch/mips/kvm/kvm_mips.c          | 127 ++++----
+>  arch/mips/kvm/kvm_mips_dyntrans.c |  15 +-
+>  arch/mips/kvm/kvm_mips_emul.c     | 608 ++++++++++++++++++++++++++++++++++++--
+>  arch/mips/kvm/kvm_tlb.c           |  60 ++--
+>  arch/mips/kvm/kvm_trap_emul.c     |  89 +++++-
+>  arch/mips/mti-malta/malta-time.c  |  14 +-
+>  10 files changed, 951 insertions(+), 231 deletions(-)
+>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Gleb Natapov <gleb@kernel.org>
+> Cc: kvm@vger.kernel.org
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: Sanjay Lal <sanjayl@kymasys.com>
+>
 
-> > +	/* Reset the board. */
-> > +	wmb();
-> > +	writew(FZA_RESET_INIT, &fp->regs->reset);
-> > +	iob();
-> > +	readw(&fp->regs->reset);	/* Read it back for a small delay. */
-> > +	iob();
-> > +	writew(FZA_RESET_CLR, &fp->regs->reset);
-> 
-> Using memory barriers around MMIO operations makes zero sense.
-> 
-> wmb() and friends order physical memory operations, and are only
-> to be used when the cpu must be synchronized with some other entity
-> looking at the same physical memory the cpu is, such as a device.
-> 
-> But that absolutely is not what is happening here, you're doing one
-> MMIO to non-physical memory after another.
+There weren't too many comments on this series, and it would be really 
+nice to have it in 3.16.
 
- This is not perfect, I admit, the issue here however is the MIPS R4400 
-processor that is used with some systems that support this FDDI adapter 
-has a weakly ordered write buffer, an uncached read issued to an MMIO 
-device can be reordered in front of an earlier uncached write, bypassing 
-the buffer.  Additionally the MIPS R3000 processor used on other systems 
-has the R3220 write buffer that can merge multiple writes into one, or 
-supply a value previously written from the buffer before it has reached 
-the destination.  Therefore a synchronisation barrier is required.
+Thanks,
 
- The architecturally guaranteed barrier operation for the R4400 processor 
-is the SYNC processor instruction.  For the R3000 processor the barrier is 
-platform specific, we have suitable handlers in place (traditionally 
-called wbflush, as they simply spin-wait until the write buffer has 
-drained by itself).
-
- Additionally in some cases, where an immediate effect is required we need 
-to issue a read (to any location) so that the SYNC instruction actually 
-drains the write buffer (for the R3000 obviously the lone wbflush 
-suffices, and this is reflected in the handlers).
-
- This has been discussed before and we lack a general abstraction layer -- 
-the assumptions we have throughout suitable e.g. for PCI systems do not 
-necessarily stand for non-PCI MIPS systems.  It happens however that for 
-systems this driver can support (i.e. MIPS, plus possibly Alpha and VAX; I 
-have actually successfully used an earlier version of this driver with a 
-VAX) these barrier handlers are good enough:
-
-1. For Alpha, where these handlers originate from, MB and WMB are hardware 
-   instructions defined both for MP memory and I/O (even UP), with the 
-   usual semantics.
-
-2. For MIPS we have equivalent handlers in place, also working with both 
-   MP memory and I/O.
-
-3. VAX is strongly ordered, all these handlers are nil.
-
-4. iob is an extension defined for MIPS so far that uses the fastest read 
-   operation available -- this is needed by the CPU and its any write 
-   buffers only (TURBOchannel itself doesn't do write posting), so 
-   with the read-back there's little sense in e.g. going down to 
-   TURBOchannel that is always slower than the CPU bus and in some cases 
-   much slower.
-
-This approach has already been used with other TURBOchannel and DECstation 
-support code, however as I noted above I wouldn't mind a cleaner solution.
-
- I have now dug deeper and I can see the PPC port (only) has these:
-
-#define iobarrier_rw() eieio()
-#define iobarrier_r()  eieio()
-#define iobarrier_w()  eieio()
-
-which look like the right starting point to me.  I would then add:
-
-#define iobarrier_rw()   mb()
-#define iobarrier_r()    rmb()
-#define iobarrier_w()    wmb()
-#define iobarrier_sync() iob()
-
-(or any equivalent code on the RHS as I see fit) for the MIPS platform if 
-we agree this is the right internal API, and update the driver and any 
-other code I look after accordingly.  Platform maintainers could then add 
-implementations as they consider required -- the strongly-ordered default 
-could simply be:
-
-#define iobarrier_rw()
-
-etc.
-
- I can see we have a mmiowb handler too, defined across all ports, 
-analogous to iobarrier_w, but its definition is IIUC wrong for some, e.g. 
-it's empty for Alpha and PPC, where it should be defined to wmb() and 
-eieio() respectively.  Anyway the name does not matter, I can take votes 
-for iobarrier_* vs mmio*b as long as we agree on the API itself. :)
-
- I've added some CCs so that non-networking people can chime in on this 
-part.
-
-> > +{
-> > +	uint status, state;
-> > +
-> > +	unsigned long int flags;
-> > +	long int t;
-> > +
-> 
-> Use "unsigned int" and "long", and also please do not put empty lines
-> in the middle of the function variable declarations.
-
- Done.
-
-> > +
-> > +	pr_info("%s: resetting the board...\n", fp->name);
-> 
-> Do not put more than one empty line between the local variables
-> and the first non-declaration statement of the function.
-
- Likewise.
-
- [This and the above (except from "long int", that was an oversight) was 
-done for readability purposes, but I won't insist, it's not important 
-enough to me.]
-
-> > +static struct fza_ring_cmd __iomem *fza_cmd_send(struct net_device *dev,
-> > +						 int command)
-> 
-> When a function declaration or definition or call spans multiple lines,
-> the second and subsequent lines should be indented to exactly the first
-> column after the openning parenthesis.
-
- The line you quoted however is exactly right. :)  Please mind the + added 
-by diff offsetting the first but not the second line quoted.
-
-> You must use the appropriate number of TAB and SPACE characters necessary
-> to do so.  Generally speaking, if you are only using TAB characters you
-> are indenting it incorrectly.
-
- Or I am good at hitting columns at multiples of 8 with the opening 
-bracket perhaps? ;)
-
-> I'm sure there are lots of other coding style issues, please run
-> checkpatch on your changes unless you want to go back and forth
-> in review several more times as we find them too :-)
-
- Well, I tried my best and the last time I ran it on this change the 
-script only had issues with the barriers we've been discussing at the 
-beginning (and which hopefully we'll settle on one way or another), and 
-comments.  The latter of which I consider a result of the script being too 
-picky or maybe even entirely wrong, given e.g.:
-
-#define FZA_EVENT_HB_PARITY_ERR	0x0100	/* host bus parity error */
-#define FZA_EVENT_NXM_ERR	0x0080	/* non-existent memory access error;
-					   also raised for unaligned and
-					   unsupported partial-word accesses */
-#define FZA_EVENT_LINK_ST_CHG	0x0040	/* link status change */
-
-where the three comments are simply consistent with one another.  If you 
-want them changed to:
-
-#define FZA_EVENT_HB_PARITY_ERR	0x0100	/* host bus parity error */
-#define FZA_EVENT_NXM_ERR	0x0080	/* non-existent memory access error;
-					 * also raised for unaligned and
-					 * unsupported partial-word accesses
-					 */
-#define FZA_EVENT_LINK_ST_CHG	0x0040	/* link status change */
-
-though, then I won't insist on keeping my style, that's not important 
-enough for me, even though the latter version hurts my eye a bit.
-
- Ah, it had something to say about 2 messages split between lines too, but 
-I refuse to go beyond 79 columns, sorry.
-
-> As per these SMT packets, don't even publish them to network taps.
-> 
-> We would have never seen them anyways, so keep them completely
-> internal to your driver.
-> 
-> That way you have no reason ti poke into internals like ptype_all
-> and dev_queue_xmit_nit().
-
- That however I would like to keep -- I find it particularly valuable and 
-a great advantage of this piece of hardware to be able to tap into all the 
-SMT traffic crossing this adapter, both incoming and outgoing, for 
-educational and diagnostic purposes.  Without this capability a second 
-FDDI station is required to be able to see both traffic streams, and also 
-it has to be exactly the next downstream neighbour or some traffic will 
-undoubtedly be stripped from the ring by intermediate stations.
-
- Therefore I would like to retain this capability.  If you're unhappy with 
-tapping in directly, then I think sending them back down the usual receive 
-path would do, although at some performance hit.  So I'd prefer to avoid 
-it if possible -- can you propose an alternative by any chance?
-
- Thanks for your review, please let me know how to proceed with the issues 
-that remain open.  I'll send updated code once we've settled, I think 
-there's little point in publishing an update before then.
-
-  Maciej
+Paolo

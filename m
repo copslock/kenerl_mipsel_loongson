@@ -1,42 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2014 17:43:08 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:33125 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822188AbaD1PnGAy1Mi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Apr 2014 17:43:06 +0200
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s3SFgrP3028236
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 28 Apr 2014 11:42:53 -0400
-Received: from yakj.usersys.redhat.com (ovpn-112-50.ams2.redhat.com [10.36.112.50])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s3SFgng1013851;
-        Mon, 28 Apr 2014 11:42:50 -0400
-Message-ID: <535E76F9.7050001@redhat.com>
-Date:   Mon, 28 Apr 2014 17:42:49 +0200
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
-MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Sanjay Lal <sanjayl@kymasys.com>
-Subject: Re: [PATCH 14/21] MIPS: KVM: Add nanosecond count bias KVM register
-References: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com>  <1398439204-26171-15-git-send-email-james.hogan@imgtec.com>     <535E4310.10308@redhat.com> <CAAG0J981KYb6vqC7FZ1=cJykj3Pmk02FwPGQvVFuZaowHzAMFg@mail.gmail.com>
-In-Reply-To: <CAAG0J981KYb6vqC7FZ1=cJykj3Pmk02FwPGQvVFuZaowHzAMFg@mail.gmail.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2014 18:52:55 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:51113 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825715AbaD1QwwJu5Qe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Apr 2014 18:52:52 +0200
+Received: from localhost (unknown [75.103.36.255])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id C7EA75818C2;
+        Mon, 28 Apr 2014 09:52:48 -0700 (PDT)
+Date:   Mon, 28 Apr 2014 12:52:44 -0400 (EDT)
+Message-Id: <20140428.125244.18665502106315120.davem@davemloft.net>
+To:     macro@linux-mips.org
+Cc:     ralf@linux-mips.org, netdev@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next RESEND 2/2] FDDI: DEC FDDIcontroller 700
+ TURBOchannel card support
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <alpine.LFD.2.11.1404280048540.11598@eddie.linux-mips.org>
+References: <alpine.LFD.2.11.1404250159220.11598@eddie.linux-mips.org>
+        <20140427.191346.2115795102984045600.davem@davemloft.net>
+        <alpine.LFD.2.11.1404280048540.11598@eddie.linux-mips.org>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-Return-Path: <pbonzini@redhat.com>
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.7 (shards.monkeyblade.net [149.20.54.216]); Mon, 28 Apr 2014 09:52:49 -0700 (PDT)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39965
+X-archive-position: 39966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,24 +45,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Il 28/04/2014 17:17, James Hogan ha scritto:
->> > If it is possible and not too hairy to use a raw value in userspace
->> > (together with KVM_REG_MIPS_COUNT_HZ), please do it---my suggestions were
->> > just that, a suggestion.  Otherwise, the patch looks good.
-> Do you mean expose the raw internal offset to userland instead of the
-> nanosecond one? Yeh it should be possible & slightly simpler for both
-> kernel and Qemu actually.
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+Date: Mon, 28 Apr 2014 12:37:08 +0100 (BST)
 
-Yes, when I reviewed the QEMU patches I missed this consequence of 
-exposing the HZ.
+>  That however I would like to keep -- I find it particularly valuable and 
+> a great advantage of this piece of hardware to be able to tap into all the 
+> SMT traffic crossing this adapter, both incoming and outgoing, for 
+> educational and diagnostic purposes.  Without this capability a second 
+> FDDI station is required to be able to see both traffic streams, and also 
+> it has to be exactly the next downstream neighbour or some traffic will 
+> undoubtedly be stripped from the ring by intermediate stations.
+> 
+>  Therefore I would like to retain this capability.  If you're unhappy with 
+> tapping in directly, then I think sending them back down the usual receive 
+> path would do, although at some performance hit.  So I'd prefer to avoid 
+> it if possible -- can you propose an alternative by any chance?
+> 
+>  Thanks for your review, please let me know how to proceed with the issues 
+> that remain open.  I'll send updated code once we've settled, I think 
+> there's little point in publishing an update before then.
 
-> Qemu could then store that value (or the Count register) straight into
-> env->CP0_Count (depending on Cause.DC), then hw/mips/cputimer.c would
-> pretty much continue to work accurately. cputimer.c is only really
-> made use of by tcg at the moment though (reading/writing
-> count/compare/cause.DC), but it still makes sense to be consistent.
-
-Yup.  cputimer.c would just use a HZ value stored in CPUMIPSState 
-(TIMER_FREQ for TCG) instead of hardcoding TIMER_FREQ I guess.
-
-Paolo
+We're not exporting all of these internals for the unique desires of
+one single driver.

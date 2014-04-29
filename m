@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Apr 2014 16:36:38 +0200 (CEST)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:29457 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6843092AbaD2OcLZ65e1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Apr 2014 16:32:11 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Apr 2014 16:37:00 +0200 (CEST)
+Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:30646 "EHLO
+        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6843095AbaD2OcNJaG67 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Apr 2014 16:32:13 +0200
 X-IronPort-AV: E=Sophos;i="4.97,951,1389772800"; 
-   d="scan'208";a="26850068"
-Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
-  by mail-gw2-out.broadcom.com with ESMTP; 29 Apr 2014 07:57:19 -0700
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Tue, 29 Apr 2014 07:32:08 -0700
+   d="scan'208";a="27211055"
+Received: from irvexchcas06.broadcom.com (HELO IRVEXCHCAS06.corp.ad.broadcom.com) ([10.9.208.53])
+  by mail-gw1-out.broadcom.com with ESMTP; 29 Apr 2014 08:42:38 -0700
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP Server
+ (TLS) id 14.3.174.1; Tue, 29 Apr 2014 07:32:10 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.3.174.1; Tue, 29 Apr 2014 07:32:09 -0700
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
+ 14.3.174.1; Tue, 29 Apr 2014 07:32:11 -0700
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 618A051E7D;    Tue, 29 Apr 2014 07:32:08 -0700 (PDT)
+ 03FE151E7D;    Tue, 29 Apr 2014 07:32:09 -0700 (PDT)
 From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Ganesan Ramalingam <ganesanr@broadcom.com>, <ralf@linux-mips.org>,
         Jayachandran C <jchandra@broadcom.com>
-Subject: [PATCH 16/17] MIPS: Netlogic: Support for XLP3XX on-chip SATA
-Date:   Tue, 29 Apr 2014 20:07:55 +0530
-Message-ID: <9b507742d1b581a1bc9210df1fb3931ec02cdde9.1398780013.git.jchandra@broadcom.com>
+Subject: [PATCH 17/17] MIPS: Netlogic: XLP9XX on-chip SATA support
+Date:   Tue, 29 Apr 2014 20:07:56 +0530
+Message-ID: <064ee7509119f3a7a76410a7d72281b41798b888.1398780013.git.jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1398780013.git.jchandra@broadcom.com>
 References: <cover.1398780013.git.jchandra@broadcom.com>
@@ -32,7 +32,7 @@ Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39981
+X-archive-position: 39982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,33 +51,33 @@ X-list: linux-mips
 
 From: Ganesan Ramalingam <ganesanr@broadcom.com>
 
-XLP3XX includes an on-chip SATA controller with 4 ports. The
-controller needs glue logic initialization and PCI fixup before
-it can be used with the standard AHCI driver.
+The XLP9XX SoC has an on-chip SATA controller with two ports. Add
+ahci-init-xlp2.c to initialize the controller, setup the glue logic
+registers, fixup PCI quirks and setup interrupt ack logic.
 
 Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/netlogic/xlp/Makefile    |    1 +
- arch/mips/netlogic/xlp/ahci-init.c |  209 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 210 insertions(+)
- create mode 100644 arch/mips/netlogic/xlp/ahci-init.c
+ arch/mips/netlogic/xlp/Makefile         |    1 +
+ arch/mips/netlogic/xlp/ahci-init-xlp2.c |  378 +++++++++++++++++++++++++++++++
+ 2 files changed, 379 insertions(+)
+ create mode 100644 arch/mips/netlogic/xlp/ahci-init-xlp2.c
 
 diff --git a/arch/mips/netlogic/xlp/Makefile b/arch/mips/netlogic/xlp/Makefile
-index ed9a93c..0cb53af 100644
+index 0cb53af..be358a8 100644
 --- a/arch/mips/netlogic/xlp/Makefile
 +++ b/arch/mips/netlogic/xlp/Makefile
-@@ -2,3 +2,4 @@ obj-y				+= setup.o nlm_hal.o cop2-ex.o dt.o
- obj-$(CONFIG_SMP)		+= wakeup.o
+@@ -3,3 +3,4 @@ obj-$(CONFIG_SMP)		+= wakeup.o
  obj-$(CONFIG_USB)		+= usb-init.o
  obj-$(CONFIG_USB)		+= usb-init-xlp2.o
-+obj-$(CONFIG_SATA_AHCI)		+= ahci-init.o
-diff --git a/arch/mips/netlogic/xlp/ahci-init.c b/arch/mips/netlogic/xlp/ahci-init.c
+ obj-$(CONFIG_SATA_AHCI)		+= ahci-init.o
++obj-$(CONFIG_SATA_AHCI)		+= ahci-init-xlp2.o
+diff --git a/arch/mips/netlogic/xlp/ahci-init-xlp2.c b/arch/mips/netlogic/xlp/ahci-init-xlp2.c
 new file mode 100644
-index 0000000..a9d0fae
+index 0000000..a55e111
 --- /dev/null
-+++ b/arch/mips/netlogic/xlp/ahci-init.c
-@@ -0,0 +1,209 @@
++++ b/arch/mips/netlogic/xlp/ahci-init-xlp2.c
+@@ -0,0 +1,378 @@
 +/*
 + * Copyright (c) 2003-2014 Broadcom Corporation
 + * All Rights Reserved
@@ -119,173 +119,342 @@ index 0000000..a9d0fae
 +#include <linux/pci.h>
 +#include <linux/irq.h>
 +#include <linux/bitops.h>
++#include <linux/pci_ids.h>
++#include <linux/nodemask.h>
 +
 +#include <asm/cpu.h>
 +#include <asm/mipsregs.h>
 +
-+#include <asm/netlogic/haldefs.h>
-+#include <asm/netlogic/xlp-hal/xlp.h>
 +#include <asm/netlogic/common.h>
-+#include <asm/netlogic/xlp-hal/iomap.h>
++#include <asm/netlogic/haldefs.h>
 +#include <asm/netlogic/mips-extns.h>
++#include <asm/netlogic/xlp-hal/xlp.h>
++#include <asm/netlogic/xlp-hal/iomap.h>
 +
 +#define SATA_CTL		0x0
-+#define SATA_STATUS		0x1	/* Status Reg */
-+#define SATA_INT		0x2	/* Interrupt Reg */
-+#define SATA_INT_MASK		0x3	/* Interrupt Mask Reg */
-+#define SATA_CR_REG_TIMER	0x4	/* PHY Conrol Timer Reg */
-+#define SATA_CORE_ID		0x5	/* Core ID Reg */
-+#define SATA_AXI_SLAVE_OPT1	0x6	/* AXI Slave Options Reg */
-+#define SATA_PHY_LOS_LEV	0x7	/* PHY LOS Level Reg */
-+#define SATA_PHY_MULTI		0x8	/* PHY Multiplier Reg */
-+#define SATA_PHY_CLK_SEL	0x9	/* Clock Select Reg */
-+#define SATA_PHY_AMP1_GEN1	0xa	/* PHY Transmit Amplitude Reg 1 */
-+#define SATA_PHY_AMP1_GEN2	0xb	/* PHY Transmit Amplitude Reg 2 */
-+#define SATA_PHY_AMP1_GEN3	0xc	/* PHY Transmit Amplitude Reg 3 */
-+#define SATA_PHY_PRE1		0xd	/* PHY Transmit Preemphasis Reg 1 */
-+#define SATA_PHY_PRE2		0xe	/* PHY Transmit Preemphasis Reg 2 */
-+#define SATA_PHY_PRE3		0xf	/* PHY Transmit Preemphasis Reg 3 */
-+#define SATA_SPDMODE		0x10	/* Speed Mode Reg */
-+#define SATA_REFCLK		0x11	/* Reference Clock Control Reg */
-+#define SATA_BYTE_SWAP_DIS	0x12	/* byte swap disable */
++#define SATA_STATUS		0x1 /* Status Reg */
++#define SATA_INT		0x2 /* Interrupt Reg */
++#define SATA_INT_MASK		0x3 /* Interrupt Mask Reg */
++#define SATA_BIU_TIMEOUT	0x4
++#define AXIWRSPERRLOG		0x5
++#define AXIRDSPERRLOG		0x6
++#define BiuTimeoutLow		0x7
++#define BiuTimeoutHi		0x8
++#define BiuSlvErLow		0x9
++#define BiuSlvErHi		0xa
++#define IO_CONFIG_SWAP_DIS	0xb
++#define CR_REG_TIMER		0xc
++#define CORE_ID			0xd
++#define AXI_SLAVE_OPT1		0xe
++#define PHY_MEM_ACCESS		0xf
++#define PHY0_CNTRL		0x10
++#define PHY0_STAT		0x11
++#define PHY0_RX_ALIGN		0x12
++#define PHY0_RX_EQ_LO		0x13
++#define PHY0_RX_EQ_HI		0x14
++#define PHY0_BIST_LOOP		0x15
++#define PHY1_CNTRL		0x16
++#define PHY1_STAT		0x17
++#define PHY1_RX_ALIGN		0x18
++#define PHY1_RX_EQ_LO		0x19
++#define PHY1_RX_EQ_HI		0x1a
++#define PHY1_BIST_LOOP		0x1b
++#define RdExBase		0x1c
++#define RdExLimit		0x1d
++#define CacheAllocBase		0x1e
++#define CacheAllocLimit		0x1f
++#define BiuSlaveCmdGstNum	0x20
 +
 +/*SATA_CTL Bits */
-+#define SATA_RST_N		BIT(0)
-+#define PHY0_RESET_N		BIT(16)
-+#define PHY1_RESET_N		BIT(17)
-+#define PHY2_RESET_N		BIT(18)
-+#define PHY3_RESET_N		BIT(19)
-+#define M_CSYSREQ		BIT(2)
-+#define S_CSYSREQ		BIT(3)
++#define SATA_RST_N		BIT(0)  /* Active low reset sata_core phy */
++#define SataCtlReserve0		BIT(1)
++#define M_CSYSREQ		BIT(2)  /* AXI master low power, not used */
++#define S_CSYSREQ		BIT(3)  /* AXI slave low power, not used */
++#define P0_CP_DET		BIT(8)  /* Reserved, bring in from pad */
++#define P0_MP_SW		BIT(9)  /* Mech Switch */
++#define P0_DISABLE		BIT(10) /* disable p0 */
++#define P0_ACT_LED_EN		BIT(11) /* Active LED enable */
++#define P0_IRST_HARD_SYNTH	BIT(12) /* PHY hard synth reset */
++#define P0_IRST_HARD_TXRX	BIT(13) /* PHY lane hard reset */
++#define P0_IRST_POR		BIT(14) /* PHY power on reset*/
++#define P0_IPDTXL		BIT(15) /* PHY Tx lane dis/power down */
++#define P0_IPDRXL		BIT(16) /* PHY Rx lane dis/power down */
++#define P0_IPDIPDMSYNTH		BIT(17) /* PHY synthesizer dis/porwer down */
++#define P0_CP_POD_EN		BIT(18) /* CP_POD enable */
++#define P0_AT_BYPASS		BIT(19) /* P0 address translation by pass */
++#define P1_CP_DET		BIT(20) /* Reserved,Cold Detect */
++#define P1_MP_SW		BIT(21) /* Mech Switch */
++#define P1_DISABLE		BIT(22) /* disable p1 */
++#define P1_ACT_LED_EN		BIT(23) /* Active LED enable */
++#define P1_IRST_HARD_SYNTH	BIT(24) /* PHY hard synth reset */
++#define P1_IRST_HARD_TXRX	BIT(25) /* PHY lane hard reset */
++#define P1_IRST_POR		BIT(26) /* PHY power on reset*/
++#define P1_IPDTXL		BIT(27) /* PHY Tx lane dis/porwer down */
++#define P1_IPDRXL		BIT(28) /* PHY Rx lane dis/porwer down */
++#define P1_IPDIPDMSYNTH		BIT(29) /* PHY synthesizer dis/porwer down */
++#define P1_CP_POD_EN		BIT(30)
++#define P1_AT_BYPASS		BIT(31) /* P1 address translation by pass */
 +
-+/*SATA_STATUS Bits */
-+#define P0_PHY_READY		BIT(4)
-+#define P1_PHY_READY		BIT(5)
-+#define P2_PHY_READY		BIT(6)
-+#define P3_PHY_READY		BIT(7)
++/* Status register */
++#define M_CACTIVE		BIT(0)  /* m_cactive, not used */
++#define S_CACTIVE		BIT(1)  /* s_cactive, not used */
++#define P0_PHY_READY		BIT(8)  /* phy is ready */
++#define P0_CP_POD		BIT(9)  /* Cold PowerOn */
++#define P0_SLUMBER		BIT(10) /* power mode slumber */
++#define P0_PATIAL		BIT(11) /* power mode patial */
++#define P0_PHY_SIG_DET		BIT(12) /* phy dignal detect */
++#define P0_PHY_CALI		BIT(13) /* phy calibration done */
++#define P1_PHY_READY		BIT(16) /* phy is ready */
++#define P1_CP_POD		BIT(17) /* Cold PowerOn */
++#define P1_SLUMBER		BIT(18) /* power mode slumber */
++#define P1_PATIAL		BIT(19) /* power mode patial */
++#define P1_PHY_SIG_DET		BIT(20) /* phy dignal detect */
++#define P1_PHY_CALI		BIT(21) /* phy calibration done */
++
++/* SATA CR_REG_TIMER bits */
++#define CR_TIME_SCALE		(0x1000 << 0)
++
++/* SATA PHY specific registers start and end address */
++#define RXCDRCALFOSC0		0x0065
++#define CALDUTY			0x006e
++#define RXDPIF			0x8065
++#define PPMDRIFTMAX_HI		0x80A4
 +
 +#define nlm_read_sata_reg(b, r)		nlm_read_reg(b, r)
 +#define nlm_write_sata_reg(b, r, v)	nlm_write_reg(b, r, v)
 +#define nlm_get_sata_pcibase(node)	\
-+		nlm_pcicfg_base(XLP_IO_SATA_OFFSET(node))
-+/* SATA device specific configuration registers are starts at 0x900 offset */
++		nlm_pcicfg_base(XLP9XX_IO_SATA_OFFSET(node))
 +#define nlm_get_sata_regbase(node)	\
-+		(nlm_get_sata_pcibase(node) + 0x900)
++		(nlm_get_sata_pcibase(node) + 0x100)
 +
-+static void sata_clear_glue_reg(uint64_t regbase, uint32_t off, uint32_t bit)
++/* SATA PHY config for register block 1 0x0065 .. 0x006e */
++static const u8 sata_phy_config1[]  = {
++	0xC9, 0xC9, 0x07, 0x07, 0x18, 0x18, 0x01, 0x01, 0x22, 0x00
++};
++
++/* SATA PHY config for register block 2 0x0x8065 .. 0x0x80A4 */
++static const u8 sata_phy_config2[]  = {
++	0xAA, 0x00, 0x4C, 0xC9, 0xC9, 0x07, 0x07, 0x18,
++	0x18, 0x05, 0x0C, 0x10, 0x00, 0x10, 0x00, 0xFF,
++	0xCF, 0xF7, 0xE1, 0xF5, 0xFD, 0xFD, 0xFF, 0xFF,
++	0xFF, 0xFF, 0xE3, 0xE7, 0xDB, 0xF5, 0xFD, 0xFD,
++	0xF5, 0xF5, 0xFF, 0xFF, 0xE3, 0xE7, 0xDB, 0xF5,
++	0xFD, 0xFD, 0xF5, 0xF5, 0xFF, 0xFF, 0xFF, 0xF5,
++	0x3F, 0x00, 0x32, 0x00, 0x03, 0x01, 0x05, 0x05,
++	0x04, 0x00, 0x00, 0x08, 0x04, 0x00, 0x00, 0x04,
++};
++
++static void sata_clear_glue_reg(u64 regbase, u32 off, u32 bit)
 +{
-+	uint32_t reg_val;
++	u32 reg_val;
 +
 +	reg_val = nlm_read_sata_reg(regbase, off);
 +	nlm_write_sata_reg(regbase, off, (reg_val & ~bit));
 +}
 +
-+static void sata_set_glue_reg(uint64_t regbase, uint32_t off, uint32_t bit)
++static void sata_set_glue_reg(u64 regbase, u32 off, u32 bit)
 +{
-+	uint32_t reg_val;
++	u32 reg_val;
 +
 +	reg_val = nlm_read_sata_reg(regbase, off);
 +	nlm_write_sata_reg(regbase, off, (reg_val | bit));
 +}
 +
++static void write_phy_reg(u64 regbase, u32 addr, u32 physel, u8 data)
++{
++	nlm_write_sata_reg(regbase, PHY_MEM_ACCESS,
++		(1u << 31) | (physel << 24) | (data << 16) | addr);
++	udelay(850);
++}
++
++static void config_sata_phy(u64 regbase, u32 node)
++{
++	u32 port, i, reg;
++
++	for (port = 0; port < 2; port++) {
++		for (i = 0, reg = RXCDRCALFOSC0; reg <= CALDUTY; reg++, i++)
++			write_phy_reg(regbase, reg, port, sata_phy_config1[i]);
++
++		for (i = 0, reg = RXDPIF; reg <= PPMDRIFTMAX_HI; reg++, i++)
++			write_phy_reg(regbase, reg, port, sata_phy_config2[i]);
++	}
++}
++
++#if 0	/* DEBUG */
++static u8 read_phy_reg(u64 regbase, u32 addr, u32 physel)
++{
++	u32 val;
++
++	nlm_write_sata_reg(regbase, PHY_MEM_ACCESS,
++		(0 << 31) | (physel << 24) | (data << 16) | addr);
++	udelay(850);
++	val = nlm_read_sata_reg(regbase, PHY_MEM_ACCESS);
++	return (val >> 16) & 0xff;
++}
++
++static void check_phy_register(u63 regbase, u32 addr, u32 physel, u8 xdata)
++{
++	u64 regbase;
++	u8 data;
++
++	data = read_phy_reg(regbase, addr, physel);
++	pr_info("PHY read addr = 0x%x physel = %d data = 0x%x %s\n",
++		addr, physel, data, data == xdata ? "TRUE" : "FALSE");
++}
++
++static void verify_sata_phy_config(u64 regbase, u32 node)
++{
++	u32 port, i, reg;
++
++	for (port = 0; port < 2; port++) {
++		for (i = 0, reg = RXCDRCALFOSC0; reg <= CALDUTY; reg++, i++)
++			check_phy_register(regbase, node, reg, port,
++					sata_phy_config1[i]);
++
++		for (i = 0, reg = RXDPIF; reg <= PPMDRIFTMAX_HI; reg++, i++)
++			check_phy_register(regbase, node, reg, port,
++					sata_phy_config2[i]);
++	}
++}
++#endif
++
 +static void nlm_sata_firmware_init(int node)
 +{
-+	uint32_t reg_val;
-+	uint64_t regbase;
-+	int i;
++	u32 reg_val;
++	u64 regbase;
++	int n;
 +
-+	pr_info("XLP AHCI Initialization started.\n");
++	pr_info("Initializing XLP9XX On-chip AHCI...\n");
 +	regbase = nlm_get_sata_regbase(node);
 +
-+	/* Reset SATA */
-+	sata_clear_glue_reg(regbase, SATA_CTL, SATA_RST_N);
-+	/* Reset PHY */
-+	sata_clear_glue_reg(regbase, SATA_CTL,
-+			(PHY3_RESET_N | PHY2_RESET_N
-+			 | PHY1_RESET_N | PHY0_RESET_N));
++	/* Reset port0 */
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IRST_POR);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_TXRX);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_SYNTH);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IPDTXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IPDRXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IPDIPDMSYNTH);
 +
-+	/* Set SATA */
-+	sata_set_glue_reg(regbase, SATA_CTL, SATA_RST_N);
++	/* port1 */
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IRST_POR);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_TXRX);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_SYNTH);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IPDTXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IPDRXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IPDIPDMSYNTH);
++	udelay(300);
++
 +	/* Set PHY */
-+	sata_set_glue_reg(regbase, SATA_CTL,
-+			(PHY3_RESET_N | PHY2_RESET_N
-+			 | PHY1_RESET_N | PHY0_RESET_N));
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IPDTXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IPDRXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IPDIPDMSYNTH);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IPDTXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IPDRXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IPDIPDMSYNTH);
++
++	udelay(1000);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IRST_POR);
++	udelay(1000);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IRST_POR);
++	udelay(1000);
++
++	/* setup PHY */
++	config_sata_phy(regbase, node);
++#if 0	/* For debug */
++	verify_sata_phy_config(regbase, node);
++#endif
++	udelay(1000);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_TXRX);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_SYNTH);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_TXRX);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_SYNTH);
++	udelay(300);
++
++	/* Override reset in serial PHY mode */
++	sata_set_glue_reg(regbase, CR_REG_TIMER, CR_TIME_SCALE);
++	/* Set reset SATA */
++	sata_set_glue_reg(regbase, SATA_CTL, SATA_RST_N);
++	sata_set_glue_reg(regbase, SATA_CTL, M_CSYSREQ);
++	sata_set_glue_reg(regbase, SATA_CTL, S_CSYSREQ);
 +
 +	pr_debug("Waiting for PHYs to come up.\n");
-+	i = 0;
++	n = 10000;
 +	do {
 +		reg_val = nlm_read_sata_reg(regbase, SATA_STATUS);
-+		i++;
-+	} while (((reg_val & 0xF0) != 0xF0) && (i < 10000));
++		if ((reg_val & P1_PHY_READY) && (reg_val & P0_PHY_READY))
++			break;
++		udelay(10);
++	} while (--n > 0);
 +
-+	for (i = 0; i < 4; i++) {
-+		if (reg_val  & (P0_PHY_READY << i))
-+			pr_info("PHY%d is up.\n", i);
-+		else
-+			pr_info("PHY%d is down.\n", i);
-+	}
++	if (reg_val  & P0_PHY_READY)
++		pr_info("PHY0 is up.\n");
++	else
++		pr_info("PHY0 is down.\n");
++	if (reg_val  & P1_PHY_READY)
++		pr_info("PHY1 is up.\n");
++	else
++		pr_info("PHY1 is down.\n");
 +
-+	pr_info("XLP AHCI init done.\n");
++	pr_info("XLP AHCI Init Done.\n");
 +}
 +
 +static int __init nlm_ahci_init(void)
 +{
-+	int node = 0;
-+	int chip = read_c0_prid() & PRID_REV_MASK;
++	int node;
 +
-+	if (chip == PRID_IMP_NETLOGIC_XLP3XX)
-+		nlm_sata_firmware_init(node);
++	if (!cpu_is_xlp9xx())
++		return 0;
++	for (node = 0; node < NLM_NR_NODES; node++)
++		if (nlm_node_present(node))
++			nlm_sata_firmware_init(node);
 +	return 0;
 +}
 +
 +static void nlm_sata_intr_ack(struct irq_data *data)
 +{
-+	uint32_t val = 0;
-+	uint64_t regbase;
++	u64 regbase;
++	u32 val;
++	int node;
 +
-+	regbase = nlm_get_sata_regbase(nlm_nodeid());
++	node = data->irq / NLM_IRQS_PER_NODE;
++	regbase = nlm_get_sata_regbase(node);
 +	val = nlm_read_sata_reg(regbase, SATA_INT);
 +	sata_set_glue_reg(regbase, SATA_INT, val);
 +}
 +
 +static void nlm_sata_fixup_bar(struct pci_dev *dev)
 +{
-+	/*
-+	 * The AHCI resource is in BAR 0, move it to
-+	 * BAR 5, where it is expected
-+	 */
 +	dev->resource[5] = dev->resource[0];
 +	memset(&dev->resource[0], 0, sizeof(dev->resource[0]));
 +}
 +
 +static void nlm_sata_fixup_final(struct pci_dev *dev)
 +{
-+	uint32_t val;
-+	uint64_t regbase;
-+	int node = 0; /* XLP3XX does not support multi-node */
++	u32 val;
++	u64 regbase;
++	int node;
 +
++	/* Find end bridge function to find node */
++	node = xlp_socdev_to_node(dev);
 +	regbase = nlm_get_sata_regbase(node);
 +
 +	/* clear pending interrupts and then enable them */
 +	val = nlm_read_sata_reg(regbase, SATA_INT);
 +	sata_set_glue_reg(regbase, SATA_INT, val);
 +
-+	/* Mask the core interrupt. If all the interrupts
-+	 * are enabled there are spurious interrupt flow
-+	 * happening, to avoid only enable core interrupt
-+	 * mask.
-+	 */
++	/* Enable only the core interrupt */
 +	sata_set_glue_reg(regbase, SATA_INT_MASK, 0x1);
 +
-+	dev->irq = PIC_SATA_IRQ;
++	dev->irq = nlm_irq_to_xirq(node, PIC_SATA_IRQ);
 +	nlm_set_pic_extra_ack(node, PIC_SATA_IRQ, nlm_sata_intr_ack);
 +}
 +
 +arch_initcall(nlm_ahci_init);
 +
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_SATA,
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_BROADCOM, PCI_DEVICE_ID_XLP9XX_SATA,
 +		nlm_sata_fixup_bar);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_SATA,
++
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_BROADCOM, PCI_DEVICE_ID_XLP9XX_SATA,
 +		nlm_sata_fixup_final);
 -- 
 1.7.9.5

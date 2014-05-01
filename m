@@ -1,44 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 May 2014 18:06:27 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:16994 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6831271AbaEAQGYI8s3T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 May 2014 18:06:24 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s41G6G87020286
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 1 May 2014 12:06:16 -0400
-Received: from dhcp-26-207.brq.redhat.com (vpn-53-36.rdu2.redhat.com [10.10.53.36])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s41G6APX023006
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Thu, 1 May 2014 12:06:13 -0400
-Date:   Thu, 1 May 2014 18:07:39 +0200
-From:   Alexander Gordeev <agordeev@redhat.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        x86@kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 2/2] PCI/MSI: Phase out pci_enable_msi_block()
-Message-ID: <20140501160738.GA10407@dhcp-26-207.brq.redhat.com>
-References: <cover.1397458024.git.agordeev@redhat.com>
- <0b08613dc17cd608c1babc1f42b8919f60e1093f.1397458024.git.agordeev@redhat.com>
- <20140414120921.GA32132@dhcp-26-207.brq.redhat.com>
- <20140414132834.GA9164@dhcp-26-207.brq.redhat.com>
- <20140430234933.GB31315@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 May 2014 19:28:36 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41616 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6843089AbaEAR21y-69L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 May 2014 19:28:27 +0200
+Date:   Thu, 1 May 2014 18:28:26 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: Malta: support powering down
+In-Reply-To: <20140422100713.GC42386@pburton-linux.le.imgtec.org>
+Message-ID: <alpine.LFD.2.11.1404221540540.11598@eddie.linux-mips.org>
+References: <1395415232-42288-1-git-send-email-paul.burton@imgtec.com> <1395415232-42288-2-git-send-email-paul.burton@imgtec.com> <alpine.LFD.2.11.1404191624180.11598@eddie.linux-mips.org> <20140422100713.GC42386@pburton-linux.le.imgtec.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140430234933.GB31315@google.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <agordeev@redhat.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40006
+X-archive-position: 40007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agordeev@redhat.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,95 +35,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Apr 30, 2014 at 05:49:33PM -0600, Bjorn Helgaas wrote:
-> I mistakenly assumed this would have to wait because I thought there were
-> other pci_enable_msi_block() users that wouldn't be removed until the v3.16
-> merge window.  But I think I was wrong: I put your GenWQE patch in my tree,
-> and I think that was the last use, so I can just add this patch on top.
+On Tue, 22 Apr 2014, Paul Burton wrote:
 
-That is right, GenWQE is the last one.
-
-> But I need a little help understanding the changelog:
+> >  First of all, shouldn't all of this stuff be wired into 
+> > mips_machine_power_off rather than mips_machine_halt?  I would have 
+> > thought mips_machine_halt is supposed to get back to the console monitor 
+> > prompt (YAMON in this case) without restarting or powering off the system, 
+> > and if that's impossible, then loop indefinitely (that's the -H vs -P 
+> > action option to shutdown(8); see the details in the manual).
 > 
-> > Up until now, when enabling MSI mode for a device a single
-> > successful call to arch_msi_check_device() was followed by
-> > a single call to arch_setup_msi_irqs() function.
+> Perhaps. Currently there is no mips_machine_power_off - both
+> _machine_halt & pm_power_off point at mips_machine_halt and its existing
+> behaviour is to reset the system. That is, regardless of whether you
+> intend to halt, power off or reset you always get a reset.
+
+ Fair enough.  With no sophisticated handlers in place this could have 
+made sense, although issuing a reset on a halt is IMO dangerous as a 
+system may be set up for auto-boot, and that's certainly not what one 
+wants with `shutdown -h'.  However as you improve handling I think it'll 
+make sense to make it more accurate too.
+
+> Returning to
+> the monitor/bootloader prompt (which may or may not be YAMON) is not
+> generally possible since the memory it was using has probably been
+> overwritten.
+
+ It depends on whether the YAMON memory (first 1MB IIRC) is claimed by the 
+kernel or not; I don't remember offhand.  Also I don't know if YAMON 
+reinstalls its exception handlers on application return.  In principle it 
+should be doable.
+
+> It may make sense to separate halt & power off though, with
+> halt simply executing an infinite loop as you suggest.
+
+ Yes, that would be great if YAMON return turns out infeasible.
+
+> >  Shouldn't the handle on the device and the resource be requested early 
+> > on, where mips_machine_halt (mips_machine_power_off) is installed as the 
+> > halt (power-off) handler?  Especially requesting the resource here seems 
+> > to make little sense to me -- we're about to kill the box, so why bother 
+> > verifying whether it's going to interfere with a random driver?
 > 
-> I understand this part; the following two paths call
-> arch_msi_check_device() once and then arch_setup_msi_irqs() once:
+> Well requesting the I/O region was more about sanity checking that it's
+> present. This could be done earlier I guess, it would just mean keeping
+> around the needed I/O & PCI bus pointers in globals and I don't see the
+> issue with just acquiring them when they're needed.
+
+ I have two issues with that:
+
+1. Drivers generally claim resources at initialisation, not at the time 
+   the resources need to be used.  While the power-off driver is very 
+   simple and single-use only, I see no reason for it to be different.  
+   I find it useful to see what hardware has drivers attached in 
+   /proc/iomem or /proc/ioports too.
+
+2. Any resource claim error message seen at boot can prompt the system 
+   operator to take a corrective action.  When it's only issued at system 
+   shutdown, it's likely it'll be too late already.
+
+Do you think there's anything wrong with these obervations?
+
+> >  I know all the three of the GT-64120/64120A, Bonito and SOC-it system 
+> > controllers support software generation of PCI special cycles, but is the 
+> > method the same across them all?
 > 
->   pci_enable_msi_block
->     pci_msi_check_device
->       arch_msi_check_device
->     msi_capability_init
->       arch_setup_msi_irqs
-> 
->   pci_enable_msix
->     pci_msi_check_device
->       arch_msi_check_device
->     msix_capability_init
->       arch_setup_msi_irqs
-> 
-> > Yet, if arch_msi_check_device() returned success we should be
-> > able to call arch_setup_msi_irqs() multiple times - while it
-> > returns a number of MSI vectors that could have been allocated
-> > (a third state).
-> 
-> I don't know what you mean by "a third state."
+> It's the same for the Galileo GT-64120 & the SOC-it/ROC-it/ROC-it2
+> system controllers. I'm unsure about Bonito, however there is the
+> fallback to the existing reset behaviour if it fails. Working on the
+> GT-64120 & SOC-it+derivatives covers the cases in wide use, ie current
+> physical Malta systems & QEMU (although QEMU doesn't seem to need the
+> special cycle anyway).
 
-That is "a number of MSI vectors that could have been allocated", which
-is neither success nor failure. In previous conversations someone branded
-it this as "third state".
+ ISTR now it may actually be specified like this by the PCI spec, so any 
+PCI host bridge would behave the same.  You should have a copy of the spec 
+available somewhere I presume. :)
 
-> Previously we only called arch_msi_check_device() once.  After your patch,
-> pci_enable_msi_range() can call it several times.  The only non-trivial
-> implementation of arch_msi_check_device() is in powerpc, and all the
-> ppc_md.msi_check_device() possibilities look safe to call multiple times.
-
-Yep, I see it the same way.
-
-> After your patch, the pci_enable_msi_range() path can also call
-> arch_setup_msi_irqs() several times.  I don't see a problem with that --
-> even if the first call succeeds and allocates something, then a subsequent
-> call fails, I assume the allocations will be cleaned up when
-> msi_capability_init() calls free_msi_irqs().
-
-Well, the potential problem related to the fact arch_msi_check_device()
-could be called with 'nvec1' while arch_setup_msi_irqs() could be called
-with 'nvec2', where 'nvec1' > 'nvec2'.
-
-While it is not a problem with current implementations, in therory it is
-possible free_msi_irqs() could be called with 'nvec2' and fail to clean
-up 'nvec1' - 'nvec2' number of resources.
-
-The only assumption that makes the above scenario impossible is if
-arch_msi_check_device() is stateless.
-
-Again, that is purely theoretical with no particular architecture in mind.
-
-> > This update makes use of the assumption described above. It
-> > could have broke things had the architectures done any pre-
-> > allocations or switch to some state in a call to function
-> > arch_msi_check_device(). But because arch_msi_check_device()
-> > is expected stateless and MSI resources are allocated in a
-> > follow-up call to arch_setup_msi_irqs() we should be fine.
-> 
-> I guess you mean that your patch assumes arch_msi_check_device() is
-> stateless.  That looks like a safe assumption to me.
-
-Moreover, if arch_msi_check_device() was not stateless then it would
-be superfluous, since all state switches and allocations are done in
-arch_setup_msi_irqs() anyway.
-
-In fact, I think arch_msi_check_device() could be eliminated, but I
-do not want to engage with PPC folks at this stage ;)
-
-> arch_setup_msi_irqs() is clearly not stateless, but I assume
-> free_msi_irqs() is enough to clean up any state if we fail.
-> 
-> Bjorn
-
--- 
-Regards,
-Alexander Gordeev
-agordeev@redhat.com
+  Maciej

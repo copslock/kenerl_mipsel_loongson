@@ -1,73 +1,70 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Fri, 14 Mar 2014 13:06:07 +0000
-Subject: MIPS: KVM: Pass reserved instruction exceptions to guest
-Message-ID: <20140314130607.Gupyz5j8nrEvrgP6Rt4HDKCKZVg3cCPq5Ex0rfWqiyw@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 May 2014 21:17:55 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:51984 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6843094AbaEATRlGLn2A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 May 2014 21:17:41 +0200
+Received: from c-67-160-228-185.hsd1.ca.comcast.net ([67.160.228.185] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1WfwU9-0005o2-Hv; Thu, 01 May 2014 19:17:33 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1WfwU7-0005SU-MX; Thu, 01 May 2014 12:17:31 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.13.y.z extended stable] Patch "MIPS: Hibernate: Flush TLB entries in swsusp_arch_resume()" has been added to staging queue
+Date:   Thu,  1 May 2014 12:17:31 -0700
+Message-Id: <1398971851-20951-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 40010
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 15505679362270d02c449626385cb74af8905514 upstream.
+This is a note to let you know that I have just added a patch titled
 
-Previously a reserved instruction exception while in guest code would
-cause a KVM internal error if kvm_mips_handle_ri() didn't recognise the
-instruction (including a RDHWR from an unrecognised hardware register).
+    MIPS: Hibernate: Flush TLB entries in swsusp_arch_resume()
 
-However the guest OS should really have the opportunity to catch the
-exception so that it can take the appropriate actions such as sending a
-SIGILL to the guest user process or emulating the instruction itself.
+to the linux-3.13.y-queue branch of the 3.13.y.z extended stable tree 
+which can be found at:
 
-Therefore in these cases emulate a guest RI exception and only return
-EMULATE_FAIL if that fails, being careful to revert the PC first in case
-the exception occurred in a branch delay slot in which case the PC will
-already point to the branch target.
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
 
-Also turn the printk messages relating to these cases into kvm_debug
-messages so that they aren't usually visible.
+This patch is scheduled to be released in version 3.13.11.1.
 
-This allows crashme to run in the guest without killing the entire VM.
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kvm/kvm_mips_emul.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+For more information about the 3.13.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index 4b6274b..e75ef82 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -1571,17 +1571,17 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
- 			arch->gprs[rt] = kvm_read_c0_guest_userlocal(cop0);
- #else
- 			/* UserLocal not implemented */
--			er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
-+			er = EMULATE_FAIL;
- #endif
- 			break;
+Thanks.
+-Kamal
 
- 		default:
--			printk("RDHWR not supported\n");
-+			kvm_debug("RDHWR %#x not supported @ %p\n", rd, opc);
- 			er = EMULATE_FAIL;
- 			break;
- 		}
- 	} else {
--		printk("Emulate RI not supported @ %p: %#x\n", opc, inst);
-+		kvm_debug("Emulate RI not supported @ %p: %#x\n", opc, inst);
- 		er = EMULATE_FAIL;
- 	}
-
-@@ -1590,6 +1590,7 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
- 	 */
- 	if (er == EMULATE_FAIL) {
- 		vcpu->arch.pc = curr_pc;
-+		er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
- 	}
- 	return er;
- }
---
-1.9.1
+------

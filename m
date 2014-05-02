@@ -1,27 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 May 2014 21:07:18 +0200 (CEST)
-Received: from [195.59.15.196] ([195.59.15.196]:49774 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 May 2014 21:44:38 +0200 (CEST)
+Received: from [195.59.15.197] ([195.59.15.197]:35681 "EHLO
         mailapp01.imgtec.com" rhost-flags-FAIL-FAIL-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817074AbaEBTHP1AEyq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 May 2014 21:07:15 +0200
+        by eddie.linux-mips.org with ESMTP id S6817664AbaEBTogsl7Ki (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 May 2014 21:44:36 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 5086C5707673B
-        for <linux-mips@linux-mips.org>; Fri,  2 May 2014 20:07:04 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 6F5D162006B73
+        for <linux-mips@linux-mips.org>; Fri,  2 May 2014 20:44:26 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Fri, 2 May 2014 20:07:07 +0100
+ 14.3.181.6; Fri, 2 May 2014 20:44:29 +0100
 Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Fri, 2 May 2014 20:07:06 +0100
+ 14.3.174.1; Fri, 2 May 2014 20:44:29 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 02/39] MIPS: traps: Add CPU PM callback for trap configuration
-Date:   Fri, 2 May 2014 20:06:59 +0100
-Message-ID: <1399057619-17397-1-git-send-email-paul.burton@imgtec.com>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v2 28/39] MIPS: smp-cps: flush cache after patching mips_cps_core_entry
+Date:   Fri, 2 May 2014 20:44:21 +0100
+Message-ID: <1399059861-26470-1-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
-In-Reply-To: <1397652810-4336-3-git-send-email-paul.burton@imgtec.com>
-References: <1397652810-4336-3-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1397652810-4336-29-git-send-email-paul.burton@imgtec.com>
+References: <1397652810-4336-29-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.79]
@@ -29,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40013
+X-archive-position: 40014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,208 +45,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+The start of mips_cps_core_entry is patched in order to provide the code
+with the address of the CM register region at a point where it will be
+running non-coherent with the rest of the system. However the cache
+wasn't being flushed after that patching which could in principle lead
+to secondary cores using an invalid CM base address.
 
-Implement a CPU power management callback for restoring trap related CPU
-configuration after CPU power up from a low power state. The following
-state is restored:
+The patching is moved to cps_prepare_cpus since local_flush_icache_range
+has not been initialised at the point cps_smp_setup is called.
 
-- Status register
-- HWREna register
-- Exception vector configuration registers
-- Context/XContext register
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 Changes in v2:
-  - Fix the non-CONFIG_MIPS_PGD_C0_CONTEXT case which I broke with a
-    dodgy rebase of this patch (sorry James!).
+  - Use dma_cache_wback_inv instead of local_flush_icache_range in order
+    to ensure that the L2 is also flushed on systems which have one.
 ---
- arch/mips/include/asm/mmu_context.h | 15 ++++--
- arch/mips/kernel/traps.c            | 93 ++++++++++++++++++++++++++++---------
- 2 files changed, 81 insertions(+), 27 deletions(-)
+ arch/mips/kernel/smp-cps.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index e277bba..ecae1dc 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -31,11 +31,15 @@ do {									\
- } while (0)
- 
- #ifdef CONFIG_MIPS_PGD_C0_CONTEXT
-+
-+#define TLBMISS_HANDLER_RESTORE()					\
-+	write_c0_xcontext((unsigned long) smp_processor_id() <<		\
-+			  SMP_CPUID_REGSHIFT)
-+
- #define TLBMISS_HANDLER_SETUP()						\
- 	do {								\
- 		TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir);		\
--		write_c0_xcontext((unsigned long) smp_processor_id() <<	\
--						SMP_CPUID_REGSHIFT);	\
-+		TLBMISS_HANDLER_RESTORE();				\
- 	} while (0)
- 
- #else /* !CONFIG_MIPS_PGD_C0_CONTEXT: using  pgd_current*/
-@@ -47,9 +51,12 @@ do {									\
-  */
- extern unsigned long pgd_current[];
- 
--#define TLBMISS_HANDLER_SETUP()						\
-+#define TLBMISS_HANDLER_RESTORE()					\
- 	write_c0_context((unsigned long) smp_processor_id() <<		\
--						SMP_CPUID_REGSHIFT);	\
-+			 SMP_CPUID_REGSHIFT)
-+
-+#define TLBMISS_HANDLER_SETUP()						\
-+	TLBMISS_HANDLER_RESTORE();					\
- 	back_to_back_c0_hazard();					\
- 	TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
- #endif /* CONFIG_MIPS_PGD_C0_CONTEXT*/
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 074e857..9651f68 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -15,6 +15,7 @@
- #include <linux/bug.h>
- #include <linux/compiler.h>
- #include <linux/context_tracking.h>
-+#include <linux/cpu_pm.h>
- #include <linux/kexec.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -1865,32 +1866,16 @@ static int __init ulri_disable(char *s)
- }
- __setup("noulri", ulri_disable);
- 
--void per_cpu_trap_init(bool is_boot_cpu)
-+/* configure STATUS register */
-+static void configure_status(void)
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index c7879fb..c3661ca 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -44,7 +44,6 @@ static void __init cps_smp_setup(void)
  {
--	unsigned int cpu = smp_processor_id();
--	unsigned int status_set = ST0_CU0;
--	unsigned int hwrena = cpu_hwrena_impl_bits;
--#ifdef CONFIG_MIPS_MT_SMTC
--	int secondaryTC = 0;
--	int bootTC = (cpu == 0);
+ 	unsigned int ncores, nvpes, core_vpes;
+ 	int c, v;
+-	u32 *entry_code;
+ 
+ 	/* Detect & record VPE topology */
+ 	ncores = mips_cm_numcores();
+@@ -82,10 +81,6 @@ static void __init cps_smp_setup(void)
+ 	/* Initialise core 0 */
+ 	mips_cps_core_init();
+ 
+-	/* Patch the start of mips_cps_core_entry to provide the CM base */
+-	entry_code = (u32 *)&mips_cps_core_entry;
+-	UASM_i_LA(&entry_code, 3, (long)mips_cm_base);
 -
--	/*
--	 * Only do per_cpu_trap_init() for first TC of Each VPE.
--	 * Note that this hack assumes that the SMTC init code
--	 * assigns TCs consecutively and in ascending order.
--	 */
--
--	if (((read_c0_tcbind() & TCBIND_CURTC) != 0) &&
--	    ((read_c0_tcbind() & TCBIND_CURVPE) == cpu_data[cpu - 1].vpe_id))
--		secondaryTC = 1;
--#endif /* CONFIG_MIPS_MT_SMTC */
--
- 	/*
- 	 * Disable coprocessors and select 32-bit or 64-bit addressing
- 	 * and the 16/32 or 32/32 FPR register model.  Reset the BEV
- 	 * flag that some firmware may have left set and the TS bit (for
- 	 * IP27).  Set XX for ISA IV code to work.
- 	 */
-+	unsigned int status_set = ST0_CU0;
- #ifdef CONFIG_64BIT
- 	status_set |= ST0_FR|ST0_KX|ST0_SX|ST0_UX;
- #endif
-@@ -1901,6 +1886,12 @@ void per_cpu_trap_init(bool is_boot_cpu)
- 
- 	change_c0_status(ST0_CU|ST0_MX|ST0_RE|ST0_FR|ST0_BEV|ST0_TS|ST0_KX|ST0_SX|ST0_UX,
- 			 status_set);
-+}
-+
-+/* configure HWRENA register */
-+static void configure_hwrena(void)
-+{
-+	unsigned int hwrena = cpu_hwrena_impl_bits;
- 
- 	if (cpu_has_mips_r2)
- 		hwrena |= 0x0000000f;
-@@ -1910,11 +1901,10 @@ void per_cpu_trap_init(bool is_boot_cpu)
- 
- 	if (hwrena)
- 		write_c0_hwrena(hwrena);
-+}
- 
--#ifdef CONFIG_MIPS_MT_SMTC
--	if (!secondaryTC) {
--#endif /* CONFIG_MIPS_MT_SMTC */
--
-+static void configure_exception_vector(void)
-+{
- 	if (cpu_has_veic || cpu_has_vint) {
- 		unsigned long sr = set_c0_status(ST0_BEV);
- 		write_c0_ebase(ebase);
-@@ -1930,6 +1920,34 @@ void per_cpu_trap_init(bool is_boot_cpu)
- 		} else
- 			set_c0_cause(CAUSEF_IV);
- 	}
-+}
-+
-+void per_cpu_trap_init(bool is_boot_cpu)
-+{
-+	unsigned int cpu = smp_processor_id();
-+#ifdef CONFIG_MIPS_MT_SMTC
-+	int secondaryTC = 0;
-+	int bootTC = (cpu == 0);
-+
-+	/*
-+	 * Only do per_cpu_trap_init() for first TC of Each VPE.
-+	 * Note that this hack assumes that the SMTC init code
-+	 * assigns TCs consecutively and in ascending order.
-+	 */
-+
-+	if (((read_c0_tcbind() & TCBIND_CURTC) != 0) &&
-+	    ((read_c0_tcbind() & TCBIND_CURVPE) == cpu_data[cpu - 1].vpe_id))
-+		secondaryTC = 1;
-+#endif /* CONFIG_MIPS_MT_SMTC */
-+
-+	configure_status();
-+	configure_hwrena();
-+
-+#ifdef CONFIG_MIPS_MT_SMTC
-+	if (!secondaryTC) {
-+#endif /* CONFIG_MIPS_MT_SMTC */
-+
-+	configure_exception_vector();
- 
- 	/*
- 	 * Before R2 both interrupt numbers were fixed to 7, so on R2 only:
-@@ -2185,3 +2203,32 @@ void __init trap_init(void)
- 
- 	cu2_notifier(default_cu2_call, 0x80000000);	/* Run last  */
+ 	/* Make core 0 coherent with everything */
+ 	write_gcr_cl_coherence(0xff);
  }
+@@ -93,9 +88,16 @@ static void __init cps_smp_setup(void)
+ static void __init cps_prepare_cpus(unsigned int max_cpus)
+ {
+ 	unsigned ncores, core_vpes, c;
++	u32 *entry_code;
+ 
+ 	mips_mt_set_cpuoptions();
+ 
++	/* Patch the start of mips_cps_core_entry to provide the CM base */
++	entry_code = (u32 *)&mips_cps_core_entry;
++	UASM_i_LA(&entry_code, 3, (long)mips_cm_base);
++	dma_cache_wback_inv((unsigned long)&mips_cps_core_entry,
++			    (void *)entry_code - (void *)&mips_cps_core_entry);
 +
-+static int trap_pm_notifier(struct notifier_block *self, unsigned long cmd,
-+			    void *v)
-+{
-+	switch (cmd) {
-+	case CPU_PM_ENTER_FAILED:
-+	case CPU_PM_EXIT:
-+		configure_status();
-+		configure_hwrena();
-+		configure_exception_vector();
-+
-+		/* Restore register with CPU number for TLB handlers */
-+		TLBMISS_HANDLER_RESTORE();
-+
-+		break;
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block trap_pm_notifier_block = {
-+	.notifier_call = trap_pm_notifier,
-+};
-+
-+static int __init trap_pm_init(void)
-+{
-+	return cpu_pm_register_notifier(&trap_pm_notifier_block);
-+}
-+arch_initcall(trap_pm_init);
+ 	/* Allocate core boot configuration structs */
+ 	ncores = mips_cm_numcores();
+ 	mips_cps_core_bootcfg = kcalloc(ncores, sizeof(*mips_cps_core_bootcfg),
 -- 
 1.8.5.3

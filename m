@@ -1,41 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 May 2014 21:48:59 +0200 (CEST)
-Received: from [195.59.15.196] ([195.59.15.196]:28093 "EHLO
-        mailapp01.imgtec.com" rhost-flags-FAIL-FAIL-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817664AbaEBTs53N0ip (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 May 2014 21:48:57 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 269B98697B69
-        for <linux-mips@linux-mips.org>; Fri,  2 May 2014 20:48:47 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Fri, 2 May
- 2014 20:48:50 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Fri, 2 May 2014 20:48:50 +0100
-Received: from pburton-linux.le.imgtec.org (192.168.154.79) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Fri, 2 May 2014 20:48:49 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 34/39] MIPS: smp-cps: duplicate core0 CCA on secondary cores
-Date:   Fri, 2 May 2014 20:48:45 +0100
-Message-ID: <1399060125-26841-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 1.8.5.3
-In-Reply-To: <1397653555-4758-1-git-send-email-paul.burton@imgtec.com>
-References: <1397653555-4758-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2014 05:04:24 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50179 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821742AbaEEDEG2sKoq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 May 2014 05:04:06 +0200
+Date:   Mon, 5 May 2014 04:04:01 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: microMIPS: Work around an assembler bug.
+In-Reply-To: <5345A2EB.8020109@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1405050400530.21408@eddie.linux-mips.org>
+References: <1396892446-23883-1-git-send-email-Steven.Hill@imgtec.com> <5345A2EB.8020109@imgtec.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.79]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40018
+X-archive-position: 40019
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,72 +35,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Rather than hardcoding CCA=0x5 for secondary cores, re-use the CCA from
-the boot CPU. This allows overrides of the CCA using the cca= kernel
-parameter to take effect on all CPUs for consistency.
+On Wed, 9 Apr 2014, Steven J. Hill wrote:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
-Changes in v2:
-  - Rebase atop v2 of patch 28.
----
- arch/mips/kernel/cps-vec.S | 11 +++++++----
- arch/mips/kernel/smp-cps.c |  8 +++++++-
- 2 files changed, 14 insertions(+), 5 deletions(-)
+> > In newer toolchains, the 16-bit branch delay slot instruction
+> > calculation is wrong. We get a message very similar to:
+> > 
+> >    {standard input}: Assembler messages:
+> >    {standard input}:7035: Warning: wrong size instruction
+> >    in a 16-bit branch delay slot
+> > 
+> > This corner case only occurs in 'arch/mips/kernel/traps.c' and
+> > we add the '-fno-delayed-branch' option when compiling it.
+> > 
+> > Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> >
+> I rejected this in patchwork. Just making sure you do not use it.
 
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index 1c865ae..6f4f739 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -45,10 +45,12 @@
- 
- LEAF(mips_cps_core_entry)
- 	/*
--	 * These first 8 bytes will be patched by cps_smp_setup to load the
--	 * base address of the CM GCRs into register v1.
-+	 * These first 12 bytes will be patched by cps_smp_setup to load the
-+	 * base address of the CM GCRs into register v1 and the CCA to use into
-+	 * register s0.
- 	 */
- 	.quad	0
-+	.word	0
- 
- 	/* Check whether we're here due to an NMI */
- 	mfc0	k0, CP0_STATUS
-@@ -139,10 +141,11 @@ icache_done:
- 	 add	a0, a0, t0
- dcache_done:
- 
--	/* Set Kseg0 cacheable, coherent, write-back, write-allocate */
-+	/* Set Kseg0 CCA to that in s0 */
- 	mfc0	t0, CP0_CONFIG
- 	ori	t0, 0x7
--	xori	t0, 0x2
-+	xori	t0, 0x7
-+	or	t0, t0, s0
- 	mtc0	t0, CP0_CONFIG
- 	ehb
- 
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index 870897d..ec4f115 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -123,9 +123,15 @@ static void __init cps_prepare_cpus(unsigned int max_cpus)
- 		}
- 	}
- 
--	/* Patch the start of mips_cps_core_entry to provide the CM base */
-+	/*
-+	 * Patch the start of mips_cps_core_entry to provide:
-+	 *
-+	 * v0 = CM base address
-+	 * s0 = kseg0 CCA
-+	 */
- 	entry_code = (u32 *)&mips_cps_core_entry;
- 	UASM_i_LA(&entry_code, 3, (long)mips_cm_base);
-+	uasm_i_addiu(&entry_code, 16, 0, cca);
- 	dma_cache_wback_inv((unsigned long)&mips_cps_core_entry,
- 			    (void *)entry_code - (void *)&mips_cps_core_entry);
- 
--- 
-1.8.5.3
+ In any case I think using -mno-jals rather than -fno-delayed-branch would 
+be a better workaround, wouldn't it?
+
+  Maciej

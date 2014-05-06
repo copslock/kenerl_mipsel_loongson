@@ -1,38 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2014 15:00:30 +0200 (CEST)
-Received: from demumfd002.nsn-inter.net ([93.183.12.31]:36903 "EHLO
-        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816879AbaEFNA2N80o5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 May 2014 15:00:28 +0200
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd002.nsn-inter.net (8.14.3/8.14.3) with ESMTP id s46D0MSa027843
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-        Tue, 6 May 2014 13:00:22 GMT
-Received: from ak-desktop.emea.nsn-net.net ([10.144.45.49])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id s46D0Kuf002474;
-        Tue, 6 May 2014 15:00:21 +0200
-From:   Aaro Koskinen <aaro.koskinen@nsn.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     Aaro Koskinen <aaro.koskinen@nsn.com>
-Subject: [PATCH RESEND] MIPS: Add __SANE_USERSPACE_TYPES__ to asm/types.h for LL64
-Date:   Tue,  6 May 2014 15:55:43 +0300
-Message-Id: <1399380943-22082-1-git-send-email-aaro.koskinen@nsn.com>
-X-Mailer: git-send-email 1.9.1
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 1272
-X-purgate-ID: 151667::1399381222-00001564-B1558E5E/0/0
-Return-Path: <aaro.koskinen@nsn.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2014 17:52:19 +0200 (CEST)
+Received: from mail-bn1blp0188.outbound.protection.outlook.com ([207.46.163.188]:7693
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6837156AbaEFPwQjSF-R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 6 May 2014 17:52:16 +0200
+Received: from CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) by
+ CO1PR07MB298.namprd07.prod.outlook.com (10.141.69.26) with Microsoft SMTP
+ Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:52:08 +0000
+Received: from alberich.caveonetworks.com (2.171.87.122) by
+ CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) with Microsoft SMTP
+ Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:52:07 +0000
+From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+To:     Pekka Enberg <penberg@kernel.org>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        <kvm@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH 01/11] kvm tools: Print message on failure of KVM_CREATE_VM
+Date:   Tue, 6 May 2014 17:51:21 +0200
+Message-ID: <1399391491-5021-2-git-send-email-andreas.herrmann@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+References: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [2.171.87.122]
+X-ClientProxiedBy: DBXPR07CA010.eurprd07.prod.outlook.com (10.255.191.168)
+ To CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19)
+X-Forefront-PRVS: 0203C93D51
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019001)(6009001)(428001)(199002)(189002)(77982001)(83072002)(85852003)(89996001)(92566001)(31966008)(77156001)(99396002)(20776003)(47776003)(83322001)(19580405001)(74662001)(74502001)(19580395003)(92726001)(80022001)(33646001)(53416003)(66066001)(2009001)(4396001)(36756003)(88136002)(81542001)(101416001)(50226001)(42186004)(93916002)(86362001)(81342001)(46102001)(79102001)(62966002)(50466002)(76482001)(87976001)(87286001)(50986999)(48376002)(76176999);DIR:OUT;SFP:1102;SCL:1;SRVR:CO1PR07MB396;H:alberich.caveonetworks.com;FPR:F9AEF021.8E69768.F7D52BFB.BDC98A09.200D0;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+Received-SPF: None (: caviumnetworks.com does not designate permitted sender
+ hosts)
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40023
+X-archive-position: 40024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nsn.com
+X-original-sender: andreas.herrmann@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,38 +53,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow 64-bit userspace programs to use ll64 types. The define name
-comes from commit 2c9c6ce0199a4d252e20c531cfdc9d24e39235c0 (powerpc:
-Add __SANE_USERSPACE_TYPES__ to asm/types.h for LL64).
+From: David Daney <david.daney@cavium.com>
 
-The patch allows to compile perf on MIPS64 and eliminates the following
-warnings:
-
-tests/attr.c:74:4: error: format '%llu' expects argument of type 'long
-long unsigned int', but argument 6 has type '__u64' [-Werror=format=]
-
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nsn.com>
+Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 ---
- arch/mips/include/uapi/asm/types.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/kvm/kvm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/include/uapi/asm/types.h b/arch/mips/include/uapi/asm/types.h
-index 7ac9d0b..f3dd9ff 100644
---- a/arch/mips/include/uapi/asm/types.h
-+++ b/arch/mips/include/uapi/asm/types.h
-@@ -14,9 +14,12 @@
- /*
-  * We don't use int-l64.h for the kernel anymore but still use it for
-  * userspace to avoid code changes.
-+ *
-+ * However, some user programs (e.g. perf) may not want this. They can
-+ * flag __SANE_USERSPACE_TYPES__ to get int-ll64.h here.
-  */
- #ifndef __KERNEL__
--# if _MIPS_SZLONG == 64
-+# if _MIPS_SZLONG == 64 && !defined(__SANE_USERSPACE_TYPES__)
- #  include <asm-generic/int-l64.h>
- # else
- #  include <asm-generic/int-ll64.h>
+diff --git a/tools/kvm/kvm.c b/tools/kvm/kvm.c
+index d7d2e84..7bd20d3 100644
+--- a/tools/kvm/kvm.c
++++ b/tools/kvm/kvm.c
+@@ -286,6 +286,7 @@ int kvm__init(struct kvm *kvm)
+ 
+ 	kvm->vm_fd = ioctl(kvm->sys_fd, KVM_CREATE_VM, 0);
+ 	if (kvm->vm_fd < 0) {
++		pr_err("KVM_CREATE_VM ioctl");
+ 		ret = kvm->vm_fd;
+ 		goto err_sys_fd;
+ 	}
 -- 
-1.9.1
+1.7.9.5

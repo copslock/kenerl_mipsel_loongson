@@ -1,46 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2014 17:56:07 +0200 (CEST)
-Received: from mail-by2lp0238.outbound.protection.outlook.com ([207.46.163.238]:46398
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6837949AbaEFPxLT8aN1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 May 2014 17:53:11 +0200
-Received: from CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) by
- CO1PR07MB111.namprd07.prod.outlook.com (10.242.167.17) with Microsoft SMTP
- Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:53:04 +0000
-Received: from alberich.caveonetworks.com (2.171.87.122) by
- CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) with Microsoft SMTP
- Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:53:03 +0000
-From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-To:     Pekka Enberg <penberg@kernel.org>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        <kvm@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH 11/11] kvm tools: Modify term_putc to write more than one char
-Date:   Tue, 6 May 2014 17:51:31 +0200
-Message-ID: <1399391491-5021-12-git-send-email-andreas.herrmann@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com>
-References: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2014 00:05:06 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:58163 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822096AbaEFWFDCmaJH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 May 2014 00:05:03 +0200
+Date:   Tue, 6 May 2014 23:05:02 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Alessandro Zummo <a.zummo@towertech.it>
+cc:     Andrew Morton <akpm@linux-foundation.org>,
+        rtc-linux@googlegroups.com, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [rtc-linux] [PATCH 1/2] RTC: rtc-cmos: drivers/char/rtc.c features
+ for DECstation support
+In-Reply-To: <20140506115458.4010da2e@linux.lan.towertech.it>
+Message-ID: <alpine.LFD.2.11.1405062258130.21408@eddie.linux-mips.org>
+References: <alpine.LFD.2.11.1404192224250.11598@eddie.linux-mips.org> <20140506115458.4010da2e@linux.lan.towertech.it>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [2.171.87.122]
-X-ClientProxiedBy: DBXPR07CA010.eurprd07.prod.outlook.com (10.255.191.168)
- To CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19)
-X-Forefront-PRVS: 0203C93D51
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019001)(979002)(6009001)(428001)(199002)(189002)(77982001)(83072002)(85852003)(89996001)(92566001)(31966008)(77156001)(99396002)(20776003)(47776003)(83322001)(19580405001)(74662001)(74502001)(19580395003)(92726001)(80022001)(33646001)(53416003)(66066001)(2009001)(4396001)(36756003)(88136002)(81542001)(101416001)(50226001)(42186004)(93916002)(86362001)(81342001)(46102001)(79102001)(62966002)(50466002)(76482001)(87976001)(87286001)(37156001)(50986999)(48376002)(76176999)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:CO1PR07MB396;H:alberich.caveonetworks.com;FPR:9B3EF851.2C96C5A9.73D4ABBB.80E98A4B.20184;MLV:ovrnspm;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (: caviumnetworks.com does not designate permitted sender
- hosts)
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <Andreas.Herrmann@caviumnetworks.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40035
+X-archive-position: 40036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.herrmann@caviumnetworks.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,39 +38,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On Tue, 6 May 2014, Alessandro Zummo wrote:
 
-It is a performance enhancement. When running in a simulator, each
-system call to write a character takes a lot of time.  Batching them
-up decreases the overhead (in the root kernel) of each virtio console
-write.
+> > This brings in drivers/char/rtc.c functionality required for DECstation 
+> > and, should the maintainers decide to switch, Alpha systems to use 
+> > rtc-cmos.
+> 
+>  Seems sane. We need to be sure it doesn't break anything
+>  on non-Alpha machines. Did you test it on x86? It would be fine if
+>  we can get a couple of Tested-by:
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
----
- tools/kvm/term.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Thanks for your review.  I can't test x86 easily/immediately, but I'll 
+see what I can do, and will also appreciate if people can check that this 
+change didn't cause any regressions.  Also Andrew was kind enough to pull 
+this patch into his -mm tree, so hopefully any breakage will show up soon.
 
-diff --git a/tools/kvm/term.c b/tools/kvm/term.c
-index 3de410b..b153eed 100644
---- a/tools/kvm/term.c
-+++ b/tools/kvm/term.c
-@@ -52,11 +52,14 @@ int term_getc(struct kvm *kvm, int term)
- int term_putc(char *addr, int cnt, int term)
- {
- 	int ret;
-+	int num_remaining = cnt;
- 
--	while (cnt--) {
--		ret = write(term_fds[term][TERM_FD_OUT], addr++, 1);
-+	while (num_remaining) {
-+		ret = write(term_fds[term][TERM_FD_OUT], addr, num_remaining);
- 		if (ret < 0)
- 			return 0;
-+		num_remaining -= ret;
-+		addr += ret;
- 	}
- 
- 	return cnt;
--- 
-1.7.9.5
+  Maciej

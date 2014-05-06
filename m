@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2014 17:53:00 +0200 (CEST)
-Received: from mail-by2lp0235.outbound.protection.outlook.com ([207.46.163.235]:14371
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2014 17:53:20 +0200 (CEST)
+Received: from mail-bn1blp0185.outbound.protection.outlook.com ([207.46.163.185]:32734
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6837583AbaEFPw3wwfR5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 May 2014 17:52:29 +0200
+        id S6837585AbaEFPwcwh0R3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 6 May 2014 17:52:32 +0200
 Received: from CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) by
- CO1PR07MB940.namprd07.prod.outlook.com (10.141.73.25) with Microsoft SMTP
- Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:52:21 +0000
+ CO1PR07MB377.namprd07.prod.outlook.com (10.141.74.156) with Microsoft SMTP
+ Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:52:25 +0000
 Received: from alberich.caveonetworks.com (2.171.87.122) by
  CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) with Microsoft SMTP
- Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:52:20 +0000
+ Server (TLS) id 15.0.929.12; Tue, 6 May 2014 15:52:24 +0000
 From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 To:     Pekka Enberg <penberg@kernel.org>
 CC:     David Daney <ddaney.cavm@gmail.com>,
         Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
         <kvm@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH 03/11] kvm tools: Move definition of TERM_MAX_DEVS to header
-Date:   Tue, 6 May 2014 17:51:23 +0200
-Message-ID: <1399391491-5021-4-git-send-email-andreas.herrmann@caviumnetworks.com>
+Subject: [PATCH 04/11] kvm tools: Allow to load ELF binary
+Date:   Tue, 6 May 2014 17:51:24 +0200
+Message-ID: <1399391491-5021-5-git-send-email-andreas.herrmann@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com>
 References: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com>
@@ -27,7 +27,7 @@ X-Originating-IP: [2.171.87.122]
 X-ClientProxiedBy: DBXPR07CA010.eurprd07.prod.outlook.com (10.255.191.168)
  To CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19)
 X-Forefront-PRVS: 0203C93D51
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019001)(6009001)(428001)(199002)(189002)(77982001)(83072002)(85852003)(89996001)(92566001)(31966008)(77156001)(99396002)(20776003)(47776003)(83322001)(19580405001)(74662001)(74502001)(19580395003)(92726001)(80022001)(33646001)(53416003)(66066001)(2009001)(4396001)(36756003)(88136002)(81542001)(101416001)(50226001)(42186004)(93916002)(86362001)(81342001)(46102001)(79102001)(62966002)(50466002)(76482001)(87976001)(87286001)(50986999)(48376002)(76176999);DIR:OUT;SFP:1102;SCL:1;SRVR:CO1PR07MB396;H:alberich.caveonetworks.com;FPR:F26675E1.2F9435A2.FBE72B4B.80E88A0B.20136;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019001)(6009001)(428001)(199002)(189002)(77982001)(83072002)(85852003)(89996001)(92566001)(31966008)(77156001)(99396002)(20776003)(47776003)(83322001)(19580405001)(74662001)(74502001)(19580395003)(92726001)(80022001)(33646001)(53416003)(66066001)(2009001)(4396001)(36756003)(88136002)(81542001)(101416001)(50226001)(42186004)(93916002)(86362001)(81342001)(46102001)(79102001)(62966002)(50466002)(76482001)(87976001)(87286001)(50986999)(48376002)(76176999);DIR:OUT;SFP:1102;SCL:1;SRVR:CO1PR07MB396;H:alberich.caveonetworks.com;FPR:F09BFDD2.A9D5A58A.B9676397.29FBE64D.201A9;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:;
 Received-SPF: None (: caviumnetworks.com does not designate permitted sender
  hosts)
 X-OriginatorOrg: caviumnetworks.com
@@ -35,7 +35,7 @@ Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40026
+X-archive-position: 40027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,38 +52,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In order to use it in other C files (in addition to term.c).
-
 Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 ---
- tools/kvm/include/kvm/term.h |    2 ++
- tools/kvm/term.c             |    1 -
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ tools/kvm/include/kvm/kvm.h |    1 +
+ tools/kvm/kvm.c             |   11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/tools/kvm/include/kvm/term.h b/tools/kvm/include/kvm/term.h
-index 5f63457..dc9882e 100644
---- a/tools/kvm/include/kvm/term.h
-+++ b/tools/kvm/include/kvm/term.h
-@@ -10,6 +10,8 @@
- #define CONSOLE_VIRTIO	2
- #define CONSOLE_HV	3
+diff --git a/tools/kvm/include/kvm/kvm.h b/tools/kvm/include/kvm/kvm.h
+index d05b936..3643fe3 100644
+--- a/tools/kvm/include/kvm/kvm.h
++++ b/tools/kvm/include/kvm/kvm.h
+@@ -109,6 +109,7 @@ void *guest_flat_to_host(struct kvm *kvm, u64 offset);
+ u64 host_to_guest_flat(struct kvm *kvm, void *ptr);
  
-+#define TERM_MAX_DEVS	4
+ int load_flat_binary(struct kvm *kvm, int fd_kernel, int fd_initrd, const char *kernel_cmdline);
++int load_elf_binary(struct kvm *kvm, int fd_kernel, int fd_initrd, const char *kernel_cmdline);
+ bool load_bzimage(struct kvm *kvm, int fd_kernel, int fd_initrd, const char *kernel_cmdline);
+ 
+ /*
+diff --git a/tools/kvm/kvm.c b/tools/kvm/kvm.c
+index 7bd20d3..cfc0693 100644
+--- a/tools/kvm/kvm.c
++++ b/tools/kvm/kvm.c
+@@ -349,6 +349,12 @@ static bool initrd_check(int fd)
+ 		!memcmp(id, CPIO_MAGIC, 4);
+ }
+ 
++int __attribute__((__weak__)) load_elf_binary(struct kvm *kvm, int fd_kernel,
++				int fd_initrd, const char *kernel_cmdline)
++{
++	return false;
++}
 +
- int term_putc_iov(struct iovec *iov, int iovcnt, int term);
- int term_getc_iov(struct kvm *kvm, struct iovec *iov, int iovcnt, int term);
- int term_putc(char *addr, int cnt, int term);
-diff --git a/tools/kvm/term.c b/tools/kvm/term.c
-index 214f5e2..3de410b 100644
---- a/tools/kvm/term.c
-+++ b/tools/kvm/term.c
-@@ -16,7 +16,6 @@
+ bool kvm__load_kernel(struct kvm *kvm, const char *kernel_filename,
+ 		const char *initrd_filename, const char *kernel_cmdline)
+ {
+@@ -375,6 +381,11 @@ bool kvm__load_kernel(struct kvm *kvm, const char *kernel_filename,
  
- #define TERM_FD_IN      0
- #define TERM_FD_OUT     1
--#define TERM_MAX_DEVS	4
+ 	pr_warning("%s is not a bzImage. Trying to load it as a flat binary...", kernel_filename);
  
- static struct termios	orig_term;
++	ret = load_elf_binary(kvm, fd_kernel, fd_initrd, kernel_cmdline);
++
++	if (ret)
++		goto found_kernel;
++
+ 	ret = load_flat_binary(kvm, fd_kernel, fd_initrd, kernel_cmdline);
  
+ 	if (ret)
 -- 
 1.7.9.5

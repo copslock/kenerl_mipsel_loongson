@@ -1,54 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2014 17:58:27 +0200 (CEST)
-Received: from mail-lb0-f176.google.com ([209.85.217.176]:48386 "EHLO
-        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6839029AbaEGP6VkJBAA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 May 2014 17:58:21 +0200
-Received: by mail-lb0-f176.google.com with SMTP id p9so1689160lbv.35
-        for <linux-mips@linux-mips.org>; Wed, 07 May 2014 08:58:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=YEt6vP/JTJOczNbCzug3mN3Ie/1apJUaDdo/bWIBWgU=;
-        b=ctG2gAnIoDKh1TwIIMSPo+XbJQVnHdy9+k98aqaiFM0Bjks3Yn8tr5ge3Y8W0xCqWd
-         nkrjqy4R4Bb2VB9diYTrgPlOcs4auPD6pfiXL4WXLfMOw2fWD1kOUljOXQAha/lIsWQe
-         wCswIGXQN7ZifL8W1KgW6m1R59JEtiz66uTS+17fkaV+KGPyJItmJKdHPYBUD7UCDj18
-         en2/D5Sqzq3e5ZS2r2siIqQ3s6gO56+e6nzM2wEjWvLisqtGBocxeGORyxSvH7bQ+ejf
-         hKj2LVe8ywy7s9lCjBcWrzWLy7ia4J30qTyT7KkJ3mihd0r0Tsle7hGodd/wQOo7Yzhm
-         A+0Q==
-X-Gm-Message-State: ALoCoQla6dCEw/3tFBQwsZf2zKIozMAaHasC5kqfTr70F5UW1VrPuRfxagBdlO5/55dSoQEXSFBJ
-X-Received: by 10.112.180.225 with SMTP id dr1mr3843177lbc.51.1399478294913;
-        Wed, 07 May 2014 08:58:14 -0700 (PDT)
-Received: from [192.168.2.4] (ppp85-140-133-75.pppoe.mtu-net.ru. [85.140.133.75])
-        by mx.google.com with ESMTPSA id d4sm17454781lbr.27.2014.05.07.08.58.13
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 07 May 2014 08:58:14 -0700 (PDT)
-Message-ID: <536A5826.6010008@cogentembedded.com>
-Date:   Wed, 07 May 2014 19:58:30 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2014 16:11:14 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:29226 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817088AbaEHOLCol6gP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 May 2014 16:11:02 +0200
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s48EAfQ9012306
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 8 May 2014 10:10:41 -0400
+Received: from sifl.localnet (vpn-53-151.rdu2.redhat.com [10.10.53.151])
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s48EAeGg011548
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 8 May 2014 10:10:41 -0400
+From:   Paul Moore <pmoore@redhat.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Andy Lutomirski <luto@amacapital.net>,
+        Eric Paris <eparis@redhat.com>
+Subject: Re: [PATCH 3.15] MIPS: Add new AUDIT_ARCH token for the N32 ABI on MIPS64
+Date:   Thu, 08 May 2014 10:10:40 -0400
+Message-ID: <6396078.TUTnZW0Rh0@sifl>
+Organization: Red Hat
+User-Agent: KMail/4.13 (Linux/3.14.1-gentoo; KDE/4.13.0; x86_64; ; )
+In-Reply-To: <5360C13A.5040902@imgtec.com>
+References: <1397550996-14805-1-git-send-email-markos.chandras@imgtec.com> <2110472.rttbk0K4Ne@sifl> <5360C13A.5040902@imgtec.com>
 MIME-Version: 1.0
-To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        Pekka Enberg <penberg@kernel.org>
-CC:     David Daney <ddaney.cavm@gmail.com>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 11/11] kvm tools: Modify term_putc to write more than
- one char
-References: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com> <1399391491-5021-12-git-send-email-andreas.herrmann@caviumnetworks.com>
-In-Reply-To: <1399391491-5021-12-git-send-email-andreas.herrmann@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+Return-Path: <pmoore@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40046
+X-archive-position: 40049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: pmoore@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,46 +48,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Wednesday, April 30, 2014 10:24:10 AM Markos Chandras wrote:
+> On 04/24/2014 08:19 PM, Paul Moore wrote:
+> > On Tuesday, April 22, 2014 03:40:36 PM Markos Chandras wrote:
+> >> A MIPS64 kernel may support ELF files for all 3 MIPS ABIs
+> >> (O32, N32, N64). Furthermore, the AUDIT_ARCH_MIPS{,EL}64 token
+> >> does not provide enough information about the ABI for the 64-bit
+> >> process. As a result of which, userland needs to use complex
+> >> seccomp filters to decide whether a syscall belongs to the o32 or n32
+> >> or n64 ABI. Therefore, a new arch token for MIPS64/n32 is added so it
+> >> can be used by seccomp to explicitely set syscall filters for this ABI.
+> >> 
+> >> Link: http://sourceforge.net/p/libseccomp/mailman/message/32239040/
+> >> Cc: Andy Lutomirski <luto@amacapital.net>
+> >> Cc: Eric Paris <eparis@redhat.com>
+> >> Cc: Paul Moore <pmoore@redhat.com>
+> >> Cc: Ralf Baechle <ralf@linux-mips.org>
+> >> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> >> ---
+> >> Ralf, can we please have this in 3.15 (Assuming it's ACK'd)?
+> >> 
+> >> Thanks a lot!
+> >> ---
+> >> 
+> >>  arch/mips/include/asm/syscall.h |  2 ++
+> >>  include/uapi/linux/audit.h      | 12 ++++++++++++
+> >>  2 files changed, 14 insertions(+)
+> > 
+> > I'm far from qualified to ACK any MIPS specific patches, but I do want to
+> > add my support for this patch.  As Markos states above, without this
+> > patch any seccomp BPF code will be more complex than necessary (see x32
+> > for an idea) and projects that try to abstract away the arch/ABI specific
+> > nature of the BPF seccomp filters will be have to do a lot more work. 
+> > Please merge this patch, or something similar, along with the MIPS BPF
+> > seccomp filters in 3.15; waiting until 3.16 will be too late.
+> > 
+> > I also don't want to speak for the audit folks (Eric?), but I think you'll
+> > hear that this patch makes life much easier for them as well.
+> > 
+> > Thanks,
+> > -Paul
+> 
+> Ralf ping? Can we please have this in 3.15 so userspace application get
+> the updated token instead of using the AUDIT_ARCH_MIPS{,EL}64 for both
+> n32 and n64? It may be harder to change it once 3.15 is released (ABI
+> break).
 
-On 06-05-2014 19:51, Andreas Herrmann wrote:
+I haven't heard anything on this patch and I don't see it in the tree this 
+morning.  Can we please get this into the 3.15 release?  If not, can you 
+please explain why so we have something to go on?
 
-> From: David Daney <david.daney@cavium.com>
+This will cause us a lot of pain in userspace if we don't get this patch 
+merged.
 
-> It is a performance enhancement. When running in a simulator, each
-> system call to write a character takes a lot of time.  Batching them
-> up decreases the overhead (in the root kernel) of each virtio console
-> write.
-
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-> ---
->   tools/kvm/term.c |    7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-
-> diff --git a/tools/kvm/term.c b/tools/kvm/term.c
-> index 3de410b..b153eed 100644
-> --- a/tools/kvm/term.c
-> +++ b/tools/kvm/term.c
-> @@ -52,11 +52,14 @@ int term_getc(struct kvm *kvm, int term)
->   int term_putc(char *addr, int cnt, int term)
->   {
->   	int ret;
-> +	int num_remaining = cnt;
->
-> -	while (cnt--) {
-> -		ret = write(term_fds[term][TERM_FD_OUT], addr++, 1);
-> +	while (num_remaining) {
-> +		ret = write(term_fds[term][TERM_FD_OUT], addr, num_remaining);
->   		if (ret < 0)
->   			return 0;
-
-    Perhaps 'return cnt - num_remaining' instead?
-
-> +		num_remaining -= ret;
-> +		addr += ret;
->   	}
->
->   	return cnt;
-
-WBR, Sergei
+-- 
+paul moore
+security and virtualization @ redhat

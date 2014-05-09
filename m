@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 12:59:17 +0200 (CEST)
-Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:58231 "EHLO
-        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6843058AbaEIK65DFa-7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 12:58:57 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 12:59:43 +0200 (CEST)
+Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:50019 "EHLO
+        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6843060AbaEIK7koajvL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 12:59:40 +0200
 X-IronPort-AV: E=Sophos;i="4.97,1017,1389772800"; 
-   d="scan'208";a="28885174"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw1-out.broadcom.com with ESMTP; 09 May 2014 05:14:33 -0700
+   d="scan'208";a="28304138"
+Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
+  by mail-gw3-out.broadcom.com with ESMTP; 09 May 2014 04:21:05 -0700
 Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Fri, 9 May 2014 03:58:49 -0700
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
+ (TLS) id 14.3.174.1; Fri, 9 May 2014 03:59:25 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
  IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.3.174.1; Fri, 9 May 2014 03:58:49 -0700
+ 14.3.174.1; Fri, 9 May 2014 03:59:25 -0700
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- EE2825D819;    Fri,  9 May 2014 03:58:43 -0700 (PDT)
+ 0DF865D818;    Fri,  9 May 2014 03:59:23 -0700 (PDT)
 From:   Jayachandran C <jchandra@broadcom.com>
-To:     g, <linux-mips@linux-mips.org>
+To:     <linux-mips@linux-mips.org>
 CC:     Ganesan Ramalingam <ganesanr@broadcom.com>, <ralf@linux-mips.org>,
         Jayachandran C <jchandra@broadcom.com>
-Subject: [PATCH v2 15/17] MIPS: Add MSI support for XLP9XX
-Date:   Fri, 9 May 2014 16:35:49 +0530
-Message-ID: <1399633549-24317-1-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH v2 17/17] MIPS: Netlogic: XLP9XX on-chip SATA support
+Date:   Fri, 9 May 2014 16:36:25 +0530
+Message-ID: <1399633585-27559-1-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <f53d4713cc3224ee83953831d77c963a267199c1.1398780013.git.jchandra@broadcom.com>
-References: <f53d4713cc3224ee83953831d77c963a267199c1.1398780013.git.jchandra@broadcom.com>
+In-Reply-To: <064ee7509119f3a7a76410a7d72281b41798b888.1398780013.git.jchandra@broadcom.com>
+References: <064ee7509119f3a7a76410a7d72281b41798b888.1398780013.git.jchandra@broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40053
+X-archive-position: 40054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,418 +51,412 @@ X-list: linux-mips
 
 From: Ganesan Ramalingam <ganesanr@broadcom.com>
 
-In XLP9XX, the interrupt routing table for MSI-X has been moved to the
-PCIe controller's config space from PIC. There are also 32 MSI-X
-interrupts available per link on XLP9XX.
-
-Update XLP MSI/MSI-X code to handle this.
+The XLP9XX SoC has an on-chip SATA controller with two ports. Add
+ahci-init-xlp2.c to initialize the controller, setup the glue logic
+registers, fixup PCI quirks and setup interrupt ack logic.
 
 Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
-[v2: Added correct MSI ack register for 9XX]
+[v2: Change '#if 0' to use a variable, and fix code which was commented
+ with the macro]
 
- arch/mips/include/asm/netlogic/xlp-hal/pcibus.h |   14 ++
- arch/mips/include/asm/netlogic/xlp-hal/pic.h    |    4 +
- arch/mips/include/asm/netlogic/xlp-hal/xlp.h    |    5 +-
- arch/mips/pci/msi-xlp.c                         |  184 +++++++++++++++++------
- 4 files changed, 156 insertions(+), 51 deletions(-)
+ arch/mips/netlogic/xlp/Makefile         |    1 +
+ arch/mips/netlogic/xlp/ahci-init-xlp2.c |  377 +++++++++++++++++++++++++++++++
+ 2 files changed, 378 insertions(+)
+ create mode 100644 arch/mips/netlogic/xlp/ahci-init-xlp2.c
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-index d4deb87..91540f4 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-@@ -69,6 +69,20 @@
- #define PCIE_9XX_BYTE_SWAP_IO_BASE	0x25e
- #define PCIE_9XX_BYTE_SWAP_IO_LIM	0x25f
- 
-+#define PCIE_9XX_BRIDGE_MSIX_ADDR_BASE	0x264
-+#define PCIE_9XX_BRIDGE_MSIX_ADDR_LIMIT	0x265
-+#define PCIE_9XX_MSI_STATUS		0x283
-+#define PCIE_9XX_MSI_EN			0x284
-+/* 128 MSIX vectors available in 9xx */
-+#define PCIE_9XX_MSIX_STATUS0		0x286
-+#define PCIE_9XX_MSIX_STATUSX(n)	(n + 0x286)
-+#define PCIE_9XX_MSIX_VEC		0x296
-+#define PCIE_9XX_MSIX_VECX(n)		(n + 0x296)
-+#define PCIE_9XX_INT_STATUS0		0x397
-+#define PCIE_9XX_INT_STATUS1		0x398
-+#define PCIE_9XX_INT_EN0		0x399
-+#define PCIE_9XX_INT_EN1		0x39a
-+
- /* other */
- #define PCIE_NLINKS			4
- 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pic.h b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-index f10bf3b..41cefe9 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-@@ -199,6 +199,10 @@
- #define PIC_IRT_PCIE_LINK_3_INDEX	81
- #define PIC_IRT_PCIE_LINK_INDEX(num)	((num) + PIC_IRT_PCIE_LINK_0_INDEX)
- 
-+#define PIC_9XX_IRT_PCIE_LINK_0_INDEX	191
-+#define PIC_9XX_IRT_PCIE_LINK_INDEX(num) \
-+				((num) + PIC_9XX_IRT_PCIE_LINK_0_INDEX)
-+
- #define PIC_CLOCK_TIMER			7
- 
- #if !defined(LOCORE) && !defined(__ASSEMBLY__)
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-index 8f8afe0..c0b2a80 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-@@ -70,8 +70,9 @@
- #define PIC_PCIE_MSIX_IRQ_BASE		48	/* 48 - 51 MSI-X IRQ */
- #define PIC_PCIE_MSIX_IRQ(i)		(48 + (i))
- 
--#define NLM_MSIX_VEC_BASE		96	/* 96 - 127 - MSIX mapped */
--#define NLM_MSI_VEC_BASE		128	/* 128 -255 - MSI mapped */
-+/* XLP9xx and XLP8xx has 128 and 32 MSIX vectors respectively */
-+#define NLM_MSIX_VEC_BASE		96	/* 96 - 223 - MSIX mapped */
-+#define NLM_MSI_VEC_BASE		224	/* 224 -351 - MSI mapped */
- 
- #define NLM_PIC_INDIRECT_VEC_BASE	512
- #define NLM_GPIO_VEC_BASE		768
-diff --git a/arch/mips/pci/msi-xlp.c b/arch/mips/pci/msi-xlp.c
-index afd8405..1ef3ed6 100644
---- a/arch/mips/pci/msi-xlp.c
-+++ b/arch/mips/pci/msi-xlp.c
-@@ -56,8 +56,8 @@
- #include <asm/netlogic/xlp-hal/bridge.h>
- 
- #define XLP_MSIVEC_PER_LINK	32
--#define XLP_MSIXVEC_TOTAL	32
--#define XLP_MSIXVEC_PER_LINK	8
-+#define XLP_MSIXVEC_TOTAL	(cpu_is_xlp9xx() ? 128 : 32)
-+#define XLP_MSIXVEC_PER_LINK	(cpu_is_xlp9xx() ? 32 : 8)
- 
- /* 128 MSI irqs per node, mapped starting at NLM_MSI_VEC_BASE */
- static inline int nlm_link_msiirq(int link, int msivec)
-@@ -65,35 +65,44 @@ static inline int nlm_link_msiirq(int link, int msivec)
- 	return NLM_MSI_VEC_BASE + link * XLP_MSIVEC_PER_LINK + msivec;
- }
- 
-+/* get the link MSI vector from irq number */
- static inline int nlm_irq_msivec(int irq)
- {
--	return irq % XLP_MSIVEC_PER_LINK;
-+	return (irq - NLM_MSI_VEC_BASE) % XLP_MSIVEC_PER_LINK;
- }
- 
-+/* get the link from the irq number */
- static inline int nlm_irq_msilink(int irq)
- {
--	return (irq % (XLP_MSIVEC_PER_LINK * PCIE_NLINKS)) /
--						XLP_MSIVEC_PER_LINK;
-+	int total_msivec = XLP_MSIVEC_PER_LINK * PCIE_NLINKS;
-+
-+	return ((irq - NLM_MSI_VEC_BASE) % total_msivec) /
-+		XLP_MSIVEC_PER_LINK;
- }
- 
- /*
-- * Only 32 MSI-X vectors are possible because there are only 32 PIC
-- * interrupts for MSI. We split them statically and use 8 MSI-X vectors
-- * per link - this keeps the allocation and lookup simple.
-+ * For XLP 8xx/4xx/3xx/2xx, only 32 MSI-X vectors are possible because
-+ * there are only 32 PIC interrupts for MSI. We split them statically
-+ * and use 8 MSI-X vectors per link - this keeps the allocation and
-+ * lookup simple.
-+ * On XLP 9xx, there are 32 vectors per link, and the interrupts are
-+ * not routed thru PIC, so we can use all 128 MSI-X vectors.
-  */
- static inline int nlm_link_msixirq(int link, int bit)
- {
- 	return NLM_MSIX_VEC_BASE + link * XLP_MSIXVEC_PER_LINK + bit;
- }
- 
-+/* get the link MSI vector from irq number */
- static inline int nlm_irq_msixvec(int irq)
- {
--	return irq % XLP_MSIXVEC_TOTAL;  /* works when given xirq */
-+	return (irq - NLM_MSIX_VEC_BASE) % XLP_MSIXVEC_TOTAL;
- }
- 
--static inline int nlm_irq_msixlink(int irq)
-+/* get the link from MSIX vec */
-+static inline int nlm_irq_msixlink(int msixvec)
- {
--	return nlm_irq_msixvec(irq) / XLP_MSIXVEC_PER_LINK;
-+	return msixvec / XLP_MSIXVEC_PER_LINK;
- }
- 
- /*
-@@ -129,7 +138,11 @@ static void xlp_msi_enable(struct irq_data *d)
- 	vec = nlm_irq_msivec(d->irq);
- 	spin_lock_irqsave(&md->msi_lock, flags);
- 	md->msi_enabled_mask |= 1u << vec;
--	nlm_write_reg(md->lnkbase, PCIE_MSI_EN, md->msi_enabled_mask);
-+	if (cpu_is_xlp9xx())
-+		nlm_write_reg(md->lnkbase, PCIE_9XX_MSI_EN,
-+				md->msi_enabled_mask);
-+	else
-+		nlm_write_reg(md->lnkbase, PCIE_MSI_EN, md->msi_enabled_mask);
- 	spin_unlock_irqrestore(&md->msi_lock, flags);
- }
- 
-@@ -142,7 +155,11 @@ static void xlp_msi_disable(struct irq_data *d)
- 	vec = nlm_irq_msivec(d->irq);
- 	spin_lock_irqsave(&md->msi_lock, flags);
- 	md->msi_enabled_mask &= ~(1u << vec);
--	nlm_write_reg(md->lnkbase, PCIE_MSI_EN, md->msi_enabled_mask);
-+	if (cpu_is_xlp9xx())
-+		nlm_write_reg(md->lnkbase, PCIE_9XX_MSI_EN,
-+				md->msi_enabled_mask);
-+	else
-+		nlm_write_reg(md->lnkbase, PCIE_MSI_EN, md->msi_enabled_mask);
- 	spin_unlock_irqrestore(&md->msi_lock, flags);
- }
- 
-@@ -156,11 +173,18 @@ static void xlp_msi_mask_ack(struct irq_data *d)
- 	xlp_msi_disable(d);
- 
- 	/* Ack MSI on bridge */
--	nlm_write_reg(md->lnkbase, PCIE_MSI_STATUS, 1u << vec);
-+	if (cpu_is_xlp9xx())
-+		nlm_write_reg(md->lnkbase, PCIE_9XX_MSI_STATUS, 1u << vec);
-+	else
-+		nlm_write_reg(md->lnkbase, PCIE_MSI_STATUS, 1u << vec);
- 
- 	/* Ack at eirr and PIC */
- 	ack_c0_eirr(PIC_PCIE_LINK_MSI_IRQ(link));
--	nlm_pic_ack(md->node->picbase, PIC_IRT_PCIE_LINK_INDEX(link));
-+	if (cpu_is_xlp9xx())
-+		nlm_pic_ack(md->node->picbase,
-+				PIC_9XX_IRT_PCIE_LINK_INDEX(link));
-+	else
-+		nlm_pic_ack(md->node->picbase, PIC_IRT_PCIE_LINK_INDEX(link));
- }
- 
- static struct irq_chip xlp_msi_chip = {
-@@ -172,30 +196,45 @@ static struct irq_chip xlp_msi_chip = {
- };
- 
- /*
-- * The MSI-X interrupt handling is different from MSI, there are 32
-- * MSI-X interrupts generated by the PIC and each of these correspond
-- * to a MSI-X vector (0-31) that can be assigned.
-+ * XLP8XX/4XX/3XX/2XX:
-+ * The MSI-X interrupt handling is different from MSI, there are 32 MSI-X
-+ * interrupts generated by the PIC and each of these correspond to a MSI-X
-+ * vector (0-31) that can be assigned.
-  *
-- * We divide the MSI-X vectors to 8 per link and do a per-link
-- * allocation
-+ * We divide the MSI-X vectors to 8 per link and do a per-link allocation
+diff --git a/arch/mips/netlogic/xlp/Makefile b/arch/mips/netlogic/xlp/Makefile
+index 0cb53af..be358a8 100644
+--- a/arch/mips/netlogic/xlp/Makefile
++++ b/arch/mips/netlogic/xlp/Makefile
+@@ -3,3 +3,4 @@ obj-$(CONFIG_SMP)		+= wakeup.o
+ obj-$(CONFIG_USB)		+= usb-init.o
+ obj-$(CONFIG_USB)		+= usb-init-xlp2.o
+ obj-$(CONFIG_SATA_AHCI)		+= ahci-init.o
++obj-$(CONFIG_SATA_AHCI)		+= ahci-init-xlp2.o
+diff --git a/arch/mips/netlogic/xlp/ahci-init-xlp2.c b/arch/mips/netlogic/xlp/ahci-init-xlp2.c
+new file mode 100644
+index 0000000..c83dbf3
+--- /dev/null
++++ b/arch/mips/netlogic/xlp/ahci-init-xlp2.c
+@@ -0,0 +1,377 @@
++/*
++ * Copyright (c) 2003-2014 Broadcom Corporation
++ * All Rights Reserved
 + *
-+ * XLP9XX:
-+ * 32 MSI-X vectors are available per link, and the interrupts are not routed
-+ * thru the PIC. PIC ack not needed.
-  *
-  * Enable and disable done using standard MSI functions.
-  */
- static void xlp_msix_mask_ack(struct irq_data *d)
- {
--	struct xlp_msi_data *md = irq_data_get_irq_handler_data(d);
-+	struct xlp_msi_data *md;
- 	int link, msixvec;
-+	uint32_t status_reg, bit;
- 
- 	msixvec = nlm_irq_msixvec(d->irq);
--	link = nlm_irq_msixlink(d->irq);
-+	link = nlm_irq_msixlink(msixvec);
- 	mask_msi_irq(d);
-+	md = irq_data_get_irq_handler_data(d);
- 
- 	/* Ack MSI on bridge */
--	nlm_write_reg(md->lnkbase, PCIE_MSIX_STATUS, 1u << msixvec);
-+	if (cpu_is_xlp9xx()) {
-+		status_reg = PCIE_9XX_MSIX_STATUSX(link);
-+		bit = msixvec % XLP_MSIXVEC_PER_LINK;
-+	} else {
-+		status_reg = PCIE_MSIX_STATUS;
-+		bit = msixvec;
-+	}
-+	nlm_write_reg(md->lnkbase, status_reg, 1u << bit);
- 
- 	/* Ack at eirr and PIC */
- 	ack_c0_eirr(PIC_PCIE_MSIX_IRQ(link));
--	nlm_pic_ack(md->node->picbase, PIC_IRT_PCIE_MSIX_INDEX(msixvec));
-+	if (!cpu_is_xlp9xx())
-+		nlm_pic_ack(md->node->picbase,
-+				PIC_IRT_PCIE_MSIX_INDEX(msixvec));
- }
- 
- static struct irq_chip xlp_msix_chip = {
-@@ -225,10 +264,18 @@ static void xlp_config_link_msi(uint64_t lnkbase, int lirq, uint64_t msiaddr)
- {
- 	u32 val;
- 
--	val = nlm_read_reg(lnkbase, PCIE_INT_EN0);
--	if ((val & 0x200) == 0) {
--		val |= 0x200;		/* MSI Interrupt enable */
--		nlm_write_reg(lnkbase, PCIE_INT_EN0, val);
-+	if (cpu_is_xlp9xx()) {
-+		val = nlm_read_reg(lnkbase, PCIE_9XX_INT_EN0);
-+		if ((val & 0x200) == 0) {
-+			val |= 0x200;		/* MSI Interrupt enable */
-+			nlm_write_reg(lnkbase, PCIE_9XX_INT_EN0, val);
-+		}
-+	} else {
-+		val = nlm_read_reg(lnkbase, PCIE_INT_EN0);
-+		if ((val & 0x200) == 0) {
-+			val |= 0x200;
-+			nlm_write_reg(lnkbase, PCIE_INT_EN0, val);
-+		}
- 	}
- 
- 	val = nlm_read_reg(lnkbase, 0x1);	/* CMD */
-@@ -275,9 +322,12 @@ static int xlp_setup_msi(uint64_t lnkbase, int node, int link,
- 
- 	spin_lock_irqsave(&md->msi_lock, flags);
- 	if (md->msi_alloc_mask == 0) {
--		/* switch the link IRQ to MSI range */
- 		xlp_config_link_msi(lnkbase, lirq, msiaddr);
--		irt = PIC_IRT_PCIE_LINK_INDEX(link);
-+		/* switch the link IRQ to MSI range */
-+		if (cpu_is_xlp9xx())
-+			irt = PIC_9XX_IRT_PCIE_LINK_INDEX(link);
-+		else
-+			irt = PIC_IRT_PCIE_LINK_INDEX(link);
- 		nlm_setup_pic_irq(node, lirq, lirq, irt);
- 		nlm_pic_init_irt(nlm_get_node(node)->picbase, irt, lirq,
- 				 node * nlm_threads_per_node(), 1 /*en */);
-@@ -319,10 +369,19 @@ static void xlp_config_link_msix(uint64_t lnkbase, int lirq, uint64_t msixaddr)
- 		val |= 0x80000000U;
- 		nlm_write_reg(lnkbase, 0x2C, val);
- 	}
--	val = nlm_read_reg(lnkbase, PCIE_INT_EN0);
--	if ((val & 0x200) == 0) {
--		val |= 0x200;		/* MSI Interrupt enable */
--		nlm_write_reg(lnkbase, PCIE_INT_EN0, val);
++ * This software is available to you under a choice of one of two
++ * licenses.  You may choose to be licensed under the terms of the GNU
++ * General Public License (GPL) Version 2, available from the file
++ * COPYING in the main directory of this source tree, or the Broadcom
++ * license below:
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
++ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
++ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
++ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
++ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
 +
-+	if (cpu_is_xlp9xx()) {
-+		val = nlm_read_reg(lnkbase, PCIE_9XX_INT_EN0);
-+		if ((val & 0x200) == 0) {
-+			val |= 0x200;		/* MSI Interrupt enable */
-+			nlm_write_reg(lnkbase, PCIE_9XX_INT_EN0, val);
-+		}
-+	} else {
-+		val = nlm_read_reg(lnkbase, PCIE_INT_EN0);
-+		if ((val & 0x200) == 0) {
-+			val |= 0x200;		/* MSI Interrupt enable */
-+			nlm_write_reg(lnkbase, PCIE_INT_EN0, val);
-+		}
- 	}
- 
- 	val = nlm_read_reg(lnkbase, 0x1);	/* CMD */
-@@ -337,10 +396,19 @@ static void xlp_config_link_msix(uint64_t lnkbase, int lirq, uint64_t msixaddr)
- 	val |= (1 << 8) | lirq;
- 	nlm_write_pci_reg(lnkbase, 0xf, val);
- 
--	/* MSI-X addresses */
--	nlm_write_reg(lnkbase, PCIE_BRIDGE_MSIX_ADDR_BASE, msixaddr >> 8);
--	nlm_write_reg(lnkbase, PCIE_BRIDGE_MSIX_ADDR_LIMIT,
--					(msixaddr + MSI_ADDR_SZ) >> 8);
-+	if (cpu_is_xlp9xx()) {
-+		/* MSI-X addresses */
-+		nlm_write_reg(lnkbase, PCIE_9XX_BRIDGE_MSIX_ADDR_BASE,
-+				msixaddr >> 8);
-+		nlm_write_reg(lnkbase, PCIE_9XX_BRIDGE_MSIX_ADDR_LIMIT,
-+				(msixaddr + MSI_ADDR_SZ) >> 8);
-+	} else {
-+		/* MSI-X addresses */
-+		nlm_write_reg(lnkbase, PCIE_BRIDGE_MSIX_ADDR_BASE,
-+				msixaddr >> 8);
-+		nlm_write_reg(lnkbase, PCIE_BRIDGE_MSIX_ADDR_LIMIT,
-+				(msixaddr + MSI_ADDR_SZ) >> 8);
-+	}
- }
- 
- /*
-@@ -377,6 +445,7 @@ static int xlp_setup_msix(uint64_t lnkbase, int node, int link,
- 
- 	xirq += t;
- 	msixvec = nlm_irq_msixvec(xirq);
++#include <linux/dma-mapping.h>
++#include <linux/kernel.h>
++#include <linux/delay.h>
++#include <linux/init.h>
++#include <linux/pci.h>
++#include <linux/irq.h>
++#include <linux/bitops.h>
++#include <linux/pci_ids.h>
++#include <linux/nodemask.h>
 +
- 	msg.address_hi = msixaddr >> 32;
- 	msg.address_lo = msixaddr & 0xffffffff;
- 	msg.data = 0xc00 | msixvec;
-@@ -417,7 +486,7 @@ void __init xlp_init_node_msi_irqs(int node, int link)
- {
- 	struct nlm_soc_info *nodep;
- 	struct xlp_msi_data *md;
--	int irq, i, irt, msixvec;
-+	int irq, i, irt, msixvec, val;
- 
- 	pr_info("[%d %d] Init node PCI IRT\n", node, link);
- 	nodep = nlm_get_node(node);
-@@ -438,19 +507,28 @@ void __init xlp_init_node_msi_irqs(int node, int link)
- 		irq_set_handler_data(i, md);
- 	}
- 
--	for (i = 0; i < XLP_MSIXVEC_PER_LINK; i++) {
--		/* Initialize MSI-X irts to generate one interrupt per link */
--		msixvec = link * XLP_MSIXVEC_PER_LINK + i;
--		irt = PIC_IRT_PCIE_MSIX_INDEX(msixvec);
--		nlm_pic_init_irt(nodep->picbase, irt, PIC_PCIE_MSIX_IRQ(link),
--			node * nlm_threads_per_node(), 1 /* enable */);
-+	for (i = 0; i < XLP_MSIXVEC_PER_LINK ; i++) {
-+		if (cpu_is_xlp9xx()) {
-+			val = ((node * nlm_threads_per_node()) << 7 |
-+				PIC_PCIE_MSIX_IRQ(link) << 1 | 0 << 0);
-+			nlm_write_pcie_reg(md->lnkbase, PCIE_9XX_MSIX_VECX(i +
-+					(link * XLP_MSIXVEC_PER_LINK)), val);
-+		} else {
-+			/* Initialize MSI-X irts to generate one interrupt
-+			 * per link
-+			 */
-+			msixvec = link * XLP_MSIXVEC_PER_LINK + i;
-+			irt = PIC_IRT_PCIE_MSIX_INDEX(msixvec);
-+			nlm_pic_init_irt(nodep->picbase, irt,
-+					PIC_PCIE_MSIX_IRQ(link),
-+					node * nlm_threads_per_node(), 1);
-+		}
- 
- 		/* Initialize MSI-X extended irq space for the link  */
- 		irq = nlm_irq_to_xirq(node, nlm_link_msixirq(link, i));
- 		irq_set_chip_and_handler(irq, &xlp_msix_chip, handle_level_irq);
- 		irq_set_handler_data(irq, md);
- 	}
--
- }
- 
- void nlm_dispatch_msi(int node, int lirq)
-@@ -462,7 +540,11 @@ void nlm_dispatch_msi(int node, int lirq)
- 	link = lirq - PIC_PCIE_LINK_MSI_IRQ_BASE;
- 	irqbase = nlm_irq_to_xirq(node, nlm_link_msiirq(link, 0));
- 	md = irq_get_handler_data(irqbase);
--	status = nlm_read_reg(md->lnkbase, PCIE_MSI_STATUS) &
-+	if (cpu_is_xlp9xx())
-+		status = nlm_read_reg(md->lnkbase, PCIE_9XX_MSI_STATUS) &
-+						md->msi_enabled_mask;
++#include <asm/cpu.h>
++#include <asm/mipsregs.h>
++
++#include <asm/netlogic/common.h>
++#include <asm/netlogic/haldefs.h>
++#include <asm/netlogic/mips-extns.h>
++#include <asm/netlogic/xlp-hal/xlp.h>
++#include <asm/netlogic/xlp-hal/iomap.h>
++
++#define SATA_CTL		0x0
++#define SATA_STATUS		0x1 /* Status Reg */
++#define SATA_INT		0x2 /* Interrupt Reg */
++#define SATA_INT_MASK		0x3 /* Interrupt Mask Reg */
++#define SATA_BIU_TIMEOUT	0x4
++#define AXIWRSPERRLOG		0x5
++#define AXIRDSPERRLOG		0x6
++#define BiuTimeoutLow		0x7
++#define BiuTimeoutHi		0x8
++#define BiuSlvErLow		0x9
++#define BiuSlvErHi		0xa
++#define IO_CONFIG_SWAP_DIS	0xb
++#define CR_REG_TIMER		0xc
++#define CORE_ID			0xd
++#define AXI_SLAVE_OPT1		0xe
++#define PHY_MEM_ACCESS		0xf
++#define PHY0_CNTRL		0x10
++#define PHY0_STAT		0x11
++#define PHY0_RX_ALIGN		0x12
++#define PHY0_RX_EQ_LO		0x13
++#define PHY0_RX_EQ_HI		0x14
++#define PHY0_BIST_LOOP		0x15
++#define PHY1_CNTRL		0x16
++#define PHY1_STAT		0x17
++#define PHY1_RX_ALIGN		0x18
++#define PHY1_RX_EQ_LO		0x19
++#define PHY1_RX_EQ_HI		0x1a
++#define PHY1_BIST_LOOP		0x1b
++#define RdExBase		0x1c
++#define RdExLimit		0x1d
++#define CacheAllocBase		0x1e
++#define CacheAllocLimit		0x1f
++#define BiuSlaveCmdGstNum	0x20
++
++/*SATA_CTL Bits */
++#define SATA_RST_N		BIT(0)  /* Active low reset sata_core phy */
++#define SataCtlReserve0		BIT(1)
++#define M_CSYSREQ		BIT(2)  /* AXI master low power, not used */
++#define S_CSYSREQ		BIT(3)  /* AXI slave low power, not used */
++#define P0_CP_DET		BIT(8)  /* Reserved, bring in from pad */
++#define P0_MP_SW		BIT(9)  /* Mech Switch */
++#define P0_DISABLE		BIT(10) /* disable p0 */
++#define P0_ACT_LED_EN		BIT(11) /* Active LED enable */
++#define P0_IRST_HARD_SYNTH	BIT(12) /* PHY hard synth reset */
++#define P0_IRST_HARD_TXRX	BIT(13) /* PHY lane hard reset */
++#define P0_IRST_POR		BIT(14) /* PHY power on reset*/
++#define P0_IPDTXL		BIT(15) /* PHY Tx lane dis/power down */
++#define P0_IPDRXL		BIT(16) /* PHY Rx lane dis/power down */
++#define P0_IPDIPDMSYNTH		BIT(17) /* PHY synthesizer dis/porwer down */
++#define P0_CP_POD_EN		BIT(18) /* CP_POD enable */
++#define P0_AT_BYPASS		BIT(19) /* P0 address translation by pass */
++#define P1_CP_DET		BIT(20) /* Reserved,Cold Detect */
++#define P1_MP_SW		BIT(21) /* Mech Switch */
++#define P1_DISABLE		BIT(22) /* disable p1 */
++#define P1_ACT_LED_EN		BIT(23) /* Active LED enable */
++#define P1_IRST_HARD_SYNTH	BIT(24) /* PHY hard synth reset */
++#define P1_IRST_HARD_TXRX	BIT(25) /* PHY lane hard reset */
++#define P1_IRST_POR		BIT(26) /* PHY power on reset*/
++#define P1_IPDTXL		BIT(27) /* PHY Tx lane dis/porwer down */
++#define P1_IPDRXL		BIT(28) /* PHY Rx lane dis/porwer down */
++#define P1_IPDIPDMSYNTH		BIT(29) /* PHY synthesizer dis/porwer down */
++#define P1_CP_POD_EN		BIT(30)
++#define P1_AT_BYPASS		BIT(31) /* P1 address translation by pass */
++
++/* Status register */
++#define M_CACTIVE		BIT(0)  /* m_cactive, not used */
++#define S_CACTIVE		BIT(1)  /* s_cactive, not used */
++#define P0_PHY_READY		BIT(8)  /* phy is ready */
++#define P0_CP_POD		BIT(9)  /* Cold PowerOn */
++#define P0_SLUMBER		BIT(10) /* power mode slumber */
++#define P0_PATIAL		BIT(11) /* power mode patial */
++#define P0_PHY_SIG_DET		BIT(12) /* phy dignal detect */
++#define P0_PHY_CALI		BIT(13) /* phy calibration done */
++#define P1_PHY_READY		BIT(16) /* phy is ready */
++#define P1_CP_POD		BIT(17) /* Cold PowerOn */
++#define P1_SLUMBER		BIT(18) /* power mode slumber */
++#define P1_PATIAL		BIT(19) /* power mode patial */
++#define P1_PHY_SIG_DET		BIT(20) /* phy dignal detect */
++#define P1_PHY_CALI		BIT(21) /* phy calibration done */
++
++/* SATA CR_REG_TIMER bits */
++#define CR_TIME_SCALE		(0x1000 << 0)
++
++/* SATA PHY specific registers start and end address */
++#define RXCDRCALFOSC0		0x0065
++#define CALDUTY			0x006e
++#define RXDPIF			0x8065
++#define PPMDRIFTMAX_HI		0x80A4
++
++#define nlm_read_sata_reg(b, r)		nlm_read_reg(b, r)
++#define nlm_write_sata_reg(b, r, v)	nlm_write_reg(b, r, v)
++#define nlm_get_sata_pcibase(node)	\
++		nlm_pcicfg_base(XLP9XX_IO_SATA_OFFSET(node))
++#define nlm_get_sata_regbase(node)	\
++		(nlm_get_sata_pcibase(node) + 0x100)
++
++/* SATA PHY config for register block 1 0x0065 .. 0x006e */
++static const u8 sata_phy_config1[]  = {
++	0xC9, 0xC9, 0x07, 0x07, 0x18, 0x18, 0x01, 0x01, 0x22, 0x00
++};
++
++/* SATA PHY config for register block 2 0x0x8065 .. 0x0x80A4 */
++static const u8 sata_phy_config2[]  = {
++	0xAA, 0x00, 0x4C, 0xC9, 0xC9, 0x07, 0x07, 0x18,
++	0x18, 0x05, 0x0C, 0x10, 0x00, 0x10, 0x00, 0xFF,
++	0xCF, 0xF7, 0xE1, 0xF5, 0xFD, 0xFD, 0xFF, 0xFF,
++	0xFF, 0xFF, 0xE3, 0xE7, 0xDB, 0xF5, 0xFD, 0xFD,
++	0xF5, 0xF5, 0xFF, 0xFF, 0xE3, 0xE7, 0xDB, 0xF5,
++	0xFD, 0xFD, 0xF5, 0xF5, 0xFF, 0xFF, 0xFF, 0xF5,
++	0x3F, 0x00, 0x32, 0x00, 0x03, 0x01, 0x05, 0x05,
++	0x04, 0x00, 0x00, 0x08, 0x04, 0x00, 0x00, 0x04,
++};
++
++const int sata_phy_debug = 0;	/* set to verify PHY writes */
++
++static void sata_clear_glue_reg(u64 regbase, u32 off, u32 bit)
++{
++	u32 reg_val;
++
++	reg_val = nlm_read_sata_reg(regbase, off);
++	nlm_write_sata_reg(regbase, off, (reg_val & ~bit));
++}
++
++static void sata_set_glue_reg(u64 regbase, u32 off, u32 bit)
++{
++	u32 reg_val;
++
++	reg_val = nlm_read_sata_reg(regbase, off);
++	nlm_write_sata_reg(regbase, off, (reg_val | bit));
++}
++
++static void write_phy_reg(u64 regbase, u32 addr, u32 physel, u8 data)
++{
++	nlm_write_sata_reg(regbase, PHY_MEM_ACCESS,
++		(1u << 31) | (physel << 24) | (data << 16) | addr);
++	udelay(850);
++}
++
++static u8 read_phy_reg(u64 regbase, u32 addr, u32 physel)
++{
++	u32 val;
++
++	nlm_write_sata_reg(regbase, PHY_MEM_ACCESS,
++		(0 << 31) | (physel << 24) | (0 << 16) | addr);
++	udelay(850);
++	val = nlm_read_sata_reg(regbase, PHY_MEM_ACCESS);
++	return (val >> 16) & 0xff;
++}
++
++static void config_sata_phy(u64 regbase)
++{
++	u32 port, i, reg;
++
++	for (port = 0; port < 2; port++) {
++		for (i = 0, reg = RXCDRCALFOSC0; reg <= CALDUTY; reg++, i++)
++			write_phy_reg(regbase, reg, port, sata_phy_config1[i]);
++
++		for (i = 0, reg = RXDPIF; reg <= PPMDRIFTMAX_HI; reg++, i++)
++			write_phy_reg(regbase, reg, port, sata_phy_config2[i]);
++	}
++}
++
++static void check_phy_register(u64 regbase, u32 addr, u32 physel, u8 xdata)
++{
++	u8 data;
++
++	data = read_phy_reg(regbase, addr, physel);
++	pr_info("PHY read addr = 0x%x physel = %d data = 0x%x %s\n",
++		addr, physel, data, data == xdata ? "TRUE" : "FALSE");
++}
++
++static void verify_sata_phy_config(u64 regbase)
++{
++	u32 port, i, reg;
++
++	for (port = 0; port < 2; port++) {
++		for (i = 0, reg = RXCDRCALFOSC0; reg <= CALDUTY; reg++, i++)
++			check_phy_register(regbase, reg, port,
++						sata_phy_config1[i]);
++
++		for (i = 0, reg = RXDPIF; reg <= PPMDRIFTMAX_HI; reg++, i++)
++			check_phy_register(regbase, reg, port,
++						sata_phy_config2[i]);
++	}
++}
++
++static void nlm_sata_firmware_init(int node)
++{
++	u32 reg_val;
++	u64 regbase;
++	int n;
++
++	pr_info("Initializing XLP9XX On-chip AHCI...\n");
++	regbase = nlm_get_sata_regbase(node);
++
++	/* Reset port0 */
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IRST_POR);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_TXRX);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_SYNTH);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IPDTXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IPDRXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P0_IPDIPDMSYNTH);
++
++	/* port1 */
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IRST_POR);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_TXRX);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_SYNTH);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IPDTXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IPDRXL);
++	sata_clear_glue_reg(regbase, SATA_CTL, P1_IPDIPDMSYNTH);
++	udelay(300);
++
++	/* Set PHY */
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IPDTXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IPDRXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IPDIPDMSYNTH);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IPDTXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IPDRXL);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IPDIPDMSYNTH);
++
++	udelay(1000);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IRST_POR);
++	udelay(1000);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IRST_POR);
++	udelay(1000);
++
++	/* setup PHY */
++	config_sata_phy(regbase);
++	if (sata_phy_debug)
++		verify_sata_phy_config(regbase);
++
++	udelay(1000);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_TXRX);
++	sata_set_glue_reg(regbase, SATA_CTL, P0_IRST_HARD_SYNTH);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_TXRX);
++	sata_set_glue_reg(regbase, SATA_CTL, P1_IRST_HARD_SYNTH);
++	udelay(300);
++
++	/* Override reset in serial PHY mode */
++	sata_set_glue_reg(regbase, CR_REG_TIMER, CR_TIME_SCALE);
++	/* Set reset SATA */
++	sata_set_glue_reg(regbase, SATA_CTL, SATA_RST_N);
++	sata_set_glue_reg(regbase, SATA_CTL, M_CSYSREQ);
++	sata_set_glue_reg(regbase, SATA_CTL, S_CSYSREQ);
++
++	pr_debug("Waiting for PHYs to come up.\n");
++	n = 10000;
++	do {
++		reg_val = nlm_read_sata_reg(regbase, SATA_STATUS);
++		if ((reg_val & P1_PHY_READY) && (reg_val & P0_PHY_READY))
++			break;
++		udelay(10);
++	} while (--n > 0);
++
++	if (reg_val  & P0_PHY_READY)
++		pr_info("PHY0 is up.\n");
 +	else
-+		status = nlm_read_reg(md->lnkbase, PCIE_MSI_STATUS) &
- 						md->msi_enabled_mask;
- 	while (status) {
- 		i = __ffs(status);
-@@ -480,10 +562,14 @@ void nlm_dispatch_msix(int node, int lirq)
- 	link = lirq - PIC_PCIE_MSIX_IRQ_BASE;
- 	irqbase = nlm_irq_to_xirq(node, nlm_link_msixirq(link, 0));
- 	md = irq_get_handler_data(irqbase);
--	status = nlm_read_reg(md->lnkbase, PCIE_MSIX_STATUS);
-+	if (cpu_is_xlp9xx())
-+		status = nlm_read_reg(md->lnkbase, PCIE_9XX_MSIX_STATUSX(link));
++		pr_info("PHY0 is down.\n");
++	if (reg_val  & P1_PHY_READY)
++		pr_info("PHY1 is up.\n");
 +	else
-+		status = nlm_read_reg(md->lnkbase, PCIE_MSIX_STATUS);
- 
- 	/* narrow it down to the MSI-x vectors for our link */
--	status = (status >> (link * XLP_MSIXVEC_PER_LINK)) &
++		pr_info("PHY1 is down.\n");
++
++	pr_info("XLP AHCI Init Done.\n");
++}
++
++static int __init nlm_ahci_init(void)
++{
++	int node;
++
 +	if (!cpu_is_xlp9xx())
-+		status = (status >> (link * XLP_MSIXVEC_PER_LINK)) &
- 			((1 << XLP_MSIXVEC_PER_LINK) - 1);
- 
- 	while (status) {
++		return 0;
++	for (node = 0; node < NLM_NR_NODES; node++)
++		if (nlm_node_present(node))
++			nlm_sata_firmware_init(node);
++	return 0;
++}
++
++static void nlm_sata_intr_ack(struct irq_data *data)
++{
++	u64 regbase;
++	u32 val;
++	int node;
++
++	node = data->irq / NLM_IRQS_PER_NODE;
++	regbase = nlm_get_sata_regbase(node);
++	val = nlm_read_sata_reg(regbase, SATA_INT);
++	sata_set_glue_reg(regbase, SATA_INT, val);
++}
++
++static void nlm_sata_fixup_bar(struct pci_dev *dev)
++{
++	dev->resource[5] = dev->resource[0];
++	memset(&dev->resource[0], 0, sizeof(dev->resource[0]));
++}
++
++static void nlm_sata_fixup_final(struct pci_dev *dev)
++{
++	u32 val;
++	u64 regbase;
++	int node;
++
++	/* Find end bridge function to find node */
++	node = xlp_socdev_to_node(dev);
++	regbase = nlm_get_sata_regbase(node);
++
++	/* clear pending interrupts and then enable them */
++	val = nlm_read_sata_reg(regbase, SATA_INT);
++	sata_set_glue_reg(regbase, SATA_INT, val);
++
++	/* Enable only the core interrupt */
++	sata_set_glue_reg(regbase, SATA_INT_MASK, 0x1);
++
++	dev->irq = nlm_irq_to_xirq(node, PIC_SATA_IRQ);
++	nlm_set_pic_extra_ack(node, PIC_SATA_IRQ, nlm_sata_intr_ack);
++}
++
++arch_initcall(nlm_ahci_init);
++
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_BROADCOM, PCI_DEVICE_ID_XLP9XX_SATA,
++		nlm_sata_fixup_bar);
++
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_BROADCOM, PCI_DEVICE_ID_XLP9XX_SATA,
++		nlm_sata_fixup_final);
 -- 
 1.7.9.5

@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 17:23:07 +0200 (CEST)
-Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:7422 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 17:49:39 +0200 (CEST)
+Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:29054 "EHLO
         mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854773AbaEIPVhigO79 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 17:21:37 +0200
+        by eddie.linux-mips.org with ESMTP id S6854774AbaEIPtelIzAW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 17:49:34 +0200
 X-IronPort-AV: E=Sophos;i="4.97,1018,1389772800"; 
-   d="scan'208";a="28919406"
-Received: from irvexchcas06.broadcom.com (HELO IRVEXCHCAS06.corp.ad.broadcom.com) ([10.9.208.53])
-  by mail-gw1-out.broadcom.com with ESMTP; 09 May 2014 09:37:20 -0700
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Fri, 9 May 2014 08:21:31 -0700
+   d="scan'208";a="28924434"
+Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
+  by mail-gw1-out.broadcom.com with ESMTP; 09 May 2014 10:05:16 -0700
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
+ (TLS) id 14.3.174.1; Fri, 9 May 2014 08:49:26 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.174.1; Fri, 9 May 2014 08:21:31 -0700
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
+ 14.3.174.1; Fri, 9 May 2014 08:49:26 -0700
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 578FC5D819;    Fri,  9 May 2014 08:21:30 -0700 (PDT)
+ 509A65D818;    Fri,  9 May 2014 08:49:25 -0700 (PDT)
 From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>
-Subject: [PATCH 4/4] MIPS: Netlogic: Map kernel with 1G/4G pages on XLPII
-Date:   Fri, 9 May 2014 20:58:24 +0530
-Message-ID: <1399649304-25856-5-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH RFC] MIPS: Netlogic: Add NUMA support for XLP
+Date:   Fri, 9 May 2014 21:26:29 +0530
+Message-ID: <1399650989-14061-1-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1399649304-25856-1-git-send-email-jchandra@broadcom.com>
-References: <1399649304-25856-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40059
+X-archive-position: 40060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,300 +46,431 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-XLP2XX and XLP9XX support 1G and 4G pages. Use this for mapping
-physical memory in Mapped Kernel support.
+Support NUMA on XLP8XX/XLP9XX multi-chip configuration.
 
-Reduces the number of WIRED entries in systems with more RAM.
+ * Create mach-netlogic/mmzone.h to do memory to node mapping.
+ * Update mach-netlogic/topology.h for cpu to node mapping.
+ * Add memory initialization code xlp_numa_bootmem_init() and call it
+   from mips bootmem_init()
+ * Use DRAM configuration of each node to separate the memory given to
+   linux to node specific regions
+ * Add platform_notify hook to setup node id correctly for PCI devices
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/netlogic/common/memory.c |  237 ++++++++++++++++++++++++------------
- 1 file changed, 159 insertions(+), 78 deletions(-)
+ arch/mips/Kconfig                              |    3 +-
+ arch/mips/include/asm/mach-netlogic/mmzone.h   |   19 +++
+ arch/mips/include/asm/mach-netlogic/topology.h |   10 ++
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h   |    5 +
+ arch/mips/kernel/setup.c                       |    8 +
+ arch/mips/netlogic/common/smp.c                |    8 +-
+ arch/mips/netlogic/xlp/Makefile                |    1 +
+ arch/mips/netlogic/xlp/numa.c                  |  191 ++++++++++++++++++++++++
+ arch/mips/netlogic/xlp/setup.c                 |    1 +
+ arch/mips/pci/pci-xlp.c                        |   28 ++++
+ 10 files changed, 272 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-netlogic/mmzone.h
+ create mode 100644 arch/mips/netlogic/xlp/numa.c
 
-diff --git a/arch/mips/netlogic/common/memory.c b/arch/mips/netlogic/common/memory.c
-index 6d967ce..83aeb7c 100644
---- a/arch/mips/netlogic/common/memory.c
-+++ b/arch/mips/netlogic/common/memory.c
-@@ -34,6 +34,7 @@
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e149850..2c8d243 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -782,6 +782,7 @@ config NLM_XLP_BOARD
+ 	select ZONE_DMA32 if 64BIT
+ 	select SYNC_R4K
+ 	select SYS_HAS_EARLY_PRINTK
++	select SYS_SUPPORTS_NUMA
+ 	select USE_OF
+ 	select SYS_SUPPORTS_ZBOOT
+ 	select SYS_SUPPORTS_ZBOOT_UART16550
+@@ -2215,7 +2216,7 @@ config ARCH_FLATMEM_ENABLE
  
- #include <linux/kernel.h>
- #include <linux/types.h>
-+#include <linux/sizes.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/pgtable.h>
-@@ -41,100 +42,187 @@
- #include <asm/tlb.h>
- 
- #include <asm/netlogic/common.h>
-+#include <asm/netlogic/xlp-hal/xlp.h>
- 
--#define TLBSZ		(256 * 1024 * 1024)
--#define PM_TLBSZ	PM_256M
--#define PTE_MAPKERN(pa)	(((pa >> 12) << 6) | 0x2f)
-+#define SZ_4G		(4ull * 1024 * 1024 * 1024)
-+#define PM_4G		0x1ffffe000
-+#define MINPGSZ		SZ_256M
+ config ARCH_DISCONTIGMEM_ENABLE
+ 	bool
+-	default y if SGI_IP27
++	default y if SGI_IP27 || NUMA
+ 	help
+ 	  Say Y to support efficient handling of discontiguous physical memory,
+ 	  for architectures which are either NUMA (Non-Uniform Memory Access)
+diff --git a/arch/mips/include/asm/mach-netlogic/mmzone.h b/arch/mips/include/asm/mach-netlogic/mmzone.h
+new file mode 100644
+index 0000000..7f4afe9
+--- /dev/null
++++ b/arch/mips/include/asm/mach-netlogic/mmzone.h
+@@ -0,0 +1,19 @@
++#ifndef _NETLOGIC_MMZONE_H_
++#define _NETLOGIC_MMZONE_H_
 +
-+#define PTE_MAPKERN(pa)	((((pa) >> 12) << 6) | 0x2f)
- #define TLB_MAXWIRED	28
++#include <asm/mach-netlogic/multi-node.h>
++
++struct node_data {
++	struct pglist_data pglist;
++	struct nlm_soc_info *node;
++};
++
++#ifdef CONFIG_NUMA
++extern struct node_data *__node_data[];
++extern int xlp_pa_to_nid(phys_addr_t addr);
++
++#define pa_to_nid(addr)         xlp_pa_to_nid(addr)
++#define NODE_DATA(n)            (&__node_data[(n)]->pglist)
++#endif
++
++#endif /* _NETLOGIC_MMZONE_H_ */
+diff --git a/arch/mips/include/asm/mach-netlogic/topology.h b/arch/mips/include/asm/mach-netlogic/topology.h
+index ceeb1f5..dfd7c37 100644
+--- a/arch/mips/include/asm/mach-netlogic/topology.h
++++ b/arch/mips/include/asm/mach-netlogic/topology.h
+@@ -11,6 +11,16 @@
+ #include <asm/mach-netlogic/multi-node.h>
  
- static const int prefetch_backup = 512;
+ #ifdef CONFIG_SMP
++#ifdef CONFIG_NUMA
++#define cpu_to_node(cpu)	nlm_cpuid_to_node(cpu_logical_map(cpu))
++#define cpumask_of_node(node)	(&nlm_get_node(node)->cpumask)
++#define parent_node(node)	(node)
++#endif
++
++struct pci_bus;
++extern int pcibus_to_node(struct pci_bus *);
++#define cpumask_of_pcibus(bus)  (cpu_online_mask)
++
+ #define topology_physical_package_id(cpu)	cpu_to_node(cpu)
+ #define topology_core_id(cpu)	(cpu_logical_map(cpu) / NLM_THREADS_PER_CORE)
+ #define topology_thread_cpumask(cpu)		(&cpu_sibling_map[cpu])
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+index c0b2a80..67842b7 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+@@ -93,6 +93,11 @@ int nlm_get_dram_map(int node, uint64_t *dram_map, int nentries);
  
- #if defined(CONFIG_MAPPED_KERNEL) && defined(CONFIG_64BIT)
--static void nlm_tlb_align(struct boot_mem_map_entry *map)
-+
-+/* To track the allocated area of a boot_mem_map segment */
-+struct alloc_entry {
-+	/* Start and end of the va mapped */
-+	unsigned long long start;
-+	unsigned long long end;
-+
-+	/* When just one of lo0/lo1 is used, the valid area is half of above */
-+	unsigned long long astart;
-+	unsigned long long aend;
-+} alloc_map[32];
-+
-+static inline int addtlb(phys_addr_t pa, u64 pgsz, u64 pmask,
-+	unsigned int validmask, struct alloc_entry *ae)
- {
--	phys_t astart, aend, start, end;
-+	phys_addr_t endpa;
-+	u64 *t;
-+	u32 *tlbcount;
-+	int ntlb;
-+
-+	tlbcount = (u32 *)nlm_get_boot_data(BOOT_NTLBS);
-+	ntlb = *tlbcount;
-+	endpa = pa + 2 * pgsz;
+ struct pci_dev;
+ int xlp_socdev_to_node(const struct pci_dev *dev);
++#ifdef CONFIG_NUMA
++void xlp_numa_init(void);
++#else
++static inline void xlp_numa_init(void) {}
++#endif
  
--	start = map->addr;
--	end = start + map->size;
-+	pr_debug("%2d - pa0 %llx pa1 %llx pgsz %llx valid %x\n",
-+				ntlb, pa, endpa, pgsz, validmask);
-+	if (ntlb == TLB_MAXWIRED) {
-+		pr_err("Ran out of TLB entries pa %llx pgsz %llx\n", pa, pgsz);
-+		return -1;
-+	}
- 
--	/* fudge first entry for now  */
--	if (start < 0x10000000) {
--		start = 0;
--		end = 0x10000000;
-+	t = nlm_get_boot_data(BOOT_TLBS_START);
-+	t += ntlb * (BOOT_TLB_SIZE / sizeof(t[0]));
-+	t[BOOT_TLB_ENTRYHI] = pa + PAGE_OFFSET;
-+	t[BOOT_TLB_ENTRYLO0] = (validmask & 0x1) ? PTE_MAPKERN(pa) : 1;
-+	t[BOOT_TLB_ENTRYLO1] = (validmask & 0x2) ? PTE_MAPKERN(pa + pgsz) : 1;
-+	t[BOOT_TLB_PAGEMASK] = pmask;
-+
-+	if (pa < ae->start) {
-+		ae->astart = ae->start = pa;
-+		if ((validmask & 0x1) == 0)
-+			ae->astart += pgsz;
- 	}
--	astart = round_up(start, TLBSZ);
--	aend = round_down(end, TLBSZ);
--	if (aend <= astart) {
--		pr_info("Boot mem map: discard seg %lx-%lx\n",
--				(unsigned long)start, (unsigned long)end);
--		map->size = 0;
--		return;
-+	if (endpa > ae->end) {
-+		ae->aend = ae->end = endpa;
-+		if ((validmask & 0x2) == 0)
-+			ae->aend -= pgsz;
- 	}
--	if (astart != start || aend != end) {
--		if (start != 0) {
--			map->addr = astart;
--			map->size = aend - astart;
--		}
--		pr_info("Boot mem map: %lx - %lx -> %lx-%lx\n",
--			(unsigned long)start, (unsigned long)end,
--			(unsigned long)astart, (unsigned long)aend);
--	} else
--		pr_info("Boot mem map: added %lx - %lx\n",
--			(unsigned long)astart, (unsigned long)aend);
-+	*tlbcount = ntlb + 1;
-+	return 0;
+ /* Device tree related */
+ void xlp_early_init_devtree(void);
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 74c5f6d..666480c 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -290,6 +290,14 @@ static void __init bootmem_init(void)
+ 	finalize_initrd();
  }
  
++#elif defined(CONFIG_CPU_XLP) && defined(CONFIG_NUMA)
++extern void xlp_numa_bootmem_init(void);
++static void __init bootmem_init(void)
++{
++	init_initrd();
++	xlp_numa_bootmem_init();
++	finalize_initrd();
++}
+ #else  /* !CONFIG_SGI_IP27 */
+ 
+ static void __init bootmem_init(void)
+diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
+index b93c5d4..89dc1fe 100644
+--- a/arch/mips/netlogic/common/smp.c
++++ b/arch/mips/netlogic/common/smp.c
+@@ -175,6 +175,7 @@ void __init nlm_smp_setup(void)
+ 	__cpu_number_map[boot_cpu] = 0;
+ 	__cpu_logical_map[0] = boot_cpu;
+ 	set_cpu_possible(0, true);
++	cpumask_set_cpu(0, &nlm_get_node(0)->cpumask);
+ 
+ 	num_cpus = 1;
+ 	for (i = 0; i < NR_CPUS; i++) {
+@@ -199,8 +200,12 @@ void __init nlm_smp_setup(void)
+ 	pr_info("Possible CPU mask: %s\n", buf);
+ 
+ 	/* check with the cores we have woken up */
+-	for (ncore = 0, i = 0; i < NLM_NR_NODES; i++)
++	for (ncore = 0, i = 0; i < NLM_NR_NODES; i++) {
+ 		ncore += hweight32(nlm_get_node(i)->coremask);
++		cpumask_scnprintf(buf, ARRAY_SIZE(buf),
++						&nlm_get_node(i)->cpumask);
++		pr_info("\tnode %d: %s\n", i, buf);
++	}
+ 
+ 	pr_info("Detected (%dc%dt) %d Slave CPU(s)\n", ncore,
+ 		nlm_threads_per_core, num_cpus);
+@@ -215,6 +220,7 @@ static int nlm_parse_cpumask(cpumask_t *wakeup_mask)
+ 	int threadmode, i, j;
+ 	char buf[64];
+ 
++	/* Get Core 0 thread mask and value for thread mode register */
+ 	core0_thr_mask = 0;
+ 	for (i = 0; i < NLM_THREADS_PER_CORE; i++)
+ 		if (cpumask_test_cpu(i, wakeup_mask))
+diff --git a/arch/mips/netlogic/xlp/Makefile b/arch/mips/netlogic/xlp/Makefile
+index be358a8..b7b8fe9 100644
+--- a/arch/mips/netlogic/xlp/Makefile
++++ b/arch/mips/netlogic/xlp/Makefile
+@@ -4,3 +4,4 @@ obj-$(CONFIG_USB)		+= usb-init.o
+ obj-$(CONFIG_USB)		+= usb-init-xlp2.o
+ obj-$(CONFIG_SATA_AHCI)		+= ahci-init.o
+ obj-$(CONFIG_SATA_AHCI)		+= ahci-init-xlp2.o
++obj-$(CONFIG_NUMA)		+= numa.o
+diff --git a/arch/mips/netlogic/xlp/numa.c b/arch/mips/netlogic/xlp/numa.c
+new file mode 100644
+index 0000000..4e07fc0
+--- /dev/null
++++ b/arch/mips/netlogic/xlp/numa.c
+@@ -0,0 +1,191 @@
 +/*
-+ * Calculate the TLB entries needed to wire dowm the memory map
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * Tries to use the largest pagesizes possible, discards memory which
-+ * cannot be mapped
++ * Copyright (C) 2013 Broadcom Corporation.
++ *
 + */
- static void nlm_calc_wired_tlbs(void)
- {
--	u64 *tlbarr;
--	u32 *tlbcount;
--	u64 lo0, lo1, vaddr;
--	phys_addr_t astart, aend, p;
--	unsigned long bootdata = CKSEG1ADDR(RESET_DATA_PHYS);
--	int i, pos;
-+	u64 pgsz, pgmask, p;
-+	phys_addr_t astart, aend, pend, nstart;
-+	phys_addr_t tstart, tend, mstart, mend;
-+	struct boot_mem_map_entry *bmap;
-+	int i, nr_map;
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/memblock.h>
++#include <linux/mmzone.h>
++#include <linux/nodemask.h>
++#include <linux/bootmem.h>
++#include <linux/pfn.h>
++#include <linux/initrd.h>
++#include <linux/swap.h>
 +
-+	nr_map = boot_mem_map.nr_map;
-+	bmap = boot_mem_map.map;
++#include <asm/bootinfo.h>
++#include <asm/page.h>
++#include <asm/pgalloc.h>
++#include <asm/sections.h>
 +
-+	for (i = 0; i < nr_map; i++) {
-+		alloc_map[i].start = alloc_map[i].astart = ~0ull;
-+		alloc_map[i].end = alloc_map[i].aend = 0;
++#include <asm/mach-netlogic/multi-node.h>
++#include <asm/netlogic/common.h>
++#include <asm/netlogic/xlp-hal/xlp.h>
++
++#define NODE_RESV_MEM	(64 * 1024)
++struct node_data *__node_data[NLM_NR_NODES];
++
++/* Quick and dirty implementation for now */
++int xlp_pa_to_nid(phys_addr_t pa)
++{
++	unsigned long pfn, start, end;
++	int n;
++
++	pfn = PFN_DOWN(pa);
++	for_each_online_node(n) {
++		start = NODE_DATA(n)->node_start_pfn;
++		end = start + NODE_DATA(n)->node_spanned_pages - 1;
++		if (pfn >= start && pfn <= end)
++			return n;
 +	}
- 
--	tlbarr = (u64 *)(bootdata + BOOT_TLBS_START);
--	tlbcount = (u32 *)(bootdata + BOOT_NTLBS);
-+	/* force the first entry with one 256M lo0 page */
-+	addtlb(0, 0x10000000, PM_256M, 0x1, &alloc_map[0]);
- 
--	pos = 0;
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
--			continue;
--		astart = boot_mem_map.map[i].addr;
--		aend =	astart + boot_mem_map.map[i].size;
-+	/* starting page size and page mask */
-+	if (cpu_is_xlpii()) {
-+		pgsz = SZ_4G;
-+		pgmask = PM_4G;
-+	} else {
-+		pgsz = SZ_256M;
-+		pgmask = PM_256M;
++	BUG();
++	return 0;		/* not reached */
++}
++
++static void __init init_node_bootmem(int node, unsigned long min_pfn,
++	unsigned long max_pfn)
++{
++	unsigned long freepfn, bootmap_size, kpfn;
++	unsigned long nodedata_size = sizeof(struct node_data);
++	unsigned long ofreepfn;
++
++	/* skip kernel and initrd load area on node it is on */
++	kpfn = max(PFN_UP(__pa(initrd_start)), PFN_UP(__pa_symbol(&_end)));
++	if (kpfn > min_pfn && kpfn <= max_pfn)
++		freepfn = kpfn;
++	else
++		freepfn = min_pfn + PFN_UP(NODE_RESV_MEM);
++
++	/* Allocate node area starting at freepfn */
++	__node_data[node] = __va(PFN_PHYS(freepfn));
++	memset(__node_data[node], 0, PAGE_SIZE * PFN_UP(nodedata_size));
++
++	NODE_DATA(node)->bdata = &bootmem_node_data[node];
++	NODE_DATA(node)->node_start_pfn = min_pfn;
++	NODE_DATA(node)->node_spanned_pages = max_pfn - min_pfn + 1;
++
++	ofreepfn = freepfn;
++	freepfn += PFN_UP(nodedata_size);
++	bootmap_size = init_bootmem_node(NODE_DATA(node), freepfn,
++							min_pfn, max_pfn);
++	free_bootmem_with_active_regions(node, max_pfn);
++	reserve_bootmem_node(NODE_DATA(node), PFN_PHYS(min_pfn),
++		PFN_PHYS(freepfn - min_pfn) + bootmap_size,
++		BOOTMEM_DEFAULT);
++	sparse_memory_present_with_active_regions(node);
++}
++/*
++ * This is done in  bootmem_init() for other mips, but in NUMA config
++ * we need to do it for each node.
++ */
++void __init xlp_numa_bootmem_init(void)
++{
++	uint64_t map[16];
++	unsigned long node_pfn_start, node_pfn_end;	/* from DRAM bars */
++	unsigned long min_node_pfn, max_node_pfn;	/* from device tree */
++	int node, n, i;
++
++	/*
++	 * At this point, the boot_mem_map is setup from the DTB, and
++	 * that needs to be split based on the NODE memory setup and
++	 * added to the right node
++	 */
++	for_each_online_node(node) {
++		/* Get the node's DRAM map */
++		n = nlm_get_dram_map(node, map, ARRAY_SIZE(map));
++		if (n == 0)  {
++			pr_err("Node %d: No DRAM found\n", node);
++			goto fail;
++		}
++		node_pfn_start = PFN_UP(map[0]);
++		node_pfn_end = PFN_DOWN(map[n - 1] - 1);
++
++		/* pick up the pieces of boot_mem_map in this node */
++		max_node_pfn = 0;
++		min_node_pfn = ~0ul;
++		for (i = 0;  i < boot_mem_map.nr_map; i++) {
++			unsigned long pfn_start, pfn_end;
++
++			if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
++				continue;
++			pfn_start = PFN_UP(boot_mem_map.map[i].addr);
++			pfn_end = PFN_DOWN(boot_mem_map.map[i].addr
++						+ boot_mem_map.map[i].size);
++			/*
++			 * find which node it falls under, and add it there
++			 */
++			if (pfn_start > node_pfn_end)
++				continue;
++
++			/* if entry starts before node region, discard */
++			if (pfn_start < node_pfn_start)
++				pfn_start = node_pfn_start;
++			/* if entry goes beyond node region, split */
++			if (pfn_end > node_pfn_end)
++				pfn_end = node_pfn_end;
++
++			if (pfn_start >= pfn_end)
++				continue;	/* nothing left in segment */
++
++			memblock_add_node(PFN_PHYS(pfn_start),
++					  PFN_PHYS(pfn_end - pfn_start), node);
++			if (pfn_start < min_node_pfn)
++				min_node_pfn = pfn_start;
++			if (pfn_end > max_node_pfn)
++				max_node_pfn = pfn_end;
++
++		}
++		if (min_node_pfn < max_node_pfn)
++			init_node_bootmem(node, min_node_pfn, max_node_pfn);
++		else {
++			pr_err("No memory on node %d\n", node);
++			goto fail;
++		}
 +	}
- 
--		/* fudge first entry for now  */
--		if (astart < 0x10000000) {
--			astart = 0;
--			aend = 0x10000000;
--		}
--		for (p = round_down(astart, 2 * TLBSZ);
--			p < round_up(aend, 2 * TLBSZ);) {
--				vaddr = PAGE_OFFSET + p;
--				lo0 = (p >= astart) ? PTE_MAPKERN(p) : 1;
--				p += TLBSZ;
--				lo1 = (p < aend) ? PTE_MAPKERN(p) : 1;
--				p += TLBSZ;
--
--				tlbarr[BOOT_TLB_ENTRYHI] = vaddr;
--				tlbarr[BOOT_TLB_ENTRYLO0] = lo0;
--				tlbarr[BOOT_TLB_ENTRYLO1] = lo1;
--				tlbarr[BOOT_TLB_PAGEMASK] = PM_TLBSZ;
--				tlbarr += (BOOT_TLB_SIZE / sizeof(tlbarr[0]));
--
--				if (++pos >= TLB_MAXWIRED) {
--					pr_err("Ran out of TLBs at %llx, ",
--							(unsigned long long)p);
--					pr_err("Discarding rest of memory!\n");
--					boot_mem_map.nr_map = i + 1;
--					boot_mem_map.map[i].size = p -
--						boot_mem_map.map[i].addr;
-+	/* do multiple passes with successively smaller page sizes */
-+	for (; pgsz >= MINPGSZ; pgsz /= 4, pgmask = (pgmask >> 2) ^ 0x1800) {
-+		for (i = 0; i < nr_map; i++) {
-+			if (bmap[i].type != BOOT_MEM_RAM)
-+				continue;
 +
-+			/* previous mapping end and next mapping start */
-+			pend = alloc_map[i - 1].end;
-+			nstart = (i == nr_map - 1) ? ~0ull : bmap[i + 1].addr;
++	return;
++fail:
++	panic("Invalid memory config!\n");
++}
 +
-+			/* mem block start and end */
-+			mstart = round_up(bmap[i].addr, MINPGSZ);
-+			mend = round_down(bmap[i].addr + bmap[i].size, MINPGSZ);
++extern void setup_zero_pages(void);
 +
-+			/* allocated area in the memory block, start and end */
-+			astart = alloc_map[i].start;
-+			aend = alloc_map[i].end;
++void __init paging_init(void)
++{
++	unsigned long zones_size[MAX_NR_ZONES] = {0, };
++	unsigned node;
 +
-+			/* skip fully mapped blocks */
-+			if (mstart >= astart && mend <= aend)
-+				continue;
++	pagetable_init();
 +
-+			/* boundaries aligned to the current page size */
-+			tstart = round_up(mstart, 2 * pgsz);
-+			tend = round_down(mend, 2 * pgsz);
-+			if (tstart > tend)
-+				continue;
++	for_each_online_node(node) {
++		unsigned long start_pfn, end_pfn;
 +
-+			/* use LO1 of a TLB entry */
-+			if (mstart + pgsz == tstart && pend <= mstart - pgsz)
-+				if (addtlb(mstart - pgsz, pgsz,
-+						pgmask, 0x2, &alloc_map[i]))
- 					goto out;
++		get_pfn_range_for_nid(node, &start_pfn, &end_pfn);
 +
-+			for (p = tstart; p < tend;) {
-+				if (astart < aend && p == astart) {
-+					p = aend;
-+					continue;
- 				}
-+				if (addtlb(p, pgsz, pgmask, 0x3, &alloc_map[i]))
-+					goto out;
-+				p += 2 * pgsz;
-+			}
++		if (end_pfn > max_low_pfn)
++			max_low_pfn = end_pfn;
++	}
++	zones_size[ZONE_NORMAL] = max_low_pfn;
++	free_area_init_nodes(zones_size);
++}
 +
-+			/* use LO0 of a TLB entry */
-+			if (tend + pgsz == mend && nstart >= mend + pgsz)
-+				if (addtlb(tend, pgsz,
-+						pgmask, 0x1, &alloc_map[i]))
-+					goto out;
- 		}
++void __init mem_init(void)
++{
++	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
++
++	free_all_bootmem();
++	setup_zero_pages();	/* This comes from node 0 */
++	mem_init_print_info(NULL);
++}
++
++void __init xlp_numa_init(void)
++{
++	int i;
++
++	for (i = 0; i < NLM_NR_NODES; i++)
++		if (nlm_get_node(i)->coremask)
++			node_set_online(i);
++}
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index bf4f6d3..5516a7d 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -103,6 +103,7 @@ void __init plat_mem_setup(void)
+ 		pr_info("Using DRAM BARs for memory map.\n");
+ 		xlp_init_mem_from_bars();
  	}
- out:
--	*tlbcount = pos;
--	pr_info("%d TLB entires used for mapped kernel.\n", pos);
-+	for (i = 0; i < nr_map; i++) {
-+		mstart = bmap[i].addr;
-+		mend = bmap[i].addr + bmap[i].size;
-+		astart = alloc_map[i].astart;
-+		aend = alloc_map[i].aend;
++	xlp_numa_init();
+ }
+ 
+ const char *get_system_type(void)
+diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
+index 7babf01..9ea47ee 100644
+--- a/arch/mips/pci/pci-xlp.c
++++ b/arch/mips/pci/pci-xlp.c
+@@ -286,6 +286,31 @@ static void xlp_config_pci_bswap(int node, int link)
+ static inline void xlp_config_pci_bswap(int node, int link) {}
+ #endif /* __BIG_ENDIAN */
+ 
++#ifdef CONFIG_NUMA
++int pcibus_to_node(struct pci_bus *bus)
++{
++	return dev_to_node(&bus->dev);
++}
 +
-+		pr_info("%2d alloc: %10llx %10llx mem %10llx %10llx\n", i,
-+						astart, aend, bmap[i].addr,
-+						bmap[i].addr + bmap[i].size);
-+		if (astart >= aend) {
-+			bmap[i].size = 0;
-+			pr_info("%2d: Discarded %#10llx - %#10llx\n", i,
-+				(unsigned long long)mstart,
-+				(unsigned long long)mend);
-+			continue;
-+		}
-+		if (bmap[i].addr < astart) {
-+			bmap[i].addr = astart;
-+			pr_info("%2d: Discarded %#10llx - %#10llx\n", i,
-+				(unsigned long long)bmap[i].addr,
-+				(unsigned long long)astart);
-+		}
-+		if (mend > aend) {
-+			bmap[i].size = aend - bmap[i].addr;
-+			pr_info("%2d: Discarded %#10llx - %#10llx\n", i,
-+				(unsigned long long)aend,
-+				(unsigned long long)mend);
++int xlp_fixup_numa_node(struct device *dev)
++{
++	if (dev_is_pci(dev)) {
++		struct pci_dev *pdev = to_pci_dev(dev);
++		int node;
++
++		/* fix the node numbers in top level devices */
++		if (pdev->bus->number == 0) {
++			if (cpu_is_xlp9xx())
++				node = PCI_FUNC(pdev->devfn);
++			else
++				node = PCI_SLOT(pdev->devfn) / 8;
++			set_dev_node(dev, node);
 +		}
 +	}
-+	pr_info("%d TLB entires used for mapped kernel.\n",
-+				*(u32 *)nlm_get_boot_data(BOOT_NTLBS));
++	return 0;
++}
++#endif
++
+ static int __init pcibios_init(void)
+ {
+ 	uint64_t pciebase;
+@@ -327,6 +352,9 @@ static int __init pcibios_init(void)
+ 	pr_info("XLP PCIe Controller %pR%pR.\n", &nlm_pci_io_resource,
+ 		&nlm_pci_mem_resource);
+ 
++#ifdef CONFIG_NUMA
++	platform_notify = xlp_fixup_numa_node;
++#endif
+ 	return 0;
  }
- #endif
- 
-@@ -143,13 +231,6 @@ void __init plat_mem_fixup(void)
- 	int i;
- 
- #if defined(CONFIG_MAPPED_KERNEL) && defined(CONFIG_64BIT)
--	/* trim memory regions to PM_TLBSZ boundaries */
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
--			continue;
--		nlm_tlb_align(&boot_mem_map.map[i]);
--	}
--
- 	/* calculate and save wired TLB entries */
- 	nlm_calc_wired_tlbs();
- 
+ arch_initcall(pcibios_init);
 -- 
 1.7.9.5

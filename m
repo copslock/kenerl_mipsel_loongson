@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 12:58:35 +0200 (CEST)
-Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:5206 "EHLO
-        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6843056AbaEIK63gzU-4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 12:58:29 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 12:58:55 +0200 (CEST)
+Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:14564 "EHLO
+        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6843057AbaEIK6nZMMdr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 12:58:43 +0200
 X-IronPort-AV: E=Sophos;i="4.97,1017,1389772800"; 
-   d="scan'208";a="28304109"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw3-out.broadcom.com with ESMTP; 09 May 2014 04:20:02 -0700
+   d="scan'208";a="28885169"
+Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
+  by mail-gw1-out.broadcom.com with ESMTP; 09 May 2014 05:14:19 -0700
 Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Fri, 9 May 2014 03:58:22 -0700
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
+ (TLS) id 14.3.174.1; Fri, 9 May 2014 03:58:35 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
  IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.174.1; Fri, 9 May 2014 03:58:22 -0700
+ 14.3.174.1; Fri, 9 May 2014 03:58:35 -0700
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 26A8B5D818;    Fri,  9 May 2014 03:58:19 -0700 (PDT)
+ 84C9F5D818;    Fri,  9 May 2014 03:58:32 -0700 (PDT)
 From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>
-Subject: [PATCH v2 07/17] MIPS: Netlogic: Reduce size of reset code
-Date:   Fri, 9 May 2014 16:35:14 +0530
-Message-ID: <1399633514-21390-1-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH v2 09/17] MIPS: Netlogic: IRQ mapping for some more SoC blocks
+Date:   Fri, 9 May 2014 16:35:34 +0530
+Message-ID: <1399633534-23124-1-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <40e8d817112e1f870b0a3be98e3b46109df1d4f0.1398780013.git.jchandra@broadcom.com>
-References: <40e8d817112e1f870b0a3be98e3b46109df1d4f0.1398780013.git.jchandra@broadcom.com>
+In-Reply-To: <a69c93df8067c9bce9aeb7d9e6e3bf40e582e8e1.1398780013.git.jchandra@broadcom.com>
+References: <a69c93df8067c9bce9aeb7d9e6e3bf40e582e8e1.1398780013.git.jchandra@broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40051
+X-archive-position: 40052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,82 +48,214 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Update thread wakeup function to use scratch registers for saving SP and
-RA. Move the register restore code needed for thread 0 to the calling
-function. This reduces the size of code copied to the reset vector.
+Add IRQ to IRT (PIC interupt table index) mapping for SATA, GPIO, NAND
+and SPI interfaces on the XLP SoC. Fix offsets for few blocks and add
+device IDs for a few blocks.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
-[v2: Use proper function macros for xlp_boot_core0_siblings]
+[v2: Fix GPIO irq]
 
- arch/mips/netlogic/common/reset.S   |   15 ++++++++-------
- arch/mips/netlogic/common/smpboot.S |   12 ++++++++----
- 2 files changed, 16 insertions(+), 11 deletions(-)
+ arch/mips/include/asm/netlogic/xlp-hal/iomap.h |   16 +++--
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h   |    4 ++
+ arch/mips/netlogic/xlp/nlm_hal.c               |   84 ++++++++++++++++--------
+ 3 files changed, 69 insertions(+), 35 deletions(-)
 
-diff --git a/arch/mips/netlogic/common/reset.S b/arch/mips/netlogic/common/reset.S
-index b231fe1..fda772a 100644
---- a/arch/mips/netlogic/common/reset.S
-+++ b/arch/mips/netlogic/common/reset.S
-@@ -197,6 +197,9 @@ FEXPORT(nlm_reset_entry)
- EXPORT(nlm_boot_siblings)
- 	/* core L1D flush before enable threads */
- 	xlp_flush_l1_dcache
-+	/* save ra and sp, will be used later (only for boot cpu) */
-+	dmtc0	ra, $22, 6
-+	dmtc0	sp, $22, 7
- 	/* Enable hw threads by writing to MAP_THREADMODE of the core */
- 	li	t0, CKSEG1ADDR(RESET_DATA_PHYS)
- 	lw	t1, BOOT_THREAD_MODE(t0)	/* t1 <- thread mode */
-@@ -238,14 +241,12 @@ EXPORT(nlm_boot_siblings)
- 	nop
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+index 1f23dfa..14b2f51 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+@@ -74,6 +74,8 @@
+ #define XLP_IO_USB_OHCI2_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 2, 4)
+ #define XLP_IO_USB_OHCI3_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 2, 5)
  
- 	/*
--	 * For the boot CPU, we have to restore registers and
--	 * return
-+	 * For the boot CPU, we have to restore ra and sp and return, rest
-+	 * of the registers will be restored by the caller
- 	 */
--4:	dmfc0	t0, $4, 2	/* restore SP from UserLocal */
--	li	t1, 0xfadebeef
--	dmtc0	t1, $4, 2	/* restore SP from UserLocal */
--	PTR_SUBU sp, t0, PT_SIZE
--	RESTORE_ALL
-+4:
-+	dmfc0	ra, $22, 6
-+	dmfc0	sp, $22, 7
- 	jr	ra
- 	nop
- EXPORT(nlm_reset_entry_end)
-diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
-index 8597657..805355b 100644
---- a/arch/mips/netlogic/common/smpboot.S
-+++ b/arch/mips/netlogic/common/smpboot.S
-@@ -54,8 +54,9 @@
- 	.set	noat
- 	.set	arch=xlr		/* for mfcr/mtcr, XLR is sufficient */
++#define XLP_IO_SATA_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 3, 2)
++
+ /* XLP2xx has an updated USB block */
+ #define XLP2XX_IO_USB_OFFSET(node, i)	XLP_HDR_OFFSET(node, 0, 4, i)
+ #define XLP2XX_IO_USB_XHCI0_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 4, 1)
+@@ -103,13 +105,11 @@
+ #define XLP_IO_SYS_OFFSET(node)		XLP_HDR_OFFSET(node, 0, 6, 5)
+ #define XLP_IO_JTAG_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 6, 6)
  
--FEXPORT(xlp_boot_core0_siblings)	/* "Master" cpu starts from here */
--	dmtc0	sp, $4, 2		/* SP saved in UserLocal */
-+/* Called by the boot cpu to wake up its sibling threads */
-+NESTED(xlp_boot_core0_siblings, PT_SIZE, sp)
-+	/* CPU register contents lost when enabling threads, save them first */
- 	SAVE_ALL
- 	sync
- 	/* find the location to which nlm_boot_siblings was relocated */
-@@ -65,9 +66,12 @@ FEXPORT(xlp_boot_core0_siblings)	/* "Master" cpu starts from here */
- 	dsubu	t2, t1
- 	daddu	t2, t0
- 	/* call it */
--	jr	t2
-+	jalr	t2
- 	nop
--	/* not reached */
-+	RESTORE_ALL
-+	jr	ra
-+	nop
-+END(xlp_boot_core0_siblings)
++/* Flash */
+ #define XLP_IO_NOR_OFFSET(node)		XLP_HDR_OFFSET(node, 0, 7, 0)
+ #define XLP_IO_NAND_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 7, 1)
+ #define XLP_IO_SPI_OFFSET(node)		XLP_HDR_OFFSET(node, 0, 7, 2)
+-/* SD flash */
+-#define XLP_IO_SD_OFFSET(node)		XLP_HDR_OFFSET(node, 0, 7, 3)
+-#define XLP_IO_MMC_OFFSET(node, slot)	\
+-		((XLP_IO_SD_OFFSET(node))+(slot*0x100)+XLP_IO_PCI_HDRSZ)
++#define XLP_IO_MMC_OFFSET(node)		XLP_HDR_OFFSET(node, 0, 7, 3)
  
- NESTED(nlm_boot_secondary_cpus, 16, sp)
- 	/* Initialize CP0 Status */
+ /* Things have changed drastically in XLP 9XX */
+ #define XLP9XX_HDR_OFFSET(n, d, f)	\
+@@ -135,11 +135,11 @@
+ /* XLP9XX on-chip SATA controller */
+ #define XLP9XX_IO_SATA_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 3, 2)
+ 
++/* Flash */
+ #define XLP9XX_IO_NOR_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 0)
+ #define XLP9XX_IO_NAND_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 1)
+ #define XLP9XX_IO_SPI_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 2)
+-/* SD flash */
+-#define XLP9XX_IO_MMCSD_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 3)
++#define XLP9XX_IO_MMC_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 3)
+ 
+ /* PCI config header register id's */
+ #define XLP_PCI_CFGREG0			0x00
+@@ -186,8 +186,10 @@
+ #define PCI_DEVICE_ID_NLM_NOR		0x1015
+ #define PCI_DEVICE_ID_NLM_NAND		0x1016
+ #define PCI_DEVICE_ID_NLM_MMC		0x1018
+-#define PCI_DEVICE_ID_NLM_XHCI		0x101d
++#define PCI_DEVICE_ID_NLM_SATA		0x101A
++#define PCI_DEVICE_ID_NLM_XHCI		0x101D
+ 
++#define PCI_DEVICE_ID_XLP9XX_MMC	0x9018
+ #define PCI_DEVICE_ID_XLP9XX_SATA	0x901A
+ #define PCI_DEVICE_ID_XLP9XX_XHCI	0x901D
+ 
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+index 1b56bd4..488863e 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+@@ -58,6 +58,10 @@
+ #define PIC_I2C_1_IRQ			31
+ #define PIC_I2C_2_IRQ			32
+ #define PIC_I2C_3_IRQ			33
++#define PIC_SPI_IRQ			34
++#define PIC_NAND_IRQ			37
++#define PIC_SATA_IRQ			38
++#define PIC_GPIO_IRQ			39
+ 
+ #define PIC_PCIE_LINK_MSI_IRQ_BASE	44	/* 44 - 47 MSI IRQ */
+ #define PIC_PCIE_LINK_MSI_IRQ(i)	(44 + (i))
+diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
+index d85019b..66a2dae 100644
+--- a/arch/mips/netlogic/xlp/nlm_hal.c
++++ b/arch/mips/netlogic/xlp/nlm_hal.c
+@@ -66,31 +66,39 @@ void nlm_node_init(int node)
+ 	spin_lock_init(&nodep->piclock);
+ }
+ 
+-int nlm_irq_to_irt(int irq)
++static int xlp9xx_irq_to_irt(int irq)
++{
++	switch (irq) {
++	case PIC_GPIO_IRQ:
++		return 12;
++	case PIC_9XX_XHCI_0_IRQ:
++		return 114;
++	case PIC_9XX_XHCI_1_IRQ:
++		return 115;
++	case PIC_UART_0_IRQ:
++		return 133;
++	case PIC_UART_1_IRQ:
++		return 134;
++	case PIC_SATA_IRQ:
++		return 143;
++	case PIC_SPI_IRQ:
++		return 152;
++	case PIC_MMC_IRQ:
++		return 153;
++	case PIC_PCIE_LINK_LEGACY_IRQ(0):
++	case PIC_PCIE_LINK_LEGACY_IRQ(1):
++	case PIC_PCIE_LINK_LEGACY_IRQ(2):
++	case PIC_PCIE_LINK_LEGACY_IRQ(3):
++		return 191 + irq - PIC_PCIE_LINK_LEGACY_IRQ_BASE;
++	}
++	return -1;
++}
++
++static int xlp_irq_to_irt(int irq)
+ {
+ 	uint64_t pcibase;
+ 	int devoff, irt;
+ 
+-	/* bypass for 9xx */
+-	if (cpu_is_xlp9xx()) {
+-		switch (irq) {
+-		case PIC_9XX_XHCI_0_IRQ:
+-			return 114;
+-		case PIC_9XX_XHCI_1_IRQ:
+-			return 115;
+-		case PIC_UART_0_IRQ:
+-			return 133;
+-		case PIC_UART_1_IRQ:
+-			return 134;
+-		case PIC_PCIE_LINK_LEGACY_IRQ(0):
+-		case PIC_PCIE_LINK_LEGACY_IRQ(1):
+-		case PIC_PCIE_LINK_LEGACY_IRQ(2):
+-		case PIC_PCIE_LINK_LEGACY_IRQ(3):
+-			return 191 + irq - PIC_PCIE_LINK_LEGACY_IRQ_BASE;
+-		}
+-		return -1;
+-	}
+-
+ 	devoff = 0;
+ 	switch (irq) {
+ 	case PIC_UART_0_IRQ:
+@@ -100,7 +108,7 @@ int nlm_irq_to_irt(int irq)
+ 		devoff = XLP_IO_UART1_OFFSET(0);
+ 		break;
+ 	case PIC_MMC_IRQ:
+-		devoff = XLP_IO_SD_OFFSET(0);
++		devoff = XLP_IO_MMC_OFFSET(0);
+ 		break;
+ 	case PIC_I2C_0_IRQ:	/* I2C will be fixed up */
+ 	case PIC_I2C_1_IRQ:
+@@ -111,6 +119,18 @@ int nlm_irq_to_irt(int irq)
+ 		else
+ 			devoff = XLP_IO_I2C0_OFFSET(0);
+ 		break;
++	case PIC_SATA_IRQ:
++		devoff = XLP_IO_SATA_OFFSET(0);
++		break;
++	case PIC_GPIO_IRQ:
++		devoff = XLP_IO_GPIO_OFFSET(0);
++		break;
++	case PIC_NAND_IRQ:
++		devoff = XLP_IO_NAND_OFFSET(0);
++		break;
++	case PIC_SPI_IRQ:
++		devoff = XLP_IO_SPI_OFFSET(0);
++		break;
+ 	default:
+ 		if (cpu_is_xlpii()) {
+ 			switch (irq) {
+@@ -166,18 +186,26 @@ int nlm_irq_to_irt(int irq)
+ 		/* HW bug, PCI IRT entries are bad on early silicon, fix */
+ 		irt = PIC_IRT_PCIE_LINK_INDEX(irq -
+ 					PIC_PCIE_LINK_LEGACY_IRQ_BASE);
+-	} else if (irq >= PIC_PCIE_LINK_MSI_IRQ(0) &&
+-			irq <= PIC_PCIE_LINK_MSI_IRQ(3)) {
+-		irt = -2;
+-	} else if (irq >= PIC_PCIE_MSIX_IRQ(0) &&
+-			irq <= PIC_PCIE_MSIX_IRQ(3)) {
+-		irt = -2;
+ 	} else {
+ 		irt = -1;
+ 	}
+ 	return irt;
+ }
+ 
++int nlm_irq_to_irt(int irq)
++{
++	/* return -2 for irqs without 1-1 mapping */
++	if (irq >= PIC_PCIE_LINK_MSI_IRQ(0) && irq <= PIC_PCIE_LINK_MSI_IRQ(3))
++		return -2;
++	if (irq >= PIC_PCIE_MSIX_IRQ(0) && irq <= PIC_PCIE_MSIX_IRQ(3))
++		return -2;
++
++	if (cpu_is_xlp9xx())
++		return xlp9xx_irq_to_irt(irq);
++	else
++		return xlp_irq_to_irt(irq);
++}
++
+ unsigned int nlm_get_core_frequency(int node, int core)
+ {
+ 	unsigned int pll_divf, pll_divr, dfs_div, ext_div;
 -- 
 1.7.9.5

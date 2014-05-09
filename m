@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 17:58:15 +0200 (CEST)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:7511 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854774AbaEIP6NRF6FP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 17:58:13 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 18:02:29 +0200 (CEST)
+Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:14807 "EHLO
+        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6854776AbaEIQC01zQwa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 18:02:26 +0200
 X-IronPort-AV: E=Sophos;i="4.97,1019,1389772800"; 
-   d="scan'208";a="28568080"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw2-out.broadcom.com with ESMTP; 09 May 2014 09:24:50 -0700
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Fri, 9 May 2014 08:58:05 -0700
+   d="scan'208";a="28926877"
+Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
+  by mail-gw1-out.broadcom.com with ESMTP; 09 May 2014 10:18:09 -0700
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
+ (TLS) id 14.3.174.1; Fri, 9 May 2014 09:02:19 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.3.174.1; Fri, 9 May 2014 08:58:06 -0700
-Received: from jayachandranc.netlogicmicro.com (netl-snoppy.ban.broadcom.com
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
+ 14.3.174.1; Fri, 9 May 2014 09:02:19 -0700
+Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 964545D818;    Fri,  9 May 2014 08:58:01 -0700 (PDT)
-Date:   Fri, 9 May 2014 21:35:09 +0530
-From:   Jayachandran C. <jchandra@broadcom.com>
+ CFEA65D818;    Fri,  9 May 2014 09:02:17 -0700 (PDT)
+From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
-CC:     <ralf@linux-mips.org>
-Subject: Re: [PATCH RFC 0/5] Mapped kernel support for Broadcom XLP
-Message-ID: <20140509160508.GA14124@jayachandranc.netlogicmicro.com>
+CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>
+Subject: [PATCH 1/5] MIPS: Make MAPPED_KERNEL config option common
+Date:   Fri, 9 May 2014 21:39:20 +0530
+Message-ID: <1399651764-14202-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1399649304-25856-1-git-send-email-jchandra@broadcom.com>
 References: <1399649304-25856-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1399649304-25856-1-git-send-email-jchandra@broadcom.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40061
+X-archive-position: 40062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,26 +48,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 09, 2014 at 08:58:20PM +0530, Jayachandran C wrote:
-> This patchset adds support for loading a XLR/XLP kernel compiled with a
-> CKSEG2 load address.
-> 
-> The changes are to:
->  - move the existing MAPPED_KERNEL option from sgi-ip27 to common config
->  - Add a plat_mem_fixup function to arch_mem_init which will allow
->    the platform to calculate the kernel wired TLB entries and save
->    them so that all the CPUs can set them up at boot.
->  - Update PAGE_OFFSET, MAP_BASE and MODULE_START when mapped kernel
->    is enabled.
->  - Update compressed kernel code to generate the final executable in
->    KSEG0 and map the load address of the embedded kernel before loading
->    it.
->  - Use wired entries of sizes 256M/1G/4G to map the available memory on
->    XLP9xx and XLP2xx
-> 
-> Comments and suggestions welcome.
+This will be needed for the mapped kernel patches for Netlogic XLP.
 
-Looks like I missed a patch while sending this out. Will send the full
-patchset again (and fix it up in patchwork).
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+ arch/mips/Kconfig          |    8 ++++++++
+ arch/mips/sgi-ip27/Kconfig |    8 --------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-JC.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d0bcfce..acf85a8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2093,6 +2093,14 @@ config SB1_PASS_2_1_WORKAROUNDS
+ 	depends on CPU_SB1 && CPU_SB1_PASS_2
+ 	default y
+ 
++config MAPPED_KERNEL
++	bool "Mapped kernel support"
++	depends on SGI_IP27
++	help
++	  Change the way a Linux kernel is loaded into memory on a MIPS64
++	  machine.  This is required in order to support text replication on
++	  NUMA.  If you need to understand it, read the source code.
++
+ 
+ config 64BIT_PHYS_ADDR
+ 	bool
+diff --git a/arch/mips/sgi-ip27/Kconfig b/arch/mips/sgi-ip27/Kconfig
+index 4d8705a..2c9dd3d 100644
+--- a/arch/mips/sgi-ip27/Kconfig
++++ b/arch/mips/sgi-ip27/Kconfig
+@@ -21,14 +21,6 @@ config SGI_SN_N_MODE
+ 
+ endchoice
+ 
+-config MAPPED_KERNEL
+-	bool "Mapped kernel support"
+-	depends on SGI_IP27
+-	help
+-	  Change the way a Linux kernel is loaded into memory on a MIPS64
+-	  machine.  This is required in order to support text replication on
+-	  NUMA.  If you need to understand it, read the source code.
+-
+ config REPLICATE_KTEXT
+ 	bool "Kernel text replication support"
+ 	depends on SGI_IP27
+-- 
+1.7.9.5

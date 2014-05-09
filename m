@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2014 16:11:14 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:29226 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817088AbaEHOLCol6gP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 May 2014 16:11:02 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s48EAfQ9012306
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 8 May 2014 10:10:41 -0400
-Received: from sifl.localnet (vpn-53-151.rdu2.redhat.com [10.10.53.151])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s48EAeGg011548
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 8 May 2014 10:10:41 -0400
-From:   Paul Moore <pmoore@redhat.com>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Andy Lutomirski <luto@amacapital.net>,
-        Eric Paris <eparis@redhat.com>
-Subject: Re: [PATCH 3.15] MIPS: Add new AUDIT_ARCH token for the N32 ABI on MIPS64
-Date:   Thu, 08 May 2014 10:10:40 -0400
-Message-ID: <6396078.TUTnZW0Rh0@sifl>
-Organization: Red Hat
-User-Agent: KMail/4.13 (Linux/3.14.1-gentoo; KDE/4.13.0; x86_64; ; )
-In-Reply-To: <5360C13A.5040902@imgtec.com>
-References: <1397550996-14805-1-git-send-email-markos.chandras@imgtec.com> <2110472.rttbk0K4Ne@sifl> <5360C13A.5040902@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2014 12:58:15 +0200 (CEST)
+Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:38856 "EHLO
+        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6839027AbaEIK6Ld7oXQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2014 12:58:11 +0200
+X-IronPort-AV: E=Sophos;i="4.97,1017,1389772800"; 
+   d="scan'208";a="28528106"
+Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
+  by mail-gw2-out.broadcom.com with ESMTP; 09 May 2014 04:24:45 -0700
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
+ (TLS) id 14.3.174.1; Fri, 9 May 2014 03:58:02 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
+ 14.3.174.1; Fri, 9 May 2014 03:58:02 -0700
+Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
+ [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ 533AF5D81B;    Fri,  9 May 2014 03:58:01 -0700 (PDT)
+From:   Jayachandran C <jchandra@broadcom.com>
+To:     g, <linux-mips@linux-mips.org>
+CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>
+Subject: [PATCH v2 06/17] MIPS: Netlogic: Use cpumask_scnprintf for wakeup_mask
+Date:   Fri, 9 May 2014 16:34:54 +0530
+Message-ID: <1399633494-19167-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <26b70b3880094baa731bfe9b2927fd6d872b82fc.1398780013.git.jchandra@broadcom.com>
+References: <26b70b3880094baa731bfe9b2927fd6d872b82fc.1398780013.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <pmoore@redhat.com>
+Content-Type: text/plain
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40049
+X-archive-position: 40050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmoore@redhat.com
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,59 +48,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday, April 30, 2014 10:24:10 AM Markos Chandras wrote:
-> On 04/24/2014 08:19 PM, Paul Moore wrote:
-> > On Tuesday, April 22, 2014 03:40:36 PM Markos Chandras wrote:
-> >> A MIPS64 kernel may support ELF files for all 3 MIPS ABIs
-> >> (O32, N32, N64). Furthermore, the AUDIT_ARCH_MIPS{,EL}64 token
-> >> does not provide enough information about the ABI for the 64-bit
-> >> process. As a result of which, userland needs to use complex
-> >> seccomp filters to decide whether a syscall belongs to the o32 or n32
-> >> or n64 ABI. Therefore, a new arch token for MIPS64/n32 is added so it
-> >> can be used by seccomp to explicitely set syscall filters for this ABI.
-> >> 
-> >> Link: http://sourceforge.net/p/libseccomp/mailman/message/32239040/
-> >> Cc: Andy Lutomirski <luto@amacapital.net>
-> >> Cc: Eric Paris <eparis@redhat.com>
-> >> Cc: Paul Moore <pmoore@redhat.com>
-> >> Cc: Ralf Baechle <ralf@linux-mips.org>
-> >> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> >> ---
-> >> Ralf, can we please have this in 3.15 (Assuming it's ACK'd)?
-> >> 
-> >> Thanks a lot!
-> >> ---
-> >> 
-> >>  arch/mips/include/asm/syscall.h |  2 ++
-> >>  include/uapi/linux/audit.h      | 12 ++++++++++++
-> >>  2 files changed, 14 insertions(+)
-> > 
-> > I'm far from qualified to ACK any MIPS specific patches, but I do want to
-> > add my support for this patch.  As Markos states above, without this
-> > patch any seccomp BPF code will be more complex than necessary (see x32
-> > for an idea) and projects that try to abstract away the arch/ABI specific
-> > nature of the BPF seccomp filters will be have to do a lot more work. 
-> > Please merge this patch, or something similar, along with the MIPS BPF
-> > seccomp filters in 3.15; waiting until 3.16 will be too late.
-> > 
-> > I also don't want to speak for the audit folks (Eric?), but I think you'll
-> > hear that this patch makes life much easier for them as well.
-> > 
-> > Thanks,
-> > -Paul
-> 
-> Ralf ping? Can we please have this in 3.15 so userspace application get
-> the updated token instead of using the AUDIT_ARCH_MIPS{,EL}64 for both
-> n32 and n64? It may be harder to change it once 3.15 is released (ABI
-> break).
+Use standard function to print cpumask. Also fixup a typo in the same
+file.
 
-I haven't heard anything on this patch and I don't see it in the tree this 
-morning.  Can we please get this into the 3.15 release?  If not, can you 
-please explain why so we have something to go on?
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+[v2: Fix subject line for patch]
 
-This will cause us a lot of pain in userspace if we don't get this patch 
-merged.
+ arch/mips/netlogic/common/smp.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
+index 6baae15..b93c5d4 100644
+--- a/arch/mips/netlogic/common/smp.c
++++ b/arch/mips/netlogic/common/smp.c
+@@ -198,7 +198,7 @@ void __init nlm_smp_setup(void)
+ 	cpumask_scnprintf(buf, ARRAY_SIZE(buf), cpu_possible_mask);
+ 	pr_info("Possible CPU mask: %s\n", buf);
+ 
+-	/* check with the cores we have worken up */
++	/* check with the cores we have woken up */
+ 	for (ncore = 0, i = 0; i < NLM_NR_NODES; i++)
+ 		ncore += hweight32(nlm_get_node(i)->coremask);
+ 
+@@ -213,6 +213,7 @@ static int nlm_parse_cpumask(cpumask_t *wakeup_mask)
+ {
+ 	uint32_t core0_thr_mask, core_thr_mask;
+ 	int threadmode, i, j;
++	char buf[64];
+ 
+ 	core0_thr_mask = 0;
+ 	for (i = 0; i < NLM_THREADS_PER_CORE; i++)
+@@ -247,8 +248,8 @@ static int nlm_parse_cpumask(cpumask_t *wakeup_mask)
+ 	return threadmode;
+ 
+ unsupp:
+-	panic("Unsupported CPU mask %lx",
+-		(unsigned long)cpumask_bits(wakeup_mask)[0]);
++	cpumask_scnprintf(buf, ARRAY_SIZE(buf), wakeup_mask);
++	panic("Unsupported CPU mask %s", buf);
+ 	return 0;
+ }
+ 
 -- 
-paul moore
-security and virtualization @ redhat
+1.7.9.5

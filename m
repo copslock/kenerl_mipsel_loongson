@@ -1,42 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2014 21:09:44 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:52825 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6837161AbaELTJi1nr1A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 May 2014 21:09:38 +0200
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s4CJ9S5S016562
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 12 May 2014 15:09:29 -0400
-Received: from [10.10.55.182] (vpn-55-182.rdu2.redhat.com [10.10.55.182])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s4CJ9QZW019966;
-        Mon, 12 May 2014 15:09:27 -0400
-Message-ID: <1399921766.3068.3.camel@localhost>
-Subject: Re: [PATCH 3.15] MIPS: Add new AUDIT_ARCH token for the N32 ABI on
- MIPS64
-From:   Eric Paris <eparis@redhat.com>
-To:     Paul Moore <pmoore@redhat.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Andy Lutomirski <luto@amacapital.net>,
-        Ralf Baechle <ralf@linux-mips.org>
-Date:   Mon, 12 May 2014 15:09:26 -0400
-In-Reply-To: <2398159.J868kTHAKn@sifl>
-References: <1397550996-14805-1-git-send-email-markos.chandras@imgtec.com>
-         <1398177636-10442-1-git-send-email-markos.chandras@imgtec.com>
-         <2398159.J868kTHAKn@sifl>
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-Return-Path: <eparis@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2014 21:24:19 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:40844 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822276AbaELTYNbNy1o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 May 2014 21:24:13 +0200
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id EEB835437B0;
+        Mon, 12 May 2014 21:24:05 +0200 (CEST)
+Message-ID: <53711FDD.6090905@openwrt.org>
+Date:   Mon, 12 May 2014 21:24:13 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+MIME-Version: 1.0
+To:     Waldemar Brodkorb <wbx@openadk.org>, linux-mips@linux-mips.org
+CC:     florian@openwrt.org, nbd@openwrt.org, phil@nwl.cc
+Subject: Re: pci problem with rb532
+References: <20140510213508.GC618@waldemar-brodkorb.de>
+In-Reply-To: <20140510213508.GC618@waldemar-brodkorb.de>
+X-Enigmail-Version: 1.6
+Content-Type: multipart/mixed;
+ boundary="------------090309060908060203070607"
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40086
+X-archive-position: 40087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eparis@redhat.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,113 +40,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 2014-05-12 at 14:53 -0400, Paul Moore wrote:
-> On Tuesday, April 22, 2014 03:40:36 PM Markos Chandras wrote:
-> > A MIPS64 kernel may support ELF files for all 3 MIPS ABIs
-> > (O32, N32, N64). Furthermore, the AUDIT_ARCH_MIPS{,EL}64 token
-> > does not provide enough information about the ABI for the 64-bit
-> > process. As a result of which, userland needs to use complex
-> > seccomp filters to decide whether a syscall belongs to the o32 or n32
-> > or n64 ABI. Therefore, a new arch token for MIPS64/n32 is added so it
-> > can be used by seccomp to explicitely set syscall filters for this ABI.
-> > 
-> > Link: http://sourceforge.net/p/libseccomp/mailman/message/32239040/
-> > Cc: Andy Lutomirski <luto@amacapital.net>
-> > Cc: Eric Paris <eparis@redhat.com>
-> > Cc: Paul Moore <pmoore@redhat.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> > ---
-> > Ralf, can we please have this in 3.15 (Assuming it's ACK'd)?
-> > 
-> > Thanks a lot!
-> > ---
-> >  arch/mips/include/asm/syscall.h |  2 ++
-> >  include/uapi/linux/audit.h      | 12 ++++++++++++
-> >  2 files changed, 14 insertions(+)
-> 
-> [NOTE: Adding lkml to the To line to hopefully spur discussion/acceptance as 
-> this *really* should be in 3.15]
-> 
-> I'm re-replying to this patch and adding lkml to the To line because I believe 
-> it is very important we get this patch into 3.15.  For those who don't follow 
-> the MIPS architecture very closely, the upcoming 3.15 is the first release to 
-> include support for seccomp filters, the latest generation of syscall 
-> filtering which used a BPF based filter language.  For reason that are easy to 
-> understand, the syscall filters are ABI specific (e.g. syscall tables, word 
-> length, endianness) and those generating syscall filters in userspace (e.g. 
-> libseccomp) need to take great care to ensure that the generated filters take 
-> the ABI into account and fail safely in the case where a different ABI is used 
-> (e.g. x86, x86_64, x32).
-> 
-> The patch below corrects, what is IMHO, an omission in the original MIPS 
-> seccomp filter patch, allowing userspace to easily separate MIPS and MIPS64.  
-> Without this patch we will be forced to handle MIPS/MIPS64 like we handle 
-> x86_64/x32 which is a royal pain and not something I want to have deal with 
-> again.
-> 
-> Further, while I don't want to speak for the audit folks, it is my 
-> understanding that they want this patch for similar reasons.
+This is a multi-part message in MIME format.
+--------------090309060908060203070607
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Audit would also like to see this patch.  We can survive without it, but
-having this patch lets us write a better/easier userspace.
+Hi Waldemar,
 
-Acked-by: Eric Paris <eparis@redhat.com>
+> I recently had a need for a small DHCP/NFS server and resurvived my
+> old Mikrotik RB532 board. Sadly the PCI registration is broken and
+> the VIA Rhine network ports didn't work.
+> See this thread for some details:
+> https://www.mail-archive.com/openwrt-devel@lists.openwrt.org/msg23073.html
+> 
+> I did know that it was working fine in the past, so I started to git
+> bisect between 2.6.39 and 3.15-rc5.
+> Following commit is the problem:
+> commit 222831787704c9ad9215f6b56f975b233968607c
+> Author: Gabor Juhos <juhosg@openwrt.org>
+> Date:   Sat Feb 2 13:18:54 2013 +0000
+> 
+>     MIPS: avoid possible resource conflict in register_pci_controller
+>     
+>     The IO and memory resources of a PCI controller
+>     might already have a parent resource set when
+>     they are passed to 'register_pci_controller'.
+>     
+>     If the parent resource is set, the request_resource
+>     call will fail due to resource conflict and the
+>     current code will not be able to register the
+>     PCI controller.
+>     
+>     Use the parent resource if it is available in the
+>     request_resource call to avoid the isssue.
+>     
+>     Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+>     Patchwork: http://patchwork.linux-mips.org/patch/4910/
+>     Signed-off-by: John Crispin <blogic@openwrt.org>
+> 
+> After reverting the change, the VIA Rhine driver works fine again.
+> 
+> So how we can unbreak the rb532 support?
 
-> 
-> Please merge this patch for 3.15 or at least provide some feedback as to why 
-> this isn't a viable solution for upstream.  Once 3.15 ships, fixing this will 
-> require breaking the MIPS ABI which isn't something any of us want.
-> 
-> Thanks,
-> -Paul
-> 
-> > diff --git a/arch/mips/include/asm/syscall.h
-> > b/arch/mips/include/asm/syscall.h index c6e9cd2..17960fe 100644
-> > --- a/arch/mips/include/asm/syscall.h
-> > +++ b/arch/mips/include/asm/syscall.h
-> > @@ -133,6 +133,8 @@ static inline int syscall_get_arch(void)
-> >  #ifdef CONFIG_64BIT
-> >  	if (!test_thread_flag(TIF_32BIT_REGS))
-> >  		arch |= __AUDIT_ARCH_64BIT;
-> > +	if (test_thread_flag(TIF_32BIT_ADDR))
-> > +		arch |= __AUDIT_ARCH_CONVENTION_MIPS64_N32;
-> >  #endif
-> >  #if defined(__LITTLE_ENDIAN)
-> >  	arch |=  __AUDIT_ARCH_LE;
-> > diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
-> > index 11917f7..1b1efdd 100644
-> > --- a/include/uapi/linux/audit.h
-> > +++ b/include/uapi/linux/audit.h
-> > @@ -331,9 +331,17 @@ enum {
-> >  #define AUDIT_FAIL_PRINTK	1
-> >  #define AUDIT_FAIL_PANIC	2
-> > 
-> > +/*
-> > + * These bits disambiguate different calling conventions that share an
-> > + * ELF machine type, bitness, and endianness
-> > + */
-> > +#define __AUDIT_ARCH_CONVENTION_MASK 0x30000000
-> > +#define __AUDIT_ARCH_CONVENTION_MIPS64_N32 0x20000000
-> > +
-> >  /* distinguish syscall tables */
-> >  #define __AUDIT_ARCH_64BIT 0x80000000
-> >  #define __AUDIT_ARCH_LE	   0x40000000
-> > +
-> >  #define AUDIT_ARCH_ALPHA	(EM_ALPHA|__AUDIT_ARCH_64BIT|__AUDIT_ARCH_LE)
-> >  #define AUDIT_ARCH_ARM		(EM_ARM|__AUDIT_ARCH_LE)
-> >  #define AUDIT_ARCH_ARMEB	(EM_ARM)
-> > @@ -346,7 +354,11 @@ enum {
-> >  #define AUDIT_ARCH_MIPS		(EM_MIPS)
-> >  #define AUDIT_ARCH_MIPSEL	(EM_MIPS|__AUDIT_ARCH_LE)
-> >  #define AUDIT_ARCH_MIPS64	(EM_MIPS|__AUDIT_ARCH_64BIT)
-> > +#define AUDIT_ARCH_MIPS64N32	(EM_MIPS|__AUDIT_ARCH_64BIT|\
-> > +				 __AUDIT_ARCH_CONVENTION_MIPS64_N32)
-> >  #define AUDIT_ARCH_MIPSEL64	(EM_MIPS|__AUDIT_ARCH_64BIT|__AUDIT_ARCH_LE)
-> > +#define AUDIT_ARCH_MIPSEL64N32	(EM_MIPS|__AUDIT_ARCH_64BIT|
-> __AUDIT_ARCH_LE\
-> > +				 __AUDIT_ARCH_CONVENTION_MIPS64_N32)
-> >  #define AUDIT_ARCH_OPENRISC	(EM_OPENRISC)
-> >  #define AUDIT_ARCH_PARISC	(EM_PARISC)
-> >  #define AUDIT_ARCH_PARISC64	(EM_PARISC|__AUDIT_ARCH_64BIT)
-> 
+Please try the attached patch without reverting the aforementioned change.
+
+Thanks,
+Gabor
+
+--------------090309060908060203070607
+Content-Type: text/x-patch;
+ name="0001-MIPS-RC32434-fix-broken-PCI-resource-initialization.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0001-MIPS-RC32434-fix-broken-PCI-resource-initialization.pat";
+ filename*1="ch"

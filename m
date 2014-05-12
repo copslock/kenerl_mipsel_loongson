@@ -1,48 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2014 13:21:41 +0200 (CEST)
-Received: from mail-bn1bn0109.outbound.protection.outlook.com ([157.56.110.109]:61668
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6822286AbaELLVfWxvX4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 May 2014 13:21:35 +0200
-Received: from alberich (2.174.248.214) by
- BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141) with Microsoft SMTP
- Server (TLS) id 15.0.944.11; Mon, 12 May 2014 11:21:26 +0000
-Date:   Mon, 12 May 2014 13:21:11 +0200
-From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-CC:     Pekka Enberg <penberg@kernel.org>,
-        David Daney <ddaney.cavm@gmail.com>, <kvm@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 11/11] kvm tools: Modify term_putc to write more than one
- char
-Message-ID: <20140512112111.GE15623@alberich>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2014 15:01:24 +0200 (CEST)
+Received: from mail-ee0-f54.google.com ([74.125.83.54]:40439 "EHLO
+        mail-ee0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822112AbaELNBUmsE3d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 May 2014 15:01:20 +0200
+Received: by mail-ee0-f54.google.com with SMTP id b57so4694186eek.13
+        for <linux-mips@linux-mips.org>; Mon, 12 May 2014 06:01:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=POGQuvUeg0YmLMPUjlrWvEDvbkys9ABRfLojtZ/eBZk=;
+        b=UmXqcomfOQdGPvaaeRaz0FQovh9a8FQ7sTipaPISQ96t+PvfXNtwjmZYi6h3+/h/Pa
+         Sn7p5yv9W/qBKv54tDa6nxmUzQB+zGsuE0tEDUMqwQnYsdMXyZR1DQZUmoBxbrmda3hm
+         UUzewl7HMrFKxkzybg6e3cTh6/FODxQFImyswB4l8mwsSSZyp6fH4Ik8e5F9YkjOvxSl
+         qwr8o+fNZ+0fXXIgGWeZbcTGr2LxdfxED76N0tyD2llaBxU6/I6h7BaOGC2pKLlR6IEp
+         cyQR/A8mzF6sD8wL0MvtAGs8eFSLWKB1WxQCILA/Av/lEG2ug0vWr6EMuhKgMAvGbl0U
+         IENg==
+X-Received: by 10.15.75.197 with SMTP id l45mr32587784eey.89.1399899675399;
+        Mon, 12 May 2014 06:01:15 -0700 (PDT)
+Received: from alberich ([2.174.248.214])
+        by mx.google.com with ESMTPSA id u1sm32784723eex.31.2014.05.12.06.01.13
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 12 May 2014 06:01:14 -0700 (PDT)
+Date:   Mon, 12 May 2014 15:01:10 +0200
+From:   Andreas Herrmann <herrmann.der.user@googlemail.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Daney <ddaney.cavm@gmail.com>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 05/11] kvm tools, mips: Add MIPS support
+Message-ID: <20140512130110.GA17255@alberich>
 References: <1399391491-5021-1-git-send-email-andreas.herrmann@caviumnetworks.com>
- <1399391491-5021-12-git-send-email-andreas.herrmann@caviumnetworks.com>
- <536A5826.6010008@cogentembedded.com>
+ <1399391491-5021-6-git-send-email-andreas.herrmann@caviumnetworks.com>
+ <536D4571.6010302@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <536A5826.6010008@cogentembedded.com>
+In-Reply-To: <536D4571.6010302@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Originating-IP: [2.174.248.214]
-X-ClientProxiedBy: AM2PR06CA010.eurprd06.prod.outlook.com (10.255.61.27) To
- BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141)
-X-Forefront-PRVS: 0209425D0A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019001)(6009001)(428001)(199002)(189002)(377424004)(51704005)(24454002)(164054003)(81342001)(86362001)(85852003)(21056001)(79102001)(80022001)(92566001)(66066001)(92726001)(83072002)(83506001)(64706001)(46102001)(42186004)(77982001)(101416001)(20776003)(47776003)(50466002)(87976001)(99396002)(76176999)(54356999)(4396001)(50986999)(23676002)(74662001)(74502001)(31966008)(76482001)(19580405001)(81542001)(33656001)(33716001)(83322001)(19580395003);DIR:OUT;SFP:1102;SCL:1;SRVR:BN1PR07MB389;H:alberich;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (: caviumnetworks.com does not designate permitted sender
- hosts)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Andreas.Herrmann@caviumnetworks.com; 
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <Andreas.Herrmann@caviumnetworks.com>
+Return-Path: <herrmann.der.user@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40082
+X-archive-position: 40083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.herrmann@caviumnetworks.com
+X-original-sender: herrmann.der.user@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,57 +61,119 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 07, 2014 at 07:58:30PM +0400, Sergei Shtylyov wrote:
-> Hello.
+On Fri, May 09, 2014 at 10:15:29PM +0100, James Hogan wrote:
+> Hi Andreas,
 > 
-> On 06-05-2014 19:51, Andreas Herrmann wrote:
+> On 06/05/14 16:51, Andreas Herrmann wrote:
+> > From: David Daney <david.daney@cavium.com>
+> > 
+> > So far this was tested with host running KVM using MIPS-VZ (on Cavium
+> > Octeon3). A paravirtualized mips kernel was used for the guest.
+> > 
+> > [andreas.herrmann:
+> >    * Renamed kvm__arch_periodic_poll to kvm__arch_read_term
+> >      because of commit fa817d892508b6d3a90f478dbeedbe5583b14da7
+> >      (kvm tools: remove periodic tick in favour of a polling thread)
+> >    * Added ioport__map_irq skeleton to fix build problem.
+> >    * Rely on TERM_MAX_DEVS instead of using other macros
+> >    * Adaptions for MMIO support
+> >    * Set coalesc offset
+> >    * Fixed compile warnings]
+> > 
+> > Signed-off-by: David Daney <david.daney@cavium.com>
+> > Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 > 
-> >From: David Daney <david.daney@cavium.com>
 > 
-> >It is a performance enhancement. When running in a simulator, each
-> >system call to write a character takes a lot of time.  Batching them
-> >up decreases the overhead (in the root kernel) of each virtio console
-> >write.
+> > +static bool kvm_cpu__hypercall_write_cons(struct kvm_cpu *vcpu)
+> > +{
+> > +	int term = (int)vcpu->kvm_run->hypercall.args[0];
+> > +	u64 addr = vcpu->kvm_run->hypercall.args[1];
+> > +	int len = (int)vcpu->kvm_run->hypercall.args[2];
+> > +	char *host_addr;
+> > +
+> > +	if (term < 0 || term >= TERM_MAX_DEVS) {
+> > +		pr_warning("hypercall_write_cons term out of range <%d>", term);
+> > +		return false;
+> > +	}
+> > +	if (len <= 0) {
+> > +		pr_warning("hypercall_write_cons len out of range <%d>", len);
+> > +		return false;
+> > +	}
+> > +
+> > +	if ((addr & 0xffffffffc0000000ull) == 0xffffffff80000000ull)
+> > +		addr &= 0x1ffffffful; /* Convert KSEG{0,1} to physical. */
+> > +	if ((addr & 0xc000000000000000ull) == 0x8000000000000000ull)
+> > +		addr &= 0x07ffffffffffffffull; /* Convert XKPHYS to pysical */
+> > +
+> > +	host_addr = guest_flat_to_host(vcpu->kvm, addr);
+> > +	if (!host_addr) {
+> > +		pr_warning("hypercall_write_cons unmapped physaddr %llx", (unsigned long long)addr);
+> > +		return false;
+> > +	}
+> > +
+> > +	term_putc(host_addr, len, term);
 > 
-> >Signed-off-by: David Daney <david.daney@cavium.com>
-> >Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-> >---
-> >  tools/kvm/term.c |    7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> >diff --git a/tools/kvm/term.c b/tools/kvm/term.c
-> >index 3de410b..b153eed 100644
-> >--- a/tools/kvm/term.c
-> >+++ b/tools/kvm/term.c
-> >@@ -52,11 +52,14 @@ int term_getc(struct kvm *kvm, int term)
-> >  int term_putc(char *addr, int cnt, int term)
-> >  {
-> >  	int ret;
-> >+	int num_remaining = cnt;
-> >
-> >-	while (cnt--) {
-> >-		ret = write(term_fds[term][TERM_FD_OUT], addr++, 1);
-> >+	while (num_remaining) {
-> >+		ret = write(term_fds[term][TERM_FD_OUT], addr, num_remaining);
-> >  		if (ret < 0)
-> >  			return 0;
-> 
->    Perhaps 'return cnt - num_remaining' instead?
+> Does len need to be range checked?
 
-Although all current callers of this function are not checking the
-return value I aggree that this change would be nice to have.
+len <= 0 is checked above.
+I don't think an upper boundery check is required.
+term_putc (using write) should be able to handle it.
+No?
 
-I wouldn't make this change within this patch though.
-(I'll add a separate patch to modify the return value.)
-
-> >+		num_remaining -= ret;
-> >+		addr += ret;
-> >  	}
-> >
-> >  	return cnt;
+> > +void kvm_cpu__show_registers(struct kvm_cpu *vcpu)
+> > +{
+> > +	struct kvm_regs regs;
+> > +
+> > +	if (ioctl(vcpu->vcpu_fd, KVM_GET_REGS, &regs) < 0)
+> > +		die("KVM_GET_REGS failed");
+> > +	dprintf(debug_fd, "\n Registers:\n");
+> > +	dprintf(debug_fd,   " ----------\n");
+> > +	dprintf(debug_fd, "$0   : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[0], (unsigned long)regs.gpr[1],
+> > +		(unsigned long)regs.gpr[2], (unsigned long)regs.gpr[3]);
 > 
-> WBR, Sergei
+> Presumably there's nothing stopping a 32-bit userland from creating a
+> 64-bit guest?
 
+Yes, that can be run.
+
+> If that's the case should this all use unsigned long longs?
+
+... and yes it creates wrong register dump.
+
+Will fix this.
+
+> > +	dprintf(debug_fd, "$4   : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[4], (unsigned long)regs.gpr[5],
+> > +		(unsigned long)regs.gpr[6], (unsigned long)regs.gpr[7]);
+> > +	dprintf(debug_fd, "$8   : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[8], (unsigned long)regs.gpr[9],
+> > +		(unsigned long)regs.gpr[10], (unsigned long)regs.gpr[11]);
+> > +	dprintf(debug_fd, "$12  : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[12], (unsigned long)regs.gpr[13],
+> > +		(unsigned long)regs.gpr[14], (unsigned long)regs.gpr[15]);
+> > +	dprintf(debug_fd, "$16  : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[16], (unsigned long)regs.gpr[17],
+> > +		(unsigned long)regs.gpr[18], (unsigned long)regs.gpr[19]);
+> > +	dprintf(debug_fd, "$20  : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[20], (unsigned long)regs.gpr[21],
+> > +		(unsigned long)regs.gpr[22], (unsigned long)regs.gpr[23]);
+> > +	dprintf(debug_fd, "$24  : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[24], (unsigned long)regs.gpr[25],
+> > +		(unsigned long)regs.gpr[26], (unsigned long)regs.gpr[27]);
+> > +	dprintf(debug_fd, "$28  : %016lx %016lx %016lx %016lx\n",
+> > +		(unsigned long)regs.gpr[28], (unsigned long)regs.gpr[29],
+> > +		(unsigned long)regs.gpr[30], (unsigned long)regs.gpr[31]);
+> > +
+> > +	dprintf(debug_fd, "hi   : %016lx\n", (unsigned long)regs.hi);
+> > +	dprintf(debug_fd, "lo   : %016lx\n", (unsigned long)regs.lo);
+> > +	dprintf(debug_fd, "epc  : %016lx\n", (unsigned long)regs.pc);
+> > +
+> > +	dprintf(debug_fd, "\n");
+> > +}
+> 
+> Cheers
+> James
 
 Thanks,
 Andreas

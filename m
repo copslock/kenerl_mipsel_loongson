@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 11:29:14 +0200 (CEST)
-Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:38398 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 11:30:10 +0200 (CEST)
+Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:38585 "EHLO
         ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6839028AbaEMJ3HLBTsZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2014 11:29:07 +0200
+        by eddie.linux-mips.org with ESMTP id S6841769AbaEMJ3v2oUyz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2014 11:29:51 +0200
 Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.80.1)
         (envelope-from <jslaby@suse.cz>)
-        id 1Wk917-00033i-19; Tue, 13 May 2014 11:28:57 +0200
+        id 1Wk917-00033t-1h; Tue, 13 May 2014 11:28:57 +0200
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gleb Natapov <gleb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sanjay Lal <sanjayl@kymasys.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 131/182] MIPS: KVM: Pass reserved instruction exceptions to guest
-Date:   Tue, 13 May 2014 11:28:03 +0200
-Message-Id: <398d3ceacab6fe9c47e2ddb01979e2a74ed7c43b.1399973152.git.jslaby@suse.cz>
+Cc:     linux-kernel@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 132/182] MIPS: Hibernate: Flush TLB entries in swsusp_arch_resume()
+Date:   Tue, 13 May 2014 11:28:04 +0200
+Message-Id: <e49d49ffb18279d51214209c982b8e723f9c5e5a.1399973152.git.jslaby@suse.cz>
 X-Mailer: git-send-email 1.9.3
 In-Reply-To: <7aa1bde8f6143b2db33e6567a8c3a4debaa246f4.1399973152.git.jslaby@suse.cz>
 References: <7aa1bde8f6143b2db33e6567a8c3a4debaa246f4.1399973152.git.jslaby@suse.cz>
@@ -26,7 +27,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40092
+X-archive-position: 40093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,77 +44,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
 3.12-stable review patch.  If anyone has any objections, please let me know.
 
 ===============
 
-commit 15505679362270d02c449626385cb74af8905514 upstream.
+commit c14af233fbe279d0e561ecf84f1208b1bae087ef upstream.
 
-Previously a reserved instruction exception while in guest code would
-cause a KVM internal error if kvm_mips_handle_ri() didn't recognise the
-instruction (including a RDHWR from an unrecognised hardware register).
+The original MIPS hibernate code flushes cache and TLB entries in
+swsusp_arch_resume(). But they are removed in Commit 44eeab67416711
+(MIPS: Hibernation: Remove SMP TLB and cacheflushing code.). A cross-
+CPU flush is surely unnecessary because all but the local CPU have
+already been disabled. But a local flush (at least the TLB flush) is
+needed. When we do hibernation on Loongson-3 with an E1000E NIC, it is
+very easy to produce a kernel panic (kernel page fault, or unaligned
+access). The root cause is E1000E driver use vzalloc_node() to allocate
+pages, the stale TLB entries of the booting kernel will be misused by
+the resumed target kernel.
 
-However the guest OS should really have the opportunity to catch the
-exception so that it can take the appropriate actions such as sending a
-SIGILL to the guest user process or emulating the instruction itself.
-
-Therefore in these cases emulate a guest RI exception and only return
-EMULATE_FAIL if that fails, being careful to revert the PC first in case
-the exception occurred in a branch delay slot in which case the PC will
-already point to the branch target.
-
-Also turn the printk messages relating to these cases into kvm_debug
-messages so that they aren't usually visible.
-
-This allows crashme to run in the guest without killing the entire VM.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sanjay Lal <sanjayl@kymasys.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: Aurelien Jarno <aurelien@aurel32.net>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/6643/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kvm/kvm_mips_emul.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/power/hibernate.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index 4b6274b47f33..e75ef8219caf 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -1571,17 +1571,17 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
- 			arch->gprs[rt] = kvm_read_c0_guest_userlocal(cop0);
- #else
- 			/* UserLocal not implemented */
--			er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
-+			er = EMULATE_FAIL;
- #endif
- 			break;
- 
- 		default:
--			printk("RDHWR not supported\n");
-+			kvm_debug("RDHWR %#x not supported @ %p\n", rd, opc);
- 			er = EMULATE_FAIL;
- 			break;
- 		}
- 	} else {
--		printk("Emulate RI not supported @ %p: %#x\n", opc, inst);
-+		kvm_debug("Emulate RI not supported @ %p: %#x\n", opc, inst);
- 		er = EMULATE_FAIL;
- 	}
- 
-@@ -1590,6 +1590,7 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
- 	 */
- 	if (er == EMULATE_FAIL) {
- 		vcpu->arch.pc = curr_pc;
-+		er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
- 	}
- 	return er;
- }
+diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
+index 7e0277a1048f..32a7c828f073 100644
+--- a/arch/mips/power/hibernate.S
++++ b/arch/mips/power/hibernate.S
+@@ -43,6 +43,7 @@ LEAF(swsusp_arch_resume)
+ 	bne t1, t3, 1b
+ 	PTR_L t0, PBE_NEXT(t0)
+ 	bnez t0, 0b
++	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
+ 	PTR_LA t0, saved_regs
+ 	PTR_L ra, PT_R31(t0)
+ 	PTR_L sp, PT_R29(t0)
 -- 
 1.9.3

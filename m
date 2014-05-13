@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 11:30:10 +0200 (CEST)
-Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:38585 "EHLO
-        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6841769AbaEMJ3v2oUyz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2014 11:29:51 +0200
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.80.1)
-        (envelope-from <jslaby@suse.cz>)
-        id 1Wk917-00033t-1h; Tue, 13 May 2014 11:28:57 +0200
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 132/182] MIPS: Hibernate: Flush TLB entries in swsusp_arch_resume()
-Date:   Tue, 13 May 2014 11:28:04 +0200
-Message-Id: <e49d49ffb18279d51214209c982b8e723f9c5e5a.1399973152.git.jslaby@suse.cz>
-X-Mailer: git-send-email 1.9.3
-In-Reply-To: <7aa1bde8f6143b2db33e6567a8c3a4debaa246f4.1399973152.git.jslaby@suse.cz>
-References: <7aa1bde8f6143b2db33e6567a8c3a4debaa246f4.1399973152.git.jslaby@suse.cz>
-In-Reply-To: <cover.1399973152.git.jslaby@suse.cz>
-References: <cover.1399973152.git.jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 17:07:27 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:56775 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6854810AbaEMPHQ5QKK5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2014 17:07:16 +0200
+Received: from localhost ([127.0.0.1] helo=bazinga.breakpoint.cc)
+        by Galois.linutronix.de with esmtp (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1WkEIU-0001vh-Ny; Tue, 13 May 2014 17:07:14 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>, Hua Yan <yanh@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Hongliang Tao <taohl@lemote.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 2/2] MIPS: Lemote 2F: cs5536: mfgpt: depend on !highres
+Date:   Tue, 13 May 2014 17:07:05 +0200
+Message-Id: <1399993625-8747-2-git-send-email-bigeasy@linutronix.de>
+X-Mailer: git-send-email 2.0.0.rc0
+In-Reply-To: <1399993625-8747-1-git-send-email-bigeasy@linutronix.de>
+References: <1399993625-8747-1-git-send-email-bigeasy@linutronix.de>
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <bigeasy@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40093
+X-archive-position: 40094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: bigeasy@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,50 +45,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Huacai Chen <chenhc@lemote.com>
+This timer does not support oneshot mode and as such the system remains
+in periodic mode and won't support high res timers.
+This patch adds a note about this in Kconfig and lets it depend on
+!highres so users which want to use high timers don' stuck with this
+timer.
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
-
-===============
-
-commit c14af233fbe279d0e561ecf84f1208b1bae087ef upstream.
-
-The original MIPS hibernate code flushes cache and TLB entries in
-swsusp_arch_resume(). But they are removed in Commit 44eeab67416711
-(MIPS: Hibernation: Remove SMP TLB and cacheflushing code.). A cross-
-CPU flush is surely unnecessary because all but the local CPU have
-already been disabled. But a local flush (at least the TLB flush) is
-needed. When we do hibernation on Loongson-3 with an E1000E NIC, it is
-very easy to produce a kernel panic (kernel page fault, or unaligned
-access). The root cause is E1000E driver use vzalloc_node() to allocate
-pages, the stale TLB entries of the booting kernel will be misused by
-the resumed target kernel.
-
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/6643/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- arch/mips/power/hibernate.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/loongson/Kconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-index 7e0277a1048f..32a7c828f073 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -43,6 +43,7 @@ LEAF(swsusp_arch_resume)
- 	bne t1, t3, 1b
- 	PTR_L t0, PBE_NEXT(t0)
- 	bnez t0, 0b
-+	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
- 	PTR_LA t0, saved_regs
- 	PTR_L ra, PT_R31(t0)
- 	PTR_L sp, PT_R29(t0)
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 7397be2..0ed955e 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -96,10 +96,11 @@ config CS5536
+ 
+ config CS5536_MFGPT
+ 	bool "CS5536 MFGPT Timer"
+-	depends on CS5536
++	depends on CS5536 && !HIGH_RES_TIMERS
+ 	select MIPS_EXTERNAL_TIMER
+ 	help
+-	  This option enables the mfgpt0 timer of AMD CS5536.
++	  This option enables the mfgpt0 timer of AMD CS5536. With this timer
++	  switched on you can not use high resolution timers.
+ 
+ 	  If you want to enable the Loongson2 CPUFreq Driver, Please enable
+ 	  this option at first, otherwise, You will get wrong system time.
 -- 
-1.9.3
+2.0.0.rc0

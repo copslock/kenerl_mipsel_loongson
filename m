@@ -1,36 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 17:07:50 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:56779 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6854807AbaEMPHYpC3ne (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2014 17:07:24 +0200
-Received: from localhost ([127.0.0.1] helo=bazinga.breakpoint.cc)
-        by Galois.linutronix.de with esmtp (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1WkEIU-0001vh-8E; Tue, 13 May 2014 17:07:14 +0200
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>, Hua Yan <yanh@lemote.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Hongliang Tao <taohl@lemote.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 1/2] MIPS: Lemote 2F: cs5536: mfgpt: use raw locks
-Date:   Tue, 13 May 2014 17:07:04 +0200
-Message-Id: <1399993625-8747-1-git-send-email-bigeasy@linutronix.de>
-X-Mailer: git-send-email 2.0.0.rc0
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <bigeasy@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 23:25:10 +0200 (CEST)
+Received: from [217.156.133.130] ([217.156.133.130]:58724 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6836419AbaEMVZDYCqfL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2014 23:25:03 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 7D60741F8E33
+        for <linux-mips@linux-mips.org>; Tue, 13 May 2014 22:24:57 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 13 May 2014 22:24:57 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 13 May 2014 22:24:57 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 7B4C8CB805CCC
+        for <linux-mips@linux-mips.org>; Tue, 13 May 2014 22:24:53 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Tue, 13 May 2014 22:24:57 +0100
+Received: from localhost (192.168.154.79) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 13 May
+ 2014 22:24:56 +0100
+Date:   Tue, 13 May 2014 22:24:56 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <matthew.fortune@imgtec.com>
+Subject: O32 FPXX ABI
+Message-ID: <20140513212456.GQ34353@pburton-linux.le.imgtec.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ZqRzwd/9tauJXEMK"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.79]
+X-ESG-ENCRYPT-TAG: 96d62635
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40095
+X-archive-position: 40098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bigeasy@linutronix.de
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,65 +54,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The lock is taken in the raw irq path and therefore a rawlock should be
-used instead of a normal spinlock.
-While here I drop the export symbol on that variable since there are no
-other users.
+--ZqRzwd/9tauJXEMK
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- arch/mips/loongson/common/cs5536/cs5536_mfgpt.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+Hi all,
 
-diff --git a/arch/mips/loongson/common/cs5536/cs5536_mfgpt.c b/arch/mips/loongson/common/cs5536/cs5536_mfgpt.c
-index c639b9d..12c75db 100644
---- a/arch/mips/loongson/common/cs5536/cs5536_mfgpt.c
-+++ b/arch/mips/loongson/common/cs5536/cs5536_mfgpt.c
-@@ -27,8 +27,7 @@
- 
- #include <cs5536/cs5536_mfgpt.h>
- 
--DEFINE_SPINLOCK(mfgpt_lock);
--EXPORT_SYMBOL(mfgpt_lock);
-+static DEFINE_RAW_SPINLOCK(mfgpt_lock);
- 
- static u32 mfgpt_base;
- 
-@@ -55,7 +54,7 @@ EXPORT_SYMBOL(enable_mfgpt0_counter);
- static void init_mfgpt_timer(enum clock_event_mode mode,
- 			     struct clock_event_device *evt)
- {
--	spin_lock(&mfgpt_lock);
-+	raw_spin_lock(&mfgpt_lock);
- 
- 	switch (mode) {
- 	case CLOCK_EVT_MODE_PERIODIC:
-@@ -79,7 +78,7 @@ static void init_mfgpt_timer(enum clock_event_mode mode,
- 		/* Nothing to do here */
- 		break;
- 	}
--	spin_unlock(&mfgpt_lock);
-+	raw_spin_unlock(&mfgpt_lock);
- }
- 
- static struct clock_event_device mfgpt_clockevent = {
-@@ -157,7 +156,7 @@ static cycle_t mfgpt_read(struct clocksource *cs)
- 	static int old_count;
- 	static u32 old_jifs;
- 
--	spin_lock_irqsave(&mfgpt_lock, flags);
-+	raw_spin_lock_irqsave(&mfgpt_lock, flags);
- 	/*
- 	 * Although our caller may have the read side of xtime_lock,
- 	 * this is now a seqlock, and we are cheating in this routine
-@@ -191,7 +190,7 @@ static cycle_t mfgpt_read(struct clocksource *cs)
- 	old_count = count;
- 	old_jifs = jifs;
- 
--	spin_unlock_irqrestore(&mfgpt_lock, flags);
-+	raw_spin_unlock_irqrestore(&mfgpt_lock, flags);
- 
- 	return (cycle_t) (jifs * COMPARE) + count;
- }
--- 
-2.0.0.rc0
+I just wanted to bring to the attention of the list the O32 FPXX ABI
+proposal:
+
+  https://dmz-portal.mips.com/wiki/MIPS_O32_ABI_-_FR0_and_FR1_Interlinking
+
+This is the proposal that I mentioned in commit 06e2e88292e9 "MIPS: mark
+O32+FP64 experimental for now". The goal is to reduce fragmentation of
+the O32 ABI whilst allowing use of 64b FP registers (Status.FR=1) and
+the MIPS SIMD Architecture (MSA) which requires them.
+
+It removes the need for the EF_MIPS_FP64 flag and instead produces code
+which can safely be linked with existing FP32 binaries until such time
+as a new FP64-using binary becomes involved (either by being the
+executable or a linked shared library). That is, it preserves
+compatibility with existing binaries whilst allowing a gradual migration
+towards an FPXX/FP64 world. The proposal has been discussed on the GCC
+development mailing list:
+
+  http://gcc.1065356.n5.nabble.com/RFC-Introducing-MIPS-O32-ABI-Extension-for-FR0-and-FR1-Interlinking-td1013453.html
+
+As it affects the kernel too, now would be a good time to raise any
+comments or suggestions. I have written patches to implement the
+requirements in the kernel (handling .MIPS.abiflags, currently emulated
+UFR support, HWCAP flags) and will post them to the list once discussion
+about O32 FPXX settles down, or sooner as an RFC if people are
+interested in that.
+
+Thanks,
+    Paul
+
+--ZqRzwd/9tauJXEMK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBCAAGBQJTco2oAAoJEIIg2fppPBxlmfUP/2NB9ZK84oykYscG/A62UGli
++sUO1WcxiybCNxHlvlKMEJMXIJH4UmkXEYKcnYUMnCQIUlPyt33NdljtV0sd0Y2X
+E26Y8w3XyndDEl5UcrcVBFUu0d324/LLgOmpYH7+JY5W/4TYhnDNgh9otlOlnYKG
+2bkCnf+urfLX2vJbLVhrsy7t2Vaa84AE/04fjbUeVnvxo8OVo9Nz9nXubdB3MmzF
+dkvjbqhrtLSBBotLBHBB+NKovss1kK5pPnWVUMTAzw/iKbYcF972e4GMDDtf1ZX4
+Ub/dtIeRXMCwbUEMNXLrASGRTyPUf++nBBdzwTCA5QUZU/Ii5M9/nHpk2ThKO04O
+KzH0YUCwa/tichKzunZ/6w8P+1DH1IMPuvuU+4+9T05Ant70+ZeQ6SQag7mqS/HM
+jJA+fyUTRuwy4KTbFOQJMubWt5zkSMQbEEg+p3pE00UgF8G64VAe05hSSx/v+aRP
+GHYV5IOJep+uaf6SaA7esS8LUmJgYqnx+OIxYjemU1w95ZgEHC/y+/e/OXnyylRc
+Pg6t1ylr7oWxSuFvuVE9l9vdDd0wEa5ddPWBvpstMsb9WfN6a93D1kZh1XTDTq2w
+Nh1Ghfk4LO3XehuU/DYeqo9Cx6cvSeizc5mAj/RkJR2d9BBWQKjuJOV/pZEzTXCz
+xAk+YbeUzcNBxyPiP4qL
+=dk5z
+-----END PGP SIGNATURE-----
+
+--ZqRzwd/9tauJXEMK--

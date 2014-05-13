@@ -1,54 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 11:06:18 +0200 (CEST)
-Received: from mail-by2on0101.outbound.protection.outlook.com ([207.46.100.101]:6269
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6841768AbaEMJGCkcizk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 May 2014 11:06:02 +0200
-Received: from BL2FFO11FD019.protection.gbl (10.173.160.31) by
- BL2FFO11HUB055.protection.gbl (10.173.161.155) with Microsoft SMTP Server
- (TLS) id 15.0.939.9; Tue, 13 May 2014 09:05:53 +0000
-Received: from SJ-ITEXEDGE02.altera.priv.altera.com (66.35.236.232) by
- BL2FFO11FD019.mail.protection.outlook.com (10.173.161.37) with Microsoft SMTP
- Server (TLS) id 15.0.939.9 via Frontend Transport; Tue, 13 May 2014 09:05:53
- +0000
-Received: from sj-mail01.altera.com (137.57.1.6) by
- SJ-ITEXEDGE02.altera.priv.altera.com (66.35.236.232) with Microsoft SMTP
- Server id 8.3.348.2; Tue, 13 May 2014 01:52:16 -0700
-Received: from leyfoon-vm (leyfoon-vm.altera.com [137.57.103.35])       by
- sj-mail01.altera.com (8.13.7+Sun/8.13.7) with SMTP id s4D95m6p004367;  Tue, 13
- May 2014 02:05:49 -0700 (PDT)
-Received: by leyfoon-vm (sSMTP sendmail emulation); Tue, 13 May 2014 17:05:47
- +0800
-From:   Ley Foon Tan <lftan@altera.com>
-To:     <linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Ley Foon Tan <lftan@altera.com>, <lftan.linux@gmail.com>,
-        <cltang@codesourcery.com>, Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH 14/25] mips: Add 32 bit time_t and clock_t
-Date:   Tue, 13 May 2014 17:05:29 +0800
-Message-ID: <1399971929-4487-1-git-send-email-lftan@altera.com>
-X-Mailer: git-send-email 1.8.3.2
-In-Reply-To: <1399971456-3941-1-git-send-email-lftan@altera.com>
-References: <1399971456-3941-1-git-send-email-lftan@altera.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-Forefront-Antispam-Report: CIP:66.35.236.232;CTRY:US;IPV:NLI;IPV:NLI;EFV:NLI;SFV:NSPM;SFS:(10019001)(6009001)(199002)(189002)(36756003)(79102001)(76482001)(92566001)(33646001)(92726001)(47776003)(20776003)(86362001)(77982001)(84676001)(48376002)(50466002)(50986999)(89996001)(76176999)(102836001)(77156001)(2009001)(87936001)(87286001)(83072002)(85852003)(16796002)(31966008)(74662001)(74502001)(46102001)(19580405001)(6806004)(44976005)(19580395003)(83322001)(81342001)(81542001)(62966002)(4396001)(50226001)(80022001);DIR:OUT;SFP:1102;SCL:1;SRVR:BL2FFO11HUB055;H:SJ-ITEXEDGE02.altera.priv.altera.com;FPR:;MLV:sfv;PTR:InfoDomainNonexistent;A:1;MX:1;LANG:en;
-X-OriginatorOrg: altera.onmicrosoft.com
-X-Forefront-PRVS: 0210479ED8
-Received-SPF: SoftFail (: domain of transitioning altera.com discourages use
- of 66.35.236.232 as permitted sender)
-Authentication-Results: spf=softfail (sender IP is 66.35.236.232)
- smtp.mailfrom=lftan@altera.com; 
-Return-Path: <lftan@altera.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2014 11:18:22 +0200 (CEST)
+Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:37571 "EHLO
+        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6837168AbaEMJRDgeFkA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2014 11:17:03 +0200
+Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.80.1)
+        (envelope-from <jslaby@suse.cz>)
+        id 1Wk8pQ-0002Ur-3c; Tue, 13 May 2014 11:16:52 +0200
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Gleb Natapov <gleb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sanjay Lal <sanjayl@kymasys.com>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to the 3.12 stable tree] MIPS: KVM: Pass reserved instruction exceptions to guest
+Date:   Tue, 13 May 2014 11:16:01 +0200
+Message-Id: <1399972612-9510-2-git-send-email-jslaby@suse.cz>
+X-Mailer: git-send-email 1.9.3
+In-Reply-To: <1399972612-9510-1-git-send-email-jslaby@suse.cz>
+References: <1399972612-9510-1-git-send-email-jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40089
+X-archive-position: 40090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lftan@altera.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,29 +41,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Override time_t and clock_t in include/uapi/asm-generic.
+From: James Hogan <james.hogan@imgtec.com>
 
-Signed-off-by: Ley Foon Tan <lftan@altera.com>
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
+
+===============
+
+commit 15505679362270d02c449626385cb74af8905514 upstream.
+
+Previously a reserved instruction exception while in guest code would
+cause a KVM internal error if kvm_mips_handle_ri() didn't recognise the
+instruction (including a RDHWR from an unrecognised hardware register).
+
+However the guest OS should really have the opportunity to catch the
+exception so that it can take the appropriate actions such as sending a
+SIGILL to the guest user process or emulating the instruction itself.
+
+Therefore in these cases emulate a guest RI exception and only return
+EMULATE_FAIL if that fails, being careful to revert the PC first in case
+the exception occurred in a branch delay slot in which case the PC will
+already point to the branch target.
+
+Also turn the printk messages relating to these cases into kvm_debug
+messages so that they aren't usually visible.
+
+This allows crashme to run in the guest without killing the entire VM.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sanjay Lal <sanjayl@kymasys.com>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/include/uapi/asm/posix_types.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/kvm/kvm_mips_emul.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/uapi/asm/posix_types.h b/arch/mips/include/uapi/asm/posix_types.h
-index fa03ec3..e9ca921 100644
---- a/arch/mips/include/uapi/asm/posix_types.h
-+++ b/arch/mips/include/uapi/asm/posix_types.h
-@@ -25,6 +25,12 @@ typedef struct {
- 	long	val[2];
- } __kernel_fsid_t;
- #define __kernel_fsid_t __kernel_fsid_t
-+
-+typedef long	__kernel_time_t;
-+#define __kernel_time_t __kernel_time_t
-+
-+typedef long	__kernel_clock_t;
-+#define __kernel_clock_t __kernel_clock_t
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 4b6274b47f33..e75ef8219caf 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -1571,17 +1571,17 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
+ 			arch->gprs[rt] = kvm_read_c0_guest_userlocal(cop0);
+ #else
+ 			/* UserLocal not implemented */
+-			er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
++			er = EMULATE_FAIL;
  #endif
+ 			break;
  
- #include <asm-generic/posix_types.h>
+ 		default:
+-			printk("RDHWR not supported\n");
++			kvm_debug("RDHWR %#x not supported @ %p\n", rd, opc);
+ 			er = EMULATE_FAIL;
+ 			break;
+ 		}
+ 	} else {
+-		printk("Emulate RI not supported @ %p: %#x\n", opc, inst);
++		kvm_debug("Emulate RI not supported @ %p: %#x\n", opc, inst);
+ 		er = EMULATE_FAIL;
+ 	}
+ 
+@@ -1590,6 +1590,7 @@ kvm_mips_handle_ri(unsigned long cause, uint32_t *opc,
+ 	 */
+ 	if (er == EMULATE_FAIL) {
+ 		vcpu->arch.pc = curr_pc;
++		er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
+ 	}
+ 	return er;
+ }
 -- 
-1.8.2.1
+1.9.3

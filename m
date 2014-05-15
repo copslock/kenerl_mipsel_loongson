@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2014 16:51:19 +0200 (CEST)
-Received: from mail-ig0-f172.google.com ([209.85.213.172]:61667 "EHLO
-        mail-ig0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816615AbaEOOvPJKTYz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 May 2014 16:51:15 +0200
-Received: by mail-ig0-f172.google.com with SMTP id uy17so8011536igb.5
-        for <linux-mips@linux-mips.org>; Thu, 15 May 2014 07:51:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-type;
-        bh=a31MNXsOV8WibLcR7q1xcDBkdSVlbINu0ADk64VxeUo=;
-        b=jq0VnRtULXJRk/0cdXkC7PxnhXwQK9Y+qMskevxvc0boj/2sMW1xgFmkBJECvZuG6d
-         bQVOboRgQh9iL9227+c2m1DFAsMDqICXq16Gt+uvxtwrN8M0LTEorIRwvMyfYGL26K0e
-         BIixMa6jMyfvf3N18kqCbPLkSod2HBS7UqD/FLLwmVN36M31ud58Esz+ME7g+hNPLrIn
-         2Yp35KBDiAdQbJBUVvpT6yXvrLo6boaO4wSXoTviJwNTDnpn7Q/xsywFAAJPY46WzMN4
-         0gcYuetVknJWq5jx4wFVgwaKF5BeNmDXHcuZhrYJ3uEYiRH3Mzf99OXO1SSPeclcBlRn
-         cGsw==
-X-Gm-Message-State: ALoCoQm8yTXIhvYRCy5di09eJStVeMhrhl65qyXZL5jrB3vqqEyjR14MF/8WiQyE7X1d8pSYQ9i8
-X-Received: by 10.50.130.37 with SMTP id ob5mr10880224igb.46.1400165468780;
- Thu, 15 May 2014 07:51:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2014 20:02:35 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15645 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6854768AbaEOSC2NvC2B (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 May 2014 20:02:28 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 91F83FA7975DA;
+        Thu, 15 May 2014 19:02:18 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 15 May
+ 2014 19:02:21 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Thu, 15 May 2014 19:02:21 +0100
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 15 May
+ 2014 11:02:18 -0700
+Message-ID: <53750129.6060902@imgtec.com>
+Date:   Thu, 15 May 2014 11:02:17 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
 MIME-Version: 1.0
-Received: by 10.64.211.198 with HTTP; Thu, 15 May 2014 07:50:48 -0700 (PDT)
-In-Reply-To: <20140422131309.9E6E1C40754@trevor.secretlab.ca>
-References: <1397756521-29387-1-git-send-email-leif.lindholm@linaro.org>
- <1397756521-29387-3-git-send-email-leif.lindholm@linaro.org> <20140422131309.9E6E1C40754@trevor.secretlab.ca>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Thu, 15 May 2014 15:50:48 +0100
-X-Google-Sender-Auth: dezU_rShc-vQyp0IQrY7aaIoESU
-Message-ID: <CACxGe6suKO5n0fg8dHGSwi0Esjbu6dyYdJPLH0AScKsDCABKbg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] mips: dts: add device_type="memory" where missing
-To:     Leif Lindholm <leif.lindholm@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     "patches@linaro.org" <patches@linaro.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        John Crispin <blogic@openwrt.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <glikely@secretlab.ca>
+To:     Richard Weinberger <richard@nod.at>
+CC:     <linux-arch@vger.kernel.org>, <arnd@arndb.de>,
+        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
+        "John Crispin" <blogic@openwrt.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 16/27] mips: Use common bits from generic tlb.h
+References: <1400093999-18703-1-git-send-email-richard@nod.at> <1400093999-18703-17-git-send-email-richard@nod.at>
+In-Reply-To: <1400093999-18703-17-git-send-email-richard@nod.at>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40110
+X-archive-position: 40114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,99 +53,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 22, 2014 at 2:13 PM, Grant Likely <grant.likely@secretlab.ca> wrote:
-> On Thu, 17 Apr 2014 18:42:00 +0100, Leif Lindholm <leif.lindholm@linaro.org> wrote:
->> A few platforms lack a 'device_type = "memory"' for their memory
->> nodes, relying on an old ppc quirk in order to discover its memory.
->> Add this, to permit that quirk to be made ppc only.
->>
->> Signed-off-by: Leif Lindholm <leif.lindholm@linaro.org>
->> Cc: linux-mips@linux-mips.org
->> Cc: devicetree@vger.kernel.org
->> Cc: John Crispin <blogic@openwrt.org>
->> Cc: Mark Rutland <mark.rutland@arm.com>
+On 05/14/2014 11:59 AM, Richard Weinberger wrote:
+> It is no longer needed to define them on our own.
 >
-> Acked-by: Grant Likely <grant.likely@linaro.org>
-
-Applied, thanks.
-
-g.
-
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: John Crispin <blogic@openwrt.org>
+> Cc: Markos Chandras <markos.chandras@imgtec.com>
+> Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Richard Weinberger <richard@nod.at>
+> ---
+>   arch/mips/include/asm/tlb.h | 7 -------
+>   1 file changed, 7 deletions(-)
 >
->> ---
->>  arch/mips/lantiq/dts/easy50712.dts    |    1 +
->>  arch/mips/ralink/dts/mt7620a_eval.dts |    1 +
->>  arch/mips/ralink/dts/rt2880_eval.dts  |    1 +
->>  arch/mips/ralink/dts/rt3052_eval.dts  |    1 +
->>  arch/mips/ralink/dts/rt3883_eval.dts  |    1 +
->>  5 files changed, 5 insertions(+)
->>
->> diff --git a/arch/mips/lantiq/dts/easy50712.dts b/arch/mips/lantiq/dts/easy50712.dts
->> index fac1f5b..143b8a3 100644
->> --- a/arch/mips/lantiq/dts/easy50712.dts
->> +++ b/arch/mips/lantiq/dts/easy50712.dts
->> @@ -8,6 +8,7 @@
->>       };
->>
->>       memory@0 {
->> +             device_type = "memory";
->>               reg = <0x0 0x2000000>;
->>       };
->>
->> diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/ralink/dts/mt7620a_eval.dts
->> index 35eb874..709f581 100644
->> --- a/arch/mips/ralink/dts/mt7620a_eval.dts
->> +++ b/arch/mips/ralink/dts/mt7620a_eval.dts
->> @@ -7,6 +7,7 @@
->>       model = "Ralink MT7620A evaluation board";
->>
->>       memory@0 {
->> +             device_type = "memory";
->>               reg = <0x0 0x2000000>;
->>       };
->>
->> diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
->> index 322d700..0a685db 100644
->> --- a/arch/mips/ralink/dts/rt2880_eval.dts
->> +++ b/arch/mips/ralink/dts/rt2880_eval.dts
->> @@ -7,6 +7,7 @@
->>       model = "Ralink RT2880 evaluation board";
->>
->>       memory@0 {
->> +             device_type = "memory";
->>               reg = <0x8000000 0x2000000>;
->>       };
->>
->> diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
->> index 0ac73ea..ec9e9a0 100644
->> --- a/arch/mips/ralink/dts/rt3052_eval.dts
->> +++ b/arch/mips/ralink/dts/rt3052_eval.dts
->> @@ -7,6 +7,7 @@
->>       model = "Ralink RT3052 evaluation board";
->>
->>       memory@0 {
->> +             device_type = "memory";
->>               reg = <0x0 0x2000000>;
->>       };
->>
->> diff --git a/arch/mips/ralink/dts/rt3883_eval.dts b/arch/mips/ralink/dts/rt3883_eval.dts
->> index 2fa6b33..e8df21a 100644
->> --- a/arch/mips/ralink/dts/rt3883_eval.dts
->> +++ b/arch/mips/ralink/dts/rt3883_eval.dts
->> @@ -7,6 +7,7 @@
->>       model = "Ralink RT3883 evaluation board";
->>
->>       memory@0 {
->> +             device_type = "memory";
->>               reg = <0x0 0x2000000>;
->>       };
->>
->> --
->> 1.7.10.4
->>
->> --
->> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
->> the body of a message to majordomo@vger.kernel.org
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->> Please read the FAQ at  http://www.tux.org/lkml/
->
+> diff --git a/arch/mips/include/asm/tlb.h b/arch/mips/include/asm/tlb.h
+> index 4a23493..5ea43ca 100644
+> --- a/arch/mips/include/asm/tlb.h
+> +++ b/arch/mips/include/asm/tlb.h
+> @@ -10,13 +10,6 @@
+>   		if (!tlb->fullmm)				\
+>   			flush_cache_range(vma, vma->vm_start, vma->vm_end); \
+>   	}  while (0)
+> -#define tlb_end_vma(tlb, vma) do { } while (0)
+> -#define __tlb_remove_tlb_entry(tlb, ptep, address) do { } while (0)
+> -
+> -/*
+> - * .. because we flush the whole mm when it fills up.
+> - */
+> -#define tlb_flush(tlb) flush_tlb_mm((tlb)->mm)
+>   
+>   #define UNIQUE_ENTRYHI(idx)						\
+>   		((CKSEG0 + ((idx) << (PAGE_SHIFT + 1))) |		\
+
+I would like to know why these functions are eliminated (don't find any 
+clue).
+Is it just because there will be a generic one or the calls would be 
+eliminated?
+And if there are generic - can I tune it later?
+
+Explanation of Q:  MIPS R6 architecture has now TLBINV instruction which 
+eliminates TLB elements only for specific ASID (read here - "mm_struct") 
+and I would like to use it for efficiency in tlb_flush()/flush_tlb_mm.
+(Not sure about tlb_end_vma()/ __tlb_remove_tlb_entry() yet)
+
+- Leonid.

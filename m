@@ -1,37 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2014 09:03:37 +0200 (CEST)
-Received: from mail.lemote.com ([222.92.8.138]:53391 "EHLO mail.lemote.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6834872AbaEOHDSAYaVI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 15 May 2014 09:03:18 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.lemote.com (Postfix) with ESMTP id 6CF6822C33
-        for <linux-mips@linux-mips.org>; Thu, 15 May 2014 15:03:09 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from mail.lemote.com ([127.0.0.1])
-        by localhost (mail.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JJYuP6sFL5Ak; Thu, 15 May 2014 15:02:55 +0800 (CST)
-Received: from software.domain.org (unknown [222.92.8.142])
-        (Authenticated sender: chenj@lemote.com)
-        by mail.lemote.com (Postfix) with ESMTPA id 21F1E22F10;
-        Thu, 15 May 2014 15:02:54 +0800 (CST)
-From:   chenj <chenj@lemote.com>
-To:     linux-mips@linux-mips.org
-Cc:     chenj <chenj@lemote.com>
-Subject: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
-Date:   Thu, 15 May 2014 15:09:03 +0800
-Message-Id: <1400137743-8806-2-git-send-email-chenj@lemote.com>
-X-Mailer: git-send-email 1.9.0
-In-Reply-To: <1400137743-8806-1-git-send-email-chenj@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2014 10:20:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26947 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816841AbaEOIUrFrbg5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 May 2014 10:20:47 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 09768BC36F7A1
+        for <linux-mips@linux-mips.org>; Thu, 15 May 2014 09:20:39 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 15 May
+ 2014 09:20:40 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Thu, 15 May 2014 09:20:40 +0100
+Received: from [192.168.154.35] (192.168.154.35) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 15 May
+ 2014 09:20:39 +0100
+Message-ID: <537478D7.2000403@imgtec.com>
+Date:   Thu, 15 May 2014 09:20:39 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+MIME-Version: 1.0
+To:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: lib: csum_partial: more instruction paral
 References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
-Return-Path: <chenj@lemote.com>
+In-Reply-To: <1400137743-8806-1-git-send-email-chenj@lemote.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.35]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40106
+X-archive-position: 40107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenj@lemote.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,42 +48,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-wsbh & movn are available on loongson3 CPU.
----
- arch/mips/lib/csum_partial.S | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+On 05/15/2014 08:09 AM, chenj wrote:
+> This will bring at most 50% performance gain on loongson3a.
+> See
+> http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.html
+> 
+> The benchmark is done in userspace through
+> http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
+> ---
+>  arch/mips/lib/csum_partial.S | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-index 6cea101..ed88647 100644
---- a/arch/mips/lib/csum_partial.S
-+++ b/arch/mips/lib/csum_partial.S
-@@ -277,9 +277,12 @@ LEAF(csum_partial)
- #endif
- 
- 	/* odd buffer alignment? */
--#ifdef CONFIG_CPU_MIPSR2
-+#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
-+	.set	push
-+	.set	arch=mips32r2
- 	wsbh	v1, sum
- 	movn	sum, v1, t7
-+	.set	pop
- #else
- 	beqz	t7, 1f			/* odd buffer alignment? */
- 	 lui	v1, 0x00ff
-@@ -726,9 +729,12 @@ LEAF(csum_partial)
- 	addu	sum, v1
- #endif
- 
--#ifdef CONFIG_CPU_MIPSR2
-+#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
-+	.set	push
-+	.set	arch=mips32r2
- 	wsbh	v1, sum
- 	movn	sum, v1, odd
-+	.set	pop
- #else
- 	beqz	odd, 1f			/* odd buffer alignment? */
- 	 lui	v1, 0x00ff
+Hi chenj,
+
+My opinion is that the commit message is not ideal. If the http links
+ever go away, the commit message will be mostly useless for someone
+trying to understand the reason for this patch. I would suggest to
+explain the reason for the optimizations in the commit message and put
+the http links as a comment to this patch which will still be visible in
+the mailing list archives. Or you can keep them in the commit message
+but I think the reason for the patch should be explained as well.
+
 -- 
-1.9.0
+markos

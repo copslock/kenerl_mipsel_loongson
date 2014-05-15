@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2014 13:41:09 +0200 (CEST)
-Received: from [217.156.133.130] ([217.156.133.130]:17372 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6816556AbaEOLlAWDVfA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 May 2014 13:41:00 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 8C41B41F8E8C;
-        Thu, 15 May 2014 12:40:54 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 15 May 2014 12:40:54 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 15 May 2014 12:40:54 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 99C0C9F899606;
-        Thu, 15 May 2014 12:40:52 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Thu, 15 May 2014 12:40:54 +0100
-Received: from localhost (192.168.154.79) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 15 May
- 2014 12:40:53 +0100
-Date:   Thu, 15 May 2014 12:40:53 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     chenj <chenj@lemote.com>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
-Message-ID: <20140515114053.GW34353@pburton-linux.le.imgtec.org>
-References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
- <1400137743-8806-2-git-send-email-chenj@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2014 16:51:19 +0200 (CEST)
+Received: from mail-ig0-f172.google.com ([209.85.213.172]:61667 "EHLO
+        mail-ig0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816615AbaEOOvPJKTYz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 May 2014 16:51:15 +0200
+Received: by mail-ig0-f172.google.com with SMTP id uy17so8011536igb.5
+        for <linux-mips@linux-mips.org>; Thu, 15 May 2014 07:51:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-type;
+        bh=a31MNXsOV8WibLcR7q1xcDBkdSVlbINu0ADk64VxeUo=;
+        b=jq0VnRtULXJRk/0cdXkC7PxnhXwQK9Y+qMskevxvc0boj/2sMW1xgFmkBJECvZuG6d
+         bQVOboRgQh9iL9227+c2m1DFAsMDqICXq16Gt+uvxtwrN8M0LTEorIRwvMyfYGL26K0e
+         BIixMa6jMyfvf3N18kqCbPLkSod2HBS7UqD/FLLwmVN36M31ud58Esz+ME7g+hNPLrIn
+         2Yp35KBDiAdQbJBUVvpT6yXvrLo6boaO4wSXoTviJwNTDnpn7Q/xsywFAAJPY46WzMN4
+         0gcYuetVknJWq5jx4wFVgwaKF5BeNmDXHcuZhrYJ3uEYiRH3Mzf99OXO1SSPeclcBlRn
+         cGsw==
+X-Gm-Message-State: ALoCoQm8yTXIhvYRCy5di09eJStVeMhrhl65qyXZL5jrB3vqqEyjR14MF/8WiQyE7X1d8pSYQ9i8
+X-Received: by 10.50.130.37 with SMTP id ob5mr10880224igb.46.1400165468780;
+ Thu, 15 May 2014 07:51:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="E5HUUwS3R9LcK7+r"
-Content-Disposition: inline
-In-Reply-To: <1400137743-8806-2-git-send-email-chenj@lemote.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.79]
-X-ESG-ENCRYPT-TAG: 2110538f
-Return-Path: <Paul.Burton@imgtec.com>
+Received: by 10.64.211.198 with HTTP; Thu, 15 May 2014 07:50:48 -0700 (PDT)
+In-Reply-To: <20140422131309.9E6E1C40754@trevor.secretlab.ca>
+References: <1397756521-29387-1-git-send-email-leif.lindholm@linaro.org>
+ <1397756521-29387-3-git-send-email-leif.lindholm@linaro.org> <20140422131309.9E6E1C40754@trevor.secretlab.ca>
+From:   Grant Likely <grant.likely@secretlab.ca>
+Date:   Thu, 15 May 2014 15:50:48 +0100
+X-Google-Sender-Auth: dezU_rShc-vQyp0IQrY7aaIoESU
+Message-ID: <CACxGe6suKO5n0fg8dHGSwi0Esjbu6dyYdJPLH0AScKsDCABKbg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mips: dts: add device_type="memory" where missing
+To:     Leif Lindholm <leif.lindholm@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     "patches@linaro.org" <patches@linaro.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        John Crispin <blogic@openwrt.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40109
+X-archive-position: 40110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,80 +58,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---E5HUUwS3R9LcK7+r
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Apr 22, 2014 at 2:13 PM, Grant Likely <grant.likely@secretlab.ca> wrote:
+> On Thu, 17 Apr 2014 18:42:00 +0100, Leif Lindholm <leif.lindholm@linaro.org> wrote:
+>> A few platforms lack a 'device_type = "memory"' for their memory
+>> nodes, relying on an old ppc quirk in order to discover its memory.
+>> Add this, to permit that quirk to be made ppc only.
+>>
+>> Signed-off-by: Leif Lindholm <leif.lindholm@linaro.org>
+>> Cc: linux-mips@linux-mips.org
+>> Cc: devicetree@vger.kernel.org
+>> Cc: John Crispin <blogic@openwrt.org>
+>> Cc: Mark Rutland <mark.rutland@arm.com>
+>
+> Acked-by: Grant Likely <grant.likely@linaro.org>
 
-On Thu, May 15, 2014 at 03:09:03PM +0800, chenj wrote:
-> wsbh & movn are available on loongson3 CPU.
-> ---
->  arch/mips/lib/csum_partial.S | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-> index 6cea101..ed88647 100644
-> --- a/arch/mips/lib/csum_partial.S
-> +++ b/arch/mips/lib/csum_partial.S
-> @@ -277,9 +277,12 @@ LEAF(csum_partial)
->  #endif
-> =20
->  	/* odd buffer alignment? */
-> -#ifdef CONFIG_CPU_MIPSR2
-> +#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
+Applied, thanks.
 
-Is there some reason CPU_LOONGSON3 can't select CPU_MIPSR2?
+g.
 
-Thanks,
-    Paul
-
-> +	.set	push
-> +	.set	arch=3Dmips32r2
->  	wsbh	v1, sum
->  	movn	sum, v1, t7
-> +	.set	pop
->  #else
->  	beqz	t7, 1f			/* odd buffer alignment? */
->  	 lui	v1, 0x00ff
-> @@ -726,9 +729,12 @@ LEAF(csum_partial)
->  	addu	sum, v1
->  #endif
-> =20
-> -#ifdef CONFIG_CPU_MIPSR2
-> +#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
-> +	.set	push
-> +	.set	arch=3Dmips32r2
->  	wsbh	v1, sum
->  	movn	sum, v1, odd
-> +	.set	pop
->  #else
->  	beqz	odd, 1f			/* odd buffer alignment? */
->  	 lui	v1, 0x00ff
-> --=20
-> 1.9.0
->=20
->=20
-
---E5HUUwS3R9LcK7+r
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBCAAGBQJTdKfFAAoJEIIg2fppPBxlk5YP/2NrmfBUSNX+46Co+bivpvd6
-eYbdmeVVCnmPe3D5SSk9Enh8NcYxtKi9TffJUZdvMlcN44JSjXOkQP7Rwv4/hfsZ
-Ln8lYpgpKbC51oOPZpwF4OftsnIwGPFn7eUrq4Es5ZwtGIwfHhrGExeyqqy3yc2C
-1KMdtNwZFNT5I13+wzgdbULB6r5KiYocrtpt+gkbNOpHQhAaGRGtsFAc0ewJmE1j
-RJ0xPwSfL62xhrQTsjb5f3OwvzCZJHyIzm7UP2pdpE8wGqujBNAsNyM8/eo8r/kQ
-ZAZ7o+bkzMfo6GK4wngx0s5hsTKoXwzdAG0Zi7D/H/pWmY91qijDsrEDPEJFzb+y
-/q+io75AXPnsrlpPjJku0i9fhofdtZD2mLOj6emft1pR5cdV4aikuG++VpDEo2lx
-KaksIP2oTTIh+W71W/DYmPzUVHTWwcFUADY3wzmOfBW3eh4XPaIr9Uwx3FwHyCNT
-GXXr6boUZxz4eLlRe7eh4krnf7zztJ8TKJTf0yJ3x61UrKIlYmNPc31f0m5W76NU
-qw4igcJ0Hnc8OUGHUJfigREwVQQ/qhSb2xtt5beIVEepC5AhR4WJc8snDOQeXpTu
-AIb4nTYaCLcttcDq7WyucCNhZUIZZ/CIhOItEUFARyAAvFzSBJUDNwiGqAsHwSKQ
-zkBlq8K0IgphNwSnaMfE
-=d7dE
------END PGP SIGNATURE-----
-
---E5HUUwS3R9LcK7+r--
+>
+>> ---
+>>  arch/mips/lantiq/dts/easy50712.dts    |    1 +
+>>  arch/mips/ralink/dts/mt7620a_eval.dts |    1 +
+>>  arch/mips/ralink/dts/rt2880_eval.dts  |    1 +
+>>  arch/mips/ralink/dts/rt3052_eval.dts  |    1 +
+>>  arch/mips/ralink/dts/rt3883_eval.dts  |    1 +
+>>  5 files changed, 5 insertions(+)
+>>
+>> diff --git a/arch/mips/lantiq/dts/easy50712.dts b/arch/mips/lantiq/dts/easy50712.dts
+>> index fac1f5b..143b8a3 100644
+>> --- a/arch/mips/lantiq/dts/easy50712.dts
+>> +++ b/arch/mips/lantiq/dts/easy50712.dts
+>> @@ -8,6 +8,7 @@
+>>       };
+>>
+>>       memory@0 {
+>> +             device_type = "memory";
+>>               reg = <0x0 0x2000000>;
+>>       };
+>>
+>> diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/ralink/dts/mt7620a_eval.dts
+>> index 35eb874..709f581 100644
+>> --- a/arch/mips/ralink/dts/mt7620a_eval.dts
+>> +++ b/arch/mips/ralink/dts/mt7620a_eval.dts
+>> @@ -7,6 +7,7 @@
+>>       model = "Ralink MT7620A evaluation board";
+>>
+>>       memory@0 {
+>> +             device_type = "memory";
+>>               reg = <0x0 0x2000000>;
+>>       };
+>>
+>> diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
+>> index 322d700..0a685db 100644
+>> --- a/arch/mips/ralink/dts/rt2880_eval.dts
+>> +++ b/arch/mips/ralink/dts/rt2880_eval.dts
+>> @@ -7,6 +7,7 @@
+>>       model = "Ralink RT2880 evaluation board";
+>>
+>>       memory@0 {
+>> +             device_type = "memory";
+>>               reg = <0x8000000 0x2000000>;
+>>       };
+>>
+>> diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
+>> index 0ac73ea..ec9e9a0 100644
+>> --- a/arch/mips/ralink/dts/rt3052_eval.dts
+>> +++ b/arch/mips/ralink/dts/rt3052_eval.dts
+>> @@ -7,6 +7,7 @@
+>>       model = "Ralink RT3052 evaluation board";
+>>
+>>       memory@0 {
+>> +             device_type = "memory";
+>>               reg = <0x0 0x2000000>;
+>>       };
+>>
+>> diff --git a/arch/mips/ralink/dts/rt3883_eval.dts b/arch/mips/ralink/dts/rt3883_eval.dts
+>> index 2fa6b33..e8df21a 100644
+>> --- a/arch/mips/ralink/dts/rt3883_eval.dts
+>> +++ b/arch/mips/ralink/dts/rt3883_eval.dts
+>> @@ -7,6 +7,7 @@
+>>       model = "Ralink RT3883 evaluation board";
+>>
+>>       memory@0 {
+>> +             device_type = "memory";
+>>               reg = <0x0 0x2000000>;
+>>       };
+>>
+>> --
+>> 1.7.10.4
+>>
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+>> the body of a message to majordomo@vger.kernel.org
+>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>> Please read the FAQ at  http://www.tux.org/lkml/
+>

@@ -1,47 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 May 2014 15:30:37 +0200 (CEST)
-Received: from mail.lemote.com ([222.92.8.138]:56646 "EHLO mail.lemote.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822137AbaEPNaeoAWta (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 16 May 2014 15:30:34 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.lemote.com (Postfix) with ESMTP id 6715322C33
-        for <linux-mips@linux-mips.org>; Fri, 16 May 2014 21:30:24 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from mail.lemote.com ([127.0.0.1])
-        by localhost (mail.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id rNqUvI27MUzT for <linux-mips@linux-mips.org>;
-        Fri, 16 May 2014 21:30:09 +0800 (CST)
-Received: from mail-la0-f45.google.com (mail-la0-f45.google.com [209.85.215.45])
-        (Authenticated sender: chenj@lemote.com)
-        by mail.lemote.com (Postfix) with ESMTPSA id 1B14E234A4
-        for <linux-mips@linux-mips.org>; Fri, 16 May 2014 21:30:07 +0800 (CST)
-Received: by mail-la0-f45.google.com with SMTP id gl10so1972680lab.32
-        for <linux-mips@linux-mips.org>; Fri, 16 May 2014 06:29:59 -0700 (PDT)
-X-Received: by 10.112.11.162 with SMTP id r2mr1218713lbb.89.1400246999883;
- Fri, 16 May 2014 06:29:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 May 2014 15:49:08 +0200 (CEST)
+Received: from helium.waldemar-brodkorb.de ([89.238.66.15]:54331 "EHLO
+        helium.waldemar-brodkorb.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822137AbaEPNtGjDKuK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 May 2014 15:49:06 +0200
+Received: by helium.waldemar-brodkorb.de (Postfix, from userid 1000)
+        id 7254C106A6; Fri, 16 May 2014 15:49:05 +0200 (CEST)
+Date:   Fri, 16 May 2014 15:49:04 +0200
+From:   Waldemar Brodkorb <wbx@openadk.org>
+To:     linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: serial console on rb532 disabled on boot (linux 3.15rc5)
+Message-ID: <20140516134904.GW618@waldemar-brodkorb.de>
 MIME-Version: 1.0
-Received: by 10.114.176.137 with HTTP; Fri, 16 May 2014 06:29:39 -0700 (PDT)
-In-Reply-To: <20140515114053.GW34353@pburton-linux.le.imgtec.org>
-References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
- <1400137743-8806-2-git-send-email-chenj@lemote.com> <20140515114053.GW34353@pburton-linux.le.imgtec.org>
-From:   Chen Jie <chenj@lemote.com>
-Date:   Fri, 16 May 2014 21:29:39 +0800
-Message-ID: <CAGXxSxVUOT_R-zHKpmEGZpE1nCSeOyfNzmc1xooYrKBxTuuaNQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org,
-        =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
-        =?UTF-8?B?546L6ZSQ?= <wangr@lemote.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenj@lemote.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Operating-System: Linux 3.2.0-4-amd64 x86_64
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <wbx@openadk.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40121
+X-archive-position: 40122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenj@lemote.com
+X-original-sender: wbx@openadk.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,24 +39,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-05-15 19:40 GMT+08:00 Paul Burton <paul.burton@imgtec.com>:
-> On Thu, May 15, 2014 at 03:09:03PM +0800, chenj wrote:
->> wsbh & movn are available on loongson3 CPU.
->> ---
->>  arch/mips/lib/csum_partial.S | 10 ++++++++--
->>  1 file changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
->> index 6cea101..ed88647 100644
->> --- a/arch/mips/lib/csum_partial.S
->> +++ b/arch/mips/lib/csum_partial.S
->> @@ -277,9 +277,12 @@ LEAF(csum_partial)
->>  #endif
->>
->>       /* odd buffer alignment? */
->> -#ifdef CONFIG_CPU_MIPSR2
->> +#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
->
-> Is there some reason CPU_LOONGSON3 can't select CPU_MIPSR2?
+Hi Linux hackers,
 
-Loongson 3a is not fully mips32r2 compatible, but Loongson 3b is.
+I am trying to bootup my Mikrotik RB532 board with the latest
+kernel, but my serial console is disabled after boot:
+..
+Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+serial8250: ttyS0 at MMIO 0x0 (irq = 104, base_baud = 12499875) is a
+16550A
+console [ttyS0] enabled
+console [ttyS0] disabled
+
+I used git bisect to find the problematic commit:
+commit 5f5c9ae56c38942623f69c3e6dc6ec78e4da2076
+Author: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Date:   Fri Feb 28 14:21:32 2014 +0100
+
+    serial_core: Unregister console in uart_remove_one_port()
+    
+    If the serial port being removed is used as a console, it must
+also be
+    unregistered from the console subsystem using
+unregister_console().
+    
+    uart_ops.release_port() will release resources (e.g. iounmap()
+the serial
+    port registers), causing a crash on subsequent kernel output if
+the console
+    is still registered.
+    
+    Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+After reverting the change, everything is fine.
+
+I can provide a .config and dmesg if needed.
+
+Thanks in advance
+ Waldemar

@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 May 2014 16:20:27 +0200 (CEST)
-Received: from mail-ig0-f172.google.com ([209.85.213.172]:50379 "EHLO
-        mail-ig0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6839073AbaEPOUZLdP-k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 May 2014 16:20:25 +0200
-Received: by mail-ig0-f172.google.com with SMTP id uy17so829273igb.5
-        for <linux-mips@linux-mips.org>; Fri, 16 May 2014 07:20:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=QXMcrD4Q6Ls8ejFCWkU4p6gCzFNQVD+vg8qVHXtVXb0=;
-        b=P19y9eATZmN0b7b6EyVGmhKPR57NFK/x5GeUXkAv+fYMIJ+YStJkjFNz45hp013Uq+
-         v7z1EBS6ZSiywnx0/ZN6OUUg5Y6Jg7uR6YeH8N8Wtb/c6E/N3+d3vRZnUFMVYsdHSS2K
-         5BMoyV4UQcEBr2a+moVIW6DbHE886n9OCuMHhNokSVebQlPlxnPggvBWK9gzu+0T1RLq
-         RDv8pDML9GSVaFRlyzWxgFM4KMexVxw1wzgjV9Zw+AtDBPLwb6lFBSC+qiIcwbO6l0pm
-         aWJA3DlI7bmmzlXPSp5XoutY6Eujg0ZAAKhAYabbRxB66Kq76QOqChqdCsIoETjIul6M
-         TCfA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 May 2014 17:21:41 +0200 (CEST)
+Received: from [217.156.133.130] ([217.156.133.130]:10196 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6835073AbaEPPVjLdng0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 May 2014 17:21:39 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4902F41F8E7C;
+        Fri, 16 May 2014 16:21:33 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 16 May 2014 16:21:33 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 16 May 2014 16:21:33 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 88EAD6D4C520C;
+        Fri, 16 May 2014 16:21:30 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Fri, 16 May 2014 16:21:33 +0100
+Received: from localhost (192.168.154.79) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 16 May
+ 2014 16:21:32 +0100
+Date:   Fri, 16 May 2014 16:21:32 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Chen Jie <chenj@lemote.com>
+CC:     <linux-mips@linux-mips.org>,
+        =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
+        =?utf-8?B?546L6ZSQ?= <wangr@lemote.com>
+Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
+Message-ID: <20140516152132.GB63315@pburton-linux.le.imgtec.org>
+References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
+ <1400137743-8806-2-git-send-email-chenj@lemote.com>
+ <20140515114053.GW34353@pburton-linux.le.imgtec.org>
+ <CAGXxSxVUOT_R-zHKpmEGZpE1nCSeOyfNzmc1xooYrKBxTuuaNQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 10.50.66.3 with SMTP id b3mr20942970igt.22.1400250018786; Fri,
- 16 May 2014 07:20:18 -0700 (PDT)
-Received: by 10.64.17.199 with HTTP; Fri, 16 May 2014 07:20:18 -0700 (PDT)
-In-Reply-To: <20140516134904.GW618@waldemar-brodkorb.de>
-References: <20140516134904.GW618@waldemar-brodkorb.de>
-Date:   Fri, 16 May 2014 16:20:18 +0200
-X-Google-Sender-Auth: oadzfgtYzCIG03pt5q7MpCftjtE
-Message-ID: <CAMuHMdVPSzYkUumqMY78zxVcoQ6=W9Vfm_tyM_T3W8DFzCztVw@mail.gmail.com>
-Subject: Re: serial console on rb532 disabled on boot (linux 3.15rc5)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Waldemar Brodkorb <wbx@openadk.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="gatW/ieO32f1wygP"
+Content-Disposition: inline
+In-Reply-To: <CAGXxSxVUOT_R-zHKpmEGZpE1nCSeOyfNzmc1xooYrKBxTuuaNQ@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.79]
+X-ESG-ENCRYPT-TAG: 2110538f
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40123
+X-archive-position: 40124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,54 +61,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Waldemar,
+--gatW/ieO32f1wygP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 16, 2014 at 3:49 PM, Waldemar Brodkorb <wbx@openadk.org> wrote:
-> I am trying to bootup my Mikrotik RB532 board with the latest
-> kernel, but my serial console is disabled after boot:
-> ..
-> Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
-> serial8250: ttyS0 at MMIO 0x0 (irq = 104, base_baud = 12499875) is a
-> 16550A
-> console [ttyS0] enabled
-> console [ttyS0] disabled
->
-> I used git bisect to find the problematic commit:
-> commit 5f5c9ae56c38942623f69c3e6dc6ec78e4da2076
-> Author: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> Date:   Fri Feb 28 14:21:32 2014 +0100
->
->     serial_core: Unregister console in uart_remove_one_port()
->
->     If the serial port being removed is used as a console, it must
-> also be
->     unregistered from the console subsystem using
-> unregister_console().
->
->     uart_ops.release_port() will release resources (e.g. iounmap()
-> the serial
->     port registers), causing a crash on subsequent kernel output if
-> the console
->     is still registered.
->
->     Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
->     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
-> After reverting the change, everything is fine.
+On Fri, May 16, 2014 at 09:29:39PM +0800, Chen Jie wrote:
+> >> -#ifdef CONFIG_CPU_MIPSR2
+> >> +#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
+> >
+> > Is there some reason CPU_LOONGSON3 can't select CPU_MIPSR2?
+>=20
+> Loongson 3a is not fully mips32r2 compatible, but Loongson 3b is.
 
-Does this patch help? https://lkml.org/lkml/2014/5/10/9
+Interesting, I was led to believe that the 3A was MIPS64r2 compliant
+(and thus by nature MIPS32r2 compliant) with the one difference with
+other implementations being how it handles Status.FR=3D0 (appearing as
+16x64b registers rather than the 32x32b registers of other CPUs). Are
+there any other ways in which Loongson 3A is not MIPS64r2/MIPS32r2
+compliant?
 
-I guess you're not using of_serial?
-Your serial driver may need to set port.type too, if it doesn't already do so
-and the type is PORT_UNKNOWN on re-registration.
+If not then wouldn't it make more sense to select CPU_MIPSR2 & then
+special case any FPU differences? That would get you all the R2 bits of
+the kernel with minimal #ifdef-ery.
 
-Gr{oetje,eeting}s,
+Thanks,
+    Paul
 
-                        Geert
+--gatW/ieO32f1wygP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+iQIcBAEBCAAGBQJTdiz8AAoJEIIg2fppPBxleZkP/3piMx3uqQzrzfKraNrNWIg5
+yoEEZC86cRP1jJyZATLE7KsLq0KFHghSuZkjQtMWdqh9hmjIiiPukXvxJt//ZL4l
+rZMQ+/0C8oEQIQ1ABCOC4IqhY6w4jd1cJddZf8gxUQStcREqKtsTaCLKHZdgBYZ5
+8R0FNHvxKxw51fnYdmLrPtHIc2FbGgu9pmdV89h7j/hJFk99Q5GhzU0CV5IRKSUS
+WP41WQ2w56EIjqe89PAgtdPcs7nDvgl5le5G4H82nnaCycOUN1P2ar2TqjKIUMHF
+na3wpR13olDjY66ozKd+GIQljx2yux1jrd/1v1tz3YcZAPDRwQMOwOgAJyzjyeiO
+CBlaDzWk4IgR4hBHWoXnK7THYgm3rgFz9fqIWmM0RlOrkwIBovX+KBOQbhpxgLPi
+0/UOHxE/HorQXV0bIfZANY9w7amkikhfwHSMaCwLmug6gRD5oqsSedj9N+zjnvbK
+ivx08vfYaqX91DbhlLCWRiq+mGnpLfpbVg3S6C7rWksIOtcq2B0U70H9NQsml11O
+2df2C80UG54yXYd988Y4PSPPXsM2LZfvmN0DCAh4YGIoQr4Ff26bfk23iWf1JHDI
+ccNTQSSTFSfYashx4NAFcOjViIhWvKQkiEZrqFZhHoBEfY//j0VZt/L6eA9fy2CC
+0quE4/cWC22xdFbSanZ+
+=wIPO
+-----END PGP SIGNATURE-----
+
+--gatW/ieO32f1wygP--

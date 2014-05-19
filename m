@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 May 2014 09:00:00 +0200 (CEST)
-Received: from mail-we0-f180.google.com ([74.125.82.180]:50732 "EHLO
-        mail-we0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818711AbaESG7bPcKvK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 May 2014 08:59:31 +0200
-Received: by mail-we0-f180.google.com with SMTP id t61so4947345wes.25
-        for <linux-mips@linux-mips.org>; Sun, 18 May 2014 23:59:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :organization:user-agent:in-reply-to:references:mime-version
-         :content-type;
-        bh=q4XbEdhterUTGhLfvSEUZLH3heFLU+Yu79jaV5fv3Ag=;
-        b=f/z3PaSpVxjo0ubMilRGrm41+JjayGy6Bj3LccXe0rXukUpKfCFQQBSYe1FcNr3aMb
-         T0fFCNjbejms0JgbVAFqSOU6rbLtApEAFVROtP9+saGxcjFW5ycOVE3Ilu1uoCWpU9gm
-         BiRz6Lp8/+Q8Iz+6j9i4TVl2d4sBeH2U6eqe6V/87dwhs/sHXxOo0+S0rVKpYTGFnpv8
-         AI6P7XFGzbYjOr0/yYQW/G7xe96hAsdrfUxuXW3PSCrIIlT+G9lzDtydXevmtMTewVss
-         FxRWPbuXcUXI9o3ygfgwS/JUFnWvya9dQb0g3RUlb7uVMdszq0SVN396rB2HJ0jKmLdz
-         Gl+g==
-X-Gm-Message-State: ALoCoQmPNoKSLwxOdCeoqnOhq4fILrSDsXsuFPMNLIpuodRn2N3h2vhEgijfsOAM8QkAWLOfh37F
-X-Received: by 10.180.206.205 with SMTP id lq13mr11197861wic.11.1400482765913;
-        Sun, 18 May 2014 23:59:25 -0700 (PDT)
-Received: from radagast.localnet (jahogan.plus.com. [212.159.75.221])
-        by mx.google.com with ESMTPSA id l2sm7473235wix.13.2014.05.18.23.59.24
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sun, 18 May 2014 23:59:24 -0700 (PDT)
-From:   James Hogan <james.hogan@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     chenj <chenj@lemote.com>, markos.chandras@imgtec.com,
-        chenhc@lemote.com
-Subject: Re: [PATCH, v2] MIPS: lib: csum_partial: more instruction paral
-Date:   Mon, 19 May 2014 07:59:11 +0100
-Message-ID: <1818781.bbVdBBlkH9@radagast>
-Organization: Imagination Technologies
-User-Agent: KMail/4.12.5 (Linux/3.15.0-rc5+; KDE/4.12.5; x86_64; ; )
-In-Reply-To: <1400469247-17788-1-git-send-email-chenj@lemote.com>
-References: <1400137743-8806-1-git-send-email-chenj@lemote.com> <1400469247-17788-1-git-send-email-chenj@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 May 2014 12:03:07 +0200 (CEST)
+Received: from [217.156.133.130] ([217.156.133.130]:17096 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6824847AbaESKDEGcum3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 May 2014 12:03:04 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id D3E9441F8E22;
+        Mon, 19 May 2014 11:02:44 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Mon, 19 May 2014 11:02:44 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Mon, 19 May 2014 11:02:44 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 6F42D7F0FEB23;
+        Mon, 19 May 2014 11:02:42 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Mon, 19 May 2014 11:02:44 +0100
+Received: from localhost (192.168.154.79) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 19 May
+ 2014 11:02:44 +0100
+Date:   Mon, 19 May 2014 11:02:44 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     chenj <chenj@lemote.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
+Message-ID: <20140519100244.GL63315@pburton-linux.le.imgtec.org>
+References: <1400401410-32600-1-git-send-email-chenj@lemote.com>
+ <CAAhV-H6zvhUvjoQiG9-e5HHGBkbLJvN_LkbEZWEzfjJEmrmLgg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1492867.dFMWVkp4xR"; micalg="pgp-sha1"; protocol="application/pgp-signature"
-Return-Path: <james@albanarts.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="tv2SIFopg1r47n4a"
+Content-Disposition: inline
+In-Reply-To: <CAAhV-H6zvhUvjoQiG9-e5HHGBkbLJvN_LkbEZWEzfjJEmrmLgg@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.79]
+X-ESG-ENCRYPT-TAG: 96d62635
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40135
+X-archive-position: 40136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,165 +58,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+--tv2SIFopg1r47n4a
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
---nextPart1492867.dFMWVkp4xR
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+On Sun, May 18, 2014 at 10:39:20PM +0800, Huacai Chen wrote:
+> Due to Wang Rui's tests, Loongson-3's EI/DI instructions don't have
+> correct behaviors, its Status.FR is also different with MIPS64R2. So,
+> I don't want to select CPU_MIPS64_R2.
 
-On Monday 19 May 2014 11:14:07 chenj wrote:
-> Computing sum introduces true data dependency, e.g.
-> 	ADDC(sum, t0)
-> 	ADDC(sum, t1)
-> 	ADDC(sum, t2)
-> 	ADDC(sum, t3)
-> Here, each ADDC(sum, ...) references the sum value updated by previous ADDC.
-> 
-> In this patch, above sequence is adjusted as following:
-> 	ADDC(t0, t1)
-> 	ADDC(t2, t3)
-> 	ADDC(sum, t0)
-> 	ADDC(sum, t2)
-> The first two ADDC operations are independent, hence can be executed
-> simultaneously if possible.
+Out of curiosity, how do ei & di misbehave? There are still a number of
+other areas in the kernel which special case >=3D R2, so if the 3A isn't
+too incompatible it may still make sense to select R2 & special case
+those incompatibilities.
 
-The actual patch appears to change it to this:
-ADDC(t0, t1)
-ADDC(sum, t0)
-ADDC(t2, t3)
-ADDC(sum, t2)
+Thanks,
+    Paul
 
-which is slightly different (presumably due to the interleaved stores in some 
-of the cases).
+>=20
+> On Sun, May 18, 2014 at 4:23 PM, chenj <chenj@lemote.com> wrote:
+> > [PATCH] MIPS: Loongson 3: Select CPU_MIPS64_R2
+> >
+> > To chenhc: Please review this.
+> >
 
-> This patch improves instruction level parallelism, and brings at most 50%
-> csum performance gain on Loongson 3a processor[1].
-
-Nice results.
-
-The stuff below the --- will get dropped when the patch is applied though, 
-after which the "[1]" won't refer to anything.
-
-Cheers
-James
-
-> 
-> ---
-> 1. The result can be found at
-> http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.ht
-> ml And is generated by a userspace test program:
-> http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
-> 
-> [v2: amend commit message]
-> 
->  arch/mips/lib/csum_partial.S | 38 +++++++++++++++++++-------------------
->  1 file changed, 19 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-> index 9901237..6cea101 100644
-> --- a/arch/mips/lib/csum_partial.S
-> +++ b/arch/mips/lib/csum_partial.S
-> @@ -76,10 +76,10 @@
->  	LOAD	_t1, (offset + UNIT(1))(src);			\
->  	LOAD	_t2, (offset + UNIT(2))(src);			\
->  	LOAD	_t3, (offset + UNIT(3))(src);			\
-> +	ADDC(_t0, _t1);						\
-> +	ADDC(_t2, _t3);						\
->  	ADDC(sum, _t0);						\
-> -	ADDC(sum, _t1);						\
-> -	ADDC(sum, _t2);						\
-> -	ADDC(sum, _t3)
-> +	ADDC(sum, _t2)
-> 
->  #ifdef USE_DOUBLE
->  #define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
-> @@ -501,21 +501,21 @@ LEAF(csum_partial)
->  	SUB	len, len, 8*NBYTES
->  	ADD	src, src, 8*NBYTES
->  	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t0)
-> +	ADDC(t0, t1)
->  	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t1)
-> +	ADDC(sum, t0)
->  	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t2)
-> +	ADDC(t2, t3)
->  	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t3)
-> +	ADDC(sum, t2)
->  	STORE(t4, UNIT(4)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t4)
-> +	ADDC(t4, t5)
->  	STORE(t5, UNIT(5)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t5)
-> +	ADDC(sum, t4)
->  	STORE(t6, UNIT(6)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t6)
-> +	ADDC(t6, t7)
->  	STORE(t7, UNIT(7)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t7)
-> +	ADDC(sum, t6)
->  	.set	reorder				/* DADDI_WAR */
->  	ADD	dst, dst, 8*NBYTES
->  	bgez	len, 1b
-> @@ -541,13 +541,13 @@ LEAF(csum_partial)
->  	SUB	len, len, 4*NBYTES
->  	ADD	src, src, 4*NBYTES
->  	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t0)
-> +	ADDC(t0, t1)
->  	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t1)
-> +	ADDC(sum, t0)
->  	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t2)
-> +	ADDC(t2, t3)
->  	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t3)
-> +	ADDC(sum, t2)
->  	.set	reorder				/* DADDI_WAR */
->  	ADD	dst, dst, 4*NBYTES
->  	beqz	len, .Ldone\@
-> @@ -646,13 +646,13 @@ LEAF(csum_partial)
->  	nop				# improves slotting
->  #endif
->  	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t0)
-> +	ADDC(t0, t1)
->  	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t1)
-> +	ADDC(sum, t0)
->  	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t2)
-> +	ADDC(t2, t3)
->  	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
-> -	ADDC(sum, t3)
-> +	ADDC(sum, t2)
->  	.set	reorder				/* DADDI_WAR */
->  	ADD	dst, dst, 4*NBYTES
->  	bne	len, rem, 1b
-
---nextPart1492867.dFMWVkp4xR
+--tv2SIFopg1r47n4a
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAABAgAGBQJTeavIAAoJEGwLaZPeOHZ6gWkQAKXoME1jVsKis/E5vMhh9ozX
-3hqKWYwBOdXeNBKYjJcprlD10FylES6dpCAu8+Ta1oDNSJh9DjtDQd0gGrJOI536
-xMl6AyXolmxHbmFpY88bH5Z4oaYERhTSs5a7FXiYI0cv/TlmdN5pvySdhksXYh0E
-MHVodIxXMQY3nXMTam5linqfH+xwefXnn9gCqqW7TvVainCRfdYcrbrpwh2XHaVt
-3W/qzJ8IVbbRajp6Ptw68/u5rm/wIvbTOBfparLm//NauskLPeP4gE3EY1BHqf4g
-s4C1ygwXS4kitSVqpKQMo14XlrEub5gZSo4pzDme/HZoI+S3FsuDqquyu92gSxbo
-l3vwuEprE7/p7npbr6GPS6sAtAGZscKamM7CQ4pypMfKhVQChXLr6hvIwFFLFUB6
-fHL/+XknYQbOt6KQ1LXLRodspsedBIoYPfbS130/Iq/kk6ngHFfN2MX/04qd7+Ym
-etHO0cVZ9MQr89PExEVvmBs54L0qkd1zBRIMbihSwzNXUz3W+W6ceZ0BbLBzow5n
-BO2FaMqsxPJLxf8Qe2YRQcR+RN7y5xS7KQHL6yggewS3dUiHcTrU4bZSk6Kbk4rd
-8b/OnzXlVy8nVJuJLCAsLZ8/cJaQhhSiIZDdm+x/geIYvgwlDtI///FneWCEMH2k
-AstnbpretRC4QSwFN/3N
-=y+zy
+iQIcBAEBCAAGBQJTedbEAAoJEIIg2fppPBxl8doP/3SFWoIldtb4gU3Jv9u7+uPh
++GqMU952fR0pGJMazlhc5XWhiAsKkBnVZAIQ0R0g5NSwTOcXSI6q+ulskC2EiRT9
+ifhg0O7NbqXYdDL5E4S4zWPfxGhJtRGjaFJ+0FKJojjyUy0PyVQo/HIvwj96x4lJ
+ObZOI++/xHQIP5meCNdiNGaMFpNMBHsg+JLugV1X8X2LbOs1SM3svAlAKEO08NeI
+AhO/CP9BKfaFkzy/p9B/8X40exBIaIEguAc1/caYmmkiDj0hNv8CV6J8nGUORF3G
+RcbI5HjQvc9VaIZuiiVQbfBj0AQGEyDhYWf8+yPu+Oub59AZoviRTtywpQet88B+
+g4b7fqMzgbLDC4x7jXjdpAOaHVBLgSf6YTCzGjYp8wQ13oFnYVeWFbTfZ0F8xJ6B
+H8NHfXx5j8ODEUKb9qDvu94ZcUe7KtQNO5Pwwrkalp+F/mG4ixufNoTEG8xi5cHG
+5FAWXyhXzUgbhkw6RRooC+EAiIQzeegC5qOhofgbWXxqoXUFRKmC2DFVX6g7khNr
+QQTomgsIrKKjQ5dLdZrSiWAi2wmEXEjLOVtijEnmvwdIMtTQeKWTBy6yjWqR3onX
+dD8DQG6Pww9jpRqdbjjt1pjuSaTntJ6rEzZajTyAyyOOxnO9OnGMfcYjLKSID5UZ
+t8faTcENcravNLM1tzgX
+=k0cL
 -----END PGP SIGNATURE-----
 
---nextPart1492867.dFMWVkp4xR--
+--tv2SIFopg1r47n4a--

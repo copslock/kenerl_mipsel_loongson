@@ -1,46 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 May 2014 18:59:00 +0200 (CEST)
-Received: from mail-bn1lp0139.outbound.protection.outlook.com ([207.46.163.139]:24231
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 May 2014 19:07:10 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:53703 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6854988AbaESQzuV24Nv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 May 2014 18:55:50 +0200
-Received: from alberich.caveonetworks.com (46.78.192.208) by
- DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21) with Microsoft SMTP
- Server (TLS) id 15.0.944.11; Mon, 19 May 2014 16:55:42 +0000
-From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-To:     Pekka Enberg <penberg@kernel.org>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        <kvm@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: [PATCH v2 12/12] kvm tools: Return number of bytes written by term_putc
-Date:   Mon, 19 May 2014 18:53:31 +0200
-Message-ID: <1400518411-9759-13-git-send-email-andreas.herrmann@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1400518411-9759-1-git-send-email-andreas.herrmann@caviumnetworks.com>
-References: <1400518411-9759-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+        id S6854792AbaESRHGt12c9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 May 2014 19:07:06 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4JH71qK012079;
+        Mon, 19 May 2014 19:07:01 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4JH6wej012069;
+        Mon, 19 May 2014 19:06:58 +0200
+Date:   Mon, 19 May 2014 19:06:58 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Chen Jie <chenj@lemote.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        =?utf-8?B?546L6ZSQ?= <wangr@lemote.com>
+Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
+Message-ID: <20140519170658.GB17197@linux-mips.org>
+References: <1400401410-32600-1-git-send-email-chenj@lemote.com>
+ <CAAhV-H6zvhUvjoQiG9-e5HHGBkbLJvN_LkbEZWEzfjJEmrmLgg@mail.gmail.com>
+ <20140519100244.GL63315@pburton-linux.le.imgtec.org>
+ <CAGXxSxWD2ryrv0JHnOUpDkjXGGKLk=5=RYH_aEXsq9kCu40LfQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [46.78.192.208]
-X-ClientProxiedBy: AM2PR06CA006.eurprd06.prod.outlook.com (10.255.61.23) To
- DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21)
-X-Forefront-PRVS: 021670B4D2
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(979002)(6009001)(428001)(189002)(199002)(81542001)(33646001)(92566001)(46102001)(21056001)(81156002)(87976001)(87286001)(4396001)(53416003)(62966002)(99396002)(50986999)(36756003)(77156001)(76482001)(93916002)(92726001)(88136002)(86362001)(81342001)(42186004)(79102001)(50466002)(20776003)(69596002)(47776003)(74662001)(102836001)(31966008)(80022001)(74502001)(83322001)(77982001)(19580405001)(76176999)(19580395003)(50226001)(85852003)(83072002)(66066001)(64706001)(48376002)(89996001)(101416001)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:;SCL:1;SRVR:DM2PR07MB398;H:alberich.caveonetworks.com;FPR:;MLV:ovrnspm;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (: caviumnetworks.com does not designate permitted sender
- hosts)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Andreas.Herrmann@caviumnetworks.com; 
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <Andreas.Herrmann@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGXxSxWD2ryrv0JHnOUpDkjXGGKLk=5=RYH_aEXsq9kCu40LfQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40153
+X-archive-position: 40154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.herrmann@caviumnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,27 +48,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-No caller is currently using the return value but better return
-number of bytes written instead of 0 in case of an error.
+On Mon, May 19, 2014 at 11:15:15PM +0800, Chen Jie wrote:
 
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
----
- tools/kvm/term.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 2014-05-19 18:02 GMT+08:00 Paul Burton <paul.burton@imgtec.com>:
+> > On Sun, May 18, 2014 at 10:39:20PM +0800, Huacai Chen wrote:
+> >> Due to Wang Rui's tests, Loongson-3's EI/DI instructions don't have
+> >> correct behaviors, its Status.FR is also different with MIPS64R2. So,
+> >> I don't want to select CPU_MIPS64_R2.
+> >
+> > Out of curiosity, how do ei & di misbehave?
+> In our test, it may cause machine stall if use ei&di in kernel,
+> especially in smp case.
 
-diff --git a/tools/kvm/term.c b/tools/kvm/term.c
-index b153eed..1b8131a 100644
---- a/tools/kvm/term.c
-+++ b/tools/kvm/term.c
-@@ -57,7 +57,7 @@ int term_putc(char *addr, int cnt, int term)
- 	while (num_remaining) {
- 		ret = write(term_fds[term][TERM_FD_OUT], addr, num_remaining);
- 		if (ret < 0)
--			return 0;
-+			return cnt - num_remaining;
- 		num_remaining -= ret;
- 		addr += ret;
- 	}
--- 
-1.7.9.5
+In that case we could make the use of DI/EI depend on a new errata flag
+in war.h or similar.
+
+  Ralf

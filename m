@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 May 2014 16:39:34 +0200 (CEST)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:52482 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6837167AbaEROj0yhK8y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 May 2014 16:39:26 +0200
-Received: by mail-ig0-f170.google.com with SMTP id uy17so1475140igb.1
-        for <linux-mips@linux-mips.org>; Sun, 18 May 2014 07:39:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=f+uCcqBA84NqAk/09BL+MGVB9WnNEWRqUMhkF/l3lqg=;
-        b=aehmoQQGKO6xG14g44uKdouzNVuPa5R2Lic9Bc7tEpJsydZ26VfEdDKbTNoOq9W2yG
-         /qT4fVeK+i4KgDcKD4r9+DpFXxFApOClAi19HqQcC05klE1xqONTqUnG0NLl/DGvRU2S
-         k+djig+mt1th+pw0KA8yJrcqI7JDLYouPcp7UI8w1awXpGsYRa/0w8gXFLm8EcnQQlQG
-         t0Lwh6UuHa7GBpPXSvoyqCtoX+eKnSGAxB9vtnIxoeC5qUq5ICvgTnV6LMtvDANuA0qZ
-         Gg7q2oPz5RFW+rgA8eg7MeQm0gaDrUVHyxZZoKYlyKvM7aG+o2HYAa38B0G755mF4dg8
-         ZSdg==
-MIME-Version: 1.0
-X-Received: by 10.50.30.6 with SMTP id o6mr10526794igh.43.1400423960616; Sun,
- 18 May 2014 07:39:20 -0700 (PDT)
-Received: by 10.64.27.161 with HTTP; Sun, 18 May 2014 07:39:20 -0700 (PDT)
-In-Reply-To: <1400401410-32600-1-git-send-email-chenj@lemote.com>
-References: <1400401410-32600-1-git-send-email-chenj@lemote.com>
-Date:   Sun, 18 May 2014 22:39:20 +0800
-X-Google-Sender-Auth: Hpg6yxtzCBFsM3rpTptpfL-choA
-Message-ID: <CAAhV-H6zvhUvjoQiG9-e5HHGBkbLJvN_LkbEZWEzfjJEmrmLgg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
-From:   Huacai Chen <chenhc@lemote.com>
-To:     chenj <chenj@lemote.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 May 2014 05:08:43 +0200 (CEST)
+Received: from mail.lemote.com ([222.92.8.138]:39131 "EHLO mail.lemote.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816409AbaESDIkfKl0e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 May 2014 05:08:40 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.lemote.com (Postfix) with ESMTP id B00112349F;
+        Mon, 19 May 2014 11:08:29 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from mail.lemote.com ([127.0.0.1])
+        by localhost (mail.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 3qilmEyugsF3; Mon, 19 May 2014 11:08:14 +0800 (CST)
+Received: from software.domain.org (unknown [222.92.8.142])
+        (Authenticated sender: chenj@lemote.com)
+        by mail.lemote.com (Postfix) with ESMTPA id A494D22E84;
+        Mon, 19 May 2014 11:07:48 +0800 (CST)
+From:   chenj <chenj@lemote.com>
+To:     markos.chandras@imgtec.com
+Cc:     linux-mips@linux-mips.org, chenhc@lemote.com,
+        chenj <chenj@lemote.com>
+Subject: [PATCH, v2] MIPS: lib: csum_partial: more instruction paral
+Date:   Mon, 19 May 2014 11:14:07 +0800
+Message-Id: <1400469247-17788-1-git-send-email-chenj@lemote.com>
+X-Mailer: git-send-email 1.9.0
+In-Reply-To: <1400137743-8806-1-git-send-email-chenj@lemote.com>
+References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
+Return-Path: <chenj@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40131
+X-archive-position: 40132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: chenj@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,12 +45,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Due to Wang Rui's tests, Loongson-3's EI/DI instructions don't have
-correct behaviors, its Status.FR is also different with MIPS64R2. So,
-I don't want to select CPU_MIPS64_R2.
+Computing sum introduces true data dependency, e.g.
+	ADDC(sum, t0)
+	ADDC(sum, t1)
+	ADDC(sum, t2)
+	ADDC(sum, t3)
+Here, each ADDC(sum, ...) references the sum value updated by previous ADDC.
 
-On Sun, May 18, 2014 at 4:23 PM, chenj <chenj@lemote.com> wrote:
-> [PATCH] MIPS: Loongson 3: Select CPU_MIPS64_R2
->
-> To chenhc: Please review this.
->
+In this patch, above sequence is adjusted as following:
+	ADDC(t0, t1)
+	ADDC(t2, t3)
+	ADDC(sum, t0)
+	ADDC(sum, t2)
+The first two ADDC operations are independent, hence can be executed
+simultaneously if possible.
+
+This patch improves instruction level parallelism, and brings at most 50%
+csum performance gain on Loongson 3a processor[1].
+
+---
+1. The result can be found at
+http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.html
+And is generated by a userspace test program:
+http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
+
+[v2: amend commit message]
+
+ arch/mips/lib/csum_partial.S | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
+index 9901237..6cea101 100644
+--- a/arch/mips/lib/csum_partial.S
++++ b/arch/mips/lib/csum_partial.S
+@@ -76,10 +76,10 @@
+ 	LOAD	_t1, (offset + UNIT(1))(src);			\
+ 	LOAD	_t2, (offset + UNIT(2))(src);			\
+ 	LOAD	_t3, (offset + UNIT(3))(src);			\
++	ADDC(_t0, _t1);						\
++	ADDC(_t2, _t3);						\
+ 	ADDC(sum, _t0);						\
+-	ADDC(sum, _t1);						\
+-	ADDC(sum, _t2);						\
+-	ADDC(sum, _t3)
++	ADDC(sum, _t2)
+ 
+ #ifdef USE_DOUBLE
+ #define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
+@@ -501,21 +501,21 @@ LEAF(csum_partial)
+ 	SUB	len, len, 8*NBYTES
+ 	ADD	src, src, 8*NBYTES
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	STORE(t4, UNIT(4)(dst),	.Ls_exc\@)
+-	ADDC(sum, t4)
++	ADDC(t4, t5)
+ 	STORE(t5, UNIT(5)(dst),	.Ls_exc\@)
+-	ADDC(sum, t5)
++	ADDC(sum, t4)
+ 	STORE(t6, UNIT(6)(dst),	.Ls_exc\@)
+-	ADDC(sum, t6)
++	ADDC(t6, t7)
+ 	STORE(t7, UNIT(7)(dst),	.Ls_exc\@)
+-	ADDC(sum, t7)
++	ADDC(sum, t6)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 8*NBYTES
+ 	bgez	len, 1b
+@@ -541,13 +541,13 @@ LEAF(csum_partial)
+ 	SUB	len, len, 4*NBYTES
+ 	ADD	src, src, 4*NBYTES
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 4*NBYTES
+ 	beqz	len, .Ldone\@
+@@ -646,13 +646,13 @@ LEAF(csum_partial)
+ 	nop				# improves slotting
+ #endif
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 4*NBYTES
+ 	bne	len, rem, 1b
+-- 
+1.9.0

@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 16:51:31 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 16:51:55 +0200 (CEST)
 Received: from mail-bl2lp0211.outbound.protection.outlook.com ([207.46.163.211]:27196
         "EHLO na01-bl2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6855086AbaETOtIiiqb2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6855087AbaETOtI4XdJS (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 20 May 2014 16:49:08 +0200
 Received: from localhost.localdomain (46.78.192.208) by
  DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21) with Microsoft SMTP
- Server (TLS) id 15.0.944.11; Tue, 20 May 2014 14:49:01 +0000
+ Server (TLS) id 15.0.944.11; Tue, 20 May 2014 14:49:07 +0000
 From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 To:     <linux-mips@linux-mips.org>
 CC:     David Daney <ddaney.cavm@gmail.com>,
         Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>, <kvm@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH 07/15] MIPS: Add mips_cpunum() function.
-Date:   Tue, 20 May 2014 16:47:08 +0200
-Message-ID: <1400597236-11352-8-git-send-email-andreas.herrmann@caviumnetworks.com>
+        James Hogan <james.hogan@imgtec.com>, <kvm@vger.kernel.org>
+Subject: [PATCH 08/15] MIPS: OCTEON: Add OCTEON3 to __get_cpu_type
+Date:   Tue, 20 May 2014 16:47:09 +0200
+Message-ID: <1400597236-11352-9-git-send-email-andreas.herrmann@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
 References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
@@ -36,7 +35,7 @@ Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40181
+X-archive-position: 40182
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,31 +52,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+Otherwise __builtin_unreachable might be called.
 
-This returns the CPUNum from the low order Ebase bits.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 ---
- arch/mips/include/asm/mipsregs.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/include/asm/cpu-type.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 3e025b5..f110d48 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1916,6 +1916,11 @@ __BUILD_SET_C0(brcm_cmt_ctrl)
- __BUILD_SET_C0(brcm_config)
- __BUILD_SET_C0(brcm_mode)
+diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
+index 72190613..0bd77a0 100644
+--- a/arch/mips/include/asm/cpu-type.h
++++ b/arch/mips/include/asm/cpu-type.h
+@@ -166,6 +166,7 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+ 	case CPU_CAVIUM_OCTEON:
+ 	case CPU_CAVIUM_OCTEON_PLUS:
+ 	case CPU_CAVIUM_OCTEON2:
++	case CPU_CAVIUM_OCTEON3:
+ #endif
  
-+static inline unsigned int mips_cpunum(void)
-+{
-+	return read_c0_ebase() & 0x3ff; /* Low 10 bits of ebase. */
-+}
-+
- #endif /* !__ASSEMBLY__ */
- 
- #endif /* _ASM_MIPSREGS_H */
+ #if defined(CONFIG_SYS_HAS_CPU_BMIPS32_3300) || \
 -- 
 1.7.9.5

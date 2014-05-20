@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 16:51:10 +0200 (CEST)
-Received: from mail-bl2lp0208.outbound.protection.outlook.com ([207.46.163.208]:26693
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 16:51:31 +0200 (CEST)
+Received: from mail-bl2lp0211.outbound.protection.outlook.com ([207.46.163.211]:27196
         "EHLO na01-bl2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6855083AbaETOtBq0Lne (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 May 2014 16:49:01 +0200
+        id S6855086AbaETOtIiiqb2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 May 2014 16:49:08 +0200
 Received: from localhost.localdomain (46.78.192.208) by
  DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21) with Microsoft SMTP
- Server (TLS) id 15.0.944.11; Tue, 20 May 2014 14:48:40 +0000
+ Server (TLS) id 15.0.944.11; Tue, 20 May 2014 14:49:01 +0000
 From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 To:     <linux-mips@linux-mips.org>
 CC:     David Daney <ddaney.cavm@gmail.com>,
@@ -14,9 +14,9 @@ CC:     David Daney <ddaney.cavm@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>, <kvm@vger.kernel.org>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH 04/15] MIPS: Don't use RI/XI with 32-bit kernels on 64-bit CPUs.
-Date:   Tue, 20 May 2014 16:47:05 +0200
-Message-ID: <1400597236-11352-5-git-send-email-andreas.herrmann@caviumnetworks.com>
+Subject: [PATCH 07/15] MIPS: Add mips_cpunum() function.
+Date:   Tue, 20 May 2014 16:47:08 +0200
+Message-ID: <1400597236-11352-8-git-send-email-andreas.herrmann@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
 References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
@@ -36,7 +36,7 @@ Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40180
+X-archive-position: 40181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,42 +55,29 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-The TLB handlers cannot handle this case, so disable it for now.
+This returns the CPUNum from the low order Ebase bits.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 ---
- arch/mips/include/asm/cpu-features.h |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/mipsregs.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index f56cc97..01486eb 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -110,9 +110,15 @@
- #ifndef cpu_has_smartmips
- #define cpu_has_smartmips	(cpu_data[0].ases & MIPS_ASE_SMARTMIPS)
- #endif
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 3e025b5..f110d48 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1916,6 +1916,11 @@ __BUILD_SET_C0(brcm_cmt_ctrl)
+ __BUILD_SET_C0(brcm_config)
+ __BUILD_SET_C0(brcm_mode)
+ 
++static inline unsigned int mips_cpunum(void)
++{
++	return read_c0_ebase() & 0x3ff; /* Low 10 bits of ebase. */
++}
 +
- #ifndef cpu_has_rixi
--#define cpu_has_rixi		(cpu_data[0].options & MIPS_CPU_RIXI)
-+# ifdef CONFIG_64BIT
-+# define cpu_has_rixi		(cpu_data[0].options & MIPS_CPU_RIXI)
-+# else /* CONFIG_32BIT */
-+# define cpu_has_rixi		((cpu_data[0].options & MIPS_CPU_RIXI) && !cpu_has_64bits)
-+# endif
- #endif
-+
- #ifndef cpu_has_mmips
- # ifdef CONFIG_SYS_SUPPORTS_MICROMIPS
- #  define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
-@@ -120,6 +126,7 @@
- #  define cpu_has_mmips		0
- # endif
- #endif
-+
- #ifndef cpu_has_vtag_icache
- #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
- #endif
+ #endif /* !__ASSEMBLY__ */
+ 
+ #endif /* _ASM_MIPSREGS_H */
 -- 
 1.7.9.5

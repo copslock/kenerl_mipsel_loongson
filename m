@@ -1,51 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 14:34:07 +0200 (CEST)
-Received: from mail-lb0-f176.google.com ([209.85.217.176]:62106 "EHLO
-        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819165AbaETMeErTA4Q convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 May 2014 14:34:04 +0200
-Received: by mail-lb0-f176.google.com with SMTP id p9so330269lbv.35
-        for <multiple recipients>; Tue, 20 May 2014 05:33:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=rVVWbBA2ZBSaEvSwB4WniWKYhbKakPhwEUcZwVrbeHI=;
-        b=v0kVhb8l6/hK7cB2UVIWdia/Q0EpbIZZeo6dZ0Po0Lwf/7XU23cPwz/Gpa85jJ3eAy
-         06PpUewUJPkjJXdFuLNbTykyYuQZuEPQdmVWWlq9piEUczeefY1K6Z2k36CVkmvaaT0C
-         +tngblgKn2L32zL8Un8eZdY2gyxG8vtjLQtOwrj9YItiDic/E1cpK79ugHRSZ2d/kg7j
-         ub5HB+fTTkfqF71f1sRnmWxv5j+AxpDfXjEtE2gfb3JycDawde+f3jorefUD+K4GxWCk
-         imx3xbXCwRjbi6DeldMjexAJYx9yfma5DpbDeBHvrMl0BG/5sLSj8lW3+EBhLT1Z3Obb
-         DP/A==
-X-Received: by 10.112.137.39 with SMTP id qf7mr29782878lbb.18.1400589239090;
- Tue, 20 May 2014 05:33:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 16:48:44 +0200 (CEST)
+Received: from mail-bl2lp0205.outbound.protection.outlook.com ([207.46.163.205]:38185
+        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6854988AbaETOsbj9A8a (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 May 2014 16:48:31 +0200
+Received: from localhost.localdomain (46.78.192.208) by
+ DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21) with Microsoft SMTP
+ Server (TLS) id 15.0.944.11; Tue, 20 May 2014 14:47:59 +0000
+From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+To:     <linux-mips@linux-mips.org>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>, <kvm@vger.kernel.org>
+Subject: [PATCH 00/15] MIPS: Add mips_paravirt
+Date:   Tue, 20 May 2014 16:47:01 +0200
+Message-ID: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Received: by 10.114.176.137 with HTTP; Tue, 20 May 2014 05:33:39 -0700 (PDT)
-In-Reply-To: <20140519170658.GB17197@linux-mips.org>
-References: <1400401410-32600-1-git-send-email-chenj@lemote.com>
- <CAAhV-H6zvhUvjoQiG9-e5HHGBkbLJvN_LkbEZWEzfjJEmrmLgg@mail.gmail.com>
- <20140519100244.GL63315@pburton-linux.le.imgtec.org> <CAGXxSxWD2ryrv0JHnOUpDkjXGGKLk=5=RYH_aEXsq9kCu40LfQ@mail.gmail.com>
- <20140519170658.GB17197@linux-mips.org>
-From:   cee1 <fykcee1@gmail.com>
-Date:   Tue, 20 May 2014 20:33:39 +0800
-Message-ID: <CAGXxSxW69ua7=OcTPym+Not23-+isWdiZj3XvrEPJKQ5qf-Kyw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        huacai chen <chenhuacai@gmail.com>,
-        =?UTF-8?B?546L?= =?UTF-8?B?6ZSQ?= <r@hev.cc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <fykcee1@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [46.78.192.208]
+X-ClientProxiedBy: AM3PR01CA004.eurprd01.prod.exchangelabs.com
+ (10.242.240.14) To DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21)
+X-Forefront-PRVS: 02176E2458
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(979002)(6069001)(6009001)(428001)(164054003)(199002)(189002)(79102001)(36756003)(48376002)(66066001)(77982001)(92726001)(50466002)(74502001)(46102001)(64706001)(47776003)(80022001)(20776003)(50226001)(33646001)(101416001)(50986999)(76482001)(77156001)(89996001)(42186004)(81542001)(92566001)(62966002)(81342001)(87976001)(93916002)(87286001)(4396001)(83072002)(88136002)(85852003)(21056001)(83322001)(31966008)(74662001)(86362001)(99396002)(102836001)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:;SCL:1;SRVR:DM2PR07MB398;H:localhost.localdomain;FPR:;MLV:ovrnspm;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+Received-SPF: None (: caviumnetworks.com does not designate permitted sender
+ hosts)
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Andreas.Herrmann@caviumnetworks.com; 
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40173
+X-archive-position: 40174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fykcee1@gmail.com
+X-original-sender: andreas.herrmann@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,28 +50,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-05-20 1:06 GMT+08:00 Ralf Baechle <ralf@linux-mips.org>:
-> On Mon, May 19, 2014 at 11:15:15PM +0800, Chen Jie wrote:
->
->> 2014-05-19 18:02 GMT+08:00 Paul Burton <paul.burton@imgtec.com>:
->> > On Sun, May 18, 2014 at 10:39:20PM +0800, Huacai Chen wrote:
->> >> Due to Wang Rui's tests, Loongson-3's EI/DI instructions don't have
->> >> correct behaviors, its Status.FR is also different with MIPS64R2. So,
->> >> I don't want to select CPU_MIPS64_R2.
->> >
->> > Out of curiosity, how do ei & di misbehave?
->> In our test, it may cause machine stall if use ei&di in kernel,
->> especially in smp case.
->
-> In that case we could make the use of DI/EI depend on a new errata flag
-> in war.h or similar.
+Hi,
 
-Thanks for the suggest!
-Huacai，I think we would try to select MIPS64_R2 for loongson3
-processor, and take care of the above bits to see whether it works.
+Following patches add support for paravirtualized guest on mips
+(mips_paravirt). Some of the patches add basic support to run it on
+octeon3.
+
+The core of mips_paravirt is David's work.
+I rebased his code, rearranged it somewhat (e.g. split it into the
+current patches) and added some minor modifications.
+
+I've run it using lkvm on a host with KVM MIPS-VZ support (on
+octeon3). I've tested guest kernels built for CPU_MIPS64_R2 and
+CPU_MIPS32_R2.
+
+When the guest kernel is built for CPU_CAVIUM_OCTEON it requires an
+additional patch to avoid usage of octeon_send_ipi_single in
+octeon_flush_icache_all_cores. Latest patch for this is not yet
+included as it caused a regression and needs some rework.
+
+To built a mips_paravirt guest kernel it's easiest to start with
+mips_paravirt_defconfig, check/modify CPU selection (defconfig has
+CPU_MIPS64_R2), and kick off kernel built.
+
+Patches are against v3.15-rc5. Diffstat is
+
+ arch/mips/Kbuild.platforms                         |    1 +
+ arch/mips/Kconfig                                  |   30 +-
+ arch/mips/cavium-octeon/Kconfig                    |   30 +-
+ arch/mips/configs/mips_paravirt_defconfig          | 1521 ++++++++++++++++++++
+ arch/mips/include/asm/cpu-features.h               |    9 +-
+ arch/mips/include/asm/cpu-type.h                   |    1 +
+ .../asm/mach-cavium-octeon/cpu-feature-overrides.h |    1 -
+ .../asm/mach-paravirt/cpu-feature-overrides.h      |   36 +
+ arch/mips/include/asm/mach-paravirt/irq.h          |   19 +
+ .../include/asm/mach-paravirt/kernel-entry-init.h  |   49 +
+ arch/mips/include/asm/mach-paravirt/war.h          |   25 +
+ arch/mips/include/asm/mipsregs.h                   |   72 +
+ arch/mips/include/asm/r4kcache.h                   |    2 +
+ arch/mips/kernel/Makefile                          |    2 +-
+ arch/mips/kernel/branch.c                          |    6 +-
+ arch/mips/kernel/octeon_switch.S                   |   84 +-
+ arch/mips/kernel/r4k_switch.S                      |    3 +
+ arch/mips/math-emu/cp1emu.c                        |   12 +-
+ arch/mips/mm/c-r4k.c                               |   32 +
+ arch/mips/mm/tlbex.c                               |    8 +-
+ arch/mips/paravirt/Kconfig                         |    6 +
+ arch/mips/paravirt/Makefile                        |   14 +
+ arch/mips/paravirt/Platform                        |    9 +
+ arch/mips/paravirt/paravirt-irq.c                  |  388 +++++
+ arch/mips/paravirt/paravirt-smp.c                  |  149 ++
+ arch/mips/paravirt/serial.c                        |   38 +
+ arch/mips/paravirt/setup.c                         |   67 +
+ arch/mips/pci/Makefile                             |    2 +-
+ arch/mips/pci/pci-virtio-guest.c                   |  140 ++
+ 29 files changed, 2709 insertions(+), 47 deletions(-)
 
 
--- 
-Regards,
+Comments are welcome.
 
-- cee1
+
+Thanks,
+
+Andreas

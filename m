@@ -1,35 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 13:42:12 +0200 (CEST)
-Received: from cpsmtpb-ews08.kpnxchange.com ([213.75.39.13]:53399 "EHLO
-        cpsmtpb-ews08.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817165AbaETLmJmflZU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 May 2014 13:42:09 +0200
-Received: from cpsps-ews11.kpnxchange.com ([10.94.84.178]) by cpsmtpb-ews08.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 20 May 2014 13:42:04 +0200
-Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews11.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 20 May 2014 13:42:03 +0200
-Received: from [192.168.10.106] ([195.240.213.44]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 20 May 2014 13:42:03 +0200
-Message-ID: <1400586123.4912.40.camel@x220>
-Subject: [PATCH] MIPS: PNX833x: remove checks for CONFIG_I2C_PNX0105
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:   Tue, 20 May 2014 13:42:03 +0200
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 May 2014 11:42:03.0884 (UTC) FILETIME=[85289AC0:01CF7420]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2014 14:03:53 +0200 (CEST)
+Received: from mail-pa0-f41.google.com ([209.85.220.41]:61409 "EHLO
+        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817165AbaETMDuQXhml (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 May 2014 14:03:50 +0200
+Received: by mail-pa0-f41.google.com with SMTP id lj1so265337pab.14
+        for <linux-mips@linux-mips.org>; Tue, 20 May 2014 05:03:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=s0RqTU7c1SoEN3ogyHFZHtN+b2uS1ncoN0gCL7pqEDc=;
+        b=DHjE4IbY5MZoUftL67aNnMJNPYtlSeWc73lBv9Bqlnbkz8jaxdDSMsEZcjsNSPXyVL
+         ohqiYyhkZFIVFOS0ZVGSYaDmBerfsLyeNKa7z6oB6OBb5e9HhHcnSFdd77WJVumrI2sq
+         lMMYg77D3C0afLSkQsSOVekS1FVuA5k8CrsEHzVQFon2qUuEOfW8DmpjyAr0N74MqQKB
+         FlKHrN6cZWaqRvZlblMt1KgZRTGI5X2AYXoGFuKpzTTBMhkUQaIHWco+p/j1UFoOlq5A
+         e/zn0yEJwsUERq8C5BURAQ/2siDIHlJYhz1bJ3C91NGYk3Al6kjkXjFxJ//GouCJH+hV
+         j1bA==
+X-Received: by 10.68.178.194 with SMTP id da2mr49726986pbc.151.1400587423604;
+        Tue, 20 May 2014 05:03:43 -0700 (PDT)
+Received: from software.domain.org ([222.92.8.142])
+        by mx.google.com with ESMTPSA id au4sm2876005pbc.10.2014.05.20.05.03.38
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 20 May 2014 05:03:42 -0700 (PDT)
+From:   chenj <chenj@lemote.com>
+To:     james.hogan@imgtec.com
+Cc:     linux-mips@linux-mips.org, chenhc@lemote.com,
+        markos.chandras@imgtec.com, chenj <chenj@lemote.com>
+Subject: [PATCH, v3] MIPS: lib: csum_partial: more instruction paral
+Date:   Tue, 20 May 2014 20:09:32 +0800
+Message-Id: <1400587772-6130-1-git-send-email-chenj@lemote.com>
+X-Mailer: git-send-email 1.9.0
+In-Reply-To: <1400587638-17791-1-git-send-email-chenj@lemote.com>
+References: <1400587638-17791-1-git-send-email-chenj@lemote.com>
+Return-Path: <fykcee1@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40169
+X-archive-position: 40170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: chenj@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,115 +53,133 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Checks for CONFIG_I2C_PNX0105 were added in v2.6.28. But the related
-Kconfig symbol has not been added to the tree. Remove these checks.
+Computing sum introduces true data dependency. This patch removes some
+true data depdendencies, hence instruction level parallelism is
+improved.
 
-Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+This patch brings at most 50% csum performance gain on Loongson 3a
+processor in our test.
+
+One example about how this patch works is in CSUM_BIGCHUNK1:
+// ** original **    vs    ** patch applied **
+    ADDC(sum, t0)           ADDC(t0, t1)
+    ADDC(sum, t1)           ADDC(t2, t3)
+    ADDC(sum, t2)           ADDC(sum, t0)
+    ADDC(sum, t3)           ADDC(sum, t2)
+
+In the original implementation, each ADDC(sum, ...) references the sum
+value updated by previous ADDC.
+
+With patch applied, the first two ADDC operations are independent,
+hence can be executed simultaneously if possible.
+
+Another example is in the "copy and sum calculating" chunk:
+// ** original **    vs    ** patch applied **
+    STORE(t0, UNIT(0)...    STORE(t0, UNIT(0)...
+    ADDC(sum, t0)           ADDC(t0, t1)
+    STORE(t1, UNIT(1)...    STORE(t1, UNIT(1)...
+    ADDC(sum, t1)           ADDC(sum, t0)
+    STORE(t2, UNIT(2)...    STORE(t2, UNIT(2)...
+    ADDC(sum, t2)           ADDC(t2, t3)
+    STORE(t3, UNIT(3)...    STORE(t3, UNIT(3)...
+    ADDC(sum, t3)           ADDC(sum, t2)
+
+With patch applied, the second and third ADDC are independent.
 ---
-Untested.
+1. The result can be found at
+http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.html
+And is generated by a userspace test program:
+http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
 
-Note that there's no i2c-pnx0105.h in the tree.
+[v2: amend commit message]
+[v3: further amend commit message]
 
- arch/mips/pnx833x/common/platform.c | 73 -------------------------------------
- 1 file changed, 73 deletions(-)
+ arch/mips/lib/csum_partial.S | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/arch/mips/pnx833x/common/platform.c b/arch/mips/pnx833x/common/platform.c
-index 2b7e837dc2e2..b4b774bc3178 100644
---- a/arch/mips/pnx833x/common/platform.c
-+++ b/arch/mips/pnx833x/common/platform.c
-@@ -33,11 +33,6 @@
- #include <linux/mtd/nand.h>
- #include <linux/mtd/partitions.h>
+diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
+index 9901237..6cea101 100644
+--- a/arch/mips/lib/csum_partial.S
++++ b/arch/mips/lib/csum_partial.S
+@@ -76,10 +76,10 @@
+ 	LOAD	_t1, (offset + UNIT(1))(src);			\
+ 	LOAD	_t2, (offset + UNIT(2))(src);			\
+ 	LOAD	_t3, (offset + UNIT(3))(src);			\
++	ADDC(_t0, _t1);						\
++	ADDC(_t2, _t3);						\
+ 	ADDC(sum, _t0);						\
+-	ADDC(sum, _t1);						\
+-	ADDC(sum, _t2);						\
+-	ADDC(sum, _t3)
++	ADDC(sum, _t2)
  
--#ifdef CONFIG_I2C_PNX0105
--/* Until i2c driver available in kernel.*/
--#include <linux/i2c-pnx0105.h>
--#endif
--
- #include <irq.h>
- #include <irq-mapping.h>
- #include <pnx833x.h>
-@@ -134,70 +129,6 @@ static struct platform_device pnx833x_usb_ehci_device = {
- 	.resource	= pnx833x_usb_ehci_resources,
- };
- 
--#ifdef CONFIG_I2C_PNX0105
--static struct resource pnx833x_i2c0_resources[] = {
--	{
--		.start		= PNX833X_I2C0_PORTS_START,
--		.end		= PNX833X_I2C0_PORTS_END,
--		.flags		= IORESOURCE_MEM,
--	},
--	{
--		.start		= PNX833X_PIC_I2C0_INT,
--		.end		= PNX833X_PIC_I2C0_INT,
--		.flags		= IORESOURCE_IRQ,
--	},
--};
--
--static struct resource pnx833x_i2c1_resources[] = {
--	{
--		.start		= PNX833X_I2C1_PORTS_START,
--		.end		= PNX833X_I2C1_PORTS_END,
--		.flags		= IORESOURCE_MEM,
--	},
--	{
--		.start		= PNX833X_PIC_I2C1_INT,
--		.end		= PNX833X_PIC_I2C1_INT,
--		.flags		= IORESOURCE_IRQ,
--	},
--};
--
--static struct i2c_pnx0105_dev pnx833x_i2c_dev[] = {
--	{
--		.base = PNX833X_I2C0_PORTS_START,
--		.irq = -1, /* should be PNX833X_PIC_I2C0_INT but polling is faster */
--		.clock = 6,	/* 0 == 400 kHz, 4 == 100 kHz(Maximum HDMI), 6 = 50kHz(Preferred HDCP) */
--		.bus_addr = 0,	/* no slave support */
--	},
--	{
--		.base = PNX833X_I2C1_PORTS_START,
--		.irq = -1,	/* on high freq, polling is faster */
--		/*.irq = PNX833X_PIC_I2C1_INT,*/
--		.clock = 4,	/* 0 == 400 kHz, 4 == 100 kHz. 100 kHz seems a safe default for now */
--		.bus_addr = 0,	/* no slave support */
--	},
--};
--
--static struct platform_device pnx833x_i2c0_device = {
--	.name		= "i2c-pnx0105",
--	.id		= 0,
--	.dev = {
--		.platform_data = &pnx833x_i2c_dev[0],
--	},
--	.num_resources	= ARRAY_SIZE(pnx833x_i2c0_resources),
--	.resource	= pnx833x_i2c0_resources,
--};
--
--static struct platform_device pnx833x_i2c1_device = {
--	.name		= "i2c-pnx0105",
--	.id		= 1,
--	.dev = {
--		.platform_data = &pnx833x_i2c_dev[1],
--	},
--	.num_resources	= ARRAY_SIZE(pnx833x_i2c1_resources),
--	.resource	= pnx833x_i2c1_resources,
--};
--#endif
--
- static u64 ethernet_dmamask = DMA_BIT_MASK(32);
- 
- static struct resource pnx833x_ethernet_resources[] = {
-@@ -294,10 +225,6 @@ static struct platform_device pnx833x_flash_nand = {
- static struct platform_device *pnx833x_platform_devices[] __initdata = {
- 	&pnx833x_uart_device,
- 	&pnx833x_usb_ehci_device,
--#ifdef CONFIG_I2C_PNX0105
--	&pnx833x_i2c0_device,
--	&pnx833x_i2c1_device,
--#endif
- 	&pnx833x_ethernet_device,
- 	&pnx833x_sata_device,
- 	&pnx833x_flash_nand,
+ #ifdef USE_DOUBLE
+ #define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
+@@ -501,21 +501,21 @@ LEAF(csum_partial)
+ 	SUB	len, len, 8*NBYTES
+ 	ADD	src, src, 8*NBYTES
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	STORE(t4, UNIT(4)(dst),	.Ls_exc\@)
+-	ADDC(sum, t4)
++	ADDC(t4, t5)
+ 	STORE(t5, UNIT(5)(dst),	.Ls_exc\@)
+-	ADDC(sum, t5)
++	ADDC(sum, t4)
+ 	STORE(t6, UNIT(6)(dst),	.Ls_exc\@)
+-	ADDC(sum, t6)
++	ADDC(t6, t7)
+ 	STORE(t7, UNIT(7)(dst),	.Ls_exc\@)
+-	ADDC(sum, t7)
++	ADDC(sum, t6)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 8*NBYTES
+ 	bgez	len, 1b
+@@ -541,13 +541,13 @@ LEAF(csum_partial)
+ 	SUB	len, len, 4*NBYTES
+ 	ADD	src, src, 4*NBYTES
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 4*NBYTES
+ 	beqz	len, .Ldone\@
+@@ -646,13 +646,13 @@ LEAF(csum_partial)
+ 	nop				# improves slotting
+ #endif
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 4*NBYTES
+ 	bne	len, rem, 1b
 -- 
 1.9.0

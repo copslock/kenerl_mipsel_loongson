@@ -1,46 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 18:49:25 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34416 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6837162AbaEUQtXG1a49 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 18:49:23 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 0819C9E05E684;
-        Wed, 21 May 2014 17:49:13 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Wed, 21 May
- 2014 17:49:15 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Wed, 21 May 2014 17:49:15 +0100
-Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 21 May
- 2014 17:49:14 +0100
-Message-ID: <537CD84B.7050005@imgtec.com>
-Date:   Wed, 21 May 2014 17:46:03 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 22:27:47 +0200 (CEST)
+Received: from mail-ee0-f52.google.com ([74.125.83.52]:49749 "EHLO
+        mail-ee0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821198AbaEUU1pbGDyy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 22:27:45 +0200
+Received: by mail-ee0-f52.google.com with SMTP id e53so1994117eek.39
+        for <multiple recipients>; Wed, 21 May 2014 13:27:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=UZzG4ppiNd9aGUSCuVVD50LECn3EF+1UYdRylWWHlTo=;
+        b=z7/p2ew5yrEixfG7+VdDpYVPVtO3KOuysYfgqdAtEVaB1wv0ukUlbine7oCzWycwG7
+         4kP2BNFgPV3pwMJF0g49C4ZaLmEFnmOmW4vAYKcUrVJRb4Nkj9GwUn2fOP9uv9ksL/C9
+         TJE+Lw5e2ONhgkIo8NeCaOqFLwcwC6ED4nfRBk46XpUQvhv3F7HEBNyf31Lv1T/m32xU
+         se0b0i2KrHabHe8YQlVMNivuZY/0pKgnm2kuGqTdLEReu3R6CYj6YoXd5QJ9i9xWb7OX
+         WCNLDzUxlSm8M56Re3HIUTo/Gol7lh8a3OHPyPrts5eRDVclAzO8zpJlVrsJBBdsu87V
+         qaoQ==
+X-Received: by 10.15.36.8 with SMTP id h8mr68061278eev.12.1400704060150;
+        Wed, 21 May 2014 13:27:40 -0700 (PDT)
+Received: from alberich ([46.78.192.208])
+        by mx.google.com with ESMTPSA id cj41sm14427033eeb.34.2014.05.21.13.27.38
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Wed, 21 May 2014 13:27:39 -0700 (PDT)
+Date:   Wed, 21 May 2014 22:27:35 +0200
+From:   Andreas Herrmann <herrmann.der.user@googlemail.com>
+To:     Paul Bolle <pebolle@tiscali.nl>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: cavium-octeon: remove checks for CONFIG_CAVIUM_GDB
+Message-ID: <20140521202735.GC23153@alberich>
+References: <1400602574.4912.43.camel@x220>
 MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        <linux-mips@linux-mips.org>, David Daney <ddaney.cavm@gmail.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 10/15] MIPS: Add code for new system 'paravirt'.
-References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com> <1400597236-11352-11-git-send-email-andreas.herrmann@caviumnetworks.com> <537CAC74.4030800@imgtec.com> <537CD4C6.5080905@caviumnetworks.com>
-In-Reply-To: <537CD4C6.5080905@caviumnetworks.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1400602574.4912.43.camel@x220>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <herrmann.der.user@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40224
+X-archive-position: 40225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: herrmann.der.user@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,76 +57,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 21/05/14 17:31, David Daney wrote:
->>> +    paravirt_smp_sp[cpu] = __KSTK_TOS(idle);
->>> +    mb();
->>
->> is this barrier necessary?
+On Tue, May 20, 2014 at 06:16:14PM +0200, Paul Bolle wrote:
+> Three checks for CONFIG_CAVIUM_GDB were added in v2.6.29. But the
+> Kconfig symbol CAVIUM_GDB was never added to the tree. Remove these
+> checks.
 > 
-> Really it is just make_writes_visible_asap(), but for OCTEON mb() or
-> smp_wmb() is the closest that the kernel has.
-> 
-> It may not be necessary, but it doesn't really harm anything.
+> Also remove the last reference to octeon_get_boot_debug_flag(). There is
+> no definition of that function anyway.
 
-Okay, fair enough. I suggest adding a comment to that effect (I think
-checkpatch now complains about barriers without comments :) ).
+Hmm, yes, this was added with commit
+5b3b16880f404ca54126210ca86141cceeafc0cf (MIPS: Add Cavium OCTEON
+processor support files to arch/mips/cavium-octeon.) and incomplete
+ever since (in mainline kernel).
+ 
+> Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+> ---
+> Untested.
 
->>> diff --git a/arch/mips/paravirt/serial.c b/arch/mips/paravirt/serial.c
->>> new file mode 100644
->>> index 0000000..e3f98b2
->>> --- /dev/null
->>> +++ b/arch/mips/paravirt/serial.c
->>> @@ -0,0 +1,38 @@
->>> +/*
->>> + * This file is subject to the terms and conditions of the GNU
->>> General Public
->>> + * License.  See the file "COPYING" in the main directory of this
->>> archive
->>> + * for more details.
->>> + *
->>> + * Copyright (C) 2013 Cavium, Inc.
->>> + */
->>> +
->>> +#include <linux/kernel.h>
->>> +#include <linux/virtio_console.h>
->>> +
->>> +#include <asm/mipsregs.h>
->>> +
->>> +/*
->>> + * Emit one character to the boot console.
->>> + */
->>> +int prom_putchar(char c)
->>> +{
->>> +    hypcall3(0 /* Console output */, 0 /*  port 0 */, (unsigned
->>> long)&c, 1 /* len == 1 */);
->>
->> I think the hypcall API needs to be clearly specified and Documented
->> somewhere along with its HYPCALL codes and scope. I.e. is it specific to
->> kvmtool, or attempting to be a standard API across MIPS hypervisors.
->>
-> 
-> I was intending it to be the later.  (standard API across MIPS
-> hypervisors.)
-> 
-> The idea being that the first argument would be broken up into several
-> ranges.
-> 
-> 0..x : Globally available HYPCALL provided by all hypervisors.
-> 
-> m..n : MIPS KVM specific.
-> 
-> y..z : Reserved for the vendor.
-> 
-> 
-> For some values of x, m, n, y and z.
-> 
-> But perhaps it should just be MIPS KVM specific. If making it global is
-> too much trouble.
+Removing this dead code shouldn't harm. I also did a quick test of a
+kernel with your patch with an octeon system -- as expected no issues
+observed. (So it's
+Tested-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>)
 
-I don't think making it global should be a problem (sounds ideal if it
-works without changes on multiple hypervisors), but it probably makes
-sense to ensure that other stakeholders are aware of it (those working
-on other hypervisors and semihosting stuff).
+> A follow up might be to remove plat_smp_ops.cpus_done. All these
+> callbacks are now (basically) nops.
 
-Cheers
-James
+I am not sure about completely removing cpus_done from
+plat_smp_ops. Maybe some platform will really make use of this in the
+future.
+
+
+Thanks,
+Andreas
+ 
+>  arch/mips/cavium-octeon/setup.c       | 11 -----------
+>  arch/mips/cavium-octeon/smp.c         | 17 -----------------
+>  arch/mips/include/asm/octeon/octeon.h |  1 -
+>  3 files changed, 29 deletions(-)
+> 
+> diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+> index 953ca85f84fa..989781fbae76 100644
+> --- a/arch/mips/cavium-octeon/setup.c
+> +++ b/arch/mips/cavium-octeon/setup.c
+> @@ -729,17 +729,6 @@ void __init prom_init(void)
+>  	octeon_write_lcd("Linux");
+>  #endif
+>  
+> -#ifdef CONFIG_CAVIUM_GDB
+> -	/*
+> -	 * When debugging the linux kernel, force the cores to enter
+> -	 * the debug exception handler to break in.
+> -	 */
+> -	if (octeon_get_boot_debug_flag()) {
+> -		cvmx_write_csr(CVMX_CIU_DINT, 1 << cvmx_get_core_num());
+> -		cvmx_read_csr(CVMX_CIU_DINT);
+> -	}
+> -#endif
+> -
+>  	octeon_setup_delays();
+>  
+>  	/*
+> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+> index 67a078ffc464..78e1abebc854 100644
+> --- a/arch/mips/cavium-octeon/smp.c
+> +++ b/arch/mips/cavium-octeon/smp.c
+> @@ -218,15 +218,6 @@ void octeon_prepare_cpus(unsigned int max_cpus)
+>   */
+>  static void octeon_smp_finish(void)
+>  {
+> -#ifdef CONFIG_CAVIUM_GDB
+> -	unsigned long tmp;
+> -	/* Pulse MCD0 signal on Ctrl-C to stop all the cores. Also set the MCD0
+> -	   to be not masked by this core so we know the signal is received by
+> -	   someone */
+> -	asm volatile ("dmfc0 %0, $22\n"
+> -		      "ori   %0, %0, 0x9100\n" "dmtc0 %0, $22\n" : "=r" (tmp));
+> -#endif
+> -
+>  	octeon_user_io_init();
+>  
+>  	/* to generate the first CPU timer interrupt */
+> @@ -239,14 +230,6 @@ static void octeon_smp_finish(void)
+>   */
+>  static void octeon_cpus_done(void)
+>  {
+> -#ifdef CONFIG_CAVIUM_GDB
+> -	unsigned long tmp;
+> -	/* Pulse MCD0 signal on Ctrl-C to stop all the cores. Also set the MCD0
+> -	   to be not masked by this core so we know the signal is received by
+> -	   someone */
+> -	asm volatile ("dmfc0 %0, $22\n"
+> -		      "ori   %0, %0, 0x9100\n" "dmtc0 %0, $22\n" : "=r" (tmp));
+> -#endif
+>  }
+>  
+>  #ifdef CONFIG_HOTPLUG_CPU
+> diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
+> index f5d77b91537f..d781f9e66884 100644
+> --- a/arch/mips/include/asm/octeon/octeon.h
+> +++ b/arch/mips/include/asm/octeon/octeon.h
+> @@ -211,7 +211,6 @@ union octeon_cvmemctl {
+>  
+>  extern void octeon_write_lcd(const char *s);
+>  extern void octeon_check_cpu_bist(void);
+> -extern int octeon_get_boot_debug_flag(void);
+>  extern int octeon_get_boot_uart(void);
+>  
+>  struct uart_port;
+> -- 
+> 1.9.0
+> 
+> 

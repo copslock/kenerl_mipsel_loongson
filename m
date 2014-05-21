@@ -1,39 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 22:44:20 +0200 (CEST)
-Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6]:51378 "EHLO
-        cpsmtpb-ews03.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6837163AbaEUUoSJEC7a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 22:44:18 +0200
-Received: from cpsps-ews28.kpnxchange.com ([10.94.84.194]) by cpsmtpb-ews03.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 21 May 2014 22:44:12 +0200
-Received: from CPSMTPM-TLF102.kpnxchange.com ([195.121.3.5]) by cpsps-ews28.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 21 May 2014 22:44:12 +0200
-Received: from [192.168.10.106] ([195.240.213.44]) by CPSMTPM-TLF102.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 21 May 2014 22:44:11 +0200
-Message-ID: <1400705051.30334.28.camel@x220>
-Subject: Re: [PATCH] MIPS: cavium-octeon: remove checks for CONFIG_CAVIUM_GDB
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Andreas Herrmann <herrmann.der.user@googlemail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 21 May 2014 22:44:11 +0200
-In-Reply-To: <20140521202735.GC23153@alberich>
-References: <1400602574.4912.43.camel@x220>
-         <20140521202735.GC23153@alberich>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 May 2014 20:44:11.0390 (UTC) FILETIME=[6B79E1E0:01CF7535]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 22:59:34 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:53395 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6837163AbaEUU7ceuXK5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 May 2014 22:59:32 +0200
+Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s4LKxPSj005064
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Wed, 21 May 2014 16:59:25 -0400
+Received: from sifl.localnet (vpn-58-56.rdu2.redhat.com [10.10.58.56])
+        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s4LKxNFG027015
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Wed, 21 May 2014 16:59:24 -0400
+From:   Paul Moore <pmoore@redhat.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        Eric Paris <eparis@redhat.com>
+Subject: Re: [PATCH 3.15] MIPS: Add new AUDIT_ARCH token for the N32 ABI on MIPS64
+Date:   Wed, 21 May 2014 16:59:22 -0400
+Message-ID: <1683789.b73kOmCp2z@sifl>
+Organization: Red Hat
+User-Agent: KMail/4.13.1 (Linux/3.14.4-gentoo; KDE/4.13.1; x86_64; ; )
+In-Reply-To: <2398159.J868kTHAKn@sifl>
+References: <1397550996-14805-1-git-send-email-markos.chandras@imgtec.com> <1398177636-10442-1-git-send-email-markos.chandras@imgtec.com> <2398159.J868kTHAKn@sifl>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
+Return-Path: <pmoore@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40226
+X-archive-position: 40227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: pmoore@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,43 +49,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2014-05-21 at 22:27 +0200, Andreas Herrmann wrote:
-> On Tue, May 20, 2014 at 06:16:14PM +0200, Paul Bolle wrote:
-> > Three checks for CONFIG_CAVIUM_GDB were added in v2.6.29. But the
-> > Kconfig symbol CAVIUM_GDB was never added to the tree. Remove these
-> > checks.
+On Monday, May 12, 2014 02:53:05 PM Paul Moore wrote:
+> On Tuesday, April 22, 2014 03:40:36 PM Markos Chandras wrote:
+> > A MIPS64 kernel may support ELF files for all 3 MIPS ABIs
+> > (O32, N32, N64). Furthermore, the AUDIT_ARCH_MIPS{,EL}64 token
+> > does not provide enough information about the ABI for the 64-bit
+> > process. As a result of which, userland needs to use complex
+> > seccomp filters to decide whether a syscall belongs to the o32 or n32
+> > or n64 ABI. Therefore, a new arch token for MIPS64/n32 is added so it
+> > can be used by seccomp to explicitely set syscall filters for this ABI.
 > > 
-> > Also remove the last reference to octeon_get_boot_debug_flag(). There is
-> > no definition of that function anyway.
-> 
-> Hmm, yes, this was added with commit
-> 5b3b16880f404ca54126210ca86141cceeafc0cf (MIPS: Add Cavium OCTEON
-> processor support files to arch/mips/cavium-octeon.) and incomplete
-> ever since (in mainline kernel).
-
-I've decided not to mention the exact commits, and only mention
-releases, if problems are rather old. Ie, v2.6.29 should mean, to most
-observers, "a long time ago".
- 
-> > Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+> > Link: http://sourceforge.net/p/libseccomp/mailman/message/32239040/
+> > Cc: Andy Lutomirski <luto@amacapital.net>
+> > Cc: Eric Paris <eparis@redhat.com>
+> > Cc: Paul Moore <pmoore@redhat.com>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 > > ---
-> > Untested.
+> > Ralf, can we please have this in 3.15 (Assuming it's ACK'd)?
+> > 
+> > Thanks a lot!
+> > ---
+> > 
+> >  arch/mips/include/asm/syscall.h |  2 ++
+> >  include/uapi/linux/audit.h      | 12 ++++++++++++
+> >  2 files changed, 14 insertions(+)
 > 
-> Removing this dead code shouldn't harm. I also did a quick test of a
-> kernel with your patch with an octeon system -- as expected no issues
-> observed. (So it's
-> Tested-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>)
-
-That's great, thanks!
-
-> > A follow up might be to remove plat_smp_ops.cpus_done. All these
-> > callbacks are now (basically) nops.
+> [NOTE: Adding lkml to the To line to hopefully spur discussion/acceptance as
+> this *really* should be in 3.15]
 > 
-> I am not sure about completely removing cpus_done from
-> plat_smp_ops. Maybe some platform will really make use of this in the
-> future.
+> I'm re-replying to this patch and adding lkml to the To line because I
+> believe it is very important we get this patch into 3.15.  For those who
+> don't follow the MIPS architecture very closely, the upcoming 3.15 is the
+> first release to include support for seccomp filters, the latest generation
+> of syscall filtering which used a BPF based filter language.  For reason
+> that are easy to understand, the syscall filters are ABI specific (e.g.
+> syscall tables, word length, endianness) and those generating syscall
+> filters in userspace (e.g. libseccomp) need to take great care to ensure
+> that the generated filters take the ABI into account and fail safely in the
+> case where a different ABI is used (e.g. x86, x86_64, x32).
+> 
+> The patch below corrects, what is IMHO, an omission in the original MIPS
+> seccomp filter patch, allowing userspace to easily separate MIPS and MIPS64.
+> Without this patch we will be forced to handle MIPS/MIPS64 like we handle
+> x86_64/x32 which is a royal pain and not something I want to have deal with
+> again.
+> 
+> Further, while I don't want to speak for the audit folks, it is my
+> understanding that they want this patch for similar reasons.
+> 
+> Please merge this patch for 3.15 or at least provide some feedback as to why
+> this isn't a viable solution for upstream.  Once 3.15 ships, fixing this
+> will require breaking the MIPS ABI which isn't something any of us want.
+> 
+> Thanks,
+> -Paul
 
-My view is that cpus_done should just be re-added if that happens.
+*Bump*
 
+I don't know what else needs to be done to get some action on this and we're 
+running out of time for 3.15.
 
-Paul Bolle
+-- 
+paul moore
+security and virtualization @ redhat

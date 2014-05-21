@@ -1,40 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 13:35:24 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47188 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 13:46:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43469 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817165AbaEULfWNPYEw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 13:35:22 +0200
+        with ESMTP id S6837162AbaEULqTZYEGX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 13:46:19 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 183AA4B044C0E
-        for <linux-mips@linux-mips.org>; Wed, 21 May 2014 12:35:13 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 3F5B878D7D4DA;
+        Wed, 21 May 2014 12:46:10 +0100 (IST)
 Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Wed, 21 May
- 2014 12:35:15 +0100
+ 2014 12:46:12 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Wed, 21 May 2014 12:35:15 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.137) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Wed, 21 May 2014 12:35:13 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <stable@vger.kernel.org # v3.14+>
-Subject: [PATCH] MIPS: Fix typo when reporting cache and ftlb errors for ImgTec cores
-Date:   Wed, 21 May 2014 12:35:00 +0100
-Message-ID: <1400672100-19092-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.9.3
+ 14.3.181.6; Wed, 21 May 2014 12:46:12 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 21 May
+ 2014 12:46:11 +0100
+Message-ID: <537C913C.1060903@imgtec.com>
+Date:   Wed, 21 May 2014 12:42:52 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.137]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        <linux-mips@linux-mips.org>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 11/15] MIPS: paravirt: Add pci controller for virtio
+References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com> <1400597236-11352-12-git-send-email-andreas.herrmann@caviumnetworks.com>
+In-Reply-To: <1400597236-11352-12-git-send-email-andreas.herrmann@caviumnetworks.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40213
+X-archive-position: 40214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,40 +53,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Introduced by the following two commits:
-75b5b5e0a262790fa11043fe45700499c7e3d818
-"MIPS: Add support for FTLBs"
-6de20451857ed14a4eecc28d08f6de5925d1cf96
-"MIPS: Add printing of ES bit for Imgtec cores when cache error occurs"
+On 20/05/14 15:47, Andreas Herrmann wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+> ---
+>  arch/mips/Kconfig                |    1 +
+>  arch/mips/paravirt/Kconfig       |    6 ++
+>  arch/mips/pci/Makefile           |    2 +-
+>  arch/mips/pci/pci-virtio-guest.c |  140 ++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 148 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/mips/paravirt/Kconfig
+>  create mode 100644 arch/mips/pci/pci-virtio-guest.c
 
-Cc: stable@vger.kernel.org # v3.14+
-Reported-by: Matheus Almeida <Matheus.Almeida@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/kernel/traps.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If I understand correctly this just drives a simple PCI controller for a
+PCI bus that a virtio device happens to be usually plugged in to, yeh?
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 074e857..8119ac2 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1545,7 +1545,7 @@ asmlinkage void cache_parity_error(void)
- 	       reg_val & (1<<30) ? "secondary" : "primary",
- 	       reg_val & (1<<31) ? "data" : "insn");
- 	if (cpu_has_mips_r2 &&
--	    ((current_cpu_data.processor_id && 0xff0000) == PRID_COMP_MIPS)) {
-+	    ((current_cpu_data.processor_id & 0xff0000) == PRID_COMP_MIPS)) {
- 		pr_err("Error bits: %s%s%s%s%s%s%s%s\n",
- 			reg_val & (1<<29) ? "ED " : "",
- 			reg_val & (1<<28) ? "ET " : "",
-@@ -1585,7 +1585,7 @@ asmlinkage void do_ftlb(void)
- 
- 	/* For the moment, report the problem and hang. */
- 	if (cpu_has_mips_r2 &&
--	    ((current_cpu_data.processor_id && 0xff0000) == PRID_COMP_MIPS)) {
-+	    ((current_cpu_data.processor_id & 0xff0000) == PRID_COMP_MIPS)) {
- 		pr_err("FTLB error exception, cp0_ecc=0x%08x:\n",
- 		       read_c0_ecc());
- 		pr_err("cp0_errorepc == %0*lx\n", field, read_c0_errorepc());
--- 
-1.9.3
+It sounds like it would make sense to take advantage of Will Deacon's
+recent efforts to make a generic pci controller driver for this sort of
+thing which specifically mentions emulation by kvmtool? Is it
+effectively the same PCI controller that is being emulated?
+
+http://lists.infradead.org/pipermail/linux-arm-kernel/2014-February/thread.html#233491
+
+http://lists.infradead.org/pipermail/linux-arm-kernel/2014-February/233491.html
+
+http://lists.infradead.org/pipermail/linux-arm-kernel/2014-February/233490.html
+
+Cheers
+James

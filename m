@@ -1,39 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 07:39:09 +0200 (CEST)
-Received: from mail1.windriver.com ([147.11.146.13]:48626 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6837156AbaEUFjICK6cz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 07:39:08 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail1.windriver.com (8.14.5/8.14.5) with ESMTP id s4L5cu8Y019154
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Tue, 20 May 2014 22:38:56 -0700 (PDT)
-Received: from localhost (128.224.162.188) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.50) with Microsoft SMTP Server (TLS) id 14.3.169.1; Tue, 20 May
- 2014 22:38:56 -0700
-Date:   Wed, 21 May 2014 13:38:53 +0800
-From:   Yong Zhang <yong.zhang@windriver.com>
-To:     Yong Zhang <yong.zhang0@gmail.com>
-CC:     <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <huawei.libin@huawei.com>
-Subject: Re: [PATCH] MIPS: change type of asid_cache to unsigned long
-Message-ID: <20140521053853.GC19655@pek-yzhang-d1>
-Reply-To: Yong Zhang <yong.zhang@windriver.com>
-References: <1400573344-5035-1-git-send-email-yong.zhang0@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 08:24:31 +0200 (CEST)
+Received: from mail-bl2lp0211.outbound.protection.outlook.com ([207.46.163.211]:14013
+        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6842298AbaEUGYKS4Rer (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 May 2014 08:24:10 +0200
+Received: from alberich (46.78.192.208) by
+ DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21) with Microsoft SMTP
+ Server (TLS) id 15.0.944.11; Wed, 21 May 2014 06:23:37 +0000
+Date:   Wed, 21 May 2014 08:22:10 +0200
+From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 03/15] MIPS: OCTEON: Move CAVIUM_OCTEON_CVMSEG_SIZE to
+ CPU_CAVIUM_OCTEON
+Message-ID: <20140521062210.GA11800@alberich>
+References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+ <1400597236-11352-4-git-send-email-andreas.herrmann@caviumnetworks.com>
+ <3124276.AVUgu1xWyv@radagast>
+ <537BE3D7.1070904@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <1400573344-5035-1-git-send-email-yong.zhang0@gmail.com>
+In-Reply-To: <537BE3D7.1070904@caviumnetworks.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Originating-IP: [128.224.162.188]
-Return-Path: <yong.zhang@windriver.com>
+X-Originating-IP: [46.78.192.208]
+X-ClientProxiedBy: DB3PR04CA006.eurprd04.prod.outlook.com (10.242.134.26) To
+ DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21)
+X-Forefront-PRVS: 0218A015FA
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(428001)(52604005)(479174003)(377454003)(24454002)(51704005)(199002)(189002)(66066001)(23676002)(101416001)(46102001)(50466002)(74502001)(80022001)(64706001)(47776003)(83506001)(20776003)(92726001)(50986999)(76482001)(33716001)(42186004)(81542001)(92566001)(81342001)(87976001)(4396001)(83322001)(77982001)(21056001)(85852003)(31966008)(86362001)(54356999)(76176999)(19580405001)(99396002)(102836001)(83072002)(19580395003)(74662001)(33656002);DIR:OUT;SFP:;SCL:1;SRVR:DM2PR07MB398;H:alberich;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+Received-SPF: None (: caviumnetworks.com does not designate permitted sender
+ hosts)
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Andreas.Herrmann@caviumnetworks.com; 
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40202
+X-archive-position: 40203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yong.zhang@windriver.com
+X-original-sender: andreas.herrmann@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,38 +57,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Please check the V2 in which I add the reporter.
-And thanks libin for reporting it :)
+On Tue, May 20, 2014 at 04:23:03PM -0700, David Daney wrote:
+> On 05/20/2014 03:52 PM, James Hogan wrote:
+> >Hi Andreas,
+> >
+> >On Tuesday 20 May 2014 16:47:04 Andreas Herrmann wrote:
+> >>From: David Daney <david.daney@cavium.com>
+> >>
+> >>CVMSEG is related to the CPU core not the SoC system.  So needs to be
+> >>configurable there.
+> >>
+> >>Signed-off-by: David Daney <david.daney@cavium.com>
+> >>Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+> >>---
+> >>  arch/mips/cavium-octeon/Kconfig |   30 ++++++++++++++++++++----------
+> >>  1 file changed, 20 insertions(+), 10 deletions(-)
+> >>
+> >>diff --git a/arch/mips/cavium-octeon/Kconfig
+> >>b/arch/mips/cavium-octeon/Kconfig index 227705d..c5e9975 100644
+> >>--- a/arch/mips/cavium-octeon/Kconfig
+> >>+++ b/arch/mips/cavium-octeon/Kconfig
+> [...]
+> >>-config CAVIUM_OCTEON_CVMSEG_SIZE
+> >>-	int "Number of L1 cache lines reserved for CVMSEG memory"
+> >>-	range 0 54
+> >>-	default 1
+> >>+config CAVIUM_OCTEON_HW_FIX_UNALIGNED
+> >>+	bool "Enable hardware fixups of unaligned loads and stores"
+> >>+	default "y"
+> >
+> >Is adding CAVIUM_OCTEON_HW_FIX_UNALIGNED in this patch intentional? It seems
+> >unrelated.
+> >
+> 
+> Good catch.  CAVIUM_OCTEON_HW_FIX_UNALIGNED and its users were
+> removed, we shouldn't add it back.  I think this is a case of
+> rebasing gone wrong.
 
-Thanks,
-Yong
 
-On Tue, May 20, 2014 at 04:09:04PM +0800, Yong Zhang wrote:
-> From: Yong Zhang <yong.zhang@windriver.com>
-> 
-> asid_cache must be unsigned long otherwise on 64bit system
-> it will become 0 if the value in get_new_mmu_context()
-> reaches 0xffffffff and in the end the assumption of
-> ASID_FIRST_VERSION is not true anymore thus leads to
-> more dangerous things.
-> 
-> Signed-off-by: Yong Zhang <yong.zhang@windriver.com>
-> ---
->  arch/mips/include/asm/cpu-info.h |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-> index f6299be..ebcc2ed 100644
-> --- a/arch/mips/include/asm/cpu-info.h
-> +++ b/arch/mips/include/asm/cpu-info.h
-> @@ -40,7 +40,7 @@ struct cache_desc {
->  
->  struct cpuinfo_mips {
->  	unsigned int		udelay_val;
-> -	unsigned int		asid_cache;
-> +	unsigned long		asid_cache;
->  
->  	/*
->  	 * Capability and feature descriptor structure for MIPS CPU
-> -- 
-> 1.7.9.5
+Oops, sorry, that wasn't intentional.
+James, thanks for catching this.
+
+
+Andreas

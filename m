@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 11:05:19 +0200 (CEST)
-Received: from qmta04.westchester.pa.mail.comcast.net ([76.96.62.40]:36660
-        "EHLO qmta04.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822276AbaEUJFOVxxub (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 11:05:14 +0200
-Received: from omta02.westchester.pa.mail.comcast.net ([76.96.62.19])
-        by qmta04.westchester.pa.mail.comcast.net with comcast
-        id 4Z581o0030QuhwU54Z58P9; Wed, 21 May 2014 09:05:08 +0000
-Received: from [192.168.1.13] ([50.190.84.14])
-        by omta02.westchester.pa.mail.comcast.net with comcast
-        id 4Z581o00D0JZ7Re3NZ58Ys; Wed, 21 May 2014 09:05:08 +0000
-Message-ID: <537C6C3C.5000009@gentoo.org>
-Date:   Wed, 21 May 2014 05:05:00 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2014 11:42:18 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:41588 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6835073AbaEUJmK4ia10 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 May 2014 11:42:10 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id BE1A793CBD46D;
+        Wed, 21 May 2014 10:42:01 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Wed, 21 May
+ 2014 10:42:03 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Wed, 21 May 2014 10:42:03 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 21 May
+ 2014 10:42:02 +0100
+Message-ID: <537C741F.60104@imgtec.com>
+Date:   Wed, 21 May 2014 10:38:39 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: remove checks for CONFIG_SGI_IP35
-References: <1400584909.4912.35.camel@x220>
-In-Reply-To: <1400584909.4912.35.camel@x220>
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        <linux-mips@linux-mips.org>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 05/15] MIPS: Don't build fast TLB refill handler with
+ 32-bit kernels.
+References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com> <1400597236-11352-6-git-send-email-andreas.herrmann@caviumnetworks.com>
+In-Reply-To: <1400597236-11352-6-git-send-email-andreas.herrmann@caviumnetworks.com>
 X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1400663108;
-        bh=8o+k7UFpR5MDWWjWNFZFDv1lOCaihUItBF8qz3zEl7c=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=BPJoWnvIn5ttacnB7JOeiwXYoZYRNDfS2oEF6TBREpWY1Cz88pQK9G9KGCD2O2Mbt
-         makNb9dLo2cysvDJFPl+SVwgQIqi9iFfjH/EewyyCZ4WnFJNOsscFaS5YYxvVDDdXd
-         4EQ6BMmAZkwmRCkfV6nxTiM8hDJG9keLmzijDjHq0+Jhs+bWktjkUDTMfTxPObW7F2
-         1CJIlqDRweyoM5B3M8Psuh3cN3a/3aQ1yqL1E/z/1gaKWH5W1rZyKDm1PMRnp1Fznq
-         bDvZcyQR4DKTpJkddKqjHNkbg+E+/+yeDckyjVFik0XxNErxy/mlTWv3bh0pAo9YWM
-         ibquo+sOy6Z6Q==
-Return-Path: <kumba@gentoo.org>
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40208
+X-archive-position: 40209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,38 +54,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/20/2014 07:21, Paul Bolle wrote:
-> Ever since (shortly before) v2.4.0 there have been checks for
-> CONFIG_SGI_IP35. But a Kconfig symbol SGI_IP35 was never added to the
-> tree. Remove these checks.
+On 20/05/14 15:47, Andreas Herrmann wrote:
+> From: David Daney <david.daney@cavium.com>
 > 
-> Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+> The fast handler only supports 64-bit kernels.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 > ---
-> Untested.
+>  arch/mips/mm/tlbex.c |    8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> For some reason CONFIG_SGI_IP35 was heavily used in arch/ia64 too.
-> Anyhow, IA64 has dropped that macro years ago.
-[snip]
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index ee88367..781e183 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -1250,13 +1250,17 @@ static void build_r4000_tlb_refill_handler(void)
+>  	unsigned int final_len;
+>  	struct mips_huge_tlb_info htlb_info __maybe_unused;
+>  	enum vmalloc64_mode vmalloc_mode __maybe_unused;
+> -
+> +#ifdef CONFIG_64BIT
+> +	bool is64bit = true;
+> +#else
+> +	bool is64bit = false;
+> +#endif
+>  	memset(tlb_handler, 0, sizeof(tlb_handler));
+>  	memset(labels, 0, sizeof(labels));
+>  	memset(relocs, 0, sizeof(relocs));
+>  	memset(final_handler, 0, sizeof(final_handler));
+>  
+> -	if ((scratch_reg >= 0 || scratchpad_available()) && use_bbit_insns()) {
+> +	if (is64bit && (scratch_reg >= 0 || scratchpad_available()) && use_bbit_insns()) {
+>  		htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
+>  							  scratch_reg);
+>  		vmalloc_mode = refill_scratch;
+> 
 
-IP35, on the MIPS side, refers to the SGI Origin 300/3000 family and its
-derivatives, including Fuel and Tezro.  Altix is basically just the ia64
-version of an Origin 300/3000.
+This looks like a good place to use IS_ENABLED(CONFIG_64BIT) to reduce
+ifdefery.
 
-An experimental tree based on 2.6.34, which was a start on booting Linux on
-these machines, is here:
-http://git.linux-mips.org/?p=ralf/linux-ip35.git;a=summary
-
-However, progress halted when the MAC address couldn't be properly found by
-probing the machine.  I think OpenBSD figured this bit out, though, so maybe
-IP35 support can get another look at some point.
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And
-our lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Cheers
+James

@@ -1,39 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2014 15:43:03 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56148 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6818667AbaEVNnBMgTot (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 May 2014 15:43:01 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4MDgpHN012455;
-        Thu, 22 May 2014 15:42:51 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4MDgjqF012454;
-        Thu, 22 May 2014 15:42:45 +0200
-Date:   Thu, 22 May 2014 15:42:45 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Yong Zhang <yong.zhang0@gmail.com>
-Cc:     Yong Zhang <yong.zhang@windriver.com>, linux-mips@linux-mips.org,
-        huawei.libin@huawei.com
-Subject: Re: [PATCH] MIPS: change type of asid_cache to unsigned long
-Message-ID: <20140522134245.GF10287@linux-mips.org>
-References: <1400573344-5035-1-git-send-email-yong.zhang0@gmail.com>
- <20140521053853.GC19655@pek-yzhang-d1>
- <20140521112936.GC17197@linux-mips.org>
- <20140522020611.GA6813@zhy>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140522020611.GA6813@zhy>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2014 15:58:17 +0200 (CEST)
+Received: from cpsmtpb-ews10.kpnxchange.com ([213.75.39.15]:53892 "EHLO
+        cpsmtpb-ews10.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817074AbaEVN6Oz1JqP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 May 2014 15:58:14 +0200
+Received: from cpsps-ews04.kpnxchange.com ([10.94.84.171]) by cpsmtpb-ews10.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 22 May 2014 15:58:08 +0200
+Received: from CPSMTPM-TLF104.kpnxchange.com ([195.121.3.7]) by cpsps-ews04.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 22 May 2014 15:58:08 +0200
+Received: from [192.168.10.106] ([195.240.213.44]) by CPSMTPM-TLF104.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 22 May 2014 15:58:08 +0200
+Message-ID: <1400767088.16407.14.camel@x220>
+Subject: Re: [PATCH] MIPS: remove checks for CONFIG_SGI_IP35
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Thu, 22 May 2014 15:58:08 +0200
+In-Reply-To: <20140522131243.GZ10287@linux-mips.org>
+References: <1400584909.4912.35.camel@x220>
+         <20140522131243.GZ10287@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 22 May 2014 13:58:08.0306 (UTC) FILETIME=[DC5C0920:01CF75C5]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40243
+X-archive-position: 40244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,61 +45,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 22, 2014 at 10:06:11AM +0800, Yong Zhang wrote:
-
-> On Wed, May 21, 2014 at 01:29:36PM +0200, Ralf Baechle wrote:
-> > On Wed, May 21, 2014 at 01:38:53PM +0800, Yong Zhang wrote:
+On Thu, 2014-05-22 at 15:12 +0200, Ralf Baechle wrote:
+> On Tue, May 20, 2014 at 01:21:49PM +0200, Paul Bolle wrote:
+> 
+> > Ever since (shortly before) v2.4.0 there have been checks for
+> > CONFIG_SGI_IP35. But a Kconfig symbol SGI_IP35 was never added to the
+> > tree. Remove these checks.
 > > 
-> > > Please check the V2 in which I add the reporter.
-> > > And thanks libin for reporting it :)
+> > Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+> > ---
+> > Untested.
 > > 
-> > The bug was introduced in 5636919b5c909fee54a6ef5226475ecae012ad02
-> > [MIPS: Outline udelay and fix a few issues.] in 2009 btw.  I think
-> > the intension was to avoid holes in the structure and minimize
-> > the bloat.  I instead applied aptch
+> > For some reason CONFIG_SGI_IP35 was heavily used in arch/ia64 too.
+> > Anyhow, IA64 has dropped that macro years ago.
 > 
-> Could you please show the patch?
-> 
-> > which also moves another member
-> > of the struct arond such that no hole will be created in the struct.
-> > This is important because the strcture it accessed fairly frequently
-> > so we want to fit the most important members into as few cache
-> > lines as possible.
-> 
-> I have tried to move the struct member around, but I found that the
-> hole cann't be avoided completely because for exampe struct cache_desc
-> is a bit special.
+> The #ifdefs exist because these headers are originally from IRIX and the
+> equivalent IRIX definitions were converted to Linux-style.  For the
+> IA64 version keeping those ifdefs around obviously made no sense since -
+> since IP35 (Origin 300/3000 series) is MIPS-based, so it was dropped
+> again.
 
-Yes, struct cache_desc is still a problem.  Easily solvable though -
-some of it's members are excessivly large; by using smaller data types
-both the struct and its required alignment will shrink.  But that's
-for another patch; as for this patch my goal to just not make things
-any worse.
+Nice to know. Thanks.
 
-  Ralf
+> There is some out-of-tree support for IP35 so I'd like to drop this
+> patch.
 
----
- arch/mips/include/asm/cpu-info.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks for handling this (and the similar) patches so quickly. I
+disagree with your decision here. But there are many, many issues like
+this still left in the tree. So there's no point in making noise about
+just this one Kconfig macro.
 
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index dc2135b..ff2707a 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -39,14 +39,14 @@ struct cache_desc {
- #define MIPS_CACHE_PINDEX	0x00000020	/* Physically indexed cache */
- 
- struct cpuinfo_mips {
--	unsigned int		udelay_val;
--	unsigned int		asid_cache;
-+	unsigned long		asid_cache;
- 
- 	/*
- 	 * Capability and feature descriptor structure for MIPS CPU
- 	 */
- 	unsigned long		options;
- 	unsigned long		ases;
-+	unsigned int		udelay_val;
- 	unsigned int		processor_id;
- 	unsigned int		fpu_id;
- 	unsigned int		msa_id;
+By the way, could you perhaps look at CONFIG_SYS_HAS_CPU_RM9000? It
+seems the Kconfig entry for SYS_HAS_CPU_RM9000 is simply missing. But
+the CPU support code is rather complicated and I stopped trying to
+understand it after staring at it for way too long.
+
+Thanks again,
+
+
+Paul Bolle

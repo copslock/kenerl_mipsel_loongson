@@ -1,40 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2014 10:01:32 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54517 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6822270AbaEVIB0L6VCE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 May 2014 10:01:26 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4M80GNJ031818;
-        Thu, 22 May 2014 10:00:16 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4M7xYqt031779;
-        Thu, 22 May 2014 09:59:34 +0200
-Date:   Thu, 22 May 2014 09:59:34 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, David Daney <ddaney.cavm@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>, kvm@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 06/15] MIPS: Add minimal support for OCTEON3 to c-r4k.c
-Message-ID: <20140522075934.GU10287@linux-mips.org>
-References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
- <1400597236-11352-7-git-send-email-andreas.herrmann@caviumnetworks.com>
- <20140521124041.GP10287@linux-mips.org>
- <20140521210212.GH11800@alberich>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140521210212.GH11800@alberich>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2014 11:24:44 +0200 (CEST)
+Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6]:54975 "EHLO
+        cpsmtpb-ews03.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6815784AbaEVJYZMNmz0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 May 2014 11:24:25 +0200
+Received: from cpsps-ews30.kpnxchange.com ([10.94.84.196]) by cpsmtpb-ews03.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 22 May 2014 11:24:19 +0200
+Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews30.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 22 May 2014 11:24:19 +0200
+Received: from [192.168.10.106] ([195.240.213.44]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 22 May 2014 11:24:19 +0200
+Message-ID: <1400750659.16832.24.camel@x220>
+Subject: [PATCH] MIPS: BCM1480: remove checks for CONFIG_SIBYTE_BCM1480_PROF
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Thu, 22 May 2014 11:24:19 +0200
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 22 May 2014 09:24:19.0318 (UTC) FILETIME=[9BEB6960:01CF759F]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40233
+X-archive-position: 40234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,20 +42,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 21, 2014 at 11:02:12PM +0200, Andreas Herrmann wrote:
+There are two checks for CONFIG_SIBYTE_BCM1480_PROF in the tree since
+v2.6.15. The related Kconfig symbol has never been added to the tree. So
+these checks have always evaluated to false. Besides, one of these
+checks guards a call of sbprof_cpu_intr(). But that function is not
+defined. Remove all this.
 
-> On Wed, May 21, 2014 at 02:40:41PM +0200, Ralf Baechle wrote:
-> > On Tue, May 20, 2014 at 04:47:07PM +0200, Andreas Herrmann wrote:
-> > 
-> > > +static inline void r4k_blast_dcache_page_dc128(unsigned long addr)
-> > > +{
-> > > +	R4600_HIT_CACHEOP_WAR_IMPL;
-> > 
-> > The R4600 has 32 byte cache lines that is this line will never be
-> > executed on an R4600 thus can be dropped.
-> 
-> So the line can also be removed from r4k_blast_dcache_page_dc64?
+Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+---
+Untested.
 
-Yes, indeed.  Just did that now.
+Until v2.6.23 there also were checks for CONFIG_SIBYTE_SB1250_PROF in
+the tree. There also was a Kconfig symbol SIBYTE_SB1250_PROF so it was
+possible to make these checks evaluate to true. But, since one of these
+checks also guarded a call of sbprof_cpu_intr(), that should have made
+the build fail with an error.
 
-  Ralf
+ arch/mips/sibyte/bcm1480/irq.c | 11 -----------
+ 1 file changed, 11 deletions(-)
+
+diff --git a/arch/mips/sibyte/bcm1480/irq.c b/arch/mips/sibyte/bcm1480/irq.c
+index 59cfe2659771..373fbbc8425c 100644
+--- a/arch/mips/sibyte/bcm1480/irq.c
++++ b/arch/mips/sibyte/bcm1480/irq.c
+@@ -347,19 +347,8 @@ asmlinkage void plat_irq_dispatch(void)
+ 	unsigned int cpu = smp_processor_id();
+ 	unsigned int pending;
+ 
+-#ifdef CONFIG_SIBYTE_BCM1480_PROF
+-	/* Set compare to count to silence count/compare timer interrupts */
+-	write_c0_compare(read_c0_count());
+-#endif
+-
+ 	pending = read_c0_cause() & read_c0_status();
+ 
+-#ifdef CONFIG_SIBYTE_BCM1480_PROF
+-	if (pending & CAUSEF_IP7)	/* Cpu performance counter interrupt */
+-		sbprof_cpu_intr();
+-	else
+-#endif
+-
+ 	if (pending & CAUSEF_IP4)
+ 		do_IRQ(K_BCM1480_INT_TIMER_0 + cpu);
+ #ifdef CONFIG_SMP
+-- 
+1.9.0

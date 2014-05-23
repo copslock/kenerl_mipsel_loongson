@@ -1,47 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2014 22:18:09 +0200 (CEST)
-Received: from mail-by2lp0236.outbound.protection.outlook.com ([207.46.163.236]:43163
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6855125AbaEVUSGoR71b (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 May 2014 22:18:06 +0200
-Received: from alberich (46.78.192.208) by
- DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21) with Microsoft SMTP
- Server (TLS) id 15.0.944.11; Thu, 22 May 2014 20:17:57 +0000
-Date:   Thu, 22 May 2014 22:17:07 +0200
-From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, David Daney <ddaney.cavm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 11/15] MIPS: paravirt: Add pci controller for virtio
-Message-ID: <20140522201707.GK11800@alberich>
-References: <1400597236-11352-1-git-send-email-andreas.herrmann@caviumnetworks.com>
- <1400597236-11352-12-git-send-email-andreas.herrmann@caviumnetworks.com>
- <537C913C.1060903@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 May 2014 05:08:44 +0200 (CEST)
+Received: from mail-pb0-f51.google.com ([209.85.160.51]:60300 "EHLO
+        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821305AbaEWDImskaOq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 May 2014 05:08:42 +0200
+Received: by mail-pb0-f51.google.com with SMTP id ma3so3449458pbc.38
+        for <multiple recipients>; Thu, 22 May 2014 20:08:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=RRNzPl1k1XsxUX+J5lJTCNUDInZBGfiwR3aPmP8j3HM=;
+        b=SAoFpjIbOEC2uJPmHRDYgRyZz9htgroonVWuZCNM+RfsVqSMk9oxHXgVcUC3odlHQW
+         zNTiI3zCsY9HHtHJhE3iVzdhbvqNcpB5eTDVT2pBT5M+Ykyhr039lhsFdLYXDqmpq/E9
+         QI0kgOow98gY9TbLAS3qnlEsLVeT+WLQP8F7p7FGSfj9+AtO413b8QnoNZJItHN41ruE
+         AFOpW3uPuULcOVON8Gp9ca9tT7u6BuGk/o2DVelsCA87lgML4YNFf16WoZ8R6y4Nbu8Y
+         JTAQc9jaOLZru4sG3w5FD9X74V7onPpdCKBCk63yuTaU0hBTrXIQeeHtE4urrBAGX3hh
+         ONCg==
+X-Received: by 10.66.151.144 with SMTP id uq16mr2285234pab.68.1400814515851;
+        Thu, 22 May 2014 20:08:35 -0700 (PDT)
+Received: from localhost ([1.202.252.122])
+        by mx.google.com with ESMTPSA id ay3sm1927089pbb.62.2014.05.22.20.08.31
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Thu, 22 May 2014 20:08:34 -0700 (PDT)
+Date:   Fri, 23 May 2014 11:08:28 +0800
+From:   Yong Zhang <yong.zhang0@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Yong Zhang <yong.zhang@windriver.com>, linux-mips@linux-mips.org,
+        huawei.libin@huawei.com
+Subject: Re: [PATCH] MIPS: change type of asid_cache to unsigned long
+Message-ID: <20140523030828.GA19723@zhy>
+Reply-To: Yong Zhang <yong.zhang0@gmail.com>
+References: <1400573344-5035-1-git-send-email-yong.zhang0@gmail.com>
+ <20140521053853.GC19655@pek-yzhang-d1>
+ <20140521112936.GC17197@linux-mips.org>
+ <20140522020611.GA6813@zhy>
+ <20140522134245.GF10287@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <537C913C.1060903@imgtec.com>
+In-Reply-To: <20140522134245.GF10287@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Originating-IP: [46.78.192.208]
-X-ClientProxiedBy: DBXPR04CA007.eurprd04.prod.outlook.com (10.255.191.155)
- To DM2PR07MB398.namprd07.prod.outlook.com (10.141.104.21)
-X-Forefront-PRVS: 021975AE46
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(428001)(479174003)(24454002)(51704005)(199002)(189002)(101416001)(74502001)(50466002)(79102001)(66066001)(15975445006)(23676002)(80022001)(47776003)(83506001)(50986999)(64706001)(76482001)(92726001)(20776003)(42186004)(81542001)(19580405001)(92566001)(81342001)(33716001)(87976001)(15202345003)(4396001)(83322001)(85852003)(76176999)(54356999)(31966008)(86362001)(46102001)(21056001)(102836001)(33656002)(99396002)(77982001)(15395725003)(74662001)(19580395003)(83072002)(6606295002);DIR:OUT;SFP:;SCL:1;SRVR:DM2PR07MB398;H:alberich;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:3;LANG:en;
-Received-SPF: None (: caviumnetworks.com does not designate permitted sender
- hosts)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Andreas.Herrmann@caviumnetworks.com; 
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <Andreas.Herrmann@caviumnetworks.com>
+Return-Path: <yong.zhang0@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40250
+X-archive-position: 40251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.herrmann@caviumnetworks.com
+X-original-sender: yong.zhang0@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,41 +62,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 21, 2014 at 12:42:52PM +0100, James Hogan wrote:
-> On 20/05/14 15:47, Andreas Herrmann wrote:
-> > From: David Daney <david.daney@cavium.com>
-> > 
-> > Signed-off-by: David Daney <david.daney@cavium.com>
-> > Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-> > ---
-> >  arch/mips/Kconfig                |    1 +
-> >  arch/mips/paravirt/Kconfig       |    6 ++
-> >  arch/mips/pci/Makefile           |    2 +-
-> >  arch/mips/pci/pci-virtio-guest.c |  140 ++++++++++++++++++++++++++++++++++++++
-> >  4 files changed, 148 insertions(+), 1 deletion(-)
-> >  create mode 100644 arch/mips/paravirt/Kconfig
-> >  create mode 100644 arch/mips/pci/pci-virtio-guest.c
+On Thu, May 22, 2014 at 03:42:45PM +0200, Ralf Baechle wrote:
+> Yes, struct cache_desc is still a problem.  Easily solvable though -
+> some of it's members are excessivly large; by using smaller data types
+> both the struct and its required alignment will shrink.  But that's
+> for another patch; as for this patch my goal to just not make things
+> any worse.
+
+Agree. Anyway I have done the similiar change as your patch already :)
+
+Thanks,
+Yong
+
 > 
-> If I understand correctly this just drives a simple PCI controller for a
-> PCI bus that a virtio device happens to be usually plugged in to, yeh?
-
-Yes.
-
-> It sounds like it would make sense to take advantage of Will Deacon's
-> recent efforts to make a generic pci controller driver for this sort of
-> thing which specifically mentions emulation by kvmtool? Is it
-> effectively the same PCI controller that is being emulated?
-
-I think, it's very similar. But it depends on OF.
- 
-> http://lists.infradead.org/pipermail/linux-arm-kernel/2014-February/thread.html#233491
-> http://lists.infradead.org/pipermail/linux-arm-kernel/2014-February/233491.html
-> http://lists.infradead.org/pipermail/linux-arm-kernel/2014-February/233490.html
-
-Currently we are at v6:
-http://marc.info/?i=1399478839-3564-1-git-send-email-will.deacon@arm.com
-
-Will take a closer look (trying to get it running for mips_paravirt).
-
-
-Andreas
+>   Ralf
+> 
+> ---
+>  arch/mips/include/asm/cpu-info.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
+> index dc2135b..ff2707a 100644
+> --- a/arch/mips/include/asm/cpu-info.h
+> +++ b/arch/mips/include/asm/cpu-info.h
+> @@ -39,14 +39,14 @@ struct cache_desc {
+>  #define MIPS_CACHE_PINDEX	0x00000020	/* Physically indexed cache */
+>  
+>  struct cpuinfo_mips {
+> -	unsigned int		udelay_val;
+> -	unsigned int		asid_cache;
+> +	unsigned long		asid_cache;
+>  
+>  	/*
+>  	 * Capability and feature descriptor structure for MIPS CPU
+>  	 */
+>  	unsigned long		options;
+>  	unsigned long		ases;
+> +	unsigned int		udelay_val;
+>  	unsigned int		processor_id;
+>  	unsigned int		fpu_id;
+>  	unsigned int		msa_id;

@@ -1,43 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 May 2014 07:56:38 +0200 (CEST)
-Received: from mail-pb0-f43.google.com ([209.85.160.43]:60323 "EHLO
-        mail-pb0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821443AbaEYF4MX7vis (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 25 May 2014 07:56:12 +0200
-Received: by mail-pb0-f43.google.com with SMTP id up15so6102852pbc.30
-        for <linux-mips@linux-mips.org>; Sat, 24 May 2014 22:56:05 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 May 2014 15:43:22 +0200 (CEST)
+Received: from mail-we0-f176.google.com ([74.125.82.176]:33120 "EHLO
+        mail-we0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822096AbaEZNnAXOWxM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 May 2014 15:43:00 +0200
+Received: by mail-we0-f176.google.com with SMTP id q59so8155859wes.35
+        for <linux-mips@linux-mips.org>; Mon, 26 May 2014 06:42:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=from:to:cc:subject:date:message-id;
-        bh=7qbvdgxEfa3huvP+aY5bnEPH+Pg7DSNjY+ONjKJocnw=;
-        b=HV5O/aCGCiuIH/RYfIDZdrYuCPNhXFRqEe61l2BdMbqEojlC4xo1A10S1j3hvlldmB
-         y3+qUXUDiU4CPnyhFchhlXNqPQtjEIxgl3qGXa0lpGv7HmvuKjC7/Vn5f9aMdIG8UNBo
-         dklaL+j2cFoUn79O+xcaXXlzRHapRVs7v4PxB1DWjACRdwtLkppGiuouNd6ck4ySjXLE
-         bsZ9WIG3zHWVO2TUbXu9lgRQOHht4ED/qw13nNtItXRXfn2Eti1FkrkmAFhpL1vdoEpe
-         ZYsMPLz4Ungp7gp8ALHrQ4O8ByVWZT15bQ0Atlw+DCEIUY5bVQml6Jsr0AvnEB4r702I
-         Eg1g==
-X-Received: by 10.68.113.68 with SMTP id iw4mr18009805pbb.119.1400997365610;
-        Sat, 24 May 2014 22:56:05 -0700 (PDT)
-Received: from software.domain.org ([222.92.8.142])
-        by mx.google.com with ESMTPSA id fe2sm12013187pbc.68.2014.05.24.22.56.00
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references;
+        bh=a3xoEc6wDixhp4O66kN50P3AiaWNB9aDm4q2XsFah3M=;
+        b=TOJsudn8wdZsBmmnP3ndrR8mn4aZDaucGEmBKyJbBERz9HdM7q860GqbeaTVgrxD/N
+         GbCE6CjMTvVr+aYNwA5Ftnm45arvm9Xm4gANvFswGQhC89xEZVK4KxtLiq1phxZBXG/e
+         RJRxzwd+c9+pmV8u9j4+3aiAOtrtDlLnB86EVlXTR1rUaswqfyh+T1P0Z3bo9rWWucFt
+         rAMQrjk7IvxUJGUUsKbC3e4hogYOql10aIuxa8vGwCGY2h3TwhkZD8PHAsPyaMsutjai
+         0/OX39du4Ao0BnD6R8oMGhQmVUIILWfcz/yFZjdswNwSfQRPhNkPa6rooXEs3C9wztgP
+         59Sg==
+X-Gm-Message-State: ALoCoQksOYFXoF8KrO6zi7dwa0CDKePem12+zl3L75h2FY38f0uq4IgoNt7WaywBxRa2Ye2O+HYm
+X-Received: by 10.180.126.33 with SMTP id mv1mr27920832wib.6.1401111774620;
+        Mon, 26 May 2014 06:42:54 -0700 (PDT)
+Received: from trevor.secretlab.ca (host109-153-30-27.range109-153.btcentralplus.com. [109.153.30.27])
+        by mx.google.com with ESMTPSA id ge6sm246662wic.0.2014.05.26.06.42.52
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 24 May 2014 22:56:04 -0700 (PDT)
-From:   chenj <chenj@lemote.com>
-To:     linux-mips@linux-mips.org
-Cc:     chenhc@lemote.com, chenj <chenj@lemote.com>
-Subject: [v4, Resend] MIPS: lib: csum_partial: more instruction paral
-Date:   Sun, 25 May 2014 14:02:22 +0800
-Message-Id: <1400997742-9393-1-git-send-email-chenj@lemote.com>
-X-Mailer: git-send-email 1.9.0
-Return-Path: <fykcee1@gmail.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 26 May 2014 06:42:53 -0700 (PDT)
+Received: by trevor.secretlab.ca (Postfix, from userid 1000)
+        id D11ADC41455; Mon, 26 May 2014 22:42:49 +0900 (JST)
+From:   Grant Likely <grant.likely@linaro.org>
+To:     gaurav.minocha@alumni.ubc.ca
+Cc:     Leif Lindholm <leif.lindholm@linaro.org>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>, <stable@vger.kernel.org>,
+        Grant Likely <grant.likely@linaro.org>
+Subject: [PATCH 2/2] mips: dts: Fix missing device_type="memory" property in memory nodes
+Date:   Mon, 26 May 2014 14:42:49 +0100
+Message-Id: <1401111769-5334-2-git-send-email-grant.likely@linaro.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1401111769-5334-1-git-send-email-grant.likely@linaro.org>
+References: <1401111769-5334-1-git-send-email-grant.likely@linaro.org>
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40266
+X-archive-position: 40267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenj@lemote.com
+X-original-sender: grant.likely@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,136 +59,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Computing sum introduces true data dependency. This patch removes some
-true data depdendencies, hence instruction level parallelism is
-improved.
+From: Leif Lindholm <leif.lindholm@linaro.org>
 
-This patch brings at most 50% csum performance gain on Loongson 3a
-processor in our test.
+A few platforms lack a 'device_type = "memory"' for their memory
+nodes, relying on an old ppc quirk in order to discover its memory.
+Add the missing data so that all parsing code can find memory nodes
+correctly.
 
-One example about how this patch works is in CSUM_BIGCHUNK1:
-// ** original **    vs    ** patch applied **
-    ADDC(sum, t0)           ADDC(t0, t1)
-    ADDC(sum, t1)           ADDC(t2, t3)
-    ADDC(sum, t2)           ADDC(sum, t0)
-    ADDC(sum, t3)           ADDC(sum, t2)
-
-In the original implementation, each ADDC(sum, ...) references the sum
-value updated by previous ADDC.
-
-With patch applied, the first two ADDC operations are independent,
-hence can be executed simultaneously if possible.
-
-Another example is in the "copy and sum calculating chunk":
-// ** original **    vs    ** patch applied **
-    STORE(t0, UNIT(0) ...   STORE(t0, UNIT(0) ...
-    ADDC(sum, t0)           ADDC(t0, t1)
-    STORE(t1, UNIT(1) ...   STORE(t1, UNIT(1) ...
-    ADDC(sum, t1)           ADDC(sum, t0)
-    STORE(t2, UNIT(2) ...   STORE(t2, UNIT(2) ...
-    ADDC(sum, t2)           ADDC(t2, t3)
-    STORE(t3, UNIT(3) ...   STORE(t3, UNIT(3) ...
-    ADDC(sum, t3)           ADDC(sum, t2)
-
-With patch applied, the first and third ADDC are independent.
-
-Signed-off-by: chenj <chenj@lemote.com>
+Signed-off-by: Leif Lindholm <leif.lindholm@linaro.org>
+Cc: linux-mips@linux-mips.org
+Cc: devicetree@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: <stable@vger.kernel.org>
+Acked-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Grant Likely <grant.likely@linaro.org>
 ---
-1. The result can be found at
-http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.html
-And is generated by a userspace test program:
-http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
+ arch/mips/lantiq/dts/easy50712.dts    | 1 +
+ arch/mips/ralink/dts/mt7620a_eval.dts | 1 +
+ arch/mips/ralink/dts/rt2880_eval.dts  | 1 +
+ arch/mips/ralink/dts/rt3052_eval.dts  | 1 +
+ arch/mips/ralink/dts/rt3883_eval.dts  | 1 +
+ 5 files changed, 5 insertions(+)
 
-[v2: amend commit message]
-[v3: further amend commit message]
-[v4: amend commit message & sign-off my patch]
-
- arch/mips/lib/csum_partial.S | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
-
-diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-index 9901237..6cea101 100644
---- a/arch/mips/lib/csum_partial.S
-+++ b/arch/mips/lib/csum_partial.S
-@@ -76,10 +76,10 @@
- 	LOAD	_t1, (offset + UNIT(1))(src);			\
- 	LOAD	_t2, (offset + UNIT(2))(src);			\
- 	LOAD	_t3, (offset + UNIT(3))(src);			\
-+	ADDC(_t0, _t1);						\
-+	ADDC(_t2, _t3);						\
- 	ADDC(sum, _t0);						\
--	ADDC(sum, _t1);						\
--	ADDC(sum, _t2);						\
--	ADDC(sum, _t3)
-+	ADDC(sum, _t2)
+diff --git a/arch/mips/lantiq/dts/easy50712.dts b/arch/mips/lantiq/dts/easy50712.dts
+index fac1f5b178eb..143b8a37b5e4 100644
+--- a/arch/mips/lantiq/dts/easy50712.dts
++++ b/arch/mips/lantiq/dts/easy50712.dts
+@@ -8,6 +8,7 @@
+ 	};
  
- #ifdef USE_DOUBLE
- #define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
-@@ -501,21 +501,21 @@ LEAF(csum_partial)
- 	SUB	len, len, 8*NBYTES
- 	ADD	src, src, 8*NBYTES
- 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
--	ADDC(sum, t0)
-+	ADDC(t0, t1)
- 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
--	ADDC(sum, t1)
-+	ADDC(sum, t0)
- 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
--	ADDC(sum, t2)
-+	ADDC(t2, t3)
- 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
--	ADDC(sum, t3)
-+	ADDC(sum, t2)
- 	STORE(t4, UNIT(4)(dst),	.Ls_exc\@)
--	ADDC(sum, t4)
-+	ADDC(t4, t5)
- 	STORE(t5, UNIT(5)(dst),	.Ls_exc\@)
--	ADDC(sum, t5)
-+	ADDC(sum, t4)
- 	STORE(t6, UNIT(6)(dst),	.Ls_exc\@)
--	ADDC(sum, t6)
-+	ADDC(t6, t7)
- 	STORE(t7, UNIT(7)(dst),	.Ls_exc\@)
--	ADDC(sum, t7)
-+	ADDC(sum, t6)
- 	.set	reorder				/* DADDI_WAR */
- 	ADD	dst, dst, 8*NBYTES
- 	bgez	len, 1b
-@@ -541,13 +541,13 @@ LEAF(csum_partial)
- 	SUB	len, len, 4*NBYTES
- 	ADD	src, src, 4*NBYTES
- 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
--	ADDC(sum, t0)
-+	ADDC(t0, t1)
- 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
--	ADDC(sum, t1)
-+	ADDC(sum, t0)
- 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
--	ADDC(sum, t2)
-+	ADDC(t2, t3)
- 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
--	ADDC(sum, t3)
-+	ADDC(sum, t2)
- 	.set	reorder				/* DADDI_WAR */
- 	ADD	dst, dst, 4*NBYTES
- 	beqz	len, .Ldone\@
-@@ -646,13 +646,13 @@ LEAF(csum_partial)
- 	nop				# improves slotting
- #endif
- 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
--	ADDC(sum, t0)
-+	ADDC(t0, t1)
- 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
--	ADDC(sum, t1)
-+	ADDC(sum, t0)
- 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
--	ADDC(sum, t2)
-+	ADDC(t2, t3)
- 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
--	ADDC(sum, t3)
-+	ADDC(sum, t2)
- 	.set	reorder				/* DADDI_WAR */
- 	ADD	dst, dst, 4*NBYTES
- 	bne	len, rem, 1b
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/ralink/dts/mt7620a_eval.dts
+index 35eb874ab7f1..709f58132f5c 100644
+--- a/arch/mips/ralink/dts/mt7620a_eval.dts
++++ b/arch/mips/ralink/dts/mt7620a_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink MT7620A evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
+index 322d7002595b..0a685db093d4 100644
+--- a/arch/mips/ralink/dts/rt2880_eval.dts
++++ b/arch/mips/ralink/dts/rt2880_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT2880 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x8000000 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
+index 0ac73ea28198..ec9e9a035541 100644
+--- a/arch/mips/ralink/dts/rt3052_eval.dts
++++ b/arch/mips/ralink/dts/rt3052_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT3052 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/rt3883_eval.dts b/arch/mips/ralink/dts/rt3883_eval.dts
+index 2fa6b330bf4f..e8df21a5d10d 100644
+--- a/arch/mips/ralink/dts/rt3883_eval.dts
++++ b/arch/mips/ralink/dts/rt3883_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT3883 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
 -- 
-1.9.0
+1.9.1

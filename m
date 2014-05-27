@@ -1,135 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 May 2014 22:57:19 +0200 (CEST)
-Received: from bes.se.axis.com ([195.60.68.10]:39893 "EHLO bes.se.axis.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6818481AbaEZU5RySGiI convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 May 2014 22:57:17 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id 998342E354
-        for <linux-mips@linux-mips.org>; Mon, 26 May 2014 22:57:10 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id tKJdVnoPJQ-p for <linux-mips@linux-mips.org>;
-        Mon, 26 May 2014 22:57:01 +0200 (CEST)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id E98472E353
-        for <linux-mips@linux-mips.org>; Mon, 26 May 2014 22:57:01 +0200 (CEST)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id BE026E69
-        for <linux-mips@linux-mips.org>; Mon, 26 May 2014 22:57:01 +0200 (CEST)
-Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
-        by boulder.se.axis.com (Postfix) with ESMTP id B306DC04
-        for <linux-mips@linux-mips.org>; Mon, 26 May 2014 22:57:01 +0200 (CEST)
-Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
-        by thoth.se.axis.com (Postfix) with ESMTP id B109E34005
-        for <linux-mips@linux-mips.org>; Mon, 26 May 2014 22:57:01 +0200 (CEST)
-Received: from xmail3.se.axis.com ([10.0.5.75]) by xmail2.se.axis.com
- ([10.0.5.74]) with mapi; Mon, 26 May 2014 22:57:01 +0200
-From:   Mikael Starvik <mikael.starvik@axis.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     Lars Persson <larper@axis.com>,
-        Martin Santesson <martinsn@axis.com>
-Date:   Mon, 26 May 2014 22:56:58 +0200
-Subject: 1004K MT paging issue
-Thread-Topic: 1004K MT paging issue
-Thread-Index: Ac95JQomL4oMCFQ8Rku9uVPj/xftKA==
-Message-ID: <498838AF-48B0-4244-95C0-F590040E5E08@axis.com>
-Accept-Language: sv-SE
-Content-Language: sv-SE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: sv-SE
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2014 06:16:53 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:38997 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818018AbaE0EQugh47u (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 May 2014 06:16:50 +0200
+Received: from 172.24.2.119 (EHLO szxeml212-edg.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id APE75762;
+        Tue, 27 May 2014 12:16:40 +0800 (CST)
+Received: from SZXEML410-HUB.china.huawei.com (10.82.67.137) by
+ szxeml212-edg.china.huawei.com (172.24.2.181) with Microsoft SMTP Server
+ (TLS) id 14.3.158.1; Tue, 27 May 2014 12:16:39 +0800
+Received: from [10.177.18.230] (10.177.18.230) by smtpscn.huawei.com
+ (10.82.67.137) with Microsoft SMTP Server (TLS) id 14.3.158.1; Tue, 27 May
+ 2014 12:16:33 +0800
+Message-ID: <5384119E.7010606@huawei.com>
+Date:   Tue, 27 May 2014 12:16:30 +0800
+From:   Li Zefan <lizefan@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
 MIME-Version: 1.0
-Return-Path: <mikael.starvik@axis.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40269
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mikael.starvik@axis.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
-
-Hi!
-
-We have a 1004K core with two VPEs with two TCs per VPE. We have a problem that is hard to debug and would like to know if anyone has seen or solved such an issue.
-
-A multithreaded application is running. 
-Twoapplication threads are running in one TC each on the same VPE.
-A piece of code has been paged out.
-Application thread 1 tries to execute the code and thus gets a page fault.
-While the page fault is being handled the second application thread enters the same code.
-For some reason it looks like application thread 2 is allowed to execute even if the page fault handling has not been finished yet.
-Thread 2 executes the wrong code and typically gets a reserved instruction exception.
-
-Any thougts?
-
-BR
-/Mikael
-From kevink@paralogos.com Tue May 27 00:58:05 2014
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2014 00:58:07 +0200 (CEST)
-Received: from gateway09.websitewelcome.com ([67.18.14.9]:50725 "EHLO
-        gateway09.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821443AbaEZW6Fxt29- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 May 2014 00:58:05 +0200
-Received: by gateway09.websitewelcome.com (Postfix, from userid 507)
-        id AC86B75A91E30; Mon, 26 May 2014 17:58:03 -0500 (CDT)
-Received: from gator3163.hostgator.com (gator3163.hostgator.com [50.87.144.199])
-        by gateway09.websitewelcome.com (Postfix) with ESMTP id 04A6575A916F6
-        for <linux-mips@linux-mips.org>; Mon, 26 May 2014 17:58:02 -0500 (CDT)
-Received: from [98.234.48.184] (port=52665 helo=[10.0.0.13])
-        by gator3163.hostgator.com with esmtpa (Exim 4.82)
-        (envelope-from <kevink@paralogos.com>)
-        id 1Wp3qD-0005gN-Hr
-        for linux-mips@linux-mips.org; Mon, 26 May 2014 17:58:01 -0500
-Message-ID: <5383C6DD.4090107@paralogos.com>
-Date:   Mon, 26 May 2014 15:57:33 -0700
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: 1004K MT paging issue
-References: <498838AF-48B0-4244-95C0-F590040E5E08@axis.com>
-In-Reply-To: <498838AF-48B0-4244-95C0-F590040E5E08@axis.com>
-Content-Type: text/plain; charset=ISO-8859-1
+To:     Yong Zhang <yong.zhang@windriver.com>
+CC:     <ralf@linux-mips.org>, <huawei.libin@huawei.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Xinwei Hu <huxinwei@huawei.com>
+Subject: Re: [PATCH V2] MIPS: change type of asid_cache to unsigned long
+References: <1400650563-1033-1-git-send-email-yong.zhang@windriver.com>
+In-Reply-To: <1400650563-1033-1-git-send-email-yong.zhang@windriver.com>
+Content-Type: text/plain; charset="GB2312"
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator3163.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-BWhitelist: no
-X-Source-IP: 98.234.48.184
-X-Exim-ID: 1Wp3qD-0005gN-Hr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([10.0.0.13]) [98.234.48.184]:52665
-X-Source-Auth: kevink@kevink.net
-X-Email-Count: 2
-X-Source-Cap: a2tpc3NlbGw7a2tpc3NlbGw7Z2F0b3IzMTYzLmhvc3RnYXRvci5jb20=
-Return-Path: <kevink@paralogos.com>
+X-Originating-IP: [10.177.18.230]
+X-CFilter-Loop: Reflected
+Return-Path: <lizefan@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40270
+X-archive-position: 40271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: lizefan@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -141,34 +49,65 @@ List-owner: <mailto:ralf@linux-mips.org>
 List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
-Content-Length: 1239
-Lines: 29
 
-When a VPE hits an exception and sets EXL, thread scheduling stops and
-the VPE is single-threaded coming into the exception.  With dual VPEs,
-one of them hitting a fault won't prevent another from doing so, but all
-the usual rules of locking and ordering that are needed for any SMP
-kernel should apply and "just work".  Is there any SMP support in the VM
-subsystem that's conditionally modfied or excluded for your 1004K kernel
-build?
+I'm not quite happy about what happaned here. There's a story behind
+this patch.
 
-/K.
+One of our Huawei product encountered a bug, and they're using WindRiver4,
+so the kernel is 2.6.34.
 
+Because they bought your licnece, they asked for your help, but
+you were reluctant on this issue, and the problem remained there
+for about one month.
 
-On 5/26/2014 1:56 PM, Mikael Starvik wrote:
-> Hi!
->
-> We have a 1004K core with two VPEs with two TCs per VPE. We have a problem that is hard to debug and would like to know if anyone has seen or solved such an issue.
->
-> A multithreaded application is running. 
-> Twoapplication threads are running in one TC each on the same VPE.
-> A piece of code has been paged out.
-> Application thread 1 tries to execute the code and thus gets a page fault.
-> While the page fault is being handled the second application thread enters the same code.
-> For some reason it looks like application thread 2 is allowed to execute even if the page fault handling has not been finished yet.
-> Thread 2 executes the wrong code and typically gets a reserved instruction exception.
->
-> Any thougts?
->
-> BR
-> /Mikael
+At last they turned to us for help. We're the kernel department in
+Huawei, but maintaining this product kernel isn't our job. Still
+Li Bin devoted his time to analyzing this bug, and he did a great
+job.
+
+Li Bin told the product team what was wrong and was about to send
+a fix for upstream kernel. They told you our analysis for further
+confirmation, and you were so reluctant to help but so quick to
+send the fix.
+
+Li Bin never reported this bug, but he fixed it. It's a shame that
+you took the credit from us.
+
+On 2014/5/21 13:36, Yong Zhang wrote:
+> asid_cache must be unsigned long otherwise on 64bit system
+> it will become 0 if the value in get_new_mmu_context()
+> reaches 0xffffffff and in the end the assumption of
+> ASID_FIRST_VERSION is not true anymore thus leads to
+> more dangerous things.
+> 
+
+We should describe what problem this bug can lead to, which
+will help people who encounter the same problem and google it.
+
+> Reported-by: libin <huawei.libin@huawei.com>
+> Signed-off-by: Yong Zhang <yong.zhang@windriver.com>
+
+Should mark the patch for stable trees. Though 2.6.34 is EOL,
+the fix should be backported to other kernels.
+
+> ---
+> 
+> V2<-V1: Add the reporter.
+> 
+>  arch/mips/include/asm/cpu-info.h |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
+> index f6299be..ebcc2ed 100644
+> --- a/arch/mips/include/asm/cpu-info.h
+> +++ b/arch/mips/include/asm/cpu-info.h
+> @@ -40,7 +40,7 @@ struct cache_desc {
+>  
+>  struct cpuinfo_mips {
+>  	unsigned int		udelay_val;
+> -	unsigned int		asid_cache;
+> +	unsigned long		asid_cache;
+>  
+>  	/*
+>  	 * Capability and feature descriptor structure for MIPS CPU
+> 

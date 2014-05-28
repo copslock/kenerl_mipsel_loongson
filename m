@@ -1,44 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 May 2014 18:25:58 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:24357 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816207AbaE1QZzo42pQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 May 2014 18:25:55 +0200
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s4SGOAJc008904
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 28 May 2014 12:24:11 -0400
-Received: from yakj.usersys.redhat.com (ovpn-112-65.ams2.redhat.com [10.36.112.65])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id s4SGO56L018244;
-        Wed, 28 May 2014 12:24:06 -0400
-Message-ID: <53860DA4.9020703@redhat.com>
-Date:   Wed, 28 May 2014 18:24:04 +0200
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 May 2014 22:09:39 +0200 (CEST)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:41847 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6854780AbaE1UJh16qqx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 May 2014 22:09:37 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 6E9345A6F93;
+        Wed, 28 May 2014 23:09:32 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id nhSVhLRGnp5z; Wed, 28 May 2014 23:09:25 +0300 (EEST)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp6.welho.com (Postfix) with ESMTP id 1C7175BC004;
+        Wed, 28 May 2014 23:09:30 +0300 (EEST)
+Date:   Wed, 28 May 2014 23:09:29 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Li Zefan <lizefan@huawei.com>
+Cc:     Yong Zhang <yong.zhang@windriver.com>, ralf@linux-mips.org,
+        huawei.libin@huawei.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Xinwei Hu <huxinwei@huawei.com>
+Subject: Re: [PATCH V2] MIPS: change type of asid_cache to unsigned long
+Message-ID: <20140528200929.GA30528@drone.musicnaut.iki.fi>
+References: <1400650563-1033-1-git-send-email-yong.zhang@windriver.com>
+ <5384119E.7010606@huawei.com>
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>,
-        David Daney <ddaney.cavm@gmail.com>,
-        David Daney <david.daney@cavium.com>,
-        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-CC:     linux-mips@linux-mips.org, Gleb Natapov <gleb@kernel.org>,
-        kvm@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Sanjay Lal <sanjayl@kymasys.com>,
-        qemu-devel <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 14/21] MIPS: KVM: Add nanosecond count bias KVM register
-References: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com> <1398439204-26171-15-git-send-email-james.hogan@imgtec.com> <535A9AF5.30105@gmail.com> <2197488.6tnytXFBJm@radagast> <535B7E58.4070304@redhat.com> <5385F0E4.1080207@imgtec.com>
-In-Reply-To: <5385F0E4.1080207@imgtec.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-Return-Path: <pbonzini@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5384119E.7010606@huawei.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40288
+X-archive-position: 40289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,19 +49,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Il 28/05/2014 16:21, James Hogan ha scritto:
-> The implementation in QEMU that I've settled upon makes do with just
-> COUNT_CTL and COUNT_RESUME, but with a slight kernel modification so
-> that COUNT_RESUME is writeable (to any positive monotonic nanosecond
-> value <= now). It works fairly cleanly and correctly even with stopping
-> and starting VM clock (gdb, stop/cont, savevm/loadvm, live migration),
-> to match the behaviour of the existing mips cpu timer emulation, so I
-> plan to drop this bias patch, and will post a v2 patchset soon with just
-> a few modifications.
+Hi,
 
-It makes sense to have writable registers in the emulator, even if they 
-are read-only in real hardware.  We also do that for x86, FWIW.
+On Tue, May 27, 2014 at 12:16:30PM +0800, Li Zefan wrote:
+> On 2014/5/21 13:36, Yong Zhang wrote:
+> > asid_cache must be unsigned long otherwise on 64bit system
+> > it will become 0 if the value in get_new_mmu_context()
+> > reaches 0xffffffff and in the end the assumption of
+> > ASID_FIRST_VERSION is not true anymore thus leads to
+> > more dangerous things.
+> 
+> We should describe what problem this bug can lead to, which
+> will help people who encounter the same problem and google it.
 
-So the idea looks okay to me.
+Please describe it, then. Even if the patch is already committed,
+googling would probably still find this e-mail thread.
 
-Paolo
+Thanks,
+
+A.

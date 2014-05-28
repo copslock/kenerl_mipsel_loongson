@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2014 13:11:36 +0200 (CEST)
-Received: from bes.se.axis.com ([195.60.68.10]:41593 "EHLO bes.se.axis.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822166AbaE0LLeflDa6 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 May 2014 13:11:34 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id 5D8842E35F
-        for <linux-mips@linux-mips.org>; Tue, 27 May 2014 13:11:27 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id y4kqdLQTUlJS for <linux-mips@linux-mips.org>;
-        Tue, 27 May 2014 13:11:22 +0200 (CEST)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id 18A142E2DF
-        for <linux-mips@linux-mips.org>; Tue, 27 May 2014 13:11:22 +0200 (CEST)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id ECED2EC3
-        for <linux-mips@linux-mips.org>; Tue, 27 May 2014 13:11:21 +0200 (CEST)
-Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
-        by boulder.se.axis.com (Postfix) with ESMTP id E14A04BA
-        for <linux-mips@linux-mips.org>; Tue, 27 May 2014 13:11:21 +0200 (CEST)
-Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
-        by thoth.se.axis.com (Postfix) with ESMTP id DED3034005
-        for <linux-mips@linux-mips.org>; Tue, 27 May 2014 13:11:21 +0200 (CEST)
-Received: from xmail2.se.axis.com ([10.0.5.74]) by xmail2.se.axis.com
- ([10.0.5.74]) with mapi; Tue, 27 May 2014 13:11:21 +0200
-From:   Lars Persson <lars.persson@axis.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     Martin Santesson <martinsn@axis.com>,
-        Mikael Starvik <starvik@axis.com>
-Date:   Tue, 27 May 2014 13:11:20 +0200
-Subject: RE: 1004K MT paging issue
-Thread-Topic: 1004K MT paging issue
-Thread-Index: Ac95JQomL4oMCFQ8Rku9uVPj/xftKAAdJvkQ
-Message-ID: <771471B8871B5044A6CA7CCD9C26EEE10117E311D65E@xmail2.se.axis.com>
-References: <498838AF-48B0-4244-95C0-F590040E5E08@axis.com>
-In-Reply-To: <498838AF-48B0-4244-95C0-F590040E5E08@axis.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US, sv-SE
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 May 2014 16:21:34 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64628 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6854398AbaE1OVcEJuMo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 May 2014 16:21:32 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 4134FB775265D;
+        Wed, 28 May 2014 15:21:22 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Wed, 28 May
+ 2014 15:21:25 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Wed, 28 May 2014 15:21:25 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 28 May
+ 2014 15:21:24 +0100
+Message-ID: <5385F0E4.1080207@imgtec.com>
+Date:   Wed, 28 May 2014 15:21:24 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Return-Path: <lars.persson@axis.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        David Daney <david.daney@cavium.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+CC:     <linux-mips@linux-mips.org>, Gleb Natapov <gleb@kernel.org>,
+        <kvm@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
+        Sanjay Lal <sanjayl@kymasys.com>,
+        qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 14/21] MIPS: KVM: Add nanosecond count bias KVM register
+References: <1398439204-26171-1-git-send-email-james.hogan@imgtec.com> <1398439204-26171-15-git-send-email-james.hogan@imgtec.com> <535A9AF5.30105@gmail.com> <2197488.6tnytXFBJm@radagast> <535B7E58.4070304@redhat.com>
+In-Reply-To: <535B7E58.4070304@redhat.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40281
+X-archive-position: 40285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars.persson@axis.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,48 +56,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi
+Hi Paolo, David, Andreas,
 
-I have found a MIPS-specific race window in __do_fault() between these two calls:
-set_pte_at(mm, address, page_table, entry);
-
-/* no need to invalidate: a not-present page won't be cached */
-update_mmu_cache(vma, address, page_table);
- 
-When the block device uses PIO-mode to populate the page in the page-cache, then the main memory still contains stale data when set_pte_at() makes the mapping live. Another VPE hitting the same page will execute garbage code.
-
-Please see the ARM port for hints how to fix this by flushing the data cache already in set_pte_at.
-
-BR,
- Lars
-
-
-> -----Original Message-----
-> From: Mikael Starvik
-> Sent: den 26 maj 2014 22:57
-> To: linux-mips@linux-mips.org
-> Cc: Lars Persson; Martin Santesson
-> Subject: 1004K MT paging issue
+On 26/04/14 10:37, Paolo Bonzini wrote:
+> Il 26/04/2014 00:34, James Hogan ha scritto:
+>> So yes, you could technically manage without (4) by using (2) ((4) was
+>> implemented first), but I think it probably still has some value since
+>> you can
+>> do it with a single ioctl rather than 4 ioctls (freeze timer, read
+>> resume_time, read or write count, unfreeze timer).
+>>
+>> Enough value to be worthwhile? I haven't really made up my mind yet
+>> but I'm
+>> leaning towards yes.
 > 
-> Hi!
-> 
-> We have a 1004K core with two VPEs with two TCs per VPE. We have a
-> problem that is hard to debug and would like to know if anyone has seen
-> or solved such an issue.
-> 
-> A multithreaded application is running.
-> Twoapplication threads are running in one TC each on the same VPE.
-> A piece of code has been paged out.
-> Application thread 1 tries to execute the code and thus gets a page
-> fault.
-> While the page fault is being handled the second application thread
-> enters the same code.
-> For some reason it looks like application thread 2 is allowed to
-> execute even if the page fault handling has not been finished yet.
-> Thread 2 executes the wrong code and typically gets a reserved
-> instruction exception.
-> 
-> Any thougts?
-> 
-> BR
-> /Mikael
+> It would be interesting to see how the userspace patches use this
+> independent of COUNT_RESUME.
+
+The implementation in QEMU that I've settled upon makes do with just
+COUNT_CTL and COUNT_RESUME, but with a slight kernel modification so
+that COUNT_RESUME is writeable (to any positive monotonic nanosecond
+value <= now). It works fairly cleanly and correctly even with stopping
+and starting VM clock (gdb, stop/cont, savevm/loadvm, live migration),
+to match the behaviour of the existing mips cpu timer emulation, so I
+plan to drop this bias patch, and will post a v2 patchset soon with just
+a few modifications.
+
+QEMU saves the state of the KVM timer from kvm_arch_get_registers() or
+when the VM clock is stopped (via a vmstate notifier) - whichever comes
+first. It then restores the KVM timer from kvm_arch_put_registers() or
+when the VM clock is started - whichever comes last.
+Example sequence:
+stop VM - SAVE
+get regs - vm clock already stopped, not saved again
+start VM - regs dirty, not restored
+put regs - vm clock running, RESTORE
+
+Saving involves:
+COUNT_CTL.DC = 1 (freeze KVM timer)
+get CP0_Cause, CP0_Count and COUNT_RESUME
+store a copy of the calculated VM clock @COUNT_RESUME nanoseconds
+(i.e. the VM clock corresponding to the saved CP0_Count)
+
+Restoring involves:
+put COUNT_RESUME = now - (vm clock @now - saved vm clock)
+(resume occurs at the same interval into the past that the VM clock has
+increased since saving)
+put CP0_Cause, CP0_Count
+(the stored CP0_Count applies at that resume time)
+COUNT_CTL.DC = 0 (resume KVM timer from CP0_Count at COUNT_RESUME)
+
+I'll post an updated QEMU patchset ASAP after the KVM patchset, but
+wanted to explain how this API can actually be used. Does it sound
+reasonable?
+
+Thanks
+James

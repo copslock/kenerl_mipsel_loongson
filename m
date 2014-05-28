@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 00:14:09 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 00:15:00 +0200 (CEST)
 Received: from mail-bl2lp0204.outbound.protection.outlook.com ([207.46.163.204]:24324
         "EHLO na01-bl2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6854789AbaE1WLCNNBdJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6854802AbaE1WLCf16zG (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 29 May 2014 00:11:02 +0200
 Received: from alberich.caveonetworks.com (31.213.222.82) by
  BLUPR07MB386.namprd07.prod.outlook.com (10.141.27.22) with Microsoft SMTP
- Server (TLS) id 15.0.949.11; Wed, 28 May 2014 21:54:07 +0000
+ Server (TLS) id 15.0.949.11; Wed, 28 May 2014 21:53:34 +0000
 From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 To:     <linux-mips@linux-mips.org>
 CC:     David Daney <ddaney.cavm@gmail.com>,
         Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
         James Hogan <james.hogan@imgtec.com>, <kvm@vger.kernel.org>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH v2 07/13] MIPS: Add function get_ebase_cpunum
-Date:   Wed, 28 May 2014 23:52:10 +0200
-Message-ID: <1401313936-11867-8-git-send-email-andreas.herrmann@caviumnetworks.com>
+Subject: [PATCH v2 03/13] MIPS: OCTEON: Move CAVIUM_OCTEON_CVMSEG_SIZE to CPU_CAVIUM_OCTEON
+Date:   Wed, 28 May 2014 23:52:06 +0200
+Message-ID: <1401313936-11867-4-git-send-email-andreas.herrmann@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1401313936-11867-1-git-send-email-andreas.herrmann@caviumnetworks.com>
 References: <1401313936-11867-1-git-send-email-andreas.herrmann@caviumnetworks.com>
@@ -35,7 +35,7 @@ Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40314
+X-archive-position: 40315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,51 +54,62 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-This returns the CPUNum from the low order Ebase bits.
+CVMSEG is related to the CPU core not the SoC system.  So needs to be
+configurable there.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 ---
- arch/mips/include/asm/mipsregs.h |    9 +++++++++
- arch/mips/kernel/cpu-probe.c     |    2 +-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/mips/cavium-octeon/Kconfig |   23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-[andreas.herrmann:
-  * Renamed function from mips_cpunum
-  * Make use of function in cpu-probe.c]
-
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index fb2d174..98e9754 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1792,6 +1792,15 @@ __BUILD_SET_C0(brcm_cmt_ctrl)
- __BUILD_SET_C0(brcm_config)
- __BUILD_SET_C0(brcm_mode)
+diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+index 227705d..6028666 100644
+--- a/arch/mips/cavium-octeon/Kconfig
++++ b/arch/mips/cavium-octeon/Kconfig
+@@ -10,6 +10,17 @@ config CAVIUM_CN63XXP1
+ 	  non-CN63XXP1 hardware, so it is recommended to select "n"
+ 	  unless it is known the workarounds are needed.
  
-+/*
-+ * Return low 10 bits of ebase.
-+ * Note that under KVM (MIPSVZ) this returns vcpu id.
-+ */
-+static inline unsigned int get_ebase_cpunum(void)
-+{
-+	return read_c0_ebase() & 0x3ff;
-+}
++config CAVIUM_OCTEON_CVMSEG_SIZE
++	int "Number of L1 cache lines reserved for CVMSEG memory"
++	range 0 54
++	default 1
++	help
++	  CVMSEG LM is a segment that accesses portions of the dcache as a
++	  local memory; the larger CVMSEG is, the smaller the cache is.
++	  This selects the size of CVMSEG LM, which is in cache blocks. The
++	  legally range is from zero to 54 cache blocks (i.e. CVMSEG LM is
++	  between zero and 6192 bytes).
 +
- #endif /* !__ASSEMBLY__ */
+ endif # CPU_CAVIUM_OCTEON
  
- #endif /* _ASM_MIPSREGS_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index e8638c5..dfc6f62 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -423,7 +423,7 @@ static void decode_configs(struct cpuinfo_mips *c)
+ if CAVIUM_OCTEON_SOC
+@@ -23,17 +34,6 @@ config CAVIUM_OCTEON_2ND_KERNEL
+ 	  with this option to be run at the same time as one built without this
+ 	  option.
  
- #ifndef CONFIG_MIPS_CPS
- 	if (cpu_has_mips_r2) {
--		c->core = read_c0_ebase() & 0x3ff;
-+		c->core = get_ebase_cpunum();
- 		if (cpu_has_mipsmt)
- 			c->core >>= fls(core_nvpes()) - 1;
- 	}
+-config CAVIUM_OCTEON_CVMSEG_SIZE
+-	int "Number of L1 cache lines reserved for CVMSEG memory"
+-	range 0 54
+-	default 1
+-	help
+-	  CVMSEG LM is a segment that accesses portions of the dcache as a
+-	  local memory; the larger CVMSEG is, the smaller the cache is.
+-	  This selects the size of CVMSEG LM, which is in cache blocks. The
+-	  legally range is from zero to 54 cache blocks (i.e. CVMSEG LM is
+-	  between zero and 6192 bytes).
+-
+ config CAVIUM_OCTEON_LOCK_L2
+ 	bool "Lock often used kernel code in the L2"
+ 	default "y"
+@@ -86,7 +86,6 @@ config SWIOTLB
+ 	select IOMMU_HELPER
+ 	select NEED_SG_DMA_LENGTH
+ 
+-
+ config OCTEON_ILM
+ 	tristate "Module to measure interrupt latency using Octeon CIU Timer"
+ 	help
 -- 
 1.7.9.5

@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 18:27:39 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:48756 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822093AbaE2Q1fVOQ92 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 May 2014 18:27:35 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C90A97674869;
-        Thu, 29 May 2014 17:27:24 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 29 May
- 2014 17:27:27 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Thu, 29 May 2014 17:27:27 +0100
-Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 29 May
- 2014 17:27:26 +0100
-Message-ID: <53875FEE.1020607@imgtec.com>
-Date:   Thu, 29 May 2014 17:27:26 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 18:55:57 +0200 (CEST)
+Received: from mail-qg0-f41.google.com ([209.85.192.41]:36259 "EHLO
+        mail-qg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817913AbaE2QzzGiltm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 May 2014 18:55:55 +0200
+Received: by mail-qg0-f41.google.com with SMTP id j5so1811760qga.14
+        for <linux-mips@linux-mips.org>; Thu, 29 May 2014 09:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=5izgH0HqxJfwzJM0jLr6387w1r20HpO23Ved4JOGNtg=;
+        b=FO1wcpOwRf+bS+iT9X+siUZJUqdx7xt9QV2RdFR7KBWpNyeVsSxfTyoBIkrYd1yXmI
+         RY+kWyvyd9KvtUqD3n9pB+Rnmq+bVBPOtBaOB1fIyWNmt+V7FQ32jSIZx79oSMCGeM9d
+         WUXSV3JfyGcwVLJW6GCYrc7hUQW86VBuY8QauKMmDc9PahZGa7Aw2PIDVjf6BhGzbRZ2
+         5aXLDpyV6FMzFKh2LzCwsBDhETBbnb8yvmFrF7jhoD3xhpsEyJNQzYeoo7q3Aaj6QK9z
+         dHHj0j6VrtqiKnZldiAZJGV/0fi15PKi7H/+3Mru90lpaKlDCQLs6BX9F4BsWeXsIUKW
+         Ly9w==
+X-Received: by 10.140.92.54 with SMTP id a51mr11733963qge.23.1401382549014;
+ Thu, 29 May 2014 09:55:49 -0700 (PDT)
 MIME-Version: 1.0
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        Gleb Natapov <gleb@kernel.org>, <kvm@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, David Daney <david.daney@cavium.com>,
-        Sanjay Lal <sanjayl@kymasys.com>
-Subject: Re: [PATCH v2 00/23] MIPS: KVM: Fixes and guest timer rewrite
-References: <1401355005-20370-1-git-send-email-james.hogan@imgtec.com> <53870DAD.7050900@redhat.com> <53874719.5070604@imgtec.com> <538750F8.7040202@redhat.com>
-In-Reply-To: <538750F8.7040202@redhat.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.96.147.163 with HTTP; Thu, 29 May 2014 09:55:08 -0700 (PDT)
+In-Reply-To: <Pine.LNX.4.44L0.1405291100320.1285-100000@iolanthe.rowland.org>
+References: <1401358203-60225-4-git-send-email-alex.smith@imgtec.com> <Pine.LNX.4.44L0.1405291100320.1285-100000@iolanthe.rowland.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Date:   Thu, 29 May 2014 09:55:08 -0700
+Message-ID: <CAGVrzcZuo2MvMv20W4zJQxkK3JBxD8L_tfkZoP=s175__kDQ3Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] usb host/MIPS: Remove hard-coded OCTEON platform information.
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        linux-usb <linux-usb@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40359
+X-archive-position: 40360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,116 +53,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paolo,
+2014-05-29 8:03 GMT-07:00 Alan Stern <stern@rowland.harvard.edu>:
+> On Thu, 29 May 2014, Alex Smith wrote:
+>
+>> From: David Daney <david.daney@cavium.com>
+>>
+>> The device tree will *always* have correct ehci/ohci clock
+>> configuration, so use it.  This allows us to remove a big chunk of
+>> platform configuration code from octeon-platform.c.
+>
+> Instead of doing this, how about moving the octeon2_usb_clocks_start()
+> and _stop() routines into octeon-platform.c, and then using the
+> ehci-platform and ohci-platform drivers instead of special-purpose
+> ehci-octeon and ohci-octeon drivers?
 
-On 29/05/14 16:23, Paolo Bonzini wrote:
-> Il 29/05/2014 16:41, James Hogan ha scritto:
->> +
->> +    /* If VM clock stopped then state was already saved when it was
->> stopped */
->> +    if (runstate_is_running()) {
->> +        ret = kvm_mips_save_count(cs);
->> +        if (ret < 0) {
->> +            return ret;
->> +        }
->> +    }
->> +
-> 
-> You're expecting that calls to kvm_mips_get_cp0_registers and
-> kvm_mips_put_cp0_registers are balanced and not nested.  Perhaps you
-> should add an assert about it.
+How about they get their changes in now, and eventually they cleanup
+the octeon driver in the future? My personal experience with that sort
+of request, is that I had to come up with 50+ patches to clean up the
+Kconfig mess that USB drivers had back then and I still have not
+re-submitted the bcm63xx USB patchset.
 
-Yes and no. If you loadvm or do an incoming migration you get an extra
-put without a prior get, so it has to handle that case (ensuring that
-the timer is frozen in kvm_mips_restore_count). I don't think it should
-ever do two kvm_mips_get_cp0_registers calls though, but it should still
-handle it okay since the timer will already be frozen so it'd just read
-the same values out.
-
-(although as it stands CP0_Count never represents the offset from the VM
-clock for KVM like it does with a running Count with TCG, so the vmstate
-is technically incompatible between TCG/KVM).
-
->> +    if (!(count_ctl & KVM_REG_MIPS_COUNT_CTL_DC)) {
->> +        count_ctl |= KVM_REG_MIPS_COUNT_CTL_DC;
->> +        ret = kvm_mips_put_one_reg64(cs, KVM_REG_MIPS_COUNT_CTL,
->> &count_ctl);
->> +        if (ret < 0) {
->> +            return ret;
->> +        }
->> +    }
-> 
-> Would it make sense to return directly if the master disable bit is set?
-
-It would probably indicate that kvm_mips_get_cp0_registers was called
-twice, so yes it could do that, although it would probably be
-unexpected/wrong if it did happen (maybe qemu modified the values while
-the state was dirty).
-
->  The rest of this function is idempotent.
-> 
-> Also, perhaps this bit in kvm_mips_restore_count is unnecessary, and so
-> is env->count_save_time in general:
-> 
->> +        /* find time to resume the saved timer at */
->> +        now = get_clock();
->> +        count_resume = now - (cpu_get_clock_at(now) -
->> env->count_save_time);
-> 
-> Is the COUNT_RESUME write necessary if the VM is running?
-
-Running at that instant or running continuously since the save?
-
-At this instant the VM is always running. Either it's just been started
-and other state isn't dirty, or the registers have been put while the VM
-is running.
-
-If the VM wasn't stopped since the context was saved, you're right that
-it could skip modifying COUNT_RESUME, it won't have changed. It's there
-for if the VM was stopped, e.g.:
-stop vm - save
-get regs
-start vm
-put regs - restore (e.g. before run vcpu)
-
-in which case COUNT_RESUME must be altered for Count to keep a similar
-offset against the vm clock (like hw/mips/cputimer.c ensures while count
-is running - even when vm stopped).
-
-> Does the
-> master disable bit just latch the values, or does it really stop the
-> timer?  (My reading of the code is the former, since writing
-> COUNT_RESUME only modifies the bias: no write => no bias change => timer
-> runs).
-
-It appears latched in the sense that starting it again will jump Count
-forward to the time it would have been had it not been disabled (with no
-loss of Compare interrupt in that time).
-
-However it does stop the timer and interrupts, so if you change Count it
-will be as if you changed it exactly at the moment it was latched. If
-you change COUNT_RESUME, Count will not change immediately, but the
-monotonic time at which the (unchanged) Count value will appear to
-resume counting will be changed. So in that sense it acts as a bias.
-Increment it by 10ns and the Count will be 10ns behind when you resume
-(as if it had been stopped for 10ns, so with no missed interrupts).
-
-> And if the VM is not running, you have timer_state.cpu_ticks_enabled ==
-> false, so cpu_get_clock_at() always returns timers_state.cpu_clock_offset.
-> 
-> So, if the COUNT_RESUME write is not necessary for a running VM, you can
-> then just write get_clock() to COUNT_RESUME, which seems to make sense
-> to me.
-
-If the VM is stopped you probably wouldn't want to resume the timer yet
-at all.
-
-See above though, the VM is always running at this point
-(restore_count), even if it has only just started (or may have been
-stopped and started since the save).
-
-Does that make sense? It's surprising hard to explain how it works
-clearly without resorting to equations :)
-
-Thanks
-James
+It is fair to pinpoint what *should* be improved and what the next
+steps could look like, it is not fair to ask people submitting changes
+to come up with a much bigger task before their patches can be merged.
+-- 
+Florian

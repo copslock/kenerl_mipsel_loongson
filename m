@@ -1,35 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 13:12:17 +0200 (CEST)
-Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6]:61087 "EHLO
-        cpsmtpb-ews03.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817913AbaE2LMPAJCdR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 May 2014 13:12:15 +0200
-Received: from cpsps-ews09.kpnxchange.com ([10.94.84.176]) by cpsmtpb-ews03.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Thu, 29 May 2014 13:12:09 +0200
-Received: from CPSMTPM-TLF104.kpnxchange.com ([195.121.3.7]) by cpsps-ews09.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Thu, 29 May 2014 13:12:09 +0200
-Received: from [192.168.10.106] ([195.240.213.44]) by CPSMTPM-TLF104.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Thu, 29 May 2014 13:12:08 +0200
-Message-ID: <1401361928.6186.48.camel@x220>
-Subject: next-20140529: CONFIG_MIPS_MT_SMTC
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Date:   Thu, 29 May 2014 13:12:08 +0200
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 13:33:05 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:29325 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817913AbaE2LdDisUd0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 May 2014 13:33:03 +0200
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s4TBVkmj032647
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 May 2014 07:31:47 -0400
+Received: from yakj.usersys.redhat.com (ovpn-112-34.ams2.redhat.com [10.36.112.34])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s4TBVfvE005847;
+        Thu, 29 May 2014 07:31:42 -0400
+Message-ID: <53871A9D.2080309@redhat.com>
+Date:   Thu, 29 May 2014 13:31:41 +0200
+From:   Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+MIME-Version: 1.0
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sanjay Lal <sanjayl@kymasys.com>
+Subject: Re: [PATCH v2 11/23] MIPS: KVM: Fix timer race modifying guest CP0_Cause
+References: <1401355005-20370-1-git-send-email-james.hogan@imgtec.com> <1401355005-20370-12-git-send-email-james.hogan@imgtec.com> <53870D99.3030900@redhat.com> <5387122C.2080203@imgtec.com>
+In-Reply-To: <5387122C.2080203@imgtec.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 29 May 2014 11:12:08.0525 (UTC) FILETIME=[D4C24FD0:01CF7B2E]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40353
+X-archive-position: 40354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,22 +48,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+Il 29/05/2014 12:55, James Hogan ha scritto:
+>> > Shouldn't you have a loop too around the ll/sc?
+> Yes, it has a do {} while () look around the inline asm, although I
+> didn't mention it in the commit message. It's modelled on
+> arch/mips/include/asm/bitops.h.
 
-Kconfig symbol MIPS_MT_SMTC was removed in next-20140526, in commit
-633648c5ad3 ("MIPS: MT: Remove SMTC support").
+Ugh, sorry---I misread that as a do/while(0).  But it is an inline 
+function, not a macro.
 
-A few references to its macro popped up again in next-20140529. These
-references can be traced back to commits ae4ce45419f9 ("MIPS: traps: Add
-CPU PM callback for trap configuration") and 74e91335190c ("MIPS: PM:
-Implement PM helper macros"). And those commits were merged in commit
-7b2e5b89e488 ("Merge branch 'wip-mips-pm' of
-https://github.com/paulburton/linux into mips-for-linux-next"). Now I'm
-guessing that those references to CONFIG_MIPS_MT_SMTC didn't generate
-merge conflicts and therefor went unnoticed.
-
-The trivial solution here is to remove all code hidden behind those
-references. Would that solution be correct?
-
-
-Paul Bolle
+Paolo

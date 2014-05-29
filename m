@@ -1,40 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 21:27:03 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62583 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822107AbaE2T1BoRNOy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 May 2014 21:27:01 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2914335B0A782;
-        Thu, 29 May 2014 20:26:51 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 29 May
- 2014 20:26:54 +0100
-Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Thu, 29 May 2014 20:26:54 +0100
-Received: from fun-lab.mips.com (10.20.2.221) by bamail02.ba.imgtec.org
- (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 29 May
- 2014 12:26:51 -0700
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-To:     <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, <Steven.Hill@imgtec.com>,
-        <james.hogan@imgtec.com>, <dengcheng.zhu@imgtec.com>
-Subject: [RESEND PATCH] MIPS: math-emu: Add IEEE754 exception statistics to debugfs
-Date:   Thu, 29 May 2014 12:26:45 -0700
-Message-ID: <1401391605-3698-1-git-send-email-dengcheng.zhu@imgtec.com>
-X-Mailer: git-send-email 1.8.5.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 21:38:44 +0200 (CEST)
+Received: from mail-we0-f173.google.com ([74.125.82.173]:37586 "EHLO
+        mail-we0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822268AbaE2TikitBZ9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 May 2014 21:38:40 +0200
+Received: by mail-we0-f173.google.com with SMTP id u57so938678wes.18
+        for <multiple recipients>; Thu, 29 May 2014 12:38:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=nZUYtiLgP5TVzkwcUQV5Zk67TVh4SdzB8DHzTSnFEJE=;
+        b=NcZ7mtKtkSo0Q1pmNTJN3LlnCcGiwXCesuwBfWRDLIcsVVYJlBOOuI/1os2fAnyH6G
+         c/9MtcmkJUyQ9Z8LKE5hQCU2VR0CX+yfugIsNzsHid6ERP19g/mZ9miGYaDk8tJ8BGkU
+         /E/CMWTRHTLrgbGlbMKwCwL0t//VFFWd1nQn2AVVCrQ+3iclU/f2RUHEXMxranrLLPqq
+         UOyxr3B64k2GHlhfqoERIghwA394i6OcPHJirZvdUD/7S0UIZqtLPovX51GJagWNEY2p
+         29g98ksd4Z+8otUQ2w1aBa/4nyT1DS6ZTGX2HzhCxa2DTaeB14KzajgceY584LAnLryT
+         B/VA==
+X-Received: by 10.180.211.36 with SMTP id mz4mr63216008wic.20.1401392315248;
+        Thu, 29 May 2014 12:38:35 -0700 (PDT)
+Received: from yakj.usersys.redhat.com (net-37-117-132-7.cust.vodafonedsl.it. [37.117.132.7])
+        by mx.google.com with ESMTPSA id vm8sm4016187wjc.27.2014.05.29.12.38.32
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 29 May 2014 12:38:33 -0700 (PDT)
+Message-ID: <53878CB5.6070202@redhat.com>
+Date:   Thu, 29 May 2014 21:38:29 +0200
+From:   Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.2.221]
-Return-Path: <DengCheng.Zhu@imgtec.com>
+To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+CC:     gleb@kernel.org, kvm@vger.kernel.org, sanjayl@kymasys.com,
+        james.hogan@imgtec.com, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: KVM: remove the stale memory alias support function
+ unalias_gfn
+References: <1401390742-3550-1-git-send-email-dengcheng.zhu@imgtec.com>
+In-Reply-To: <1401390742-3550-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <paolo.bonzini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40365
+X-archive-position: 40366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,112 +60,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Il 29/05/2014 21:12, Deng-Cheng Zhu ha scritto:
+> kvm_mips.c | 5 -----
+>  1 file changed
 
-Sometimes it's useful to let the user, while doing performance research,
-know what in the IEEE754 exceptions has caused many times of FP emulation
-when running a specific application. This patch adds 5 more files to
-/sys/kernel/debug/mips/fpuemustats/, whose filenames begin with "ieee754".
-These stats are in addition to the existing cp1ops, cp1xops, errors, loads
-and stores, which may not be useful in understanding the reasons of ieee754
-exceptions.
+Applied, thanks.
 
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
----
- arch/mips/include/asm/fpu_emulator.h |  5 +++++
- arch/mips/math-emu/cp1emu.c          | 41 ++++++++++++++++++++++++++++--------
- 2 files changed, 37 insertions(+), 9 deletions(-)
-
-diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 2abb587..0ab4a3c 100644
---- a/arch/mips/include/asm/fpu_emulator.h
-+++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -36,6 +36,11 @@ struct mips_fpu_emulator_stats {
- 	local_t cp1ops;
- 	local_t cp1xops;
- 	local_t errors;
-+	local_t ieee754_inexact;
-+	local_t ieee754_underflow;
-+	local_t ieee754_overflow;
-+	local_t ieee754_zerodiv;
-+	local_t ieee754_invalidop;
- };
- 
- DECLARE_PER_CPU(struct mips_fpu_emulator_stats, fpuemustats);
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 0b4e2e3..f630b74 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -1444,14 +1444,22 @@ static int fpux_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 			SPTOREG(fd, MIPSInst_FD(ir));
- 
- 		      copcsr:
--			if (ieee754_cxtest(IEEE754_INEXACT))
-+			if (ieee754_cxtest(IEEE754_INEXACT)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_inexact);
- 				rcsr |= FPU_CSR_INE_X | FPU_CSR_INE_S;
--			if (ieee754_cxtest(IEEE754_UNDERFLOW))
-+			}
-+			if (ieee754_cxtest(IEEE754_UNDERFLOW)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_underflow);
- 				rcsr |= FPU_CSR_UDF_X | FPU_CSR_UDF_S;
--			if (ieee754_cxtest(IEEE754_OVERFLOW))
-+			}
-+			if (ieee754_cxtest(IEEE754_OVERFLOW)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_overflow);
- 				rcsr |= FPU_CSR_OVF_X | FPU_CSR_OVF_S;
--			if (ieee754_cxtest(IEEE754_INVALID_OPERATION))
-+			}
-+			if (ieee754_cxtest(IEEE754_INVALID_OPERATION)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_invalidop);
- 				rcsr |= FPU_CSR_INV_X | FPU_CSR_INV_S;
-+			}
- 
- 			ctx->fcr31 = (ctx->fcr31 & ~FPU_CSR_ALL_X) | rcsr;
- 			if ((ctx->fcr31 >> 5) & ctx->fcr31 & FPU_CSR_ALL_E) {
-@@ -1660,16 +1668,26 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 				goto copcsr;
- 			}
- 		      copcsr:
--			if (ieee754_cxtest(IEEE754_INEXACT))
-+			if (ieee754_cxtest(IEEE754_INEXACT)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_inexact);
- 				rcsr |= FPU_CSR_INE_X | FPU_CSR_INE_S;
--			if (ieee754_cxtest(IEEE754_UNDERFLOW))
-+			}
-+			if (ieee754_cxtest(IEEE754_UNDERFLOW)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_underflow);
- 				rcsr |= FPU_CSR_UDF_X | FPU_CSR_UDF_S;
--			if (ieee754_cxtest(IEEE754_OVERFLOW))
-+			}
-+			if (ieee754_cxtest(IEEE754_OVERFLOW)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_overflow);
- 				rcsr |= FPU_CSR_OVF_X | FPU_CSR_OVF_S;
--			if (ieee754_cxtest(IEEE754_ZERO_DIVIDE))
-+			}
-+			if (ieee754_cxtest(IEEE754_ZERO_DIVIDE)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_zerodiv);
- 				rcsr |= FPU_CSR_DIV_X | FPU_CSR_DIV_S;
--			if (ieee754_cxtest(IEEE754_INVALID_OPERATION))
-+			}
-+			if (ieee754_cxtest(IEEE754_INVALID_OPERATION)) {
-+				MIPS_FPU_EMU_INC_STATS(ieee754_invalidop);
- 				rcsr |= FPU_CSR_INV_X | FPU_CSR_INV_S;
-+			}
- 			break;
- 
- 			/* unary conv ops */
-@@ -2179,6 +2197,11 @@ static int __init debugfs_fpuemu(void)
- 	FPU_STAT_CREATE(cp1ops);
- 	FPU_STAT_CREATE(cp1xops);
- 	FPU_STAT_CREATE(errors);
-+	FPU_STAT_CREATE(ieee754_inexact);
-+	FPU_STAT_CREATE(ieee754_underflow);
-+	FPU_STAT_CREATE(ieee754_overflow);
-+	FPU_STAT_CREATE(ieee754_zerodiv);
-+	FPU_STAT_CREATE(ieee754_invalidop);
- 
- 	return 0;
- }
--- 
-1.8.5.3
+paolo

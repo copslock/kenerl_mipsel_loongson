@@ -1,28 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 12:10:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50364 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2014 12:11:20 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4693 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6821742AbaE2KKanIGv- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 May 2014 12:10:30 +0200
+        with ESMTP id S6822093AbaE2KKfQe6vn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 May 2014 12:10:35 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 7E1ECB2E88AC7;
-        Thu, 29 May 2014 11:10:20 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 29 May
- 2014 11:10:22 +0100
+        by Websense Email Security Gateway with ESMTPS id 89666C3698256;
+        Thu, 29 May 2014 11:10:25 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Thu, 29 May 2014 11:10:22 +0100
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Thu, 29 May 2014 11:10:27 +0100
 Received: from asmith-linux.le.imgtec.org (192.168.154.62) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Thu, 29 May 2014 11:10:21 +0100
+ 14.3.174.1; Thu, 29 May 2014 11:10:27 +0100
 From:   Alex Smith <alex.smith@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     David Daney <david.daney@cavium.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        <devel@driverdev.osuosl.org>
-Subject: [PATCH 2/3] staging: octeon-ethernet: Move PHY activation to .ndo_open().
-Date:   Thu, 29 May 2014 11:10:02 +0100
-Message-ID: <1401358203-60225-3-git-send-email-alex.smith@imgtec.com>
+        Alex Smith <alex.smith@imgtec.com>, <linux-usb@vger.kernel.org>
+Subject: [PATCH 3/3] usb host/MIPS: Remove hard-coded OCTEON platform information.
+Date:   Thu, 29 May 2014 11:10:03 +0100
+Message-ID: <1401358203-60225-4-git-send-email-alex.smith@imgtec.com>
 X-Mailer: git-send-email 1.9.3
 In-Reply-To: <1401358203-60225-1-git-send-email-alex.smith@imgtec.com>
 References: <1401358203-60225-1-git-send-email-alex.smith@imgtec.com>
@@ -33,7 +29,7 @@ Return-Path: <Alex.Smith@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40347
+X-archive-position: 40348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,504 +48,329 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-This prevents PHY not found types of errors for PHY drivers that are
-probed after the Ethernet driver is probed, because the ifconfig UP is
-done from userspace after all drivers have been probed.
-
-Also avoid the cvmx-helper-board.c PHY code if a real PHY driver is
-present, this allows a bootloader supplied device tree to specify the
-PHY information rather than having to modify the code for each
-different board.
+The device tree will *always* have correct ehci/ohci clock
+configuration, so use it.  This allows us to remove a big chunk of
+platform configuration code from octeon-platform.c.
 
 Tested-by: Alex Smith <alex.smith@imgtec.com>
 Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-Cc: devel@driverdev.osuosl.org
+Cc: linux-usb@vger.kernel.org
 ---
- .../cavium-octeon/executive/cvmx-helper-sgmii.c    | 12 ++-
- drivers/staging/octeon/ethernet-mdio.c             | 79 ++++++++++++++------
- drivers/staging/octeon/ethernet-rgmii.c            | 23 ++++--
- drivers/staging/octeon/ethernet-sgmii.c            | 87 +++++++++++++---------
- drivers/staging/octeon/ethernet-xaui.c             | 83 +++++++++++++--------
- drivers/staging/octeon/ethernet.c                  |  2 +-
- drivers/staging/octeon/octeon-ethernet.h           |  4 +
- 7 files changed, 189 insertions(+), 101 deletions(-)
+ arch/mips/cavium-octeon/octeon-platform.c | 102 ------------------------------
+ drivers/usb/host/ehci-octeon.c            |  17 +++--
+ drivers/usb/host/octeon2-common.c         |  47 ++++++++++++--
+ drivers/usb/host/ohci-octeon.c            |  17 +++--
+ 4 files changed, 69 insertions(+), 114 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-index 45f18cc..6f9609e 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-@@ -317,10 +317,14 @@ static int __cvmx_helper_sgmii_hardware_init(int interface, int num_ports)
- 	for (index = 0; index < num_ports; index++) {
- 		int ipd_port = cvmx_helper_get_ipd_port(interface, index);
- 		__cvmx_helper_sgmii_hardware_init_one_time(interface, index);
--		__cvmx_helper_sgmii_link_set(ipd_port,
--					     __cvmx_helper_sgmii_link_get
--					     (ipd_port));
--
-+		/* Linux kernel driver will call ....link_set with the
-+		 * proper link state. In the simulator there is no
-+		 * link state polling and hence it is set from
-+		 * here.
-+		 */
-+		if (cvmx_sysinfo_get()->board_type == CVMX_BOARD_TYPE_SIM)
-+			__cvmx_helper_sgmii_link_set(ipd_port,
-+				       __cvmx_helper_sgmii_link_get(ipd_port));
- 	}
- 
- 	return 0;
-diff --git a/drivers/staging/octeon/ethernet-mdio.c b/drivers/staging/octeon/ethernet-mdio.c
-index 3f067f1..ebfa9c9 100644
---- a/drivers/staging/octeon/ethernet-mdio.c
-+++ b/drivers/staging/octeon/ethernet-mdio.c
-@@ -116,7 +116,34 @@ int cvm_oct_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
- 	return phy_mii_ioctl(priv->phydev, rq, cmd);
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 6df0f4d..f8cced4 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -66,108 +66,6 @@ out:
  }
+ device_initcall(octeon_rng_device_init);
  
--static void cvm_oct_adjust_link(struct net_device *dev)
-+static void cvm_oct_note_carrier(struct octeon_ethernet *priv,
-+				 cvmx_helper_link_info_t li)
-+{
-+	if (li.s.link_up) {
-+		pr_notice_ratelimited("%s: %u Mbps %s duplex, port %d\n",
-+				      netdev_name(priv->netdev), li.s.speed,
-+				      (li.s.full_duplex) ? "Full" : "Half",
-+				      priv->port);
-+	} else {
-+		pr_notice_ratelimited("%s: Link down\n",
-+				      netdev_name(priv->netdev));
-+	}
-+}
-+
-+void cvm_oct_set_carrier(struct octeon_ethernet *priv,
-+			 cvmx_helper_link_info_t link_info)
-+{
-+	cvm_oct_note_carrier(priv, link_info);
-+	if (link_info.s.link_up) {
-+		if (!netif_carrier_ok(priv->netdev))
-+			netif_carrier_on(priv->netdev);
-+	} else {
-+		if (netif_carrier_ok(priv->netdev))
-+			netif_carrier_off(priv->netdev);
-+	}
-+}
-+
-+void cvm_oct_adjust_link(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
- 	cvmx_helper_link_info_t link_info;
-@@ -127,28 +154,32 @@ static void cvm_oct_adjust_link(struct net_device *dev)
- 		link_info.s.link_up = priv->last_link ? 1 : 0;
- 		link_info.s.full_duplex = priv->phydev->duplex ? 1 : 0;
- 		link_info.s.speed = priv->phydev->speed;
-+
- 		cvmx_helper_link_set(priv->port, link_info);
--		if (priv->last_link) {
--			netif_carrier_on(dev);
--			if (priv->queue != -1)
--				printk_ratelimited("%s: %u Mbps %s duplex, "
--					"port %2d, queue %2d\n", dev->name,
--					priv->phydev->speed,
--					priv->phydev->duplex ? "Full" : "Half",
--					priv->port, priv->queue);
--			else
--				printk_ratelimited("%s: %u Mbps %s duplex, "
--					"port %2d, POW\n", dev->name,
--					priv->phydev->speed,
--					priv->phydev->duplex ? "Full" : "Half",
--					priv->port);
--		} else {
--			netif_carrier_off(dev);
--			printk_ratelimited("%s: Link down\n", dev->name);
+-#ifdef CONFIG_USB
+-
+-static int __init octeon_ehci_device_init(void)
+-{
+-	struct platform_device *pd;
+-	int ret = 0;
+-
+-	struct resource usb_resources[] = {
+-		{
+-			.flags	= IORESOURCE_MEM,
+-		}, {
+-			.flags	= IORESOURCE_IRQ,
 -		}
-+		cvm_oct_note_carrier(priv, link_info);
+-	};
+-
+-	/* Only Octeon2 has ehci/ohci */
+-	if (!OCTEON_IS_MODEL(OCTEON_CN63XX))
+-		return 0;
+-
+-	if (octeon_is_simulation() || usb_disabled())
+-		return 0; /* No USB in the simulator. */
+-
+-	pd = platform_device_alloc("octeon-ehci", 0);
+-	if (!pd) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	usb_resources[0].start = 0x00016F0000000000ULL;
+-	usb_resources[0].end = usb_resources[0].start + 0x100;
+-
+-	usb_resources[1].start = OCTEON_IRQ_USB0;
+-	usb_resources[1].end = OCTEON_IRQ_USB0;
+-
+-	ret = platform_device_add_resources(pd, usb_resources,
+-					    ARRAY_SIZE(usb_resources));
+-	if (ret)
+-		goto fail;
+-
+-	ret = platform_device_add(pd);
+-	if (ret)
+-		goto fail;
+-
+-	return ret;
+-fail:
+-	platform_device_put(pd);
+-out:
+-	return ret;
+-}
+-device_initcall(octeon_ehci_device_init);
+-
+-static int __init octeon_ohci_device_init(void)
+-{
+-	struct platform_device *pd;
+-	int ret = 0;
+-
+-	struct resource usb_resources[] = {
+-		{
+-			.flags	= IORESOURCE_MEM,
+-		}, {
+-			.flags	= IORESOURCE_IRQ,
+-		}
+-	};
+-
+-	/* Only Octeon2 has ehci/ohci */
+-	if (!OCTEON_IS_MODEL(OCTEON_CN63XX))
+-		return 0;
+-
+-	if (octeon_is_simulation() || usb_disabled())
+-		return 0; /* No USB in the simulator. */
+-
+-	pd = platform_device_alloc("octeon-ohci", 0);
+-	if (!pd) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	usb_resources[0].start = 0x00016F0000000400ULL;
+-	usb_resources[0].end = usb_resources[0].start + 0x100;
+-
+-	usb_resources[1].start = OCTEON_IRQ_USB0;
+-	usb_resources[1].end = OCTEON_IRQ_USB0;
+-
+-	ret = platform_device_add_resources(pd, usb_resources,
+-					    ARRAY_SIZE(usb_resources));
+-	if (ret)
+-		goto fail;
+-
+-	ret = platform_device_add(pd);
+-	if (ret)
+-		goto fail;
+-
+-	return ret;
+-fail:
+-	platform_device_put(pd);
+-out:
+-	return ret;
+-}
+-device_initcall(octeon_ohci_device_init);
+-
+-#endif /* CONFIG_USB */
+-
+ static struct of_device_id __initdata octeon_ids[] = {
+ 	{ .compatible = "simple-bus", },
+ 	{ .compatible = "cavium,octeon-6335-uctl", },
+diff --git a/drivers/usb/host/ehci-octeon.c b/drivers/usb/host/ehci-octeon.c
+index 9051439..e1a264f5 100644
+--- a/drivers/usb/host/ehci-octeon.c
++++ b/drivers/usb/host/ehci-octeon.c
+@@ -19,14 +19,14 @@
+ #define OCTEON_EHCI_HCD_NAME "octeon-ehci"
+ 
+ /* Common clock init code.  */
+-void octeon2_usb_clocks_start(void);
++void octeon2_usb_clocks_start(struct device *dev);
+ void octeon2_usb_clocks_stop(void);
+ 
+-static void ehci_octeon_start(void)
++static void ehci_octeon_start(struct device *dev)
+ {
+ 	union cvmx_uctlx_ehci_ctl ehci_ctl;
+ 
+-	octeon2_usb_clocks_start();
++	octeon2_usb_clocks_start(dev);
+ 
+ 	ehci_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_EHCI_CTL(0));
+ 	/* Use 64-bit addressing. */
+@@ -134,7 +134,7 @@ static int ehci_octeon_drv_probe(struct platform_device *pdev)
+ 		goto err1;
  	}
- }
  
-+int cvm_oct_common_stop(struct net_device *dev)
-+{
-+	struct octeon_ethernet *priv = netdev_priv(dev);
-+	cvmx_helper_link_info_t link_info;
-+
-+	priv->poll = NULL;
-+
-+	if (priv->phydev)
-+		phy_disconnect(priv->phydev);
-+	priv->phydev = NULL;
-+
-+	if (priv->last_link) {
-+		link_info.u64 = 0;
-+		priv->last_link = 0;
-+
-+		cvmx_helper_link_set(priv->port, link_info);
-+		cvm_oct_note_carrier(priv, link_info);
-+	}
-+	return 0;
-+}
+-	ehci_octeon_start();
++	ehci_octeon_start(&pdev->dev);
  
- /**
-  * cvm_oct_phy_setup_device - setup the PHY
-@@ -163,11 +194,11 @@ int cvm_oct_phy_setup_device(struct net_device *dev)
- 	struct device_node *phy_node;
+ 	ehci = hcd_to_ehci(hcd);
  
- 	if (!priv->of_node)
--		return 0;
-+		goto no_phy;
- 
- 	phy_node = of_parse_phandle(priv->of_node, "phy-handle", 0);
- 	if (!phy_node)
--		return 0;
-+		goto no_phy;
- 
- 	priv->phydev = of_phy_connect(dev, phy_node, cvm_oct_adjust_link, 0,
- 				      PHY_INTERFACE_MODE_GMII);
-@@ -179,4 +210,10 @@ int cvm_oct_phy_setup_device(struct net_device *dev)
- 	phy_start_aneg(priv->phydev);
- 
+@@ -175,6 +175,14 @@ static int ehci_octeon_drv_remove(struct platform_device *pdev)
  	return 0;
-+no_phy:
-+	/* If there is no phy, assume a direct MAC connection and that
-+	 * the link is up.
-+	 */
-+	netif_carrier_on(dev);
-+	return 0;
  }
-diff --git a/drivers/staging/octeon/ethernet-rgmii.c b/drivers/staging/octeon/ethernet-rgmii.c
-index 0ec0da3..651be7e 100644
---- a/drivers/staging/octeon/ethernet-rgmii.c
-+++ b/drivers/staging/octeon/ethernet-rgmii.c
-@@ -36,6 +36,7 @@
- #include "ethernet-defines.h"
- #include "octeon-ethernet.h"
- #include "ethernet-util.h"
-+#include "ethernet-mdio.h"
  
- #include <asm/octeon/cvmx-helper.h>
- 
-@@ -302,15 +303,28 @@ int cvm_oct_rgmii_open(struct net_device *dev)
- 	int interface = INTERFACE(priv->port);
- 	int index = INDEX(priv->port);
- 	cvmx_helper_link_info_t link_info;
-+	int rv;
++static struct of_device_id ehci_octeon_match[] = {
++	{
++		.compatible = "cavium,octeon-6335-ehci",
++	},
++	{},
++};
++MODULE_DEVICE_TABLE(of, ehci_octeon_match);
 +
-+	rv = cvm_oct_phy_setup_device(dev);
-+	if (rv)
-+		return rv;
+ static struct platform_driver ehci_octeon_driver = {
+ 	.probe		= ehci_octeon_drv_probe,
+ 	.remove		= ehci_octeon_drv_remove,
+@@ -182,6 +190,7 @@ static struct platform_driver ehci_octeon_driver = {
+ 	.driver = {
+ 		.name	= OCTEON_EHCI_HCD_NAME,
+ 		.owner	= THIS_MODULE,
++		.of_match_table = ehci_octeon_match,
+ 	}
+ };
  
- 	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
- 	gmx_cfg.s.en = 1;
- 	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
+diff --git a/drivers/usb/host/octeon2-common.c b/drivers/usb/host/octeon2-common.c
+index d9df423..3c7c13a 100644
+--- a/drivers/usb/host/octeon2-common.c
++++ b/drivers/usb/host/octeon2-common.c
+@@ -6,9 +6,11 @@
+  * Copyright (C) 2010, 2011 Cavium Networks
+  */
  
- 	if (!octeon_is_simulation()) {
--		link_info = cvmx_helper_link_get(priv->port);
--		if (!link_info.s.link_up)
--			netif_carrier_off(dev);
-+		if (priv->phydev) {
-+			int r = phy_read_status(priv->phydev);
-+			if (r == 0 && priv->phydev->link == 0)
-+				netif_carrier_off(dev);
-+			cvm_oct_adjust_link(dev);
-+		} else {
-+			link_info = cvmx_helper_link_get(priv->port);
-+			if (!link_info.s.link_up)
-+				netif_carrier_off(dev);
-+			priv->poll = cvm_oct_rgmii_poll;
++#include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/delay.h>
++#include <linux/of.h>
+ 
+ #include <asm/octeon/octeon.h>
+ #include <asm/octeon/cvmx-uctlx-defs.h>
+@@ -17,13 +19,15 @@ static DEFINE_MUTEX(octeon2_usb_clocks_mutex);
+ 
+ static int octeon2_usb_clock_start_cnt;
+ 
+-void octeon2_usb_clocks_start(void)
++void octeon2_usb_clocks_start(struct device *dev)
+ {
+ 	u64 div;
+ 	union cvmx_uctlx_if_ena if_ena;
+ 	union cvmx_uctlx_clk_rst_ctl clk_rst_ctl;
+ 	union cvmx_uctlx_uphy_ctl_status uphy_ctl_status;
+ 	union cvmx_uctlx_uphy_portx_ctl_status port_ctl_status;
++	u32 clock_rate = 12000000;
++	bool is_crystal_clock = false;
+ 	int i;
+ 	unsigned long io_clk_64_to_ns;
+ 
+@@ -36,6 +40,28 @@ void octeon2_usb_clocks_start(void)
+ 
+ 	io_clk_64_to_ns = 64000000000ull / octeon_get_io_clock_rate();
+ 
++	if (dev->of_node) {
++		struct device_node *uctl_node;
++		const char *clock_type;
++
++		uctl_node = of_get_parent(dev->of_node);
++		if (!uctl_node) {
++			dev_err(dev, "No UCTL device node\n");
++			goto exit;
 +		}
- 	}
- 
- 	return 0;
-@@ -326,7 +340,7 @@ int cvm_oct_rgmii_stop(struct net_device *dev)
- 	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
- 	gmx_cfg.s.en = 0;
- 	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
--	return 0;
-+	return cvm_oct_common_stop(dev);
- }
- 
- static void cvm_oct_rgmii_immediate_poll(struct work_struct *work)
-@@ -384,7 +398,6 @@ int cvm_oct_rgmii_init(struct net_device *dev)
- 			gmx_rx_int_en.s.phy_spd = 1;
- 			cvmx_write_csr(CVMX_GMXX_RXX_INT_EN(index, interface),
- 				       gmx_rx_int_en.u64);
--			priv->poll = cvm_oct_rgmii_poll;
- 		}
- 	}
- 
-diff --git a/drivers/staging/octeon/ethernet-sgmii.c b/drivers/staging/octeon/ethernet-sgmii.c
-index d3e8243..e187844 100644
---- a/drivers/staging/octeon/ethernet-sgmii.c
-+++ b/drivers/staging/octeon/ethernet-sgmii.c
-@@ -24,6 +24,7 @@
-  * This file may also be available under a different license from Cavium.
-  * Contact Cavium Networks for more information
- **********************************************************************/
-+#include <linux/phy.h>
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
- #include <linux/ratelimit.h>
-@@ -34,45 +35,12 @@
- #include "ethernet-defines.h"
- #include "octeon-ethernet.h"
- #include "ethernet-util.h"
-+#include "ethernet-mdio.h"
- 
- #include <asm/octeon/cvmx-helper.h>
- 
- #include <asm/octeon/cvmx-gmxx-defs.h>
- 
--int cvm_oct_sgmii_open(struct net_device *dev)
--{
--	union cvmx_gmxx_prtx_cfg gmx_cfg;
--	struct octeon_ethernet *priv = netdev_priv(dev);
--	int interface = INTERFACE(priv->port);
--	int index = INDEX(priv->port);
--	cvmx_helper_link_info_t link_info;
--
--	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
--	gmx_cfg.s.en = 1;
--	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
--
--	if (!octeon_is_simulation()) {
--		link_info = cvmx_helper_link_get(priv->port);
--		if (!link_info.s.link_up)
--			netif_carrier_off(dev);
--	}
--
--	return 0;
--}
--
--int cvm_oct_sgmii_stop(struct net_device *dev)
--{
--	union cvmx_gmxx_prtx_cfg gmx_cfg;
--	struct octeon_ethernet *priv = netdev_priv(dev);
--	int interface = INTERFACE(priv->port);
--	int index = INDEX(priv->port);
--
--	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
--	gmx_cfg.s.en = 0;
--	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
--	return 0;
--}
--
- static void cvm_oct_sgmii_poll(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
-@@ -109,13 +77,58 @@ static void cvm_oct_sgmii_poll(struct net_device *dev)
- 	}
- }
- 
--int cvm_oct_sgmii_init(struct net_device *dev)
-+int cvm_oct_sgmii_open(struct net_device *dev)
- {
-+	union cvmx_gmxx_prtx_cfg gmx_cfg;
- 	struct octeon_ethernet *priv = netdev_priv(dev);
-+	int interface = INTERFACE(priv->port);
-+	int index = INDEX(priv->port);
-+	cvmx_helper_link_info_t link_info;
-+	int rv;
++		i = of_property_read_u32(uctl_node,
++					 "refclk-frequency", &clock_rate);
++		if (i) {
++			dev_err(dev, "No UCTL \"refclk-frequency\"\n");
++			goto exit;
++		}
++		i = of_property_read_string(uctl_node,
++					    "refclk-type", &clock_type);
 +
-+	rv = cvm_oct_phy_setup_device(dev);
-+	if (rv)
-+		return rv;
-+
-+	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
-+	gmx_cfg.s.en = 1;
-+	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
-+
-+	if (octeon_is_simulation())
-+		return 0;
-+
-+	if (priv->phydev) {
-+		int r = phy_read_status(priv->phydev);
-+		if (r == 0 && priv->phydev->link == 0)
-+			netif_carrier_off(dev);
-+		cvm_oct_adjust_link(dev);
-+	} else {
-+		link_info = cvmx_helper_link_get(priv->port);
-+		if (!link_info.s.link_up)
-+			netif_carrier_off(dev);
-+		priv->poll = cvm_oct_sgmii_poll;
-+		cvm_oct_sgmii_poll(dev);
++		if (!i && strcmp("crystal", clock_type) == 0)
++			is_crystal_clock = true;
 +	}
-+	return 0;
-+}
 +
-+int cvm_oct_sgmii_stop(struct net_device *dev)
-+{
-+	union cvmx_gmxx_prtx_cfg gmx_cfg;
-+	struct octeon_ethernet *priv = netdev_priv(dev);
-+	int interface = INTERFACE(priv->port);
-+	int index = INDEX(priv->port);
-+
-+	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
-+	gmx_cfg.s.en = 0;
-+	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
-+	return cvm_oct_common_stop(dev);
-+}
-+
-+int cvm_oct_sgmii_init(struct net_device *dev)
-+{
- 	cvm_oct_common_init(dev);
- 	dev->netdev_ops->ndo_stop(dev);
--	if (!octeon_is_simulation() && priv->phydev == NULL)
--		priv->poll = cvm_oct_sgmii_poll;
- 
- 	/* FIXME: Need autoneg logic */
- 	return 0;
-diff --git a/drivers/staging/octeon/ethernet-xaui.c b/drivers/staging/octeon/ethernet-xaui.c
-index 419f8c3..20b3533 100644
---- a/drivers/staging/octeon/ethernet-xaui.c
-+++ b/drivers/staging/octeon/ethernet-xaui.c
-@@ -24,6 +24,7 @@
-  * This file may also be available under a different license from Cavium.
-  * Contact Cavium Networks for more information
- **********************************************************************/
-+#include <linux/phy.h>
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
- #include <linux/ratelimit.h>
-@@ -34,44 +35,12 @@
- #include "ethernet-defines.h"
- #include "octeon-ethernet.h"
- #include "ethernet-util.h"
-+#include "ethernet-mdio.h"
- 
- #include <asm/octeon/cvmx-helper.h>
- 
- #include <asm/octeon/cvmx-gmxx-defs.h>
- 
--int cvm_oct_xaui_open(struct net_device *dev)
--{
--	union cvmx_gmxx_prtx_cfg gmx_cfg;
--	struct octeon_ethernet *priv = netdev_priv(dev);
--	int interface = INTERFACE(priv->port);
--	int index = INDEX(priv->port);
--	cvmx_helper_link_info_t link_info;
--
--	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
--	gmx_cfg.s.en = 1;
--	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
--
--	if (!octeon_is_simulation()) {
--		link_info = cvmx_helper_link_get(priv->port);
--		if (!link_info.s.link_up)
--			netif_carrier_off(dev);
--	}
--	return 0;
--}
--
--int cvm_oct_xaui_stop(struct net_device *dev)
--{
--	union cvmx_gmxx_prtx_cfg gmx_cfg;
--	struct octeon_ethernet *priv = netdev_priv(dev);
--	int interface = INTERFACE(priv->port);
--	int index = INDEX(priv->port);
--
--	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
--	gmx_cfg.s.en = 0;
--	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
--	return 0;
--}
--
- static void cvm_oct_xaui_poll(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
-@@ -108,6 +77,54 @@ static void cvm_oct_xaui_poll(struct net_device *dev)
- 	}
- }
- 
-+int cvm_oct_xaui_open(struct net_device *dev)
-+{
-+	union cvmx_gmxx_prtx_cfg gmx_cfg;
-+	struct octeon_ethernet *priv = netdev_priv(dev);
-+	int interface = INTERFACE(priv->port);
-+	int index = INDEX(priv->port);
-+	cvmx_helper_link_info_t link_info;
-+	int rv;
-+
-+	rv = cvm_oct_phy_setup_device(dev);
-+	if (rv)
-+		return rv;
-+
-+	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
-+	gmx_cfg.s.en = 1;
-+	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
-+
-+	if (octeon_is_simulation())
-+		return 0;
-+
-+	if (priv->phydev) {
-+		int r = phy_read_status(priv->phydev);
-+		if (r == 0 && priv->phydev->link == 0)
-+			netif_carrier_off(dev);
-+		cvm_oct_adjust_link(dev);
-+	} else {
-+		link_info = cvmx_helper_link_get(priv->port);
-+		if (!link_info.s.link_up)
-+			netif_carrier_off(dev);
-+		priv->poll = cvm_oct_xaui_poll;
-+		cvm_oct_xaui_poll(dev);
-+	}
-+	return 0;
-+}
-+
-+int cvm_oct_xaui_stop(struct net_device *dev)
-+{
-+	union cvmx_gmxx_prtx_cfg gmx_cfg;
-+	struct octeon_ethernet *priv = netdev_priv(dev);
-+	int interface = INTERFACE(priv->port);
-+	int index = INDEX(priv->port);
-+
-+	gmx_cfg.u64 = cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
-+	gmx_cfg.s.en = 0;
-+	cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface), gmx_cfg.u64);
-+	return cvm_oct_common_stop(dev);
-+}
-+
- int cvm_oct_xaui_init(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
-diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/ethernet.c
-index da9dd6b..2aa7235 100644
---- a/drivers/staging/octeon/ethernet.c
-+++ b/drivers/staging/octeon/ethernet.c
-@@ -471,7 +471,6 @@ int cvm_oct_common_init(struct net_device *dev)
- 	dev->features |= NETIF_F_LLTX;
- 	dev->ethtool_ops = &cvm_oct_ethtool_ops;
- 
--	cvm_oct_phy_setup_device(dev);
- 	cvm_oct_set_mac_filter(dev);
- 	dev->netdev_ops->ndo_change_mtu(dev, dev->mtu);
- 
-@@ -722,6 +721,7 @@ static int cvm_oct_probe(struct platform_device *pdev)
- 
- 			/* Initialize the device private structure. */
- 			priv = netdev_priv(dev);
-+			priv->netdev = dev;
- 			priv->of_node = cvm_oct_node_for_port(pip, interface,
- 								port_index);
- 
-diff --git a/drivers/staging/octeon/octeon-ethernet.h b/drivers/staging/octeon/octeon-ethernet.h
-index 4cf3884..d0e3211 100644
---- a/drivers/staging/octeon/octeon-ethernet.h
-+++ b/drivers/staging/octeon/octeon-ethernet.h
-@@ -44,6 +44,8 @@ struct octeon_ethernet {
- 	int queue;
- 	/* Hardware fetch and add to count outstanding tx buffers */
- 	int fau;
-+	/* My netdev. */
-+	struct net_device *netdev;
  	/*
- 	 * Type of port. This is one of the enums in
- 	 * cvmx_helper_interface_mode_t
-@@ -85,6 +87,8 @@ extern int cvm_oct_xaui_stop(struct net_device *dev);
+ 	 * Step 1: Wait for voltages stable.  That surely happened
+ 	 * before starting the kernel.
+@@ -66,9 +92,22 @@ void octeon2_usb_clocks_start(void)
+ 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
  
- extern int cvm_oct_common_init(struct net_device *dev);
- extern void cvm_oct_common_uninit(struct net_device *dev);
-+void cvm_oct_adjust_link(struct net_device *dev);
-+int cvm_oct_common_stop(struct net_device *dev);
+ 	/* 3b */
+-	/* 12MHz crystal. */
+-	clk_rst_ctl.s.p_refclk_sel = 0;
+-	clk_rst_ctl.s.p_refclk_div = 0;
++	clk_rst_ctl.s.p_refclk_sel = is_crystal_clock ? 0 : 1;
++	switch (clock_rate) {
++	default:
++		pr_err("Invalid UCTL clock rate of %u, using 12000000 instead\n",
++			clock_rate);
++		/* Fall through */
++	case 12000000:
++		clk_rst_ctl.s.p_refclk_div = 0;
++		break;
++	case 24000000:
++		clk_rst_ctl.s.p_refclk_div = 1;
++		break;
++	case 48000000:
++		clk_rst_ctl.s.p_refclk_div = 2;
++		break;
++	}
+ 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
  
- extern int always_use_pow;
- extern int pow_send_group;
+ 	/* 3c */
+diff --git a/drivers/usb/host/ohci-octeon.c b/drivers/usb/host/ohci-octeon.c
+index 15af895..2127290 100644
+--- a/drivers/usb/host/ohci-octeon.c
++++ b/drivers/usb/host/ohci-octeon.c
+@@ -19,14 +19,14 @@
+ #define OCTEON_OHCI_HCD_NAME "octeon-ohci"
+ 
+ /* Common clock init code.  */
+-void octeon2_usb_clocks_start(void);
++void octeon2_usb_clocks_start(struct device *dev);
+ void octeon2_usb_clocks_stop(void);
+ 
+-static void ohci_octeon_hw_start(void)
++static void ohci_octeon_hw_start(struct device *dev)
+ {
+ 	union cvmx_uctlx_ohci_ctl ohci_ctl;
+ 
+-	octeon2_usb_clocks_start();
++	octeon2_usb_clocks_start(dev);
+ 
+ 	ohci_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_OHCI_CTL(0));
+ 	ohci_ctl.s.l2c_addr_msb = 0;
+@@ -144,7 +144,7 @@ static int ohci_octeon_drv_probe(struct platform_device *pdev)
+ 		goto err1;
+ 	}
+ 
+-	ohci_octeon_hw_start();
++	ohci_octeon_hw_start(&pdev->dev);
+ 
+ 	hcd->regs = reg_base;
+ 
+@@ -189,6 +189,14 @@ static int ohci_octeon_drv_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static struct of_device_id ohci_octeon_match[] = {
++	{
++		.compatible = "cavium,octeon-6335-ohci",
++	},
++	{},
++};
++MODULE_DEVICE_TABLE(of, ohci_octeon_match);
++
+ static struct platform_driver ohci_octeon_driver = {
+ 	.probe		= ohci_octeon_drv_probe,
+ 	.remove		= ohci_octeon_drv_remove,
+@@ -196,6 +204,7 @@ static struct platform_driver ohci_octeon_driver = {
+ 	.driver = {
+ 		.name	= OCTEON_OHCI_HCD_NAME,
+ 		.owner	= THIS_MODULE,
++		.of_match_table = ohci_octeon_match,
+ 	}
+ };
+ 
 -- 
 1.9.3

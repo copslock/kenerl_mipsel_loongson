@@ -1,43 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 09:19:42 +0200 (CEST)
-Received: from [119.145.14.64] ([119.145.14.64]:43717 "EHLO
-        szxga01-in.huawei.com" rhost-flags-FAIL-FAIL-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823925AbaE3HJGqNqGq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 09:09:06 +0200
-Received: from 172.24.2.119 (EHLO szxeml206-edg.china.huawei.com) ([172.24.2.119])
-        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id BWF06737;
-        Fri, 30 May 2014 15:08:32 +0800 (CST)
-Received: from SZXEML419-HUB.china.huawei.com (10.82.67.158) by
- szxeml206-edg.china.huawei.com (172.24.2.59) with Microsoft SMTP Server (TLS)
- id 14.3.158.1; Fri, 30 May 2014 15:08:15 +0800
-Received: from [127.0.0.1] (10.177.25.181) by szxeml419-hub.china.huawei.com
- (10.82.67.158) with Microsoft SMTP Server id 14.3.158.1; Fri, 30 May 2014
- 15:08:18 +0800
-Message-ID: <53882E60.5070602@huawei.com>
-Date:   Fri, 30 May 2014 15:08:16 +0800
-From:   Libin <huawei.libin@huawei.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 09:57:33 +0200 (CEST)
+Received: from mail-wg0-f44.google.com ([74.125.82.44]:44073 "EHLO
+        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6820484AbaE3H52NF0HD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 09:57:28 +0200
+Received: by mail-wg0-f44.google.com with SMTP id a1so1538156wgh.3
+        for <multiple recipients>; Fri, 30 May 2014 00:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=mm/DEUrJPxypjmI7aaBTrdwt6WCQU0VawD4a75Cv7dM=;
+        b=g5BzzNzmOhD3WvfO/aQSA13Haq85H+j6Hkl5KSRhVdnabYNU7QtT40XD7JtNMkFMAz
+         +fgDyPEUvoajpuk9x8JH7nTwqMcbHYWm6stEgJhNsZmYEd4I0FEH0ZJMT6O4F1iVOk0R
+         2pqLSqWR0jHrUvR8fS0pTCTxd0piMuU86flvMbpFBdct59xyMbnE/GXB/f01OIgLg8lw
+         bBly6rFYsA0OTr+MPu8a7C+N7OuvtA2G6+Til7sWTFNhezRSlyWTNFPIINtVpjOAt9kK
+         4rDVcCLEQPtUQur9YD/r8u44xc8DTFxQbRFXmXDCQbTJxDvcrCO4hOWH944k86bbca1O
+         LD9g==
+X-Received: by 10.180.100.129 with SMTP id ey1mr4075170wib.60.1401436642833;
+        Fri, 30 May 2014 00:57:22 -0700 (PDT)
+Received: from yakj.usersys.redhat.com (net-37-117-132-7.cust.vodafonedsl.it. [37.117.132.7])
+        by mx.google.com with ESMTPSA id bj2sm3825417wib.3.2014.05.30.00.57.20
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 30 May 2014 00:57:21 -0700 (PDT)
+Message-ID: <538839DE.3000804@redhat.com>
+Date:   Fri, 30 May 2014 09:57:18 +0200
+From:   Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>, Li Zefan <lizefan@huawei.com>
-CC:     Yong Zhang <yong.zhang@windriver.com>, <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Xinwei Hu <huxinwei@huawei.com>
-Subject: Re: [PATCH V2] MIPS: change type of asid_cache to unsigned long
-References: <1400650563-1033-1-git-send-email-yong.zhang@windriver.com> <5384119E.7010606@huawei.com> <20140528200929.GA30528@drone.musicnaut.iki.fi>
-In-Reply-To: <20140528200929.GA30528@drone.musicnaut.iki.fi>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.25.181]
-X-CFilter-Loop: Reflected
-Return-Path: <huawei.libin@huawei.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>,
+        Sanjay Lal <sanjayl@kymasys.com>
+Subject: Re: [PATCH v2 00/23] MIPS: KVM: Fixes and guest timer rewrite
+References: <1401355005-20370-1-git-send-email-james.hogan@imgtec.com> <53870DAD.7050900@redhat.com> <53874719.5070604@imgtec.com> <538750F8.7040202@redhat.com> <53875FEE.1020607@imgtec.com> <53876850.20600@redhat.com> <53879C3E.3040102@imgtec.com>
+In-Reply-To: <53879C3E.3040102@imgtec.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <paolo.bonzini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40375
+X-archive-position: 40378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: huawei.libin@huawei.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,92 +61,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/5/29 4:09, Aaro Koskinen wrote:
-> Hi,
-> 
-> On Tue, May 27, 2014 at 12:16:30PM +0800, Li Zefan wrote:
->> On 2014/5/21 13:36, Yong Zhang wrote:
->>> asid_cache must be unsigned long otherwise on 64bit system
->>> it will become 0 if the value in get_new_mmu_context()
->>> reaches 0xffffffff and in the end the assumption of
->>> ASID_FIRST_VERSION is not true anymore thus leads to
->>> more dangerous things.
->>
->> We should describe what problem this bug can lead to, which
->> will help people who encounter the same problem and google it.
-> 
-> Please describe it, then. Even if the patch is already committed,
-> googling would probably still find this e-mail thread.
-> 
-> Thanks,
-> 
-> A.
-> 
-> 
+Il 29/05/2014 22:44, James Hogan ha scritto:
+> Yes, I agree with your analysis and had considered something like this,
+> although it doesn't particularly appeal to my sense of perfectionism :).
 
-Problem description:
-On our MIPS architecture product, after a long time running our business
-service, a random cpu trigger the problem, that if running test cases
-include the following code on this cpu will trigger bus error or
-segment fault:
-    ...
-    pid = fork();
-    if (pid < 0)
-        return 1;
-    if (0 == pid)
-        exit(0);
-    else
-            exit(0);
-    ...
+I can see that.  But I think the simplification of the code is worth it.
 
-Root cause:
-After doing a lot of fork/mmap/munmap operations, it will make the asid value
-exceeds 0xffffffff in get_new_mmu_context function, which is truncated to 0:
-|-get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
-    unsigned long asid = asid_cache(cpu); //if asid_cache(cpu) is 0xffffffff now
-    if (! ((asid += ASID_INC) & ASID_MASK) ) {  //asid reaches 0x1 0000 0000
-        ...
-        local_flush_tlb_all();         /* start new asid cycle */
-        if (!asid)             /* fix version if needed */  //but here condition does not meet...
-            asid = ASID_FIRST_VERSION;
-         }
-         cpu_context(cpu, mm) = asid_cache(cpu) = asid; //and here cpu_context and asid_cache is truncated to 0
+It is hard to explain why the invalid times-goes-backwards case can 
+happen if env->count_save_time is overwritten with data from another 
+machine.  I think the explanation is that (due to 
+timers_state.cpu_ticks_enabled) the value of "cpu_get_clock_at(now) - 
+env->count_save_time" does not depend on get_clock(), but the code 
+doesn't have any comment for that.
 
-In do_fork()->dup_mmap(), adding write-protect flag for writable page but the
-following tlb flush does not take effect, and breaks the normal COW:
-do_fork()
-|-copy_process()
-    |-copy_mm()
-        ...
-        |-dup_mmap()
-            |-copy_page_range()
-                ...
-                |-copy_one_pte()
-                ...
-                    if (is_cow_mapping(vm_flags)) {
-                        ptep_set_wrprotect(src_mm, addr, src_pte);
-                        pte = pte_wrprotect(pte);
-                    }
-                ...
-        |-flush_tlb_mm(oldmm)
-            |-local_flush_tlb_mm（）
-                if (cpu_context(cpu, mm) != 0) {//cpu_context is 0, no tlb flush
-                drop_mmu_context(mm, cpu);
-            }
+Rather than adding comments, we might as well force it to be always zero 
+and just write get_clock() to COUNT_RESUME.
 
-In addition, the condition ((cpu_context(cpu, next) ^ asid_cache(cpu))
-& ASID_VERSION_MASK) can not be met in switch_mm(), and the tlb flush operation
-can not be completed during the process switch.
-|-switch_mm()
-    ...
-    /* Check if our ASID is of an older version and thus invalid */
-    if ((cpu_context(cpu, next) ^ asid_cache(cpu)) & ASID_VERSION_MASK)
-        get_new_mmu_context(next, cpu);
-        write_c0_entryhi(cpu_asid(cpu, next));
-    ...
+Finally, having to serialize env->count_save_time makes harder to 
+support migration from TCG to KVM and back.
 
-In short, due to the truncation operation caused by inappropriate type conversion,
-making tlb flush failure, causing problems of COW, triggering bus error or segment fault.
+> It would be race free though, and if you're stopping the VM at all you
+> expect to lose some time anyway.
 
-Thanks,
-Libin
+Since you mentioned perfectionism, :) your code also loses some time; 
+COUNT_RESUME is written based on when the CPU state becomes clean, not 
+on when the CPU was restarted.
+
+Paolo

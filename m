@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 11:05:09 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:60198 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6822106AbaE3JFHgNnDH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 May 2014 11:05:07 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4U955Yf016913;
-        Fri, 30 May 2014 11:05:05 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4U954XN016912;
-        Fri, 30 May 2014 11:05:04 +0200
-Date:   Fri, 30 May 2014 11:05:04 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: Re: [PATCH][next: 3.16] MIPS: BCM47XX: Slightly clean memory
- detection
-Message-ID: <20140530090504.GJ5157@linux-mips.org>
-References: <1397904586-9773-1-git-send-email-zajec5@gmail.com>
- <CACna6ryVwqeSW22R3QrE1DcRkRmrJFWbpuHHm55DiazqXfabqw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACna6ryVwqeSW22R3QrE1DcRkRmrJFWbpuHHm55DiazqXfabqw@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 11:29:22 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:60528 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822106AbaE3J3UOnyyI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 11:29:20 +0200
+Received: from [194.158.52.142] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1WqJ7n-0003GA-D1; Fri, 30 May 2014 09:29:19 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     Leif Lindholm <leif.lindholm@linaro.org>
+Cc:     linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        John Crispin <blogic@openwrt.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.11.y.z extended stable] Patch "mips: dts: Fix missing device_type="memory" property in memory nodes" has been added to staging queue
+Date:   Fri, 30 May 2014 10:29:17 +0100
+Message-Id: <1401442157-10237-1-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.11
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40380
+X-archive-position: 40381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,19 +42,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 30, 2014 at 10:45:41AM +0200, Rafał Miłecki wrote:
+This is a note to let you know that I have just added a patch titled
 
-> On 19 April 2014 12:49, Rafał Miłecki <zajec5@gmail.com> wrote:
-> > Patch was tested on devices with 64 MiB and 256 MiB of RAM.
-> > It documents every part nicely and drops this hacky part of code:
-> > max = off | ((128 << 20) - 1);
-> 
-> I can't see this patch in any git tree. Am I missing some, or was this
-> patch forgotten?
+    mips: dts: Fix missing device_type="memory" property in memory nodes
 
-Nope - if it's in patchwork it's not forgotten.  Just slightly burried.
-Really, patchwork is the ledger.  If a patch is there, don't resend or
-I will hate you ;-)  If it's not there but should be, enquire.  If it's
-marked "Accepted" but doesn't show up anywhere - enquire.
+to the linux-3.11.y-queue branch of the 3.11.y.z extended stable tree 
+which can be found at:
 
-  Ralf
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.11.y-queue
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.11.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Luis
+
+------

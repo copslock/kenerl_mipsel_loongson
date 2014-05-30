@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 20:40:40 +0200 (CEST)
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:52405 "EHLO
-        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822998AbaE3SkiuVMcB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 20:40:38 +0200
-Received: from compute2.internal (compute2.nyi.mail.srv.osa [10.202.2.42])
-        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id 41E7120F23
-        for <linux-mips@linux-mips.org>; Fri, 30 May 2014 14:40:36 -0400 (EDT)
-Received: from frontend1 ([10.202.2.160])
-  by compute2.internal (MEProxy); Fri, 30 May 2014 14:40:36 -0400
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
-        messagingengine.com; h=message-id:date:from:mime-version:to:cc
-        :subject:references:in-reply-to:content-type
-        :content-transfer-encoding; s=smtpout; bh=F8g0//D0QC5lKKyEWzTtuU
-        oLsoY=; b=HhVOttIveNeL9frGO067g4/ggQDjVfOqJTGWztjUMW/nlyBVnByYsQ
-        zPXZLPepETAHFck/BgOzHBgviIpqv0eSTBdt8fN66u4KdjMYyQ6LPNBUvWGCf5I3
-        DkVvLqjrj2GMTnt3ZC+ifzFePJNjmi0VD5l4IFMGL0peJ268B+qqY=
-X-Sasl-enc: JISKrhsX4B8p22Qsizby0Nqtdor1pGqw/nrketk/pkcL 1401475235
-Received: from localhost.localdomain (unknown [83.249.107.137])
-        by mail.messagingengine.com (Postfix) with ESMTPA id C306DC007AA;
-        Fri, 30 May 2014 14:40:34 -0400 (EDT)
-Message-ID: <5388D0A1.9030005@iki.fi>
-Date:   Fri, 30 May 2014 21:40:33 +0300
-From:   Pekka Enberg <penberg@iki.fi>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 20:52:49 +0200 (CEST)
+Received: from smtp-out-150.synserver.de ([212.40.185.150]:1077 "EHLO
+        smtp-out-147.synserver.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6822106AbaE3SwrgoR0z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 20:52:47 +0200
+Received: (qmail 29647 invoked by uid 0); 30 May 2014 18:17:05 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 29400
+Received: from ppp-212-114-237-253.dynamic.mnet-online.de (HELO ?192.168.178.23?) [212.114.237.253]
+  by 217.119.54.87 with AES256-SHA encrypted SMTP; 30 May 2014 18:17:02 -0000
+Message-ID: <5388CB1B.3090802@metafoo.de>
+Date:   Fri, 30 May 2014 20:16:59 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20131103 Icedove/17.0.10
 MIME-Version: 1.0
-To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        Pekka Enberg <penberg@kernel.org>
-CC:     David Daney <ddaney.cavm@gmail.com>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>
-Subject: Re: [PATCH v3 00/12] kvm tools: Misc patches (mips support)
-References: <1401307735-16195-1-git-send-email-andreas.herrmann@caviumnetworks.com>
-In-Reply-To: <1401307735-16195-1-git-send-email-andreas.herrmann@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     abdoulaye berthe <berthe.ab@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>, m@bues.ch,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        patches@opensource.wolfsonmicro.com,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-samsungsoc@vger.kernel.org, spear-devel@list.st.com,
+        platform-driver-x86@vger.kernel.org,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>
+Subject: Re: [PATCH 2/2] gpio: gpiolib: set gpiochip_remove retval to void
+References: <20140530094025.3b78301e@canb.auug.org.au>        <1401449454-30895-1-git-send-email-berthe.ab@gmail.com>        <1401449454-30895-2-git-send-email-berthe.ab@gmail.com> <CAMuHMdV6AtjD2aqO3buzj8Eo7A7xc_+ROYnxEi2sdjMaqFiAuA@mail.gmail.com> <5388C0F1.90503@gmail.com>
+In-Reply-To: <5388C0F1.90503@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <penberg@iki.fi>
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40392
+X-archive-position: 40393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: penberg@iki.fi
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,13 +61,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/28/2014 11:08 PM, Andreas Herrmann wrote:
-> Hi,
+On 05/30/2014 07:33 PM, David Daney wrote:
+> On 05/30/2014 04:39 AM, Geert Uytterhoeven wrote:
+>> On Fri, May 30, 2014 at 1:30 PM, abdoulaye berthe <berthe.ab@gmail.com>
+>> wrote:
+>>> --- a/drivers/gpio/gpiolib.c
+>>> +++ b/drivers/gpio/gpiolib.c
+>>> @@ -1263,10 +1263,9 @@ static void gpiochip_irqchip_remove(struct
+>>> gpio_chip *gpiochip);
+>>>    *
+>>>    * A gpio_chip with any GPIOs still requested may not be removed.
+>>>    */
+>>> -int gpiochip_remove(struct gpio_chip *chip)
+>>> +void gpiochip_remove(struct gpio_chip *chip)
+>>>   {
+>>>          unsigned long   flags;
+>>> -       int             status = 0;
+>>>          unsigned        id;
+>>>
+>>>          acpi_gpiochip_remove(chip);
+>>> @@ -1278,24 +1277,15 @@ int gpiochip_remove(struct gpio_chip *chip)
+>>>          of_gpiochip_remove(chip);
+>>>
+>>>          for (id = 0; id < chip->ngpio; id++) {
+>>> -               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags)) {
+>>> -                       status = -EBUSY;
+>>> -                       break;
+>>> -               }
+>>> -       }
+>>> -       if (status == 0) {
+>>> -               for (id = 0; id < chip->ngpio; id++)
+>>> -                       chip->desc[id].chip = NULL;
+>>> -
+>>> -               list_del(&chip->list);
+>>> +               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags))
+>>> +                       panic("gpio: removing gpiochip with gpios still
+>>> requested\n");
+>>
+>> panic?
 >
-> This is v3 of my patch set to run lkvm on MIPS.
+> NACK to the patch for this reason.  The strongest thing you should do here
+> is WARN.
 >
-> It's rebased on v3.13-rc1-1436-g1fc83c5 of
-> git://github.com/penberg/linux-kvm.git
->
+> That said, I am not sure why we need this whole patch set in the first place.
 
-Applied, thanks!
+Well, what currently happens when you remove a device that is a provider of 
+a gpio_chip which is still in use, is that the kernel crashes. Probably with 
+a rather cryptic error message. So this patch doesn't really change the 
+behavior, but makes it more explicit what is actually wrong. And even if you 
+replace the panic() by a WARN() it will again just crash slightly later.
+
+This is a design flaw in the GPIO subsystem that needs to be fixed.
+
+- Lars

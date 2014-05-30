@@ -1,47 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 10:45:50 +0200 (CEST)
-Received: from mail-ob0-f174.google.com ([209.85.214.174]:38945 "EHLO
-        mail-ob0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822134AbaE3IpsxcZxQ convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 May 2014 10:45:48 +0200
-Received: by mail-ob0-f174.google.com with SMTP id uz6so1492947obc.5
-        for <multiple recipients>; Fri, 30 May 2014 01:45:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=ehSRy4QiiOEmLcERlltVHxXXFTf2DYTnOJlYwvr0fKk=;
-        b=lJ+BUHbG0g/tET89NrrsUh0p4PJAbHo0Y3pjwJaOAAFk375qOymA12q9CDWAKr7/5j
-         Vykby6Lk65MLONZUBSbCNc1pH2MKGGfIGGJefeUdB2x747xUXnEZ0zaxut3ArWFytVJp
-         XzofGVU7Vv0tD3mm0CX3SI9RrNEPEhJdfHIjDCtAb4uqaYW6mZWINNpsqbPnGprKkFbw
-         C6LxNzJOWA+TcAighOyM66T0PvQ+LvMo4VZgb0TDrtjOQdlU8K9FpngBDIE2bobalZxU
-         yRWhUjDYJWU09GxVuLQYKytmDgoiHYAb4/6qULzPuj+vBSdNBgrshIm53NTu7vzCNpAL
-         1rBQ==
-MIME-Version: 1.0
-X-Received: by 10.182.199.5 with SMTP id jg5mr11889952obc.75.1401439541973;
- Fri, 30 May 2014 01:45:41 -0700 (PDT)
-Received: by 10.76.124.167 with HTTP; Fri, 30 May 2014 01:45:41 -0700 (PDT)
-In-Reply-To: <1397904586-9773-1-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 11:05:09 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:60198 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6822106AbaE3JFHgNnDH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 30 May 2014 11:05:07 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4U955Yf016913;
+        Fri, 30 May 2014 11:05:05 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4U954XN016912;
+        Fri, 30 May 2014 11:05:04 +0200
+Date:   Fri, 30 May 2014 11:05:04 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Re: [PATCH][next: 3.16] MIPS: BCM47XX: Slightly clean memory
+ detection
+Message-ID: <20140530090504.GJ5157@linux-mips.org>
 References: <1397904586-9773-1-git-send-email-zajec5@gmail.com>
-Date:   Fri, 30 May 2014 10:45:41 +0200
-Message-ID: <CACna6ryVwqeSW22R3QrE1DcRkRmrJFWbpuHHm55DiazqXfabqw@mail.gmail.com>
-Subject: Re: [PATCH][next: 3.16] MIPS: BCM47XX: Slightly clean memory detection
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+ <CACna6ryVwqeSW22R3QrE1DcRkRmrJFWbpuHHm55DiazqXfabqw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACna6ryVwqeSW22R3QrE1DcRkRmrJFWbpuHHm55DiazqXfabqw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40379
+X-archive-position: 40380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,10 +46,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 19 April 2014 12:49, Rafał Miłecki <zajec5@gmail.com> wrote:
-> Patch was tested on devices with 64 MiB and 256 MiB of RAM.
-> It documents every part nicely and drops this hacky part of code:
-> max = off | ((128 << 20) - 1);
+On Fri, May 30, 2014 at 10:45:41AM +0200, Rafał Miłecki wrote:
 
-I can't see this patch in any git tree. Am I missing some, or was this
-patch forgotten?
+> On 19 April 2014 12:49, Rafał Miłecki <zajec5@gmail.com> wrote:
+> > Patch was tested on devices with 64 MiB and 256 MiB of RAM.
+> > It documents every part nicely and drops this hacky part of code:
+> > max = off | ((128 << 20) - 1);
+> 
+> I can't see this patch in any git tree. Am I missing some, or was this
+> patch forgotten?
+
+Nope - if it's in patchwork it's not forgotten.  Just slightly burried.
+Really, patchwork is the ledger.  If a patch is there, don't resend or
+I will hate you ;-)  If it's not there but should be, enquire.  If it's
+marked "Accepted" but doesn't show up anywhere - enquire.
+
+  Ralf

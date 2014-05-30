@@ -1,36 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 18:50:57 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:33763 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6830035AbaE3QuzEIkmR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 May 2014 18:50:55 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4UGoq6x005191;
-        Fri, 30 May 2014 18:50:52 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4UGoq6o005190;
-        Fri, 30 May 2014 18:50:52 +0200
-Date:   Fri, 30 May 2014 18:50:52 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 4/5] MIPS: Malta: hang on halt
-Message-ID: <20140530165052.GM17197@linux-mips.org>
-References: <1399461660-17623-1-git-send-email-paul.burton@imgtec.com>
- <1399461660-17623-5-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 19:33:47 +0200 (CEST)
+Received: from mail-ie0-f169.google.com ([209.85.223.169]:37876 "EHLO
+        mail-ie0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817294AbaE3RdqMoThs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 19:33:46 +0200
+Received: by mail-ie0-f169.google.com with SMTP id rp18so833935iec.28
+        for <linux-mips@linux-mips.org>; Fri, 30 May 2014 10:33:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=lMG4PGyq69XzPjBrVWe4SaATOQL56sWeB0kS41Le3M0=;
+        b=wTYjqXR3Ph+VxvxuPVCC9ifVDDR44ExmbvLPaZnf5Q/SURT5IFLF4r9vFp+4pz4st6
+         JcpKhf1QfP9VcAvudgTCU8W2IwJTG+AQX/kzypJG6BXhEnAZqD5tHHb9rx2wHtkgLQ0n
+         WbwEbrg6OouXc4qKJokWk2+0aKTgIUhmtiJIJ+VPPrFT29vkDwLY5OwmWwxZEBXG2Mr2
+         PEli9OzWGsZgUH0J+HrL2rO98xbBT1TRF6fEcA36x7KvzVPJQytyvCAZUVldDF2DB3HH
+         wJ9HR89CzVrQ6Unv9KJrWK6Nna5UojN3Jxc9NSM5YVwxxwPzNtOpN1IIdOwfGm8/DfnZ
+         5ajA==
+X-Received: by 10.42.85.19 with SMTP id o19mr17860762icl.34.1401471219986;
+        Fri, 30 May 2014 10:33:39 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id ri2sm6921193igc.1.2014.05.30.10.33.37
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 30 May 2014 10:33:39 -0700 (PDT)
+Message-ID: <5388C0F1.90503@gmail.com>
+Date:   Fri, 30 May 2014 10:33:37 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1399461660-17623-5-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     abdoulaye berthe <berthe.ab@gmail.com>
+CC:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>, m@bues.ch,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        patches@opensource.wolfsonmicro.com,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-samsungsoc@vger.kernel.org, spear-devel@list.st.com,
+        platform-driver-x86@vger.kernel.org,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>
+Subject: Re: [PATCH 2/2] gpio: gpiolib: set gpiochip_remove retval to void
+References: <20140530094025.3b78301e@canb.auug.org.au>        <1401449454-30895-1-git-send-email-berthe.ab@gmail.com>        <1401449454-30895-2-git-send-email-berthe.ab@gmail.com> <CAMuHMdV6AtjD2aqO3buzj8Eo7A7xc_+ROYnxEi2sdjMaqFiAuA@mail.gmail.com>
+In-Reply-To: <CAMuHMdV6AtjD2aqO3buzj8Eo7A7xc_+ROYnxEi2sdjMaqFiAuA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40390
+X-archive-position: 40391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,38 +74,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 07, 2014 at 12:20:59PM +0100, Paul Burton wrote:
+On 05/30/2014 04:39 AM, Geert Uytterhoeven wrote:
+> On Fri, May 30, 2014 at 1:30 PM, abdoulaye berthe <berthe.ab@gmail.com> wrote:
+>> --- a/drivers/gpio/gpiolib.c
+>> +++ b/drivers/gpio/gpiolib.c
+>> @@ -1263,10 +1263,9 @@ static void gpiochip_irqchip_remove(struct gpio_chip *gpiochip);
+>>    *
+>>    * A gpio_chip with any GPIOs still requested may not be removed.
+>>    */
+>> -int gpiochip_remove(struct gpio_chip *chip)
+>> +void gpiochip_remove(struct gpio_chip *chip)
+>>   {
+>>          unsigned long   flags;
+>> -       int             status = 0;
+>>          unsigned        id;
+>>
+>>          acpi_gpiochip_remove(chip);
+>> @@ -1278,24 +1277,15 @@ int gpiochip_remove(struct gpio_chip *chip)
+>>          of_gpiochip_remove(chip);
+>>
+>>          for (id = 0; id < chip->ngpio; id++) {
+>> -               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags)) {
+>> -                       status = -EBUSY;
+>> -                       break;
+>> -               }
+>> -       }
+>> -       if (status == 0) {
+>> -               for (id = 0; id < chip->ngpio; id++)
+>> -                       chip->desc[id].chip = NULL;
+>> -
+>> -               list_del(&chip->list);
+>> +               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags))
+>> +                       panic("gpio: removing gpiochip with gpios still requested\n");
+>
+> panic?
 
-> When the system is halted it makes little sense to reset it. Instead,
-> hang by executing an infinite loop.
-> 
-> Suggested-by: Maciej W. Rozycki <macro@linux-mips.org>
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
->  arch/mips/mti-malta/malta-reset.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/mips/mti-malta/malta-reset.c b/arch/mips/mti-malta/malta-reset.c
-> index d627d4b..4471dea 100644
-> --- a/arch/mips/mti-malta/malta-reset.c
-> +++ b/arch/mips/mti-malta/malta-reset.c
-> @@ -24,17 +24,20 @@ static void mips_machine_restart(char *command)
->  
->  static void mips_machine_halt(void)
->  {
-> -	unsigned int __iomem *softres_reg =
-> -		ioremap(SOFTRES_REG, sizeof(unsigned int));
-> +	pr_info("Halting\n");
-> +	while (true);
-> +}
+NACK to the patch for this reason.  The strongest thing you should do 
+here is WARN.
 
-I don't think this should print anything - communication with the user
-is up to userland.
+That said, I am not sure why we need this whole patch set in the first 
+place.
 
-while (true) is going to burn lots of power - undesirable on a virtualized
-system in particular.  How about something like while (cpu_wait()); instead?
-The invocation of cpu_wait() is a little tricky however in this case I think
-it's ok if the CPU goes terminally goes to sleep which simplifies things
-over the idle loop :-)
+David Daney
 
-  Ralf
+
+
+>
+> Is this likely to happen?
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
+>
+>

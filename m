@@ -1,89 +1,57 @@
-From: Leif Lindholm <leif.lindholm@linaro.org>
-Date: Thu, 17 Apr 2014 18:42:00 +0100
-Subject: mips: dts: Fix missing device_type="memory" property in memory nodes
-Message-ID: <20140417174200.umGhaq7cCXJqTacaRlF2-BcGTM0mhnXNxpXsawgKiiQ@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 12:18:15 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:60393 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6825074AbaE3KSNPYYYU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 30 May 2014 12:18:13 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4UAI7BG020137;
+        Fri, 30 May 2014 12:18:07 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4UAI4cB020136;
+        Fri, 30 May 2014 12:18:04 +0200
+Date:   Fri, 30 May 2014 12:18:04 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, Sanjay Lal <sanjayl@kymasys.com>
+Subject: Re: [PATCH v2 02/23] MIPS: Export local_flush_icache_range for KVM
+Message-ID: <20140530101804.GH17197@linux-mips.org>
+References: <1401355005-20370-1-git-send-email-james.hogan@imgtec.com>
+ <1401355005-20370-3-git-send-email-james.hogan@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1401355005-20370-3-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 40382
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: ralf@linux-mips.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit dfc44f8030653b345fc6fb337558c3a07536823f upstream.
+On Thu, May 29, 2014 at 10:16:24AM +0100, James Hogan wrote:
 
-A few platforms lack a 'device_type = "memory"' for their memory
-nodes, relying on an old ppc quirk in order to discover its memory.
-Add the missing data so that all parsing code can find memory nodes
-correctly.
+> Export the local_flush_icache_range function pointer for GPL modules so
+> that it can be used by KVM for syncing the icache after binary
+> translation of trapping instructions.
 
-Signed-off-by: Leif Lindholm <leif.lindholm@linaro.org>
-Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Acked-by: John Crispin <blogic@openwrt.org>
-Signed-off-by: Grant Likely <grant.likely@linaro.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/lantiq/dts/easy50712.dts    | 1 +
- arch/mips/ralink/dts/mt7620a_eval.dts | 1 +
- arch/mips/ralink/dts/rt2880_eval.dts  | 1 +
- arch/mips/ralink/dts/rt3052_eval.dts  | 1 +
- arch/mips/ralink/dts/rt3883_eval.dts  | 1 +
- 5 files changed, 5 insertions(+)
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-diff --git a/arch/mips/lantiq/dts/easy50712.dts b/arch/mips/lantiq/dts/easy50712.dts
-index fac1f5b178eb..143b8a37b5e4 100644
---- a/arch/mips/lantiq/dts/easy50712.dts
-+++ b/arch/mips/lantiq/dts/easy50712.dts
-@@ -8,6 +8,7 @@
- 	};
-
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
-
-diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/ralink/dts/mt7620a_eval.dts
-index 35eb874ab7f1..709f58132f5c 100644
---- a/arch/mips/ralink/dts/mt7620a_eval.dts
-+++ b/arch/mips/ralink/dts/mt7620a_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink MT7620A evaluation board";
-
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
-
-diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
-index 322d7002595b..0a685db093d4 100644
---- a/arch/mips/ralink/dts/rt2880_eval.dts
-+++ b/arch/mips/ralink/dts/rt2880_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink RT2880 evaluation board";
-
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x8000000 0x2000000>;
- 	};
-
-diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
-index 0ac73ea28198..ec9e9a035541 100644
---- a/arch/mips/ralink/dts/rt3052_eval.dts
-+++ b/arch/mips/ralink/dts/rt3052_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink RT3052 evaluation board";
-
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
-
-diff --git a/arch/mips/ralink/dts/rt3883_eval.dts b/arch/mips/ralink/dts/rt3883_eval.dts
-index 2fa6b330bf4f..e8df21a5d10d 100644
---- a/arch/mips/ralink/dts/rt3883_eval.dts
-+++ b/arch/mips/ralink/dts/rt3883_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink RT3883 evaluation board";
-
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
-
---
-1.9.1
+  Ralf

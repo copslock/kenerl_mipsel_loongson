@@ -1,54 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 20:52:49 +0200 (CEST)
-Received: from smtp-out-150.synserver.de ([212.40.185.150]:1077 "EHLO
-        smtp-out-147.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6822106AbaE3SwrgoR0z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 20:52:47 +0200
-Received: (qmail 29647 invoked by uid 0); 30 May 2014 18:17:05 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 29400
-Received: from ppp-212-114-237-253.dynamic.mnet-online.de (HELO ?192.168.178.23?) [212.114.237.253]
-  by 217.119.54.87 with AES256-SHA encrypted SMTP; 30 May 2014 18:17:02 -0000
-Message-ID: <5388CB1B.3090802@metafoo.de>
-Date:   Fri, 30 May 2014 20:16:59 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20131103 Icedove/17.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 21:18:15 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34309 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6822998AbaE3TSNYZpWf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 30 May 2014 21:18:13 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s4UJIBAD011877;
+        Fri, 30 May 2014 21:18:11 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s4UJI8jI011876;
+        Fri, 30 May 2014 21:18:08 +0200
+Date:   Fri, 30 May 2014 21:18:08 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: Implement random_get_entropy with CP0 Random
+Message-ID: <20140530191808.GO5157@linux-mips.org>
+References: <alpine.LFD.2.11.1404062102130.15266@eddie.linux-mips.org>
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     abdoulaye berthe <berthe.ab@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>, m@bues.ch,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        patches@opensource.wolfsonmicro.com,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-samsungsoc@vger.kernel.org, spear-devel@list.st.com,
-        platform-driver-x86@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        driverdevel <devel@driverdev.osuosl.org>
-Subject: Re: [PATCH 2/2] gpio: gpiolib: set gpiochip_remove retval to void
-References: <20140530094025.3b78301e@canb.auug.org.au>        <1401449454-30895-1-git-send-email-berthe.ab@gmail.com>        <1401449454-30895-2-git-send-email-berthe.ab@gmail.com> <CAMuHMdV6AtjD2aqO3buzj8Eo7A7xc_+ROYnxEi2sdjMaqFiAuA@mail.gmail.com> <5388C0F1.90503@gmail.com>
-In-Reply-To: <5388C0F1.90503@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <lars@metafoo.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1404062102130.15266@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40393
+X-archive-position: 40394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,56 +44,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/30/2014 07:33 PM, David Daney wrote:
-> On 05/30/2014 04:39 AM, Geert Uytterhoeven wrote:
->> On Fri, May 30, 2014 at 1:30 PM, abdoulaye berthe <berthe.ab@gmail.com>
->> wrote:
->>> --- a/drivers/gpio/gpiolib.c
->>> +++ b/drivers/gpio/gpiolib.c
->>> @@ -1263,10 +1263,9 @@ static void gpiochip_irqchip_remove(struct
->>> gpio_chip *gpiochip);
->>>    *
->>>    * A gpio_chip with any GPIOs still requested may not be removed.
->>>    */
->>> -int gpiochip_remove(struct gpio_chip *chip)
->>> +void gpiochip_remove(struct gpio_chip *chip)
->>>   {
->>>          unsigned long   flags;
->>> -       int             status = 0;
->>>          unsigned        id;
->>>
->>>          acpi_gpiochip_remove(chip);
->>> @@ -1278,24 +1277,15 @@ int gpiochip_remove(struct gpio_chip *chip)
->>>          of_gpiochip_remove(chip);
->>>
->>>          for (id = 0; id < chip->ngpio; id++) {
->>> -               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags)) {
->>> -                       status = -EBUSY;
->>> -                       break;
->>> -               }
->>> -       }
->>> -       if (status == 0) {
->>> -               for (id = 0; id < chip->ngpio; id++)
->>> -                       chip->desc[id].chip = NULL;
->>> -
->>> -               list_del(&chip->list);
->>> +               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags))
->>> +                       panic("gpio: removing gpiochip with gpios still
->>> requested\n");
->>
->> panic?
->
-> NACK to the patch for this reason.  The strongest thing you should do here
-> is WARN.
->
-> That said, I am not sure why we need this whole patch set in the first place.
+On Sun, Apr 06, 2014 at 09:31:29PM +0100, Maciej W. Rozycki wrote:
 
-Well, what currently happens when you remove a device that is a provider of 
-a gpio_chip which is still in use, is that the kernel crashes. Probably with 
-a rather cryptic error message. So this patch doesn't really change the 
-behavior, but makes it more explicit what is actually wrong. And even if you 
-replace the panic() by a WARN() it will again just crash slightly later.
+(Cc list chopped down to just the MIPS folks.)
 
-This is a design flaw in the GPIO subsystem that needs to be fixed.
+> linux-mips-cycles.patch
+> Index: linux-20140404-4maxp64/arch/mips/include/asm/timex.h
+> ===================================================================
+> --- linux-20140404-4maxp64.orig/arch/mips/include/asm/timex.h
+> +++ linux-20140404-4maxp64/arch/mips/include/asm/timex.h
+> @@ -4,15 +4,18 @@
+>   * for more details.
+>   *
+>   * Copyright (C) 1998, 1999, 2003 by Ralf Baechle
+> + * Copyright (C) 2014 by Maciej W. Rozycki
+>   */
+>  #ifndef _ASM_TIMEX_H
+>  #define _ASM_TIMEX_H
+>  
+>  #ifdef __KERNEL__
+>  
+> +#include <linux/compiler.h>
+> +
+> +#include <asm/cpu.h>
+>  #include <asm/cpu-features.h>
+>  #include <asm/mipsregs.h>
+> -#include <asm/cpu-type.h>
 
-- Lars
+And this line broke the build big time - lots of files are using either
+boot_cpu_type() or current_cpu_type() and are implicitly getting the
+definition via <asm/timex.h>.
+
+So for the moment I've added the unnecessary inclusion of asm/cpu-type.h
+back.
+
+  Ralf

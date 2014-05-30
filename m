@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 01:40:42 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:33850 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817913AbaE2XkhhCtxZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 May 2014 01:40:37 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 3B541140094;
-        Fri, 30 May 2014 09:40:31 +1000 (EST)
-Date:   Fri, 30 May 2014 09:40:25 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     abdoulaye berthe <berthe.ab@gmail.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>, devel@driverdev.osuosl.org,
-        Alexandre Courbot <gnurou@gmail.com>,
-        patches@opensource.wolfsonmicro.com, linux-mips@linux-mips.org,
-        netdev@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
-        linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        spear-devel@list.st.com, linux-samsungsoc@vger.kernel.org,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        linux-leds@vger.kernel.org, m@bues.ch, linux-input@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH] gpio: removes all usage of gpiochip_remove retval
-Message-ID: <20140530094025.3b78301e@canb.auug.org.au>
-In-Reply-To: <CABprBybQ-Jyk95zCqnoWjjyzhNyHVbsbEhb=vA5d=ZYp95_bFA@mail.gmail.com>
-References: <1401400492-26175-1-git-send-email-berthe.ab@gmail.com>
-        <5387B149.20408@gmail.com>
-        <CABprBybQ-Jyk95zCqnoWjjyzhNyHVbsbEhb=vA5d=ZYp95_bFA@mail.gmail.com>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2014 09:19:42 +0200 (CEST)
+Received: from [119.145.14.64] ([119.145.14.64]:43717 "EHLO
+        szxga01-in.huawei.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823925AbaE3HJGqNqGq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2014 09:09:06 +0200
+Received: from 172.24.2.119 (EHLO szxeml206-edg.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id BWF06737;
+        Fri, 30 May 2014 15:08:32 +0800 (CST)
+Received: from SZXEML419-HUB.china.huawei.com (10.82.67.158) by
+ szxeml206-edg.china.huawei.com (172.24.2.59) with Microsoft SMTP Server (TLS)
+ id 14.3.158.1; Fri, 30 May 2014 15:08:15 +0800
+Received: from [127.0.0.1] (10.177.25.181) by szxeml419-hub.china.huawei.com
+ (10.82.67.158) with Microsoft SMTP Server id 14.3.158.1; Fri, 30 May 2014
+ 15:08:18 +0800
+Message-ID: <53882E60.5070602@huawei.com>
+Date:   Fri, 30 May 2014 15:08:16 +0800
+From:   Libin <huawei.libin@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/852XE2D+8ii.R+aAPw7pJ16"; protocol="application/pgp-signature"
-Return-Path: <sfr@canb.auug.org.au>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>, Li Zefan <lizefan@huawei.com>
+CC:     Yong Zhang <yong.zhang@windriver.com>, <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Xinwei Hu <huxinwei@huawei.com>
+Subject: Re: [PATCH V2] MIPS: change type of asid_cache to unsigned long
+References: <1400650563-1033-1-git-send-email-yong.zhang@windriver.com> <5384119E.7010606@huawei.com> <20140528200929.GA30528@drone.musicnaut.iki.fi>
+In-Reply-To: <20140528200929.GA30528@drone.musicnaut.iki.fi>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.177.25.181]
+X-CFilter-Loop: Reflected
+Return-Path: <huawei.libin@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40373
+X-archive-position: 40375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: huawei.libin@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,51 +50,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Sig_/852XE2D+8ii.R+aAPw7pJ16
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 2014/5/29 4:09, Aaro Koskinen wrote:
+> Hi,
+> 
+> On Tue, May 27, 2014 at 12:16:30PM +0800, Li Zefan wrote:
+>> On 2014/5/21 13:36, Yong Zhang wrote:
+>>> asid_cache must be unsigned long otherwise on 64bit system
+>>> it will become 0 if the value in get_new_mmu_context()
+>>> reaches 0xffffffff and in the end the assumption of
+>>> ASID_FIRST_VERSION is not true anymore thus leads to
+>>> more dangerous things.
+>>
+>> We should describe what problem this bug can lead to, which
+>> will help people who encounter the same problem and google it.
+> 
+> Please describe it, then. Even if the patch is already committed,
+> googling would probably still find this e-mail thread.
+> 
+> Thanks,
+> 
+> A.
+> 
+> 
 
-Hi abdoulaye,
+Problem description:
+On our MIPS architecture product, after a long time running our business
+service, a random cpu trigger the problem, that if running test cases
+include the following code on this cpu will trigger bus error or
+segment fault:
+    ...
+    pid = fork();
+    if (pid < 0)
+        return 1;
+    if (0 == pid)
+        exit(0);
+    else
+            exit(0);
+    ...
 
-On Fri, 30 May 2014 01:16:22 +0200 abdoulaye berthe <berthe.ab@gmail.com> w=
-rote:
->
-> The aim of this patch is to make gpiochip_remove() behavior consistent,
-> especially when issuing a remove request while the chipio chip is
-> still requested. A patch has been submitted to change the return value of
-> gpiochip_remove() from int to void. This one updates users of the return
-> value:
+Root cause:
+After doing a lot of fork/mmap/munmap operations, it will make the asid value
+exceeds 0xffffffff in get_new_mmu_context function, which is truncated to 0:
+|-get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
+    unsigned long asid = asid_cache(cpu); //if asid_cache(cpu) is 0xffffffff now
+    if (! ((asid += ASID_INC) & ASID_MASK) ) {  //asid reaches 0x1 0000 0000
+        ...
+        local_flush_tlb_all();         /* start new asid cycle */
+        if (!asid)             /* fix version if needed */  //but here condition does not meet...
+            asid = ASID_FIRST_VERSION;
+         }
+         cpu_context(cpu, mm) = asid_cache(cpu) = asid; //and here cpu_context and asid_cache is truncated to 0
 
-Then you need to keep these two patch in a series with this one first
-to make sure that the other patch is not applied without this one.
+In do_fork()->dup_mmap(), adding write-protect flag for writable page but the
+following tlb flush does not take effect, and breaks the normal COW:
+do_fork()
+|-copy_process()
+    |-copy_mm()
+        ...
+        |-dup_mmap()
+            |-copy_page_range()
+                ...
+                |-copy_one_pte()
+                ...
+                    if (is_cow_mapping(vm_flags)) {
+                        ptep_set_wrprotect(src_mm, addr, src_pte);
+                        pte = pte_wrprotect(pte);
+                    }
+                ...
+        |-flush_tlb_mm(oldmm)
+            |-local_flush_tlb_mm（）
+                if (cpu_context(cpu, mm) != 0) {//cpu_context is 0, no tlb flush
+                drop_mmu_context(mm, cpu);
+            }
 
-And you should add the above explanation to the changelog for this
-patch.
+In addition, the condition ((cpu_context(cpu, next) ^ asid_cache(cpu))
+& ASID_VERSION_MASK) can not be met in switch_mm(), and the tlb flush operation
+can not be completed during the process switch.
+|-switch_mm()
+    ...
+    /* Check if our ASID is of an older version and thus invalid */
+    if ((cpu_context(cpu, next) ^ asid_cache(cpu)) & ASID_VERSION_MASK)
+        get_new_mmu_context(next, cpu);
+        write_c0_entryhi(cpu_asid(cpu, next));
+    ...
 
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
+In short, due to the truncation operation caused by inappropriate type conversion,
+making tlb flush failure, causing problems of COW, triggering bus error or segment fault.
 
---Sig_/852XE2D+8ii.R+aAPw7pJ16
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Disposition: attachment; filename=signature.asc
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBCAAGBQJTh8VuAAoJEMDTa8Ir7ZwV8iEQAICWaN/UMPsdzewqsMiXXSMh
-C5svkPpUj+qDUSm6Z89xsBlSrNn5iaa06uiZllN8KLoLbhGpZ5xdGqmMalys33zc
-Bh2lJNCtozIbI1fMW63+W94wMtWNSnUAbX4szSpxbbaZQ3ig9ixXegji8nvONTqw
-QWNjGORnMPvzrCsTrv8/hNYlmeT/9WZwAwVLr9++ldM0fow/SfF251WvmNjheAcq
-2YCd1vEk7ZZ9aFDr463CKP3eeTKDtWaSrdoXLdIvs627tRtfhSuqQF1q6d8B1Vbk
-HR9xx3bANosgA/Fa7rHcWxw8lLr5EDXeaHJieT0I05kXPM1rSIh9tTGAeXivG/LH
-j+FWHe7P3v2qN+mvgqRHIndi1axUhm4ZbqG3Wcg8uAV+rGxemlmkZMWzdMPwzcRA
-YJKTVoc+LbLp4Yb1HpZ4hYbKvxu7iEf8OQJsb9bY3lnm8Rnax4VhQtn15aKn2fLr
-b8xSfM9iGeL1bgEyh5pK4BVgE1+N7Z/7qGfD95EAT9v5cX7di9y+eU8zXb0fmXRh
-V1rV2n9RfrbH3wE8DoR4yC2SeDcQl5F/CwII/zHkymzWTgGvpN4mhk06q0CPhxxO
-nZD317b7OuLQbDbZJ+o/92/XMlOt6Sanno1I27C19ahUMynJAo32O+xHIDdv5AKI
-Dom8qI4Ex3DKkwqflJzw
-=RG4V
------END PGP SIGNATURE-----
-
---Sig_/852XE2D+8ii.R+aAPw7pJ16--
+Thanks,
+Libin

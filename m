@@ -1,30 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jun 2014 10:31:53 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37692 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817115AbaFAIbtn-uus (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jun 2014 10:31:49 +0200
-Date:   Sun, 1 Jun 2014 09:31:49 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-cc:     linux-mips@linux-mips.org, blogic@openwrt.org
-Subject: Re: [PATCH 2/2] MIPS: fix DECStation build for L1_CACHE_SHIFT
- value
-In-Reply-To: <alpine.LFD.2.11.1404010105130.27402@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1405310947180.30121@eddie.linux-mips.org>
-References: <1390327294-2618-1-git-send-email-florian@openwrt.org> <1390327294-2618-2-git-send-email-florian@openwrt.org> <alpine.LFD.2.11.1404010105130.27402@eddie.linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jun 2014 03:20:43 +0200 (CEST)
+Received: from mail-ig0-f171.google.com ([209.85.213.171]:38936 "EHLO
+        mail-ig0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822677AbaFBBUjg89cK convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Jun 2014 03:20:39 +0200
+Received: by mail-ig0-f171.google.com with SMTP id c1so2797664igq.10
+        for <linux-mips@linux-mips.org>; Sun, 01 Jun 2014 18:20:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=1SyNvKMJ1KWXSH21HxzdreLdauWQGXxAxagAGXplVW0=;
+        b=xleVfkVoDKtUT59W6NYDa3JEILgD5PNgcN3a9GYA66QBJR1ChIaWH5JrMOYTtdpBQU
+         cRq4ncJjSP8tJu3xU54l7Olb2hS1dYclSYoqYKIAm/EsYOKd1EWdM/F5vGPmc/O6jbOq
+         0BfK9zipI0qdnoALVQ26huSdnFDwnH4BNzxiaQhKC8VJmHmeVGs1YZlUfgna1/vy8eQS
+         7urYMl6wtuC1KrInoNcQESDu2C/nXKSRPNG8ceRwPePyEsj9qBbd3MFwxBnPUQEcUkTK
+         y4qXsf0us/lxt7uyhjjE7pEPJvGoaNSGOrxbo2YvXpzDvOXEszZAvMGnJalaokzIigI3
+         JZDA==
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+X-Received: by 10.50.119.129 with SMTP id ku1mr13932817igb.6.1401672033380;
+ Sun, 01 Jun 2014 18:20:33 -0700 (PDT)
+Received: by 10.64.137.71 with HTTP; Sun, 1 Jun 2014 18:20:33 -0700 (PDT)
+In-Reply-To: <or61klqft0.fsf@free.home>
+References: <tencent_03F1BF0862C094496B5D0360@qq.com>
+        <or61klqft0.fsf@free.home>
+Date:   Mon, 2 Jun 2014 09:20:33 +0800
+X-Google-Sender-Auth: 7B8V0PA6vUDl5nzeKH-FEfKWibs
+Message-ID: <CAAhV-H4r0-Ezv1-Z=WxMy=dyNNCRNUmT216KVGh_UCWW556F=A@mail.gmail.com>
+Subject: Re: MIPS: Hibernate: Flush TLB entries in swsusp_arch_resume()
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Alexandre Oliva <oliva@gnu.org>
+Cc:     wuzhangjin <wuzhangjin@gmail.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40402
+X-archive-position: 40403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,119 +56,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 1 Apr 2014, Maciej W. Rozycki wrote:
+Hi,
 
-> > When support for the DECStation is enabled, it will default to use a
-> > MIPS R3000 class processor. This will cause an intentional build failure
-> > to popup because MIPS_L1_CACHE_SHIFT and cpu_dcache_line_size()
-> > disagree. Fix this by selecting MIPS_L1_CACHE_SHIFT_2 when we build
-> > targetting a MIPS R3000 CPU to fix that build failure and satisfy all
-> > requirements.
-> > 
-> > Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> 
-> Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
-> 
->  This actually boots -- Ralf, please apply.
+Could you please let's have a look at your error log?
 
- Having done further investigation I need to withdraw my ack; I see these 
-patches went nowhere so far, so please keep the status quo.  The thing is 
-while the size of an individual cache entry (i.e. data+tag) is indeed 4 
-bytes on the R2000 and R3000 DECstations their cache controllers do not 
-necessarily operate on single entries only.  Some models do fills on 
-multiple aligned entries at once.  So while the stride of 4 bytes is 
-adequate for invalidation, it is not necessarily so for good performance.
+Huacai
 
- Specifically:
-
-* in DECstation 2100 and 3100 systems [1]:
-
-"The CPU maintains the direct-mapped instruction cache and the 
-direct-mapped, write-through data cache.  Each cache is 64 KBytes in 
-capacity with a 4-byte line size."
-
-* in DECstation 5000/200 systems [2]:
-
-"The instruction and data caches are configured with a four-word line size 
-with loads and stores nominally completing in one cycle.  Instruction and 
-data cache fills take advantage of page mode memory cycles to complete a 
-four-word fill in 11 access latency cycles, 4 data transfer cycles, plus 
-miss and memory latency overhead.  This results in a peak memory read 
-bandwidth of 21 MBytes/second with a 25 MHz system clock."
-
-* in DECstation 5000/120, 5000/125 and Personal DECstation 5000/20 and 
-  5000/125 systems (CPU daughtercards are interchangeable between these 
-  systems) [4]:
-
-"The CPU subsystem contains 64 KB each of instruction cache and data 
-cache.  The caches are direct-mapped, write-through caches, each 
-containing 16K word entries.  A cache word entry contains 32 bits of 
-instruction or data, 13 tag bits, a valid flag bit, and byte-parity bits.  
-The tag bits hold the high-order part of the physical address in system 
-memory of the cached word.  The low-order bits of the system memory 
-address of the cached word are the same as its address in the cache; they 
-form the cache index.  The dual cache is implemented in fast SRAM.  The 
-R3000A can fetch one instruction and load one data word in each cycle."
-
-* in DECstation 5000/240 systems [3]:
-
-"The caches are direct-mapped, write-through caches, each containing 16K 
-word entries.  A cache word entry contains 32 bits of instruction or data, 
-16 tag bits, a valid flag bit, and byte-parity bits.  The tag bits hold 
-the high-order part of the physical address of the cached word in system 
-memory.  The low-order bits of the system memory address of the cached 
-word are the same as its address in the cache; they form the cache index. 
-(Physically, each cache entry contains a total of 60 bits; the unused bits 
-are additional tag and parity bits needed in implementations with smaller 
-caches.) [...]
-
-"A cache load fills eight consecutive cache words on an eight-word 
-boundary.  The MB contains dual eight-word buffers -- a read buffer and a 
-prefetch buffer.  For a cache load, the MB performs a page-mode read from 
-memory to fill its read buffer, at one word per 40-ns memory system cycle 
-after the 8-cycle page mode read latency.  When the read buffer is full, 
-the MB writes the eight locations to cache, in eight 25-ns CPU/cache 
-cycles.  When the cache line is on a 16-word boundary, the MB also fills 
-the prefetch buffer, so that the next cache line can be available for a 
-subsequent cache load without referencing system memory (unless one of the 
-prefetched words is invalidated by a processor write to the location)." 
-
- Our code in r3k_cache_lsize only calculates how many bytes in the cache 
-get invalidated at a time.  That's of course useful for optimising cache 
-invalidations (that we don't do at the moment anyway), but has nothing to 
-do with the optimising for cache prefetches.  A different sizing algorithm 
-would have to be used -- not that difficult to invent too, and maybe worth 
-adding for informational purposes if nothing else.
-
- All in all it looks to me like not only MIPS_L1_CACHE_SHIFT_2 shouldn't 
-be set for R2000 and R3000 DECstations, but MIPS_L1_CACHE_SHIFT_4 
-shouldn't be either.  Instead MIPS_L1_CACHE_SHIFT_6 looks like the right 
-choice for good performance with the DECstation 5000/240 system since we 
-don't handle individual family members with separate configurations 
-(MIPS_L1_CACHE_SHIFT_5 would do for the 5000/200).  R4k DECstations would 
-remain using MIPS_L1_CACHE_SHIFT_4, although it is quite possible that the 
-MB chip they also have does similar prefetching for their secondary cache 
-(there's that mysterious PF bit in its control and status register).
-
- References:
-
-[1] Workstation Systems Engineering: "DECstation 3100 Desktop Workstation 
-    Functional Specification", Revision 1.3, August 28, 1990, Digital 
-    Equipment Corporation, section 6.1: "Processor", p. 4.
-
-[2] Workstation Systems Engineering: "DECstation 5000/200 KN02 System 
-    Module Functional Specification", Revision 1.3, August 27, 1990, 
-    Digital Equipment Corporation, section 4.3: "Processor Subsystem", p. 
-    4.
-
-[3] Worksystems Base Product Marketing: "Personal DECstation Series 
-    Technical Overview", Version 1.0, December, 1991, Digital Equipment 
-    Corporation, section 2.2.3: "The Personal DECstation 5000 CPU 
-    Subsystem", p. 8.
-
-[4] Worksystems Base Product Marketing: "DECstation 5000 Model 240 
-    Workstation Technical Overview", Version 1.0, December, 1991, Digital 
-    Equipment Corporation, section 2.2.4: "Cache Architecture, 
-    Implementation, and Operation", pp. 8-9.
-
-  Maciej
+On Sun, Jun 1, 2014 at 2:55 PM, Alexandre Oliva <oliva@gnu.org> wrote:
+> Hi,
+>
+> Thanks for your response,
+>
+> On Jun  1, 2014, "陈华才" <chenhc@lemote.com> wrote:
+>
+>> The original code flush both TLB and cache, and I think the original author (Wu Zhangjin) has tested his code. In my patch I only restore the TLB flush, but not the cache flush. Since Loongson-3A maintain cache coherency by hardware, with or without cache flush will both OK. But for Loongson-2F, I guess cache flush is also needed, but I have no Yeelong-2F to test now.
+>
+> I'm afraid reintroducing the cache flush is not enough to bring the
+> kernel back to a working state, hibernation wise.  The last oops message
+> I saw, after the ones that flew by, had __arch_local_irq_restore at the
+> top of the backtrace, called by some function with resume in its name.
+>
+> Any other suggestions?
+>
+>
+> Here's the patch I tried on top of yours, as an alternative to reverting
+> it, unfortunately without success:
+>
+> --- arch/mips/power/hibernate.S
+> +++ arch/mips/power/hibernate.S
+> @@ -43,6 +43,9 @@
+>         bne t1, t3, 1b
+>         PTR_L t0, PBE_NEXT(t0)
+>         bnez t0, 0b
+> +       /* flush caches to make sure context is in memory */
+> +       PTR_L t0, __flush_cache_all
+> +       jalr t0
+>         jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
+>         PTR_LA t0, saved_regs
+>         PTR_L ra, PT_R31(t0)
+>
+>
+> --
+> Alexandre Oliva, freedom fighter    http://FSFLA.org/~lxoliva/
+> You must be the change you wish to see in the world. -- Gandhi
+> Be Free! -- http://FSFLA.org/   FSF Latin America board member
+> Free Software Evangelist|Red Hat Brasil GNU Toolchain Engineer
+>

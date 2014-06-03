@@ -1,57 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2014 12:29:34 +0200 (CEST)
-Received: from bes.se.axis.com ([195.60.68.10]:51241 "EHLO bes.se.axis.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6843087AbaFCK3bzXZpH convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jun 2014 12:29:31 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id 82FA92E2F1;
-        Tue,  3 Jun 2014 12:29:24 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id rxPG0stvDKTS; Tue,  3 Jun 2014 12:29:19 +0200 (CEST)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id 3CD5F2E2FC;
-        Tue,  3 Jun 2014 12:29:19 +0200 (CEST)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id 26753ECE;
-        Tue,  3 Jun 2014 12:29:19 +0200 (CEST)
-Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
-        by boulder.se.axis.com (Postfix) with ESMTP id 1B2728F4;
-        Tue,  3 Jun 2014 12:29:19 +0200 (CEST)
-Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
-        by thoth.se.axis.com (Postfix) with ESMTP id 18D6D34005;
-        Tue,  3 Jun 2014 12:29:19 +0200 (CEST)
-Received: from xmail2.se.axis.com ([10.0.5.74]) by xmail2.se.axis.com
- ([10.0.5.74]) with mapi; Tue, 3 Jun 2014 12:29:19 +0200
-From:   Lars Persson <lars.persson@axis.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Date:   Tue, 3 Jun 2014 12:29:17 +0200
-Subject: RE: [PATCH] MIPS: Remove race window in page fault handling
-Thread-Topic: [PATCH] MIPS: Remove race window in page fault handling
-Thread-Index: Ac9+gmBVyNagLwEeTBiqVNnz+WY8MwAk8DAA
-Message-ID: <771471B8871B5044A6CA7CCD9C26EEE10117E31EC89D@xmail2.se.axis.com>
-References: <1401532566-22929-1-git-send-email-larper@axis.com>
- <538CAAA6.90509@gmail.com>
-In-Reply-To: <538CAAA6.90509@gmail.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US, sv-SE
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2014 13:03:38 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:44474 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6854774AbaFCLDfgDhEw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Jun 2014 13:03:35 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s53B3NAQ028488;
+        Tue, 3 Jun 2014 13:03:23 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s53B3L9W028487;
+        Tue, 3 Jun 2014 13:03:21 +0200
+Date:   Tue, 3 Jun 2014 13:03:21 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     chenj <chenj@lemote.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
+Message-ID: <20140603110321.GR17197@linux-mips.org>
+References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
+ <1400137743-8806-2-git-send-email-chenj@lemote.com>
 MIME-Version: 1.0
-Return-Path: <lars.persson@axis.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1400137743-8806-2-git-send-email-chenj@lemote.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40414
+X-archive-position: 40415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars.persson@axis.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,33 +43,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi
+On Thu, May 15, 2014 at 03:09:03PM +0800, chenj wrote:
 
-Good point. Would adding !cpu_has_ic_fills_f_dc as an extra condition in set_pte_at be sufficient to address your concern ?
+> wsbh & movn are available on loongson3 CPU.
+> ---
+>  arch/mips/lib/csum_partial.S | 10 ++++++++--
 
-BR,
- Lars
+Does Loongson 3 also have both the DSBH and DSHD instructions?
 
-> -----Original Message-----
-> From: David Daney [mailto:ddaney.cavm@gmail.com]
-> Sent: den 2 juni 2014 18:48
-> To: Lars Persson
-> Cc: linux-mips@linux-mips.org; Lars Persson
-> Subject: Re: [PATCH] MIPS: Remove race window in page fault handling
-> 
-> On 05/31/2014 03:36 AM, Lars Persson wrote:
-> > Multicore MIPSes without I/D hardware coherency suffered from a race
-> > condition in the page fault handler. The page table entry was
-> > published before any pending lazy D-cache flush was committed, hence
-> > it allowed execution of stale page cache data by other VPEs in the
-> system.
-> >
-> 
-> Shouldn't this only be done on machines that suffer from the problem?
-> 
-> There are many SMP MIPS machines that don't need this, so they
-> shouldn't have to pay the price for doing this.
-> 
-> David Daney
-> 
-> 
+  Ralf

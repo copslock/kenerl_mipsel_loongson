@@ -1,30 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2014 13:18:48 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:44523 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6843095AbaFCLSnVjjrm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jun 2014 13:18:43 +0200
-Date:   Tue, 3 Jun 2014 12:18:43 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Kconfig: microMIPS and SmartMIPS are mutually
- exclusive
-In-Reply-To: <20140603093434.GQ17197@linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1406031214390.18344@eddie.linux-mips.org>
-References: <1401785177-7904-1-git-send-email-markos.chandras@imgtec.com> <20140603093434.GQ17197@linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2014 13:42:05 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:57984 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816900AbaFCLmCYrJNn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jun 2014 13:42:02 +0200
+Received: from bl15-147-49.dsl.telepac.pt ([188.80.147.49] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1Wrn6P-00079s-Kb; Tue, 03 Jun 2014 11:42:01 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Leif Lindholm <leif.lindholm@linaro.org>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Grant Likely <grant.likely@linaro.org>,
+        Luis Henriques <luis.henriques@canonical.com>
+Subject: [PATCH 3.11 088/138] mips: dts: Fix missing device_type="memory" property in memory nodes
+Date:   Tue,  3 Jun 2014 12:38:54 +0100
+Message-Id: <1401795584-22664-89-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1401795584-22664-1-git-send-email-luis.henriques@canonical.com>
+References: <1401795584-22664-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.11
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40416
+X-archive-position: 40417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,43 +44,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 3 Jun 2014, Ralf Baechle wrote:
+3.11.10.11 -stable review patch.  If anyone has any objections, please let me know.
 
-> > Warning: the 32-bit microMIPS architecture does not support the `smartmips'
-> > extension
-> > arch/mips/kernel/entry.S:90: Error: unrecognized opcode `mtlhx $24'
-> > [...]
-> > arch/mips/kernel/entry.S:109: Error: unrecognized opcode `mtlhx $24'
-> > 
-> > Link: https://dmz-portal.mips.com/bugz/show_bug.cgi?id=1021
-> > Reviewed-by: Steven J. Hill <Steven.Hill@imgtec.com>
-> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> > ---
-> >  arch/mips/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > index 2fe8e60..ffde3d6 100644
-> > --- a/arch/mips/Kconfig
-> > +++ b/arch/mips/Kconfig
-> > @@ -2063,7 +2063,7 @@ config ARCH_PHYS_ADDR_T_64BIT
-> >         def_bool 64BIT_PHYS_ADDR
-> >  
-> >  config CPU_HAS_SMARTMIPS
-> > -	depends on SYS_SUPPORTS_SMARTMIPS
-> > +	depends on SYS_SUPPORTS_SMARTMIPS && !CPU_MICROMIPS
-> >  	bool "Support for the SmartMIPS ASE"
-> >  	help
-> >  	  SmartMIPS is a extension of the MIPS32 architecture aimed at
-> 
-> >From a user's perspective that's a bit quirky; a user has to first
-> disable CPU_MICROMIPS before he can enable CPU_HAS_SMARTMIPS.  So I
-> think this should become a choice statement.
+------------------
 
- Do we need this CPU_HAS_SMARTMIPS setting at all?  Can't we just 
-save/restore this SmartMIPS ACX register on context switches where 
-available (straightforward to detect at the run time) and have the 
-relevant pieces of code excluded (#ifdef-ed out or suchlike) on 
-non-supported configurations such as microMIPS or MIPS64?
+From: Leif Lindholm <leif.lindholm@linaro.org>
 
-  Maciej
+commit dfc44f8030653b345fc6fb337558c3a07536823f upstream.
+
+A few platforms lack a 'device_type = "memory"' for their memory
+nodes, relying on an old ppc quirk in order to discover its memory.
+Add the missing data so that all parsing code can find memory nodes
+correctly.
+
+Signed-off-by: Leif Lindholm <leif.lindholm@linaro.org>
+Cc: linux-mips@linux-mips.org
+Cc: devicetree@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Acked-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Grant Likely <grant.likely@linaro.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/lantiq/dts/easy50712.dts    | 1 +
+ arch/mips/ralink/dts/mt7620a_eval.dts | 1 +
+ arch/mips/ralink/dts/rt2880_eval.dts  | 1 +
+ arch/mips/ralink/dts/rt3052_eval.dts  | 1 +
+ arch/mips/ralink/dts/rt3883_eval.dts  | 1 +
+ 5 files changed, 5 insertions(+)
+
+diff --git a/arch/mips/lantiq/dts/easy50712.dts b/arch/mips/lantiq/dts/easy50712.dts
+index fac1f5b178eb..143b8a37b5e4 100644
+--- a/arch/mips/lantiq/dts/easy50712.dts
++++ b/arch/mips/lantiq/dts/easy50712.dts
+@@ -8,6 +8,7 @@
+ 	};
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/ralink/dts/mt7620a_eval.dts
+index 35eb874ab7f1..709f58132f5c 100644
+--- a/arch/mips/ralink/dts/mt7620a_eval.dts
++++ b/arch/mips/ralink/dts/mt7620a_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink MT7620A evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
+index 322d7002595b..0a685db093d4 100644
+--- a/arch/mips/ralink/dts/rt2880_eval.dts
++++ b/arch/mips/ralink/dts/rt2880_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT2880 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x8000000 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
+index 0ac73ea28198..ec9e9a035541 100644
+--- a/arch/mips/ralink/dts/rt3052_eval.dts
++++ b/arch/mips/ralink/dts/rt3052_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT3052 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/ralink/dts/rt3883_eval.dts b/arch/mips/ralink/dts/rt3883_eval.dts
+index 2fa6b330bf4f..e8df21a5d10d 100644
+--- a/arch/mips/ralink/dts/rt3883_eval.dts
++++ b/arch/mips/ralink/dts/rt3883_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT3883 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+-- 
+1.9.1

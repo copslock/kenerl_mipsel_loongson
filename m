@@ -1,60 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2014 18:45:12 +0200 (CEST)
-Received: from mail-bn1blp0190.outbound.protection.outlook.com ([207.46.163.190]:52723
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2014 20:44:30 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:46200 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6816900AbaFCQpJmPMfa convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jun 2014 18:45:09 +0200
-Received: from CO1PR07MB127.namprd07.prod.outlook.com (10.242.167.26) by
- CO1PR07MB395.namprd07.prod.outlook.com (10.141.74.22) with Microsoft SMTP
- Server (TLS) id 15.0.949.11; Tue, 3 Jun 2014 16:45:01 +0000
-Received: from CO1PR07MB127.namprd07.prod.outlook.com ([169.254.3.148]) by
- CO1PR07MB127.namprd07.prod.outlook.com ([169.254.3.148]) with mapi id
- 15.00.0954.000; Tue, 3 Jun 2014 16:45:01 +0000
-From:   "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>
-To:     "Daney, David" <David.Daney@caviumnetworks.com>
-CC:     "Herrmann, Andreas" <Andreas.Herrmann@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v2 09/13] MIPS: Add functions for hypervisor call
-Thread-Topic: [PATCH v2 09/13] MIPS: Add functions for hypervisor call
-Thread-Index: AQHPf0p6gDdohutE1E+d1JaWoWdLs5tfl72X
-Date:   Tue, 3 Jun 2014 16:45:00 +0000
-Message-ID: <BE1AC288-3E8F-4329-AFE8-50B64E069AB7@caviumnetworks.com>
-References: <1401313936-11867-1-git-send-email-andreas.herrmann@caviumnetworks.com>
- <1401313936-11867-10-git-send-email-andreas.herrmann@caviumnetworks.com>
- <20140603083031.GP17197@linux-mips.org>
- <20140603150337.GA28045@alberich>,<538DFA61.4080100@caviumnetworks.com>
-In-Reply-To: <538DFA61.4080100@caviumnetworks.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [76.253.2.104]
-x-microsoft-antispam: BL:0;ACTION:Default;RISK:Low;SCL:0;SPMLVL:NotSpam;PCL:0;RULEID:
-x-forefront-prvs: 02318D10FB
-x-forefront-antispam-report: SFV:NSPM;SFS:(6009001)(428001)(24454002)(164054003)(51704005)(479174003)(377454003)(189002)(199002)(66066001)(64706001)(77982001)(46102001)(101416001)(21056001)(82746002)(83322001)(36756003)(92726001)(79102001)(76482001)(20776003)(81542001)(15202345003)(86362001)(83072002)(81342001)(85852003)(92566001)(15975445006)(80022001)(83716003)(2656002)(87936001)(50986999)(54356999)(76176999)(99286001)(99396002)(33656002)(19580395003)(19580405001)(74502001)(4396001)(31966008)(74662001)(104396001);DIR:OUT;SFP:;SCL:1;SRVR:CO1PR07MB395;H:CO1PR07MB127.namprd07.prod.outlook.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-received-spf: None (: caviumnetworks.com does not designate permitted sender
- hosts)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Andrew.Pinski@caviumnetworks.com; 
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S6854772AbaFCSo20-H0e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Jun 2014 20:44:28 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s53IiFfi016787;
+        Tue, 3 Jun 2014 20:44:15 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s53IiE4N016786;
+        Tue, 3 Jun 2014 20:44:14 +0200
+Date:   Tue, 3 Jun 2014 20:44:14 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     chenj <chenj@lemote.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: lib: csum_partial: use wsbh/movn on ls3
+Message-ID: <20140603184414.GT17197@linux-mips.org>
+References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
+ <1400137743-8806-2-git-send-email-chenj@lemote.com>
 MIME-Version: 1.0
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <Andrew.Pinski@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1400137743-8806-2-git-send-email-chenj@lemote.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40423
+X-archive-position: 40424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrew.Pinski@caviumnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,69 +43,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, May 15, 2014 at 03:09:03PM +0800, chenj wrote:
 
+> wsbh & movn are available on loongson3 CPU.
 
-> On Jun 3, 2014, at 9:40 AM, "Daney, David" <David.Daney@caviumnetworks.com> wrote:
-> 
-> In cases like this, I always wonder WWPD (What Would Pinski Do)...
-> 
-> Let's get him to opine.
-> 
-> Andrew, the patch in question is:
-> 
-> http://www.linux-mips.org/archives/linux-mips/2014-05/msg00309.html
+I think there are a few more case that need to be fixed than just
+this file to make best use of WSBH and similar on Loongson 3A.  How
+about below patch?
 
-
-Yes having two variables with the same register is safe as long as the only time the live ranges of them overlap is the inline-asm where they are used. 
+As I don't have Loongson 3 hardware I am not able to runtime test this.
 
 Thanks,
-Andrew
 
-> 
-> Thanks,
-> David Daney
-> 
->> On 06/03/2014 08:03 AM, Andreas Herrmann wrote:
->>> On Tue, Jun 03, 2014 at 10:30:31AM +0200, Ralf Baechle wrote:
->>>> On Wed, May 28, 2014 at 11:52:12PM +0200, Andreas Herrmann wrote:
->>>> 
->>>> +/*
->>>> + * Hypercalls for KVM.
->>>> + *
->>>> + * Hypercall number is passed in v0.
->>>> + * Return value will be placed in v0.
->>>> + * Up to 3 arguments are passed in a0, a1, and a2.
->>>> + */
->>>> +static inline unsigned long kvm_hypercall0(unsigned long num)
->>>> +{
->>>> +    register unsigned long n asm("v0");
->>>> +    register unsigned long r asm("v0");
->>> 
->>> Btw, is it safe to put two variables in the same register?
->> 
->> I think it's safe.
->> 
->> If we would have a matching constraint letter (say "v" for register v0) the
->> asm should translate to
->> 
->>         __asm__ __volatile__(
->>           KVM_HYPERCALL
->>                 : "=v" (n) : "v" (r) : "memory"
->>                 );
->> 
->> which isn't unusual on other archs. (Or maybe I am just biased from
->> x86 ... or missed something else.)
->> 
->>> The syscall wrappers that used to be in <asm/unistd.h> were occasionally
->>> hitting problems which eventually forced me to stop forcing variables
->>> into particular registers instead using a MOVE instruction to shove
->>> each variable into the right place.
->>> 
->>> Of course they were being used from non-PIC and PIC code, kernel and userland
->>> so GCC had a much better chance to do evil than in the hypercall wrapper
->>> case - but it made me paranoid ...
->> 
->> 
->> 
->> Andreas
->> 
+  Ralf
+
+ arch/mips/include/asm/cpu-features.h                           | 10 ++++++++++
+ .../include/asm/mach-cavium-octeon/cpu-feature-overrides.h     |  1 +
+ arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h    |  2 ++
+ arch/mips/include/uapi/asm/swab.h                              |  5 +++--
+ arch/mips/lib/csum_partial.S                                   | 10 ++++++++--
+ arch/mips/net/bpf_jit.c                                        |  2 +-
+ 6 files changed, 25 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index c7d8c99..d927bda 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -222,6 +222,16 @@
+ #define cpu_has_clo_clz	cpu_has_mips_r
+ #endif
+ 
++/*
++ * MIPS32 R2, MIPS64 R2, Loongson 3A and Octeon have WSBH.
++ * MIPS64 R2, Loongson 3A and Octeon have WSBH, DSBH and DSHD.
++ * This indicates the availability of WSBH and in case of 64 bit CPUs also
++ * DSBH and DSHD.
++ */
++#ifndef cpu_has_wsbh
++#define cpu_has_wsbh		cpu_has_mips_r2
++#endif
++
+ #ifndef cpu_has_dsp
+ #define cpu_has_dsp		(cpu_data[0].ases & MIPS_ASE_DSP)
+ #endif
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+index cf80228..fa1f3cf 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+@@ -57,6 +57,7 @@
+ #define cpu_has_vint		0
+ #define cpu_has_veic		0
+ #define cpu_hwrena_impl_bits	0xc0000000
++#define cpu_has_wsbh            1
+ 
+ #define cpu_has_rixi		(cpu_data[0].cputype != CPU_CAVIUM_OCTEON)
+ 
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+index c0f3ef4..7d28f95 100644
+--- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -59,4 +59,6 @@
+ #define cpu_has_watch		1
+ #define cpu_has_local_ebase	0
+ 
++#define cpu_has_wsbh		IS_ENABLED(CONFIG_CPU_LOONGSON3)
++
+ #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/include/uapi/asm/swab.h b/arch/mips/include/uapi/asm/swab.h
+index ac9a8f9..b2ab2cf 100644
+--- a/arch/mips/include/uapi/asm/swab.h
++++ b/arch/mips/include/uapi/asm/swab.h
+@@ -13,7 +13,8 @@
+ 
+ #define __SWAB_64_THRU_32__
+ 
+-#if defined(__mips_isa_rev) && (__mips_isa_rev >= 2)
++#if (defined(__mips_isa_rev) && (__mips_isa_rev >= 2)) ||		\
++    defined(_MIPS_ARCH_LOONGSON3A)
+ 
+ static inline __attribute_const__ __u16 __arch_swab16(__u16 x)
+ {
+@@ -55,5 +56,5 @@ static inline __attribute_const__ __u64 __arch_swab64(__u64 x)
+ }
+ #define __arch_swab64 __arch_swab64
+ #endif /* __mips64 */
+-#endif /* MIPS R2 or newer  */
++#endif /* MIPS R2 or newer or Loongson 3A  */
+ #endif /* _ASM_SWAB_H */
+diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
+index 9901237..4c721e2 100644
+--- a/arch/mips/lib/csum_partial.S
++++ b/arch/mips/lib/csum_partial.S
+@@ -277,9 +277,12 @@ LEAF(csum_partial)
+ #endif
+ 
+ 	/* odd buffer alignment? */
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
++	.set	push
++	.set	arch=mips32r2
+ 	wsbh	v1, sum
+ 	movn	sum, v1, t7
++	.set	pop
+ #else
+ 	beqz	t7, 1f			/* odd buffer alignment? */
+ 	 lui	v1, 0x00ff
+@@ -726,9 +729,12 @@ LEAF(csum_partial)
+ 	addu	sum, v1
+ #endif
+ 
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_LOONGSON3)
++	.set	push
++	.set	arch=mips32r2
+ 	wsbh	v1, sum
+ 	movn	sum, v1, odd
++	.set	pop
+ #else
+ 	beqz	odd, 1f			/* odd buffer alignment? */
+ 	 lui	v1, 0x00ff
+diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+index a67b975..b2a560b 100644
+--- a/arch/mips/net/bpf_jit.c
++++ b/arch/mips/net/bpf_jit.c
+@@ -1240,7 +1240,7 @@ jmp_cmp:
+ 			emit_half_load(r_A, r_skb, off, ctx);
+ #ifdef CONFIG_CPU_LITTLE_ENDIAN
+ 			/* This needs little endian fixup */
+-			if (cpu_has_mips_r2) {
++			if (cpu_has_wsbh) {
+ 				/* R2 and later have the wsbh instruction */
+ 				emit_wsbh(r_A, r_A, ctx);
+ 			} else {

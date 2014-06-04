@@ -1,53 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jun 2014 19:22:29 +0200 (CEST)
-Received: from mail-ie0-f173.google.com ([209.85.223.173]:42822 "EHLO
-        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854780AbaFDRWZsNwnU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jun 2014 19:22:25 +0200
-Received: by mail-ie0-f173.google.com with SMTP id lx4so7605606iec.18
-        for <multiple recipients>; Wed, 04 Jun 2014 10:22:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=gwIy/zP3LhbH+XHkPBggKDnb03hCsLlAPZ1gR+Xmqgk=;
-        b=GwDog7aLmGxCvMHgPuivnxFAhqWFhTpdmiXZYh+tm/BKorgnGnQgke1spVbvkUKbM4
-         VfBqWrXULByaHpOJBg6oJTip3nCoX3aLTCDzvfcag6rA3WoHNV42GxmzmPQJ6DXyfRnW
-         Ngwp8kP5Q6XesqLTeIIfMp7C8bcqGWFzPwVWwBGyIi8GdW+Qz2tHf0uR/ZkKMjxnVA3G
-         SLf9tYxvIBVkEMolwaHv1T8Sf2JWnu3CQ+N9CWOr9rOgNfSg+VbTgi50J3AQG6AIo+aJ
-         XCSYjez/+kJaIEj5N1K1WYs6LSIQopjw/hOHzx24kIxZES+QpUuQQ+GygWVo1JCI3csb
-         DCGQ==
-X-Received: by 10.50.28.51 with SMTP id y19mr9371385igg.5.1401902539479;
-        Wed, 04 Jun 2014 10:22:19 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id ql7sm46395963igc.19.2014.06.04.10.22.17
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 04 Jun 2014 10:22:18 -0700 (PDT)
-Message-ID: <538F55C9.7090905@gmail.com>
-Date:   Wed, 04 Jun 2014 10:22:17 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jun 2014 20:53:14 +0200 (CEST)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:41672 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6854763AbaFDSxLPhDoW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jun 2014 20:53:11 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 86E9A56F7EB;
+        Wed,  4 Jun 2014 21:53:10 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id MsgpeXr925QS; Wed,  4 Jun 2014 21:53:04 +0300 (EEST)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id E813C5BC012;
+        Wed,  4 Jun 2014 21:53:03 +0300 (EEST)
+Date:   Wed, 4 Jun 2014 21:53:03 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Alex Smith <alex.smith@imgtec.com>,
+        Aaro Koskinen <aaro.koskinen@nsn.com>,
+        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
+Subject: Re: [1/3] MIPS: octeon: Add interface mode detection for Octeon II
+Message-ID: <20140604185303.GA562@drone.musicnaut.iki.fi>
+References: <1401358203-60225-2-git-send-email-alex.smith@imgtec.com>
+ <20140604144739.GB24816@ak-desktop.emea.nsn-net.net>
+ <538F420A.60007@imgtec.com>
+ <538F5387.8000200@caviumnetworks.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Huacai Chen <chenhc@lemote.com>, John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 4/8] MIPS: Add NUMA support for Loongson-3
-References: <1397348662-22502-1-git-send-email-chenhc@lemote.com> <1397348662-22502-5-git-send-email-chenhc@lemote.com> <20140603224739.GU17197@linux-mips.org> <538E5EA8.8010907@gmail.com> <20140604064601.GU5157@linux-mips.org>
-In-Reply-To: <20140604064601.GU5157@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <538F5387.8000200@caviumnetworks.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40434
+X-archive-position: 40435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,33 +51,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/03/2014 11:46 PM, Ralf Baechle wrote:
->
-> A more important value which I haven't noticed the Looongson patches to
-> modify is SECTION_SIZE_BITS in <asm/sparsemem.h>:
->
-> #if defined(CONFIG_MIPS_HUGE_TLB_SUPPORT) && defined(CONFIG_PAGE_SIZE_64KB)
-> # define SECTION_SIZE_BITS      29
-> #else
-> # define SECTION_SIZE_BITS      28
-> #endif
->
-> Don't ask me why its definition depends on MIPS_HUGE_TLB_SUPPORT and
-> PAGE_SIZE_64KB - the value describes the larges chunk of contiguous
-> memory (that is for example memory per node) and that doesn't depend
-> on these CONFIG_* symbols.
->
+Hi,
 
-I think I can answer that.  We do the same thing for OCTEON I think.
+On Wed, Jun 04, 2014 at 10:12:39AM -0700, David Daney wrote:
+> On 06/04/2014 08:58 AM, Alex Smith wrote:
+> >On 04/06/14 15:47, Aaro Koskinen wrote:
+> >>On Thu, May 29, 2014 at 11:10:01AM +0100, Alex Smith wrote:
+> >>>Add interface mode detection for Octeon II. This is necessary to detect
+> >>>the interface modes correctly on the UBNT E200 board. Code is taken
+> >>>from the UBNT GPL source release, with some alterations: SRIO, ILK and
+> >>>RXAUI interface modes are removed and instead return disabled as these
+> >>>modes are not currently supported.
+> >>>
+> >>>Tested-by: David Daney <david.daney@cavium.com>
+> >>>Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+> >>
+> >>I tried booting ebb6800 board with these patches.
+> 
+> There seem to be problems (I think in the interrupt controller code) for
+> cn68xx based systems in the kernel.org kernel.  So I couldn't get it to boot
+> on my ebb6800 even to the point it tries to initialize the networking
+> hardware.
 
-IIRC, with SPARSEMEM, you cannot allocate high order pages that span 
-multiple sections.  Therefore you have to have the sections be at least 
-as large as a huge page.  in the case of CONFIG_PAGE_SIZE_64KB, the huge 
-pages are 512MB which doesn't fit in 28 bits.
+I tested two boards with 3.15-rc8. They boot fine to shell, it's just
+modprobing octeon-ethernet that is causing issues.
 
-David.
+> >>It hangs somewhere in __cvmx_helper_xaui_enable() with XAUI port. Looking
+> >>at the UBNT GPL package, xaui init is quite different with 68XX specific
+> >>code paths.  Maybe those bits should be added too, or then disable XAUI
+> >>support as well?
+> >
+> >Probably the best thing to do for now would be to disable it. Does it
+> >boot successfully for you if you switch CVMX_HELPER_INTERFACE_MODE_XAUI
+> >to disabled?
+> 
+> ... I don't think it matters.  The patch Alex et al. came up with is an
+> improvement over what is already there.  The fact that there are still some
+> configurations that don't work can be addressed with follow-on patches.
 
+Fair enough; previously octeon-ethernet panic()ed on ebb6800 and now it
+silently hangs - so it's not really any serious regression.
 
->    Ralf
->
->
+If these patches already make it work on ER Pro then good, at least
+it's a some kind of improvement towards a proper Octeon II support.
+
+A.

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2014 01:20:52 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35520 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2014 01:21:14 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35556 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6843095AbaFDXUsKOvjc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jun 2014 01:20:48 +0200
+        by eddie.linux-mips.org with ESMTP id S6854780AbaFDXUvNkW8- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jun 2014 01:20:51 +0200
 Received: from localhost (c-76-28-255-20.hsd1.wa.comcast.net [76.28.255.20])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CD61589C;
-        Wed,  4 Jun 2014 23:20:39 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2039F910;
+        Wed,  4 Jun 2014 23:20:45 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-mips@linux-mips.org, cpufreq@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 003/228] MIPS/loongson2_cpufreq: Fix CPU clock rate setting
-Date:   Wed,  4 Jun 2014 16:20:32 -0700
-Message-Id: <20140604232348.187603019@linuxfoundation.org>
+        stable@vger.kernel.org, Leif Lindholm <leif.lindholm@linaro.org>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        John Crispin <blogic@openwrt.org>,
+        Grant Likely <grant.likely@linaro.org>
+Subject: [PATCH 3.14 004/228] mips: dts: Fix missing device_type="memory" property in memory nodes
+Date:   Wed,  4 Jun 2014 16:20:33 -0700
+Message-Id: <20140604232348.220747739@linuxfoundation.org>
 X-Mailer: git-send-email 1.9.0
 In-Reply-To: <20140604232347.966798903@linuxfoundation.org>
 References: <20140604232347.966798903@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40436
+X-archive-position: 40437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,73 +48,78 @@ X-list: linux-mips
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Leif Lindholm <leif.lindholm@linaro.org>
 
-commit 8e8acb32960f42c81b1d50deac56a2c07bb6a18a upstream.
+commit dfc44f8030653b345fc6fb337558c3a07536823f upstream.
 
-Loongson2 has been using (incorrectly) kHz for cpu_clk rate. This has
-been unnoticed, as loongson2_cpufreq was the only place where the rate
-was set/get. After commit 652ed95d5fa6074b3c4ea245deb0691f1acb6656
-(cpufreq: introduce cpufreq_generic_get() routine) things however broke,
-and now loops_per_jiffy adjustments are incorrect (1000 times too long).
-The patch fixes this by changing cpu_clk rate to Hz.
+A few platforms lack a 'device_type = "memory"' for their memory
+nodes, relying on an old ppc quirk in order to discover its memory.
+Add the missing data so that all parsing code can find memory nodes
+correctly.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Leif Lindholm <leif.lindholm@linaro.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Cc: cpufreq@vger.kernel.org
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Patchwork: https://patchwork.linux-mips.org/patch/6678/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: devicetree@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Acked-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Grant Likely <grant.likely@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/loongson/lemote-2f/clock.c |    5 +++--
- drivers/cpufreq/loongson2_cpufreq.c  |    4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ arch/mips/lantiq/dts/easy50712.dts    |    1 +
+ arch/mips/ralink/dts/mt7620a_eval.dts |    1 +
+ arch/mips/ralink/dts/rt2880_eval.dts  |    1 +
+ arch/mips/ralink/dts/rt3052_eval.dts  |    1 +
+ arch/mips/ralink/dts/rt3883_eval.dts  |    1 +
+ 5 files changed, 5 insertions(+)
 
---- a/arch/mips/loongson/lemote-2f/clock.c
-+++ b/arch/mips/loongson/lemote-2f/clock.c
-@@ -91,6 +91,7 @@ EXPORT_SYMBOL(clk_put);
+--- a/arch/mips/lantiq/dts/easy50712.dts
++++ b/arch/mips/lantiq/dts/easy50712.dts
+@@ -8,6 +8,7 @@
+ 	};
  
- int clk_set_rate(struct clk *clk, unsigned long rate)
- {
-+	unsigned int rate_khz = rate / 1000;
- 	int ret = 0;
- 	int regval;
- 	int i;
-@@ -111,10 +112,10 @@ int clk_set_rate(struct clk *clk, unsign
- 		if (loongson2_clockmod_table[i].frequency ==
- 		    CPUFREQ_ENTRY_INVALID)
- 			continue;
--		if (rate == loongson2_clockmod_table[i].frequency)
-+		if (rate_khz == loongson2_clockmod_table[i].frequency)
- 			break;
- 	}
--	if (rate != loongson2_clockmod_table[i].frequency)
-+	if (rate_khz != loongson2_clockmod_table[i].frequency)
- 		return -ENOTSUPP;
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
  
- 	clk->rate = rate;
---- a/drivers/cpufreq/loongson2_cpufreq.c
-+++ b/drivers/cpufreq/loongson2_cpufreq.c
-@@ -62,7 +62,7 @@ static int loongson2_cpufreq_target(stru
- 	set_cpus_allowed_ptr(current, &cpus_allowed);
+--- a/arch/mips/ralink/dts/mt7620a_eval.dts
++++ b/arch/mips/ralink/dts/mt7620a_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink MT7620A evaluation board";
  
- 	/* setting the cpu frequency */
--	clk_set_rate(policy->clk, freq);
-+	clk_set_rate(policy->clk, freq * 1000);
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
  
- 	return 0;
- }
-@@ -92,7 +92,7 @@ static int loongson2_cpufreq_cpu_init(st
- 	     i++)
- 		loongson2_clockmod_table[i].frequency = (rate * i) / 8;
+--- a/arch/mips/ralink/dts/rt2880_eval.dts
++++ b/arch/mips/ralink/dts/rt2880_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT2880 evaluation board";
  
--	ret = clk_set_rate(cpuclk, rate);
-+	ret = clk_set_rate(cpuclk, rate * 1000);
- 	if (ret) {
- 		clk_put(cpuclk);
- 		return ret;
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x8000000 0x2000000>;
+ 	};
+ 
+--- a/arch/mips/ralink/dts/rt3052_eval.dts
++++ b/arch/mips/ralink/dts/rt3052_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT3052 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 
+--- a/arch/mips/ralink/dts/rt3883_eval.dts
++++ b/arch/mips/ralink/dts/rt3883_eval.dts
+@@ -7,6 +7,7 @@
+ 	model = "Ralink RT3883 evaluation board";
+ 
+ 	memory@0 {
++		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
+ 	};
+ 

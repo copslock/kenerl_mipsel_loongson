@@ -1,47 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jun 2014 19:12:52 +0200 (CEST)
-Received: from mail-bn1lp0145.outbound.protection.outlook.com ([207.46.163.145]:47075
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6816071AbaFDRMtzG8rJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Jun 2014 19:12:49 +0200
-Received: from BY2PRD0711HT002.namprd07.prod.outlook.com (10.255.88.165) by
- DM2PR07MB685.namprd07.prod.outlook.com (10.141.179.141) with Microsoft SMTP
- Server (TLS) id 15.0.949.11; Wed, 4 Jun 2014 17:12:41 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.88.165) with Microsoft SMTP Server (TLS) id 14.16.459.0; Wed, 4 Jun
- 2014 17:12:40 +0000
-Message-ID: <538F5387.8000200@caviumnetworks.com>
-Date:   Wed, 4 Jun 2014 10:12:39 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jun 2014 19:22:29 +0200 (CEST)
+Received: from mail-ie0-f173.google.com ([209.85.223.173]:42822 "EHLO
+        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6854780AbaFDRWZsNwnU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jun 2014 19:22:25 +0200
+Received: by mail-ie0-f173.google.com with SMTP id lx4so7605606iec.18
+        for <multiple recipients>; Wed, 04 Jun 2014 10:22:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=gwIy/zP3LhbH+XHkPBggKDnb03hCsLlAPZ1gR+Xmqgk=;
+        b=GwDog7aLmGxCvMHgPuivnxFAhqWFhTpdmiXZYh+tm/BKorgnGnQgke1spVbvkUKbM4
+         VfBqWrXULByaHpOJBg6oJTip3nCoX3aLTCDzvfcag6rA3WoHNV42GxmzmPQJ6DXyfRnW
+         Ngwp8kP5Q6XesqLTeIIfMp7C8bcqGWFzPwVWwBGyIi8GdW+Qz2tHf0uR/ZkKMjxnVA3G
+         SLf9tYxvIBVkEMolwaHv1T8Sf2JWnu3CQ+N9CWOr9rOgNfSg+VbTgi50J3AQG6AIo+aJ
+         XCSYjez/+kJaIEj5N1K1WYs6LSIQopjw/hOHzx24kIxZES+QpUuQQ+GygWVo1JCI3csb
+         DCGQ==
+X-Received: by 10.50.28.51 with SMTP id y19mr9371385igg.5.1401902539479;
+        Wed, 04 Jun 2014 10:22:19 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id ql7sm46395963igc.19.2014.06.04.10.22.17
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 04 Jun 2014 10:22:18 -0700 (PDT)
+Message-ID: <538F55C9.7090905@gmail.com>
+Date:   Wed, 04 Jun 2014 10:22:17 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-To:     Alex Smith <alex.smith@imgtec.com>
-CC:     Aaro Koskinen <aaro.koskinen@nsn.com>,
-        David Daney <david.daney@cavium.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [1/3] MIPS: octeon: Add interface mode detection for Octeon II
-References: <1401358203-60225-2-git-send-email-alex.smith@imgtec.com> <20140604144739.GB24816@ak-desktop.emea.nsn-net.net> <538F420A.60007@imgtec.com>
-In-Reply-To: <538F420A.60007@imgtec.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Huacai Chen <chenhc@lemote.com>, John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V2 4/8] MIPS: Add NUMA support for Loongson-3
+References: <1397348662-22502-1-git-send-email-chenhc@lemote.com> <1397348662-22502-5-git-send-email-chenhc@lemote.com> <20140603224739.GU17197@linux-mips.org> <538E5EA8.8010907@gmail.com> <20140604064601.GU5157@linux-mips.org>
+In-Reply-To: <20140604064601.GU5157@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-Microsoft-Antispam: BL:0;ACTION:Default;RISK:Low;SCL:0;SPMLVL:NotSpam;PCL:0;RULEID:
-X-Forefront-PRVS: 0232B30BBC
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(428001)(377454003)(479174003)(199002)(189002)(24454002)(51704005)(65816999)(87936001)(4396001)(21056001)(101416001)(33656002)(80022001)(79102001)(74502001)(87266999)(31966008)(99396002)(23756003)(54356999)(76482001)(65956001)(46102001)(74662001)(66066001)(77982001)(47776003)(76176999)(59896001)(65806001)(64706001)(20776003)(102836001)(81342001)(36756003)(50986999)(19580395003)(92726001)(50466002)(83506001)(53416003)(81542001)(19580405001)(83072002)(85852003)(80316001)(92566001)(83322001);DIR:OUT;SFP:;SCL:1;SRVR:DM2PR07MB685;H:BY2PRD0711HT002.namprd07.prod.outlook.com;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (: caviumnetworks.com does not designate permitted sender
- hosts)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@caviumnetworks.com; 
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40433
+X-archive-position: 40434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,46 +60,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/04/2014 08:58 AM, Alex Smith wrote:
-> On 04/06/14 15:47, Aaro Koskinen wrote:
->> On Thu, May 29, 2014 at 11:10:01AM +0100, Alex Smith wrote:
->>> Add interface mode detection for Octeon II. This is necessary to detect
->>> the interface modes correctly on the UBNT E200 board. Code is taken
->>> from the UBNT GPL source release, with some alterations: SRIO, ILK and
->>> RXAUI interface modes are removed and instead return disabled as these
->>> modes are not currently supported.
->>>
->>> Tested-by: David Daney <david.daney@cavium.com>
->>> Signed-off-by: Alex Smith <alex.smith@imgtec.com>
->>
->> I tried booting ebb6800 board with these patches.
-
-There seem to be problems (I think in the interrupt controller code) for 
-cn68xx based systems in the kernel.org kernel.  So I couldn't get it to 
-boot on my ebb6800 even to the point it tries to initialize the 
-networking hardware.
-
-Therefore ...
-
->>
->> It hangs somewhere in __cvmx_helper_xaui_enable() with XAUI port. Looking
->> at the UBNT GPL package, xaui init is quite different with 68XX specific
->> code paths.  Maybe those bits should be added too, or then disable XAUI
->> support as well?
+On 06/03/2014 11:46 PM, Ralf Baechle wrote:
 >
-> Probably the best thing to do for now would be to disable it. Does it
-> boot successfully for you if you switch CVMX_HELPER_INTERFACE_MODE_XAUI
-> to disabled?
-
-... I don't think it matters.  The patch Alex et al. came up with is an 
-improvement over what is already there.  The fact that there are still 
-some configurations that don't work can be addressed with follow-on patches.
-
-If I misunderstand the situation, please let me know, and we can work 
-towards something better.
-
-David Daney
-
-
+> A more important value which I haven't noticed the Looongson patches to
+> modify is SECTION_SIZE_BITS in <asm/sparsemem.h>:
 >
-> Alex
+> #if defined(CONFIG_MIPS_HUGE_TLB_SUPPORT) && defined(CONFIG_PAGE_SIZE_64KB)
+> # define SECTION_SIZE_BITS      29
+> #else
+> # define SECTION_SIZE_BITS      28
+> #endif
+>
+> Don't ask me why its definition depends on MIPS_HUGE_TLB_SUPPORT and
+> PAGE_SIZE_64KB - the value describes the larges chunk of contiguous
+> memory (that is for example memory per node) and that doesn't depend
+> on these CONFIG_* symbols.
+>
+
+I think I can answer that.  We do the same thing for OCTEON I think.
+
+IIRC, with SPARSEMEM, you cannot allocate high order pages that span 
+multiple sections.  Therefore you have to have the sections be at least 
+as large as a huge page.  in the case of CONFIG_PAGE_SIZE_64KB, the huge 
+pages are 512MB which doesn't fit in 28 bits.
+
+David.
+
+
+>    Ralf
+>
+>

@@ -1,37 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2014 23:07:27 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:55112 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6821089AbaFEVHXw-03g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Jun 2014 23:07:23 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s55L7KoQ002983;
-        Thu, 5 Jun 2014 23:07:20 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s55L7JW3002982;
-        Thu, 5 Jun 2014 23:07:19 +0200
-Date:   Thu, 5 Jun 2014 23:07:19 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Steven Rostedt <rostedt@goodmis.org>, linux-mips@linux-mips.org,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2014 23:38:08 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55178 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6854763AbaFEViFmZRFv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jun 2014 23:38:05 +0200
+Date:   Thu, 5 Jun 2014 22:38:05 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     David Daney <ddaney.cavm@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>, linux-mips@linux-mips.org
 Subject: Re: gcc warning in my trace_benchmark() code
-Message-ID: <20140605210718.GV17197@linux-mips.org>
-References: <20140605121204.18ee5f2d@gandalf.local.home>
- <5390A4F0.3000601@gmail.com>
+In-Reply-To: <20140605210718.GV17197@linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1406052214320.18344@eddie.linux-mips.org>
+References: <20140605121204.18ee5f2d@gandalf.local.home> <5390A4F0.3000601@gmail.com> <20140605210718.GV17197@linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5390A4F0.3000601@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40445
+X-archive-position: 40446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,40 +36,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 05, 2014 at 10:12:16AM -0700, David Daney wrote:
+On Thu, 5 Jun 2014, Ralf Baechle wrote:
 
-> >vim +84 kernel/trace/trace_benchmark.c
-> >
-> >     78		if (bm_cnt > 1) {
-> >     79			/*
-> >     80			 * Apply Welford's method to calculate standard deviation:
-> >     81			 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
-> >     82			 */
-> >     83			stddev = (u64)bm_cnt * bm_totalsq - bm_total * bm_total;
-> >   > 84			do_div(stddev, bm_cnt);
-> >   > 85			do_div(stddev, bm_cnt - 1);
-> >     86		} else
-> >     87			stddev = 0;
-> >     88	
-> >
-> >
-> >
-> >Is there something special with do_div in mips that I should be aware
-> >of?
+> > Ralf:  As a side note, while looking at
+> > arch/mips/include/asm/div64.h, I saw that the implementation of
+> > __div64_32 in that file will be unused, and is also completely
+> > broken due to the first parameter never being used.
 > 
-> Yes.  MIPS is using the implementation in asm-generic/div64.h,
-> which per the comments in that file has a useless pointer compare to
-> find just this type of issue.
+> Seems I broke c21004cd5b4cb7d479514d470a62366e8307412c "MIPS: Rewrite
+> <asm/div64.h> to work with gcc 4.4.0."  Took only five years until
+> somebody noticed ...
 
-And it's not the only warning it's picking up.
+ Well, it's not really possible to track all the breakage introduced 
+unless at least a warning is spat for some config.  Which is why I think 
+it's a good idea to have all non-trivial changes put through a review 
+process or at least posted to the relevant mailing list.
 
-> Ralf:  As a side note, while looking at
-> arch/mips/include/asm/div64.h, I saw that the implementation of
-> __div64_32 in that file will be unused, and is also completely
-> broken due to the first parameter never being used.
+ This change didn't appear anywhere, only the commit log message was 
+posted, so there was no chance to spot the damage, unless there was 
+someone who actively studied changes made to the tree.
 
-Seems I broke c21004cd5b4cb7d479514d470a62366e8307412c "MIPS: Rewrite
-<asm/div64.h> to work with gcc 4.4.0."  Took only five years until
-somebody noticed ...
-
-  Ralf
+  Maciej

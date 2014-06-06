@@ -1,29 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2014 14:51:46 +0200 (CEST)
-Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:57347 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2014 15:05:34 +0200 (CEST)
+Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:57990 "EHLO
         ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817664AbaFFMvmdt19n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jun 2014 14:51:42 +0200
+        by eddie.linux-mips.org with ESMTP id S6816288AbaFFNFb6eS8n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jun 2014 15:05:31 +0200
 Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.80.1)
         (envelope-from <jslaby@suse.cz>)
-        id 1WstcJ-0008C9-6b; Fri, 06 Jun 2014 14:51:31 +0200
+        id 1Wstpj-0000Do-5C; Fri, 06 Jun 2014 15:05:23 +0200
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
-Cc:     Leif Lindholm <leif.lindholm@linaro.org>,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to the 3.12 stable tree] mips: dts: Fix missing device_type="memory" property in memory nodes
-Date:   Fri,  6 Jun 2014 14:49:17 +0200
-Message-Id: <1402059090-31277-13-git-send-email-jslaby@suse.cz>
+Cc:     jslaby@suse.cz, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        cpufreq@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [patch NOT added to the 3.12 stable tree] MIPS/loongson2_cpufreq: Fix CPU clock rate setting
+Date:   Fri,  6 Jun 2014 15:05:23 +0200
+Message-Id: <1402059923-821-1-git-send-email-jslaby@suse.cz>
 X-Mailer: git-send-email 1.9.3
-In-Reply-To: <1402059090-31277-1-git-send-email-jslaby@suse.cz>
-References: <1402059090-31277-1-git-send-email-jslaby@suse.cz>
 Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40450
+X-archive-position: 40451
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,94 +38,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Leif Lindholm <leif.lindholm@linaro.org>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-This patch has been added to the 3.12 stable tree. If you have any
-objections, please let us know.
+This patch does NOT apply to the 3.12 stable tree. If you still want
+it applied, please provide a backport.
 
 ===============
 
-commit dfc44f8030653b345fc6fb337558c3a07536823f upstream.
+commit 8e8acb32960f42c81b1d50deac56a2c07bb6a18a upstream.
 
-A few platforms lack a 'device_type = "memory"' for their memory
-nodes, relying on an old ppc quirk in order to discover its memory.
-Add the missing data so that all parsing code can find memory nodes
-correctly.
+Loongson2 has been using (incorrectly) kHz for cpu_clk rate. This has
+been unnoticed, as loongson2_cpufreq was the only place where the rate
+was set/get. After commit 652ed95d5fa6074b3c4ea245deb0691f1acb6656
+(cpufreq: introduce cpufreq_generic_get() routine) things however broke,
+and now loops_per_jiffy adjustments are incorrect (1000 times too long).
+The patch fixes this by changing cpu_clk rate to Hz.
 
-Signed-off-by: Leif Lindholm <leif.lindholm@linaro.org>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: stable@vger.kernel.org
+Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
 Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Acked-by: John Crispin <blogic@openwrt.org>
-Signed-off-by: Grant Likely <grant.likely@linaro.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Cc: linux-kernel@vger.kernel.org
+Cc: cpufreq@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Patchwork: https://patchwork.linux-mips.org/patch/6678/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 ---
- arch/mips/lantiq/dts/easy50712.dts    | 1 +
- arch/mips/ralink/dts/mt7620a_eval.dts | 1 +
- arch/mips/ralink/dts/rt2880_eval.dts  | 1 +
- arch/mips/ralink/dts/rt3052_eval.dts  | 1 +
- arch/mips/ralink/dts/rt3883_eval.dts  | 1 +
- 5 files changed, 5 insertions(+)
+ arch/mips/loongson/lemote-2f/clock.c | 5 +++--
+ drivers/cpufreq/loongson2_cpufreq.c  | 4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/lantiq/dts/easy50712.dts b/arch/mips/lantiq/dts/easy50712.dts
-index fac1f5b178eb..143b8a37b5e4 100644
---- a/arch/mips/lantiq/dts/easy50712.dts
-+++ b/arch/mips/lantiq/dts/easy50712.dts
-@@ -8,6 +8,7 @@
- 	};
+diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
+index e1f427f4f5f3..67dd94ef28e6 100644
+--- a/arch/mips/loongson/lemote-2f/clock.c
++++ b/arch/mips/loongson/lemote-2f/clock.c
+@@ -91,6 +91,7 @@ EXPORT_SYMBOL(clk_put);
  
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
+ int clk_set_rate(struct clk *clk, unsigned long rate)
+ {
++	unsigned int rate_khz = rate / 1000;
+ 	int ret = 0;
+ 	int regval;
+ 	int i;
+@@ -111,10 +112,10 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+ 		if (loongson2_clockmod_table[i].frequency ==
+ 		    CPUFREQ_ENTRY_INVALID)
+ 			continue;
+-		if (rate == loongson2_clockmod_table[i].frequency)
++		if (rate_khz == loongson2_clockmod_table[i].frequency)
+ 			break;
+ 	}
+-	if (rate != loongson2_clockmod_table[i].frequency)
++	if (rate_khz != loongson2_clockmod_table[i].frequency)
+ 		return -ENOTSUPP;
  
-diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/ralink/dts/mt7620a_eval.dts
-index 35eb874ab7f1..709f58132f5c 100644
---- a/arch/mips/ralink/dts/mt7620a_eval.dts
-+++ b/arch/mips/ralink/dts/mt7620a_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink MT7620A evaluation board";
+ 	clk->rate = rate;
+diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
+index f0bc31f5db27..d4add8621944 100644
+--- a/drivers/cpufreq/loongson2_cpufreq.c
++++ b/drivers/cpufreq/loongson2_cpufreq.c
+@@ -62,7 +62,7 @@ static int loongson2_cpufreq_target(struct cpufreq_policy *policy,
+ 	set_cpus_allowed_ptr(current, &cpus_allowed);
  
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
+ 	/* setting the cpu frequency */
+-	clk_set_rate(policy->clk, freq);
++	clk_set_rate(policy->clk, freq * 1000);
  
-diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
-index 322d7002595b..0a685db093d4 100644
---- a/arch/mips/ralink/dts/rt2880_eval.dts
-+++ b/arch/mips/ralink/dts/rt2880_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink RT2880 evaluation board";
+ 	return 0;
+ }
+@@ -92,7 +92,7 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	     i++)
+ 		loongson2_clockmod_table[i].frequency = (rate * i) / 8;
  
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x8000000 0x2000000>;
- 	};
- 
-diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
-index 0ac73ea28198..ec9e9a035541 100644
---- a/arch/mips/ralink/dts/rt3052_eval.dts
-+++ b/arch/mips/ralink/dts/rt3052_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink RT3052 evaluation board";
- 
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
- 
-diff --git a/arch/mips/ralink/dts/rt3883_eval.dts b/arch/mips/ralink/dts/rt3883_eval.dts
-index 2fa6b330bf4f..e8df21a5d10d 100644
---- a/arch/mips/ralink/dts/rt3883_eval.dts
-+++ b/arch/mips/ralink/dts/rt3883_eval.dts
-@@ -7,6 +7,7 @@
- 	model = "Ralink RT3883 evaluation board";
- 
- 	memory@0 {
-+		device_type = "memory";
- 		reg = <0x0 0x2000000>;
- 	};
- 
+-	ret = clk_set_rate(cpuclk, rate);
++	ret = clk_set_rate(cpuclk, rate * 1000);
+ 	if (ret) {
+ 		clk_put(cpuclk);
+ 		return ret;
 -- 
 1.9.3

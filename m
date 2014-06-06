@@ -1,18 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2014 00:17:19 +0200 (CEST)
-Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.228]:52370 "EHLO
-        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6832290AbaFEWRQVJyzC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jun 2014 00:17:16 +0200
-Received: from [67.246.153.56] ([67.246.153.56:53614] helo=gandalf.local.home)
-        by cdptpa-oedge01 (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
-        id 79/44-06582-46CE0935; Thu, 05 Jun 2014 22:17:09 +0000
-Date:   Thu, 5 Jun 2014 18:17:08 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: gcc warning in my trace_benchmark() code
-Message-ID: <20140605181708.7affae05@gandalf.local.home>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2014 09:17:07 +0200 (CEST)
+Received: from mail-lb0-f172.google.com ([209.85.217.172]:45356 "EHLO
+        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816207AbaFFHREvg4w6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jun 2014 09:17:04 +0200
+Received: by mail-lb0-f172.google.com with SMTP id l4so1280537lbv.31
+        for <multiple recipients>; Fri, 06 Jun 2014 00:16:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=g6KGZtNFvG0LIWzds7cCtXeg2geiNb9/FgBephkTSz8=;
+        b=rSQ7yeU0SGmiNvykwrKS44WthPHz/NHh7bjrx+bTl7uNTrJyYUdL65x3cvBqPyIPpY
+         Bj0pxZzCpC9HHg6CJSsHOBJ4IOsug+MLEUkzOtl/n9Z+q9zEDUHKYWi+Y0WPujRbFifY
+         T9Xa36D0nZESioX4YDY8H6ce1Qdra4G1vMp3Mpamx+hDZMyoYEdfDgpgI2giVBcaUYmR
+         1iGpPkaaVMSmfA75bz8Lcafxs4OyE1J9WKQ5vWvUhmBbV7WLbWmSs6KCGzDUj0A2LRXt
+         UVspbqWc2oZQ23l8x1E4vs/3Ojd7DaMf2o8v/IrwqQdc1xRPgVxnP96PrOqa5Pxiukd0
+         HyKw==
+MIME-Version: 1.0
+X-Received: by 10.152.87.80 with SMTP id v16mr278062laz.77.1402039019141; Fri,
+ 06 Jun 2014 00:16:59 -0700 (PDT)
+Received: by 10.152.43.4 with HTTP; Fri, 6 Jun 2014 00:16:59 -0700 (PDT)
 In-Reply-To: <5390E788.2030702@gmail.com>
 References: <20140605121204.18ee5f2d@gandalf.local.home>
         <5390A4F0.3000601@gmail.com>
@@ -20,21 +27,25 @@ References: <20140605121204.18ee5f2d@gandalf.local.home>
         <5390BA9D.3090402@gmail.com>
         <20140605145339.57c5be79@gandalf.local.home>
         <5390E788.2030702@gmail.com>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-RR-Connecting-IP: 107.14.168.118:25
-X-Cloudmark-Score: 0
-Return-Path: <rostedt@goodmis.org>
+Date:   Fri, 6 Jun 2014 09:16:59 +0200
+X-Google-Sender-Auth: MSub2SCWi-i37BvC1jiZNwQvk2w
+Message-ID: <CAMuHMdVYftu=nhYvhq9_gMVqs_dufgziW+dTMZAK_8QnfKjqug@mail.gmail.com>
+Subject: Re: gcc warning in my trace_benchmark() code
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40448
+X-archive-position: 40449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,63 +58,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 05 Jun 2014 14:56:24 -0700
-David Daney <ddaney.cavm@gmail.com> wrote:
+On Thu, Jun 5, 2014 at 11:56 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+>> I don't
+>> see it in the comments, and I don't see anything in the Documentation
+>> directory. It only states that n must be 64bit. It doesn't say unsigned
+>> 64 bit.
+>
+> The handful of call sites I examined, seem to all use u64 or unsigned long
+> long.
 
- 
-> Evidently it is.
-> 
-> The top of asm-generic/div64.h has:
-> 
-> .
-> .
-> .
->   * The semantics of do_div() are:
->   *
->   * uint32_t do_div(uint64_t *n, uint32_t base)
->   * {
+And the ones that don't, cause warnings, and are being fixed:
 
-That's somewhat lacking. Does this mean that we have no consistent way
-to divide a s64 number?
+https://www.mail-archive.com/linuxppc-dev@lists.ozlabs.org/msg78445.html
 
-> .
-> .
-> .
-> 
-> do_div() really passes the first parameter by reference, and C doesn't 
-> have by reference parameters, so the example is not quite right.  But it 
-> does seem to imply the thing should be an *unsigned* 64-bit wide variable.
-> 
-> It has been like this since the beginning of the git epoch.
-> 
-> > Where is that documented.
-> 
-> The code is the documentation.
-> 
-> > I don't
-> > see it in the comments, and I don't see anything in the Documentation
-> > directory. It only states that n must be 64bit. It doesn't say unsigned
-> > 64 bit.
-> 
-> The handful of call sites I examined, seem to all use u64 or unsigned 
-> long long.
+Gr{oetje,eeting}s,
 
-and u64 and unsigned long long are usually the standard type to use for
-64 bits.
+                        Geert
 
-> 
-> I get:
-> 
->    $ grep -r do_div Documentation | wc
->        0       0       0
-> 
-> So it would seem that most of the do_div() documentation actually is the 
-> code.
-> 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Which means there isn't documentation for it.
-
-Anyway, this probably can be safely converted to an unsigned. As I'm
-not sure standard deviation can ever be negative.
-
--- Steve
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

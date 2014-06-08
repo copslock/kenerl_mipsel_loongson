@@ -1,31 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2014 15:05:34 +0200 (CEST)
-Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:57990 "EHLO
-        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816288AbaFFNFb6eS8n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jun 2014 15:05:31 +0200
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.80.1)
-        (envelope-from <jslaby@suse.cz>)
-        id 1Wstpj-0000Do-5C; Fri, 06 Jun 2014 15:05:23 +0200
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     jslaby@suse.cz, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        cpufreq@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [patch NOT added to the 3.12 stable tree] MIPS/loongson2_cpufreq: Fix CPU clock rate setting
-Date:   Fri,  6 Jun 2014 15:05:23 +0200
-Message-Id: <1402059923-821-1-git-send-email-jslaby@suse.cz>
-X-Mailer: git-send-email 1.9.3
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2014 01:19:08 +0200 (CEST)
+Received: from trinity.fluff.org ([89.16.178.74]:46077 "EHLO trinity.fluff.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6854774AbaFHXTERnXR1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Jun 2014 01:19:04 +0200
+Received: from ben by trinity.fluff.org with local (Exim 4.72)
+        (envelope-from <ben@trinity.fluff.org>)
+        id 1WtmM3-0002v4-JC; Mon, 09 Jun 2014 00:18:23 +0100
+Date:   Mon, 9 Jun 2014 00:18:23 +0100
+From:   Ben Dooks <ben@trinity.fluff.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        abdoulaye berthe <berthe.ab@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>, m@bues.ch,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        patches@opensource.wolfsonmicro.com,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-samsungsoc@vger.kernel.org, spear-devel@list.st.com,
+        platform-driver-x86@vger.kernel.org,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>
+Subject: Re: [PATCH 2/2] gpio: gpiolib: set gpiochip_remove retval to void
+Message-ID: <20140608231823.GB10112@trinity.fluff.org>
+References: <20140530094025.3b78301e@canb.auug.org.au>
+ <1401449454-30895-1-git-send-email-berthe.ab@gmail.com>
+ <1401449454-30895-2-git-send-email-berthe.ab@gmail.com>
+ <CAMuHMdV6AtjD2aqO3buzj8Eo7A7xc_+ROYnxEi2sdjMaqFiAuA@mail.gmail.com>
+ <5388C0F1.90503@gmail.com>
+ <5388CB1B.3090802@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5388CB1B.3090802@metafoo.de>
+X-Disclaimer: These are my views alone.
+X-URL:  http://www.fluff.org/
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: ben@trinity.fluff.org
+X-SA-Exim-Scanned: No (on trinity.fluff.org); SAEximRunCond expanded to false
+Return-Path: <ben@trinity.fluff.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40451
+X-archive-position: 40452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: ben@trinity.fluff.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,83 +69,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+On Fri, May 30, 2014 at 08:16:59PM +0200, Lars-Peter Clausen wrote:
+> On 05/30/2014 07:33 PM, David Daney wrote:
+> >On 05/30/2014 04:39 AM, Geert Uytterhoeven wrote:
+> >>On Fri, May 30, 2014 at 1:30 PM, abdoulaye berthe <berthe.ab@gmail.com>
+> >>wrote:
+> >>>--- a/drivers/gpio/gpiolib.c
+> >>>+++ b/drivers/gpio/gpiolib.c
+> >>>@@ -1263,10 +1263,9 @@ static void gpiochip_irqchip_remove(struct
+> >>>gpio_chip *gpiochip);
+> >>>   *
+> >>>   * A gpio_chip with any GPIOs still requested may not be removed.
+> >>>   */
+> >>>-int gpiochip_remove(struct gpio_chip *chip)
+> >>>+void gpiochip_remove(struct gpio_chip *chip)
+> >>>  {
+> >>>         unsigned long   flags;
+> >>>-       int             status = 0;
+> >>>         unsigned        id;
+> >>>
+> >>>         acpi_gpiochip_remove(chip);
+> >>>@@ -1278,24 +1277,15 @@ int gpiochip_remove(struct gpio_chip *chip)
+> >>>         of_gpiochip_remove(chip);
+> >>>
+> >>>         for (id = 0; id < chip->ngpio; id++) {
+> >>>-               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags)) {
+> >>>-                       status = -EBUSY;
+> >>>-                       break;
+> >>>-               }
+> >>>-       }
+> >>>-       if (status == 0) {
+> >>>-               for (id = 0; id < chip->ngpio; id++)
+> >>>-                       chip->desc[id].chip = NULL;
+> >>>-
+> >>>-               list_del(&chip->list);
+> >>>+               if (test_bit(FLAG_REQUESTED, &chip->desc[id].flags))
+> >>>+                       panic("gpio: removing gpiochip with gpios still
+> >>>requested\n");
+> >>
+> >>panic?
+> >
+> >NACK to the patch for this reason.  The strongest thing you should do here
+> >is WARN.
+> >
+> >That said, I am not sure why we need this whole patch set in the first place.
+> 
+> Well, what currently happens when you remove a device that is a
+> provider of a gpio_chip which is still in use, is that the kernel
+> crashes. Probably with a rather cryptic error message. So this patch
+> doesn't really change the behavior, but makes it more explicit what
+> is actually wrong. And even if you replace the panic() by a WARN()
+> it will again just crash slightly later.
+> 
+> This is a design flaw in the GPIO subsystem that needs to be fixed.
 
-This patch does NOT apply to the 3.12 stable tree. If you still want
-it applied, please provide a backport.
+Surely then the best way is to error out to the module unload and
+stop the driver being unloaded?
 
-===============
-
-commit 8e8acb32960f42c81b1d50deac56a2c07bb6a18a upstream.
-
-Loongson2 has been using (incorrectly) kHz for cpu_clk rate. This has
-been unnoticed, as loongson2_cpufreq was the only place where the rate
-was set/get. After commit 652ed95d5fa6074b3c4ea245deb0691f1acb6656
-(cpufreq: introduce cpufreq_generic_get() routine) things however broke,
-and now loops_per_jiffy adjustments are incorrect (1000 times too long).
-The patch fixes this by changing cpu_clk rate to Hz.
-
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: stable@vger.kernel.org
-Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Cc: cpufreq@vger.kernel.org
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Patchwork: https://patchwork.linux-mips.org/patch/6678/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/loongson/lemote-2f/clock.c | 5 +++--
- drivers/cpufreq/loongson2_cpufreq.c  | 4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
-index e1f427f4f5f3..67dd94ef28e6 100644
---- a/arch/mips/loongson/lemote-2f/clock.c
-+++ b/arch/mips/loongson/lemote-2f/clock.c
-@@ -91,6 +91,7 @@ EXPORT_SYMBOL(clk_put);
- 
- int clk_set_rate(struct clk *clk, unsigned long rate)
- {
-+	unsigned int rate_khz = rate / 1000;
- 	int ret = 0;
- 	int regval;
- 	int i;
-@@ -111,10 +112,10 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
- 		if (loongson2_clockmod_table[i].frequency ==
- 		    CPUFREQ_ENTRY_INVALID)
- 			continue;
--		if (rate == loongson2_clockmod_table[i].frequency)
-+		if (rate_khz == loongson2_clockmod_table[i].frequency)
- 			break;
- 	}
--	if (rate != loongson2_clockmod_table[i].frequency)
-+	if (rate_khz != loongson2_clockmod_table[i].frequency)
- 		return -ENOTSUPP;
- 
- 	clk->rate = rate;
-diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
-index f0bc31f5db27..d4add8621944 100644
---- a/drivers/cpufreq/loongson2_cpufreq.c
-+++ b/drivers/cpufreq/loongson2_cpufreq.c
-@@ -62,7 +62,7 @@ static int loongson2_cpufreq_target(struct cpufreq_policy *policy,
- 	set_cpus_allowed_ptr(current, &cpus_allowed);
- 
- 	/* setting the cpu frequency */
--	clk_set_rate(policy->clk, freq);
-+	clk_set_rate(policy->clk, freq * 1000);
- 
- 	return 0;
- }
-@@ -92,7 +92,7 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	     i++)
- 		loongson2_clockmod_table[i].frequency = (rate * i) / 8;
- 
--	ret = clk_set_rate(cpuclk, rate);
-+	ret = clk_set_rate(cpuclk, rate * 1000);
- 	if (ret) {
- 		clk_put(cpuclk);
- 		return ret;
 -- 
-1.9.3
+Ben Dooks, ben@fluff.org, http://www.fluff.org/ben/
+
+Large Hadron Colada: A large Pina Colada that makes the universe disappear.

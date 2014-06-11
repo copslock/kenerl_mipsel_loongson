@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2014 23:29:28 +0200 (CEST)
-Received: from mail-qc0-f175.google.com ([209.85.216.175]:35313 "EHLO
-        mail-qc0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6843059AbaFKV30dppGB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jun 2014 23:29:26 +0200
-Received: by mail-qc0-f175.google.com with SMTP id i8so597642qcq.20
-        for <linux-mips@linux-mips.org>; Wed, 11 Jun 2014 14:29:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2014 23:32:58 +0200 (CEST)
+Received: from mail-ig0-f181.google.com ([209.85.213.181]:51967 "EHLO
+        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859994AbaFKVcyNUxt8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jun 2014 23:32:54 +0200
+Received: by mail-ig0-f181.google.com with SMTP id h3so1301897igd.2
+        for <linux-mips@linux-mips.org>; Wed, 11 Jun 2014 14:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=7kthtXtFvf9ErELEW2yMVdCJLXwAmtgf+56ZlX2+AGM=;
-        b=r2J3zAAUHqUOzotMhREwOC1moVogRvwED6oDjDdSXSNu7nwVkrwAz/pXV/PW/S1nXu
-         3RbbRuBGf/Iw5tJBeu2fP8iA0sSlPYZ9BlYLHFtXrLj9zWUiDnXpYYeKpuu0yGtIZ3Iu
-         ALJCnQNYqCsb4XZwTqtQXQuB6GAt9LNLTWkUMSl9krewXeflGYrOj6IbSOYily2kZlcM
-         d3+X9f1YAiG8Myxn/jHoHz/1PEf7YI8J3M/cCJLf135uaJTyqHoGjLPoTrCN/tH3Vx6L
-         7WtXiSStfjsBdYpD/Qr74+uIG73u1o8xYv1is7zQFIyA5YXAQWVNQ735UkFiXKacxNY3
-         86GQ==
+        d=google.com; s=20120113;
+        h=date:from:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version:content-type;
+        bh=gEFZB8p7M7RDxv6CMZt7RQ69h0EdE8/UOfTKCq9olU0=;
+        b=OWVLsUnkGyxItVeKcEHn10yb84lc2uBqvvi7ePUSogk6avwvjTvDV3ekRVR7TgYbuO
+         sCnPffvpITV9h5lT0sYKTAClo1MHLCgsJ2In9tEiZ53ORd124FLtkTuk/c0CM2i9RsMI
+         4Sw0y+aRL0KeI1eNfh+uySMehP7MzfdXEa35Nvh2gb627H3Hfdx616fOz9gQ5XOb3u0p
+         bPOZYapAX0fPWdlz9E27dSZETzYEC2Td+qXY7fage31FYfcWNnlnqmsrv/Oh8rSroDKX
+         yldMsA+Wo+21+k7VvMng/Kk7aK8jeQCl92AFmSf1Qm1TJGMhPXZBVEAE+tr5nUTCQdhC
+         UnUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type;
+        bh=gEFZB8p7M7RDxv6CMZt7RQ69h0EdE8/UOfTKCq9olU0=;
+        b=Q37vEvURGjZ7R3BTCRnJVE4TLWJExPQIhz7XMDrzJBYxXGv6QefTOEtX6/GrD87ohw
+         KLQzUVEgy9zpdWnDSANOcA1LSmnl/xmN4AOvHli01/ped+pPw8V7qVPqH1f6bX2MQwSz
+         3xxWKmkdU5F0PL7i43gKDouPsqhWhRNmLGpw/0A/LJJHz6XuYEfXLyGdd/QVx/B0j4Is
+         +/TtMbrH4M9Leku38MW92pAb42lliC+kP+n2hSQEHbEZx66niHvKuDUtYg5TCjY03sxX
+         7oX7VriMyYpPAZ+hVPvYWVRdrDJHVaCoPel64GwrRD0p9ySv+pfI5JgCSJr89Ywj2Ub9
+         indA==
+X-Gm-Message-State: ALoCoQlCv5nEMO6X36ZvYITLt2tdzcRL4exyVU9QQrN+7xaOLdCAh/Xa6v5hJa8ijHXRKfPo5J8K
+X-Received: by 10.43.160.137 with SMTP id mc9mr48728929icc.4.1402522367755;
+        Wed, 11 Jun 2014 14:32:47 -0700 (PDT)
+Received: from [2620:0:1008:1101:be30:5bff:fed8:5e64] ([2620:0:1008:1101:be30:5bff:fed8:5e64])
+        by mx.google.com with ESMTPSA id u10sm158794igz.21.2014.06.11.14.32.46
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 11 Jun 2014 14:32:47 -0700 (PDT)
+Date:   Wed, 11 Jun 2014 14:32:45 -0700 (PDT)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Eunbong Song <eunb.song@samsung.com>, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: mips: math-emu: Fix compilation error ieee754.c
+In-Reply-To: <20140611171000.GD26335@linux-mips.org>
+Message-ID: <alpine.DEB.2.02.1406111427170.27885@chino.kir.corp.google.com>
+References: <2463243.264261402478691777.JavaMail.weblogic@epml26> <20140611171000.GD26335@linux-mips.org>
+User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-X-Received: by 10.140.94.39 with SMTP id f36mr53913401qge.64.1402522160227;
- Wed, 11 Jun 2014 14:29:20 -0700 (PDT)
-Received: by 10.96.134.74 with HTTP; Wed, 11 Jun 2014 14:29:20 -0700 (PDT)
-In-Reply-To: <9e11cd988a0f120606e37b5e275019754e2774da.1402517933.git.luto@amacapital.net>
-References: <cover.1402517933.git.luto@amacapital.net>
-        <9e11cd988a0f120606e37b5e275019754e2774da.1402517933.git.luto@amacapital.net>
-Date:   Wed, 11 Jun 2014 14:29:20 -0700
-Message-ID: <CAADnVQKt5FnShkZeQewbfnU1kHM-gLs3hCZMf5xcgFzyRDLX7A@mail.gmail.com>
-Subject: Re: [RFC 5/5] x86,seccomp: Add a seccomp fastpath
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Will Drewry <wad@chromium.org>,
-        Oleg Nesterov <oleg@redhat.com>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <alexei.starovoitov@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <rientjes@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40495
+X-archive-position: 40496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexei.starovoitov@gmail.com
+X-original-sender: rientjes@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,135 +69,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 11, 2014 at 1:23 PM, Andy Lutomirski <luto@amacapital.net> wrote:
-> On my VM, getpid takes about 70ns.  Before this patch, adding a
-> single-instruction always-accept seccomp filter added about 134ns of
-> overhead to getpid.  With this patch, the overhead is down to about
-> 13ns.
+On Wed, 11 Jun 2014, Ralf Baechle wrote:
 
-interesting.
-Is this the gain from patch 4 into patch 5 or from patch 0 to patch 5?
-13ns is still with seccomp enabled, but without filters?
+> On Wed, Jun 11, 2014 at 09:24:51AM +0000, Eunbong Song wrote:
+> 
+> > ieee754dp has bitfield member in struct without name. And this
+> > cause compilation error. This patch removes struct in ieee754dp
+> > declaration. So compilation error is fixed.
+> > Signed-off-by: Eunbong Song <eunb.song@samsung.com>
+> 
+> What gcc version are you using?
+> 
 
-> I'm not really thrilled by this patch.  It has two main issues:
->
-> 1. Calling into code in kernel/seccomp.c from assembly feels ugly.
->
-> 2. The x86 64-bit syscall entry now has four separate code paths:
-> fast, seccomp only, audit only, and slow.  This kind of sucks.
-> Would it be worth trying to rewrite the whole thing in C with a
-> two-phase slow path approach like I'm using here for seccomp?
->
-> Signed-off-by: Andy Lutomirski <luto@amacapital.net>
-> ---
->  arch/x86/kernel/entry_64.S | 45 +++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/seccomp.h    |  4 ++--
->  2 files changed, 47 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/kernel/entry_64.S b/arch/x86/kernel/entry_64.S
-> index f9e713a..feb32b2 100644
-> --- a/arch/x86/kernel/entry_64.S
-> +++ b/arch/x86/kernel/entry_64.S
-> @@ -683,6 +683,45 @@ sysret_signal:
->         FIXUP_TOP_OF_STACK %r11, -ARGOFFSET
->         jmp int_check_syscall_exit_work
->
-> +#ifdef CONFIG_SECCOMP
-> +       /*
-> +        * Fast path for seccomp without any other slow path triggers.
-> +        */
-> +seccomp_fastpath:
-> +       /* Build seccomp_data */
-> +       pushq %r9                               /* args[5] */
-> +       pushq %r8                               /* args[4] */
-> +       pushq %r10                              /* args[3] */
-> +       pushq %rdx                              /* args[2] */
-> +       pushq %rsi                              /* args[1] */
-> +       pushq %rdi                              /* args[0] */
-> +       pushq RIP-ARGOFFSET+6*8(%rsp)           /* rip */
-> +       pushq %rax                              /* nr and junk */
-> +       movl $AUDIT_ARCH_X86_64, 4(%rsp)        /* arch */
-> +       movq %rsp, %rdi
-> +       call seccomp_phase1
+make arch/mips/math-emu/ieee754.o for mips defconfig triggers the 
+following on linux-next 30 times:
 
-the assembler code is pretty much repeating what C does in
-populate_seccomp_data(). Assuming the whole gain came from
-patch 5 why asm version is so much faster than C?
-it skips SAVE/RESTORE_REST... what else?
-If the most of the gain is from all patches combined (mainly from
-2 phase approach) then why bother with asm?
+arch/mips/math-emu/ieee754.c:45:2: error: unknown field 'sign' specified in initializer
+arch/mips/math-emu/ieee754.c:45:2: warning: missing braces around initializer
+arch/mips/math-emu/ieee754.c:45:2: warning: (near initialization for '__ieee754dp_spcvals[0].<anonymous>')
+arch/mips/math-emu/ieee754.c:45:2: error: unknown field 'bexp' specified in initializer
+arch/mips/math-emu/ieee754.c:45:2: warning: excess elements in union initializer
+arch/mips/math-emu/ieee754.c:45:2: warning: (near initialization for '__ieee754dp_spcvals[0]')
+arch/mips/math-emu/ieee754.c:45:2: error: unknown field 'mant' specified in initializer
+arch/mips/math-emu/ieee754.c:45:2: warning: excess elements in union initializer
+arch/mips/math-emu/ieee754.c:45:2: warning: (near initialization for '__ieee754dp_spcvals[0]')
 
-Somehow it feels that the gain is due to better branch prediction
-in asm version. If you change few 'unlikely' in C to 'likely', it may
-get to the same performance...
-
-btw patches #1-3 look good to me. especially #1 is nice.
-
-> +       addq $8*8, %rsp
-> +       cmpq $1, %rax
-> +       ja seccomp_invoke_phase2
-> +       LOAD_ARGS 0  /* restore clobbered regs */
-> +       jb system_call_fastpath
-> +       jmp ret_from_sys_call
-> +
-> +seccomp_invoke_phase2:
-> +       SAVE_REST
-> +       FIXUP_TOP_OF_STACK %rdi
-> +       movq %rax,%rdi
-> +       call seccomp_phase2
-> +
-> +       /* if seccomp says to skip, then set orig_ax to -1 and skip */
-> +       test %eax,%eax
-> +       jz 1f
-> +       movq $-1, ORIG_RAX(%rsp)
-> +1:
-> +       mov ORIG_RAX(%rsp), %rax                /* reload rax */
-> +       jmp system_call_post_trace              /* and maybe do the syscall */
-> +#endif
-> +
->  #ifdef CONFIG_AUDITSYSCALL
->         /*
->          * Fast path for syscall audit without full syscall trace.
-> @@ -717,6 +756,10 @@ sysret_audit:
->
->         /* Do syscall tracing */
->  tracesys:
-> +#ifdef CONFIG_SECCOMP
-> +       testl $(_TIF_WORK_SYSCALL_ENTRY & ~_TIF_SECCOMP),TI_flags+THREAD_INFO(%rsp,RIP-ARGOFFSET)
-> +       jz seccomp_fastpath
-> +#endif
->  #ifdef CONFIG_AUDITSYSCALL
->         testl $(_TIF_WORK_SYSCALL_ENTRY & ~_TIF_SYSCALL_AUDIT),TI_flags+THREAD_INFO(%rsp,RIP-ARGOFFSET)
->         jz auditsys
-> @@ -725,6 +768,8 @@ tracesys:
->         FIXUP_TOP_OF_STACK %rdi
->         movq %rsp,%rdi
->         call syscall_trace_enter
-> +
-> +system_call_post_trace:
->         /*
->          * Reload arg registers from stack in case ptrace changed them.
->          * We don't reload %rax because syscall_trace_enter() returned
-> diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-> index 4fc7a84..d3d4c52 100644
-> --- a/include/linux/seccomp.h
-> +++ b/include/linux/seccomp.h
-> @@ -37,8 +37,8 @@ static inline int secure_computing(void)
->  #define SECCOMP_PHASE1_OK      0
->  #define SECCOMP_PHASE1_SKIP    1
->
-> -extern u32 seccomp_phase1(struct seccomp_data *sd);
-> -int seccomp_phase2(u32 phase1_result);
-> +asmlinkage __visible extern u32 seccomp_phase1(struct seccomp_data *sd);
-> +asmlinkage __visible int seccomp_phase2(u32 phase1_result);
->  #else
->  extern void secure_computing_strict(int this_syscall);
->  #endif
-> --
-> 1.9.3
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+I'm using gcc 4.5.1 for mips.  The patch makes all members part of the 
+union so it's probably not what you want to fix it, though.

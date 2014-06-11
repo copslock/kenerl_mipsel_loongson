@@ -1,43 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2014 05:28:38 +0200 (CEST)
-Received: from smtp.outflux.net ([198.145.64.163]:55052 "EHLO smtp.outflux.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6854783AbaFKDZpqBIvk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jun 2014 05:25:45 +0200
-Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s5B3PSUB004262;
-        Tue, 10 Jun 2014 20:25:28 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Kees Cook <keescook@chromium.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        John Johansen <john.johansen@canonical.com>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: [PATCH v6 2/9] seccomp: split filter prep from check and apply
-Date:   Tue, 10 Jun 2014 20:25:14 -0700
-Message-Id: <1402457121-8410-3-git-send-email-keescook@chromium.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1402457121-8410-1-git-send-email-keescook@chromium.org>
-References: <1402457121-8410-1-git-send-email-keescook@chromium.org>
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.73
-Return-Path: <keescook@www.outflux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2014 11:25:05 +0200 (CEST)
+Received: from mailout3.samsung.com ([203.254.224.33]:13775 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817327AbaFKJZCg6HOL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jun 2014 11:25:02 +0200
+Received: from epcpsbgr3.samsung.com
+ (u143.gpu120.samsung.co.kr [203.254.230.143])
+ by mailout3.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTP id <0N6Z0078SZHIFX50@mailout3.samsung.com> for
+ linux-mips@linux-mips.org; Wed, 11 Jun 2014 18:24:54 +0900 (KST)
+Received: from epcpsbgx4.samsung.com ( [203.254.230.46])
+        by epcpsbgr3.samsung.com (EPCPMTA) with SMTP id F0.22.14704.46028935; Wed,
+ 11 Jun 2014 18:24:52 +0900 (KST)
+X-AuditID: cbfee68f-b7fef6d000003970-66-53982064be94
+Received: from epmailer01 ( [203.254.219.141])
+        by epcpsbgx4.samsung.com (EPCPMTA) with SMTP id D0.74.26169.46028935; Wed,
+ 11 Jun 2014 18:24:52 +0900 (KST)
+Date:   Wed, 11 Jun 2014 09:24:52 +0000 (GMT)
+From:   Eunbong Song <eunb.song@samsung.com>
+Subject: mips: math-emu: Fix compilation error ieee754.c
+To:     ralf@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Reply-to: eunb.song@samsung.com
+MIME-version: 1.0
+X-MTR:  20140611092245298@eunb.song
+Msgkey: 20140611092245298@eunb.song
+X-EPLocale: ko_KR.euc-kr
+X-Priority: 3
+X-EPWebmail-Msg-Type: personal
+X-EPWebmail-Reply-Demand: 0
+X-EPApproval-Locale: 
+X-EPHeader: ML
+X-EPTrCode: 
+X-EPTrName: 
+X-MLAttribute: 
+X-RootMTR: 20140611092245298@eunb.song
+X-ParentMTR: 
+X-ArchiveUser: EV
+X-CPGSPASS: N
+Content-transfer-encoding: base64
+Content-type: text/plain; charset=euc-kr
+MIME-version: 1.0
+Message-id: <2463243.264261402478691777.JavaMail.weblogic@epml26>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrCJsWRmVeSWpSXmKPExsVy+t8zPd0UhRnBBrf2WVlMmDqJ3YHR4+jK
+        tUwBjFENjDaJRckZmWWpCql5yfkpmXnptkqhIW66FkoKGfnFJbZK0UYGxnpGpiZ6RibmepYG
+        sVZGpkoKeYm5qbZKFbpQvUoKRckFQLW5lcVAA3JS9aDiesWpeSkOWfmlIKfoFSfmFpfmpesl
+        5+cqKZQl5pQCjVDST5jKmNE5fyVbwQeeiiNfzrE1MB7g6WLk5BASUJFo+f+dEcSWEDCRWL2z
+        nwnCFpO4cG89WxcjF1DNMkaJv58Os3cxcoAV7TorDxGfwyjx9eYdFpAGFgFViftLf4MNYhPQ
+        lvhx4CoziC0sYCHxftJLNhBbREBGYumnK2A1zALuEucX7GCBOEJeYvLpy+wgNq+AoMTJmU9Y
+        II5Qkjjb/4gNIq4scbH1HytEXEJi1vQLUDavxIz2p1D1chLTvq5hhrClJc7P2sAI88zi74+h
+        4vwSx27vYIL4hVfiyf1gmDG7N39hg7AFJKaeOQjVqi7x994uqDifxJqFb6FWCUqcvtbNDNN7
+        f8tcJoi3FCWmdD9kh7C1JL782MeG7i1eAUeJhhm3GScwKs9CkpqFpH0WknZkNQsYWVYxiqYW
+        JBcUJ6UXGSNH9iZGSCLs38F494D1Icb9jMA4mcgsJZqcD0yleSXxhsZmRhamJqbGRuaWZhQK
+        m5haWJgYUUVYSZz3/sOkICGB9MSS1OzU1ILUovii0pzU4kOMTBycUg2MJrr8RxdfZ9z5g1Pl
+        VNhpv5C/256bPZY7eNA4oVQ45PWPt/y+weu4Cu9ck7v3OPyes2vDW4ZwRksv5V21XPf2SWW9
+        C7s/r9axMcx1LueGxBWZm4yb+iImnukQypBq2GYlrJLG+/nwlVNxp51WSe35IJ51a33jafnM
+        effWB3oudbpztqbmrmGMEktxRqKhFnNRcSIAnnIx3/cDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpik+LIzCtJLcpLzFFi42I5/e92r26KwoxggwkbzC0mTJ3E7sDocXTl
+        WqYAxqgMm4zUxJTUIoXUvOT8lMy8dFsl7+B453hTMwNDXUNLC3MlhbzE3FRbJRefAF23zByg
+        qUoKZYk5pUChgMTiYiV9O5ui/NKSVIWM/OISW6VoIwNjPSNTEz0jYwM9E4NYK0MDAyNToKqE
+        jIzO+SvZCj7wVBz5co6tgfEATxcjJ4eQgIpEy//vjF2MHBwSAiYSu87Kg4QlBMQkLtxbz9bF
+        yAVUModR4uvNOywgCRYBVYn7S38zgthsAtoSPw5cZQaxhQUsJN5PeskGYosIyEgs/XQFrIZZ
+        wF3i/IIdLBC75CUmn77MDmLzCghKnJz5hAVimZLE2f5HbBBxZYmLrf9YIeISErOmX4CyeSVm
+        tD+FqpeTmPZ1DTOELS1xftYGRpijF39/DBXnlzh2ewcTxF+8Ek/uB8OM2b35CxuELSAx9cxB
+        qFZ1ib/3dkHF+STWLHwLtUpQ4vS1bmaY3vtb5jJBvKUoMaX7ITuErSXx5cc+NnRv8Qo4SjTM
+        uM04gVFuFpLULCTts5C0I6tZwMiyilE0tSC5oDgpvcJErzgxt7g0L10vOT93EyM4RT1bsoOx
+        4YL1IUYBDkYlHt4DEtODhVgTy4orcw8xSnAwK4nw7hSeESzEm5JYWZValB9fVJqTWnyIMRkY
+        gROZpUST84HpM68k3tDYwNjQ0NLcwNTQyII0YSVx3gW3koKEBNITS1KzU1MLUotgtjBxcEo1
+        MArqceX0pMzSsFSMPuj12/XXF5/OJ+mntRLuf1lk5ybnIKvOovcofX1wp3S843PXCSHrbP/6
+        nP2uk/ZUS0ox9EH06+3lfMtV1W94RTNf+OnkO+9uw7JtVU+un94rF97itemnEGP1E8co+UM8
+        57Ys2Sey6eb7NdLsJRWufdKTLHYoFCVvffftjhJLcUaioRZzUXEiAEcNQbqVAwAA
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+Return-Path: <eunb.song@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40484
+X-archive-position: 40485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: eunb.song@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,200 +93,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In preparation for adding seccomp locking, move filter creation away
-from where it is checked and applied. This will allow for locking where
-no memory allocation is happening. The validation, filter attachment,
-and seccomp mode setting can all happen under the future locks.
-
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- kernel/seccomp.c |   86 ++++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 58 insertions(+), 28 deletions(-)
-
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 552b972b8f83..7a9257ddd69c 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -18,6 +18,7 @@
- #include <linux/compat.h>
- #include <linux/sched.h>
- #include <linux/seccomp.h>
-+#include <linux/slab.h>
- 
- /* #define SECCOMP_DEBUG 1 */
- 
-@@ -26,7 +27,6 @@
- #include <linux/filter.h>
- #include <linux/ptrace.h>
- #include <linux/security.h>
--#include <linux/slab.h>
- #include <linux/tracehook.h>
- #include <linux/uaccess.h>
- 
-@@ -197,27 +197,21 @@ static u32 seccomp_run_filters(int syscall)
- }
- 
- /**
-- * seccomp_attach_filter: Attaches a seccomp filter to current.
-+ * seccomp_prepare_filter: Prepares a seccomp filter for use.
-  * @fprog: BPF program to install
-  *
-- * Returns 0 on success or an errno on failure.
-+ * Returns filter on success or an ERR_PTR on failure.
-  */
--static long seccomp_attach_filter(struct sock_fprog *fprog)
-+static struct seccomp_filter *seccomp_prepare_filter(struct sock_fprog *fprog)
- {
- 	struct seccomp_filter *filter;
- 	unsigned long fp_size = fprog->len * sizeof(struct sock_filter);
--	unsigned long total_insns = fprog->len;
- 	struct sock_filter *fp;
- 	int new_len;
- 	long ret;
- 
- 	if (fprog->len == 0 || fprog->len > BPF_MAXINSNS)
--		return -EINVAL;
--
--	for (filter = current->seccomp.filter; filter; filter = filter->prev)
--		total_insns += filter->len + 4;  /* include a 4 instr penalty */
--	if (total_insns > MAX_INSNS_PER_PATH)
--		return -ENOMEM;
-+		return ERR_PTR(-EINVAL);
- 
- 	/*
- 	 * Installing a seccomp filter requires that the task has
-@@ -228,11 +222,11 @@ static long seccomp_attach_filter(struct sock_fprog *fprog)
- 	if (!current->no_new_privs &&
- 	    security_capable_noaudit(current_cred(), current_user_ns(),
- 				     CAP_SYS_ADMIN) != 0)
--		return -EACCES;
-+		return ERR_PTR(-EACCES);
- 
- 	fp = kzalloc(fp_size, GFP_KERNEL|__GFP_NOWARN);
- 	if (!fp)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* Copy the instructions from fprog. */
- 	ret = -EFAULT;
-@@ -270,31 +264,26 @@ static long seccomp_attach_filter(struct sock_fprog *fprog)
- 	atomic_set(&filter->usage, 1);
- 	filter->len = new_len;
- 
--	/*
--	 * If there is an existing filter, make it the prev and don't drop its
--	 * task reference.
--	 */
--	filter->prev = current->seccomp.filter;
--	current->seccomp.filter = filter;
--	return 0;
-+	return filter;
- 
- free_filter:
- 	kfree(filter);
- free_prog:
- 	kfree(fp);
--	return ret;
-+	return ERR_PTR(ret);
- }
- 
- /**
-- * seccomp_attach_user_filter - attaches a user-supplied sock_fprog
-+ * seccomp_prepare_user_filter - prepares a user-supplied sock_fprog
-  * @user_filter: pointer to the user data containing a sock_fprog.
-  *
-- * Returns 0 on success and non-zero otherwise.
-+ * Returns filter on success and ERR_PTR otherwise.
-  */
--static long seccomp_attach_user_filter(char __user *user_filter)
-+static
-+struct seccomp_filter *seccomp_prepare_user_filter(char __user *user_filter)
- {
- 	struct sock_fprog fprog;
--	long ret = -EFAULT;
-+	struct seccomp_filter *filter = ERR_PTR(-EFAULT);
- 
- #ifdef CONFIG_COMPAT
- 	if (is_compat_task()) {
-@@ -307,9 +296,37 @@ static long seccomp_attach_user_filter(char __user *user_filter)
- #endif
- 	if (copy_from_user(&fprog, user_filter, sizeof(fprog)))
- 		goto out;
--	ret = seccomp_attach_filter(&fprog);
-+	filter = seccomp_prepare_filter(&fprog);
- out:
--	return ret;
-+	return filter;
-+}
-+
-+/**
-+ * seccomp_attach_filter: validate and attach filter
-+ * @filter: seccomp filter to add to the current process
-+ *
-+ * Returns 0 on success, -ve on error.
-+ */
-+static long seccomp_attach_filter(struct seccomp_filter *filter)
-+{
-+	unsigned long total_insns;
-+	struct seccomp_filter *walker;
-+
-+	/* Validate resulting filter length. */
-+	total_insns = filter->len;
-+	for (walker = current->seccomp.filter; walker; walker = filter->prev)
-+		total_insns += walker->len + 4;  /* include a 4 instr penalty */
-+	if (total_insns > MAX_INSNS_PER_PATH)
-+		return -ENOMEM;
-+
-+	/*
-+	 * If there is an existing filter, make it the prev and don't drop its
-+	 * task reference.
-+	 */
-+	filter->prev = current->seccomp.filter;
-+	current->seccomp.filter = filter;
-+
-+	return 0;
- }
- 
- /* get_seccomp_filter - increments the reference count of the filter on @tsk */
-@@ -480,8 +497,18 @@ long prctl_get_seccomp(void)
-  */
- static long seccomp_set_mode(unsigned long seccomp_mode, char __user *filter)
- {
-+	struct seccomp_filter *prepared = NULL;
- 	long ret = -EINVAL;
- 
-+#ifdef CONFIG_SECCOMP_FILTER
-+	/* Prepare the new filter outside of the seccomp lock. */
-+	if (seccomp_mode == SECCOMP_MODE_FILTER) {
-+		prepared = seccomp_prepare_user_filter(filter);
-+		if (IS_ERR(prepared))
-+			return PTR_ERR(prepared);
-+	}
-+#endif
-+
- 	if (current->seccomp.mode &&
- 	    current->seccomp.mode != seccomp_mode)
- 		goto out;
-@@ -495,9 +522,11 @@ static long seccomp_set_mode(unsigned long seccomp_mode, char __user *filter)
- 		break;
- #ifdef CONFIG_SECCOMP_FILTER
- 	case SECCOMP_MODE_FILTER:
--		ret = seccomp_attach_user_filter(filter);
-+		ret = seccomp_attach_filter(prepared);
- 		if (ret)
- 			goto out;
-+		/* Do not free the successfully attached filter. */
-+		prepared = NULL;
- 		break;
- #endif
- 	default:
-@@ -507,6 +536,7 @@ static long seccomp_set_mode(unsigned long seccomp_mode, char __user *filter)
- 	current->seccomp.mode = seccomp_mode;
- 	set_thread_flag(TIF_SECCOMP);
- out:
-+	kfree(prepared);
- 	return ret;
- }
- 
--- 
-1.7.9.5
+DQppZWVlNzU0ZHAgaGFzIGJpdGZpZWxkIG1lbWJlciBpbiBzdHJ1Y3Qgd2l0aG91dCBuYW1lLiBB
+bmQgdGhpcw0KY2F1c2UgY29tcGlsYXRpb24gZXJyb3IuIFRoaXMgcGF0Y2ggcmVtb3ZlcyBzdHJ1
+Y3QgaW4gaWVlZTc1NGRwDQpkZWNsYXJhdGlvbi4gU28gY29tcGlsYXRpb24gZXJyb3IgaXMgZml4
+ZWQuDQpTaWduZWQtb2ZmLWJ5OiBFdW5ib25nIFNvbmcgPGV1bmIuc29uZ0BzYW1zdW5nLmNvbT4N
+Ci0tLQ0KIGFyY2gvbWlwcy9tYXRoLWVtdS9pZWVlNzU0LmggfCAgIDIwICsrKysrKysrLS0tLS0t
+LS0tLS0tDQogMSBmaWxlcyBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygt
+KQ0KZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9tYXRoLWVtdS9pZWVlNzU0LmggYi9hcmNoL21pcHMv
+bWF0aC1lbXUvaWVlZTc1NC5oDQppbmRleCA0M2M0ZmI1Li5jNmUyOGI4IDEwMDY0NA0KLS0tIGEv
+YXJjaC9taXBzL21hdGgtZW11L2llZWU3NTQuaA0KKysrIGIvYXJjaC9taXBzL21hdGgtZW11L2ll
+ZWU3NTQuaA0KQEAgLTMyLDIyICszMiwxOCBAQA0KICNpbmNsdWRlIDxhc20vYml0ZmllbGQuaD4N
+CiANCiB1bmlvbiBpZWVlNzU0ZHAgew0KLSBzdHJ1Y3Qgew0KLSAgX19CSVRGSUVMRF9GSUVMRCh1
+bnNpZ25lZCBpbnQgc2lnbjoxLA0KLSAgX19CSVRGSUVMRF9GSUVMRCh1bnNpZ25lZCBpbnQgYmV4
+cDoxMSwNCi0gIF9fQklURklFTERfRklFTEQodTY0IG1hbnQ6NTIsDQotICA7KSkpDQotIH07DQor
+IF9fQklURklFTERfRklFTEQodW5zaWduZWQgaW50IHNpZ246MSwNCisgX19CSVRGSUVMRF9GSUVM
+RCh1bnNpZ25lZCBpbnQgYmV4cDoxMSwNCisgX19CSVRGSUVMRF9GSUVMRCh1NjQgbWFudDo1MiwN
+CisgOykpKQ0KICB1NjQgYml0czsNCiB9Ow0KIA0KIHVuaW9uIGllZWU3NTRzcCB7DQotIHN0cnVj
+dCB7DQotICBfX0JJVEZJRUxEX0ZJRUxEKHVuc2lnbmVkIHNpZ246MSwNCi0gIF9fQklURklFTERf
+RklFTEQodW5zaWduZWQgYmV4cDo4LA0KLSAgX19CSVRGSUVMRF9GSUVMRCh1bnNpZ25lZCBtYW50
+OjIzLA0KLSAgOykpKQ0KLSB9Ow0KKyBfX0JJVEZJRUxEX0ZJRUxEKHVuc2lnbmVkIHNpZ246MSwN
+CisgX19CSVRGSUVMRF9GSUVMRCh1bnNpZ25lZCBiZXhwOjgsDQorIF9fQklURklFTERfRklFTEQo
+dW5zaWduZWQgbWFudDoyMywNCisgOykpKQ0KICB1MzIgYml0czsNCiB9Ow0KIA0KLS0gDQoxLjcu
+MC4x

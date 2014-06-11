@@ -1,35 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2014 19:10:06 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:43000 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6815784AbaFKRKD4wwBw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jun 2014 19:10:03 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s5BHA2iL023660;
-        Wed, 11 Jun 2014 19:10:02 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s5BHA0fF023640;
-        Wed, 11 Jun 2014 19:10:00 +0200
-Date:   Wed, 11 Jun 2014 19:10:00 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Eunbong Song <eunb.song@samsung.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: mips: math-emu: Fix compilation error ieee754.c
-Message-ID: <20140611171000.GD26335@linux-mips.org>
-References: <2463243.264261402478691777.JavaMail.weblogic@epml26>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2463243.264261402478691777.JavaMail.weblogic@epml26>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2014 22:23:17 +0200 (CEST)
+Received: from mail-pb0-f53.google.com ([209.85.160.53]:49464 "EHLO
+        mail-pb0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6853554AbaFKUXPHvSRk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jun 2014 22:23:15 +0200
+Received: by mail-pb0-f53.google.com with SMTP id md12so181769pbc.12
+        for <linux-mips@linux-mips.org>; Wed, 11 Jun 2014 13:23:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=64zXlf5tpyPIs4Latyi+PJXG8+7Io0h1kKAGSFVrjwE=;
+        b=Al5aTDe4ULFhAdBZpz2+w8MJEryNmQfUE8rsKsEHRCFzVzgSsG0tCEHuPW5IF/2JxQ
+         bXMcBna1mf8dBUYBXu8zQ90m8UAjdCaopvNfwgv0MBSo+b4jGYCGduM0f5kJ+JkiI2kl
+         /GR6cx/UJnEvYaN1Di4Wz1Ep4NiojWOLOOG4m5XHm10LmWUuZdqI6DczEVUlIQWwwsFC
+         fqqJ/UcGVLXq4bTVpvycgTt8gVwrRG+GvoDkD+Km/K31v5bR0SB/FRco2KZaSo/CQjZH
+         ay6c7wfK9aDLysqbS1g6DVvJKRg9bV5bbS58+8un9SQ8dvXJCaq9ChsBRn3w+yqPWvTd
+         VfPQ==
+X-Gm-Message-State: ALoCoQmlVJIOYDmpOr7KcoX1jr4PWHdHK/7zDA33ElJtGR1uZER8VRlWPte0qIM4c+LGHLLWY9Id
+X-Received: by 10.68.134.101 with SMTP id pj5mr7795727pbb.62.1402518188446;
+        Wed, 11 Jun 2014 13:23:08 -0700 (PDT)
+Received: from localhost (50-76-60-73-ip-static.hfc.comcastbusiness.net. [50.76.60.73])
+        by mx.google.com with ESMTPSA id wp3sm76507584pbc.67.2014.06.11.13.23.07
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Jun 2014 13:23:07 -0700 (PDT)
+From:   Andy Lutomirski <luto@amacapital.net>
+To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>
+Cc:     Oleg Nesterov <oleg@redhat.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Andy Lutomirski <luto@amacapital.net>
+Subject: [RFC 0/5] Two-phase seccomp and an x86_64 fast path
+Date:   Wed, 11 Jun 2014 13:22:57 -0700
+Message-Id: <cover.1402517933.git.luto@amacapital.net>
+X-Mailer: git-send-email 1.9.3
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40488
+X-archive-position: 40489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,13 +55,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 11, 2014 at 09:24:51AM +0000, Eunbong Song wrote:
+On my VM, getpid takes about 70ns.  Before this patchset, adding a
+single-instruction always-accept seccomp filter added about 134ns of
+overhead to getpid.  With this patchset, the overhead is down to about
+13ns.
 
-> ieee754dp has bitfield member in struct without name. And this
-> cause compilation error. This patch removes struct in ieee754dp
-> declaration. So compilation error is fixed.
-> Signed-off-by: Eunbong Song <eunb.song@samsung.com>
+I'd really appreciate careful review from all relevant arch
+maintainers for patch 1.
 
-What gcc version are you using?
+This is an RFC for now.  I'll submit a non-RFC version after the merge
+window ends.
 
-  Ralf
+Andy Lutomirski (5):
+  seccomp,x86,arm,mips,s390: Remove nr parameter from secure_computing
+  x86_64,entry: Treat regs->ax the same in fastpath and slowpath
+    syscalls
+  seccomp: Refactor the filter callback and the API
+  seccomp: Allow arch code to provide seccomp_data
+  x86,seccomp: Add a seccomp fastpath
+
+ arch/arm/kernel/ptrace.c       |   7 +-
+ arch/mips/kernel/ptrace.c      |   2 +-
+ arch/s390/kernel/ptrace.c      |   2 +-
+ arch/x86/include/asm/calling.h |   6 +-
+ arch/x86/kernel/entry_64.S     |  52 ++++++++-
+ arch/x86/kernel/ptrace.c       |   2 +-
+ arch/x86/kernel/vsyscall_64.c  |   2 +-
+ include/linux/seccomp.h        |  25 +++--
+ kernel/seccomp.c               | 244 +++++++++++++++++++++++++++--------------
+ 9 files changed, 241 insertions(+), 101 deletions(-)
+
+-- 
+1.9.3

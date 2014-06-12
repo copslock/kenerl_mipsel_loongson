@@ -1,87 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2014 02:06:31 +0200 (CEST)
-Received: from mailout1.samsung.com ([203.254.224.24]:27270 "EHLO
-        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6843091AbaFLAG220MkL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Jun 2014 02:06:28 +0200
-Received: from epcpsbgr3.samsung.com
- (u143.gpu120.samsung.co.kr [203.254.230.143])
- by mailout1.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTP id <0N7100JN74AK6GA0@mailout1.samsung.com> for
- linux-mips@linux-mips.org; Thu, 12 Jun 2014 09:06:20 +0900 (KST)
-Received: from epcpsbgx3.samsung.com ( [203.254.230.46])
-        by epcpsbgr3.samsung.com (EPCPMTA) with SMTP id BE.A9.14704.CFEE8935; Thu,
- 12 Jun 2014 09:06:20 +0900 (KST)
-X-AuditID: cbfee68f-b7fef6d000003970-1e-5398eefce189
-Received: from epmailer02 ( [203.254.219.142])
-        by epcpsbgx3.samsung.com (EPCPMTA) with SMTP id A5.53.13458.CFEE8935; Thu,
- 12 Jun 2014 09:06:20 +0900 (KST)
-Date:   Thu, 12 Jun 2014 00:06:20 +0000 (GMT)
-From:   Eunbong Song <eunb.song@samsung.com>
-Subject: Re: Re: mips: math-emu: Fix compilation error ieee754.c
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Reply-to: eunb.song@samsung.com
-MIME-version: 1.0
-X-MTR:  20140612000533665@eunb.song
-Msgkey: 20140612000533665@eunb.song
-X-EPLocale: ko_KR.euc-kr
-X-Priority: 3
-X-EPWebmail-Msg-Type: personal
-X-EPWebmail-Reply-Demand: 0
-X-EPApproval-Locale: 
-X-EPHeader: ML
-X-EPTrCode: 
-X-EPTrName: 
-X-MLAttribute: 
-X-RootMTR: 20140612000533665@eunb.song
-X-ParentMTR: 
-X-ArchiveUser: EV
-X-CPGSPASS: N
-Content-transfer-encoding: base64
-Content-type: text/plain; charset=euc-kr
-MIME-version: 1.0
-Message-id: <10240088.548381402531578961.JavaMail.weblogic@epml02>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrIJsWRmVeSWpSXmKPExsVy+t8zPd0/72YEG/zeY2kxYeokdgdGj6Mr
-        1zIFMEY1MNokFiVnZJalKqTmJeenZOal2yqFhrjpWigpZOQXl9gqRRsZGOsZmZroGZmY61ka
-        xFoZmSop5CXmptoqVehC9SopFCUXANXmVhYDDchJ1YOK6xWn5qU4ZOWXgpyiV5yYW1yal66X
-        nJ+rpFCWmFMKNEJJP2EqY8brYzsZCyoqZn+ZxdbAWNDFyMkhJKAi0fL/OyOILSFgIrHv5BxW
-        CFtM4sK99WxdjFxANcsYJaben8IKU3Tx+XsWiMQcRok/y06CJVgEVCX2XNgINolNQFvix4Gr
-        zCC2sICDxOW7h8FqRAQ0JDbc3cYOYjML1Eh8u7qPFeIKeYnJpy+DxXkFBCVOznzCArFMSaK5
-        6QgjRFxZYsV1iBoJAQmJWdMvQB3EKzGj/SlUvZzEtK9rmCFsaYnzszYwwnyz+PtjqDi/xLHb
-        O5i6GDnAep/cD4YZs3vzFzYIW0Bi6pmDjBAl6hK7GnMgwnwSaxa+hdokKHH6WjczTOv9LXOZ
-        IL5SlJjS/RDqQy2JLz/2saH6igPIdpLY+8RsAqPyLCSZWUi6ZyHpRlazgJFlFaNoakFyQXFS
-        epExckxvYoSkwP4djHcPWB9i3M8IjJGJzFKiyfnAJJpXEm9obGZkYWpiamxkbmlGobCJqYWF
-        iRFVhJXEee8/TAoSEkhPLEnNTk0tSC2KLyrNSS0+xMjEwSnVwLgjW8N0Yfgj+/Tbh2eX35+R
-        tUnJdct1fcEvXRsvzn34vjRq44T7c80fz0/nuD/Rrkvxyd774swvnVwnNC9TsP32XUguJuHz
-        dqPaz5l7Cz9dsRTvzD7+7ejHzVul726x2X+uIWtjRHpVi/rXa3YyH93WeEjf9n3H80J4IdvU
-        KetXPT3PUbNxtx2jEktxRqKhFnNRcSIAs5OT2/QDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPKsWRmVeSWpSXmKPExsVy+t/tPt0/72YEG3SuE7eYMHUSuwOjx9GV
-        a5kCGKMybDJSE1NSixRS85LzUzLz0m2VvIPjneNNzQwMdQ0tLcyVFPISc1NtlVx8AnTdMnOA
-        pioplCXmlAKFAhKLi5X07WyK8ktLUhUy8otLbJWijQyM9YxMTfSMjA30TAxirQwNDIxMgaoS
-        MjJeH9vJWFBRMfvLLLYGxoIuRk4OIQEViZb/3xlBbAkBE4mLz9+zQNhiEhfurWfrYuQCqpnD
-        KPFn2UlWkASLgKrEngsbwRrYBLQlfhy4ygxiCws4SFy+exisRkRAQ2LD3W3sIDazQI3Et6v7
-        WCGWyUtMPn0ZLM4rIChxcuYTqGVKEs1NRxgh4soSK65D1EgISEjMmn6BFcLmlZjR/hSqXk5i
-        2tc1zBC2tMT5WRsYYY5e/P0xVJxf4tjtHUxdjBxgvU/uB8OM2b35CxuELSAx9cxBRogSdYld
-        jTkQYT6JNQvfQm0SlDh9rZsZpvX+lrlMEF8pSkzpfgj1oZbElx/72FB9xQFkO0nsfWI2gVFu
-        FpLMLCTds5B0I6tZwMiyilE0tSC5oDgpvcJYrzgxt7g0L10vOT93EyM4OT1bvIPx/3nrQ4wC
-        HIxKPLwMtTOChVgTy4orcw8xSnAwK4nwOp4HCvGmJFZWpRblxxeV5qQWH2JMBkbfRGYp0eR8
-        YOLMK4k3NDYwNjS0NDcwNTSyIE1YSZw3/lZSkJBAemJJanZqakFqEcwWJg5OqQbGtH1+ay87
-        JkrrzCp5fXqW93R13h+Oog/i5t+Lyv9s2KxzXoP1X25wbYKcdtURh2Vv4qZq/JORXv/rWers
-        I6/urpKcYaTw4oW77IV416/LvxsvZNf6sftg5seIqHfblrIWvXkUmfL96I4JHiVJqrb3XD9N
-        45dM/uD2mfkD65vw2uYTrbEH3seVK7EUZyQaajEXFScCAItgxPCSAwAA
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-Return-Path: <eunb.song@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2014 22:21:53 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:44979 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834695AbaFLUVvZafdD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Jun 2014 22:21:51 +0200
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.249])
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1WvBVN-0004C5-G1; Thu, 12 Jun 2014 21:21:49 +0100
+Received: from ben by deadeye.wl.decadent.org.uk with local (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1WvBVK-0004it-Mt; Thu, 12 Jun 2014 21:21:46 +0100
+Message-ID: <1402604501.31756.50.camel@deadeye.wl.decadent.org.uk>
+Subject: Re: Bug#751417: linux-image-3.2.0-4-5kc-malta: no SIGKILL after
+ prctl(PR_SET_SECCOMP, 1, ...) on MIPS
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     stable <stable@vger.kernel.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     751417@bugs.debian.org, team@security.debian.org,
+        Plamen Alexandrov <plamen@aomeda.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Date:   Thu, 12 Jun 2014 21:21:41 +0100
+In-Reply-To: <1402601767.31756.38.camel@deadeye.wl.decadent.org.uk>
+References: <20140612161903.32229.20589.reportbug@debian-mips."">
+         <1402601767.31756.38.camel@deadeye.wl.decadent.org.uk>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-4y4VZH3lxh6RGQnf40y8"
+X-Mailer: Evolution 3.12.2-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 192.168.4.249
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40503
+X-archive-position: 40505
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eunb.song@samsung.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,5 +52,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DQoNCj4gV2hhdCBnY2MgdmVyc2lvbiBhcmUgeW91IHVzaW5nPw0KDQo+ICBSYWxmDQoNCkkgYW0g
-dXNpbmcgZ2NjIDQuNC4xLiANClRoYW5rcy4=
+
+--=-4y4VZH3lxh6RGQnf40y8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2014-06-12 at 20:36 +0100, Ben Hutchings wrote:
+> Control: tag -1 security upstream patch moreinfo
+> Control: severity -1 grave
+> Control: found -1 3.14.5-1
+
+Aurelien Jarno pointed out this appears to be fixed upstream in 3.15:
+
+commit 137f7df8cead00688524c82360930845396b8a21
+Author: Markos Chandras <markos.chandras@imgtec.com>
+Date:   Wed Jan 22 14:40:00 2014 +0000
+
+    MIPS: asm: thread_info: Add _TIF_SECCOMP flag
+
+It looks like this can be cherry-picked cleanly onto stable branches for
+3.13 and 3.14.  For 3.11 and 3.12, it will need trivial adjustment.
+
+For branches older than 3.11, this needs to be cherry-picked first:
+
+commit e7f3b48af7be9f8007a224663a5b91340626fed5
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Wed May 29 01:02:18 2013 +0200
+
+    MIPS: Cleanup flags in syscall flags handlers.
+
+Ben.
+
+> On Thu, 2014-06-12 at 16:19 +0000, Plamen Alexandrov wrote:
+> > Package: src:linux
+> > Version: 3.2.51-1
+> > Severity: normal
+> >=20
+> > Under MIPS the system call prctl(PR_SET_SECCOMP, 1, ...) does not behav=
+e as expected.
+> > According to the manual page, after calling it with 1 as a second argum=
+ent, any consecutive system calls other than read(), write(), _exit() and s=
+igreturn() should result in the delivery of SIGKILL. However, under MIPS an=
+y consecutive system call behaves as if prctl(PR_SET_SECCOMP, 1, ...) was n=
+ever called.
+> >=20
+> > Here is a simple example that can be used to reproduce the bug:
+> >=20
+> > plamen@debian-mips:/tmp$ id
+> > uid=3D1000(plamen) gid=3D1000(user) groups=3D1000(user)
+> > plamen@debian-mips:/tmp$ cat prctl.c=20
+> > #include <unistd.h>
+> > #include <sys/prctl.h>
+> > #include <stdio.h>
+> >=20
+> > int main(void)
+> > {
+> > 	if (prctl(PR_SET_SECCOMP, 1, 0, 0, 0) !=3D 0)
+> > 		return 0;
+> > 	uid_t uid =3D getuid();
+> > 	printf("%u\n", (unsigned)uid);
+> > 	return 0;
+> > }
+> > plamen@debian-mips:/tmp$ gcc prctl.c -o prctl
+> > plamen@debian-mips:/tmp$ ./prctl=20
+> > 1000
+> >=20
+> > There is no change if I replace
+> > 	if (prctl(PR_SET_SECCOMP, 1, 0, 0, 0) !=3D 0)
+> > with
+> > 	if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_STRICT, 0, 0, 0) !=3D 0)
+> > and I add #include <linux/seccomp.h>
+>=20
+> Indeed, I see no check for seccomp on the MIPS syscall 'fast path'.  The
+> seccomp check appears to be done on the 'slow path' which is used only
+> if tracing or audit is also enabled for the task.  If I run the above
+> program under strace, it is killed as expected.
+>=20
+> Could you test whether the attached patches fix this?  (Instructions for
+> rebuilding the Debian kernel package with patches can be found at
+> <http://kernel-handbook.alioth.debian.org/ch-common-tasks.html#s-common-o=
+fficial>.  These patches apply to 'wheezy'.)
+>=20
+> Ben.
+>=20
+
+--=20
+Ben Hutchings
+The program is absolutely right; therefore, the computer must be wrong.
+
+--=-4y4VZH3lxh6RGQnf40y8
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIVAwUAU5oL2ue/yOyVhhEJAQrhgBAAm7rsfJq5HuIrffdD+/B5qmRbZegUZfRp
+bmGL9RJAvZTIvbI1QscuGUCan4eCAvPA0dKWvFkXDSZGVl0TtQL4I9Unbab8ukM6
+WqpODuVDVUsX/OS12mYhgRHMSd6YzuO0Tkr6v9GevO96N+6/f8WwaVkJPIczLFM/
+XFiiKTi3PCddC9ujqVpU7PohGN2K71evb8S3UlXCRWTJt57+cNQJrCFqqLTjObt6
+Rqs64mC7IprDDvf+TXBTdnzmDMEbOzb4bU2LKzNlj0m8q/3hfMgFZGQScHApAr0J
+s1Sg/qIdLaWtLLjXUp1oNwHXNMrijxKfY1U8J4rAyzw+ssHumBVNw9LMOfQkuPZL
+1ZPJC5uwRfs8uR5TPBS7pX60aFNmBNHP2IVomJnMrjIU4dXUdQ+1Z8YAWe+o1utU
+CoxSQv/Mm0jh40T1vx2Bp0gzQvAgt0xBQ72mddId9pkV868oqtFI8jCzaRuvpcqs
+8IiEVxSotohzf9g9fbfSkrLVC2abyAsQ/dfwV4d+AqTmqfRcaeTV5LOaqjERm2mV
+l0qUMcCmeSzBYG4hxpZYp8goiv3R5F8kwGilCNprryPVQatEFn09dMY+A108WgFJ
+wwoOlKuF06sPUdR/hcjCF+oTxkn2GUY5YNvXt4ZMuAw0zKRqCKMtmq+iEbolMGSw
+GJhaRvHJUmU=
+=NiYu
+-----END PGP SIGNATURE-----
+
+--=-4y4VZH3lxh6RGQnf40y8--

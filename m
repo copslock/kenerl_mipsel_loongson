@@ -1,45 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2014 00:01:31 +0200 (CEST)
-Received: from mail-oa0-f51.google.com ([209.85.219.51]:50038 "EHLO
-        mail-oa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854771AbaFMWB1VLF7W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 14 Jun 2014 00:01:27 +0200
-Received: by mail-oa0-f51.google.com with SMTP id j17so3572468oag.10
-        for <linux-mips@linux-mips.org>; Fri, 13 Jun 2014 15:01:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=U4OTuPQscPnQ6K4HKQja63PhC/JFYWYrLx+AmnGRJHs=;
-        b=aHy0fHrU9VzYtHGufRGBXZXdEkaqZMQr0jqSj/7xxS4rGSAYftK9MMYQ4f1Z8+9yjC
-         4pOwi7KdIgZRyQVk2ONT4+IuuYqK6UnZhtc+ukbQaXJa3rbEggQceQ2/ObkAwTDCrVp/
-         9UDBgM+SdlQ4qklBN3iMOJw36YyPNENXYRD7zvxIJ45Y2QS+Tr1CAoyuEsoeG3aJtRfu
-         uKp7LCSOF7EWlHD2cp6bNw4/2ZKPNCsj/3MagbRgp6xWq8UBVWCVPnstFYB64iPLAv7H
-         ORrtfeUdsIqOOqF8ohj/gavU17WKrL5Uz5Q8+0WNCu28YFNpXN7kZnc7LKRFMJuY794W
-         yTVA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=U4OTuPQscPnQ6K4HKQja63PhC/JFYWYrLx+AmnGRJHs=;
-        b=ORj0aki5o/zpvpG1pFwiK4RWZznKM7aB7YpWbas32r7686Vk43TRLAzOJW5LtsxtBQ
-         oh/aUyCresKtHkG1U1vm9t6umPX2Trb2vOet7C4MDbVHFfvBe41YA64qbNj88kpXKA4E
-         2vRQJW2b/UZeI0RxoMaeQObDhWva2LUWkz3lw=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2014 00:26:21 +0200 (CEST)
+Received: from mail-we0-f175.google.com ([74.125.82.175]:57037 "EHLO
+        mail-we0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6854771AbaFMW0RHZSD2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 14 Jun 2014 00:26:17 +0200
+Received: by mail-we0-f175.google.com with SMTP id k48so2618918wev.6
+        for <linux-mips@linux-mips.org>; Fri, 13 Jun 2014 15:26:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=U4OTuPQscPnQ6K4HKQja63PhC/JFYWYrLx+AmnGRJHs=;
-        b=jj65IP+areEB0hr2RxD0ZEG4S7Jen8Mx+AaNgOz20RKAMXWeK8eUEN3PvRtx5zhM2G
-         YzpAE6X9TYTPQ80kiZDoSEqUYo0CnH+QObnfwxXHMpI7w0mXD0CbLBZQa7KUJ0w8zuKM
-         7SdmVCRz/lUAsTHddpB+XEURZ3Fwa5tbTPPcgD+/Zzz6x8aA4JbjMWrnjJ+NYKMtlqpw
-         IrECe3ebNNVtCNm1eyMfIhtck5EciriLfHJ3MS4y4dlGbIXh+Xw6h178WkdAPddqiC0d
-         KtWXDiUWtY5M5WQlJ78pd/+/NgtuYu1+jiEPn+1ahRCbcLn/8IX/qNL5Hn0j2bCYu8nI
-         l8PA==
-X-Gm-Message-State: ALoCoQl0MUOrPJaggTMUOlIUrYHw6plsRw1VgxtJXwKQJotF44AbIo171zZvYf83wwLPWnRJ/Xja
+        bh=CFL92XGraPz7+H2UVgSzqvTkkzE4u+mp4er19gHHcuE=;
+        b=Afpmi6ntVGcLgKFQviWX7J0ZCvafprgfWDWmcgOFn+je5ckt8+FVCr+KCfCmU4PIpC
+         1MFwsuNTO/Nu0Ptyybr02GT8GpZOYQVJByLFuD1/P4fi181wB6lzgGbSE1ljkt1j/Fle
+         hq0h7KYQ2KXNkMRlAysHIowvha6fAoXaA14tOaJE+/0AQzhcYHwBi7CFtwUO1pHpnmIf
+         irL/Zg09yUJ3ep6JMayrpEKDiEgPi/W+jS/fTrcDOu842YSSsx8pdlp2GL1KXZXKCy6I
+         n6sRb/4zH11pAznuMj0Rf7Y6T8nBa3kzJZ5KWxiPbA6OB3QZenQm73+vIWdrKd5wRKF8
+         V5Dg==
+X-Gm-Message-State: ALoCoQnBtA4e1IYKeRihMHjN4s5HW3feaxogyv0wQd5+x/kyOYp5OhgW1Jp4smPliPm5bLk4L529
 MIME-Version: 1.0
-X-Received: by 10.182.81.99 with SMTP id z3mr5271293obx.79.1402696881132; Fri,
- 13 Jun 2014 15:01:21 -0700 (PDT)
-Received: by 10.182.63.80 with HTTP; Fri, 13 Jun 2014 15:01:20 -0700 (PDT)
+X-Received: by 10.194.6.2 with SMTP id w2mr8082533wjw.6.1402698371725; Fri, 13
+ Jun 2014 15:26:11 -0700 (PDT)
+Received: by 10.194.121.228 with HTTP; Fri, 13 Jun 2014 15:26:11 -0700 (PDT)
 In-Reply-To: <CALCETrVbsGjgtHtQKftxcNJB_vY5=Dd3FckW-1C9=xgdOrR6_A@mail.gmail.com>
 References: <1402457121-8410-1-git-send-email-keescook@chromium.org>
         <1402457121-8410-7-git-send-email-keescook@chromium.org>
@@ -47,13 +28,12 @@ References: <1402457121-8410-1-git-send-email-keescook@chromium.org>
         <CALCETrVCJvnj9yr5yhhZTn_Gq32mgSqOhMRi16Y=_LvqGOTZ5g@mail.gmail.com>
         <CAMEtUuykiN=FvBFZLp8ieN2ymt0=opfyFee0UC9aRpcW3SQ0pg@mail.gmail.com>
         <CALCETrVbsGjgtHtQKftxcNJB_vY5=Dd3FckW-1C9=xgdOrR6_A@mail.gmail.com>
-Date:   Fri, 13 Jun 2014 15:01:21 -0700
-X-Google-Sender-Auth: CbYJD3jZjCDf3Nf8zA17vLRlhQI
-Message-ID: <CAGXu5jJiWiXj76aevQvHhmTdhjVDZrev9ybz+XUZDKhQfJErKg@mail.gmail.com>
+Date:   Fri, 13 Jun 2014 15:26:11 -0700
+Message-ID: <CAMEtUuwKNx8TfRtRx=wdy3EwsL0ioQCMxhasXbrBvrBZW+tBgg@mail.gmail.com>
 Subject: Re: [PATCH v6 6/9] seccomp: add "seccomp" syscall
-From:   Kees Cook <keescook@chromium.org>
+From:   Alexei Starovoitov <ast@plumgrid.com>
 To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     Alexei Starovoitov <ast@plumgrid.com>,
+Cc:     Kees Cook <keescook@chromium.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux API <linux-api@vger.kernel.org>,
         Oleg Nesterov <oleg@redhat.com>,
@@ -68,15 +48,15 @@ Cc:     Alexei Starovoitov <ast@plumgrid.com>,
         linux-arch <linux-arch@vger.kernel.org>,
         LSM List <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+Return-Path: <ast@plumgrid.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40521
+X-archive-position: 40522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: ast@plumgrid.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -199,27 +179,54 @@ On Fri, Jun 13, 2014 at 2:42 PM, Andy Lutomirski <luto@amacapital.net> wrote:
 > The "tsync" operation would be seccomp_add_filter(NULL,
 > SECCOMP_ADD_FILTER_TSYNC) -- it's equivalent to adding an
 > always-accept filter and syncing threads.
-
-I think you convinced me that tsync should be part of adding a filter
-(since now there are no failure side-effects), so this specific
-example I would expect EFAULT from. But ...
-
 >
 > But, frankly, this kind of stuff should probably be "do operation X".
 > IIUC nl_attr is more like "do something, with these tags and values",
 > which results in oddities like whatever should happen of more than one
 > tag is set.
 
-I have no objection to eliminating seccomp-strict from the syscall,
-and just making this the "add seccomp filter" syscall. My only
-hesitation would be that if we need something besides adding a filter
-in the future, we'd be back to extending this awkwardly or adding
-another syscall. That's why I went with the "operation" argument. I'm
-not opposed to passing attrs and len, but seccomp_add_filter does feel
-cleaner.
-
--Kees
-
--- 
-Kees Cook
-Chrome OS Security
+TLV is a price of extensibility vs simplicity.
+Say we have a syscall_foo(struct XX __user *x); that takes
+struct XX {
+  int flag;
+  int var1;
+};
+now we want to add another variable to the structure that will be used
+only when certain flag is set. You cannot do it easily without
+breaking old user binaries, since new structure will be:
+struct XX2 {
+  int flag;
+  int var1;
+  int var2;
+};
+if we do copy_from_user(,, sizeof(struct XX2)) it will brake old programs.
+Potentially we can do it the ugly way:
+copy_from_user(,, sizeof(struct XX)), then check flag and do another
+copy_from_user(,, sizeof(struct XX2)) just to fetch extra argument.
+but then another day passes and yet another new flag means that both
+var1 and var2 are unused and it needs 'u64 var3' instead.
+Now kernel looks very ugly by doing multiple copy_from_user() of different
+structures.
+It would be much cleaner with nlattr:
+syscall_foo(struct nlattr *attrs, int len);
+kernel fetches 'len' bytes onces and then picks var[123] fields from nlattr
+array. In other words nlattr array is a way to represent flexible structure
+where fields can come and go in the future.
+This was a simple example. Consider the case where var1 and var2
+are arrays of things.
+imo the old:
+struct sock_fprog {
+        unsigned short          len;    /* Number of filter blocks */
+        struct sock_filter __user *filter;
+};
+is the example of inflexible user interface.
+It could have been single 'struct nlattr'
+nlattr->nla_len == length of filter program in bytes
+nlattr->nla_type == ARRAY_OF_SOCK_FILTER constant
+nla_data(nlattr) - variable length array of 'struct sock_filter' bpf
+instructions.
+Right now I'd like to extend it for the work I'm doing around eBPF, but
+I cannot, since it's rigid. If it was TLV, I could have easily added new flags,
+new types, new sections to bpf programs.
+For user space it would have been just as easy to populate such
+'struct nlattr' as to populate 'struct sock_fprog'.

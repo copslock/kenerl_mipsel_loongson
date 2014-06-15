@@ -1,62 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2014 00:26:21 +0200 (CEST)
-Received: from mail-we0-f175.google.com ([74.125.82.175]:57037 "EHLO
-        mail-we0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854771AbaFMW0RHZSD2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 14 Jun 2014 00:26:17 +0200
-Received: by mail-we0-f175.google.com with SMTP id k48so2618918wev.6
-        for <linux-mips@linux-mips.org>; Fri, 13 Jun 2014 15:26:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=CFL92XGraPz7+H2UVgSzqvTkkzE4u+mp4er19gHHcuE=;
-        b=Afpmi6ntVGcLgKFQviWX7J0ZCvafprgfWDWmcgOFn+je5ckt8+FVCr+KCfCmU4PIpC
-         1MFwsuNTO/Nu0Ptyybr02GT8GpZOYQVJByLFuD1/P4fi181wB6lzgGbSE1ljkt1j/Fle
-         hq0h7KYQ2KXNkMRlAysHIowvha6fAoXaA14tOaJE+/0AQzhcYHwBi7CFtwUO1pHpnmIf
-         irL/Zg09yUJ3ep6JMayrpEKDiEgPi/W+jS/fTrcDOu842YSSsx8pdlp2GL1KXZXKCy6I
-         n6sRb/4zH11pAznuMj0Rf7Y6T8nBa3kzJZ5KWxiPbA6OB3QZenQm73+vIWdrKd5wRKF8
-         V5Dg==
-X-Gm-Message-State: ALoCoQnBtA4e1IYKeRihMHjN4s5HW3feaxogyv0wQd5+x/kyOYp5OhgW1Jp4smPliPm5bLk4L529
-MIME-Version: 1.0
-X-Received: by 10.194.6.2 with SMTP id w2mr8082533wjw.6.1402698371725; Fri, 13
- Jun 2014 15:26:11 -0700 (PDT)
-Received: by 10.194.121.228 with HTTP; Fri, 13 Jun 2014 15:26:11 -0700 (PDT)
-In-Reply-To: <CALCETrVbsGjgtHtQKftxcNJB_vY5=Dd3FckW-1C9=xgdOrR6_A@mail.gmail.com>
-References: <1402457121-8410-1-git-send-email-keescook@chromium.org>
-        <1402457121-8410-7-git-send-email-keescook@chromium.org>
-        <CAMEtUuwKRUYN_qdnCj42G3Z1UT3vMYPoJqXd2_PjV+_J3WA+8w@mail.gmail.com>
-        <CALCETrVCJvnj9yr5yhhZTn_Gq32mgSqOhMRi16Y=_LvqGOTZ5g@mail.gmail.com>
-        <CAMEtUuykiN=FvBFZLp8ieN2ymt0=opfyFee0UC9aRpcW3SQ0pg@mail.gmail.com>
-        <CALCETrVbsGjgtHtQKftxcNJB_vY5=Dd3FckW-1C9=xgdOrR6_A@mail.gmail.com>
-Date:   Fri, 13 Jun 2014 15:26:11 -0700
-Message-ID: <CAMEtUuwKNx8TfRtRx=wdy3EwsL0ioQCMxhasXbrBvrBZW+tBgg@mail.gmail.com>
-Subject: Re: [PATCH v6 6/9] seccomp: add "seccomp" syscall
-From:   Alexei Starovoitov <ast@plumgrid.com>
-To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     Kees Cook <keescook@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        John Johansen <john.johansen@canonical.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        X86 ML <x86@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <ast@plumgrid.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jun 2014 22:01:52 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53364 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822099AbaFOUBrhjg9d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 15 Jun 2014 22:01:47 +0200
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.249])
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1WwGcZ-0000ym-5y; Sun, 15 Jun 2014 21:01:43 +0100
+Received: from ben by deadeye.wl.decadent.org.uk with local (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1WwGcX-0006dT-2T; Sun, 15 Jun 2014 21:01:41 +0100
+Message-ID: <1402862492.7797.64.camel@deadeye.wl.decadent.org.uk>
+Subject: Re: Bug#751417: linux-image-3.2.0-4-5kc-malta: no SIGKILL after
+ prctl(PR_SET_SECCOMP, 1, ...) on MIPS
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Greg KH <greg@kroah.com>
+Cc:     stable <stable@vger.kernel.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>, 751417@bugs.debian.org,
+        team@security.debian.org, Plamen Alexandrov <plamen@aomeda.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Date:   Sun, 15 Jun 2014 21:01:32 +0100
+In-Reply-To: <20140612215947.GA8176@kroah.com>
+References: <20140612161903.32229.20589.reportbug@debian-mips."">
+         <1402601767.31756.38.camel@deadeye.wl.decadent.org.uk>
+         <1402604501.31756.50.camel@deadeye.wl.decadent.org.uk>
+         <20140612210323.GA30046@kroah.com> <20140612210531.GB30046@kroah.com>
+         <1402607459.31756.58.camel@deadeye.wl.decadent.org.uk>
+         <20140612215947.GA8176@kroah.com>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-kUReUyIZL4/N0J2Lz4sh"
+X-Mailer: Evolution 3.12.2-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 192.168.4.249
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40522
+X-archive-position: 40524
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ast@plumgrid.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,164 +56,142 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 13, 2014 at 2:42 PM, Andy Lutomirski <luto@amacapital.net> wrote:
-> On Fri, Jun 13, 2014 at 2:37 PM, Alexei Starovoitov <ast@plumgrid.com> wrote:
->> On Fri, Jun 13, 2014 at 2:25 PM, Andy Lutomirski <luto@amacapital.net> wrote:
->>> On Fri, Jun 13, 2014 at 2:22 PM, Alexei Starovoitov <ast@plumgrid.com> wrote:
->>>> On Tue, Jun 10, 2014 at 8:25 PM, Kees Cook <keescook@chromium.org> wrote:
->>>>> This adds the new "seccomp" syscall with both an "operation" and "flags"
->>>>> parameter for future expansion. The third argument is a pointer value,
->>>>> used with the SECCOMP_SET_MODE_FILTER operation. Currently, flags must
->>>>> be 0. This is functionally equivalent to prctl(PR_SET_SECCOMP, ...).
->>>>>
->>>>> Signed-off-by: Kees Cook <keescook@chromium.org>
->>>>> Cc: linux-api@vger.kernel.org
->>>>> ---
->>>>>  arch/x86/syscalls/syscall_32.tbl  |    1 +
->>>>>  arch/x86/syscalls/syscall_64.tbl  |    1 +
->>>>>  include/linux/syscalls.h          |    2 ++
->>>>>  include/uapi/asm-generic/unistd.h |    4 ++-
->>>>>  include/uapi/linux/seccomp.h      |    4 +++
->>>>>  kernel/seccomp.c                  |   63 ++++++++++++++++++++++++++++++++-----
->>>>>  kernel/sys_ni.c                   |    3 ++
->>>>>  7 files changed, 69 insertions(+), 9 deletions(-)
->>>>>
->>>>> diff --git a/arch/x86/syscalls/syscall_32.tbl b/arch/x86/syscalls/syscall_32.tbl
->>>>> index d6b867921612..7527eac24122 100644
->>>>> --- a/arch/x86/syscalls/syscall_32.tbl
->>>>> +++ b/arch/x86/syscalls/syscall_32.tbl
->>>>> @@ -360,3 +360,4 @@
->>>>>  351    i386    sched_setattr           sys_sched_setattr
->>>>>  352    i386    sched_getattr           sys_sched_getattr
->>>>>  353    i386    renameat2               sys_renameat2
->>>>> +354    i386    seccomp                 sys_seccomp
->>>>> diff --git a/arch/x86/syscalls/syscall_64.tbl b/arch/x86/syscalls/syscall_64.tbl
->>>>> index ec255a1646d2..16272a6c12b7 100644
->>>>> --- a/arch/x86/syscalls/syscall_64.tbl
->>>>> +++ b/arch/x86/syscalls/syscall_64.tbl
->>>>> @@ -323,6 +323,7 @@
->>>>>  314    common  sched_setattr           sys_sched_setattr
->>>>>  315    common  sched_getattr           sys_sched_getattr
->>>>>  316    common  renameat2               sys_renameat2
->>>>> +317    common  seccomp                 sys_seccomp
->>>>>
->>>>>  #
->>>>>  # x32-specific system call numbers start at 512 to avoid cache impact
->>>>> diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
->>>>> index b0881a0ed322..1713977ee26f 100644
->>>>> --- a/include/linux/syscalls.h
->>>>> +++ b/include/linux/syscalls.h
->>>>> @@ -866,4 +866,6 @@ asmlinkage long sys_process_vm_writev(pid_t pid,
->>>>>  asmlinkage long sys_kcmp(pid_t pid1, pid_t pid2, int type,
->>>>>                          unsigned long idx1, unsigned long idx2);
->>>>>  asmlinkage long sys_finit_module(int fd, const char __user *uargs, int flags);
->>>>> +asmlinkage long sys_seccomp(unsigned int op, unsigned int flags,
->>>>> +                           const char __user *uargs);
->>>>
->>>> It looks odd to add 'flags' argument to syscall that is not even used.
->>>> It don't think it will be extensible this way.
->>>> 'uargs' is used only in 2nd command as well and it's not 'char __user *'
->>>> but rather 'struct sock_fprog __user *'
->>>> I think it makes more sense to define only first argument as 'int op' and the
->>>> rest as variable length array.
->>>> Something like:
->>>> long sys_seccomp(unsigned int op, struct nlattr *attrs, int len);
->>>> then different commands can interpret 'attrs' differently.
->>>> if op == mode_strict, then attrs == NULL, len == 0
->>>> if op == mode_filter, then attrs->nla_type == seccomp_bpf_filter
->>>> and nla_data(attrs) is 'struct sock_fprog'
->>>
->>> Eww.  If the operation doesn't imply the type, then I think we've
->>> totally screwed up.
->>>
->>>> If we decide to add new types of filters or new commands, the syscall prototype
->>>> won't need to change. New commands can be added preserving backward
->>>> compatibility.
->>>> The basic TLV concept has been around forever in netlink world. imo makes
->>>> sense to use it with new syscalls. Passing 'struct xxx' into syscalls
->>>> is the thing
->>>> of the past. TLV style is more extensible. Fields of structures can become
->>>> optional in the future, new fields added, etc.
->>>> 'struct nlattr' brings the same benefits to kernel api as protobuf did
->>>> to user land.
->>>
->>> I see no reason to bring nl_attr into this.
->>>
->>> Admittedly, I've never dealt with nl_attr, but everything
->>> netlink-related I've even been involved in has involved some sort of
->>> API atrocity.
->>
->> netlink has a lot of legacy and there is genetlink which is not pretty
->> either because of extra socket creation, binding, dealing with packet
->> loss issues, but the key concept of variable length encoding is sound.
->> Right now seccomp has two commands and they already don't fit
->> into single syscall neatly. Are you saying there should be two syscalls
->> here? What about another seccomp related command? Another syscall?
->> imo all seccomp related commands needs to be mux/demux-ed under
->> one syscall. What is the way to mux/demux potentially very different
->> commands under one syscall? I cannot think of anything better than
->> TLV style. 'struct nlattr' is what we have today and I think it works fine.
->> I'm not suggesting to bring the whole netlink into the picture, but rather
->> TLV style of encoding different arguments for different commands.
->
-> I'm unconvinced.  These are simple commands, and I think the interface
-> should be simple.  Syscalls are cheap.
->
-> As an example, the interface could be:
->
-> int seccomp_add_filter(const struct sock_fprog *filter, unsigned int flags);
->
-> The "tsync" operation would be seccomp_add_filter(NULL,
-> SECCOMP_ADD_FILTER_TSYNC) -- it's equivalent to adding an
-> always-accept filter and syncing threads.
->
-> But, frankly, this kind of stuff should probably be "do operation X".
-> IIUC nl_attr is more like "do something, with these tags and values",
-> which results in oddities like whatever should happen of more than one
-> tag is set.
 
-TLV is a price of extensibility vs simplicity.
-Say we have a syscall_foo(struct XX __user *x); that takes
-struct XX {
-  int flag;
-  int var1;
-};
-now we want to add another variable to the structure that will be used
-only when certain flag is set. You cannot do it easily without
-breaking old user binaries, since new structure will be:
-struct XX2 {
-  int flag;
-  int var1;
-  int var2;
-};
-if we do copy_from_user(,, sizeof(struct XX2)) it will brake old programs.
-Potentially we can do it the ugly way:
-copy_from_user(,, sizeof(struct XX)), then check flag and do another
-copy_from_user(,, sizeof(struct XX2)) just to fetch extra argument.
-but then another day passes and yet another new flag means that both
-var1 and var2 are unused and it needs 'u64 var3' instead.
-Now kernel looks very ugly by doing multiple copy_from_user() of different
-structures.
-It would be much cleaner with nlattr:
-syscall_foo(struct nlattr *attrs, int len);
-kernel fetches 'len' bytes onces and then picks var[123] fields from nlattr
-array. In other words nlattr array is a way to represent flexible structure
-where fields can come and go in the future.
-This was a simple example. Consider the case where var1 and var2
-are arrays of things.
-imo the old:
-struct sock_fprog {
-        unsigned short          len;    /* Number of filter blocks */
-        struct sock_filter __user *filter;
-};
-is the example of inflexible user interface.
-It could have been single 'struct nlattr'
-nlattr->nla_len == length of filter program in bytes
-nlattr->nla_type == ARRAY_OF_SOCK_FILTER constant
-nla_data(nlattr) - variable length array of 'struct sock_filter' bpf
-instructions.
-Right now I'd like to extend it for the work I'm doing around eBPF, but
-I cannot, since it's rigid. If it was TLV, I could have easily added new flags,
-new types, new sections to bpf programs.
-For user space it would have been just as easy to populate such
-'struct nlattr' as to populate 'struct sock_fprog'.
+--=-kUReUyIZL4/N0J2Lz4sh
+Content-Type: multipart/mixed; boundary="=-dIs/NK+4wLBmWjfb5Lno"
+
+
+--=-dIs/NK+4wLBmWjfb5Lno
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2014-06-12 at 14:59 -0700, Greg KH wrote:
+> On Thu, Jun 12, 2014 at 10:10:59PM +0100, Ben Hutchings wrote:
+> > On Thu, 2014-06-12 at 14:05 -0700, Greg KH wrote:
+> > > On Thu, Jun 12, 2014 at 02:03:23PM -0700, Greg KH wrote:
+> > > > On Thu, Jun 12, 2014 at 09:21:41PM +0100, Ben Hutchings wrote:
+> > > > > On Thu, 2014-06-12 at 20:36 +0100, Ben Hutchings wrote:
+> > > > > > Control: tag -1 security upstream patch moreinfo
+> > > > > > Control: severity -1 grave
+> > > > > > Control: found -1 3.14.5-1
+> > > > >=20
+> > > > > Aurelien Jarno pointed out this appears to be fixed upstream in 3=
+.15:
+> > > > >=20
+> > > > > commit 137f7df8cead00688524c82360930845396b8a21
+> > > > > Author: Markos Chandras <markos.chandras@imgtec.com>
+> > > > > Date:   Wed Jan 22 14:40:00 2014 +0000
+> > > > >=20
+> > > > >     MIPS: asm: thread_info: Add _TIF_SECCOMP flag
+> > > > >=20
+> > > > > It looks like this can be cherry-picked cleanly onto stable branc=
+hes for
+> > > > > 3.13 and 3.14.  For 3.11 and 3.12, it will need trivial adjustmen=
+t.
+> > > > >=20
+> > > > > For branches older than 3.11, this needs to be cherry-picked firs=
+t:
+> > > > >=20
+> > > > > commit e7f3b48af7be9f8007a224663a5b91340626fed5
+> > > > > Author: Ralf Baechle <ralf@linux-mips.org>
+> > > > > Date:   Wed May 29 01:02:18 2013 +0200
+> > > > >=20
+> > > > >     MIPS: Cleanup flags in syscall flags handlers.
+> > > >=20
+> > > > It also needs parts of 1d7bf993e0731b4ac790667c196b2a2d787f95c3 (MI=
+PS:
+> > > > ftrace: Add support for syscall tracepoints.) to apply properly to =
+stuff
+> > > > older than 3.11.  But, I'm not so sure that is good to apply as tha=
+t is
+> > > > a whole new feature.
+> > > >=20
+> > > > So I think I'll just do this "by hand" to get it to work properly..=
+.
+> > >=20
+> > > Wait, no, SECCOMP for MIPS isn't even in 3.10 or older kernels, so wh=
+y
+> > > is this a 3.2 issue?  Did you add it there to your kernel for some
+> > > reason?
+> >=20
+> > Seccomp mode 2 (i.e. filtering with BPF) was only just implenented for
+> > MIPS in 3.15.  Mode 1 (fixed set of syscalls) was implemented long ago.
+>=20
+> Really?  I don't see _TIF_SECCOMP in the mips asm files in 3.10.  I
+> don't feel comfortable backporting it to 3.10 or 3.4, are you going to
+> do that for 3.2?
+
+I'm attaching the backport to 3.2 which I've now been able to test.  It
+appears to apply cleanly to 3.4 and 3.10 as well.  ("MIPS: Cleanup flags
+in syscall flags handlers." applies to all branches with some fuzz.)
+
+> > (If prctl(PR_SET_SECCOMP) could return success when CONFIG_SECCOMP is
+> > not enabled, that would be even worse!)
+>=20
+> True, but this seems to have always been broken, right?  :)
+
+Yes, so far as I can see.
+
+Ben.
+
+--=20
+Ben Hutchings
+Tomorrow will be cancelled due to lack of interest.
+
+--=-dIs/NK+4wLBmWjfb5Lno
+Content-Disposition: attachment; filename="MIPS-asm-thread_info-Add-_TIF_SECCOMP-flag.patch"
+Content-Type: text/x-patch; name="MIPS-asm-thread_info-Add-_TIF_SECCOMP-flag.patch";
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+RnJvbTogTWFya29zIENoYW5kcmFzIDxtYXJrb3MuY2hhbmRyYXNAaW1ndGVjLmNvbT4NCkRhdGU6
+IFdlZCwgMjIgSmFuIDIwMTQgMTQ6NDA6MDAgKzAwMDANClN1YmplY3Q6IE1JUFM6IGFzbTogdGhy
+ZWFkX2luZm86IEFkZCBfVElGX1NFQ0NPTVAgZmxhZw0KT3JpZ2luOiBodHRwczovL2dpdC5rZXJu
+ZWwub3JnL2xpbnVzLzEzN2Y3ZGY4Y2VhZDAwNjg4NTI0YzgyMzYwOTMwODQ1Mzk2YjhhMjENCg0K
+QWRkIF9USUZfU0VDQ09NUCBmbGFnIHRvIF9USUZfV09SS19TWVNDQUxMX0VOVFJZIHRvIGluZGlj
+YXRlDQp0aGF0IHRoZSBzeXN0ZW0gY2FsbCBuZWVkcyB0byBiZSBjaGVja2VkIGFnYWluc3QgYSBz
+ZWNjb21wIGZpbHRlci4NCg0KU2lnbmVkLW9mZi1ieTogTWFya29zIENoYW5kcmFzIDxtYXJrb3Mu
+Y2hhbmRyYXNAaW1ndGVjLmNvbT4NClJldmlld2VkLWJ5OiBQYXVsIEJ1cnRvbiA8cGF1bC5idXJ0
+b25AaW1ndGVjLmNvbT4NClJldmlld2VkLWJ5OiBKYW1lcyBIb2dhbiA8amFtZXMuaG9nYW5AaW1n
+dGVjLmNvbT4NCkNjOiBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnDQpQYXRjaHdvcms6IGh0dHBz
+Oi8vcGF0Y2h3b3JrLmxpbnV4LW1pcHMub3JnL3BhdGNoLzY0MDUvDQpTaWduZWQtb2ZmLWJ5OiBS
+YWxmIEJhZWNobGUgPHJhbGZAbGludXgtbWlwcy5vcmc+DQpbYndoOiBCYWNrcG9ydGVkIHRvIDMu
+MjogdmFyaW91cyBvdGhlciBmbGFncyBhcmUgbm90IGluY2x1ZGVkIGluDQogX1RJRl9XT1JLX1NZ
+U0NBTExfRU5UUlldDQpTaWduZWQtb2ZmLWJ5OiBCZW4gSHV0Y2hpbmdzIDxiZW5AZGVjYWRlbnQu
+b3JnLnVrPg0KLS0tDQotLS0gYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vdGhyZWFkX2luZm8uaA0K
+KysrIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL3RocmVhZF9pbmZvLmgNCkBAIC0xNDksNyArMTQ5
+LDcgQEAgcmVnaXN0ZXIgc3RydWN0IHRocmVhZF9pbmZvICpfX2N1cnJlbnRfdA0KICNkZWZpbmUg
+X1RJRl9GUFVCT1VORAkJKDE8PFRJRl9GUFVCT1VORCkNCiAjZGVmaW5lIF9USUZfTE9BRF9XQVRD
+SAkJKDE8PFRJRl9MT0FEX1dBVENIKQ0KIA0KLSNkZWZpbmUgX1RJRl9XT1JLX1NZU0NBTExfRU5U
+UlkJKF9USUZfU1lTQ0FMTF9UUkFDRSB8IF9USUZfU1lTQ0FMTF9BVURJVCkNCisjZGVmaW5lIF9U
+SUZfV09SS19TWVNDQUxMX0VOVFJZCShfVElGX1NZU0NBTExfVFJBQ0UgfCBfVElGX1NZU0NBTExf
+QVVESVQgfCBfVElGX1NFQ0NPTVApDQogDQogLyogd29yayB0byBkbyBpbiBzeXNjYWxsX3RyYWNl
+X2xlYXZlKCkgKi8NCiAjZGVmaW5lIF9USUZfV09SS19TWVNDQUxMX0VYSVQJKF9USUZfU1lTQ0FM
+TF9UUkFDRSB8IF9USUZfU1lTQ0FMTF9BVURJVCkNCg==
+
+
+--=-dIs/NK+4wLBmWjfb5Lno--
+
+--=-kUReUyIZL4/N0J2Lz4sh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIVAwUAU537pOe/yOyVhhEJAQrB7BAAj/tvk4GSgC3m5DEuyBx7tFd2Dp7kL0nW
+1oX3NTtrrMn58yhatRkB5neBSo6N3mJo8O/hBvehWqUo1D5TYU+V7OcnSTLQW36w
+1Yhe2S/QMRdi32G8BCYjZLQxVMYOy2C/opeyWH2W9dRg8I+jvx9sqgLv8qZUff7u
+GzT3OewHhq1wN6NXLwKCs5SFtNzkc1GPOLz7Xy/b0ii1T0DYuAfNHnGvuCbJvMmx
+O3yf6r6DvPjh7U1CiFI92H6R5zNbufmR/pOdA7OBeRl9zVYGi56/3zBHQUDANqFp
+Rp0YHQPB0G/fwwQ+jfiMXa3O5L7S68o/NBN8ykl6kSHysshnryIvznh2B0SMevDs
+nNHKAOMZlAOsvv/60ntLBQQ73QN7UOOkj1j4TngMT+SIrffJ6Q8VCGEYCYvOZA/X
+2dbTVhb3cLaHdC5DnH2gUPDpc101tI1heKEDW+pz7r+KDDRba6/xZIN2vnoLczGd
+iE68w2hEYYnqPYnvl4iNAeZ1Z8pIOVmRW3YsaaQIJGy0gjMmH5uuNrIW2VGwUZL8
+YmCLYGCkjCwrPhdz4wWrmT1LxxAM1YV8AXokFQR/ZkhhrDzq6iEzxFtL7Eyi/o57
+chWej1nzSEaUBM8w92uLwoEbSWEGbpxAUIVLfXd90q+yQRnsfNXWSKH5LICl3nWj
+4+Z5VmHcIzs=
+=3fel
+-----END PGP SIGNATURE-----
+
+--=-kUReUyIZL4/N0J2Lz4sh--

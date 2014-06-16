@@ -1,57 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2014 08:09:13 +0200 (CEST)
-Received: from mail-qc0-f169.google.com ([209.85.216.169]:48161 "EHLO
-        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859963AbaFPGJGOBp8N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jun 2014 08:09:06 +0200
-Received: by mail-qc0-f169.google.com with SMTP id c9so7314788qcz.0
-        for <linux-mips@linux-mips.org>; Sun, 15 Jun 2014 23:09:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=gkGFZ2K8RiTbn12cTWGZFLkNBa6QMhy+HrC4XJHQPV8=;
-        b=KHLNsh4ocw5Ui0T0L0H5kHGBM1SFkwAUi5U/X18hmPegWOSjhnCDAHZKKry5beZHpS
-         Y2ik/9PsJuNKtqiXH9Px4AGlvEx5dISIWkEW7zmY7XqWwm6hENIUyArIWRa33DdkiKru
-         KLHeM6o13KoctvAsffv87DX6N+Nd8Lk884zHmc/6SdCWMOQgVbS9cC1Y6GFyXXyohACm
-         f7aGhHzdjk9J5WkOYf4ob0Nfe/FbjA8ICmvZ9FqCxBUpLkA6Fd5tPAjONJHhOr9jkN7B
-         rVgiHQ40dpRSLVjh+5TNDgMnXSaqvS5y8xpJ/bg232ZSDkO0eicjr9zGxylgj8K3w4TD
-         kE5A==
-X-Received: by 10.140.105.183 with SMTP id c52mr22119998qgf.40.1402898939942;
- Sun, 15 Jun 2014 23:08:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2014 13:48:32 +0200 (CEST)
+Received: from mail-by2lp0236.outbound.protection.outlook.com ([207.46.163.236]:46732
+        "EHLO na01-by2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6817535AbaFPLs1iquQa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 Jun 2014 13:48:27 +0200
+Received: from alberich (2.171.207.32) by
+ BLUPR07MB385.namprd07.prod.outlook.com (10.141.27.18) with Microsoft SMTP
+ Server (TLS) id 15.0.954.9; Mon, 16 Jun 2014 11:48:19 +0000
+Date:   Mon, 16 Jun 2014 13:47:29 +0200
+From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+To:     Pekka Enberg <penberg@kernel.org>
+CC:     David Daney <ddaney.cavm@gmail.com>, <kvm@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH] kvm tools, mips: Adapt signature of kvm_cpu__emulate_io
+Message-ID: <20140616114729.GB17831@alberich>
 MIME-Version: 1.0
-Received: by 10.140.102.147 with HTTP; Sun, 15 Jun 2014 23:08:39 -0700 (PDT)
-Reply-To: mtk.manpages@gmail.com
-In-Reply-To: <1402457121-8410-7-git-send-email-keescook@chromium.org>
-References: <1402457121-8410-1-git-send-email-keescook@chromium.org> <1402457121-8410-7-git-send-email-keescook@chromium.org>
-From:   "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
-Date:   Mon, 16 Jun 2014 08:08:39 +0200
-Message-ID: <CAKgNAkjWgFBUhMx=-2a5LN28OJb76A=B_ZXm5ADkBGOxL8vw0g@mail.gmail.com>
-Subject: Re: [PATCH v6 6/9] seccomp: add "seccomp" syscall
-To:     Kees Cook <keescook@chromium.org>
-Cc:     lkml <linux-kernel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        John Johansen <john.johansen@canonical.com>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <mtk.manpages@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Originating-IP: [2.171.207.32]
+X-ClientProxiedBy: DB3PR05CA003.eurprd05.prod.outlook.com (10.242.134.33) To
+ BLUPR07MB385.namprd07.prod.outlook.com (10.141.27.18)
+X-Microsoft-Antispam: BL:0;ACTION:Default;RISK:Low;SCL:0;SPMLVL:NotSpam;PCL:0;RULEID:
+X-Forefront-PRVS: 0244637DEA
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(428001)(199002)(189002)(164054003)(15395725005)(31966008)(50466002)(66066001)(92726001)(74502001)(86362001)(20776003)(64706001)(47776003)(92566001)(80022001)(23676002)(19580405001)(105586001)(19580395003)(83506001)(85852003)(15202345003)(54356999)(101416001)(83072002)(79102001)(46102001)(15975445006)(74662001)(33716001)(21056001)(50986999)(77096002)(102836001)(4396001)(83322001)(81342001)(99396002)(33656002)(77982001)(76482001)(42186005)(87976001)(81542001)(85306003)(6606295002);DIR:OUT;SFP:;SCL:1;SRVR:BLUPR07MB385;H:alberich;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+Received-SPF: None (: caviumnetworks.com does not designate permitted sender
+ hosts)
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Andreas.Herrmann@caviumnetworks.com; 
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40525
+X-archive-position: 40526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mtk.manpages@gmail.com
+X-original-sender: andreas.herrmann@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,266 +50,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Kees,
 
-On Wed, Jun 11, 2014 at 5:25 AM, Kees Cook <keescook@chromium.org> wrote:
-> This adds the new "seccomp" syscall with both an "operation" and "flags"
-> parameter for future expansion. The third argument is a pointer value,
-> used with the SECCOMP_SET_MODE_FILTER operation. Currently, flags must
-> be 0. This is functionally equivalent to prctl(PR_SET_SECCOMP, ...).
+Use struct kvm_cpu instead of struct kvm.
+This change is req'd due to commit
+8d770c4096cdf73e1b79e7395ef3a86aa2887077
+(kvmtool: virtio: pass trapped vcpu to IO accessors).
 
-I assume there'll be another iteration of these patches. With that
-next iteration, could you write a man page (or at least free text
-structured like a man page) that comprehensively documents the
-user-space API?
+Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+---
+ tools/kvm/mips/include/kvm/kvm-cpu-arch.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Hi Pekka,
+
+When submitting v3 patch set for mips support
+(http://marc.info/?i=1401307735-16195-1-git-send-email-andreas.herrmann@caviumnetworks.com)
+that was based on v3.13-rc1-1436-g1fc83c5 of your tree.
+Thus I missed commit 8d770c4096cdf73e1b79e7395ef3a86aa2887077
+(kvmtool: virtio: pass trapped vcpu to IO accessors)
+
+This patch provides the req'd change for above commit to fix
+compilation for mips.
+
+Please apply.
+
 
 Thanks,
 
-Michael
+Andreas
 
-
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Cc: linux-api@vger.kernel.org
-> ---
->  arch/x86/syscalls/syscall_32.tbl  |    1 +
->  arch/x86/syscalls/syscall_64.tbl  |    1 +
->  include/linux/syscalls.h          |    2 ++
->  include/uapi/asm-generic/unistd.h |    4 ++-
->  include/uapi/linux/seccomp.h      |    4 +++
->  kernel/seccomp.c                  |   63 ++++++++++++++++++++++++++++++++-----
->  kernel/sys_ni.c                   |    3 ++
->  7 files changed, 69 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/x86/syscalls/syscall_32.tbl b/arch/x86/syscalls/syscall_32.tbl
-> index d6b867921612..7527eac24122 100644
-> --- a/arch/x86/syscalls/syscall_32.tbl
-> +++ b/arch/x86/syscalls/syscall_32.tbl
-> @@ -360,3 +360,4 @@
->  351    i386    sched_setattr           sys_sched_setattr
->  352    i386    sched_getattr           sys_sched_getattr
->  353    i386    renameat2               sys_renameat2
-> +354    i386    seccomp                 sys_seccomp
-> diff --git a/arch/x86/syscalls/syscall_64.tbl b/arch/x86/syscalls/syscall_64.tbl
-> index ec255a1646d2..16272a6c12b7 100644
-> --- a/arch/x86/syscalls/syscall_64.tbl
-> +++ b/arch/x86/syscalls/syscall_64.tbl
-> @@ -323,6 +323,7 @@
->  314    common  sched_setattr           sys_sched_setattr
->  315    common  sched_getattr           sys_sched_getattr
->  316    common  renameat2               sys_renameat2
-> +317    common  seccomp                 sys_seccomp
->
->  #
->  # x32-specific system call numbers start at 512 to avoid cache impact
-> diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-> index b0881a0ed322..1713977ee26f 100644
-> --- a/include/linux/syscalls.h
-> +++ b/include/linux/syscalls.h
-> @@ -866,4 +866,6 @@ asmlinkage long sys_process_vm_writev(pid_t pid,
->  asmlinkage long sys_kcmp(pid_t pid1, pid_t pid2, int type,
->                          unsigned long idx1, unsigned long idx2);
->  asmlinkage long sys_finit_module(int fd, const char __user *uargs, int flags);
-> +asmlinkage long sys_seccomp(unsigned int op, unsigned int flags,
-> +                           const char __user *uargs);
->  #endif
-> diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-> index 333640608087..65acbf0e2867 100644
-> --- a/include/uapi/asm-generic/unistd.h
-> +++ b/include/uapi/asm-generic/unistd.h
-> @@ -699,9 +699,11 @@ __SYSCALL(__NR_sched_setattr, sys_sched_setattr)
->  __SYSCALL(__NR_sched_getattr, sys_sched_getattr)
->  #define __NR_renameat2 276
->  __SYSCALL(__NR_renameat2, sys_renameat2)
-> +#define __NR_seccomp 277
-> +__SYSCALL(__NR_seccomp, sys_seccomp)
->
->  #undef __NR_syscalls
-> -#define __NR_syscalls 277
-> +#define __NR_syscalls 278
->
->  /*
->   * All syscalls below here should go away really,
-> diff --git a/include/uapi/linux/seccomp.h b/include/uapi/linux/seccomp.h
-> index ac2dc9f72973..b258878ba754 100644
-> --- a/include/uapi/linux/seccomp.h
-> +++ b/include/uapi/linux/seccomp.h
-> @@ -10,6 +10,10 @@
->  #define SECCOMP_MODE_STRICT    1 /* uses hard-coded filter. */
->  #define SECCOMP_MODE_FILTER    2 /* uses user-supplied filter. */
->
-> +/* Valid operations for seccomp syscall. */
-> +#define SECCOMP_SET_MODE_STRICT        0
-> +#define SECCOMP_SET_MODE_FILTER        1
-> +
->  /*
->   * All BPF programs must return a 32-bit value.
->   * The bottom 16-bits are for optional return data.
-> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-> index 39d32c2904fc..c0cafa9e84af 100644
-> --- a/kernel/seccomp.c
-> +++ b/kernel/seccomp.c
-> @@ -19,6 +19,7 @@
->  #include <linux/sched.h>
->  #include <linux/seccomp.h>
->  #include <linux/slab.h>
-> +#include <linux/syscalls.h>
->
->  /* #define SECCOMP_DEBUG 1 */
->
-> @@ -301,8 +302,8 @@ free_prog:
->   *
->   * Returns filter on success and ERR_PTR otherwise.
->   */
-> -static
-> -struct seccomp_filter *seccomp_prepare_user_filter(char __user *user_filter)
-> +static struct seccomp_filter *
-> +seccomp_prepare_user_filter(const char __user *user_filter)
->  {
->         struct sock_fprog fprog;
->         struct seccomp_filter *filter = ERR_PTR(-EFAULT);
-> @@ -325,19 +326,25 @@ out:
->
->  /**
->   * seccomp_attach_filter: validate and attach filter
-> + * @flags:  flags to change filter behavior
->   * @filter: seccomp filter to add to the current process
->   *
->   * Caller must be holding current->sighand->siglock lock.
->   *
->   * Returns 0 on success, -ve on error.
->   */
-> -static long seccomp_attach_filter(struct seccomp_filter *filter)
-> +static long seccomp_attach_filter(unsigned int flags,
-> +                                 struct seccomp_filter *filter)
->  {
->         unsigned long total_insns;
->         struct seccomp_filter *walker;
->
->         BUG_ON(!spin_is_locked(&current->sighand->siglock));
->
-> +       /* Validate flags. */
-> +       if (flags != 0)
-> +               return -EINVAL;
-> +
->         /* Validate resulting filter length. */
->         total_insns = filter->len;
->         for (walker = current->seccomp.filter; walker; walker = filter->prev)
-> @@ -541,6 +548,7 @@ out:
->  #ifdef CONFIG_SECCOMP_FILTER
->  /**
->   * seccomp_set_mode_filter: internal function for setting seccomp filter
-> + * @flags:  flags to change filter behavior
->   * @filter: struct sock_fprog containing filter
->   *
->   * This function may be called repeatedly to install additional filters.
-> @@ -551,7 +559,8 @@ out:
->   *
->   * Returns 0 on success or -EINVAL on failure.
->   */
-> -static long seccomp_set_mode_filter(char __user *filter)
-> +static long seccomp_set_mode_filter(unsigned int flags,
-> +                                   const char __user *filter)
->  {
->         const unsigned long seccomp_mode = SECCOMP_MODE_FILTER;
->         struct seccomp_filter *prepared = NULL;
-> @@ -569,7 +578,7 @@ static long seccomp_set_mode_filter(char __user *filter)
->         if (!seccomp_check_mode(current, seccomp_mode))
->                 goto out;
->
-> -       ret = seccomp_attach_filter(prepared);
-> +       ret = seccomp_attach_filter(flags, prepared);
->         if (ret)
->                 goto out;
->         /* Do not free the successfully attached filter. */
-> @@ -583,12 +592,35 @@ out_free:
->         return ret;
->  }
->  #else
-> -static inline long seccomp_set_mode_filter(char __user *filter)
-> +static inline long seccomp_set_mode_filter(unsigned int flags,
-> +                                          const char __user *filter)
->  {
->         return -EINVAL;
->  }
->  #endif
->
-> +/* Common entry point for both prctl and syscall. */
-> +static long do_seccomp(unsigned int op, unsigned int flags,
-> +                      const char __user *uargs)
-> +{
-> +       switch (op) {
-> +       case SECCOMP_SET_MODE_STRICT:
-> +               if (flags != 0 || uargs != NULL)
-> +                       return -EINVAL;
-> +               return seccomp_set_mode_strict();
-> +       case SECCOMP_SET_MODE_FILTER:
-> +               return seccomp_set_mode_filter(flags, uargs);
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +SYSCALL_DEFINE3(seccomp, unsigned int, op, unsigned int, flags,
-> +                        const char __user *, uargs)
-> +{
-> +       return do_seccomp(op, flags, uargs);
-> +}
-> +
->  /**
->   * prctl_set_seccomp: configures current->seccomp.mode
->   * @seccomp_mode: requested mode to use
-> @@ -598,12 +630,27 @@ static inline long seccomp_set_mode_filter(char __user *filter)
->   */
->  long prctl_set_seccomp(unsigned long seccomp_mode, char __user *filter)
->  {
-> +       unsigned int op;
-> +       char __user *uargs;
-> +
->         switch (seccomp_mode) {
->         case SECCOMP_MODE_STRICT:
-> -               return seccomp_set_mode_strict();
-> +               op = SECCOMP_SET_MODE_STRICT;
-> +               /*
-> +                * Setting strict mode through prctl always ignored filter,
-> +                * so make sure it is always NULL here to pass the internal
-> +                * check in do_seccomp().
-> +                */
-> +               uargs = NULL;
-> +               break;
->         case SECCOMP_MODE_FILTER:
-> -               return seccomp_set_mode_filter(filter);
-> +               op = SECCOMP_SET_MODE_FILTER;
-> +               uargs = filter;
-> +               break;
->         default:
->                 return -EINVAL;
->         }
-> +
-> +       /* prctl interface doesn't have flags, so they are always zero. */
-> +       return do_seccomp(op, 0, uargs);
->  }
-> diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
-> index 36441b51b5df..2904a2105914 100644
-> --- a/kernel/sys_ni.c
-> +++ b/kernel/sys_ni.c
-> @@ -213,3 +213,6 @@ cond_syscall(compat_sys_open_by_handle_at);
->
->  /* compare kernel pointers */
->  cond_syscall(sys_kcmp);
-> +
-> +/* operate on Secure Computing state */
-> +cond_syscall(sys_seccomp);
-> --
-> 1.7.9.5
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-api" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-
-
-
+diff --git a/tools/kvm/mips/include/kvm/kvm-cpu-arch.h b/tools/kvm/mips/include/kvm/kvm-cpu-arch.h
+index fc286b1..3db7f2b 100644
+--- a/tools/kvm/mips/include/kvm/kvm-cpu-arch.h
++++ b/tools/kvm/mips/include/kvm/kvm-cpu-arch.h
+@@ -29,9 +29,9 @@ struct kvm_cpu {
+  * As these are such simple wrappers, let's have them in the header so they'll
+  * be cheaper to call:
+  */
+-static inline bool kvm_cpu__emulate_io(struct kvm *kvm, u16 port, void *data, int direction, int size, u32 count)
++static inline bool kvm_cpu__emulate_io(struct kvm_cpu *vcpu, u16 port, void *data, int direction, int size, u32 count)
+ {
+-	return kvm__emulate_io(kvm, port, data, direction, size, count);
++	return kvm__emulate_io(vcpu, port, data, direction, size, count);
+ }
+ 
+ static inline bool kvm_cpu__emulate_mmio(struct kvm_cpu *vcpu, u64 phys_addr, u8 *data, u32 len, u8 is_write)
 -- 
-Michael Kerrisk
-Linux man-pages maintainer; http://www.kernel.org/doc/man-pages/
-Linux/UNIX System Programming Training: http://man7.org/training/
+1.7.9.5

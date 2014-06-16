@@ -1,42 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2014 18:34:44 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:16856 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6859971AbaFPQemFbzX6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Jun 2014 18:34:42 +0200
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s5GGXPAg008950
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 16 Jun 2014 12:33:25 -0400
-Received: from yakj.usersys.redhat.com (ovpn-112-52.ams2.redhat.com [10.36.112.52])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s5GGXKrX019567;
-        Mon, 16 Jun 2014 12:33:21 -0400
-Message-ID: <539F1C50.3090604@redhat.com>
-Date:   Mon, 16 Jun 2014 18:33:20 +0200
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
-MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>,
-        Sanjay Lal <sanjayl@kymasys.com>
-Subject: Re: [PATCH v2 00/23] MIPS: KVM: Fixes and guest timer rewrite
-References: <1401355005-20370-1-git-send-email-james.hogan@imgtec.com> <53870DAD.7050900@redhat.com> <53874719.5070604@imgtec.com> <538750F8.7040202@redhat.com> <53875FEE.1020607@imgtec.com> <53876850.20600@redhat.com> <53879C3E.3040102@imgtec.com> <538839DE.3000804@redhat.com> <539F1B76.8090601@imgtec.com>
-In-Reply-To: <539F1B76.8090601@imgtec.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
-Return-Path: <pbonzini@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2014 22:06:49 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:58482 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6859971AbaFPUGqp3M4s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jun 2014 22:06:46 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 27FAF21B947;
+        Mon, 16 Jun 2014 23:06:44 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id Bv1p01ufGrof; Mon, 16 Jun 2014 23:06:37 +0300 (EEST)
+Received: from cooljazz.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp6.welho.com (Postfix) with ESMTP id 7EF125BC009;
+        Mon, 16 Jun 2014 23:06:37 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 1/3] MIPS: OCTEON: SMP: delete redundant check
+Date:   Mon, 16 Jun 2014 23:06:28 +0300
+Message-Id: <1402949190-28182-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40529
+X-archive-position: 40530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,16 +42,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Il 16/06/2014 18:29, James Hogan ha scritto:
->> Rather than adding comments, we might as well force it to be always zero
->> and just write get_clock() to COUNT_RESUME.
->>
->> Finally, having to serialize env->count_save_time makes harder to
->> support migration from TCG to KVM and back.
->
-> Yes, I'm not keen on that bit of code.
+The same check is already done earlier in octeon_smp_hotplug_setup().
 
-Are you going to submit it for 2.1?  There are still a few days for 
-review and inclusion.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/cavium-octeon/smp.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Paolo
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index a7b3ae1..2c8d156 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -192,14 +192,6 @@ static void octeon_init_secondary(void)
+  */
+ void octeon_prepare_cpus(unsigned int max_cpus)
+ {
+-#ifdef CONFIG_HOTPLUG_CPU
+-	struct linux_app_boot_info *labi;
+-
+-	labi = (struct linux_app_boot_info *)PHYS_TO_XKSEG_CACHED(LABI_ADDR_IN_BOOTLOADER);
+-
+-	if (labi->labi_signature != LABI_SIGNATURE)
+-		panic("The bootloader version on this board is incorrect.");
+-#endif
+ 	/*
+ 	 * Only the low order mailbox bits are used for IPIs, leave
+ 	 * the other bits alone.
+-- 
+2.0.0

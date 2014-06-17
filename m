@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2014 22:07:26 +0200 (CEST)
-Received: from filtteri5.pp.htv.fi ([213.243.153.188]:58308 "EHLO
-        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860016AbaFPUGt1z9-w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jun 2014 22:06:49 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 2EA5D5A70B0;
-        Mon, 16 Jun 2014 23:06:44 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
-        with ESMTP id rqWQlMjzKriK; Mon, 16 Jun 2014 23:06:37 +0300 (EEST)
-Received: from cooljazz.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id 642115BC003;
-        Mon, 16 Jun 2014 23:06:42 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 3/3] MIPS: OCTEON: disable SMP if the bootloader version is incorrect
-Date:   Mon, 16 Jun 2014 23:06:30 +0300
-Message-Id: <1402949190-28182-3-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1402949190-28182-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1402949190-28182-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2014 04:24:33 +0200 (CEST)
+Received: from mail.active-venture.com ([67.228.131.205]:61379 "EHLO
+        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821742AbaFQCY1OFg2Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jun 2014 04:24:27 +0200
+Received: (qmail 70139 invoked by uid 399); 17 Jun 2014 02:24:20 -0000
+Received: from unknown (HELO server.roeck-us.net) (linux@roeck-us.net@108.223.40.66)
+  by mail.active-venture.com with ESMTPAM; 17 Jun 2014 02:24:20 -0000
+X-Originating-IP: 108.223.40.66
+X-Sender: linux@roeck-us.net
+Message-ID: <539FA6CB.5050703@roeck-us.net>
+Date:   Mon, 16 Jun 2014 19:24:11 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+MIME-Version: 1.0
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Alexei Starovoitov <ast@plumgrid.com>
+Subject: mips:allmodconfig build failure in 3.16-rc1 due to bpf_jit code
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40532
+X-archive-position: 40533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,29 +42,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Disable SMP if the bootloader version is incorrect for HOTPLUG_CPU.
+mips:allmodconfig fails in 3.16-rc1 with lots of undefined symbols.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- arch/mips/cavium-octeon/smp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+arch/mips/net/bpf_jit.c: In function 'is_load_to_a':
+arch/mips/net/bpf_jit.c:559:7: error: 'BPF_S_LD_W_LEN' undeclared (first use in this function)
+arch/mips/net/bpf_jit.c:559:7: note: each undeclared identifier is reported only once for each function it appears in
+arch/mips/net/bpf_jit.c:560:7: error: 'BPF_S_LD_W_ABS' undeclared (first use in this function)
+arch/mips/net/bpf_jit.c:561:7: error: 'BPF_S_LD_H_ABS' undeclared (first use in this function)
+arch/mips/net/bpf_jit.c:562:7: error: 'BPF_S_LD_B_ABS' undeclared (first use in this function)
+arch/mips/net/bpf_jit.c:563:7: error: 'BPF_S_ANC_CPU' undeclared (first use in this function)
+arch/mips/net/bpf_jit.c:564:7: error: 'BPF_S_ANC_IFINDEX' undeclared (first use in this function)
+arch/mips/net/bpf_jit.c:565:7: error: 'BPF_S_ANC_MARK' undeclared (first use in this function)
 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index ea96930..71f5505 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -88,8 +88,10 @@ static void octeon_smp_hotplug_setup(void)
- 		return;
- 
- 	labi = (struct linux_app_boot_info *)PHYS_TO_XKSEG_CACHED(LABI_ADDR_IN_BOOTLOADER);
--	if (labi->labi_signature != LABI_SIGNATURE)
--		panic("The bootloader version on this board is incorrect.");
-+	if (labi->labi_signature != LABI_SIGNATURE) {
-+		setup_max_cpus = 0;
-+		WARN(1, "Disabling SMP - the bootloader version on this board does not support HOTPLUG_CPU.");
-+	}
- 
- 	octeon_bootloader_entry_addr = labi->InitTLBStart_addr;
- #endif
--- 
-2.0.0
+and so on.
+
+Those symbols are not defined anywhere.
+
+The problem is due to a conflict with commit 348059313 (net: filter: get rid of BPF_S_*
+enum), which removed those definitions.
+
+Guenter

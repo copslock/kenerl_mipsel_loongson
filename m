@@ -1,44 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2014 20:16:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:57820 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860031AbaFQSOXYh-QJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jun 2014 20:14:23 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id BB691F6F25205;
-        Tue, 17 Jun 2014 19:14:12 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Tue, 17 Jun
- 2014 19:14:16 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Tue, 17 Jun 2014 19:14:16 +0100
-Received: from localhost (192.168.159.86) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 17 Jun
- 2014 19:14:10 +0100
-Date:   Tue, 17 Jun 2014 19:14:09 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     "Joseph S. Myers" <joseph@codesourcery.com>
-CC:     <linux-mips@linux-mips.org>, <libc-alpha@sourceware.org>,
-        <linux-api@vger.kernel.org>
-Subject: Re: MIPS MSA sigcontext changes in 3.15
-Message-ID: <20140617181409.GD7020@pburton-laptop.home>
-References: <Pine.LNX.4.64.1406171447030.23412@digraph.polyomino.org.uk>
- <Pine.LNX.4.64.1406171539240.23412@digraph.polyomino.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2014 21:38:34 +0200 (CEST)
+Received: from mail-wg0-f46.google.com ([74.125.82.46]:60187 "EHLO
+        mail-wg0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818452AbaFQTiausnNH convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Jun 2014 21:38:30 +0200
+Received: by mail-wg0-f46.google.com with SMTP id y10so7627216wgg.29
+        for <linux-mips@linux-mips.org>; Tue, 17 Jun 2014 12:38:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=HUWkXJByIdwnfXOoIooz3QaDwnyn4AfB3VV4v6M5Z5M=;
+        b=T2qCm+lFSOIlVb0jIGornOBb5MomOi6N7lLB8tRp57lPUx4ddiSvHNlwQrGcjZqQ3j
+         GH9j8AiqQU69NR5nS53PZ1a5WE2vhGs0gBlEuIe7A8fQCJ0MOib40NnrqEv1f+fawYlg
+         o8AYJhjjy4qamcjzetM3nna6jmY58oYXId2rEvd1tWobouoQJ+VM8UkC60SKOUv4LGSY
+         lTYoYsiJBeKj04KlDoYaCLd9+18Ic7Zmo40s0PgkBwCms++rNavypikdhmNP30mMm/It
+         9yAhj31q+K8v8eQ4mMyyFuy8T+Al4RFxXE90rQTVW9slL/zUQqlKiDgZRs5hyqZbgO2a
+         GXYQ==
+X-Gm-Message-State: ALoCoQkYlMCAzt64L9cQIodH+zjPJiYhgZj/VV2V7NJ3jdW2zBecyu5Pw/V/LihlDcKASBH8lSPP
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.1406171539240.23412@digraph.polyomino.org.uk>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.159.86]
-Return-Path: <Paul.Burton@imgtec.com>
+X-Received: by 10.194.122.169 with SMTP id lt9mr40878272wjb.16.1403033905343;
+ Tue, 17 Jun 2014 12:38:25 -0700 (PDT)
+Received: by 10.194.121.228 with HTTP; Tue, 17 Jun 2014 12:38:25 -0700 (PDT)
+Date:   Tue, 17 Jun 2014 12:38:25 -0700
+Message-ID: <CAMEtUuz=us+=ejHaOf+Mq19hZoNJ=-faB9y4f4NC90=9E6Ck7g@mail.gmail.com>
+Subject: Re: mips:allmodconfig build failure in 3.16-rc1 due to bpf_jit code
+From:   Alexei Starovoitov <ast@plumgrid.com>
+To:     Daniel Borkmann <dborkman@redhat.com>
+Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Network Development <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <ast@plumgrid.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40611
+X-archive-position: 40612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ast@plumgrid.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,55 +57,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 17, 2014 at 03:44:36PM +0000, Joseph S. Myers wrote:
-> On Tue, 17 Jun 2014, Joseph S. Myers wrote:
-> 
-> > signal mask at a particular offset in the ucontext.  As far as I can see, 
-> > extending sigcontext requires a new sigaction flag that could be used to 
-> > opt in, for a particular signal handler, to receiving the new-layout 
-> > ucontext (so new symbol versions of sigaction in glibc could then pass 
-> > that flag to the kernel, but existing binaries would continue to get 
-> > old-layout ucontext from the kernel), or else putting the new data at the 
-> 
-> And a new flag would itself be problematic - signal handlers would need 
-> wrapping with userspace code to convert structure layout when new-version 
-> sigaction is used on an older kernel.  That suggests putting the new data 
-> at the end of ucontext is to be preferred (but in any case it would be 
-> best to revert the incompatible changes until something compatible with 
-> existing userspace can be produced).
-> 
-> -- 
-> Joseph S. Myers
-> joseph@codesourcery.com
-> 
+On Tue, Jun 17, 2014 at 4:21 AM, Daniel Borkmann <dborkman@redhat.com> wrote:
+> On 06/17/2014 01:09 PM, Markos Chandras wrote:
+> ...
+>>
+>> Thanks for these instructions. I will try them myself once I find some
+>>
+>> time since I don't think bpf_jit for MIPS has ever been tested with all
+>> the opcodes.
+>
+>
+> Sounds great! If you find some tests are missing, please feel free to
+> submit them as well via netdev.
+>
+> Best,
+>
+> Daniel
 
-True. Oops. I hadn't realised this...
+Daniel,
 
-I wonder if the sensible thing is to switch to sigcontext merely
-containing a pointer to another struct holding FP state, much like x86.
-Only in response to a flag as you describe of course. That way the
-kernel could avoid the games it currently plays with splitting the
-vector registers into 64b pieces, and it would probably be more open
-to wider vector registers if they appear in the future.
+thank you for taking care of it so quickly :)
+from the BPF perspective the fix looks good:
+Acked-by: Alexei Starovoitov <ast@plumgrid.com>
 
-Anyway, I agree with reverting the sigcontext change (eec43a224cf1
-"MIPS: Save/restore MSA context around signals") in the meantime. I'll
-submit a patch as soon as I can.
+Markos,
 
-Given:
+please do run the testsuite.
+Doing quick code review of mips jit, it looks like:
 
- - This issue.
+- your version of pkt_type_offset() will work for little endian only.
+  (we've recently fixed it in net/core/filter.c)
 
- - A couple of other MSA fixes I have pending cleanup.
+- vlan tag handling is incorrect, since it's missing shifts.
+  classic BPF standard for vlan_tag_present has to return 1 or 0
+  and not just emit_and(r_A, r_s0, VLAN_TAG_PRESENT, ctx);
 
- - The fact that the only CPU the kernel supports which has MSA is the
-      P5600, and since that is 32b it can't actually make use of MSA
-   without the experimental CONFIG_MIPS_O32_FP64_SUPPORT option. Thus
-   MSA isn't actually being used yet beyond a few small groups who
-   accepted that big shouty experimental warning.
+- pr_warn("%s: Unhandled opcode: 0x%02x\n", __FILE__,
+  is way too heavy, since when jit is on, unprivileged user can spam log.
 
-...I wonder if it makes sense to disable MSA support by default for the
-moment also.
+- /* sa is 5-bits long */
+  BUG_ON(sa >= BIT(5));
+is wrong too. Malicious user can cause kernel crash…
+Also shift A>>=33 was always allowed by classic BPF checker, so
+JITs have to silently do C-equivalent version of such shift.
 
-Thanks,
-    Paul
+- /* Determine if immediate is within the 16-bit signed range */
+static inline bool is_range16(s32 imm)
+{
+        if (imm >= SBIT(15) || imm < -SBIT(15))
+                return true;
+the function name and comment are doing the opposite of
+actual code, which makes harder to follow.
+
+- the rest looks pretty good!
+
+Also you'll get a lot more mileage out of mips jit if you use eBPF
+instruction set as a base for JITing. You wouldn't need to worry
+about vlan, pkt_type and other classic extensions. You'll get all
+extensions for free, plus seccomp, tracing, etc.
+
+Thanks
+Alexei

@@ -1,29 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2014 18:01:51 +0200 (CEST)
-Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:44249 "EHLO
-        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816615AbaFRQBsh8bO4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jun 2014 18:01:48 +0200
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.80.1)
-        (envelope-from <jslaby@suse.cz>)
-        id 1WxIIo-0001Tv-Fn; Wed, 18 Jun 2014 18:01:34 +0200
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     ben@decadent.org.uk, Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to the 3.12 stable tree] MIPS: asm: thread_info: Add _TIF_SECCOMP flag
-Date:   Wed, 18 Jun 2014 18:01:34 +0200
-Message-Id: <1403107294-5664-1-git-send-email-jslaby@suse.cz>
-X-Mailer: git-send-email 1.9.3
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2014 18:03:18 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34132 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6859957AbaFRQDQ06QAl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Jun 2014 18:03:16 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s5IG3D6V002258;
+        Wed, 18 Jun 2014 18:03:13 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s5IG3A6Y002222;
+        Wed, 18 Jun 2014 18:03:10 +0200
+Date:   Wed, 18 Jun 2014 18:03:10 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     ganesanr@broadcom.com
+Cc:     kristina.martsenko@gmail.com, gregkh@linuxfoundation.org,
+        jchandra@broadcom.com, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 0/3] XLR/XLS network driver update and fixes
+Message-ID: <20140618160309.GG26335@linux-mips.org>
+References: <cover.1403096668.git.ganesanr@broadcom.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1403096668.git.ganesanr@broadcom.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40635
+X-archive-position: 40636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,41 +44,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+On Wed, Jun 18, 2014 at 06:43:55PM +0530, ganesanr@broadcom.com wrote:
 
-This patch has been added to the 3.12 stable tree. If you have any
-objections, please let us know.
+> From: Ganesan Ramalingam <ganesanr@broadcom.com>
+> 
+> Patches has following changes:
+> 
+>  * Fixed compilation failure caused by change in COP2 API
+>  * SGMII PHY address calculation was wrong, fixed
+>  * Updated the driver to have single parent device for a XLR/XLS
+>    network block with multiple network devices under it
+>  * Fixed comment format
 
-===============
+Patches 1 and 2 apply cleanly but I'm getting a reject for patch 3.
 
-commit 137f7df8cead00688524c82360930845396b8a21 upstream.
-
-Add _TIF_SECCOMP flag to _TIF_WORK_SYSCALL_ENTRY to indicate
-that the system call needs to be checked against a seccomp filter.
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/6405/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/include/asm/thread_info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index 61215a34acc6..897cd58407c8 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -134,7 +134,7 @@ static inline struct thread_info *current_thread_info(void)
- #define _TIF_LOAD_WATCH		(1<<TIF_LOAD_WATCH)
- 
- #define _TIF_WORK_SYSCALL_ENTRY	(_TIF_NOHZ | _TIF_SYSCALL_TRACE |	\
--				 _TIF_SYSCALL_AUDIT)
-+				 _TIF_SYSCALL_AUDIT | _TIF_SECCOMP)
- 
- /* work to do in syscall_trace_leave() */
- #define _TIF_WORK_SYSCALL_EXIT	(_TIF_NOHZ | _TIF_SYSCALL_TRACE |	\
--- 
-1.9.3
+  Ralf

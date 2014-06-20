@@ -1,49 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2014 13:24:00 +0200 (CEST)
-Received: from mail-by2lp0237.outbound.protection.outlook.com ([207.46.163.237]:53525
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6859947AbaFTLX55ImW9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jun 2014 13:23:57 +0200
-Received: from ixro-sdumitru.ixiacom.com (205.168.23.154) by
- CO2PR0601MB0950.namprd06.prod.outlook.com (25.160.10.22) with Microsoft SMTP
- Server (TLS) id 15.0.969.15; Fri, 20 Jun 2014 11:23:49 +0000
-From:   Sorin Dumitru <sdumitru@ixiacom.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-CC:     <ralf@linux-mips.org>, <sdumitru@ixiacom.com>
-Subject: [PATCH v2] mips: n32: use compat getsockopt syscall
-Date:   Fri, 20 Jun 2014 14:23:35 +0300
-Message-ID: <1403263415-15765-1-git-send-email-sdumitru@ixiacom.com>
-X-Mailer: git-send-email 2.0.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2014 19:32:46 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55261 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6859948AbaFTRcjbFq6h (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jun 2014 19:32:39 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 88AB1BAE316EB;
+        Fri, 20 Jun 2014 18:32:29 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Fri, 20 Jun
+ 2014 18:32:32 +0100
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
+ (192.168.5.97) with Microsoft SMTP Server (TLS) id 14.3.181.6; Fri, 20 Jun
+ 2014 18:32:32 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Fri, 20 Jun 2014 18:32:31 +0100
+Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 20 Jun
+ 2014 10:32:30 -0700
+Message-ID: <53A4702D.3090503@imgtec.com>
+Date:   Fri, 20 Jun 2014 10:32:29 -0700
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [205.168.23.154]
-X-ClientProxiedBy: CO2PR04CA046.namprd04.prod.outlook.com (10.141.240.174) To
- CO2PR0601MB0950.namprd06.prod.outlook.com (25.160.10.22)
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
-X-Forefront-PRVS: 024847EE92
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(428001)(199002)(189002)(81156003)(85306003)(53416004)(77096002)(42186005)(74662001)(99396002)(104166001)(46102001)(77156001)(36756003)(19580395003)(50226001)(83322001)(77982001)(76482001)(79102001)(4396001)(19580405001)(31966008)(69596002)(21056001)(102836001)(92566001)(92726001)(33646001)(74502001)(93916002)(86362001)(50986999)(50466002)(88136002)(85852003)(89996001)(105586002)(47776003)(62966002)(64706001)(95666004)(83072002)(87976001)(48376002)(87286001)(80022001)(81342001)(101416001)(20776003)(81542001)(106356001)(66066001)(2101003);DIR:OUT;SFP:;SCL:1;SRVR:CO2PR0601MB0950;H:ixro-sdumitru.ixiacom.com;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (: ixiacom.com does not designate permitted sender hosts)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=sdumitru@ixiacom.com; 
-X-OriginatorOrg: ixiacom.com
-X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 205.168.23.154
-X-MS-Exchange-CrossPremises-AuthSource: CO2PR0601MB0950.namprd06.prod.outlook.com
-X-MS-Exchange-CrossPremises-AuthAs: Internal
-X-MS-Exchange-CrossPremises-AuthMechanism: 06
-X-MS-Exchange-CrossPremises-AVStamp-Service: 1.0
-X-MS-Exchange-CrossPremises-SCL: 1
-X-MS-Exchange-CrossPremises-Antispam-ScanContext: DIR:Originating;SFV:NSPM;SKIP:0;
-X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: CO2PR0601MB0950.namprd06.prod.outlook.com
-Return-Path: <sdumitru@ixiacom.com>
+To:     Sebastien Bourdelin <sebastien.bourdelin@savoirfairelinux.com>,
+        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        John Crispin <blogic@openwrt.org>,
+        "Qais Yousef" <Qais.Yousef@imgtec.com>
+CC:     <linux-kernel@vger.kernel.org>,
+        Jerome Oufella <jerome.oufella@savoirfairelinux.com>
+Subject: Re: [PATCH 1/1] MIPS: APRP: Fix an issue when device_create() fails.
+References: <1403209823-6376-1-git-send-email-sebastien.bourdelin@savoirfairelinux.com>
+In-Reply-To: <1403209823-6376-1-git-send-email-sebastien.bourdelin@savoirfairelinux.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.2.221]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40647
+X-archive-position: 40648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sdumitru@ixiacom.com
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,30 +57,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The IP_PKTOPTIONS sockopt puts control messages
-in option_values, these need to be handled
-differently in the compat case. This is already
-done through the MSG_CMSG_COMPAT flag, we just
-need to use compat_sys_getsockopt which sets that
-flag.
+On 06/19/2014 01:30 PM, Sebastien Bourdelin wrote:
+> If a call to device_create() fails for a channel during the initialize
+> loop, we need to clean the devices entries already created before
+> leaving.
+>
+> Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@savoirfairelinux.com>
+> ---
+>   arch/mips/kernel/rtlx-cmp.c | 3 +++
+>   arch/mips/kernel/rtlx-mt.c  | 3 +++
+>   2 files changed, 6 insertions(+)
+>
+> diff --git a/arch/mips/kernel/rtlx-cmp.c b/arch/mips/kernel/rtlx-cmp.c
+> index 758fb3c..d26dcc4 100644
+> --- a/arch/mips/kernel/rtlx-cmp.c
+> +++ b/arch/mips/kernel/rtlx-cmp.c
+> @@ -77,6 +77,9 @@ int __init rtlx_module_init(void)
+>   		dev = device_create(mt_class, NULL, MKDEV(major, i), NULL,
+>   				    "%s%d", RTLX_MODULE_NAME, i);
+>   		if (IS_ERR(dev)) {
+> +			while (i--)
 
-Signed-off-by: Sorin Dumitru <sdumitru@ixiacom.com>
----
- arch/mips/kernel/scall64-n32.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--i?
 
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index c1dbcda..e543861 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -162,7 +162,7 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_getpeername
- 	PTR	sys_socketpair
- 	PTR	compat_sys_setsockopt
--	PTR	sys_getsockopt
-+	PTR	compat_sys_getsockopt
- 	PTR	__sys_clone			/* 6055 */
- 	PTR	__sys_fork
- 	PTR	compat_sys_execve
--- 
-2.0.0
+> +				device_destroy(mt_class, MKDEV(major, i));
+> +
+>   			err = PTR_ERR(dev);
+>   			goto out_chrdev;
+>   		}
+> diff --git a/arch/mips/kernel/rtlx-mt.c b/arch/mips/kernel/rtlx-mt.c
+> index 5a66b97..cb95470 100644
+> --- a/arch/mips/kernel/rtlx-mt.c
+> +++ b/arch/mips/kernel/rtlx-mt.c
+> @@ -103,6 +103,9 @@ int __init rtlx_module_init(void)
+>   		dev = device_create(mt_class, NULL, MKDEV(major, i), NULL,
+>   				    "%s%d", RTLX_MODULE_NAME, i);
+>   		if (IS_ERR(dev)) {
+> +			while (i--)
+
+Same here.
+
+> +				device_destroy(mt_class, MKDEV(major, i));
+> +
+>   			err = PTR_ERR(dev);
+>   			goto out_chrdev;
+>   		}
+
+
+
+Deng-Cheng

@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2014 07:57:50 +0200 (CEST)
-Received: from mail-wi0-f180.google.com ([209.85.212.180]:62611 "EHLO
-        mail-wi0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859942AbaFTF443I1Qd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jun 2014 07:56:56 +0200
-Received: by mail-wi0-f180.google.com with SMTP id hi2so179729wib.1
-        for <multiple recipients>; Thu, 19 Jun 2014 22:56:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=20I1StT2cPvvWCSyDWbVWZy6rcpJNsqpJSIqHTV48Sc=;
-        b=R0TbM8AUwMU2OT8F/DfqxRZ315PuGEUDrd3Lz5lm/2dqdj8f174xKcohDdsyiYqw2I
-         CMcqHPNwvCinhgy+zlMRV7pBBMGgmcA1PsL4CMih/3wgfOl/5lZWwMCAiW+FymgiHtN8
-         d2V3FgnTSlcEs58LH9zpRqZb0DY0U/eBGNyk0DBUATxB78ekV1a5LUGNhEL2ka0xPYQt
-         ymvAgV8PgbLwwe2NY7Pu8ZaEtyttm+IPxHcKuFIUbbBIRW+yhvoF8o7nydIRuRbNWZ25
-         jtn9tj2OwkFgGErkoy8XOnkK2hBrTwb91fnq8liBMvK7D/Q6ckXi70dnauHqpAXNBcgr
-         ETgQ==
-X-Received: by 10.194.174.168 with SMTP id bt8mr1528967wjc.72.1403243811151;
-        Thu, 19 Jun 2014 22:56:51 -0700 (PDT)
-Received: from linux-tdhb.lan (static-91-227-21-4.devs.futuro.pl. [91.227.21.4])
-        by mx.google.com with ESMTPSA id ge17sm1574298wic.0.2014.06.19.22.56.49
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Jun 2014 22:56:50 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        Catalin Patulea <cat@vv.carleton.ca>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [3.17][PATCH 2/2] MIPS: BCM47XX: Fix LEDs on WRT54GS V1.0
-Date:   Fri, 20 Jun 2014 07:56:40 +0200
-Message-Id: <1403243800-7849-2-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-In-Reply-To: <1403243800-7849-1-git-send-email-zajec5@gmail.com>
-References: <1403243800-7849-1-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2014 09:53:36 +0200 (CEST)
+Received: from mail-bn1blp0185.outbound.protection.outlook.com ([207.46.163.185]:49203
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6816288AbaFTHxa4Klfn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jun 2014 09:53:30 +0200
+Received: from BLUPR0601MB0946.namprd06.prod.outlook.com (25.160.35.22) by
+ BLUPR0601MB772.namprd06.prod.outlook.com (10.141.254.140) with Microsoft SMTP
+ Server (TLS) id 15.0.959.24; Fri, 20 Jun 2014 07:53:23 +0000
+Received: from ixro-sdumitru.ixiacom.com (205.168.23.154) by
+ BLUPR0601MB0946.namprd06.prod.outlook.com (25.160.35.22) with Microsoft SMTP
+ Server (TLS) id 15.0.969.15; Fri, 20 Jun 2014 07:53:22 +0000
+From:   Sorin Dumitru <sdumitru@ixiacom.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
+CC:     <ralf@linux-mips.org>, <sdumitru@ixiacom.com>
+Subject: [PATCH] mips: n32: use compat getsockopt syscall
+Date:   Fri, 20 Jun 2014 10:53:06 +0300
+Message-ID: <1403250786-9763-1-git-send-email-sdumitru@ixiacom.com>
+X-Mailer: git-send-email 2.0.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [205.168.23.154]
+X-ClientProxiedBy: CO2PR05CA030.namprd05.prod.outlook.com (10.141.241.158) To
+ BLUPR0601MB0946.namprd06.prod.outlook.com (25.160.35.22)
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
+X-Forefront-PRVS: 024847EE92
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(428001)(189002)(199002)(81156003)(95666004)(93916002)(86362001)(33646001)(77096002)(50986999)(21056001)(101416001)(85306003)(46102001)(92726001)(76482001)(69596002)(19580395003)(19580405001)(83322001)(62966002)(77982001)(64706001)(79102001)(66066001)(106356001)(81542001)(80022001)(81342001)(47776003)(20776003)(42186005)(53416004)(87286001)(105586002)(4396001)(104166001)(99396002)(74662001)(50226001)(50466002)(87976001)(88136002)(48376002)(36756003)(83072002)(85852003)(77156001)(89996001)(102836001)(74502001)(2101003);DIR:OUT;SFP:;SCL:1;SRVR:BLUPR0601MB0946;H:ixro-sdumitru.ixiacom.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+Received-SPF: None (: ixiacom.com does not designate permitted sender hosts)
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=sdumitru@ixiacom.com; 
+X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 205.168.23.154
+X-MS-Exchange-CrossPremises-AuthSource: BLUPR0601MB0946.namprd06.prod.outlook.com
+X-MS-Exchange-CrossPremises-AuthAs: Internal
+X-MS-Exchange-CrossPremises-AuthMechanism: 06
+X-MS-Exchange-CrossPremises-AVStamp-Service: 1.0
+X-MS-Exchange-CrossPremises-SCL: 1
+X-MS-Exchange-CrossPremises-Antispam-ScanContext: DIR:Originating;SFV:NSPM;SKIP:0;
+X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
+X-OrganizationHeadersPreserved: BLUPR0601MB0946.namprd06.prod.outlook.com
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
+X-OriginatorOrg: ixiacom.com
+Return-Path: <sdumitru@ixiacom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40642
+X-archive-position: 40643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: sdumitru@ixiacom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,39 +60,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Reported-by: Catalin Patulea <cat@vv.carleton.ca>
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+Signed-off-by: Sorin Dumitru <sdumitru@ixiacom.com>
 ---
- arch/mips/bcm47xx/leds.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/kernel/scall64-n32.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index 909e00f..23324e3 100644
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -306,6 +306,14 @@ bcm47xx_leds_linksys_wrt54g3gv2[] __initconst = {
- 	BCM47XX_GPIO_LED(3, "blue", "3g", 0, LEDS_GPIO_DEFSTATE_OFF),
- };
- 
-+/* Verified on: WRT54GS V1.0 */
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt54g_type_0101[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "green", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
- static const struct gpio_led
- bcm47xx_leds_linksys_wrt610nv1[] __initconst = {
- 	BCM47XX_GPIO_LED(0, "unk", "usb",  1, LEDS_GPIO_DEFSTATE_OFF),
-@@ -542,6 +550,8 @@ void __init bcm47xx_leds_register(void)
- 		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g3gv2);
- 		break;
- 	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0101:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g_type_0101);
-+		break;
- 	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0467:
- 	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0708:
- 		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g_generic);
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index c1dbcda..e543861 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -162,7 +162,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_getpeername
+ 	PTR	sys_socketpair
+ 	PTR	compat_sys_setsockopt
+-	PTR	sys_getsockopt
++	PTR	compat_sys_getsockopt
+ 	PTR	__sys_clone			/* 6055 */
+ 	PTR	__sys_fork
+ 	PTR	compat_sys_execve
 -- 
-1.8.4.5
+2.0.0

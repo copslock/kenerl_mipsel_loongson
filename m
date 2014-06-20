@@ -1,44 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2014 21:11:30 +0200 (CEST)
-Received: from mail.savoirfairelinux.com ([209.172.62.77]:62362 "EHLO
-        mail.savoirfairelinux.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859948AbaFTTL1kj59m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jun 2014 21:11:27 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.savoirfairelinux.com (Postfix) with ESMTP id 0E53710D7299;
-        Fri, 20 Jun 2014 15:11:21 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at mail.savoirfairelinux.com
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
-        by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Feh10IfxxdTi; Fri, 20 Jun 2014 15:11:20 -0400 (EDT)
-Received: from [192.168.50.114] (mtl.savoirfairelinux.net [208.88.110.46])
-        by mail.savoirfairelinux.com (Postfix) with ESMTPSA id AAC3D10D7293;
-        Fri, 20 Jun 2014 15:11:20 -0400 (EDT)
-Message-ID: <53A48855.2010102@savoirfairelinux.com>
-Date:   Fri, 20 Jun 2014 15:15:33 -0400
-From:   Sebastien Bourdelin <sebastien.bourdelin@savoirfairelinux.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2014 22:07:47 +0200 (CEST)
+Received: from mail-ie0-f174.google.com ([209.85.223.174]:58977 "EHLO
+        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859950AbaFTUHorI8DD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jun 2014 22:07:44 +0200
+Received: by mail-ie0-f174.google.com with SMTP id lx4so3563405iec.5
+        for <linux-mips@linux-mips.org>; Fri, 20 Jun 2014 13:07:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=RM//3/y0LZCtaUvk0KNEd4zwAavkPH+swvPBlbW0EKU=;
+        b=X6R77r1DvnprWpNBw6H+oGYWMgW8oWGsZf21drV+Iw8O41VVHoypzySbpS7GuFqeoL
+         F2u1o034rJmiB9JZcBuXmJyPipcqZ5RWAEWTTUP+PNriFiIxt7HER10W4qqbzC02PqMu
+         yqnY3IayA79lLMRgAyseYm9AtGa0MeMzjWvK0leGyQQ06F6Z5yZAH66xboSBlF8lrUqf
+         0IIYkoB6pimp/tc2X2IjbCNZETvdxVNITXTVOmHgEPnianyh2hicl8wDKz8mZnt+uUdf
+         5lwjIF/HzTkg9Sbvpq3EQAGmHl0l+aCAXe01C1A3lbufzCC5JUIKEjPiOKnsmNr7gEcW
+         kdwg==
+X-Received: by 10.50.141.164 with SMTP id rp4mr7406714igb.20.1403294858483;
+        Fri, 20 Jun 2014 13:07:38 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id z8sm7001550igl.20.2014.06.20.13.07.37
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 20 Jun 2014 13:07:37 -0700 (PDT)
+Message-ID: <53A49488.6050902@gmail.com>
+Date:   Fri, 20 Jun 2014 13:07:36 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        John Crispin <blogic@openwrt.org>,
-        Qais Yousef <Qais.Yousef@imgtec.com>
-CC:     linux-kernel@vger.kernel.org,
-        Jerome Oufella <jerome.oufella@savoirfairelinux.com>
-Subject: Re: [PATCH 1/1] MIPS: APRP: Fix an issue when device_create() fails.
-References: <1403209823-6376-1-git-send-email-sebastien.bourdelin@savoirfairelinux.com> <53A4702D.3090503@imgtec.com>
-In-Reply-To: <53A4702D.3090503@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1
+To:     Christoph Lameter <cl@linux.com>,
+        linux-mips <linux-mips@linux-mips.org>
+CC:     Tejun Heo <tj@kernel.org>, akpm@linuxfoundation.org,
+        rostedt@goodmis.org, linux-kernel@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 19/31] MIPS: Replace __get_cpu_var uses in FPU emulator.
+References: <20140620193115.547427118@linux.com> <20140620193127.123705312@linux.com>
+In-Reply-To: <20140620193127.123705312@linux.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sebastien.bourdelin@savoirfairelinux.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40649
+X-archive-position: 40650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebastien.bourdelin@savoirfairelinux.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,65 +62,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
++ linux-mips@linux-mips.org, as that is the main MIPS patch reviewing list.
 
-correct me if i'm wrong, but if we pre-decrement, it will decrement
-before evaluate and the channel 0 will never be destroy.
-So the while condition must change too accordingly.
-In any case inside the while loop, "i" will be "i - 1" so we destroy the
-previously device.
-I think it's correct like this.
-
-On 06/20/2014 01:32 PM, Deng-Cheng Zhu wrote:
-> On 06/19/2014 01:30 PM, Sebastien Bourdelin wrote:
->> If a call to device_create() fails for a channel during the initialize
->> loop, we need to clean the devices entries already created before
->> leaving.
->>
->> Signed-off-by: Sebastien Bourdelin <sebastien.bourdelin@savoirfairelinux.com>
->> ---
->>   arch/mips/kernel/rtlx-cmp.c | 3 +++
->>   arch/mips/kernel/rtlx-mt.c  | 3 +++
->>   2 files changed, 6 insertions(+)
->>
->> diff --git a/arch/mips/kernel/rtlx-cmp.c b/arch/mips/kernel/rtlx-cmp.c
->> index 758fb3c..d26dcc4 100644
->> --- a/arch/mips/kernel/rtlx-cmp.c
->> +++ b/arch/mips/kernel/rtlx-cmp.c
->> @@ -77,6 +77,9 @@ int __init rtlx_module_init(void)
->>   		dev = device_create(mt_class, NULL, MKDEV(major, i), NULL,
->>   				    "%s%d", RTLX_MODULE_NAME, i);
->>   		if (IS_ERR(dev)) {
->> +			while (i--)
-> --i?
+On 06/20/2014 12:31 PM, Christoph Lameter wrote:
+> From: David Daney<david.daney@cavium.com>
 >
->> +				device_destroy(mt_class, MKDEV(major, i));
->> +
->>   			err = PTR_ERR(dev);
->>   			goto out_chrdev;
->>   		}
->> diff --git a/arch/mips/kernel/rtlx-mt.c b/arch/mips/kernel/rtlx-mt.c
->> index 5a66b97..cb95470 100644
->> --- a/arch/mips/kernel/rtlx-mt.c
->> +++ b/arch/mips/kernel/rtlx-mt.c
->> @@ -103,6 +103,9 @@ int __init rtlx_module_init(void)
->>   		dev = device_create(mt_class, NULL, MKDEV(major, i), NULL,
->>   				    "%s%d", RTLX_MODULE_NAME, i);
->>   		if (IS_ERR(dev)) {
->> +			while (i--)
-> Same here.
+> The use of __this_cpu_inc() requires a fundamental integer type, so
+> change the type of all the counters to unsigned long, which is the
+> same width they were before, but not wrapped in local_t.
 >
->> +				device_destroy(mt_class, MKDEV(major, i));
->> +
->>   			err = PTR_ERR(dev);
->>   			goto out_chrdev;
->>   		}
+> Signed-off-by: David Daney<david.daney@cavium.com>
+> Signed-off-by: Christoph Lameter<cl@linux.com>
+> ---
+>   arch/mips/include/asm/fpu_emulator.h | 14 +++++++-------
+>   arch/mips/math-emu/cp1emu.c          |  6 +++---
+>   2 files changed, 10 insertions(+), 10 deletions(-)
+>
+> Index: linux/arch/mips/include/asm/fpu_emulator.h
+> ===================================================================
+> --- linux.orig/arch/mips/include/asm/fpu_emulator.h	2014-06-16 09:15:42.199326017 -0500
+> +++ linux/arch/mips/include/asm/fpu_emulator.h	2014-06-16 09:17:42.776959733 -0500
+> @@ -33,17 +33,17 @@
+>   #ifdef CONFIG_DEBUG_FS
+>
+>   struct mips_fpu_emulator_stats {
+> -	local_t emulated;
+> -	local_t loads;
+> -	local_t stores;
+> -	local_t cp1ops;
+> -	local_t cp1xops;
+> -	local_t errors;
+> -	local_t ieee754_inexact;
+> -	local_t ieee754_underflow;
+> -	local_t ieee754_overflow;
+> -	local_t ieee754_zerodiv;
+> -	local_t ieee754_invalidop;
+> +	unsigned long emulated;
+> +	unsigned long loads;
+> +	unsigned long stores;
+> +	unsigned long cp1ops;
+> +	unsigned long cp1xops;
+> +	unsigned long errors;
+> +	unsigned long ieee754_inexact;
+> +	unsigned long ieee754_underflow;
+> +	unsigned long ieee754_overflow;
+> +	unsigned long ieee754_zerodiv;
+> +	unsigned long ieee754_invalidop;
+>   };
+>
+>   DECLARE_PER_CPU(struct mips_fpu_emulator_stats, fpuemustats);
+> @@ -51,7 +51,7 @@
+>   #define MIPS_FPU_EMU_INC_STATS(M)					\
+>   do {									\
+>   	preempt_disable();						\
+> -	__local_inc(&__get_cpu_var(fpuemustats).M);			\
+> +	__this_cpu_inc(fpuemustats.M);					\
+>   	preempt_enable();						\
+>   } while (0)
 >
 >
-> Deng-Cheng
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/

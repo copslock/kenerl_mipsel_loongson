@@ -1,55 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2014 22:07:47 +0200 (CEST)
-Received: from mail-ie0-f174.google.com ([209.85.223.174]:58977 "EHLO
-        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859950AbaFTUHorI8DD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jun 2014 22:07:44 +0200
-Received: by mail-ie0-f174.google.com with SMTP id lx4so3563405iec.5
-        for <linux-mips@linux-mips.org>; Fri, 20 Jun 2014 13:07:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jun 2014 23:24:17 +0200 (CEST)
+Received: from mail-wg0-f48.google.com ([74.125.82.48]:64246 "EHLO
+        mail-wg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859946AbaFUVYKzHi1p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Jun 2014 23:24:10 +0200
+Received: by mail-wg0-f48.google.com with SMTP id n12so4970745wgh.31
+        for <linux-mips@linux-mips.org>; Sat, 21 Jun 2014 14:24:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=RM//3/y0LZCtaUvk0KNEd4zwAavkPH+swvPBlbW0EKU=;
-        b=X6R77r1DvnprWpNBw6H+oGYWMgW8oWGsZf21drV+Iw8O41VVHoypzySbpS7GuFqeoL
-         F2u1o034rJmiB9JZcBuXmJyPipcqZ5RWAEWTTUP+PNriFiIxt7HER10W4qqbzC02PqMu
-         yqnY3IayA79lLMRgAyseYm9AtGa0MeMzjWvK0leGyQQ06F6Z5yZAH66xboSBlF8lrUqf
-         0IIYkoB6pimp/tc2X2IjbCNZETvdxVNITXTVOmHgEPnianyh2hicl8wDKz8mZnt+uUdf
-         5lwjIF/HzTkg9Sbvpq3EQAGmHl0l+aCAXe01C1A3lbufzCC5JUIKEjPiOKnsmNr7gEcW
-         kdwg==
-X-Received: by 10.50.141.164 with SMTP id rp4mr7406714igb.20.1403294858483;
-        Fri, 20 Jun 2014 13:07:38 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id z8sm7001550igl.20.2014.06.20.13.07.37
+        d=google.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=u6DO3Gg2J3PlBVFIiUZumgAkdu/tImfFPIGaInC3o7g=;
+        b=naym+zgh8b1TPEmN+Kgzi1JJNl0pz0rdtBjb0jQaXkwiFeYs91Q894oA8ADQQFaW70
+         gwLPuVIks93p4quZLsH8yOP4LwnbgJ55afapR9UCQUJE3RmHVnskP1gBZRg4EM931GYI
+         V3Wlqa5Xb2RSqBk2cBbA9wny7vD4mT4VopQEqeVeggp8BuBAFmzB0seoyMhKJELxM4Ht
+         9qyFHkgz0j4e5tMwOl/IFPO+jzFYhHUMt0J6BwgsxxoBvtxhUTnxf2EY9KJVak34kX1h
+         5+pU8wpYsqQ9/gHmoTagjZFPecEv9fcxLo558bhDQYMTwYD34cR8VU/aR/tDBg1DGA4n
+         nDcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-type:content-disposition:user-agent;
+        bh=u6DO3Gg2J3PlBVFIiUZumgAkdu/tImfFPIGaInC3o7g=;
+        b=JkChKd7KceS9oDH3i3GQ6zSVMHua6G80UnjXxH7f/0NKWjq3JTZ1klSy4TnPMZjaEE
+         fG6n1fz9qrMkWMcFUCSWG81MtWxeGpbQFA21uBzeLTBe1+JJoW+k9Lt3lyzwzWM3nMIj
+         1IjBy454kFGz3kkfuBvOm+wHOondVXIoLgGSVLQJkM780KKKiJyXyzb+EE1eB/87lUnk
+         TIxw/iKCSwqUJbd0+jbmOWuSkXklZjbi3ISyS8NtO8nQTKHwp+nO7bw554aDC/bbJick
+         /qBnKH2IbKynZZWA/LsqpxAbobXgrxL5z3WP1WfSaTuBKOXbqtBRb/ZmNmt7NVr/10EW
+         nxSg==
+X-Gm-Message-State: ALoCoQkM4EGVbvzObhSIJfMTT7JwIMLUfyq+WLDMhpgvNRIcUbaf0EpKNEAiSmrkNm6owmNQXtnO
+X-Received: by 10.180.73.106 with SMTP id k10mr13956360wiv.11.1403385845452;
+        Sat, 21 Jun 2014 14:24:05 -0700 (PDT)
+Received: from google.com ([2620:0:1040:202:2e44:fdff:fe1c:7ea6])
+        by mx.google.com with ESMTPSA id r5sm24736363wjq.26.2014.06.21.14.24.04
         for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 20 Jun 2014 13:07:37 -0700 (PDT)
-Message-ID: <53A49488.6050902@gmail.com>
-Date:   Fri, 20 Jun 2014 13:07:36 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Sat, 21 Jun 2014 14:24:04 -0700 (PDT)
+Date:   Sat, 21 Jun 2014 22:24:02 +0100
+From:   Daniel Walter <dwalter@google.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] [arch/mips] rb532: replace mac_addr parsing
+Message-ID: <20140621212402.GA20842@google.com>
 MIME-Version: 1.0
-To:     Christoph Lameter <cl@linux.com>,
-        linux-mips <linux-mips@linux-mips.org>
-CC:     Tejun Heo <tj@kernel.org>, akpm@linuxfoundation.org,
-        rostedt@goodmis.org, linux-kernel@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 19/31] MIPS: Replace __get_cpu_var uses in FPU emulator.
-References: <20140620193115.547427118@linux.com> <20140620193127.123705312@linux.com>
-In-Reply-To: <20140620193127.123705312@linux.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dwalter@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40650
+X-archive-position: 40651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: dwalter@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,62 +66,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-+ linux-mips@linux-mips.org, as that is the main MIPS patch reviewing list.
+Replace parse_mac_addr with sscanf.
 
-On 06/20/2014 12:31 PM, Christoph Lameter wrote:
-> From: David Daney<david.daney@cavium.com>
->
-> The use of __this_cpu_inc() requires a fundamental integer type, so
-> change the type of all the counters to unsigned long, which is the
-> same width they were before, but not wrapped in local_t.
->
-> Signed-off-by: David Daney<david.daney@cavium.com>
-> Signed-off-by: Christoph Lameter<cl@linux.com>
-> ---
->   arch/mips/include/asm/fpu_emulator.h | 14 +++++++-------
->   arch/mips/math-emu/cp1emu.c          |  6 +++---
->   2 files changed, 10 insertions(+), 10 deletions(-)
->
-> Index: linux/arch/mips/include/asm/fpu_emulator.h
-> ===================================================================
-> --- linux.orig/arch/mips/include/asm/fpu_emulator.h	2014-06-16 09:15:42.199326017 -0500
-> +++ linux/arch/mips/include/asm/fpu_emulator.h	2014-06-16 09:17:42.776959733 -0500
-> @@ -33,17 +33,17 @@
->   #ifdef CONFIG_DEBUG_FS
->
->   struct mips_fpu_emulator_stats {
-> -	local_t emulated;
-> -	local_t loads;
-> -	local_t stores;
-> -	local_t cp1ops;
-> -	local_t cp1xops;
-> -	local_t errors;
-> -	local_t ieee754_inexact;
-> -	local_t ieee754_underflow;
-> -	local_t ieee754_overflow;
-> -	local_t ieee754_zerodiv;
-> -	local_t ieee754_invalidop;
-> +	unsigned long emulated;
-> +	unsigned long loads;
-> +	unsigned long stores;
-> +	unsigned long cp1ops;
-> +	unsigned long cp1xops;
-> +	unsigned long errors;
-> +	unsigned long ieee754_inexact;
-> +	unsigned long ieee754_underflow;
-> +	unsigned long ieee754_overflow;
-> +	unsigned long ieee754_zerodiv;
-> +	unsigned long ieee754_invalidop;
->   };
->
->   DECLARE_PER_CPU(struct mips_fpu_emulator_stats, fpuemustats);
-> @@ -51,7 +51,7 @@
->   #define MIPS_FPU_EMU_INC_STATS(M)					\
->   do {									\
->   	preempt_disable();						\
-> -	__local_inc(&__get_cpu_var(fpuemustats).M);			\
-> +	__this_cpu_inc(fpuemustats.M);					\
->   	preempt_enable();						\
->   } while (0)
->
->
+Signed-off-by: Daniel Walter <dwalter@google.com>
+---
+Patch applies against current linux-tree
+---
+ arch/mips/rb532/devices.c | 30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
+---
+diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+index 3af00b2..6e32819b 100644
+--- a/arch/mips/rb532/devices.c
++++ b/arch/mips/rb532/devices.c
+@@ -250,28 +250,6 @@ static struct platform_device *rb532_devs[] = {
+ 	&rb532_wdt
+ };
+ 
+-static void __init parse_mac_addr(char *macstr)
+-{
+-	int i, h, l;
+-
+-	for (i = 0; i < 6; i++) {
+-		if (i != 5 && *(macstr + 2) != ':')
+-			return;
+-
+-		h = hex_to_bin(*macstr++);
+-		if (h == -1)
+-			return;
+-
+-		l = hex_to_bin(*macstr++);
+-		if (l == -1)
+-			return;
+-
+-		macstr++;
+-		korina_dev0_data.mac[i] = (h << 4) + l;
+-	}
+-}
+-
+-
+ /* NAND definitions */
+ #define NAND_CHIP_DELAY 25
+ 
+@@ -333,7 +311,13 @@ static int __init plat_setup_devices(void)
+ static int __init setup_kmac(char *s)
+ {
+ 	printk(KERN_INFO "korina mac = %s\n", s);
+-	parse_mac_addr(s);
++	sscanf(macstr, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
++			&korina_dev0_data.mac[0],
++			&korina_dev0_data.mac[1],
++			&korina_dev0_data.mac[2],
++			&korina_dev0_data.mac[3],
++			&korina_dev0_data.mac[4],
++			&korina_dev0_data.mac[5]);
+ 	return 0;
+ }
+ 

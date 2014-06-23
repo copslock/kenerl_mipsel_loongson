@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 00:01:01 +0200 (CEST)
-Received: from smtp.outflux.net ([198.145.64.163]:35502 "EHLO smtp.outflux.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 00:01:21 +0200 (CEST)
+Received: from smtp.outflux.net ([198.145.64.163]:39989 "EHLO smtp.outflux.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860011AbaFWV61b0DHF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Jun 2014 23:58:27 +0200
+        id S6860017AbaFWV6brDVL5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 23 Jun 2014 23:58:31 +0200
 Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s5NLwHvW002907;
-        Mon, 23 Jun 2014 14:58:18 -0700
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s5NLwMuc002929;
+        Mon, 23 Jun 2014 14:58:22 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>,
@@ -21,9 +21,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-api@vger.kernel.org, x86@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH v7 4/9] seccomp: move no_new_privs into seccomp
-Date:   Mon, 23 Jun 2014 14:58:08 -0700
-Message-Id: <1403560693-21809-5-git-send-email-keescook@chromium.org>
+Subject: [PATCH v7 9/9] MIPS: add seccomp syscall
+Date:   Mon, 23 Jun 2014 14:58:13 -0700
+Message-Id: <1403560693-21809-10-git-send-email-keescook@chromium.org>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1403560693-21809-1-git-send-email-keescook@chromium.org>
 References: <1403560693-21809-1-git-send-email-keescook@chromium.org>
@@ -34,7 +34,7 @@ Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40689
+X-archive-position: 40690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,167 +51,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since seccomp transitions between threads requires updates to the
-no_new_privs flag to be atomic, changes must be atomic. This moves the nnp
-flag into the seccomp field as a separate unsigned long for atomic access.
+Wires up the new seccomp syscall.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
-Acked-by: Andy Lutomirski <luto@amacapital.net>
 ---
- fs/exec.c                  |    4 ++--
- include/linux/sched.h      |   13 ++++++++++---
- include/linux/seccomp.h    |    8 +++++++-
- kernel/seccomp.c           |    2 +-
- kernel/sys.c               |    4 ++--
- security/apparmor/domain.c |    4 ++--
- 6 files changed, 24 insertions(+), 11 deletions(-)
+ arch/mips/include/uapi/asm/unistd.h |   15 +++++++++------
+ arch/mips/kernel/scall32-o32.S      |    1 +
+ arch/mips/kernel/scall64-64.S       |    1 +
+ arch/mips/kernel/scall64-n32.S      |    1 +
+ arch/mips/kernel/scall64-o32.S      |    1 +
+ 5 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index a3d33fe592d6..0f5c272410f6 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1234,7 +1234,7 @@ static void check_unsafe_exec(struct linux_binprm *bprm)
- 	 * This isn't strictly necessary, but it makes it harder for LSMs to
- 	 * mess up.
- 	 */
--	if (current->no_new_privs)
-+	if (task_no_new_privs(current))
- 		bprm->unsafe |= LSM_UNSAFE_NO_NEW_PRIVS;
+diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+index 5805414777e0..9bc13eaf9d67 100644
+--- a/arch/mips/include/uapi/asm/unistd.h
++++ b/arch/mips/include/uapi/asm/unistd.h
+@@ -372,16 +372,17 @@
+ #define __NR_sched_setattr		(__NR_Linux + 349)
+ #define __NR_sched_getattr		(__NR_Linux + 350)
+ #define __NR_renameat2			(__NR_Linux + 351)
++#define __NR_seccomp			(__NR_Linux + 352)
  
- 	t = p;
-@@ -1272,7 +1272,7 @@ int prepare_binprm(struct linux_binprm *bprm)
- 	bprm->cred->egid = current_egid();
+ /*
+  * Offset of the last Linux o32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		351
++#define __NR_Linux_syscalls		352
  
- 	if (!(bprm->file->f_path.mnt->mnt_flags & MNT_NOSUID) &&
--	    !current->no_new_privs &&
-+	    !task_no_new_privs(current) &&
- 	    kuid_has_mapping(bprm->cred->user_ns, inode->i_uid) &&
- 	    kgid_has_mapping(bprm->cred->user_ns, inode->i_gid)) {
- 		/* Set-uid? */
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 306f4f0c987a..f22c4735cead 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1307,9 +1307,6 @@ struct task_struct {
- 				 * execve */
- 	unsigned in_iowait:1;
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
  
--	/* task may not gain privileges */
--	unsigned no_new_privs:1;
--
- 	/* Revert to default priority/policy when forking */
- 	unsigned sched_reset_on_fork:1;
- 	unsigned sched_contributes_to_load:1;
-@@ -2529,6 +2526,16 @@ static inline void task_unlock(struct task_struct *p)
- 	spin_unlock(&p->alloc_lock);
- }
+ #define __NR_O32_Linux			4000
+-#define __NR_O32_Linux_syscalls		351
++#define __NR_O32_Linux_syscalls		352
  
-+static inline bool task_no_new_privs(struct task_struct *p)
-+{
-+	return test_bit(SECCOMP_FLAG_NO_NEW_PRIVS, &p->seccomp.flags);
-+}
-+
-+static inline void task_set_no_new_privs(struct task_struct *p)
-+{
-+	set_bit(SECCOMP_FLAG_NO_NEW_PRIVS, &p->seccomp.flags);
-+}
-+
- extern struct sighand_struct *__lock_task_sighand(struct task_struct *tsk,
- 							unsigned long *flags);
+ #if _MIPS_SIM == _MIPS_SIM_ABI64
  
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 9ff98b4bfe2e..6a5e2d0ec912 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -3,6 +3,8 @@
+@@ -701,16 +702,17 @@
+ #define __NR_sched_setattr		(__NR_Linux + 309)
+ #define __NR_sched_getattr		(__NR_Linux + 310)
+ #define __NR_renameat2			(__NR_Linux + 311)
++#define __NR_seccomp			(__NR_Linux + 312)
  
- #include <uapi/linux/seccomp.h>
+ /*
+  * Offset of the last Linux 64-bit flavoured syscall
+  */
+-#define __NR_Linux_syscalls		311
++#define __NR_Linux_syscalls		312
  
-+#define SECCOMP_FLAG_NO_NEW_PRIVS	0	/* task may not gain privs */
-+
- #ifdef CONFIG_SECCOMP
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
  
- #include <linux/thread_info.h>
-@@ -16,6 +18,7 @@ struct seccomp_filter;
-  *         system calls available to a process.
-  * @filter: must always point to a valid seccomp-filter or NULL as it is
-  *          accessed without locking during system call entry.
-+ * @flags: flags under task->sighand->siglock lock
-  *
-  *          @filter must only be accessed from the context of current as there
-  *          is no read locking.
-@@ -23,6 +26,7 @@ struct seccomp_filter;
- struct seccomp {
- 	int mode;
- 	struct seccomp_filter *filter;
-+	unsigned long flags;
- };
+ #define __NR_64_Linux			5000
+-#define __NR_64_Linux_syscalls		311
++#define __NR_64_Linux_syscalls		312
  
- extern int __secure_computing(int);
-@@ -51,7 +55,9 @@ static inline int seccomp_mode(struct seccomp *s)
+ #if _MIPS_SIM == _MIPS_SIM_NABI32
  
- #include <linux/errno.h>
+@@ -1034,15 +1036,16 @@
+ #define __NR_sched_setattr		(__NR_Linux + 313)
+ #define __NR_sched_getattr		(__NR_Linux + 314)
+ #define __NR_renameat2			(__NR_Linux + 315)
++#define __NR_seccomp			(__NR_Linux + 316)
  
--struct seccomp { };
-+struct seccomp {
-+	unsigned long flags;
-+};
- struct seccomp_filter { };
+ /*
+  * Offset of the last N32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		315
++#define __NR_Linux_syscalls		316
  
- static inline int secure_computing(int this_syscall) { return 0; }
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 065ff5137e39..8ab0b7116ed8 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -217,7 +217,7 @@ static struct seccomp_filter *seccomp_prepare_filter(struct sock_fprog *fprog)
- 	 * This avoids scenarios where unprivileged tasks can affect the
- 	 * behavior of privileged children.
- 	 */
--	if (!current->no_new_privs &&
-+	if (!task_no_new_privs(current) &&
- 	    security_capable_noaudit(current_cred(), current_user_ns(),
- 				     CAP_SYS_ADMIN) != 0)
- 		return ERR_PTR(-EACCES);
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 66a751ebf9d9..ce8129192a26 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -1990,12 +1990,12 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 		if (arg2 != 1 || arg3 || arg4 || arg5)
- 			return -EINVAL;
+ #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
  
--		current->no_new_privs = 1;
-+		task_set_no_new_privs(current);
- 		break;
- 	case PR_GET_NO_NEW_PRIVS:
- 		if (arg2 || arg3 || arg4 || arg5)
- 			return -EINVAL;
--		return current->no_new_privs ? 1 : 0;
-+		return task_no_new_privs(current) ? 1 : 0;
- 	case PR_GET_THP_DISABLE:
- 		if (arg2 || arg3 || arg4 || arg5)
- 			return -EINVAL;
-diff --git a/security/apparmor/domain.c b/security/apparmor/domain.c
-index 452567d3a08e..d97cba3e3849 100644
---- a/security/apparmor/domain.c
-+++ b/security/apparmor/domain.c
-@@ -621,7 +621,7 @@ int aa_change_hat(const char *hats[], int count, u64 token, bool permtest)
- 	 * There is no exception for unconfined as change_hat is not
- 	 * available.
- 	 */
--	if (current->no_new_privs)
-+	if (task_no_new_privs(current))
- 		return -EPERM;
+ #define __NR_N32_Linux			6000
+-#define __NR_N32_Linux_syscalls		315
++#define __NR_N32_Linux_syscalls		316
  
- 	/* released below */
-@@ -776,7 +776,7 @@ int aa_change_profile(const char *ns_name, const char *hname, bool onexec,
- 	 * no_new_privs is set because this aways results in a reduction
- 	 * of permissions.
- 	 */
--	if (current->no_new_privs && !unconfined(profile)) {
-+	if (task_no_new_privs(current) && !unconfined(profile)) {
- 		put_cred(cred);
- 		return -EPERM;
- 	}
+ #endif /* _UAPI_ASM_UNISTD_H */
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index 3245474f19d5..ab02d14f1b5c 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -578,3 +578,4 @@ EXPORT(sys_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr		/* 4350 */
+ 	PTR	sys_renameat2
++	PTR	sys_seccomp
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index be2fedd4ae33..010dccf128ec 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -431,4 +431,5 @@ EXPORT(sys_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr		/* 5310 */
+ 	PTR	sys_renameat2
++	PTR	sys_seccomp
+ 	.size	sys_call_table,.-sys_call_table
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index c1dbcda4b816..c3b3b6525df5 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -424,4 +424,5 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr
+ 	PTR	sys_renameat2			/* 6315 */
++	PTR	sys_seccomp
+ 	.size	sysn32_call_table,.-sysn32_call_table
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index f1343ccd7ed7..bb1550b1f501 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -557,4 +557,5 @@ EXPORT(sys32_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr		/* 4350 */
+ 	PTR	sys_renameat2
++	PTR	sys_seccomp
+ 	.size	sys32_call_table,.-sys32_call_table
 -- 
 1.7.9.5

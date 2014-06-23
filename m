@@ -1,61 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 13:18:59 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:58173 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860071AbaGJLSf6tC7K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Jul 2014 13:18:35 +0200
-Received: from [188.251.62.23] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1X5CMy-00023P-4y; Thu, 10 Jul 2014 11:18:32 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.11.y.z extended stable] Patch "MIPS: MSC: Prevent out-of-bounds writes to MIPS SC ioremap'd region" has been added to staging queue
-Date:   Thu, 10 Jul 2014 12:18:30 +0100
-Message-Id: <1404991110-13744-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.11
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41113
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Mon, 23 Jun 2014 09:48:51 +0100
+Subject: MIPS: MSC: Prevent out-of-bounds writes to MIPS SC ioremap'd region
+Message-ID: <20140623084851.ryrgRJ0oNFws7PvRY5HBdg1HU-IPCUvINtILJULKe1s@z>
 
-This is a note to let you know that I have just added a patch titled
+commit ab6c15bc6620ebe220970cc040b29bcb2757f373 upstream.
 
-    MIPS: MSC: Prevent out-of-bounds writes to MIPS SC ioremap'd region
+Previously, the lower limit for the MIPS SC initialization loop was
+set incorrectly allowing one extra loop leading to writes
+beyond the MSC ioremap'd space. More precisely, the value of the 'imp'
+in the last loop increased beyond the msc_irqmap_t boundaries and
+as a result of which, the 'n' variable was loaded with an incorrect
+value. This value was used later on to calculate the offset in the
+MSC01_IC_SUP which led to random crashes like the following one:
 
-to the linux-3.11.y-queue branch of the 3.11.y.z extended stable tree 
-which can be found at:
+CPU 0 Unable to handle kernel paging request at virtual address e75c0200,
+epc == 8058dba4, ra == 8058db90
+[...]
+Call Trace:
+[<8058dba4>] init_msc_irqs+0x104/0x154
+[<8058b5bc>] arch_init_irq+0xd8/0x154
+[<805897b0>] start_kernel+0x220/0x36c
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.11.y-queue
+Kernel panic - not syncing: Attempted to kill the idle task!
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+This patch fixes the problem
 
-For more information about the 3.11.y.z tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/7118/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/kernel/irq-msc01.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks.
--Luis
+diff --git a/arch/mips/kernel/irq-msc01.c b/arch/mips/kernel/irq-msc01.c
+index fab40f7d2e03..ac9facc08694 100644
+--- a/arch/mips/kernel/irq-msc01.c
++++ b/arch/mips/kernel/irq-msc01.c
+@@ -131,7 +131,7 @@ void __init init_msc_irqs(unsigned long icubase, unsigned int irqbase, msc_irqma
 
-------
+ 	board_bind_eic_interrupt = &msc_bind_eic_interrupt;
+
+-	for (; nirq >= 0; nirq--, imp++) {
++	for (; nirq > 0; nirq--, imp++) {
+ 		int n = imp->im_irq;
+
+ 		switch (imp->im_type) {
+--
+1.9.1

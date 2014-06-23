@@ -1,36 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jun 2014 15:08:25 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:51582 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816900AbaFWNFhBCvt7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jun 2014 15:05:37 +0200
-Received: from [188.251.61.174] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1Wz3w5-0007qF-RW; Mon, 23 Jun 2014 13:05:26 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.11 87/93] MIPS: asm: thread_info: Add _TIF_SECCOMP flag
-Date:   Mon, 23 Jun 2014 14:03:06 +0100
-Message-Id: <1403528592-2163-88-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1403528592-2163-1-git-send-email-luis.henriques@canonical.com>
-References: <1403528592-2163-1-git-send-email-luis.henriques@canonical.com>
-X-Extended-Stable: 3.11
-Return-Path: <luis.henriques@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jun 2014 21:49:27 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:42673 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817546AbaFWTtZqoCuT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jun 2014 21:49:25 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id AB0E7582086;
+        Mon, 23 Jun 2014 12:49:22 -0700 (PDT)
+Date:   Mon, 23 Jun 2014 12:49:19 -0700 (PDT)
+Message-Id: <20140623.124919.2215480222213445820.davem@davemloft.net>
+To:     markos.chandras@imgtec.com
+Cc:     linux-mips@linux-mips.org, dborkman@redhat.com, ast@plumgrid.com,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 00/17] Misc MIPS/BPF fixes for 3.16
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1403516340-22997-1-git-send-email-markos.chandras@imgtec.com>
+References: <1403516340-22997-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.7 (shards.monkeyblade.net [149.20.54.216]); Mon, 23 Jun 2014 12:49:22 -0700 (PDT)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40678
+X-archive-position: 40679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,42 +42,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.11.10.12 -stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
 From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Mon, 23 Jun 2014 10:38:43 +0100
 
-commit 137f7df8cead00688524c82360930845396b8a21 upstream.
+> Here are some fixes for MIPS/BPF for 3.16. These fixes make
+> the bpf testsuite *almost* happy with only 2 tests (LD_IND_LL,
+> LD_IND_NET) failing at the moment. Since fixing the remaining tests
+> is not so trivial, it would be nice to have these fixes in 3.16 for now.
+> 
+> The patches are based on the upstream-sfr/mips-for-linux-next tree
+> because they depend on https://patchwork.linux-mips.org/patch/7099/
 
-Add _TIF_SECCOMP flag to _TIF_WORK_SYSCALL_ENTRY to indicate
-that the system call needs to be checked against a seccomp filter.
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/6405/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-[ luis: backported to 3.11: adjusted context ]
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/include/asm/thread_info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index 61215a34acc6..897cd58407c8 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -134,7 +134,7 @@ static inline struct thread_info *current_thread_info(void)
- #define _TIF_LOAD_WATCH		(1<<TIF_LOAD_WATCH)
- 
- #define _TIF_WORK_SYSCALL_ENTRY	(_TIF_NOHZ | _TIF_SYSCALL_TRACE |	\
--				 _TIF_SYSCALL_AUDIT)
-+				 _TIF_SYSCALL_AUDIT | _TIF_SECCOMP)
- 
- /* work to do in syscall_trace_leave() */
- #define _TIF_WORK_SYSCALL_EXIT	(_TIF_NOHZ | _TIF_SYSCALL_TRACE |	\
--- 
-1.9.1
+You did not CC: netdev on patches 1, 2, and 3.  Please do not do this,
+people on this list will want to review the series as a whole.

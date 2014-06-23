@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 00:01:40 +0200 (CEST)
-Received: from smtp.outflux.net ([198.145.64.163]:45441 "EHLO smtp.outflux.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860018AbaFWV6b4OvMz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Jun 2014 23:58:31 +0200
-Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s5NLwMcQ002928;
-        Mon, 23 Jun 2014 14:58:22 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Kees Cook <keescook@chromium.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 00:09:08 +0200 (CEST)
+Received: from mail-wg0-f50.google.com ([74.125.82.50]:42099 "EHLO
+        mail-wg0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816071AbaFWWJGleHXi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 00:09:06 +0200
+Received: by mail-wg0-f50.google.com with SMTP id m15so280889wgh.9
+        for <linux-mips@linux-mips.org>; Mon, 23 Jun 2014 15:09:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=/CckaFl3GwHDgFPT8PO4Z/0zEwEGlFLPVH+DPf/xmS4=;
+        b=LH6gyTSfW45mmRDvQJFnbp/pR0G1tC06C6E3vkclIz/3iHnVTgfGywyQmZlxLyeRDp
+         Vu6RLdrnPh3WFEgmkRBNCDT4BcG9QJJg8a3+p1hZMqgQdLbZy93iYfahDmaA6lZNqb2N
+         z73GYLB5XajTUuBGdujpuDxyPgBDLkCE9Ybi4IVxObKhUNNcTBWmWsSxt3IxB+K90CYj
+         3RxNCL3CtncvQlZyM5Vcr5R4RbYT8mZHUb3mpgD1vQbOawXSOE1PljpK3EHbCMzLeQpy
+         qhb2or9iSncATppP/HwWGcRdYfLRgyVgffeyh4/r9SoODjDNHsmKr1w60XJ2LK0hKEwU
+         pXsw==
+X-Gm-Message-State: ALoCoQmoOM8S42q2v1vIG0Dat2EmBJVK6zjBpbfrCNWzcIdb0SOpTweTL0qDD1HkxESGF//RI/np
+MIME-Version: 1.0
+X-Received: by 10.194.240.196 with SMTP id wc4mr31749185wjc.63.1403561341323;
+ Mon, 23 Jun 2014 15:09:01 -0700 (PDT)
+Received: by 10.194.121.228 with HTTP; Mon, 23 Jun 2014 15:09:01 -0700 (PDT)
+In-Reply-To: <1403516340-22997-6-git-send-email-markos.chandras@imgtec.com>
+References: <1403516340-22997-1-git-send-email-markos.chandras@imgtec.com>
+        <1403516340-22997-6-git-send-email-markos.chandras@imgtec.com>
+Date:   Mon, 23 Jun 2014 15:09:01 -0700
+Message-ID: <CAMEtUuyL8EV3UxS7yaD_ufiAywr7hkgPSC-3etMEYfbAZ_rRew@mail.gmail.com>
+Subject: Re: [PATCH 05/17] MIPS: bpf: Return error code if the offset is a
+ negative number
+From:   Alexei Starovoitov <ast@plumgrid.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Daniel Borkmann <dborkman@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        linux-api@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH v7 7/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
-Date:   Mon, 23 Jun 2014 14:58:11 -0700
-Message-Id: <1403560693-21809-8-git-send-email-keescook@chromium.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1403560693-21809-1-git-send-email-keescook@chromium.org>
-References: <1403560693-21809-1-git-send-email-keescook@chromium.org>
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.73
-Return-Path: <keescook@www.outflux.net>
+        Network Development <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <ast@plumgrid.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40691
+X-archive-position: 40692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: ast@plumgrid.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,278 +56,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Applying restrictive seccomp filter programs to large or diverse
-codebases often requires handling threads which may be started early in
-the process lifetime (e.g., by code that is linked in). While it is
-possible to apply permissive programs prior to process start up, it is
-difficult to further restrict the kernel ABI to those threads after that
-point.
+On Mon, Jun 23, 2014 at 2:38 AM, Markos Chandras
+<markos.chandras@imgtec.com> wrote:
+> Previously, the negative offset was not checked leading to failures
+> due to trying to load data beyond the skb struct boundaries. Until we
+> have proper asm helpers in place, it's best if we return ENOSUPP if K
+> is negative when trying to JIT the filter or 0 during runtime if we
+> do an indirect load where the value of X is unknown during build time.
+>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Daniel Borkmann <dborkman@redhat.com>
+> Cc: Alexei Starovoitov <ast@plumgrid.com>
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 
-This change adds a new seccomp syscall flag to SECCOMP_SET_MODE_FILTER for
-synchronizing thread group seccomp filters at filter installation time.
+Hi Markos,
 
-When calling seccomp(SECCOMP_SET_MODE_FILTER, SECCOMP_FILTER_FLAG_TSYNC,
-filter) an attempt will be made to synchronize all threads in current's
-threadgroup to its new seccomp filter program. This is possible iff all
-threads are using a filter that is an ancestor to the filter current is
-attempting to synchronize to. NULL filters (where the task is running as
-SECCOMP_MODE_NONE) are also treated as ancestors allowing threads to be
-transitioned into SECCOMP_MODE_FILTER. If prctrl(PR_SET_NO_NEW_PRIVS,
-...) has been set on the calling thread, no_new_privs will be set for
-all synchronized threads too. On success, 0 is returned. On failure,
-the pid of one of the failing threads will be returned and no filters
-will have been applied.
+thank you for addressing all of my earlier comments.
+Looks like test_bpf was quite useful in finding all of these bugs :)
+For the patches that reached netdev:
 
-The race conditions are against another thread requesting TSYNC, another
-thread performing a clone, and another thread changing its filter. The
-sighand lock is sufficient for these cases, though the clone case is
-assisted by the tasklist_lock so that new threads must have a duplicate
-of its parent seccomp state when it appears on the tasklist.
+Acked-by: Alexei Starovoitov <ast@plumgrid.com>
 
-Based on patches by Will Drewry.
+One minor nit below:
 
-Suggested-by: Julien Tinnes <jln@chromium.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/Kconfig                 |    1 +
- include/linux/seccomp.h      |    2 +
- include/uapi/linux/seccomp.h |    3 +
- kernel/seccomp.c             |  135 +++++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 139 insertions(+), 2 deletions(-)
+> ---
+>  arch/mips/net/bpf_jit.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+>
+> diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+> index 5cc92c4590cb..95728ea6cb74 100644
+> --- a/arch/mips/net/bpf_jit.c
+> +++ b/arch/mips/net/bpf_jit.c
+> @@ -331,6 +331,12 @@ static inline void emit_srl(unsigned int dst, unsigned int src,
+>         emit_instr(ctx, srl, dst, src, sa);
+>  }
+>
+> +static inline void emit_slt(unsigned int dst, unsigned int src1,
+> +                           unsigned int src2, struct jit_ctx *ctx)
+> +{
+> +       emit_instr(ctx, slt, dst, src1, src2);
+> +}
+> +
+>  static inline void emit_sltu(unsigned int dst, unsigned int src1,
+>                              unsigned int src2, struct jit_ctx *ctx)
+>  {
+> @@ -816,8 +822,21 @@ static int build_body(struct jit_ctx *ctx)
+>                         /* A <- P[k:1] */
+>                         load_order = 0;
+>  load:
+> +                       /* the interpreter will deal with the negative K */
+> +                       if ((int)k < 0)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 97ff872c7acc..0eae9df35b88 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -321,6 +321,7 @@ config HAVE_ARCH_SECCOMP_FILTER
- 	  - secure_computing is called from a ptrace_event()-safe context
- 	  - secure_computing return value is checked and a return value of -1
- 	    results in the system call being skipped immediately.
-+	  - seccomp syscall wired up
- 
- config SECCOMP_FILTER
- 	def_bool y
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 6a5e2d0ec912..e1ae50f7cb0b 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -5,6 +5,8 @@
- 
- #define SECCOMP_FLAG_NO_NEW_PRIVS	0	/* task may not gain privs */
- 
-+#define SECCOMP_FILTER_FLAG_MASK	~(SECCOMP_FILTER_FLAG_TSYNC)
-+
- #ifdef CONFIG_SECCOMP
- 
- #include <linux/thread_info.h>
-diff --git a/include/uapi/linux/seccomp.h b/include/uapi/linux/seccomp.h
-index b258878ba754..0f238a43ff1e 100644
---- a/include/uapi/linux/seccomp.h
-+++ b/include/uapi/linux/seccomp.h
-@@ -14,6 +14,9 @@
- #define SECCOMP_SET_MODE_STRICT	0
- #define SECCOMP_SET_MODE_FILTER	1
- 
-+/* Valid flags for SECCOMP_SET_MODE_FILTER */
-+#define SECCOMP_FILTER_FLAG_TSYNC	1
-+
- /*
-  * All BPF programs must return a 32-bit value.
-  * The bottom 16-bits are for optional return data.
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index a0db770ff26c..ed3a4453c054 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -26,6 +26,7 @@
- #ifdef CONFIG_SECCOMP_FILTER
- #include <asm/syscall.h>
- #include <linux/filter.h>
-+#include <linux/pid.h>
- #include <linux/ptrace.h>
- #include <linux/security.h>
- #include <linux/tracehook.h>
-@@ -217,6 +218,107 @@ static inline void seccomp_assign_mode(struct task_struct *task,
- }
- 
- #ifdef CONFIG_SECCOMP_FILTER
-+/* Returns 1 if the candidate is an ancestor. */
-+static int is_ancestor(struct seccomp_filter *candidate,
-+		       struct seccomp_filter *child)
-+{
-+	/* NULL is the root ancestor. */
-+	if (candidate == NULL)
-+		return 1;
-+	for (; child; child = child->prev)
-+		if (child == candidate)
-+			return 1;
-+	return 0;
-+}
-+
-+/**
-+ * seccomp_can_sync_threads: checks if all threads can be synchronized
-+ *
-+ * Expects both tasklist_lock and current->sighand->siglock to be held.
-+ *
-+ * Returns 0 on success, -ve on error, or the pid of a thread which was
-+ * either not in the correct seccomp mode or it did not have an ancestral
-+ * seccomp filter.
-+ */
-+static pid_t seccomp_can_sync_threads(void)
-+{
-+	struct task_struct *thread, *caller;
-+
-+	BUG_ON(write_can_lock(&tasklist_lock));
-+	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-+
-+	if (current->seccomp.mode != SECCOMP_MODE_FILTER)
-+		return -EACCES;
-+
-+	/* Validate all threads being eligible for synchronization. */
-+	thread = caller = current;
-+	for_each_thread(caller, thread) {
-+		pid_t failed;
-+
-+		if (thread->seccomp.mode == SECCOMP_MODE_DISABLED ||
-+		    (thread->seccomp.mode == SECCOMP_MODE_FILTER &&
-+		     is_ancestor(thread->seccomp.filter,
-+				 caller->seccomp.filter)))
-+			continue;
-+
-+		/* Return the first thread that cannot be synchronized. */
-+		failed = task_pid_vnr(thread);
-+		/* If the pid cannot be resolved, then return -ESRCH */
-+		if (failed == 0)
-+			failed = -ESRCH;
-+		return failed;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * seccomp_sync_threads: sets all threads to use current's filter
-+ *
-+ * Expects both tasklist_lock and current->sighand->siglock to be held,
-+ * and for seccomp_can_sync_threads() to have returned success already
-+ * without dropping the locks.
-+ *
-+ */
-+static void seccomp_sync_threads(void)
-+{
-+	struct task_struct *thread, *caller;
-+
-+	BUG_ON(write_can_lock(&tasklist_lock));
-+	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-+
-+	/* Synchronize all threads. */
-+	thread = caller = current;
-+	for_each_thread(caller, thread) {
-+		/* Get a task reference for the new leaf node. */
-+		get_seccomp_filter(caller);
-+		/*
-+		 * Drop the task reference to the shared ancestor since
-+		 * current's path will hold a reference.  (This also
-+		 * allows a put before the assignment.)
-+		 */
-+		put_seccomp_filter(thread);
-+		thread->seccomp.filter = caller->seccomp.filter;
-+		/* Opt the other thread into seccomp if needed.
-+		 * As threads are considered to be trust-realm
-+		 * equivalent (see ptrace_may_access), it is safe to
-+		 * allow one thread to transition the other.
-+		 */
-+		if (thread->seccomp.mode == SECCOMP_MODE_DISABLED) {
-+			/*
-+			 * Don't let an unprivileged task work around
-+			 * the no_new_privs restriction by creating
-+			 * a thread that sets it up, enters seccomp,
-+			 * then dies.
-+			 */
-+			if (task_no_new_privs(caller))
-+				task_set_no_new_privs(thread);
-+
-+			seccomp_assign_mode(thread, SECCOMP_MODE_FILTER);
-+		}
-+	}
-+}
-+
- /**
-  * seccomp_prepare_filter: Prepares a seccomp filter for use.
-  * @fprog: BPF program to install
-@@ -348,7 +450,7 @@ static long seccomp_attach_filter(unsigned int flags,
- 	BUG_ON(!spin_is_locked(&current->sighand->siglock));
- 
- 	/* Validate flags. */
--	if (flags != 0)
-+	if (flags & SECCOMP_FILTER_FLAG_MASK)
- 		return -EINVAL;
- 
- 	/* Validate resulting filter length. */
-@@ -358,6 +460,15 @@ static long seccomp_attach_filter(unsigned int flags,
- 	if (total_insns > MAX_INSNS_PER_PATH)
- 		return -ENOMEM;
- 
-+	/* If thread sync has been requested, check that it is possible. */
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC) {
-+		int ret;
-+
-+		ret = seccomp_can_sync_threads();
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/*
- 	 * If there is an existing filter, make it the prev and don't drop its
- 	 * task reference.
-@@ -365,6 +476,10 @@ static long seccomp_attach_filter(unsigned int flags,
- 	filter->prev = current->seccomp.filter;
- 	smp_store_release(&current->seccomp.filter, filter);
- 
-+	/* Now that the new filter is in place, synchronize to all threads. */
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
-+		seccomp_sync_threads();
-+
- 	return 0;
- }
- 
-@@ -578,7 +693,7 @@ static long seccomp_set_mode_filter(unsigned int flags,
- {
- 	const unsigned long seccomp_mode = SECCOMP_MODE_FILTER;
- 	struct seccomp_filter *prepared = NULL;
--	unsigned long irqflags;
-+	unsigned long irqflags, taskflags;
- 	long ret = -EINVAL;
- 
- 	/* Prepare the new filter outside of any locking. */
-@@ -586,6 +701,17 @@ static long seccomp_set_mode_filter(unsigned int flags,
- 	if (IS_ERR(prepared))
- 		return PTR_ERR(prepared);
- 
-+	/*
-+	 * If we're doing thread sync, we must hold tasklist_lock
-+	 * to make sure seccomp filter changes are stable on threads
-+	 * entering or leaving the task list. And we must take it
-+	 * before the sighand lock to avoid deadlocking.
-+	 */
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
-+		write_lock_irqsave(&tasklist_lock, taskflags);
-+	else
-+		__acquire(&tasklist_lock); /* keep sparse happy */
-+
- 	if (unlikely(!lock_task_sighand(current, &irqflags)))
- 		goto out_free;
- 
-@@ -602,6 +728,11 @@ static long seccomp_set_mode_filter(unsigned int flags,
- out:
- 	unlock_task_sighand(current, &irqflags);
- out_free:
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
-+		write_unlock_irqrestore(&tasklist_lock, taskflags);
-+	else
-+		__release(&tasklist_lock); /* keep sparse happy */
-+
- 	seccomp_filter_free(prepared);
- 	return ret;
- }
--- 
-1.7.9.5
+should be a space after cast.

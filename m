@@ -1,78 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 21:08:27 +0200 (CEST)
-Received: from mail-oa0-f48.google.com ([209.85.219.48]:40356 "EHLO
-        mail-oa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854779AbaFXTIXRZlul (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 21:08:23 +0200
-Received: by mail-oa0-f48.google.com with SMTP id m1so850199oag.21
-        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 12:08:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 21:18:38 +0200 (CEST)
+Received: from mail-oa0-f41.google.com ([209.85.219.41]:64466 "EHLO
+        mail-oa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6854975AbaFXTSepgEpb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 21:18:34 +0200
+Received: by mail-oa0-f41.google.com with SMTP id l6so885437oag.28
+        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 12:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=MEFa9FqyVv/Lbj9F4ort24vZJFJS488HF8BbcREJKdo=;
-        b=S8X8MQQYt/zm3E7UHHGS/a1iLdZR5e4eV1bICEVYCqPfqxf8zJtUB/oFg2IY10SSBx
-         AMRkL5IBjvD4Nna66Fl69xPvYcLomD0J8ybbz2mxLp2sX2xWEJfrfyBveJriDDPgYwVM
-         zFiKan7xVGvnuiepKPUGE1JO+OluN4QttW/UQ3eWdPRT43g/nVVZ+08Oc14pSvE+YZKf
-         fzE61WDdmkKmGsJnhxZAnsm9IBZ4cFMi/wEEi3P8yGngTVsGWnwwB/UP/9sOXMn5q3D3
-         nrCX80lnxY910Fd4zcMlmO7LWJU33G1Epw8nTbcUn2JgopIQXK9DJ8i7D0U6ytw4b3RM
-         ZKHw==
+        bh=5IQ/gyoX/kkCXBX+F9DKgnxHehj/YdAgSWYcA9uKdc8=;
+        b=We7sheRUKNBumjPQqv6dKb4S8TykY4nPh8wfiPmuCbqd9zltTDUwS5d7VLT0TRHts4
+         PoEd0JrQB1/raQXRJIB6bBOPGNGfEQCblzPEh1wE1eD1Seet0J92J7rjDJ9yl1Ht3/Dm
+         kRFJDH1YQDj2hL+DODpGYUROfRYUcHMms4ImF7BtFzG2akcjatmfW8XzTq7xqcrvSleK
+         zj0AQ2Kb27gzQ5HXX4Tv+TdKIgzOHOKPR9vhqsYe+NTxdqpTSynRj+idbvsR39VMI7gK
+         QqKxbVMAaaeiqJ0KP/snCTjdhNHmybPvcgz3TmB8cv/eXB+n7pieYddcy73L33vr8Kq+
+         ml3Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=MEFa9FqyVv/Lbj9F4ort24vZJFJS488HF8BbcREJKdo=;
-        b=KB3W4l7vs4b3gR8Qm43wrZLnAIcWpSvSZXFKei9AiFwewbHzuuVIFbkS4fgp0bucr/
-         ONZ/fi/MYXFg90nGkfcmOph0wcu6OuN9CbaRHXegzLtul6i6GAFK6A/OfH16WIxHErN8
-         AesPGQIhOQnQCf0/KSv13bTK1r8srMb/T0Z0w=
+        bh=5IQ/gyoX/kkCXBX+F9DKgnxHehj/YdAgSWYcA9uKdc8=;
+        b=O25Id20iWfHrNkZ5HyUvaWpyPXPeyiNcY+O9U8REKlWhy3irCaPXiyMNz5mua3pMpj
+         etFeZyS6G0RnC8ID9Xq9P5LbLEuaGj3c50wUDd1mjUj8eE798Kjg/sJanePMeYl+W04s
+         GIA7GvX5lcyD77Psdip7++9NmsDV9uc+C+2VI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=MEFa9FqyVv/Lbj9F4ort24vZJFJS488HF8BbcREJKdo=;
-        b=OMsM6eqaKS7hQjjKnJ7QEofvyhGidWF0BmkjEBixB+gpINIse3y/U20QTTLZIJxvya
-         OAaVM7I/0M/dN6NmSMC1uwtExM6zcN3kN4uCyvW9IRt6tJAxLwrcVL9URQ1yH60e5yq0
-         obyHygiv9bu8qJ4KF1crRB4k8DB/a0NAVfgp3uxw7okq8OQ4bmXg9cnCJJL4jzSmam7J
-         IN3GPysVSrG60a8Tm0WzKeJk0o/n7V0HAPguXZB9nlArsEfuA+5AQ0af+S7U1dhC71Sl
-         Jm5e7G3iR54dMvDR+7m18FGRXsNM84gm+wv7mpc46ufx/GEIDsluFzE80En/NhSZsr9g
-         PSFA==
-X-Gm-Message-State: ALoCoQmYjpaL7y0PvD8PU+uMS5PkXreSY+Ekx9ch05hmlQ1OH0Kl1bA06IxhMdNYiMaBifEtLL2x
+        bh=5IQ/gyoX/kkCXBX+F9DKgnxHehj/YdAgSWYcA9uKdc8=;
+        b=clUNXtA5PsYhbFetDxwN6V+rzHTZnWkZIXiHTHuMr8HauYKsn/YOk0C4L220nysfCm
+         Iu1HGL1GT4gCPw3SwmrcrKgIHzr00AIuhC6T4YcbgHmGp7JvcgUNedUlgiYcCOED0P0V
+         4xHd41Sv0JR4MD0gsj3uVXZa2hGtH3Gvncqvcl3afCyYlrEKjFJjP9jq8xWIP6XUDTzY
+         zzrAOAtNoJLfW6RzBWCYQ7FGXR2qg/bdRCCHRY9MakKSpFTNLBtnaUbDUHRx9R7ASCmL
+         24bHuxTk1SvujymZwE5VxJ0RVlzAJrwPSvnssG43jRlIZTpG7eDCnuHBQ4Bkq32lANCS
+         j8Rw==
+X-Gm-Message-State: ALoCoQmZTKgnVAK81Rj5sw/qOt1WBy9LJRdKGrMPEk3gDbGjrpNwceji1P19BNsXaeSTpqdGMsXg
 MIME-Version: 1.0
-X-Received: by 10.182.81.99 with SMTP id z3mr2861765obx.79.1403636896839; Tue,
- 24 Jun 2014 12:08:16 -0700 (PDT)
-Received: by 10.182.63.80 with HTTP; Tue, 24 Jun 2014 12:08:16 -0700 (PDT)
-In-Reply-To: <20140624183749.GC1258@redhat.com>
+X-Received: by 10.60.52.77 with SMTP id r13mr2902409oeo.55.1403637505971; Tue,
+ 24 Jun 2014 12:18:25 -0700 (PDT)
+Received: by 10.182.63.80 with HTTP; Tue, 24 Jun 2014 12:18:25 -0700 (PDT)
+In-Reply-To: <CALCETrV=nAuWi8_Xj6KnJ6P1Yiaw36+n50-gHKaTgea4yH85Eg@mail.gmail.com>
 References: <1403560693-21809-1-git-send-email-keescook@chromium.org>
-        <1403560693-21809-8-git-send-email-keescook@chromium.org>
-        <20140624172753.GA31435@redhat.com>
-        <CAGXu5jKoDEXffJqFSjhO+D=5toJOA=KAomi+LQOahPDYKFbEdg@mail.gmail.com>
-        <20140624183749.GC1258@redhat.com>
-Date:   Tue, 24 Jun 2014 12:08:16 -0700
-X-Google-Sender-Auth: jtcyTBS-8hLg3tdrJqFc-3Cbong
-Message-ID: <CAGXu5jKwF1cbc=4O5nXDKZT8HF7grCm+AaRz7v1VCdPVMRX-3A@mail.gmail.com>
-Subject: Re: [PATCH v7 7/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
+        <20140623220150.GM5412@outflux.net>
+        <CALCETrV=nAuWi8_Xj6KnJ6P1Yiaw36+n50-gHKaTgea4yH85Eg@mail.gmail.com>
+Date:   Tue, 24 Jun 2014 12:18:25 -0700
+X-Google-Sender-Auth: JX7tRFJh7_m8ndSDjRqFzOyR43o
+Message-ID: <CAGXu5j+E1DVp+BDwTaTdexcOhPC=COE+uHXtj7yGdi2ewkrTTA@mail.gmail.com>
+Subject: Re: [PATCH v7 1/1] man-pages: seccomp.2: document syscall
 From:   Kees Cook <keescook@chromium.org>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Andy Lutomirski <luto@amacapital.net>,
+To:     Andy Lutomirski <luto@amacapital.net>
+Cc:     "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Alexei Starovoitov <ast@plumgrid.com>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Daniel Borkmann <dborkman@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
         Will Drewry <wad@chromium.org>,
         Julien Tinnes <jln@chromium.org>,
         David Drysdale <drysdale@google.com>,
-        Linux API <linux-api@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
+        Linux API <linux-api@vger.kernel.org>, X86 ML <x86@kernel.org>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
         linux-arch <linux-arch@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>
+        LSM List <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40762
+X-archive-position: 40763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -89,55 +86,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 24, 2014 at 11:37 AM, Oleg Nesterov <oleg@redhat.com> wrote:
-> On 06/24, Kees Cook wrote:
+On Tue, Jun 24, 2014 at 11:06 AM, Andy Lutomirski <luto@amacapital.net> wrote:
+> On Mon, Jun 23, 2014 at 3:01 PM, Kees Cook <keescook@chromium.org> wrote:
+>> Combines documentation from prctl, and in-kernel seccomp_filter.txt,
+>> along with new details specific to the new syscall.
 >>
->> On Tue, Jun 24, 2014 at 10:27 AM, Oleg Nesterov <oleg@redhat.com> wrote:
->> > On 06/23, Kees Cook wrote:
->> >>
->> >> +static pid_t seccomp_can_sync_threads(void)
->> >> +{
->> >> +     struct task_struct *thread, *caller;
->> >> +
->> >> +     BUG_ON(write_can_lock(&tasklist_lock));
->> >> +     BUG_ON(!spin_is_locked(&current->sighand->siglock));
->> >> +
->> >> +     if (current->seccomp.mode != SECCOMP_MODE_FILTER)
->> >> +             return -EACCES;
->> >> +
->> >> +     /* Validate all threads being eligible for synchronization. */
->> >> +     thread = caller = current;
->> >> +     for_each_thread(caller, thread) {
->> >> +             pid_t failed;
->> >> +
->> >> +             if (thread->seccomp.mode == SECCOMP_MODE_DISABLED ||
->> >> +                 (thread->seccomp.mode == SECCOMP_MODE_FILTER &&
->> >> +                  is_ancestor(thread->seccomp.filter,
->> >> +                              caller->seccomp.filter)))
->> >> +                     continue;
->> >> +
->> >> +             /* Return the first thread that cannot be synchronized. */
->> >> +             failed = task_pid_vnr(thread);
->> >> +             /* If the pid cannot be resolved, then return -ESRCH */
->> >> +             if (failed == 0)
->> >> +                     failed = -ESRCH;
->> >
->> > forgot to mention, task_pid_vnr() can't fail. sighand->siglock is held,
->> > for_each_thread() can't see a thread which has passed unhash_process().
+>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>> ---
+>>  man2/seccomp.2 |  333 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 333 insertions(+)
+>>  create mode 100644 man2/seccomp.2
 >>
->> Certainly good to know, but I'd be much more comfortable leaving this
->> check as-is. Having "failed" return with "0" would be very very bad
->> (userspace would think the filter had been successfully applied, etc).
->> I'd rather stay highly defensive here.
+>> diff --git a/man2/seccomp.2 b/man2/seccomp.2
+>> new file mode 100644
+>> index 0000000..de7fbf7
+>> --- /dev/null
+>> +++ b/man2/seccomp.2
+>> @@ -0,0 +1,333 @@
+>> +.\" Copyright (C) 2014 Kees Cook <keescook@chromium.org>
+>> +.\" and Copyright (C) 2012 Will Drewry <wad@chromium.org>
+>> +.\" and Copyright (C) 2008 Michael Kerrisk <mtk.manpages@gmail.com>
+>> +.\"
+>> +.\" %%%LICENSE_START(VERBATIM)
+>> +.\" Permission is granted to make and distribute verbatim copies of this
+>> +.\" manual provided the copyright notice and this permission notice are
+>> +.\" preserved on all copies.
+>> +.\"
+>> +.\" Permission is granted to copy and distribute modified versions of this
+>> +.\" manual under the conditions for verbatim copying, provided that the
+>> +.\" entire resulting derived work is distributed under the terms of a
+>> +.\" permission notice identical to this one.
+>> +.\"
+>> +.\" Since the Linux kernel and libraries are constantly changing, this
+>> +.\" manual page may be incorrect or out-of-date.  The author(s) assume no
+>> +.\" responsibility for errors or omissions, or for damages resulting from
+>> +.\" the use of the information contained herein.  The author(s) may not
+>> +.\" have taken the same level of care in the production of this manual,
+>> +.\" which is licensed free of charge, as they might when working
+>> +.\" professionally.
+>> +.\"
+>> +.\" Formatted or processed versions of this manual, if unaccompanied by
+>> +.\" the source, must acknowledge the copyright and authors of this work.
+>> +.\" %%%LICENSE_END
+>> +.\"
+>> +.TH SECCOMP 2 2014-06-23 "Linux" "Linux Programmer's Manual"
+>> +.SH NAME
+>> +seccomp \-
+>> +operate on Secure Computing state of the process
+>> +.SH SYNOPSIS
+>> +.nf
+>> +.B #include <linux/seccomp.h>
+>> +.B #include <linux/filter.h>
+>> +.B #include <linux/audit.h>
+>> +.B #include <linux/signal.h>
+>> +.B #include <sys/ptrace.h>
+>> +
+>> +.BI "int seccomp(unsigned int " operation ", unsigned int " flags ,
+>> +.BI "            unsigned char *" args );
 >
-> OK, agreed. Although in this case I'd suggest
->
->                 if (WARN_ON(failed == 0))
->                         failed = -ESRCH;
->
-> but I won't insist.
+> At the very least, shouldn't this be void *args?
 
-Excellent idea, yes! I'll include this as well.
+Yeah, good point. Fixed for the next version...
 
 -Kees
 

@@ -1,54 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 01:14:19 +0200 (CEST)
-Received: from mail-wi0-f176.google.com ([209.85.212.176]:37887 "EHLO
-        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860024AbaFXXOQi7njG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 01:14:16 +0200
-Received: by mail-wi0-f176.google.com with SMTP id n3so6980081wiv.15
-        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 16:14:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 01:55:10 +0200 (CEST)
+Received: from mail-ob0-f173.google.com ([209.85.214.173]:44540 "EHLO
+        mail-ob0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860024AbaFXXzHGqpN6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 01:55:07 +0200
+Received: by mail-ob0-f173.google.com with SMTP id va2so1241468obc.32
+        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 16:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=YekSIZRQ3QnkLAwIJxqv05Gz8Gv46xg6ugZ7lSl0fSU=;
+        b=bbArQaaEqDg35DMi3AbXkyo31vKOcwvJhjzZRrmbiDVYb5X/dLkFlJ0afTmvm+IqvB
+         JjQB29g0lMV8UppJzYjjp0qs2WcNXY4kpn63ZIdg7bTJy+vI6jOcQjGWWTqOjWSAPSun
+         GQAWn9uGsJkdgvKciFXOYhS3chZMtq+4zue07kMkX5ksgkLvyCiHTmuKz5oG3uwV63oX
+         JrSwG6EhTQonlECGpzXosf0f+GFRo0K2EeiEfIpKFfPtQutKeRXJ+qWSNVfp0sa1Frli
+         Y35pSWEv6bMRArfYzdqSIcCR650cfwEWCzu+II9oU21lG0G05znZDtZzitxDnHHdUaV9
+         Lfsw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=YekSIZRQ3QnkLAwIJxqv05Gz8Gv46xg6ugZ7lSl0fSU=;
+        b=cu1UpqxxbEOUc6yVqo6NxbhDmF/T71wfuHX5/AuPS3FPZMmRDHNlC5BqrT8kUTMwOC
+         PSVMIybl3GEREc6W3bDrGKOsFU/Ird64LO+lut1nAxvHeZDhOBppNxZjIXgnxW860CY1
+         vzRFCEy6AD++Spw2V/Z/DjqT0Ld+G6VpdemiY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :organization:user-agent:in-reply-to:references:mime-version
-         :content-transfer-encoding:content-type;
-        bh=WFrYbpyXxJKjBFFpLXNtI5znuMuRqVS5dfi0OdMyCqE=;
-        b=gEHzzru8WCHHoACjOC8OLqv1LamntmA46AkTTxPBJJlmRbeiw3TcblHBsdfSCyXT//
-         jtQyjHJ6AtOHFR2OOK5M0BHBisnh6LpANBtgQOo1BoBi4I/IU66XBGCoP7scud6gAtF2
-         QBAEWRwL8MhD/HQ7F+c6/GV1wsPAdwfFOjnxZ9ZgG0Wna1AT2+kHCToZdr5MP3AZxXt+
-         sWDtS/WMNzp1EbGuDiL//SZdDT32j3jfqG/GQMPkVvoBzC2R9NWGpkh0+vU4QDA1Pr0G
-         a7wjxdjIeg9TvDwUXhGHikHyivnMnRDoWYPyf0J2c78xwOY0WFjLI5NHEJOMje/yT5CK
-         LD7g==
-X-Gm-Message-State: ALoCoQmsmLF6T1ao20QwnqEEiL+vjHt/bDoyQlE/mh/rs2ZwWfUIZGhPNa4zPABqRzR6/4qKrRqF
-X-Received: by 10.194.87.134 with SMTP id ay6mr4976692wjb.84.1403651651069;
-        Tue, 24 Jun 2014 16:14:11 -0700 (PDT)
-Received: from radagast.localnet (jahogan.plus.com. [212.159.75.221])
-        by mx.google.com with ESMTPSA id cj8sm3496481wjb.5.2014.06.24.16.14.09
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 24 Jun 2014 16:14:10 -0700 (PDT)
-From:   James Hogan <james.hogan@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>, pbonzini@redhat.com,
-        gleb@kernel.org, kvm@vger.kernel.org, sanjayl@kymasys.com,
-        ralf@linux-mips.org
-Subject: Re: [PATCH v3 1/9] MIPS: KVM: Reformat code and comments
-Date:   Wed, 25 Jun 2014 00:13:58 +0100
-Message-ID: <2425309.IacJWOu9rB@radagast>
-Organization: Imagination Technologies
-User-Agent: KMail/4.12.5 (Linux/3.15.1+; KDE/4.12.5; x86_64; ; )
-In-Reply-To: <1403631071-6012-2-git-send-email-dengcheng.zhu@imgtec.com>
-References: <1403631071-6012-1-git-send-email-dengcheng.zhu@imgtec.com> <1403631071-6012-2-git-send-email-dengcheng.zhu@imgtec.com>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=YekSIZRQ3QnkLAwIJxqv05Gz8Gv46xg6ugZ7lSl0fSU=;
+        b=Wz3vy9Q7F5YOHvCzRi2G5T16bV4IuE7h77iJN7vJUej5gasFGfh8F6kJyae/WK9+aw
+         IlIM/wv4BnakJ9qyVtCgXgirNcWLVDz4yJbZEy9ThupoEPSJuzLpd4ivX92zVOxzQWWl
+         Sb0W1HHAyK9969+aJlH2QzexoRPJM6b19spV8aegFZUGUn9H4xE+x1ws1Udh4UDhbfIv
+         jksFC95ydLCMU0G2IYxVNGuUgvjNAJGvUCWOJP/NY3tLECfft3alZyL/W6BHxBJUyX3U
+         WMXGWWjuCtut8arSlEPnlmLAXn7gvEj3nNQDrD0VJmE1Kwo0pF1bGA4EU7CWZ1CSCeU2
+         wE6A==
+X-Gm-Message-State: ALoCoQlJ3VB5CnRPt7nUKwVh5DfZdjDTBdXu4uS86k/I6sN8thTzl4PxfTKo6u8HABLYw7dtGh7s
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Return-Path: <james@albanarts.com>
+X-Received: by 10.182.33.106 with SMTP id q10mr4405841obi.19.1403654100693;
+ Tue, 24 Jun 2014 16:55:00 -0700 (PDT)
+Received: by 10.182.63.80 with HTTP; Tue, 24 Jun 2014 16:55:00 -0700 (PDT)
+In-Reply-To: <1403650817-21641-1-git-send-email-benchan@chromium.org>
+References: <1403650817-21641-1-git-send-email-benchan@chromium.org>
+Date:   Tue, 24 Jun 2014 16:55:00 -0700
+X-Google-Sender-Auth: Ew9HiDbn-tloOk_N5jrjQN8AufI
+Message-ID: <CAGXu5j+gntXQQdC4aOiH9mOTv5rEqXqbQ1rt2XN_BkWznLR=7A@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: ZBOOT: implement stack protector in compressed boot phase
+From:   Kees Cook <keescook@chromium.org>
+To:     Ben Chan <benchan@chromium.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Olof Johansson <olofj@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40785
+X-archive-position: 40786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,77 +73,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Deng-Cheng,
+On Tue, Jun 24, 2014 at 4:00 PM, Ben Chan <benchan@chromium.org> wrote:
+> This patch implements the stack protector code in MIPS compressed boot
+> phase based on the same code added to arm in commit
+> 8779657d29c0ebcc0c94ede4df2f497baf1b563f "stackprotector: Introduce
+> CONFIG_CC_STACKPROTECTOR_STRONG" by Kees Cook <keescook@chromium.org>
+>
+> Signed-off-by: Ben Chan <benchan@chromium.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Olof Johansson <olofj@chromium.org>
+> ---
+>  arch/mips/boot/compressed/decompress.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+> index c00c4dd..b49c7ad 100644
+> --- a/arch/mips/boot/compressed/decompress.c
+> +++ b/arch/mips/boot/compressed/decompress.c
+> @@ -67,10 +67,24 @@ void error(char *x)
+>  #include "../../../../lib/decompress_unxz.c"
+>  #endif
+>
+> +unsigned long __stack_chk_guard;
+> +
+> +void __stack_chk_guard_setup(void)
+> +{
+> +       __stack_chk_guard = 0x000a0dff;
+> +}
+> +
+> +void __stack_chk_fail(void)
+> +{
+> +       error("stack-protector: Kernel stack is corrupted\n");
+> +}
+> +
+>  void decompress_kernel(unsigned long boot_heap_start)
+>  {
+>         unsigned long zimage_start, zimage_size;
+>
+> +       __stack_chk_guard_setup();
+> +
+>         zimage_start = (unsigned long)(&__image_begin);
+>         zimage_size = (unsigned long)(&__image_end) -
+>             (unsigned long)(&__image_begin);
+> --
+> 2.0.0.526.g5318336
 
-On Tuesday 24 June 2014 10:31:02 Deng-Cheng Zhu wrote:
-> diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-> index cd5e4f5..821e7e8 100644
-> --- a/arch/mips/kvm/kvm_mips.c
-> +++ b/arch/mips/kvm/kvm_mips.c
+Yup, that looks correct to me. As in the ARM case, gathering entropy
+for the canary here is overkill, so this is sufficient to build and
+provide basic canary support in the decompression phase of boot.
 
-> -#define VCPU_STAT(x) offsetof(struct kvm_vcpu, stat.x), KVM_STAT_VCPU
-> +#define VCPU_STAT(x) offsetof(struct kvm_vcpu, stat.x)
->  struct kvm_stats_debugfs_item debugfs_entries[] = {
-> -	{ "wait", VCPU_STAT(wait_exits) },
-> -	{ "cache", VCPU_STAT(cache_exits) },
-> -	{ "signal", VCPU_STAT(signal_exits) },
-> -	{ "interrupt", VCPU_STAT(int_exits) },
-> -	{ "cop_unsuable", VCPU_STAT(cop_unusable_exits) },
-> -	{ "tlbmod", VCPU_STAT(tlbmod_exits) },
-> -	{ "tlbmiss_ld", VCPU_STAT(tlbmiss_ld_exits) },
-> -	{ "tlbmiss_st", VCPU_STAT(tlbmiss_st_exits) },
-> -	{ "addrerr_st", VCPU_STAT(addrerr_st_exits) },
-> -	{ "addrerr_ld", VCPU_STAT(addrerr_ld_exits) },
-> -	{ "syscall", VCPU_STAT(syscall_exits) },
-> -	{ "resvd_inst", VCPU_STAT(resvd_inst_exits) },
-> -	{ "break_inst", VCPU_STAT(break_inst_exits) },
-> -	{ "flush_dcache", VCPU_STAT(flush_dcache_exits) },
-> -	{ "halt_wakeup", VCPU_STAT(halt_wakeup) },
-> +	{ "wait", VCPU_STAT(wait_exits), KVM_STAT_VCPU },
-> +	{ "cache", VCPU_STAT(cache_exits), KVM_STAT_VCPU },
-> +	{ "signal", VCPU_STAT(signal_exits), KVM_STAT_VCPU },
-> +	{ "interrupt", VCPU_STAT(int_exits), KVM_STAT_VCPU },
-> +	{ "cop_unsuable", VCPU_STAT(cop_unusable_exits), KVM_STAT_VCPU },
-> +	{ "tlbmod", VCPU_STAT(tlbmod_exits), KVM_STAT_VCPU },
-> +	{ "tlbmiss_ld", VCPU_STAT(tlbmiss_ld_exits), KVM_STAT_VCPU },
-> +	{ "tlbmiss_st", VCPU_STAT(tlbmiss_st_exits), KVM_STAT_VCPU },
-> +	{ "addrerr_st", VCPU_STAT(addrerr_st_exits), KVM_STAT_VCPU },
-> +	{ "addrerr_ld", VCPU_STAT(addrerr_ld_exits), KVM_STAT_VCPU },
-> +	{ "syscall", VCPU_STAT(syscall_exits), KVM_STAT_VCPU },
-> +	{ "resvd_inst", VCPU_STAT(resvd_inst_exits), KVM_STAT_VCPU },
-> +	{ "break_inst", VCPU_STAT(break_inst_exits), KVM_STAT_VCPU },
-> +	{ "flush_dcache", VCPU_STAT(flush_dcache_exits), KVM_STAT_VCPU },
-> +	{ "halt_wakeup", VCPU_STAT(halt_wakeup), KVM_STAT_VCPU },
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-IMO more important than making checkpatch happy here would be to put it in 
-nicely tabulated columns ;-)
+Thanks!
 
-> diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-> index 8d48400..993dd1c 100644
-> --- a/arch/mips/kvm/kvm_mips_emul.c
-> +++ b/arch/mips/kvm/kvm_mips_emul.c
+-Kees
 
->  	switch (insn.i_format.opcode) {
-> -		/*
-> -		 * jr and jalr are in r_format format.
-> -		 */
-> +		 /* jr and jalr are in r_format format. */
-
-bad indentation.
-
-> diff --git a/arch/mips/kvm/kvm_trap_emul.c b/arch/mips/kvm/kvm_trap_emul.c
-> index 693f952..baf6577 100644
-> --- a/arch/mips/kvm/kvm_trap_emul.c
-> +++ b/arch/mips/kvm/kvm_trap_emul.c
-
-> @@ -186,10 +185,12 @@ static int kvm_trap_emul_handle_tlb_ld_miss(struct
-> kvm_vcpu *vcpu) vcpu->arch.pc, badvaddr);
-> 
->  		/* User Address (UA) fault, this could happen if
-
-this comment could be fixed too
-
-Otherwise this patch looks good. Thanks for doing this!
-
-Cheers
-James
+-- 
+Kees Cook
+Chrome OS Security

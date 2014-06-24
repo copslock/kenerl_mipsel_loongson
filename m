@@ -1,59 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 17:40:16 +0200 (CEST)
-Received: from mail-we0-f172.google.com ([74.125.82.172]:42019 "EHLO
-        mail-we0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816071AbaFXPkLfEFrT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 17:40:11 +0200
-Received: by mail-we0-f172.google.com with SMTP id u57so558570wes.17
-        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 08:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-type
-         :content-disposition:user-agent;
-        bh=esh580jhtZbEbieOaQdHV3udSpX+iYvfjUHx9WOTC2A=;
-        b=GU83bBIuRGcKc2Rhj2JD7bZYTcbTlFPxH+tyzVX5NhRcItOpbBbWOOgfflPD1NVKBS
-         6UkDp24dD/AeTvmvpS4YQn0nOsmYrtWZYYAyVhwZjr6rF/PjihZSGnhbrCDJuVD4trfF
-         cBTBF2cPpKAJkFP6Qn/1jgVNdfh3CxwabH5ao0iRrKetgbAngQZpiaTEHDhqetE6tCfu
-         wcImZ4FH+UYt7qs90Ydky3K+51JELaw3TvOEigSSBcFHCVMNnWAfX7RRNMhH9Ezb9vHH
-         d9lTTkIYWGHXaPXbLxIG8pnpmXdKT8+catUKUXS9iO2D9k4awpiao3p3hxY477LLNFTD
-         kXXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-type:content-disposition:user-agent;
-        bh=esh580jhtZbEbieOaQdHV3udSpX+iYvfjUHx9WOTC2A=;
-        b=mU9hsfvX6iqAtM+lWmkyLEd7VUAj2rqwQst5Cv6pYgOCd2ijyTKqdegfqkeKR7krTU
-         YtbM0GlFAv2DukazF/zYhLvSO7nd5Q6lV9ZL+ApL4y4+jNe3tH/Tyur77qzMGHscygdL
-         KDd61ccKM4ddeocmNlxgBuxLKV11+hZzecE0ikhho8+WwwXuV4nu46LaWigUtnaIYToB
-         EnaEY1jBrUKwMRlGBjYexKuIG7RAf2/Kk+mwHKvpsUo8WINIU/neHoq+bH24z2nMjZXp
-         w3OAp5/AEnv6l/asSRHpF4Mi39SJsXumjE12Wur5wqQozEa2zKRy9DPAdSZn9wfg7Zz+
-         5iww==
-X-Gm-Message-State: ALoCoQmD+GXSKBM8t4ATrwoB5XfPBttT5DEL5RbggfLUEubIVJrbxzKeQiYK4IuSEcWxxxFI0Yy/
-X-Received: by 10.194.189.230 with SMTP id gl6mr2385902wjc.118.1403624401992;
-        Tue, 24 Jun 2014 08:40:01 -0700 (PDT)
-Received: from google.com ([2620:0:1040:202:2e44:fdff:fe1c:7ea6])
-        by mx.google.com with ESMTPSA id h3sm1246373wjz.48.2014.06.24.08.40.01
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 24 Jun 2014 08:40:01 -0700 (PDT)
-Date:   Tue, 24 Jun 2014 16:39:59 +0100
-From:   Daniel Walter <dwalter@google.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] ar7: replace mac address parsing
-Message-ID: <20140624153959.GA19564@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dwalter@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 17:48:47 +0200 (CEST)
+Received: from smtprelay0015.hostedemail.com ([216.40.44.15]:34349 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6816071AbaFXPsnVBoC- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 17:48:43 +0200
+Received: from filter.hostedemail.com (ff-bigip1 [10.5.19.254])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 1386B29DE18;
+        Tue, 24 Jun 2014 15:48:41 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: grass47_85d685a7bac2a
+X-Filterd-Recvd-Size: 1675
+Received: from [192.168.1.162] (pool-71-103-235-196.lsanca.fios.verizon.net [71.103.235.196])
+        (Authenticated sender: joe@perches.com)
+        by omf12.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 24 Jun 2014 15:48:39 +0000 (UTC)
+Message-ID: <1403624918.29061.16.camel@joe-AO725>
+Subject: Re: [PATCH 1/1] ar7: replace mac address parsing
+From:   Joe Perches <joe@perches.com>
+To:     Daniel Walter <dwalter@google.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 24 Jun 2014 08:48:38 -0700
+In-Reply-To: <20140624153959.GA19564@google.com>
+References: <20140624153959.GA19564@google.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.10.4-0ubuntu1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40735
+X-archive-position: 40736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwalter@google.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,27 +47,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace sscanf() with mac_pton().
+On Tue, 2014-06-24 at 16:39 +0100, Daniel Walter wrote:
+> Replace sscanf() with mac_pton().
+[]
+> diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+[]
+> @@ -307,10 +307,7 @@ static void __init cpmac_get_mac(int instance, unsigned char *dev_addr)
+>  	}
+>  
+>  	if (mac) {
+> -		if (sscanf(mac, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
+> -					&dev_addr[0], &dev_addr[1],
+> -					&dev_addr[2], &dev_addr[3],
+> -					&dev_addr[4], &dev_addr[5]) != 6) {
+> +		if (!mac_pton(mac, dev_addr)) {
 
-Signed-off-by: Daniel Walter <dwalter@google.com>
----
+There is a slight functional change with this conversion.
 
- arch/mips/ar7/platform.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
----
-diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index 7e2356f..653cbff 100644
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -307,10 +307,7 @@ static void __init cpmac_get_mac(int instance, unsigned char *dev_addr)
- 	}
- 
- 	if (mac) {
--		if (sscanf(mac, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
--					&dev_addr[0], &dev_addr[1],
--					&dev_addr[2], &dev_addr[3],
--					&dev_addr[4], &dev_addr[5]) != 6) {
-+		if (!mac_pton(mac, dev_addr)) {
- 			pr_warning("cannot parse mac address, "
- 					"using random address\n");
- 			eth_random_addr(dev_addr);
+mac_pton is strict about leading 0's and requires a 17 char strlen.
+
+sscanf will accept 0:1:2:3:4:5, mac_pton will not.
+
+>  			pr_warning("cannot parse mac address, "
+>  					"using random address\n");
+
+could be coalesced and pr_warn
+
+			pr_warn("cannot parse mac address - using random address\n");

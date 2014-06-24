@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 20:32:04 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:45856 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 20:37:08 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:21734 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822968AbaFXScCH6Vwe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Jun 2014 20:32:02 +0200
+        id S6854779AbaFXShGXA0UI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 Jun 2014 20:37:06 +0200
 Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s5OIVU6O001192
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s5OIauh9021294
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 Jun 2014 14:31:30 -0400
+        Tue, 24 Jun 2014 14:36:56 -0400
 Received: from tranklukator.brq.redhat.com (dhcp-1-125.brq.redhat.com [10.34.1.125])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s5OIVQot028951;
-        Tue, 24 Jun 2014 14:31:27 -0400
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s5OIaqaE032064;
+        Tue, 24 Jun 2014 14:36:52 -0400
 Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Tue, 24 Jun 2014 20:30:29 +0200 (CEST)
-Date:   Tue, 24 Jun 2014 20:30:24 +0200
+        oleg@redhat.com; Tue, 24 Jun 2014 20:35:54 +0200 (CEST)
+Date:   Tue, 24 Jun 2014 20:35:50 +0200
 From:   Oleg Nesterov <oleg@redhat.com>
 To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
+Cc:     LKML <linux-kernel@vger.kernel.org>,
         Andy Lutomirski <luto@amacapital.net>,
         Alexei Starovoitov <ast@plumgrid.com>,
         "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
@@ -24,23 +24,26 @@ Cc:     linux-kernel@vger.kernel.org,
         Will Drewry <wad@chromium.org>,
         Julien Tinnes <jln@chromium.org>,
         David Drysdale <drysdale@google.com>,
-        linux-api@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
+        Linux API <linux-api@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>
 Subject: Re: [PATCH v7 3/9] seccomp: introduce writer locking
-Message-ID: <20140624183024.GA1258@redhat.com>
-References: <1403560693-21809-1-git-send-email-keescook@chromium.org> <1403560693-21809-4-git-send-email-keescook@chromium.org>
+Message-ID: <20140624183550.GB1258@redhat.com>
+References: <1403560693-21809-1-git-send-email-keescook@chromium.org> <1403560693-21809-4-git-send-email-keescook@chromium.org> <20140624165216.GA29272@redhat.com> <CAGXu5j+G8qAkGD7H=3R2iw2ZTqZSrMPa2f=czoEjwSW5wKqUWQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1403560693-21809-4-git-send-email-keescook@chromium.org>
+In-Reply-To: <CAGXu5j+G8qAkGD7H=3R2iw2ZTqZSrMPa2f=czoEjwSW5wKqUWQ@mail.gmail.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
 Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40759
+X-archive-position: 40760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,70 +60,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I am puzzled by the usage of smp_load_acquire(),
-
-On 06/23, Kees Cook wrote:
+On 06/24, Kees Cook wrote:
 >
->  static u32 seccomp_run_filters(int syscall)
->  {
-> -	struct seccomp_filter *f;
-> +	struct seccomp_filter *f = smp_load_acquire(&current->seccomp.filter);
->  	struct seccomp_data sd;
->  	u32 ret = SECCOMP_RET_ALLOW;
->  
->  	/* Ensure unexpected behavior doesn't result in failing open. */
-> -	if (WARN_ON(current->seccomp.filter == NULL))
-> +	if (WARN_ON(f == NULL))
->  		return SECCOMP_RET_KILL;
->  
->  	populate_seccomp_data(&sd);
-> @@ -186,9 +186,8 @@ static u32 seccomp_run_filters(int syscall)
->  	 * All filters in the list are evaluated and the lowest BPF return
->  	 * value always takes priority (ignoring the DATA).
->  	 */
-> -	for (f = current->seccomp.filter; f; f = f->prev) {
-> +	for (; f; f = smp_load_acquire(&f->prev)) {
->  		u32 cur_ret = SK_RUN_FILTER(f->prog, (void *)&sd);
-> -
->  		if ((cur_ret & SECCOMP_RET_ACTION) < (ret & SECCOMP_RET_ACTION))
->  			ret = cur_ret;
+> On Tue, Jun 24, 2014 at 9:52 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+> > Kees,
+> >
+> > I am still trying to force myself to read and try to understand what
+> > this series does ;) Just a minor nit so far.
+>
+> The use-case this solves is when a userspace process does not control
+> (or know) when a thread is spawned (e.g. via shared library init, or
+> LD_PRELOAD) but wants to make sure seccomp filters have been applied
+> to it.
 
-OK, in this case the 1st one is probably fine, altgough it is not
-clear to me why it is better than read_barrier_depends().
+Yes, thanks, I understand this. But the details are not clear to me so
+far, I'll try to re-read this series later.
 
-But why do we need a 2nd one inside the loop? And if we actually need
-it (I don't think so) then why it is safe to use f->prog without
-load_acquire ?
+> >> @@ -1142,6 +1168,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
+> >>  {
+> >>       int retval;
+> >>       struct task_struct *p;
+> >> +     unsigned long irqflags;
+> >>
+> >>       if ((clone_flags & (CLONE_NEWNS|CLONE_FS)) == (CLONE_NEWNS|CLONE_FS))
+> >>               return ERR_PTR(-EINVAL);
+> >> @@ -1196,7 +1223,6 @@ static struct task_struct *copy_process(unsigned long clone_flags,
+> >>               goto fork_out;
+> >>
+> >>       ftrace_graph_init_task(p);
+> >> -     get_seccomp_filter(p);
+> >>
+> >>       rt_mutex_init_task(p);
+> >>
+> >> @@ -1434,7 +1460,13 @@ static struct task_struct *copy_process(unsigned long clone_flags,
+> >>               p->parent_exec_id = current->self_exec_id;
+> >>       }
+> >>
+> >> -     spin_lock(&current->sighand->siglock);
+> >> +     spin_lock_irqsave(&current->sighand->siglock, irqflags);
+> >> +
+> >> +     /*
+> >> +      * Copy seccomp details explicitly here, in case they were changed
+> >> +      * before holding tasklist_lock.
+> >> +      */
+> >> +     copy_seccomp(p);
+> >>
+> >>       /*
+> >>        * Process group and session signals need to be delivered to just the
+> >> @@ -1446,7 +1478,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
+> >>       */
+> >>       recalc_sigpending();
+> >>       if (signal_pending(current)) {
+> >> -             spin_unlock(&current->sighand->siglock);
+> >> +             spin_unlock_irqrestore(&current->sighand->siglock, irqflags);
+> >>               write_unlock_irq(&tasklist_lock);
+> >>               retval = -ERESTARTNOINTR;
+> >>               goto bad_fork_free_pid;
+> >> @@ -1486,7 +1518,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
+> >>       }
+> >>
+> >>       total_forks++;
+> >> -     spin_unlock(&current->sighand->siglock);
+> >> +     spin_unlock_irqrestore(&current->sighand->siglock, irqflags);
+> >>       write_unlock_irq(&tasklist_lock);
+> >>       proc_fork_connector(p);
+> >>       cgroup_post_fork(p);
+> >
+> > It seems that the only change copy_process() needs is copy_seccomp() under the locks.
+> > Everythinh else (irqflags games) looks obviously unneeded?
+>
+> I got irq lock dep warnings without these changes.
 
->  void get_seccomp_filter(struct task_struct *tsk)
->  {
-> -	struct seccomp_filter *orig = tsk->seccomp.filter;
-> +	struct seccomp_filter *orig = smp_load_acquire(&tsk->seccomp.filter);
->  	if (!orig)
->  		return;
+With or without your patches? Could you show the waring?
 
-This one looks unneeded.
+> If they're
+> unneeded, that's totally fine by me, but some change (either this or
+> markings to keep lockdep happy) is needed.
 
-First of all, afaics atomic_inc() should work correctly without any barriers,
-otherwise it is buggy. But even this doesn't matter.
-
-With this changes get_seccomp_filter() must be called under ->siglock, it can't
-race with add-filter and thus tsk->seccomp.filter should be stable.
-
->  	/* Reference count is bounded by the number of total processes. */
-> @@ -361,7 +364,7 @@ void put_seccomp_filter(struct task_struct *tsk)
->  	/* Clean up single-reference branches iteratively. */
->  	while (orig && atomic_dec_and_test(&orig->usage)) {
->  		struct seccomp_filter *freeme = orig;
-> -		orig = orig->prev;
-> +		orig = smp_load_acquire(&orig->prev);
->  		seccomp_filter_free(freeme);
->  	}
-
-This one looks unneeded too. And note that this patch does not add
-smp_load_acquire() to read tsk->seccomp.filter.
-
-atomic_dec_and_test() adds mb(), we do not need more barriers to access
-->prev ?
+Yes, we need to understand what what happens...
 
 Oleg.

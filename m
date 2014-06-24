@@ -1,59 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 11:38:35 +0200 (CEST)
-Received: from mail-wi0-f170.google.com ([209.85.212.170]:48129 "EHLO
-        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860319AbaFXIpszz06j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 10:45:48 +0200
-Received: by mail-wi0-f170.google.com with SMTP id cc10so5431086wib.3
-        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 01:45:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-type
-         :content-disposition:user-agent;
-        bh=JnyrGWaR4E0ZLB0Yb3VE3RtpF1m73XNfA/fj4N3+qio=;
-        b=pXnUtD/wxTHw1rm8HFHoQt14CZbOuaszFTAslHhNKgBR6JObojwsej3nnIUTkKvF8v
-         M7+ckVjoM5BEG7kC4A0GUikJNk3I3jem3/LoyMRpCsoRxxxtrWfUIWiNpeqcQZLLYNU9
-         yoFm0S/vJDHr6jY++NFH87ndOAQ3v7N2UnDvq9a3wrGSM5IFMPT3Qm72BTmfNVFudL6n
-         1tiFmWtxjgEUo6lH2R+j3ISdeQ6HaETQSn934vU4VGqirwMWFHmxRc0IOcJFq7h05lGj
-         4BK3NTTnbTlP4PSqMPeni/M1EJIGU0CSzvR+9a2aBOuQO5vG7YRSI7DFORqj/9jBG3li
-         +QQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-type:content-disposition:user-agent;
-        bh=JnyrGWaR4E0ZLB0Yb3VE3RtpF1m73XNfA/fj4N3+qio=;
-        b=HlD5WwopNi07hX78lUezF6u6VTv7WCpPYCTXt0XX5t0bt9B669biuTTyeaj/0LKMOG
-         ZE2kWuTM3jQoboDsUHnsAJD7okipjvAqfuP8pJRnh31kY8MFp8N6KtAs0LDENy8ip6uR
-         R9iZTJfAP44NC229xxKf1+OLXZKmICpDnNfty1uOGC+LBk3/A+PprQSlnCLQUBQn5BfC
-         hp/vXOOgtO3rv4Y/DxeVJgKG+O++6PsPDERJ8IiddVg+KRyd4Qf460gMYwBrrxT+8eAP
-         7Fj1bNA8pv8ruvjpf3ac9p3GDgB4T4h5267yEyn01SKnZkR3zwVLH/js+lGooXUhspMX
-         qKaQ==
-X-Gm-Message-State: ALoCoQkNChoxk0XrSYRYTcbFcqrKb/QlI0rIN/TfelUDl8gFq3di6dbcLZxcbKQnLFoDLfIJ3EEX
-X-Received: by 10.194.89.40 with SMTP id bl8mr33703414wjb.90.1403599543556;
-        Tue, 24 Jun 2014 01:45:43 -0700 (PDT)
-Received: from google.com ([2620:0:1040:202:2e44:fdff:fe1c:7ea6])
-        by mx.google.com with ESMTPSA id wi9sm41693412wjc.23.2014.06.24.01.45.42
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 24 Jun 2014 01:45:43 -0700 (PDT)
-Date:   Tue, 24 Jun 2014 09:45:40 +0100
-From:   Daniel Walter <dwalter@google.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] arch/mips rb532: replace mac_addr parsing
-Message-ID: <20140624084540.GA22930@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 13:31:14 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44983 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6860427AbaFXKNltaEyG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 12:13:41 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 6FA76FA5B3375;
+        Tue, 24 Jun 2014 11:13:32 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Tue, 24 Jun
+ 2014 11:13:34 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (192.168.5.97) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Tue, 24 Jun 2014 11:13:34 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 24 Jun
+ 2014 11:13:33 +0100
+Message-ID: <53A94F4D.10605@imgtec.com>
+Date:   Tue, 24 Jun 2014 11:13:33 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dwalter@google.com>
+To:     Daniel Walter <dwalter@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] arch/mips rb532: replace mac_addr parsing
+References: <20140624084540.GA22930@google.com>
+In-Reply-To: <20140624084540.GA22930@google.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40704
+X-archive-position: 40715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwalter@google.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,63 +51,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace parse_mac_addr with sscanf.
+Hi Daniel,
 
+On 24/06/14 09:45, Daniel Walter wrote:
+> @@ -333,7 +311,13 @@ static int __init plat_setup_devices(void)
+>  static int __init setup_kmac(char *s)
+>  {
+>  	printk(KERN_INFO "korina mac = %s\n", s);
+> -	parse_mac_addr(s);
+> +	sscanf(s, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
+> +			&korina_dev0_data.mac[0],
+> +			&korina_dev0_data.mac[1],
+> +			&korina_dev0_data.mac[2],
+> +			&korina_dev0_data.mac[3],
+> +			&korina_dev0_data.mac[4],
+> +			&korina_dev0_data.mac[5]);
 
-Signed-off-by: Daniel Walter <dwalter@google.com>
----
-Changes since v1:
-  sending in the working patch
-Patch applies against current linux-tree
----
- arch/mips/rb532/devices.c | 30 +++++++-----------------------
- 1 file changed, 7 insertions(+), 23 deletions(-)
----
-diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
-index 3af00b2..6e32819b 100644
---- a/arch/mips/rb532/devices.c
-+++ b/arch/mips/rb532/devices.c
-@@ -250,28 +250,6 @@ static struct platform_device *rb532_devs[] = {
- 	&rb532_wdt
- };
- 
--static void __init parse_mac_addr(char *macstr)
--{
--	int i, h, l;
--
--	for (i = 0; i < 6; i++) {
--		if (i != 5 && *(macstr + 2) != ':')
--			return;
--
--		h = hex_to_bin(*macstr++);
--		if (h == -1)
--			return;
--
--		l = hex_to_bin(*macstr++);
--		if (l == -1)
--			return;
--
--		macstr++;
--		korina_dev0_data.mac[i] = (h << 4) + l;
--	}
--}
--
--
- /* NAND definitions */
- #define NAND_CHIP_DELAY 25
- 
-@@ -333,7 +311,13 @@ static int __init plat_setup_devices(void)
- static int __init setup_kmac(char *s)
- {
- 	printk(KERN_INFO "korina mac = %s\n", s);
--	parse_mac_addr(s);
-+	sscanf(s, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
-+			&korina_dev0_data.mac[0],
-+			&korina_dev0_data.mac[1],
-+			&korina_dev0_data.mac[2],
-+			&korina_dev0_data.mac[3],
-+			&korina_dev0_data.mac[4],
-+			&korina_dev0_data.mac[5]);
- 	return 0;
- }
- 
+Does it make sense to go one better and use mac_pton() for this?
+
+Cheers
+James

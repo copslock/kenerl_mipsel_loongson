@@ -1,53 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 20:02:12 +0200 (CEST)
-Received: from mail-oa0-f42.google.com ([209.85.219.42]:33003 "EHLO
-        mail-oa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822276AbaFXSCK4PLJF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 20:02:10 +0200
-Received: by mail-oa0-f42.google.com with SMTP id eb12so773128oac.29
-        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 11:02:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 20:05:35 +0200 (CEST)
+Received: from mail-ob0-f180.google.com ([209.85.214.180]:47687 "EHLO
+        mail-ob0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822276AbaFXSF300l2s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 20:05:29 +0200
+Received: by mail-ob0-f180.google.com with SMTP id vb8so767020obc.11
+        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 11:05:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=4LK+gUFJix3bLooJLo0ia10gBQGT/wCnvVBkpd6BABg=;
-        b=jxui4TVScstiIKSwsW+vvbuifbOLaTHqpyrCMudr9it/wJL5O9rPqHKzOUcGXNq4BA
-         hKt/Z1OIT3YXeX0kib3yW1qCCedttCG1EY2kkYpNdWDKs1jkW+/vYmBK4Kg0mm9iFwWd
-         rLpwwii6ENSz4i6Vv4HXxjErRfkUX5P/wsZ/qUr/S6Yjyxg+4jXtBu5NCrByas32z060
-         l1RNHoC9H03fJrkWk2RYXO8jgQFqpHc9b33Sss35Wj7FCwi0z4/v4HoAgFCHPL/Mg9dH
-         nJzHgLqWkN6kyvfY4BfjUvTsL0q17GsxU1l8u9IR3ZwbcishjiSAMda0sqSI7dyTMar0
-         /15A==
+        bh=FT4rUkLtMfwg/jZXudqKcL5MMBVZdM8howOmm9jToIw=;
+        b=pa6rvOM7aoXUcbYgQshBcc7skZWPHBYd8mFdBm9F/NWfu+aoqgBtcxQlftlj42EPUP
+         adSuoqtG+kvWNaK/wrDuUVtQyUIpXsTWXi7S4TZjDPNWNkyeJGtnokFH8VniXlYn7gs7
+         htP/grnkBLCwwKSZcEfcziAk5YbbQ4c7qUbFUtZK/g89LNaLGvnv6LtyMs/836CeRzAp
+         2Ei4N6Lzh0a1BEI76g5ACDu1z3Z9erJOVP/dpl2xYkdJcVZRzaQBdzHWFHvGXFh62g/x
+         4G2ek3apnbKCuBeoDji2LgC2E7k+Wa48ScaMTte5aoyDM9HXYQLBgIkRjkEA9u4XPi2r
+         YuJw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=4LK+gUFJix3bLooJLo0ia10gBQGT/wCnvVBkpd6BABg=;
-        b=mpz3/Qp91Nzayy3H20khtmqDzr1AAcwisnCV5x1v97FlISPRZNcn1/Nko3hU8yK+0z
-         BhO3KO97zmL5Mbc2Sk6SPKotRLsnudEXaLCqnm7TvZVSuWIIPOx1ZqMBOMaCPv/EZnjy
-         Zpj/U7dxY5eyn/sMTNlqqSojWXSvXvb7Xu3EA=
+        bh=FT4rUkLtMfwg/jZXudqKcL5MMBVZdM8howOmm9jToIw=;
+        b=GkRZt0mEk6LXgj2ifXR+QD+TCboW3NYz1dohqdmLpt53vSvEDtuzBiRjT/7XjwhPs8
+         t7hGPlmmvwNsnMX3+4NTjHXX177csKsceN7dIL1XyYcMVJ8ozkTj/5T7gYTgDzkvwV1/
+         /9L4+d/5PFd0Yv8/7DYl8uImB8m+r/1u996Z0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=4LK+gUFJix3bLooJLo0ia10gBQGT/wCnvVBkpd6BABg=;
-        b=en4JlxnqueOdIAQHcHSOWmlh+qJHrHL39cdu4yRMySf3qAhV2Wt65DftGr+47O0D0k
-         0tIuAp9VIthGxz645u2vDdHu25oxk/jScE4A93xBuEQWGbusGEtT4j1fzK84YDTOuEz4
-         mQf4XF7SAl/AsJkGsu15A+8EG+onu7cO5Lt4Z3jsQvDcm8TfY4Er/Qvls3uAYjfGwsYq
-         GK+1QjlIjVH9pcgZ9oDf4pk1hUyv7anI4obqbsuph7kYQXqjRLBDCXZLrl/aolZOOJaf
-         wQQrw764f5QvUadNf4Ss3Rc2pa0xKSzeECEWHeAwWDlk9R1EuFHGeM8Fx6jzRYGCgqLm
-         zfsA==
-X-Gm-Message-State: ALoCoQml9t17qq/basAJRDG2oZ7HmAoAy9JzuLUJObk/W6e2p3y+/gUXRbWndQzyKXq5vsDnkYZF
+        bh=FT4rUkLtMfwg/jZXudqKcL5MMBVZdM8howOmm9jToIw=;
+        b=VBNQE28dVKkjfyEYn1eI6K9mQLUgjvES2sp1bFJN5rthOn83Tq1UKWZqfjWi9ZZED2
+         0tuorrInx64iuTlskjJbYIi44TL7KyikzNKK9wjSgj7e/qd84fP7TR9fx9tRgU6qafhs
+         55Ypv5PXub5vXhHtCj0bjWpqfDKZrUfhKaXHBFIyZF42JgmlT4kGIoyfpBjwR/m96wX/
+         UTKcp7OETSubg0WwQIagwBaq6N5H+oitJxKlX6EdS9NsuxUQYrhR6yebGYGqPZGSlFBp
+         FJIo7VnoISA/WVAnCJcXTxwOjxfGeSo+xaYo65pVIrPdeemGvCe+S7YqjWWaqkoY8NTt
+         cuJw==
+X-Gm-Message-State: ALoCoQk+tIqu6LnNpkDhbX0n2I58QslABXe5QHOollIvDWSKaa+FptPdzvfUGlm6JlIqry/IMwFU
 MIME-Version: 1.0
-X-Received: by 10.182.65.167 with SMTP id y7mr2592761obs.29.1403632924456;
- Tue, 24 Jun 2014 11:02:04 -0700 (PDT)
-Received: by 10.182.63.80 with HTTP; Tue, 24 Jun 2014 11:02:04 -0700 (PDT)
-In-Reply-To: <20140624165216.GA29272@redhat.com>
+X-Received: by 10.60.42.196 with SMTP id q4mr2564543oel.31.1403633123071; Tue,
+ 24 Jun 2014 11:05:23 -0700 (PDT)
+Received: by 10.182.63.80 with HTTP; Tue, 24 Jun 2014 11:05:22 -0700 (PDT)
+In-Reply-To: <20140624172753.GA31435@redhat.com>
 References: <1403560693-21809-1-git-send-email-keescook@chromium.org>
-        <1403560693-21809-4-git-send-email-keescook@chromium.org>
-        <20140624165216.GA29272@redhat.com>
-Date:   Tue, 24 Jun 2014 11:02:04 -0700
-X-Google-Sender-Auth: VjwTwMiWAlt1LW-P62uIPo62kpo
-Message-ID: <CAGXu5j+G8qAkGD7H=3R2iw2ZTqZSrMPa2f=czoEjwSW5wKqUWQ@mail.gmail.com>
-Subject: Re: [PATCH v7 3/9] seccomp: introduce writer locking
+        <1403560693-21809-8-git-send-email-keescook@chromium.org>
+        <20140624172753.GA31435@redhat.com>
+Date:   Tue, 24 Jun 2014 11:05:22 -0700
+X-Google-Sender-Auth: 2Ce6EZN27Vjg_CpBPv3-BetKv9k
+Message-ID: <CAGXu5jKoDEXffJqFSjhO+D=5toJOA=KAomi+LQOahPDYKFbEdg@mail.gmail.com>
+Subject: Re: [PATCH v7 7/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
 From:   Kees Cook <keescook@chromium.org>
 To:     Oleg Nesterov <oleg@redhat.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -70,7 +70,7 @@ Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40755
+X-archive-position: 40756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,97 +87,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 24, 2014 at 9:52 AM, Oleg Nesterov <oleg@redhat.com> wrote:
-> Kees,
->
-> I am still trying to force myself to read and try to understand what
-> this series does ;) Just a minor nit so far.
-
-The use-case this solves is when a userspace process does not control
-(or know) when a thread is spawned (e.g. via shared library init, or
-LD_PRELOAD) but wants to make sure seccomp filters have been applied
-to it. Specifically, Chrome, when loading some proprietary graphics
-drivers, will have those drivers spawning threads before there has
-been an ability to call seccomp. While some games can be played to get
-ahead of it, it's not always possible, or racey, depending on the
-drivers. With seccomp thread-sync, we can be certain that all threads
-have had the filter applied.
-
->
+On Tue, Jun 24, 2014 at 10:27 AM, Oleg Nesterov <oleg@redhat.com> wrote:
 > On 06/23, Kees Cook wrote:
 >>
->> @@ -1142,6 +1168,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
->>  {
->>       int retval;
->>       struct task_struct *p;
->> +     unsigned long irqflags;
->>
->>       if ((clone_flags & (CLONE_NEWNS|CLONE_FS)) == (CLONE_NEWNS|CLONE_FS))
->>               return ERR_PTR(-EINVAL);
->> @@ -1196,7 +1223,6 @@ static struct task_struct *copy_process(unsigned long clone_flags,
->>               goto fork_out;
->>
->>       ftrace_graph_init_task(p);
->> -     get_seccomp_filter(p);
->>
->>       rt_mutex_init_task(p);
->>
->> @@ -1434,7 +1460,13 @@ static struct task_struct *copy_process(unsigned long clone_flags,
->>               p->parent_exec_id = current->self_exec_id;
->>       }
->>
->> -     spin_lock(&current->sighand->siglock);
->> +     spin_lock_irqsave(&current->sighand->siglock, irqflags);
+>> +static pid_t seccomp_can_sync_threads(void)
+>> +{
+>> +     struct task_struct *thread, *caller;
 >> +
->> +     /*
->> +      * Copy seccomp details explicitly here, in case they were changed
->> +      * before holding tasklist_lock.
->> +      */
->> +     copy_seccomp(p);
->>
->>       /*
->>        * Process group and session signals need to be delivered to just the
->> @@ -1446,7 +1478,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
->>       */
->>       recalc_sigpending();
->>       if (signal_pending(current)) {
->> -             spin_unlock(&current->sighand->siglock);
->> +             spin_unlock_irqrestore(&current->sighand->siglock, irqflags);
->>               write_unlock_irq(&tasklist_lock);
->>               retval = -ERESTARTNOINTR;
->>               goto bad_fork_free_pid;
->> @@ -1486,7 +1518,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
->>       }
->>
->>       total_forks++;
->> -     spin_unlock(&current->sighand->siglock);
->> +     spin_unlock_irqrestore(&current->sighand->siglock, irqflags);
->>       write_unlock_irq(&tasklist_lock);
->>       proc_fork_connector(p);
->>       cgroup_post_fork(p);
->
-> It seems that the only change copy_process() needs is copy_seccomp() under the locks.
-> Everythinh else (irqflags games) looks obviously unneeded?
-
-I got irq lock dep warnings without these changes. If they're
-unneeded, that's totally fine by me, but some change (either this or
-markings to keep lockdep happy) is needed.
-
->> @@ -524,6 +528,9 @@ static long seccomp_set_mode(unsigned long seccomp_mode, char __user *filter)
->>       }
->>  #endif
->>
->> +     if (unlikely(!lock_task_sighand(current, &irqflags)))
->> +             goto out_free;
+>> +     BUG_ON(write_can_lock(&tasklist_lock));
+>> +     BUG_ON(!spin_is_locked(&current->sighand->siglock));
 >> +
+>> +     if (current->seccomp.mode != SECCOMP_MODE_FILTER)
+>> +             return -EACCES;
+>> +
+>> +     /* Validate all threads being eligible for synchronization. */
+>> +     thread = caller = current;
+>> +     for_each_thread(caller, thread) {
+>> +             pid_t failed;
+>> +
+>> +             if (thread->seccomp.mode == SECCOMP_MODE_DISABLED ||
+>> +                 (thread->seccomp.mode == SECCOMP_MODE_FILTER &&
+>> +                  is_ancestor(thread->seccomp.filter,
+>> +                              caller->seccomp.filter)))
+>> +                     continue;
+>> +
+>> +             /* Return the first thread that cannot be synchronized. */
+>> +             failed = task_pid_vnr(thread);
+>> +             /* If the pid cannot be resolved, then return -ESRCH */
+>> +             if (failed == 0)
+>> +                     failed = -ESRCH;
 >
-> Unless this task is exiting (namely, it has already called exit_notify()),
-> lock_task_sighand(current) must not fail. Looks like you can simply do
-> spin_lock_irq(->siglock).
+> forgot to mention, task_pid_vnr() can't fail. sighand->siglock is held,
+> for_each_thread() can't see a thread which has passed unhash_process().
 
-Okay. I wasn't sure if I needed to be extra careful here or not. I
-opted for just using lock_task_sighand since that seemed to be the
-most used. :)
+Certainly good to know, but I'd be much more comfortable leaving this
+check as-is. Having "failed" return with "0" would be very very bad
+(userspace would think the filter had been successfully applied, etc).
+I'd rather stay highly defensive here.
 
 -Kees
 

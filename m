@@ -1,32 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 01:50:10 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48841 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817546AbaFWXuHMueg5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 01:50:07 +0200
-Date:   Tue, 24 Jun 2014 00:50:07 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     David Rientjes <rientjes@google.com>
-cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Eunbong Song <eunb.song@samsung.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: GCC version requirement (was: Re: mips: math-emu: Fix compilation
- error ieee754.c)
-In-Reply-To: <alpine.DEB.2.02.1406111427170.27885@chino.kir.corp.google.com>
-Message-ID: <alpine.LFD.2.11.1406240032450.23403@eddie.linux-mips.org>
-References: <2463243.264261402478691777.JavaMail.weblogic@epml26> <20140611171000.GD26335@linux-mips.org> <alpine.DEB.2.02.1406111427170.27885@chino.kir.corp.google.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 11:38:35 +0200 (CEST)
+Received: from mail-wi0-f170.google.com ([209.85.212.170]:48129 "EHLO
+        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860319AbaFXIpszz06j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 10:45:48 +0200
+Received: by mail-wi0-f170.google.com with SMTP id cc10so5431086wib.3
+        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 01:45:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=JnyrGWaR4E0ZLB0Yb3VE3RtpF1m73XNfA/fj4N3+qio=;
+        b=pXnUtD/wxTHw1rm8HFHoQt14CZbOuaszFTAslHhNKgBR6JObojwsej3nnIUTkKvF8v
+         M7+ckVjoM5BEG7kC4A0GUikJNk3I3jem3/LoyMRpCsoRxxxtrWfUIWiNpeqcQZLLYNU9
+         yoFm0S/vJDHr6jY++NFH87ndOAQ3v7N2UnDvq9a3wrGSM5IFMPT3Qm72BTmfNVFudL6n
+         1tiFmWtxjgEUo6lH2R+j3ISdeQ6HaETQSn934vU4VGqirwMWFHmxRc0IOcJFq7h05lGj
+         4BK3NTTnbTlP4PSqMPeni/M1EJIGU0CSzvR+9a2aBOuQO5vG7YRSI7DFORqj/9jBG3li
+         +QQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-type:content-disposition:user-agent;
+        bh=JnyrGWaR4E0ZLB0Yb3VE3RtpF1m73XNfA/fj4N3+qio=;
+        b=HlD5WwopNi07hX78lUezF6u6VTv7WCpPYCTXt0XX5t0bt9B669biuTTyeaj/0LKMOG
+         ZE2kWuTM3jQoboDsUHnsAJD7okipjvAqfuP8pJRnh31kY8MFp8N6KtAs0LDENy8ip6uR
+         R9iZTJfAP44NC229xxKf1+OLXZKmICpDnNfty1uOGC+LBk3/A+PprQSlnCLQUBQn5BfC
+         hp/vXOOgtO3rv4Y/DxeVJgKG+O++6PsPDERJ8IiddVg+KRyd4Qf460gMYwBrrxT+8eAP
+         7Fj1bNA8pv8ruvjpf3ac9p3GDgB4T4h5267yEyn01SKnZkR3zwVLH/js+lGooXUhspMX
+         qKaQ==
+X-Gm-Message-State: ALoCoQkNChoxk0XrSYRYTcbFcqrKb/QlI0rIN/TfelUDl8gFq3di6dbcLZxcbKQnLFoDLfIJ3EEX
+X-Received: by 10.194.89.40 with SMTP id bl8mr33703414wjb.90.1403599543556;
+        Tue, 24 Jun 2014 01:45:43 -0700 (PDT)
+Received: from google.com ([2620:0:1040:202:2e44:fdff:fe1c:7ea6])
+        by mx.google.com with ESMTPSA id wi9sm41693412wjc.23.2014.06.24.01.45.42
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 24 Jun 2014 01:45:43 -0700 (PDT)
+Date:   Tue, 24 Jun 2014 09:45:40 +0100
+From:   Daniel Walter <dwalter@google.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] arch/mips rb532: replace mac_addr parsing
+Message-ID: <20140624084540.GA22930@google.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dwalter@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40695
+X-archive-position: 40704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: dwalter@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,75 +66,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 11 Jun 2014, David Rientjes wrote:
+Replace parse_mac_addr with sscanf.
 
-> > > ieee754dp has bitfield member in struct without name. And this
-> > > cause compilation error. This patch removes struct in ieee754dp
-> > > declaration. So compilation error is fixed.
-> > > Signed-off-by: Eunbong Song <eunb.song@samsung.com>
-> > 
-> > What gcc version are you using?
-> > 
-> 
-> make arch/mips/math-emu/ieee754.o for mips defconfig triggers the 
-> following on linux-next 30 times:
-> 
-> arch/mips/math-emu/ieee754.c:45:2: error: unknown field 'sign' specified in initializer
-> arch/mips/math-emu/ieee754.c:45:2: warning: missing braces around initializer
-> arch/mips/math-emu/ieee754.c:45:2: warning: (near initialization for '__ieee754dp_spcvals[0].<anonymous>')
-> arch/mips/math-emu/ieee754.c:45:2: error: unknown field 'bexp' specified in initializer
-> arch/mips/math-emu/ieee754.c:45:2: warning: excess elements in union initializer
-> arch/mips/math-emu/ieee754.c:45:2: warning: (near initialization for '__ieee754dp_spcvals[0]')
-> arch/mips/math-emu/ieee754.c:45:2: error: unknown field 'mant' specified in initializer
-> arch/mips/math-emu/ieee754.c:45:2: warning: excess elements in union initializer
-> arch/mips/math-emu/ieee754.c:45:2: warning: (near initialization for '__ieee754dp_spcvals[0]')
-> 
-> I'm using gcc 4.5.1 for mips.  The patch makes all members part of the 
-> union so it's probably not what you want to fix it, though.
 
- There's more recent breakage like this, e.g.:
-
-mm/page_io.c: In function '__swap_writepage':
-mm/page_io.c:277: error: unknown field 'bvec' specified in initializer
-mm/page_io.c:278: warning: excess elements in struct initializer
-mm/page_io.c:278: warning: (near initialization for 'from')
-
-introduced with "bio_vec-backed iov_iter" (GCC 4.1.2 here).  We still in 
-principle support GCC versions back to 3.2:
-
-$ grep 'Gnu C' Documentation/Changes
-o  Gnu C                  3.2                     # gcc --version
-$ 
-
-so either this breakage has to be cleaned up or the requirement for the 
-minimum GCC version revisited.
-
- This is a semi-standard language extension BTW, citing from the GCC 
-manual:
-
---------------------------------------------------------------------------
-6 Extensions to the C Language Family
-*************************************
-
-GNU C provides several language features not found in ISO standard C.
-(The `-pedantic' option directs GCC to print a warning message if any
-of these features is used.)  To test for the availability of these
-features in conditional compilation, check for a predefined macro
-`__GNUC__', which is always defined under GCC.
-
-6.59 Unnamed struct/union fields within structs/unions
-======================================================
-
-As permitted by ISO C11 and for compatibility with other compilers, GCC
-allows you to define a structure or union that contains, as fields,
-structures and unions without names.
---------------------------------------------------------------------------
-
--- note the term "permitted" rather than "required".
-
- We do make use of a few GCC language extensions, most notably inline 
-assembly, however in this case we merely save a couple of characters here 
-and there and this is IMO not worth breaking people's development 
-environments.
-
-  Maciej
+Signed-off-by: Daniel Walter <dwalter@google.com>
+---
+Changes since v1:
+  sending in the working patch
+Patch applies against current linux-tree
+---
+ arch/mips/rb532/devices.c | 30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
+---
+diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+index 3af00b2..6e32819b 100644
+--- a/arch/mips/rb532/devices.c
++++ b/arch/mips/rb532/devices.c
+@@ -250,28 +250,6 @@ static struct platform_device *rb532_devs[] = {
+ 	&rb532_wdt
+ };
+ 
+-static void __init parse_mac_addr(char *macstr)
+-{
+-	int i, h, l;
+-
+-	for (i = 0; i < 6; i++) {
+-		if (i != 5 && *(macstr + 2) != ':')
+-			return;
+-
+-		h = hex_to_bin(*macstr++);
+-		if (h == -1)
+-			return;
+-
+-		l = hex_to_bin(*macstr++);
+-		if (l == -1)
+-			return;
+-
+-		macstr++;
+-		korina_dev0_data.mac[i] = (h << 4) + l;
+-	}
+-}
+-
+-
+ /* NAND definitions */
+ #define NAND_CHIP_DELAY 25
+ 
+@@ -333,7 +311,13 @@ static int __init plat_setup_devices(void)
+ static int __init setup_kmac(char *s)
+ {
+ 	printk(KERN_INFO "korina mac = %s\n", s);
+-	parse_mac_addr(s);
++	sscanf(s, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
++			&korina_dev0_data.mac[0],
++			&korina_dev0_data.mac[1],
++			&korina_dev0_data.mac[2],
++			&korina_dev0_data.mac[3],
++			&korina_dev0_data.mac[4],
++			&korina_dev0_data.mac[5]);
+ 	return 0;
+ }
+ 

@@ -1,37 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 17:56:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39593 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816071AbaFXP4XY9KlC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 17:56:23 +0200
-Received: from localhost (unknown [38.104.188.138])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id ED4B7B01;
-        Tue, 24 Jun 2014 15:56:16 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sanjay Lal <sanjayl@kymasys.com>
-Subject: [PATCH 3.15 25/61] MIPS: KVM: Allocate at least 16KB for exception handlers
-Date:   Tue, 24 Jun 2014 11:51:08 -0400
-Message-Id: <20140624154953.916793194@linuxfoundation.org>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <20140624154952.751713761@linuxfoundation.org>
-References: <20140624154952.751713761@linuxfoundation.org>
-User-Agent: quilt/0.63-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 18:44:10 +0200 (CEST)
+Received: from mail-oa0-f53.google.com ([209.85.219.53]:62961 "EHLO
+        mail-oa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816071AbaFXQoFMAWzF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 18:44:05 +0200
+Received: by mail-oa0-f53.google.com with SMTP id l6so654929oag.12
+        for <linux-mips@linux-mips.org>; Tue, 24 Jun 2014 09:43:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=6aUiFlzoyglWoV3HG4s7ZfANLOUUgxsr4Oc8LmzvpNo=;
+        b=lDVcx0n2LzTO4q0RkqdYdwUQvkzzByp1Vanbo+kQCVrSpOb4A5UaWL8dSOUit9WZrE
+         h2/vvl3+lxmqzm1Qqlmdjw2TQca5CzSPAbx1NMzmzNiOskGrV/t9J/tNG+gT2IeKwNAr
+         GupNhB9BnUPh82v0oEAhO4jlJwCcGumpsRZ2rst8uQTtosVKjVx1sQ+8hgYZfS9F/Mgy
+         I5uxtZwvGr6Gc0NnvtiK/9/WA8+yH8f+CznqHJ2A1ZQP0UsQmm3CUAkCMye5julRdDZh
+         lINBYM1DNjJ75t6ZU9TaNTt817lwAsLgJi1mKDySKhd/TTjIwkVBkxY+WuSBmPS/XoFF
+         77YA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=6aUiFlzoyglWoV3HG4s7ZfANLOUUgxsr4Oc8LmzvpNo=;
+        b=axHXgVRzP9iIrGG5zs7NRF8pM6IfT+xRytd+o0RpFdKRv9c6QdW/rLVKFJbaVl0d4x
+         QdRUhHmWaMxOC6ACvztVlkBBk/NC2kINuZjRxpULPFy6WDigCA1bicMyp+jMJ9l7M+kC
+         2DOxYH/un0frXc6S4tet3aopUkOH99/0yR488=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=6aUiFlzoyglWoV3HG4s7ZfANLOUUgxsr4Oc8LmzvpNo=;
+        b=Bozdl/AvAbW0mNbDwRg2+IneE5jBpXtTl+EpCfxSmnXZF3alNsx3UwGI9K11mV3nKk
+         prN6QZMkdO/dS5V1/zNxpkGU2bTEenDoIie5vGMsW2T0YNQ6E4YGbkgi09ehbZBVa6QF
+         d8pLXsuWV/hqtRuzsyBAzGyE7ywRqlxRwMcAgjJ4By7QdCTmdl8TfWmXYXj3rCAXWkvO
+         erdMCorxv00NCM+kfuerHXQWnBiHeCffTgp0T+AcTnE+nPY0rAC+5lWUDZR4mIzoB4CM
+         Z1pPQuZiPb5AOBLn6RVtdpUtKfZ4bGNKMoWK12x0iGoEbRYXgeCYqk9+rJMfd9tvUqlQ
+         jS7g==
+X-Gm-Message-State: ALoCoQlOndAd97o4mTYidJ1HqiWf0AYHtgR2oph/Y31Ys+1ZjGLlN4XyqpNrnPNkBVCQd/QxEX7B
 MIME-Version: 1.0
+X-Received: by 10.60.175.34 with SMTP id bx2mr2089327oec.49.1403628238791;
+ Tue, 24 Jun 2014 09:43:58 -0700 (PDT)
+Received: by 10.182.63.80 with HTTP; Tue, 24 Jun 2014 09:43:58 -0700 (PDT)
+In-Reply-To: <53A95187.4010805@gmail.com>
+References: <20140623220150.GM5412@outflux.net>
+        <53A95187.4010805@gmail.com>
+Date:   Tue, 24 Jun 2014 09:43:58 -0700
+X-Google-Sender-Auth: NQIOUxYVJ08ACTVzzcRKIRSU3KA
+Message-ID: <CAGXu5j+A1WCA13rRnREh_m0kwsYfBrZSwB25NXEdpQNpgjJfyw@mail.gmail.com>
+Subject: Re: [PATCH v7 1/1] man-pages: seccomp.2: document syscall
+From:   Kees Cook <keescook@chromium.org>
+To:     "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Alexei Starovoitov <ast@plumgrid.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Will Drewry <wad@chromium.org>,
+        Julien Tinnes <jln@chromium.org>,
+        David Drysdale <drysdale@google.com>,
+        Linux API <linux-api@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40739
+X-archive-position: 40740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,52 +86,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.15-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Jun 24, 2014 at 3:23 AM, Michael Kerrisk (man-pages)
+<mtk.manpages@gmail.com> wrote:
+> On 06/24/2014 12:01 AM, Kees Cook wrote:
+>> Combines documentation from prctl, and in-kernel seccomp_filter.txt,
+>> along with new details specific to the new syscall.
+>
+> Great work on the man page, Kees! (BTW, just looking at the complexity detailed
+> there further supports the decision to grant this functionality as a separate
+> syscall, rather than multiplexed into prctl(2).
 
-------------------
+Great, thanks!
 
-From: James Hogan <james.hogan@imgtec.com>
+> Would there be some suitable, not too long program that we
+> could put in the man page as an example for using filters?
 
-commit 7006e2dfda9adfa40251093604db76d7e44263b3 upstream.
+Sure thing. I can modify the "dropper" sample in samples/seccomp. I
+will resend the man-page with that added.
 
-Each MIPS KVM guest has its own copy of the KVM exception vector. This
-contains the TLB refill exception handler at offset 0x000, the general
-exception handler at offset 0x180, and interrupt exception handlers at
-offset 0x200 in case Cause_IV=1. A common handler is copied to offset
-0x2000 and offset 0x3000 is used for temporarily storing k1 during entry
-from guest.
+Thanks!
 
-However the amount of memory allocated for this purpose is calculated as
-0x200 rounded up to the next page boundary, which is insufficient if 4KB
-pages are in use. This can lead to the common handler at offset 0x2000
-being overwritten and infinitely recursive exceptions on the next exit
-from the guest.
+-Kees
 
-Increase the minimum size from 0x200 to 0x4000 to cover the full use of
-the page.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kvm/kvm_mips.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -304,7 +304,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
- 	if (cpu_has_veic || cpu_has_vint) {
- 		size = 0x200 + VECTORSPACING * 64;
- 	} else {
--		size = 0x200;
-+		size = 0x4000;
- 	}
- 
- 	/* Save Linux EBASE */
+-- 
+Kees Cook
+Chrome OS Security

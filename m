@@ -1,50 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 19:29:47 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:63496 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6861043AbaFXR3pjatha (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Jun 2014 19:29:45 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s5OHSxxe023907
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 Jun 2014 13:28:59 -0400
-Received: from tranklukator.brq.redhat.com (dhcp-1-125.brq.redhat.com [10.34.1.125])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s5OHStW5022738;
-        Tue, 24 Jun 2014 13:28:55 -0400
-Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Tue, 24 Jun 2014 19:27:57 +0200 (CEST)
-Date:   Tue, 24 Jun 2014 19:27:53 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andy Lutomirski <luto@amacapital.net>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        linux-api@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v7 7/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
-Message-ID: <20140624172753.GA31435@redhat.com>
-References: <1403560693-21809-1-git-send-email-keescook@chromium.org> <1403560693-21809-8-git-send-email-keescook@chromium.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2014 19:31:40 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57351 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6862372AbaFXRbgK8TcI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2014 19:31:36 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id A596180C9D9E1;
+        Tue, 24 Jun 2014 18:31:20 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (192.168.5.97) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Tue, 24 Jun
+ 2014 18:31:23 +0100
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
+ (192.168.5.97) with Microsoft SMTP Server (TLS) id 14.3.181.6; Tue, 24 Jun
+ 2014 18:31:22 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Tue, 24 Jun 2014 18:31:22 +0100
+Received: from fun-lab.mips.com (10.20.2.221) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 24 Jun
+ 2014 10:31:20 -0700
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+To:     <pbonzini@redhat.com>
+CC:     <gleb@kernel.org>, <kvm@vger.kernel.org>, <sanjayl@kymasys.com>,
+        <james.hogan@imgtec.com>, <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, <dengcheng.zhu@imgtec.com>
+Subject: [PATCH v3 0/9] MIPS: KVM: Bugfixes and cleanups
+Date:   Tue, 24 Jun 2014 10:31:01 -0700
+Message-ID: <1403631071-6012-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1403560693-21809-8-git-send-email-keescook@chromium.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <oleg@redhat.com>
+Content-Type: text/plain
+X-Originating-IP: [10.20.2.221]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40742
+X-archive-position: 40743
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,36 +51,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/23, Kees Cook wrote:
->
-> +static pid_t seccomp_can_sync_threads(void)
-> +{
-> +	struct task_struct *thread, *caller;
-> +
-> +	BUG_ON(write_can_lock(&tasklist_lock));
-> +	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-> +
-> +	if (current->seccomp.mode != SECCOMP_MODE_FILTER)
-> +		return -EACCES;
-> +
-> +	/* Validate all threads being eligible for synchronization. */
-> +	thread = caller = current;
-> +	for_each_thread(caller, thread) {
-> +		pid_t failed;
-> +
-> +		if (thread->seccomp.mode == SECCOMP_MODE_DISABLED ||
-> +		    (thread->seccomp.mode == SECCOMP_MODE_FILTER &&
-> +		     is_ancestor(thread->seccomp.filter,
-> +				 caller->seccomp.filter)))
-> +			continue;
-> +
-> +		/* Return the first thread that cannot be synchronized. */
-> +		failed = task_pid_vnr(thread);
-> +		/* If the pid cannot be resolved, then return -ESRCH */
-> +		if (failed == 0)
-> +			failed = -ESRCH;
+The patches are pretty straightforward.
 
-forgot to mention, task_pid_vnr() can't fail. sighand->siglock is held,
-for_each_thread() can't see a thread which has passed unhash_process().
+Changes:
+v3 - v2:
+o In patch #2, change the use of kvm_[err|info|debug].
+o In patch #3, add err removal in kvm_arch_commit_memory_region().
+o In patch #3, revert the changes to kvm_arch_vm_ioctl().
+o In patch #7, drop the merge of kvm_arch_vcpu_free() and pointer nullification.
+o Add patch #9.
+v2 - v1:
+o In patch #1, don't change the opening comment mark for kernel-doc comments.
+o In patch #1, to make long lines more readable, use local variables / macros.
+o In patch #1, slight format adjustments are made.
+o Use -M flag to generate patches (detect renames).
+o Add patch #8.
 
-Oleg.
+Deng-Cheng Zhu (8):
+  MIPS: KVM: Reformat code and comments
+  MIPS: KVM: Use KVM internal logger
+  MIPS: KVM: Simplify functions by removing redundancy
+  MIPS: KVM: Remove unneeded volatile
+  MIPS: KVM: Rename files to remove the prefix "kvm_" and "kvm_mips_"
+  MIPS: KVM: Restore correct value for WIRED at TLB uninit
+  MIPS: KVM: Fix memory leak on VCPU
+  MIPS: KVM: Skip memory cleaning in kvm_mips_commpage_init()
+
+James Hogan (1):
+  MIPS: KVM: Remove dead code of TLB index error in
+    kvm_mips_emul_tlbwr()
+
+ arch/mips/include/asm/kvm_host.h                  |  12 +-
+ arch/mips/include/asm/r4kcache.h                  |   3 +
+ arch/mips/kvm/Makefile                            |   8 +-
+ arch/mips/kvm/{kvm_cb.c => callback.c}            |   0
+ arch/mips/kvm/commpage.c                          |  33 ++
+ arch/mips/kvm/commpage.h                          |  24 +
+ arch/mips/kvm/{kvm_mips_dyntrans.c => dyntrans.c} |  40 +-
+ arch/mips/kvm/{kvm_mips_emul.c => emulate.c}      | 539 +++++++++++-----------
+ arch/mips/kvm/{kvm_mips_int.c => interrupt.c}     |  47 +-
+ arch/mips/kvm/{kvm_mips_int.h => interrupt.h}     |  22 +-
+ arch/mips/kvm/kvm_mips_comm.h                     |  23 -
+ arch/mips/kvm/kvm_mips_commpage.c                 |  37 --
+ arch/mips/kvm/kvm_mips_opcode.h                   |  24 -
+ arch/mips/kvm/{kvm_locore.S => locore.S}          |  55 ++-
+ arch/mips/kvm/{kvm_mips.c => mips.c}              | 227 +++++----
+ arch/mips/kvm/opcode.h                            |  22 +
+ arch/mips/kvm/{kvm_mips_stats.c => stats.c}       |  28 +-
+ arch/mips/kvm/{kvm_tlb.c => tlb.c}                | 258 +++++------
+ arch/mips/kvm/trace.h                             |  18 +-
+ arch/mips/kvm/{kvm_trap_emul.c => trap_emul.c}    | 109 +++--
+ 20 files changed, 750 insertions(+), 779 deletions(-)
+ rename arch/mips/kvm/{kvm_cb.c => callback.c} (100%)
+ create mode 100644 arch/mips/kvm/commpage.c
+ create mode 100644 arch/mips/kvm/commpage.h
+ rename arch/mips/kvm/{kvm_mips_dyntrans.c => dyntrans.c} (79%)
+ rename arch/mips/kvm/{kvm_mips_emul.c => emulate.c} (83%)
+ rename arch/mips/kvm/{kvm_mips_int.c => interrupt.c} (85%)
+ rename arch/mips/kvm/{kvm_mips_int.h => interrupt.h} (74%)
+ delete mode 100644 arch/mips/kvm/kvm_mips_comm.h
+ delete mode 100644 arch/mips/kvm/kvm_mips_commpage.c
+ delete mode 100644 arch/mips/kvm/kvm_mips_opcode.h
+ rename arch/mips/kvm/{kvm_locore.S => locore.S} (93%)
+ rename arch/mips/kvm/{kvm_mips.c => mips.c} (83%)
+ create mode 100644 arch/mips/kvm/opcode.h
+ rename arch/mips/kvm/{kvm_mips_stats.c => stats.c} (63%)
+ rename arch/mips/kvm/{kvm_tlb.c => tlb.c} (78%)
+ rename arch/mips/kvm/{kvm_trap_emul.c => trap_emul.c} (83%)
+
+-- 
+1.8.5.3

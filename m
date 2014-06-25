@@ -1,53 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 16:44:32 +0200 (CEST)
-Received: from mail-oa0-f53.google.com ([209.85.219.53]:62915 "EHLO
-        mail-oa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816417AbaFYOoWSA2g0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 16:44:22 +0200
-Received: by mail-oa0-f53.google.com with SMTP id l6so2252134oag.12
-        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 07:44:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 16:51:33 +0200 (CEST)
+Received: from mail-ob0-f170.google.com ([209.85.214.170]:54622 "EHLO
+        mail-ob0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816417AbaFYOvbTxR2C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 16:51:31 +0200
+Received: by mail-ob0-f170.google.com with SMTP id uz6so2228644obc.29
+        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 07:51:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=d43c9ia4W4ibB4JXNGaNqBdNylfjX3ysbsOgdxFdABQ=;
-        b=pSR8s9nSTMeCY9F0OMYJdEYif0/yXCCV5+NiA/h0yR8/ZJKUtIWldrS+1P5tL5Uxul
-         TqSdu6PyLebwqai41geFrbx6s7SyWtIb03SrCNLsNPb/4SD/yIj/R13Fl4rDANHFbgdJ
-         NeKAA8R+ZWzfW/agrJ/ciQSkegpmDNwx+hlk6cYEw55ZNmhEWIGpe4HOekmA+a/YJ3Wt
-         LY4Joh3g1aYtlFsnZs/V3vHy31iiYIGqi5bQITVtokBnnsoDDXU/e95pfy59fj6aIklc
-         3vPmUigJY/K06oy76LWF956od0EW1mio5qDOL6+zzhttDlG5FBM22ZSGF8rzWUqMa86R
-         q5Fg==
+        bh=FNRwftFuANuIfX/LBvzGK/EiALT+SoPX0f2P2wYXV/M=;
+        b=PHrT7Oni4yxEmN3iI0jy2KuCSTBMnAg/DDXSTImJQ8ha+iJm9QGr+osIoyV80NFeHJ
+         uBXmFCXPi/k6W5iPnw4/z++FtnNp7HibdczK6KvvSkKEtQHWrCB6NibsDeAWVlCXFsBV
+         KjBFuLbVjExi5fyQ18aZNEhtqghaBtH5GMjNsA3yOp0bjPALsqRg3nqVB2hV7M0nVZ0f
+         wOSnEkT3mLdU4MYQue2wlGRwi4rV83w3bwp0ITzdaGN+b9YPHVyIxbxxGXWEbM2oiV8V
+         zUAQBWrv2lZTi6P9MOzACySOxDJO8C3FM5FWUuEGluQNuoOSUkE5F7I3b6zwb0Zpaoj4
+         Jt+A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=d43c9ia4W4ibB4JXNGaNqBdNylfjX3ysbsOgdxFdABQ=;
-        b=fMzddH57Z/xmEibz7xXs7FF6S6wSVYYC7fcXbomx9TZ+MKKNQLVr/N8N+g8c4XIPrN
-         D4NQimXx0KwHMMY1AgFJ9gqtG7jXHZb2HwirLxFB+dqB7GLT7Rgt+djhKJtseC7FqJs4
-         Mi0hg9PyQeW4HEDRwyyIuBlKCVLscpQkfKBWs=
+        bh=FNRwftFuANuIfX/LBvzGK/EiALT+SoPX0f2P2wYXV/M=;
+        b=J82Wuz1bft7xnF+aWMEnL1ZJhkgPwcVftTXmRccnvTksDMP6SWe/lRCTDtP0JmZycI
+         q/lMwRaL4yUa3aPeS+wxfjN7RNmPPEgPGRFLg3bJI6MmZXoPbo3YaGcMMFzxwoyULEVf
+         9j2PO47QYOK4TYGD/yWepqRvQTKtIGozBgImQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=d43c9ia4W4ibB4JXNGaNqBdNylfjX3ysbsOgdxFdABQ=;
-        b=QBFgPA6/y1GOoY0DxwVaZtQkjEtXocmgkznH+tBG5BRQePYc/6hspIKetVzc4QPun5
-         Uj2Tl+l0Z6SocRVeZSONSwSvn3f/qi9PIvZpryHbvInBn3Hnt18p9Szu7KEnkQ1itRkl
-         b+90o6yeUa3q8RGXxxhyn5RTbTYQ+qRa7nlepltK4fDO+zd6fpw2FRd4XVGYBnb15e2j
-         bzsCtagM2rZ9WWguq55t8jP9d3WcJm9tLYCwnwvh+WzcZwzHunr3eu7wcjWfOpFilorv
-         K4Fm5BaXL+3B5L4BA6IC68CD0SssQgDOFBHdN3MNZVVD2vNNRF506ofba8WGnMOYVqa5
-         MGPg==
-X-Gm-Message-State: ALoCoQl4AIGvKKduaxByFfvy6E9Ixwm8P3DwRNtuyqVRA5m3rFw1LR7DhhBuQAoHT3q5T7yLTgMc
+        bh=FNRwftFuANuIfX/LBvzGK/EiALT+SoPX0f2P2wYXV/M=;
+        b=l53oRxZVWMOhi5MD2/gcEssibs3trZqgQstvDBX2rlqF+e4SUI3KKJQKMhK3FLhVi1
+         9m5jhD1pzOcEv5+S6L9lFru5CXpqOOmoQdc2VekYHHu8ZdaMibzCxKpzdpe/fthieKiF
+         mloZRnKwyEyyioOHpIWqR0flFZjM+oaRdiPtS9+IMPOttUecvWw0FJhAh7FlYhh7cXNj
+         gR64kO/Uxvf0Q46YxJB7y+sa/KsUaWBIYq4jXYm80HD8yptcAA48/o5XD5qiloFSk4WI
+         D4Ai/g0tcwXLbZ6UU6jTg9w7Sdd1TeMIwqhPwIOcGW36f5eV4F5aV2Fo1kkRNelEhsxM
+         9AWg==
+X-Gm-Message-State: ALoCoQlhR5vNRq3I6ljp4BFtA/vURHNcJpklngeqg7K4JV/HgxXnSLWpl7LJwvLsm0dQzf8VqtUB
 MIME-Version: 1.0
-X-Received: by 10.60.143.37 with SMTP id sb5mr8481969oeb.38.1403707455342;
- Wed, 25 Jun 2014 07:44:15 -0700 (PDT)
-Received: by 10.182.85.103 with HTTP; Wed, 25 Jun 2014 07:44:15 -0700 (PDT)
-In-Reply-To: <20140625134354.GA7892@redhat.com>
+X-Received: by 10.60.143.37 with SMTP id sb5mr8531664oeb.38.1403707885258;
+ Wed, 25 Jun 2014 07:51:25 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Wed, 25 Jun 2014 07:51:25 -0700 (PDT)
+In-Reply-To: <20140625135121.GB7892@redhat.com>
 References: <1403642893-23107-1-git-send-email-keescook@chromium.org>
-        <1403642893-23107-5-git-send-email-keescook@chromium.org>
-        <20140625134354.GA7892@redhat.com>
-Date:   Wed, 25 Jun 2014 07:44:15 -0700
-X-Google-Sender-Auth: 0nCLCSOhkNigsvazxcb0T8pkDus
-Message-ID: <CAGXu5j+yutPBpEq3qiVwAMT6q0y36bwM2ksBvj-=6AqkWAgaGQ@mail.gmail.com>
-Subject: Re: [PATCH v8 4/9] sched: move no_new_privs into new atomic flags
+        <1403642893-23107-6-git-send-email-keescook@chromium.org>
+        <20140625135121.GB7892@redhat.com>
+Date:   Wed, 25 Jun 2014 07:51:25 -0700
+X-Google-Sender-Auth: RCNeIVkYTQv2tceTvFHUOTo4kcM
+Message-ID: <CAGXu5jJkFxh4K=40xuh6tu3kUf4oJM8Dry+4upBdRieW3FNLgw@mail.gmail.com>
+Subject: Re: [PATCH v8 5/9] seccomp: split mode set routines
 From:   Kees Cook <keescook@chromium.org>
 To:     Oleg Nesterov <oleg@redhat.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -70,7 +70,7 @@ Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40811
+X-archive-position: 40812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,28 +87,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 25, 2014 at 6:43 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+On Wed, Jun 25, 2014 at 6:51 AM, Oleg Nesterov <oleg@redhat.com> wrote:
 > On 06/24, Kees Cook wrote:
 >>
->> --- a/include/linux/sched.h
->> +++ b/include/linux/sched.h
->> @@ -1307,8 +1307,7 @@ struct task_struct {
->>                                * execve */
->>       unsigned in_iowait:1;
->>
->> -     /* task may not gain privileges */
->> -     unsigned no_new_privs:1;
->> +     unsigned long atomic_flags; /* Flags needing atomic access. */
->>
->>       /* Revert to default priority/policy when forking */
->>       unsigned sched_reset_on_fork:1;
+>> +static inline void seccomp_assign_mode(struct task_struct *task,
+>> +                                    unsigned long seccomp_mode)
+>> +{
+>> +     BUG_ON(!spin_is_locked(&task->sighand->siglock));
+>> +
+>> +     task->seccomp.mode = seccomp_mode;
+>> +     set_tsk_thread_flag(task, TIF_SECCOMP);
+>> +}
 >
-> Agreed, personally I like it more than seccomp->flags.
+> OK, but unless task == current this can race with secure_computing().
+> I think this needs smp_mb__before_atomic() and secure_computing() needs
+> rmb() after test_bit(TIF_SECCOMP).
 >
-> But probably it would be better to place the new member before/after
-> other bitfields to save the space?
+> Otherwise, can't __secure_computing() hit BUG() if it sees the old
+> mode == SECCOMP_MODE_DISABLED ?
+>
+> Or seccomp_run_filters() can see ->filters == NULL and WARN(),
+> smp_load_acquire() only serializes that LOAD with the subsequent memory
+> operations.
 
-Sure, I'll move it down. (Though I thought the compiler was smarter about that.)
+Hm, actually, now I'm worried about smp_load_acquire() being too slow
+in run_filters().
+
+The ordering must be:
+- task->seccomp.filter must be valid before
+- task->seccomp.mode is set, which must be valid before
+- TIF_SECCOMP is set
+
+But I don't want to impact secure_computing(). What's the best way to
+make sure this ordering is respected?
 
 -Kees
 

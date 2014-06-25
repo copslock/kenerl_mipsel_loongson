@@ -1,50 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 20:30:29 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:30216 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6843037AbaFYSaWiaARc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Jun 2014 20:30:22 +0200
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s5PIUDmw027301
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Jun 2014 14:30:13 -0400
-Received: from tranklukator.brq.redhat.com (dhcp-1-125.brq.redhat.com [10.34.1.125])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s5PIU9C2026311;
-        Wed, 25 Jun 2014 14:30:10 -0400
-Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Wed, 25 Jun 2014 20:29:11 +0200 (CEST)
-Date:   Wed, 25 Jun 2014 20:29:07 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andy Lutomirski <luto@amacapital.net>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        linux-api@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v8 3/9] seccomp: introduce writer locking
-Message-ID: <20140625182907.GA20226@redhat.com>
-References: <1403642893-23107-1-git-send-email-keescook@chromium.org> <1403642893-23107-4-git-send-email-keescook@chromium.org> <20140625180705.GB18185@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 20:31:57 +0200 (CEST)
+Received: from mail-oa0-f44.google.com ([209.85.219.44]:40761 "EHLO
+        mail-oa0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859933AbaFYSbzM0vS7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 20:31:55 +0200
+Received: by mail-oa0-f44.google.com with SMTP id i7so2591956oag.3
+        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 11:31:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=xxOyiLu8lA3jP6sdCx23/Je+Kh1wn2HoIsTfNI1NLuE=;
+        b=oWxLaYGhVd6yUBOlg6Rj6T33WYlKOa4pCjHppBkBk4flILAAF6PIydD12UKBTveWiw
+         +bMo4NKtqCz+n8/ApR29VvzflorZbMZnUv/O6cl8AWw+lnTLTdugThykKp5rZDjLiEgU
+         QhmY96FsbqHd8gEexfYmlR7qNuuC8vBJZJ89QP6YFjt+qY475tvRrvZy4gtstMSYDMeZ
+         l7npnadkydY0/f4EaiTwt/YlQTutAyVGzlcWfUIf2NJ5K9KDml8e9hTr5nzlKMe7BTnj
+         gxkWZj89XlzSjCvomhlZkvymf6GAVKKBgoqlrbKGx+WMKrZfhKSwUBWk6J6N0cEZX/pj
+         6X4A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=xxOyiLu8lA3jP6sdCx23/Je+Kh1wn2HoIsTfNI1NLuE=;
+        b=IiJWHYoo/8f1FfcaTvONzDWzHYB5MucZyy+dIzpg78GqJKsN4utS/orpZ+mEB6w+js
+         iwyq7an5hArKXlYgaeZMvemkYvsev2mgNJGZTJ2ISNEJqdnF+OAUPE/qK/aN6cgDJ+8n
+         rGADkRKbrYmtVoaBHpxbAzL/sVOMcv3uV44Mc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=xxOyiLu8lA3jP6sdCx23/Je+Kh1wn2HoIsTfNI1NLuE=;
+        b=CGNEtrX/1M7tzI8Tlg+bt8bzjKnXZt3fAjTqml6UhOQos1jX0w4NPPcE9rE20bY2bz
+         3PJAp7Ohyl22WpMOmgYqB+IyShfYQki2HReChMqnoZSVtIwhJq5GtmeTzXrCEtU5EM9A
+         jL5EBYQkaA7aCxUawoi1720txFNQlu2sa/HupIGz+Bv6FfXIiyf9SEYl3/Nw6hKgEXc8
+         8rLrmLUe3iy6Br2xAugYw/uUlx0cNlYIUphiEioUfmnfFMKazx/rtxg+mq7RzCORgbPw
+         nwThddvrTHJ2gE1Ynj9GdDBQUQ7TZp/VieZQx5PRJUPVsmcTTX3zBKvi4agVvGRB1yQq
+         VYnQ==
+X-Gm-Message-State: ALoCoQlQCo0Rj+IwCPcNrMBnzbpmMrkrjenZ4hY+4o+3psQresvEHEC1Bsx+nBL9ApVQRTQ0zT28
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140625180705.GB18185@redhat.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <oleg@redhat.com>
+X-Received: by 10.182.81.99 with SMTP id z3mr4566558obx.79.1403721109111; Wed,
+ 25 Jun 2014 11:31:49 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Wed, 25 Jun 2014 11:31:48 -0700 (PDT)
+In-Reply-To: <20140625182012.GA19437@redhat.com>
+References: <1403642893-23107-1-git-send-email-keescook@chromium.org>
+        <1403642893-23107-10-git-send-email-keescook@chromium.org>
+        <20140625142121.GD7892@redhat.com>
+        <CAGXu5jJtLrjbobZC1FD4WV-Jm2p7cRGa1aSPK-d_isnfCZAHdA@mail.gmail.com>
+        <20140625165209.GA14720@redhat.com>
+        <CAGXu5jLHDew1fifGY_mWgwcH7evm0T8rqSnBrw4XpoAXGK+t-Q@mail.gmail.com>
+        <20140625172410.GA17133@redhat.com>
+        <CAGXu5jKkLS3++_dtWHnjWudVvaSR9DRwjNG3q00SmSy6XoCMaw@mail.gmail.com>
+        <20140625182012.GA19437@redhat.com>
+Date:   Wed, 25 Jun 2014 11:31:48 -0700
+X-Google-Sender-Auth: aGErAidmIooTIFiXMdWJrG37Qhc
+Message-ID: <CAGXu5jLh-a2x0N+kHW7qbZSW0gOPs8v05EzBFkMYQwhft8o2aA@mail.gmail.com>
+Subject: Re: [PATCH v8 9/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
+From:   Kees Cook <keescook@chromium.org>
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     linux-arch <linux-arch@vger.kernel.org>, linux-mips@linux-mips.org,
+        Will Drewry <wad@chromium.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Julien Tinnes <jln@chromium.org>,
+        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Drysdale <drysdale@google.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Alexei Starovoitov <ast@plumgrid.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40834
+X-archive-position: 40835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,33 +93,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/25, Oleg Nesterov wrote:
+On Wed, Jun 25, 2014 at 11:20 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+> On 06/25, Kees Cook wrote:
+>>
+>> On Wed, Jun 25, 2014 at 10:24 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+>> >
+>> > However, do_execve() takes cred_guard_mutex at the start in prepare_bprm_creds()
+>> > and drops it in install_exec_creds(), so it should solve the problem?
+>>
+>> I can't tell yet. I'm still trying to understand the order of
+>> operations here. It looks like de_thread() takes the sighand lock.
+>> do_execve_common does:
+>>
+>> prepare_bprm_creds (takes cred_guard_mutex)
+>> check_unsafe_exec (checks nnp to set LSM_UNSAFE_NO_NEW_PRIVS)
+>> prepare_binprm (handles suid escalation, checks nnp separately)
+>>     security_bprm_set_creds (checks LSM_UNSAFE_NO_NEW_PRIVS)
+>> exec_binprm
+>>     load_elf_binary
+>>         flush_old_exec
+>>             de_thread (takes and releases sighand->lock)
+>>         install_exec_creds (releases cred_guard_mutex)
 >
-> On 06/24, Kees Cook wrote:
-> >
-> > +static void copy_seccomp(struct task_struct *p)
-> > +{
-> > +#ifdef CONFIG_SECCOMP
-> > +	/*
-> > +	 * Must be called with sighand->lock held, which is common to
-> > +	 * all threads in the group. Regardless, nothing special is
-> > +	 * needed for the child since it is not yet in the tasklist.
-> > +	 */
-> > +	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-> > +
-> > +	get_seccomp_filter(current);
-> > +	p->seccomp = current->seccomp;
-> > +
-> > +	if (p->seccomp.mode != SECCOMP_MODE_DISABLED)
-> > +		set_tsk_thread_flag(p, TIF_SECCOMP);
-> > +#endif
-> > +}
+> Yes, and note that when cred_guard_mutex is dropped all other threads
+> are already killed,
 >
-> Wait. But what about no_new_privs? We should copy it as well...
+>> I don't see a way to use cred_guard_mutex during tsync (which holds
+>> sighand->lock) without dead-locking. What were you considering here?
 >
-> Perhaps this helper should be updated a bit and moved into seccomp.c so
-> that seccomp_sync_threads() could use it too.
+> Just take/drop current->signal->cred_guard_mutex along with ->siglock
+> in seccomp_set_mode_filter() ? Unconditionally on depending on
+> SECCOMP_FILTER_FLAG_TSYNC.
 
-This way we can also unexport get_seccomp_filter().
+Yeah, this looks good. *whew* Testing it now, so far so good.
 
-Oleg.
+Thanks!
+
+-Kees
+
+-- 
+Kees Cook
+Chrome OS Security

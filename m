@@ -1,38 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 19:04:09 +0200 (CEST)
-Received: from mail-la0-f51.google.com ([209.85.215.51]:34263 "EHLO
-        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854767AbaFYREHzIhH7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 19:04:07 +0200
-Received: by mail-la0-f51.google.com with SMTP id mc6so960171lab.24
-        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 10:04:02 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 19:09:09 +0200 (CEST)
+Received: from mail-oa0-f52.google.com ([209.85.219.52]:50780 "EHLO
+        mail-oa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860038AbaFYRJGQCiRX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 19:09:06 +0200
+Received: by mail-oa0-f52.google.com with SMTP id j17so2472677oag.11
+        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 10:09:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=g0o15zrYn6AY8uXfBl5NxTBKzgqKsRTYymb/zSkxkcg=;
+        b=NPe/TyZBr3yrGy71xRdOM56g4iw/xmTUMpI6WcRAbBJWKFMxyb3fwf2YtO28AUMy0a
+         FIS4QdJ3pPHx7vm6myD1nGLubi3tj7TD+uKwYWXg8ltvPeO84ejENkO/UW38XNdZQMvX
+         f8y7Roo94abpLuq/yWkA6KpBWDXurRXefXNv01jC7gEMyvkLRQ75Y8HVJtbFXUEAZY31
+         eHtsfRzyv+i8gJayuOsFHhNxtmLzPzWw9QLqA5LB0dIDVevCzvA4zn6mBGUo3v4wetdT
+         P2JMW6VrdXCMUv1ivfsPOgW2nsyomsBH9OjdX9kGqtGmhY7Ue+YINhQTYzEEFyskwPLY
+         CadA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=g0o15zrYn6AY8uXfBl5NxTBKzgqKsRTYymb/zSkxkcg=;
+        b=lB6oIGLsNoXPwzizKr71QhWa7Y9QGVyFTide7CfjxhVLRkZawxuyAI+yMV57uhTGAv
+         NSjiikS4GsuE9avDhxxzQqAYM+jziZb/h/3gh8lkk/lKQf6RDK/Ui4VPMz9ZS+5Z9362
+         Gt5Fw8Sb3phi9bb8JoKykbKL77aSQvmespADM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=stf7n+bLoPTTY1mHnpqgJoJgjsyJQR+lSrWf6i6y5zo=;
-        b=P5YZqmkzEyHfrNz+do/Xn3NFklINfXk/AI9FVjvLFJadpLFmNPNPWE7sIfATgwsURP
-         WLWKIjhUBw304bxrFJlkxW3uhO1EPzS7KGnm+9MYis1OQ/DhS3FXPfPC16iNm9xZVj6D
-         CuGk5Cvt4wfKaNFSr9nxURZfnl6hXSiiu8CAZbz81m4Rpc49gzKATasxAQOpFN0SW75U
-         PNUr4vWvTLLTzZf4Fv0sd1kayek0EuP1BrWkgyyFoJa+O7yUX41gNBmUw0gNyBC8CIzG
-         X4mcMRWYQdE71PCYIO12MsxVnHudJ0qSp3U6CPrB7iq9oq8a+j+gN7XGX8+TIjty+Mq0
-         tGwQ==
-X-Gm-Message-State: ALoCoQkXeoJu3D5PXB9EXuHa3Ok8UsWLaIiPzxqPOSTe8S0QsHUde4XoeNGS0wadOlV7il7Pe2SP
-X-Received: by 10.112.46.97 with SMTP id u1mr6467919lbm.50.1403715842426; Wed,
- 25 Jun 2014 10:04:02 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=g0o15zrYn6AY8uXfBl5NxTBKzgqKsRTYymb/zSkxkcg=;
+        b=SJ3bVTTCI9ROMkjSUeOAO34jTkxRKLVsg68/IHuLPRJRaUa72KkFNJMHdHqe3KuUqF
+         TCxLm0jMUoppu8d/LSQhS5w/pxDHJv2AJAxcURMCM1exDfFQR+YAcrwIw/eE5FY7OSrF
+         DdAwKf/0sq9vcka2QBxlKT42szyNxnooV7pWVpKnbSB3Uln7GAsf6z1q6exDrGEGkPKj
+         3D/e+hx8Tlk9mNXf5xB4g1oH4neQo0p30PDbHxstJA423r949u07rJalmdFzbAPmowlG
+         hUo76GJoH/y10x8xI34boh5y49JPtNOdkW0XBvSoF3/0nxZnes2YH5eueo9JQSbZGGdi
+         O49A==
+X-Gm-Message-State: ALoCoQmJcLOmnsWUi56x0zIZ2YBOXs0Fke5WttmDMtuOoMS6D7WOqGyUZBkeWr53RB/7iKHhIHCo
 MIME-Version: 1.0
-Received: by 10.152.108.130 with HTTP; Wed, 25 Jun 2014 10:03:42 -0700 (PDT)
-In-Reply-To: <CAGXu5j+J11zJnuFR8bYKAXizAHhCx4R+uJE_QH6zC3q2udkpaQ@mail.gmail.com>
+X-Received: by 10.60.175.34 with SMTP id bx2mr9444178oec.49.1403716140098;
+ Wed, 25 Jun 2014 10:09:00 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Wed, 25 Jun 2014 10:08:59 -0700 (PDT)
+In-Reply-To: <20140625165209.GA14720@redhat.com>
 References: <1403642893-23107-1-git-send-email-keescook@chromium.org>
- <1403642893-23107-6-git-send-email-keescook@chromium.org> <20140625135121.GB7892@redhat.com>
- <CAGXu5jJkFxh4K=40xuh6tu3kUf4oJM8Dry+4upBdRieW3FNLgw@mail.gmail.com>
- <CALCETrUBNmLnpa+LM91om2RSpR6SjupP-EdefzhU1Me4nv3Dfw@mail.gmail.com> <CAGXu5j+J11zJnuFR8bYKAXizAHhCx4R+uJE_QH6zC3q2udkpaQ@mail.gmail.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Wed, 25 Jun 2014 10:03:42 -0700
-Message-ID: <CALCETrVrs8sb19+UUqyFEpAFzTih5dkAwn-WpQjfgPcPJMpP5g@mail.gmail.com>
-Subject: Re: [PATCH v8 5/9] seccomp: split mode set routines
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Oleg Nesterov <oleg@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
+        <1403642893-23107-10-git-send-email-keescook@chromium.org>
+        <20140625142121.GD7892@redhat.com>
+        <CAGXu5jJtLrjbobZC1FD4WV-Jm2p7cRGa1aSPK-d_isnfCZAHdA@mail.gmail.com>
+        <20140625165209.GA14720@redhat.com>
+Date:   Wed, 25 Jun 2014 10:09:00 -0700
+X-Google-Sender-Auth: LyzNbpp1gBF1qXUfuxVtfLNpQuk
+Message-ID: <CAGXu5jLHDew1fifGY_mWgwcH7evm0T8rqSnBrw4XpoAXGK+t-Q@mail.gmail.com>
+Subject: Re: [PATCH v8 9/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
+From:   Kees Cook <keescook@chromium.org>
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
         "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
         Alexei Starovoitov <ast@plumgrid.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -47,15 +68,15 @@ Cc:     Oleg Nesterov <oleg@redhat.com>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-security-module <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40819
+X-archive-position: 40820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,89 +89,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 25, 2014 at 9:54 AM, Kees Cook <keescook@chromium.org> wrote:
-> On Wed, Jun 25, 2014 at 9:10 AM, Andy Lutomirski <luto@amacapital.net> wrote:
->> On Wed, Jun 25, 2014 at 7:51 AM, Kees Cook <keescook@chromium.org> wrote:
->>> On Wed, Jun 25, 2014 at 6:51 AM, Oleg Nesterov <oleg@redhat.com> wrote:
->>>> On 06/24, Kees Cook wrote:
->>>>>
->>>>> +static inline void seccomp_assign_mode(struct task_struct *task,
->>>>> +                                    unsigned long seccomp_mode)
->>>>> +{
->>>>> +     BUG_ON(!spin_is_locked(&task->sighand->siglock));
->>>>> +
->>>>> +     task->seccomp.mode = seccomp_mode;
->>>>> +     set_tsk_thread_flag(task, TIF_SECCOMP);
->>>>> +}
->>>>
->>>> OK, but unless task == current this can race with secure_computing().
->>>> I think this needs smp_mb__before_atomic() and secure_computing() needs
->>>> rmb() after test_bit(TIF_SECCOMP).
->>>>
->>>> Otherwise, can't __secure_computing() hit BUG() if it sees the old
->>>> mode == SECCOMP_MODE_DISABLED ?
->>>>
->>>> Or seccomp_run_filters() can see ->filters == NULL and WARN(),
->>>> smp_load_acquire() only serializes that LOAD with the subsequent memory
->>>> operations.
->>>
->>> Hm, actually, now I'm worried about smp_load_acquire() being too slow
->>> in run_filters().
->>>
->>> The ordering must be:
->>> - task->seccomp.filter must be valid before
->>> - task->seccomp.mode is set, which must be valid before
->>> - TIF_SECCOMP is set
->>>
->>> But I don't want to impact secure_computing(). What's the best way to
->>> make sure this ordering is respected?
+On Wed, Jun 25, 2014 at 9:52 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+> On 06/25, Kees Cook wrote:
 >>
->> Remove the ordering requirement, perhaps?
+>> On Wed, Jun 25, 2014 at 7:21 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+>> >
+>> > But. Doesn't this change add a new security hole?
+>> >
+>> > Obviously, we should not allow to install a filter and then (say) exec
+>> > a suid binary, that is why we have no_new_privs/LSM_UNSAFE_NO_NEW_PRIVS.
+>> >
+>> > But what if "thread->seccomp.filter = caller->seccomp.filter" races with
+>> > any user of task_no_new_privs() ? Say, suppose this thread has already
+>> > passed check_unsafe_exec/etc and it is going to exec the suid binary?
 >>
->> What if you moved mode into seccomp.filter?  Then there would be
->> little reason to check TIF_SECCOMP from secure_computing; instead, you
->> could smp_load_acquire (or read_barrier_depends, maybe) seccomp.filter
->> from secure_computing and pass the result as a parameter to
->> __secure_computing.  Or you could even remove the distinction between
->> secure_computing and __secure_computing -- it's essentially useless
->> anyway to split entry hook approaches like my x86 fastpath prototype.
+>> Oh, ew. Yeah. It looks like there's a cred lock to be held to combat this?
 >
-> The TIF_SECCOMP is needed for the syscall entry path. The check in
-> secure_computing() is just because the "I am being traced" trigger
-> includes a call to secure_computing, which filters out tracing
-> reasons.
-
-Right.  I'm suggesting just checking a single indication that seccomp
-is on from the process in the seccomp code so that the order doesn't
-matter.
-
-IOW, TIF_SECCOMP causes __secure_computing to be invoked, but the race
-only seems to matter because of the warning and the BUG.  I think that
-both can be fixed if you merge mode into filter so that
-__secure_computing atomically checks one condition.
-
+> Yes, cred_guard_mutex looks like an obvious choice... Hmm, but somehow
+> initially I thought that the fix won't be simple. Not sure why.
 >
-> Your fast path work would clean a lot of that up, as you say. But it
-> still doesn't change the ordering check here. TIF_SECCOMP indicates
-> seccomp.mode must be checked, so that ordering will remain, and if
-> mode == FILTER, seccomp.filter must be valid.
+> Yes, at least this should close the race with suid-exec. And there are no
+> other users. Except apparmor, and I hope you will check it because I simply
+> do not know what it does ;)
 >
-> Isn't there a way we can force the assignment ordering in seccomp_assign_mode()?
-
-Write the filter, then smp_mb (or maybe a weaker barrier is okay),
-then set the bit.
-
---Andy
-
+>> I wonder if changes to nnp need to "flushed" during syscall entry
+>> instead of getting updated externally/asynchronously? That way it
+>> won't be out of sync with the seccomp mode/filters.
+>>
+>> Perhaps secure computing needs to check some (maybe seccomp-only)
+>> atomic flags and flip on the "real" nnp if found?
 >
-> -Kees
+> Not sure I understand you, could you clarify?
+
+Instead of having TSYNC change the nnp bit, it can set a new flag, say:
+
+    task->seccomp.flags |= SECCOMP_NEEDS_NNP;
+
+This would be set along with seccomp.mode, seccomp.filter, and
+TIF_SECCOMP. Then, during the next secure_computing() call that thread
+makes, it would check the flag:
+
+    if (task->seccomp.flags & SECCOMP_NEEDS_NNP)
+        task->nnp = 1;
+
+This means that nnp couldn't change in the middle of a running syscall.
+
+Hmmm. Perhaps this doesn't solve anything, though? Perhaps my proposal
+above would actually make things worse, since now we'd have a thread
+with seccomp set up, and no nnp. If it was in the middle of exec,
+we're still causing a problem.
+
+I think we'd also need a way to either delay the seccomp changes, or
+to notice this condition during exec. Bleh.
+
+What actually happens with a multi-threaded process calls exec? I
+assume all the other threads are destroyed?
+
+> But I was also worried that task_no_new_privs(current) is no longer stable
+> inside the syscall paths, perhaps this is what you meant? However I do not
+> see something bad here... And this has nothing to do with the race above.
 >
-> --
-> Kees Cook
-> Chrome OS Security
+> Also. Even ignoring no_new_privs, SECCOMP_FILTER_FLAG_TSYNC is not atomic
+> and we can do nothing with this fact (unless it try to freeze the thread
+> group somehow), perhaps it makes sense to document this somehow.
+>
+> I mean, suppose you want to ensure write-to-file is not possible, so you
+> do seccomp(SECCOMP_FILTER_FLAG_TSYNC, nack_write_to_file_filter). You can't
+> assume that this has effect right after seccomp() returns, this can obviously
+> race with a sub-thread which has already entered sys_write().
+>
+> Once again, I am not arguing, just I think it makes sense to at least mention
+> the limitations during the discussion.
 
+Right -- this is an accepted limitation. I will call it out
+specifically in the man-page; that's a good idea.
 
+-Kees
 
 -- 
-Andy Lutomirski
-AMA Capital Management, LLC
+Kees Cook
+Chrome OS Security

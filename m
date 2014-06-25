@@ -1,53 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 16:51:33 +0200 (CEST)
-Received: from mail-ob0-f170.google.com ([209.85.214.170]:54622 "EHLO
-        mail-ob0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816417AbaFYOvbTxR2C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 16:51:31 +0200
-Received: by mail-ob0-f170.google.com with SMTP id uz6so2228644obc.29
-        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 07:51:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 17:08:19 +0200 (CEST)
+Received: from mail-oa0-f48.google.com ([209.85.219.48]:58264 "EHLO
+        mail-oa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859626AbaFYPIRc3EJG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 17:08:17 +0200
+Received: by mail-oa0-f48.google.com with SMTP id m1so2250210oag.35
+        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 08:08:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=FNRwftFuANuIfX/LBvzGK/EiALT+SoPX0f2P2wYXV/M=;
-        b=PHrT7Oni4yxEmN3iI0jy2KuCSTBMnAg/DDXSTImJQ8ha+iJm9QGr+osIoyV80NFeHJ
-         uBXmFCXPi/k6W5iPnw4/z++FtnNp7HibdczK6KvvSkKEtQHWrCB6NibsDeAWVlCXFsBV
-         KjBFuLbVjExi5fyQ18aZNEhtqghaBtH5GMjNsA3yOp0bjPALsqRg3nqVB2hV7M0nVZ0f
-         wOSnEkT3mLdU4MYQue2wlGRwi4rV83w3bwp0ITzdaGN+b9YPHVyIxbxxGXWEbM2oiV8V
-         zUAQBWrv2lZTi6P9MOzACySOxDJO8C3FM5FWUuEGluQNuoOSUkE5F7I3b6zwb0Zpaoj4
-         Jt+A==
+        bh=RPRkHElKoRY56C+gf2FLTCdORrBGECka4D3omf19jyI=;
+        b=ZtGUOXe3i7YQNHgILzKlyepxwBESDp23bdFzVii6fj0bbiR8mVG/OoAcYFFRdlckb8
+         Y/gMH3MdFoY+5qe3lGD4Bi6fr6Z5FEod4IFAufcRC0Lm/XXSEwyPj8/Uz2GCwBwp4THi
+         zd6VzQyJf9z322c/Fht12U8WJ3+YGgLZoMIomR83WR1CPbgB4JG0htW+VbIT8pshDMIO
+         GS/5ftAe+HbVomm9EbiAy3XPNSl4xt24N2YiHJyeOOTao7FjvoYYrukMrKFc3/n4N/G5
+         Zw2yL8bVMFoj/GayB6TRO1EvkhF757POgDdyu4VJDaHxRbHJTzevhM3Jeb57W0qaeNHF
+         Bcig==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=FNRwftFuANuIfX/LBvzGK/EiALT+SoPX0f2P2wYXV/M=;
-        b=J82Wuz1bft7xnF+aWMEnL1ZJhkgPwcVftTXmRccnvTksDMP6SWe/lRCTDtP0JmZycI
-         q/lMwRaL4yUa3aPeS+wxfjN7RNmPPEgPGRFLg3bJI6MmZXoPbo3YaGcMMFzxwoyULEVf
-         9j2PO47QYOK4TYGD/yWepqRvQTKtIGozBgImQ=
+        bh=RPRkHElKoRY56C+gf2FLTCdORrBGECka4D3omf19jyI=;
+        b=P3WAERfYnxvUz48q2W5hDz45iOLPGvKDmMyJZ7IzmD0SUCV8IO8YzOmGVsBXllgt4o
+         aGdDSrJ3jb+DL44aUbfTlh6m/AhSj/p6QKzz1eq4rQ0bNGBenBCCqhWgvlEOei8W3PlO
+         VRuqlLr3deHIdhbNDn95wDyh8guFNZfyzFCNQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=FNRwftFuANuIfX/LBvzGK/EiALT+SoPX0f2P2wYXV/M=;
-        b=l53oRxZVWMOhi5MD2/gcEssibs3trZqgQstvDBX2rlqF+e4SUI3KKJQKMhK3FLhVi1
-         9m5jhD1pzOcEv5+S6L9lFru5CXpqOOmoQdc2VekYHHu8ZdaMibzCxKpzdpe/fthieKiF
-         mloZRnKwyEyyioOHpIWqR0flFZjM+oaRdiPtS9+IMPOttUecvWw0FJhAh7FlYhh7cXNj
-         gR64kO/Uxvf0Q46YxJB7y+sa/KsUaWBIYq4jXYm80HD8yptcAA48/o5XD5qiloFSk4WI
-         D4Ai/g0tcwXLbZ6UU6jTg9w7Sdd1TeMIwqhPwIOcGW36f5eV4F5aV2Fo1kkRNelEhsxM
-         9AWg==
-X-Gm-Message-State: ALoCoQlhR5vNRq3I6ljp4BFtA/vURHNcJpklngeqg7K4JV/HgxXnSLWpl7LJwvLsm0dQzf8VqtUB
+        bh=RPRkHElKoRY56C+gf2FLTCdORrBGECka4D3omf19jyI=;
+        b=JW0oZ9YcDXhqAaPXeKOQFf/p+ONlt98Fw9TcJ2Fflcgq+YYEudv3hvEWxReGvw0hVy
+         38XaI4lZzPxyVLcmvwolRXQf1GDTkgQ6DzJy6EjftP0Ugc4AzsmRCB4t/k/5QiYEum2M
+         5LKO7Lbw2os63VDvCxnenhz9EbENKXCm2rKsyWCdyQY+6GXioO8JLRiTOee8P3Y2VYng
+         CBaAVPWeqho/bZ0wcgiUmC+j1wNK9LyGD2kjYwcOm6lKI3gX7/+6tWDN5p/Zl8L5XDQD
+         lCDLJAbzNO0RnIIlg3sz0X3O4a/OSsiI021sd9S2b/R+uiUCOzKCNxbyJhmh4qNrsO9p
+         ruZg==
+X-Gm-Message-State: ALoCoQn8pDzhudn+jKDT7SbWdJqB6LjoTmRG5glZrbQx6KRibxZD2b0CZo5B6XXwTwFm8/teFhM4
 MIME-Version: 1.0
-X-Received: by 10.60.143.37 with SMTP id sb5mr8531664oeb.38.1403707885258;
- Wed, 25 Jun 2014 07:51:25 -0700 (PDT)
-Received: by 10.182.85.103 with HTTP; Wed, 25 Jun 2014 07:51:25 -0700 (PDT)
-In-Reply-To: <20140625135121.GB7892@redhat.com>
+X-Received: by 10.60.175.34 with SMTP id bx2mr8630411oec.49.1403708891523;
+ Wed, 25 Jun 2014 08:08:11 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Wed, 25 Jun 2014 08:08:11 -0700 (PDT)
+In-Reply-To: <20140625142121.GD7892@redhat.com>
 References: <1403642893-23107-1-git-send-email-keescook@chromium.org>
-        <1403642893-23107-6-git-send-email-keescook@chromium.org>
-        <20140625135121.GB7892@redhat.com>
-Date:   Wed, 25 Jun 2014 07:51:25 -0700
-X-Google-Sender-Auth: RCNeIVkYTQv2tceTvFHUOTo4kcM
-Message-ID: <CAGXu5jJkFxh4K=40xuh6tu3kUf4oJM8Dry+4upBdRieW3FNLgw@mail.gmail.com>
-Subject: Re: [PATCH v8 5/9] seccomp: split mode set routines
+        <1403642893-23107-10-git-send-email-keescook@chromium.org>
+        <20140625142121.GD7892@redhat.com>
+Date:   Wed, 25 Jun 2014 08:08:11 -0700
+X-Google-Sender-Auth: r_1Qo0KhVxpzl5aIumz0oJDUf2o
+Message-ID: <CAGXu5jJtLrjbobZC1FD4WV-Jm2p7cRGa1aSPK-d_isnfCZAHdA@mail.gmail.com>
+Subject: Re: [PATCH v8 9/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
 From:   Kees Cook <keescook@chromium.org>
 To:     Oleg Nesterov <oleg@redhat.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -70,7 +70,7 @@ Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40812
+X-archive-position: 40813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,39 +87,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 25, 2014 at 6:51 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+On Wed, Jun 25, 2014 at 7:21 AM, Oleg Nesterov <oleg@redhat.com> wrote:
 > On 06/24, Kees Cook wrote:
 >>
->> +static inline void seccomp_assign_mode(struct task_struct *task,
->> +                                    unsigned long seccomp_mode)
+>> +static void seccomp_sync_threads(void)
 >> +{
->> +     BUG_ON(!spin_is_locked(&task->sighand->siglock));
+>> +     struct task_struct *thread, *caller;
 >> +
->> +     task->seccomp.mode = seccomp_mode;
->> +     set_tsk_thread_flag(task, TIF_SECCOMP);
+>> +     BUG_ON(!spin_is_locked(&current->sighand->siglock));
+>> +
+>> +     /* Synchronize all threads. */
+>> +     caller = current;
+>> +     for_each_thread(caller, thread) {
+>> +             /* Get a task reference for the new leaf node. */
+>> +             get_seccomp_filter(caller);
+>> +             /*
+>> +              * Drop the task reference to the shared ancestor since
+>> +              * current's path will hold a reference.  (This also
+>> +              * allows a put before the assignment.)
+>> +              */
+>> +             put_seccomp_filter(thread);
+>> +             thread->seccomp.filter = caller->seccomp.filter;
+>> +             /* Opt the other thread into seccomp if needed.
+>> +              * As threads are considered to be trust-realm
+>> +              * equivalent (see ptrace_may_access), it is safe to
+>> +              * allow one thread to transition the other.
+>> +              */
+>> +             if (thread->seccomp.mode == SECCOMP_MODE_DISABLED) {
+>> +                     /*
+>> +                      * Don't let an unprivileged task work around
+>> +                      * the no_new_privs restriction by creating
+>> +                      * a thread that sets it up, enters seccomp,
+>> +                      * then dies.
+>> +                      */
+>> +                     if (task_no_new_privs(caller))
+>> +                             task_set_no_new_privs(thread);
+>> +
+>> +                     seccomp_assign_mode(thread, SECCOMP_MODE_FILTER);
+>> +             }
+>> +     }
 >> +}
 >
-> OK, but unless task == current this can race with secure_computing().
-> I think this needs smp_mb__before_atomic() and secure_computing() needs
-> rmb() after test_bit(TIF_SECCOMP).
+> OK, personally I think this all make sense. I even think that perhaps
+> SECCOMP_FILTER_FLAG_TSYNC should allow filter == NULL, a thread might
+> want to "sync" without adding the new filter, but this is minor/offtopic.
 >
-> Otherwise, can't __secure_computing() hit BUG() if it sees the old
-> mode == SECCOMP_MODE_DISABLED ?
+> But. Doesn't this change add a new security hole?
 >
-> Or seccomp_run_filters() can see ->filters == NULL and WARN(),
-> smp_load_acquire() only serializes that LOAD with the subsequent memory
-> operations.
+> Obviously, we should not allow to install a filter and then (say) exec
+> a suid binary, that is why we have no_new_privs/LSM_UNSAFE_NO_NEW_PRIVS.
+>
+> But what if "thread->seccomp.filter = caller->seccomp.filter" races with
+> any user of task_no_new_privs() ? Say, suppose this thread has already
+> passed check_unsafe_exec/etc and it is going to exec the suid binary?
 
-Hm, actually, now I'm worried about smp_load_acquire() being too slow
-in run_filters().
+Oh, ew. Yeah. It looks like there's a cred lock to be held to combat this?
 
-The ordering must be:
-- task->seccomp.filter must be valid before
-- task->seccomp.mode is set, which must be valid before
-- TIF_SECCOMP is set
+I wonder if changes to nnp need to "flushed" during syscall entry
+instead of getting updated externally/asynchronously? That way it
+won't be out of sync with the seccomp mode/filters.
 
-But I don't want to impact secure_computing(). What's the best way to
-make sure this ordering is respected?
+Perhaps secure computing needs to check some (maybe seccomp-only)
+atomic flags and flip on the "real" nnp if found?
 
 -Kees
 

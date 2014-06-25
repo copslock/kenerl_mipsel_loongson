@@ -1,34 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 22:17:55 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:47272 "EHLO test.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6859936AbaFYURw56Iwv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Jun 2014 22:17:52 +0200
-Received: from [IPv6:2001:470:7259:0:3510:53e7:fc7e:801a] (unknown [IPv6:2001:470:7259:0:3510:53e7:fc7e:801a])
-        by test.hauke-m.de (Postfix) with ESMTPSA id 3E1C52021F;
-        Wed, 25 Jun 2014 22:17:52 +0200 (CEST)
-Message-ID: <53AB2E6F.7000006@hauke-m.de>
-Date:   Wed, 25 Jun 2014 22:17:51 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
-MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-CC:     Catalin Patulea <cat@vv.carleton.ca>
-Subject: Re: [3.17][PATCH 2/2] MIPS: BCM47XX: Fix LEDs on WRT54GS V1.0
-References: <1403243800-7849-1-git-send-email-zajec5@gmail.com> <1403243800-7849-2-git-send-email-zajec5@gmail.com>
-In-Reply-To: <1403243800-7849-2-git-send-email-zajec5@gmail.com>
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 01:41:41 +0200 (CEST)
+Received: from mail-qg0-f41.google.com ([209.85.192.41]:34672 "EHLO
+        mail-qg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859925AbaFYXliwDnT8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 01:41:38 +0200
+Received: by mail-qg0-f41.google.com with SMTP id i50so2378718qgf.28
+        for <multiple recipients>; Wed, 25 Jun 2014 16:41:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=6TRA+CFn6f3adU+KjgrHb8PG8y3Q1FyQNWs3Uc/mJcQ=;
+        b=lCZO0JzDr7uKiYoqaA+aLTEvRSWNhZzrftrZmANNqLauMy4aR8CgCDMqegvC2u1nh9
+         nERUIHA/wSZwB/CqnGi/MOCRdAMyRj2yDux0uIFzqsMlaFOuUxVsf6NFqfo+lTSXhJ4F
+         Q0U4qN1PqGoBdbAF+eQBVh16seyq5kgq0b7n15h0UxLVkds6eo0mGz4k4MQ4VQxdODc8
+         sm236vBlZx2thgLX2EBaF3zC9B5VcBrdWJddWEdA38/14Gc7skk9gGKYulZML7/i1Jwg
+         g/LwLQsw9ayRV/1jegkzGnDDw6kQrhAwMmURXb73FU42o7HGRgKubY9iiTmlKY/01svi
+         9qFw==
+X-Received: by 10.224.131.74 with SMTP id w10mr17064548qas.100.1403739692661;
+        Wed, 25 Jun 2014 16:41:32 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id m1sm8304879qaz.27.2014.06.25.16.41.31
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 25 Jun 2014 16:41:32 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org, anemo@mba.ocn.ne.jp,
+        chris@mips.com, Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: document the cca= command-line parameter
+Date:   Wed, 25 Jun 2014 16:41:13 -0700
+Message-Id: <1403739673-7422-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40836
+X-archive-position: 40837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,44 +51,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/20/2014 07:56 AM, Rafał Miłecki wrote:
-> Reported-by: Catalin Patulea <cat@vv.carleton.ca>
-> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+Commit 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0 ("[MIPS] Allow setting
+of the cache attribute at run time") introduced the 'cca=' kernel
+command-line parameter which allows overriding the kernel pages
+cacheable attributes, document that parameter.
 
-These two patches are looking good to me.
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ Documentation/kernel-parameters.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-
-> ---
->  arch/mips/bcm47xx/leds.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-> index 909e00f..23324e3 100644
-> --- a/arch/mips/bcm47xx/leds.c
-> +++ b/arch/mips/bcm47xx/leds.c
-> @@ -306,6 +306,14 @@ bcm47xx_leds_linksys_wrt54g3gv2[] __initconst = {
->  	BCM47XX_GPIO_LED(3, "blue", "3g", 0, LEDS_GPIO_DEFSTATE_OFF),
->  };
->  
-> +/* Verified on: WRT54GS V1.0 */
-> +static const struct gpio_led
-> +bcm47xx_leds_linksys_wrt54g_type_0101[] __initconst = {
-> +	BCM47XX_GPIO_LED(0, "green", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-> +	BCM47XX_GPIO_LED(1, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-> +	BCM47XX_GPIO_LED(7, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
-> +};
-> +
->  static const struct gpio_led
->  bcm47xx_leds_linksys_wrt610nv1[] __initconst = {
->  	BCM47XX_GPIO_LED(0, "unk", "usb",  1, LEDS_GPIO_DEFSTATE_OFF),
-> @@ -542,6 +550,8 @@ void __init bcm47xx_leds_register(void)
->  		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g3gv2);
->  		break;
->  	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0101:
-> +		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g_type_0101);
-> +		break;
->  	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0467:
->  	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0708:
->  		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g_generic);
-> 
+diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
+index 6eaa9cdb7094..d6f26d017dc0 100644
+--- a/Documentation/kernel-parameters.txt
++++ b/Documentation/kernel-parameters.txt
+@@ -566,6 +566,11 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
+ 			possible to determine what the correct size should be.
+ 			This option provides an override for these situations.
+ 
++	cca=		[MIPS] Override the kernel pages cacheable attribute.
++			Accepted values range from 0 to 7 inclusive. See
++			arch/mips/include/asm/pgtable-bits.h for platform
++			specific values (SB1, Loongson3 and others).
++
+ 	ccw_timeout_log [S390]
+ 			See Documentation/s390/CommonIO for details.
+ 
+-- 
+1.9.1

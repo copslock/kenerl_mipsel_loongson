@@ -1,41 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 11:31:32 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41826 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6859932AbaFYJb1Q5KRL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 11:31:27 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3A6201C5318DE;
-        Wed, 25 Jun 2014 10:31:19 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Wed, 25 Jun 2014 10:31:20 +0100
-Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 25 Jun
- 2014 10:31:19 +0100
-Message-ID: <53AA96E7.4040609@imgtec.com>
-Date:   Wed, 25 Jun 2014 10:31:19 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
-MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>, <pbonzini@redhat.com>
-CC:     <gleb@kernel.org>, <kvm@vger.kernel.org>, <sanjayl@kymasys.com>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3 8/9] MIPS: KVM: Skip memory cleaning in kvm_mips_commpage_init()
-References: <1403631071-6012-1-git-send-email-dengcheng.zhu@imgtec.com> <1403631071-6012-9-git-send-email-dengcheng.zhu@imgtec.com>
-In-Reply-To: <1403631071-6012-9-git-send-email-dengcheng.zhu@imgtec.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 13:47:06 +0200 (CEST)
+Received: from ip4-83-240-18-248.cust.nbox.cz ([83.240.18.248]:53441 "EHLO
+        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819433AbaFYLpzW0Dq6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 13:45:55 +0200
+Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.80.1)
+        (envelope-from <jslaby@suse.cz>)
+        id 1Wzldw-0001vX-Mp; Wed, 25 Jun 2014 13:45:36 +0200
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sanjay Lal <sanjayl@kymasys.com>, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to the 3.12 stable tree] MIPS: KVM: Allocate at least 16KB for exception handlers
+Date:   Wed, 25 Jun 2014 13:45:12 +0200
+Message-Id: <1403696736-7282-13-git-send-email-jslaby@suse.cz>
+X-Mailer: git-send-email 2.0.0
+In-Reply-To: <1403696736-7282-1-git-send-email-jslaby@suse.cz>
+References: <1403696736-7282-1-git-send-email-jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40801
+X-archive-position: 40802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,15 +40,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 24/06/14 18:31, Deng-Cheng Zhu wrote:
-> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-> 
-> The commpage is allocated using kzalloc(), so there's no need of cleaning
-> the memory of the kvm_mips_commpage struct and its internal mips_coproc.
-> 
-> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-Cheers
-James
+===============
+
+commit 7006e2dfda9adfa40251093604db76d7e44263b3 upstream.
+
+Each MIPS KVM guest has its own copy of the KVM exception vector. This
+contains the TLB refill exception handler at offset 0x000, the general
+exception handler at offset 0x180, and interrupt exception handlers at
+offset 0x200 in case Cause_IV=1. A common handler is copied to offset
+0x2000 and offset 0x3000 is used for temporarily storing k1 during entry
+from guest.
+
+However the amount of memory allocated for this purpose is calculated as
+0x200 rounded up to the next page boundary, which is insufficient if 4KB
+pages are in use. This can lead to the common handler at offset 0x2000
+being overwritten and infinitely recursive exceptions on the next exit
+from the guest.
+
+Increase the minimum size from 0x200 to 0x4000 to cover the full use of
+the page.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: kvm@vger.kernel.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: Sanjay Lal <sanjayl@kymasys.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kvm/kvm_mips.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
+index a7b044536de4..b31153969946 100644
+--- a/arch/mips/kvm/kvm_mips.c
++++ b/arch/mips/kvm/kvm_mips.c
+@@ -303,7 +303,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ 	if (cpu_has_veic || cpu_has_vint) {
+ 		size = 0x200 + VECTORSPACING * 64;
+ 	} else {
+-		size = 0x200;
++		size = 0x4000;
+ 	}
+ 
+ 	/* Save Linux EBASE */
+-- 
+2.0.0

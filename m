@@ -1,58 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 17:10:50 +0200 (CEST)
-Received: from mail-ob0-f174.google.com ([209.85.214.174]:57803 "EHLO
-        mail-ob0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859626AbaFYPKr53mRx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 17:10:47 +0200
-Received: by mail-ob0-f174.google.com with SMTP id va2so2218721obc.5
-        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 08:10:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=Y36nyxpFk+lXWY7Uz0mqdzdbbKZvtf0lRJsaPziS3k8=;
-        b=BeoA7OAlj90TLoCTQWcO7or2C1/1whmktz2t1DaZ4w4ydManYncXvoJ/Z4lHoCKGHa
-         4r00N8A5QbiXw0olXq78Jr6B0vZTcOx5ML5Tuvc6WS6wQlrw1/PWxWTEoSOqqA+Yp3kP
-         ZTbf1NmYmXdQBxirp9G1agGBjV/RIhf8+DmJQykwSy3CMsEZ56lNjC46qQu/tt9kB5HA
-         e+IUAUWtgEMgrnXBXiOpi5z2SPoFJG05XixMxxTHOYi75A273wt9+HI7w8gLcWrl5/Dq
-         1QAxHU6h7CzEvw0kqLUbbz61COce537DgLTX7H5f7URP8lsAvW86cFfOqmmLVlwQedc4
-         yuwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=Y36nyxpFk+lXWY7Uz0mqdzdbbKZvtf0lRJsaPziS3k8=;
-        b=dyj1FOWt2zOyjNq37YtsBXmCpo/QTp+hGqcFINJqXQEuNHlArlUJBlmgEO6YgcQLnP
-         QYuEWRI6iRxHyELoAjbSd12joEJJ6iY9Qp7ik21V30YzcMY///ar3ZLRejjVOM7uSlUE
-         QtVaAMn/8t6kxKRQoNiVlW8NPSGWtHPca/a5k=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 18:11:00 +0200 (CEST)
+Received: from mail-lb0-f174.google.com ([209.85.217.174]:64564 "EHLO
+        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859928AbaFYQK6TrhSc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 18:10:58 +0200
+Received: by mail-lb0-f174.google.com with SMTP id u10so2009864lbd.19
+        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 09:10:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=Y36nyxpFk+lXWY7Uz0mqdzdbbKZvtf0lRJsaPziS3k8=;
-        b=eHsq4kuOeDV4eCv17P+WX4ix8DRDZy6G1s9tCCT+DZJ3Uapb5NNZCUYD7O6zhApZiy
-         vWuVOJMwyBCL3FH3I/8DIcyU/b3VGJ8SEDABMdJ67H9IRdygCavyfQRBnEXvGQ1LmLp3
-         cSgGdkoqULO6Aeg+D1qnkyavQm/D8WcShVr8o5lZlIkmvwALxQPaFk/+rPl9/i51XZ74
-         Ljr+7TQM5wYiJRJ35H+CdxejigQUzbjEAYg6w9YgtH7ho1dJMeZ46O6+rPLBZ3io6fLm
-         8MGoqvSZoj34xhzFt/SRnSwChta9ArFEoRGo0syw9Arr2bn0kr+sP/pAmIIgn8f0vpjx
-         wcgw==
-X-Gm-Message-State: ALoCoQmlPCOJ0AJGKyOvoAp2P/JvmUsvQXmrmJW3yQ5404Uq44beQ4eBaLdzP7akMnLemHz1jNqs
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=VLidyI6X/biA2c4RvWH4/qMyKt3Hbvzy7s8E6VLJDXo=;
+        b=Tpq573IN2wpS+NmfafuLwB9H3a3+lNs4Cs6cD3jrJWOLT6p5CXCFJobFacOawlXi/3
+         DO4BUhVJDpptXDE34+A0FeCEwCFbzZo6Iry57s4Fhdc9+C0i1fibOcUiU+2XSBNcW/7o
+         RfFYzsQrhqQs4V3dIXjMwYUT8keuMWlbZoH7WSYpoOAvs2q3FtGkCRAIDpfwDgn0ZQRa
+         pOvKEdk29C8gXG9xeu8UybZH39lfho/RW14Sdv6WL2ZrUbt2RfNI0Ptef1ewawoFFqvq
+         /2YgY6qKpqVv/Z44bPVT1R2GN/QL0UYLYkAAJ8cll1Ri9SKnbWtsBwtTZ8E2GyrD8QTZ
+         IHjg==
+X-Gm-Message-State: ALoCoQnARydN3QM52DnlRxLpMJQyqB842IqkJQPAjM3SW6u0f7USoJrrNrq++udoTVpCObZ7DEN9
+X-Received: by 10.152.23.42 with SMTP id j10mr6539305laf.19.1403712652572;
+ Wed, 25 Jun 2014 09:10:52 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.182.213.100 with SMTP id nr4mr8702872obc.39.1403709041910;
- Wed, 25 Jun 2014 08:10:41 -0700 (PDT)
-Received: by 10.182.85.103 with HTTP; Wed, 25 Jun 2014 08:10:41 -0700 (PDT)
-In-Reply-To: <20140625140440.6870eac1@alan.etchedpixels.co.uk>
+Received: by 10.152.108.130 with HTTP; Wed, 25 Jun 2014 09:10:32 -0700 (PDT)
+In-Reply-To: <CAGXu5jJkFxh4K=40xuh6tu3kUf4oJM8Dry+4upBdRieW3FNLgw@mail.gmail.com>
 References: <1403642893-23107-1-git-send-email-keescook@chromium.org>
-        <20140624205615.GW5412@outflux.net>
-        <20140625140440.6870eac1@alan.etchedpixels.co.uk>
-Date:   Wed, 25 Jun 2014 08:10:41 -0700
-X-Google-Sender-Auth: bCbTkPScOTHELah4xx8OXxxVzrQ
-Message-ID: <CAGXu5j+99NOtJq2-TWYm8mwNw1ki0y3rRH21wX66MVM8=jz1bQ@mail.gmail.com>
-Subject: Re: [PATCH v8 1/1] man-pages: seccomp.2: document syscall
-From:   Kees Cook <keescook@chromium.org>
-To:     One Thousand Gnomes <gnomes@lxorguk.ukuu.org.uk>
-Cc:     "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
+ <1403642893-23107-6-git-send-email-keescook@chromium.org> <20140625135121.GB7892@redhat.com>
+ <CAGXu5jJkFxh4K=40xuh6tu3kUf4oJM8Dry+4upBdRieW3FNLgw@mail.gmail.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Wed, 25 Jun 2014 09:10:32 -0700
+Message-ID: <CALCETrUBNmLnpa+LM91om2RSpR6SjupP-EdefzhU1Me4nv3Dfw@mail.gmail.com>
+Subject: Re: [PATCH v8 5/9] seccomp: split mode set routines
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Oleg Nesterov <oleg@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
         Alexei Starovoitov <ast@plumgrid.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Daniel Borkmann <dborkman@redhat.com>,
@@ -60,22 +40,21 @@ Cc:     "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
         Julien Tinnes <jln@chromium.org>,
         David Drysdale <drysdale@google.com>,
         Linux API <linux-api@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
         "x86@kernel.org" <x86@kernel.org>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-security-module <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40814
+X-archive-position: 40815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,22 +67,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 25, 2014 at 6:04 AM, One Thousand Gnomes
-<gnomes@lxorguk.ukuu.org.uk> wrote:
-> On Tue, 24 Jun 2014 13:56:15 -0700
-> Kees Cook <keescook@chromium.org> wrote:
+On Wed, Jun 25, 2014 at 7:51 AM, Kees Cook <keescook@chromium.org> wrote:
+> On Wed, Jun 25, 2014 at 6:51 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+>> On 06/24, Kees Cook wrote:
+>>>
+>>> +static inline void seccomp_assign_mode(struct task_struct *task,
+>>> +                                    unsigned long seccomp_mode)
+>>> +{
+>>> +     BUG_ON(!spin_is_locked(&task->sighand->siglock));
+>>> +
+>>> +     task->seccomp.mode = seccomp_mode;
+>>> +     set_tsk_thread_flag(task, TIF_SECCOMP);
+>>> +}
+>>
+>> OK, but unless task == current this can race with secure_computing().
+>> I think this needs smp_mb__before_atomic() and secure_computing() needs
+>> rmb() after test_bit(TIF_SECCOMP).
+>>
+>> Otherwise, can't __secure_computing() hit BUG() if it sees the old
+>> mode == SECCOMP_MODE_DISABLED ?
+>>
+>> Or seccomp_run_filters() can see ->filters == NULL and WARN(),
+>> smp_load_acquire() only serializes that LOAD with the subsequent memory
+>> operations.
 >
->> Combines documentation from prctl, in-kernel seccomp_filter.txt and
->> dropper.c, along with details specific to the new syscall.
+> Hm, actually, now I'm worried about smp_load_acquire() being too slow
+> in run_filters().
 >
-> What is the license on the example ? Probably you want to propogate the
-> minimal form of the text in seccomp/dropper into the document example to
-> avoid confusion ?
+> The ordering must be:
+> - task->seccomp.filter must be valid before
+> - task->seccomp.mode is set, which must be valid before
+> - TIF_SECCOMP is set
+>
+> But I don't want to impact secure_computing(). What's the best way to
+> make sure this ordering is respected?
 
-What is the license of the other code examples in man-pages?
+Remove the ordering requirement, perhaps?
 
--Kees
+What if you moved mode into seccomp.filter?  Then there would be
+little reason to check TIF_SECCOMP from secure_computing; instead, you
+could smp_load_acquire (or read_barrier_depends, maybe) seccomp.filter
+from secure_computing and pass the result as a parameter to
+__secure_computing.  Or you could even remove the distinction between
+secure_computing and __secure_computing -- it's essentially useless
+anyway to split entry hook approaches like my x86 fastpath prototype.
 
--- 
-Kees Cook
-Chrome OS Security
+--Andy

@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 16:22:41 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:33198 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816417AbaFYOWjK1wBZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Jun 2014 16:22:39 +0200
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s5PEMSal011232
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Jun 2014 10:22:28 -0400
-Received: from tranklukator.brq.redhat.com (dhcp-1-125.brq.redhat.com [10.34.1.125])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s5PEMNwO013608;
-        Wed, 25 Jun 2014 10:22:23 -0400
-Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Wed, 25 Jun 2014 16:21:26 +0200 (CEST)
-Date:   Wed, 25 Jun 2014 16:21:21 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andy Lutomirski <luto@amacapital.net>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        linux-api@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v8 9/9] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
-Message-ID: <20140625142121.GD7892@redhat.com>
-References: <1403642893-23107-1-git-send-email-keescook@chromium.org> <1403642893-23107-10-git-send-email-keescook@chromium.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2014 16:28:49 +0200 (CEST)
+Received: from mail-we0-f182.google.com ([74.125.82.182]:56705 "EHLO
+        mail-we0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816417AbaFYO2rNLCxa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2014 16:28:47 +0200
+Received: by mail-we0-f182.google.com with SMTP id q59so2072544wes.41
+        for <linux-mips@linux-mips.org>; Wed, 25 Jun 2014 07:28:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=5PnFaDypsAy9FlPtzZmIKiRGhXmp0RSP32bW9Xy+038=;
+        b=EmObvPOxvsWX7pEf0i1PG342+/GGvRsgYH0vybaviXNTGhdVq4UjMpz9FcEaRtncGe
+         yRH8bqauQIRkMdjMg2yB7tuI5hEk3UYc3tzbKl9//w3lVlqzxcHTME0XS3xSLSMvEyuJ
+         JaRN3ijN+nOXWNMJQAKhdksv+frRjxLz+W2sG39zTpYRQ2one68wk3a0sAAcOE+sY9xa
+         Q6JVSvDmMnqYLYah253mXt92t9QA5uvvFMhuXnTAXHiFeUX1ovXx2UrZAwtB3RH3wrdy
+         c6RI5rDlsMvOIGoGprJRHu+QIwCO9TA59oyXSt7ouP7uSaYu4/8lLdWb+fZ/QYNJkCB0
+         2FDQ==
+X-Gm-Message-State: ALoCoQlAjaBsNBUOX4GikbfWgaFfCsq9PVl/FENRr3l1kzbQ0qIvdL/K1Vl0FPG6J75u3ZiPCd8t
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1403642893-23107-10-git-send-email-keescook@chromium.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-Return-Path: <oleg@redhat.com>
+X-Received: by 10.194.90.106 with SMTP id bv10mr10599259wjb.20.1403706519127;
+ Wed, 25 Jun 2014 07:28:39 -0700 (PDT)
+Received: by 10.194.121.228 with HTTP; Wed, 25 Jun 2014 07:28:39 -0700 (PDT)
+In-Reply-To: <1403685578-25170-1-git-send-email-markos.chandras@imgtec.com>
+References: <53AA85E8.5090403@imgtec.com>
+        <1403685578-25170-1-git-send-email-markos.chandras@imgtec.com>
+Date:   Wed, 25 Jun 2014 07:28:39 -0700
+Message-ID: <CAMEtUuwzsWX=JR8PJo=MnX_KG8ActhDPju26wOO-9GUZPg_pwA@mail.gmail.com>
+Subject: Re: [PATCH v2 16/17] MIPS: bpf: Use 32 or 64-bit load instruction to
+ load an address to register
+From:   Alexei Starovoitov <ast@plumgrid.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Network Development <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <ast@plumgrid.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40809
+X-archive-position: 40810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: ast@plumgrid.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,57 +56,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/24, Kees Cook wrote:
+On Wed, Jun 25, 2014 at 1:39 AM, Markos Chandras
+<markos.chandras@imgtec.com> wrote:
+> When loading a pointer to register we need to use the appropriate
+> 32 or 64bit instruction to preserve the pointers' top 32bits.
 >
-> +static void seccomp_sync_threads(void)
-> +{
-> +	struct task_struct *thread, *caller;
-> +
-> +	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-> +
-> +	/* Synchronize all threads. */
-> +	caller = current;
-> +	for_each_thread(caller, thread) {
-> +		/* Get a task reference for the new leaf node. */
-> +		get_seccomp_filter(caller);
-> +		/*
-> +		 * Drop the task reference to the shared ancestor since
-> +		 * current's path will hold a reference.  (This also
-> +		 * allows a put before the assignment.)
-> +		 */
-> +		put_seccomp_filter(thread);
-> +		thread->seccomp.filter = caller->seccomp.filter;
-> +		/* Opt the other thread into seccomp if needed.
-> +		 * As threads are considered to be trust-realm
-> +		 * equivalent (see ptrace_may_access), it is safe to
-> +		 * allow one thread to transition the other.
-> +		 */
-> +		if (thread->seccomp.mode == SECCOMP_MODE_DISABLED) {
-> +			/*
-> +			 * Don't let an unprivileged task work around
-> +			 * the no_new_privs restriction by creating
-> +			 * a thread that sets it up, enters seccomp,
-> +			 * then dies.
-> +			 */
-> +			if (task_no_new_privs(caller))
-> +				task_set_no_new_privs(thread);
-> +
-> +			seccomp_assign_mode(thread, SECCOMP_MODE_FILTER);
-> +		}
-> +	}
-> +}
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Daniel Borkmann <dborkman@redhat.com>
+> Cc: Alexei Starovoitov <ast@plumgrid.com>
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+> Changes since v1:
+> - Change function name to make it clear that we are loading a
+> pointer to a register, not an address
 
-OK, personally I think this all make sense. I even think that perhaps
-SECCOMP_FILTER_FLAG_TSYNC should allow filter == NULL, a thread might
-want to "sync" without adding the new filter, but this is minor/offtopic.
+Markos,
 
-But. Doesn't this change add the new security hole?
+when you post v2, please refresh the whole series, add v2 to subject and repost
+all patches from scratch.
 
-Obviously, we should not allow to install a filter and then (say) exec
-a suid binary, that is why we have no_new_privs/LSM_UNSAFE_NO_NEW_PRIVS.
-
-But what if "thread->seccomp.filter = caller->seccomp.filter" races with
-any user of task_no_new_privs() ? Say, suppose this thread has already
-passed check_unsafe_exec/etc and it is going to exec the suid binary?
-
-Oleg.
+Thanks

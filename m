@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 21:55:37 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62097 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860035AbaFZTzfSzZ0f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 21:55:35 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 322F19D27BE1E;
-        Thu, 26 Jun 2014 20:55:24 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.10.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 26 Jun
- 2014 20:55:28 +0100
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
- (10.40.10.222) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 26 Jun
- 2014 20:55:27 +0100
-Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.181.6; Thu, 26 Jun 2014 20:55:27 +0100
-Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
- (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 26 Jun
- 2014 12:55:25 -0700
-Message-ID: <53AC7AAD.7010007@imgtec.com>
-Date:   Thu, 26 Jun 2014 12:55:25 -0700
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 23:55:45 +0200 (CEST)
+Received: from mail-ig0-f177.google.com ([209.85.213.177]:46016 "EHLO
+        mail-ig0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817913AbaFZVznnve9L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 23:55:43 +0200
+Received: by mail-ig0-f177.google.com with SMTP id c1so1251234igq.4
+        for <multiple recipients>; Thu, 26 Jun 2014 14:55:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=ouj4f8rEMURVsw11moyCkkyzks8qvJ0xW25TC4eGjns=;
+        b=UwsJgYMkG8HMHd8NFLwOyOnseytvxROQSwSyzhfasrWdm5BPd26ZaCdJBenfeaDFdu
+         pLqoVWzVqWjvp3ukl/OK4/urPyz/5IXWc8UTmc52+0Zsr1TgTj8ta9hxbuIC8NiwXsI5
+         XLA5f6O0cu3nB6pOMbARj/OWIt9rh+Mvkek+zRLRyfYccLJv6MDtPSZqKBBA06hSFr6E
+         tSDLLxpqnkRSoTjvQLn1rmRR47uzt8rEb6fJzV5koaaYA0B0ggxNtFirRtBMeywtqJrW
+         eVSVcKhOVDJIngIkNKSUoY5SAoQzkGaL6e11pnNNGguOEtL3H2w88ligT1R5bqiDQNW9
+         N6Zg==
+X-Received: by 10.50.61.234 with SMTP id t10mr7687677igr.38.1403819737412;
+        Thu, 26 Jun 2014 14:55:37 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id jc2sm7678214igb.19.2014.06.26.14.55.36
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 26 Jun 2014 14:55:37 -0700 (PDT)
+Message-ID: <53AC96D7.8040208@gmail.com>
+Date:   Thu, 26 Jun 2014 14:55:35 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     <pbonzini@redhat.com>, <gleb@kernel.org>, <kvm@vger.kernel.org>,
-        <sanjayl@kymasys.com>, <james.hogan@imgtec.com>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+CC:     pbonzini@redhat.com, gleb@kernel.org, kvm@vger.kernel.org,
+        sanjayl@kymasys.com, james.hogan@imgtec.com, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
 Subject: Re: [PATCH v4 5/7] MIPS: KVM: Rename files to remove the prefix "kvm_"
  and "kvm_mips_"
-References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com> <1403809900-17454-6-git-send-email-dengcheng.zhu@imgtec.com> <53AC7466.6070401@gmail.com>
-In-Reply-To: <53AC7466.6070401@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com> <1403809900-17454-6-git-send-email-dengcheng.zhu@imgtec.com> <53AC7466.6070401@gmail.com> <53AC7AAD.7010007@imgtec.com>
+In-Reply-To: <53AC7AAD.7010007@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.2.221]
-Return-Path: <DengCheng.Zhu@imgtec.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40860
+X-archive-position: 40861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,34 +59,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/26/2014 12:28 PM, David Daney wrote:
-> On 06/26/2014 12:11 PM, Deng-Cheng Zhu wrote:
->> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+On 06/26/2014 12:55 PM, Deng-Cheng Zhu wrote:
+> On 06/26/2014 12:28 PM, David Daney wrote:
+>> On 06/26/2014 12:11 PM, Deng-Cheng Zhu wrote:
+>>> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+>>>
+>>> Since all the files are in arch/mips/kvm/, there's no need of the
+>>> prefixes
+>>> "kvm_" and "kvm_mips_".
+>>>
 >>
->> Since all the files are in arch/mips/kvm/, there's no need of the prefixes
->> "kvm_" and "kvm_mips_".
+>> I don't like this change.
 >>
+>> It will leads me to confuse arch/mips/kvm/interrupt.h with
+>> include/linux/interrupt.h
 >
-> I don't like this change.
+> We have <linux/interrupt.h> and "interrupt.h".
 >
-> It will leads me to confuse arch/mips/kvm/interrupt.h with 
-> include/linux/interrupt.h
+>>
+>> x86 calls these things irq.c and irq.h, perhaps that would be a little
+>> better.
+>
+> There's also include/linux/irq.h
+>
 
-We have <linux/interrupt.h> and "interrupt.h".
+Yes, I know.
+
+>>
+>> There is precedence in x86 for some of the names though.
+>>
+>> But really why churn up the code in the first place?  the kvm_mips
+>> prefix does tell us exactly what we are dealing with.
+>
+> That's why people created the arch/mips/kvm directory, isn't it?
+
+No.  Segregating things into directories keeps code related to one 
+functional area together.
+
+File names are different.  They should carry as much meaning as possible.
+
+For examples of this look at some of these directories:
+
+drivers/net/ethernet/intel/ixgb
+drivers/i2c/busses
+
+It is not bad to have a filename prefix related to the function of the 
+files.
+
 
 >
-> x86 calls these things irq.c and irq.h, perhaps that would be a little 
-> better.
-
-There's also include/linux/irq.h
-
 >
-> There is precedence in x86 for some of the names though.
+> Deng-Cheng
 >
-> But really why churn up the code in the first place?  the kvm_mips prefix 
-> does tell us exactly what we are dealing with.
-
-That's why people created the arch/mips/kvm directory, isn't it?
-
-
-Deng-Cheng
+>
+>

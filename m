@@ -1,52 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 23:55:45 +0200 (CEST)
-Received: from mail-ig0-f177.google.com ([209.85.213.177]:46016 "EHLO
-        mail-ig0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817913AbaFZVznnve9L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 23:55:43 +0200
-Received: by mail-ig0-f177.google.com with SMTP id c1so1251234igq.4
-        for <multiple recipients>; Thu, 26 Jun 2014 14:55:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=ouj4f8rEMURVsw11moyCkkyzks8qvJ0xW25TC4eGjns=;
-        b=UwsJgYMkG8HMHd8NFLwOyOnseytvxROQSwSyzhfasrWdm5BPd26ZaCdJBenfeaDFdu
-         pLqoVWzVqWjvp3ukl/OK4/urPyz/5IXWc8UTmc52+0Zsr1TgTj8ta9hxbuIC8NiwXsI5
-         XLA5f6O0cu3nB6pOMbARj/OWIt9rh+Mvkek+zRLRyfYccLJv6MDtPSZqKBBA06hSFr6E
-         tSDLLxpqnkRSoTjvQLn1rmRR47uzt8rEb6fJzV5koaaYA0B0ggxNtFirRtBMeywtqJrW
-         eVSVcKhOVDJIngIkNKSUoY5SAoQzkGaL6e11pnNNGguOEtL3H2w88ligT1R5bqiDQNW9
-         N6Zg==
-X-Received: by 10.50.61.234 with SMTP id t10mr7687677igr.38.1403819737412;
-        Thu, 26 Jun 2014 14:55:37 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id jc2sm7678214igb.19.2014.06.26.14.55.36
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 26 Jun 2014 14:55:37 -0700 (PDT)
-Message-ID: <53AC96D7.8040208@gmail.com>
-Date:   Thu, 26 Jun 2014 14:55:35 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2014 01:21:58 +0200 (CEST)
+Received: from mail-oa0-f45.google.com ([209.85.219.45]:50799 "EHLO
+        mail-oa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860042AbaFZXV4friw2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2014 01:21:56 +0200
+Received: by mail-oa0-f45.google.com with SMTP id o6so4707809oag.4
+        for <linux-mips@linux-mips.org>; Thu, 26 Jun 2014 16:21:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=I2lSVkwV+QIDIVH9kxfuS4I8O7vGe6AsdP/sbZVGu+I=;
+        b=dKTtzXxUEdGx8oWCyyol32F1NToUp+8F9WdemkgHW/Mq3HBvbafHhdT1KRy5jA2Y9r
+         BpeWCrW/LEeaI7oTB3LuYwqRigDzjZyLh4uOgz9Wsi28uQljH4Pk17TytpcEaHt54PoM
+         6JDh2OwrVdSwO86KjeVTpHBmEUGoDoFOnkBsjV4QCTobn274LtV4jQroaEvS6EFiBxUS
+         mtgauy2xnL1HgvDnQHWCAfvf+J8esZgnQnVJIW5AvOaf+Rs4tP+VuPMNCr8WqSThlD3I
+         eCU11kJ9WDfDLE7FT6ymsg5ON9J1JlBmZJnqK8nYzne2iNrknrbxeQ674sooNparnfJq
+         HyvQ==
+X-Gm-Message-State: ALoCoQmEfnRJdfrnenyloN232/H2UlThQhUGyX/pT9tLzvKefhfZtMQsPcfYM+K4OPMH1oFDgPTc
 MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-CC:     pbonzini@redhat.com, gleb@kernel.org, kvm@vger.kernel.org,
-        sanjayl@kymasys.com, james.hogan@imgtec.com, ralf@linux-mips.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v4 5/7] MIPS: KVM: Rename files to remove the prefix "kvm_"
- and "kvm_mips_"
-References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com> <1403809900-17454-6-git-send-email-dengcheng.zhu@imgtec.com> <53AC7466.6070401@gmail.com> <53AC7AAD.7010007@imgtec.com>
-In-Reply-To: <53AC7AAD.7010007@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+X-Received: by 10.60.57.3 with SMTP id e3mr19158298oeq.33.1403824909842; Thu,
+ 26 Jun 2014 16:21:49 -0700 (PDT)
+Received: by 10.202.81.137 with HTTP; Thu, 26 Jun 2014 16:21:49 -0700 (PDT)
+X-Originating-IP: [212.159.75.221]
+In-Reply-To: <53AC96D7.8040208@gmail.com>
+References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com>
+        <1403809900-17454-6-git-send-email-dengcheng.zhu@imgtec.com>
+        <53AC7466.6070401@gmail.com>
+        <53AC7AAD.7010007@imgtec.com>
+        <53AC96D7.8040208@gmail.com>
+Date:   Fri, 27 Jun 2014 00:21:49 +0100
+X-Google-Sender-Auth: oZezDuzGQe5ylDPP16cook71Bfc
+Message-ID: <CAAG0J99aDdsku1ZXX=aBxK4NVwEZK2wa+gV638yZN735qZnT+A@mail.gmail.com>
+Subject: Re: [PATCH v4 5/7] MIPS: KVM: Rename files to remove the prefix
+ "kvm_" and "kvm_mips_"
+From:   James Hogan <james.hogan@imgtec.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        Sanjay Lal <sanjayl@kymasys.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <james@albanarts.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40861
+X-archive-position: 40862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,57 +64,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/26/2014 12:55 PM, Deng-Cheng Zhu wrote:
-> On 06/26/2014 12:28 PM, David Daney wrote:
->> On 06/26/2014 12:11 PM, Deng-Cheng Zhu wrote:
->>> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+On 26 June 2014 22:55, David Daney <ddaney.cavm@gmail.com> wrote:
+>>> There is precedence in x86 for some of the names though.
 >>>
->>> Since all the files are in arch/mips/kvm/, there's no need of the
->>> prefixes
->>> "kvm_" and "kvm_mips_".
->>>
+>>> But really why churn up the code in the first place?  the kvm_mips
+>>> prefix does tell us exactly what we are dealing with.
 >>
->> I don't like this change.
 >>
->> It will leads me to confuse arch/mips/kvm/interrupt.h with
->> include/linux/interrupt.h
+>> That's why people created the arch/mips/kvm directory, isn't it?
 >
-> We have <linux/interrupt.h> and "interrupt.h".
 >
->>
->> x86 calls these things irq.c and irq.h, perhaps that would be a little
->> better.
+> No.  Segregating things into directories keeps code related to one
+> functional area together.
 >
-> There's also include/linux/irq.h
+> File names are different.  They should carry as much meaning as possible.
 >
+> For examples of this look at some of these directories:
+>
+> drivers/net/ethernet/intel/ixgb
+> drivers/i2c/busses
+>
+> It is not bad to have a filename prefix related to the function of the
+> files.
 
-Yes, I know.
+Hi David,
 
->>
->> There is precedence in x86 for some of the names though.
->>
->> But really why churn up the code in the first place?  the kvm_mips
->> prefix does tell us exactly what we are dealing with.
->
-> That's why people created the arch/mips/kvm directory, isn't it?
+More importantly if you look in arch/*/kvm/, very few of the files
+have kvm in their names except for mips.
 
-No.  Segregating things into directories keeps code related to one 
-functional area together.
+Personally I find the filenames Deng-Cheng is suggesting must less
+cumbersome to type. Most of the files start with kvm_mips_ at the
+moment, which is completely redundant.
 
-File names are different.  They should carry as much meaning as possible.
+As for churn, renaming the files hardly produces much churn compared
+to cleaning up coding style issues like some of the other patches, but
+I still think even they are worth doing.
 
-For examples of this look at some of these directories:
-
-drivers/net/ethernet/intel/ixgb
-drivers/i2c/busses
-
-It is not bad to have a filename prefix related to the function of the 
-files.
-
-
->
->
-> Deng-Cheng
->
->
->
+Cheers
+James

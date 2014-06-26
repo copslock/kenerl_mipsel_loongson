@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 05:43:55 +0200 (CEST)
-Received: from mail-pb0-f52.google.com ([209.85.160.52]:43497 "EHLO
-        mail-pb0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816841AbaFZDmXgjOJL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 05:42:23 +0200
-Received: by mail-pb0-f52.google.com with SMTP id rq2so2537180pbb.25
-        for <multiple recipients>; Wed, 25 Jun 2014 20:42:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 05:44:21 +0200 (CEST)
+Received: from mail-pd0-f173.google.com ([209.85.192.173]:50845 "EHLO
+        mail-pd0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860036AbaFZDmlyFkDh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 05:42:41 +0200
+Received: by mail-pd0-f173.google.com with SMTP id r10so2478899pdi.4
+        for <multiple recipients>; Wed, 25 Jun 2014 20:42:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=2Tvf0X8+a4jBfBDolecra6MVMW/GU9GH9fhdWSXSHaY=;
-        b=WALvZRJKZGhx4JCaR+UuuoZvM6ffsJ/CLFMtH4M0ERPbOND8C1lk6+ekIbH4gtg0KG
-         23GUdhjfRs/BV8n5bZhV3dsw5xg607QamaTWVmnh4tnVyW45j8M4pBl2QRpzhrdmAP7a
-         /7kVF8ifap8KLSDxYFn+8hGkMe0UhuE5921UPx79rfeF97sF432vMP3PKAbuRcOJR6b8
-         lxph16jf+Af8n6ihbAEvkRhtehN3WQILDH5qdejHRS/FrvSWuGTmZnqVE48I9IW+pQgY
-         9AnaXY43Ccktmh2r7F+paj2asGYTM5oluWI2v5HodpblSHv0/rXXaW9BeYhUyebBxygQ
-         ephA==
-X-Received: by 10.69.25.69 with SMTP id io5mr18031929pbd.22.1403754137098;
-        Wed, 25 Jun 2014 20:42:17 -0700 (PDT)
+        bh=WQ6DV2WQsihnxjot3Iz4ouWNbEdjf3QRy6mBSKdqWgs=;
+        b=VtkktEmPVsEjPReNjomkuRJOOjhMcgxH8PEz5XNF8Xk3i8ustOvN4+DdHzbkG/yBDW
+         DNMlKSlG56+WFaM7OPMKuiEox6OAb6hFY/tfb41cEAB36BNUOpuxX9qWF3SmbBdIZ+BV
+         BHGVCctbkA2DdJEoRfbi6Ah0J5yLL8je0QLpgIbdEmJ5ftfMMNjJpXtDp67pxKSvi2mq
+         CZ1PRdcmdQFIDRwMx0C7fylHT6HAxZEUkdLLptvL3A275oEUY/ILGodKZtBiOopJYc0s
+         siHSnugheiN3PHKOj8yfIzisn2Fu5eW0ku5LZSz2+Y6Atd16pDwK3WcHuxncCIkmLOso
+         ftMA==
+X-Received: by 10.66.183.11 with SMTP id ei11mr17683504pac.116.1403754155678;
+        Wed, 25 Jun 2014 20:42:35 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id aa3sm5115497pbd.17.2014.06.25.20.42.09
+        by mx.google.com with ESMTPSA id aa3sm5115497pbd.17.2014.06.25.20.42.24
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 25 Jun 2014 20:42:16 -0700 (PDT)
+        Wed, 25 Jun 2014 20:42:35 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
@@ -30,9 +30,9 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V3 3/8] MIPS: Loongson: Modify ChipConfig register definition
-Date:   Thu, 26 Jun 2014 11:41:27 +0800
-Message-Id: <1403754092-26607-4-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V3 5/8] MIPS: Add numa api support
+Date:   Thu, 26 Jun 2014 11:41:29 +0800
+Message-Id: <1403754092-26607-6-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1403754092-26607-1-git-send-email-chenhc@lemote.com>
 References: <1403754092-26607-1-git-send-email-chenhc@lemote.com>
@@ -40,7 +40,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40841
+X-archive-position: 40842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,163 +57,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch is prepared for Multi-chip interconnection. Since each chip
-has a ChipConfig register, LOONGSON_CHIPCFG should be an array.
+Enable sys_mbind()/sys_get_mempolicy()/sys_set_mempolicy() for O32, N32,
+and N64 ABIs. By the way, O32/N32 should use the compat version of
+sys_migrate_pages()/sys_move_pages(), so fix that.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson/loongson.h |    7 +++++--
- arch/mips/loongson/common/env.c                |   11 +++++++++++
- arch/mips/loongson/common/pm.c                 |    8 ++++----
- arch/mips/loongson/lemote-2f/clock.c           |    4 ++--
- arch/mips/loongson/lemote-2f/reset.c           |    2 +-
- arch/mips/loongson/loongson-3/smp.c            |    4 ++--
- drivers/cpufreq/loongson2_cpufreq.c            |    6 +++---
- 7 files changed, 28 insertions(+), 14 deletions(-)
+ arch/mips/kernel/scall32-o32.S |    4 ++--
+ arch/mips/kernel/scall64-64.S  |    4 ++--
+ arch/mips/kernel/scall64-n32.S |   10 +++++-----
+ arch/mips/kernel/scall64-o32.S |    8 ++++----
+ 4 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index f3fd1eb..a1c76ca 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -249,8 +249,11 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_PXARB_CFG		LOONGSON_REG(LOONGSON_REGBASE + 0x68)
- #define LOONGSON_PXARB_STATUS		LOONGSON_REG(LOONGSON_REGBASE + 0x6c)
- 
--/* Chip Config */
--#define LOONGSON_CHIPCFG0		LOONGSON_REG(LOONGSON_REGBASE + 0x80)
-+#define MAX_PACKAGES 4
-+
-+/* Chip Config registor of each physical cpu package, PRid >= Loongson-2F */
-+extern u64 loongson_chipcfg[MAX_PACKAGES];
-+#define LOONGSON_CHIPCFG(id) (*(volatile u32 *)(loongson_chipcfg[id]))
- 
- /* pcimap */
- 
-diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index 0c543ea..dc59241 100644
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
-@@ -27,6 +27,8 @@ EXPORT_SYMBOL(cpu_clock_freq);
- struct efi_memory_map_loongson *loongson_memmap;
- struct loongson_system_configuration loongson_sysconf;
- 
-+u64 loongson_chipcfg[MAX_PACKAGES] = {0xffffffffbfc00180};
-+
- #define parse_even_earlier(res, option, p)				\
- do {									\
- 	unsigned int tmp __maybe_unused;				\
-@@ -77,6 +79,15 @@ void __init prom_init_env(void)
- 
- 	cpu_clock_freq = ecpu->cpu_clock_freq;
- 	loongson_sysconf.cputype = ecpu->cputype;
-+	if (ecpu->cputype == Loongson_3A) {
-+		loongson_chipcfg[0] = 0x900000001fe00180;
-+		loongson_chipcfg[1] = 0x900010001fe00180;
-+		loongson_chipcfg[2] = 0x900020001fe00180;
-+		loongson_chipcfg[3] = 0x900030001fe00180;
-+	} else {
-+		loongson_chipcfg[0] = 0x900000001fe00180;
-+	}
-+
- 	loongson_sysconf.nr_cpus = ecpu->nr_cpus;
- 	if (ecpu->nr_cpus > NR_CPUS || ecpu->nr_cpus == 0)
- 		loongson_sysconf.nr_cpus = NR_CPUS;
-diff --git a/arch/mips/loongson/common/pm.c b/arch/mips/loongson/common/pm.c
-index f55e07a..a6b67cc 100644
---- a/arch/mips/loongson/common/pm.c
-+++ b/arch/mips/loongson/common/pm.c
-@@ -79,7 +79,7 @@ int __weak wakeup_loongson(void)
- static void wait_for_wakeup_events(void)
- {
- 	while (!wakeup_loongson())
--		LOONGSON_CHIPCFG0 &= ~0x7;
-+		LOONGSON_CHIPCFG(0) &= ~0x7;
- }
- 
- /*
-@@ -102,15 +102,15 @@ static void loongson_suspend_enter(void)
- 
- 	stop_perf_counters();
- 
--	cached_cpu_freq = LOONGSON_CHIPCFG0;
-+	cached_cpu_freq = LOONGSON_CHIPCFG(0);
- 
- 	/* Put CPU into wait mode */
--	LOONGSON_CHIPCFG0 &= ~0x7;
-+	LOONGSON_CHIPCFG(0) &= ~0x7;
- 
- 	/* wait for the given events to wakeup cpu from wait mode */
- 	wait_for_wakeup_events();
- 
--	LOONGSON_CHIPCFG0 = cached_cpu_freq;
-+	LOONGSON_CHIPCFG(0) = cached_cpu_freq;
- 	mmiowb();
- }
- 
-diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
-index 1eed38e..a217061 100644
---- a/arch/mips/loongson/lemote-2f/clock.c
-+++ b/arch/mips/loongson/lemote-2f/clock.c
-@@ -114,9 +114,9 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
- 
- 	clk->rate = rate;
- 
--	regval = LOONGSON_CHIPCFG0;
-+	regval = LOONGSON_CHIPCFG(0);
- 	regval = (regval & ~0x7) | (pos->driver_data - 1);
--	LOONGSON_CHIPCFG0 = regval;
-+	LOONGSON_CHIPCFG(0) = regval;
- 
- 	return ret;
- }
-diff --git a/arch/mips/loongson/lemote-2f/reset.c b/arch/mips/loongson/lemote-2f/reset.c
-index 90962a3..79ac694 100644
---- a/arch/mips/loongson/lemote-2f/reset.c
-+++ b/arch/mips/loongson/lemote-2f/reset.c
-@@ -28,7 +28,7 @@ static void reset_cpu(void)
- 	 * reset cpu to full speed, this is needed when enabling cpu frequency
- 	 * scalling
- 	 */
--	LOONGSON_CHIPCFG0 |= 0x7;
-+	LOONGSON_CHIPCFG(0) |= 0x7;
- }
- 
- /* reset support for fuloong2f */
-diff --git a/arch/mips/loongson/loongson-3/smp.c b/arch/mips/loongson/loongson-3/smp.c
-index 1e88940..3c320e7 100644
---- a/arch/mips/loongson/loongson-3/smp.c
-+++ b/arch/mips/loongson/loongson-3/smp.c
-@@ -399,12 +399,12 @@ static int loongson3_cpu_callback(struct notifier_block *nfb,
- 	case CPU_POST_DEAD:
- 	case CPU_POST_DEAD_FROZEN:
- 		pr_info("Disable clock for CPU#%d\n", cpu);
--		LOONGSON_CHIPCFG0 &= ~(1 << (12 + cpu));
-+		LOONGSON_CHIPCFG(0) &= ~(1 << (12 + cpu));
- 		break;
- 	case CPU_UP_PREPARE:
- 	case CPU_UP_PREPARE_FROZEN:
- 		pr_info("Enable clock for CPU#%d\n", cpu);
--		LOONGSON_CHIPCFG0 |= 1 << (12 + cpu);
-+		LOONGSON_CHIPCFG(0) |= 1 << (12 + cpu);
- 		break;
- 	}
- 
-diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
-index d4add86..9fa1772 100644
---- a/drivers/cpufreq/loongson2_cpufreq.c
-+++ b/drivers/cpufreq/loongson2_cpufreq.c
-@@ -148,9 +148,9 @@ static void loongson2_cpu_wait(void)
- 	u32 cpu_freq;
- 
- 	spin_lock_irqsave(&loongson2_wait_lock, flags);
--	cpu_freq = LOONGSON_CHIPCFG0;
--	LOONGSON_CHIPCFG0 &= ~0x7;	/* Put CPU into wait mode */
--	LOONGSON_CHIPCFG0 = cpu_freq;	/* Restore CPU state */
-+	cpu_freq = LOONGSON_CHIPCFG(0);
-+	LOONGSON_CHIPCFG(0) &= ~0x7;	/* Put CPU into wait mode */
-+	LOONGSON_CHIPCFG(0) = cpu_freq;	/* Restore CPU state */
- 	spin_unlock_irqrestore(&loongson2_wait_lock, flags);
- 	local_irq_enable();
- }
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index 3245474..6bfdc82 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -495,8 +495,8 @@ EXPORT(sys_call_table)
+ 	PTR	sys_tgkill
+ 	PTR	sys_utimes
+ 	PTR	sys_mbind
+-	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+-	PTR	sys_ni_syscall			/* 4270 sys_set_mempolicy */
++	PTR	sys_get_mempolicy
++	PTR	sys_set_mempolicy		/* 4270 */
+ 	PTR	sys_mq_open
+ 	PTR	sys_mq_unlink
+ 	PTR	sys_mq_timedsend
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index be2fedd..0952139 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -347,8 +347,8 @@ EXPORT(sys_call_table)
+ 	PTR	sys_tgkill			/* 5225 */
+ 	PTR	sys_utimes
+ 	PTR	sys_mbind
+-	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+-	PTR	sys_ni_syscall			/* sys_set_mempolicy */
++	PTR	sys_get_mempolicy
++	PTR	sys_set_mempolicy
+ 	PTR	sys_mq_open			/* 5230 */
+ 	PTR	sys_mq_unlink
+ 	PTR	sys_mq_timedsend
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index c1dbcda..7641c87 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -339,9 +339,9 @@ EXPORT(sysn32_call_table)
+ 	PTR	compat_sys_clock_nanosleep
+ 	PTR	sys_tgkill
+ 	PTR	compat_sys_utimes		/* 6230 */
+-	PTR	sys_ni_syscall			/* sys_mbind */
+-	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+-	PTR	sys_ni_syscall			/* sys_set_mempolicy */
++	PTR	compat_sys_mbind
++	PTR	compat_sys_get_mempolicy
++	PTR	compat_sys_set_mempolicy
+ 	PTR	compat_sys_mq_open
+ 	PTR	sys_mq_unlink			/* 6235 */
+ 	PTR	compat_sys_mq_timedsend
+@@ -358,7 +358,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch
+ 	PTR	sys_inotify_rm_watch
+-	PTR	sys_migrate_pages		/* 6250 */
++	PTR	compat_sys_migrate_pages	/* 6250 */
+ 	PTR	sys_openat
+ 	PTR	sys_mkdirat
+ 	PTR	sys_mknodat
+@@ -379,7 +379,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_sync_file_range
+ 	PTR	sys_tee
+ 	PTR	compat_sys_vmsplice		/* 6270 */
+-	PTR	sys_move_pages
++	PTR	compat_sys_move_pages
+ 	PTR	compat_sys_set_robust_list
+ 	PTR	compat_sys_get_robust_list
+ 	PTR	compat_sys_kexec_load
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index f1343cc..18cfa11 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -473,9 +473,9 @@ EXPORT(sys32_call_table)
+ 	PTR	compat_sys_clock_nanosleep	/* 4265 */
+ 	PTR	sys_tgkill
+ 	PTR	compat_sys_utimes
+-	PTR	sys_ni_syscall			/* sys_mbind */
+-	PTR	sys_ni_syscall			/* sys_get_mempolicy */
+-	PTR	sys_ni_syscall			/* 4270 sys_set_mempolicy */
++	PTR	compat_sys_mbind
++	PTR	compat_sys_get_mempolicy
++	PTR	compat_sys_set_mempolicy	/* 4270 */
+ 	PTR	compat_sys_mq_open
+ 	PTR	sys_mq_unlink
+ 	PTR	compat_sys_mq_timedsend
+@@ -492,7 +492,7 @@ EXPORT(sys32_call_table)
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch		/* 4285 */
+ 	PTR	sys_inotify_rm_watch
+-	PTR	sys_migrate_pages
++	PTR	compat_sys_migrate_pages
+ 	PTR	compat_sys_openat
+ 	PTR	sys_mkdirat
+ 	PTR	sys_mknodat			/* 4290 */
 -- 
 1.7.7.3

@@ -1,25 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2014 04:58:38 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:37529 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2014 04:58:56 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55787 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6856089AbaF0C6fOkF9M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2014 04:58:35 +0200
+        with ESMTP id S6856571AbaF0C6jkrGk0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2014 04:58:39 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 51ED2F40CF195;
-        Fri, 27 Jun 2014 03:58:27 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.10.222) by KLMAIL01.kl.imgtec.org
+        by Websense Email Security Gateway with ESMTPS id CBC08EA143A3A;
+        Fri, 27 Jun 2014 03:58:31 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 27 Jun
- 2014 03:58:27 +0100
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
- (10.40.10.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 27 Jun
- 2014 03:58:27 +0100
+ 2014 03:58:32 +0100
 Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 27 Jun 2014 03:58:27 +0100
+ 14.3.195.1; Fri, 27 Jun 2014 03:58:32 +0100
 Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
  (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 26 Jun
- 2014 16:53:51 -0700
-Message-ID: <53ACB28F.8010405@imgtec.com>
-Date:   Thu, 26 Jun 2014 16:53:51 -0700
+ 2014 15:44:49 -0700
+Message-ID: <53ACA261.7040007@imgtec.com>
+Date:   Thu, 26 Jun 2014 15:44:49 -0700
 From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
@@ -29,8 +26,8 @@ CC:     <pbonzini@redhat.com>, <gleb@kernel.org>, <kvm@vger.kernel.org>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 Subject: Re: [PATCH v4 5/7] MIPS: KVM: Rename files to remove the prefix "kvm_"
  and "kvm_mips_"
-References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com> <1403809900-17454-6-git-send-email-dengcheng.zhu@imgtec.com> <53AC7466.6070401@gmail.com> <53AC7AAD.7010007@imgtec.com> <53AC96D7.8040208@gmail.com> <53ACA261.7040007@imgtec.com>
-In-Reply-To: <53ACA261.7040007@imgtec.com>
+References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com> <1403809900-17454-6-git-send-email-dengcheng.zhu@imgtec.com> <53AC7466.6070401@gmail.com> <53AC7AAD.7010007@imgtec.com> <53AC96D7.8040208@gmail.com>
+In-Reply-To: <53AC96D7.8040208@gmail.com>
 Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.20.2.221]
@@ -38,7 +35,7 @@ Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40864
+X-archive-position: 40865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -119,15 +116,7 @@ If it's kernel/events/perf_events_core.c, I think it looks ugly.
 Other examples are kernel/sched/, mm/, and many more. When talking about 
 filemap.c, one may think it may be under fs/. But there's mm/filemap.c (not 
 mm/mm_filemap.c which seems, again, ugly). What I want to say is that: 
-Talking about a file should include its path info.
-
-In addition, I'm saying "ugly" is not only from the perspective of feeling, 
-but also from practicability. When reading source code using some tools, 
-the file list window is usually (at least for me) relatively small. If the 
-prefix is there, it's easy to see something like:
-
-arch/mips/kvm/kvm_mips_e...
-arch/mips/kvm/kvm_mips_s...
+Talking about a file should include its path.
 
 
 Deng-Cheng

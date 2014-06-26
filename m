@@ -1,81 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 14:37:22 +0200 (CEST)
-Received: from mail-wg0-f73.google.com ([74.125.82.73]:59366 "EHLO
-        mail-wg0-f73.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860036AbaFZMhSEHb1c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 14:37:18 +0200
-Received: by mail-wg0-f73.google.com with SMTP id b13so357487wgh.4
-        for <linux-mips@linux-mips.org>; Thu, 26 Jun 2014 05:37:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=WJJLzoKtHRsLX63zBjvhkPte8WIkTtg1XKamPF1nlEQ=;
-        b=n1czxBWwwQEgcG7cbwcBnE8mF57JKCxX6zmx3+TQuhJja2bBrSXX1phTNBM7HJwNeX
-         IARU8pfJXM6s+w6iR/u+aIawSdv1cGQO1ClMf45kW9CqGAI3uLdQXVwJeUQsmWGx9Qps
-         r1kVndOdiQISHyGLp5iuKTQcYb6NpOfBfawlPF4QZlXcjT1z8Rvr2N90SnrufLofCTki
-         5bEEOFRiQt8nZy7uvj2nOKKjrnn5au4J0Ol7yKexqIqAjoWHAWdFz+tz+oDSpC0x51Df
-         Nh4QvuSbbRP/9+WjwQAud1BSbkjzc/B+4Leg0tO05QgxwaIUl5iyeMM/Poc/sQv6rRfk
-         JqDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=WJJLzoKtHRsLX63zBjvhkPte8WIkTtg1XKamPF1nlEQ=;
-        b=Ed5mJyyj++vHd9p8KANHRa4DE6W0gPN7aPQntPbiEnCd5sSnSVNwRKvA9SmMUvE2RB
-         wXpqIY0QHAc/lrYscxxwu/YSp/OEMtxXSB+CEfe0cWYUFrG3ZyyOeNqhF463ZoZo0gCT
-         wKtAC5GtmYJZZ8++ce4IgSUn/+FaIXIcPpExR4WAob47GTU0GkxMUW4u9U1zq/D8s/zo
-         +7SoFNA8Ewcz8qGwDPrlJwCt3WP5pibiCwSDlmVxUt/Ms14SUiXtXjM/BErQ7K4D48b1
-         gPyBlCatbFltotEKlEX0LYywR/Ra9vrhIZKWPmXMs2OIAwmnODjkb3ItkEhRjBqDyfqq
-         kPmA==
-X-Gm-Message-State: ALoCoQnmCyeEPkNF4Bwbo5iO080ul354qpsYVdLTaqlzy27owj4LU14v0lnTTy4XxOG8YNNnd0/e
-X-Received: by 10.180.39.196 with SMTP id r4mr442875wik.4.1403786231887;
-        Thu, 26 Jun 2014 05:37:11 -0700 (PDT)
-Received: from corp2gmr1-1.eem.corp.google.com (corp2gmr1-1.eem.corp.google.com [172.25.138.99])
-        by gmr-mx.google.com with ESMTPS id l9si230811wiy.2.2014.06.26.05.37.11
-        for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 26 Jun 2014 05:37:11 -0700 (PDT)
-Received: from drysdale.lon.corp.google.com (drysdale.lon.corp.google.com [172.16.7.77])
-        by corp2gmr1-1.eem.corp.google.com (Postfix) with ESMTP id AE78B1CA380;
-        Thu, 26 Jun 2014 05:37:11 -0700 (PDT)
-Received: by drysdale.lon.corp.google.com (Postfix, from userid 172398)
-        id D005AE0C1B; Thu, 26 Jun 2014 13:37:10 +0100 (BST)
-Date:   Thu, 26 Jun 2014 13:37:10 +0100
-From:   David Drysdale <drysdale@google.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andy Lutomirski <luto@amacapital.net>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>, linux-api@vger.kernel.org,
-        x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-arch@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v7 2/9] seccomp: split filter prep from check and apply
-Message-ID: <20140626123710.GA16204@google.com>
-References: <1403560693-21809-1-git-send-email-keescook@chromium.org>
- <1403560693-21809-3-git-send-email-keescook@chromium.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2014 21:12:05 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26372 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6860036AbaFZTMCO2KTo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2014 21:12:02 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id AA441E092A246;
+        Thu, 26 Jun 2014 20:11:50 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.10.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 26 Jun
+ 2014 20:11:54 +0100
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
+ (10.40.10.222) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 26 Jun
+ 2014 20:11:54 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.181.6; Thu, 26 Jun 2014 20:11:53 +0100
+Received: from fun-lab.mips.com (10.20.2.221) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 26 Jun
+ 2014 12:11:45 -0700
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+To:     <pbonzini@redhat.com>
+CC:     <gleb@kernel.org>, <kvm@vger.kernel.org>, <sanjayl@kymasys.com>,
+        <james.hogan@imgtec.com>, <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, <dengcheng.zhu@imgtec.com>
+Subject: [PATCH v4 0/7] MIPS: KVM: Bugfixes and cleanups
+Date:   Thu, 26 Jun 2014 12:11:33 -0700
+Message-ID: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1403560693-21809-3-git-send-email-keescook@chromium.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <drysdale@google.com>
+Content-Type: text/plain
+X-Originating-IP: [10.20.2.221]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40850
+X-archive-position: 40851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: drysdale@google.com
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,30 +51,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 23, 2014 at 02:58:06PM -0700, Kees Cook wrote:
-> In preparation for adding seccomp locking, move filter creation away
-> from where it is checked and applied. This will allow for locking where
-> no memory allocation is happening. The validation, filter attachment,
-> and seccomp mode setting can all happen under the future locks.
-> 
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  kernel/seccomp.c |   97 +++++++++++++++++++++++++++++++++++++-----------------
->  1 file changed, 67 insertions(+), 30 deletions(-)
-> 
-> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-> index afb916c7e890..edc8c79ed16d 100644
-> --- a/kernel/seccomp.c
-> +++ b/kernel/seccomp.c
-> @@ -515,6 +551,7 @@ static long seccomp_set_mode(unsigned long seccomp_mode, char __user *filter)
->  	current->seccomp.mode = seccomp_mode;
->  	set_thread_flag(TIF_SECCOMP);
->  out:
-> +	seccomp_filter_free(prepared);
->  	return ret;
->  }
+The patches are pretty straightforward.
 
-I think this needs to be inside #ifdef CONFIG_SECCOMP_FILTER to match
-the definition of seccomp_filter_free:
+Changes:
+v4 - v3:
+o In patch #1, align elements in debugfs_entries[].
+o In patch #1, indentation and comment style changes.
+o In patch #2, use kvm_debug instead of kvm_err in kvm_mips_check_privilege().
+o Drop off the original patch #6 (MIPS: KVM: Restore correct value for WIRED at
+  TLB uninit).
+o Drop off the original patch #7 (MIPS: KVM: Fix memory leak on VCPU), because
+  it has been queued.
+o Change authorship of the original patch #9 (MIPS: KVM: Remove dead code of TLB
+  index error in kvm_mips_emul_tlbwr()), add Reported-by.
+v3 - v2:
+o In patch #2, change the use of kvm_[err|info|debug].
+o In patch #3, add err removal in kvm_arch_commit_memory_region().
+o In patch #3, revert the changes to kvm_arch_vm_ioctl().
+o In patch #7, drop the merge of kvm_arch_vcpu_free() and pointer nullification.
+o Add patch #9.
+v2 - v1:
+o In patch #1, don't change the opening comment mark for kernel-doc comments.
+o In patch #1, to make long lines more readable, use local variables / macros.
+o In patch #1, slight format adjustments are made.
+o Use -M flag to generate patches (detect renames).
+o Add patch #8.
 
-../kernel/seccomp.c:554:2: error: implicit declaration of function ‘seccomp_filter_free’ [-Werror=implicit-function-declaration]
+Deng-Cheng Zhu (7):
+  MIPS: KVM: Reformat code and comments
+  MIPS: KVM: Use KVM internal logger
+  MIPS: KVM: Simplify functions by removing redundancy
+  MIPS: KVM: Remove unneeded volatile
+  MIPS: KVM: Rename files to remove the prefix "kvm_" and "kvm_mips_"
+  MIPS: KVM: Skip memory cleaning in kvm_mips_commpage_init()
+  MIPS: KVM: Remove dead code of TLB index error in
+    kvm_mips_emul_tlbwr()
+
+ arch/mips/include/asm/kvm_host.h                  |  12 +-
+ arch/mips/include/asm/r4kcache.h                  |   3 +
+ arch/mips/kvm/Makefile                            |   8 +-
+ arch/mips/kvm/{kvm_cb.c => callback.c}            |   0
+ arch/mips/kvm/commpage.c                          |  33 ++
+ arch/mips/kvm/commpage.h                          |  24 +
+ arch/mips/kvm/{kvm_mips_dyntrans.c => dyntrans.c} |  40 +-
+ arch/mips/kvm/{kvm_mips_emul.c => emulate.c}      | 539 +++++++++++-----------
+ arch/mips/kvm/{kvm_mips_int.c => interrupt.c}     |  47 +-
+ arch/mips/kvm/{kvm_mips_int.h => interrupt.h}     |  22 +-
+ arch/mips/kvm/kvm_mips_comm.h                     |  23 -
+ arch/mips/kvm/kvm_mips_commpage.c                 |  37 --
+ arch/mips/kvm/kvm_mips_opcode.h                   |  24 -
+ arch/mips/kvm/{kvm_locore.S => locore.S}          |  55 ++-
+ arch/mips/kvm/{kvm_mips.c => mips.c}              | 224 +++++----
+ arch/mips/kvm/opcode.h                            |  22 +
+ arch/mips/kvm/{kvm_mips_stats.c => stats.c}       |  28 +-
+ arch/mips/kvm/{kvm_tlb.c => tlb.c}                | 258 +++++------
+ arch/mips/kvm/trace.h                             |  18 +-
+ arch/mips/kvm/{kvm_trap_emul.c => trap_emul.c}    | 112 +++--
+ 20 files changed, 750 insertions(+), 779 deletions(-)
+ rename arch/mips/kvm/{kvm_cb.c => callback.c} (100%)
+ create mode 100644 arch/mips/kvm/commpage.c
+ create mode 100644 arch/mips/kvm/commpage.h
+ rename arch/mips/kvm/{kvm_mips_dyntrans.c => dyntrans.c} (79%)
+ rename arch/mips/kvm/{kvm_mips_emul.c => emulate.c} (83%)
+ rename arch/mips/kvm/{kvm_mips_int.c => interrupt.c} (85%)
+ rename arch/mips/kvm/{kvm_mips_int.h => interrupt.h} (74%)
+ delete mode 100644 arch/mips/kvm/kvm_mips_comm.h
+ delete mode 100644 arch/mips/kvm/kvm_mips_commpage.c
+ delete mode 100644 arch/mips/kvm/kvm_mips_opcode.h
+ rename arch/mips/kvm/{kvm_locore.S => locore.S} (93%)
+ rename arch/mips/kvm/{kvm_mips.c => mips.c} (84%)
+ create mode 100644 arch/mips/kvm/opcode.h
+ rename arch/mips/kvm/{kvm_mips_stats.c => stats.c} (63%)
+ rename arch/mips/kvm/{kvm_tlb.c => tlb.c} (78%)
+ rename arch/mips/kvm/{kvm_trap_emul.c => trap_emul.c} (83%)
+
+-- 
+1.8.5.3

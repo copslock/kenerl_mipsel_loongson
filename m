@@ -1,50 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2014 20:39:55 +0200 (CEST)
-Received: from mail-lb0-f175.google.com ([209.85.217.175]:44699 "EHLO
-        mail-lb0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860046AbaF0SjvqVj0H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2014 20:39:51 +0200
-Received: by mail-lb0-f175.google.com with SMTP id n15so4226141lbi.6
-        for <linux-mips@linux-mips.org>; Fri, 27 Jun 2014 11:39:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2014 20:45:33 +0200 (CEST)
+Received: from mail-ob0-f175.google.com ([209.85.214.175]:43339 "EHLO
+        mail-ob0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860046AbaF0Sp3k4FDx convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Jun 2014 20:45:29 +0200
+Received: by mail-ob0-f175.google.com with SMTP id wm4so6070270obc.6
+        for <linux-mips@linux-mips.org>; Fri, 27 Jun 2014 11:45:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=3P09+TtHyb9MDetCx+TCyh3w/w1Wo9MkGlneGr0Rzbc=;
+        b=MQ+5sCqpBzDibZQVV5W3wH/b8i61B/Zib7oaGwTJyJ5ynhfnp9m9A3zx4di58eR/sA
+         d+c+pLIetpFC0p/Fzi3mUqeSEzzbGFd5ZVyvt+4uxzDEgKvECWNDREAtbT3xg+ciT8Pz
+         kvkQol5ZBG2djOIvFasoqsAPXaPBO+X5DZT3fhUxTfjG831sghHOLg/DjBstpNa+bqtI
+         LwN6gQjM//BoCE40Xm3+m3l2VWtdtfpZyuBBQ6NrVNlXSB1aKUw5QZ1kjdLCfWT0aoNS
+         6fXMc6KSuo9/GskxSdtY8teSuS8BJb5wJOqChFxl6PIQ0Gua49dumQVzLKzhE96JtJPv
+         pgRw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=3P09+TtHyb9MDetCx+TCyh3w/w1Wo9MkGlneGr0Rzbc=;
+        b=KHUZvUi9r6cqUJwLkgnq1lrzEjZFAX7XrbazADixvZGY+ODPeqKFEEIcyOuHXL6aD+
+         0gbi+CgkHp1GgDyHfo0EZtnrUWVB7dvPBzgqln3vKhjZFhcB7OaaiIy4lVG1YK220nOS
+         TYJulU+JpV46YVrGw3a57twl3BYOLMhtOZEIY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=13P1VDlVcE9vLQIeB0adbdnzVuSrf1DiZZKLmXhiLDw=;
-        b=YaP7djUkf/MQLszMYAHRMekBu2tixls/6QsmWg2W+bKoHYL90rzptrC0oYH/46mSxz
-         TBud5H8iqmHFIFyRmcYIYqAhiRkD5RSnfqIT6OZTBm9cpGzYqwHcuDWsGLCKHmISnhru
-         cMMVnxiQ8Wi5fKKYBoUfvinV+ywFcUesWDiXJg5YDLAMm7Eo2FxOZh8p/bHAn3nQbH4h
-         faHTUEGEw70MwcDTxRuWRQuobajwQpGvszIg5hzmpa9dfHpHq56uGrDVHdWU1Z56Y/3A
-         OuDg+13Cp2Ic3zvmzXFN5mYtf5w8mHTde0GpA4BUWWdz+sSwytjoxjVnuDu+esmS4ABW
-         kdsQ==
-X-Gm-Message-State: ALoCoQmHTeCGkpQ07uEIg1o/leOOlFwQLzXKms6eiN0QlEw3cFi0immWVGYB6NFUIgaJ5aPwYLY5
-X-Received: by 10.112.41.195 with SMTP id h3mr7884lbl.103.1403894386065; Fri,
- 27 Jun 2014 11:39:46 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=3P09+TtHyb9MDetCx+TCyh3w/w1Wo9MkGlneGr0Rzbc=;
+        b=KkDANReYrt5dkFAJr9tpAJDkuZZw0x1jYI3EK0vXFdpiTIy5WUIE/CLaK2Rfzay3iZ
+         UaP/nrV03u+hpSX8PHVqmQkdRoOem8s5G1ndIHFQQnMnJ0UfoaMHILZT7sFa0k67uJ0c
+         VMQwLGvSJ19S5DYdNrUDKX/v7ffkuJvfh90dq20sqZ2UTVmXiDwgY2FU9NEWMn1NqV6I
+         R3BcPyFm5Uyi9oHmFSwGjIQJ2BBhp0nEqghGZ/k162J+rinPBD11e2Z4lmSB078a0z03
+         aX6Ee+C1qlcjIUXj46jIBMvFxa4uN1+RDuCnbfGHwp/5rT0bOPIAtXnIxXLkNCBfOUA1
+         jm2w==
+X-Gm-Message-State: ALoCoQm4TN5D1uqpFSEYC+avkrWdi8d8mu5QNqwZiqpj4AgsVMT4Ua1uRlT6duc/Y1fRFGhiNTp7
 MIME-Version: 1.0
-Received: by 10.152.108.130 with HTTP; Fri, 27 Jun 2014 11:39:25 -0700 (PDT)
-In-Reply-To: <CAGXu5jLavA8FJD8m-1y4wO0uzh3qvvMmajAg0Lrr1Cn_Om3a3w@mail.gmail.com>
-References: <1403642893-23107-1-git-send-email-keescook@chromium.org>
- <1403642893-23107-6-git-send-email-keescook@chromium.org> <20140625135121.GB7892@redhat.com>
- <CAGXu5jJkFxh4K=40xuh6tu3kUf4oJM8Dry+4upBdRieW3FNLgw@mail.gmail.com>
- <CALCETrUBNmLnpa+LM91om2RSpR6SjupP-EdefzhU1Me4nv3Dfw@mail.gmail.com>
- <CAGXu5j+J11zJnuFR8bYKAXizAHhCx4R+uJE_QH6zC3q2udkpaQ@mail.gmail.com>
- <CALCETrVrs8sb19+UUqyFEpAFzTih5dkAwn-WpQjfgPcPJMpP5g@mail.gmail.com>
- <20140625173245.GA17695@redhat.com> <CALCETrUc65H+fn6dtMdYnB_xR39wcmgDdTbdR3fFRjyrndJhgA@mail.gmail.com>
- <20140625175136.GA18185@redhat.com> <CAGXu5jL17k6=GXju6x+eLU20FMwBHhnuRiHoQD1Bzj_EmpiKjg@mail.gmail.com>
- <CALCETrVNwhWSPNiBiZmgP1nD9zLJPTk6cH0yo=85rbxTPTYFRg@mail.gmail.com> <CAGXu5jLavA8FJD8m-1y4wO0uzh3qvvMmajAg0Lrr1Cn_Om3a3w@mail.gmail.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Fri, 27 Jun 2014 11:39:25 -0700
-Message-ID: <CALCETrUPxTxseJ=sOhD9CyJPtOqCR5sL8yx7KezLmLZcFSFNMA@mail.gmail.com>
-Subject: Re: [PATCH v8 5/9] seccomp: split mode set routines
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Oleg Nesterov <oleg@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
+X-Received: by 10.60.120.98 with SMTP id lb2mr25210918oeb.52.1403894723360;
+ Fri, 27 Jun 2014 11:45:23 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Fri, 27 Jun 2014 11:45:23 -0700 (PDT)
+In-Reply-To: <20140626123710.GA16204@google.com>
+References: <1403560693-21809-1-git-send-email-keescook@chromium.org>
+        <1403560693-21809-3-git-send-email-keescook@chromium.org>
+        <20140626123710.GA16204@google.com>
+Date:   Fri, 27 Jun 2014 11:45:23 -0700
+X-Google-Sender-Auth: 7zWe2MZOonWy0O3lzzu2P7_-VEQ
+Message-ID: <CAGXu5j+CxPPj2m+mgAR99O9PmDF0Pg4vKEXqN6SOdawQ7X_q8g@mail.gmail.com>
+Subject: Re: [PATCH v7 2/9] seccomp: split filter prep from check and apply
+From:   Kees Cook <keescook@chromium.org>
+To:     David Drysdale <drysdale@google.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
         Alexei Starovoitov <ast@plumgrid.com>,
+        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Daniel Borkmann <dborkman@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
         Will Drewry <wad@chromium.org>,
         Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
         Linux API <linux-api@vger.kernel.org>,
         "x86@kernel.org" <x86@kernel.org>,
         "linux-arm-kernel@lists.infradead.org" 
@@ -52,15 +68,16 @@ Cc:     Oleg Nesterov <oleg@redhat.com>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-security-module <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40871
+X-archive-position: 40872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,96 +90,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 27, 2014 at 11:33 AM, Kees Cook <keescook@chromium.org> wrote:
-> On Wed, Jun 25, 2014 at 11:07 AM, Andy Lutomirski <luto@amacapital.net> wrote:
->> On Wed, Jun 25, 2014 at 11:00 AM, Kees Cook <keescook@chromium.org> wrote:
->>> On Wed, Jun 25, 2014 at 10:51 AM, Oleg Nesterov <oleg@redhat.com> wrote:
->>>> On 06/25, Andy Lutomirski wrote:
->>>>>
->>>>> On Wed, Jun 25, 2014 at 10:32 AM, Oleg Nesterov <oleg@redhat.com> wrote:
->>>>> > On 06/25, Andy Lutomirski wrote:
->>>>> >>
->>>>> >> Write the filter, then smp_mb (or maybe a weaker barrier is okay),
->>>>> >> then set the bit.
->>>>> >
->>>>> > Yes, exactly, this is what I meant. Plas rmb() in __secure_computing().
->>>>> >
->>>>> > But I still can't understand the rest of your discussion about the
->>>>> > ordering we need ;)
->>>>>
->>>>> Let me try again from scratch.
->>>>>
->>>>> Currently there are three relevant variables: TIF_SECCOMP,
->>>>> seccomp.mode, and seccomp.filter.  __secure_computing needs
->>>>> seccomp.mode and seccomp.filter to be in sync, and it wants (but
->>>>> doesn't really need) TIF_SECCOMP to be in sync as well.
->>>>>
->>>>> My suggestion is to rearrange it a bit.  Move mode into seccomp.filter
->>>>> (so that filter == NULL implies no seccomp) and don't check
->>>
->>> This would require that we reimplement mode 1 seccomp via mode 2
->>> filters. Which isn't too hard, but may add complexity.
->>>
->>>>> TIF_SECCOMP in secure_computing.  Then turning on seccomp is entirely
->>>>> atomic except for the fact that the seccomp hooks won't be called if
->>>>> filter != NULL but !TIF_SECCOMP.  This removes all ordering
->>>>> requirements.
->>>>
->>>> Ah, got it, thanks. Perhaps I missed somehing, but to me this looks like
->>>> unnecessary complication at first glance.
->>>>
->>>> We alredy have TIF_SECCOMP, we need it anyway, and we should only care
->>>> about the case when this bit is actually set, so that we can race with
->>>> the 1st call of __secure_computing().
->>>>
->>>> Otherwise we are fine: we can miss the new filter anyway, ->mode can't
->>>> be changed it is already nonzero.
->>>>
->>>>> Alternatively, __secure_computing could still BUG_ON(!seccomp.filter).
->>>>> In that case, filter needs to be set before TIF_SECCOMP is set, but
->>>>> that's straightforward.
->>>>
->>>> Yep. And this is how seccomp_assign_mode() already works? It is called
->>>> after we change ->filter chain, it changes ->mode before set(TIF_SECCOMP)
->>>> just it lacks a barrier.
->>>
->>> Right, I think the best solution is to add the barrier. I was
->>> concerned that adding the read barrier in secure_computing would have
->>> a performance impact, though.
->>>
+On Thu, Jun 26, 2014 at 5:37 AM, David Drysdale <drysdale@google.com> wrote:
+> On Mon, Jun 23, 2014 at 02:58:06PM -0700, Kees Cook wrote:
+>> In preparation for adding seccomp locking, move filter creation away
+>> from where it is checked and applied. This will allow for locking where
+>> no memory allocation is happening. The validation, filter attachment,
+>> and seccomp mode setting can all happen under the future locks.
 >>
->> I can't speak for ARM, but I think that all of the read barriers are
->> essentially free on x86.  (smp_mb is a very different story, but that
->> shouldn't be needed here.)
+>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>> ---
+>>  kernel/seccomp.c |   97 +++++++++++++++++++++++++++++++++++++-----------------
+>>  1 file changed, 67 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+>> index afb916c7e890..edc8c79ed16d 100644
+>> --- a/kernel/seccomp.c
+>> +++ b/kernel/seccomp.c
+>> @@ -515,6 +551,7 @@ static long seccomp_set_mode(unsigned long seccomp_mode, char __user *filter)
+>>       current->seccomp.mode = seccomp_mode;
+>>       set_thread_flag(TIF_SECCOMP);
+>>  out:
+>> +     seccomp_filter_free(prepared);
+>>       return ret;
+>>  }
 >
-> It looks like SMP ARM issues dsb for rmb, which seems a bit expensive.
-> http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0204g/CIHJFGFE.html
+> I think this needs to be inside #ifdef CONFIG_SECCOMP_FILTER to match
+> the definition of seccomp_filter_free:
 >
-> If I skip the rmb in the secure_computing call before checking mode,
-> it sounds like I run the risk of racing an out-of-order TIF_SECCOMP vs
-> mode and filter. This seems unlikely to me, given an addition of the
-> smp_mb__before_atomic() during the seccomp_assign_mode()? I guess I
-> don't have a sense of how aggressively ARM might do data caching in
-> this area. Could the other thread actually see TIF_SECCOMP get set but
-> still have an out of date copy of seccomp.mode?
->
-> I really want to avoid adding anything to the secure_computing()
-> execution path. :(
+> ../kernel/seccomp.c:554:2: error: implicit declaration of function ‘seccomp_filter_free’ [-Werror=implicit-function-declaration]
 
-Hence my suggestion to make the ordering not matter.  No ordering
-requirement, no barriers.
+Thanks for catching that! I've ended up rearranging the patch series
+so the prepare/attach split happens after I've split the set_mode
+functions now, so I've managed to avoid this condition now. :)
 
---Andy
-
->
-> -Kees
->
-> --
-> Kees Cook
-> Chrome OS Security
-
-
+-Kees
 
 -- 
-Andy Lutomirski
-AMA Capital Management, LLC
+Kees Cook
+Chrome OS Security

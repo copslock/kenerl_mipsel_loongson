@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2014 01:33:21 +0200 (CEST)
-Received: from smtp.outflux.net ([198.145.64.163]:55689 "EHLO smtp.outflux.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2014 01:35:08 +0200 (CEST)
+Received: from smtp.outflux.net ([198.145.64.163]:49638 "EHLO smtp.outflux.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860050AbaF0XXRNoT1G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6860052AbaF0XXRQf0TO (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 28 Jun 2014 01:23:17 +0200
 Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s5RNN8E7026804;
-        Fri, 27 Jun 2014 16:23:08 -0700
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s5RNN74l026800;
+        Fri, 27 Jun 2014 16:23:07 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>, Oleg Nesterov <oleg@redhat.com>,
@@ -20,9 +20,9 @@ Cc:     Kees Cook <keescook@chromium.org>, Oleg Nesterov <oleg@redhat.com>,
         linux-api@vger.kernel.org, x86@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH v9 10/11] seccomp: allow mode setting across threads
-Date:   Fri, 27 Jun 2014 16:22:59 -0700
-Message-Id: <1403911380-27787-11-git-send-email-keescook@chromium.org>
+Subject: [PATCH v9 06/11] MIPS: add seccomp syscall
+Date:   Fri, 27 Jun 2014 16:22:55 -0700
+Message-Id: <1403911380-27787-7-git-send-email-keescook@chromium.org>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1403911380-27787-1-git-send-email-keescook@chromium.org>
 References: <1403911380-27787-1-git-send-email-keescook@chromium.org>
@@ -33,7 +33,7 @@ Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40894
+X-archive-position: 40895
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,79 +50,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This changes the mode setting helper to allow threads to change the
-seccomp mode from another thread. We must maintain barriers to keep
-TIF_SECCOMP synchronized with the rest of the seccomp state.
+Wires up the new seccomp syscall.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- kernel/seccomp.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ arch/mips/include/uapi/asm/unistd.h |   15 +++++++++------
+ arch/mips/kernel/scall32-o32.S      |    1 +
+ arch/mips/kernel/scall64-64.S       |    1 +
+ arch/mips/kernel/scall64-n32.S      |    1 +
+ arch/mips/kernel/scall64-o32.S      |    1 +
+ 5 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index e1ff2c193190..7bbcb9ed16df 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -207,12 +207,18 @@ static inline bool seccomp_check_mode(unsigned long seccomp_mode)
- 	return true;
- }
+diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+index 5805414777e0..9bc13eaf9d67 100644
+--- a/arch/mips/include/uapi/asm/unistd.h
++++ b/arch/mips/include/uapi/asm/unistd.h
+@@ -372,16 +372,17 @@
+ #define __NR_sched_setattr		(__NR_Linux + 349)
+ #define __NR_sched_getattr		(__NR_Linux + 350)
+ #define __NR_renameat2			(__NR_Linux + 351)
++#define __NR_seccomp			(__NR_Linux + 352)
  
--static inline void seccomp_assign_mode(unsigned long seccomp_mode)
-+static inline void seccomp_assign_mode(struct task_struct *task,
-+				       unsigned long seccomp_mode)
- {
--	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-+	BUG_ON(!spin_is_locked(&task->sighand->siglock));
+ /*
+  * Offset of the last Linux o32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		351
++#define __NR_Linux_syscalls		352
  
--	current->seccomp.mode = seccomp_mode;
--	set_tsk_thread_flag(current, TIF_SECCOMP);
-+	task->seccomp.mode = seccomp_mode;
-+	/*
-+	 * Make sure TIF_SECCOMP cannot be set before the mode (and
-+	 * filter) is set.
-+	 */
-+	smp_mb__before_atomic();
-+	set_tsk_thread_flag(task, TIF_SECCOMP);
- }
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
  
- #ifdef CONFIG_SECCOMP_FILTER
-@@ -433,12 +439,17 @@ static int mode1_syscalls_32[] = {
+ #define __NR_O32_Linux			4000
+-#define __NR_O32_Linux_syscalls		351
++#define __NR_O32_Linux_syscalls		352
  
- int __secure_computing(int this_syscall)
- {
--	int mode = current->seccomp.mode;
- 	int exit_sig = 0;
- 	int *syscall;
- 	u32 ret;
+ #if _MIPS_SIM == _MIPS_SIM_ABI64
  
--	switch (mode) {
-+	/*
-+	 * Make sure that any changes to mode from another thread have
-+	 * been seen after TIF_SECCOMP was seen.
-+	 */
-+	rmb();
-+
-+	switch (current->seccomp.mode) {
- 	case SECCOMP_MODE_STRICT:
- 		syscall = mode1_syscalls;
- #ifdef CONFIG_COMPAT
-@@ -543,7 +554,7 @@ static long seccomp_set_mode_strict(void)
- #ifdef TIF_NOTSC
- 	disable_TSC();
- #endif
--	seccomp_assign_mode(seccomp_mode);
-+	seccomp_assign_mode(current, seccomp_mode);
- 	ret = 0;
+@@ -701,16 +702,17 @@
+ #define __NR_sched_setattr		(__NR_Linux + 309)
+ #define __NR_sched_getattr		(__NR_Linux + 310)
+ #define __NR_renameat2			(__NR_Linux + 311)
++#define __NR_seccomp			(__NR_Linux + 312)
  
- out:
-@@ -593,7 +604,7 @@ static long seccomp_set_mode_filter(unsigned int flags,
- 	/* Do not free the successfully attached filter. */
- 	prepared = NULL;
+ /*
+  * Offset of the last Linux 64-bit flavoured syscall
+  */
+-#define __NR_Linux_syscalls		311
++#define __NR_Linux_syscalls		312
  
--	seccomp_assign_mode(seccomp_mode);
-+	seccomp_assign_mode(current, seccomp_mode);
- out:
- 	spin_unlock_irq(&current->sighand->siglock);
- 	seccomp_filter_free(prepared);
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+ 
+ #define __NR_64_Linux			5000
+-#define __NR_64_Linux_syscalls		311
++#define __NR_64_Linux_syscalls		312
+ 
+ #if _MIPS_SIM == _MIPS_SIM_NABI32
+ 
+@@ -1034,15 +1036,16 @@
+ #define __NR_sched_setattr		(__NR_Linux + 313)
+ #define __NR_sched_getattr		(__NR_Linux + 314)
+ #define __NR_renameat2			(__NR_Linux + 315)
++#define __NR_seccomp			(__NR_Linux + 316)
+ 
+ /*
+  * Offset of the last N32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		315
++#define __NR_Linux_syscalls		316
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+ 
+ #define __NR_N32_Linux			6000
+-#define __NR_N32_Linux_syscalls		315
++#define __NR_N32_Linux_syscalls		316
+ 
+ #endif /* _UAPI_ASM_UNISTD_H */
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index 3245474f19d5..ab02d14f1b5c 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -578,3 +578,4 @@ EXPORT(sys_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr		/* 4350 */
+ 	PTR	sys_renameat2
++	PTR	sys_seccomp
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index be2fedd4ae33..010dccf128ec 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -431,4 +431,5 @@ EXPORT(sys_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr		/* 5310 */
+ 	PTR	sys_renameat2
++	PTR	sys_seccomp
+ 	.size	sys_call_table,.-sys_call_table
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index c1dbcda4b816..c3b3b6525df5 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -424,4 +424,5 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr
+ 	PTR	sys_renameat2			/* 6315 */
++	PTR	sys_seccomp
+ 	.size	sysn32_call_table,.-sysn32_call_table
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index f1343ccd7ed7..bb1550b1f501 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -557,4 +557,5 @@ EXPORT(sys32_call_table)
+ 	PTR	sys_sched_setattr
+ 	PTR	sys_sched_getattr		/* 4350 */
+ 	PTR	sys_renameat2
++	PTR	sys_seccomp
+ 	.size	sys32_call_table,.-sys32_call_table
 -- 
 1.7.9.5

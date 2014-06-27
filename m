@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2014 01:45:56 +0200 (CEST)
-Received: from smtp.outflux.net ([198.145.64.163]:49099 "EHLO smtp.outflux.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860058AbaF0XXWQ0UeE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 28 Jun 2014 01:23:22 +0200
-Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s5RNNC0D026801;
-        Fri, 27 Jun 2014 16:23:12 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Kees Cook <keescook@chromium.org>, Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        linux-api@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH v9 07/11] sched: move no_new_privs into new atomic flags
-Date:   Fri, 27 Jun 2014 16:22:56 -0700
-Message-Id: <1403911380-27787-8-git-send-email-keescook@chromium.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1403911380-27787-1-git-send-email-keescook@chromium.org>
-References: <1403911380-27787-1-git-send-email-keescook@chromium.org>
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.73
-Return-Path: <keescook@www.outflux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2014 01:47:41 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21360 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6860058AbaF0Xr34Kmoj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Jun 2014 01:47:29 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8B0BBD18600CB;
+        Sat, 28 Jun 2014 00:47:18 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 28 Jun
+ 2014 00:47:22 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Sat, 28 Jun 2014 00:47:22 +0100
+Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 27 Jun
+ 2014 16:47:20 -0700
+Message-ID: <53AE0288.6000905@imgtec.com>
+Date:   Fri, 27 Jun 2014 16:47:20 -0700
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+MIME-Version: 1.0
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        James Hogan <james.hogan@imgtec.com>
+CC:     <gleb@kernel.org>, <kvm@vger.kernel.org>, <sanjayl@kymasys.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v3 7/9] MIPS: KVM: Fix memory leak on VCPU
+References: <1403631071-6012-1-git-send-email-dengcheng.zhu@imgtec.com> <1403631071-6012-8-git-send-email-dengcheng.zhu@imgtec.com> <53AA9625.8020802@imgtec.com> <53AABDE9.3050907@redhat.com>
+In-Reply-To: <53AABDE9.3050907@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.2.221]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40901
+X-archive-position: 40902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,135 +51,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since seccomp transitions between threads requires updates to the
-no_new_privs flag to be atomic, the flag must be part of an atomic flag
-set. This moves the nnp flag into a separate task field, and introduces
-accessors.
+Hi Paolo,
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- fs/exec.c                  |    4 ++--
- include/linux/sched.h      |   18 +++++++++++++++---
- kernel/seccomp.c           |    2 +-
- kernel/sys.c               |    4 ++--
- security/apparmor/domain.c |    4 ++--
- 5 files changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index a3d33fe592d6..0f5c272410f6 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1234,7 +1234,7 @@ static void check_unsafe_exec(struct linux_binprm *bprm)
- 	 * This isn't strictly necessary, but it makes it harder for LSMs to
- 	 * mess up.
- 	 */
--	if (current->no_new_privs)
-+	if (task_no_new_privs(current))
- 		bprm->unsafe |= LSM_UNSAFE_NO_NEW_PRIVS;
- 
- 	t = p;
-@@ -1272,7 +1272,7 @@ int prepare_binprm(struct linux_binprm *bprm)
- 	bprm->cred->egid = current_egid();
- 
- 	if (!(bprm->file->f_path.mnt->mnt_flags & MNT_NOSUID) &&
--	    !current->no_new_privs &&
-+	    !task_no_new_privs(current) &&
- 	    kuid_has_mapping(bprm->cred->user_ns, inode->i_uid) &&
- 	    kgid_has_mapping(bprm->cred->user_ns, inode->i_gid)) {
- 		/* Set-uid? */
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 306f4f0c987a..0fd19055bb64 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1307,13 +1307,12 @@ struct task_struct {
- 				 * execve */
- 	unsigned in_iowait:1;
- 
--	/* task may not gain privileges */
--	unsigned no_new_privs:1;
--
- 	/* Revert to default priority/policy when forking */
- 	unsigned sched_reset_on_fork:1;
- 	unsigned sched_contributes_to_load:1;
- 
-+	unsigned long atomic_flags; /* Flags needing atomic access. */
-+
- 	pid_t pid;
- 	pid_t tgid;
- 
-@@ -1967,6 +1966,19 @@ static inline void memalloc_noio_restore(unsigned int flags)
- 	current->flags = (current->flags & ~PF_MEMALLOC_NOIO) | flags;
- }
- 
-+/* Per-process atomic flags. */
-+#define PFA_NO_NEW_PRIVS 0x00000001	/* May not gain new privileges. */
-+
-+static inline bool task_no_new_privs(struct task_struct *p)
-+{
-+	return test_bit(PFA_NO_NEW_PRIVS, &p->atomic_flags);
-+}
-+
-+static inline void task_set_no_new_privs(struct task_struct *p)
-+{
-+	set_bit(PFA_NO_NEW_PRIVS, &p->atomic_flags);
-+}
-+
- /*
-  * task->jobctl flags
-  */
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 2f83496d6016..137e40c7ae3b 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -241,7 +241,7 @@ static long seccomp_attach_filter(struct sock_fprog *fprog)
- 	 * This avoids scenarios where unprivileged tasks can affect the
- 	 * behavior of privileged children.
- 	 */
--	if (!current->no_new_privs &&
-+	if (!task_no_new_privs(current) &&
- 	    security_capable_noaudit(current_cred(), current_user_ns(),
- 				     CAP_SYS_ADMIN) != 0)
- 		return -EACCES;
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 66a751ebf9d9..ce8129192a26 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -1990,12 +1990,12 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 		if (arg2 != 1 || arg3 || arg4 || arg5)
- 			return -EINVAL;
- 
--		current->no_new_privs = 1;
-+		task_set_no_new_privs(current);
- 		break;
- 	case PR_GET_NO_NEW_PRIVS:
- 		if (arg2 || arg3 || arg4 || arg5)
- 			return -EINVAL;
--		return current->no_new_privs ? 1 : 0;
-+		return task_no_new_privs(current) ? 1 : 0;
- 	case PR_GET_THP_DISABLE:
- 		if (arg2 || arg3 || arg4 || arg5)
- 			return -EINVAL;
-diff --git a/security/apparmor/domain.c b/security/apparmor/domain.c
-index 452567d3a08e..d97cba3e3849 100644
---- a/security/apparmor/domain.c
-+++ b/security/apparmor/domain.c
-@@ -621,7 +621,7 @@ int aa_change_hat(const char *hats[], int count, u64 token, bool permtest)
- 	 * There is no exception for unconfined as change_hat is not
- 	 * available.
- 	 */
--	if (current->no_new_privs)
-+	if (task_no_new_privs(current))
- 		return -EPERM;
- 
- 	/* released below */
-@@ -776,7 +776,7 @@ int aa_change_profile(const char *ns_name, const char *hname, bool onexec,
- 	 * no_new_privs is set because this aways results in a reduction
- 	 * of permissions.
- 	 */
--	if (current->no_new_privs && !unconfined(profile)) {
-+	if (task_no_new_privs(current) && !unconfined(profile)) {
- 		put_cred(cred);
- 		return -EPERM;
- 	}
--- 
-1.7.9.5
+On 06/25/2014 05:17 AM, Paolo Bonzini wrote:
+> Il 25/06/2014 11:28, James Hogan ha scritto:
+>> On 24/06/14 18:31, Deng-Cheng Zhu wrote:
+>>> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+>>>
+>>> kvm_arch_vcpu_free() is called in 2 code paths:
+>>>
+>>> 1) kvm_vm_ioctl()
+>>>        kvm_vm_ioctl_create_vcpu()
+>>>            kvm_arch_vcpu_destroy()
+>>>                kvm_arch_vcpu_free()
+>>> 2) kvm_put_kvm()
+>>>        kvm_destroy_vm()
+>>>            kvm_arch_destroy_vm()
+>>>                kvm_mips_free_vcpus()
+>>>                    kvm_arch_vcpu_free()
+>>>
+>>> Neither of the paths handles VCPU free. We need to do it in
+>>> kvm_arch_vcpu_free() corresponding to the memory allocation in
+>>> kvm_arch_vcpu_create().
+>>>
+>>> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+>>
+>> Reviewed-by: James Hogan <james.hogan@imgtec.com>
+>>
+>> Maybe worth adding "Cc: stable@vger.kernel.org" and moving this to the
+>> beginning of the patchset to avoid conflicts.
+>>
+>> Cheers
+>> James
+>>
+>
+> I've queued this for 3.16.  It applies cleanly apart for the filename change.
+
+Maybe you forgot to put this on the branch "queue"? I don't see it. Thanks.
+
+
+Deng-Cheng

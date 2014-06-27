@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2014 04:58:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55787 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2014 16:23:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44308 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6856571AbaF0C6jkrGk0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2014 04:58:39 +0200
+        with ESMTP id S6860046AbaF0OXBD6pDT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2014 16:23:01 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CBC08EA143A3A;
-        Fri, 27 Jun 2014 03:58:31 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+        by Websense Email Security Gateway with ESMTPS id 643FCEC1D3839;
+        Fri, 27 Jun 2014 15:22:50 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.10.222) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 27 Jun
- 2014 03:58:32 +0100
-Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 27 Jun 2014 03:58:32 +0100
-Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
- (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 26 Jun
- 2014 15:44:49 -0700
-Message-ID: <53ACA261.7040007@imgtec.com>
-Date:   Thu, 26 Jun 2014 15:44:49 -0700
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+ 2014 15:22:53 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.10.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 27 Jun 2014 15:22:52 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 27 Jun
+ 2014 15:22:52 +0100
+Message-ID: <53AD7E3C.3040901@imgtec.com>
+Date:   Fri, 27 Jun 2014 15:22:52 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     <pbonzini@redhat.com>, <gleb@kernel.org>, <kvm@vger.kernel.org>,
-        <sanjayl@kymasys.com>, <james.hogan@imgtec.com>,
+To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>, <pbonzini@redhat.com>
+CC:     <gleb@kernel.org>, <kvm@vger.kernel.org>, <sanjayl@kymasys.com>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v4 5/7] MIPS: KVM: Rename files to remove the prefix "kvm_"
- and "kvm_mips_"
-References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com> <1403809900-17454-6-git-send-email-dengcheng.zhu@imgtec.com> <53AC7466.6070401@gmail.com> <53AC7AAD.7010007@imgtec.com> <53AC96D7.8040208@gmail.com>
-In-Reply-To: <53AC96D7.8040208@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Subject: Re: [PATCH v4 0/7] MIPS: KVM: Bugfixes and cleanups
+References: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com>
+In-Reply-To: <1403809900-17454-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.2.221]
-Return-Path: <DengCheng.Zhu@imgtec.com>
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40865
+X-archive-position: 40867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,71 +51,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/26/2014 02:55 PM, David Daney wrote:
-> On 06/26/2014 12:55 PM, Deng-Cheng Zhu wrote:
->> On 06/26/2014 12:28 PM, David Daney wrote:
->>> On 06/26/2014 12:11 PM, Deng-Cheng Zhu wrote:
->>>> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
->>>>
->>>> Since all the files are in arch/mips/kvm/, there's no need of the
->>>> prefixes
->>>> "kvm_" and "kvm_mips_".
->>>>
->>>
->>> I don't like this change.
->>>
->>> It will leads me to confuse arch/mips/kvm/interrupt.h with
->>> include/linux/interrupt.h
->>
->> We have <linux/interrupt.h> and "interrupt.h".
->>
->>>
->>> x86 calls these things irq.c and irq.h, perhaps that would be a little
->>> better.
->>
->> There's also include/linux/irq.h
->>
->
-> Yes, I know.
+On 26/06/14 20:11, Deng-Cheng Zhu wrote:
+> The patches are pretty straightforward.
+> 
+> Changes:
+> v4 - v3:
+> o In patch #1, align elements in debugfs_entries[].
+> o In patch #1, indentation and comment style changes.
+> o In patch #2, use kvm_debug instead of kvm_err in kvm_mips_check_privilege().
+> o Drop off the original patch #6 (MIPS: KVM: Restore correct value for WIRED at
+>   TLB uninit).
+> o Drop off the original patch #7 (MIPS: KVM: Fix memory leak on VCPU), because
+>   it has been queued.
+> o Change authorship of the original patch #9 (MIPS: KVM: Remove dead code of TLB
+>   index error in kvm_mips_emul_tlbwr()), add Reported-by.
 
-I simply wanted to let you know that if arch/mips/kvm/interrupt.h and 
-include/linux/interrupt.h are consufing, then arch/x86/kvm/irq.h and 
-include/linux/irq.h the same -- not even a little better.
+Thanks. The remaining changes look good to me.
 
->
->>>
->>> There is precedence in x86 for some of the names though.
->>>
->>> But really why churn up the code in the first place?  the kvm_mips
->>> prefix does tell us exactly what we are dealing with.
->>
->> That's why people created the arch/mips/kvm directory, isn't it?
->
-> No.  Segregating things into directories keeps code related to one 
-> functional area together.
->
-> File names are different.  They should carry as much meaning as possible.
+Patches 1, 2, and 7:
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
-Remember that directory path is also part of file info.
+Cheers
+James
 
->
-> For examples of this look at some of these directories:
->
-> drivers/net/ethernet/intel/ixgb
-> drivers/i2c/busses
-
-One can find way more examples not having prefixes. Look at kernel/events/. 
-In the beginning, Perf-events has things under kernel. Then people did 
-things like:
-
-kernel/perf_event.c -> kernel/events/core.c
-
-If it's kernel/events/perf_events_core.c, I think it looks ugly.
-
-Other examples are kernel/sched/, mm/, and many more. When talking about 
-filemap.c, one may think it may be under fs/. But there's mm/filemap.c (not 
-mm/mm_filemap.c which seems, again, ugly). What I want to say is that: 
-Talking about a file should include its path.
-
-
-Deng-Cheng
+> v3 - v2:
+> o In patch #2, change the use of kvm_[err|info|debug].
+> o In patch #3, add err removal in kvm_arch_commit_memory_region().
+> o In patch #3, revert the changes to kvm_arch_vm_ioctl().
+> o In patch #7, drop the merge of kvm_arch_vcpu_free() and pointer nullification.
+> o Add patch #9.
+> v2 - v1:
+> o In patch #1, don't change the opening comment mark for kernel-doc comments.
+> o In patch #1, to make long lines more readable, use local variables / macros.
+> o In patch #1, slight format adjustments are made.
+> o Use -M flag to generate patches (detect renames).
+> o Add patch #8.
+> 
+> Deng-Cheng Zhu (7):
+>   MIPS: KVM: Reformat code and comments
+>   MIPS: KVM: Use KVM internal logger
+>   MIPS: KVM: Simplify functions by removing redundancy
+>   MIPS: KVM: Remove unneeded volatile
+>   MIPS: KVM: Rename files to remove the prefix "kvm_" and "kvm_mips_"
+>   MIPS: KVM: Skip memory cleaning in kvm_mips_commpage_init()
+>   MIPS: KVM: Remove dead code of TLB index error in
+>     kvm_mips_emul_tlbwr()
+> 
+>  arch/mips/include/asm/kvm_host.h                  |  12 +-
+>  arch/mips/include/asm/r4kcache.h                  |   3 +
+>  arch/mips/kvm/Makefile                            |   8 +-
+>  arch/mips/kvm/{kvm_cb.c => callback.c}            |   0
+>  arch/mips/kvm/commpage.c                          |  33 ++
+>  arch/mips/kvm/commpage.h                          |  24 +
+>  arch/mips/kvm/{kvm_mips_dyntrans.c => dyntrans.c} |  40 +-
+>  arch/mips/kvm/{kvm_mips_emul.c => emulate.c}      | 539 +++++++++++-----------
+>  arch/mips/kvm/{kvm_mips_int.c => interrupt.c}     |  47 +-
+>  arch/mips/kvm/{kvm_mips_int.h => interrupt.h}     |  22 +-
+>  arch/mips/kvm/kvm_mips_comm.h                     |  23 -
+>  arch/mips/kvm/kvm_mips_commpage.c                 |  37 --
+>  arch/mips/kvm/kvm_mips_opcode.h                   |  24 -
+>  arch/mips/kvm/{kvm_locore.S => locore.S}          |  55 ++-
+>  arch/mips/kvm/{kvm_mips.c => mips.c}              | 224 +++++----
+>  arch/mips/kvm/opcode.h                            |  22 +
+>  arch/mips/kvm/{kvm_mips_stats.c => stats.c}       |  28 +-
+>  arch/mips/kvm/{kvm_tlb.c => tlb.c}                | 258 +++++------
+>  arch/mips/kvm/trace.h                             |  18 +-
+>  arch/mips/kvm/{kvm_trap_emul.c => trap_emul.c}    | 112 +++--
+>  20 files changed, 750 insertions(+), 779 deletions(-)
+>  rename arch/mips/kvm/{kvm_cb.c => callback.c} (100%)
+>  create mode 100644 arch/mips/kvm/commpage.c
+>  create mode 100644 arch/mips/kvm/commpage.h
+>  rename arch/mips/kvm/{kvm_mips_dyntrans.c => dyntrans.c} (79%)
+>  rename arch/mips/kvm/{kvm_mips_emul.c => emulate.c} (83%)
+>  rename arch/mips/kvm/{kvm_mips_int.c => interrupt.c} (85%)
+>  rename arch/mips/kvm/{kvm_mips_int.h => interrupt.h} (74%)
+>  delete mode 100644 arch/mips/kvm/kvm_mips_comm.h
+>  delete mode 100644 arch/mips/kvm/kvm_mips_commpage.c
+>  delete mode 100644 arch/mips/kvm/kvm_mips_opcode.h
+>  rename arch/mips/kvm/{kvm_locore.S => locore.S} (93%)
+>  rename arch/mips/kvm/{kvm_mips.c => mips.c} (84%)
+>  create mode 100644 arch/mips/kvm/opcode.h
+>  rename arch/mips/kvm/{kvm_mips_stats.c => stats.c} (63%)
+>  rename arch/mips/kvm/{kvm_tlb.c => tlb.c} (78%)
+>  rename arch/mips/kvm/{kvm_trap_emul.c => trap_emul.c} (83%)
+> 

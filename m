@@ -1,38 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2014 22:35:31 +0200 (CEST)
-Received: from filtteri6.pp.htv.fi ([213.243.153.189]:45160 "EHLO
-        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6859961AbaF1UeeB5sX- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Jun 2014 22:34:34 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 1577256F87D;
-        Sat, 28 Jun 2014 23:34:32 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
-        with ESMTP id ZwiLNRZE6X8w; Sat, 28 Jun 2014 23:34:25 +0300 (EEST)
-Received: from cooljazz.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id 794CD5BC012;
-        Sat, 28 Jun 2014 23:34:25 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 3/3] MIPS: OCTEON: add interface & port definitions for D-Link DSR-1000N
-Date:   Sat, 28 Jun 2014 23:34:10 +0300
-Message-Id: <1403987650-6194-4-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1403987650-6194-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1403987650-6194-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jun 2014 00:12:58 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50311 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859960AbaF1WM42yUN0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Jun 2014 00:12:56 +0200
+Date:   Sat, 28 Jun 2014 23:12:56 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Eunbong Song <eunb.song@samsung.com>,
+        David Rientjes <rientjes@google.com>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: math-emu: Avoid anonymous union members
+Message-ID: <alpine.LFD.2.11.1406282239230.15455@eddie.linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40909
+X-archive-position: 40910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,51 +35,220 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add interface & port definitions for D-Link DSR-1000N.
+Commit 49548b09e0fa9fddb64e3cd47266193e36b73144 [MIPS: math-emu: Cleanup 
+definition of structs describe sp/dp floats.] introduced a regression for 
+pre-4.7 GCC versions that apparently have issues with static initialisers 
+setting anonymous struct/union members, even though such members have been 
+supported by GCC in other uses for a little bit longer.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+This has been figured out by Al Viro and documented in commit 
+05064084e82d057f8d74590c51581650e060fbb8 [fix __swap_writepage() compile 
+failure on old gcc versions] (thanks Al!).
+
+The regression manifests itself by a load of compilation errors like:
+
+arch/mips/math-emu/ieee754.c:45: error: unknown field 'sign' specified in initializer
+arch/mips/math-emu/ieee754.c:45: warning: missing braces around initializer
+arch/mips/math-emu/ieee754.c:45: warning: (near initialization for '__ieee754dp_spcvals[0].<anonymous>')
+arch/mips/math-emu/ieee754.c:45: error: unknown field 'bexp' specified in initializer
+arch/mips/math-emu/ieee754.c:45: warning: excess elements in union initializer
+arch/mips/math-emu/ieee754.c:45: warning: (near initialization for '__ieee754dp_spcvals[0]')
+arch/mips/math-emu/ieee754.c:45: error: unknown field 'mant' specified in initializer
+arch/mips/math-emu/ieee754.c:45: warning: excess elements in union initializer
+arch/mips/math-emu/ieee754.c:45: warning: (near initialization for '__ieee754dp_spcvals[0]')
+
+-- and so on, and so on.
+
+This change gives a name back to the anonymous union members and reverts 
+parts of the problematic commit while retaining what I believe were the 
+good parts of the cleanup.  I concluded a workaround such as one made by 
+Al in his commit is infeasible in this context, there's simply too much 
+static initialisation across math-emu.
+
+It is worth noting here that we still in principle support GCC versions 
+back to 3.2:
+
+$ grep 'Gnu C' Documentation/Changes
+o  Gnu C                  3.2                     # gcc --version
+$ 
+
+and I think it makes sense to keep this support where feasible as I think 
+from the perspective of the Linux kernel it is better if developers' time 
+is spent on the kernel itself rather than on sorting out GCC versions.
+
+These anonymous struct/union members are a semi-standard language 
+extension BTW, citing from a recent version of the GCC manual:
+
+--------------------------------------------------------------------------
+6 Extensions to the C Language Family
+*************************************
+
+GNU C provides several language features not found in ISO standard C.
+(The `-pedantic' option directs GCC to print a warning message if any
+of these features is used.)  To test for the availability of these
+features in conditional compilation, check for a predefined macro
+`__GNUC__', which is always defined under GCC.
+
+6.59 Unnamed struct/union fields within structs/unions
+======================================================
+
+As permitted by ISO C11 and for compatibility with other compilers, GCC
+allows you to define a structure or union that contains, as fields,
+structures and unions without names.
+--------------------------------------------------------------------------
+
+-- note the term "permitted" rather than "required".
+
+We do make use of a few GCC language extensions, most notably inline 
+assembly, however in this case we merely save a couple of characters here 
+and there and this is IMO not worth breaking people's development 
+environments.
+
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- .../cavium-octeon/executive/cvmx-helper-board.c     | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-index 6c871a5..5dfef84 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-@@ -186,6 +186,15 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
- 			return 7 - ipd_port;
- 		else
- 			return -1;
-+	case CVMX_BOARD_TYPE_CUST_DSR1000N:
-+		/*
-+		 * Port 2 connects to Broadcom PHY (B5081). Other ports (0-1)
-+		 * connect to a switch (BCM53115).
-+		 */
-+		if (ipd_port == 2)
-+			return 8;
-+		else
-+			return -1;
+linux-mips-anon-ieee754.patch
+Index: linux-20140623-4maxp64/arch/mips/math-emu/dp_sqrt.c
+===================================================================
+--- linux-20140623-4maxp64.orig/arch/mips/math-emu/dp_sqrt.c
++++ linux-20140623-4maxp64/arch/mips/math-emu/dp_sqrt.c
+@@ -110,13 +110,13 @@ union ieee754dp ieee754dp_sqrt(union iee
+ 	/* triple to almost 56 sig. bits: y ~= sqrt(x) to within 1 ulp */
+ 	/* t=y*y; z=t;	pt[n0]+=0x00100000; t+=z; z=(x-z)*y; */
+ 	z = t = ieee754dp_mul(y, y);
+-	t.bexp += 0x001;
++	t.parts.bexp += 0x001;
+ 	t = ieee754dp_add(t, z);
+ 	z = ieee754dp_mul(ieee754dp_sub(x, z), y);
+ 
+ 	/* t=z/(t+x) ;	pt[n0]+=0x00100000; y+=t; */
+ 	t = ieee754dp_div(z, ieee754dp_add(t, x));
+-	t.bexp += 0x001;
++	t.parts.bexp += 0x001;
+ 	y = ieee754dp_add(y, t);
+ 
+ 	/* twiddle last bit to force y correctly rounded */
+@@ -155,7 +155,7 @@ union ieee754dp ieee754dp_sqrt(union iee
  	}
  
- 	/* Some unknown board. Somebody forgot to update this function... */
-@@ -274,6 +283,18 @@ cvmx_helper_link_info_t __cvmx_helper_board_link_get(int ipd_port)
- 			return result;
- 		}
- 		break;
-+	case CVMX_BOARD_TYPE_CUST_DSR1000N:
-+		if (ipd_port == 0 || ipd_port == 1) {
-+			/* Ports 0 and 1 connect to a switch (BCM53115). */
-+			result.s.link_up = 1;
-+			result.s.full_duplex = 1;
-+			result.s.speed = 1000;
-+			return result;
-+		} else {
-+			/* Port 2 uses a Broadcom PHY (B5081). */
-+			is_broadcom_phy = 1;
-+		}
-+		break;
- 	}
+ 	/* py[n0]=py[n0]+scalx; ...scale back y */
+-	y.bexp += scalx;
++	y.parts.bexp += scalx;
  
- 	phy_addr = cvmx_helper_board_get_mii_address(ipd_port);
--- 
-2.0.0
+ 	/* restore rounding mode, possibly set inexact */
+ 	ieee754_csr = oldcsr;
+Index: linux-20140623-4maxp64/arch/mips/math-emu/ieee754.c
+===================================================================
+--- linux-20140623-4maxp64.orig/arch/mips/math-emu/ieee754.c
++++ linux-20140623-4maxp64/arch/mips/math-emu/ieee754.c
+@@ -36,9 +36,11 @@
+ 
+ #define DPCNST(s, b, m)							\
+ {									\
+-	.sign	= (s),							\
+-	.bexp	= (b) + DP_EBIAS,					\
+-	.mant	= (m)							\
++	.parts = {							\
++		.sign	= (s),						\
++		.bexp	= (b) + DP_EBIAS,				\
++		.mant	= (m)						\
++	}								\
+ }
+ 
+ const union ieee754dp __ieee754dp_spcvals[] = {
+@@ -63,9 +65,11 @@ const union ieee754dp __ieee754dp_spcval
+ 
+ #define SPCNST(s, b, m)							\
+ {									\
+-	.sign	= (s),							\
+-	.bexp	= (b) + SP_EBIAS,					\
+-	.mant	= (m)							\
++	.parts = {							\
++		.sign	= (s),						\
++		.bexp	= (b) + SP_EBIAS,				\
++		.mant	= (m)						\
++	}								\
+ }
+ 
+ const union ieee754sp __ieee754sp_spcvals[] = {
+Index: linux-20140623-4maxp64/arch/mips/math-emu/ieee754.h
+===================================================================
+--- linux-20140623-4maxp64.orig/arch/mips/math-emu/ieee754.h
++++ linux-20140623-4maxp64/arch/mips/math-emu/ieee754.h
+@@ -37,7 +37,7 @@ union ieee754dp {
+ 		__BITFIELD_FIELD(unsigned int bexp:11,
+ 		__BITFIELD_FIELD(u64 mant:52,
+ 		;)))
+-	};
++	} parts;
+ 	u64 bits;
+ };
+ 
+@@ -47,7 +47,7 @@ union ieee754sp {
+ 		__BITFIELD_FIELD(unsigned bexp:8,
+ 		__BITFIELD_FIELD(unsigned mant:23,
+ 		;)))
+-	};
++	} parts;
+ 	u32 bits;
+ };
+ 
+Index: linux-20140623-4maxp64/arch/mips/math-emu/ieee754dp.h
+===================================================================
+--- linux-20140623-4maxp64.orig/arch/mips/math-emu/ieee754dp.h
++++ linux-20140623-4maxp64/arch/mips/math-emu/ieee754dp.h
+@@ -36,9 +36,9 @@
+ #define DP_HIDDEN_BIT	DP_MBIT(DP_FBITS)
+ #define DP_SIGN_BIT	DP_MBIT(63)
+ 
+-#define DPSIGN(dp)	(dp.sign)
+-#define DPBEXP(dp)	(dp.bexp)
+-#define DPMANT(dp)	(dp.mant)
++#define DPSIGN(dp)	(dp.parts.sign)
++#define DPBEXP(dp)	(dp.parts.bexp)
++#define DPMANT(dp)	(dp.parts.mant)
+ 
+ static inline int ieee754dp_finite(union ieee754dp x)
+ {
+@@ -70,9 +70,9 @@ static inline union ieee754dp builddp(in
+ 	       && (bx) <= DP_EMAX + 1 + DP_EBIAS);
+ 	assert(((m) >> DP_FBITS) == 0);
+ 
+-	r.sign = s;
+-	r.bexp = bx;
+-	r.mant = m;
++	r.parts.sign = s;
++	r.parts.bexp = bx;
++	r.parts.mant = m;
+ 
+ 	return r;
+ }
+Index: linux-20140623-4maxp64/arch/mips/math-emu/ieee754sp.h
+===================================================================
+--- linux-20140623-4maxp64.orig/arch/mips/math-emu/ieee754sp.h
++++ linux-20140623-4maxp64/arch/mips/math-emu/ieee754sp.h
+@@ -36,9 +36,9 @@
+ #define SP_HIDDEN_BIT	SP_MBIT(SP_FBITS)
+ #define SP_SIGN_BIT	SP_MBIT(31)
+ 
+-#define SPSIGN(sp)	(sp.sign)
+-#define SPBEXP(sp)	(sp.bexp)
+-#define SPMANT(sp)	(sp.mant)
++#define SPSIGN(sp)	(sp.parts.sign)
++#define SPBEXP(sp)	(sp.parts.bexp)
++#define SPMANT(sp)	(sp.parts.mant)
+ 
+ static inline int ieee754sp_finite(union ieee754sp x)
+ {
+@@ -75,9 +75,9 @@ static inline union ieee754sp buildsp(in
+ 	       && (bx) <= SP_EMAX + 1 + SP_EBIAS);
+ 	assert(((m) >> SP_FBITS) == 0);
+ 
+-	r.sign = s;
+-	r.bexp = bx;
+-	r.mant = m;
++	r.parts.sign = s;
++	r.parts.bexp = bx;
++	r.parts.mant = m;
+ 
+ 	return r;
+ }

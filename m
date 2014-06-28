@@ -1,30 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2014 16:57:24 +0200 (CEST)
-Received: from mv-drv-hcb003.ocn.ad.jp ([118.23.109.133]:42501 "EHLO
-        mv-drv-hcb003.ocn.ad.jp" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859961AbaF1O5TId0uk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Jun 2014 16:57:19 +0200
-Received: from vcmba.ocn.ne.jp (localhost.localdomain [127.0.0.1])
-        by mv-drv-hcb003.ocn.ad.jp (Postfix) with ESMTP id CF1515642D8;
-        Sat, 28 Jun 2014 23:57:16 +0900 (JST)
-Received: from anemo-PC-VJ22.flets-east.jp (p16146-ipngn402funabasi.chiba.ocn.ne.jp [180.58.11.146])
-        by vcmba.ocn.ne.jp (Postfix) with ESMTP;
-        Sat, 28 Jun 2014 23:57:16 +0900 (JST)
-From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH] MIPS: TXx9: delete an unused variable in tx4927_pcibios_setup
-Date:   Sat, 28 Jun 2014 23:57:13 +0900
-Message-Id: <1403967433-4157-1-git-send-email-anemo@mba.ocn.ne.jp>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2014 22:34:34 +0200 (CEST)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:38857 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817913AbaF1Uec25sST (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Jun 2014 22:34:32 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 977315A7097;
+        Sat, 28 Jun 2014 23:34:26 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id klOohrcizO5b; Sat, 28 Jun 2014 23:34:20 +0300 (EEST)
+Received: from cooljazz.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id 0FC905BC005;
+        Sat, 28 Jun 2014 23:34:25 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 0/3] MIPS: OCTEON: Minimal support for D-Link DSR-1000N
+Date:   Sat, 28 Jun 2014 23:34:07 +0300
+Message-Id: <1403987650-6194-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40905
+X-archive-position: 40906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,23 +43,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/pci/ops-tx4927.c |    2 --
- 1 file changed, 2 deletions(-)
+Hi,
 
-diff --git a/arch/mips/pci/ops-tx4927.c b/arch/mips/pci/ops-tx4927.c
-index 0e046d8..d54ea93 100644
---- a/arch/mips/pci/ops-tx4927.c
-+++ b/arch/mips/pci/ops-tx4927.c
-@@ -199,8 +199,6 @@ static struct {
- 
- char *tx4927_pcibios_setup(char *str)
- {
--	unsigned long val;
--
- 	if (!strncmp(str, "trdyto=", 7)) {
- 		u8 val = 0;
- 		if (kstrtou8(str + 7, 0, &val) == 0)
+The following patches add minimal support for D-Link DSR-1000N router.
+USB and ethernet ports should now work with these patches.
+(I guess WLAN (PCI/ath9k) should work too; I was able to scan networks,
+but for some reason it did not connect to my AP.)
+
+Aaro Koskinen (3):
+  MIPS: OCTEON: cvmx-bootinfo: add D-Link DSR-1000N
+  MIPS: OCTEON: add USB clock type for D-Link DSR-1000N
+  MIPS: OCTEON: add interface & port definitions for D-Link DSR-1000N
+
+ .../cavium-octeon/executive/cvmx-helper-board.c    | 22 ++++++++++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-bootinfo.h       |  2 ++
+ 2 files changed, 24 insertions(+)
+
 -- 
-1.7.9.5
+2.0.0

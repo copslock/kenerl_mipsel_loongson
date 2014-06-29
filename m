@@ -1,27 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jun 2014 01:59:37 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50584 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859955AbaF1X7fdb8tr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Jun 2014 01:59:35 +0200
-Date:   Sun, 29 Jun 2014 00:59:35 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Richard Sandiford <rdsandiford@googlemail.com>
-cc:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: SB1: Check optional compilation flags one by one
-Message-ID: <alpine.LFD.2.11.1406290026280.15455@eddie.linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jun 2014 09:17:49 +0200 (CEST)
+Received: from mailrelay004.isp.belgacom.be ([195.238.6.170]:1533 "EHLO
+        mailrelay004.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6856088AbaF2HRpEW0pv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Jun 2014 09:17:45 +0200
+X-Belgacom-Dynamic: yes
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: ApcIAMe8r1NbsmJR/2dsb2JhbABagw2sLwsFAW4BmUaBBxd1hGAjgRo3iEYBxX8XhWSJIx2ELQWaXos/iD6CAIFEOw
+Received: from 81.98-178-91.adsl-dyn.isp.belgacom.be (HELO linux-zvq9.site) ([91.178.98.81])
+  by relay.skynet.be with ESMTP; 29 Jun 2014 09:17:39 +0200
+From:   Fabian Frederick <fabf@skynet.be>
+To:     linux-kernel@vger.kernel.org
+Cc:     Fabian Frederick <fabf@skynet.be>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 1/1] MIPS: Octeon: remove unnecessary null test before debugfs_remove_recursive
+Date:   Sun, 29 Jun 2014 09:16:19 +0200
+Message-Id: <1404026179-2910-1-git-send-email-fabf@skynet.be>
+X-Mailer: git-send-email 1.8.4.5
+Return-Path: <fabf@skynet.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40913
+X-archive-position: 40914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: fabf@skynet.be
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,63 +37,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This fixes a regression caused by commit 
-bb6c0bd3fdb67c8a1fceea1d4700b9ee593309f9 [MIPS: SB1: Fix excessive kernel 
-warnings.], that makes `-march=r5000' selected for compilation flags 
-rather than supposed `-march=sb1' with compilers that do not support the 
-ASE selection flags introduced with that change.
+Fix checkpatch warning:
+WARNING: debugfs_remove_recursive(NULL) is safe this check is probably not required
 
-For example GCC 4.1.2 supports `-mips3d'/`-mno-mips3d' (and obviously 
-`-march=sb1'), however it does not support `-mdmx'/`-mno-mdmx'.  As a 
-result the whole selection of flags fails and compilation resorts to using 
-`-march=r5000', meant for really old compilers indeed only.
-
-It is always best to pick the flags individually unless we are absolutely 
-sure a set of flags was introduced to the toolchain together (`-march=sb1' 
-and `-mtune=sb1' would be a good example), and this change makes it happen 
-for CONFIG_CPU_SB1.  Consequently the flags ultimately selected with GCC 
-4.1.2 are `-march=sb1 -Wa,--trap -mno-mips3d'
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Fabian Frederick <fabf@skynet.be>
 ---
- Ralf, I think we might want to go back to the discussion on using 
-`-march=' vs `-mtune=' -- of course we need to be careful, because 
-occasionally `-march=' does enable instructions useful in the kernel (such 
-as MADD on the NEC Vr5500) beyond ones enabled by the corresponding base 
-architecture (MIPS IV in the case of NEC Vr5500), however in many cases 
-there is indeed no benefit.
+ arch/mips/cavium-octeon/oct_ilm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- Richard, this makes me concerned again about backward compatibility of 
-toolchain components.  I've been using binutils 2.20.1 for these kernel 
-builds simply because sorting out some unrelated Linux kernel issues took 
-precedence over upgrading old cross-binutils used.  However this makes me 
-believe that `-mdmx' and `-mips3d' are now implied in GAS for `-march=sb1' 
--- has it been always the place?  I'm asking because one should in 
-principle be able to upgrade binutils under an old version of the compiler 
-and things are supposed to work unchanged, modulo bug fixes, as long as no 
-new features are used.
-
- Overall, perhaps we should try harder here and stick `-Wa,-mno-mdmx' and 
-`-Wa,-mno-mips3d' to be sure as well.  I'll see if they are indeed needed 
-when I get to upgrading binutils, and send another patch if so (unless 
-someone else beats me to it, that is, of course).
-
-  Maciej
-
-linux-mips-sb1.patch
-Index: linux-20140623-swarm64/arch/mips/Makefile
-===================================================================
---- linux-20140623-swarm64.orig/arch/mips/Makefile
-+++ linux-20140623-swarm64/arch/mips/Makefile
-@@ -151,8 +151,10 @@ cflags-$(CONFIG_CPU_NEVADA)	+= $(call cc
- 			-Wa,--trap
- cflags-$(CONFIG_CPU_RM7000)	+= $(call cc-option,-march=rm7000,-march=r5000) \
- 			-Wa,--trap
--cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-march=sb1 -mno-mdmx -mno-mips3d,-march=r5000) \
-+cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-march=sb1,-march=r5000) \
- 			-Wa,--trap
-+cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-mno-mdmx)
-+cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-mno-mips3d)
- cflags-$(CONFIG_CPU_R8000)	+= -march=r8000 -Wa,--trap
- cflags-$(CONFIG_CPU_R10000)	+= $(call cc-option,-march=r10000,-march=r8000) \
- 			-Wa,--trap
+diff --git a/arch/mips/cavium-octeon/oct_ilm.c b/arch/mips/cavium-octeon/oct_ilm.c
+index 71b213d..2d68a39 100644
+--- a/arch/mips/cavium-octeon/oct_ilm.c
++++ b/arch/mips/cavium-octeon/oct_ilm.c
+@@ -194,8 +194,7 @@ err_irq:
+ static __exit void oct_ilm_module_exit(void)
+ {
+ 	disable_timer(TIMER_NUM);
+-	if (dir)
+-		debugfs_remove_recursive(dir);
++	debugfs_remove_recursive(dir);
+ 	free_irq(OCTEON_IRQ_TIMER0 + TIMER_NUM, 0);
+ }
+ 
+-- 
+1.8.4.5

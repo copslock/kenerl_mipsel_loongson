@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2014 11:30:16 +0200 (CEST)
-Received: from mail-wg0-f49.google.com ([74.125.82.49]:43905 "EHLO
-        mail-wg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860000AbaGBJaNWjRYk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jul 2014 11:30:13 +0200
-Received: by mail-wg0-f49.google.com with SMTP id y10so10846537wgg.8
-        for <linux-mips@linux-mips.org>; Wed, 02 Jul 2014 02:30:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=o2crN2D+pKxZI0s2T7onNKPy+cyeLjyekHSdK9/VXaI=;
-        b=qfuZzQip8I3UgoA2uFChyrFUEY6Xox/+bKiG8s5qoUitXCpjFjJHW4MsvFOG9VTtuA
-         ZRvzM0e5KOdrpRIYLIPSjX71MGIbwU3P015xpxXD14JukHc+JhIPUQubbPdGnAkf4gto
-         yjkgUUzJ6fIMoqkYQQW/x938YwWz2smzXQF0wgxqK/sK4HvHGLsIYAcH1Bd7F4hCjG2z
-         oAQUDG1L1s3YAgQ/1ocKkhaNIhS1yueaFKbVcdO6Poxf8QOghwz+RvO+wQuen/9M+t7e
-         ALJK8y30IGZLGhvm7sfKLJCSGjoYE205TnDlBTBI0EGcevYisKwNLVnZ2s/d71NKoW0n
-         I7Iw==
-X-Received: by 10.194.6.134 with SMTP id b6mr53022514wja.64.1404293407255;
- Wed, 02 Jul 2014 02:30:07 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2014 16:31:51 +0200 (CEST)
+Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.226]:38190 "EHLO
+        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6861101AbaGBObril84d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jul 2014 16:31:47 +0200
+Received: from [67.246.153.56] ([67.246.153.56:52606] helo=gandalf.local.home)
+        by cdptpa-oedge03 (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
+        id EA/DF-02848-AC714B35; Wed, 02 Jul 2014 14:31:40 +0000
+Date:   Wed, 2 Jul 2014 10:31:38 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-arch@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Josh Poimboeuf <notifications@github.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [RFA][PATCH 07/27] MIPS: ftrace: Add call to
+ ftrace_graph_is_dead() in function graph code
+Message-ID: <20140702103138.01880b1d@gandalf.local.home>
+In-Reply-To: <20140626165849.321719498@goodmis.org>
+References: <20140626165221.736847419@goodmis.org>
+        <20140626165849.321719498@goodmis.org>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 10.216.111.72 with HTTP; Wed, 2 Jul 2014 02:29:27 -0700 (PDT)
-In-Reply-To: <20140702052012.23338.54536@quantum>
-References: <1404061055-89797-1-git-send-email-manuel.lauss@gmail.com>
- <1404061055-89797-3-git-send-email-manuel.lauss@gmail.com> <20140702052012.23338.54536@quantum>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Wed, 2 Jul 2014 11:29:27 +0200
-Message-ID: <CAOLZvyH810_0yp=CaQjxYianguS++iXOmq6ZEW2FWRPDxZMW2g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: Alchemy: common clock framework integration
-To:     Mike Turquette <mturquette@linaro.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-RR-Connecting-IP: 107.14.168.142:25
+X-Cloudmark-Score: 0
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40985
+X-archive-position: 40986
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,35 +52,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Mike,
 
-On Wed, Jul 2, 2014 at 7:20 AM, Mike Turquette <mturquette@linaro.org> wrote:
-> Quoting Manuel Lauss (2014-06-29 09:57:35)
->> Expose chip-internal configurable clocks to the common clk framework,
->> and fix a few drivers to take advantage of it.
->
-> Thanks for the patch series! Both patches cover a lot of ground, but
-> I'll focus on #2. It would be best to split the driver changes out
+Adding linux-mips@linux-mips.org.
 
-I sent the first one along because the second doesn't compile without it.
+-- Steve
 
 
-> separately. You can introduce the common clk changes but not compile
-> them in, then change the drivers, then add the logic to compile the new
-> common clock driver all as separate patches.
+On Thu, 26 Jun 2014 12:52:28 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-I'll split them into pure clock framework and enablement parts.
-
-
-> Additionally, it would be cool to push this driver out to drivers/clk/
-> if you are so inclined. It looks like your header dependencies are not
-> so bad as to make that task impossible. Just a suggestion from me.
-
-This clock framework is for a single line of MIPS SoCs which are no longer
-being developed by the manufacturer and I don't think it is reusable for any
-other soc line currently in existence.  I'd like to keep it within the mips tree
-for that reason.  (I find the ARM way of sprinkling the whole tree with
-a single driver for each iteration of each custom on-chip peripheral on
-each ARM chip [exaggerated of course] quite messy.   But that's just me).
-
-Manuel
+> From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
+> 
+> ftrace_stop() is going away as it disables parts of function tracing
+> that affects users that should not be affected. But ftrace_graph_stop()
+> is built on ftrace_stop(). Here's another example of killing all of
+> function tracing because something went wrong with function graph
+> tracing.
+> 
+> Instead of disabling all users of function tracing on function graph
+> error, disable only function graph tracing. To do this, the arch code
+> must call ftrace_graph_is_dead() before it implements function graph.
+> 
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+> ---
+>  arch/mips/kernel/ftrace.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+> index 60e7e5e45af1..8b6538750fe1 100644
+> --- a/arch/mips/kernel/ftrace.c
+> +++ b/arch/mips/kernel/ftrace.c
+> @@ -302,6 +302,9 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+>  	    &return_to_handler;
+>  	int faulted, insns;
+>  
+> +	if (unlikely(ftrace_graph_is_dead()))
+> +		return;
+> +
+>  	if (unlikely(atomic_read(&current->tracing_graph_pause)))
+>  		return;
+>  

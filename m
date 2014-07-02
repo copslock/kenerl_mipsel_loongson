@@ -1,44 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2014 16:32:33 +0200 (CEST)
-Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.229]:55745 "EHLO
-        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6861101AbaGBOc3en0B9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jul 2014 16:32:29 +0200
-Received: from [67.246.153.56] ([67.246.153.56:52598] helo=gandalf.local.home)
-        by cdptpa-oedge03 (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
-        id 4B/C0-02848-5F714B35; Wed, 02 Jul 2014 14:32:22 +0000
-Date:   Wed, 2 Jul 2014 10:32:21 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-mips@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-arch@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jiri Kosina <jkosina@suse.cz>,
-        Josh Poimboeuf <notifications@github.com>
-Subject: Re: [RFA][PATCH 21/27] MIPS: ftrace: Remove check of obsolete
- variable function_trace_stop
-Message-ID: <20140702103221.52fe1869@gandalf.local.home>
-In-Reply-To: <20140626165852.665644919@goodmis.org>
-References: <20140626165221.736847419@goodmis.org>
-        <20140626165852.665644919@goodmis.org>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2014 18:09:11 +0200 (CEST)
+Received: from helium.waldemar-brodkorb.de ([89.238.66.15]:41230 "EHLO
+        helium.waldemar-brodkorb.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861041AbaGBQJJ2ni9j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jul 2014 18:09:09 +0200
+Received: by helium.waldemar-brodkorb.de (Postfix, from userid 1000)
+        id ABCB4104B3; Wed,  2 Jul 2014 18:09:08 +0200 (CEST)
+Date:   Wed, 2 Jul 2014 18:09:08 +0200
+From:   Waldemar Brodkorb <wbx@openadk.org>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org, florian@openwrt.org
+Subject: [PATCH] fix reregistering of serial console
+Message-ID: <20140702160908.GA12510@waldemar-brodkorb.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-RR-Connecting-IP: 107.14.168.142:25
-X-Cloudmark-Score: 0
-Return-Path: <rostedt@goodmis.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Operating-System: Linux 3.2.0-4-amd64 x86_64
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <wbx@openadk.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40987
+X-archive-position: 40988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: wbx@openadk.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,61 +38,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Runtime tested on Mikrotik RB532 board.
+Thanks goes to Geert Uytterhoeven for the explanation of the problem.
 
-Adding linux-mips@linux-mips.org.
+"I'm afraid this is not gonna help. When the port is unregistered,
+its type will be reset to PORT_UNKNOWN.
+So before registering it again, its type must be set again the actual
+serial driver, cfr. the change to of_serial.c."
 
--- Steve
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ arch/mips/rb532/devices.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-On Thu, 26 Jun 2014 12:52:42 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
-
-> From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
-> 
-> Nothing sets function_trace_stop to disable function tracing anymore.
-> Remove the check for it in the arch code.
-> 
-> [ Please test this on your arch ]
-> 
-> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-> ---
->  arch/mips/Kconfig         | 1 -
->  arch/mips/kernel/mcount.S | 7 -------
->  2 files changed, 8 deletions(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 7a469acee33c..9ca52987fcd5 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -15,7 +15,6 @@ config MIPS
->  	select HAVE_BPF_JIT if !CPU_MICROMIPS
->  	select ARCH_HAVE_CUSTOM_GPIO_H
->  	select HAVE_FUNCTION_TRACER
-> -	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
->  	select HAVE_DYNAMIC_FTRACE
->  	select HAVE_FTRACE_MCOUNT_RECORD
->  	select HAVE_C_RECORDMCOUNT
-> diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-> index 539b6294b613..00940d1d5c4f 100644
-> --- a/arch/mips/kernel/mcount.S
-> +++ b/arch/mips/kernel/mcount.S
-> @@ -74,10 +74,6 @@ _mcount:
->  #endif
->  
->  	/* When tracing is activated, it calls ftrace_caller+8 (aka here) */
-> -	lw	t1, function_trace_stop
-> -	bnez	t1, ftrace_stub
-> -	 nop
-> -
->  	MCOUNT_SAVE_REGS
->  #ifdef KBUILD_MCOUNT_RA_ADDRESS
->  	PTR_S	MCOUNT_RA_ADDRESS_REG, PT_R12(sp)
-> @@ -105,9 +101,6 @@ ftrace_stub:
->  #else	/* ! CONFIG_DYNAMIC_FTRACE */
->  
->  NESTED(_mcount, PT_SIZE, ra)
-> -	lw	t1, function_trace_stop
-> -	bnez	t1, ftrace_stub
-> -	 nop
->  	PTR_LA	t1, ftrace_stub
->  	PTR_L	t2, ftrace_trace_function /* Prepare t2 for (1) */
->  	bne	t1, t2, static_trace
+diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+index 3af00b2..ba61268 100644
+--- a/arch/mips/rb532/devices.c
++++ b/arch/mips/rb532/devices.c
+@@ -223,6 +223,7 @@ static struct platform_device rb532_wdt = {
+ 
+ static struct plat_serial8250_port rb532_uart_res[] = {
+ 	{
++		.type           = PORT_16550A,
+ 		.membase	= (char *)KSEG1ADDR(REGBASE + UART0BASE),
+ 		.irq		= UART0_IRQ,
+ 		.regshift	= 2,
+-- 
+1.7.10.4

@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2014 16:31:51 +0200 (CEST)
-Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.226]:38190 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2014 16:32:33 +0200 (CEST)
+Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.229]:55745 "EHLO
         cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6861101AbaGBObril84d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jul 2014 16:31:47 +0200
-Received: from [67.246.153.56] ([67.246.153.56:52606] helo=gandalf.local.home)
+        by eddie.linux-mips.org with ESMTP id S6861101AbaGBOc3en0B9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jul 2014 16:32:29 +0200
+Received: from [67.246.153.56] ([67.246.153.56:52598] helo=gandalf.local.home)
         by cdptpa-oedge03 (envelope-from <rostedt@goodmis.org>)
         (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
-        id EA/DF-02848-AC714B35; Wed, 02 Jul 2014 14:31:40 +0000
-Date:   Wed, 2 Jul 2014 10:31:38 -0400
+        id 4B/C0-02848-5F714B35; Wed, 02 Jul 2014 14:32:22 +0000
+Date:   Wed, 2 Jul 2014 10:32:21 -0400
 From:   Steven Rostedt <rostedt@goodmis.org>
 To:     linux-mips@linux-mips.org
 Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
@@ -17,14 +17,13 @@ Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         "H. Peter Anvin" <hpa@zytor.com>, linux-arch@vger.kernel.org,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Jiri Kosina <jkosina@suse.cz>,
-        Josh Poimboeuf <notifications@github.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [RFA][PATCH 07/27] MIPS: ftrace: Add call to
- ftrace_graph_is_dead() in function graph code
-Message-ID: <20140702103138.01880b1d@gandalf.local.home>
-In-Reply-To: <20140626165849.321719498@goodmis.org>
+        Josh Poimboeuf <notifications@github.com>
+Subject: Re: [RFA][PATCH 21/27] MIPS: ftrace: Remove check of obsolete
+ variable function_trace_stop
+Message-ID: <20140702103221.52fe1869@gandalf.local.home>
+In-Reply-To: <20140626165852.665644919@goodmis.org>
 References: <20140626165221.736847419@goodmis.org>
-        <20140626165849.321719498@goodmis.org>
+        <20140626165852.665644919@goodmis.org>
 X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,7 +34,7 @@ Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 40986
+X-archive-position: 40987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,39 +56,56 @@ Adding linux-mips@linux-mips.org.
 
 -- Steve
 
-
-On Thu, 26 Jun 2014 12:52:28 -0400
+On Thu, 26 Jun 2014 12:52:42 -0400
 Steven Rostedt <rostedt@goodmis.org> wrote:
 
 > From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
 > 
-> ftrace_stop() is going away as it disables parts of function tracing
-> that affects users that should not be affected. But ftrace_graph_stop()
-> is built on ftrace_stop(). Here's another example of killing all of
-> function tracing because something went wrong with function graph
-> tracing.
+> Nothing sets function_trace_stop to disable function tracing anymore.
+> Remove the check for it in the arch code.
 > 
-> Instead of disabling all users of function tracing on function graph
-> error, disable only function graph tracing. To do this, the arch code
-> must call ftrace_graph_is_dead() before it implements function graph.
+> [ Please test this on your arch ]
 > 
-> Cc: Ralf Baechle <ralf@linux-mips.org>
 > Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 > ---
->  arch/mips/kernel/ftrace.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  arch/mips/Kconfig         | 1 -
+>  arch/mips/kernel/mcount.S | 7 -------
+>  2 files changed, 8 deletions(-)
 > 
-> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-> index 60e7e5e45af1..8b6538750fe1 100644
-> --- a/arch/mips/kernel/ftrace.c
-> +++ b/arch/mips/kernel/ftrace.c
-> @@ -302,6 +302,9 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
->  	    &return_to_handler;
->  	int faulted, insns;
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 7a469acee33c..9ca52987fcd5 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -15,7 +15,6 @@ config MIPS
+>  	select HAVE_BPF_JIT if !CPU_MICROMIPS
+>  	select ARCH_HAVE_CUSTOM_GPIO_H
+>  	select HAVE_FUNCTION_TRACER
+> -	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
+>  	select HAVE_DYNAMIC_FTRACE
+>  	select HAVE_FTRACE_MCOUNT_RECORD
+>  	select HAVE_C_RECORDMCOUNT
+> diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+> index 539b6294b613..00940d1d5c4f 100644
+> --- a/arch/mips/kernel/mcount.S
+> +++ b/arch/mips/kernel/mcount.S
+> @@ -74,10 +74,6 @@ _mcount:
+>  #endif
 >  
-> +	if (unlikely(ftrace_graph_is_dead()))
-> +		return;
-> +
->  	if (unlikely(atomic_read(&current->tracing_graph_pause)))
->  		return;
+>  	/* When tracing is activated, it calls ftrace_caller+8 (aka here) */
+> -	lw	t1, function_trace_stop
+> -	bnez	t1, ftrace_stub
+> -	 nop
+> -
+>  	MCOUNT_SAVE_REGS
+>  #ifdef KBUILD_MCOUNT_RA_ADDRESS
+>  	PTR_S	MCOUNT_RA_ADDRESS_REG, PT_R12(sp)
+> @@ -105,9 +101,6 @@ ftrace_stub:
+>  #else	/* ! CONFIG_DYNAMIC_FTRACE */
 >  
+>  NESTED(_mcount, PT_SIZE, ra)
+> -	lw	t1, function_trace_stop
+> -	bnez	t1, ftrace_stub
+> -	 nop
+>  	PTR_LA	t1, ftrace_stub
+>  	PTR_L	t2, ftrace_trace_function /* Prepare t2 for (1) */
+>  	bne	t1, t2, static_trace

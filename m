@@ -1,45 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jul 2014 18:36:34 +0200 (CEST)
-Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.230]:33527 "EHLO
-        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6861029AbaGCQgacvGsM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jul 2014 18:36:30 +0200
-Received: from [67.246.153.56] ([67.246.153.56:50850] helo=gandalf.local.home)
-        by cdptpa-oedge02 (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
-        id EC/A7-04420-68685B35; Thu, 03 Jul 2014 16:36:23 +0000
-Date:   Thu, 3 Jul 2014 12:36:21 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-arch@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jiri Kosina <jkosina@suse.cz>,
-        Josh Poimboeuf <notifications@github.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [RFA][PATCH 07/27] MIPS: ftrace: Add call to
- ftrace_graph_is_dead() in function graph code
-Message-ID: <20140703123621.38880cf9@gandalf.local.home>
-In-Reply-To: <20140626165849.321719498@goodmis.org>
-References: <20140626165221.736847419@goodmis.org>
-        <20140626165849.321719498@goodmis.org>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jul 2014 19:20:42 +0200 (CEST)
+Received: from mail-wi0-f173.google.com ([209.85.212.173]:43890 "EHLO
+        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860376AbaGCRUifXdm8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jul 2014 19:20:38 +0200
+Received: by mail-wi0-f173.google.com with SMTP id cc10so11782930wib.0
+        for <linux-mips@linux-mips.org>; Thu, 03 Jul 2014 10:20:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=zdUzWG9Ypkdwx2sY6s4WfBfgiITqzodBrgGh+u2hmgE=;
+        b=yPzZoRDBTdhUHu79Es++WZACDg9s6lg7KWZJRXq7k/7pnOYareBT2oRNT8zBeuu6tD
+         tl1YaiW4iusJus7bL+t+7SwQpcVs8DpEHKtwWDetvDr+fuVqsiJIABit0C1a/HZwhQzZ
+         ndzpgjcEqBZeLFdVEZ52IdB8wMUhCmlqmbPsH6TBz+O3QcikQ4aASImloxxRkVKdgGvF
+         dalymhiGvWF4/20HJjcsQ0mVXUIok/WIPCP/7VfNcTva073axtZ+znMabbdk1tfgLZ2Z
+         Jah2YnPAUw7V3tRLriwViB7WI2uZ3QjE9h20puiNSTsY2KQnrgdvOMuRDPwU1D8qeizJ
+         9VCA==
+X-Received: by 10.180.82.199 with SMTP id k7mr12611360wiy.34.1404408032974;
+ Thu, 03 Jul 2014 10:20:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-RR-Connecting-IP: 107.14.168.130:25
-X-Cloudmark-Score: 0
-Return-Path: <rostedt@goodmis.org>
+Received: by 10.216.111.72 with HTTP; Thu, 3 Jul 2014 10:19:52 -0700 (PDT)
+In-Reply-To: <53B55FA6.5080801@cogentembedded.com>
+References: <1404393762-858019-1-git-send-email-manuel.lauss@gmail.com>
+ <1404393762-858019-6-git-send-email-manuel.lauss@gmail.com> <53B55FA6.5080801@cogentembedded.com>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Thu, 3 Jul 2014 19:19:52 +0200
+Message-ID: <CAOLZvyFit=cuXHjtx=v2oOBAdj9yj1nwODzBQ+3EP7MpongZoA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 05/11] MIPS: Alchemy: pci: use clk framework to
+ enable PCI clock
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Mike Turquette <mturquette@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41009
+X-archive-position: 41010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,49 +54,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf,
+Hi Sergei,
 
-Can you give me your Acked-by on this and patch 21. I'm still waiting
-on a few arch maintainers for acks before I can push this to my
-for-next branch.
+On Thu, Jul 3, 2014 at 3:50 PM, Sergei Shtylyov
+<sergei.shtylyov@cogentembedded.com> wrote:
+>> --- a/arch/mips/pci/pci-alchemy.c
+>> +++ b/arch/mips/pci/pci-alchemy.c
+>> @@ -394,11 +396,24 @@ static int alchemy_pci_probe(struct platform_device
+>> *pdev)
 
-Thanks,
+>> +       ret = clk_prepare_enable(c);
+>> +       if (ret) {
+>> +               dev_err(&pdev->dev, "cannot enable PCI clock\n");
+>> +               clk_put(c);
+>> +               goto out2;
+>
+>
+>    Isn't it simpler to add one more label before clk_put() at end of
+> function?
 
--- Steve
+Yes, I have changed it locally.
 
 
-On Thu, 26 Jun 2014 12:52:28 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
-
-> From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
-> 
-> ftrace_stop() is going away as it disables parts of function tracing
-> that affects users that should not be affected. But ftrace_graph_stop()
-> is built on ftrace_stop(). Here's another example of killing all of
-> function tracing because something went wrong with function graph
-> tracing.
-> 
-> Instead of disabling all users of function tracing on function graph
-> error, disable only function graph tracing. To do this, the arch code
-> must call ftrace_graph_is_dead() before it implements function graph.
-> 
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-> ---
->  arch/mips/kernel/ftrace.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-> index 60e7e5e45af1..8b6538750fe1 100644
-> --- a/arch/mips/kernel/ftrace.c
-> +++ b/arch/mips/kernel/ftrace.c
-> @@ -302,6 +302,9 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
->  	    &return_to_handler;
->  	int faulted, insns;
->  
-> +	if (unlikely(ftrace_graph_is_dead()))
-> +		return;
-> +
->  	if (unlikely(atomic_read(&current->tracing_graph_pause)))
->  		return;
->  
+Thank you!
+       Manuel

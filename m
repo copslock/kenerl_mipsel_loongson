@@ -1,43 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2014 04:59:33 +0200 (CEST)
-Received: from mail-ve0-f169.google.com ([209.85.128.169]:56718 "EHLO
-        mail-ve0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818711AbaGEC7a3y6xU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Jul 2014 04:59:30 +0200
-Received: by mail-ve0-f169.google.com with SMTP id pa12so2254987veb.28
-        for <multiple recipients>; Fri, 04 Jul 2014 19:59:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        bh=gHtKPyZKIJ0Y1A6gKx/RV37iYzXCfcw5zQRLkgintOg=;
-        b=STnIaHc7m7M7+Bm2gAb3kMtPgih4tEKLSJfBSYAfsILws7Lqkf7pDCVhJKPBWBEtE6
-         oq94kVQUT3uyQcWrPyBHBSulA6gIt3787p+YFM9Pm8XtkNWyAQQ+7Zd1KiT2rJQdrjOs
-         c3NRxOd2O+k5dA3WL+L3D9SufGWKRn8W+9lLjIUdLgrUUSyAIAMrdkoQtFpFEyq+LsY3
-         XviPyN7c4rhHTWjQcUwgENOciVlTKsnGsBGz0MUMYATiffMops++qX2xMbZj8Ce8I96W
-         gW67g+OH5wknFH5skY8PpXCTRs3BGfEWQT+3yZjo2ZxjNVI+3Tz1Z9MQJHikPxyHtqp/
-         l+vA==
-MIME-Version: 1.0
-X-Received: by 10.52.69.172 with SMTP id f12mr10794820vdu.26.1404529164158;
- Fri, 04 Jul 2014 19:59:24 -0700 (PDT)
-Received: by 10.221.53.5 with HTTP; Fri, 4 Jul 2014 19:59:24 -0700 (PDT)
-Date:   Fri, 4 Jul 2014 22:59:24 -0400
-Message-ID: <CAPDOMVj-++wOH38d4setvfGFdsaMkn8Rzo4-3YajgGkV2A-aug@mail.gmail.com>
-Subject: mips: FIX ME message in smp_cmp.c
-From:   Nick Krause <xerofoify@gmail.com>
-To:     ralf@linux-mips.org
-Cc:     paul.burton@imgtec.com, markos.chandras@imgtec.com,
-        Leonid.Yegoshin@imgtec.com, Steven.Hill@imgtec.com,
-        linux-mips@linux-mips.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <xerofoify@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2014 07:34:33 +0200 (CEST)
+Received: from seketeli.net ([94.23.218.202]:39319 "EHLO ms.seketeli.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6819433AbaGEFe229gi4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 5 Jul 2014 07:34:28 +0200
+Received: from amegan.ahome.fr (176-26-190-109.dsl.ovh.fr [109.190.26.176])
+        by ms.seketeli.fr (Postfix) with ESMTPSA id AF94C2360045;
+        Sat,  5 Jul 2014 07:34:27 +0200 (CEST)
+Received: by amegan.ahome.fr (Postfix, from userid 1000)
+        id 87C44A40670; Sat,  5 Jul 2014 07:34:57 +0200 (CEST)
+From:   Apelete Seketeli <apelete@seketeli.net>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        John Crispin <blogic@openwrt.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Vinod Koul <vinod.koul@intel.com>, linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: [PATCH] Rename NOP transceiver in JZ4740 platform data
+Date:   Sat,  5 Jul 2014 07:34:56 +0200
+Message-Id: <1404538497-8381-1-git-send-email-apelete@seketeli.net>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <apelete@seketeli.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41044
+X-archive-position: 41045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xerofoify@gmail.com
+X-original-sender: apelete@seketeli.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,8 +40,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I am wondering if in this file, arch/mips/kernel/smp-cmp.c the fix me
-message in cmp_smp_finish I can remove the line that the fix me
-message states below it or
-is this part of the function still needed.
-Cheers Nick
+Hello,
+
+The name of the NOP transceiver driver was changed during v3.16
+release cycle from usb_phy_gen_xceiv to usb_phy_generic.
+
+The patch that comes as a follow up of this message renames
+accordingly the NOP transceiver driver in JZ4740 platform data to fix
+a subsequent kernel panic.
+
+Please consider for merge in 3.16 if possible since it fixes an issue
+that makes the Ben Nanonote unable to boot.
+
+Changes were rebased on top of the linux-mips master branch, built and
+tested successfully.
+
+The following changes since commit bc0b9d9:
+
+  Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux
+
+are available in the git repository at:
+
+  git://git.seketeli.net/~apelete/linux-mips.git rename-jz4740-xceiv
+
+Apelete Seketeli (1):
+  mips: jz4740: rename usb_nop_xceiv to usb_phy_generic
+
+ arch/mips/jz4740/platform.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+1.7.10.4

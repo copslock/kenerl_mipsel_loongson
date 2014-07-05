@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2014 04:50:35 +0200 (CEST)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:38603 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816417AbaGECubTtaB0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Jul 2014 04:50:31 +0200
-Received: by mail-ig0-f170.google.com with SMTP id h15so8880428igd.3
-        for <multiple recipients>; Fri, 04 Jul 2014 19:50:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2014 04:59:33 +0200 (CEST)
+Received: from mail-ve0-f169.google.com ([209.85.128.169]:56718 "EHLO
+        mail-ve0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818711AbaGEC7a3y6xU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Jul 2014 04:59:30 +0200
+Received: by mail-ve0-f169.google.com with SMTP id pa12so2254987veb.28
+        for <multiple recipients>; Fri, 04 Jul 2014 19:59:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=Gq3SIY+5nmvP/i6qeKO4EHhetVT5ygPtpI1ot1ffU1k=;
-        b=Rmyl1NZBjtSjBew7Sq9KjNNgAwedV322WhD8HczzIyiByvEeaMWG3NIrZ8JPEC7EBH
-         GqwGx5Gn6mpCxOdpOAtiuxk4kZCXW9UNtQTfE05NgSQLTP1ciA52WeqD/41Xx5/dMGIv
-         4JdZku+jxZ3zLf6mu4jL7HfGOEkdFrrc2zHRRHU+Dar50xIRABrTDwPb5Mcg2KVjc9Gx
-         tuXwn/DJDzsVtwlwpjS0Y8+7GqhaOB5xhYCN27L5sZ3a/+owjsQ4y5VgjOwiK/2eVBi7
-         ksamy6bKorxd3eaMRibtF7kAnWIrhNGzkdlEIjnFSSOIYuq/Z3+0Ej6T0tqLBWEKHDKn
-         7cUg==
-X-Received: by 10.50.120.65 with SMTP id la1mr23014012igb.23.1404528624944;
-        Fri, 04 Jul 2014 19:50:24 -0700 (PDT)
-Received: from nick-System-Product-Name.phub.net.cable.rogers.com (CPE0026f3330aca-CM0026f3330ac6.cpe.net.cable.rogers.com. [99.232.64.167])
-        by mx.google.com with ESMTPSA id qa4sm67652483igb.10.2014.07.04.19.50.23
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 04 Jul 2014 19:50:24 -0700 (PDT)
-From:   Nicholas Krause <xerofoify@gmail.com>
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=gHtKPyZKIJ0Y1A6gKx/RV37iYzXCfcw5zQRLkgintOg=;
+        b=STnIaHc7m7M7+Bm2gAb3kMtPgih4tEKLSJfBSYAfsILws7Lqkf7pDCVhJKPBWBEtE6
+         oq94kVQUT3uyQcWrPyBHBSulA6gIt3787p+YFM9Pm8XtkNWyAQQ+7Zd1KiT2rJQdrjOs
+         c3NRxOd2O+k5dA3WL+L3D9SufGWKRn8W+9lLjIUdLgrUUSyAIAMrdkoQtFpFEyq+LsY3
+         XviPyN7c4rhHTWjQcUwgENOciVlTKsnGsBGz0MUMYATiffMops++qX2xMbZj8Ce8I96W
+         gW67g+OH5wknFH5skY8PpXCTRs3BGfEWQT+3yZjo2ZxjNVI+3Tz1Z9MQJHikPxyHtqp/
+         l+vA==
+MIME-Version: 1.0
+X-Received: by 10.52.69.172 with SMTP id f12mr10794820vdu.26.1404529164158;
+ Fri, 04 Jul 2014 19:59:24 -0700 (PDT)
+Received: by 10.221.53.5 with HTTP; Fri, 4 Jul 2014 19:59:24 -0700 (PDT)
+Date:   Fri, 4 Jul 2014 22:59:24 -0400
+Message-ID: <CAPDOMVj-++wOH38d4setvfGFdsaMkn8Rzo4-3YajgGkV2A-aug@mail.gmail.com>
+Subject: mips: FIX ME message in smp_cmp.c
+From:   Nick Krause <xerofoify@gmail.com>
 To:     ralf@linux-mips.org
-Cc:     jchandra@broadcom.com, blogic@openwrt.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mips: Add #ifdef in file bridge.h
-Date:   Fri,  4 Jul 2014 22:50:19 -0400
-Message-Id: <1404528619-3715-1-git-send-email-xerofoify@gmail.com>
-X-Mailer: git-send-email 1.9.1
+Cc:     paul.burton@imgtec.com, markos.chandras@imgtec.com,
+        Leonid.Yegoshin@imgtec.com, Steven.Hill@imgtec.com,
+        linux-mips@linux-mips.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Return-Path: <xerofoify@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41043
+X-archive-position: 41044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,26 +50,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch addes a #ifdef __ASSEMBLY__ in order to check if this part
-of the file is configured to fix this #ifdef block in bridge.h for mips.
-
-Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
----
- arch/mips/include/asm/netlogic/xlp-hal/bridge.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
-index 3067f98..4f315c3 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
-@@ -143,7 +143,7 @@
- #define BRIDGE_GIO_WEIGHT		0x2cb
- #define BRIDGE_FLASH_WEIGHT		0x2cc
- 
--/* FIXME verify */
-+#ifdef __ASSEMBLY__
- #define BRIDGE_9XX_FLASH_BAR(i)		(0x11 + (i))
- #define BRIDGE_9XX_FLASH_BAR_LIMIT(i)	(0x15 + (i))
- 
--- 
-1.9.1
+I am wondering if in this file, arch/mips/kernel/smp-cmp.c the fix me
+message in cmp_smp_finish I can remove the line that the fix me
+message states below it or
+is this part of the function still needed.
+Cheers Nick

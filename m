@@ -1,41 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2014 06:01:48 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:51813 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6861302AbaGHEBkPFltn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Jul 2014 06:01:40 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 86F9A1400E9;
-        Tue,  8 Jul 2014 14:01:32 +1000 (EST)
-Message-ID: <1404792090.26459.1.camel@concordia>
-Subject: Re: [PATCH 1/3] PCI/MSI: Add pci_enable_msi_partial()
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Alexander Gordeev <agordeev@redhat.com>, linux-mips@linux-mips.org,
-        linux-s390@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
-        iommu@lists.linux-foundation.org, xen-devel@lists.xenproject.org,
-        linuxppc-dev@lists.ozlabs.org
-Date:   Tue, 08 Jul 2014 14:01:30 +1000
-In-Reply-To: <20140702202201.GA28852@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2014 10:34:50 +0200 (CEST)
+Received: from mx0.aculab.com ([213.249.233.131]:50815 "HELO mx0.aculab.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6816071AbaGHIeq0v0Zr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Jul 2014 10:34:46 +0200
+Received: (qmail 21843 invoked from network); 8 Jul 2014 08:34:44 -0000
+Received: from localhost (127.0.0.1)
+  by mx0.aculab.com with SMTP; 8 Jul 2014 08:34:44 -0000
+Received: from mx0.aculab.com ([127.0.0.1])
+ by localhost (mx0.aculab.com [127.0.0.1]) (amavisd-new, port 10024) with SMTP
+ id 17925-09 for <linux-mips@linux-mips.org>;
+ Tue,  8 Jul 2014 09:34:36 +0100 (BST)
+Received: (qmail 21704 invoked by uid 599); 8 Jul 2014 08:34:36 -0000
+Received: from unknown (HELO AcuExch.aculab.com) (10.202.163.4)
+    by mx0.aculab.com (qpsmtpd/0.28) with ESMTP; Tue, 08 Jul 2014 09:34:36 +0100
+Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
+ mapi id 14.03.0123.003; Tue, 8 Jul 2014 09:33:18 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Bjorn Helgaas' <bhelgaas@google.com>,
+        Alexander Gordeev <agordeev@redhat.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: RE: [PATCH 1/3] PCI/MSI: Add pci_enable_msi_partial()
+Thread-Topic: [PATCH 1/3] PCI/MSI: Add pci_enable_msi_partial()
+Thread-Index: AQHPljNB2YNqvD5cNkq3/QaNLPhjzpuOEsDAgAF8RoCABWaUgIAA63Pw
+Date:   Tue, 8 Jul 2014 08:33:17 +0000
+Message-ID: <063D6719AE5E284EB5DD2968C1650D6D1726E211@AcuExch.aculab.com>
 References: <cover.1402405331.git.agordeev@redhat.com>
-         <4fef62a2e647a7c38e9f2a1ea4244b3506a85e2b.1402405331.git.agordeev@redhat.com>
-         <20140702202201.GA28852@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <mpe@ellerman.id.au>
+ <4fef62a2e647a7c38e9f2a1ea4244b3506a85e2b.1402405331.git.agordeev@redhat.com>
+ <20140702202201.GA28852@google.com>
+ <063D6719AE5E284EB5DD2968C1650D6D1726BF4E@AcuExch.aculab.com>
+ <20140704085816.GB12247@dhcp-26-207.brq.redhat.com>
+ <CAErSpo7QWc35seoMhJA+H1_=MkKWYMdeYG=hT=i1v=iz8d5ezA@mail.gmail.com>
+In-Reply-To: <CAErSpo7QWc35seoMhJA+H1_=MkKWYMdeYG=hT=i1v=iz8d5ezA@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.99.200]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Virus-Scanned: by iCritical at mx0.aculab.com
+Return-Path: <David.Laight@ACULAB.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41070
+X-archive-position: 41072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: David.Laight@ACULAB.COM
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,46 +70,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2014-07-02 at 14:22 -0600, Bjorn Helgaas wrote:
-> On Tue, Jun 10, 2014 at 03:10:30PM +0200, Alexander Gordeev wrote:
-> > There are PCI devices that require a particular value written
-> > to the Multiple Message Enable (MME) register while aligned on
-> > power of 2 boundary value of actually used MSI vectors 'nvec'
-> > is a lesser of that MME value:
-> > 
-> > 	roundup_pow_of_two(nvec) < 'Multiple Message Enable'
-> > 
-> > However the existing pci_enable_msi_block() interface is not
-> > able to configure such devices, since the value written to the
-> > MME register is calculated from the number of requested MSIs
-> > 'nvec':
-> > 
-> > 	'Multiple Message Enable' = roundup_pow_of_two(nvec)
-> 
-> For MSI, software learns how many vectors a device requests by reading
-> the Multiple Message Capable (MMC) field.  This field is encoded, so a
-> device can only request 1, 2, 4, 8, etc., vectors.  It's impossible
-> for a device to request 3 vectors; it would have to round up that up
-> to a power of two and request 4 vectors.
-> 
-> Software writes similarly encoded values to MME to tell the device how
-> many vectors have been allocated for its use.  For example, it's
-> impossible to tell the device that it can use 3 vectors; the OS has to
-> round that up and tell the device it can use 4 vectors.
-> 
-> So if I understand correctly, the point of this series is to take
-> advantage of device-specific knowledge, e.g., the device requests 4
-> vectors via MMC, but we "know" the device is only capable of using 3.
-> Moreover, we tell the device via MME that 4 vectors are available, but
-> we've only actually set up 3 of them.
-> 
-> This makes me uneasy because we're lying to the device, and the device
-> is perfectly within spec to use all 4 of those vectors.  If anything
-> changes the number of vectors the device uses (new device revision,
-> firmware upgrade, etc.), this is liable to break.
-
-It also adds more complexity into the already complex MSI API, across all
-architectures, all so a single Intel chipset can save a couple of MSIs. That
-seems like the wrong trade off to me.
-
-cheers
+RnJvbTogQmpvcm4gSGVsZ2Fhcw0KLi4uDQo+ID4+IEV2ZW4gaWYgeW91IGRvIHRoYXQsIHlvdSBv
+dWdodCB0byB3cml0ZSB2YWxpZCBpbnRlcnJ1cHQgaW5mb3JtYXRpb24NCj4gPj4gaW50byB0aGUg
+NHRoIHNsb3QgKG1heWJlIHJlcGxpY2F0aW5nIG9uZSBvZiB0aGUgZWFybGllciBpbnRlcnJ1cHRz
+KS4NCj4gPj4gVGhlbiwgaWYgdGhlIGRldmljZSBkb2VzIHJhaXNlIHRoZSAndW5leHBlY3RlZCcg
+aW50ZXJydXB0IHlvdSBkb24ndA0KPiA+PiBnZXQgYSB3cml0ZSB0byBhIHJhbmRvbSBrZXJuZWwg
+bG9jYXRpb24uDQo+ID4NCj4gPiBJIG1pZ2h0IGJlIG1pc3Npbmcgc29tZXRoaW5nLCBidXQgd2Ug
+YXJlIHRhbGtpbmcgb2YgTVNJIGFkZHJlc3Mgc3BhY2UNCj4gPiBoZXJlLCBhcmVuJ3Qgd2U/IEkg
+YW0gbm90IGdldHRpbmcgaG93IHdlIGNvdWxkIGVuZCB1cCB3aXRoIGEgJ3dyaXRlJw0KPiA+IHRv
+IGEgcmFuZG9tIGtlcm5lbCBsb2NhdGlvbiB3aGVuIGEgdW5jbGFpbWVkIE1TSSB2ZWN0b3Igc2Vu
+dC4gV2UgY291bGQNCj4gPiBvbmx5IGV4cGVjdCBhIHNwdXJpb3VzIGludGVycnVwdCBhdCB3b3Jz
+dCwgd2hpY2ggaXMgaGFuZGxlZCBhbmQgcmVwb3J0ZWQuDQo+IA0KPiBZZXMsIHRoYXQncyBob3cg
+SSB1bmRlcnN0YW5kIGl0LiAgV2l0aCBNU0ksIHRoZSBPUyBzcGVjaWZpZXMgdGhlIGENCj4gc2lu
+Z2xlIE1lc3NhZ2UgQWRkcmVzcywgZS5nLiwgYSBMQVBJQyBhZGRyZXNzLCBhbmQgYSBzaW5nbGUg
+TWVzc2FnZQ0KPiBEYXRhIHZhbHVlLCBlLmcuLCBhIHZlY3RvciBudW1iZXIgdGhhdCB3aWxsIGJl
+IHdyaXR0ZW4gdG8gdGhlIExBUElDLg0KPiBUaGUgZGV2aWNlIGlzIHBlcm1pdHRlZCB0byBtb2Rp
+Znkgc29tZSBsb3ctb3JkZXIgYml0cyBvZiB0aGUgTWVzc2FnZQ0KPiBEYXRhIHRvIHNlbmQgb25l
+IG9mIHNldmVyYWwgdmVjdG9yIG51bWJlcnMgKHRoZSBNTUUgdmFsdWUgdGVsbHMgdGhlDQo+IGRl
+dmljZSBob3cgbWFueSBiaXRzIGl0IGNhbiBtb2RpZnkpLg0KPiANCj4gQm90dG9tIGxpbmUsIEkg
+dGhpbmsgYSBzcHVyaW91cyBpbnRlcnJ1cHQgaXMgdGhlIGZhaWx1cmUgd2UnZCBleHBlY3QNCj4g
+aWYgYSBkZXZpY2UgdXNlZCBtb3JlIHZlY3RvcnMgdGhhbiB0aGUgT1MgZXhwZWN0cyBpdCB0by4N
+Cg0KU28geW91IG5lZWQgdG8gdGVsbCB0aGUgZGV2aWNlIHdoZXJlIHRvIHdyaXRlIGluIG9yZGVy
+IHRvIHJhaXNlIHRoZQ0KJ3NwdXJpb3VzIGludGVycnVwdCcuDQoNCglEYXZpZA0KDQo=

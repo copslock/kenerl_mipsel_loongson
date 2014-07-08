@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jul 2014 22:41:59 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:7452 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2014 06:01:48 +0200 (CEST)
+Received: from ozlabs.org ([103.22.144.67]:51813 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860043AbaGGUl4U8isW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Jul 2014 22:41:56 +0200
-Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s67KfnWD025792
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 7 Jul 2014 16:41:50 -0400
-Received: from dhcp-26-207.brq.redhat.com (vpn-57-196.rdu2.redhat.com [10.10.57.196])
-        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s67Kfh1a008773
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Mon, 7 Jul 2014 16:41:46 -0400
-Date:   Mon, 7 Jul 2014 22:42:43 +0200
-From:   Alexander Gordeev <agordeev@redhat.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390@vger.kernel.org, "x86@kernel.org" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org,
-        "open list:INTEL IOMMU (VT-d)" <iommu@lists.linux-foundation.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+        id S6861302AbaGHEBkPFltn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Jul 2014 06:01:40 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 86F9A1400E9;
+        Tue,  8 Jul 2014 14:01:32 +1000 (EST)
+Message-ID: <1404792090.26459.1.camel@concordia>
 Subject: Re: [PATCH 1/3] PCI/MSI: Add pci_enable_msi_partial()
-Message-ID: <20140707204242.GA27809@dhcp-26-207.brq.redhat.com>
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Alexander Gordeev <agordeev@redhat.com>, linux-mips@linux-mips.org,
+        linux-s390@vger.kernel.org, linux-pci@vger.kernel.org,
+        x86@kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
+        iommu@lists.linux-foundation.org, xen-devel@lists.xenproject.org,
+        linuxppc-dev@lists.ozlabs.org
+Date:   Tue, 08 Jul 2014 14:01:30 +1000
+In-Reply-To: <20140702202201.GA28852@google.com>
 References: <cover.1402405331.git.agordeev@redhat.com>
- <4fef62a2e647a7c38e9f2a1ea4244b3506a85e2b.1402405331.git.agordeev@redhat.com>
- <20140702202201.GA28852@google.com>
- <20140704085741.GA12247@dhcp-26-207.brq.redhat.com>
- <CAErSpo6f6RXWv0DEtLBZX0jXoSUYJeWrSm7mubSJ_F-O7tQp6w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAErSpo6f6RXWv0DEtLBZX0jXoSUYJeWrSm7mubSJ_F-O7tQp6w@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
-Return-Path: <agordeev@redhat.com>
+         <4fef62a2e647a7c38e9f2a1ea4244b3506a85e2b.1402405331.git.agordeev@redhat.com>
+         <20140702202201.GA28852@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41069
+X-archive-position: 41070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agordeev@redhat.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,34 +48,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 07, 2014 at 01:40:48PM -0600, Bjorn Helgaas wrote:
-> As you can tell, I'm a little skeptical about this.  It's a fairly big
-> change, it affects the arch interface, it seems to be targeted for
-> only a single chipset (though it's widely used), and we already
-> support a standard solution (MSI-X, reducing the number of vectors
-> requested, or even operating with 1 vector).
+On Wed, 2014-07-02 at 14:22 -0600, Bjorn Helgaas wrote:
+> On Tue, Jun 10, 2014 at 03:10:30PM +0200, Alexander Gordeev wrote:
+> > There are PCI devices that require a particular value written
+> > to the Multiple Message Enable (MME) register while aligned on
+> > power of 2 boundary value of actually used MSI vectors 'nvec'
+> > is a lesser of that MME value:
+> > 
+> > 	roundup_pow_of_two(nvec) < 'Multiple Message Enable'
+> > 
+> > However the existing pci_enable_msi_block() interface is not
+> > able to configure such devices, since the value written to the
+> > MME register is calculated from the number of requested MSIs
+> > 'nvec':
+> > 
+> > 	'Multiple Message Enable' = roundup_pow_of_two(nvec)
+> 
+> For MSI, software learns how many vectors a device requests by reading
+> the Multiple Message Capable (MMC) field.  This field is encoded, so a
+> device can only request 1, 2, 4, 8, etc., vectors.  It's impossible
+> for a device to request 3 vectors; it would have to round up that up
+> to a power of two and request 4 vectors.
+> 
+> Software writes similarly encoded values to MME to tell the device how
+> many vectors have been allocated for its use.  For example, it's
+> impossible to tell the device that it can use 3 vectors; the OS has to
+> round that up and tell the device it can use 4 vectors.
+> 
+> So if I understand correctly, the point of this series is to take
+> advantage of device-specific knowledge, e.g., the device requests 4
+> vectors via MMC, but we "know" the device is only capable of using 3.
+> Moreover, we tell the device via MME that 4 vectors are available, but
+> we've only actually set up 3 of them.
+> 
+> This makes me uneasy because we're lying to the device, and the device
+> is perfectly within spec to use all 4 of those vectors.  If anything
+> changes the number of vectors the device uses (new device revision,
+> firmware upgrade, etc.), this is liable to break.
 
-Bjorn,
+It also adds more complexity into the already complex MSI API, across all
+architectures, all so a single Intel chipset can save a couple of MSIs. That
+seems like the wrong trade off to me.
 
-I surely understand your concerns. I am answering this "summary"
-question right away.
-
-Even though an extra parameter is introduced, functionally this update
-is rather small. It is only the new pci_enable_msi_partial() function
-that could exploit a custom 'nvec_mme' parameter. By contrast, existing
-pci_enable_msi_range() function (and therefore all device drivers) is
-unaffected - it just rounds up 'nvec' to the nearest power of two and
-continues exactly as it has been. All archs besides x86 just ignore it.
-And x86 change is fairly small as well - all necessary functionality is
-already in.
-
-Thus, at the moment it is only AHCI of concern. And no, AHCI can not do MSI-X..
-
-Thanks!
-
-> Bjorn
-
--- 
-Regards,
-Alexander Gordeev
-agordeev@redhat.com
+cheers

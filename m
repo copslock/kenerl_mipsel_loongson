@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2014 21:09:03 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37590 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2014 21:09:22 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37639 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861043AbaGHTIl2LZKd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Jul 2014 21:08:41 +0200
+        by eddie.linux-mips.org with ESMTP id S6861345AbaGHTImCqee8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Jul 2014 21:08:42 +0200
 Received: from deadeye.wl.decadent.org.uk ([192.168.4.249])
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
         (Exim 4.80)
         (envelope-from <ben@decadent.org.uk>)
-        id 1X4akm-0000W3-TA; Tue, 08 Jul 2014 20:08:37 +0100
+        id 1X4akm-0000W1-LO; Tue, 08 Jul 2014 20:08:36 +0100
 Received: from ben by deadeye.wl.decadent.org.uk with local (Exim 4.82_1-5b7a7c0-XX)
         (envelope-from <ben@decadent.org.uk>)
-        id 1X4aki-000869-52; Tue, 08 Jul 2014 20:08:32 +0100
+        id 1X4aki-00086k-8p; Tue, 08 Jul 2014 20:08:32 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "James Hogan" <james.hogan@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
+CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "James Hogan" <james.hogan@imgtec.com>,
+        "Paul Burton" <paul.burton@imgtec.com>,
         "Markos Chandras" <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org
 Date:   Tue, 08 Jul 2014 20:01:50 +0100
-Message-ID: <lsq.1404846110.10255393@decadent.org.uk>
+Message-ID: <lsq.1404846110.570302220@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.2 102/125] MIPS: MSC: Prevent out-of-bounds writes to
- MIPS SC ioremap'd region
+Subject: [PATCH 3.2 109/125] MIPS: asm: thread_info: Add _TIF_SECCOMP flag
 In-Reply-To: <lsq.1404846109.699842714@decadent.org.uk>
 X-SA-Exim-Connect-IP: 192.168.4.249
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -34,7 +34,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41089
+X-archive-position: 41090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,46 +57,32 @@ X-list: linux-mips
 
 From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit ab6c15bc6620ebe220970cc040b29bcb2757f373 upstream.
+commit 137f7df8cead00688524c82360930845396b8a21 upstream.
 
-Previously, the lower limit for the MIPS SC initialization loop was
-set incorrectly allowing one extra loop leading to writes
-beyond the MSC ioremap'd space. More precisely, the value of the 'imp'
-in the last loop increased beyond the msc_irqmap_t boundaries and
-as a result of which, the 'n' variable was loaded with an incorrect
-value. This value was used later on to calculate the offset in the
-MSC01_IC_SUP which led to random crashes like the following one:
-
-CPU 0 Unable to handle kernel paging request at virtual address e75c0200,
-epc == 8058dba4, ra == 8058db90
-[...]
-Call Trace:
-[<8058dba4>] init_msc_irqs+0x104/0x154
-[<8058b5bc>] arch_init_irq+0xd8/0x154
-[<805897b0>] start_kernel+0x220/0x36c
-
-Kernel panic - not syncing: Attempted to kill the idle task!
-
-This patch fixes the problem
+Add _TIF_SECCOMP flag to _TIF_WORK_SYSCALL_ENTRY to indicate
+that the system call needs to be checked against a seccomp filter.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 Reviewed-by: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7118/
+Patchwork: https://patchwork.linux-mips.org/patch/6405/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[bwh: Backported to 3.2: various other flags are not included in
+ _TIF_WORK_SYSCALL_ENTRY]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/irq-msc01.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/thread_info.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/irq-msc01.c
-+++ b/arch/mips/kernel/irq-msc01.c
-@@ -131,7 +131,7 @@ void __init init_msc_irqs(unsigned long
+--- a/arch/mips/include/asm/thread_info.h
++++ b/arch/mips/include/asm/thread_info.h
+@@ -149,7 +149,7 @@ register struct thread_info *__current_t
+ #define _TIF_FPUBOUND		(1<<TIF_FPUBOUND)
+ #define _TIF_LOAD_WATCH		(1<<TIF_LOAD_WATCH)
  
- 	board_bind_eic_interrupt = &msc_bind_eic_interrupt;
+-#define _TIF_WORK_SYSCALL_ENTRY	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT)
++#define _TIF_WORK_SYSCALL_ENTRY	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT | _TIF_SECCOMP)
  
--	for (; nirq >= 0; nirq--, imp++) {
-+	for (; nirq > 0; nirq--, imp++) {
- 		int n = imp->im_irq;
- 
- 		switch (imp->im_type) {
+ /* work to do in syscall_trace_leave() */
+ #define _TIF_WORK_SYSCALL_EXIT	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT)

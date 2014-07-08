@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2014 16:55:26 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:37269 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2014 16:55:54 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:37286 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6861342AbaGHOxwpb0ch (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Jul 2014 16:53:52 +0200
+        id S6861343AbaGHOx5G8DCL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Jul 2014 16:53:57 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 3C11928B952;
-        Tue,  8 Jul 2014 16:51:48 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id A97AB28B44E;
+        Tue,  8 Jul 2014 16:51:52 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from ixxyvirt.lan (p5081183E.dip0.t-ipconnect.de [80.129.24.62])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id DF56C28B956;
-        Tue,  8 Jul 2014 16:51:29 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 5BF7428B95A;
+        Tue,  8 Jul 2014 16:51:30 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -17,9 +17,9 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH 3/8] MIPS: BCM63XX: remove !RUNTIME_DETECT from reset code
-Date:   Tue,  8 Jul 2014 16:53:19 +0200
-Message-Id: <1404831204-30659-4-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 4/8] MIPS: BCM63XX: remove !RUNTIME_DETECT code from gpio code
+Date:   Tue,  8 Jul 2014 16:53:20 +0200
+Message-Id: <1404831204-30659-5-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1404831204-30659-1-git-send-email-jogo@openwrt.org>
 References: <1404831204-30659-1-git-send-email-jogo@openwrt.org>
@@ -27,7 +27,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41078
+X-archive-position: 41079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,86 +46,40 @@ X-list: linux-mips
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/bcm63xx/reset.c | 60 -----------------------------------------------
- 1 file changed, 60 deletions(-)
+ arch/mips/bcm63xx/gpio.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/reset.c b/arch/mips/bcm63xx/reset.c
-index acbeb1f..d1fe51e 100644
---- a/arch/mips/bcm63xx/reset.c
-+++ b/arch/mips/bcm63xx/reset.c
-@@ -125,8 +125,6 @@
- #define BCM6368_RESET_PCIE	0
- #define BCM6368_RESET_PCIE_EXT	0
+diff --git a/arch/mips/bcm63xx/gpio.c b/arch/mips/bcm63xx/gpio.c
+index a6c2135..468bc7b 100644
+--- a/arch/mips/bcm63xx/gpio.c
++++ b/arch/mips/bcm63xx/gpio.c
+@@ -18,19 +18,6 @@
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_regs.h>
  
--#ifdef BCMCPU_RUNTIME_DETECT
--
- /*
-  * core reset bits
-  */
-@@ -188,64 +186,6 @@ static int __init bcm63xx_reset_bits_init(void)
- 
- 	return 0;
- }
--#else
--
--#ifdef CONFIG_BCM63XX_CPU_3368
--static const u32 bcm63xx_reset_bits[] = {
--	__GEN_RESET_BITS_TABLE(3368)
--};
--#define reset_reg PERF_SOFTRESET_6358_REG
--#endif
--
--#ifdef CONFIG_BCM63XX_CPU_6328
--static const u32 bcm63xx_reset_bits[] = {
--	__GEN_RESET_BITS_TABLE(6328)
--};
--#define reset_reg PERF_SOFTRESET_6328_REG
--#endif
--
--#ifdef CONFIG_BCM63XX_CPU_6338
--static const u32 bcm63xx_reset_bits[] = {
--	__GEN_RESET_BITS_TABLE(6338)
--};
--#define reset_reg PERF_SOFTRESET_REG
--#endif
--
+-#ifndef BCMCPU_RUNTIME_DETECT
+-#define gpio_out_low_reg	GPIO_DATA_LO_REG
 -#ifdef CONFIG_BCM63XX_CPU_6345
--static const u32 bcm63xx_reset_bits[] = { };
--#define reset_reg 0
--#endif
+-#ifdef gpio_out_low_reg
+-#undef gpio_out_low_reg
+-#define gpio_out_low_reg	GPIO_DATA_LO_REG_6345
+-#endif /* gpio_out_low_reg */
+-#endif /* CONFIG_BCM63XX_CPU_6345 */
 -
--#ifdef CONFIG_BCM63XX_CPU_6348
--static const u32 bcm63xx_reset_bits[] = {
--	__GEN_RESET_BITS_TABLE(6348)
--};
--#define reset_reg PERF_SOFTRESET_REG
--#endif
--
--#ifdef CONFIG_BCM63XX_CPU_6358
--static const u32 bcm63xx_reset_bits[] = {
--	__GEN_RESET_BITS_TABLE(6358)
--};
--#define reset_reg PERF_SOFTRESET_6358_REG
--#endif
--
--#ifdef CONFIG_BCM63XX_CPU_6362
--static const u32 bcm63xx_reset_bits[] = {
--	__GEN_RESET_BITS_TABLE(6362)
--};
--#define reset_reg PERF_SOFTRESET_6362_REG
--#endif
--
--#ifdef CONFIG_BCM63XX_CPU_6368
--static const u32 bcm63xx_reset_bits[] = {
--	__GEN_RESET_BITS_TABLE(6368)
--};
--#define reset_reg PERF_SOFTRESET_6368_REG
--#endif
--
--static int __init bcm63xx_reset_bits_init(void) { return 0; }
--#endif
+-static inline void bcm63xx_gpio_out_low_reg_init(void)
+-{
+-}
+-#else /* ! BCMCPU_RUNTIME_DETECT */
+ static u32 gpio_out_low_reg;
  
- static DEFINE_SPINLOCK(reset_mutex);
+ static void bcm63xx_gpio_out_low_reg_init(void)
+@@ -44,7 +31,6 @@ static void bcm63xx_gpio_out_low_reg_init(void)
+ 		break;
+ 	}
+ }
+-#endif /* ! BCMCPU_RUNTIME_DETECT */
  
+ static DEFINE_SPINLOCK(bcm63xx_gpio_lock);
+ static u32 gpio_out_low, gpio_out_high;
 -- 
 2.0.0

@@ -1,42 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 14:25:53 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:40540 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6861103AbaGIMZuE9hZh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Jul 2014 14:25:50 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id BAF8F280893;
-        Wed,  9 Jul 2014 14:23:43 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qa0-f43.google.com (mail-qa0-f43.google.com [209.85.216.43])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 8CBB128162E;
-        Wed,  9 Jul 2014 14:23:32 +0200 (CEST)
-Received: by mail-qa0-f43.google.com with SMTP id k15so5958304qaq.16
-        for <multiple recipients>; Wed, 09 Jul 2014 05:25:35 -0700 (PDT)
-X-Received: by 10.224.98.145 with SMTP id q17mr68938982qan.97.1404908735244;
- Wed, 09 Jul 2014 05:25:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 16:16:03 +0200 (CEST)
+Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.228]:65019 "EHLO
+        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6861345AbaGIOP7CmPEm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jul 2014 16:15:59 +0200
+Received: from [67.246.153.56] ([67.246.153.56:50774] helo=gandalf.local.home)
+        by cdptpa-oedge02 (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
+        id 18/5F-20336-69E4DB35; Wed, 09 Jul 2014 14:15:51 +0000
+Date:   Wed, 9 Jul 2014 10:15:50 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-arch@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Josh Poimboeuf <notifications@github.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [RFA][PATCH 21/27] MIPS: ftrace: Remove check of obsolete
+ variable function_trace_stop
+Message-ID: <20140709101550.2ec6582f@gandalf.local.home>
+In-Reply-To: <20140626165852.665644919@goodmis.org>
+References: <20140626165221.736847419@goodmis.org>
+        <20140626165852.665644919@goodmis.org>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 10.140.89.209 with HTTP; Wed, 9 Jul 2014 05:25:15 -0700 (PDT)
-In-Reply-To: <53BC15DA.7050602@imgtec.com>
-References: <1404832446-31028-1-git-send-email-jogo@openwrt.org> <53BC15DA.7050602@imgtec.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Wed, 9 Jul 2014 14:25:15 +0200
-Message-ID: <CAOiHx=mmLwD=eC5B8hhAowqZgV_rKw4cmHSGLRLjRKAwiyZ9KA@mail.gmail.com>
-Subject: Re: [PATCH RFC] MIPS: add support for vmlinux appended DTB
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-RR-Connecting-IP: 107.14.168.130:25
+X-Cloudmark-Score: 0
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41098
+X-archive-position: 41099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,122 +52,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 8, 2014 at 6:01 PM, James Hogan <james.hogan@imgtec.com> wrote:
-> Hi Jonas,
->
-> On 08/07/14 16:14, Jonas Gorski wrote:
->> Add support for populating initial_device_params through a dtb
->
-> initial_boot_params here and above?
+Ralf,
 
-Yes, that's what I meant. I must have been distracted by the
-thunderstorm outside.
+Can you please ack this patch.
 
->
->> blob appended to vmlinux.
->
-> should that be vmlinux.bin? Presumably it isn't appended to the ELF file?
+Thanks,
 
-Hmmm, you are right, indeed it should. I was always taking the OpenWrt
-names for granted, so I never looked at how the kernel itself named
-them. OpenWrt uses "vmlinux" for binary only, and "vmlinux.elf" for
-the unstripped elf one.
-
-As far as I can tell, there is no simple vmlinux.bin target without
-the decompressor wrapper included, but for the description I will
-change the name and clarify that I am talking about a binary kernel
-without the decompressing wrapper.
-
->
->>
->> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
->> ---
->> Mostly adapted from how ARM is doing it.
->>
->> Sent as an RFC PATCH because I am not sure if this is the right way to
->> it, and whether storing the pointer in initial_device_params is a good
->> idea, or a new variable should be introduced.
->>
->> The reasoning for initial_device_params is that there is no common
->> MIPS interface yet, so the next best thing was using that. This also
->> has the advantage of keeping the original fw_args intact.
->
-> Does it matter that this will be ignored if the bootloader does provide
-> a DT (initial_boot_params overwritten by early_init_dt_scan() call), and
-> that if no DT is provided by the bootloader the of_scan_flat_dt() calls
-> at the bottom of early_init_dt_scan will never happen?
-
-Since (AFAIK) there is no common interface on mips for a bootloader to
-pass a dtb to the kernel, it is currently up to the individual targets
-to do something with an appended dtb, and decide which one has a
-higher priority. They already need to manually "extract" the passed
-dtb from the bootloader and pass it to the kernel, so all this patch
-does is provide another source for one.
+-- Steve
 
 
->>
->> This patch works for me on bcm63xx, where the bootloade expects
->
-> s/bootloade/bootloader/
->
->> an lzma compressed kernel, so I wanted to not double compress using
->> the in-kernel compressed kernel support.
->>
->> Completely untested on anything except MIPS32 / big endian.
->>
->>  arch/mips/Kconfig              | 18 ++++++++++++++++++
->>  arch/mips/kernel/head.S        | 19 +++++++++++++++++++
->>  arch/mips/kernel/vmlinux.lds.S |  6 ++++++
->>  3 files changed, 43 insertions(+)
->>
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> index 3f05b56..58527cd 100644
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
->> @@ -2476,6 +2476,24 @@ config USE_OF
->>       select OF_EARLY_FLATTREE
->>       select IRQ_DOMAIN
->>
->> +config MIPS_APPENDED_DTB
->> +     bool "Use appended device tree blob to vmlinux (EXPERIMENTAL)"
->> +     depends on OF
->> +     help
->> +       With this option, the boot code will look for a device tree binary
->> +       DTB) appended to vmlinux
->
-> s/DTB)/(DTB)/
->
-> vmlinux.bin again?
+On Thu, 26 Jun 2014 12:52:42 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-Right.
-
->> +       (e.g. cat vmlinux <filename>.dtb > vmlinux_w_dtb).
->
-> here too I think.
-
-Right again.
-
->> +
->> +       This is meant as a backward compatibility convenience for those
->> +       systems with a bootloader that can't be upgraded to accommodate
->> +       the documented boot protocol using a device tree.
->> +
->> +       Beware that there is very little in terms of protection against
->> +       this option being confused by leftover garbage in memory that might
->> +       look like a DTB header after a reboot if no actual DTB is appended
->> +       to vmlinux.  Do not leave this option active in a production kernel
->
-> maybe same here too.
-
-Will fix that, too.
-
->
-> Can't fault the rest though.
->
-> Cheers
-> James
-
-Thanks for the review!
-
-
-Jonas
+> From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
+> 
+> Nothing sets function_trace_stop to disable function tracing anymore.
+> Remove the check for it in the arch code.
+> 
+> [ Please test this on your arch ]
+> 
+> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+> ---
+>  arch/mips/Kconfig         | 1 -
+>  arch/mips/kernel/mcount.S | 7 -------
+>  2 files changed, 8 deletions(-)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 7a469acee33c..9ca52987fcd5 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -15,7 +15,6 @@ config MIPS
+>  	select HAVE_BPF_JIT if !CPU_MICROMIPS
+>  	select ARCH_HAVE_CUSTOM_GPIO_H
+>  	select HAVE_FUNCTION_TRACER
+> -	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
+>  	select HAVE_DYNAMIC_FTRACE
+>  	select HAVE_FTRACE_MCOUNT_RECORD
+>  	select HAVE_C_RECORDMCOUNT
+> diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+> index 539b6294b613..00940d1d5c4f 100644
+> --- a/arch/mips/kernel/mcount.S
+> +++ b/arch/mips/kernel/mcount.S
+> @@ -74,10 +74,6 @@ _mcount:
+>  #endif
+>  
+>  	/* When tracing is activated, it calls ftrace_caller+8 (aka here) */
+> -	lw	t1, function_trace_stop
+> -	bnez	t1, ftrace_stub
+> -	 nop
+> -
+>  	MCOUNT_SAVE_REGS
+>  #ifdef KBUILD_MCOUNT_RA_ADDRESS
+>  	PTR_S	MCOUNT_RA_ADDRESS_REG, PT_R12(sp)
+> @@ -105,9 +101,6 @@ ftrace_stub:
+>  #else	/* ! CONFIG_DYNAMIC_FTRACE */
+>  
+>  NESTED(_mcount, PT_SIZE, ra)
+> -	lw	t1, function_trace_stop
+> -	bnez	t1, ftrace_stub
+> -	 nop
+>  	PTR_LA	t1, ftrace_stub
+>  	PTR_L	t2, ftrace_trace_function /* Prepare t2 for (1) */
+>  	bne	t1, t2, static_trace

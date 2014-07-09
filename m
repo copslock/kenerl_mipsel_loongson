@@ -1,45 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 16:16:03 +0200 (CEST)
-Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.228]:65019 "EHLO
-        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6861345AbaGIOP7CmPEm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jul 2014 16:15:59 +0200
-Received: from [67.246.153.56] ([67.246.153.56:50774] helo=gandalf.local.home)
-        by cdptpa-oedge02 (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
-        id 18/5F-20336-69E4DB35; Wed, 09 Jul 2014 14:15:51 +0000
-Date:   Wed, 9 Jul 2014 10:15:50 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 18:03:19 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9461 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6861448AbaGIPuWY0Ahq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jul 2014 17:50:22 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 0907C6A84B760;
+        Wed,  9 Jul 2014 16:50:12 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 9 Jul 2014 16:50:15 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 9 Jul
+ 2014 16:50:14 +0100
+Message-ID: <53BD6450.50103@imgtec.com>
+Date:   Wed, 9 Jul 2014 16:48:32 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+MIME-Version: 1.0
+To:     Steven Rostedt <rostedt@goodmis.org>, <linux-mips@linux-mips.org>
+CC:     <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-arch@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, <linux-arch@vger.kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Jiri Kosina <jkosina@suse.cz>,
         Josh Poimboeuf <notifications@github.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [RFA][PATCH 21/27] MIPS: ftrace: Remove check of obsolete
- variable function_trace_stop
-Message-ID: <20140709101550.2ec6582f@gandalf.local.home>
-In-Reply-To: <20140626165852.665644919@goodmis.org>
-References: <20140626165221.736847419@goodmis.org>
-        <20140626165852.665644919@goodmis.org>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [RFA][PATCH 07/27] MIPS: ftrace: Add call to ftrace_graph_is_dead()
+ in function graph code
+References: <20140626165221.736847419@goodmis.org>      <20140626165849.321719498@goodmis.org> <20140702103138.01880b1d@gandalf.local.home>
+In-Reply-To: <20140702103138.01880b1d@gandalf.local.home>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-X-RR-Connecting-IP: 107.14.168.130:25
-X-Cloudmark-Score: 0
-Return-Path: <rostedt@goodmis.org>
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41099
+X-archive-position: 41101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,65 +56,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf,
+Hi Steven,
 
-Can you please ack this patch.
+I've given this a quick test on a mips32 le target, on your
+rfc/remove-function-trace-stop branch (4161daee7df8). Booted fine,
+startup tests fine, function and function_graph trace appear to work
+from a quick cat of the trace file. Feel free to add my Tested-by:
 
-Thanks,
+Tested-by: James Hogan <james.hogan@imgtec.com> [MIPS]
 
--- Steve
+Cheers
+James
 
-
-On Thu, 26 Jun 2014 12:52:42 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
-
-> From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
+On 02/07/14 15:31, Steven Rostedt wrote:
 > 
-> Nothing sets function_trace_stop to disable function tracing anymore.
-> Remove the check for it in the arch code.
+> Adding linux-mips@linux-mips.org.
 > 
-> [ Please test this on your arch ]
+> -- Steve
 > 
-> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-> ---
->  arch/mips/Kconfig         | 1 -
->  arch/mips/kernel/mcount.S | 7 -------
->  2 files changed, 8 deletions(-)
 > 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 7a469acee33c..9ca52987fcd5 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -15,7 +15,6 @@ config MIPS
->  	select HAVE_BPF_JIT if !CPU_MICROMIPS
->  	select ARCH_HAVE_CUSTOM_GPIO_H
->  	select HAVE_FUNCTION_TRACER
-> -	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
->  	select HAVE_DYNAMIC_FTRACE
->  	select HAVE_FTRACE_MCOUNT_RECORD
->  	select HAVE_C_RECORDMCOUNT
-> diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-> index 539b6294b613..00940d1d5c4f 100644
-> --- a/arch/mips/kernel/mcount.S
-> +++ b/arch/mips/kernel/mcount.S
-> @@ -74,10 +74,6 @@ _mcount:
->  #endif
->  
->  	/* When tracing is activated, it calls ftrace_caller+8 (aka here) */
-> -	lw	t1, function_trace_stop
-> -	bnez	t1, ftrace_stub
-> -	 nop
-> -
->  	MCOUNT_SAVE_REGS
->  #ifdef KBUILD_MCOUNT_RA_ADDRESS
->  	PTR_S	MCOUNT_RA_ADDRESS_REG, PT_R12(sp)
-> @@ -105,9 +101,6 @@ ftrace_stub:
->  #else	/* ! CONFIG_DYNAMIC_FTRACE */
->  
->  NESTED(_mcount, PT_SIZE, ra)
-> -	lw	t1, function_trace_stop
-> -	bnez	t1, ftrace_stub
-> -	 nop
->  	PTR_LA	t1, ftrace_stub
->  	PTR_L	t2, ftrace_trace_function /* Prepare t2 for (1) */
->  	bne	t1, t2, static_trace
+> On Thu, 26 Jun 2014 12:52:28 -0400
+> Steven Rostedt <rostedt@goodmis.org> wrote:
+> 
+>> From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
+>>
+>> ftrace_stop() is going away as it disables parts of function tracing
+>> that affects users that should not be affected. But ftrace_graph_stop()
+>> is built on ftrace_stop(). Here's another example of killing all of
+>> function tracing because something went wrong with function graph
+>> tracing.
+>>
+>> Instead of disabling all users of function tracing on function graph
+>> error, disable only function graph tracing. To do this, the arch code
+>> must call ftrace_graph_is_dead() before it implements function graph.
+>>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+>> ---
+>>  arch/mips/kernel/ftrace.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+>> index 60e7e5e45af1..8b6538750fe1 100644
+>> --- a/arch/mips/kernel/ftrace.c
+>> +++ b/arch/mips/kernel/ftrace.c
+>> @@ -302,6 +302,9 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+>>  	    &return_to_handler;
+>>  	int faulted, insns;
+>>  
+>> +	if (unlikely(ftrace_graph_is_dead()))
+>> +		return;
+>> +
+>>  	if (unlikely(atomic_read(&current->tracing_graph_pause)))
+>>  		return;
+>>  
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-arch" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

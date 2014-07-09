@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 13:51:25 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55814 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860063AbaGILvTYQcsI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jul 2014 13:51:19 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 1B40A39AB24BD
-        for <linux-mips@linux-mips.org>; Wed,  9 Jul 2014 12:51:10 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 9 Jul
- 2014 12:51:12 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 9 Jul 2014 12:51:12 +0100
-Received: from pburton-laptop.home (192.168.79.89) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 9 Jul
- 2014 12:51:11 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 5/5] MIPS: smp-cps: fix entry code cache flush for systems with coherent I/O
-Date:   Wed, 9 Jul 2014 12:51:05 +0100
-Message-ID: <1404906665-10825-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.0.1
-In-Reply-To: <1404906502-10702-1-git-send-email-paul.burton@imgtec.com>
-References: <1404906502-10702-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 13:58:41 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:39363 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6859944AbaGIL6iNM7vr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Jul 2014 13:58:38 +0200
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 85C3D280893;
+        Wed,  9 Jul 2014 13:56:32 +0200 (CEST)
+Received: from openwrt.org (dslb-088-073-046-107.pools.arcor-ip.net [88.73.46.107])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Wed,  9 Jul 2014 13:56:32 +0200 (CEST)
+Date:   Wed, 9 Jul 2014 13:58:37 +0200
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: Re: [PATCH 6/8] MIPS: BCM63XX: remove !RUNTIME_DETECT usage from
+ enet code
+Message-ID: <20140709135837.00006b3c@openwrt.org>
+In-Reply-To: <53BC156D.6080106@cogentembedded.com>
+References: <1404831204-30659-1-git-send-email-jogo@openwrt.org>
+        <1404831204-30659-7-git-send-email-jogo@openwrt.org>
+        <53BC156D.6080106@cogentembedded.com>
+Organization: OpenWrt
+X-Mailer: Claws Mail 3.9.3-30-gd68093 (GTK+ 2.16.6; i586-pc-mingw32msvc)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.79.89]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41096
+X-archive-position: 41097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,50 +50,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The dma_cache_wback_inv function performs exactly as is required here,
-unless the system has coherent I/O in which case it's a no-op. Call the
-underlying cache writeback functions directly, which is arguably clearer
-anyway given that the code doesn't actually have anything to do with
-DMA in a strict sense.
+On Tue, 08 Jul 2014 19:59:41 +0400
+Sergei Shtylyov <sergei.shtylyov@cogentembedded.com> wrote:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
- arch/mips/kernel/smp-cps.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+> Hello.
+> 
+>     You forgot to si.gn off on this patch.
 
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index f9b53b4..e6e16a1 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -14,13 +14,14 @@
- #include <linux/smp.h>
- #include <linux/types.h>
+(added a dot into sign to make ecartis not detect a command)
+
+Indeed I have, thanks for spotting this. *cough*
  
--#include <asm/cacheflush.h>
-+#include <asm/bcache.h>
- #include <asm/gic.h>
- #include <asm/mips-cm.h>
- #include <asm/mips-cpc.h>
- #include <asm/mips_mt.h>
- #include <asm/mipsregs.h>
- #include <asm/pm-cps.h>
-+#include <asm/r4kcache.h>
- #include <asm/smp-cps.h>
- #include <asm/time.h>
- #include <asm/uasm.h>
-@@ -132,8 +133,11 @@ static void __init cps_prepare_cpus(unsigned int max_cpus)
- 	entry_code = (u32 *)&mips_cps_core_entry;
- 	UASM_i_LA(&entry_code, 3, (long)mips_cm_base);
- 	uasm_i_addiu(&entry_code, 16, 0, cca);
--	dma_cache_wback_inv((unsigned long)&mips_cps_core_entry,
--			    (void *)entry_code - (void *)&mips_cps_core_entry);
-+	blast_dcache_range((unsigned long)&mips_cps_core_entry,
-+			   (unsigned long)entry_code);
-+	bc_wback_inv((unsigned long)&mips_cps_core_entry,
-+		     (void *)entry_code - (void *)&mips_cps_core_entry);
-+	__sync();
+Sooo ... *looks at patchwork*
  
- 	/* Allocate core boot configuration structs */
- 	mips_cps_core_bootcfg = kcalloc(ncores, sizeof(*mips_cps_core_bootcfg),
--- 
-2.0.1
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+ 
+
+Jonas

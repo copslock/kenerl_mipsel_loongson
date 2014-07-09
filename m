@@ -1,39 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 13:58:41 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:39363 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2014 14:25:53 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:40540 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6859944AbaGIL6iNM7vr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Jul 2014 13:58:38 +0200
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 85C3D280893;
-        Wed,  9 Jul 2014 13:56:32 +0200 (CEST)
-Received: from openwrt.org (dslb-088-073-046-107.pools.arcor-ip.net [88.73.46.107])
-        by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Wed,  9 Jul 2014 13:56:32 +0200 (CEST)
-Date:   Wed, 9 Jul 2014 13:58:37 +0200
-From:   Jonas Gorski <jogo@openwrt.org>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>
-Subject: Re: [PATCH 6/8] MIPS: BCM63XX: remove !RUNTIME_DETECT usage from
- enet code
-Message-ID: <20140709135837.00006b3c@openwrt.org>
-In-Reply-To: <53BC156D.6080106@cogentembedded.com>
-References: <1404831204-30659-1-git-send-email-jogo@openwrt.org>
-        <1404831204-30659-7-git-send-email-jogo@openwrt.org>
-        <53BC156D.6080106@cogentembedded.com>
-Organization: OpenWrt
-X-Mailer: Claws Mail 3.9.3-30-gd68093 (GTK+ 2.16.6; i586-pc-mingw32msvc)
+        id S6861103AbaGIMZuE9hZh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Jul 2014 14:25:50 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id BAF8F280893;
+        Wed,  9 Jul 2014 14:23:43 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qa0-f43.google.com (mail-qa0-f43.google.com [209.85.216.43])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 8CBB128162E;
+        Wed,  9 Jul 2014 14:23:32 +0200 (CEST)
+Received: by mail-qa0-f43.google.com with SMTP id k15so5958304qaq.16
+        for <multiple recipients>; Wed, 09 Jul 2014 05:25:35 -0700 (PDT)
+X-Received: by 10.224.98.145 with SMTP id q17mr68938982qan.97.1404908735244;
+ Wed, 09 Jul 2014 05:25:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 10.140.89.209 with HTTP; Wed, 9 Jul 2014 05:25:15 -0700 (PDT)
+In-Reply-To: <53BC15DA.7050602@imgtec.com>
+References: <1404832446-31028-1-git-send-email-jogo@openwrt.org> <53BC15DA.7050602@imgtec.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Wed, 9 Jul 2014 14:25:15 +0200
+Message-ID: <CAOiHx=mmLwD=eC5B8hhAowqZgV_rKw4cmHSGLRLjRKAwiyZ9KA@mail.gmail.com>
+Subject: Re: [PATCH RFC] MIPS: add support for vmlinux appended DTB
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
 Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41097
+X-archive-position: 41098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,20 +49,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 08 Jul 2014 19:59:41 +0400
-Sergei Shtylyov <sergei.shtylyov@cogentembedded.com> wrote:
+On Tue, Jul 8, 2014 at 6:01 PM, James Hogan <james.hogan@imgtec.com> wrote:
+> Hi Jonas,
+>
+> On 08/07/14 16:14, Jonas Gorski wrote:
+>> Add support for populating initial_device_params through a dtb
+>
+> initial_boot_params here and above?
 
-> Hello.
-> 
->     You forgot to si.gn off on this patch.
+Yes, that's what I meant. I must have been distracted by the
+thunderstorm outside.
 
-(added a dot into sign to make ecartis not detect a command)
+>
+>> blob appended to vmlinux.
+>
+> should that be vmlinux.bin? Presumably it isn't appended to the ELF file?
 
-Indeed I have, thanks for spotting this. *cough*
- 
-Sooo ... *looks at patchwork*
- 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
- 
+Hmmm, you are right, indeed it should. I was always taking the OpenWrt
+names for granted, so I never looked at how the kernel itself named
+them. OpenWrt uses "vmlinux" for binary only, and "vmlinux.elf" for
+the unstripped elf one.
+
+As far as I can tell, there is no simple vmlinux.bin target without
+the decompressor wrapper included, but for the description I will
+change the name and clarify that I am talking about a binary kernel
+without the decompressing wrapper.
+
+>
+>>
+>> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+>> ---
+>> Mostly adapted from how ARM is doing it.
+>>
+>> Sent as an RFC PATCH because I am not sure if this is the right way to
+>> it, and whether storing the pointer in initial_device_params is a good
+>> idea, or a new variable should be introduced.
+>>
+>> The reasoning for initial_device_params is that there is no common
+>> MIPS interface yet, so the next best thing was using that. This also
+>> has the advantage of keeping the original fw_args intact.
+>
+> Does it matter that this will be ignored if the bootloader does provide
+> a DT (initial_boot_params overwritten by early_init_dt_scan() call), and
+> that if no DT is provided by the bootloader the of_scan_flat_dt() calls
+> at the bottom of early_init_dt_scan will never happen?
+
+Since (AFAIK) there is no common interface on mips for a bootloader to
+pass a dtb to the kernel, it is currently up to the individual targets
+to do something with an appended dtb, and decide which one has a
+higher priority. They already need to manually "extract" the passed
+dtb from the bootloader and pass it to the kernel, so all this patch
+does is provide another source for one.
+
+
+>>
+>> This patch works for me on bcm63xx, where the bootloade expects
+>
+> s/bootloade/bootloader/
+>
+>> an lzma compressed kernel, so I wanted to not double compress using
+>> the in-kernel compressed kernel support.
+>>
+>> Completely untested on anything except MIPS32 / big endian.
+>>
+>>  arch/mips/Kconfig              | 18 ++++++++++++++++++
+>>  arch/mips/kernel/head.S        | 19 +++++++++++++++++++
+>>  arch/mips/kernel/vmlinux.lds.S |  6 ++++++
+>>  3 files changed, 43 insertions(+)
+>>
+>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> index 3f05b56..58527cd 100644
+>> --- a/arch/mips/Kconfig
+>> +++ b/arch/mips/Kconfig
+>> @@ -2476,6 +2476,24 @@ config USE_OF
+>>       select OF_EARLY_FLATTREE
+>>       select IRQ_DOMAIN
+>>
+>> +config MIPS_APPENDED_DTB
+>> +     bool "Use appended device tree blob to vmlinux (EXPERIMENTAL)"
+>> +     depends on OF
+>> +     help
+>> +       With this option, the boot code will look for a device tree binary
+>> +       DTB) appended to vmlinux
+>
+> s/DTB)/(DTB)/
+>
+> vmlinux.bin again?
+
+Right.
+
+>> +       (e.g. cat vmlinux <filename>.dtb > vmlinux_w_dtb).
+>
+> here too I think.
+
+Right again.
+
+>> +
+>> +       This is meant as a backward compatibility convenience for those
+>> +       systems with a bootloader that can't be upgraded to accommodate
+>> +       the documented boot protocol using a device tree.
+>> +
+>> +       Beware that there is very little in terms of protection against
+>> +       this option being confused by leftover garbage in memory that might
+>> +       look like a DTB header after a reboot if no actual DTB is appended
+>> +       to vmlinux.  Do not leave this option active in a production kernel
+>
+> maybe same here too.
+
+Will fix that, too.
+
+>
+> Can't fault the rest though.
+>
+> Cheers
+> James
+
+Thanks for the review!
+
 
 Jonas

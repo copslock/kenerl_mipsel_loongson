@@ -1,55 +1,61 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Thu, 29 May 2014 10:16:44 +0100
-Subject: MIPS: KVM: Remove redundant NULL checks before kfree()
-Message-ID: <20140529091644.suQT9_Vk-jQMOT1Bh7f6Sf5AlkYE4f0Y_2ojJOAZ8xc@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 13:18:39 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:58170 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860045AbaGJLSfMgjva (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Jul 2014 13:18:35 +0200
+Received: from [188.251.62.23] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1X5CMw-00023E-ER; Thu, 10 Jul 2014 11:18:30 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     Alex Smith <alex.smith@imgtec.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.11.y.z extended stable] Patch "recordmcount/MIPS: Fix possible incorrect mcount_loc table entries in modules" has been added to staging queue
+Date:   Thu, 10 Jul 2014 12:18:29 +0100
+Message-Id: <1404991109-13707-1-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.11
+Return-Path: <luis.henriques@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 41112
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit c6c0a6637f9da54f9472144d44f71cf847f92e20 upstream.
+This is a note to let you know that I have just added a patch titled
 
-The kfree() function already NULL checks the parameter so remove the
-redundant NULL checks before kfree() calls in arch/mips/kvm/.
+    recordmcount/MIPS: Fix possible incorrect mcount_loc table entries in modules
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/kvm/kvm_mips.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+to the linux-3.11.y-queue branch of the 3.11.y.z extended stable tree 
+which can be found at:
 
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 426345ac6f6e..7e78af0e57de 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -149,9 +149,7 @@ void kvm_mips_free_vcpus(struct kvm *kvm)
- 		if (kvm->arch.guest_pmap[i] != KVM_INVALID_PAGE)
- 			kvm_mips_release_pfn_clean(kvm->arch.guest_pmap[i]);
- 	}
--
--	if (kvm->arch.guest_pmap)
--		kfree(kvm->arch.guest_pmap);
-+	kfree(kvm->arch.guest_pmap);
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.11.y-queue
 
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		kvm_arch_vcpu_free(vcpu);
-@@ -384,12 +382,8 @@ void kvm_arch_vcpu_free(struct kvm_vcpu *vcpu)
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
- 	kvm_mips_dump_stats(vcpu);
+For more information about the 3.11.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
--	if (vcpu->arch.guest_ebase)
--		kfree(vcpu->arch.guest_ebase);
--
--	if (vcpu->arch.kseg0_commpage)
--		kfree(vcpu->arch.kseg0_commpage);
--
-+	kfree(vcpu->arch.guest_ebase);
-+	kfree(vcpu->arch.kseg0_commpage);
- }
+Thanks.
+-Luis
 
- void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
---
-1.9.1
+------

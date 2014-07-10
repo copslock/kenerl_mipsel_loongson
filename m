@@ -1,20 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 17:25:52 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:2656 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860064AbaGJPZt4rLPA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Jul 2014 17:25:49 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s6AFPekQ011299
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Jul 2014 11:25:41 -0400
-Received: from tranklukator.brq.redhat.com (dhcp-1-170.brq.redhat.com [10.34.1.170])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s6AFPaNN000925;
-        Thu, 10 Jul 2014 11:25:37 -0400
-Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Thu, 10 Jul 2014 17:24:22 +0200 (CEST)
-Date:   Thu, 10 Jul 2014 17:24:18 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Kees Cook <keescook@chromium.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 18:04:00 +0200 (CEST)
+Received: from mail-ob0-f178.google.com ([209.85.214.178]:62853 "EHLO
+        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860072AbaGJQD5PfOrW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Jul 2014 18:03:57 +0200
+Received: by mail-ob0-f178.google.com with SMTP id nu7so2314040obb.9
+        for <linux-mips@linux-mips.org>; Thu, 10 Jul 2014 09:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=ihySoauN2te6beIA1tYs/mthI5wQER7tuZlAALBB1nQ=;
+        b=FQMoeO0L2ExlmH6OHW6ydp/mpq3EFK/DZm5LPLNQ8G+0MTvilDQJjEaGEj7y69GZAw
+         rge5vMSjSy9GXtJL48cwIC9v8T0tWjVT+HfMeBxzSLUTRvHarGyhOlXisWb0bmLFcIb3
+         irKl2QS3HiH78ePtP23ARJl9l1jyUFlHISs38mFZsMmD7QL7e04vBbvHFZt8hytzUY1s
+         4d9b0AGllT4910VaYYHQ75QO2v7ShkPpl2996qMQyi4mbZpGENFjAk2bqBYR7MDnafKi
+         u2vfxtcvM4hECDrkBO51EF7PzH8T186jufkbyHGuQ1jpx5mCr2Gzpxf6sFQJrdK2rBOT
+         ktTA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=ihySoauN2te6beIA1tYs/mthI5wQER7tuZlAALBB1nQ=;
+        b=WREY6kq4mgP+Er4yucUI6vhnoGU77Z9e6DxP3i7tyUH4+qKHt8P7hN006WlkBr9hWu
+         F16g5n1pqxcqLFNWJpW/W7QaAQkUH3X9ouwNU2GxU0SbBTJtoYndkAuNjmnYsNjtej7Z
+         B7XdP/S19Zghz7RSh/LaDf/mDThFRigujjVDk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=ihySoauN2te6beIA1tYs/mthI5wQER7tuZlAALBB1nQ=;
+        b=Mx+PfKbVxY6ljtm6/hYVuja4tYMrKBy72kG1Td2MUXTXgy3zBmnCby1MSSgVaPa6q7
+         XbgJSF0e6RbD1EbQ0pPO2qrcHd0OgfuaeSIqZ6f2y9ssxp/hbazH3hsWB0AAPjdcDXYL
+         k3ZJVtrapB0ZtCUqcwSsHL7Agvfms+1RGzV2P4YsBS6ygNauIQHQEoJuK/KnxHV5BO37
+         8Uy1dfuA4KSXlZITDYCwQiVAFHFrSF/+yppar7z0n4f7ZgEg4Zx6pOsfSZjciLRtl2+6
+         28o0d9NuRQzo5VAGfwsQdLE0yl3AFaK+7oJ3mspfH/r6PajyXXVGsXuyj56mgE36c9jg
+         JEbA==
+X-Gm-Message-State: ALoCoQmWFxNveogapnigczmQGWQMpOojSgDAHrVPro3K3aTWio3CPK/1PwX8MCuNglZiyU0sZIYP
+MIME-Version: 1.0
+X-Received: by 10.182.181.42 with SMTP id dt10mr11574313obc.69.1405008230305;
+ Thu, 10 Jul 2014 09:03:50 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Thu, 10 Jul 2014 09:03:50 -0700 (PDT)
+In-Reply-To: <20140710150832.GA20861@redhat.com>
+References: <1403911380-27787-1-git-send-email-keescook@chromium.org>
+        <1403911380-27787-12-git-send-email-keescook@chromium.org>
+        <20140709180520.GA2560@redhat.com>
+        <CAGXu5jLUqz-T1tRBCpPLkzWijyAF-Vjw_7PnQ1EvUh4urwyaUg@mail.gmail.com>
+        <20140710150832.GA20861@redhat.com>
+Date:   Thu, 10 Jul 2014 09:03:50 -0700
+X-Google-Sender-Auth: nVp9CbmgbGU1uPKFt_FQNOnvRqs
+Message-ID: <CAGXu5jK_BBAexok1G1vbxL6764n+7h1kLRSu074MMFzF0QrafQ@mail.gmail.com>
+Subject: Re: [PATCH v9 11/11] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
+From:   Kees Cook <keescook@chromium.org>
+To:     Oleg Nesterov <oleg@redhat.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Andy Lutomirski <luto@amacapital.net>,
         "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
@@ -30,24 +67,16 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-security-module <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v9 09/11] seccomp: introduce writer locking
-Message-ID: <20140710152418.GB20861@redhat.com>
-References: <1403911380-27787-1-git-send-email-keescook@chromium.org> <1403911380-27787-10-git-send-email-keescook@chromium.org> <20140709184215.GA4866@redhat.com> <20140709185549.GB4866@redhat.com> <CAGXu5jL6q1d16uA1Yu+QO4eV7zWwcWEWgkZrwmsfymbMvEr6+Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGXu5jL6q1d16uA1Yu+QO4eV7zWwcWEWgkZrwmsfymbMvEr6+Q@mail.gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <oleg@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41115
+X-archive-position: 41116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,67 +89,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/10, Kees Cook wrote:
+On Thu, Jul 10, 2014 at 8:08 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+> On 07/10, Kees Cook wrote:
+>>
+>> On Wed, Jul 9, 2014 at 11:05 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+>> >
+>> >> +     /*
+>> >> +      * Make sure we cannot change seccomp or nnp state via TSYNC
+>> >> +      * while another thread is in the middle of calling exec.
+>> >> +      */
+>> >> +     if (flags & SECCOMP_FILTER_FLAG_TSYNC &&
+>> >> +         mutex_lock_killable(&current->signal->cred_guard_mutex))
+>> >> +             goto out_free;
+>> >
+>> > -EINVAL looks a bit confusing in this case, but this is cosemtic because
+>> > userspace won't see this error-code anyway.
+>>
+>> Happy to use whatever since, as you say, it's cosmetic. Perhaps -EAGAIN?
 >
-> On Wed, Jul 9, 2014 at 11:55 AM, Oleg Nesterov <oleg@redhat.com> wrote:
-> > On 07/09, Oleg Nesterov wrote:
-> >>
-> >> On 06/27, Kees Cook wrote:
-> >> >
-> >> >  static u32 seccomp_run_filters(int syscall)
-> >> >  {
-> >> > -   struct seccomp_filter *f;
-> >> > +   struct seccomp_filter *f = ACCESS_ONCE(current->seccomp.filter);
-> >>
-> >> I am not sure...
-> >>
-> >> This is fine if this ->filter is the 1st (and only) one, in this case
-> >> we can rely on rmb() in the caller.
-> >>
-> >> But the new filter can be installed at any moment. Say, right after that
-> >> rmb() although this doesn't matter. Either we need smp_read_barrier_depends()
-> >> after that, or smp_load_acquire() like the previous version did?
-> >
-> > Wait... and it seems that seccomp_sync_threads() needs smp_store_release()
-> > when it sets thread->filter = current->filter by the same reason?
-> >
-> > OTOH. smp_store_release() in seccomp_attach_filter() can die, "current"
-> > doesn't need a barrier to serialize with itself.
+> Or -EINTR. I do not really mind, I only mentioned this because I had another
+> nit.
 >
-> I have lost track of what you're suggesting to change. :)
+>> >>       spin_lock_irq(&current->sighand->siglock);
+>> >> +     if (unlikely(signal_group_exit(current->signal))) {
+>> >> +             /* If thread is dying, return to process the signal. */
+>> >
+>> > OK, this doesn't hurt, but why?
+>> >
+>> > You could check __fatal_signal_pending() with the same effect. And since
+>> > we hold this mutex, exec (de_thread) can be the source of that SIGKILL.
+>> > We take this mutex specially to avoid the race with exec.
+>> >
+>> > So why do we need to abort if we race with kill() or exit_grouo() ?
+>>
+>> In my initial code inspection that we could block waiting for the
+>> cred_guard mutex, with exec holding it, exec would schedule death in
+>> de_thread, and then once it released, the tsync thread would try to
+>> keep running.
+>>
+>> However, in looking at this again, now I'm concerned this produces a
+>> dead-lock in de_thread, since it waits for all threads to actually
+>> die, but tsync will be waiting with the killable mutex.
+>
+> That is why you should always use _killable (or _interruptible) if you
+> want to take ->cred_guard_mutex.
+>
+> If this thread races with de_thread() which holds this mutex, it will
+> be killed and mutex_lock_killable() will fail.
+>
+> (to clarify; this deadlock is not "fatal", de_thread() can be killed too,
+>  but this doesn't really matter).
+>
+>> So I think I got too defensive when I read the top of de_thread where
+>> it checks for pending signals itself.
+>>
+>> It seems like I can just safely remove the singal_group_exit checks?
+>> The other paths (non-tsync seccomp_set_mode_filter, and
+>> seccomp_set_mode_strict)
+>
+> Yes, I missed another signal_group_exit() in seccomp_set_mode_strict().
+> It looks equally unneeded.
+>
+>> I can't decide which feels cleaner: just letting stuff
+>> clean up naturally on death or to short-circuit after taking
+>> sighand->siglock.
+>
+> I'd prefer to simply remove the singal_group_exit checks.
+>
+> I won't argue if you prefer to keep them, but then please add a comment
+> to explain that this is not needed for correctness.
+>
+> Because otherwise the code looks confusing, as if there is a subtle reason
+> why we must not do this if killed.
 
-Perhaps I am just trying to confuse you and myself ;)
+Sounds good! I'll clean it all up for v10.
 
-But,
+-Kees
 
-> Since rmb() happens before run_filters, isn't the ACCESS_ONCE
-> sufficient?
-
-Yes. But see above. ACCESS_ONCE is sufficient if we read the first filter
-installed by another thread, in this case rmb() pairs with mb_before_atomic()
-before set_bit(TIF_SECCOMP).
-
-IOW, if this threads sees TIF_SECCOMP, it should also see all modifications
-which were done before set_bit, including the data in ->filter points to.
-
-> We only care that TIF_SECCOMP, mode, and some filter is
-> valid. In a tsync thread race, it's okay to use not use the deepest
-> filter node in the list,
-
-Yes, it is fine if we miss yet another filter which was just installed by
-another thread.
-
-But, unless I missed something, the problem is that we can get this new
-filter.
-
-Just to simplify. Suppose TIF_SECCOMP was set a long ago. This thread
-has a single filter F1 and it enters seccomp_run_filters().
-
-Right before it does ACCESS_ONCE() to read the pointer, another thread
-does seccomp_sync_threads() and sets .filter = F2.
-
-If ACCESS_ONCE() returns F1 - everything is fine. But it can see the new
-pointer F2, and in this case we need a barrier to ensure that, say,
-LOAD(F2->prog) will see all the preceding changes in this memory.
-
-Oleg.
+-- 
+Kees Cook
+Chrome OS Security

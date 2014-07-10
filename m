@@ -1,83 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 18:54:59 +0200 (CEST)
-Received: from mail-oa0-f47.google.com ([209.85.219.47]:48562 "EHLO
-        mail-oa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860077AbaGJQy4NmLbV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Jul 2014 18:54:56 +0200
-Received: by mail-oa0-f47.google.com with SMTP id g18so3095096oah.34
-        for <linux-mips@linux-mips.org>; Thu, 10 Jul 2014 09:54:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 19:02:56 +0200 (CEST)
+Received: from mail-qg0-f51.google.com ([209.85.192.51]:35129 "EHLO
+        mail-qg0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860079AbaGJRCu2u8Wb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Jul 2014 19:02:50 +0200
+Received: by mail-qg0-f51.google.com with SMTP id z60so7792065qgd.24
+        for <linux-mips@linux-mips.org>; Thu, 10 Jul 2014 10:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=wpIMYl2aT0OiXiv9Z7CbmK8uXkI4Y1hkN8LeooW5/pc=;
-        b=TPtYQmyIu+50I9ZcaOXIk4MrbxXSE/EJGsJoNGpakSk7nbyArMf89oIt0Q4BqOCVov
-         kDEbwZ97cDHohswskqTjwZOoCn+to8wBgpnYZprmXElUElOFICBo/rZpuaTWeAuqWotr
-         cpaaBZTuBgfDk3trWlGfR4YSzskbA2GF4OA68gEYXr2YSUk4wGAG6YSUJyK0TSrWmVwH
-         iHLXER0JeIaiFOpSeANp9Acn5Tn3cXZZHjJIUk7C2Cz4JcQmi/oeX9Ec85pflSDateYd
-         UyaX8gdheBCn9/DhXW8ga20dx8nfb6Xe9ezdDeJeJS7kDMkWnVqLSVbXOfCnmo8YSchp
-         vjgw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=wpIMYl2aT0OiXiv9Z7CbmK8uXkI4Y1hkN8LeooW5/pc=;
-        b=WRBrIgCs742CMYgC9+MGbpuudfcxcl171Gzbk73p3aPNm86t3iURfdn+uVk4BNdMu+
-         8zwdRCwgzsIAFYNzI/r0mm+PkQsnf7HQRqBEFhMz+rABHb6jqaEXvb1pxbdAcuIZ3a6k
-         q1TbyKWyxc+E0IK4C3ZqPv9ddPcVtjaNAl29o=
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=YDndmH0rlDUbbzbI3jIE0y1/b+dq0xlk0pESHawPsyo=;
+        b=IusRt1B1awrnL38bojqVPJ4Q4n2NEp3m7l0BDQacji85IYZcb7NZKRNat1lsJJUBbP
+         Y72+4ay1GacPfLE1KhRXWKLTEYnFiniUM8tGPNNWwSR2ViW8puQJ9cVHF9XNoGzMaRKz
+         gQ59rAfkL5g4vFIGY3baBI/FwQZCsIZvyA7f21mqMMDjvcjTYtV47LcERxkWaEaKBkfJ
+         xsRnuVn4g/Su1o45XeXdmvOIuMbZGSO5eQbYcQBVuvtc80W9x7VOY/QLjy8pSGjpBHeo
+         7BN0Fnekuy7uAJAJtrqVYN5yuaDw+PSwES2mY21PirG25geZp6XJrRzvvyHZuMm2JkgI
+         31gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=wpIMYl2aT0OiXiv9Z7CbmK8uXkI4Y1hkN8LeooW5/pc=;
-        b=JdaLMeOKX2T0VGSK2S4nvn8FIbOpnDWOQJJSbVwhmC3s1tJyLgNSNMS8FVouiKSFD0
-         BEGuxvyMsYOX12ZLhmF9vZ9VdTo8YE0oDHWEFRW4Pv4DLBCBXd+GYbkDUqXRD+7LybU7
-         svQbBm8UgNEj2m0VN5AlXDCuI1rLmBRfQle+jhwaBkFBBFolzprkpPBxgYBxdL6IaQyz
-         GSymRvu5rlILtfiljCj4OjO3205T1OpZiL0SBh68576RdVOpp6CUavq8yOaKYy8F1y9X
-         Zp5LiHd964vfM2YkR70VQyiKeXxwEoIDbhhYOuXfZpj8ei/6nwxfqt3Xvn686fMB5KWW
-         5n6g==
-X-Gm-Message-State: ALoCoQkDzuKh0OZfqT+PrU+QJCB6gMB5OhYj6Glzo0LvYLrdrLybTK6fYPY5wXH8SeBew6TpWJYj
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=YDndmH0rlDUbbzbI3jIE0y1/b+dq0xlk0pESHawPsyo=;
+        b=cqYacnCX82dvBGnBiiA+Q63ol9pye9ZdHflaaYOb3vNz/zoxHbexxty+801bsFOJfA
+         SFQKsBRW38x91K8nCA0jgSFOs0PZLHEvyRqbMKgdfi8b9VhYQiQCepq4LK5oR7TMAjI+
+         1sjwvmSvIunDEfkHpyhqPwFmWdQLh8sgoRwE56BjLvLbrEnJ1Y2nais4QkSJqIn3xTf/
+         LGcFKpJNQDGQXCUXfIiDG1+D5qAqe8rvC4TP2b4L0S9iphgKw/L2i80uiFKtT5z3dRpM
+         u2fbcZqjSFgFSoit0u4MHc4t6nLtijuIvpUU2i3TLffvuqbYNNpXRHtjYASex2TZ7sAR
+         tHxw==
+X-Gm-Message-State: ALoCoQlbCn0j3RZr0UIfOygVHiIDD1i6r3uYZn9Lfqk7kMOh8lN1XaCyBO/r3h6VuLDLfw1OVpsk
+X-Received: by 10.224.136.200 with SMTP id s8mr82669558qat.85.1405011764282;
+ Thu, 10 Jul 2014 10:02:44 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.182.81.99 with SMTP id z3mr4381515obx.79.1405011289933; Thu,
- 10 Jul 2014 09:54:49 -0700 (PDT)
-Received: by 10.182.85.103 with HTTP; Thu, 10 Jul 2014 09:54:49 -0700 (PDT)
-In-Reply-To: <20140710152418.GB20861@redhat.com>
-References: <1403911380-27787-1-git-send-email-keescook@chromium.org>
-        <1403911380-27787-10-git-send-email-keescook@chromium.org>
-        <20140709184215.GA4866@redhat.com>
-        <20140709185549.GB4866@redhat.com>
-        <CAGXu5jL6q1d16uA1Yu+QO4eV7zWwcWEWgkZrwmsfymbMvEr6+Q@mail.gmail.com>
-        <20140710152418.GB20861@redhat.com>
-Date:   Thu, 10 Jul 2014 09:54:49 -0700
-X-Google-Sender-Auth: -1xDtbhzyZz9fuaIc0D4utRPZ44
-Message-ID: <CAGXu5jKNUn0OcXPyTmqbHwQ_GPMNTeajyrxpd2xAtzjTRFyhpg@mail.gmail.com>
-Subject: Re: [PATCH v9 09/11] seccomp: introduce writer locking
-From:   Kees Cook <keescook@chromium.org>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     linux-arch <linux-arch@vger.kernel.org>, linux-mips@linux-mips.org,
-        Will Drewry <wad@chromium.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
+Received: by 10.229.17.198 with HTTP; Thu, 10 Jul 2014 10:02:24 -0700 (PDT)
+In-Reply-To: <20140710101151.GA21629@dhcp-26-207.brq.redhat.com>
+References: <cover.1402405331.git.agordeev@redhat.com> <4fef62a2e647a7c38e9f2a1ea4244b3506a85e2b.1402405331.git.agordeev@redhat.com>
+ <20140702202201.GA28852@google.com> <20140704085741.GA12247@dhcp-26-207.brq.redhat.com>
+ <CAErSpo6f6RXWv0DEtLBZX0jXoSUYJeWrSm7mubSJ_F-O7tQp6w@mail.gmail.com>
+ <20140708122606.GB6270@dhcp-26-207.brq.redhat.com> <CAErSpo4oiabgoOjsGdWZpCMPnmopK4xRzB2f3tM0AiUFrdhFww@mail.gmail.com>
+ <20140710101151.GA21629@dhcp-26-207.brq.redhat.com>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Thu, 10 Jul 2014 11:02:24 -0600
+Message-ID: <CAErSpo6p=teHx+ZG9yritgcBvOer-FNtug4-WQQQkHhPhTLjZw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] PCI/MSI: Add pci_enable_msi_partial()
+To:     Alexander Gordeev <agordeev@redhat.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
         "x86@kernel.org" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Julien Tinnes <jln@chromium.org>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Drysdale <drysdale@google.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Alexei Starovoitov <ast@plumgrid.com>
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "open list:INTEL IOMMU (VT-d)" <iommu@lists.linux-foundation.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41117
+X-archive-position: 41118
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,78 +75,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 10, 2014 at 8:24 AM, Oleg Nesterov <oleg@redhat.com> wrote:
-> On 07/10, Kees Cook wrote:
+On Thu, Jul 10, 2014 at 4:11 AM, Alexander Gordeev <agordeev@redhat.com> wrote:
+> On Wed, Jul 09, 2014 at 10:06:48AM -0600, Bjorn Helgaas wrote:
+>> Out of curiosity, do you have a pointer to this?  It looks like it
+>
+> I.e. ICH8 chapter 12.1.30 or ICH10 chapter 14.1.27
+>
+>> uses one vector per port, and I'm wondering if the reason it requests
+>> 16 is because there's some possibility of a part with more than 8
+>> ports.
+>
+> I doubt that is the reason. The only allowed MME values (powers of two)
+> are 0b000, 0b001, 0b010 and 0b100. As you can see, only one bit is used -
+> I would speculate it suits nicely to some hardware logic.
+>
+> BTW, apart from AHCI, it seems the reason MSI is not going to disappear
+> (in a decade at least) is it is way cheaper to implement than MSI-X.
+>
+>> > No, this is not an erratum. The value of 8 vectors is reserved and could
+>> > cause undefined results if used.
 >>
->> On Wed, Jul 9, 2014 at 11:55 AM, Oleg Nesterov <oleg@redhat.com> wrote:
->> > On 07/09, Oleg Nesterov wrote:
->> >>
->> >> On 06/27, Kees Cook wrote:
->> >> >
->> >> >  static u32 seccomp_run_filters(int syscall)
->> >> >  {
->> >> > -   struct seccomp_filter *f;
->> >> > +   struct seccomp_filter *f = ACCESS_ONCE(current->seccomp.filter);
->> >>
->> >> I am not sure...
->> >>
->> >> This is fine if this ->filter is the 1st (and only) one, in this case
->> >> we can rely on rmb() in the caller.
->> >>
->> >> But the new filter can be installed at any moment. Say, right after that
->> >> rmb() although this doesn't matter. Either we need smp_read_barrier_depends()
->> >> after that, or smp_load_acquire() like the previous version did?
->> >
->> > Wait... and it seems that seccomp_sync_threads() needs smp_store_release()
->> > when it sets thread->filter = current->filter by the same reason?
->> >
->> > OTOH. smp_store_release() in seccomp_attach_filter() can die, "current"
->> > doesn't need a barrier to serialize with itself.
->>
->> I have lost track of what you're suggesting to change. :)
+>> As I read the spec (PCI 3.0, sec 6.8.1.3), if MMC contains 0b100
+>> (requesting 16 vectors), the OS is allowed to allocate 1, 2, 4, 8, or
+>> 16 vectors.  If allocating 8 vectors and writing 0b011 to MME causes
+>> undefined results, I'd say that's a chipset defect.
 >
-> Perhaps I am just trying to confuse you and myself ;)
->
-> But,
->
->> Since rmb() happens before run_filters, isn't the ACCESS_ONCE
->> sufficient?
->
-> Yes. But see above. ACCESS_ONCE is sufficient if we read the first filter
-> installed by another thread, in this case rmb() pairs with mb_before_atomic()
-> before set_bit(TIF_SECCOMP).
->
-> IOW, if this threads sees TIF_SECCOMP, it should also see all modifications
-> which were done before set_bit, including the data in ->filter points to.
->
->> We only care that TIF_SECCOMP, mode, and some filter is
->> valid. In a tsync thread race, it's okay to use not use the deepest
->> filter node in the list,
->
-> Yes, it is fine if we miss yet another filter which was just installed by
-> another thread.
->
-> But, unless I missed something, the problem is that we can get this new
-> filter.
->
-> Just to simplify. Suppose TIF_SECCOMP was set a long ago. This thread
-> has a single filter F1 and it enters seccomp_run_filters().
->
-> Right before it does ACCESS_ONCE() to read the pointer, another thread
-> does seccomp_sync_threads() and sets .filter = F2.
->
-> If ACCESS_ONCE() returns F1 - everything is fine. But it can see the new
-> pointer F2, and in this case we need a barrier to ensure that, say,
-> LOAD(F2->prog) will see all the preceding changes in this memory.
+> Well, the PCI spec does not prevent devices to have their own specs on top
+> of it. Undefined results are meant on the device side here. On the MSI side
+> these results are likely perfectly within the PCI spec. I feel speaking as
+> a lawer here ;)
 
-And the rmb() isn't sufficient for that? Is another barrier needed
-before assigning the filter pointer to make sure the contents it
-points to are flushed?
+I disagree about this part.  The reason MSI is in the PCI spec is so
+the OS can have generic support for it without having to put
+device-specific support in every driver.  The PCI spec is clear that
+the OS can allocate any number of vectors less than or equal to the
+number requested via MMC.  The SATA device requests 16, and it should
+be perfectly legal for the OS to give it 8.
 
-What's the least time-consuming operation I can use in run_filters?
+It's interesting that the ICH10 spec (sec 14.1.27, thanks for the
+reference) says MMC 100b means "8 MSI Capable".  That smells like a
+hardware bug.  The PCI spec says:
 
--Kees
+  000 => 1 vector
+  001 => 2 vectors
+  010 => 4 vectors
+  011 => 8 vectors
+  100 => 16 vectors
 
--- 
-Kees Cook
-Chrome OS Security
+The ICH10 spec seems to think 100 means 8 vectors (not 16 as the PCI
+spec says), and that would fit with the rest of the ICH10 MME info.
+If ICH10 was built assuming this table:
+
+  000 => 1 vector
+  001 => 2 vectors
+  010 => 4 vectors
+  100 => 8 vectors
+
+then everything makes sense: the device requests 8 vectors, and the
+behavior is defined in all possible MME cases (1, 2, 4, or 8 vectors
+assigned).  The "Values '011b' to '111b' are reserved" part is still
+slightly wrong, because the 100b value is in that range but is not
+reserved, but that's a tangent.
+
+So my guess (speculation, I admit) is that the intent was for ICH SATA
+to request only 8 vectors, but because of this error, it requests 16.
+Maybe some early MSI proposal used a different encoding for MMC and
+MME, and ICH was originally designed using that.
+
+>> Interrupt vector space is the issue I would worry about, but I think
+>> I'm going to put this on the back burner until it actually becomes a
+>> problem.
+>
+> I plan to try get rid of arch_msi_check_device() hook. Should I repost
+> this series afterwards?
+
+Honestly, I'm still not inclined to pursue this because of the API
+complication and lack of concrete benefit.
+
+Bjorn

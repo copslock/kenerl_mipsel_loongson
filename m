@@ -1,81 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 11:25:22 +0200 (CEST)
-Received: from mail-oa0-f53.google.com ([209.85.219.53]:59187 "EHLO
-        mail-oa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860067AbaGJJZS7cMeJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Jul 2014 11:25:18 +0200
-Received: by mail-oa0-f53.google.com with SMTP id l6so9262407oag.26
-        for <linux-mips@linux-mips.org>; Thu, 10 Jul 2014 02:25:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=VBjhpgHN56I1SCqygdImtyp1IV5MHA8SA/N11dclpbA=;
-        b=ReD9w+FJrJ16Ta+CAldITgFEC+LnPzDPoVwePrHWyQDODRlxNdo5v6ALRErp43u+Li
-         ugNdvbN8H/t1snv9RMCYmXr5l9pDbwTHrdfjFCWdrA7JEiD3jecsi6sGFkR+Yso+O0Zn
-         /lqAUMXKjSrdq73I/VOVIknXXCJYtaI5sdkAZDKfESLtupfYP83+BfXN7GMt7vsdJfmd
-         HDQtyNSOXlVcdQ0BfK2HU2LX2y87XY4FudDQyfiPY0bqdByu4kHoDIy+TNDWTWJqqwqS
-         L1Ot/eb5wy1RwvIyDy8itIT7YCwhvfz2zYoD9B5VOxdGkDPmH0S9FBqTnBOH9fxlMBVa
-         BCJg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=VBjhpgHN56I1SCqygdImtyp1IV5MHA8SA/N11dclpbA=;
-        b=OSzkCWsYHHjbajEorRlXl0cYrihlciKNygBKt57rjDsI87MwvM8duayTVNIrHAyWgF
-         N8uPb+hzAvJO6vqnw5tMJ4KmHnsW+IAt/BIHM9dl+ilyf9Sgha6cfPe8yyFvfcygTYrA
-         lIJgGmlIlNWPi0HtS4f9a6YEnJIySlJTedjpU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=VBjhpgHN56I1SCqygdImtyp1IV5MHA8SA/N11dclpbA=;
-        b=Y0MFCA294EQ8YXF4I2TX2vO+v5iOyzVMkfEjLdcia6YiR2Pe6z6q1ZM9H5XTrNH9Lq
-         kZ9qQsWFTaoL9eo3WMHQeOKtF/Q/55PZCd4QU6Ri/eIbobZLdR4r4IUL8zoOw/GOporq
-         gU1Ace9jKJfb/JWXuuuapsnhEqTSMLBB10kPdB3nU++/qw6XJ4HxY41JoJaOizgl2K25
-         GHdZUz1M/AT1c8kdbe0XBshabSKildiwDwPXuQCymAcCzopbVrdr+P4eIuCyC0rHGPKO
-         Y2vZrBZ7kfaOtaWLdKWnGZZ5Mda966HHENR66fSeTpiiqPylWtKwwxaXNILFv9Fcglkc
-         J7Tg==
-X-Gm-Message-State: ALoCoQnMPAkxmX54Bznz7hSyhw7398HXWhy8JqWRYmZRAIR5ShLxrFdDpna8W1ZLprNNXp+1wmiT
-MIME-Version: 1.0
-X-Received: by 10.182.65.167 with SMTP id y7mr53425118obs.29.1404984312732;
- Thu, 10 Jul 2014 02:25:12 -0700 (PDT)
-Received: by 10.182.85.103 with HTTP; Thu, 10 Jul 2014 02:25:12 -0700 (PDT)
-In-Reply-To: <20140709185549.GB4866@redhat.com>
-References: <1403911380-27787-1-git-send-email-keescook@chromium.org>
-        <1403911380-27787-10-git-send-email-keescook@chromium.org>
-        <20140709184215.GA4866@redhat.com>
-        <20140709185549.GB4866@redhat.com>
-Date:   Thu, 10 Jul 2014 02:25:12 -0700
-X-Google-Sender-Auth: sQAH1XjXNSSrDt6A530PBSvtI74
-Message-ID: <CAGXu5jL6q1d16uA1Yu+QO4eV7zWwcWEWgkZrwmsfymbMvEr6+Q@mail.gmail.com>
-Subject: Re: [PATCH v9 09/11] seccomp: introduce writer locking
-From:   Kees Cook <keescook@chromium.org>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Will Drewry <wad@chromium.org>,
-        Julien Tinnes <jln@chromium.org>,
-        David Drysdale <drysdale@google.com>,
-        Linux API <linux-api@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2014 12:11:10 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:11337 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6859947AbaGJKLH4zKF- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Jul 2014 12:11:07 +0200
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s6AAB2m1022221
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Jul 2014 06:11:02 -0400
+Received: from dhcp-26-207.brq.redhat.com (dhcp-26-192.brq.redhat.com [10.34.26.192])
+        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s6AAAtWr002728
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=NO);
+        Thu, 10 Jul 2014 06:10:57 -0400
+Date:   Thu, 10 Jul 2014 12:11:51 +0200
+From:   Alexander Gordeev <agordeev@redhat.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
         "x86@kernel.org" <x86@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "open list:INTEL IOMMU (VT-d)" <iommu@lists.linux-foundation.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 1/3] PCI/MSI: Add pci_enable_msi_partial()
+Message-ID: <20140710101151.GA21629@dhcp-26-207.brq.redhat.com>
+References: <cover.1402405331.git.agordeev@redhat.com>
+ <4fef62a2e647a7c38e9f2a1ea4244b3506a85e2b.1402405331.git.agordeev@redhat.com>
+ <20140702202201.GA28852@google.com>
+ <20140704085741.GA12247@dhcp-26-207.brq.redhat.com>
+ <CAErSpo6f6RXWv0DEtLBZX0jXoSUYJeWrSm7mubSJ_F-O7tQp6w@mail.gmail.com>
+ <20140708122606.GB6270@dhcp-26-207.brq.redhat.com>
+ <CAErSpo4oiabgoOjsGdWZpCMPnmopK4xRzB2f3tM0AiUFrdhFww@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAErSpo4oiabgoOjsGdWZpCMPnmopK4xRzB2f3tM0AiUFrdhFww@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+Return-Path: <agordeev@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41109
+X-archive-position: 41110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: agordeev@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,40 +60,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 9, 2014 at 11:55 AM, Oleg Nesterov <oleg@redhat.com> wrote:
-> On 07/09, Oleg Nesterov wrote:
->>
->> On 06/27, Kees Cook wrote:
->> >
->> >  static u32 seccomp_run_filters(int syscall)
->> >  {
->> > -   struct seccomp_filter *f;
->> > +   struct seccomp_filter *f = ACCESS_ONCE(current->seccomp.filter);
->>
->> I am not sure...
->>
->> This is fine if this ->filter is the 1st (and only) one, in this case
->> we can rely on rmb() in the caller.
->>
->> But the new filter can be installed at any moment. Say, right after that
->> rmb() although this doesn't matter. Either we need smp_read_barrier_depends()
->> after that, or smp_load_acquire() like the previous version did?
->
-> Wait... and it seems that seccomp_sync_threads() needs smp_store_release()
-> when it sets thread->filter = current->filter by the same reason?
->
-> OTOH. smp_store_release() in seccomp_attach_filter() can die, "current"
-> doesn't need a barrier to serialize with itself.
+On Wed, Jul 09, 2014 at 10:06:48AM -0600, Bjorn Helgaas wrote:
+> Out of curiosity, do you have a pointer to this?  It looks like it
 
-I have lost track of what you're suggesting to change. :)
+I.e. ICH8 chapter 12.1.30 or ICH10 chapter 14.1.27
 
-Since rmb() happens before run_filters, isn't the ACCESS_ONCE
-sufficient? We only care that TIF_SECCOMP, mode, and some filter is
-valid. In a tsync thread race, it's okay to use not use the deepest
-filter node in the list, it just needs A filter.
+> uses one vector per port, and I'm wondering if the reason it requests
+> 16 is because there's some possibility of a part with more than 8
+> ports.
 
--Kees
+I doubt that is the reason. The only allowed MME values (powers of two)
+are 0b000, 0b001, 0b010 and 0b100. As you can see, only one bit is used -
+I would speculate it suits nicely to some hardware logic.
+
+BTW, apart from AHCI, it seems the reason MSI is not going to disappear
+(in a decade at least) is it is way cheaper to implement than MSI-X.
+
+> > No, this is not an erratum. The value of 8 vectors is reserved and could
+> > cause undefined results if used.
+> 
+> As I read the spec (PCI 3.0, sec 6.8.1.3), if MMC contains 0b100
+> (requesting 16 vectors), the OS is allowed to allocate 1, 2, 4, 8, or
+> 16 vectors.  If allocating 8 vectors and writing 0b011 to MME causes
+> undefined results, I'd say that's a chipset defect.
+
+Well, the PCI spec does not prevent devices to have their own specs on top
+of it. Undefined results are meant on the device side here. On the MSI side
+these results are likely perfectly within the PCI spec. I feel speaking as
+a lawer here ;)
+
+> Interrupt vector space is the issue I would worry about, but I think
+> I'm going to put this on the back burner until it actually becomes a
+> problem.
+
+I plan to try get rid of arch_msi_check_device() hook. Should I repost
+this series afterwards?
+
+Thanks!
 
 -- 
-Kees Cook
-Chrome OS Security
+Regards,
+Alexander Gordeev
+agordeev@redhat.com

@@ -1,34 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2014 17:51:51 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12889 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2014 17:56:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56774 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860090AbaGKPriutloS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jul 2014 17:47:38 +0200
+        with ESMTP id S6860040AbaGKP4kqSr-e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jul 2014 17:56:40 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 8D0C36D2D74B3
-        for <linux-mips@linux-mips.org>; Fri, 11 Jul 2014 16:47:29 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 32C6F71893F25;
+        Fri, 11 Jul 2014 16:56:31 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 11 Jul 2014 16:47:32 +0100
-Received: from pburton-laptop.home (192.168.79.172) by LEMAIL01.le.imgtec.org
+ 14.3.195.1; Fri, 11 Jul 2014 16:56:33 +0100
+Received: from localhost (192.168.79.172) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 11 Jul
- 2014 16:47:30 +0100
+ 2014 16:56:31 +0100
+Date:   Fri, 11 Jul 2014 16:56:31 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 13/13] MIPS: mark MSA experimental
-Date:   Fri, 11 Jul 2014 16:47:25 +0100
-Message-ID: <1405093645-5380-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.0.1
-In-Reply-To: <1405093479-5123-1-git-send-email-paul.burton@imgtec.com>
-References: <1405093479-5123-1-git-send-email-paul.burton@imgtec.com>
+To:     chenj <chenj@lemote.com>
+CC:     <linux-mips@linux-mips.org>, <chenhc@lemote.com>,
+        <ralf@linux-mips.org>, <wangr@lemote.com>
+Subject: Re: [PATCH] Not preempt in CP1 exception handling
+Message-ID: <20140711155631.GE8187@pburton-laptop>
+References: <1405047990-12519-1-git-send-email-chenhc@lemote.com>
+ <1405048453-12633-1-git-send-email-chenj@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <1405048453-12633-1-git-send-email-chenj@lemote.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Originating-IP: [192.168.79.172]
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41148
+X-archive-position: 41149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,38 +48,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In light of the commit 16f77de82f2d (Revert "MIPS: Save/restore MSA
-context around signals") the MSA support in the kernel is incomplete.
-Until the replacement for the former sigcontext changes is agreed upon
-and in tree, mark MSA experimental & disable it by default.
+On Fri, Jul 11, 2014 at 11:14:13AM +0800, chenj wrote:
+> do_ade may be invoked with preempt enabled. do_cpu will be invoked with
+> preempt enabled. When it's preempted(in do_ade/do_cpu), TIF_USEDFPU will be
+> cleared, when it returns to do_ade/do_cpu, the fpu is actually disabled.
+> 
+> e.g.
+> In do_ade()
+>   emulate_load_store_insn():
+>     BUG_ON(!is_fpu_owner()); <-- This assertion may be breaked.
+> 
+> In do_cpu()
+>   enable_restore_fp_context():
+>     was_fpu_owner = is_fpu_owner();
 
-MSA is only implemented by one CPU supported by the kernel, the P5600.
-The P5600 is a 32 bit core, and thus MSA can only be used when the
-experimental CONFIG_MIPS_O32_FP64_SUPPORT option is enabled. Therefore
-MSA is only being used in experimental settings anyway and this change
-doesn't actually make any difference beyond clarifying the state of
-MSA support.
+Preemption should indeed be disabled around the assignment & use of the
+was_fpu_owner variable, but note that you can only hit the problem if
+using MSA. One of the MSA fixes I just submitted also fixes this along
+with another instance of the problem:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
- arch/mips/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+  http://patchwork.linux-mips.org/patch/7307/
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 857a49c..d747273 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2110,10 +2110,9 @@ config CPU_MICROMIPS
- 	  microMIPS ISA
- 
- config CPU_HAS_MSA
--	bool "Support for the MIPS SIMD Architecture"
-+	bool "Support for the MIPS SIMD Architecture (EXPERIMENTAL)"
- 	depends on CPU_SUPPORTS_MSA
- 	depends on 64BIT || MIPS_O32_FP64_SUPPORT
--	default y
- 	help
- 	  MIPS SIMD Architecture (MSA) introduces 128 bit wide vector registers
- 	  and a set of SIMD instructions to operate on them. When this option
--- 
-2.0.1
+I prefer my patch to this since it disables preemption for less time,
+in addition to fixing the !used_math() case.
+
+In emulate_load_store_insn I believe the correct fix is simply to remove
+that BUG_ON. The code is about to give up FPU ownership anyway, so it's
+not like there is any requirement being violated if it was already lost.
+
+Thanks,
+    Paul
+
+> This patch simply disables interrupts in related handlers, and
+> disable preempt/enable interrupts in do_ade/do_cpu.
+> ---
+>  arch/mips/kernel/genex.S | 4 ++--
+>  arch/mips/kernel/traps.c | 4 ++++
+>  2 files changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+> index ac35e12..a5c6931 100644
+> --- a/arch/mips/kernel/genex.S
+> +++ b/arch/mips/kernel/genex.S
+> @@ -370,7 +370,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+>  	.macro	__build_clear_ade
+>  	MFC0	t0, CP0_BADVADDR
+>  	PTR_S	t0, PT_BVADDR(sp)
+> -	KMODE
+> +	CLI
+>  	.endm
+>  
+>  	.macro	__BUILD_silent exception
+> @@ -422,7 +422,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+>  	BUILD_HANDLER dbe be cli silent			/* #7  */
+>  	BUILD_HANDLER bp bp sti silent			/* #9  */
+>  	BUILD_HANDLER ri ri sti silent			/* #10 */
+> -	BUILD_HANDLER cpu cpu sti silent		/* #11 */
+> +	BUILD_HANDLER cpu cpu cli silent		/* #11 */
+>  	BUILD_HANDLER ov ov sti silent			/* #12 */
+>  	BUILD_HANDLER tr tr sti silent			/* #13 */
+>  	BUILD_HANDLER msa_fpe msa_fpe sti silent	/* #14 */
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index 51706d6..0e0f7de 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -1166,6 +1166,9 @@ asmlinkage void do_cpu(struct pt_regs *regs)
+>  	int status, err;
+>  	unsigned long __maybe_unused flags;
+>  
+> +	preempt_disable();
+> +	local_irq_enable();
+> +
+>  	prev_state = exception_enter();
+>  	cpid = (regs->cp0_cause >> CAUSEB_CE) & 3;
+>  
+> @@ -1258,6 +1261,7 @@ asmlinkage void do_cpu(struct pt_regs *regs)
+>  
+>  out:
+>  	exception_exit(prev_state);
+> +	preempt_enable();
+>  }
+>  
+>  asmlinkage void do_msa_fpe(struct pt_regs *regs)
+> -- 
+> 1.9.0
+> 
+> 

@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2014 17:47:32 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41743 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2014 17:47:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:65148 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860085AbaGKPqS2EucS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jul 2014 17:46:18 +0200
+        with ESMTP id S6860086AbaGKPqYKq8aP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jul 2014 17:46:24 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2F92837E5BFAE
-        for <linux-mips@linux-mips.org>; Fri, 11 Jul 2014 16:46:09 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 3A68ACFDD26C3
+        for <linux-mips@linux-mips.org>; Fri, 11 Jul 2014 16:46:14 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 11 Jul
+ 2014 16:46:17 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 11 Jul 2014 16:46:11 +0100
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 11 Jul 2014 16:46:17 +0100
 Received: from pburton-laptop.home (192.168.79.172) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 11 Jul
- 2014 16:46:10 +0100
+ 2014 16:46:16 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 07/13] MIPS: fix read_msa_* & write_msa_* functions on non-MSA toolchains
-Date:   Fri, 11 Jul 2014 16:44:33 +0100
-Message-ID: <1405093479-5123-8-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 08/13] MIPS: ensure MSA gets disabled during boot
+Date:   Fri, 11 Jul 2014 16:44:34 +0100
+Message-ID: <1405093479-5123-9-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.0.1
 In-Reply-To: <1405093479-5123-1-git-send-email-paul.burton@imgtec.com>
 References: <1405093479-5123-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41142
+X-archive-position: 41143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,45 +48,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit d96cc3d1ec5d "MIPS: Add microMIPS MSA support." attempted to use
-the value of a macro within an inline asm statement but instead emitted
-a comment leading to the cfcmsa & ctcmsa instructions being omitted. Fix
-that by passing CFC_MSA_INSN & CTC_MSA_INSN as arguments to the asm
-statements.
+The kernel relies upon MSA being disabled when a task begins running,
+so that it can initialise or restore context in response to the
+resulting MSA disabled exception. Previously the state of MSA following
+boot was left as it was before the kernel ran, where MSA could
+potentially have been enabled. Explicitly disable it during boot to
+prevent any problems.
+
+As a nice side effect the code reads a little better too.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/msa.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/cpu-probe.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
-index f32aa06..7002c18 100644
---- a/arch/mips/include/asm/msa.h
-+++ b/arch/mips/include/asm/msa.h
-@@ -115,10 +115,10 @@ static inline unsigned int read_msa_##name(void)		\
- 	"	.set	push\n"					\
- 	"	.set	noat\n"					\
- 	"	.insn\n"					\
--	"	.word	#CFC_MSA_INSN | (" #cs " << 11)\n"	\
-+	"	.word	%1 | (" #cs " << 11)\n"			\
- 	"	move	%0, $1\n"				\
- 	"	.set	pop\n"					\
--	: "=r"(reg));						\
-+	: "=r"(reg) : "i"(CFC_MSA_INSN));			\
- 	return reg;						\
- }								\
- 								\
-@@ -129,9 +129,9 @@ static inline void write_msa_##name(unsigned int val)		\
- 	"	.set	noat\n"					\
- 	"	move	$1, %0\n"				\
- 	"	.insn\n"					\
--	"	.word	#CTC_MSA_INSN | (" #cs " << 6)\n"	\
-+	"	.word	%1 | (" #cs " << 6)\n"			\
- 	"	.set	pop\n"					\
--	: : "r"(val));						\
-+	: : "r"(val), "i"(CTC_MSA_INSN));			\
- }
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index e818547..1b345f0 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -130,14 +130,13 @@ static inline int __cpu_has_fpu(void)
  
- #endif /* !TOOLCHAIN_SUPPORTS_MSA */
+ static inline unsigned long cpu_get_msa_id(void)
+ {
+-	unsigned long status, conf5, msa_id;
++	unsigned long status, msa_id;
+ 
+ 	status = read_c0_status();
+ 	__enable_fpu(FPU_64BIT);
+-	conf5 = read_c0_config5();
+ 	enable_msa();
+ 	msa_id = read_msa_ir();
+-	write_c0_config5(conf5);
++	disable_msa();
+ 	write_c0_status(status);
+ 	return msa_id;
+ }
 -- 
 2.0.1

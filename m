@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jul 2014 12:49:31 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:46921 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jul 2014 12:49:55 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:46933 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822968AbaGLKt3gEtri (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Jul 2014 12:49:29 +0200
+        id S6822968AbaGLKtxVbF6Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 12 Jul 2014 12:49:53 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 46A83280164;
-        Sat, 12 Jul 2014 12:47:21 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id 5D57B2845A0;
+        Sat, 12 Jul 2014 12:47:45 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from ixxyvirt.lan (dslb-088-073-046-107.pools.arcor-ip.net [88.73.46.107])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id D5A3A280133;
-        Sat, 12 Jul 2014 12:47:15 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 79C18280133;
+        Sat, 12 Jul 2014 12:47:44 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <blogic@openwrt.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH RFC v2] MIPS: add support for vmlinux.bin appended DTB
-Date:   Sat, 12 Jul 2014 12:49:17 +0200
-Message-Id: <1405162157-30357-1-git-send-email-jogo@openwrt.org>
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>
+Subject: [PATCH 00/10] MIPS: BCM63XX: add irq affinity support for IPIC
+Date:   Sat, 12 Jul 2014 12:49:32 +0200
+Message-Id: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 2.0.0
 Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41158
+X-archive-position: 41159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,123 +43,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for populating initial_boot_params through a dtb
-blob appended to raw vmlinux.bin.
+This patch set adds support for setting the irq affinity of the internal
+PIC found on SMP capable bcm63xx SoCs.
 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
-Changes RFC v1 -> v2
+The PIC has two sets of mask/status registers, wired to two mips IRQs.
+Each of the mips irqs can be assigned to a different core, so the irq to
+cpu distribution is not fixed, but for simplicity it is assumed that
+cpu0 => irq 2, and cpu 1 => irq 3.
 
-* changed all occurences of vmlinux to vmlinux.bin
-* clarified this applies to the raw vmlinux.bin without decompressor
-* s/initial_device_params/initial_boot_params/
+Jonas Gorski (10):
+  MIPS: BCM63XX: add width to __dispatch_internal
+  MIPS: BCM63XX: move bcm63xx_init_irq down
+  MIPS: BCM63XX: replace irq dispatch code with a generic version
+  MIPS: BCM63XX: append irq line to irq_{stat,mask}*
+  MIPS: BCM63XX: populate irq_{stat,mask}_addr for second cpu
+  MIPS: BCM63XX: add cpu argument to dispatch internal
+  MIPS: BCM63XX: protect irq register accesses
+  MIPS: BCM63XX: wire up the second cpu's irq line
+  MIPS: BCM63XX: use irq_desc as argument for (un)mask
+  MIPS: BCM63XX: allow setting affinity for IPIC
 
-Initial comments by me still valid:
+ arch/mips/bcm63xx/irq.c                           | 451 +++++++++++++---------
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |  16 +-
+ 2 files changed, 278 insertions(+), 189 deletions(-)
 
-Mostly adapted from how ARM is doing it.
-
-Sent as an RFC PATCH because I am not sure if this is the right way to
-it, and whether storing the pointer in initial_boot_params is a good
-idea, or a new variable should be introduced.
-
-The reasoning for initial_boot_params is that there is no common
-MIPS interface yet, so the next best thing was using that. This also
-has the advantage of keeping the original fw_args intact.
-
-This patch works for me on bcm63xx, where the bootloader expects
-an lzma compressed kernel, so I didn't want to double compress using
-the in-kernel compressed kernel support.
-
-Completely untested on anything except MIPS32 / big endian.
-
- arch/mips/Kconfig              | 18 ++++++++++++++++++
- arch/mips/kernel/head.S        | 19 +++++++++++++++++++
- arch/mips/kernel/vmlinux.lds.S |  6 ++++++
- 3 files changed, 43 insertions(+)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3f05b56..21c6d51 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2476,6 +2476,24 @@ config USE_OF
- 	select OF_EARLY_FLATTREE
- 	select IRQ_DOMAIN
- 
-+config MIPS_APPENDED_DTB
-+	bool "Use appended device tree blob to vmlinux.bin (EXPERIMENTAL)"
-+	depends on OF
-+	help
-+	  With this option, the boot code will look for a device tree binary
-+	  DTB) appended to raw vmlinux.bin (without decompressor).
-+	  (e.g. cat vmlinux.bin <filename>.dtb > vmlinux_w_dtb).
-+
-+	  This is meant as a backward compatibility convenience for those
-+	  systems with a bootloader that can't be upgraded to accommodate
-+	  the documented boot protocol using a device tree.
-+
-+	  Beware that there is very little in terms of protection against
-+	  this option being confused by leftover garbage in memory that might
-+	  look like a DTB header after a reboot if no actual DTB is appended
-+	  to vmlinux.bin.  Do not leave this option active in a production kernel
-+	  if you don't intend to always append a DTB.
-+
- endmenu
- 
- config LOCKDEP_SUPPORT
-diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
-index 95afd66..72c1049 100644
---- a/arch/mips/kernel/head.S
-+++ b/arch/mips/kernel/head.S
-@@ -93,7 +93,22 @@ NESTED(kernel_entry, 16, sp)			# kernel entry point
- 	PTR_LA	t0, 0f
- 	jr	t0
- 0:
-+#ifdef CONFIG_MIPS_APPENDED_DTB
-+	PTR_LA		t0, __appended_dtb
-+	PTR_LI		t3, 0
- 
-+#ifdef CONFIG_CPU_BIG_ENDIAN
-+	PTR_LI		t1, 0xd00dfeed
-+#else
-+	PTR_LI		t1, 0xedfe0dd0
-+#endif
-+	LONG_L		t2, (t0)
-+	bne		t1, t2, not_found
-+
-+	PTR_LA		t3, __appended_dtb
-+
-+not_found:
-+#endif
- 	PTR_LA		t0, __bss_start		# clear .bss
- 	LONG_S		zero, (t0)
- 	PTR_LA		t1, __bss_stop - LONGSIZE
-@@ -107,6 +122,10 @@ NESTED(kernel_entry, 16, sp)			# kernel entry point
- 	LONG_S		a2, fw_arg2
- 	LONG_S		a3, fw_arg3
- 
-+#ifdef CONFIG_MIPS_APPENDED_DTB
-+	LONG_S		t3, initial_boot_params
-+#endif
-+
- 	MTC0		zero, CP0_CONTEXT	# clear context register
- 	PTR_LA		$28, init_thread_union
- 	/* Set the SP after an empty pt_regs.  */
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 3b46f7c..8009530 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -127,6 +127,12 @@ SECTIONS
- 	}
- 
- 	PERCPU_SECTION(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
-+
-+#ifdef CONFIG_MIPS_APPENDED_DTB
-+	__appended_dtb = .;
-+	/* leave space for appended DTB */
-+	. = . + 0x100000;
-+#endif
- 	/*
- 	 * Align to 64K in attempt to eliminate holes before the
- 	 * .bss..swapper_pg_dir section at the start of .bss.  This
 -- 
 2.0.0

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jul 2014 12:49:55 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:46933 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jul 2014 12:50:13 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:46944 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822968AbaGLKtxVbF6Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Jul 2014 12:49:53 +0200
+        id S6860082AbaGLKt61CDh0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 12 Jul 2014 12:49:58 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 5D57B2845A0;
-        Sat, 12 Jul 2014 12:47:45 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id 85EF728B516;
+        Sat, 12 Jul 2014 12:47:50 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from ixxyvirt.lan (dslb-088-073-046-107.pools.arcor-ip.net [88.73.46.107])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 79C18280133;
-        Sat, 12 Jul 2014 12:47:44 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 283CD280164;
+        Sat, 12 Jul 2014 12:47:45 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -18,15 +18,17 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         Gregory Fong <gregory.0xf0@gmail.com>
-Subject: [PATCH 00/10] MIPS: BCM63XX: add irq affinity support for IPIC
-Date:   Sat, 12 Jul 2014 12:49:32 +0200
-Message-Id: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 01/10] MIPS: BCM63XX: add width to __dispatch_internal
+Date:   Sat, 12 Jul 2014 12:49:33 +0200
+Message-Id: <1405162182-30399-2-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 2.0.0
+In-Reply-To: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
+References: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
 Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41159
+X-archive-position: 41160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,29 +45,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch set adds support for setting the irq affinity of the internal
-PIC found on SMP capable bcm63xx SoCs.
+Make it follow the same naming convention as the other functions.
 
-The PIC has two sets of mask/status registers, wired to two mips IRQs.
-Each of the mips irqs can be assigned to a different core, so the irq to
-cpu distribution is not fixed, but for simplicity it is assumed that
-cpu0 => irq 2, and cpu 1 => irq 3.
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+ arch/mips/bcm63xx/irq.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Jonas Gorski (10):
-  MIPS: BCM63XX: add width to __dispatch_internal
-  MIPS: BCM63XX: move bcm63xx_init_irq down
-  MIPS: BCM63XX: replace irq dispatch code with a generic version
-  MIPS: BCM63XX: append irq line to irq_{stat,mask}*
-  MIPS: BCM63XX: populate irq_{stat,mask}_addr for second cpu
-  MIPS: BCM63XX: add cpu argument to dispatch internal
-  MIPS: BCM63XX: protect irq register accesses
-  MIPS: BCM63XX: wire up the second cpu's irq line
-  MIPS: BCM63XX: use irq_desc as argument for (un)mask
-  MIPS: BCM63XX: allow setting affinity for IPIC
-
- arch/mips/bcm63xx/irq.c                           | 451 +++++++++++++---------
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |  16 +-
- 2 files changed, 278 insertions(+), 189 deletions(-)
-
+diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
+index 30c6803..a9fb564 100644
+--- a/arch/mips/bcm63xx/irq.c
++++ b/arch/mips/bcm63xx/irq.c
+@@ -19,7 +19,7 @@
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_irq.h>
+ 
+-static void __dispatch_internal(void) __maybe_unused;
++static void __dispatch_internal_32(void) __maybe_unused;
+ static void __dispatch_internal_64(void) __maybe_unused;
+ static void __internal_irq_mask_32(unsigned int irq) __maybe_unused;
+ static void __internal_irq_mask_64(unsigned int irq) __maybe_unused;
+@@ -117,7 +117,7 @@ static void bcm63xx_init_irq(void)
+ 	}
+ 
+ 	if (irq_bits == 32) {
+-		dispatch_internal = __dispatch_internal;
++		dispatch_internal = __dispatch_internal_32;
+ 		internal_irq_mask = __internal_irq_mask_32;
+ 		internal_irq_unmask = __internal_irq_unmask_32;
+ 	} else {
+@@ -149,7 +149,7 @@ static inline void handle_internal(int intbit)
+  * will resume the loop where it ended the last time we left this
+  * function.
+  */
+-static void __dispatch_internal(void)
++static void __dispatch_internal_32(void)
+ {
+ 	u32 pending;
+ 	static int i;
 -- 
 2.0.0

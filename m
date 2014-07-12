@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jul 2014 12:51:08 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:46961 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jul 2014 12:51:26 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:46968 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860085AbaGLKuEkFppL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Jul 2014 12:50:04 +0200
+        id S6822968AbaGLKuLVMpjw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 12 Jul 2014 12:50:11 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id B2ECF2845E6;
-        Sat, 12 Jul 2014 12:47:56 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id EEDCB280133;
+        Sat, 12 Jul 2014 12:48:02 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from ixxyvirt.lan (dslb-088-073-046-107.pools.arcor-ip.net [88.73.46.107])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 6694828470E;
-        Sat, 12 Jul 2014 12:47:50 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 3C3E12845A0;
+        Sat, 12 Jul 2014 12:47:47 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -18,9 +18,9 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         Gregory Fong <gregory.0xf0@gmail.com>
-Subject: [PATCH 09/10] MIPS: BCM63XX: use irq_desc as argument for (un)mask
-Date:   Sat, 12 Jul 2014 12:49:41 +0200
-Message-Id: <1405162182-30399-10-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 04/10] MIPS: BCM63XX: append irq line to irq_{stat,mask}*
+Date:   Sat, 12 Jul 2014 12:49:36 +0200
+Message-Id: <1405162182-30399-5-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
 References: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
@@ -28,7 +28,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41163
+X-archive-position: 41164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,85 +45,186 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In preparation for applying affinity, use the irq descriptor as the
-argument for (un)mask.
+The SMP capable irq controllers have two interrupt output pins which are
+controlled through separate registers, so make the variables arrays.
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/bcm63xx/irq.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ arch/mips/bcm63xx/irq.c                           | 51 ++++++++++++-----------
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h | 16 +++----
+ 2 files changed, 34 insertions(+), 33 deletions(-)
 
 diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
-index 615b25b..a53305f 100644
+index db9f2ef..91d1765 100644
 --- a/arch/mips/bcm63xx/irq.c
 +++ b/arch/mips/bcm63xx/irq.c
-@@ -31,8 +31,8 @@ static int is_ext_irq_cascaded;
+@@ -19,7 +19,8 @@
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_irq.h>
+ 
+-static u32 irq_stat_addr, irq_mask_addr;
++static u32 irq_stat_addr[2];
++static u32 irq_mask_addr[2];
+ static void (*dispatch_internal)(void);
+ static int is_ext_irq_cascaded;
  static unsigned int ext_irq_count;
- static unsigned int ext_irq_start, ext_irq_end;
- static unsigned int ext_irq_cfg_reg1, ext_irq_cfg_reg2;
--static void (*internal_irq_mask)(unsigned int irq);
--static void (*internal_irq_unmask)(unsigned int irq);
-+static void (*internal_irq_mask)(struct irq_data *d);
-+static void (*internal_irq_unmask)(struct irq_data *d);
- 
- 
- static inline u32 get_ext_irq_perf_reg(int irq)
-@@ -96,9 +96,10 @@ void __dispatch_internal_##width(int cpu)				\
- 	}								\
- }									\
+@@ -64,8 +65,8 @@ void __dispatch_internal_##width(void)					\
+ 	for (src = 0, tgt = (width / 32); src < (width / 32); src++) {	\
+ 		u32 val;						\
  									\
--static void __internal_irq_mask_##width(unsigned int irq)		\
-+static void __internal_irq_mask_##width(struct irq_data *d)		\
- {									\
- 	u32 val;							\
-+	unsigned irq = d->irq - IRQ_INTERNAL_BASE;			\
+-		val = bcm_readl(irq_stat_addr + src * sizeof(u32));	\
+-		val &= bcm_readl(irq_mask_addr + src * sizeof(u32));	\
++		val = bcm_readl(irq_stat_addr[0] + src * sizeof(u32));	\
++		val &= bcm_readl(irq_mask_addr[0] + src * sizeof(u32));	\
+ 		pending[--tgt] = val;					\
+ 									\
+ 		if (val)						\
+@@ -92,9 +93,9 @@ static void __internal_irq_mask_##width(unsigned int irq)		\
  	unsigned reg = (irq / 32) ^ (width/32 - 1);			\
  	unsigned bit = irq & 0x1f;					\
- 	unsigned long flags;						\
-@@ -116,9 +117,10 @@ static void __internal_irq_mask_##width(unsigned int irq)		\
- 	spin_unlock_irqrestore(&ipic_lock, flags);			\
+ 									\
+-	val = bcm_readl(irq_mask_addr + reg * sizeof(u32));		\
++	val = bcm_readl(irq_mask_addr[0] + reg * sizeof(u32));		\
+ 	val &= ~(1 << bit);						\
+-	bcm_writel(val, irq_mask_addr + reg * sizeof(u32));		\
++	bcm_writel(val, irq_mask_addr[0] + reg * sizeof(u32));		\
  }									\
  									\
--static void __internal_irq_unmask_##width(unsigned int irq)		\
-+static void __internal_irq_unmask_##width(struct irq_data *d)		\
- {									\
- 	u32 val;							\
-+	unsigned irq = d->irq - IRQ_INTERNAL_BASE;			\
+ static void __internal_irq_unmask_##width(unsigned int irq)		\
+@@ -103,9 +104,9 @@ static void __internal_irq_unmask_##width(unsigned int irq)		\
  	unsigned reg = (irq / 32) ^ (width/32 - 1);			\
  	unsigned bit = irq & 0x1f;					\
- 	unsigned long flags;						\
-@@ -182,12 +184,12 @@ asmlinkage void plat_irq_dispatch(void)
-  */
- static void bcm63xx_internal_irq_mask(struct irq_data *d)
+ 									\
+-	val = bcm_readl(irq_mask_addr + reg * sizeof(u32));		\
++	val = bcm_readl(irq_mask_addr[0] + reg * sizeof(u32));		\
+ 	val |= (1 << bit);						\
+-	bcm_writel(val, irq_mask_addr + reg * sizeof(u32));		\
++	bcm_writel(val, irq_mask_addr[0] + reg * sizeof(u32));		\
+ }
+ 
+ BUILD_IPIC_INTERNAL(32);
+@@ -339,20 +340,20 @@ static void bcm63xx_init_irq(void)
  {
--	internal_irq_mask(d->irq - IRQ_INTERNAL_BASE);
-+	internal_irq_mask(d);
- }
+ 	int irq_bits;
  
- static void bcm63xx_internal_irq_unmask(struct irq_data *d)
- {
--	internal_irq_unmask(d->irq - IRQ_INTERNAL_BASE);
-+	internal_irq_unmask(d);
- }
+-	irq_stat_addr = bcm63xx_regset_address(RSET_PERF);
+-	irq_mask_addr = bcm63xx_regset_address(RSET_PERF);
++	irq_stat_addr[0] = bcm63xx_regset_address(RSET_PERF);
++	irq_mask_addr[0] = bcm63xx_regset_address(RSET_PERF);
  
- /*
-@@ -213,7 +215,7 @@ static void bcm63xx_external_irq_mask(struct irq_data *d)
- 	spin_unlock_irqrestore(&epic_lock, flags);
+ 	switch (bcm63xx_get_cpu_id()) {
+ 	case BCM3368_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_3368_REG;
+-		irq_mask_addr += PERF_IRQMASK_3368_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_3368_REG;
++		irq_mask_addr[0] += PERF_IRQMASK_3368_REG;
+ 		irq_bits = 32;
+ 		ext_irq_count = 4;
+ 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_3368;
+ 		break;
+ 	case BCM6328_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_6328_REG;
+-		irq_mask_addr += PERF_IRQMASK_6328_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_6328_REG(0);
++		irq_mask_addr[0] += PERF_IRQMASK_6328_REG(0);
+ 		irq_bits = 64;
+ 		ext_irq_count = 4;
+ 		is_ext_irq_cascaded = 1;
+@@ -361,29 +362,29 @@ static void bcm63xx_init_irq(void)
+ 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_6328;
+ 		break;
+ 	case BCM6338_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_6338_REG;
+-		irq_mask_addr += PERF_IRQMASK_6338_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_6338_REG;
++		irq_mask_addr[0] += PERF_IRQMASK_6338_REG;
+ 		irq_bits = 32;
+ 		ext_irq_count = 4;
+ 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_6338;
+ 		break;
+ 	case BCM6345_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_6345_REG;
+-		irq_mask_addr += PERF_IRQMASK_6345_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_6345_REG;
++		irq_mask_addr[0] += PERF_IRQMASK_6345_REG;
+ 		irq_bits = 32;
+ 		ext_irq_count = 4;
+ 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_6345;
+ 		break;
+ 	case BCM6348_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_6348_REG;
+-		irq_mask_addr += PERF_IRQMASK_6348_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_6348_REG;
++		irq_mask_addr[0] += PERF_IRQMASK_6348_REG;
+ 		irq_bits = 32;
+ 		ext_irq_count = 4;
+ 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_6348;
+ 		break;
+ 	case BCM6358_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_6358_REG;
+-		irq_mask_addr += PERF_IRQMASK_6358_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_6358_REG(0);
++		irq_mask_addr[0] += PERF_IRQMASK_6358_REG(0);
+ 		irq_bits = 32;
+ 		ext_irq_count = 4;
+ 		is_ext_irq_cascaded = 1;
+@@ -392,8 +393,8 @@ static void bcm63xx_init_irq(void)
+ 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_6358;
+ 		break;
+ 	case BCM6362_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_6362_REG;
+-		irq_mask_addr += PERF_IRQMASK_6362_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_6362_REG(0);
++		irq_mask_addr[0] += PERF_IRQMASK_6362_REG(0);
+ 		irq_bits = 64;
+ 		ext_irq_count = 4;
+ 		is_ext_irq_cascaded = 1;
+@@ -402,8 +403,8 @@ static void bcm63xx_init_irq(void)
+ 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_6362;
+ 		break;
+ 	case BCM6368_CPU_ID:
+-		irq_stat_addr += PERF_IRQSTAT_6368_REG;
+-		irq_mask_addr += PERF_IRQMASK_6368_REG;
++		irq_stat_addr[0] += PERF_IRQSTAT_6368_REG(0);
++		irq_mask_addr[0] += PERF_IRQMASK_6368_REG(0);
+ 		irq_bits = 64;
+ 		ext_irq_count = 6;
+ 		is_ext_irq_cascaded = 1;
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index ab427f8..4794067 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -215,23 +215,23 @@
  
- 	if (is_ext_irq_cascaded)
--		internal_irq_mask(irq + ext_irq_start);
-+		internal_irq_mask(irq_get_irq_data(irq + ext_irq_start));
- }
+ /* Interrupt Mask register */
+ #define PERF_IRQMASK_3368_REG		0xc
+-#define PERF_IRQMASK_6328_REG		0x20
++#define PERF_IRQMASK_6328_REG(x)	(0x20 + (x) * 0x10)
+ #define PERF_IRQMASK_6338_REG		0xc
+ #define PERF_IRQMASK_6345_REG		0xc
+ #define PERF_IRQMASK_6348_REG		0xc
+-#define PERF_IRQMASK_6358_REG		0xc
+-#define PERF_IRQMASK_6362_REG		0x20
+-#define PERF_IRQMASK_6368_REG		0x20
++#define PERF_IRQMASK_6358_REG(x)	(0xc + (x) * 0x2c)
++#define PERF_IRQMASK_6362_REG(x)	(0x20 + (x) * 0x10)
++#define PERF_IRQMASK_6368_REG(x)	(0x20 + (x) * 0x10)
  
- static void bcm63xx_external_irq_unmask(struct irq_data *d)
-@@ -235,7 +237,7 @@ static void bcm63xx_external_irq_unmask(struct irq_data *d)
- 	spin_unlock_irqrestore(&epic_lock, flags);
+ /* Interrupt Status register */
+ #define PERF_IRQSTAT_3368_REG		0x10
+-#define PERF_IRQSTAT_6328_REG		0x28
++#define PERF_IRQSTAT_6328_REG(x)	(0x28 + (x) * 0x10)
+ #define PERF_IRQSTAT_6338_REG		0x10
+ #define PERF_IRQSTAT_6345_REG		0x10
+ #define PERF_IRQSTAT_6348_REG		0x10
+-#define PERF_IRQSTAT_6358_REG		0x10
+-#define PERF_IRQSTAT_6362_REG		0x28
+-#define PERF_IRQSTAT_6368_REG		0x28
++#define PERF_IRQSTAT_6358_REG(x)	(0x10 + (x) * 0x2c)
++#define PERF_IRQSTAT_6362_REG(x)	(0x28 + (x) * 0x10)
++#define PERF_IRQSTAT_6368_REG(x)	(0x28 + (x) * 0x10)
  
- 	if (is_ext_irq_cascaded)
--		internal_irq_unmask(irq + ext_irq_start);
-+		internal_irq_unmask(irq_get_irq_data(irq + ext_irq_start));
- }
- 
- static void bcm63xx_external_irq_clear(struct irq_data *d)
+ /* External Interrupt Configuration register */
+ #define PERF_EXTIRQ_CFG_REG_3368	0x14
 -- 
 2.0.0

@@ -1,38 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jul 2014 12:52:57 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:46989 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860092AbaGLKu1BD8rw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Jul 2014 12:50:27 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id E62972845A0;
-        Sat, 12 Jul 2014 12:48:18 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from ixxyvirt.lan (dslb-088-073-046-107.pools.arcor-ip.net [88.73.46.107])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id F21A3280164;
-        Sat, 12 Jul 2014 12:47:50 +0200 (CEST)
-From:   Jonas Gorski <jogo@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>
-Subject: [PATCH 10/10] MIPS: BCM63XX: allow setting affinity for IPIC
-Date:   Sat, 12 Jul 2014 12:49:42 +0200
-Message-Id: <1405162182-30399-11-git-send-email-jogo@openwrt.org>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
-References: <1405162182-30399-1-git-send-email-jogo@openwrt.org>
-Return-Path: <jogo@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2014 04:23:00 +0200 (CEST)
+Received: from mail-ig0-f172.google.com ([209.85.213.172]:57886 "EHLO
+        mail-ig0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819433AbaGNCWx5q0Iu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2014 04:22:53 +0200
+Received: by mail-ig0-f172.google.com with SMTP id h15so1258841igd.11
+        for <multiple recipients>; Sun, 13 Jul 2014 19:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=5Nw+Vd/2OaTFtKThVrvabS+6oWjxlY2RfozPALauTyk=;
+        b=nRdhVf+ZQEvlPuYRYpcUMiy97CX6ttO/Tp3U11upDfz0Zr5pqeTpmWbjUSVYYxEkws
+         LGTl8r5uxw3kaZitL4lcxwWlYqlEs9ox8iG6rPVYEeqhpWIfl/D1BR97ej4gB0k2TR0c
+         4sxcXnKHxMCWghVQwUiwIeKfINwKN5kY0vWnSDhWOr3u14khyLDPQJA1mjwzCEYUib0l
+         QmkuVJREdaYrUZNny3BaZDFru1FAJKrwsRlkOHWbgghvWIPZGXc9SLvcNnBpewDKlK3U
+         BcffoHfpbOtC2A4A3L6UjfYs9jhMWzyp82t1eNcjxVJlRYdAgQsdHjECuoJgoR5+wcDO
+         piNg==
+MIME-Version: 1.0
+X-Received: by 10.42.65.7 with SMTP id j7mr18965234ici.11.1405304567491; Sun,
+ 13 Jul 2014 19:22:47 -0700 (PDT)
+Received: by 10.64.65.40 with HTTP; Sun, 13 Jul 2014 19:22:47 -0700 (PDT)
+In-Reply-To: <20140712093003.GF8187@pburton-laptop>
+References: <1405047990-12519-1-git-send-email-chenhc@lemote.com>
+        <1405048453-12633-1-git-send-email-chenj@lemote.com>
+        <20140711155631.GE8187@pburton-laptop>
+        <CAGXxSxV2KWiArguRRKWcbC82sZJweyjiDBBpJdWPne_Ag_Z_+w@mail.gmail.com>
+        <CAAhV-H5z1Xu5Mg0X68Yf_mpi8ZBg96TEYLkk4_2_Grb8=ET05Q@mail.gmail.com>
+        <20140712093003.GF8187@pburton-laptop>
+Date:   Mon, 14 Jul 2014 10:22:47 +0800
+X-Google-Sender-Auth: gfTR10fFZF__iFC6AkIwRT5-PkE
+Message-ID: <CAAhV-H4PbCLam5jdUjCdn9X9+pL6HR5=8wT_6TPWMt31qv4gMA@mail.gmail.com>
+Subject: Re: [PATCH] Not preempt in CP1 exception handling
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Chen Jie <chenj@lemote.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        =?UTF-8?B?546L6ZSQ?= <wangr@lemote.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41169
+X-archive-position: 41170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,120 +59,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Wire up the set_affinity call for the internal PIC if booting on
-a cpu supporting it.
-Affinity is kept to boot cpu as default.
+Hi, Ralf,
 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
- arch/mips/bcm63xx/irq.c | 46 ++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 40 insertions(+), 6 deletions(-)
+What do you think about? If you also prefer to totally remove the
+BUG_ON(), I will send a new patch.
 
-diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
-index a53305f..37eb2d1 100644
---- a/arch/mips/bcm63xx/irq.c
-+++ b/arch/mips/bcm63xx/irq.c
-@@ -32,7 +32,7 @@ static unsigned int ext_irq_count;
- static unsigned int ext_irq_start, ext_irq_end;
- static unsigned int ext_irq_cfg_reg1, ext_irq_cfg_reg2;
- static void (*internal_irq_mask)(struct irq_data *d);
--static void (*internal_irq_unmask)(struct irq_data *d);
-+static void (*internal_irq_unmask)(struct irq_data *d, const struct cpumask *m);
- 
- 
- static inline u32 get_ext_irq_perf_reg(int irq)
-@@ -51,6 +51,20 @@ static inline void handle_internal(int intbit)
- 		do_IRQ(intbit + IRQ_INTERNAL_BASE);
- }
- 
-+static inline int enable_irq_for_cpu(int cpu, struct irq_data *d,
-+				     const struct cpumask *m)
-+{
-+	bool enable = cpu_online(cpu);
-+
-+#ifdef CONFIG_SMP
-+	if (m)
-+		enable &= cpu_isset(cpu, *m);
-+	else if (irqd_affinity_was_set(d))
-+		enable &= cpu_isset(cpu, *d->affinity);
-+#endif
-+	return enable;
-+}
-+
- /*
-  * dispatch internal devices IRQ (uart, enet, watchdog, ...). do not
-  * prioritize any interrupt relatively to another. the static counter
-@@ -117,7 +131,8 @@ static void __internal_irq_mask_##width(struct irq_data *d)		\
- 	spin_unlock_irqrestore(&ipic_lock, flags);			\
- }									\
- 									\
--static void __internal_irq_unmask_##width(struct irq_data *d)		\
-+static void __internal_irq_unmask_##width(struct irq_data *d,		\
-+					  const struct cpumask *m)	\
- {									\
- 	u32 val;							\
- 	unsigned irq = d->irq - IRQ_INTERNAL_BASE;			\
-@@ -132,7 +147,7 @@ static void __internal_irq_unmask_##width(struct irq_data *d)		\
- 			break;						\
- 									\
- 		val = bcm_readl(irq_mask_addr[cpu] + reg * sizeof(u32));\
--		if (cpu_online(cpu))					\
-+		if (enable_irq_for_cpu(cpu, d, m))			\
- 			val |= (1 << bit);				\
- 		else							\
- 			val &= ~(1 << bit);				\
-@@ -189,7 +204,7 @@ static void bcm63xx_internal_irq_mask(struct irq_data *d)
- 
- static void bcm63xx_internal_irq_unmask(struct irq_data *d)
- {
--	internal_irq_unmask(d);
-+	internal_irq_unmask(d, NULL);
- }
- 
- /*
-@@ -237,7 +252,8 @@ static void bcm63xx_external_irq_unmask(struct irq_data *d)
- 	spin_unlock_irqrestore(&epic_lock, flags);
- 
- 	if (is_ext_irq_cascaded)
--		internal_irq_unmask(irq_get_irq_data(irq + ext_irq_start));
-+		internal_irq_unmask(irq_get_irq_data(irq + ext_irq_start),
-+				    NULL);
- }
- 
- static void bcm63xx_external_irq_clear(struct irq_data *d)
-@@ -356,6 +372,18 @@ static int bcm63xx_external_irq_set_type(struct irq_data *d,
- 	return IRQ_SET_MASK_OK_NOCOPY;
- }
- 
-+#ifdef CONFIG_SMP
-+static int bcm63xx_internal_set_affinity(struct irq_data *data,
-+					 const struct cpumask *dest,
-+					 bool force)
-+{
-+	if (!irqd_irq_disabled(data))
-+		internal_irq_unmask(data, dest);
-+
-+	return 0;
-+}
-+#endif
-+
- static struct irq_chip bcm63xx_internal_irq_chip = {
- 	.name		= "bcm63xx_ipic",
- 	.irq_mask	= bcm63xx_internal_irq_mask,
-@@ -523,7 +551,13 @@ void __init arch_init_irq(void)
- 
- 	setup_irq(MIPS_CPU_IRQ_BASE + 2, &cpu_ip2_cascade_action);
- #ifdef CONFIG_SMP
--	if (is_ext_irq_cascaded)
-+	if (is_ext_irq_cascaded) {
- 		setup_irq(MIPS_CPU_IRQ_BASE + 3, &cpu_ip3_cascade_action);
-+		bcm63xx_internal_irq_chip.irq_set_affinity =
-+			bcm63xx_internal_set_affinity;
-+
-+		cpumask_clear(irq_default_affinity);
-+		cpumask_set_cpu(smp_processor_id(), irq_default_affinity);
-+	}
- #endif
- }
--- 
-2.0.0
+On Sat, Jul 12, 2014 at 5:30 PM, Paul Burton <paul.burton@imgtec.com> wrote:
+> On Sat, Jul 12, 2014 at 05:10:35PM +0800, Huacai Chen wrote:
+>> Hi, Paul,
+>>
+>> You means my patch (http://patchwork.linux-mips.org/patch/7297/) is
+>> the correct way?
+>
+> I believe you patch will fix the problem, but I think it would be better
+> to remove the check for !preemptible() & the BUG_ON entirely.
+>
+>> Another question: Your patch
+>> (http://patchwork.linux-mips.org/patch/7307/) remove
+>> preempt_disable()/preempt_enable() in init_fpu(). It will cause
+>> problems if there is another function call init_fpu() because it is
+>> previously preempt-safe. Maybe introduce a new function (e.g.
+>> __init_fpu()) is a better way?
+>
+> It may cause a problem if there were other callers, but there is only
+> one caller of init_fpu (enable_restore_fp_context) and it needs to
+> disable preemption for longer than the init_fpu function anyway. I see
+> no value in keeping init_fpu as a wrapper that disables preemption
+> when there would be nothing calling it.
+>
+> Thanks,
+>     Paul
+>
+>> Huacai
+>>
+>> On Sat, Jul 12, 2014 at 7:28 AM, Chen Jie <chenj@lemote.com> wrote:
+>> > 2014-07-11 23:56 GMT+08:00 Paul Burton <paul.burton@imgtec.com>:
+>> >> On Fri, Jul 11, 2014 at 11:14:13AM +0800, chenj wrote:
+>> >>> do_ade may be invoked with preempt enabled. do_cpu will be invoked with
+>> >>> preempt enabled. When it's preempted(in do_ade/do_cpu), TIF_USEDFPU will be
+>> >>> cleared, when it returns to do_ade/do_cpu, the fpu is actually disabled.
+>> >>>
+>> >>> e.g.
+>> >>> In do_ade()
+>> >>>   emulate_load_store_insn():
+>> >>>     BUG_ON(!is_fpu_owner()); <-- This assertion may be breaked.
+>> >>>
+>> >>> In do_cpu()
+>> >>>   enable_restore_fp_context():
+>> >>>     was_fpu_owner = is_fpu_owner();
+>> >>
+>> >> Preemption should indeed be disabled around the assignment & use of the
+>> >> was_fpu_owner variable, but note that you can only hit the problem if
+>> >> using MSA. One of the MSA fixes I just submitted also fixes this along
+>> >> with another instance of the problem:
+>> >>
+>> >>   http://patchwork.linux-mips.org/patch/7307/
+>> >>
+>> >> I prefer my patch to this since it disables preemption for less time,
+>> >> in addition to fixing the !used_math() case.
+>> >>
+>> >> In emulate_load_store_insn I believe the correct fix is simply to remove
+>> >> that BUG_ON. The code is about to give up FPU ownership anyway, so it's
+>> >> not like there is any requirement being violated if it was already lost.
+>> > Yes, you're right.
+>> >
+>> > """ /* arch/mips/kernel/unaligned.c */
+>> > lose_fpu(1);    /* Save FPU state for the emulator. */
+>> > res = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1, &fault_addr);
+>> > own_fpu(1);     /* Restore FPU state. */
+>> > """
+>> >
+>> > Going deep into the code, I find lost_fpu(1) will save fpu context if
+>> > owns fpu (otherwise, if preempted, the fpu context will be saved in
+>> > process switch), then fpu_emulator_cop1Handler manipulates the saved
+>> > fpu context, own_fpu(1) restores it.
+>> >
+>> > So, remove "BUG_ON(!is_fpu_owner())" is OK.
+>> >
+>

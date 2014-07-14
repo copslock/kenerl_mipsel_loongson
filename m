@@ -1,41 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2014 13:47:25 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3128 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2014 17:39:45 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:31061 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860090AbaGNLrW57OxM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2014 13:47:22 +0200
+        with ESMTP id S6815921AbaGNPjnichk2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2014 17:39:43 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 7C3667AF904F4
-        for <linux-mips@linux-mips.org>; Mon, 14 Jul 2014 12:47:12 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 949283A3DEC72;
+        Mon, 14 Jul 2014 16:39:33 +0100 (IST)
 Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 14 Jul
- 2014 12:47:15 +0100
+ 2014 16:39:36 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 14 Jul 2014 12:47:15 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
+ 14.3.195.1; Mon, 14 Jul 2014 16:39:36 +0100
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.89) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 14 Jul 2014 12:47:14 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH v2 5/5] MIPS: mm: Use the Hardware Page Table Walker if the core supports it
-Date:   Mon, 14 Jul 2014 12:47:09 +0100
-Message-ID: <1405338429-10995-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1405329246-21643-6-git-send-email-markos.chandras@imgtec.com>
-References: <1405329246-21643-6-git-send-email-markos.chandras@imgtec.com>
+ 14.3.195.1; Mon, 14 Jul 2014 16:39:35 +0100
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: [PATCH] mips: fix a warning for virt_to_page
+Date:   Mon, 14 Jul 2014 16:39:19 +0100
+Message-ID: <1405352359-15277-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [192.168.154.67]
-Return-Path: <Markos.Chandras@imgtec.com>
+X-Originating-IP: [192.168.154.89]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41186
+X-archive-position: 41187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,338 +46,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Hardware Page Table Walker aims to speed up TLB refill exceptions
-by handling them in the hardware level instead of having a software
-TLB refill handler. However, a TLB refill exception can still be thrown
-in certain cases such as, synchronus exceptions, or address translation
-or memory errors during the HTW operation. As a result of which,
-HTW must not be considered a complete replacement for the TLB refill
-software handler, but rather a fast-path for it.
-For HTW to work, the PWBase register must contain the task's page
-global directory address so the HTW will kick in on TLB refill
-exceptions.
+Compiling mm/highmem.c gives a warning: passing argument 1 of
+'virt_to_phys' makes pointer from integer without a cast
 
-Due to HTW being a separate engine embedded deep in the CPU pipeline,
-we need to restart the HTW everytime a PTE changes to avoid HTW fetching
-a old entry from the page tables. It's also necessary to restart the HTW
-on context switches to prevent it from fetching a page from the previous
-process. Finally, since HTW is using the entryhi register to write
-the translations to the TLB, it's necessary to stop the HTW whenever
-the entryhi changes (eg for tlb probe operations) and enable it back
-afterwards.
+Fixed by casting to void*
 
-== Performance ==
-
-The following trivial test was used to measure the performance of
-the HTW. Using the same root filesystem, the following
-command was used to measure the number of tlb refill handler executions
-with and without (using 'nohtw' kernel parameter) HTW support.
-The kernel was modified to use a scratch register as a counter for
-the TLB refill exceptions.
-
-find /usr -type f -exec ls -lh {} \;
-
-HTW Enabled:
-TLB refill exceptions: 12306
-
-HTW Disabled:
-TLB refill exceptions: 17805
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 ---
-Changes since v1:
-- Rename HWTW to HTW
----
- arch/mips/include/asm/mmu_context.h | 10 ++++
- arch/mips/include/asm/pgtable.h     | 27 +++++++++++
- arch/mips/mm/tlb-r4k.c              | 12 +++++
- arch/mips/mm/tlbex.c                | 91 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 140 insertions(+)
+ arch/mips/include/asm/page.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index 2e373da5f8e9..2f82568a3ee4 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -20,10 +20,20 @@
- #include <asm/tlbflush.h>
- #include <asm-generic/mm_hooks.h>
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index 5699ec3..fd0347d 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -223,7 +223,8 @@ static inline int pfn_valid(unsigned long pfn)
  
-+#define htw_set_pwbase(pgd)						\
-+do {									\
-+	if (cpu_has_htw) {						\
-+		write_c0_pwbase(pgd);					\
-+		back_to_back_c0_hazard();				\
-+		htw_reset();						\
-+	}								\
-+} while (0)
-+
- #define TLBMISS_HANDLER_SETUP_PGD(pgd)					\
- do {									\
- 	extern void tlbmiss_handler_setup_pgd(unsigned long);		\
- 	tlbmiss_handler_setup_pgd((unsigned long)(pgd));		\
-+	htw_set_pwbase((unsigned long)pgd);				\
- } while (0)
- 
- #ifdef CONFIG_MIPS_PGD_C0_CONTEXT
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 539ddd148bbb..027c74db13f9 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -97,6 +97,31 @@ extern void paging_init(void);
- 
- #define pmd_page_vaddr(pmd)	pmd_val(pmd)
- 
-+#define htw_stop()							\
-+do {									\
-+	if (cpu_has_htw)						\
-+		write_c0_pwctl(read_c0_pwctl() &			\
-+			       ~(1 << MIPS_PWCTL_PWEN_SHIFT));		\
-+} while(0)
-+
-+#define htw_start()							\
-+do {									\
-+	if (cpu_has_htw)						\
-+		write_c0_pwctl(read_c0_pwctl() |			\
-+			       (1 << MIPS_PWCTL_PWEN_SHIFT));		\
-+} while(0)
-+
-+
-+#define htw_reset()							\
-+do {									\
-+	if (cpu_has_htw) {						\
-+		htw_stop();						\
-+		back_to_back_c0_hazard();				\
-+		htw_start();						\
-+		back_to_back_c0_hazard();				\
-+	}								\
-+} while(0)
-+
- #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
- 
- #define pte_none(pte)		(!(((pte).pte_low | (pte).pte_high) & ~_PAGE_GLOBAL))
-@@ -131,6 +156,7 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *pt
- 		null.pte_low = null.pte_high = _PAGE_GLOBAL;
- 
- 	set_pte_at(mm, addr, ptep, null);
-+	htw_reset();
- }
- #else
- 
-@@ -168,6 +194,7 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *pt
- 	else
- #endif
- 		set_pte_at(mm, addr, ptep, __pte(0));
-+	htw_reset();
- }
  #endif
  
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 3914e27456f2..560c4ada8b8e 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -57,6 +57,7 @@ void local_flush_tlb_all(void)
- 	local_irq_save(flags);
- 	/* Save old context and create impossible VPN2 value */
- 	old_ctx = read_c0_entryhi();
-+	htw_stop();
- 	write_c0_entrylo0(0);
- 	write_c0_entrylo1(0);
+-#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
++#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys((void *)     \
++								  (kaddr))))
  
-@@ -90,6 +91,7 @@ void local_flush_tlb_all(void)
- 	}
- 	tlbw_use_hazard();
- 	write_c0_entryhi(old_ctx);
-+	htw_start();
- 	flush_itlb();
- 	local_irq_restore(flags);
- }
-@@ -131,6 +133,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 			int oldpid = read_c0_entryhi();
- 			int newpid = cpu_asid(cpu, mm);
- 
-+			htw_stop();
- 			while (start < end) {
- 				int idx;
- 
-@@ -151,6 +154,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 			}
- 			tlbw_use_hazard();
- 			write_c0_entryhi(oldpid);
-+			htw_start();
- 		} else {
- 			drop_mmu_context(mm, cpu);
- 		}
-@@ -174,6 +178,7 @@ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
- 		start &= (PAGE_MASK << 1);
- 		end += ((PAGE_SIZE << 1) - 1);
- 		end &= (PAGE_MASK << 1);
-+		htw_stop();
- 
- 		while (start < end) {
- 			int idx;
-@@ -195,6 +200,7 @@ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
- 		}
- 		tlbw_use_hazard();
- 		write_c0_entryhi(pid);
-+		htw_start();
- 	} else {
- 		local_flush_tlb_all();
- 	}
-@@ -214,6 +220,7 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long page)
- 		page &= (PAGE_MASK << 1);
- 		local_irq_save(flags);
- 		oldpid = read_c0_entryhi();
-+		htw_stop();
- 		write_c0_entryhi(page | newpid);
- 		mtc0_tlbw_hazard();
- 		tlb_probe();
-@@ -231,6 +238,7 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long page)
- 
- 	finish:
- 		write_c0_entryhi(oldpid);
-+		htw_start();
- 		flush_itlb_vm(vma);
- 		local_irq_restore(flags);
- 	}
-@@ -247,6 +255,7 @@ void local_flush_tlb_one(unsigned long page)
- 
- 	local_irq_save(flags);
- 	oldpid = read_c0_entryhi();
-+	htw_stop();
- 	page &= (PAGE_MASK << 1);
- 	write_c0_entryhi(page);
- 	mtc0_tlbw_hazard();
-@@ -263,6 +272,7 @@ void local_flush_tlb_one(unsigned long page)
- 		tlbw_use_hazard();
- 	}
- 	write_c0_entryhi(oldpid);
-+	htw_start();
- 	flush_itlb();
- 	local_irq_restore(flags);
- }
-@@ -351,6 +361,7 @@ void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
- 	local_irq_save(flags);
- 	/* Save old context and create impossible VPN2 value */
- 	old_ctx = read_c0_entryhi();
-+	htw_stop();
- 	old_pagemask = read_c0_pagemask();
- 	wired = read_c0_wired();
- 	write_c0_wired(wired + 1);
-@@ -366,6 +377,7 @@ void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
- 
- 	write_c0_entryhi(old_ctx);
- 	tlbw_use_hazard();	/* What is the hazard here? */
-+	htw_start();
- 	write_c0_pagemask(old_pagemask);
- 	local_flush_tlb_all();
- 	local_irq_restore(flags);
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index e80e10bafc83..0d9d0f06dbb2 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -2194,6 +2194,94 @@ static void flush_tlb_handlers(void)
- 			   (unsigned long)tlbmiss_handler_setup_pgd_end);
- }
- 
-+static void print_htw_config(void)
-+{
-+	unsigned long config;
-+	unsigned int pwctl;
-+	const int field = 2 * sizeof(unsigned long);
-+
-+	config = read_c0_pwfield();
-+	pr_debug("PWField (0x%0*lx): GDI: 0x%02lx  UDI: 0x%02lx  MDI: 0x%02lx  PTI: 0x%02lx  PTEI: 0x%02lx\n",
-+		field, config,
-+		(config & MIPS_PWFIELD_GDI_MASK) >> MIPS_PWFIELD_GDI_SHIFT,
-+		(config & MIPS_PWFIELD_UDI_MASK) >> MIPS_PWFIELD_UDI_SHIFT,
-+		(config & MIPS_PWFIELD_MDI_MASK) >> MIPS_PWFIELD_MDI_SHIFT,
-+		(config & MIPS_PWFIELD_PTI_MASK) >> MIPS_PWFIELD_PTI_SHIFT,
-+		(config & MIPS_PWFIELD_PTEI_MASK) >> MIPS_PWFIELD_PTEI_SHIFT);
-+
-+	config = read_c0_pwsize();
-+	pr_debug("PWSize  (0x%0*lx): GDW: 0x%02lx  UDW: 0x%02lx  MDW: 0x%02lx  PTW: 0x%02lx  PTEW: 0x%02lx\n",
-+		field, config,
-+		(config & MIPS_PWSIZE_GDW_MASK) >> MIPS_PWSIZE_GDW_SHIFT,
-+		(config & MIPS_PWSIZE_UDW_MASK) >> MIPS_PWSIZE_UDW_SHIFT,
-+		(config & MIPS_PWSIZE_MDW_MASK) >> MIPS_PWSIZE_MDW_SHIFT,
-+		(config & MIPS_PWSIZE_PTW_MASK) >> MIPS_PWSIZE_PTW_SHIFT,
-+		(config & MIPS_PWSIZE_PTEW_MASK) >> MIPS_PWSIZE_PTEW_SHIFT);
-+
-+	pwctl = read_c0_pwctl();
-+	pr_debug("PWCtl   (0x%x): PWEn: 0x%x  DPH: 0x%x  HugePg: 0x%x  Psn: 0x%x\n",
-+		pwctl,
-+		(pwctl & MIPS_PWCTL_PWEN_MASK) >> MIPS_PWCTL_PWEN_SHIFT,
-+		(pwctl & MIPS_PWCTL_DPH_MASK) >> MIPS_PWCTL_DPH_SHIFT,
-+		(pwctl & MIPS_PWCTL_HUGEPG_MASK) >> MIPS_PWCTL_HUGEPG_SHIFT,
-+		(pwctl & MIPS_PWCTL_PSN_MASK) >> MIPS_PWCTL_PSN_SHIFT);
-+}
-+
-+static void config_htw_params(void)
-+{
-+	unsigned long pwfield, pwsize, ptei;
-+	unsigned int config;
-+
-+	/*
-+	 * We are using 2-level page tables, so we only need to
-+	 * setup GDW and PTW appropriately. UDW and MDW will remain 0.
-+	 * The default value of GDI/UDI/MDI/PTI is 0xc. It is illegal to
-+	 * write values less than 0xc in these fields because the entire
-+	 * write will be dropped. As a result of which, we must preserve
-+	 * the original reset values and overwrite only what we really want.
-+	 */
-+
-+	pwfield = read_c0_pwfield();
-+	/* re-initialize the GDI field */
-+	pwfield &= ~MIPS_PWFIELD_GDI_MASK;
-+	pwfield |= PGDIR_SHIFT << MIPS_PWFIELD_GDI_SHIFT;
-+	/* re-initialize the PTI field including the even/odd bit */
-+	pwfield &= ~MIPS_PWFIELD_PTI_MASK;
-+	pwfield |= PAGE_SHIFT << MIPS_PWFIELD_PTI_SHIFT;
-+	/* Set the PTEI right shift */
-+	ptei = _PAGE_GLOBAL_SHIFT << MIPS_PWFIELD_PTEI_SHIFT;
-+	pwfield |= ptei;
-+	write_c0_pwfield(pwfield);
-+	/* Check whether the PTEI value is supported */
-+	back_to_back_c0_hazard();
-+	pwfield = read_c0_pwfield();
-+	if (((pwfield & MIPS_PWFIELD_PTEI_MASK) << MIPS_PWFIELD_PTEI_SHIFT)
-+		!= ptei) {
-+		pr_warn("Unsupported PTEI field value: 0x%lx. HTW will not be enabled",
-+			ptei);
-+		/*
-+		 * Drop option to avoid HTW being enabled via another path
-+		 * (eg htw_reset())
-+		 */
-+		current_cpu_data.options &= ~MIPS_CPU_HTW;
-+		return;
-+	}
-+
-+	pwsize = ilog2(PTRS_PER_PGD) << MIPS_PWSIZE_GDW_SHIFT;
-+	pwsize |= ilog2(PTRS_PER_PTE) << MIPS_PWSIZE_PTW_SHIFT;
-+	write_c0_pwsize(pwsize);
-+
-+	/* Make sure everything is set before we enable the HTW */
-+	back_to_back_c0_hazard();
-+
-+	/* Enable HTW and disable the rest of the pwctl fields */
-+	config = 1 << MIPS_PWCTL_PWEN_SHIFT;
-+	write_c0_pwctl(config);
-+	pr_info("Hardware Page Table Walker enabled\n");
-+
-+	print_htw_config();
-+}
-+
- void build_tlb_refill_handler(void)
- {
- 	/*
-@@ -2258,5 +2346,8 @@ void build_tlb_refill_handler(void)
- 		}
- 		if (cpu_has_local_ebase)
- 			build_r4000_tlb_refill_handler();
-+		if (cpu_has_htw)
-+			config_htw_params();
-+
- 	}
- }
+ extern int __virt_addr_valid(const volatile void *kaddr);
+ #define virt_addr_valid(kaddr)						\
 -- 
-2.0.0
+1.9.1

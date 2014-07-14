@@ -1,58 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2014 20:59:17 +0200 (CEST)
-Received: from mail-ob0-f175.google.com ([209.85.214.175]:55997 "EHLO
-        mail-ob0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815921AbaGNS7PbwoBJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2014 20:59:15 +0200
-Received: by mail-ob0-f175.google.com with SMTP id wp18so4705031obc.34
-        for <linux-mips@linux-mips.org>; Mon, 14 Jul 2014 11:59:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=uhhJdYVdKfO1n2PcPWEzzOogaSj6aH34TkN+2WE8K4c=;
-        b=JnF7aB6DAe2yrBdCOxZobHll7jTwxAK+uiemY5hC2AfE93V4gM0iaf4mSdr2Vca7O4
-         /pyiEyPt2J66fkdJA8udWWvB3juaffBk9NWpiZKzEKj8BxfdNxG0pQ62Ea1rIlAMPztG
-         CulrfeJAK0yXgZw5tacSY4JEFkPe30iKndBAAq8USEPBDgT5pESjt7XoDEzLLOwA/vzI
-         E2PvaR5GLsURbzefWaGHhYReYbFfQCS0wq/yb8iflYiMdczQ0MleRc5tcpazhoWNG+EK
-         jPN6dsF8xNbo199Cpfl/MF/doF8aq9+BXmJNLErCP9Y918zKhWNZVSRpZYPBuN2bnl5q
-         K+vA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=uhhJdYVdKfO1n2PcPWEzzOogaSj6aH34TkN+2WE8K4c=;
-        b=n7EN/XUzlvPBamv5exPbR/E50w4SQzAPFpEH1DA6fbQXHt1bbGCIHnOOrR0J+86Ekj
-         0Hu2YN7PB7rBMICHMJaEx9rbRS6EnBDfpA5BDit8/9lDDfTBaOM4GarBk2dEK2vvz/+p
-         L3YjZm782ndjzUqsNZaUsgZDXqS0E0LSNQa40=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2014 21:05:00 +0200 (CEST)
+Received: from mail-lb0-f180.google.com ([209.85.217.180]:59978 "EHLO
+        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6815921AbaGNTE7CSYKA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2014 21:04:59 +0200
+Received: by mail-lb0-f180.google.com with SMTP id w7so3095087lbi.25
+        for <linux-mips@linux-mips.org>; Mon, 14 Jul 2014 12:04:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=uhhJdYVdKfO1n2PcPWEzzOogaSj6aH34TkN+2WE8K4c=;
-        b=Cdotfht0f1yVD/BXiEf1j3Xk0GlEnMaIxc5NuD2Dj7UU+pntv4cs9KrlhyV/dNlb4w
-         wu/MWDKI2RInEg4lfDkpZx29PkZu2w8VHeTQ3QNl6qcBmR3eL+RjH6Bbe0fGDIf/T5PU
-         AIqtzUUq2ol41vjqt6e2FGfVCdvAUGWcHNG8YeyPVEJrISHk762SMwRc8+gHRKf2RbvM
-         5uiy06UmNSjhEgqsPNEK2XkzNgxLri5mwUxPuNt2axhi6e+F5mOaFKhgxdFojhuMzPzg
-         P/FAsHiTRtZhPf4+7jpf0jv7eenHoCK4zqMhhY82XDJdX5uxkz7h4JrwPoqTbfASrjZe
-         JZog==
-X-Gm-Message-State: ALoCoQklB0MBZTIrs+QjHtY+HqFSzrmKlL59zsO9OZx5ospnYpO9redAeYUX4vHtp/TfWdd4C4zD
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=d8xZ7+7UkIxRic1Dxlu6MlBzMd9urkJ/Lo1Vqk6DRcc=;
+        b=AxbgZ4GOeczzaseE4Bj9HhDx21jpcayFxJ7a+FEoUmzMWYP5c7NjN/XspdwL0kBdM8
+         BCHSjiuIvWiBzeeOuFwtyNz7ShmOuMt/Uip3LReVbPoUv9Yq4nwYu+Tuqqt23zpZO6GM
+         5BVTen5sUBS3vpMvOL31erpK9GdrUntwAGqXIPRtKfd9RXqWo/eOL6dazU8P4C4RPLhb
+         yKOeiypZ+s8TesEYf1fm7FjmjyCtC8IIuPOVx/YXPCUcANeqgWpI3iCdE9wvtp4KjqN8
+         UrCh9PQ1CydUaWrDvf4JgHWh1K9Z2bt3Y2dwL6O1xu+/GTBc+oRo67EHiCf0c6JVxpZy
+         GJYw==
+X-Gm-Message-State: ALoCoQmfQbzIWA3EyHwSeLpODZSJviRZ56Q5r40DX4XxL9V3aKIVAG9gjA+wSdIZlJ260kMICUq8
+X-Received: by 10.112.180.70 with SMTP id dm6mr14836930lbc.32.1405364693370;
+ Mon, 14 Jul 2014 12:04:53 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.60.80.229 with SMTP id u5mr19899702oex.62.1405364348955;
- Mon, 14 Jul 2014 11:59:08 -0700 (PDT)
-Received: by 10.182.85.103 with HTTP; Mon, 14 Jul 2014 11:59:08 -0700 (PDT)
+Received: by 10.152.108.130 with HTTP; Mon, 14 Jul 2014 12:04:33 -0700 (PDT)
 In-Reply-To: <CAGXu5jK-x0=Rr7kX2a=b4Z8ueA77uwmhNZZAayG8cwmNOKa8Ug@mail.gmail.com>
 References: <1405017631-27346-1-git-send-email-keescook@chromium.org>
-        <20140711164931.GA18473@redhat.com>
-        <CAGXu5jK-x0=Rr7kX2a=b4Z8ueA77uwmhNZZAayG8cwmNOKa8Ug@mail.gmail.com>
-Date:   Mon, 14 Jul 2014 11:59:08 -0700
-X-Google-Sender-Auth: zs_UTEa_Y_JdKgssJCB-nUIhbeM
-Message-ID: <CAGXu5jJJsiTxxn5UijkBz7jpWgqg01BS=Zc0WbHXbs0vH_xPMQ@mail.gmail.com>
+ <20140711164931.GA18473@redhat.com> <CAGXu5jK-x0=Rr7kX2a=b4Z8ueA77uwmhNZZAayG8cwmNOKa8Ug@mail.gmail.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Mon, 14 Jul 2014 12:04:33 -0700
+Message-ID: <CALCETrVXgA9a2f7VwnCYW4_XB+JAPRSR8xsuH_ZYbA82=ZozRw@mail.gmail.com>
 Subject: Re: [PATCH v10 0/11] seccomp: add thread sync ability
-From:   Kees Cook <keescook@chromium.org>
-To:     James Morris <james.l.morris@oracle.com>
+To:     Kees Cook <keescook@chromium.org>
 Cc:     Oleg Nesterov <oleg@redhat.com>,
         LKML <linux-kernel@vger.kernel.org>,
-        Andy Lutomirski <luto@amacapital.net>,
         Alexei Starovoitov <ast@plumgrid.com>,
         "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -67,15 +45,15 @@ Cc:     Oleg Nesterov <oleg@redhat.com>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-security-module <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41188
+X-archive-position: 41189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,15 +65,6 @@ List-owner: <mailto:ralf@linux-mips.org>
 List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
-
-Hi James,
-
-Is this series something you would carry in the security-next tree?
-That has traditionally been where seccomp features have landed in the
-past.
-
--Kees
-
 
 On Fri, Jul 11, 2014 at 10:55 AM, Kees Cook <keescook@chromium.org> wrote:
 > On Fri, Jul 11, 2014 at 9:49 AM, Oleg Nesterov <oleg@redhat.com> wrote:
@@ -118,21 +87,10 @@ On Fri, Jul 11, 2014 at 10:55 AM, Kees Cook <keescook@chromium.org> wrote:
 >
 > Awesome! Thank you for all the reviews. :) If Andy and Michael are
 > happy with this too, I think this is in good shape. \o/
->
-> -Kees
->
->>
->> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
->>
->
->
->
-> --
-> Kees Cook
-> Chrome OS Security
 
+I think I'm happy with it.  Is it in git somewhere for easy perusal?
+I have a cold, so my reviewing ability is a bit off, but I want to
+take a look at the final version, and git is a little easier than
+email for this.
 
-
--- 
-Kees Cook
-Chrome OS Security
+--Andy

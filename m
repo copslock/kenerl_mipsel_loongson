@@ -1,25 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jul 2014 23:34:48 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:40312 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jul 2014 23:35:07 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:40375 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861019AbaGOVeo3sGWk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jul 2014 23:34:44 +0200
+        by eddie.linux-mips.org with ESMTP id S6861035AbaGOVfBSYIfT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jul 2014 23:35:01 +0200
 Received: from c-67-160-228-185.hsd1.ca.comcast.net ([67.160.228.185] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.71)
         (envelope-from <kamal@canonical.com>)
-        id 1X7AJu-0007F3-Dt; Tue, 15 Jul 2014 21:31:30 +0000
+        id 1X7AJp-0007Cr-5i; Tue, 15 Jul 2014 21:31:25 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1X7AJs-0004Ed-EP; Tue, 15 Jul 2014 14:31:28 -0700
+        id 1X7AJn-00045M-86; Tue, 15 Jul 2014 14:31:23 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Alex Smith <alex.smith@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sanjay Lal <sanjayl@kymasys.com>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.13 190/198] recordmcount/MIPS: Fix possible incorrect mcount_loc table entries in modules
-Date:   Tue, 15 Jul 2014 14:31:00 -0700
-Message-Id: <1405459868-15089-191-git-send-email-kamal@canonical.com>
+Subject: [PATCH 3.13 076/198] MIPS: KVM: Allocate at least 16KB for exception handlers
+Date:   Tue, 15 Jul 2014 14:29:06 -0700
+Message-Id: <1405459868-15089-77-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1405459868-15089-1-git-send-email-kamal@canonical.com>
 References: <1405459868-15089-1-git-send-email-kamal@canonical.com>
@@ -28,7 +31,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41209
+X-archive-position: 41210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,63 +52,51 @@ X-list: linux-mips
 
 ------------------
 
-From: Alex Smith <alex.smith@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 91ad11d7cc6f4472ebf177a6252fbf0fd100d798 upstream.
+commit 7006e2dfda9adfa40251093604db76d7e44263b3 upstream.
 
-On MIPS calls to _mcount in modules generate 2 instructions to load
-the _mcount address (and therefore 2 relocations). The mcount_loc
-table should only reference the first of these, so the second is
-filtered out by checking the relocation offset and ignoring ones that
-immediately follow the previous one seen.
+Each MIPS KVM guest has its own copy of the KVM exception vector. This
+contains the TLB refill exception handler at offset 0x000, the general
+exception handler at offset 0x180, and interrupt exception handlers at
+offset 0x200 in case Cause_IV=1. A common handler is copied to offset
+0x2000 and offset 0x3000 is used for temporarily storing k1 during entry
+from guest.
 
-However if a module has an _mcount call at offset 0, the second
-relocation would not be filtered out due to old_r_offset == 0
-being taken to mean that the current relocation is the first one
-seen, and both would end up in the mcount_loc table.
+However the amount of memory allocated for this purpose is calculated as
+0x200 rounded up to the next page boundary, which is insufficient if 4KB
+pages are in use. This can lead to the common handler at offset 0x2000
+being overwritten and infinitely recursive exceptions on the next exit
+from the guest.
 
-This results in ftrace_make_nop() patching both (adjacent)
-instructions to branches over the _mcount call sequence like so:
+Increase the minimum size from 0x200 to 0x4000 to cover the full use of
+the page.
 
-  0xffffffffc08a8000:  04 00 00 10     b       0xffffffffc08a8014
-  0xffffffffc08a8004:  04 00 00 10     b       0xffffffffc08a8018
-  0xffffffffc08a8008:  2d 08 e0 03     move    at,ra
-  ...
-
-The second branch is in the delay slot of the first, which is
-defined to be unpredictable - on the platform on which this bug was
-encountered, it triggers a reserved instruction exception.
-
-Fix by initializing old_r_offset to ~0 and using that instead of 0
-to determine whether the current relocation is the first seen.
-
-Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-Cc: linux-kernel@vger.kernel.org
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: kvm@vger.kernel.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7098/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Sanjay Lal <sanjayl@kymasys.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- scripts/recordmcount.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kvm/kvm_mips.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
-index 9d1421e..49b582a 100644
---- a/scripts/recordmcount.h
-+++ b/scripts/recordmcount.h
-@@ -163,11 +163,11 @@ static int mcount_adjust = 0;
+diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
+index 73b3482..3dfbe82 100644
+--- a/arch/mips/kvm/kvm_mips.c
++++ b/arch/mips/kvm/kvm_mips.c
+@@ -304,7 +304,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ 	if (cpu_has_veic || cpu_has_vint) {
+ 		size = 0x200 + VECTORSPACING * 64;
+ 	} else {
+-		size = 0x200;
++		size = 0x4000;
+ 	}
  
- static int MIPS_is_fake_mcount(Elf_Rel const *rp)
- {
--	static Elf_Addr old_r_offset;
-+	static Elf_Addr old_r_offset = ~(Elf_Addr)0;
- 	Elf_Addr current_r_offset = _w(rp->r_offset);
- 	int is_fake;
- 
--	is_fake = old_r_offset &&
-+	is_fake = (old_r_offset != ~(Elf_Addr)0) &&
- 		(current_r_offset - old_r_offset == MIPS_FAKEMCOUNT_OFFSET);
- 	old_r_offset = current_r_offset;
- 
+ 	/* Save Linux EBASE */
 -- 
 1.9.1

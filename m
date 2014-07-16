@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2014 18:20:54 +0200 (CEST)
-Received: from mail-we0-f172.google.com ([74.125.82.172]:41333 "EHLO
-        mail-we0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861298AbaGPQUhfeXus convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2014 18:21:19 +0200 (CEST)
+Received: from mail-wi0-f182.google.com ([209.85.212.182]:45393 "EHLO
+        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861327AbaGPQVCHxbct convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 Jul 2014 18:20:37 +0200
-Received: by mail-we0-f172.google.com with SMTP id x48so1200592wes.3
-        for <linux-mips@linux-mips.org>; Wed, 16 Jul 2014 09:20:32 -0700 (PDT)
+        Wed, 16 Jul 2014 18:21:02 +0200
+Received: by mail-wi0-f182.google.com with SMTP id d1so1589536wiv.3
+        for <linux-mips@linux-mips.org>; Wed, 16 Jul 2014 09:20:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=sender:from:to:cc:subject:in-reply-to:organization:references
          :user-agent:face:date:message-id:mime-version:content-type
          :content-transfer-encoding;
-        bh=8FMKMg8D1RKHHtO4jtUjEA6Tk7CvCdEK46U77+QGRdY=;
-        b=pWNBhgbMMB3kX3vHSwq9s+0kCziRWPgh5oAzMCrbChdMPPkuCakopHi7idxK0/0ncJ
-         o8Xe+kM0ErQrYEdE2tRhuYdG3GB4kiF+A5y5uklh9SXgWDA8floBxjZR9YKwgtKbhW61
-         f4EAqinHn7vviLxnL+0mcNHfQacPdLesPk0EUojXqvBqPF75GHhifi6u46DKe16ZnXfp
-         U5aiO0WDMvoEQaFQO8d8gcoqrGp26N0EdlZTv0+8/rI3Z3tFdD5PWcWZ+Dl/IMk7Uj4i
-         G4CgI/ERgvvIIJVqV1aLxlxDYXoe1K+aQuIbCnf+u9aRrWZBc6YWE0ahK76KZltGjsfv
-         OFwA==
+        bh=AY1ddBSTya/Z/TLrwX5Fd3/N8l3re18vKOmpKO3RCus=;
+        b=RMcsqCSPv8HSqD/hNH0xuwav7eeNeiKzWGY+W8BMgAYhLcPpMuqPh8rkrgXRnLqIBw
+         g8OZ6OknVeQGeYPsyPVUUlxEz5Yf2YiMOIMHzi150d52KizDWcJpxpBHY1OFy/S82mWX
+         XkTEexhU6CGTNyp4QINYpzxXk6R0zTvT9xuxJREU+GD7c/BRVQytzfEbiylvju1aGkDF
+         o8o57k9/q8mTmNF9C/UmjibSsBlkrQ4oqhiQ2Vt4Ei0w7oazMeopeVonti6+Cz9KCbcN
+         JpG3RJ3Hm6wtxDanPvXThMNhnX6vsM81nl5+BKNkioE+FyPwwFiSoycA+4BX5H2jeYzB
+         1Xkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to
          :organization:references:user-agent:face:date:message-id
          :mime-version:content-type:content-transfer-encoding;
-        bh=8FMKMg8D1RKHHtO4jtUjEA6Tk7CvCdEK46U77+QGRdY=;
-        b=leHFw68WwEacWnFvQQfgH5R8oY0UKCFm4kW1je/cRhxrTo8q5+GUwrzrg1vgLZq5fo
-         brhCGtNNassS+ibl6U7kidjgfvl5xCmOOoNbgFF1aeqWXyFWMcb5w5EcjAymf4QQ5Vqe
-         DM4dhth5lMUC0O/4T3HZMgLb4CZ71BNB4Hcglei3TlxsFisFj6o6twYVbK7EKyOsY5VV
-         0kKEcSA4V7sr1uvluh59+SKfo+CzMsOVAh3FU1XEyxI/YS2yydz2hOJunlKk2kiiF3Sm
-         FmJlOJoR+mdOpbdfxkVIG8b/fwWyiTak2vQZ8ILMJPd+1+B8X+XXAapQ/4trv1/wUez5
-         cOww==
-X-Gm-Message-State: ALoCoQmXmbdEp1xp9dq0finZN+eIZXREs4gXC+dThoIDdRiR67XkKdatXQzxWUEdY3eW8Eorx9KY
-X-Received: by 10.181.5.39 with SMTP id cj7mr15054890wid.79.1405527632131;
-        Wed, 16 Jul 2014 09:20:32 -0700 (PDT)
+        bh=AY1ddBSTya/Z/TLrwX5Fd3/N8l3re18vKOmpKO3RCus=;
+        b=DORNcZniAN7fS8EkkTxXytYSup0V8YwHd2aZvdgb2+dTtvCoInawQUHhcePmwOKCDu
+         CiJLAHdvE5fpZ2vL3gC1kkzUDdBA/EWyKFus4H6gFjXry5e66auT9RsHtuYiC7kiZ86C
+         h8p7raShrGM1V9rZl6nhLlbhwYevpLWKAtbXKdpLMOCweT/e/gH7FPlJ1hQjKyy5Q/tD
+         BVVqbAUiU5IJCGxpOL5BJdHHcepzG18S4Kzu6NBFrSkMUOS4R9qQcM/fDu1rEMSd0G8/
+         tF25TYrLJZ5cIR3PXn6C2OwsgmSOeR54wg1rlz7tz72FGC/tOJAjiUWJqnIZcTf/bM/M
+         Xlcw==
+X-Gm-Message-State: ALoCoQmKfiK8IfEdtJRCPvwNnUGeUIVbnzOWkyFHxcWSICqek3rd7TEetxdsM9iSOcUbswVsW2M6
+X-Received: by 10.194.192.201 with SMTP id hi9mr37886069wjc.28.1405527652319;
+        Wed, 16 Jul 2014 09:20:52 -0700 (PDT)
 Received: from mpn-glaptop.roam.corp.google.com ([2620:0:105f:311:c05c:b62d:85fd:69b9])
-        by mx.google.com with ESMTPSA id wi9sm40690458wjc.23.2014.07.16.09.20.30
+        by mx.google.com with ESMTPSA id l8sm40697723wje.15.2014.07.16.09.20.50
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Wed, 16 Jul 2014 09:20:31 -0700 (PDT)
+        Wed, 16 Jul 2014 09:20:51 -0700 (PDT)
 From:   Michal Nazarewicz <mina86@mina86.com>
 To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
         ralf@linux-mips.org, catalin.marinas@arm.com, will.deacon@arm.com,
@@ -46,32 +46,32 @@ To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
 Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         linux-arch@vger.kernel.org
-Subject: Re: [PATCH 2/4] arm64: use generic dma-contiguous.h
-In-Reply-To: <1405525892-60383-3-git-send-email-Zubair.Kakakhel@imgtec.com>
+Subject: Re: [PATCH 3/4] x86: use generic dma-contiguous.h
+In-Reply-To: <1405525892-60383-4-git-send-email-Zubair.Kakakhel@imgtec.com>
 Organization: http://mina86.com/
-References: <1405525892-60383-1-git-send-email-Zubair.Kakakhel@imgtec.com> <1405525892-60383-3-git-send-email-Zubair.Kakakhel@imgtec.com>
+References: <1405525892-60383-1-git-send-email-Zubair.Kakakhel@imgtec.com> <1405525892-60383-4-git-send-email-Zubair.Kakakhel@imgtec.com>
 User-Agent: Notmuch/0.17+15~gb65ca8e (http://notmuchmail.org) Emacs/24.4.50.1 (x86_64-unknown-linux-gnu)
 X-Face: PbkBB1w#)bOqd`iCe"Ds{e+!C7`pkC9a|f)Qo^BMQvy\q5x3?vDQJeN(DS?|-^$uMti[3D*#^_Ts"pU$jBQLq~Ud6iNwAw_r_o_4]|JO?]}P_}Nc&"p#D(ZgUb4uCNPe7~a[DbPG0T~!&c.y$Ur,=N4RT>]dNpd;KFrfMCylc}gc??'U2j,!8%xdD
 Face:   iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAJFBMVEWbfGlUPDDHgE57V0jUupKjgIObY0PLrom9mH4dFRK4gmjPs41MxjOgAAACQElEQVQ4jW3TMWvbQBQHcBk1xE6WyALX1069oZBMlq+ouUwpEQQ6uRjttkWP4CmBgGM0BQLBdPFZYPsyFUo6uEtKDQ7oy/U96XR2Ux8ehH/89Z6enqxBcS7Lg81jmSuujrfCZcLI/TYYvbGj+jbgFpHJ/bqQAUISj8iLyu4LuFHJTosxsucO4jSDNE0Hq3hwK/ceQ5sx97b8LcUDsILfk+ovHkOIsMbBfg43VuQ5Ln9YAGCkUdKJoXR9EclFBhixy3EGVz1K6eEkhxCAkeMMnqoAhAKwhoUJkDrCqvbecaYINlFKSRS1i12VKH1XpUd4qxL876EkMcDvHj3s5RBajHHMlA5iK32e0C7VgG0RlzFPvoYHZLRmAC0BmNcBruhkE0KsMsbEc62ZwUJDxWUdMsMhVqovoT96i/DnX/ASvz/6hbCabELLk/6FF/8PNpPCGqcZTGFcBhhAaZZDbQPaAB3+KrWWy2XgbYDNIinkdWAFcCpraDE/knwe5DBqGmgzESl1p2E4MWAz0VUPgYYzmfWb9yS4vCvgsxJriNTHoIBz5YteBvg+VGISQWUqhMiByPIPpygeDBE6elD973xWwKkEiHZAHKjhuPsFnBuArrzxtakRcISv+XMIPl4aGBUJm8Emk7qBYU8IlgNEIpiJhk/No24jHwkKTFHDWfPniR4iw5vJaw2nzSjfq2zffcE/GDjRC2dn0J0XwPAbDL84TvaFCJEU4Oml9pRyEUhR3Cl2t01AoEjRbs0sYugp14/4X5n4pU4EHHnMAAAAAElFTkSuQmCC
 X-PGP:  50751FF4
 X-PGP-FP: AC1F 5F5C D418 88F8 CC84 5858 2060 4012 5075 1FF4
-X-Hashcash: 1:20:140716:linux-arch@vger.kernel.org::ikVP6ny+B0p2H+Jx:000000000000000000000000000000000000Imt
-X-Hashcash: 1:20:140716:x86@kernel.org::hd9DW4HOvkjdXUdk:0000VgH
-X-Hashcash: 1:20:140716:catalin.marinas@arm.com::kTka2XaB0MNLBUHc:000000000000000000000000000000000000002J/m
-X-Hashcash: 1:20:140716:will.deacon@arm.com::KKl9z/ZEK9eJ1EjB:0000000000000000000000000000000000000000002qQR
-X-Hashcash: 1:20:140716:gregkh@linuxfoundation.org::V66IRISnXsm3ps2j:0000000000000000000000000000000000038v+
-X-Hashcash: 1:20:140716:mingo@redhat.com::B+eUlrjt/YNehRev:04T0w
-X-Hashcash: 1:20:140716:linux-arm-kernel@lists.infradead.org::5GSPr4tmTPZ1KDD7:00000000000000000000000003/fJ
-X-Hashcash: 1:20:140716:hpa@zytor.com::UipkHc6zjaJLQsKJ:00004w8I
-X-Hashcash: 1:20:140716:zubair.kakakhel@imgtec.com::m7QTYUjfWQ9Krc/a:000000000000000000000000000000000005jjE
-X-Hashcash: 1:20:140716:linux-kernel@vger.kernel.org::Qoa5HXm6jUHs03gv:0000000000000000000000000000000005D9O
-X-Hashcash: 1:20:140716:arnd@arndb.de::gsl0oMCLybGcDUqu:00006WVF
-X-Hashcash: 1:20:140716:ralf@linux-mips.org::9dzxX0rr0Sd144W9:0000000000000000000000000000000000000000005bP9
-X-Hashcash: 1:20:140716:m.szyprowski@samsung.com::0PuRdwurMtIQH3kV:00000000000000000000000000000000000008i20
-X-Hashcash: 1:20:140716:linux-mips@linux-mips.org::tBO2w++gCl0dO04R:000000000000000000000000000000000000Axhp
-X-Hashcash: 1:20:140716:tglx@linutronix.de::AV74fn752xyxpQH9:0000000000000000000000000000000000000000000FKSy
-Date:   Wed, 16 Jul 2014 18:20:29 +0200
-Message-ID: <xa1td2d5b7hu.fsf@mina86.com>
+X-Hashcash: 1:20:140716:catalin.marinas@arm.com::Palh8q9qT3qX5tU3:0000000000000000000000000000000000000003UC
+X-Hashcash: 1:20:140716:linux-arm-kernel@lists.infradead.org::+dGmSykDTGheinxh:00000000000000000000000000Ya3
+X-Hashcash: 1:20:140716:mingo@redhat.com::covzxqOaiJfkY0nk:00Xrl
+X-Hashcash: 1:20:140716:m.szyprowski@samsung.com::DcZqJ8ZwAuk5Tw3+:00000000000000000000000000000000000000tYO
+X-Hashcash: 1:20:140716:ralf@linux-mips.org::nbpXSjE/oPHTJVv7:0000000000000000000000000000000000000000000uS2
+X-Hashcash: 1:20:140716:linux-arch@vger.kernel.org::1lBj8CLMj90A/DDM:000000000000000000000000000000000001Od8
+X-Hashcash: 1:20:140716:tglx@linutronix.de::MNccQdAtK9pP3xYB:00000000000000000000000000000000000000000001rU4
+X-Hashcash: 1:20:140716:zubair.kakakhel@imgtec.com::1jumXx7o1a85FpWx:000000000000000000000000000000000002Yt/
+X-Hashcash: 1:20:140716:linux-kernel@vger.kernel.org::2OeEnRiqBIRckkfU:0000000000000000000000000000000002W5q
+X-Hashcash: 1:20:140716:gregkh@linuxfoundation.org::kAz30K0sdO+hRPkG:000000000000000000000000000000000002dAb
+X-Hashcash: 1:20:140716:x86@kernel.org::lQeAaLaQskcKoivp:0004pW7
+X-Hashcash: 1:20:140716:linux-mips@linux-mips.org::hus92bFhNzHWOCxG:0000000000000000000000000000000000005CLw
+X-Hashcash: 1:20:140716:arnd@arndb.de::grdNF8pO7zOe+lH2:00007pjZ
+X-Hashcash: 1:20:140716:will.deacon@arm.com::rNzoDB0KjD1CHh4k:00000000000000000000000000000000000000000081Tn
+X-Hashcash: 1:20:140716:hpa@zytor.com::u+3EVN98WcdAoCU9:0000CZ3U
+Date:   Wed, 16 Jul 2014 18:20:49 +0200
+Message-ID: <xa1ta989b7ha.fsf@mina86.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8BIT
@@ -79,7 +79,7 @@ Return-Path: <mpn@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41225
+X-archive-position: 41226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -98,54 +98,42 @@ X-list: linux-mips
 
 On Wed, Jul 16 2014, Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com> wrote:
 > dma-contiguous.h is now in asm-generic. Use that to avoid code
-> repetition in arm64.
+> repetition in x86.
 >
 > Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 
 Acked-by: Michal Nazarewicz <mina86@mina86.com>
 
+But to be honest, I would fold the three into a single commit.
+
 > ---
->  arch/arm64/include/asm/Kbuild           |  1 +
->  arch/arm64/include/asm/dma-contiguous.h | 28 ----------------------------
->  2 files changed, 1 insertion(+), 28 deletions(-)
->  delete mode 100644 arch/arm64/include/asm/dma-contiguous.h
+>  arch/x86/include/asm/Kbuild           |  1 +
+>  arch/x86/include/asm/dma-contiguous.h | 12 ------------
+>  2 files changed, 1 insertion(+), 12 deletions(-)
+>  delete mode 100644 arch/x86/include/asm/dma-contiguous.h
 >
-> diff --git a/arch/arm64/include/asm/Kbuild b/arch/arm64/include/asm/Kbuild
-> index 0b3fcf8..92bf7cb 100644
-> --- a/arch/arm64/include/asm/Kbuild
-> +++ b/arch/arm64/include/asm/Kbuild
-> @@ -9,6 +9,7 @@ generic-y += current.h
->  generic-y += delay.h
->  generic-y += div64.h
->  generic-y += dma.h
+> diff --git a/arch/x86/include/asm/Kbuild b/arch/x86/include/asm/Kbuild
+> index 3bf000f..d55a210 100644
+> --- a/arch/x86/include/asm/Kbuild
+> +++ b/arch/x86/include/asm/Kbuild
+> @@ -6,6 +6,7 @@ genhdr-y += unistd_x32.h
+>  
+>  generic-y += clkdev.h
+>  generic-y += cputime.h
 > +generic-y += dma-contiguous.h
->  generic-y += emergency-restart.h
 >  generic-y += early_ioremap.h
->  generic-y += errno.h
-> diff --git a/arch/arm64/include/asm/dma-contiguous.h b/arch/arm64/include/asm/dma-contiguous.h
+>  generic-y += mcs_spinlock.h
+>  generic-y += scatterlist.h
+> diff --git a/arch/x86/include/asm/dma-contiguous.h b/arch/x86/include/asm/dma-contiguous.h
 > deleted file mode 100644
-> index 14c4c0c..0000000
-> --- a/arch/arm64/include/asm/dma-contiguous.h
+> index b4b38ba..0000000
+> --- a/arch/x86/include/asm/dma-contiguous.h
 > +++ /dev/null
-> @@ -1,28 +0,0 @@
-> -/*
-> - * Copyright (c) 2013, The Linux Foundation. All rights reserved.
-> - *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License version 2 and
-> - * only version 2 as published by the Free Software Foundation.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - */
-> -
-> -#ifndef _ASM_DMA_CONTIGUOUS_H
-> -#define _ASM_DMA_CONTIGUOUS_H
+> @@ -1,12 +0,0 @@
+> -#ifndef ASMX86_DMA_CONTIGUOUS_H
+> -#define ASMX86_DMA_CONTIGUOUS_H
 > -
 > -#ifdef __KERNEL__
-> -#ifdef CONFIG_DMA_CMA
 > -
 > -#include <linux/types.h>
 > -
@@ -153,8 +141,6 @@ Acked-by: Michal Nazarewicz <mina86@mina86.com>
 > -dma_contiguous_early_fixup(phys_addr_t base, unsigned long size) { }
 > -
 > -#endif
-> -#endif
-> -
 > -#endif
 > -- 
 > 1.9.1

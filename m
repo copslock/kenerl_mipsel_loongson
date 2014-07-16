@@ -1,70 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Sep 2014 00:09:36 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:33500 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009004AbaIOWHz2HIIm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Sep 2014 00:07:55 +0200
-Received: from c-76-102-4-12.hsd1.ca.comcast.net ([76.102.4.12] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <kamal@canonical.com>)
-        id 1XTeR4-0008LC-LE; Mon, 15 Sep 2014 22:07:50 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1XTeR2-0001Z0-Sw; Mon, 15 Sep 2014 15:07:48 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Jie Chen <chenj@lemote.com>, Rui Wang <wangr@lemote.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.13.y.z extended stable] Patch "MIPS: Remove BUG_ON(!is_fpu_owner()) in do_ade()" has been added to staging queue
-Date:   Mon, 15 Sep 2014 15:07:48 -0700
-Message-Id: <1410818868-5979-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.13
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42608
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Huacai Chen <chenhc@lemote.com>
+Date: Wed, 16 Jul 2014 09:19:16 +0800
+Subject: MIPS: Remove BUG_ON(!is_fpu_owner()) in do_ade()
+Message-ID: <20140716011916.L79M8xpWQCRojeLLHLQjxBf1auspyu4PGZsE3dujEbk@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 2e5767a27337812f6850b3fa362419e2f085e5c3 upstream.
 
-    MIPS: Remove BUG_ON(!is_fpu_owner()) in do_ade()
+In do_ade(), is_fpu_owner() isn't preempt-safe. For example, when an
+unaligned ldc1 is executed, do_cpu() is called and then FPU will be
+enabled (and TIF_USEDFPU will be set for the current process). Then,
+do_ade() is called because the access is unaligned.  If the current
+process is preempted at this time, TIF_USEDFPU will be cleard.  So when
+the process is scheduled again, BUG_ON(!is_fpu_owner()) is triggered.
 
-to the linux-3.13.y-queue branch of the 3.13.y.z extended stable tree 
-which can be found at:
+This small program can trigger this BUG in a preemptible kernel:
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
+int main (int argc, char *argv[])
+{
+        double u64[2];
 
-This patch is scheduled to be released in version 3.13.11.7.
+        while (1) {
+                asm volatile (
+                        ".set push \n\t"
+                        ".set noreorder \n\t"
+                        "ldc1 $f3, 4(%0) \n\t"
+                        ".set pop \n\t"
+                        ::"r"(u64):
+                );
+        }
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+        return 0;
+}
 
-For more information about the 3.13.y.z tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+V2: Remove the BUG_ON() unconditionally due to Paul's suggestion.
 
-Thanks.
--Kamal
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Jie Chen <chenj@lemote.com>
+Signed-off-by: Rui Wang <wangr@lemote.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/unaligned.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-------
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index c369a5d..b897dde 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -605,7 +605,6 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	case sdc1_op:
+ 		die_if_kernel("Unaligned FP access in kernel code", regs);
+ 		BUG_ON(!used_math());
+-		BUG_ON(!is_fpu_owner());
+
+ 		lose_fpu(1);	/* Save FPU state for the emulator. */
+ 		res = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
+--
+1.9.1

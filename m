@@ -1,43 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2014 09:45:37 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:57666 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2014 09:54:02 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35068 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816671AbaGPHpfuQ7oO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2014 09:45:35 +0200
+        with ESMTP id S6816671AbaGPHyAU3pPy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2014 09:54:00 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A5E5DF488FA0C;
-        Wed, 16 Jul 2014 08:45:27 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 16 Jul
- 2014 08:45:28 +0100
+        by Websense Email Security Gateway with ESMTPS id 1082A8FCCFC6D
+        for <linux-mips@linux-mips.org>; Wed, 16 Jul 2014 08:53:52 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 16 Jul 2014 08:45:28 +0100
-Received: from [192.168.154.67] (192.168.154.67) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 16 Jul
- 2014 08:45:28 +0100
-Message-ID: <53C62D98.6010307@imgtec.com>
-Date:   Wed, 16 Jul 2014 08:45:28 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 16 Jul 2014 08:53:53 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 16 Jul 2014 08:53:52 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <Paul.Burton@imgtec.com>
+Subject: [PATCH] MIPS: kernel: cps-vec: Set ISA level to mips32r2 for the MIPS MT ASE
+Date:   Wed, 16 Jul 2014 08:53:39 +0100
+Message-ID: <1405497219-19878-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.0.0
 MIME-Version: 1.0
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <linux-mips@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH 1/3] MIPS: Add new option for unique RI/XI exceptions
-References: <1405429797-18281-1-git-send-email-markos.chandras@imgtec.com> <1405429797-18281-2-git-send-email-markos.chandras@imgtec.com> <53C5523E.7060503@cogentembedded.com>
-In-Reply-To: <53C5523E.7060503@cogentembedded.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Originating-IP: [192.168.154.67]
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41214
+X-archive-position: 41215
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,42 +44,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Sergei,
+Fixes the following build warnings:
+arch/mips/kernel/cps-vec.S: Assembler messages:
+arch/mips/kernel/cps-vec.S:228: Warning: the `mt' extension requires
+MIPS32 revision 2 or greater
+[...]
+arch/mips/kernel/cps-vec.S: Assembler messages:
+arch/mips/kernel/cps-vec.S:345: Warning: the `mt' extension requires
+MIPS32 revision 2 or greater
 
-On 07/15/2014 05:09 PM, Sergei Shtylyov wrote:
-> Hello.
-> 
-> On 07/15/2014 05:09 PM, Markos Chandras wrote:
-> 
->> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> 
->> MIPSr5 added support for unique exception codes for the Read-Inhibit
->> and Execute-Inhibit exceptions.
-> 
->> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> [...]
-> 
->> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
->> index 8219c0a5f77e..be13f2879c84 100644
->> --- a/arch/mips/include/asm/cpu.h
->> +++ b/arch/mips/include/asm/cpu.h
->> @@ -364,6 +364,7 @@ enum cpu_type_enum {
->>   #define MIPS_CPU_SEGMENTS    0x04000000ull /* CPU supports
->> Segmentation Control registers */
->>   #define MIPS_CPU_EVA        0x80000000ull /* CPU supports Enhanced
->> Virtual Addressing */
->>   #define MIPS_CPU_HTW        0x100000000ull /* CPU support Hardware
->> Page Table Walker */
->> +#define MIPS_CPU_RIXIEX        0x200000000ull /* CPU has unique
->> exception codes for {Read, Execute}-Inhibit exceptions */
-> 
->    I think this conflicts with the MAAR patchset.
-> 
-> WBR, Sergei
-> 
+Cc: Paul Burton <Paul.Burton@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/kernel/cps-vec.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Well yes, but it's easy to resolve these conflicts.
-
+diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+index 6f4f739dad96..ec06a82f8210 100644
+--- a/arch/mips/kernel/cps-vec.S
++++ b/arch/mips/kernel/cps-vec.S
+@@ -225,6 +225,7 @@ LEAF(mips_cps_core_init)
+ 	 nop
+ 
+ 	.set	push
++	.set	mips32r2
+ 	.set	mt
+ 
+ 	/* Only allow 1 TC per VPE to execute... */
+@@ -341,6 +342,7 @@ LEAF(mips_cps_boot_vpes)
+ 	 nop
+ 
+ 	.set	push
++	.set	mips32r2
+ 	.set	mt
+ 
+ 1:	/* Enter VPE configuration state */
 -- 
-markos
+2.0.0

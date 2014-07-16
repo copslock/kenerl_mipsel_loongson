@@ -1,55 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2014 22:08:16 +0200 (CEST)
-Received: from mail-wi0-f181.google.com ([209.85.212.181]:50514 "EHLO
-        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861307AbaGPUINV-2to (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2014 22:08:13 +0200
-Received: by mail-wi0-f181.google.com with SMTP id bs8so1880181wib.14
-        for <linux-mips@linux-mips.org>; Wed, 16 Jul 2014 13:08:03 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2014 22:12:42 +0200 (CEST)
+Received: from mail-ie0-f176.google.com ([209.85.223.176]:58463 "EHLO
+        mail-ie0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861312AbaGPUMjPECll (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2014 22:12:39 +0200
+Received: by mail-ie0-f176.google.com with SMTP id tr6so1402473ieb.21
+        for <linux-mips@linux-mips.org>; Wed, 16 Jul 2014 13:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=aZpk+Ojm/NfZP5r9pz8kw4pY/bG08fmb4LSVaCkLViA=;
+        b=KcAM52XNEb0wRU5KPAXRk2sepJYTky/262Ufs5py0yO4YLZQK/MNDrZpiWgku5TuS/
+         DoKg6BDWhsOjeE4jt8diadVEZAbjj5C6Gq7PKboRYRTdXuDR9zYuMf7nGmtF1ukUiZRZ
+         G64+EkTM60ZLEXVkItiVm8IsvflUgOyatv/UcP5JEsM3lXD8edWntdzUuWYGpFWbv+bb
+         k+U8YclQwNR9MiBjT5SsPXouCTSn+eHXFd+YJmo5JDizUuJX6czIO9XUCInTLlysjHL7
+         BXu5Q5rmW9c1h173yRq4+wX5ESQ6hRKHikisE8wvXJQUGczCbPzrbQKn8h9rEYY4c/Dn
+         42wA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=aZpk+Ojm/NfZP5r9pz8kw4pY/bG08fmb4LSVaCkLViA=;
+        b=EoTogsFhnz7Kxv+qTvAoO/j+UDdmo+bWpfGa4xctl561uSf8v75o0UZYPEHj8H3l7h
+         5S5nKtB9hInF2iWOsCW6Z2xe93tyg5mB4C+2gSRLwTMfOo/i/d6LRuCO11tV8BBdt8qx
+         i15cRZmTmWi4PseyNxTvWdh+TSVPqYiEIasfc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=MwCrgeHrXE5Eoydr+WgeX1ISNQyQp+No++d5v8W/baE=;
-        b=G3/4UC7jj1qRNNaIN9hPI7Vywy3T5NdsBr0ZIkIXevia/ZhfBNwvEUt9/pOvrXySZp
-         31tZJMQDTrEsywYqS94EHtwx1n1a5ZG/0k4gFfOeZJjJsxc3F9Jvya7uimxzXHnqceuu
-         EeLxCO/6ZMUqUmR4xE/035Z0tWN1nHFOIgrHHrVgob23SlvAiYhYA1KJYjYtp+Z6/hE7
-         BX1CRMyeszLSIm+lPU8J4Wicf4ER8cY/35LfNwwEhro56oL69+yuNvcp17ULY+QofaTE
-         YxU68cXKpg1oC083gManTsv91bz6KiKNfHbRfGw35RQMvegvG5lOz3FDBp3bZuLv/j+Y
-         THvA==
-X-Gm-Message-State: ALoCoQkPFgArqBBXgcBvQv8hiPaD/pdSr66SEzZMSrw0rXkEAzb4/qYrilYrPK8mHk71RnsmStie
+        bh=aZpk+Ojm/NfZP5r9pz8kw4pY/bG08fmb4LSVaCkLViA=;
+        b=BQ5D8rP7uHQwIJ78iheIZgd0cuXbCtSp9XtgDr8QxC++ARmulUbwy8Fv/2SFUXy0bG
+         pgiEK7RheUrhzpoTcULhgboam2fGvevWkaDA7Rrt7pFVnrHlN25SvfCrSM9LstTgmrla
+         L88mfZ0Riicz499SCf7hUUh7LbDjmbgBImM0j5qCJHpoX4hHkeYMylWTaDHU4Tjtjejf
+         GdXpT7QeBVTKAMkthdmmY4gLVwhk8lK0syPQ0NzTOw39kVJAzWWoqW3qCa0rw56w3bWe
+         A9KEasnzlJZWzz21tkRaFUBRK11lxSECbq3oURulKDjgBwglqPFCAiWkIm9241R1xfod
+         Eenw==
+X-Gm-Message-State: ALoCoQlojIwtdqmYhQfouD+oLppg2aYFPFyny/J+duy6UEjp3X09L6c6nYe9mKSFmw6zyepghcHw
 MIME-Version: 1.0
-X-Received: by 10.180.9.71 with SMTP id x7mr16114102wia.61.1405541283687; Wed,
- 16 Jul 2014 13:08:03 -0700 (PDT)
-Received: by 10.194.121.228 with HTTP; Wed, 16 Jul 2014 13:08:03 -0700 (PDT)
-In-Reply-To: <3bee564fe07150f11d2e5078d457b6aacde43bec.1405452484.git.luto@amacapital.net>
+X-Received: by 10.60.80.229 with SMTP id u5mr38943958oex.62.1405541552982;
+ Wed, 16 Jul 2014 13:12:32 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Wed, 16 Jul 2014 13:12:32 -0700 (PDT)
+In-Reply-To: <4f153feea35430104d6d1a7c83805fccbffdf089.1405452484.git.luto@amacapital.net>
 References: <cover.1405452484.git.luto@amacapital.net>
-        <3bee564fe07150f11d2e5078d457b6aacde43bec.1405452484.git.luto@amacapital.net>
-Date:   Wed, 16 Jul 2014 13:08:03 -0700
-Message-ID: <CAMEtUuywjY8habDJJWyDZLBWtXZXDqpmn2hZ9Dts1hrQ7OWXnA@mail.gmail.com>
-Subject: Re: [PATCH 6/7] x86_64,entry: Treat regs->ax the same in fastpath and
- slowpath syscalls
-From:   Alexei Starovoitov <ast@plumgrid.com>
+        <4f153feea35430104d6d1a7c83805fccbffdf089.1405452484.git.luto@amacapital.net>
+Date:   Wed, 16 Jul 2014 13:12:32 -0700
+X-Google-Sender-Auth: Aq3U3qzSYSqXVB6-nq_Til3cAX0
+Message-ID: <CAGXu5jK0v=dtPNY4Y2m7D01peeNoBSDq8zowgLu_rjZe41=eUg@mail.gmail.com>
+Subject: Re: [PATCH 2/7] seccomp: Refactor the filter callback and the API
+From:   Kees Cook <keescook@chromium.org>
 To:     Andy Lutomirski <luto@amacapital.net>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
         Will Drewry <wad@chromium.org>,
         James Morris <james.l.morris@oracle.com>,
-        Oleg Nesterov <oleg@redhat.com>, X86 ML <x86@kernel.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>,
         "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
         linux-arch <linux-arch@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        Alexei Starovoitov <ast@plumgrid.com>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <ast@plumgrid.com>
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41231
+X-archive-position: 41232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ast@plumgrid.com
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,75 +82,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Tue, Jul 15, 2014 at 12:32 PM, Andy Lutomirski <luto@amacapital.net> wrote:
-> For slowpath syscalls, we initialize regs->ax to -ENOSYS and stick
-> the syscall number into regs->orig_ax prior to any possible tracing
-> and syscall execution.  This is user-visible ABI used by ptrace
-> syscall emulation and seccomp.
+> The reason I did this is to add a seccomp API that will be usable
+> for an x86 fast path.  The x86 entry code needs to use a rather
+> expensive slow path for a syscall that might be visible to things
+> like ptrace.  By splitting seccomp into two phases, we can check
+> whether we need the slow path and then use the fast path in if the
+> filter allows the syscall or just returns some errno.
 >
-> For fastpath syscalls, there's no good reason not to do the same
-> thing.  It's even slightly simpler than what we're currently doing.
-> It probably has no measureable performance impact.  It should have
-> no user-visible effect.
->
-> The purpose of this patch is to prepare for seccomp-based syscall
-> emulation in the fast path.  This change is just subtle enough that
-> I'm keeping it separate.
->
-> Signed-off-by: Andy Lutomirski <luto@amacapital.net>
-> ---
->  arch/x86/include/asm/calling.h |  6 +++++-
->  arch/x86/kernel/entry_64.S     | 11 +++--------
->  2 files changed, 8 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/x86/include/asm/calling.h b/arch/x86/include/asm/calling.h
-> index cb4c73b..76659b6 100644
-> --- a/arch/x86/include/asm/calling.h
-> +++ b/arch/x86/include/asm/calling.h
-> @@ -85,7 +85,7 @@ For 32-bit we have the following conventions - kernel is built with
->  #define ARGOFFSET      R11
->  #define SWFRAME                ORIG_RAX
->
-> -       .macro SAVE_ARGS addskip=0, save_rcx=1, save_r891011=1
-> +       .macro SAVE_ARGS addskip=0, save_rcx=1, save_r891011=1, rax_enosys=0
->         subq  $9*8+\addskip, %rsp
->         CFI_ADJUST_CFA_OFFSET   9*8+\addskip
->         movq_cfi rdi, 8*8
-> @@ -96,7 +96,11 @@ For 32-bit we have the following conventions - kernel is built with
->         movq_cfi rcx, 5*8
->         .endif
->
-> +       .if \rax_enosys
-> +       movq $-ENOSYS, 4*8(%rsp)
-> +       .else
->         movq_cfi rax, 4*8
-> +       .endif
->
->         .if \save_r891011
->         movq_cfi r8,  3*8
-> diff --git a/arch/x86/kernel/entry_64.S b/arch/x86/kernel/entry_64.S
-> index b25ca96..432c190 100644
-> --- a/arch/x86/kernel/entry_64.S
-> +++ b/arch/x86/kernel/entry_64.S
-> @@ -405,8 +405,8 @@ GLOBAL(system_call_after_swapgs)
->          * and short:
->          */
->         ENABLE_INTERRUPTS(CLBR_NONE)
-> -       SAVE_ARGS 8,0
-> -       movq  %rax,ORIG_RAX-ARGOFFSET(%rsp)
-> +       SAVE_ARGS 8, 0, rax_enosys=1
-> +       movq_cfi rax,(ORIG_RAX-ARGOFFSET)
+> As a side effect, I think the new code is much easier to understand
+> than the old code.
 
-I think changing store rax to macro is unnecessary,
-since it breaks common style of asm with the next line:
->         movq  %rcx,RIP-ARGOFFSET(%rsp)
-Also it made the diff harder to grasp.
+I'd agree. The #idefs got a little weirder, but the actual code flow
+was much easier to read. I wonder if "phase1" and "phase2" should be
+renamed "pretrace" and "tracing" or something more meaningful? Or
+"fast" and "slow"?
 
-The change from the next patch 7/7:
+> This has one user-visible effect: the audit record written for
+> SECCOMP_RET_TRACE is now a simple indication that SECCOMP_RET_TRACE
+> happened.  It used to depend in a complicated way on what the tracer
+> did.  I couldn't make much sense of it.
 
-> -       ja   int_ret_from_sys_call      /* RAX(%rsp) set to -ENOSYS above */
-> +       ja   int_ret_from_sys_call      /* RAX(%rsp) is already set */
+I think this change is okay. The only way to get the audit record to
+report SIGSYS before was to have an additional signal come in and kill
+it while the tracer was working on it. Which is confusing too. I like
+this way better.
 
-probably belongs in this 6/7 patch as well.
+-Kees
 
-The rest look good to me. I think it's a big improvement in readability
-comparing to v1.
+-- 
+Kees Cook
+Chrome OS Security

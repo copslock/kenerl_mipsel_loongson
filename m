@@ -1,27 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 10:23:33 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17785 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 10:24:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21003 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6861309AbaGQIV6ENmMC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 10:21:58 +0200
+        with ESMTP id S6861310AbaGQIV7J-qgs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 10:21:59 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2918445219B19
-        for <linux-mips@linux-mips.org>; Thu, 17 Jul 2014 09:21:49 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 17 Jul
- 2014 09:21:51 +0100
+        by Websense Email Security Gateway with ESMTPS id 17FDB6B1AE3BF
+        for <linux-mips@linux-mips.org>; Thu, 17 Jul 2014 09:21:50 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Jul 2014 09:21:51 +0100
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 17 Jul 2014 09:21:52 +0100
 Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Jul 2014 09:21:50 +0100
+ 14.3.195.1; Thu, 17 Jul 2014 09:21:51 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Jeffrey Deans <jeffrey.deans@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 5/7] MIPS: GIC: Generalise check for pending interrupts
-Date:   Thu, 17 Jul 2014 09:20:57 +0100
-Message-ID: <1405585259-24941-6-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 6/7] MIPS: Malta: Fix dispatching of GIC interrupts
+Date:   Thu, 17 Jul 2014 09:20:58 +0100
+Message-ID: <1405585259-24941-7-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1405585259-24941-1-git-send-email-markos.chandras@imgtec.com>
 References: <1405585259-24941-1-git-send-email-markos.chandras@imgtec.com>
@@ -32,7 +29,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41262
+X-archive-position: 41263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,67 +48,69 @@ X-list: linux-mips
 
 From: Jeffrey Deans <jeffrey.deans@imgtec.com>
 
-Move most of the functionality of gic_get_int() into a new function
-gic_get_int_mask() which takes a bitmask of interrupts in which the
-caller is interested, and returns the subset which are pending for the
-current CPU.
-
-This allows CP0 IRQ dispatch routines to check only the GIC interrupts
-which are routed to a particular CPU interrupt input.
-
-gic_get_int() is reimplemented using gic_get_int_mask() and is retained
-for use by any platforms for which gic_get_int() is sufficient.
+The Malta malta_ipi_irqdispatch() routine now checks only IPI interrupts
+when handling IPIs. It could previously call do_IRQ() for non-IPIs, and
+also call do_IRQ() with an invalid IRQ number if there were no pending
+GIC interrupts when gic_get_int() was called.
 
 Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/gic.h |  1 +
- arch/mips/kernel/irq-gic.c  | 13 +++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ arch/mips/mti-malta/malta-int.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
-index 394d366b8fc1..8b30befd99d6 100644
---- a/arch/mips/include/asm/gic.h
-+++ b/arch/mips/include/asm/gic.h
-@@ -373,6 +373,7 @@ extern unsigned int plat_ipi_call_int_xlate(unsigned int);
- extern unsigned int plat_ipi_resched_int_xlate(unsigned int);
- extern void gic_bind_eic_interrupt(int irq, int set);
- extern unsigned int gic_get_timer_pending(void);
-+extern void gic_get_int_mask(unsigned long *dst, const unsigned long *src);
- extern unsigned int gic_get_int(void);
- extern void gic_enable_interrupt(int irq_vec);
- extern void gic_disable_interrupt(int irq_vec);
-diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
-index 9932aef91abb..9e9d8b9a5b97 100644
---- a/arch/mips/kernel/irq-gic.c
-+++ b/arch/mips/kernel/irq-gic.c
-@@ -189,7 +189,7 @@ unsigned int gic_compare_int(void)
- 		return 0;
- }
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index 4ab919141737..e4f43baa8f67 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -42,6 +42,10 @@ static unsigned int ipi_map[NR_CPUS];
  
--unsigned int gic_get_int(void)
-+void gic_get_int_mask(unsigned long *dst, const unsigned long *src)
+ static DEFINE_RAW_SPINLOCK(mips_irq_lock);
+ 
++#ifdef CONFIG_MIPS_GIC_IPI
++DECLARE_BITMAP(ipi_ints, GIC_NUM_INTRS);
++#endif
++
+ static inline int mips_pcibios_iack(void)
  {
- 	unsigned int i;
- 	unsigned long *pending, *intrmask, *pcpu_mask;
-@@ -214,8 +214,17 @@ unsigned int gic_get_int(void)
+ 	int irq;
+@@ -125,16 +129,22 @@ static void malta_hw0_irqdispatch(void)
  
- 	bitmap_and(pending, pending, intrmask, GIC_NUM_INTRS);
- 	bitmap_and(pending, pending, pcpu_mask, GIC_NUM_INTRS);
-+	bitmap_and(dst, src, pending, GIC_NUM_INTRS);
-+}
-+
-+unsigned int gic_get_int(void)
-+{
-+	DECLARE_BITMAP(interrupts, GIC_NUM_INTRS);
-+
-+	bitmap_fill(interrupts, GIC_NUM_INTRS);
-+	gic_get_int_mask(interrupts, interrupts);
+ static void malta_ipi_irqdispatch(void)
+ {
+-	int irq;
++#ifdef CONFIG_MIPS_GIC_IPI
++	unsigned long irq;
++	DECLARE_BITMAP(pending, GIC_NUM_INTRS);
  
--	return find_first_bit(pending, GIC_NUM_INTRS);
-+	return find_first_bit(interrupts, GIC_NUM_INTRS);
+-	if (gic_compare_int())
+-		do_IRQ(MIPS_GIC_IRQ_BASE);
++	gic_get_int_mask(pending, ipi_ints);
++
++	irq = find_first_bit(pending, GIC_NUM_INTRS);
+ 
+-	irq = gic_get_int();
+-	if (irq < 0)
+-		return;	 /* interrupt has already been cleared */
++	while (irq < GIC_NUM_INTRS) {
++		do_IRQ(MIPS_GIC_IRQ_BASE + irq);
+ 
+-	do_IRQ(MIPS_GIC_IRQ_BASE + irq);
++		irq = find_next_bit(pending, GIC_NUM_INTRS, irq + 1);
++	}
++#endif
++	if (gic_compare_int())
++		do_IRQ(MIPS_GIC_IRQ_BASE);
  }
  
- static void gic_mask_irq(struct irq_data *d)
+ static void corehi_irqdispatch(void)
+@@ -429,6 +439,7 @@ static void __init fill_ipi_map1(int baseintr, int cpu, int cpupin)
+ 	gic_intr_map[intr].trigtype = GIC_TRIG_EDGE;
+ 	gic_intr_map[intr].flags = 0;
+ 	ipi_map[cpu] |= (1 << (cpupin + 2));
++	bitmap_set(ipi_ints, intr, 1);
+ }
+ 
+ static void __init fill_ipi_map(void)
 -- 
 2.0.0

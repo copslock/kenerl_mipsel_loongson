@@ -1,42 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 10:24:30 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38856 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6861303AbaGQIWBUfA6b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 10:22:01 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 73559701B3D8D
-        for <linux-mips@linux-mips.org>; Thu, 17 Jul 2014 09:21:52 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 17 Jul
- 2014 09:21:54 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Jul 2014 09:21:54 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Jul 2014 09:21:53 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 7/7] MIPS: GIC: Fix GICBIS macro
-Date:   Thu, 17 Jul 2014 09:20:59 +0100
-Message-ID: <1405585259-24941-8-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1405585259-24941-1-git-send-email-markos.chandras@imgtec.com>
-References: <1405585259-24941-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 10:39:29 +0200 (CEST)
+Received: from mail-we0-f176.google.com ([74.125.82.176]:41062 "EHLO
+        mail-we0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817540AbaGQIj1KGlkF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 10:39:27 +0200
+Received: by mail-we0-f176.google.com with SMTP id q58so2094989wes.35
+        for <multiple recipients>; Thu, 17 Jul 2014 01:39:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=Sdl52+Y6RqCk2QGs+kgscah7vvv+LaCmnNAM8RS2aQg=;
+        b=aqHPh1L/xNr78hbzOaOfG/ZkC1ucDvJd74PKgkvYzKjZim2f1a3+4CVKs/c2x9tW9D
+         Hj1u2qi3a50Juz1HTWekPtGLXlymGgozz1OumfHGG49WFzX2oxGBLVRfUGQ6jXtyqFO5
+         zhNiYaLPVDXfQdWsysrJnLbpnZ5lkBIdxzICWqcnPv35kevIDPW3Jh0YfUcIB+by57J4
+         9ctzcTZ/Y3t0uqr6Cj7Jv7LcwZRT5N//aV+PKRRYTaqSOTv9PfWnd/7f6aS78vTo+Hcv
+         bHXAz0cAl1Ku7qeQq2RFrZZJdGTu7nhJp0s7ouIdogQFm/y5C1kgl7kZwX5uIT1ySP7e
+         PPBg==
+X-Received: by 10.194.71.81 with SMTP id s17mr41971143wju.18.1405586360371;
+ Thu, 17 Jul 2014 01:39:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.67]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: by 10.216.26.4 with HTTP; Thu, 17 Jul 2014 01:38:40 -0700 (PDT)
+In-Reply-To: <CAOLZvyEs_+R+urf-rhvpfZ+ieqhgg6zXuOtLLPUqKSaeNTzpNg@mail.gmail.com>
+References: <1405525892-60383-1-git-send-email-Zubair.Kakakhel@imgtec.com> <CAOLZvyEs_+R+urf-rhvpfZ+ieqhgg6zXuOtLLPUqKSaeNTzpNg@mail.gmail.com>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Thu, 17 Jul 2014 10:38:40 +0200
+Message-ID: <CAOLZvyFjkuCzUkbb3SpJ25gKQoZ-Ken9Ri1YEckxdM6ETNyuSg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] mips: Add cma support to mips
+To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>, mina86@mina86.com,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41264
+X-archive-position: 41265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,70 +52,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Jeffrey Deans <jeffrey.deans@imgtec.com>
+On Wed, Jul 16, 2014 at 6:18 PM, Manuel Lauss <manuel.lauss@gmail.com> wrote:
+> Hi,
+>
+> On Wed, Jul 16, 2014 at 5:51 PM, Zubair Lutfullah Kakakhel
+> <Zubair.Kakakhel@imgtec.com> wrote:
+>> Here we have 4 patches that add cma support to mips.
+>>
+>> Patch 1 adds dma-contiguous.h to asm-generic
+>> Patch 2 and 3 make arm64 and x86 use dma-contiguous from asm-generic
+>> Patch 4 adds cma to mips.
+>
+> I've given this a try on mips32, I haven't dug into this error yet, maybe
+> you have an idea:
+[ oops snipped ]
 
-The GICBIS macro could update the GIC registers incorrectly, depending
-on the data value passed in:
+Nevermind.   Did a full recompile, the oops is gone.  Works fine now,
+framebuffer driver and others are very happy.
 
-* Bits were only OR'd into the register data, so register fields could
-  not be cleared.
-
-* Bits were OR'd into the register data without masking the data to the
-  correct field width, corrupting adjacent bits.
-
-Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/include/asm/gic.h | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
-index 8b30befd99d6..3f20b2111d56 100644
---- a/arch/mips/include/asm/gic.h
-+++ b/arch/mips/include/asm/gic.h
-@@ -43,18 +43,17 @@
- #ifdef GICISBYTELITTLEENDIAN
- #define GICREAD(reg, data)	((data) = (reg), (data) = le32_to_cpu(data))
- #define GICWRITE(reg, data)	((reg) = cpu_to_le32(data))
--#define GICBIS(reg, bits)			\
--	({unsigned int data;			\
--		GICREAD(reg, data);		\
--		data |= bits;			\
--		GICWRITE(reg, data);		\
--	})
--
- #else
- #define GICREAD(reg, data)	((data) = (reg))
- #define GICWRITE(reg, data)	((reg) = (data))
--#define GICBIS(reg, bits)	((reg) |= (bits))
- #endif
-+#define GICBIS(reg, mask, bits)			\
-+	do { u32 data;				\
-+		GICREAD((reg), data);		\
-+		data &= ~(mask);		\
-+		data |= ((bits) & (mask));	\
-+		GICWRITE((reg), data);		\
-+	} while (0)
- 
- 
- /* GIC Address Space */
-@@ -170,13 +169,15 @@
- #define GIC_SH_SET_POLARITY_OFS		0x0100
- #define GIC_SET_POLARITY(intr, pol) \
- 	GICBIS(GIC_REG_ADDR(SHARED, GIC_SH_SET_POLARITY_OFS + \
--		GIC_INTR_OFS(intr)), (pol) << GIC_INTR_BIT(intr))
-+		GIC_INTR_OFS(intr)), (1 << GIC_INTR_BIT(intr)), \
-+		(pol) << GIC_INTR_BIT(intr))
- 
- /* Triggering : Reset Value is always 0 */
- #define GIC_SH_SET_TRIGGER_OFS		0x0180
- #define GIC_SET_TRIGGER(intr, trig) \
- 	GICBIS(GIC_REG_ADDR(SHARED, GIC_SH_SET_TRIGGER_OFS + \
--		GIC_INTR_OFS(intr)), (trig) << GIC_INTR_BIT(intr))
-+		GIC_INTR_OFS(intr)), (1 << GIC_INTR_BIT(intr)), \
-+		(trig) << GIC_INTR_BIT(intr))
- 
- /* Mask manipulation */
- #define GIC_SH_SMASK_OFS		0x0380
--- 
-2.0.0
+Thanks!
+        Manuel

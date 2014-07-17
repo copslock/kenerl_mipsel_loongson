@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 20:11:50 +0200 (CEST)
-Received: from smtp.outflux.net ([198.145.64.163]:59313 "EHLO smtp.outflux.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 20:12:09 +0200 (CEST)
+Received: from smtp.outflux.net ([198.145.64.163]:59809 "EHLO smtp.outflux.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6861360AbaGQSIzDga9l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Jul 2014 20:08:55 +0200
+        id S6861405AbaGQSI4nRIzW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Jul 2014 20:08:56 +0200
 Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s6HI8mwN032258;
-        Thu, 17 Jul 2014 11:08:48 -0700
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id s6HI8odF032257;
+        Thu, 17 Jul 2014 11:08:50 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>,
@@ -19,9 +19,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, linux-arch@vger.kernel.org,
         linux-security-module@vger.kernel.org
-Subject: [PATCH v12 11/11] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
-Date:   Thu, 17 Jul 2014 11:08:38 -0700
-Message-Id: <1405620518-18495-12-git-send-email-keescook@chromium.org>
+Subject: [PATCH v12 10/11] seccomp: allow mode setting across threads
+Date:   Thu, 17 Jul 2014 11:08:37 -0700
+Message-Id: <1405620518-18495-11-git-send-email-keescook@chromium.org>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1405620518-18495-1-git-send-email-keescook@chromium.org>
 References: <1405620518-18495-1-git-send-email-keescook@chromium.org>
@@ -32,7 +32,7 @@ Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41291
+X-archive-position: 41292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,283 +49,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Applying restrictive seccomp filter programs to large or diverse
-codebases often requires handling threads which may be started early in
-the process lifetime (e.g., by code that is linked in). While it is
-possible to apply permissive programs prior to process start up, it is
-difficult to further restrict the kernel ABI to those threads after that
-point.
+This changes the mode setting helper to allow threads to change the
+seccomp mode from another thread. We must maintain barriers to keep
+TIF_SECCOMP synchronized with the rest of the seccomp state.
 
-This change adds a new seccomp syscall flag to SECCOMP_SET_MODE_FILTER for
-synchronizing thread group seccomp filters at filter installation time.
-
-When calling seccomp(SECCOMP_SET_MODE_FILTER, SECCOMP_FILTER_FLAG_TSYNC,
-filter) an attempt will be made to synchronize all threads in current's
-threadgroup to its new seccomp filter program. This is possible iff all
-threads are using a filter that is an ancestor to the filter current is
-attempting to synchronize to. NULL filters (where the task is running as
-SECCOMP_MODE_NONE) are also treated as ancestors allowing threads to be
-transitioned into SECCOMP_MODE_FILTER. If prctrl(PR_SET_NO_NEW_PRIVS,
-...) has been set on the calling thread, no_new_privs will be set for
-all synchronized threads too. On success, 0 is returned. On failure,
-the pid of one of the failing threads will be returned and no filters
-will have been applied.
-
-The race conditions against another thread are:
-- requesting TSYNC (already handled by sighand lock)
-- performing a clone (already handled by sighand lock)
-- changing its filter (already handled by sighand lock)
-- calling exec (handled by cred_guard_mutex)
-The clone case is assisted by the fact that new threads will have their
-seccomp state duplicated from their parent before appearing on the tasklist.
-
-Holding cred_guard_mutex means that seccomp filters cannot be assigned
-while in the middle of another thread's exec (potentially bypassing
-no_new_privs or similar). The call to de_thread() may kill threads waiting
-for the mutex.
-
-Changes across threads to the filter pointer includes a barrier.
-
-Based on patches by Will Drewry.
-
-Suggested-by: Julien Tinnes <jln@chromium.org>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 Reviewed-by: Andy Lutomirski <luto@amacapital.net>
 ---
- fs/exec.c                    |    2 +-
- include/linux/seccomp.h      |    2 +
- include/uapi/linux/seccomp.h |    3 +
- kernel/seccomp.c             |  135 +++++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 140 insertions(+), 2 deletions(-)
+ kernel/seccomp.c |   36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 0f5c272410f6..ab1f1200ce5d 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1216,7 +1216,7 @@ EXPORT_SYMBOL(install_exec_creds);
- /*
-  * determine how safe it is to execute the proposed program
-  * - the caller must hold ->cred_guard_mutex to protect against
-- *   PTRACE_ATTACH
-+ *   PTRACE_ATTACH or seccomp thread-sync
-  */
- static void check_unsafe_exec(struct linux_binprm *bprm)
- {
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 9ff98b4bfe2e..5d586a45a319 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -3,6 +3,8 @@
- 
- #include <uapi/linux/seccomp.h>
- 
-+#define SECCOMP_FILTER_FLAG_MASK	(SECCOMP_FILTER_FLAG_TSYNC)
-+
- #ifdef CONFIG_SECCOMP
- 
- #include <linux/thread_info.h>
-diff --git a/include/uapi/linux/seccomp.h b/include/uapi/linux/seccomp.h
-index b258878ba754..0f238a43ff1e 100644
---- a/include/uapi/linux/seccomp.h
-+++ b/include/uapi/linux/seccomp.h
-@@ -14,6 +14,9 @@
- #define SECCOMP_SET_MODE_STRICT	0
- #define SECCOMP_SET_MODE_FILTER	1
- 
-+/* Valid flags for SECCOMP_SET_MODE_FILTER */
-+#define SECCOMP_FILTER_FLAG_TSYNC	1
-+
- /*
-  * All BPF programs must return a 32-bit value.
-  * The bottom 16-bits are for optional return data.
 diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 9065d2c79c56..74f460179171 100644
+index d5543e787e4e..9065d2c79c56 100644
 --- a/kernel/seccomp.c
 +++ b/kernel/seccomp.c
-@@ -26,6 +26,7 @@
- #ifdef CONFIG_SECCOMP_FILTER
- #include <asm/syscall.h>
- #include <linux/filter.h>
-+#include <linux/pid.h>
- #include <linux/ptrace.h>
- #include <linux/security.h>
- #include <linux/tracehook.h>
-@@ -225,6 +226,114 @@ static inline void seccomp_assign_mode(struct task_struct *task,
- }
+@@ -173,21 +173,24 @@ static int seccomp_check_filter(struct sock_filter *filter, unsigned int flen)
+  */
+ static u32 seccomp_run_filters(int syscall)
+ {
+-	struct seccomp_filter *f;
++	struct seccomp_filter *f = ACCESS_ONCE(current->seccomp.filter);
+ 	struct seccomp_data sd;
+ 	u32 ret = SECCOMP_RET_ALLOW;
  
- #ifdef CONFIG_SECCOMP_FILTER
-+/* Returns 1 if the parent is an ancestor of the child. */
-+static int is_ancestor(struct seccomp_filter *parent,
-+		       struct seccomp_filter *child)
-+{
-+	/* NULL is the root ancestor. */
-+	if (parent == NULL)
-+		return 1;
-+	for (; child; child = child->prev)
-+		if (child == parent)
-+			return 1;
-+	return 0;
-+}
-+
-+/**
-+ * seccomp_can_sync_threads: checks if all threads can be synchronized
-+ *
-+ * Expects sighand and cred_guard_mutex locks to be held.
-+ *
-+ * Returns 0 on success, -ve on error, or the pid of a thread which was
-+ * either not in the correct seccomp mode or it did not have an ancestral
-+ * seccomp filter.
-+ */
-+static inline pid_t seccomp_can_sync_threads(void)
-+{
-+	struct task_struct *thread, *caller;
-+
-+	BUG_ON(!mutex_is_locked(&current->signal->cred_guard_mutex));
-+	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-+
-+	/* Validate all threads being eligible for synchronization. */
-+	caller = current;
-+	for_each_thread(caller, thread) {
-+		pid_t failed;
-+
-+		/* Skip current, since it is initiating the sync. */
-+		if (thread == caller)
-+			continue;
-+
-+		if (thread->seccomp.mode == SECCOMP_MODE_DISABLED ||
-+		    (thread->seccomp.mode == SECCOMP_MODE_FILTER &&
-+		     is_ancestor(thread->seccomp.filter,
-+				 caller->seccomp.filter)))
-+			continue;
-+
-+		/* Return the first thread that cannot be synchronized. */
-+		failed = task_pid_vnr(thread);
-+		/* If the pid cannot be resolved, then return -ESRCH */
-+		if (unlikely(WARN_ON(failed == 0)))
-+			failed = -ESRCH;
-+		return failed;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * seccomp_sync_threads: sets all threads to use current's filter
-+ *
-+ * Expects sighand and cred_guard_mutex locks to be held, and for
-+ * seccomp_can_sync_threads() to have returned success already
-+ * without dropping the locks.
-+ *
-+ */
-+static inline void seccomp_sync_threads(void)
-+{
-+	struct task_struct *thread, *caller;
-+
-+	BUG_ON(!mutex_is_locked(&current->signal->cred_guard_mutex));
-+	BUG_ON(!spin_is_locked(&current->sighand->siglock));
-+
-+	/* Synchronize all threads. */
-+	caller = current;
-+	for_each_thread(caller, thread) {
-+		/* Skip current, since it needs no changes. */
-+		if (thread == caller)
-+			continue;
-+
-+		/* Get a task reference for the new leaf node. */
-+		get_seccomp_filter(caller);
-+		/*
-+		 * Drop the task reference to the shared ancestor since
-+		 * current's path will hold a reference.  (This also
-+		 * allows a put before the assignment.)
-+		 */
-+		put_seccomp_filter(thread);
-+		smp_store_release(&thread->seccomp.filter,
-+				  caller->seccomp.filter);
-+		/*
-+		 * Opt the other thread into seccomp if needed.
-+		 * As threads are considered to be trust-realm
-+		 * equivalent (see ptrace_may_access), it is safe to
-+		 * allow one thread to transition the other.
-+		 */
-+		if (thread->seccomp.mode == SECCOMP_MODE_DISABLED) {
-+			/*
-+			 * Don't let an unprivileged task work around
-+			 * the no_new_privs restriction by creating
-+			 * a thread that sets it up, enters seccomp,
-+			 * then dies.
-+			 */
-+			if (task_no_new_privs(caller))
-+				task_set_no_new_privs(thread);
-+
-+			seccomp_assign_mode(thread, SECCOMP_MODE_FILTER);
-+		}
-+	}
-+}
-+
- /**
-  * seccomp_prepare_filter: Prepares a seccomp filter for use.
-  * @fprog: BPF program to install
-@@ -364,6 +473,15 @@ static long seccomp_attach_filter(unsigned int flags,
- 	if (total_insns > MAX_INSNS_PER_PATH)
- 		return -ENOMEM;
+ 	/* Ensure unexpected behavior doesn't result in failing open. */
+-	if (WARN_ON(current->seccomp.filter == NULL))
++	if (unlikely(WARN_ON(f == NULL)))
+ 		return SECCOMP_RET_KILL;
  
-+	/* If thread sync has been requested, check that it is possible. */
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC) {
-+		int ret;
++	/* Make sure cross-thread synced filter points somewhere sane. */
++	smp_read_barrier_depends();
 +
-+		ret = seccomp_can_sync_threads();
-+		if (ret)
-+			return ret;
-+	}
-+
+ 	populate_seccomp_data(&sd);
+ 
  	/*
- 	 * If there is an existing filter, make it the prev and don't drop its
- 	 * task reference.
-@@ -371,6 +489,10 @@ static long seccomp_attach_filter(unsigned int flags,
- 	filter->prev = current->seccomp.filter;
- 	current->seccomp.filter = filter;
+ 	 * All filters in the list are evaluated and the lowest BPF return
+ 	 * value always takes priority (ignoring the DATA).
+ 	 */
+-	for (f = current->seccomp.filter; f; f = f->prev) {
++	for (; f; f = f->prev) {
+ 		u32 cur_ret = SK_RUN_FILTER(f->prog, (void *)&sd);
  
-+	/* Now that the new filter is in place, synchronize to all threads. */
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
-+		seccomp_sync_threads();
-+
- 	return 0;
+ 		if ((cur_ret & SECCOMP_RET_ACTION) < (ret & SECCOMP_RET_ACTION))
+@@ -207,12 +210,18 @@ static inline bool seccomp_may_assign_mode(unsigned long seccomp_mode)
+ 	return true;
  }
  
-@@ -590,7 +712,7 @@ static long seccomp_set_mode_filter(unsigned int flags,
- 	long ret = -EINVAL;
+-static inline void seccomp_assign_mode(unsigned long seccomp_mode)
++static inline void seccomp_assign_mode(struct task_struct *task,
++				       unsigned long seccomp_mode)
+ {
+-	BUG_ON(!spin_is_locked(&current->sighand->siglock));
++	BUG_ON(!spin_is_locked(&task->sighand->siglock));
  
- 	/* Validate flags. */
--	if (flags != 0)
-+	if (flags & ~SECCOMP_FILTER_FLAG_MASK)
- 		return -EINVAL;
- 
- 	/* Prepare the new filter before holding any locks. */
-@@ -598,6 +720,14 @@ static long seccomp_set_mode_filter(unsigned int flags,
- 	if (IS_ERR(prepared))
- 		return PTR_ERR(prepared);
- 
+-	current->seccomp.mode = seccomp_mode;
+-	set_tsk_thread_flag(current, TIF_SECCOMP);
++	task->seccomp.mode = seccomp_mode;
 +	/*
-+	 * Make sure we cannot change seccomp or nnp state via TSYNC
-+	 * while another thread is in the middle of calling exec.
++	 * Make sure TIF_SECCOMP cannot be set before the mode (and
++	 * filter) is set.
 +	 */
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC &&
-+	    mutex_lock_killable(&current->signal->cred_guard_mutex))
-+		goto out_free;
-+
- 	spin_lock_irq(&current->sighand->siglock);
++	smp_mb__before_atomic();
++	set_tsk_thread_flag(task, TIF_SECCOMP);
+ }
  
- 	if (!seccomp_may_assign_mode(seccomp_mode))
-@@ -612,6 +742,9 @@ static long seccomp_set_mode_filter(unsigned int flags,
- 	seccomp_assign_mode(current, seccomp_mode);
+ #ifdef CONFIG_SECCOMP_FILTER
+@@ -435,12 +444,17 @@ static int mode1_syscalls_32[] = {
+ 
+ int __secure_computing(int this_syscall)
+ {
+-	int mode = current->seccomp.mode;
+ 	int exit_sig = 0;
+ 	int *syscall;
+ 	u32 ret;
+ 
+-	switch (mode) {
++	/*
++	 * Make sure that any changes to mode from another thread have
++	 * been seen after TIF_SECCOMP was seen.
++	 */
++	rmb();
++
++	switch (current->seccomp.mode) {
+ 	case SECCOMP_MODE_STRICT:
+ 		syscall = mode1_syscalls;
+ #ifdef CONFIG_COMPAT
+@@ -545,7 +559,7 @@ static long seccomp_set_mode_strict(void)
+ #ifdef TIF_NOTSC
+ 	disable_TSC();
+ #endif
+-	seccomp_assign_mode(seccomp_mode);
++	seccomp_assign_mode(current, seccomp_mode);
+ 	ret = 0;
+ 
+ out:
+@@ -595,7 +609,7 @@ static long seccomp_set_mode_filter(unsigned int flags,
+ 	/* Do not free the successfully attached filter. */
+ 	prepared = NULL;
+ 
+-	seccomp_assign_mode(seccomp_mode);
++	seccomp_assign_mode(current, seccomp_mode);
  out:
  	spin_unlock_irq(&current->sighand->siglock);
-+	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
-+		mutex_unlock(&current->signal->cred_guard_mutex);
-+out_free:
  	seccomp_filter_free(prepared);
- 	return ret;
- }
 -- 
 1.7.9.5

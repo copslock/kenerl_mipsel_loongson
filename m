@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 23:24:49 +0200 (CEST)
-Received: from mail-wi0-f178.google.com ([209.85.212.178]:50566 "EHLO
-        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861334AbaGQVYptZTse (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 23:24:45 +0200
-Received: by mail-wi0-f178.google.com with SMTP id hi2so3529424wib.5
-        for <multiple recipients>; Thu, 17 Jul 2014 14:24:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 23:26:55 +0200 (CEST)
+Received: from mail-we0-f169.google.com ([74.125.82.169]:33124 "EHLO
+        mail-we0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860088AbaGQV0xXqTqf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 23:26:53 +0200
+Received: by mail-we0-f169.google.com with SMTP id u56so3735438wes.28
+        for <multiple recipients>; Thu, 17 Jul 2014 14:26:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:mime-version:content-type
          :content-transfer-encoding;
-        bh=ktN6FhbQHgrtUCXUxZI5HiRwudjow8mOwlrLVKQLvF8=;
-        b=crPlXuqT55bslCpO/tmE9eiKJu3rP7s9e2pjePP8ksYF+1LgLMxq4gonlCkJog8qBw
-         FukmWM8890815wWwtRq3Wnay0w7tVFdO7rExBV5ZBFgbL7cx2S40Yc9WNYkyYfxV2XGV
-         NQJWDIBQO+8YI8j85g3uq+xRmXgz5/Z/3BLhVG/PbopvJjPUV8G0igCtCFNZf56N3N7u
-         7Uh+VlyLxy3R/JAnx8UN/sZOYtN6PLq1OPLE1iMs+Regm7/ExyFky/bIZzVHRfVFg2UC
-         Vc1NGiXOC97JC6jCSegXd2MGQTQesZEJWQqIcPDOyPwz3LNKFroJGyg7dkRpRT94NHoE
-         KPcg==
-X-Received: by 10.194.222.197 with SMTP id qo5mr102190wjc.78.1405632280130;
-        Thu, 17 Jul 2014 14:24:40 -0700 (PDT)
+        bh=x/tdWvLTIzaerkMyF036ZiXvO2uz1R8HSm+pDKgCLM0=;
+        b=gX9c+UYbG7DK0ygNFDPfjA37d74wsze3mxfJwXAek0OTzWhSJIUeFlinnw33LkOCY2
+         iQuFINhJiXyOU8PYtcfZWwNsWZEadMbvA5dlMHM9YkLQcSN+O7zG6iSS4Y1e4zDm/gFJ
+         V5/ddMivFJH1X4ROcBpByQxNN9kiZfeOmeXHM4hSY0pd+xLPIvBVIgxMyYaNlqLcUji/
+         W+bmPug92zLX4Bn2xRR5MDC4ETBx+qkK7L7R5UXt0c/uBxh3OoxgPPZ3LUhOJUs55rdA
+         juwJhFZjR2Rnu57JicNVmgrt/hD0JDoDVQ8OHK2ph670KHaS8FylgYtEuOUUMC0LaEP3
+         tTPA==
+X-Received: by 10.180.21.235 with SMTP id y11mr1126145wie.75.1405632408145;
+        Thu, 17 Jul 2014 14:26:48 -0700 (PDT)
 Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id i3sm2360468wic.15.2014.07.17.14.24.37
+        by mx.google.com with ESMTPSA id fu7sm25223443wib.2.2014.07.17.14.26.46
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 17 Jul 2014 14:24:38 -0700 (PDT)
+        Thu, 17 Jul 2014 14:26:47 -0700 (PDT)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Devices database update for 3.17
-Date:   Thu, 17 Jul 2014 23:24:30 +0200
-Message-Id: <1405632270-17867-1-git-send-email-zajec5@gmail.com>
+Subject: [PATCH 1/2] Revert "MIPS: Delete unused function add_temporary_entry."
+Date:   Thu, 17 Jul 2014 23:26:32 +0200
+Message-Id: <1405632393-17960-1-git-send-email-zajec5@gmail.com>
 X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -38,7 +38,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41296
+X-archive-position: 41297
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,193 +55,107 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Detect more devices and register leds & buttons for them.
+This reverts commit d7a887a73dec6c387b02a966a71aac767bbd9ce6.
+
+Function add_temporary_entry is needed by bcm47xx to support highmem. We
+need to add a temporary entry to check for amount of RAM.
+The only change made in this revert was replacing (ENTER|EXIT)_CRITICAL.
+
+Conflicts:
+	arch/mips/include/asm/pgtable-32.h
+	arch/mips/mm/tlb-r4k.c
 
 Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
-This is based on top of:
-[3.17,1/2] MIPS: BCM47XX: Distinguish WRT54G series devices by boardtype
-[3.17,2/2] MIPS: BCM47XX: Fix LEDs on WRT54GS V1.0
+ arch/mips/include/asm/pgtable-32.h | 10 ++++++++
+ arch/mips/mm/tlb-r4k.c             | 47 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
 
-Patchwork links for above patches:
-https://patchwork.linux-mips.org/patch/7112/
-https://patchwork.linux-mips.org/patch/7113/
-
-It doesn't apply cleanly otherwise!
----
- arch/mips/bcm47xx/board.c   |  3 ++-
- arch/mips/bcm47xx/buttons.c |  9 ++++++++
- arch/mips/bcm47xx/leds.c    | 53 +++++++++++++++++++++++++++++++++++++--------
- 3 files changed, 55 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
-index 63359f4..838fb32 100644
---- a/arch/mips/bcm47xx/board.c
-+++ b/arch/mips/bcm47xx/board.c
-@@ -58,6 +58,7 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_machine_name[] __initconst =
- static const
- struct bcm47xx_board_type_list1 bcm47xx_board_list_hardware_version[] __initconst = {
- 	{{BCM47XX_BOARD_ASUS_RTN10U, "Asus RT-N10U"}, "RTN10U"},
-+	{{BCM47XX_BOARD_ASUS_RTN10D, "Asus RT-N10D"}, "RTN10D"},
- 	{{BCM47XX_BOARD_ASUS_RTN12, "Asus RT-N12"}, "RT-N12"},
- 	{{BCM47XX_BOARD_ASUS_RTN12B1, "Asus RT-N12B1"}, "RTN12B1"},
- 	{{BCM47XX_BOARD_ASUS_RTN12C1, "Asus RT-N12C1"}, "RTN12C1"},
-@@ -98,7 +99,7 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_productid[] __initconst = {
- /* ModelId */
- static const
- struct bcm47xx_board_type_list1 bcm47xx_board_list_ModelId[] __initconst = {
--	{{BCM47XX_BOARD_DELL_TM2300, "Dell WX-5565"}, "WX-5565"},
-+	{{BCM47XX_BOARD_DELL_TM2300, "Dell TrueMobile 2300"}, "WX-5565"},
- 	{{BCM47XX_BOARD_MOTOROLA_WE800G, "Motorola WE800G"}, "WE800G"},
- 	{{BCM47XX_BOARD_MOTOROLA_WR850GP, "Motorola WR850GP"}, "WR850GP"},
- 	{{BCM47XX_BOARD_MOTOROLA_WR850GV2V3, "Motorola WR850G"}, "WR850G"},
-diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
-index e9b3cab..80cfb82 100644
---- a/arch/mips/bcm47xx/buttons.c
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -329,6 +329,12 @@ bcm47xx_buttons_netgear_wndr4500v1[] __initconst = {
- };
+diff --git a/arch/mips/include/asm/pgtable-32.h b/arch/mips/include/asm/pgtable-32.h
+index b4204c1..2b11332 100644
+--- a/arch/mips/include/asm/pgtable-32.h
++++ b/arch/mips/include/asm/pgtable-32.h
+@@ -19,6 +19,16 @@
+ #include <asm-generic/pgtable-nopmd.h>
  
- static const struct gpio_keys_button
-+bcm47xx_buttons_netgear_wnr3500lv1[] __initconst = {
-+	BCM47XX_GPIO_KEY(4, KEY_RESTART),
-+	BCM47XX_GPIO_KEY(6, KEY_WPS_BUTTON),
-+};
+ /*
++ * - add_temporary_entry() add a temporary TLB entry. We use TLB entries
++ *	starting at the top and working down. This is for populating the
++ *	TLB before trap_init() puts the TLB miss handler in place. It
++ *	should be used only for entries matching the actual page tables,
++ *	to prevent inconsistencies.
++ */
++extern int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
++			       unsigned long entryhi, unsigned long pagemask);
 +
-+static const struct gpio_keys_button
- bcm47xx_buttons_netgear_wnr834bv2[] __initconst = {
- 	BCM47XX_GPIO_KEY(6, KEY_RESTART),
- };
-@@ -538,6 +544,9 @@ int __init bcm47xx_buttons_register(void)
- 	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wndr4500v1);
- 		break;
-+	case BCM47XX_BOARD_NETGEAR_WNR3500L:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wnr3500lv1);
-+		break;
- 	case BCM47XX_BOARD_NETGEAR_WNR834BV2:
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wnr834bv2);
- 		break;
-diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index 23324e3..98d29eb 100644
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -35,6 +35,15 @@ bcm47xx_leds_asus_rtn12[] __initconst = {
- };
++/*
+  * Basically we have the same two-level (which is the logical three level
+  * Linux page table layout folded) page tables as the i386.  Some day
+  * when we have proper page coloring support we can have a 1% quicker
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 3914e27..04feeb5 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -391,6 +391,51 @@ int __init has_transparent_hugepage(void)
  
- static const struct gpio_led
-+bcm47xx_leds_asus_rtn15u[] __initconst = {
-+	/* TODO: Add "wlan" LED */
-+	BCM47XX_GPIO_LED(3, "blue", "wan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(4, "blue", "lan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "blue", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(9, "blue", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE  */
+ 
++/*
++ * Used for loading TLB entries before trap_init() has started, when we
++ * don't actually want to add a wired entry which remains throughout the
++ * lifetime of the system
++ */
 +
-+static const struct gpio_led
- bcm47xx_leds_asus_rtn16[] __initconst = {
- 	BCM47XX_GPIO_LED(1, "blue", "power", 1, LEDS_GPIO_DEFSTATE_ON),
- 	BCM47XX_GPIO_LED(7, "blue", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-@@ -42,8 +51,8 @@ bcm47xx_leds_asus_rtn16[] __initconst = {
- 
- static const struct gpio_led
- bcm47xx_leds_asus_rtn66u[] __initconst = {
--	BCM47XX_GPIO_LED(12, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
--	BCM47XX_GPIO_LED(15, "unk", "usb", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(12, "blue", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(15, "blue", "usb", 1, LEDS_GPIO_DEFSTATE_OFF),
- };
- 
- static const struct gpio_led
-@@ -216,8 +225,8 @@ bcm47xx_leds_linksys_e1000v1[] __initconst = {
- 
- static const struct gpio_led
- bcm47xx_leds_linksys_e1000v21[] __initconst = {
--	BCM47XX_GPIO_LED(5, "unk", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
--	BCM47XX_GPIO_LED(6, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(5, "blue", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "blue", "power", 1, LEDS_GPIO_DEFSTATE_ON),
- 	BCM47XX_GPIO_LED(7, "amber", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
- 	BCM47XX_GPIO_LED(8, "blue", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
- };
-@@ -314,6 +323,16 @@ bcm47xx_leds_linksys_wrt54g_type_0101[] __initconst = {
- 	BCM47XX_GPIO_LED(7, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
- };
- 
-+/* Verified on: WRT54GL V1.1 */
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt54g_type_0467[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "green", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(2, "white", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "orange", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
++static int temp_tlb_entry __cpuinitdata;
 +
- static const struct gpio_led
- bcm47xx_leds_linksys_wrt610nv1[] __initconst = {
- 	BCM47XX_GPIO_LED(0, "unk", "usb",  1, LEDS_GPIO_DEFSTATE_OFF),
-@@ -333,11 +352,10 @@ bcm47xx_leds_linksys_wrt610nv2[] __initconst = {
- 
- static const struct gpio_led
- bcm47xx_leds_linksys_wrtsl54gs[] __initconst = {
--	BCM47XX_GPIO_LED(0, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
--	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
--	BCM47XX_GPIO_LED(2, "white", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
--	BCM47XX_GPIO_LED(3, "orange", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
--	BCM47XX_GPIO_LED(7, "unk", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(0, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(5, "white", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "orange", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
- };
- 
- /* Motorola */
-@@ -385,6 +403,15 @@ bcm47xx_leds_netgear_wndr4500v1[] __initconst = {
- };
- 
- static const struct gpio_led
-+bcm47xx_leds_netgear_wnr3500lv1[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "blue", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "green", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(2, "green", "wan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "amber", "power", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
++__init int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
++			       unsigned long entryhi, unsigned long pagemask)
++{
++	int ret = 0;
++	unsigned long flags;
++	unsigned long wired;
++	unsigned long old_pagemask;
++	unsigned long old_ctx;
 +
-+static const struct gpio_led
- bcm47xx_leds_netgear_wnr834bv2[] __initconst = {
- 	BCM47XX_GPIO_LED(2, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
- 	BCM47XX_GPIO_LED(3, "amber", "power", 0, LEDS_GPIO_DEFSTATE_OFF),
-@@ -425,6 +452,9 @@ void __init bcm47xx_leds_register(void)
- 	case BCM47XX_BOARD_ASUS_RTN12:
- 		bcm47xx_set_pdata(bcm47xx_leds_asus_rtn12);
- 		break;
-+	case BCM47XX_BOARD_ASUS_RTN15U:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_rtn15u);
-+		break;
- 	case BCM47XX_BOARD_ASUS_RTN16:
- 		bcm47xx_set_pdata(bcm47xx_leds_asus_rtn16);
- 		break;
-@@ -553,6 +583,8 @@ void __init bcm47xx_leds_register(void)
- 		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g_type_0101);
- 		break;
- 	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0467:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g_type_0467);
-+		break;
- 	case BCM47XX_BOARD_LINKSYS_WRT54G_TYPE_0708:
- 		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt54g_generic);
- 		break;
-@@ -582,6 +614,9 @@ void __init bcm47xx_leds_register(void)
- 	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
- 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wndr4500v1);
- 		break;
-+	case BCM47XX_BOARD_NETGEAR_WNR3500L:
-+		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr3500lv1);
-+		break;
- 	case BCM47XX_BOARD_NETGEAR_WNR834BV2:
- 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr834bv2);
- 		break;
++	local_irq_save(flags);
++	/* Save old context and create impossible VPN2 value */
++	old_ctx = read_c0_entryhi();
++	old_pagemask = read_c0_pagemask();
++	wired = read_c0_wired();
++	if (--temp_tlb_entry < wired) {
++		printk(KERN_WARNING
++		       "No TLB space left for add_temporary_entry\n");
++		ret = -ENOSPC;
++		goto out;
++	}
++
++	write_c0_index(temp_tlb_entry);
++	write_c0_pagemask(pagemask);
++	write_c0_entryhi(entryhi);
++	write_c0_entrylo0(entrylo0);
++	write_c0_entrylo1(entrylo1);
++	mtc0_tlbw_hazard();
++	tlb_write_indexed();
++	tlbw_use_hazard();
++
++	write_c0_entryhi(old_ctx);
++	write_c0_pagemask(old_pagemask);
++out:
++	local_irq_restore(flags);
++	return ret;
++}
++
+ static int ntlb;
+ static int __init set_ntlb(char *str)
+ {
+@@ -431,6 +476,8 @@ static void r4k_tlb_configure(void)
+ 		write_c0_pagegrain(pg);
+ 	}
+ 
++	temp_tlb_entry = current_cpu_data.tlbsize - 1;
++
+ 	/* From this point on the ARC firmware is dead.	 */
+ 	local_flush_tlb_all();
+ 
 -- 
 1.8.4.5

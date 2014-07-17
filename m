@@ -1,47 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 16:23:05 +0200 (CEST)
-Received: from mail-lb0-f173.google.com ([209.85.217.173]:35598 "EHLO
-        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6856089AbaGQOXARVsSg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 16:23:00 +0200
-Received: by mail-lb0-f173.google.com with SMTP id n15so1770636lbi.4
-        for <multiple recipients>; Thu, 17 Jul 2014 07:22:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 17:05:30 +0200 (CEST)
+Received: from mail-vc0-f173.google.com ([209.85.220.173]:34011 "EHLO
+        mail-vc0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861326AbaGQPF0kYYvV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 17:05:26 +0200
+Received: by mail-vc0-f173.google.com with SMTP id hy10so4842894vcb.18
+        for <linux-mips@linux-mips.org>; Thu, 17 Jul 2014 08:05:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=7Q3IbF7s/Hl6cbSdwsJizwjTNLAdKRYFhn4KjTu7y/o=;
-        b=Gs5DCN0XiRJ+s58V5ltda9y9fxlc0qx7myFZLCC5dL73peNyn5FWq6QZfUi7WOCsVz
-         h6VdL0Gjo/540M4vZHtXyL9XM2nGGBDxM3Sh/g/8EjApzVUYL1+c3vGqB0CJ6XmZEOzj
-         qLQfCI1j/KV90BZpCZsypuxzvqKJzZgYTVp6GbR3tY6B/hEOevSpDt2PmD3ugpZh+nVq
-         EXVFJz63++EPeuEgZZp/Z62K1IGhii9fZOQS64JX9qBvlSueSWryozZNI8V6g/WUSGek
-         zyoY2TVhQpaI5jmCj5O9yZ1m8whuzftHIyAqZuBH/5RpWYd8hrA7OkGFmyZ0Mx+cowLl
-         xQqw==
-X-Received: by 10.152.180.36 with SMTP id dl4mr7087643lac.26.1405606973890;
-        Thu, 17 Jul 2014 07:22:53 -0700 (PDT)
-Received: from localhost.localdomain (alfa-g11.tenet.odessa.ua. [195.138.73.151])
-        by mx.google.com with ESMTPSA id c7sm1738101laf.2.2014.07.17.07.22.50
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 17 Jul 2014 07:22:51 -0700 (PDT)
-From:   Andrey Utkin <andrey.krieger.utkin@gmail.com>
-To:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-mips@linux-mips.org
-Cc:     dborkman@redhat.com, markos.chandras@imgtec.com,
-        ralf@linux-mips.org, Andrey Utkin <andrey.krieger.utkin@gmail.com>
-Subject: [PATCH] arch/mips/net/bpf_jit.c: fix failure check
-Date:   Thu, 17 Jul 2014 17:22:38 +0300
-Message-Id: <1405606958-14383-1-git-send-email-andrey.krieger.utkin@gmail.com>
-X-Mailer: git-send-email 1.8.5.5
-In-Reply-To: <1405603655-12571-1-git-send-email-andrey.krieger.utkin@gmail.com>
-References: <1405603655-12571-1-git-send-email-andrey.krieger.utkin@gmail.com>
-Return-Path: <andrey.krieger.utkin@gmail.com>
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=4hHvJEFCj1npgwe/zEiH0NA/ymJzWjzJW3EICmqlm2Y=;
+        b=Mu6oru8r+/Lp0wGEmE0bmKe6k3SoUYOtmxxlcEvnnYqy29RWjTDEOQriUfIZFRxwAn
+         tzAuulSSDvR1O3bzfg8I1wBbwqkpnoTpUs/S67gcOfTfkxVzRhPsBQXnz13Hom3NBL5b
+         pi0+yZXn3kz5AAQj0UPeBnpWOGVCSCDm+7tylpatYTfEk1tBf30Mxh1xMCKh+fCRfzDe
+         hB72VJNyA5jBoTOgTZghdJdSEGtR7S+x4XxyaIUuOEzUaMdcCixNBSDH4HhkyBZWYLQ+
+         9eZdBbM9RgJdRacyXJJ0S3c7eHOpA+ViSqbcY3JQ9/rm+RQwLLAGUJOUiresClbyWx75
+         PUhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=4hHvJEFCj1npgwe/zEiH0NA/ymJzWjzJW3EICmqlm2Y=;
+        b=aw9aQWOmqDZph/dbL9kv73aXgSUzHMuQZ6kengrr6rLOamDYneGFxAgVBaNMK07vO8
+         UNCgCHXGN7/3EMGpvKx35/8NzEQ4bXeKVZVxS+cGZmLILTlKh9sERC5s9Vz+/f2SkMIY
+         n7wId6jLUVdAP/CXCRQkSsaXOPO7nvUwwFVb0JzgXrG7zUX1qs9yv8h1n6WHhuQ//LNV
+         RUQPavx2dt2s9SXf/VYdD4Fhar6S6AIwrWFZNdVR/2EkOq9pMwH79AAurNQUnIVsUfIc
+         19m/Ck2X9aZw3V+SwVPOgc/DGse9dptTHwbIsC3W9TUdubacSKw1X+oVvPHujuUzNzNS
+         pMFg==
+X-Gm-Message-State: ALoCoQmFSd/afvQxtsRKJ87Qm7WPITPPFx1KAA1yjEGqj2GbmfvGy1TM7O/jWl9VF+eC1SO2gsnw
+X-Received: by 10.52.129.200 with SMTP id ny8mr6100016vdb.27.1405609516353;
+ Thu, 17 Jul 2014 08:05:16 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.52.96.168 with HTTP; Thu, 17 Jul 2014 08:04:56 -0700 (PDT)
+In-Reply-To: <1405547442-26641-12-git-send-email-keescook@chromium.org>
+References: <1405547442-26641-1-git-send-email-keescook@chromium.org> <1405547442-26641-12-git-send-email-keescook@chromium.org>
+From:   David Drysdale <drysdale@google.com>
+Date:   Thu, 17 Jul 2014 16:04:56 +0100
+Message-ID: <CAHse=S_32tmusk4ceY4U6GbNpX4PkX12iPPDZFVZ7qgv-RAooA@mail.gmail.com>
+Subject: Re: [PATCH v11 11/11] seccomp: implement SECCOMP_FILTER_FLAG_TSYNC
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Oleg Nesterov <oleg@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
+        Alexei Starovoitov <ast@plumgrid.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Will Drewry <wad@chromium.org>,
+        Julien Tinnes <jln@chromium.org>,
+        Linux API <linux-api@vger.kernel.org>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <drysdale@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41277
+X-archive-position: 41278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrey.krieger.utkin@gmail.com
+X-original-sender: drysdale@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,42 +75,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-static int pkt_type_offset(void) returned -1 in case of failure, and actual
-(positive) offset value in case of success. In the only instance of its usage,
-the result was saved to local "unsigned int off" variable, which is used in a
-lot of places in the same (large) function, so changing its type could cause
-many warnings. So new signed int variable was added.
+On Wed, Jul 16, 2014 at 10:50 PM, Kees Cook <keescook@chromium.org> wrote:
+> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+> index 9065d2c79c56..2125b83ccfd4 100644
+> +/**
+> + * seccomp_can_sync_threads: checks if all threads can be synchronized
+> + *
+> + * Expects sighand and cred_guard_mutex locks to be held.
+> + *
+> + * Returns 0 on success, -ve on error, or the pid of a thread which was
+> + * either not in the correct seccomp mode or it did not have an ancestral
+> + * seccomp filter.
+> + */
+> +static inline pid_t seccomp_can_sync_threads(void)
+> +{
+> +       struct task_struct *thread, *caller;
+> +
+> +       BUG_ON(!mutex_is_locked(&current->signal->cred_guard_mutex));
+> +       BUG_ON(!spin_is_locked(&current->sighand->siglock));
+> +
+> +       if (current->seccomp.mode != SECCOMP_MODE_FILTER)
+> +               return -EACCES;
 
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=80371
-Reported-by: David Binderman <dcb314@hotmail.com>
-Signed-off-by: Andrey Utkin <andrey.krieger.utkin@gmail.com>
----
- arch/mips/net/bpf_jit.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Quick question -- is it possible to apply the first filter and also synchronize
+it across threads in the same operation?  If so, does this arm also need to
+cope with seccomp.mode being SECCOMP_MODE_DISABLED?
 
-diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
-index b87390a..918b341 100644
---- a/arch/mips/net/bpf_jit.c
-+++ b/arch/mips/net/bpf_jit.c
-@@ -793,6 +793,7 @@ static int build_body(struct jit_ctx *ctx)
- 	const struct sock_filter *inst;
- 	unsigned int i, off, load_order, condt;
- 	u32 k, b_off __maybe_unused;
-+	int tmp;
- 
- 	for (i = 0; i < prog->len; i++) {
- 		u16 code;
-@@ -1332,9 +1333,9 @@ jmp_cmp:
- 		case BPF_ANC | SKF_AD_PKTTYPE:
- 			ctx->flags |= SEEN_SKB;
- 
--			off = pkt_type_offset();
-+			tmp = off = pkt_type_offset();
- 
--			if (off < 0)
-+			if (tmp < 0)
- 				return -1;
- 			emit_load_byte(r_tmp, r_skb, off, ctx);
- 			/* Keep only the last 3 bits */
--- 
-1.8.5.5
+[seccomp_set_mode_filter() looks to call this via seccomp_attach_filter()
+before it does seccomp_assign_mode()]
+
+> +
+> +       /* Validate all threads being eligible for synchronization. */
+> +       caller = current;
+> +       for_each_thread(caller, thread) {
+> +               pid_t failed;
+> +
+> +               if (thread->seccomp.mode == SECCOMP_MODE_DISABLED ||
+> +                   (thread->seccomp.mode == SECCOMP_MODE_FILTER &&
+> +                    is_ancestor(thread->seccomp.filter,
+> +                                caller->seccomp.filter)))
+> +                       continue;
+> +
+> +               /* Return the first thread that cannot be synchronized. */
+> +               failed = task_pid_vnr(thread);
+> +               /* If the pid cannot be resolved, then return -ESRCH */
+> +               if (unlikely(WARN_ON(failed == 0)))
+> +                       failed = -ESRCH;
+> +               return failed;
+> +       }
+> +
+> +       return 0;
+> +}

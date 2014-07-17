@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 15:52:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32917 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6861326AbaGQNwymXP2v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 15:52:54 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A7683309230B;
-        Thu, 17 Jul 2014 14:52:44 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Jul 2014 14:52:47 +0100
-Received: from [192.168.154.67] (192.168.154.67) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 17 Jul
- 2014 14:52:46 +0100
-Message-ID: <53C7D52E.5020205@imgtec.com>
-Date:   Thu, 17 Jul 2014 14:52:46 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 15:58:46 +0200 (CEST)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:60561 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861336AbaGQN6mhYmHA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 15:58:42 +0200
+Received: by mail-pa0-f51.google.com with SMTP id ey11so3384334pad.24
+        for <multiple recipients>; Thu, 17 Jul 2014 06:58:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=kbA9h4tZbt6HIGt1BFKIWN31rDHKEjpPEPYAkAZqzJk=;
+        b=p5DfOyuHzFy/zLYngRZA8Fkc7SUgqxvvKEg2vpgGUTr1zXW1oxOxIgqNj99cl1lv8/
+         9noP6pEUWDWOtpB0jyFlpkAGug/ql27mC8KM3abvaUVKptlPUtW+kx+8wqc8Pj3m7Lin
+         do3V0/3AxlgQm+i2ni2Y7XPYOl84lXMBrvteZBdnc7gYiiOthC6u7vlYF0aKfuUrvHuA
+         EGeoyd0qK0yWmZx84V7+C65n0qyP3hbv021hI54vB3Qj92aHDdg5Cs+Ax+lyKKVCKJdw
+         s9uE3zQs7vtCvhM2/tmEDn7sPx1FxPeXLzKVf8z0cpCSNgakEt1vhFonkzLcSh+leZ8h
+         HWvQ==
 MIME-Version: 1.0
-To:     Andrey Utkin <andrey.krieger.utkin@gmail.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-CC:     <dborkman@redhat.com>, <ralf@linux-mips.org>
-Subject: Re: [PATCH 2/3] arch/mips/net/bpf_jit.c: fix failure check
+X-Received: by 10.67.16.67 with SMTP id fu3mr37331659pad.38.1405605515777;
+ Thu, 17 Jul 2014 06:58:35 -0700 (PDT)
+Received: by 10.70.40.167 with HTTP; Thu, 17 Jul 2014 06:58:35 -0700 (PDT)
+In-Reply-To: <53C7D52E.5020205@imgtec.com>
 References: <1405603655-12571-1-git-send-email-andrey.krieger.utkin@gmail.com>
-In-Reply-To: <1405603655-12571-1-git-send-email-andrey.krieger.utkin@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.67]
-Return-Path: <Markos.Chandras@imgtec.com>
+        <53C7D52E.5020205@imgtec.com>
+Date:   Thu, 17 Jul 2014 16:58:35 +0300
+Message-ID: <CANZNk81DOOxYYFSKZMCh=uABd3ONB8wToTFc3_L_9TfyQDS1yQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] arch/mips/net/bpf_jit.c: fix failure check
+From:   Andrey Utkin <andrey.krieger.utkin@gmail.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-mips@linux-mips.org,
+        dborkman@redhat.com, ralf@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <andrey.krieger.utkin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41274
+X-archive-position: 41275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: andrey.krieger.utkin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,67 +53,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/17/2014 02:27 PM, Andrey Utkin wrote:
-> static int pkt_type_offset(void) returned -1 in case of failure, and
-> actual (positive) offset value in case of success. In the only instance
-> of its usage, the result was saved to local "unsigned int off" variable,
->    which is used in a lot of places in the same (large) function, so
->    changing its type could cause many warnings.
-> There was no signed int variable which could be just used for this case.
-> There are two possibilities to resolve that: to declare temporary signed
-> int variable to get the return value from pkt_type_offset(), or to
-> separate return status from returned offset value. The latter approach
-> was chosen, however, I am not sure which would be practically optimal.
-> 
-> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=80371
-> Reported-by: David Binderman <dcb314@hotmail.com>
-> Signed-off-by: Andrey Utkin <andrey.krieger.utkin@gmail.com>
-> ---
->  arch/mips/net/bpf_jit.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
-> index b87390a..47f65d5 100644
-> --- a/arch/mips/net/bpf_jit.c
-> +++ b/arch/mips/net/bpf_jit.c
-> @@ -770,7 +770,7 @@ static u64 jit_get_skb_w(struct sk_buff *skb, unsigned offset)
->  #else
->  #define PKT_TYPE_MAX	7
->  #endif
-> -static int pkt_type_offset(void)
-> +static int pkt_type_offset(unsigned int *off_arg)
->  {
->  	struct sk_buff skb_probe = {
->  		.pkt_type = ~0,
-> @@ -779,8 +779,10 @@ static int pkt_type_offset(void)
->  	unsigned int off;
->  
->  	for (off = 0; off < sizeof(struct sk_buff); off++) {
-> -		if (ct[off] == PKT_TYPE_MAX)
-> -			return off;
-> +		if (ct[off] == PKT_TYPE_MAX) {
-> +			*off_arg = off;
-> +			return 0;
-> +		}
->  	}
->  	pr_err_once("Please fix pkt_type_offset(), as pkt_type couldn't be found\n");
->  	return -1;
-> @@ -1332,9 +1334,7 @@ jmp_cmp:
->  		case BPF_ANC | SKF_AD_PKTTYPE:
->  			ctx->flags |= SEEN_SKB;
->  
-> -			off = pkt_type_offset();
-> -
-> -			if (off < 0)
-> +			if (pkt_type_offset(&off))
->  				return -1;
->  			emit_load_byte(r_tmp, r_skb, off, ctx);
->  			/* Keep only the last 3 bits */
-> 
-Hi,
+2014-07-17 16:52 GMT+03:00 Markos Chandras <Markos.Chandras@imgtec.com>:
+> Thanks for the patch. I would personally prefer to use a new signed int
+> variable, but I am fine either way.
 
-Thanks for the patch. I would personally prefer to use a new signed int
-variable, but I am fine either way.
+If that's not a problem for performance etc., then i'll resubmit with
+new temporary signed variable, because i believe it would be simpler
+to comprehend.
 
 -- 
-markos
+Andrey Utkin

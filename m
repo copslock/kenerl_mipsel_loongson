@@ -1,24 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 10:24:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:21003 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 10:24:30 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38856 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6861310AbaGQIV7J-qgs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 10:21:59 +0200
+        with ESMTP id S6861303AbaGQIWBUfA6b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 10:22:01 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 17FDB6B1AE3BF
-        for <linux-mips@linux-mips.org>; Thu, 17 Jul 2014 09:21:50 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 73559701B3D8D
+        for <linux-mips@linux-mips.org>; Thu, 17 Jul 2014 09:21:52 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 17 Jul
+ 2014 09:21:54 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Jul 2014 09:21:52 +0100
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 17 Jul 2014 09:21:54 +0100
 Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Jul 2014 09:21:51 +0100
+ 14.3.195.1; Thu, 17 Jul 2014 09:21:53 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Jeffrey Deans <jeffrey.deans@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 6/7] MIPS: Malta: Fix dispatching of GIC interrupts
-Date:   Thu, 17 Jul 2014 09:20:58 +0100
-Message-ID: <1405585259-24941-7-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 7/7] MIPS: GIC: Fix GICBIS macro
+Date:   Thu, 17 Jul 2014 09:20:59 +0100
+Message-ID: <1405585259-24941-8-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1405585259-24941-1-git-send-email-markos.chandras@imgtec.com>
 References: <1405585259-24941-1-git-send-email-markos.chandras@imgtec.com>
@@ -29,7 +32,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41263
+X-archive-position: 41264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,69 +51,68 @@ X-list: linux-mips
 
 From: Jeffrey Deans <jeffrey.deans@imgtec.com>
 
-The Malta malta_ipi_irqdispatch() routine now checks only IPI interrupts
-when handling IPIs. It could previously call do_IRQ() for non-IPIs, and
-also call do_IRQ() with an invalid IRQ number if there were no pending
-GIC interrupts when gic_get_int() was called.
+The GICBIS macro could update the GIC registers incorrectly, depending
+on the data value passed in:
+
+* Bits were only OR'd into the register data, so register fields could
+  not be cleared.
+
+* Bits were OR'd into the register data without masking the data to the
+  correct field width, corrupting adjacent bits.
 
 Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/mti-malta/malta-int.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ arch/mips/include/asm/gic.h | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index 4ab919141737..e4f43baa8f67 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -42,6 +42,10 @@ static unsigned int ipi_map[NR_CPUS];
+diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
+index 8b30befd99d6..3f20b2111d56 100644
+--- a/arch/mips/include/asm/gic.h
++++ b/arch/mips/include/asm/gic.h
+@@ -43,18 +43,17 @@
+ #ifdef GICISBYTELITTLEENDIAN
+ #define GICREAD(reg, data)	((data) = (reg), (data) = le32_to_cpu(data))
+ #define GICWRITE(reg, data)	((reg) = cpu_to_le32(data))
+-#define GICBIS(reg, bits)			\
+-	({unsigned int data;			\
+-		GICREAD(reg, data);		\
+-		data |= bits;			\
+-		GICWRITE(reg, data);		\
+-	})
+-
+ #else
+ #define GICREAD(reg, data)	((data) = (reg))
+ #define GICWRITE(reg, data)	((reg) = (data))
+-#define GICBIS(reg, bits)	((reg) |= (bits))
+ #endif
++#define GICBIS(reg, mask, bits)			\
++	do { u32 data;				\
++		GICREAD((reg), data);		\
++		data &= ~(mask);		\
++		data |= ((bits) & (mask));	\
++		GICWRITE((reg), data);		\
++	} while (0)
  
- static DEFINE_RAW_SPINLOCK(mips_irq_lock);
  
-+#ifdef CONFIG_MIPS_GIC_IPI
-+DECLARE_BITMAP(ipi_ints, GIC_NUM_INTRS);
-+#endif
-+
- static inline int mips_pcibios_iack(void)
- {
- 	int irq;
-@@ -125,16 +129,22 @@ static void malta_hw0_irqdispatch(void)
+ /* GIC Address Space */
+@@ -170,13 +169,15 @@
+ #define GIC_SH_SET_POLARITY_OFS		0x0100
+ #define GIC_SET_POLARITY(intr, pol) \
+ 	GICBIS(GIC_REG_ADDR(SHARED, GIC_SH_SET_POLARITY_OFS + \
+-		GIC_INTR_OFS(intr)), (pol) << GIC_INTR_BIT(intr))
++		GIC_INTR_OFS(intr)), (1 << GIC_INTR_BIT(intr)), \
++		(pol) << GIC_INTR_BIT(intr))
  
- static void malta_ipi_irqdispatch(void)
- {
--	int irq;
-+#ifdef CONFIG_MIPS_GIC_IPI
-+	unsigned long irq;
-+	DECLARE_BITMAP(pending, GIC_NUM_INTRS);
+ /* Triggering : Reset Value is always 0 */
+ #define GIC_SH_SET_TRIGGER_OFS		0x0180
+ #define GIC_SET_TRIGGER(intr, trig) \
+ 	GICBIS(GIC_REG_ADDR(SHARED, GIC_SH_SET_TRIGGER_OFS + \
+-		GIC_INTR_OFS(intr)), (trig) << GIC_INTR_BIT(intr))
++		GIC_INTR_OFS(intr)), (1 << GIC_INTR_BIT(intr)), \
++		(trig) << GIC_INTR_BIT(intr))
  
--	if (gic_compare_int())
--		do_IRQ(MIPS_GIC_IRQ_BASE);
-+	gic_get_int_mask(pending, ipi_ints);
-+
-+	irq = find_first_bit(pending, GIC_NUM_INTRS);
- 
--	irq = gic_get_int();
--	if (irq < 0)
--		return;	 /* interrupt has already been cleared */
-+	while (irq < GIC_NUM_INTRS) {
-+		do_IRQ(MIPS_GIC_IRQ_BASE + irq);
- 
--	do_IRQ(MIPS_GIC_IRQ_BASE + irq);
-+		irq = find_next_bit(pending, GIC_NUM_INTRS, irq + 1);
-+	}
-+#endif
-+	if (gic_compare_int())
-+		do_IRQ(MIPS_GIC_IRQ_BASE);
- }
- 
- static void corehi_irqdispatch(void)
-@@ -429,6 +439,7 @@ static void __init fill_ipi_map1(int baseintr, int cpu, int cpupin)
- 	gic_intr_map[intr].trigtype = GIC_TRIG_EDGE;
- 	gic_intr_map[intr].flags = 0;
- 	ipi_map[cpu] |= (1 << (cpupin + 2));
-+	bitmap_set(ipi_ints, intr, 1);
- }
- 
- static void __init fill_ipi_map(void)
+ /* Mask manipulation */
+ #define GIC_SH_SMASK_OFS		0x0380
 -- 
 2.0.0

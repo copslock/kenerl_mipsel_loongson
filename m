@@ -1,50 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 23:27:15 +0200 (CEST)
-Received: from mail-we0-f171.google.com ([74.125.82.171]:38472 "EHLO
-        mail-we0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861337AbaGQV04lIU9h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 23:26:56 +0200
-Received: by mail-we0-f171.google.com with SMTP id p10so3753235wes.16
-        for <multiple recipients>; Thu, 17 Jul 2014 14:26:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=3fwoA7Xx3vuhSrsfABCGTt6f1yE3RHuMMh7z6ndJHJQ=;
-        b=ahb3tKKuHOALVTvpZE+BTsEssiRHp2hCpH+7usZRTmhEzfWJWbbOwsPsTEncuGT111
-         SyDRhoU2CthWwQQUvvFYmXQXjgpIxoQKjgXjmZBJa1Il94c/CChPfH81xxpH4tVWXl97
-         afkfeiarAvqLLIVmm1ZABD6/VK+c7WW4ZGfxSdeisQ5Gk0ZksHjvsAOVn9g+Qt9hddrV
-         hzzD6juILsYB0/hD4+SnvqeMrAKYFzCSV4REjzlj6+yGcGnj7RRhQEVTxb7JPb6wN0tc
-         IosNwfJyckzUw9H0u3QZOx3LJ1Aln296yDtPM/jri3KLoiCwjlS53J1opa6v/eHBA3Ns
-         ks2A==
-X-Received: by 10.180.24.34 with SMTP id r2mr1431786wif.46.1405632411096;
-        Thu, 17 Jul 2014 14:26:51 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id fu7sm25223443wib.2.2014.07.17.14.26.49
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 17 Jul 2014 14:26:50 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH 2/2] MIPS: BCM47XX: Detect more then 128 MiB of RAM (HIGHMEM)
-Date:   Thu, 17 Jul 2014 23:26:33 +0200
-Message-Id: <1405632393-17960-2-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-In-Reply-To: <1405632393-17960-1-git-send-email-zajec5@gmail.com>
-References: <1405632393-17960-1-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 23:40:14 +0200 (CEST)
+Received: from mail-lb0-f176.google.com ([209.85.217.176]:54550 "EHLO
+        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860088AbaGQVkMnCs0k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 23:40:12 +0200
+Received: by mail-lb0-f176.google.com with SMTP id u10so1977838lbd.35
+        for <linux-mips@linux-mips.org>; Thu, 17 Jul 2014 14:40:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=wrahysN0MkFRHxTmKq7O5h0YpvuKZju3S7+yd578Ftk=;
+        b=ZRfZF7YqC8w+B2XNAug+MtJNgcOnxk1SVSZBErk/IcX6OA76uLGAvRZjby190PGkL9
+         BZutACP9tcaAiS8t/qclH4042rCjLrHkRbzYHGdX/+SudL5fUHZ03dhFaGD4H4xtAg3v
+         s0Ag7pA6gC3zLmzZHSlhoacW0WPzP4foRUt7ZRN1knx53GP7msIAllCB9EnzbNmAlrNF
+         erGhCc/+dg+9/WuabgDdZwftRLCQ1ApnLNjb2YfWjnAi6NoLuLT8marbDIZMwNpnJZeT
+         DtK8IhUBy7GAiugVQV1qGn6Tupyh7klADCFdNiCmXS05l8P/k79zMECjJvBW4+vSEGQC
+         7Ilw==
+X-Gm-Message-State: ALoCoQmUIIoi4QBckNvmLbcRZxIAnlcAfDauqH/xWj/+aBIy+FBjaPMmmYRrgJqkBB8PrLIcrbOv
+X-Received: by 10.152.207.36 with SMTP id lt4mr104237lac.72.1405633206656;
+ Thu, 17 Jul 2014 14:40:06 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 10.152.108.130 with HTTP; Thu, 17 Jul 2014 14:39:46 -0700 (PDT)
+In-Reply-To: <53C48986.5010109@oracle.com>
+References: <1405017631-27346-1-git-send-email-keescook@chromium.org>
+ <20140711164931.GA18473@redhat.com> <CAGXu5jK-x0=Rr7kX2a=b4Z8ueA77uwmhNZZAayG8cwmNOKa8Ug@mail.gmail.com>
+ <CAGXu5jJJsiTxxn5UijkBz7jpWgqg01BS=Zc0WbHXbs0vH_xPMQ@mail.gmail.com> <53C48986.5010109@oracle.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Thu, 17 Jul 2014 14:39:46 -0700
+Message-ID: <CALCETrUf-Tei+R32SR-KKLD50zWa89Vrfu4S4uZ+4jh4eEFOdg@mail.gmail.com>
+Subject: Re: [PATCH v10 0/11] seccomp: add thread sync ability
+To:     James Morris <james.l.morris@oracle.com>
+Cc:     Kees Cook <keescook@chromium.org>, Oleg Nesterov <oleg@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Alexei Starovoitov <ast@plumgrid.com>,
+        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Will Drewry <wad@chromium.org>,
+        Julien Tinnes <jln@chromium.org>,
+        David Drysdale <drysdale@google.com>,
+        Linux API <linux-api@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41298
+X-archive-position: 41299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,172 +68,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-So far BCM47XX can only detect amount of HIGHMEM. It still requires
-adding (registering) and well-testing before enabling by default.
+On Mon, Jul 14, 2014 at 6:53 PM, James Morris <james.l.morris@oracle.com> wrote:
+> On 07/15/2014 04:59 AM, Kees Cook wrote:
+>>
+>> Hi James,
+>>
+>> Is this series something you would carry in the security-next tree?
+>> That has traditionally been where seccomp features have landed in the
+>> past.
+>>
+>> -Kees
+>>
+>>
+>> On Fri, Jul 11, 2014 at 10:55 AM, Kees Cook <keescook@chromium.org> wrote:
+>>>
+>>> On Fri, Jul 11, 2014 at 9:49 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+>>>>
+>>>> On 07/10, Kees Cook wrote:
+>>>>>
+>>>>>
+>>>>> This adds the ability for threads to request seccomp filter
+>>>>> synchronization across their thread group (at filter attach time).
+>>>>> For example, for Chrome to make sure graphic driver threads are fully
+>>>>> confined after seccomp filters have been attached.
+>>>>>
+>>>>> To support this, locking on seccomp changes via thread-group-shared
+>>>>> sighand lock is introduced, along with refactoring of no_new_privs.
+>>>>> Races
+>>>>> with thread creation are handled via delayed duplication of the seccomp
+>>>>> task struct field and cred_guard_mutex.
+>>>>>
+>>>>> This includes a new syscall (instead of adding a new prctl option),
+>>>>> as suggested by Andy Lutomirski and Michael Kerrisk.
+>>>>
+>>>>
+>>>> I do not not see any problems in this version,
+>>>
+>>>
+>>> Awesome! Thank you for all the reviews. :) If Andy and Michael are
+>>> happy with this too, I think this is in good shape. \o/
+>>>
+>>> -Kees
+>>>
+>>>>
+>>>> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+>>>>
+>>>
+>>>
+>>>
+>>> --
+>>> Kees Cook
+>>> Chrome OS Security
+>>
+>>
+>>
+>>
+>
+> Yep, certainly.
+>
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
-Changes since RFC:
-1) Use pgtable-32.h instead of ugly "extern" in .c file
-2) Make it clear it needs work & testing before enabling
----
- arch/mips/bcm47xx/bcm47xx_private.h |  3 ++
- arch/mips/bcm47xx/prom.c            | 68 ++++++++++++++++++++++++++++++++++++-
- arch/mips/bcm47xx/setup.c           |  3 ++
- arch/mips/include/asm/pgtable-32.h  |  2 ++
- arch/mips/mm/tlb-r4k.c              |  2 +-
- 5 files changed, 76 insertions(+), 2 deletions(-)
+Any ETA?  I'm currently blocking on having stable commit hashes for these.
 
-diff --git a/arch/mips/bcm47xx/bcm47xx_private.h b/arch/mips/bcm47xx/bcm47xx_private.h
-index 0194c3b..f1cc9d0 100644
---- a/arch/mips/bcm47xx/bcm47xx_private.h
-+++ b/arch/mips/bcm47xx/bcm47xx_private.h
-@@ -3,6 +3,9 @@
- 
- #include <linux/kernel.h>
- 
-+/* prom.c */
-+void __init bcm47xx_prom_highmem_init(void);
-+
- /* buttons.c */
- int __init bcm47xx_buttons_register(void);
- 
-diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
-index 1a03a2f..1b170bf 100644
---- a/arch/mips/bcm47xx/prom.c
-+++ b/arch/mips/bcm47xx/prom.c
-@@ -51,6 +51,8 @@ __init void bcm47xx_set_system_type(u16 chip_id)
- 		 chip_id);
- }
- 
-+static unsigned long lowmem __initdata;
-+
- static __init void prom_init_mem(void)
- {
- 	unsigned long mem;
-@@ -87,6 +89,7 @@ static __init void prom_init_mem(void)
- 		if (!memcmp(prom_init, prom_init + mem, 32))
- 			break;
- 	}
-+	lowmem = mem;
- 
- 	/* Ignoring the last page when ddr size is 128M. Cached
- 	 * accesses to last page is causing the processor to prefetch
-@@ -95,7 +98,6 @@ static __init void prom_init_mem(void)
- 	 */
- 	if (c->cputype == CPU_74K && (mem == (128  << 20)))
- 		mem -= 0x1000;
--
- 	add_memory_region(0, mem, BOOT_MEM_RAM);
- }
- 
-@@ -114,3 +116,67 @@ void __init prom_init(void)
- void __init prom_free_prom_memory(void)
- {
- }
-+
-+#if defined(CONFIG_BCM47XX_BCMA) && defined(CONFIG_HIGHMEM)
-+
-+#define EXTVBASE	0xc0000000
-+#define ENTRYLO(x)	((pte_val(pfn_pte((x) >> _PFN_SHIFT, PAGE_KERNEL_UNCACHED)) >> 6) | 1)
-+
-+#include <asm/tlbflush.h>
-+
-+/* Stripped version of tlb_init, with the call to build_tlb_refill_handler
-+ * dropped. Calling it at this stage causes a hang.
-+ */
-+void __cpuinit early_tlb_init(void)
-+{
-+	write_c0_pagemask(PM_DEFAULT_MASK);
-+	write_c0_wired(0);
-+	temp_tlb_entry = current_cpu_data.tlbsize - 1;
-+	local_flush_tlb_all();
-+}
-+
-+void __init bcm47xx_prom_highmem_init(void)
-+{
-+	unsigned long off = (unsigned long)prom_init;
-+	unsigned long extmem = 0;
-+	bool highmem_region = false;
-+
-+	if (WARN_ON(bcm47xx_bus_type != BCM47XX_BUS_TYPE_BCMA))
-+		return;
-+
-+	if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
-+		highmem_region = true;
-+
-+	if (lowmem != 128 << 20 || !highmem_region)
-+		return;
-+
-+	early_tlb_init();
-+
-+	/* Add one temporary TLB entry to map SDRAM Region 2.
-+	 *      Physical        Virtual
-+	 *      0x80000000      0xc0000000      (1st: 256MB)
-+	 *      0x90000000      0xd0000000      (2nd: 256MB)
-+	 */
-+	add_temporary_entry(ENTRYLO(0x80000000),
-+			    ENTRYLO(0x80000000 + (256 << 20)),
-+			    EXTVBASE, PM_256M);
-+
-+	off = EXTVBASE + __pa(off);
-+	for (extmem = 128 << 20; extmem < 512 << 20; extmem <<= 1) {
-+		if (!memcmp(prom_init, (void *)(off + extmem), 16))
-+			break;
-+	}
-+	extmem -= lowmem;
-+
-+	early_tlb_init();
-+
-+	if (!extmem)
-+		return;
-+
-+	pr_warn("Found %lu MiB of extra memory, but highmem is unsupported yet!\n",
-+		extmem >> 20);
-+
-+	/* TODO: Register extra memory */
-+}
-+
-+#endif /* defined(CONFIG_BCM47XX_BCMA) && defined(CONFIG_HIGHMEM) */
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 63a4b0e..8c8e7cd 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -218,6 +218,9 @@ void __init plat_mem_setup(void)
- 		bcm47xx_bus_type = BCM47XX_BUS_TYPE_BCMA;
- 		bcm47xx_register_bcma();
- 		bcm47xx_set_system_type(bcm47xx_bus.bcma.bus.chipinfo.id);
-+#ifdef CONFIG_HIGHMEM
-+		bcm47xx_prom_highmem_init();
-+#endif
- #endif
- 	} else {
- 		printk(KERN_INFO "bcm47xx: using ssb bus\n");
-diff --git a/arch/mips/include/asm/pgtable-32.h b/arch/mips/include/asm/pgtable-32.h
-index 2b11332..cd7d606 100644
---- a/arch/mips/include/asm/pgtable-32.h
-+++ b/arch/mips/include/asm/pgtable-32.h
-@@ -18,6 +18,8 @@
- 
- #include <asm-generic/pgtable-nopmd.h>
- 
-+extern int temp_tlb_entry __cpuinitdata;
-+
- /*
-  * - add_temporary_entry() add a temporary TLB entry. We use TLB entries
-  *	starting at the top and working down. This is for populating the
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 04feeb5..92c9efdb 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -397,7 +397,7 @@ int __init has_transparent_hugepage(void)
-  * lifetime of the system
-  */
- 
--static int temp_tlb_entry __cpuinitdata;
-+int temp_tlb_entry __cpuinitdata;
- 
- __init int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
- 			       unsigned long entryhi, unsigned long pagemask)
--- 
-1.8.4.5
+If you're planning on pulling from Kees' tree instead of importing the
+patches, I can work with that, too.
+
+Thanks,
+Andy

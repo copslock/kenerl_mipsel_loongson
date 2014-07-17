@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 15:58:46 +0200 (CEST)
-Received: from mail-pa0-f51.google.com ([209.85.220.51]:60561 "EHLO
-        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861336AbaGQN6mhYmHA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 15:58:42 +0200
-Received: by mail-pa0-f51.google.com with SMTP id ey11so3384334pad.24
-        for <multiple recipients>; Thu, 17 Jul 2014 06:58:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=kbA9h4tZbt6HIGt1BFKIWN31rDHKEjpPEPYAkAZqzJk=;
-        b=p5DfOyuHzFy/zLYngRZA8Fkc7SUgqxvvKEg2vpgGUTr1zXW1oxOxIgqNj99cl1lv8/
-         9noP6pEUWDWOtpB0jyFlpkAGug/ql27mC8KM3abvaUVKptlPUtW+kx+8wqc8Pj3m7Lin
-         do3V0/3AxlgQm+i2ni2Y7XPYOl84lXMBrvteZBdnc7gYiiOthC6u7vlYF0aKfuUrvHuA
-         EGeoyd0qK0yWmZx84V7+C65n0qyP3hbv021hI54vB3Qj92aHDdg5Cs+Ax+lyKKVCKJdw
-         s9uE3zQs7vtCvhM2/tmEDn7sPx1FxPeXLzKVf8z0cpCSNgakEt1vhFonkzLcSh+leZ8h
-         HWvQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2014 16:12:38 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44515 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6861343AbaGQOMdpRf5Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jul 2014 16:12:33 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 1AD015B57FC5F;
+        Thu, 17 Jul 2014 15:12:24 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 17 Jul
+ 2014 15:12:26 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 17 Jul 2014 15:12:26 +0100
+Received: from [192.168.154.67] (192.168.154.67) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 17 Jul
+ 2014 15:12:26 +0100
+Message-ID: <53C7D9CA.20405@imgtec.com>
+Date:   Thu, 17 Jul 2014 15:12:26 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
-X-Received: by 10.67.16.67 with SMTP id fu3mr37331659pad.38.1405605515777;
- Thu, 17 Jul 2014 06:58:35 -0700 (PDT)
-Received: by 10.70.40.167 with HTTP; Thu, 17 Jul 2014 06:58:35 -0700 (PDT)
-In-Reply-To: <53C7D52E.5020205@imgtec.com>
-References: <1405603655-12571-1-git-send-email-andrey.krieger.utkin@gmail.com>
-        <53C7D52E.5020205@imgtec.com>
-Date:   Thu, 17 Jul 2014 16:58:35 +0300
-Message-ID: <CANZNk81DOOxYYFSKZMCh=uABd3ONB8wToTFc3_L_9TfyQDS1yQ@mail.gmail.com>
+To:     Andrey Utkin <andrey.krieger.utkin@gmail.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <dborkman@redhat.com>, <ralf@linux-mips.org>
 Subject: Re: [PATCH 2/3] arch/mips/net/bpf_jit.c: fix failure check
-From:   Andrey Utkin <andrey.krieger.utkin@gmail.com>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-mips@linux-mips.org,
-        dborkman@redhat.com, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <andrey.krieger.utkin@gmail.com>
+References: <1405603655-12571-1-git-send-email-andrey.krieger.utkin@gmail.com>  <53C7D52E.5020205@imgtec.com> <CANZNk81DOOxYYFSKZMCh=uABd3ONB8wToTFc3_L_9TfyQDS1yQ@mail.gmail.com>
+In-Reply-To: <CANZNk81DOOxYYFSKZMCh=uABd3ONB8wToTFc3_L_9TfyQDS1yQ@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.67]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41275
+X-archive-position: 41276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrey.krieger.utkin@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,13 +51,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-07-17 16:52 GMT+03:00 Markos Chandras <Markos.Chandras@imgtec.com>:
-> Thanks for the patch. I would personally prefer to use a new signed int
-> variable, but I am fine either way.
+On 07/17/2014 02:58 PM, Andrey Utkin wrote:
+> 2014-07-17 16:52 GMT+03:00 Markos Chandras <Markos.Chandras@imgtec.com>:
+>> Thanks for the patch. I would personally prefer to use a new signed int
+>> variable, but I am fine either way.
+> 
+> If that's not a problem for performance etc., then i'll resubmit with
+> new temporary signed variable, because i believe it would be simpler
+> to comprehend.
+> 
+Hi Andrey,
 
-If that's not a problem for performance etc., then i'll resubmit with
-new temporary signed variable, because i believe it would be simpler
-to comprehend.
+Well, this function is executed during the filter compilation so it's
+only executed once (or maybe a few times) per filter (assuming the
+filter uses the SKF_AD_PKTTYPE opcode at all) so performance is not
+really critical at this point. The performance become a critical factor
+for the execution of the jitted filter. But yes, avoiding passing the
+argument and doing the pointer operation later on could save some
+instructions which is both good for compilation performance and also
+makes the function simpler as you said.
 
 -- 
-Andrey Utkin
+markos

@@ -1,55 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2014 18:54:43 +0200 (CEST)
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42324 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861343AbaGRQylM8z8g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2014 18:54:41 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 617758EE1C0;
-        Fri, 18 Jul 2014 09:54:34 -0700 (PDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zqKLiVNYGYIN; Fri, 18 Jul 2014 09:54:34 -0700 (PDT)
-Received: from [153.66.254.224] (unknown [50.46.103.107])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 152868EE06D;
-        Fri, 18 Jul 2014 09:54:33 -0700 (PDT)
-Message-ID: <1405702472.30262.1.camel@dabdike.int.hansenpartnership.com>
-Subject: Re: [PATCH 0/25] Replace DEFINE_PCI_DEVICE_TABLE macro use
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Greg KH <greg@kroah.com>
-Cc:     "John W. Linville" <linville@tuxdriver.com>,
-        Benoit Taine <benoit.taine@lip6.fr>, linux-mips@linux-mips.org,
-        linux-fbdev@vger.kernel.org, linux-pci@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        ath5k-devel@venema.h4ckr.net, linux-acenic@sunsite.dk,
-        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-hippi@sunsite.dk,
-        industrypack-devel@lists.sourceforge.net,
-        linux-mmc@vger.kernel.org, MPT-FusionLinux.pdl@avagotech.com,
-        virtualization@lists.linux-foundation.org,
-        ath9k-devel@venema.h4ckr.net, wil6210@qca.qualcomm.com,
-        linux-pcmcia@lists.infradead.org, linux-can@vger.kernel.org,
-        xen-devel@lists.xenproject.org,
-        platform-driver-x86@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, users@rt2x00.serialmonkey.com,
-        e1000-devel@lists.sourceforge.net, linux-crypto@vger.kernel.org,
-        devel@linuxdriverproject.org
-Date:   Fri, 18 Jul 2014 09:54:32 -0700
-In-Reply-To: <20140718164340.GA24960@kroah.com>
-References: <1405697232-11785-1-git-send-email-benoit.taine@lip6.fr>
-         <20140718162213.GC31114@tuxdriver.com> <20140718164340.GA24960@kroah.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.12.3 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <James.Bottomley@HansenPartnership.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2014 19:17:36 +0200 (CEST)
+Received: from mail-la0-f46.google.com ([209.85.215.46]:55518 "EHLO
+        mail-la0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861349AbaGRRRcMTOA8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2014 19:17:32 +0200
+Received: by mail-la0-f46.google.com with SMTP id b8so3134161lan.33
+        for <linux-mips@linux-mips.org>; Fri, 18 Jul 2014 10:17:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=BtvgbTIxq+ZbaEUTFfpZ0tFlITqZGzNz2ygRd63dC+A=;
+        b=f7mOsV59siYL9n+HzTvTcc3i7bqz2veW3fg63VwU9jtCALdg8equhquorrPu3uPwLe
+         BRW+1U96DOxgOCWnT4hlqzh85LWZuNLxvi0PpFwkqloek+FX6OGcEmuw1YyGdjbz/ZkP
+         BPZa8WTr+w7hRBmWgYE2uxYBrUcEr14k/1IWZkYMqTdOHsWW4NdaBCk+5tGVSa7Hm5t2
+         Lb2adChLAmutLXSZAvTnhzIxclytxQwNPaR5eR+6PPxOW7wKYwBcWDUKmU9V8RFSeXzs
+         YZhV9Y+5wFOrr3Dj7e4SQxwpYdYetUjfbQeP43DkLjcPnprQMZn8fiCXcX+3y//xeDeb
+         JOnQ==
+X-Gm-Message-State: ALoCoQmFealLCZBmN5lMzI23YSuCgLm+snYQ7kbD3VBdogcnaKfC6cmajMP02iHca4oGYfnoK1Kg
+X-Received: by 10.152.202.197 with SMTP id kk5mr6886919lac.19.1405703846505;
+ Fri, 18 Jul 2014 10:17:26 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.152.108.130 with HTTP; Fri, 18 Jul 2014 10:17:06 -0700 (PDT)
+In-Reply-To: <alpine.LRH.2.11.1407181325200.15709@namei.org>
+References: <1405620518-18495-1-git-send-email-keescook@chromium.org> <alpine.LRH.2.11.1407181325200.15709@namei.org>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Fri, 18 Jul 2014 10:17:06 -0700
+Message-ID: <CALCETrUv3G+C3PTOD1FJGOG8AQCA30hNkUiusCnQDGq6Kt_Feg@mail.gmail.com>
+Subject: Re: [PATCH v12 11/11] seccomp: add thread sync ability
+To:     James Morris <jmorris@namei.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        James Morris <james.l.morris@oracle.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        David Drysdale <drysdale@google.com>,
+        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>,
+        Will Drewry <wad@chromium.org>,
+        Julien Tinnes <jln@chromium.org>,
+        Linux API <linux-api@vger.kernel.org>, X86 ML <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41323
+X-archive-position: 41324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Bottomley@HansenPartnership.com
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,36 +64,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2014-07-18 at 09:43 -0700, Greg KH wrote:
-> On Fri, Jul 18, 2014 at 12:22:13PM -0400, John W. Linville wrote:
-> > On Fri, Jul 18, 2014 at 05:26:47PM +0200, Benoit Taine wrote:
-> > > We should prefer `const struct pci_device_id` over
-> > > `DEFINE_PCI_DEVICE_TABLE` to meet kernel coding style guidelines.
-> > > This issue was reported by checkpatch.
-> > 
-> > Honestly, I prefer the macro -- it stands-out more.  Maybe the style
-> > guidelines and/or checkpatch should change instead?
-> 
-> The macro is horrid, no other bus has this type of thing just to save a
-> few characters in typing
+On Thu, Jul 17, 2014 at 8:26 PM, James Morris <jmorris@namei.org> wrote:
+> On Thu, 17 Jul 2014, Kees Cook wrote:
+>
+>> Twelfth time's the charm! :)
+>
+> Btw, there doesn't seem to be an official seccomp maintainer.  Kees, would
+> you like to volunteer for this?  If so, send in a patch for MAINTAINERS,
+> and set up a git tree for me to pull from.
 
-OK, so this is the macro:
+*snicker* :)
 
-#define DEFINE_PCI_DEVICE_TABLE(_table) \
-	const struct pci_device_id _table[]
+Kees, if you take on this awesome responsibility, should I send you a
+rebased version of the fastpath stuff?  If so, I think that the
+arch-neutral part should go in through your shiny new tree (once it's
+reviewed to your satisfaction), and I'll ask hpa to pick up the x86
+part.
 
-Could you explain what's so horrible?
+I'd volunteer to be a "R:eviewer", but I don't think that the R tag
+has made it into MAINTAINERS yet.
 
-The reason it's useful today is that people forget the const (and
-sometimes the [] making it a true table instead of a pointer).  If you
-use the DEFINE_PCI_DEVICE_TABLE macro, the compile breaks if you use it
-wrongly (good) and you automatically get the correct annotations.
-
-> , so why should PCI be "special" in this regard
-> anymore?
-
-I think the PCI usage dwarfs most other bus types now, so you could turn
-the question around.  However, I don't think majority voting is a good
-guide to best practise; lets debate the merits for their own sake.
-
-James
+--Andy

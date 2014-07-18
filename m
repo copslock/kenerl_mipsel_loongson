@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2014 23:19:45 +0200 (CEST)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:54696 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861361AbaGRVTD4gihW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2014 23:19:03 +0200
-Received: by mail-pd0-f180.google.com with SMTP id y13so5667400pdi.11
-        for <linux-mips@linux-mips.org>; Fri, 18 Jul 2014 14:18:57 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2014 23:20:06 +0200 (CEST)
+Received: from mail-pd0-f171.google.com ([209.85.192.171]:47227 "EHLO
+        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861350AbaGRVTKfWwvv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2014 23:19:10 +0200
+Received: by mail-pd0-f171.google.com with SMTP id z10so5663075pdj.16
+        for <linux-mips@linux-mips.org>; Fri, 18 Jul 2014 14:19:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=EJJLfS8opdD37HkB9j+MtWi+63KwbM1xtGRDDzLjWn4=;
-        b=mAdhN/DT2DYGdPGSzdcB4nFjaW2JW+Vn0MpK+1tc04kTCDu/PhzozKLNEmP53NSF5h
-         4ia78mJDZPFfmsn7b3Ks2B63qBKf2f/KjtSaSEH61wRHADdqStkOXJXJPeN7gbbbTjtN
-         NVTPRde3kGAOPq1JCnFEHDap1GsbFvpuZOKDvUcSfD30e/lBAbmhU8KmseD7ls39FbHw
-         wmJrI82J8Hy98ZfrVp1x/nhKqvSQdmfQpbcHQ9UkXU13J5jZIf1jgSqmTGZhRmJJUg8s
-         2qv9+bwtpdM7d8+Vlri2uJcDCspe2LosiPo+nDIanc2JfL9aWBbLXsHU69xivWhiCoV2
-         LvKQ==
-X-Gm-Message-State: ALoCoQnvNzNVwpEhJdNOxvMamR09k7+nT9IMfIZd8uUpK5pCdp+QeAlw+wn82bnN9vg2xUtQyXMD
-X-Received: by 10.66.253.170 with SMTP id ab10mr8359581pad.53.1405718337342;
-        Fri, 18 Jul 2014 14:18:57 -0700 (PDT)
+        bh=zStVeuj7o/rf0vJ1C6QRL5Y8ra7ACBFZyMyO3pa8i38=;
+        b=KhKA6HYyXfR/VvxhQs7unJeEyvQhmTyQ5pl6AiP1WCx1g2CgY+nMmVJDO01j7khfvw
+         D3ykOx3fudKPxba51jMv1v+5rxSZ3Jc444n7FAk3bkFyZVM1WzlZFfR8MF/xOnb9qX3V
+         pIbbvk3nMn0iVirj0k3loeSPw9NVe8WKovDGKGWt5IzZtThLaiHnHP/dR4xspdSvwVJ8
+         8myshJxOAbwG9s2Z1DLCeUTedGTzrabMjskhFujwxj17FpUhlEyKgcc4ZFF8XqS7bkzS
+         ggrLBAj07L0GYYemArUTZZ7I3ccekMzrTgVxV22LmNeGw8EyRNKnUFTjpCua3cvXew0W
+         n5JQ==
+X-Gm-Message-State: ALoCoQmFHE7qGAbVBsMcDHhbNC+OzSWVCsMHXBd4qVFMuOG9uJ4WgVYGKVrRjpuZhuH7VYH/LCgd
+X-Received: by 10.70.34.73 with SMTP id x9mr8269640pdi.27.1405718344581;
+        Fri, 18 Jul 2014 14:19:04 -0700 (PDT)
 Received: from localhost (50-76-60-73-ip-static.hfc.comcastbusiness.net. [50.76.60.73])
-        by mx.google.com with ESMTPSA id wd7sm26860190pab.47.2014.07.18.14.18.54
+        by mx.google.com with ESMTPSA id mt1sm6523068pbb.31.2014.07.18.14.19.00
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 18 Jul 2014 14:18:56 -0700 (PDT)
+        Fri, 18 Jul 2014 14:19:03 -0700 (PDT)
 From:   Andy Lutomirski <luto@amacapital.net>
 To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
         Will Drewry <wad@chromium.org>
@@ -32,9 +32,9 @@ Cc:     Oleg Nesterov <oleg@redhat.com>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
         Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com,
         Andy Lutomirski <luto@amacapital.net>
-Subject: [PATCH v2 3/7] seccomp: Allow arch code to provide seccomp_data
-Date:   Fri, 18 Jul 2014 14:18:11 -0700
-Message-Id: <ce65e0e8be18ae8fab437899db44ca41c912b506.1405717901.git.luto@amacapital.net>
+Subject: [PATCH v2 4/7] x86,x32,audit: Fix x32's AUDIT_ARCH wrt audit
+Date:   Fri, 18 Jul 2014 14:18:12 -0700
+Message-Id: <a724eeae03fdec10268cc81da615a36522503458.1405717901.git.luto@amacapital.net>
 X-Mailer: git-send-email 1.9.3
 In-Reply-To: <cover.1405717901.git.luto@amacapital.net>
 References: <cover.1405717901.git.luto@amacapital.net>
@@ -44,7 +44,7 @@ Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41336
+X-archive-position: 41337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,151 +61,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-populate_seccomp_data is expensive: it works by inspecting
-task_pt_regs and various other bits to piece together all the
-information, and it's does so in multiple partially redundant steps.
+is_compat_task() is the wrong check for audit arch; the check should
+be is_ia32_task(): x32 syscalls should be AUDIT_ARCH_X86_64, not
+AUDIT_ARCH_I386.
 
-Arch-specific code in the syscall entry path can do much better.
-
-Admittedly this adds a bit of additional room for error, but the
-speedup should be worth it.
+CONFIG_AUDITSYSCALL is currently incompatible with x32, so this has
+no visible effect.
 
 Signed-off-by: Andy Lutomirski <luto@amacapital.net>
 ---
- include/linux/seccomp.h |  2 +-
- kernel/seccomp.c        | 32 +++++++++++++++++++-------------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ arch/x86/kernel/ptrace.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 3885108..a19ddac 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -39,7 +39,7 @@ static inline int secure_computing(void)
- #define SECCOMP_PHASE1_OK	0
- #define SECCOMP_PHASE1_SKIP	1
- 
--extern u32 seccomp_phase1(void);
-+extern u32 seccomp_phase1(struct seccomp_data *sd);
- int seccomp_phase2(u32 phase1_result);
- #else
- extern void secure_computing_strict(int this_syscall);
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 0088d29..80115b0 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -173,10 +173,10 @@ static int seccomp_check_filter(struct sock_filter *filter, unsigned int flen)
-  *
-  * Returns valid seccomp BPF response codes.
-  */
--static u32 seccomp_run_filters(void)
-+static u32 seccomp_run_filters(struct seccomp_data *sd)
- {
- 	struct seccomp_filter *f = ACCESS_ONCE(current->seccomp.filter);
--	struct seccomp_data sd;
-+	struct seccomp_data sd_local;
- 	u32 ret = SECCOMP_RET_ALLOW;
- 
- 	/* Ensure unexpected behavior doesn't result in failing open. */
-@@ -186,14 +186,17 @@ static u32 seccomp_run_filters(void)
- 	/* Make sure cross-thread synced filter points somewhere sane. */
- 	smp_read_barrier_depends();
- 
--	populate_seccomp_data(&sd);
-+	if (!sd) {
-+		populate_seccomp_data(&sd_local);
-+		sd = &sd_local;
-+	}
- 
- 	/*
- 	 * All filters in the list are evaluated and the lowest BPF return
- 	 * value always takes priority (ignoring the DATA).
- 	 */
- 	for (; f; f = f->prev) {
--		u32 cur_ret = SK_RUN_FILTER(f->prog, (void *)&sd);
-+		u32 cur_ret = SK_RUN_FILTER(f->prog, (void *)sd);
- 
- 		if ((cur_ret & SECCOMP_RET_ACTION) < (ret & SECCOMP_RET_ACTION))
- 			ret = cur_ret;
-@@ -599,7 +602,7 @@ void secure_computing_strict(int this_syscall)
- #else
- int __secure_computing(void)
- {
--	u32 phase1_result = seccomp_phase1();
-+	u32 phase1_result = seccomp_phase1(NULL);
- 
- 	if (likely(phase1_result == SECCOMP_PHASE1_OK))
- 		return 0;
-@@ -610,7 +613,7 @@ int __secure_computing(void)
+diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
+index 93c182a..39296d2 100644
+--- a/arch/x86/kernel/ptrace.c
++++ b/arch/x86/kernel/ptrace.c
+@@ -1441,15 +1441,6 @@ void send_sigtrap(struct task_struct *tsk, struct pt_regs *regs,
+ 	force_sig_info(SIGTRAP, &info, tsk);
  }
  
- #ifdef CONFIG_SECCOMP_FILTER
--static u32 __seccomp_phase1_filter(int this_syscall, struct pt_regs *regs)
-+static u32 __seccomp_phase1_filter(int this_syscall, struct seccomp_data *sd)
- {
- 	u32 filter_ret, action;
- 	int data;
-@@ -621,20 +624,20 @@ static u32 __seccomp_phase1_filter(int this_syscall, struct pt_regs *regs)
- 	 */
- 	rmb();
+-
+-#ifdef CONFIG_X86_32
+-# define IS_IA32	1
+-#elif defined CONFIG_IA32_EMULATION
+-# define IS_IA32	is_compat_task()
+-#else
+-# define IS_IA32	0
+-#endif
+-
+ /*
+  * We must return the syscall number to actually look up in the table.
+  * This can be -1L to skip running any syscall at all.
+@@ -1487,7 +1478,7 @@ long syscall_trace_enter(struct pt_regs *regs)
+ 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+ 		trace_sys_enter(regs, regs->orig_ax);
  
--	filter_ret = seccomp_run_filters();
-+	filter_ret = seccomp_run_filters(sd);
- 	data = filter_ret & SECCOMP_RET_DATA;
- 	action = filter_ret & SECCOMP_RET_ACTION;
- 
- 	switch (action) {
- 	case SECCOMP_RET_ERRNO:
- 		/* Set the low-order 16-bits as a errno. */
--		syscall_set_return_value(current, regs,
-+		syscall_set_return_value(current, task_pt_regs(current),
- 					 -data, 0);
- 		goto skip;
- 
- 	case SECCOMP_RET_TRAP:
- 		/* Show the handler the original registers. */
--		syscall_rollback(current, regs);
-+		syscall_rollback(current, task_pt_regs(current));
- 		/* Let the filter pass back 16 bits of data. */
- 		seccomp_send_sigsys(this_syscall, data);
- 		goto skip;
-@@ -661,11 +664,14 @@ skip:
- 
- /**
-  * seccomp_phase1() - run fast path seccomp checks on the current syscall
-+ * @arg sd: The seccomp_data or NULL
-  *
-  * This only reads pt_regs via the syscall_xyz helpers.  The only change
-  * it will make to pt_regs is via syscall_set_return_value, and it will
-  * only do that if it returns SECCOMP_PHASE1_SKIP.
-  *
-+ * If sd is provided, it will not read pt_regs at all.
-+ *
-  * It may also call do_exit or force a signal; these actions must be
-  * safe.
-  *
-@@ -679,11 +685,11 @@ skip:
-  * If it returns anything else, then the return value should be passed
-  * to seccomp_phase2 from a context in which ptrace hooks are safe.
-  */
--u32 seccomp_phase1(void)
-+u32 seccomp_phase1(struct seccomp_data *sd)
- {
- 	int mode = current->seccomp.mode;
--	struct pt_regs *regs = task_pt_regs(current);
--	int this_syscall = syscall_get_nr(current, regs);
-+	int this_syscall = sd ? sd->nr :
-+		syscall_get_nr(current, task_pt_regs(current));
- 
- 	switch (mode) {
- 	case SECCOMP_MODE_STRICT:
-@@ -691,7 +697,7 @@ u32 seccomp_phase1(void)
- 		return SECCOMP_PHASE1_OK;
- #ifdef CONFIG_SECCOMP_FILTER
- 	case SECCOMP_MODE_FILTER:
--		return __seccomp_phase1_filter(this_syscall, regs);
-+		return __seccomp_phase1_filter(this_syscall, sd);
- #endif
- 	default:
- 		BUG();
+-	if (IS_IA32)
++	if (is_ia32_task())
+ 		audit_syscall_entry(AUDIT_ARCH_I386,
+ 				    regs->orig_ax,
+ 				    regs->bx, regs->cx,
 -- 
 1.9.3

@@ -1,53 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2014 20:05:38 +0200 (CEST)
-Received: from mail-lb0-f170.google.com ([209.85.217.170]:64446 "EHLO
-        mail-lb0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861344AbaGRSFbue4bj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2014 20:05:31 +0200
-Received: by mail-lb0-f170.google.com with SMTP id w7so2290324lbi.29
-        for <linux-mips@linux-mips.org>; Fri, 18 Jul 2014 11:05:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=n5f2X0bvfHuJv8Y6kyU6zw9QXrcvmKPe/PujzhJj1BE=;
-        b=ZSEOZ1+nKEjTb3tH8rXV058pL1Hc8jVlWs/4u0oo3rWKB/DyoH71WPRuCRsGWJfwJ6
-         YypS2cnrSTnvdJLeufVi1HJ9dbVWnoypTht7dJ8c6IjvnOdaH6+P+G6BjEaxEBY2uZsa
-         XjanedEiSZEsrYnyNVnlqGIf9qiua8cuN6LjnmJM9ye3IPnmgHCTfoY22jykvt1Syt0b
-         ztYux54vxgMmM2WU48L5vKqpjQNjPNZl2D8Kd6tJO0sqIXVEAfT3U+8fPvoOq7Lk1prT
-         vvJNoK+CuLgdK8Z7Z/5UV0M+ZbjKAH+eiXjBzNHO7fMoBwJyfa1atPL4QEpsXiIU60j5
-         +BaQ==
-X-Gm-Message-State: ALoCoQm2OCe387v5gxZZnw0Lc22ct0hA0KbqaB0pvO5taGwG1OaqVfoLSMvee3Lg2PiO8LJUUSPx
-X-Received: by 10.152.21.132 with SMTP id v4mr7314037lae.24.1405706726012;
-        Fri, 18 Jul 2014 11:05:26 -0700 (PDT)
-Received: from wasted.cogentembedded.com (ppp25-152.pppoe.mtu-net.ru. [81.195.25.152])
-        by mx.google.com with ESMTPSA id n1sm10448499lbs.0.2014.07.18.11.05.24
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 18 Jul 2014 11:05:25 -0700 (PDT)
-Message-ID: <53C961E9.9000803@cogentembedded.com>
-Date:   Fri, 18 Jul 2014 22:05:29 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
-MIME-Version: 1.0
-To:     Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 7/7] MIPS: GIC: Fix GICBIS macro
-References: <1405585259-24941-1-git-send-email-markos.chandras@imgtec.com> <1405585259-24941-8-git-send-email-markos.chandras@imgtec.com> <53C7C5E2.1020307@cogentembedded.com> <53C8D2AE.3020300@imgtec.com>
-In-Reply-To: <53C8D2AE.3020300@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2014 20:06:00 +0200 (CEST)
+Received: from smtprelay0223.hostedemail.com ([216.40.44.223]:36397 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6861354AbaGRSFroDpH1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2014 20:05:47 +0200
+Received: from filter.hostedemail.com (ff-bigip1 [10.5.19.254])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 6CBE2C1F73;
+        Fri, 18 Jul 2014 18:05:45 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: pigs22_6bcc2b39e7346
+X-Filterd-Recvd-Size: 3628
+Received: from [192.168.1.162] (pool-71-103-235-196.lsanca.fios.verizon.net [71.103.235.196])
+        (Authenticated sender: joe@perches.com)
+        by omf09.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 18 Jul 2014 18:05:40 +0000 (UTC)
+Message-ID: <1405706739.14358.68.camel@joe-AO725>
+Subject: Re: [PATCH 0/25] Replace DEFINE_PCI_DEVICE_TABLE macro use
+From:   Joe Perches <joe@perches.com>
+To:     Greg KH <greg@kroah.com>
+Cc:     "John W. Linville" <linville@tuxdriver.com>,
+        Benoit Taine <benoit.taine@lip6.fr>, linux-mips@linux-mips.org,
+        linux-fbdev@vger.kernel.org, linux-pci@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        ath5k-devel@venema.h4ckr.net, linux-acenic@sunsite.dk,
+        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-hippi@sunsite.dk,
+        industrypack-devel@lists.sourceforge.net,
+        linux-mmc@vger.kernel.org, MPT-FusionLinux.pdl@avagotech.com,
+        virtualization@lists.linux-foundation.org,
+        ath9k-devel@venema.h4ckr.net, wil6210@qca.qualcomm.com,
+        linux-pcmcia@lists.infradead.org, linux-can@vger.kernel.org,
+        xen-devel@lists.xenproject.org,
+        platform-driver-x86@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, users@rt2x00.serialmonkey.com,
+        e1000-devel@lists.sourceforge.net, linux-crypto@vger.kernel.org,
+        devel@linuxdriverproject.org
+Date:   Fri, 18 Jul 2014 11:05:39 -0700
+In-Reply-To: <20140718164340.GA24960@kroah.com>
+References: <1405697232-11785-1-git-send-email-benoit.taine@lip6.fr>
+         <20140718162213.GC31114@tuxdriver.com> <20140718164340.GA24960@kroah.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.10.4-0ubuntu1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41325
+X-archive-position: 41326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,58 +63,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Fri, 2014-07-18 at 09:43 -0700, Greg KH wrote:
+> On Fri, Jul 18, 2014 at 12:22:13PM -0400, John W. Linville wrote:
+> > On Fri, Jul 18, 2014 at 05:26:47PM +0200, Benoit Taine wrote:
+> > > We should prefer `const struct pci_device_id` over
+> > > `DEFINE_PCI_DEVICE_TABLE` to meet kernel coding style guidelines.
+> > > This issue was reported by checkpatch.
+> >  scripts/checkpatch.pl | 4 ++--
+> > Honestly, I prefer the macro -- it stands-out more.  Maybe the style
+> > guidelines and/or checkpatch should change instead?
+> 
+> The macro is horrid, no other bus has this type of thing just to save a
+> few characters in typing, so why should PCI be "special" in this regard
+> anymore?
 
-On 07/18/2014 11:54 AM, Jeffrey Deans wrote:
+I think it doesn't matter much.
 
->>> From: Jeffrey Deans <jeffrey.deans@imgtec.com>
+The PCI_DEVICE and PCI_VDEVICE macro uses are somewhat similar
+and are frequently used with PCI_DEVICE_TABLE, so there's some
+commonality there.
 
->>> The GICBIS macro could update the GIC registers incorrectly, depending
->>> on the data value passed in:
+The checkpatch message could be made --strict/CHK instead of
+WARN so most people would never see it.
 
->>> * Bits were only OR'd into the register data, so register fields could
->>>    not be cleared.
+Of course it could be removed altogether too.  I don't care.
+---
+(suggested patch is for -next)
 
->>> * Bits were OR'd into the register data without masking the data to the
->>>    correct field width, corrupting adjacent bits.
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->>> Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
->>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->>> ---
->>>   arch/mips/include/asm/gic.h | 21 +++++++++++----------
->>>   1 file changed, 11 insertions(+), 10 deletions(-)
-
->>> diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
->>> index 8b30befd99d6..3f20b2111d56 100644
->>> --- a/arch/mips/include/asm/gic.h
->>> +++ b/arch/mips/include/asm/gic.h
->>> @@ -43,18 +43,17 @@
->>>   #ifdef GICISBYTELITTLEENDIAN
->>>   #define GICREAD(reg, data)    ((data) = (reg), (data) =
->>> le32_to_cpu(data))
->>>   #define GICWRITE(reg, data)    ((reg) = cpu_to_le32(data))
->>> -#define GICBIS(reg, bits)            \
->>> -    ({unsigned int data;            \
->>> -        GICREAD(reg, data);        \
->>> -        data |= bits;            \
->>> -        GICWRITE(reg, data);        \
->>> -    })
->>> -
->>>   #else
->>>   #define GICREAD(reg, data)    ((data) = (reg))
->>>   #define GICWRITE(reg, data)    ((reg) = (data))
->>> -#define GICBIS(reg, bits)    ((reg) |= (bits))
->>>   #endif
->>> +#define GICBIS(reg, mask, bits)            \
->>> +    do { u32 data;                \
->>> +        GICREAD((reg), data);        \
-
->>     Why () only around 'reg', not around 'data'?
-
-> Brackets aren't necessary around "data" because it is declared at the start of
-> the "do" code block, so it can't expand to anything else within that scope.
-
-    Oh, I was not attentive enough, sorry about that... :-<
-    However, it makes sense to at least put that declaration at a separate line.
-
-WBR, Sergei
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index dc72a9b..754fbf2 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3018,8 +3018,8 @@ sub process {
+ 
+ # check for uses of DEFINE_PCI_DEVICE_TABLE
+ 		if ($line =~ /\bDEFINE_PCI_DEVICE_TABLE\s*\(\s*(\w+)\s*\)\s*=/) {
+-			if (WARN("DEFINE_PCI_DEVICE_TABLE",
+-				 "Prefer struct pci_device_id over deprecated DEFINE_PCI_DEVICE_TABLE\n" . $herecurr) &&
++			if (CHK("DEFINE_PCI_DEVICE_TABLE",
++				"Prefer struct pci_device_id over deprecated DEFINE_PCI_DEVICE_TABLE\n" . $herecurr) &&
+ 			    $fix) {
+ 				$fixed[$fixlinenr] =~ s/\b(?:static\s+|)DEFINE_PCI_DEVICE_TABLE\s*\(\s*(\w+)\s*\)\s*=\s*/static const struct pci_device_id $1\[\] = /;
+ 			}

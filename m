@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2014 07:10:18 +0200 (CEST)
-Received: from mail-ig0-f179.google.com ([209.85.213.179]:43756 "EHLO
-        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815804AbaGSFKPhFOqg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jul 2014 07:10:15 +0200
-Received: by mail-ig0-f179.google.com with SMTP id h18so1317269igc.12
-        for <multiple recipients>; Fri, 18 Jul 2014 22:10:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=/nE79YSliIq+97YSPwUWyIq+6nEDmfUW9ay2BOIqYAU=;
-        b=L3OKQ7fVlseLpH8VnijMsBsjkbtfuBHDAN6k1CuFTCRFw/m83IO6g2+XTISuhDmQNh
-         5h06dTDl+cXzEeOIGr7rOsOloaf4JYTppx0BVxVgZFSYcSx4M0OrJLXqquTHJgfto/r1
-         K/8a3xqM+fe9NXdHRgphUu4qjl+c/mq0QGhxLwmcN6fBh0rI2ZC8xDDIWv/ZOtVyabVL
-         nBA9TqULXZtDcM2dvQc4nd5nrbBAQescmhwp4JtNnKbYGi8y1YjGWqrIZsZL4E69O8N/
-         ca0Sk1EVdzdSXp6OlaMoHU7AYt8QH46zU0Jxqxs5CkdwXL0y/xWq99jIZ9rGyOc4Vwsh
-         Nc7w==
-X-Received: by 10.42.212.207 with SMTP id gt15mr13285040icb.47.1405746609199;
-        Fri, 18 Jul 2014 22:10:09 -0700 (PDT)
-Received: from nick-System-Product-Name.phub.net.cable.rogers.com (CPE0026f3330aca-CM0026f3330ac6.cpe.net.cable.rogers.com. [99.232.64.167])
-        by mx.google.com with ESMTPSA id i10sm13188442igm.13.2014.07.18.22.10.08
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 18 Jul 2014 22:10:08 -0700 (PDT)
-From:   Nicholas Krause <xerofoify@gmail.com>
-To:     ralf@linux-mips.org
-Cc:     paul.burton@imgtec.com, Leonid.Yegoshin@imgtec.com,
-        markos.chandras@imgtec.com, Steven.Hill@imgtec.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mips: Remove uneeded line in cmp_smp_finish
-Date:   Sat, 19 Jul 2014 01:10:04 -0400
-Message-Id: <1405746604-7737-1-git-send-email-xerofoify@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <xerofoify@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2014 14:06:06 +0200 (CEST)
+Received: from cpsmtpb-ews10.kpnxchange.com ([213.75.39.15]:55089 "EHLO
+        cpsmtpb-ews10.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860071AbaGSMGDcgKu2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jul 2014 14:06:03 +0200
+Received: from cpsps-ews19.kpnxchange.com ([10.94.84.185]) by cpsmtpb-ews10.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 19 Jul 2014 14:05:57 +0200
+Received: from CPSMTPM-TLF103.kpnxchange.com ([195.121.3.6]) by cpsps-ews19.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 19 Jul 2014 14:05:56 +0200
+Received: from [192.168.10.107] ([77.173.140.92]) by CPSMTPM-TLF103.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 19 Jul 2014 14:05:56 +0200
+Message-ID: <1405771556.18077.5.camel@x220>
+Subject: Re: [PATCH] mips: Remove uneeded line in cmp_smp_finish
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Nicholas Krause <xerofoify@gmail.com>
+Cc:     ralf@linux-mips.org, paul.burton@imgtec.com,
+        Leonid.Yegoshin@imgtec.com, markos.chandras@imgtec.com,
+        Steven.Hill@imgtec.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Sat, 19 Jul 2014 14:05:56 +0200
+In-Reply-To: <1405746604-7737-1-git-send-email-xerofoify@gmail.com>
+References: <1405746604-7737-1-git-send-email-xerofoify@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 19 Jul 2014 12:05:56.0659 (UTC) FILETIME=[CBF1B830:01CFA349]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41345
+X-archive-position: 41346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xerofoify@gmail.com
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,26 +47,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch removes a unneeded line from this file as stated by the
-fix me in this file.
+On Sat, 2014-07-19 at 01:10 -0400, Nicholas Krause wrote:
+> This patch removes a unneeded line from this file as stated by the
+> fix me in this file.
+> 
+> Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
+> ---
+>  arch/mips/kernel/smp-cmp.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+> index fc8a515..61bfa20 100644
+> --- a/arch/mips/kernel/smp-cmp.c
+> +++ b/arch/mips/kernel/smp-cmp.c
+> @@ -60,8 +60,6 @@ static void cmp_smp_finish(void)
+>  {
+>  	pr_debug("SMPCMP: CPU%d: %s\n", smp_processor_id(), __func__);
+>  
+> -	/* CDFIXME: remove this? */
+> -	write_c0_compare(read_c0_count() + (8 * mips_hpt_frequency / HZ));
 
-Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
----
- arch/mips/kernel/smp-cmp.c | 2 --
- 1 file changed, 2 deletions(-)
+That comment ends in a question mark. I wonder why...
+ 
+>  #ifdef CONFIG_MIPS_MT_FPAFF
+>  	/* If we have an FPU, enroll ourselves in the FPU-full mask */
 
-diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
-index fc8a515..61bfa20 100644
---- a/arch/mips/kernel/smp-cmp.c
-+++ b/arch/mips/kernel/smp-cmp.c
-@@ -60,8 +60,6 @@ static void cmp_smp_finish(void)
- {
- 	pr_debug("SMPCMP: CPU%d: %s\n", smp_processor_id(), __func__);
- 
--	/* CDFIXME: remove this? */
--	write_c0_compare(read_c0_count() + (8 * mips_hpt_frequency / HZ));
- 
- #ifdef CONFIG_MIPS_MT_FPAFF
- 	/* If we have an FPU, enroll ourselves in the FPU-full mask */
--- 
-1.9.1
+
+Paul Bolle

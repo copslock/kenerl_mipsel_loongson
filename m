@@ -1,31 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2014 21:28:00 +0200 (CEST)
-Received: from hall.aurel32.net ([195.154.112.97]:39926 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6859944AbaGST1zAlMXB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 19 Jul 2014 21:27:55 +0200
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1X8aIT-0004jW-VY
-        for linux-mips@linux-mips.org; Sat, 19 Jul 2014 21:27:54 +0200
-Date:   Sat, 19 Jul 2014 21:27:53 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     linux-mips@linux-mips.org
-Subject: Dirty memory amount corruption on Loongson 2E kernel
-Message-ID: <20140719192753.GA31695@hall.aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2014 23:33:24 +0200 (CEST)
+Received: from mail-vc0-f171.google.com ([209.85.220.171]:34600 "EHLO
+        mail-vc0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860071AbaGSVdWnKr6A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jul 2014 23:33:22 +0200
+Received: by mail-vc0-f171.google.com with SMTP id hq11so8274468vcb.16
+        for <multiple recipients>; Sat, 19 Jul 2014 14:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=a8gnnTFvLagR1Kk0snZ/6d5sQuQ6fMnv50zRSBJkaTg=;
+        b=qIks9BHlpzxNM/QP6ORy/78ZOxSJHXqzZNPcL/YNQQMjYYsvofugyNGZsBwhY5L9tC
+         wPHTRSNhGMER4RunsjEgld1S1vXjaMHp6N4w+pQ2JaFQGeDbF0xdKkQl+ff7aE7RA5GX
+         K68fqQzI7UKuA5wGMYxSNLYbXSUThkpuz6+00GVI3eNdxf4h8cHg1hr88LxU1YnVprXZ
+         z6Qhvw5HeYNJRYRCBDVOZ3P+PYPasMudLyYS2wsqKoC/uKAshZXIh8woVY+ZG191FVv8
+         FfOFT2OCNzxw8KCCGFsfzrdhFHBgcVkB3JMR9IvoCh7Ow2VbO2uCGo8bZetAs/CvXrTG
+         V8NA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-X-Mailer: Mutt 1.5.21 (2010-09-15)
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <aurelien@aurel32.net>
+X-Received: by 10.220.166.9 with SMTP id k9mr17254996vcy.20.1405805596510;
+ Sat, 19 Jul 2014 14:33:16 -0700 (PDT)
+Received: by 10.221.53.5 with HTTP; Sat, 19 Jul 2014 14:33:16 -0700 (PDT)
+In-Reply-To: <1405771556.18077.5.camel@x220>
+References: <1405746604-7737-1-git-send-email-xerofoify@gmail.com>
+        <1405771556.18077.5.camel@x220>
+Date:   Sat, 19 Jul 2014 17:33:16 -0400
+Message-ID: <CAPDOMVgQ-F9Y4AoNfFW-vN0YP10kwYL-GCwkpnXj+zg_UMJ4jw@mail.gmail.com>
+Subject: Re: [PATCH] mips: Remove uneeded line in cmp_smp_finish
+From:   Nick Krause <xerofoify@gmail.com>
+To:     Paul Bolle <pebolle@tiscali.nl>
+Cc:     ralf@linux-mips.org, paul.burton@imgtec.com,
+        Leonid.Yegoshin@imgtec.com, markos.chandras@imgtec.com,
+        Steven.Hill@imgtec.com, linux-mips@linux-mips.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <xerofoify@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41347
+X-archive-position: 41348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: xerofoify@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,69 +54,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
-
-Debian is using Loongson 2E machines as part of the buildd network. From
-time to time we observed a corruption of the amount of dirty memory as
-it can be seen below:
-
-| # cat /proc/meminfo
-| MemTotal:        1033008 kB
-| MemFree:           81504 kB
-| MemAvailable:     781552 kB
-| Buffers:          133104 kB
-| Cached:           660752 kB
-| SwapCached:        13152 kB
-| Active:           513680 kB
-| Inactive:         348016 kB
-| Active(anon):      20288 kB
-| Inactive(anon):    48048 kB
-| Active(file):     493392 kB
-| Inactive(file):   299968 kB
-| Unevictable:          96 kB
-| Mlocked:              96 kB
-| SwapTotal:       2097136 kB
-| SwapFree:        2046624 kB
-| Dirty:          18446744073709288640 kB
-| Writeback:             0 kB
-| AnonPages:         65296 kB
-| Mapped:            16992 kB
-| Shmem:               496 kB
-| Slab:              79312 kB
-| SReclaimable:      69872 kB
-| SUnreclaim:         9440 kB
-| KernelStack:        1664 kB
-| PageTables:         2752 kB
-| NFS_Unstable:          0 kB
-| Bounce:                0 kB
-| WritebackTmp:          0 kB
-| CommitLimit:     2613632 kB
-| Committed_AS:     178464 kB
-| VmallocTotal:   1069547488 kB
-| VmallocUsed:         656 kB
-| VmallocChunk:   1069538528 kB
-| AnonHugePages:         0 kB
-| HugePages_Total:       0
-| HugePages_Free:        0
-| HugePages_Rsvd:        0
-| HugePages_Surp:        0
-| Hugepagesize:      32768 kB
-
-The consequences is that all write accesses to disk are very very slow,
-while read access are running at normal speed. My guess is that the
-kernel is trying to flush dirty pages in priority, but there are none.
-
-It usually happens after 3 to 6 days of continuous work, but we haven't
-found any pattern triggering the issue so far. We first thought it could
-be a bad interaction of transparent hugepages, but even setting them to
-"never" does not fix the issue.
-
-Do you have an idea about what could be the issue, or if not how can we
-debug it?
-
-Thanks,
-Aurelien
-
--- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net
+On Sat, Jul 19, 2014 at 8:05 AM, Paul Bolle <pebolle@tiscali.nl> wrote:
+> On Sat, 2014-07-19 at 01:10 -0400, Nicholas Krause wrote:
+>> This patch removes a unneeded line from this file as stated by the
+>> fix me in this file.
+>>
+>> Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
+>> ---
+>>  arch/mips/kernel/smp-cmp.c | 2 --
+>>  1 file changed, 2 deletions(-)
+>>
+>> diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+>> index fc8a515..61bfa20 100644
+>> --- a/arch/mips/kernel/smp-cmp.c
+>> +++ b/arch/mips/kernel/smp-cmp.c
+>> @@ -60,8 +60,6 @@ static void cmp_smp_finish(void)
+>>  {
+>>       pr_debug("SMPCMP: CPU%d: %s\n", smp_processor_id(), __func__);
+>>
+>> -     /* CDFIXME: remove this? */
+>> -     write_c0_compare(read_c0_count() + (8 * mips_hpt_frequency / HZ));
+>
+> That comment ends in a question mark. I wonder why...
+>
+>>  #ifdef CONFIG_MIPS_MT_FPAFF
+>>       /* If we have an FPU, enroll ourselves in the FPU-full mask */
+>
+>
+> Paul Bolle
+>
+If we need it then can I remove the FIx me comment.
+Cheers Nick

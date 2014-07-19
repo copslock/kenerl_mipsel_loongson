@@ -1,40 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2014 14:06:06 +0200 (CEST)
-Received: from cpsmtpb-ews10.kpnxchange.com ([213.75.39.15]:55089 "EHLO
-        cpsmtpb-ews10.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860071AbaGSMGDcgKu2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jul 2014 14:06:03 +0200
-Received: from cpsps-ews19.kpnxchange.com ([10.94.84.185]) by cpsmtpb-ews10.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Sat, 19 Jul 2014 14:05:57 +0200
-Received: from CPSMTPM-TLF103.kpnxchange.com ([195.121.3.6]) by cpsps-ews19.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Sat, 19 Jul 2014 14:05:56 +0200
-Received: from [192.168.10.107] ([77.173.140.92]) by CPSMTPM-TLF103.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Sat, 19 Jul 2014 14:05:56 +0200
-Message-ID: <1405771556.18077.5.camel@x220>
-Subject: Re: [PATCH] mips: Remove uneeded line in cmp_smp_finish
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Nicholas Krause <xerofoify@gmail.com>
-Cc:     ralf@linux-mips.org, paul.burton@imgtec.com,
-        Leonid.Yegoshin@imgtec.com, markos.chandras@imgtec.com,
-        Steven.Hill@imgtec.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Date:   Sat, 19 Jul 2014 14:05:56 +0200
-In-Reply-To: <1405746604-7737-1-git-send-email-xerofoify@gmail.com>
-References: <1405746604-7737-1-git-send-email-xerofoify@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-2.fc20) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Jul 2014 12:05:56.0659 (UTC) FILETIME=[CBF1B830:01CFA349]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2014 21:28:00 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:39926 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6859944AbaGST1zAlMXB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 19 Jul 2014 21:27:55 +0200
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1X8aIT-0004jW-VY
+        for linux-mips@linux-mips.org; Sat, 19 Jul 2014 21:27:54 +0200
+Date:   Sat, 19 Jul 2014 21:27:53 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     linux-mips@linux-mips.org
+Subject: Dirty memory amount corruption on Loongson 2E kernel
+Message-ID: <20140719192753.GA31695@hall.aurel32.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41346
+X-archive-position: 41347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,30 +38,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 2014-07-19 at 01:10 -0400, Nicholas Krause wrote:
-> This patch removes a unneeded line from this file as stated by the
-> fix me in this file.
-> 
-> Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
-> ---
->  arch/mips/kernel/smp-cmp.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
-> index fc8a515..61bfa20 100644
-> --- a/arch/mips/kernel/smp-cmp.c
-> +++ b/arch/mips/kernel/smp-cmp.c
-> @@ -60,8 +60,6 @@ static void cmp_smp_finish(void)
->  {
->  	pr_debug("SMPCMP: CPU%d: %s\n", smp_processor_id(), __func__);
->  
-> -	/* CDFIXME: remove this? */
-> -	write_c0_compare(read_c0_count() + (8 * mips_hpt_frequency / HZ));
+Hi all,
 
-That comment ends in a question mark. I wonder why...
- 
->  #ifdef CONFIG_MIPS_MT_FPAFF
->  	/* If we have an FPU, enroll ourselves in the FPU-full mask */
+Debian is using Loongson 2E machines as part of the buildd network. From
+time to time we observed a corruption of the amount of dirty memory as
+it can be seen below:
 
+| # cat /proc/meminfo
+| MemTotal:        1033008 kB
+| MemFree:           81504 kB
+| MemAvailable:     781552 kB
+| Buffers:          133104 kB
+| Cached:           660752 kB
+| SwapCached:        13152 kB
+| Active:           513680 kB
+| Inactive:         348016 kB
+| Active(anon):      20288 kB
+| Inactive(anon):    48048 kB
+| Active(file):     493392 kB
+| Inactive(file):   299968 kB
+| Unevictable:          96 kB
+| Mlocked:              96 kB
+| SwapTotal:       2097136 kB
+| SwapFree:        2046624 kB
+| Dirty:          18446744073709288640 kB
+| Writeback:             0 kB
+| AnonPages:         65296 kB
+| Mapped:            16992 kB
+| Shmem:               496 kB
+| Slab:              79312 kB
+| SReclaimable:      69872 kB
+| SUnreclaim:         9440 kB
+| KernelStack:        1664 kB
+| PageTables:         2752 kB
+| NFS_Unstable:          0 kB
+| Bounce:                0 kB
+| WritebackTmp:          0 kB
+| CommitLimit:     2613632 kB
+| Committed_AS:     178464 kB
+| VmallocTotal:   1069547488 kB
+| VmallocUsed:         656 kB
+| VmallocChunk:   1069538528 kB
+| AnonHugePages:         0 kB
+| HugePages_Total:       0
+| HugePages_Free:        0
+| HugePages_Rsvd:        0
+| HugePages_Surp:        0
+| Hugepagesize:      32768 kB
 
-Paul Bolle
+The consequences is that all write accesses to disk are very very slow,
+while read access are running at normal speed. My guess is that the
+kernel is trying to flush dirty pages in priority, but there are none.
+
+It usually happens after 3 to 6 days of continuous work, but we haven't
+found any pattern triggering the issue so far. We first thought it could
+be a bad interaction of transparent hugepages, but even setting them to
+"never" does not fix the issue.
+
+Do you have an idea about what could be the issue, or if not how can we
+debug it?
+
+Thanks,
+Aurelien
+
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

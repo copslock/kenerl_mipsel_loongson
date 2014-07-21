@@ -1,33 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Jul 2014 19:58:35 +0200 (CEST)
-Received: from hall.aurel32.net ([195.154.112.97]:44069 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822330AbaGTR6aAgMIU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 20 Jul 2014 19:58:30 +0200
-Received: from [2001:470:d4ed:0:5e26:aff:fe2b:6f5b] (helo=volta.rr44.fr)
-        by hall.aurel32.net with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1X8vNV-0003Fr-C9; Sun, 20 Jul 2014 19:58:29 +0200
-Received: from aurel32 by volta.rr44.fr with local (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1X8vNU-0007fw-2x; Sun, 20 Jul 2014 19:58:28 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Aurelien Jarno <aurelien@aurel32.net>,
-        stable@vger.kernel.org
-Subject: [PATCH v3] MIPS: ZBOOT: add missing <linux/string.h> include
-Date:   Sun, 20 Jul 2014 19:58:23 +0200
-Message-Id: <1405879103-29463-1-git-send-email-aurelien@aurel32.net>
-X-Mailer: git-send-email 2.0.0
-Return-Path: <aurelien@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2014 06:18:20 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:33128 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6859939AbaGUESRpSXDm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Jul 2014 06:18:17 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0B8455818A7;
+        Sun, 20 Jul 2014 21:18:14 -0700 (PDT)
+Date:   Sun, 20 Jul 2014 21:18:13 -0700 (PDT)
+Message-Id: <20140720.211813.942862864883062133.davem@davemloft.net>
+To:     benoit.taine@lip6.fr
+Cc:     linux-pci@vger.kernel.org, ath5k-devel@venema.h4ckr.net,
+        ath9k-devel@venema.h4ckr.net, linux-hippi@sunsite.dk,
+        dri-devel@lists.freedesktop.org, linux-acenic@sunsite.dk,
+        wil6210@qca.qualcomm.com, platform-driver-x86@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-mips@linux-mips.org, users@rt2x00.serialmonkey.com,
+        linux-rdma@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-can@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-crypto@vger.kernel.org, MPT-FusionLinux.pdl@avagotech.com,
+        devel@linuxdriverproject.org, xen-devel@lists.xenproject.org,
+        linux-pcmcia@lists.infradead.org, e1000-devel@lists.sourceforge.net
+Subject: Re: [PATCH 0/25] Replace DEFINE_PCI_DEVICE_TABLE macro use
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1405697232-11785-1-git-send-email-benoit.taine@lip6.fr>
+References: <1405697232-11785-1-git-send-email-benoit.taine@lip6.fr>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.7 (shards.monkeyblade.net [149.20.54.216]); Sun, 20 Jul 2014 21:18:15 -0700 (PDT)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41352
+X-archive-position: 41353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,53 +55,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit dc4d7b37 (MIPS: ZBOOT: gather string functions into string.c)
-moved the string related functions into a separate file, which might
-cause the following build error, depending on the configuration:
+From: Benoit Taine <benoit.taine@lip6.fr>
+Date: Fri, 18 Jul 2014 17:26:47 +0200
 
-| CC      arch/mips/boot/compressed/decompress.o
-| In file included from linux/arch/mips/boot/compressed/../../../../lib/decompress_unxz.c:234:0,
-|                  from linux/arch/mips/boot/compressed/decompress.c:67:
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c: In function 'fill_temp':
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c:162:2: error: implicit declaration of function 'memcpy' [-Werror=implicit-function-declaration]
-| cc1: some warnings being treated as errors
-| linux/scripts/Makefile.build:308: recipe for target 'arch/mips/boot/compressed/decompress.o' failed
-| make[6]: *** [arch/mips/boot/compressed/decompress.o] Error 1
-| linux/arch/mips/Makefile:308: recipe for target 'vmlinuz' failed
+> We should prefer `const struct pci_device_id` over
+> `DEFINE_PCI_DEVICE_TABLE` to meet kernel coding style guidelines.
+> This issue was reported by checkpatch.
+> 
+> A simplified version of the semantic patch that makes this change is as
+> follows (http://coccinelle.lip6.fr/):
+> 
+> // <smpl>
+> 
+> @@
+> identifier i;
+> declarer name DEFINE_PCI_DEVICE_TABLE;
+> initializer z;
+> @@
+> 
+> - DEFINE_PCI_DEVICE_TABLE(i)
+> + const struct pci_device_id i[]
+> = z;
+> 
+> // </smpl>
+> 
+> I have 103 patches ready, and will only send a few for you to judge if
+> it is useful enough, and to prevent from spamming too much.
 
-It does not fail with the standard configuration, as when
-CONFIG_DYNAMIC_DEBUG is not enabled <linux/string.h> gets included in
-include/linux/dynamic_debug.h. There might be other ways for it to
-get indirectly included.
-
-We can't add the include directly in xz_dec_stream.c as some
-architectures might want to use a different version for the boot/
-directory (see for example arch/x86/boot/string.h).
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
----
- arch/mips/boot/compressed/decompress.c | 1 +
- 1 file changed, 1 insertion(+)
-
-v2 -> v3:
- - Add commit dc4d7b37 summary line in parens
-
-v1 -> v2:
- - Fixed commit description
- - Added a Cc: stable@vger.kernel.org  
-
-diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
-index c00c4dd..5244cec 100644
---- a/arch/mips/boot/compressed/decompress.c
-+++ b/arch/mips/boot/compressed/decompress.c
-@@ -13,6 +13,7 @@
- 
- #include <linux/types.h>
- #include <linux/kernel.h>
-+#include <linux/string.h>
- 
- #include <asm/addrspace.h>
- 
--- 
-2.0.0
+I'm fine with this wrt. the networking changes, but I don't think this should
+be merged via my tree.

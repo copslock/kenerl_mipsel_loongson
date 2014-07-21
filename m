@@ -1,41 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2014 16:27:07 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47799 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6861533AbaGUNgVuBjEK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Jul 2014 15:36:21 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9C2C18D221551
-        for <linux-mips@linux-mips.org>; Mon, 21 Jul 2014 14:36:12 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 21 Jul
- 2014 14:36:15 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 21 Jul 2014 14:36:14 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.145) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 21 Jul 2014 14:36:14 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 3/3] MIPS: CPS: Initialize EVA before bringing up VPEs from secondary cores
-Date:   Mon, 21 Jul 2014 14:35:56 +0100
-Message-ID: <1405949756-10427-4-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1405949756-10427-1-git-send-email-markos.chandras@imgtec.com>
-References: <1405949756-10427-1-git-send-email-markos.chandras@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.145]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2014 17:18:52 +0200 (CEST)
+Received: from mail.sigma-star.at ([95.130.255.111]:45333 "EHLO
+        mail.sigma-star.at" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6861575AbaGUOEFriBP7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Jul 2014 16:04:05 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.sigma-star.at (Postfix) with ESMTP id C950816B42AF;
+        Mon, 21 Jul 2014 16:04:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mail.sigma-star.at
+Received: from localhost.localdomain (chello213047235169.tirol.surfer.at [213.47.235.169])
+        by mail.sigma-star.at (Postfix) with ESMTPSA id D627916B42B1;
+        Mon, 21 Jul 2014 16:04:01 +0200 (CEST)
+From:   Richard Weinberger <richard@sigma-star.at>
+To:     akpm@linux-foundation.org
+Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        Richard Weinberger <richard@nod.at>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 13/43] mips: Use get_signal() signal_setup_done()
+Date:   Mon, 21 Jul 2014 16:02:59 +0200
+Message-Id: <1405951409-16953-14-git-send-email-richard@sigma-star.at>
+X-Mailer: git-send-email 1.8.4.5
+In-Reply-To: <1405951409-16953-1-git-send-email-richard@sigma-star.at>
+References: <1405951409-16953-1-git-send-email-richard@sigma-star.at>
+Return-Path: <richard@sigma-star.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41360
+X-archive-position: 41365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: richard@sigma-star.at
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,38 +42,392 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The CPS code is doing several memory loads when configuring the VPEs
-from secondary cores, so the segmentation control registers must be
-initialized in time otherwise the kernel will crash with strange
-TLB exceptions.
+From: Richard Weinberger <richard@nod.at>
 
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Use the more generic functions get_signal() signal_setup_done()
+for signal delivery.
+
+Signed-off-by: Richard Weinberger <richard@nod.at>
 ---
- arch/mips/kernel/cps-vec.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/include/asm/abi.h      | 10 +++---
+ arch/mips/kernel/signal-common.h |  2 +-
+ arch/mips/kernel/signal.c        | 66 +++++++++++++++-------------------------
+ arch/mips/kernel/signal32.c      | 39 +++++++++---------------
+ arch/mips/kernel/signal_n32.c    | 20 +++++-------
+ 5 files changed, 53 insertions(+), 84 deletions(-)
 
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index 6f4f739dad96..e6e97d2a5c9e 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -13,6 +13,7 @@
- #include <asm/asm-offsets.h>
- #include <asm/asmmacro.h>
- #include <asm/cacheops.h>
-+#include <asm/eva.h>
- #include <asm/mipsregs.h>
- #include <asm/mipsmtregs.h>
- #include <asm/pm.h>
-@@ -166,6 +167,9 @@ dcache_done:
- 1:	jal	mips_cps_core_init
- 	 nop
+diff --git a/arch/mips/include/asm/abi.h b/arch/mips/include/asm/abi.h
+index 909bb69..7186bb5 100644
+--- a/arch/mips/include/asm/abi.h
++++ b/arch/mips/include/asm/abi.h
+@@ -13,13 +13,11 @@
+ #include <asm/siginfo.h>
  
-+	/* Do any EVA initialization if necessary */
-+	eva_init
-+
+ struct mips_abi {
+-	int (* const setup_frame)(void *sig_return, struct k_sigaction *ka,
+-				  struct pt_regs *regs, int signr,
+-				  sigset_t *set);
++	int (* const setup_frame)(void *sig_return, struct ksignal *ksig,
++				  struct pt_regs *regs, sigset_t *set);
+ 	const unsigned long	signal_return_offset;
+-	int (* const setup_rt_frame)(void *sig_return, struct k_sigaction *ka,
+-			       struct pt_regs *regs, int signr,
+-			       sigset_t *set, siginfo_t *info);
++	int (* const setup_rt_frame)(void *sig_return, struct ksignal *ksig,
++				     struct pt_regs *regs, sigset_t *set);
+ 	const unsigned long	rt_signal_return_offset;
+ 	const unsigned long	restart;
+ };
+diff --git a/arch/mips/kernel/signal-common.h b/arch/mips/kernel/signal-common.h
+index 9c60d09..06805e0 100644
+--- a/arch/mips/kernel/signal-common.h
++++ b/arch/mips/kernel/signal-common.h
+@@ -22,7 +22,7 @@
+ /*
+  * Determine which stack to use..
+  */
+-extern void __user *get_sigframe(struct k_sigaction *ka, struct pt_regs *regs,
++extern void __user *get_sigframe(struct ksignal *ksig, struct pt_regs *regs,
+ 				 size_t frame_size);
+ /* Check and clear pending FPU exceptions in saved CSR */
+ extern int fpcsr_pending(unsigned int __user *fpcsr);
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index 9e60d11..da4baac 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -428,20 +428,20 @@ badframe:
+ }
+ 
+ #ifdef CONFIG_TRAD_SIGNALS
+-static int setup_frame(void *sig_return, struct k_sigaction *ka,
+-		       struct pt_regs *regs, int signr, sigset_t *set)
++static int setup_frame(void *sig_return, struct ksignal *ksig,
++		       struct pt_regs *regs, sigset_t *set)
+ {
+ 	struct sigframe __user *frame;
+ 	int err = 0;
+ 
+-	frame = get_sigframe(ka, regs, sizeof(*frame));
++	frame = get_sigframe(&ksig->ka, regs, sizeof(*frame));
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	err |= setup_sigcontext(regs, &frame->sf_sc);
+ 	err |= __copy_to_user(&frame->sf_mask, set, sizeof(*set));
+ 	if (err)
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
  	/*
- 	 * Boot any other VPEs within this core that should be online, and
- 	 * deactivate this VPE if it should be offline.
+ 	 * Arguments to signal handler:
+@@ -453,37 +453,32 @@ static int setup_frame(void *sig_return, struct k_sigaction *ka,
+ 	 * $25 and c0_epc point to the signal handler, $29 points to the
+ 	 * struct sigframe.
+ 	 */
+-	regs->regs[ 4] = signr;
++	regs->regs[ 4] = ksig->sig;
+ 	regs->regs[ 5] = 0;
+ 	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
+ 	regs->regs[29] = (unsigned long) frame;
+ 	regs->regs[31] = (unsigned long) sig_return;
+-	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
++	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+ 	       current->comm, current->pid,
+ 	       frame, regs->cp0_epc, regs->regs[31]);
+ 	return 0;
+-
+-give_sigsegv:
+-	force_sigsegv(signr, current);
+-	return -EFAULT;
+ }
+ #endif
+ 
+-static int setup_rt_frame(void *sig_return, struct k_sigaction *ka,
+-			  struct pt_regs *regs, int signr, sigset_t *set,
+-			  siginfo_t *info)
++static int setup_rt_frame(void *sig_return, struct ksignal *ksig,
++			  struct pt_regs *regs, sigset_t *set)
+ {
+ 	struct rt_sigframe __user *frame;
+ 	int err = 0;
+ 
+-	frame = get_sigframe(ka, regs, sizeof(*frame));
++	frame = get_sigframe(&ksig->ka, regs, sizeof(*frame));
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	/* Create siginfo.  */
+-	err |= copy_siginfo_to_user(&frame->rs_info, info);
++	err |= copy_siginfo_to_user(&frame->rs_info, &ksig->info);
+ 
+ 	/* Create the ucontext.	 */
+ 	err |= __put_user(0, &frame->rs_uc.uc_flags);
+@@ -493,7 +488,7 @@ static int setup_rt_frame(void *sig_return, struct k_sigaction *ka,
+ 	err |= __copy_to_user(&frame->rs_uc.uc_sigmask, set, sizeof(*set));
+ 
+ 	if (err)
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	/*
+ 	 * Arguments to signal handler:
+@@ -505,22 +500,18 @@ static int setup_rt_frame(void *sig_return, struct k_sigaction *ka,
+ 	 * $25 and c0_epc point to the signal handler, $29 points to
+ 	 * the struct rt_sigframe.
+ 	 */
+-	regs->regs[ 4] = signr;
++	regs->regs[ 4] = ksig->sig;
+ 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
+ 	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
+ 	regs->regs[29] = (unsigned long) frame;
+ 	regs->regs[31] = (unsigned long) sig_return;
+-	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
++	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+ 	       current->comm, current->pid,
+ 	       frame, regs->cp0_epc, regs->regs[31]);
+ 
+ 	return 0;
+-
+-give_sigsegv:
+-	force_sigsegv(signr, current);
+-	return -EFAULT;
+ }
+ 
+ struct mips_abi mips_abi = {
+@@ -534,8 +525,7 @@ struct mips_abi mips_abi = {
+ 	.restart	= __NR_restart_syscall
+ };
+ 
+-static void handle_signal(unsigned long sig, siginfo_t *info,
+-	struct k_sigaction *ka, struct pt_regs *regs)
++static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
+ {
+ 	sigset_t *oldset = sigmask_to_save();
+ 	int ret;
+@@ -557,7 +547,7 @@ static void handle_signal(unsigned long sig, siginfo_t *info,
+ 			regs->regs[2] = EINTR;
+ 			break;
+ 		case ERESTARTSYS:
+-			if (!(ka->sa.sa_flags & SA_RESTART)) {
++			if (!(ksig->ka.sa.sa_flags & SA_RESTART)) {
+ 				regs->regs[2] = EINTR;
+ 				break;
+ 			}
+@@ -571,29 +561,23 @@ static void handle_signal(unsigned long sig, siginfo_t *info,
+ 		regs->regs[0] = 0;		/* Don't deal with this again.	*/
+ 	}
+ 
+-	if (sig_uses_siginfo(ka))
++	if (sig_uses_siginfo(&ksig->ka))
+ 		ret = abi->setup_rt_frame(vdso + abi->rt_signal_return_offset,
+-					  ka, regs, sig, oldset, info);
++					  ksig, regs, oldset);
+ 	else
+-		ret = abi->setup_frame(vdso + abi->signal_return_offset,
+-				       ka, regs, sig, oldset);
+-
+-	if (ret)
+-		return;
++		ret = abi->setup_frame(vdso + abi->signal_return_offset, ksig,
++				       regs, oldset);
+ 
+-	signal_delivered(sig, info, ka, regs, 0);
++	signal_setup_done(ret, ksig, 0);
+ }
+ 
+ static void do_signal(struct pt_regs *regs)
+ {
+-	struct k_sigaction ka;
+-	siginfo_t info;
+-	int signr;
++	struct ksignal ksig;
+ 
+-	signr = get_signal_to_deliver(&info, &ka, regs, NULL);
+-	if (signr > 0) {
++	if (get_signal(&ksig)) {
+ 		/* Whee!  Actually deliver the signal.	*/
+-		handle_signal(signr, &info, &ka, regs);
++		handle_signal(&ksig, regs);
+ 		return;
+ 	}
+ 
+diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
+index bae2e6e..eb8d0e2 100644
+--- a/arch/mips/kernel/signal32.c
++++ b/arch/mips/kernel/signal32.c
+@@ -490,21 +490,21 @@ badframe:
+ 	force_sig(SIGSEGV, current);
+ }
+ 
+-static int setup_frame_32(void *sig_return, struct k_sigaction *ka,
+-			  struct pt_regs *regs, int signr, sigset_t *set)
++static int setup_frame_32(void *sig_return, struct ksignal *ksig,
++			  struct pt_regs *regs, sigset_t *set)
+ {
+ 	struct sigframe32 __user *frame;
+ 	int err = 0;
+ 
+-	frame = get_sigframe(ka, regs, sizeof(*frame));
++	frame = get_sigframe(&ksig->ka, regs, sizeof(*frame));
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	err |= setup_sigcontext32(regs, &frame->sf_sc);
+ 	err |= __copy_conv_sigset_to_user(&frame->sf_mask, set);
+ 
+ 	if (err)
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	/*
+ 	 * Arguments to signal handler:
+@@ -516,37 +516,32 @@ static int setup_frame_32(void *sig_return, struct k_sigaction *ka,
+ 	 * $25 and c0_epc point to the signal handler, $29 points to the
+ 	 * struct sigframe.
+ 	 */
+-	regs->regs[ 4] = signr;
++	regs->regs[ 4] = ksig->sig;
+ 	regs->regs[ 5] = 0;
+ 	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
+ 	regs->regs[29] = (unsigned long) frame;
+ 	regs->regs[31] = (unsigned long) sig_return;
+-	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
++	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+ 	       current->comm, current->pid,
+ 	       frame, regs->cp0_epc, regs->regs[31]);
+ 
+ 	return 0;
+-
+-give_sigsegv:
+-	force_sigsegv(signr, current);
+-	return -EFAULT;
+ }
+ 
+-static int setup_rt_frame_32(void *sig_return, struct k_sigaction *ka,
+-			     struct pt_regs *regs, int signr, sigset_t *set,
+-			     siginfo_t *info)
++static int setup_rt_frame_32(void *sig_return, struct ksignal *ksig,
++			     struct pt_regs *regs, sigset_t *set)
+ {
+ 	struct rt_sigframe32 __user *frame;
+ 	int err = 0;
+ 
+-	frame = get_sigframe(ka, regs, sizeof(*frame));
++	frame = get_sigframe(&ksig->ka, regs, sizeof(*frame));
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	/* Convert (siginfo_t -> compat_siginfo_t) and copy to user. */
+-	err |= copy_siginfo_to_user32(&frame->rs_info, info);
++	err |= copy_siginfo_to_user32(&frame->rs_info, &ksig->info);
+ 
+ 	/* Create the ucontext.	 */
+ 	err |= __put_user(0, &frame->rs_uc.uc_flags);
+@@ -556,7 +551,7 @@ static int setup_rt_frame_32(void *sig_return, struct k_sigaction *ka,
+ 	err |= __copy_conv_sigset_to_user(&frame->rs_uc.uc_sigmask, set);
+ 
+ 	if (err)
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	/*
+ 	 * Arguments to signal handler:
+@@ -568,22 +563,18 @@ static int setup_rt_frame_32(void *sig_return, struct k_sigaction *ka,
+ 	 * $25 and c0_epc point to the signal handler, $29 points to
+ 	 * the struct rt_sigframe32.
+ 	 */
+-	regs->regs[ 4] = signr;
++	regs->regs[ 4] = ksig->sig;
+ 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
+ 	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
+ 	regs->regs[29] = (unsigned long) frame;
+ 	regs->regs[31] = (unsigned long) sig_return;
+-	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
++	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+ 	       current->comm, current->pid,
+ 	       frame, regs->cp0_epc, regs->regs[31]);
+ 
+ 	return 0;
+-
+-give_sigsegv:
+-	force_sigsegv(signr, current);
+-	return -EFAULT;
+ }
+ 
+ /*
+diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
+index b2241bb..7d04f28 100644
+--- a/arch/mips/kernel/signal_n32.c
++++ b/arch/mips/kernel/signal_n32.c
+@@ -102,18 +102,18 @@ badframe:
+ 	force_sig(SIGSEGV, current);
+ }
+ 
+-static int setup_rt_frame_n32(void *sig_return, struct k_sigaction *ka,
+-	struct pt_regs *regs, int signr, sigset_t *set, siginfo_t *info)
++static int setup_rt_frame_n32(void *sig_return, struct ksignal *ksig,
++			      struct pt_regs *regs, sigset_t *set)
+ {
+ 	struct rt_sigframe_n32 __user *frame;
+ 	int err = 0;
+ 
+-	frame = get_sigframe(ka, regs, sizeof(*frame));
++	frame = get_sigframe(&ksig->ka, regs, sizeof(*frame));
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	/* Create siginfo.  */
+-	err |= copy_siginfo_to_user32(&frame->rs_info, info);
++	err |= copy_siginfo_to_user32(&frame->rs_info, &ksig->info);
+ 
+ 	/* Create the ucontext.	 */
+ 	err |= __put_user(0, &frame->rs_uc.uc_flags);
+@@ -123,7 +123,7 @@ static int setup_rt_frame_n32(void *sig_return, struct k_sigaction *ka,
+ 	err |= __copy_conv_sigset_to_user(&frame->rs_uc.uc_sigmask, set);
+ 
+ 	if (err)
+-		goto give_sigsegv;
++		return -EFAULT;
+ 
+ 	/*
+ 	 * Arguments to signal handler:
+@@ -135,22 +135,18 @@ static int setup_rt_frame_n32(void *sig_return, struct k_sigaction *ka,
+ 	 * $25 and c0_epc point to the signal handler, $29 points to
+ 	 * the struct rt_sigframe.
+ 	 */
+-	regs->regs[ 4] = signr;
++	regs->regs[ 4] = ksig->sig;
+ 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
+ 	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
+ 	regs->regs[29] = (unsigned long) frame;
+ 	regs->regs[31] = (unsigned long) sig_return;
+-	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
++	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+ 	       current->comm, current->pid,
+ 	       frame, regs->cp0_epc, regs->regs[31]);
+ 
+ 	return 0;
+-
+-give_sigsegv:
+-	force_sigsegv(signr, current);
+-	return -EFAULT;
+ }
+ 
+ struct mips_abi mips_abi_n32 = {
 -- 
-2.0.0
+1.8.4.5

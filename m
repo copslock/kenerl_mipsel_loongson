@@ -1,44 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 20:42:57 +0200 (CEST)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:60615 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860188AbaGVSlNkOedq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 20:41:13 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 8505321B950;
-        Tue, 22 Jul 2014 21:41:10 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id Oc4PLP1sf2DZ; Tue, 22 Jul 2014 21:41:04 +0300 (EEST)
-Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id EA72E5BC011;
-        Tue, 22 Jul 2014 21:41:03 +0300 (EEST)
-Date:   Tue, 22 Jul 2014 21:41:03 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Rob Kendrick <rob.kendrick@codethink.co.uk>
-Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: EdgeRouter Pro supported?  Strange FP problems
-Message-ID: <20140722184103.GA1197@drone.musicnaut.iki.fi>
-References: <20140722130616.GJ30723@humdrum>
- <53CE736E.1060009@imgtec.com>
- <20140722143311.GK30723@humdrum>
- <53CE8570.8020404@imgtec.com>
- <20140722154914.GL30723@humdrum>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140722154914.GL30723@humdrum>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 21:03:14 +0200 (CEST)
+Received: from mail-la0-f51.google.com ([209.85.215.51]:34086 "EHLO
+        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6863501AbaGVTB2azoxP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 21:01:28 +0200
+Received: by mail-la0-f51.google.com with SMTP id el20so69168lab.38
+        for <linux-mips@linux-mips.org>; Tue, 22 Jul 2014 12:01:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=25ONpWtM7bvQh3stQog/eYz5dT17bSGMi2zoNUJ+0iY=;
+        b=EV7bwWx3iZ14jBcBD4Od/GHi/dEnB9u+9jBnIjkti0y6ykxR0sstYRQUSu2LKpZBsz
+         Dfcr+N7pJiB+sC27a59WoZU3nXqDw2ja69ldxXWU7yvsE2HTEB6qWpWY8rR+8PLDZBFx
+         DceYeLDz0FfZH0PZ6/EEo7mGpUQ9V+/RZH5xhlJ611N0qVRnrHLPJCgBmh0Ar+Y6CVnS
+         QkRw+wZQjJAKWeRN63klgMFxg1HMRN4KD+qqRcAVctTTlal0MKTt8pbWl+ryAVu5RPRE
+         t90WInMC9UKgkDLONkCA8aOQ/SdiFg+0fKnsVUQvUewxTm2Q+8ts7a0h46hJXWTGwpgu
+         o2bw==
+X-Received: by 10.112.146.202 with SMTP id te10mr20480260lbb.75.1406055682835;
+        Tue, 22 Jul 2014 12:01:22 -0700 (PDT)
+Received: from octofox.metropolis ([5.18.160.1])
+        by mx.google.com with ESMTPSA id a7sm677355lae.37.2014.07.22.12.01.21
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 22 Jul 2014 12:01:21 -0700 (PDT)
+From:   Max Filippov <jcmvbkbc@gmail.com>
+To:     linux-xtensa@linux-xtensa.org
+Cc:     Chris Zankel <chris@zankel.net>, Marc Gauthier <marc@cadence.com>,
+        linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
+        linux-mm@kvack.org, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, David Rientjes <rientjes@google.com>
+Subject: [PATCH 0/8] xtensa: highmem support on cores with aliasing cache
+Date:   Tue, 22 Jul 2014 23:01:05 +0400
+Message-Id: <1406055673-10100-1-git-send-email-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 1.8.1.4
+Return-Path: <jcmvbkbc@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41488
+X-archive-position: 41491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: jcmvbkbc@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,20 +55,45 @@ X-list: linux-mips
 
 Hi,
 
-On Tue, Jul 22, 2014 at 04:49:14PM +0100, Rob Kendrick wrote:
-> On Tue, Jul 22, 2014 at 04:38:24PM +0100, Markos Chandras wrote:
-> > there have been quite a few FPU changes in 3.16. I am able to reproduce
-> > the problem on EdgeRouter (non pro) but the result is not the same as
-> > yours. The output using the 'gawk' is:
-> > 
-> > prefix is ''
-> > suffix is 'baz'
-> 
-> This is still, of course, wrong ;)  I'm glad somebody's managed to
-> reproduce it and it's not just madness on my part.
+this series implements highmem support on xtensa cores with aliasing cache.
+It does so by making sure that high memory pages are always mapped at
+virtual addresses with color that match color of their physical address.
 
-If your userspace is small, maybe you could try rebuilding it
-with softfloat. Your script works on octeon with 3.16-rc6 + gcc 4.9 +
-glibc 2.19 + gawk 4.0.3 when compiled with softfloat.
+This involves changing the generic kmap code to make it aware of cache
+coloring. This part with corresponding arch changes is cc'd linux-mm,
+linux-arch and linux-mips.
 
-A.
+The whole series can also be found at:
+git://github.com/jcmvbkbc/linux-xtensa.git xtensa-highmem-ca
+
+Leonid Yegoshin (1):
+  mm/highmem: make kmap cache coloring aware
+
+Max Filippov (7):
+  xtensa: make fixmap region addressing grow with index
+  xtensa: allow fixmap and kmap span more than one page table
+  xtensa: fix TLBTEMP_BASE_2 region handling in fast_second_level_miss
+  xtensa: implement clear_user_highpage and copy_user_highpage
+  xtensa: support aliasing cache in k[un]map_atomic
+  xtensa: support aliasing cache in kmap
+  xtensa: support highmem in aliasing cache flushing code
+
+ arch/xtensa/include/asm/cacheflush.h |   2 +
+ arch/xtensa/include/asm/fixmap.h     |  30 +++++++--
+ arch/xtensa/include/asm/highmem.h    |  18 +++++-
+ arch/xtensa/include/asm/page.h       |  14 ++++-
+ arch/xtensa/include/asm/pgtable.h    |   7 ++-
+ arch/xtensa/kernel/entry.S           |   2 +-
+ arch/xtensa/mm/cache.c               |  77 ++++++++++++++++++++---
+ arch/xtensa/mm/highmem.c             |  24 +++++---
+ arch/xtensa/mm/misc.S                | 116 ++++++++++++++++-------------------
+ arch/xtensa/mm/mmu.c                 |  38 +++++++-----
+ mm/highmem.c                         |  19 +++++-
+ 11 files changed, 235 insertions(+), 112 deletions(-)
+
+Cc: linux-mm@kvack.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: David Rientjes <rientjes@google.com>
+-- 
+1.8.1.4

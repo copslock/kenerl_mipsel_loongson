@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 16:05:41 +0200 (CEST)
-Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:45895 "EHLO
-        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6862664AbaGVNGaI0tmr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 15:06:30 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id BD6414633B7
-        for <linux-mips@linux-mips.org>; Tue, 22 Jul 2014 14:06:22 +0100 (BST)
-X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
-Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
-        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id NzeZyXfta3dm for <linux-mips@linux-mips.org>;
-        Tue, 22 Jul 2014 14:06:20 +0100 (BST)
-Received: from humdrum (unknown [10.24.1.221])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 59E57462A92
-        for <linux-mips@linux-mips.org>; Tue, 22 Jul 2014 14:06:20 +0100 (BST)
-Date:   Tue, 22 Jul 2014 14:06:17 +0100
-From:   Rob Kendrick <rob.kendrick@codethink.co.uk>
-To:     linux-mips@linux-mips.org
-Subject: EdgeRouter Pro supported?  Strange FP problems
-Message-ID: <20140722130616.GJ30723@humdrum>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 16:36:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:5645 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6862647AbaGVNVmU6SWc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 15:21:42 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id F0AAC3A039519;
+        Tue, 22 Jul 2014 14:21:32 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 22 Jul
+ 2014 14:21:35 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 22 Jul 2014 14:21:34 +0100
+Received: from localhost.localdomain (192.168.79.130) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 22 Jul 2014 14:21:34 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>, <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: prevent user from setting FCSR cause bits
+Date:   Tue, 22 Jul 2014 14:21:21 +0100
+Message-ID: <1406035281-693-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <rob.kendrick@codethink.co.uk>
+Content-Type: text/plain
+X-Originating-IP: [192.168.79.130]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41446
+X-archive-position: 41449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rob.kendrick@codethink.co.uk
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,23 +46,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+If one or more matching FCSR cause & enable bits are set in saved thread
+context then when that context is restored the kernel will take an FP
+exception. This is of course undesirable and considered an oops, leading
+to the kernel writing a backtrace to the console and potentially
+rebooting depending upon the configuration. Thus the kernel avoids this
+situation by clearing the cause bits of the FCSR register when handling
+FP exceptions and after emulating FP instructions.
 
-I'm trying to build a kernel for an Ubiquiti EdgeRouter Pro (not a
-Lite).  I'm using the current master from linux-mti, and this produces a
-kernel that boots and has network support (but bizarrely not activity
-LEDs) and USB support, which is good.  However, what I am seeing is
-bizarre floating point behavior.
+However the kernel does not prevent userland from setting arbitrary FCSR
+cause & enable bits via ptrace, using either the PTRACE_POKEUSR or
+PTRACE_SETFPREGS requests. This means userland can trivially cause the
+kernel to oops on any system with an FPU. Prevent this from happening
+by clearing the cause bits when writing to the saved FCSR context via
+ptrace.
 
-Is there a known issue with master on these Octeon2-based boards?
-Should I be pointing my finger of blame at the compiler I've built
-(using crosstool-ng) or my configuration of the kernel?
+This problem appears to exist at least back to the beginning of the git
+era in the PTRACE_POKEUSR case.
 
-Is there a better choice of compiler and kernel to be using for these
-boards?
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: stable@vger.kernel.org
+---
+ arch/mips/kernel/ptrace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thanks for any input,
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index f639ccd..3a7f7dd 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -151,6 +151,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
+ 	}
+ 
+ 	__get_user(child->thread.fpu.fcr31, data + 64);
++	child->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
+ 
+ 	/* FIR may not be written.  */
+ 
+@@ -565,7 +566,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			break;
+ #endif
+ 		case FPC_CSR:
+-			child->thread.fpu.fcr31 = data;
++			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;
 -- 
-Rob Kendrick, Senior Consulting Developer                Codethink Ltd.
-Telephone: +44 7880 657 193              302 Ducie House, Ducie Street,
-http://www.codethink.co.uk/         Manchester, M1 2JW, United Kingdom.
+2.0.1

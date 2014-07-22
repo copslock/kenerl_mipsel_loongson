@@ -1,48 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 21:07:14 +0200 (CEST)
-Received: from mail-la0-f41.google.com ([209.85.215.41]:41558 "EHLO
-        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6863507AbaGVTBjB1mwt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 21:01:39 +0200
-Received: by mail-la0-f41.google.com with SMTP id s18so77232lam.0
-        for <linux-mips@linux-mips.org>; Tue, 22 Jul 2014 12:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=5svbS5VOisP0kHce65VXS1gUtOL/eFk7EG3vo7g5Nbc=;
-        b=I7Ope4oDoouKUdzSdgI47uED334H5vtlmPVIGmKoVFIg1c/chR+5OYcGXRls6oJCnL
-         188CSIVwQti2kHkcqZCGZ67PbKXyIjTKuy/dZy2qIPEKW9nabtNS8T7QakOP6J8pm1vR
-         4ybMzYVjXRrpM6SG9sYdkq4+ayey0Hz03KqTz0bNiZX17vMLIJKmnOnnSALg39hUE90d
-         f5HvfRQV2s3x3X/e6J7VuoYDgYs/RVYIZPJVtaSzq8zDjZ/XjbPTRmv7bAPCVjwlHtIl
-         L1jlfD4a4SseXWkVX3W+lwm1ef3tYIJt/J/gazL/cnnnf9hJ+2iZWtJPogUV/PWttcph
-         uzSQ==
-X-Received: by 10.152.5.167 with SMTP id t7mr29065769lat.54.1406055693239;
-        Tue, 22 Jul 2014 12:01:33 -0700 (PDT)
-Received: from octofox.metropolis ([5.18.160.1])
-        by mx.google.com with ESMTPSA id a7sm677355lae.37.2014.07.22.12.01.31
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 22 Jul 2014 12:01:32 -0700 (PDT)
-From:   Max Filippov <jcmvbkbc@gmail.com>
-To:     linux-xtensa@linux-xtensa.org
-Cc:     Chris Zankel <chris@zankel.net>, Marc Gauthier <marc@cadence.com>,
-        linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
-        linux-mm@kvack.org, linux-arch@vger.kernel.org,
-        linux-mips@linux-mips.org, David Rientjes <rientjes@google.com>
-Subject: [PATCH 7/8] xtensa: support aliasing cache in kmap
-Date:   Tue, 22 Jul 2014 23:01:12 +0400
-Message-Id: <1406055673-10100-8-git-send-email-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 1.8.1.4
-In-Reply-To: <1406055673-10100-1-git-send-email-jcmvbkbc@gmail.com>
-References: <1406055673-10100-1-git-send-email-jcmvbkbc@gmail.com>
-Return-Path: <jcmvbkbc@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 21:19:33 +0200 (CEST)
+Received: from mailout2.w2.samsung.com ([211.189.100.12]:40174 "EHLO
+        usmailout2.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860206AbaGVTRrdhSB0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 21:17:47 +0200
+Received: from uscpsbgm2.samsung.com
+ (u115.gpu85.samsung.co.kr [203.254.195.115]) by mailout2.w2.samsung.com
+ (Oracle Communications Messaging Server 7u4-24.01(7.0.4.24.0) 64bit (built Nov
+ 17 2011)) with ESMTP id <0N9400FS9O9FSP80@mailout2.w2.samsung.com>; Tue,
+ 22 Jul 2014 15:17:40 -0400 (EDT)
+X-AuditID: cbfec373-b7fd56d0000060dc-5d-53ceb8d325b6
+Received: from ussync4.samsung.com ( [203.254.195.84])
+        by uscpsbgm2.samsung.com (USCPMTA) with SMTP id 90.E9.24796.3D8BEC35; Tue,
+ 22 Jul 2014 15:17:39 -0400 (EDT)
+Received: from recife.lan ([105.144.134.243])
+ by ussync4.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTPA id <0N94009CBO95ZL60@ussync4.samsung.com>; Tue,
+ 22 Jul 2014 15:17:39 -0400 (EDT)
+Date:   Tue, 22 Jul 2014 16:17:28 -0300
+From:   Mauro Carvalho Chehab <m.chehab@samsung.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     abdoulaye berthe <berthe.ab@gmail.com>,
+        "arm@kernel.org" <arm@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Bryan Wu <cooloney@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Matthew Garrett <matthew.garrett@nebula.com>,
+        Michael Buesch <m@bues.ch>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
+Subject: Re: [PATCH 3/3] driver:gpio remove all usage of gpio_remove retval in
+ driver
+Message-id: <20140722161728.712d961e.m.chehab@samsung.com>
+In-reply-to: <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
+References: <CACRpkda6mzVdaN0cvOxpbsxWyCv2nGyDXOjZg_5aT8u7SSQeUw@mail.gmail.com>
+ <1405197014-25225-1-git-send-email-berthe.ab@gmail.com>
+ <1405197014-25225-4-git-send-email-berthe.ab@gmail.com>
+ <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
+X-Mailer: Claws Mail 3.10.1 (GTK+ 2.24.22; x86_64-redhat-linux-gnu)
+MIME-version: 1.0
+Content-type: text/plain; charset=US-ASCII
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOIsWRmVeSWpSXmKPExsVy+t/hEN3LO84FG3z8amZx5eIhJotjX7aw
+        WXxoamW22NPay2Yx9eETNoujOycyWRxe9ILR4tyrRywWzYvXs1nsnrOYxeL+16OMFt+udDBZ
+        TPmznMniRN8HVovN8/8wWtz89I3V4vKuOWwWPRu2slpMmDqJ3eLM4l52izl/pjBbrJr7hNXi
+        4ycbi0t7VCxOd7NarJ9/i81izclUB2mPDZ+b2DxmH3/E5rFz1l12j543Lawem1Z1snncubaH
+        zePoyrVMHvNOBnrsn7uG3WPhlWYmjzMLjrB7HL+xncnj8ya5AN4oLpuU1JzMstQifbsEroyu
+        PftZC7ZxVRyb+Zq1gXEBRxcjJ4eEgInEvbNH2SBsMYkL99YD2VwcQgJLGCV6v09khHCamSSW
+        PXrMCFLFIqAq8XftZnYQm03ASOJVYwsriC0ioCPRve0nK0gDs8BiTom+qTvBioQFwiWWHe0E
+        a+YVsJJ4ebuFGcTmFAiWaOn/xQ6xoZdJYsr9RywQdzhL/Jw5CapBUOLH5HtgcWYBLYnN25pY
+        IWx5ic1r3jJPYBSYhaRsFpKyWUjKFjAyr2IULS1OLihOSs810itOzC0uzUvXS87P3cQIifzi
+        HYwvNlgdYhTgYFTi4dVYfjZYiDWxrLgy9xCjBAezkghvdOu5YCHelMTKqtSi/Pii0pzU4kOM
+        TBycUg2Mk+cu58hiWWC/MO7u5LL3u1N8+ffMeZTk4h58teV2N//dVqbJJ/T5NIT8n3LKlvFq
+        TCsM62Y8pcPhzrrn3aLHz1cLO73pDZtZ3bhuot3WabUn1797+8B4wQXdCsuU0sK7KgmBkrcb
+        vnb9Dcr87vfU7ETc6gkZOx1UzX7ym2dIv7hlsnDyaysNJZbijERDLeai4kQAutiGzdoCAAA=
+Return-Path: <m.chehab@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41493
+X-archive-position: 41495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jcmvbkbc@gmail.com
+X-original-sender: m.chehab@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,69 +92,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Define ARCH_PKMAP_COLORING and provide corresponding macro definitions
-on cores with aliasing data cache.
+Em Tue, 22 Jul 2014 17:08:13 +0200
+Linus Walleij <linus.walleij@linaro.org> escreveu:
 
-Instead of single last_pkmap_nr maintain an array last_pkmap_nr_arr of
-pkmap counters for each page color. Make sure that kmap maps physical
-page at virtual address with color matching its physical address.
+> On Sat, Jul 12, 2014 at 10:30 PM, abdoulaye berthe <berthe.ab@gmail.com> wrote:
+> 
+> Heads up. Requesting ACKs for this patch or I'm atleast warning that it will be
+> applied. We're getting rid of the return value from gpiochip_remove().
+> 
+> > this remove all reference to gpio_remove retval in all driver
+> > except pinctrl and gpio. the same thing is done for gpio and
+> > pinctrl in two different patches.
+> >
+> > Signed-off-by: abdoulaye berthe <berthe.ab@gmail.com>
+> (...)
+> 
+> I think this patch probably needs to be broken down per-subsystem as it
+> hits all over the map. But let's start requesting ACKs for the
+> individual pieces.
+> Actually I think it will be OK to merge because there is likely not much churn
+> around these code sites.
+> 
+> I'm a bit torn between just wanting a big patch for this hitting drivers/gpio
+> and smaller patches hitting one subsystem at a time. We should be able
+> to hammer this in one switch strike.
+> 
+...
+> >  drivers/media/dvb-frontends/cxd2820r_core.c    | 10 +++-------
+> 
+> Mauro can you ACK this?
 
-Cc: linux-mm@kvack.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: David Rientjes <rientjes@google.com>
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
----
- arch/xtensa/include/asm/highmem.h | 18 ++++++++++++++++--
- arch/xtensa/mm/highmem.c          |  1 +
- 2 files changed, 17 insertions(+), 2 deletions(-)
+Acked-by: Mauro Carvalho Chehab <m.chehab@samsung.com>
+> 
+> (Hm that looks weird. Mental note to look closer at this.)
 
-diff --git a/arch/xtensa/include/asm/highmem.h b/arch/xtensa/include/asm/highmem.h
-index 2653ef5..a5c3380 100644
---- a/arch/xtensa/include/asm/highmem.h
-+++ b/arch/xtensa/include/asm/highmem.h
-@@ -17,14 +17,28 @@
- #include <asm/kmap_types.h>
- #include <asm/pgtable.h>
- 
--#define PKMAP_BASE		(FIXADDR_START - PMD_SIZE)
--#define LAST_PKMAP		PTRS_PER_PTE
-+#define PKMAP_BASE		((FIXADDR_START - \
-+				  (LAST_PKMAP + 1) * PAGE_SIZE) & PMD_MASK)
-+#define LAST_PKMAP		(PTRS_PER_PTE * DCACHE_N_COLORS)
- #define LAST_PKMAP_MASK		(LAST_PKMAP - 1)
- #define PKMAP_NR(virt)		(((virt) - PKMAP_BASE) >> PAGE_SHIFT)
- #define PKMAP_ADDR(nr)		(PKMAP_BASE + ((nr) << PAGE_SHIFT))
- 
- #define kmap_prot		PAGE_KERNEL
- 
-+#if DCACHE_WAY_SIZE > PAGE_SIZE
-+#define ARCH_PKMAP_COLORING
-+#define set_pkmap_color(pg, cl)		((cl) = DCACHE_ALIAS(page_to_phys(pg)))
-+#define get_last_pkmap_nr(p, cl)	(last_pkmap_nr_arr[cl] + (cl))
-+#define get_next_pkmap_nr(p, cl)	\
-+	((last_pkmap_nr_arr[cl] = ((last_pkmap_nr_arr[cl] + DCACHE_N_COLORS) & \
-+				   LAST_PKMAP_MASK)) + (cl))
-+#define no_more_pkmaps(p, cl)		((p) < DCACHE_N_COLORS)
-+#define get_next_pkmap_counter(c, cl)	((c) - DCACHE_N_COLORS)
-+
-+extern unsigned int last_pkmap_nr_arr[];
-+#endif
-+
- extern pte_t *pkmap_page_table;
- 
- void *kmap_high(struct page *page);
-diff --git a/arch/xtensa/mm/highmem.c b/arch/xtensa/mm/highmem.c
-index 466abae..3742a37 100644
---- a/arch/xtensa/mm/highmem.c
-+++ b/arch/xtensa/mm/highmem.c
-@@ -12,6 +12,7 @@
- #include <linux/highmem.h>
- #include <asm/tlbflush.h>
- 
-+unsigned int last_pkmap_nr_arr[DCACHE_N_COLORS];
- static pte_t *kmap_pte;
- 
- static inline enum fixed_addresses kmap_idx(int type, unsigned long color)
--- 
-1.8.1.4
+What's weird there?
+
+Regards,
+Mauro

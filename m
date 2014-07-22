@@ -1,85 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 21:19:33 +0200 (CEST)
-Received: from mailout2.w2.samsung.com ([211.189.100.12]:40174 "EHLO
-        usmailout2.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860206AbaGVTRrdhSB0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 21:17:47 +0200
-Received: from uscpsbgm2.samsung.com
- (u115.gpu85.samsung.co.kr [203.254.195.115]) by mailout2.w2.samsung.com
- (Oracle Communications Messaging Server 7u4-24.01(7.0.4.24.0) 64bit (built Nov
- 17 2011)) with ESMTP id <0N9400FS9O9FSP80@mailout2.w2.samsung.com>; Tue,
- 22 Jul 2014 15:17:40 -0400 (EDT)
-X-AuditID: cbfec373-b7fd56d0000060dc-5d-53ceb8d325b6
-Received: from ussync4.samsung.com ( [203.254.195.84])
-        by uscpsbgm2.samsung.com (USCPMTA) with SMTP id 90.E9.24796.3D8BEC35; Tue,
- 22 Jul 2014 15:17:39 -0400 (EDT)
-Received: from recife.lan ([105.144.134.243])
- by ussync4.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTPA id <0N94009CBO95ZL60@ussync4.samsung.com>; Tue,
- 22 Jul 2014 15:17:39 -0400 (EDT)
-Date:   Tue, 22 Jul 2014 16:17:28 -0300
-From:   Mauro Carvalho Chehab <m.chehab@samsung.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     abdoulaye berthe <berthe.ab@gmail.com>,
-        "arm@kernel.org" <arm@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Jiri Kosina <jkosina@suse.cz>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Bryan Wu <cooloney@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Matthew Garrett <matthew.garrett@nebula.com>,
-        Michael Buesch <m@bues.ch>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
-Subject: Re: [PATCH 3/3] driver:gpio remove all usage of gpio_remove retval in
- driver
-Message-id: <20140722161728.712d961e.m.chehab@samsung.com>
-In-reply-to: <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
-References: <CACRpkda6mzVdaN0cvOxpbsxWyCv2nGyDXOjZg_5aT8u7SSQeUw@mail.gmail.com>
- <1405197014-25225-1-git-send-email-berthe.ab@gmail.com>
- <1405197014-25225-4-git-send-email-berthe.ab@gmail.com>
- <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
-X-Mailer: Claws Mail 3.10.1 (GTK+ 2.24.22; x86_64-redhat-linux-gnu)
-MIME-version: 1.0
-Content-type: text/plain; charset=US-ASCII
-Content-transfer-encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOIsWRmVeSWpSXmKPExsVy+t/hEN3LO84FG3z8amZx5eIhJotjX7aw
-        WXxoamW22NPay2Yx9eETNoujOycyWRxe9ILR4tyrRywWzYvXs1nsnrOYxeL+16OMFt+udDBZ
-        TPmznMniRN8HVovN8/8wWtz89I3V4vKuOWwWPRu2slpMmDqJ3eLM4l52izl/pjBbrJr7hNXi
-        4ycbi0t7VCxOd7NarJ9/i81izclUB2mPDZ+b2DxmH3/E5rFz1l12j543Lawem1Z1snncubaH
-        zePoyrVMHvNOBnrsn7uG3WPhlWYmjzMLjrB7HL+xncnj8ya5AN4oLpuU1JzMstQifbsEroyu
-        PftZC7ZxVRyb+Zq1gXEBRxcjJ4eEgInEvbNH2SBsMYkL99YD2VwcQgJLGCV6v09khHCamSSW
-        PXrMCFLFIqAq8XftZnYQm03ASOJVYwsriC0ioCPRve0nK0gDs8BiTom+qTvBioQFwiWWHe0E
-        a+YVsJJ4ebuFGcTmFAiWaOn/xQ6xoZdJYsr9RywQdzhL/Jw5CapBUOLH5HtgcWYBLYnN25pY
-        IWx5ic1r3jJPYBSYhaRsFpKyWUjKFjAyr2IULS1OLihOSs810itOzC0uzUvXS87P3cQIifzi
-        HYwvNlgdYhTgYFTi4dVYfjZYiDWxrLgy9xCjBAezkghvdOu5YCHelMTKqtSi/Pii0pzU4kOM
-        TBycUg2Mk+cu58hiWWC/MO7u5LL3u1N8+ffMeZTk4h58teV2N//dVqbJJ/T5NIT8n3LKlvFq
-        TCsM62Y8pcPhzrrn3aLHz1cLO73pDZtZ3bhuot3WabUn1797+8B4wQXdCsuU0sK7KgmBkrcb
-        vnb9Dcr87vfU7ETc6gkZOx1UzX7ym2dIv7hlsnDyaysNJZbijERDLeai4kQAutiGzdoCAAA=
-Return-Path: <m.chehab@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 21:37:12 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24049 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6863548AbaGVTf0Ehf40 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 21:35:26 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8F0FD1AB5F0EB;
+        Tue, 22 Jul 2014 20:35:14 +0100 (IST)
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 22 Jul 2014 20:35:18 +0100
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 22 Jul
+ 2014 12:35:15 -0700
+Message-ID: <53CEBCF3.9010208@imgtec.com>
+Date:   Tue, 22 Jul 2014 12:35:15 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+MIME-Version: 1.0
+To:     Max Filippov <jcmvbkbc@gmail.com>
+CC:     <linux-xtensa@linux-xtensa.org>, Chris Zankel <chris@zankel.net>,
+        "Marc Gauthier" <marc@cadence.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <linux-arch@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, David Rientjes <rientjes@google.com>
+Subject: Re: [PATCH 6/8] mm/highmem: make kmap cache coloring aware
+References: <1406055673-10100-1-git-send-email-jcmvbkbc@gmail.com> <1406055673-10100-7-git-send-email-jcmvbkbc@gmail.com>
+In-Reply-To: <1406055673-10100-7-git-send-email-jcmvbkbc@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41495
+X-archive-position: 41496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m.chehab@samsung.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,41 +49,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Em Tue, 22 Jul 2014 17:08:13 +0200
-Linus Walleij <linus.walleij@linaro.org> escreveu:
+On 07/22/2014 12:01 PM, Max Filippov wrote:
+> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>
+> Provide hooks that allow architectures with aliasing cache to align
+> mapping address of high pages according to their color. Such architectures
+> may enforce similar coloring of low- and high-memory page mappings and
+> reuse existing cache management functions to support highmem.
+>
+> Cc: linux-mm@kvack.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: David Rientjes <rientjes@google.com>
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> [ Max: extract architecture-independent part of the original patch, clean
+>    up checkpatch and build warnings. ]
+> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+> ---
+> Changes since the initial version:
+> - define set_pkmap_color(pg, cl) as do { } while (0) instead of /* */;
+> - rename is_no_more_pkmaps to no_more_pkmaps;
+> - change 'if (count > 0)' to 'if (count)' to better match the original
+>    code behavior;
+>
+>   mm/highmem.c | 19 ++++++++++++++++---
+>   1 file changed, 16 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/highmem.c b/mm/highmem.c
+> index b32b70c..88fb62e 100644
+> --- a/mm/highmem.c
+> +++ b/mm/highmem.c
+> @@ -44,6 +44,14 @@ DEFINE_PER_CPU(int, __kmap_atomic_idx);
+>    */
+>   #ifdef CONFIG_HIGHMEM
+>   
+> +#ifndef ARCH_PKMAP_COLORING
+> +#define set_pkmap_color(pg, cl)		do { } while (0)
+> +#define get_last_pkmap_nr(p, cl)	(p)
+> +#define get_next_pkmap_nr(p, cl)	(((p) + 1) & LAST_PKMAP_MASK)
+> +#define no_more_pkmaps(p, cl)		(!(p))
+> +#define get_next_pkmap_counter(c, cl)	((c) - 1)
+> +#endif
+> +
+>   unsigned long totalhigh_pages __read_mostly;
+>   EXPORT_SYMBOL(totalhigh_pages);
+>   
+> @@ -161,19 +169,24 @@ static inline unsigned long map_new_virtual(struct page *page)
+>   {
+>   	unsigned long vaddr;
+>   	int count;
+> +	int color __maybe_unused;
+> +
+> +	set_pkmap_color(page, color);
+> +	last_pkmap_nr = get_last_pkmap_nr(last_pkmap_nr, color);
+>   
+>   start:
+>   	count = LAST_PKMAP;
+>   	/* Find an empty entry */
+>   	for (;;) {
+> -		last_pkmap_nr = (last_pkmap_nr + 1) & LAST_PKMAP_MASK;
+> -		if (!last_pkmap_nr) {
+> +		last_pkmap_nr = get_next_pkmap_nr(last_pkmap_nr, color);
+> +		if (no_more_pkmaps(last_pkmap_nr, color)) {
+>   			flush_all_zero_pkmaps();
+>   			count = LAST_PKMAP;
+>   		}
+>   		if (!pkmap_count[last_pkmap_nr])
+>   			break;	/* Found a usable entry */
+> -		if (--count)
+> +		count = get_next_pkmap_counter(count, color);
+> +		if (count)
+>   			continue;
+>   
+>   		/*
+I would like to return back to "if (count >0)".
 
-> On Sat, Jul 12, 2014 at 10:30 PM, abdoulaye berthe <berthe.ab@gmail.com> wrote:
-> 
-> Heads up. Requesting ACKs for this patch or I'm atleast warning that it will be
-> applied. We're getting rid of the return value from gpiochip_remove().
-> 
-> > this remove all reference to gpio_remove retval in all driver
-> > except pinctrl and gpio. the same thing is done for gpio and
-> > pinctrl in two different patches.
-> >
-> > Signed-off-by: abdoulaye berthe <berthe.ab@gmail.com>
-> (...)
-> 
-> I think this patch probably needs to be broken down per-subsystem as it
-> hits all over the map. But let's start requesting ACKs for the
-> individual pieces.
-> Actually I think it will be OK to merge because there is likely not much churn
-> around these code sites.
-> 
-> I'm a bit torn between just wanting a big patch for this hitting drivers/gpio
-> and smaller patches hitting one subsystem at a time. We should be able
-> to hammer this in one switch strike.
-> 
-...
-> >  drivers/media/dvb-frontends/cxd2820r_core.c    | 10 +++-------
-> 
-> Mauro can you ACK this?
+The reason is in easy way to jump through the same coloured pages - next 
+element is calculated via decrementing by non "1" value of colours and 
+it can easy become negative on last page available:
 
-Acked-by: Mauro Carvalho Chehab <m.chehab@samsung.com>
-> 
-> (Hm that looks weird. Mental note to look closer at this.)
+#define     get_next_pkmap_counter(c,cl)    (c - FIX_N_COLOURS)
 
-What's weird there?
+where FIX_N_COLOURS is a max number of page colours.
 
-Regards,
-Mauro
+Besides that it is a good practice in stopping cycle.
+
+- Leonid.

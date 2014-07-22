@@ -1,42 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 19:32:55 +0200 (CEST)
-Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:51934 "EHLO
-        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6862842AbaGVPt0Yg2Cw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 17:49:26 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id AFF234633A2;
-        Tue, 22 Jul 2014 16:49:20 +0100 (BST)
-X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
-Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
-        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7SnpVA22le+k; Tue, 22 Jul 2014 16:49:18 +0100 (BST)
-Received: from humdrum (unknown [10.24.1.221])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 34409464D33;
-        Tue, 22 Jul 2014 16:49:18 +0100 (BST)
-Date:   Tue, 22 Jul 2014 16:49:14 +0100
-From:   Rob Kendrick <rob.kendrick@codethink.co.uk>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: EdgeRouter Pro supported?  Strange FP problems
-Message-ID: <20140722154914.GL30723@humdrum>
-References: <20140722130616.GJ30723@humdrum>
- <53CE736E.1060009@imgtec.com>
- <20140722143311.GK30723@humdrum>
- <53CE8570.8020404@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 19:36:56 +0200 (CEST)
+Received: from mail-ie0-f181.google.com ([209.85.223.181]:37884 "EHLO
+        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6863013AbaGVQCNLG8Ua (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 18:02:13 +0200
+Received: by mail-ie0-f181.google.com with SMTP id rp18so8214118iec.40
+        for <linux-mips@linux-mips.org>; Tue, 22 Jul 2014 09:02:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=tk2ukiMSPG14A93KcdrDbEhowXSLWbFKWQR84Z+Ap0U=;
+        b=gfRER/tEZoGCqlKq6dYVq0U9E9FKPAs4OxnIktLXyZa0dfdFN8l/Ys+TiQvN3SV6fZ
+         yAM7G7Cf7673An7b4Qr7QtgPqzNHui1sg/U0dfbtNNJbwO0CztlFTOWpcRU42cFgAtKR
+         NFTyzfUwUWaZ4W872iQGLo9vGHzl6gF00EEq19TPOSFqt+sipZmG3/OemzkwhEgItf+0
+         k7JL2bJfNDJquh2cDKaIW/s6ha/ymS215pkwdJZLMeuRCFixWuxmye1jgPAofo2XA69H
+         Jg+h3RSLdwRkLGkV6djq8hmvY030d8z4Quq10PneRkX7KAmnbzfuozW7/LlP2WfQnznG
+         babQ==
+X-Gm-Message-State: ALoCoQkyvdGzqTtsHoqbYOkC6kk4f57JQB6DuJ10+RUWiTUhNdyGnLmAAUgi6KCLbGPl69dEPSxm
+X-Received: by 10.50.112.1 with SMTP id im1mr17723651igb.33.1406044927053;
+        Tue, 22 Jul 2014 09:02:07 -0700 (PDT)
+Received: from lee--X1 (host109-148-232-149.range109-148.btcentralplus.com. [109.148.232.149])
+        by mx.google.com with ESMTPSA id y11sm50248856igp.14.2014.07.22.09.02.02
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 22 Jul 2014 09:02:06 -0700 (PDT)
+Date:   Tue, 22 Jul 2014 17:01:58 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     abdoulaye berthe <berthe.ab@gmail.com>,
+        "arm@kernel.org" <arm@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Bryan Wu <cooloney@gmail.com>,
+        Mauro Carvalho Chehab <m.chehab@samsung.com>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Matthew Garrett <matthew.garrett@nebula.com>,
+        Michael Buesch <m@bues.ch>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
+Subject: Re: [PATCH 3/3] driver:gpio remove all usage of gpio_remove retval
+ in driver
+Message-ID: <20140722160158.GE23210@lee--X1>
+References: <CACRpkda6mzVdaN0cvOxpbsxWyCv2nGyDXOjZg_5aT8u7SSQeUw@mail.gmail.com>
+ <1405197014-25225-1-git-send-email-berthe.ab@gmail.com>
+ <1405197014-25225-4-git-send-email-berthe.ab@gmail.com>
+ <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <53CE8570.8020404@imgtec.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <rob.kendrick@codethink.co.uk>
+Return-Path: <lee.jones@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41471
+X-archive-position: 41473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rob.kendrick@codethink.co.uk
+X-original-sender: lee.jones@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,34 +88,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 22, 2014 at 04:38:24PM +0100, Markos Chandras wrote:
-> there have been quite a few FPU changes in 3.16. I am able to reproduce
-> the problem on EdgeRouter (non pro) but the result is not the same as
-> yours. The output using the 'gawk' is:
+On Tue, 22 Jul 2014, Linus Walleij wrote:
+
+> On Sat, Jul 12, 2014 at 10:30 PM, abdoulaye berthe <berthe.ab@gmail.com> wrote:
 > 
-> prefix is ''
-> suffix is 'baz'
-
-This is still, of course, wrong ;)  I'm glad somebody's managed to
-reproduce it and it's not just madness on my part.
-
-> a quick bisect between v3.15 and v3.16-rc1, which is the first tag with
-> all the new FPU changes, leads to the following bad commit:
+> Heads up. Requesting ACKs for this patch or I'm atleast warning that it will be
+> applied. We're getting rid of the return value from gpiochip_remove().
 > 
-> 08a07904e182895e1205f399465a3d622c0115b8
-> MIPS: math-emu: Remove most ifdefery.
+> > this remove all reference to gpio_remove retval in all driver
+> > except pinctrl and gpio. the same thing is done for gpio and
+> > pinctrl in two different patches.
+> >
+> > Signed-off-by: abdoulaye berthe <berthe.ab@gmail.com>
+> (...)
 > 
-> Reverting the commit is not trivial unfortunately. Perhaps you could use
-> a v3.15 kernel for now (assuming it boots on that board) or perhaps use
-> an earlier revision before this bad commit (eg
-> 9e8bad1f9c0370b2635175b34d6151b90a53da5c, which boots and your test
-> works for me)
+> I think this patch probably needs to be broken down per-subsystem as it
+> hits all over the map. But let's start requesting ACKs for the
+> individual pieces.
+> Actually I think it will be OK to merge because there is likely not much churn
+> around these code sites.
+> 
+> I'm a bit torn between just wanting a big patch for this hitting drivers/gpio
+> and smaller patches hitting one subsystem at a time. We should be able
+> to hammer this in one switch strike.
 
-I'll give it a whirl; I don't think 3.15 will boot at all on this
-hardware, though.
+It would be better if you could devise a plan to make the switch a
+subsystem at a time.
 
-Thanks for your help!
+[...]
+
+> >  drivers/mfd/asic3.c                            |  3 ++-
+> >  drivers/mfd/htc-i2cpld.c                       |  8 +-------
+> >  drivers/mfd/sm501.c                            | 17 +++--------------
+> >  drivers/mfd/tc6393xb.c                         | 13 ++++---------
+> >  drivers/mfd/ucb1x00-core.c                     |  8 ++------
+> 
+> Lee/Sam can either of you ACK this?
+
+I don't see any code?
+
 -- 
-Rob Kendrick, Senior Consulting Developer                Codethink Ltd.
-Telephone: +44 7880 657 193              302 Ducie House, Ducie Street,
-http://www.codethink.co.uk/         Manchester, M1 2JW, United Kingdom.
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

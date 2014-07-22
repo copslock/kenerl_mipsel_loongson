@@ -1,41 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 03:14:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8884 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6861457AbaGVBOvpBbRs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 03:14:51 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 7F8B56A97D29D;
-        Tue, 22 Jul 2014 02:14:43 +0100 (IST)
-Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 22 Jul 2014 02:14:44 +0100
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 21 Jul
- 2014 18:14:41 -0700
-Message-ID: <53CDBB01.7040007@imgtec.com>
-Date:   Mon, 21 Jul 2014 18:14:41 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
-MIME-Version: 1.0
-To:     David Rientjes <rientjes@google.com>
-CC:     Max Filippov <jcmvbkbc@gmail.com>, <linux-mm@kvack.org>,
-        <linux-arch@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-xtensa@linux-xtensa.org>, <linux-kernel@vger.kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 03:20:20 +0200 (CEST)
+Received: from mail-ig0-f175.google.com ([209.85.213.175]:57035 "EHLO
+        mail-ig0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6820496AbaGVBUQeRIvC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 03:20:16 +0200
+Received: by mail-ig0-f175.google.com with SMTP id uq10so3478741igb.8
+        for <linux-mips@linux-mips.org>; Mon, 21 Jul 2014 18:20:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=date:from:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version:content-type;
+        bh=fhb0ykA5HEmbpkGikMHZM8/CsGF+HBidCvrG2nzWVws=;
+        b=KNZ7pmnPQzUf68XGGbUaYxZxDyLPn8eimwNP/v9TFc28ha63SlPeL1o7L9Gv+J4N9Z
+         Dp3Wr0tyveAlTC5oqmdMd17mtt8R610QBlaS+HGtRDigsdRKXSUTd2aeSxczHSkAHg0w
+         wb0A4cUU3romLRZYZoldrVWQKTYFLGGwjs5J84mdcP0x2SBrNGL1PZW0ec8H2f9StZqw
+         CdSE99qa3NfUIJK4ub3Mxg9B1Nby3t+eR/IoK0qiqCN3HQ+PuaejAMwLSawYvL8UmauM
+         KLur7sOvaqmNsZtZDJMnXpUjKvOjEQjmRnfQaBDwqICh4cb4ZaDDjCTxbrlXuKMVDdTZ
+         6Lyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type;
+        bh=fhb0ykA5HEmbpkGikMHZM8/CsGF+HBidCvrG2nzWVws=;
+        b=chsBuMGNPR8ur6zUGKt2n+JwD0ml9BexLprHhsZ8GfYiQOXoCZeLCCABV4hoYCDL31
+         dIzcNlnR9vhw6+M4zQRkkcu9E5JsX8VVQdjlS8fTxKzoxlGKRxMzLl7u1KvM1tFmSkqY
+         CcTbvh1Gx5slawnjjjplHycKvX/nkag0Og7gOAvyJBIRXyJpWFWQq4H+Kiks006lbi1l
+         BGLZ3gAk3v3/qlF6n6ff/EGNtXeEleRv3nxIRilsS9v0vRdPC6pCQQ97MNoC4lJzsmP7
+         GqgbRI4RfyUzbrQ5zsEs8yRSJTJbcuEwa/67wdqIm4Ve1TSSRru4RIa+rZq5uGiXTWVz
+         5J2Q==
+X-Gm-Message-State: ALoCoQlTate9lrUoNyv8prbvBH+VRFG/FKQfKhetuZMpt5e/i6r4g2F0cpjOjktCMrVUTHKEYJ3D
+X-Received: by 10.43.6.195 with SMTP id ol3mr17844080icb.86.1405992009551;
+        Mon, 21 Jul 2014 18:20:09 -0700 (PDT)
+Received: from [2620:0:1008:1101:e427:f43b:221b:a15c] ([2620:0:1008:1101:e427:f43b:221b:a15c])
+        by mx.google.com with ESMTPSA id kk10sm43892756igb.19.2014.07.21.18.20.08
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 21 Jul 2014 18:20:09 -0700 (PDT)
+Date:   Mon, 21 Jul 2014 18:20:07 -0700 (PDT)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+cc:     Max Filippov <jcmvbkbc@gmail.com>, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-xtensa@linux-xtensa.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] mm/highmem: make kmap cache coloring aware
-References: <1405616598-14798-1-git-send-email-jcmvbkbc@gmail.com> <alpine.DEB.2.02.1407211754350.7042@chino.kir.corp.google.com>
-In-Reply-To: <alpine.DEB.2.02.1407211754350.7042@chino.kir.corp.google.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+In-Reply-To: <53CDBB01.7040007@imgtec.com>
+Message-ID: <alpine.DEB.2.02.1407211819340.9778@chino.kir.corp.google.com>
+References: <1405616598-14798-1-git-send-email-jcmvbkbc@gmail.com> <alpine.DEB.2.02.1407211754350.7042@chino.kir.corp.google.com> <53CDBB01.7040007@imgtec.com>
+User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <rientjes@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41409
+X-archive-position: 41410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: rientjes@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,102 +70,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/21/2014 05:58 PM, David Rientjes wrote:
-> On Thu, 17 Jul 2014, Max Filippov wrote:
->
->> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->>
->> Provide hooks that allow architectures with aliasing cache to align
->> mapping address of high pages according to their color. Such architectures
->> may enforce similar coloring of low- and high-memory page mappings and
->> reuse existing cache management functions to support highmem.
->>
-> Typically a change like this would be proposed along with a change to an
-> architecture which would define this new ARCH_PKMAP_COLORING and have its
-> own overriding definitions.  Based on who you sent this patch to, it looks
-> like that would be mips and xtensa.  Now the only question is where are
-> those patches to add the alternate definitions for those platforms?
-Yes, there is one, at least for MIPS. This stuff can be a common ground 
-for both platforms (MIPS and XTENSA)
+On Mon, 21 Jul 2014, Leonid Yegoshin wrote:
 
->
->> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->> [ Max: extract architecture-independent part of the original patch, clean
->>    up checkpatch and build warnings. ]
->> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
->> ---
->> Changes v1->v2:
->> - fix description
->>
->>   mm/highmem.c | 19 ++++++++++++++++---
->>   1 file changed, 16 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/highmem.c b/mm/highmem.c
->> index b32b70c..6898a8b 100644
->> --- a/mm/highmem.c
->> +++ b/mm/highmem.c
->> @@ -44,6 +44,14 @@ DEFINE_PER_CPU(int, __kmap_atomic_idx);
->>    */
->>   #ifdef CONFIG_HIGHMEM
->>   
->> +#ifndef ARCH_PKMAP_COLORING
->> +#define set_pkmap_color(pg, cl)		/* */
-> This is typically done with do {} while (0).
->
->> +#define get_last_pkmap_nr(p, cl)	(p)
->> +#define get_next_pkmap_nr(p, cl)	(((p) + 1) & LAST_PKMAP_MASK)
->> +#define is_no_more_pkmaps(p, cl)	(!(p))
-> That's not gramatically proper.
->
->> +#define get_next_pkmap_counter(c, cl)	((c) - 1)
->> +#endif
->> +
->>   unsigned long totalhigh_pages __read_mostly;
->>   EXPORT_SYMBOL(totalhigh_pages);
->>   
->> @@ -161,19 +169,24 @@ static inline unsigned long map_new_virtual(struct page *page)
->>   {
->>   	unsigned long vaddr;
->>   	int count;
->> +	int color __maybe_unused;
->> +
->> +	set_pkmap_color(page, color);
->> +	last_pkmap_nr = get_last_pkmap_nr(last_pkmap_nr, color);
->>   
->>   start:
->>   	count = LAST_PKMAP;
->>   	/* Find an empty entry */
->>   	for (;;) {
->> -		last_pkmap_nr = (last_pkmap_nr + 1) & LAST_PKMAP_MASK;
->> -		if (!last_pkmap_nr) {
->> +		last_pkmap_nr = get_next_pkmap_nr(last_pkmap_nr, color);
->> +		if (is_no_more_pkmaps(last_pkmap_nr, color)) {
->>   			flush_all_zero_pkmaps();
->>   			count = LAST_PKMAP;
->>   		}
->>   		if (!pkmap_count[last_pkmap_nr])
->>   			break;	/* Found a usable entry */
->> -		if (--count)
->> +		count = get_next_pkmap_counter(count, color);
-> And that's not equivalent at all, --count decrements the auto variable and
-> then tests it for being non-zero.  Your get_next_pkmap_counter() never
-> decrements count.
-David, the statements
+> Yes, there is one, at least for MIPS. This stuff can be a common ground for
+> both platforms (MIPS and XTENSA)
+> 
 
-             count = get_next_pkmap_counter(count, color);
-             if (count > 0)
-
-are extended in STANDARD (non colored) case to
-
-             count = (count - 1);
-             if (count > 0)
-
-which are perfect equivalent of
-
-             if (--count)
-
->
->> +		if (count > 0)
->>   			continue;
->>   
->>   		/*
+Needs the mips patch as a followup as justification for the change.

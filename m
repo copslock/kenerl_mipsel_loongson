@@ -1,77 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 20:01:00 +0200 (CEST)
-Received: from mail-pd0-f169.google.com ([209.85.192.169]:50387 "EHLO
-        mail-pd0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6863268AbaGVRvha5N3V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 19:51:37 +0200
-Received: by mail-pd0-f169.google.com with SMTP id y10so997pdj.14
-        for <multiple recipients>; Tue, 22 Jul 2014 10:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=he+7o/W6/LmRR2eKo/moak+bACJUcV2sS2zwwQWexFM=;
-        b=uP1axbuy1atyR0ebDL+qjkFL4MmWNaBkCWdiUXwGmBz4sF9RLv/JdSapJduWTosWND
-         7Z5VluA7qh6t/X5hdP6yekUzQTsQhkt97TjHEo77T1CHQU/UmOE5LiNgvnEG5brkcN1k
-         x83agX38bplgVk2UaordhWHs9Ro6/WZ8bAJF8pL1B5JCqglrGUq2PweQ+Q+xcwoPSEgb
-         fHJ5G0brluUbsDVAJR9NuxeAu2njvMnMFO2nq7XtdLhelZy1nKJWsYufZg6+8uPDSN2c
-         ZkJqX8FjT8a8PMD/p2MeBrWwDjjj2EMeE4s5WBh8AHm2T8QYUIjeewYq/7D89dmd1gaZ
-         UcEA==
-X-Received: by 10.69.2.35 with SMTP id bl3mr24916141pbd.83.1406051487846;
-        Tue, 22 Jul 2014 10:51:27 -0700 (PDT)
-Received: from mailhub.coreip.homeip.net (c-50-136-245-103.hsd1.ca.comcast.net. [50.136.245.103])
-        by mx.google.com with ESMTPSA id q1sm1384529pdd.10.2014.07.22.10.51.25
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 22 Jul 2014 10:51:26 -0700 (PDT)
-Date:   Tue, 22 Jul 2014 10:51:22 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     abdoulaye berthe <berthe.ab@gmail.com>,
-        "arm@kernel.org" <arm@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Jiri Kosina <jkosina@suse.cz>, Bryan Wu <cooloney@gmail.com>,
-        Mauro Carvalho Chehab <m.chehab@samsung.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Matthew Garrett <matthew.garrett@nebula.com>,
-        Michael Buesch <m@bues.ch>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
-Subject: Re: [PATCH 3/3] driver:gpio remove all usage of gpio_remove retval
- in driver
-Message-ID: <20140722175121.GA5489@core.coreip.homeip.net>
-References: <CACRpkda6mzVdaN0cvOxpbsxWyCv2nGyDXOjZg_5aT8u7SSQeUw@mail.gmail.com>
- <1405197014-25225-1-git-send-email-berthe.ab@gmail.com>
- <1405197014-25225-4-git-send-email-berthe.ab@gmail.com>
- <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 20:42:57 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:60615 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6860188AbaGVSlNkOedq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 20:41:13 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 8505321B950;
+        Tue, 22 Jul 2014 21:41:10 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id Oc4PLP1sf2DZ; Tue, 22 Jul 2014 21:41:04 +0300 (EEST)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id EA72E5BC011;
+        Tue, 22 Jul 2014 21:41:03 +0300 (EEST)
+Date:   Tue, 22 Jul 2014 21:41:03 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Rob Kendrick <rob.kendrick@codethink.co.uk>
+Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: Re: EdgeRouter Pro supported?  Strange FP problems
+Message-ID: <20140722184103.GA1197@drone.musicnaut.iki.fi>
+References: <20140722130616.GJ30723@humdrum>
+ <53CE736E.1060009@imgtec.com>
+ <20140722143311.GK30723@humdrum>
+ <53CE8570.8020404@imgtec.com>
+ <20140722154914.GL30723@humdrum>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dmitry.torokhov@gmail.com>
+In-Reply-To: <20140722154914.GL30723@humdrum>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41485
+X-archive-position: 41488
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitry.torokhov@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,39 +51,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 22, 2014 at 05:08:13PM +0200, Linus Walleij wrote:
-> On Sat, Jul 12, 2014 at 10:30 PM, abdoulaye berthe <berthe.ab@gmail.com> wrote:
-> 
-> Heads up. Requesting ACKs for this patch or I'm atleast warning that it will be
-> applied. We're getting rid of the return value from gpiochip_remove().
-> 
-> > this remove all reference to gpio_remove retval in all driver
-> > except pinctrl and gpio. the same thing is done for gpio and
-> > pinctrl in two different patches.
-> >
-> > Signed-off-by: abdoulaye berthe <berthe.ab@gmail.com>
-> (...)
-> 
-> I think this patch probably needs to be broken down per-subsystem as it
-> hits all over the map. But let's start requesting ACKs for the
-> individual pieces.
-> Actually I think it will be OK to merge because there is likely not much churn
-> around these code sites.
-> 
-> I'm a bit torn between just wanting a big patch for this hitting drivers/gpio
-> and smaller patches hitting one subsystem at a time. We should be able
-> to hammer this in one switch strike.
+Hi,
 
-...
-
+On Tue, Jul 22, 2014 at 04:49:14PM +0100, Rob Kendrick wrote:
+> On Tue, Jul 22, 2014 at 04:38:24PM +0100, Markos Chandras wrote:
+> > there have been quite a few FPU changes in 3.16. I am able to reproduce
+> > the problem on EdgeRouter (non pro) but the result is not the same as
+> > yours. The output using the 'gawk' is:
+> > 
+> > prefix is ''
+> > suffix is 'baz'
 > 
-> >  drivers/input/keyboard/adp5588-keys.c          |  4 +---
-> >  drivers/input/keyboard/adp5589-keys.c          |  4 +---
-> >  drivers/input/touchscreen/ad7879.c             | 10 +++-------
-> 
-> Dmitry can you ACK this?
+> This is still, of course, wrong ;)  I'm glad somebody's managed to
+> reproduce it and it's not just madness on my part.
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+If your userspace is small, maybe you could try rebuilding it
+with softfloat. Your script works on octeon with 3.16-rc6 + gcc 4.9 +
+glibc 2.19 + gawk 4.0.3 when compiled with softfloat.
 
--- 
-Dmitry
+A.

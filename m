@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 03:50:42 +0200 (CEST)
-Received: from mail-pa0-f43.google.com ([209.85.220.43]:50616 "EHLO
-        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6842316AbaGVBtt4lEJw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 03:49:49 +0200
-Received: by mail-pa0-f43.google.com with SMTP id lf10so10923859pab.16
-        for <linux-mips@linux-mips.org>; Mon, 21 Jul 2014 18:49:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2014 03:51:00 +0200 (CEST)
+Received: from mail-pd0-f179.google.com ([209.85.192.179]:60163 "EHLO
+        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821198AbaGVBtyU3q1r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2014 03:49:54 +0200
+Received: by mail-pd0-f179.google.com with SMTP id ft15so10125157pdb.24
+        for <linux-mips@linux-mips.org>; Mon, 21 Jul 2014 18:49:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=EJJLfS8opdD37HkB9j+MtWi+63KwbM1xtGRDDzLjWn4=;
-        b=GNHmYcIbcaniqwhUVa0qQ83MBTuhbQ9DTf8vFaxV74o1D5jC6wEuA+gjDQQpIDZ+cy
-         1vFKiJanT5QTPqsanwjUcs2W0qHl46Q4DGLVzks5ot6PPVxAVcZYFT2lzGzbSJXjENu5
-         skaUqRZMBF8qbiQIE8GqWjhwbri5YUKJs062X5UIXa7QMtj0jvoaLKbO48umVyhFhhpg
-         wOvGNnUUEmB2GBT2sTjTJAx1dHv/OToBKbuoNOjiIeFbZGwcScANJYHNh1ddT8DlvOkv
-         lbodGBI6UJNRwiP9M296ESYl3H4YRSVH4TmZTfjdA78UVTaJn3FmHIvfcvfvwhEQATsp
-         iZ5A==
-X-Gm-Message-State: ALoCoQmZnJics5GtQK3GsKpTe11lNEy+oWX3ODCFrPZGnmnebdOZ83PtJXPzqsPdoI49LhC06GN9
-X-Received: by 10.68.194.202 with SMTP id hy10mr18722682pbc.94.1405993783910;
-        Mon, 21 Jul 2014 18:49:43 -0700 (PDT)
+        bh=sqawMfiK1To/ZSD72ook3pV9OW9w8NdRhlta7YjsL1I=;
+        b=GDiCNrSOldoky3IkSRg9USRzSRkaYtU6CEm2bTO4aUbMd2he/6REmj+7Axl/FcGm+X
+         KbEzehcVNTEVC3mT+fGZbQXSN/EP4nJUH9Mv8cEncIS8A7YAbOTCaM1yrx9JFTknMr1G
+         +Kxc2NYqN4Ni78fn6DzjKuAVhD10MP/PQC2i2Z7AzBE835T+aQqvm62l5093i/Q/ETXK
+         2iN2DbH0oO/E59Mjg3ivdv35cQzUbCOoBOBBoMUG/ROlOtAyPIiPosW7MQmznC/DgqzJ
+         TFpjr4n/pzaXlMvwdNlw6lv/gdqXCxbSxStTugRAhRLOzdOXpuMwjvck/QhszUIAKWiQ
+         qAYg==
+X-Gm-Message-State: ALoCoQlJ3xPXrCQoGIyGtihmSsS9ZUmGUR6M01ITaMVahyVfg2p/yg1KaupLu9AWuj1B6oo5r9PH
+X-Received: by 10.68.114.65 with SMTP id je1mr12554620pbb.124.1405993788116;
+        Mon, 21 Jul 2014 18:49:48 -0700 (PDT)
 Received: from localhost ([2600:1010:b01b:59a8:9138:8dc8:286b:79c0])
-        by mx.google.com with ESMTPSA id tu10sm15511293pbc.43.2014.07.21.18.49.41
+        by mx.google.com with ESMTPSA id p5sm2853612pdg.35.2014.07.21.18.49.45
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 21 Jul 2014 18:49:42 -0700 (PDT)
+        Mon, 21 Jul 2014 18:49:47 -0700 (PDT)
 From:   Andy Lutomirski <luto@amacapital.net>
 To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
         Will Drewry <wad@chromium.org>
@@ -32,9 +32,9 @@ Cc:     Oleg Nesterov <oleg@redhat.com>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
         Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com,
         Andy Lutomirski <luto@amacapital.net>
-Subject: [PATCH v3 3/8] seccomp: Allow arch code to provide seccomp_data
-Date:   Mon, 21 Jul 2014 18:49:16 -0700
-Message-Id: <ce65e0e8be18ae8fab437899db44ca41c912b506.1405992946.git.luto@amacapital.net>
+Subject: [PATCH v3 4/8] seccomp: Document two-phase seccomp and arch-provided seccomp_data
+Date:   Mon, 21 Jul 2014 18:49:17 -0700
+Message-Id: <7dc27063cc38b4b5a0d800ee16c1aa2a89953533.1405992946.git.luto@amacapital.net>
 X-Mailer: git-send-email 1.9.3
 In-Reply-To: <cover.1405992946.git.luto@amacapital.net>
 References: <cover.1405992946.git.luto@amacapital.net>
@@ -44,7 +44,7 @@ Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41414
+X-archive-position: 41415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,151 +61,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-populate_seccomp_data is expensive: it works by inspecting
-task_pt_regs and various other bits to piece together all the
-information, and it's does so in multiple partially redundant steps.
-
-Arch-specific code in the syscall entry path can do much better.
-
-Admittedly this adds a bit of additional room for error, but the
-speedup should be worth it.
+The description of how archs should implement seccomp filters was
+still strictly correct, but it failed to describe the newly
+available optimizations.
 
 Signed-off-by: Andy Lutomirski <luto@amacapital.net>
 ---
- include/linux/seccomp.h |  2 +-
- kernel/seccomp.c        | 32 +++++++++++++++++++-------------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ arch/Kconfig | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 3885108..a19ddac 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -39,7 +39,7 @@ static inline int secure_computing(void)
- #define SECCOMP_PHASE1_OK	0
- #define SECCOMP_PHASE1_SKIP	1
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 0eae9df..05d7a8a 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -323,6 +323,17 @@ config HAVE_ARCH_SECCOMP_FILTER
+ 	    results in the system call being skipped immediately.
+ 	  - seccomp syscall wired up
  
--extern u32 seccomp_phase1(void);
-+extern u32 seccomp_phase1(struct seccomp_data *sd);
- int seccomp_phase2(u32 phase1_result);
- #else
- extern void secure_computing_strict(int this_syscall);
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 0088d29..80115b0 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -173,10 +173,10 @@ static int seccomp_check_filter(struct sock_filter *filter, unsigned int flen)
-  *
-  * Returns valid seccomp BPF response codes.
-  */
--static u32 seccomp_run_filters(void)
-+static u32 seccomp_run_filters(struct seccomp_data *sd)
- {
- 	struct seccomp_filter *f = ACCESS_ONCE(current->seccomp.filter);
--	struct seccomp_data sd;
-+	struct seccomp_data sd_local;
- 	u32 ret = SECCOMP_RET_ALLOW;
- 
- 	/* Ensure unexpected behavior doesn't result in failing open. */
-@@ -186,14 +186,17 @@ static u32 seccomp_run_filters(void)
- 	/* Make sure cross-thread synced filter points somewhere sane. */
- 	smp_read_barrier_depends();
- 
--	populate_seccomp_data(&sd);
-+	if (!sd) {
-+		populate_seccomp_data(&sd_local);
-+		sd = &sd_local;
-+	}
- 
- 	/*
- 	 * All filters in the list are evaluated and the lowest BPF return
- 	 * value always takes priority (ignoring the DATA).
- 	 */
- 	for (; f; f = f->prev) {
--		u32 cur_ret = SK_RUN_FILTER(f->prog, (void *)&sd);
-+		u32 cur_ret = SK_RUN_FILTER(f->prog, (void *)sd);
- 
- 		if ((cur_ret & SECCOMP_RET_ACTION) < (ret & SECCOMP_RET_ACTION))
- 			ret = cur_ret;
-@@ -599,7 +602,7 @@ void secure_computing_strict(int this_syscall)
- #else
- int __secure_computing(void)
- {
--	u32 phase1_result = seccomp_phase1();
-+	u32 phase1_result = seccomp_phase1(NULL);
- 
- 	if (likely(phase1_result == SECCOMP_PHASE1_OK))
- 		return 0;
-@@ -610,7 +613,7 @@ int __secure_computing(void)
- }
- 
- #ifdef CONFIG_SECCOMP_FILTER
--static u32 __seccomp_phase1_filter(int this_syscall, struct pt_regs *regs)
-+static u32 __seccomp_phase1_filter(int this_syscall, struct seccomp_data *sd)
- {
- 	u32 filter_ret, action;
- 	int data;
-@@ -621,20 +624,20 @@ static u32 __seccomp_phase1_filter(int this_syscall, struct pt_regs *regs)
- 	 */
- 	rmb();
- 
--	filter_ret = seccomp_run_filters();
-+	filter_ret = seccomp_run_filters(sd);
- 	data = filter_ret & SECCOMP_RET_DATA;
- 	action = filter_ret & SECCOMP_RET_ACTION;
- 
- 	switch (action) {
- 	case SECCOMP_RET_ERRNO:
- 		/* Set the low-order 16-bits as a errno. */
--		syscall_set_return_value(current, regs,
-+		syscall_set_return_value(current, task_pt_regs(current),
- 					 -data, 0);
- 		goto skip;
- 
- 	case SECCOMP_RET_TRAP:
- 		/* Show the handler the original registers. */
--		syscall_rollback(current, regs);
-+		syscall_rollback(current, task_pt_regs(current));
- 		/* Let the filter pass back 16 bits of data. */
- 		seccomp_send_sigsys(this_syscall, data);
- 		goto skip;
-@@ -661,11 +664,14 @@ skip:
- 
- /**
-  * seccomp_phase1() - run fast path seccomp checks on the current syscall
-+ * @arg sd: The seccomp_data or NULL
-  *
-  * This only reads pt_regs via the syscall_xyz helpers.  The only change
-  * it will make to pt_regs is via syscall_set_return_value, and it will
-  * only do that if it returns SECCOMP_PHASE1_SKIP.
-  *
-+ * If sd is provided, it will not read pt_regs at all.
-+ *
-  * It may also call do_exit or force a signal; these actions must be
-  * safe.
-  *
-@@ -679,11 +685,11 @@ skip:
-  * If it returns anything else, then the return value should be passed
-  * to seccomp_phase2 from a context in which ptrace hooks are safe.
-  */
--u32 seccomp_phase1(void)
-+u32 seccomp_phase1(struct seccomp_data *sd)
- {
- 	int mode = current->seccomp.mode;
--	struct pt_regs *regs = task_pt_regs(current);
--	int this_syscall = syscall_get_nr(current, regs);
-+	int this_syscall = sd ? sd->nr :
-+		syscall_get_nr(current, task_pt_regs(current));
- 
- 	switch (mode) {
- 	case SECCOMP_MODE_STRICT:
-@@ -691,7 +697,7 @@ u32 seccomp_phase1(void)
- 		return SECCOMP_PHASE1_OK;
- #ifdef CONFIG_SECCOMP_FILTER
- 	case SECCOMP_MODE_FILTER:
--		return __seccomp_phase1_filter(this_syscall, regs);
-+		return __seccomp_phase1_filter(this_syscall, sd);
- #endif
- 	default:
- 		BUG();
++	  For best performance, an arch should use seccomp_phase1 and
++	  seccomp_phase2 directly.  It should call seccomp_phase1 for all
++	  syscalls if TIF_SECCOMP is set, but seccomp_phase1 does not
++	  need to be called from a ptrace-safe context.  It must then
++	  call seccomp_phase2 if seccomp_phase1 returns anything other
++	  than SECCOMP_PHASE1_OK or SECCOMP_PHASE1_SKIP.
++
++	  As an additional optimization, an arch may provide seccomp_data
++	  directly to seccomp_phase1; this avoids multiple calls
++	  to the syscall_xyz helpers for every syscall.
++
+ config SECCOMP_FILTER
+ 	def_bool y
+ 	depends on HAVE_ARCH_SECCOMP_FILTER && SECCOMP && NET
 -- 
 1.9.3

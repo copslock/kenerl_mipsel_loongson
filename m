@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 16:43:01 +0200 (CEST)
-Received: from mail-we0-f177.google.com ([74.125.82.177]:51919 "EHLO
-        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6842536AbaGWOhazQItI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 16:37:30 +0200
-Received: by mail-we0-f177.google.com with SMTP id w62so1266233wes.22
-        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 07:37:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 16:43:59 +0200 (CEST)
+Received: from mail-wg0-f44.google.com ([74.125.82.44]:53339 "EHLO
+        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6842557AbaGWOhder-Ra (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 16:37:33 +0200
+Received: by mail-wg0-f44.google.com with SMTP id m15so1272700wgh.3
+        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 07:37:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=y3zNH0c92ObXbampkDxyjOREqMJjx+Lkwq+iGsrGCd0=;
-        b=DiTq1nWmLnL8BZsTOGqdp7sGe6srSnZxduUXgzy5QA6nKt+vsp/HpWvbT9E0I4AtPJ
-         wyL0NlA5zCcr9nS8Ep2PNTiSpDovpTSQZa5ShLAJ1pGY+Q/zi02dGqjoUex0bZiF4LWs
-         mlAwQTUJJZ34KTNhn+Euk4scJzPh2GhPwy2CW+pRuRcLoigwE/N6/xW/Cy/Kv5TTjYBM
-         jTF5y/t4naYm1bIs8A3tsYYU27wsV4c9cjuDpBmN0nH31N+IF5u5kys3zQv/ubwgY+Y4
-         mJqh9ysOP4Gcqjud2RmVR5kZODsqLGC3m5h6v5SP0ZBVwlQDx81L51BZX++VDL6lVHxy
-         350w==
-X-Received: by 10.194.123.105 with SMTP id lz9mr2531632wjb.122.1406126238017;
-        Wed, 23 Jul 2014 07:37:18 -0700 (PDT)
+        bh=Al6g1/jryciOqWGSFkvh7NtkVRV5f3IUyaBz+65X8es=;
+        b=wRAvHTIWGmevWqM/BDTwbSREnVISWwdhrFRQP4fxwY2LpbeT3JYMwfmbtmjsXWOuDi
+         U5dujNczExGxQMaTZnOYC/amxSt7oEKEStSZpXewiSmjqTE6QVSMcQ/iVrW87FxG6skC
+         di/sinzDwqL8rcJ+D4wqD//nH8c61CMuF5wKh+Ul60zbff3111NhjZmUHAugqhyTVpxE
+         n/gGakJBfidH6JXbTfUmZMM7Xa9XP4nn2wC3k9pbB+dbXVKdVLszA0qK5ZWHKmyjHE3D
+         0vlNH1WmKDg5qGaQUrM0OGd2lX2CtWEcRPqtDWY8ZvESbK8ODEs8Po6sdwCSX0WltEUj
+         ZElQ==
+X-Received: by 10.194.92.148 with SMTP id cm20mr2397711wjb.57.1406126242774;
+        Wed, 23 Jul 2014 07:37:22 -0700 (PDT)
 Received: from localhost.localdomain (p57A349C7.dip0.t-ipconnect.de. [87.163.73.199])
-        by mx.google.com with ESMTPSA id ex4sm10196560wic.2.2014.07.23.07.37.17
+        by mx.google.com with ESMTPSA id ex4sm10196560wic.2.2014.07.23.07.37.21
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 23 Jul 2014 07:37:17 -0700 (PDT)
+        Wed, 23 Jul 2014 07:37:22 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@gmail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH 04/10] MIPS: Alchemy: pci: use clk framework to enable PCI clock
-Date:   Wed, 23 Jul 2014 16:36:51 +0200
-Message-Id: <1406126217-471265-5-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH 08/10] MIPS: Alchemy: au1200fb: use clk framework
+Date:   Wed, 23 Jul 2014 16:36:55 +0200
+Message-Id: <1406126217-471265-9-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 2.0.1
 In-Reply-To: <1406126217-471265-1-git-send-email-manuel.lauss@gmail.com>
 References: <1406126217-471265-1-git-send-email-manuel.lauss@gmail.com>
@@ -35,7 +35,7 @@ Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41542
+X-archive-position: 41543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,79 +52,169 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the clock framework to get at the PCI clock source and enable
-it on driver initialization.
+minimal patch to replace direct clock register hackery with clock
+framework calls.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/mips/pci/pci-alchemy.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/au1200fb.c | 50 +++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
 
-diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
-index 563d1f6..c19600a 100644
---- a/arch/mips/pci/pci-alchemy.c
-+++ b/arch/mips/pci/pci-alchemy.c
-@@ -7,6 +7,7 @@
-  * Support for all devices (greater than 16) added by David Gathright.
+diff --git a/drivers/video/fbdev/au1200fb.c b/drivers/video/fbdev/au1200fb.c
+index 1c8e106..40494db 100644
+--- a/drivers/video/fbdev/au1200fb.c
++++ b/drivers/video/fbdev/au1200fb.c
+@@ -30,6 +30,7 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
   */
  
 +#include <linux/clk.h>
- #include <linux/export.h>
- #include <linux/types.h>
- #include <linux/pci.h>
-@@ -364,6 +365,7 @@ static int alchemy_pci_probe(struct platform_device *pdev)
- 	void __iomem *virt_io;
- 	unsigned long val;
- 	struct resource *r;
-+	struct clk *c;
- 	int ret;
- 
- 	/* need at least PCI IRQ mapping table */
-@@ -393,11 +395,24 @@ static int alchemy_pci_probe(struct platform_device *pdev)
- 		goto out1;
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/kernel.h>
+@@ -330,9 +331,8 @@ struct panel_settings
+ 	uint32 mode_pwmhi;
+ 	uint32 mode_outmask;
+ 	uint32 mode_fifoctrl;
+-	uint32 mode_toyclksrc;
+ 	uint32 mode_backlight;
+-	uint32 mode_auxpll;
++	uint32 lcdclk;
+ #define Xres min_xres
+ #define Yres min_yres
+ 	u32	min_xres;		/* Minimum horizontal resolution */
+@@ -379,9 +379,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x00000000,
+ 		.mode_outmask	= 0x00FFFFFF,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.lcdclk		= 96,
+ 		320, 320,
+ 		240, 240,
+ 	},
+@@ -407,9 +406,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x00000000,
+ 		.mode_outmask	= 0x00FFFFFF,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.lcdclk		= 96,
+ 		640, 480,
+ 		640, 480,
+ 	},
+@@ -435,9 +433,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x00000000,
+ 		.mode_outmask	= 0x00FFFFFF,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.lcdclk		= 96,
+ 		800, 800,
+ 		600, 600,
+ 	},
+@@ -463,9 +460,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x00000000,
+ 		.mode_outmask	= 0x00FFFFFF,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 6, /* 72MHz AUXPLL */
++		.lcdclk		= 72,
+ 		1024, 1024,
+ 		768, 768,
+ 	},
+@@ -491,9 +487,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x00000000,
+ 		.mode_outmask	= 0x00FFFFFF,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 10, /* 120MHz AUXPLL */
++		.lcdclk		= 120,
+ 		1280, 1280,
+ 		1024, 1024,
+ 	},
+@@ -519,9 +514,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x03400000, /* SCB 0x0 */
+ 		.mode_outmask	= 0x00FFFFFF,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.lcdclk		= 96,
+ 		1024, 1024,
+ 		768, 768,
+ 	},
+@@ -550,9 +544,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x03400000,
+ 		.mode_outmask	= 0x00fcfcfc,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.lcdclk		= 96,
+ 		640, 480,
+ 		640, 480,
+ 	},
+@@ -581,9 +574,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x03400000,
+ 		.mode_outmask	= 0x00fcfcfc,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.lcdclk		= 96, /* 96MHz AUXPLL */
+ 		320, 320,
+ 		240, 240,
+ 	},
+@@ -612,9 +604,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x03400000,
+ 		.mode_outmask	= 0x00fcfcfc,
+ 		.mode_fifoctrl	= 0x2f2f2f2f,
+-		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight	= 0x00000000,
+-		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.lcdclk		= 96,
+ 		856, 856,
+ 		480, 480,
+ 	},
+@@ -646,9 +637,8 @@ static struct panel_settings known_lcd_panels[] =
+ 		.mode_pwmhi		= 0x00000000,
+ 		.mode_outmask		= 0x00FFFFFF,
+ 		.mode_fifoctrl		= 0x2f2f2f2f,
+-		.mode_toyclksrc		= 0x00000004, /* AUXPLL directly */
+ 		.mode_backlight		= 0x00000000,
+-		.mode_auxpll		= (48/12) * 2,
++		.lcdclk			= 96,
+ 		800, 800,
+ 		480, 480,
+ 	},
+@@ -828,11 +818,17 @@ static void au1200_setpanel(struct panel_settings *newpanel,
+ 	 */
+ 	if (!(panel->mode_clkcontrol & LCD_CLKCONTROL_EXT))
+ 	{
+-		uint32 sys_clksrc;
+-		alchemy_wrsys(panel->mode_auxpll, AU1000_SYS_AUXPLL);
+-		sys_clksrc = alchemy_rdsys(AU1000_SYS_CLKSRC) & ~0x0000001f;
+-		sys_clksrc |= panel->mode_toyclksrc;
+-		alchemy_wrsys(sys_clksrc, AU1000_SYS_CLKSRC);
++		struct clk *c = clk_get(NULL, "lcd_intclk");
++		long r, pc = panel->lcdclk * 1000000;
++
++		if (!IS_ERR(c)) {
++			r = clk_round_rate(c, pc);
++			if ((pc - r) < (pc / 10)) {	/* 10% slack */
++				clk_set_rate(c, r);
++				clk_prepare_enable(c);
++			}
++			clk_put(c);
++		}
  	}
  
-+	c = clk_get(&pdev->dev, "pci_clko");
-+	if (IS_ERR(c)) {
-+		dev_err(&pdev->dev, "unable to find PCI clock\n");
-+		ret = PTR_ERR(c);
-+		goto out2;
-+	}
-+
-+	ret = clk_prepare_enable(c);
-+	if (ret) {
-+		dev_err(&pdev->dev, "cannot enable PCI clock\n");
-+		goto out6;
-+	}
-+
- 	ctx->regs = ioremap_nocache(r->start, resource_size(r));
- 	if (!ctx->regs) {
- 		dev_err(&pdev->dev, "cannot map pci regs\n");
- 		ret = -ENODEV;
--		goto out2;
-+		goto out5;
- 	}
- 
- 	/* map parts of the PCI IO area */
-@@ -465,12 +480,19 @@ static int alchemy_pci_probe(struct platform_device *pdev)
- 	register_syscore_ops(&alchemy_pci_pmops);
- 	register_pci_controller(&ctx->alchemy_pci_ctrl);
- 
-+	dev_info(&pdev->dev, "PCI controller at %ld MHz\n",
-+		 clk_get_rate(c) / 1000000);
-+
- 	return 0;
- 
- out4:
- 	iounmap(virt_io);
- out3:
- 	iounmap(ctx->regs);
-+out5:
-+	clk_disable_unprepare(c);
-+out6:
-+	clk_put(c);
- out2:
- 	release_mem_region(r->start, resource_size(r));
- out1:
+ 	/*
 -- 
 2.0.1

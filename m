@@ -1,35 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 23:17:33 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36833 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6842513AbaGWVRapp-Ny (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 23:17:30 +0200
-Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.95])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C1A5BA5C;
-        Wed, 23 Jul 2014 21:17:22 +0000 (UTC)
-Date:   Wed, 23 Jul 2014 14:17:21 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Max Filippov <jcmvbkbc@gmail.com>
-Cc:     linux-mm@kvack.org, linux-arch@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-xtensa@linux-xtensa.org,
-        linux-kernel@vger.kernel.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH v2] mm/highmem: make kmap cache coloring aware
-Message-Id: <20140723141721.d6a58555f124a7024d010067@linux-foundation.org>
-In-Reply-To: <1405616598-14798-1-git-send-email-jcmvbkbc@gmail.com>
-References: <1405616598-14798-1-git-send-email-jcmvbkbc@gmail.com>
-X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2014 00:03:47 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:60420 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6818465AbaGWWDj4--ru (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Jul 2014 00:03:39 +0200
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1XA4dK-0004fB-Fy; Thu, 24 Jul 2014 00:03:34 +0200
+Date:   Thu, 24 Jul 2014 00:03:34 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     linux-mips@linux-mips.org
+Cc:     Huacai Chen <chenhc@lemote.com>, Andreas Barth <aba@ayous.org>
+Subject: SMP IPI issues on Loongson 3A based machines
+Message-ID: <20140723220334.GA26280@hall.aurel32.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41552
+X-archive-position: 41553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,62 +38,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 17 Jul 2014 21:03:18 +0400 Max Filippov <jcmvbkbc@gmail.com> wrote:
+Hi all,
 
-> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> 
-> Provide hooks that allow architectures with aliasing cache to align
-> mapping address of high pages according to their color. Such architectures
-> may enforce similar coloring of low- and high-memory page mappings and
-> reuse existing cache management functions to support highmem.
-> 
-> ...
->
-> --- a/mm/highmem.c
-> +++ b/mm/highmem.c
-> @@ -44,6 +44,14 @@ DEFINE_PER_CPU(int, __kmap_atomic_idx);
->   */
->  #ifdef CONFIG_HIGHMEM
->  
-> +#ifndef ARCH_PKMAP_COLORING
-> +#define set_pkmap_color(pg, cl)		/* */
-> +#define get_last_pkmap_nr(p, cl)	(p)
-> +#define get_next_pkmap_nr(p, cl)	(((p) + 1) & LAST_PKMAP_MASK)
-> +#define is_no_more_pkmaps(p, cl)	(!(p))
-> +#define get_next_pkmap_counter(c, cl)	((c) - 1)
-> +#endif
+Debian is using Loongson 3A based machines as build daemons. We
+experience a few stability issues from time to time, with the machine
+freezing completely, sometimes outputing a backtrace on the serial
+console:
 
-This is the old-school way of doing things.  The new Linus-approved way is
+| ------------[ cut here ]------------
+| [158285.176000] WARNING: CPU: 3 PID: 4162 at /build/kernel/linux-3.15.5/kernel/smp.c:338 smp_call_function_many+0x120/0x388()
+| [158285.176000] Modules linked in: radeon drm_kms_helper ttm drm dm_mod ehci_pci ata_generic ohci_pci ohci_hcd ehci_hcd usbcore usb_common
+| [158285.176000] CPU: 3 PID: 4162 Comm: mysqld Not tainted 3.15-trunk-loongson-3 #1 Debian 3.15.5-1~exp1+rs780e
+| [158285.176000] Stack : ffffffff80920000 ffffffff80290fec ffffffff80a00000 ffffffff80291808
+|           0000000000000000 0000000000000000 ffffffff809e0000 ffffffff809e0000
+|           ffffffff8085f188 ffffffff80914ff7 ffffffff809de068 98000000fab16e58
+|           0000000000001042 0000000000000003 0000000000000003 0000000000000001
+|           ffffffff8090e688 ffffffff80768cfc 980000014c323c08 ffffffff80234f2c
+|           ffffffff8090e688 ffffffff80293180 98000000fab169b0 ffffffff8085f188
+|           0000000000000003 0000000000001042 0000000000000000 0000000000000000
+|           0000000000000000 980000014c323b50 0000000000000000 ffffffff8076bdb0
+|           0000000000000000 0000000000000000 0000000000000000 ffffffff802b2300
+|           0000000000000152 ffffffff8020acd0 0000000000000009 ffffffff8076bdb0
+|           ...
+| [158285.280000] Call Trace:
+| [158285.280000] [<ffffffff8020acd0>] show_stack+0x68/0x80
+| [158285.280000] [<ffffffff8076bdb0>] dump_stack+0x6c/0x8c
+| [158285.280000] [<ffffffff80235088>] warn_slowpath_common+0x88/0xb8
+| [158285.280000] [<ffffffff802b2328>] smp_call_function_many+0x120/0x388
+| [158285.280000] [<ffffffff802b25bc>] smp_call_function+0x2c/0x40
+| [158285.280000] [<ffffffff80223b18>] r4k_flush_data_cache_page+0x38/0x70
+| [158285.280000] [<ffffffff803c89b0>] aio_complete+0x170/0x338
+| [158285.280000] [<ffffffff803c9bb0>] do_io_submit+0x378/0x768
+| [158285.280000] [<ffffffff80218fe8>] handle_sys+0x128/0x14c
+| [158285.280000]
+| [158285.280000] ---[ end trace 97d7fd09bd30b5b9 ]---
 
-#ifndef set_pkmap_color
-#define set_pkmap_color ...
-#define get_last_pkmap_nr ...
-#endif
+We noticed this happens on various CPU. The CPU is stuck in this part of
+the smp_call_function_many function:
 
-so we don't need to add yet another symbol and to avoid typos, etc.
+|         if (wait) {
+|                 for_each_cpu(cpu, cfd->cpumask) {
+|                         struct call_single_data *csd;
+| 
+|                         csd = per_cpu_ptr(cfd->csd, cpu);
+|                         csd_lock_wait(csd);
+|                 }
+|         }
 
-Secondly, please identify which per-arch header file is responsible for
-defining these symbols.  Document that here and make sure that
-mm/highmem.c is directly including that file.  Otherwise we end up with
-different architectures using different header files and it's all a big
-mess.
+and more precisely in the csd_lock_wait() part. From time to time (it
+*seems* when the initial issue happens on a different CPU than #0), we
+get this kind of additional backtrace a few seconds after, sometimes
+repeating regularly on the other CPUs:
 
-Thirdly, macros are nasty things.  It would be nicer to do
+| [158313.196000] INFO: rcu_sched self-detected stall on CPU { 2}  (t=5250 jiffies g=661863 c=661862 q=4)
+| [158313.196000] CPU: 2 PID: 4217 Comm: mysqld Tainted: G        W     3.15-trunk-loongson-3 #1 Debian 3.15.5-1~exp1+rs780e
+| [158313.196000] Stack : ffffffff80920000 ffffffff80290fec ffffffff80a00000 ffffffff80291808
+|           0000000000000000 0000000000000000 ffffffff809e0000 ffffffff809e0000
+|           ffffffff8085f188 ffffffff80914ff7 ffffffff809de068 98000000029b73e0
+|           0000000000001079 0000000000000002 ffffffff80910000 0000000000000010
+|           9800000008d4cbe0 ffffffff80768cfc 98000001305d3858 ffffffff80234e94
+|           9800000008d51230 ffffffff80293180 98000000029b6f38 ffffffff8085f188
+|           0000000000000002 0000000000001079 0000000000000000 0000000000000000
+|           0000000000000000 98000001305d37a0 0000000000000000 ffffffff8076bdb0
+|           0000000000000000 0000000000000000 0000000000000000 ffffffff80790000
+|           ffffffff80920c40 ffffffff8020acd0 ffffffff80920c40 ffffffff8076bdb0
+|           ...
+| [158313.196000] Call Trace:
+| [158313.196000] [<ffffffff8020acd0>] show_stack+0x68/0x80
+| [158313.196000] [<ffffffff8076bdb0>] dump_stack+0x6c/0x8c
+| [158313.196000] [<ffffffff8029ff60>] rcu_check_callbacks+0x4d8/0x878
+| [158313.196000] [<ffffffff80245418>] update_process_times+0x48/0x88
+| [158313.196000] [<ffffffff802ac178>] tick_sched_handle.isra.15+0x20/0x80
+| [158313.196000] [<ffffffff802ac218>] tick_sched_timer+0x40/0x70
+| [158313.196000] [<ffffffff8025f050>] __run_hrtimer+0xa8/0x240
+| [158313.196000] [<ffffffff8025fc08>] hrtimer_interrupt+0x130/0x2f8
+| [158313.196000] [<ffffffff8020d754>] c0_compare_interrupt+0x54/0x90
+| [158313.196000] [<ffffffff80293eb8>] handle_irq_event_percpu+0x68/0x248
+| [158313.196000] [<ffffffff802984fc>] handle_percpu_irq+0x8c/0xc0
+| [158313.196000] [<ffffffff802933bc>] generic_handle_irq+0x3c/0x58
+| [158313.196000] [<ffffffff80207608>] do_IRQ+0x18/0x30
+| [158313.196000] [<ffffffff80205428>] ret_from_irq+0x0/0x4
+| [158313.196000] [<ffffffff802b2500>] smp_call_function_many+0x2f8/0x388
+| [158313.196000] [<ffffffff802b25bc>] smp_call_function+0x2c/0x40
+| [158313.196000] [<ffffffff8020f8a0>] flush_tlb_mm+0x50/0x108
+| [158313.196000] [<ffffffff80335a5c>] tlb_finish_mmu+0x74/0x88
+| [158313.196000] [<ffffffff8033fef0>] unmap_region+0xc8/0x118
+| [158313.196000] [<ffffffff803422c4>] do_munmap+0x264/0x440
+| [158313.196000] [<ffffffff803424e4>] vm_munmap+0x44/0x70
+| [158313.196000] [<ffffffff8034353c>] SyS_munmap+0x24/0x38
+| [158313.196000] [<ffffffff80218fe8>] handle_sys+0x128/0x14c
+| [158313.196000]
+| [158340.156000] BUG: soft lockup - CPU#2 stuck for 22s! [mysqld:4217]
+| [158340.156000] Modules linked in: radeon drm_kms_helper ttm drm dm_mod ehci_pci ata_generic ohci_pci ohci_hcd ehci_hcd usbcore usb_common
 
-#ifndef set_pkmap_color
-static inline void set_pkmap_color(...)
-{
-	...
-}
-#define set_pkmap_color set_pkmap_color
+Any idea about the problem or how to debug that further?
 
-...
+The problem happens with both Lemote and Loongson machines, and we have
+finally found a way to reproduce it all the time, by running the mysql 
+testsuite with 4 threads. This means we can now easily reproduce the
+issue to debug it further. If someone is interested, I think I can
+package a chroot with all the needed files in a tarball so that the
+issue can be reproduce more easily.
 
-#endif
+Thanks,
+Aurelien
 
-Fourthly, please document these proposed interfaces with code comments.
-
-Fifthly, it would be very useful to publish the performance testing
-results for at least one architecture so that we can determine the
-patchset's desirability.  And perhaps to motivate other architectures
-to implement this.
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

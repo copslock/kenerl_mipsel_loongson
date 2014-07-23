@@ -1,43 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 08:47:14 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19940 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816417AbaGWGrH6k9FY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 08:47:07 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9C5D259A3EF45;
-        Wed, 23 Jul 2014 07:46:59 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 23 Jul 2014 07:47:00 +0100
-Received: from localhost (192.168.79.200) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 23 Jul
- 2014 07:46:59 +0100
-Date:   Wed, 23 Jul 2014 07:46:57 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Nick Krause <xerofoify@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        <markos.chandras@imgtec.com>, <Steven.Hill@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: smp-cmp.c: CDFIXMES
-Message-ID: <20140723064657.GK30558@pburton-laptop>
-References: <CAPDOMVjNyAwo53Coz8MFuUs70M7j1e3QWprus5vGpTfAw=hspg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 09:03:23 +0200 (CEST)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:40311 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6842441AbaGWHDVWWQUC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 09:03:21 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 9BB14462A92;
+        Wed, 23 Jul 2014 08:03:15 +0100 (BST)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 564VTQgdE+1r; Wed, 23 Jul 2014 08:03:13 +0100 (BST)
+Received: from humdrum (unknown [10.24.1.221])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 556CE460C33;
+        Wed, 23 Jul 2014 08:03:13 +0100 (BST)
+Date:   Wed, 23 Jul 2014 08:03:10 +0100
+From:   Rob Kendrick <rob.kendrick@codethink.co.uk>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: EdgeRouter Pro supported?  Strange FP problems
+Message-ID: <20140723070309.GM30723@humdrum>
+References: <20140722130616.GJ30723@humdrum>
+ <53CE82B6.1070902@phrozen.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAPDOMVjNyAwo53Coz8MFuUs70M7j1e3QWprus5vGpTfAw=hspg@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.79.200]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <53CE82B6.1070902@phrozen.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <rob.kendrick@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41509
+X-archive-position: 41510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: rob.kendrick@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,26 +47,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 23, 2014 at 12:40:59AM -0400, Nick Krause wrote:
-> Are the lines with  CDFIXME still needed? If not please tell me as I
-> will send in a patch removing these
-> two from this file in order to help you guys out :).
-> Cheers Nick
+On Tue, Jul 22, 2014 at 05:26:46PM +0200, John Crispin wrote:
+> we had a quite some trouble adding support to openwrt. in the end we
+> needed a few uclibc patches and gxx4.8 seems utterly foo'ed on this.
+> gcc 4.6 and 4.9 seem to be running fine though.
+> 
+> what compiler, libc, ... version are you using ?
 
-Hi Nick,
+mips64-unknown-linux-gnu-gcc (crosstool-NG git+7f1c646) 4.9.0
+eglibc 2.15
 
-I imagine the only answer any of us can give you is "we don't know". If
-we did then we'd have removed the code or the comments already.
+But this does indeed appear problem with the kernel and not the
+toolchain.  Sadly I can't opt for softfloat with this.  I'm going to be
+trying to look at the patch that Markos identified; it looks like it may
+have mixed up MIPSInst_RT and MIPSInst_FD in a copy-and-paste.
+(Guessing, new to MIPS.)
 
-Please do note that the smp-cmp.c file lives behind a Kconfig option
-that is now marked as deprecated, and that there is other work going on
-in areas related to clocksource & clock events on the applicable
-systems. So whilst someone could spend the time figuring out whether
-those lines are useful, I expect that cleaning up these old FIXMEs is
-not a particularly high priority for anyone right now.
+Thanks everyone for your help so far!
 
-If you'll leave them alone for a while I expect they'll disappear one
-way or another in a few cycles time, along with the rest of the file.
-
-Thanks,
-    Paul
+-- 
+Rob Kendrick, Senior Consulting Developer                Codethink Ltd.
+Telephone: +44 7880 657 193              302 Ducie House, Ducie Street,
+http://www.codethink.co.uk/         Manchester, M1 2JW, United Kingdom.

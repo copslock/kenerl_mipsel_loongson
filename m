@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 18:20:58 +0200 (CEST)
-Received: from mail-we0-f170.google.com ([74.125.82.170]:53821 "EHLO
-        mail-we0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818465AbaGWQU4HRD1h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 18:20:56 +0200
-Received: by mail-we0-f170.google.com with SMTP id w62so1473012wes.15
-        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 09:20:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 21:20:49 +0200 (CEST)
+Received: from mail-lb0-f171.google.com ([209.85.217.171]:52318 "EHLO
+        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6842513AbaGWTUowX-Yi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 21:20:44 +0200
+Received: by mail-lb0-f171.google.com with SMTP id l4so1294789lbv.30
+        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 12:20:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=HLIetgCbJfjLQdGh5YeGjMvpR/1rZieEWEmSGyXtdxA=;
-        b=BnksCKnyxvLBwW/imqxGp3JDg8tLeXx0zswD5szvQ1O6QxU4yDcx/3T/E9mWYeSeHr
-         8SFKYGVSt77rar85nyu1GLapulWOCuQ1lWpp7l9DfbaF+mfh8swUqTbAHjSvPAq9OBOU
-         mLFSeVaYVEJB6uVAyQEHkfeDqsoAZdPi/lJTsY8TScIVh31HA1qNLKEbo18MIuqknAzF
-         uNHsRMLBNk+hJ0CAiyQ/8Fhae4cwZtQ1ext1R222mv4jmrCargJGwGaJfT1iWKVXtweR
-         tKa4gGuRFNYPsXD3lB0u924B/NYz7DyFc06rEd+gegsm8EWtLHlHQmyus8FKvXQjputL
-         z5fg==
-X-Gm-Message-State: ALoCoQkVvaSIiBXLYqaYmX268FU2G4Hi2OOmCA9PceuiLlOl195T/0fPvyTNUn1tTd3/r1KJ2N/d
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=fbPctYpleL3aO6PcLm9fMoVEBZPAhJneizCfik1Vxoc=;
+        b=ITdv7zyHbdaOsedMZ/VxG9+6izZ2nNHB+esQ/LONzMP4GgkTyZRAgP4dyZvfIZTwGF
+         mpG/AGWCmSKpxjJWVRSZJdxTelo7fQPF9vgxLy3w/T9EfyVIogJsBDlApGRRf195PmQs
+         NJIVxfhOW+ehUSRdTilUcr4yZDqrFTF1t7VJevRbL4o1+FKgYg1M6xCbcimdHXhAZtHE
+         U/ppsGyyTAIFYDjA+haRczXr/E9PJLuf7HWGoUyw3Bg+XkaIUvtNIfACBKrwytiUJ5S/
+         a46vuqkHUrAQ7KveUAn7eJ7r7rdo/oBremFhfHaKxhMhWS5bxKoAoB+8hxEi70YZGVng
+         AZWw==
+X-Gm-Message-State: ALoCoQk0avZzf8mBOAik6SqlvUcace2hFh/NkKeG1zJtnKbm/HgkA9ZZ3h9BYUHYcdsZJLP2QhE2
+X-Received: by 10.152.29.200 with SMTP id m8mr4137710lah.4.1406143239029; Wed,
+ 23 Jul 2014 12:20:39 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.180.80.133 with SMTP id r5mr25788546wix.62.1406132450594;
- Wed, 23 Jul 2014 09:20:50 -0700 (PDT)
-Received: by 10.194.122.170 with HTTP; Wed, 23 Jul 2014 09:20:50 -0700 (PDT)
-In-Reply-To: <20140723141203.GM30558@pburton-laptop>
-References: <1406122816-2424-1-git-send-email-alex@alex-smith.me.uk>
-        <1406122816-2424-6-git-send-email-alex@alex-smith.me.uk>
-        <20140723141203.GM30558@pburton-laptop>
-Date:   Wed, 23 Jul 2014 17:20:50 +0100
-Message-ID: <CAOFt0_DpB1foU2XKROLuvHuY5uzSytqnKY_bv_seid8zj5NedA@mail.gmail.com>
-Subject: Re: [PATCH 05/11] MIPS: ptrace: Always copy FCSR in FP regset
-From:   Alex Smith <alex@alex-smith.me.uk>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, stable@vger.kernel.org
+Received: by 10.152.36.106 with HTTP; Wed, 23 Jul 2014 12:20:18 -0700 (PDT)
+In-Reply-To: <CAGXu5jJ93-vto9voMENc4jX5itcd_Rm5AZjeChF57fpMYnWocA@mail.gmail.com>
+References: <cover.1405992946.git.luto@amacapital.net> <CAGXu5jJ93-vto9voMENc4jX5itcd_Rm5AZjeChF57fpMYnWocA@mail.gmail.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Wed, 23 Jul 2014 12:20:18 -0700
+Message-ID: <CALCETrVwqDeRbFOw=k_OhQZ4V6Pn5v3t8ODw75UuE7HKPFz=Sw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] Two-phase seccomp and x86 tracing changes
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "H. Peter Anvin" <hpa@zytor.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Will Drewry <wad@chromium.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        Alexei Starovoitov <ast@plumgrid.com>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <alex@alex-smith.me.uk>
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41550
+X-archive-position: 41551
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alex-smith.me.uk
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,151 +61,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23 July 2014 15:12, Paul Burton <paul.burton@imgtec.com> wrote:
-> On Wed, Jul 23, 2014 at 02:40:10PM +0100, Alex Smith wrote:
->> Copy FCSR in the FP regset to match the original pre-regset core dumper.
->> The code paths for where sizeof(union fpureg) == sizeof(elf_fpreg_t)
->> already do so, but they actually copy 4 bytes more than they should do
->> as FCSR is only 32 bits. The not equal code paths do not copy it at all.
->> Therefore change the copy to be done explicitly (with the correct size)
->> for both paths.
+On Tue, Jul 22, 2014 at 12:37 PM, Kees Cook <keescook@chromium.org> wrote:
+> On Mon, Jul 21, 2014 at 6:49 PM, Andy Lutomirski <luto@amacapital.net> wrote:
+>> [applies on jmorris's security-next tree]
+>>
+>> This is both a cleanup and a speedup.  It reduces overhead due to
+>> installing a trivial seccomp filter by 87%.  The speedup comes from
+>> avoiding the full syscall tracing mechanism for filters that don't
+>> return SECCOMP_RET_TRACE.
+>>
+>> This series works by splitting the seccomp hooks into two phases.
+>> The first phase evaluates the filter; it can skip syscalls, allow
+>> them, kill the calling task, or pass a u32 to the second phase.  The
+>> second phase requires a full tracing context, and it sends ptrace
+>> events if necessary.
+>>
+>> Once this is done, I implemented a similar split for the x86 syscall
+>> entry work.  The C callback is invoked in two phases: the first has
+>> only a partial frame, and it can request phase 2 processing with a
+>> full frame.
+>>
+>> Finally, I switch the 64-bit system_call code to use the new split
+>> entry work.  This is a net deletion of assembly code: it replaces
+>> all of the audit entry muck.
+>>
+>> In the process, I fixed some bugs.
+>>
+>> If this is acceptable, someone can do the same tweak for the
+>> ia32entry and entry_32 code.
+>>
+>> This passes all seccomp tests that I know of.  Now that it's properly
+>> rebased, even the previously expected failures are gone.
+>>
+>> Kees, if you like this version, can you create a branch with patches
+>> 1-4?  I think that the rest should go into tip/x86 once everyone's happy
+>> with it.
+>>
+>> Changes from v2:
+>>  - Fixed 32-bit x86 build (and the tests pass).
+>>  - Put the doc patch where it belongs.
 >
-> Ah, I hadn't realised that ELF_NFPREG == 33, sneaky! That together with
-> the "XXX fcr31" comment led me to believe the FP regset didn't include
-> FCSR which is why I hadn't fixed the oops there or taken it into account
-> for the case where FPR size != sizeof(elf_fpreg_t) (ie. when MSA support
-> is enabled).
+> Thanks! This looks good to me. I'll add it to my tree.
 >
->> Additionally, clear the cause bits from FCSR when setting the FP regset
->> to avoid the possibility of causing an FP exception (and an oops) in the
->> kernel.
->>
->> Signed-off-by: Alex Smith <alex@alex-smith.me.uk>
->> Cc: Paul Burton <paul.burton@imgtec.com>
->> Cc: <stable@vger.kernel.org> # v3.13+
->> ---
->> This patch incorporates a fix for another instance of the bug fixed by
->> Paul Burton's patch "MIPS: prevent user from setting FCSR cause bits" -
->> the code path in fpr_set for sizeof(fpureg) == sizeof(elf_fpreg_t)
->> copied fcr31 without clearing cause bits. I've incorporated a fix for
->> it into this patch to so that it's easier to apply both patches without
->> conflicts.
->> ---
->>  arch/mips/kernel/ptrace.c | 61 +++++++++++++++++++++++++++++------------------
->>  1 file changed, 38 insertions(+), 23 deletions(-)
->>
->> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
->> index 8bd13ed..ffc2e37 100644
->> --- a/arch/mips/kernel/ptrace.c
->> +++ b/arch/mips/kernel/ptrace.c
->> @@ -409,23 +409,28 @@ static int fpr_get(struct task_struct *target,
->>       int err;
->>       u64 fpr_val;
->>
->> -     /* XXX fcr31  */
->> -
->> -     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
->> -             return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> -                                        &target->thread.fpu,
->> -                                        0, sizeof(elf_fpregset_t));
->> -
->> -     for (i = 0; i < NUM_FPU_REGS; i++) {
->> -             fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
->> +     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t)) {
->>               err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> -                                       &fpr_val, i * sizeof(elf_fpreg_t),
->> -                                       (i + 1) * sizeof(elf_fpreg_t));
->> +                                       &target->thread.fpu.fpr,
->> +                                       0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
->>               if (err)
->>                       return err;
->> +     } else {
->> +             for (i = 0; i < NUM_FPU_REGS; i++) {
->> +                     fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
->> +                     err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> +                                               &fpr_val,
->> +                                               i * sizeof(elf_fpreg_t),
->> +                                               (i + 1) * sizeof(elf_fpreg_t));
->> +                     if (err)
->> +                             return err;
->> +             }
->>       }
->>
->> -     return 0;
->> +     return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> +                         &target->thread.fpu.fcr31,
->> +                         NUM_FPU_REGS * sizeof(elf_fpreg_t),
->> +                         (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32));
+> Peter, how do you feel about this series? Do the x86 changes look good to you?
 >
-> The only problem I can think of is that the final register in the regset
-> will still be treated as 64b (regset->size) as far as ptrace is
-> concerned, so I'm not sure how best to handle this. I presume the pre
-> regset core dump format placed the 32b FCSR value immediately after
-> the 64b $f31, as you have here? In which case we should probably at
-> least zero out the other 4 bytes of this final "register", assuming
-> the extra 4 bytes compared to the pre-regset version isn't a problem?
 
-Yes, this should now exactly match the old core dump code, which
-copies the 32-bit FCSR immediately after f31 (see dump_task_fpu). The
-last 4 bytes were still there with the old code, but it never actually
-touched them. You're right that this should zero it out. I'll do a v2
-with that fixed.
+It looks like patches 1-4 have landed here:
 
-Thanks,
-Alex
+https://git.kernel.org/cgit/linux/kernel/git/kees/linux.git/log/?h=seccomp/fastpath
 
->
-> Thanks,
->     Paul
->
->>  }
->>
->>  static int fpr_set(struct task_struct *target,
->> @@ -436,23 +441,33 @@ static int fpr_set(struct task_struct *target,
->>       unsigned i;
->>       int err;
->>       u64 fpr_val;
->> +     u32 fcr31;
->>
->> -     /* XXX fcr31  */
->> -
->> -     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
->> -             return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
->> -                                       &target->thread.fpu,
->> -                                       0, sizeof(elf_fpregset_t));
->> -
->> -     for (i = 0; i < NUM_FPU_REGS; i++) {
->> +     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t)) {
->>               err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
->> -                                      &fpr_val, i * sizeof(elf_fpreg_t),
->> -                                      (i + 1) * sizeof(elf_fpreg_t));
->> +                                      &target->thread.fpu.fpr,
->> +                                      0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
->>               if (err)
->>                       return err;
->> -             set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
->> +     } else {
->> +             for (i = 0; i < NUM_FPU_REGS; i++) {
->> +                     err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
->> +                                              &fpr_val,
->> +                                              i * sizeof(elf_fpreg_t),
->> +                                              (i + 1) * sizeof(elf_fpreg_t));
->> +                     if (err)
->> +                             return err;
->> +                     set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
->> +             }
->>       }
->>
->> +     err = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &fcr31,
->> +                         NUM_FPU_REGS * sizeof(elf_fpreg_t),
->> +                         (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32));
->> +     if (err)
->> +             return err;
->> +
->> +     target->thread.fpu.fcr31 = fcr31 & ~FPU_CSR_ALL_X;
->>       return 0;
->>  }
->>
->> --
->> 1.9.1
->>
+hpa, what's the route forward for the x86 part?
+
+--Andy

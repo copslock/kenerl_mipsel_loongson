@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 16:12:51 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42208 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6831986AbaGWOMsQWPyt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 16:12:48 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 1E02BC927777A;
-        Wed, 23 Jul 2014 15:12:38 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 23 Jul 2014 15:12:40 +0100
-Received: from localhost (192.168.79.47) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 23 Jul
- 2014 15:12:10 +0100
-Date:   Wed, 23 Jul 2014 15:12:03 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Alex Smith <alex@alex-smith.me.uk>
-CC:     <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 05/11] MIPS: ptrace: Always copy FCSR in FP regset
-Message-ID: <20140723141203.GM30558@pburton-laptop>
-References: <1406122816-2424-1-git-send-email-alex@alex-smith.me.uk>
- <1406122816-2424-6-git-send-email-alex@alex-smith.me.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <1406122816-2424-6-git-send-email-alex@alex-smith.me.uk>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.79.47]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 16:36:58 +0200 (CEST)
+Received: from mail-we0-f179.google.com ([74.125.82.179]:50746 "EHLO
+        mail-we0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822058AbaGWOgquwEMG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 16:36:46 +0200
+Received: by mail-we0-f179.google.com with SMTP id u57so1297997wes.38
+        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 07:36:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=68M9FAsgigSkGbEAzEB8JxHG/RNEYdJ6srNvHdpc+qQ=;
+        b=Ou41g5RmgBb8F7qxhZFIqnzkv59DT2nzqqcJk+sQAWF8TXLkInS0QVM4jpuhncmM5b
+         IIonnzip+Gw/cK5YIc3QVyhQhfwqlH5z63NP9IwubFQ1X2Yp9qpaDuoheVB+GX73N/gE
+         AhP16BDAS+kBAmwU+DD9SHMmVyROAFB+sEiOXuezskSNxoBJkY6Ay0w/6uTXQhf5KIk6
+         MpDWjYnW2UXIbKkC12WH8GliH2C9Ob2D+NouMjqFNsYbP/PDgeSz4yOUhqBiSNKf+BDn
+         k+oJET+4lQrzRWmRTSanSGsHJm+hXCRJKUuPhykuJ2AtkijQvV6DbCZKQs1BLAvJ/XQP
+         su5g==
+X-Received: by 10.194.189.230 with SMTP id gl6mr2511245wjc.118.1406126201465;
+        Wed, 23 Jul 2014 07:36:41 -0700 (PDT)
+Received: from localhost.localdomain (p57A349C7.dip0.t-ipconnect.de. [87.163.73.199])
+        by mx.google.com with ESMTPSA id h3sm6717751wjz.48.2014.07.23.07.36.40
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 23 Jul 2014 07:36:40 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH 0/6] MIPS: Alchemy: au1000 header cleaning
+Date:   Wed, 23 Jul 2014 16:36:20 +0200
+Message-Id: <1406126186-471228-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 2.0.1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41528
+X-archive-position: 41529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,140 +50,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 23, 2014 at 02:40:10PM +0100, Alex Smith wrote:
-> Copy FCSR in the FP regset to match the original pre-regset core dumper.
-> The code paths for where sizeof(union fpureg) == sizeof(elf_fpreg_t)
-> already do so, but they actually copy 4 bytes more than they should do
-> as FCSR is only 32 bits. The not equal code paths do not copy it at all.
-> Therefore change the copy to be done explicitly (with the correct size)
-> for both paths.
+This patchseries removes a few unused register definitions from
+the au1000.h header, changes registers to offsets from block
+base and finally removes the au_read/au_write and au_sync*
+functions.
 
-Ah, I hadn't realised that ELF_NFPREG == 33, sneaky! That together with
-the "XXX fcr31" comment led me to believe the FP regset didn't include
-FCSR which is why I hadn't fixed the oops there or taken it into account
-for the case where FPR size != sizeof(elf_fpreg_t) (ie. when MSA support
-is enabled).
+A large part of the change is the move of all c-code (enums, structs,
+inline functions) below the register definitions so that the
+helpers to access SYS_ and MEM_ blocks actually compile (they
+depend on block base address definitions).
 
-> Additionally, clear the cause bits from FCSR when setting the FP regset
-> to avoid the possibility of causing an FP exception (and an oops) in the
-> kernel.
-> 
-> Signed-off-by: Alex Smith <alex@alex-smith.me.uk>
-> Cc: Paul Burton <paul.burton@imgtec.com>
-> Cc: <stable@vger.kernel.org> # v3.13+
-> ---
-> This patch incorporates a fix for another instance of the bug fixed by
-> Paul Burton's patch "MIPS: prevent user from setting FCSR cause bits" -
-> the code path in fpr_set for sizeof(fpureg) == sizeof(elf_fpreg_t)
-> copied fcr31 without clearing cause bits. I've incorporated a fix for
-> it into this patch to so that it's easier to apply both patches without
-> conflicts.
-> ---
->  arch/mips/kernel/ptrace.c | 61 +++++++++++++++++++++++++++++------------------
->  1 file changed, 38 insertions(+), 23 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-> index 8bd13ed..ffc2e37 100644
-> --- a/arch/mips/kernel/ptrace.c
-> +++ b/arch/mips/kernel/ptrace.c
-> @@ -409,23 +409,28 @@ static int fpr_get(struct task_struct *target,
->  	int err;
->  	u64 fpr_val;
->  
-> -	/* XXX fcr31  */
-> -
-> -	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
-> -		return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-> -					   &target->thread.fpu,
-> -					   0, sizeof(elf_fpregset_t));
-> -
-> -	for (i = 0; i < NUM_FPU_REGS; i++) {
-> -		fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
-> +	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t)) {
->  		err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-> -					  &fpr_val, i * sizeof(elf_fpreg_t),
-> -					  (i + 1) * sizeof(elf_fpreg_t));
-> +					  &target->thread.fpu.fpr,
-> +					  0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
->  		if (err)
->  			return err;
-> +	} else {
-> +		for (i = 0; i < NUM_FPU_REGS; i++) {
-> +			fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
-> +			err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-> +						  &fpr_val,
-> +						  i * sizeof(elf_fpreg_t),
-> +						  (i + 1) * sizeof(elf_fpreg_t));
-> +			if (err)
-> +				return err;
-> +		}
->  	}
->  
-> -	return 0;
-> +	return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-> +			    &target->thread.fpu.fcr31,
-> +			    NUM_FPU_REGS * sizeof(elf_fpreg_t),
-> +			    (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32));
+Run-tested on a few DB1xx boards, compile tested MTX-1 and GPR targets.
 
-The only problem I can think of is that the final register in the regset
-will still be treated as 64b (regset->size) as far as ptrace is
-concerned, so I'm not sure how best to handle this. I presume the pre
-regset core dump format placed the 32b FCSR value immediately after
-the 64b $f31, as you have here? In which case we should probably at
-least zero out the other 4 bytes of this final "register", assuming
-the extra 4 bytes compared to the pre-regset version isn't a problem?
+Manuel Lauss (6):
+  MIPS: Alchemy: au1000.h: remove unused register definitions
+  MIPS: Alchemy: move ethernet registers to ethernet driver
+  MIPS: Alchemy: au1000.h move C-code after register definitions.
+  MIPS: Alchemy: introduce helpers to access SYS register block.
+  MIPS: Alchemy: add helpers to access static memory ctrl registers.
+  MIPS: Alchemy: remove au_read/write/sync
 
-Thanks,
-    Paul
+ arch/mips/alchemy/board-mtx1.c                  |    4 +-
+ arch/mips/alchemy/board-xxs1500.c               |    4 +-
+ arch/mips/alchemy/common/clocks.c               |    6 +-
+ arch/mips/alchemy/common/dbdma.c                |   22 +-
+ arch/mips/alchemy/common/dma.c                  |   15 +-
+ arch/mips/alchemy/common/irq.c                  |    5 +-
+ arch/mips/alchemy/common/platform.c             |    2 +-
+ arch/mips/alchemy/common/power.c                |   74 +-
+ arch/mips/alchemy/common/time.c                 |   23 +-
+ arch/mips/alchemy/devboards/db1000.c            |    5 +-
+ arch/mips/alchemy/devboards/db1200.c            |   21 +-
+ arch/mips/alchemy/devboards/db1300.c            |    2 +-
+ arch/mips/alchemy/devboards/db1550.c            |   14 +-
+ arch/mips/alchemy/devboards/pm.c                |   39 +-
+ arch/mips/include/asm/mach-au1x00/au1000.h      | 2546 ++++++++++-------------
+ arch/mips/include/asm/mach-au1x00/au1000_dma.h  |   50 +-
+ arch/mips/include/asm/mach-au1x00/gpio-au1000.h |   56 +-
+ drivers/mmc/host/au1xmmc.c                      |  169 +-
+ drivers/mtd/nand/au1550nd.c                     |   29 +-
+ drivers/net/ethernet/amd/au1000_eth.c           |  149 +-
+ drivers/rtc/rtc-au1xxx.c                        |   18 +-
+ drivers/spi/spi-au1550.c                        |   66 +-
+ drivers/video/fbdev/au1100fb.c                  |   15 +-
+ drivers/video/fbdev/au1200fb.c                  |   37 +-
+ sound/soc/au1x/psc-ac97.c                       |  140 +-
+ sound/soc/au1x/psc-i2s.c                        |  100 +-
+ sound/soc/au1x/psc.h                            |   22 +-
+ 27 files changed, 1719 insertions(+), 1914 deletions(-)
 
->  }
->  
->  static int fpr_set(struct task_struct *target,
-> @@ -436,23 +441,33 @@ static int fpr_set(struct task_struct *target,
->  	unsigned i;
->  	int err;
->  	u64 fpr_val;
-> +	u32 fcr31;
->  
-> -	/* XXX fcr31  */
-> -
-> -	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
-> -		return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-> -					  &target->thread.fpu,
-> -					  0, sizeof(elf_fpregset_t));
-> -
-> -	for (i = 0; i < NUM_FPU_REGS; i++) {
-> +	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t)) {
->  		err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-> -					 &fpr_val, i * sizeof(elf_fpreg_t),
-> -					 (i + 1) * sizeof(elf_fpreg_t));
-> +					 &target->thread.fpu.fpr,
-> +					 0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
->  		if (err)
->  			return err;
-> -		set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
-> +	} else {
-> +		for (i = 0; i < NUM_FPU_REGS; i++) {
-> +			err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-> +						 &fpr_val,
-> +						 i * sizeof(elf_fpreg_t),
-> +						 (i + 1) * sizeof(elf_fpreg_t));
-> +			if (err)
-> +				return err;
-> +			set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
-> +		}
->  	}
->  
-> +	err = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &fcr31,
-> +			    NUM_FPU_REGS * sizeof(elf_fpreg_t),
-> +			    (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32));
-> +	if (err)
-> +		return err;
-> +
-> +	target->thread.fpu.fcr31 = fcr31 & ~FPU_CSR_ALL_X;
->  	return 0;
->  }
->  
-> -- 
-> 1.9.1
-> 
+-- 
+2.0.1

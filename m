@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 16:42:42 +0200 (CEST)
-Received: from mail-wi0-f181.google.com ([209.85.212.181]:56795 "EHLO
-        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6842533AbaGWOhavbvro (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 16:43:01 +0200 (CEST)
+Received: from mail-we0-f177.google.com ([74.125.82.177]:51919 "EHLO
+        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6842536AbaGWOhazQItI (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 16:37:30 +0200
-Received: by mail-wi0-f181.google.com with SMTP id bs8so2366538wib.8
-        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 07:37:20 -0700 (PDT)
+Received: by mail-we0-f177.google.com with SMTP id w62so1266233wes.22
+        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 07:37:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=AVBQnUklZuov2vo32Bhi2SUhfoSBFaxihfUhIUAxpVQ=;
-        b=h3U62pb2Gj8s1qffG8dv8kG2oB+kCPDnmCT+kWYc15sILwe4GfmQryn5MUqY/FcAT6
-         MiyoS9QZo4pf2LCp9Y4dpKFdeg++SBiEY8O1UyhJsJgS55p9x5Lc0mAc7uNF596K7OMC
-         mKlqeC2bHoznm2pIKV9JwXSezPnYWqulupq94OCOMSLyOiEB2HUnpsvjoMHv9sWmJmRA
-         PY0PEMf9SfnPsnR1NZBP+yDuvdHf+r1Q0XITuxkjqtAuRZveAnv6kLQ+GQ4LlZVvCKR8
-         i/zv/5M3sWFAzB1CHPGCy1Zjogjm/f/uFaMCsrvZwScZtenCZ2Es2Ihs29DnMI3LNkln
-         bzqQ==
-X-Received: by 10.194.92.115 with SMTP id cl19mr2435090wjb.29.1406126240943;
-        Wed, 23 Jul 2014 07:37:20 -0700 (PDT)
+        bh=y3zNH0c92ObXbampkDxyjOREqMJjx+Lkwq+iGsrGCd0=;
+        b=DiTq1nWmLnL8BZsTOGqdp7sGe6srSnZxduUXgzy5QA6nKt+vsp/HpWvbT9E0I4AtPJ
+         wyL0NlA5zCcr9nS8Ep2PNTiSpDovpTSQZa5ShLAJ1pGY+Q/zi02dGqjoUex0bZiF4LWs
+         mlAwQTUJJZ34KTNhn+Euk4scJzPh2GhPwy2CW+pRuRcLoigwE/N6/xW/Cy/Kv5TTjYBM
+         jTF5y/t4naYm1bIs8A3tsYYU27wsV4c9cjuDpBmN0nH31N+IF5u5kys3zQv/ubwgY+Y4
+         mJqh9ysOP4Gcqjud2RmVR5kZODsqLGC3m5h6v5SP0ZBVwlQDx81L51BZX++VDL6lVHxy
+         350w==
+X-Received: by 10.194.123.105 with SMTP id lz9mr2531632wjb.122.1406126238017;
+        Wed, 23 Jul 2014 07:37:18 -0700 (PDT)
 Received: from localhost.localdomain (p57A349C7.dip0.t-ipconnect.de. [87.163.73.199])
-        by mx.google.com with ESMTPSA id ex4sm10196560wic.2.2014.07.23.07.37.19
+        by mx.google.com with ESMTPSA id ex4sm10196560wic.2.2014.07.23.07.37.17
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 23 Jul 2014 07:37:20 -0700 (PDT)
+        Wed, 23 Jul 2014 07:37:17 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@gmail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH 06/10] MIPS: Alchemy: irda: use clk framework
-Date:   Wed, 23 Jul 2014 16:36:53 +0200
-Message-Id: <1406126217-471265-7-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH 04/10] MIPS: Alchemy: pci: use clk framework to enable PCI clock
+Date:   Wed, 23 Jul 2014 16:36:51 +0200
+Message-Id: <1406126217-471265-5-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 2.0.1
 In-Reply-To: <1406126217-471265-1-git-send-email-manuel.lauss@gmail.com>
 References: <1406126217-471265-1-git-send-email-manuel.lauss@gmail.com>
@@ -35,7 +35,7 @@ Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41541
+X-archive-position: 41542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,116 +52,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Test the existence of the irda_clk clock object, use it to en/dis-
-able it when date is being transferred.
+Use the clock framework to get at the PCI clock source and enable
+it on driver initialization.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- drivers/net/irda/au1k_ir.c | 48 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+ arch/mips/pci/pci-alchemy.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/irda/au1k_ir.c b/drivers/net/irda/au1k_ir.c
-index 5f91e3e..aab2cf7 100644
---- a/drivers/net/irda/au1k_ir.c
-+++ b/drivers/net/irda/au1k_ir.c
-@@ -18,6 +18,7 @@
-  *  with this program; if not, see <http://www.gnu.org/licenses/>.
+diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
+index 563d1f6..c19600a 100644
+--- a/arch/mips/pci/pci-alchemy.c
++++ b/arch/mips/pci/pci-alchemy.c
+@@ -7,6 +7,7 @@
+  * Support for all devices (greater than 16) added by David Gathright.
   */
  
 +#include <linux/clk.h>
- #include <linux/module.h>
- #include <linux/netdevice.h>
- #include <linux/interrupt.h>
-@@ -175,6 +176,7 @@ struct au1k_private {
- 
- 	struct resource *ioarea;
- 	struct au1k_irda_platform_data *platdata;
-+	struct clk *irda_clk;
- };
- 
- static int qos_mtt_bits = 0x07;  /* 1 ms or more */
-@@ -514,9 +516,39 @@ static irqreturn_t au1k_irda_interrupt(int dummy, void *dev_id)
- static int au1k_init(struct net_device *dev)
- {
- 	struct au1k_private *aup = netdev_priv(dev);
--	u32 enable, ring_address;
-+	u32 enable, ring_address, phyck;
-+	struct clk *c;
- 	int i;
- 
-+	c = clk_get(NULL, "irda_clk");
-+	if (IS_ERR(c))
-+		return PTR_ERR(c);
-+	i = clk_prepare_enable(c);
-+	if (i) {
-+		clk_put(c);
-+		return i;
-+	}
-+
-+	switch (clk_get_rate(c)) {
-+	case 40000000:
-+		phyck = IR_PHYCLK_40MHZ;
-+		break;
-+	case 48000000:
-+		phyck = IR_PHYCLK_48MHZ;
-+		break;
-+	case 56000000:
-+		phyck = IR_PHYCLK_56MHZ;
-+		break;
-+	case 64000000:
-+		phyck = IR_PHYCLK_64MHZ;
-+		break;
-+	default:
-+		clk_disable_unprepare(c);
-+		clk_put(c);
-+		return -EINVAL;
-+	}
-+	aup->irda_clk = c;
-+
- 	enable = IR_HC | IR_CE | IR_C;
- #ifndef CONFIG_CPU_LITTLE_ENDIAN
- 	enable |= IR_BE;
-@@ -545,7 +577,7 @@ static int au1k_init(struct net_device *dev)
- 	irda_write(aup, IR_RING_SIZE,
- 				(RING_SIZE_64 << 8) | (RING_SIZE_64 << 12));
- 
--	irda_write(aup, IR_CONFIG_2, IR_PHYCLK_48MHZ | IR_ONE_PIN);
-+	irda_write(aup, IR_CONFIG_2, phyck | IR_ONE_PIN);
- 	irda_write(aup, IR_RING_ADDR_CMPR, 0);
- 
- 	au1k_irda_set_speed(dev, 9600);
-@@ -619,6 +651,9 @@ static int au1k_irda_stop(struct net_device *dev)
- 	free_irq(aup->irq_tx, dev);
- 	free_irq(aup->irq_rx, dev);
- 
-+	clk_disable_unprepare(aup->irda_clk);
-+	clk_put(aup->irda_clk);
-+
- 	return 0;
- }
- 
-@@ -853,6 +888,7 @@ static int au1k_irda_probe(struct platform_device *pdev)
- 	struct au1k_private *aup;
- 	struct net_device *dev;
+ #include <linux/export.h>
+ #include <linux/types.h>
+ #include <linux/pci.h>
+@@ -364,6 +365,7 @@ static int alchemy_pci_probe(struct platform_device *pdev)
+ 	void __iomem *virt_io;
+ 	unsigned long val;
  	struct resource *r;
 +	struct clk *c;
- 	int err;
+ 	int ret;
  
- 	dev = alloc_irdadev(sizeof(struct au1k_private));
-@@ -886,6 +922,14 @@ static int au1k_irda_probe(struct platform_device *pdev)
- 	if (!aup->ioarea)
- 		goto out;
+ 	/* need at least PCI IRQ mapping table */
+@@ -393,11 +395,24 @@ static int alchemy_pci_probe(struct platform_device *pdev)
+ 		goto out1;
+ 	}
  
-+	/* bail out early if clock doesn't exist */
-+	c = clk_get(NULL, "irda_clk");
++	c = clk_get(&pdev->dev, "pci_clko");
 +	if (IS_ERR(c)) {
-+		err = PTR_ERR(c);
-+		goto out;
++		dev_err(&pdev->dev, "unable to find PCI clock\n");
++		ret = PTR_ERR(c);
++		goto out2;
 +	}
-+	clk_put(c);
 +
- 	aup->iobase = ioremap_nocache(r->start, resource_size(r));
- 	if (!aup->iobase)
- 		goto out2;
++	ret = clk_prepare_enable(c);
++	if (ret) {
++		dev_err(&pdev->dev, "cannot enable PCI clock\n");
++		goto out6;
++	}
++
+ 	ctx->regs = ioremap_nocache(r->start, resource_size(r));
+ 	if (!ctx->regs) {
+ 		dev_err(&pdev->dev, "cannot map pci regs\n");
+ 		ret = -ENODEV;
+-		goto out2;
++		goto out5;
+ 	}
+ 
+ 	/* map parts of the PCI IO area */
+@@ -465,12 +480,19 @@ static int alchemy_pci_probe(struct platform_device *pdev)
+ 	register_syscore_ops(&alchemy_pci_pmops);
+ 	register_pci_controller(&ctx->alchemy_pci_ctrl);
+ 
++	dev_info(&pdev->dev, "PCI controller at %ld MHz\n",
++		 clk_get_rate(c) / 1000000);
++
+ 	return 0;
+ 
+ out4:
+ 	iounmap(virt_io);
+ out3:
+ 	iounmap(ctx->regs);
++out5:
++	clk_disable_unprepare(c);
++out6:
++	clk_put(c);
+ out2:
+ 	release_mem_region(r->start, resource_size(r));
+ out1:
 -- 
 2.0.1

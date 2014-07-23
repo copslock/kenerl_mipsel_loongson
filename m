@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 15:42:41 +0200 (CEST)
-Received: from mail-wg0-f46.google.com ([74.125.82.46]:32787 "EHLO
-        mail-wg0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826470AbaGWNmfV3PFM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 15:42:35 +0200
-Received: by mail-wg0-f46.google.com with SMTP id m15so1202619wgh.29
-        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 06:42:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 15:43:04 +0200 (CEST)
+Received: from mail-wi0-f170.google.com ([209.85.212.170]:55583 "EHLO
+        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6831986AbaGWNmqVdb9- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 15:42:46 +0200
+Received: by mail-wi0-f170.google.com with SMTP id f8so7605386wiw.3
+        for <linux-mips@linux-mips.org>; Wed, 23 Jul 2014 06:42:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=TJsY3/aIXYDq4Cqc+Sr+reLrUt7cd9pml1Tng/1cy1o=;
-        b=jCGkzl6PxsDDBT5cD6ohnaEV4fKEgWCtn5XjtIWcEdSfZXsxV6GHstApGXNyTK10ai
-         32cmhWf+t32Lby0VzwyS5OzbNdtTvaICpMJinJPFw8GjlWvJoOhsL/GkmYYXAw2zV3mD
-         0yxyHutNMc0VP9qJwFLpPEEn90a746PCt1g91Jefq6+QCKj6cuC9kzB6gm9KlLY1jLfu
-         7xOZeU8/k50zBgT8LRP8el4n877wHTQ03ZsKOgS0B0Ewxo0KQjnlDu1MyKauWHTwheBj
-         UcUv46b0A9XxH8WPLNpO0CUv87BYPKiosKBbc0V1NqGn3M/efZdcERmKgke8CI65Dyqr
-         FT7A==
-X-Gm-Message-State: ALoCoQkEoKdJPlHuEt5K3Hle4pBclgpRc5ZeuLeajGzikTkFzPjJ2EiZDrgEV7V884h4C1rRDswn
-X-Received: by 10.194.133.42 with SMTP id oz10mr2092387wjb.40.1406122949173;
-        Wed, 23 Jul 2014 06:42:29 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=AVGmNuCKMO8ghmDpjfz7gMOKPWvt2y9lZho9T6kFtk4=;
+        b=h4XboofwetePit7UhUefHPVdLEuKH77zAz4maYLs/E/gOpUv3uQfTJDgHPQTiRPBji
+         veKDeu9/1Jr4yKDxrj2jKIvD6l/wtqmidLfyjZOvme6yfebMIZnUT1EVRIgOWJ2q4MC6
+         rNHmVV5ix3GhO22mr35q/GaI8d4KbKa8mDRMRIkeZPurvmfD5rVG1UHgXNJ1yYB3AffE
+         5d82maGY/VPm1iN/Z2tj3fAQR7pNCeUR4yz7gOGS7I2yXKLfcrXKbm774bx5idc7/OSn
+         TVDdWU1JDODMxuRwDUWiLX/BVvoQ9sWpek5AG6U2/YobO5pvTSWg7t/OgXuwFsESpPW/
+         zJmA==
+X-Gm-Message-State: ALoCoQm2SVSC0aXSd8WF1L6iEfQL8Y3vCvYuEsfTBsPTe+cZs7DeSUS4Pq6vUoxt2dMl9Fuwqzos
+X-Received: by 10.194.24.2 with SMTP id q2mr1798006wjf.91.1406122961035;
+        Wed, 23 Jul 2014 06:42:41 -0700 (PDT)
 Received: from localhost.localdomain (host31-50-226-70.range31-50.btcentralplus.com. [31.50.226.70])
-        by mx.google.com with ESMTPSA id w10sm9359341wie.22.2014.07.23.06.42.28
+        by mx.google.com with ESMTPSA id w10sm9359341wie.22.2014.07.23.06.42.39
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 23 Jul 2014 06:42:28 -0700 (PDT)
+        Wed, 23 Jul 2014 06:42:40 -0700 (PDT)
 From:   Alex Smith <alex@alex-smith.me.uk>
 To:     linux-mips@linux-mips.org
-Cc:     Alex Smith <alex@alex-smith.me.uk>
-Subject: [PATCH 00/11] MIPS ptrace/core dump fixes and cleanups
-Date:   Wed, 23 Jul 2014 14:40:05 +0100
-Message-Id: <1406122816-2424-1-git-send-email-alex@alex-smith.me.uk>
+Cc:     Alex Smith <alex@alex-smith.me.uk>, <stable@vger.kernel.org>
+Subject: [PATCH 01/11] MIPS: ptrace: Avoid smp_processor_id() when retrieving FPU IR
+Date:   Wed, 23 Jul 2014 14:40:06 +0100
+Message-Id: <1406122816-2424-2-git-send-email-alex@alex-smith.me.uk>
 X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1406122816-2424-1-git-send-email-alex@alex-smith.me.uk>
+References: <1406122816-2424-1-git-send-email-alex@alex-smith.me.uk>
 Return-Path: <alex@alex-smith.me.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41516
+X-archive-position: 41517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,50 +54,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Whenever ptrace attempts to retrieve the FPU implementation register it
+accesses it through current_cpu_data, which calls smp_processor_id().
+Since the code may execute with preemption enabled, this can trigger
+a warning. Fix this by using boot_cpu_data to get the IR instead.
 
-This patch set includes a number of fixes and cleanups for ptrace and
-core dumps. The bulk of the changes are to make core dumps work again,
-which have been broken since the core dumper was switched to use
-regsets.
+Signed-off-by: Alex Smith <alex@alex-smith.me.uk>
+Cc: <stable@vger.kernel.org> # v3.15+
+---
+ arch/mips/kernel/ptrace.c   | 4 ++--
+ arch/mips/kernel/ptrace32.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-This series applies on top of Ralf's mips-for-linux-next branch.
-
-Thanks,
-Alex
-
-Alex Smith (11):
-  MIPS: ptrace: Avoid smp_processor_id() when retrieving FPU IR
-  MIPS: ptrace: Test correct task's flags in task_user_regset_view()
-  MIPS: asm/reg.h: Make 32- and 64-bit definitions available at the same
-    time
-  MIPS: ptrace: Change GP regset to use correct core dump register
-    layout
-  MIPS: ptrace: Always copy FCSR in FP regset
-  MIPS: O32/32-bit: Fix bug which can cause incorrect system call
-    restarts
-  MIPS: O32/32-bit: Remove outdated comment
-  MIPS: ptrace: Fix user pt_regs definition, use in
-    ptrace_{get,set}regs()
-  MIPS: Remove old core dump functions
-  MIPS: Remove asm/user.h
-  MIPS: asm/reg.h: Move to uapi
-
- arch/mips/include/asm/Kbuild        |   1 +
- arch/mips/include/asm/elf.h         |  17 ---
- arch/mips/include/asm/ptrace.h      |   8 +-
- arch/mips/include/asm/reg.h         | 129 +----------------
- arch/mips/include/asm/user.h        |  58 --------
- arch/mips/include/uapi/asm/ptrace.h |  25 ++--
- arch/mips/include/uapi/asm/reg.h    | 206 ++++++++++++++++++++++++++
- arch/mips/kernel/binfmt_elfo32.c    |  38 -----
- arch/mips/kernel/process.c          |  57 +-------
- arch/mips/kernel/ptrace.c           | 281 +++++++++++++++++++++++++++---------
- arch/mips/kernel/ptrace32.c         |  10 +-
- arch/mips/kernel/scall32-o32.S      |   2 -
- 12 files changed, 447 insertions(+), 385 deletions(-)
- delete mode 100644 arch/mips/include/asm/user.h
- create mode 100644 arch/mips/include/uapi/asm/reg.h
-
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index f639ccd..6063b11 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -129,7 +129,7 @@ int ptrace_getfpregs(struct task_struct *child, __u32 __user *data)
+ 	}
+ 
+ 	__put_user(child->thread.fpu.fcr31, data + 64);
+-	__put_user(current_cpu_data.fpu_id, data + 65);
++	__put_user(boot_cpu_data.fpu_id, data + 65);
+ 
+ 	return 0;
+ }
+@@ -480,7 +480,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			break;
+ 		case FPC_EIR:
+ 			/* implementation / version register */
+-			tmp = current_cpu_data.fpu_id;
++			tmp = boot_cpu_data.fpu_id;
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;
+diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
+index b40c3ca..a83fb73 100644
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -129,7 +129,7 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			break;
+ 		case FPC_EIR:
+ 			/* implementation / version register */
+-			tmp = current_cpu_data.fpu_id;
++			tmp = boot_cpu_data.fpu_id;
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;
 -- 
 1.9.1

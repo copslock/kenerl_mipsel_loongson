@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 17:00:11 +0200 (CEST)
-Received: from mx0.aculab.com ([213.249.233.131]:38471 "HELO mx0.aculab.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6822058AbaGWPAFoe7lN convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 17:00:05 +0200
-Received: (qmail 16093 invoked from network); 23 Jul 2014 15:00:03 -0000
-Received: from localhost (127.0.0.1)
-  by mx0.aculab.com with SMTP; 23 Jul 2014 15:00:03 -0000
-Received: from mx0.aculab.com ([127.0.0.1])
- by localhost (mx0.aculab.com [127.0.0.1]) (amavisd-new, port 10024) with SMTP
- id 15923-01 for <linux-mips@linux-mips.org>;
- Wed, 23 Jul 2014 15:59:56 +0100 (BST)
-Received: (qmail 15970 invoked by uid 599); 23 Jul 2014 14:59:56 -0000
-Received: from unknown (HELO AcuExch.aculab.com) (10.202.163.4)
-    by mx0.aculab.com (qpsmtpd/0.28) with ESMTP; Wed, 23 Jul 2014 15:59:56 +0100
-Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
- mapi id 14.03.0123.003; Wed, 23 Jul 2014 15:58:42 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Manuel Lauss' <manuel.lauss@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH 2/6] MIPS: Alchemy: move ethernet registers to ethernet
- driver
-Thread-Topic: [PATCH 2/6] MIPS: Alchemy: move ethernet registers to ethernet
- driver
-Thread-Index: AQHPpoNwOr077loBYkWGG5uCaxA295utv8Vg
-Date:   Wed, 23 Jul 2014 14:58:42 +0000
-Message-ID: <063D6719AE5E284EB5DD2968C1650D6D1727C2C8@AcuExch.aculab.com>
-References: <1406126186-471228-1-git-send-email-manuel.lauss@gmail.com>
- <1406126186-471228-3-git-send-email-manuel.lauss@gmail.com>
-In-Reply-To: <1406126186-471228-3-git-send-email-manuel.lauss@gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.99.200]
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2014 17:19:31 +0200 (CEST)
+Received: from mail-vc0-f177.google.com ([209.85.220.177]:61534 "EHLO
+        mail-vc0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822058AbaGWPT30mqLd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2014 17:19:29 +0200
+Received: by mail-vc0-f177.google.com with SMTP id hy4so2385516vcb.22
+        for <multiple recipients>; Wed, 23 Jul 2014 08:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=pEl/4Esc0EJVYYyhEWr2Wc9iywDcIRiIrzwP/vnFZdA=;
+        b=W7WAeZ0VdvHc/E2GZH2Vcu51baKPpozuoo7xP0sXHBvsjxI0U1lUvFUecDebB22cyO
+         bBkWw7pC3lfWp4gr54nF53zs1RWvi3hzs30RPhLG748LjmKMGuNaXh4pWJ62UWf70Z77
+         hHGSKGBhRHVtIWyOloG1rBZ9CVkn5HOzRrnhX0Ys2SdNeaJuvkOBVpx8fPJxPt3f8Neo
+         WHOCd1rHoZQaI+mdbHEKdj/96+8vaF2gQcD+5xMp/qif9EYmZuH8CsoonCGFdcg5eVZU
+         6Te3l/jOCHKhNn1NtbveVbJgrfSpFaC7X3NJcvK2X71XDRTVNjbSxgxWR6fkuvsV8vo+
+         CqXQ==
 MIME-Version: 1.0
-X-Virus-Scanned: by iCritical at mx0.aculab.com
-Return-Path: <David.Laight@ACULAB.COM>
+X-Received: by 10.53.9.234 with SMTP id dv10mr2711839vdd.56.1406128763157;
+ Wed, 23 Jul 2014 08:19:23 -0700 (PDT)
+Received: by 10.220.187.133 with HTTP; Wed, 23 Jul 2014 08:19:23 -0700 (PDT)
+In-Reply-To: <20140723064657.GK30558@pburton-laptop>
+References: <CAPDOMVjNyAwo53Coz8MFuUs70M7j1e3QWprus5vGpTfAw=hspg@mail.gmail.com>
+        <20140723064657.GK30558@pburton-laptop>
+Date:   Wed, 23 Jul 2014 11:19:23 -0400
+Message-ID: <CAPDOMVg6qMBBaT5t8Cqu7NH7FZxs=-y2SZ9uBgYGv2tgBr3yvw@mail.gmail.com>
+Subject: Re: smp-cmp.c: CDFIXMES
+From:   Nick Krause <xerofoify@gmail.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>, markos.chandras@imgtec.com,
+        Steven.Hill@imgtec.com, Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <xerofoify@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41547
+X-archive-position: 41548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: xerofoify@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,295 +54,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Manuel Lauss
-> Move the register offsets and bit descriptions from the au1000.h header
-> to their only user, the au1000_eth.c driver.
+On Wed, Jul 23, 2014 at 2:46 AM, Paul Burton <paul.burton@imgtec.com> wrote:
+> On Wed, Jul 23, 2014 at 12:40:59AM -0400, Nick Krause wrote:
+>> Are the lines with  CDFIXME still needed? If not please tell me as I
+>> will send in a patch removing these
+>> two from this file in order to help you guys out :).
+>> Cheers Nick
+>
+> Hi Nick,
+>
+> I imagine the only answer any of us can give you is "we don't know". If
+> we did then we'd have removed the code or the comments already.
+>
+> Please do note that the smp-cmp.c file lives behind a Kconfig option
+> that is now marked as deprecated, and that there is other work going on
+> in areas related to clocksource & clock events on the applicable
+> systems. So whilst someone could spend the time figuring out whether
+> those lines are useful, I expect that cleaning up these old FIXMEs is
+> not a particularly high priority for anyone right now.
+>
+> If you'll leave them alone for a while I expect they'll disappear one
+> way or another in a few cycles time, along with the rest of the file.
+>
+> Thanks,
+>     Paul
 
-Personally I'd use 2 header files.
-One for the private data and one for the public data.
-It can be much easier to read code if the structure definitions are in
-a header file.
 
-	David
-
-> 
-> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-> Cc: netdev@vger.kernel.org
-> ---
->  arch/mips/include/asm/mach-au1x00/au1000.h | 126 -----------------------------
->  drivers/net/ethernet/amd/au1000_eth.c      | 118 +++++++++++++++++++++++++++
->  2 files changed, 118 insertions(+), 126 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
-> index 60754fc..e506710 100644
-> --- a/arch/mips/include/asm/mach-au1x00/au1000.h
-> +++ b/arch/mips/include/asm/mach-au1x00/au1000.h
-> @@ -1003,132 +1003,6 @@ enum soc_au1200_ints {
->  #define SYS_RTCMATCH2		(SYS_BASE + 0x54)
->  #define SYS_RTCREAD		(SYS_BASE + 0x58)
-> 
-> -/* Ethernet Controllers  */
-> -
-> -/* 4 byte offsets from AU1000_ETH_BASE */
-> -#define MAC_CONTROL		0x0
-> -#  define MAC_RX_ENABLE		(1 << 2)
-> -#  define MAC_TX_ENABLE		(1 << 3)
-> -#  define MAC_DEF_CHECK		(1 << 5)
-> -#  define MAC_SET_BL(X)		(((X) & 0x3) << 6)
-> -#  define MAC_AUTO_PAD		(1 << 8)
-> -#  define MAC_DISABLE_RETRY	(1 << 10)
-> -#  define MAC_DISABLE_BCAST	(1 << 11)
-> -#  define MAC_LATE_COL		(1 << 12)
-> -#  define MAC_HASH_MODE		(1 << 13)
-> -#  define MAC_HASH_ONLY		(1 << 15)
-> -#  define MAC_PASS_ALL		(1 << 16)
-> -#  define MAC_INVERSE_FILTER	(1 << 17)
-> -#  define MAC_PROMISCUOUS	(1 << 18)
-> -#  define MAC_PASS_ALL_MULTI	(1 << 19)
-> -#  define MAC_FULL_DUPLEX	(1 << 20)
-> -#  define MAC_NORMAL_MODE	0
-> -#  define MAC_INT_LOOPBACK	(1 << 21)
-> -#  define MAC_EXT_LOOPBACK	(1 << 22)
-> -#  define MAC_DISABLE_RX_OWN	(1 << 23)
-> -#  define MAC_BIG_ENDIAN	(1 << 30)
-> -#  define MAC_RX_ALL		(1 << 31)
-> -#define MAC_ADDRESS_HIGH	0x4
-> -#define MAC_ADDRESS_LOW		0x8
-> -#define MAC_MCAST_HIGH		0xC
-> -#define MAC_MCAST_LOW		0x10
-> -#define MAC_MII_CNTRL		0x14
-> -#  define MAC_MII_BUSY		(1 << 0)
-> -#  define MAC_MII_READ		0
-> -#  define MAC_MII_WRITE		(1 << 1)
-> -#  define MAC_SET_MII_SELECT_REG(X) (((X) & 0x1f) << 6)
-> -#  define MAC_SET_MII_SELECT_PHY(X) (((X) & 0x1f) << 11)
-> -#define MAC_MII_DATA		0x18
-> -#define MAC_FLOW_CNTRL		0x1C
-> -#  define MAC_FLOW_CNTRL_BUSY	(1 << 0)
-> -#  define MAC_FLOW_CNTRL_ENABLE (1 << 1)
-> -#  define MAC_PASS_CONTROL	(1 << 2)
-> -#  define MAC_SET_PAUSE(X)	(((X) & 0xffff) << 16)
-> -#define MAC_VLAN1_TAG		0x20
-> -#define MAC_VLAN2_TAG		0x24
-> -
-> -/* Ethernet Controller Enable */
-> -
-> -#  define MAC_EN_CLOCK_ENABLE	(1 << 0)
-> -#  define MAC_EN_RESET0		(1 << 1)
-> -#  define MAC_EN_TOSS		(0 << 2)
-> -#  define MAC_EN_CACHEABLE	(1 << 3)
-> -#  define MAC_EN_RESET1		(1 << 4)
-> -#  define MAC_EN_RESET2		(1 << 5)
-> -#  define MAC_DMA_RESET		(1 << 6)
-> -
-> -/* Ethernet Controller DMA Channels */
-> -
-> -#define MAC0_TX_DMA_ADDR	0xB4004000
-> -#define MAC1_TX_DMA_ADDR	0xB4004200
-> -/* offsets from MAC_TX_RING_ADDR address */
-> -#define MAC_TX_BUFF0_STATUS	0x0
-> -#  define TX_FRAME_ABORTED	(1 << 0)
-> -#  define TX_JAB_TIMEOUT	(1 << 1)
-> -#  define TX_NO_CARRIER		(1 << 2)
-> -#  define TX_LOSS_CARRIER	(1 << 3)
-> -#  define TX_EXC_DEF		(1 << 4)
-> -#  define TX_LATE_COLL_ABORT	(1 << 5)
-> -#  define TX_EXC_COLL		(1 << 6)
-> -#  define TX_UNDERRUN		(1 << 7)
-> -#  define TX_DEFERRED		(1 << 8)
-> -#  define TX_LATE_COLL		(1 << 9)
-> -#  define TX_COLL_CNT_MASK	(0xF << 10)
-> -#  define TX_PKT_RETRY		(1 << 31)
-> -#define MAC_TX_BUFF0_ADDR	0x4
-> -#  define TX_DMA_ENABLE		(1 << 0)
-> -#  define TX_T_DONE		(1 << 1)
-> -#  define TX_GET_DMA_BUFFER(X)	(((X) >> 2) & 0x3)
-> -#define MAC_TX_BUFF0_LEN	0x8
-> -#define MAC_TX_BUFF1_STATUS	0x10
-> -#define MAC_TX_BUFF1_ADDR	0x14
-> -#define MAC_TX_BUFF1_LEN	0x18
-> -#define MAC_TX_BUFF2_STATUS	0x20
-> -#define MAC_TX_BUFF2_ADDR	0x24
-> -#define MAC_TX_BUFF2_LEN	0x28
-> -#define MAC_TX_BUFF3_STATUS	0x30
-> -#define MAC_TX_BUFF3_ADDR	0x34
-> -#define MAC_TX_BUFF3_LEN	0x38
-> -
-> -#define MAC0_RX_DMA_ADDR	0xB4004100
-> -#define MAC1_RX_DMA_ADDR	0xB4004300
-> -/* offsets from MAC_RX_RING_ADDR */
-> -#define MAC_RX_BUFF0_STATUS	0x0
-> -#  define RX_FRAME_LEN_MASK	0x3fff
-> -#  define RX_WDOG_TIMER		(1 << 14)
-> -#  define RX_RUNT		(1 << 15)
-> -#  define RX_OVERLEN		(1 << 16)
-> -#  define RX_COLL		(1 << 17)
-> -#  define RX_ETHER		(1 << 18)
-> -#  define RX_MII_ERROR		(1 << 19)
-> -#  define RX_DRIBBLING		(1 << 20)
-> -#  define RX_CRC_ERROR		(1 << 21)
-> -#  define RX_VLAN1		(1 << 22)
-> -#  define RX_VLAN2		(1 << 23)
-> -#  define RX_LEN_ERROR		(1 << 24)
-> -#  define RX_CNTRL_FRAME	(1 << 25)
-> -#  define RX_U_CNTRL_FRAME	(1 << 26)
-> -#  define RX_MCAST_FRAME	(1 << 27)
-> -#  define RX_BCAST_FRAME	(1 << 28)
-> -#  define RX_FILTER_FAIL	(1 << 29)
-> -#  define RX_PACKET_FILTER	(1 << 30)
-> -#  define RX_MISSED_FRAME	(1 << 31)
-> -
-> -#  define RX_ERROR (RX_WDOG_TIMER | RX_RUNT | RX_OVERLEN |  \
-> -		    RX_COLL | RX_MII_ERROR | RX_CRC_ERROR | \
-> -		    RX_LEN_ERROR | RX_U_CNTRL_FRAME | RX_MISSED_FRAME)
-> -#define MAC_RX_BUFF0_ADDR	0x4
-> -#  define RX_DMA_ENABLE		(1 << 0)
-> -#  define RX_T_DONE		(1 << 1)
-> -#  define RX_GET_DMA_BUFFER(X)	(((X) >> 2) & 0x3)
-> -#  define RX_SET_BUFF_ADDR(X)	((X) & 0xffffffc0)
-> -#define MAC_RX_BUFF1_STATUS	0x10
-> -#define MAC_RX_BUFF1_ADDR	0x14
-> -#define MAC_RX_BUFF2_STATUS	0x20
-> -#define MAC_RX_BUFF2_ADDR	0x24
-> -#define MAC_RX_BUFF3_STATUS	0x30
-> -#define MAC_RX_BUFF3_ADDR	0x34
-> -
-> 
->  /*
->   * The IrDA peripheral has an IRFIRSEL pin, but on the DB/PB boards it's not
-> diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
-> index a78e4c1..ad8b058 100644
-> --- a/drivers/net/ethernet/amd/au1000_eth.c
-> +++ b/drivers/net/ethernet/amd/au1000_eth.c
-> @@ -89,6 +89,124 @@ MODULE_DESCRIPTION(DRV_DESC);
->  MODULE_LICENSE("GPL");
->  MODULE_VERSION(DRV_VERSION);
-> 
-> +/* AU1000 MAC registers and bits */
-> +#define MAC_CONTROL		0x0
-> +#  define MAC_RX_ENABLE		(1 << 2)
-> +#  define MAC_TX_ENABLE		(1 << 3)
-> +#  define MAC_DEF_CHECK		(1 << 5)
-> +#  define MAC_SET_BL(X)		(((X) & 0x3) << 6)
-> +#  define MAC_AUTO_PAD		(1 << 8)
-> +#  define MAC_DISABLE_RETRY	(1 << 10)
-> +#  define MAC_DISABLE_BCAST	(1 << 11)
-> +#  define MAC_LATE_COL		(1 << 12)
-> +#  define MAC_HASH_MODE		(1 << 13)
-> +#  define MAC_HASH_ONLY		(1 << 15)
-> +#  define MAC_PASS_ALL		(1 << 16)
-> +#  define MAC_INVERSE_FILTER	(1 << 17)
-> +#  define MAC_PROMISCUOUS	(1 << 18)
-> +#  define MAC_PASS_ALL_MULTI	(1 << 19)
-> +#  define MAC_FULL_DUPLEX	(1 << 20)
-> +#  define MAC_NORMAL_MODE	0
-> +#  define MAC_INT_LOOPBACK	(1 << 21)
-> +#  define MAC_EXT_LOOPBACK	(1 << 22)
-> +#  define MAC_DISABLE_RX_OWN	(1 << 23)
-> +#  define MAC_BIG_ENDIAN	(1 << 30)
-> +#  define MAC_RX_ALL		(1 << 31)
-> +#define MAC_ADDRESS_HIGH	0x4
-> +#define MAC_ADDRESS_LOW		0x8
-> +#define MAC_MCAST_HIGH		0xC
-> +#define MAC_MCAST_LOW		0x10
-> +#define MAC_MII_CNTRL		0x14
-> +#  define MAC_MII_BUSY		(1 << 0)
-> +#  define MAC_MII_READ		0
-> +#  define MAC_MII_WRITE		(1 << 1)
-> +#  define MAC_SET_MII_SELECT_REG(X) (((X) & 0x1f) << 6)
-> +#  define MAC_SET_MII_SELECT_PHY(X) (((X) & 0x1f) << 11)
-> +#define MAC_MII_DATA		0x18
-> +#define MAC_FLOW_CNTRL		0x1C
-> +#  define MAC_FLOW_CNTRL_BUSY	(1 << 0)
-> +#  define MAC_FLOW_CNTRL_ENABLE (1 << 1)
-> +#  define MAC_PASS_CONTROL	(1 << 2)
-> +#  define MAC_SET_PAUSE(X)	(((X) & 0xffff) << 16)
-> +#define MAC_VLAN1_TAG		0x20
-> +#define MAC_VLAN2_TAG		0x24
-> +
-> +/* Ethernet Controller Enable */
-> +#  define MAC_EN_CLOCK_ENABLE	(1 << 0)
-> +#  define MAC_EN_RESET0		(1 << 1)
-> +#  define MAC_EN_TOSS		(0 << 2)
-> +#  define MAC_EN_CACHEABLE	(1 << 3)
-> +#  define MAC_EN_RESET1		(1 << 4)
-> +#  define MAC_EN_RESET2		(1 << 5)
-> +#  define MAC_DMA_RESET		(1 << 6)
-> +
-> +/* Ethernet Controller DMA Channels */
-> +/* offsets from MAC_TX_RING_ADDR address */
-> +#define MAC_TX_BUFF0_STATUS	0x0
-> +#  define TX_FRAME_ABORTED	(1 << 0)
-> +#  define TX_JAB_TIMEOUT	(1 << 1)
-> +#  define TX_NO_CARRIER		(1 << 2)
-> +#  define TX_LOSS_CARRIER	(1 << 3)
-> +#  define TX_EXC_DEF		(1 << 4)
-> +#  define TX_LATE_COLL_ABORT	(1 << 5)
-> +#  define TX_EXC_COLL		(1 << 6)
-> +#  define TX_UNDERRUN		(1 << 7)
-> +#  define TX_DEFERRED		(1 << 8)
-> +#  define TX_LATE_COLL		(1 << 9)
-> +#  define TX_COLL_CNT_MASK	(0xF << 10)
-> +#  define TX_PKT_RETRY		(1 << 31)
-> +#define MAC_TX_BUFF0_ADDR	0x4
-> +#  define TX_DMA_ENABLE		(1 << 0)
-> +#  define TX_T_DONE		(1 << 1)
-> +#  define TX_GET_DMA_BUFFER(X)	(((X) >> 2) & 0x3)
-> +#define MAC_TX_BUFF0_LEN	0x8
-> +#define MAC_TX_BUFF1_STATUS	0x10
-> +#define MAC_TX_BUFF1_ADDR	0x14
-> +#define MAC_TX_BUFF1_LEN	0x18
-> +#define MAC_TX_BUFF2_STATUS	0x20
-> +#define MAC_TX_BUFF2_ADDR	0x24
-> +#define MAC_TX_BUFF2_LEN	0x28
-> +#define MAC_TX_BUFF3_STATUS	0x30
-> +#define MAC_TX_BUFF3_ADDR	0x34
-> +#define MAC_TX_BUFF3_LEN	0x38
-> +
-> +/* offsets from MAC_RX_RING_ADDR */
-> +#define MAC_RX_BUFF0_STATUS	0x0
-> +#  define RX_FRAME_LEN_MASK	0x3fff
-> +#  define RX_WDOG_TIMER		(1 << 14)
-> +#  define RX_RUNT		(1 << 15)
-> +#  define RX_OVERLEN		(1 << 16)
-> +#  define RX_COLL		(1 << 17)
-> +#  define RX_ETHER		(1 << 18)
-> +#  define RX_MII_ERROR		(1 << 19)
-> +#  define RX_DRIBBLING		(1 << 20)
-> +#  define RX_CRC_ERROR		(1 << 21)
-> +#  define RX_VLAN1		(1 << 22)
-> +#  define RX_VLAN2		(1 << 23)
-> +#  define RX_LEN_ERROR		(1 << 24)
-> +#  define RX_CNTRL_FRAME	(1 << 25)
-> +#  define RX_U_CNTRL_FRAME	(1 << 26)
-> +#  define RX_MCAST_FRAME	(1 << 27)
-> +#  define RX_BCAST_FRAME	(1 << 28)
-> +#  define RX_FILTER_FAIL	(1 << 29)
-> +#  define RX_PACKET_FILTER	(1 << 30)
-> +#  define RX_MISSED_FRAME	(1 << 31)
-> +
-> +#  define RX_ERROR (RX_WDOG_TIMER | RX_RUNT | RX_OVERLEN |  \
-> +		    RX_COLL | RX_MII_ERROR | RX_CRC_ERROR | \
-> +		    RX_LEN_ERROR | RX_U_CNTRL_FRAME | RX_MISSED_FRAME)
-> +#define MAC_RX_BUFF0_ADDR	0x4
-> +#  define RX_DMA_ENABLE		(1 << 0)
-> +#  define RX_T_DONE		(1 << 1)
-> +#  define RX_GET_DMA_BUFFER(X)	(((X) >> 2) & 0x3)
-> +#  define RX_SET_BUFF_ADDR(X)	((X) & 0xffffffc0)
-> +#define MAC_RX_BUFF1_STATUS	0x10
-> +#define MAC_RX_BUFF1_ADDR	0x14
-> +#define MAC_RX_BUFF2_STATUS	0x20
-> +#define MAC_RX_BUFF2_ADDR	0x24
-> +#define MAC_RX_BUFF3_STATUS	0x30
-> +#define MAC_RX_BUFF3_ADDR	0x34
-> +
->  /*
->   * Theory of operation
->   *
-> --
-> 2.0.1
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe netdev" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+That's Ok Paul, just wanted to known when the file was going away as it seemed
+old if you want help with this please let me known :).
+Cheers Nick

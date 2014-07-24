@@ -1,35 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2014 09:40:45 +0200 (CEST)
-Received: from hall.aurel32.net ([195.154.112.97]:33851 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816022AbaGXHkmnSMuU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Jul 2014 09:40:42 +0200
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1XADdg-0007zY-6E; Thu, 24 Jul 2014 09:40:32 +0200
-Date:   Thu, 24 Jul 2014 09:40:32 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Andreas Barth <aba@ayous.org>
-Subject: Re: SMP IPI issues on Loongson 3A based machines
-Message-ID: <20140724074032.GC18817@hall.aurel32.net>
-References: <tencent_17A6D3544BFB28F65D92C62E@qq.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2014 10:29:38 +0200 (CEST)
+Received: from mail-oa0-f44.google.com ([209.85.219.44]:40893 "EHLO
+        mail-oa0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6842383AbaGXI32w6pHp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Jul 2014 10:29:28 +0200
+Received: by mail-oa0-f44.google.com with SMTP id eb12so3255861oac.31
+        for <linux-mips@linux-mips.org>; Thu, 24 Jul 2014 01:29:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=1NC3ZbyGjuZZvRpXhJplqKG8zUXgjtsOTCWQltj5q8U=;
+        b=dohJghLH5w1E8f/yOXIqomw4YrwE3IgoRDJzIRsBuSlUu5CTa2FNgavizuYLHnNo6V
+         K9XbqkBNswqvBHYZSlcIL3FfO3SwsylXbqUHn4yKkhLPDgHxK+lQd97EoiPs+UQePeBl
+         pEcai6RBSTF351LYOUIoM4KzO43C9p7TTH+TMt/NgqIo1iNley75yTmsMV3Sw/ndHHEs
+         Y9HtwkKTxt2urDWt4HrYrK5Vu7qFRqCCGaMuR4qLy0dE8s4bJ3WUROl7tpdrJXdTH1EX
+         DwKBd27Ekn4O5Axf8olJgzaTKkxFnv9/bRyAZgxA9pBxWdQABMxJdpdIgJoqiXBjtS6a
+         0V8A==
+X-Gm-Message-State: ALoCoQn/IXV8FDOcEsO+/HvfUG66Z3akra4ZSnCyhnKoOJUx5CBerijqKmt52KQdiKB1NpJ9ez1j
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <tencent_17A6D3544BFB28F65D92C62E@qq.com>
-X-Mailer: Mutt 1.5.21 (2010-09-15)
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <aurelien@aurel32.net>
+X-Received: by 10.182.29.234 with SMTP id n10mr10363467obh.67.1406190562767;
+ Thu, 24 Jul 2014 01:29:22 -0700 (PDT)
+Received: by 10.182.33.100 with HTTP; Thu, 24 Jul 2014 01:29:22 -0700 (PDT)
+In-Reply-To: <20140722151125.GS17528@sirena.org.uk>
+References: <CACRpkda6mzVdaN0cvOxpbsxWyCv2nGyDXOjZg_5aT8u7SSQeUw@mail.gmail.com>
+        <1405197014-25225-1-git-send-email-berthe.ab@gmail.com>
+        <1405197014-25225-4-git-send-email-berthe.ab@gmail.com>
+        <CACRpkdasp9bLULT7NJM9nYX58rRSsQKXFddOLz9Ah6kp-j-3=Q@mail.gmail.com>
+        <20140722151125.GS17528@sirena.org.uk>
+Date:   Thu, 24 Jul 2014 10:29:22 +0200
+Message-ID: <CACRpkdaEF14cB+=SjTHgwGH0z88v82Q_UNPvjzDAbpOb_2ec5Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] driver:gpio remove all usage of gpio_remove retval in driver
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     abdoulaye berthe <berthe.ab@gmail.com>,
+        "arm@kernel.org" <arm@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Bryan Wu <cooloney@gmail.com>,
+        Mauro Carvalho Chehab <m.chehab@samsung.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Matthew Garrett <matthew.garrett@nebula.com>,
+        Michael Buesch <m@bues.ch>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41556
+X-archive-position: 41557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,150 +80,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 24, 2014 at 07:47:02AM +0800, 陈华才 wrote:
-> Hi, Aurelien
+On Tue, Jul 22, 2014 at 5:11 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Jul 22, 2014 at 05:08:13PM +0200, Linus Walleij wrote:
+>
+>> Heads up. Requesting ACKs for this patch or I'm atleast warning that it will be
+>> applied. We're getting rid of the return value from gpiochip_remove().
+>
+> Can someone send the patch please?  Splitting it up per-subsystem would
+> probably be easier...
 
-Hi,
+OK Abdoulaye maybe we can do it a piece at a time?
 
-> Could you please attachment your config file? It seems you didn't use
-> the default one.
+I have removed the __must_check attribute from gpiochip_remove()
+in the gpiolib, so the compiler won't complain about this being missing
+anymore as of kernel v3.17. I also dropped the check in the GPIO
+and pin control subsystem, and other subsystems can start
+dropping the checks too if they are OK with the build warnings
+from the kautobuild until the __must_check removal has propagated
+upstream.
 
-Please fine it attached. That said thanks for your idea about using the
-default config file, I built a 3.15.6 kernel with it, and it doesn't 
-crash with it. I'll try to "bisect" the config file to see what is
-causing the issue, and I'll keep you updated.
-
-> And, which version of mysql do you use? We will debug this problem as
-> soon as possible.
-
-We have been able to reproduce both mysql 5.5 and 5.6.
-
-> BTW, you can try the master branch of
-> http://dev.lemote.com/cgit/linux-official.git/, because the upstream
-> kernel has only basic support for loongson now.
-
-I'll try it once I have identified the config option causing the issue.
-
-Thanks,
-Aurelien
-
-> ------------------ Original ------------------
-> From: "Aurelien Jarno"<aurelien@aurel32.net>
-> Date: Thu, Jul 24, 2014 06:03 AM
-> To: "linux-mips"<linux-mips@linux-mips.org>;
-> Cc: "Huacai Chen"<chenhc@lemote.com>;"Andreas Barth"<aba@ayous.org>;
-> Subject: SMP IPI issues on Loongson 3A based machines
-> 
-> 
-> Hi all,
-> 
-> Debian is using Loongson 3A based machines as build daemons. We
-> experience a few stability issues from time to time, with the machine
-> freezing completely, sometimes outputing a backtrace on the serial
-> console:
-> 
-> | ------------[ cut here ]------------
-> | [158285.176000] WARNING: CPU: 3 PID: 4162 at /build/kernel/linux-3.15.5/kernel/smp.c:338 smp_call_function_many+0x120/0x388()
-> | [158285.176000] Modules linked in: radeon drm_kms_helper ttm drm dm_mod ehci_pci ata_generic ohci_pci ohci_hcd ehci_hcd usbcore usb_common
-> | [158285.176000] CPU: 3 PID: 4162 Comm: mysqld Not tainted 3.15-trunk-loongson-3 #1 Debian 3.15.5-1~exp1+rs780e
-> | [158285.176000] Stack : ffffffff80920000 ffffffff80290fec ffffffff80a00000 ffffffff80291808
-> |           0000000000000000 0000000000000000 ffffffff809e0000 ffffffff809e0000
-> |           ffffffff8085f188 ffffffff80914ff7 ffffffff809de068 98000000fab16e58
-> |           0000000000001042 0000000000000003 0000000000000003 0000000000000001
-> |           ffffffff8090e688 ffffffff80768cfc 980000014c323c08 ffffffff80234f2c
-> |           ffffffff8090e688 ffffffff80293180 98000000fab169b0 ffffffff8085f188
-> |           0000000000000003 0000000000001042 0000000000000000 0000000000000000
-> |           0000000000000000 980000014c323b50 0000000000000000 ffffffff8076bdb0
-> |           0000000000000000 0000000000000000 0000000000000000 ffffffff802b2300
-> |           0000000000000152 ffffffff8020acd0 0000000000000009 ffffffff8076bdb0
-> |           ...
-> | [158285.280000] Call Trace:
-> | [158285.280000] [<ffffffff8020acd0>] show_stack+0x68/0x80
-> | [158285.280000] [<ffffffff8076bdb0>] dump_stack+0x6c/0x8c
-> | [158285.280000] [<ffffffff80235088>] warn_slowpath_common+0x88/0xb8
-> | [158285.280000] [<ffffffff802b2328>] smp_call_function_many+0x120/0x388
-> | [158285.280000] [<ffffffff802b25bc>] smp_call_function+0x2c/0x40
-> | [158285.280000] [<ffffffff80223b18>] r4k_flush_data_cache_page+0x38/0x70
-> | [158285.280000] [<ffffffff803c89b0>] aio_complete+0x170/0x338
-> | [158285.280000] [<ffffffff803c9bb0>] do_io_submit+0x378/0x768
-> | [158285.280000] [<ffffffff80218fe8>] handle_sys+0x128/0x14c
-> | [158285.280000]
-> | [158285.280000] ---[ end trace 97d7fd09bd30b5b9 ]---
-> 
-> We noticed this happens on various CPU. The CPU is stuck in this part of
-> the smp_call_function_many function:
-> 
-> |         if (wait) {
-> |                 for_each_cpu(cpu, cfd->cpumask) {
-> |                         struct call_single_data *csd;
-> | 
-> |                         csd = per_cpu_ptr(cfd->csd, cpu);
-> |                         csd_lock_wait(csd);
-> |                 }
-> |         }
-> 
-> and more precisely in the csd_lock_wait() part. From time to time (it
-> *seems* when the initial issue happens on a different CPU than #0), we
-> get this kind of additional backtrace a few seconds after, sometimes
-> repeating regularly on the other CPUs:
-> 
-> | [158313.196000] INFO: rcu_sched self-detected stall on CPU { 2}  (t=5250 jiffies g=661863 c=661862 q=4)
-> | [158313.196000] CPU: 2 PID: 4217 Comm: mysqld Tainted: G        W     3.15-trunk-loongson-3 #1 Debian 3.15.5-1~exp1+rs780e
-> | [158313.196000] Stack : ffffffff80920000 ffffffff80290fec ffffffff80a00000 ffffffff80291808
-> |           0000000000000000 0000000000000000 ffffffff809e0000 ffffffff809e0000
-> |           ffffffff8085f188 ffffffff80914ff7 ffffffff809de068 98000000029b73e0
-> |           0000000000001079 0000000000000002 ffffffff80910000 0000000000000010
-> |           9800000008d4cbe0 ffffffff80768cfc 98000001305d3858 ffffffff80234e94
-> |           9800000008d51230 ffffffff80293180 98000000029b6f38 ffffffff8085f188
-> |           0000000000000002 0000000000001079 0000000000000000 0000000000000000
-> |           0000000000000000 98000001305d37a0 0000000000000000 ffffffff8076bdb0
-> |           0000000000000000 0000000000000000 0000000000000000 ffffffff80790000
-> |           ffffffff80920c40 ffffffff8020acd0 ffffffff80920c40 ffffffff8076bdb0
-> |           ...
-> | [158313.196000] Call Trace:
-> | [158313.196000] [<ffffffff8020acd0>] show_stack+0x68/0x80
-> | [158313.196000] [<ffffffff8076bdb0>] dump_stack+0x6c/0x8c
-> | [158313.196000] [<ffffffff8029ff60>] rcu_check_callbacks+0x4d8/0x878
-> | [158313.196000] [<ffffffff80245418>] update_process_times+0x48/0x88
-> | [158313.196000] [<ffffffff802ac178>] tick_sched_handle.isra.15+0x20/0x80
-> | [158313.196000] [<ffffffff802ac218>] tick_sched_timer+0x40/0x70
-> | [158313.196000] [<ffffffff8025f050>] __run_hrtimer+0xa8/0x240
-> | [158313.196000] [<ffffffff8025fc08>] hrtimer_interrupt+0x130/0x2f8
-> | [158313.196000] [<ffffffff8020d754>] c0_compare_interrupt+0x54/0x90
-> | [158313.196000] [<ffffffff80293eb8>] handle_irq_event_percpu+0x68/0x248
-> | [158313.196000] [<ffffffff802984fc>] handle_percpu_irq+0x8c/0xc0
-> | [158313.196000] [<ffffffff802933bc>] generic_handle_irq+0x3c/0x58
-> | [158313.196000] [<ffffffff80207608>] do_IRQ+0x18/0x30
-> | [158313.196000] [<ffffffff80205428>] ret_from_irq+0x0/0x4
-> | [158313.196000] [<ffffffff802b2500>] smp_call_function_many+0x2f8/0x388
-> | [158313.196000] [<ffffffff802b25bc>] smp_call_function+0x2c/0x40
-> | [158313.196000] [<ffffffff8020f8a0>] flush_tlb_mm+0x50/0x108
-> | [158313.196000] [<ffffffff80335a5c>] tlb_finish_mmu+0x74/0x88
-> | [158313.196000] [<ffffffff8033fef0>] unmap_region+0xc8/0x118
-> | [158313.196000] [<ffffffff803422c4>] do_munmap+0x264/0x440
-> | [158313.196000] [<ffffffff803424e4>] vm_munmap+0x44/0x70
-> | [158313.196000] [<ffffffff8034353c>] SyS_munmap+0x24/0x38
-> | [158313.196000] [<ffffffff80218fe8>] handle_sys+0x128/0x14c
-> | [158313.196000]
-> | [158340.156000] BUG: soft lockup - CPU#2 stuck for 22s! [mysqld:4217]
-> | [158340.156000] Modules linked in: radeon drm_kms_helper ttm drm dm_mod ehci_pci ata_generic ohci_pci ohci_hcd ehci_hcd usbcore usb_common
-> 
-> Any idea about the problem or how to debug that further?
-> 
-> The problem happens with both Lemote and Loongson machines, and we have
-> finally found a way to reproduce it all the time, by running the mysql 
-> testsuite with 4 threads. This means we can now easily reproduce the
-> issue to debug it further. If someone is interested, I think I can
-> package a chroot with all the needed files in a tarball so that the
-> issue can be reproduce more easily.
-> 
-> Thanks,
-> Aurelien
-> 
-> -- 
-> Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-> aurelien@aurel32.net                 http://www.aurel32.net
-
--- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net
+Yours,
+Linus Walleij

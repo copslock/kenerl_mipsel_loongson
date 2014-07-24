@@ -1,25 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2014 11:46:41 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:40654 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2014 11:47:15 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:40812 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6842451AbaGXJqfwF3gz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Jul 2014 11:46:35 +0200
+        by eddie.linux-mips.org with ESMTP id S6842532AbaGXJrLxLkja (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Jul 2014 11:47:11 +0200
 Received: from bl16-86-217.dsl.telepac.pt ([188.81.86.217] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.71)
         (envelope-from <luis.henriques@canonical.com>)
-        id 1XAFbX-0005nL-4k; Thu, 24 Jul 2014 09:46:27 +0000
+        id 1XAFcF-0005z9-BL; Thu, 24 Jul 2014 09:47:11 +0000
 From:   Luis Henriques <luis.henriques@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sanjay Lal <sanjayl@kymasys.com>,
+Cc:     Alex Smith <alex.smith@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
         Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.11 002/128] MIPS: KVM: Remove redundant NULL checks before kfree()
-Date:   Thu, 24 Jul 2014 10:44:11 +0100
-Message-Id: <1406195177-8656-3-git-send-email-luis.henriques@canonical.com>
+Subject: [PATCH 3.11 033/128] recordmcount/MIPS: Fix possible incorrect mcount_loc table entries in modules
+Date:   Thu, 24 Jul 2014 10:44:42 +0100
+Message-Id: <1406195177-8656-34-git-send-email-luis.henriques@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1406195177-8656-1-git-send-email-luis.henriques@canonical.com>
 References: <1406195177-8656-1-git-send-email-luis.henriques@canonical.com>
@@ -28,7 +25,7 @@ Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41558
+X-archive-position: 41559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,55 +46,63 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Alex Smith <alex.smith@imgtec.com>
 
-commit c6c0a6637f9da54f9472144d44f71cf847f92e20 upstream.
+commit 91ad11d7cc6f4472ebf177a6252fbf0fd100d798 upstream.
 
-The kfree() function already NULL checks the parameter so remove the
-redundant NULL checks before kfree() calls in arch/mips/kvm/.
+On MIPS calls to _mcount in modules generate 2 instructions to load
+the _mcount address (and therefore 2 relocations). The mcount_loc
+table should only reference the first of these, so the second is
+filtered out by checking the relocation offset and ignoring ones that
+immediately follow the previous one seen.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
+However if a module has an _mcount call at offset 0, the second
+relocation would not be filtered out due to old_r_offset == 0
+being taken to mean that the current relocation is the first one
+seen, and both would end up in the mcount_loc table.
+
+This results in ftrace_make_nop() patching both (adjacent)
+instructions to branches over the _mcount call sequence like so:
+
+  0xffffffffc08a8000:  04 00 00 10     b       0xffffffffc08a8014
+  0xffffffffc08a8004:  04 00 00 10     b       0xffffffffc08a8018
+  0xffffffffc08a8008:  2d 08 e0 03     move    at,ra
+  ...
+
+The second branch is in the delay slot of the first, which is
+defined to be unpredictable - on the platform on which this bug was
+encountered, it triggers a reserved instruction exception.
+
+Fix by initializing old_r_offset to ~0 and using that instead of 0
+to determine whether the current relocation is the first seen.
+
+Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+Cc: linux-kernel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Patchwork: https://patchwork.linux-mips.org/patch/7098/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
- arch/mips/kvm/kvm_mips.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ scripts/recordmcount.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 426345ac6f6e..7e78af0e57de 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -149,9 +149,7 @@ void kvm_mips_free_vcpus(struct kvm *kvm)
- 		if (kvm->arch.guest_pmap[i] != KVM_INVALID_PAGE)
- 			kvm_mips_release_pfn_clean(kvm->arch.guest_pmap[i]);
- 	}
--
--	if (kvm->arch.guest_pmap)
--		kfree(kvm->arch.guest_pmap);
-+	kfree(kvm->arch.guest_pmap);
+diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
+index 9d1421e63ff8..49b582a225b0 100644
+--- a/scripts/recordmcount.h
++++ b/scripts/recordmcount.h
+@@ -163,11 +163,11 @@ static int mcount_adjust = 0;
  
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		kvm_arch_vcpu_free(vcpu);
-@@ -384,12 +382,8 @@ void kvm_arch_vcpu_free(struct kvm_vcpu *vcpu)
+ static int MIPS_is_fake_mcount(Elf_Rel const *rp)
+ {
+-	static Elf_Addr old_r_offset;
++	static Elf_Addr old_r_offset = ~(Elf_Addr)0;
+ 	Elf_Addr current_r_offset = _w(rp->r_offset);
+ 	int is_fake;
  
- 	kvm_mips_dump_stats(vcpu);
+-	is_fake = old_r_offset &&
++	is_fake = (old_r_offset != ~(Elf_Addr)0) &&
+ 		(current_r_offset - old_r_offset == MIPS_FAKEMCOUNT_OFFSET);
+ 	old_r_offset = current_r_offset;
  
--	if (vcpu->arch.guest_ebase)
--		kfree(vcpu->arch.guest_ebase);
--
--	if (vcpu->arch.kseg0_commpage)
--		kfree(vcpu->arch.kseg0_commpage);
--
-+	kfree(vcpu->arch.guest_ebase);
-+	kfree(vcpu->arch.kseg0_commpage);
- }
- 
- void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
 -- 
 1.9.1

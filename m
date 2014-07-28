@@ -1,28 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 01:05:56 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:37907 "EHLO test.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815804AbaG1WMXitI3r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Jul 2014 00:12:23 +0200
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by test.hauke-m.de (Postfix) with ESMTPSA id 97D8E2000B;
-        Tue, 29 Jul 2014 00:12:14 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org
-Cc:     zajec5@gmail.com, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH] MIPS: BCM47XX: add Microsoft MN-700 and Asus WL500G
-Date:   Tue, 29 Jul 2014 00:12:09 +0200
-Message-Id: <1406585529-13154-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 01:46:53 +0200 (CEST)
+Received: from mail-oi0-f52.google.com ([209.85.218.52]:41980 "EHLO
+        mail-oi0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860177AbaG1X3il8ba2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2014 01:29:38 +0200
+Received: by mail-oi0-f52.google.com with SMTP id h136so6731420oig.11
+        for <linux-mips@linux-mips.org>; Mon, 28 Jul 2014 16:29:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=u4eJl+L+lo+gtCTcQEIqgkA/4jNDLQWGL/rVVaZu+mw=;
+        b=X0jcAqhlSVl4bumv5H0Gkoy4AomayVc+keqvCU/ZABce6dXlOyVLUztKGsURkPOi4v
+         H0lAUMWI8wz7VUPFliJWb7rWbaQXD92a6V5d0NRF0XOcIv5TTfmLAlwCWX5tHySLEOL2
+         7eb6ejRoXrusMCpaDfOOCZIQ2GRZZhkwRwa3bxhgKWZ7mMtx9e3SdAxX5y/rBJVg7Bfa
+         phal5mRCI0s8kLLyS+MRAk7+rAqjkM7XDWPlfkBkIMoiBdl2aEOipg5m68uXG1qy1oq8
+         StESTR6PFKJTU1OO3MMOa8+tVLG1TfU0phJIsnMXllODW4QeqioCn6bOwLIAOl1Hhpan
+         kezw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=u4eJl+L+lo+gtCTcQEIqgkA/4jNDLQWGL/rVVaZu+mw=;
+        b=bNAIusI2QFldro4Vb+7twCFnwpPeyqImTGO9MEz1Qe/IDg3XFMsrWBkYBnUAk8WP65
+         lAr0eP+JCvDZmWbPNkyO7lCAzz84kFeDoLklTpS+CiKynD/goVOVF2DGuTCuukLmbn/A
+         A0eVapTO+enqJrlg+niwchT7qMPXBz06fhXVI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=u4eJl+L+lo+gtCTcQEIqgkA/4jNDLQWGL/rVVaZu+mw=;
+        b=dWoGdZVC6QioJCGyAiokNuPQv3bw6BTrSRcGM6xxqDXmpthFLwVnMm2uIRM9fsGQUd
+         xuUZSB4xmqPsb25nYjPYVVnfov84E/QZMIjLJ9/MrGrHxdSTzDn0HNShr+6FB3eIyKUn
+         99nBd36HntemqceyR9dRjjf/Qh+wjdAXYD46+Bz/hqBE9/6OncGQjrSbAOwP4l1K0mXQ
+         kT2mHZGukfi6jDah3YFkkpjX+VdJR35MZD0VOMnZVnk35qMQVxMr+ESP7ya64zjuVN9N
+         jHtUPL/GKt2H28BbdCdWmsNptOWwE6rNe4NlyAk+NEoNM48AxR7TH229JuCSOgUTDXCW
+         Ewiw==
+X-Gm-Message-State: ALoCoQlXL0Z+8uXHj/SjD4e2zycabFWCkUalnwK5AMtt208hM42iWrbHljxS9H+6YsNuxKsN4RXV
+MIME-Version: 1.0
+X-Received: by 10.182.3.100 with SMTP id b4mr36848404obb.79.1406590171913;
+ Mon, 28 Jul 2014 16:29:31 -0700 (PDT)
+Received: by 10.182.85.103 with HTTP; Mon, 28 Jul 2014 16:29:31 -0700 (PDT)
+In-Reply-To: <53D68F91.4000106@zytor.com>
+References: <cover.1405992946.git.luto@amacapital.net>
+        <CAGXu5jJ93-vto9voMENc4jX5itcd_Rm5AZjeChF57fpMYnWocA@mail.gmail.com>
+        <CALCETrVwqDeRbFOw=k_OhQZ4V6Pn5v3t8ODw75UuE7HKPFz=Sw@mail.gmail.com>
+        <53D68F91.4000106@zytor.com>
+Date:   Mon, 28 Jul 2014 16:29:31 -0700
+X-Google-Sender-Auth: XiJtTw83h0hS56GiBImAI2p2mao
+Message-ID: <CAGXu5jKJOrtjY9JsCBUvUbj_y4Hv+AeMEmGwWZZ18FmiZmAbbQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] Two-phase seccomp and x86 tracing changes
+From:   Kees Cook <keescook@chromium.org>
+To:     "H. Peter Anvin" <hpa@zytor.com>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Will Drewry <wad@chromium.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Alexei Starovoitov <ast@plumgrid.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41727
+X-archive-position: 41731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,185 +84,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch adds detection for the Microsoft MN-700 and the Asus WL500G
-router. This is based on some old code from OpenWrt.
+On Mon, Jul 28, 2014 at 10:59 AM, H. Peter Anvin <hpa@zytor.com> wrote:
+> On 07/23/2014 12:20 PM, Andy Lutomirski wrote:
+>>
+>> It looks like patches 1-4 have landed here:
+>>
+>> https://git.kernel.org/cgit/linux/kernel/git/kees/linux.git/log/?h=seccomp/fastpath
+>>
+>> hpa, what's the route forward for the x86 part?
+>>
+>
+> I guess I should discuss this with Kees to figure out what makes most
+> sense.  In the meantime, could you address Oleg's question?
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
+Since the x86 parts depend on the seccomp parts, I'm happy if you
+carry them instead of having them land from my tree. Otherwise I'm
+open to how to coordinate timing.
 
-This is based on top of:
-[3.17,1/2] MIPS: BCM47XX: Distinguish WRT54G series devices by boardtype
-[3.17,2/2] MIPS: BCM47XX: Fix LEDs on WRT54GS V1.0
-[PATCH] MIPS: BCM47XX: Devices database update for 3.17
+-Kees
 
-Patchwork links for above patches:
-https://patchwork.linux-mips.org/patch/7112/
-https://patchwork.linux-mips.org/patch/7113/
-https://patchwork.linux-mips.org/patch/7394/
+>
+>         -hpa
+>
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
- arch/mips/bcm47xx/board.c                          | 17 +++++++++++++++++
- arch/mips/bcm47xx/buttons.c                        | 19 +++++++++++++++++++
- arch/mips/bcm47xx/leds.c                           | 19 +++++++++++++++++++
- arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h |  3 +++
- 4 files changed, 58 insertions(+)
 
-diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
-index 838fb32..b3ae068 100644
---- a/arch/mips/bcm47xx/board.c
-+++ b/arch/mips/bcm47xx/board.c
-@@ -81,6 +81,14 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_hardware_version[] __initcons
- 	{ {0}, NULL},
- };
- 
-+/* hardware_version, boardnum */
-+static const
-+struct bcm47xx_board_type_list2 bcm47xx_board_list_hw_version_num[] __initconst = {
-+	{{BCM47XX_BOARD_MICROSOFT_MN700, "Microsoft MN-700"}, "WL500-", "mn700"},
-+	{{BCM47XX_BOARD_ASUS_WL500G, "Asus WL500G"}, "WL500-", "asusX"},
-+	{ {0}, NULL},
-+};
-+
- /* productid */
- static const
- struct bcm47xx_board_type_list1 bcm47xx_board_list_productid[] __initconst = {
-@@ -238,6 +246,15 @@ static __init const struct bcm47xx_board_type *bcm47xx_board_get_nvram(void)
- 		}
- 	}
- 
-+	if (bcm47xx_nvram_getenv("hardware_version", buf1, sizeof(buf1)) >= 0 &&
-+	    bcm47xx_nvram_getenv("boardtype", buf2, sizeof(buf2)) >= 0) {
-+		for (e2 = bcm47xx_board_list_boot_hw; e2->value1; e2++) {
-+			if (!strstarts(buf1, e2->value1) &&
-+			    !strcmp(buf2, e2->value2))
-+				return &e2->board;
-+		}
-+	}
-+
- 	if (bcm47xx_nvram_getenv("productid", buf1, sizeof(buf1)) >= 0) {
- 		for (e1 = bcm47xx_board_list_productid; e1->value1; e1++) {
- 			if (!strcmp(buf1, e1->value1))
-diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
-index 80cfb82..913182b 100644
---- a/arch/mips/bcm47xx/buttons.c
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -56,6 +56,11 @@ bcm47xx_buttons_asus_wl330ge[] __initconst = {
- };
- 
- static const struct gpio_keys_button
-+bcm47xx_buttons_asus_wl500g[] __initconst = {
-+	BCM47XX_GPIO_KEY(6, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
- bcm47xx_buttons_asus_wl500gd[] __initconst = {
- 	BCM47XX_GPIO_KEY(6, KEY_RESTART),
- };
-@@ -288,6 +293,13 @@ bcm47xx_buttons_linksys_wrtsl54gs[] __initconst = {
- 	BCM47XX_GPIO_KEY(6, KEY_RESTART),
- };
- 
-+/* Microsoft */
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_microsoft_nm700[] __initconst = {
-+	BCM47XX_GPIO_KEY(7, KEY_RESTART),
-+};
-+
- /* Motorola */
- 
- static const struct gpio_keys_button
-@@ -401,6 +413,9 @@ int __init bcm47xx_buttons_register(void)
- 	case BCM47XX_BOARD_ASUS_WL330GE:
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wl330ge);
- 		break;
-+	case BCM47XX_BOARD_ASUS_WL500G:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wl500g);
-+		break;
- 	case BCM47XX_BOARD_ASUS_WL500GD:
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wl500gd);
- 		break;
-@@ -525,6 +540,10 @@ int __init bcm47xx_buttons_register(void)
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_linksys_wrtsl54gs);
- 		break;
- 
-+	case BCM47XX_BOARD_MICROSOFT_MN700:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_microsoft_nm700);
-+		break;
-+
- 	case BCM47XX_BOARD_MOTOROLA_WE800G:
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_motorola_we800g);
- 		break;
-diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index 98d29eb..903a656 100644
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -73,6 +73,11 @@ bcm47xx_leds_asus_wl330ge[] __initconst = {
- };
- 
- static const struct gpio_led
-+bcm47xx_leds_asus_wl500g[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
- bcm47xx_leds_asus_wl500gd[] __initconst = {
- 	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
- };
-@@ -358,6 +363,13 @@ bcm47xx_leds_linksys_wrtsl54gs[] __initconst = {
- 	BCM47XX_GPIO_LED(7, "orange", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
- };
- 
-+/* Microsoft */
-+
-+static const struct gpio_led
-+bcm47xx_leds_microsoft_nm700[] __initconst = {
-+	BCM47XX_GPIO_LED(6, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
- /* Motorola */
- 
- static const struct gpio_led
-@@ -470,6 +482,9 @@ void __init bcm47xx_leds_register(void)
- 	case BCM47XX_BOARD_ASUS_WL330GE:
- 		bcm47xx_set_pdata(bcm47xx_leds_asus_wl330ge);
- 		break;
-+	case BCM47XX_BOARD_ASUS_WL500G:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500g);
-+		break;
- 	case BCM47XX_BOARD_ASUS_WL500GD:
- 		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500gd);
- 		break;
-@@ -598,6 +613,10 @@ void __init bcm47xx_leds_register(void)
- 		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrtsl54gs);
- 		break;
- 
-+	case BCM47XX_BOARD_MICROSOFT_MN700:
-+		bcm47xx_set_pdata(bcm47xx_leds_microsoft_nm700);
-+		break;
-+
- 	case BCM47XX_BOARD_MOTOROLA_WE800G:
- 		bcm47xx_set_pdata(bcm47xx_leds_motorola_we800g);
- 		break;
-diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-index bcae0e8..1f5643b 100644
---- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-@@ -18,6 +18,7 @@ enum bcm47xx_board {
- 	BCM47XX_BOARD_ASUS_WL300G,
- 	BCM47XX_BOARD_ASUS_WL320GE,
- 	BCM47XX_BOARD_ASUS_WL330GE,
-+	BCM47XX_BOARD_ASUS_WL500G,
- 	BCM47XX_BOARD_ASUS_WL500GD,
- 	BCM47XX_BOARD_ASUS_WL500GPV1,
- 	BCM47XX_BOARD_ASUS_WL500GPV2,
-@@ -77,6 +78,8 @@ enum bcm47xx_board {
- 	BCM47XX_BOARD_LINKSYS_WRT610NV2,
- 	BCM47XX_BOARD_LINKSYS_WRTSL54GS,
- 
-+	BCM47XX_BOARD_MICROSOFT_MN700,
-+
- 	BCM47XX_BOARD_MOTOROLA_WE800G,
- 	BCM47XX_BOARD_MOTOROLA_WR850GP,
- 	BCM47XX_BOARD_MOTOROLA_WR850GV2V3,
+
 -- 
-1.9.1
+Kees Cook
+Chrome OS Security

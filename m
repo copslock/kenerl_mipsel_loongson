@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 00:35:13 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:37891 "EHLO test.hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 00:45:28 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:37888 "EHLO test.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860207AbaG1VzWXUwb- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6860206AbaG1VzWXUwb- (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 28 Jul 2014 23:55:22 +0200
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by test.hauke-m.de (Postfix) with ESMTPSA id 084FF209CC;
-        Mon, 28 Jul 2014 23:54:58 +0200 (CEST)
+        by test.hauke-m.de (Postfix) with ESMTPSA id DED12209CA;
+        Mon, 28 Jul 2014 23:54:11 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     zajec5@gmail.com, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH] MIPS: BCM47XX: fixup broken MAC addresses in nvram
-Date:   Mon, 28 Jul 2014 23:54:47 +0200
-Message-Id: <1406584487-31167-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH] MIPS: BCM47XX: make reboot more relaiable
+Date:   Mon, 28 Jul 2014 23:53:57 +0200
+Message-Id: <1406584437-31108-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.9.1
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41724
+X-archive-position: 41725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,90 +35,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The address prefix 00:90:4C is used by Broadcom in their initial
-configuration. When a mac address with the prefix 00:90:4C is used all
-devices from the same series are sharing the same mac address. To
-prevent mac address collisions we replace them with a mac address based
-on the base address. To generate such addresses we take the main mac
-address from et0macaddr and increase it by two for the first wifi
-device and by 3 for the second one. This matches the printed mac
-address on the device. The main mac address increased by one is used as
-wan address by the vendor code.
+The reboot on the BCM47XX SoCs is done, by setting the watchdog counter
+to 1 and let it trigger a reboot, when it reaches 0. Some devices with
+a BCM4705/BCM4785 SoC do not reboot when the counter is set to 1 and
+decreased to 0 by the hardware. It looks like it works more reliable
+when we set it to 3. As far as I understand the hardware, this should
+not make any difference, but I do not have access to any documentation
+for this SoC.
+It is still not 100% reliable.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/sprom.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ arch/mips/bcm47xx/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index da4cdb1..90eb880 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -28,6 +28,7 @@
- 
- #include <bcm47xx.h>
- #include <bcm47xx_nvram.h>
-+#include <linux/if_ether.h>
- 
- static void create_key(const char *prefix, const char *postfix,
- 		       const char *name, char *buf, int len)
-@@ -631,6 +632,33 @@ static void bcm47xx_fill_sprom_path_r45(struct ssb_sprom *sprom,
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 8c8e7cd..2b63e7e 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -59,12 +59,12 @@ static void bcm47xx_machine_restart(char *command)
+ 	switch (bcm47xx_bus_type) {
+ #ifdef CONFIG_BCM47XX_SSB
+ 	case BCM47XX_BUS_TYPE_SSB:
+-		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
++		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 3);
+ 		break;
+ #endif
+ #ifdef CONFIG_BCM47XX_BCMA
+ 	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 1);
++		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 3);
+ 		break;
+ #endif
  	}
- }
- 
-+static bool bcm47xx_is_valid_mac(u8 *mac)
-+{
-+	return mac && !(mac[0] == 0x00 && mac[1] == 0x90 && mac[2] == 0x4c);
-+}
-+
-+static int bcm47xx_increase_mac_addr(u8 *mac, u8 num)
-+{
-+	u8 *oui = mac + ETH_ALEN/2 - 1;
-+	u8 *p = mac + ETH_ALEN - 1;
-+
-+	do {
-+		(*p) += num;
-+		if (*p > num)
-+			break;
-+		p--;
-+		num = 1;
-+	} while (p != oui);
-+
-+	if (p == oui) {
-+		pr_err("unable to fetch mac address\n");
-+		return -ENOENT;
-+	}
-+	return 0;
-+}
-+
-+static int mac_addr_used = 2;
-+
- static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
- 					const char *prefix, bool fallback)
- {
-@@ -648,6 +676,23 @@ static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
- 
- 	nvram_read_macaddr(prefix, "macaddr", sprom->il0mac, fallback);
- 	nvram_read_macaddr(prefix, "il0macaddr", sprom->il0mac, fallback);
-+
-+	/* The address prefix 00:90:4C is used by Broadcom in their initial
-+	   configuration. When a mac address with the prefix 00:90:4C is used
-+	   all devices from the same series are sharing the same mac address.
-+	   To prevent mac address collisions we replace them with a mac address
-+	   based on the base address. */
-+	if (!bcm47xx_is_valid_mac(sprom->il0mac)) {
-+		u8 mac[6];
-+		nvram_read_macaddr(NULL, "et0macaddr", mac, false);
-+		if (bcm47xx_is_valid_mac(mac)) {
-+			int err = bcm47xx_increase_mac_addr(mac, mac_addr_used);
-+			if (!err) {
-+				memcpy(sprom->il0mac, mac, ETH_ALEN);
-+				mac_addr_used++;
-+			}
-+		}
-+	}
- }
- 
- static void bcm47xx_fill_board_data(struct ssb_sprom *sprom, const char *prefix,
 -- 
 1.9.1

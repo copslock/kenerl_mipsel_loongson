@@ -1,26 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 00:55:42 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:37905 "EHLO test.hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 01:05:56 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:37907 "EHLO test.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860093AbaG1WINTH0vf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Jul 2014 00:08:13 +0200
+        id S6815804AbaG1WMXitI3r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Jul 2014 00:12:23 +0200
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by test.hauke-m.de (Postfix) with ESMTPSA id C36802000B;
-        Tue, 29 Jul 2014 00:08:12 +0200 (CEST)
+        by test.hauke-m.de (Postfix) with ESMTPSA id 97D8E2000B;
+        Tue, 29 Jul 2014 00:12:14 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     zajec5@gmail.com, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2] MIPS: BCM47XX: fixup broken MAC addresses in nvram
-Date:   Tue, 29 Jul 2014 00:08:01 +0200
-Message-Id: <1406585281-13054-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH] MIPS: BCM47XX: add Microsoft MN-700 and Asus WL500G
+Date:   Tue, 29 Jul 2014 00:12:09 +0200
+Message-Id: <1406585529-13154-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1406584487-31167-1-git-send-email-hauke@hauke-m.de>
-References: <1406584487-31167-1-git-send-email-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41726
+X-archive-position: 41727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,96 +35,185 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The address prefix 00:90:4C is used by Broadcom in their initial
-configuration. When a mac address with the prefix 00:90:4C is used all
-devices from the same series are sharing the same mac address. To
-prevent mac address collisions we replace them with a mac address based
-on the base address. To generate such addresses we take the main mac
-address from et0macaddr and increase it by two for the first wifi
-device and by 3 for the second one. This matches the printed mac
-address on the device. The main mac address increased by one is used as
-wan address by the vendor code.
+This patch adds detection for the Microsoft MN-700 and the Asus WL500G
+router. This is based on some old code from OpenWrt.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
 
-v1: fix checkpatch warnings
+This is based on top of:
+[3.17,1/2] MIPS: BCM47XX: Distinguish WRT54G series devices by boardtype
+[3.17,2/2] MIPS: BCM47XX: Fix LEDs on WRT54GS V1.0
+[PATCH] MIPS: BCM47XX: Devices database update for 3.17
 
- arch/mips/bcm47xx/sprom.c | 48 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+Patchwork links for above patches:
+https://patchwork.linux-mips.org/patch/7112/
+https://patchwork.linux-mips.org/patch/7113/
+https://patchwork.linux-mips.org/patch/7394/
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index da4cdb1..41226b6 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -28,6 +28,8 @@
+ arch/mips/bcm47xx/board.c                          | 17 +++++++++++++++++
+ arch/mips/bcm47xx/buttons.c                        | 19 +++++++++++++++++++
+ arch/mips/bcm47xx/leds.c                           | 19 +++++++++++++++++++
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h |  3 +++
+ 4 files changed, 58 insertions(+)
+
+diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
+index 838fb32..b3ae068 100644
+--- a/arch/mips/bcm47xx/board.c
++++ b/arch/mips/bcm47xx/board.c
+@@ -81,6 +81,14 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_hardware_version[] __initcons
+ 	{ {0}, NULL},
+ };
  
- #include <bcm47xx.h>
- #include <bcm47xx_nvram.h>
-+#include <linux/if_ether.h>
-+#include <linux/etherdevice.h>
- 
- static void create_key(const char *prefix, const char *postfix,
- 		       const char *name, char *buf, int len)
-@@ -631,6 +633,33 @@ static void bcm47xx_fill_sprom_path_r45(struct ssb_sprom *sprom,
++/* hardware_version, boardnum */
++static const
++struct bcm47xx_board_type_list2 bcm47xx_board_list_hw_version_num[] __initconst = {
++	{{BCM47XX_BOARD_MICROSOFT_MN700, "Microsoft MN-700"}, "WL500-", "mn700"},
++	{{BCM47XX_BOARD_ASUS_WL500G, "Asus WL500G"}, "WL500-", "asusX"},
++	{ {0}, NULL},
++};
++
+ /* productid */
+ static const
+ struct bcm47xx_board_type_list1 bcm47xx_board_list_productid[] __initconst = {
+@@ -238,6 +246,15 @@ static __init const struct bcm47xx_board_type *bcm47xx_board_get_nvram(void)
+ 		}
  	}
- }
  
-+static bool bcm47xx_is_valid_mac(u8 *mac)
-+{
-+	return mac && !(mac[0] == 0x00 && mac[1] == 0x90 && mac[2] == 0x4c);
-+}
-+
-+static int bcm47xx_increase_mac_addr(u8 *mac, u8 num)
-+{
-+	u8 *oui = mac + ETH_ALEN/2 - 1;
-+	u8 *p = mac + ETH_ALEN - 1;
-+
-+	do {
-+		(*p) += num;
-+		if (*p > num)
-+			break;
-+		p--;
-+		num = 1;
-+	} while (p != oui);
-+
-+	if (p == oui) {
-+		pr_err("unable to fetch mac address\n");
-+		return -ENOENT;
-+	}
-+	return 0;
-+}
-+
-+static int mac_addr_used = 2;
-+
- static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
- 					const char *prefix, bool fallback)
- {
-@@ -648,6 +677,25 @@ static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
- 
- 	nvram_read_macaddr(prefix, "macaddr", sprom->il0mac, fallback);
- 	nvram_read_macaddr(prefix, "il0macaddr", sprom->il0mac, fallback);
-+
-+	/* The address prefix 00:90:4C is used by Broadcom in their initial
-+	   configuration. When a mac address with the prefix 00:90:4C is used
-+	   all devices from the same series are sharing the same mac address.
-+	   To prevent mac address collisions we replace them with a mac address
-+	   based on the base address. */
-+	if (!bcm47xx_is_valid_mac(sprom->il0mac)) {
-+		u8 mac[6];
-+
-+		nvram_read_macaddr(NULL, "et0macaddr", mac, false);
-+		if (bcm47xx_is_valid_mac(mac)) {
-+			int err = bcm47xx_increase_mac_addr(mac, mac_addr_used);
-+
-+			if (!err) {
-+				ether_addr_copy(sprom->il0mac, mac);
-+				mac_addr_used++;
-+			}
++	if (bcm47xx_nvram_getenv("hardware_version", buf1, sizeof(buf1)) >= 0 &&
++	    bcm47xx_nvram_getenv("boardtype", buf2, sizeof(buf2)) >= 0) {
++		for (e2 = bcm47xx_board_list_boot_hw; e2->value1; e2++) {
++			if (!strstarts(buf1, e2->value1) &&
++			    !strcmp(buf2, e2->value2))
++				return &e2->board;
 +		}
 +	}
- }
++
+ 	if (bcm47xx_nvram_getenv("productid", buf1, sizeof(buf1)) >= 0) {
+ 		for (e1 = bcm47xx_board_list_productid; e1->value1; e1++) {
+ 			if (!strcmp(buf1, e1->value1))
+diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
+index 80cfb82..913182b 100644
+--- a/arch/mips/bcm47xx/buttons.c
++++ b/arch/mips/bcm47xx/buttons.c
+@@ -56,6 +56,11 @@ bcm47xx_buttons_asus_wl330ge[] __initconst = {
+ };
  
- static void bcm47xx_fill_board_data(struct ssb_sprom *sprom, const char *prefix,
+ static const struct gpio_keys_button
++bcm47xx_buttons_asus_wl500g[] __initconst = {
++	BCM47XX_GPIO_KEY(6, KEY_RESTART),
++};
++
++static const struct gpio_keys_button
+ bcm47xx_buttons_asus_wl500gd[] __initconst = {
+ 	BCM47XX_GPIO_KEY(6, KEY_RESTART),
+ };
+@@ -288,6 +293,13 @@ bcm47xx_buttons_linksys_wrtsl54gs[] __initconst = {
+ 	BCM47XX_GPIO_KEY(6, KEY_RESTART),
+ };
+ 
++/* Microsoft */
++
++static const struct gpio_keys_button
++bcm47xx_buttons_microsoft_nm700[] __initconst = {
++	BCM47XX_GPIO_KEY(7, KEY_RESTART),
++};
++
+ /* Motorola */
+ 
+ static const struct gpio_keys_button
+@@ -401,6 +413,9 @@ int __init bcm47xx_buttons_register(void)
+ 	case BCM47XX_BOARD_ASUS_WL330GE:
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wl330ge);
+ 		break;
++	case BCM47XX_BOARD_ASUS_WL500G:
++		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wl500g);
++		break;
+ 	case BCM47XX_BOARD_ASUS_WL500GD:
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_asus_wl500gd);
+ 		break;
+@@ -525,6 +540,10 @@ int __init bcm47xx_buttons_register(void)
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_linksys_wrtsl54gs);
+ 		break;
+ 
++	case BCM47XX_BOARD_MICROSOFT_MN700:
++		err = bcm47xx_copy_bdata(bcm47xx_buttons_microsoft_nm700);
++		break;
++
+ 	case BCM47XX_BOARD_MOTOROLA_WE800G:
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_motorola_we800g);
+ 		break;
+diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
+index 98d29eb..903a656 100644
+--- a/arch/mips/bcm47xx/leds.c
++++ b/arch/mips/bcm47xx/leds.c
+@@ -73,6 +73,11 @@ bcm47xx_leds_asus_wl330ge[] __initconst = {
+ };
+ 
+ static const struct gpio_led
++bcm47xx_leds_asus_wl500g[] __initconst = {
++	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
++};
++
++static const struct gpio_led
+ bcm47xx_leds_asus_wl500gd[] __initconst = {
+ 	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
+ };
+@@ -358,6 +363,13 @@ bcm47xx_leds_linksys_wrtsl54gs[] __initconst = {
+ 	BCM47XX_GPIO_LED(7, "orange", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
+ };
+ 
++/* Microsoft */
++
++static const struct gpio_led
++bcm47xx_leds_microsoft_nm700[] __initconst = {
++	BCM47XX_GPIO_LED(6, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
++};
++
+ /* Motorola */
+ 
+ static const struct gpio_led
+@@ -470,6 +482,9 @@ void __init bcm47xx_leds_register(void)
+ 	case BCM47XX_BOARD_ASUS_WL330GE:
+ 		bcm47xx_set_pdata(bcm47xx_leds_asus_wl330ge);
+ 		break;
++	case BCM47XX_BOARD_ASUS_WL500G:
++		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500g);
++		break;
+ 	case BCM47XX_BOARD_ASUS_WL500GD:
+ 		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500gd);
+ 		break;
+@@ -598,6 +613,10 @@ void __init bcm47xx_leds_register(void)
+ 		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrtsl54gs);
+ 		break;
+ 
++	case BCM47XX_BOARD_MICROSOFT_MN700:
++		bcm47xx_set_pdata(bcm47xx_leds_microsoft_nm700);
++		break;
++
+ 	case BCM47XX_BOARD_MOTOROLA_WE800G:
+ 		bcm47xx_set_pdata(bcm47xx_leds_motorola_we800g);
+ 		break;
+diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
+index bcae0e8..1f5643b 100644
+--- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
++++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
+@@ -18,6 +18,7 @@ enum bcm47xx_board {
+ 	BCM47XX_BOARD_ASUS_WL300G,
+ 	BCM47XX_BOARD_ASUS_WL320GE,
+ 	BCM47XX_BOARD_ASUS_WL330GE,
++	BCM47XX_BOARD_ASUS_WL500G,
+ 	BCM47XX_BOARD_ASUS_WL500GD,
+ 	BCM47XX_BOARD_ASUS_WL500GPV1,
+ 	BCM47XX_BOARD_ASUS_WL500GPV2,
+@@ -77,6 +78,8 @@ enum bcm47xx_board {
+ 	BCM47XX_BOARD_LINKSYS_WRT610NV2,
+ 	BCM47XX_BOARD_LINKSYS_WRTSL54GS,
+ 
++	BCM47XX_BOARD_MICROSOFT_MN700,
++
+ 	BCM47XX_BOARD_MOTOROLA_WE800G,
+ 	BCM47XX_BOARD_MOTOROLA_WR850GP,
+ 	BCM47XX_BOARD_MOTOROLA_WR850GV2V3,
 -- 
 1.9.1

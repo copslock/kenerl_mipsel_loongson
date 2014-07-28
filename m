@@ -1,59 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2014 21:22:30 +0200 (CEST)
-Received: from mail-we0-f182.google.com ([74.125.82.182]:41611 "EHLO
-        mail-we0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860184AbaG1TW0DZyzs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jul 2014 21:22:26 +0200
-Received: by mail-we0-f182.google.com with SMTP id k48so7971303wev.27
-        for <linux-mips@linux-mips.org>; Mon, 28 Jul 2014 12:22:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=/uTEpvavJJpdmvVUXjdEtrmnHx4w/HE8oIcqH0w3GOc=;
-        b=tz/c8rJg8MQSGNKnvQ/9c9ls8PSYWirhS93xYFLazLlWrvE3QgB9FBr2eMoW86zYYO
-         i6Hgvzqkw9mAO1/K2tLUlPR0tcq34dXTz0ijFEudZbJ+4yhHWUdfqHpHCFHV797rfUGd
-         y06E2s9Abb/7HBuy4JIzffpwx9JSCslwHWUmcXtiCh0LAsiB2Qv30v9G8xPqHAmPZDRc
-         nfLxNqwtUhEXdug0dQQTpMzRgfqQzKGX2irryHeSEIrRG8BXutlBg30xNvoq+g3b2n5x
-         0a5enTmFU1wxqhhbDzdf4qmUoHBmoEq+JsHAH7RHTMKJhSb4JdRzHf09nooteT4KTpX8
-         z/VQ==
-X-Received: by 10.195.13.79 with SMTP id ew15mr49785570wjd.19.1406575339530;
-        Mon, 28 Jul 2014 12:22:19 -0700 (PDT)
-Received: from localhost (8.20.196.77.rev.sfr.net. [77.196.20.8])
-        by mx.google.com with ESMTPSA id k6sm8855697wjq.5.2014.07.28.12.22.17
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Jul 2014 12:22:18 -0700 (PDT)
-Date:   Mon, 28 Jul 2014 21:22:13 +0200
-From:   Frederic Weisbecker <fweisbec@gmail.com>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Will Drewry <wad@chromium.org>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com
-Subject: Re: TIF_NOHZ can escape nonhz mask? (Was: [PATCH v3 6/8] x86: Split
- syscall_trace_enter into two phases)
-Message-ID: <20140728192209.GA26017@localhost.localdomain>
-References: <cover.1405992946.git.luto@amacapital.net>
- <3f649f5658a163645e3ce15156176c325283762e.1405992946.git.luto@amacapital.net>
- <20140728173723.GA20993@redhat.com>
- <20140728185803.GA24663@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2014 22:24:41 +0200 (CEST)
+Received: from mail-lb0-f181.google.com ([209.85.217.181]:38715 "EHLO
+        mail-lb0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821703AbaG1UXj5bl0b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jul 2014 22:23:39 +0200
+Received: by mail-lb0-f181.google.com with SMTP id 10so6239347lbg.12
+        for <linux-mips@linux-mips.org>; Mon, 28 Jul 2014 13:23:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=4GPXMxLxy6uSWoX5rtRSweDLVXD07XfUCC+lpi1SkT4=;
+        b=ShPsTR/UNcP2IPmqJu2u3mi29krmxboHr4MDk7yEr4U+K0guAop8WHIkE+9rvu5e1v
+         1x/F5x2ZPB/C1oLkT9fnEr7YhaBSp6C/Pnminm3wqZE31XnpmY67gZQoE9D0hqnCqRVr
+         HVIas3jZAI9vrfPXqWXeRQQxbhNnI8agYKkLfmVTC0MgLMtA2ia2gXWG501diIx/syEJ
+         +Ol7m6SsCW2pY2CLKpsMAkXPb78MCyv+5U9OEu9Vji67DtsnvoHn/zs1GunosOdpdqoZ
+         oyxJaXdxix2sJiki7s4CklXa+dc+UTANy5BWMJ3USTfCtU21+/Mjf+4PrByJHa2tDBC6
+         mNYg==
+X-Gm-Message-State: ALoCoQnaxW6HWZj1OAZi5VvwYfmDLZOGdzUfukrV1n0cu0ei4IaSZ5Duf5pD3zPBNs0lwRC4T1dR
+X-Received: by 10.112.87.41 with SMTP id u9mr5438366lbz.97.1406579013846; Mon,
+ 28 Jul 2014 13:23:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140728185803.GA24663@redhat.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <fweisbec@gmail.com>
+Received: by 10.152.36.106 with HTTP; Mon, 28 Jul 2014 13:23:13 -0700 (PDT)
+In-Reply-To: <20140728173723.GA20993@redhat.com>
+References: <cover.1405992946.git.luto@amacapital.net> <3f649f5658a163645e3ce15156176c325283762e.1405992946.git.luto@amacapital.net>
+ <20140728173723.GA20993@redhat.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Mon, 28 Jul 2014 13:23:13 -0700
+Message-ID: <CALCETrWUFo_zXcAZja-vdL4_MgJDd=1ed5Vt54eyUuim930xAw@mail.gmail.com>
+Subject: Re: [PATCH v3 6/8] x86: Split syscall_trace_enter into two phases
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>, X86 ML <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        Alexei Starovoitov <ast@plumgrid.com>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41719
+X-archive-position: 41720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fweisbec@gmail.com
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,66 +61,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 28, 2014 at 08:58:03PM +0200, Oleg Nesterov wrote:
-> Off-topic, but...
-> 
-> On 07/28, Oleg Nesterov wrote:
-> >
-> > But we should always call user_exit() unconditionally?
-> 
-> Frederic, don't we need the patch below? In fact clear_() can be moved
-> under "if ()" too. and probably copy_process() should clear this flag...
-> 
-> Or. __context_tracking_task_switch() can simply do
-> 
-> 	 if (context_tracking_cpu_is_enabled())
-> 	 	set_tsk_thread_flag(next, TIF_NOHZ);
-> 	 else
-> 	 	clear_tsk_thread_flag(next, TIF_NOHZ);
-> 
-> and then we can forget about copy_process(). Or I am totally confused?
-> 
-> 
-> I am also wondering if we can extend user_return_notifier to handle
-> enter/exit and kill TIF_NOHZ.
-> 
-> Oleg.
-> 
-> --- x/kernel/context_tracking.c
-> +++ x/kernel/context_tracking.c
-> @@ -202,7 +202,8 @@ void __context_tracking_task_switch(stru
->  				    struct task_struct *next)
->  {
->  	clear_tsk_thread_flag(prev, TIF_NOHZ);
-> -	set_tsk_thread_flag(next, TIF_NOHZ);
-> +	if (context_tracking_cpu_is_enabled())
-> +		set_tsk_thread_flag(next, TIF_NOHZ);
->  }
->  
->  #ifdef CONFIG_CONTEXT_TRACKING_FORCE
+On Mon, Jul 28, 2014 at 10:37 AM, Oleg Nesterov <oleg@redhat.com> wrote:
+> Hi Andy,
+>
+> I am really sorry for delay.
+>
+> This is on top of the recent change from Kees, right? Could me remind me
+> where can I found the tree this series based on? So that I could actually
+> apply these changes...
 
-Unfortunately, as long as tasks can migrate in and out a context tracked CPU, we
-need to track all CPUs.
+https://git.kernel.org/cgit/linux/kernel/git/kees/linux.git/log/?h=seccomp/fastpath
 
-This is because there is always a small shift between hard and soft kernelspace
-boundaries.
+The first four patches are already applied there.
 
-Hard boundaries are the real strict boundaries: between "int", "iret" or faulting
-instructions for example.
+>
+> On 07/21, Andy Lutomirski wrote:
+>>
+>> +long syscall_trace_enter_phase2(struct pt_regs *regs, u32 arch,
+>> +                             unsigned long phase1_result)
+>>  {
+>>       long ret = 0;
+>> +     u32 work = ACCESS_ONCE(current_thread_info()->flags) &
+>> +             _TIF_WORK_SYSCALL_ENTRY;
+>> +
+>> +     BUG_ON(regs != task_pt_regs(current));
+>>
+>>       user_exit();
+>>
+>> @@ -1458,17 +1562,20 @@ long syscall_trace_enter(struct pt_regs *regs)
+>>        * do_debug() and we need to set it again to restore the user
+>>        * state.  If we entered on the slow path, TF was already set.
+>>        */
+>> -     if (test_thread_flag(TIF_SINGLESTEP))
+>> +     if (work & _TIF_SINGLESTEP)
+>>               regs->flags |= X86_EFLAGS_TF;
+>
+> This looks suspicious, but perhaps I misread this change.
+>
+> If I understand correctly, syscall_trace_enter() can avoid _phase2() above.
+> But we should always call user_exit() unconditionally?
 
-Soft boundaries are the place where we put our context tracking probes. They
-are just function calls and a distance between them and hard boundaries is inevitable.
+Damnit.  I read that every function called by user_exit, and none of
+them give any indication of why they're needed for traced syscalls but
+not for untraced syscalls.  On a second look, it seems that TIF_NOHZ
+controls it.  I'll update the code to call user_exit iff TIF_NOHZ is
+set.  If that's still wrong, then I don't see how the current code is
+correct either.
 
-So here is a scenario where this is a problem: a task runs on CPU 0, passes the context
-tracking call before returning from a syscall to userspace, and gets an interrupt. The
-interrupt preempts the task and it moves to CPU 1. So it returns from preempt_schedule_irq()
-after which it is going to resume to userspace.
+>
+> And we should always set X86_EFLAGS_TF if TIF_SINGLESTEP? IIRC, TF can be
+> actually cleared on a 32bit kernel if we step over sysenter insn?
 
-In this scenario, if context tracking is only enabled on CPU 1, we have no way to know that
-the task is resuming to userspace, because we passed through the context tracking probe
-already and it was ignored on CPU 0.
+I don't follow.  If TIF_SINGLESTEP, then phase1 will return a nonzero
+value, and phase2 will set TF.
 
-This might be hackbable by ensuring that irqs are disabled between context tracking
-calls and actual returns to userspace. It's a nightmare to audit on all archs though,
-and it makes the context tracking callers less flexible also that only solve the issue
-for irqs. Exception have a similar problem and we can't mask them.
+I admit I don't really understand all the TF machinations.
+
+--Andy

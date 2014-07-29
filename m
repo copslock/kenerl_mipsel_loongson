@@ -1,44 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 20:46:07 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:20160 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 21:23:17 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:48048 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816676AbaG2SqEGPIbc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Jul 2014 20:46:04 +0200
+        id S6860001AbaG2TW4dRRyf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Jul 2014 21:22:56 +0200
 Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s6TIjr0l025292
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s6TJMdva002104
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Jul 2014 14:45:54 -0400
+        Tue, 29 Jul 2014 15:22:39 -0400
 Received: from tranklukator.brq.redhat.com (dhcp-1-191.brq.redhat.com [10.34.1.191])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s6TIjoab032482;
-        Tue, 29 Jul 2014 14:45:51 -0400
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s6TJMZwc018561;
+        Tue, 29 Jul 2014 15:22:36 -0400
 Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Tue, 29 Jul 2014 20:44:14 +0200 (CEST)
-Date:   Tue, 29 Jul 2014 20:44:11 +0200
+        oleg@redhat.com; Tue, 29 Jul 2014 21:21:00 +0200 (CEST)
+Date:   Tue, 29 Jul 2014 21:20:56 +0200
 From:   Oleg Nesterov <oleg@redhat.com>
 To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Will Drewry <wad@chromium.org>, X86 ML <x86@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v3 6/8] x86: Split syscall_trace_enter into two phases
-Message-ID: <20140729184411.GA6035@redhat.com>
-References: <cover.1405992946.git.luto@amacapital.net> <3f649f5658a163645e3ce15156176c325283762e.1405992946.git.luto@amacapital.net> <20140728173723.GA20993@redhat.com> <CALCETrWUFo_zXcAZja-vdL4_MgJDd=1ed5Vt54eyUuim930xAw@mail.gmail.com> <20140729165416.GA967@redhat.com> <CALCETrWBU-=zqLTCP7B1feZ9J-e4u-Boic+e1EEn1rL-ijeEKg@mail.gmail.com> <20140729173136.GA2808@redhat.com> <CALCETrVP-P+EJ6YJ=CZL_gyA1r8O9eogUNTik7_31_SA+Pj3pg@mail.gmail.com> <20140729181615.GA4950@redhat.com> <CALCETrVWOOs3HCnQNaqmnn480oQYn3scrWUfR4JJX9+zTxUDRw@mail.gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com,
+        Frederic Weisbecker <fweisbec@gmail.com>
+Subject: Re: [PATCH v4 0/5] x86: two-phase syscall tracing and seccomp
+        fastpath
+Message-ID: <20140729192056.GA6308@redhat.com>
+References: <cover.1406604806.git.luto@amacapital.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CALCETrVWOOs3HCnQNaqmnn480oQYn3scrWUfR4JJX9+zTxUDRw@mail.gmail.com>
+In-Reply-To: <cover.1406604806.git.luto@amacapital.net>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
 Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41797
+X-archive-position: 41798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,50 +52,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/29, Andy Lutomirski wrote:
+Andy, to avoid the confusion: I am not trying to review this changes.
+As you probably know my understanding of asm code in entry.S is very
+limited.
+
+Just a couple of questions to ensure I understand this correctly.
+
+On 07/28, Andy Lutomirski wrote:
 >
-> On Tue, Jul 29, 2014 at 11:16 AM, Oleg Nesterov <oleg@redhat.com> wrote:
-> > On 07/29, Andy Lutomirski wrote:
-> >>
-> >> On Tue, Jul 29, 2014 at 10:31 AM, Oleg Nesterov <oleg@redhat.com> wrote:
-> >> >
-> >> > TIF_NOHZ is set if and only if context_tracking_is_enabled() is true.
-> >> > So I think that
-> >> >
-> >> >         work = current_thread_info()->flags & (_TIF_WORK_SYSCALL_ENTRY & ~TIF_NOHZ);
-> >> >
-> >> >         user_exit();
-> >> >
-> >> > looks a bit better. But I won't argue.
-> >>
-> >> I don't get it.
-> >
-> > Don't worry, you are not alone.
-> >
-> >> context_tracking_is_enabled is global, and TIF_NOHZ
-> >> is per-task.  Isn't this stuff determined per-task or per-cpu or
-> >> something?
-> >>
-> >> IOW, if one CPU is running something that's very heavily
-> >> userspace-oriented and another CPU is doing something syscall- or
-> >> sleep-heavy, then shouldn't only the first CPU end up paying the price
-> >> of context tracking?
-> >
-> > Please see another email I sent to Frederic.
-> >
-> I'll add at least this argument in favor of my approach: if context
-> tracking works at all, then it had better not demand that syscall
-> entry call user_exit if TIF_NOHZ is *not* set.
+> This is both a cleanup and a speedup.  It reduces overhead due to
+> installing a trivial seccomp filter by 87%.  The speedup comes from
+> avoiding the full syscall tracing mechanism for filters that don't
+> return SECCOMP_RET_TRACE.
 
-I disagree. At least I disagree with that you should enforce this in
-syscall_trace_enter() paths, and in any case this has nothing to do with
-these changes.
+And only after I look at 5/5 I _seem_ to actually understand where
+this speedup comes from.
 
-But again, I won't insist, so please forget.
+So. Currently tracesys: path always lead to "iret" after syscall, with
+this change we can avoid it if phase_1() returns zero, correct?
 
-> So adding the
-> condition ought to be safe, barring dumb bugs in my code.
+And, this also removes the special TIF_SYSCALL_AUDIT-only case in entry.S,
+cool.
 
-Yes, I think it is technically correct.
+I am wondering if we can do something similar with do_notify_resume() ?
+
+
+Stupid question. To simplify, lets forget that syscall_trace_enter()
+already returns the value. Can't we simplify the asm code if we do
+not export 2 functions, but make syscall_trace_enter() return
+"bool slow_path_is_needed". So that "tracesys:" could do
+
+	// pseudo code
+
+tracesys:
+	SAVE_REST
+	FIXUP_TOP_OF_STACK
+
+	call syscall_trace_enter
+
+	if (!slow_path_is_needed) {
+		addq REST_SKIP, %rsp
+		jmp system_call_fastpath
+	}
+	
+	...
+
+?
+
+Once again, I am just curious, it is not that I actually suggest to consider
+this option.
 
 Oleg.

@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 05:59:15 +0200 (CEST)
-Received: from mail-pd0-f170.google.com ([209.85.192.170]:37688 "EHLO
-        mail-pd0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861987AbaG2DivOAvvR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2014 05:38:51 +0200
-Received: by mail-pd0-f170.google.com with SMTP id g10so10946773pdj.15
-        for <linux-mips@linux-mips.org>; Mon, 28 Jul 2014 20:38:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 06:09:30 +0200 (CEST)
+Received: from mail-pd0-f172.google.com ([209.85.192.172]:54310 "EHLO
+        mail-pd0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861990AbaG2Di4YRJNI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2014 05:38:56 +0200
+Received: by mail-pd0-f172.google.com with SMTP id ft15so10875467pdb.17
+        for <linux-mips@linux-mips.org>; Mon, 28 Jul 2014 20:38:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=zStVeuj7o/rf0vJ1C6QRL5Y8ra7ACBFZyMyO3pa8i38=;
-        b=XYxMy9EDylamTiIa3to7exSJBEpkZHDvfWWPjkuIBFhqNvHcYjIySuZEIBLQpK2jsk
-         ogb9zDKxmcjOQV3ghodvmwcBfUtZj2TpMihVjqfHi5wEBmE5jopxNV7Vu8KfuxUk1Wbk
-         mHEmcpTVL3bDL9wo192ygTRgZJCI7FFY17IzMDyOBAj/zY083JPHdvbxxiIrcVVwpCob
-         juOFJv3hT0kCNLJouXe2wCO5l0MrqQzBXT/otPwnwI+7Pzs6O3/duy6JFhkkLmwGVXBT
-         GHTvj/u2IvMDvBv363gTl6IZQHMLJtzaA84WGmbtzFXjPqN0O2hT4Sitv7edAPvuefEE
-         tTZA==
-X-Gm-Message-State: ALoCoQmKAq/wygbicbmyR4Wsemc6s1RnpcgFjQORl+MillxYbKrK+iOubSPBoD414jgbJsQNL/9U
-X-Received: by 10.66.191.9 with SMTP id gu9mr42734294pac.27.1406605124976;
-        Mon, 28 Jul 2014 20:38:44 -0700 (PDT)
+        bh=MEjsYcAIRskgqLe2fb8RNMBo1NP3NoMu1cUcegL3r9E=;
+        b=VpSfbkCtwRW7QYWHdodrZVckXH9mKWOHVENUr4ZcymuP3g2fryquNYNR8w6snx13vv
+         9XjDjYkNvuHztsJWLT6bi/avzwcFmTZFOEKZqwTno+J4uVzPC0XUmr9DIEF21RffGoTa
+         qUcZpOeWEiQ3XlLK202gKHOnTiOJMDY0bxmSMDCZBJ9/9ot4BhuzXHH5qTcVzTOpNZVG
+         lhz3qBQtK7r8+IPofAXN8kaHYoA44WHT0cfmpAS0xbFY6OhKnZzKOJPTqmMwslqaAPRo
+         rq5ZuDLpwrWhUtw+PgH3nn8+Aax6bDo2x5Sz+9ebTZbbSwvhScbDGn1mKjs9RzMGHeNA
+         SYSw==
+X-Gm-Message-State: ALoCoQl30LeLx5EPhYjBFV/h3cOcZosDkEvPOjS7M1/JFt84wHAt+PirZWoJU2NirE1eYRdsKyzp
+X-Received: by 10.67.23.165 with SMTP id ib5mr42712837pad.60.1406605130332;
+        Mon, 28 Jul 2014 20:38:50 -0700 (PDT)
 Received: from localhost ([2001:5a8:4:83c0:fd15:6cb4:fa7d:1e89])
-        by mx.google.com with ESMTPSA id c17sm26772083pdm.33.2014.07.28.20.38.42
+        by mx.google.com with ESMTPSA id nt15sm26759892pdb.63.2014.07.28.20.38.47
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Jul 2014 20:38:43 -0700 (PDT)
+        Mon, 28 Jul 2014 20:38:49 -0700 (PDT)
 From:   Andy Lutomirski <luto@amacapital.net>
 To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
         Will Drewry <wad@chromium.org>
@@ -33,9 +33,9 @@ Cc:     Oleg Nesterov <oleg@redhat.com>, x86@kernel.org,
         Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com,
         Frederic Weisbecker <fweisbec@gmail.com>,
         Andy Lutomirski <luto@amacapital.net>
-Subject: [PATCH v4 1/5] x86,x32,audit: Fix x32's AUDIT_ARCH wrt audit
-Date:   Mon, 28 Jul 2014 20:38:28 -0700
-Message-Id: <ed503c590487ac761b9bf39dac4fe26c64022962.1406604806.git.luto@amacapital.net>
+Subject: [PATCH v4 2/5] x86,entry: Only call user_exit if TIF_NOHZ
+Date:   Mon, 28 Jul 2014 20:38:29 -0700
+Message-Id: <7123b2489cc5d1d5abb7bcf1364ca729cab3e6ca.1406604806.git.luto@amacapital.net>
 X-Mailer: git-send-email 1.9.3
 In-Reply-To: <cover.1406604806.git.luto@amacapital.net>
 References: <cover.1406604806.git.luto@amacapital.net>
@@ -45,7 +45,7 @@ Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41752
+X-archive-position: 41753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,46 +62,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-is_compat_task() is the wrong check for audit arch; the check should
-be is_ia32_task(): x32 syscalls should be AUDIT_ARCH_X86_64, not
-AUDIT_ARCH_I386.
+The RCU context tracking code requires that arch code call
+user_exit() on any entry into kernel code if TIF_NOHZ is set.  This
+patch adds a check for TIF_NOHZ and a comment to the syscall entry
+tracing code.
 
-CONFIG_AUDITSYSCALL is currently incompatible with x32, so this has
-no visible effect.
+The main purpose of this patch is to make the code easier to follow:
+one can read the body of user_exit and of every function it calls
+without finding any explanation of why it's called for traced
+syscalls but not for untraced syscalls.  This makes it clear when
+user_exit() is necessary.
 
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
 Signed-off-by: Andy Lutomirski <luto@amacapital.net>
 ---
- arch/x86/kernel/ptrace.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ arch/x86/kernel/ptrace.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
-index 93c182a..39296d2 100644
+index 39296d2..bbf338a 100644
 --- a/arch/x86/kernel/ptrace.c
 +++ b/arch/x86/kernel/ptrace.c
-@@ -1441,15 +1441,6 @@ void send_sigtrap(struct task_struct *tsk, struct pt_regs *regs,
- 	force_sig_info(SIGTRAP, &info, tsk);
- }
+@@ -1449,7 +1449,12 @@ long syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	long ret = 0;
  
--
--#ifdef CONFIG_X86_32
--# define IS_IA32	1
--#elif defined CONFIG_IA32_EMULATION
--# define IS_IA32	is_compat_task()
--#else
--# define IS_IA32	0
--#endif
--
- /*
-  * We must return the syscall number to actually look up in the table.
-  * This can be -1L to skip running any syscall at all.
-@@ -1487,7 +1478,7 @@ long syscall_trace_enter(struct pt_regs *regs)
- 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
- 		trace_sys_enter(regs, regs->orig_ax);
+-	user_exit();
++	/*
++	 * If TIF_NOHZ is set, we are required to call user_exit() before
++	 * doing anything that could touch RCU.
++	 */
++	if (test_thread_flag(TIF_NOHZ))
++		user_exit();
  
--	if (IS_IA32)
-+	if (is_ia32_task())
- 		audit_syscall_entry(AUDIT_ARCH_I386,
- 				    regs->orig_ax,
- 				    regs->bx, regs->cx,
+ 	/*
+ 	 * If we stepped into a sysenter/syscall insn, it trapped in
 -- 
 1.9.3

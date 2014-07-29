@@ -1,81 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 03:08:47 +0200 (CEST)
-Received: from mail-oa0-f53.google.com ([209.85.219.53]:53329 "EHLO
-        mail-oa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6861520AbaG1XyoT948k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2014 01:54:44 +0200
-Received: by mail-oa0-f53.google.com with SMTP id j17so9610748oag.40
-        for <linux-mips@linux-mips.org>; Mon, 28 Jul 2014 16:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=TnsNPqoJMqkbItRLyWDK4udpqANUE2goqXTZSWQlZiI=;
-        b=BsGdx1z3l1FLcu+VDM9i1tVQeDphtAxvDXn8Ii11NfDlEoeMeNSDzaRgMdBxiinyQh
-         z/xhIPbKenLKzCJV5PYLggLRAO7Ows/Fs42L8iSxqEHYoCwMEaLdADJZ6PWbcf7OxjI9
-         kM8GKdgL2gdnbHJGzijiasChsyFWBzR7GCgd1onjI+MH/B0bNO1pPhZ5bk09ojytEsGE
-         BDvNS+YvZCxCOdwXAOBcuDfCFpa+/VX7u5j6wOQkUsGzMEKhmqvoXA8Ftl9bdM4e4jLS
-         bYepkx/aWhHU4fWwUm27WOreyhuNpU+fgNaSSbC0lsaRnvV543CN6V0EAMxqZNVx/Z5C
-         3Ngw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=TnsNPqoJMqkbItRLyWDK4udpqANUE2goqXTZSWQlZiI=;
-        b=L2/HZorgzTvkh/owlFxg1wBlMva+FLA8jWr1zfJKlFOyc35ubeLYfg3WbCSXgdDjef
-         Ti+oSu3wU1W6MoV+VXkRU9ElPyeE8sFqFLUK/ZIoEye6TTJ14WlioX0Q+a+CFLmaLgKe
-         XN+suwkvfIptj4/13r3HolDCsEvABesVhVYzo=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2014 05:48:48 +0200 (CEST)
+Received: from mail-pd0-f174.google.com ([209.85.192.174]:60278 "EHLO
+        mail-pd0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6861986AbaG2DirpLs2o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2014 05:38:47 +0200
+Received: by mail-pd0-f174.google.com with SMTP id fp1so10972395pdb.33
+        for <linux-mips@linux-mips.org>; Mon, 28 Jul 2014 20:38:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=TnsNPqoJMqkbItRLyWDK4udpqANUE2goqXTZSWQlZiI=;
-        b=b8jMluBo0MGpAP0CQ+9+tFtV+vWS7XmA43AxYMfLN8mbXPKlIMgj+mhrgZzwBM9F9F
-         u6ofy+7cOTnk2NRHfDFK87uplzxCKhKWwr8IV1staeWmWmc/NK0JYNcwYQFyDopjL18x
-         SUICempf8LmhkffAnTOcqx53IFmDvGR2u9bQFdaS+sMrvhQAK3D8msO5yJ+SVAmhf9wx
-         yTSUphN8wA2S0YitT3yDS48kyVK+RDgffDTWul0gklzhipeC4Z2zTZo/wE9iU5rWUBbx
-         QxrZR+OIt2dLP7hp1dH5Motr+PWaxtvK78hidW9A2JIYSQCMWWal6an2t0EeZ4N6Sw0c
-         7G6A==
-X-Gm-Message-State: ALoCoQlua9d+Z7piWkxvzy0TZBpj4b6JRHMSkybaIk3Ya2wVf449FRr5rSrvE6EHRfWEuEtfIzOe
-MIME-Version: 1.0
-X-Received: by 10.60.52.5 with SMTP id p5mr54009081oeo.55.1406591678268; Mon,
- 28 Jul 2014 16:54:38 -0700 (PDT)
-Received: by 10.182.85.103 with HTTP; Mon, 28 Jul 2014 16:54:38 -0700 (PDT)
-In-Reply-To: <53D6E07F.7090806@zytor.com>
-References: <cover.1405992946.git.luto@amacapital.net>
-        <CAGXu5jJ93-vto9voMENc4jX5itcd_Rm5AZjeChF57fpMYnWocA@mail.gmail.com>
-        <CALCETrVwqDeRbFOw=k_OhQZ4V6Pn5v3t8ODw75UuE7HKPFz=Sw@mail.gmail.com>
-        <53D68F91.4000106@zytor.com>
-        <CAGXu5jKJOrtjY9JsCBUvUbj_y4Hv+AeMEmGwWZZ18FmiZmAbbQ@mail.gmail.com>
-        <53D6DE1E.1060501@zytor.com>
-        <CAGXu5jLjmHczeQiJN1Q+aGQKn_B+08FEXHWxjku6QedkGDhDTg@mail.gmail.com>
-        <53D6E07F.7090806@zytor.com>
-Date:   Mon, 28 Jul 2014 16:54:38 -0700
-X-Google-Sender-Auth: Mcou2ELHP4zx9cJIbdNjhWuAnKk
-Message-ID: <CAGXu5jJA=gN+5gQs5wNUdsnqiK3kRVvYnpBB6DkdhmVCsenugQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] Two-phase seccomp and x86 tracing changes
-From:   Kees Cook <keescook@chromium.org>
-To:     "H. Peter Anvin" <hpa@zytor.com>
-Cc:     linux-arch <linux-arch@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Will Drewry <wad@chromium.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Alexei Starovoitov <ast@plumgrid.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=5J9A6FJKjFT9aXl0hJIBk9UovVbjZQHmaSo+pCiPJmg=;
+        b=BshkjoTELSXB18nsaVX6W1JtJLiDT8rG1KuVwv0/pjQdK64dOwbqN6keFFtQOennc0
+         zOBPqjaUDWTP/1EdXEaIa9wqG0R57u8yp6FehWEuxHMi5H72F80jeAcXpaCJho9xu28Y
+         zkQgN7CaBSN+JXY6PWHMqnuBV5zjSu3gtgij2/cnI/wAfvl9laCpx+PS/a99gIU2b60g
+         MI7JmSy/zUjpZlUnjahfGKMXirrhDLzFJt9vtFuOpmOQdrG/gQGWi0Wvt0VxQVEfLDVv
+         8WuCbCb8EPC4K9fEWRbbxOXSaHSPQ4bvDp7r4OwZy+1nhvAdbkXR3y+qJlYRaE7V+Ur0
+         fQbw==
+X-Gm-Message-State: ALoCoQnwCxJ1ahAJUqkvoPcbvrhvN6X9zIkXDV8yXI+DpOGNgQRbVxHn+Yy4tJYsF55QtTAHCH0B
+X-Received: by 10.68.131.33 with SMTP id oj1mr43310786pbb.71.1406605120823;
+        Mon, 28 Jul 2014 20:38:40 -0700 (PDT)
+Received: from localhost ([2001:5a8:4:83c0:fd15:6cb4:fa7d:1e89])
+        by mx.google.com with ESMTPSA id pv2sm19226283pbb.13.2014.07.28.20.38.38
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Jul 2014 20:38:39 -0700 (PDT)
+From:   Andy Lutomirski <luto@amacapital.net>
+To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>
+Cc:     Oleg Nesterov <oleg@redhat.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Andy Lutomirski <luto@amacapital.net>
+Subject: [PATCH v4 0/5] x86: two-phase syscall tracing and seccomp fastpath
+Date:   Mon, 28 Jul 2014 20:38:27 -0700
+Message-Id: <cover.1406604806.git.luto@amacapital.net>
+X-Mailer: git-send-email 1.9.3
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41739
+X-archive-position: 41751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,44 +57,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 28, 2014 at 4:45 PM, H. Peter Anvin <hpa@zytor.com> wrote:
-> On 07/28/2014 04:42 PM, Kees Cook wrote:
->> On Mon, Jul 28, 2014 at 4:34 PM, H. Peter Anvin <hpa@zytor.com> wrote:
->>> On 07/28/2014 04:29 PM, Kees Cook wrote:
->>>> On Mon, Jul 28, 2014 at 10:59 AM, H. Peter Anvin <hpa@zytor.com> wrote:
->>>>> On 07/23/2014 12:20 PM, Andy Lutomirski wrote:
->>>>>>
->>>>>> It looks like patches 1-4 have landed here:
->>>>>>
->>>>>> https://git.kernel.org/cgit/linux/kernel/git/kees/linux.git/log/?h=seccomp/fastpath
->>>>>>
->>>>>> hpa, what's the route forward for the x86 part?
->>>>>>
->>>>>
->>>>> I guess I should discuss this with Kees to figure out what makes most
->>>>> sense.  In the meantime, could you address Oleg's question?
->>>>
->>>> Since the x86 parts depend on the seccomp parts, I'm happy if you
->>>> carry them instead of having them land from my tree. Otherwise I'm
->>>> open to how to coordinate timing.
->>>>
->>>
->>> You mean for me to carry the seccomp part as well?
->>
->> If that makes sense as far as the coordination, that's fine with me.
->> Otherwise I'm not sure how x86 can build without having the seccomp
->> changes in your tree.
->>
->
-> Exactly.  What I guess I'll do is set up a separate tip branch for this,
-> pull your branch into it, and then put the x86 patches on top.  Does
-> that make sense for everyone?
+This applies to:
+git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git seccomp-fastpath
 
-Sounds good to me. Once Oleg and Andy are happy, we'll be set.
+Gitweb:
+https://git.kernel.org/cgit/linux/kernel/git/kees/linux.git/log/?h=seccomp/fastpath
 
--Kees
+This is both a cleanup and a speedup.  It reduces overhead due to
+installing a trivial seccomp filter by 87%.  The speedup comes from
+avoiding the full syscall tracing mechanism for filters that don't
+return SECCOMP_RET_TRACE.
 
+This series depends on splitting the seccomp hooks into two phases.
+The first phase evaluates the filter; it can skip syscalls, allow
+them, kill the calling task, or pass a u32 to the second phase.  The
+second phase requires a full tracing context, and it sends ptrace
+events if necessary.  The seccomp core part is in Kees' seccomp/fastpath
+tree.
+
+These patches implement a similar split for the x86 syscall
+entry work.  The C callback is invoked in two phases: the first has
+only a partial frame, and it can request phase 2 processing with a
+full frame.
+
+Finally, I switch the 64-bit system_call code to use the new split
+entry work.  This is a net deletion of assembly code: it replaces
+all of the audit entry muck.
+
+In the process, I fixed some bugs.
+
+If this is acceptable, someone can do the same tweak for the
+ia32entry and entry_32 code.
+
+This passes all seccomp tests that I know of.
+
+Changes from v3:
+ - Dropped the core seccomp changes from the email -- Kees has applied them.
+ - Add patch 2 (the TIF_NOHZ change).
+ - Fix TIF_NOHZ in the two-phase entry code (thanks, Oleg).
+
+Changes from v2:
+ - Fixed 32-bit x86 build (and the tests pass).
+ - Put the doc patch where it belongs.
+
+Changes from v1:
+ - Rebased on top of Kees' shiny new seccomp tree (no effect on the x86
+   part).
+ - Improved patch 6 vs patch 7 split (thanks Alexei!)
+ - Fixed bogus -ENOSYS in patch 5 (thanks Kees!)
+ - Improved changelog message in patch 6.
+
+Changes from RFC version:
+ - The first three patches are more or less the same
+ - The rest is more or less a rewrite
+
+
+Andy Lutomirski (5):
+  x86,x32,audit: Fix x32's AUDIT_ARCH wrt audit
+  x86,entry: Only call user_exit if TIF_NOHZ
+  x86: Split syscall_trace_enter into two phases
+  x86_64,entry: Treat regs->ax the same in fastpath and slowpath
+    syscalls
+  x86_64,entry: Use split-phase syscall_trace_enter for 64-bit syscalls
+
+ arch/x86/include/asm/calling.h |   6 +-
+ arch/x86/include/asm/ptrace.h  |   5 ++
+ arch/x86/kernel/entry_64.S     |  51 +++++--------
+ arch/x86/kernel/ptrace.c       | 159 ++++++++++++++++++++++++++++++++++-------
+ 4 files changed, 161 insertions(+), 60 deletions(-)
 
 -- 
-Kees Cook
-Chrome OS Security
+1.9.3

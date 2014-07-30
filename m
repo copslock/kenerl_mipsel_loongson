@@ -1,53 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 20:17:40 +0200 (CEST)
-Received: from mail-wi0-f182.google.com ([209.85.212.182]:56603 "EHLO
-        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860095AbaG3SReEooC- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 20:17:34 +0200
-Received: by mail-wi0-f182.google.com with SMTP id d1so2823920wiv.15
-        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 11:17:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=srpC5TwR5f9Ay9ioaUbeSJuhjNHfUiBAhaHRqhSh9Wc=;
-        b=PLktntzvJMxhsYwQHNPYeg1m2pZEZVpYq9ja3p6iKKHS7tUeWHeW9iBhuxVpplyheT
-         3aInQr+MLZSpQ/OU9o4Dqt2Wyr/poK2dSfmHkl45AD4J1BzV+5+nC+aJnFkOowIDsutf
-         xcdslImecgYeogyVKwPgIjmV4mnLisaXx1df04EKpwWQoMwIxfAqJomdx/j5/E6s/+TX
-         eBVXNTwq/zmAZS0PpSmUDbcdouswOGpVMkV3Ec0VTChwf53GltmKlTjAeizYl2PU12oe
-         N1Ob8uhC8a9f4FUxsy1eOYmkFuqgCX4r5Ofk4oyeqzd7AOhPQtuvE8aG1cNUP0bjo4cq
-         ZE8A==
-X-Gm-Message-State: ALoCoQmFWoGA3Dj09eAH5pwZ4lOrMez496/hMEung8WM+Dj42fdrAAtBEXWvjaoewIwJGIrRkBt1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 20:50:11 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:39721 "EHLO test.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6860038AbaG3SuGSb0K0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Jul 2014 20:50:06 +0200
+Received: from [IPv6:2001:470:7259:0:b12f:49a3:124:6e3c] (unknown [IPv6:2001:470:7259:0:b12f:49a3:124:6e3c])
+        by test.hauke-m.de (Postfix) with ESMTPSA id A7685200D8;
+        Wed, 30 Jul 2014 20:50:05 +0200 (CEST)
+Message-ID: <53D93E5C.2000706@hauke-m.de>
+Date:   Wed, 30 Jul 2014 20:50:04 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-X-Received: by 10.180.80.133 with SMTP id r5mr9227676wix.62.1406744248446;
- Wed, 30 Jul 2014 11:17:28 -0700 (PDT)
-Received: by 10.194.122.170 with HTTP; Wed, 30 Jul 2014 11:17:28 -0700 (PDT)
-In-Reply-To: <53D9169D.3020705@imgtec.com>
-References: <53D9169D.3020705@imgtec.com>
-Date:   Wed, 30 Jul 2014 19:17:28 +0100
-Message-ID: <CAOFt0_C1mCsnn56uhpQy8zR-zhT9T_rK6P8YNAKKkoHrgnT_9g@mail.gmail.com>
-Subject: Re: Please add my temporary MIPS fixes branch to linux-next
-From:   Alex Smith <alex@alex-smith.me.uk>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Ralf <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Markos (GMail)" <markos.chandras@gmail.com>,
-        Markos <markos.chandras@imgtec.com>,
-        Paul <paul.burton@imgtec.com>,
-        Rob Kendrick <rob.kendrick@codethink.co.uk>,
-        Huacai Chen <chenhc@lemote.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <alex@alex-smith.me.uk>
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: BCM47XX: make reboot more relaiable
+References: <1406584437-31108-1-git-send-email-hauke@hauke-m.de> <CACna6rw_OswnvN7YD7AVnCNKtKJAk8UGXEjUdVJEvaBF3ErAmQ@mail.gmail.com>
+In-Reply-To: <CACna6rw_OswnvN7YD7AVnCNKtKJAk8UGXEjUdVJEvaBF3ErAmQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41822
+X-archive-position: 41823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alex-smith.me.uk
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,26 +40,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 30 July 2014 17:00, James Hogan <james.hogan@imgtec.com> wrote:
-> This one fixes mips32 debian boot, but changes the layout of the
-> NT_PRSTATUS regset which is accessible through ptrace. I don't believe
-> this will break anything, but there are other patches pending in the
-> patchset to fix up the regset stuff properly anyway (as it is already
-> broken for core dumps) and I don't really want to take the risk without
-> Ralf's okay.
->
-> Alex Smith (1):
->       MIPS: O32/32-bit: Fix bug which can cause incorrect system call
-> restarts
+On 07/30/2014 08:06 PM, Rafał Miłecki wrote:
+> On 28 July 2014 23:53, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+>> The reboot on the BCM47XX SoCs is done, by setting the watchdog counter
+>> to 1 and let it trigger a reboot, when it reaches 0. Some devices with
+>> a BCM4705/BCM4785 SoC do not reboot when the counter is set to 1 and
+>> decreased to 0 by the hardware. It looks like it works more reliable
+>> when we set it to 3. As far as I understand the hardware, this should
+>> not make any difference, but I do not have access to any documentation
+>> for this SoC.
+>> It is still not 100% reliable.
+> 
+> Did you see code in hndmips.c of Broadcom SDK? Maybe we need this
+> magic ASM code they have it there?
+> 
+> if (CHIPID(sih->chip) == BCM4785_CHIP_ID)
+>     MTC0(C0_BROADCOM, 4, (1 << 22));
+> si_watchdog(sih, 1);
+> if (CHIPID(sih->chip) == BCM4785_CHIP_ID) {
+>     __asm__ __volatile__(
+>         ".set\tmips3\n\t"
+>         "sync\n\t"
+>         "wait\n\t"
+>         ".set\tmips0");
+> }
+> while (1);
+> 
+> Maybe it'll work better and more reliable?
+> 
+This looks interesting, I haven't seen this.
 
-Right now the NT_PRSTATUS regset can't be relied upon to return the
-same layout anyway, as it can differ depending on whether the kernel
-is 32- or 64-bit, as well as with a couple of other Kconfig options.
-Changing it in this patch shouldn't make things any worse. As you say
-other patches in the series properly fix the regset/core dump
-situation, though I suppose they aren't too critical for 3.16 as
-nobody seems to have noticed/cared that core dumps aren't working
-until now!
+Please drop this patch for now, I will create a new one
 
-Thanks,
-Alex
+Hauke

@@ -1,38 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 09:53:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15874 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6837604AbaG3HxmfnUJV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 09:53:42 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E762E6960B141
-        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 08:53:33 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 30 Jul 2014 08:53:35 +0100
-Received: from pburton-laptop.home (192.168.79.176) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 30 Jul
- 2014 08:53:34 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 05/13] MIPS: init upper 64b of vector registers when MSA is first used
-Date:   Wed, 30 Jul 2014 08:53:20 +0100
-Message-ID: <1406706800-8637-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.0.2
-In-Reply-To: <1405093479-5123-6-git-send-email-paul.burton@imgtec.com>
-References: <1405093479-5123-6-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 10:35:36 +0200 (CEST)
+Received: from mail-ie0-f170.google.com ([209.85.223.170]:44856 "EHLO
+        mail-ie0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6836188AbaG3IfdQh1AN convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Jul 2014 10:35:33 +0200
+Received: by mail-ie0-f170.google.com with SMTP id rl12so1082406iec.15
+        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 01:35:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=mEQtT/kB0v4QpDEz1NC9ruEZUdmU43zxp8TCwxGiE04=;
+        b=G0QjbIIPpR/pDQRSFyEIkGjGOW3K/Dtpk0AO2YRXnfFY5PHpndbXfPyMhQ44p5RShk
+         gHQcyOl1xdhpOQPiOghnK1s+dTO2Yv2K5ccgZqSVhczLElqNR9gF+QpEnqqsmvfIcW3a
+         MfvvJvZwP4rikSuGLTJ3hWVH7Yjsc6g3ZGXcgDIKiByJyG1cKVCnbKKaRRKulINdD3YQ
+         LgCu9A560qGMYzZY8CoIogwe6H97ZhUMndw48O/krrPOc/q1phHt2UdVPa4Ty+pheDW0
+         nAIGpd6OaVDwa3irL065UlC+c0qUKZ0a2eR5BTQ4Bx/JvVq+RjmLFrlCMDKGNclLQ7i4
+         fkZg==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.79.176]
-Return-Path: <Paul.Burton@imgtec.com>
+X-Received: by 10.50.8.6 with SMTP id n6mr33800343iga.43.1406709327032; Wed,
+ 30 Jul 2014 01:35:27 -0700 (PDT)
+Received: by 10.64.241.5 with HTTP; Wed, 30 Jul 2014 01:35:26 -0700 (PDT)
+In-Reply-To: <20140726145116.GA14047@hall.aurel32.net>
+References: <tencent_0448A221440A321914235E33@qq.com>
+        <20140726145116.GA14047@hall.aurel32.net>
+Date:   Wed, 30 Jul 2014 16:35:26 +0800
+X-Google-Sender-Auth: iCSy9zpmekNsgt7z3yQyX1fPCdE
+Message-ID: <CAAhV-H6UbeXG__c14qn+ToM_eR1SkOj+BN+7gqG1NxH=RGUBFA@mail.gmail.com>
+Subject: Re: SMP IPI issues on Loongson 3A based machines
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Aurelien Jarno <aurelien@aurel32.net>,
+        Binbin Zhou <zhoubb@lemote.com>,
+        Kent Overstreet <koverstreet@google.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        Andreas Barth <aba@ayous.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41803
+X-archive-position: 41804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,155 +57,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When a task first makes use of MSA we need to ensure that the upper
-64b of the vector registers are set to some value such that no
-information can be leaked to it from the previous task to use MSA
-context on the CPU. The architecture formerly specified that these
-bits would be cleared to 0 when a scalar FP instructions wrote to the
-aliased FP registers, which would have implicitly handled this as the
-kernel restored scalar FP context. However more recent versions of the
-specification now state that the value of the bits in such cases is
-unpredictable. Initialise them explictly to be sure, and set all the
-bits to 1 rather than 0 for consistency with the least significant
-64b.
+Hi, Aurelien,
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
-Changes in v2:
-  - Handle the case of a task which has formerly used FP, but doesn't
-    currently have live FP context & has not formerly used MSA.
-  - Initialise to all-1s rather than all-0s for consistency with the
-    64b scalar FP registers.
----
- arch/mips/include/asm/asmmacro.h | 20 ++++++++++++++++++++
- arch/mips/include/asm/msa.h      |  1 +
- arch/mips/kernel/r4k_switch.S    |  5 +++++
- arch/mips/kernel/traps.c         | 39 ++++++++++++++++++++++++++++++---------
- 4 files changed, 56 insertions(+), 9 deletions(-)
+After some days debugging, we found the root cause: If we revert the
+commit 21b40200cfe961 (aio: use flush_dcache_page()), everything is
+OK. This commit add two flush_dcache_page() in irq disabled context,
+but in MIPS, flush_dcache_page() is implemented via call_function IPI.
+Unfortunately, call_function IPI shouldn't be called in irq disabled
+context, otherwise there will be deadlock.
 
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 4986bf5..cd9a98b 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -426,4 +426,24 @@
- 	ld_d	31, THREAD_FPR31, \thread
- 	.endm
- 
-+	.macro	msa_init_upper wd
-+#ifdef CONFIG_64BIT
-+	insert_d \wd, 1
-+#else
-+	insert_w \wd, 2
-+	insert_w \wd, 3
-+#endif
-+	.if	31-\wd
-+	msa_init_upper	(\wd+1)
-+	.endif
-+	.endm
-+
-+	.macro	msa_init_all_upper
-+	.set	push
-+	.set	noat
-+	not	$1, zero
-+	msa_init_upper	0
-+	.set	pop
-+	.endm
-+
- #endif /* _ASM_ASMMACRO_H */
-diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
-index e80e85c..fe25a17 100644
---- a/arch/mips/include/asm/msa.h
-+++ b/arch/mips/include/asm/msa.h
-@@ -16,6 +16,7 @@
- 
- extern void _save_msa(struct task_struct *);
- extern void _restore_msa(struct task_struct *);
-+extern void _init_msa_upper(void);
- 
- static inline void enable_msa(void)
- {
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 1a1aef0..4c4ec18 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -144,6 +144,11 @@ LEAF(_restore_msa)
- 	jr	ra
- 	END(_restore_msa)
- 
-+LEAF(_init_msa_upper)
-+	msa_init_all_upper
-+	jr	ra
-+	END(_init_msa_upper)
-+
- #endif
- 
- /*
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 4792fd7..4aca484 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1088,13 +1088,15 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
- 
- static int enable_restore_fp_context(int msa)
- {
--	int err, was_fpu_owner;
-+	int err, was_fpu_owner, prior_msa;
- 
- 	if (!used_math()) {
- 		/* First time FP context user. */
- 		err = init_fpu();
--		if (msa && !err)
-+		if (msa && !err) {
- 			enable_msa();
-+			_init_msa_upper();
-+		}
- 		if (!err)
- 			set_used_math();
- 		return err;
-@@ -1146,18 +1148,37 @@ static int enable_restore_fp_context(int msa)
- 	/*
- 	 * If this is the first time that the task is using MSA and it has
- 	 * previously used scalar FP in this time slice then we already nave
--	 * FP context which we shouldn't clobber.
-+	 * FP context which we shouldn't clobber. We do however need to clear
-+	 * the upper 64b of each vector register so that this task has no
-+	 * opportunity to see data left behind by another.
- 	 */
--	if (!test_and_set_thread_flag(TIF_MSA_CTX_LIVE) && was_fpu_owner)
-+	prior_msa = test_and_set_thread_flag(TIF_MSA_CTX_LIVE);
-+	if (!prior_msa && was_fpu_owner) {
-+		_init_msa_upper();
- 		return 0;
-+	}
- 
--	/* We need to restore the vector context. */
--	restore_msa(current);
-+	if (!prior_msa) {
-+		/*
-+		 * Restore the least significant 64b of each vector register
-+		 * from the existing scalar FP context.
-+		 */
-+		_restore_fp(current);
- 
--	/* Restore the scalar FP control & status register */
--	if (!was_fpu_owner)
--		asm volatile("ctc1 %0, $31" : : "r"(current->thread.fpu.fcr31));
-+		/*
-+		 * The task has not formerly used MSA, so clear the upper 64b
-+		 * of each vector register such that it cannot see data left
-+		 * behind by another task.
-+		 */
-+		_init_msa_upper();
-+	} else {
-+		/* We need to restore the vector context. */
-+		restore_msa(current);
- 
-+		/* Restore the scalar FP control & status register */
-+		if (!was_fpu_owner)
-+			asm volatile("ctc1 %0, $31" : : "r"(current->thread.fpu.fcr31));
-+	}
- 	return 0;
- }
- 
--- 
-2.0.2
+I don't know how to solve this problem, since commit 21b40200
+shouldn't be reverted (Loongson can revert it because of
+hardware-maintained cache, but other MIPS need this). May be the
+original author (Kent Overstreet) have good ideas?
+
+Huacai
+
+On Sat, Jul 26, 2014 at 10:51 PM, Aurelien Jarno <aurelien@aurel32.net> wrote:
+> On Sat, Jul 26, 2014 at 02:05:28PM +0800, 陈华才 wrote:
+>> Hi,
+>>
+>> I'm debugging, please wait for some time.
+>
+> Great, thanks! Does it means you have been able to reproduce the issue?
+> If not I can provide you a copy of the chroot I used to reproduce the
+> issue.
+>
+> I also tried with the kernel from
+> http://dev.lemote.com/cgit/linux-official.git/ but unfortunately
+> I haven't been able to get it working correctly with
+> PREEMPT_VOLUNTARY=yes. I have tried with the kernel from the master
+> branch and after merging the v3.15.6 tag. In one of the case I got the
+> following backtrace on the serial console:
+>
+> | [   75.128906] irq 17, desc: ffffffff80c911e0, depth: 1, count: 0, unhandled: 0
+> | [   75.136718] ->handle_irq():  ffffffff80289a18, handle_bad_irq+0x0/0x2d0
+> | [   75.144531] ->irq_data.chip(): ffffffff80cbe210, 0xffffffff80cbe210
+> | [   75.144531] ->action():           (null)
+> | [   75.144531]    IRQ_NOPROBE set
+> | [   75.144531] unexpected IRQ # 17
+>
+> Aurelien
+>
+> --
+> Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+> aurelien@aurel32.net                 http://www.aurel32.net
+>

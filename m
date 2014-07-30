@@ -1,50 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 17:34:58 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:39805 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860069AbaG3PeyajOdW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Jul 2014 17:34:54 +0200
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s6UFYhrI019956
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 30 Jul 2014 11:34:44 -0400
-Received: from tranklukator.brq.redhat.com (dhcp-1-191.brq.redhat.com [10.34.1.191])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s6UFYdDY005079;
-        Wed, 30 Jul 2014 11:34:40 -0400
-Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Wed, 30 Jul 2014 17:33:03 +0200 (CEST)
-Date:   Wed, 30 Jul 2014 17:32:59 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arch <linux-arch@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Will Drewry <wad@chromium.org>,
-        Kees Cook <keescook@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 0/5] x86: two-phase syscall tracing and seccomp
-        fastpath
-Message-ID: <20140730153259.GA25478@redhat.com>
-References: <cover.1406604806.git.luto@amacapital.net> <20140729192056.GA6308@redhat.com> <CALCETrX6P7SJQdgc0gTM7FLdwyT_Ld1MWvkLYpTO_2xsvBC9sA@mail.gmail.com> <CALCETrXHF5YzPQDvnJs=mFNm2Ff_FekGu_Y8-JyMaWh2hctR7A@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 18:00:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:40126 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6860022AbaG3QAhvShG9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 18:00:37 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 30EA0666F359E;
+        Wed, 30 Jul 2014 17:00:28 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 30 Jul 2014 17:00:30 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 30 Jul
+ 2014 17:00:29 +0100
+Message-ID: <53D9169D.3020705@imgtec.com>
+Date:   Wed, 30 Jul 2014 17:00:29 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALCETrXHF5YzPQDvnJs=mFNm2Ff_FekGu_Y8-JyMaWh2hctR7A@mail.gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
-Return-Path: <oleg@redhat.com>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ralf <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+CC:     Aurelien Jarno <aurelien@aurel32.net>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Markos (GMail)" <markos.chandras@gmail.com>,
+        Markos <markos.chandras@imgtec.com>,
+        Paul <paul.burton@imgtec.com>,
+        Rob Kendrick <rob.kendrick@codethink.co.uk>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        "Huacai Chen" <chenhc@lemote.com>
+Subject: Please add my temporary MIPS fixes branch to linux-next
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41806
+X-archive-position: 41807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,31 +54,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/29, Andy Lutomirski wrote:
->
-> > SAVE_REST is 6 movq instructions and a subq.  FIXUP_TOP_OF_STACK is 7
-> > movqs (and 8 if I ever get my way).  RESTORE_TOP_OF_STACK is 4.
-> > RESTORE_REST is 6 movqs and an adsq.  So we're talking about avoiding
-> > 21 movqs, and addq, and a subq.  That may be significant.  (And I
-> > suspect that the difference is much larger on platforms like arm64,
-> > but that's a separate issue.)
+Hi Stephen & MIPS people
 
-OK, thanks. We could probably simplify the logic in phase1 + phase2 if
-it was a single function though.
+v3.16 is fast approaching and there are quite a few important MIPS
+patches pending. Since Ralf appears to be unavailable at the moment I've
+reviewed and applied some of those patches which are least controversial
+to a fixes branch with the intention of sending a pull request to Ralf &
+Linus so that one of them can hopefully merge it before the release.
 
-> To put some more options on the table: there's an argument to be made
-> that the whole fast-path/slow-path split isn't worth it.  We could
-> unconditionally set up a full frame for all syscalls.  This means:
+Please could the following branch be added to linux-next:
 
-Or, at least, can't we allocate the full frame and avoid "add/sub %rsp"?
+git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
+branch: mips-fixes
 
-> This means:
-...
-> On the
-> other hand, there's zero chance that this would be ready for 3.17.
->
-> I'd tend to advocate for keeping the approach in my patches for now.
+Details of fixes below.
 
-Yes, sure, I didn't try to convince you to change this code. Thanks.
+Thanks
+James
 
-Oleg.
+The current shortlog looks like this:
+
+Aaro Koskinen (1):
+      MIPS: OCTEON: make get_system_type() thread-safe
+
+Markos Chandras (5):
+      MIPS: syscall: Fix AUDIT value for O32 processes on MIPS64
+      MIPS: scall64-o32: Fix indirect syscall detection
+      MIPS: EVA: Add new EVA header
+      MIPS: Malta: EVA: Rename 'eva_entry' to 'platform_eva_init'
+      MIPS: CPS: Initialize EVA before bringing up VPEs from secondary cores
+
+Paul Burton (1):
+      MIPS: prevent user from setting FCSR cause bits
+
+Rob Kendrick (1):
+      MIPS: math-emu: cp1emu: Fix typo when returning to register file
+
+
+If I've missed any other critical fixes for v3.16 please let me know.
+
+
+
+I haven't included the patches below, even though they are important, as
+I'm less sure about them. Comments welcome.
+
+
+This one fixes mips32 debian boot, but changes the layout of the
+NT_PRSTATUS regset which is accessible through ptrace. I don't believe
+this will break anything, but there are other patches pending in the
+patchset to fix up the regset stuff properly anyway (as it is already
+broken for core dumps) and I don't really want to take the risk without
+Ralf's okay.
+
+Alex Smith (1):
+      MIPS: O32/32-bit: Fix bug which can cause incorrect system call
+restarts
+
+
+This one I'm not confident about, hasn't had any comments on the list,
+and has been broken for quite a while anyway, so I haven't risked it.
+
+Huacai Chen (1):
+      MIPS: tlbex: fix a missing statement for HUGETLB

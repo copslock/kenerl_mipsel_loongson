@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 18:00:42 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40126 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860022AbaG3QAhvShG9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 18:00:37 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 30EA0666F359E;
-        Wed, 30 Jul 2014 17:00:28 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 30 Jul 2014 17:00:30 +0100
-Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 30 Jul
- 2014 17:00:29 +0100
-Message-ID: <53D9169D.3020705@imgtec.com>
-Date:   Wed, 30 Jul 2014 17:00:29 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 18:01:42 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:48027 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6860022AbaG3QBkLgkVk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Jul 2014 18:01:40 +0200
+Received: from [37.161.205.241] (helo=ohm.rr44.fr)
+        by hall.aurel32.net with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1XCWJo-0003Hf-J5; Wed, 30 Jul 2014 18:01:32 +0200
+Received: from aurel32 by ohm.rr44.fr with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1XCWJa-0001FN-RI; Wed, 30 Jul 2014 18:01:18 +0200
+Date:   Wed, 30 Jul 2014 18:01:18 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Binbin Zhou <zhoubb@lemote.com>,
+        Kent Overstreet <koverstreet@google.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Andreas Barth <aba@ayous.org>
+Subject: Re: SMP IPI issues on Loongson 3A based machines
+Message-ID: <20140730160118.GA4386@ohm.rr44.fr>
+References: <tencent_0448A221440A321914235E33@qq.com>
+ <20140726145116.GA14047@hall.aurel32.net>
+ <CAAhV-H6UbeXG__c14qn+ToM_eR1SkOj+BN+7gqG1NxH=RGUBFA@mail.gmail.com>
 MIME-Version: 1.0
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Ralf <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-CC:     Aurelien Jarno <aurelien@aurel32.net>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Markos (GMail)" <markos.chandras@gmail.com>,
-        Markos <markos.chandras@imgtec.com>,
-        Paul <paul.burton@imgtec.com>,
-        Rob Kendrick <rob.kendrick@codethink.co.uk>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        "Huacai Chen" <chenhc@lemote.com>
-Subject: Please add my temporary MIPS fixes branch to linux-next
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <CAAhV-H6UbeXG__c14qn+ToM_eR1SkOj+BN+7gqG1NxH=RGUBFA@mail.gmail.com>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41807
+X-archive-position: 41808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,65 +50,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Stephen & MIPS people
+Hi Hucai,
 
-v3.16 is fast approaching and there are quite a few important MIPS
-patches pending. Since Ralf appears to be unavailable at the moment I've
-reviewed and applied some of those patches which are least controversial
-to a fixes branch with the intention of sending a pull request to Ralf &
-Linus so that one of them can hopefully merge it before the release.
+On Wed, Jul 30, 2014 at 04:35:26PM +0800, Huacai Chen wrote:
+> Hi, Aurelien,
+> 
+> After some days debugging, we found the root cause: If we revert the
+> commit 21b40200cfe961 (aio: use flush_dcache_page()), everything is
+> OK. This commit add two flush_dcache_page() in irq disabled context,
+> but in MIPS, flush_dcache_page() is implemented via call_function IPI.
+> Unfortunately, call_function IPI shouldn't be called in irq disabled
+> context, otherwise there will be deadlock.
 
-Please could the following branch be added to linux-next:
+Thanks a lot for digging into the problem. I will try to revert this
+patch to confirm it fixes the problem for us, and I'll keep you updated.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
-branch: mips-fixes
+> I don't know how to solve this problem, since commit 21b40200
+> shouldn't be reverted (Loongson can revert it because of
+> hardware-maintained cache, but other MIPS need this). May be the
+> original author (Kent Overstreet) have good ideas?
 
-Details of fixes below.
+Maybe we should look if it's possible to reduce the window where
+interrupts are disabled in this function, but I guess we'll have to wait
+for Kent about that. Do we know if other MIPS systems or other
+architectures also implement the flush_dcache_page() function via IPI?
 
-Thanks
-James
+Thanks,
+Aurelien
 
-The current shortlog looks like this:
-
-Aaro Koskinen (1):
-      MIPS: OCTEON: make get_system_type() thread-safe
-
-Markos Chandras (5):
-      MIPS: syscall: Fix AUDIT value for O32 processes on MIPS64
-      MIPS: scall64-o32: Fix indirect syscall detection
-      MIPS: EVA: Add new EVA header
-      MIPS: Malta: EVA: Rename 'eva_entry' to 'platform_eva_init'
-      MIPS: CPS: Initialize EVA before bringing up VPEs from secondary cores
-
-Paul Burton (1):
-      MIPS: prevent user from setting FCSR cause bits
-
-Rob Kendrick (1):
-      MIPS: math-emu: cp1emu: Fix typo when returning to register file
-
-
-If I've missed any other critical fixes for v3.16 please let me know.
-
-
-
-I haven't included the patches below, even though they are important, as
-I'm less sure about them. Comments welcome.
-
-
-This one fixes mips32 debian boot, but changes the layout of the
-NT_PRSTATUS regset which is accessible through ptrace. I don't believe
-this will break anything, but there are other patches pending in the
-patchset to fix up the regset stuff properly anyway (as it is already
-broken for core dumps) and I don't really want to take the risk without
-Ralf's okay.
-
-Alex Smith (1):
-      MIPS: O32/32-bit: Fix bug which can cause incorrect system call
-restarts
-
-
-This one I'm not confident about, hasn't had any comments on the list,
-and has been broken for quite a while anyway, so I haven't risked it.
-
-Huacai Chen (1):
-      MIPS: tlbex: fix a missing statement for HUGETLB
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

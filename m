@@ -1,50 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 23:45:07 +0200 (CEST)
-Received: from mail-by2lp0243.outbound.protection.outlook.com ([207.46.163.243]:29714
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6860069AbaG3VpD5rUCm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Jul 2014 23:45:03 +0200
-Received: from DM2PR07MB589.namprd07.prod.outlook.com (10.141.176.139) by
- DM2PR07MB255.namprd07.prod.outlook.com (10.141.101.18) with Microsoft SMTP
- Server (TLS) id 15.0.995.14; Wed, 30 Jul 2014 21:44:55 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by
- DM2PR07MB589.namprd07.prod.outlook.com (10.141.176.139) with Microsoft SMTP
- Server (TLS) id 15.0.995.14; Wed, 30 Jul 2014 21:44:52 +0000
-Message-ID: <53D9674E.4000507@caviumnetworks.com>
-Date:   Wed, 30 Jul 2014 14:44:46 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 01:07:06 +0200 (CEST)
+Received: from ozlabs.org ([103.22.144.67]:43688 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6855028AbaG3XHBK0soy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jul 2014 01:07:01 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 183D71400D7;
+        Thu, 31 Jul 2014 09:06:56 +1000 (EST)
+Date:   Thu, 31 Jul 2014 09:06:50 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf <ralf@linux-mips.org>, linux-mips <linux-mips@linux-mips.org>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Markos (GMail)" <markos.chandras@gmail.com>,
+        Markos <markos.chandras@imgtec.com>,
+        Paul <paul.burton@imgtec.com>,
+        Rob Kendrick <rob.kendrick@codethink.co.uk>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        "Huacai Chen" <chenhc@lemote.com>
+Subject: Re: Please add my temporary MIPS fixes branch to linux-next
+Message-ID: <20140731090650.2f1c255c@canb.auug.org.au>
+In-Reply-To: <53D9169D.3020705@imgtec.com>
+References: <53D9169D.3020705@imgtec.com>
+X-Mailer: Claws Mail 3.10.1 (GTK+ 2.24.24; i486-pc-linux-gnu)
 MIME-Version: 1.0
-To:     James Hogan <james@albanarts.com>
-CC:     <linux-mips@linux-mips.org>, Huacai Chen <chenhc@lemote.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Binbin Zhou <zhoubb@lemote.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: tlbex: fix a missing statement for HUGETLB
-References: <1406616880-17142-1-git-send-email-chenhc@lemote.com> <2357839.vPXx615ci5@radagast>
-In-Reply-To: <2357839.vPXx615ci5@radagast>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-ClientProxiedBy: BY2PR07CA049.namprd07.prod.outlook.com (10.141.251.24) To
- DM2PR07MB589.namprd07.prod.outlook.com (10.141.176.139)
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
-X-Forefront-PRVS: 0288CD37D9
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(51704005)(199002)(189002)(377454003)(479174003)(24454002)(102836001)(87266999)(54356999)(76176999)(99396002)(65816999)(106356001)(50986999)(81156004)(79102001)(66066001)(110136001)(69596002)(20776003)(101416001)(74502001)(64706001)(65956001)(80022001)(85306003)(50466002)(46102001)(31966008)(65806001)(81342001)(59896001)(77096002)(76482001)(81542001)(80316001)(64126003)(77982001)(23756003)(87976001)(19580395003)(83506001)(83322001)(4396001)(19580405001)(85852003)(92726001)(83072002)(36756003)(92566001)(21056001)(47776003)(33656002)(575784001)(95666004)(107046002)(74662001)(42186005)(53416004);DIR:OUT;SFP:;SCL:1;SRVR:DM2PR07MB589;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;LANG:en;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/pnPHiMbaeCkUor0_3hDfy6E"; protocol="application/pgp-signature"
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41825
+X-archive-position: 41826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,52 +49,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/30/2014 02:41 PM, James Hogan wrote:
-> Hi Huacai,
->
-> On Tuesday 29 July 2014 14:54:40 Huacai Chen wrote:
->> In commit 2c8c53e28f1 (MIPS: Optimize TLB handlers for Octeon CPUs)
->> build_r4000_tlb_refill_handler() is modified. But it doesn't compatible
->> with the original code in HUGETLB case. Because there is a copy & paste
->> error and one line of code is missing. It is very easy to produce a bug
->> with LTP's hugemmap05 test.
->>
->> Signed-off-by: Huacai Chen <chenhc@lemote.com>
->> Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
->> Cc: <stable@vger.kernel.org>
->> ---
->>   arch/mips/mm/tlbex.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
->> index e80e10b..343fe0f 100644
->> --- a/arch/mips/mm/tlbex.c
->> +++ b/arch/mips/mm/tlbex.c
->> @@ -1299,6 +1299,7 @@ static void build_r4000_tlb_refill_handler(void)
->>   	}
->>   #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
->>   	uasm_l_tlb_huge_update(&l, p);
->> +	UASM_i_LW(&p, K0, 0, K1);
->>   	build_huge_update_entries(&p, htlb_info.huge_pte, K1);
->>   	build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
->>   				   htlb_info.restore_scratch);
->
-> build_huge_tlb_write_entry only uses K0 as a temp and clobbers without using
-> the value, so the K0 must be being used by the code generated by
-> build_huge_update_entires, but the patch you mentioned changed the second
-> argument from K0 to htlb_info.huge_pte.
->
-> So should the K0 in the new UASM_i_LW call be changed to htlb_info.huge_pte
-> too?
->
+--Sig_/pnPHiMbaeCkUor0_3hDfy6E
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I don't know.  You have to dump out the generated handler (by #define 
-DEBUG at the top of the file), then assemble/disassemble it.  Looking at 
-the disassembly, we could make sensible statements about what is happening.
+Hi James,
 
+On Wed, 30 Jul 2014 17:00:29 +0100 James Hogan <james.hogan@imgtec.com> wro=
+te:
+>
+> v3.16 is fast approaching and there are quite a few important MIPS
+> patches pending. Since Ralf appears to be unavailable at the moment I've
+> reviewed and applied some of those patches which are least controversial
+> to a fixes branch with the intention of sending a pull request to Ralf &
+> Linus so that one of them can hopefully merge it before the release.
+>=20
+> Please could the following branch be added to linux-next:
+>=20
+> git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
+> branch: mips-fixes
 
-> (David Daney on Cc)
->
-> Thanks
-> James
->
+Added from today.
+
+Thanks for adding your subsystem tree as a participant of linux-next.  As
+you may know, this is not a judgment of your code.  The purpose of
+linux-next is for integration testing and to lower the impact of
+conflicts between subsystems in the next merge window.=20
+
+You will need to ensure that the patches/commits in your tree/series have
+been:
+     * submitted under GPL v2 (or later) and include the Contributor's
+        Signed-off-by,
+     * posted to the relevant mailing list,
+     * reviewed by you (or another maintainer of your subsystem tree),
+     * successfully unit tested, and=20
+     * destined for the current or next Linux merge window.
+
+Basically, this should be just what you would send to Linus (or ask him
+to fetch).  It is allowed to be rebased if you deem it necessary.
+
+--=20
+Cheers,
+Stephen Rothwell=20
+sfr@canb.auug.org.au
+
+--Sig_/pnPHiMbaeCkUor0_3hDfy6E
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Disposition: attachment; filename=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJT2XqPAAoJEMDTa8Ir7ZwV9eMP/0QTglmlKOO8PYgnemNkFUME
+akCJpfPIaj+FJHQFUaRdYU4Y/Xp0p6s11DN1CBfkQZAR+I4WYPhsYSFq2d/ddhX0
+GrHpXIL7B7TPwgeAfBmP7uFTbTtfV2wKj0Ct4aTpFjUpQ1QW0PkjRptMFSqKcXVd
+Bp7ymI3KxxdzgzCamPUWvZLwkWfxswXuN56kc1UNLcNojIA75TuJVdtjdg052BuL
+C+SiyXe1e4qmeDjgEe91bAyOEVT8HEvpuOQlfvSltyhraOHn/YEUwc4LD3tj+e33
+8uuHDB4bbz1swCajj1sbo98PEpCAMAijAeKjQdIBaRqNmtsrcn3DkOw5SjPtihhy
+CzJdLIPqabohIE0kp4+Fenux61EfPyL83HHvRfkOaY3LoLLysHpb/b5nSH3nMwXV
+WpMl0b77lrFy2hZBCDiYYbYooqpPTMdNmuXDf6/FeLCY6bsOknvRGl2ILS2gppti
+nfG5CKF+ehCjIvrGxnbitV4TPkS7OVsFcibl+ecYOUerA6GrKKaNipERE6UAl/sE
+jxT+oW+igRLdGyw0nB6aiISIOViDYnCucJxevKFE5YnI4lQni4pvdnqVDbl3CvTq
+xgnC5dN6koQjJWo7QRaJQaDkx0HBliPJQy2snluB4yJ4Vps7xG2yS5kFB1SLe4AP
+uOg7EEhUXBEBCLSKQaHC
+=5qDw
+-----END PGP SIGNATURE-----
+
+--Sig_/pnPHiMbaeCkUor0_3hDfy6E--

@@ -1,62 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 19:00:10 +0200 (CEST)
-Received: from mail-wi0-f171.google.com ([209.85.212.171]:35921 "EHLO
-        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860010AbaG3RAGmoziO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 19:00:06 +0200
-Received: by mail-wi0-f171.google.com with SMTP id hi2so7846387wib.16
-        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 10:00:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 19:06:12 +0200 (CEST)
+Received: from mail-ig0-f179.google.com ([209.85.213.179]:34242 "EHLO
+        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6855028AbaG3RGJrRn0r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 19:06:09 +0200
+Received: by mail-ig0-f179.google.com with SMTP id h18so3302626igc.0
+        for <multiple recipients>; Wed, 30 Jul 2014 10:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=9+NJ4tFP4lTzQAk0q4JyQ9WMUs0uXe79LjaNczDo8O8=;
-        b=JPtuhV8oMpwO9E+KWNpOaVlzeSF6LFII46NoINVxEpmy7ApZE8sWa0vlnHJJWy0/qt
-         /5qzvM+4rhvN+u/BDr1x4oSLSPm9agD/PGNaUi38Bksq3jpzx3kZO6qRH1Y4U8zA8IFk
-         YB0lNjPC2NYmEdKpb6ylc+uVzfLiMLMbwvS2eMsT70s2e36YNFmhhGERuW5Qg7/xDYJw
-         hfn36QdBU9GLEpYFpc2dvoYePrDjgRHEYrtYlFixUHghzZkK6tJ9ISnDYo3jJchNzEQd
-         WF+py1hNJCctTp7u+sqv56oVPlbTh8eDwpHi2zPmBoAoxn0EfIDGemtbG5g4RONe4SsJ
-         PgYg==
-X-Received: by 10.194.63.37 with SMTP id d5mr8253290wjs.92.1406739600126;
-        Wed, 30 Jul 2014 10:00:00 -0700 (PDT)
-Received: from localhost (8.20.196.77.rev.sfr.net. [77.196.20.8])
-        by mx.google.com with ESMTPSA id bp9sm57299806wib.7.2014.07.30.09.59.57
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=rNJwcwU+lfnfZkOLyrDY5gXmenxUiYJ7RiRhORHSgWk=;
+        b=npeXVGZvpgFhLjXSTNf+BwvekIfrWVkBHPUwzH01YIlQkZNoFJkljK+UxiU9MAe7TO
+         j/MepdnE+SSszJmOGZa/KiVOmOZcfeHn3lhF0NJYiW+H+4/d4rSQVxhTUat36rHOxXWn
+         WTqAJyv/EAXMbENxgnI75Pqnql65LkZWBrlHwdmQ3x5w714v21tc2mYyLp/rip2eX9JK
+         bAkIG2feZkOmb1MhNTDtF4Kl0hI4TWBcvTNnZ/lPSgqj/fkcRabBr29YGg8rbYVGs9CC
+         ty8jJubNZmYszFU6U0lVoiaTwL9RzPv4Pu84Is38daG43raVpFPPdT/FIEVBjRhVAYcn
+         ah6Q==
+X-Received: by 10.43.154.145 with SMTP id le17mr6709271icc.20.1406739963537;
+        Wed, 30 Jul 2014 10:06:03 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id ga11sm11472018igd.8.2014.07.30.10.06.01
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 30 Jul 2014 09:59:59 -0700 (PDT)
-Date:   Wed, 30 Jul 2014 18:59:56 +0200
-From:   Frederic Weisbecker <fweisbec@gmail.com>
-To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     Oleg Nesterov <oleg@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arch <linux-arch@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Will Drewry <wad@chromium.org>,
-        Kees Cook <keescook@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 0/5] x86: two-phase syscall tracing and seccomp
- fastpath
-Message-ID: <20140730165940.GB27954@localhost.localdomain>
-References: <cover.1406604806.git.luto@amacapital.net>
- <20140729192056.GA6308@redhat.com>
- <CALCETrX6P7SJQdgc0gTM7FLdwyT_Ld1MWvkLYpTO_2xsvBC9sA@mail.gmail.com>
- <CALCETrXHF5YzPQDvnJs=mFNm2Ff_FekGu_Y8-JyMaWh2hctR7A@mail.gmail.com>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 30 Jul 2014 10:06:02 -0700 (PDT)
+Message-ID: <53D925F9.5090001@gmail.com>
+Date:   Wed, 30 Jul 2014 10:06:01 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALCETrXHF5YzPQDvnJs=mFNm2Ff_FekGu_Y8-JyMaWh2hctR7A@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <fweisbec@gmail.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ralf <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Markos (GMail)" <markos.chandras@gmail.com>,
+        Markos <markos.chandras@imgtec.com>,
+        Paul <paul.burton@imgtec.com>,
+        Rob Kendrick <rob.kendrick@codethink.co.uk>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: Re: Please add my temporary MIPS fixes branch to linux-next
+References: <53D9169D.3020705@imgtec.com>
+In-Reply-To: <53D9169D.3020705@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41813
+X-archive-position: 41814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fweisbec@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,160 +66,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 29, 2014 at 04:30:58PM -0700, Andy Lutomirski wrote:
-> On Tue, Jul 29, 2014 at 1:54 PM, Andy Lutomirski <luto@amacapital.net> wrote:
-> > On Jul 29, 2014 12:22 PM, "Oleg Nesterov" <oleg@redhat.com> wrote:
-> >>
-> >> Andy, to avoid the confusion: I am not trying to review this changes.
-> >> As you probably know my understanding of asm code in entry.S is very
-> >> limited.
-> >>
-> >> Just a couple of questions to ensure I understand this correctly.
-> >>
-> >> On 07/28, Andy Lutomirski wrote:
-> >> >
-> >> > This is both a cleanup and a speedup.  It reduces overhead due to
-> >> > installing a trivial seccomp filter by 87%.  The speedup comes from
-> >> > avoiding the full syscall tracing mechanism for filters that don't
-> >> > return SECCOMP_RET_TRACE.
-> >>
-> >> And only after I look at 5/5 I _seem_ to actually understand where
-> >> this speedup comes from.
-> >>
-> >> So. Currently tracesys: path always lead to "iret" after syscall, with
-> >> this change we can avoid it if phase_1() returns zero, correct?
-> >>
-> >> And, this also removes the special TIF_SYSCALL_AUDIT-only case in entry.S,
-> >> cool.
-> >>
-> >> I am wondering if we can do something similar with do_notify_resume() ?
-> >>
-> >>
-> >> Stupid question. To simplify, lets forget that syscall_trace_enter()
-> >> already returns the value. Can't we simplify the asm code if we do
-> >> not export 2 functions, but make syscall_trace_enter() return
-> >> "bool slow_path_is_needed". So that "tracesys:" could do
-> >>
-> >>         // pseudo code
-> >>
-> >> tracesys:
-> >>         SAVE_REST
-> >>         FIXUP_TOP_OF_STACK
-> >>
-> >>         call syscall_trace_enter
-> >>
-> >>         if (!slow_path_is_needed) {
-> >>                 addq REST_SKIP, %rsp
-> >>                 jmp system_call_fastpath
-> >>         }
-> >>
-> >>         ...
-> >>
-> >> ?
-> >>
-> >> Once again, I am just curious, it is not that I actually suggest to consider
-> >> this option.
-> >
-> > We could, but this would lose a decent amount of the speedup.  I could
-> > try it and benchmark it, but I'm guessing that the save and restore is
-> > kind of expensive.  This will make audit slower than it currently is,
-> > which may also annoy some people.  (Not me.)
-> >
-> > I'm also not convinced that it would be much simpler.  My code is currently:
-> >
-> > tracesys:
-> >     leaq -REST_SKIP(%rsp), %rdi
-> >     movq $AUDIT_ARCH_X86_64, %rsi
-> >     call syscall_trace_enter_phase1
-> >     test %rax, %rax
-> >     jnz tracesys_phase2        /* if needed, run the slow path */
-> >     LOAD_ARGS 0            /* else restore clobbered regs */
-> >     jmp system_call_fastpath    /*      and return to the fast path */
-> >
-> > tracesys_phase2:
-> >     SAVE_REST
-> >     FIXUP_TOP_OF_STACK %rdi
-> >     movq %rsp, %rdi
-> >     movq $AUDIT_ARCH_X86_64, %rsi
-> >     movq %rax,%rdx
-> >     call syscall_trace_enter_phase2
-> >
-> >     LOAD_ARGS ARGOFFSET, 1
-> >     RESTORE_REST
-> >
-> >     ... slow path here ...
-> >
-> > It would end up looking more like (totally untested):
-> >
-> > tracesys:
-> >     SAVE_REST
-> >     FIXUP_TOP_OF_STACK %rdi
-> >     mov %rsp, %rdi
-> >     movq $AUDIT_ARCH_X86_64, %rsi
-> >     call syscall_trace_enter
-> >     LOAD_ARGS
-> >     RESTORE_REST
-> >     test [whatever condition]
-> >     j[cond] system_call_fastpath
-> >
-> >     ... slow path here ...
-> >
-> > So it's a bit simpler.  Oddly, the ia32entry code doesn't have this
-> > multiple syscall path distinction.
-> >
-> > SAVE_REST is 6 movq instructions and a subq.  FIXUP_TOP_OF_STACK is 7
-> > movqs (and 8 if I ever get my way).  RESTORE_TOP_OF_STACK is 4.
-> > RESTORE_REST is 6 movqs and an adsq.  So we're talking about avoiding
-> > 21 movqs, and addq, and a subq.  That may be significant.  (And I
-> > suspect that the difference is much larger on platforms like arm64,
-> > but that's a separate issue.)
-> 
-> To put some more options on the table: there's an argument to be made
-> that the whole fast-path/slow-path split isn't worth it.  We could
-> unconditionally set up a full frame for all syscalls.  This means:
-> 
-> No FIXUP_TOP_OF_STACK.  Instead, the system_call entry sets up RSP,
-> SS, CS, RCX, and EFLAGS right away.  That's five stores for all
-> syscalls instead of two loads and five stores for syscalls that need
-> it.  But it also gets rid of RESTORE_TOP_OF_STACK completely.
-> 
-> No more bugs involving C code that assumes a full stack frame when no
-> such frame exists inside syscall code.
-> 
-> We could possibly remove a whole bunch of duplicated code.
-> 
-> The upshot would be simpler code, faster slow-path syscalls, and
-> slower fast-path syscalls (but probably not much slower).  On the
-> other hand, there's zero chance that this would be ready for 3.17.
+On 07/30/2014 09:00 AM, James Hogan wrote:
+[...]
 
-Indeed.
+> ... Since Ralf appears to be unavailable at the moment ...
+>
+[...]
 
-If we ever take that direction (ie: remove that partial frame optimization),
-there is that common part that we can find in many archs when they return
-from syscalls, exceptions or interrupts which could be more or less consolidated as:
+This doesn't seem to be a temporary situation.
 
-void sysret_check(struct pt_regs *regs)
-{
-          while(test_thread_flag(TIF_ALLWORK_MASK)) {
-              int resched = need_resched();
+If we want to keep the MIPS architecture in a functioning state, it may 
+make sense to establish an alternate path for merging MIPS patches upstream.
 
-              local_irq_enable();
-              if (resched)
-                  schedule();
-              else
-                  do_notify_resume(regs);
-              local_irq_disable()
-           }
-}
-
-But well, probably the syscall fastpath is still worth it.              
-
-> 
-> I'd tend to advocate for keeping the approach in my patches for now.
-> It's probably a smaller assembly diff than any of the other options --
-> the split between fast-path, slower fast-path, and slow-path already
-> exists due to the audit crap.  If we end up making more radical
-> changes later, then at worst we end up reverting part of the change to
-> ptrace.c.
-> 
-> --Andy
+David Daney.

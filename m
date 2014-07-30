@@ -1,55 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 01:31:32 +0200 (CEST)
-Received: from mail-la0-f53.google.com ([209.85.215.53]:63937 "EHLO
-        mail-la0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859953AbaG2XbYA0gRB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 01:31:24 +0200
-Received: by mail-la0-f53.google.com with SMTP id gl10so296239lab.12
-        for <linux-mips@linux-mips.org>; Tue, 29 Jul 2014 16:31:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=2GgWKiSN83gi/V87yHrTYBIWYUXjJMO5SNAug2opk0Q=;
-        b=b2/7KvRVmRn6G/eUOtgS+4m16E8k9ecpYYj7wpcqrraxDGL5UAwCsM+lDSndTgsagF
-         4U/IiXfLvPZYBlNz9zjW7F1t7/hxjvrnsL+XmnriMFx0tkF8bqw+V3gYysVHj4fgYenO
-         45dNoFrfsz9Umy8aafRhWubSrYN9DTWFHHyJiZ5bPKCi6CjD1rBoXjldZDMuX+d3hqiU
-         oisEmQ/Ut6bpCvt4PYigzMsbu2WvRsHVPITb5U4+aUyj7+lrVk7ClIeW2q5KlVV9KD92
-         dwc3bUPO/wBF2pQvJT41HSsvFrDWMSEs2cuW9gP8tZXLE/fgrfBaOXPzBzDTbSXWrFHH
-         EoWQ==
-X-Gm-Message-State: ALoCoQms2TmI5QnjOFYfI4hCFa5P17rgZemzywx/x9erol9uuoKyi5/9pmLiI6ClX+nhBAMXgU4x
-X-Received: by 10.152.179.137 with SMTP id dg9mr254202lac.11.1406676678327;
- Tue, 29 Jul 2014 16:31:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 09:53:48 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15874 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6837604AbaG3HxmfnUJV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 09:53:42 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id E762E6960B141
+        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 08:53:33 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 30 Jul 2014 08:53:35 +0100
+Received: from pburton-laptop.home (192.168.79.176) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 30 Jul
+ 2014 08:53:34 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v2 05/13] MIPS: init upper 64b of vector registers when MSA is first used
+Date:   Wed, 30 Jul 2014 08:53:20 +0100
+Message-ID: <1406706800-8637-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.0.2
+In-Reply-To: <1405093479-5123-6-git-send-email-paul.burton@imgtec.com>
+References: <1405093479-5123-6-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Received: by 10.152.36.106 with HTTP; Tue, 29 Jul 2014 16:30:58 -0700 (PDT)
-In-Reply-To: <CALCETrX6P7SJQdgc0gTM7FLdwyT_Ld1MWvkLYpTO_2xsvBC9sA@mail.gmail.com>
-References: <cover.1406604806.git.luto@amacapital.net> <20140729192056.GA6308@redhat.com>
- <CALCETrX6P7SJQdgc0gTM7FLdwyT_Ld1MWvkLYpTO_2xsvBC9sA@mail.gmail.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Tue, 29 Jul 2014 16:30:58 -0700
-Message-ID: <CALCETrXHF5YzPQDvnJs=mFNm2Ff_FekGu_Y8-JyMaWh2hctR7A@mail.gmail.com>
-Subject: Re: [PATCH v4 0/5] x86: two-phase syscall tracing and seccomp fastpath
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arch <linux-arch@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Will Drewry <wad@chromium.org>,
-        Kees Cook <keescook@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Content-Type: text/plain
+X-Originating-IP: [192.168.79.176]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41802
+X-archive-position: 41803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,136 +45,155 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 29, 2014 at 1:54 PM, Andy Lutomirski <luto@amacapital.net> wrote:
-> On Jul 29, 2014 12:22 PM, "Oleg Nesterov" <oleg@redhat.com> wrote:
->>
->> Andy, to avoid the confusion: I am not trying to review this changes.
->> As you probably know my understanding of asm code in entry.S is very
->> limited.
->>
->> Just a couple of questions to ensure I understand this correctly.
->>
->> On 07/28, Andy Lutomirski wrote:
->> >
->> > This is both a cleanup and a speedup.  It reduces overhead due to
->> > installing a trivial seccomp filter by 87%.  The speedup comes from
->> > avoiding the full syscall tracing mechanism for filters that don't
->> > return SECCOMP_RET_TRACE.
->>
->> And only after I look at 5/5 I _seem_ to actually understand where
->> this speedup comes from.
->>
->> So. Currently tracesys: path always lead to "iret" after syscall, with
->> this change we can avoid it if phase_1() returns zero, correct?
->>
->> And, this also removes the special TIF_SYSCALL_AUDIT-only case in entry.S,
->> cool.
->>
->> I am wondering if we can do something similar with do_notify_resume() ?
->>
->>
->> Stupid question. To simplify, lets forget that syscall_trace_enter()
->> already returns the value. Can't we simplify the asm code if we do
->> not export 2 functions, but make syscall_trace_enter() return
->> "bool slow_path_is_needed". So that "tracesys:" could do
->>
->>         // pseudo code
->>
->> tracesys:
->>         SAVE_REST
->>         FIXUP_TOP_OF_STACK
->>
->>         call syscall_trace_enter
->>
->>         if (!slow_path_is_needed) {
->>                 addq REST_SKIP, %rsp
->>                 jmp system_call_fastpath
->>         }
->>
->>         ...
->>
->> ?
->>
->> Once again, I am just curious, it is not that I actually suggest to consider
->> this option.
->
-> We could, but this would lose a decent amount of the speedup.  I could
-> try it and benchmark it, but I'm guessing that the save and restore is
-> kind of expensive.  This will make audit slower than it currently is,
-> which may also annoy some people.  (Not me.)
->
-> I'm also not convinced that it would be much simpler.  My code is currently:
->
-> tracesys:
->     leaq -REST_SKIP(%rsp), %rdi
->     movq $AUDIT_ARCH_X86_64, %rsi
->     call syscall_trace_enter_phase1
->     test %rax, %rax
->     jnz tracesys_phase2        /* if needed, run the slow path */
->     LOAD_ARGS 0            /* else restore clobbered regs */
->     jmp system_call_fastpath    /*      and return to the fast path */
->
-> tracesys_phase2:
->     SAVE_REST
->     FIXUP_TOP_OF_STACK %rdi
->     movq %rsp, %rdi
->     movq $AUDIT_ARCH_X86_64, %rsi
->     movq %rax,%rdx
->     call syscall_trace_enter_phase2
->
->     LOAD_ARGS ARGOFFSET, 1
->     RESTORE_REST
->
->     ... slow path here ...
->
-> It would end up looking more like (totally untested):
->
-> tracesys:
->     SAVE_REST
->     FIXUP_TOP_OF_STACK %rdi
->     mov %rsp, %rdi
->     movq $AUDIT_ARCH_X86_64, %rsi
->     call syscall_trace_enter
->     LOAD_ARGS
->     RESTORE_REST
->     test [whatever condition]
->     j[cond] system_call_fastpath
->
->     ... slow path here ...
->
-> So it's a bit simpler.  Oddly, the ia32entry code doesn't have this
-> multiple syscall path distinction.
->
-> SAVE_REST is 6 movq instructions and a subq.  FIXUP_TOP_OF_STACK is 7
-> movqs (and 8 if I ever get my way).  RESTORE_TOP_OF_STACK is 4.
-> RESTORE_REST is 6 movqs and an adsq.  So we're talking about avoiding
-> 21 movqs, and addq, and a subq.  That may be significant.  (And I
-> suspect that the difference is much larger on platforms like arm64,
-> but that's a separate issue.)
+When a task first makes use of MSA we need to ensure that the upper
+64b of the vector registers are set to some value such that no
+information can be leaked to it from the previous task to use MSA
+context on the CPU. The architecture formerly specified that these
+bits would be cleared to 0 when a scalar FP instructions wrote to the
+aliased FP registers, which would have implicitly handled this as the
+kernel restored scalar FP context. However more recent versions of the
+specification now state that the value of the bits in such cases is
+unpredictable. Initialise them explictly to be sure, and set all the
+bits to 1 rather than 0 for consistency with the least significant
+64b.
 
-To put some more options on the table: there's an argument to be made
-that the whole fast-path/slow-path split isn't worth it.  We could
-unconditionally set up a full frame for all syscalls.  This means:
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+---
+Changes in v2:
+  - Handle the case of a task which has formerly used FP, but doesn't
+    currently have live FP context & has not formerly used MSA.
+  - Initialise to all-1s rather than all-0s for consistency with the
+    64b scalar FP registers.
+---
+ arch/mips/include/asm/asmmacro.h | 20 ++++++++++++++++++++
+ arch/mips/include/asm/msa.h      |  1 +
+ arch/mips/kernel/r4k_switch.S    |  5 +++++
+ arch/mips/kernel/traps.c         | 39 ++++++++++++++++++++++++++++++---------
+ 4 files changed, 56 insertions(+), 9 deletions(-)
 
-No FIXUP_TOP_OF_STACK.  Instead, the system_call entry sets up RSP,
-SS, CS, RCX, and EFLAGS right away.  That's five stores for all
-syscalls instead of two loads and five stores for syscalls that need
-it.  But it also gets rid of RESTORE_TOP_OF_STACK completely.
-
-No more bugs involving C code that assumes a full stack frame when no
-such frame exists inside syscall code.
-
-We could possibly remove a whole bunch of duplicated code.
-
-The upshot would be simpler code, faster slow-path syscalls, and
-slower fast-path syscalls (but probably not much slower).  On the
-other hand, there's zero chance that this would be ready for 3.17.
-
-I'd tend to advocate for keeping the approach in my patches for now.
-It's probably a smaller assembly diff than any of the other options --
-the split between fast-path, slower fast-path, and slow-path already
-exists due to the audit crap.  If we end up making more radical
-changes later, then at worst we end up reverting part of the change to
-ptrace.c.
-
---Andy
+diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
+index 4986bf5..cd9a98b 100644
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -426,4 +426,24 @@
+ 	ld_d	31, THREAD_FPR31, \thread
+ 	.endm
+ 
++	.macro	msa_init_upper wd
++#ifdef CONFIG_64BIT
++	insert_d \wd, 1
++#else
++	insert_w \wd, 2
++	insert_w \wd, 3
++#endif
++	.if	31-\wd
++	msa_init_upper	(\wd+1)
++	.endif
++	.endm
++
++	.macro	msa_init_all_upper
++	.set	push
++	.set	noat
++	not	$1, zero
++	msa_init_upper	0
++	.set	pop
++	.endm
++
+ #endif /* _ASM_ASMMACRO_H */
+diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
+index e80e85c..fe25a17 100644
+--- a/arch/mips/include/asm/msa.h
++++ b/arch/mips/include/asm/msa.h
+@@ -16,6 +16,7 @@
+ 
+ extern void _save_msa(struct task_struct *);
+ extern void _restore_msa(struct task_struct *);
++extern void _init_msa_upper(void);
+ 
+ static inline void enable_msa(void)
+ {
+diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
+index 1a1aef0..4c4ec18 100644
+--- a/arch/mips/kernel/r4k_switch.S
++++ b/arch/mips/kernel/r4k_switch.S
+@@ -144,6 +144,11 @@ LEAF(_restore_msa)
+ 	jr	ra
+ 	END(_restore_msa)
+ 
++LEAF(_init_msa_upper)
++	msa_init_all_upper
++	jr	ra
++	END(_init_msa_upper)
++
+ #endif
+ 
+ /*
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 4792fd7..4aca484 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1088,13 +1088,15 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
+ 
+ static int enable_restore_fp_context(int msa)
+ {
+-	int err, was_fpu_owner;
++	int err, was_fpu_owner, prior_msa;
+ 
+ 	if (!used_math()) {
+ 		/* First time FP context user. */
+ 		err = init_fpu();
+-		if (msa && !err)
++		if (msa && !err) {
+ 			enable_msa();
++			_init_msa_upper();
++		}
+ 		if (!err)
+ 			set_used_math();
+ 		return err;
+@@ -1146,18 +1148,37 @@ static int enable_restore_fp_context(int msa)
+ 	/*
+ 	 * If this is the first time that the task is using MSA and it has
+ 	 * previously used scalar FP in this time slice then we already nave
+-	 * FP context which we shouldn't clobber.
++	 * FP context which we shouldn't clobber. We do however need to clear
++	 * the upper 64b of each vector register so that this task has no
++	 * opportunity to see data left behind by another.
+ 	 */
+-	if (!test_and_set_thread_flag(TIF_MSA_CTX_LIVE) && was_fpu_owner)
++	prior_msa = test_and_set_thread_flag(TIF_MSA_CTX_LIVE);
++	if (!prior_msa && was_fpu_owner) {
++		_init_msa_upper();
+ 		return 0;
++	}
+ 
+-	/* We need to restore the vector context. */
+-	restore_msa(current);
++	if (!prior_msa) {
++		/*
++		 * Restore the least significant 64b of each vector register
++		 * from the existing scalar FP context.
++		 */
++		_restore_fp(current);
+ 
+-	/* Restore the scalar FP control & status register */
+-	if (!was_fpu_owner)
+-		asm volatile("ctc1 %0, $31" : : "r"(current->thread.fpu.fcr31));
++		/*
++		 * The task has not formerly used MSA, so clear the upper 64b
++		 * of each vector register such that it cannot see data left
++		 * behind by another task.
++		 */
++		_init_msa_upper();
++	} else {
++		/* We need to restore the vector context. */
++		restore_msa(current);
+ 
++		/* Restore the scalar FP control & status register */
++		if (!was_fpu_owner)
++			asm volatile("ctc1 %0, $31" : : "r"(current->thread.fpu.fcr31));
++	}
+ 	return 0;
+ }
+ 
+-- 
+2.0.2

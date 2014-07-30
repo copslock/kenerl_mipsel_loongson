@@ -1,50 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 10:35:36 +0200 (CEST)
-Received: from mail-ie0-f170.google.com ([209.85.223.170]:44856 "EHLO
-        mail-ie0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6836188AbaG3IfdQh1AN convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Jul 2014 10:35:33 +0200
-Received: by mail-ie0-f170.google.com with SMTP id rl12so1082406iec.15
-        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 01:35:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type:content-transfer-encoding;
-        bh=mEQtT/kB0v4QpDEz1NC9ruEZUdmU43zxp8TCwxGiE04=;
-        b=G0QjbIIPpR/pDQRSFyEIkGjGOW3K/Dtpk0AO2YRXnfFY5PHpndbXfPyMhQ44p5RShk
-         gHQcyOl1xdhpOQPiOghnK1s+dTO2Yv2K5ccgZqSVhczLElqNR9gF+QpEnqqsmvfIcW3a
-         MfvvJvZwP4rikSuGLTJ3hWVH7Yjsc6g3ZGXcgDIKiByJyG1cKVCnbKKaRRKulINdD3YQ
-         LgCu9A560qGMYzZY8CoIogwe6H97ZhUMndw48O/krrPOc/q1phHt2UdVPa4Ty+pheDW0
-         nAIGpd6OaVDwa3irL065UlC+c0qUKZ0a2eR5BTQ4Bx/JvVq+RjmLFrlCMDKGNclLQ7i4
-         fkZg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 11:32:07 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:46287 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822330AbaG3JcEORaTc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Jul 2014 11:32:04 +0200
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1XCQEp-0005GV-01; Wed, 30 Jul 2014 11:31:59 +0200
+Date:   Wed, 30 Jul 2014 11:31:58 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Alex Smith <alex@alex-smith.me.uk>
+Cc:     linux-mips@linux-mips.org, Alex Smith <alex.smith@imgtec.com>,
+        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v2 06/11] MIPS: O32/32-bit: Fix bug which can cause
+ incorrect system call restarts
+Message-ID: <20140730093158.GA19066@hall.aurel32.net>
+References: <1406122816-2424-1-git-send-email-alex@alex-smith.me.uk>
+ <1406122816-2424-7-git-send-email-alex@alex-smith.me.uk>
 MIME-Version: 1.0
-X-Received: by 10.50.8.6 with SMTP id n6mr33800343iga.43.1406709327032; Wed,
- 30 Jul 2014 01:35:27 -0700 (PDT)
-Received: by 10.64.241.5 with HTTP; Wed, 30 Jul 2014 01:35:26 -0700 (PDT)
-In-Reply-To: <20140726145116.GA14047@hall.aurel32.net>
-References: <tencent_0448A221440A321914235E33@qq.com>
-        <20140726145116.GA14047@hall.aurel32.net>
-Date:   Wed, 30 Jul 2014 16:35:26 +0800
-X-Google-Sender-Auth: iCSy9zpmekNsgt7z3yQyX1fPCdE
-Message-ID: <CAAhV-H6UbeXG__c14qn+ToM_eR1SkOj+BN+7gqG1NxH=RGUBFA@mail.gmail.com>
-Subject: Re: SMP IPI issues on Loongson 3A based machines
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Aurelien Jarno <aurelien@aurel32.net>,
-        Binbin Zhou <zhoubb@lemote.com>,
-        Kent Overstreet <koverstreet@google.com>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Andreas Barth <aba@ayous.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <chenhuacai@gmail.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <1406122816-2424-7-git-send-email-alex@alex-smith.me.uk>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41804
+X-archive-position: 41805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,49 +43,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Aurelien,
+On Wed, Jul 23, 2014 at 02:40:11PM +0100, Alex Smith wrote:
+> From: Alex Smith <alex.smith@imgtec.com>
+> 
+> On 32-bit/O32, pt_regs has a padding area at the beginning into which the
+> syscall arguments passed via the user stack are copied. 4 arguments
+> totalling 16 bytes are copied to offset 16 bytes into this area, however
+> the area is only 24 bytes long. This means the last 2 arguments overwrite
+> pt_regs->regs[{0,1}].
+> 
+> If a syscall function returns an error, handle_sys stores the original
+> syscall number in pt_regs->regs[0] for syscall restart. signal.c checks
+> whether regs[0] is non-zero, if it is it will check whether the syscall
+> return value is one of the ERESTART* codes to see if it must be
+> restarted.
+> 
+> Should a syscall be made that results in a non-zero value being copied
+> off the user stack into regs[0], and then returns a positive (non-error)
+> value that matches one of the ERESTART* error codes, this can be mistaken
+> for requiring a syscall restart.
+> 
+> While the possibility for this to occur has always existed, it is made
+> much more likely to occur by commit 46e12c07b3b9 ("MIPS: O32 / 32-bit:
+> Always copy 4 stack arguments."), since now every syscall will copy 4
+> arguments and overwrite regs[0], rather than just those with 7 or 8
+> arguments.
+> 
+> Since that commit, booting Debian under a 32-bit MIPS kernel almost
+> always results in a hang early in boot, due to a wait4 syscall returning
+> a PID that matches one of the ERESTART* codes, which then causes an
+> incorrect restart of the syscall.
+> 
+> The problem is fixed by increasing the size of the padding area so that
+> arguments copied off the stack will not overwrite pt_regs->regs[{0,1}].
+> 
+> Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+> Cc: <stable@vger.kernel.org> # v3.13+
+> ---
+> Changes in v2:
+>  - Rebase on current upstream.
+>  - Split comment change into a separate commit.
+> 
+> I've rebased this patch on top of current mips-for-linux-next. However,
+> for it to be applied to stable it needs an additional change to the
+> PT_PADSLOT* definitions in arch/mips/kernel/smtc-asm.S to account for
+> the changed pt_regs offsets. This file no longer exists since SMTC has
+> been dropped.
+> 
+> I'm not sure what the correct way to deal with this is - can an
+> alternate version of the patch be submitted for stable?
+> ---
+>  arch/mips/include/asm/ptrace.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+> index 7e6e682..c301fa9 100644
+> --- a/arch/mips/include/asm/ptrace.h
+> +++ b/arch/mips/include/asm/ptrace.h
+> @@ -23,7 +23,7 @@
+>  struct pt_regs {
+>  #ifdef CONFIG_32BIT
+>  	/* Pad bytes for argument save space on the stack. */
+> -	unsigned long pad0[6];
+> +	unsigned long pad0[8];
+>  #endif
+>  
+>  	/* Saved main processor registers. */
 
-After some days debugging, we found the root cause: If we revert the
-commit 21b40200cfe961 (aio: use flush_dcache_page()), everything is
-OK. This commit add two flush_dcache_page() in irq disabled context,
-but in MIPS, flush_dcache_page() is implemented via call_function IPI.
-Unfortunately, call_function IPI shouldn't be called in irq disabled
-context, otherwise there will be deadlock.
+This patch looks fine to me, and I confirm it fixes a problem. Without
+this patch, I am not able to boot a Debian user land on a 32-bit system.
+It's a regression, so I think it should be merged as soon as possible,
+even if the other patches in this series are merged later.
 
-I don't know how to solve this problem, since commit 21b40200
-shouldn't be reverted (Loongson can revert it because of
-hardware-maintained cache, but other MIPS need this). May be the
-original author (Kent Overstreet) have good ideas?
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
 
-Huacai
-
-On Sat, Jul 26, 2014 at 10:51 PM, Aurelien Jarno <aurelien@aurel32.net> wrote:
-> On Sat, Jul 26, 2014 at 02:05:28PM +0800, 陈华才 wrote:
->> Hi,
->>
->> I'm debugging, please wait for some time.
->
-> Great, thanks! Does it means you have been able to reproduce the issue?
-> If not I can provide you a copy of the chroot I used to reproduce the
-> issue.
->
-> I also tried with the kernel from
-> http://dev.lemote.com/cgit/linux-official.git/ but unfortunately
-> I haven't been able to get it working correctly with
-> PREEMPT_VOLUNTARY=yes. I have tried with the kernel from the master
-> branch and after merging the v3.15.6 tag. In one of the case I got the
-> following backtrace on the serial console:
->
-> | [   75.128906] irq 17, desc: ffffffff80c911e0, depth: 1, count: 0, unhandled: 0
-> | [   75.136718] ->handle_irq():  ffffffff80289a18, handle_bad_irq+0x0/0x2d0
-> | [   75.144531] ->irq_data.chip(): ffffffff80cbe210, 0xffffffff80cbe210
-> | [   75.144531] ->action():           (null)
-> | [   75.144531]    IRQ_NOPROBE set
-> | [   75.144531] unexpected IRQ # 17
->
-> Aurelien
->
-> --
-> Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-> aurelien@aurel32.net                 http://www.aurel32.net
->
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

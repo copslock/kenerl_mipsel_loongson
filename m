@@ -1,56 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 18:43:58 +0200 (CEST)
-Received: from mail-wi0-f173.google.com ([209.85.212.173]:44221 "EHLO
-        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860092AbaG3Qnz4hdPN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 18:43:55 +0200
-Received: by mail-wi0-f173.google.com with SMTP id f8so7889035wiw.6
-        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 09:43:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=r+08Jlp4ivkiAlM9zRnvwtNpTXAySKAlJ8WCD1pYorE=;
-        b=BykbbyN09eyrvOKxDTYBxPvwgGPgPRxRnZhdvrsU2W1OapwnpMhz2WPHsQFtQInZkx
-         g5DAYVPV/Ru8UocrRTvsks762zFUVBoGkxCod76Y7VlD4Mhnu2+bcFEQTCRNG6piB7uz
-         yT65Y06PsAUOoV76b1pVNPyOBpXGyqBxqS8N33Dic/SB4jfkv/hf3un0HO/T4uZkqvBI
-         rFV1fs2dcQabr9RAQPupo4zbwtl/MCyXOmCzusDC2q3k098fFnww7kbgW9FLwVh5GGfT
-         y+5GzOfG/LQcLbvtK2VR41omsmeqwK5S8qX6n/o5PLVU5w3nMhE+GOVPOG+rsBkBhJrt
-         HQrA==
-X-Received: by 10.194.191.131 with SMTP id gy3mr8172412wjc.108.1406738630605;
-        Wed, 30 Jul 2014 09:43:50 -0700 (PDT)
-Received: from localhost (8.20.196.77.rev.sfr.net. [77.196.20.8])
-        by mx.google.com with ESMTPSA id es9sm6740558wjd.1.2014.07.30.09.43.48
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 30 Jul 2014 09:43:49 -0700 (PDT)
-Date:   Wed, 30 Jul 2014 18:43:46 +0200
-From:   Frederic Weisbecker <fweisbec@gmail.com>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Will Drewry <wad@chromium.org>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com
-Subject: Re: [PATCH v4 2/5] x86,entry: Only call user_exit if TIF_NOHZ
-Message-ID: <20140730164344.GA27954@localhost.localdomain>
-References: <cover.1406604806.git.luto@amacapital.net>
- <7123b2489cc5d1d5abb7bcf1364ca729cab3e6ca.1406604806.git.luto@amacapital.net>
- <20140729193232.GA8153@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 18:53:04 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:48431 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6860088AbaG3QxB6xJGD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Jul 2014 18:53:01 +0200
+Received: from watt.rr44.fr ([82.228.202.134] helo=ohm.rr44.fr)
+        by hall.aurel32.net with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1XCX7d-0005I3-AS; Wed, 30 Jul 2014 18:53:01 +0200
+Received: from aurel32 by ohm.rr44.fr with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1XCX7c-0002gs-4E; Wed, 30 Jul 2014 18:53:00 +0200
+Date:   Wed, 30 Jul 2014 18:53:00 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Rob Kendrick <rob.kendrick@codethink.co.uk>
+Cc:     linux-mips@linux-mips.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH 1/1] MIPS: math-emu: cp1emu: Fix typo when returning to
+ register file
+Message-ID: <20140730165300.GB4848@ohm.rr44.fr>
+References: <20140723124154.GA8378@humdrum>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20140729193232.GA8153@redhat.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <fweisbec@gmail.com>
+In-Reply-To: <20140723124154.GA8378@humdrum>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41811
+X-archive-position: 41812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fweisbec@gmail.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,30 +48,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 29, 2014 at 09:32:32PM +0200, Oleg Nesterov wrote:
-> On 07/28, Andy Lutomirski wrote:
-> >
-> > @@ -1449,7 +1449,12 @@ long syscall_trace_enter(struct pt_regs *regs)
-> >  {
-> >  	long ret = 0;
-> >  
-> > -	user_exit();
-> > +	/*
-> > +	 * If TIF_NOHZ is set, we are required to call user_exit() before
-> > +	 * doing anything that could touch RCU.
-> > +	 */
-> > +	if (test_thread_flag(TIF_NOHZ))
-> > +		user_exit();
+On Wed, Jul 23, 2014 at 01:41:58PM +0100, Rob Kendrick wrote:
+> The commit 08a07904e182895e1205f399465a3d622c0115b8 (v3.16-rc1)
+> entitled "MIPS: math-emu: Remove most ifdefery":
 > 
-> Personally I still think this change just adds more confusion, but I leave
-> this to you and Frederic.
+> switched from build time to runtime detection for the CPU ISA level.
 > 
-> It is not that "If TIF_NOHZ is set, we are required to call user_exit()", we
-> need to call user_exit() just because we enter the kernel. TIF_NOHZ is just
-> the implementation detail which triggers this slow path.
+> However, along the way, a typo was introduced in the code path
+> to return the value to the register file. Previously, the
+> MIPSInst_FD macro was used but the above commit switched to
+> MIPSInst_RT leading to regressions.
 > 
-> At least it should be correct, unless I am confused even more than I think.
+> Link: http://www.linux-mips.org/archives/linux-mips/2014-07/msg00484.html
+> Reported-by: Rob Kendrick <rob.kendrick@codethink.co.uk>
+> Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> Signed-off-by: Rob Kendrick <rob.kendrick@codethink.co.uk>
+> ---
+>  arch/mips/math-emu/cp1emu.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+> index 736c17a..bf0fc6b 100644
+> --- a/arch/mips/math-emu/cp1emu.c
+> +++ b/arch/mips/math-emu/cp1emu.c
+> @@ -1827,7 +1827,7 @@ dcopuop:
+>  	case -1:
+>  
+>  		if (cpu_has_mips_4_5_r)
+> -			cbit = fpucondbit[MIPSInst_RT(ir) >> 2];
+> +			cbit = fpucondbit[MIPSInst_FD(ir) >> 2];
+>  		else
+>  			cbit = FPU_CSR_COND;
+>  		if (rv.w)
 
-Agreed, Perhaps the confusion is on the syscall_trace_enter() name which suggests
-this is only about tracing? syscall_slowpath_enter() could be an alternative.
-But that's still tracing in a general sense so...
+Looking at commit 8a07904e, the typo looks obvious. Moreover I have
+tested that using QEMU, and I can confirm the issue. I can also confirm
+the patch fixes the issue.
+
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

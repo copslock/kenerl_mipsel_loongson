@@ -1,33 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 20:50:11 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:39721 "EHLO test.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860038AbaG3SuGSb0K0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Jul 2014 20:50:06 +0200
-Received: from [IPv6:2001:470:7259:0:b12f:49a3:124:6e3c] (unknown [IPv6:2001:470:7259:0:b12f:49a3:124:6e3c])
-        by test.hauke-m.de (Postfix) with ESMTPSA id A7685200D8;
-        Wed, 30 Jul 2014 20:50:05 +0200 (CEST)
-Message-ID: <53D93E5C.2000706@hauke-m.de>
-Date:   Wed, 30 Jul 2014 20:50:04 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 23:41:32 +0200 (CEST)
+Received: from mail-we0-f170.google.com ([74.125.82.170]:64824 "EHLO
+        mail-we0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860084AbaG3Vl3jXaCW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 23:41:29 +0200
+Received: by mail-we0-f170.google.com with SMTP id w62so1881914wes.15
+        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 14:41:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:user-agent
+         :in-reply-to:references:mime-version:content-transfer-encoding
+         :content-type;
+        bh=CM2l41KvWNOUA9vWIdKumoBb0MyDuRflSHr1sY0fMaw=;
+        b=HMhS8UHkH3xnvXGbqYJ1s1yuP0JAg8/2fz3R6fFWyUPKccKfuvdFByPxaA/DwMZ82y
+         25YINd5Iii0r+SR33nKd84jp6u9Wjic/xbNLvFC9uOHW2a8nZl5+kD5GVpFifuO8tDil
+         EHceUdNvuGYaKrZ/jwtI6yzPQnBAmYRrvptaw+DUN9DikbTQtg3YgvQnKczP0CTAtpNo
+         oTGUyCH7MV4ergfq6hne4jaxTaee4ZKwh9dy0tSL1nJe3tCNUrse6CDwrUPLyr46vUYG
+         mCcUJWqlVmNkvu+fiUY6MJtGctk/NT99+Pz0DgWSCDFa6mnpjkjGu5zk8WtFg9jFCG9L
+         k+cQ==
+X-Gm-Message-State: ALoCoQn1UIsgOaC+KHeqodbh4H+0dPB5BygngHjVtwTV+WUoS6torL6RA+YgX3ET4ZIrY0nBJDHz
+X-Received: by 10.194.91.228 with SMTP id ch4mr10196601wjb.59.1406756483867;
+        Wed, 30 Jul 2014 14:41:23 -0700 (PDT)
+Received: from radagast.localnet (jahogan.plus.com. [212.159.75.221])
+        by mx.google.com with ESMTPSA id ca8sm8519790wjc.0.2014.07.30.14.41.21
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 30 Jul 2014 14:41:22 -0700 (PDT)
+From:   James Hogan <james@albanarts.com>
+To:     linux-mips@linux-mips.org
+Cc:     Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Binbin Zhou <zhoubb@lemote.com>, stable@vger.kernel.org,
+        David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [PATCH] MIPS: tlbex: fix a missing statement for HUGETLB
+Date:   Wed, 30 Jul 2014 22:41:02 +0100
+Message-ID: <2357839.vPXx615ci5@radagast>
+User-Agent: KMail/4.12.5 (Linux/3.15.6+; KDE/4.12.5; x86_64; ; )
+In-Reply-To: <1406616880-17142-1-git-send-email-chenhc@lemote.com>
+References: <1406616880-17142-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: BCM47XX: make reboot more relaiable
-References: <1406584437-31108-1-git-send-email-hauke@hauke-m.de> <CACna6rw_OswnvN7YD7AVnCNKtKJAk8UGXEjUdVJEvaBF3ErAmQ@mail.gmail.com>
-In-Reply-To: <CACna6rw_OswnvN7YD7AVnCNKtKJAk8UGXEjUdVJEvaBF3ErAmQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Return-Path: <james@albanarts.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41823
+X-archive-position: 41824
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: james@albanarts.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,36 +65,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/30/2014 08:06 PM, Rafał Miłecki wrote:
-> On 28 July 2014 23:53, Hauke Mehrtens <hauke@hauke-m.de> wrote:
->> The reboot on the BCM47XX SoCs is done, by setting the watchdog counter
->> to 1 and let it trigger a reboot, when it reaches 0. Some devices with
->> a BCM4705/BCM4785 SoC do not reboot when the counter is set to 1 and
->> decreased to 0 by the hardware. It looks like it works more reliable
->> when we set it to 3. As far as I understand the hardware, this should
->> not make any difference, but I do not have access to any documentation
->> for this SoC.
->> It is still not 100% reliable.
-> 
-> Did you see code in hndmips.c of Broadcom SDK? Maybe we need this
-> magic ASM code they have it there?
-> 
-> if (CHIPID(sih->chip) == BCM4785_CHIP_ID)
->     MTC0(C0_BROADCOM, 4, (1 << 22));
-> si_watchdog(sih, 1);
-> if (CHIPID(sih->chip) == BCM4785_CHIP_ID) {
->     __asm__ __volatile__(
->         ".set\tmips3\n\t"
->         "sync\n\t"
->         "wait\n\t"
->         ".set\tmips0");
-> }
-> while (1);
-> 
-> Maybe it'll work better and more reliable?
-> 
-This looks interesting, I haven't seen this.
+Hi Huacai,
 
-Please drop this patch for now, I will create a new one
+On Tuesday 29 July 2014 14:54:40 Huacai Chen wrote:
+> In commit 2c8c53e28f1 (MIPS: Optimize TLB handlers for Octeon CPUs)
+> build_r4000_tlb_refill_handler() is modified. But it doesn't compatible
+> with the original code in HUGETLB case. Because there is a copy & paste
+> error and one line of code is missing. It is very easy to produce a bug
+> with LTP's hugemmap05 test.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+> Cc: <stable@vger.kernel.org>
+> ---
+>  arch/mips/mm/tlbex.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index e80e10b..343fe0f 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -1299,6 +1299,7 @@ static void build_r4000_tlb_refill_handler(void)
+>  	}
+>  #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+>  	uasm_l_tlb_huge_update(&l, p);
+> +	UASM_i_LW(&p, K0, 0, K1);
+>  	build_huge_update_entries(&p, htlb_info.huge_pte, K1);
+>  	build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
+>  				   htlb_info.restore_scratch);
 
-Hauke
+build_huge_tlb_write_entry only uses K0 as a temp and clobbers without using 
+the value, so the K0 must be being used by the code generated by 
+build_huge_update_entires, but the patch you mentioned changed the second 
+argument from K0 to htlb_info.huge_pte.
+
+So should the K0 in the new UASM_i_LW call be changed to htlb_info.huge_pte 
+too?
+
+(David Daney on Cc)
+
+Thanks
+James

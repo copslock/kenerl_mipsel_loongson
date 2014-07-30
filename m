@@ -1,29 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 19:53:16 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59448 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859943AbaG3RxLO-Z18 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 19:53:11 +0200
-Date:   Wed, 30 Jul 2014 18:53:11 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: prevent user from setting FCSR cause bits
-In-Reply-To: <20140730173446.GB27790@linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1407301838210.6486@eddie.linux-mips.org>
-References: <1406035281-693-1-git-send-email-paul.burton@imgtec.com> <20140730173446.GB27790@linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2014 20:06:41 +0200 (CEST)
+Received: from mail-ig0-f174.google.com ([209.85.213.174]:52408 "EHLO
+        mail-ig0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860069AbaG3SGiUf6lC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2014 20:06:38 +0200
+Received: by mail-ig0-f174.google.com with SMTP id c1so7802776igq.13
+        for <multiple recipients>; Wed, 30 Jul 2014 11:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=7z7Cgb842OdccY7d2RoIhIM8VQqsUrwHp/Z00sZTf4c=;
+        b=i6O04Xxr8NWECRN+XnseK3JPtYk34609MfR/HMVakiP3H9x3SIHcXe/4cfPbnTpwA2
+         MJLAt3FrNCNPiidGH0qrp+J68r3hQd1JhnZ0g4OEwVL+djIB5BLoPDv8IVwBcnELwsmH
+         nDDRUGVW/8xfMcv1TCXayh4rXdBQNfTu0fGp9KgdDHs3BloP8xmAoDSrxBFjArzuzFUt
+         WgcqFkxoI7Ko9Q45twO6i3OCH5/G287XkQKfIPnzHbTAHpB2HNMWGQbuS6yxlQaMmtPY
+         EiIs55dH2L0NWxBcNcfy5HV00YPVFEvJF3UXOzw4gbvoqyTMwied6A7iZOUYUQsPCJFr
+         PBlA==
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+X-Received: by 10.50.6.77 with SMTP id y13mr9989304igy.21.1406743591980; Wed,
+ 30 Jul 2014 11:06:31 -0700 (PDT)
+Received: by 10.107.130.160 with HTTP; Wed, 30 Jul 2014 11:06:31 -0700 (PDT)
+In-Reply-To: <1406584437-31108-1-git-send-email-hauke@hauke-m.de>
+References: <1406584437-31108-1-git-send-email-hauke@hauke-m.de>
+Date:   Wed, 30 Jul 2014 20:06:31 +0200
+Message-ID: <CACna6rw_OswnvN7YD7AVnCNKtKJAk8UGXEjUdVJEvaBF3ErAmQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: BCM47XX: make reboot more relaiable
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41820
+X-archive-position: 41821
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,40 +51,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 30 Jul 2014, Ralf Baechle wrote:
+On 28 July 2014 23:53, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> The reboot on the BCM47XX SoCs is done, by setting the watchdog counter
+> to 1 and let it trigger a reboot, when it reaches 0. Some devices with
+> a BCM4705/BCM4785 SoC do not reboot when the counter is set to 1 and
+> decreased to 0 by the hardware. It looks like it works more reliable
+> when we set it to 3. As far as I understand the hardware, this should
+> not make any difference, but I do not have access to any documentation
+> for this SoC.
+> It is still not 100% reliable.
 
-> > If one or more matching FCSR cause & enable bits are set in saved thread
-> > context then when that context is restored the kernel will take an FP
-> > exception. This is of course undesirable and considered an oops, leading
-> > to the kernel writing a backtrace to the console and potentially
-> > rebooting depending upon the configuration. Thus the kernel avoids this
-> > situation by clearing the cause bits of the FCSR register when handling
-> > FP exceptions and after emulating FP instructions.
-> > 
-> > However the kernel does not prevent userland from setting arbitrary FCSR
-> > cause & enable bits via ptrace, using either the PTRACE_POKEUSR or
-> > PTRACE_SETFPREGS requests. This means userland can trivially cause the
-> > kernel to oops on any system with an FPU. Prevent this from happening
-> > by clearing the cause bits when writing to the saved FCSR context via
-> > ptrace.
-> > 
-> > This problem appears to exist at least back to the beginning of the git
-> > era in the PTRACE_POKEUSR case.
-> 
-> Good catch - but I think something like UML on a more proper fix.  How
-> until then I'm going to apply this.
+Did you see code in hndmips.c of Broadcom SDK? Maybe we need this
+magic ASM code they have it there?
 
- I'm not sure what you mean by UML, but this is definitely a valid action, 
-you need to be able to do anything from GDB that a program can do itself, 
-and a program can raise FP exceptions to itself by fiddling with CP1.FCSR; 
-this is even required by the ISO C language standard (see the pieces in 
-<fenv.h>).  So I think the kernel should be prepared to handle such 
-exceptions on context switches; and also emulate them if no FP hardware is 
-used.
+if (CHIPID(sih->chip) == BCM4785_CHIP_ID)
+    MTC0(C0_BROADCOM, 4, (1 << 22));
+si_watchdog(sih, 1);
+if (CHIPID(sih->chip) == BCM4785_CHIP_ID) {
+    __asm__ __volatile__(
+        ".set\tmips3\n\t"
+        "sync\n\t"
+        "wait\n\t"
+        ".set\tmips0");
+}
+while (1);
 
- I suspect a similar condition exists when a program writes to the saved 
-image of CP1.FCSR in a signal handler and then restores that context.  I 
-don't know offhand if this is supported by any standard though; 
-intuitively it should.
-
-  Maciej
+Maybe it'll work better and more reliable?

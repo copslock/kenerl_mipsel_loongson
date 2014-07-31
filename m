@@ -1,46 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 02:40:36 +0200 (CEST)
-Received: from mail-ig0-f175.google.com ([209.85.213.175]:57103 "EHLO
-        mail-ig0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860093AbaGaAkbW-z3z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 02:40:31 +0200
-Received: by mail-ig0-f175.google.com with SMTP id uq10so8383205igb.14
-        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 17:40:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 02:48:24 +0200 (CEST)
+Received: from mail-ig0-f170.google.com ([209.85.213.170]:57964 "EHLO
+        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860093AbaGaAsVM2Z2P (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 02:48:21 +0200
+Received: by mail-ig0-f170.google.com with SMTP id h3so624640igd.3
+        for <multiple recipients>; Wed, 30 Jul 2014 17:48:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=qCh2jt563I87BEwU1BXeA7VHrYdwwPHR8Abf9ToZ/KE=;
-        b=LASRgIBcL/F6C4nyB5k81evZq8vTyChEXdDccdVkanGOsG5/i6YwYrBIQGdpNLumKT
-         c3TIfcpPC4bDeUsihBzrgkxzKyBQ5YR5kLOR1vtiZKOlpRD3wXILse/KnHfhGdH22bpr
-         AU3Ar3II722wz7Y5loS645GCJfRQIInMNmi+4x/R5V4Rq+7yiB7Uhx4RkpyOthjjxA2J
-         4ygsfVRcjzi7Y5Lh4MK2/UgJF/pGxEgc5He+TvRu3G0qFYHSmzd9MOinCneearJxrD29
-         9E5ShT8CvjtWamk3Ffsar8qmb9QntH4L+bOFFrKvHzCCbML079bXoGu8jpzoiCCdAmef
-         jH2w==
+        bh=1pspg6JWPPYdiQA361mUMy1Wyhws51NzFYkoiz9qDtM=;
+        b=K94q3HTy0hSGaFaa1lEzLlTJkPLpCeGY1YFAEU3K1mirR90qRylNzMg359mNvlEIWx
+         AjAYXgKWaKY5SMBVdVbilVBDVluU6mcm+tBY2fUZdBl4gotTbyVPx59H5oGkaR801ilR
+         MMVpFZMwuCyX/c0PJzezG+6oEl8sE2AmWqGleGb4Ce01lGMOWpUkql+iCXHngEmStr7J
+         Z0mgTtWVEe4unPEp+DuaE5xMAPAUG5ZEvWDrXQNqaEoqymm1bpWbgL1J9TyaUcjgbzgC
+         yciHn/E9QqVx0SE8A7mjuXRunuot/i0IOCG5P1jK7dV4vaQphWRhxXr24N+26lPNkhS7
+         qD6w==
 MIME-Version: 1.0
-X-Received: by 10.50.8.6 with SMTP id n6mr41946103iga.43.1406767224123; Wed,
- 30 Jul 2014 17:40:24 -0700 (PDT)
-Received: by 10.64.241.5 with HTTP; Wed, 30 Jul 2014 17:40:24 -0700 (PDT)
-In-Reply-To: <20140730160118.GA4386@ohm.rr44.fr>
-References: <tencent_0448A221440A321914235E33@qq.com>
-        <20140726145116.GA14047@hall.aurel32.net>
-        <CAAhV-H6UbeXG__c14qn+ToM_eR1SkOj+BN+7gqG1NxH=RGUBFA@mail.gmail.com>
-        <20140730160118.GA4386@ohm.rr44.fr>
-Date:   Thu, 31 Jul 2014 08:40:24 +0800
-X-Google-Sender-Auth: XWcwu6CucCs1-q1ptdhWmWJF-xM
-Message-ID: <CAAhV-H5ZzcxjQeEU6nMsnuzaT55_SOd18+vJtU4z1cpHyn_fhQ@mail.gmail.com>
-Subject: Re: SMP IPI issues on Loongson 3A based machines
+X-Received: by 10.42.110.208 with SMTP id r16mr10036249icp.17.1406767694741;
+ Wed, 30 Jul 2014 17:48:14 -0700 (PDT)
+Received: by 10.64.241.5 with HTTP; Wed, 30 Jul 2014 17:48:14 -0700 (PDT)
+In-Reply-To: <53D9674E.4000507@caviumnetworks.com>
+References: <1406616880-17142-1-git-send-email-chenhc@lemote.com>
+        <2357839.vPXx615ci5@radagast>
+        <53D9674E.4000507@caviumnetworks.com>
+Date:   Thu, 31 Jul 2014 08:48:14 +0800
+X-Google-Sender-Auth: CIRR-hD2qag7hl95W33NLPbq1Ws
+Message-ID: <CAAhV-H51phVJvSTv_GMw15RpKp32vmNgj2QSzYzf+UOMK0koyw@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: tlbex: fix a missing statement for HUGETLB
 From:   Huacai Chen <chenhc@lemote.com>
-To:     Aurelien Jarno <aurelien@aurel32.net>
-Cc:     Binbin Zhou <zhoubb@lemote.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Andreas Barth <aba@ayous.org>,
-        Kent Overstreet <kmo@daterainc.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     James Hogan <james@albanarts.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Binbin Zhou <zhoubb@lemote.com>,
+        stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41829
+X-archive-position: 41830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,43 +61,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Aurelien,
+Hi, David,
 
-I have a quick look, both MIPS and SH use IPI to implement flush_dcache_page().
-It seems Kent's email has changed, so CC his new address. :)
+For non-Octeon CPU, htlb_info.huge_pte is equal to K0, but I don't
+know much about Octeon. So I think you know whether we should use K0
+or htlb_info.huge_pte here, since you are the original author.
 
-Huacai
-
-On Thu, Jul 31, 2014 at 12:01 AM, Aurelien Jarno <aurelien@aurel32.net> wrote:
-> Hi Hucai,
->
-> On Wed, Jul 30, 2014 at 04:35:26PM +0800, Huacai Chen wrote:
->> Hi, Aurelien,
+On Thu, Jul 31, 2014 at 5:44 AM, David Daney <ddaney@caviumnetworks.com> wrote:
+> On 07/30/2014 02:41 PM, James Hogan wrote:
 >>
->> After some days debugging, we found the root cause: If we revert the
->> commit 21b40200cfe961 (aio: use flush_dcache_page()), everything is
->> OK. This commit add two flush_dcache_page() in irq disabled context,
->> but in MIPS, flush_dcache_page() is implemented via call_function IPI.
->> Unfortunately, call_function IPI shouldn't be called in irq disabled
->> context, otherwise there will be deadlock.
+>> Hi Huacai,
+>>
+>> On Tuesday 29 July 2014 14:54:40 Huacai Chen wrote:
+>>>
+>>> In commit 2c8c53e28f1 (MIPS: Optimize TLB handlers for Octeon CPUs)
+>>> build_r4000_tlb_refill_handler() is modified. But it doesn't compatible
+>>> with the original code in HUGETLB case. Because there is a copy & paste
+>>> error and one line of code is missing. It is very easy to produce a bug
+>>> with LTP's hugemmap05 test.
+>>>
+>>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>>> Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+>>> Cc: <stable@vger.kernel.org>
+>>> ---
+>>>   arch/mips/mm/tlbex.c | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+>>> index e80e10b..343fe0f 100644
+>>> --- a/arch/mips/mm/tlbex.c
+>>> +++ b/arch/mips/mm/tlbex.c
+>>> @@ -1299,6 +1299,7 @@ static void build_r4000_tlb_refill_handler(void)
+>>>         }
+>>>   #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+>>>         uasm_l_tlb_huge_update(&l, p);
+>>> +       UASM_i_LW(&p, K0, 0, K1);
+>>>         build_huge_update_entries(&p, htlb_info.huge_pte, K1);
+>>>         build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
+>>>                                    htlb_info.restore_scratch);
+>>
+>>
+>> build_huge_tlb_write_entry only uses K0 as a temp and clobbers without
+>> using
+>> the value, so the K0 must be being used by the code generated by
+>> build_huge_update_entires, but the patch you mentioned changed the second
+>> argument from K0 to htlb_info.huge_pte.
+>>
+>> So should the K0 in the new UASM_i_LW call be changed to
+>> htlb_info.huge_pte
+>> too?
+>>
 >
-> Thanks a lot for digging into the problem. I will try to revert this
-> patch to confirm it fixes the problem for us, and I'll keep you updated.
+> I don't know.  You have to dump out the generated handler (by #define DEBUG
+> at the top of the file), then assemble/disassemble it.  Looking at the
+> disassembly, we could make sensible statements about what is happening.
 >
->> I don't know how to solve this problem, since commit 21b40200
->> shouldn't be reverted (Loongson can revert it because of
->> hardware-maintained cache, but other MIPS need this). May be the
->> original author (Kent Overstreet) have good ideas?
 >
-> Maybe we should look if it's possible to reduce the window where
-> interrupts are disabled in this function, but I guess we'll have to wait
-> for Kent about that. Do we know if other MIPS systems or other
-> architectures also implement the flush_dcache_page() function via IPI?
 >
-> Thanks,
-> Aurelien
+>> (David Daney on Cc)
+>>
+>> Thanks
+>> James
+>>
 >
-> --
-> Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-> aurelien@aurel32.net                 http://www.aurel32.net
 >

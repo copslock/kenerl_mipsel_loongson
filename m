@@ -1,63 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 19:17:31 +0200 (CEST)
-Received: from mail-wi0-f182.google.com ([209.85.212.182]:59594 "EHLO
-        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860187AbaGaRRYgqT-p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 19:17:24 +0200
-Received: by mail-wi0-f182.google.com with SMTP id d1so4416810wiv.9
-        for <linux-mips@linux-mips.org>; Thu, 31 Jul 2014 10:17:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 19:20:32 +0200 (CEST)
+Received: from mail-wg0-f48.google.com ([74.125.82.48]:43062 "EHLO
+        mail-wg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860188AbaGaRU2tiD5A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 19:20:28 +0200
+Received: by mail-wg0-f48.google.com with SMTP id x13so3054213wgg.19
+        for <linux-mips@linux-mips.org>; Thu, 31 Jul 2014 10:20:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-type:content-disposition:in-reply-to:user-agent;
-        bh=lj7zHEUsYv15Q1Gcg6WyusSvi0Q1lrUp3sf2UXG9Bns=;
-        b=Gm9kj2cAZt5vqQx2ebksI4RUr2Sr8SGFE9NNdnUlQSgDU1D/E+fhFOAo6z4U2BGq+p
-         RSKrDpFcRk1ZptYU6DIEFa971QDMgCplGxgp3UiA+ZcEfzYpttqu8YVVsPjuZ+a1kxa2
-         zwWW2R8gCsPVDh7oc0LaZ6Aop6Ull3PdEEUfkYvaZpavJUoBgC+AYVnr/BG3L0gkx5JB
-         fysDwH4reCjV/JAeQ6g717WfrbXPrevDCV372YbX6EiyX9voXBmXCeWFxMAPzLqnhNsO
-         IZK8tnj2qNXEdfl5SCtSeMZOM8OhEMKjXoNAyd/xBp2Zt7jABt1okRbxPhxAl9pifQM8
-         3XzA==
-X-Received: by 10.180.36.238 with SMTP id t14mr18432193wij.38.1406827038252;
-        Thu, 31 Jul 2014 10:17:18 -0700 (PDT)
+        bh=H1HQ1ltEMiA67J3G+QQBjG3sjuJ3SuZVdBkUCuhDpjk=;
+        b=bcwmOsiq7kuymqEydy3cDTOwAw3prz9MrcB15bgWizMqhpm+roM7ZM9fd221KP/Y5R
+         VljwD5rfs5LLwtBvkS5BF3waqGyYL8v/NlBscGclkQUruZSd/jemXaHCmqwm6vQBapjD
+         VUEsDlvm0VjXnexVeT6s5vCnHdogdMBQxNFX4cgjKJKIVWmz4c/k8lB/cKFJ5xbyVH8N
+         ZQ+KKv95RIx/P3DNrCF8nVznu5ct5Qa/7HiYiv82FZJtvK9uRQKKRdJkGQUHYTi7LGit
+         lI7F2N1pXc6sCIyP/SyeT/ThOokWGW8s6+7rdNPno7GK3CBk0qnOQMkVL+52OBcRZuHX
+         rnoQ==
+X-Received: by 10.194.85.78 with SMTP id f14mr19321898wjz.36.1406827221315;
+        Thu, 31 Jul 2014 10:20:21 -0700 (PDT)
 Received: from localhost (8.20.196.77.rev.sfr.net. [77.196.20.8])
-        by mx.google.com with ESMTPSA id pj6sm14699921wjb.21.2014.07.31.10.17.15
+        by mx.google.com with ESMTPSA id bx2sm14684617wjb.47.2014.07.31.10.20.19
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 31 Jul 2014 10:17:17 -0700 (PDT)
-Date:   Thu, 31 Jul 2014 19:17:14 +0200
+        Thu, 31 Jul 2014 10:20:20 -0700 (PDT)
+Date:   Thu, 31 Jul 2014 19:20:18 +0200
 From:   Frederic Weisbecker <fweisbec@gmail.com>
-To:     Oleg Nesterov <oleg@redhat.com>
+To:     "H. Peter Anvin" <hpa@zytor.com>
 Cc:     Andy Lutomirski <luto@amacapital.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Will Drewry <wad@chromium.org>, X86 ML <x86@kernel.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        linux-arch <linux-arch@vger.kernel.org>, X86 ML <x86@kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
         Alexei Starovoitov <ast@plumgrid.com>,
-        "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v4 2/5] x86,entry: Only call user_exit if TIF_NOHZ
-Message-ID: <20140731171713.GE7842@localhost.localdomain>
+        Will Drewry <wad@chromium.org>,
+        Kees Cook <keescook@chromium.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 0/5] x86: two-phase syscall tracing and seccomp
+ fastpath
+Message-ID: <20140731172017.GF7842@localhost.localdomain>
 References: <cover.1406604806.git.luto@amacapital.net>
- <7123b2489cc5d1d5abb7bcf1364ca729cab3e6ca.1406604806.git.luto@amacapital.net>
- <20140729193232.GA8153@redhat.com>
- <20140730164344.GA27954@localhost.localdomain>
- <CALCETrUVaz3JFiNbyU=r3M-E9muHa1ffn7RX+_-4V_0U-hVaPw@mail.gmail.com>
- <20140731151630.GA7842@localhost.localdomain>
- <20140731164246.GA15974@redhat.com>
- <20140731164918.GC7842@localhost.localdomain>
- <20140731165423.GA16800@redhat.com>
+ <20140729192056.GA6308@redhat.com>
+ <CALCETrX6P7SJQdgc0gTM7FLdwyT_Ld1MWvkLYpTO_2xsvBC9sA@mail.gmail.com>
+ <CALCETrXHF5YzPQDvnJs=mFNm2Ff_FekGu_Y8-JyMaWh2hctR7A@mail.gmail.com>
+ <20140730165940.GB27954@localhost.localdomain>
+ <CALCETrUafpWfnbfZzgu3qSGqyxcG0+6A=A1RE8g++=GrQKD93Q@mail.gmail.com>
+ <53DA7550.40905@zytor.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20140731165423.GA16800@redhat.com>
+In-Reply-To: <53DA7550.40905@zytor.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <fweisbec@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41849
+X-archive-position: 41850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,55 +73,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 31, 2014 at 06:54:23PM +0200, Oleg Nesterov wrote:
-> On 07/31, Frederic Weisbecker wrote:
-> >
-> > On Thu, Jul 31, 2014 at 06:42:46PM +0200, Oleg Nesterov wrote:
-> > > On 07/31, Frederic Weisbecker wrote:
-> > > >
-> > > > On Wed, Jul 30, 2014 at 10:23:34AM -0700, Andy Lutomirski wrote:
-> > > > >
-> > > > > At the end of the day, the syscall slowpath code calls a bunch of
-> > > > > functions depending on what TIF_XYZ flags are set.  As long as it's
-> > > > > structured like "if (TIF_A) do_a(); if (TIF_B) do_b();" or something
-> > > > > like that, it's comprehensible.  But once random functions with no
-> > > > > explicit flag checks or comments start showing up, it gets confusing.
-> > > >
-> > > > Yeah that's a point. I don't mind much the TIF_NOHZ test if you like.
-> > >
-> > > And in my opinion
-> > >
-> > > 	if (work & TIF_XYZ)
-> > > 		user_exit();
-> > >
-> > > looks even more confusing. Because, once again, TIF_XYZ is not the
-> > > reason to call user_exit().
-> > >
-> > > Not to mention this adds a minor performance penalty.
-> >
-> > That's a point too! You guys both convinced me! ;-)
+On Thu, Jul 31, 2014 at 09:56:48AM -0700, H. Peter Anvin wrote:
+> On 07/30/2014 10:25 AM, Andy Lutomirski wrote:
+> > 
+> > And yet x86_64 has this code implemented in assembly even in the
+> > slowpath.  Go figure.
+> > 
 > 
-> Very nice, now I know that you can agree with 2 opposite opinions at
-> the same time ;)
+> There is way too much assembly in entry_64.S probably because things
+> have been grafted on, ahem, "organically".  It is darn nigh impossible
+> to even remotely figure out what goes on in that file.
 
-That's what an Acked-by from Schroedinger would look like!
-
-> 
-> > > > > If it's indeed all-or-nothing, I could remove the check and add a
-> > > > > comment.  But please keep in mind that, currently, the slow path is
-> > > > > *slow*, and my patches only improve the entry case.  So enabling
-> > > > > context tracking on every task will hurt.
-> > > >
-> > > > That's what we do anyway. I haven't found a safe way to enabled context tracking
-> > > > without tracking all CPUs.
-> > >
-> > > And if we change this, then the code above becomes racy. The state of
-> > > TIF_XYZ can be changed right after the check. OK, it is racy anyway ;)
-> > > but still this adds more confusion.
-> >
-> > No because all running tasks have this flag set when context tracking is
-> > enabled. And context tracking can't be disabled on runtime.
-> 
-> Yes, yes, please note that I said "if we change this".
-
-Yeah but the NO_HZ test wouldn't change much the situation I think.
+Always warn your family and give them an estimate return hour before opening that file.

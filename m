@@ -1,48 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 10:25:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28267 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6818481AbaGaIZIMaEj0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 10:25:08 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 1B219CAA0F532;
-        Thu, 31 Jul 2014 09:24:59 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 31 Jul 2014 09:25:00 +0100
-Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 31 Jul
- 2014 09:25:00 +0100
-Message-ID: <53D9FD5C.6030903@imgtec.com>
-Date:   Thu, 31 Jul 2014 09:25:00 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 13:43:09 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:40069 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6860095AbaGaLnHEUvRG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 13:43:07 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
+        by mail.windriver.com (8.14.9/8.14.5) with ESMTP id s6VBgwtZ004192
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Thu, 31 Jul 2014 04:42:59 -0700 (PDT)
+Received: from pek-wyang1-d1.wrs.com (128.224.162.170) by
+ ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
+ 14.3.174.1; Thu, 31 Jul 2014 04:42:58 -0700
+From:   <Wei.Yang@windriver.com>
+To:     <ralf@linux-mips.org>
+CC:     <Wei.Yang@windriver.com>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v1] MIPS:KDUMP: set a right value to kexec_indirection_page variable
+Date:   Thu, 31 Jul 2014 19:42:29 +0800
+Message-ID: <1406806949-27039-1-git-send-email-Wei.Yang@windriver.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-To:     Alex Smith <alex@alex-smith.me.uk>, Ralf <ralf@linux-mips.org>
-CC:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Markos (GMail)" <markos.chandras@gmail.com>,
-        Markos <markos.chandras@imgtec.com>,
-        Paul <paul.burton@imgtec.com>,
-        Rob Kendrick <rob.kendrick@codethink.co.uk>,
-        "Huacai Chen" <chenhc@lemote.com>
-Subject: Re: Please add my temporary MIPS fixes branch to linux-next
-References: <53D9169D.3020705@imgtec.com> <CAOFt0_C1mCsnn56uhpQy8zR-zhT9T_rK6P8YNAKKkoHrgnT_9g@mail.gmail.com>
-In-Reply-To: <CAOFt0_C1mCsnn56uhpQy8zR-zhT9T_rK6P8YNAKKkoHrgnT_9g@mail.gmail.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain
+Return-Path: <Wei.Yang@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41837
+X-archive-position: 41838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: Wei.Yang@windriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,29 +41,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alex,
+From: Yang Wei <Wei.Yang@windriver.com>
 
-On 30/07/14 19:17, Alex Smith wrote:
-> On 30 July 2014 17:00, James Hogan <james.hogan@imgtec.com> wrote:
->> This one fixes mips32 debian boot, but changes the layout of the
->> NT_PRSTATUS regset which is accessible through ptrace. I don't believe
->> this will break anything, but there are other patches pending in the
->> patchset to fix up the regset stuff properly anyway (as it is already
->> broken for core dumps) and I don't really want to take the risk without
->> Ralf's okay.
->>
->> Alex Smith (1):
->>       MIPS: O32/32-bit: Fix bug which can cause incorrect system call
->> restarts
-> 
-> Right now the NT_PRSTATUS regset can't be relied upon to return the
-> same layout anyway, as it can differ depending on whether the kernel
-> is 32- or 64-bit, as well as with a couple of other Kconfig options.
-> Changing it in this patch shouldn't make things any worse.
+Since there is not indirection page in crash type, so the vaule of the head
+field of kimage structure is not equal to the address of indirection page but
+IND_DONE. so we have to set kexec_indirection_page variable to the address of
+the head field of image structure.
 
-Yeh, that is true, and it does fix a real regression.
+Signed-off-by: Yang Wei <Wei.Yang@windriver.com>
 
-Since Ralf does appear to be online I'll apply the patch unless he objects.
+          Hi Ralf,
 
-Cheers
-James
+		  Please help me take a look at this patch, I have already verified it on Cavium 6100EVB board.
+
+		  Thanks
+		  Wei
+---
+ arch/mips/kernel/machine_kexec.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
+index 992e184..531b70d 100644
+--- a/arch/mips/kernel/machine_kexec.c
++++ b/arch/mips/kernel/machine_kexec.c
+@@ -71,8 +71,13 @@ machine_kexec(struct kimage *image)
+ 	kexec_start_address =
+ 		(unsigned long) phys_to_virt(image->start);
+ 
+-	kexec_indirection_page =
+-		(unsigned long) phys_to_virt(image->head & PAGE_MASK);
++	if (image->type == KEXEC_TYPE_DEFAULT) {
++		kexec_indirection_page =
++			(unsigned long) phys_to_virt(image->head & PAGE_MASK);
++	} else {
++		kexec_indirection_page = (unsigned long)&image->head;
++	}
++	
+ 
+ 	memcpy((void*)reboot_code_buffer, relocate_new_kernel,
+ 	       relocate_new_kernel_size);
+-- 
+1.7.9.5

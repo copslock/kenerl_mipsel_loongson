@@ -1,52 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 19:34:13 +0200 (CEST)
-Received: from mail-bn1blp0182.outbound.protection.outlook.com ([207.46.163.182]:53059
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6860175AbaGaReKi08Ru (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Jul 2014 19:34:10 +0200
-Received: from BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155) by
- BY2PR07MB988.namprd07.prod.outlook.com (10.242.47.156) with Microsoft SMTP
- Server (TLS) id 15.0.995.14; Thu, 31 Jul 2014 17:34:02 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by
- BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155) with Microsoft SMTP
- Server (TLS) id 15.0.995.14; Thu, 31 Jul 2014 17:33:59 +0000
-Message-ID: <53DA7E03.9090306@caviumnetworks.com>
-Date:   Thu, 31 Jul 2014 10:33:55 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 20:14:40 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:49709 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6860106AbaGaSOiQ0udX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jul 2014 20:14:38 +0200
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s6VIEFjw011106
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 31 Jul 2014 14:14:15 -0400
+Received: from tranklukator.brq.redhat.com (dhcp-1-191.brq.redhat.com [10.34.1.191])
+        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id s6VIECQO017773;
+        Thu, 31 Jul 2014 14:14:12 -0400
+Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
+        oleg@redhat.com; Thu, 31 Jul 2014 20:12:34 +0200 (CEST)
+Date:   Thu, 31 Jul 2014 20:12:30 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Frederic Weisbecker <fweisbec@gmail.com>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com
+Subject: Re: TIF_NOHZ can escape nonhz mask? (Was: [PATCH v3 6/8] x86:
+        Split syscall_trace_enter into two phases)
+Message-ID: <20140731181230.GA18695@redhat.com>
+References: <3f649f5658a163645e3ce15156176c325283762e.1405992946.git.luto@amacapital.net> <20140728173723.GA20993@redhat.com> <20140728185803.GA24663@redhat.com> <20140728192209.GA26017@localhost.localdomain> <20140729175414.GA3289@redhat.com> <20140730163516.GC18158@localhost.localdomain> <20140730174630.GA30862@redhat.com> <20140731003034.GA32078@localhost.localdomain> <20140731160353.GA14772@redhat.com> <20140731171329.GD7842@localhost.localdomain>
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Huacai Chen <chenhc@lemote.com>, James Hogan <james@albanarts.com>,
-        "Linux MIPS Mailing List" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Binbin Zhou <zhoubb@lemote.com>,
-        stable <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: tlbex: fix a missing statement for HUGETLB
-References: <1406616880-17142-1-git-send-email-chenhc@lemote.com> <2357839.vPXx615ci5@radagast> <53D9674E.4000507@caviumnetworks.com> <CAAhV-H51phVJvSTv_GMw15RpKp32vmNgj2QSzYzf+UOMK0koyw@mail.gmail.com> <53D99854.8090109@caviumnetworks.com> <53DA2E66.20200@imgtec.com>
-In-Reply-To: <53DA2E66.20200@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-ClientProxiedBy: SN2PR07CA002.namprd07.prod.outlook.com (10.255.174.19) To
- BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155)
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
-X-Forefront-PRVS: 0289B6431E
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(377454003)(479174003)(24454002)(51704005)(199002)(189002)(83322001)(50466002)(65816999)(64126003)(46102001)(65806001)(59896001)(33656002)(79102001)(74502001)(80316001)(31966008)(85306003)(74662001)(81342001)(36756003)(81156004)(83072002)(106356001)(77982001)(85852003)(575784001)(54356999)(80022001)(47776003)(95666004)(107046002)(21056001)(102836001)(64706001)(93886003)(42186005)(65956001)(50986999)(92566001)(87266999)(69596002)(92726001)(101416001)(76482001)(105586002)(23676002)(87976001)(77096002)(53416004)(110136001)(20776003)(81542001)(99396002)(66066001)(4396001)(76176999);DIR:OUT;SFP:;SCL:1;SRVR:BY2PR07MB583;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;LANG:en;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20140731171329.GD7842@localhost.localdomain>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41851
+X-archive-position: 41852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,145 +53,151 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/31/2014 04:54 AM, James Hogan wrote:
-> Hi,
+On 07/31, Frederic Weisbecker wrote:
 >
-> On 31/07/14 02:13, David Daney wrote:
->> On 07/30/2014 05:48 PM, Huacai Chen wrote:
->>> For non-Octeon CPU, htlb_info.huge_pte is equal to K0, but I don't
->>> know much about Octeon. So I think you know whether we should use K0
->>>   or htlb_info.huge_pte here, since you are the original author.
->>>
->>
->> This is why I requested that somebody show me a disassembly of the
->> faulty handler.  I cannot tell where the problem is unless I see that.
->>
->> Really I think the problem is in build_is_huge_pte(), where we are
->> clobbering 'tmp' which is K0.
->>
->> So you could reload tmp/K0 in build_is_huge_pte().
+> On Thu, Jul 31, 2014 at 06:03:53PM +0200, Oleg Nesterov wrote:
+> > On 07/31, Frederic Weisbecker wrote:
+> > >
+> > > I was convinced that the very first kernel init task is PID 0 then
+> > > it forks on rest_init() to launch the userspace init with PID 1. Then init/0 becomes the
+> > > idle task of the boot CPU.
+> >
+> > Yes sure. But context_tracking_cpu_set() is called by init task with PID 1, not
+> > by "swapper".
 >
-> Here's the difference with this patch (using k0) on an Octeon I have to
-> hand, with some slightly munged offsets for nicer diffing:
->
-> #define _PAGE_PRESENT_SHIFT 0
-> #define _PAGE_READ_SHIFT 0
-> #define _PAGE_WRITE_SHIFT 1
-> #define _PAGE_ACCESSED_SHIFT 2
-> #define _PAGE_MODIFIED_SHIFT 3
-> #define _PAGE_HUGE_SHIFT 4
-> #define _PAGE_SPLITTING_SHIFT 5
-> #define _PAGE_NO_EXEC_SHIFT 6
-> #define _PAGE_NO_READ_SHIFT 7
-> #define _PAGE_GLOBAL_SHIFT 8
-> #define _PAGE_VALID_SHIFT 9
-> #define _PAGE_DIRTY_SHIFT 10
-> #define _PFN_SHIFT 14
->
->   00000000 <r4000_tlb_refill>:
-> +   0:	df7a0000 	ld	k0,0(k1)
+> Are you sure? It's called from start_kernel() which is init/0.
 
-Completely redundant, it is not used and then clobbered...
+But do_initcalls() is called by kernel_init(), this is the init process which is
+going to exec /sbin/init later.
 
->      4:	00210a3a 	dror	at,at,0x8
->      8:	40a11000 	dmtc0	at,c0_entrylo0
->      c:	64214000 	daddiu	at,at,16384
->     10:	40a11800 	dmtc0	at,c0_entrylo1
->     14:	3c1a001f 	lui	k0,0x1f
+But this doesn't really matter,
 
-... here.
+> Maybe we should just enable it everywhere.
 
->     18:	375ae000 	ori	k0,k0,0xe000
->     1c:	409a2800 	mtc0	k0,c0_pagemask
->     20:	000000c0 	ehb
->     24:	42000006 	tlbwr
->     28:	40802800 	mtc0	zero,c0_pagemask
-> -  28:	1000002e 	b	e4 <r4000_tlb_refill+0xe4>
-> +  2c:	1000002d 	b	e4 <r4000_tlb_refill+0xe4>
->     30:	4021f802 	dmfc0	at,$31,2
-> -  30:	07400019 	bltz	k0,98 <r4000_tlb_refill+0x98>
-> +  34:	07400018 	bltz	k0,98 <r4000_tlb_refill+0x98>
->     38:	3c1b81da 	lui	k1,0x81da
->     3c:	3c1b8113 	lui	k1,0x8113
-> -  3c:	277b7ef0 	addiu	k1,k1,32496
-> +  40:	277b7f00 	addiu	k1,k1,32512
->     44:	03600008 	jr	k1
->     48:	4021f802 	dmfc0	at,$31,2
->   	...
->     80:	403a4000 	dmfc0	k0,c0_badvaddr
->     84:	403bf803 	dmfc0	k1,$31,3
->     88:	40a1f802 	dmtc0	at,$31,2
->     8c:	001a0a3e 	dsrl32	at,k0,0x8
-> -  90:	1420ffe7 	bnez	at,30 <r4000_tlb_refill+0x30>
-> +  90:	1420ffe8 	bnez	at,34 <r4000_tlb_refill+0x34>
->     94:	001a0efa 	dsrl	at,k0,0x1b
->     98:	30211ff8 	andi	at,at,0x1ff8
->     9c:	7c3bda0a 	ldx	k1,k1(at)
->     a0:	001a0cba 	dsrl	at,k0,0x12
->     a4:	30210ff8 	andi	at,at,0xff8
->     a8:	403aa000 	dmfc0	k0,c0_xcontext
->     ac:	7c3b0a0a 	ldx	at,k1(at)
->     b0:	335a0ff0 	andi	k0,k0,0xff0
->     b4:	e824ffd2 	bbit1	at,0x4,0 <r4000_tlb_refill>
->     b8:	00000000 	nop
->     bc:	7c3ada0a 	ldx	k1,k0(at)
->     c0:	675a0008 	daddiu	k0,k0,8
->     c4:	7c3ad20a 	ldx	k0,k0(at)
->     c8:	003bda3a 	dror	k1,k1,0x8
->     cc:	40bb1000 	dmtc0	k1,c0_entrylo0
->     d0:	003ad23a 	dror	k0,k0,0x8
->     d4:	40ba1800 	dmtc0	k0,c0_entrylo1
->     d8:	4021f802 	dmfc0	at,$31,2
->     dc:	000000c0 	ehb
->     e0:	42000006 	tlbwr
->     e4:	42000018 	eret
+Yes, yes, this doesn't really matter. We can even add set(TIF_NOHZ) at the start
+of start_kernel(). The question is, I still can't understand why do we want to
+have the global TIF_NOHZ.
+
+> > OK. To simplify, lets discuss user_enter() only. So, it is actually a nop on
+> > CPU_0, and CPU_1 can miss it anyway.
+> >
+> > > But global TIF_NOHZ should enforce context tracking everywhere.
+> >
+> > And this is what I can't understand. Lets return to my initial question, why
+> > we can't change __context_tracking_task_switch()
+> >
+> > 	void __context_tracking_task_switch(struct task_struct *prev,
+> > 					    struct task_struct *next)
+> > 	{
+> > 		if (context_tracking_cpu_is_enabled())
+> > 			set_tsk_thread_flag(next, TIF_NOHZ);
+> > 		else
+> > 			clear_tsk_thread_flag(next, TIF_NOHZ);
+> > 	}
+> >
+> > ?
 >
+> Well we can change it to global TIF_NOHZ
 >
-> b4 is apparently where it branches back to the huge page case at the
-> beginning. In that case the at register (htlb_info.huge_pte) is set to
-> *(k1+at) instead of *(k1), so loading to htlb_info.huge_pte instead of
-> k0 would I think be bad and change the behaviour. So forget my suggestion!
+> > How can the global TIF_NOHZ help?
 >
-> On the other hand loading the pte to k0 is redundant when
-> build_fast_tlb_refill_handler is used (which depends on bbit1), and also
-> in the other case if bbit1 is available since it won't get clobbered by
-> build_is_huge_pte().
->
-> Maybe the reload should simply be conditional on !use_bbit_insns()?
->
+> It avoids that flag swap on task_switch.
 
-That was kind of my suggestion.  What happens if you do something like 
-(untested):
+Ah, you probably meant that we can kill context_tracking_task_switch() as
+we discussed.
 
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -716,6 +716,7 @@ build_is_huge_pte(u32 **p, struct uasm_reloc **r, 
-unsigned int tmp,
-         } else {
-                 uasm_i_andi(p, tmp, tmp, _PAGE_HUGE);
-                 uasm_il_bnez(p, r, tmp, lid);
-+               UASM_i_LW(p, tmp, 0, pmd);
-         }
-  }
+But I meant another thing, TIF_NOHZ is already global because it is always
+set after context_tracking_cpu_set().
 
-or
-
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index f99ec587..341add1 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1299,6 +1299,8 @@ static void build_r4000_tlb_refill_handler(void)
-         }
-  #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
-         uasm_l_tlb_huge_update(&l, p);
-+       if (!use_bbit_insns())
-+               UASM_i_LW(&p, K0, 0, K1);
-         build_huge_update_entries(&p, htlb_info.huge_pte, K1);
-         build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
-                                    htlb_info.restore_scratch);
+Performance-wise, this set/clear code above can be better because it avoids
+the slow paths on the untracked CPU's. But let's ignore this, the question is
+why the change above is not correct? Or why it can make the things worse?
 
 
-> Cheers
-> James
+> > OK, OK, a task can return to usermode on CPU_0, notice TIF_NOHZ, take the
+> > slow path, and do the "right" thing if it migrates to CPU_1 _before_ it
+> > comes to user_enter(). But this case is very unlikely, certainly this can't
+> > explain why do we penalize the untracked CPU's ?
 >
+> It's rather that CPU 0 calls user_enter() and then migrate to CPU 1 and resume
+> to userspace.
+
+And in this case a) user_enter() is pointless on CPU_0, and b) CPU_1 misses
+the necessary user_enter().
+
+> It's unlikely but possible. I actually observed that very easily on early testing.
+
+Sure. And this can happen anyway? Why the change in __context_tracking_task_switch()
+is wrong?
+
+> And it's a big problem because then the CPU runs in userspace, possibly for a long while
+> in HPC case, and context tracking thinks it is in kernelspace. As a result, RCU waits
+> for that CPU to complete grace periods and cputime is accounted to kernelspace instead of
+> userspace.
 >
+> It looks like a harmless race but it can have big consequences.
+
+I see. Again, does the global TIF_NOHZ really help?
+
+> > > And also it's
+> > > less context switch overhead.
+> >
+> > Why???
+>
+> Because calling context_switch_task_switch() on every context switch is costly.
+
+See above. This depends, but forcing the slow paths on all CPU's can be more
+costly.
+
+> > And of course I can't understand exception_enter/exit(). Not to mention that
+> > (afaics) "prev_ctx == IN_USER" in exception_exit() can be false positive even
+> > if we forget that the caller can migrate in between. Just because, once again,
+> > a tracked CPU can miss user_exit().
+>
+> You lost me on this. How can a tracked CPU miss user_exit()?
+
+I am lost too ;) Didn't we already discuss this? A task calls user_exit() on
+CPU_0 for no reason, migrates to the tracked CPU_1 and finally returns to user
+space leaving this cpu in IN_KERNEL state?
+
+> > So, why not
+> >
+> > 	static inline void exception_enter(void)
+> > 	{
+> > 		user_exit();
+> > 	}
+> >
+> > 	static inline void exception_exit(struct pt_regs *regs)
+> > 	{
+> > 		if (user_mode(regs))
+> > 			user_enter();
+> > 	}
+>
+> That's how I implemented it first. But then I changed it the way it is now:
+> 6c1e0256fad84a843d915414e4b5973b7443d48d
+> ("context_tracking: Restore correct previous context state on exception exit")
+>
+> This is again due to the shift between hard and soft userspace boundaries.
+> user_mode(regs) checks hard boundaries only.
+>
+> Lets get back to our beloved example:
+>
+>           CPU 0                                  CPU 1
+>           ---------------------------------------------
+>
+>           returning from syscall {
+>                user_enter();
+>                exception {
+>                     exception_enter()
+>                     PREEMPT!
+>                     ----------------------->
+>                                                  //resume exception
+>                                                    exception_exit();
+>                                                    return to userspace
+
+OK, thanks, so in this case we miss user_enter().
+
+But again, we can miss it anyway if preemptions comes before "exception" ?
+if CPU 1 was in IN_KERNEL state.
+
+Oleg.

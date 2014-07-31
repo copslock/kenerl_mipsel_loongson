@@ -1,42 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 01:07:06 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:43688 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6855028AbaG3XHBK0soy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Jul 2014 01:07:01 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 183D71400D7;
-        Thu, 31 Jul 2014 09:06:56 +1000 (EST)
-Date:   Thu, 31 Jul 2014 09:06:50 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf <ralf@linux-mips.org>, linux-mips <linux-mips@linux-mips.org>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Markos (GMail)" <markos.chandras@gmail.com>,
-        Markos <markos.chandras@imgtec.com>,
-        Paul <paul.burton@imgtec.com>,
-        Rob Kendrick <rob.kendrick@codethink.co.uk>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        "Huacai Chen" <chenhc@lemote.com>
-Subject: Re: Please add my temporary MIPS fixes branch to linux-next
-Message-ID: <20140731090650.2f1c255c@canb.auug.org.au>
-In-Reply-To: <53D9169D.3020705@imgtec.com>
-References: <53D9169D.3020705@imgtec.com>
-X-Mailer: Claws Mail 3.10.1 (GTK+ 2.24.24; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 02:30:50 +0200 (CEST)
+Received: from mail-wi0-f176.google.com ([209.85.212.176]:62553 "EHLO
+        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860084AbaGaAarK9O9e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 02:30:47 +0200
+Received: by mail-wi0-f176.google.com with SMTP id bs8so8460968wib.3
+        for <linux-mips@linux-mips.org>; Wed, 30 Jul 2014 17:30:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=e4kIHHsK0vaEIkYSANYal+2HxP7gWKL4kBrQcOG1Ruw=;
+        b=Evf7Y+mJ1lDnvzCQAEofFX6dLRPN4qtdFBE0oBNo4vLjSeXkaIsp4QjyeL1VE4d6x1
+         rRdbtHguTRNn1gCRBOzaxujwrfHnhaeAzKa3tFP7E5whcxI+bd9YYIL5PdimqG4fMcp+
+         E9sYmVrujcp0A4ddtuODg8L9ySCcjOVDPOBujOihhAzBho3xHp4I+iTU/KDvKRHxF8cb
+         f4BYgb0YC9pFl6gjoOsATvIJ8yKdh+hQpJ4d9x3H5QKLlhPg6iM+pwLWPtCGiQr21Du0
+         Qkc3Po3uHWVsjztYFVFI7c7trzIjTh/I0d/ClsvsBVKRxh3vFO6G3TDcAiU4K8Xh1r1Y
+         WFKQ==
+X-Received: by 10.180.94.166 with SMTP id dd6mr10499901wib.33.1406766641316;
+        Wed, 30 Jul 2014 17:30:41 -0700 (PDT)
+Received: from localhost (8.20.196.77.rev.sfr.net. [77.196.20.8])
+        by mx.google.com with ESMTPSA id r1sm14846281wia.21.2014.07.30.17.30.39
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 30 Jul 2014 17:30:40 -0700 (PDT)
+Date:   Thu, 31 Jul 2014 02:30:37 +0200
+From:   Frederic Weisbecker <fweisbec@gmail.com>
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com
+Subject: Re: TIF_NOHZ can escape nonhz mask? (Was: [PATCH v3 6/8] x86: Split
+ syscall_trace_enter into two phases)
+Message-ID: <20140731003034.GA32078@localhost.localdomain>
+References: <cover.1405992946.git.luto@amacapital.net>
+ <3f649f5658a163645e3ce15156176c325283762e.1405992946.git.luto@amacapital.net>
+ <20140728173723.GA20993@redhat.com>
+ <20140728185803.GA24663@redhat.com>
+ <20140728192209.GA26017@localhost.localdomain>
+ <20140729175414.GA3289@redhat.com>
+ <20140730163516.GC18158@localhost.localdomain>
+ <20140730174630.GA30862@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/pnPHiMbaeCkUor0_3hDfy6E"; protocol="application/pgp-signature"
-Return-Path: <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20140730174630.GA30862@redhat.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <fweisbec@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41826
+X-archive-position: 41828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: fweisbec@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,70 +70,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Sig_/pnPHiMbaeCkUor0_3hDfy6E
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jul 30, 2014 at 07:46:30PM +0200, Oleg Nesterov wrote:
+> On 07/30, Frederic Weisbecker wrote:
+> >
+> > On Tue, Jul 29, 2014 at 07:54:14PM +0200, Oleg Nesterov wrote:
+> >
+> > >
+> > > Looks like, we can kill context_tracking_task_switch() and simply change the
+> > > "__init" callers of context_tracking_cpu_set() to do set_thread_flag(TIF_NOHZ) ?
+> > > Then this flag will be propagated by copy_process().
+> >
+> > Right, that would be much better. Good catch! context tracking is enabled from
+> > tick_nohz_init(). This is the init 0 task so the flag should be propagated from there.
+> 
+> actually init 1 task, but this doesn't matter.
 
-Hi James,
+Are you sure? It does matter because that would invalidate everything I understood
+about init/main.c :) I was convinced that the very first kernel init task is PID 0 then
+it forks on rest_init() to launch the userspace init with PID 1. Then init/0 becomes the
+idle task of the boot CPU.
 
-On Wed, 30 Jul 2014 17:00:29 +0100 James Hogan <james.hogan@imgtec.com> wro=
-te:
->
-> v3.16 is fast approaching and there are quite a few important MIPS
-> patches pending. Since Ralf appears to be unavailable at the moment I've
-> reviewed and applied some of those patches which are least controversial
-> to a fixes branch with the intention of sending a pull request to Ralf &
-> Linus so that one of them can hopefully merge it before the release.
->=20
-> Please could the following branch be added to linux-next:
->=20
-> git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
-> branch: mips-fixes
+> 
+> > I still think we need a for_each_process_thread() set as well though because some
+> > kernel threads may well have been created at this stage already.
+> 
+> Yes... Or we can add set_thread_flag(TIF_NOHZ) into ____call_usermodehelper().
 
-Added from today.
+Couldn't there be some other tasks than usermodehelper stuffs at this stage? Like workqueues
+or random kernel threads?
 
-Thanks for adding your subsystem tree as a participant of linux-next.  As
-you may know, this is not a judgment of your code.  The purpose of
-linux-next is for integration testing and to lower the impact of
-conflicts between subsystems in the next merge window.=20
+> 
+> > > Or I am totally confused? (quite possible).
+> > >
+> > > > So here is a scenario where this is a problem: a task runs on CPU 0, passes the context
+> > > > tracking call before returning from a syscall to userspace, and gets an interrupt. The
+> > > > interrupt preempts the task and it moves to CPU 1. So it returns from preempt_schedule_irq()
+> > > > after which it is going to resume to userspace.
+> > > >
+> > > > In this scenario, if context tracking is only enabled on CPU 1, we have no way to know that
+> > > > the task is resuming to userspace, because we passed through the context tracking probe
+> > > > already and it was ignored on CPU 0.
+> > >
+> > > Thanks. But I still can't understand... So if we only track CPU 1, then in this
+> > > case context_tracking.state == IN_USER on CPU 0, but it can be IN_USER or IN_KERNEL
+> > > on CPU 1.
+> >
+> > I'm not sure I understand your question.
+> 
+> Probably because it was stupid. Seriously, I still have no idea what this code
+> actually does.
+> 
+> > Context tracking is either enabled everywhere or
+> > nowhere.
+> >
+> > I need to say though that there is a per CPU context tracking state named context_tracking.active.
+> > It's confusing because it suggests that context tracking is active per CPU. Actually it's tracked
+> > everywhere when globally enabled, but active determines if we call the RCU and vtime callbacks or
+> > not.
+> >
+> > So only nohz full CPUs have context_tracking.active set because only these need to call the RCU
+> > and vtime callbacks. Other CPUs still do the context tracking but they won't call rcu and vtime
+> > functions.
+> 
+> I meant that in the scenario you described above the "global" TIF_NOHZ doesn't
+> really make a difference, afaics.
+> 
+> Lets assume that context tracking is only enabled on CPU 1. To simplify,
+> assume that we have a single usermode task T which sleeps in kernel mode.
+> 
+> So context_tracking[0].state == context_tracking[1].state == IN_KERNEL.
+> 
+> T wakes up on CPU_0, returns to user space, calls user_enter(). This sets
+> context_tracking[0].state = IN_USER but otherwise does nothing else, this
+> CPU is not tracked and .active is false.
+> 
+> Right after local_irq_restore() this task can migrate to CPU_1 and finish
+> its ret-to-usermode path. But since it had already passed user_enter() we
+> do not change context_tracking[1].state and do not play with rcu/vtime.
+> (unless this task hits SCHEDULE_USER in asm).
+> 
+> The same for user_exit() of course.
 
-You will need to ensure that the patches/commits in your tree/series have
-been:
-     * submitted under GPL v2 (or later) and include the Contributor's
-        Signed-off-by,
-     * posted to the relevant mailing list,
-     * reviewed by you (or another maintainer of your subsystem tree),
-     * successfully unit tested, and=20
-     * destined for the current or next Linux merge window.
+So indeed if context tracking is enabled on CPU 1 and not in CPU 0, we risk
+such situation where CPU 1 has wrong context tracking.
 
-Basically, this should be just what you would send to Linus (or ask him
-to fetch).  It is allowed to be rebased if you deem it necessary.
+But global TIF_NOHZ should enforce context tracking everywhere. And also it's
+less context switch overhead.
 
---=20
-Cheers,
-Stephen Rothwell=20
-sfr@canb.auug.org.au
-
---Sig_/pnPHiMbaeCkUor0_3hDfy6E
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Disposition: attachment; filename=signature.asc
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJT2XqPAAoJEMDTa8Ir7ZwV9eMP/0QTglmlKOO8PYgnemNkFUME
-akCJpfPIaj+FJHQFUaRdYU4Y/Xp0p6s11DN1CBfkQZAR+I4WYPhsYSFq2d/ddhX0
-GrHpXIL7B7TPwgeAfBmP7uFTbTtfV2wKj0Ct4aTpFjUpQ1QW0PkjRptMFSqKcXVd
-Bp7ymI3KxxdzgzCamPUWvZLwkWfxswXuN56kc1UNLcNojIA75TuJVdtjdg052BuL
-C+SiyXe1e4qmeDjgEe91bAyOEVT8HEvpuOQlfvSltyhraOHn/YEUwc4LD3tj+e33
-8uuHDB4bbz1swCajj1sbo98PEpCAMAijAeKjQdIBaRqNmtsrcn3DkOw5SjPtihhy
-CzJdLIPqabohIE0kp4+Fenux61EfPyL83HHvRfkOaY3LoLLysHpb/b5nSH3nMwXV
-WpMl0b77lrFy2hZBCDiYYbYooqpPTMdNmuXDf6/FeLCY6bsOknvRGl2ILS2gppti
-nfG5CKF+ehCjIvrGxnbitV4TPkS7OVsFcibl+ecYOUerA6GrKKaNipERE6UAl/sE
-jxT+oW+igRLdGyw0nB6aiISIOViDYnCucJxevKFE5YnI4lQni4pvdnqVDbl3CvTq
-xgnC5dN6koQjJWo7QRaJQaDkx0HBliPJQy2snluB4yJ4Vps7xG2yS5kFB1SLe4AP
-uOg7EEhUXBEBCLSKQaHC
-=5qDw
------END PGP SIGNATURE-----
-
---Sig_/pnPHiMbaeCkUor0_3hDfy6E--
+> 
+> Oleg.
+> 

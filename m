@@ -1,44 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 04:56:00 +0200 (CEST)
-Received: from mail-la0-f41.google.com ([209.85.215.41]:53771 "EHLO
-        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822149AbaGaCzzk7W8q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 04:55:55 +0200
-Received: by mail-la0-f41.google.com with SMTP id s18so1591980lam.28
-        for <multiple recipients>; Wed, 30 Jul 2014 19:55:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 07:14:24 +0200 (CEST)
+Received: from mail-ie0-f169.google.com ([209.85.223.169]:43705 "EHLO
+        mail-ie0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821737AbaGaFOWA2IT3 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jul 2014 07:14:22 +0200
+Received: by mail-ie0-f169.google.com with SMTP id rd18so3088041iec.28
+        for <multiple recipients>; Wed, 30 Jul 2014 22:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to:cc:content-type;
-        bh=2xan4GtwugOEFn9cy2yz9hFarF0MEliPR08eoePG85s=;
-        b=XYx4bFVK/N/L670Aj9Ck6zV7cK4mjAtlB8JeiMQ9c2TkJ7HHNjkC4lowZod2eg3AAb
-         lY11W0agD7wf2fTYeDh9V4A1JW2aJApSMqVvbSRNhXAM7hDUFcCX22rRSe7lAOe6Gxi4
-         w1BneFL80VVgSLG32sZweKwAUY7pg4N+A4F2f2U+6v5pb9H2MOR8cDLlgA3Np33XPpY6
-         wgZI6o7dXE47VO2Psqe67kIGIbkpw/53uQOqfL8QCd9gELGl2XUI+3PH1NUd2DLSZRjH
-         iWx1WgQW/HDJuN8gwn3FgJm8OthPVMO2k6Upg+mJNgRkEaWcPbb1qaQRuFiJcDdOvmqo
-         pPvQ==
-X-Received: by 10.112.84.75 with SMTP id w11mr8263742lby.24.1406775350037;
- Wed, 30 Jul 2014 19:55:50 -0700 (PDT)
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=6bcp7kJ4D2DGbehWzp4i1x2iHV/gVUQTodTXD5yEAk4=;
+        b=qYzl+wCQDWIoQwW10ay8qswhRAnxexphmwaWHd5Oq71VyG6I2gWGjSqthqaYsF1VWZ
+         Cg2wBYg6m4R6XNX+Mpu88Gkqaa1ufNJi4b755s5KDuviKwHQ+OLXDte1fA/eRJ0KOWvw
+         hgIIXBRxfdd05wiMMQA/a2H1xDmrnANuyKHmsWdwUItKPugCHR31DZrsxuq8YBhoqCw1
+         o5cdBxpdO4t5JKr8aews/Dj0OX9yXLvnp4JlF7IQyVir0qvx4X3h2c5rpZTLsQ0L14SK
+         i4A33ybjNXlAfGZNeL1TVllL/Cbpn95M4fJYe9Dn8QO0isDWwUYbYIVAre8PZxiVHEts
+         bkBg==
 MIME-Version: 1.0
-Received: by 10.114.200.39 with HTTP; Wed, 30 Jul 2014 19:55:29 -0700 (PDT)
-From:   cee1 <fykcee1@gmail.com>
-Date:   Thu, 31 Jul 2014 10:55:29 +0800
-Message-ID: <CAGXxSxXGpRBJm+8sYfYXN4-20OYdmJ4FgBDnPknv9uMBN9zBsQ@mail.gmail.com>
-Subject: Status about csum_partial optimization patches.
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+X-Received: by 10.43.6.195 with SMTP id ol3mr11630906icb.86.1406783655358;
+ Wed, 30 Jul 2014 22:14:15 -0700 (PDT)
+Received: by 10.107.130.160 with HTTP; Wed, 30 Jul 2014 22:14:15 -0700 (PDT)
+In-Reply-To: <53D93E5C.2000706@hauke-m.de>
+References: <1406584437-31108-1-git-send-email-hauke@hauke-m.de>
+        <CACna6rw_OswnvN7YD7AVnCNKtKJAk8UGXEjUdVJEvaBF3ErAmQ@mail.gmail.com>
+        <53D93E5C.2000706@hauke-m.de>
+Date:   Thu, 31 Jul 2014 07:14:15 +0200
+Message-ID: <CACna6ryCP98zJ9PikqycyX1=Enw1BgRgJu+Www+jmLzr5A9u4w@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: BCM47XX: make reboot more relaiable
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        huacai chen <chenhuacai@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        markos.chandras@imgtec.com
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <fykcee1@gmail.com>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41834
+X-archive-position: 41835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fykcee1@gmail.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,30 +55,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+On 30 July 2014 20:50, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> On 07/30/2014 08:06 PM, Rafał Miłecki wrote:
+>> Did you see code in hndmips.c of Broadcom SDK? Maybe we need this
+>> magic ASM code they have it there?
+>>
+>> if (CHIPID(sih->chip) == BCM4785_CHIP_ID)
+>>     MTC0(C0_BROADCOM, 4, (1 << 22));
+>> si_watchdog(sih, 1);
+>> if (CHIPID(sih->chip) == BCM4785_CHIP_ID) {
+>>     __asm__ __volatile__(
+>>         ".set\tmips3\n\t"
+>>         "sync\n\t"
+>>         "wait\n\t"
+>>         ".set\tmips0");
+>> }
+>> while (1);
+>>
+>> Maybe it'll work better and more reliable?
+>>
+> This looks interesting, I haven't seen this.
+>
+> Please drop this patch for now, I will create a new one
 
-The csum_partial optimization patches have resided at patch-work for
-quite a while:
-1. http://patchwork.linux-mips.org/patch/6988/
-2. http://patchwork.linux-mips.org/patch/7176/
-
-Any comments about patch 1, can it be merged?
-
-For patch 2, which is actually Loongson3 related and is modified from
-ralf's patch: http://www.linux-mips.org/archives/linux-mips/2014-06/msg00023.html.
-In patch 2, there are still two switches for Loongson 3A:
-1. #define cpu_has_wsbh IS_ENABLED(CONFIG_CPU_LOONGSON3) in
-cpu-feature-overrides.h
-2. #if defined(_MIPS_ARCH_LOONGSON3A) in swab.h
-
-It replaces the "#if defined(_MIPS_ARCH_LOONGSON3A)" with "#if
-cpu_has_wsbh" in csum_partial.S, compared with ralf's original patch.
-My question is using cpu_has_wsbh in macro is not suitable, hence it
-is preferred to revert to the ralf's original patch?
-
-
+Ralf, I'm afraid you didn't drop this patch.
 
 -- 
-Regards,
-
-- cee1
+Rafał

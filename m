@@ -1,66 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 19:20:32 +0200 (CEST)
-Received: from mail-wg0-f48.google.com ([74.125.82.48]:43062 "EHLO
-        mail-wg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860188AbaGaRU2tiD5A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jul 2014 19:20:28 +0200
-Received: by mail-wg0-f48.google.com with SMTP id x13so3054213wgg.19
-        for <linux-mips@linux-mips.org>; Thu, 31 Jul 2014 10:20:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=H1HQ1ltEMiA67J3G+QQBjG3sjuJ3SuZVdBkUCuhDpjk=;
-        b=bcwmOsiq7kuymqEydy3cDTOwAw3prz9MrcB15bgWizMqhpm+roM7ZM9fd221KP/Y5R
-         VljwD5rfs5LLwtBvkS5BF3waqGyYL8v/NlBscGclkQUruZSd/jemXaHCmqwm6vQBapjD
-         VUEsDlvm0VjXnexVeT6s5vCnHdogdMBQxNFX4cgjKJKIVWmz4c/k8lB/cKFJ5xbyVH8N
-         ZQ+KKv95RIx/P3DNrCF8nVznu5ct5Qa/7HiYiv82FZJtvK9uRQKKRdJkGQUHYTi7LGit
-         lI7F2N1pXc6sCIyP/SyeT/ThOokWGW8s6+7rdNPno7GK3CBk0qnOQMkVL+52OBcRZuHX
-         rnoQ==
-X-Received: by 10.194.85.78 with SMTP id f14mr19321898wjz.36.1406827221315;
-        Thu, 31 Jul 2014 10:20:21 -0700 (PDT)
-Received: from localhost (8.20.196.77.rev.sfr.net. [77.196.20.8])
-        by mx.google.com with ESMTPSA id bx2sm14684617wjb.47.2014.07.31.10.20.19
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 31 Jul 2014 10:20:20 -0700 (PDT)
-Date:   Thu, 31 Jul 2014 19:20:18 +0200
-From:   Frederic Weisbecker <fweisbec@gmail.com>
-To:     "H. Peter Anvin" <hpa@zytor.com>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Oleg Nesterov <oleg@redhat.com>,
-        linux-arch <linux-arch@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Will Drewry <wad@chromium.org>,
-        Kees Cook <keescook@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 0/5] x86: two-phase syscall tracing and seccomp
- fastpath
-Message-ID: <20140731172017.GF7842@localhost.localdomain>
-References: <cover.1406604806.git.luto@amacapital.net>
- <20140729192056.GA6308@redhat.com>
- <CALCETrX6P7SJQdgc0gTM7FLdwyT_Ld1MWvkLYpTO_2xsvBC9sA@mail.gmail.com>
- <CALCETrXHF5YzPQDvnJs=mFNm2Ff_FekGu_Y8-JyMaWh2hctR7A@mail.gmail.com>
- <20140730165940.GB27954@localhost.localdomain>
- <CALCETrUafpWfnbfZzgu3qSGqyxcG0+6A=A1RE8g++=GrQKD93Q@mail.gmail.com>
- <53DA7550.40905@zytor.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2014 19:34:13 +0200 (CEST)
+Received: from mail-bn1blp0182.outbound.protection.outlook.com ([207.46.163.182]:53059
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6860175AbaGaReKi08Ru (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jul 2014 19:34:10 +0200
+Received: from BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155) by
+ BY2PR07MB988.namprd07.prod.outlook.com (10.242.47.156) with Microsoft SMTP
+ Server (TLS) id 15.0.995.14; Thu, 31 Jul 2014 17:34:02 +0000
+Received: from dl.caveonetworks.com (64.2.3.195) by
+ BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155) with Microsoft SMTP
+ Server (TLS) id 15.0.995.14; Thu, 31 Jul 2014 17:33:59 +0000
+Message-ID: <53DA7E03.9090306@caviumnetworks.com>
+Date:   Thu, 31 Jul 2014 10:33:55 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53DA7550.40905@zytor.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <fweisbec@gmail.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Huacai Chen <chenhc@lemote.com>, James Hogan <james@albanarts.com>,
+        "Linux MIPS Mailing List" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Binbin Zhou <zhoubb@lemote.com>,
+        stable <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: tlbex: fix a missing statement for HUGETLB
+References: <1406616880-17142-1-git-send-email-chenhc@lemote.com> <2357839.vPXx615ci5@radagast> <53D9674E.4000507@caviumnetworks.com> <CAAhV-H51phVJvSTv_GMw15RpKp32vmNgj2QSzYzf+UOMK0koyw@mail.gmail.com> <53D99854.8090109@caviumnetworks.com> <53DA2E66.20200@imgtec.com>
+In-Reply-To: <53DA2E66.20200@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-ClientProxiedBy: SN2PR07CA002.namprd07.prod.outlook.com (10.255.174.19) To
+ BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155)
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
+X-Forefront-PRVS: 0289B6431E
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(377454003)(479174003)(24454002)(51704005)(199002)(189002)(83322001)(50466002)(65816999)(64126003)(46102001)(65806001)(59896001)(33656002)(79102001)(74502001)(80316001)(31966008)(85306003)(74662001)(81342001)(36756003)(81156004)(83072002)(106356001)(77982001)(85852003)(575784001)(54356999)(80022001)(47776003)(95666004)(107046002)(21056001)(102836001)(64706001)(93886003)(42186005)(65956001)(50986999)(92566001)(87266999)(69596002)(92726001)(101416001)(76482001)(105586002)(23676002)(87976001)(77096002)(53416004)(110136001)(20776003)(81542001)(99396002)(66066001)(4396001)(76176999);DIR:OUT;SFP:;SCL:1;SRVR:BY2PR07MB583;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;LANG:en;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41850
+X-archive-position: 41851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fweisbec@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,15 +59,145 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 31, 2014 at 09:56:48AM -0700, H. Peter Anvin wrote:
-> On 07/30/2014 10:25 AM, Andy Lutomirski wrote:
-> > 
-> > And yet x86_64 has this code implemented in assembly even in the
-> > slowpath.  Go figure.
-> > 
-> 
-> There is way too much assembly in entry_64.S probably because things
-> have been grafted on, ahem, "organically".  It is darn nigh impossible
-> to even remotely figure out what goes on in that file.
+On 07/31/2014 04:54 AM, James Hogan wrote:
+> Hi,
+>
+> On 31/07/14 02:13, David Daney wrote:
+>> On 07/30/2014 05:48 PM, Huacai Chen wrote:
+>>> For non-Octeon CPU, htlb_info.huge_pte is equal to K0, but I don't
+>>> know much about Octeon. So I think you know whether we should use K0
+>>>   or htlb_info.huge_pte here, since you are the original author.
+>>>
+>>
+>> This is why I requested that somebody show me a disassembly of the
+>> faulty handler.  I cannot tell where the problem is unless I see that.
+>>
+>> Really I think the problem is in build_is_huge_pte(), where we are
+>> clobbering 'tmp' which is K0.
+>>
+>> So you could reload tmp/K0 in build_is_huge_pte().
+>
+> Here's the difference with this patch (using k0) on an Octeon I have to
+> hand, with some slightly munged offsets for nicer diffing:
+>
+> #define _PAGE_PRESENT_SHIFT 0
+> #define _PAGE_READ_SHIFT 0
+> #define _PAGE_WRITE_SHIFT 1
+> #define _PAGE_ACCESSED_SHIFT 2
+> #define _PAGE_MODIFIED_SHIFT 3
+> #define _PAGE_HUGE_SHIFT 4
+> #define _PAGE_SPLITTING_SHIFT 5
+> #define _PAGE_NO_EXEC_SHIFT 6
+> #define _PAGE_NO_READ_SHIFT 7
+> #define _PAGE_GLOBAL_SHIFT 8
+> #define _PAGE_VALID_SHIFT 9
+> #define _PAGE_DIRTY_SHIFT 10
+> #define _PFN_SHIFT 14
+>
+>   00000000 <r4000_tlb_refill>:
+> +   0:	df7a0000 	ld	k0,0(k1)
 
-Always warn your family and give them an estimate return hour before opening that file.
+Completely redundant, it is not used and then clobbered...
+
+>      4:	00210a3a 	dror	at,at,0x8
+>      8:	40a11000 	dmtc0	at,c0_entrylo0
+>      c:	64214000 	daddiu	at,at,16384
+>     10:	40a11800 	dmtc0	at,c0_entrylo1
+>     14:	3c1a001f 	lui	k0,0x1f
+
+... here.
+
+>     18:	375ae000 	ori	k0,k0,0xe000
+>     1c:	409a2800 	mtc0	k0,c0_pagemask
+>     20:	000000c0 	ehb
+>     24:	42000006 	tlbwr
+>     28:	40802800 	mtc0	zero,c0_pagemask
+> -  28:	1000002e 	b	e4 <r4000_tlb_refill+0xe4>
+> +  2c:	1000002d 	b	e4 <r4000_tlb_refill+0xe4>
+>     30:	4021f802 	dmfc0	at,$31,2
+> -  30:	07400019 	bltz	k0,98 <r4000_tlb_refill+0x98>
+> +  34:	07400018 	bltz	k0,98 <r4000_tlb_refill+0x98>
+>     38:	3c1b81da 	lui	k1,0x81da
+>     3c:	3c1b8113 	lui	k1,0x8113
+> -  3c:	277b7ef0 	addiu	k1,k1,32496
+> +  40:	277b7f00 	addiu	k1,k1,32512
+>     44:	03600008 	jr	k1
+>     48:	4021f802 	dmfc0	at,$31,2
+>   	...
+>     80:	403a4000 	dmfc0	k0,c0_badvaddr
+>     84:	403bf803 	dmfc0	k1,$31,3
+>     88:	40a1f802 	dmtc0	at,$31,2
+>     8c:	001a0a3e 	dsrl32	at,k0,0x8
+> -  90:	1420ffe7 	bnez	at,30 <r4000_tlb_refill+0x30>
+> +  90:	1420ffe8 	bnez	at,34 <r4000_tlb_refill+0x34>
+>     94:	001a0efa 	dsrl	at,k0,0x1b
+>     98:	30211ff8 	andi	at,at,0x1ff8
+>     9c:	7c3bda0a 	ldx	k1,k1(at)
+>     a0:	001a0cba 	dsrl	at,k0,0x12
+>     a4:	30210ff8 	andi	at,at,0xff8
+>     a8:	403aa000 	dmfc0	k0,c0_xcontext
+>     ac:	7c3b0a0a 	ldx	at,k1(at)
+>     b0:	335a0ff0 	andi	k0,k0,0xff0
+>     b4:	e824ffd2 	bbit1	at,0x4,0 <r4000_tlb_refill>
+>     b8:	00000000 	nop
+>     bc:	7c3ada0a 	ldx	k1,k0(at)
+>     c0:	675a0008 	daddiu	k0,k0,8
+>     c4:	7c3ad20a 	ldx	k0,k0(at)
+>     c8:	003bda3a 	dror	k1,k1,0x8
+>     cc:	40bb1000 	dmtc0	k1,c0_entrylo0
+>     d0:	003ad23a 	dror	k0,k0,0x8
+>     d4:	40ba1800 	dmtc0	k0,c0_entrylo1
+>     d8:	4021f802 	dmfc0	at,$31,2
+>     dc:	000000c0 	ehb
+>     e0:	42000006 	tlbwr
+>     e4:	42000018 	eret
+>
+>
+> b4 is apparently where it branches back to the huge page case at the
+> beginning. In that case the at register (htlb_info.huge_pte) is set to
+> *(k1+at) instead of *(k1), so loading to htlb_info.huge_pte instead of
+> k0 would I think be bad and change the behaviour. So forget my suggestion!
+>
+> On the other hand loading the pte to k0 is redundant when
+> build_fast_tlb_refill_handler is used (which depends on bbit1), and also
+> in the other case if bbit1 is available since it won't get clobbered by
+> build_is_huge_pte().
+>
+> Maybe the reload should simply be conditional on !use_bbit_insns()?
+>
+
+That was kind of my suggestion.  What happens if you do something like 
+(untested):
+
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -716,6 +716,7 @@ build_is_huge_pte(u32 **p, struct uasm_reloc **r, 
+unsigned int tmp,
+         } else {
+                 uasm_i_andi(p, tmp, tmp, _PAGE_HUGE);
+                 uasm_il_bnez(p, r, tmp, lid);
++               UASM_i_LW(p, tmp, 0, pmd);
+         }
+  }
+
+or
+
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index f99ec587..341add1 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1299,6 +1299,8 @@ static void build_r4000_tlb_refill_handler(void)
+         }
+  #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+         uasm_l_tlb_huge_update(&l, p);
++       if (!use_bbit_insns())
++               UASM_i_LW(&p, K0, 0, K1);
+         build_huge_update_entries(&p, htlb_info.huge_pte, K1);
+         build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
+                                    htlb_info.restore_scratch);
+
+
+> Cheers
+> James
+>
+>

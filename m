@@ -1,43 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Aug 2014 18:48:35 +0200 (CEST)
-Received: from p54BA95AA.dip0.t-ipconnect.de ([84.186.149.170]:34431 "EHLO
-        linux-mips.org" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S6842510AbaHAQsdfv0Ih (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Aug 2014 18:48:33 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s71Gm50o017534;
-        Fri, 1 Aug 2014 18:48:05 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s71Gm3fb017533;
-        Fri, 1 Aug 2014 18:48:03 +0200
-Date:   Fri, 1 Aug 2014 18:48:03 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>, Chen Jie <chenj@lemote.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        =?utf-8?B?546L6ZSQ?= <wangr@lemote.com>
-Subject: Re: [PATCH] Not preempt in CP1 exception handling
-Message-ID: <20140801164803.GA17520@linux-mips.org>
-References: <1405047990-12519-1-git-send-email-chenhc@lemote.com>
- <1405048453-12633-1-git-send-email-chenj@lemote.com>
- <20140711155631.GE8187@pburton-laptop>
- <CAGXxSxV2KWiArguRRKWcbC82sZJweyjiDBBpJdWPne_Ag_Z_+w@mail.gmail.com>
- <CAAhV-H5z1Xu5Mg0X68Yf_mpi8ZBg96TEYLkk4_2_Grb8=ET05Q@mail.gmail.com>
- <20140712093003.GF8187@pburton-laptop>
- <CAAhV-H4PbCLam5jdUjCdn9X9+pL6HR5=8wT_6TPWMt31qv4gMA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAhV-H4PbCLam5jdUjCdn9X9+pL6HR5=8wT_6TPWMt31qv4gMA@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Aug 2014 22:11:04 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:43220 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860175AbaHAUK6R1w2h (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Aug 2014 22:10:58 +0200
+Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.95])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2249EA56;
+        Fri,  1 Aug 2014 20:10:50 +0000 (UTC)
+Date:   Fri, 1 Aug 2014 13:10:49 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Max Filippov <jcmvbkbc@gmail.com>
+Cc:     linux-xtensa@linux-xtensa.org, Chris Zankel <chris@zankel.net>,
+        Marc Gauthier <marc@cadence.com>, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, David Rientjes <rientjes@google.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Steven Hill <Steven.Hill@imgtec.com>
+Subject: Re: [PATCH v3 1/2] mm/highmem: make kmap cache coloring aware
+Message-Id: <20140801131049.e94e0e6daec0180ac0236f68@linux-foundation.org>
+In-Reply-To: <1406317427-10215-2-git-send-email-jcmvbkbc@gmail.com>
+References: <1406317427-10215-1-git-send-email-jcmvbkbc@gmail.com>
+        <1406317427-10215-2-git-send-email-jcmvbkbc@gmail.com>
+X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41860
+X-archive-position: 41862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,11 +45,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 14, 2014 at 10:22:47AM +0800, Huacai Chen wrote:
+On Fri, 25 Jul 2014 23:43:46 +0400 Max Filippov <jcmvbkbc@gmail.com> wrote:
 
-> What do you think about? If you also prefer to totally remove the
-> BUG_ON(), I will send a new patch.
+> VIPT cache with way size larger than MMU page size may suffer from
+> aliasing problem: a single physical address accessed via different
+> virtual addresses may end up in multiple locations in the cache.
+> Virtual mappings of a physical address that always get cached in
+> different cache locations are said to have different colors.
+> L1 caching hardware usually doesn't handle this situation leaving it
+> up to software. Software must avoid this situation as it leads to
+> data corruption.
+> 
+> One way to handle this is to flush and invalidate data cache every time
+> page mapping changes color. The other way is to always map physical page
+> at a virtual address with the same color. Low memory pages already have
+> this property. Giving architecture a way to control color of high memory
+> page mapping allows reusing of existing low memory cache alias handling
+> code.
+> 
+> Provide hooks that allow architectures with aliasing cache to align
+> mapping address of high pages according to their color. Such architectures
+> may enforce similar coloring of low- and high-memory page mappings and
+> reuse existing cache management functions to support highmem.
+> 
+> This code is based on the implementation of similar feature for MIPS by
+> Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>.
+> 
 
-I agree, removing the BUG_ON() is the right way.
+It's worth mentioning that xtensa needs this.
 
-  Ralf
+What is (still) missing from these changelogs is a clear description of
+the end-user visible effects.  Does it fix some bug?  If so what?  Is
+it a performace optimisation?  If so how much?  This info is the
+top-line reason for the patchset and should be presented as such.
+
+> --- a/mm/highmem.c
+> +++ b/mm/highmem.c
+> @@ -28,6 +28,9 @@
+>  #include <linux/highmem.h>
+>  #include <linux/kgdb.h>
+>  #include <asm/tlbflush.h>
+> +#ifdef CONFIG_HIGHMEM
+> +#include <asm/highmem.h>
+> +#endif
+
+Should be unneeded - the linux/highmem.h inclusion already did this.
+
+Apart from that it all looks OK to me.  I'm assuming this is 3.17-rc1
+material, but I am unsure because of the missing end-user-impact info. 
+If it's needed in earlier kernels then we can tag it for -stable
+backporting but again, the -stable team (ie: Greg) will want so see the
+justification for that backport.

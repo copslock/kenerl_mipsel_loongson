@@ -1,47 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2014 02:05:07 +0200 (CEST)
-Received: from smtpbgau1.qq.com ([54.206.16.166]:58963 "EHLO smtpbgau1.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6860094AbaHBAE6Q1e1d (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 2 Aug 2014 02:04:58 +0200
-X-QQ-SSF: 0010000000000000
-X-QQ-BUSINESS-ORIGIN: 1
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 180.106.11.233
-X-QQ-STYLE: 
-X-QQ-mid: wapbizmail2t1406937863t749169
-From:   "=?gb18030?B?s8K7qrLF?=" <chenhc@lemote.com>
-To:     "=?gb18030?B?s8K7qrLF?=" <chenhc@lemote.com>,
-        "=?gb18030?B?UmFsZiBCYWVjaGxl?=" <ralf@linux-mips.org>
-Cc:     "=?gb18030?B?Sm9obiBDcmlzcGlu?=" <john@phrozen.org>,
-        "=?gb18030?B?U3RldmVuIEouIEhpbGw=?=" <Steven.Hill@imgtec.com>,
-        "=?gb18030?B?QXVyZWxpZW4gSmFybm8=?=" <aurelien@aurel32.net>,
-        "=?gb18030?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
-        "=?gb18030?B?RnV4aW4gWmhhbmc=?=" <zhangfx@lemote.com>,
-        "=?gb18030?B?WmhhbmdqaW4gV3U=?=" <wuzhangjin@gmail.com>,
-        "=?gb18030?B?SmF5YWNoYW5kcmFuIEMu?=" <jchandra@broadcom.com>
-Subject: Re:[PATCH V4] MIPS: Support CPU topology files in sysfs
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="gb18030"
-Content-Transfer-Encoding: base64
-Date:   Sat, 2 Aug 2014 08:04:23 +0800
-X-Priority: 3
-Message-ID: <tencent_48B5972E0891A56E56FE7BB6@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-X-QQ-ReplyHash: 3300949080
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2014 03:12:26 +0200 (CEST)
+Received: from mail-la0-f51.google.com ([209.85.215.51]:57467 "EHLO
+        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860999AbaHBBMLuR0Ln (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Aug 2014 03:12:11 +0200
+Received: by mail-la0-f51.google.com with SMTP id pn19so3807263lab.10
+        for <linux-mips@linux-mips.org>; Fri, 01 Aug 2014 18:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=n1WjZTxjD2/swqiIEBSXeqjuOI9DNZeM0kQUqfxCCgM=;
+        b=pSYI0XZs59MOYv2jbSOqSr0cMmYmbthhNrxzYjeXaL9cUITqgWZS4b7hU1xCytleQj
+         XFv66g1O4oFeM5ak9rGCuaCvAxL1um66db6aQ7GKtUKzClodL8cyZSgVjnPJuN2OB+Rz
+         TDPhtUakmp/dvMjQyzXtSN8r/nAfolStzBVZEzhrgBZEKIdeEzOGToGW5vY9mHDXvjQx
+         eL11iJdLW52s3XNwAdOB3mEQZlr0Ik46yMZtD3l0EtsCljxdzWkHpXV2pC/o5ri3WGgq
+         3UTzdu1xDPv1cbVdqubNOVHVaDCAd6VhRZNcxqyBOFYBwDEACYQZfx3f0648gG3m4HJQ
+         0t5g==
+X-Received: by 10.112.181.9 with SMTP id ds9mr9271083lbc.10.1406941925953;
+        Fri, 01 Aug 2014 18:12:05 -0700 (PDT)
+Received: from octofox.metropolis ([5.18.160.3])
+        by mx.google.com with ESMTPSA id u6sm5611953laj.7.2014.08.01.18.12.04
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 01 Aug 2014 18:12:04 -0700 (PDT)
+From:   Max Filippov <jcmvbkbc@gmail.com>
+To:     linux-xtensa@linux-xtensa.org
+Cc:     Chris Zankel <chris@zankel.net>, Marc Gauthier <marc@cadence.com>,
+        linux-mm@kvack.org, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        David Rientjes <rientjes@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Steven Hill <Steven.Hill@imgtec.com>,
+        Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH v4 0/2] mm/highmem: make kmap cache coloring aware
+Date:   Sat,  2 Aug 2014 05:11:37 +0400
+Message-Id: <1406941899-19932-1-git-send-email-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 1.8.1.4
+Return-Path: <jcmvbkbc@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41864
+X-archive-position: 41865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: jcmvbkbc@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,99 +57,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SGksIFJhbGYsDQoNClBsZWFzZSB1cGRhdGUgdGhpcyBwYXRjaCBzaW5jZSB0aGUgVjMgaGFz
-IGZhaWxlZCB0aGUga2J1aWxkIHRlc3QgaW4gbGludXgtbmV4dCB0cmVlLg0KDQpIdWFjYWkN
-Cg0KDQotLS3Urcq808q8/i0tLQ0Kt6K8/sjLOiKzwruqssUiPGNoZW5oY0BsZW1vdGUuY29t
-Pg0Kt6LLzcqxvOQ6MjAxNMTqONTCMcjVKNDHxtrO5Skgz8LO5zU6MjENCsrVvP7IyzoiUmFs
-ZiBCYWVjaGxlIjxyYWxmQGxpbnV4LW1pcHMub3JnPjsNCtb3zOI6W1BBVENIIFY0XSBNSVBT
-OiBTdXBwb3J0IENQVSB0b3BvbG9neSBmaWxlcyBpbiBzeXNmcw0KVGhpcyBwYXRjaCBpcyBw
-cmVwYXJlZCBmb3IgTG9vbmdzb24ncyBOVU1BIHN1cHBvcnQsIGl0IG9mZmVyIG1lYW5pbmdm
-dWwNCnN5c2ZzIGZpbGVzIHN1Y2ggYXMgcGh5c2ljYWxfcGFja2FnZV9pZCwgY29yZV9pZCwg
-Y29yZV9zaWJsaW5ncyBhbmQNCnRocmVhZF9zaWJsaW5ncyBpbiAvc3lzL2RldmljZXMvc3lz
-dGVtL2NwdS9jcHU/L3RvcG9sb2d5Lg0KDQpWNDogRml4IG1hY3JvcyByZWRlZmluaXRpb24g
-cHJvYmxlbXMgZm9yIE5ldGxvZ2ljLg0KDQpTaWduZWQtb2ZmLWJ5OiBIdWFjYWkgQ2hlbiA8
-Y2hlbmhjQGxlbW90ZS5jb20+DQpSZXZpZXdlZC1ieTogQW5kcmVhcyBIZXJybWFubiA8YW5k
-cmVhcy5oZXJybWFubkBjYXZpdW1uZXR3b3Jrcy5jb20+DQpDYzogSmF5YWNoYW5kcmFuIEMu
-IDxqY2hhbmRyYUBicm9hZGNvbS5jb20+DQotLS0NCmFyY2gvbWlwcy9pbmNsdWRlL2FzbS9j
-cHUtaW5mby5oIHwgICAgMSArDQphcmNoL21pcHMvaW5jbHVkZS9hc20vc21wLmggICAgICB8
-ICAgIDEgKw0KYXJjaC9taXBzL2luY2x1ZGUvYXNtL3RvcG9sb2d5LmggfCAgIDEzICsrKysr
-KysrKysrKysNCmFyY2gvbWlwcy9rZXJuZWwvcHJvYy5jICAgICAgICAgIHwgICAgMSArDQph
-cmNoL21pcHMva2VybmVsL3NtcC5jICAgICAgICAgICB8ICAgMjYgKysrKysrKysrKysrKysr
-KysrKysrKysrKy0NCjUgZmlsZXMgY2hhbmdlZCwgNDEgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
-dGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9jcHUtaW5m
-by5oIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2NwdS1pbmZvLmgNCmluZGV4IDc4MGNmZjku
-LmQ1ZjQyYzEgMTAwNjQ0DQotLS0gYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vY3B1LWluZm8u
-aA0KKysrIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2NwdS1pbmZvLmgNCkBAIC02MSw2ICs2
-MSw3IEBAIHN0cnVjdCBjcHVpbmZvX21pcHMgew0KIHN0cnVjdCBjYWNoZV9kZXNjIHNjYWNo
-ZTsgLyogU2Vjb25kYXJ5IGNhY2hlICovDQogc3RydWN0IGNhY2hlX2Rlc2MgdGNhY2hlOyAv
-KiBUZXJ0aWFyeS9zcGxpdCBzZWNvbmRhcnkgY2FjaGUgKi8NCiBpbnQgc3JzZXRzOyAvKiBT
-aGFkb3cgcmVnaXN0ZXIgc2V0cyAqLw0KKyBpbnQgcGFja2FnZTsvKiBwaHlzaWNhbCBwYWNr
-YWdlIG51bWJlciAqLw0KIGludCBjb3JlOyAvKiBwaHlzaWNhbCBjb3JlIG51bWJlciAqLw0K
-I2lmZGVmIENPTkZJR182NEJJVA0KIGludCB2bWJpdHM7IC8qIFZpcnR1YWwgbWVtb3J5IHNp
-emUgaW4gYml0cyAqLw0KZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9zbXAu
-aCBiL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9zbXAuaA0KaW5kZXggYjAzNzMzNC4uZWFjZjg2
-NSAxMDA2NDQNCi0tLSBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9zbXAuaA0KKysrIGIvYXJj
-aC9taXBzL2luY2x1ZGUvYXNtL3NtcC5oDQpAQCAtMjIsNiArMjIsNyBAQA0KDQpleHRlcm4g
-aW50IHNtcF9udW1fc2libGluZ3M7DQpleHRlcm4gY3B1bWFza190IGNwdV9zaWJsaW5nX21h
-cFtdOw0KK2V4dGVybiBjcHVtYXNrX3QgY3B1X2NvcmVfbWFwW107DQoNCiNkZWZpbmUgcmF3
-X3NtcF9wcm9jZXNzb3JfaWQoKSAoY3VycmVudF90aHJlYWRfaW5mbygpLT5jcHUpDQoNCmRp
-ZmYgLS1naXQgYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vdG9wb2xvZ3kuaCBiL2FyY2gvbWlw
-cy9pbmNsdWRlL2FzbS90b3BvbG9neS5oDQppbmRleCAyMGVhNDg1Li4yYTBmMDRiIDEwMDY0
-NA0KLS0tIGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL3RvcG9sb2d5LmgNCisrKyBiL2FyY2gv
-bWlwcy9pbmNsdWRlL2FzbS90b3BvbG9neS5oDQpAQCAtMTAsNCArMTAsMTcgQEANCg0KI2lu
-Y2x1ZGUgPHRvcG9sb2d5Lmg+DQoNCisjaWZuZGVmIHRvcG9sb2d5X3BoeXNpY2FsX3BhY2th
-Z2VfaWQNCisjZGVmaW5lIHRvcG9sb2d5X3BoeXNpY2FsX3BhY2thZ2VfaWQoY3B1KSAoY3B1
-X2RhdGFbY3B1XS5wYWNrYWdlKQ0KKyNlbmRpZg0KKyNpZm5kZWYgdG9wb2xvZ3lfY29yZV9p
-ZA0KKyNkZWZpbmUgdG9wb2xvZ3lfY29yZV9pZChjcHUpIChjcHVfZGF0YVtjcHVdLmNvcmUp
-DQorI2VuZGlmDQorI2lmbmRlZiB0b3BvbG9neV9jb3JlX2NwdW1hc2sNCisjZGVmaW5lIHRv
-cG9sb2d5X2NvcmVfY3B1bWFzayhjcHUpKCZjcHVfY29yZV9tYXBbY3B1XSkNCisjZW5kaWYN
-CisjaWZuZGVmIHRvcG9sb2d5X3RocmVhZF9jcHVtYXNrDQorI2RlZmluZSB0b3BvbG9neV90
-aHJlYWRfY3B1bWFzayhjcHUpKCZjcHVfc2libGluZ19tYXBbY3B1XSkNCisjZW5kaWYNCisN
-CiNlbmRpZiAvKiBfX0FTTV9UT1BPTE9HWV9IICovDQpkaWZmIC0tZ2l0IGEvYXJjaC9taXBz
-L2tlcm5lbC9wcm9jLmMgYi9hcmNoL21pcHMva2VybmVsL3Byb2MuYw0KaW5kZXggMWVkMWI1
-YS4uMDk3ZmM4ZCAxMDA2NDQNCi0tLSBhL2FyY2gvbWlwcy9rZXJuZWwvcHJvYy5jDQorKysg
-Yi9hcmNoL21pcHMva2VybmVsL3Byb2MuYw0KQEAgLTEyNCw2ICsxMjQsNyBAQCBzdGF0aWMg
-aW50IHNob3dfY3B1aW5mbyhzdHJ1Y3Qgc2VxX2ZpbGUgKm0sIHZvaWQgKnYpDQogICAgICBj
-cHVfZGF0YVtuXS5zcnNldHMpOw0KIHNlcV9wcmludGYobSwgImtzY3JhdGNoIHJlZ2lzdGVy
-c1x0OiAlZFxuIiwNCiAgICAgIGh3ZWlnaHQ4KGNwdV9kYXRhW25dLmtzY3JhdGNoX21hc2sp
-KTsNCisgc2VxX3ByaW50ZihtLCAicGFja2FnZVx0XHRcdDogJWRcbiIsIGNwdV9kYXRhW25d
-LnBhY2thZ2UpOw0KIHNlcV9wcmludGYobSwgImNvcmVcdFx0XHQ6ICVkXG4iLCBjcHVfZGF0
-YVtuXS5jb3JlKTsNCg0KIHNwcmludGYoZm10LCAiVkNFJSVjIGV4Y2VwdGlvbnNcdFx0OiAl
-c1xuIiwNCmRpZmYgLS1naXQgYS9hcmNoL21pcHMva2VybmVsL3NtcC5jIGIvYXJjaC9taXBz
-L2tlcm5lbC9zbXAuYw0KaW5kZXggOWJhZDUyZS4uYzk0YzRlOSAxMDA2NDQNCi0tLSBhL2Fy
-Y2gvbWlwcy9rZXJuZWwvc21wLmMNCisrKyBiL2FyY2gvbWlwcy9rZXJuZWwvc21wLmMNCkBA
-IC01OSw5ICs1OSwxNiBAQCBFWFBPUlRfU1lNQk9MKHNtcF9udW1fc2libGluZ3MpOw0KY3B1
-bWFza190IGNwdV9zaWJsaW5nX21hcFtOUl9DUFVTXSBfX3JlYWRfbW9zdGx5Ow0KRVhQT1JU
-X1NZTUJPTChjcHVfc2libGluZ19tYXApOw0KDQorLyogcmVwcmVzZW50aW5nIHRoZSBjb3Jl
-IG1hcCBvZiBtdWx0aS1jb3JlIGNoaXBzIG9mIGVhY2ggbG9naWNhbCBDUFUgKi8NCitjcHVt
-YXNrX3QgY3B1X2NvcmVfbWFwW05SX0NQVVNdIF9fcmVhZF9tb3N0bHk7DQorRVhQT1JUX1NZ
-TUJPTChjcHVfY29yZV9tYXApOw0KKw0KLyogcmVwcmVzZW50aW5nIGNwdXMgZm9yIHdoaWNo
-IHNpYmxpbmcgbWFwcyBjYW4gYmUgY29tcHV0ZWQgKi8NCnN0YXRpYyBjcHVtYXNrX3QgY3B1
-X3NpYmxpbmdfc2V0dXBfbWFwOw0KDQorLyogcmVwcmVzZW50aW5nIGNwdXMgZm9yIHdoaWNo
-IGNvcmUgbWFwcyBjYW4gYmUgY29tcHV0ZWQgKi8NCitzdGF0aWMgY3B1bWFza190IGNwdV9j
-b3JlX3NldHVwX21hcDsNCisNCmNwdW1hc2tfdCBjcHVfY29oZXJlbnRfbWFzazsNCg0Kc3Rh
-dGljIGlubGluZSB2b2lkIHNldF9jcHVfc2libGluZ19tYXAoaW50IGNwdSkNCkBAIC03Miw3
-ICs3OSw4IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBzZXRfY3B1X3NpYmxpbmdfbWFwKGludCBj
-cHUpDQoNCiBpZiAoc21wX251bV9zaWJsaW5ncyA+IDEpIHsNCmZvcl9lYWNoX2NwdV9tYXNr
-KGksIGNwdV9zaWJsaW5nX3NldHVwX21hcCkgew0KLSBpZiAoY3B1X2RhdGFbY3B1XS5jb3Jl
-ID09IGNwdV9kYXRhW2ldLmNvcmUpIHsNCisgaWYgKGNwdV9kYXRhW2NwdV0ucGFja2FnZSA9
-PSBjcHVfZGF0YVtpXS5wYWNrYWdlICYmDQorICAgIGNwdV9kYXRhW2NwdV0uY29yZSA9PSBj
-cHVfZGF0YVtpXS5jb3JlKSB7DQpjcHVfc2V0KGksIGNwdV9zaWJsaW5nX21hcFtjcHVdKTsN
-CmNwdV9zZXQoY3B1LCBjcHVfc2libGluZ19tYXBbaV0pOw0KIH0NCkBAIC04MSw2ICs4OSwy
-MCBAQCBzdGF0aWMgaW5saW5lIHZvaWQgc2V0X2NwdV9zaWJsaW5nX21hcChpbnQgY3B1KQ0K
-Y3B1X3NldChjcHUsIGNwdV9zaWJsaW5nX21hcFtjcHVdKTsNCn0NCg0KK3N0YXRpYyBpbmxp
-bmUgdm9pZCBzZXRfY3B1X2NvcmVfbWFwKGludCBjcHUpDQorew0KKyBpbnQgaTsNCisNCisg
-Y3B1X3NldChjcHUsIGNwdV9jb3JlX3NldHVwX21hcCk7DQorDQorIGZvcl9lYWNoX2NwdV9t
-YXNrKGksIGNwdV9jb3JlX3NldHVwX21hcCkgew0KK2lmIChjcHVfZGF0YVtjcHVdLnBhY2th
-Z2UgPT0gY3B1X2RhdGFbaV0ucGFja2FnZSkgew0KKyBjcHVfc2V0KGksIGNwdV9jb3JlX21h
-cFtjcHVdKTsNCisgY3B1X3NldChjcHUsIGNwdV9jb3JlX21hcFtpXSk7DQorfQ0KKyB9DQor
-fQ0KKw0Kc3RydWN0IHBsYXRfc21wX29wcyAqbXBfb3BzOw0KRVhQT1JUX1NZTUJPTChtcF9v
-cHMpOw0KDQpAQCAtMTIyLDYgKzE0NCw3IEBAIGFzbWxpbmthZ2Ugdm9pZCBzdGFydF9zZWNv
-bmRhcnkodm9pZCkNCiBzZXRfY3B1X29ubGluZShjcHUsIHRydWUpOw0KDQogc2V0X2NwdV9z
-aWJsaW5nX21hcChjcHUpOw0KKyBzZXRfY3B1X2NvcmVfbWFwKGNwdSk7DQoNCiBjcHVfc2V0
-KGNwdSwgY3B1X2NhbGxpbl9tYXApOw0KDQpAQCAtMTc1LDYgKzE5OCw3IEBAIHZvaWQgX19p
-bml0IHNtcF9wcmVwYXJlX2NwdXModW5zaWduZWQgaW50IG1heF9jcHVzKQ0KIGN1cnJlbnRf
-dGhyZWFkX2luZm8oKS0+Y3B1ID0gMDsNCiBtcF9vcHMtPnByZXBhcmVfY3B1cyhtYXhfY3B1
-cyk7DQogc2V0X2NwdV9zaWJsaW5nX21hcCgwKTsNCisgc2V0X2NwdV9jb3JlX21hcCgwKTsN
-CiNpZm5kZWYgQ09ORklHX0hPVFBMVUdfQ1BVDQogaW5pdF9jcHVfcHJlc2VudChjcHVfcG9z
-c2libGVfbWFzayk7DQojZW5kaWYNCi0tIA0KMS43LjcuMw0KDQo=
+Hi,
+
+this series adds mapping color control to the generic kmap code, allowing
+architectures with aliasing VIPT cache to use high memory. There's also
+use example of this new interface by xtensa.
+
+Changes since v3:
+- drop #include <asm/highmem.h> from mm/highmem.c as it's done in
+  linux/highmem.h;
+- add 'User-visible effect' section to changelog.
+
+Max Filippov (2):
+  mm/highmem: make kmap cache coloring aware
+  xtensa: support aliasing cache in kmap
+
+ arch/xtensa/include/asm/highmem.h | 40 +++++++++++++++++-
+ arch/xtensa/mm/highmem.c          | 18 ++++++++
+ mm/highmem.c                      | 86 ++++++++++++++++++++++++++++++++++-----
+ 3 files changed, 131 insertions(+), 13 deletions(-)
+
+-- 
+1.8.1.4

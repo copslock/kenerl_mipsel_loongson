@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Aug 2014 15:10:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55585 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6860164AbaHDNKnSe1pu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Aug 2014 15:10:43 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 34CB8EE11D773;
-        Mon,  4 Aug 2014 14:10:34 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 4 Aug 2014 14:10:36 +0100
-Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 4 Aug
- 2014 14:10:35 +0100
-Message-ID: <53DF864B.6000702@imgtec.com>
-Date:   Mon, 4 Aug 2014 14:10:35 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2014 00:55:18 +0200 (CEST)
+Received: from mail-pd0-f181.google.com ([209.85.192.181]:44973 "EHLO
+        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860188AbaHDWzHAK148 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2014 00:55:07 +0200
+Received: by mail-pd0-f181.google.com with SMTP id g10so135507pdj.26
+        for <linux-mips@linux-mips.org>; Mon, 04 Aug 2014 15:55:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:subject:references
+         :in-reply-to:content-type:content-transfer-encoding;
+        bh=YYEo6h6sZ+SbsOjIgf7k1LSh/ePdTscGe9tf7wd6T/8=;
+        b=FyNWaGNsvzNkwSe+KQ29Oww5/ZyH+PLPpCb5H6XkTmhoLJCBsvJnN468E1RT2dyjao
+         ETsh117snQu62hg1g9gysL2cMn/7fLEEwDgMFWigpIJ6/fEHkrjCZK+cl2LPOJjBvXYt
+         HyYwQ5dh7VWvfdr+1TxEqJ0rbykhY52b2PjoRgSyjIXOR4uYPCWuzq+NZnGqkeEJPVmZ
+         wxc2S8KR2OXkpvgcNF6o+eUWv0LqOnhHHL1U8Qe04XHafkTxd0mWeIAG3DeI2rxqzcKN
+         M2eV/PwLHj/UU1R6pR9+dNLVXDX+JMR/HqHUZmRb03wzqPJgV9iRdoDVW8Xw4T6CZvyQ
+         s8xg==
+X-Received: by 10.66.100.200 with SMTP id fa8mr26772025pab.23.1407192900053;
+        Mon, 04 Aug 2014 15:55:00 -0700 (PDT)
+Received: from [10.12.164.252] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id da7sm28489264pdb.4.2014.08.04.15.54.59
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 04 Aug 2014 15:54:59 -0700 (PDT)
+Message-ID: <53E00F39.7@gmail.com>
+Date:   Mon, 04 Aug 2014 15:54:49 -0700
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-To:     Aurelien Jarno <aurelien@aurel32.net>
-CC:     David Daney <ddaney@caviumnetworks.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        James Hogan <james@albanarts.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Binbin Zhou <zhoubb@lemote.com>,
-        stable <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: tlbex: fix a missing statement for HUGETLB
-References: <1406616880-17142-1-git-send-email-chenhc@lemote.com> <2357839.vPXx615ci5@radagast> <53D9674E.4000507@caviumnetworks.com> <CAAhV-H51phVJvSTv_GMw15RpKp32vmNgj2QSzYzf+UOMK0koyw@mail.gmail.com> <53D99854.8090109@caviumnetworks.com> <53DA2E66.20200@imgtec.com> <53DA7E03.9090306@caviumnetworks.com> <20140802213538.GC19066@hall.aurel32.net> <53DF5BB2.70502@imgtec.com> <20140804130506.GA27352@hall.aurel32.net>
-In-Reply-To: <20140804130506.GA27352@hall.aurel32.net>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset="ISO-8859-15"
+To:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/4] MIPS: cpu-probe: Set the write-combine CCA value
+ on per core basis
+References: <1405677093-22591-1-git-send-email-markos.chandras@imgtec.com> <1405677093-22591-4-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1405677093-22591-4-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41876
+X-archive-position: 41878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,47 +57,145 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/08/14 14:05, Aurelien Jarno wrote:
-> On Mon, Aug 04, 2014 at 11:08:50AM +0100, James Hogan wrote:
->> Hi Aurelien,
->>
->> On 02/08/14 22:35, Aurelien Jarno wrote:
->>> On Thu, Jul 31, 2014 at 10:33:55AM -0700, David Daney wrote:
->>>> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
->>>> index f99ec587..341add1 100644
->>>> --- a/arch/mips/mm/tlbex.c
->>>> +++ b/arch/mips/mm/tlbex.c
->>>> @@ -1299,6 +1299,8 @@ static void build_r4000_tlb_refill_handler(void)
->>>>         }
->>>>  #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
->>>>         uasm_l_tlb_huge_update(&l, p);
->>>> +       if (!use_bbit_insns())
->>>> +               UASM_i_LW(&p, K0, 0, K1);
->>>>         build_huge_update_entries(&p, htlb_info.huge_pte, K1);
->>>>         build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
->>>>                                    htlb_info.restore_scratch);
->>>
->>> This patch fixes the issue, thanks. That said it doesn't look fully
->>> correct. The test should be done the same way as for
->>> build_fast_tlb_refill_handler. For example the fast handler is not
->>> called on a 32-bit machine with bbit instructions, so it would need
->>> to reload K0.
->>
->> In the non fast case build_is_huge_pte() will still use bbit1 if
->> available after restoring K0, and I don't think the bbit1 would clobber
->> K0 when the branch is taken, so I think the test for !use_bbit_insns()
->> is correct.
->>
-> Oh you are right! Therefore this second patch is:
+Hi Markos,
+
+On 07/18/2014 02:51 AM, Markos Chandras wrote:
+> Different cores use different CCA values to achieve write-combine
+> memory writes. For cores that do not support write-combine we
+> set the default value to CCA:2 (uncached, non-coherent) which is the
+> default value as set by the kernel.
 > 
-> Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+[snip]
+			break;
+> @@ -765,67 +767,83 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+>  
+>  static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+>  {
+> +	c->writecombine = _CACHE_UNCACHED_ACCELERATED;
 
-Likewise:
+Why do we set this writecombine setting by default, when later we are
+going to override writecombine on a per-cpu basic.
 
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+In the end, we have the following:
 
-Cheers
-James
+cpu_probe()
+	c->writecombine = _CACHE_UNCACHED;
 
-> Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+	cpu_probe_mips()
+		c->writecombine = _CACHE_UNCACHED_ACCELERATED:
+		... per-cpu case ...
+		c->writecombine = _CACHE_UNCACHED;
+
+Can't we just eliminate the various assignments in cpu_probe_mips() and
+only override c->writecombine if _CACHE_UNCACHED is not suitable?
+
+
+>  	switch (c->processor_id & PRID_IMP_MASK) {
+>  	case PRID_IMP_4KC:
+>  		c->cputype = CPU_4KC;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 4Kc";
+>  		break;
+>  	case PRID_IMP_4KEC:
+>  	case PRID_IMP_4KECR2:
+>  		c->cputype = CPU_4KEC;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 4KEc";
+>  		break;
+>  	case PRID_IMP_4KSC:
+>  	case PRID_IMP_4KSD:
+>  		c->cputype = CPU_4KSC;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 4KSc";
+>  		break;
+>  	case PRID_IMP_5KC:
+>  		c->cputype = CPU_5KC;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 5Kc";
+>  		break;
+>  	case PRID_IMP_5KE:
+>  		c->cputype = CPU_5KE;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 5KE";
+>  		break;
+>  	case PRID_IMP_20KC:
+>  		c->cputype = CPU_20KC;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 20Kc";
+>  		break;
+>  	case PRID_IMP_24K:
+>  		c->cputype = CPU_24K;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 24Kc";
+>  		break;
+>  	case PRID_IMP_24KE:
+>  		c->cputype = CPU_24K;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 24KEc";
+>  		break;
+>  	case PRID_IMP_25KF:
+>  		c->cputype = CPU_25KF;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 25Kc";
+>  		break;
+>  	case PRID_IMP_34K:
+>  		c->cputype = CPU_34K;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 34Kc";
+>  		break;
+>  	case PRID_IMP_74K:
+>  		c->cputype = CPU_74K;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 74Kc";
+>  		break;
+>  	case PRID_IMP_M14KC:
+>  		c->cputype = CPU_M14KC;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS M14Kc";
+>  		break;
+>  	case PRID_IMP_M14KEC:
+>  		c->cputype = CPU_M14KEC;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS M14KEc";
+>  		break;
+>  	case PRID_IMP_1004K:
+>  		c->cputype = CPU_1004K;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 1004Kc";
+>  		break;
+>  	case PRID_IMP_1074K:
+>  		c->cputype = CPU_1074K;
+> +		c->writecombine = _CACHE_UNCACHED;
+>  		__cpu_name[cpu] = "MIPS 1074Kc";
+>  		break;
+>  	case PRID_IMP_INTERAPTIV_UP:
+> @@ -899,6 +917,7 @@ static inline void cpu_probe_sibyte(struct cpuinfo_mips *c, unsigned int cpu)
+>  {
+>  	decode_configs(c);
+>  
+> +	c->writecombine = _CACHE_UNCACHED_ACCELERATED;
+>  	switch (c->processor_id & PRID_IMP_MASK) {
+>  	case PRID_IMP_SB1:
+>  		c->cputype = CPU_SB1;
+> @@ -1030,6 +1049,7 @@ static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
+>  	switch (c->processor_id & PRID_IMP_MASK) {
+>  	case PRID_IMP_JZRISC:
+>  		c->cputype = CPU_JZRISC;
+> +		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
+>  		__cpu_name[cpu] = "Ingenic JZRISC";
+>  		break;
+>  	default:
+> @@ -1136,6 +1156,7 @@ void cpu_probe(void)
+>  	c->processor_id = PRID_IMP_UNKNOWN;
+>  	c->fpu_id	= FPIR_IMP_NONE;
+>  	c->cputype	= CPU_UNKNOWN;
+> +	c->writecombine = _CACHE_UNCACHED;
+
+
+
+>  
+>  	c->processor_id = read_c0_prid();
+>  	switch (c->processor_id & PRID_COMP_MASK) {
 > 

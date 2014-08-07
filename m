@@ -1,51 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Aug 2014 19:33:59 +0200 (CEST)
-Received: from mail-ig0-f181.google.com ([209.85.213.181]:40850 "EHLO
-        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6875432AbaHGRdszgD2R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Aug 2014 19:33:48 +0200
-Received: by mail-ig0-f181.google.com with SMTP id h3so4853080igd.14
-        for <multiple recipients>; Thu, 07 Aug 2014 10:33:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=47zCfPyD3FKNWpbglS30eI1a7gc/2A0L13MjuyCPUd8=;
-        b=wlX4oIsgudkW2/Wmsf2a+jmolR3/JjuFWiRKcG5kos2Kg412ilSUz6fEByoATI+56N
-         ehsyjis1qjG7PK/lFduMLgQkG3/GeDj4WrxHQkKk/fCtj1FWuGXs+SW6ohN6L/D+Gr0/
-         VoZk96VWL2rBFjEhLMen747+PMuQndu9gHlRYeT2hvKYHFAkUczdLuYHKFmr996LRw2G
-         NWiKaVDsDnpXzHVZKfrjc/oWsWLHFTOSiWv6EImVt4e1mrhD6LHGw1RRrcEEafKQJp2I
-         YmEh1Oq/8VXk3IlJ9GjIqWUZyfZHI775I2i7Qchg/PblZKh2+Q9nBpSBjozyM348K0VR
-         UZ0g==
-X-Received: by 10.50.43.164 with SMTP id x4mr27819108igl.27.1407432822612;
-        Thu, 07 Aug 2014 10:33:42 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id ka6sm1943178igb.8.2014.08.07.10.33.41
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 07 Aug 2014 10:33:41 -0700 (PDT)
-Message-ID: <53E3B874.80008@gmail.com>
-Date:   Thu, 07 Aug 2014 10:33:40 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Aug 2014 23:25:20 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38628 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6875431AbaHGVZRqlL7p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 7 Aug 2014 23:25:17 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s77LPFwN012740;
+        Thu, 7 Aug 2014 23:25:15 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s77LPEXV012739;
+        Thu, 7 Aug 2014 23:25:14 +0200
+Date:   Thu, 7 Aug 2014 23:25:14 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Alan Cooper <alcooperx@gmail.com>
+Cc:     Petri Gynther <pgynther@google.com>, linux-mips@linux-mips.org,
+        Steven Rostedt <rostedt@goodmis.org>, cminyard@mvista.com
+Subject: Re: [PATCH] MIPS: Ftrace: Fix dynamic tracing of kernel modules
+Message-ID: <20140807212514.GD29898@linux-mips.org>
+References: <20140724055502.301F710077A@puck.mtv.corp.google.com>
+ <CAOGqxeXY4x7gyhpsSwm6dohG8rJschsR4yyd2YXdeAarsLp1WQ@mail.gmail.com>
+ <CAGXr9JE7v9-hS3irmdgeaEU2iGLZHshEr_N-Do1UAsZhyzMe2g@mail.gmail.com>
+ <CAOGqxeW8+cdfUuGqy8d6Ewcyy9oC7ZCsdd1p4aX_-zko38BAuA@mail.gmail.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Wei.Yang@windriver.com, a.p.zijlstra@chello.nl, paulus@samba.org,
-        mingo@redhat.com, acme@kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v1] MIPS: perf: Mark pmu interupt IRQF_NO_THREAD
-References: <1407217067-1144-1-git-send-email-Wei.Yang@windriver.com> <20140807114831.GB29898@linux-mips.org>
-In-Reply-To: <20140807114831.GB29898@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOGqxeW8+cdfUuGqy8d6Ewcyy9oC7ZCsdd1p4aX_-zko38BAuA@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41898
+X-archive-position: 41899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,45 +46,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/07/2014 04:48 AM, Ralf Baechle wrote:
-> On Tue, Aug 05, 2014 at 01:37:47PM +0800, Wei.Yang@windriver.com wrote:
->
->> From: Yang Wei <Wei.Yang@windriver.com>
->>
->> In RT kernel, I ran into the following calltrace, so PMU interrupts cannot
->> be threaded
->>
->> in_atomic(): 1, irqs_disabled(): 1, pid: 0, name: swapper/0
->> INFO: lockdep is turned off.
->> Call Trace:
->> [<ffffffff8088595c>] dump_stack+0x1c/0x50
->> [<ffffffff801a958c>] __might_sleep+0x13c/0x148
->> [<ffffffff80891c54>] rt_spin_lock+0x3c/0xb0
->> [<ffffffff801ad29c>] __wake_up+0x3c/0x80
->> [<ffffffff80243ba4>] perf_event_wakeup+0x8c/0xf8
->> [<ffffffff80243c50>] perf_pending_event+0x40/0x78
->> [<ffffffff8023d88c>] irq_work_run+0x74/0xc0
->> [<ffffffff80152640>] mipsxx_pmu_handle_shared_irq+0x110/0x228
->> [<ffffffff8015276c>] mipsxx_pmu_handle_irq+0x14/0x30
->> [<ffffffff801ffda4>] handle_irq_event_percpu+0xbc/0x470
->> [<ffffffff80204478>] handle_percpu_irq+0x98/0xc8
->> [<ffffffff801ff284>] generic_handle_irq+0x4c/0x68
->> [<ffffffff8089748c>] do_IRQ+0x2c/0x48
->> [<ffffffff80105864>] plat_irq_dispatch+0x64/0xd0
->
-> Hm...  I don't see why based on this backtrace you concluce the
-> handler needs to be marked IRQF_NO_THREAD.  However there's another
-> reason to mark it IRQF_NO_THREAD.  IRQ threads may be rescheduled to
-> other CPUs but this handler is fiddling with per-CPU resources.
->
+On Wed, Aug 06, 2014 at 01:12:06PM -0400, Alan Cooper wrote:
 
-Also by its nature, the profiling code needs synchronous access to the 
-register state of the interrupted code.  If you are running on a 
-different thread, then I don't think this would be available.
+> Actually , there's no reason to write the second NOP when nop'ing the
+> mcount call site in a module. This was done to remove the stack adjust
+> instruction which only exists at this location for internal kernel
+> routines. The following diff seems like a simpler way to solve issue
+> #1:
 
-> See https://patchwork.linux-mips.org/patch/2818/ for a similar
-> scenario a few years ago.
->
->    Ralf
->
->
+Oh?
+
+$ mips-linux-objdump -d --reloc net/sctp/sctp.ko
+[...]
+00000000 <sctp_sm_lookup_event>:
+       0:       27bdffe8        addiu   sp,sp,-24
+       4:       afbf0014        sw      ra,20(sp)
+       8:       3c030000        lui     v1,0x0
+                        8: R_MIPS_HI16  _mcount
+       c:       24630000        addiu   v1,v1,0
+                        c: R_MIPS_LO16  _mcount
+      10:       03e00821        move    at,ra
+      14:       27ac0014        addiu   t4,sp,20
+      18:       0060f809        jalr    v1
+      1c:       27bdfff8        addiu   sp,sp,-8  <====
+[...]
+      64:       27bd0018        addiu   sp,sp,24
+      68:       03e00008        jr      ra
+[...]
+
+So the stack adjustment also exists for modules.
+
+Or am I missunderstanding something?
+
+  Ralf

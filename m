@@ -1,37 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Aug 2014 22:47:35 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:41248 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6898485AbaHHUrPB-SxK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 8 Aug 2014 22:47:15 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s78Kl65B006190;
-        Fri, 8 Aug 2014 22:47:06 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s78Kl5fY006189;
-        Fri, 8 Aug 2014 22:47:05 +0200
-Date:   Fri, 8 Aug 2014 22:47:05 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Lars Persson <lars.persson@axis.com>, linux-mips@linux-mips.org,
-        Lars Persson <larper@axis.com>
-Subject: Re: [PATCH v2] MIPS: Remove race window in page fault handling
-Message-ID: <20140808204705.GH29898@linux-mips.org>
-References: <1407505668-18547-1-git-send-email-larper@axis.com>
- <53E500E4.5020509@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Aug 2014 01:11:09 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:47428 "EHLO test.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6898874AbaHHWtvVFP1P (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 9 Aug 2014 00:49:51 +0200
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by test.hauke-m.de (Postfix) with ESMTPSA id C68BF2057E;
+        Sat,  9 Aug 2014 00:49:50 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     zajec5@gmail.com, linux-mips@linux-mips.org,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] MIPS: BCM47XX: fix reboot problem on BCM4705/BCM4785
+Date:   Sat,  9 Aug 2014 00:49:45 +0200
+Message-Id: <1407538185-23497-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53E500E4.5020509@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41912
+X-archive-position: 41921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,27 +38,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 08, 2014 at 09:55:00AM -0700, David Daney wrote:
+This adds some code based on code from the Broadcom GPL tar to fix the
+reboot problems on BCM4705/BCM4785. I tried rebooting my device for ~10
+times and have never seen a problem. This reverts the changes in the
+previous commit and adds the real fix as suggested by Rafał.
 
-> >+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
-> >+	pte_t *ptep, pte_t pteval);
-> >+
-> 
-> Is it possible to reorder the code such that this declaration is not
-> necessary?
+Setting bit 22 in Reg 22, sel 4 puts the BIU (Bus Interface Unit) into
+async mode.
 
-That's not as obvious as one might think initially.  set_pte_at needs
-to be defined after set_pte but before clear_pte which is calling set_pte_at.
+The previous try was this:
+commit 316cad5c1d4daee998cd1f83ccdb437f6f20d45c
+Author: Hauke Mehrtens <hauke@hauke-m.de>
+Date:   Mon Jul 28 23:53:57 2014 +0200
 
-Of both set_pte and clear_pte there are two #ifdefd variants.
+    MIPS: BCM47XX: make reboot more relaiable
 
-set_pte_at is a fairly small function only but it's invoked quite a few
-times so I was a little concerned about the effect on I'm experimenting with
-outlining set_pte_at entirely.  ip22_defconfig with the patch applied as
-posted; this is the effect on code size.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/bcm47xx/setup.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-  text    data     bss     dec     hex filename
-3790118  175304   84544 4049966  3dcc2e vmlinux		as posted
-3789062	 175304	  84544	4048910	 3dc80e	vmlinux		set_pte_at outlined
-
-  Ralf
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 2b63e7e..2c35af4 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -59,12 +59,21 @@ static void bcm47xx_machine_restart(char *command)
+ 	switch (bcm47xx_bus_type) {
+ #ifdef CONFIG_BCM47XX_SSB
+ 	case BCM47XX_BUS_TYPE_SSB:
+-		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 3);
++		if (bcm47xx_bus.bcma.bus.chipinfo.id == 0x4785)
++			write_c0_diag4(1 << 22);
++		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
++		if (bcm47xx_bus.bcma.bus.chipinfo.id == 0x4785) {
++			__asm__ __volatile__(
++				".set\tmips3\n\t"
++				"sync\n\t"
++				"wait\n\t"
++				".set\tmips0");
++		}
+ 		break;
+ #endif
+ #ifdef CONFIG_BCM47XX_BCMA
+ 	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 3);
++		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 1);
+ 		break;
+ #endif
+ 	}
+-- 
+1.9.1

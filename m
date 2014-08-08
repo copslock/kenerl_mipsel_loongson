@@ -1,42 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Aug 2014 20:40:19 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:38461 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6842522AbaHHSkQ3uU0g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 8 Aug 2014 20:40:16 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 5EDFB2844F5;
-        Fri,  8 Aug 2014 20:37:43 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qa0-f53.google.com (mail-qa0-f53.google.com [209.85.216.53])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 8047C280531;
-        Fri,  8 Aug 2014 20:37:37 +0200 (CEST)
-Received: by mail-qa0-f53.google.com with SMTP id v10so5800131qac.26
-        for <multiple recipients>; Fri, 08 Aug 2014 11:40:08 -0700 (PDT)
-X-Received: by 10.229.82.74 with SMTP id a10mr39699821qcl.21.1407523208677;
- Fri, 08 Aug 2014 11:40:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Aug 2014 22:47:35 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41248 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6898485AbaHHUrPB-SxK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 8 Aug 2014 22:47:15 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s78Kl65B006190;
+        Fri, 8 Aug 2014 22:47:06 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s78Kl5fY006189;
+        Fri, 8 Aug 2014 22:47:05 +0200
+Date:   Fri, 8 Aug 2014 22:47:05 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Lars Persson <lars.persson@axis.com>, linux-mips@linux-mips.org,
+        Lars Persson <larper@axis.com>
+Subject: Re: [PATCH v2] MIPS: Remove race window in page fault handling
+Message-ID: <20140808204705.GH29898@linux-mips.org>
+References: <1407505668-18547-1-git-send-email-larper@axis.com>
+ <53E500E4.5020509@gmail.com>
 MIME-Version: 1.0
-Received: by 10.140.84.244 with HTTP; Fri, 8 Aug 2014 11:39:48 -0700 (PDT)
-In-Reply-To: <1405162157-30357-1-git-send-email-jogo@openwrt.org>
-References: <1405162157-30357-1-git-send-email-jogo@openwrt.org>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Fri, 8 Aug 2014 20:39:48 +0200
-Message-ID: <CAOiHx=mS-CSE-rM7nWxoRwO9twYiO2F4ObMf9ZVLo1oskZVKLg@mail.gmail.com>
-Subject: Re: [PATCH RFC v2] MIPS: add support for vmlinux.bin appended DTB
-To:     MIPS Mailing List <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <53E500E4.5020509@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41911
+X-archive-position: 41912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,29 +44,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jul 12, 2014 at 12:49 PM, Jonas Gorski <jogo@openwrt.org> wrote:
-> (snip)
-> diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-> index 3b46f7c..8009530 100644
-> --- a/arch/mips/kernel/vmlinux.lds.S
-> +++ b/arch/mips/kernel/vmlinux.lds.S
-> @@ -127,6 +127,12 @@ SECTIONS
->         }
->
->         PERCPU_SECTION(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
-> +
-> +#ifdef CONFIG_MIPS_APPENDED_DTB
-> +       __appended_dtb = .;
-> +       /* leave space for appended DTB */
-> +       . = . + 0x100000;
-> +#endif
+On Fri, Aug 08, 2014 at 09:55:00AM -0700, David Daney wrote:
 
-Okay, this won't work for non SMP kernels - PERCPU is empty there, so
-the actual binary end is then __mips_machine_end, not __per_cpu_end
-(unless mips_machine_end happens to satisfty the per_cpu alignment
-requirements).
+> >+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
+> >+	pte_t *ptep, pte_t pteval);
+> >+
+> 
+> Is it possible to reorder the code such that this declaration is not
+> necessary?
 
-So back to the drawing board.
+That's not as obvious as one might think initially.  set_pte_at needs
+to be defined after set_pte but before clear_pte which is calling set_pte_at.
 
+Of both set_pte and clear_pte there are two #ifdefd variants.
 
-Jonas
+set_pte_at is a fairly small function only but it's invoked quite a few
+times so I was a little concerned about the effect on I'm experimenting with
+outlining set_pte_at entirely.  ip22_defconfig with the patch applied as
+posted; this is the effect on code size.
+
+  text    data     bss     dec     hex filename
+3790118  175304   84544 4049966  3dcc2e vmlinux		as posted
+3789062	 175304	  84544	4048910	 3dc80e	vmlinux		set_pte_at outlined
+
+  Ralf

@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Aug 2014 07:40:16 +0200 (CEST)
-Received: from mail-ig0-f181.google.com ([209.85.213.181]:54457 "EHLO
-        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6898962AbaHIFaQ0jfDM convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 9 Aug 2014 07:30:16 +0200
-Received: by mail-ig0-f181.google.com with SMTP id h3so2025919igd.14
-        for <multiple recipients>; Fri, 08 Aug 2014 22:30:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Aug 2014 19:54:27 +0200 (CEST)
+Received: from mail-pd0-f181.google.com ([209.85.192.181]:57869 "EHLO
+        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819004AbaHIRyYdJSLE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Aug 2014 19:54:24 +0200
+Received: by mail-pd0-f181.google.com with SMTP id g10so8493089pdj.26
+        for <multiple recipients>; Sat, 09 Aug 2014 10:54:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=GWVdb3zQzeIyWk8mo4P8E/V/4CRqrnevb0yMfXiE/CY=;
-        b=H8GevPSsh6yCyFQhZtrdCiBBpPNhWaPTmwk3ORUOPgwzf8B5yAgOs5kY9sGKdS09sv
-         G/3N2kUMNIByCCbLOl14BsPUaa8kj8nWRDW37Q2Wv/lwxIeolwKSJ27kDh/TvsBb/H7w
-         8EMFe39G02TBkaXztwkyRrhJcDGGIAcjsh2OgTDfxwguIvI8Xwi6cXgT8TtZaKtVqAVy
-         lNhn8BO+GK6TeEf3rPQNXgF9QyoiHv1xmxL00ucfR4FQnek/LU+iYVcuGuS07DheMpKw
-         IeJqnmDqVvu6qy50Q9bRuwBtu3POtDlhAWLlYN4/pa7ie1rIMQxnIQGmlbj9Oxvm9KR7
-         598g==
-MIME-Version: 1.0
-X-Received: by 10.50.142.6 with SMTP id rs6mr11183622igb.39.1407562209850;
- Fri, 08 Aug 2014 22:30:09 -0700 (PDT)
-Received: by 10.107.130.160 with HTTP; Fri, 8 Aug 2014 22:30:09 -0700 (PDT)
-In-Reply-To: <1407538185-23497-1-git-send-email-hauke@hauke-m.de>
-References: <1407538185-23497-1-git-send-email-hauke@hauke-m.de>
-Date:   Sat, 9 Aug 2014 07:30:09 +0200
-Message-ID: <CACna6rxOYxVw51ZDLmdyy9+AOb56FAwFDKT04BV0UreSUUyJRw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: BCM47XX: fix reboot problem on BCM4705/BCM4785
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=Iy6HjWuXXBT49L22/0QSVwIgZIYqziIcBykvgReXDIQ=;
+        b=H4pRZxwMkYf/dBKngyUCA023XPexWw8kRkkHWg1zzEqmGZNgT5yqlWYdC/nvgadKeA
+         Bo+q7QteTDmO27XZtAvYsAjxwPdgvFsTARYK8lxZqLtALEJFTx9DjkTf4OSjOD+4dcbr
+         OZz3kPwzvTtuDkb1xdW8CcDfz74WGrPA/m6GpiMtaMqLpLbAd8IWTGh9BeA8cnbD40aL
+         uXh3fv0ASkhx8J88Pie2HCZAjLuU/83kF8ifsF8ZSAXcSimbMPJz/arf0/SnjgWqCVS4
+         0oiqHIo1pzXdaowhM45JvBTuRYldsAjULFtdqucoSriKPLP4/NW5rDuUpJ6JFxXWpwUb
+         uZNA==
+X-Received: by 10.70.65.100 with SMTP id w4mr2515795pds.128.1407606857788;
+        Sat, 09 Aug 2014 10:54:17 -0700 (PDT)
+Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by mx.google.com with ESMTPSA id pu1sm6552381pbc.45.2014.08.09.10.54.16
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Sat, 09 Aug 2014 10:54:17 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Huacai Chen <chenhc@lemote.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Subject: [PATCH] mips: Fix nlm_xlp_defconfig build error
+Date:   Sat,  9 Aug 2014 10:54:03 -0700
+Message-Id: <1407606843-12984-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41936
+X-archive-position: 41944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,13 +53,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 9 August 2014 00:49, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> This adds some code based on code from the Broadcom GPL tar to fix the
-> reboot problems on BCM4705/BCM4785. I tried rebooting my device for ~10
-> times and have never seen a problem. This reverts the changes in the
-> previous commit and adds the real fix as suggested by Rafał.
->
-> Setting bit 22 in Reg 22, sel 4 puts the BIU (Bus Interface Unit) into
-> async mode.
+The nlm_xlp_defconfig build fails with
 
-Nice work, thanks!
+./arch/mips/include/asm/mach-netlogic/topology.h:15:0:
+			error: "topology_core_id" redefined [-Werror]
+In file included from include/linux/smp.h:59:0,
+	[ ...]
+                 from arch/mips/mm/dma-default.c:12:
+./arch/mips/include/asm/smp.h:41:0:
+			note: this is the location of the previous definition
+
+and similar errors.
+
+This is caused by commit bda4584cd943d7 ("MIPS: Support CPU topology files
+in sysfs") which adds the defines to arch/mips/include/asm/smp.h.
+
+Remove the defines from arch/mips/include/asm/mach-netlogic/topology.h
+as no longer necessary.
+
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ arch/mips/include/asm/mach-netlogic/topology.h | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-netlogic/topology.h b/arch/mips/include/asm/mach-netlogic/topology.h
+index ceeb1f5..0eb43c8 100644
+--- a/arch/mips/include/asm/mach-netlogic/topology.h
++++ b/arch/mips/include/asm/mach-netlogic/topology.h
+@@ -10,13 +10,6 @@
+ 
+ #include <asm/mach-netlogic/multi-node.h>
+ 
+-#ifdef CONFIG_SMP
+-#define topology_physical_package_id(cpu)	cpu_to_node(cpu)
+-#define topology_core_id(cpu)	(cpu_logical_map(cpu) / NLM_THREADS_PER_CORE)
+-#define topology_thread_cpumask(cpu)		(&cpu_sibling_map[cpu])
+-#define topology_core_cpumask(cpu)	cpumask_of_node(cpu_to_node(cpu))
+-#endif
+-
+ #include <asm-generic/topology.h>
+ 
+ #endif /* _ASM_MACH_NETLOGIC_TOPOLOGY_H */
+-- 
+1.9.1

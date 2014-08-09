@@ -1,31 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Aug 2014 01:11:09 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:47428 "EHLO test.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6898874AbaHHWtvVFP1P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 9 Aug 2014 00:49:51 +0200
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by test.hauke-m.de (Postfix) with ESMTPSA id C68BF2057E;
-        Sat,  9 Aug 2014 00:49:50 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org
-Cc:     zajec5@gmail.com, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH] MIPS: BCM47XX: fix reboot problem on BCM4705/BCM4785
-Date:   Sat,  9 Aug 2014 00:49:45 +0200
-Message-Id: <1407538185-23497-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Aug 2014 07:40:16 +0200 (CEST)
+Received: from mail-ig0-f181.google.com ([209.85.213.181]:54457 "EHLO
+        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6898962AbaHIFaQ0jfDM convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 9 Aug 2014 07:30:16 +0200
+Received: by mail-ig0-f181.google.com with SMTP id h3so2025919igd.14
+        for <multiple recipients>; Fri, 08 Aug 2014 22:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=GWVdb3zQzeIyWk8mo4P8E/V/4CRqrnevb0yMfXiE/CY=;
+        b=H8GevPSsh6yCyFQhZtrdCiBBpPNhWaPTmwk3ORUOPgwzf8B5yAgOs5kY9sGKdS09sv
+         G/3N2kUMNIByCCbLOl14BsPUaa8kj8nWRDW37Q2Wv/lwxIeolwKSJ27kDh/TvsBb/H7w
+         8EMFe39G02TBkaXztwkyRrhJcDGGIAcjsh2OgTDfxwguIvI8Xwi6cXgT8TtZaKtVqAVy
+         lNhn8BO+GK6TeEf3rPQNXgF9QyoiHv1xmxL00ucfR4FQnek/LU+iYVcuGuS07DheMpKw
+         IeJqnmDqVvu6qy50Q9bRuwBtu3POtDlhAWLlYN4/pa7ie1rIMQxnIQGmlbj9Oxvm9KR7
+         598g==
 MIME-Version: 1.0
+X-Received: by 10.50.142.6 with SMTP id rs6mr11183622igb.39.1407562209850;
+ Fri, 08 Aug 2014 22:30:09 -0700 (PDT)
+Received: by 10.107.130.160 with HTTP; Fri, 8 Aug 2014 22:30:09 -0700 (PDT)
+In-Reply-To: <1407538185-23497-1-git-send-email-hauke@hauke-m.de>
+References: <1407538185-23497-1-git-send-email-hauke@hauke-m.de>
+Date:   Sat, 9 Aug 2014 07:30:09 +0200
+Message-ID: <CACna6rxOYxVw51ZDLmdyy9+AOb56FAwFDKT04BV0UreSUUyJRw@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: BCM47XX: fix reboot problem on BCM4705/BCM4785
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41921
+X-archive-position: 41936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,53 +53,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This adds some code based on code from the Broadcom GPL tar to fix the
-reboot problems on BCM4705/BCM4785. I tried rebooting my device for ~10
-times and have never seen a problem. This reverts the changes in the
-previous commit and adds the real fix as suggested by Rafał.
+On 9 August 2014 00:49, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> This adds some code based on code from the Broadcom GPL tar to fix the
+> reboot problems on BCM4705/BCM4785. I tried rebooting my device for ~10
+> times and have never seen a problem. This reverts the changes in the
+> previous commit and adds the real fix as suggested by Rafał.
+>
+> Setting bit 22 in Reg 22, sel 4 puts the BIU (Bus Interface Unit) into
+> async mode.
 
-Setting bit 22 in Reg 22, sel 4 puts the BIU (Bus Interface Unit) into
-async mode.
-
-The previous try was this:
-commit 316cad5c1d4daee998cd1f83ccdb437f6f20d45c
-Author: Hauke Mehrtens <hauke@hauke-m.de>
-Date:   Mon Jul 28 23:53:57 2014 +0200
-
-    MIPS: BCM47XX: make reboot more relaiable
-
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- arch/mips/bcm47xx/setup.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 2b63e7e..2c35af4 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -59,12 +59,21 @@ static void bcm47xx_machine_restart(char *command)
- 	switch (bcm47xx_bus_type) {
- #ifdef CONFIG_BCM47XX_SSB
- 	case BCM47XX_BUS_TYPE_SSB:
--		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 3);
-+		if (bcm47xx_bus.bcma.bus.chipinfo.id == 0x4785)
-+			write_c0_diag4(1 << 22);
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
-+		if (bcm47xx_bus.bcma.bus.chipinfo.id == 0x4785) {
-+			__asm__ __volatile__(
-+				".set\tmips3\n\t"
-+				"sync\n\t"
-+				"wait\n\t"
-+				".set\tmips0");
-+		}
- 		break;
- #endif
- #ifdef CONFIG_BCM47XX_BCMA
- 	case BCM47XX_BUS_TYPE_BCMA:
--		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 3);
-+		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 1);
- 		break;
- #endif
- 	}
--- 
-1.9.1
+Nice work, thanks!

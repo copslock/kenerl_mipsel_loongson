@@ -1,44 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Aug 2014 18:57:53 +0200 (CEST)
-Received: from mail-we0-f178.google.com ([74.125.82.178]:46690 "EHLO
-        mail-we0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6859992AbaHJQ5voRN9j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 10 Aug 2014 18:57:51 +0200
-Received: by mail-we0-f178.google.com with SMTP id w61so7749037wes.9
-        for <multiple recipients>; Sun, 10 Aug 2014 09:57:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Aug 2014 11:11:12 +0200 (CEST)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:50754 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821394AbaHKJLHB-G0h (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Aug 2014 11:11:07 +0200
+Received: by mail-pa0-f50.google.com with SMTP id et14so10800808pad.9
+        for <multiple recipients>; Mon, 11 Aug 2014 02:11:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=E9Gvee2ATPk/AsYHxMRe6JeRVrqZs4Z2O9MtfqizU0Y=;
-        b=prGdiEy/QMtPdyeZafISjmxmSrJb5NRnef8oPacYqAtFhqiIwHHGFIw48bXlNkg2kj
-         8VpMfqFZPK+DRucRqUc03V4dKMDsNuzRMOaA4OOERmHHfZev7U7XLQt6wBwcqM4Zw5SM
-         gAMcksw6yhcbagDGuxQcGHH6QNySdrvXxzxaen584XVWWd82hl6ruy3jkfFe3OJa49sO
-         ZLZ0qA6eGbSTIjRFE8o9Vw6+WpgLslgcpAw1Dhfq9C7nvNSYstUP0mRFIda3vhEi61Qb
-         xf1vKBkHYgDESGencPtWS0eatU+Bz5es6SEHIpj0opL6aRRPaY2JcskiqqaR9DP3tiSp
-         GVHA==
-X-Received: by 10.180.75.14 with SMTP id y14mr13565529wiv.79.1407689866198;
-        Sun, 10 Aug 2014 09:57:46 -0700 (PDT)
-Received: from flagship.roarinelk.net (62-47-45-86.adsl.highway.telekom.at. [62.47.45.86])
-        by mx.google.com with ESMTPSA id fi1sm33065820wib.5.2014.08.10.09.57.44
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=H7k71LaxgSakn9nU6i3DpZ5DQygx4sFZzRIWJNOzgho=;
+        b=MryqcOF6yw7kqSrJ9Hg+20fIatFAQi2qKG+IHcTwrsM9KP5aK683iSUns8sJn6IsAK
+         ePHGe6LLED9WP2nxo1zkVh4cck75lV6ShkvGNhaF0iwrmvCqC9qcgPdNgcBWguYzF+hM
+         Qj5A8K/dDot/Rj7Opl29tiIN23mgvWG5K1HylEMgDPng1a0jXzA09bpE4rAROSEbSvj1
+         wJlUiXIy81E8ko9I8ZxOsQxu2LuyqMaBcTNXc3COXJFAuSFPZEGpqrDvGAM0N7+W9Dyh
+         JmQ0A8FL4DoM5KVVFOpfaX0Db+mcSSs4/6QfTjPOyhSrbVtHIrGwVjtoewgXVwz8mSfV
+         H3tg==
+X-Received: by 10.66.142.166 with SMTP id rx6mr2046848pab.128.1407748260527;
+        Mon, 11 Aug 2014 02:11:00 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPSA id fx13sm16530781pdb.64.2014.08.11.02.10.54
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 10 Aug 2014 09:57:45 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [RFC RFC PATCH] MIPS: fix build with newest binutils
-Date:   Sun, 10 Aug 2014 18:57:41 +0200
-Message-Id: <1407689861-188297-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 2.0.4
-Return-Path: <manuel.lauss@gmail.com>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 11 Aug 2014 02:10:59 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V2] MIPS: Loongson: Fix COP2 usage for preemptible kernel
+Date:   Mon, 11 Aug 2014 17:10:38 +0800
+Message-Id: <1407748238-15694-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41946
+X-archive-position: 41947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,57 +55,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With recent binutils devel, I get the following build failure:
-{standard input}: Warning: .gnu_attribute 4,3 requires `softfloat'
-  LD      arch/mips/alchemy/common/built-in.o
-mipsel-softfloat-linux-gnu-ld: Warning: arch/mips/alchemy/common/built-in.o uses -msoft-float (set by arch/mips/alchemy/common/prom.o), arch/mips/alchemy/common/sleeper.o uses -mhard-float
+In preemptible kernel, only TIF_USEDFPU flag is reliable to distinguish
+whether _init_fpu()/_restore_fp() is needed. Because the value of the
+CP0_Status.CU1 isn't changed during preemption.
 
-This hackish patch "fixes" it, but I'm not sure if this is actually
-a binutils problem.
+V2: Fix coding style.
 
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/Makefile            | 2 +-
- arch/mips/kernel/r4k_fpu.S    | 1 +
- arch/mips/kernel/r4k_switch.S | 2 ++
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/loongson/loongson-3/cop2-ex.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 9336509..cffbd49 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -88,7 +88,7 @@ all-$(CONFIG_SYS_SUPPORTS_ZBOOT)+= vmlinuz
- # crossformat linking we rely on the elf2ecoff tool for format conversion.
- #
- cflags-y			+= -G 0 -mno-abicalls -fno-pic -pipe
--cflags-y			+= -msoft-float
-+cflags-y			+= -msoft-float -Wa,-msoft-float
- LDFLAGS_vmlinux			+= -G 0 -static -n -nostdlib
- KBUILD_AFLAGS_MODULE		+= -mlong-calls
- KBUILD_CFLAGS_MODULE		+= -mlong-calls
-diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-index 8352523..10dd5d4 100644
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -31,6 +31,7 @@
+diff --git a/arch/mips/loongson/loongson-3/cop2-ex.c b/arch/mips/loongson/loongson-3/cop2-ex.c
+index 9182e8d..c1e9503 100644
+--- a/arch/mips/loongson/loongson-3/cop2-ex.c
++++ b/arch/mips/loongson/loongson-3/cop2-ex.c
+@@ -22,13 +22,13 @@
+ static int loongson_cu2_call(struct notifier_block *nfb, unsigned long action,
+ 	void *data)
+ {
+-	int fpu_enabled;
++	int fpu_owned;
+ 	int fr = !test_thread_flag(TIF_32BIT_FPREGS);
  
- 	.set	noreorder
- 	.set	arch=r4000
-+	.set	hardfloat
- 
- LEAF(_save_fp_context)
- 	cfc1	t1, fcr31
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 4c4ec18..a030f74 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -34,6 +34,8 @@
-  *		       struct thread_info *next_ti, s32 fp_save)
-  */
- 	.align	5
-+	.set hardfloat
-+
- 	LEAF(resume)
- 	mfc0	t1, CP0_STATUS
- 	LONG_S	t1, THREAD_STATUS(a0)
+ 	switch (action) {
+ 	case CU2_EXCEPTION:
+ 		preempt_disable();
+-		fpu_enabled = read_c0_status() & ST0_CU1;
++		fpu_owned = __is_fpu_owner();
+ 		if (!fr)
+ 			set_c0_status(ST0_CU1 | ST0_CU2);
+ 		else
+@@ -39,8 +39,8 @@ static int loongson_cu2_call(struct notifier_block *nfb, unsigned long action,
+ 			KSTK_STATUS(current) |= ST0_FR;
+ 		else
+ 			KSTK_STATUS(current) &= ~ST0_FR;
+-		/* If FPU is enabled, we needn't init or restore fp */
+-		if(!fpu_enabled) {
++		/* If FPU is owned, we needn't init or restore fp */
++		if (!fpu_owned) {
+ 			set_thread_flag(TIF_USEDFPU);
+ 			if (!used_math()) {
+ 				_init_fpu();
 -- 
-2.0.4
+1.7.7.3

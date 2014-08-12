@@ -1,46 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2014 20:03:41 +0200 (CEST)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:56739 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6854401AbaHLSDjAg-DD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Aug 2014 20:03:39 +0200
-Received: by mail-ig0-f170.google.com with SMTP id h3so8783853igd.1
-        for <linux-mips@linux-mips.org>; Tue, 12 Aug 2014 11:03:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=sFzdjP0vfUlOic84hcjbyNo8yoxAdwPVGYwoEtZXWZQ=;
-        b=lqdo/2TVlC453nvazyBrtlw2o+ewQcZejt2WYERxrVDmIoIRgvjyzuagaNvdBNIU7B
-         Ssemqx/+wJsMo8BXsufTnLe03dAk8emF/3ZtdCUyVr1YCoYAkmUxDg/PbRnJTnKGws4D
-         wRDxY7ILBoba+8Ll7AobVIvqfleJ7RopckOAcp1ZhuXsWmw7QvVrBdJUxzcaKwZZE4qy
-         tIUhXsSQAKXe7qHdGUDDErClgCi4UlvittD48+GStIft6lMazTexAPyTeifSIfASspk7
-         d2rVt6HjZ359G3Ptlhi2a2qpLcJ9EwzZEInlYxM9APlKbcfEDU0y34KS+XpOt77XRr5i
-         mARA==
-X-Received: by 10.42.201.134 with SMTP id fa6mr180495icb.73.1407866611569;
- Tue, 12 Aug 2014 11:03:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2014 21:11:00 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:18834 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6821694AbaHLTK5qlI1s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Aug 2014 21:10:57 +0200
+Received: from acsinet22.oracle.com (acsinet22.oracle.com [141.146.126.238])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id s7CJA0Jm022731
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 12 Aug 2014 19:10:03 GMT
+Received: from userz7021.oracle.com (userz7021.oracle.com [156.151.31.85])
+        by acsinet22.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id s7CJ9pUN017065
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+        Tue, 12 Aug 2014 19:09:53 GMT
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userz7021.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id s7CJ9oTt001080;
+        Tue, 12 Aug 2014 19:09:50 GMT
+Received: from laptop.dumpdata.com (/50.195.21.189)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 12 Aug 2014 12:09:50 -0700
+Received: by laptop.dumpdata.com (Postfix, from userid 1000)
+        id CEEA8C2500; Tue, 12 Aug 2014 15:09:47 -0400 (EDT)
+Date:   Tue, 12 Aug 2014 15:09:47 -0400
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     Yijing Wang <wangyijing@huawei.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
+        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        linux-pci@vger.kernel.org, Marc Zyngier <marc.zyngier@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Russell King <linux@arm.linux.org.uk>,
+        arnab.basu@freescale.com, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
+        Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>
+Subject: Re: [RFC PATCH 07/20] x86/MSI: Use msi_chip instead of arch func to
+ configure MSI/MSI-X
+Message-ID: <20140812190947.GD13996@laptop.dumpdata.com>
+References: <1407828373-24322-1-git-send-email-wangyijing@huawei.com>
+ <1407828373-24322-8-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
-Received: by 10.107.148.135 with HTTP; Tue, 12 Aug 2014 11:02:51 -0700 (PDT)
-In-Reply-To: <20140812072353.GC12230@mchandras-linux.le.imgtec.org>
-References: <1405677093-22591-1-git-send-email-markos.chandras@imgtec.com>
- <1405677093-22591-4-git-send-email-markos.chandras@imgtec.com>
- <53E00F39.7@gmail.com> <20140812072353.GC12230@mchandras-linux.le.imgtec.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Tue, 12 Aug 2014 11:02:51 -0700
-Message-ID: <CAGVrzcbZGUbkb=wXp7xwaobpVvzWkr++6L+rErXDyu+3W==6YA@mail.gmail.com>
-Subject: Re: [PATCH 3/4] MIPS: cpu-probe: Set the write-combine CCA value on
- per core basis
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1407828373-24322-8-git-send-email-wangyijing@huawei.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Source-IP: acsinet22.oracle.com [141.146.126.238]
+Return-Path: <konrad.wilk@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42025
+X-archive-position: 42037
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: konrad.wilk@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,56 +71,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Markos,
+On Tue, Aug 12, 2014 at 03:26:00PM +0800, Yijing Wang wrote:
+> Introduce a new struct msi_chip apic_msi_chip instead of weak arch
+> functions to configure MSI/MSI-X in x86.
 
-2014-08-12 0:23 GMT-07:00 Markos Chandras <markos.chandras@imgtec.com>:
-> Hi Florian,
->
-> On Mon, Aug 04, 2014 at 03:54:49PM -0700, Florian Fainelli wrote:
->> Hi Markos,
->>
->> On 07/18/2014 02:51 AM, Markos Chandras wrote:
->> > Different cores use different CCA values to achieve write-combine
->> > memory writes. For cores that do not support write-combine we
->> > set the default value to CCA:2 (uncached, non-coherent) which is the
->> > default value as set by the kernel.
->> >
->> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> > ---
->> [snip]
->>                       break;
->> > @@ -765,67 +767,83 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
->> >
->> >  static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
->> >  {
->> > +   c->writecombine = _CACHE_UNCACHED_ACCELERATED;
->>
->> Why do we set this writecombine setting by default, when later we are
->> going to override writecombine on a per-cpu basic.
->>
->> In the end, we have the following:
->>
->> cpu_probe()
->>       c->writecombine = _CACHE_UNCACHED;
->>
->>       cpu_probe_mips()
->>               c->writecombine = _CACHE_UNCACHED_ACCELERATED:
->>               ... per-cpu case ...
->>               c->writecombine = _CACHE_UNCACHED;
->>
->> Can't we just eliminate the various assignments in cpu_probe_mips() and
->> only override c->writecombine if _CACHE_UNCACHED is not suitable?
->>
-> The reason I did it like this, is that new cores (eg *Aptiv family) will use
-> _CACHE_UNCACHED_ACCELERATED and that's why it's the 'default' option for
-> the MIPS cores. _CACHE_UNCACHED is only suitable for old cores.
-> The way it is right now, allows us to not have to set this option whenever we
-> add support for a new core since it will inherit the default option.
-
-Ok, that makes sense, although we currently have more _CACHE_UNCACHED
-platforms supported than _CACHE_UNCACHED_ACCELERATED, so maybe once
-you reach a critical number of Aptiv cores or with similar caching
-settings, we can reverse the tendency by then? This is not a strong
-objection, I was just looking at a way to minimize the changes.
--- 
-Florian
+Why not 'x86_msi_ops' (see  arch/x86/kernel/x86_init.c)
+> 
+> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+> ---
+>  arch/x86/include/asm/pci.h     |    1 +
+>  arch/x86/kernel/apic/io_apic.c |   20 ++++++++++++++++----
+>  2 files changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
+> index 0892ea0..878a06d 100644
+> --- a/arch/x86/include/asm/pci.h
+> +++ b/arch/x86/include/asm/pci.h
+> @@ -101,6 +101,7 @@ void native_teardown_msi_irq(unsigned int irq);
+>  void native_restore_msi_irqs(struct pci_dev *dev);
+>  int setup_msi_irq(struct pci_dev *dev, struct msi_desc *msidesc,
+>  		  unsigned int irq_base, unsigned int irq_offset);
+> +extern struct msi_chip *x86_msi_chip;
+>  #else
+>  #define native_setup_msi_irqs		NULL
+>  #define native_teardown_msi_irq		NULL
+> diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+> index 2609dcd..eb8ab7c 100644
+> --- a/arch/x86/kernel/apic/io_apic.c
+> +++ b/arch/x86/kernel/apic/io_apic.c
+> @@ -3077,24 +3077,25 @@ int setup_msi_irq(struct pci_dev *dev, struct msi_desc *msidesc,
+>  	return 0;
+>  }
+>  
+> -int native_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+> +int native_setup_msi_irqs(struct device *dev, int nvec, int type)
+>  {
+>  	struct msi_desc *msidesc;
+>  	unsigned int irq;
+>  	int node, ret;
+> +	struct pci_dev *pdev = to_pci_dev(dev);
+>  
+>  	/* Multiple MSI vectors only supported with interrupt remapping */
+>  	if (type == PCI_CAP_ID_MSI && nvec > 1)
+>  		return 1;
+>  
+> -	node = dev_to_node(&dev->dev);
+> +	node = dev_to_node(dev);
+>  
+> -	list_for_each_entry(msidesc, &dev->msi_list, list) {
+> +	list_for_each_entry(msidesc, &pdev->msi_list, list) {
+>  		irq = irq_alloc_hwirq(node);
+>  		if (!irq)
+>  			return -ENOSPC;
+>  
+> -		ret = setup_msi_irq(dev, msidesc, irq, 0);
+> +		ret = setup_msi_irq(pdev, msidesc, irq, 0);
+>  		if (ret < 0) {
+>  			irq_free_hwirq(irq);
+>  			return ret;
+> @@ -3214,6 +3215,17 @@ int default_setup_hpet_msi(unsigned int irq, unsigned int id)
+>  }
+>  #endif
+>  
+> +struct msi_chip apic_msi_chip = {
+> +	.setup_irqs = native_setup_msi_irqs,
+> +	.teardown_irq = native_teardown_msi_irq,
+> +};
+> +
+> +struct msi_chip *arch_get_match_msi_chip(struct device *dev)
+> +{
+> +	return x86_msi_chip;
+> +}
+> +
+> +struct msi_chip *x86_msi_chip = &apic_msi_chip;
+>  #endif /* CONFIG_PCI_MSI */
+>  /*
+>   * Hypertransport interrupt support
+> -- 
+> 1.7.1
+> 

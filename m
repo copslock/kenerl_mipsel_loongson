@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2014 09:04:56 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:31173 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6852377AbaHLHD0ZZQSR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Aug 2014 09:03:26 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2014 09:05:15 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:17929 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6843037AbaHLHDxmog9Z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Aug 2014 09:03:53 +0200
 Received: from 172.24.2.119 (EHLO szxeml421-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id ASY16042;
-        Tue, 12 Aug 2014 15:02:37 +0800 (CST)
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CAE07906;
+        Tue, 12 Aug 2014 15:03:00 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml421-hub.china.huawei.com (10.82.67.160) with Microsoft SMTP Server id
- 14.3.158.1; Tue, 12 Aug 2014 15:02:23 +0800
+ 14.3.158.1; Tue, 12 Aug 2014 15:02:49 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
@@ -31,9 +31,9 @@ CC:     <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
         "David S. Miller" <davem@davemloft.net>,
         <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [RFC PATCH 01/20] x86/xen/MSI: Eliminate arch_msix_mask_irq() and arch_msi_mask_irq()
-Date:   Tue, 12 Aug 2014 15:25:54 +0800
-Message-ID: <1407828373-24322-2-git-send-email-wangyijing@huawei.com>
+Subject: [RFC PATCH 16/20] arm/iop13xx/MSI: Use msi_chip instead of arch func to configure MSI/MSI-X
+Date:   Tue, 12 Aug 2014 15:26:09 +0800
+Message-ID: <1407828373-24322-17-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1407828373-24322-1-git-send-email-wangyijing@huawei.com>
 References: <1407828373-24322-1-git-send-email-wangyijing@huawei.com>
@@ -41,17 +41,11 @@ MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.100.166]
 X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020204.53E9BC13.0087,ss=1,re=0.000,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2011-05-27 18:58:46
-X-Mirapoint-Loop-Id: 4de8051833db9aa489ab699c900b664d
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41957
+X-archive-position: 41958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,229 +62,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 0e4ccb150 added two __weak arch functions arch_msix_mask_irq()
-and arch_msi_mask_irq() to fix a bug found when running xen in x86.
-Introduced these two funcntions make MSI code complex. This patch
-reverted commit 0e4ccb150 and add #ifdef for x86 msi_chip to fix this
-bug for simplicity. Also this is preparation for using struct
-msi_chip instead of weak arch MSI functions in all platforms.
+Introduce a new struct msi_chip iop13xx_msi_chip instead of weak arch
+functions to configure MSI/MSI-X. And associate the pci bus with msi_chip
+in pcibios_add_bus().
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-CC: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 ---
- arch/x86/include/asm/x86_init.h |    3 ---
- arch/x86/kernel/apic/io_apic.c  |   15 +++++++++++++++
- arch/x86/kernel/x86_init.c      |   10 ----------
- arch/x86/pci/xen.c              |   13 +------------
- drivers/pci/msi.c               |   22 ++++++----------------
- include/linux/msi.h             |    2 --
- 6 files changed, 22 insertions(+), 43 deletions(-)
+ arch/arm/mach-iop13xx/include/mach/pci.h |    2 ++
+ arch/arm/mach-iop13xx/iq81340mc.c        |    1 +
+ arch/arm/mach-iop13xx/iq81340sc.c        |    1 +
+ arch/arm/mach-iop13xx/msi.c              |   14 ++++++++++++--
+ arch/arm/mach-iop13xx/pci.c              |    6 ++++++
+ 5 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index e45e4da..f58a9c7 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -172,7 +172,6 @@ struct x86_platform_ops {
+diff --git a/arch/arm/mach-iop13xx/include/mach/pci.h b/arch/arm/mach-iop13xx/include/mach/pci.h
+index 59f42b5..7a073cb 100644
+--- a/arch/arm/mach-iop13xx/include/mach/pci.h
++++ b/arch/arm/mach-iop13xx/include/mach/pci.h
+@@ -10,6 +10,8 @@ struct pci_bus *iop13xx_scan_bus(int nr, struct pci_sys_data *);
+ void iop13xx_atu_select(struct hw_pci *plat_pci);
+ void iop13xx_pci_init(void);
+ void iop13xx_map_pci_memory(void);
++void iop13xx_add_bus(struct pci_bus *bus);
++extern struct msi_chip iop13xx_msi_chip;
  
- struct pci_dev;
- struct msi_msg;
--struct msi_desc;
- 
- struct x86_msi_ops {
- 	int (*setup_msi_irqs)(struct pci_dev *dev, int nvec, int type);
-@@ -183,8 +182,6 @@ struct x86_msi_ops {
- 	void (*teardown_msi_irqs)(struct pci_dev *dev);
- 	void (*restore_msi_irqs)(struct pci_dev *dev);
- 	int  (*setup_hpet_msi)(unsigned int irq, unsigned int id);
--	u32 (*msi_mask_irq)(struct msi_desc *desc, u32 mask, u32 flag);
--	u32 (*msix_mask_irq)(struct msi_desc *desc, u32 flag);
+ #define IOP_PCI_STATUS_ERROR (PCI_STATUS_PARITY |	     \
+ 			       PCI_STATUS_SIG_TARGET_ABORT | \
+diff --git a/arch/arm/mach-iop13xx/iq81340mc.c b/arch/arm/mach-iop13xx/iq81340mc.c
+index 9cd07d3..19d47cb 100644
+--- a/arch/arm/mach-iop13xx/iq81340mc.c
++++ b/arch/arm/mach-iop13xx/iq81340mc.c
+@@ -59,6 +59,7 @@ static struct hw_pci iq81340mc_pci __initdata = {
+ 	.map_irq	= iq81340mc_pcix_map_irq,
+ 	.scan		= iop13xx_scan_bus,
+ 	.preinit	= iop13xx_pci_init,
++	.add_bus	= iop13xx_add_bus;
  };
  
- struct IO_APIC_route_entry;
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 81e08ef..2609dcd 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -3019,14 +3019,29 @@ msi_set_affinity(struct irq_data *data, const struct cpumask *mask, bool force)
- 	return IRQ_SET_MASK_OK_NOCOPY;
- }
- 
-+#ifdef CONFIG_XEN
-+static void nop_unmask_msi_irq(struct irq_data *data)
-+{
-+}
-+
-+static void nop_mask_msi_irq(struct irq_data *data)
-+{
-+}
-+#endif
-+
- /*
-  * IRQ Chip for MSI PCI/PCI-X/PCI-Express Devices,
-  * which implement the MSI or MSI-X Capability Structure.
-  */
- static struct irq_chip msi_chip = {
- 	.name			= "PCI-MSI",
-+#ifdef CONFIG_XEN
-+	.irq_unmask		= nop_unmask_msi_irq,
-+	.irq_mask		= nop_mask_msi_irq,
-+#else
- 	.irq_unmask		= unmask_msi_irq,
- 	.irq_mask		= mask_msi_irq,
-+#endif
- 	.irq_ack		= ack_apic_edge,
- 	.irq_set_affinity	= msi_set_affinity,
- 	.irq_retrigger		= ioapic_retrigger_irq,
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index e48b674..234b072 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -116,8 +116,6 @@ struct x86_msi_ops x86_msi = {
- 	.teardown_msi_irqs	= default_teardown_msi_irqs,
- 	.restore_msi_irqs	= default_restore_msi_irqs,
- 	.setup_hpet_msi		= default_setup_hpet_msi,
--	.msi_mask_irq		= default_msi_mask_irq,
--	.msix_mask_irq		= default_msix_mask_irq,
+ static int __init iq81340mc_pci_init(void)
+diff --git a/arch/arm/mach-iop13xx/iq81340sc.c b/arch/arm/mach-iop13xx/iq81340sc.c
+index b3ec11c..4d56993 100644
+--- a/arch/arm/mach-iop13xx/iq81340sc.c
++++ b/arch/arm/mach-iop13xx/iq81340sc.c
+@@ -61,6 +61,7 @@ static struct hw_pci iq81340sc_pci __initdata = {
+ 	.scan		= iop13xx_scan_bus,
+ 	.map_irq	= iq81340sc_atux_map_irq,
+ 	.preinit	= iop13xx_pci_init
++	.add_bus	= iop13xx_add_bus;
  };
  
- /* MSI arch specific hooks */
-@@ -140,14 +138,6 @@ void arch_restore_msi_irqs(struct pci_dev *dev)
- {
- 	x86_msi.restore_msi_irqs(dev);
- }
--u32 arch_msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
--{
--	return x86_msi.msi_mask_irq(desc, mask, flag);
--}
--u32 arch_msix_mask_irq(struct msi_desc *desc, u32 flag)
--{
--	return x86_msi.msix_mask_irq(desc, flag);
--}
- #endif
+ static int __init iq81340sc_pci_init(void)
+diff --git a/arch/arm/mach-iop13xx/msi.c b/arch/arm/mach-iop13xx/msi.c
+index e7730cf..59a9f8f 100644
+--- a/arch/arm/mach-iop13xx/msi.c
++++ b/arch/arm/mach-iop13xx/msi.c
+@@ -132,7 +132,7 @@ static struct irq_chip iop13xx_msi_chip = {
+ 	.irq_unmask = unmask_msi_irq,
+ };
  
- struct x86_io_apic_ops x86_io_apic_ops = {
-diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
-index 905956f..55c7858 100644
---- a/arch/x86/pci/xen.c
-+++ b/arch/x86/pci/xen.c
-@@ -393,14 +393,7 @@ static void xen_teardown_msi_irq(unsigned int irq)
+-int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
++int iop13xx_setup_msi_irq(struct device *dev, struct msi_desc *desc)
  {
- 	xen_destroy_irq(irq);
- }
--static u32 xen_nop_msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
--{
--	return 0;
--}
--static u32 xen_nop_msix_mask_irq(struct msi_desc *desc, u32 flag)
--{
--	return 0;
--}
-+
- #endif
- 
- int __init pci_xen_init(void)
-@@ -424,8 +417,6 @@ int __init pci_xen_init(void)
- 	x86_msi.setup_msi_irqs = xen_setup_msi_irqs;
- 	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
- 	x86_msi.teardown_msi_irqs = xen_teardown_msi_irqs;
--	x86_msi.msi_mask_irq = xen_nop_msi_mask_irq;
--	x86_msi.msix_mask_irq = xen_nop_msix_mask_irq;
- #endif
+ 	int id, irq = irq_alloc_desc_from(IRQ_IOP13XX_MSI_0, -1);
+ 	struct msi_msg msg;
+@@ -159,7 +159,17 @@ int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
  	return 0;
  }
-@@ -505,8 +496,6 @@ int __init pci_xen_initial_domain(void)
- 	x86_msi.setup_msi_irqs = xen_initdom_setup_msi_irqs;
- 	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
- 	x86_msi.restore_msi_irqs = xen_initdom_restore_msi_irqs;
--	x86_msi.msi_mask_irq = xen_nop_msi_mask_irq;
--	x86_msi.msix_mask_irq = xen_nop_msix_mask_irq;
- #endif
- 	xen_setup_acpi_sci();
- 	__acpi_register_gsi = acpi_register_gsi_xen;
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 5a40516..bff25df 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -173,7 +173,7 @@ static inline __attribute_const__ u32 msi_mask(unsigned x)
-  * reliably as devices without an INTx disable bit will then generate a
-  * level IRQ which will never be cleared.
-  */
--u32 default_msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
-+static u32 __msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
+ 
+-void arch_teardown_msi_irq(unsigned int irq)
++void iop13xx_teardown_msi_irq(unsigned int irq)
  {
- 	u32 mask_bits = desc->masked;
- 
-@@ -187,14 +187,9 @@ u32 default_msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
- 	return mask_bits;
+ 	irq_free_desc(irq);
  }
- 
--__weak u32 arch_msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
--{
--	return default_msi_mask_irq(desc, mask, flag);
--}
--
- static void msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
- {
--	desc->masked = arch_msi_mask_irq(desc, mask, flag);
-+	desc->masked = __msi_mask_irq(desc, mask, flag);
- }
- 
- /*
-@@ -204,7 +199,7 @@ static void msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
-  * file.  This saves a few milliseconds when initialising devices with lots
-  * of MSI-X interrupts.
-  */
--u32 default_msix_mask_irq(struct msi_desc *desc, u32 flag)
-+static u32 __msix_mask_irq(struct msi_desc *desc, u32 flag)
- {
- 	u32 mask_bits = desc->masked;
- 	unsigned offset = desc->msi_attrib.entry_nr * PCI_MSIX_ENTRY_SIZE +
-@@ -217,14 +212,9 @@ u32 default_msix_mask_irq(struct msi_desc *desc, u32 flag)
- 	return mask_bits;
- }
- 
--__weak u32 arch_msix_mask_irq(struct msi_desc *desc, u32 flag)
--{
--	return default_msix_mask_irq(desc, flag);
--}
--
- static void msix_mask_irq(struct msi_desc *desc, u32 flag)
- {
--	desc->masked = arch_msix_mask_irq(desc, flag);
-+	desc->masked = __msix_mask_irq(desc, flag);
- }
- 
- static void msi_set_mask_bit(struct irq_data *data, u32 flag)
-@@ -893,7 +883,7 @@ void pci_msi_shutdown(struct pci_dev *dev)
- 	/* Return the device with MSI unmasked as initial states */
- 	mask = msi_mask(desc->msi_attrib.multi_cap);
- 	/* Keep cached state to be restored */
--	arch_msi_mask_irq(desc, mask, ~mask);
-+	__msi_mask_irq(desc, mask, ~mask);
- 
- 	/* Restore dev->irq to its default pin-assertion irq */
- 	dev->irq = desc->msi_attrib.default_irq;
-@@ -993,7 +983,7 @@ void pci_msix_shutdown(struct pci_dev *dev)
- 	/* Return the device with MSI-X masked as initial states */
- 	list_for_each_entry(entry, &dev->msi_list, list) {
- 		/* Keep cached states to be restored */
--		arch_msix_mask_irq(entry, 1);
-+		__msix_mask_irq(entry, 1);
++
++struct msi_chip iop13xx_chip = {
++	.setup_irq = iop13xx_setup_msi_irq,
++	.teardown_irq = iop13xx_teardown_msi_irq,
++};
++
++struct msi_chip *arch_get_match_msi_chip(struct device *dev)
++{
++	return &iop13xx_chip;
++}
+diff --git a/arch/arm/mach-iop13xx/pci.c b/arch/arm/mach-iop13xx/pci.c
+index 9082b84..f498800 100644
+--- a/arch/arm/mach-iop13xx/pci.c
++++ b/arch/arm/mach-iop13xx/pci.c
+@@ -962,6 +962,12 @@ void __init iop13xx_atu_select(struct hw_pci *plat_pci)
  	}
+ }
  
- 	msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_ENABLE, 0);
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 8103f32..78e6b6e 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -65,8 +65,6 @@ void arch_restore_msi_irqs(struct pci_dev *dev);
- 
- void default_teardown_msi_irqs(struct pci_dev *dev);
- void default_restore_msi_irqs(struct pci_dev *dev);
--u32 default_msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag);
--u32 default_msix_mask_irq(struct msi_desc *desc, u32 flag);
- 
- struct msi_chip {
- 	struct module *owner;
++void iop13xx_add_bus(struct pci_bus *bus)
++{
++	if (IS_ENABLED(CONFIG_PCI_MSI))
++		bus->msi = &iop13xx_msi_chip;
++}
++
+ void __init iop13xx_pci_init(void)
+ {
+ 	/* clear pre-existing south bridge errors */
 -- 
 1.7.1

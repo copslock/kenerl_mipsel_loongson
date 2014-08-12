@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2014 09:10:26 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:32555 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6860185AbaHLHJBnp0lB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Aug 2014 09:09:01 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2014 09:10:45 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:23458 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6860194AbaHLHJJF-gBM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Aug 2014 09:09:09 +0200
 Received: from 172.24.2.119 (EHLO szxeml421-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id BYA39919;
-        Tue, 12 Aug 2014 15:02:52 +0800 (CST)
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CAE07909;
+        Tue, 12 Aug 2014 15:03:00 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml421-hub.china.huawei.com (10.82.67.160) with Microsoft SMTP Server id
- 14.3.158.1; Tue, 12 Aug 2014 15:02:38 +0800
+ 14.3.158.1; Tue, 12 Aug 2014 15:02:46 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
@@ -31,9 +31,9 @@ CC:     <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
         "David S. Miller" <davem@davemloft.net>,
         <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [RFC PATCH 10/20] x86/MSI: Remove unused MSI weak arch functions
-Date:   Tue, 12 Aug 2014 15:26:03 +0800
-Message-ID: <1407828373-24322-11-git-send-email-wangyijing@huawei.com>
+Subject: [RFC PATCH 14/20] Powerpc/MSI: Use msi_chip instead of arch func to configure MSI/MSI-X
+Date:   Tue, 12 Aug 2014 15:26:07 +0800
+Message-ID: <1407828373-24322-15-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1407828373-24322-1-git-send-email-wangyijing@huawei.com>
 References: <1407828373-24322-1-git-send-email-wangyijing@huawei.com>
@@ -45,7 +45,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 41968
+X-archive-position: 41969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,85 +62,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now we can clean up MSI weak arch functions in x86.
+Introduce a new struct msi_chip ppc_msi_chip instead of weak arch
+functions to configure MSI/MSI-X.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
 ---
- arch/x86/include/asm/pci.h     |    3 ---
- arch/x86/kernel/apic/io_apic.c |    2 +-
- arch/x86/kernel/x86_init.c     |   24 ------------------------
- 3 files changed, 1 insertions(+), 28 deletions(-)
+ arch/powerpc/kernel/msi.c |   23 +++++++++++++++++------
+ 1 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index 878a06d..34f9676 100644
---- a/arch/x86/include/asm/pci.h
-+++ b/arch/x86/include/asm/pci.h
-@@ -96,14 +96,11 @@ extern void pci_iommu_alloc(void);
- #ifdef CONFIG_PCI_MSI
- /* implemented in arch/x86/kernel/apic/io_apic. */
- struct msi_desc;
--int native_setup_msi_irqs(struct pci_dev *dev, int nvec, int type);
- void native_teardown_msi_irq(unsigned int irq);
--void native_restore_msi_irqs(struct pci_dev *dev);
- int setup_msi_irq(struct pci_dev *dev, struct msi_desc *msidesc,
- 		  unsigned int irq_base, unsigned int irq_offset);
- extern struct msi_chip *x86_msi_chip;
- #else
--#define native_setup_msi_irqs		NULL
- #define native_teardown_msi_irq		NULL
- #endif
+diff --git a/arch/powerpc/kernel/msi.c b/arch/powerpc/kernel/msi.c
+index 8bbc12d..170b02c 100644
+--- a/arch/powerpc/kernel/msi.c
++++ b/arch/powerpc/kernel/msi.c
+@@ -13,7 +13,7 @@
  
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index eb8ab7c..e3326d9 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -3077,7 +3077,7 @@ int setup_msi_irq(struct pci_dev *dev, struct msi_desc *msidesc,
- 	return 0;
+ #include <asm/machdep.h>
+ 
+-int arch_msi_check_device(struct pci_dev* dev, int nvec, int type)
++int ppc_msi_check_device(struct device *dev, int nvec, int type)
+ {
+ 	if (!ppc_md.setup_msi_irqs || !ppc_md.teardown_msi_irqs) {
+ 		pr_debug("msi: Platform doesn't provide MSI callbacks.\n");
+@@ -26,18 +26,29 @@ int arch_msi_check_device(struct pci_dev* dev, int nvec, int type)
+ 
+ 	if (ppc_md.msi_check_device) {
+ 		pr_debug("msi: Using platform check routine.\n");
+-		return ppc_md.msi_check_device(dev, nvec, type);
++		return ppc_md.msi_check_device(to_pci_dev(dev), nvec, type);
+ 	}
+ 
+         return 0;
  }
  
--int native_setup_msi_irqs(struct device *dev, int nvec, int type)
-+static int native_setup_msi_irqs(struct device *dev, int nvec, int type)
- {
- 	struct msi_desc *msidesc;
- 	unsigned int irq;
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index 234b072..cc32568 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -110,34 +110,10 @@ EXPORT_SYMBOL_GPL(x86_platform);
- 
- #if defined(CONFIG_PCI_MSI)
- struct x86_msi_ops x86_msi = {
--	.setup_msi_irqs		= native_setup_msi_irqs,
- 	.compose_msi_msg	= native_compose_msi_msg,
--	.teardown_msi_irq	= native_teardown_msi_irq,
--	.teardown_msi_irqs	= default_teardown_msi_irqs,
--	.restore_msi_irqs	= default_restore_msi_irqs,
- 	.setup_hpet_msi		= default_setup_hpet_msi,
- };
- 
--/* MSI arch specific hooks */
 -int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
--{
--	return x86_msi.setup_msi_irqs(dev, nvec, type);
--}
--
--void arch_teardown_msi_irqs(struct pci_dev *dev)
--{
--	x86_msi.teardown_msi_irqs(dev);
--}
--
--void arch_teardown_msi_irq(unsigned int irq)
--{
--	x86_msi.teardown_msi_irq(irq);
--}
--
--void arch_restore_msi_irqs(struct pci_dev *dev)
--{
--	x86_msi.restore_msi_irqs(dev);
--}
- #endif
++int ppc_setup_msi_irqs(struct device *dev, int nvec, int type)
+ {
+-	return ppc_md.setup_msi_irqs(dev, nvec, type);
++	return ppc_md.setup_msi_irqs(to_pci_dev(dev), nvec, type);
+ }
  
- struct x86_io_apic_ops x86_io_apic_ops = {
+-void arch_teardown_msi_irqs(struct pci_dev *dev)
++void ppc_teardown_msi_irqs(struct device *dev)
+ {
+-	ppc_md.teardown_msi_irqs(dev);
++	ppc_md.teardown_msi_irqs(to_pci_dev(dev));
++}
++
++struct msi_chip ppc_msi_chip = {
++	.setup_irqs = ppc_setup_msi_irqs,
++	.teardown_irqs = ppc_teardown_msi_irqs,
++	.check_device = ppc_msi_check_device,
++};
++
++struct msi_chip *arch_get_match_msi_chip(struct device *dev)
++{
++	return &ppc_msi_chip;
+ }
 -- 
 1.7.1

@@ -1,42 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2014 21:42:00 +0200 (CEST)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:56821 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6867605AbaHMTlw2BW8b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Aug 2014 21:41:52 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 1569619BEBA;
-        Wed, 13 Aug 2014 22:41:50 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id qCT6vtx1cWtM; Wed, 13 Aug 2014 22:41:45 +0300 (EEST)
-Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id 4885B5BC011;
-        Wed, 13 Aug 2014 22:41:45 +0300 (EEST)
-Date:   Wed, 13 Aug 2014 22:41:45 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2014 23:44:24 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49923 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6898436AbaHMVoRemvFV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Aug 2014 23:44:17 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7DLiGTI030663;
+        Wed, 13 Aug 2014 23:44:16 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7DLiFLc030662;
+        Wed, 13 Aug 2014 23:44:15 +0200
+Date:   Wed, 13 Aug 2014 23:44:15 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc:     Jonas Gorski <jogo@openwrt.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>
 Subject: Re: [ADMIN] Outages on linux-mips.org
-Message-ID: <20140813194144.GA10858@drone.musicnaut.iki.fi>
+Message-ID: <20140813214415.GD21008@linux-mips.org>
 References: <20140813121919.GK11869@linux-mips.org>
  <CAOiHx=kG8Ve-Vz9qUAWwuk1nPcMvfcTUc+epNo-0-fTFjAwHfw@mail.gmail.com>
  <20140813131803.GA21008@linux-mips.org>
+ <20140813194144.GA10858@drone.musicnaut.iki.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20140813131803.GA21008@linux-mips.org>
+In-Reply-To: <20140813194144.GA10858@drone.musicnaut.iki.fi>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42090
+X-archive-position: 42091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,22 +46,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Wed, Aug 13, 2014 at 10:41:45PM +0300, Aaro Koskinen wrote:
 
-On Wed, Aug 13, 2014 at 03:18:03PM +0200, Ralf Baechle wrote:
-> On Wed, Aug 13, 2014 at 02:40:36PM +0200, Jonas Gorski wrote:
-> > On Wed, Aug 13, 2014 at 2:19 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > > In the past days there have been several outages of services provided
-> > > by linux-mips.org due excessive load on the machine, crashes of the VM
-> > > and its hosts system.  Resolving this is going to take some time so
-> > > please bear with me while the machine is suffering for you ;-)
+> On Wed, Aug 13, 2014 at 03:18:03PM +0200, Ralf Baechle wrote:
+> > On Wed, Aug 13, 2014 at 02:40:36PM +0200, Jonas Gorski wrote:
+> > > On Wed, Aug 13, 2014 at 2:19 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > > > In the past days there have been several outages of services provided
+> > > > by linux-mips.org due excessive load on the machine, crashes of the VM
+> > > > and its hosts system.  Resolving this is going to take some time so
+> > > > please bear with me while the machine is suffering for you ;-)
+> > > 
+> > > Thanks for the update!
 > > 
-> > Thanks for the update!
+> > One of the side effects is also that if the spam filter is failing due
+> > to timeouts or a crash spam will be allowed to pass straight through to
+> > the list ...
 > 
-> One of the side effects is also that if the spam filter is failing due
-> to timeouts or a crash spam will be allowed to pass straight through to
-> the list ...
+> FWIW, lots of spam has been coming in already weeks through MIPS list.
 
-FWIW, lots of spam has been coming in already weeks through MIPS list.
+It was hard to miss and yes, the situation exist for a while already ...  I
+occasionally remove the spam from the list archive and rebuild the web
+archive.
 
-A.
+  Ralf

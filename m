@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2014 00:09:33 +0200 (CEST)
-Received: from mail-la0-f44.google.com ([209.85.215.44]:42865 "EHLO
-        mail-la0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6878444AbaHMWJQhiwHz (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2014 00:09:57 +0200 (CEST)
+Received: from mail-la0-f54.google.com ([209.85.215.54]:47714 "EHLO
+        mail-la0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6898436AbaHMWJQkwvy9 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 14 Aug 2014 00:09:16 +0200
-Received: by mail-la0-f44.google.com with SMTP id el20so318986lab.17
-        for <multiple recipients>; Wed, 13 Aug 2014 15:09:07 -0700 (PDT)
+Received: by mail-la0-f54.google.com with SMTP id hz20so321455lab.13
+        for <multiple recipients>; Wed, 13 Aug 2014 15:09:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=rqayCjm9GvPbcaLZc6OHFDaOQfezNztQ+hDFhmQ9E5g=;
-        b=cRI4hfvzRBf5rWriPXq4hiMVBOi9WpVOBmvfcQiZzw4yBPkFjeyMwtXoiSowiykIcJ
-         ayXVHWSpjajCgWzdCgq2jwk3qHU7umBFzYc4tWL0qXGE9y0nkQYfZg+f/cnL8xJjr06p
-         9hGROliEa67+4eLHHeXwUioSunzkm58ZPoYQrk4fNYMfqIGTGhO8/Mc5DtExhtuZU2Pt
-         yeEax5g/1Qik7qp8ParO2fOIDmeCgCb/LeUGYvIySFXY1Q6DsgrnMDu6st2v1KF9Hia/
-         P6+Q2vCdAOBtxjl9/dWHNNJyS2wd3gJp5IWLDH26W0oFuHkdTPjOtEahAGRsuKnQYPBe
-         9DhA==
-X-Received: by 10.152.45.8 with SMTP id i8mr738217lam.3.1407967747432;
-        Wed, 13 Aug 2014 15:09:07 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=O0IKxKIS9d9ZhJoFklashR5k3lSA5MjFpr+TwLO/beU=;
+        b=A7RGkl3ze+RlapNkpHiKog8Kq8bb3qWsgadfOpadewscneYPymnFzDwIhWoSaxWkIU
+         Tjc45+23IwzJK8wDRDHxHKTFIfJcf+/8aCdMCHuvvllvmwRTkHlHUZAggW6sVl8TYaug
+         bZKvR+9vjBxOhSx+aco7kyDRN1teXUyajQSWRLU+2QwEMCWxU6es5SrN3TwtZCCRw9kQ
+         9mA9poxOjZKcPo9rYjBiPStw/s1m+khtVL4OaPH/8KGAyQhmxgvWUeP0AQo3s/EAwgTc
+         MDCHxanEpoYECf1lLHCJYsmv9HIkIW6KTUIXmN+0ejLNgYAJ0I3x3nXGIByVWbfjPj/H
+         Ou0g==
+X-Received: by 10.152.10.193 with SMTP id k1mr722659lab.79.1407967748956;
+        Wed, 13 Aug 2014 15:09:08 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id x10sm1927137lal.13.2014.08.13.15.09.05
+        by mx.google.com with ESMTPSA id x10sm1927137lal.13.2014.08.13.15.09.07
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 13 Aug 2014 15:09:06 -0700 (PDT)
+        Wed, 13 Aug 2014 15:09:08 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH 0/2] MIPS: add common plat_irq_dispatch declaration
-Date:   Thu, 14 Aug 2014 02:09:34 +0400
-Message-Id: <1407967776-7320-1-git-send-email-ryazanov.s.a@gmail.com>
+Subject: [PATCH 1/2] MIPS: MSP71xx: remove unused plat_irq_dispatch() argument
+Date:   Thu, 14 Aug 2014 02:09:35 +0400
+Message-Id: <1407967776-7320-2-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
+In-Reply-To: <1407967776-7320-1-git-send-email-ryazanov.s.a@gmail.com>
+References: <1407967776-7320-1-git-send-email-ryazanov.s.a@gmail.com>
 Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42092
+X-archive-position: 42093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,72 +52,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This short series get rid of one nasty sparse warning "symbol
-'plat_irq_dispatch' was not declared. Should it be static?"
+Remove unused argument to make the plat_irq_dispatch() function
+declaration similar to the realization of other platforms.
 
-Compile tested with following configs:
-  ar7_defconfig
-  ath79_defconfig
-  bcm47xx_defconfig
-  bcm63xx_defconfig
-  bigsur_defconfig
-  capcella_defconfig
-  cavium_octeon_defconfig
-  cobalt_defconfig
-  db1xxx_defconfig
-  decstation_defconfig
-  e55_defconfig
-  fuloong2e_defconfig
-  gpr_defconfig
-  ip22_defconfig
-  ip27_defconfig
-  ip32_defconfig
-  jazz_defconfig
-  jmr3927_defconfig
-  lasat_defconfig
-  lemote2f_defconfig
-  loongson3_defconfig
-  ls1b_defconfig
-  maltaaprp_defconfig
-  malta_defconfig
-  malta_kvm_defconfig
-  malta_kvm_guest_defconfig
-  maltasmvp_defconfig
-  maltaup_defconfig
-  markeins_defconfig
-  mips_paravirt_defconfig
-  mpc30x_defconfig
-  msp71xx_defconfig
-  mtx1_defconfig
-  pnx8335_stb225_defconfig
-  qi_lb60_defconfig
-  rb532_defconfig
-  rbtx49xx_defconfig
-  rm200_defconfig
-  rt305x_defconfig
-  sb1250_swarm_defconfig
-  sead3_defconfig
-  sead3micro_defconfig
-  tb0219_defconfig
-  tb0226_defconfig
-  tb0287_defconfig
-  workpad_defconfig
-  xway_defconfig
-
-Could not test following configs since compiller lacks and some macro redefinitions:
-  ip28_defconfig
-  maltasmvp_eva_defconfig
-  nlm_xlp_defconfig
-  nlm_xlr_defconfig
-
-Sergey Ryazanov (2):
-  MIPS: MSP71xx: remove unused plat_irq_dispatch() argument
-  MIPS: add common plat_irq_dispatch declaration
-
- arch/mips/cavium-octeon/setup.c  | 1 -
- arch/mips/include/asm/irq.h      | 2 ++
+Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+---
  arch/mips/pmcs-msp71xx/msp_irq.c | 2 +-
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/mips/pmcs-msp71xx/msp_irq.c b/arch/mips/pmcs-msp71xx/msp_irq.c
+index 941744a..f914c75 100644
+--- a/arch/mips/pmcs-msp71xx/msp_irq.c
++++ b/arch/mips/pmcs-msp71xx/msp_irq.c
+@@ -51,7 +51,7 @@ static inline void sec_int_dispatch(void)  { do_IRQ(MSP_INT_SEC);  }
+  * the range 40-71.
+  */
+ 
+-asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
++asmlinkage void plat_irq_dispatch(void)
+ {
+ 	u32 pending;
+ 
 -- 
 1.8.1.5

@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2014 00:23:04 +0200 (CEST)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:39392 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6855122AbaHNWW7owvKB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2014 00:22:59 +0200
-Received: by mail-pd0-f180.google.com with SMTP id v10so2315380pde.39
-        for <multiple recipients>; Thu, 14 Aug 2014 15:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=3nzQZTqA3gZs/buEqy2I49eTrxCes76fxE0EE0gouqQ=;
-        b=Nidk833Lh8/nl7p3QYwcytHHrbMDJWOTtQbEMUMc8F41EiXums5/AiXulOq5nCFATw
-         pGngNZFql4NenkVbkLndpej7YSlwmx/xmnxKYnVQPRiq+mseOTDFVv2L6sB47Ri8xloU
-         mxBfvU0ZjGfAz3Nb++aLwY7jAVtHqX2IPqFFrNdzZ0lVdiyZQLz0taIYS7Ju9a/3rhpi
-         lc5tuoD1L3k2aLYEHI8xbEZ6RRhbb3Z1JuaxSyTNSzo0rxXFTaA+V1P7Z3khh7CfRfLT
-         60naZP6z5REzRQVCduBHAiVRiTgkVrCb5J4WHHn688cMfJoWRCg35eE/6yswBQHHWaWT
-         5Dbg==
-X-Received: by 10.70.60.169 with SMTP id i9mr4605530pdr.166.1408054972975;
-        Thu, 14 Aug 2014 15:22:52 -0700 (PDT)
-Received: from [192.168.1.102] ([223.72.65.32])
-        by mx.google.com with ESMTPSA id rn7sm21342672pab.39.2014.08.14.15.22.35
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 14 Aug 2014 15:22:52 -0700 (PDT)
-Message-ID: <53ED36AB.8020703@gmail.com>
-Date:   Fri, 15 Aug 2014 06:22:35 +0800
-From:   Chen Gang <gang.chen.5i5j@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Lennox Wu <lennox.wu@gmail.com>
-CC:     Vineet Gupta <Vineet.Gupta1@synopsys.com>,
-        Arnd Bergmann <arnd@arndb.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2014 01:14:18 +0200 (CEST)
+Received: from us01smtprelay-2.synopsys.com ([198.182.44.111]:48418 "EHLO
+        smtprelay.synopsys.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6855144AbaHNXOKFyo8O convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Aug 2014 01:14:10 +0200
+Received: from us02secmta2.synopsys.com (us02secmta2.synopsys.com [10.12.235.98])
+        by smtprelay.synopsys.com (Postfix) with ESMTP id C061424E101B;
+        Thu, 14 Aug 2014 16:13:57 -0700 (PDT)
+Received: from us02secmta2.internal.synopsys.com (us02secmta2.internal.synopsys.com [127.0.0.1])
+        by us02secmta2.internal.synopsys.com (Service) with ESMTP id 9174155F13;
+        Thu, 14 Aug 2014 16:13:57 -0700 (PDT)
+Received: from mailhost.synopsys.com (mailhost1.synopsys.com [10.12.238.239])
+        by us02secmta2.internal.synopsys.com (Service) with ESMTP id A857C55F02;
+        Thu, 14 Aug 2014 16:13:56 -0700 (PDT)
+Received: from mailhost.synopsys.com (localhost [127.0.0.1])
+        by mailhost.synopsys.com (Postfix) with ESMTP id 59C5BCB2;
+        Thu, 14 Aug 2014 16:13:56 -0700 (PDT)
+Received: from US01WEHTC3.internal.synopsys.com (us01wehtc3.internal.synopsys.com [10.15.84.232])
+        by mailhost.synopsys.com (Postfix) with ESMTP id BE98AAD7;
+        Thu, 14 Aug 2014 16:13:13 -0700 (PDT)
+Received: from IN01WEHTCA.internal.synopsys.com (10.144.199.104) by
+ US01WEHTC3.internal.synopsys.com (10.15.84.232) with Microsoft SMTP Server
+ (TLS) id 14.3.158.1; Thu, 14 Aug 2014 16:12:57 -0700
+Received: from IN01WEMBXA.internal.synopsys.com ([fe80::ed6f:22d3:d35:4833])
+ by IN01WEHTCA.internal.synopsys.com ([::1]) with mapi id 14.03.0158.001; Fri,
+ 15 Aug 2014 04:42:54 +0530
+From:   Vineet Gupta <Vineet.Gupta1@synopsys.com>
+To:     Chen Gang <gang.chen.5i5j@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
         "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
         "rth@twiddle.net" <rth@twiddle.net>,
         "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
@@ -59,10 +57,10 @@ CC:     Vineet Gupta <Vineet.Gupta1@synopsys.com>,
         "jonas@southpole.se" <jonas@southpole.se>,
         "jejb@parisc-linux.org" <jejb@parisc-linux.org>,
         "deller@gmx.de" <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
         "paulus@samba.org" <paulus@samba.org>,
         "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        "Martin Schwidefsky" <schwidefsky@de.ibm.com>,
         "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
         Liqin Chen <liqin.linux@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
@@ -103,20 +101,34 @@ CC:     Vineet Gupta <Vineet.Gupta1@synopsys.com>,
         "user-mode-linux-user@lists.sourceforge.net" 
         <user-mode-linux-user@lists.sourceforge.net>,
         "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>
-Subject: Re: [PATCH v3] arch: Kconfig: Let all architectures set endian explicitly
-References: <53ECE9DD.80004@gmail.com> <C2D7FE5348E1B147BCA15975FBA230753C4BA528@IN01WEMBXA.internal.synopsys.com> <CAF0htA6qfhyVXEuLbruiz+dfxnieF-309NdxSDhoEYHM=aBhQA@mail.gmail.com>
-In-Reply-To: <CAF0htA6qfhyVXEuLbruiz+dfxnieF-309NdxSDhoEYHM=aBhQA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <gang.chen.5i5j@gmail.com>
+Subject: Re: [PATCH v3] arch: Kconfig: Let all architectures set endian
+ explicitly
+Thread-Topic: [PATCH v3] arch: Kconfig: Let all architectures set endian
+ explicitly
+Thread-Index: AQHPt+CPQyNRLz1f9kGDGhxSg+sSdQ==
+Date:   Thu, 14 Aug 2014 23:12:53 +0000
+Message-ID: <C2D7FE5348E1B147BCA15975FBA230753C4BA673@IN01WEMBXA.internal.synopsys.com>
+References: <53ECE9DD.80004@gmail.com>
+ <C2D7FE5348E1B147BCA15975FBA230753C4BA528@IN01WEMBXA.internal.synopsys.com>
+ <CAF0htA6qfhyVXEuLbruiz+dfxnieF-309NdxSDhoEYHM=aBhQA@mail.gmail.com>
+ <53ED36AB.8020703@gmail.com>
+Accept-Language: en-US, en-IN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.9.21.32]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <Vineet.Gupta1@synopsys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42110
+X-archive-position: 42111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gang.chen.5i5j@gmail.com
+X-original-sender: Vineet.Gupta1@synopsys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -129,41 +141,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/15/2014 02:27 AM, Lennox Wu wrote:
-> I don't think it's necessary, what's the benfit?
-> 
-> 2014-08-15 2:21 GMT+08:00 Vineet Gupta <Vineet.Gupta1@synopsys.com>:
-> 
->> On Thursday 14 August 2014 09:55 AM, Chen Gang wrote:
-[...]
->>> diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
->>> index 9596b0a..e939abd 100644
->>> --- a/arch/arc/Kconfig
->>> +++ b/arch/arc/Kconfig
->>> @@ -35,6 +35,7 @@ config ARC
->>>       select OF_EARLY_FLATTREE
->>>       select PERF_USE_VMALLOC
->>>       select HAVE_DEBUG_STACKOVERFLOW
->>> +     select CPU_LITTLE_ENDIAN if !CPU_BIG_ENDIAN
->>
->> It is not clear what exactly are you trying to fix. What doesn't work w/o
->> this
->> patch !
->>
+On Thursday 14 August 2014 03:22 PM, Chen Gang wrote:
+> For many individual modules may need check CPU_LITTLE_ENDIAN or
+> CPU_BIG_ENDIAN, which is an architecture's attribute.
+>
+> Or they have to list many architectures which they support, which they
+> don't support. And still, it is not precise.
+>
+> For architecture API, endian is a main architecture's attribute which
+> may be used by outside, so every architecture need let outside know
+> about it, explicitly.
 
-For many individual modules may need check CPU_LITTLE_ENDIAN or
-CPU_BIG_ENDIAN, which is an architecture's attribute.
+I don't think that is correct. The modules need to use standard API e.g. swab
+which will take care of proper endian handling anyways. Why would a module do
+anything endian specific outside of those APIs.
 
-Or they have to list many architectures which they support, which they
-don't support. And still, it is not precise.
+And again is this churn just theoretical or do you really have a issue at hand ! I
+would not accept a change for ARC unless you prove that something is broken (or
+atleast potentially broken) !
 
-For architecture API, endian is a main architecture's attribute which
-may be used by outside, so every architecture need let outside know
-about it, explicitly.
-
-
-Thanks.
--- 
-Chen Gang
-
-Open share and attitude like air water and life which God blessed
+-Vineet

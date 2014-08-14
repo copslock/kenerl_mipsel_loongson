@@ -1,33 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2014 14:46:58 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52094 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2014 16:22:53 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52403 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6842554AbaHNMqz1r0s0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Aug 2014 14:46:55 +0200
+        id S6901459AbaHNOWWOKKCV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Aug 2014 16:22:22 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7ECkrPZ015169;
-        Thu, 14 Aug 2014 14:46:53 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7EEMLBi016907
+        for <linux-mips@linux-mips.org>; Thu, 14 Aug 2014 16:22:22 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7ECkqYr015168;
-        Thu, 14 Aug 2014 14:46:52 +0200
-Date:   Thu, 14 Aug 2014 14:46:52 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7EEMLOU016906
+        for linux-mips@linux-mips.org; Thu, 14 Aug 2014 16:22:21 +0200
+Date:   Thu, 14 Aug 2014 16:22:21 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/2] MIPS: MSP71xx: remove unused plat_irq_dispatch()
- argument
-Message-ID: <20140814124652.GE21008@linux-mips.org>
-References: <1407967776-7320-1-git-send-email-ryazanov.s.a@gmail.com>
- <1407967776-7320-2-git-send-email-ryazanov.s.a@gmail.com>
+To:     linux-mips@linux-mips.org
+Subject: Re: [ADMIN] Outages on linux-mips.org
+Message-ID: <20140814142221.GF21008@linux-mips.org>
+References: <20140813121919.GK11869@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1407967776-7320-2-git-send-email-ryazanov.s.a@gmail.com>
+In-Reply-To: <20140813121919.GK11869@linux-mips.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42095
+X-archive-position: 42096
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,12 +41,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 14, 2014 at 02:09:35AM +0400, Sergey Ryazanov wrote:
+On Wed, Aug 13, 2014 at 02:19:20PM +0200, Ralf Baechle wrote:
 
-> Remove unused argument to make the plat_irq_dispatch() function
-> declaration similar to the realization of other platforms.
+> In the past days there have been several outages of services provided
+> by linux-mips.org due excessive load on the machine, crashes of the VM
+> and its hosts system.  Resolving this is going to take some time so
+> please bear with me while the machine is suffering for you ;-)
 
-The issue may be harmless but the regs argument of the false argument
-isn't even being passed in!
+For the moment the problem appears to be under control even though
+the system is processing a bunch of -stable kernels.  Touch wood ...
+
+File corruption appears to have been limited to the mail spool so some
+in transit email has been lost and you may want to consider resending.  As
+for postings to the list you can check in the web archive if your posting
+made it; patches to the linux-mips mailing list should also show up in
+patchwork almost immediately.
 
   Ralf

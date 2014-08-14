@@ -1,35 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2014 16:57:05 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52555 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6854401AbaHNO5BNvgFs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Aug 2014 16:57:01 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7EEv07E017581
-        for <linux-mips@linux-mips.org>; Thu, 14 Aug 2014 16:57:00 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7EEv07j017580
-        for linux-mips@linux-mips.org; Thu, 14 Aug 2014 16:57:00 +0200
-Date:   Thu, 14 Aug 2014 16:57:00 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Subject: Re: [ADMIN] Outages on linux-mips.org
-Message-ID: <20140814145700.GB17477@linux-mips.org>
-References: <20140813121919.GK11869@linux-mips.org>
- <20140814142221.GF21008@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2014 17:09:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30427 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6901545AbaHNPJey8VJr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Aug 2014 17:09:34 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 84C4C943AA80;
+        Thu, 14 Aug 2014 16:09:24 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 14 Aug
+ 2014 16:09:27 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 14 Aug 2014 16:09:27 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 14 Aug
+ 2014 16:09:27 +0100
+Message-ID: <53ECD126.7090103@imgtec.com>
+Date:   Thu, 14 Aug 2014 16:09:26 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20140814142221.GF21008@linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: Bug tracking system
+References: <20140814145558.GA17477@linux-mips.org>
+In-Reply-To: <20140814145558.GA17477@linux-mips.org>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42100
+X-archive-position: 42101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,17 +49,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 14, 2014 at 04:22:21PM +0200, Ralf Baechle wrote:
+On 14/08/14 15:55, Ralf Baechle wrote:
+> While I'm tinkering with the system - linux-mips.org still has no
+> bug tracking system to track bugs and so issues get forgotten also the
+> only system we have to track feature requests and other to-do items
+> currently is the to do page in the wiki.  But the wiki isn't the best
+> medium for this purpose.  So should we install something like bugzilla -
+> which I personally never liked - or other tracking system?  Suggestions?
 
-> > In the past days there have been several outages of services provided
-> > by linux-mips.org due excessive load on the machine, crashes of the VM
-> > and its hosts system.  Resolving this is going to take some time so
-> > please bear with me while the machine is suffering for you ;-)
-> 
-> For the moment the problem appears to be under control even though
-> the system is processing a bunch of -stable kernels.  Touch wood ...
+If bugzilla is to be used, would it make sense to use the kernel.org
+bugzilla which already has a MIPS category, rather than setting up a new
+one?
 
-Famous last words - the wiki database has been damaged but for the
-moment the wiki's still limping along ...
+https://bugzilla.kernel.org/buglist.cgi?product=Platform%20Specific%2FHardware&component=MIPS&resolution=---
 
-  Ralf
+Cheers
+James

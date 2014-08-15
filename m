@@ -1,98 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2014 04:02:53 +0200 (CEST)
-Received: from mail-pa0-f43.google.com ([209.85.220.43]:41407 "EHLO
-        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6855142AbaHOCCsVXJjD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2014 04:02:48 +0200
-Received: by mail-pa0-f43.google.com with SMTP id lf10so2678051pab.16
-        for <multiple recipients>; Thu, 14 Aug 2014 19:02:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=h5EvHdt+8yp+8ser3AXFJOkyXGDS4RVPgKEPlkYBUnk=;
-        b=rS5ZugBS5SXG4UwS6DxAWQVYjb9a3SVguC42GXiEoMrg3tBDzRJY7eT5bbHukJB3gU
-         mbCI7TTxXqU6JrNGH4wwMWgeuvTmKVClB70iuOOcJrZa2YdpqM1mIDyqGCQnl5uA1Wzb
-         wuFkM9QoysYgJeF1m14HGUkEl/Vk/vRQc6BNyERNlgslwjFG1XYKU5GNYBEwa7JUXg4H
-         BNXN/euelb6znGOYgSUnWzSN93Hx5zDT6CBzVfoNimsxjvRpx0X6FGtC1tUcld5BFKcP
-         jDabDG4mhZdMSd9fXdjKHKgHwBrj8p72PjFuMCk+V2PzSNqFIg12HR6CjUMF2rB6HLD7
-         AlyQ==
-X-Received: by 10.68.68.225 with SMTP id z1mr8209881pbt.110.1408068160696;
-        Thu, 14 Aug 2014 19:02:40 -0700 (PDT)
-Received: from ShengShiZhuChengdeMacBook-Pro.local ([219.143.82.150])
-        by mx.google.com with ESMTPSA id ov4sm6603416pbc.86.2014.08.14.19.02.10
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 14 Aug 2014 19:02:40 -0700 (PDT)
-Message-ID: <53ED6B40.8000409@gmail.com>
-Date:   Fri, 15 Aug 2014 10:06:56 +0800
-From:   Chen Gang <gang.chen.5i5j@gmail.com>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:31.0) Gecko/20100101 Thunderbird/31.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2014 10:04:29 +0200 (CEST)
+Received: from bastet.se.axis.com ([195.60.68.11]:38973 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6855163AbaHOIEUlEREV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2014 10:04:20 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id 5D713180DE;
+        Fri, 15 Aug 2014 10:04:13 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id Y1t6EX7FTrTw; Fri, 15 Aug 2014 10:04:04 +0200 (CEST)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bastet.se.axis.com (Postfix) with ESMTP id 8CB1D180A9;
+        Fri, 15 Aug 2014 10:04:04 +0200 (CEST)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 587D91691;
+        Fri, 15 Aug 2014 10:03:55 +0200 (CEST)
+Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
+        by boulder.se.axis.com (Postfix) with ESMTP id 4CDDB115E;
+        Fri, 15 Aug 2014 10:03:55 +0200 (CEST)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by thoth.se.axis.com (Postfix) with ESMTP id 4AADC34005;
+        Fri, 15 Aug 2014 10:03:55 +0200 (CEST)
+Received: from [10.88.41.1] (10.88.41.1) by xmail2.se.axis.com (10.0.5.74)
+ with Microsoft SMTP Server (TLS) id 8.3.342.0; Fri, 15 Aug 2014 10:03:55
+ +0200
+Message-ID: <1408089827.15236.2.camel@lnxlarper.se.axis.com>
+Subject: Re: [PATCH v2] MIPS: Remove race window in page fault handling
+From:   Lars Persson <lars.persson@axis.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Date:   Fri, 15 Aug 2014 10:03:47 +0200
+In-Reply-To: <20140808204705.GH29898@linux-mips.org>
+References: <1407505668-18547-1-git-send-email-larper@axis.com>
+         <53E500E4.5020509@gmail.com> <20140808204705.GH29898@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4-3 
 MIME-Version: 1.0
-To:     Max Filippov <jcmvbkbc@gmail.com>
-CC:     Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        "vgupta@synopsys.com" <vgupta@synopsys.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jean Delvare <jdelvare@suse.de>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>, hskinnemoen@gmail.com,
-        egtvedt@samfundet.no, realmz6@gmail.com,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>, starvik@axis.com,
-        jesper.nilsson@axis.com, David Howells <dhowells@redhat.com>,
-        rkuo@codeaurora.org, tony.luck@intel.com, fenghua.yu@intel.com,
-        takata@linux-m32r.org, James Hogan <james.hogan@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        yasutake.koichi@jp.panasonic.com, Jonas Bonn <jonas@southpole.se>,
-        jejb@parisc-linux.org, deller@gmx.de,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        heiko.carstens@de.ibm.com, Liqin Chen <liqin.linux@gmail.com>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>, jdike@addtoit.com,
-        Richard Weinberger <richard@nod.at>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        linux390@de.ibm.com, x86@kernel.org, linux-alpha@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        Linux/MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-am33-list@redhat.com, linux@lists.openrisc.net,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v3] arch: Kconfig: Let all architectures set endian explicitly
-References: <53ECE9DD.80004@gmail.com>  <CAMo8BfLuXZ8zyEoKdo8yb6nd+pZUnx0YEL9nqHx98kt76ezfYg@mail.gmail.com> <CAMo8Bf+=EgXc0hq14y9Kdykaw_7E52kRAENU1P0fAK4tTx=JpA@mail.gmail.com>
-In-Reply-To: <CAMo8Bf+=EgXc0hq14y9Kdykaw_7E52kRAENU1P0fAK4tTx=JpA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <gang.chen.5i5j@gmail.com>
+Return-Path: <lars.persson@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42115
+X-archive-position: 42116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gang.chen.5i5j@gmail.com
+X-original-sender: lars.persson@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -105,68 +60,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 8/15/14 9:52, Max Filippov wrote:
-> On Fri, Aug 15, 2014 at 5:47 AM, Max Filippov <jcmvbkbc@gmail.com> wrote:
->> Hi Chen,
->>
->> On Thu, Aug 14, 2014 at 8:54 PM, Chen Gang <gang.chen.5i5j@gmail.com> wrote:
->>> Normal architectures:
->>>
->>>  - Big endian: avr32, frv, m68k, openrisc, parisc, s390, sparc
->>>
->>>  - Little endian: alpha, blackfin, cris, hexagon, ia64, metag, mn10300,
->>>                   score, unicore32, x86
->>>
->>>  - Choose in config time: arc, arm, arm64, c6x, m32r, mips, powerpc, sh
->>>
->>> Special architectures:
->>>
->>>  - Deside by compiler: microblaze, tile, xtensa.
->>>
->>>  - Deside by building host: um
->>>
->>>  - Next, need improve Kbuild to probe endian to deside whether need mark
->>>    __BUILDING_TIME_BIG_ENDIAN__ before real config.
-
-Please check this comments, thanks.
-
->>
->> [...]
->>
->>> diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
->>> index 3a617af..a3e8f7e 100644
->>> --- a/arch/xtensa/Kconfig
->>> +++ b/arch/xtensa/Kconfig
->>> @@ -22,6 +22,8 @@ config XTENSA
->>>         select HAVE_IRQ_TIME_ACCOUNTING
->>>         select HAVE_PERF_EVENTS
->>>         select COMMON_CLK
->>> +       select CPU_BIG_ENDIAN if __BUILDING_TIME_BIG_ENDIAN__
->>> +       select CPU_LITTLE_ENDIAN if !CPU_BIG_ENDIAN
->>>         help
->>>           Xtensa processors are 32-bit RISC machines designed by Tensilica
->>>           primarily for embedded systems.  These processors are both
->>
->> I've tested this part and it doesn't select neither CPU_BIG_ENDIAN,
->> nor CPU_LITTLE_ENDIAN. And looking into the Kconfig/Kbuild I cound't
+On fre, 2014-08-08 at 22:47 +0200, Ralf Baechle wrote:
+> On Fri, Aug 08, 2014 at 09:55:00AM -0700, David Daney wrote:
 > 
-> Correction: it always selects CPU_LITTLE_ENDIAN, regardless of the
-> compiler endianness.
+> > >+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
+> > >+	pte_t *ptep, pte_t pteval);
+> > >+
+> > 
+> > Is it possible to reorder the code such that this declaration is not
+> > necessary?
 > 
+> That's not as obvious as one might think initially.  set_pte_at needs
+> to be defined after set_pte but before clear_pte which is calling set_pte_at.
+> 
+> Of both set_pte and clear_pte there are two #ifdefd variants.
+> 
+> set_pte_at is a fairly small function only but it's invoked quite a few
+> times so I was a little concerned about the effect on I'm experimenting with
+> outlining set_pte_at entirely.  ip22_defconfig with the patch applied as
+> posted; this is the effect on code size.
+> 
+>   text    data     bss     dec     hex filename
+> 3790118  175304   84544 4049966  3dcc2e vmlinux		as posted
+> 3789062	 175304	  84544	4048910	 3dc80e	vmlinux		set_pte_at outlined
+> 
+>   Ralf
 
-Yeah, at present, it always select CPU_LITTLE_ENDIAN, next, Kbuild need
-be improved for it, just the comments said.
+Hi Ralf
 
-If this patch can be pass checking, I shall improve the Kbuild for it,
-also will modify some individual drivers to use CPU_*_ENDIAN.
+Should I update the patch with outlined set_pte_at ?
 
-I guess, we need Cc to kbuild for getting more ideas, suggestions, or
-completions.
-
-
-
-THanks.
--- 
-Chen Gang
-
-Open, share, and attitude like air, water, and life which God blessed
+Best Regards,
+ Lars

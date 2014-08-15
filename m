@@ -1,84 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2014 10:57:23 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:42236 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816855AbaHOI5NOV8We (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2014 10:57:13 +0200
-Received: by mail-pa0-f49.google.com with SMTP id hz1so3160668pad.22
-        for <multiple recipients>; Fri, 15 Aug 2014 01:57:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=VOeqw/n7UCD7wMmRLxfit5rey0ZmaJSVDygLXIGaB9g=;
-        b=k3IYshbANurNxjIxvmqWAvWiikaWtHUqR+X+lmAlJjP/5jTWFLA6JGaODj+yzfwRzH
-         BQFxBwglwpSJsVpmIEh5kO0DzTLWDCvZ7V3YMlMBLAHeO+stYkx1efLOLodmM7/W6ImM
-         hurylFKXCDDO60sx9S49EFiYYEkbYPVCcalacUTq7NrnfAG2GyaLSP95H+Gw6D6ZGpfU
-         jNOFq6CLFoQz51CKrGF10RJLaISITtyXAAOglQlaKuxhA0JGZGpEkEcGTyg9KUR0AnzH
-         tlmnQlzXLwoq5U5N3t4cCuIbFZOdLRPbE8GjK8rUb35i9UobGEMan/XD1F2MeMCc54NO
-         5dQQ==
-X-Received: by 10.66.139.232 with SMTP id rb8mr10473263pab.130.1408093025145;
-        Fri, 15 Aug 2014 01:57:05 -0700 (PDT)
-Received: from [192.168.2.114] ([124.127.118.42])
-        by mx.google.com with ESMTPSA id zh7sm25873054pab.1.2014.08.15.01.56.33
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 15 Aug 2014 01:57:04 -0700 (PDT)
-Message-ID: <53EDCC60.5040608@gmail.com>
-Date:   Fri, 15 Aug 2014 17:01:20 +0800
-From:   Chen Gang <gang.chen.5i5j@gmail.com>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:31.0) Gecko/20100101 Thunderbird/31.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2014 13:01:43 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:54777 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6855192AbaHOLBfXvYue (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Aug 2014 13:01:35 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7FB1VC3007606;
+        Fri, 15 Aug 2014 13:01:32 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7FB1U7q007605;
+        Fri, 15 Aug 2014 13:01:30 +0200
+Date:   Fri, 15 Aug 2014 13:01:30 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Lars Persson <lars.persson@axis.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: Remove race window in page fault handling
+Message-ID: <20140815110129.GB5642@linux-mips.org>
+References: <1407505668-18547-1-git-send-email-larper@axis.com>
+ <53E500E4.5020509@gmail.com>
+ <20140808204705.GH29898@linux-mips.org>
+ <1408089827.15236.2.camel@lnxlarper.se.axis.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Arnd Bergmann <arnd@arndb.de>, akpm@linux-foundation.org,
-        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        vgupta@synopsys.com, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jean Delvare <jdelvare@suse.de>, linux@arm.linux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com,
-        hskinnemoen@gmail.com, egtvedt@samfundet.no, realmz6@gmail.com,
-        msalter@redhat.com, a-jacquiot@ti.com, starvik@axis.com,
-        jesper.nilsson@axis.com, dhowells@redhat.com, rkuo@codeaurora.org,
-        tony.luck@intel.com, fenghua.yu@intel.com, takata@linux-m32r.org,
-        james.hogan@imgtec.com, Michal Simek <monstr@monstr.eu>,
-        yasutake.koichi@jp.panasonic.com, jonas@southpole.se,
-        jejb@parisc-linux.org, deller@gmx.de,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        paulus@samba.org, mpe@ellerman.id.au,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        heiko.carstens@de.ibm.com, Liqin Chen <liqin.linux@gmail.com>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, cmetcalf@tilera.com,
-        jdike@addtoit.com, Richard Weinberger <richard@nod.at>,
-        gxt@mprc.pku.edu.cn, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        linux390@de.ibm.com, x86@kernel.org, linux-alpha@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
-        linux-m68k@vger.kernel.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        linux@openrisc.net, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net,
-        linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org
-Subject: Re: [PATCH v3] arch: Kconfig: Let all architectures set endian explicitly
-References: <53ECE9DD.80004@gmail.com> <20140814180418.GA20777@linux-mips.org> <53ED34CE.3040001@gmail.com>
-In-Reply-To: <53ED34CE.3040001@gmail.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <gang.chen.5i5j@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1408089827.15236.2.camel@lnxlarper.se.axis.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42118
+X-archive-position: 42119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gang.chen.5i5j@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,33 +46,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Fri, Aug 15, 2014 at 10:03:47AM +0200, Lars Persson wrote:
 
-
-On 8/15/14 6:14, Chen Gang wrote:
-> On 08/15/2014 02:04 AM, Ralf Baechle wrote:
->>
 > 
-> OK, thanks, I assumes when support both endian, the default choice is
-> CPU_BIG_ENDIAN, although no default value for choice (originally, I did
-> worry about it).
+> On fre, 2014-08-08 at 22:47 +0200, Ralf Baechle wrote:
+> > On Fri, Aug 08, 2014 at 09:55:00AM -0700, David Daney wrote:
+> > 
+> > > >+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
+> > > >+	pte_t *ptep, pte_t pteval);
+> > > >+
+> > > 
+> > > Is it possible to reorder the code such that this declaration is not
+> > > necessary?
+> > 
+> > That's not as obvious as one might think initially.  set_pte_at needs
+> > to be defined after set_pte but before clear_pte which is calling set_pte_at.
+> > 
+> > Of both set_pte and clear_pte there are two #ifdefd variants.
+> > 
+> > set_pte_at is a fairly small function only but it's invoked quite a few
+> > times so I was a little concerned about the effect on I'm experimenting with
+> > outlining set_pte_at entirely.  ip22_defconfig with the patch applied as
+> > posted; this is the effect on code size.
+> > 
+> >   text    data     bss     dec     hex filename
+> > 3790118  175304   84544 4049966  3dcc2e vmlinux		as posted
+> > 3789062	 175304	  84544	4048910	 3dc80e	vmlinux		set_pte_at outlined
+> > 
+> >   Ralf
 > 
->> So I think you can just drop the MIPS segment from your patch.
->>
+> Hi Ralf
 > 
-> If what I assumes is correct, what you said sounds reasonable to me.
-> 
-> 
+> Should I update the patch with outlined set_pte_at ?
 
-So for me, it is harmless to add CPU_*_ENDIAN explicitly, and can let
-other members don't need think of.
+Not necessary; I've already done that myself.  I was just waiting for
+comments.
 
-By the way, for sh, it is almost the same case, except it contents the
-default value, for me, it is clear enough, so I skip sh architecture in
-this patch.
+Thanks for your work on tracking this down.  I wonder, how did you discover
+this issue?
 
-
-Thanks
--- 
-Chen Gang
-
-Open, share, and attitude like air, water, and life which God blessed
+  Ralf

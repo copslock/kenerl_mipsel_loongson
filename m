@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2014 22:16:09 +0200 (CEST)
-Received: from ec2-54-194-5-104.eu-west-1.compute.amazonaws.com ([54.194.5.104]:51636
-        "EHLO smtpbgie2.qq.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6855189AbaHOUQAx2cVC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2014 22:16:00 +0200
-X-QQ-mid: bizesmtp7t1408133746t174t203
-Received: from mail-ig0-f178.google.com (unknown [209.85.213.178])
-        by esmtp4.qq.com (ESMTP) with SMTP id 0
-        for <linux-mips@linux-mips.org>; Sat, 16 Aug 2014 04:15:44 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FF22B00A0000000
-X-QQ-FEAT: Ay4iuitErgnyEvtQ0ZFis94y9Xe7x5aEBq4fmgdMJkusuR7DXle3GOGQrSZVQ
-        tslRA8FMRZV4Gp3Wh04DV6XhMtTkyk/h7d9tRVNfKUH1ab8xDEo0G1KoTW1mOzUz51PIskA
-        FuL/vxb6TyUc2H3ZEn48AA0Pu9GoxD1iC1uGYeoWdItOy4OrlK/0BT3Dx/0GqjR7v7q72es
-        =
-X-QQ-GoodBg: 0
-Received: by mail-ig0-f178.google.com with SMTP id uq10so2825529igb.17
-        for <linux-mips@linux-mips.org>; Fri, 15 Aug 2014 13:15:43 -0700 (PDT)
-X-Received: by 10.43.63.134 with SMTP id xe6mr428836icb.97.1408133743897; Fri,
- 15 Aug 2014 13:15:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2014 01:20:17 +0200 (CEST)
+Received: from qmta09.westchester.pa.mail.comcast.net ([76.96.62.96]:44900
+        "EHLO qmta09.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6901708AbaHQGIYawbCo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Aug 2014 08:08:24 +0200
+Received: from omta22.westchester.pa.mail.comcast.net ([76.96.62.73])
+        by qmta09.westchester.pa.mail.comcast.net with comcast
+        id fhCi1o0011ap0As59hCieM; Sun, 17 Aug 2014 05:12:42 +0000
+Received: from [192.168.1.13] ([50.190.84.14])
+        by omta22.westchester.pa.mail.comcast.net with comcast
+        id fhCi1o00F0JZ7Re3ihCiZA; Sun, 17 Aug 2014 05:12:42 +0000
+Message-ID: <53F039B3.9010503@gentoo.org>
+Date:   Sun, 17 Aug 2014 01:12:19 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-Received: by 10.107.42.198 with HTTP; Fri, 15 Aug 2014 13:15:23 -0700 (PDT)
-In-Reply-To: <CAGXxSxUBej1hTzDWmf1tz=vST1Z1gXvzagO3B+4wWhuVX4Q5_w@mail.gmail.com>
-References: <1400137743-8806-1-git-send-email-chenj@lemote.com>
- <1400469247-17788-1-git-send-email-chenj@lemote.com> <1818781.bbVdBBlkH9@radagast>
- <CAGXxSxUBej1hTzDWmf1tz=vST1Z1gXvzagO3B+4wWhuVX4Q5_w@mail.gmail.com>
-From:   Chen Jie <chenj@lemote.com>
-Date:   Sat, 16 Aug 2014 04:15:23 +0800
-Message-ID: <CAGXxSxWxRYC_84A_kMsXZ_Hc1KMVDcrXQp62MoqPhhthc26mdg@mail.gmail.com>
-Subject: Re: [PATCH, v2] MIPS: lib: csum_partial: more instruction paral
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        markos.chandras@imgtec.com,
-        =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
-Content-Type: text/plain; charset=UTF-8
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenj@lemote.com>
+To:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: IP28 boot error under 3.16
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1408252362;
+        bh=K981uhDededgUjvcoVZ80eDGa0OFRvS4ZuQudkhUbsI=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=WMTsB1i45S/uWLRlXNkCyry8LgKUCcCpqXc5G4/ELUuBVGssPl10oIIMki9Qk08UK
+         6l5zmfazHpCtlZ90i/hn528ll8pyMi+dixWRStE/cisk68jghXWdSSxuIgwMyBzSK9
+         jHcHFN3TVb4QNZB1mItn4NCdAMNK9pc9En2qJA2lPsk7sDEj+6u4sMe7ZUpCxNoqRO
+         zlkiz7RiVcb5eWkDAqU/jMpKWojafpDkn+5AzPAL7F2BqGtdQ0q77CxkbfDPT9yHNs
+         XnZxSHHx6SM3KgE1NqxlMN1P47pjcp14nYQOGoDefgJbNLimCVP/XNPOdmKrQHJ64a
+         l1Ve2gi7/UfHA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42121
+X-archive-position: 42122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenj@lemote.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,107 +51,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-05-19 23:32 GMT+08:00 Chen Jie <chenj@lemote.com>:
-> 2014-05-19 14:59 GMT+08:00 James Hogan <james.hogan@imgtec.com>:
->> On Monday 19 May 2014 11:14:07 chenj wrote:
->>> Computing sum introduces true data dependency, e.g.
->>>       ADDC(sum, t0)
->>>       ADDC(sum, t1)
->>>       ADDC(sum, t2)
->>>       ADDC(sum, t3)
->>> Here, each ADDC(sum, ...) references the sum value updated by previous ADDC.
->>>
->>> In this patch, above sequence is adjusted as following:
->>>       ADDC(t0, t1)
->>>       ADDC(t2, t3)
->>>       ADDC(sum, t0)
->>>       ADDC(sum, t2)
->>> The first two ADDC operations are independent, hence can be executed
->>> simultaneously if possible.
->>
->> The actual patch appears to change it to this:
->> ADDC(t0, t1)
->> ADDC(sum, t0)
->> ADDC(t2, t3)
->> ADDC(sum, t2)
->>
->> which is slightly different (presumably due to the interleaved stores in some
->> of the cases).
->>
->>> This patch improves instruction level parallelism, and brings at most 50%
->>> csum performance gain on Loongson 3a processor[1].
->>
->> Nice results.
->>
->> The stuff below the --- will get dropped when the patch is applied though,
->> after which the "[1]" won't refer to anything.
->>
-> Thanks for your suggestion, I'll amend the commit message further later.
->
-> Basically, the patch reduces the case of one ADDC depending on the
-> result of the previous ADDC.
->
-> BTW, I'm not sure whether the sum value of the new implementation is
-> equivalent to the original one, but in my test(make run_test of the
-> csum_test.tar.gz, and a comparing patch in kernel) it is.
 
-It is equivalent to the original one.
-More explanation about the math behind "x ADDC y ADDC z == x ADDC (y ADDC z)":
+Has anyone tried booting IP28 lately?
 
-Let C = the value of '(uint64_t) -1 + 1' in 64bit case, then
-0 <= x <= C-1
-0 <= y <= C-1
-0 <= z <= C-1
+I tried a cut of 3.16 from git (~08/05/14) and I get the following crash at
+the ARCS console:
 
-Here 'x ADDC y' is defined as
-x + y >= C ? x + y - C + 1 : x + y
+Exception: <vector=normal>
+Status register: 0x34004882<CU1,CU0,FR,IM7,IM4,IPL=???,KX,MODE=KERNEL>
+Cause register: 0x10<CE=0,EXC=RADE>
+Exception PC: 0xa800000020654004, Exception RA: 0xa800000020654c9c
+Read address error exception, bad address: 0xdfbdd600
+Local I/O interrupt register 2: 0x0xc8<EISA,SLOT0,SLOT1>
+  Saved user regs in hex (&gpda9000000020f01dc8, & regs 0x9000000020f01fc9):
+  arg: dfbe0000 ffffffffa8000000 ffffffffa8000000 40000 20690000 20690000
+20690000 9
+  tmp: 9 38 0 ffffffff9fc60670
+  sve: a8000000204f1330 ffffffff9fc572d0 ffffffff9fc572d3
+  t8 206e0000 t9 206e0000 at 34004880 v0 dfbd9800 v1 a800000020654fe0 k1
+ffffffffbad11bad
+  gp a80000002060c000 fp 740b sp a80000002060fdc0 ra a800000020654c9c
 
+PANIC: Unexpected exception
 
-Case 1: x + y >= C && x + y - C + 1 + z < C (i.e. x ADDC y ADDC z = x
-+ y - C +1 + z)
-if y + z >= C:
-=> y ADDC z = y + z - C + 1
-C > x + y + z - C + 1
-=> The result is x + y + z - C + 1
+Going by the Exception PC and the RA, I figured out which line looks to be
+causing this:
 
-if y + z < C:
-=> y ADDC z = y + z
-x + y >= C
-=> x + (y + z) >= C + z >= C
-=> The result is x + y + z - C + 1
+    (gdb) l *(sgihpc_init+0x78)
+    0xa800000020654004 is in sgihpc_init (arch/mips/sgi-ip22/ip22-hpc.c:41).
+    36              hpc3c1 = (struct hpc3_regs *)
+    37                       ioremap(HPC3_CHIP1_BASE, sizeof(struct hpc3_regs));
+    38              /* IOC lives in PBUS PIO channel 6 */
+    39              sgioc = (struct sgioc_regs *)hpc3c0->pbus_extregs[6];
+    40
+--> 41              hpc3c0->pbus_piocfg[6][0] |= HPC3_PIOCFG_DS16;
+    42              if (ip22_is_fullhouse()) {
+    43                      /* Full House comes with INT2 which lives in
+PBUS PIO
+    44                       * channel 4 */
+    45                      sgint = (struct sgint_regs
+*)hpc3c0->pbus_extregs[4];
 
-Case 2: x + y < C && x + y + z >= C (i.e. x ADDC y ADDC z = x + y + z - C + 1)
-if y + z >= C:
-=> y ADDC z = y + z - C + 1
-C > x + y
-=> C + z - C + 1 > x + y + z - C + 1
-=> z + 1 > x + y + z - C + 1
-=> C >= z + 1 > x + y + z - C + 1
-=> The result is x + y + z - C + 1
+To me, it looks like a pointer isn't getting converted to 64bit address
+space correctly (0xdfbdd600 -> ???).  I haven't played with this IP28
+machine for a few years, so I forget what the best approach to fixing this is.
 
-if y + z < C:
-=> y ADDC z = y + z
-x + y + z >= C
-=> The result is x + y + z - C + 1
+Thoughts?
 
-Case 3: x + y >= C && x + y - C + 1 + z >= C (i.e. x ADDC y ADDC z = x
-+ y + z - 2C + 2)
-x + y - C + 1 + z >= C
-=> y + z >= 2C - 1 - x
-C >= 1 + x
-=> 2C - 1 - x >= C
-=> y + z >= C
-=> y ADDC z = y + z - C + 1
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
 
-x + y - C + 1 + z >= C
-=> The result is  x + y + z - 2C + 2
+"The past tempts us, the present confuses us, the future frightens us.  And
+our lives slip away, moment by moment, lost in that vast, terrible in-between."
 
-
-Case 4: x + y < C && x + y + z < C (i.e. x ADDC y ADDC z = x + y + z)
-x + y + z < C
-=> y + z < C - x <= C
-=> y + z < C
-=> y ADDC z = y + z
-
-x + y + z < C
-=> The result is x + y + z
+--Emperor Turhan, Centauri Republic

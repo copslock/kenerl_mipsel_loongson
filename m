@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2014 17:12:15 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:53640 "EHLO elvis.franken.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2014 17:28:05 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:53692 "EHLO elvis.franken.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6855222AbaHRPMLTd2dC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Aug 2014 17:12:11 +0200
+        id S6855229AbaHRP2BJ2Bvc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Aug 2014 17:28:01 +0200
 Received: from uucp (helo=solo.franken.de)
         by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1XJObS-00027D-00; Mon, 18 Aug 2014 17:12:10 +0200
+        id 1XJOqm-0002ob-00; Mon, 18 Aug 2014 17:28:00 +0200
 Received: by solo.franken.de (Postfix, from userid 1000)
-        id 72A0E1D25F; Mon, 18 Aug 2014 17:12:04 +0200 (CEST)
-Date:   Mon, 18 Aug 2014 17:12:04 +0200
+        id 501C51D261; Mon, 18 Aug 2014 17:27:50 +0200 (CEST)
+Date:   Mon, 18 Aug 2014 17:27:50 +0200
 From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 To:     Joshua Kinard <kumba@gentoo.org>
 Cc:     Linux MIPS List <linux-mips@linux-mips.org>
 Subject: Re: IP28 boot error under 3.16
-Message-ID: <20140818151204.GA1784@alpha.franken.de>
+Message-ID: <20140818152750.GA1860@alpha.franken.de>
 References: <53F039B3.9010503@gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -24,7 +24,7 @@ Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42134
+X-archive-position: 42135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,19 +42,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Sun, Aug 17, 2014 at 01:12:19AM -0400, Joshua Kinard wrote:
-> 
-> Has anyone tried booting IP28 lately?
-
-will try hopefully tonight. I've checked my logs and last boot of
-one of my IP28 was with 3.1 *cough*
-
-> To me, it looks like a pointer isn't getting converted to 64bit address
-> space correctly (0xdfbdd600 -> ???).  I haven't played with this IP28
-> machine for a few years, so I forget what the best approach to fixing this is.
-> 
 > Thoughts?
 
-looks like ioremap is broken, that's where the hpc pointer is coming from.
+something like
+
+#define IO_BASE                 _AC(0x9000000000000000, UL)
+
+in mach-ip28/spaces.h should do the trick. UNCAC_BASE also looks
+strange, no idea why there that way.
 
 Thomas.
 

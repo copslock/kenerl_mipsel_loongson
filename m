@@ -1,31 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2014 22:07:46 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:54815 "EHLO test.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6855164AbaHRUHXh0wqM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Aug 2014 22:07:23 +0200
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by test.hauke-m.de (Postfix) with ESMTPSA id CDDBA20179;
-        Mon, 18 Aug 2014 22:01:22 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org
-Cc:     jogo@openwrt.org, zajec5@gmail.com, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2] MIPS: BCM47XX: fix reboot problem on BCM4705/BCM4785
-Date:   Mon, 18 Aug 2014 22:01:16 +0200
-Message-Id: <1408392076-308-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2014 23:03:00 +0200 (CEST)
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:42150 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6855205AbaHRVCyCS9P8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Aug 2014 23:02:54 +0200
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by gateway1.nyi.internal (Postfix) with ESMTP id 9124123C31
+        for <linux-mips@linux-mips.org>; Mon, 18 Aug 2014 17:02:52 -0400 (EDT)
+Received: from frontend2 ([10.202.2.161])
+  by compute5.internal (MEProxy); Mon, 18 Aug 2014 17:02:52 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=date:from:to:cc:subject:message-id
+        :references:mime-version:content-type:in-reply-to; s=smtpout;
+         bh=KkgXM4zaLiLhT+EmJ1vYXSV28MM=; b=UtMlinX0J8UtW0w5NfZ/H8M5BHqj
+        xicUXGEaTJmIPLMpnEFXkwrEYK/6hzt1/nfnzdgb4rfMq/4j7IjDN+S34r2NwFcE
+        SV9KdhmFW+TfJ24C+KdPTV4bWjU1QkgM+YlhyS4qvXfDtRMbERf18TGYFstU78KF
+        fpocDW4aZaYZQic=
+X-Sasl-enc: XF3LsjldBY8hCUMq8dib3HasPu9vvPPENPrtthOJJdd+ 1408395772
+Received: from localhost (unknown [166.147.96.60])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 401FD6800FD;
+        Mon, 18 Aug 2014 17:02:52 -0400 (EDT)
+Date:   Mon, 18 Aug 2014 11:46:39 -0500
+From:   Greg KH <greg@kroah.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     stable@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [request for stable inclusion] MIPS: math-emu: Fix instruction
+ decoding
+Message-ID: <20140818164639.GA14942@kroah.com>
+References: <20140818135933.GA1214@mchandras-linux.le.imgtec.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20140818135933.GA1214@mchandras-linux.le.imgtec.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42136
+X-archive-position: 42137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: greg@kroah.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,53 +53,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This adds some code based on code from the Broadcom GPL tar to fix the
-reboot problems on BCM4705/BCM4785. I tried rebooting my device for ~10
-times and have never seen a problem. This reverts the changes in the
-previous commit and adds the real fix as suggested by Rafał.
+On Mon, Aug 18, 2014 at 02:59:33PM +0100, Markos Chandras wrote:
+> Hi Greg,
+> 
+> Could you please apply the following patch to the 3.16.X stable kernels?
+> 
+> c3b9b945e02e011c63522761e91133ea43eb6939
+> "MIPS: math-emu: Fix instruction decoding"
 
-Setting bit 22 in Reg 22, sel 4 puts the BIU (Bus Interface Unit) into
-async mode.
-
-The previous try was this:
-commit 316cad5c1d4daee998cd1f83ccdb437f6f20d45c
-Author: Hauke Mehrtens <hauke@hauke-m.de>
-Date:   Mon Jul 28 23:53:57 2014 +0200
-
-    MIPS: BCM47XX: make reboot more relaiable
-
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- arch/mips/bcm47xx/setup.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 2b63e7e..ad439c2 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -59,12 +59,21 @@ static void bcm47xx_machine_restart(char *command)
- 	switch (bcm47xx_bus_type) {
- #ifdef CONFIG_BCM47XX_SSB
- 	case BCM47XX_BUS_TYPE_SSB:
--		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 3);
-+		if (bcm47xx_bus.ssb.chip_id == 0x4785)
-+			write_c0_diag4(1 << 22);
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
-+		if (bcm47xx_bus.ssb.chip_id == 0x4785) {
-+			__asm__ __volatile__(
-+				".set\tmips3\n\t"
-+				"sync\n\t"
-+				"wait\n\t"
-+				".set\tmips0");
-+		}
- 		break;
- #endif
- #ifdef CONFIG_BCM47XX_BCMA
- 	case BCM47XX_BUS_TYPE_BCMA:
--		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 3);
-+		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 1);
- 		break;
- #endif
- 	}
--- 
-1.9.1
+Now applied.

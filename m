@@ -1,34 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2014 17:28:05 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:53692 "EHLO elvis.franken.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2014 22:07:46 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:54815 "EHLO test.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6855229AbaHRP2BJ2Bvc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Aug 2014 17:28:01 +0200
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1XJOqm-0002ob-00; Mon, 18 Aug 2014 17:28:00 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id 501C51D261; Mon, 18 Aug 2014 17:27:50 +0200 (CEST)
-Date:   Mon, 18 Aug 2014 17:27:50 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IP28 boot error under 3.16
-Message-ID: <20140818152750.GA1860@alpha.franken.de>
-References: <53F039B3.9010503@gentoo.org>
+        id S6855164AbaHRUHXh0wqM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Aug 2014 22:07:23 +0200
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by test.hauke-m.de (Postfix) with ESMTPSA id CDDBA20179;
+        Mon, 18 Aug 2014 22:01:22 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     jogo@openwrt.org, zajec5@gmail.com, linux-mips@linux-mips.org,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v2] MIPS: BCM47XX: fix reboot problem on BCM4705/BCM4785
+Date:   Mon, 18 Aug 2014 22:01:16 +0200
+Message-Id: <1408392076-308-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53F039B3.9010503@gentoo.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42135
+X-archive-position: 42136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,18 +38,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Aug 17, 2014 at 01:12:19AM -0400, Joshua Kinard wrote:
-> Thoughts?
+This adds some code based on code from the Broadcom GPL tar to fix the
+reboot problems on BCM4705/BCM4785. I tried rebooting my device for ~10
+times and have never seen a problem. This reverts the changes in the
+previous commit and adds the real fix as suggested by Rafał.
 
-something like
+Setting bit 22 in Reg 22, sel 4 puts the BIU (Bus Interface Unit) into
+async mode.
 
-#define IO_BASE                 _AC(0x9000000000000000, UL)
+The previous try was this:
+commit 316cad5c1d4daee998cd1f83ccdb437f6f20d45c
+Author: Hauke Mehrtens <hauke@hauke-m.de>
+Date:   Mon Jul 28 23:53:57 2014 +0200
 
-in mach-ip28/spaces.h should do the trick. UNCAC_BASE also looks
-strange, no idea why there that way.
+    MIPS: BCM47XX: make reboot more relaiable
 
-Thomas.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/bcm47xx/setup.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 2b63e7e..ad439c2 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -59,12 +59,21 @@ static void bcm47xx_machine_restart(char *command)
+ 	switch (bcm47xx_bus_type) {
+ #ifdef CONFIG_BCM47XX_SSB
+ 	case BCM47XX_BUS_TYPE_SSB:
+-		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 3);
++		if (bcm47xx_bus.ssb.chip_id == 0x4785)
++			write_c0_diag4(1 << 22);
++		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
++		if (bcm47xx_bus.ssb.chip_id == 0x4785) {
++			__asm__ __volatile__(
++				".set\tmips3\n\t"
++				"sync\n\t"
++				"wait\n\t"
++				".set\tmips0");
++		}
+ 		break;
+ #endif
+ #ifdef CONFIG_BCM47XX_BCMA
+ 	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 3);
++		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 1);
+ 		break;
+ #endif
+ 	}
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+1.9.1

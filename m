@@ -1,45 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 04:55:14 +0200 (CEST)
-Received: from qmta14.westchester.pa.mail.comcast.net ([76.96.59.212]:46151
-        "EHLO qmta14.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816503AbaHSCzLCt99H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2014 04:55:11 +0200
-Received: from omta13.westchester.pa.mail.comcast.net ([76.96.62.52])
-        by qmta14.westchester.pa.mail.comcast.net with comcast
-        id gRzZ1o00217dt5G5ESv40S; Tue, 19 Aug 2014 02:55:04 +0000
-Received: from [192.168.1.13] ([50.190.84.14])
-        by omta13.westchester.pa.mail.comcast.net with comcast
-        id gSv41o0070JZ7Re3ZSv49U; Tue, 19 Aug 2014 02:55:04 +0000
-Message-ID: <53F2BC86.8000506@gentoo.org>
-Date:   Mon, 18 Aug 2014 22:55:02 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 10:01:41 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59900 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6855120AbaHSIAgQyXbZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Aug 2014 10:00:36 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7J80YBa020530;
+        Tue, 19 Aug 2014 10:00:34 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7J80YMI020529;
+        Tue, 19 Aug 2014 10:00:34 +0200
+Date:   Tue, 19 Aug 2014 10:00:34 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Joshua Kinard <kumba@gentoo.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: IP28: Correct IO_BASE in mach-ip28/spaces.h for
+ proper ioremap
+Message-ID: <20140819080034.GA11547@linux-mips.org>
+References: <53F2BC86.8000506@gentoo.org>
 MIME-Version: 1.0
-To:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: IP28: Correct IO_BASE in mach-ip28/spaces.h for proper
- ioremap
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1408416904;
-        bh=udqjCuYdP//nyWw8+BsjIF3E7DYBS/B3kbyzk4D0y8o=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=lMloXOoIu7Qafz143juCFdszQOBryiOwrd07rQYkVQc24t7Zat+ZECRC0Mihd9+51
-         jAhlyxhKjZfl8SjJzomGe7h8gsr7uqMU8pPam/eHnspysIGTu7/QELRDlYOVCgl+rF
-         6VDKe8a3lj13Em/6x+hupoXY5GPHgE5YFoDX5gZ0YesToHabXAoiE7pB3ugiyXGZdM
-         BK5ANEamq8e4Naqmrg8xiQWNdhgxKwcsjNpu4Objs1OP1/3vraY9Jcz5UYkx0/Mux5
-         nJi7v1ToOA2IBU3GSO9KsVuK/KqWySMD5bhGujwUOlfsmit4runlAD1teJXGopP4Qm
-         pFdMJAyZZv0WQ==
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <53F2BC86.8000506@gentoo.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42139
+X-archive-position: 42140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,35 +44,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On SGI IP28 systems, fix an early crash at boot by setting IO_BASE to a
-correct value so that ioremap works properly.
+On Mon, Aug 18, 2014 at 10:55:02PM -0400, Joshua Kinard wrote:
 
-Exception: <vector=normal>
-Status register: 0x34004882<CU1,CU0,FR,IM7,IM4,IPL=???,KX,MODE=KERNEL>
-Cause register: 0x10<CE=0,EXC=RADE>
-Exception PC: 0xa800000020654004, Exception RA: 0xa800000020654c9c
-Read address error exception, bad address: 0xdfbdd600
+> --- a/arch/mips/include/asm/mach-ip28/spaces.h
+> +++ b/arch/mips/include/asm/mach-ip28/spaces.h
+> @@ -18,7 +18,7 @@
+>  #define PHYS_OFFSET	_AC(0x20000000, UL)
+> 
+>  #define UNCAC_BASE	_AC(0xc0000000, UL)     /* 0xa0000000 + PHYS_OFFSET */
+> -#define IO_BASE		UNCAC_BASE
+> +#define IO_BASE		_AC(0x9000000000000000, UL)
+> 
+>  #include <asm/mach-generic/spaces.h>
 
-Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-Reported-by: Joshua Kinard <kumba@gentoo.org>
-Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Tested-by: Joshua Kinard <kumba@gentoo.org>
-Fixes: ed3ce16c3d2b ("Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account for
-PHYS_OFFSET"")
----
- arch/mips/include/asm/mach-ip28/spaces.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think the real culprit is not the definition of IO_BASE but of
+UNCAC_BASE.  0xc0000000UL is KSEG2 for a 32 bit kernel - but for a 64 bit
+kernel UNCAC_BASE should be defined as _AC(0x9000000000000000, UL).
 
-diff --git a/arch/mips/include/asm/mach-ip28/spaces.h
-b/arch/mips/include/asm/mach-ip28/spaces.h
-index 5d6a764..8c60fb0 100644
---- a/arch/mips/include/asm/mach-ip28/spaces.h
-+++ b/arch/mips/include/asm/mach-ip28/spaces.h
-@@ -18,7 +18,7 @@
- #define PHYS_OFFSET	_AC(0x20000000, UL)
+Which are the defaults in <asm/mach-generic/spaces.h> so just deleting
+both UNCAC_BASE and IO_BASE from mach-ip28/spaces.h should fix things?
 
- #define UNCAC_BASE	_AC(0xc0000000, UL)     /* 0xa0000000 + PHYS_OFFSET */
--#define IO_BASE		UNCAC_BASE
-+#define IO_BASE		_AC(0x9000000000000000, UL)
-
- #include <asm/mach-generic/spaces.h>
+  Ralf

@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 12:10:55 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:55250 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6855253AbaHSKKrviZnJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Aug 2014 12:10:47 +0200
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1XJgNH-0005Eu-00; Tue, 19 Aug 2014 12:10:43 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id 828AB1D268; Tue, 19 Aug 2014 12:05:02 +0200 (CEST)
-Date:   Tue, 19 Aug 2014 12:05:02 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Joshua Kinard <kumba@gentoo.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: IP28: Correct IO_BASE in mach-ip28/spaces.h for
- proper ioremap
-Message-ID: <20140819100502.GA5321@alpha.franken.de>
-References: <53F2BC86.8000506@gentoo.org>
- <20140819080034.GA11547@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 12:12:29 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:60326 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6855253AbaHSKM1lhcIj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Aug 2014 12:12:27 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7JACNdB023171;
+        Tue, 19 Aug 2014 12:12:23 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7JACMR3023170;
+        Tue, 19 Aug 2014 12:12:22 +0200
+Date:   Tue, 19 Aug 2014 12:12:22 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     jogo@openwrt.org, zajec5@gmail.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: BCM47XX: fix reboot problem on BCM4705/BCM4785
+Message-ID: <20140819101222.GC11547@linux-mips.org>
+References: <1408392076-308-1-git-send-email-hauke@hauke-m.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20140819080034.GA11547@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1408392076-308-1-git-send-email-hauke@hauke-m.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42142
+X-archive-position: 42143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,37 +43,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 19, 2014 at 10:00:34AM +0200, Ralf Baechle wrote:
-> On Mon, Aug 18, 2014 at 10:55:02PM -0400, Joshua Kinard wrote:
+On Mon, Aug 18, 2014 at 10:01:16PM +0200, Hauke Mehrtens wrote:
+
+> This adds some code based on code from the Broadcom GPL tar to fix the
+> reboot problems on BCM4705/BCM4785. I tried rebooting my device for ~10
+> times and have never seen a problem. This reverts the changes in the
+> previous commit and adds the real fix as suggested by Rafał.
 > 
-> > --- a/arch/mips/include/asm/mach-ip28/spaces.h
-> > +++ b/arch/mips/include/asm/mach-ip28/spaces.h
-> > @@ -18,7 +18,7 @@
-> >  #define PHYS_OFFSET	_AC(0x20000000, UL)
-> > 
-> >  #define UNCAC_BASE	_AC(0xc0000000, UL)     /* 0xa0000000 + PHYS_OFFSET */
-> > -#define IO_BASE		UNCAC_BASE
-> > +#define IO_BASE		_AC(0x9000000000000000, UL)
-> > 
-> >  #include <asm/mach-generic/spaces.h>
-> 
-> I think the real culprit is not the definition of IO_BASE but of
-> UNCAC_BASE.  0xc0000000UL is KSEG2 for a 32 bit kernel - but for a 64 bit
-> kernel UNCAC_BASE should be defined as _AC(0x9000000000000000, UL).
+> Setting bit 22 in Reg 22, sel 4 puts the BIU (Bus Interface Unit) into
+> async mode.
 
-that was my first thought as well. I just wondered whether it's necessary
-to reflect PHY_OFFSET != 0... nevertheless UNCAC_BASE is not usuable
-for memory access on IP28 at all. At least not without poking at the
-memory controller for slower access cycles, which the current kernel
-avoids totaly.
+I'm going to apply this - but in the future, when reverting a patch please
+don't fold new changes together with the revert, rather send a revert.
 
-> Which are the defaults in <asm/mach-generic/spaces.h> so just deleting
-> both UNCAC_BASE and IO_BASE from mach-ip28/spaces.h should fix things?
+Thanks,
 
-I'll give a spin later.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+  Ralf

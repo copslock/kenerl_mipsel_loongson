@@ -1,24 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 22:01:46 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:60699 "EHLO elvis.franken.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 22:02:04 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:60700 "EHLO elvis.franken.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6855312AbaHSUBYD2bwG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Aug 2014 22:01:24 +0200
+        id S6855328AbaHSUB0bk8ZN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Aug 2014 22:01:26 +0200
 Received: from uucp (helo=solo.franken.de)
         by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1XJpat-00060S-01; Tue, 19 Aug 2014 22:01:23 +0200
+        id 1XJpat-00060S-02; Tue, 19 Aug 2014 22:01:23 +0200
 Received: by solo.franken.de (Postfix, from userid 1000)
-        id 28DA01D270; Tue, 19 Aug 2014 22:00:11 +0200 (CEST)
+        id 7FD061D270; Tue, 19 Aug 2014 22:01:15 +0200 (CEST)
+Date:   Tue, 19 Aug 2014 22:01:15 +0200
 From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] SGI-IP28: fix/clean spaces.h
-To:     linux-mips@linux-mips.org,
-cc:     ralf@linux-mips.org
-Message-Id: <20140819200011.28DA01D270@solo.franken.de>
-Date:   Tue, 19 Aug 2014 22:00:11 +0200 (CEST)
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Joshua Kinard <kumba@gentoo.org>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: IP28: Correct IO_BASE in mach-ip28/spaces.h for
+ proper ioremap
+Message-ID: <20140819200115.GA13326@alpha.franken.de>
+References: <53F2BC86.8000506@gentoo.org>
+ <20140819080034.GA11547@linux-mips.org>
+ <20140819100502.GA5321@alpha.franken.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20140819100502.GA5321@alpha.franken.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42151
+X-archive-position: 42152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,32 +45,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Broken values for UNCAC_BASE/IO_BASE caused complete breakage of IP28
-builds. Only set special PHY_OFFSET and take everything else from
-generic spaces.h
+On Tue, Aug 19, 2014 at 12:05:02PM +0200, Thomas Bogendoerfer wrote:
+> On Tue, Aug 19, 2014 at 10:00:34AM +0200, Ralf Baechle wrote:
+> I'll give a spin later.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
- arch/mips/include/asm/mach-ip28/spaces.h |    7 -------
- 1 file changed, 7 deletions(-)
+after fixing the L1_CACHE_SHIFT my IP28 booted successfull to a shell
+prompt.
 
-diff --git a/arch/mips/include/asm/mach-ip28/spaces.h b/arch/mips/include/asm/mach-ip28/spaces.h
-index 5d6a764..c4a9127 100644
---- a/arch/mips/include/asm/mach-ip28/spaces.h
-+++ b/arch/mips/include/asm/mach-ip28/spaces.h
-@@ -11,15 +11,8 @@
- #ifndef _ASM_MACH_IP28_SPACES_H
- #define _ASM_MACH_IP28_SPACES_H
- 
--#define CAC_BASE	_AC(0xa800000000000000, UL)
--
--#define HIGHMEM_START	(~0UL)
--
- #define PHYS_OFFSET	_AC(0x20000000, UL)
- 
--#define UNCAC_BASE	_AC(0xc0000000, UL)     /* 0xa0000000 + PHYS_OFFSET */
--#define IO_BASE		UNCAC_BASE
--
- #include <asm/mach-generic/spaces.h>
- 
- #endif /* _ASM_MACH_IP28_SPACES_H */
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

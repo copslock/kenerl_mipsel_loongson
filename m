@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 17:22:59 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:33310 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 17:47:14 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33405 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6855362AbaHSPWvmGyM6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Aug 2014 17:22:51 +0200
+        id S6855288AbaHSPrHklu25 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Aug 2014 17:47:07 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7JFMlSv028963;
-        Tue, 19 Aug 2014 17:22:47 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7JFl4hB029422;
+        Tue, 19 Aug 2014 17:47:04 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7JFMkYZ028962;
-        Tue, 19 Aug 2014 17:22:46 +0200
-Date:   Tue, 19 Aug 2014 17:22:46 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7JFl45Y029421;
+        Tue, 19 Aug 2014 17:47:04 +0200
+Date:   Tue, 19 Aug 2014 17:47:04 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Lars Persson <lars.persson@axis.com>
 Cc:     David Daney <ddaney.cavm@gmail.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: [PATCH v2] MIPS: Remove race window in page fault handling
-Message-ID: <20140819152246.GF11547@linux-mips.org>
+Message-ID: <20140819154704.GG11547@linux-mips.org>
 References: <1407505668-18547-1-git-send-email-larper@axis.com>
  <53E500E4.5020509@gmail.com>
  <20140808204705.GH29898@linux-mips.org>
@@ -31,7 +31,7 @@ Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42145
+X-archive-position: 42147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,18 +50,8 @@ X-list: linux-mips
 
 On Fri, Aug 15, 2014 at 02:08:56PM +0200, Lars Persson wrote:
 
-> This one was tricky to track down. We had sporadic SIGILLs in
-> multi-threaded apps for a long time. Eventually we got a test case that
-> triggered more page cache evictions and the frequency of SIGILLs
-> increased enough to catch it with a JTAG debugger. 
-> 
-> Kernel call stacks showed one thread handling an illegal instruction
-> exception while another thread was somewhere around the
-> set_pte_at/update_mmu_cache calls for the same page.
-
-Some of those coherency bugs are almost impossibly hard to track down
-and fix properly!
-
-Anyway, I'm going to send the outlined version of your fix to Linus.
+Btw, this patch applies with minor variations all the way back to
+at least 2.6.12 and in even older kernel set_pte_at() doesn't exist
+yet ...
 
   Ralf

@@ -1,43 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 04:45:37 +0200 (CEST)
-Received: from qmta09.westchester.pa.mail.comcast.net ([76.96.62.96]:55578
-        "EHLO qmta09.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816503AbaHSCpUBxVJj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2014 04:45:20 +0200
-Received: from omta15.westchester.pa.mail.comcast.net ([76.96.62.87])
-        by qmta09.westchester.pa.mail.comcast.net with comcast
-        id gSbl1o0021swQuc59SlBf3; Tue, 19 Aug 2014 02:45:11 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2014 04:55:14 +0200 (CEST)
+Received: from qmta14.westchester.pa.mail.comcast.net ([76.96.59.212]:46151
+        "EHLO qmta14.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816503AbaHSCzLCt99H (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2014 04:55:11 +0200
+Received: from omta13.westchester.pa.mail.comcast.net ([76.96.62.52])
+        by qmta14.westchester.pa.mail.comcast.net with comcast
+        id gRzZ1o00217dt5G5ESv40S; Tue, 19 Aug 2014 02:55:04 +0000
 Received: from [192.168.1.13] ([50.190.84.14])
-        by omta15.westchester.pa.mail.comcast.net with comcast
-        id gSlB1o0010JZ7Re3bSlBmi; Tue, 19 Aug 2014 02:45:11 +0000
-Message-ID: <53F2BA34.5010100@gentoo.org>
-Date:   Mon, 18 Aug 2014 22:45:08 -0400
+        by omta13.westchester.pa.mail.comcast.net with comcast
+        id gSv41o0070JZ7Re3ZSv49U; Tue, 19 Aug 2014 02:55:04 +0000
+Message-ID: <53F2BC86.8000506@gentoo.org>
+Date:   Mon, 18 Aug 2014 22:55:02 -0400
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IP28 boot error under 3.16
-References: <53F039B3.9010503@gentoo.org> <20140818152750.GA1860@alpha.franken.de>
-In-Reply-To: <20140818152750.GA1860@alpha.franken.de>
+To:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: IP28: Correct IO_BASE in mach-ip28/spaces.h for proper
+ ioremap
 X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1408416311;
-        bh=TfeVqxLX/pE+oilys1Wt2N/yWeHvhtbJxBjtT4DFPQI=;
+        s=q20140121; t=1408416904;
+        bh=udqjCuYdP//nyWw8+BsjIF3E7DYBS/B3kbyzk4D0y8o=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=ijO8rreoRrvbPjppfBb23qLW+a5LEVDRX0aSzZ5V3aQ4vb2MEZEoRJuE8qjV+bIV3
-         IqkTgn2/8a+u9J0405mrnF7ZAdSh4bLso5PSeZA6H2l2vTgcgjW1uVML/EgvJb1OBg
-         3h59dSd26s3OHYzl4mN2OpgkxQ0Yr70xz1eTK7/R+Iqq2ifTvSRyfQuIbkIro1n2Sa
-         IBb6BZXFokRtMWZu0ghGF4TyMsnmWqYDTDGB3oeQkq4VZq8vkMMQ76JSqeCZjan86l
-         NA7DxlWe0kT4Uy95WOZBoJVmijbHMf8ZO8GjvnP/Z0eECx4KzQGaRIV1dNLcp/mYSo
-         9u3VLLK76WLOQ==
+        b=lMloXOoIu7Qafz143juCFdszQOBryiOwrd07rQYkVQc24t7Zat+ZECRC0Mihd9+51
+         jAhlyxhKjZfl8SjJzomGe7h8gsr7uqMU8pPam/eHnspysIGTu7/QELRDlYOVCgl+rF
+         6VDKe8a3lj13Em/6x+hupoXY5GPHgE5YFoDX5gZ0YesToHabXAoiE7pB3ugiyXGZdM
+         BK5ANEamq8e4Naqmrg8xiQWNdhgxKwcsjNpu4Objs1OP1/3vraY9Jcz5UYkx0/Mux5
+         nJi7v1ToOA2IBU3GSO9KsVuK/KqWySMD5bhGujwUOlfsmit4runlAD1teJXGopP4Qm
+         pFdMJAyZZv0WQ==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42138
+X-archive-position: 42139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,36 +52,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/18/2014 11:27, Thomas Bogendoerfer wrote:
-> On Sun, Aug 17, 2014 at 01:12:19AM -0400, Joshua Kinard wrote:
->> Thoughts?
-> 
-> something like
-> 
-> #define IO_BASE                 _AC(0x9000000000000000, UL)
-> 
-> in mach-ip28/spaces.h should do the trick. UNCAC_BASE also looks
-> strange, no idea why there that way.
+On SGI IP28 systems, fix an early crash at boot by setting IO_BASE to a
+correct value so that ioremap works properly.
 
-That appears to do it, thanks!  Still getting a panic somewhere before
-Impact comes up, as the LED starts flashing.  However, my serial cables are
-missing in a closet somewhere, so I can't debug it further right now.  I
-ordered some more cables so I can take another look later in the week (or go
-tear my closet apart looking for the other ones...).
+Exception: <vector=normal>
+Status register: 0x34004882<CU1,CU0,FR,IM7,IM4,IPL=???,KX,MODE=KERNEL>
+Cause register: 0x10<CE=0,EXC=RADE>
+Exception PC: 0xa800000020654004, Exception RA: 0xa800000020654c9c
+Read address error exception, bad address: 0xdfbdd600
 
-Digging on kernel.org, it appears commit ed3ce16c added the definitions of
-UNCAC_BASE and IO_BASE as part of a larger fix.  Before that, these
-definitions didn't exist in IP28's spaces.h.
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+Reported-by: Joshua Kinard <kumba@gentoo.org>
+Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Tested-by: Joshua Kinard <kumba@gentoo.org>
+Fixes: ed3ce16c3d2b ("Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account for
+PHYS_OFFSET"")
+---
+ arch/mips/include/asm/mach-ip28/spaces.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'll send a patch for this fix shortly.
+diff --git a/arch/mips/include/asm/mach-ip28/spaces.h
+b/arch/mips/include/asm/mach-ip28/spaces.h
+index 5d6a764..8c60fb0 100644
+--- a/arch/mips/include/asm/mach-ip28/spaces.h
++++ b/arch/mips/include/asm/mach-ip28/spaces.h
+@@ -18,7 +18,7 @@
+ #define PHYS_OFFSET	_AC(0x20000000, UL)
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
+ #define UNCAC_BASE	_AC(0xc0000000, UL)     /* 0xa0000000 + PHYS_OFFSET */
+-#define IO_BASE		UNCAC_BASE
++#define IO_BASE		_AC(0x9000000000000000, UL)
 
-"The past tempts us, the present confuses us, the future frightens us.  And
-our lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+ #include <asm/mach-generic/spaces.h>

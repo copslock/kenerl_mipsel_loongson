@@ -1,42 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2014 21:19:26 +0200 (CEST)
-Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:19170 "EHLO
-        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27028420AbaHVTTHBhLRp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2014 21:19:07 +0200
-X-IronPort-AV: E=Sophos;i="5.04,377,1406617200"; 
-   d="scan'208";a="43542981"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw1-out.broadcom.com with ESMTP; 21 Aug 2014 22:19:52 -0700
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Thu, 21 Aug 2014 21:28:31 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.174.1; Thu, 21 Aug 2014 21:28:31 -0700
-Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
- [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 1BF889F9FD;    Thu, 21 Aug 2014 21:28:29 -0700 (PDT)
-From:   Jayachandran C <jchandra@broadcom.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>,
-        <chenhc@lemote.com>
-Subject: [PATCH 1/2] MIPS: Netlogic: Use MIPS topology.h
-Date:   Fri, 22 Aug 2014 09:48:31 +0530
-Message-ID: <1408681112-26744-1-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <CAAhV-H7x3FDAXYcH6J8mDeBnrgV1CZZtizerjHRa4cj_oZ1PuQ@mail.gmail.com>
-References: <CAAhV-H7x3FDAXYcH6J8mDeBnrgV1CZZtizerjHRa4cj_oZ1PuQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2014 21:36:27 +0200 (CEST)
+Received: from mail-wi0-f174.google.com ([209.85.212.174]:64745 "EHLO
+        mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026882AbaHVTg0Kthmj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2014 21:36:26 +0200
+Received: by mail-wi0-f174.google.com with SMTP id d1so158754wiv.1
+        for <linux-mips@linux-mips.org>; Fri, 22 Aug 2014 12:36:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=zYXcvw2VgX8jy+CV3dOFUyTs+HziSTCzvsUyqtd3+bA=;
+        b=mhNRWPuwhOKq4577LvCn4oSqbF+ipP85B+eRg8wCmKuqJrjLNZOQb3RTCD75hNsQ/l
+         YGcHjK+lgTAk1iPT8RgJUOVPN61xrsaNgzy8YtxDHRlO6m2bXifE32rdENjXY5EE6Vjr
+         SNa5tMF++N1xE/PiCZoF1EanKQunnn7lvLIFVoG4KnXoUfMual794E/BxhknZ0R0CsKx
+         XUBhkKeAoRjWlV2twGudl1KAapjFVtl1/nNZrk6rTzk1YY+DyglSi+J2vrv1OsMsADKm
+         651AIfd4jR0XJCTMQDE5aXnA46zMLM/gVj8c5lVA2mDBID/iLOxI1TmIR2kmktBL0jp+
+         InZg==
+X-Received: by 10.180.79.72 with SMTP id h8mr17425005wix.55.1408563409943;
+        Wed, 20 Aug 2014 12:36:49 -0700 (PDT)
+Received: from localhost.localdomain (p4FD8DBDE.dip0.t-ipconnect.de. [79.216.219.222])
+        by mx.google.com with ESMTPSA id vn10sm60779177wjc.28.2014.08.20.12.36.48
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 20 Aug 2014 12:36:49 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH 0/4] MIPS: Alchemy devboard fixes and enhancements
+Date:   Wed, 20 Aug 2014 21:36:29 +0200
+Message-Id: <1408563393-132515-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 2.0.4
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42165
+X-archive-position: 42166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,63 +50,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-commit bda4584cd943 ("MIPS: Support CPU topology files in sysfs")
-added topology related macros for all MIPS platforms. This causes
-compile failure for Netlogic platforms with errors like:
+Here's a set of small patches to devboard support:
+- when poweroff doesn't work, sit and spin in the idle loop to shut
+  up systemd.
+- updated cpu_feature_overrides which save ~7.5kB (db1xxx_defconfig)
+- clock fixes
+- support for pendown IRQ on DB1300: reduces timer interrupt rate
+  when the touch is idle but open.
 
-arch/mips/include/asm/mach-netlogic/topology.h:14:0: error: "topology_physical_package_id" redefined [-Werror]
+Manuel Lauss (4):
+  MIPS: Alchemy: devboards: sit and spin after poweroff
+  MIPS: Alchemy: update cpu-feature-overrides
+  MIPS: Alchemy: db1xxx: explicitly set 50MHz clock for I2C/SPI units.
+  MIPS: Alchemy: db1300: add touch penirq support
 
-Fix this by dropping Netlogic specific topology.h and setting up package
-field in cpu data.
+ arch/mips/alchemy/devboards/db1300.c               | 47 +++++++++++++++++++++-
+ arch/mips/alchemy/devboards/db1550.c               |  9 ++---
+ arch/mips/alchemy/devboards/platform.c             |  3 ++
+ .../asm/mach-au1x00/cpu-feature-overrides.h        | 12 ++++++
+ 4 files changed, 65 insertions(+), 6 deletions(-)
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
-[Resending this, looks like linux-mips.org is down]
-
- arch/mips/include/asm/mach-netlogic/topology.h |   22 ----------------------
- arch/mips/netlogic/common/smp.c                |    1 +
- 2 files changed, 1 insertion(+), 22 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-netlogic/topology.h
-
-diff --git a/arch/mips/include/asm/mach-netlogic/topology.h b/arch/mips/include/asm/mach-netlogic/topology.h
-deleted file mode 100644
-index ceeb1f5..0000000
---- a/arch/mips/include/asm/mach-netlogic/topology.h
-+++ /dev/null
-@@ -1,22 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2013 Broadcom Corporation
-- */
--#ifndef _ASM_MACH_NETLOGIC_TOPOLOGY_H
--#define _ASM_MACH_NETLOGIC_TOPOLOGY_H
--
--#include <asm/mach-netlogic/multi-node.h>
--
--#ifdef CONFIG_SMP
--#define topology_physical_package_id(cpu)	cpu_to_node(cpu)
--#define topology_core_id(cpu)	(cpu_logical_map(cpu) / NLM_THREADS_PER_CORE)
--#define topology_thread_cpumask(cpu)		(&cpu_sibling_map[cpu])
--#define topology_core_cpumask(cpu)	cpumask_of_node(cpu_to_node(cpu))
--#endif
--
--#include <asm-generic/topology.h>
--
--#endif /* _ASM_MACH_NETLOGIC_TOPOLOGY_H */
-diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
-index 4fde7ac..f23fe22 100644
---- a/arch/mips/netlogic/common/smp.c
-+++ b/arch/mips/netlogic/common/smp.c
-@@ -120,6 +120,7 @@ static void nlm_init_secondary(void)
- 
- 	hwtid = hard_smp_processor_id();
- 	current_cpu_data.core = hwtid / NLM_THREADS_PER_CORE;
-+	current_cpu_data.package = nlm_cpuid_to_node(hwtid);
- 	nlm_percpu_init(hwtid);
- 	nlm_smp_irq_init(hwtid);
- }
 -- 
-1.7.9.5
+2.0.4

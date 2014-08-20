@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2014 14:02:09 +0200 (CEST)
-Received: from smtpbgbr1.qq.com ([54.207.19.206]:46313 "EHLO smtpbgbr1.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6855367AbaHTMCBaB7j2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 Aug 2014 14:02:01 +0200
-X-QQ-mid: bizesmtp8t1408536005t504t326
-Received: from mail-ie0-f178.google.com (unknown [209.85.223.178])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 20 Aug 2014 20:00:03 +0800 (CST)
-X-QQ-SSF: 01100000008000F0FF22B00A0000000
-X-QQ-FEAT: HlPlO+HuJuzufYeN1dI2UgMRoqLOzybLks2Okr3w/I5bWDVZleHwtcv8uOWg9
-        ZlYzIk/mDF25DP4byIClIrH1JjGXD7VrSvCjysQd+X57q2nEuJLEUyQ/uOkCSXBu3VEIr99
-        +LbAGgx/2rxUKqGoRNLuYokCSoWIyuz3dty7emLV14xJysvTKNzQXHifJswT0I5eRqYDrjo
-        =
-X-QQ-GoodBg: 0
-Received: by mail-ie0-f178.google.com with SMTP id rd18so2708632iec.9
-        for <multiple recipients>; Wed, 20 Aug 2014 05:00:01 -0700 (PDT)
-X-Received: by 10.43.164.130 with SMTP id ms2mr48070931icc.9.1408536001898;
- Wed, 20 Aug 2014 05:00:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2014 21:01:32 +0200 (CEST)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:48031 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025177AbaHVSfxZ2BQc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2014 20:35:53 +0200
+Received: from [208.59.64.2] (helo=finisterre)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1XKB29-00038F-KE; Wed, 20 Aug 2014 18:54:59 +0000
+Received: from broonie by finisterre with local (Exim 4.84_RC1)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1XKB26-0005l6-Ga; Wed, 20 Aug 2014 13:54:54 -0500
+Resent-From: Mark Brown <broonie@sirena.org.uk>
+Resent-Date: Wed, 20 Aug 2014 13:54:54 -0500
+Resent-Message-ID: <20140820185454.GA22133@sirena.org.uk>
+Resent-To: linux-mips@linux-mips.org, markos.chandras@imgtec.com
+Date:   Wed, 20 Aug 2014 10:33:54 -0500
+From:   Mark Brown <broonie@kernel.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Himangi Saraogi <himangi774@gmail.com>,
+        linux-spi@vger.kernel.org, linux-mips@linux-mips.org
+Message-ID: <20140820153354.GZ24407@sirena.org.uk>
+References: <1408545613-28348-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-Received: by 10.107.26.201 with HTTP; Wed, 20 Aug 2014 04:59:41 -0700 (PDT)
-In-Reply-To: <20140820105356.GA21497@linux-mips.org>
-References: <1408504488-12319-1-git-send-email-chenj@lemote.com>
- <1408504488-12319-2-git-send-email-chenj@lemote.com> <20140820105356.GA21497@linux-mips.org>
-From:   Chen Jie <chenj@lemote.com>
-Date:   Wed, 20 Aug 2014 19:59:41 +0800
-Message-ID: <CAGXxSxVqEs5jyckaOG=iX24UeV2P_WgmqV=EBQYycRJ1P9vPgg@mail.gmail.com>
-Subject: Re: [PATCH] mips: define _MIPS_ARCH_LOONGSON3A for Loongson3
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
-        =?UTF-8?B?546L6ZSQ?= <wangr@lemote.com>
-Content-Type: text/plain; charset=UTF-8
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenj@lemote.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="csehs8AeUiGwWnbr"
+Content-Disposition: inline
+In-Reply-To: <1408545613-28348-1-git-send-email-markos.chandras@imgtec.com>
+X-Cookie: If you can read this, you're too close.
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-SA-Exim-Connect-IP: 208.59.64.2
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH] SPI: spi-au1550: Fix build problem in au1550_spi_remove
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42162
+X-archive-position: 42163
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenj@lemote.com
+X-original-sender: broonie@sirena.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,12 +56,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-08-20 18:53 GMT+08:00 Ralf Baechle <ralf@linux-mips.org>:
-> On Wed, Aug 20, 2014 at 11:14:48AM +0800, chenj wrote:
->
->> +cflags-$(CONFIG_CPU_LOONGSON3)  += -D_MIPS_ARCH_LOONGSON3A
->
-> The _MIPS_ARCH_* namespace belongs to GCC.  While it seems current GCC
-> does not define this symbol _MIPS_ARCH_LOONGSON3A runs into the danger
-> of causing a conflict when GCC eventually will define the symbol.
-When this symbol will be defined? With option '-march=loongson3a'?
+
+--csehs8AeUiGwWnbr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Aug 20, 2014 at 03:40:13PM +0100, Markos Chandras wrote:
+> Commit 30670539b867 ("spi: au1550: Fix bug in deallocation of memory")
+> switched from release_resource to release_mem_region to release
+> memory regions allocated using the request_mem_region. However,
+> a build problem was introduced due to 'r' being undefined in that
+> function. We fix this by having 'r' being defined as the platform's
+> IORESROUCE_MEM region.
+
+A different fix has already been sent for htis issue - please check if
+there's anything you want to change with that and resubmit if there's
+anything.
+
+--csehs8AeUiGwWnbr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT9L/eAAoJELSic+t+oim9FeYQAIW3Mhf8CpsJ/pa9TioJNU/E
+pQEKiO/tYMSevoPRPiYj62YY9lCZNuafWl+rQ3v7xtw3+U0HxoujJiqFb8QqEJvy
+2BZkexsiCxMbynEXiekwulBKHYc5v1Tuc+ft09igaHMnBhUTLrSPB2YBf6dcLX51
+/tEkyoFxh/0My79a6yq19T4eKDvmluSNc83YqbQpbVkeIWaHpzaGcSG1nYL7bEH6
+MYyNn1qP5WImJCFnYeTLvzDiwrtI3JMUhd1Klv9Iit9IOi+9CCBr8+yM6pnEtPcy
+1cgOhl0VOzMVl9RrxS0ZFm4v5BmRI9dEefwmAQ7Q3jtEp1KcsTrrekcnR/gUQ6Qn
+Kd9Kk1Nb+r46CmezJhKpMxVjHL5cJAx54YTu8pN7Mnp/JWEqt5M+wBb3s5DLsCL4
+ZOb8YmHojmZluFPTxXQdmDXCcVgpX2+iNgTc51vgL1vQkrysvDHb+70ds9vTgYSx
+ekqdMCYdhJPTupVT2/eWOhcG3tWO+kLsnOHvwgE1Q0lLMMuevtifKDN//PAIRBcN
+btyr0z/By3Z2rVZwJQ3K6/VOueVdVyy0zbNgCBYYAycZOp969M59c8lDIGXS7TjF
+xVSx6hr6EyjEkJa2wRm+xoiEX+4+MSldYgotYtA57TkBYT/yTn6e4S5VlH/L5cdc
+E7xle/z50X6OpP/fAUmB
+=hODX
+-----END PGP SIGNATURE-----
+
+--csehs8AeUiGwWnbr--

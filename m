@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2014 05:12:09 +0200 (CEST)
-Received: from smtpbg298.qq.com ([184.105.67.102]:41403 "EHLO smtpbg298.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6842384AbaHTDMGgsNNq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 Aug 2014 05:12:06 +0200
-X-QQ-mid: bizesmtp5t1408504310t868t267
-Received: from mail-qa0-f51.google.com (unknown [209.85.216.51])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 20 Aug 2014 11:11:49 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FF22B00A0000000
-X-QQ-FEAT: hUz2QKAUQ1MxgoX1B6HWlBUzJDlYkwLmqxeTA3wTgVmevGzd5cSwvWi0Ayk0a
-        zworog2nqd9M5rhX68CInZ8lW+Vs0EcfyXdwzZ4ritw1lh6WZ+mnB+2olG1wmLvWleYB9DE
-        ddaJhZ8789efE01BzuJIqT96wbXaNtwy5bjiyaJbXC06TlGLkj1s8jl8lb1CuW9wXDXYiYW
-        YPHI97eH+Tg==
-X-QQ-GoodBg: 0
-Received: by mail-qa0-f51.google.com with SMTP id k15so6393585qaq.38
-        for <multiple recipients>; Tue, 19 Aug 2014 20:11:48 -0700 (PDT)
-X-Received: by 10.140.22.137 with SMTP id 9mr70161356qgn.4.1408504307987; Tue,
- 19 Aug 2014 20:11:47 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2014 05:57:40 +0200 (CEST)
+Received: from mail-ig0-f169.google.com ([209.85.213.169]:51883 "EHLO
+        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821703AbaHTD5aCeOnO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Aug 2014 05:57:30 +0200
+Received: by mail-ig0-f169.google.com with SMTP id r2so10623502igi.2
+        for <multiple recipients>; Tue, 19 Aug 2014 20:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=MRmOwYbtvJ9Myq5Ifq97LQAzUIgeCSLU2PvddfILUKk=;
+        b=wcvgmEG4gk71dlmLuIPJkddTb3jhYQQ0d9stJusGvQ6ASJMAjs/U6EFtGiuT0+rNV7
+         6mQF1+vkI03cgT+BBCAMFs6MOT2mapLg0Uv3EZFDfd5/zu8gmfDuocK8TTvTEa2nwDXi
+         pvzMhfDqC1pjjpRXeKBgmpZPzyw4irkc4dpe6jFp0aIU4g+IThXF4EcsGOkQKlaRAlkV
+         tzABSv15Asnp1MyB37xsFluLTnNnKq/T/Sv1wrv5L6zgve17/IcYJ6ZaZYKU3tGFZ9il
+         yFceZi4CQ/uKW1zNOx1pDFx3e6K3/gseEsQUkIXdz50ecSs853CJtuAUTmXngYqMEIrp
+         +v8Q==
 MIME-Version: 1.0
-Received: by 10.96.118.97 with HTTP; Tue, 19 Aug 2014 20:11:27 -0700 (PDT)
-In-Reply-To: <53F3DC11.1080208@gmail.com>
-References: <CAGXxSxXGpRBJm+8sYfYXN4-20OYdmJ4FgBDnPknv9uMBN9zBsQ@mail.gmail.com>
- <1408093018-25436-1-git-send-email-chenj@lemote.com> <53F3DC11.1080208@gmail.com>
-From:   Chen Jie <chenj@lemote.com>
-Date:   Wed, 20 Aug 2014 11:11:27 +0800
-Message-ID: <CAGXxSxV7RCoGUVyn7-n2PLyrODSFOF6JWQjnZUEVWe0qQSDM0A@mail.gmail.com>
-Subject: Re: [v2] mips: use wsbh/dsbh/dshd on Loongson 3A
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+X-Received: by 10.50.78.167 with SMTP id c7mr10186344igx.6.1408507042740; Tue,
+ 19 Aug 2014 20:57:22 -0700 (PDT)
+Received: by 10.64.241.5 with HTTP; Tue, 19 Aug 2014 20:57:22 -0700 (PDT)
+In-Reply-To: <20140813001849.GA27602@jayachandranc.netlogicmicro.com>
+References: <1407467768-24097-1-git-send-email-chenhc@lemote.com>
+        <20140808134738.GG29898@linux-mips.org>
+        <20140813001849.GA27602@jayachandranc.netlogicmicro.com>
+Date:   Wed, 20 Aug 2014 11:57:22 +0800
+X-Google-Sender-Auth: CZyeWL-BalYq93mWdLuOaqRWKrU
+Message-ID: <CAAhV-H7x3FDAXYcH6J8mDeBnrgV1CZZtizerjHRa4cj_oZ1PuQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MIPS: Move CPU topology macros to topology.h
+From:   Huacai Chen <chenhc@lemote.com>
+To:     "Jayachandran C." <jchandra@broadcom.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-X-QQ-SENDSIZE: 520
-X-QQ-FName: 827494A6980B491A891A0421D3B53854
-X-QQ-LocalIP: 58.250.132.20
-Return-Path: <chenj@lemote.com>
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42157
+X-archive-position: 42158
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenj@lemote.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,57 +59,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-08-20 7:21 GMT+08:00 David Daney <ddaney.cavm@gmail.com>:
-> On 08/15/2014 01:56 AM, chenj wrote:
+Hi, Ralf,
+
+Why this patch hasn't applied?
+
+Huacai
+
+On Wed, Aug 13, 2014 at 8:18 AM, Jayachandran C. <jchandra@broadcom.com> wrote:
+> On Fri, Aug 08, 2014 at 03:47:38PM +0200, Ralf Baechle wrote:
+>> Jayachandran,
 >>
->> Signed-off-by: chenj <chenj@lemote.com>
->> ---
->> This patch is modified from http://patchwork.linux-mips.org/patch/7054/
->> The original author is ralf.
->>
->> v2: using "#if defined(CONFIG_CPU_MIPSR2) ||
->> defined(CONFIG_CPU_LOONGSON3)"
->> instead of "#if cpu_has_wsbh" in csum_partial.S
->>
->>   arch/mips/include/asm/cpu-features.h                       | 10
->> ++++++++++
->>   .../include/asm/mach-cavium-octeon/cpu-feature-overrides.h |  1 +
->>   .../mips/include/asm/mach-loongson/cpu-feature-overrides.h |  2 ++
->>   arch/mips/include/uapi/asm/swab.h                          | 14
->> ++++++++++++--
->>   arch/mips/lib/csum_partial.S                               | 10
->> ++++++++--
->>   arch/mips/net/bpf_jit.c                                    |  2 +-
->>   6 files changed, 34 insertions(+), 5 deletions(-)
->>
-> [...]
+>> could you convert the netlogic platforms to use this scheme, too?
+>> We then could drop the #ifdefs introduced by this patch.
 >
->> diff --git a/arch/mips/include/uapi/asm/swab.h
->> b/arch/mips/include/uapi/asm/swab.h
->> index ac9a8f9..20b884a 100644
->> --- a/arch/mips/include/uapi/asm/swab.h
->> +++ b/arch/mips/include/uapi/asm/swab.h
+> The same sequence is used by ip27 platform as well, so I think the
+> ifndef may still be needed. This is the same ifndef pattern we use
+> for all our mach-generic/*.h vs. mach-<platform>/*.h
 >
-> [...]
+> On second thought, I am not sure if the changes in Huacai's patch
+> has to be in asm/topology.h, probably this has to be in
+> mach-generic/topology.h
 >
->> @@ -46,8 +53,11 @@ static inline __attribute_const__ __u32
->> __arch_swab32(__u32 x)
->>   static inline __attribute_const__ __u64 __arch_swab64(__u64 x)
->>   {
->>         __asm__(
->> +       "       .set    push                    \n"
->> +       "       .set    arch=mips64r2           \n"
->>         "       dsbh    %0, %1\n"
->>         "       dshd    %0, %0"
->> +       "       .set    pop                     \n"
->>         : "=r" (x)
->>         : "r" (x));
->>
+> JC.
 >
-> This section of the patch is defective.  It appears to have not been compile
-> tested.
->
-> On mips-for-linux-next commit d4c5edf76f14720a32805202129dfa8206560035
-> produces:
-Really sorry for that, I've submitted a patch for this:
-http://patchwork.linux-mips.org/patch/7550/

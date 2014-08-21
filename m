@@ -1,47 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2014 23:36:28 +0200 (CEST)
-Received: from mail-qc0-f176.google.com ([209.85.216.176]:54651 "EHLO
-        mail-qc0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006152AbaHVVg1GsOET (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2014 23:36:27 +0200
-Received: by mail-qc0-f176.google.com with SMTP id m20so11634427qcx.35
-        for <linux-mips@linux-mips.org>; Fri, 22 Aug 2014 14:36:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2014 23:52:24 +0200 (CEST)
+Received: from mail-ig0-f202.google.com ([209.85.213.202]:37975 "EHLO
+        mail-ig0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006152AbaHVVwXHwuvR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2014 23:52:23 +0200
+Received: by mail-ig0-f202.google.com with SMTP id r2so60445igi.1
+        for <linux-mips@linux-mips.org>; Fri, 22 Aug 2014 14:52:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=cRBdJARUIYs/+IWZ9DjaOC9YXZn2n8aY+nf5p9wMZIA=;
-        b=W29M02iYFTmpP7eb7NsjPRu/4y0vYVuJ5QWy6MstrvU1aEKei0pIV78Gl5qOmUXHmr
-         oFQFlKDFgkzKT1Fe+QuRXCTAZIMqjABTiE7SoMUUQXRPyzR385z37lS4aH+QvUwIZ4yO
-         2+x0Oc+J/2TA5Uc1R2YVWLMydhFWYj4ihhiKKAB0mC2ij5/fIjt6W+RXICuPWAQ9B9bv
-         6r1wzcA/0URYoycpKUd8FaG3/ldomaU9o5o9jdSxbqw2KQLRlG1Cw6KOwVh5oNcSgnIV
-         ylbhS8Lg2L7n2UbDGvh/vynZ2y9DnSlg8+veLzB/LmanrbxWH+O2229GJ8d0QgmcwLuN
-         5Aug==
-X-Gm-Message-State: ALoCoQm01E0deR4uUABMSR0bhATjeOHdfbQFFrgOfBeNTVfVJGKilyIplXSQqFmYBSCRLKUWqQqd
-MIME-Version: 1.0
-X-Received: by 10.140.93.161 with SMTP id d30mr74288668qge.53.1408547720494;
- Wed, 20 Aug 2014 08:15:20 -0700 (PDT)
-Received: by 10.229.82.209 with HTTP; Wed, 20 Aug 2014 08:15:20 -0700 (PDT)
-In-Reply-To: <53F4ABA2.3030008@imgtec.com>
-References: <1406122816-2424-6-git-send-email-alex@alex-smith.me.uk>
-        <1406206238-28512-1-git-send-email-alex@alex-smith.me.uk>
-        <53F4ABA2.3030008@imgtec.com>
-Date:   Wed, 20 Aug 2014 16:15:20 +0100
-Message-ID: <CAOFt0_DrQbXa8=N4=BRN9iZu9P6p=8cLcsbjWwS9Ngz23zvqcw@mail.gmail.com>
-Subject: Re: [PATCH v2 05/11] MIPS: ptrace: Always copy FCSR in FP regset
-From:   Alex Smith <alex@alex-smith.me.uk>
-To:     James Hogan <james.hogan@imgtec.com>, Ralf <ralf@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <alex@alex-smith.me.uk>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=9WTyfWfvGt4ooMCF4RylxTBO+1F+nIXQpirmP1d57B8=;
+        b=GJ4B5CHbxSv+7bVmBR+fjTh5WmYHR+LhIMxqBWcrfEVMjLGZHL0TXCF8jbgiA25C4Y
+         p4D5svtP+VjrD1SsFk5khngr4KVLRu6Q+q4XlUBP2RMxlYhxxCadIKeTmdMjI+mvt4Ds
+         fR03Z1hMjMT+zTVD/XDyDrpgdnpVlFspNbo+6quf/1rYji9EOFiY4lGCjsjrJem94LY6
+         WmVXRl9WdsNYW/db0UE5f0i166LyPLE/7IO4z1x7P1Ds/7YJIVFZdDe4rKIxONmN41Bh
+         Q4OrXvrkzcL6t93oi77rU9jxtmVdA0FjDoyrXdhS8dwOV43o/Yn/6JNdo8j8D5VE55Rk
+         hHLw==
+X-Gm-Message-State: ALoCoQlkjdEqZpH3kzzfltVpKQ52zpZE3XS5jZF7q9ER+cP67yH9czPRlqkyWWK+P9IIhzO/jpo6
+X-Received: by 10.182.251.135 with SMTP id zk7mr620977obc.14.1408651486933;
+        Thu, 21 Aug 2014 13:04:46 -0700 (PDT)
+Received: from corp2gmr1-1.hot.corp.google.com (corp2gmr1-1.hot.corp.google.com [172.24.189.92])
+        by gmr-mx.google.com with ESMTPS id v20si883590yhe.2.2014.08.21.13.04.46
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 21 Aug 2014 13:04:46 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com (abrestic.mtv.corp.google.com [172.22.65.70])
+        by corp2gmr1-1.hot.corp.google.com (Postfix) with ESMTP id B17B231C5D0;
+        Thu, 21 Aug 2014 13:04:46 -0700 (PDT)
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id 73B44220378; Thu, 21 Aug 2014 13:04:46 -0700 (PDT)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        David Daney <david.daney@cavium.com>,
+        John Crispin <blogic@openwrt.org>,
+        Jayachandran C <jchandra@broadcom.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Andrew Bresticker <abrestic@chromium.org>
+Subject: [PATCH 1/7] MIPS: Create common infrastructure for building built-in device-trees
+Date:   Thu, 21 Aug 2014 13:04:20 -0700
+Message-Id: <1408651466-8334-2-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
+In-Reply-To: <1408651466-8334-1-git-send-email-abrestic@chromium.org>
+References: <1408651466-8334-1-git-send-email-abrestic@chromium.org>
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42181
+X-archive-position: 42182
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alex-smith.me.uk
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,151 +72,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+In preparation for moving the device-trees to a common location,
+introduce the config option BUILTIN_DTB, which can be selected by
+platforms that use a device-tree built into the kernel image, and
+create a Makefile to build the device-trees in arch/mips/boot/dts/.
 
-On 20 August 2014 15:07, James Hogan <james.hogan@imgtec.com> wrote:
-> Hi Ralf,
->
-> On 24/07/14 13:50, Alex Smith wrote:
->> Copy FCSR in the FP regset to match the original pre-regset core dumper.
->> The code paths for where sizeof(union fpureg) == sizeof(elf_fpreg_t)
->> already do so, but they actually copy 4 bytes more than they should do
->> as FCSR is only 32 bits. The not equal code paths do not copy it at all.
->> Therefore change the copy to be done explicitly (with the correct size)
->> for both paths.
->>
->> Additionally, clear the cause bits from FCSR when setting the FP regset
->> to avoid the possibility of causing an FP exception (and an oops) in the
->> kernel.
->>
->> Signed-off-by: Alex Smith <alex@alex-smith.me.uk>
->> Cc: Paul Burton <paul.burton@imgtec.com>
->> Cc: <stable@vger.kernel.org> # v3.13+
->
-> This patch seems to have been missed, although all the others in the
-> series were included in the main v3.17 merge. Was that intentional?
+Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+---
+ arch/mips/Kconfig           | 3 +++
+ arch/mips/Makefile          | 6 ++++++
+ arch/mips/boot/dts/Makefile | 3 +++
+ 3 files changed, 12 insertions(+)
+ create mode 100644 arch/mips/boot/dts/Makefile
 
-Ralf emailed me saying he'd dropped the patch because it was causing
-warnings, and he didn't respond when I asked what the warnings were
-(I'm unable to reproduce any).
-
-Ralf: if you can let me know what warnings you were getting I can send
-an updated patch.
-
-Thanks,
-Alex
-
->
-> Cheers
-> James
->
->> ---
->> Changes in v2:
->>  - Zero fill the last 4 bytes in the FP regset.
->> ---
->>  arch/mips/kernel/ptrace.c | 73 +++++++++++++++++++++++++++++++----------------
->>  1 file changed, 49 insertions(+), 24 deletions(-)
->>
->> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
->> index 8bd13ed..e082079 100644
->> --- a/arch/mips/kernel/ptrace.c
->> +++ b/arch/mips/kernel/ptrace.c
->> @@ -409,23 +409,35 @@ static int fpr_get(struct task_struct *target,
->>       int err;
->>       u64 fpr_val;
->>
->> -     /* XXX fcr31  */
->> -
->> -     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
->> -             return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> -                                        &target->thread.fpu,
->> -                                        0, sizeof(elf_fpregset_t));
->> -
->> -     for (i = 0; i < NUM_FPU_REGS; i++) {
->> -             fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
->> +     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t)) {
->>               err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> -                                       &fpr_val, i * sizeof(elf_fpreg_t),
->> -                                       (i + 1) * sizeof(elf_fpreg_t));
->> +                                       &target->thread.fpu.fpr,
->> +                                       0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
->>               if (err)
->>                       return err;
->> +     } else {
->> +             for (i = 0; i < NUM_FPU_REGS; i++) {
->> +                     fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
->> +                     err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> +                                               &fpr_val,
->> +                                               i * sizeof(elf_fpreg_t),
->> +                                               (i + 1) * sizeof(elf_fpreg_t));
->> +                     if (err)
->> +                             return err;
->> +             }
->>       }
->>
->> -     return 0;
->> +     err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> +                        &target->thread.fpu.fcr31,
->> +                        NUM_FPU_REGS * sizeof(elf_fpreg_t),
->> +                        (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32));
->> +     if (err)
->> +             return err;
->> +
->> +     /* Zero fill the remaining 4 bytes. */
->> +     return user_regset_copyout_zero(&pos, &count, &kbuf, &ubuf,
->> +                         (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32),
->> +                         sizeof(elf_fpregset_t));
->>  }
->>
->>  static int fpr_set(struct task_struct *target,
->> @@ -436,24 +448,37 @@ static int fpr_set(struct task_struct *target,
->>       unsigned i;
->>       int err;
->>       u64 fpr_val;
->> +     u32 fcr31;
->>
->> -     /* XXX fcr31  */
->> -
->> -     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
->> -             return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
->> -                                       &target->thread.fpu,
->> -                                       0, sizeof(elf_fpregset_t));
->> -
->> -     for (i = 0; i < NUM_FPU_REGS; i++) {
->> +     if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t)) {
->>               err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
->> -                                      &fpr_val, i * sizeof(elf_fpreg_t),
->> -                                      (i + 1) * sizeof(elf_fpreg_t));
->> +                                      &target->thread.fpu.fpr,
->> +                                      0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
->>               if (err)
->>                       return err;
->> -             set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
->> +     } else {
->> +             for (i = 0; i < NUM_FPU_REGS; i++) {
->> +                     err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
->> +                                              &fpr_val,
->> +                                              i * sizeof(elf_fpreg_t),
->> +                                              (i + 1) * sizeof(elf_fpreg_t));
->> +                     if (err)
->> +                             return err;
->> +                     set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
->> +             }
->>       }
->>
->> -     return 0;
->> +     err = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &fcr31,
->> +                         NUM_FPU_REGS * sizeof(elf_fpreg_t),
->> +                         (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32));
->> +     if (err)
->> +             return err;
->> +
->> +     target->thread.fpu.fcr31 = fcr31 & ~FPU_CSR_ALL_X;
->> +
->> +     return user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
->> +                         (NUM_FPU_REGS * sizeof(elf_fpreg_t)) + sizeof(u32),
->> +                         sizeof(elf_fpregset_t));
->>  }
->>
->>  enum mips_regset {
->>
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index df51e78..19b8aac 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2481,6 +2481,9 @@ config USE_OF
+ 	select OF_EARLY_FLATTREE
+ 	select IRQ_DOMAIN
+ 
++config BUILTIN_DTB
++	bool
++
+ endmenu
+ 
+ config LOCKDEP_SUPPORT
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 9336509..72cdd6a 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -324,6 +324,12 @@ endif
+ 
+ CLEAN_FILES += vmlinux.32 vmlinux.64
+ 
++# device-trees
++core-$(CONFIG_BUILTIN_DTB) += arch/mips/boot/dts/
++
++%.dtb %.dtb.S %.dtb.o: | scripts
++	$(Q)$(MAKE) $(build)=arch/mips/boot/dts arch/mips/boot/dts/$@
++
+ archprepare:
+ ifdef CONFIG_MIPS32_N32
+ 	@echo '  Checking missing-syscalls for N32'
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+new file mode 100644
+index 0000000..6bb41df
+--- /dev/null
++++ b/arch/mips/boot/dts/Makefile
+@@ -0,0 +1,3 @@
++obj-y		+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++clean-files	+= *.dtb.S
+-- 
+2.1.0.rc2.206.gedb03e5

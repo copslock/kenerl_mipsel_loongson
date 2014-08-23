@@ -1,31 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Aug 2014 10:34:23 +0200 (CEST)
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:23497
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27025228AbaHWShDJueU3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Aug 2014 20:37:03 +0200
-X-IronPort-AV: E=Sophos;i="5.04,387,1406584800"; 
-   d="scan'208";a="76200908"
-Received: from palace.rsr.lip6.fr (HELO localhost.localdomain) ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 23 Aug 2014 20:36:57 +0200
-From:   Julia Lawall <Julia.Lawall@lip6.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Aug 2014 10:34:42 +0200 (CEST)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:40466 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27025898AbaHWUYzmUMxW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Aug 2014 22:24:55 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 0D2CC19BD9D;
+        Sat, 23 Aug 2014 23:24:55 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id C1CCxF0cvVoD; Sat, 23 Aug 2014 23:24:48 +0300 (EEST)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 590AF5BC003;
+        Sat, 23 Aug 2014 23:24:48 +0300 (EEST)
+Date:   Sat, 23 Aug 2014 23:24:48 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     joe@perches.com, kernel-janitors@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/7] MIPS: BCM63xx: delete double assignment
-Date:   Sat, 23 Aug 2014 20:33:25 +0200
-Message-Id: <1408818808-18850-5-git-send-email-Julia.Lawall@lip6.fr>
-X-Mailer: git-send-email 1.8.3.2
-In-Reply-To: <1408818808-18850-1-git-send-email-Julia.Lawall@lip6.fr>
-References: <1408818808-18850-1-git-send-email-Julia.Lawall@lip6.fr>
-Return-Path: <Julia.Lawall@lip6.fr>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        "Markos (GMail)" <markos.chandras@gmail.com>,
+        Markos <markos.chandras@imgtec.com>,
+        Paul <paul.burton@imgtec.com>,
+        Rob Kendrick <rob.kendrick@codethink.co.uk>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: Re: Please add my temporary MIPS fixes branch to linux-next
+Message-ID: <20140823202447.GB6818@drone.musicnaut.iki.fi>
+References: <53D9169D.3020705@imgtec.com>
+ <53E8A470.1050603@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <53E8A470.1050603@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42193
+X-archive-position: 42194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Julia.Lawall@lip6.fr
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,52 +56,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Julia Lawall <Julia.Lawall@lip6.fr>
+Hi,
 
-Delete successive assignments to the same location.  In each case, the
-duplicated assignment is modified to be in line with other nearby code.
+On Mon, Aug 11, 2014 at 12:09:36PM +0100, James Hogan wrote:
+> On 30/07/14 17:00, James Hogan wrote:
+> > Hi Stephen & MIPS people
+> > 
+> > v3.16 is fast approaching and there are quite a few important MIPS
+> > patches pending. Since Ralf appears to be unavailable at the moment I've
+> > reviewed and applied some of those patches which are least controversial
+> > to a fixes branch with the intention of sending a pull request to Ralf &
+> > Linus so that one of them can hopefully merge it before the release.
+> 
+> I sent you a pull request for these fixes prior to v3.16 but
+> unfortunately they still missed the release, and only two of the patches
+> were applied in the main v3.17 MIPS merge.
+> 
+> What are you intentions for the remaining fixes from Markos & Aaro?
 
-A simplified version of the semantic match that finds this problem is as
-follows: (http://coccinelle.lip6.fr/)
+Ralf, any comments? I think at least this fix is imporant,
+because currently users can hang OCTEON systems simply by lauching
+multiple readers of the proc file:
 
-// <smpl>
-@@
-expression i;
-@@
+https://git.kernel.org/cgit/linux/kernel/git/jhogan/mips.git/commit/?id=08a9c3c9afcf6e8975fc1c9a97e871e6a039c25a
 
-*i = ...;
- i = ...;
-// </smpl>
-
-Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
-
----
-The patches in this series do not depend on each other.
-
-Not compiled.  This patch changes the semantics of the code.
-
- arch/mips/bcm63xx/irq.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
-index 37eb2d1..b94bf44 100644
---- a/arch/mips/bcm63xx/irq.c
-+++ b/arch/mips/bcm63xx/irq.c
-@@ -434,7 +434,7 @@ static void bcm63xx_init_irq(void)
- 		irq_stat_addr[0] += PERF_IRQSTAT_3368_REG;
- 		irq_mask_addr[0] += PERF_IRQMASK_3368_REG;
- 		irq_stat_addr[1] = 0;
--		irq_stat_addr[1] = 0;
-+		irq_mask_addr[1] = 0;
- 		irq_bits = 32;
- 		ext_irq_count = 4;
- 		ext_irq_cfg_reg1 = PERF_EXTIRQ_CFG_REG_3368;
-@@ -443,7 +443,7 @@ static void bcm63xx_init_irq(void)
- 		irq_stat_addr[0] += PERF_IRQSTAT_6328_REG(0);
- 		irq_mask_addr[0] += PERF_IRQMASK_6328_REG(0);
- 		irq_stat_addr[1] += PERF_IRQSTAT_6328_REG(1);
--		irq_stat_addr[1] += PERF_IRQMASK_6328_REG(1);
-+		irq_mask_addr[1] += PERF_IRQMASK_6328_REG(1);
- 		irq_bits = 64;
- 		ext_irq_count = 4;
- 		is_ext_irq_cascaded = 1;
+A.

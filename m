@@ -1,15 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Aug 2014 10:32:12 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.17.10]:53415 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006614AbaHWO72k26OH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Aug 2014 16:59:28 +0200
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue105) with ESMTP (Nemesis)
-        id 0Lwqt6-1WEupN2EeW-016OtY; Sat, 23 Aug 2014 16:59:05 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     Olof Johansson <olof@lixom.net>,
-        Andrew Bresticker <abrestic@chromium.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Aug 2014 10:32:36 +0200 (CEST)
+Received: from mail-la0-x231.google.com ([IPv6:2a00:1450:4010:c03::231]:58322
+        "EHLO mail-la0-x231.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025874AbaHWTuRS8vNL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Aug 2014 21:50:17 +0200
+Received: by mail-la0-f49.google.com with SMTP id hz20so11143410lab.22
+        for <multiple recipients>; Sat, 23 Aug 2014 12:50:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=vOrHQRKwC8g9pO9FuqmfcMMiLI8vtmFdGyavzqdlzE4=;
+        b=GgguoL2O0klvs5Vclcy4RrBzzLKmhz3BDcFm+Lv9s+lW+FuDD/25mZ5KsEEPEQEICg
+         ccU8QNUE9FKHvqPikg2EhZy3ufjm97RQa0XVX1jb/WDX+7DXpaEdoUgrawBY6dDNfFbz
+         d4h53m15LpZor9TxqcUUPzNJTjNAiw0BM15qCu9fYs3U9rH+IV4i5RSkOtgKvcgm+1Cj
+         LxKLkWnQfdYILlD9YEtAdlyQWrtS8nUdjT+9pFdYEz/r1U8suImJx9igDaL81cOPwecA
+         3Vie1k8lQ77Qe2g2Z8+QdoVgE+P3sbSvQ+JnmtCmpwaeVhlQNfuOqXz8yJ5UUoNNkOrL
+         OrYw==
+MIME-Version: 1.0
+X-Received: by 10.112.120.226 with SMTP id lf2mr11104566lbb.14.1408823411696;
+ Sat, 23 Aug 2014 12:50:11 -0700 (PDT)
+Received: by 10.152.170.202 with HTTP; Sat, 23 Aug 2014 12:50:11 -0700 (PDT)
+In-Reply-To: <20140823063113.GC23715@localhost>
+References: <1408651466-8334-1-git-send-email-abrestic@chromium.org>
+        <CAGVrzcZobuL4z0WNX+Sz4p_uwaPL-S5yvEmgRUwZPJi4+qq0tg@mail.gmail.com>
+        <CAL1qeaGb-o0P7x4nZPJ+dGfoSKz+2ANrB0gGrBi19TtPxVTAZQ@mail.gmail.com>
+        <20140823063113.GC23715@localhost>
+Date:   Sat, 23 Aug 2014 21:50:11 +0200
+X-Google-Sender-Auth: rNQdmktVYSNXvhAu2XFEG2WUeDI
+Message-ID: <CAMuHMdXudu0kuOkKN8JCrWZSrQ4awKHhHU0E2ss++ProP0rteQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] MIPS: Move device-tree files to a common location
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Olof Johansson <olof@lixom.net>
+Cc:     Andrew Bresticker <abrestic@chromium.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Kumar Gala <galak@codeaurora.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -26,33 +48,16 @@ Cc:     Olof Johansson <olof@lixom.net>,
         Paul Burton <paul.burton@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 0/7] MIPS: Move device-tree files to a common location
-Date:   Sat, 23 Aug 2014 16:59:04 +0200
-Message-ID: <64044023.tHj6rvEyXT@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.11.0-26-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAOiHx=noe=614vv4GyhuvfoAYj0jYDhO5vX+7M2RbQBpE-uPnQ@mail.gmail.com>
-References: <1408651466-8334-1-git-send-email-abrestic@chromium.org> <201408231556.42571.arnd@arndb.de> <CAOiHx=noe=614vv4GyhuvfoAYj0jYDhO5vX+7M2RbQBpE-uPnQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:MBYTySjxA2D/clWyPFYjtm74J4lB0LGeTuFXVerBMxe
- Y5Q/P6ttBckbjY84xcOcKMQOzwNAP0WWyQguVINukXiRvyufDu
- Tl2542AffJaQ2O3NvXdcTIsgyMiZp0E2PyqvUmg2E1aENrfKEJ
- r8lIbnL47OL5FqwMHVTuMxBz6YU8Y7ECV1WFPSGlGEULZ0SYbE
- SZ7N5PrdWA23tNI1x5AGoUfTO+BzREckYNM/LcavF60xRM6UG7
- gWcnDBBsP976JQPt5rdNncVhCAJur9x7hx3Lc4wMAsRmOQZFia
- C9Ab8YmctjeWdH5dKsm34P1pD8MOxcD/5x2yuCJZyfoafv12t8
- TrB9bYjdmCPSMsiYfxPU=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42188
+X-archive-position: 42189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,29 +70,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Saturday 23 August 2014 16:48:52 Jonas Gorski wrote:
-> On Sat, Aug 23, 2014 at 3:56 PM, Arnd Bergmann <arnd@arndb.de> wrote:
-> > Another argument is that we plan to actually move all the dts files out of
-> > the kernel into a separate project in the future. We really don't want to
-> > have the churn of moving all the files now when they get deleted in one
-> > of the next merge windows.
-> >
-> > I don't know if we talked about whether that move should be done for
-> > all architectures at the same time. If that is the plan, I think it
-> > would be best to not move the MIPS files at all but also wait until
-> > they can get removed from the kernel tree.
-> 
-> I wonder how this is supposed to work with dtbs that are currently
-> expected to be built into the kernel?
+On Sat, Aug 23, 2014 at 8:31 AM, Olof Johansson <olof@lixom.net> wrote:
+>> > arch/arm/boot/dts/<vendor>/
+>> >
+>> > Is this something we should do for the MIPS and update the other architectures
+>> > to follow that scheme?
+>>
+>> I recall reading that as well and that it would be adopted for ARM64,
+>> but that hasn't seemed to have happened.  Perhaps Olof (CC'ed) will no
+>> more.
+>
+> Yeah, I highly recommend having a directory per vendor. We didn't on ARM,
+> and the amount of files in that directory is becoming pretty
+> insane. Moving to a subdirectory structure later gets messy which is
+> why we've been holding off on it.
 
-Most architectures use appended dtb blobs to work around legacy boot
-loaders that are lacking native dtb support. For these, combining the
-kernel and dtb is part of the installation or system image creation
-process, not part of the kernel build.
+It would mean we can change our scripts to operate on "interesting"
+DTS files from
 
-For the architectures that currently link the dtb into the kernel,
-(arc, metag, openrisc, xtensa), I suppose the best way is to move
-to use the same method as the other architectures. This also solves
-the problem of building a kernel that runs on multiple machines.
+     do-something-with $(git grep -l $vendor, -- arch/arm/boot/dts)
 
-	Arnd
+to
+
+    do-something-with arch/arm/boot/dts/$vendor/*
+
+which is easier to type...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

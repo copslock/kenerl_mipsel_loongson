@@ -1,26 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 03:04:08 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:41400 "EHLO test.hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 03:04:23 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:41408 "EHLO test.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006613AbaHYBDBc7jGC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27006616AbaHYBDBmlZNj (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 25 Aug 2014 03:03:01 +0200
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by test.hauke-m.de (Postfix) with ESMTPSA id CDC822096C;
-        Sun, 24 Aug 2014 23:25:19 +0200 (CEST)
+        by test.hauke-m.de (Postfix) with ESMTPSA id 12620204C5;
+        Sun, 24 Aug 2014 23:25:18 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org
 Cc:     zajec5@gmail.com, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [RFC 4/7] bcma: register bcma as device tree driver
-Date:   Sun, 24 Aug 2014 23:24:42 +0200
-Message-Id: <1408915485-8078-6-git-send-email-hauke@hauke-m.de>
+Subject: [RFC 0/7] bcma: add device tree support
+Date:   Sun, 24 Aug 2014 23:24:37 +0200
+Message-Id: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
-References: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42204
+X-archive-position: 42205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,174 +35,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This driver is used by the bcm53xx ARM SoC code. Now it is possible to
-give the address of the chipcommon core in device tree and bcma will
-search for all the other cores.
+This adds device tree support to bcma. In addition it also provides the 
+sprom needed by bcma through a device tree driver.
+This is needed for the Broadcom BCM47XX/BCM53XX ARM SoCs (NorthStar).
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- Documentation/devicetree/bindings/bus/bcma.txt | 46 +++++++++++++++++
- drivers/bcma/host_soc.c                        | 70 ++++++++++++++++++++++++++
- include/linux/bcma/bcma.h                      |  2 +
- 3 files changed, 118 insertions(+)
+bcma drives the system AIX bus. This bus is scanable, so we 
+automatically detect the cores attached to this bus. We only have to 
+provide the address of the first core, this can now be done through 
+device tree.
+It is not possible to find out what IRQ is associated to a specific 
+core, we have to provide this through device tree.
+
+Broadcom uses a nvram which is a key value store on the flash chip. 
+This nvram contains the mac addresses to be used by the wifi and 
+Ethernet devices, the configuration data for the switch, the 
+calibration data for the wifi cores and some more stuff. Currently bcma 
+assumes to get some sprom when it gets initialized on a SoC. This sprom 
+is a structure with all the data which are originally stored in the 
+nvram. When bcma is used on a PCIe wifi card this data is fetched from 
+some eeporm on the card. The nvram could contains more than one sprom, 
+in case there is a main Baordocm SoC and a Broadcom wifi card connected 
+via PCIe this PCIe cards mostly use the nvram to store the sprom with 
+the calibration data.
+
+This patch series adds two drivers, the nvram driver which reads the 
+nvram and provides an interface to fetch values by giving a key and a 
+driver which creates a sprom based on a given nvram. These two things 
+are no real drivers, they are just converting stuff. I made them 
+drivers so they can be replaced with some other drivers which are 
+fetching the sprom from other storages. I know that the BCM63XX SoCs 
+are also using an sprom, but there it is stored in a file on the file 
+system. 
+
+Some code was copied from the mips code at arch/mips/bcm47xx/ in the 
+end I want to make this mips code also use these new drivers.
+
+There is no device I know of which uses more than one nvram and I do 
+not think there will ever be such a device. With this patch you have to 
+provide a reference to the nvram you want to fetch data from which is a 
+little bit annoying, should I remove this parameter and assume there is 
+just one nvram driver in the system?
+
+I am interested on comments if this architecture is correct or if there 
+are some improvements I could do. I haven't fond similar code in the 
+kernel.
+
+Through which tree should I merge the final patches?
+
+This is based on linus 3.17-rc1.
+
+Log output:
+bcma: bus0: Found chip with id 0xCF12, rev 0x00 and package 0x02
+bcma: bus0: Core 0 found: ChipCommon (manuf 0x4BF, id 0x800, rev 0x2A, class 0x0)
+bcma: bus0: Core 1 found: Chipcommon B (manuf 0x4BF, id 0x50B, rev 0x01, class 0x0)
+bcma: bus0: Core 2 found: DMA (manuf 0x4BF, id 0x502, rev 0x01, class 0x0)
+bcma: bus0: Core 3 found: GBit MAC (manuf 0x4BF, id 0x82D, rev 0x04, class 0x0)
+bcma: bus0: Core 4 found: GBit MAC (manuf 0x4BF, id 0x82D, rev 0x04, class 0x0)
+bcma: bus0: Core 5 found: GBit MAC (manuf 0x4BF, id 0x82D, rev 0x04, class 0x0)
+bcma: bus0: Core 6 found: GBit MAC (manuf 0x4BF, id 0x82D, rev 0x04, class 0x0)
+bcma: bus0: Core 7 found: PCIe Gen 2 (manuf 0x4BF, id 0x501, rev 0x01, class 0x0)
+bcma: bus0: Core 8 found: PCIe Gen 2 (manuf 0x4BF, id 0x501, rev 0x01, class 0x0)
+bcma: bus0: Core 9 found: ARM Cortex A9 core (ihost) (manuf 0x4BF, id 0x510, rev 0x01, class 0x0)
+bcma: bus0: Core 10 found: USB 2.0 (manuf 0x4BF, id 0x504, rev 0x01, class 0x0)
+bcma: bus0: Core 11 found: USB 3.0 (manuf 0x4BF, id 0x505, rev 0x01, class 0x0)
+bcma: bus0: Core 12 found: SDIO3 (manuf 0x4BF, id 0x503, rev 0x01, class 0x0)
+bcma: bus0: Core 13 found: ARM Cortex A9 JTAG (manuf 0x4BF, id 0x506, rev 0x01, class 0x0)
+bcma: bus0: Core 14 found: Denali DDR2/DDR3 memory controller (manuf 0x4BF, id 0x507, rev 0x01, class 0x0)
+bcma: bus0: Core 15 found: ROM (manuf 0x4BF, id 0x508, rev 0x01, class 0x0)
+bcma: bus0: Core 16 found: NAND flash controller (manuf 0x4BF, id 0x509, rev 0x01, class 0x0)
+bcma: bus0: Core 17 found: SPI flash controller (manuf 0x4BF, id 0x50A, rev 0x01, class 0x0)
+bcma: bus0: Found sprom from device tree provider
+bgmac bcma0:1: Found PHY addr: 30 (NOREGS)
+bgmac bcma0:1: Support for Roboswitch not implemented
+libphy: bgmac mii bus: probed
+b53_common: found switch: BCM53011, rev 2
+bgmac bcma0:2: Found PHY addr: 0
+bgmac bcma0:2: Support for Roboswitch not implemented
+libphy: bgmac mii bus: probed
+
+
+Hauke Mehrtens (7):
+  MIPS: BCM47XX: move the nvram header file into common space
+  bcm47xx-nvram: add new broadcom nvram driver with dt support
+  bcm47xx-sprom: add Broadcom sprom parser driver
+  bcma: register bcma as device tree driver
+  bcma: get IRQ numbers from dt
+  bcma: get sprom from devicetree
+  ARM: BCM5301X: register bcma bus
+
+ Documentation/devicetree/bindings/bus/bcma.txt     |  46 ++
+ .../devicetree/bindings/misc/bcm47xx-nvram.txt     |  19 +
+ .../devicetree/bindings/misc/bcm47xx-sprom.txt     |  16 +
+ arch/arm/boot/dts/bcm4708.dtsi                     |  58 ++
+ arch/mips/bcm47xx/board.c                          |  42 +-
+ arch/mips/bcm47xx/nvram.c                          |   9 +-
+ arch/mips/bcm47xx/setup.c                          |   6 +-
+ arch/mips/bcm47xx/sprom.c                          |   6 +-
+ arch/mips/bcm47xx/time.c                           |   4 +-
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h |  53 --
+ drivers/bcma/host_soc.c                            |  70 +++
+ drivers/bcma/main.c                                |  42 +-
+ drivers/bcma/sprom.c                               |  51 +-
+ drivers/misc/Kconfig                               |  27 +
+ drivers/misc/Makefile                              |   2 +
+ drivers/misc/bcm47xx-nvram.c                       | 215 +++++++
+ drivers/misc/bcm47xx-sprom.c                       | 690 +++++++++++++++++++++
+ drivers/net/ethernet/broadcom/b44.c                |  10 +-
+ drivers/net/ethernet/broadcom/bgmac.c              |   7 +-
+ drivers/ssb/driver_chipcommon_pmu.c                |   9 +-
+ include/linux/bcm47xx_nvram.h                      |  71 +++
+ include/linux/bcma/bcma.h                          |   2 +
+ 22 files changed, 1350 insertions(+), 105 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/bus/bcma.txt
+ create mode 100644 Documentation/devicetree/bindings/misc/bcm47xx-nvram.txt
+ create mode 100644 Documentation/devicetree/bindings/misc/bcm47xx-sprom.txt
+ delete mode 100644 arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h
+ create mode 100644 drivers/misc/bcm47xx-nvram.c
+ create mode 100644 drivers/misc/bcm47xx-sprom.c
+ create mode 100644 include/linux/bcm47xx_nvram.h
 
-diff --git a/Documentation/devicetree/bindings/bus/bcma.txt b/Documentation/devicetree/bindings/bus/bcma.txt
-new file mode 100644
-index 0000000..52fb929
---- /dev/null
-+++ b/Documentation/devicetree/bindings/bus/bcma.txt
-@@ -0,0 +1,46 @@
-+Broadcom AIX bcma bus driver
-+
-+
-+Required properties:
-+
-+- compatible : brcm,bus-aix
-+
-+- reg : iomem address range of chipcommon core
-+
-+Optional properties:
-+
-+- sprom: reference to a sprom driver. This is needed for sprom less devices.
-+	 Use bcm47xx_sprom for example.
-+
-+
-+The cores on the AIX bus are auto detected by bcma. Detection of the
-+IRQ number is not supported on BCM47xx/BCM53xx ARM SoCs, so it is
-+possible to provide the IRQ number over device tree. The IRQ number and
-+the device tree child entry will be added to the core with the matching
-+reg address.
-+
-+Example:
-+
-+	aix@18000000 {
-+		compatible = "brcm,bus-aix";
-+		reg = <0x18000000 0x1000>;
-+		ranges = <0x00000000 0x18000000 0x00100000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		sprom = <&sprom0>;
-+
-+		gmac@0 {
-+			reg = <0x18024000 0x1000>;
-+			interrupts = <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;
-+		};
-+
-+		gmac@1 {
-+			reg = <0x18025000 0x1000>;
-+			interrupts = <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>;
-+		};
-+
-+		pcie@0 {
-+			reg = <0x18012000 0x1000>;
-+			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
-+		};
-+	};
-diff --git a/drivers/bcma/host_soc.c b/drivers/bcma/host_soc.c
-index 3475e60..d009bc9 100644
---- a/drivers/bcma/host_soc.c
-+++ b/drivers/bcma/host_soc.c
-@@ -7,6 +7,9 @@
- 
- #include "bcma_private.h"
- #include "scan.h"
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/of_address.h>
- #include <linux/bcma/bcma.h>
- #include <linux/bcma/bcma_soc.h>
- 
-@@ -173,6 +176,7 @@ int __init bcma_host_soc_register(struct bcma_soc *soc)
- 	/* Host specific */
- 	bus->hosttype = BCMA_HOSTTYPE_SOC;
- 	bus->ops = &bcma_host_soc_ops;
-+	bus->host_pdev = NULL;
- 
- 	/* Register */
- 	err = bcma_bus_early_register(bus, &soc->core_cc, &soc->core_mips);
-@@ -181,3 +185,69 @@ int __init bcma_host_soc_register(struct bcma_soc *soc)
- 
- 	return err;
- }
-+
-+#ifdef CONFIG_OF
-+static int bcma_host_soc_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct device_node *np = dev->of_node;
-+	struct bcma_bus *bus;
-+	int err;
-+
-+	/* Alloc */
-+	bus = devm_kzalloc(dev, sizeof(*bus), GFP_KERNEL);
-+	if (!bus)
-+		return -ENOMEM;
-+
-+	/* Map MMIO */
-+	bus->mmio = of_iomap(np, 0);
-+	if (!bus->mmio)
-+		return -ENOMEM;
-+
-+	/* Host specific */
-+	bus->hosttype = BCMA_HOSTTYPE_SOC;
-+	bus->ops = &bcma_host_soc_ops;
-+	bus->host_pdev = pdev;
-+
-+	/* Register */
-+	err = bcma_bus_register(bus);
-+	if (err)
-+		goto err_unmap_mmio;
-+
-+	platform_set_drvdata(pdev, bus);
-+
-+	return err;
-+
-+err_unmap_mmio:
-+	iounmap(bus->mmio);
-+	return err;
-+}
-+
-+static int bcma_host_soc_remove(struct platform_device *pdev)
-+{
-+	struct bcma_bus *bus = platform_get_drvdata(pdev);
-+
-+	bcma_bus_unregister(bus);
-+	iounmap(bus->mmio);
-+	platform_set_drvdata(pdev, NULL);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id bcma_host_soc_of_match[] = {
-+	{ .compatible = "brcm,bus-aix", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, bcma_host_soc_of_match);
-+
-+static struct platform_driver bcma_host_soc_driver = {
-+	.driver = {
-+		.name = "bcma-host-soc",
-+		.owner = THIS_MODULE,
-+		.of_match_table = bcma_host_soc_of_match,
-+	},
-+	.probe		= bcma_host_soc_probe,
-+	.remove		= bcma_host_soc_remove,
-+};
-+module_platform_driver(bcma_host_soc_driver);
-+#endif /* CONFIG_OF */
-diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
-index 0272e49..7a10d6d 100644
---- a/include/linux/bcma/bcma.h
-+++ b/include/linux/bcma/bcma.h
-@@ -323,6 +323,8 @@ struct bcma_bus {
- 		struct pci_dev *host_pci;
- 		/* Pointer to the SDIO device (only for BCMA_HOSTTYPE_SDIO) */
- 		struct sdio_func *host_sdio;
-+		/* Pointer to platform device (only for BCMA_HOSTTYPE_SOC) */
-+		struct platform_device *host_pdev;
- 	};
- 
- 	struct bcma_chipinfo chipinfo;
 -- 
 1.9.1

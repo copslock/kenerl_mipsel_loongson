@@ -1,48 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 02:36:23 +0200 (CEST)
-Received: from mail-ie0-f171.google.com ([209.85.223.171]:33723 "EHLO
-        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006583AbaHYAgWu5MHe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Aug 2014 02:36:22 +0200
-Received: by mail-ie0-f171.google.com with SMTP id at1so9000538iec.30
-        for <linux-mips@linux-mips.org>; Sun, 24 Aug 2014 17:36:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=/QrPTJHsoIKgWIYgFrbmHqv5Qtfhg4o4LgT1ygAmgYQ=;
-        b=asfk+AAvUe5LrTWbbf1cTfPgzAcrr+UT9d6iAlhbcTsUEF7h7p26yrlO70EqYrgiPw
-         zk639qhyou5d61N3AplYhfhwpjSzAiBQW6NFkNpkOCZC3dBkdjECPxZLtvwb3jrNpVw+
-         +ToPI3QNKCOvf5VTZJJ7p7QaoudFtTQN4/rEDkhYNPm1TD/AuhgKmVSKUQv/pbr2veYF
-         SE4h1hucT1URJxWW96xvEvifyFwit3o0+n6yxmajF7sdsfZiiGTbjnnQWnXJvrprr8KU
-         EhUNSPptI2GA9G/9fhUmS0Gb5qprPEWYZ+7Vm88Vt1xl8hJW+fYTBiboJ+7nHwyQY5F5
-         qMYA==
-MIME-Version: 1.0
-X-Received: by 10.50.176.202 with SMTP id ck10mr11856115igc.2.1408916738606;
- Sun, 24 Aug 2014 14:45:38 -0700 (PDT)
-Received: by 10.107.130.160 with HTTP; Sun, 24 Aug 2014 14:45:38 -0700 (PDT)
-In-Reply-To: <1408915485-8078-4-git-send-email-hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 03:03:02 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:41403 "EHLO test.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006614AbaHYBDB3t15o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Aug 2014 03:03:01 +0200
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by test.hauke-m.de (Postfix) with ESMTPSA id 7FF702097B;
+        Sun, 24 Aug 2014 23:25:20 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org
+Cc:     zajec5@gmail.com, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [RFC 6/7] bcma: get sprom from devicetree
+Date:   Sun, 24 Aug 2014 23:24:44 +0200
+Message-Id: <1408915485-8078-8-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
 References: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
-        <1408915485-8078-4-git-send-email-hauke@hauke-m.de>
-Date:   Sun, 24 Aug 2014 21:45:38 +0000
-Message-ID: <CACna6rx_V46wAAkRFA+XnZNX80tAdWkaYrTUV5VHxLwbC6GvfQ@mail.gmail.com>
-Subject: Re: [RFC 2/7] bcm47xx-nvram: add new broadcom nvram driver with dt support
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <zajec5@gmail.com>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42199
+X-archive-position: 42200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,18 +37,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 24 August 2014 21:24, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> This was copied from arch/mips/bcm47xx/nvram.c and modified to interact
-> with device tree. My plan is to make the MIPS bcm47xx also use this new
-> driver some time later.
+This patch make it possible to device an sprom provider in device tree
+and get the sprom from this driver. Every time there is such a provider
+it gets asked for a sprom.
 
-I don't like this.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ drivers/bcma/sprom.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 1 deletion(-)
 
-First, you change API (_getenv call), without explanation why/if we
-really need this. We decided we're very unlikely to ever find devices
-with multiple (separated) NVRAMs. So what's the point of having nvram
-per device?
-
-Secondly, don't duplicate the code. If you're going to switch bcm47xx
-to this new code, handle it smarter. Modify bcm47xx mode, move it to
-the "misc" and re-use in bcm53xx.
+diff --git a/drivers/bcma/sprom.c b/drivers/bcma/sprom.c
+index efb037f..ebe495d 100644
+--- a/drivers/bcma/sprom.c
++++ b/drivers/bcma/sprom.c
+@@ -15,6 +15,8 @@
+ #include <linux/io.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/slab.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
+ 
+ static int(*get_fallback_sprom)(struct bcma_bus *dev, struct ssb_sprom *out);
+ 
+@@ -46,6 +48,46 @@ int bcma_arch_register_fallback_sprom(int (*sprom_callback)(struct bcma_bus *bus
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_OF
++static int bcma_fill_sprom_with_dt(struct bcma_bus *bus,
++				   struct ssb_sprom *out)
++{
++	const __be32 *handle;
++	struct device_node *sprom_node;
++	struct platform_device *sprom_dev;
++	struct ssb_sprom *sprom;
++
++	if (!bus->host_pdev || !bus->host_pdev->dev.of_node)
++		return -ENOENT;
++
++	handle = of_get_property(bus->host_pdev->dev.of_node, "sprom", NULL);
++	if (!handle)
++		return -ENOENT;
++
++	sprom_node = of_find_node_by_phandle(be32_to_cpup(handle));
++	if (!sprom_node)
++		return -ENOENT;
++
++	sprom_dev = of_find_device_by_node(sprom_node);
++	if (!sprom_dev)
++		return -ENOENT;
++
++	sprom = platform_get_drvdata(sprom_dev);
++	if (!sprom)
++		return -ENOENT;
++
++	memcpy(out, sprom, sizeof(*out));
++
++	return 0;
++}
++#else
++static int bcma_fill_sprom_with_dt(struct bcma_bus *bus,
++				   struct ssb_sprom *out)
++{
++	return -ENOENT;
++}
++#endif
++
+ static int bcma_fill_sprom_with_fallback(struct bcma_bus *bus,
+ 					 struct ssb_sprom *out)
+ {
+@@ -580,7 +622,14 @@ int bcma_sprom_get(struct bcma_bus *bus)
+ 	u16 *sprom;
+ 	size_t sprom_sizes[] = { SSB_SPROMSIZE_WORDS_R4,
+ 				 SSB_SPROMSIZE_WORDS_R10, };
+-	int i, err = 0;
++	int i, err;
++
++	err = bcma_fill_sprom_with_dt(bus, &bus->sprom);
++	if (err == 0) {
++		bcma_info(bus, "Found sprom from device tree provider\n");
++		return 0;
++	}
++	err = 0;
+ 
+ 	if (!bus->drv_cc.core)
+ 		return -EOPNOTSUPP;
+-- 
+1.9.1

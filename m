@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 03:04:56 +0200 (CEST)
-Received: from test.hauke-m.de ([5.39.93.123]:41406 "EHLO test.hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 03:05:11 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:41409 "EHLO test.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006615AbaHYBDBlv-UB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27006623AbaHYBDBlzv2p (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 25 Aug 2014 03:03:01 +0200
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by test.hauke-m.de (Postfix) with ESMTPSA id 2D13720971;
+        by test.hauke-m.de (Postfix) with ESMTPSA id D18B820980;
         Sun, 24 Aug 2014 23:25:20 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org
 Cc:     zajec5@gmail.com, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [RFC 5/7] bcma: get IRQ numbers from dt
-Date:   Sun, 24 Aug 2014 23:24:43 +0200
-Message-Id: <1408915485-8078-7-git-send-email-hauke@hauke-m.de>
+Subject: [RFC 7/7] ARM: BCM5301X: register bcma bus
+Date:   Sun, 24 Aug 2014 23:24:45 +0200
+Message-Id: <1408915485-8078-9-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
 References: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
@@ -20,7 +20,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42207
+X-archive-position: 42208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,82 +37,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It is not possible to auto detect the irq numbers used by the cores on
-an arm SoC. If bcma was registered with device tree it will search for
-some device tree nodes with the irq number and add it to the core
-configuration.
-
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/main.c | 42 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/bcm4708.dtsi | 58 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index 0ff8d58..3f75776 100644
---- a/drivers/bcma/main.c
-+++ b/drivers/bcma/main.c
-@@ -10,6 +10,8 @@
- #include <linux/platform_device.h>
- #include <linux/bcma/bcma.h>
- #include <linux/slab.h>
-+#include <linux/of_irq.h>
-+#include <linux/of_address.h>
+diff --git a/arch/arm/boot/dts/bcm4708.dtsi b/arch/arm/boot/dts/bcm4708.dtsi
+index 31141e8..7c240ab 100644
+--- a/arch/arm/boot/dts/bcm4708.dtsi
++++ b/arch/arm/boot/dts/bcm4708.dtsi
+@@ -31,4 +31,62 @@
+ 		};
+ 	};
  
- MODULE_DESCRIPTION("Broadcom's specific AMBA driver");
- MODULE_LICENSE("GPL");
-@@ -120,6 +122,38 @@ static void bcma_release_core_dev(struct device *dev)
- 	kfree(core);
- }
- 
-+static struct device_node *bcma_of_find_child_device(struct platform_device *parent,
-+						     struct bcma_device *core)
-+{
-+	struct device_node *node;
-+	u64 size;
-+	const __be32 *reg;
++	nvram0: nvram@0 {
++		compatible = "brcm,bcm47xx-nvram";
++		reg = <0x1c000000 0x01000000>;
++	};
 +
-+	if (!parent || !parent->dev.of_node)
-+		return NULL;
++	sprom0: sprom@0 {
++		compatible = "brcm,bcm47xx-sprom";
++		nvram = <&nvram0>;
++	};
 +
-+	for_each_child_of_node(parent->dev.of_node, node) {
-+		reg = of_get_address(node, 0, &size, NULL);
-+		if (!reg)
-+			continue;
-+		if (be32_to_cpup(reg) == core->addr)
-+			return node;
-+	}
-+	return NULL;
-+}
++	aix@18000000 {
++		compatible = "brcm,bus-aix";
++		reg = <0x18000000 0x1000>;
++		ranges = <0x00000000 0x18000000 0x00100000>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++		sprom = <&sprom0>;
 +
-+static void bcma_of_fill_device(struct platform_device *parent,
-+				struct bcma_device *core)
-+{
-+	struct device_node *node;
++		usb2@0 {
++			reg = <0x18021000 0x1000>;
++			interrupts = <GIC_SPI 79 IRQ_TYPE_LEVEL_HIGH>;
++		};
 +
-+	node = bcma_of_find_child_device(parent, core);
-+	if (!node)
-+		return;
-+	core->dev.of_node = node;
-+	core->irq = irq_of_parse_and_map(node, 0);
-+}
++		usb3@0 {
++			reg = <0x18023000 0x1000>;
++			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
++		};
 +
- static int bcma_register_cores(struct bcma_bus *bus)
- {
- 	struct bcma_device *core;
-@@ -155,7 +189,13 @@ static int bcma_register_cores(struct bcma_bus *bus)
- 			break;
- 		case BCMA_HOSTTYPE_SOC:
- 			core->dev.dma_mask = &core->dev.coherent_dma_mask;
--			core->dma_dev = &core->dev;
-+			if (bus->host_pdev) {
-+				core->dma_dev = &bus->host_pdev->dev;
-+				core->dev.parent = &bus->host_pdev->dev;
-+				bcma_of_fill_device(bus->host_pdev, core);
-+			} else {
-+				core->dma_dev = &core->dev;
-+			}
- 			break;
- 		case BCMA_HOSTTYPE_SDIO:
- 			break;
++		gmac@0 {
++			reg = <0x18024000 0x1000>;
++			interrupts = <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
++		gmac@1 {
++			reg = <0x18025000 0x1000>;
++			interrupts = <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
++		gmac@2 {
++			reg = <0x18026000 0x1000>;
++			interrupts = <GIC_SPI 149 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
++		gmac@3 {
++			reg = <0x18027000 0x1000>;
++			interrupts = <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
++		pcie@0 {
++			reg = <0x18012000 0x1000>;
++			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
++		pcie@1 {
++			reg = <0x18013000 0x1000>;
++			interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
++		};
++	};
+ };
 -- 
 1.9.1

@@ -1,30 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 21:57:30 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:55295 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006778AbaHYT5WADNBm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Aug 2014 21:57:22 +0200
-Date:   Mon, 25 Aug 2014 20:57:21 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [RFC PATCH V2] MIPS: fix build with binutils 2.24.51+
-In-Reply-To: <CAOLZvyG4F_PCb5hbws1_e8nCeJ+odvnC5u=yitSe9CwY3TWZdw@mail.gmail.com>
-Message-ID: <alpine.LFD.2.11.1408252036420.18483@eddie.linux-mips.org>
-References: <1408465632-34262-1-git-send-email-manuel.lauss@gmail.com> <20140825125107.GA25892@linux-mips.org> <alpine.LFD.2.11.1408251502140.18483@eddie.linux-mips.org> <CAOLZvyG4F_PCb5hbws1_e8nCeJ+odvnC5u=yitSe9CwY3TWZdw@mail.gmail.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 01:56:03 +0200 (CEST)
+Received: from qmta06.westchester.pa.mail.comcast.net ([76.96.62.56]:35637
+        "EHLO qmta06.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006537AbaHYX4BwX6Mh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2014 01:56:01 +0200
+Received: from omta24.westchester.pa.mail.comcast.net ([76.96.62.76])
+        by qmta06.westchester.pa.mail.comcast.net with comcast
+        id jBRq1o0031ei1Bg56BvwM4; Mon, 25 Aug 2014 23:55:56 +0000
+Received: from [192.168.1.13] ([50.190.84.14])
+        by omta24.westchester.pa.mail.comcast.net with comcast
+        id jBvv1o0040JZ7Re3kBvvLr; Mon, 25 Aug 2014 23:55:56 +0000
+Message-ID: <53FBCD09.1050003@gentoo.org>
+Date:   Mon, 25 Aug 2014 19:55:53 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Max Filippov <jcmvbkbc@gmail.com>
+CC:     linux-xtensa@linux-xtensa.org, Chris Zankel <chris@zankel.net>,
+        Marc Gauthier <marc@cadence.com>, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, David Rientjes <rientjes@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Steven Hill <Steven.Hill@imgtec.com>
+Subject: Re: [PATCH v4 0/2] mm/highmem: make kmap cache coloring aware
+References: <1406941899-19932-1-git-send-email-jcmvbkbc@gmail.com> <20140825171600.GH25892@linux-mips.org>
+In-Reply-To: <20140825171600.GH25892@linux-mips.org>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1409010956;
+        bh=8dznMvPL/iKLG9Tkn4Ijz2zl068niI+QefefLysqtJM=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=SlDbaqFS7ySrhHIj3x3HnaPM5rdKl6TrmSQMquOqrXsJL9PTGUU4eKOytOGcHyM0m
+         XQiFum0gjr/+YzdgU3uJqqsgVXeQfa4Pp6RoYKiW5Fz/87Z6g+3AdauUbUz34y91uW
+         ZXhuPwlfv1aI6IIe7jYdR+1Nvqlkuv3yNalR3OoLvCp4sc/deN1xlyQKlRI5CmkZ/p
+         6HdbLUPZvnvczd0Z2FyjS2VAzH9rjEhc+lc9BrhhO+VWd2TGdAV8FtZZTRSYW6IRYv
+         hzx6qMmD+53OHb+qNSZ7U3pZ/NvgnIt0kznp9R52zFGEvKdEV7OhMySuK3NbT7tqnH
+         7snbAvPZdTexw==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42238
+X-archive-position: 42239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,43 +61,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 25 Aug 2014, Manuel Lauss wrote:
-
-> > 1. Determine whether `-Wa,-msoft-float' and `.set hardfloat' are available
-> >    (a single check will do, they were added to GAS both at the same time)
-> >    and only enable them if supported by binutils being used to build the
-> >    kernel, e.g. (for the `.set' part):
-> >
-> > #ifdef GAS_HAS_SET_HARDFLOAT
-> > #define SET_HARDFLOAT .set      hardfloat
-> > #else
-> > #define SET_HARDFLOAT
-> > #endif
-> >
-> >    Otherwise we'd have to bump the binutils requirement up to 2.19; this
+On 08/25/2014 13:16, Ralf Baechle wrote:
+> On Sat, Aug 02, 2014 at 05:11:37AM +0400, Max Filippov wrote:
 > 
-> Do people really update their toolchain so rarely?
+>> this series adds mapping color control to the generic kmap code, allowing
+>> architectures with aliasing VIPT cache to use high memory. There's also
+>> use example of this new interface by xtensa.
+> 
+> I haven't actually ported this to MIPS but it certainly appears to be
+> the right framework to get highmem aliases handled on MIPS, too.
+> 
+> Though I still consider increasing PAGE_SIZE to 16k the preferable
+> solution because it will entirly do away with cache aliases.
 
- I don't know, but unless they're toolchain developers at the same time 
-I'd expect some to stick with whatever they've found working.  The worst 
-thing that can happen to you is when you need to upgrade the kernel to fix 
-a critical bug, then the updated kernel requires newer tools and then the 
-newer tools trigger a bunch of new bugs that you don't even know if they 
-are kernel or toolchain bugs (or both).  So I don't want to force people 
-to upgrade unless absolutely necessary (e.g. a microMIPS kernel), I'd 
-rather let them do it whenever *they* feel comfortable doing it.
+Won't setting PAGE_SIZE to 16k break some existing userlands (o32)?  I use a
+4k PAGE_SIZE because the last few times I've tried 16k or 64k, init won't
+load (SIGSEGVs or such, which panicks the kernel).
 
- Linux's generic requirement is binutils 2.12 or newer, I reckon we bumped 
-the corresponding requirement for the MIPS port up a bit recently because 
-of some braindamage in binutils 2.24 the workaround for which has some 
-version limitations.  And I am not convinced it is a good idea to bump the 
-requirement in such a short time again just because a GCC version to be 
-released next year have become strictier about the FP ABI (that we don't 
-use anyway).  Especially as the solution is so simple.
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
 
- I'm still at 2.20.1 as far as the MIPS target is concerned BTW, I just 
-considered the time I'd have to spend on upgrading would be better spent 
-on sorting out the kernel issues I've had outstanding, and there's been 
-quite a bunch.
+"The past tempts us, the present confuses us, the future frightens us.  And
+our lives slip away, moment by moment, lost in that vast, terrible in-between."
 
-  Maciej
+--Emperor Turhan, Centauri Republic

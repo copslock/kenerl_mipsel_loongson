@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 20:22:36 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54530 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006760AbaHYSWfB8pgi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 20:22:35 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PIMVFg003932;
-        Mon, 25 Aug 2014 20:22:31 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PIMUr5003931;
-        Mon, 25 Aug 2014 20:22:30 +0200
-Date:   Mon, 25 Aug 2014 20:22:30 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V4] MIPS: Loongson-3: Enable the COP2 usage
-Message-ID: <20140825182230.GJ25892@linux-mips.org>
-References: <1406768782-14644-1-git-send-email-chenhc@lemote.com>
- <CAAhV-H63fxcX5dUMBwsM7CyO+ot4kGz++YDq+n4-=g0qNBR0Hg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 21:10:26 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:47348 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006599AbaHYTKZfa900 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Aug 2014 21:10:25 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 160CD28A5FC;
+        Mon, 25 Aug 2014 21:10:12 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qg0-f41.google.com (mail-qg0-f41.google.com [209.85.192.41])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 50BDD28B40C;
+        Mon, 25 Aug 2014 21:10:02 +0200 (CEST)
+Received: by mail-qg0-f41.google.com with SMTP id z107so10244871qgd.28
+        for <multiple recipients>; Mon, 25 Aug 2014 12:10:13 -0700 (PDT)
+X-Received: by 10.140.48.234 with SMTP id o97mr36714590qga.10.1408993813905;
+ Mon, 25 Aug 2014 12:10:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAhV-H63fxcX5dUMBwsM7CyO+ot4kGz++YDq+n4-=g0qNBR0Hg@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.140.84.244 with HTTP; Mon, 25 Aug 2014 12:09:53 -0700 (PDT)
+In-Reply-To: <20140825112754.GE27724@linux-mips.org>
+References: <1408818808-18850-1-git-send-email-Julia.Lawall@lip6.fr>
+ <1408818808-18850-5-git-send-email-Julia.Lawall@lip6.fr> <20140825112754.GE27724@linux-mips.org>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Mon, 25 Aug 2014 21:09:53 +0200
+Message-ID: <CAOiHx=m_-GmRwAmPOWFg8w9pFMPU8Vn9U-UO+k=jDdDxNH7R3Q@mail.gmail.com>
+Subject: Re: [PATCH 4/7] MIPS: BCM63xx: delete double assignment
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Julia Lawall <Julia.Lawall@lip6.fr>, joe@perches.com,
+        kernel-janitors@vger.kernel.org,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42232
+X-archive-position: 42233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,19 +50,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 31, 2014 at 09:13:37AM +0800, Huacai Chen wrote:
+On Mon, Aug 25, 2014 at 1:27 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Sat, Aug 23, 2014 at 08:33:25PM +0200, Julia Lawall wrote:
+>
+>> Delete successive assignments to the same location.  In each case, the
+>> duplicated assignment is modified to be in line with other nearby code.
+>>
+>> A simplified version of the semantic match that finds this problem is as
+>> follows: (http://coccinelle.lip6.fr/)
+>
+> Looking good, applied.
 
-> 
-> I found that the V3 of Loongson's patchset has been merged into
-> mips-for-linux-next. But the 7th patch (this one) should be updated
-> for preemptible kernel. The reason is nearly the same as
-> http://www.linux-mips.org/archives/linux-mips/2014-07/msg00237.html.
-> Thanks.
+Huh, somehow gmail decided the original emails were spam.
 
-I'm marking this one as rejected because V3 plus
-https://patchwork.linux-mips.org/patch/7515/ which are already applied
-are identical.
+> Thanks,
+>
+>   Ralf
 
-Thanks,
+Also thanks from me for cleaning up behind me! These mistakes were
+definitely mine.
 
-  Ralf
+
+Jonas

@@ -1,32 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 16:42:43 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:53034 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 16:49:54 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:53210 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006715AbaHYOmmJz6vP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 16:42:42 +0200
+        id S27006715AbaHYOtwaSF0z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Aug 2014 16:49:52 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PEgfkA031653;
-        Mon, 25 Aug 2014 16:42:41 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PEnldg031814;
+        Mon, 25 Aug 2014 16:49:47 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PEge48031652;
-        Mon, 25 Aug 2014 16:42:40 +0200
-Date:   Mon, 25 Aug 2014 16:42:40 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PEnhJ1031813;
+        Mon, 25 Aug 2014 16:49:43 +0200
+Date:   Mon, 25 Aug 2014 16:49:43 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Wei.Yang@windriver.com
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] MIPS:KDUMP: set a right value to
- kexec_indirection_page variable
-Message-ID: <20140825144240.GD25892@linux-mips.org>
-References: <1406806949-27039-1-git-send-email-Wei.Yang@windriver.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Rob Herring <robherring2@gmail.com>,
+        Olof Johansson <olof@lixom.net>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        David Daney <david.daney@cavium.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        John Crispin <blogic@openwrt.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jayachandran C <jchandra@broadcom.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 0/7] MIPS: Move device-tree files to a common location
+Message-ID: <20140825144943.GE25892@linux-mips.org>
+References: <1408651466-8334-1-git-send-email-abrestic@chromium.org>
+ <20140823161456.GA2758@localhost>
+ <CAL_JsqLGdZRFXni0Y5Loij3FVfw8RzaizNaRA+_hccXz0opkKw@mail.gmail.com>
+ <2336240.173zr5MfQE@wuerfel>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1406806949-27039-1-git-send-email-Wei.Yang@windriver.com>
+In-Reply-To: <2336240.173zr5MfQE@wuerfel>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42224
+X-archive-position: 42225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,20 +62,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 31, 2014 at 07:42:29PM +0800, Wei.Yang@windriver.com wrote:
-
-> From: Yang Wei <Wei.Yang@windriver.com>
-> 
-> Since there is not indirection page in crash type, so the vaule of the head
-> field of kimage structure is not equal to the address of indirection page but
-> IND_DONE. so we have to set kexec_indirection_page variable to the address of
-> the head field of image structure.
-
-Applied, thanks.
-
-Your patch applies to 3.8-stable and newer only.  If you happen to have
-patches for older kernels, I'd appreciate if you post them.
-
-Thanks,
+There have been no forcing arguments for or against acceptance of this
+patch series but given that many other architectures organize their
+DTS files in an arch/<ARCH>/boot/dts/ directory I think MIPS should
+follow that example.
 
   Ralf

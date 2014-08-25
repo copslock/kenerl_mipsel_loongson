@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 19:16:11 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54256 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 20:22:36 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:54530 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006754AbaHYRQJaOZEL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 19:16:09 +0200
+        id S27006760AbaHYSWfB8pgi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Aug 2014 20:22:35 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PHG35B002603;
-        Mon, 25 Aug 2014 19:16:04 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PIMVFg003932;
+        Mon, 25 Aug 2014 20:22:31 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PHG0Vx002602;
-        Mon, 25 Aug 2014 19:16:00 +0200
-Date:   Mon, 25 Aug 2014 19:16:00 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PIMUr5003931;
+        Mon, 25 Aug 2014 20:22:30 +0200
+Date:   Mon, 25 Aug 2014 20:22:30 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Max Filippov <jcmvbkbc@gmail.com>
-Cc:     linux-xtensa@linux-xtensa.org, Chris Zankel <chris@zankel.net>,
-        Marc Gauthier <marc@cadence.com>, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, David Rientjes <rientjes@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Steven Hill <Steven.Hill@imgtec.com>
-Subject: Re: [PATCH v4 0/2] mm/highmem: make kmap cache coloring aware
-Message-ID: <20140825171600.GH25892@linux-mips.org>
-References: <1406941899-19932-1-git-send-email-jcmvbkbc@gmail.com>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V4] MIPS: Loongson-3: Enable the COP2 usage
+Message-ID: <20140825182230.GJ25892@linux-mips.org>
+References: <1406768782-14644-1-git-send-email-chenhc@lemote.com>
+ <CAAhV-H63fxcX5dUMBwsM7CyO+ot4kGz++YDq+n4-=g0qNBR0Hg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1406941899-19932-1-git-send-email-jcmvbkbc@gmail.com>
+In-Reply-To: <CAAhV-H63fxcX5dUMBwsM7CyO+ot4kGz++YDq+n4-=g0qNBR0Hg@mail.gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42231
+X-archive-position: 42232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,17 +48,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Aug 02, 2014 at 05:11:37AM +0400, Max Filippov wrote:
+On Thu, Jul 31, 2014 at 09:13:37AM +0800, Huacai Chen wrote:
 
-> this series adds mapping color control to the generic kmap code, allowing
-> architectures with aliasing VIPT cache to use high memory. There's also
-> use example of this new interface by xtensa.
+> 
+> I found that the V3 of Loongson's patchset has been merged into
+> mips-for-linux-next. But the 7th patch (this one) should be updated
+> for preemptible kernel. The reason is nearly the same as
+> http://www.linux-mips.org/archives/linux-mips/2014-07/msg00237.html.
+> Thanks.
 
-I haven't actually ported this to MIPS but it certainly appears to be
-the right framework to get highmem aliases handled on MIPS, too.
-
-Though I still consider increasing PAGE_SIZE to 16k the preferable
-solution because it will entirly do away with cache aliases.
+I'm marking this one as rejected because V3 plus
+https://patchwork.linux-mips.org/patch/7515/ which are already applied
+are identical.
 
 Thanks,
 

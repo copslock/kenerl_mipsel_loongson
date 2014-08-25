@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 21:10:26 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:47348 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006599AbaHYTKZfa900 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 21:10:25 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 160CD28A5FC;
-        Mon, 25 Aug 2014 21:10:12 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qg0-f41.google.com (mail-qg0-f41.google.com [209.85.192.41])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 50BDD28B40C;
-        Mon, 25 Aug 2014 21:10:02 +0200 (CEST)
-Received: by mail-qg0-f41.google.com with SMTP id z107so10244871qgd.28
-        for <multiple recipients>; Mon, 25 Aug 2014 12:10:13 -0700 (PDT)
-X-Received: by 10.140.48.234 with SMTP id o97mr36714590qga.10.1408993813905;
- Mon, 25 Aug 2014 12:10:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 21:30:11 +0200 (CEST)
+Received: from mail-wg0-f42.google.com ([74.125.82.42]:50063 "EHLO
+        mail-wg0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006760AbaHYTaJ6vbzh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Aug 2014 21:30:09 +0200
+Received: by mail-wg0-f42.google.com with SMTP id l18so13356653wgh.1
+        for <multiple recipients>; Mon, 25 Aug 2014 12:30:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=xYUsOnuNZjSGAECY0DZvKHYxlwILH364fhgbqVPH38M=;
+        b=LGkO4SKvbvpbC+2KTa8qAkakR6kq/XAB6B3bjLqElfQAWkXsv96eShXFbFn498VLxJ
+         CUI9/kC5oGR1Te0bT1mFsCNzI+GH/FFLl0/7UL79pte0Qds1zoLVGvsrcvAtapTPNlRj
+         fR+eO/01mzo5hrKw2NlU82zGzGgRAByy9CuOWVEjCQWH/bMf4rTGs7z9T3hFHzGrHLxQ
+         gpbEk1anuk3mv1DSP2tL+xwNuP8PvDmvsWv+sCQVbV9SZkBV706Wm2VgVdfj2GCjFlBe
+         mOK6ovbAyaNCQxN+KFUNOpOp0kNcCvhuisfuK0hHU/KEkWBOrMoq2brkw+WXel85d6UC
+         /wxQ==
+X-Received: by 10.194.203.105 with SMTP id kp9mr25323497wjc.41.1408995004656;
+ Mon, 25 Aug 2014 12:30:04 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.140.84.244 with HTTP; Mon, 25 Aug 2014 12:09:53 -0700 (PDT)
-In-Reply-To: <20140825112754.GE27724@linux-mips.org>
-References: <1408818808-18850-1-git-send-email-Julia.Lawall@lip6.fr>
- <1408818808-18850-5-git-send-email-Julia.Lawall@lip6.fr> <20140825112754.GE27724@linux-mips.org>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 25 Aug 2014 21:09:53 +0200
-Message-ID: <CAOiHx=m_-GmRwAmPOWFg8w9pFMPU8Vn9U-UO+k=jDdDxNH7R3Q@mail.gmail.com>
-Subject: Re: [PATCH 4/7] MIPS: BCM63xx: delete double assignment
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Julia Lawall <Julia.Lawall@lip6.fr>, joe@perches.com,
-        kernel-janitors@vger.kernel.org,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Received: by 10.216.36.67 with HTTP; Mon, 25 Aug 2014 12:29:24 -0700 (PDT)
+In-Reply-To: <alpine.LFD.2.11.1408251502140.18483@eddie.linux-mips.org>
+References: <1408465632-34262-1-git-send-email-manuel.lauss@gmail.com>
+ <20140825125107.GA25892@linux-mips.org> <alpine.LFD.2.11.1408251502140.18483@eddie.linux-mips.org>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Mon, 25 Aug 2014 21:29:24 +0200
+Message-ID: <CAOLZvyG4F_PCb5hbws1_e8nCeJ+odvnC5u=yitSe9CwY3TWZdw@mail.gmail.com>
+Subject: Re: [RFC PATCH V2] MIPS: fix build with binutils 2.24.51+
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42233
+X-archive-position: 42234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,25 +53,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Aug 25, 2014 at 1:27 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Sat, Aug 23, 2014 at 08:33:25PM +0200, Julia Lawall wrote:
+On Mon, Aug 25, 2014 at 4:27 PM, Maciej W. Rozycki <macro@linux-mips.org> wrote:
+
+> 1. Determine whether `-Wa,-msoft-float' and `.set hardfloat' are available
+>    (a single check will do, they were added to GAS both at the same time)
+>    and only enable them if supported by binutils being used to build the
+>    kernel, e.g. (for the `.set' part):
 >
->> Delete successive assignments to the same location.  In each case, the
->> duplicated assignment is modified to be in line with other nearby code.
->>
->> A simplified version of the semantic match that finds this problem is as
->> follows: (http://coccinelle.lip6.fr/)
+> #ifdef GAS_HAS_SET_HARDFLOAT
+> #define SET_HARDFLOAT .set      hardfloat
+> #else
+> #define SET_HARDFLOAT
+> #endif
 >
-> Looking good, applied.
+>    Otherwise we'd have to bump the binutils requirement up to 2.19; this
 
-Huh, somehow gmail decided the original emails were spam.
+Do people really update their toolchain so rarely?
 
-> Thanks,
+
+> 2. Use `.set hardfloat' only around the places that really require it,
+>    i.e.:
 >
->   Ralf
+>         .set    push
+>         SET_HARDFLOAT
+> # Do the FP stuff.
+>         .set    pop
+>
+>    (so the arch/mips/kernel/r4k_fpu.S piece is good except for maybe using
+>    a macro, depending on the outcome of #1 above, but the other ones are
+>    not).
 
-Also thanks from me for cleaning up behind me! These mistakes were
-definitely mine.
+I'll update the patch.
 
-
-Jonas
+Thank you!
+        Manuel

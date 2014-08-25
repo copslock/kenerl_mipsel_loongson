@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 15:26:47 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52563 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006715AbaHYN0pnX46A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 15:26:45 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PDQjFk030054
-        for <linux-mips@linux-mips.org>; Mon, 25 Aug 2014 15:26:45 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PDQjjP030053
-        for linux-mips@linux-mips.org; Mon, 25 Aug 2014 15:26:45 +0200
-Date:   Mon, 25 Aug 2014 15:26:45 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Subject: Fwd: MIPS: Pull Request
-Message-ID: <20140825132645.GA29979@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 16:27:55 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52852 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006709AbaHYO1wyYgcd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Aug 2014 16:27:52 +0200
+Date:   Mon, 25 Aug 2014 15:27:52 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [RFC PATCH V2] MIPS: fix build with binutils 2.24.51+
+In-Reply-To: <20140825125107.GA25892@linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1408251502140.18483@eddie.linux-mips.org>
+References: <1408465632-34262-1-git-send-email-manuel.lauss@gmail.com> <20140825125107.GA25892@linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42222
+X-archive-position: 42223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,87 +37,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-FYI, below the last pull request to Linus.
+On Mon, 25 Aug 2014, Ralf Baechle wrote:
 
-  Ralf
+> > With binutils snapshots since 29.07.2014 I get the following build failure:
+> > {standard input}: Warning: .gnu_attribute 4,3 requires `softfloat'
+> >   LD      arch/mips/alchemy/common/built-in.o
+> > mipsel-softfloat-linux-gnu-ld: Warning: arch/mips/alchemy/common/built-in.o
+> >  uses -msoft-float (set by arch/mips/alchemy/common/prom.o),
+> >  arch/mips/alchemy/common/sleeper.o uses -mhard-float
+> > 
+> > Extend cflags with a soft-float directive for the assembler, and add
+> > hardfloat directives to assembler files dealing with FPU
+> > registers to compensate.
+> 
+> I had a discussion about this with Maciej.  He suggested that this
+> behavious of binutils should be taken a look at but also that we rather
+> should remove the -msoft-float option from the kernel and I support his
+> view.
+> 
+> I did add -msoft-float in 6218cf4410cfce7bc7e89834e73525b124625d4c
+> [[MIPS] Always pass -msoft-float.] in 2006 because back then there was a
+> wave of bug reports from people attempting to use hard fp in the kernel
+> which of course did result in FPR corruption.  Adding -msoft-float made
+> sure that floating point operations would result in a link error because
+> the kernel does not supply a soft-fp library.
+> 
+> But maybe there are other methods to achieve the same - such as
+> 
+> #define float diediedie
+> #define double goboom
 
-The following changes since commit 7d1311b93e58ed55f3a31cc8f94c4b8fe988a2b9:
+ I had a short discussion with Matthew (cc-ed) meanwhile who has been 
+doing binutils and GCC work in this area recently and made GCC pass 
+`-msoft-float' down to GAS as a part of floating-point ABI updates being 
+made right now.  As a result at this point I think we want to keep 
+`-msoft-float', and furthermore the use of `-Wa,-msoft-float' and `.set 
+hardfloat' appears mostly right to me however with the following 
+exceptions:
 
-  Linux 3.17-rc1 (2014-08-16 10:40:26 -0600)
+1. Determine whether `-Wa,-msoft-float' and `.set hardfloat' are available 
+   (a single check will do, they were added to GAS both at the same time) 
+   and only enable them if supported by binutils being used to build the 
+   kernel, e.g. (for the `.set' part):
 
-are available in the git repository at:
+#ifdef GAS_HAS_SET_HARDFLOAT
+#define SET_HARDFLOAT .set	hardfloat
+#else
+#define SET_HARDFLOAT
+#endif
 
-  git://git.linux-mips.org/pub/scm/ralf/upstream-linus.git upstream
+   Otherwise we'd have to bump the binutils requirement up to 2.19; this 
+   feature was only added with:
 
-for you to fetch changes up to 608308682addfdc7b8e2aee88f0e028331d88e4d:
+commit 037b32b9ffec4d7e68c596a0835dee8b0d26818f
+Author: Adam Nemet <anemet@caviumnetworks.com>
+Date:   Mon Apr 28 17:06:28 2008 +0000
 
-  MIPS: OCTEON: make get_system_type() thread-safe (2014-08-19 18:24:42 +0200)
+   I'm not convinced that would be very wise, but maybe it's OK after six 
+   years after all.
 
-MIPS fixes for 3.17.  Pretty much all across the field so with this we
-should be in reasonable shape for the upcoming -rc2.
+2. Use `.set hardfloat' only around the places that really require it, 
+   i.e.:
 
-Please consider pulling,
+	.set	push
+	SET_HARDFLOAT
+# Do the FP stuff.
+	.set	pop
 
-  Ralf
+   (so the arch/mips/kernel/r4k_fpu.S piece is good except for maybe using 
+   a macro, depending on the outcome of #1 above, but the other ones are 
+   not).
 
-----------------------------------------------------------------
+ So the patch looks to me like a good starting point, but it is not quite 
+there yet.
 
-Aaro Koskinen (1):
-      MIPS: OCTEON: make get_system_type() thread-safe
+ The use of `-Wa,-msoft-float' will also improve our safety checks with 
+GCC versions up to 4.9 as it'll catch any unintended use of FP operations 
+in assembly code as long as the version of GAS used is at least 2.19.
 
-Guenter Roeck (1):
-      MIPS: NL: Fix nlm_xlp_defconfig build error
-
-Hauke Mehrtens (1):
-      MIPS: BCM47XX: Fix reboot problem on BCM4705/BCM4785
-
-Huacai Chen (1):
-      MIPS: Loongson: Fix COP2 usage for preemptible kernel
-
-Lars Persson (1):
-      MIPS: Remove race window in page fault handling
-
-Manuel Lauss (1):
-      MIPS: Alchemy: Fix db1200 PSC clock enablement
-
-Markos Chandras (6):
-      MIPS: Malta: Improve system memory detection for '{e, }memsize' >= 2G
-      MIPS: syscall: Fix AUDIT value for O32 processes on MIPS64
-      MIPS: scall64-o32: Fix indirect syscall detection
-      MIPS: EVA: Add new EVA header
-      MIPS: Malta: EVA: Rename 'eva_entry' to 'platform_eva_init'
-      MIPS: CPS: Initialize EVA before bringing up VPEs from secondary cores
-
-Ralf Baechle (1):
-      MIPS: GIC: Remove useless parens from GICBIS().
-
-Sergey Ryazanov (2):
-      MIPS: MSP71xx: remove unused plat_irq_dispatch() argument
-      MIPS: Add common plat_irq_dispatch declaration
-
-Wei Yongjun (1):
-      MIPS: Remove duplicated include from numa.c
-
-Yang Wei (1):
-      MIPS: perf: Mark pmu interupt IRQF_NO_THREAD
-
- arch/mips/alchemy/devboards/db1200.c               |  6 +--
- arch/mips/bcm47xx/setup.c                          | 13 ++++++-
- arch/mips/cavium-octeon/setup.c                    | 19 +++++++---
- arch/mips/include/asm/eva.h                        | 43 ++++++++++++++++++++++
- arch/mips/include/asm/gic.h                        |  2 +-
- arch/mips/include/asm/irq.h                        |  2 +
- .../include/asm/mach-malta/kernel-entry-init.h     | 22 ++++++++---
- arch/mips/include/asm/mach-netlogic/topology.h     |  7 ----
- arch/mips/include/asm/pgtable.h                    |  8 ++--
- arch/mips/include/asm/syscall.h                    |  8 ++--
- arch/mips/kernel/cps-vec.S                         |  4 ++
- arch/mips/kernel/perf_event_mipsxx.c               |  2 +-
- arch/mips/kernel/scall64-o32.S                     | 12 ++++--
- arch/mips/loongson/loongson-3/cop2-ex.c            |  8 ++--
- arch/mips/loongson/loongson-3/numa.c               |  2 -
- arch/mips/mm/cache.c                               | 27 ++++++++++----
- arch/mips/mti-malta/malta-memory.c                 | 14 +++++--
- arch/mips/pmcs-msp71xx/msp_irq.c                   |  2 +-
- 18 files changed, 142 insertions(+), 59 deletions(-)
- create mode 100644 arch/mips/include/asm/eva.h
+  Maciej

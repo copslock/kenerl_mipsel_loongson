@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 14:51:09 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52249 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 15:20:58 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52428 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006715AbaHYMvHzVkdM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 14:51:07 +0200
+        id S27006724AbaHYNU5B4sOm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Aug 2014 15:20:57 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PCp7q8029305;
-        Mon, 25 Aug 2014 14:51:07 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PDKrTD029925;
+        Mon, 25 Aug 2014 15:20:53 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PCp7Dr029304;
-        Mon, 25 Aug 2014 14:51:07 +0200
-Date:   Mon, 25 Aug 2014 14:51:07 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PDKpQR029919;
+        Mon, 25 Aug 2014 15:20:51 +0200
+Date:   Mon, 25 Aug 2014 15:20:50 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Manuel Lauss <manuel.lauss@gmail.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [RFC PATCH V2] MIPS: fix build with binutils 2.24.51+
-Message-ID: <20140825125107.GA25892@linux-mips.org>
-References: <1408465632-34262-1-git-send-email-manuel.lauss@gmail.com>
+To:     Jayachandran C <jchandra@broadcom.com>
+Cc:     linux-mips@linux-mips.org, chenhc@lemote.com,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 1/2] MIPS: Netlogic: Use MIPS topology.h
+Message-ID: <20140825132050.GH27724@linux-mips.org>
+References: <CAAhV-H7x3FDAXYcH6J8mDeBnrgV1CZZtizerjHRa4cj_oZ1PuQ@mail.gmail.com>
+ <1408681112-26744-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1408465632-34262-1-git-send-email-manuel.lauss@gmail.com>
+In-Reply-To: <1408681112-26744-1-git-send-email-jchandra@broadcom.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42220
+X-archive-position: 42221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,34 +44,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 19, 2014 at 06:27:12PM +0200, Manuel Lauss wrote:
+On Fri, Aug 22, 2014 at 09:48:31AM +0530, Jayachandran C wrote:
 
-> With binutils snapshots since 29.07.2014 I get the following build failure:
-> {standard input}: Warning: .gnu_attribute 4,3 requires `softfloat'
->   LD      arch/mips/alchemy/common/built-in.o
-> mipsel-softfloat-linux-gnu-ld: Warning: arch/mips/alchemy/common/built-in.o
->  uses -msoft-float (set by arch/mips/alchemy/common/prom.o),
->  arch/mips/alchemy/common/sleeper.o uses -mhard-float
+> commit bda4584cd943 ("MIPS: Support CPU topology files in sysfs")
+> added topology related macros for all MIPS platforms. This causes
+> compile failure for Netlogic platforms with errors like:
 > 
-> Extend cflags with a soft-float directive for the assembler, and add
-> hardfloat directives to assembler files dealing with FPU
-> registers to compensate.
+> arch/mips/include/asm/mach-netlogic/topology.h:14:0: error: "topology_physical_package_id" redefined [-Werror]
+> 
+> Fix this by dropping Netlogic specific topology.h and setting up package
+> field in cpu data.
 
-I had a discussion about this with Maciej.  He suggested that this
-behavious of binutils should be taken a look at but also that we rather
-should remove the -msoft-float option from the kernel and I support his
-view.
+I've already applied Guenter Roeck's patch
+https://patchwork.linux-mips.org/patch/7513/ as commit
+bbbf6d8768f5cac3523c408917083a111b1f3ffe [MIPS: Netlogic: Use MIPS
+topology.h] and the pull request for that one is out to Linus.
 
-I did add -msoft-float in 6218cf4410cfce7bc7e89834e73525b124625d4c
-[[MIPS] Always pass -msoft-float.] in 2006 because back then there was a
-wave of bug reports from people attempting to use hard fp in the kernel
-which of course did result in FPR corruption.  Adding -msoft-float made
-sure that floating point operations would result in a link error because
-the kernel does not supply a soft-fp library.
+So if you think your solution is nicer, please send a followup patch,
 
-But maybe there are other methods to achieve the same - such as
+> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+> ---
+> [Resending this, looks like linux-mips.org is down]
 
-#define float diediedie
-#define double goboom
+Ironically the announcement of the new system also got affected by the
+email woes and only went out after resending it ...  By now things should
+be all back to normal and I can't believe how much faster some operations
+such as git push have become!
 
   Ralf

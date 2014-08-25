@@ -1,31 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 14:07:17 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51769 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 14:12:43 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51886 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006715AbaHYMHQIc61v (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 14:07:16 +0200
+        id S27006709AbaHYMMkuNZ3g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Aug 2014 14:12:40 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PC7D8B028390;
-        Mon, 25 Aug 2014 14:07:13 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PCCeU3028498;
+        Mon, 25 Aug 2014 14:12:40 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PC7CCp028389;
-        Mon, 25 Aug 2014 14:07:12 +0200
-Date:   Mon, 25 Aug 2014 14:07:12 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PCCerR028497;
+        Mon, 25 Aug 2014 14:12:40 +0200
+Date:   Mon, 25 Aug 2014 14:12:40 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     chenj <chenj@lemote.com>
-Cc:     linux-mips@linux-mips.org, chenhc@lemote.com
-Subject: Re: [PATCH 1/2] mips: .../swab.h: fix a compiling failure
-Message-ID: <20140825120712.GF27724@linux-mips.org>
+To:     Chen Jie <chenj@lemote.com>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
+        =?utf-8?B?546L6ZSQ?= <wangr@lemote.com>
+Subject: Re: [PATCH] mips: define _MIPS_ARCH_LOONGSON3A for Loongson3
+Message-ID: <20140825121240.GG27724@linux-mips.org>
 References: <1408504488-12319-1-git-send-email-chenj@lemote.com>
+ <1408504488-12319-2-git-send-email-chenj@lemote.com>
+ <20140820105356.GA21497@linux-mips.org>
+ <CAGXxSxVqEs5jyckaOG=iX24UeV2P_WgmqV=EBQYycRJ1P9vPgg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1408504488-12319-1-git-send-email-chenj@lemote.com>
+In-Reply-To: <CAGXxSxVqEs5jyckaOG=iX24UeV2P_WgmqV=EBQYycRJ1P9vPgg@mail.gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42217
+X-archive-position: 42218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,12 +48,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 20, 2014 at 11:14:47AM +0800, chenj wrote:
+On Wed, Aug 20, 2014 at 07:59:41PM +0800, Chen Jie wrote:
 
-> It was introduced in commit
-> "mips: use wsbh/dsbh/dshd on Loongson3A"
-> (http://patchwork.linux-mips.org/patch/7542/)
+> 2014-08-20 18:53 GMT+08:00 Ralf Baechle <ralf@linux-mips.org>:
+> > On Wed, Aug 20, 2014 at 11:14:48AM +0800, chenj wrote:
+> >
+> >> +cflags-$(CONFIG_CPU_LOONGSON3)  += -D_MIPS_ARCH_LOONGSON3A
+> >
+> > The _MIPS_ARCH_* namespace belongs to GCC.  While it seems current GCC
+> > does not define this symbol _MIPS_ARCH_LOONGSON3A runs into the danger
+> > of causing a conflict when GCC eventually will define the symbol.
+> When this symbol will be defined? With option '-march=loongson3a'?
 
-Thanks, folded into the original patch.
+Well, not currently (at least not in my gcc 4.9.0) - but it might.  In
+fact, I'm wondering why it doesn't.  Maciej?
 
   Ralf

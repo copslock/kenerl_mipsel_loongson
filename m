@@ -1,32 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 18:33:26 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54004 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2014 19:16:11 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:54256 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006747AbaHYQdYag-SY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Aug 2014 18:33:24 +0200
+        id S27006754AbaHYRQJaOZEL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Aug 2014 19:16:09 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PGXNl2001458;
-        Mon, 25 Aug 2014 18:33:23 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7PHG35B002603;
+        Mon, 25 Aug 2014 19:16:04 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PGXNaf001457;
-        Mon, 25 Aug 2014 18:33:23 +0200
-Date:   Mon, 25 Aug 2014 18:33:23 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7PHG0Vx002602;
+        Mon, 25 Aug 2014 19:16:00 +0200
+Date:   Mon, 25 Aug 2014 19:16:00 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: bpf: Add new emit_long_instr macro
-Message-ID: <20140825163323.GG25892@linux-mips.org>
-References: <1406106009-6520-1-git-send-email-markos.chandras@imgtec.com>
- <20140818082831.GB32372@mchandras-linux.le.imgtec.org>
+To:     Max Filippov <jcmvbkbc@gmail.com>
+Cc:     linux-xtensa@linux-xtensa.org, Chris Zankel <chris@zankel.net>,
+        Marc Gauthier <marc@cadence.com>, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, David Rientjes <rientjes@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Steven Hill <Steven.Hill@imgtec.com>
+Subject: Re: [PATCH v4 0/2] mm/highmem: make kmap cache coloring aware
+Message-ID: <20140825171600.GH25892@linux-mips.org>
+References: <1406941899-19932-1-git-send-email-jcmvbkbc@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20140818082831.GB32372@mchandras-linux.le.imgtec.org>
+In-Reply-To: <1406941899-19932-1-git-send-email-jcmvbkbc@gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42230
+X-archive-position: 42231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,23 +48,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Aug 18, 2014 at 09:28:31AM +0100, Markos Chandras wrote:
+On Sat, Aug 02, 2014 at 05:11:37AM +0400, Max Filippov wrote:
 
-> On Wed, Jul 23, 2014 at 10:00:09AM +0100, Markos Chandras wrote:
-> > This macro uses the capitalized UASM_* macros to emit 32 or 64-bit
-> > instructions depending on the kernel configurations. This allows
-> > us to remove a few CONFIG_64BIT ifdefs from the code.
-> > 
-> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> > ---
-> >  arch/mips/net/bpf_jit.c | 51 ++++++++++++++++++-------------------------------
-> >  1 file changed, 19 insertions(+), 32 deletions(-)
-> > 
-> Hi Ralf,
-> 
-> ping?
+> this series adds mapping color control to the generic kmap code, allowing
+> architectures with aliasing VIPT cache to use high memory. There's also
+> use example of this new interface by xtensa.
 
-Ignored like a few other patches by various submitters because it was
-not a fix and submitted after the -rc5 deadline.  Applied now.
+I haven't actually ported this to MIPS but it certainly appears to be
+the right framework to get highmem aliases handled on MIPS, too.
+
+Though I still consider increasing PAGE_SIZE to 16k the preferable
+solution because it will entirly do away with cache aliases.
+
+Thanks,
 
   Ralf

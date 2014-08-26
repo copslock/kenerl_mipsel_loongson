@@ -1,45 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 23:14:27 +0200 (CEST)
-Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:6894 "EHLO
-        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006917AbaHZVO0k0ntn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2014 23:14:26 +0200
-X-IronPort-AV: E=Sophos;i="5.04,406,1406617200"; 
-   d="scan'208";a="43521448"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw3-out.broadcom.com with ESMTP; 26 Aug 2014 14:29:27 -0700
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Tue, 26 Aug 2014 14:14:18 -0700
-Received: from mail-sj1-12.sj.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.174.1; Tue, 26 Aug 2014 14:14:17 -0700
-Received: from [10.176.128.58] (xl-bun-04.bun.broadcom.com [10.176.128.58])     by
- mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 76D5727A82;        Tue, 26 Aug
- 2014 14:14:16 -0700 (PDT)
-Message-ID: <53FCF8A7.4090807@broadcom.com>
-Date:   Tue, 26 Aug 2014 23:14:15 +0200
-From:   Arend van Spriel <arend@broadcom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.24) Gecko/20111103 Lightning/1.0b2 Thunderbird/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 23:25:39 +0200 (CEST)
+Received: from test.hauke-m.de ([5.39.93.123]:43201 "EHLO test.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006917AbaHZVZhZmra7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Aug 2014 23:25:37 +0200
+Received: from [IPv6:2001:470:7259:0:d971:5f1a:7c74:7894] (unknown [IPv6:2001:470:7259:0:d971:5f1a:7c74:7894])
+        by test.hauke-m.de (Postfix) with ESMTPSA id F341320179;
+        Tue, 26 Aug 2014 23:25:36 +0200 (CEST)
+Message-ID: <53FCFB50.80800@hauke-m.de>
+Date:   Tue, 26 Aug 2014 23:25:36 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-CC:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Arnd Bergmann" <arnd@arndb.de>
-Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
-References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com> <53FCEECA.8090308@hauke-m.de>
-In-Reply-To: <53FCEECA.8090308@hauke-m.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     Arnd Bergmann <arnd@arndb.de>, linux-arm-kernel@lists.infradead.org
+CC:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, zajec5@gmail.com
+Subject: Re: [RFC 4/7] bcma: register bcma as device tree driver
+References: <1408915485-8078-1-git-send-email-hauke@hauke-m.de> <1408915485-8078-6-git-send-email-hauke@hauke-m.de> <2462012.kILSFadzpm@wuerfel>
+In-Reply-To: <2462012.kILSFadzpm@wuerfel>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 8bit
-Return-Path: <arend@broadcom.com>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42266
+X-archive-position: 42267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend@broadcom.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,98 +40,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/26/14 22:32, Hauke Mehrtens wrote:
-> On 08/26/2014 06:42 PM, Rafał Miłecki wrote:
->> [cross-list: linux-mips@ and linux-wireless@]
+On 08/25/2014 09:57 AM, Arnd Bergmann wrote:
+> On Sunday 24 August 2014 23:24:42 Hauke Mehrtens wrote:
+>> This driver is used by the bcm53xx ARM SoC code. Now it is possible to
+>> give the address of the chipcommon core in device tree and bcma will
+>> search for all the other cores.
 >>
->> We're working on another Broadcom platform, SoC with an ARM CPU,
->> platform called bcm53xx. It shares many things with the older (MIPS
->> based) bcm47xx, so we need to figure out how to modify some of the
->> drivers.
+>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> 
+> Looks good to me overall. Two small comments:
+> 
+>>  Documentation/devicetree/bindings/bus/bcma.txt | 46 +++++++++++++++++
+>>  drivers/bcma/host_soc.c                        | 70 ++++++++++++++++++++++++++
+>>  include/linux/bcma/bcma.h                      |  2 +
+>>  3 files changed, 118 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/bus/bcma.txt
 >>
->> Hauke recently proposed sharing code for NVRAM support as a separated
->> driver. In his RFC patch it was added as a new platform driver. I
->> liked this idea (I'd simply prefer to modify existing code instead of
->> duplicating it), so I played with it a bit today.
->
-> I will also make mips bcm47xx uses that code in the next version of the
-> patch. (move the code from mips)
->
->>
->> My plan was to modify bcm47xx code to make nvram.c a separated driver
->> and update bcm47xx/bcma to use it. Well, it didn't work out. The
->> problem is that we need access to the NVRAM pretty early. Please take
->> a look at my description of bcm47xx booting process (it's simply a
->> summary of start_kernel and bcm47xx code):
->>
->> 1) prom_init / plat_mem_setup
->> These two functions are called in pretty much the same phase from the
->> setup_arch (arch/mips/kernel/setup.c).
->> Task: detect&  register memory
->> Requires: CPU type, maybe Broadcom chip ID (highmem support)
->> Available: CPU type
->> Not available: kmalloc, device_add (kobject)
->>
->> 2) arch_init_irq
->> Called from the arch specific init_IRQ (arch/mips/kernel/irq.c)
->> Task: setup bcma's MIPS core
->> Requires: bcma bus MIPS core
->> Available: kmalloc
->> Not available: device_add (kobject)
->>
->> 3) plat_time_init
->> Called from the arch specific time_init (arch/mips/kernel/time.c)
->> Task: set frequency
->> Requires: bcma bus ChipCommon core, nvram
->> Available: kmalloc
->> Not available: device_add (kobject)
->>
->> 4) At some point we need to register bcma devices, device_initcall can
->> be used for that
->>
->> As you can see, we need access to the NVRAM quite early (step 3,
->> plat_time_init, or even earlier), but device_add (platform
->> devices/drivers) is not available then yet. So I'm afraid we won't be
->> able to use this common way to write NVRAM driver.
->>
->>
->> So there I want to present my plan for the NVRAM improvements. If you
->> don't agree with any part of it, or you can see any better solution,
->> please speak up!
->>
->> 1) I won't make nvram.c a platform driver. Instead I would like to
->> make it less bcm47xx specific. I don't want to touch bcm47xx_bus in
->> this file. Instead I want to add a generic function that will accept
->> address and size of memory where NVRAM should be found. Then I'd like
->> to move this file out of "mips" arch (drivers/misc/?
->> drivers/bcma/nvram/?) and allow using it for bcm53xx.
->
-> I would make this nvram.c a platform driver in addition so it can get
-> registered to device tree. this part would only get activated when
-> CONFIG_OF is set which is not on MIPS bcm47xx.
->
->> 2) I was also thinking about cleaning bcm47xx init. Right now we do a
->> lot of hacks in plat_mem_setup&  bcma to register the bus and scan its
->> cores. It's so early (before mm_init) that we can't alloc memory!
->> Doing all this stuff slightly later (e.g. arch_init_irq) would allow
->> us to simply use "kmalloc" and drop all current hacks in bcma.
->>
->> 3) Above change (point 2) would require some small change in bcma. We
->> would need 2-stages init: detecting (with kmalloc!) bus cores,
->> registering cores. This is required, because we can't register cores
->> too early, device_add (and the underlying kobject) would oops/WARN in
->> kobject_get.
->>
->
-> This sound good to me, but I still have some questions.
->
-> Do you also want to change ssb registration?
-> Is it worth the effort? I think MIPS bcm47xx will be EOL and replaced by
-> the ARM versions completely in the next years. (I do not have any
-> private information about Broadcom product politics)
+>> diff --git a/Documentation/devicetree/bindings/bus/bcma.txt b/Documentation/devicetree/bindings/bus/bcma.txt
+>> new file mode 100644
+>> index 0000000..52fb929
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/bus/bcma.txt
+>> @@ -0,0 +1,46 @@
+>> +Broadcom AIX bcma bus driver
+>> +
+>> +
+>> +Required properties:
+>> +
+>> +- compatible : brcm,bus-aix
+>> +
+>> +- reg : iomem address range of chipcommon core
+>> +
+>> +Optional properties:
+>> +
+>> +- sprom: reference to a sprom driver. This is needed for sprom less devices.
+>> +        Use bcm47xx_sprom for example.
+>> +
+>> +
+>> +The cores on the AIX bus are auto detected by bcma. Detection of the
+>> +IRQ number is not supported on BCM47xx/BCM53xx ARM SoCs, so it is
+>> +possible to provide the IRQ number over device tree. The IRQ number and
+>> +the device tree child entry will be added to the core with the matching
+>> +reg address.
+> 
+> What is the problem with the interrupt numbers? Is that information
+> missing completely from the data available to the brcm bus, or is it
+> in an inconvenient format?
 
-I am not a (product) politician as well, but I think it is a safe 
-assumption.
+I do not have access to the datasheet, only to the vendor source code.
+The irq numbers are hard coded in the vendor code, see:
+https://github.com/RMerl/asuswrt-merlin/blob/master/release/src-rt-6.x.4708/linux/linux-2.6.36/arch/arm/plat-brcm/bcm5301x_pcie.c#L286
 
-Regards,
-Arend
+On the mips SoCs it was possible to read them from some register in the
+mips core on the aix bus.
+
+> 
+>> +Example:
+>> +
+>> +       aix@18000000 {
+>> +               compatible = "brcm,bus-aix";
+>> +               reg = <0x18000000 0x1000>;
+>> +               ranges = <0x00000000 0x18000000 0x00100000>;
+>> +               #address-cells = <1>;
+>> +               #size-cells = <1>;
+>> +               sprom = <&sprom0>;
+>> +
+>> +               gmac@0 {
+>> +                       reg = <0x18024000 0x1000>;
+>> +                       interrupts = <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;
+>> +               };
+> 
+> The @0 part seems wrong here: the address should generally match
+> the first entry in the reg property, which would be gmac@18024000.
+> 
+> Also, you probably mean ethernet@ not gmac@.
+
+Will change that.
+
+>> +               gmac@1 {
+>> +                       reg = <0x18025000 0x1000>;
+>> +                       interrupts = <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>;
+>> +               };
+>> +
+>> +               pcie@0 {
+>> +                       reg = <0x18012000 0x1000>;
+>> +                       interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+>> +               };
+>> +       };
+> 
+> We may require additional properties for the pcie node, depending on whether
+> we want to use the DT probing interfaces for it, or whether it should just
+> hardcode the settings used on brcm based on the ID.
+
+I wrote a driver for the PCIe host controller and it also automatically
+detects all needed memory addresses, it just had to provide the IRQ
+number through device tree.
+
+> 
+> 	Arnd
+> 

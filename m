@@ -1,37 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 14:03:29 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59659 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006868AbaHZMD13TUfL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 Aug 2014 14:03:27 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7QC3QF4024575;
-        Tue, 26 Aug 2014 14:03:26 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7QC3QTB024574;
-        Tue, 26 Aug 2014 14:03:26 +0200
-Date:   Tue, 26 Aug 2014 14:03:26 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: 16k or 64k PAGE_SIZE and "illegal instruction" (signal -4) errors
-Message-ID: <20140826120326.GB24146@linux-mips.org>
-References: <53FC5300.4070902@gentoo.org>
- <20140826102004.GA22221@linux-mips.org>
- <53FC6A50.9090709@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 14:03:46 +0200 (CEST)
+Received: from qmta15.westchester.pa.mail.comcast.net ([76.96.59.228]:38764
+        "EHLO qmta15.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006855AbaHZMDgxEnF6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2014 14:03:36 +0200
+Received: from omta05.westchester.pa.mail.comcast.net ([76.96.62.43])
+        by qmta15.westchester.pa.mail.comcast.net with comcast
+        id jPlo1o0050vyq2s5FQ3W3b; Tue, 26 Aug 2014 12:03:30 +0000
+Received: from [192.168.1.13] ([50.190.84.14])
+        by omta05.westchester.pa.mail.comcast.net with comcast
+        id jQ3W1o00T0JZ7Re3RQ3Wtu; Tue, 26 Aug 2014 12:03:30 +0000
+Message-ID: <53FC7790.80602@gentoo.org>
+Date:   Tue, 26 Aug 2014 08:03:28 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53FC6A50.9090709@gentoo.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     linux-mips@linux-mips.org
+Subject: Re: 16k or 64k PAGE_SIZE and "illegal instruction" (signal -4) errors
+References: <53FC5300.4070902@gentoo.org> <20140826102004.GA22221@linux-mips.org> <alpine.LFD.2.11.1408261126000.18483@eddie.linux-mips.org> <20140826114925.GA24146@linux-mips.org>
+In-Reply-To: <20140826114925.GA24146@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1409054610;
+        bh=z+IwJmivRkcKYulPYRP/Ce/xtTELiUxyG7ruEfPM9y4=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=n4GY5pfifXbFRGkoKLNN7cv9peuhbWXkzDNlrVx5jMe8R2Z30jDLOkh93NjcShheG
+         j6nRzTF/MnBTarTnWjDRKUr+WdAAX9GrTngjim05tHyvI2GIg3I8FWUwlGjypUPc68
+         dYjw/T5y5SRi4mZ1aGL2SW+lCzc2GNK9bo4/wptu3Sp8uyZ8IW8WyMraMvtaEIPuTH
+         GLckHvjRY/lQtH3SIrmkh4Gxtfn2ICmC4mASdC775YuueDcS14PDChRdPMsc/7Skr7
+         OKOpaUTsyBRq1AK64TKfWiDVd2MUhZHfwmp0rrFbjt7F0/CMxB5qYj3VQGh/rl/ZO8
+         E6O5pkrMvSd8w==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42256
+X-archive-position: 42257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,37 +52,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 26, 2014 at 07:06:56AM -0400, Joshua Kinard wrote:
-
-> o32 userland is the primary on both systems.  However, the last SIGILL was
-> under the 64k PAGE_SIZE kernel inside of an n32 chroot compiling the 'boost'
-> package on the Octane, which I restarted that and it's not complained since.
->  Also got SIGILL on the 16k PAGE_SIZE kernel when I booted 16k PAGE_SIZE the
-> first time and ran 'ps'.  Subsequent runs of 'ps' didn't reproduce the
-> error.  Also saw SIGILLs in the bootlog of the 16k PAGE_SIZE kernel when
-> "rm" was ran once (couldn't reproduce) and when mdadm tried to put one of
-> the arrays back together.  Subsequent runs using similar argument lines
-> don't reproduce once I got to a root shell.
+On 08/26/2014 07:49, Ralf Baechle wrote:
+> On Tue, Aug 26, 2014 at 11:42:30AM +0100, Maciej W. Rozycki wrote:
 > 
-> Being it's a Gentoo install...the o32 userland is pretty fresh.  Especially
-> on the Octane, where I literally rebuilt the old userland over 2-3 times
-> just to make sure all the old 5-year cruft was gone.  The n32 userland
-> chroot is brand-spanking new.  gcc-4.7.x only for now on both, because of
-> PR61538 in gcc.  Latest binutils.
+>>>> I cannot reproduce it on demand, so I'm not really sure what the cause could
+>>>> be.  PAGE_SIZE should be largely transparent to userland these days, so I am
+>>>> wondering if this might be more oddities w/ an R14000 CPU.
+>>>
+>>> This sound very unlikely as the CPU was primarily designed to run IRIX and
+>>> SGI's systems were using 16k or even 64k page size.
+>>>
+>>> What userland are you running and how old is it?  Are you seeing different
+>>> results for 16k and 64k?
+>>
+>>  FWIW, I've been always using the 16k page size exclusively with my 64-bit 
+>> userland and my SWARM board using the SB-1/BCM1250 processor (with either 
+>> endianness) and never had issues even with stuff as intensive as native 
+>> GCC bootstrapping (with all the languages enabled such as Ada and Java) or 
+>> glibc builds.  It's been like 8 years now and quite recent kernels like 
+>> from two months ago gave me no trouble either.  So it must be something 
+>> specific to the configuration, my first candidates to look at would be the 
+>> generated TLB and cache handlers, that are system-specific.
 > 
-> The O2 is chugging away happily so far in updating a bunch of packages.  So
-> I am leaning towards this being another quirk I have to hunt down in the
-> Octane's code again.  There isn't much in the Octane-specific code that
-> deals with memory, though -- it seems the higher-level MIPS memory code
-> handles most things just fine.
+> Generally the R10000 architecture is such that there is much less potencial
+> for software bugs as well.  The TLB is nice, cleans up conflicting entries
+> so no TLB shutdown or similar horrors possible.  And the caches while they
+> suffer from cache aliases, will cleanup those aliases transparently to
+> software, that is an OS can treat them as non-aliasing.  R10000 systems
+> with the notable exception of the SGI O2 and Indigo² R10000 have fully
+> coherent I/O.  Basically the only thing that needs to be done in software
+> is I-cache coherency.  The I-cache snoops stores by remote CPUs but not
+> by the local CPU itself so in a sense SMP is a simpler case than UP even.
 
-Can you enable core dumps?  I'm wondering about the EPC of the crashed
-process.  If it's at a function entry or the beginning of a page that
-might indicate there is an issue with flushing caches after the containing
-page got loaded.  Also interesting to know if this possibly happened in a
-signal trampoline or VDSO.
+Yeah, coherency shouldn't be a problem for the Octane.  hardware-coherent
+like IP27.
 
-These are just the usual suspects - nothing indicates this case is actually
-related.
+The icache snooping fix is already enabled in
+arch/mips/include/asm/mach-ip30/cpu-feature-overrides.h:
 
-  Ralf
+#define cpu_icache_snoops_remote_store 1
+
+SMP is not working yet on IP30, though.  I gave up on that for now, because
+I can't get the second CPU to start ticking properly.
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  And
+our lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

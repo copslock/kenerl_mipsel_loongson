@@ -1,35 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 12:20:08 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58581 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006858AbaHZKUHPFdvL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 Aug 2014 12:20:07 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s7QAK4tu022477;
-        Tue, 26 Aug 2014 12:20:04 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s7QAK4HX022476;
-        Tue, 26 Aug 2014 12:20:04 +0200
-Date:   Tue, 26 Aug 2014 12:20:04 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: 16k or 64k PAGE_SIZE and "illegal instruction" (signal -4) errors
-Message-ID: <20140826102004.GA22221@linux-mips.org>
-References: <53FC5300.4070902@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 12:42:32 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:58745 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006860AbaHZKma5tpgT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2014 12:42:30 +0200
+Date:   Tue, 26 Aug 2014 11:42:30 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Joshua Kinard <kumba@gentoo.org>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: 16k or 64k PAGE_SIZE and "illegal instruction" (signal -4)
+ errors
+In-Reply-To: <20140826102004.GA22221@linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1408261126000.18483@eddie.linux-mips.org>
+References: <53FC5300.4070902@gentoo.org> <20140826102004.GA22221@linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53FC5300.4070902@gentoo.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42249
+X-archive-position: 42250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,24 +37,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 26, 2014 at 05:27:28AM -0400, Joshua Kinard wrote:
+On Tue, 26 Aug 2014, Ralf Baechle wrote:
 
-> Okay, so from the "make kmap cache coloring aware" thread, I've been playing
-> with larger PAGE_SIZE values on the Octane and O2 for the last few hours.
-> 16k and 64k used to, in the past, never get far after init (usually died
-> *at* init)  That appears to have changed now.  Most programs seem to
-> JustWork(), but very randomly, I am getting a signal -4, illegal instruction
-> (SIGILL) on the Octane.  Both systems are running kernels w/ 64k PAGE_SIZE
-> at the moment.
+> > I cannot reproduce it on demand, so I'm not really sure what the cause could
+> > be.  PAGE_SIZE should be largely transparent to userland these days, so I am
+> > wondering if this might be more oddities w/ an R14000 CPU.
 > 
-> I cannot reproduce it on demand, so I'm not really sure what the cause could
-> be.  PAGE_SIZE should be largely transparent to userland these days, so I am
-> wondering if this might be more oddities w/ an R14000 CPU.
+> This sound very unlikely as the CPU was primarily designed to run IRIX and
+> SGI's systems were using 16k or even 64k page size.
+> 
+> What userland are you running and how old is it?  Are you seeing different
+> results for 16k and 64k?
 
-This sound very unlikely as the CPU was primarily designed to run IRIX and
-SGI's systems were using 16k or even 64k page size.
+ FWIW, I've been always using the 16k page size exclusively with my 64-bit 
+userland and my SWARM board using the SB-1/BCM1250 processor (with either 
+endianness) and never had issues even with stuff as intensive as native 
+GCC bootstrapping (with all the languages enabled such as Ada and Java) or 
+glibc builds.  It's been like 8 years now and quite recent kernels like 
+from two months ago gave me no trouble either.  So it must be something 
+specific to the configuration, my first candidates to look at would be the 
+generated TLB and cache handlers, that are system-specific.
 
-What userland are you running and how old is it?  Are you seeing different
-results for 16k and 64k?
-
-  Ralf
+  Maciej

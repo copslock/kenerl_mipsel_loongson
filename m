@@ -1,49 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 08:42:00 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:55270 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006629AbaHZGl6AH8KA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2014 08:41:58 +0200
-Received: by mail-pa0-f49.google.com with SMTP id hz1so22426577pad.8
-        for <multiple recipients>; Mon, 25 Aug 2014 23:41:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=smMiAX+i+cS6THQzQbQzVzY9+iGGdUIfrVt3cXr1D4w=;
-        b=vvO+mzGzjVPKr2fbt7dFqnuen98eRJPmVZJCaju9ZvJs++HoF8Gb9cL68GxqmcQHSl
-         4/chaET5gNYSXQuxnk0p/L8cjIhsxECmvb3N15UAfFrRLsO3AySxhgvIMxjHaHLzBbjq
-         yEEh3BJS2G0x06QpjGBGFuDNrTcb9BdFPU7g5kp0G0xTbxI9os6tprL5UrjBVSvXoK6B
-         dn6intjga8WoBzkFTp4vDPBmI6rqQqON7BjO9FEk36JrKK3P51iPidnFJS/mTRPqGTGp
-         4jhY2jn0WT9+tUt/puZ6YwGcfcbt2rGcBl2HzNwKJOJo54V07jKtunyzc7gf+MD4qE53
-         tRbA==
-X-Received: by 10.66.237.206 with SMTP id ve14mr14417128pac.40.1409035311295;
-        Mon, 25 Aug 2014 23:41:51 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id u8sm3040705pdp.10.2014.08.25.23.41.43
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 25 Aug 2014 23:41:50 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        "Jayachandran C." <jchandra@broadcom.com>
-Subject: [PATCH V2] MIPS: Move CPU topology macros to topology.h
-Date:   Tue, 26 Aug 2014 14:41:31 +0800
-Message-Id: <1409035291-11040-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-Return-Path: <chenhuacai@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2014 11:27:38 +0200 (CEST)
+Received: from qmta11.westchester.pa.mail.comcast.net ([76.96.59.211]:54915
+        "EHLO QMTA11.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006674AbaHZJ1hN3W2o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2014 11:27:37 +0200
+Received: from omta14.westchester.pa.mail.comcast.net ([76.96.62.60])
+        by QMTA11.westchester.pa.mail.comcast.net with comcast
+        id jMT51o0011HzFnQ5BMTWAt; Tue, 26 Aug 2014 09:27:30 +0000
+Received: from [192.168.1.13] ([50.190.84.14])
+        by omta14.westchester.pa.mail.comcast.net with comcast
+        id jMTW1o00Q0JZ7Re3aMTWB9; Tue, 26 Aug 2014 09:27:30 +0000
+Message-ID: <53FC5300.4070902@gentoo.org>
+Date:   Tue, 26 Aug 2014 05:27:28 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.0
+MIME-Version: 1.0
+To:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: 16k or 64k PAGE_SIZE and "illegal instruction" (signal -4) errors
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1409045250;
+        bh=MK2tEuXymikf2y3qaP9b4tfKYIStrfmdq9Uxa4KouEw=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=tsR06Uvx3oLTEW3BNM5S7Uzit6Gs4RyPxOLoDv5EXLW4QpfHksm0vyqNs7Kh4KKux
+         TiIbeKQdUsMYKMa6zwBYuXrmJ7hwTrm6rNHh8YIuDF7mYvepJNlYXC0ehMrPi96Bco
+         7OURGs2aytyyJpBXWrOpC2VS9it83fVaG0Xshpyaar3Y811tOW0a373Gm0i+M56reW
+         1LbVgi0Rja8qqS2BgkhzCjRuQjbxSVvdO7+IKVKPlDMohh32sxMiDcoDrbXqptWLx7
+         Cz7zEs6BrqRg+hGHQg+GTgzXpYfecPf6oyX/lL8asHpoRBpUltyiUgOj6VKBWXJG9U
+         GjhbEIouszBAQ==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42244
+X-archive-position: 42245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,47 +50,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The correct position is topology.h, and this fix macros redefinition
-problems for Netlogic.
+Okay, so from the "make kmap cache coloring aware" thread, I've been playing
+with larger PAGE_SIZE values on the Octane and O2 for the last few hours.
+16k and 64k used to, in the past, never get far after init (usually died
+*at* init)  That appears to have changed now.  Most programs seem to
+JustWork(), but very randomly, I am getting a signal -4, illegal instruction
+(SIGILL) on the Octane.  Both systems are running kernels w/ 64k PAGE_SIZE
+at the moment.
 
-V2: remove unnecessary #ifndefs.
+I cannot reproduce it on demand, so I'm not really sure what the cause could
+be.  PAGE_SIZE should be largely transparent to userland these days, so I am
+wondering if this might be more oddities w/ an R14000 CPU.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Jayachandran C. <jchandra@broadcom.com>
----
- arch/mips/include/asm/smp.h      |    5 -----
- arch/mips/include/asm/topology.h |    5 +++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+Ideas?
 
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 1e0f20a..eacf865 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -37,11 +37,6 @@ extern int __cpu_logical_map[NR_CPUS];
- 
- #define NO_PROC_ID	(-1)
- 
--#define topology_physical_package_id(cpu)	(cpu_data[cpu].package)
--#define topology_core_id(cpu)			(cpu_data[cpu].core)
--#define topology_core_cpumask(cpu)		(&cpu_core_map[cpu])
--#define topology_thread_cpumask(cpu)		(&cpu_sibling_map[cpu])
--
- #define SMP_RESCHEDULE_YOURSELF 0x1	/* XXX braindead */
- #define SMP_CALL_FUNCTION	0x2
- /* Octeon - Tell another core to flush its icache */
-diff --git a/arch/mips/include/asm/topology.h b/arch/mips/include/asm/topology.h
-index 20ea485..e012429 100644
---- a/arch/mips/include/asm/topology.h
-+++ b/arch/mips/include/asm/topology.h
-@@ -10,4 +10,9 @@
- 
- #include <topology.h>
- 
-+#define topology_physical_package_id(cpu)	(cpu_data[cpu].package)
-+#define topology_core_id(cpu)			(cpu_data[cpu].core)
-+#define topology_core_cpumask(cpu)		(&cpu_core_map[cpu])
-+#define topology_thread_cpumask(cpu)		(&cpu_sibling_map[cpu])
-+
- #endif /* __ASM_TOPOLOGY_H */
 -- 
-1.7.7.3
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  And
+our lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

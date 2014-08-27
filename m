@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2014 14:05:26 +0200 (CEST)
-Received: from mail-ig0-f182.google.com ([209.85.213.182]:53564 "EHLO
-        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007010AbaH0MFY53BnR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2014 14:05:24 +0200
-Received: by mail-ig0-f182.google.com with SMTP id c1so241512igq.3
-        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 05:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=b8HiMLsfPGYVLhex8iSgIx1tp9RYFa4R4k6iX43+CFA=;
-        b=cYnhsx7LWztdQCgYrXbhDyyTqs2+QHXZV/zK1EYfuVegO+cJRBioSr2Jwccd+6kwcY
-         xt/4XymfD3dHw0uIvGbnnJCzBY3vFT2BsyvXqjHHQT0zOcBgJHrE/mVRYGfs5Uz9V4KX
-         SeuMrvslaw7mBhCgbmj1zCbpqwGky7FaR396/dY0PzXKvn2DTUCQhDty7BVZjR1KRGNu
-         2ZSOyJTZi/UFoz1DVE91GyNx4Eo94daigKkYgJro80kEts8VmB8iee9o1NDPNvarDpXc
-         /xRcknZb8eogYmP7++uOJvBfin+ooHFL5rSuSAOHuvrdvztGkngS2jXOcdzs+iudHrp7
-         xcKg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2014 16:05:03 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:62292 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007029AbaH0OE6xN2kB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2014 16:04:58 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C84F4ED0CDCEA;
+        Wed, 27 Aug 2014 15:04:49 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 27 Aug
+ 2014 15:04:52 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 27 Aug 2014 15:04:52 +0100
+Received: from [192.168.154.67] (192.168.154.67) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 27 Aug
+ 2014 15:04:51 +0100
+Message-ID: <53FDE583.9060908@imgtec.com>
+Date:   Wed, 27 Aug 2014 15:04:51 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-X-Received: by 10.42.249.20 with SMTP id mi20mr402775icb.90.1409141118840;
- Wed, 27 Aug 2014 05:05:18 -0700 (PDT)
-Received: by 10.50.135.73 with HTTP; Wed, 27 Aug 2014 05:05:18 -0700 (PDT)
-In-Reply-To: <20140827114854.GC25985@pburton-laptop>
-References: <CAPweEDznk3iecHkQcaGMd_EZfzZmbAbtXuO9dnePctDxFSWS7Q@mail.gmail.com>
-        <20140827114854.GC25985@pburton-laptop>
-Date:   Wed, 27 Aug 2014 13:05:18 +0100
-Message-ID: <CAPweEDwn95=Oi04H_r1FCDox8Oxd=tP8WAT7ze1urGu2uLJhSA@mail.gmail.com>
-Subject: Re: rhombus tech eoma68 ingenic jz4775 cpu card
-From:   "lkcl ." <luke.leighton@gmail.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luke.leighton@gmail.com>
+To:     <stable@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: [request for stable inclusion] MIPS fixes for 3.16
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.67]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42280
+X-archive-position: 42281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luke.leighton@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,65 +47,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 27, 2014 at 12:48 PM, Paul Burton <paul.burton@imgtec.com> wrote:
+Hi Greg,
 
-> Hi Luke :)
+Could you please apply the following patches to the 3.16.X stable kernels?
 
- hii paul, nice to meet you
+- MIPS: EVA: Add new EVA header
+(f85b71ceabb9d8d8a9e34b045b5c43ffde3623b3)
+- MIPS: Malta: EVA: Rename 'eva_entry' to 'platform_eva_init'
+(ca4d24f7954f3746742ba350c2276ff777f21173)
+- MIPS: CPS: Initialize EVA before bringing up VPEs from secondary cores
+(6521d9a436a62e83ce57d6be6e5484e1098c1380)
+- MIPS: scall64-o32: Fix indirect syscall detection
+(5245689900804604fdc349c8d9b8985b0e401ae2)
+- MIPS: syscall: Fix AUDIT value for O32 processes on MIPS64
+(40381529f84c4cda3bd2d20cab6a707508856b21)
+- MIPS: Malta: Improve system memory detection for '{e, }memsize' >= 2G
+(64615682658373516863b5b5971ff1d922d0ae7b)
 
-> That all sounds very interesting! I would definitely be interested in
-> getting involved & helping out, and I imagine others at Imagination
-> may be too!
+Thank you!
 
- _great_.
-
-> We have recently begun releasing a board based around the jz4780[1] so
-> have been doing a fair bit of work on that SoC,
-
- yehhh i have been waiting a long time for ingenic to come up with a SoC
- that has reasonable (i'd prefer great!) specs that does *not* need proprietary
- libraries, so i have avoided the jz4780 although the GPU has been
- successfully reverse-engineered.
-
- what i am really looking forward to is when ingenic come out with a quad-core
- FSF-Endorseable SoC: that's when the fun really starts.
-
-> are familiar with some
-> of the older SoCs in the jz47xx series and I believe should have access
-> to some other jz4775 based boards. There is also the jz4770 based GCW
-> zero project[2]
-
- http://www.gcw-zero.com/specifications very cool.  you might be
-interested to know that there is someone creating an eoma68 games
-console base unit, with quite high specs (capacitive touchpanel, 5in
-1280x720 LCD).
-
-> Did you have anything concrete in mind that would be helpful at this
-> stage, or are you more judging interest?
-
- bit of both.  background: with 4 CPU cards coming out (ICubeCorp
-IC1T, Allwinner A20, Allwinner A33 and Ingenic JZ4775) in the next few
-months and an upcoming (first) crowdfunding campaign i simply won't
-have time to get everything done myself, so i will kinda need some
-help.
-
-so it's a "yes let people know the project exists, see who's out
-there, who'd like some cool early hardware" and also a "these are the
-things that need doing, who'd like to help" enquiry.
-
-and on that list, getting *a* kernel and OS installed is right at the
-top!  literally this will be a bare board, direct from the prototyping
-company.  then begins the task of working out if the hardware's good
-by learning at the same time how to get an OS onto the card *at all*
-:)
-
-so that's at the micro-level: at the larger level, to give some
-perspective, the goal of the rhombus tech project is to create
-desirable mass-volume affordable environmentally-conscious computing
-appliances, and inviting software libre developers to be involved with
-that process at every step of the way.
-
-it's quite an ambitious long-term project and the EOMA68 standard is a
-key part of that, being designed to last at least a decade.
-
-l.
+-- 
+markos

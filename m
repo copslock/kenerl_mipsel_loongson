@@ -1,52 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2014 20:43:48 +0200 (CEST)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:64210 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007092AbaH0SnrHdMHk convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 27 Aug 2014 20:43:47 +0200
-Received: by mail-ig0-f170.google.com with SMTP id h3so7738790igd.5
-        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 11:43:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=BGETvWlbP2hJbp+8TUrCyQHPOdVQZaHy5xbE/6Geq44=;
-        b=zOJjTjvLgr0DLziL14WW0acOzcICttF9QKIqkI92mkeZEgzGMszXapW0A1nWLgUJ0x
-         YWMtyFpoc6Xk8vSJ5XaIbWJ/G49/zTbOVJ4JjY14EDnnPaRe75/Z63ZpZoMBMZZU4M9O
-         0MVJpGhuwLwpLLcJB5AK/Eq+mZ5vfBS+ghmujOThKFn/6Ss8eKuX0Pt+vNZl3uTqHbIB
-         RpKx+8RktoWQT25uMRnS9X+9AH3Bn++28cRbCa59+YEmlx9BVfLkElGNpojxFHMIgoPq
-         u6ZJpDrPUmagZvw6o9hranHKQbnXAsHpATnFC1Ck/IkelvxLay7xa9WkslaM/hfvOjwA
-         uiSQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2014 21:33:55 +0200 (CEST)
+Received: from mail-by2lp0236.outbound.protection.outlook.com ([207.46.163.236]:44943
+        "EHLO na01-by2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27007097AbaH0Tdy0w3Ee (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Aug 2014 21:33:54 +0200
+Received: from dl.caveonetworks.com (64.2.3.195) by
+ DM2PR07MB589.namprd07.prod.outlook.com (10.141.176.139) with Microsoft SMTP
+ Server (TLS) id 15.0.1015.19; Wed, 27 Aug 2014 19:33:41 +0000
+Message-ID: <53FE328F.5040204@caviumnetworks.com>
+Date:   Wed, 27 Aug 2014 12:33:35 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-X-Received: by 10.42.107.145 with SMTP id d17mr15738853icp.61.1409165020774;
- Wed, 27 Aug 2014 11:43:40 -0700 (PDT)
-Received: by 10.107.130.160 with HTTP; Wed, 27 Aug 2014 11:43:40 -0700 (PDT)
-In-Reply-To: <53FE217B.7000401@gmail.com>
-References: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
-        <1408915485-8078-4-git-send-email-hauke@hauke-m.de>
-        <CACna6rwJBDpg9VS4h5hfP4wtGRVwAdRUq5mELeA0OFWWzH9jsA@mail.gmail.com>
-        <53FE217B.7000401@gmail.com>
-Date:   Wed, 27 Aug 2014 20:43:40 +0200
-Message-ID: <CACna6ryXtFwJxBhEoJe+2mZWut24egtgXzzybxQ=rtPn9+X+2g@mail.gmail.com>
-Subject: Re: [RFC 2/7] bcm47xx-nvram: add new broadcom nvram driver with dt support
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>, devicetree@vger.kernel.org,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+To:     Andrew Bresticker <abrestic@chromium.org>
+CC:     Jonas Gorski <jogo@openwrt.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Olof Johansson <olof@lixom.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        John Crispin <blogic@openwrt.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jayachandran C <jchandra@broadcom.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 0/7] MIPS: Move device-tree files to a common location
+References: <1408651466-8334-1-git-send-email-abrestic@chromium.org> <CAGVrzcZobuL4z0WNX+Sz4p_uwaPL-S5yvEmgRUwZPJi4+qq0tg@mail.gmail.com> <CAL1qeaGb-o0P7x4nZPJ+dGfoSKz+2ANrB0gGrBi19TtPxVTAZQ@mail.gmail.com> <20140823063113.GC23715@localhost> <CAMuHMdXudu0kuOkKN8JCrWZSrQ4awKHhHU0E2ss++ProP0rteQ@mail.gmail.com> <CAOiHx=mZPt=p_jw4fyEqgniJvqunQ86ro_Run5ZtD1zLYWzmqA@mail.gmail.com> <CAL1qeaFTw=0XMEkag1Z8C4jKkWnwBeGJLYxHGiYfKXBk-9o0Yw@mail.gmail.com>
+In-Reply-To: <CAL1qeaFTw=0XMEkag1Z8C4jKkWnwBeGJLYxHGiYfKXBk-9o0Yw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-ClientProxiedBy: BLUPR07CA081.namprd07.prod.outlook.com (25.160.24.36) To
+ DM2PR07MB589.namprd07.prod.outlook.com (10.141.176.139)
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;UriScan:;
+X-Forefront-PRVS: 0316567485
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(6009001)(24454002)(199003)(479174003)(189002)(377454003)(105586002)(90102001)(93886004)(85306004)(64126003)(106356001)(83072002)(81156004)(85852003)(92726001)(92566001)(74662001)(76482001)(74502001)(87976001)(95666004)(31966008)(110136001)(23676002)(83506001)(107046002)(50466002)(76176999)(59896002)(50986999)(101416001)(81342001)(19580405001)(47776003)(20776003)(19580395003)(79102001)(64706001)(83322001)(69596002)(36756003)(87266999)(54356999)(65816999)(80316001)(33656002)(66066001)(65806001)(77096002)(53416004)(4396001)(21056001)(81542001)(99396002)(80022001)(65956001)(42186005)(46102001)(102836001)(77982001);DIR:OUT;SFP:;SCL:1;SRVR:DM2PR07MB589;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42285
+X-archive-position: 42286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,24 +65,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 27 August 2014 20:20, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> On 08/26/2014 10:54 PM, Rafał Miłecki wrote:
->> Could we avoid that? Type of flash can easily be checked in the code.
->> All we need to do is to read BCMA_IOST register of BCMA_CORE_NS_ROM
->> core.
+On 08/27/2014 11:30 AM, Andrew Bresticker wrote:
+> On Mon, Aug 25, 2014 at 8:17 AM, Jonas Gorski <jogo@openwrt.org> wrote:
+>> On Sat, Aug 23, 2014 at 9:50 PM, Geert Uytterhoeven
+>> <geert@linux-m68k.org> wrote:
+>>> On Sat, Aug 23, 2014 at 8:31 AM, Olof Johansson <olof@lixom.net> wrote:
+>>>>>> arch/arm/boot/dts/<vendor>/
+>>>>>>
+>>>>>> Is this something we should do for the MIPS and update the other architectures
+>>>>>> to follow that scheme?
+>>>>>
+>>>>> I recall reading that as well and that it would be adopted for ARM64,
+>>>>> but that hasn't seemed to have happened.  Perhaps Olof (CC'ed) will no
+>>>>> more.
+>>>>
+>>>> Yeah, I highly recommend having a directory per vendor. We didn't on ARM,
+>>>> and the amount of files in that directory is becoming pretty
+>>>> insane. Moving to a subdirectory structure later gets messy which is
+>>>> why we've been holding off on it.
+>>>
+>>> It would mean we can change our scripts to operate on "interesting"
+>>> DTS files from
+>>>
+>>>       do-something-with $(git grep -l $vendor, -- arch/arm/boot/dts)
+>>>
+>>> to
+>>>
+>>>      do-something-with arch/arm/boot/dts/$vendor/*
+>>>
+>>> which is easier to type...
+>>
+>> Btw, do you mean chip-vendor or device-vendor with vendor?
+>> Device-vendor could get a bit messy on the source part as the router
+>> manufacturers tend to switch them quite often. E.g. d-link used arm,
+>> mips and ubi32 chips from marvell, ubicom, broadcom, atheros, realtek
+>> and ralink for their dir-615 router, happily switching back and forth.
+>> There are 14 known different hardware revisions of it where the chip
+>> differed from the previous one.
 >
-> So there is a boot status register you can read to tell what type of
-> flash you booted from, but does that also give you the resource ranges
-> for these type of flashes? Presumably they will be mapped into different
-> addresses (at least bcm63xx is like that), that information needs to be
-> listed somewhere.
+> I'm going to assume it means chip/SoC vendor.  That would result in
+> the following structure (I think):
+>
+> Octeon -> cavium/
 
-Take a look at find_nvram in nvram_rw.c. It scans the whole region
-which is up to 0x02000000 (SI_FLASH2_SZ) size.
+To match the state of the art naming we have in other MIPS related 
+directories, it should probably be "cavium-octeon/" (See 
+arch/mips/cavium-octeon, and arch/mips/include/asm/mach-cavium-octeon)
 
-In case of NAND limit is slightly different (nfl_boot_size function):
-1) On ARM it's 0x800000 or 0x2600000
-2) On MIPS it's 0x200000
-
--- 
-Rafał
+David Daney

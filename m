@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2014 13:49:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:57015 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007012AbaH0LtLg0J3Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2014 13:49:11 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 458F0523B2DB7;
-        Wed, 27 Aug 2014 12:49:02 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 27 Aug
- 2014 12:49:04 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 27 Aug 2014 12:49:04 +0100
-Received: from localhost (192.168.79.156) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 27 Aug
- 2014 12:49:01 +0100
-Date:   Wed, 27 Aug 2014 12:48:54 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     "lkcl ." <luke.leighton@gmail.com>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: rhombus tech eoma68 ingenic jz4775 cpu card
-Message-ID: <20140827114854.GC25985@pburton-laptop>
-References: <CAPweEDznk3iecHkQcaGMd_EZfzZmbAbtXuO9dnePctDxFSWS7Q@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2014 14:05:26 +0200 (CEST)
+Received: from mail-ig0-f182.google.com ([209.85.213.182]:53564 "EHLO
+        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007010AbaH0MFY53BnR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2014 14:05:24 +0200
+Received: by mail-ig0-f182.google.com with SMTP id c1so241512igq.3
+        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 05:05:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=b8HiMLsfPGYVLhex8iSgIx1tp9RYFa4R4k6iX43+CFA=;
+        b=cYnhsx7LWztdQCgYrXbhDyyTqs2+QHXZV/zK1EYfuVegO+cJRBioSr2Jwccd+6kwcY
+         xt/4XymfD3dHw0uIvGbnnJCzBY3vFT2BsyvXqjHHQT0zOcBgJHrE/mVRYGfs5Uz9V4KX
+         SeuMrvslaw7mBhCgbmj1zCbpqwGky7FaR396/dY0PzXKvn2DTUCQhDty7BVZjR1KRGNu
+         2ZSOyJTZi/UFoz1DVE91GyNx4Eo94daigKkYgJro80kEts8VmB8iee9o1NDPNvarDpXc
+         /xRcknZb8eogYmP7++uOJvBfin+ooHFL5rSuSAOHuvrdvztGkngS2jXOcdzs+iudHrp7
+         xcKg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <CAPweEDznk3iecHkQcaGMd_EZfzZmbAbtXuO9dnePctDxFSWS7Q@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.79.156]
-Return-Path: <Paul.Burton@imgtec.com>
+X-Received: by 10.42.249.20 with SMTP id mi20mr402775icb.90.1409141118840;
+ Wed, 27 Aug 2014 05:05:18 -0700 (PDT)
+Received: by 10.50.135.73 with HTTP; Wed, 27 Aug 2014 05:05:18 -0700 (PDT)
+In-Reply-To: <20140827114854.GC25985@pburton-laptop>
+References: <CAPweEDznk3iecHkQcaGMd_EZfzZmbAbtXuO9dnePctDxFSWS7Q@mail.gmail.com>
+        <20140827114854.GC25985@pburton-laptop>
+Date:   Wed, 27 Aug 2014 13:05:18 +0100
+Message-ID: <CAPweEDwn95=Oi04H_r1FCDox8Oxd=tP8WAT7ze1urGu2uLJhSA@mail.gmail.com>
+Subject: Re: rhombus tech eoma68 ingenic jz4775 cpu card
+From:   "lkcl ." <luke.leighton@gmail.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <luke.leighton@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42279
+X-archive-position: 42280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: luke.leighton@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,61 +51,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 27, 2014 at 12:18:56PM +0100, lkcl . wrote:
-> hi all,
-> 
-> i'm a long-standing software libre advocate and developer and i tend
-> to tackle the areas where free software doesn't have someone already
-> working on it.  that has taken me into hardware design, so i'd like to
-> let people here know that i have designed a hardware standard (eoma68)
-> and have been working with ingenic to create a CPU card using the
-> ingenic JZ4775. info on the standard is here:
-> http://elinux.org/Embedded_Open_Modular_Architecture/EOMA-68#Table_of_EOMA-68_pinouts
-> 
-> the PCB designs are done and will be sent off to be prototyped (qty 5
-> are planned at the moment) at the beginning of next month (september).
-> it will be the very first CPU card that could go into FSF-Endorseable
-> products and be reasonably popular, as Ingenic have, bless 'em, even
-> released the full source code of the VPU drivers.  no, not "a .a or
-> .so with some header files", *actual* full source.  also as people
-> familiar with Ingenic X-Burst will know, although it is a bit
-> challenging the 3D libraries are also fully software libre.
-> 
-> very very early Ingenic SoCs (JZ4740) only used X-Burst: ingenic then
-> unfortunately licensed proprietary 2D/3D/VPU hard macros for a while
-> but the JZ4775 is the first 1ghz (i.e. modern-ish) SoC that can
-> address 3Gb (i.e. modern-ish) DDR3 RAM and *doesn't* include
-> proprietary drivers.
-> 
-> so! :)
-> 
-> if anyone would like to get involved, just let me know, i will be
-> happy to answer.  just so you know, i am subscribed (digest) to
-> linux-mips.
-> 
-> l.
+On Wed, Aug 27, 2014 at 12:48 PM, Paul Burton <paul.burton@imgtec.com> wrote:
 
-Hi Luke :)
+> Hi Luke :)
 
-That all sounds very interesting! I would definitely be interested in
-getting involved & helping out, and I imagine others at Imagination
-may be too!
+ hii paul, nice to meet you
 
-We have recently begun releasing a board based around the jz4780[1] so
-have been doing a fair bit of work on that SoC, are familiar with some
-of the older SoCs in the jz47xx series and I believe should have access
-to some other jz4775 based boards. There is also the jz4770 based GCW
-zero project[2] which is interested in developing, improving &
-mainlining Linux support for that SoC and there is of course the
-existing in-tree jz4740 support. Effectively we're all aiming towards
-having in-tree support for the whole series of jz47xx SoCs so if you're
-interested in collaborating on that, it would be fantastic!
+> That all sounds very interesting! I would definitely be interested in
+> getting involved & helping out, and I imagine others at Imagination
+> may be too!
 
-Did you have anything concrete in mind that would be helpful at this
-stage, or are you more judging interest?
+ _great_.
 
-Thanks,
-    Paul
+> We have recently begun releasing a board based around the jz4780[1] so
+> have been doing a fair bit of work on that SoC,
 
-[1]: http://elinux.org/MIPS_Creator_CI20
-[2]: http://www.gcw-zero.com/
+ yehhh i have been waiting a long time for ingenic to come up with a SoC
+ that has reasonable (i'd prefer great!) specs that does *not* need proprietary
+ libraries, so i have avoided the jz4780 although the GPU has been
+ successfully reverse-engineered.
+
+ what i am really looking forward to is when ingenic come out with a quad-core
+ FSF-Endorseable SoC: that's when the fun really starts.
+
+> are familiar with some
+> of the older SoCs in the jz47xx series and I believe should have access
+> to some other jz4775 based boards. There is also the jz4770 based GCW
+> zero project[2]
+
+ http://www.gcw-zero.com/specifications very cool.  you might be
+interested to know that there is someone creating an eoma68 games
+console base unit, with quite high specs (capacitive touchpanel, 5in
+1280x720 LCD).
+
+> Did you have anything concrete in mind that would be helpful at this
+> stage, or are you more judging interest?
+
+ bit of both.  background: with 4 CPU cards coming out (ICubeCorp
+IC1T, Allwinner A20, Allwinner A33 and Ingenic JZ4775) in the next few
+months and an upcoming (first) crowdfunding campaign i simply won't
+have time to get everything done myself, so i will kinda need some
+help.
+
+so it's a "yes let people know the project exists, see who's out
+there, who'd like some cool early hardware" and also a "these are the
+things that need doing, who'd like to help" enquiry.
+
+and on that list, getting *a* kernel and OS installed is right at the
+top!  literally this will be a bare board, direct from the prototyping
+company.  then begins the task of working out if the hardware's good
+by learning at the same time how to get an OS onto the card *at all*
+:)
+
+so that's at the micro-level: at the larger level, to give some
+perspective, the goal of the rhombus tech project is to create
+desirable mass-volume affordable environmentally-conscious computing
+appliances, and inviting software libre developers to be involved with
+that process at every step of the way.
+
+it's quite an ambitious long-term project and the EOMA68 standard is a
+key part of that, being designed to last at least a decade.
+
+l.

@@ -1,44 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 18:03:19 +0200 (CEST)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:53251 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007231AbaH1QDSIkJBG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 18:03:18 +0200
-X-IronPort-AV: E=Sophos;i="5.04,418,1406617200"; 
-   d="scan'208";a="43917619"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw2-out.broadcom.com with ESMTP; 28 Aug 2014 09:18:17 -0700
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Thu, 28 Aug 2014 09:03:10 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP Server id
- 14.3.174.1; Thu, 28 Aug 2014 09:03:09 -0700
-Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
- [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 1FF329F9FF;    Thu, 28 Aug 2014 09:03:07 -0700 (PDT)
-From:   Jayachandran C <jchandra@broadcom.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Jayachandran C <jchandra@broadcom.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH] MIPS: Netlogic: Use MIPS topology.h
-Date:   Thu, 28 Aug 2014 21:23:52 +0530
-Message-ID: <1409241232-4205-1-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <Message-ID: <20140825132050.GH27724@linux-mips.org>
-References: <Message-ID: <20140825132050.GH27724@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 18:03:49 +0200 (CEST)
+Received: from mail-ig0-f176.google.com ([209.85.213.176]:39578 "EHLO
+        mail-ig0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007231AbaH1QDo1jC10 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Aug 2014 18:03:44 +0200
+Received: by mail-ig0-f176.google.com with SMTP id hn18so8263450igb.3
+        for <linux-mips@linux-mips.org>; Thu, 28 Aug 2014 09:03:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=UxIKyVbv4vs1ThA2JEZMWSvlKbo6moa8ffGBy4DaZkE=;
+        b=gtZpZAWPB6Y5cuCJf4QJHqU/mD5HCzuDwu4FB4LtIPuV31BwsZQOQl7XFS7yzm7/0F
+         GUYKfqyxtXTELrMvCKhT9Ea5TfZd6VutuCjd5w5tiwuXYGZyx7ykSeXZlNLSLWy4uNe6
+         A8TlgvbI5WMjY7jByvjwQ0hTbLoqq12BtqsQCpbG+e4uVMxSbKpJf6QsK+SZjKWqq0ej
+         k3Q53i77ZJxfs6lixM0DzymskseqFaH7Bq3Y+nimrAoTbLbGup9AJDxjO1njJpW/czdV
+         z0MoimpU//m73YawqbnQ6VMUDudBjbyrJyCFaHhlen58rsL0czIU4wJuBP6cL4CL16BI
+         H4Xg==
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <jchandra@broadcom.com>
+X-Received: by 10.50.176.202 with SMTP id ck10mr39498608igc.2.1409241818481;
+ Thu, 28 Aug 2014 09:03:38 -0700 (PDT)
+Received: by 10.107.130.160 with HTTP; Thu, 28 Aug 2014 09:03:38 -0700 (PDT)
+In-Reply-To: <CACna6rwKheOAogaeeDd5pLNaRo=Zq0euURTT87BY-S1MdOWwVQ@mail.gmail.com>
+References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com>
+        <2859425.94ptgpItD3@wuerfel>
+        <CACna6rx0E_s76wLLkDjj90sXH=Q3yzBemQM5Qrp96QiWCWr0qg@mail.gmail.com>
+        <6633831.1CSHMPPLH1@wuerfel>
+        <CACna6rwKheOAogaeeDd5pLNaRo=Zq0euURTT87BY-S1MdOWwVQ@mail.gmail.com>
+Date:   Thu, 28 Aug 2014 18:03:38 +0200
+Message-ID: <CACna6ryEp0oFXy0ZOEU0yve8r74qg7cC1GDdFSbarr2qjz5-YA@mail.gmail.com>
+Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42312
+X-archive-position: 42313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,59 +58,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-commit bbbf6d8768f5 ("MIPS: NL: Fix nlm_xlp_defconfig build error")
-removed topology related macros from mach-netlogic/topology.h, but
-did not setup the current_cpu_data.package.
+On 28 August 2014 18:00, Rafał Miłecki <zajec5@gmail.com> wrote:
+> On 28 August 2014 17:32, Arnd Bergmann <arnd@arndb.de> wrote:
+>> On Thursday 28 August 2014 14:37:54 Rafał Miłecki wrote:
+>>> To make booting possible, flash content is mapped to the memory. We're
+>>> talking about read only access. This mapping allows CPU to get code
+>>> (bootloader) and execute it as well as it allows CFE to get NVRAM
+>>> content easily. You don't need flash driver (with erasing & writing
+>>> support) to read NVRAM.
+>>
+>> Ok. Just out of curiosity, how does the system manage to map NAND
+>> flash into physical address space? Is this a feature of the SoC
+>> of the flash chip?
+>
+> I don't know exactly. Many (all?) device with BCM4706 SoC have two
+> flashes. Serial flash (~2 MiB) with bootloader + nvram and NAND flash
+> with the firmware. However Netgear WNR3500Lv2 (based on BCM47186B0)
+> has only a NAND flash.
 
-Fix this by setting the package field in netlogic/common/smp.c. Also
-mach-netlogic/topology.h can be removed now as it no longer needs to
-override mips topology definitions.
-
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Huacai Chen <chenhc@lemote.com>
----
-[ Ralf: This is for 3.17, fixes an issue which went into -rc1, and was fixed
-  partially in -rc2]
-
- arch/mips/include/asm/mach-netlogic/topology.h | 15 ---------------
- arch/mips/netlogic/common/smp.c                |  1 +
- 2 files changed, 1 insertion(+), 15 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-netlogic/topology.h
-
-diff --git a/arch/mips/include/asm/mach-netlogic/topology.h b/arch/mips/include/asm/mach-netlogic/topology.h
-deleted file mode 100644
-index 0eb43c8..0000000
---- a/arch/mips/include/asm/mach-netlogic/topology.h
-+++ /dev/null
-@@ -1,15 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2013 Broadcom Corporation
-- */
--#ifndef _ASM_MACH_NETLOGIC_TOPOLOGY_H
--#define _ASM_MACH_NETLOGIC_TOPOLOGY_H
--
--#include <asm/mach-netlogic/multi-node.h>
--
--#include <asm-generic/topology.h>
--
--#endif /* _ASM_MACH_NETLOGIC_TOPOLOGY_H */
-diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
-index 4fde7ac..f23fe22 100644
---- a/arch/mips/netlogic/common/smp.c
-+++ b/arch/mips/netlogic/common/smp.c
-@@ -120,6 +120,7 @@ static void nlm_init_secondary(void)
- 
- 	hwtid = hard_smp_processor_id();
- 	current_cpu_data.core = hwtid / NLM_THREADS_PER_CORE;
-+	current_cpu_data.package = nlm_cpuid_to_node(hwtid);
- 	nlm_percpu_init(hwtid);
- 	nlm_smp_irq_init(hwtid);
- }
--- 
-1.9.1
+Btw. since NAND flashes tend to be huhe, they can't be fully mapped
+into memory. This is where Broadcom's "nfl_boot_size" comes in. This
+is a function saying how much of NAND content it mapped into memory.
+It returns NFL_BOOT_SIZE (0x200000) or NFL_BIG_BOOT_SIZE (0x800000)
+depending on the block size.

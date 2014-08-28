@@ -1,51 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 00:52:42 +0200 (CEST)
-Received: from mail-ig0-f169.google.com ([209.85.213.169]:65383 "EHLO
-        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006953AbaH0WwlnO3Da (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 00:52:41 +0200
-Received: by mail-ig0-f169.google.com with SMTP id r2so83272igi.2
-        for <multiple recipients>; Wed, 27 Aug 2014 15:52:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 02:46:04 +0200 (CEST)
+Received: from mail-lb0-f172.google.com ([209.85.217.172]:48306 "EHLO
+        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006944AbaH1AqDAIAbw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 02:46:03 +0200
+Received: by mail-lb0-f172.google.com with SMTP id 10so69456lbg.3
+        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 17:45:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=cfrtA41b1xNlVeY1P4Cpbd2wawy0vQUdvwd1+H87S+Q=;
-        b=bIVcNGBS1iaoMUTyBnk5qjvdetjnieX2ZnKkdGm7zxI5JOvTeipfp8ImuT8YLx47t9
-         m/l5kPsTpQ/RLrIY4BpiSp05NL7LCGSldllDq+fHioLx56KvE7cKg2SR0SRIhfIxdbmU
-         gtJDh2l3Q9l+STrxgrbhsPFUw6dc0TpVLtoFesxw1aqbMeWRSVl12J/KldAwN/Gh5Bju
-         JTD6IuZZSGzhQlvWT9uSyc5tp4RKEutpGdkjUp9UsaXUqbGERAsKq4N5lIgbaNgm1HWF
-         OkxfrTs21D+hm7417cUE+Wo7Cz6wlabeOKV+HITsz2pfx2USxdUvXXBlKd0FbPcHIVMU
-         nqbw==
-X-Received: by 10.50.108.103 with SMTP id hj7mr33370647igb.5.1409179955508;
-        Wed, 27 Aug 2014 15:52:35 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id j4sm8410350igx.20.2014.08.27.15.52.34
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 27 Aug 2014 15:52:34 -0700 (PDT)
-Message-ID: <53FE6131.5020201@gmail.com>
-Date:   Wed, 27 Aug 2014 15:52:33 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=NiYxtNvj8XtUbJgK/3eERTZwfEAu+aBrL/2kD9ifkLM=;
+        b=K2Pq2kQ+5VmZFgMRgw8DYytOiSMl7wemsUEMECkja4qItsJaxvavCGOz5VdEqSADgN
+         dqe5ReCRjIPHDl88JlffiYi7TjM5ONQJB3gdoqDdHDOcnjfA4OQm87mISXFkhtrTFpFc
+         oTZfm6yf7/X+u78WWFZQ3BpzHC8PwqldIRh61Pp0IhJaw/lZKlWZ99XvQVYh1Vei+YDC
+         +QAgA9za8vOQ4lZrPvQe1SpO8UaJdowit6mO6LTFkJKIb0/cgwDSj8QhSEJhJw91Tv4a
+         UfngG5uV6K6X9xW9xO2VRv9xpYf/jwu8qlLVPbIhIgxp/LagVHO+yT6uCAggs+TADNpE
+         eYCA==
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Yong Zhang <yong.zhang0@gmail.com>,
-        Yong Zhang <yong.zhang@windriver.com>,
-        linux-mips@linux-mips.org, huawei.libin@huawei.com
-Subject: Re: [PATCH] MIPS: change type of asid_cache to unsigned long
-References: <1400573344-5035-1-git-send-email-yong.zhang0@gmail.com> <20140521053853.GC19655@pek-yzhang-d1> <20140521112936.GC17197@linux-mips.org> <20140522020611.GA6813@zhy> <20140522134245.GF10287@linux-mips.org>
-In-Reply-To: <20140522134245.GF10287@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+X-Received: by 10.112.149.72 with SMTP id ty8mr472420lbb.15.1409186757340;
+ Wed, 27 Aug 2014 17:45:57 -0700 (PDT)
+Received: by 10.152.3.167 with HTTP; Wed, 27 Aug 2014 17:45:57 -0700 (PDT)
+Date:   Wed, 27 Aug 2014 17:45:57 -0700
+Message-ID: <CAF1ivSYeUL_UgS3Pn8Uif10wf4ibCh4aeS9NHMKo=S3wQtfduQ@mail.gmail.com>
+Subject: epc register reported zero
+From:   Lin Ming <minggr@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <minggr@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42288
+X-archive-position: 42289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: minggr@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,94 +46,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Regarding this patch (commit e5eb925a1804c4a52994ba57f4f68ee7a9132905), 
-the fix is fine for 64-bit systems, as it is impossible to overflow a 
-64-bit ASID value.
+Hi list,
 
-For 32-bit systems, there is still a problem, we don't see the type 
-truncation issue that was present on 64-bit systems, but there can still 
-be badness on ASID generation wrap.
+Board: Broadcom 963268
+CPU model: Broadcom BMIPS4350 V8.0
+Kernel: 2.6.30
+Toolchain: uclibc-crosstools-gcc-4.4.2-1
+
+I encountered an userspace application crash with epc reported zero.
+I don't understand how epc register could be zero.
+
+Any help is appreciated.
+
+wps_monitor/1699: potentially unexpected fatal signal 11.
+
+Cpu 1
+$ 0   : 00000000 10008d00 00000004 0000000a
+$ 4   : 0000000a 7f88a55c 00000000 00000001
+$ 8   : 00000000 00000000 00000001 00000000
+$12   : 00000001 00000000 00000008 12182430
+$16   : 00438968 00000001 00409620 00000000
+$20   : 00000000 00000000 00000000 00406404
+$24   : 00000002 2aaecc00
+$28   : 2ab39a70 7f88a4c0 7f88a4f0 0041a838
+Hi    : 00000000
+Lo    : 00000000
+epc   : 00000000 (null)
+    Tainted: P
+ra    : 0041a838 0x41a838
+Status: 00008d13    USER EXL IE
+Cause : 00000008
+BadVA : 00000000
+PrId  : 0002a080 (Broadcom4350)
+
+mips-linux-addr2line -e wps_monitor 0041a838
+This shows "ra" address mapped to below line 328.
+
+322         if (max_fd == -1) {
+323                 TUTRACE((TUTRACE_ERR, "wpsm_readData: no fd set!\n"));
+324                 return NULL;
+325         }
+326
+327         /* Do select */
+328         n = select(max_fd + 1, &fdvar, NULL, NULL, &timeout);
+329         if (n <= 0) {
+330                 /*
+331                  * to avoid the select operation interferenced by
+led lighting timer.
+332                  * this will be removed after led lighting timer
+is replaced by wireless driver
+333                  */
+334                 if (n < 0 && errno != EINTR) {
+335                         TUTRACE((TUTRACE_ERR, "wpsm_readData:
+select recv failed\n"));
+336                 }
+337                 goto out;
+338         }
 
 
-Scenario:
+0000eac0 <__libc_select>:
+    eac0:       3c1c0006        lui     gp,0x6
+    eac4:       279c1aa0        addiu   gp,gp,6816
+    eac8:       0399e021        addu    gp,gp,t9
+    eacc:       27bdffd8        addiu   sp,sp,-40
+    ead0:       afbe0020        sw      s8,32(sp)
+    ead4:       03a0f021        move    s8,sp
+    ead8:       afbf0024        sw      ra,36(sp)
+    eadc:       afb0001c        sw      s0,28(sp)
+    eae0:       afbc0010        sw      gp,16(sp)
+    eae4:       27bdfff0        addiu   sp,sp,-16
+    eae8:       8fc20038        lw      v0,56(s8)
+    eaec:       27bdffe0        addiu   sp,sp,-32
+    eaf0:       afa20010        sw      v0,16(sp)
+    eaf4:       2402102e        li      v0,4142
+    eaf8:       0000000c        syscall
+    eafc:       27bd0020        addiu   sp,sp,32
+    eb00:       10e00006        beqz    a3,eb1c <__libc_select+0x5c>
+    eb04:       00408021        move    s0,v0
+    eb08:       8f9988d0        lw      t9,-30512(gp)
+    eb0c:       0320f809        jalr    t9
+    eb10:       00000000        nop
+    eb14:       ac500000        sw      s0,0(v0)
+    eb18:       2402ffff        li      v0,-1
+    eb1c:       03c0e821        move    sp,s8
+    eb20:       8fbf0024        lw      ra,36(sp)
+    eb24:       8fbe0020        lw      s8,32(sp)
+    eb28:       8fb0001c        lw      s0,28(sp)
+    eb2c:       03e00008        jr      ra
+    eb30:       27bd0028        addiu   sp,sp,40
 
-  o Long live process (p0) that sleeps for a long time.  It acquires 
-what we will call ASID_0 and then is scheduled off the CPU
-
-  o We cycle through 2^32 ASIDs, and the asid_cache wraps around  (not 
-difficult to do, just write a program that does nothing but mmap() 
-munmap() in a loop).  We have seen this happen every 6 days with ebizzy 
-benchmark program.
-
-  o Start new program (p1) that happens to also get ASID_0
-
-  o p0 wakes up, and is now sharing tlb entries with p1, chaos ensues.
-
-A workaround for this would be to use u64 for both 32-bit and 64-bit for 
-all ASID related variables.  I have a patch for this, is it worth 
-testing on 32-bit systems, and sending it in?
-
-David Daney
-
-
-On 05/22/2014 06:42 AM, Ralf Baechle wrote:
-> On Thu, May 22, 2014 at 10:06:11AM +0800, Yong Zhang wrote:
->
->> On Wed, May 21, 2014 at 01:29:36PM +0200, Ralf Baechle wrote:
->>> On Wed, May 21, 2014 at 01:38:53PM +0800, Yong Zhang wrote:
->>>
->>>> Please check the V2 in which I add the reporter.
->>>> And thanks libin for reporting it :)
->>>
->>> The bug was introduced in 5636919b5c909fee54a6ef5226475ecae012ad02
->>> [MIPS: Outline udelay and fix a few issues.] in 2009 btw.  I think
->>> the intension was to avoid holes in the structure and minimize
->>> the bloat.  I instead applied aptch
->>
->> Could you please show the patch?
->>
->>> which also moves another member
->>> of the struct arond such that no hole will be created in the struct.
->>> This is important because the strcture it accessed fairly frequently
->>> so we want to fit the most important members into as few cache
->>> lines as possible.
->>
->> I have tried to move the struct member around, but I found that the
->> hole cann't be avoided completely because for exampe struct cache_desc
->> is a bit special.
->
-> Yes, struct cache_desc is still a problem.  Easily solvable though -
-> some of it's members are excessivly large; by using smaller data types
-> both the struct and its required alignment will shrink.  But that's
-> for another patch; as for this patch my goal to just not make things
-> any worse.
->
->    Ralf
->
-> ---
->   arch/mips/include/asm/cpu-info.h | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-> index dc2135b..ff2707a 100644
-> --- a/arch/mips/include/asm/cpu-info.h
-> +++ b/arch/mips/include/asm/cpu-info.h
-> @@ -39,14 +39,14 @@ struct cache_desc {
->   #define MIPS_CACHE_PINDEX	0x00000020	/* Physically indexed cache */
->
->   struct cpuinfo_mips {
-> -	unsigned int		udelay_val;
-> -	unsigned int		asid_cache;
-> +	unsigned long		asid_cache;
->
->   	/*
->   	 * Capability and feature descriptor structure for MIPS CPU
->   	 */
->   	unsigned long		options;
->   	unsigned long		ases;
-> +	unsigned int		udelay_val;
->   	unsigned int		processor_id;
->   	unsigned int		fpu_id;
->   	unsigned int		msa_id;
->
->
+Regards,
+Ming

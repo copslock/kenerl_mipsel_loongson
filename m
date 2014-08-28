@@ -1,49 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 03:16:06 +0200 (CEST)
-Received: from mail-ig0-f174.google.com ([209.85.213.174]:62989 "EHLO
-        mail-ig0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006944AbaH1BQFnNPj5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 03:16:05 +0200
-Received: by mail-ig0-f174.google.com with SMTP id c1so7263089igq.1
-        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 18:15:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 03:33:26 +0200 (CEST)
+Received: from mail-lb0-f171.google.com ([209.85.217.171]:56626 "EHLO
+        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006944AbaH1BdYMol8t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 03:33:24 +0200
+Received: by mail-lb0-f171.google.com with SMTP id n15so101730lbi.30
+        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 18:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=Qcbs1YDZrzpJylcm9mfX3b4eLbDIhK4m35H6lcftUqg=;
-        b=ewVzDQqhSLS5a+CejPH2G1a3FCm0nMSbBfSs347xmoJXvhom912xNzZUQt23ak2K0j
-         qwazQ1RrMt+U2C5CBhupx4ju1KEGSQfBBKd3DSSObyT7KosCPDEPuufvXFYuUPsWvBTy
-         /JiC1C1mbZJTKbODNNJk6KFwtvSL0BYhxAP9OwY7UbOJrMqhSiISnSqhAvb6Wn5BlYPs
-         jH2PouHyugS04NhBFFFz+43vyxxrIXej9iERJWFJcVZfbPZTn3j85cYZ+vmfRH3DVGG/
-         9G77CrWwwaACWdTa31BhkJAMUh90YIJvTkuEIESa49whsEOufQjlC0J9ycuFR3Mt/TPS
-         W14A==
-X-Received: by 10.43.154.145 with SMTP id le17mr1635069icc.20.1409188559723;
-        Wed, 27 Aug 2014 18:15:59 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id ky8sm9785377igb.16.2014.08.27.18.15.58
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 27 Aug 2014 18:15:59 -0700 (PDT)
-Message-ID: <53FE82CE.1090707@gmail.com>
-Date:   Wed, 27 Aug 2014 18:15:58 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=UM24ZTiZ9NhylxRmKODzqp/Brt2n//o3i7wio44H0rg=;
+        b=mAVww/moxSBhkSI3P5J2LHSMHwnEzCPUL42l8l/nVjZpJFZXzyyLCCFOpOLFHjx2qQ
+         Pc/QHqHtOMwZfLKWbdjiO/F//aQ1lVo7JrWy+qxisW2jCPM3L6Cdpo7D/9v1Y7O9vk5H
+         BrcRe6bm/MNWZZnYHnZyUkkk9GhwTpEC1cmuufMYHY4FHYXt4fhyqgTXMRlI9VPPQw9w
+         IHc3ypDXR/PSYcFLvdwHUq6AkO8w1PbOGPO2aS8yeKJG0SL6CSqdYFSo+fe3zCdE1x+t
+         qhFSChpO/AzvwJ9KQzJ/F6y4FNoqF1Qr00CvkQonFoSVSpRv5YxNYbHNFJBFBlFnRGmf
+         dCdQ==
 MIME-Version: 1.0
-To:     Lin Ming <minggr@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: epc register reported zero
+X-Received: by 10.112.105.168 with SMTP id gn8mr557855lbb.77.1409189598600;
+ Wed, 27 Aug 2014 18:33:18 -0700 (PDT)
+Received: by 10.152.3.167 with HTTP; Wed, 27 Aug 2014 18:33:18 -0700 (PDT)
+In-Reply-To: <53FE82CE.1090707@gmail.com>
 References: <CAF1ivSYeUL_UgS3Pn8Uif10wf4ibCh4aeS9NHMKo=S3wQtfduQ@mail.gmail.com>
-In-Reply-To: <CAF1ivSYeUL_UgS3Pn8Uif10wf4ibCh4aeS9NHMKo=S3wQtfduQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+        <53FE82CE.1090707@gmail.com>
+Date:   Wed, 27 Aug 2014 18:33:18 -0700
+Message-ID: <CAF1ivSa0oH+4vhjX-6mYP7UCAFkh=xXcnVZCW0iBBg8gRGfNTg@mail.gmail.com>
+Subject: Re: epc register reported zero
+From:   Lin Ming <minggr@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <minggr@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42290
+X-archive-position: 42291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: minggr@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,108 +51,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/27/2014 05:45 PM, Lin Ming wrote:
-> Hi list,
+On Wed, Aug 27, 2014 at 6:15 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+> On 08/27/2014 05:45 PM, Lin Ming wrote:
+>>
+>> Hi list,
+>>
+>> Board: Broadcom 963268
+>> CPU model: Broadcom BMIPS4350 V8.0
+>> Kernel: 2.6.30
+>> Toolchain: uclibc-crosstools-gcc-4.4.2-1
+>>
+>> I encountered an userspace application crash with epc reported zero.
+>> I don't understand how epc register could be zero.
+>>
+>> Any help is appreciated.
+>>
+>> wps_monitor/1699: potentially unexpected fatal signal 11.
+>>
+>> Cpu 1
+>> $ 0   : 00000000 10008d00 00000004 0000000a
+>> $ 4   : 0000000a 7f88a55c 00000000 00000001
+>> $ 8   : 00000000 00000000 00000001 00000000
+>> $12   : 00000001 00000000 00000008 12182430
+>> $16   : 00438968 00000001 00409620 00000000
+>> $20   : 00000000 00000000 00000000 00406404
+>> $24   : 00000002 2aaecc00
+>> $28   : 2ab39a70 7f88a4c0 7f88a4f0 0041a838
 >
-> Board: Broadcom 963268
-> CPU model: Broadcom BMIPS4350 V8.0
-> Kernel: 2.6.30
-> Toolchain: uclibc-crosstools-gcc-4.4.2-1
 >
-> I encountered an userspace application crash with epc reported zero.
-> I don't understand how epc register could be zero.
+> Disassemble the surrounding the address in $31
 >
-> Any help is appreciated.
+> I am guessing that at 0x41a830, you have an indirect jump (JR instruction)
+> and that 'rs' contains a value of zero.  So the EPC when you get the SIGSEGV
+> will be ... zero.
 >
-> wps_monitor/1699: potentially unexpected fatal signal 11.
->
-> Cpu 1
-> $ 0   : 00000000 10008d00 00000004 0000000a
-> $ 4   : 0000000a 7f88a55c 00000000 00000001
-> $ 8   : 00000000 00000000 00000001 00000000
-> $12   : 00000001 00000000 00000008 12182430
-> $16   : 00438968 00000001 00409620 00000000
-> $20   : 00000000 00000000 00000000 00406404
-> $24   : 00000002 2aaecc00
-> $28   : 2ab39a70 7f88a4c0 7f88a4f0 0041a838
+> This is called a call through a NULL function pointer.
 
-Disassemble the surrounding the address in $31
+Here it is.
+There is only a "jalr t9", which I think it's call of __libc_select().
 
-I am guessing that at 0x41a830, you have an indirect jump (JR 
-instruction) and that 'rs' contains a value of zero.  So the EPC when 
-you get the SIGSEGV will be ... zero.
+        /* Do select */
+        n = select(max_fd + 1, &fdvar, NULL, NULL, &timeout);
+  41a804:       8fc20034        lw      v0,52(s8)
+  41a808:       24430001        addiu   v1,v0,1
+  41a80c:       27c20044        addiu   v0,s8,68
+  41a810:       27c400c4        addiu   a0,s8,196
+  41a814:       afa40010        sw      a0,16(sp)
+  41a818:       00602021        move    a0,v1
+  41a81c:       00402821        move    a1,v0
+  41a820:       00003021        move    a2,zero
+  41a824:       00003821        move    a3,zero
+  41a828:       8f82843c        lw      v0,-31684(gp)
+  41a82c:       0040c821        move    t9,v0
+  41a830:       0320f809        jalr    t9
+  41a834:       00000000        nop
+  41a838:       8fdc0018        lw      gp,24(s8)
+  41a83c:       afc20038        sw      v0,56(s8)
+        if (n <= 0) {
+  41a840:       8fc20038        lw      v0,56(s8)
+  41a844:       1c40000b        bgtz    v0,41a874
+<wps_osl_wait_for_all_packets+0x21c>
+  41a848:       00000000        nop
 
-This is called a call through a NULL function pointer.
+Here is my crazy thought:
 
+One possibility is:
+1. select() syscall entered kernel mode. Then epc register was saved
+on kernel mode stack.
+2. After select() syscall finished, kernel code read epc value from
+stack and restore it to epc register.
+3. CPU jump to the instruction pointed by epc register.
 
-> Hi    : 00000000
-> Lo    : 00000000
-> epc   : 00000000 (null)
->      Tainted: P
-> ra    : 0041a838 0x41a838
-> Status: 00008d13    USER EXL IE
-> Cause : 00000008
-> BadVA : 00000000
-> PrId  : 0002a080 (Broadcom4350)
->
-> mips-linux-addr2line -e wps_monitor 0041a838
-> This shows "ra" address mapped to below line 328.
->
-> 322         if (max_fd == -1) {
-> 323                 TUTRACE((TUTRACE_ERR, "wpsm_readData: no fd set!\n"));
-> 324                 return NULL;
-> 325         }
-> 326
-> 327         /* Do select */
-> 328         n = select(max_fd + 1, &fdvar, NULL, NULL, &timeout);
-> 329         if (n <= 0) {
-> 330                 /*
-> 331                  * to avoid the select operation interferenced by
-> led lighting timer.
-> 332                  * this will be removed after led lighting timer
-> is replaced by wireless driver
-> 333                  */
-> 334                 if (n < 0 && errno != EINTR) {
-> 335                         TUTRACE((TUTRACE_ERR, "wpsm_readData:
-> select recv failed\n"));
-> 336                 }
-> 337                 goto out;
-> 338         }
->
->
-> 0000eac0 <__libc_select>:
->      eac0:       3c1c0006        lui     gp,0x6
->      eac4:       279c1aa0        addiu   gp,gp,6816
->      eac8:       0399e021        addu    gp,gp,t9
->      eacc:       27bdffd8        addiu   sp,sp,-40
->      ead0:       afbe0020        sw      s8,32(sp)
->      ead4:       03a0f021        move    s8,sp
->      ead8:       afbf0024        sw      ra,36(sp)
->      eadc:       afb0001c        sw      s0,28(sp)
->      eae0:       afbc0010        sw      gp,16(sp)
->      eae4:       27bdfff0        addiu   sp,sp,-16
->      eae8:       8fc20038        lw      v0,56(s8)
->      eaec:       27bdffe0        addiu   sp,sp,-32
->      eaf0:       afa20010        sw      v0,16(sp)
->      eaf4:       2402102e        li      v0,4142
->      eaf8:       0000000c        syscall
->      eafc:       27bd0020        addiu   sp,sp,32
->      eb00:       10e00006        beqz    a3,eb1c <__libc_select+0x5c>
->      eb04:       00408021        move    s0,v0
->      eb08:       8f9988d0        lw      t9,-30512(gp)
->      eb0c:       0320f809        jalr    t9
->      eb10:       00000000        nop
->      eb14:       ac500000        sw      s0,0(v0)
->      eb18:       2402ffff        li      v0,-1
->      eb1c:       03c0e821        move    sp,s8
->      eb20:       8fbf0024        lw      ra,36(sp)
->      eb24:       8fbe0020        lw      s8,32(sp)
->      eb28:       8fb0001c        lw      s0,28(sp)
->      eb2c:       03e00008        jr      ra
->      eb30:       27bd0028        addiu   sp,sp,40
->
-> Regards,
-> Ming
->
->
->
+Maybe there's some bug in kernel that destroyed kernel mode stack. So
+epc register value became zero.
+
+I added below crazy code to simulate it.
+
+diff --git a/bcmcpe2/kernel/linux-3.4rt/fs/select.c
+b/bcmcpe2/kernel/linux-3.4rt/fs/select.c
+index 0baa0a3..cd41c4d 100644
+--- a/bcmcpe2/kernel/linux-3.4rt/fs/select.c
++++ b/bcmcpe2/kernel/linux-3.4rt/fs/select.c
+@@ -597,6 +597,11 @@ SYSCALL_DEFINE5(select, int, n, fd_set __user *,
+inp, fd_set __user *, outp,
+        struct timeval tv;
+        int ret;
+
++       if (!strcmp(current->comm, "wps_monitor")) {
++               printk("LINMING: hack wps_monitor epc\n");
++               task_pt_regs(current)->cp0_epc = 0;
++       }
++
+
+And got below:
+
+wps_monitor/1315: potentially unexpected fatal signal 11.
+
+Cpu 1
+$ 0   : 00000000 10008d00 00000000 0000f9d8
+$ 4   : 00000008 7f7fe624 00000000 00000000
+$ 8   : 00000000 7f7fe5f8 00000000 87c78000
+$12   : 00504303 00000043 0000000e 0000dd18
+$16   : 00000000 0043db30 0043bff8 0043bffc
+$20   : 7f7fe624 7f7fe5f0 00000007 00000000
+$24   : 00000000 77c59960
+$28   : 77cc94d0 7f7fe578 7f7fe5a8 004090a8
+Hi    : 00000000
+Lo    : 00000000
+epc   : 00000000   (null)
+    Tainted: P
+ra    : 004090a8 0x4090a8
+Status: 00008d13    USER EXL IE
+Cause : 00000008
+BadVA : 00000000
+PrId  : 0002a080 (Broadcom BMIPS4350)

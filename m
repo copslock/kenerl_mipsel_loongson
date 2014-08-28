@@ -1,44 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 03:33:26 +0200 (CEST)
-Received: from mail-lb0-f171.google.com ([209.85.217.171]:56626 "EHLO
-        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006944AbaH1BdYMol8t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 03:33:24 +0200
-Received: by mail-lb0-f171.google.com with SMTP id n15so101730lbi.30
-        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 18:33:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=UM24ZTiZ9NhylxRmKODzqp/Brt2n//o3i7wio44H0rg=;
-        b=mAVww/moxSBhkSI3P5J2LHSMHwnEzCPUL42l8l/nVjZpJFZXzyyLCCFOpOLFHjx2qQ
-         Pc/QHqHtOMwZfLKWbdjiO/F//aQ1lVo7JrWy+qxisW2jCPM3L6Cdpo7D/9v1Y7O9vk5H
-         BrcRe6bm/MNWZZnYHnZyUkkk9GhwTpEC1cmuufMYHY4FHYXt4fhyqgTXMRlI9VPPQw9w
-         IHc3ypDXR/PSYcFLvdwHUq6AkO8w1PbOGPO2aS8yeKJG0SL6CSqdYFSo+fe3zCdE1x+t
-         qhFSChpO/AzvwJ9KQzJ/F6y4FNoqF1Qr00CvkQonFoSVSpRv5YxNYbHNFJBFBlFnRGmf
-         dCdQ==
-MIME-Version: 1.0
-X-Received: by 10.112.105.168 with SMTP id gn8mr557855lbb.77.1409189598600;
- Wed, 27 Aug 2014 18:33:18 -0700 (PDT)
-Received: by 10.152.3.167 with HTTP; Wed, 27 Aug 2014 18:33:18 -0700 (PDT)
-In-Reply-To: <53FE82CE.1090707@gmail.com>
-References: <CAF1ivSYeUL_UgS3Pn8Uif10wf4ibCh4aeS9NHMKo=S3wQtfduQ@mail.gmail.com>
-        <53FE82CE.1090707@gmail.com>
-Date:   Wed, 27 Aug 2014 18:33:18 -0700
-Message-ID: <CAF1ivSa0oH+4vhjX-6mYP7UCAFkh=xXcnVZCW0iBBg8gRGfNTg@mail.gmail.com>
-Subject: Re: epc register reported zero
-From:   Lin Ming <minggr@gmail.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <minggr@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 04:10:23 +0200 (CEST)
+Received: from mail-pa0-f74.google.com ([209.85.220.74]:61863 "EHLO
+        mail-pa0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006945AbaH1CKWRb0UA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 04:10:22 +0200
+Received: by mail-pa0-f74.google.com with SMTP id lj1so471033pab.3
+        for <linux-mips@linux-mips.org>; Wed, 27 Aug 2014 19:10:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=QivRljOpNQ2E7dhQskpTlPuGh/9oa14m+GDWxDDY4Vk=;
+        b=l/uOuGYGg98/fraYnA2HHx/s7Tkm1gMCoRN5Dee7R4vfXW5QJ2wGNc5cJoPx85e/Zt
+         vq1LCBtbJQCencj8QJKcFvtlips3TXoSw2yuKFdHDPbUMXz9v+PFjo8PJQ2CuIROAwJg
+         tlAm1GLi4z4qYQQjqm507+YU41ok8uYCmZLeRVnp1k6VkudNIUCDx4FShhXJLYvJ5XZz
+         sqoda5NJ/N2xOoB4z+87CUg6pimd1Vu32Ay7BSzkKlcKIvcc9Xg8mR8hfz+6qC7NDX8L
+         9aRAyYZsSu2YW2z2Ilo/DCI/w8rh4zczaE23Ef61XLG0fbWUHDn7O/kN4RdmfgV0XJmk
+         A7zw==
+X-Gm-Message-State: ALoCoQmmkz1WfAIiwrDJbv0e2LIZcCIOVvd7M4tTIgOOoJTtx4voQOZxQUYuJd4h8FIytR+2gUtV
+X-Received: by 10.66.161.7 with SMTP id xo7mr650761pab.14.1409191815617;
+        Wed, 27 Aug 2014 19:10:15 -0700 (PDT)
+Received: from corp2gmr1-1.hot.corp.google.com (corp2gmr1-1.hot.corp.google.com [172.24.189.92])
+        by gmr-mx.google.com with ESMTPS id d7si145416yho.2.2014.08.27.19.10.15
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 27 Aug 2014 19:10:15 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com (abrestic.mtv.corp.google.com [172.22.65.70])
+        by corp2gmr1-1.hot.corp.google.com (Postfix) with ESMTP id 5AF2831C379;
+        Wed, 27 Aug 2014 19:10:15 -0700 (PDT)
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id ECE84221121; Wed, 27 Aug 2014 19:10:14 -0700 (PDT)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        David Daney <david.daney@cavium.com>,
+        John Crispin <blogic@openwrt.org>,
+        Jayachandran C <jchandra@broadcom.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Andrew Bresticker <abrestic@chromium.org>
+Subject: [PATCH v2 0/7] MIPS: Move device-tree files to a common location
+Date:   Wed, 27 Aug 2014 19:10:05 -0700
+Message-Id: <1409191812-23697-1-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42291
+X-archive-position: 42292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minggr@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,117 +73,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 27, 2014 at 6:15 PM, David Daney <ddaney.cavm@gmail.com> wrote:
-> On 08/27/2014 05:45 PM, Lin Ming wrote:
->>
->> Hi list,
->>
->> Board: Broadcom 963268
->> CPU model: Broadcom BMIPS4350 V8.0
->> Kernel: 2.6.30
->> Toolchain: uclibc-crosstools-gcc-4.4.2-1
->>
->> I encountered an userspace application crash with epc reported zero.
->> I don't understand how epc register could be zero.
->>
->> Any help is appreciated.
->>
->> wps_monitor/1699: potentially unexpected fatal signal 11.
->>
->> Cpu 1
->> $ 0   : 00000000 10008d00 00000004 0000000a
->> $ 4   : 0000000a 7f88a55c 00000000 00000001
->> $ 8   : 00000000 00000000 00000001 00000000
->> $12   : 00000001 00000000 00000008 12182430
->> $16   : 00438968 00000001 00409620 00000000
->> $20   : 00000000 00000000 00000000 00406404
->> $24   : 00000002 2aaecc00
->> $28   : 2ab39a70 7f88a4c0 7f88a4f0 0041a838
->
->
-> Disassemble the surrounding the address in $31
->
-> I am guessing that at 0x41a830, you have an indirect jump (JR instruction)
-> and that 'rs' contains a value of zero.  So the EPC when you get the SIGSEGV
-> will be ... zero.
->
-> This is called a call through a NULL function pointer.
+To be consistent with other architectures and to avoid unnecessary
+makefile duplication, move all MIPS device-trees to arch/mips/boot/dts
+and build them with a common makefile.  Per Olof's suggestion in v1,
+device-trees are grouped into per-vendor subdirectories.  Note that
+since there is currently no Kbuild infrastructure for recursively
+building dtbs like there is for object files, the top level Makefile
+in arch/mips/boot/dts/ just includes the sub-Makefiles.
 
-Here it is.
-There is only a "jalr t9", which I think it's call of __libc_select().
+Patch 1 sets up the makefiles for building the DTs in arch/mips/boot/dts
+and introduces the config option BUILTIN_DTB for platforms that require
+it.
 
-        /* Do select */
-        n = select(max_fd + 1, &fdvar, NULL, NULL, &timeout);
-  41a804:       8fc20034        lw      v0,52(s8)
-  41a808:       24430001        addiu   v1,v0,1
-  41a80c:       27c20044        addiu   v0,s8,68
-  41a810:       27c400c4        addiu   a0,s8,196
-  41a814:       afa40010        sw      a0,16(sp)
-  41a818:       00602021        move    a0,v1
-  41a81c:       00402821        move    a1,v0
-  41a820:       00003021        move    a2,zero
-  41a824:       00003821        move    a3,zero
-  41a828:       8f82843c        lw      v0,-31684(gp)
-  41a82c:       0040c821        move    t9,v0
-  41a830:       0320f809        jalr    t9
-  41a834:       00000000        nop
-  41a838:       8fdc0018        lw      gp,24(s8)
-  41a83c:       afc20038        sw      v0,56(s8)
-        if (n <= 0) {
-  41a840:       8fc20038        lw      v0,56(s8)
-  41a844:       1c40000b        bgtz    v0,41a874
-<wps_osl_wait_for_all_packets+0x21c>
-  41a848:       00000000        nop
+Patch 2 introduces the 'dtbs' makefile target to allow building of just
+the DT binaries.
 
-Here is my crazy thought:
+Patches 3-7 move the DTs out of the platform directores.
 
-One possibility is:
-1. select() syscall entered kernel mode. Then epc register was saved
-on kernel mode stack.
-2. After select() syscall finished, kernel code read epc value from
-stack and restore it to epc register.
-3. CPU jump to the instruction pointed by epc register.
+I've build tested this on all affected platforms (Octeon, Lantiq, SEAD3,
+Netlogic, and Ralink) as well as Malta.  For platforms where builtin DTBs
+are optional (Netlogic and Ralink), I built with and without the builtin
+DTBs.
 
-Maybe there's some bug in kernel that destroyed kernel mode stack. So
-epc register value became zero.
+Based on 3.17-rc2.
 
-I added below crazy code to simulate it.
+Changes from v1:
+ - moved to per-vendor subdirectories
+ - rebased on 3.17-rc2
 
-diff --git a/bcmcpe2/kernel/linux-3.4rt/fs/select.c
-b/bcmcpe2/kernel/linux-3.4rt/fs/select.c
-index 0baa0a3..cd41c4d 100644
---- a/bcmcpe2/kernel/linux-3.4rt/fs/select.c
-+++ b/bcmcpe2/kernel/linux-3.4rt/fs/select.c
-@@ -597,6 +597,11 @@ SYSCALL_DEFINE5(select, int, n, fd_set __user *,
-inp, fd_set __user *, outp,
-        struct timeval tv;
-        int ret;
+Andrew Bresticker (7):
+  MIPS: Create common infrastructure for building built-in device-trees
+  MIPS: Add support for building device-tree binaries
+  MIPS: Octeon: Move device-trees to arch/mips/boot/dts/cavium-octeon/
+  MIPS: Lantiq: Move device-trees to arch/mips/boot/dts/lantiq/
+  MIPS: sead3: Move device-trees to arch/mips/boot/dts/mti/
+  MIPS: Netlogic: Move device-trees to arch/mips/boot/dts/netlogic/
+  MIPS: ralink: Move device-trees to arch/mips/boot/dts/ralink/
 
-+       if (!strcmp(current->comm, "wps_monitor")) {
-+               printk("LINMING: hack wps_monitor epc\n");
-+               task_pt_regs(current)->cp0_epc = 0;
-+       }
-+
+ arch/mips/Kconfig                                          |  5 +++++
+ arch/mips/Makefile                                         | 11 +++++++++++
+ arch/mips/boot/.gitignore                                  |  1 +
+ arch/mips/boot/dts/Makefile                                | 14 ++++++++++++++
+ arch/mips/boot/dts/cavium-octeon/Makefile                  |  2 ++
+ arch/mips/{ => boot/dts}/cavium-octeon/octeon_3xxx.dts     |  0
+ arch/mips/{ => boot/dts}/cavium-octeon/octeon_68xx.dts     |  0
+ arch/mips/boot/dts/lantiq/Makefile                         |  1 +
+ arch/mips/{lantiq/dts => boot/dts/lantiq}/danube.dtsi      |  0
+ arch/mips/{lantiq/dts => boot/dts/lantiq}/easy50712.dts    |  0
+ arch/mips/boot/dts/mti/Makefile                            |  1 +
+ arch/mips/{mti-sead3 => boot/dts/mti}/sead3.dts            |  0
+ arch/mips/boot/dts/netlogic/Makefile                       |  4 ++++
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_evp.dts  |  0
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_fvp.dts  |  0
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_gvp.dts  |  0
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_svp.dts  |  0
+ arch/mips/boot/dts/ralink/Makefile                         |  4 ++++
+ arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a.dtsi     |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a_eval.dts |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt2880.dtsi      |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt2880_eval.dts  |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3050.dtsi      |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3052_eval.dts  |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3883.dtsi      |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3883_eval.dts  |  0
+ arch/mips/cavium-octeon/.gitignore                         |  2 --
+ arch/mips/cavium-octeon/Makefile                           | 10 ----------
+ arch/mips/lantiq/Kconfig                                   |  1 +
+ arch/mips/lantiq/Makefile                                  |  2 --
+ arch/mips/lantiq/dts/Makefile                              |  1 -
+ arch/mips/mti-sead3/Makefile                               |  4 ----
+ arch/mips/netlogic/Kconfig                                 |  4 ++++
+ arch/mips/netlogic/Makefile                                |  1 -
+ arch/mips/netlogic/dts/Makefile                            |  4 ----
+ arch/mips/ralink/Kconfig                                   |  4 ++++
+ arch/mips/ralink/Makefile                                  |  2 --
+ arch/mips/ralink/dts/Makefile                              |  4 ----
+ 38 files changed, 52 insertions(+), 30 deletions(-)
+ create mode 100644 arch/mips/boot/dts/Makefile
+ create mode 100644 arch/mips/boot/dts/cavium-octeon/Makefile
+ rename arch/mips/{ => boot/dts}/cavium-octeon/octeon_3xxx.dts (100%)
+ rename arch/mips/{ => boot/dts}/cavium-octeon/octeon_68xx.dts (100%)
+ create mode 100644 arch/mips/boot/dts/lantiq/Makefile
+ rename arch/mips/{lantiq/dts => boot/dts/lantiq}/danube.dtsi (100%)
+ rename arch/mips/{lantiq/dts => boot/dts/lantiq}/easy50712.dts (100%)
+ create mode 100644 arch/mips/boot/dts/mti/Makefile
+ rename arch/mips/{mti-sead3 => boot/dts/mti}/sead3.dts (100%)
+ create mode 100644 arch/mips/boot/dts/netlogic/Makefile
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_evp.dts (100%)
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_fvp.dts (100%)
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_gvp.dts (100%)
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_svp.dts (100%)
+ create mode 100644 arch/mips/boot/dts/ralink/Makefile
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a_eval.dts (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt2880.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt2880_eval.dts (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3050.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3052_eval.dts (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3883.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3883_eval.dts (100%)
+ delete mode 100644 arch/mips/cavium-octeon/.gitignore
+ delete mode 100644 arch/mips/lantiq/dts/Makefile
+ delete mode 100644 arch/mips/netlogic/dts/Makefile
+ delete mode 100644 arch/mips/ralink/dts/Makefile
 
-And got below:
-
-wps_monitor/1315: potentially unexpected fatal signal 11.
-
-Cpu 1
-$ 0   : 00000000 10008d00 00000000 0000f9d8
-$ 4   : 00000008 7f7fe624 00000000 00000000
-$ 8   : 00000000 7f7fe5f8 00000000 87c78000
-$12   : 00504303 00000043 0000000e 0000dd18
-$16   : 00000000 0043db30 0043bff8 0043bffc
-$20   : 7f7fe624 7f7fe5f0 00000007 00000000
-$24   : 00000000 77c59960
-$28   : 77cc94d0 7f7fe578 7f7fe5a8 004090a8
-Hi    : 00000000
-Lo    : 00000000
-epc   : 00000000   (null)
-    Tainted: P
-ra    : 004090a8 0x4090a8
-Status: 00008d13    USER EXL IE
-Cause : 00000008
-BadVA : 00000000
-PrId  : 0002a080 (Broadcom BMIPS4350)
+-- 
+2.1.0.rc2.206.gedb03e5

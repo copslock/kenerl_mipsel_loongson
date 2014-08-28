@@ -1,65 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 17:05:18 +0200 (CEST)
-Received: from mail-vc0-f169.google.com ([209.85.220.169]:36309 "EHLO
-        mail-vc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007230AbaH1PFMsRW4Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 17:05:12 +0200
-Received: by mail-vc0-f169.google.com with SMTP id hq11so978440vcb.28
-        for <multiple recipients>; Thu, 28 Aug 2014 08:05:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=y3oTjNg7pjFdEizO8g/OVf8Z1Ame4l980U6aeFwi5yI=;
-        b=PWZzDE7HxVrrYgGNz0ATYrQ0NITU8UPZsmQk//GEoy6qQtUNASd8uwbwnvHkcIYm6l
-         Bgfdmnh9QfoTjpnnIQIMHtkDcLSx/pN2gDpMzf4Lf/VnpWwVKfxUmaB3WUZhlWAoHrKI
-         JGQClMUeiV49T+WkbrBCQIJjef8rmM3PLTgwEo9HGWF8NCvhNAb7SdO42khdzDF4II4J
-         kwZo0tSmyVVV4HRl6MJJVQ4gH1A3gKQ08qS7vL1IaxeJA3bYuUkt8FqtkCLFGTfMxQJ/
-         hPSgQAp0m0uQPlAPtIE1Sh9xnPiKRRlxarYLX8H3G0WIy65bOPo+TOkehYwn/Wu4d71A
-         f+Gg==
-X-Received: by 10.52.73.202 with SMTP id n10mr1127437vdv.86.1409238306392;
- Thu, 28 Aug 2014 08:05:06 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2014 17:32:54 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.10]:59145 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007230AbaH1PctI-5vt convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Aug 2014 17:32:49 +0200
+Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
+        by mrelayeu.kundenserver.de (node=mreue101) with ESMTP (Nemesis)
+        id 0MZDVU-1X23SX2YaS-00Kyfh; Thu, 28 Aug 2014 17:32:41 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
+Date:   Thu, 28 Aug 2014 17:32:38 +0200
+Message-ID: <6633831.1CSHMPPLH1@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CACna6rx0E_s76wLLkDjj90sXH=Q3yzBemQM5Qrp96QiWCWr0qg@mail.gmail.com>
+References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com> <2859425.94ptgpItD3@wuerfel> <CACna6rx0E_s76wLLkDjj90sXH=Q3yzBemQM5Qrp96QiWCWr0qg@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.220.107.66 with HTTP; Thu, 28 Aug 2014 08:04:46 -0700 (PDT)
-In-Reply-To: <CAOiHx=mZPt=p_jw4fyEqgniJvqunQ86ro_Run5ZtD1zLYWzmqA@mail.gmail.com>
-References: <1408651466-8334-1-git-send-email-abrestic@chromium.org>
- <CAGVrzcZobuL4z0WNX+Sz4p_uwaPL-S5yvEmgRUwZPJi4+qq0tg@mail.gmail.com>
- <CAL1qeaGb-o0P7x4nZPJ+dGfoSKz+2ANrB0gGrBi19TtPxVTAZQ@mail.gmail.com>
- <20140823063113.GC23715@localhost> <CAMuHMdXudu0kuOkKN8JCrWZSrQ4awKHhHU0E2ss++ProP0rteQ@mail.gmail.com>
- <CAOiHx=mZPt=p_jw4fyEqgniJvqunQ86ro_Run5ZtD1zLYWzmqA@mail.gmail.com>
-From:   Rob Herring <robherring2@gmail.com>
-Date:   Thu, 28 Aug 2014 10:04:46 -0500
-Message-ID: <CAL_Jsq+zpvK4Zbp4cN2eq3hfGDc09x3d4+b_TdEgnSQ5063rZw@mail.gmail.com>
-Subject: Re: [PATCH 0/7] MIPS: Move device-tree files to a common location
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Olof Johansson <olof@lixom.net>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        John Crispin <blogic@openwrt.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <robherring2@gmail.com>
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+X-Provags-ID: V02:K0:PMaTtOkzYGxIhWlKbsKKp1fpNvGCNKl250UXXn/JHUf
+ VYBwri8Se8xBoCKXDAnCscjct2zTQh9y6XvuUnkTtSY1KVDTHy
+ utPjTL/dS5Ye3qpMWDA3JJgvB1cthkMrGVWKwJoeuIBj4BIOZv
+ JggIlND6ZvZUhwkXkeSSgL/RyRstsoRnzBhDaDOwRsl/c7j5Ny
+ 7FCMNw2ipNUan4eTSi7pCpNBDWO91Tb/YLs4PO1rbswmAQ1dxs
+ RY0hvZaL96D/AoellsWu84q5ZFmtvxwEe6aGxyx66kujXrT3Et
+ JVosdMt+a8v3nQNQQKsfHLUqjlo1zx/MfAUVeUvpdCBjqGdig/
+ DYTb+l5nu0P6i2DkQ+Mw=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42309
+X-archive-position: 42310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robherring2@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,47 +50,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Aug 25, 2014 at 10:17 AM, Jonas Gorski <jogo@openwrt.org> wrote:
-> On Sat, Aug 23, 2014 at 9:50 PM, Geert Uytterhoeven
-> <geert@linux-m68k.org> wrote:
->> On Sat, Aug 23, 2014 at 8:31 AM, Olof Johansson <olof@lixom.net> wrote:
->>>> > arch/arm/boot/dts/<vendor>/
->>>> >
->>>> > Is this something we should do for the MIPS and update the other architectures
->>>> > to follow that scheme?
->>>>
->>>> I recall reading that as well and that it would be adopted for ARM64,
->>>> but that hasn't seemed to have happened.  Perhaps Olof (CC'ed) will no
->>>> more.
->>>
->>> Yeah, I highly recommend having a directory per vendor. We didn't on ARM,
->>> and the amount of files in that directory is becoming pretty
->>> insane. Moving to a subdirectory structure later gets messy which is
->>> why we've been holding off on it.
->>
->> It would mean we can change our scripts to operate on "interesting"
->> DTS files from
->>
->>      do-something-with $(git grep -l $vendor, -- arch/arm/boot/dts)
->>
->> to
->>
->>     do-something-with arch/arm/boot/dts/$vendor/*
->>
->> which is easier to type...
->
-> Btw, do you mean chip-vendor or device-vendor with vendor?
-> Device-vendor could get a bit messy on the source part as the router
-> manufacturers tend to switch them quite often. E.g. d-link used arm,
-> mips and ubi32 chips from marvell, ubicom, broadcom, atheros, realtek
-> and ralink for their dir-615 router, happily switching back and forth.
-> There are 14 known different hardware revisions of it where the chip
-> differed from the previous one.
+On Thursday 28 August 2014 14:37:54 Rafał Miłecki wrote:
+> On 28 August 2014 13:56, Arnd Bergmann <arnd@arndb.de> wrote:
+> > On Thursday 28 August 2014 13:39:55 Rafał Miłecki wrote:
+> >> switch (boot_device) {
+> >> case BCMA_BOOT_DEV_NAND:
+> >>     nvram_address = 0x1000dead;
+> >>     break;
+> >> case BCMA_BOOT_DEV_SERIAL:
+> >>     nvram_address = 0x1000c0de;
+> >>     break;
+> >> }
+> >>
+> >
+> > I don't understand. Why does the nvram address depend on the boot
+> > device?
+> 
+> NVRAM is basically just a partition on flash, however there are few
+> tricks applying to it.
 
-There's probably no hard and fast rule that works perfectly for
-everything. Since the chip/soc generally defines most of the platform,
-I would say follow the chip vendor. A few "../other-vendor/" includes
-would be okay, but they should be the exception. 3rd party boards with
-common daughter cards come to mind here.
+Ah, that explains a lot! I was thinking of hardware nvram, which I assume
+it was on some early hardware.
 
-Rob
+> To make booting possible, flash content is mapped to the memory. We're
+> talking about read only access. This mapping allows CPU to get code
+> (bootloader) and execute it as well as it allows CFE to get NVRAM
+> content easily. You don't need flash driver (with erasing & writing
+> support) to read NVRAM.
+
+Ok. Just out of curiosity, how does the system manage to map NAND
+flash into physical address space? Is this a feature of the SoC
+of the flash chip?
+
+I guess for writing you'd still use the full MTD driver, right?
+
+> Depending on the boot flash device, content of flash is mapped at
+> different offsets:
+> 1) MIPS serial flash: SI_FLASH2 (0x1c000000)
+> 2) MIPS NAND flash: SI_FLASH1 (0x1fc00000)
+> 3) ARM serial flash: SI_NS_NORFLASH (0x1e000000)
+> 4) ARM NAND flash: SI_NS_NANDFLASH (0x1c000000)
+> 
+> So on my ARM device with serial flash (connected over SPI) I was able
+> to get NVRAM header this way:
+> 
+> void __iomem *iobase = ioremap_nocache(0x1e000000, 0x1000000);
+> u8 *buf;
+> 
+> buf = (u8 *)(iobase + 0xff0000);
+> pr_info("[NVRAM] %02X %02X %02X %02X\n", buf[0], buf[1], buf[2], buf[3]);
+> 
+> This resulted in:
+> [NVRAM] 46 4C 53 48
+> 
+> (I hardcoded 0xff0000 above, normally you would need to try 0x10000,
+> 0x20000, 0x30000 and so on...).
+
+Does that mean the entire 0x1e000000-0x1f000000 area is mapped to
+the flash and you are looking for the nvram in it, or that you don't
+know where it is?
+
+	Arnd

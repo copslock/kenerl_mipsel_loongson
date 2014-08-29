@@ -1,43 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Aug 2014 22:04:51 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.17.10]:63092 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007451AbaH2UEtyP4rI convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Aug 2014 22:04:49 +0200
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue104) with ESMTP (Nemesis)
-        id 0M1XmT-1YGVwB0OUb-00tVEH; Fri, 29 Aug 2014 22:04:42 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
-Date:   Fri, 29 Aug 2014 22:04:39 +0200
-Message-ID: <5882203.GXbhhcHqjK@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CACna6rzaXHww2UXoP4Fi-zA3uNve4NQ48DeChF8zoBS-_-mtyw@mail.gmail.com>
-References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com> <53FF9D9B.30106@hauke-m.de> <CACna6rzaXHww2UXoP4Fi-zA3uNve4NQ48DeChF8zoBS-_-mtyw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="utf-8"
-X-Provags-ID: V02:K0:E79eRdCIBFbC8n/Bp3ewQTyGGkxuFLfKJV/sGE7rBKz
- 7QH5k3KaeCQIO9mL6sFZL8UJjHZgIq8FyYeIitEyOlKYHw2RPm
- JCP3b0J2M/1t2215SFgQfV72DlMcvr3v/QLF7NaWBrUkgIRUQT
- Pt2lDPhL0dlznfdnfVopRW78mB2yZUIXNNIPvqaKjUVAWByjMY
- M1i0xSQ2QUrMM3MQPIJR86sLOspFO4kClgkn64Zxi0/xWeynSR
- NPFjezzMuevWV8uE9x7mMHQbF8G+QGKXW5IXoLt25Y7zrbLNG3
- hIXMc9WCnN+UIl77uWwfaRdo/VV60dRdNIKj2lJcmWVOlIynh2
- 1X9aJiNg5VN+EUE3JU9A=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 00:14:52 +0200 (CEST)
+Received: from mail-pa0-f74.google.com ([209.85.220.74]:62706 "EHLO
+        mail-pa0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007387AbaH2WOuoLewu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 00:14:50 +0200
+Received: by mail-pa0-f74.google.com with SMTP id lj1so1500137pab.5
+        for <linux-mips@linux-mips.org>; Fri, 29 Aug 2014 15:14:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=xEDLAlec4IVh8o1aCW1G/VF84xLi2pRWMO4VzSo8Ads=;
+        b=W6S0d/M3iZ2xjNeR7wGc3gV1ZTUDPhza9COahmMXDg9t4FTlVOkmMQgV7dzExiObWl
+         D7eLwxSQaPJ/VHWVm+j7tophnOXqGSQ7pTv/jqeqE6a52KUxlYgdBtPahKQ6dWaPR4Sp
+         a8MKRCRjez/usxJOL5lHdVOkmQCkpywbCY5qWydCxubskR4gQSqGg2X8Ta9M5eQHhxxv
+         efPE0MiwWrOFh33LNfQzC6DNB8J7SRqTlhTt+NRKTB3Z1K6C7j/+sNnMjhawOg4LvmQE
+         B8V4hppJE6INKVjTY1NLyAcriuyUsELJZIPYRdYgdz5Y8cf2ZSYizPhF5oOykbi3M7xr
+         rQvA==
+X-Gm-Message-State: ALoCoQmgR48RekL4YqIipPwnbxq95j62EtKAul4HfwAje3uo+CUFUYGujMQSmPYDN4PhLU7M29w0
+X-Received: by 10.66.252.6 with SMTP id zo6mr7400607pac.40.1409350484029;
+        Fri, 29 Aug 2014 15:14:44 -0700 (PDT)
+Received: from corp2gmr1-1.hot.corp.google.com (corp2gmr1-1.hot.corp.google.com [172.24.189.92])
+        by gmr-mx.google.com with ESMTPS id j25si1440yhb.0.2014.08.29.15.14.43
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 29 Aug 2014 15:14:43 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com (abrestic.mtv.corp.google.com [172.22.65.70])
+        by corp2gmr1-1.hot.corp.google.com (Postfix) with ESMTP id CCD9B31C514;
+        Fri, 29 Aug 2014 15:14:43 -0700 (PDT)
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id 86D49221060; Fri, 29 Aug 2014 15:14:43 -0700 (PDT)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Cc:     Andrew Bresticker <abrestic@chromium.org>,
+        Jeffrey Deans <jeffrey.deans@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 03/12] of: Add binding document for MIPS GIC
+Date:   Fri, 29 Aug 2014 15:14:30 -0700
+Message-Id: <1409350479-19108-4-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
+In-Reply-To: <1409350479-19108-1-git-send-email-abrestic@chromium.org>
+References: <1409350479-19108-1-git-send-email-abrestic@chromium.org>
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42322
+X-archive-position: 42323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,112 +70,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday 29 August 2014 17:21:18 Rafał Miłecki wrote:
-> On 28 August 2014 23:22, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> > On 08/28/2014 01:56 PM, Arnd Bergmann wrote:
-> >> On Thursday 28 August 2014 13:39:55 Rafał Miłecki wrote:
-> >>> Well, that depends. Hauke was planning to put info about flash in DT.
-> >>>> I think it would make sense to have a common driver that has both
-> >>>> an 'early' init part used by MIPS and a regular init part used by
-> >>>> ARM and potentially also on MIPS if we want. Most of the code can
-> >>>> still be shared.
-> >>>
-> >>> OK, now it's clear what you meant.
-> >>> The thing is that we may want to call probe function from
-> >>> drivers/bcma/main.c. I think we never meant to call it directly from
-> >>> arch code. This code in drivers/bcma/main.c is used on both: MIPS and
-> >>> ARM. So I wonder if there is much sense in doing it like
-> >>> #ifdev MIPS
-> >>> bcm47xx_nvram_init(nvram_address);
-> >>> #endif
-> >>> #ifdef ARM
-> >>> nvram_device.resource[0].start = nvram_address;
-> >>> platform_device_register(nvram_device);
-> >>> #endif
-> >>>
-> >>> What do you think about this?
-> >>
-> >> I definitely don't want to see any manual platform_device_register()
-> >> calls on ARM, any device should be either a platform_device probed
-> >> from DT, or a bcma_device that comes from the bcma bus.
-> >>
-> >> I suspect I'm still missing part of the story here. How is the
-> >> nvram chip actually connected?
-> >
-> > I think we have to provide an own device tree for every board, like it
-> > is done for other arm boards. If we do so I do not see a problem to
-> > specify the nvram address space in device tree.
-> 
-> Alright, I think we should try to answer one main question at this
-> point: how much data we want to put in DTS? It's still not clear to
-> me.
-> 
-> What about this flash memory mapping? You added this in your RFC:
-> reg = <0x1c000000 0x01000000>;
-> 
-> As I described, the first part (address 0x1c000000) could be extracted
-> on runtime. For that you need my patch:
-> [PATCH] bcma: get & store info about flash type SoC booted from
-> http://www.spinics.net/lists/linux-wireless/msg126163.html
-> 
-> And then add some simple "swtich" like:
-> switch (boot_device) {
-> case BCMA_BOOT_DEV_NAND:
->     nvram_address = 0x1c000000;
->     break;
-> case BCMA_BOOT_DEV_SERIAL:
->     nvram_address = 0x1e000000;
->     break;
-> }
+The Global Interrupt Controller (GIC) present on certain MIPS systems
+can be used to route external interrupts to individual VPEs and CPU
+interrupt vectors.  It also supports a timer and software-generated
+interrupts.
 
-At the very least, those addresses should come from DT in some form.
-We should never hardcode register locations in kernel code, since those
-tend to change when a new hardware version comes out. Even if you are
-sure that wouldn't happen with bcm53xx, it's still bad style and I
-want to avoid having other developers copy code like that into a new
-platform or driver.
+Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+---
+ Documentation/devicetree/bindings/mips/gic.txt | 50 ++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/gic.txt
 
-> So... should we handle it on runtime? Or do we really want this in DTS?
-> I was thinking about doing this on runtime. This would limit amount of
-> DTS entries and this is what makes more sense to me. The same way
-> don't hardcode many other hardware details. For example we don't store
-> flash size, block size, erase size in DTS. We simply use JEDEC and
-> mtd's spi-nor framework database.
-
-I think the main difference is that for the example of the flash
-chip, we can find out that information by looking at the device itself:
-The DT describes how to find the device and from there we can do
-proper hardware probing.
-
-For the case of the nvram, I don't see how that would be done, since
-the presence of the device itself is something your code above tries
-to derive from something that from an unrelated setting, so I'd rather
-see it done explicit in DT.
-
-You mentioned that the 'boot_device' variable in your code snippet
-comes from a hardware register that can be accessed easily, right?
-A possible way to handle it would then be to have two DT entries
-like
-
-	nvram@1c000000 {
-		compatible = "bcm,bcm4710-nvram";
-		reg = <0x1c000000 0x1000000>;
-		bcm,boot-device = BCMA_BOOT_DEV_NAND;
-	};	
-
-	nvram@1c000000 {
-		compatible = "bcm,bcm4710-nvram";
-		reg = <0x1e000000 0x1000000>;
-		bcm,boot-device = BCMA_BOOT_DEV_SERIAL;
-	};
-
-We would then have two platform device instances and get the
-driver's probe function to reject any device whose bcm,boot-device
-property doesn't match the contents of the register.
-
-That would correctly describe the hardware while still allowing
-automatic probing of the device, but I don't see a value in
-the extra complexity compared to just marking one of the two
-as status="disabled".
-
-	Arnd
+diff --git a/Documentation/devicetree/bindings/mips/gic.txt b/Documentation/devicetree/bindings/mips/gic.txt
+new file mode 100644
+index 0000000..725f1ef
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/gic.txt
+@@ -0,0 +1,50 @@
++MIPS Global Interrupt Controller (GIC)
++
++The MIPS GIC routes external interrupts to individual VPEs and IRQ pins.
++It also supports a timer and software-generated interrupts which can be
++used as IPIs.
++
++Required properties:
++- compatible : Should be "mti,global-interrupt-controller"
++- reg : Base address and length of the GIC registers.
++- interrupts : Core interrupts to which the GIC may route external interrupts.
++- interrupt-controller : Identifies the node as an interrupt controller
++- #interrupt-cells : Specifies the number of cells needed to encode an
++  interrupt specifier.  Should be 3.
++  - The first cell is the GIC interrupt number.
++  - The second cell encodes the interrupt flags.
++    See <include/dt-bindings/interrupt-controller/irq.h> for a list of valid
++    flags.
++  - The optional third cell indicates which CPU interrupt vector the GIC
++    interrupt should be routed to.  It is a 0-based index into the list of
++    GIC-to-CPU interrupts specified in the "interrupts" property described
++    above.  For example, a '2' in this cell will route the interrupt to the
++    3rd core interrupt listed in 'interrupts'.  If omitted, the interrupt will
++    be routed to the 1st core interrupt.
++
++Example:
++
++	cpu_intc: interrupt-controller@0 {
++		compatible = "mti,cpu-interrupt-controller";
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++	};
++
++	gic: interrupt-controller@1bdc0000 {
++		compatible = "mti,global-interrupt-controller";
++		reg = <0x1bdc0000 0x20000>;
++
++		interrupt-controller;
++		#interrupt-cells = <3>;
++
++		interrupt-parent = <&cpu_intc>;
++		interrupts = <3>, <4>;
++	};
++
++	uart@18101400 {
++		...
++		interrupt-parent = <&gic>;
++		interrupts = <24 IRQ_TYPE_LEVEL_HIGH 0>;
++		...
++	};
+-- 
+2.1.0.rc2.206.gedb03e5

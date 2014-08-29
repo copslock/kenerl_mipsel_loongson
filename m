@@ -1,43 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Aug 2014 09:12:50 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.17.13]:62561 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007354AbaH2HMsHYo4P convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Aug 2014 09:12:48 +0200
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue104) with ESMTP (Nemesis)
-        id 0Mfpbg-1XkRW72jJM-00NApo; Fri, 29 Aug 2014 09:12:39 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
-Date:   Fri, 29 Aug 2014 09:12:37 +0200
-Message-ID: <2928362.8a0siS8rnK@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <53FF9D9B.30106@hauke-m.de>
-References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com> <2859425.94ptgpItD3@wuerfel> <53FF9D9B.30106@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Aug 2014 10:37:54 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:2082 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007354AbaH2Ihxj1zZr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Aug 2014 10:37:53 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C64B92C507136
+        for <linux-mips@linux-mips.org>; Fri, 29 Aug 2014 09:37:44 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 29 Aug
+ 2014 09:37:46 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 29 Aug 2014 09:37:45 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 29 Aug 2014 09:37:45 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: cpu: Add 'noftlb' kernel command line option to disable the FTLB
+Date:   Fri, 29 Aug 2014 09:37:26 +0100
+Message-ID: <1409301446-23865-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.0.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="utf-8"
-X-Provags-ID: V02:K0:+Gvwa5eu7JQoTEmN5879Qg5cReXr8PiK7g+obAaVKsW
- ZK3M/82ey9VVwyXwkIPznlCY5ANMg6niAl5ABc5ckPaGscFMyk
- G8woNgUA5dkkieEYDRkasTQfj1sh7PNbtz0GeTEt7MkavIvJ7U
- YRZ8gpAAA5cXmwLoqXM9rLtJ7Iypcttf9X3sx5CzzHDxZP61Bs
- OcUaApu9nkK/vhhgXxrqMHeThtkIB3klD14gajAiqweCIVRyy/
- I9Ce5HCc5m8AgQiGeoMZo1DokapJ80Ru1r7k54WxcY0U46byEK
- ppXmojH6RCyoWIh9z+zGJ/DL5A/7PCekc7WlSjaLb4ChaC0Eat
- YzeBK2ve2Kg/9tE2MZTM=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.67]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42317
+X-archive-position: 42318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,81 +46,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 28 August 2014 23:22:35 Hauke Mehrtens wrote:
-> 
-> I think we have to provide an own device tree for every board, like it
-> is done for other arm boards. If we do so I do not see a problem to
-> specify the nvram address space in device tree.  I do not think the arm
-> guys do like some board files containing the gpio numbers of the leds
-> and buttons found on the board.
+Add new 'noftlb' kernel command line option to disable the FTLB.
+Since the kernel command line is not available when probing and
+enabling the CPU features in cpu_probe(), we let the kernel configure
+the FTLB during the config4 decode operation and we disable the FTLB later
+on, once the command line has become available to us. This should have
+no negative effects since FTLB isn't used so early in the boot process.
+FTLB increases the effective TLB size leading to less TLB misses. However,
+sometimes it's useful to be able to disable it when debugging memory related
+core features or other hardware components.
 
-Ok. The part I'm not sure about is how to best represent the nvram
-in a way that matches the actual hardware.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/kernel/cpu-probe.c | 64 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 62 insertions(+), 2 deletions(-)
 
-If the two physical address ranges are just used for the purpose
-of showing nvram, that would be fairly straightforward, and we
-can jut put both of them in DT, mark them as 'status="disabled"'
-by default and let the board specific file enable the one it needs.
-
-However, if these registers really belong into the address range
-that is owned by the flash controller device and that is behind
-the bcma bus logic, things get a little tricky and we have to decide
-whether we want to intentionally put a simplified (and incorrect)
-description into the DT to make it easier to use, or to make
-the description more correct at the expense of complicating the
-code to detect it (thereby negating the intention of this hardware,
-which is built to make it easier to boot).
-
-> For the MIPS version of BCM47xx we are able to automatically detect
-> mostly everything, just for the gpio configuration we try to guess the
-> board name based on nvram content and then configure the gpios.
-
-We could still do something like this with a boot wrapper that fills
-the fields in the dtb from nvram data. We are pretty flexible in
-the kernel when it comes to how that dtb is created, and there is no
-requirement to have each board's dts file be part of the kernel sources
-if there is some pre-kernel environment (firmware, boot loader,
-wrapper, ...) that can generate it for us.
-
-> The ARM BCM47xx contains a standard ARM with GIC and other standard arm
-> things just the flash, Ethernet, PCIe, USB controller and their
-> interconnection are Braodcom specific.
-
-Ok.
-
-> My plan was to provide a nvram and sprom driver which registers as a
-> normal platform device and supports device tree, like the one I posted
-> and it would also be possible to call the function with the address of
-> the flash directly, this function would be used for MIPS, this way we
-> can share the code and do not have to change the mips stuff so much.
-
-Yes, and none of that should interfere with the cleanup plans for MIPS
-that Rafał talked about, right?
-
-> For ARM BCM47xx we do not need bcma at all to boot the device, so it
-> should also work when bcma is build as a module, this is different to
-> MIPS. The ARM BCM47xx code currently in mainline Linux boots for me into
-> user space with an initramfs, it just misses many parts like Ethernet,
-> flash PCIe, ...
-
-Ah, good. So to confirm: all the essential devices including irqchip,
-clocksource, uart and nvram can be accessed without using the bcma bus,
-right?
-Does that mean they are actually connected to another bus, or are they
-actually bcma bus devices for which you provide an additional probe
-method using dt/platform_device?
-
-> The address of the console is already hard coded in device tree. It
-> would also be possible to automatically detect their address based on
-> some description in the AIX bus (bcma), but I think hard coding the
-> address in device tree is easier.
-
-Right. Importantly for the console, there are patches to allow a very
-early output by having some minimal dt parsing done before start
-accessing any other hardware. I think this is valuable even if it
-means we compromise on the accurate DT description. We do the same
-thing for consoles on other buses (ISAPnP, PCI, of_platform, ...)
-and a lot of serial drivers have a way to retroactively connect that
-early console setup to the actual device once it is probed normally.
-
-	Arnd
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 94c4a0c0a577..61572c9407c1 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -69,6 +69,63 @@ static int __init htw_disable(char *s)
+ 
+ __setup("nohtw", htw_disable);
+ 
++static int mips_ftlb_disabled;
++static int mips_has_ftlb_configured;
++
++static void set_ftlb_enable(struct cpuinfo_mips *c, int enable);
++
++static int __init ftlb_disable(char *s)
++{
++	unsigned int config4, mmuextdef;
++
++	/*
++	 * If the core hasn't done any FTLB configuration, there is nothing
++	 * for us to do here.
++	 */
++	if (!mips_has_ftlb_configured)
++		return 1;
++
++	/* Disable it in the boot cpu */
++	set_ftlb_enable(&cpu_data[0], 0);
++
++	back_to_back_c0_hazard();
++
++	config4 = read_c0_config4();
++
++	/* Check that FTLB has been disabled */
++	mmuextdef = config4 & MIPS_CONF4_MMUEXTDEF;
++	/* MMUSIZEEXT == VTLB ON, FTLB OFF */
++	if (mmuextdef == MIPS_CONF4_MMUEXTDEF_FTLBSIZEEXT) {
++		/* This should never happen */
++		pr_warn("FTLB could not be disabled!\n");
++		return 1;
++	}
++
++	mips_ftlb_disabled = 1;
++	mips_has_ftlb_configured = 0;
++
++	/*
++	 * noftlb is mainly used for debug purposes so print
++	 * an informative message instead of using pr_debug()
++	 */
++	pr_info("FTLB has been disabled\n");
++
++	/*
++	 * Some of these bits are duplicated in the decode_config4.
++	 * MIPS_CONF4_MMUEXTDEF_MMUSIZEEXT is the only possible case
++	 * once FTLB has been disabled so undo what decode_config4 did.
++	 */
++	cpu_data[0].tlbsize -= cpu_data[0].tlbsizeftlbways *
++			       cpu_data[0].tlbsizeftlbsets;
++	cpu_data[0].tlbsizeftlbsets = 0;
++	cpu_data[0].tlbsizeftlbways = 0;
++
++	return 1;
++}
++
++__setup("noftlb", ftlb_disable);
++
++
+ static inline void check_errata(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+@@ -368,6 +425,8 @@ static inline unsigned int decode_config4(struct cpuinfo_mips *c)
+ 			ftlb_page = MIPS_CONF4_VFTLBPAGESIZE;
+ 			/* fall through */
+ 		case MIPS_CONF4_MMUEXTDEF_FTLBSIZEEXT:
++			if (mips_ftlb_disabled)
++				break;
+ 			newcf4 = (config4 & ~ftlb_page) |
+ 				(page_size_ftlb(mmuextdef) <<
+ 				 MIPS_CONF4_FTLBPAGESIZE_SHIFT);
+@@ -387,6 +446,7 @@ static inline unsigned int decode_config4(struct cpuinfo_mips *c)
+ 			c->tlbsizeftlbways = ((config4 & MIPS_CONF4_FTLBWAYS) >>
+ 					      MIPS_CONF4_FTLBWAYS_SHIFT) + 2;
+ 			c->tlbsize += c->tlbsizeftlbways * c->tlbsizeftlbsets;
++			mips_has_ftlb_configured = 1;
+ 			break;
+ 		}
+ 	}
+@@ -422,8 +482,8 @@ static void decode_configs(struct cpuinfo_mips *c)
+ 
+ 	c->scache.flags = MIPS_CACHE_NOT_PRESENT;
+ 
+-	/* Enable FTLB if present */
+-	set_ftlb_enable(c, 1);
++	/* Enable FTLB if present and not disabled */
++	set_ftlb_enable(c, !mips_ftlb_disabled);
+ 
+ 	ok = decode_config0(c);			/* Read Config registers.  */
+ 	BUG_ON(!ok);				/* Arch spec violation!	 */
+-- 
+2.0.4

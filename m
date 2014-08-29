@@ -1,34 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 00:15:09 +0200 (CEST)
-Received: from mail-ig0-f202.google.com ([209.85.213.202]:53358 "EHLO
-        mail-ig0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007389AbaH2WOuwhZ0c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 00:14:50 +0200
-Received: by mail-ig0-f202.google.com with SMTP id r2so652805igi.3
-        for <linux-mips@linux-mips.org>; Fri, 29 Aug 2014 15:14:44 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 00:15:25 +0200 (CEST)
+Received: from mail-qg0-f73.google.com ([209.85.192.73]:63480 "EHLO
+        mail-qg0-f73.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007451AbaH2WOvkL471 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 00:14:51 +0200
+Received: by mail-qg0-f73.google.com with SMTP id i50so416784qgf.4
+        for <linux-mips@linux-mips.org>; Fri, 29 Aug 2014 15:14:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=EmJy+NPVQ3/iFjk/Vn0Moyi4UwnkZhAu7Y7crGG1OCw=;
-        b=d6tgCoNwZ9rdK8chD2e4ddEx9PkyHChihXanGPqT5Fmm83Bg1EcmbR9ly0pvO3GgOz
-         c/v0s8D69buJ1oz9nyImlv27UcDPwc+CCxOpoKI6YB7dSYYopgW91OW3/Y1kLNDPX10J
-         mVkfel6fLDJw+9GJk8oQ0CRZLyScIz89m8ST3u9HF/lcr4z69WyI6diok9TZwn97fUEV
-         4IFmm0MZwXlcJSC60aCiWZKz0IdvA4dQPyQ701U3LHnt0JxjFyPG7tyJLzPZJeZtkxcW
-         vpkLYEnleoBLrwDd6SSy0ReuLZMAnLD1p9SQTHx3EzELAHZWyL7gzqYL8pxKlQsMR6f3
-         dqKA==
-X-Gm-Message-State: ALoCoQmIy0SG2qyMkypYOPBurSxjlrzo89FcsJfABfbH84kNiRj7vSieBnlJxvH/YtaQxQLZmWJd
-X-Received: by 10.182.28.194 with SMTP id d2mr7437563obh.19.1409350484567;
-        Fri, 29 Aug 2014 15:14:44 -0700 (PDT)
-Received: from corp2gmr1-1.hot.corp.google.com (corp2gmr1-1.hot.corp.google.com [172.24.189.92])
-        by gmr-mx.google.com with ESMTPS id t28si345yhb.4.2014.08.29.15.14.44
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=n51GCGIKUkPpMECFu0nqsV9pL4HZ+2xgUjDfrndOh64=;
+        b=dxghpNKQB2x4QEPj+tl2VGZVWgR9+GqjT9umzkOoH6bCPnnpPLei1Qsot7aSLvR9ED
+         2zwOF0VEzmXbIZgpW8Id5YZYUp+KLSABrz8BPTEBtHCEqvz3VnXmd6eAtmGXvJ3VcmyJ
+         5mwPSUyetCTO88zZbeEER6mp7kH4F9LCc3zHb3LIKKw03cljNE+rFkcDz0oE0Zl8i0bX
+         +D79aJTBo8ojPsEr9YKYzhL6XKL4Dbw2g0Hy8gKDuZQRPj+KHm1z7XVjER6R2jqbXL6+
+         G4APNj/WVqhhuQgoTYW3TEuHe8NpKmpGe9p6da3YZ9jA1zDwQ7dJdZhSB5ty6PJiICY7
+         IHPQ==
+X-Gm-Message-State: ALoCoQkGmi1j2oEMjqZGJy1v5QN5XuBgZ97D/+G2d+otwWCCZAQGIKxu0F69JcDjxiLFmgpFY2A4
+X-Received: by 10.236.207.101 with SMTP id m65mr5481651yho.41.1409350485505;
+        Fri, 29 Aug 2014 15:14:45 -0700 (PDT)
+Received: from corp2gmr1-2.hot.corp.google.com (corp2gmr1-2.hot.corp.google.com [172.24.189.93])
+        by gmr-mx.google.com with ESMTPS id c77si178yha.5.2014.08.29.15.14.45
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 29 Aug 2014 15:14:44 -0700 (PDT)
+        Fri, 29 Aug 2014 15:14:45 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com (abrestic.mtv.corp.google.com [172.22.65.70])
-        by corp2gmr1-1.hot.corp.google.com (Postfix) with ESMTP id 64CBD31C514;
-        Fri, 29 Aug 2014 15:14:44 -0700 (PDT)
+        by corp2gmr1-2.hot.corp.google.com (Postfix) with ESMTP id B07DC5A43B0;
+        Fri, 29 Aug 2014 15:14:41 -0700 (PDT)
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 25403221060; Fri, 29 Aug 2014 15:14:44 -0700 (PDT)
+        id 4ABCA221060; Fri, 29 Aug 2014 15:14:41 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -43,17 +42,15 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 04/12] MIPS: GIC: Move MIPS_GIC_IRQ_BASE into platform irq.h
-Date:   Fri, 29 Aug 2014 15:14:31 -0700
-Message-Id: <1409350479-19108-5-git-send-email-abrestic@chromium.org>
+Subject: [PATCH 00/12] MIPS: GIC device-tree support
+Date:   Fri, 29 Aug 2014 15:14:27 -0700
+Message-Id: <1409350479-19108-1-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
-In-Reply-To: <1409350479-19108-1-git-send-email-abrestic@chromium.org>
-References: <1409350479-19108-1-git-send-email-abrestic@chromium.org>
 Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42324
+X-archive-position: 42325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,69 +67,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Define a generic MIPS_GIC_IRQ_BASE which is suitable for Malta and
-the upcoming Danube board in <mach-generic/irq.h>.  Since Sead-3 is
-different and uses a MIPS_GIC_IRQ_BASE equal to the CPU IRQ base (0),
-define its MIPS_GIC_IRQ_BASE in <mach-sead3/irq.h>.
+This series add support for mapping and routing GIC interrupts through
+the device-tree, which will be used on the upcoming interAptiv-based
+Danube SoC.
 
-Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
----
- arch/mips/include/asm/mach-generic/irq.h     | 6 ++++++
- arch/mips/include/asm/mach-sead3/irq.h       | 1 +
- arch/mips/include/asm/mips-boards/maltaint.h | 2 --
- arch/mips/include/asm/mips-boards/sead3int.h | 2 --
- 4 files changed, 7 insertions(+), 4 deletions(-)
+- Patches 1 and 2 provide improvements to the CPU interrupt controller
+  when used with DT.
+- Patches 3 through 7 add device-tree support for the GIC.
+- Patches 8 and 9 are misc. GIC irqchip cleanups.
+- Patches 10 through 12 cleanup/fix GIC local interrupt support.
 
-diff --git a/arch/mips/include/asm/mach-generic/irq.h b/arch/mips/include/asm/mach-generic/irq.h
-index 139cd20..c0fc62b 100644
---- a/arch/mips/include/asm/mach-generic/irq.h
-+++ b/arch/mips/include/asm/mach-generic/irq.h
-@@ -36,4 +36,10 @@
- 
- #endif /* CONFIG_IRQ_CPU */
- 
-+#ifdef CONFIG_IRQ_GIC
-+#ifndef MIPS_GIC_IRQ_BASE
-+#define MIPS_GIC_IRQ_BASE (MIPS_CPU_IRQ_BASE + 8)
-+#endif
-+#endif /* CONFIG_IRQ_GIC */
-+
- #endif /* __ASM_MACH_GENERIC_IRQ_H */
-diff --git a/arch/mips/include/asm/mach-sead3/irq.h b/arch/mips/include/asm/mach-sead3/irq.h
-index d8106f7..52c75d5 100644
---- a/arch/mips/include/asm/mach-sead3/irq.h
-+++ b/arch/mips/include/asm/mach-sead3/irq.h
-@@ -1,6 +1,7 @@
- #ifndef __ASM_MACH_MIPS_IRQ_H
- #define __ASM_MACH_MIPS_IRQ_H
- 
-+#define MIPS_GIC_IRQ_BASE 0
- #define GIC_NUM_INTRS (24 + NR_CPUS * 2)
- #define NR_IRQS 256
- 
-diff --git a/arch/mips/include/asm/mips-boards/maltaint.h b/arch/mips/include/asm/mips-boards/maltaint.h
-index e330732..9d23343 100644
---- a/arch/mips/include/asm/mips-boards/maltaint.h
-+++ b/arch/mips/include/asm/mips-boards/maltaint.h
-@@ -10,8 +10,6 @@
- #ifndef _MIPS_MALTAINT_H
- #define _MIPS_MALTAINT_H
- 
--#define MIPS_GIC_IRQ_BASE	(MIPS_CPU_IRQ_BASE + 8)
--
- /*
-  * Interrupts 0..15 are used for Malta ISA compatible interrupts
-  */
-diff --git a/arch/mips/include/asm/mips-boards/sead3int.h b/arch/mips/include/asm/mips-boards/sead3int.h
-index 6b17aaf..11ebec9 100644
---- a/arch/mips/include/asm/mips-boards/sead3int.h
-+++ b/arch/mips/include/asm/mips-boards/sead3int.h
-@@ -14,6 +14,4 @@
- #define GIC_BASE_ADDR		0x1b1c0000
- #define GIC_ADDRSPACE_SZ	(128 * 1024)
- 
--#define MIPS_GIC_IRQ_BASE	(MIPS_CPU_IRQ_BASE + 0)
--
- #endif /* !(_MIPS_SEAD3INT_H) */
+Based on 3.17-rc2 and boot tested on Danube (+ out of tree patches) and
+Malta.  Build tested for SEAD-3.  Paul Burton has also tested this series
+with his WIP Malta DT support [0].
+
+[0] https://github.com/paulburton/linux/commits/wip-malta-dt
+
+Andrew Bresticker (12):
+  MIPS: Provide a generic plat_irq_dispatch
+  MIPS: Set vint handler when mapping CPU interrupts
+  of: Add binding document for MIPS GIC
+  MIPS: GIC: Move MIPS_GIC_IRQ_BASE into platform irq.h
+  MIPS: GIC: Add device-tree support
+  MIPS: GIC: Add generic IPI support when using DT
+  MIPS: GIC: Implement irq_set_type callback
+  MIPS: GIC: Implement generic irq_ack/irq_eoi callbacks
+  MIPS: GIC: Fix gic_set_affinity() return value
+  MIPS: GIC: Support local interrupts
+  MIPS: GIC: Use local interrupts for timer
+  MIPS: Malta: Map GIC local interrupts
+
+ Documentation/devicetree/bindings/mips/gic.txt |  50 +++
+ arch/mips/include/asm/gic.h                    |  36 ++
+ arch/mips/include/asm/mach-generic/irq.h       |   8 +
+ arch/mips/include/asm/mach-sead3/irq.h         |   1 +
+ arch/mips/include/asm/mips-boards/maltaint.h   |   2 -
+ arch/mips/include/asm/mips-boards/sead3int.h   |   2 -
+ arch/mips/kernel/cevt-gic.c                    |  16 +-
+ arch/mips/kernel/irq-gic.c                     | 434 ++++++++++++++++++++++++-
+ arch/mips/kernel/irq_cpu.c                     |  32 +-
+ arch/mips/mti-malta/malta-int.c                |  44 ++-
+ 10 files changed, 585 insertions(+), 40 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mips/gic.txt
+
 -- 
 2.1.0.rc2.206.gedb03e5

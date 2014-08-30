@@ -1,34 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 04:06:30 +0200 (CEST)
-Received: from mail-la0-f44.google.com ([209.85.215.44]:55529 "EHLO
-        mail-la0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007492AbaH3CFdsdrrE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 04:05:33 +0200
-Received: by mail-la0-f44.google.com with SMTP id hz20so3629962lab.31
-        for <multiple recipients>; Fri, 29 Aug 2014 19:05:28 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 04:06:45 +0200 (CEST)
+Received: from mail-lb0-f181.google.com ([209.85.217.181]:62221 "EHLO
+        mail-lb0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007493AbaH3CFfgx7eB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 04:05:35 +0200
+Received: by mail-lb0-f181.google.com with SMTP id n15so3378737lbi.26
+        for <multiple recipients>; Fri, 29 Aug 2014 19:05:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=DvEWYWc7/Cvq+cH0/cElhe2rV1W6OvVTDtyCJwBL5EM=;
-        b=EviCpaK1I8Uy3dd7BvRq9XmrQ3wHTqFMR7yaWb6H+IuNGCqmpV7aK/NstjhdyhPBRT
-         WPZC7KDB5gHlBm0z/Mp6k7O47V1RR2IYzAzEzn0Y7YTsVdX+t1jzy0D29hRxbpnil4Fh
-         /Y1JGguPuOT9rLLiBnGb7pSdaCQBkjh+mlzSQnSTQ1Q2uBe6NY0tCuj6klVlGbVpQ6/t
-         EdzGBKIztBJl3kXZKW419QAXKHhP2tiP9yED2jIbwYK2iHZkc1OoSum1qjirzH9aDjvn
-         ER5bn6WLI5Y2VEgAMKOxjSv0ZPB+4wXbLhQxX6IHiK5maA+IulWdlRbSKdiMQfmovZnu
-         /ddA==
-X-Received: by 10.152.6.40 with SMTP id x8mr14500826lax.18.1409364328389;
-        Fri, 29 Aug 2014 19:05:28 -0700 (PDT)
+        bh=R7sZN9jQ8w/XeccZgKOLjidtjlX2AHt8cFTJtshSZyI=;
+        b=yZF9DES0OG9QtdbJ/WmOUmuSIKUNNtuNT0/bmiD6XygvZL3CUH6jiflfbsdjV2MDlS
+         HNKtqxl13fWiWazCuNv/6UGWKtLxWF8tnC8/mV08G/UTCL+RO8EB82IBrkt42RhGEBvV
+         xNIiBVhgZNkVgkdiwW4HSmmDLz3gLwtK+t/Tvtl5DMgpX5tq5v9FIPQZ8WqJkjNO5xCz
+         stYUMAXhQ2l+GA+4+S6uis/d1T1x44Zn6DznTBQoQKWD2ILlivGhBE17R4Z2Hqzc3pMs
+         Nb7mtpvjg/IYxHvUzAqVLw9r0DhEo4V+zw58iEDK9b+MZ3UvA1A+KeShPvmlsTLnmU5M
+         RdDQ==
+X-Received: by 10.112.205.200 with SMTP id li8mr13808093lbc.70.1409364330118;
+        Fri, 29 Aug 2014 19:05:30 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([188.113.6.134])
-        by mx.google.com with ESMTPSA id l10sm2512262lbc.3.2014.08.29.19.05.26
+        by mx.google.com with ESMTPSA id l10sm2512262lbc.3.2014.08.29.19.05.28
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 29 Aug 2014 19:05:27 -0700 (PDT)
+        Fri, 29 Aug 2014 19:05:29 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 4/5] MIPS: pci-rt3883: remove odd locking in PCI config space access code
-Date:   Sat, 30 Aug 2014 06:06:27 +0400
-Message-Id: <1409364388-7108-5-git-send-email-ryazanov.s.a@gmail.com>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH 5/5] MIPS: make PCI_DMA_BUS_IS_PHYS=1 constant
+Date:   Sat, 30 Aug 2014 06:06:28 +0400
+Message-Id: <1409364388-7108-6-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1409364388-7108-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1409364388-7108-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -36,7 +35,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42340
+X-archive-position: 42341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,78 +52,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Caller (generic PCI code) already do proper locking so no need to add
-another one here. Local PCI read/write functions are never called
-simultaneously, also they do not require synchronization with the PCI
-controller ops, since they are used before the controller registration.
+No one of supported MIPS machines has an IOMMU unit, so we can safely define
+PCI_DMA_BUS_IS_PHYS = 1. Also remove iommu flag from the pci controller
+structure, since it is useless.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Cc: Linux MIPS <linux-mips@linux-mips.org>
-Cc: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/pci/pci-rt3883.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ arch/mips/include/asm/pci.h      | 10 ++++------
+ arch/mips/kernel/setup.c         |  7 -------
+ arch/mips/pci/pci-ip32.c         |  1 -
+ arch/mips/pci/pci.c              |  3 ---
+ arch/mips/pnx833x/common/setup.c |  3 ---
+ 5 files changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/arch/mips/pci/pci-rt3883.c b/arch/mips/pci/pci-rt3883.c
-index 72919ae..0bcc0b1 100644
---- a/arch/mips/pci/pci-rt3883.c
-+++ b/arch/mips/pci/pci-rt3883.c
-@@ -61,7 +61,6 @@
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 974b0e3..eae11b5 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -41,8 +41,6 @@ struct pci_controller {
+ 	   and XFree86. Eventually will be removed. */
+ 	unsigned int need_domain_info;
  
- struct rt3883_pci_controller {
- 	void __iomem *base;
--	spinlock_t lock;
+-	int iommu;
+-
+ 	/* Optional access methods for reading/writing the bus number
+ 	   of the PCI controller */
+ 	int (*get_busno)(void);
+@@ -105,11 +103,11 @@ static inline void pci_resource_to_user(const struct pci_dev *dev, int bar,
+ struct pci_dev;
  
- 	struct device_node *intc_of_node;
- 	struct irq_domain *irq_domain;
-@@ -111,10 +110,8 @@ static u32 rt3883_pci_read_cfg32(struct rt3883_pci_controller *rpc,
+ /*
+- * The PCI address space does equal the physical memory address space.	The
+- * networking and block device layers use this boolean for bounce buffer
+- * decisions.  This is set if any hose does not have an IOMMU.
++ * The PCI address space does equal the physical memory address space.
++ * The networking and block device layers use this boolean for bounce
++ * buffer decisions.
+  */
+-extern unsigned int PCI_DMA_BUS_IS_PHYS;
++#define PCI_DMA_BUS_IS_PHYS     (1)
  
- 	address = rt3883_pci_get_cfgaddr(bus, slot, func, reg);
+ #ifdef CONFIG_PCI
+ static inline void pci_dma_burst_advice(struct pci_dev *pdev,
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 7c1fe2b..0af4275 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -44,13 +44,6 @@ struct screen_info screen_info;
+ #endif
  
--	spin_lock_irqsave(&rpc->lock, flags);
- 	rt3883_pci_w32(rpc, address, RT3883_PCI_REG_CFGADDR);
- 	ret = rt3883_pci_r32(rpc, RT3883_PCI_REG_CFGDATA);
--	spin_unlock_irqrestore(&rpc->lock, flags);
+ /*
+- * Despite it's name this variable is even if we don't have PCI
+- */
+-unsigned int PCI_DMA_BUS_IS_PHYS;
+-
+-EXPORT_SYMBOL(PCI_DMA_BUS_IS_PHYS);
+-
+-/*
+  * Setup information
+  *
+  * These are initialized so they are in the .data section
+diff --git a/arch/mips/pci/pci-ip32.c b/arch/mips/pci/pci-ip32.c
+index b1e061f..7ae89d0 100644
+--- a/arch/mips/pci/pci-ip32.c
++++ b/arch/mips/pci/pci-ip32.c
+@@ -116,7 +116,6 @@ static struct pci_controller mace_pci_controller = {
+ 	.pci_ops	= &mace_pci_ops,
+ 	.mem_resource	= &mace_pci_mem_resource,
+ 	.io_resource	= &mace_pci_io_resource,
+-	.iommu		= 0,
+ 	.mem_offset	= MACE_PCI_MEM_OFFSET,
+ 	.io_offset	= 0,
+ 	.io_map_base	= CKSEG1ADDR(MACEPCI_LOW_IO),
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index 1bf60b1..81d49a5 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -83,9 +83,6 @@ static void pcibios_scanbus(struct pci_controller *hose)
+ 	LIST_HEAD(resources);
+ 	struct pci_bus *bus;
  
- 	return ret;
- }
-@@ -128,10 +125,8 @@ static void rt3883_pci_write_cfg32(struct rt3883_pci_controller *rpc,
+-	if (!hose->iommu)
+-		PCI_DMA_BUS_IS_PHYS = 1;
+-
+ 	if (hose->get_busno && pci_has_flag(PCI_PROBE_ONLY))
+ 		next_busno = (*hose->get_busno)();
  
- 	address = rt3883_pci_get_cfgaddr(bus, slot, func, reg);
+diff --git a/arch/mips/pnx833x/common/setup.c b/arch/mips/pnx833x/common/setup.c
+index 99b4d94..8a7443b 100644
+--- a/arch/mips/pnx833x/common/setup.c
++++ b/arch/mips/pnx833x/common/setup.c
+@@ -38,9 +38,6 @@ extern void pnx833x_machine_power_off(void);
  
--	spin_lock_irqsave(&rpc->lock, flags);
- 	rt3883_pci_w32(rpc, address, RT3883_PCI_REG_CFGADDR);
- 	rt3883_pci_w32(rpc, val, RT3883_PCI_REG_CFGDATA);
--	spin_unlock_irqrestore(&rpc->lock, flags);
- }
- 
- static void rt3883_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
-@@ -252,10 +247,8 @@ static int rt3883_pci_config_read(struct pci_bus *bus, unsigned int devfn,
- 	address = rt3883_pci_get_cfgaddr(bus->number, PCI_SLOT(devfn),
- 					 PCI_FUNC(devfn), where);
- 
--	spin_lock_irqsave(&rpc->lock, flags);
- 	rt3883_pci_w32(rpc, address, RT3883_PCI_REG_CFGADDR);
- 	data = rt3883_pci_r32(rpc, RT3883_PCI_REG_CFGDATA);
--	spin_unlock_irqrestore(&rpc->lock, flags);
- 
- 	switch (size) {
- 	case 1:
-@@ -288,7 +281,6 @@ static int rt3883_pci_config_write(struct pci_bus *bus, unsigned int devfn,
- 	address = rt3883_pci_get_cfgaddr(bus->number, PCI_SLOT(devfn),
- 					 PCI_FUNC(devfn), where);
- 
--	spin_lock_irqsave(&rpc->lock, flags);
- 	rt3883_pci_w32(rpc, address, RT3883_PCI_REG_CFGADDR);
- 	data = rt3883_pci_r32(rpc, RT3883_PCI_REG_CFGDATA);
- 
-@@ -307,7 +299,6 @@ static int rt3883_pci_config_write(struct pci_bus *bus, unsigned int devfn,
- 	}
- 
- 	rt3883_pci_w32(rpc, data, RT3883_PCI_REG_CFGDATA);
--	spin_unlock_irqrestore(&rpc->lock, flags);
- 
- 	return PCIBIOS_SUCCESSFUL;
- }
+ int __init plat_mem_setup(void)
+ {
+-	/* fake pci bus to avoid bounce buffers */
+-	PCI_DMA_BUS_IS_PHYS = 1;
+-
+ 	/* set mips clock to 320MHz */
+ #if defined(CONFIG_SOC_PNX8335)
+ 	PNX8335_WRITEFIELD(0x17, CLOCK_PLL_CPU_CTL, FREQ);
 -- 
 1.8.1.5

@@ -1,52 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 09:57:45 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.187]:53774 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007509AbaH3H5oCkArV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 09:57:44 +0200
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue007) with ESMTP (Nemesis)
-        id 0MfNr4-1XmTeZ2rN4-00Oke9; Sat, 30 Aug 2014 09:57:33 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/12] MIPS: GIC: Move MIPS_GIC_IRQ_BASE into platform irq.h
-Date:   Sat, 30 Aug 2014 09:57:33 +0200
-Message-ID: <6179185.bNbDBEC6tl@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1409350479-19108-5-git-send-email-abrestic@chromium.org>
-References: <1409350479-19108-1-git-send-email-abrestic@chromium.org> <1409350479-19108-5-git-send-email-abrestic@chromium.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 15:33:27 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:60277 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007560AbaH3NdZjKWQ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 30 Aug 2014 15:33:25 +0200
+Received: from [IPv6:2001:470:7259:0:e8f5:65a0:7ec4:e523] (unknown [IPv6:2001:470:7259:0:e8f5:65a0:7ec4:e523])
+        by hauke-m.de (Postfix) with ESMTPSA id 3FBD02000C;
+        Sat, 30 Aug 2014 15:33:25 +0200 (CEST)
+Message-ID: <5401D2A4.7070402@hauke-m.de>
+Date:   Sat, 30 Aug 2014 15:33:24 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:Ky9RecbHG1JaYrCgDcQvPDSF8IWkvlCGQNDPah6GsMJ
- ACSMbzSwSLMfvWrp9nkBizUeJRpjOp6k3KPJzqu8Dfy+m0VyvR
- /IgZqmHST5y8n4bgUS9wLsZDeRsnSbIGiZkKPjEXPJR9IYEhXv
- uECr0sCIEbp8XWsRP/CeWxAYYRo4GpHf25LbYo7V4p0piN0lbB
- gqPfnEs4GKL8TLk9VEEIN63JwVl4UKWk6+OFUNmz7QRele+d4s
- l0B251yrwCQxqRO2r3EmD2+cve87o4aVbuq59zdOhqzL+59KPJ
- HuvCh0bESlqGFHI56yV81h1vEp8G9USQoGd2mg/APcfNGGQ/7U
- 7MFyCbnEQlD4DZnBI47o=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
+References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com> <53FF9D9B.30106@hauke-m.de> <CACna6rzaXHww2UXoP4Fi-zA3uNve4NQ48DeChF8zoBS-_-mtyw@mail.gmail.com> <5882203.GXbhhcHqjK@wuerfel>
+In-Reply-To: <5882203.GXbhhcHqjK@wuerfel>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42345
+X-archive-position: 42346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,16 +41,125 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday 29 August 2014 15:14:31 Andrew Bresticker wrote:
-> Define a generic MIPS_GIC_IRQ_BASE which is suitable for Malta and
-> the upcoming Danube board in <mach-generic/irq.h>.  Since Sead-3 is
-> different and uses a MIPS_GIC_IRQ_BASE equal to the CPU IRQ base (0),
-> define its MIPS_GIC_IRQ_BASE in <mach-sead3/irq.h>.
-> 
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> 
+On 08/29/2014 10:04 PM, Arnd Bergmann wrote:
+> On Friday 29 August 2014 17:21:18 Rafał Miłecki wrote:
+>> On 28 August 2014 23:22, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+>>> On 08/28/2014 01:56 PM, Arnd Bergmann wrote:
+>>>> On Thursday 28 August 2014 13:39:55 Rafał Miłecki wrote:
+>>>>> Well, that depends. Hauke was planning to put info about flash in DT.
+>>>>>> I think it would make sense to have a common driver that has both
+>>>>>> an 'early' init part used by MIPS and a regular init part used by
+>>>>>> ARM and potentially also on MIPS if we want. Most of the code can
+>>>>>> still be shared.
+>>>>>
+>>>>> OK, now it's clear what you meant.
+>>>>> The thing is that we may want to call probe function from
+>>>>> drivers/bcma/main.c. I think we never meant to call it directly from
+>>>>> arch code. This code in drivers/bcma/main.c is used on both: MIPS and
+>>>>> ARM. So I wonder if there is much sense in doing it like
+>>>>> #ifdev MIPS
+>>>>> bcm47xx_nvram_init(nvram_address);
+>>>>> #endif
+>>>>> #ifdef ARM
+>>>>> nvram_device.resource[0].start = nvram_address;
+>>>>> platform_device_register(nvram_device);
+>>>>> #endif
+>>>>>
+>>>>> What do you think about this?
+>>>>
+>>>> I definitely don't want to see any manual platform_device_register()
+>>>> calls on ARM, any device should be either a platform_device probed
+>>>> from DT, or a bcma_device that comes from the bcma bus.
+>>>>
+>>>> I suspect I'm still missing part of the story here. How is the
+>>>> nvram chip actually connected?
+>>>
+>>> I think we have to provide an own device tree for every board, like it
+>>> is done for other arm boards. If we do so I do not see a problem to
+>>> specify the nvram address space in device tree.
+>>
+>> Alright, I think we should try to answer one main question at this
+>> point: how much data we want to put in DTS? It's still not clear to
+>> me.
 
-Why do you actually have to hardwire an IRQ base? Can't you move
-to the linear irqdomain code for DT based MIPS systems yet?
+I think we need a separate device tree description for every board
+anyway (to specify the GPIO configuration) and then I do not see a big
+problem specifying if this board boots from serial or nand flash.
 
-	Arnd
+>>
+>> What about this flash memory mapping? You added this in your RFC:
+>> reg = <0x1c000000 0x01000000>;
+>>
+>> As I described, the first part (address 0x1c000000) could be extracted
+>> on runtime. For that you need my patch:
+>> [PATCH] bcma: get & store info about flash type SoC booted from
+>> http://www.spinics.net/lists/linux-wireless/msg126163.html
+>>
+>> And then add some simple "swtich" like:
+>> switch (boot_device) {
+>> case BCMA_BOOT_DEV_NAND:
+>>     nvram_address = 0x1c000000;
+>>     break;
+>> case BCMA_BOOT_DEV_SERIAL:
+>>     nvram_address = 0x1e000000;
+>>     break;
+>> }
+> 
+> At the very least, those addresses should come from DT in some form.
+> We should never hardcode register locations in kernel code, since those
+> tend to change when a new hardware version comes out. Even if you are
+> sure that wouldn't happen with bcm53xx, it's still bad style and I
+> want to avoid having other developers copy code like that into a new
+> platform or driver.
+> 
+>> So... should we handle it on runtime? Or do we really want this in DTS?
+>> I was thinking about doing this on runtime. This would limit amount of
+>> DTS entries and this is what makes more sense to me. The same way
+>> don't hardcode many other hardware details. For example we don't store
+>> flash size, block size, erase size in DTS. We simply use JEDEC and
+>> mtd's spi-nor framework database.
+> 
+> I think the main difference is that for the example of the flash
+> chip, we can find out that information by looking at the device itself:
+> The DT describes how to find the device and from there we can do
+> proper hardware probing.
+> 
+> For the case of the nvram, I don't see how that would be done, since
+> the presence of the device itself is something your code above tries
+> to derive from something that from an unrelated setting, so I'd rather
+> see it done explicit in DT.
+> 
+> You mentioned that the 'boot_device' variable in your code snippet
+> comes from a hardware register that can be accessed easily, right?
+> A possible way to handle it would then be to have two DT entries
+> like
+> 
+> 	nvram@1c000000 {
+> 		compatible = "bcm,bcm4710-nvram";
+> 		reg = <0x1c000000 0x1000000>;
+> 		bcm,boot-device = BCMA_BOOT_DEV_NAND;
+> 	};	
+> 
+> 	nvram@1c000000 {
+> 		compatible = "bcm,bcm4710-nvram";
+> 		reg = <0x1e000000 0x1000000>;
+> 		bcm,boot-device = BCMA_BOOT_DEV_SERIAL;
+> 	};
+> 
+> We would then have two platform device instances and get the
+> driver's probe function to reject any device whose bcm,boot-device
+> property doesn't match the contents of the register.
+> 
+> That would correctly describe the hardware while still allowing
+> automatic probing of the device, but I don't see a value in
+> the extra complexity compared to just marking one of the two
+> as status="disabled".
+
+This looks interesting.
+
+But when we have an own device tree description for every board I do not
+see many advantages over using status="disabled". Anyway we can share
+all the common device tree description parts and  we can add the device
+tree description after building the kernel, we are doing both for now.
+
+Hauke

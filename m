@@ -1,53 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2017 16:49:31 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57992 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992881AbdD0OtW6YNX2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Apr 2017 16:49:22 +0200
-Received: from localhost (unknown [166.177.184.243])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 277CBB8E;
-        Thu, 27 Apr 2017 14:49:11 +0000 (UTC)
-Subject: Patch "MIPS: MSP71xx: remove odd locking in PCI config space access code" has been added to the 3.18-stable tree
-To:     ryazanov.s.a@gmail.com, arnd@arndb.de, gregkh@linuxfoundation.org,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 27 Apr 2017 16:29:00 +0200
-Message-ID: <1493303340209136@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57799
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date: Sat, 30 Aug 2014 06:06:25 +0400
+Subject: MIPS: MSP71xx: remove odd locking in PCI config space access code
+Message-ID: <20140830020625.91EKulgdu7qqvX0pLsbne-FQiDwlfYpqG3lQV2iJDIw@z>
+
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+
+commit c4a305374bbf36414515d2ae00d588c67051e67d upstream.
+
+Caller (generic PCI code) already do proper locking so no need to add
+another one here.
+
+Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc: Linux MIPS <linux-mips@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/7601/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/pci/ops-pmcmsp.c |   12 ------------
+ 1 file changed, 12 deletions(-)
+
+--- a/arch/mips/pci/ops-pmcmsp.c
++++ b/arch/mips/pci/ops-pmcmsp.c
+@@ -193,8 +193,6 @@ static void pci_proc_init(void)
+ }
+ #endif /* CONFIG_PROC_FS && PCI_COUNTERS */
+ 
+-static DEFINE_SPINLOCK(bpci_lock);
+-
+ /*****************************************************************************
+  *
+  *  STRUCT: pci_io_resource
+@@ -368,7 +366,6 @@ int msp_pcibios_config_access(unsigned c
+ 	struct msp_pci_regs *preg = (void *)PCI_BASE_REG;
+ 	unsigned char bus_num = bus->number;
+ 	unsigned char dev_fn = (unsigned char)devfn;
+-	unsigned long flags;
+ 	unsigned long intr;
+ 	unsigned long value;
+ 	static char pciirqflag;
+@@ -401,10 +398,7 @@ int msp_pcibios_config_access(unsigned c
+ 	}
+ 
+ #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
+-	local_irq_save(flags);
+ 	vpe_status = dvpe();
+-#else
+-	spin_lock_irqsave(&bpci_lock, flags);
+ #endif
+ 
+ 	/*
+@@ -457,9 +451,6 @@ int msp_pcibios_config_access(unsigned c
+ 
+ #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
+ 		evpe(vpe_status);
+-		local_irq_restore(flags);
+-#else
+-		spin_unlock_irqrestore(&bpci_lock, flags);
+ #endif
+ 
+ 		return -1;
+@@ -467,9 +458,6 @@ int msp_pcibios_config_access(unsigned c
+ 
+ #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
+ 	evpe(vpe_status);
+-	local_irq_restore(flags);
+-#else
+-	spin_unlock_irqrestore(&bpci_lock, flags);
+ #endif
+ 
+ 	return PCIBIOS_SUCCESSFUL;
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from ryazanov.s.a@gmail.com are
 
-    MIPS: MSP71xx: remove odd locking in PCI config space access code
-
-to the 3.18-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-msp71xx-remove-odd-locking-in-pci-config-space-access-code.patch
-and it can be found in the queue-3.18 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-3.18/mips-msp71xx-remove-odd-locking-in-pci-config-space-access-code.patch

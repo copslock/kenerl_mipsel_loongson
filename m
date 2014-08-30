@@ -1,33 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 04:05:58 +0200 (CEST)
-Received: from mail-lb0-f174.google.com ([209.85.217.174]:40691 "EHLO
-        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007490AbaH3CF3qJ3cI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 04:05:29 +0200
-Received: by mail-lb0-f174.google.com with SMTP id p9so3464046lbv.19
-        for <multiple recipients>; Fri, 29 Aug 2014 19:05:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 04:06:14 +0200 (CEST)
+Received: from mail-lb0-f172.google.com ([209.85.217.172]:64820 "EHLO
+        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007491AbaH3CFbzr3sn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Aug 2014 04:05:31 +0200
+Received: by mail-lb0-f172.google.com with SMTP id 10so3481714lbg.17
+        for <multiple recipients>; Fri, 29 Aug 2014 19:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=yIC60uMSobWsJE5joNyvR1TH6hLm1fI3E4x2Tbn3aIM=;
-        b=ol8vE9cbjW4EAmVjSbXWRFGLg36EpljM4V6fqNtWf+a1ANjwwDwzc8iAe5SJ3aX+1s
-         +EdXPQvvloSwPqDZts7e/TkCC2uDpn6jB+U1nO9LurqD2TmXH/7NIF0bsUeuTxL5xTsE
-         Zcg2O+qBsI9hx7Gkoah5A8vHq/BoV6LzmwnoBMNq+MN9csAoxMNlZNCBfjpR8UW37Muh
-         WV//hEz5s5k7Drm/qd2H5QEDHmQMWVfimBrgCOxqQ2N40YlGC4VUMYglXWTjA/EEcECr
-         l0SloeiQb9ch/EI5ertn1LH16Wt1x0C2ZNx7egbI7sWd2TRh3Y80Fguebns7fMTrHLia
-         SXtA==
-X-Received: by 10.152.27.2 with SMTP id p2mr14676035lag.23.1409364324424;
-        Fri, 29 Aug 2014 19:05:24 -0700 (PDT)
+        bh=/g1hx9L+XZGG9j6vBmEon4Swtzd8a2o5JEM2tTYxMsU=;
+        b=B+Hjp118EucSLLS4b3VM2Q+s7ayG+RaotrdNBdO7z3R7jvvefp2eMLxogWcEVKJWnz
+         m5xiXc3Cx1REkgIzBIb2qAFniakOFrMLKRBow+6vl33SW1Si9HREtWhvb41s4yPt96u9
+         7MrshCG9U0hyDMZ1P/bU4JSltvs/L2vO8fg06/R3pHxWC2SVNZrFfO27+2iEEdVif1++
+         QaPoo4APmr2fSbK6VGSFLH14Z6Rly4RvU5DmK3lrkZnXTvfmA3tyK7xpuXJzOWc88Qth
+         cqmKLQ5W319ug7G1iCdHu6N9XiTQ1EUSLL4/Gr9x1N0oHQQyl4UcI33bhB2HAnTUQy4T
+         3Y9Q==
+X-Received: by 10.152.25.136 with SMTP id c8mr14953580lag.64.1409364326433;
+        Fri, 29 Aug 2014 19:05:26 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([188.113.6.134])
-        by mx.google.com with ESMTPSA id l10sm2512262lbc.3.2014.08.29.19.05.22
+        by mx.google.com with ESMTPSA id l10sm2512262lbc.3.2014.08.29.19.05.24
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 29 Aug 2014 19:05:23 -0700 (PDT)
+        Fri, 29 Aug 2014 19:05:25 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH 2/5] MIPS: MSP71xx: remove odd locking in PCI config space access code
-Date:   Sat, 30 Aug 2014 06:06:25 +0400
-Message-Id: <1409364388-7108-3-git-send-email-ryazanov.s.a@gmail.com>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH 3/5] MIPS: pci-ar7{1x,24}x: remove odd locking in PCI config space access code
+Date:   Sat, 30 Aug 2014 06:06:26 +0400
+Message-Id: <1409364388-7108-4-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1409364388-7108-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1409364388-7108-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -35,7 +36,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42338
+X-archive-position: 42339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,61 +58,209 @@ another one here.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Cc: Linux MIPS <linux-mips@linux-mips.org>
+Cc: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/pci/ops-pmcmsp.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/mips/pci/pci-ar71xx.c | 13 -------------
+ arch/mips/pci/pci-ar724x.c | 23 -----------------------
+ 2 files changed, 36 deletions(-)
 
-diff --git a/arch/mips/pci/ops-pmcmsp.c b/arch/mips/pci/ops-pmcmsp.c
-index 50034f9..dd2d9f7 100644
---- a/arch/mips/pci/ops-pmcmsp.c
-+++ b/arch/mips/pci/ops-pmcmsp.c
-@@ -193,8 +193,6 @@ static void pci_proc_init(void)
- }
- #endif /* CONFIG_PROC_FS && PCI_COUNTERS */
+diff --git a/arch/mips/pci/pci-ar71xx.c b/arch/mips/pci/pci-ar71xx.c
+index d471a26..2b534ae 100644
+--- a/arch/mips/pci/pci-ar71xx.c
++++ b/arch/mips/pci/pci-ar71xx.c
+@@ -50,7 +50,6 @@
  
--static DEFINE_SPINLOCK(bpci_lock);
--
- /*****************************************************************************
-  *
-  *  STRUCT: pci_io_resource
-@@ -368,7 +366,6 @@ int msp_pcibios_config_access(unsigned char access_type,
- 	struct msp_pci_regs *preg = (void *)PCI_BASE_REG;
- 	unsigned char bus_num = bus->number;
- 	unsigned char dev_fn = (unsigned char)devfn;
+ struct ar71xx_pci_controller {
+ 	void __iomem *cfg_base;
+-	spinlock_t lock;
+ 	int irq;
+ 	int irq_base;
+ 	struct pci_controller pci_ctrl;
+@@ -182,7 +181,6 @@ static int ar71xx_pci_read_config(struct pci_bus *bus, unsigned int devfn,
+ {
+ 	struct ar71xx_pci_controller *apc = pci_bus_to_ar71xx_controller(bus);
+ 	void __iomem *base = apc->cfg_base;
 -	unsigned long flags;
- 	unsigned long intr;
- 	unsigned long value;
- 	static char pciirqflag;
-@@ -401,10 +398,7 @@ int msp_pcibios_config_access(unsigned char access_type,
+ 	u32 data;
+ 	int err;
+ 	int ret;
+@@ -190,8 +188,6 @@ static int ar71xx_pci_read_config(struct pci_bus *bus, unsigned int devfn,
+ 	ret = PCIBIOS_SUCCESSFUL;
+ 	data = ~0;
+ 
+-	spin_lock_irqsave(&apc->lock, flags);
+-
+ 	err = ar71xx_pci_set_cfgaddr(bus, devfn, where, size,
+ 				     AR71XX_PCI_CFG_CMD_READ);
+ 	if (err)
+@@ -199,8 +195,6 @@ static int ar71xx_pci_read_config(struct pci_bus *bus, unsigned int devfn,
+ 	else
+ 		data = __raw_readl(base + AR71XX_PCI_REG_CFG_RDDATA);
+ 
+-	spin_unlock_irqrestore(&apc->lock, flags);
+-
+ 	*value = (data >> (8 * (where & 3))) & ar71xx_pci_read_mask[size & 7];
+ 
+ 	return ret;
+@@ -211,15 +205,12 @@ static int ar71xx_pci_write_config(struct pci_bus *bus, unsigned int devfn,
+ {
+ 	struct ar71xx_pci_controller *apc = pci_bus_to_ar71xx_controller(bus);
+ 	void __iomem *base = apc->cfg_base;
+-	unsigned long flags;
+ 	int err;
+ 	int ret;
+ 
+ 	value = value << (8 * (where & 3));
+ 	ret = PCIBIOS_SUCCESSFUL;
+ 
+-	spin_lock_irqsave(&apc->lock, flags);
+-
+ 	err = ar71xx_pci_set_cfgaddr(bus, devfn, where, size,
+ 				     AR71XX_PCI_CFG_CMD_WRITE);
+ 	if (err)
+@@ -227,8 +218,6 @@ static int ar71xx_pci_write_config(struct pci_bus *bus, unsigned int devfn,
+ 	else
+ 		__raw_writel(value, base + AR71XX_PCI_REG_CFG_WRDATA);
+ 
+-	spin_unlock_irqrestore(&apc->lock, flags);
+-
+ 	return ret;
+ }
+ 
+@@ -360,8 +349,6 @@ static int ar71xx_pci_probe(struct platform_device *pdev)
+ 	if (!apc)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&apc->lock);
+-
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "cfg_base");
+ 	apc->cfg_base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(apc->cfg_base))
+diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+index 785b265..b7a6fcb 100644
+--- a/arch/mips/pci/pci-ar724x.c
++++ b/arch/mips/pci/pci-ar724x.c
+@@ -9,7 +9,6 @@
+  *  by the Free Software Foundation.
+  */
+ 
+-#include <linux/spinlock.h>
+ #include <linux/irq.h>
+ #include <linux/pci.h>
+ #include <linux/module.h>
+@@ -48,8 +47,6 @@ struct ar724x_pci_controller {
+ 	bool bar0_is_cached;
+ 	u32  bar0_value;
+ 
+-	spinlock_t lock;
+-
+ 	struct pci_controller pci_controller;
+ 	struct resource io_res;
+ 	struct resource mem_res;
+@@ -75,7 +72,6 @@ pci_bus_to_ar724x_controller(struct pci_bus *bus)
+ static int ar724x_pci_local_write(struct ar724x_pci_controller *apc,
+ 				  int where, int size, u32 value)
+ {
+-	unsigned long flags;
+ 	void __iomem *base;
+ 	u32 data;
+ 	int s;
+@@ -86,8 +82,6 @@ static int ar724x_pci_local_write(struct ar724x_pci_controller *apc,
+ 		return PCIBIOS_DEVICE_NOT_FOUND;
+ 
+ 	base = apc->crp_base;
+-
+-	spin_lock_irqsave(&apc->lock, flags);
+ 	data = __raw_readl(base + (where & ~3));
+ 
+ 	switch (size) {
+@@ -105,14 +99,12 @@ static int ar724x_pci_local_write(struct ar724x_pci_controller *apc,
+ 		data = value;
+ 		break;
+ 	default:
+-		spin_unlock_irqrestore(&apc->lock, flags);
+ 		return PCIBIOS_BAD_REGISTER_NUMBER;
  	}
  
- #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
--	local_irq_save(flags);
- 	vpe_status = dvpe();
--#else
--	spin_lock_irqsave(&bpci_lock, flags);
- #endif
- 
- 	/*
-@@ -457,9 +451,6 @@ int msp_pcibios_config_access(unsigned char access_type,
- 
- #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
- 		evpe(vpe_status);
--		local_irq_restore(flags);
--#else
--		spin_unlock_irqrestore(&bpci_lock, flags);
- #endif
- 
- 		return -1;
-@@ -467,9 +458,6 @@ int msp_pcibios_config_access(unsigned char access_type,
- 
- #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
- 	evpe(vpe_status);
--	local_irq_restore(flags);
--#else
--	spin_unlock_irqrestore(&bpci_lock, flags);
- #endif
+ 	__raw_writel(data, base + (where & ~3));
+ 	/* flush write */
+ 	__raw_readl(base + (where & ~3));
+-	spin_unlock_irqrestore(&apc->lock, flags);
  
  	return PCIBIOS_SUCCESSFUL;
+ }
+@@ -121,7 +113,6 @@ static int ar724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+ 			    int size, uint32_t *value)
+ {
+ 	struct ar724x_pci_controller *apc;
+-	unsigned long flags;
+ 	void __iomem *base;
+ 	u32 data;
+ 
+@@ -133,8 +124,6 @@ static int ar724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+ 		return PCIBIOS_DEVICE_NOT_FOUND;
+ 
+ 	base = apc->devcfg_base;
+-
+-	spin_lock_irqsave(&apc->lock, flags);
+ 	data = __raw_readl(base + (where & ~3));
+ 
+ 	switch (size) {
+@@ -153,13 +142,9 @@ static int ar724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+ 	case 4:
+ 		break;
+ 	default:
+-		spin_unlock_irqrestore(&apc->lock, flags);
+-
+ 		return PCIBIOS_BAD_REGISTER_NUMBER;
+ 	}
+ 
+-	spin_unlock_irqrestore(&apc->lock, flags);
+-
+ 	if (where == PCI_BASE_ADDRESS_0 && size == 4 &&
+ 	    apc->bar0_is_cached) {
+ 		/* use the cached value */
+@@ -175,7 +160,6 @@ static int ar724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+ 			     int size, uint32_t value)
+ {
+ 	struct ar724x_pci_controller *apc;
+-	unsigned long flags;
+ 	void __iomem *base;
+ 	u32 data;
+ 	int s;
+@@ -209,8 +193,6 @@ static int ar724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+ 	}
+ 
+ 	base = apc->devcfg_base;
+-
+-	spin_lock_irqsave(&apc->lock, flags);
+ 	data = __raw_readl(base + (where & ~3));
+ 
+ 	switch (size) {
+@@ -228,15 +210,12 @@ static int ar724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+ 		data = value;
+ 		break;
+ 	default:
+-		spin_unlock_irqrestore(&apc->lock, flags);
+-
+ 		return PCIBIOS_BAD_REGISTER_NUMBER;
+ 	}
+ 
+ 	__raw_writel(data, base + (where & ~3));
+ 	/* flush write */
+ 	__raw_readl(base + (where & ~3));
+-	spin_unlock_irqrestore(&apc->lock, flags);
+ 
+ 	return PCIBIOS_SUCCESSFUL;
+ }
+@@ -380,8 +359,6 @@ static int ar724x_pci_probe(struct platform_device *pdev)
+ 	if (apc->irq < 0)
+ 		return -EINVAL;
+ 
+-	spin_lock_init(&apc->lock);
+-
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_IO, "io_base");
+ 	if (!res)
+ 		return -EINVAL;
 -- 
 1.8.1.5

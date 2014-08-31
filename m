@@ -1,54 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2014 20:32:40 +0200 (CEST)
-Received: from mail-vc0-f169.google.com ([209.85.220.169]:41207 "EHLO
-        mail-vc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007692AbaHaSciuY2gY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Aug 2014 20:32:38 +0200
-Received: by mail-vc0-f169.google.com with SMTP id hq11so4616590vcb.14
-        for <linux-mips@linux-mips.org>; Sun, 31 Aug 2014 11:32:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2014 20:34:44 +0200 (CEST)
+Received: from mail-vc0-f181.google.com ([209.85.220.181]:59836 "EHLO
+        mail-vc0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006909AbaHaSemvyIGl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Aug 2014 20:34:42 +0200
+Received: by mail-vc0-f181.google.com with SMTP id ij19so4578339vcb.40
+        for <linux-mips@linux-mips.org>; Sun, 31 Aug 2014 11:34:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=Ey3zZRovNtQHzkYQOPgWms6nrg7di8ICUEmEYAbWhIQ=;
-        b=J2A8bwcY7LkLXzFCOD3MvkpqwRN7dicIPdUKxkyONsfbNMfbCvt8sZZo7/OzPekmmG
-         gJrv68ik0w/wHGRKWmkXBp5VLTnwkRPO7qCsZOlZUblp7+LiqTtYwh4WSB02FE4R3LKA
-         pMGVsuinJCKgEtCizCBvFY3dCspNLguAwvR2A9C374Fi5AZoq4Mz5A2Kl4OCXfcPYP76
-         WNKKSNyNKKwxIlhXLGHzPnN1g1SGb/Y20oZQtbum8D/IQdkzKvhI1VbCeBzCcmFSLg/c
-         JD+ueMwNx8XPM/G7k4Q9KKVzfjAQeQVJoRNytgLtdkqWZ85LNhF5zTqlCWKHOhU0NzzB
-         JVZg==
+        bh=7Ijt9vsU7z5HG1g9JThtu+T695hhwBA/uVs74Qyqj88=;
+        b=SrDInL8wz243tl+V9UUriC4IKVPf7yYIQocdkuht89Xw4fNFKXUgQj2VMoLvDZLuLu
+         +VgcTZMlormxAxS6w19by+o6i4IfIWcArfLay8eCLjupPfv3VdqGAgk2GwmmKzm8QA1h
+         vWllSsovE7jNNsSvAvDSGQGMCE2LdR5bUyTfFKqo/I6BaliG0sOa7NJCbg3hXj2ops0q
+         TJ4W7pz7zAmlOV3KwcoXYLX2szoIBK2D5Qj2AQyzTkg3dbwDtFm6+4UtLSUX1xtm0Fuv
+         WoCA3bCuqS2pWtH3UAalhf+vdx+TJAjSBu/NjkxvqQ2rrE+1d4bIuxAX9zMp4yyl6+sm
+         HR/g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=Ey3zZRovNtQHzkYQOPgWms6nrg7di8ICUEmEYAbWhIQ=;
-        b=UNZ2LobrfYmZKCb5OY3DBfvYVrEObSBUDDm6kj3a5TtB1ObRIRNQjy15otup578Ypc
-         EmCUsVrxAaBDJCVjRoVVt0RddHxFYM0A0+O7/5B2cyjFuqb1AeorT++0xKejEPFQTANI
-         +o2xas642cOOFq4jJfh4pRGSecnq3N2JDLL3A=
+        bh=7Ijt9vsU7z5HG1g9JThtu+T695hhwBA/uVs74Qyqj88=;
+        b=LmhLcVfZBeoLfvNg5glOhZD+b1BGPKCYxBKhs7ESf6xBDJDoOqdd6aPIWEd6UdeYBk
+         kuuuj5Lq3xj9sdNpEQeQxZYbbEMHO5M67gmUn2VMacLjicDFLas9VZOPCm16JwMXf307
+         1VsGi8GQD8ibqkuYlBAe4B//fta10YsS9e2Xo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=Ey3zZRovNtQHzkYQOPgWms6nrg7di8ICUEmEYAbWhIQ=;
-        b=SfQV1MuCnrjj9lBz75RYHIZdZVaQEeNf2XWfY87TDY38jBa85F0w/kjMfLlbrGrNo9
-         31axq7eVT7sCPqllDVb3LYLsXnS0k+PRj63pSQWJRX9jJNc433VfEPgl+dEUCTtzfzNP
-         eiM07gQ35ajfJ3wsfIO7kYpEAqlJjsM63/dfAyq0/5xBuBkHW+Ejal3NTW9WMHbS2JN3
-         FFq8jVUBqHDIOjjfGF6h9rfH+n1kWLdMFp+809FA7JXxMbA9feDB6/j8nOTqfkdN+vXZ
-         i7z2WV28o6z2gERsyzuQjSR9y5BW2haWrKmuZvOQLWZOMRpe9jg4m9ZWQyi4euCFNll7
-         QiOQ==
-X-Gm-Message-State: ALoCoQkWOkPCMKuB25CzvdzrILS9fxWJQ1D30scnPaZDu6W46oTgkaE2qSQr8J67bWorrVtgyzN8
+        bh=7Ijt9vsU7z5HG1g9JThtu+T695hhwBA/uVs74Qyqj88=;
+        b=QA73ZZPQiD0vPOlXcrpqPo73W2gmF9X99BKkh+SCYyQi7Du00G6GzEA9zGbzElg/s2
+         vm+u4ECN+3qyGJcGPXbAUFvnZ5ldByBmqbBT4aljB4QHsIfoAqqVcb1Sp5/jH9OX96ix
+         jzHIqYieZWKrG2QsLxsOBHjqVz+3t5NsDyoLd3Y7QwBjEvX5mpHpmitZDKmEeekqLPDN
+         VGfG2b5YGENebn3qF35j+2VvqA1YKuGJob+WIonin4fsp8KdjkaLK/XXYGes0THG6Wch
+         mBAO6PirbpRSu5oOE1Fy/kddSRpkOf8g+m7pcUtYMtKvv35DJMMo8Xv/GiMBaEhpcKqM
+         OHsQ==
+X-Gm-Message-State: ALoCoQlPaHbwx1UQ3Z0z+JNWJP5oyLLiYPsytM9QjzhB16tKEOs4gEEA5yPynIC+VgOv80G/1Zou
 MIME-Version: 1.0
-X-Received: by 10.220.169.72 with SMTP id x8mr3053621vcy.45.1409509952633;
- Sun, 31 Aug 2014 11:32:32 -0700 (PDT)
-Received: by 10.53.5.133 with HTTP; Sun, 31 Aug 2014 11:32:32 -0700 (PDT)
-In-Reply-To: <5401703B.4090801@openwrt.org>
+X-Received: by 10.52.253.39 with SMTP id zx7mr12042540vdc.2.1409510076926;
+ Sun, 31 Aug 2014 11:34:36 -0700 (PDT)
+Received: by 10.53.5.133 with HTTP; Sun, 31 Aug 2014 11:34:36 -0700 (PDT)
+In-Reply-To: <6798670.9zbxUzsGyC@wuerfel>
 References: <1409350479-19108-1-git-send-email-abrestic@chromium.org>
-        <5401703B.4090801@openwrt.org>
-Date:   Sun, 31 Aug 2014 11:32:32 -0700
-X-Google-Sender-Auth: 8-t7nfBXHyYcZOh_On04gKMfJkQ
-Message-ID: <CAL1qeaH7q1N8oPpyyhTkwDhwGjn80CcfHZt6jqgFVg9ik=KdAQ@mail.gmail.com>
-Subject: Re: [PATCH 00/12] MIPS: GIC device-tree support
+        <1409350479-19108-4-git-send-email-abrestic@chromium.org>
+        <6798670.9zbxUzsGyC@wuerfel>
+Date:   Sun, 31 Aug 2014 11:34:36 -0700
+X-Google-Sender-Auth: eXjALQgChIQgmisWYfKJwQ2G46k
+Message-ID: <CAL1qeaE1jKLM0kK95efvcaeQwS4qjAR9-77Maa2q8aTJ4TC3jw@mail.gmail.com>
+Subject: Re: [PATCH 03/12] of: Add binding document for MIPS GIC
 From:   Andrew Bresticker <abrestic@chromium.org>
-To:     John Crispin <blogic@openwrt.org>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
@@ -68,7 +69,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42349
+X-archive-position: 42350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,14 +86,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 29, 2014 at 11:33 PM, John Crispin <blogic@openwrt.org> wrote:
-> Hi Andrew,
+On Sat, Aug 30, 2014 at 12:53 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Friday 29 August 2014 15:14:30 Andrew Bresticker wrote:
+>> The Global Interrupt Controller (GIC) present on certain MIPS systems
+>> can be used to route external interrupts to individual VPEs and CPU
+>> interrupt vectors.  It also supports a timer and software-generated
+>> interrupts.
+>>
+>> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+>> ---
+>>  Documentation/devicetree/bindings/mips/gic.txt | 50 ++++++++++++++++++++++++++
+>>
 >
-> On 30/08/2014 00:14, Andrew Bresticker wrote:
->> Based on 3.17-rc2 and boot tested on Danube (+ out of tree patches) and
->> Malta.
->
-> Lantiq makes a mips soc called danube. is this the same family or is
-> this just a name collision between 2 chip vendors ?
+> This may be a stupid question, but is this related to the ARM GIC
+> in any way or does it just share the name?
 
-They are unrelated.  It's just a name collision.
+There's no relation.  Note that it's also "Global Interrupt
+Controller" vs. "Generic Interrupt Controller".
+
+> In either case the binding belongs into
+> Documentation/devicetree/bindings/interrupt-controller/.
+
+Will do.

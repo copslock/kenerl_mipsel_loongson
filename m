@@ -1,34 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2014 15:33:27 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:60277 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007560AbaH3NdZjKWQ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 30 Aug 2014 15:33:25 +0200
-Received: from [IPv6:2001:470:7259:0:e8f5:65a0:7ec4:e523] (unknown [IPv6:2001:470:7259:0:e8f5:65a0:7ec4:e523])
-        by hauke-m.de (Postfix) with ESMTPSA id 3FBD02000C;
-        Sat, 30 Aug 2014 15:33:25 +0200 (CEST)
-Message-ID: <5401D2A4.7070402@hauke-m.de>
-Date:   Sat, 30 Aug 2014 15:33:24 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2014 11:20:49 +0200 (CEST)
+Received: from mail-ie0-f172.google.com ([209.85.223.172]:64807 "EHLO
+        mail-ie0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007641AbaHaJUrxtMjJ convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 31 Aug 2014 11:20:47 +0200
+Received: by mail-ie0-f172.google.com with SMTP id rd18so4818987iec.3
+        for <linux-mips@linux-mips.org>; Sun, 31 Aug 2014 02:20:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=aKxa97+NwKr4Jje8lahohzSe3rDg2CxYEQ7ZQpwBt2E=;
+        b=gFDHMUXhYxN+wKC4e7dtt9aBK8SP+Of/cM3GK3dzADuEwAAxJmS47fYHu8VH1q//iE
+         q+jTPliB5pevkpIaHnPVElVZ+id6dnUUYzd3/uJ3+3HephxFUOnoObAAX0IHFp3YPbB1
+         JBBMQyaSdQAZyV/NIgT2AfrkWxj7irGi4SppnXCTzS1NwomkTNfG7zT2rm4L9ZNlNx+1
+         lLvrl1nDbwEYwQ614sedEa57x3QjVnM/tid8qfSHPPEebxorU8NhnfMzgQRutQwtzO2R
+         m8bLGr/Tumruj7BtHE/Y5Gh/uecleN+ayLIwvDD+gbjeAWmIqsgKalBm9s6WgNw/pS3S
+         eouA==
 MIME-Version: 1.0
-To:     Arnd Bergmann <arnd@arndb.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
-References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com> <53FF9D9B.30106@hauke-m.de> <CACna6rzaXHww2UXoP4Fi-zA3uNve4NQ48DeChF8zoBS-_-mtyw@mail.gmail.com> <5882203.GXbhhcHqjK@wuerfel>
+X-Received: by 10.42.39.142 with SMTP id h14mr6690917ice.32.1409476841754;
+ Sun, 31 Aug 2014 02:20:41 -0700 (PDT)
+Received: by 10.107.10.133 with HTTP; Sun, 31 Aug 2014 02:20:41 -0700 (PDT)
 In-Reply-To: <5882203.GXbhhcHqjK@wuerfel>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com>
+        <53FF9D9B.30106@hauke-m.de>
+        <CACna6rzaXHww2UXoP4Fi-zA3uNve4NQ48DeChF8zoBS-_-mtyw@mail.gmail.com>
+        <5882203.GXbhhcHqjK@wuerfel>
+Date:   Sun, 31 Aug 2014 11:20:41 +0200
+Message-ID: <CACna6rwmNtS1JSi=VHXWHu6mOM72Y8sBrr5EqCRbpYUHFrMnCg@mail.gmail.com>
+Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42346
+X-archive-position: 42347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,125 +57,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/29/2014 10:04 PM, Arnd Bergmann wrote:
-> On Friday 29 August 2014 17:21:18 Rafał Miłecki wrote:
->> On 28 August 2014 23:22, Hauke Mehrtens <hauke@hauke-m.de> wrote:
->>> On 08/28/2014 01:56 PM, Arnd Bergmann wrote:
->>>> On Thursday 28 August 2014 13:39:55 Rafał Miłecki wrote:
->>>>> Well, that depends. Hauke was planning to put info about flash in DT.
->>>>>> I think it would make sense to have a common driver that has both
->>>>>> an 'early' init part used by MIPS and a regular init part used by
->>>>>> ARM and potentially also on MIPS if we want. Most of the code can
->>>>>> still be shared.
->>>>>
->>>>> OK, now it's clear what you meant.
->>>>> The thing is that we may want to call probe function from
->>>>> drivers/bcma/main.c. I think we never meant to call it directly from
->>>>> arch code. This code in drivers/bcma/main.c is used on both: MIPS and
->>>>> ARM. So I wonder if there is much sense in doing it like
->>>>> #ifdev MIPS
->>>>> bcm47xx_nvram_init(nvram_address);
->>>>> #endif
->>>>> #ifdef ARM
->>>>> nvram_device.resource[0].start = nvram_address;
->>>>> platform_device_register(nvram_device);
->>>>> #endif
->>>>>
->>>>> What do you think about this?
->>>>
->>>> I definitely don't want to see any manual platform_device_register()
->>>> calls on ARM, any device should be either a platform_device probed
->>>> from DT, or a bcma_device that comes from the bcma bus.
->>>>
->>>> I suspect I'm still missing part of the story here. How is the
->>>> nvram chip actually connected?
->>>
->>> I think we have to provide an own device tree for every board, like it
->>> is done for other arm boards. If we do so I do not see a problem to
->>> specify the nvram address space in device tree.
->>
->> Alright, I think we should try to answer one main question at this
->> point: how much data we want to put in DTS? It's still not clear to
->> me.
-
-I think we need a separate device tree description for every board
-anyway (to specify the GPIO configuration) and then I do not see a big
-problem specifying if this board boots from serial or nand flash.
-
->>
->> What about this flash memory mapping? You added this in your RFC:
->> reg = <0x1c000000 0x01000000>;
->>
->> As I described, the first part (address 0x1c000000) could be extracted
->> on runtime. For that you need my patch:
->> [PATCH] bcma: get & store info about flash type SoC booted from
->> http://www.spinics.net/lists/linux-wireless/msg126163.html
->>
->> And then add some simple "swtich" like:
->> switch (boot_device) {
->> case BCMA_BOOT_DEV_NAND:
->>     nvram_address = 0x1c000000;
->>     break;
->> case BCMA_BOOT_DEV_SERIAL:
->>     nvram_address = 0x1e000000;
->>     break;
->> }
-> 
-> At the very least, those addresses should come from DT in some form.
-> We should never hardcode register locations in kernel code, since those
-> tend to change when a new hardware version comes out. Even if you are
-> sure that wouldn't happen with bcm53xx, it's still bad style and I
-> want to avoid having other developers copy code like that into a new
-> platform or driver.
-> 
->> So... should we handle it on runtime? Or do we really want this in DTS?
->> I was thinking about doing this on runtime. This would limit amount of
->> DTS entries and this is what makes more sense to me. The same way
->> don't hardcode many other hardware details. For example we don't store
->> flash size, block size, erase size in DTS. We simply use JEDEC and
->> mtd's spi-nor framework database.
-> 
-> I think the main difference is that for the example of the flash
-> chip, we can find out that information by looking at the device itself:
-> The DT describes how to find the device and from there we can do
-> proper hardware probing.
-> 
-> For the case of the nvram, I don't see how that would be done, since
-> the presence of the device itself is something your code above tries
-> to derive from something that from an unrelated setting, so I'd rather
-> see it done explicit in DT.
-> 
+On 29 August 2014 22:04, Arnd Bergmann <arnd@arndb.de> wrote:
 > You mentioned that the 'boot_device' variable in your code snippet
 > comes from a hardware register that can be accessed easily, right?
 > A possible way to handle it would then be to have two DT entries
 > like
-> 
-> 	nvram@1c000000 {
-> 		compatible = "bcm,bcm4710-nvram";
-> 		reg = <0x1c000000 0x1000000>;
-> 		bcm,boot-device = BCMA_BOOT_DEV_NAND;
-> 	};	
-> 
-> 	nvram@1c000000 {
-> 		compatible = "bcm,bcm4710-nvram";
-> 		reg = <0x1e000000 0x1000000>;
-> 		bcm,boot-device = BCMA_BOOT_DEV_SERIAL;
-> 	};
-> 
-> We would then have two platform device instances and get the
-> driver's probe function to reject any device whose bcm,boot-device
-> property doesn't match the contents of the register.
-> 
-> That would correctly describe the hardware while still allowing
-> automatic probing of the device, but I don't see a value in
-> the extra complexity compared to just marking one of the two
-> as status="disabled".
+>
+>         nvram@1c000000 {
+>                 compatible = "bcm,bcm4710-nvram";
+>                 reg = <0x1c000000 0x1000000>;
+>                 bcm,boot-device = BCMA_BOOT_DEV_NAND;
+>         };
+>
+>         nvram@1c000000 {
+>                 compatible = "bcm,bcm4710-nvram";
+>                 reg = <0x1e000000 0x1000000>;
+>                 bcm,boot-device = BCMA_BOOT_DEV_SERIAL;
+>         };
 
-This looks interesting.
+This sounds like a nice consensus for me! Actually it seems to be
+similar to what we already do for other hardware parts.
 
-But when we have an own device tree description for every board I do not
-see many advantages over using status="disabled". Anyway we can share
-all the common device tree description parts and  we can add the device
-tree description after building the kernel, we are doing both for now.
+E.g. in bcm4708.dtsi Hauke put registers location of 4 Ethernet cores
+(gmac@0, gmac@1, gmac@2, gmac@3). I believe this board is ready for 4
+Ethernet cores so DT matches hardware capabilities. Then most vendors
+use/activate only one (maybe up to 2?) Ethernet cores. It's up to the
+driver to detect if core is activated/used.
 
-Hauke
+AFAIU having two flash mappings (as suggested above) would follow this
+logic. It would match hardware capabilities. And then it would be up
+to driver to detect which one mapping is really in use for this
+particular board.
+
+Does it make sense?
+
+-- 
+Rafał

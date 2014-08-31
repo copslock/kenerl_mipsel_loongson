@@ -1,53 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2014 20:42:23 +0200 (CEST)
-Received: from mail-vc0-f179.google.com ([209.85.220.179]:51236 "EHLO
-        mail-vc0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006919AbaHaSmUbGfn5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Aug 2014 20:42:20 +0200
-Received: by mail-vc0-f179.google.com with SMTP id hy4so4643388vcb.10
-        for <linux-mips@linux-mips.org>; Sun, 31 Aug 2014 11:42:14 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2014 20:54:12 +0200 (CEST)
+Received: from mail-vc0-f171.google.com ([209.85.220.171]:33880 "EHLO
+        mail-vc0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007718AbaHaSyKhAgav (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Aug 2014 20:54:10 +0200
+Received: by mail-vc0-f171.google.com with SMTP id id10so4585439vcb.2
+        for <linux-mips@linux-mips.org>; Sun, 31 Aug 2014 11:54:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=qUALOJT1ItY0PP9Rg8AKVG5ilskq2kXoLVphNyVSDTY=;
-        b=HfLlXg2keoDVciFkVleGFQeWOZy5pmNvuh1hLxX+wufCvHmxe4ANd6+5tidilJk411
-         i/n8s+drnvIlYZibmC699/oIF2jsashHJdyuxpFPSrVlupFXLb+xh9O2NYIW2aZ/K992
-         CLjfn+S9OgsVpH5z7Z+lM++DOJIVie5sn26RRlAPaPolVDDm3w2fkwb++3Ko9NP3uyhc
-         jnTQibpxR03Q6zZCSL7KbyKByYUUDn2C0PEnI/0LjUncB1PU2O1JW00ZXaSvwxMHXv3M
-         mwecdGpskzlv2xvXAXVj9DojJfbZRs0xYBGzqCWfUBtXVc8caJPTq7h27DBSSkCxmdHh
-         QR2A==
+        bh=abDdsFAh9vf0KXAF+C1n5rbH3YHC/VxTKi3XfhIPyX4=;
+        b=pih++V6bwmW0YRgQQ3oAKFzHvN0f63TE2fs7itdJnmiDKlqmkqa4LoYT3kgMYm2gEx
+         MeMiOAoj3HWFcBzY6+mkdourOMMtYSgWx0WIsyFEzfEvMccC++NE/uFUW38fFdv9CpeQ
+         JVjYyvxD1TAh7muwDATwTW4lFqXA1vwpgNBOpuEdld05jIUb4hRgEV/NaUjA4uo/ENCS
+         ey6DRxu5WYjTObmaJtMYKt7kqtSmwmvYC5E/pRzQxe56kRNM+dRWodRJ2p7soyWnSQj5
+         YfXWZ0TSWuCkrh1VTiIHa4CUdcFYD4f4lv0lOH6Zhc07EmFmxbRzGKGir9plI8wI+qVV
+         zwlg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=qUALOJT1ItY0PP9Rg8AKVG5ilskq2kXoLVphNyVSDTY=;
-        b=dOcNeLwjb+8JUxgL6PxzA4nfj/Rq3rh519HfZwQ7fA5U9YeLhdKZUJP6VrWEucvcUG
-         QkEv4xaLO8Xd6tDC78oyHwwSktiGeVEoq63C/kBO/5ltu3ePedIaCshHiLbCt28wLOGz
-         +PnXGMe2hlbpXS853RWjSHgCl/V4wZ6zuS3Zs=
+        bh=abDdsFAh9vf0KXAF+C1n5rbH3YHC/VxTKi3XfhIPyX4=;
+        b=jXStN3RHVyR69lYuCfB2I/rXOzX0j1bPZ0AMhhzXcl1WeJLcCuj0MQb2t1jYirk9e+
+         CnrplXhT3Cq68za+xgfQZLiImue3lGrWxd1xGzOiaeT+UUwqdrsqmvSw3EEZZhsDTO8O
+         93zKZk/5WctpQ5OzI4Jb92MRCmm0BY/RpEAuQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=qUALOJT1ItY0PP9Rg8AKVG5ilskq2kXoLVphNyVSDTY=;
-        b=PDJbPRpWALKuwlsBtiDKGaSfeOmvbjx+nSrUxStmKHz14TY5DSHky0JKPri/uGtanL
-         oPUb6rU95TYKes5udBn3tNo5eZ8TflME8vnFI83Ir+Thnb4Qi6cICzKIkGO6Xcmcje5S
-         no7k3K5285rSaqXMrsz5bmAzRiTYB95jhhrg8XBWIUFH9ztXUCQrBQc8beGw1RwlSxZH
-         /0/byM7uJhl/PC5nF0IBJzHBoipsrKwipxZXN86xJoEwkKMNtcgK4PO5MPGU489cYR77
-         nALrsL2Hatsc4JlsimCNd74F+ZkDY6zIl4JY/6wawj2itNxmycAuhdekXl/dC4vFfIjp
-         5E3w==
-X-Gm-Message-State: ALoCoQlgqKubzil3mk0kIqT433effXkHUAxiBEU/YDkfUCnfRCzNbz8iTQhJQRJVEeYgfYSnYNLD
+        bh=abDdsFAh9vf0KXAF+C1n5rbH3YHC/VxTKi3XfhIPyX4=;
+        b=OGvSw4NzDI9k1rwxqsM966sBtNmXt2I70IhhxIa/xujcSTUmayDgJpiN5QysJls+GD
+         ZYNlVJYdD1Q7o9ItQbFMlPg6E+iNknAfFw1ph1TM1Tm5eYsJ1wCpjJT1RHUs1IrcJ/2x
+         Ljxugl8CmW8I3XED4/JyVU2mDasmRkFaXgaAnIWwKduNPhdEqn30lur6SNVv2IMWLyDY
+         0T3q6FmrpZdyjkWcsSzPn54ftSBje8vpQTy7B3l5r6EFQQVpdj9/6YIbY33aHAM2eZBx
+         JPi4w3IbKzEAUrXgZiQD8+5lWOra0GwXNJCJZRT7a/olx6M597wg/KilueDvJo3c5zCN
+         Fzqg==
+X-Gm-Message-State: ALoCoQmaVzMh2I/45AnjFzV9QGDaefyl/0Fvt6vRAIBLJ0QjfZueJfGBrXnN46LBLhwLqklBEEs0
 MIME-Version: 1.0
-X-Received: by 10.52.245.66 with SMTP id xm2mr16860021vdc.36.1409510534698;
- Sun, 31 Aug 2014 11:42:14 -0700 (PDT)
-Received: by 10.53.5.133 with HTTP; Sun, 31 Aug 2014 11:42:14 -0700 (PDT)
-In-Reply-To: <15153439.zUXECAnL7k@wuerfel>
+X-Received: by 10.221.29.5 with SMTP id rw5mr1730001vcb.49.1409511244694; Sun,
+ 31 Aug 2014 11:54:04 -0700 (PDT)
+Received: by 10.53.5.133 with HTTP; Sun, 31 Aug 2014 11:54:04 -0700 (PDT)
+In-Reply-To: <6179185.bNbDBEC6tl@wuerfel>
 References: <1409350479-19108-1-git-send-email-abrestic@chromium.org>
-        <1409350479-19108-6-git-send-email-abrestic@chromium.org>
-        <15153439.zUXECAnL7k@wuerfel>
-Date:   Sun, 31 Aug 2014 11:42:14 -0700
-X-Google-Sender-Auth: 1uhxDrVvTNDKicdPwdNXftoJHic
-Message-ID: <CAL1qeaFFrQJLMyNQtcwWtrYSJ4=_Yf0zuYWPtCPsUu-6OrvKdw@mail.gmail.com>
-Subject: Re: [PATCH 05/12] MIPS: GIC: Add device-tree support
+        <1409350479-19108-5-git-send-email-abrestic@chromium.org>
+        <6179185.bNbDBEC6tl@wuerfel>
+Date:   Sun, 31 Aug 2014 11:54:04 -0700
+X-Google-Sender-Auth: VHWRbFTWf--u6jwK2nwvGsRy3uk
+Message-ID: <CAL1qeaEEo6-LZz3Kex7oPUfz=Z56nvKoDnqu051rGhhi3ZFTDQ@mail.gmail.com>
+Subject: Re: [PATCH 04/12] MIPS: GIC: Move MIPS_GIC_IRQ_BASE into platform irq.h
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -69,7 +69,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42351
+X-archive-position: 42352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -86,28 +86,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Aug 30, 2014 at 12:54 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> On Friday 29 August 2014 15:14:32 Andrew Bresticker wrote:
->> Add device-tree support for the MIPS GIC.  With DT, no per-platform
->> static device interrupt mapping is supplied and instead all device
->> interrupts are specified through the DT.  The GIC-to-CPU interrupts
->> must also be specified in the DT.
->>
->> Platforms using DT-based probing of the GIC need only supply the
->> GIC_NUM_INTRS and, if necessary, MIPS_GIC_IRQ_BASE values and
->> call of_irq_init() with an of_device_id table including the GIC.
->>
->> Currenlty only legacy and vecotred interrupt modes are supported.
+On Sat, Aug 30, 2014 at 12:57 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Friday 29 August 2014 15:14:31 Andrew Bresticker wrote:
+>> Define a generic MIPS_GIC_IRQ_BASE which is suitable for Malta and
+>> the upcoming Danube board in <mach-generic/irq.h>.  Since Sead-3 is
+>> different and uses a MIPS_GIC_IRQ_BASE equal to the CPU IRQ base (0),
+>> define its MIPS_GIC_IRQ_BASE in <mach-sead3/irq.h>.
 >>
 >> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
->> ---
->>  arch/mips/include/asm/gic.h |  15 ++++++
->>  arch/mips/kernel/irq-gic.c  | 122 +++++++++++++++++++++++++++++++++++++++++++-
 >>
 >
->
-> Can you move this to drivers/irqchip and use the IRQCHIP_DECLARE()
-> macro to define the entry point?
+> Why do you actually have to hardwire an IRQ base? Can't you move
+> to the linear irqdomain code for DT based MIPS systems yet?
 
-Sure.  I was planning on doing this later, but I don't see why it
-couldn't be done now though.
+Neither Malta nor SEAD-3 use device-tree for interrupts yet, so they
+still require a hard-coded IRQ base.  For boards using device-tree, I
+stuck with a legacy IRQ domain as it allows most of the existing GIC
+irqchip code to be reused.

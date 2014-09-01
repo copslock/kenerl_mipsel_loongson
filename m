@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Sep 2014 18:09:04 +0200 (CEST)
-Received: from mail-wi0-f178.google.com ([209.85.212.178]:59294 "EHLO
-        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007822AbaIAQJD0ZeDP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Sep 2014 18:09:03 +0200
-Received: by mail-wi0-f178.google.com with SMTP id r20so6382642wiv.11
-        for <multiple recipients>; Mon, 01 Sep 2014 09:08:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=2pbGr71SDWdB1b80/2LhAeRx1m7+jEBw+tuA328iR7Q=;
-        b=j1HjvWbX4rGov+7qpIgVLe71gjRaNdz0CVYU+6eK+6Lb48ig5umKdyPKVzfbAa81QH
-         MVWlKeBnBsdBmhhSiOPqHnouB1Z7PDv6CBbhr+eTWLlLPRZHXT1zmDqJUeaQunZ1b0lC
-         broEx+8GxZrO6423r7/4sd9P9JK7hETDJ2zmVESuqAw2G/Rsl/5VGd21XzTo2JdYSD9L
-         sptnLpBGiSH6Y6i3DxEfVT4gZkVUQWzSwrcTZlAAU5JSMtkpe54X7Q32/aOsDLNGRyTu
-         9qeY0Ab0CcVkajJ11DMRcivRzo+17kdp3O00ieiTs91sjAKnjNrOigYOR8+FV5p2PvCr
-         Wusg==
-X-Received: by 10.194.77.243 with SMTP id v19mr32765231wjw.18.1409587738079;
-        Mon, 01 Sep 2014 09:08:58 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id hm5sm3120912wjb.2.2014.09.01.09.08.56
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 01 Sep 2014 09:08:57 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Get rid of calls to KSEG1ADDR in nvram
-Date:   Mon,  1 Sep 2014 18:08:50 +0200
-Message-Id: <1409587730-18849-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Sep 2014 22:45:59 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:49910 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007105AbaIAUp55kQjI convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Sep 2014 22:45:57 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 51CAF28BB92
+        for <linux-mips@linux-mips.org>; Mon,  1 Sep 2014 22:45:38 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qa0-f47.google.com (mail-qa0-f47.google.com [209.85.216.47])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 7247328BB94
+        for <linux-mips@linux-mips.org>; Mon,  1 Sep 2014 22:45:27 +0200 (CEST)
+Received: by mail-qa0-f47.google.com with SMTP id x12so5364626qac.6
+        for <linux-mips@linux-mips.org>; Mon, 01 Sep 2014 13:45:45 -0700 (PDT)
+X-Received: by 10.140.101.145 with SMTP id u17mr46637229qge.10.1409604345162;
+ Mon, 01 Sep 2014 13:45:45 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 10.140.84.244 with HTTP; Mon, 1 Sep 2014 13:45:25 -0700 (PDT)
+In-Reply-To: <4072992.6HB7sP7z87@wuerfel>
+References: <CACna6rzRf7qf0YAFWqp4VgwR76-N8HO12eSz_H5NW9LpjBArdw@mail.gmail.com>
+ <CACna6rwmNtS1JSi=VHXWHu6mOM72Y8sBrr5EqCRbpYUHFrMnCg@mail.gmail.com>
+ <CACna6rwMovK133ZoFYsLcsnH39umU7=UAoyG6jmgM8ZVq0AYRA@mail.gmail.com> <4072992.6HB7sP7z87@wuerfel>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Mon, 1 Sep 2014 22:45:25 +0200
+Message-ID: <CAOiHx==sRquiqrQW6T0S+UsOz5H8V1Wt7x1RD=SVo6=gu7M1Vg@mail.gmail.com>
+Subject: Re: Booting bcm47xx (bcma & stuff), sharing code with bcm53xx
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42361
+X-archive-position: 42362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,115 +52,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We should be using ioremap_nocache helper which handles remaps in a
-smarter way.
+On Mon, Sep 1, 2014 at 4:57 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Monday 01 September 2014 09:48:48 Rafał Miłecki wrote:
+>> On 31 August 2014 11:20, Rafał Miłecki <zajec5@gmail.com> wrote:
+>> So I think we'll need to change our vision of flash access in
+>> bcm74xx_nvram driver. I guess we will have to:
+>> 1) Register NAND core early
+>> 2) Initialize NAND driver
+>> 3) Use mtd/nand API in bcm47xx_nvram
+>
+> This would mean it's available really late. Is that a problem?
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/nvram.c | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+That's probably mostly fine (for MIPS), except for two places:
+a) the kernel command line is stored in nvram, and used for finding
+out the correct console tty.
+b) on one specific chip, the configured system clock rate needs to be
+read out from nvram.
 
-diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index 2bed73a..2f0a646 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/arch/mips/bcm47xx/nvram.c
-@@ -23,13 +23,13 @@
- static char nvram_buf[NVRAM_SPACE];
- static const u32 nvram_sizes[] = {0x8000, 0xF000, 0x10000};
- 
--static u32 find_nvram_size(u32 end)
-+static u32 find_nvram_size(void __iomem *end)
- {
- 	struct nvram_header *header;
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(nvram_sizes); i++) {
--		header = (struct nvram_header *)KSEG1ADDR(end - nvram_sizes[i]);
-+		header = (struct nvram_header *)(end - nvram_sizes[i]);
- 		if (header->magic == NVRAM_HEADER)
- 			return nvram_sizes[i];
- 	}
-@@ -38,7 +38,7 @@ static u32 find_nvram_size(u32 end)
- }
- 
- /* Probe for NVRAM header */
--static int nvram_find_and_copy(u32 base, u32 lim)
-+static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
- {
- 	struct nvram_header *header;
- 	int i;
-@@ -46,27 +46,31 @@ static int nvram_find_and_copy(u32 base, u32 lim)
- 	u32 *src, *dst;
- 	u32 size;
- 
-+	if (nvram_buf[0]) {
-+		pr_warn("nvram already initialized\n");
-+		return -EEXIST;
-+	}
-+
- 	/* TODO: when nvram is on nand flash check for bad blocks first. */
- 	off = FLASH_MIN;
- 	while (off <= lim) {
- 		/* Windowed flash access */
--		size = find_nvram_size(base + off);
-+		size = find_nvram_size(iobase + off);
- 		if (size) {
--			header = (struct nvram_header *)KSEG1ADDR(base + off -
--								  size);
-+			header = (struct nvram_header *)(iobase + off - size);
- 			goto found;
- 		}
- 		off <<= 1;
- 	}
- 
- 	/* Try embedded NVRAM at 4 KB and 1 KB as last resorts */
--	header = (struct nvram_header *) KSEG1ADDR(base + 4096);
-+	header = (struct nvram_header *)(iobase + 4096);
- 	if (header->magic == NVRAM_HEADER) {
- 		size = NVRAM_SPACE;
- 		goto found;
- 	}
- 
--	header = (struct nvram_header *) KSEG1ADDR(base + 1024);
-+	header = (struct nvram_header *)(iobase + 1024);
- 	if (header->magic == NVRAM_HEADER) {
- 		size = NVRAM_SPACE;
- 		goto found;
-@@ -94,6 +98,17 @@ found:
- 	return 0;
- }
- 
-+static int bcm47xx_nvram_init_from_mem(u32 base, u32 lim)
-+{
-+	void __iomem *iobase;
-+
-+	iobase = ioremap_nocache(base, lim);
-+	if (!iobase)
-+		return -ENOMEM;
-+
-+	return nvram_find_and_copy(iobase, lim);
-+}
-+
- #ifdef CONFIG_BCM47XX_SSB
- static int nvram_init_ssb(void)
- {
-@@ -109,7 +124,7 @@ static int nvram_init_ssb(void)
- 		return -ENXIO;
- 	}
- 
--	return nvram_find_and_copy(base, lim);
-+	return bcm47xx_nvram_init_from_mem(base, lim);
- }
- #endif
- 
-@@ -139,7 +154,7 @@ static int nvram_init_bcma(void)
- 		return -ENXIO;
- 	}
- 
--	return nvram_find_and_copy(base, lim);
-+	return bcm47xx_nvram_init_from_mem(base, lim);
- }
- #endif
- 
--- 
-1.8.4.5
+Both can be also done through DT, but b) is somewhat important to do
+right, as it will cause the time running fast/slow if the value is
+wrong.
+
+> A possible solution for this would be to use the boot wrapper
+> I mentioned earlier, to put all the data from nvram into DT
+> properties before the kernel gets started.
+
+That sounds like quite a bit of effort, and a bit over-engineered for
+just 2.5 platforms.
+
+
+Jonas

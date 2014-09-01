@@ -1,35 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Sep 2014 11:05:10 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:47233 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007766AbaIAJFIB-09o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Sep 2014 11:05:08 +0200
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id E9ACF280734
-        for <linux-mips@linux-mips.org>; Mon,  1 Sep 2014 11:04:47 +0200 (CEST)
-Received: from Dicker-Alter.local (p548C8AB1.dip0.t-ipconnect.de [84.140.138.177])
-        by arrakis.dune.hu (Postfix) with ESMTPSA
-        for <linux-mips@linux-mips.org>; Mon,  1 Sep 2014 11:04:47 +0200 (CEST)
-Message-ID: <540436C1.20805@openwrt.org>
-Date:   Mon, 01 Sep 2014 11:05:05 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Sep 2014 11:24:47 +0200 (CEST)
+Received: from mail-ie0-f179.google.com ([209.85.223.179]:47406 "EHLO
+        mail-ie0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007766AbaIAJYq2jF9f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Sep 2014 11:24:46 +0200
+Received: by mail-ie0-f179.google.com with SMTP id tr6so5637839ieb.24
+        for <linux-mips@linux-mips.org>; Mon, 01 Sep 2014 02:24:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=IzBqK+MxDY5VDKjVguDodaoNefT3k8iTaMqfmCpxMtI=;
+        b=tMKpyPUC880pqYsH5lviRqWAFMZSYB0YySi8n7kC9kbmz6YxOdaD/XWTgdY6Q0PzZz
+         P8h4dK0kEfAqVI3KaAgxTyx5BtaJ/2657lcrg6uDm11gCyrGLtgI12quC24m7LzVvuGC
+         hd5U383yhCsvqMuxYayKnJZOA/LTbQxYnNNLM/idb4+CcJ31viizR9BUnH2icccEh2c/
+         GKAw6/kyIIo3d0kQYrRQVEUioMkORNnzP1oF0EXovVo8BhPijbDoh8iZW5HbcKTLB8Lj
+         /AiQlUMJAXEM/QSuNT/5MWgXP2YE2wSlw/XexUHSCcoroi0UNLyTrE86rOOYtZ+8+zVZ
+         EOcw==
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 04/12] MIPS: GIC: Move MIPS_GIC_IRQ_BASE into platform
- irq.h
-References: <1409350479-19108-1-git-send-email-abrestic@chromium.org> <6179185.bNbDBEC6tl@wuerfel> <CAL1qeaEEo6-LZz3Kex7oPUfz=Z56nvKoDnqu051rGhhi3ZFTDQ@mail.gmail.com> <3341001.1Jsp173xyM@wuerfel>
-In-Reply-To: <3341001.1Jsp173xyM@wuerfel>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+X-Received: by 10.42.114.203 with SMTP id h11mr134815icq.86.1409563480379;
+ Mon, 01 Sep 2014 02:24:40 -0700 (PDT)
+Received: by 10.107.10.133 with HTTP; Mon, 1 Sep 2014 02:24:40 -0700 (PDT)
+In-Reply-To: <53FCFCF0.2010704@hauke-m.de>
+References: <1408915485-8078-1-git-send-email-hauke@hauke-m.de>
+        <1408915485-8078-5-git-send-email-hauke@hauke-m.de>
+        <8344390.rjnOcYBCET@wuerfel>
+        <53FCFCF0.2010704@hauke-m.de>
+Date:   Mon, 1 Sep 2014 11:24:40 +0200
+Message-ID: <CACna6rzx4uc3V=pxK-B-TvDov9A4sMSs=TDP+7=XpdqfTOFoHw@mail.gmail.com>
+Subject: Re: [RFC 3/7] bcm47xx-sprom: add Broadcom sprom parser driver
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42356
+X-archive-position: 42357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,55 +58,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-On 01/09/2014 10:34, Arnd Bergmann wrote:
-> On Sunday 31 August 2014 11:54:04 Andrew Bresticker wrote:
->> On Sat, Aug 30, 2014 at 12:57 AM, Arnd Bergmann <arnd@arndb.de> wrote:
->>> On Friday 29 August 2014 15:14:31 Andrew Bresticker wrote:
->>>> Define a generic MIPS_GIC_IRQ_BASE which is suitable for Malta and
->>>> the upcoming Danube board in <mach-generic/irq.h>.  Since Sead-3 is
->>>> different and uses a MIPS_GIC_IRQ_BASE equal to the CPU IRQ base (0),
->>>> define its MIPS_GIC_IRQ_BASE in <mach-sead3/irq.h>.
->>>>
->>>> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
->>>>
->>>
->>> Why do you actually have to hardwire an IRQ base? Can't you move
->>> to the linear irqdomain code for DT based MIPS systems yet?
+On 26 August 2014 23:32, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> On 08/25/2014 09:52 AM, Arnd Bergmann wrote:
+>> On Sunday 24 August 2014 23:24:41 Hauke Mehrtens wrote:
+>>>  drivers/misc/Kconfig                               |  14 +
+>>>  drivers/misc/Makefile                              |   1 +
+>>>  drivers/misc/bcm47xx-sprom.c                       | 690 +++++++++++++++++++++
 >>
->> Neither Malta nor SEAD-3 use device-tree for interrupts yet, so they
->> still require a hard-coded IRQ base.  For boards using device-tree, I
->> stuck with a legacy IRQ domain as it allows most of the existing GIC
->> irqchip code to be reused.
-> 
-> I see. Note that we now have irq_domain_add_simple(), which should
-> do the right think in either case: use a legacy domain when a 
-> nonzero base is provided for the old boards, but use the simple
-> domain when probed from DT without an irq base.
-> 
-> This makes the latter case more memory efficient (it avoids
-> allocating the irq descriptors for every possibly but unused
-> IRQ number) and helps ensure that you don't accidentally rely
-> on hardcoded IRQ numbers for the DT based machines, which would
-> be considered a bug.
+>> On a similar note, putting the driver into drivers/misc seems
+>> suboptimal: misc drivers should by definition be something that
+>> is for some odd hardware with no external dependencies on it,
+>> whereas your driver seems to be used by multiple other drivers.
+>>
+>> Would it make sense to put it into drivers/bcma when that is the
+>> only bus it is used on?
+>
+> As Jonas already said this code should be used for the bcm53xx ARM code
+> and the bcm47xx MIPS code and it is needed for drivers/bcma/ and
+> drivers/ssb/ (ssb only for old mips devices). Do you have any better
+> idea than putting this to drivers/misc/ ? For the mips SoC we need the
+> code very early and will not use the driver interface but probably
+> directly call the function name.
 
-Hi,
+Ping? Does anyone have any better idea?
 
-for the mediatek mt7621/1004k we use the following code to load the gic
-https://dev.openwrt.org/browser/trunk/target/linux/ramips/patches-3.14/0012-MIPS-ralink-add-MT7621-support.patch
- (look for  arch/mips/ralink/irq-gic.c)
-
-we ended up using irq_domain_add_legacy()
-
-i am planning to send these patches upstream in the near future.
-
-	John
-
-	John
-
-
-> 
-> 	Arnd
-> 
-> 
+Both: nvram and sprom drivers will be used by bcm47xx (mips) and
+bcm53xx (arm). They can't be put in drivers/bcma, as they are used by
+drivers/ssb as well.

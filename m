@@ -1,50 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 13:34:50 +0200 (CEST)
-Received: from mail-we0-f182.google.com ([74.125.82.182]:55775 "EHLO
-        mail-we0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007901AbaICLetAgWoX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2014 13:34:49 +0200
-Received: by mail-we0-f182.google.com with SMTP id w62so8490421wes.27
-        for <multiple recipients>; Wed, 03 Sep 2014 04:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=+sADYEwQATzUUo0n+tn4jj0xeX3gZ94pqIKNvJKa5h4=;
-        b=eaHaCoGzI2w9zZF4FMOK8aP2osHYiYzzoMsBLYGhKt+zOZtsUZk05GzBGAeWl+mr7F
-         fSlYEDngHlJmv5fGjFQv+IN+w40tJweiqWitigTfTw0qDixHMh15sxved0wQmG8y82o0
-         LCI+Yhg0mlM5eQuQD47En3WnMzjX93DJr7Nr94epP9OHFNdFqPJncuuudCoB37oDmT7r
-         O8mW+yalwjpzzwHbLaqfq+26GLNduNyBD2j6hiFleXP+Hss9gig+sythvlhQkZhQr++y
-         kgXDenz/3/Yee9r33kNylg0CBG6fBXjDc5qOwz1/FVsV/Xoypev+VQCZEcXjBDivw5Hj
-         qFhw==
-X-Received: by 10.195.13.2 with SMTP id eu2mr17280825wjd.88.1409744083373;
-        Wed, 03 Sep 2014 04:34:43 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id qd1sm4216456wic.8.2014.09.03.04.34.41
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Sep 2014 04:34:42 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH V2] MIPS: BCM47XX: Make ssb init NVRAM instead of bcm47xx polling it
-Date:   Wed,  3 Sep 2014 13:34:25 +0200
-Message-Id: <1409744065-24334-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-In-Reply-To: <1409743926-23957-1-git-send-email-zajec5@gmail.com>
-References: <1409743926-23957-1-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 17:09:10 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.10]:65470 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007992AbaICPJIcrZt- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2014 17:09:08 +0200
+Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
+        by mrelayeu.kundenserver.de (node=mreue104) with ESMTP (Nemesis)
+        id 0Leu47-1YByNO3MhL-00qhr2; Wed, 03 Sep 2014 17:08:46 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Andrew Bresticker <abrestic@chromium.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Jeffrey Deans <jeffrey.deans@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 04/12] MIPS: GIC: Move MIPS_GIC_IRQ_BASE into platform irq.h
+Date:   Wed, 03 Sep 2014 17:08:43 +0200
+Message-ID: <3376106.3oS8jj7piF@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CAL1qeaETzZ3EaC8RVXm3K4GLZbknk5iMUR1X2naaAboon4s6fQ@mail.gmail.com>
+References: <1409350479-19108-1-git-send-email-abrestic@chromium.org> <CAL1qeaHryi7noBMiHxJPybByuvVts23reuiiQbV9mCQj+Ngqjw@mail.gmail.com> <CAL1qeaETzZ3EaC8RVXm3K4GLZbknk5iMUR1X2naaAboon4s6fQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V02:K0:dWGDpT87OTkZOn9i/jQzU4qxJ2lzAKAnyIz1NpvIilA
+ 11yQEDXhK6eFlcM5KHJyK68K0S8Y2SJ2mfrYM/Tg04OfP/tq3i
+ YGbp2LJ6mmF6BnAitDIDDzWouhjlGNSGYpj++Hjtn1sH5GNo1N
+ 5ZlSEfgMumOnFx2tm39GoosFZVklRYUTHJyvlN2KQqRsb0M0xy
+ OMsY/9fOsHNt7qxaqO6Zh7C1PxzI+Zoq1GItheRvtpbU1ml+/o
+ jEebvacRoXPoQxKYVw7qQoH1ROMo71E9iqvxi0Eri/nJw7VX5e
+ KB3NttP5xpU0gmaMlT89irLXz7dSpKSs/PmZ1T6wfzH0W7ViOn
+ mZCmxrY/mFEY/+IHPF7s=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42376
+X-archive-position: 42377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,114 +61,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This makes NVRAM code less bcm47xx/ssb specific allowing it to become a
-standalone driver in the future. A similar patch for bcma will follow
-when it's ready.
+On Tuesday 02 September 2014 15:22:31 Andrew Bresticker wrote:
+> On Mon, Sep 1, 2014 at 5:08 PM, Andrew Bresticker <abrestic@chromium.org> wrote:
+> > On Mon, Sep 1, 2014 at 1:34 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> >> On Sunday 31 August 2014 11:54:04 Andrew Bresticker wrote:
+> >>> On Sat, Aug 30, 2014 at 12:57 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> >>> > On Friday 29 August 2014 15:14:31 Andrew Bresticker wrote:
+> >>> >> Define a generic MIPS_GIC_IRQ_BASE which is suitable for Malta and
+> >>> >> the upcoming Danube board in <mach-generic/irq.h>.  Since Sead-3 is
+> >>> >> different and uses a MIPS_GIC_IRQ_BASE equal to the CPU IRQ base (0),
+> >>> >> define its MIPS_GIC_IRQ_BASE in <mach-sead3/irq.h>.
+> >>> >>
+> >>> >> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+> >>> >>
+> >>> >
+> >>> > Why do you actually have to hardwire an IRQ base? Can't you move
+> >>> > to the linear irqdomain code for DT based MIPS systems yet?
+> >>>
+> >>> Neither Malta nor SEAD-3 use device-tree for interrupts yet, so they
+> >>> still require a hard-coded IRQ base.  For boards using device-tree, I
+> >>> stuck with a legacy IRQ domain as it allows most of the existing GIC
+> >>> irqchip code to be reused.
+> >>
+> >> I see. Note that we now have irq_domain_add_simple(), which should
+> >> do the right think in either case: use a legacy domain when a
+> >> nonzero base is provided for the old boards, but use the simple
+> >> domain when probed from DT without an irq base.
+> >>
+> >> This makes the latter case more memory efficient (it avoids
+> >> allocating the irq descriptors for every possibly but unused
+> >> IRQ number) and helps ensure that you don't accidentally rely
+> >> on hardcoded IRQ numbers for the DT based machines, which would
+> >> be considered a bug.
+> >
+> > Ah, ok.  It looks like add_simple() is what I want then.
+> 
+> Actually, never mind.  To re-use the existing GIC irqchip code I want
+> a legacy IRQ domain.
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
-This patch depends on
-[PATCH] MIPS: BCM47XX: Get rid of calls to KSEG1ADDR in nvram
+It shouldn't be hard to change the existing code to use irq domain
+accessors. The main part is probably just to replace 'd->irq -
+gic_irq_base' with 'd->hwirq', in case you make up your mind about
+it again.
 
-V2: Typo in commit message s/bcma/ssb/
----
- arch/mips/bcm47xx/nvram.c     | 30 +++++++++---------------------
- drivers/ssb/driver_mipscore.c | 18 +++++++++++++++++-
- 2 files changed, 26 insertions(+), 22 deletions(-)
-
-diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index 2f0a646..8ea2116 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/arch/mips/bcm47xx/nvram.c
-@@ -98,7 +98,14 @@ found:
- 	return 0;
- }
- 
--static int bcm47xx_nvram_init_from_mem(u32 base, u32 lim)
-+/*
-+ * On bcm47xx we need access to the NVRAM very early, so we can't use mtd
-+ * subsystem to access flash. We can't even use platform device / driver to
-+ * store memory offset.
-+ * To handle this we provide following symbol. It's supposed to be called as
-+ * soon as we get info about flash device, before any NVRAM entry is needed.
-+ */
-+int bcm47xx_nvram_init_from_mem(u32 base, u32 lim)
- {
- 	void __iomem *iobase;
- 
-@@ -109,25 +116,6 @@ static int bcm47xx_nvram_init_from_mem(u32 base, u32 lim)
- 	return nvram_find_and_copy(iobase, lim);
- }
- 
--#ifdef CONFIG_BCM47XX_SSB
--static int nvram_init_ssb(void)
--{
--	struct ssb_mipscore *mcore = &bcm47xx_bus.ssb.mipscore;
--	u32 base;
--	u32 lim;
--
--	if (mcore->pflash.present) {
--		base = mcore->pflash.window;
--		lim = mcore->pflash.window_size;
--	} else {
--		pr_err("Couldn't find supported flash memory\n");
--		return -ENXIO;
--	}
--
--	return bcm47xx_nvram_init_from_mem(base, lim);
--}
--#endif
--
- #ifdef CONFIG_BCM47XX_BCMA
- static int nvram_init_bcma(void)
- {
-@@ -163,7 +151,7 @@ static int nvram_init(void)
- 	switch (bcm47xx_bus_type) {
- #ifdef CONFIG_BCM47XX_SSB
- 	case BCM47XX_BUS_TYPE_SSB:
--		return nvram_init_ssb();
-+		break;
- #endif
- #ifdef CONFIG_BCM47XX_BCMA
- 	case BCM47XX_BUS_TYPE_BCMA:
-diff --git a/drivers/ssb/driver_mipscore.c b/drivers/ssb/driver_mipscore.c
-index 0907706..c51802f 100644
---- a/drivers/ssb/driver_mipscore.c
-+++ b/drivers/ssb/driver_mipscore.c
-@@ -207,9 +207,17 @@ static void ssb_mips_serial_init(struct ssb_mipscore *mcore)
- 		mcore->nr_serial_ports = 0;
- }
- 
-+/* bcm47xx_nvram isn't a separated driver yet and doesn't have its own header.
-+ * Once we make it a standalone driver, remove following extern!
-+ */
-+#ifdef CONFIG_BCM47XX
-+extern int bcm47xx_nvram_init_from_mem(u32 base, u32 lim);
-+#endif
-+
- static void ssb_mips_flash_detect(struct ssb_mipscore *mcore)
- {
- 	struct ssb_bus *bus = mcore->dev->bus;
-+	struct ssb_sflash *sflash = &mcore->sflash;
- 	struct ssb_pflash *pflash = &mcore->pflash;
- 
- 	/* When there is no chipcommon on the bus there is 4MB flash */
-@@ -242,7 +250,15 @@ static void ssb_mips_flash_detect(struct ssb_mipscore *mcore)
- 	}
- 
- ssb_pflash:
--	if (pflash->present) {
-+	if (sflash->present) {
-+#ifdef CONFIG_BCM47XX
-+		bcm47xx_nvram_init_from_mem(sflash->window, sflash->size);
-+#endif
-+	} else if (pflash->present) {
-+#ifdef CONFIG_BCM47XX
-+		bcm47xx_nvram_init_from_mem(pflash->window, pflash->window_size);
-+#endif
-+
- 		ssb_pflash_data.width = pflash->buswidth;
- 		ssb_pflash_resource.start = pflash->window;
- 		ssb_pflash_resource.end = pflash->window + pflash->window_size;
--- 
-1.8.4.5
+	Arnd

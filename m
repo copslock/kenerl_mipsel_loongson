@@ -1,48 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 19:14:55 +0200 (CEST)
-Received: from mail-wi0-f176.google.com ([209.85.212.176]:61691 "EHLO
-        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008043AbaICROxsKAFb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2014 19:14:53 +0200
-Received: by mail-wi0-f176.google.com with SMTP id bs8so1366845wib.9
-        for <linux-mips@linux-mips.org>; Wed, 03 Sep 2014 10:14:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=AUT9JlIC5fal3+CWwa9aAjUpWbF7n4R1zEcm7UdnWa0=;
-        b=zFcvPlySRbboKrNh709TJ38q6WlWSQC8WUBInyBIVuJbyLvCy1D+jgrvIk0SMccDJy
-         0E6o6ZDfn4AOCzZy6a4nlB3Ye8jwlU+gREXnDmvPteFTVO23FkPb4VeVu6i+1Edl+jKx
-         IuYpIsjjm2iRi5JIq1hA3A4gkTqzm9tKZpb8xAoyCYnomrvmRM0lELLm5DFt32IPo98E
-         hV4qgXb0NF+e1SNwZS3s4ymWB8h26oQFkDb5Jnz2LEjQ7LsM3GuZDPynggLm8EvQlAey
-         GKaJMQ38BLjborHjyrozbkJaxTv5m5yEcytgmpEViM2yTZglH+IZ2hE9+fQPrGTCFYNL
-         tsVw==
-X-Received: by 10.194.186.178 with SMTP id fl18mr48228539wjc.8.1409764488552;
-        Wed, 03 Sep 2014 10:14:48 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id fh5sm5766244wib.5.2014.09.03.10.14.46
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Sep 2014 10:14:47 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH][RFC] MIPS: BCM47XX: Use mtd as an alternative way/API to get NVRAM content
-Date:   Wed,  3 Sep 2014 19:14:41 +0200
-Message-Id: <1409764481-20997-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 21:33:14 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:35968 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008056AbaICTdMUf9Fd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Sep 2014 21:33:12 +0200
+Received: from [IPv6:2001:470:7259:0:59c1:1a8e:a91d:7de2] (unknown [IPv6:2001:470:7259:0:59c1:1a8e:a91d:7de2])
+        by hauke-m.de (Postfix) with ESMTPSA id E306B200F3;
+        Wed,  3 Sep 2014 21:33:11 +0200 (CEST)
+Message-ID: <54076CF7.2080704@hauke-m.de>
+Date:   Wed, 03 Sep 2014 21:33:11 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: BCM47XX: Get rid of calls to KSEG1ADDR in nvram
+References: <1409587730-18849-1-git-send-email-zajec5@gmail.com>
+In-Reply-To: <1409587730-18849-1-git-send-email-zajec5@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42378
+X-archive-position: 42379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,79 +39,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-NVRAM can be read using magic memory offset, but after all it's just a
-flash partition. On platforms where NVRAM isn't needed early we can get
-it using mtd subsystem.
+On 09/01/2014 06:08 PM, Rafał Miłecki wrote:
+> We should be using ioremap_nocache helper which handles remaps in a
+> smarter way.
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/nvram.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+This is a good idea.
 
-diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index 8ea2116..9ab74db 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/arch/mips/bcm47xx/nvram.c
-@@ -16,6 +16,7 @@
- #include <linux/ssb/ssb.h>
- #include <linux/kernel.h>
- #include <linux/string.h>
-+#include <linux/mtd/mtd.h>
- #include <asm/addrspace.h>
- #include <bcm47xx_nvram.h>
- #include <asm/mach-bcm47xx/bcm47xx.h>
-@@ -148,6 +149,13 @@ static int nvram_init_bcma(void)
- 
- static int nvram_init(void)
- {
-+#ifdef CONFIG_MTD
-+	struct mtd_info *mtd;
-+	struct nvram_header header;
-+	size_t bytes_read;
-+	int i;
-+#endif
-+
- 	switch (bcm47xx_bus_type) {
- #ifdef CONFIG_BCM47XX_SSB
- 	case BCM47XX_BUS_TYPE_SSB:
-@@ -158,6 +166,38 @@ static int nvram_init(void)
- 		return nvram_init_bcma();
- #endif
- 	}
-+
-+#ifdef CONFIG_MTD
-+	mtd = get_mtd_device_nm("nvram");
-+	if (IS_ERR(mtd))
-+		return -ENODEV;
-+
-+	for (i = 0; i < ARRAY_SIZE(nvram_sizes); i++) {
-+		loff_t from = mtd->size - nvram_sizes[i];
-+
-+		if (from < 0)
-+			continue;
-+
-+		if (mtd_read(mtd, from, sizeof(header), &bytes_read,
-+			     (uint8_t *)&header) < 0)
-+			continue;
-+		if (header.magic == NVRAM_HEADER) {
-+			u8 *dst = (uint8_t *)nvram_buf;
-+			size_t len = header.len;
-+
-+			if (header.len > NVRAM_SPACE) {
-+				pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
-+				       header.len, NVRAM_SPACE);
-+				len = NVRAM_SPACE;
-+			}
-+
-+			if (mtd_read(mtd, from, len, &bytes_read, dst) < 0)
-+				continue;
-+			memset(dst + bytes_read, 0x0, NVRAM_SPACE - bytes_read);
-+		}
-+	}
-+#endif
-+
- 	return -ENXIO;
- }
- 
--- 
-1.8.4.5
+I just checked this with sparse and it still finds some places where you
+cast a var annotated with __iomem to a var without this annotation.
+
+hauke@hauke-desktop:~/linux/linux-next$ ionice -c 3 nice -n 20 make
+ARCH=mips CROSS_COMPILE=mipsel-openwrt-linux-uclibc- C=2 arch/mips/bcm47xx/
+.....
+  CHECK   arch/mips/bcm47xx/nvram.c
+arch/mips/bcm47xx/nvram.c:32:27: warning: cast removes address space of
+expression
+arch/mips/bcm47xx/nvram.c:60:35: warning: cast removes address space of
+expression
+arch/mips/bcm47xx/nvram.c:67:19: warning: cast removes address space of
+expression
+arch/mips/bcm47xx/nvram.c:73:19: warning: cast removes address space of
+expression
+  CC      arch/mips/bcm47xx/nvram.o
+
+
+> 
+> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+> ---
+>  arch/mips/bcm47xx/nvram.c | 35 +++++++++++++++++++++++++----------
+>  1 file changed, 25 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+> index 2bed73a..2f0a646 100644
+> --- a/arch/mips/bcm47xx/nvram.c
+> +++ b/arch/mips/bcm47xx/nvram.c
+> @@ -23,13 +23,13 @@
+>  static char nvram_buf[NVRAM_SPACE];
+>  static const u32 nvram_sizes[] = {0x8000, 0xF000, 0x10000};
+>  
+> -static u32 find_nvram_size(u32 end)
+> +static u32 find_nvram_size(void __iomem *end)
+>  {
+>  	struct nvram_header *header;
+>  	int i;
+>  
+>  	for (i = 0; i < ARRAY_SIZE(nvram_sizes); i++) {
+> -		header = (struct nvram_header *)KSEG1ADDR(end - nvram_sizes[i]);
+> +		header = (struct nvram_header *)(end - nvram_sizes[i]);
+__iomem annotation gets lost
+>  		if (header->magic == NVRAM_HEADER)
+>  			return nvram_sizes[i];
+>  	}
+> @@ -38,7 +38,7 @@ static u32 find_nvram_size(u32 end)
+>  }
+>  
+>  /* Probe for NVRAM header */
+> -static int nvram_find_and_copy(u32 base, u32 lim)
+> +static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
+>  {
+>  	struct nvram_header *header;
+>  	int i;
+> @@ -46,27 +46,31 @@ static int nvram_find_and_copy(u32 base, u32 lim)
+>  	u32 *src, *dst;
+>  	u32 size;
+>  
+> +	if (nvram_buf[0]) {
+> +		pr_warn("nvram already initialized\n");
+> +		return -EEXIST;
+> +	}
+> +
+>  	/* TODO: when nvram is on nand flash check for bad blocks first. */
+>  	off = FLASH_MIN;
+>  	while (off <= lim) {
+>  		/* Windowed flash access */
+> -		size = find_nvram_size(base + off);
+> +		size = find_nvram_size(iobase + off);
+>  		if (size) {
+> -			header = (struct nvram_header *)KSEG1ADDR(base + off -
+> -								  size);
+> +			header = (struct nvram_header *)(iobase + off - size);
+__iomem annotation gets lost
+>  			goto found;
+>  		}
+>  		off <<= 1;
+>  	}
+>  
+>  	/* Try embedded NVRAM at 4 KB and 1 KB as last resorts */
+> -	header = (struct nvram_header *) KSEG1ADDR(base + 4096);
+> +	header = (struct nvram_header *)(iobase + 4096);
+__iomem annotation gets lost
+>  	if (header->magic == NVRAM_HEADER) {
+>  		size = NVRAM_SPACE;
+>  		goto found;
+>  	}
+>  
+> -	header = (struct nvram_header *) KSEG1ADDR(base + 1024);
+> +	header = (struct nvram_header *)(iobase + 1024);
+__iomem annotation gets lost
+>  	if (header->magic == NVRAM_HEADER) {
+>  		size = NVRAM_SPACE;
+>  		goto found;
+> @@ -94,6 +98,17 @@ found:
+>  	return 0;
+>  }
+>  
+> +static int bcm47xx_nvram_init_from_mem(u32 base, u32 lim)
+> +{
+> +	void __iomem *iobase;
+> +
+> +	iobase = ioremap_nocache(base, lim);
+> +	if (!iobase)
+> +		return -ENOMEM;
+
+You should iounmap this sometime later, because the data is copied to
+nvram_buf and iobase is not accsses after is was passed to
+nvram_find_and_copy().
+> +
+> +	return nvram_find_and_copy(iobase, lim);
+> +}
+> +
+>  #ifdef CONFIG_BCM47XX_SSB
+>  static int nvram_init_ssb(void)
+>  {
+> @@ -109,7 +124,7 @@ static int nvram_init_ssb(void)
+>  		return -ENXIO;
+>  	}
+>  
+> -	return nvram_find_and_copy(base, lim);
+> +	return bcm47xx_nvram_init_from_mem(base, lim);
+>  }
+>  #endif
+>  
+> @@ -139,7 +154,7 @@ static int nvram_init_bcma(void)
+>  		return -ENXIO;
+>  	}
+>  
+> -	return nvram_find_and_copy(base, lim);
+> +	return bcm47xx_nvram_init_from_mem(base, lim);
+>  }
+>  #endif
+>  
+> 

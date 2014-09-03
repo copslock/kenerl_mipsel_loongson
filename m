@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 13:32:30 +0200 (CEST)
-Received: from mail-we0-f182.google.com ([74.125.82.182]:46588 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 13:34:50 +0200 (CEST)
+Received: from mail-we0-f182.google.com ([74.125.82.182]:55775 "EHLO
         mail-we0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007901AbaICLcYxTpii (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2014 13:32:24 +0200
-Received: by mail-we0-f182.google.com with SMTP id w62so8487070wes.27
-        for <multiple recipients>; Wed, 03 Sep 2014 04:32:19 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S27007901AbaICLetAgWoX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2014 13:34:49 +0200
+Received: by mail-we0-f182.google.com with SMTP id w62so8490421wes.27
+        for <multiple recipients>; Wed, 03 Sep 2014 04:34:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=W6PX+HOmZLNf6SJOfXwdhW45o4SYOKIrPOOHgF+Tl/Q=;
-        b=O66/F8xX/jAfNGzn+1qVBsc/k9fBgYoRQdaHw9ISqtSCtZysGdDqyTdAdeeZrz/gNE
-         TSXiDVfK6aJQdeF0RXEG8QIJkRESUOQTHoTEELT3aBwV4oUT9tV8dLDsH5whR12TnaT4
-         Pl0QWKjNzzZR8O89FTMj6VgUfaW77LvfJ1/U99VF30ecAnqhFa/wOzpG4ZyAeULKwQbA
-         p78kPdwQRxkRi9MEkTwAJV5zBPGcWkrS7CC1Nn3dxWk6msbgxbD43Cd7yryIMKvmKHVn
-         h7oaFQRydMQjNuHo/G2xCsukYsZUUM3C3rQRoUj75LnoZfrOec4+ZXHiE6LY43AuAjzU
-         c5jA==
-X-Received: by 10.180.219.37 with SMTP id pl5mr34745923wic.26.1409743939597;
-        Wed, 03 Sep 2014 04:32:19 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=+sADYEwQATzUUo0n+tn4jj0xeX3gZ94pqIKNvJKa5h4=;
+        b=eaHaCoGzI2w9zZF4FMOK8aP2osHYiYzzoMsBLYGhKt+zOZtsUZk05GzBGAeWl+mr7F
+         fSlYEDngHlJmv5fGjFQv+IN+w40tJweiqWitigTfTw0qDixHMh15sxved0wQmG8y82o0
+         LCI+Yhg0mlM5eQuQD47En3WnMzjX93DJr7Nr94epP9OHFNdFqPJncuuudCoB37oDmT7r
+         O8mW+yalwjpzzwHbLaqfq+26GLNduNyBD2j6hiFleXP+Hss9gig+sythvlhQkZhQr++y
+         kgXDenz/3/Yee9r33kNylg0CBG6fBXjDc5qOwz1/FVsV/Xoypev+VQCZEcXjBDivw5Hj
+         qFhw==
+X-Received: by 10.195.13.2 with SMTP id eu2mr17280825wjd.88.1409744083373;
+        Wed, 03 Sep 2014 04:34:43 -0700 (PDT)
 Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id z5sm4154384wib.20.2014.09.03.04.32.17
+        by mx.google.com with ESMTPSA id qd1sm4216456wic.8.2014.09.03.04.34.41
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Sep 2014 04:32:18 -0700 (PDT)
+        Wed, 03 Sep 2014 04:34:42 -0700 (PDT)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Make bcma init NVRAM instead of bcm47xx polling it
-Date:   Wed,  3 Sep 2014 13:32:06 +0200
-Message-Id: <1409743926-23957-1-git-send-email-zajec5@gmail.com>
+Subject: [PATCH V2] MIPS: BCM47XX: Make ssb init NVRAM instead of bcm47xx polling it
+Date:   Wed,  3 Sep 2014 13:34:25 +0200
+Message-Id: <1409744065-24334-1-git-send-email-zajec5@gmail.com>
 X-Mailer: git-send-email 1.8.4.5
+In-Reply-To: <1409743926-23957-1-git-send-email-zajec5@gmail.com>
+References: <1409743926-23957-1-git-send-email-zajec5@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +40,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42375
+X-archive-position: 42376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,6 +65,8 @@ Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 ---
 This patch depends on
 [PATCH] MIPS: BCM47XX: Get rid of calls to KSEG1ADDR in nvram
+
+V2: Typo in commit message s/bcma/ssb/
 ---
  arch/mips/bcm47xx/nvram.c     | 30 +++++++++---------------------
  drivers/ssb/driver_mipscore.c | 18 +++++++++++++++++-

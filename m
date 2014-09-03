@@ -1,54 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 17:09:10 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.17.10]:65470 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007992AbaICPJIcrZt- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2014 17:09:08 +0200
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue104) with ESMTP (Nemesis)
-        id 0Leu47-1YByNO3MhL-00qhr2; Wed, 03 Sep 2014 17:08:46 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 04/12] MIPS: GIC: Move MIPS_GIC_IRQ_BASE into platform irq.h
-Date:   Wed, 03 Sep 2014 17:08:43 +0200
-Message-ID: <3376106.3oS8jj7piF@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAL1qeaETzZ3EaC8RVXm3K4GLZbknk5iMUR1X2naaAboon4s6fQ@mail.gmail.com>
-References: <1409350479-19108-1-git-send-email-abrestic@chromium.org> <CAL1qeaHryi7noBMiHxJPybByuvVts23reuiiQbV9mCQj+Ngqjw@mail.gmail.com> <CAL1qeaETzZ3EaC8RVXm3K4GLZbknk5iMUR1X2naaAboon4s6fQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2014 19:14:55 +0200 (CEST)
+Received: from mail-wi0-f176.google.com ([209.85.212.176]:61691 "EHLO
+        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008043AbaICROxsKAFb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2014 19:14:53 +0200
+Received: by mail-wi0-f176.google.com with SMTP id bs8so1366845wib.9
+        for <linux-mips@linux-mips.org>; Wed, 03 Sep 2014 10:14:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=AUT9JlIC5fal3+CWwa9aAjUpWbF7n4R1zEcm7UdnWa0=;
+        b=zFcvPlySRbboKrNh709TJ38q6WlWSQC8WUBInyBIVuJbyLvCy1D+jgrvIk0SMccDJy
+         0E6o6ZDfn4AOCzZy6a4nlB3Ye8jwlU+gREXnDmvPteFTVO23FkPb4VeVu6i+1Edl+jKx
+         IuYpIsjjm2iRi5JIq1hA3A4gkTqzm9tKZpb8xAoyCYnomrvmRM0lELLm5DFt32IPo98E
+         hV4qgXb0NF+e1SNwZS3s4ymWB8h26oQFkDb5Jnz2LEjQ7LsM3GuZDPynggLm8EvQlAey
+         GKaJMQ38BLjborHjyrozbkJaxTv5m5yEcytgmpEViM2yTZglH+IZ2hE9+fQPrGTCFYNL
+         tsVw==
+X-Received: by 10.194.186.178 with SMTP id fl18mr48228539wjc.8.1409764488552;
+        Wed, 03 Sep 2014 10:14:48 -0700 (PDT)
+Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by mx.google.com with ESMTPSA id fh5sm5766244wib.5.2014.09.03.10.14.46
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Sep 2014 10:14:47 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH][RFC] MIPS: BCM47XX: Use mtd as an alternative way/API to get NVRAM content
+Date:   Wed,  3 Sep 2014 19:14:41 +0200
+Message-Id: <1409764481-20997-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:dWGDpT87OTkZOn9i/jQzU4qxJ2lzAKAnyIz1NpvIilA
- 11yQEDXhK6eFlcM5KHJyK68K0S8Y2SJ2mfrYM/Tg04OfP/tq3i
- YGbp2LJ6mmF6BnAitDIDDzWouhjlGNSGYpj++Hjtn1sH5GNo1N
- 5ZlSEfgMumOnFx2tm39GoosFZVklRYUTHJyvlN2KQqRsb0M0xy
- OMsY/9fOsHNt7qxaqO6Zh7C1PxzI+Zoq1GItheRvtpbU1ml+/o
- jEebvacRoXPoQxKYVw7qQoH1ROMo71E9iqvxi0Eri/nJw7VX5e
- KB3NttP5xpU0gmaMlT89irLXz7dSpKSs/PmZ1T6wfzH0W7ViOn
- mZCmxrY/mFEY/+IHPF7s=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42377
+X-archive-position: 42378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,47 +55,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 02 September 2014 15:22:31 Andrew Bresticker wrote:
-> On Mon, Sep 1, 2014 at 5:08 PM, Andrew Bresticker <abrestic@chromium.org> wrote:
-> > On Mon, Sep 1, 2014 at 1:34 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> >> On Sunday 31 August 2014 11:54:04 Andrew Bresticker wrote:
-> >>> On Sat, Aug 30, 2014 at 12:57 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> >>> > On Friday 29 August 2014 15:14:31 Andrew Bresticker wrote:
-> >>> >> Define a generic MIPS_GIC_IRQ_BASE which is suitable for Malta and
-> >>> >> the upcoming Danube board in <mach-generic/irq.h>.  Since Sead-3 is
-> >>> >> different and uses a MIPS_GIC_IRQ_BASE equal to the CPU IRQ base (0),
-> >>> >> define its MIPS_GIC_IRQ_BASE in <mach-sead3/irq.h>.
-> >>> >>
-> >>> >> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> >>> >>
-> >>> >
-> >>> > Why do you actually have to hardwire an IRQ base? Can't you move
-> >>> > to the linear irqdomain code for DT based MIPS systems yet?
-> >>>
-> >>> Neither Malta nor SEAD-3 use device-tree for interrupts yet, so they
-> >>> still require a hard-coded IRQ base.  For boards using device-tree, I
-> >>> stuck with a legacy IRQ domain as it allows most of the existing GIC
-> >>> irqchip code to be reused.
-> >>
-> >> I see. Note that we now have irq_domain_add_simple(), which should
-> >> do the right think in either case: use a legacy domain when a
-> >> nonzero base is provided for the old boards, but use the simple
-> >> domain when probed from DT without an irq base.
-> >>
-> >> This makes the latter case more memory efficient (it avoids
-> >> allocating the irq descriptors for every possibly but unused
-> >> IRQ number) and helps ensure that you don't accidentally rely
-> >> on hardcoded IRQ numbers for the DT based machines, which would
-> >> be considered a bug.
-> >
-> > Ah, ok.  It looks like add_simple() is what I want then.
-> 
-> Actually, never mind.  To re-use the existing GIC irqchip code I want
-> a legacy IRQ domain.
+NVRAM can be read using magic memory offset, but after all it's just a
+flash partition. On platforms where NVRAM isn't needed early we can get
+it using mtd subsystem.
 
-It shouldn't be hard to change the existing code to use irq domain
-accessors. The main part is probably just to replace 'd->irq -
-gic_irq_base' with 'd->hwirq', in case you make up your mind about
-it again.
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+ arch/mips/bcm47xx/nvram.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-	Arnd
+diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+index 8ea2116..9ab74db 100644
+--- a/arch/mips/bcm47xx/nvram.c
++++ b/arch/mips/bcm47xx/nvram.c
+@@ -16,6 +16,7 @@
+ #include <linux/ssb/ssb.h>
+ #include <linux/kernel.h>
+ #include <linux/string.h>
++#include <linux/mtd/mtd.h>
+ #include <asm/addrspace.h>
+ #include <bcm47xx_nvram.h>
+ #include <asm/mach-bcm47xx/bcm47xx.h>
+@@ -148,6 +149,13 @@ static int nvram_init_bcma(void)
+ 
+ static int nvram_init(void)
+ {
++#ifdef CONFIG_MTD
++	struct mtd_info *mtd;
++	struct nvram_header header;
++	size_t bytes_read;
++	int i;
++#endif
++
+ 	switch (bcm47xx_bus_type) {
+ #ifdef CONFIG_BCM47XX_SSB
+ 	case BCM47XX_BUS_TYPE_SSB:
+@@ -158,6 +166,38 @@ static int nvram_init(void)
+ 		return nvram_init_bcma();
+ #endif
+ 	}
++
++#ifdef CONFIG_MTD
++	mtd = get_mtd_device_nm("nvram");
++	if (IS_ERR(mtd))
++		return -ENODEV;
++
++	for (i = 0; i < ARRAY_SIZE(nvram_sizes); i++) {
++		loff_t from = mtd->size - nvram_sizes[i];
++
++		if (from < 0)
++			continue;
++
++		if (mtd_read(mtd, from, sizeof(header), &bytes_read,
++			     (uint8_t *)&header) < 0)
++			continue;
++		if (header.magic == NVRAM_HEADER) {
++			u8 *dst = (uint8_t *)nvram_buf;
++			size_t len = header.len;
++
++			if (header.len > NVRAM_SPACE) {
++				pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
++				       header.len, NVRAM_SPACE);
++				len = NVRAM_SPACE;
++			}
++
++			if (mtd_read(mtd, from, len, &bytes_read, dst) < 0)
++				continue;
++			memset(dst + bytes_read, 0x0, NVRAM_SPACE - bytes_read);
++		}
++	}
++#endif
++
+ 	return -ENXIO;
+ }
+ 
+-- 
+1.8.4.5

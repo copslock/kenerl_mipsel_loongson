@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 11:48:44 +0200 (CEST)
-Received: from szxga01-in.huawei.com ([119.145.14.64]:54920 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 11:49:00 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:54917 "EHLO
         szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007086AbaIEJqZdn0D8 (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27008173AbaIEJqZhy1gg (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 11:46:25 +0200
 Received: from 172.24.2.119 (EHLO szxeml419-hub.china.huawei.com) ([172.24.2.119])
         by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CBG93443;
+        with ESMTP id CBG93431;
         Fri, 05 Sep 2014 17:45:49 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml419-hub.china.huawei.com (10.82.67.158) with Microsoft SMTP Server id
- 14.3.158.1; Fri, 5 Sep 2014 17:45:39 +0800
+ 14.3.158.1; Fri, 5 Sep 2014 17:45:35 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
@@ -31,9 +31,9 @@ CC:     Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
         <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH v1 08/21] x86/xen/MSI: Use MSI chip framework to configure MSI/MSI-X irq
-Date:   Fri, 5 Sep 2014 18:09:53 +0800
-Message-ID: <1409911806-10519-9-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH v1 06/21] PCI/MSI: Refactor struct msi_chip to make it become more common
+Date:   Fri, 5 Sep 2014 18:09:51 +0800
+Message-ID: <1409911806-10519-7-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
 References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
@@ -45,7 +45,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42410
+X-archive-position: 42411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,104 +62,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use MSI chip framework instead of arch MSI functions to configure
-MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
+Now there are a lot of __weak arch functions in MSI code.
+These functions make MSI driver complex. Thierry Reding Introduced
+a new MSI chip framework to configure MSI/MSI-X irq in ARM. Use
+the new MSI chip framework to refactor all other platform MSI
+arch code to eliminate weak arch MSI functions. This patch add
+.restore_irq() and .setup_irqs() to make it become more common.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-CC: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 ---
- arch/x86/pci/xen.c |   46 ++++++++++++++++++++++++++++++----------------
- 1 files changed, 30 insertions(+), 16 deletions(-)
+ drivers/pci/msi.c   |   15 +++++++++++++++
+ include/linux/msi.h |    3 +++
+ 2 files changed, 18 insertions(+), 0 deletions(-)
 
-diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
-index 84c2fce..e669ee4 100644
---- a/arch/x86/pci/xen.c
-+++ b/arch/x86/pci/xen.c
-@@ -376,6 +376,11 @@ static void xen_initdom_restore_msi_irqs(struct pci_dev *dev)
- }
- #endif
- 
-+static void xen_teardown_msi_irq(unsigned int irq)
-+{
-+	xen_destroy_irq(irq);
-+}
-+
- static void xen_teardown_msi_irqs(struct pci_dev *dev)
+diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+index 539c11d..d78d637 100644
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -63,6 +63,11 @@ int __weak arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
  {
- 	struct msi_desc *msidesc;
-@@ -385,19 +390,26 @@ static void xen_teardown_msi_irqs(struct pci_dev *dev)
- 		xen_pci_frontend_disable_msix(dev);
- 	else
- 		xen_pci_frontend_disable_msi(dev);
--
--	/* Free the IRQ's and the msidesc using the generic code. */
--	default_teardown_msi_irqs(dev);
--}
--
--static void xen_teardown_msi_irq(unsigned int irq)
--{
--	xen_destroy_irq(irq);
+ 	struct msi_desc *entry;
+ 	int ret;
++	struct msi_chip *chip;
 +
-+	list_for_each_entry(msidesc, &dev->msi_list, list) {
-+		int i, nvec;
-+		if (msidesc->irq == 0)
-+			continue;
-+		if (msidesc->nvec_used)
-+			nvec = msidesc->nvec_used;
-+		else
-+			nvec = 1 << msidesc->msi_attrib.multiple;
-+		for (i = 0; i < nvec; i++)
-+			xen_teardown_msi_irq(msidesc->irq + i);
-+	}
- }
++	chip = arch_find_msi_chip(dev);
++	if (chip && chip->setup_irqs)
++		return chip->setup_irqs(dev, nvec, type);
  
- void xen_nop_msi_mask(struct irq_data *data)
+ 	/*
+ 	 * If an architecture wants to support multiple MSI, it needs to
+@@ -105,6 +110,11 @@ void default_teardown_msi_irqs(struct pci_dev *dev)
+ 
+ void __weak arch_teardown_msi_irqs(struct pci_dev *dev)
  {
- }
++	struct msi_chip *chip = arch_find_msi_chip(dev);
 +
-+struct msi_chip xen_msi_chip;
++	if (chip && chip->teardown_irqs)
++		return chip->teardown_irqs(dev);
 +
- #endif
- 
- int __init pci_xen_init(void)
-@@ -418,9 +430,9 @@ int __init pci_xen_init(void)
- #endif
- 
- #ifdef CONFIG_PCI_MSI
--	x86_msi.setup_msi_irqs = xen_setup_msi_irqs;
--	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
--	x86_msi.teardown_msi_irqs = xen_teardown_msi_irqs;
-+	xen_msi_chip.setup_irqs = xen_setup_msi_irqs;
-+	xen_msi_chip.teardown_irqs = xen_teardown_msi_irqs;
-+	x86_msi_chip = &xen_msi_chip;
- 	msi_chip.irq_mask = xen_nop_msi_mask;
- 	msi_chip.irq_unmask = xen_nop_msi_mask;
- #endif
-@@ -441,8 +453,9 @@ int __init pci_xen_hvm_init(void)
- #endif
- 
- #ifdef CONFIG_PCI_MSI
--	x86_msi.setup_msi_irqs = xen_hvm_setup_msi_irqs;
--	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
-+	xen_msi_chip.setup_irqs = xen_hvm_setup_msi_irqs;
-+	xen_msi_chip.teardown_irq = xen_teardown_msi_irq;
-+	x86_msi_chip = &xen_msi_chip;
- #endif
- 	return 0;
+ 	return default_teardown_msi_irqs(dev);
  }
-@@ -499,9 +512,10 @@ int __init pci_xen_initial_domain(void)
- 	int irq;
  
- #ifdef CONFIG_PCI_MSI
--	x86_msi.setup_msi_irqs = xen_initdom_setup_msi_irqs;
--	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
--	x86_msi.restore_msi_irqs = xen_initdom_restore_msi_irqs;
-+	xen_msi_chip.setup_irqs = xen_initdom_setup_msi_irqs;
-+	xen_msi_chip.teardown_irq = xen_teardown_msi_irq;
-+	xen_msi_chip.restore_irqs = xen_initdom_restore_msi_irqs;
-+	x86_msi_chip = &xen_msi_chip;
- 	msi_chip.irq_mask = xen_nop_msi_mask;
- 	msi_chip.irq_unmask = xen_nop_msi_mask;
- #endif
+@@ -128,6 +138,11 @@ static void default_restore_msi_irq(struct pci_dev *dev, int irq)
+ 
+ void __weak arch_restore_msi_irqs(struct pci_dev *dev)
+ {
++	struct msi_chip *chip = arch_find_msi_chip(dev);
++
++	if (chip && chip->restore_irqs)
++		return chip->restore_irqs(dev);
++
+ 	return default_restore_msi_irqs(dev);
+ }
+ 
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index 5650848..92a51e7 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -72,7 +72,10 @@ struct msi_chip {
+ 	struct list_head list;
+ 
+ 	int (*setup_irq)(struct pci_dev *dev, struct msi_desc *desc);
++	int (*setup_irqs)(struct pci_dev *dev, int nvec, int type);
+ 	void (*teardown_irq)(unsigned int irq);
++	void (*teardown_irqs)(struct pci_dev *dev);
++	void (*restore_irqs)(struct pci_dev *dev);
+ };
+ 
+ #endif /* LINUX_MSI_H */
 -- 
 1.7.1

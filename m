@@ -1,81 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 23:50:14 +0200 (CEST)
-Received: from mail-vc0-f180.google.com ([209.85.220.180]:60121 "EHLO
-        mail-vc0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27025895AbaIEVuNMQULv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 23:50:13 +0200
-Received: by mail-vc0-f180.google.com with SMTP id lf12so13001410vcb.39
-        for <linux-mips@linux-mips.org>; Fri, 05 Sep 2014 14:50:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=AY37H12qzMSEqEkJku/c7H5TKcjyR9DGUxV3iwNhvRc=;
-        b=Jk3Rc65xOWBcdk4Zxjo6yPJBcPmpBlUc8/ovfS80orWUYkQsNsb0lCC9bXV//llFqo
-         p1OcAhURt6rekaYMqwDGHKCBUBBoeajaHJz1Xfx/TvBWvXljxlPUbiCf1T40raKKwkY2
-         9D/+Zp19YdPc/d66wSgGMGY1Jjff/OX6ckEiZYNJri+XnX9hh2C12QLniHbMzYttkl5Z
-         64ZDe3KpBc+sfRxXI4DFKMy7toSuWPlg9oNtMnF0CR4GgXrMmU2rMYTdcx9n0KqhftYr
-         CSuqEGiMSKq6dnIhTxg7In7p+zwBjSlBR4JXKZ5yQTa0GDErG6psZoeZsRv2zMWwm3ag
-         I80A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=AY37H12qzMSEqEkJku/c7H5TKcjyR9DGUxV3iwNhvRc=;
-        b=g1pPwuhSMx/GB9X6V2BSdDqRrVFItjZTEM973UizamSFgCKm1bpYTExnEOIn1k2ODc
-         l/p54E6etyW4WfZWHPlhnB1Vre0hvi4lcbx6uXtwN/oHO4wJT+0MW0hpOUdxmP6LI8tM
-         iKJ7GdRLf1pnAfiZjqlqIGOHOdyXJdIRrikbg=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Sep 2014 00:14:12 +0200 (CEST)
+Received: from mail-yk0-f175.google.com ([209.85.160.175]:34585 "EHLO
+        mail-yk0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008131AbaIEWOL0vZpX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Sep 2014 00:14:11 +0200
+Received: by mail-yk0-f175.google.com with SMTP id 131so7458804ykp.34
+        for <linux-mips@linux-mips.org>; Fri, 05 Sep 2014 15:14:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=AY37H12qzMSEqEkJku/c7H5TKcjyR9DGUxV3iwNhvRc=;
-        b=gtQIeTQoF/v7XMCuM3HtTA4wgsud6omhLKmSjxpbpOqVjwsG+hw0toOzTp2iPf0VbW
-         C6GVmojdbOcJxLnqdTZtQvn8uDtvr4wwjWtROqpc/bhm4EeX3+7aTzYzbC5B/cW1m/0S
-         QelQZBckR29750BJREMLmG03fsEJjznA4qJ8Nn7NynFYGXiUifwaovXQuUVztzQKn7Om
-         EfdCq8lCDp7kYzjnpYGnG5icr8sbZ/tMUgJ2vSkVpMTNxqRslb+p6nfWCCqBpCseQamz
-         1w55X1Ax+9CaMShebOQ89/7cbDsAu0GMC+Fuuhvfg+WqBT3UmRrsom5r18Zn+nHjqsMC
-         Gx2w==
-X-Gm-Message-State: ALoCoQnZhCvj5M0lmtxr97MMmv+LfACBd/XrjAfYZx24Kd3IVfnXN/7I+CF2aoqvmtrs1iVgSJhr
-MIME-Version: 1.0
-X-Received: by 10.52.146.17 with SMTP id sy17mr10514882vdb.29.1409953802089;
- Fri, 05 Sep 2014 14:50:02 -0700 (PDT)
-Received: by 10.52.51.194 with HTTP; Fri, 5 Sep 2014 14:50:02 -0700 (PDT)
-In-Reply-To: <alpine.DEB.2.10.1409052056400.5472@nanos>
-References: <1409938218-9026-1-git-send-email-abrestic@chromium.org>
-        <1409938218-9026-15-git-send-email-abrestic@chromium.org>
-        <alpine.DEB.2.10.1409052056400.5472@nanos>
-Date:   Fri, 5 Sep 2014 14:50:02 -0700
-X-Google-Sender-Auth: cLF84FfuQD-FvMMBU9HsOpviWVg
-Message-ID: <CAL1qeaH5ZQA8Y=n3uVSy9e+vEweCi_RT2s-ZGRfyJTAcbguyoA@mail.gmail.com>
-Subject: Re: [PATCH v2 14/16] irqchip: mips-gic: Support local interrupts
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Gx2skzFOF9Jqjn5VcBAJfG92CM/hakm8c3jINaXNdoE=;
+        b=dgpZShLaqJwO/i9cDAw4IpAZmw++NjsLw2MH3qaH/2SowCJ3ahS92YXq+Q6mwYQdI0
+         k04ufklUcFNYhLX2J//J8oY+Ia9v4Ocn6ysRLJYxIYeUXY4zIqnEh1tSO686l6L7ts8d
+         07lQaeWAe4UINNoO6RS5eFAEJMWW9rJUj0uxZ+J5oA98RhuRDrFvERQg3gzMzCjjVzAW
+         lXcEPUEriVKNP1qYtKMjyPSJPFbbhxkAn1uEjUCYAsfzPLeJHsNntJfIbploIafc+edm
+         UeWbt/n8CYCl09QYpThYaD3mjbujzOw/U5xdlfZY9Xt9Q0UZZDFdTDNke6hsC69nQ/Ja
+         LcSw==
+X-Gm-Message-State: ALoCoQm3jBkfHyYeCzbnc17wgrYtycqkW0h9r5ycoq+21TCCbqIbTyMZezTZI1v3RxT670ua6ThK
+X-Received: by 10.236.41.199 with SMTP id h47mr18179103yhb.1.1409955244783;
+        Fri, 05 Sep 2014 15:14:04 -0700 (PDT)
+Received: from localhost ([2602:301:77d8:1800:bd9e:fe09:e642:968])
+        by mx.google.com with ESMTPSA id h92sm1293243yhq.21.2014.09.05.15.14.02
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 05 Sep 2014 15:14:03 -0700 (PDT)
+From:   Andy Lutomirski <luto@amacapital.net>
+To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>, Oleg Nesterov <oleg@redhat.com>
+Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-arch@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Andy Lutomirski <luto@amacapital.net>
+Subject: [PATCH v5 0/5] x86: two-phase syscall tracing and seccomp fastpath
+Date:   Fri,  5 Sep 2014 15:13:51 -0700
+Message-Id: <cover.1409954077.git.luto@amacapital.net>
+X-Mailer: git-send-email 1.9.3
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42454
+X-archive-position: 42455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,45 +57,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Sep 5, 2014 at 12:05 PM, Thomas Gleixner <tglx@linutronix.de> wrote:
-> On Fri, 5 Sep 2014, Andrew Bresticker wrote:
->>  static void gic_mask_irq(struct irq_data *d)
->>  {
->> -     GIC_CLR_INTR_MASK(d->irq - gic_irq_base);
->> +     unsigned int irq = d->irq - gic_irq_base;
->> +
->> +     if (gic_is_local_irq(irq)) {
->> +             GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK),
->> +                      1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
->> +     } else {
->> +             GIC_CLR_INTR_MASK(irq);
->> +     }
->>  }
->>
->>  static void gic_unmask_irq(struct irq_data *d)
->>  {
->> -     GIC_SET_INTR_MASK(d->irq - gic_irq_base);
->> +     unsigned int irq = d->irq - gic_irq_base;
->> +
->> +     if (gic_is_local_irq(irq)) {
->> +             GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK),
->> +                      1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
->> +     } else {
->> +             GIC_SET_INTR_MASK(irq);
->> +     }
->
-> Why are you adding a conditional in all these functions instead of
-> having two interrupt chips with separate callbacks and irqdata?
+This applies to:
+git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git seccomp-fastpath
 
-Ok, I'll use a separate irqchip.
+Gitweb:
+https://git.kernel.org/cgit/linux/kernel/git/kees/linux.git/log/?h=seccomp/fastpath
 
-> And looking at GIC_SET_INTR_MASK(irq) makes me shudder even more. The
-> whole thing can be replaced with the generic interrupt chip functions.
->
-> If you set it up proper, then there is not a single conditional or
-> runtime calculation of bitmasks, address offsets etc.
+This is both a cleanup and a speedup.  It reduces overhead due to
+installing a trivial seccomp filter by 87%.  The speedup comes from
+avoiding the full syscall tracing mechanism for filters that don't
+return SECCOMP_RET_TRACE.
 
-Yes, I'd like to use the generic irqchip library here, but Malta and
-SEAD-3 will need to be converted over to using irq domains.  Perhaps
-I'll do that first - it should get rid of a lot of the other ugliness
-here as well.
+This series depends on splitting the seccomp hooks into two phases.
+The first phase evaluates the filter; it can skip syscalls, allow
+them, kill the calling task, or pass a u32 to the second phase.  The
+second phase requires a full tracing context, and it sends ptrace
+events if necessary.  The seccomp core part is in Kees' seccomp/fastpath
+tree.
+
+These patches implement a similar split for the x86 syscall
+entry work.  The C callback is invoked in two phases: the first has
+only a partial frame, and it can request phase 2 processing with a
+full frame.
+
+Finally, I switch the 64-bit system_call code to use the new split
+entry work.  This is a net deletion of assembly code: it replaces
+all of the audit entry muck.
+
+In the process, I fixed some bugs.
+
+If this is acceptable, someone can do the same tweak for the
+ia32entry and entry_32 code.
+
+This passes all seccomp tests that I know of.
+
+Changes from v4:
+ - Rebased (which seems to have been a no-op)
+ - Fixed embarrassing bug that broke allnoconfig
+   (patch 3 was missing an ifdef).
+
+Changes from v3:
+ - Dropped the core seccomp changes from the email -- Kees has applied them.
+ - Add patch 2 (the TIF_NOHZ change).
+ - Fix TIF_NOHZ in the two-phase entry code (thanks, Oleg).
+
+Changes from v2:
+ - Fixed 32-bit x86 build (and the tests pass).
+ - Put the doc patch where it belongs.
+
+Changes from v1:
+ - Rebased on top of Kees' shiny new seccomp tree (no effect on the x86
+   part).
+ - Improved patch 6 vs patch 7 split (thanks Alexei!)
+ - Fixed bogus -ENOSYS in patch 5 (thanks Kees!)
+ - Improved changelog message in patch 6.
+
+Changes from RFC version:
+ - The first three patches are more or less the same
+ - The rest is more or less a rewrite
+
+Andy Lutomirski (5):
+  x86,x32,audit: Fix x32's AUDIT_ARCH wrt audit
+  x86,entry: Only call user_exit if TIF_NOHZ
+  x86: Split syscall_trace_enter into two phases
+  x86_64,entry: Treat regs->ax the same in fastpath and slowpath
+    syscalls
+  x86_64,entry: Use split-phase syscall_trace_enter for 64-bit syscalls
+
+ arch/x86/include/asm/calling.h |   6 +-
+ arch/x86/include/asm/ptrace.h  |   5 ++
+ arch/x86/kernel/entry_64.S     |  51 +++++--------
+ arch/x86/kernel/ptrace.c       | 165 +++++++++++++++++++++++++++++++++--------
+ 4 files changed, 164 insertions(+), 63 deletions(-)
+
+-- 
+1.9.3

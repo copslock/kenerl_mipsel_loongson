@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 20:52:23 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:56643 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 21:06:06 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:56809 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008131AbaIESwVc5AMo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 20:52:21 +0200
+        with ESMTP id S27008131AbaIETGBiWyLZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 21:06:01 +0200
 Received: from localhost ([127.0.0.1])
         by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
         (Exim 4.80)
         (envelope-from <tglx@linutronix.de>)
-        id 1XPyc4-0002qH-WF; Fri, 05 Sep 2014 20:52:01 +0200
-Date:   Fri, 5 Sep 2014 20:51:59 +0200 (CEST)
+        id 1XPypU-00030g-F1; Fri, 05 Sep 2014 21:05:52 +0200
+Date:   Fri, 5 Sep 2014 21:05:50 +0200 (CEST)
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     Andrew Bresticker <abrestic@chromium.org>
 cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -25,10 +25,10 @@ cc:     Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <blogic@openwrt.org>,
         David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/16] MIPS: Provide a generic plat_irq_dispatch
-In-Reply-To: <1409938218-9026-2-git-send-email-abrestic@chromium.org>
-Message-ID: <alpine.DEB.2.10.1409052051240.5472@nanos>
-References: <1409938218-9026-1-git-send-email-abrestic@chromium.org> <1409938218-9026-2-git-send-email-abrestic@chromium.org>
+Subject: Re: [PATCH v2 14/16] irqchip: mips-gic: Support local interrupts
+In-Reply-To: <1409938218-9026-15-git-send-email-abrestic@chromium.org>
+Message-ID: <alpine.DEB.2.10.1409052056400.5472@nanos>
+References: <1409938218-9026-1-git-send-email-abrestic@chromium.org> <1409938218-9026-15-git-send-email-abrestic@chromium.org>
 User-Agent: Alpine 2.10 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -39,7 +39,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42447
+X-archive-position: 42448
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,45 +57,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Fri, 5 Sep 2014, Andrew Bresticker wrote:
-> For platforms which boot with device-tree and use the MIPS CPU interrupt
-> controller binding, a generic plat_irq_dispatch() can be used since all
-> CPU interrupts should be mapped through the CPU IRQ domain.  Implement a
-> plat_irq_dispatch() which simply handles the highest pending interrupt.
-> 
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> Tested-by: Jonas Gorski <jogo@openwrt.org>
-> ---
-> No changes from v1.
-> ---
->  arch/mips/kernel/irq_cpu.c | 28 +++++++++++++++++++++++-----
->  1 file changed, 23 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
-> index e498f2b..9cf8459 100644
-> --- a/arch/mips/kernel/irq_cpu.c
-> +++ b/arch/mips/kernel/irq_cpu.c
-> @@ -116,6 +116,24 @@ void __init mips_cpu_irq_init(void)
+>  static void gic_mask_irq(struct irq_data *d)
+>  {
+> -	GIC_CLR_INTR_MASK(d->irq - gic_irq_base);
+> +	unsigned int irq = d->irq - gic_irq_base;
+> +
+> +	if (gic_is_local_irq(irq)) {
+> +		GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK),
+> +			 1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
+> +	} else {
+> +		GIC_CLR_INTR_MASK(irq);
+> +	}
 >  }
 >  
->  #ifdef CONFIG_IRQ_DOMAIN
-> +static struct irq_domain *mips_intc_domain;
+>  static void gic_unmask_irq(struct irq_data *d)
+>  {
+> -	GIC_SET_INTR_MASK(d->irq - gic_irq_base);
+> +	unsigned int irq = d->irq - gic_irq_base;
 > +
-> +asmlinkage void __weak plat_irq_dispatch(void)
-> +{
-> +	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
-> +	unsigned int hw;
-> +	int irq;
-> +
-> +	if (!pending) {
-> +		spurious_interrupt();
-> +		return;
+> +	if (gic_is_local_irq(irq)) {
+> +		GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK),
+> +			 1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
+> +	} else {
+> +		GIC_SET_INTR_MASK(irq);
 > +	}
-> +
-> +	hw = fls(pending) - CAUSEB_IP - 1;
-> +	irq = irq_linear_revmap(mips_intc_domain, hw);
-> +	do_IRQ(irq);
 
-Why are you not handling all pending interrupts in a loop?
+Why are you adding a conditional in all these functions instead of
+having two interrupt chips with separate callbacks and irqdata?
+
+And looking at GIC_SET_INTR_MASK(irq) makes me shudder even more. The
+whole thing can be replaced with the generic interrupt chip functions.
+
+If you set it up proper, then there is not a single conditional or
+runtime calculation of bitmasks, address offsets etc.
 
 Thanks,
 

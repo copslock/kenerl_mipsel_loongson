@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 21:09:07 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:56859 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008131AbaIETJFqPnPy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 21:09:05 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1XPysU-00034q-LA; Fri, 05 Sep 2014 21:08:58 +0200
-Date:   Fri, 5 Sep 2014 21:08:57 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Andrew Bresticker <abrestic@chromium.org>
-cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 15/16] MIPS: GIC: Use local interrupts for timer
-In-Reply-To: <1409938218-9026-16-git-send-email-abrestic@chromium.org>
-Message-ID: <alpine.DEB.2.10.1409052108090.5472@nanos>
-References: <1409938218-9026-1-git-send-email-abrestic@chromium.org> <1409938218-9026-16-git-send-email-abrestic@chromium.org>
-User-Agent: Alpine 2.10 (DEB 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 22:07:53 +0200 (CEST)
+Received: from terminus.zytor.com ([198.137.202.10]:47393 "EHLO mail.zytor.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007724AbaIEUHwXLxl1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 5 Sep 2014 22:07:52 +0200
+Received: from anacreon.sc.intel.com ([192.55.55.41])
+        (authenticated bits=0)
+        by mail.zytor.com (8.14.7/8.14.5) with ESMTP id s85K7XW0018636
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Fri, 5 Sep 2014 13:07:34 -0700
+Message-ID: <540A1800.3000005@zytor.com>
+Date:   Fri, 05 Sep 2014 13:07:28 -0700
+From:   "H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+To:     Andy Lutomirski <luto@amacapital.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Will Drewry <wad@chromium.org>
+CC:     Oleg Nesterov <oleg@redhat.com>, X86 ML <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        Alexei Starovoitov <ast@plumgrid.com>,
+        Frederic Weisbecker <fweisbec@gmail.com>
+Subject: Re: Post-merge-window ping (Re: [PATCH v4 0/5] x86: two-phase syscall
+ tracing and seccomp fastpath)
+References: <CALCETrUaZ8w92g96SmFEZDE0Jr+0Moeo+S24-TyW8crrK5reSg@mail.gmail.com>
+In-Reply-To: <CALCETrUaZ8w92g96SmFEZDE0Jr+0Moeo+S24-TyW8crrK5reSg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42449
+X-archive-position: 42450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,55 +52,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 5 Sep 2014, Andrew Bresticker wrote:
-
-> Instead of using GIC interrupt 0 for the timer (which was not even
-> handled correctly by the GIC irqchip code and could conflict with an
-> actual external interrupt), use the designated local interrupt for
-> the GIC timer.
+On 08/26/2014 06:32 PM, Andy Lutomirski wrote:
+> On Mon, Jul 28, 2014 at 8:38 PM, Andy Lutomirski <luto@amacapital.net> wrote:
+>> This applies to:
+>> git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git seccomp-fastpath
+>>
+>> Gitweb:
+>> https://git.kernel.org/cgit/linux/kernel/git/kees/linux.git/log/?h=seccomp/fastpath
 > 
-> Also, since the timer is a per-CPU interrupt, initialize it with
-> setup_percpu_irq() and enable it with enable_percpu_irq() instead
-> of using direct register writes.
+> Hi all-
 > 
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> ---
-> No changes from v1.
-> ---
->  arch/mips/kernel/cevt-gic.c | 16 +++++++---------
->  1 file changed, 7 insertions(+), 9 deletions(-)
+> AFAIK the only thing that's changed since I submitted it is that the
+> 3.17 merge window is closed.  Kees rebased the tree this applies to,
+> but I think the patches all still apply.  What, if anything, do I need
+> to do to help this along for 3.18?
 > 
-> diff --git a/arch/mips/kernel/cevt-gic.c b/arch/mips/kernel/cevt-gic.c
-> index 6093716..cae72a4 100644
-> --- a/arch/mips/kernel/cevt-gic.c
-> +++ b/arch/mips/kernel/cevt-gic.c
-> @@ -68,7 +68,7 @@ int gic_clockevent_init(void)
->  	if (!cpu_has_counter || !gic_frequency)
->  		return -ENXIO;
->  
-> -	irq = MIPS_GIC_IRQ_BASE;
-> +	irq = MIPS_GIC_LOCAL_IRQ_BASE + GIC_LOCAL_INTR_COMPARE;
->  
->  	cd = &per_cpu(gic_clockevent_device, cpu);
->  
-> @@ -91,15 +91,13 @@ int gic_clockevent_init(void)
->  
->  	clockevents_register_device(cd);
->  
-> -	GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_MAP), 0x80000002);
-> -	GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), GIC_VPE_SMASK_CMP_MSK);
-> +	if (!gic_timer_irq_installed) {
-> +		setup_percpu_irq(irq, &gic_compare_irqaction);
-> +		irq_set_handler(irq, handle_percpu_irq);
-> +		gic_timer_irq_installed = 1;
-> +	}
->  
-> -	if (gic_timer_irq_installed)
-> -		return 0;
-> +	enable_percpu_irq(irq, 0);
 
-Please use a proper IRQ_TYPE constant instead of 0
+Just put this stuff in a branch and running through my personal test
+battery now.
 
-Thanks,
-
-	tglx
+	-hpa

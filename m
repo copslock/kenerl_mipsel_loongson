@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 13:33:26 +0200 (CEST)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:50215 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007097AbaIELdYFx5kF convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 5 Sep 2014 13:33:24 +0200
-Received: by mail-pd0-f180.google.com with SMTP id ft15so30344pdb.25
-        for <multiple recipients>; Fri, 05 Sep 2014 04:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=references:mime-version:in-reply-to:content-type
-         :content-transfer-encoding:message-id:cc:from:subject:date:to;
-        bh=2Gt8WW5VLPdRC7lJXHTATT+5TFDvAOeV25yy7RL1/yY=;
-        b=uiSOpMe5umXUwL3XM54ABhiYdKolfxW+9r1TzEvVqrhNtq4wlTPqXge6rjJcry+1iC
-         Bny+MFOO2j8ivUYSkcsyv6h62vLTETJxYF0lV4f5zxKJEPXUfWoTOlTtrebuAZq7+FfW
-         uMFtJjaU7HtkqbgzqIDs5dfqU6qVtjbFKQ/ydrYqYkAQ/cHv7BtepRV3nWFuvnG9axpI
-         Z8UKv6SQFSSJj/Wt47h2Savf791LKuX/sP5iyNNDJPgC20/3EDLLOdp2Y9KLQjtj/OVG
-         gwwZ1HOdq9n/5hepHiuqqQKnhXGoFEklvZoRf301VYcG8XFfiDsyRaL+BrKiwDs+G2g2
-         p8wQ==
-X-Received: by 10.70.102.200 with SMTP id fq8mr20628552pdb.152.1409916789818;
-        Fri, 05 Sep 2014 04:33:09 -0700 (PDT)
-Received: from [192.168.1.102] ([111.140.71.79])
-        by mx.google.com with ESMTPSA id ca2sm1551082pbc.26.2014.09.05.04.33.08
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 13:41:49 +0200 (CEST)
+Received: from mail-lb0-f170.google.com ([209.85.217.170]:33753 "EHLO
+        mail-lb0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007043AbaIELlsLcnNf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 13:41:48 +0200
+Received: by mail-lb0-f170.google.com with SMTP id w7so13352372lbi.1
+        for <linux-mips@linux-mips.org>; Fri, 05 Sep 2014 04:41:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=AvvsciWmWVLT5LL8S+y+bEiiPf/FO0FbMELvEbWbRa4=;
+        b=eP02k3PkG2o28S/S83sZpJ+exV8FTwa9MW6eTkcV8mo8QXVM6Oy2rqHZwmOgKcleog
+         0Cv75PLKFP083oTgUq3/Ho4nRe110onR3AhXNbmPeqbrSpud+9hgByFlMAI+inYyYppr
+         uPoQ89De1gd+bgikE3E8ZOMdNdNu81ZUC8LSYUlCsKnQkkbaaNl3dMusDKpAx9YHooyt
+         JPCohIYi7FEUg45E3bogNSc22OMOlF1xg8ZbDKL+nwETC2mh1EPx+FfvTH+NlC7I/JEp
+         UE++bLhXaetw2YXx+p5aTLedUp5P/CgYd1bK/KUFrX8A4QXbirIdl+s9SVDDU+J/TtR1
+         gSjA==
+X-Gm-Message-State: ALoCoQkg0EFRXhiY6Te4fFc5VyHFu6jzt3aaRxEgNoT5Fd4D9+l/6oeXAn9RKQv4DsKIDKJGWrDD
+X-Received: by 10.152.23.131 with SMTP id m3mr11300641laf.8.1409917302132;
+        Fri, 05 Sep 2014 04:41:42 -0700 (PDT)
+Received: from [192.168.2.5] (ppp17-243.pppoe.mtu-net.ru. [81.195.17.243])
+        by mx.google.com with ESMTPSA id k7sm618155lak.22.2014.09.05.04.41.39
         for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 05 Sep 2014 04:33:09 -0700 (PDT)
-References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com> <1409911806-10519-16-git-send-email-wangyijing@huawei.com> <540994D4.6040500@cogentembedded.com>
-Mime-Version: 1.0 (1.0)
-In-Reply-To: <540994D4.6040500@cogentembedded.com>
-Content-Type: text/plain;
-        charset=gb2312
-Content-Transfer-Encoding: 8BIT
-Message-Id: <43412AE0-85BB-4B4B-A4EA-2C6D3B8B85D7@gmail.com>
-Cc:     Yijing Wang <wangyijing@huawei.com>,
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 05 Sep 2014 04:41:41 -0700 (PDT)
+Message-ID: <5409A174.3050205@cogentembedded.com>
+Date:   Fri, 05 Sep 2014 15:41:40 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.1.0
+MIME-Version: 1.0
+To:     wangyijing <wangyijing0307@gmail.com>
+CC:     Yijing Wang <wangyijing@huawei.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
         "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
@@ -58,20 +58,21 @@ Cc:     Yijing Wang <wangyijing@huawei.com>,
         "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
         Chris Metcalf <cmetcalf@tilera.com>,
         Ralf Baechle <ralf@linux-mips.org>
-X-Mailer: iPad Mail (11D201)
-From:   wangyijing <wangyijing0307@gmail.com>
-Subject: Re: [PATCH v1 15/21] Powerpc/MSI: Use MSI chip framework to configure MSI/MSI-X irq
-Date:   Fri, 5 Sep 2014 19:33:08 +0800
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Return-Path: <wangyijing0307@gmail.com>
+Subject: Re: [PATCH v1 15/21] Powerpc/MSI: Use MSI chip framework to configure
+ MSI/MSI-X irq
+References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com> <1409911806-10519-16-git-send-email-wangyijing@huawei.com> <540994D4.6040500@cogentembedded.com> <43412AE0-85BB-4B4B-A4EA-2C6D3B8B85D7@gmail.com>
+In-Reply-To: <43412AE0-85BB-4B4B-A4EA-2C6D3B8B85D7@gmail.com>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42426
+X-archive-position: 42427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangyijing0307@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,59 +85,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 9/5/2014 3:33 PM, wangyijing wrote:
 
+>>> Use MSI chip framework instead of arch MSI functions to configure
+>>> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
-> 在 2014年9月5日，18:47，Sergei Shtylyov <sergei.shtylyov@cogentembedded.com> 写道：
-> 
-> Hello.
-> 
->> On 9/5/2014 2:10 PM, Yijing Wang wrote:
->> 
->> Use MSI chip framework instead of arch MSI functions to configure
->> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
-> 
->> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
->> ---
->>  arch/powerpc/kernel/msi.c |   14 ++++++++++++--
->>  1 files changed, 12 insertions(+), 2 deletions(-)
-> 
->> diff --git a/arch/powerpc/kernel/msi.c b/arch/powerpc/kernel/msi.c
->> index 71bd161..01781a4 100644
->> --- a/arch/powerpc/kernel/msi.c
->> +++ b/arch/powerpc/kernel/msi.c
-> [...]
->> @@ -27,7 +27,17 @@ int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
->>      return ppc_md.setup_msi_irqs(dev, nvec, type);
->>  }
->> 
->> -void arch_teardown_msi_irqs(struct pci_dev *dev)
->> +static void ppc_teardown_msi_irqs(struct pci_dev *dev)
-> 
->   Shouldn't this function take IRQ # instead?
+>>> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+>>> ---
+>>>   arch/powerpc/kernel/msi.c |   14 ++++++++++++--
+>>>   1 files changed, 12 insertions(+), 2 deletions(-)
 
-This function need to teardown all msi irqs of the pci dev, we should pass the pci dev as argument .
+>>> diff --git a/arch/powerpc/kernel/msi.c b/arch/powerpc/kernel/msi.c
+>>> index 71bd161..01781a4 100644
+>>> --- a/arch/powerpc/kernel/msi.c
+>>> +++ b/arch/powerpc/kernel/msi.c
+>> [...]
+>>> @@ -27,7 +27,17 @@ int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+>>>       return ppc_md.setup_msi_irqs(dev, nvec, type);
+>>>   }
+>>>
+>>> -void arch_teardown_msi_irqs(struct pci_dev *dev)
+>>> +static void ppc_teardown_msi_irqs(struct pci_dev *dev)
 
-Thanks!
-Yijing.
+>>    Shouldn't this function take IRQ # instead?
 
-> 
->>  {
->>      ppc_md.teardown_msi_irqs(dev);
->>  }
->> +
->> +static struct msi_chip ppc_msi_chip = {
->> +    .setup_irqs = ppc_setup_msi_irqs,
->> +    .teardown_irqs = ppc_teardown_msi_irqs,
->> +};
->> +
->> +struct msi_chip *arch_find_msi_chip(struct pci_dev *dev)
->> +{
->> +    return &ppc_msi_chip;
->> +}
-> 
-> WBR, Sergei
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-pci" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> This function need to teardown all msi irqs of the pci dev, we should pass the pci dev as argument .
+
+    Ah, I've mixed up the teardown_irqs() method with teardown_irq()! Too 
+similar. :-)
+
+> Thanks!
+> Yijing.
+
+WBR, Sergei

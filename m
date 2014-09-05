@@ -1,48 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 10:08:44 +0200 (CEST)
-Received: from mail-wi0-f179.google.com ([209.85.212.179]:43890 "EHLO
-        mail-wi0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007010AbaIEIImfnDJ8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 10:08:42 +0200
-Received: by mail-wi0-f179.google.com with SMTP id q5so2503022wiv.6
-        for <multiple recipients>; Fri, 05 Sep 2014 01:08:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=9raxfcdwGOoDRIm7DR6n02ZyyfEQxmRrxX0w+jcCTDI=;
-        b=LzLzrZomU3X67/0aZeFHJGLRXhOYKEsqZ6gpKhTvYY4YzlSVSTs8fBxitaDCVBuK0r
-         4B/hsH3LwJJ7TQf4P5PrOMOzG0Jo0eC89bTF69E6XT2myGMcXQOvmBHJo+DQ9ppC0BeW
-         hArILyVdySfWxSaqhgc10judrxmL9R3ymZPiN3MTlbm7CAtZcZUQPIhCt6vBlWWZxQSf
-         ceJGtxCmqClgJ9y6ahlXRhg7ZjW+aFJtPU/V6TVXLhkaMDlUh5b6urgEQZBAeUkXS83J
-         BN1j43+sOPW/pFderDbpHGWn2sh44rtzObiHWOpPA/C5ulU4ckxNcesYZm3FqDnt4c0K
-         tQuA==
-X-Received: by 10.194.6.101 with SMTP id z5mr12749872wjz.79.1409904517257;
-        Fri, 05 Sep 2014 01:08:37 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id r8sm603701wjy.20.2014.09.05.01.08.35
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 05 Sep 2014 01:08:36 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Move SPROM fallback code into sprom.c
-Date:   Fri,  5 Sep 2014 10:08:23 +0200
-Message-Id: <1409904503-31202-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 11:46:08 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:62926 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007048AbaIEJqF6I5Ly (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 11:46:05 +0200
+Received: from 172.24.2.119 (EHLO szxeml419-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id ATY92806;
+        Fri, 05 Sep 2014 17:45:42 +0800 (CST)
+Received: from localhost.localdomain (10.175.100.166) by
+ szxeml419-hub.china.huawei.com (10.82.67.158) with Microsoft SMTP Server id
+ 14.3.158.1; Fri, 5 Sep 2014 17:45:26 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+CC:     Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        "Russell King" <linux@arm.linux.org.uk>,
+        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
+        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Yijing Wang <wangyijing@huawei.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>
+Subject: [PATCH v1 01/21] PCI/MSI: Clean up struct msi_chip argument
+Date:   Fri, 5 Sep 2014 18:09:46 +0800
+Message-ID: <1409911806-10519-2-git-send-email-wangyijing@huawei.com>
+X-Mailer: git-send-email 1.7.1
+In-Reply-To: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
+References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.175.100.166]
+X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A020206.5409864A.017D,ss=1,re=0.000,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2011-05-27 18:58:46
+X-Mirapoint-Loop-Id: 9849e949b8bbcab4997d27c03d49b308
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42400
+X-archive-position: 42401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,206 +70,178 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is some general cleanup as well as preparing sprom.c to become a
-standalone driver. We will need this for bcm53xx ARM arch support.
+Msi_chip functions setup_irq/teardown_irq rarely use msi_chip
+argument. We can look up msi_chip pointer by the device pointer
+or irq number, so clean up msi_chip argument.
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+CC: Thierry Reding <thierry.reding@gmail.com>
+CC: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/mips/bcm47xx/bcm47xx_private.h |  3 ++
- arch/mips/bcm47xx/setup.c           | 58 ++-----------------------------
- arch/mips/bcm47xx/sprom.c           | 68 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 73 insertions(+), 56 deletions(-)
+ drivers/irqchip/irq-armada-370-xp.c |   12 +++++-------
+ drivers/pci/host/pci-tegra.c        |    8 +++++---
+ drivers/pci/host/pcie-designware.c  |    4 ++--
+ drivers/pci/host/pcie-rcar.c        |    8 +++++---
+ drivers/pci/msi.c                   |    4 ++--
+ include/linux/msi.h                 |    5 ++---
+ 6 files changed, 21 insertions(+), 20 deletions(-)
 
-diff --git a/arch/mips/bcm47xx/bcm47xx_private.h b/arch/mips/bcm47xx/bcm47xx_private.h
-index f1cc9d0..12a112d 100644
---- a/arch/mips/bcm47xx/bcm47xx_private.h
-+++ b/arch/mips/bcm47xx/bcm47xx_private.h
-@@ -6,6 +6,9 @@
- /* prom.c */
- void __init bcm47xx_prom_highmem_init(void);
- 
-+/* sprom.c */
-+void bcm47xx_sprom_register_fallbacks(void);
-+
- /* buttons.c */
- int __init bcm47xx_buttons_register(void);
- 
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index ad439c2..30afbfa 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -102,23 +102,6 @@ static void bcm47xx_machine_halt(void)
+diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
+index 574aba0..658990c 100644
+--- a/drivers/irqchip/irq-armada-370-xp.c
++++ b/drivers/irqchip/irq-armada-370-xp.c
+@@ -129,9 +129,8 @@ static void armada_370_xp_free_msi(int hwirq)
+ 	mutex_unlock(&msi_used_lock);
  }
  
- #ifdef CONFIG_BCM47XX_SSB
--static int bcm47xx_get_sprom_ssb(struct ssb_bus *bus, struct ssb_sprom *out)
--{
--	char prefix[10];
--
--	if (bus->bustype == SSB_BUSTYPE_PCI) {
--		memset(out, 0, sizeof(struct ssb_sprom));
--		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
--			 bus->host_pci->bus->number + 1,
--			 PCI_SLOT(bus->host_pci->devfn));
--		bcm47xx_fill_sprom(out, prefix, false);
--		return 0;
--	} else {
--		printk(KERN_WARNING "bcm47xx: unable to fill SPROM for given bustype.\n");
--		return -EINVAL;
--	}
--}
--
- static int bcm47xx_get_invariants(struct ssb_bus *bus,
- 				  struct ssb_init_invariants *iv)
+-static int armada_370_xp_setup_msi_irq(struct msi_chip *chip,
+-				       struct pci_dev *pdev,
+-				       struct msi_desc *desc)
++static int armada_370_xp_setup_msi_irq(struct pci_dev *pdev,
++		struct msi_desc *desc)
  {
-@@ -144,11 +127,6 @@ static void __init bcm47xx_register_ssb(void)
- 	char buf[100];
- 	struct ssb_mipscore *mcore;
- 
--	err = ssb_arch_register_fallback_sprom(&bcm47xx_get_sprom_ssb);
--	if (err)
--		printk(KERN_WARNING "bcm47xx: someone else already registered"
--			" a ssb SPROM callback handler (err %d)\n", err);
--
- 	err = ssb_bus_ssbbus_register(&(bcm47xx_bus.ssb), SSB_ENUM_BASE,
- 				      bcm47xx_get_invariants);
- 	if (err)
-@@ -171,44 +149,10 @@ static void __init bcm47xx_register_ssb(void)
- #endif
- 
- #ifdef CONFIG_BCM47XX_BCMA
--static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
--{
--	char prefix[10];
--	struct bcma_device *core;
--
--	switch (bus->hosttype) {
--	case BCMA_HOSTTYPE_PCI:
--		memset(out, 0, sizeof(struct ssb_sprom));
--		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
--			 bus->host_pci->bus->number + 1,
--			 PCI_SLOT(bus->host_pci->devfn));
--		bcm47xx_fill_sprom(out, prefix, false);
--		return 0;
--	case BCMA_HOSTTYPE_SOC:
--		memset(out, 0, sizeof(struct ssb_sprom));
--		core = bcma_find_core(bus, BCMA_CORE_80211);
--		if (core) {
--			snprintf(prefix, sizeof(prefix), "sb/%u/",
--				 core->core_index);
--			bcm47xx_fill_sprom(out, prefix, true);
--		} else {
--			bcm47xx_fill_sprom(out, NULL, false);
--		}
--		return 0;
--	default:
--		pr_warn("bcm47xx: unable to fill SPROM for given bustype.\n");
--		return -EINVAL;
--	}
--}
--
- static void __init bcm47xx_register_bcma(void)
- {
- 	int err;
- 
--	err = bcma_arch_register_fallback_sprom(&bcm47xx_get_sprom_bcma);
--	if (err)
--		pr_warn("bcm47xx: someone else already registered a bcma SPROM callback handler (err %d)\n", err);
--
- 	err = bcma_host_soc_register(&bcm47xx_bus.bcma);
- 	if (err)
- 		panic("Failed to initialize BCMA bus (err %d)", err);
-@@ -225,6 +169,7 @@ void __init plat_mem_setup(void)
- 		printk(KERN_INFO "bcm47xx: using bcma bus\n");
- #ifdef CONFIG_BCM47XX_BCMA
- 		bcm47xx_bus_type = BCM47XX_BUS_TYPE_BCMA;
-+		bcm47xx_sprom_register_fallbacks();
- 		bcm47xx_register_bcma();
- 		bcm47xx_set_system_type(bcm47xx_bus.bcma.bus.chipinfo.id);
- #ifdef CONFIG_HIGHMEM
-@@ -235,6 +180,7 @@ void __init plat_mem_setup(void)
- 		printk(KERN_INFO "bcm47xx: using ssb bus\n");
- #ifdef CONFIG_BCM47XX_SSB
- 		bcm47xx_bus_type = BCM47XX_BUS_TYPE_SSB;
-+		bcm47xx_sprom_register_fallbacks();
- 		bcm47xx_register_ssb();
- 		bcm47xx_set_system_type(bcm47xx_bus.ssb.chip_id);
- #endif
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index 41226b6..e772e77 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -801,3 +801,71 @@ void bcm47xx_fill_bcma_boardinfo(struct bcma_boardinfo *boardinfo,
- 	nvram_read_u16(prefix, NULL, "boardtype", &boardinfo->type, 0, true);
+ 	struct msi_msg msg;
+ 	int virq, hwirq;
+@@ -156,8 +155,7 @@ static int armada_370_xp_setup_msi_irq(struct msi_chip *chip,
+ 	return 0;
  }
- #endif
-+
-+#if defined(CONFIG_BCM47XX_SSB)
-+static int bcm47xx_get_sprom_ssb(struct ssb_bus *bus, struct ssb_sprom *out)
-+{
-+	char prefix[10];
-+
-+	if (bus->bustype == SSB_BUSTYPE_PCI) {
-+		memset(out, 0, sizeof(struct ssb_sprom));
-+		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
-+			 bus->host_pci->bus->number + 1,
-+			 PCI_SLOT(bus->host_pci->devfn));
-+		bcm47xx_fill_sprom(out, prefix, false);
-+		return 0;
-+	} else {
-+		pr_warn("bcm47xx: unable to fill SPROM for given bustype.\n");
-+		return -EINVAL;
-+	}
-+}
-+#endif
-+
-+#if defined(CONFIG_BCM47XX_BCMA)
-+static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
-+{
-+	char prefix[10];
-+	struct bcma_device *core;
-+
-+	switch (bus->hosttype) {
-+	case BCMA_HOSTTYPE_PCI:
-+		memset(out, 0, sizeof(struct ssb_sprom));
-+		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
-+			 bus->host_pci->bus->number + 1,
-+			 PCI_SLOT(bus->host_pci->devfn));
-+		bcm47xx_fill_sprom(out, prefix, false);
-+		return 0;
-+	case BCMA_HOSTTYPE_SOC:
-+		memset(out, 0, sizeof(struct ssb_sprom));
-+		core = bcma_find_core(bus, BCMA_CORE_80211);
-+		if (core) {
-+			snprintf(prefix, sizeof(prefix), "sb/%u/",
-+				 core->core_index);
-+			bcm47xx_fill_sprom(out, prefix, true);
-+		} else {
-+			bcm47xx_fill_sprom(out, NULL, false);
-+		}
-+		return 0;
-+	default:
-+		pr_warn("bcm47xx: unable to fill SPROM for given bustype.\n");
-+		return -EINVAL;
-+	}
-+}
-+#endif
-+
-+/*
-+ * On bcm47xx we need to register SPROM fallback handler very early, so we can't
-+ * use anything like platform device / driver for this.
-+ */
-+void bcm47xx_sprom_register_fallbacks(void)
-+{
-+#if defined(CONFIG_BCM47XX_SSB)
-+	if (ssb_arch_register_fallback_sprom(&bcm47xx_get_sprom_ssb))
-+		pr_warn("Failed to registered ssb SPROM handler\n");
-+#endif
-+
-+#if defined(CONFIG_BCM47XX_BCMA)
-+	if (bcma_arch_register_fallback_sprom(&bcm47xx_get_sprom_bcma))
-+		pr_warn("Failed to registered bcma SPROM handler\n");
-+#endif
-+}
+ 
+-static void armada_370_xp_teardown_msi_irq(struct msi_chip *chip,
+-					   unsigned int irq)
++static void armada_370_xp_teardown_msi_irq(unsigned int irq)
+ {
+ 	struct irq_data *d = irq_get_irq_data(irq);
+ 	unsigned long hwirq = d->hwirq;
+@@ -166,8 +164,8 @@ static void armada_370_xp_teardown_msi_irq(struct msi_chip *chip,
+ 	armada_370_xp_free_msi(hwirq);
+ }
+ 
+-static int armada_370_xp_check_msi_device(struct msi_chip *chip, struct pci_dev *dev,
+-					  int nvec, int type)
++static int armada_370_xp_check_msi_device(struct pci_dev *dev,
++		int nvec, int type)
+ {
+ 	/* We support MSI, but not MSI-X */
+ 	if (type == PCI_CAP_ID_MSI)
+diff --git a/drivers/pci/host/pci-tegra.c b/drivers/pci/host/pci-tegra.c
+index 0fb0fdb..edd4040 100644
+--- a/drivers/pci/host/pci-tegra.c
++++ b/drivers/pci/host/pci-tegra.c
+@@ -1157,9 +1157,10 @@ static irqreturn_t tegra_pcie_msi_irq(int irq, void *data)
+ 	return processed > 0 ? IRQ_HANDLED : IRQ_NONE;
+ }
+ 
+-static int tegra_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
++static int tegra_msi_setup_irq(struct pci_dev *pdev,
+ 			       struct msi_desc *desc)
+ {
++	struct msi_chip *chip = pdev->bus->msi;
+ 	struct tegra_msi *msi = to_tegra_msi(chip);
+ 	struct msi_msg msg;
+ 	unsigned int irq;
+@@ -1185,10 +1186,11 @@ static int tegra_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
+ 	return 0;
+ }
+ 
+-static void tegra_msi_teardown_irq(struct msi_chip *chip, unsigned int irq)
++static void tegra_msi_teardown_irq(unsigned int irq)
+ {
+-	struct tegra_msi *msi = to_tegra_msi(chip);
+ 	struct irq_data *d = irq_get_irq_data(irq);
++	struct msi_chip *chip = irq_get_chip_data(irq);
++	struct tegra_msi *msi = to_tegra_msi(chip);
+ 
+ 	tegra_msi_free(msi, d->hwirq);
+ }
+diff --git a/drivers/pci/host/pcie-designware.c b/drivers/pci/host/pcie-designware.c
+index 52bd3a1..2204456 100644
+--- a/drivers/pci/host/pcie-designware.c
++++ b/drivers/pci/host/pcie-designware.c
+@@ -342,7 +342,7 @@ static void clear_irq(unsigned int irq)
+ 	msi->msi_attrib.multiple = 0;
+ }
+ 
+-static int dw_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
++static int dw_msi_setup_irq(struct pci_dev *pdev,
+ 			struct msi_desc *desc)
+ {
+ 	int irq, pos, msgvec;
+@@ -384,7 +384,7 @@ static int dw_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
+ 	return 0;
+ }
+ 
+-static void dw_msi_teardown_irq(struct msi_chip *chip, unsigned int irq)
++static void dw_msi_teardown_irq(unsigned int irq)
+ {
+ 	clear_irq(irq);
+ }
+diff --git a/drivers/pci/host/pcie-rcar.c b/drivers/pci/host/pcie-rcar.c
+index 4884ee5..647bc9f 100644
+--- a/drivers/pci/host/pcie-rcar.c
++++ b/drivers/pci/host/pcie-rcar.c
+@@ -615,9 +615,10 @@ static irqreturn_t rcar_pcie_msi_irq(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int rcar_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
++static int rcar_msi_setup_irq(struct pci_dev *pdev,
+ 			      struct msi_desc *desc)
+ {
++	struct msi_chip *chip = pdev->bus->msi;
+ 	struct rcar_msi *msi = to_rcar_msi(chip);
+ 	struct rcar_pcie *pcie = container_of(chip, struct rcar_pcie, msi.chip);
+ 	struct msi_msg msg;
+@@ -645,10 +646,11 @@ static int rcar_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
+ 	return 0;
+ }
+ 
+-static void rcar_msi_teardown_irq(struct msi_chip *chip, unsigned int irq)
++static void rcar_msi_teardown_irq(unsigned int irq)
+ {
+-	struct rcar_msi *msi = to_rcar_msi(chip);
+ 	struct irq_data *d = irq_get_irq_data(irq);
++	struct msi_chip *chip = irq_get_chip_data(irq);
++	struct rcar_msi *msi = to_rcar_msi(chip);
+ 
+ 	rcar_msi_free(msi, d->hwirq);
+ }
+diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+index 8fc9587..f6cb317 100644
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -37,7 +37,7 @@ int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
+ 	if (!chip || !chip->setup_irq)
+ 		return -EINVAL;
+ 
+-	err = chip->setup_irq(chip, dev, desc);
++	err = chip->setup_irq(dev, desc);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -53,7 +53,7 @@ void __weak arch_teardown_msi_irq(unsigned int irq)
+ 	if (!chip || !chip->teardown_irq)
+ 		return;
+ 
+-	chip->teardown_irq(chip, irq);
++	chip->teardown_irq(irq);
+ }
+ 
+ int __weak arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index c3c70a6..762fe61 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -71,9 +71,8 @@ struct msi_chip {
+ 	struct device_node *of_node;
+ 	struct list_head list;
+ 
+-	int (*setup_irq)(struct msi_chip *chip, struct pci_dev *dev,
+-			 struct msi_desc *desc);
+-	void (*teardown_irq)(struct msi_chip *chip, unsigned int irq);
++	int (*setup_irq)(struct pci_dev *dev, struct msi_desc *desc);
++	void (*teardown_irq)(unsigned int irq);
+ };
+ 
+ #endif /* LINUX_MSI_H */
 -- 
-1.8.4.5
+1.7.1

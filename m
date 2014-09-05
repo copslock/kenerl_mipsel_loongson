@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 19:34:54 +0200 (CEST)
-Received: from mail-pa0-f73.google.com ([209.85.220.73]:52040 "EHLO
-        mail-pa0-f73.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27025908AbaIERaphIGV0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 19:30:45 +0200
-Received: by mail-pa0-f73.google.com with SMTP id kx10so3542990pab.0
-        for <linux-mips@linux-mips.org>; Fri, 05 Sep 2014 10:30:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2014 19:35:12 +0200 (CEST)
+Received: from mail-ob0-f202.google.com ([209.85.214.202]:44381 "EHLO
+        mail-ob0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025911AbaIERarbGm0S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Sep 2014 19:30:47 +0200
+Received: by mail-ob0-f202.google.com with SMTP id wp18so2082603obc.3
+        for <linux-mips@linux-mips.org>; Fri, 05 Sep 2014 10:30:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=2V1kT88ylxwKA0Oi46b4c0FcstE4LHNaQPrPX4rprIw=;
-        b=LlmmjVKuRzj+hm8Pf30XPrOJPWQXYZ1EguMg4hD6ZlnCN76CGByXdbGJOethfNVL4h
-         WgIpAeBgWLWzkZ6r5ye5dOmOUMtroSyi2RH8nrM0TQgnApRXCT67l/wnHbz4OtO1a5nv
-         /Edy0zfH5qi6HqFmvk8ShAEFORWB1DYlx9INcqzkie8LqAcBtX3GVaCcFRf1eZm6s+he
-         kH32mfvEktWXJdAEREKhc/yBjdKv7JIWEcuBdf1vkSK7+lZi1SwdJZaK38z1vxKdO0TY
-         mhBEiT7p1tAH8Fz3GadkKb0oflD27cz0vDq8Q7EPNhIvdhbZ5Virn+cQ0AX4XJj8TdD0
-         craQ==
-X-Gm-Message-State: ALoCoQmSuaYHXSIEcRHul2q4g4gHyyI7Z1Bkcgv6aA7b+o0gPltvradX2NvSy/VjkNvekySC5b70
-X-Received: by 10.66.190.67 with SMTP id go3mr7636803pac.10.1409938239522;
-        Fri, 05 Sep 2014 10:30:39 -0700 (PDT)
-Received: from corp2gmr1-1.hot.corp.google.com (corp2gmr1-1.hot.corp.google.com [172.24.189.92])
-        by gmr-mx.google.com with ESMTPS id d7si508249yho.2.2014.09.05.10.30.39
+        bh=Rpl2JdSPo8tnSjBfmdT9NhKu3hDb7rLTwd34KbVFjMw=;
+        b=V614iSfw/f/CYFpphgQTrW5RRW0PNvcvw2ERFza+fqoaRp+YFoWunGMZu19tp3PjCg
+         U3734ceWOoDN+lMpUWBwZyZCCjTSb2nD65xb9JwSpCBoUzibMh7+Gip7D7fa461cPCNJ
+         m6agSGYOF1vDOptqq0TMhanVwYhVIUSArwhg35gCAAfxNCxXVvktE8r49H8iuqBYLtZe
+         G+92SWpxZdNHHn2wVCIbQgYfzTRT+k4lGSCFVubBl0Vc5tC/3gXSO5imyEJHSyi6lCFq
+         WIm+JcTSrxTXEAAdErkRH98TE4Uy86DBWphPQQY7TC/aLSF61jzWHamB/1m9r5rfFVlT
+         ASIg==
+X-Gm-Message-State: ALoCoQmDpnERH23akKw5u3mcilZP2FBYmpDAz0jHT31fVnIpKFhWzAjtkw0dSo18yZ85zgvW+wU0
+X-Received: by 10.182.81.161 with SMTP id b1mr7175431oby.1.1409938241774;
+        Fri, 05 Sep 2014 10:30:41 -0700 (PDT)
+Received: from corp2gmr1-2.hot.corp.google.com (corp2gmr1-2.hot.corp.google.com [172.24.189.93])
+        by gmr-mx.google.com with ESMTPS id c77si506623yha.5.2014.09.05.10.30.41
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 05 Sep 2014 10:30:39 -0700 (PDT)
+        Fri, 05 Sep 2014 10:30:41 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com (abrestic.mtv.corp.google.com [172.22.65.70])
-        by corp2gmr1-1.hot.corp.google.com (Postfix) with ESMTP id 3DC9C31C285;
-        Fri,  5 Sep 2014 10:30:39 -0700 (PDT)
+        by corp2gmr1-2.hot.corp.google.com (Postfix) with ESMTP id 828245A427D;
+        Fri,  5 Sep 2014 10:30:41 -0700 (PDT)
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 019052209EA; Fri,  5 Sep 2014 10:30:38 -0700 (PDT)
+        id 4707E2209EA; Fri,  5 Sep 2014 10:30:41 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -46,9 +46,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         John Crispin <blogic@openwrt.org>,
         David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 14/16] irqchip: mips-gic: Support local interrupts
-Date:   Fri,  5 Sep 2014 10:30:16 -0700
-Message-Id: <1409938218-9026-15-git-send-email-abrestic@chromium.org>
+Subject: [PATCH v2 16/16] MIPS: Malta: Map GIC local interrupts
+Date:   Fri,  5 Sep 2014 10:30:18 -0700
+Message-Id: <1409938218-9026-17-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1409938218-9026-1-git-send-email-abrestic@chromium.org>
 References: <1409938218-9026-1-git-send-email-abrestic@chromium.org>
@@ -56,7 +56,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42444
+X-archive-position: 42445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,345 +73,145 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS GIC supports 7 local interrupts, 5 of which are just core
-interrupts which can be re-routed through the GIC.  This patch adds
-support for mapping and handling the remaining two: the GIC timer
-and watchdog.  GIC interrupts from 0 to GIC_NUM_INTRS are still the
-shared external interrupts while interrupts from GIC_NUM_INTRS to
-GIC_NUM_INTRS + GIC_NUM_LOCAL_INTRS are local interrupts.
-
-With device-tree based probing, the GIC local interrupts will be routed
-to the first GIC-to-CPU pin.  For platforms using a static mapping, the
-local interrupts can be initialized by extending the interrupt mapping
-table passed to gic_init.
+Now that the GIC driver properly supports local interrupts, extend
+the static interrupt mapping to include the GIC timer and watchdog
+and fix up the GIC interrupt setup and handling so that the local
+interrupts are properly handled.  Note that ipi_map is also renamed
+to gic_irq_map since it is now also used to track mapping of non-IPI
+interrupts to CPUs.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
 No changes from v1.
 ---
- arch/mips/include/asm/gic.h              |  12 +++
- arch/mips/include/asm/mach-generic/irq.h |   1 +
- drivers/irqchip/irq-mips-gic.c           | 180 +++++++++++++++++++++++++++----
- 3 files changed, 171 insertions(+), 22 deletions(-)
+ arch/mips/mti-malta/malta-int.c | 44 +++++++++++++++++++++++++++++++----------
+ 1 file changed, 34 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
-index 3853c15..d5b2d84 100644
---- a/arch/mips/include/asm/gic.h
-+++ b/arch/mips/include/asm/gic.h
-@@ -217,6 +217,10 @@
- #define GIC_VPE_COMPARE_LO_OFS		0x00a0
- #define GIC_VPE_COMPARE_HI_OFS		0x00a4
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index e4f43ba..16b1473 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -38,7 +38,7 @@
+ #include <asm/rtlx.h>
  
-+#define GIC_VPE_MAP_OFS			0x0040
-+#define GIC_VPE_MAP_TO_PIN(intr) \
-+	(GIC_VPE_MAP_OFS + 4 * (intr))
-+
- #define GIC_VPE_EIC_SHADOW_SET_BASE	0x0100
- #define GIC_VPE_EIC_SS(intr) \
- 	(GIC_VPE_EIC_SHADOW_SET_BASE + (4 * intr))
-@@ -354,6 +358,11 @@ struct gic_shared_intr_map {
- #define GIC_CPU_PIN_OFFSET	2
+ static unsigned long _msc01_biu_base;
+-static unsigned int ipi_map[NR_CPUS];
++static unsigned int gic_irq_map[NR_CPUS];
  
- /* Local GIC interrupts. */
-+#define GIC_LOCAL_INTR_WD	0 /* GIC watchdog timer */
-+#define GIC_LOCAL_INTR_COMPARE	1 /* GIC count/compare timer */
-+#define GIC_NUM_LOCAL_INTRS	2
-+
-+/* Pin mapping for CPU interrupts routable through the GIC. */
- #define GIC_INT_TMR		(GIC_CPU_INT5)
- #define GIC_INT_PERFCTR		(GIC_CPU_INT5)
+ static DEFINE_RAW_SPINLOCK(mips_irq_lock);
  
-@@ -389,6 +398,9 @@ extern void gic_bind_eic_interrupt(int irq, int set);
- extern unsigned int gic_get_timer_pending(void);
- extern void gic_get_int_mask(unsigned long *dst, const unsigned long *src);
- extern unsigned int gic_get_int(void);
-+extern void gic_get_local_int_mask(unsigned long *dst,
-+				   const unsigned long *src);
-+extern unsigned int gic_get_local_int(void);
- extern void gic_enable_interrupt(int irq_vec);
- extern void gic_disable_interrupt(int irq_vec);
- extern void gic_irq_ack(struct irq_data *d);
-diff --git a/arch/mips/include/asm/mach-generic/irq.h b/arch/mips/include/asm/mach-generic/irq.h
-index 050e18b..9233df6 100644
---- a/arch/mips/include/asm/mach-generic/irq.h
-+++ b/arch/mips/include/asm/mach-generic/irq.h
-@@ -40,6 +40,7 @@
- #ifndef MIPS_GIC_IRQ_BASE
- #define MIPS_GIC_IRQ_BASE (MIPS_CPU_IRQ_BASE + 8)
+@@ -129,8 +129,8 @@ static void malta_hw0_irqdispatch(void)
+ 
+ static void malta_ipi_irqdispatch(void)
+ {
+-#ifdef CONFIG_MIPS_GIC_IPI
+ 	unsigned long irq;
++#ifdef CONFIG_MIPS_GIC_IPI
+ 	DECLARE_BITMAP(pending, GIC_NUM_INTRS);
+ 
+ 	gic_get_int_mask(pending, ipi_ints);
+@@ -143,8 +143,12 @@ static void malta_ipi_irqdispatch(void)
+ 		irq = find_next_bit(pending, GIC_NUM_INTRS, irq + 1);
+ 	}
  #endif
-+#define MIPS_GIC_LOCAL_IRQ_BASE (MIPS_GIC_IRQ_BASE + GIC_NUM_INTRS)
- #endif /* CONFIG_MIPS_GIC */
- 
- #endif /* __ASM_MACH_GENERIC_IRQ_H */
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 82a35cf..638b75c 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -53,6 +53,21 @@ static struct gic_intrmask_regs intrmask_regs[NR_CPUS];
- 
- static struct irq_chip gic_irq_controller;
- 
-+static inline bool gic_is_local_irq(unsigned int hwirq)
-+{
-+	return hwirq >= GIC_NUM_INTRS;
-+}
+-	if (gic_compare_int())
+-		do_IRQ(MIPS_GIC_IRQ_BASE);
++	irq = gic_get_local_int();
++	while (irq < GIC_NUM_LOCAL_INTRS) {
++		do_IRQ(MIPS_GIC_LOCAL_IRQ_BASE + irq);
 +
-+static inline unsigned int gic_hw_to_local_irq(unsigned int hwirq)
-+{
-+	return hwirq - GIC_NUM_INTRS;
-+}
-+
-+static inline unsigned int gic_local_to_hw_irq(unsigned int irq)
-+{
-+	return irq + GIC_NUM_INTRS;
-+}
-+
- #if defined(CONFIG_CSRC_GIC) || defined(CONFIG_CEVT_GIC)
- cycle_t gic_read_count(void)
- {
-@@ -236,28 +251,77 @@ unsigned int gic_get_int(void)
- 	return find_first_bit(interrupts, GIC_NUM_INTRS);
- }
- 
-+void gic_get_local_int_mask(unsigned long *dst, const unsigned long *src)
-+{
-+	unsigned long pending, intrmask;
-+
-+	GICREAD(GIC_REG(VPE_LOCAL, GIC_VPE_PEND), pending);
-+	GICREAD(GIC_REG(VPE_LOCAL, GIC_VPE_MASK), intrmask);
-+
-+	bitmap_and(&pending, &pending, &intrmask, GIC_NUM_LOCAL_INTRS);
-+	bitmap_and(dst, src, &pending, GIC_NUM_LOCAL_INTRS);
-+}
-+
-+unsigned int gic_get_local_int(void)
-+{
-+	unsigned long interrupts;
-+
-+	bitmap_fill(&interrupts, GIC_NUM_LOCAL_INTRS);
-+	gic_get_local_int_mask(&interrupts, &interrupts);
-+
-+	return find_first_bit(&interrupts, GIC_NUM_LOCAL_INTRS);
-+}
-+
- static void gic_mask_irq(struct irq_data *d)
- {
--	GIC_CLR_INTR_MASK(d->irq - gic_irq_base);
-+	unsigned int irq = d->irq - gic_irq_base;
-+
-+	if (gic_is_local_irq(irq)) {
-+		GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK),
-+			 1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
-+	} else {
-+		GIC_CLR_INTR_MASK(irq);
++		irq = gic_get_local_int();
 +	}
  }
  
- static void gic_unmask_irq(struct irq_data *d)
- {
--	GIC_SET_INTR_MASK(d->irq - gic_irq_base);
-+	unsigned int irq = d->irq - gic_irq_base;
-+
-+	if (gic_is_local_irq(irq)) {
-+		GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK),
-+			 1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
-+	} else {
-+		GIC_SET_INTR_MASK(irq);
-+	}
+ static void corehi_irqdispatch(void)
+@@ -288,7 +292,7 @@ asmlinkage void plat_irq_dispatch(void)
+ 
+ 	if (irq == MIPSCPU_INT_I8259A)
+ 		malta_hw0_irqdispatch();
+-	else if (gic_present && ((1 << irq) & ipi_map[smp_processor_id()]))
++	else if (gic_present && ((1 << irq) & gic_irq_map[smp_processor_id()]))
+ 		malta_ipi_irqdispatch();
+ 	else
+ 		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
+@@ -408,7 +412,7 @@ static int msc_nr_eicirqs __initdata = ARRAY_SIZE(msc_eicirqmap);
+ #define GIC_CPU_NMI GIC_MAP_TO_NMI_MSK
+ #define X GIC_UNUSED
+ 
+-static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS] = {
++static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS + GIC_NUM_LOCAL_INTRS] = {
+ 	{ X, X,		   X,		X,		0 },
+ 	{ X, X,		   X,		X,		0 },
+ 	{ X, X,		   X,		X,		0 },
+@@ -425,7 +429,10 @@ static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS] = {
+ 	{ 0, GIC_CPU_NMI,  GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
+ 	{ 0, GIC_CPU_NMI,  GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
+ 	{ X, X,		   X,		X,		0 },
+-	/* The remainder of this table is initialised by fill_ipi_map */
++	/*
++	 * The remainder of this table is initialised by fill_ipi_map and
++	 * fill_local_irq_map
++	 */
+ };
+ #undef X
+ 
+@@ -438,7 +445,7 @@ static void __init fill_ipi_map1(int baseintr, int cpu, int cpupin)
+ 	gic_intr_map[intr].polarity = GIC_POL_POS;
+ 	gic_intr_map[intr].trigtype = GIC_TRIG_EDGE;
+ 	gic_intr_map[intr].flags = 0;
+-	ipi_map[cpu] |= (1 << (cpupin + 2));
++	gic_irq_map[cpu] |= (1 << (cpupin + 2));
+ 	bitmap_set(ipi_ints, intr, 1);
  }
  
- void __weak gic_irq_ack(struct irq_data *d)
- {
--	GIC_CLR_INTR_MASK(d->irq - gic_irq_base);
-+	unsigned int irq = d->irq - gic_irq_base;
- 
--	/* Clear edge detector */
--	if (gic_irq_flags[d->irq - gic_irq_base] & GIC_TRIG_EDGE)
--		GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), d->irq - gic_irq_base);
-+	if (gic_is_local_irq(irq)) {
-+		GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK),
-+			 1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
-+	} else {
-+		GIC_CLR_INTR_MASK(irq);
-+
-+		/* Clear edge detector */
-+		if (gic_irq_flags[irq] & GIC_TRIG_EDGE)
-+			GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), irq);
-+	}
+@@ -453,6 +460,22 @@ static void __init fill_ipi_map(void)
  }
+ #endif
  
- void __weak gic_finish_irq(struct irq_data *d)
- {
--	GIC_SET_INTR_MASK(d->irq - gic_irq_base);
-+	unsigned int irq = d->irq - gic_irq_base;
-+
-+	if (gic_is_local_irq(irq)) {
-+		GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK),
-+			 1 << GIC_INTR_BIT(gic_hw_to_local_irq(irq)));
-+	} else {
-+		GIC_SET_INTR_MASK(irq);
-+	}
- }
- 
- static int gic_set_type(struct irq_data *d, unsigned int type)
-@@ -265,6 +329,9 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- 	unsigned int irq = d->irq - gic_irq_base;
- 	bool is_edge;
- 
-+	if (gic_is_local_irq(irq))
-+		return -EINVAL;
-+
- 	switch (type & IRQ_TYPE_SENSE_MASK) {
- 	case IRQ_TYPE_EDGE_FALLING:
- 		GIC_SET_POLARITY(irq, GIC_POL_NEG);
-@@ -321,6 +388,9 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 	unsigned long	flags;
- 	int		i;
- 
-+	if (gic_is_local_irq(irq))
-+		return -EINVAL;
-+
- 	cpumask_and(&tmp, cpumask, cpu_online_mask);
- 	if (cpus_empty(tmp))
- 		return -EINVAL;
-@@ -406,6 +476,42 @@ static void __init gic_setup_intr(unsigned int intr, unsigned int cpu,
- 		gic_irq_flags[intr] |= GIC_TRIG_EDGE;
- }
- 
-+static void __init gic_setup_local_intr(unsigned int intr, unsigned int pin,
-+				unsigned int flags)
++static void __init fill_local_irq_map(void)
 +{
-+	struct gic_shared_intr_map *map_ptr;
-+	unsigned int local_irq = gic_hw_to_local_irq(intr);
 +	int i;
 +
-+	/* Setup Intr to Pin mapping */
-+	for (i = 0; i < nr_cpu_ids; i++) {
-+		GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), i);
-+		if (pin & GIC_MAP_TO_NMI_MSK) {
-+			GICWRITE(GIC_REG_ADDR(VPE_OTHER,
-+					GIC_VPE_MAP_TO_PIN(local_irq)), pin);
-+		} else {
-+			GICWRITE(GIC_REG_ADDR(VPE_OTHER,
-+					GIC_VPE_MAP_TO_PIN(local_irq)),
-+				 GIC_MAP_TO_PIN_MSK | pin);
-+		}
++	for (i = 0; i < GIC_NUM_LOCAL_INTRS; i++) {
++		int intr = i + GIC_NUM_INTRS;
++
++		gic_intr_map[intr].cpunum = 0;
++		gic_intr_map[intr].pin = GIC_CPU_INT2;
++		gic_intr_map[intr].flags = 0;
 +	}
 +
-+	if (!(pin & GIC_MAP_TO_NMI_MSK) && cpu_has_veic) {
-+		set_vi_handler(pin + GIC_PIN_TO_VEC_OFFSET,
-+			       gic_eic_irq_dispatch);
-+		map_ptr = &gic_shared_intr_map[pin + GIC_PIN_TO_VEC_OFFSET];
-+		if (map_ptr->num_shared_intr >= GIC_MAX_SHARED_INTR)
-+			BUG();
-+		map_ptr->intr_list[map_ptr->num_shared_intr++] = intr;
-+	}
-+
-+	/* Init Intr Masks */
-+	GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK),
-+		 1 << GIC_INTR_BIT(local_irq));
-+
-+	irq_set_percpu_devid(gic_irq_base + intr);
++	for (i = 0; i < NR_CPUS; i++)
++		gic_irq_map[i] |= 1 << (GIC_CPU_INT2 + 2);
 +}
 +
- static void __init gic_basic_init(int numintrs, int numvpes,
- 			struct gic_intr_map *intrmap, int mapsize)
+ void __init arch_init_ipiirq(int irq, struct irqaction *action)
  {
-@@ -438,12 +544,17 @@ static void __init gic_basic_init(int numintrs, int numvpes,
- 		cpu = intrmap[i].cpunum;
- 		if (cpu == GIC_UNUSED)
- 			continue;
--		gic_setup_intr(i,
--			intrmap[i].cpunum,
--			intrmap[i].pin + pin_offset,
--			intrmap[i].polarity,
--			intrmap[i].trigtype,
--			intrmap[i].flags);
-+		if (gic_is_local_irq(i))
-+			gic_setup_local_intr(i,
-+				intrmap[i].pin + pin_offset,
-+				intrmap[i].flags);
-+		else
-+			gic_setup_intr(i,
-+				intrmap[i].cpunum,
-+				intrmap[i].pin + pin_offset,
-+				intrmap[i].polarity,
-+				intrmap[i].trigtype,
-+				intrmap[i].flags);
- 	}
- 
- 	vpe_local_setup(numvpes);
-@@ -472,7 +583,8 @@ void __init gic_init(unsigned long gic_base_addr,
- 
- 	gic_basic_init(numintrs, numvpes, intr_map, intr_map_size);
- 
--	gic_platform_init(numintrs, &gic_irq_controller);
-+	gic_platform_init(GIC_NUM_INTRS + GIC_NUM_LOCAL_INTRS,
-+			  &gic_irq_controller);
- }
- 
- #ifdef CONFIG_IRQ_DOMAIN
-@@ -563,13 +675,30 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int irq,
- {
- 	int pin = gic_cpu_pin[0] - GIC_CPU_PIN_OFFSET;
- 
--	irq_set_chip_and_handler(irq, &gic_irq_controller, handle_level_irq);
-+	if (gic_is_local_irq(hw)) {
-+		int i;
-+		int local_irq = gic_hw_to_local_irq(hw);
-+
-+		irq_set_chip_and_handler(irq, &gic_irq_controller,
-+					 handle_percpu_irq);
-+		irq_set_percpu_devid(irq);
- 
--	GICWRITE(GIC_REG_ADDR(SHARED, GIC_SH_MAP_TO_PIN(hw)),
--		 GIC_MAP_TO_PIN_MSK | pin);
--	/* Map to VPE 0 by default */
--	GIC_SH_MAP_TO_VPE_SMASK(hw, 0);
--	set_bit(hw, pcpu_masks[0].pcpu_mask);
-+		for (i = 0; i < nr_cpu_ids; i++) {
-+			GICWRITE(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), i);
-+			GICWRITE(GIC_REG_ADDR(VPE_OTHER,
-+					      GIC_VPE_MAP_TO_PIN(local_irq)),
-+				 GIC_MAP_TO_PIN_MSK | pin);
-+		}
-+	} else {
-+		irq_set_chip_and_handler(irq, &gic_irq_controller,
-+					 handle_level_irq);
-+
-+		GICWRITE(GIC_REG_ADDR(SHARED, GIC_SH_MAP_TO_PIN(hw)),
-+			 GIC_MAP_TO_PIN_MSK | pin);
-+		/* Map to VPE 0 by default */
-+		GIC_SH_MAP_TO_VPE_SMASK(hw, 0);
-+		set_bit(hw, pcpu_masks[0].pcpu_mask);
-+	}
- 
- 	return 0;
- }
-@@ -584,6 +713,11 @@ static void gic_irq_dispatch(unsigned int irq, struct irq_desc *desc)
- 	struct irq_domain *domain = irq_get_handler_data(irq);
- 	unsigned int hwirq;
- 
-+	while ((hwirq = gic_get_local_int()) != GIC_NUM_LOCAL_INTRS) {
-+		irq = irq_linear_revmap(domain, gic_local_to_hw_irq(hwirq));
-+		generic_handle_irq(irq);
-+	}
-+
- 	while ((hwirq = gic_get_int()) != GIC_NUM_INTRS) {
- 		irq = irq_linear_revmap(domain, hwirq);
- 		generic_handle_irq(irq);
-@@ -627,8 +761,10 @@ int __init gic_of_init(struct device_node *node, struct device_node *parent)
- 
- 	gic_init(res.start, resource_size(&res), NULL, 0, MIPS_GIC_IRQ_BASE);
- 
--	domain = irq_domain_add_legacy(node, GIC_NUM_INTRS, MIPS_GIC_IRQ_BASE,
--				       0, &gic_irq_domain_ops, NULL);
-+	domain = irq_domain_add_legacy(node,
-+				       GIC_NUM_INTRS + GIC_NUM_LOCAL_INTRS,
-+				       MIPS_GIC_IRQ_BASE, 0,
-+				       &gic_irq_domain_ops, NULL);
- 	if (!domain) {
- 		pr_err("Failed to add GIC IRQ domain\n");
- 		return -ENOMEM;
+ 	setup_irq(irq, action);
+@@ -533,6 +556,7 @@ void __init arch_init_irq(void)
+ 		gic_resched_int_base = gic_call_int_base - nr_cpu_ids;
+ 		fill_ipi_map();
+ #endif
++		fill_local_irq_map();
+ 		gic_init(GIC_BASE_ADDR, GIC_ADDRSPACE_SZ, gic_intr_map,
+ 				ARRAY_SIZE(gic_intr_map), MIPS_GIC_IRQ_BASE);
+ 		if (!mips_cm_present()) {
+@@ -542,8 +566,7 @@ void __init arch_init_irq(void)
+ 				(i | (0x1 << MSC01_SC_CFG_GICENA_SHF));
+ 			pr_debug("GIC Enabled\n");
+ 		}
+-#if defined(CONFIG_MIPS_GIC_IPI)
+-		/* set up ipi interrupts */
++		/* set up ipi and local interrupts */
+ 		if (cpu_has_vint) {
+ 			set_vi_handler(MIPSCPU_INT_IPI0, malta_ipi_irqdispatch);
+ 			set_vi_handler(MIPSCPU_INT_IPI1, malta_ipi_irqdispatch);
+@@ -557,6 +580,7 @@ void __init arch_init_irq(void)
+ 		write_c0_status(0x1100dc00);
+ 		pr_info("CPU%d: status register frc %08x\n",
+ 			smp_processor_id(), read_c0_status());
++#if defined(CONFIG_MIPS_GIC_IPI)
+ 		for (i = 0; i < nr_cpu_ids; i++) {
+ 			arch_init_ipiirq(MIPS_GIC_IRQ_BASE +
+ 					 GIC_RESCHED_INT(i), &irq_resched);
 -- 
 2.1.0.rc2.206.gedb03e5

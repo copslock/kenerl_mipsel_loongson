@@ -1,55 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Sep 2014 00:15:39 +0200 (CEST)
-Received: from mail-yh0-f49.google.com ([209.85.213.49]:34489 "EHLO
-        mail-yh0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27025901AbaIEWOjwwUOk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Sep 2014 00:14:39 +0200
-Received: by mail-yh0-f49.google.com with SMTP id z6so7822846yhz.36
-        for <linux-mips@linux-mips.org>; Fri, 05 Sep 2014 15:14:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=Ly2ged3LV5UtVnaiJ5dRlmi0SXluoTfKNyARUuR+YCg=;
-        b=K6+NmUj+s8Uh/cR/ITciEt91Abx+cS5fLkFe1OXY/eTBKpqTtD6iE+HzqXPxPMjk9x
-         1N4SGdbJpfTRVg677vQ8Br7Gzpg2dBkFQxj12DrzxOoQJzCvewLMRS173B1DAZOTtFyK
-         KjhJhopSCvVOfhYxuEcVRJHwd6IR8qYqqo8sQ+4VMt1IaH6k3A6iCukLuEoGJcgTX1FD
-         /QILWgxP9egJ81+hMv7SEGMlnq/Ov795nLwi4CcoU+982UCD6fYbSBsg9cY2XSnGVNGb
-         3eFlN4XeXqVAppHTOd81xD/rRWGUhxBFo1p6CiehTw5rDGTknEXTThKmM9SbUnW9HDgP
-         sAtw==
-X-Gm-Message-State: ALoCoQniQCHBkq2D8IJ+C94u0hY/YCu624jK0KH5s+KrcanCCjaoyxgGyYcuMTWIOdCeKfBiygb6
-X-Received: by 10.236.103.170 with SMTP id f30mr18442880yhg.76.1409955274172;
-        Fri, 05 Sep 2014 15:14:34 -0700 (PDT)
-Received: from localhost ([2602:301:77d8:1800:bd9e:fe09:e642:968])
-        by mx.google.com with ESMTPSA id n36sm1276309yhp.49.2014.09.05.15.14.32
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 05 Sep 2014 15:14:33 -0700 (PDT)
-From:   Andy Lutomirski <luto@amacapital.net>
-To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Will Drewry <wad@chromium.org>, Oleg Nesterov <oleg@redhat.com>
-Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-arch@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Alexei Starovoitov <ast@plumgrid.com>, hpa@zytor.com,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Andy Lutomirski <luto@amacapital.net>
-Subject: [PATCH v5 5/5] x86_64,entry: Use split-phase syscall_trace_enter for 64-bit syscalls
-Date:   Fri,  5 Sep 2014 15:13:56 -0700
-Message-Id: <a3dbd267ee990110478d349f78cccfdac5497a84.1409954077.git.luto@amacapital.net>
-X-Mailer: git-send-email 1.9.3
-In-Reply-To: <cover.1409954077.git.luto@amacapital.net>
-References: <cover.1409954077.git.luto@amacapital.net>
-In-Reply-To: <cover.1409954077.git.luto@amacapital.net>
-References: <cover.1409954077.git.luto@amacapital.net>
-Return-Path: <luto@amacapital.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Sep 2014 04:03:25 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:32751 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008161AbaIFCDX6GobP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Sep 2014 04:03:23 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8F2384C795D2D;
+        Sat,  6 Sep 2014 03:03:15 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 6 Sep
+ 2014 03:03:15 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Sat, 6 Sep 2014 03:03:15 +0100
+Received: from [127.0.1.1] (192.168.65.146) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 5 Sep
+ 2014 19:03:13 -0700
+Subject: [PATCH] MIPS: bugfix of coherentio variable default setup
+To:     <linux-mips@linux-mips.org>, <nbd@openwrt.org>,
+        <james.hogan@imgtec.com>, <jchandra@broadcom.com>,
+        <paul.burton@imgtec.com>, <david.daney@cavium.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <markos.chandras@imgtec.com>, <macro@linux-mips.org>,
+        <manuel.lauss@gmail.com>, <jerinjacobk@gmail.com>,
+        <chenhc@lemote.com>, <blogic@openwrt.org>
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Date:   Fri, 5 Sep 2014 19:03:12 -0700
+Message-ID: <20140906020312.5192.70037.stgit@linux-yegoshin>
+User-Agent: StGit/0.15
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42460
+X-archive-position: 42461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,80 +52,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On KVM on my box, this reduces the overhead from an always-accept
-seccomp filter from ~130ns to ~17ns.  Most of that comes from
-avoiding IRET on every syscall when seccomp is enabled.
+Patch commit b6d92b4a6bdb880b39789c677b952c53a437028d
 
-In extremely approximate hacked-up benchmarking, just bypassing IRET
-saves about 80ns, so there's another 43ns of savings here from
-simplifying the seccomp path.
+    MIPS: Add option to disable software I/O coherency.
 
-The diffstat is also rather nice :)
+    Some MIPS controllers have hardware I/O coherency. This patch
+    detects those and turns off software coherency. A new kernel
+    command line option also allows the user to manually turn
+    software coherency on or off.
 
-Signed-off-by: Andy Lutomirski <luto@amacapital.net>
+in fact enforces L2 cache flushes even on systems with IOCU.
+The default value of coherentio is 0 and is not changed even with IOCU.
+It is a serious performance problem because it destroys all IOCU performance
+advantages.
+
+It is fixed by setting coherentio to tri-state with default value as (-1) and
+setup a final value during platform coherency setup.
 ---
- arch/x86/kernel/entry_64.S | 38 +++++++++++++++-----------------------
- 1 file changed, 15 insertions(+), 23 deletions(-)
+ arch/mips/include/asm/mach-generic/dma-coherence.h |    7 ++++++-
+ arch/mips/mm/c-r4k.c                               |    2 +-
+ arch/mips/mm/dma-default.c                         |    2 +-
+ arch/mips/mti-malta/malta-setup.c                  |    8 ++++++--
+ arch/mips/pci/pci-alchemy.c                        |    2 +-
+ 5 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/entry_64.S b/arch/x86/kernel/entry_64.S
-index 0bd6d3c28064..df088bb03fb3 100644
---- a/arch/x86/kernel/entry_64.S
-+++ b/arch/x86/kernel/entry_64.S
-@@ -478,22 +478,6 @@ sysret_signal:
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index 7629c35..b4563df 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -49,7 +49,12 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
  
- #ifdef CONFIG_AUDITSYSCALL
- 	/*
--	 * Fast path for syscall audit without full syscall trace.
--	 * We just call __audit_syscall_entry() directly, and then
--	 * jump back to the normal fast path.
--	 */
--auditsys:
--	movq %r10,%r9			/* 6th arg: 4th syscall arg */
--	movq %rdx,%r8			/* 5th arg: 3rd syscall arg */
--	movq %rsi,%rcx			/* 4th arg: 2nd syscall arg */
--	movq %rdi,%rdx			/* 3rd arg: 1st syscall arg */
--	movq %rax,%rsi			/* 2nd arg: syscall number */
--	movl $AUDIT_ARCH_X86_64,%edi	/* 1st arg: audit arch */
--	call __audit_syscall_entry
--	LOAD_ARGS 0		/* reload call-clobbered registers */
--	jmp system_call_fastpath
--
--	/*
- 	 * Return fast path for syscall audit.  Call __audit_syscall_exit()
- 	 * directly and then jump back to the fast path with TIF_SYSCALL_AUDIT
- 	 * masked off.
-@@ -510,17 +494,25 @@ sysret_audit:
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+-	return coherentio;
++#ifdef CONFIG_DMA_COHERENT
++	return 1;
++#else
++	return (coherentio > 0);
++#endif
++
+ }
  
- 	/* Do syscall tracing */
- tracesys:
--#ifdef CONFIG_AUDITSYSCALL
--	testl $(_TIF_WORK_SYSCALL_ENTRY & ~_TIF_SYSCALL_AUDIT),TI_flags+THREAD_INFO(%rsp,RIP-ARGOFFSET)
--	jz auditsys
--#endif
-+	leaq -REST_SKIP(%rsp), %rdi
-+	movq $AUDIT_ARCH_X86_64, %rsi
-+	call syscall_trace_enter_phase1
-+	test %rax, %rax
-+	jnz tracesys_phase2		/* if needed, run the slow path */
-+	LOAD_ARGS 0			/* else restore clobbered regs */
-+	jmp system_call_fastpath	/*      and return to the fast path */
-+
-+tracesys_phase2:
- 	SAVE_REST
- 	FIXUP_TOP_OF_STACK %rdi
--	movq %rsp,%rdi
--	call syscall_trace_enter
-+	movq %rsp, %rdi
-+	movq $AUDIT_ARCH_X86_64, %rsi
-+	movq %rax,%rdx
-+	call syscall_trace_enter_phase2
-+
- 	/*
- 	 * Reload arg registers from stack in case ptrace changed them.
--	 * We don't reload %rax because syscall_trace_enter() returned
-+	 * We don't reload %rax because syscall_trace_entry_phase2() returned
- 	 * the value it wants us to use in the table lookup.
- 	 */
- 	LOAD_ARGS ARGOFFSET, 1
--- 
-1.9.3
+ #ifdef CONFIG_SWIOTLB
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index fbcd867..ad6ff7b 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1660,7 +1660,7 @@ void r4k_cache_init(void)
+ 	local_flush_icache_range	= local_r4k_flush_icache_range;
+ 
+ #if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+-	if (coherentio) {
++	if (coherentio > 0) {
+ 		_dma_cache_wback_inv	= (void *)cache_noop;
+ 		_dma_cache_wback	= (void *)cache_noop;
+ 		_dma_cache_inv		= (void *)cache_noop;
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 44b6dff..42c819a 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -24,7 +24,7 @@
+ #include <dma-coherence.h>
+ 
+ #ifdef CONFIG_DMA_MAYBE_COHERENT
+-int coherentio = 0;	/* User defined DMA coherency from command line. */
++int coherentio = -1;    /* User defined DMA coherency is not defined yet. */
+ EXPORT_SYMBOL_GPL(coherentio);
+ int hw_coherentio = 0;	/* Actual hardware supported DMA coherency setting. */
+ 
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index db7c9e5..48039fd 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -147,13 +147,17 @@ static void __init plat_setup_iocoherency(void)
+ 	if (plat_enable_iocoherency()) {
+ 		if (coherentio == 0)
+ 			pr_info("Hardware DMA cache coherency disabled\n");
+-		else
++		else {
++			coherentio = 1;
+ 			pr_info("Hardware DMA cache coherency enabled\n");
++		}
+ 	} else {
+ 		if (coherentio == 1)
+ 			pr_info("Hardware DMA cache coherency unsupported, but enabled from command line!\n");
+-		else
++		else {
++			coherentio = 0;
+ 			pr_info("Software DMA cache coherency enabled\n");
++		}
+ 	}
+ #else
+ 	if (!plat_enable_iocoherency())
+diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
+index c19600a..0d0b6c1 100644
+--- a/arch/mips/pci/pci-alchemy.c
++++ b/arch/mips/pci/pci-alchemy.c
+@@ -429,7 +429,7 @@ static int alchemy_pci_probe(struct platform_device *pdev)
+ 
+ 	/* Au1500 revisions older than AD have borked coherent PCI */
+ 	if ((alchemy_get_cputype() == ALCHEMY_CPU_AU1500) &&
+-	    (read_c0_prid() < 0x01030202) && !coherentio) {
++	    (read_c0_prid() < 0x01030202) && (coherentio <= 0)) {
+ 		val = __raw_readl(ctx->regs + PCI_REG_CONFIG);
+ 		val |= PCI_CONFIG_NC;
+ 		__raw_writel(val, ctx->regs + PCI_REG_CONFIG);

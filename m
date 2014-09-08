@@ -1,40 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Sep 2014 17:28:35 +0200 (CEST)
-Received: from demumfd001.nsn-inter.net ([93.183.12.32]:58283 "EHLO
-        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008471AbaIHP10SaL0B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Sep 2014 17:27:26 +0200
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd001.nsn-inter.net (8.14.3/8.14.3) with ESMTP id s88FRJUE002219
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 8 Sep 2014 15:27:19 GMT
-Received: from ak-desktop.emea.nsn-net.net ([10.144.35.206])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id s88FRGFb002806;
-        Mon, 8 Sep 2014 17:27:19 +0200
-From:   Aaro Koskinen <aaro.koskinen@nsn.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@nsn.com>
-Subject: [PATCH 4/4] MIPS: OCTEON: mark octeon_model_get_string() with __init
-Date:   Mon,  8 Sep 2014 18:25:43 +0300
-Message-Id: <1410189943-4573-5-git-send-email-aaro.koskinen@nsn.com>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1410189943-4573-1-git-send-email-aaro.koskinen@nsn.com>
-References: <1410189943-4573-1-git-send-email-aaro.koskinen@nsn.com>
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 2647
-X-purgate-ID: 151667::1410190039-00002A30-BFA32ABC/0/0
-Return-Path: <aaro.koskinen@nsn.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Sep 2014 21:11:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15876 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008367AbaIHTLIg10Ak (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Sep 2014 21:11:08 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 3825ABD8DBF8D;
+        Mon,  8 Sep 2014 20:10:57 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 8 Sep
+ 2014 20:11:00 +0100
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
+ (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 8 Sep
+ 2014 20:11:00 +0100
+Received: from BAMAIL02.ba.imgtec.org (192.168.66.28) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 8 Sep 2014 20:10:59 +0100
+Received: from [127.0.1.1] (192.168.65.146) by bamail02.ba.imgtec.org
+ (192.168.66.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 8 Sep
+ 2014 12:10:54 -0700
+Subject: [PATCH V2] MIPS: bugfix of coherentio variable default setup
+To:     <linux-mips@linux-mips.org>, <nbd@openwrt.org>,
+        <james.hogan@imgtec.com>, <jchandra@broadcom.com>,
+        <paul.burton@imgtec.com>, <david.daney@cavium.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <markos.chandras@imgtec.com>, <macro@linux-mips.org>,
+        <manuel.lauss@gmail.com>, <jerinjacobk@gmail.com>,
+        <chenhc@lemote.com>, <blogic@openwrt.org>
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Date:   Mon, 8 Sep 2014 12:10:54 -0700
+Message-ID: <20140908191002.13852.47842.stgit@linux-yegoshin>
+User-Agent: StGit/0.15
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42477
+X-archive-position: 42478
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nsn.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,72 +55,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Mark octeon_model_get_string() with __init and make internal functions
-static.
+Patch commit b6d92b4a6bdb880b39789c677b952c53a437028d
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nsn.com>
+    MIPS: Add option to disable software I/O coherency.
+
+    Some MIPS controllers have hardware I/O coherency. This patch
+    detects those and turns off software coherency. A new kernel
+    command line option also allows the user to manually turn
+    software coherency on or off.
+
+in fact enforces L2 cache flushes even on systems with IOCU.
+The default value of coherentio is 0 and is not changed even with IOCU.
+It is a serious performance problem because it destroys all IOCU performance
+advantages.
+
+It is fixed by setting coherentio to tri-state with default value as (-1) and
+setup a final value during platform coherency setup.
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 ---
- arch/mips/cavium-octeon/executive/octeon-model.c | 7 ++++---
- arch/mips/include/asm/octeon/cvmx.h              | 2 --
- arch/mips/include/asm/octeon/octeon-model.h      | 3 +--
- 3 files changed, 5 insertions(+), 7 deletions(-)
+V2: Missed signature added
+---
+ arch/mips/include/asm/mach-generic/dma-coherence.h |    7 ++++++-
+ arch/mips/mm/c-r4k.c                               |    2 +-
+ arch/mips/mm/dma-default.c                         |    2 +-
+ arch/mips/mti-malta/malta-setup.c                  |    8 ++++++--
+ arch/mips/pci/pci-alchemy.c                        |    2 +-
+ 5 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/octeon-model.c b/arch/mips/cavium-octeon/executive/octeon-model.c
-index 5105d0d..e15b049 100644
---- a/arch/mips/cavium-octeon/executive/octeon-model.c
-+++ b/arch/mips/cavium-octeon/executive/octeon-model.c
-@@ -33,7 +33,7 @@
-  *
-  * Returns fuse value: 0 or 1
-  */
--uint8_t cvmx_fuse_read_byte(int byte_addr)
-+static uint8_t __init cvmx_fuse_read_byte(int byte_addr)
- {
- 	union cvmx_mio_fus_rcmd read_cmd;
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index 7629c35..b4563df 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -49,7 +49,12 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
  
-@@ -52,7 +52,8 @@ uint8_t cvmx_fuse_read_byte(int byte_addr)
-  * as running early in u-boot static/global variables don't work when
-  * running from flash.
-  */
--const char *octeon_model_get_string_buffer(uint32_t chip_id, char *buffer)
-+static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
-+							 char *buffer)
+ static inline int plat_device_is_coherent(struct device *dev)
  {
- 	const char *family;
- 	const char *core_model;
-@@ -422,7 +423,7 @@ const char *octeon_model_get_string_buffer(uint32_t chip_id, char *buffer)
-  *
-  * Returns Model string
-  */
--const char *octeon_model_get_string(uint32_t chip_id)
-+const char *__init octeon_model_get_string(uint32_t chip_id)
- {
- 	static char buffer[32];
- 	return octeon_model_get_string_buffer(chip_id, buffer);
-diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
-index b0b544f..33db1c8 100644
---- a/arch/mips/include/asm/octeon/cvmx.h
-+++ b/arch/mips/include/asm/octeon/cvmx.h
-@@ -451,6 +451,4 @@ static inline uint32_t cvmx_octeon_num_cores(void)
- 	return cvmx_pop(ciu_fuse);
+-	return coherentio;
++#ifdef CONFIG_DMA_COHERENT
++	return 1;
++#else
++	return (coherentio > 0);
++#endif
++
  }
  
--uint8_t cvmx_fuse_read_byte(int byte_addr);
--
- #endif /*  __CVMX_H__  */
-diff --git a/arch/mips/include/asm/octeon/octeon-model.h b/arch/mips/include/asm/octeon/octeon-model.h
-index e2c122c..e8a1c2f 100644
---- a/arch/mips/include/asm/octeon/octeon-model.h
-+++ b/arch/mips/include/asm/octeon/octeon-model.h
-@@ -326,8 +326,7 @@ static inline int __octeon_is_model_runtime__(uint32_t model)
- #define OCTEON_IS_COMMON_BINARY() 1
- #undef OCTEON_MODEL
+ #ifdef CONFIG_SWIOTLB
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index fbcd867..ad6ff7b 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1660,7 +1660,7 @@ void r4k_cache_init(void)
+ 	local_flush_icache_range	= local_r4k_flush_icache_range;
  
--const char *octeon_model_get_string(uint32_t chip_id);
--const char *octeon_model_get_string_buffer(uint32_t chip_id, char *buffer);
-+const char *__init octeon_model_get_string(uint32_t chip_id);
+ #if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+-	if (coherentio) {
++	if (coherentio > 0) {
+ 		_dma_cache_wback_inv	= (void *)cache_noop;
+ 		_dma_cache_wback	= (void *)cache_noop;
+ 		_dma_cache_inv		= (void *)cache_noop;
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 44b6dff..42c819a 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -24,7 +24,7 @@
+ #include <dma-coherence.h>
  
- /*
-  * Return the octeon family, i.e., ProcessorID of the PrID register.
--- 
-2.1.0
+ #ifdef CONFIG_DMA_MAYBE_COHERENT
+-int coherentio = 0;	/* User defined DMA coherency from command line. */
++int coherentio = -1;    /* User defined DMA coherency is not defined yet. */
+ EXPORT_SYMBOL_GPL(coherentio);
+ int hw_coherentio = 0;	/* Actual hardware supported DMA coherency setting. */
+ 
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index db7c9e5..48039fd 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -147,13 +147,17 @@ static void __init plat_setup_iocoherency(void)
+ 	if (plat_enable_iocoherency()) {
+ 		if (coherentio == 0)
+ 			pr_info("Hardware DMA cache coherency disabled\n");
+-		else
++		else {
++			coherentio = 1;
+ 			pr_info("Hardware DMA cache coherency enabled\n");
++		}
+ 	} else {
+ 		if (coherentio == 1)
+ 			pr_info("Hardware DMA cache coherency unsupported, but enabled from command line!\n");
+-		else
++		else {
++			coherentio = 0;
+ 			pr_info("Software DMA cache coherency enabled\n");
++		}
+ 	}
+ #else
+ 	if (!plat_enable_iocoherency())
+diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
+index c19600a..0d0b6c1 100644
+--- a/arch/mips/pci/pci-alchemy.c
++++ b/arch/mips/pci/pci-alchemy.c
+@@ -429,7 +429,7 @@ static int alchemy_pci_probe(struct platform_device *pdev)
+ 
+ 	/* Au1500 revisions older than AD have borked coherent PCI */
+ 	if ((alchemy_get_cputype() == ALCHEMY_CPU_AU1500) &&
+-	    (read_c0_prid() < 0x01030202) && !coherentio) {
++	    (read_c0_prid() < 0x01030202) && (coherentio <= 0)) {
+ 		val = __raw_readl(ctx->regs + PCI_REG_CONFIG);
+ 		val |= PCI_CONFIG_NC;
+ 		__raw_writel(val, ctx->regs + PCI_REG_CONFIG);

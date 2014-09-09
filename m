@@ -1,41 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Sep 2014 14:04:10 +0200 (CEST)
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:36511 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008439AbaIIMEFPhul6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Sep 2014 14:04:05 +0200
-Received: from mfilter18-d.gandi.net (mfilter18-d.gandi.net [217.70.178.146])
-        by relay5-d.mail.gandi.net (Postfix) with ESMTP id E434041C07B;
-        Tue,  9 Sep 2014 14:04:04 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at mfilter18-d.gandi.net
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
-        by mfilter18-d.gandi.net (mfilter18-d.gandi.net [10.0.15.180]) (amavisd-new, port 10024)
-        with ESMTP id 5-2uSLqqny5O; Tue,  9 Sep 2014 14:04:03 +0200 (CEST)
-X-Originating-IP: 88.159.34.112
-Received: from starbug-2.treewalker.org (unknown [88.159.34.112])
-        (Authenticated sender: relay@treewalker.org)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 42C8641C088;
-        Tue,  9 Sep 2014 14:04:03 +0200 (CEST)
-Received: from hyperion.trinair2002 (hyperion.trinair2002 [192.168.0.43])
-        by starbug-2.treewalker.org (Postfix) with ESMTP id C0DED31876;
-        Tue,  9 Sep 2014 14:04:02 +0200 (CEST)
-From:   Maarten ter Huurne <maarten@treewalker.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Apelete Seketeli <apelete@seketeli.net>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Maarten ter Huurne <maarten@treewalker.org>
-Subject: [PATCH] MIPS: Removed declaration of obsolete arch_init_clk_ops()
-Date:   Tue,  9 Sep 2014 14:04:00 +0200
-Message-Id: <1410264240-10869-1-git-send-email-maarten@treewalker.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Sep 2014 18:02:25 +0200 (CEST)
+Received: from mail-pa0-f53.google.com ([209.85.220.53]:37143 "EHLO
+        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008463AbaIIQCXgK-nO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Sep 2014 18:02:23 +0200
+Received: by mail-pa0-f53.google.com with SMTP id rd3so5132610pab.40
+        for <multiple recipients>; Tue, 09 Sep 2014 09:02:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=from:to:cc:subject:date:message-id;
+        bh=Ld7F9a3EtmL1bR+yaB6M9SkPUaEHcsMdfMnv11s9kR8=;
+        b=fTDx7+yAYOgOj7BADmayCFMOIjFq36oHWv/a4x+eOv5t+dwQH0Vsf2nRR/L4HjqOzL
+         4PxZwxk2w3+v093Uryg+0nR9I/zQUREwqb87QpBrcjYpzHtIesxDCP7a+9Sbl76KxQZH
+         qBPzP5OvnHs8mFf8Hx5E/kbJ9fwTeXBNJFOd3UmalAE8aAdr8wj3UKKhpP61FZ/tahxt
+         LJ/oMxxnYaijC8+MzjYYdwSqkxLYs9NkzbhkQY5HhQV1pSwRebrIAKpXYjLQ+xSEv2Kh
+         kBkRTAdrQxyZwHKy1cDNCQ/vtXefsS6Guza6+PdUjTdPnDuIqgt+vNeaFX22736JLBmC
+         pdvQ==
+X-Received: by 10.68.238.69 with SMTP id vi5mr31955612pbc.0.1410278535988;
+        Tue, 09 Sep 2014 09:02:15 -0700 (PDT)
+Received: from linux-ibnp.site (pdadd5e69.tokynt01.ap.so-net.ne.jp. [218.221.94.105])
+        by mx.google.com with ESMTPSA id cf4sm11985499pbb.87.2014.09.09.09.02.13
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 09 Sep 2014 09:02:15 -0700 (PDT)
+From:   Isamu Mogi <isamu@leafytree.jp>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Isamu Mogi <isamu@leafytree.jp>
+Subject: [PATCH] MIPS: R3000: Fix debug output for Virtual page number
+Date:   Wed, 10 Sep 2014 01:00:29 +0900
+Message-Id: <1410278429-8541-1-git-send-email-isamu@leafytree.jp>
 X-Mailer: git-send-email 1.8.4.5
-Return-Path: <maarten@treewalker.org>
+Return-Path: <wiz.saturday@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42484
+X-archive-position: 42485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maarten@treewalker.org
+X-original-sender: isamu@leafytree.jp
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,24 +51,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
----
- arch/mips/include/asm/clock.h | 3 ---
- 1 file changed, 3 deletions(-)
+Virtual page number of R3000 in entryhi is 20 bit from MSB. But in
+dump_tlb(), the bit mask to read it from entryhi is 19 bit (0xffffe000).
+The patch fixes that to 0xfffff000.
 
-diff --git a/arch/mips/include/asm/clock.h b/arch/mips/include/asm/clock.h
-index 778e32d..4809c29 100644
---- a/arch/mips/include/asm/clock.h
-+++ b/arch/mips/include/asm/clock.h
-@@ -35,9 +35,6 @@ struct clk {
- #define CLK_ALWAYS_ENABLED	(1 << 0)
- #define CLK_RATE_PROPAGATES	(1 << 1)
+Signed-off-by: Isamu Mogi <isamu@leafytree.jp>
+---
+ arch/mips/lib/r3k_dump_tlb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/lib/r3k_dump_tlb.c b/arch/mips/lib/r3k_dump_tlb.c
+index 91615c2..1ef365a 100644
+--- a/arch/mips/lib/r3k_dump_tlb.c
++++ b/arch/mips/lib/r3k_dump_tlb.c
+@@ -34,7 +34,7 @@ static void dump_tlb(int first, int last)
+ 		entrylo0 = read_c0_entrylo0();
  
--/* Should be defined by processor-specific code */
--void arch_init_clk_ops(struct clk_ops **, int type);
--
- int clk_init(void);
+ 		/* Unused entries have a virtual address of KSEG0.  */
+-		if ((entryhi & 0xffffe000) != 0x80000000
++		if ((entryhi & 0xfffff000) != 0x80000000
+ 		    && (entryhi & 0xfc0) == asid) {
+ 			/*
+ 			 * Only print entries in use
+@@ -43,7 +43,7 @@ static void dump_tlb(int first, int last)
  
- int __clk_enable(struct clk *);
+ 			printk("va=%08lx asid=%08lx"
+ 			       "  [pa=%06lx n=%d d=%d v=%d g=%d]",
+-			       (entryhi & 0xffffe000),
++			       (entryhi & 0xfffff000),
+ 			       entryhi & 0xfc0,
+ 			       entrylo0 & PAGE_MASK,
+ 			       (entrylo0 & (1 << 11)) ? 1 : 0,
 -- 
 1.8.4.5

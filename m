@@ -1,44 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2014 12:03:51 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60681 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008712AbaIKKDtHIzlt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Sep 2014 12:03:49 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 5B42455494F5C;
-        Thu, 11 Sep 2014 11:03:40 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 11 Sep 2014 11:03:41 +0100
-Received: from [192.168.154.67] (192.168.154.67) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 11 Sep
- 2014 11:03:41 +0100
-Message-ID: <5411737D.4070801@imgtec.com>
-Date:   Thu, 11 Sep 2014 11:03:41 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2014 14:34:17 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36386 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008711AbaIKMeMC08uU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Sep 2014 14:34:12 +0200
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.249] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1XS3Zd-0006Jo-KQ; Thu, 11 Sep 2014 13:34:06 +0100
+Received: from ben by deadeye with local (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1XS3ZS-0004FP-AT; Thu, 11 Sep 2014 13:33:54 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>, <nbd@openwrt.org>,
-        <james.hogan@imgtec.com>, <jchandra@broadcom.com>,
-        <paul.burton@imgtec.com>, <david.daney@cavium.com>,
-        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
-        <macro@linux-mips.org>, <manuel.lauss@gmail.com>,
-        <jerinjacobk@gmail.com>, <chenhc@lemote.com>, <blogic@openwrt.org>
-Subject: Re: [PATCH V2] MIPS: bugfix of coherentio variable default setup
-References: <20140908191002.13852.47842.stgit@linux-yegoshin>
-In-Reply-To: <20140908191002.13852.47842.stgit@linux-yegoshin>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.67]
-Return-Path: <Markos.Chandras@imgtec.com>
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        "Paul Burton" <paul.burton@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+Date:   Thu, 11 Sep 2014 13:32:13 +0100
+Message-ID: <lsq.1410438733.978510958@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.2 030/131] MIPS: Prevent user from setting FCSR cause bits
+In-Reply-To: <lsq.1410438733.176537304@decadent.org.uk>
+X-SA-Exim-Connect-IP: 192.168.4.249
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42514
+X-archive-position: 42515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,53 +49,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Leonid,
+3.2.63-rc1 review patch.  If anyone has any objections, please let me know.
 
-On 09/08/2014 08:10 PM, Leonid Yegoshin wrote:
-> Patch commit b6d92b4a6bdb880b39789c677b952c53a437028d
-> 
->     MIPS: Add option to disable software I/O coherency.
-> 
->     Some MIPS controllers have hardware I/O coherency. This patch
->     detects those and turns off software coherency. A new kernel
->     command line option also allows the user to manually turn
->     software coherency on or off.
-> 
-> in fact enforces L2 cache flushes even on systems with IOCU.
-> The default value of coherentio is 0 and is not changed even with IOCU.
-> It is a serious performance problem because it destroys all IOCU performance
-> advantages.
-> 
-> It is fixed by setting coherentio to tri-state with default value as (-1) and
-> setup a final value during platform coherency setup.
-> 
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> [...]
-> diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-> index db7c9e5..48039fd 100644
-> --- a/arch/mips/mti-malta/malta-setup.c
-> +++ b/arch/mips/mti-malta/malta-setup.c
-> @@ -147,13 +147,17 @@ static void __init plat_setup_iocoherency(void)
->  	if (plat_enable_iocoherency()) {
->  		if (coherentio == 0)
->  			pr_info("Hardware DMA cache coherency disabled\n");
-> -		else
-> +		else {
-> +			coherentio = 1;
->  			pr_info("Hardware DMA cache coherency enabled\n");
-> +		}
->  	} else {
->  		if (coherentio == 1)
->  			pr_info("Hardware DMA cache coherency unsupported, but enabled from command line!\n");
-> -		else
-> +		else {
-> +			coherentio = 0;
->  			pr_info("Software DMA cache coherency enabled\n");
-> +		}
+------------------
 
-This is not acceptable coding style for the kernel. See
-Documentation/CodingStyle, Chapter 3. Since you are adding braces in the
-"else" case, you should also add them in the "if" case as well.
+From: Paul Burton <paul.burton@imgtec.com>
 
--- 
-markos
+commit b1442d39fac2fcfbe6a4814979020e993ca59c9e upstream.
+
+If one or more matching FCSR cause & enable bits are set in saved thread
+context then when that context is restored the kernel will take an FP
+exception. This is of course undesirable and considered an oops, leading
+to the kernel writing a backtrace to the console and potentially
+rebooting depending upon the configuration. Thus the kernel avoids this
+situation by clearing the cause bits of the FCSR register when handling
+FP exceptions and after emulating FP instructions.
+
+However the kernel does not prevent userland from setting arbitrary FCSR
+cause & enable bits via ptrace, using either the PTRACE_POKEUSR or
+PTRACE_SETFPREGS requests. This means userland can trivially cause the
+kernel to oops on any system with an FPU. Prevent this from happening
+by clearing the cause bits when writing to the saved FCSR context via
+ptrace.
+
+This problem appears to exist at least back to the beginning of the git
+era in the PTRACE_POKEUSR case.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: Paul Burton <paul.burton@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/7438/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/kernel/ptrace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -162,6 +162,7 @@ int ptrace_setfpregs(struct task_struct
+ 		__get_user(fregs[i], i + (__u64 __user *) data);
+ 
+ 	__get_user(child->thread.fpu.fcr31, data + 64);
++	child->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
+ 
+ 	/* FIR may not be written.  */
+ 
+@@ -452,7 +453,7 @@ long arch_ptrace(struct task_struct *chi
+ 			break;
+ #endif
+ 		case FPC_CSR:
+-			child->thread.fpu.fcr31 = data;
++			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;

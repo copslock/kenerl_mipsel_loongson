@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2014 03:24:47 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:41542 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006909AbaIKBYnRXHpn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Sep 2014 03:24:43 +0200
-Received: from 172.24.2.119 (EHLO szxeml448-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AUE31679;
-        Thu, 11 Sep 2014 09:22:48 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml448-hub.china.huawei.com
- (10.82.67.191) with Microsoft SMTP Server id 14.3.158.1; Thu, 11 Sep 2014
- 09:22:37 +0800
-Message-ID: <5410F955.80609@huawei.com>
-Date:   Thu, 11 Sep 2014 09:22:29 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2014 03:29:43 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:17139 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006909AbaIKB3kbMpZs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Sep 2014 03:29:40 +0200
+Received: from 172.24.2.119 (EHLO szxeml419-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CBM93639;
+        Thu, 11 Sep 2014 09:27:29 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml419-hub.china.huawei.com
+ (10.82.67.158) with Microsoft SMTP Server id 14.3.158.1; Thu, 11 Sep 2014
+ 09:27:14 +0800
+Message-ID: <5410FA6E.8080708@huawei.com>
+Date:   Thu, 11 Sep 2014 09:27:10 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
 To:     David Vrabel <david.vrabel@citrix.com>,
         Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-mips@linux-mips.org>, <linux-ia64@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <Bharat.Bhushan@freescale.com>,
+        <linux-pci@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
         <sparclinux@vger.kernel.org>, <linux-arch@vger.kernel.org>,
         <linux-s390@vger.kernel.org>,
         Russell King <linux@arm.linux.org.uk>,
@@ -30,31 +30,24 @@ CC:     <linux-mips@linux-mips.org>, <linux-ia64@vger.kernel.org>,
         Chris Metcalf <cmetcalf@tilera.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         <linux-arm-kernel@lists.infradead.org>,
-        Xinwei Hu <huxinwei@huawei.com>,
-        "Tony Luck" <tony.luck@intel.com>,
+        <Bharat.Bhushan@freescale.com>, "Tony Luck" <tony.luck@intel.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         <iommu@lists.linux-foundation.org>, Wuyun <wuyun.wu@huawei.com>,
         <linuxppc-dev@lists.ozlabs.org>,
         "David S. Miller" <davem@davemloft.net>
-Subject: Re: [Xen-devel] [PATCH v1 04/21] x86/xen/MSI: Eliminate arch_msix_mask_irq()
- and arch_msi_mask_irq()
-References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com> <1409911806-10519-5-git-send-email-wangyijing@huawei.com> <541045BE.9050804@citrix.com>
-In-Reply-To: <541045BE.9050804@citrix.com>
+Subject: Re: [Xen-devel] [PATCH v1 08/21] x86/xen/MSI: Use MSI chip framework
+ to configure MSI/MSI-X irq
+References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>   <1409911806-10519-9-git-send-email-wangyijing@huawei.com>       <5409C8C0.8020200@citrix.com> <540E6095.8030409@huawei.com> <54104641.7020007@citrix.com>
+In-Reply-To: <54104641.7020007@citrix.com>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.177.27.212]
 X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020208.5410F96D.006D,ss=1,re=0.000,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2011-05-27 18:58:46
-X-Mirapoint-Loop-Id: 5b23eb4297e59afdb70bc19d5e198dc7
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42500
+X-archive-position: 42501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,29 +64,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/9/10 20:36, David Vrabel wrote:
-> On 05/09/14 11:09, Yijing Wang wrote:
->> Commit 0e4ccb150 added two __weak arch functions arch_msix_mask_irq()
->> and arch_msi_mask_irq() to fix a bug found when running xen in x86.
->> Introduced these two funcntions make MSI code complex. And mask/unmask
->> is the irq actions related to interrupt controller, should not use
->> weak arch functions to override mask/unmask interfaces. This patch
->> reverted commit 0e4ccb150 and export struct irq_chip msi_chip, modify
->> msi_chip->irq_mask/irq_unmask() in xen init functions to fix this
->> bug for simplicity. Also this is preparation for using struct
->> msi_chip instead of weak arch MSI functions in all platforms.
+On 2014/9/10 20:38, David Vrabel wrote:
+> On 09/09/14 03:06, Yijing Wang wrote:
+>> On 2014/9/5 22:29, David Vrabel wrote:
+>>> On 05/09/14 11:09, Yijing Wang wrote:
+>>>> Use MSI chip framework instead of arch MSI functions to configure
+>>>> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
+>>> [...]
+>>>> --- a/arch/x86/pci/xen.c
+>>>> +++ b/arch/x86/pci/xen.c
+>>> [...]
+>>>> @@ -418,9 +430,9 @@ int __init pci_xen_init(void)
+>>>>  #endif
+>>>>  
+>>>>  #ifdef CONFIG_PCI_MSI
+>>>> -	x86_msi.setup_msi_irqs = xen_setup_msi_irqs;
+>>>> -	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
+>>>> -	x86_msi.teardown_msi_irqs = xen_teardown_msi_irqs;
+>>>> +	xen_msi_chip.setup_irqs = xen_setup_msi_irqs;
+>>>> +	xen_msi_chip.teardown_irqs = xen_teardown_msi_irqs;
+>>>> +	x86_msi_chip = &xen_msi_chip;
+>>>>  	msi_chip.irq_mask = xen_nop_msi_mask;
+>>>>  	msi_chip.irq_unmask = xen_nop_msi_mask;
+>>>
+>>> Why have these not been changed to set the x86_msi_chip.mask/unmask
+>>> fields instead?
+>>
+>> Hi David, x86_msi_chip here is struct msi_chip data type, used to configure MSI/MSI-X
+>> irq. msi_chip above is struct irq_chip data type, represent the MSI irq controller. They are
+>> not the same object. Their name easily confusing people.
+> 
+> Ok, it all makes sense now.
 > 
 > Acked-by: David Vrabel <david.vrabel@citrix.com>
-> 
-> But I wonder if it would be better the Xen subsystem to provide its own
-> struct irq_chip instead of adjusting the fields in the generic x86 one.
-
-Thanks! Currently, Xen and the bare x86 system only have the different irq_chip->irq_mask/irq_unmask.
-So I chose to override the two ops of bare x86 irq_chip in xen. Konrad Rzeszutek Wilk has been tested it
-ok in his platform, so I think we could use its own irq_chip for xen later if the difference become large.
 
 Thanks!
-Yijing.
 
 > 
 > David

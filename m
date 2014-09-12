@@ -1,39 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Sep 2014 15:32:18 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54977 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008773AbaILNcQsVb1k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Sep 2014 15:32:16 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CA7E7C323501;
-        Fri, 12 Sep 2014 14:32:07 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 12 Sep 2014 14:32:10 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 12 Sep 2014 14:32:09 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v3] MIPS: mcount: Adjust stack pointer for static trace in MIPS32
-Date:   Fri, 12 Sep 2014 14:32:05 +0100
-Message-ID: <1410528725-29794-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1410510883-7257-1-git-send-email-markos.chandras@imgtec.com>
-References: <1410510883-7257-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Sep 2014 20:35:47 +0200 (CEST)
+Received: from mail-wg0-f41.google.com ([74.125.82.41]:60373 "EHLO
+        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008338AbaILSfphBdun (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Sep 2014 20:35:45 +0200
+Received: by mail-wg0-f41.google.com with SMTP id k14so1153937wgh.12
+        for <linux-mips@linux-mips.org>; Fri, 12 Sep 2014 11:35:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=zU9vQpTPFrjWgcN9W21ujjKFtzaTEtTKEwzh8tJftZs=;
+        b=VXIqhre66KL0Ja1vH/ZEdNKcWw/E+8XfBN0idjSQjQudSmhkvnZt/8xfKB4P+r2FnV
+         ozGzUC60OEYLtDa8ejeXkiHiyBLse2TDsHjKHxTDHGYTVYIASTpziVCnrJltY8hoyoxT
+         p8V+YVPmI/lLt6gquCWDDC+qb2bgXvPHeCMOkrNroj3Wv1RACwS7F5/Uu03ZvxdyuYXp
+         yZBTVxvG/gPGC9c3MXQgcVMcaddDeNq+woOofC9dewvcSAVsTSpl3fKaOL+RDBpZQSxp
+         36oQw561Dv/Zf5OqySJyWL7MXn6r9uRJAlkAORIxndUaBMBe44JfvKDawPEgGxd1bH1H
+         5kcg==
+X-Gm-Message-State: ALoCoQleqHQ9enfzoF0AcxKonL95hD4E7HGFWqT8J+7wP2gfNT6j3TqOJ3v0rWa8IupAMYb1NzrQ
+X-Received: by 10.180.94.161 with SMTP id dd1mr4729488wib.22.1410546937709;
+        Fri, 12 Sep 2014 11:35:37 -0700 (PDT)
+Received: from [192.168.122.210] (smart113.bb.netvision.net.il. [212.143.76.46])
+        by mx.google.com with ESMTPSA id q13sm1646199wik.8.2014.09.12.11.35.34
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 12 Sep 2014 11:35:36 -0700 (PDT)
+Message-ID: <54133CF1.4040306@cogentembedded.com>
+Date:   Fri, 12 Sep 2014 21:35:29 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.1.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.67]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org, nbd@openwrt.org, james.hogan@imgtec.com,
+        jchandra@broadcom.com, paul.burton@imgtec.com,
+        david.daney@cavium.com, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, markos.chandras@imgtec.com,
+        macro@linux-mips.org, manuel.lauss@gmail.com,
+        jerinjacobk@gmail.com, chenhc@lemote.com, blogic@openwrt.org
+Subject: Re: [PATCH V2] MIPS: bugfix of coherentio variable default setup
+References: <20140908191002.13852.47842.stgit@linux-yegoshin>
+In-Reply-To: <20140908191002.13852.47842.stgit@linux-yegoshin>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42523
+X-archive-position: 42524
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,68 +63,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Every mcount() call in the MIPS 32-bit kernel is done as follows:
+Hello.
 
-[...]
-move at, ra
-jal _mcount
-addiu sp, sp, -8
-[...]
+On 9/8/2014 10:10 PM, Leonid Yegoshin wrote:
 
-but upon returning from the mcount() function, the stack pointer
-is not adjusted properly. This is explained in details in 58b69401c797
-(MIPS: Function tracer: Fix broken function tracing).
+> Patch commit b6d92b4a6bdb880b39789c677b952c53a437028d
 
-Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
-fixed the stack manipulation for 64-bit but it didn't fix it completely
-for MIPS32.
+    Just commit.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-Changes since v2:
-- Also fix the case where the function graph tracer is enabled
-Changes since v1:
-- Also fix the case where the tracer is actually enabled
----
- arch/mips/kernel/mcount.S | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+>      MIPS: Add option to disable software I/O coherency.
 
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 5d25462de8a6..2d28c117831d 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -106,6 +106,9 @@ ftrace_graph_call:
- #endif
- 
- 	MCOUNT_RESTORE_REGS
-+#ifdef CONFIG_32BIT
-+        addiu sp, sp, 8
-+#endif
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-@@ -129,7 +132,11 @@ NESTED(_mcount, PT_SIZE, ra)
- 	 nop
- #endif
- 	b	ftrace_stub
-+#ifdef CONFIG_32BIT
-+	 addiu sp, sp, 8
-+#else
- 	 nop
-+#endif
- 
- static_trace:
- 	MCOUNT_SAVE_REGS
-@@ -139,6 +146,9 @@ static_trace:
- 	 move	a1, AT		/* arg2: parent's return address */
- 
- 	MCOUNT_RESTORE_REGS
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
--- 
-2.1.0
+    It's enough to just cite the summary in parens after SHA1 ID.
+
+>      Some MIPS controllers have hardware I/O coherency. This patch
+>      detects those and turns off software coherency. A new kernel
+>      command line option also allows the user to manually turn
+>      software coherency on or off.
+
+> in fact enforces L2 cache flushes even on systems with IOCU.
+> The default value of coherentio is 0 and is not changed even with IOCU.
+> It is a serious performance problem because it destroys all IOCU performance
+> advantages.
+
+> It is fixed by setting coherentio to tri-state with default value as (-1) and
+> setup a final value during platform coherency setup.
+
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> ---
+> V2: Missed signature added
+> ---
+>   arch/mips/include/asm/mach-generic/dma-coherence.h |    7 ++++++-
+>   arch/mips/mm/c-r4k.c                               |    2 +-
+>   arch/mips/mm/dma-default.c                         |    2 +-
+>   arch/mips/mti-malta/malta-setup.c                  |    8 ++++++--
+>   arch/mips/pci/pci-alchemy.c                        |    2 +-
+>   5 files changed, 15 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+> index 7629c35..b4563df 100644
+> --- a/arch/mips/include/asm/mach-generic/dma-coherence.h
+> +++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+> @@ -49,7 +49,12 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+>
+>   static inline int plat_device_is_coherent(struct device *dev)
+>   {
+> -	return coherentio;
+> +#ifdef CONFIG_DMA_COHERENT
+> +	return 1;
+> +#else
+> +	return (coherentio > 0);
+
+    *return* never needs parens around the value.
+
+> +#endif
+> +
+>   }
+>
+>   #ifdef CONFIG_SWIOTLB
+> diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+> index db7c9e5..48039fd 100644
+> --- a/arch/mips/mti-malta/malta-setup.c
+> +++ b/arch/mips/mti-malta/malta-setup.c
+> @@ -147,13 +147,17 @@ static void __init plat_setup_iocoherency(void)
+>   	if (plat_enable_iocoherency()) {
+>   		if (coherentio == 0)
+>   			pr_info("Hardware DMA cache coherency disabled\n");
+> -		else
+> +		else {
+> +			coherentio = 1;
+
+    You now need the parens around another arm of the *if* statement too. Such 
+is the kernel style. :-)
+
+>   			pr_info("Hardware DMA cache coherency enabled\n");
+> +		}
+>   	} else {
+>   		if (coherentio == 1)
+>   			pr_info("Hardware DMA cache coherency unsupported, but enabled from command line!\n");
+> -		else
+> +		else {
+> +			coherentio = 0;
+
+    Likewise.
+
+>   			pr_info("Software DMA cache coherency enabled\n");
+> +		}
+>   	}
+>   #else
+>   	if (!plat_enable_iocoherency())
+
+WBR, Sergei

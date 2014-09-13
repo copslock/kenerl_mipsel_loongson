@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Sep 2014 10:01:55 +0200 (CEST)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:34266 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008106AbaIMIA7QXj4N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Sep 2014 10:00:59 +0200
-Received: by mail-pa0-f45.google.com with SMTP id rd3so2878206pab.32
-        for <multiple recipients>; Sat, 13 Sep 2014 01:00:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Sep 2014 10:02:12 +0200 (CEST)
+Received: from mail-pd0-f178.google.com ([209.85.192.178]:48583 "EHLO
+        mail-pd0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008107AbaIMIBCeAdsy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Sep 2014 10:01:02 +0200
+Received: by mail-pd0-f178.google.com with SMTP id p10so2735241pdj.23
+        for <multiple recipients>; Sat, 13 Sep 2014 01:00:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=AJRodpZ1OVbiUMdhgy8rn14kouOstiGJjDvxZm5YjGI=;
-        b=K+o8wvzAlr8ypNh7KSWELWrFPyiVjEhIg9n6ZFkDJ075P3UBwxjS7k6RMaPi5u6frx
-         xpogakiHGMkUkJn6n0vG+IT91N/x+e5OAp6MdUxUvcPzRtgNsNVlCjIx4P2VeliDOtge
-         DzLuBV2pgGerDvi+Bv6wyLe1yLFMO4svLITXUVLANcts3igSpN1TowkIukjLh2iO+CvL
-         91tbihXfbkJJTDOvkPFWEDTfInEV5KiXkjF54OR2XjRvVshIfqbZVKg9RV+ckz1og1WD
-         Vq3wbK+/9/4Ic3JAs2IgoszAZ3PzYdmP6rKFTKzJyemqlPjv3LsmKp2dO1SVrnYnwzw+
-         P8Yg==
-X-Received: by 10.66.136.48 with SMTP id px16mr19550461pab.10.1410595253052;
-        Sat, 13 Sep 2014 01:00:53 -0700 (PDT)
+        bh=GJ8D5tu9l3C3RwBrH07+2QyoTb9x/5mUEBE8ZiC9H7E=;
+        b=sR3pj5D6vMlvjFDmpARHmNvgTVwS3k/1IIT6hUaXXn42AMBVrLI6eXER5EP9W1Un26
+         HFQ3M0piTEDuc6DadaFvSiFowcdTBC9mD3q2GBe2RJY1qmXwyaqd2lAFoc2ac0CBaB9k
+         yP56A09tEfOZB8Pgs7lDn7EbHiTF8ESAxgdIqZyW7TJFJwZ0hcpCEAnysgdsLlUupAI7
+         HUNoy5t7tlHKnwWueWQezeDjsD1ApQOgAq6Tihy62CsHye6MrqoYx/tRy+lphOpS2w2M
+         zP+N54oahr+wBQnTTDKRxomukAoohivzJABKoMe9pggvN2qvXA7TQ9RM2/cRygcLpB1n
+         JwVA==
+X-Received: by 10.66.102.97 with SMTP id fn1mr4721527pab.146.1410595256308;
+        Sat, 13 Sep 2014 01:00:56 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id wh10sm6062397pac.20.2014.09.13.01.00.50
+        by mx.google.com with ESMTPSA id wh10sm6062397pac.20.2014.09.13.01.00.53
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sat, 13 Sep 2014 01:00:52 -0700 (PDT)
+        Sat, 13 Sep 2014 01:00:55 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
@@ -30,9 +30,9 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 04/11] MIPS: Loongson: Allow booting from any core
-Date:   Sat, 13 Sep 2014 16:00:02 +0800
-Message-Id: <1410595207-10994-5-git-send-email-chenhc@lemote.com>
+Subject: [PATCH 05/11] MIPS: Loongson: Improve LEFI firmware interface
+Date:   Sat, 13 Sep 2014 16:00:03 +0800
+Message-Id: <1410595207-10994-6-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1410595207-10994-1-git-send-email-chenhc@lemote.com>
 References: <1410595207-10994-1-git-send-email-chenhc@lemote.com>
@@ -40,7 +40,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42532
+X-archive-position: 42533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,291 +57,568 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-By offering Logical->Physical core id mapping, so as to reserve some
-physical cores via mask. This allow booting from any core when core-0
-has problems. Since the maximun cores supported by Loongson-3 is 16,
-32-bit cpu_startup_core_id can be split to 16-bit cpu_startup_core_id
-and 16-bit reserved_cores_mask for compatibility.
+Machtypes of Loongson-3 machines become more and more, but there are
+only small differences among different machtypes. Keeping a large table
+of machtypes is very ugly and hard to extend. We found that the major
+machtype differences are UARTs information (number of UARTs, UART IRQs,
+UART clocks, etc.), platform devices (EC, temperature sensors, fan
+controllers, etc.) and some workarounds (because of some CPU bugs or
+mainboard bugs).
+
+In this patch we improve the UEFI-like (LEFI) interface to make all
+Loongson-3 machines use a same machtype "generic-loongson-machine".
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson/boot_param.h |    5 +-
- arch/mips/include/asm/mach-loongson/irq.h        |    3 +-
- arch/mips/include/asm/mach-loongson/topology.h   |    2 +-
- arch/mips/loongson/common/env.c                  |    2 +
- arch/mips/loongson/loongson-3/irq.c              |   14 +++--
- arch/mips/loongson/loongson-3/numa.c             |   12 +++-
- arch/mips/loongson/loongson-3/smp.c              |   65 ++++++++++++++--------
- 7 files changed, 67 insertions(+), 36 deletions(-)
+ arch/mips/include/asm/bootinfo.h                   |    5 +--
+ arch/mips/include/asm/mach-loongson/boot_param.h   |   44 +++++++++++++++-
+ arch/mips/include/asm/mach-loongson/loongson.h     |    2 +-
+ .../include/asm/mach-loongson/loongson_hwmon.h     |   55 ++++++++++++++++++++
+ arch/mips/include/asm/mach-loongson/machine.h      |    2 +-
+ arch/mips/include/asm/mach-loongson/workarounds.h  |    7 +++
+ arch/mips/loongson/common/early_printk.c           |    2 +-
+ arch/mips/loongson/common/env.c                    |   26 +++++++++-
+ arch/mips/loongson/common/machtype.c               |    5 +--
+ arch/mips/loongson/common/serial.c                 |   48 ++++++++++++++---
+ arch/mips/loongson/common/uart_base.c              |   30 +++++------
+ arch/mips/loongson/loongson-3/Makefile             |    2 +-
+ arch/mips/loongson/loongson-3/platform.c           |   43 +++++++++++++++
+ arch/mips/loongson/loongson-3/smp.c                |    5 +-
+ 14 files changed, 234 insertions(+), 42 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson/loongson_hwmon.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/workarounds.h
+ create mode 100644 arch/mips/loongson/loongson-3/platform.c
 
+diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
+index 1f7ca8b..8b2eaa1 100644
+--- a/arch/mips/include/asm/bootinfo.h
++++ b/arch/mips/include/asm/bootinfo.h
+@@ -70,10 +70,7 @@ enum loongson_machine_type {
+ 	MACH_DEXXON_GDIUM2F10,
+ 	MACH_LEMOTE_NAS,
+ 	MACH_LEMOTE_LL2F,
+-	MACH_LEMOTE_A1004,
+-	MACH_LEMOTE_A1101,
+-	MACH_LEMOTE_A1201,
+-	MACH_LEMOTE_A1205,
++	MACH_LOONGSON_GENERIC,
+ 	MACH_LOONGSON_END
+ };
+ 
 diff --git a/arch/mips/include/asm/mach-loongson/boot_param.h b/arch/mips/include/asm/mach-loongson/boot_param.h
-index 3388fc5..11ebf4c 100644
+index 11ebf4c..fa80292 100644
 --- a/arch/mips/include/asm/mach-loongson/boot_param.h
 +++ b/arch/mips/include/asm/mach-loongson/boot_param.h
-@@ -42,7 +42,8 @@ struct efi_cpuinfo_loongson {
- 	u32 processor_id; /* PRID, e.g. 6305, 6306 */
- 	u32 cputype;  /* Loongson_3A/3B, etc. */
- 	u32 total_node;   /* num of total numa nodes */
--	u32 cpu_startup_core_id; /* Core id */
-+	u16 cpu_startup_core_id; /* Boot core id */
-+	u16 reserved_cores_mask;
- 	u32 cpu_clock_freq; /* cpu_clock */
+@@ -10,7 +10,8 @@
+ #define VIDEO_ROM		7
+ #define ADAPTER_ROM		8
+ #define ACPI_TABLE		9
+-#define MAX_MEMORY_TYPE		10
++#define SMBIOS_TABLE		10
++#define MAX_MEMORY_TYPE		11
+ 
+ #define LOONGSON3_BOOT_MEM_MAP_MAX 128
+ struct efi_memory_map_loongson {
+@@ -48,10 +49,43 @@ struct efi_cpuinfo_loongson {
  	u32 nr_cpus;
  } __packed;
-@@ -149,6 +150,8 @@ struct loongson_system_configuration {
- 	u32 nr_nodes;
- 	int cores_per_node;
- 	int cores_per_package;
-+	u16 boot_cpu_id;
-+	u16 reserved_cpus_mask;
- 	enum loongson_cpu_type cputype;
- 	u64 ht_control_base;
- 	u64 pci_mem_start_addr;
-diff --git a/arch/mips/include/asm/mach-loongson/irq.h b/arch/mips/include/asm/mach-loongson/irq.h
-index 34560bd..a281cca 100644
---- a/arch/mips/include/asm/mach-loongson/irq.h
-+++ b/arch/mips/include/asm/mach-loongson/irq.h
-@@ -32,8 +32,7 @@
- #define LOONGSON_INT_ROUTER_LPC		LOONGSON_INT_ROUTER_ENTRY(0x0a)
- #define LOONGSON_INT_ROUTER_HT1(n)	LOONGSON_INT_ROUTER_ENTRY(n + 0x18)
  
--#define LOONGSON_INT_CORE0_INT0		0x11 /* route to int 0 of core 0 */
--#define LOONGSON_INT_CORE0_INT1		0x21 /* route to int 1 of core 0 */
-+#define LOONGSON_INT_COREx_INTy(x, y)	(1<<(x) | 1<<(y+4))	/* route to int y of core x */
++#define MAX_UARTS 64
++struct uart_device {
++	u32 iotype; /* see include/linux/serial_core.h */
++	u32 uartclk;
++	u32 int_offset;
++	u64 uart_base;
++} __packed;
++
++#define MAX_SENSORS 64
++#define SENSOR_TEMPER  0x00000001
++#define SENSOR_VOLTAGE 0x00000002
++#define SENSOR_FAN     0x00000004
++struct sensor_device {
++	char name[32];  /* a formal name */
++	char label[64]; /* a flexible description */
++	u32 type;       /* SENSOR_* */
++	u32 id;         /* instance id of a sensor-class */
++	u32 fan_policy; /* see loongson_hwmon.h */
++	u32 fan_percent;/* only for constant speed policy */
++	u64 base_addr;  /* base address of device registers */
++} __packed;
++
+ struct system_loongson {
+ 	u16 vers;     /* version of system_loongson */
+ 	u32 ccnuma_smp; /* 0: no numa; 1: has numa */
+ 	u32 sing_double_channel; /* 1:single; 2:double */
++	u32 nr_uarts;
++	struct uart_device uarts[MAX_UARTS];
++	u32 nr_sensors;
++	struct sensor_device sensors[MAX_SENSORS];
++	char has_ec;
++	char ec_name[32];
++	u64 ec_base_addr;
++	char has_tcm;
++	char tcm_name[32];
++	u64 tcm_base_addr;
++	u64 workarounds; /* see workarounds.h */
+ } __packed;
  
+ struct irq_source_routing_table {
+@@ -162,9 +196,15 @@ struct loongson_system_configuration {
+ 	u64 suspend_addr;
+ 	u64 vgabios_addr;
+ 	u32 dma_mask_bits;
++	char ecname[32];
++	u32 nr_uarts;
++	struct uart_device uarts[MAX_UARTS];
++	u32 nr_sensors;
++	struct sensor_device sensors[MAX_SENSORS];
++	u64 workarounds;
+ };
+ 
+ extern struct efi_memory_map_loongson *loongson_memmap;
+ extern struct loongson_system_configuration loongson_sysconf;
+-extern int cpuhotplug_workaround;
++
+ #endif
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index 92bf76c..5459ac0 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -35,7 +35,7 @@ extern void __init prom_init_cmdline(void);
+ extern void __init prom_init_machtype(void);
+ extern void __init prom_init_env(void);
+ #ifdef CONFIG_LOONGSON_UART_BASE
+-extern unsigned long _loongson_uart_base, loongson_uart_base;
++extern unsigned long _loongson_uart_base[], loongson_uart_base[];
+ extern void prom_init_loongson_uart_base(void);
  #endif
  
-diff --git a/arch/mips/include/asm/mach-loongson/topology.h b/arch/mips/include/asm/mach-loongson/topology.h
-index 5598ba7..0d8f3b5 100644
---- a/arch/mips/include/asm/mach-loongson/topology.h
-+++ b/arch/mips/include/asm/mach-loongson/topology.h
-@@ -3,7 +3,7 @@
+diff --git a/arch/mips/include/asm/mach-loongson/loongson_hwmon.h b/arch/mips/include/asm/mach-loongson/loongson_hwmon.h
+new file mode 100644
+index 0000000..4431fc5
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson/loongson_hwmon.h
+@@ -0,0 +1,55 @@
++#ifndef __LOONGSON_HWMON_H_
++#define __LOONGSON_HWMON_H_
++
++#include <linux/types.h>
++
++#define MIN_TEMP	0
++#define MAX_TEMP	255
++#define NOT_VALID_TEMP	999
++
++typedef int (*get_temp_fun)(int);
++extern int loongson3_cpu_temp(int);
++
++/* 0:Max speed, 1:Manual, 2:Auto */
++enum fan_control_mode {
++	FAN_FULL_MODE = 0,
++	FAN_MANUAL_MODE = 1,
++	FAN_AUTO_MODE = 2,
++	FAN_MODE_END
++};
++
++struct temp_range {
++	u8 low;
++	u8 high;
++	u8 level;
++};
++
++#define CONSTANT_SPEED_POLICY	0  /* at constent speed */
++#define STEP_SPEED_POLICY	1  /* use up/down arrays to describe policy */
++#define KERNEL_HELPER_POLICY	2  /* kernel as a helper to fan control */
++
++#define MAX_STEP_NUM	16
++#define MAX_FAN_LEVEL	255
++
++/* loongson_fan_policy works when fan work at FAN_AUTO_MODE */
++struct loongson_fan_policy {
++	u8	type;
++
++	/* percent only used when type is CONSTANT_SPEED_POLICY */
++	u8	percent;
++
++	/* period between two check. (Unit: S) */
++	u8	adjust_period;
++
++	/* fan adjust usually depend on a temprature input */
++	get_temp_fun	depend_temp;
++
++	/* up_step/down_step used when type is STEP_SPEED_POLICY */
++	u8	up_step_num;
++	u8	down_step_num;
++	struct temp_range up_step[MAX_STEP_NUM];
++	struct temp_range down_step[MAX_STEP_NUM];
++	struct delayed_work work;
++};
++
++#endif /* __LOONGSON_HWMON_H_*/
+diff --git a/arch/mips/include/asm/mach-loongson/machine.h b/arch/mips/include/asm/mach-loongson/machine.h
+index 228e3784..cb2b602 100644
+--- a/arch/mips/include/asm/mach-loongson/machine.h
++++ b/arch/mips/include/asm/mach-loongson/machine.h
+@@ -26,7 +26,7 @@
  
- #ifdef CONFIG_NUMA
+ #ifdef CONFIG_LOONGSON_MACH3X
  
--#define cpu_to_node(cpu)	((cpu) >> 2)
-+#define cpu_to_node(cpu)	(cpu_logical_map(cpu) >> 2)
- #define parent_node(node)	(node)
- #define cpumask_of_node(node)	(&__node_data[(node)]->cpumask)
+-#define LOONGSON_MACHTYPE MACH_LEMOTE_A1101
++#define LOONGSON_MACHTYPE MACH_LOONGSON_GENERIC
  
+ #endif /* CONFIG_LOONGSON_MACH3X */
+ 
+diff --git a/arch/mips/include/asm/mach-loongson/workarounds.h b/arch/mips/include/asm/mach-loongson/workarounds.h
+new file mode 100644
+index 0000000..e180c14
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson/workarounds.h
+@@ -0,0 +1,7 @@
++#ifndef __ASM_MACH_LOONGSON_WORKAROUNDS_H_
++#define __ASM_MACH_LOONGSON_WORKAROUNDS_H_
++
++#define WORKAROUND_CPUFREQ	0x00000001
++#define WORKAROUND_CPUHOTPLUG	0x00000002
++
++#endif
+diff --git a/arch/mips/loongson/common/early_printk.c b/arch/mips/loongson/common/early_printk.c
+index ced461b..6ca632e 100644
+--- a/arch/mips/loongson/common/early_printk.c
++++ b/arch/mips/loongson/common/early_printk.c
+@@ -30,7 +30,7 @@ void prom_putchar(char c)
+ 	int timeout;
+ 	unsigned char *uart_base;
+ 
+-	uart_base = (unsigned char *)_loongson_uart_base;
++	uart_base = (unsigned char *)_loongson_uart_base[0];
+ 	timeout = 1024;
+ 
+ 	while (((serial_in(uart_base, UART_LSR) & UART_LSR_THRE) == 0) &&
 diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index f152285..d8be539 100644
+index d8be539..045ea3d 100644
 --- a/arch/mips/loongson/common/env.c
 +++ b/arch/mips/loongson/common/env.c
-@@ -119,6 +119,8 @@ void __init prom_init_env(void)
- 	}
+@@ -21,6 +21,7 @@
+ #include <asm/bootinfo.h>
+ #include <loongson.h>
+ #include <boot_param.h>
++#include <workarounds.h>
  
- 	loongson_sysconf.nr_cpus = ecpu->nr_cpus;
-+	loongson_sysconf.boot_cpu_id = ecpu->cpu_startup_core_id;
-+	loongson_sysconf.reserved_cpus_mask = ecpu->reserved_cores_mask;
- 	if (ecpu->nr_cpus > NR_CPUS || ecpu->nr_cpus == 0)
- 		loongson_sysconf.nr_cpus = NR_CPUS;
- 	loongson_sysconf.nr_nodes = (loongson_sysconf.nr_cpus +
-diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
-index ca1c62a..5813d94 100644
---- a/arch/mips/loongson/loongson-3/irq.c
-+++ b/arch/mips/loongson/loongson-3/irq.c
-@@ -55,8 +55,8 @@ static inline void mask_loongson_irq(struct irq_data *d)
- 	/* Workaround: UART IRQ may deliver to any core */
- 	if (d->irq == LOONGSON_UART_IRQ) {
- 		int cpu = smp_processor_id();
--		int node_id = cpu / loongson_sysconf.cores_per_node;
--		int core_id = cpu % loongson_sysconf.cores_per_node;
-+		int node_id = cpu_logical_map(cpu) / loongson_sysconf.cores_per_node;
-+		int core_id = cpu_logical_map(cpu) % loongson_sysconf.cores_per_node;
- 		u64 intenclr_addr = smp_group[node_id] |
- 			(u64)(&LOONGSON_INT_ROUTER_INTENCLR);
- 		u64 introuter_lpc_addr = smp_group[node_id] |
-@@ -72,8 +72,8 @@ static inline void unmask_loongson_irq(struct irq_data *d)
- 	/* Workaround: UART IRQ may deliver to any core */
- 	if (d->irq == LOONGSON_UART_IRQ) {
- 		int cpu = smp_processor_id();
--		int node_id = cpu / loongson_sysconf.cores_per_node;
--		int core_id = cpu % loongson_sysconf.cores_per_node;
-+		int node_id = cpu_logical_map(cpu) / loongson_sysconf.cores_per_node;
-+		int core_id = cpu_logical_map(cpu) % loongson_sysconf.cores_per_node;
- 		u64 intenset_addr = smp_group[node_id] |
- 			(u64)(&LOONGSON_INT_ROUTER_INTENSET);
- 		u64 introuter_lpc_addr = smp_group[node_id] |
-@@ -102,10 +102,12 @@ void irq_router_init(void)
- 	int i;
+ u32 cpu_clock_freq;
+ EXPORT_SYMBOL(cpu_clock_freq);
+@@ -31,7 +32,6 @@ u64 loongson_chipcfg[MAX_PACKAGES] = {0xffffffffbfc00180};
+ u64 loongson_freqctrl[MAX_PACKAGES];
  
- 	/* route LPC int to cpu core0 int 0 */
--	LOONGSON_INT_ROUTER_LPC = LOONGSON_INT_CORE0_INT0;
-+	LOONGSON_INT_ROUTER_LPC =
-+		LOONGSON_INT_COREx_INTy(loongson_sysconf.boot_cpu_id, 0);
- 	/* route HT1 int0 ~ int7 to cpu core0 INT1*/
- 	for (i = 0; i < 8; i++)
--		LOONGSON_INT_ROUTER_HT1(i) = LOONGSON_INT_CORE0_INT1;
-+		LOONGSON_INT_ROUTER_HT1(i) =
-+			LOONGSON_INT_COREx_INTy(loongson_sysconf.boot_cpu_id, 1);
- 	/* enable HT1 interrupt */
- 	LOONGSON_HT1_INTN_EN(0) = 0xffffffff;
- 	/* enable router interrupt intenset */
-diff --git a/arch/mips/loongson/loongson-3/numa.c b/arch/mips/loongson/loongson-3/numa.c
-index 37ed184..5246043 100644
---- a/arch/mips/loongson/loongson-3/numa.c
-+++ b/arch/mips/loongson/loongson-3/numa.c
-@@ -223,7 +223,7 @@ static void __init node_mem_init(unsigned int node)
+ unsigned long long smp_group[4];
+-int cpuhotplug_workaround = 0;
  
- static __init void prom_meminit(void)
- {
--	unsigned int node, cpu;
-+	unsigned int node, cpu, active_cpu = 0;
+ #define parse_even_earlier(res, option, p)				\
+ do {									\
+@@ -67,6 +67,7 @@ void __init prom_init_env(void)
+ #else
+ 	struct boot_params *boot_p;
+ 	struct loongson_params *loongson_p;
++	struct system_loongson *esys;
+ 	struct efi_cpuinfo_loongson *ecpu;
+ 	struct irq_source_routing_table *eirq_source;
  
- 	cpu_node_probe();
- 	init_topology_matrix();
-@@ -239,8 +239,14 @@ static __init void prom_meminit(void)
- 		node = cpu / loongson_sysconf.cores_per_node;
- 		if (node >= num_online_nodes())
- 			node = 0;
--		pr_info("NUMA: set cpumask cpu %d on node %d\n", cpu, node);
--		cpu_set(cpu, __node_data[(node)]->cpumask);
+@@ -74,6 +75,8 @@ void __init prom_init_env(void)
+ 	boot_p = (struct boot_params *)fw_arg2;
+ 	loongson_p = &(boot_p->efi.smbios.lp);
+ 
++	esys = (struct system_loongson *)
++		((u64)loongson_p + loongson_p->system_offset);
+ 	ecpu = (struct efi_cpuinfo_loongson *)
+ 		((u64)loongson_p + loongson_p->cpu_offset);
+ 	eirq_source = (struct irq_source_routing_table *)
+@@ -95,6 +98,7 @@ void __init prom_init_env(void)
+ 		loongson_chipcfg[2] = 0x900020001fe00180;
+ 		loongson_chipcfg[3] = 0x900030001fe00180;
+ 		loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
++		loongson_sysconf.workarounds = WORKAROUND_CPUFREQ;
+ 	} else if (ecpu->cputype == Loongson_3B) {
+ 		loongson_sysconf.cores_per_node = 4; /* One chip has 2 nodes */
+ 		loongson_sysconf.cores_per_package = 8;
+@@ -111,7 +115,7 @@ void __init prom_init_env(void)
+ 		loongson_freqctrl[2] = 0x900040001fe001d0;
+ 		loongson_freqctrl[3] = 0x900060001fe001d0;
+ 		loongson_sysconf.ht_control_base = 0x90001EFDFB000000;
+-		cpuhotplug_workaround = 1;
++		loongson_sysconf.workarounds = WORKAROUND_CPUHOTPLUG;
+ 	} else {
+ 		loongson_sysconf.cores_per_node = 1;
+ 		loongson_sysconf.cores_per_package = 1;
+@@ -143,6 +147,24 @@ void __init prom_init_env(void)
+ 	pr_debug("Shutdown Addr: %llx, Restart Addr: %llx, VBIOS Addr: %llx\n",
+ 		loongson_sysconf.poweroff_addr, loongson_sysconf.restart_addr,
+ 		loongson_sysconf.vgabios_addr);
 +
-+		if (loongson_sysconf.reserved_cpus_mask & (1<<cpu))
-+			continue;
++	memset(loongson_sysconf.ecname, 0, 32);
++	if (esys->has_ec)
++		memcpy(loongson_sysconf.ecname, esys->ec_name, 32);
++	loongson_sysconf.workarounds |= esys->workarounds;
 +
-+		cpu_set(active_cpu, __node_data[(node)]->cpumask);
-+		pr_info("NUMA: set cpumask cpu %d on node %d\n", active_cpu, node);
++	loongson_sysconf.nr_uarts = esys->nr_uarts;
++	if (esys->nr_uarts < 1 || esys->nr_uarts > MAX_UARTS)
++		loongson_sysconf.nr_uarts = 1;
++	memcpy(loongson_sysconf.uarts, esys->uarts,
++		sizeof(struct uart_device) * loongson_sysconf.nr_uarts);
 +
-+		active_cpu++;
- 	}
++	loongson_sysconf.nr_sensors = esys->nr_sensors;
++	if (loongson_sysconf.nr_sensors > MAX_SENSORS)
++		loongson_sysconf.nr_sensors = 0;
++	if (loongson_sysconf.nr_sensors)
++		memcpy(loongson_sysconf.sensors, esys->sensors,
++			sizeof(struct sensor_device) * loongson_sysconf.nr_sensors);
+ #endif
+ 	if (cpu_clock_freq == 0) {
+ 		processor_id = (&current_cpu_data)->processor_id;
+diff --git a/arch/mips/loongson/common/machtype.c b/arch/mips/loongson/common/machtype.c
+index 1a47979..26629ab 100644
+--- a/arch/mips/loongson/common/machtype.c
++++ b/arch/mips/loongson/common/machtype.c
+@@ -27,10 +27,7 @@ static const char *system_types[] = {
+ 	[MACH_DEXXON_GDIUM2F10]		"dexxon-gdium-2f",
+ 	[MACH_LEMOTE_NAS]		"lemote-nas-2f",
+ 	[MACH_LEMOTE_LL2F]		"lemote-lynloong-2f",
+-	[MACH_LEMOTE_A1004]		"lemote-3a-notebook-a1004",
+-	[MACH_LEMOTE_A1101]		"lemote-3a-itx-a1101",
+-	[MACH_LEMOTE_A1201]		"lemote-2gq-notebook-a1201",
+-	[MACH_LEMOTE_A1205]		"lemote-2gq-aio-a1205",
++	[MACH_LOONGSON_GENERIC]		"generic-loongson-machine",
+ 	[MACH_LOONGSON_END]		NULL,
+ };
+ 
+diff --git a/arch/mips/loongson/common/serial.c b/arch/mips/loongson/common/serial.c
+index bd2b709..d2f4817 100644
+--- a/arch/mips/loongson/common/serial.c
++++ b/arch/mips/loongson/common/serial.c
+@@ -38,7 +38,7 @@
+ 	.regshift	= 0,					\
  }
  
-diff --git a/arch/mips/loongson/loongson-3/smp.c b/arch/mips/loongson/loongson-3/smp.c
-index 74e827b..e53d015 100644
---- a/arch/mips/loongson/loongson-3/smp.c
-+++ b/arch/mips/loongson/loongson-3/smp.c
-@@ -239,7 +239,7 @@ static void ipi_mailbox_buf_init(void)
-  */
- static void loongson3_send_ipi_single(int cpu, unsigned int action)
+-static struct plat_serial8250_port uart8250_data[][2] = {
++static struct plat_serial8250_port uart8250_data[][MAX_UARTS + 1] = {
+ 	[MACH_LOONGSON_UNKNOWN]		{},
+ 	[MACH_LEMOTE_FL2E]              {PORT(4, 1843200), {} },
+ 	[MACH_LEMOTE_FL2F]              {PORT(3, 1843200), {} },
+@@ -47,10 +47,7 @@ static struct plat_serial8250_port uart8250_data[][2] = {
+ 	[MACH_DEXXON_GDIUM2F10]         {PORT_M(3, 3686400), {} },
+ 	[MACH_LEMOTE_NAS]               {PORT_M(3, 3686400), {} },
+ 	[MACH_LEMOTE_LL2F]              {PORT(3, 1843200), {} },
+-	[MACH_LEMOTE_A1004]             {PORT_M(2, 33177600), {} },
+-	[MACH_LEMOTE_A1101]             {PORT_M(2, 25000000), {} },
+-	[MACH_LEMOTE_A1201]             {PORT_M(2, 25000000), {} },
+-	[MACH_LEMOTE_A1205]             {PORT_M(2, 25000000), {} },
++	[MACH_LOONGSON_GENERIC]         {PORT_M(2, 25000000), {} },
+ 	[MACH_LOONGSON_END]		{},
+ };
+ 
+@@ -61,17 +58,52 @@ static struct platform_device uart8250_device = {
+ 
+ static int __init serial_init(void)
  {
--	loongson3_ipi_write32((u32)action, ipi_set0_regs[cpu]);
-+	loongson3_ipi_write32((u32)action, ipi_set0_regs[cpu_logical_map(cpu)]);
- }
++	int i;
+ 	unsigned char iotype;
  
- static void
-@@ -248,7 +248,7 @@ loongson3_send_ipi_mask(const struct cpumask *mask, unsigned int action)
- 	unsigned int i;
+ 	iotype = uart8250_data[mips_machtype][0].iotype;
  
- 	for_each_cpu(i, mask)
--		loongson3_ipi_write32((u32)action, ipi_set0_regs[i]);
-+		loongson3_ipi_write32((u32)action, ipi_set0_regs[cpu_logical_map(i)]);
- }
+-	if (UPIO_MEM == iotype)
++	if (UPIO_MEM == iotype) {
++		uart8250_data[mips_machtype][0].mapbase =
++			loongson_uart_base[0];
+ 		uart8250_data[mips_machtype][0].membase =
+-			(void __iomem *)_loongson_uart_base;
++			(void __iomem *)_loongson_uart_base[0];
++	}
+ 	else if (UPIO_PORT == iotype)
+ 		uart8250_data[mips_machtype][0].iobase =
+-		    loongson_uart_base - LOONGSON_PCIIO_BASE;
++			loongson_uart_base[0] - LOONGSON_PCIIO_BASE;
  
- void loongson3_ipi_interrupt(struct pt_regs *regs)
-@@ -257,10 +257,10 @@ void loongson3_ipi_interrupt(struct pt_regs *regs)
- 	unsigned int action, c0count;
- 
- 	/* Load the ipi register to figure out what we're supposed to do */
--	action = loongson3_ipi_read32(ipi_status0_regs[cpu]);
-+	action = loongson3_ipi_read32(ipi_status0_regs[cpu_logical_map(cpu)]);
- 
- 	/* Clear the ipi register to clear the interrupt */
--	loongson3_ipi_write32((u32)action, ipi_clear0_regs[cpu]);
-+	loongson3_ipi_write32((u32)action, ipi_clear0_regs[cpu_logical_map(cpu)]);
- 
- 	if (action & SMP_RESCHEDULE_YOURSELF)
- 		scheduler_ipi();
-@@ -291,12 +291,14 @@ static void loongson3_init_secondary(void)
- 	/* Set interrupt mask, but don't enable */
- 	change_c0_status(ST0_IM, imask);
- 
--	for (i = 0; i < loongson_sysconf.nr_cpus; i++)
--		loongson3_ipi_write32(0xffffffff, ipi_en0_regs[i]);
-+	for (i = 0; i < num_possible_cpus(); i++)
-+		loongson3_ipi_write32(0xffffffff, ipi_en0_regs[cpu_logical_map(i)]);
- 
--	cpu_data[cpu].package = cpu / loongson_sysconf.cores_per_package;
--	cpu_data[cpu].core = cpu % loongson_sysconf.cores_per_package;
- 	per_cpu(cpu_state, cpu) = CPU_ONLINE;
-+	cpu_data[cpu].core =
-+		cpu_logical_map(cpu) % loongson_sysconf.cores_per_package;
-+	cpu_data[cpu].package =
-+		cpu_logical_map(cpu) / loongson_sysconf.cores_per_package;
- 
- 	i = 0;
- 	__get_cpu_var(core0_c0count) = 0;
-@@ -314,37 +316,50 @@ static void loongson3_init_secondary(void)
- 
- static void loongson3_smp_finish(void)
- {
-+	int cpu = smp_processor_id();
++	if (loongson_sysconf.uarts[0].uartclk)
++		uart8250_data[mips_machtype][0].uartclk =
++			loongson_sysconf.uarts[0].uartclk;
 +
- 	write_c0_compare(read_c0_count() + mips_hpt_frequency/HZ);
- 	local_irq_enable();
- 	loongson3_ipi_write64(0,
--			(void *)(ipi_mailbox_buf[smp_processor_id()]+0x0));
-+			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x0));
- 	pr_info("CPU#%d finished, CP0_ST=%x\n",
- 			smp_processor_id(), read_c0_status());
- }
- 
- static void __init loongson3_smp_setup(void)
- {
--	int i, num;
-+	int i = 0, num = 0; /* i: physical id, num: logical id */
- 
- 	init_cpu_possible(cpu_none_mask);
--	set_cpu_possible(0, true);
--
--	__cpu_number_map[0] = 0;
--	__cpu_logical_map[0] = 0;
- 
- 	/* For unified kernel, NR_CPUS is the maximum possible value,
- 	 * loongson_sysconf.nr_cpus is the really present value */
--	for (i = 1, num = 0; i < loongson_sysconf.nr_cpus; i++) {
--		set_cpu_possible(i, true);
--		__cpu_number_map[i] = ++num;
--		__cpu_logical_map[num] = i;
-+	while (i < loongson_sysconf.nr_cpus) {
-+		if (loongson_sysconf.reserved_cpus_mask & (1<<i)) {
-+			/* Reserved physical CPU cores */
-+			__cpu_number_map[i] = -1;
-+		} else {
-+			__cpu_number_map[i] = num;
-+			__cpu_logical_map[num] = i;
-+			set_cpu_possible(num, true);
-+			num++;
++	for (i = 1; i < loongson_sysconf.nr_uarts; i++) {
++		iotype = loongson_sysconf.uarts[i].iotype;
++		uart8250_data[mips_machtype][i].iotype = iotype;
++		loongson_uart_base[i] = loongson_sysconf.uarts[i].uart_base;
++
++		if (UPIO_MEM == iotype) {
++			uart8250_data[mips_machtype][i].irq =
++				MIPS_CPU_IRQ_BASE + loongson_sysconf.uarts[i].int_offset;
++			uart8250_data[mips_machtype][i].mapbase =
++				loongson_uart_base[i];
++			uart8250_data[mips_machtype][i].membase =
++				ioremap_nocache(loongson_uart_base[i], 8);
++		} else if (UPIO_PORT == iotype) {
++			uart8250_data[mips_machtype][i].irq =
++				loongson_sysconf.uarts[i].int_offset;
++			uart8250_data[mips_machtype][i].iobase =
++				loongson_uart_base[i] - LOONGSON_PCIIO_BASE;
 +		}
-+		i++;
- 	}
-+	pr_info("Detected %i available CPU(s)\n", num);
 +
-+	while (num < loongson_sysconf.nr_cpus) {
-+		__cpu_logical_map[num] = -1;
-+		num++;
++		uart8250_data[mips_machtype][i].uartclk =
++			loongson_sysconf.uarts[i].uartclk;
++		uart8250_data[mips_machtype][i].flags =
++			UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
 +	}
 +
- 	ipi_set0_regs_init();
- 	ipi_clear0_regs_init();
- 	ipi_status0_regs_init();
- 	ipi_en0_regs_init();
- 	ipi_mailbox_buf_init();
--	pr_info("Detected %i available secondary CPU(s)\n", num);
-+	cpu_data[0].core = cpu_logical_map(0) % loongson_sysconf.cores_per_package;
-+	cpu_data[0].package = cpu_logical_map(0) / loongson_sysconf.cores_per_package;
++	memset(&uart8250_data[mips_machtype][loongson_sysconf.nr_uarts],
++			0, sizeof(struct plat_serial8250_port));
+ 	uart8250_device.dev.platform_data = uart8250_data[mips_machtype];
+ 
+ 	return platform_device_register(&uart8250_device);
+diff --git a/arch/mips/loongson/common/uart_base.c b/arch/mips/loongson/common/uart_base.c
+index 1e1eeea..9de559d 100644
+--- a/arch/mips/loongson/common/uart_base.c
++++ b/arch/mips/loongson/common/uart_base.c
+@@ -13,22 +13,27 @@
+ 
+ #include <loongson.h>
+ 
+-/* ioremapped */
+-unsigned long _loongson_uart_base;
+-EXPORT_SYMBOL(_loongson_uart_base);
+ /* raw */
+-unsigned long loongson_uart_base;
++unsigned long loongson_uart_base[MAX_UARTS] = {};
++/* ioremapped */
++unsigned long _loongson_uart_base[MAX_UARTS] = {};
++
+ EXPORT_SYMBOL(loongson_uart_base);
++EXPORT_SYMBOL(_loongson_uart_base);
+ 
+ void prom_init_loongson_uart_base(void)
+ {
+ 	switch (mips_machtype) {
++	case MACH_LOONGSON_GENERIC:
++		/* The CPU provided serial port (CPU) */
++		loongson_uart_base[0] = LOONGSON_REG_BASE + 0x1e0;
++		break;
+ 	case MACH_LEMOTE_FL2E:
+-		loongson_uart_base = LOONGSON_PCIIO_BASE + 0x3f8;
++		loongson_uart_base[0] = LOONGSON_PCIIO_BASE + 0x3f8;
+ 		break;
+ 	case MACH_LEMOTE_FL2F:
+ 	case MACH_LEMOTE_LL2F:
+-		loongson_uart_base = LOONGSON_PCIIO_BASE + 0x2f8;
++		loongson_uart_base[0] = LOONGSON_PCIIO_BASE + 0x2f8;
+ 		break;
+ 	case MACH_LEMOTE_ML2F7:
+ 	case MACH_LEMOTE_YL2F89:
+@@ -36,17 +41,10 @@ void prom_init_loongson_uart_base(void)
+ 	case MACH_LEMOTE_NAS:
+ 	default:
+ 		/* The CPU provided serial port (LPC) */
+-		loongson_uart_base = LOONGSON_LIO1_BASE + 0x3f8;
+-		break;
+-	case MACH_LEMOTE_A1004:
+-	case MACH_LEMOTE_A1101:
+-	case MACH_LEMOTE_A1201:
+-	case MACH_LEMOTE_A1205:
+-		/* The CPU provided serial port (CPU) */
+-		loongson_uart_base = LOONGSON_REG_BASE + 0x1e0;
++		loongson_uart_base[0] = LOONGSON_LIO1_BASE + 0x3f8;
+ 		break;
+ 	}
+ 
+-	_loongson_uart_base =
+-		(unsigned long)ioremap_nocache(loongson_uart_base, 8);
++	_loongson_uart_base[0] =
++		(unsigned long)ioremap_nocache(loongson_uart_base[0], 8);
  }
+diff --git a/arch/mips/loongson/loongson-3/Makefile b/arch/mips/loongson/loongson-3/Makefile
+index b4df775..69809a3 100644
+--- a/arch/mips/loongson/loongson-3/Makefile
++++ b/arch/mips/loongson/loongson-3/Makefile
+@@ -1,7 +1,7 @@
+ #
+ # Makefile for Loongson-3 family machines
+ #
+-obj-y			+= irq.o cop2-ex.o
++obj-y			+= irq.o cop2-ex.o platform.o
  
- static void __init loongson3_prepare_cpus(unsigned int max_cpus)
-@@ -371,10 +386,14 @@ static void loongson3_boot_secondary(int cpu, struct task_struct *idle)
- 	pr_debug("CPU#%d, func_pc=%lx, sp=%lx, gp=%lx\n",
- 			cpu, startargs[0], startargs[1], startargs[2]);
+ obj-$(CONFIG_SMP)	+= smp.o
  
--	loongson3_ipi_write64(startargs[3], (void *)(ipi_mailbox_buf[cpu]+0x18));
--	loongson3_ipi_write64(startargs[2], (void *)(ipi_mailbox_buf[cpu]+0x10));
--	loongson3_ipi_write64(startargs[1], (void *)(ipi_mailbox_buf[cpu]+0x8));
--	loongson3_ipi_write64(startargs[0], (void *)(ipi_mailbox_buf[cpu]+0x0));
-+	loongson3_ipi_write64(startargs[3],
-+			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x18));
-+	loongson3_ipi_write64(startargs[2],
-+			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x10));
-+	loongson3_ipi_write64(startargs[1],
-+			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x8));
-+	loongson3_ipi_write64(startargs[0],
-+			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x0));
+diff --git a/arch/mips/loongson/loongson-3/platform.c b/arch/mips/loongson/loongson-3/platform.c
+new file mode 100644
+index 0000000..25a97cc
+--- /dev/null
++++ b/arch/mips/loongson/loongson-3/platform.c
+@@ -0,0 +1,43 @@
++/*
++ * Copyright (C) 2009 Lemote Inc.
++ * Author: Wu Zhangjin, wuzhangjin@gmail.com
++ *         Xiang Yu, xiangy@lemote.com
++ *         Chen Huacai, chenhc@lemote.com
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/err.h>
++#include <linux/slab.h>
++#include <linux/platform_device.h>
++#include <asm/bootinfo.h>
++#include <boot_param.h>
++#include <loongson_hwmon.h>
++#include <workarounds.h>
++
++static int __init loongson3_platform_init(void)
++{
++	int i;
++	struct platform_device *pdev;
++
++	if (loongson_sysconf.ecname[0] != '\0')
++		platform_device_register_simple(loongson_sysconf.ecname, -1, NULL, 0);
++
++	for (i = 0; i < loongson_sysconf.nr_sensors; i++) {
++		if (loongson_sysconf.sensors[i].type > SENSOR_FAN)
++			continue;
++
++		pdev = kzalloc(sizeof(struct platform_device), GFP_KERNEL);
++		pdev->name = loongson_sysconf.sensors[i].name;
++		pdev->id = loongson_sysconf.sensors[i].id;
++		pdev->dev.platform_data = &loongson_sysconf.sensors[i];
++		platform_device_register(pdev);
++	}
++
++	return 0;
++}
++
++arch_initcall(loongson3_platform_init);
+diff --git a/arch/mips/loongson/loongson-3/smp.c b/arch/mips/loongson/loongson-3/smp.c
+index e53d015..46e9f5e 100644
+--- a/arch/mips/loongson/loongson-3/smp.c
++++ b/arch/mips/loongson/loongson-3/smp.c
+@@ -25,6 +25,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/cacheflush.h>
+ #include <loongson.h>
++#include <workarounds.h>
+ 
+ #include "smp.h"
+ 
+@@ -587,7 +588,7 @@ void loongson3_disable_clock(int cpu)
+ 	if (loongson_sysconf.cputype == Loongson_3A) {
+ 		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
+ 	} else if (loongson_sysconf.cputype == Loongson_3B) {
+-		if (!cpuhotplug_workaround)
++		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
+ 			LOONGSON_FREQCTRL(package_id) &= ~(1 << (core_id * 4 + 3));
+ 	}
  }
- 
- #ifdef CONFIG_HOTPLUG_CPU
+@@ -600,7 +601,7 @@ void loongson3_enable_clock(int cpu)
+ 	if (loongson_sysconf.cputype == Loongson_3A) {
+ 		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
+ 	} else if (loongson_sysconf.cputype == Loongson_3B) {
+-		if (!cpuhotplug_workaround)
++		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
+ 			LOONGSON_FREQCTRL(package_id) |= 1 << (core_id * 4 + 3);
+ 	}
+ }
 -- 
 1.7.7.3

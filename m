@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Sep 2014 20:54:39 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:45602 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008745AbaIMSyibBgls (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Sep 2014 20:54:38 +0200
-Received: from [IPv6:2001:470:7259:0:bd6f:2956:3ade:2df4] (unknown [IPv6:2001:470:7259:0:bd6f:2956:3ade:2df4])
-        by hauke-m.de (Postfix) with ESMTPSA id 06EF7200EE;
-        Sat, 13 Sep 2014 20:54:38 +0200 (CEST)
-Message-ID: <541492E9.4060402@hauke-m.de>
-Date:   Sat, 13 Sep 2014 20:54:33 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Sep 2014 01:06:05 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47429 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008072AbaIMXGDX0Etf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Sep 2014 01:06:03 +0200
+Date:   Sun, 14 Sep 2014 00:06:03 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        linux-mips@linux-mips.org, ddaney.cavm@gmail.com
+Subject: Re: [PATCH v2 5/6] mips: use per-mm page to execute FP branch delay
+ slots
+In-Reply-To: <20140704113007.GA804@pburton-laptop>
+Message-ID: <alpine.LFD.2.11.1409132359450.11957@eddie.linux-mips.org>
+References: <CAO_EM_k0Qp_VPEd2Q+WTJWsvE8cmyAuC780SwGfDxhTt_GzMeg@mail.gmail.com> <20140704080641.GY804@pburton-laptop> <20140704085246.GH13532@linux-mips.org> <20140704090601.GZ804@pburton-laptop> <20140704093809.GI13532@linux-mips.org>
+ <20140704113007.GA804@pburton-laptop>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH][RFC] MIPS: BCM47XX: Use mtd as an alternative way/API
- to get NVRAM content
-References: <1409764481-20997-1-git-send-email-zajec5@gmail.com>
-In-Reply-To: <1409764481-20997-1-git-send-email-zajec5@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42540
+X-archive-position: 42541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,86 +39,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/03/2014 07:14 PM, Rafał Miłecki wrote:
-> NVRAM can be read using magic memory offset, but after all it's just a
-> flash partition. On platforms where NVRAM isn't needed early we can get
-> it using mtd subsystem.
-> 
-> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
-> ---
->  arch/mips/bcm47xx/nvram.c | 40 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
-> 
-> diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-> index 8ea2116..9ab74db 100644
-> --- a/arch/mips/bcm47xx/nvram.c
-> +++ b/arch/mips/bcm47xx/nvram.c
-> @@ -16,6 +16,7 @@
->  #include <linux/ssb/ssb.h>
->  #include <linux/kernel.h>
->  #include <linux/string.h>
-> +#include <linux/mtd/mtd.h>
->  #include <asm/addrspace.h>
->  #include <bcm47xx_nvram.h>
->  #include <asm/mach-bcm47xx/bcm47xx.h>
-> @@ -148,6 +149,13 @@ static int nvram_init_bcma(void)
->  
->  static int nvram_init(void)
->  {
-> +#ifdef CONFIG_MTD
-> +	struct mtd_info *mtd;
-> +	struct nvram_header header;
-> +	size_t bytes_read;
-> +	int i;
-> +#endif
-> +
->  	switch (bcm47xx_bus_type) {
->  #ifdef CONFIG_BCM47XX_SSB
->  	case BCM47XX_BUS_TYPE_SSB:
-> @@ -158,6 +166,38 @@ static int nvram_init(void)
->  		return nvram_init_bcma();
->  #endif
->  	}
-> +
-> +#ifdef CONFIG_MTD
-Could you put this into an extra function so we do not have so many #ifdefs.
-> +	mtd = get_mtd_device_nm("nvram");
-> +	if (IS_ERR(mtd))
-> +		return -ENODEV;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(nvram_sizes); i++) {
-> +		loff_t from = mtd->size - nvram_sizes[i];
-> +
-> +		if (from < 0)
-> +			continue;
-> +
-> +		if (mtd_read(mtd, from, sizeof(header), &bytes_read,
-> +			     (uint8_t *)&header) < 0)
+On Fri, 4 Jul 2014, Paul Burton wrote:
 
-I do not like complex function calls in if, like "if(mtd_read(...))"
-could you use this instead:
-err = mtd_read(..);
-if (err)
-
-> +			continue;
-> +		if (header.magic == NVRAM_HEADER) {
-> +			u8 *dst = (uint8_t *)nvram_buf;
-> +			size_t len = header.len;
-> +
-> +			if (header.len > NVRAM_SPACE) {
-> +				pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
-> +				       header.len, NVRAM_SPACE);
-> +				len = NVRAM_SPACE;
-> +			}
-> +
-> +			if (mtd_read(mtd, from, len, &bytes_read, dst) < 0)
-> +				continue;
-> +			memset(dst + bytes_read, 0x0, NVRAM_SPACE - bytes_read);
-> +		}
-> +	}
-> +#endif
-> +
->  	return -ENXIO;
->  }
->  
+> > > I'm in 2 minds about this - it sounds crazy but perhaps it's the most
+> > > sane option available :)
+> > 
+> > Sanity is overrated anyway ;-)
 > 
+> I had originally left this patch at the point I started considering
+> implementing emulation for the whole ISA in the kernel, figuring I was
+> going insane & should probably do something else for a while. Perhaps I
+> shouldn't worry so much ;)
+
+ One question: does this emulation handle PC-relative instructions placed 
+in a branch delay slot correctly?  This only applies to microMIPS ADDIUPC 
+at the moment I believe, but still that has to work correctly whether on 
+FP hardware or emulated.
+
+  Maciej

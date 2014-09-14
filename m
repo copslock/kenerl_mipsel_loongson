@@ -1,36 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Sep 2014 21:35:19 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:54255 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008834AbaINTcFLsznZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Sep 2014 21:32:05 +0200
-Received: by mail-lb0-f177.google.com with SMTP id l4so3367219lbv.22
-        for <multiple recipients>; Sun, 14 Sep 2014 12:31:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Sep 2014 21:35:35 +0200 (CEST)
+Received: from mail-la0-f43.google.com ([209.85.215.43]:48439 "EHLO
+        mail-la0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008898AbaINTcGpU1WH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Sep 2014 21:32:06 +0200
+Received: by mail-la0-f43.google.com with SMTP id gi9so3479096lab.16
+        for <multiple recipients>; Sun, 14 Sep 2014 12:32:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=SlUAad7zdaTNhcivb/BWzf5XFaF4R8uTdUv4U/EPcLs=;
-        b=yt+knI63XkewXspBF3D8uwAAncaxVYzW0T73H02ne+qXDnwrYoHaL/hwXEq0W/+1Ih
-         HQkfJhk5n5BxWuBYWXmWcs2I87+We4Ch1+wnFB0rubLONu14piiv0KtJnUc5cwgJAKSD
-         yF18jQR8gR08TjCoEsyeANGzZRoSv3HEUMYezKXZNBqnr0oxWIL1VBFuDfRu2cSvaZm2
-         uRzL8IrLm7qjadgq9Yn8RXl1NLWOjP+GpfDpU8mwzJIm8q4ZtxmyEm0Fq/D3MQ4M6eS6
-         cjo7oqJ9JjJ/PgMARgjVIx0NohLi1Rx7pm0H1O4HzUewT+mibj++vcvsnFnR397JHk7y
-         dKwg==
-X-Received: by 10.112.147.74 with SMTP id ti10mr22038771lbb.29.1410723119744;
-        Sun, 14 Sep 2014 12:31:59 -0700 (PDT)
+        bh=j9AlCsCfqq12p9O7tuP+pi8khQSesQ8XFuH+aVVOIH8=;
+        b=n19oxS2pwY45J2+XZHge7pc4xFqSgn/0fc+PHw87jZ9dPeVBqcsWZK0sidoESSiuWG
+         Bu1/rQVkGt4ILCwIlf8CbOvhQLOzxoSWMgXvOSb9ignHYI0GntTA+Di5LgRHp2ayXhzF
+         bBDJPplct36n1dKu0uNXfVLfjHPpwhZPSyEicdVN6AR6JsCM1TlX4pcH9nb9c/m7OsjI
+         L3gfGFgbLrnRBtNt13lEmci2QF+WYC/+SZ/4CcoLJw2vmGIryrQbGjIFwVUTvT5CGyDM
+         aPiu8R37BfShpNZ4z/0pEiUEix7O0EFYz7JqtnJ99zhTSo74BlaAR63MwoK9ruIvZC9/
+         AaGw==
+X-Received: by 10.112.53.230 with SMTP id e6mr3201430lbp.100.1410723121361;
+        Sun, 14 Sep 2014 12:32:01 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id y5sm3339621laa.20.2014.09.14.12.31.57
+        by mx.google.com with ESMTPSA id y5sm3339621laa.20.2014.09.14.12.31.59
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 14 Sep 2014 12:31:58 -0700 (PDT)
+        Sun, 14 Sep 2014 12:32:00 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linux MIPS <linux-mips@linux-mips.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org
-Subject: [RFC 12/18] mtd: add Atheros AR2315 SPI Flash driver
-Date:   Sun, 14 Sep 2014 23:33:27 +0400
-Message-Id: <1410723213-22440-13-git-send-email-ryazanov.s.a@gmail.com>
+        Wim Van Sebroeck <wim@iguana.be>,
+        linux-watchdog@vger.kernel.org
+Subject: [RFC 13/18] watchdog: add Atheros AR2315 watchdog driver
+Date:   Sun, 14 Sep 2014 23:33:28 +0400
+Message-Id: <1410723213-22440-14-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1410723213-22440-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1410723213-22440-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -38,7 +37,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42555
+X-archive-position: 42556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,672 +54,305 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Atheros AR2315 SoC have a SPI Flash unit with hybrid flash access: flash
-read is performed via memory mapping, on the other hand flash write is
-performed by explicitly issued SPI command.
-
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Cc: Brian Norris <computersforpeace@gmail.com>
-Cc: linux-mtd@lists.infradead.org
+Cc: Wim Van Sebroeck <wim@iguana.be>
+Cc: linux-watchdog@vger.kernel.org
 ---
-This driver is not ready for merging since it should be rewrited using
-spi-nor framework.
----
- arch/mips/ar231x/ar2315.c             |  23 ++
- drivers/mtd/devices/Kconfig           |   5 +
- drivers/mtd/devices/Makefile          |   1 +
- drivers/mtd/devices/ar2315.c          | 459 ++++++++++++++++++++++++++++++++++
- drivers/mtd/devices/ar2315_spiflash.h | 106 ++++++++
- 5 files changed, 594 insertions(+)
- create mode 100644 drivers/mtd/devices/ar2315.c
- create mode 100644 drivers/mtd/devices/ar2315_spiflash.h
+ arch/mips/ar231x/ar2315.c     |  26 +++++-
+ drivers/watchdog/Kconfig      |   7 ++
+ drivers/watchdog/Makefile     |   1 +
+ drivers/watchdog/ar2315-wtd.c | 202 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 235 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/watchdog/ar2315-wtd.c
 
 diff --git a/arch/mips/ar231x/ar2315.c b/arch/mips/ar231x/ar2315.c
-index ab38ad4..cab3b76 100644
+index cab3b76..62cf548 100644
 --- a/arch/mips/ar231x/ar2315.c
 +++ b/arch/mips/ar231x/ar2315.c
-@@ -126,6 +126,28 @@ void __init ar2315_arch_init_irq(void)
- 	irq_set_chained_handler(AR2315_IRQ_MISC, ar2315_misc_irq_handler);
+@@ -62,7 +62,10 @@ static void ar2315_misc_irq_handler(unsigned irq, struct irq_desc *desc)
+ 		generic_handle_irq(AR2315_MISC_IRQ_GPIO);
+ 	} else if (pending & AR2315_ISR_UART0)
+ 		generic_handle_irq(AR2315_MISC_IRQ_UART0);
+-	else
++	else if (pending & AR2315_ISR_WD) {
++		ar231x_write_reg(AR2315_ISR, AR2315_ISR_WD);
++		generic_handle_irq(AR2315_MISC_IRQ_WATCHDOG);
++	} else
+ 		spurious_interrupt();
  }
  
-+static struct resource ar2315_spiflash_res[] = {
+@@ -148,6 +151,26 @@ static struct platform_device ar2315_spiflash = {
+ 	.num_resources = ARRAY_SIZE(ar2315_spiflash_res)
+ };
+ 
++static struct resource ar2315_wdt_res[] = {
 +	{
-+		.name = "spiflash_read",
 +		.flags = IORESOURCE_MEM,
-+		.start = AR2315_SPI_READ,
-+		.end = AR2315_SPI_READ + 0x1000000 - 1,
++		.start = AR2315_WD,
++		.end = AR2315_WD + 8 - 1,
 +	},
 +	{
-+		.name = "spiflash_mmr",
-+		.flags = IORESOURCE_MEM,
-+		.start = AR2315_SPI_MMR,
-+		.end = AR2315_SPI_MMR + 12 - 1,
-+	},
++		.flags = IORESOURCE_IRQ,
++		.start = AR2315_MISC_IRQ_WATCHDOG,
++		.end = AR2315_MISC_IRQ_WATCHDOG,
++	}
 +};
 +
-+static struct platform_device ar2315_spiflash = {
++static struct platform_device ar2315_wdt = {
 +	.id = -1,
-+	.name = "ar2315-spiflash",
-+	.resource = ar2315_spiflash_res,
-+	.num_resources = ARRAY_SIZE(ar2315_spiflash_res)
++	.name = "ar2315-wdt",
++	.resource = ar2315_wdt_res,
++	.num_resources = ARRAY_SIZE(ar2315_wdt_res)
 +};
 +
  static struct resource ar2315_gpio_res[] = {
  	{
  		.name = "ar2315-gpio",
-@@ -171,6 +193,7 @@ void __init ar2315_init_devices(void)
+@@ -193,6 +216,7 @@ void __init ar2315_init_devices(void)
  	ar231x_find_config(ar2315_flash_limit);
  
  	platform_device_register(&ar2315_gpio);
-+	platform_device_register(&ar2315_spiflash);
++	platform_device_register(&ar2315_wdt);
+ 	platform_device_register(&ar2315_spiflash);
  }
  
- static void ar2315_restart(char *command)
-diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
-index c49d0b1..9533867 100644
---- a/drivers/mtd/devices/Kconfig
-+++ b/drivers/mtd/devices/Kconfig
-@@ -112,6 +112,11 @@ config MTD_SST25L
- 	  Set up your spi devices with the right board-specific platform data,
- 	  if you want to specify device partitioning.
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index f57312f..0e84f3a 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -1186,6 +1186,13 @@ config RALINK_WDT
+ 	help
+ 	  Hardware driver for the Ralink SoC Watchdog Timer.
  
-+config MTD_AR2315
-+	tristate "Atheros AR2315+ SPI Flash support"
++config AR2315_WDT
++	tristate "Atheros AR2315+ WiSoCs Watchdog Timer"
 +	depends on SOC_AR2315
-+	default y
++	help
++	  Hardware driver for the built-in watchdog timer on the Atheros
++	  AR2315/AR2316 WiSoCs.
 +
- config MTD_BCM47XXSFLASH
- 	tristate "R/O support for serial flash on BCMA bus"
- 	depends on BCMA_SFLASH
-diff --git a/drivers/mtd/devices/Makefile b/drivers/mtd/devices/Makefile
-index c68868f..eaec8fb 100644
---- a/drivers/mtd/devices/Makefile
-+++ b/drivers/mtd/devices/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_MTD_M25P80)	+= m25p80.o
- obj-$(CONFIG_MTD_NAND_OMAP_BCH)	+= elm.o
- obj-$(CONFIG_MTD_SPEAR_SMI)	+= spear_smi.o
- obj-$(CONFIG_MTD_SST25L)	+= sst25l.o
-+obj-$(CONFIG_MTD_AR2315)	+= ar2315.o
- obj-$(CONFIG_MTD_BCM47XXSFLASH)	+= bcm47xxsflash.o
- obj-$(CONFIG_MTD_ST_SPI_FSM)    += st_spi_fsm.o
+ # PARISC Architecture
  
-diff --git a/drivers/mtd/devices/ar2315.c b/drivers/mtd/devices/ar2315.c
+ # POWERPC Architecture
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 468c320..ef7f83b 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -133,6 +133,7 @@ obj-$(CONFIG_WDT_MTX1) += mtx-1_wdt.o
+ obj-$(CONFIG_PNX833X_WDT) += pnx833x_wdt.o
+ obj-$(CONFIG_SIBYTE_WDOG) += sb_wdog.o
+ obj-$(CONFIG_AR7_WDT) += ar7_wdt.o
++obj-$(CONFIG_AR2315_WDT) += ar2315-wtd.o
+ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
+ obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+ octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
+diff --git a/drivers/watchdog/ar2315-wtd.c b/drivers/watchdog/ar2315-wtd.c
 new file mode 100644
-index 0000000..f2a5e28
+index 0000000..8e1687a
 --- /dev/null
-+++ b/drivers/mtd/devices/ar2315.c
-@@ -0,0 +1,459 @@
-+
++++ b/drivers/watchdog/ar2315-wtd.c
+@@ -0,0 +1,202 @@
 +/*
-+ * MTD driver for the SPI Flash Memory support on Atheros AR2315
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
 + *
-+ * Copyright (c) 2005-2006 Atheros Communications Inc.
-+ * Copyright (C) 2006-2007 FON Technology, SL.
-+ * Copyright (C) 2006-2007 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
-+ * Copyright (C) 2012 Alexandros C. Couloumbis <alex@ozo.com>
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
-+ * This code is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, see <http://www.gnu.org/licenses/>.
 + *
++ * Copyright (C) 2008 John Crispin <blogic@openwrt.org>
++ * Based on EP93xx and ifxmips wdt driver
 + */
 +
-+#include <linux/kernel.h>
++#include <linux/interrupt.h>
 +#include <linux/module.h>
++#include <linux/moduleparam.h>
 +#include <linux/types.h>
-+#include <linux/errno.h>
-+#include <linux/slab.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/partitions.h>
++#include <linux/miscdevice.h>
++#include <linux/watchdog.h>
++#include <linux/fs.h>
++#include <linux/ioport.h>
++#include <linux/notifier.h>
++#include <linux/reboot.h>
++#include <linux/init.h>
 +#include <linux/platform_device.h>
-+#include <linux/sched.h>
-+#include <linux/delay.h>
 +#include <linux/io.h>
-+#include <linux/mutex.h>
++#include <linux/uaccess.h>
 +
-+#include "ar2315_spiflash.h"
++#define DRIVER_NAME	"ar2315-wdt"
 +
-+#define DRIVER_NAME "ar2315-spiflash"
++#define CLOCK_RATE 40000000
++#define HEARTBEAT(x) (x < 1 || x > 90 ? 20 : x)
 +
-+#define busy_wait(_priv, _condition, _wait) do { \
-+	while (_condition) { \
-+		if (_wait > 1) \
-+			msleep(_wait); \
-+		else if ((_wait == 1) && need_resched()) \
-+			schedule(); \
-+		else \
-+			udelay(1); \
-+	} \
-+} while (0)
++#define WDT_REG_TIMER		0x00
++#define WDT_REG_CTRL		0x04
 +
-+enum {
-+	FLASH_NONE,
-+	FLASH_1MB,
-+	FLASH_2MB,
-+	FLASH_4MB,
-+	FLASH_8MB,
-+	FLASH_16MB,
-+};
++#define WDT_CTRL_ACT_NONE	0x00000000	/* No action */
++#define WDT_CTRL_ACT_NMI	0x00000001	/* NMI on watchdog */
++#define WDT_CTRL_ACT_RESET	0x00000002	/* reset on watchdog */
 +
-+/* Flash configuration table */
-+struct flashconfig {
-+	u32 byte_cnt;
-+	u32 sector_cnt;
-+	u32 sector_size;
-+};
++static int wdt_timeout = 20;
++static int started;
++static int in_use;
++static void __iomem *wdt_base;
 +
-+static const struct flashconfig flashconfig_tbl[] = {
-+	[FLASH_NONE] = { 0, 0, 0},
-+	[FLASH_1MB]  = { STM_1MB_BYTE_COUNT, STM_1MB_SECTOR_COUNT,
-+			 STM_1MB_SECTOR_SIZE},
-+	[FLASH_2MB]  = { STM_2MB_BYTE_COUNT, STM_2MB_SECTOR_COUNT,
-+			 STM_2MB_SECTOR_SIZE},
-+	[FLASH_4MB]  = { STM_4MB_BYTE_COUNT, STM_4MB_SECTOR_COUNT,
-+			 STM_4MB_SECTOR_SIZE},
-+	[FLASH_8MB]  = { STM_8MB_BYTE_COUNT, STM_8MB_SECTOR_COUNT,
-+			 STM_8MB_SECTOR_SIZE},
-+	[FLASH_16MB] = { STM_16MB_BYTE_COUNT, STM_16MB_SECTOR_COUNT,
-+			 STM_16MB_SECTOR_SIZE}
-+};
-+
-+/* Mapping of generic opcodes to STM serial flash opcodes */
-+enum {
-+	SPI_WRITE_ENABLE,
-+	SPI_WRITE_DISABLE,
-+	SPI_RD_STATUS,
-+	SPI_WR_STATUS,
-+	SPI_RD_DATA,
-+	SPI_FAST_RD_DATA,
-+	SPI_PAGE_PROGRAM,
-+	SPI_SECTOR_ERASE,
-+	SPI_BULK_ERASE,
-+	SPI_DEEP_PWRDOWN,
-+	SPI_RD_SIG,
-+};
-+
-+struct opcodes {
-+	__u16 code;
-+	__s8 tx_cnt;
-+	__s8 rx_cnt;
-+};
-+
-+static const struct opcodes stm_opcodes[] = {
-+	[SPI_WRITE_ENABLE] = {STM_OP_WR_ENABLE, 1, 0},
-+	[SPI_WRITE_DISABLE] = {STM_OP_WR_DISABLE, 1, 0},
-+	[SPI_RD_STATUS] = {STM_OP_RD_STATUS, 1, 1},
-+	[SPI_WR_STATUS] = {STM_OP_WR_STATUS, 1, 0},
-+	[SPI_RD_DATA] = {STM_OP_RD_DATA, 4, 4},
-+	[SPI_FAST_RD_DATA] = {STM_OP_FAST_RD_DATA, 5, 0},
-+	[SPI_PAGE_PROGRAM] = {STM_OP_PAGE_PGRM, 8, 0},
-+	[SPI_SECTOR_ERASE] = {STM_OP_SECTOR_ERASE, 4, 0},
-+	[SPI_BULK_ERASE] = {STM_OP_BULK_ERASE, 1, 0},
-+	[SPI_DEEP_PWRDOWN] = {STM_OP_DEEP_PWRDOWN, 1, 0},
-+	[SPI_RD_SIG] = {STM_OP_RD_SIG, 4, 1},
-+};
-+
-+/* Driver private data structure */
-+struct spiflash_priv {
-+	struct mtd_info mtd;
-+	void __iomem *readaddr; /* memory mapped data for read  */
-+	void __iomem *mmraddr;  /* memory mapped register space */
-+	struct mutex lock;	/* serialize registers access */
-+};
-+
-+#define to_spiflash(_mtd) container_of(_mtd, struct spiflash_priv, mtd)
-+
-+enum {
-+	FL_READY,
-+	FL_READING,
-+	FL_ERASING,
-+	FL_WRITING
-+};
-+
-+/*****************************************************************************/
-+
-+static u32
-+spiflash_read_reg(struct spiflash_priv *priv, int reg)
++static inline void ar2315_wdt_wr(unsigned reg, u32 val)
 +{
-+	return ioread32(priv->mmraddr + reg);
++	iowrite32(val, wdt_base + reg);
 +}
 +
-+static void
-+spiflash_write_reg(struct spiflash_priv *priv, int reg, u32 data)
++static void ar2315_wdt_enable(void)
 +{
-+	iowrite32(data, priv->mmraddr + reg);
++	ar2315_wdt_wr(WDT_REG_TIMER, wdt_timeout * CLOCK_RATE);
 +}
 +
-+static u32
-+spiflash_wait_busy(struct spiflash_priv *priv)
++static ssize_t ar2315_wdt_write(struct file *file, const char __user *data,
++				size_t len, loff_t *ppos)
 +{
-+	u32 reg;
-+
-+	busy_wait(priv, (reg = spiflash_read_reg(priv, SPI_FLASH_CTL)) &
-+		SPI_CTL_BUSY, 0);
-+	return reg;
++	if (len)
++		ar2315_wdt_enable();
++	return len;
 +}
 +
-+static u32
-+spiflash_sendcmd(struct spiflash_priv *priv, int opcode, u32 addr)
++static int ar2315_wdt_open(struct inode *inode, struct file *file)
 +{
-+	const struct opcodes *op;
-+	u32 reg, mask;
-+
-+	op = &stm_opcodes[opcode];
-+	reg = spiflash_wait_busy(priv);
-+	spiflash_write_reg(priv, SPI_FLASH_OPCODE,
-+			   ((u32)op->code) | (addr << 8));
-+
-+	reg &= ~SPI_CTL_TX_RX_CNT_MASK;
-+	reg |= SPI_CTL_START | op->tx_cnt | (op->rx_cnt << 4);
-+
-+	spiflash_write_reg(priv, SPI_FLASH_CTL, reg);
-+	spiflash_wait_busy(priv);
-+
-+	if (!op->rx_cnt)
-+		return 0;
-+
-+	reg = spiflash_read_reg(priv, SPI_FLASH_DATA);
-+
-+	switch (op->rx_cnt) {
-+	case 1:
-+		mask = 0x000000ff;
-+		break;
-+	case 2:
-+		mask = 0x0000ffff;
-+		break;
-+	case 3:
-+		mask = 0x00ffffff;
-+		break;
-+	default:
-+		mask = 0xffffffff;
-+		break;
-+	}
-+	reg &= mask;
-+
-+	return reg;
++	if (in_use)
++		return -EBUSY;
++	ar2315_wdt_enable();
++	in_use = 1;
++	started = 1;
++	return nonseekable_open(inode, file);
 +}
 +
-+/*
-+ * Probe SPI flash device
-+ * Function returns 0 for failure.
-+ * and flashconfig_tbl array index for success.
-+ */
-+static int
-+spiflash_probe_chip(struct platform_device *pdev, struct spiflash_priv *priv)
++static int ar2315_wdt_release(struct inode *inode, struct file *file)
 +{
-+	u32 sig = spiflash_sendcmd(priv, SPI_RD_SIG, 0);
-+	int flash_size;
-+
-+	switch (sig) {
-+	case STM_8MBIT_SIGNATURE:
-+		flash_size = FLASH_1MB;
-+		break;
-+	case STM_16MBIT_SIGNATURE:
-+		flash_size = FLASH_2MB;
-+		break;
-+	case STM_32MBIT_SIGNATURE:
-+		flash_size = FLASH_4MB;
-+		break;
-+	case STM_64MBIT_SIGNATURE:
-+		flash_size = FLASH_8MB;
-+		break;
-+	case STM_128MBIT_SIGNATURE:
-+		flash_size = FLASH_16MB;
-+		break;
-+	default:
-+		dev_warn(&pdev->dev, "read of flash device signature failed!\n");
-+		return 0;
-+	}
-+
-+	return flash_size;
-+}
-+
-+static void
-+spiflash_wait_complete(struct spiflash_priv *priv, unsigned int timeout)
-+{
-+	busy_wait(priv, spiflash_sendcmd(priv, SPI_RD_STATUS, 0) &
-+		SPI_STATUS_WIP, timeout);
-+}
-+
-+static int
-+spiflash_erase(struct mtd_info *mtd, struct erase_info *instr)
-+{
-+	struct spiflash_priv *priv = to_spiflash(mtd);
-+	const struct opcodes *op;
-+	u32 temp, reg;
-+
-+	if (instr->addr + instr->len > mtd->size)
-+		return -EINVAL;
-+
-+	mutex_lock(&priv->lock);
-+
-+	spiflash_sendcmd(priv, SPI_WRITE_ENABLE, 0);
-+	reg = spiflash_wait_busy(priv);
-+
-+	op = &stm_opcodes[SPI_SECTOR_ERASE];
-+	temp = ((u32)instr->addr << 8) | (u32)(op->code);
-+	spiflash_write_reg(priv, SPI_FLASH_OPCODE, temp);
-+
-+	reg &= ~SPI_CTL_TX_RX_CNT_MASK;
-+	reg |= op->tx_cnt | SPI_CTL_START;
-+	spiflash_write_reg(priv, SPI_FLASH_CTL, reg);
-+
-+	spiflash_wait_complete(priv, 20);
-+
-+	mutex_unlock(&priv->lock);
-+
-+	instr->state = MTD_ERASE_DONE;
-+	mtd_erase_callback(instr);
-+
++	in_use = 0;
 +	return 0;
 +}
 +
-+static int
-+spiflash_read(struct mtd_info *mtd, loff_t from, size_t len, size_t *retlen,
-+	      u_char *buf)
++static irqreturn_t ar2315_wdt_interrupt(int irq, void *dev)
 +{
-+	struct spiflash_priv *priv = to_spiflash(mtd);
++	struct platform_device *pdev = (struct platform_device *)dev;
 +
-+	if (!len)
-+		return 0;
-+
-+	if (from + len > mtd->size)
-+		return -EINVAL;
-+
-+	*retlen = len;
-+
-+	mutex_lock(&priv->lock);
-+
-+	memcpy_fromio(buf, priv->readaddr + from, len);
-+
-+	mutex_unlock(&priv->lock);
-+
-+	return 0;
++	if (started) {
++		dev_crit(&pdev->dev, "watchdog expired, rebooting system\n");
++		emergency_restart();
++	} else {
++		ar2315_wdt_wr(WDT_REG_CTRL, 0);
++		ar2315_wdt_wr(WDT_REG_TIMER, 0);
++	}
++	return IRQ_HANDLED;
 +}
 +
-+static int
-+spiflash_write(struct mtd_info *mtd, loff_t to, size_t len, size_t *retlen,
-+	       const u8 *buf)
++static struct watchdog_info ident = {
++	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING,
++	.identity = "ar2315 Watchdog",
++};
++
++static long ar2315_wdt_ioctl(struct file *file, unsigned int cmd,
++			     unsigned long arg)
 +{
-+	struct spiflash_priv *priv = to_spiflash(mtd);
-+	u32 opcode, bytes_left;
++	int new_wdt_timeout;
++	int ret = -ENOIOCTLCMD;
 +
-+	*retlen = 0;
-+
-+	if (!len)
-+		return 0;
-+
-+	if (to + len > mtd->size)
-+		return -EINVAL;
-+
-+	bytes_left = len;
-+
-+	do {
-+		u32 read_len, reg, page_offset, spi_data = 0;
-+
-+		read_len = min(bytes_left, sizeof(u32));
-+
-+		/* 32-bit writes cannot span across a page boundary
-+		 * (256 bytes). This types of writes require two page
-+		 * program operations to handle it correctly. The STM part
-+		 * will write the overflow data to the beginning of the
-+		 * current page as opposed to the subsequent page.
-+		 */
-+		page_offset = (to & (STM_PAGE_SIZE - 1)) + read_len;
-+
-+		if (page_offset > STM_PAGE_SIZE)
-+			read_len -= (page_offset - STM_PAGE_SIZE);
-+
-+		mutex_lock(&priv->lock);
-+
-+		spiflash_sendcmd(priv, SPI_WRITE_ENABLE, 0);
-+		spi_data = 0;
-+		switch (read_len) {
-+		case 4:
-+			spi_data |= buf[3] << 24;
-+			/* fall through */
-+		case 3:
-+			spi_data |= buf[2] << 16;
-+			/* fall through */
-+		case 2:
-+			spi_data |= buf[1] << 8;
-+			/* fall through */
-+		case 1:
-+			spi_data |= buf[0] & 0xff;
++	switch (cmd) {
++	case WDIOC_GETSUPPORT:
++		ret = copy_to_user((void __user *)arg, &ident, sizeof(ident)) ?
++		      -EFAULT : 0;
++		break;
++	case WDIOC_KEEPALIVE:
++		ar2315_wdt_enable();
++		ret = 0;
++		break;
++	case WDIOC_SETTIMEOUT:
++		ret = get_user(new_wdt_timeout, (int __user *)arg);
++		if (ret)
 +			break;
-+		default:
-+			break;
-+		}
++		wdt_timeout = HEARTBEAT(new_wdt_timeout);
++		ar2315_wdt_enable();
++		break;
++	case WDIOC_GETTIMEOUT:
++		ret = put_user(wdt_timeout, (int __user *)arg);
++		break;
++	}
++	return ret;
++}
 +
-+		spiflash_write_reg(priv, SPI_FLASH_DATA, spi_data);
-+		opcode = stm_opcodes[SPI_PAGE_PROGRAM].code |
-+			(to & 0x00ffffff) << 8;
-+		spiflash_write_reg(priv, SPI_FLASH_OPCODE, opcode);
++static const struct file_operations ar2315_wdt_fops = {
++	.owner		= THIS_MODULE,
++	.llseek		= no_llseek,
++	.write		= ar2315_wdt_write,
++	.unlocked_ioctl	= ar2315_wdt_ioctl,
++	.open		= ar2315_wdt_open,
++	.release	= ar2315_wdt_release,
++};
 +
-+		reg = spiflash_read_reg(priv, SPI_FLASH_CTL);
-+		reg &= ~SPI_CTL_TX_RX_CNT_MASK;
-+		reg |= (read_len + 4) | SPI_CTL_START;
-+		spiflash_write_reg(priv, SPI_FLASH_CTL, reg);
++static struct miscdevice ar2315_wdt_miscdev = {
++	.minor	= WATCHDOG_MINOR,
++	.name	= "watchdog",
++	.fops	= &ar2315_wdt_fops,
++};
 +
-+		spiflash_wait_complete(priv, 1);
++static int ar2315_wdt_probe(struct platform_device *dev)
++{
++	struct resource *mem_res, *irq_res;
++	int ret = 0;
 +
-+		mutex_unlock(&priv->lock);
++	if (wdt_base)
++		return -EBUSY;
 +
-+		bytes_left -= read_len;
-+		to += read_len;
-+		buf += read_len;
++	irq_res = platform_get_resource(dev, IORESOURCE_IRQ, 0);
++	if (!irq_res) {
++		dev_err(&dev->dev, "no IRQ resource\n");
++		return -ENOENT;
++	}
 +
-+		*retlen += read_len;
-+	} while (bytes_left != 0);
++	mem_res = platform_get_resource(dev, IORESOURCE_MEM, 0);
++	wdt_base = devm_ioremap_resource(&dev->dev, mem_res);
++	if (IS_ERR(wdt_base))
++		return PTR_ERR(wdt_base);
 +
++	ret = devm_request_irq(&dev->dev, irq_res->start, ar2315_wdt_interrupt,
++			       IRQF_DISABLED, DRIVER_NAME, dev);
++	if (ret) {
++		dev_err(&dev->dev, "failed to register inetrrupt\n");
++		goto out;
++	}
++
++	ret = misc_register(&ar2315_wdt_miscdev);
++	if (ret)
++		dev_err(&dev->dev, "failed to register miscdev\n");
++
++out:
++	return ret;
++}
++
++static int ar2315_wdt_remove(struct platform_device *dev)
++{
++	misc_deregister(&ar2315_wdt_miscdev);
 +	return 0;
 +}
 +
-+#if defined CONFIG_MTD_REDBOOT_PARTS || CONFIG_MTD_MYLOADER_PARTS
-+static const char * const part_probe_types[] = {
-+	"cmdlinepart", "RedBoot", "MyLoader", NULL
-+};
-+#endif
-+
-+static int
-+spiflash_probe(struct platform_device *pdev)
-+{
-+	struct spiflash_priv *priv;
-+	struct mtd_info *mtd;
-+	struct resource *res;
-+	int index;
-+	int result = 0;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	mutex_init(&priv->lock);
-+	mtd = &priv->mtd;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	priv->mmraddr = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(priv->mmraddr)) {
-+		dev_warn(&pdev->dev, "failed to map flash MMR\n");
-+		return PTR_ERR(priv->mmraddr);
-+	}
-+
-+	index = spiflash_probe_chip(pdev, priv);
-+	if (!index) {
-+		dev_warn(&pdev->dev, "found no flash device\n");
-+		return -ENODEV;
-+	}
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	priv->readaddr = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(priv->readaddr)) {
-+		dev_warn(&pdev->dev, "failed to map flash read mem\n");
-+		return PTR_ERR(priv->readaddr);
-+	}
-+
-+	platform_set_drvdata(pdev, priv);
-+	mtd->name = "spiflash";
-+	mtd->type = MTD_NORFLASH;
-+	mtd->flags = (MTD_CAP_NORFLASH|MTD_WRITEABLE);
-+	mtd->size = flashconfig_tbl[index].byte_cnt;
-+	mtd->erasesize = flashconfig_tbl[index].sector_size;
-+	mtd->writesize = 1;
-+	mtd->numeraseregions = 0;
-+	mtd->eraseregions = NULL;
-+	mtd->_erase = spiflash_erase;
-+	mtd->_read = spiflash_read;
-+	mtd->_write = spiflash_write;
-+	mtd->owner = THIS_MODULE;
-+
-+	dev_info(&pdev->dev, "%lld Kbytes flash detected\n", mtd->size >> 10);
-+
-+#if defined CONFIG_MTD_REDBOOT_PARTS || CONFIG_MTD_MYLOADER_PARTS
-+	/* parse redboot partitions */
-+
-+	result = mtd_device_parse_register(mtd, part_probe_types,
-+					   NULL, NULL, 0);
-+#endif
-+
-+	return result;
-+}
-+
-+static int
-+spiflash_remove(struct platform_device *pdev)
-+{
-+	struct spiflash_priv *priv = platform_get_drvdata(pdev);
-+
-+	mtd_device_unregister(&priv->mtd);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver spiflash_driver = {
-+	.driver.name = DRIVER_NAME,
-+	.probe = spiflash_probe,
-+	.remove = spiflash_remove,
++static struct platform_driver ar2315_wdt_driver = {
++	.probe = ar2315_wdt_probe,
++	.remove = ar2315_wdt_remove,
++	.driver = {
++		.name = DRIVER_NAME,
++		.owner = THIS_MODULE,
++	},
 +};
 +
-+module_platform_driver(spiflash_driver);
++module_platform_driver(ar2315_wdt_driver);
 +
++MODULE_DESCRIPTION("Atheros AR2315 hardware watchdog driver");
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
 +MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("OpenWrt.org");
-+MODULE_AUTHOR("Atheros Communications Inc");
-+MODULE_DESCRIPTION("MTD driver for SPI Flash on Atheros AR2315+ SOC");
 +MODULE_ALIAS("platform:" DRIVER_NAME);
-+
-diff --git a/drivers/mtd/devices/ar2315_spiflash.h b/drivers/mtd/devices/ar2315_spiflash.h
-new file mode 100644
-index 0000000..17b0903
---- /dev/null
-+++ b/drivers/mtd/devices/ar2315_spiflash.h
-@@ -0,0 +1,106 @@
-+/*
-+ * Atheros AR2315 SPI Flash Memory support header file.
-+ *
-+ * Copyright (c) 2005, Atheros Communications Inc.
-+ * Copyright (C) 2006 FON Technology, SL.
-+ * Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
-+ *
-+ * This code is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ */
-+#ifndef __AR2315_SPIFLASH_H
-+#define __AR2315_SPIFLASH_H
-+
-+#define STM_PAGE_SIZE           256
-+
-+#define SFI_WRITE_BUFFER_SIZE   4
-+#define SFI_FLASH_ADDR_MASK     0x00ffffff
-+
-+#define STM_8MBIT_SIGNATURE     0x13
-+#define STM_M25P80_BYTE_COUNT   1048576
-+#define STM_M25P80_SECTOR_COUNT 16
-+#define STM_M25P80_SECTOR_SIZE  0x10000
-+
-+#define STM_16MBIT_SIGNATURE    0x14
-+#define STM_M25P16_BYTE_COUNT   2097152
-+#define STM_M25P16_SECTOR_COUNT 32
-+#define STM_M25P16_SECTOR_SIZE  0x10000
-+
-+#define STM_32MBIT_SIGNATURE    0x15
-+#define STM_M25P32_BYTE_COUNT   4194304
-+#define STM_M25P32_SECTOR_COUNT 64
-+#define STM_M25P32_SECTOR_SIZE  0x10000
-+
-+#define STM_64MBIT_SIGNATURE    0x16
-+#define STM_M25P64_BYTE_COUNT   8388608
-+#define STM_M25P64_SECTOR_COUNT 128
-+#define STM_M25P64_SECTOR_SIZE  0x10000
-+
-+#define STM_128MBIT_SIGNATURE   0x17
-+#define STM_M25P128_BYTE_COUNT   16777216
-+#define STM_M25P128_SECTOR_COUNT 256
-+#define STM_M25P128_SECTOR_SIZE  0x10000
-+
-+#define STM_1MB_BYTE_COUNT   STM_M25P80_BYTE_COUNT
-+#define STM_1MB_SECTOR_COUNT STM_M25P80_SECTOR_COUNT
-+#define STM_1MB_SECTOR_SIZE  STM_M25P80_SECTOR_SIZE
-+#define STM_2MB_BYTE_COUNT   STM_M25P16_BYTE_COUNT
-+#define STM_2MB_SECTOR_COUNT STM_M25P16_SECTOR_COUNT
-+#define STM_2MB_SECTOR_SIZE  STM_M25P16_SECTOR_SIZE
-+#define STM_4MB_BYTE_COUNT   STM_M25P32_BYTE_COUNT
-+#define STM_4MB_SECTOR_COUNT STM_M25P32_SECTOR_COUNT
-+#define STM_4MB_SECTOR_SIZE  STM_M25P32_SECTOR_SIZE
-+#define STM_8MB_BYTE_COUNT   STM_M25P64_BYTE_COUNT
-+#define STM_8MB_SECTOR_COUNT STM_M25P64_SECTOR_COUNT
-+#define STM_8MB_SECTOR_SIZE  STM_M25P64_SECTOR_SIZE
-+#define STM_16MB_BYTE_COUNT   STM_M25P128_BYTE_COUNT
-+#define STM_16MB_SECTOR_COUNT STM_M25P128_SECTOR_COUNT
-+#define STM_16MB_SECTOR_SIZE  STM_M25P128_SECTOR_SIZE
-+
-+/*
-+ * ST Microelectronics Opcodes for Serial Flash
-+ */
-+
-+#define STM_OP_WR_ENABLE       0x06     /* Write Enable */
-+#define STM_OP_WR_DISABLE      0x04     /* Write Disable */
-+#define STM_OP_RD_STATUS       0x05     /* Read Status */
-+#define STM_OP_WR_STATUS       0x01     /* Write Status */
-+#define STM_OP_RD_DATA         0x03     /* Read Data */
-+#define STM_OP_FAST_RD_DATA    0x0b     /* Fast Read Data */
-+#define STM_OP_PAGE_PGRM       0x02     /* Page Program */
-+#define STM_OP_SECTOR_ERASE    0xd8     /* Sector Erase */
-+#define STM_OP_BULK_ERASE      0xc7     /* Bulk Erase */
-+#define STM_OP_DEEP_PWRDOWN    0xb9     /* Deep Power-Down Mode */
-+#define STM_OP_RD_SIG          0xab     /* Read Electronic Signature */
-+
-+#define STM_STATUS_WIP       0x01       /* Write-In-Progress */
-+#define STM_STATUS_WEL       0x02       /* Write Enable Latch */
-+#define STM_STATUS_BP0       0x04       /* Block Protect 0 */
-+#define STM_STATUS_BP1       0x08       /* Block Protect 1 */
-+#define STM_STATUS_BP2       0x10       /* Block Protect 2 */
-+#define STM_STATUS_SRWD      0x80       /* Status Register Write Disable */
-+
-+/*
-+ * SPI Flash Interface Registers
-+ */
-+
-+#define SPI_FLASH_CTL           0x00
-+#define SPI_FLASH_OPCODE        0x04
-+#define SPI_FLASH_DATA          0x08
-+
-+#define SPI_CTL_START           0x00000100
-+#define SPI_CTL_BUSY            0x00010000
-+#define SPI_CTL_TXCNT_MASK      0x0000000f
-+#define SPI_CTL_RXCNT_MASK      0x000000f0
-+#define SPI_CTL_TX_RX_CNT_MASK  0x000000ff
-+#define SPI_CTL_SIZE_MASK       0x00060000
-+
-+#define SPI_CTL_CLK_SEL_MASK    0x03000000
-+#define SPI_OPCODE_MASK         0x000000ff
-+
-+#define SPI_STATUS_WIP		STM_STATUS_WIP
-+
-+#endif
 -- 
 1.8.1.5

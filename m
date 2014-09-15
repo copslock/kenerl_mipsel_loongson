@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Sep 2014 01:51:59 +0200 (CEST)
-Received: from mail-ob0-f201.google.com ([209.85.214.201]:49672 "EHLO
-        mail-ob0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008998AbaIOXvlkfF0y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Sep 2014 01:51:41 +0200
-Received: by mail-ob0-f201.google.com with SMTP id m8so746255obr.4
-        for <linux-mips@linux-mips.org>; Mon, 15 Sep 2014 16:51:34 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Sep 2014 01:52:18 +0200 (CEST)
+Received: from mail-ie0-f202.google.com ([209.85.223.202]:54342 "EHLO
+        mail-ie0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008999AbaIOXvmKFrs9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Sep 2014 01:51:42 +0200
+Received: by mail-ie0-f202.google.com with SMTP id rl12so746111iec.3
+        for <linux-mips@linux-mips.org>; Mon, 15 Sep 2014 16:51:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=NcfggpnTvFYurEg4nvcSLGmKoYx9nL3gxaVrO8FrEzY=;
-        b=ddzPqVwYEj1LZMW6oaQN8MCVVIp01iqZn3ptas4Y4mhVtiASuO8LRbzCKtKO1M0L5i
-         XUmbkLfP0lj0UCSXh8BRbHcgmMYvaby7aaJB2+3Tt2xHZ1fVyO7ADNA73X6lE4xtB9e7
-         t4uwzDl/e0CgmH03yH68PQX3wQlVPs4nAnrenEIeeZ3LVY+ejjIH1pI9rH5BQyvUcAAy
-         Sip5ZKwLp0ViSRl+68Hik4IRg3F2ySbsR4MDEi/gzhxihM7tGdPYMwp635PfKEsdwJV8
-         J4KxJEi1R5jUuNIxfdHQcwTdTa4b3IUJdOIqCxC6Ht4vqOCFNhu1sYnU5WtOSEDmUm/5
-         +/pQ==
-X-Gm-Message-State: ALoCoQkk40FqF3zH383A3m4s66arvbGa3y/AolqpJnbTpUrZiyTcXHegQjchQdK5XuB6+ohf0tts
-X-Received: by 10.182.213.105 with SMTP id nr9mr17714210obc.36.1410825094386;
-        Mon, 15 Sep 2014 16:51:34 -0700 (PDT)
+        bh=oaThMYBHDpkxOUqs2reXcrM/Z27lCnfvpgsGRDcklgU=;
+        b=Dfw5z74m5zcb3fQLaz0rZEV2ixOdyn1tcZK9aFp0+M9MmVfl7WYY79XA3YtY9qvUb6
+         S/5oZ/I3vdwTlWMVXDCeOVVchVqC1xqIWyXt35BkUB9VsClpMZAFbl/NcGn/rMC0Cruz
+         OEw6KcQj/j++2dBKvnzv0o1+9iVhw0CGetQS8R9yM9dgpq8CadYEYTQ6Lbrp2+COptEB
+         +pAwJ4up+djeO6jy34Xa+1xyB6CBaAQQFA26QXcuJbwwabHkUOhUm5rLmq8llBli8ffF
+         ETbmZA6eVVlLdfi0wG1LKfg4uvtL6IuKidyrMo5a5cZB0UskrJhxmlrb1M30H1lFqRbn
+         2PlQ==
+X-Gm-Message-State: ALoCoQkpYGi5LQqnEmNWcQkm5Ccx6ikhEB3G5JsQRwpsbW3Tt+9qvw3M36xKstSKeuqGmvwdjCKK
+X-Received: by 10.182.29.10 with SMTP id f10mr17014395obh.23.1410825095391;
+        Mon, 15 Sep 2014 16:51:35 -0700 (PDT)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id n63si629273yho.5.2014.09.15.16.51.33
+        by gmr-mx.google.com with ESMTPS id m14si627493yhm.7.2014.09.15.16.51.34
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 15 Sep 2014 16:51:34 -0700 (PDT)
+        Mon, 15 Sep 2014 16:51:35 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id 4wJpECu2.1; Mon, 15 Sep 2014 16:51:34 -0700
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id pSykdCfm.1; Mon, 15 Sep 2014 16:51:35 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 14C0922093F; Mon, 15 Sep 2014 16:51:33 -0700 (PDT)
+        id F2A9E220868; Mon, 15 Sep 2014 16:51:33 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -41,9 +41,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         John Crispin <blogic@openwrt.org>,
         David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 01/24] MIPS: Always use IRQ domains for CPU IRQs
-Date:   Mon, 15 Sep 2014 16:51:04 -0700
-Message-Id: <1410825087-5497-2-git-send-email-abrestic@chromium.org>
+Subject: [PATCH 02/24] MIPS: Rename mips_cpu_intc_init() -> mips_cpu_irq_of_init()
+Date:   Mon, 15 Sep 2014 16:51:05 -0700
+Message-Id: <1410825087-5497-3-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1410825087-5497-1-git-send-email-abrestic@chromium.org>
 References: <1410825087-5497-1-git-send-email-abrestic@chromium.org>
@@ -51,7 +51,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42619
+X-archive-position: 42620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,86 +68,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use an IRQ domain for the 8 CPU IRQs in both the DT and non-DT cases.
+mips_cpu_intc_init() is used for DT-based initialization of the CPU
+IRQ domain.  Give it a more appropriate name.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- arch/mips/Kconfig          |  1 +
- arch/mips/kernel/irq_cpu.c | 36 +++++++++++-------------------------
- 2 files changed, 12 insertions(+), 25 deletions(-)
+ Documentation/devicetree/bindings/mips/cpu_irq.txt | 4 ++--
+ arch/mips/include/asm/irq_cpu.h                    | 4 ++--
+ arch/mips/kernel/irq_cpu.c                         | 4 ++--
+ arch/mips/ralink/irq.c                             | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 900c7e5..9fc335c 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1051,6 +1051,7 @@ config MIPS_HUGE_TLB_SUPPORT
+diff --git a/Documentation/devicetree/bindings/mips/cpu_irq.txt b/Documentation/devicetree/bindings/mips/cpu_irq.txt
+index 13aa4b6..fc149f3 100644
+--- a/Documentation/devicetree/bindings/mips/cpu_irq.txt
++++ b/Documentation/devicetree/bindings/mips/cpu_irq.txt
+@@ -1,6 +1,6 @@
+ MIPS CPU interrupt controller
  
- config IRQ_CPU
- 	bool
-+	select IRQ_DOMAIN
+-On MIPS the mips_cpu_intc_init() helper can be used to initialize the 8 CPU
++On MIPS the mips_cpu_irq_of_init() helper can be used to initialize the 8 CPU
+ IRQs from a devicetree file and create a irq_domain for IRQ controller.
  
- config IRQ_CPU_RM7K
- 	bool
+ With the irq_domain in place we can describe how the 8 IRQs are wired to the
+@@ -36,7 +36,7 @@ Example devicetree:
+ 
+ Example platform irq.c:
+ static struct of_device_id __initdata of_irq_ids[] = {
+-	{ .compatible = "mti,cpu-interrupt-controller", .data = mips_cpu_intc_init },
++	{ .compatible = "mti,cpu-interrupt-controller", .data = mips_cpu_irq_of_init },
+ 	{ .compatible = "ralink,rt2880-intc", .data = intc_of_init },
+ 	{},
+ };
+diff --git a/arch/mips/include/asm/irq_cpu.h b/arch/mips/include/asm/irq_cpu.h
+index 3f11fdb..39a160b 100644
+--- a/arch/mips/include/asm/irq_cpu.h
++++ b/arch/mips/include/asm/irq_cpu.h
+@@ -19,8 +19,8 @@ extern void rm9k_cpu_irq_init(void);
+ 
+ #ifdef CONFIG_IRQ_DOMAIN
+ struct device_node;
+-extern int mips_cpu_intc_init(struct device_node *of_node,
+-			      struct device_node *parent);
++extern int mips_cpu_irq_of_init(struct device_node *of_node,
++				struct device_node *parent);
+ #endif
+ 
+ #endif /* _ASM_IRQ_CPU_H */
 diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
-index e498f2b..b097f7d 100644
+index b097f7d..ca98a9f 100644
 --- a/arch/mips/kernel/irq_cpu.c
 +++ b/arch/mips/kernel/irq_cpu.c
-@@ -94,28 +94,6 @@ static struct irq_chip mips_mt_cpu_irq_controller = {
- 	.irq_eoi	= unmask_mips_irq,
- };
- 
--void __init mips_cpu_irq_init(void)
--{
--	int irq_base = MIPS_CPU_IRQ_BASE;
--	int i;
--
--	/* Mask interrupts. */
--	clear_c0_status(ST0_IM);
--	clear_c0_cause(CAUSEF_IP);
--
--	/* Software interrupts are used for MT/CMT IPI */
--	for (i = irq_base; i < irq_base + 2; i++)
--		irq_set_chip_and_handler(i, cpu_has_mipsmt ?
--					 &mips_mt_cpu_irq_controller :
--					 &mips_cpu_irq_controller,
--					 handle_percpu_irq);
--
--	for (i = irq_base + 2; i < irq_base + 8; i++)
--		irq_set_chip_and_handler(i, &mips_cpu_irq_controller,
--					 handle_percpu_irq);
--}
--
--#ifdef CONFIG_IRQ_DOMAIN
- static int mips_cpu_intc_map(struct irq_domain *d, unsigned int irq,
- 			     irq_hw_number_t hw)
- {
-@@ -138,8 +116,7 @@ static const struct irq_domain_ops mips_cpu_intc_irq_domain_ops = {
- 	.xlate = irq_domain_xlate_onecell,
- };
+@@ -135,8 +135,8 @@ void __init mips_cpu_irq_init(void)
+ 	__mips_cpu_irq_init(NULL);
+ }
  
 -int __init mips_cpu_intc_init(struct device_node *of_node,
 -			      struct device_node *parent)
-+static void __init __mips_cpu_irq_init(struct device_node *of_node)
++int __init mips_cpu_irq_of_init(struct device_node *of_node,
++				struct device_node *parent)
  {
- 	struct irq_domain *domain;
- 
-@@ -151,7 +128,16 @@ int __init mips_cpu_intc_init(struct device_node *of_node,
- 				       &mips_cpu_intc_irq_domain_ops, NULL);
- 	if (!domain)
- 		panic("Failed to add irqdomain for MIPS CPU");
-+}
-+
-+void __init mips_cpu_irq_init(void)
-+{
-+	__mips_cpu_irq_init(NULL);
-+}
- 
-+int __init mips_cpu_intc_init(struct device_node *of_node,
-+			      struct device_node *parent)
-+{
-+	__mips_cpu_irq_init(of_node);
+ 	__mips_cpu_irq_init(of_node);
  	return 0;
+diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+index 781b3d1..0495011 100644
+--- a/arch/mips/ralink/irq.c
++++ b/arch/mips/ralink/irq.c
+@@ -173,7 +173,7 @@ static int __init intc_of_init(struct device_node *node,
  }
--#endif /* CONFIG_IRQ_DOMAIN */
+ 
+ static struct of_device_id __initdata of_irq_ids[] = {
+-	{ .compatible = "mti,cpu-interrupt-controller", .data = mips_cpu_intc_init },
++	{ .compatible = "mti,cpu-interrupt-controller", .data = mips_cpu_irq_of_init },
+ 	{ .compatible = "ralink,rt2880-intc", .data = intc_of_init },
+ 	{},
+ };
 -- 
 2.1.0.rc2.206.gedb03e5

@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:28:05 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37529 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:28:24 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37559 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008994AbaIOT1GpT55F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:27:06 +0200
+        by eddie.linux-mips.org with ESMTP id S27008996AbaIOT1KQR4do (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:27:10 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 525D8B13;
-        Mon, 15 Sep 2014 19:26:59 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 44B85B19;
+        Mon, 15 Sep 2014 19:27:03 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
+        stable@vger.kernel.org, Jeffrey Deans <jeffrey.deans@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.16 072/158] MIPS: Malta: Improve system memory detection for {e, }memsize >= 2G
-Date:   Mon, 15 Sep 2014 12:25:11 -0700
-Message-Id: <20140915192545.061315267@linuxfoundation.org>
+Subject: [PATCH 3.16 060/158] MIPS: GIC: Prevent array overrun
+Date:   Mon, 15 Sep 2014 12:24:59 -0700
+Message-Id: <20140915192544.692938762@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <20140915192542.872134685@linuxfoundation.org>
 References: <20140915192542.872134685@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42579
+X-archive-position: 42580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,50 +46,41 @@ X-list: linux-mips
 
 ------------------
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+From: Jeffrey Deans <jeffrey.deans@imgtec.com>
 
-commit 64615682658373516863b5b5971ff1d922d0ae7b upstream.
+commit ffc8415afab20bd97754efae6aad1f67b531132b upstream.
 
-Using kstrtol to parse the "{e,}memsize" variables was wrong because this
-parses signed long numbers. In case of '{e,}memsize' >= 2G, the top bit
-is set, resulting to -ERANGE errors and possibly random system memory
-boundaries. We fix this by replacing "kstrtol" with "kstrtoul".
-We also improve the code to check the kstrtoul return value and
-print a warning if an error was returned.
+A GIC interrupt which is declared as having a GIC_MAP_TO_NMI_MSK
+mapping causes the cpu parameter to gic_setup_intr() to be increased
+to 32, causing memory corruption when pcpu_masks[] is written to again
+later in the function.
 
+Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7543/
+Patchwork: https://patchwork.linux-mips.org/patch/7375/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/mti-malta/malta-memory.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/mips/kernel/irq-gic.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/mti-malta/malta-memory.c
-+++ b/arch/mips/mti-malta/malta-memory.c
-@@ -34,13 +34,19 @@ fw_memblock_t * __init fw_getmdesc(int e
- 	/* otherwise look in the environment */
+--- a/arch/mips/kernel/irq-gic.c
++++ b/arch/mips/kernel/irq-gic.c
+@@ -269,11 +269,13 @@ static void __init gic_setup_intr(unsign
  
- 	memsize_str = fw_getenv("memsize");
--	if (memsize_str)
--		tmp = kstrtol(memsize_str, 0, &memsize);
-+	if (memsize_str) {
-+		tmp = kstrtoul(memsize_str, 0, &memsize);
-+		if (tmp)
-+			pr_warn("Failed to read the 'memsize' env variable.\n");
-+	}
- 	if (eva) {
- 	/* Look for ememsize for EVA */
- 		ememsize_str = fw_getenv("ememsize");
--		if (ememsize_str)
--			tmp = kstrtol(ememsize_str, 0, &ememsize);
-+		if (ememsize_str) {
-+			tmp = kstrtoul(ememsize_str, 0, &ememsize);
-+			if (tmp)
-+				pr_warn("Failed to read the 'ememsize' env variable.\n");
-+		}
- 	}
- 	if (!memsize && !ememsize) {
- 		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
+ 	/* Setup Intr to Pin mapping */
+ 	if (pin & GIC_MAP_TO_NMI_MSK) {
++		int i;
++
+ 		GICWRITE(GIC_REG_ADDR(SHARED, GIC_SH_MAP_TO_PIN(intr)), pin);
+ 		/* FIXME: hack to route NMI to all cpu's */
+-		for (cpu = 0; cpu < NR_CPUS; cpu += 32) {
++		for (i = 0; i < NR_CPUS; i += 32) {
+ 			GICWRITE(GIC_REG_ADDR(SHARED,
+-					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, cpu)),
++					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, i)),
+ 				 0xffffffff);
+ 		}
+ 	} else {

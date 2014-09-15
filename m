@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 16:03:11 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:58348 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 16:43:32 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([92.198.50.35]:57558 "EHLO
         metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008960AbaIOODKGbMzc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 16:03:10 +0200
+        by eddie.linux-mips.org with ESMTP id S27008962AbaIOOn05SAxP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 16:43:26 +0200
 Received: from weser.hi.pengutronix.de ([2001:67c:670:100:fa0f:41ff:fe58:4010])
         by metis.ext.pengutronix.de with esmtp (Exim 4.72)
         (envelope-from <l.stach@pengutronix.de>)
-        id 1XTWpy-0000SU-GS; Mon, 15 Sep 2014 16:01:02 +0200
-Message-ID: <1410789648.3314.5.camel@pengutronix.de>
-Subject: Re: [PATCH v1 03/21] MSI: Remove the redundant irq_set_chip_data()
+        id 1XTXUG-0003ZG-45; Mon, 15 Sep 2014 16:42:40 +0200
+Message-ID: <1410792154.3314.7.camel@pengutronix.de>
+Subject: Re: [PATCH v1 05/21] PCI/MSI: Introduce weak arch_find_msi_chip()
+ to find MSI chip
 From:   Lucas Stach <l.stach@pengutronix.de>
 To:     Yijing Wang <wangyijing@huawei.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>,
@@ -29,10 +30,10 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Date:   Mon, 15 Sep 2014 16:00:48 +0200
-In-Reply-To: <1409911806-10519-4-git-send-email-wangyijing@huawei.com>
+Date:   Mon, 15 Sep 2014 16:42:34 +0200
+In-Reply-To: <1409911806-10519-6-git-send-email-wangyijing@huawei.com>
 References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
-         <1409911806-10519-4-git-send-email-wangyijing@huawei.com>
+         <1409911806-10519-6-git-send-email-wangyijing@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.12.5-1 
 Mime-Version: 1.0
@@ -45,7 +46,7 @@ Return-Path: <l.stach@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42565
+X-archive-position: 42566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,39 +64,52 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Am Freitag, den 05.09.2014, 18:09 +0800 schrieb Yijing Wang:
-> Currently, pcie-designware, pcie-rcar, pci-tegra drivers
-> use irq chip_data to save the msi_chip pointer. They
-> already call irq_set_chip_data() in their own MSI irq map
-> functions. So irq_set_chip_data() in arch_setup_msi_irq()
-> is useless.
+> Introduce weak arch_find_msi_chip() to find the match msi_chip.
+> Currently, MSI chip associates pci bus to msi_chip. Because in
+> ARM platform, there may be more than one MSI controller in system.
+> Associate pci bus to msi_chip help pci device to find the match
+> msi_chip and setup MSI/MSI-X irq correctly. But in other platform,
+> like in x86. we only need one MSI chip, because all device use
+> the same MSI address/data and irq etc. So it's no need to associate
+> pci bus to MSI chip, just use a arch function, arch_find_msi_chip()
+> to return the MSI chip for simplicity. The default weak
+> arch_find_msi_chip() used in ARM platform, find the MSI chip
+> by pci bus.
 > 
-> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-> ---
->  drivers/pci/msi.c |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-> index f6cb317..d547f7f 100644
-> --- a/drivers/pci/msi.c
-> +++ b/drivers/pci/msi.c
-> @@ -41,8 +41,6 @@ int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
->  	if (err < 0)
->  		return err;
->  
-> -	irq_set_chip_data(desc->irq, chip);
-> -
->  	return 0;
->  }
->  
-
-arch_teardown_msi_irq() expects to find the msi_chip in the irq
-chip_data field. As this means drivers don't have any reasonable other
-possibility to stuff things into this field, I think it would make sense
-to do the cleanup the other way around: keep the irq_set_chip_data
-arch_setup_msi_irq() and rip it out of the individual drivers.
+Hm, while one weak function sounds much better than the plethora we have
+now, I wonder how much work it would be to associate the msi_chip with
+the pci bus on other arches the same way as done on ARM. This way we
+could kill this calling into arch specific functions which would make
+things a bit clearer to follow I think.
 
 Regards,
 Lucas
+
+> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+> ---
+>  drivers/pci/msi.c |    7 ++++++-
+>  1 files changed, 6 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+> index a77e7f7..539c11d 100644
+> --- a/drivers/pci/msi.c
+> +++ b/drivers/pci/msi.c
+> @@ -29,9 +29,14 @@ static int pci_msi_enable = 1;
+>  
+>  /* Arch hooks */
+>  
+> +struct msi_chip * __weak arch_find_msi_chip(struct pci_dev *dev)
+> +{
+> +	return dev->bus->msi;
+> +}
+> +
+>  int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
+>  {
+> -	struct msi_chip *chip = dev->bus->msi;
+> +	struct msi_chip *chip = arch_find_msi_chip(dev);
+>  	int err;
+>  
+>  	if (!chip || !chip->setup_irq)
 
 -- 
 Pengutronix e.K.             | Lucas Stach                 |

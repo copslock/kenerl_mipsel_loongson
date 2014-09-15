@@ -1,24 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:38:47 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38212 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:39:06 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38213 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009012AbaIOThWS1Coq (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27009011AbaIOThW2BMe0 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:37:22 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 08E39B11;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5D23CB01;
         Mon, 15 Sep 2014 19:37:14 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Jie Chen <chenj@lemote.com>, Rui Wang <wangr@lemote.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 048/114] MIPS: Remove BUG_ON(!is_fpu_owner()) in do_ade()
-Date:   Mon, 15 Sep 2014 12:25:48 -0700
-Message-Id: <20140915192642.944348149@linuxfoundation.org>
+        stable@vger.kernel.org, Alex Smith <alex@alex-smith.me.uk>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.14 049/114] MIPS: asm/reg.h: Make 32- and 64-bit definitions available at the same time
+Date:   Mon, 15 Sep 2014 12:25:49 -0700
+Message-Id: <20140915192642.978853324@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <20140915192641.428509513@linuxfoundation.org>
 References: <20140915192641.428509513@linuxfoundation.org>
@@ -29,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42592
+X-archive-position: 42593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,60 +45,361 @@ X-list: linux-mips
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: Alex Smith <alex@alex-smith.me.uk>
 
-commit 2e5767a27337812f6850b3fa362419e2f085e5c3 upstream.
+commit bcec7c8da6b092b1ff3327fd83c2193adb12f684 upstream.
 
-In do_ade(), is_fpu_owner() isn't preempt-safe. For example, when an
-unaligned ldc1 is executed, do_cpu() is called and then FPU will be
-enabled (and TIF_USEDFPU will be set for the current process). Then,
-do_ade() is called because the access is unaligned.  If the current
-process is preempted at this time, TIF_USEDFPU will be cleard.  So when
-the process is scheduled again, BUG_ON(!is_fpu_owner()) is triggered.
+Get rid of the WANT_COMPAT_REG_H test and instead define both the 32-
+and 64-bit register offset definitions at the same time with
+MIPS{32,64}_ prefixes, then define the existing EF_* names to the
+correct definitions for the kernel's bitness.
 
-This small program can trigger this BUG in a preemptible kernel:
+This patch is a prerequisite of the following bug fix patch.
 
-int main (int argc, char *argv[])
-{
-        double u64[2];
-
-        while (1) {
-                asm volatile (
-                        ".set push \n\t"
-                        ".set noreorder \n\t"
-                        "ldc1 $f3, 4(%0) \n\t"
-                        ".set pop \n\t"
-                        ::"r"(u64):
-                );
-        }
-
-        return 0;
-}
-
-V2: Remove the BUG_ON() unconditionally due to Paul's suggestion.
-
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Jie Chen <chenj@lemote.com>
-Signed-off-by: Rui Wang <wangr@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Signed-off-by: Alex Smith <alex@alex-smith.me.uk>
 Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/7451/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/unaligned.c |    1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/include/asm/reg.h      |  256 +++++++++++++++++++++++++--------------
+ arch/mips/kernel/binfmt_elfo32.c |   32 +---
+ 2 files changed, 180 insertions(+), 108 deletions(-)
 
---- a/arch/mips/kernel/unaligned.c
-+++ b/arch/mips/kernel/unaligned.c
-@@ -605,7 +605,6 @@ static void emulate_load_store_insn(stru
- 	case sdc1_op:
- 		die_if_kernel("Unaligned FP access in kernel code", regs);
- 		BUG_ON(!used_math());
--		BUG_ON(!is_fpu_owner());
+--- a/arch/mips/include/asm/reg.h
++++ b/arch/mips/include/asm/reg.h
+@@ -12,116 +12,194 @@
+ #ifndef __ASM_MIPS_REG_H
+ #define __ASM_MIPS_REG_H
  
- 		lose_fpu(1);	/* Save FPU state for the emulator. */
- 		res = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
+-
+-#if defined(CONFIG_32BIT) || defined(WANT_COMPAT_REG_H)
+-
+-#define EF_R0			6
+-#define EF_R1			7
+-#define EF_R2			8
+-#define EF_R3			9
+-#define EF_R4			10
+-#define EF_R5			11
+-#define EF_R6			12
+-#define EF_R7			13
+-#define EF_R8			14
+-#define EF_R9			15
+-#define EF_R10			16
+-#define EF_R11			17
+-#define EF_R12			18
+-#define EF_R13			19
+-#define EF_R14			20
+-#define EF_R15			21
+-#define EF_R16			22
+-#define EF_R17			23
+-#define EF_R18			24
+-#define EF_R19			25
+-#define EF_R20			26
+-#define EF_R21			27
+-#define EF_R22			28
+-#define EF_R23			29
+-#define EF_R24			30
+-#define EF_R25			31
++#define MIPS32_EF_R0		6
++#define MIPS32_EF_R1		7
++#define MIPS32_EF_R2		8
++#define MIPS32_EF_R3		9
++#define MIPS32_EF_R4		10
++#define MIPS32_EF_R5		11
++#define MIPS32_EF_R6		12
++#define MIPS32_EF_R7		13
++#define MIPS32_EF_R8		14
++#define MIPS32_EF_R9		15
++#define MIPS32_EF_R10		16
++#define MIPS32_EF_R11		17
++#define MIPS32_EF_R12		18
++#define MIPS32_EF_R13		19
++#define MIPS32_EF_R14		20
++#define MIPS32_EF_R15		21
++#define MIPS32_EF_R16		22
++#define MIPS32_EF_R17		23
++#define MIPS32_EF_R18		24
++#define MIPS32_EF_R19		25
++#define MIPS32_EF_R20		26
++#define MIPS32_EF_R21		27
++#define MIPS32_EF_R22		28
++#define MIPS32_EF_R23		29
++#define MIPS32_EF_R24		30
++#define MIPS32_EF_R25		31
+ 
+ /*
+  * k0/k1 unsaved
+  */
+-#define EF_R26			32
+-#define EF_R27			33
++#define MIPS32_EF_R26		32
++#define MIPS32_EF_R27		33
+ 
+-#define EF_R28			34
+-#define EF_R29			35
+-#define EF_R30			36
+-#define EF_R31			37
++#define MIPS32_EF_R28		34
++#define MIPS32_EF_R29		35
++#define MIPS32_EF_R30		36
++#define MIPS32_EF_R31		37
+ 
+ /*
+  * Saved special registers
+  */
+-#define EF_LO			38
+-#define EF_HI			39
++#define MIPS32_EF_LO		38
++#define MIPS32_EF_HI		39
+ 
+-#define EF_CP0_EPC		40
+-#define EF_CP0_BADVADDR		41
+-#define EF_CP0_STATUS		42
+-#define EF_CP0_CAUSE		43
+-#define EF_UNUSED0		44
+-
+-#define EF_SIZE			180
+-
+-#endif
+-
+-#if defined(CONFIG_64BIT) && !defined(WANT_COMPAT_REG_H)
+-
+-#define EF_R0			 0
+-#define EF_R1			 1
+-#define EF_R2			 2
+-#define EF_R3			 3
+-#define EF_R4			 4
+-#define EF_R5			 5
+-#define EF_R6			 6
+-#define EF_R7			 7
+-#define EF_R8			 8
+-#define EF_R9			 9
+-#define EF_R10			10
+-#define EF_R11			11
+-#define EF_R12			12
+-#define EF_R13			13
+-#define EF_R14			14
+-#define EF_R15			15
+-#define EF_R16			16
+-#define EF_R17			17
+-#define EF_R18			18
+-#define EF_R19			19
+-#define EF_R20			20
+-#define EF_R21			21
+-#define EF_R22			22
+-#define EF_R23			23
+-#define EF_R24			24
+-#define EF_R25			25
++#define MIPS32_EF_CP0_EPC	40
++#define MIPS32_EF_CP0_BADVADDR	41
++#define MIPS32_EF_CP0_STATUS	42
++#define MIPS32_EF_CP0_CAUSE	43
++#define MIPS32_EF_UNUSED0	44
++
++#define MIPS32_EF_SIZE		180
++
++#define MIPS64_EF_R0		0
++#define MIPS64_EF_R1		1
++#define MIPS64_EF_R2		2
++#define MIPS64_EF_R3		3
++#define MIPS64_EF_R4		4
++#define MIPS64_EF_R5		5
++#define MIPS64_EF_R6		6
++#define MIPS64_EF_R7		7
++#define MIPS64_EF_R8		8
++#define MIPS64_EF_R9		9
++#define MIPS64_EF_R10		10
++#define MIPS64_EF_R11		11
++#define MIPS64_EF_R12		12
++#define MIPS64_EF_R13		13
++#define MIPS64_EF_R14		14
++#define MIPS64_EF_R15		15
++#define MIPS64_EF_R16		16
++#define MIPS64_EF_R17		17
++#define MIPS64_EF_R18		18
++#define MIPS64_EF_R19		19
++#define MIPS64_EF_R20		20
++#define MIPS64_EF_R21		21
++#define MIPS64_EF_R22		22
++#define MIPS64_EF_R23		23
++#define MIPS64_EF_R24		24
++#define MIPS64_EF_R25		25
+ 
+ /*
+  * k0/k1 unsaved
+  */
+-#define EF_R26			26
+-#define EF_R27			27
++#define MIPS64_EF_R26		26
++#define MIPS64_EF_R27		27
+ 
+ 
+-#define EF_R28			28
+-#define EF_R29			29
+-#define EF_R30			30
+-#define EF_R31			31
++#define MIPS64_EF_R28		28
++#define MIPS64_EF_R29		29
++#define MIPS64_EF_R30		30
++#define MIPS64_EF_R31		31
+ 
+ /*
+  * Saved special registers
+  */
+-#define EF_LO			32
+-#define EF_HI			33
+-
+-#define EF_CP0_EPC		34
+-#define EF_CP0_BADVADDR		35
+-#define EF_CP0_STATUS		36
+-#define EF_CP0_CAUSE		37
++#define MIPS64_EF_LO		32
++#define MIPS64_EF_HI		33
+ 
+-#define EF_SIZE			304	/* size in bytes */
++#define MIPS64_EF_CP0_EPC	34
++#define MIPS64_EF_CP0_BADVADDR	35
++#define MIPS64_EF_CP0_STATUS	36
++#define MIPS64_EF_CP0_CAUSE	37
++
++#define MIPS64_EF_SIZE		304	/* size in bytes */
++
++#if defined(CONFIG_32BIT)
++
++#define EF_R0			MIPS32_EF_R0
++#define EF_R1			MIPS32_EF_R1
++#define EF_R2			MIPS32_EF_R2
++#define EF_R3			MIPS32_EF_R3
++#define EF_R4			MIPS32_EF_R4
++#define EF_R5			MIPS32_EF_R5
++#define EF_R6			MIPS32_EF_R6
++#define EF_R7			MIPS32_EF_R7
++#define EF_R8			MIPS32_EF_R8
++#define EF_R9			MIPS32_EF_R9
++#define EF_R10			MIPS32_EF_R10
++#define EF_R11			MIPS32_EF_R11
++#define EF_R12			MIPS32_EF_R12
++#define EF_R13			MIPS32_EF_R13
++#define EF_R14			MIPS32_EF_R14
++#define EF_R15			MIPS32_EF_R15
++#define EF_R16			MIPS32_EF_R16
++#define EF_R17			MIPS32_EF_R17
++#define EF_R18			MIPS32_EF_R18
++#define EF_R19			MIPS32_EF_R19
++#define EF_R20			MIPS32_EF_R20
++#define EF_R21			MIPS32_EF_R21
++#define EF_R22			MIPS32_EF_R22
++#define EF_R23			MIPS32_EF_R23
++#define EF_R24			MIPS32_EF_R24
++#define EF_R25			MIPS32_EF_R25
++#define EF_R26			MIPS32_EF_R26
++#define EF_R27			MIPS32_EF_R27
++#define EF_R28			MIPS32_EF_R28
++#define EF_R29			MIPS32_EF_R29
++#define EF_R30			MIPS32_EF_R30
++#define EF_R31			MIPS32_EF_R31
++#define EF_LO			MIPS32_EF_LO
++#define EF_HI			MIPS32_EF_HI
++#define EF_CP0_EPC		MIPS32_EF_CP0_EPC
++#define EF_CP0_BADVADDR		MIPS32_EF_CP0_BADVADDR
++#define EF_CP0_STATUS		MIPS32_EF_CP0_STATUS
++#define EF_CP0_CAUSE		MIPS32_EF_CP0_CAUSE
++#define EF_UNUSED0		MIPS32_EF_UNUSED0
++#define EF_SIZE			MIPS32_EF_SIZE
++
++#elif defined(CONFIG_64BIT)
++
++#define EF_R0			MIPS64_EF_R0
++#define EF_R1			MIPS64_EF_R1
++#define EF_R2			MIPS64_EF_R2
++#define EF_R3			MIPS64_EF_R3
++#define EF_R4			MIPS64_EF_R4
++#define EF_R5			MIPS64_EF_R5
++#define EF_R6			MIPS64_EF_R6
++#define EF_R7			MIPS64_EF_R7
++#define EF_R8			MIPS64_EF_R8
++#define EF_R9			MIPS64_EF_R9
++#define EF_R10			MIPS64_EF_R10
++#define EF_R11			MIPS64_EF_R11
++#define EF_R12			MIPS64_EF_R12
++#define EF_R13			MIPS64_EF_R13
++#define EF_R14			MIPS64_EF_R14
++#define EF_R15			MIPS64_EF_R15
++#define EF_R16			MIPS64_EF_R16
++#define EF_R17			MIPS64_EF_R17
++#define EF_R18			MIPS64_EF_R18
++#define EF_R19			MIPS64_EF_R19
++#define EF_R20			MIPS64_EF_R20
++#define EF_R21			MIPS64_EF_R21
++#define EF_R22			MIPS64_EF_R22
++#define EF_R23			MIPS64_EF_R23
++#define EF_R24			MIPS64_EF_R24
++#define EF_R25			MIPS64_EF_R25
++#define EF_R26			MIPS64_EF_R26
++#define EF_R27			MIPS64_EF_R27
++#define EF_R28			MIPS64_EF_R28
++#define EF_R29			MIPS64_EF_R29
++#define EF_R30			MIPS64_EF_R30
++#define EF_R31			MIPS64_EF_R31
++#define EF_LO			MIPS64_EF_LO
++#define EF_HI			MIPS64_EF_HI
++#define EF_CP0_EPC		MIPS64_EF_CP0_EPC
++#define EF_CP0_BADVADDR		MIPS64_EF_CP0_BADVADDR
++#define EF_CP0_STATUS		MIPS64_EF_CP0_STATUS
++#define EF_CP0_CAUSE		MIPS64_EF_CP0_CAUSE
++#define EF_SIZE			MIPS64_EF_SIZE
+ 
+ #endif /* CONFIG_64BIT */
+ 
+--- a/arch/mips/kernel/binfmt_elfo32.c
++++ b/arch/mips/kernel/binfmt_elfo32.c
+@@ -72,12 +72,6 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_N
+ 
+ #include <asm/processor.h>
+ 
+-/*
+- * When this file is selected, we are definitely running a 64bit kernel.
+- * So using the right regs define in asm/reg.h
+- */
+-#define WANT_COMPAT_REG_H
+-
+ /* These MUST be defined before elf.h gets included */
+ extern void elf32_core_copy_regs(elf_gregset_t grp, struct pt_regs *regs);
+ #define ELF_CORE_COPY_REGS(_dest, _regs) elf32_core_copy_regs(_dest, _regs);
+@@ -149,21 +143,21 @@ void elf32_core_copy_regs(elf_gregset_t
+ {
+ 	int i;
+ 
+-	for (i = 0; i < EF_R0; i++)
++	for (i = 0; i < MIPS32_EF_R0; i++)
+ 		grp[i] = 0;
+-	grp[EF_R0] = 0;
++	grp[MIPS32_EF_R0] = 0;
+ 	for (i = 1; i <= 31; i++)
+-		grp[EF_R0 + i] = (elf_greg_t) regs->regs[i];
+-	grp[EF_R26] = 0;
+-	grp[EF_R27] = 0;
+-	grp[EF_LO] = (elf_greg_t) regs->lo;
+-	grp[EF_HI] = (elf_greg_t) regs->hi;
+-	grp[EF_CP0_EPC] = (elf_greg_t) regs->cp0_epc;
+-	grp[EF_CP0_BADVADDR] = (elf_greg_t) regs->cp0_badvaddr;
+-	grp[EF_CP0_STATUS] = (elf_greg_t) regs->cp0_status;
+-	grp[EF_CP0_CAUSE] = (elf_greg_t) regs->cp0_cause;
+-#ifdef EF_UNUSED0
+-	grp[EF_UNUSED0] = 0;
++		grp[MIPS32_EF_R0 + i] = (elf_greg_t) regs->regs[i];
++	grp[MIPS32_EF_R26] = 0;
++	grp[MIPS32_EF_R27] = 0;
++	grp[MIPS32_EF_LO] = (elf_greg_t) regs->lo;
++	grp[MIPS32_EF_HI] = (elf_greg_t) regs->hi;
++	grp[MIPS32_EF_CP0_EPC] = (elf_greg_t) regs->cp0_epc;
++	grp[MIPS32_EF_CP0_BADVADDR] = (elf_greg_t) regs->cp0_badvaddr;
++	grp[MIPS32_EF_CP0_STATUS] = (elf_greg_t) regs->cp0_status;
++	grp[MIPS32_EF_CP0_CAUSE] = (elf_greg_t) regs->cp0_cause;
++#ifdef MIPS32_EF_UNUSED0
++	grp[MIPS32_EF_UNUSED0] = 0;
+ #endif
+ }
+ 

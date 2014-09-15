@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:37:55 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38185 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:38:12 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38189 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009006AbaIOThTFIiwg (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27009007AbaIOThTOqsoF (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:37:19 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 110C3B02;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 61EA2B09;
         Mon, 15 Sep 2014 19:37:13 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Alex Smith <alex@alex-smith.me.uk>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 045/114] MIPS: ptrace: Change GP regset to use correct core dump register layout
-Date:   Mon, 15 Sep 2014 12:25:45 -0700
-Message-Id: <20140915192642.853199796@linuxfoundation.org>
+Subject: [PATCH 3.14 046/114] MIPS: Prevent user from setting FCSR cause bits
+Date:   Mon, 15 Sep 2014 12:25:46 -0700
+Message-Id: <20140915192642.882797404@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <20140915192641.428509513@linuxfoundation.org>
 References: <20140915192641.428509513@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42589
+X-archive-position: 42590
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,285 +45,56 @@ X-list: linux-mips
 
 ------------------
 
-From: Alex Smith <alex@alex-smith.me.uk>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit c23b3d1a53119849dc3c23c417124deb067aa33d upstream.
+commit b1442d39fac2fcfbe6a4814979020e993ca59c9e upstream.
 
-Commit 6a9c001b7ec3 ("MIPS: Switch ELF core dumper to use regsets.")
-switched the core dumper to use regsets, however the GP regset code
-simply makes a direct copy of the kernel's pt_regs, which does not
-match the original core dump register layout as defined in asm/reg.h.
-Furthermore, the definition of pt_regs can vary with certain Kconfig
-variables, therefore the GP regset can never be relied upon to return
-registers in the same layout.
+If one or more matching FCSR cause & enable bits are set in saved thread
+context then when that context is restored the kernel will take an FP
+exception. This is of course undesirable and considered an oops, leading
+to the kernel writing a backtrace to the console and potentially
+rebooting depending upon the configuration. Thus the kernel avoids this
+situation by clearing the cause bits of the FCSR register when handling
+FP exceptions and after emulating FP instructions.
 
-Therefore, this patch changes the GP regset to match the original core
-dump layout. The layout differs for 32- and 64-bit processes, so
-separate implementations of the get/set functions are added for the
-32- and 64-bit regsets.
+However the kernel does not prevent userland from setting arbitrary FCSR
+cause & enable bits via ptrace, using either the PTRACE_POKEUSR or
+PTRACE_SETFPREGS requests. This means userland can trivially cause the
+kernel to oops on any system with an FPU. Prevent this from happening
+by clearing the cause bits when writing to the saved FCSR context via
+ptrace.
 
-Signed-off-by: Alex Smith <alex@alex-smith.me.uk>
+This problem appears to exist at least back to the beginning of the git
+era in the PTRACE_POKEUSR case.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7452/
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: stable@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/7438/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |  189 ++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 160 insertions(+), 29 deletions(-)
+ arch/mips/kernel/ptrace.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 --- a/arch/mips/kernel/ptrace.c
 +++ b/arch/mips/kernel/ptrace.c
-@@ -265,36 +265,160 @@ int ptrace_set_watch_regs(struct task_st
+@@ -170,6 +170,7 @@ int ptrace_setfpregs(struct task_struct
+ 		__get_user(fregs[i], i + (__u64 __user *) data);
  
- /* regset get/set implementations */
+ 	__get_user(child->thread.fpu.fcr31, data + 64);
++	child->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
  
--static int gpr_get(struct task_struct *target,
--		   const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   void *kbuf, void __user *ubuf)
-+#if defined(CONFIG_32BIT) || defined(CONFIG_MIPS32_O32)
-+
-+static int gpr32_get(struct task_struct *target,
-+		     const struct user_regset *regset,
-+		     unsigned int pos, unsigned int count,
-+		     void *kbuf, void __user *ubuf)
- {
- 	struct pt_regs *regs = task_pt_regs(target);
-+	u32 uregs[ELF_NGREG] = {};
-+	unsigned i;
+ 	/* FIR may not be written.  */
  
--	return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
--				   regs, 0, sizeof(*regs));
-+	for (i = MIPS32_EF_R1; i <= MIPS32_EF_R31; i++) {
-+		/* k0/k1 are copied as zero. */
-+		if (i == MIPS32_EF_R26 || i == MIPS32_EF_R27)
-+			continue;
-+
-+		uregs[i] = regs->regs[i - MIPS32_EF_R0];
-+	}
-+
-+	uregs[MIPS32_EF_LO] = regs->lo;
-+	uregs[MIPS32_EF_HI] = regs->hi;
-+	uregs[MIPS32_EF_CP0_EPC] = regs->cp0_epc;
-+	uregs[MIPS32_EF_CP0_BADVADDR] = regs->cp0_badvaddr;
-+	uregs[MIPS32_EF_CP0_STATUS] = regs->cp0_status;
-+	uregs[MIPS32_EF_CP0_CAUSE] = regs->cp0_cause;
-+
-+	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, uregs, 0,
-+				   sizeof(uregs));
- }
- 
--static int gpr_set(struct task_struct *target,
--		   const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   const void *kbuf, const void __user *ubuf)
-+static int gpr32_set(struct task_struct *target,
-+		     const struct user_regset *regset,
-+		     unsigned int pos, unsigned int count,
-+		     const void *kbuf, const void __user *ubuf)
- {
--	struct pt_regs newregs;
--	int ret;
-+	struct pt_regs *regs = task_pt_regs(target);
-+	u32 uregs[ELF_NGREG];
-+	unsigned start, num_regs, i;
-+	int err;
-+
-+	start = pos / sizeof(u32);
-+	num_regs = count / sizeof(u32);
-+
-+	if (start + num_regs > ELF_NGREG)
-+		return -EIO;
-+
-+	err = user_regset_copyin(&pos, &count, &kbuf, &ubuf, uregs, 0,
-+				 sizeof(uregs));
-+	if (err)
-+		return err;
-+
-+	for (i = start; i < num_regs; i++) {
-+		/*
-+		 * Cast all values to signed here so that if this is a 64-bit
-+		 * kernel, the supplied 32-bit values will be sign extended.
-+		 */
-+		switch (i) {
-+		case MIPS32_EF_R1 ... MIPS32_EF_R25:
-+			/* k0/k1 are ignored. */
-+		case MIPS32_EF_R28 ... MIPS32_EF_R31:
-+			regs->regs[i - MIPS32_EF_R0] = (s32)uregs[i];
-+			break;
-+		case MIPS32_EF_LO:
-+			regs->lo = (s32)uregs[i];
-+			break;
-+		case MIPS32_EF_HI:
-+			regs->hi = (s32)uregs[i];
-+			break;
-+		case MIPS32_EF_CP0_EPC:
-+			regs->cp0_epc = (s32)uregs[i];
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
- 
--	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
--				 &newregs,
--				 0, sizeof(newregs));
--	if (ret)
--		return ret;
-+#endif /* CONFIG_32BIT || CONFIG_MIPS32_O32 */
-+
-+#ifdef CONFIG_64BIT
-+
-+static int gpr64_get(struct task_struct *target,
-+		     const struct user_regset *regset,
-+		     unsigned int pos, unsigned int count,
-+		     void *kbuf, void __user *ubuf)
-+{
-+	struct pt_regs *regs = task_pt_regs(target);
-+	u64 uregs[ELF_NGREG] = {};
-+	unsigned i;
- 
--	*task_pt_regs(target) = newregs;
-+	for (i = MIPS64_EF_R1; i <= MIPS64_EF_R31; i++) {
-+		/* k0/k1 are copied as zero. */
-+		if (i == MIPS64_EF_R26 || i == MIPS64_EF_R27)
-+			continue;
-+
-+		uregs[i] = regs->regs[i - MIPS64_EF_R0];
-+	}
-+
-+	uregs[MIPS64_EF_LO] = regs->lo;
-+	uregs[MIPS64_EF_HI] = regs->hi;
-+	uregs[MIPS64_EF_CP0_EPC] = regs->cp0_epc;
-+	uregs[MIPS64_EF_CP0_BADVADDR] = regs->cp0_badvaddr;
-+	uregs[MIPS64_EF_CP0_STATUS] = regs->cp0_status;
-+	uregs[MIPS64_EF_CP0_CAUSE] = regs->cp0_cause;
-+
-+	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, uregs, 0,
-+				   sizeof(uregs));
-+}
-+
-+static int gpr64_set(struct task_struct *target,
-+		     const struct user_regset *regset,
-+		     unsigned int pos, unsigned int count,
-+		     const void *kbuf, const void __user *ubuf)
-+{
-+	struct pt_regs *regs = task_pt_regs(target);
-+	u64 uregs[ELF_NGREG];
-+	unsigned start, num_regs, i;
-+	int err;
-+
-+	start = pos / sizeof(u64);
-+	num_regs = count / sizeof(u64);
-+
-+	if (start + num_regs > ELF_NGREG)
-+		return -EIO;
-+
-+	err = user_regset_copyin(&pos, &count, &kbuf, &ubuf, uregs, 0,
-+				 sizeof(uregs));
-+	if (err)
-+		return err;
-+
-+	for (i = start; i < num_regs; i++) {
-+		switch (i) {
-+		case MIPS64_EF_R1 ... MIPS64_EF_R25:
-+			/* k0/k1 are ignored. */
-+		case MIPS64_EF_R28 ... MIPS64_EF_R31:
-+			regs->regs[i - MIPS64_EF_R0] = uregs[i];
-+			break;
-+		case MIPS64_EF_LO:
-+			regs->lo = uregs[i];
-+			break;
-+		case MIPS64_EF_HI:
-+			regs->hi = uregs[i];
-+			break;
-+		case MIPS64_EF_CP0_EPC:
-+			regs->cp0_epc = uregs[i];
-+			break;
-+		}
-+	}
- 
- 	return 0;
- }
- 
-+#endif /* CONFIG_64BIT */
-+
- static int fpr_get(struct task_struct *target,
- 		   const struct user_regset *regset,
- 		   unsigned int pos, unsigned int count,
-@@ -322,14 +446,16 @@ enum mips_regset {
- 	REGSET_FPR,
- };
- 
-+#if defined(CONFIG_32BIT) || defined(CONFIG_MIPS32_O32)
-+
- static const struct user_regset mips_regsets[] = {
- 	[REGSET_GPR] = {
- 		.core_note_type	= NT_PRSTATUS,
- 		.n		= ELF_NGREG,
- 		.size		= sizeof(unsigned int),
- 		.align		= sizeof(unsigned int),
--		.get		= gpr_get,
--		.set		= gpr_set,
-+		.get		= gpr32_get,
-+		.set		= gpr32_set,
- 	},
- 	[REGSET_FPR] = {
- 		.core_note_type	= NT_PRFPREG,
-@@ -349,14 +475,18 @@ static const struct user_regset_view use
- 	.n		= ARRAY_SIZE(mips_regsets),
- };
- 
-+#endif /* CONFIG_32BIT || CONFIG_MIPS32_O32 */
-+
-+#ifdef CONFIG_64BIT
-+
- static const struct user_regset mips64_regsets[] = {
- 	[REGSET_GPR] = {
- 		.core_note_type	= NT_PRSTATUS,
- 		.n		= ELF_NGREG,
- 		.size		= sizeof(unsigned long),
- 		.align		= sizeof(unsigned long),
--		.get		= gpr_get,
--		.set		= gpr_set,
-+		.get		= gpr64_get,
-+		.set		= gpr64_set,
- 	},
- 	[REGSET_FPR] = {
- 		.core_note_type	= NT_PRFPREG,
-@@ -369,25 +499,26 @@ static const struct user_regset mips64_r
- };
- 
- static const struct user_regset_view user_mips64_view = {
--	.name		= "mips",
-+	.name		= "mips64",
- 	.e_machine	= ELF_ARCH,
- 	.ei_osabi	= ELF_OSABI,
- 	.regsets	= mips64_regsets,
--	.n		= ARRAY_SIZE(mips_regsets),
-+	.n		= ARRAY_SIZE(mips64_regsets),
- };
- 
-+#endif /* CONFIG_64BIT */
-+
- const struct user_regset_view *task_user_regset_view(struct task_struct *task)
- {
- #ifdef CONFIG_32BIT
- 	return &user_mips_view;
--#endif
--
-+#else
- #ifdef CONFIG_MIPS32_O32
--		if (test_tsk_thread_flag(task, TIF_32BIT_REGS))
--			return &user_mips_view;
-+	if (test_tsk_thread_flag(task, TIF_32BIT_REGS))
-+		return &user_mips_view;
+@@ -724,7 +725,7 @@ long arch_ptrace(struct task_struct *chi
+ 			break;
  #endif
--
- 	return &user_mips64_view;
-+#endif
- }
- 
- long arch_ptrace(struct task_struct *child, long request,
+ 		case FPC_CSR:
+-			child->thread.fpu.fcr31 = data;
++			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;

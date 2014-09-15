@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:28:24 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37559 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:28:42 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37583 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008996AbaIOT1KQR4do (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:27:10 +0200
+        by eddie.linux-mips.org with ESMTP id S27009001AbaIOT1MEl41g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:27:12 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 44B85B19;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 986FFA6E;
         Mon, 15 Sep 2014 19:27:03 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
+        stable@vger.kernel.org, Alex Smith <alex.smith@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.16 060/158] MIPS: GIC: Prevent array overrun
-Date:   Mon, 15 Sep 2014 12:24:59 -0700
-Message-Id: <20140915192544.692938762@linuxfoundation.org>
+Subject: [PATCH 3.16 061/158] MIPS: O32/32-bit: Fix bug which can cause incorrect system call restarts
+Date:   Mon, 15 Sep 2014 12:25:00 -0700
+Message-Id: <20140915192544.722247014@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <20140915192542.872134685@linuxfoundation.org>
 References: <20140915192542.872134685@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42580
+X-archive-position: 42581
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,41 +46,61 @@ X-list: linux-mips
 
 ------------------
 
-From: Jeffrey Deans <jeffrey.deans@imgtec.com>
+From: Alex Smith <alex.smith@imgtec.com>
 
-commit ffc8415afab20bd97754efae6aad1f67b531132b upstream.
+commit e90e6fddc57055c4c6b57f92787fea1c065d440b upstream.
 
-A GIC interrupt which is declared as having a GIC_MAP_TO_NMI_MSK
-mapping causes the cpu parameter to gic_setup_intr() to be increased
-to 32, causing memory corruption when pcpu_masks[] is written to again
-later in the function.
+On 32-bit/O32, pt_regs has a padding area at the beginning into which the
+syscall arguments passed via the user stack are copied. 4 arguments
+totalling 16 bytes are copied to offset 16 bytes into this area, however
+the area is only 24 bytes long. This means the last 2 arguments overwrite
+pt_regs->regs[{0,1}].
 
-Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+If a syscall function returns an error, handle_sys stores the original
+syscall number in pt_regs->regs[0] for syscall restart. signal.c checks
+whether regs[0] is non-zero, if it is it will check whether the syscall
+return value is one of the ERESTART* codes to see if it must be
+restarted.
+
+Should a syscall be made that results in a non-zero value being copied
+off the user stack into regs[0], and then returns a positive (non-error)
+value that matches one of the ERESTART* error codes, this can be mistaken
+for requiring a syscall restart.
+
+While the possibility for this to occur has always existed, it is made
+much more likely to occur by commit 46e12c07b3b9 ("MIPS: O32 / 32-bit:
+Always copy 4 stack arguments."), since now every syscall will copy 4
+arguments and overwrite regs[0], rather than just those with 7 or 8
+arguments.
+
+Since that commit, booting Debian under a 32-bit MIPS kernel almost
+always results in a hang early in boot, due to a wait4 syscall returning
+a PID that matches one of the ERESTART* codes, which then causes an
+incorrect restart of the syscall.
+
+The problem is fixed by increasing the size of the padding area so that
+arguments copied off the stack will not overwrite pt_regs->regs[{0,1}].
+
+Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7375/
+Patchwork: https://patchwork.linux-mips.org/patch/7454/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/irq-gic.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/ptrace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/irq-gic.c
-+++ b/arch/mips/kernel/irq-gic.c
-@@ -269,11 +269,13 @@ static void __init gic_setup_intr(unsign
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -23,7 +23,7 @@
+ struct pt_regs {
+ #ifdef CONFIG_32BIT
+ 	/* Pad bytes for argument save space on the stack. */
+-	unsigned long pad0[6];
++	unsigned long pad0[8];
+ #endif
  
- 	/* Setup Intr to Pin mapping */
- 	if (pin & GIC_MAP_TO_NMI_MSK) {
-+		int i;
-+
- 		GICWRITE(GIC_REG_ADDR(SHARED, GIC_SH_MAP_TO_PIN(intr)), pin);
- 		/* FIXME: hack to route NMI to all cpu's */
--		for (cpu = 0; cpu < NR_CPUS; cpu += 32) {
-+		for (i = 0; i < NR_CPUS; i += 32) {
- 			GICWRITE(GIC_REG_ADDR(SHARED,
--					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, cpu)),
-+					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, i)),
- 				 0xffffffff);
- 		}
- 	} else {
+ 	/* Saved main processor registers. */

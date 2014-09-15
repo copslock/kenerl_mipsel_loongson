@@ -1,51 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 20:11:31 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:58888 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008874AbaIOSLZ0YYst (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Sep 2014 20:11:25 +0200
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 9602D28BBF9;
-        Mon, 15 Sep 2014 20:10:39 +0200 (CEST)
-Received: from Dicker-Alter.local (p5B324558.dip0.t-ipconnect.de [91.50.69.88])
-        by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Mon, 15 Sep 2014 20:10:39 +0200 (CEST)
-Message-ID: <54172BBB.4040506@openwrt.org>
-Date:   Mon, 15 Sep 2014 20:11:07 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:27:10 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37516 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008991AbaIOT1GJfI0Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:27:06 +0200
+Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9A9E9B0C;
+        Mon, 15 Sep 2014 19:26:57 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        Binbin Zhou <zhoubb@lemote.com>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.16 067/158] MIPS: tlbex: Fix a missing statement for HUGETLB
+Date:   Mon, 15 Sep 2014 12:25:06 -0700
+Message-Id: <20140915192544.910327407@linuxfoundation.org>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <20140915192542.872134685@linuxfoundation.org>
+References: <20140915192542.872134685@linuxfoundation.org>
+User-Agent: quilt/0.63-1
 MIME-Version: 1.0
-To:     Andrew Bresticker <abrestic@chromium.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        David Daney <david.daney@cavium.com>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] MIPS: Move device-tree files to a common location
-References: <1410803639-3159-1-git-send-email-abrestic@chromium.org>
-In-Reply-To: <1410803639-3159-1-git-send-email-abrestic@chromium.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42575
+X-archive-position: 42576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,128 +46,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+3.16-stable review patch.  If anyone has any objections, please let me know.
 
-for the lantiq/ralink part ...
+------------------
 
-Acked-by: John Crispin <blogic@openwrt.org>
+From: Huacai Chen <chenhc@lemote.com>
 
-now we just need to merge jonas's appended DTB patch and I can finally
-drop the ugly hack i am currently using inside openwrt.
+commit 8393c524a25609a30129e4a8975cf3b91f6c16a5 upstream.
 
-Thanks,
-    John
+In commit 2c8c53e28f1 (MIPS: Optimize TLB handlers for Octeon CPUs)
+build_r4000_tlb_refill_handler() is modified. But it doesn't compatible
+with the original code in HUGETLB case. Because there is a copy & paste
+error and one line of code is missing. It is very easy to produce a bug
+with LTP's hugemmap05 test.
 
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/7496/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-On 15/09/2014 19:53, Andrew Bresticker wrote:
-> To be consistent with other architectures and to avoid unnecessary
-> makefile duplication, move all MIPS device-trees to arch/mips/boot/dts
-> and build them with a common makefile.  Per Olof's suggestion in v1,
-> device-trees are grouped into per-vendor subdirectories, based on the
-> kbuild changes introduced by Robert Richter's series for arm64 DTS
-> vendor subdirectories [0].  The makefiles for MIPS must be adjusted
-> slightly from what is used for arm{,64} since most MIPS platforms
-> require builtin device-tree binaries.  This introduces two bits of
-> ugliness: a) *.dtb.o files are still generated by 'make dtbs' since
-> there is no longer a 'dtbs' target for the .../boot/dts makefile, and
-> b) the dummy.o trick to force kbuild to make an empty built-in.o.
-> I'd be interested in any suggestions to avoid these, since I"m by
-> no means a makefile/kbuild expert.
->
-> Patch 1 sets up the makefiles for building the DTs in arch/mips/boot/dts
-> and introduces the config option BUILTIN_DTB for platforms that require
-> it.
->
-> Patch 2 introduces the 'dtbs' and 'dtbs_install' makefile targets.
->
-> Patch 3 moves the DTs out of the platform directores.
->
-> I've build tested this on all affected platforms (Octeon, Lantiq, SEAD3,
-> Netlogic, and Ralink) as well as Malta.  For platforms where builtin DTBs
-> are optional (Netlogic and Ralink), I built with and without the builtin
-> DTBs.
->
-> Based on 3.17-rc5.
->
-> Changes from v2:
->  - added 'dtbs_install' target
->  - squashed move of dts files into a single patch
->  - rebased on 3.17-rc5 + Robert's dts vendor subdir support
-> Changes from v1:
->  - moved to per-vendor subdirectories
->  - rebased on 3.17-rc2
->
-> [0] https://lkml.org/lkml/2014/9/5/64
->
-> Andrew Bresticker (3):
->   MIPS: Create common infrastructure for building built-in device-trees
->   MIPS: Add support for building and installing device-tree binaries
->   MIPS: Move device-trees to arch/mips/boot/dts
->
->  arch/mips/Kconfig                                        |  5 +++++
->  arch/mips/Makefile                                       | 16 ++++++++++++++++
->  arch/mips/boot/.gitignore                                |  1 +
->  arch/mips/boot/dts/Makefile                              | 10 ++++++++++
->  arch/mips/boot/dts/cavium-octeon/Makefile                |  9 +++++++++
->  arch/mips/{ => boot/dts}/cavium-octeon/octeon_3xxx.dts   |  0
->  arch/mips/{ => boot/dts}/cavium-octeon/octeon_68xx.dts   |  0
->  arch/mips/boot/dts/lantiq/Makefile                       |  9 +++++++++
->  arch/mips/{lantiq/dts => boot/dts/lantiq}/danube.dtsi    |  0
->  arch/mips/{lantiq/dts => boot/dts/lantiq}/easy50712.dts  |  0
->  arch/mips/boot/dts/mti/Makefile                          |  9 +++++++++
->  arch/mips/{mti-sead3 => boot/dts/mti}/sead3.dts          |  0
->  arch/mips/boot/dts/netlogic/Makefile                     | 12 ++++++++++++
->  .../mips/{netlogic/dts => boot/dts/netlogic}/xlp_evp.dts |  0
->  .../mips/{netlogic/dts => boot/dts/netlogic}/xlp_fvp.dts |  0
->  .../mips/{netlogic/dts => boot/dts/netlogic}/xlp_gvp.dts |  0
->  .../mips/{netlogic/dts => boot/dts/netlogic}/xlp_svp.dts |  0
->  arch/mips/boot/dts/ralink/Makefile                       | 12 ++++++++++++
->  arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a.dtsi   |  0
->  .../{ralink/dts => boot/dts/ralink}/mt7620a_eval.dts     |  0
->  arch/mips/{ralink/dts => boot/dts/ralink}/rt2880.dtsi    |  0
->  .../mips/{ralink/dts => boot/dts/ralink}/rt2880_eval.dts |  0
->  arch/mips/{ralink/dts => boot/dts/ralink}/rt3050.dtsi    |  0
->  .../mips/{ralink/dts => boot/dts/ralink}/rt3052_eval.dts |  0
->  arch/mips/{ralink/dts => boot/dts/ralink}/rt3883.dtsi    |  0
->  .../mips/{ralink/dts => boot/dts/ralink}/rt3883_eval.dts |  0
->  arch/mips/cavium-octeon/.gitignore                       |  2 --
->  arch/mips/cavium-octeon/Makefile                         | 10 ----------
->  arch/mips/lantiq/Kconfig                                 |  1 +
->  arch/mips/lantiq/Makefile                                |  2 --
->  arch/mips/lantiq/dts/Makefile                            |  1 -
->  arch/mips/mti-sead3/Makefile                             |  4 ----
->  arch/mips/netlogic/Kconfig                               |  4 ++++
->  arch/mips/netlogic/Makefile                              |  1 -
->  arch/mips/netlogic/dts/Makefile                          |  4 ----
->  arch/mips/ralink/Kconfig                                 |  4 ++++
->  arch/mips/ralink/Makefile                                |  2 --
->  arch/mips/ralink/dts/Makefile                            |  4 ----
->  38 files changed, 92 insertions(+), 30 deletions(-)
->  create mode 100644 arch/mips/boot/dts/Makefile
->  create mode 100644 arch/mips/boot/dts/cavium-octeon/Makefile
->  rename arch/mips/{ => boot/dts}/cavium-octeon/octeon_3xxx.dts (100%)
->  rename arch/mips/{ => boot/dts}/cavium-octeon/octeon_68xx.dts (100%)
->  create mode 100644 arch/mips/boot/dts/lantiq/Makefile
->  rename arch/mips/{lantiq/dts => boot/dts/lantiq}/danube.dtsi (100%)
->  rename arch/mips/{lantiq/dts => boot/dts/lantiq}/easy50712.dts (100%)
->  create mode 100644 arch/mips/boot/dts/mti/Makefile
->  rename arch/mips/{mti-sead3 => boot/dts/mti}/sead3.dts (100%)
->  create mode 100644 arch/mips/boot/dts/netlogic/Makefile
->  rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_evp.dts (100%)
->  rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_fvp.dts (100%)
->  rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_gvp.dts (100%)
->  rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_svp.dts (100%)
->  create mode 100644 arch/mips/boot/dts/ralink/Makefile
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a.dtsi (100%)
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a_eval.dts (100%)
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/rt2880.dtsi (100%)
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/rt2880_eval.dts (100%)
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3050.dtsi (100%)
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3052_eval.dts (100%)
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3883.dtsi (100%)
->  rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3883_eval.dts (100%)
->  delete mode 100644 arch/mips/cavium-octeon/.gitignore
->  delete mode 100644 arch/mips/lantiq/dts/Makefile
->  delete mode 100644 arch/mips/netlogic/dts/Makefile
->  delete mode 100644 arch/mips/ralink/dts/Makefile
->
+---
+ arch/mips/mm/tlbex.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1299,6 +1299,7 @@ static void build_r4000_tlb_refill_handl
+ 	}
+ #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+ 	uasm_l_tlb_huge_update(&l, p);
++	UASM_i_LW(&p, K0, 0, K1);
+ 	build_huge_update_entries(&p, htlb_info.huge_pte, K1);
+ 	build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
+ 				   htlb_info.restore_scratch);

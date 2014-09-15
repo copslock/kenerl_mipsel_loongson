@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:49:09 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38608 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009017AbaIOTr0Weosx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:47:26 +0200
-Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 98D9DA54;
-        Mon, 15 Sep 2014 19:47:17 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.10 19/71] MIPS: GIC: Prevent array overrun
-Date:   Mon, 15 Sep 2014 12:26:17 -0700
-Message-Id: <20140915192639.354361680@linuxfoundation.org>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <20140915192638.702282534@linuxfoundation.org>
-References: <20140915192638.702282534@linuxfoundation.org>
-User-Agent: quilt/0.63-1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Sep 2014 00:07:54 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:33425 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006944AbaIOWHu6sN6W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Sep 2014 00:07:50 +0200
+Received: from c-76-102-4-12.hsd1.ca.comcast.net ([76.102.4.12] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1XTeR4-0008L0-1e; Mon, 15 Sep 2014 22:07:50 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1XTeR2-0001Xg-A5; Mon, 15 Sep 2014 15:07:48 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.13.y.z extended stable] Patch "MIPS: Prevent user from setting FCSR cause bits" has been added to staging queue
+Date:   Mon, 15 Sep 2014 15:07:48 -0700
+Message-Id: <1410818868-5897-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42601
+X-archive-position: 42602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,45 +42,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.10-stable review patch.  If anyone has any objections, please let me know.
+This is a note to let you know that I have just added a patch titled
 
-------------------
+    MIPS: Prevent user from setting FCSR cause bits
 
-From: Jeffrey Deans <jeffrey.deans@imgtec.com>
+to the linux-3.13.y-queue branch of the 3.13.y.z extended stable tree 
+which can be found at:
 
-commit ffc8415afab20bd97754efae6aad1f67b531132b upstream.
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
 
-A GIC interrupt which is declared as having a GIC_MAP_TO_NMI_MSK
-mapping causes the cpu parameter to gic_setup_intr() to be increased
-to 32, causing memory corruption when pcpu_masks[] is written to again
-later in the function.
+This patch is scheduled to be released in version 3.13.11.7.
 
-Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7375/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
----
- arch/mips/kernel/irq-gic.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+For more information about the 3.13.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
---- a/arch/mips/kernel/irq-gic.c
-+++ b/arch/mips/kernel/irq-gic.c
-@@ -256,11 +256,13 @@ static void __init gic_setup_intr(unsign
- 
- 	/* Setup Intr to Pin mapping */
- 	if (pin & GIC_MAP_TO_NMI_MSK) {
-+		int i;
-+
- 		GICWRITE(GIC_REG_ADDR(SHARED, GIC_SH_MAP_TO_PIN(intr)), pin);
- 		/* FIXME: hack to route NMI to all cpu's */
--		for (cpu = 0; cpu < NR_CPUS; cpu += 32) {
-+		for (i = 0; i < NR_CPUS; i += 32) {
- 			GICWRITE(GIC_REG_ADDR(SHARED,
--					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, cpu)),
-+					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, i)),
- 				 0xffffffff);
- 		}
- 	} else {
+Thanks.
+-Kamal
+
+------

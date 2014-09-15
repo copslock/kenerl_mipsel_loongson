@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 19:54:46 +0200 (CEST)
-Received: from mail-oa0-f74.google.com ([209.85.219.74]:33290 "EHLO
-        mail-oa0-f74.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008986AbaIORyJ6pBYr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 19:54:09 +0200
-Received: by mail-oa0-f74.google.com with SMTP id g18so444101oah.1
-        for <linux-mips@linux-mips.org>; Mon, 15 Sep 2014 10:54:03 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 19:55:03 +0200 (CEST)
+Received: from mail-ig0-f202.google.com ([209.85.213.202]:32944 "EHLO
+        mail-ig0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008988AbaIORyKwYiM3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 19:54:10 +0200
+Received: by mail-ig0-f202.google.com with SMTP id h18so618792igc.1
+        for <linux-mips@linux-mips.org>; Mon, 15 Sep 2014 10:54:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=KVAcyEjYab1mtVgYaIKM+pWILvpcTRsqRQcf7iFSM8Q=;
-        b=U1dXoMRRammXDXpgRswleRVY2/+Gx9FuBiiK58YqWuwpyRFUBHVfRap4cVDp+jZj78
-         x7pcxS3h8j6HxPv3J2/xeu5K7xRGvijvVrKFgCWq33uiZbXDOnkN1zl2lifFBDgisp8I
-         C3Mg33ryiFgKzottW8Xda+3YL9sJevqJTAsahW4C0K5BN7K1B6A4BEQ6YRzGo6ujQJPs
-         WAywIBkXbhCdq+LWTIDmMrhgevYK/LKeMiFtNxCvHmfgOkVaCe1ffj641F2+qKFNSvzD
-         BX9amvHtvYALavixVLzEw7rt8/9e+ap+6ocqc4+JPYxFjqB3Eo1Gwhx1hgxZAvTIpnJd
-         f1IQ==
-X-Gm-Message-State: ALoCoQlMJRhtmxLHUqoJbq5DkJd824YKsoDA4XhO8JWUmpxxs9KO7IEUEGUkGHJFkRLb/nRfH+PK
-X-Received: by 10.42.118.200 with SMTP id y8mr17011848icq.4.1410803643754;
-        Mon, 15 Sep 2014 10:54:03 -0700 (PDT)
-Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id n24si575736yha.6.2014.09.15.10.54.02
+        bh=dOPUbzEGa8vQVrQMFRXdDI9nZz9E5D2MM8Sc4QUqiJY=;
+        b=UyS8NBMbCDjI98hxNmwfcW1shaTpNL5eJJ8rKxSrHO60WrcGKn33OKNPjxXuRkNkfU
+         1qJBw20f8SVPespeOXOscpf8VjCQbJn3INZe3ghs6uYHS/GAJPtss9aqsJ8V96+wwIqP
+         XJsxF3zXSwDpHqRrK1T0NNsPrzPizYCk6W1Uf7su8jrc3Kj7Hae+mioe5+69pNevrzMG
+         ezUTXzSxtAZ/g6LOvYELs9Zwe/8MXHnAyzoMakcnnWiyRc2sNZCrv7xMOZy9twbJ/kZR
+         eIL4/Wq/OH0c63P4EzXeYl9zIana3PGrZG4Ke02cTnWVB2a/NCXFOoi2IHQwWT4ggGWB
+         ablA==
+X-Gm-Message-State: ALoCoQnK9B8PPxp4r0HXuCwHQjiYf3joDlb1avqRtvEHNC+sK+kb13OmwbGZKzRzQP7wDFcCgKSc
+X-Received: by 10.182.245.134 with SMTP id xo6mr16323059obc.40.1410803644253;
+        Mon, 15 Sep 2014 10:54:04 -0700 (PDT)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id l45si578368yha.2.2014.09.15.10.54.02
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 15 Sep 2014 10:54:03 -0700 (PDT)
+        Mon, 15 Sep 2014 10:54:04 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id SoSUYnNV.1; Mon, 15 Sep 2014 10:54:03 -0700
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id nRczkeOZ.1; Mon, 15 Sep 2014 10:54:04 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id C56D0220E4E; Mon, 15 Sep 2014 10:54:01 -0700 (PDT)
+        id 5FEAE220EA6; Mon, 15 Sep 2014 10:54:02 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -48,9 +48,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v3 2/3] MIPS: Add support for building and installing device-tree binaries
-Date:   Mon, 15 Sep 2014 10:53:58 -0700
-Message-Id: <1410803639-3159-3-git-send-email-abrestic@chromium.org>
+Subject: [PATCH v3 3/3] MIPS: Move device-trees to arch/mips/boot/dts
+Date:   Mon, 15 Sep 2014 10:53:59 -0700
+Message-Id: <1410803639-3159-4-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1410803639-3159-1-git-send-email-abrestic@chromium.org>
 References: <1410803639-3159-1-git-send-email-abrestic@chromium.org>
@@ -58,7 +58,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42573
+X-archive-position: 42574
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,56 +75,438 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add 'dtbs' and 'dtbs_install" Makefile targets that build and install
-the device-tree binaries enabled by the configuration.
+Move the MIPS device-trees into appropriate vendor sub-directories under
+arch/mips/boot/dts/.  Update the Makefiles and Kconfig files accordingly,
+selecting BUILTIN_DTB when necessary.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
 Changes from v2:
- - added 'dtbs_install' target
- - removed 'dtbs' target from dts makefile
-No changes from v1.
+ - squahsed moving of dts files into a single patch
+ - used $(dts-dirs) for descending into vendor subdirs
+Changes from v1:
+ - added vendor subdirs
 ---
- arch/mips/Makefile        | 10 ++++++++++
- arch/mips/boot/.gitignore |  1 +
- 2 files changed, 11 insertions(+)
+ arch/mips/Kconfig                                          |  2 ++
+ arch/mips/boot/dts/Makefile                                |  6 ++++++
+ arch/mips/boot/dts/cavium-octeon/Makefile                  |  9 +++++++++
+ arch/mips/{ => boot/dts}/cavium-octeon/octeon_3xxx.dts     |  0
+ arch/mips/{ => boot/dts}/cavium-octeon/octeon_68xx.dts     |  0
+ arch/mips/boot/dts/lantiq/Makefile                         |  9 +++++++++
+ arch/mips/{lantiq/dts => boot/dts/lantiq}/danube.dtsi      |  0
+ arch/mips/{lantiq/dts => boot/dts/lantiq}/easy50712.dts    |  0
+ arch/mips/boot/dts/mti/Makefile                            |  9 +++++++++
+ arch/mips/{mti-sead3 => boot/dts/mti}/sead3.dts            |  0
+ arch/mips/boot/dts/netlogic/Makefile                       | 12 ++++++++++++
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_evp.dts  |  0
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_fvp.dts  |  0
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_gvp.dts  |  0
+ arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_svp.dts  |  0
+ arch/mips/boot/dts/ralink/Makefile                         | 12 ++++++++++++
+ arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a.dtsi     |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a_eval.dts |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt2880.dtsi      |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt2880_eval.dts  |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3050.dtsi      |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3052_eval.dts  |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3883.dtsi      |  0
+ arch/mips/{ralink/dts => boot/dts/ralink}/rt3883_eval.dts  |  0
+ arch/mips/cavium-octeon/.gitignore                         |  2 --
+ arch/mips/cavium-octeon/Makefile                           | 10 ----------
+ arch/mips/lantiq/Kconfig                                   |  1 +
+ arch/mips/lantiq/Makefile                                  |  2 --
+ arch/mips/lantiq/dts/Makefile                              |  1 -
+ arch/mips/mti-sead3/Makefile                               |  4 ----
+ arch/mips/netlogic/Kconfig                                 |  4 ++++
+ arch/mips/netlogic/Makefile                                |  1 -
+ arch/mips/netlogic/dts/Makefile                            |  4 ----
+ arch/mips/ralink/Kconfig                                   |  4 ++++
+ arch/mips/ralink/Makefile                                  |  2 --
+ arch/mips/ralink/dts/Makefile                              |  4 ----
+ 36 files changed, 68 insertions(+), 30 deletions(-)
+ create mode 100644 arch/mips/boot/dts/cavium-octeon/Makefile
+ rename arch/mips/{ => boot/dts}/cavium-octeon/octeon_3xxx.dts (100%)
+ rename arch/mips/{ => boot/dts}/cavium-octeon/octeon_68xx.dts (100%)
+ create mode 100644 arch/mips/boot/dts/lantiq/Makefile
+ rename arch/mips/{lantiq/dts => boot/dts/lantiq}/danube.dtsi (100%)
+ rename arch/mips/{lantiq/dts => boot/dts/lantiq}/easy50712.dts (100%)
+ create mode 100644 arch/mips/boot/dts/mti/Makefile
+ rename arch/mips/{mti-sead3 => boot/dts/mti}/sead3.dts (100%)
+ create mode 100644 arch/mips/boot/dts/netlogic/Makefile
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_evp.dts (100%)
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_fvp.dts (100%)
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_gvp.dts (100%)
+ rename arch/mips/{netlogic/dts => boot/dts/netlogic}/xlp_svp.dts (100%)
+ create mode 100644 arch/mips/boot/dts/ralink/Makefile
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/mt7620a_eval.dts (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt2880.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt2880_eval.dts (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3050.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3052_eval.dts (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3883.dtsi (100%)
+ rename arch/mips/{ralink/dts => boot/dts/ralink}/rt3883_eval.dts (100%)
+ delete mode 100644 arch/mips/cavium-octeon/.gitignore
+ delete mode 100644 arch/mips/lantiq/dts/Makefile
+ delete mode 100644 arch/mips/netlogic/dts/Makefile
+ delete mode 100644 arch/mips/ralink/dts/Makefile
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 72cdd6a..434c834 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -330,6 +330,14 @@ core-$(CONFIG_BUILTIN_DTB) += arch/mips/boot/dts/
- %.dtb %.dtb.S %.dtb.o: | scripts
- 	$(Q)$(MAKE) $(build)=arch/mips/boot/dts arch/mips/boot/dts/$@
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ffa8388..57ee48e 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -353,6 +353,7 @@ config MIPS_SEAD3
+ 	bool "MIPS SEAD3 board"
+ 	select BOOT_ELF32
+ 	select BOOT_RAW
++	select BUILTIN_DTB
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+ 	select CSRC_GIC
+@@ -741,6 +742,7 @@ config CAVIUM_OCTEON_SOC
+ 	select ARCH_SPARSEMEM_ENABLE
+ 	select SYS_SUPPORTS_SMP
+ 	select NR_CPUS_DEFAULT_16
++	select BUILTIN_DTB
+ 	help
+ 	  This option supports all of the Octeon reference boards from Cavium
+ 	  Networks. It builds a kernel that dynamically determines the Octeon
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+index 4a78bad..527f71b 100644
+--- a/arch/mips/boot/dts/Makefile
++++ b/arch/mips/boot/dts/Makefile
+@@ -1,3 +1,9 @@
++dts-dirs	+= cavium-octeon
++dts-dirs	+= lantiq
++dts-dirs	+= mti
++dts-dirs	+= netlogic
++dts-dirs	+= ralink
++
+ obj-y		+= $(addsuffix /, $(dts-dirs))
  
-+dtbs: scripts
-+	$(Q)$(MAKE) $(build)=arch/mips/boot/dts
+ subdir-y	:= $(dts-dirs)
+diff --git a/arch/mips/boot/dts/cavium-octeon/Makefile b/arch/mips/boot/dts/cavium-octeon/Makefile
+new file mode 100644
+index 0000000..f9a57e4
+--- /dev/null
++++ b/arch/mips/boot/dts/cavium-octeon/Makefile
+@@ -0,0 +1,9 @@
++dtb-$(CONFIG_CAVIUM_OCTEON_SOC)	+= octeon_3xxx.dtb octeon_68xx.dtb
 +
-+dtbs_install:
-+	$(Q)$(MAKE) $(dtbinst)=arch/mips/boot/dts
++obj-y		+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
 +
-+PHONY += dtbs dtbs_install
++# Force kbuild to make empty built-in.o if necessary
++obj-		+= dummy.o
 +
- archprepare:
- ifdef CONFIG_MIPS32_N32
- 	@echo '  Checking missing-syscalls for N32'
-@@ -364,6 +372,8 @@ define archhelp
- 	echo '  vmlinuz.srec         - SREC zboot image'
- 	echo '  uImage               - U-Boot image'
- 	echo '  uImage.gz            - U-Boot image (gzip)'
-+	echo '  dtbs                 - Device-tree blobs for enabled boards'
-+	echo '  dtbs_install         - Install dtbs into $(INSTALL_DTBS_PATH)'
- 	echo
- 	echo '  These will be default as appropriate for a configured platform.'
- endef
-diff --git a/arch/mips/boot/.gitignore b/arch/mips/boot/.gitignore
-index a73d6e2..d3962cd 100644
---- a/arch/mips/boot/.gitignore
-+++ b/arch/mips/boot/.gitignore
-@@ -5,3 +5,4 @@ zImage
- zImage.tmp
- calc_vmlinuz_load_addr
- uImage
-+*.dtb
++always		:= $(dtb-y)
++clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/mips/cavium-octeon/octeon_3xxx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
+similarity index 100%
+rename from arch/mips/cavium-octeon/octeon_3xxx.dts
+rename to arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
+diff --git a/arch/mips/cavium-octeon/octeon_68xx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
+similarity index 100%
+rename from arch/mips/cavium-octeon/octeon_68xx.dts
+rename to arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
+diff --git a/arch/mips/boot/dts/lantiq/Makefile b/arch/mips/boot/dts/lantiq/Makefile
+new file mode 100644
+index 0000000..6162d2d
+--- /dev/null
++++ b/arch/mips/boot/dts/lantiq/Makefile
+@@ -0,0 +1,9 @@
++dtb-$(CONFIG_DT_EASY50712)	+= easy50712.dtb
++
++obj-y		+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++# Force kbuild to make empty built-in.o if necessary
++obj-		+= dummy.o
++
++always		:= $(dtb-y)
++clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/mips/lantiq/dts/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+similarity index 100%
+rename from arch/mips/lantiq/dts/danube.dtsi
+rename to arch/mips/boot/dts/lantiq/danube.dtsi
+diff --git a/arch/mips/lantiq/dts/easy50712.dts b/arch/mips/boot/dts/lantiq/easy50712.dts
+similarity index 100%
+rename from arch/mips/lantiq/dts/easy50712.dts
+rename to arch/mips/boot/dts/lantiq/easy50712.dts
+diff --git a/arch/mips/boot/dts/mti/Makefile b/arch/mips/boot/dts/mti/Makefile
+new file mode 100644
+index 0000000..abc024d
+--- /dev/null
++++ b/arch/mips/boot/dts/mti/Makefile
+@@ -0,0 +1,9 @@
++dtb-$(CONFIG_MIPS_SEAD3)	+= sead3.dtb
++
++obj-y		+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++# Force kbuild to make empty built-in.o if necessary
++obj-		+= dummy.o
++
++always		:= $(dtb-y)
++clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/mips/mti-sead3/sead3.dts b/arch/mips/boot/dts/mti/sead3.dts
+similarity index 100%
+rename from arch/mips/mti-sead3/sead3.dts
+rename to arch/mips/boot/dts/mti/sead3.dts
+diff --git a/arch/mips/boot/dts/netlogic/Makefile b/arch/mips/boot/dts/netlogic/Makefile
+new file mode 100644
+index 0000000..e53ce4a
+--- /dev/null
++++ b/arch/mips/boot/dts/netlogic/Makefile
+@@ -0,0 +1,12 @@
++dtb-$(CONFIG_DT_XLP_EVP)	+= xlp_evp.dtb
++dtb-$(CONFIG_DT_XLP_SVP)	+= xlp_svp.dtb
++dtb-$(CONFIG_DT_XLP_FVP)	+= xlp_fvp.dtb
++dtb-$(CONFIG_DT_XLP_GVP)	+= xlp_gvp.dtb
++
++obj-y		+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++# Force kbuild to make empty built-in.o if necessary
++obj-		+= dummy.o
++
++always		:= $(dtb-y)
++clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/mips/netlogic/dts/xlp_evp.dts b/arch/mips/boot/dts/netlogic/xlp_evp.dts
+similarity index 100%
+rename from arch/mips/netlogic/dts/xlp_evp.dts
+rename to arch/mips/boot/dts/netlogic/xlp_evp.dts
+diff --git a/arch/mips/netlogic/dts/xlp_fvp.dts b/arch/mips/boot/dts/netlogic/xlp_fvp.dts
+similarity index 100%
+rename from arch/mips/netlogic/dts/xlp_fvp.dts
+rename to arch/mips/boot/dts/netlogic/xlp_fvp.dts
+diff --git a/arch/mips/netlogic/dts/xlp_gvp.dts b/arch/mips/boot/dts/netlogic/xlp_gvp.dts
+similarity index 100%
+rename from arch/mips/netlogic/dts/xlp_gvp.dts
+rename to arch/mips/boot/dts/netlogic/xlp_gvp.dts
+diff --git a/arch/mips/netlogic/dts/xlp_svp.dts b/arch/mips/boot/dts/netlogic/xlp_svp.dts
+similarity index 100%
+rename from arch/mips/netlogic/dts/xlp_svp.dts
+rename to arch/mips/boot/dts/netlogic/xlp_svp.dts
+diff --git a/arch/mips/boot/dts/ralink/Makefile b/arch/mips/boot/dts/ralink/Makefile
+new file mode 100644
+index 0000000..1119fa5
+--- /dev/null
++++ b/arch/mips/boot/dts/ralink/Makefile
+@@ -0,0 +1,12 @@
++dtb-$(CONFIG_DTB_RT2880_EVAL)	+= rt2880_eval.dtb
++dtb-$(CONFIG_DTB_RT305X_EVAL)	+= rt3052_eval.dtb
++dtb-$(CONFIG_DTB_RT3883_EVAL)	+= rt3883_eval.dtb
++dtb-$(CONFIG_DTB_MT7620A_EVAL)	+= mt7620a_eval.dtb
++
++obj-y		+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++# Force kbuild to make empty built-in.o if necessary
++obj-		+= dummy.o
++
++always		:= $(dtb-y)
++clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/mips/ralink/dts/mt7620a.dtsi b/arch/mips/boot/dts/ralink/mt7620a.dtsi
+similarity index 100%
+rename from arch/mips/ralink/dts/mt7620a.dtsi
+rename to arch/mips/boot/dts/ralink/mt7620a.dtsi
+diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/boot/dts/ralink/mt7620a_eval.dts
+similarity index 100%
+rename from arch/mips/ralink/dts/mt7620a_eval.dts
+rename to arch/mips/boot/dts/ralink/mt7620a_eval.dts
+diff --git a/arch/mips/ralink/dts/rt2880.dtsi b/arch/mips/boot/dts/ralink/rt2880.dtsi
+similarity index 100%
+rename from arch/mips/ralink/dts/rt2880.dtsi
+rename to arch/mips/boot/dts/ralink/rt2880.dtsi
+diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/boot/dts/ralink/rt2880_eval.dts
+similarity index 100%
+rename from arch/mips/ralink/dts/rt2880_eval.dts
+rename to arch/mips/boot/dts/ralink/rt2880_eval.dts
+diff --git a/arch/mips/ralink/dts/rt3050.dtsi b/arch/mips/boot/dts/ralink/rt3050.dtsi
+similarity index 100%
+rename from arch/mips/ralink/dts/rt3050.dtsi
+rename to arch/mips/boot/dts/ralink/rt3050.dtsi
+diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/boot/dts/ralink/rt3052_eval.dts
+similarity index 100%
+rename from arch/mips/ralink/dts/rt3052_eval.dts
+rename to arch/mips/boot/dts/ralink/rt3052_eval.dts
+diff --git a/arch/mips/ralink/dts/rt3883.dtsi b/arch/mips/boot/dts/ralink/rt3883.dtsi
+similarity index 100%
+rename from arch/mips/ralink/dts/rt3883.dtsi
+rename to arch/mips/boot/dts/ralink/rt3883.dtsi
+diff --git a/arch/mips/ralink/dts/rt3883_eval.dts b/arch/mips/boot/dts/ralink/rt3883_eval.dts
+similarity index 100%
+rename from arch/mips/ralink/dts/rt3883_eval.dts
+rename to arch/mips/boot/dts/ralink/rt3883_eval.dts
+diff --git a/arch/mips/cavium-octeon/.gitignore b/arch/mips/cavium-octeon/.gitignore
+deleted file mode 100644
+index 39c9686..0000000
+--- a/arch/mips/cavium-octeon/.gitignore
++++ /dev/null
+@@ -1,2 +0,0 @@
+-*.dtb.S
+-*.dtb
+diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+index 4e95204..42f5f1a 100644
+--- a/arch/mips/cavium-octeon/Makefile
++++ b/arch/mips/cavium-octeon/Makefile
+@@ -20,13 +20,3 @@ obj-y += executive/
+ obj-$(CONFIG_MTD)		      += flash_setup.o
+ obj-$(CONFIG_SMP)		      += smp.o
+ obj-$(CONFIG_OCTEON_ILM)	      += oct_ilm.o
+-
+-DTS_FILES = octeon_3xxx.dts octeon_68xx.dts
+-DTB_FILES = $(patsubst %.dts, %.dtb, $(DTS_FILES))
+-
+-obj-y += $(patsubst %.dts, %.dtb.o, $(DTS_FILES))
+-
+-# Let's keep the .dtb files around in case we want to look at them.
+-.SECONDARY:  $(addprefix $(obj)/, $(DTB_FILES))
+-
+-clean-files += $(DTB_FILES) $(patsubst %.dtb, %.dtb.S, $(DTB_FILES))
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index c002191..e10d333 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -30,6 +30,7 @@ choice
+ config DT_EASY50712
+ 	bool "Easy50712"
+ 	depends on SOC_XWAY
++	select BUILTIN_DTB
+ endchoice
+ 
+ config PCI_LANTIQ
+diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
+index d6bdc57..690257a 100644
+--- a/arch/mips/lantiq/Makefile
++++ b/arch/mips/lantiq/Makefile
+@@ -6,8 +6,6 @@
+ 
+ obj-y := irq.o clk.o prom.o
+ 
+-obj-y += dts/
+-
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ 
+ obj-$(CONFIG_SOC_TYPE_XWAY) += xway/
+diff --git a/arch/mips/lantiq/dts/Makefile b/arch/mips/lantiq/dts/Makefile
+deleted file mode 100644
+index 6fa72dd..0000000
+--- a/arch/mips/lantiq/dts/Makefile
++++ /dev/null
+@@ -1 +0,0 @@
+-obj-$(CONFIG_DT_EASY50712) := easy50712.dtb.o
+diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
+index 071786f..febf433 100644
+--- a/arch/mips/mti-sead3/Makefile
++++ b/arch/mips/mti-sead3/Makefile
+@@ -19,9 +19,5 @@ obj-y				+= sead3-i2c-dev.o sead3-i2c.o \
+ 
+ obj-$(CONFIG_EARLY_PRINTK)	+= sead3-console.o
+ obj-$(CONFIG_USB_EHCI_HCD)	+= sead3-ehci.o
+-obj-$(CONFIG_OF)		+= sead3.dtb.o
+ 
+ CFLAGS_sead3-setup.o = -I$(src)/../../../scripts/dtc/libfdt
+-
+-$(obj)/%.dtb: $(obj)/%.dts
+-	$(call if_changed,dtc)
+diff --git a/arch/mips/netlogic/Kconfig b/arch/mips/netlogic/Kconfig
+index 4eb683a..0823321 100644
+--- a/arch/mips/netlogic/Kconfig
++++ b/arch/mips/netlogic/Kconfig
+@@ -4,6 +4,7 @@ if NLM_XLP_BOARD
+ config DT_XLP_EVP
+ 	bool "Built-in device tree for XLP EVP boards"
+ 	default y
++	select BUILTIN_DTB
+ 	help
+ 	  Add an FDT blob for XLP EVP boards into the kernel.
+ 	  This DTB will be used if the firmware does not pass in a DTB
+@@ -13,6 +14,7 @@ config DT_XLP_EVP
+ config DT_XLP_SVP
+ 	bool "Built-in device tree for XLP SVP boards"
+ 	default y
++	select BUILTIN_DTB
+ 	help
+ 	  Add an FDT blob for XLP VP boards into the kernel.
+ 	  This DTB will be used if the firmware does not pass in a DTB
+@@ -22,6 +24,7 @@ config DT_XLP_SVP
+ config DT_XLP_FVP
+ 	bool "Built-in device tree for XLP FVP boards"
+ 	default y
++	select BUILTIN_DTB
+ 	help
+ 	  Add an FDT blob for XLP FVP board into the kernel.
+ 	  This DTB will be used if the firmware does not pass in a DTB
+@@ -31,6 +34,7 @@ config DT_XLP_FVP
+ config DT_XLP_GVP
+ 	bool "Built-in device tree for XLP GVP boards"
+ 	default y
++	select BUILTIN_DTB
+ 	help
+ 	  Add an FDT blob for XLP GVP board into the kernel.
+ 	  This DTB will be used if the firmware does not pass in a DTB
+diff --git a/arch/mips/netlogic/Makefile b/arch/mips/netlogic/Makefile
+index 7602d13..36d169b 100644
+--- a/arch/mips/netlogic/Makefile
++++ b/arch/mips/netlogic/Makefile
+@@ -1,4 +1,3 @@
+ obj-$(CONFIG_NLM_COMMON)	+=	common/
+ obj-$(CONFIG_CPU_XLR)		+=	xlr/
+ obj-$(CONFIG_CPU_XLP)		+=	xlp/
+-obj-$(CONFIG_CPU_XLP)		+=	dts/
+diff --git a/arch/mips/netlogic/dts/Makefile b/arch/mips/netlogic/dts/Makefile
+deleted file mode 100644
+index 25c8e87..0000000
+--- a/arch/mips/netlogic/dts/Makefile
++++ /dev/null
+@@ -1,4 +0,0 @@
+-obj-$(CONFIG_DT_XLP_EVP) := xlp_evp.dtb.o
+-obj-$(CONFIG_DT_XLP_SVP) += xlp_svp.dtb.o
+-obj-$(CONFIG_DT_XLP_FVP) += xlp_fvp.dtb.o
+-obj-$(CONFIG_DT_XLP_GVP) += xlp_gvp.dtb.o
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 4a29665..77e8a96 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -42,18 +42,22 @@ choice
+ 	config DTB_RT2880_EVAL
+ 		bool "RT2880 eval kit"
+ 		depends on SOC_RT288X
++		select BUILTIN_DTB
+ 
+ 	config DTB_RT305X_EVAL
+ 		bool "RT305x eval kit"
+ 		depends on SOC_RT305X
++		select BUILTIN_DTB
+ 
+ 	config DTB_RT3883_EVAL
+ 		bool "RT3883 eval kit"
+ 		depends on SOC_RT3883
++		select BUILTIN_DTB
+ 
+ 	config DTB_MT7620A_EVAL
+ 		bool "MT7620A eval kit"
+ 		depends on SOC_MT7620
++		select BUILTIN_DTB
+ 
+ endchoice
+ 
+diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+index 98ae349..2c09c8a 100644
+--- a/arch/mips/ralink/Makefile
++++ b/arch/mips/ralink/Makefile
+@@ -16,5 +16,3 @@ obj-$(CONFIG_SOC_RT3883) += rt3883.o
+ obj-$(CONFIG_SOC_MT7620) += mt7620.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+-
+-obj-y += dts/
+diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
+deleted file mode 100644
+index 18194fa..0000000
+--- a/arch/mips/ralink/dts/Makefile
++++ /dev/null
+@@ -1,4 +0,0 @@
+-obj-$(CONFIG_DTB_RT2880_EVAL) := rt2880_eval.dtb.o
+-obj-$(CONFIG_DTB_RT305X_EVAL) := rt3052_eval.dtb.o
+-obj-$(CONFIG_DTB_RT3883_EVAL) := rt3883_eval.dtb.o
+-obj-$(CONFIG_DTB_MT7620A_EVAL) := mt7620a_eval.dtb.o
 -- 
 2.1.0.rc2.206.gedb03e5

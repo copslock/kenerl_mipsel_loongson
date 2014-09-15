@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:30:14 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37590 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 21:37:19 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38146 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009006AbaIOT1MlbUXc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:27:12 +0200
+        by eddie.linux-mips.org with ESMTP id S27008996AbaIOThPReWTn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 21:37:15 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4635EA6A;
-        Mon, 15 Sep 2014 19:27:05 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 09212B14;
+        Mon, 15 Sep 2014 19:37:09 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        stable@vger.kernel.org, Alex Smith <alex.smith@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.16 066/158] MIPS: Prevent user from setting FCSR cause bits
-Date:   Mon, 15 Sep 2014 12:25:05 -0700
-Message-Id: <20140915192544.874182650@linuxfoundation.org>
+Subject: [PATCH 3.14 043/114] MIPS: O32/32-bit: Fix bug which can cause incorrect system call restarts
+Date:   Mon, 15 Sep 2014 12:25:43 -0700
+Message-Id: <20140915192642.791025744@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.0
-In-Reply-To: <20140915192542.872134685@linuxfoundation.org>
-References: <20140915192542.872134685@linuxfoundation.org>
+In-Reply-To: <20140915192641.428509513@linuxfoundation.org>
+References: <20140915192641.428509513@linuxfoundation.org>
 User-Agent: quilt/0.63-1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42586
+X-archive-position: 42587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,60 +42,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16-stable review patch.  If anyone has any objections, please let me know.
+3.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Alex Smith <alex.smith@imgtec.com>
 
-commit b1442d39fac2fcfbe6a4814979020e993ca59c9e upstream.
+commit e90e6fddc57055c4c6b57f92787fea1c065d440b upstream.
 
-If one or more matching FCSR cause & enable bits are set in saved thread
-context then when that context is restored the kernel will take an FP
-exception. This is of course undesirable and considered an oops, leading
-to the kernel writing a backtrace to the console and potentially
-rebooting depending upon the configuration. Thus the kernel avoids this
-situation by clearing the cause bits of the FCSR register when handling
-FP exceptions and after emulating FP instructions.
+On 32-bit/O32, pt_regs has a padding area at the beginning into which the
+syscall arguments passed via the user stack are copied. 4 arguments
+totalling 16 bytes are copied to offset 16 bytes into this area, however
+the area is only 24 bytes long. This means the last 2 arguments overwrite
+pt_regs->regs[{0,1}].
 
-However the kernel does not prevent userland from setting arbitrary FCSR
-cause & enable bits via ptrace, using either the PTRACE_POKEUSR or
-PTRACE_SETFPREGS requests. This means userland can trivially cause the
-kernel to oops on any system with an FPU. Prevent this from happening
-by clearing the cause bits when writing to the saved FCSR context via
-ptrace.
+If a syscall function returns an error, handle_sys stores the original
+syscall number in pt_regs->regs[0] for syscall restart. signal.c checks
+whether regs[0] is non-zero, if it is it will check whether the syscall
+return value is one of the ERESTART* codes to see if it must be
+restarted.
 
-This problem appears to exist at least back to the beginning of the git
-era in the PTRACE_POKEUSR case.
+Should a syscall be made that results in a non-zero value being copied
+off the user stack into regs[0], and then returns a positive (non-error)
+value that matches one of the ERESTART* error codes, this can be mistaken
+for requiring a syscall restart.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+While the possibility for this to occur has always existed, it is made
+much more likely to occur by commit 46e12c07b3b9 ("MIPS: O32 / 32-bit:
+Always copy 4 stack arguments."), since now every syscall will copy 4
+arguments and overwrite regs[0], rather than just those with 7 or 8
+arguments.
+
+Since that commit, booting Debian under a 32-bit MIPS kernel almost
+always results in a hang early in boot, due to a wait4 syscall returning
+a PID that matches one of the ERESTART* codes, which then causes an
+incorrect restart of the syscall.
+
+The problem is fixed by increasing the size of the padding area so that
+arguments copied off the stack will not overwrite pt_regs->regs[{0,1}].
+
+Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
 Cc: linux-mips@linux-mips.org
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/7438/
+Patchwork: https://patchwork.linux-mips.org/patch/7454/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/ptrace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -151,6 +151,7 @@ int ptrace_setfpregs(struct task_struct
- 	}
- 
- 	__get_user(child->thread.fpu.fcr31, data + 64);
-+	child->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
- 
- 	/* FIR may not be written.  */
- 
-@@ -696,7 +697,7 @@ long arch_ptrace(struct task_struct *chi
- 			break;
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -23,7 +23,7 @@
+ struct pt_regs {
+ #ifdef CONFIG_32BIT
+ 	/* Pad bytes for argument save space on the stack. */
+-	unsigned long pad0[6];
++	unsigned long pad0[8];
  #endif
- 		case FPC_CSR:
--			child->thread.fpu.fcr31 = data;
-+			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
- 			break;
- 		case DSP_BASE ... DSP_BASE + 5: {
- 			dspreg_t *dregs;
+ 
+ 	/* Saved main processor registers. */

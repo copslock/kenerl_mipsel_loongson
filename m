@@ -1,55 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 16:47:47 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:41006 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008962AbaIOOrpHU0qs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 16:47:45 +0200
-Received: from weser.hi.pengutronix.de ([2001:67c:670:100:fa0f:41ff:fe58:4010])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <l.stach@pengutronix.de>)
-        id 1XTXYc-0003xy-Ij; Mon, 15 Sep 2014 16:47:10 +0200
-Message-ID: <1410792430.3314.10.camel@pengutronix.de>
-Subject: Re: [PATCH v1 21/21] PCI/MSI: Clean up unused MSI arch functions
-From:   Lucas Stach <l.stach@pengutronix.de>
-To:     Yijing Wang <wangyijing@huawei.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
-        Bharat.Bhushan@freescale.com, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Date:   Mon, 15 Sep 2014 16:47:10 +0200
-In-Reply-To: <1409911806-10519-22-git-send-email-wangyijing@huawei.com>
-References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
-         <1409911806-10519-22-git-send-email-wangyijing@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.5-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:fa0f:41ff:fe58:4010
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <l.stach@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2014 18:23:57 +0200 (CEST)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:40803 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008815AbaIOQXzile2o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Sep 2014 18:23:55 +0200
+Received: by mail-ig0-f173.google.com with SMTP id l13so4208920iga.12
+        for <linux-mips@linux-mips.org>; Mon, 15 Sep 2014 09:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=jevKCM5xvrDEdzSn/GQsJOpf5DN2vBwYoJlf9W7pTbk=;
+        b=nHkLV5S4xim3H0/XnppWylIdYMF5x6TfcIrVbgjgTcfvvjFbH/9ialdqFAW98+69Wb
+         EQViV+wmJXQXeC3KJ8vBvGGz5c0PBYEDvEgNPqX4I6vIdl9i6AyaRj9vNvvkDdulsvNu
+         rsW43rsF6Fj8kHB/34kEQkm3HNDNiCp3pDSgyLTBhMK0Ztg6vwlU8WiDer8jnyLcWcNj
+         j8w5IcUFfsQBWL2l322R1/SI8O4aW4zxRLc3jib32y37dRl714qrUDbIWV1rUWM+WPfo
+         UaLfhaPuD1K43GCl1l4p8jDz5Qv9x6F0lsgpxHXa/NTfFjCp/3VX/4CnOju/XJJoukjJ
+         lfhw==
+X-Received: by 10.50.30.72 with SMTP id q8mr23197791igh.14.1410798229382;
+        Mon, 15 Sep 2014 09:23:49 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id p5sm10485955iga.5.2014.09.15.09.23.48
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 15 Sep 2014 09:23:48 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id s8FGNlAe021453;
+        Mon, 15 Sep 2014 09:23:47 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id s8FGNjZu021452;
+        Mon, 15 Sep 2014 09:23:45 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Joe Perches <joe@perches.com>
+Subject: [PATCH] netdev: octeon_mgmt: Fix ISO C90 forbids mixed declarations and code warning.
+Date:   Mon, 15 Sep 2014 09:23:43 -0700
+Message-Id: <1410798223-21420-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42568
+X-archive-position: 42569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: l.stach@pengutronix.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,254 +59,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am Freitag, den 05.09.2014, 18:10 +0800 schrieb Yijing Wang:
-> Now we use struct msi_chip in all platforms to configure
-> MSI/MSI-X. We can clean up the unused arch functions.
-> 
-> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+From: David Daney <david.daney@cavium.com>
 
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+We were getting:
 
-> ---
->  drivers/iommu/irq_remapping.c |    2 +-
->  drivers/pci/msi.c             |   99 ++++++++++++++++-------------------------
->  include/linux/msi.h           |   14 ------
->  3 files changed, 39 insertions(+), 76 deletions(-)
-> 
-> diff --git a/drivers/iommu/irq_remapping.c b/drivers/iommu/irq_remapping.c
-> index 99b1c0f..6e645f0 100644
-> --- a/drivers/iommu/irq_remapping.c
-> +++ b/drivers/iommu/irq_remapping.c
-> @@ -92,7 +92,7 @@ error:
->  
->  	/*
->  	 * Restore altered MSI descriptor fields and prevent just destroyed
-> -	 * IRQs from tearing down again in default_teardown_msi_irqs()
-> +	 * IRQs from tearing down again in teardown_msi_irqs()
->  	 */
->  	msidesc->irq = 0;
->  	msidesc->nvec_used = 0;
-> diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-> index d78d637..e3e7f4f 100644
-> --- a/drivers/pci/msi.c
-> +++ b/drivers/pci/msi.c
-> @@ -34,50 +34,31 @@ struct msi_chip * __weak arch_find_msi_chip(struct pci_dev *dev)
->  	return dev->bus->msi;
->  }
->  
-> -int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
-> -{
-> -	struct msi_chip *chip = arch_find_msi_chip(dev);
-> -	int err;
-> -
-> -	if (!chip || !chip->setup_irq)
-> -		return -EINVAL;
-> -
-> -	err = chip->setup_irq(dev, desc);
-> -	if (err < 0)
-> -		return err;
-> -
-> -	return 0;
-> -}
-> -
-> -void __weak arch_teardown_msi_irq(unsigned int irq)
-> -{
-> -	struct msi_chip *chip = irq_get_chip_data(irq);
-> -
-> -	if (!chip || !chip->teardown_irq)
-> -		return;
-> -
-> -	chip->teardown_irq(irq);
-> -}
-> -
-> -int __weak arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
-> +int setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
->  {
->  	struct msi_desc *entry;
->  	int ret;
->  	struct msi_chip *chip;
->  
->  	chip = arch_find_msi_chip(dev);
-> -	if (chip && chip->setup_irqs)
-> +	if (!chip)
-> +		return -EINVAL;
-> +
-> +	if (chip->setup_irqs)
->  		return chip->setup_irqs(dev, nvec, type);
->  
->  	/*
->  	 * If an architecture wants to support multiple MSI, it needs to
-> -	 * override arch_setup_msi_irqs()
-> +	 * implement chip->setup_irqs().
->  	 */
->  	if (type == PCI_CAP_ID_MSI && nvec > 1)
->  		return 1;
->  
-> +	if (!chip->setup_irq)
-> +		return -EINVAL;
-> +
->  	list_for_each_entry(entry, &dev->msi_list, list) {
-> -		ret = arch_setup_msi_irq(dev, entry);
-> +		ret = chip->setup_irq(dev, entry);
->  		if (ret < 0)
->  			return ret;
->  		if (ret > 0)
-> @@ -87,13 +68,20 @@ int __weak arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
->  	return 0;
->  }
->  
-> -/*
-> - * We have a default implementation available as a separate non-weak
-> - * function, as it is used by the Xen x86 PCI code
-> - */
-> -void default_teardown_msi_irqs(struct pci_dev *dev)
-> +static void teardown_msi_irqs(struct pci_dev *dev)
->  {
->  	struct msi_desc *entry;
-> +	struct msi_chip *chip;
-> +
-> +	chip = arch_find_msi_chip(dev);
-> +	if (!chip)
-> +		return;
-> +
-> +	if (chip->teardown_irqs)
-> +		return chip->teardown_irqs(dev);
-> +
-> +	if (!chip->teardown_irq)
-> +		return;
->  
->  	list_for_each_entry(entry, &dev->msi_list, list) {
->  		int i, nvec;
-> @@ -104,20 +92,10 @@ void default_teardown_msi_irqs(struct pci_dev *dev)
->  		else
->  			nvec = 1 << entry->msi_attrib.multiple;
->  		for (i = 0; i < nvec; i++)
-> -			arch_teardown_msi_irq(entry->irq + i);
-> +			chip->teardown_irq(entry->irq + i);
->  	}
->  }
->  
-> -void __weak arch_teardown_msi_irqs(struct pci_dev *dev)
-> -{
-> -	struct msi_chip *chip = arch_find_msi_chip(dev);
-> -
-> -	if (chip && chip->teardown_irqs)
-> -		return chip->teardown_irqs(dev);
-> -
-> -	return default_teardown_msi_irqs(dev);
-> -}
-> -
->  static void default_restore_msi_irq(struct pci_dev *dev, int irq)
->  {
->  	struct msi_desc *entry;
-> @@ -136,10 +114,18 @@ static void default_restore_msi_irq(struct pci_dev *dev, int irq)
->  		write_msi_msg(irq, &entry->msg);
->  }
->  
-> -void __weak arch_restore_msi_irqs(struct pci_dev *dev)
-> +static void default_restore_msi_irqs(struct pci_dev *dev)
->  {
-> -	struct msi_chip *chip = arch_find_msi_chip(dev);
-> +	struct msi_desc *entry = NULL;
-> +
-> +	list_for_each_entry(entry, &dev->msi_list, list) {
-> +		default_restore_msi_irq(dev, entry->irq);
-> +	}
-> +}
->  
-> +static void restore_msi_irqs(struct pci_dev *dev)
-> +{
-> +	struct msi_chip *chip = arch_find_msi_chip(dev);
->  	if (chip && chip->restore_irqs)
->  		return chip->restore_irqs(dev);
->  
-> @@ -248,15 +234,6 @@ void unmask_msi_irq(struct irq_data *data)
->  	msi_set_mask_bit(data, 0);
->  }
->  
-> -void default_restore_msi_irqs(struct pci_dev *dev)
-> -{
-> -	struct msi_desc *entry;
-> -
-> -	list_for_each_entry(entry, &dev->msi_list, list) {
-> -		default_restore_msi_irq(dev, entry->irq);
-> -	}
-> -}
-> -
->  void read_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
->  {
->  	BUG_ON(entry->dev->current_state != PCI_D0);
-> @@ -360,7 +337,7 @@ static void free_msi_irqs(struct pci_dev *dev)
->  			BUG_ON(irq_has_action(entry->irq + i));
->  	}
->  
-> -	arch_teardown_msi_irqs(dev);
-> +	teardown_msi_irqs(dev);
->  
->  	list_for_each_entry_safe(entry, tmp, &dev->msi_list, list) {
->  		if (entry->msi_attrib.is_msix) {
-> @@ -430,7 +407,7 @@ static void __pci_restore_msi_state(struct pci_dev *dev)
->  
->  	pci_intx_for_msi(dev, 0);
->  	msi_set_enable(dev, 0);
-> -	arch_restore_msi_irqs(dev);
-> +	restore_msi_irqs(dev);
->  
->  	pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &control);
->  	msi_mask_irq(entry, msi_mask(entry->msi_attrib.multi_cap),
-> @@ -453,7 +430,7 @@ static void __pci_restore_msix_state(struct pci_dev *dev)
->  	msix_clear_and_set_ctrl(dev, 0,
->  				PCI_MSIX_FLAGS_ENABLE | PCI_MSIX_FLAGS_MASKALL);
->  
-> -	arch_restore_msi_irqs(dev);
-> +	restore_msi_irqs(dev);
->  	list_for_each_entry(entry, &dev->msi_list, list) {
->  		msix_mask_irq(entry, entry->masked);
->  	}
-> @@ -624,7 +601,7 @@ static int msi_capability_init(struct pci_dev *dev, int nvec)
->  	list_add_tail(&entry->list, &dev->msi_list);
->  
->  	/* Configure MSI capability structure */
-> -	ret = arch_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
-> +	ret = setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
->  	if (ret) {
->  		msi_mask_irq(entry, mask, ~mask);
->  		free_msi_irqs(dev);
-> @@ -740,7 +717,7 @@ static int msix_capability_init(struct pci_dev *dev,
->  	if (ret)
->  		return ret;
->  
-> -	ret = arch_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSIX);
-> +	ret = setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSIX);
->  	if (ret)
->  		goto out_avail;
->  
-> diff --git a/include/linux/msi.h b/include/linux/msi.h
-> index 92a51e7..d6e1f7c 100644
-> --- a/include/linux/msi.h
-> +++ b/include/linux/msi.h
-> @@ -51,20 +51,6 @@ struct msi_desc {
->  	struct kobject kobj;
->  };
->  
-> -/*
-> - * The arch hooks to setup up msi irqs. Those functions are
-> - * implemented as weak symbols so that they /can/ be overriden by
-> - * architecture specific code if needed.
-> - */
-> -int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc);
-> -void arch_teardown_msi_irq(unsigned int irq);
-> -int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type);
-> -void arch_teardown_msi_irqs(struct pci_dev *dev);
-> -void arch_restore_msi_irqs(struct pci_dev *dev);
-> -
-> -void default_teardown_msi_irqs(struct pci_dev *dev);
-> -void default_restore_msi_irqs(struct pci_dev *dev);
-> -
->  struct msi_chip {
->  	struct module *owner;
->  	struct device *dev;
+  drivers/net/ethernet/octeon/octeon_mgmt.c:295:4: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
 
+The idea of the fix from Joe Perches.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc: Joe Perches <joe@perches.com>
+---
+
+This patch should supersede previous patches from Heinrich Schuchardt,
+and may be preferable as it touches fewer lines of code.
+
+ drivers/net/ethernet/octeon/octeon_mgmt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/octeon/octeon_mgmt.c b/drivers/net/ethernet/octeon/octeon_mgmt.c
+index 979c698..5e10c1d 100644
+--- a/drivers/net/ethernet/octeon/octeon_mgmt.c
++++ b/drivers/net/ethernet/octeon/octeon_mgmt.c
+@@ -290,12 +290,12 @@ static void octeon_mgmt_clean_tx_buffers(struct octeon_mgmt *p)
+ 		/* Read the hardware TX timestamp if one was recorded */
+ 		if (unlikely(re.s.tstamp)) {
+ 			struct skb_shared_hwtstamps ts;
+-			memset(&ts, 0, sizeof(ts));
+ 			/* Read the timestamp */
+ 			u64 ns = cvmx_read_csr(CVMX_MIXX_TSTAMP(p->port));
+ 			/* Remove the timestamp from the FIFO */
+ 			cvmx_write_csr(CVMX_MIXX_TSCTL(p->port), 0);
+ 			/* Tell the kernel about the timestamp */
++			memset(&ts, 0, sizeof(ts));
+ 			ts.hwtstamp = ns_to_ktime(ns);
+ 			skb_tstamp_tx(skb, &ts);
+ 		}
 -- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+1.7.11.7

@@ -1,65 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 22:51:51 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:42050 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011000AbaJIUvtLDMxI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 22:51:49 +0200
-Received: from c-76-102-4-12.hsd1.ca.comcast.net ([76.102.4.12] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <kamal@canonical.com>)
-        id 1XcKge-0003Ji-Mm; Thu, 09 Oct 2014 20:51:48 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1XcKgc-0005sf-VZ; Thu, 09 Oct 2014 13:51:46 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.13.y.z extended stable] Patch "MIPS: mcount: Adjust stack pointer for static trace in MIPS32" has been added to staging queue
-Date:   Thu,  9 Oct 2014 13:51:46 -0700
-Message-Id: <1412887906-22574-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.13
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43170
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Tue, 16 Sep 2014 15:55:12 +0100
+Subject: MIPS: mcount: Adjust stack pointer for static trace in MIPS32
+Message-ID: <20140916145512._QDYIo2o_JR5AX1C_yaNH7v4mRe15OiW7kIbWPKsstg@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 8a574cfa2652545eb95595d38ac2a0bb501af0ae upstream.
 
-    MIPS: mcount: Adjust stack pointer for static trace in MIPS32
+Every mcount() call in the MIPS 32-bit kernel is done as follows:
 
-to the linux-3.13.y-queue branch of the 3.13.y.z extended stable tree 
-which can be found at:
+[...]
+move at, ra
+jal _mcount
+addiu sp, sp, -8
+[...]
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
+but upon returning from the mcount() function, the stack pointer
+is not adjusted properly. This is explained in details in 58b69401c797
+(MIPS: Function tracer: Fix broken function tracing).
 
-This patch is scheduled to be released in version 3.13.11.9.
+Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
+fixed the stack manipulation for 64-bit but it didn't fix it completely
+for MIPS32.
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/7792/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/mcount.S | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-For more information about the 3.13.y.z tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+index 539b629..8f89ff4 100644
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -123,7 +123,11 @@ NESTED(_mcount, PT_SIZE, ra)
+ 	 nop
+ #endif
+ 	b	ftrace_stub
++#ifdef CONFIG_32BIT
++	 addiu sp, sp, 8
++#else
+ 	 nop
++#endif
 
-Thanks.
--Kamal
+ static_trace:
+ 	MCOUNT_SAVE_REGS
+@@ -133,6 +137,9 @@ static_trace:
+ 	 move	a1, AT		/* arg2: parent's return address */
 
-------
+ 	MCOUNT_RESTORE_REGS
++#ifdef CONFIG_32BIT
++	addiu sp, sp, 8
++#endif
+ 	.globl ftrace_stub
+ ftrace_stub:
+ 	RETURN_BACK
+@@ -177,6 +184,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
+ 	jal	prepare_ftrace_return
+ 	 nop
+ 	MCOUNT_RESTORE_REGS
++#ifndef CONFIG_DYNAMIC_FTRACE
++#ifdef CONFIG_32BIT
++	addiu sp, sp, 8
++#endif
++#endif
+ 	RETURN_BACK
+ 	END(ftrace_graph_caller)
+
+--
+1.9.1

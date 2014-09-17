@@ -1,52 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Sep 2014 01:25:00 +0200 (CEST)
-Received: from mail-ob0-f179.google.com ([209.85.214.179]:62714 "EHLO
-        mail-ob0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009064AbaIPXYzV-80k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Sep 2014 01:24:55 +0200
-Received: by mail-ob0-f179.google.com with SMTP id wp18so476405obc.38
-        for <linux-mips@linux-mips.org>; Tue, 16 Sep 2014 16:24:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=K51UoYgCYSkWkWMylAT/qfIzgGN0g8NDc+yEoMa4Y8Q=;
-        b=CPS/at32oAkmonc3QOHzmA+VzqPVAbiSyEJliyG6U0OLIy1zU1HJemLqt015hYVmWq
-         bsk4YXv26HXZ4xbsYqbEJTisDGWQv/cxZuGPU4KTW8Bv2FcBtOnmbKUob5CFW8Yegper
-         SZ0YrxatqgodSqh4tMWUjqQnjKZNx7PfViEA/wQMsr4a4tLCgD9oTSgdT7DXyxaPm/PV
-         QtFrfZAHfhcFUzGTF5VcUrm8OvfcaYhYgQpkAwpYdYfoXDMEo4pGVuI4sULJQMS06FnX
-         2u9K62yfZ0TO4/Houp9/dVRDvMMf1LPSAj4bsK2lgJgOrkwL20rYDsZWOdwv96S0lu8Z
-         Es8A==
-X-Gm-Message-State: ALoCoQkk5xcbWdU1CgCdt9S2M7BUY4sIUjZghygyu/LYeXQmLFXXuAXAN9Vn/+PtfU0PhaUu8aqZ
-X-Received: by 10.182.186.73 with SMTP id fi9mr39431049obc.0.1410909889039;
-        Tue, 16 Sep 2014 16:24:49 -0700 (PDT)
-Received: from t430.minyard.home (pool-173-57-152-84.dllstx.fios.verizon.net. [173.57.152.84])
-        by mx.google.com with ESMTPSA id j10sm6655277oef.13.2014.09.16.16.24.47
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 16 Sep 2014 16:24:48 -0700 (PDT)
-Message-ID: <5418C6BF.9090208@mvista.com>
-Date:   Tue, 16 Sep 2014 18:24:47 -0500
-From:   Corey Minyard <cminyard@mvista.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Sep 2014 03:25:27 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:14358 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009064AbaIQBZXCFvBa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Sep 2014 03:25:23 +0200
+Received: from 172.24.2.119 (EHLO szxeml403-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id AUL68514;
+        Wed, 17 Sep 2014 09:24:28 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml403-hub.china.huawei.com
+ (10.82.67.35) with Microsoft SMTP Server id 14.3.158.1; Wed, 17 Sep 2014
+ 09:24:19 +0800
+Message-ID: <5418E2BA.4030304@huawei.com>
+Date:   Wed, 17 Sep 2014 09:24:10 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
-To:     minyard@acm.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-CC:     linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mips: Save all registers when saving the frame
-References: <1410903925-10744-1-git-send-email-minyard@acm.org>
-In-Reply-To: <1410903925-10744-1-git-send-email-minyard@acm.org>
-Content-Type: text/plain; charset=ISO-8859-1
+To:     Sebastian Ott <sebott@linux.vnet.ibm.com>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
+        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        Tony Luck <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [PATCH v1 16/21] s390/MSI: Use MSI chip framework to configure
+ MSI/MSI-X irq
+References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com> <1409911806-10519-17-git-send-email-wangyijing@huawei.com> <alpine.LFD.2.11.1409161325280.1618@denkbrett>
+In-Reply-To: <alpine.LFD.2.11.1409161325280.1618@denkbrett>
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <cminyard@mvista.com>
+X-Originating-IP: [10.177.27.212]
+X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A020209.5418E2D1.004D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2013-03-21 17:37:32
+X-Mirapoint-Loop-Id: f39294459a33fecd36d045692f4d361d
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42655
+X-archive-position: 42656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cminyard@mvista.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,117 +69,101 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Well, there's a bug I noticed in this patch, $1 is restored from the
-wrong location.
-I'm not sure $1 ($at) needs to be restored at all, really.  I guess make
-this a RFC.
+On 2014/9/16 19:35, Sebastian Ott wrote:
+> Hello,
+> 
+> On Fri, 5 Sep 2014, Yijing Wang wrote:
+>> Use MSI chip framework instead of arch MSI functions to configure
+>> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
+>>
+>> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+>> ---
+>>  arch/s390/pci/pci.c |   18 ++++++++++++++----
+>>  1 files changed, 14 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+>> index 2fa7b14..da5316e 100644
+>> --- a/arch/s390/pci/pci.c
+>> +++ b/arch/s390/pci/pci.c
+>> @@ -358,7 +358,7 @@ static void zpci_irq_handler(struct airq_struct *airq)
+>>  	}
+>>  }
+>>
+>> -int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+>> +int zpci_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+>>  {
+>>  	struct zpci_dev *zdev = get_zdev(pdev);
+>>  	unsigned int hwirq, msi_vecs;
+>> @@ -434,7 +434,7 @@ out:
+>>  	return rc;
+>>  }
+>>
+>> -void arch_teardown_msi_irqs(struct pci_dev *pdev)
+>> +static void zpci_teardown_msi_irqs(struct pci_dev *pdev)
+>>  {
+>>  	struct zpci_dev *zdev = get_zdev(pdev);
+>>  	struct msi_desc *msi;
+>> @@ -448,9 +448,9 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+>>  	/* Release MSI interrupts */
+>>  	list_for_each_entry(msi, &pdev->msi_list, list) {
+>>  		if (msi->msi_attrib.is_msix)
+>> -			default_msix_mask_irq(msi, 1);
+>> +			__msix_mask_irq(msi, 1);
+>>  		else
+>> -			default_msi_mask_irq(msi, 1, 1);
+>> +			__msi_mask_irq(msi, 1, 1);
+> 
+> The default_msi_mask_irq to __msi_mask_irq renaming is hidden in your
+> patch "x86/xen/MSI: Eliminate arch_msix_mask_irq() and arch_msi_mask_irq()"
+> 
+> This means that between that patch and this one s390 will not compile.
+> Could you please move this hunk to the other patch or even make an extra
+> patch with the renaming. Other than that:
 
--corey
+Good catch. I will move this hunk into the patch "x86/xen/MSI: Eliminate arch_msix_mask_irq() and arch_msi_mask_irq()".
+
+> 
+> Acked-by: Sebastian Ott <sebott@linux.vnet.ibm.com>
 
 
-On 09/16/2014 04:45 PM, minyard@acm.org wrote:
-> From: Corey Minyard <cminyard@mvista.com>
->
-> The MIPS frame save code was just saving a few registers, enough to
-> do a backtrace if every function set up a frame.  However, this is
-> not working if you are using DWARF unwinding, because most of the
-> registers are wrong.  This was causing kdump backtraces to be short
-> or bogus.
->
-> So save all the registers.
->
-> Signed-off-by: Corey Minyard <cminyard@mvista.com>
-> ---
->  arch/mips/include/asm/stacktrace.h | 64 +++++++++++++++++++++++++++++---------
->  1 file changed, 50 insertions(+), 14 deletions(-)
->
-> diff --git a/arch/mips/include/asm/stacktrace.h b/arch/mips/include/asm/stacktrace.h
-> index 780ee2c..05a2195 100644
-> --- a/arch/mips/include/asm/stacktrace.h
-> +++ b/arch/mips/include/asm/stacktrace.h
-> @@ -2,6 +2,8 @@
->  #define _ASM_STACKTRACE_H
->  
->  #include <asm/ptrace.h>
-> +#include <asm/asm.h>
-> +#include <linux/stringify.h>
->  
->  #ifdef CONFIG_KALLSYMS
->  extern int raw_show_trace;
-> @@ -20,6 +22,14 @@ static inline unsigned long unwind_stack(struct task_struct *task,
->  }
->  #endif
->  
-> +#define STR_PTR_LA    __stringify(PTR_LA)
-> +#define STR_LONG_S    __stringify(LONG_S)
-> +#define STR_LONG_L    __stringify(LONG_L)
-> +#define STR_LONGSIZE  __stringify(LONGSIZE)
-> +
-> +#define STORE_ONE_REG(r) \
-> +    STR_LONG_S   " $" __stringify(r)",("STR_LONGSIZE"*"__stringify(r)")(%1)\n\t"
-> +
->  static __always_inline void prepare_frametrace(struct pt_regs *regs)
->  {
->  #ifndef CONFIG_KALLSYMS
-> @@ -32,21 +42,47 @@ static __always_inline void prepare_frametrace(struct pt_regs *regs)
->  	__asm__ __volatile__(
->  		".set push\n\t"
->  		".set noat\n\t"
-> -#ifdef CONFIG_64BIT
-> -		"1: dla $1, 1b\n\t"
-> -		"sd $1, %0\n\t"
-> -		"sd $29, %1\n\t"
-> -		"sd $31, %2\n\t"
-> -#else
-> -		"1: la $1, 1b\n\t"
-> -		"sw $1, %0\n\t"
-> -		"sw $29, %1\n\t"
-> -		"sw $31, %2\n\t"
-> -#endif
-> +		/* Store $1 so we can use it */
-> +		STR_LONG_S " $1,"STR_LONGSIZE"(%1)\n\t"
-> +		/* Store the PC */
-> +		"1: " STR_PTR_LA " $1, 1b\n\t"
-> +		STR_LONG_S " $1,%0\n\t"
-> +		STORE_ONE_REG(2)
-> +		STORE_ONE_REG(3)
-> +		STORE_ONE_REG(4)
-> +		STORE_ONE_REG(5)
-> +		STORE_ONE_REG(6)
-> +		STORE_ONE_REG(7)
-> +		STORE_ONE_REG(8)
-> +		STORE_ONE_REG(9)
-> +		STORE_ONE_REG(10)
-> +		STORE_ONE_REG(11)
-> +		STORE_ONE_REG(12)
-> +		STORE_ONE_REG(13)
-> +		STORE_ONE_REG(14)
-> +		STORE_ONE_REG(15)
-> +		STORE_ONE_REG(16)
-> +		STORE_ONE_REG(17)
-> +		STORE_ONE_REG(18)
-> +		STORE_ONE_REG(19)
-> +		STORE_ONE_REG(20)
-> +		STORE_ONE_REG(21)
-> +		STORE_ONE_REG(22)
-> +		STORE_ONE_REG(23)
-> +		STORE_ONE_REG(24)
-> +		STORE_ONE_REG(25)
-> +		STORE_ONE_REG(26)
-> +		STORE_ONE_REG(27)
-> +		STORE_ONE_REG(28)
-> +		STORE_ONE_REG(29)
-> +		STORE_ONE_REG(30)
-> +		STORE_ONE_REG(31)
-> +		/* Restore $1 */
-> +		STR_LONG_L " $1,(%1)\n\t"
->  		".set pop\n\t"
-> -		: "=m" (regs->cp0_epc),
-> -		"=m" (regs->regs[29]), "=m" (regs->regs[31])
-> -		: : "memory");
-> +		: "=m" (regs->cp0_epc)
-> +		: "r" (regs->regs)
-> +		: "memory");
->  }
->  
->  #endif /* _ASM_STACKTRACE_H */
+Thanks!
+Yijing.
+
+
+> 
+> Regards,
+> Sebastian
+> 
+>>  		irq_set_msi_desc(msi->irq, NULL);
+>>  		irq_free_desc(msi->irq);
+>>  		msi->msg.address_lo = 0;
+>> @@ -464,6 +464,16 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+>>  	airq_iv_free_bit(zpci_aisb_iv, zdev->aisb);
+>>  }
+>>
+>> +static struct msi_chip zpci_msi_chip = {
+>> +	.setup_irqs = zpci_setup_msi_irqs,
+>> +	.teardown_irqs = zpci_teardown_msi_irqs,
+>> +};
+>> +
+>> +struct msi_chip *arch_find_msi_chip(struct pci_dev *dev)
+>> +{
+>> +	return &zpci_msi_chip;
+>> +}
+>> +
+>>  static void zpci_map_resources(struct zpci_dev *zdev)
+>>  {
+>>  	struct pci_dev *pdev = zdev->pdev;
+>> -- 
+>> 1.7.1
+>>
+>>
+> 
+> 
+> .
+> 
+
+
+-- 
+Thanks!
+Yijing

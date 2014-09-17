@@ -1,54 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Sep 2014 19:14:47 +0200 (CEST)
-Received: from mail-vc0-f181.google.com ([209.85.220.181]:57968 "EHLO
-        mail-vc0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009158AbaIQROjiSiqT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Sep 2014 19:14:39 +0200
-Received: by mail-vc0-f181.google.com with SMTP id ij19so1579367vcb.26
-        for <linux-mips@linux-mips.org>; Wed, 17 Sep 2014 10:14:33 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Sep 2014 19:15:51 +0200 (CEST)
+Received: from mail-vc0-f182.google.com ([209.85.220.182]:52140 "EHLO
+        mail-vc0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009160AbaIQRPsmrVAr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Sep 2014 19:15:48 +0200
+Received: by mail-vc0-f182.google.com with SMTP id le20so1602660vcb.13
+        for <linux-mips@linux-mips.org>; Wed, 17 Sep 2014 10:15:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=/AWwzzlpRRUg9trFlHAVOxXAtBG72CkiZ7QYcsX014o=;
-        b=YWGuUu5HQuyO+Sf59AkTFKAs6at03C1QOq6hoFBSgZSWE7+tGuAGV9KEAQNhn78eYw
-         x+s9IavnR7c5tvmF3daQe3YdR4U2CJoMGdjXPeHVIMz8VXstSh5Mzbw6dK3tlAeZXQbz
-         cGdTdkxlcPIPpXNQvXGDU+vqMkQs5DifRCyU9lHmMdytcjl5Nu4nGRMaDkFx9cZ7tIeC
-         X3b/t4/FnpfZyQM6WsxYhP9uM9ueNXtFFCJlTRHPeIdbXr+EYUkgexIrtuy49Otg7bTZ
-         lExG0gB6aMVeQ/k4pgR0AuO6kUikChePdrn0Uy+Yic0nkdDyx5/O0VwEdi1q2MaZ9O9Q
-         1CyA==
+        bh=rDVQtr6WGZcLjnDGoZY45R0Tx5v0+f1BoPvh7rHop9I=;
+        b=Pn0Rw+UOsdLVbV3cSGaL9E3KqFSH/dldjGbRDFpxalJ00E5yg149SCrIek/7z7q4rg
+         teEsMhHhNiyayJOHrHq88avrsQ202h1o5DZS/QLXcFYmaRkSvjshSAv1xzPBxVCuxABJ
+         3nL1lfltAvjAi2WaooiyOkzM9vp8vWRqxIaghY7y3aHEhFtBWoshNynDzMc0CjHCBdcY
+         HAEpwhICi7H3TC4sjA+0UbUH72NWApeJsXbUBof21tYzJQfTY6/+y9OYGuA0lUGDwqg5
+         gjOT5x32wkArqcb6bvTnRWA8Du8iIALoxzLoFcitDY/0CnSCp3HQ7vZ0u9LTSWV/HzNQ
+         jmhQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=/AWwzzlpRRUg9trFlHAVOxXAtBG72CkiZ7QYcsX014o=;
-        b=Pueqme8LJe4tYTDvfNs7cWvU0EP+clVhMQeb5Xpgj3b+MLVpyP/Fj4Cs4TWp+OiYDd
-         MC6Z5UCjOO1Ok6FYmv/mPK7qgpeWSDKXCLt6ZyB8AS4aU41YZpyIMjyDw0UMcOt8hYFO
-         ZcJd8KfY4CQ5h0lZb0eenTYFrutD07VPR75SE=
+        bh=rDVQtr6WGZcLjnDGoZY45R0Tx5v0+f1BoPvh7rHop9I=;
+        b=X0ASTaVQW9cRnSp+T5mCVkel8u4i774YVuM6T7cfmw2pCcowzEqW9CtF4eXV1owIZy
+         MtjG2QqfOOxBeNDcXvykmWXXEe/GxuwSGGITR6DcCBAio9DSjsy4FadAtKpceNU6G3iT
+         lXzviINmbDFvc4TWOlNm0mAH7cBMMhr8NpY9I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=/AWwzzlpRRUg9trFlHAVOxXAtBG72CkiZ7QYcsX014o=;
-        b=i2UD/7FXA0kGlKTuSZ3bUdvmmIo5tPZIPEm4NKZPIBr2/LGX8l+GJ+k7wdk7GY2Oq8
-         02SYLxfBkxqP0rZfZw06cZJPzdcqk6L5Gxov1pvad2MkhX0VyWoRIyfXQDm7oRfzh9Ss
-         XdexEOn0/Ddehwqy4gWhErzbSoyKB1/KPEVWGfV8P7zFAGnEqKip+QUj0ePXDpdQaPwK
-         FQwdBzCxL++7ZXjkQ4gbJxRZ4BmlYGJ3MBBWMXAa2fTykp1qw3sjW688Ih7esFg8gr+T
-         O/FWva2bMUDAV+bmgaTFC5fl2+PortLiksQl1GGIeEhV3ieteg5oLRxc0tsnzzmlvk5M
-         ollA==
-X-Gm-Message-State: ALoCoQmoptvo8mVtxu6mb/Fjpc8Un+7/A1w39n6pTmi92ovLXkoG+IWJpWjJPpa7APrJ9F74COPw
+        bh=rDVQtr6WGZcLjnDGoZY45R0Tx5v0+f1BoPvh7rHop9I=;
+        b=O+Y7ArjB5JU+i3VX9i4Z/a5VIdYlAm5FPNgTFxyhEv7v/76dsCvOsK7KeN3oQQHcX8
+         Q3Geq16e1uNkRgRPLdeAs6hUoDS5mNoEw4pwTGCTKQWMXJKzg5jPmIRXQBSkxxJsE5ky
+         MOZAf6gvNyYa1FyVI2DYYtBeo3XA9OZ+Dp3BdmI2rUKs0nTSmGuauLYc7POm48CDOWQW
+         xs1l8Q0lezIqPTGcCAzKOSznkSJX93veNaviRSvycD+LBcRmheo7f/IJtMMWZe7fNPqP
+         5Lcj1nbKW1KYHdI0NXxzOLG/1X3I5xiH1AGXTpluCVifyKVdanpUt9oCXeUh7Zx5PNFY
+         NuTg==
+X-Gm-Message-State: ALoCoQmdlvSiT/o6DFAcWuJSXFyVbPEHvRxL1UWyu4BRCX1v9MzM8kHOQvSVB8r79jbnliU7Imj7
 MIME-Version: 1.0
-X-Received: by 10.220.49.10 with SMTP id t10mr36002040vcf.34.1410974073622;
- Wed, 17 Sep 2014 10:14:33 -0700 (PDT)
-Received: by 10.52.168.200 with HTTP; Wed, 17 Sep 2014 10:14:33 -0700 (PDT)
-In-Reply-To: <5419510A.3000300@imgtec.com>
+X-Received: by 10.53.6.132 with SMTP id cu4mr1564801vdd.62.1410974142699; Wed,
+ 17 Sep 2014 10:15:42 -0700 (PDT)
+Received: by 10.52.168.200 with HTTP; Wed, 17 Sep 2014 10:15:42 -0700 (PDT)
+In-Reply-To: <5419535C.9060802@imgtec.com>
 References: <1410825087-5497-1-git-send-email-abrestic@chromium.org>
-        <1410825087-5497-15-git-send-email-abrestic@chromium.org>
-        <5419510A.3000300@imgtec.com>
-Date:   Wed, 17 Sep 2014 10:14:33 -0700
-X-Google-Sender-Auth: ZLINl_FL1jgkLH9cnC9nizDFL0o
-Message-ID: <CAL1qeaHA3q+t53NAAzSuKPj26W4gYoOby8kiGhDNRHg5t8=eGw@mail.gmail.com>
-Subject: Re: [PATCH 14/24] irqchip: mips-gic: Implement generic
- irq_ack/irq_eoi callbacks
+        <1410825087-5497-21-git-send-email-abrestic@chromium.org>
+        <5419535C.9060802@imgtec.com>
+Date:   Wed, 17 Sep 2014 10:15:42 -0700
+X-Google-Sender-Auth: WN0DayVUoIyKXM2-60GE3urvhEo
+Message-ID: <CAL1qeaG8YoksatuKE--GALFnNkgrVJo8ayZMnfAFqrneRC=sAg@mail.gmail.com>
+Subject: Re: [PATCH 20/24] irqchip: mips-gic: Use separate edge/level irq_chips
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Qais Yousef <qais.yousef@imgtec.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -67,7 +66,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42665
+X-archive-position: 42666
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,136 +83,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Sep 17, 2014 at 2:14 AM, Qais Yousef <qais.yousef@imgtec.com> wrote:
-> Hi Andrew,
->
->
+On Wed, Sep 17, 2014 at 2:24 AM, Qais Yousef <qais.yousef@imgtec.com> wrote:
 > On 09/16/2014 12:51 AM, Andrew Bresticker wrote:
 >>
->> There's no need for platforms to have their own GIC irq_ack/irq_eoi
->> callbacks.  Move them to the GIC irqchip driver.
+>> GIC edge-triggered interrupts must be acknowledged by clearing the edge
+>> detector via a write to GIC_SH_WEDGE.  Create a separate edge-triggered
+>> irq_chip with the appropriate irq_ack() callback.  This also allows us
+>> to get rid of gic_irq_flags.
 >>
 >> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 >> ---
->>   arch/mips/include/asm/gic.h     |  2 --
->>   arch/mips/mti-malta/malta-int.c | 16 ----------------
->>   arch/mips/mti-sead3/sead3-int.c | 21 ---------------------
->>   drivers/irqchip/irq-mips-gic.c  | 15 ++++++++++++---
->>   4 files changed, 12 insertions(+), 42 deletions(-)
+>>   arch/mips/include/asm/gic.h    |  1 -
+>>   drivers/irqchip/irq-mips-gic.c | 38
+>> ++++++++++++++++++++++++--------------
+>>   2 files changed, 24 insertions(+), 15 deletions(-)
 >>
 >> diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
->> index 022d831..1bf7985 100644
+>> index 8d1e457..f245395 100644
 >> --- a/arch/mips/include/asm/gic.h
 >> +++ b/arch/mips/include/asm/gic.h
->> @@ -376,7 +376,5 @@ extern void gic_bind_eic_interrupt(int irq, int set);
->>   extern unsigned int gic_get_timer_pending(void);
->>   extern void gic_get_int_mask(unsigned long *dst, const unsigned long
->> *src);
->>   extern unsigned int gic_get_int(void);
->> -extern void gic_irq_ack(struct irq_data *d);
->> -extern void gic_finish_irq(struct irq_data *d);
->>   extern void gic_platform_init(int irqs, struct irq_chip
->> *irq_controller);
->>   #endif /* _ASM_GICREGS_H */
->> diff --git a/arch/mips/mti-malta/malta-int.c
->> b/arch/mips/mti-malta/malta-int.c
->> index 5c31208..b60adfd 100644
->> --- a/arch/mips/mti-malta/malta-int.c
->> +++ b/arch/mips/mti-malta/malta-int.c
->> @@ -715,22 +715,6 @@ int malta_be_handler(struct pt_regs *regs, int
->> is_fixup)
->>         return retval;
->>   }
->>   -void gic_irq_ack(struct irq_data *d)
->> -{
->> -       int irq = (d->irq - gic_irq_base);
->> -
->> -       GIC_CLR_INTR_MASK(irq);
->> -
->> -       if (gic_irq_flags[irq] & GIC_TRIG_EDGE)
->> -               GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), irq);
->> -}
->> -
->> -void gic_finish_irq(struct irq_data *d)
->> -{
->> -       /* Enable interrupts. */
->> -       GIC_SET_INTR_MASK(d->irq - gic_irq_base);
->> -}
->> -
->>   void __init gic_platform_init(int irqs, struct irq_chip *irq_controller)
->>   {
->>         int i;
->> diff --git a/arch/mips/mti-sead3/sead3-int.c
->> b/arch/mips/mti-sead3/sead3-int.c
->> index 9d5b5bd..03f9865 100644
->> --- a/arch/mips/mti-sead3/sead3-int.c
->> +++ b/arch/mips/mti-sead3/sead3-int.c
->> @@ -85,27 +85,6 @@ void __init arch_init_irq(void)
->>                         ARRAY_SIZE(gic_intr_map), MIPS_GIC_IRQ_BASE);
->>   }
->>   -void gic_irq_ack(struct irq_data *d)
->> -{
->> -       GIC_CLR_INTR_MASK(d->irq - gic_irq_base);
->> -}
->> -
->> -void gic_finish_irq(struct irq_data *d)
->> -{
->> -       unsigned int irq = (d->irq - gic_irq_base);
->> -       unsigned int i, irq_source;
->> -
->> -       /* Clear edge detectors. */
->> -       for (i = 0; i < gic_shared_intr_map[irq].num_shared_intr; i++) {
->> -               irq_source = gic_shared_intr_map[irq].intr_list[i];
->> -               if (gic_irq_flags[irq_source] & GIC_TRIG_EDGE)
->> -                       GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE),
->> irq_source);
->> -       }
->> -
->> -       /* Enable interrupts. */
->> -       GIC_SET_INTR_MASK(irq);
->> -}
->> -
->>   void __init gic_platform_init(int irqs, struct irq_chip *irq_controller)
->>   {
->>         int i;
+>> @@ -345,7 +345,6 @@
+>>   extern unsigned int gic_present;
+>>   extern unsigned int gic_frequency;
+>>   extern unsigned long _gic_base;
+>> -extern unsigned int gic_irq_flags[];
+>>   extern unsigned int gic_cpu_pin;
+>>     extern void gic_init(unsigned long gic_base_addr,
 >> diff --git a/drivers/irqchip/irq-mips-gic.c
 >> b/drivers/irqchip/irq-mips-gic.c
->> index 9e9d8b9..0dc2972 100644
+>> index c9ba102..6682a4e 100644
 >> --- a/drivers/irqchip/irq-mips-gic.c
 >> +++ b/drivers/irqchip/irq-mips-gic.c
->> @@ -237,6 +237,15 @@ static void gic_unmask_irq(struct irq_data *d)
->>         GIC_SET_INTR_MASK(d->irq - gic_irq_base);
+>> @@ -24,7 +24,6 @@
+>>   unsigned int gic_frequency;
+>>   unsigned int gic_present;
+>>   unsigned long _gic_base;
+>> -unsigned int gic_irq_flags[GIC_NUM_INTRS];
+>>   unsigned int gic_cpu_pin;
+>>     struct gic_pcpu_mask {
+>> @@ -44,6 +43,7 @@ static struct gic_pending_regs pending_regs[NR_CPUS];
+>>   static struct gic_intrmask_regs intrmask_regs[NR_CPUS];
+>>   static struct irq_domain *gic_irq_domain;
+>>   static int gic_shared_intrs;
+>> +static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
+>>     static void __gic_irq_dispatch(void);
+>>   @@ -228,11 +228,7 @@ static void gic_ack_irq(struct irq_data *d)
+>>   {
+>>         unsigned int irq = d->hwirq;
+>>   -     GIC_CLR_INTR_MASK(irq);
+>> -
+>> -       /* Clear edge detector */
+>> -       if (gic_irq_flags[irq] & GIC_TRIG_EDGE)
+>> -               GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), irq);
+>> +       GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), irq);
 >>   }
->>   +static void gic_ack_irq(struct irq_data *d)
->> +{
->> +       GIC_CLR_INTR_MASK(d->irq - gic_irq_base);
+>>     static int gic_set_type(struct irq_data *d, unsigned int type)
+>> @@ -275,11 +271,13 @@ static int gic_set_type(struct irq_data *d, unsigned
+>> int type)
+>>         }
+>>         if (is_edge) {
+>> -               gic_irq_flags[irq] |= GIC_TRIG_EDGE;
+>> -               __irq_set_handler_locked(d->irq, handle_edge_irq);
+>> +               __irq_set_chip_handler_name_locked(d->irq,
 >> +
->> +       /* Clear edge detector */
->> +       if (gic_irq_flags[d->irq - gic_irq_base] & GIC_TRIG_EDGE)
->> +               GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), d->irq -
->> gic_irq_base);
->> +}
+>> &gic_edge_irq_controller,
+>> +                                                  handle_edge_irq, NULL);
+>>         } else {
+>> -               gic_irq_flags[irq] &= ~GIC_TRIG_EDGE;
+>> -               __irq_set_handler_locked(d->irq, handle_level_irq);
+>> +               __irq_set_chip_handler_name_locked(d->irq,
 >> +
->>   #ifdef CONFIG_SMP
->>   static DEFINE_SPINLOCK(gic_lock);
->>   @@ -272,11 +281,11 @@ static int gic_set_affinity(struct irq_data *d,
+>> &gic_level_irq_controller,
+>> +                                                  handle_level_irq,
+>> NULL);
+>>         }
+>>         return 0;
+>> @@ -318,11 +316,23 @@ static int gic_set_affinity(struct irq_data *d,
 >> const struct cpumask *cpumask,
->>     static struct irq_chip gic_irq_controller = {
->>         .name                   =       "MIPS GIC",
->> -       .irq_ack                =       gic_irq_ack,
->> +       .irq_ack                =       gic_ack_irq,
->>         .irq_mask               =       gic_mask_irq,
->> -       .irq_mask_ack           =       gic_mask_irq,
->> +       .irq_mask_ack           =       gic_ack_irq,
->>         .irq_unmask             =       gic_unmask_irq,
->> -       .irq_eoi                =       gic_finish_irq,
->> +       .irq_eoi                =       gic_unmask_irq,
->>   #ifdef CONFIG_SMP
->>         .irq_set_affinity       =       gic_set_affinity,
+>>   }
 >>   #endif
+>>   -static struct irq_chip gic_irq_controller = {
+>> +static struct irq_chip gic_level_irq_controller = {
+>> +       .name                   =       "MIPS GIC",
+>> +       .irq_ack                =       gic_mask_irq,
+>> +       .irq_mask               =       gic_mask_irq,
+>> +       .irq_mask_ack           =       gic_mask_irq,
+>> +       .irq_unmask             =       gic_unmask_irq,
+>> +       .irq_eoi                =       gic_unmask_irq,
+>> +       .irq_set_type           =       gic_set_type,
+>> +#ifdef CONFIG_SMP
+>> +       .irq_set_affinity       =       gic_set_affinity,
+>> +#endif
+>> +};
+>> +
 >
 >
-> I'm no expert in irq_chip api but I think providing irq_mask_ack and irq_eoi
-> makes no sense to GIC and can be removed.
+> I don't think there's a need to provide irq_ack, irq_mask_ack and irq_eoi
+> here.
+>
+>> +static struct irq_chip gic_edge_irq_controller = {
+>>         .name                   =       "MIPS GIC",
+>>         .irq_ack                =       gic_ack_irq,
+>>         .irq_mask               =       gic_mask_irq,
+>> -       .irq_mask_ack           =       gic_ack_irq,
+>>         .irq_unmask             =       gic_unmask_irq,
+>>         .irq_eoi                =       gic_unmask_irq,
+>>         .irq_set_type           =       gic_set_type,
+>
+>
+> irq_eoi can be removed from here as well.
 
-Ok, yeah, I think both irq_mask_ack and irq_eoi can go away here.
+Right, I'll fix up both of these.

@@ -1,49 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 09:08:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47584 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 10:58:13 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:27232 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008535AbaIRHIqERnd2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2014 09:08:46 +0200
+        with ESMTP id S27007677AbaIRI6KRh9zW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2014 10:58:10 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 47779B601A77A;
-        Thu, 18 Sep 2014 08:08:37 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 31BC1E2393711;
+        Thu, 18 Sep 2014 09:58:01 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 18 Sep
+ 2014 09:58:03 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 18 Sep 2014 08:08:39 +0100
-Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 18 Sep 2014 09:58:03 +0100
+Received: from localhost (192.168.159.106) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 18 Sep
- 2014 08:08:38 +0100
-Message-ID: <541A84F6.20509@imgtec.com>
-Date:   Thu, 18 Sep 2014 08:08:38 +0100
-From:   Qais Yousef <qais.yousef@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
+ 2014 09:58:00 +0100
+Date:   Thu, 18 Sep 2014 09:57:56 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        <linux-mips@linux-mips.org>, <ddaney.cavm@gmail.com>
+Subject: Re: [PATCH v2 5/6] mips: use per-mm page to execute FP branch delay
+ slots
+Message-ID: <20140918085756.GU17248@pburton-laptop>
+References: <CAO_EM_k0Qp_VPEd2Q+WTJWsvE8cmyAuC780SwGfDxhTt_GzMeg@mail.gmail.com>
+ <20140704080641.GY804@pburton-laptop>
+ <20140704085246.GH13532@linux-mips.org>
+ <20140704090601.GZ804@pburton-laptop>
+ <20140704093809.GI13532@linux-mips.org>
+ <20140704113007.GA804@pburton-laptop>
+ <alpine.LFD.2.11.1409132359450.11957@eddie.linux-mips.org>
 MIME-Version: 1.0
-To:     Andrew Bresticker <abrestic@chromium.org>
-CC:     Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        "John Crispin" <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/24] MIPS GIC cleanup, part 1
-References: <1410825087-5497-1-git-send-email-abrestic@chromium.org>    <54196086.9030204@imgtec.com> <CAL1qeaGF2rZ3qRBwWa24-Jun1GB=-i2ibartqAS+z_U9G33Wdw@mail.gmail.com>
-In-Reply-To: <CAL1qeaGF2rZ3qRBwWa24-Jun1GB=-i2ibartqAS+z_U9G33Wdw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1409132359450.11957@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.159.106]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42671
+X-archive-position: 42672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,36 +58,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/17/2014 06:42 PM, Andrew Bresticker wrote:
-> On Wed, Sep 17, 2014 at 3:20 AM, Qais Yousef <qais.yousef@imgtec.com> wrote:
->> On 09/16/2014 12:51 AM, Andrew Bresticker wrote:
->>> The current MIPS GIC driver and the platform code using it are rather
->>> ugly and could use a good cleanup before adding device-tree support [0].
->>> This major issues addressed in this series are converting the GIC (and
->>> platforms using it) to use IRQ domains and properly mapping interrupts
->>> through the GIC instead of using it transparently.  For part 2 I plan
->>> on: updating the driver to use proper iomem accessors, cleaning up and
->>> moving the GIC clocksource driver to drivers/clocksource/, adding DT
->>> support, and possibly converting the GIC driver to use generic irqchip.
->>>
->>> Patches 1-16 are cleanups for the existing GIC driver and prepare
->>> platforms
->>> using it for the switch to IRQ domains and using the GIC in a
->>> non-transparent
->>> way.
->>>
->>> Patches 17-24 convert the GIC driver to use IRQ domains and updates the
->>> platforms using it to properly map GIC interrupts instead of using the
->>> static
->>> routing tables to make the GIC appear transparent.
->>>
->>> I've tested this series on Malta and, with additional patches, on the
->>> DT-enabled Danube platform.  Unfortunately I do not have SEAD-3 hardware,
->>> so that has only been compile tested.  Compile tested on all other
->>> affected
->>> architectures (ath79, ralink, lantiq).
->>
->> I boot tested this on sead3 without problems.
-> Thanks Qais!  Can I add your Tested-by for the series?
+On Sun, Sep 14, 2014 at 12:06:03AM +0100, Maciej W. Rozycki wrote:
+> On Fri, 4 Jul 2014, Paul Burton wrote:
+> 
+> > > > I'm in 2 minds about this - it sounds crazy but perhaps it's the most
+> > > > sane option available :)
+> > > 
+> > > Sanity is overrated anyway ;-)
+> > 
+> > I had originally left this patch at the point I started considering
+> > implementing emulation for the whole ISA in the kernel, figuring I was
+> > going insane & should probably do something else for a while. Perhaps I
+> > shouldn't worry so much ;)
+> 
+>  One question: does this emulation handle PC-relative instructions placed 
+> in a branch delay slot correctly?  This only applies to microMIPS ADDIUPC 
+> at the moment I believe, but still that has to work correctly whether on 
+> FP hardware or emulated.
+> 
+>   Maciej
 
-Tested-and-reviewed-by: Qais Yousef <qais.yousef@imgtec.com>
+Hi Maciej,
+
+That's a good question, and no I don't believe the current dsemul code
+will handle that correctly. Perhaps that's another argument in favor of
+the full on emulator...
+
+Paul

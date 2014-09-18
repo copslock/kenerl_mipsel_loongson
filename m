@@ -1,51 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 14:58:27 +0200 (CEST)
-Received: from mail-oi0-f49.google.com ([209.85.218.49]:43470 "EHLO
-        mail-oi0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008608AbaIRM6ZduwkA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2014 14:58:25 +0200
-Received: by mail-oi0-f49.google.com with SMTP id x69so588834oia.22
-        for <linux-mips@linux-mips.org>; Thu, 18 Sep 2014 05:58:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=JsYLHOf0BqDYAaDAvVz9m3/1zGoq3JQVzh5toxHObQw=;
-        b=e0Qbi47z49rUfV6BUYDXx0s0SKm2BYDniC/vuKl29B/3v6dfpP4qLbmB0kKCtiV1ae
-         9moFaSSPvA+2je7ct7ymPwQlQFzx/KCLPgBoikLSGBEQbAt5Mn/kMZAphbf3du5Zg0B0
-         e42lnzkGVdr+bHW7h4udUDGoWcBEow78MoDUmz1/oaASlr7fVWMMdltuciKf2Mj8eqR2
-         +5Gj/pZAdl2VDuc+/uVlrYbTIfHT2dMVHmX5fqJTQTBb2dNiGg/3rcv0qLsQjoVWXJTt
-         Ca9JqbRCRXA9NGnCI9aBZrUQE3bp06Iw4Vi4w2fvar4/Hp3YU3RUzWs3zai4yNWrvYhj
-         Pqug==
-X-Gm-Message-State: ALoCoQlU1tyQBcHZl9iN+54xgi1OMRtTM6NvNL65DThHAV9BnMBmJCUGxiuGJMvX3rnoasEM8j/5
-X-Received: by 10.182.236.162 with SMTP id uv2mr4227012obc.12.1411045099057;
-        Thu, 18 Sep 2014 05:58:19 -0700 (PDT)
-Received: from t430.minyard.home (pool-173-57-152-84.dllstx.fios.verizon.net. [173.57.152.84])
-        by mx.google.com with ESMTPSA id j10sm9315275oef.13.2014.09.18.05.58.17
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 18 Sep 2014 05:58:18 -0700 (PDT)
-Message-ID: <541AD6E9.2010609@mvista.com>
-Date:   Thu, 18 Sep 2014 07:58:17 -0500
-From:   Corey Minyard <cminyard@mvista.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>, minyard@acm.org
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mips: Save all registers when saving the frame
-References: <1410903925-10744-1-git-send-email-minyard@acm.org> <20140918095813.GA9804@linux-mips.org>
-In-Reply-To: <20140918095813.GA9804@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <cminyard@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 16:08:36 +0200 (CEST)
+Received: from townshendhl-gw.townshend.cz ([193.165.72.158]:49007 "EHLO
+        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009196AbaIROId5knKl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2014 16:08:33 +0200
+Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.83)
+        (envelope-from <jslaby@suse.cz>)
+        id 1XUcNk-0001zG-5G; Thu, 18 Sep 2014 16:08:24 +0200
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     Jeffrey Deans <jeffrey.deans@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to the 3.12 stable tree] MIPS: GIC: Prevent array overrun
+Date:   Thu, 18 Sep 2014 16:07:52 +0200
+Message-Id: <1411049303-7278-59-git-send-email-jslaby@suse.cz>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1411049303-7278-1-git-send-email-jslaby@suse.cz>
+References: <1411049303-7278-1-git-send-email-jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42674
+X-archive-position: 42675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cminyard@mvista.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,45 +39,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/18/2014 04:58 AM, Ralf Baechle wrote:
-> On Tue, Sep 16, 2014 at 04:45:25PM -0500, minyard@acm.org wrote:
->
->> From: Corey Minyard <cminyard@mvista.com>
->>
->> The MIPS frame save code was just saving a few registers, enough to
->> do a backtrace if every function set up a frame.  However, this is
->> not working if you are using DWARF unwinding, because most of the
->> registers are wrong.  This was causing kdump backtraces to be short
->> or bogus.
->>
->> So save all the registers.
-> The stratey of partial and full stack frames was developed in '97 to bring
-> down the syscall overhead.  It certaily was very effective - it brought
-> down the syscall latency to the level of Alphas running at much higher
-> clock.
->
-> That certainly worked well back then for kernel 2.0 / 2.2.  But the syscall
-> code has become much more complex.  Since then support for 64 bit kernels,
-> two 32 bit ABIs running on a 64 bit kernels and numerous features that
-> changed the once simple syscall path have been implemented.  My gut feeling
-> is it might be worth to yank out the whole optimization to see how much
-> code complexity we get rid of in exchange for how much extra syscall
-> latency.
+From: Jeffrey Deans <jeffrey.deans@imgtec.com>
 
-I"m not sure I understand.  From what I can tell, this code is only
-called by
-things that print stack traces, kdb, and kexec/kdump.  So it shouldn't be in
-any normal syscall path.
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-This patch will currently only help kdump, but it will be necessary if
-anyone
-adds MIPS support for DWARF unwinding for stack traces.  And you'd have
-to fix some things in context switching, too, I think.
+===============
 
-From what I can tell the partial save for syscalls is a good idea.  You
-don't have
-to save half the registers and it doesn't affect tracebacks, kdump, or
-anything else
-like that.
+commit ffc8415afab20bd97754efae6aad1f67b531132b upstream.
 
--corey
+A GIC interrupt which is declared as having a GIC_MAP_TO_NMI_MSK
+mapping causes the cpu parameter to gic_setup_intr() to be increased
+to 32, causing memory corruption when pcpu_masks[] is written to again
+later in the function.
+
+Signed-off-by: Jeffrey Deans <jeffrey.deans@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/7375/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kernel/irq-gic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
+index 5b5ddb231f26..78f18436cdf2 100644
+--- a/arch/mips/kernel/irq-gic.c
++++ b/arch/mips/kernel/irq-gic.c
+@@ -255,11 +255,13 @@ static void __init gic_setup_intr(unsigned int intr, unsigned int cpu,
+ 
+ 	/* Setup Intr to Pin mapping */
+ 	if (pin & GIC_MAP_TO_NMI_MSK) {
++		int i;
++
+ 		GICWRITE(GIC_REG_ADDR(SHARED, GIC_SH_MAP_TO_PIN(intr)), pin);
+ 		/* FIXME: hack to route NMI to all cpu's */
+-		for (cpu = 0; cpu < NR_CPUS; cpu += 32) {
++		for (i = 0; i < NR_CPUS; i += 32) {
+ 			GICWRITE(GIC_REG_ADDR(SHARED,
+-					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, cpu)),
++					  GIC_SH_MAP_TO_VPE_REG_OFF(intr, i)),
+ 				 0xffffffff);
+ 		}
+ 	} else {
+-- 
+2.1.0

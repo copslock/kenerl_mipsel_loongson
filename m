@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 23:51:41 +0200 (CEST)
-Received: from mail-oa0-f73.google.com ([209.85.219.73]:34065 "EHLO
-        mail-oa0-f73.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009259AbaIRVruehszv (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 23:52:01 +0200 (CEST)
+Received: from mail-pa0-f74.google.com ([209.85.220.74]:41946 "EHLO
+        mail-pa0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009251AbaIRVruOFeJl (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2014 23:47:50 +0200
-Received: by mail-oa0-f73.google.com with SMTP id eb12so181830oac.2
-        for <linux-mips@linux-mips.org>; Thu, 18 Sep 2014 14:47:44 -0700 (PDT)
+Received: by mail-pa0-f74.google.com with SMTP id lj1so498184pab.1
+        for <linux-mips@linux-mips.org>; Thu, 18 Sep 2014 14:47:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=q1mk4ftdWvy9bNFv0myF9CagmQLFcl9QzaHSa+tLfFM=;
-        b=bdmucQhED/5139wDW2uJ3IC0LXa7Hbmq+oF5Soc+TbB2JnnQrf293BhadVuTOkRnGG
-         MyiOTNtWU/VZ1bAVtHzBfaOzqYTboxwU1HAxItoY7zvXlTycLp6p86on9ANWEeTAMSt/
-         ose7YBF9Ifd5Es9aFfG90qB9YAa8qq+vcmn6UP6z3XKczvfw/PDE/u1hrqThQH7wrpX1
-         pSjR2lcXSqB5lQMeG4fdT4iwYz+hVIgyI4C9NmihHvOo/ot+A5aCM1eUxTo+2bAk36SQ
-         ZqLpqqh9oh4GTnQYexiLYhxhkuLH8QmrgnPHfnMYo8sU6CIAA3y+lgCC9BKZIbA11OKN
-         KZGA==
-X-Gm-Message-State: ALoCoQlhD8qs5/7YqhCtCa/ouZiZxIYkXggeqpqk1DY/mMJYGOgshqhGsx36lsmBuO2eEtJzljCU
-X-Received: by 10.182.213.105 with SMTP id nr9mr1217968obc.36.1411076864714;
-        Thu, 18 Sep 2014 14:47:44 -0700 (PDT)
+        bh=mlDo+FMBH5t4u3Tv0QmFECO8MNp1w6qVRV9vNUlXIzs=;
+        b=R/oC0nDBAYnAHI021le+J3WXT4FQCtvLwF6TUOR+kJn+ryZ8mINbtbCOVrvhpHh3nS
+         XGPLjZ6Z6zFI/SMYAIYiJsomXdnEWIqp6Bmv/Y+0djjGJ4e/3yXjQ2uw/vt2k0L9olBJ
+         Xhg9x2hsGpmiKMb9S5W7YsQAxG0IhOLzLGM5xhWgUlRkvaQXvnGNspzBs6RJRJMi3vu5
+         60dExhbxAmIphmKmg7kuVZ+nGgFKzbc5E0zHRgodE26CYmY5JXM1+Tlqr6CTgLscllls
+         dE5PwEhq7yV0sr3/78Kv1w1HJlBEDq/6HSvrdnPdlelbZUpY8kwZDcMBCPh7g3XWBzDR
+         fgUw==
+X-Gm-Message-State: ALoCoQmw1SjNgdgxpnVRbn8j8fepeb4AqRWtEyQnTdX5TehAQ4bHDFWTlzdtbjGxQMiLHJ4zcuU+
+X-Received: by 10.67.4.231 with SMTP id ch7mr5866462pad.46.1411076862483;
+        Thu, 18 Sep 2014 14:47:42 -0700 (PDT)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id l45si4220yha.2.2014.09.18.14.47.43
+        by gmr-mx.google.com with ESMTPS id n24si1754yha.6.2014.09.18.14.47.41
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Sep 2014 14:47:44 -0700 (PDT)
+        Thu, 18 Sep 2014 14:47:42 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id lBwURzVy.5; Thu, 18 Sep 2014 14:47:44 -0700
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id xE8T9pn4.3; Thu, 18 Sep 2014 14:47:42 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 8716E220D1A; Thu, 18 Sep 2014 14:47:43 -0700 (PDT)
+        id 45586220B91; Thu, 18 Sep 2014 14:47:41 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -41,9 +41,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         John Crispin <blogic@openwrt.org>,
         David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V2 17/24] irqchip: mips-gic: Use IRQ domains
-Date:   Thu, 18 Sep 2014 14:47:23 -0700
-Message-Id: <1411076851-28242-18-git-send-email-abrestic@chromium.org>
+Subject: [PATCH V2 13/24] MIPS: Move GIC to drivers/irqchip/
+Date:   Thu, 18 Sep 2014 14:47:19 -0700
+Message-Id: <1411076851-28242-14-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1411076851-28242-1-git-send-email-abrestic@chromium.org>
 References: <1411076851-28242-1-git-send-email-abrestic@chromium.org>
@@ -51,7 +51,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42693
+X-archive-position: 42694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,184 +68,189 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use a simple IRQ domain for the MIPS GIC.  Remove the gic_platform_init
-callback as it's no longer necessary for it to set the irqchip.
+Move GIC irqchip support to drivers/irqchip/ and rename the Kconfig
+option from IRQ_GIC to MIPS_GIC to avoid confusion with the ARM GIC.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 Acked-by: Jason Cooper <jason@lakedaemon.net>
 Reviewed-by: Qais Yousef <qais.yousef@imgtec.com>
 Tested-by: Qais Yousef <qais.yousef@imgtec.com>
 ---
-Changes from v1:
- - hold spinlock across gic_irq_domain_map because of r-m-w ops
+No changes from v1.
 ---
- arch/mips/include/asm/gic.h     |  1 -
- arch/mips/mti-malta/malta-int.c |  8 -------
- arch/mips/mti-sead3/sead3-int.c | 15 -------------
- drivers/irqchip/irq-mips-gic.c  | 48 ++++++++++++++++++++++++++++++++++-------
- 4 files changed, 40 insertions(+), 32 deletions(-)
+ arch/mips/Kconfig                                            | 10 +++-------
+ arch/mips/kernel/Makefile                                    |  1 -
+ arch/mips/kernel/cevt-r4k.c                                  |  2 +-
+ arch/mips/kernel/smp-mt.c                                    |  4 ++--
+ arch/mips/mti-malta/malta-time.c                             | 10 +++++-----
+ drivers/irqchip/Kconfig                                      |  4 ++++
+ drivers/irqchip/Makefile                                     |  1 +
+ arch/mips/kernel/irq-gic.c => drivers/irqchip/irq-mips-gic.c |  0
+ 8 files changed, 16 insertions(+), 16 deletions(-)
+ rename arch/mips/kernel/irq-gic.c => drivers/irqchip/irq-mips-gic.c (100%)
 
-diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
-index 662b567..efcf4de 100644
---- a/arch/mips/include/asm/gic.h
-+++ b/arch/mips/include/asm/gic.h
-@@ -385,5 +385,4 @@ extern void gic_bind_eic_interrupt(int irq, int set);
- extern unsigned int gic_get_timer_pending(void);
- extern void gic_get_int_mask(unsigned long *dst, const unsigned long *src);
- extern unsigned int gic_get_int(void);
--extern void gic_platform_init(int irqs, struct irq_chip *irq_controller);
- #endif /* _ASM_GICREGS_H */
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index b60adfd..e56563c 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -714,11 +714,3 @@ int malta_be_handler(struct pt_regs *regs, int is_fixup)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index de72c92..a0720d0 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -319,7 +319,7 @@ config MIPS_MALTA
+ 	select GENERIC_ISA_DMA
+ 	select HAVE_PCSPKR_PLATFORM
+ 	select IRQ_CPU
+-	select IRQ_GIC
++	select MIPS_GIC
+ 	select HW_HAS_PCI
+ 	select I8253
+ 	select I8259
+@@ -360,7 +360,7 @@ config MIPS_SEAD3
+ 	select CPU_MIPSR2_IRQ_EI
+ 	select DMA_NONCOHERENT
+ 	select IRQ_CPU
+-	select IRQ_GIC
++	select MIPS_GIC
+ 	select LIBFDT
+ 	select MIPS_MSC
+ 	select SYS_HAS_CPU_MIPS32_R1
+@@ -1069,10 +1069,6 @@ config IRQ_TXX9
+ config IRQ_GT641XX
+ 	bool
  
- 	return retval;
- }
+-config IRQ_GIC
+-	select MIPS_CM
+-	bool
 -
--void __init gic_platform_init(int irqs, struct irq_chip *irq_controller)
--{
--	int i;
--
--	for (i = gic_irq_base; i < (gic_irq_base + irqs); i++)
--		irq_set_chip(i, irq_controller);
--}
-diff --git a/arch/mips/mti-sead3/sead3-int.c b/arch/mips/mti-sead3/sead3-int.c
-index 03f9865..8f36342 100644
---- a/arch/mips/mti-sead3/sead3-int.c
-+++ b/arch/mips/mti-sead3/sead3-int.c
-@@ -85,18 +85,3 @@ void __init arch_init_irq(void)
- 			ARRAY_SIZE(gic_intr_map), MIPS_GIC_IRQ_BASE);
- }
+ config PCI_GT64XXX_PCI0
+ 	bool
  
--void __init gic_platform_init(int irqs, struct irq_chip *irq_controller)
--{
--	int i;
--
--	/*
--	 * For non-EIC mode, we want to setup the GIC in pass-through
--	 * mode, as if the GIC didn't exist. Do not map any interrupts
--	 * for an external interrupt controller.
--	 */
--	if (!cpu_has_veic)
--		return;
--
--	for (i = gic_irq_base; i < (gic_irq_base + irqs); i++)
--		irq_set_chip_and_handler(i, irq_controller, handle_percpu_irq);
--}
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 5e12777..64dc5a9 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -44,6 +44,7 @@ static struct gic_pcpu_mask pcpu_masks[NR_CPUS];
- static struct gic_pending_regs pending_regs[NR_CPUS];
- static struct gic_intrmask_regs intrmask_regs[NR_CPUS];
- static DEFINE_SPINLOCK(gic_lock);
-+static struct irq_domain *gic_irq_domain;
+@@ -1886,7 +1882,7 @@ config FORCE_MAX_ZONEORDER
  
- #if defined(CONFIG_CSRC_GIC) || defined(CONFIG_CEVT_GIC)
- cycle_t gic_read_count(void)
-@@ -230,24 +231,26 @@ unsigned int gic_get_int(void)
+ config CEVT_GIC
+ 	bool "Use GIC global counter for clock events"
+-	depends on IRQ_GIC && !MIPS_SEAD3
++	depends on MIPS_GIC && !MIPS_SEAD3
+ 	help
+ 	  Use the GIC global counter for the clock events. The R4K clock
+ 	  event driver is always present, so if the platform ends up not
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 008a2fe..3982e51 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -68,7 +68,6 @@ obj-$(CONFIG_IRQ_CPU_RM7K)	+= irq-rm7000.o
+ obj-$(CONFIG_MIPS_MSC)		+= irq-msc01.o
+ obj-$(CONFIG_IRQ_TXX9)		+= irq_txx9.o
+ obj-$(CONFIG_IRQ_GT641XX)	+= irq-gt641xx.o
+-obj-$(CONFIG_IRQ_GIC)		+= irq-gic.o
  
- static void gic_mask_irq(struct irq_data *d)
+ obj-$(CONFIG_KPROBES)		+= kprobes.o
+ obj-$(CONFIG_32BIT)		+= scall32-o32.o
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index bc127e2..5b8f8e3 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -85,7 +85,7 @@ void mips_event_handler(struct clock_event_device *dev)
+  */
+ static int c0_compare_int_pending(void)
  {
--	GIC_CLR_INTR_MASK(d->irq - gic_irq_base);
-+	GIC_CLR_INTR_MASK(d->hwirq);
- }
- 
- static void gic_unmask_irq(struct irq_data *d)
- {
--	GIC_SET_INTR_MASK(d->irq - gic_irq_base);
-+	GIC_SET_INTR_MASK(d->hwirq);
- }
- 
- static void gic_ack_irq(struct irq_data *d)
- {
-+	unsigned int irq = d->hwirq;
-+
- 	/* Clear edge detector */
--	if (gic_irq_flags[d->irq - gic_irq_base] & GIC_TRIG_EDGE)
--		GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), d->irq - gic_irq_base);
-+	if (gic_irq_flags[irq] & GIC_TRIG_EDGE)
-+		GICWRITE(GIC_REG(SHARED, GIC_SH_WEDGE), irq);
- }
- 
- static int gic_set_type(struct irq_data *d, unsigned int type)
- {
--	unsigned int irq = d->irq - gic_irq_base;
-+	unsigned int irq = d->hwirq;
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	if (cpu_has_veic)
+ 		return gic_get_timer_pending();
+ #endif
+diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
+index 21f23ad..d60475f 100644
+--- a/arch/mips/kernel/smp-mt.c
++++ b/arch/mips/kernel/smp-mt.c
+@@ -119,7 +119,7 @@ static void vsmp_send_ipi_single(int cpu, unsigned int action)
  	unsigned long flags;
- 	bool is_edge;
+ 	int vpflags;
  
-@@ -302,7 +305,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 			    bool force)
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	if (gic_present) {
+ 		gic_send_ipi_single(cpu, action);
+ 		return;
+@@ -158,7 +158,7 @@ static void vsmp_send_ipi_mask(const struct cpumask *mask, unsigned int action)
+ 
+ static void vsmp_init_secondary(void)
  {
--	unsigned int irq = (d->irq - gic_irq_base);
-+	unsigned int irq = d->hwirq;
- 	cpumask_t	tmp = CPU_MASK_NONE;
- 	unsigned long	flags;
- 	int		i;
-@@ -345,6 +348,7 @@ static void __init gic_setup_intr(unsigned int intr, unsigned int cpu,
- 	unsigned int flags)
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	/* This is Malta specific: IPI,performance and timer interrupts */
+ 	if (gic_present)
+ 		change_c0_status(ST0_IM, STATUSF_IP3 | STATUSF_IP4 |
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index a4e035c..17cfc8a 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -70,7 +70,7 @@ static void __init estimate_frequencies(void)
  {
- 	struct gic_shared_intr_map *map_ptr;
-+	int i;
+ 	unsigned long flags;
+ 	unsigned int count, start;
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	unsigned int giccount = 0, gicstart = 0;
+ #endif
  
- 	/* Setup Intr to Pin mapping */
- 	if (pin & GIC_MAP_TO_NMI_MSK) {
-@@ -382,6 +386,8 @@ static void __init gic_setup_intr(unsigned int intr, unsigned int cpu,
- 	GIC_CLR_INTR_MASK(intr);
+@@ -87,7 +87,7 @@ static void __init estimate_frequencies(void)
  
- 	/* Initialise per-cpu Interrupt software masks */
-+	for (i = 0; i < NR_CPUS; i++)
-+		clear_bit(intr, pcpu_masks[i].pcpu_mask);
- 	set_bit(intr, pcpu_masks[cpu].pcpu_mask);
+ 	/* Initialize counters. */
+ 	start = read_c0_count();
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	if (gic_present)
+ 		GICREAD(GIC_REG(SHARED, GIC_SH_COUNTER_31_00), gicstart);
+ #endif
+@@ -97,7 +97,7 @@ static void __init estimate_frequencies(void)
+ 	while (!(CMOS_READ(RTC_REG_A) & RTC_UIP));
  
- 	if ((flags & GIC_FLAG_TRANSPARENT) && (cpu_has_veic == 0))
-@@ -433,6 +439,29 @@ static void __init gic_basic_init(int numintrs, int numvpes,
- 	vpe_local_setup(numvpes);
- }
+ 	count = read_c0_count();
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	if (gic_present)
+ 		GICREAD(GIC_REG(SHARED, GIC_SH_COUNTER_31_00), giccount);
+ #endif
+@@ -107,7 +107,7 @@ static void __init estimate_frequencies(void)
+ 	count -= start;
+ 	mips_hpt_frequency = count;
  
-+static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
-+			      irq_hw_number_t hw)
-+{
-+	unsigned long flags;
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	if (gic_present) {
+ 		giccount -= gicstart;
+ 		gic_frequency = giccount;
+@@ -189,7 +189,7 @@ void __init plat_time_init(void)
+ 	setup_pit_timer();
+ #endif
+ 
+-#ifdef CONFIG_IRQ_GIC
++#ifdef CONFIG_MIPS_GIC
+ 	if (gic_present) {
+ 		freq = freqround(gic_frequency, 5000);
+ 		printk("GIC frequency %d.%02d MHz\n", freq/1000000,
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index b8632bf..ddacccf 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -113,3 +113,7 @@ config IRQ_CROSSBAR
+ 	  The primary irqchip invokes the crossbar's callback which inturn allocates
+ 	  a free irq and configures the IP. Thus the peripheral interrupts are
+ 	  routed to one of the free irqchip interrupt lines.
 +
-+	irq_set_chip_and_handler(virq, &gic_irq_controller, handle_level_irq);
-+
-+	spin_lock_irqsave(&gic_lock, flags);
-+	GICWRITE(GIC_REG_ADDR(SHARED, GIC_SH_MAP_TO_PIN(hw)),
-+		 GIC_MAP_TO_PIN_MSK | 0);
-+	/* Map to VPE 0 by default */
-+	GIC_SH_MAP_TO_VPE_SMASK(hw, 0);
-+	set_bit(hw, pcpu_masks[0].pcpu_mask);
-+	spin_unlock_irqrestore(&gic_lock, flags);
-+
-+	return 0;
-+}
-+
-+static struct irq_domain_ops gic_irq_domain_ops = {
-+	.map = gic_irq_domain_map,
-+	.xlate = irq_domain_xlate_twocell,
-+};
-+
- void __init gic_init(unsigned long gic_base_addr,
- 		     unsigned long gic_addrspace_size,
- 		     struct gic_intr_map *intr_map, unsigned int intr_map_size,
-@@ -454,7 +483,10 @@ void __init gic_init(unsigned long gic_base_addr,
- 		  GIC_SH_CONFIG_NUMVPES_SHF;
- 	numvpes = numvpes + 1;
- 
--	gic_basic_init(numintrs, numvpes, intr_map, intr_map_size);
-+	gic_irq_domain = irq_domain_add_simple(NULL, GIC_NUM_INTRS, irqbase,
-+					       &gic_irq_domain_ops, NULL);
-+	if (!gic_irq_domain)
-+		panic("Failed to add GIC IRQ domain");
- 
--	gic_platform_init(numintrs, &gic_irq_controller);
-+	gic_basic_init(numintrs, numvpes, intr_map, intr_map_size);
- }
++config MIPS_GIC
++	bool
++	select MIPS_CM
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index 73052ba..fd47e0d 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -34,3 +34,4 @@ obj-$(CONFIG_XTENSA)			+= irq-xtensa-pic.o
+ obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
+ obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
+ obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o
++obj-$(CONFIG_MIPS_GIC)			+= irq-mips-gic.o
+diff --git a/arch/mips/kernel/irq-gic.c b/drivers/irqchip/irq-mips-gic.c
+similarity index 100%
+rename from arch/mips/kernel/irq-gic.c
+rename to drivers/irqchip/irq-mips-gic.c
 -- 
 2.1.0.rc2.206.gedb03e5

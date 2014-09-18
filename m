@@ -1,51 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 10:58:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27232 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007677AbaIRI6KRh9zW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2014 10:58:10 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 31BC1E2393711;
-        Thu, 18 Sep 2014 09:58:01 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 18 Sep
- 2014 09:58:03 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 18 Sep 2014 09:58:03 +0100
-Received: from localhost (192.168.159.106) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 18 Sep
- 2014 09:58:00 +0100
-Date:   Thu, 18 Sep 2014 09:57:56 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Ed Swierk <eswierk@skyportsystems.com>,
-        <linux-mips@linux-mips.org>, <ddaney.cavm@gmail.com>
-Subject: Re: [PATCH v2 5/6] mips: use per-mm page to execute FP branch delay
- slots
-Message-ID: <20140918085756.GU17248@pburton-laptop>
-References: <CAO_EM_k0Qp_VPEd2Q+WTJWsvE8cmyAuC780SwGfDxhTt_GzMeg@mail.gmail.com>
- <20140704080641.GY804@pburton-laptop>
- <20140704085246.GH13532@linux-mips.org>
- <20140704090601.GZ804@pburton-laptop>
- <20140704093809.GI13532@linux-mips.org>
- <20140704113007.GA804@pburton-laptop>
- <alpine.LFD.2.11.1409132359450.11957@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 11:58:20 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51296 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008584AbaIRJ6RsGPXa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Sep 2014 11:58:17 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s8I9wEEl010052;
+        Thu, 18 Sep 2014 11:58:14 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s8I9wD0G010051;
+        Thu, 18 Sep 2014 11:58:13 +0200
+Date:   Thu, 18 Sep 2014 11:58:13 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     minyard@acm.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Corey Minyard <cminyard@mvista.com>
+Subject: Re: [PATCH] mips: Save all registers when saving the frame
+Message-ID: <20140918095813.GA9804@linux-mips.org>
+References: <1410903925-10744-1-git-send-email-minyard@acm.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1409132359450.11957@eddie.linux-mips.org>
+In-Reply-To: <1410903925-10744-1-git-send-email-minyard@acm.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.159.106]
-Return-Path: <Paul.Burton@imgtec.com>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42672
+X-archive-position: 42673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,30 +43,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Sep 14, 2014 at 12:06:03AM +0100, Maciej W. Rozycki wrote:
-> On Fri, 4 Jul 2014, Paul Burton wrote:
-> 
-> > > > I'm in 2 minds about this - it sounds crazy but perhaps it's the most
-> > > > sane option available :)
-> > > 
-> > > Sanity is overrated anyway ;-)
-> > 
-> > I had originally left this patch at the point I started considering
-> > implementing emulation for the whole ISA in the kernel, figuring I was
-> > going insane & should probably do something else for a while. Perhaps I
-> > shouldn't worry so much ;)
-> 
->  One question: does this emulation handle PC-relative instructions placed 
-> in a branch delay slot correctly?  This only applies to microMIPS ADDIUPC 
-> at the moment I believe, but still that has to work correctly whether on 
-> FP hardware or emulated.
-> 
->   Maciej
+On Tue, Sep 16, 2014 at 04:45:25PM -0500, minyard@acm.org wrote:
 
-Hi Maciej,
+> From: Corey Minyard <cminyard@mvista.com>
+> 
+> The MIPS frame save code was just saving a few registers, enough to
+> do a backtrace if every function set up a frame.  However, this is
+> not working if you are using DWARF unwinding, because most of the
+> registers are wrong.  This was causing kdump backtraces to be short
+> or bogus.
+> 
+> So save all the registers.
 
-That's a good question, and no I don't believe the current dsemul code
-will handle that correctly. Perhaps that's another argument in favor of
-the full on emulator...
+The stratey of partial and full stack frames was developed in '97 to bring
+down the syscall overhead.  It certaily was very effective - it brought
+down the syscall latency to the level of Alphas running at much higher
+clock.
 
-Paul
+That certainly worked well back then for kernel 2.0 / 2.2.  But the syscall
+code has become much more complex.  Since then support for 64 bit kernels,
+two 32 bit ABIs running on a 64 bit kernels and numerous features that
+changed the once simple syscall path have been implemented.  My gut feeling
+is it might be worth to yank out the whole optimization to see how much
+code complexity we get rid of in exchange for how much extra syscall
+latency.
+
+  Ralf

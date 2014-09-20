@@ -1,61 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2014 23:55:10 +0200 (CEST)
-Received: from mail-pa0-f74.google.com ([209.85.220.74]:50144 "EHLO
-        mail-pa0-f74.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009161AbaIRVyOxCKKe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2014 23:54:14 +0200
-Received: by mail-pa0-f74.google.com with SMTP id lj1so502819pab.1
-        for <linux-mips@linux-mips.org>; Thu, 18 Sep 2014 14:54:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=Ky4TlE3PKi3tD7VZVPmwF7ltn7Gk9JR7EWL1xbCbZho=;
-        b=QOv3C1NpBh7Mdk+LWulw8nRHQNk6mdjU4thmXzMkO1BPrgsZrJcaUTBDhI1vrIhlCR
-         C+XjgNe/zToDyVcM6OhNWPG8gFiI48stCv2v4c4GMwBViGl/sFKyhQBgrd4Ux5bveYIu
-         VC8lMUPUFBaztnLftFz14nrKcXcfPJpwWxUMM5x1lC9m5ukKuqWiEErkoPhupfv3cWiB
-         uUdhmLXysX2jrhhdO/YsEI0l0Mi0RjS3k3h0V8e3287/Md+rY9pRWF6VwOldDcJIzlrK
-         Dt3wuKIqySBWoJT6NHpK63HZdKzReDa2Oy5OL/VJSot6R1QV25R8L8AY+oioivjaTZUN
-         +9vw==
-X-Gm-Message-State: ALoCoQllIWszjAltVx8DOr34ZD3TIqSSyiwyKswtkrq3b4pIQjTRseTseK0KEyMEir9A8xmvIA31
-X-Received: by 10.68.204.97 with SMTP id kx1mr6681463pbc.7.1411077249455;
-        Thu, 18 Sep 2014 14:54:09 -0700 (PDT)
-Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id m14si1931yhm.7.2014.09.18.14.54.08
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Sep 2014 14:54:09 -0700 (PDT)
-Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id 2KAtvZBw.1; Thu, 18 Sep 2014 14:54:09 -0700
-Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id AB093220B91; Thu, 18 Sep 2014 14:47:49 -0700 (PDT)
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-Cc:     Andrew Bresticker <abrestic@chromium.org>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH V2 24/24] MIPS: sead3: Use generic plat_irq_dispatch
-Date:   Thu, 18 Sep 2014 14:47:30 -0700
-Message-Id: <1411076851-28242-25-git-send-email-abrestic@chromium.org>
-X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
-In-Reply-To: <1411076851-28242-1-git-send-email-abrestic@chromium.org>
-References: <1411076851-28242-1-git-send-email-abrestic@chromium.org>
-Return-Path: <abrestic@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2014 12:42:21 +0200 (CEST)
+Received: from www262.sakura.ne.jp ([202.181.97.72]:25652 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007509AbaITKmPvQrd6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2014 12:42:15 +0200
+Received: from fsav403.sakura.ne.jp (fsav403.sakura.ne.jp [133.242.250.102])
+        by www262.sakura.ne.jp (8.14.5/8.14.5) with ESMTP id s8KAeDEP001705;
+        Sat, 20 Sep 2014 19:40:13 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav403.sakura.ne.jp (F-Secure/virusgw_smtp/412/fsav403.sakura.ne.jp);
+ Sat, 20 Sep 2014 19:40:13 +0900 (JST)
+X-Virus-Status: clean(F-Secure/virusgw_smtp/412/fsav403.sakura.ne.jp)
+Received: from CLAMP (KD175108057186.ppp-bb.dion.ne.jp [175.108.57.186])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.14.5/8.14.5) with ESMTP id s8KAeCZn001699;
+        Sat, 20 Sep 2014 19:40:12 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+To:     keescook@chromium.org, linux-kernel@vger.kernel.org
+Cc:     james.l.morris@oracle.com, oleg@redhat.com, luto@amacapital.net,
+        drysdale@google.com, mtk.manpages@gmail.com, wad@chromium.org,
+        jln@chromium.org, linux-api@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: [PATCH 3.17-rc5] Fix confusing PFA_NO_NEW_PRIVS constant.
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+References: <201409192053.IHJ35462.JLOMOSOFFVtQFH@I-love.SAKURA.ne.jp>
+        <541D16EA.70407@huawei.com>
+In-Reply-To: <541D16EA.70407@huawei.com>
+Message-Id: <201409201940.AHG21834.LJOFFHSFQOtVMO@I-love.SAKURA.ne.jp>
+X-Mailer: Winbiff [Version 2.51 PL2]
+X-Accept-Language: ja,en,zh
+Date:   Sat, 20 Sep 2014 19:40:30 +0900
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <penguin-kernel@I-love.SAKURA.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42704
+X-archive-position: 42705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: penguin-kernel@I-love.SAKURA.ne.jp
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,55 +54,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The generic plat_irq_dispatch provided in irq_cpu.c is sufficient for
-dispatching interrupts on SEAD-3 in legacy and vectored interrupt modes.
+Can you apply below patch before new PFA_* are defined?
+Cgroups code might want to define PFA_SPREAD_PAGE as 1 and PFA_SPREAD_SLAB as 2.
+----------------------------------------
+>From 8543e68adb210142fa347d8bc9d83df0bb2c5291 Mon Sep 17 00:00:00 2001
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Date: Sat, 20 Sep 2014 19:24:23 +0900
+Subject: [PATCH 3.17-rc5] Fix confusing PFA_NO_NEW_PRIVS constant.
 
-Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-Reviewed-by: Qais Yousef <qais.yousef@imgtec.com>
-Tested-by: Qais Yousef <qais.yousef@imgtec.com>
----
-No changes from v1.
----
- arch/mips/mti-sead3/sead3-int.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+Commit 1d4457f99928 ("sched: move no_new_privs into new atomic flags")
+defined PFA_NO_NEW_PRIVS as hexadecimal value, but it is confusing
+because it is used as bit number. Redefine it as decimal bit number.
 
-diff --git a/arch/mips/mti-sead3/sead3-int.c b/arch/mips/mti-sead3/sead3-int.c
-index cb06cd9..69ae185 100644
---- a/arch/mips/mti-sead3/sead3-int.c
-+++ b/arch/mips/mti-sead3/sead3-int.c
-@@ -22,32 +22,11 @@
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+---
+ include/linux/sched.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 5c2c885..4557765 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1957,7 +1957,7 @@ static inline void memalloc_noio_restore(unsigned int flags)
+ }
  
- static unsigned long sead3_config_reg;
+ /* Per-process atomic flags. */
+-#define PFA_NO_NEW_PRIVS 0x00000001	/* May not gain new privileges. */
++#define PFA_NO_NEW_PRIVS 0	/* May not gain new privileges. */
  
--asmlinkage void plat_irq_dispatch(void)
--{
--	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
--	int irq;
--
--	irq = (fls(pending) - CAUSEB_IP - 1);
--	if (irq >= 0)
--		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
--	else
--		spurious_interrupt();
--}
--
- void __init arch_init_irq(void)
+ static inline bool task_no_new_privs(struct task_struct *p)
  {
--	int i;
--
--	if (!cpu_has_veic) {
-+	if (!cpu_has_veic)
- 		mips_cpu_irq_init();
- 
--		if (cpu_has_vint) {
--			/* install generic handler */
--			for (i = 0; i < 8; i++)
--				set_vi_handler(i, plat_irq_dispatch);
--		}
--	}
--
- 	sead3_config_reg = (unsigned long)ioremap_nocache(SEAD_CONFIG_BASE,
- 		SEAD_CONFIG_SIZE);
- 	gic_present = (REG32(sead3_config_reg) & SEAD_CONFIG_GIC_PRESENT_MSK) >>
 -- 
-2.1.0.rc2.206.gedb03e5
+1.7.1

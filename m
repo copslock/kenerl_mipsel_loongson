@@ -1,42 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2014 02:45:44 +0200 (CEST)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:37488 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009371AbaIUApmZv700 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Sep 2014 02:45:42 +0200
-Received: by mail-pa0-f45.google.com with SMTP id lj1so1495572pab.18
-        for <multiple recipients>; Sat, 20 Sep 2014 17:45:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2014 02:46:52 +0200 (CEST)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:61000 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009371AbaIUAqt4As1i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Sep 2014 02:46:49 +0200
+Received: by mail-pa0-f52.google.com with SMTP id hz1so2327270pad.11
+        for <multiple recipients>; Sat, 20 Sep 2014 17:46:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
         bh=2xxw1d19ojdTL9Tkjds9zmHgdA1bDZU7aJZCVsxYpLU=;
-        b=DCd9Dwjz8xINy9FiGdb6AAH761DKuOrw2LwZ5xVtK3XY8CGbhy97q80Af865atNUNf
-         sGxu1twmfk65JpXxTZmYE5ax/HOpM5utOuynThCNmvigyMDe5XpTVPJsL2Zbb2kXoP5C
-         qacjxHOXiYGwk21jiogHAs/z/0gRGGdCsUV/4RAcZciDfGol+Yyilq9dI/TJC+wQZr57
-         MpPAQO9zJerRgc5pOC9WWLfWdgoPjJiB7nL3ap1/KZY8ZubFlFotlsjwfL5zeTDBYFez
-         7GnOft8IyKlYMAy0TAslb4L+6f/zmnVbEys3itP5kEYXZsMkOlYcBAsVOKbKy8LbtCBb
-         1rXQ==
-X-Received: by 10.68.195.74 with SMTP id ic10mr12649783pbc.93.1411260335251;
-        Sat, 20 Sep 2014 17:45:35 -0700 (PDT)
+        b=0LyIPhA4+2IG9x7YS/oIvJH1WMaf1a1skm0PByyj3oBg/xDvSjbEBqKt0cByP3PHoh
+         o0ByGkS/pQRYYtsdLp4P3CPuzkKw3M0ib/7CKKnuO1QQ8Len2SUGfyn7sy+Ce9A1GvRp
+         5f/6G7WSdtqbjipnjPGzklmQC4R2oyv0fl3PULi5pOMkIjoXnWa/Nj4EmZMGHKDizqZl
+         qbBPB6gwI0/uARJEhOWDVeQHSQxbXlZPunAVh9/BGgiMA4EuCBG2xe0O+LxbbfW3yI9L
+         JhhrQ6iL+3aW69gDOSDhtq3PAEskGvqWGQjCGVb7+hr4SDw7aFPrBN+49rElIhn3NVcd
+         AZZg==
+X-Received: by 10.67.4.163 with SMTP id cf3mr11705692pad.92.1411260403761;
+        Sat, 20 Sep 2014 17:46:43 -0700 (PDT)
 Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by mx.google.com with ESMTPSA id na4sm5495256pdb.96.2014.09.20.17.45.34
+        by mx.google.com with ESMTPSA id f12sm5497034pdl.94.2014.09.20.17.46.43
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Sat, 20 Sep 2014 17:45:34 -0700 (PDT)
+        Sat, 20 Sep 2014 17:46:43 -0700 (PDT)
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
         "David S. Miller" <davem@davemloft.net>,
         Anish Bhatt <anish@chelsio.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>
 Subject: [RFC PATCH 00/11] next: mips: Fix default configurations
-Date:   Sat, 20 Sep 2014 17:45:19 -0700
-Message-Id: <1411260330-6716-1-git-send-email-linux@roeck-us.net>
+Date:   Sat, 20 Sep 2014 17:46:15 -0700
+Message-Id: <1411260386-6800-1-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42708
+X-archive-position: 42709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

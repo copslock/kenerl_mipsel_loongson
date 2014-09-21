@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2014 02:47:47 +0200 (CEST)
-Received: from mail-pd0-f175.google.com ([209.85.192.175]:63217 "EHLO
-        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009383AbaIUAq5cCnfC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Sep 2014 02:46:57 +0200
-Received: by mail-pd0-f175.google.com with SMTP id v10so1075837pde.34
-        for <multiple recipients>; Sat, 20 Sep 2014 17:46:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2014 02:48:04 +0200 (CEST)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:44989 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009384AbaIUArBJ00Jh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Sep 2014 02:47:01 +0200
+Received: by mail-pa0-f51.google.com with SMTP id eu11so629745pac.10
+        for <multiple recipients>; Sat, 20 Sep 2014 17:46:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=d9rXsrKjYcBE70mPbnChT/uEMFiaHsFkhxasMB+buAY=;
-        b=QV4HRNaCjTxfsjT3/nbnzbuATgyeQKjhDcZIBQoFbQRzhi+4YSVRGevQibvJGYIHI3
-         T8jrM6NlgE7VIwo4+SFa0yyPn0LEoiS7Qo2lpKAqm1BgWVVAo/0uMOouf1RwUlIIVmTE
-         7DBLMS3IDqPNe4tQlG4aZCqWh/bOokrDXPDX/zSBGiZ3higFBJQggkVKE5q+ZErta/EX
-         vL56agK/rMs8oY3eXT5HIfsqpNUsT09m8/fuqXn9FCFmsDWtSSQhcMoxvlEnpIPtlur4
-         J17GtdNdTSfU3R5/N2DHaWiA+AR9DYg4j830pw5vDZjm7U9p1+XZIz6EH9LvFSGvLOfI
-         LJ7A==
-X-Received: by 10.68.94.34 with SMTP id cz2mr12535199pbb.7.1411260411455;
-        Sat, 20 Sep 2014 17:46:51 -0700 (PDT)
+        bh=hrRCktwHdBmTmdgwf8IVG7O/S6FmccEixvIqHIYMnSg=;
+        b=b5GQYCO/NENaq7lrPqxh0oeWmDwH+JSyhHoLQYUmB6G4Z7Mr+3rEzp5VMsfwadHAjL
+         wKCgd3YWfPlJ0C52xQVBTrLiN0wRL3SGvhQryRxEq1VU8nhWV3zLJhJcLkd9qiUsF0v9
+         L9pYzM4RTjfujfeSLMCCgrxzSj1Weoy8xX86Q78EE2Vq9xQqUPCM7u/AjIMTZX3Io9m+
+         ev6yklZsgv7egfz+6WatVYN93R8618C2A4F4nA0S5De/VJHaSrjhX9BYjSRLcGYF+E6A
+         oBKPsE9xCrQQjR8RlVbPEAUTiDmWPIkuLcI20oVBf4RVxC+uoZ3X+sF73OwbwfvOMCUq
+         X7Rg==
+X-Received: by 10.68.69.41 with SMTP id b9mr10601849pbu.109.1411260413912;
+        Sat, 20 Sep 2014 17:46:53 -0700 (PDT)
 Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by mx.google.com with ESMTPSA id ri1sm5516248pdb.61.2014.09.20.17.46.50
+        by mx.google.com with ESMTPSA id hq5sm4906536pbc.21.2014.09.20.17.46.53
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Sat, 20 Sep 2014 17:46:50 -0700 (PDT)
+        Sat, 20 Sep 2014 17:46:53 -0700 (PDT)
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
@@ -29,9 +29,9 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Anish Bhatt <anish@chelsio.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         Guenter Roeck <linux@roeck-us.net>
-Subject: [RFC PATCH 03/11] next: mips: Fix jazz_defconfig
-Date:   Sat, 20 Sep 2014 17:46:18 -0700
-Message-Id: <1411260386-6800-4-git-send-email-linux@roeck-us.net>
+Subject: [RFC PATCH 04/11] next: mips: Fix loongson3_defconfig
+Date:   Sat, 20 Sep 2014 17:46:19 -0700
+Message-Id: <1411260386-6800-5-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1411260386-6800-1-git-send-email-linux@roeck-us.net>
 References: <1411260386-6800-1-git-send-email-linux@roeck-us.net>
@@ -39,7 +39,7 @@ Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42712
+X-archive-position: 42713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,187 +73,86 @@ The command sequence to create the new configuration is as follows.
 Fixes: 5d6be6a5d486 ('scsi_netlink : Make SCSI_NETLINK dependent on NET instead of selecting NET')
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/mips/configs/jazz_defconfig | 43 +++++-----------------------------------
- 1 file changed, 5 insertions(+), 38 deletions(-)
+ arch/mips/configs/loongson3_defconfig | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/configs/jazz_defconfig b/arch/mips/configs/jazz_defconfig
-index 2575302..c24896f 100644
---- a/arch/mips/configs/jazz_defconfig
-+++ b/arch/mips/configs/jazz_defconfig
-@@ -1,7 +1,6 @@
- CONFIG_MACH_JAZZ=y
- CONFIG_OLIVETTI_M700=y
- CONFIG_PREEMPT_VOLUNTARY=y
--CONFIG_EXPERIMENTAL=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_BSD_PROCESS_ACCT=y
-@@ -9,15 +8,14 @@ CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_RELAY=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_SYSCTL_SYSCALL is not set
- CONFIG_SLAB=y
- CONFIG_MODULES=y
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+index 4cb787f..5a73d17 100644
+--- a/arch/mips/configs/loongson3_defconfig
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -1,12 +1,7 @@
+ CONFIG_MACH_LOONGSON=y
+-CONFIG_SWIOTLB=y
+ CONFIG_LOONGSON_MACH3X=y
+-CONFIG_CPU_LOONGSON3=y
+-CONFIG_64BIT=y
+-CONFIG_PAGE_SIZE_16KB=y
+ CONFIG_KSM=y
+ CONFIG_SMP=y
+-CONFIG_NR_CPUS=4
+ CONFIG_HZ_256=y
+ CONFIG_PREEMPT=y
+ CONFIG_KEXEC=y
+@@ -42,12 +37,9 @@ CONFIG_MODULE_FORCE_LOAD=y
  CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODULE_FORCE_UNLOAD=y
  CONFIG_MODVERSIONS=y
-+CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=m
--CONFIG_PM=y
+-CONFIG_BLK_DEV_INTEGRITY=y
+ CONFIG_PARTITION_ADVANCED=y
+ CONFIG_IOSCHED_DEADLINE=m
+ CONFIG_CFQ_GROUP_IOSCHED=y
+-CONFIG_PCI=y
+-CONFIG_HT_PCI=y
+ CONFIG_PCIEPORTBUS=y
+ CONFIG_HOTPLUG_PCI_PCIE=y
+ # CONFIG_PCIEAER is not set
+@@ -59,6 +51,7 @@ CONFIG_MIPS32_COMPAT=y
+ CONFIG_MIPS32_O32=y
+ CONFIG_MIPS32_N32=y
+ CONFIG_PM_RUNTIME=y
 +CONFIG_NET=y
- CONFIG_PACKET=m
+ CONFIG_PACKET=y
  CONFIG_UNIX=y
- CONFIG_NET_KEY=m
-@@ -25,15 +23,12 @@ CONFIG_NET_KEY_MIGRATE=y
- CONFIG_INET=y
- CONFIG_IP_MULTICAST=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
--CONFIG_NET_IPGRE_BROADCAST=y
- CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
- CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_INET6_AH=m
-@@ -42,7 +37,6 @@ CONFIG_INET6_IPCOMP=m
- CONFIG_IPV6_TUNNEL=m
- CONFIG_NETWORK_SECMARK=y
- CONFIG_NETFILTER=y
--CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
-@@ -85,21 +79,12 @@ CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
- CONFIG_NETFILTER_XT_MATCH_STRING=m
- CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
- CONFIG_NF_CONNTRACK_IPV4=m
--CONFIG_IP_NF_QUEUE=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
+ CONFIG_XFRM_USER=y
+@@ -95,7 +88,6 @@ CONFIG_IP_NF_MATCH_ECN=m
  CONFIG_IP_NF_MATCH_TTL=m
  CONFIG_IP_NF_FILTER=m
  CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
 -CONFIG_IP_NF_TARGET_ULOG=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
--CONFIG_IP_NF_TARGET_NETMAP=m
--CONFIG_IP_NF_TARGET_REDIRECT=m
--CONFIG_NF_NAT_SNMP_BASIC=m
  CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_CLUSTERIP=m
  CONFIG_IP_NF_TARGET_ECN=m
-@@ -109,7 +94,6 @@ CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
- CONFIG_NF_CONNTRACK_IPV6=m
--CONFIG_IP6_NF_QUEUE=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
-@@ -120,7 +104,6 @@ CONFIG_IP6_NF_MATCH_IPV6HEADER=m
- CONFIG_IP6_NF_MATCH_MH=m
- CONFIG_IP6_NF_MATCH_RT=m
- CONFIG_IP6_NF_TARGET_HL=m
--CONFIG_IP6_NF_TARGET_LOG=m
- CONFIG_IP6_NF_FILTER=m
- CONFIG_IP6_NF_TARGET_REJECT=m
- CONFIG_IP6_NF_MANGLE=m
-@@ -145,7 +128,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_BRIDGE=m
- CONFIG_DECNET=m
- CONFIG_NET_SCHED=y
-@@ -235,10 +217,12 @@ CONFIG_DM_MIRROR=m
- CONFIG_DM_ZERO=m
- CONFIG_DM_MULTIPATH=m
- CONFIG_NETDEVICES=y
--CONFIG_DUMMY=m
- CONFIG_BONDING=m
-+CONFIG_DUMMY=m
- CONFIG_EQUALIZER=m
- CONFIG_TUN=m
-+CONFIG_MIPS_JAZZ_SONIC=y
-+CONFIG_NE2000=m
- CONFIG_PHYLIB=m
- CONFIG_MARVELL_PHY=m
- CONFIG_DAVICOM_PHY=m
-@@ -247,12 +231,6 @@ CONFIG_LXT_PHY=m
- CONFIG_CICADA_PHY=m
- CONFIG_VITESSE_PHY=m
- CONFIG_SMSC_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--CONFIG_MIPS_JAZZ_SONIC=y
--CONFIG_NET_ISA=y
--CONFIG_NE2000=m
--CONFIG_NET_PCI=y
- CONFIG_PLIP=m
- CONFIG_INPUT_FF_MEMLESS=m
- CONFIG_SERIO_PARKBD=m
-@@ -276,7 +254,6 @@ CONFIG_REISERFS_FS_POSIX_ACL=y
- CONFIG_REISERFS_FS_SECURITY=y
- CONFIG_XFS_FS=m
- CONFIG_XFS_QUOTA=y
--CONFIG_AUTOFS_FS=m
- CONFIG_AUTOFS4_FS=m
- CONFIG_FUSE_FS=m
- CONFIG_ISO9660_FS=m
-@@ -303,12 +280,8 @@ CONFIG_ROMFS_FS=m
- CONFIG_SYSV_FS=m
- CONFIG_UFS_FS=m
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
--CONFIG_RPCSEC_GSS_KRB5=m
--CONFIG_RPCSEC_GSS_SPKM3=m
--CONFIG_SMB_FS=m
- CONFIG_CIFS=m
- CONFIG_NCP_FS=m
- CONFIG_NCPFS_PACKET_SIGNING=y
-@@ -321,7 +294,6 @@ CONFIG_NCPFS_NLS=y
- CONFIG_NCPFS_EXTRAS=y
- CONFIG_CODA_FS=m
- CONFIG_AFS_FS=m
--CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_CODEPAGE_737=m
- CONFIG_NLS_CODEPAGE_775=m
-@@ -360,22 +332,17 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=m
--CONFIG_DLM=m
- CONFIG_KEYS_DEBUG_PROC_KEYS=y
- CONFIG_CRYPTO_NULL=m
--CONFIG_CRYPTO_ECB=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
--CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
--CONFIG_CRYPTO_ARC4=m
- CONFIG_CRYPTO_BLOWFISH=m
- CONFIG_CRYPTO_CAMELLIA=m
- CONFIG_CRYPTO_CAST6=m
+ CONFIG_IP_NF_TARGET_TTL=m
+@@ -124,7 +116,6 @@ CONFIG_BLK_DEV_SD=y
+ CONFIG_BLK_DEV_SR=y
+ CONFIG_CHR_DEV_SG=y
+ CONFIG_CHR_DEV_SCH=m
+-CONFIG_SCSI_MULTI_LUN=y
+ CONFIG_SCSI_CONSTANTS=y
+ CONFIG_SCSI_LOGGING=y
+ CONFIG_SCSI_SPI_ATTRS=m
+@@ -165,7 +156,6 @@ CONFIG_TUN=m
+ # CONFIG_NET_VENDOR_AMD is not set
+ # CONFIG_NET_VENDOR_ARC is not set
+ # CONFIG_NET_VENDOR_ATHEROS is not set
+-# CONFIG_NET_CADENCE is not set
+ # CONFIG_NET_VENDOR_BROADCOM is not set
+ # CONFIG_NET_VENDOR_BROCADE is not set
+ # CONFIG_NET_VENDOR_CHELSIO is not set
+@@ -242,6 +232,7 @@ CONFIG_HW_RANDOM=y
+ CONFIG_RAW_DRIVER=m
+ CONFIG_I2C_CHARDEV=y
+ CONFIG_I2C_PIIX4=y
++CONFIG_SPI=y
+ CONFIG_SENSORS_LM75=m
+ CONFIG_SENSORS_LM93=m
+ CONFIG_SENSORS_W83627HF=m
+@@ -251,7 +242,6 @@ CONFIG_MEDIA_USB_SUPPORT=y
+ CONFIG_USB_VIDEO_CLASS=m
+ CONFIG_DRM=y
+ CONFIG_DRM_RADEON=y
+-CONFIG_VIDEO_OUTPUT_CONTROL=y
+ CONFIG_FB_RADEON=y
+ CONFIG_LCD_CLASS_DEVICE=y
+ CONFIG_LCD_PLATFORM=m
 -- 
 1.9.1

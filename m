@@ -1,82 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2014 18:28:19 +0200 (CEST)
-Received: from mail-vc0-f180.google.com ([209.85.220.180]:35195 "EHLO
-        mail-vc0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008930AbaIVQ2Rd2PBt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2014 18:28:17 +0200
-Received: by mail-vc0-f180.google.com with SMTP id hq11so4100539vcb.25
-        for <linux-mips@linux-mips.org>; Mon, 22 Sep 2014 09:28:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2014 18:55:19 +0200 (CEST)
+Received: from mail-ie0-f176.google.com ([209.85.223.176]:48135 "EHLO
+        mail-ie0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008930AbaIVQzRMHRnt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2014 18:55:17 +0200
+Received: by mail-ie0-f176.google.com with SMTP id ar1so7874110iec.35
+        for <linux-mips@linux-mips.org>; Mon, 22 Sep 2014 09:55:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=eKqvqEIpyJshhMmIqmtWsIs27VRVhrO2BcZaJQ66QD8=;
-        b=m31L1oP63TmIaYILZ3tXdd7AzNtBLv8A7/A2aXdvAfqMUSPz78o8r4yXoNr6UtycgA
-         YM4bRQth2mv43pdbckTvgcei9DojdpGqYEhVqu6pJdbWkEsAWs0W6fwd1BjJDHRwtTSi
-         UlKAPfgQi/Tl96MLsGVSihzHn+VpXK6BWJC7fFerL8b6QpRl91YmmJvSCh7cilyIUUO0
-         fpDvUdTplDlcDMBuWSVDsqk88TQSA7VBGqotNcvTG4kdlqxdDqirmoPV1GOfdGTA+Q9w
-         4B7B+0td2qyhhschnTMaAbVjY9XN3Z0TQB3cZ3XgJm2OC5ICHTT/GUSjx67I2ock7Heg
-         014A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=eKqvqEIpyJshhMmIqmtWsIs27VRVhrO2BcZaJQ66QD8=;
-        b=bShWtqr544j8Ci7TTOnuxJuyHYPCWwGfCybI9AqJUAFwRR+MMHK3qpafditkzxTpiL
-         zBePnJdez+U64FR/AOFXhhYPZb8N31UKBCPRRnsD/qF9vM4QA6t6lQSMwGZCqb0l1KMd
-         LCyq01c/Ue8Ekyht9Zz8CN2GjyQvgB4pqVPF0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=eKqvqEIpyJshhMmIqmtWsIs27VRVhrO2BcZaJQ66QD8=;
-        b=f1tyHp9zaLPfEGqW6VRMN3rTqRHnlg3h7yaPMTuyHNXSFriF5URfZxu1tD5m6HwyWd
-         mHXbG2MAYo1bhUqtNfUuc49Xnh2kkRjdmu60Vf/8NzmQg1JCRBr58XfjXaamQA7cv6kl
-         nk8wSq/3lOLOBt3IVM1fu2dzl3N9iS3UusvQu2hgzLJ0g3bQJ3tt9vWpvqzS4mS16vRV
-         5a5YWoCn6xrwPY7lIScumelMPQ1ygHxjZwLW8RgVGp/eV0saH6vRv8wZ9ZbYZ+ZAQYri
-         lRL7H9wvYzo1jMxiNRdVa/TECHAIBCVfqtff2hWT/5v/H5uNXBDEDbJdjmpjwTyyyTgT
-         RItg==
-X-Gm-Message-State: ALoCoQkOUsfxuE8chE3ptlU8+n4kmjvxxo9xsSROFusTToAV97glnJDFkOVhakDoAjnHkK3MQSJm
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=splShu4W4fxwZKFJ/OHlWysUjeMcet6K14bvrCAs5BE=;
+        b=gWgvCTGeVQmOyP2Cs6ckyjniV5ZxMy//DgExNp/r4I2+DAL4wL0Z05fPEHbCITwoef
+         Et2CRdthIY9g0e60sMzjZnsIkMcYqkZlKc2D5em7AepefYiy1jIPiOJFWhZJXyrq6zBx
+         6j3C4QIs2K/CpiVyb6Iiec3hG2rE3t2bXomxgHqMUd8OENcLbvXzw1wlOwgfs0APkvT9
+         8PDB9+HnFMG22JZl3A0ssIXAnArEIS+sOjhzV+ug5OXiTiRhNKrISRPwkYFCniupBGx1
+         MQ9EH2EJAA3AroxwmDm9X9xZYWB/ShEa3AnyrFXgd2oH2yNX3NDvDfhaYlWvk6wt6vXi
+         CkQw==
+X-Received: by 10.50.138.194 with SMTP id qs2mr16122582igb.4.1411404910969;
+        Mon, 22 Sep 2014 09:55:10 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id e16sm9186923igz.8.2014.09.22.09.55.09
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 22 Sep 2014 09:55:10 -0700 (PDT)
+Message-ID: <5420546D.6050102@gmail.com>
+Date:   Mon, 22 Sep 2014 09:55:09 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-X-Received: by 10.52.178.98 with SMTP id cx2mr6365031vdc.62.1411403291332;
- Mon, 22 Sep 2014 09:28:11 -0700 (PDT)
-Received: by 10.52.168.200 with HTTP; Mon, 22 Sep 2014 09:28:11 -0700 (PDT)
-In-Reply-To: <CAL_JsqKGG3ei9=Od74VSL9Sm_=+vsW4U+WBgXmCEtK3iTDfJ0g@mail.gmail.com>
-References: <1409938218-9026-1-git-send-email-abrestic@chromium.org>
-        <1409938218-9026-11-git-send-email-abrestic@chromium.org>
-        <CAL_JsqKGG3ei9=Od74VSL9Sm_=+vsW4U+WBgXmCEtK3iTDfJ0g@mail.gmail.com>
-Date:   Mon, 22 Sep 2014 09:28:11 -0700
-X-Google-Sender-Auth: OTzuV_84x7IuDp-qUMHQdqXP6Zg
-Message-ID: <CAL1qeaGgBpkuGyxu_P9BNdHjncLA1pfPc-yE98UBj9Ot1koLrA@mail.gmail.com>
-Subject: Re: [PATCH v2 10/16] of: Add vendor prefix for MIPS Technologies, Inc.
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Rob Herring <robherring2@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+CC:     linux-mips@linux-mips.org, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] MIPS: ftrace.h: Fix the MCOUNT_INSN_SIZE definition
+References: <1411392779-9554-1-git-send-email-markos.chandras@imgtec.com> <1411392779-9554-2-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1411392779-9554-2-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42728
+X-archive-position: 42729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,30 +57,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 22, 2014 at 7:23 AM, Rob Herring <robherring2@gmail.com> wrote:
-> On Fri, Sep 5, 2014 at 12:30 PM, Andrew Bresticker
-> <abrestic@chromium.org> wrote:
->> Add the vendor prefix "mti" for MIPS Technologies, Inc.
->>
->> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
->> ---
->> New for v2.
->> ---
->>  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
->> index ac7269f..efa5a5b 100644
->> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
->> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
->> @@ -86,6 +86,7 @@ microchip     Microchip Technology Inc.
->>  mosaixtech     Mosaix Technologies, Inc.
->>  moxa   Moxa
->>  mpl    MPL AG
->> +mti    MIPS Technologies, Inc.
->
-> Why not mips as that is more common and the stock ticker.
+On 09/22/2014 06:32 AM, Markos Chandras wrote:
+> The MCOUNT_INSN_SIZE is meant to be used to denote the overall
+> size of the mcount() call. Since a jal instruction is used to
+> call mcount() the delay slot should be taken into consideration
+> as well.
+> This also replaces the MCOUNT_INSN_SIZE usage with the real size
+> of a single MIPS instruction since, as described above, the
+> MCOUNT_INSN_SIZE is used to denote the total overhead of the
+> mcount() call.
 
-"mti" is already in use, see
-Documentation/devicetree/bindings/mips/cpu_irq.txt,
-arch/mips/mti-sead3/sead3.dts, and arch/mips/ralink/dts/*.dtsi.
+Are you seeing errors with the existing code?  If so please state what 
+they are.
+
+By changing this, we can no longer atomically replace the instruction. 
+So I think shouldn't be changing this stuff unless there is a real bug 
+we are fixing.
+
+In conclusion: NAK unless the patch fixes a bug, in which case the 
+change log *must* state what the bug is, and how the patch addresses the 
+problem.
+
+David Daney
+
+
+>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>   arch/mips/include/asm/ftrace.h | 2 +-
+>   arch/mips/kernel/ftrace.c      | 4 +++-
+>   2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+> index 992aaba603b5..70d4a35fb560 100644
+> --- a/arch/mips/include/asm/ftrace.h
+> +++ b/arch/mips/include/asm/ftrace.h
+> @@ -13,7 +13,7 @@
+>   #ifdef CONFIG_FUNCTION_TRACER
+>
+>   #define MCOUNT_ADDR ((unsigned long)(_mcount))
+> -#define MCOUNT_INSN_SIZE 4		/* sizeof mcount call */
+> +#define MCOUNT_INSN_SIZE 8		/* sizeof mcount call + delay slot */
+>
+>   #ifndef __ASSEMBLY__
+>   extern void _mcount(void);
+> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+> index 937c54bc8ccc..211460d4617d 100644
+> --- a/arch/mips/kernel/ftrace.c
+> +++ b/arch/mips/kernel/ftrace.c
+> @@ -28,6 +28,8 @@
+>   #define MCOUNT_OFFSET_INSNS 4
+>   #endif
+>
+> +#define FTRACE_MIPS_INSN_SIZE 4 /* Size of single MIPS instruction */
+> +
+>   #ifdef CONFIG_DYNAMIC_FTRACE
+>
+>   /* Arch override because MIPS doesn't need to run this from stop_machine() */
+> @@ -395,7 +397,7 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+>   	 */
+>
+>   	insns = in_kernel_space(self_ra) ? 2 : MCOUNT_OFFSET_INSNS + 1;
+> -	trace.func = self_ra - (MCOUNT_INSN_SIZE * insns);
+> +	trace.func = self_ra - (FTRACE_MIPS_INSN_SIZE * insns);
+>
+>   	/* Only trace if the calling function expects to */
+>   	if (!ftrace_graph_entry(&trace)) {
+>

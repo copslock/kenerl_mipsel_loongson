@@ -1,36 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2014 20:26:51 +0200 (CEST)
-Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.225]:41878 "EHLO
-        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009370AbaIVS0tOYNoX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2014 20:26:49 +0200
-Received: from [67.246.153.56] ([67.246.153.56:50134] helo=gandalf.local.home)
-        by cdptpa-oedge02 (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
-        id 3D/9B-04172-3E960245; Mon, 22 Sep 2014 18:26:43 +0000
-Date:   Mon, 22 Sep 2014 14:26:42 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] MIPS: mcount: Fix selfpc address for static trace
-Message-ID: <20140922142642.7f70fb0f@gandalf.local.home>
-In-Reply-To: <1411392779-9554-3-git-send-email-markos.chandras@imgtec.com>
-References: <1411392779-9554-1-git-send-email-markos.chandras@imgtec.com>
-        <1411392779-9554-3-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: Claws Mail 3.10.1 (GTK+ 2.24.24; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-RR-Connecting-IP: 107.14.168.130:25
-X-Cloudmark-Score: 0
-Return-Path: <rostedt@goodmis.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2014 21:01:20 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.11.231]:44924 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009370AbaIVTBRpF2ek convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2014 21:01:17 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id C6F7A1402FB;
+        Mon, 22 Sep 2014 19:01:08 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id B5D4C1402FF; Mon, 22 Sep 2014 19:01:08 +0000 (UTC)
+Received: from galak-mac.qualcomm.com (rrcs-67-52-129-61.west.biz.rr.com [67.52.129.61])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: galak@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 86DE71402FB;
+        Mon, 22 Sep 2014 19:01:05 +0000 (UTC)
+Content-Type: text/plain; charset=windows-1252
+Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.6\))
+Subject: Re: [PATCH v2 10/16] of: Add vendor prefix for MIPS Technologies, Inc.
+From:   Kumar Gala <galak@codeaurora.org>
+In-Reply-To: <CAL1qeaGgBpkuGyxu_P9BNdHjncLA1pfPc-yE98UBj9Ot1koLrA@mail.gmail.com>
+Date:   Mon, 22 Sep 2014 14:01:03 -0500
+Cc:     Rob Herring <robherring2@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Jeffrey Deans <jeffrey.deans@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <1E0E7540-B04F-4E89-91F7-B6FAC3C5D889@codeaurora.org>
+References: <1409938218-9026-1-git-send-email-abrestic@chromium.org> <1409938218-9026-11-git-send-email-abrestic@chromium.org> <CAL_JsqKGG3ei9=Od74VSL9Sm_=+vsW4U+WBgXmCEtK3iTDfJ0g@mail.gmail.com> <CAL1qeaGgBpkuGyxu_P9BNdHjncLA1pfPc-yE98UBj9Ot1koLrA@mail.gmail.com>
+To:     Andrew Bresticker <abrestic@chromium.org>
+X-Mailer: Apple Mail (2.1878.6)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <galak@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42731
+X-archive-position: 42732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: galak@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,48 +64,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 22 Sep 2014 14:32:59 +0100
-Markos Chandras <markos.chandras@imgtec.com> wrote:
 
-> According to Documentation/trace/ftrace-design.txt, the selfpc
-> should be the return address minus the mcount overhead (8 bytes).
-> This brings static trace in line with the dynamic trace regarding
-> the selfpc argument to the tracing function.
+On Sep 22, 2014, at 11:28 AM, Andrew Bresticker <abrestic@chromium.org> wrote:
+
+> On Mon, Sep 22, 2014 at 7:23 AM, Rob Herring <robherring2@gmail.com> wrote:
+>> On Fri, Sep 5, 2014 at 12:30 PM, Andrew Bresticker
+>> <abrestic@chromium.org> wrote:
+>>> Add the vendor prefix "mti" for MIPS Technologies, Inc.
+>>> 
+>>> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+>>> ---
+>>> New for v2.
+>>> ---
+>>> Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+>>> 1 file changed, 1 insertion(+)
+>>> 
+>>> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+>>> index ac7269f..efa5a5b 100644
+>>> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
+>>> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+>>> @@ -86,6 +86,7 @@ microchip     Microchip Technology Inc.
+>>> mosaixtech     Mosaix Technologies, Inc.
+>>> moxa   Moxa
+>>> mpl    MPL AG
+>>> +mti    MIPS Technologies, Inc.
+>> 
+>> Why not mips as that is more common and the stock ticker.
 > 
-> This also removes the magic number '8' with the proper
-> MCOUNT_INSN_SIZE.
+> "mti" is already in use, see
+> Documentation/devicetree/bindings/mips/cpu_irq.txt,
+> arch/mips/mti-sead3/sead3.dts, and arch/mips/ralink/dts/*.dtsi.
 
-I could also update the generic code to handle delay slots.
+Isn’t mips already used as well:
 
--- Steve
+arch/mips/lantiq/dts/danube.dtsi:			compatible = "mips,mips24Kc";
+arch/mips/ralink/dts/mt7620a.dtsi:			compatible = "mips,mips24KEc";
+arch/mips/ralink/dts/rt2880.dtsi:			compatible = "mips,mips4KEc";
+arch/mips/ralink/dts/rt3050.dtsi:			compatible = "mips,mips24KEc";
+arch/mips/ralink/dts/rt3883.dtsi:
 
-> 
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
->  arch/mips/kernel/mcount.S | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-> index 2f7c734771f4..3af48b7c7a47 100644
-> --- a/arch/mips/kernel/mcount.S
-> +++ b/arch/mips/kernel/mcount.S
-> @@ -79,7 +79,7 @@ _mcount:
->  	PTR_S	MCOUNT_RA_ADDRESS_REG, PT_R12(sp)
->  #endif
->  
-> -	PTR_SUBU a0, ra, 8	/* arg1: self address */
-> +	PTR_SUBU a0, ra, MCOUNT_INSN_SIZE /* arg1: self address */
->  	PTR_LA   t1, _stext
->  	sltu     t2, a0, t1	/* t2 = (a0 < _stext) */
->  	PTR_LA   t1, _etext
-> @@ -138,7 +138,7 @@ NESTED(_mcount, PT_SIZE, ra)
->  static_trace:
->  	MCOUNT_SAVE_REGS
->  
-> -	move	a0, ra		/* arg1: self return address */
-> +	PTR_SUBU a0, ra, MCOUNT_INSN_SIZE	/* arg1: self address */
->  	jalr	t2		/* (1) call *ftrace_trace_function */
->  	 move	a1, AT		/* arg2: parent's return address */
->  
+- k
+
+-- 
+Employee of Qualcomm Innovation Center, Inc.
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

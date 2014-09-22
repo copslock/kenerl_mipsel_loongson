@@ -1,43 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2014 15:33:51 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8121 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009516AbaIVNdRefbbq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2014 15:33:17 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 50C63987E8DAD;
-        Mon, 22 Sep 2014 14:33:08 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 22 Sep
- 2014 14:33:10 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 22 Sep 2014 14:33:10 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.67) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 22 Sep 2014 14:33:09 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] MIPS: mcount: Fix selfpc address for static trace
-Date:   Mon, 22 Sep 2014 14:32:59 +0100
-Message-ID: <1411392779-9554-3-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1411392779-9554-1-git-send-email-markos.chandras@imgtec.com>
-References: <1411392779-9554-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2014 16:23:35 +0200 (CEST)
+Received: from mail-la0-f52.google.com ([209.85.215.52]:42344 "EHLO
+        mail-la0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009415AbaIVOXc1ysPk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2014 16:23:32 +0200
+Received: by mail-la0-f52.google.com with SMTP id gq15so6724302lab.25
+        for <multiple recipients>; Mon, 22 Sep 2014 07:23:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=Hq0JmXAZLGqf3MXCzmW/rSuimVsspT9nu3NPkyJNFYU=;
+        b=HgvMGAL6RIVvyF42I2C7BTTA5tAgdC987r7S3eMrMKEYaeNXX7Ju1YS5zTVIjZr+uh
+         e/cpSKynu9j3g4TPMrUkOJFje6Nn2yNNM/FIzJgzWxCSEMYBzP9j/gkLY1VsPb6y59RG
+         vv+wL1bXM9EP0+KVNPsw1nf8eejA3TkILY+YaPil+ACSGuJVLzWQf1YSnqB71elG5X8K
+         KU/s+/hd1mtXY6oItC6vivGDMfTJVC6IbsXMpKQ4ID3hiNuu34OVK3VRQD+dSHncXQCb
+         LSvzkX39yAoCYozbhf46GLNF14GVAxVcrku66/5AFRmplosmKXT4MPGTa8rZKB2kf09n
+         gwcg==
+X-Received: by 10.112.184.161 with SMTP id ev1mr3041906lbc.82.1411395806894;
+ Mon, 22 Sep 2014 07:23:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.67]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: by 10.112.11.233 with HTTP; Mon, 22 Sep 2014 07:23:06 -0700 (PDT)
+In-Reply-To: <1409938218-9026-11-git-send-email-abrestic@chromium.org>
+References: <1409938218-9026-1-git-send-email-abrestic@chromium.org> <1409938218-9026-11-git-send-email-abrestic@chromium.org>
+From:   Rob Herring <robherring2@gmail.com>
+Date:   Mon, 22 Sep 2014 09:23:06 -0500
+Message-ID: <CAL_JsqKGG3ei9=Od74VSL9Sm_=+vsW4U+WBgXmCEtK3iTDfJ0g@mail.gmail.com>
+Subject: Re: [PATCH v2 10/16] of: Add vendor prefix for MIPS Technologies, Inc.
+To:     Andrew Bresticker <abrestic@chromium.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Jeffrey Deans <jeffrey.deans@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42726
+X-archive-position: 42727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: robherring2@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,42 +66,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-According to Documentation/trace/ftrace-design.txt, the selfpc
-should be the return address minus the mcount overhead (8 bytes).
-This brings static trace in line with the dynamic trace regarding
-the selfpc argument to the tracing function.
+On Fri, Sep 5, 2014 at 12:30 PM, Andrew Bresticker
+<abrestic@chromium.org> wrote:
+> Add the vendor prefix "mti" for MIPS Technologies, Inc.
+>
+> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+> ---
+> New for v2.
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> index ac7269f..efa5a5b 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> @@ -86,6 +86,7 @@ microchip     Microchip Technology Inc.
+>  mosaixtech     Mosaix Technologies, Inc.
+>  moxa   Moxa
+>  mpl    MPL AG
+> +mti    MIPS Technologies, Inc.
 
-This also removes the magic number '8' with the proper
-MCOUNT_INSN_SIZE.
+Why not mips as that is more common and the stock ticker.
 
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/kernel/mcount.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 2f7c734771f4..3af48b7c7a47 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -79,7 +79,7 @@ _mcount:
- 	PTR_S	MCOUNT_RA_ADDRESS_REG, PT_R12(sp)
- #endif
- 
--	PTR_SUBU a0, ra, 8	/* arg1: self address */
-+	PTR_SUBU a0, ra, MCOUNT_INSN_SIZE /* arg1: self address */
- 	PTR_LA   t1, _stext
- 	sltu     t2, a0, t1	/* t2 = (a0 < _stext) */
- 	PTR_LA   t1, _etext
-@@ -138,7 +138,7 @@ NESTED(_mcount, PT_SIZE, ra)
- static_trace:
- 	MCOUNT_SAVE_REGS
- 
--	move	a0, ra		/* arg1: self return address */
-+	PTR_SUBU a0, ra, MCOUNT_INSN_SIZE	/* arg1: self address */
- 	jalr	t2		/* (1) call *ftrace_trace_function */
- 	 move	a1, AT		/* arg2: parent's return address */
- 
--- 
-2.1.0
+Rob

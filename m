@@ -1,78 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2014 21:47:14 +0200 (CEST)
-Received: from cassarossa.samfundet.no ([193.35.52.29]:53905 "EHLO
-        cassarossa.samfundet.no" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009414AbaIWTrLvpZzQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Sep 2014 21:47:11 +0200
-Received: from egtvedt by cassarossa.samfundet.no with local (Exim 4.80)
-        (envelope-from <egtvedt@samfundet.no>)
-        id 1XWVzj-0007wo-Um; Tue, 23 Sep 2014 21:43:27 +0200
-Date:   Tue, 23 Sep 2014 21:43:27 +0200
-From:   Hans-Christian Egtvedt <egtvedt@samfundet.no>
-To:     Pranith Kumar <bobby.prani@gmail.com>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2014 23:09:47 +0200 (CEST)
+Received: from mail-ig0-f171.google.com ([209.85.213.171]:56732 "EHLO
+        mail-ig0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009643AbaIWVJpui1-N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Sep 2014 23:09:45 +0200
+Received: by mail-ig0-f171.google.com with SMTP id hn15so5381445igb.16
+        for <linux-mips@linux-mips.org>; Tue, 23 Sep 2014 14:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=WALyKzb3L+te2PU/Iz08V3AI0bosoxZwzCKnMPxmobc=;
+        b=X1En0iZq7qWOEy2v1IEWpj0mhfLcVnK4HAzLYa5cxEmQ6TKLHgQ+Kg9Yb5m+sysI5I
+         AV15UnjLPTbSz05+5NAEf1NXUGxWNQUeCk+UtrPlDHruuXA3kdbwSe9V1eKVdgQe5xkM
+         MlFDWLf/+xBMJmKzptsVL/wO+gg4t+JQiUBeO9PwaukXLH/isWY8fSjzlowBMTIYZFr9
+         ql7QPmzK36p+Ad/mHFrNbtKoVf1CY327XRx3zRBdYJqHYVfWn70nVgy6fSZtOZrPlPoV
+         +sXPKc5s/JXILD4uEz0xUhwNnFA71FipZJC9TBH0wqSNtchD7wREPJeXfx3uEx8mIUCi
+         T5Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=WALyKzb3L+te2PU/Iz08V3AI0bosoxZwzCKnMPxmobc=;
+        b=DGwKjrGL8fKM95QWWc1JnB6jgtmpPn8LHAuo9hqhlq9hYRdBlYdnMrlPiYHejZYXn9
+         lgM72QCTQqxUgNRNzt8EYvRdOCmpjwGn/XSLM1H/3PUQ/1kyvRpUlhkR3ZeOobZiirDe
+         xDQVnuyNDsmCYC6kHQUfeUz6Ro6qzm91AEsi3zfPvjnqkyJ/U+5DQm7s491lgxPynDAt
+         3fubKoq7KGh7y/NNYSYx3ik6lUck9U8pWuKGJSwd61KlqaU8zZs5zxSP15LWIoEX7Bft
+         VdzBnjbL4bokbjavkv3kX5p9TS8uicCcOjQw1X17yceCZMjcxTooPmwSS2XzxkDx6p8D
+         MCJA==
+X-Gm-Message-State: ALoCoQkl8Zc25XSgp7Lhj+LJ/onkRrfCq8E9tdRqOD+KNTzzBsFWYOWQbjsKoInF5U+y/z+E8nzi
+X-Received: by 10.50.72.43 with SMTP id a11mr6874168igv.23.1411506579499;
+        Tue, 23 Sep 2014 14:09:39 -0700 (PDT)
+Received: from google.com ([172.16.50.66])
+        by mx.google.com with ESMTPSA id ik8sm2795488igb.0.2014.09.23.14.09.37
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 23 Sep 2014 14:09:38 -0700 (PDT)
+Date:   Tue, 23 Sep 2014 15:09:36 -0600
+From:   Bjorn Helgaas <bhelgaas@google.com>
+To:     Yijing Wang <wangyijing@huawei.com>
+Cc:     Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        David Howells <dhowells@redhat.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
+        Bharat.Bhushan@freescale.com, x86@kernel.org,
         Arnd Bergmann <arnd@arndb.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Chen Gang <gang.chen@asianux.com>,
-        Victor Kamensky <victor.kamensky@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Maciej W. Rozycki" <macro@codesourcery.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "open list:CRIS PORT" <linux-cris-kernel@axis.com>,
-        "open list:IA64 (Itanium) PL..." <linux-ia64@vger.kernel.org>,
-        "moderated list:M32R ARCHITECTURE" <linux-m32r@ml.linux-m32r.org>,
-        "open list:M32R ARCHITECTURE" <linux-m32r-ja@ml.linux-m32r.org>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        "open list:MIPS" <linux-mips@linux-mips.org>,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>,
-        "open list:TENSILICA XTENSA..." <linux-xtensa@linux-xtensa.org>,
-        "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] atomic_read: Use ACCESS_ONCE() instead of cast to
- volatile
-Message-ID: <20140923194327.GA5940@samfundet.no>
-References: <1411482607-20948-1-git-send-email-bobby.prani@gmail.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v1 00/21] Use MSI chip to configure MSI/MSI-X in all
+ platforms
+Message-ID: <20140923210936.GC27117@google.com>
+References: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1411482607-20948-1-git-send-email-bobby.prani@gmail.com>
+In-Reply-To: <1409911806-10519-1-git-send-email-wangyijing@huawei.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <egtvedt@samfundet.no>
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42750
+X-archive-position: 42752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: egtvedt@samfundet.no
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,38 +86,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Around Tue 23 Sep 2014 10:29:50 -0400 or thereabout, Pranith Kumar wrote:
-> Use the much reader friendly ACCESS_ONCE() instead of the cast to volatile. This
-> is purely a style change.
+On Fri, Sep 05, 2014 at 06:09:45PM +0800, Yijing Wang wrote:
+> This series is based Bjorn's pci-next branch + Alexander Gordeev's two patches
+> "Remove arch_msi_check_device()" link: https://lkml.org/lkml/2014/7/12/41
 > 
-> Signed-off-by: Pranith Kumar <bobby.prani@gmail.com>
-> ---
->  arch/alpha/include/asm/atomic.h    | 4 ++--
->  arch/arm/include/asm/atomic.h      | 2 +-
->  arch/arm64/include/asm/atomic.h    | 4 ++--
->  arch/avr32/include/asm/atomic.h    | 2 +-
+> Currently, there are a lot of weak arch functions in MSI code.
+> Thierry Reding Introduced MSI chip framework to configure MSI/MSI-X in arm.
+> This series use MSI chip framework to refactor MSI code across all platforms
+> to eliminate weak arch functions. It has been tested fine in x86(with or without
+> irq remap).
 
-For the AVR32 related part.
+I see you plan some updates, so I'll look for a v2 posting after v3.17 releases.
+It will be great to get rid of some of those weak functions!
 
-Acked-by: Hans-Christian Egtvedt <egtvedt@samfundet.no>
-
->  arch/cris/include/asm/atomic.h     | 2 +-
->  arch/frv/include/asm/atomic.h      | 2 +-
->  arch/ia64/include/asm/atomic.h     | 4 ++--
->  arch/m32r/include/asm/atomic.h     | 2 +-
->  arch/m68k/include/asm/atomic.h     | 2 +-
->  arch/mips/include/asm/atomic.h     | 4 ++--
->  arch/parisc/include/asm/atomic.h   | 4 ++--
->  arch/sh/include/asm/atomic.h       | 2 +-
->  arch/sparc/include/asm/atomic_32.h | 2 +-
->  arch/sparc/include/asm/atomic_64.h | 4 ++--
->  arch/x86/include/asm/atomic.h      | 2 +-
->  arch/x86/include/asm/atomic64_64.h | 2 +-
->  arch/xtensa/include/asm/atomic.h   | 2 +-
->  include/asm-generic/atomic.h       | 2 +-
->  18 files changed, 24 insertions(+), 24 deletions(-)
-
-<snipp diff>
-
--- 
-BR, HcE
+Bjorn

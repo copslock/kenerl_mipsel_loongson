@@ -1,97 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2014 17:40:35 +0200 (CEST)
-Received: from bes.se.axis.com ([195.60.68.10]:57857 "EHLO bes.se.axis.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2014 17:44:29 +0200 (CEST)
+Received: from cantor2.suse.de ([195.135.220.15]:34979 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009616AbaIWPk2xvDnm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Sep 2014 17:40:28 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id 1EB112E308;
-        Tue, 23 Sep 2014 17:40:23 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id DIPnl3fNFDFP; Tue, 23 Sep 2014 17:40:18 +0200 (CEST)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id 7B2CA2E2E3;
-        Tue, 23 Sep 2014 17:40:16 +0200 (CEST)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id 60CAACE7;
-        Tue, 23 Sep 2014 17:40:16 +0200 (CEST)
-Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
-        by boulder.se.axis.com (Postfix) with ESMTP id 486105DA;
-        Tue, 23 Sep 2014 17:40:16 +0200 (CEST)
-Received: from lnxjespern2.se.axis.com (lnxjespern2.se.axis.com [10.88.4.6])
-        by seth.se.axis.com (Postfix) with ESMTP id 3EE0B3E048;
-        Tue, 23 Sep 2014 17:40:16 +0200 (CEST)
-Received: by lnxjespern2.se.axis.com (Postfix, from userid 363)
-        id 3AF8DC069; Tue, 23 Sep 2014 17:40:16 +0200 (CEST)
-Date:   Tue, 23 Sep 2014 17:40:16 +0200
-From:   Jesper Nilsson <jesper.nilsson@axis.com>
-To:     Pranith Kumar <bobby.prani@gmail.com>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jespern@axis.com>,
-        David Howells <dhowells@redhat.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Chen Gang <gang.chen@asianux.com>,
-        Victor Kamensky <victor.kamensky@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Maciej W. Rozycki" <macro@codesourcery.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        linux-cris-kernel <linux-cris-kernel@axis.com>,
-        "open list:IA64 (Itanium) PL..." <linux-ia64@vger.kernel.org>,
-        "moderated list:M32R ARCHITECTURE" <linux-m32r@ml.linux-m32r.org>,
-        "open list:M32R ARCHITECTURE" <linux-m32r-ja@ml.linux-m32r.org>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        "open list:MIPS" <linux-mips@linux-mips.org>,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>,
-        "open list:TENSILICA XTENSA..." <linux-xtensa@linux-xtensa.org>,
-        "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] atomic_read: Use ACCESS_ONCE() instead of cast to
- volatile
-Message-ID: <20140923154016.GT18910@axis.com>
-References: <1411482607-20948-1-git-send-email-bobby.prani@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1411482607-20948-1-git-send-email-bobby.prani@gmail.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <jesper.nilsson@axis.com>
+        id S27009523AbaIWPo1iBSp5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Sep 2014 17:44:27 +0200
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 5AF1CAB1E;
+        Tue, 23 Sep 2014 15:44:27 +0000 (UTC)
+Received: by sepie.suse.cz (Postfix, from userid 10020)
+        id B40C14085B; Tue, 23 Sep 2014 17:44:26 +0200 (CEST)
+From:   Michal Marek <mmarek@suse.cz>
+To:     sfr@canb.auug.org.au, rdunlap@infradead.org, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-next@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH 1/5] mips: Set CONFIG_NET=y in defconfigs
+Date:   Tue, 23 Sep 2014 17:44:00 +0200
+Message-Id: <1411487044-14071-1-git-send-email-mmarek@suse.cz>
+X-Mailer: git-send-email 1.8.4.5
+In-Reply-To: <54218AEF.5090200@suse.cz>
+References: <54218AEF.5090200@suse.cz>
+Return-Path: <mmarek@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42744
+X-archive-position: 42745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jesper.nilsson@axis.com
+X-original-sender: mmarek@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -104,22 +40,133 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 23, 2014 at 04:29:50PM +0200, Pranith Kumar wrote:
-> Use the much reader friendly ACCESS_ONCE() instead of the cast to volatile. This
-> is purely a style change.
-> 
-> Signed-off-by: Pranith Kumar <bobby.prani@gmail.com>
-> ---
->  arch/alpha/include/asm/atomic.h    | 4 ++--
->  arch/arm/include/asm/atomic.h      | 2 +-
->  arch/arm64/include/asm/atomic.h    | 4 ++--
->  arch/avr32/include/asm/atomic.h    | 2 +-
->  arch/cris/include/asm/atomic.h     | 2 +-
+Commit 5d6be6a5 ("scsi_netlink : Make SCSI_NETLINK dependent on NET
+instead of selecting NET") removed what happened to be the only instance
+of 'select NET'. Defconfigs that were relying on the select now lack
+networking support.
 
-For the CRIS parts:
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Michal Marek <mmarek@suse.cz>
+---
+ arch/mips/configs/gpr_defconfig             | 1 +
+ arch/mips/configs/ip27_defconfig            | 1 +
+ arch/mips/configs/jazz_defconfig            | 1 +
+ arch/mips/configs/loongson3_defconfig       | 1 +
+ arch/mips/configs/malta_defconfig           | 1 +
+ arch/mips/configs/malta_kvm_defconfig       | 1 +
+ arch/mips/configs/malta_kvm_guest_defconfig | 1 +
+ arch/mips/configs/mtx1_defconfig            | 1 +
+ arch/mips/configs/rm200_defconfig           | 1 +
+ 9 files changed, 9 insertions(+)
 
-Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
-
-/^JN - Jesper Nilsson
+diff --git a/arch/mips/configs/gpr_defconfig b/arch/mips/configs/gpr_defconfig
+index 8f219da..e24feb06 100644
+--- a/arch/mips/configs/gpr_defconfig
++++ b/arch/mips/configs/gpr_defconfig
+@@ -19,6 +19,7 @@ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PCI=y
+ CONFIG_BINFMT_MISC=m
++CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_INET=y
+diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
+index cc07560..48e16d9 100644
+--- a/arch/mips/configs/ip27_defconfig
++++ b/arch/mips/configs/ip27_defconfig
+@@ -28,6 +28,7 @@ CONFIG_MIPS32_COMPAT=y
+ CONFIG_MIPS32_O32=y
+ CONFIG_MIPS32_N32=y
+ CONFIG_PM=y
++CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_XFRM_USER=m
+diff --git a/arch/mips/configs/jazz_defconfig b/arch/mips/configs/jazz_defconfig
+index 2575302..4f37a59 100644
+--- a/arch/mips/configs/jazz_defconfig
++++ b/arch/mips/configs/jazz_defconfig
+@@ -18,6 +18,7 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_BINFMT_MISC=m
+ CONFIG_PM=y
++CONFIG_NET=y
+ CONFIG_PACKET=m
+ CONFIG_UNIX=y
+ CONFIG_NET_KEY=m
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+index 4cb787f..1c6191e 100644
+--- a/arch/mips/configs/loongson3_defconfig
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -59,6 +59,7 @@ CONFIG_MIPS32_COMPAT=y
+ CONFIG_MIPS32_O32=y
+ CONFIG_MIPS32_N32=y
+ CONFIG_PM_RUNTIME=y
++CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_XFRM_USER=y
+diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
+index e18741e..f57b96d 100644
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -19,6 +19,7 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_PCI=y
++CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_XFRM_USER=m
+diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
+index cf0e01f..d41742d 100644
+--- a/arch/mips/configs/malta_kvm_defconfig
++++ b/arch/mips/configs/malta_kvm_defconfig
+@@ -20,6 +20,7 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_PCI=y
++CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_XFRM_USER=m
+diff --git a/arch/mips/configs/malta_kvm_guest_defconfig b/arch/mips/configs/malta_kvm_guest_defconfig
+index edd9ec9..a7806e8 100644
+--- a/arch/mips/configs/malta_kvm_guest_defconfig
++++ b/arch/mips/configs/malta_kvm_guest_defconfig
+@@ -19,6 +19,7 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_PCI=y
++CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_XFRM_USER=m
+diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
+index d269a53..9b6926d 100644
+--- a/arch/mips/configs/mtx1_defconfig
++++ b/arch/mips/configs/mtx1_defconfig
+@@ -27,6 +27,7 @@ CONFIG_PD6729=m
+ CONFIG_I82092=m
+ CONFIG_BINFMT_MISC=m
+ CONFIG_PM=y
++CONFIG_NET=y
+ CONFIG_PACKET=m
+ CONFIG_UNIX=y
+ CONFIG_XFRM_USER=m
+diff --git a/arch/mips/configs/rm200_defconfig b/arch/mips/configs/rm200_defconfig
+index 29d79ae..db029f4 100644
+--- a/arch/mips/configs/rm200_defconfig
++++ b/arch/mips/configs/rm200_defconfig
+@@ -20,6 +20,7 @@ CONFIG_MODVERSIONS=y
+ CONFIG_PCI=y
+ CONFIG_BINFMT_MISC=m
+ CONFIG_PM=y
++CONFIG_NET=y
+ CONFIG_PACKET=m
+ CONFIG_UNIX=y
+ CONFIG_NET_KEY=m
 -- 
-               Jesper Nilsson -- jesper.nilsson@axis.com
+1.8.4.5

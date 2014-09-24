@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:49:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17245 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:50:20 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:48977 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008868AbaIXJtyYBUKH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:49:54 +0200
+        with ESMTP id S27008868AbaIXJuTDqaGi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:50:19 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C6F8096677573
-        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:49:45 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 4EB97DE4F4604
+        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:50:09 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
+ 2014 10:50:10 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 24 Sep 2014 10:49:47 +0100
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 24 Sep 2014 10:50:10 +0100
 Received: from pburton-laptop.home (192.168.159.158) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:49:45 +0100
+ 2014 10:50:09 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 08/11] MIPS: prevent FP context set via ptrace being discarded
-Date:   Wed, 24 Sep 2014 10:45:39 +0100
-Message-ID: <1411551942-11153-9-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 09/11] MIPS: disable FPU if the mode is unsupported
+Date:   Wed, 24 Sep 2014 10:45:40 +0100
+Message-ID: <1411551942-11153-10-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.0.4
 In-Reply-To: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
 References: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42763
+X-archive-position: 42764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,81 +48,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If a ptracee has not used the FPU and the ptracer sets its FP context
-using PTRACE_POKEUSR, PTRACE_SETFPREGS or PTRACE_SETREGSET then that
-context will be discarded upon either the ptracee using the FPU or a
-further write to the context via ptrace. Prevent this loss by recording
-that the task has "used" math once its FP context has been written to.
-The context initialisation code that was present for the PTRACE_POKEUSR
-case is reused for the other 2 cases to provide consistent behaviour
-for the different ptrace requests.
+The expected semantics of __enable_fpu are for the FPU to be enabled
+in the given mode if possible, otherwise for the FPU to be left
+disabled and SIGFPE returned. The FPU was incorrectly being left
+enabled in cases where the desired value for FR was unavailable.
+Without ensuring the FPU is disabled in this case, it would be
+possible for userland to go on to execute further FP instructions
+natively in the incorrect mode, rather than those instructions being
+trapped & emulated as they need to be.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/kernel/ptrace.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/fpu.h | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 645b3c4..4b5543b 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -46,6 +46,26 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/syscalls.h>
+diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
+index 6e60431..ba62fa5 100644
+--- a/arch/mips/include/asm/fpu.h
++++ b/arch/mips/include/asm/fpu.h
+@@ -48,6 +48,12 @@ enum fpu_mode {
+ #define FPU_FR_MASK		0x1
+ };
  
-+static void init_fp_ctx(struct task_struct *target)
-+{
-+	/* If FP has been used then the target already has context */
-+	if (tsk_used_math(target))
-+		return;
++#define __disable_fpu()							\
++do {									\
++	clear_c0_status(ST0_CU1);					\
++	disable_fpu_hazard();						\
++} while (0)
 +
-+	/* Begin with data registers set to all 1s... */
-+	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
+ static inline int __enable_fpu(enum fpu_mode mode)
+ {
+ 	int fr;
+@@ -83,7 +89,12 @@ fr_common:
+ 		enable_fpu_hazard();
+ 
+ 		/* check FR has the desired value */
+-		return (!!(read_c0_status() & ST0_FR) == !!fr) ? 0 : SIGFPE;
++		if (!!(read_c0_status() & ST0_FR) == !!fr)
++			return 0;
 +
-+	/* ...and FCSR zeroed */
-+	target->thread.fpu.fcr31 = 0;
-+
-+	/*
-+	 * Record that the target has "used" math, such that the context
-+	 * just initialised, and any modifications made by the caller,
-+	 * aren't discarded.
-+	 */
-+	set_stopped_child_used_math(target);
-+}
-+
- /*
-  * Called by kernel/ptrace.c when detaching..
-  *
-@@ -142,6 +162,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
- 	if (!access_ok(VERIFY_READ, data, 33 * 8))
- 		return -EIO;
++		/* unsupported FR value */
++		__disable_fpu();
++		return SIGFPE;
  
-+	init_fp_ctx(child);
- 	fregs = get_fpu_regs(child);
+ 	default:
+ 		BUG();
+@@ -92,12 +103,6 @@ fr_common:
+ 	return SIGFPE;
+ }
  
- 	for (i = 0; i < 32; i++) {
-@@ -439,6 +460,8 @@ static int fpr_set(struct task_struct *target,
+-#define __disable_fpu()							\
+-do {									\
+-	clear_c0_status(ST0_CU1);					\
+-	disable_fpu_hazard();						\
+-} while (0)
+-
+ #define clear_fpu_owner()	clear_thread_flag(TIF_USEDFPU)
  
- 	/* XXX fcr31  */
- 
-+	init_fp_ctx(target);
-+
- 	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
- 		return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
- 					  &target->thread.fpu,
-@@ -660,12 +683,7 @@ long arch_ptrace(struct task_struct *child, long request,
- 		case FPR_BASE ... FPR_BASE + 31: {
- 			union fpureg *fregs = get_fpu_regs(child);
- 
--			if (!tsk_used_math(child)) {
--				/* FP not yet used  */
--				memset(&child->thread.fpu, ~0,
--				       sizeof(child->thread.fpu));
--				child->thread.fpu.fcr31 = 0;
--			}
-+			init_fp_ctx(child);
- #ifdef CONFIG_32BIT
- 			if (test_thread_flag(TIF_32BIT_FPREGS)) {
- 				/*
+ static inline int __is_fpu_owner(void)
 -- 
 2.0.4

@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:46:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:16526 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:47:19 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:40709 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007197AbaIXJqkxJ8FN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:46:40 +0200
+        with ESMTP id S27009507AbaIXJqnTeRF8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:46:43 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A511C7E3DE351
-        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:46:31 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id CEDD6F02D25FF
+        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:46:34 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
+ 2014 10:46:36 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 24 Sep 2014 10:46:34 +0100
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 24 Sep 2014 10:46:36 +0100
 Received: from pburton-laptop.home (192.168.159.158) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:46:31 +0100
+ 2014 10:46:35 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 02/11] MIPS: assume at as source/dest of MSA copy/insert instructions
-Date:   Wed, 24 Sep 2014 10:45:33 +0100
-Message-ID: <1411551942-11153-3-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 03/11] MIPS: remove MSA macro recursion
+Date:   Wed, 24 Sep 2014 10:45:34 +0100
+Message-ID: <1411551942-11153-4-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.0.4
 In-Reply-To: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
 References: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42757
+X-archive-position: 42758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,117 +48,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Assuming at ($1) as the source or destination register of copy or
-insert instructions:
+Recursive macros made the code more concise & worked great for the
+case where the toolchain doesn't support MSA. However, with toolchains
+which do support MSA they lead to build failures such as:
 
-  - Simplifies the macros providing those instructions for toolchains
-    without MSA support.
+  arch/mips/kernel/r4k_switch.S: Assembler messages:
+  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w(0+1)[2],$1'
+  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w(0+1)[3],$1'
+  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w((0+1)+1)[2],$1'
+  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w((0+1)+1)[3],$1'
+  ...
 
-  - Avoids an unnecessary move instruction when at is used as the source
-    or destination register anyway.
-
-  - Is sufficient for the uses to be introduced in the kernel by a
-    subsequent patch.
-
-Note that due to a patch ordering snafu on my part this also fixes the
-currently broken build with MSA support enabled. The build has been
-broken since commit c9017757c532 "MIPS: init upper 64b of vector
-registers when MSA is first used", which this patch should have
-preceeded.
+Drop the recursion from msa_init_all_upper invoking the msa_init_upper
+macro explicitly for each vector register.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/asmmacro.h | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ arch/mips/include/asm/asmmacro.h | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index f6293ef..7e4aaeb 100644
+index 7e4aaeb..62c4af9 100644
 --- a/arch/mips/include/asm/asmmacro.h
 +++ b/arch/mips/include/asm/asmmacro.h
-@@ -218,35 +218,35 @@
- 	.set	pop
+@@ -425,9 +425,6 @@
+ 	insert_w \wd, 2
+ 	insert_w \wd, 3
+ #endif
+-	.if	31-\wd
+-	msa_init_upper	(\wd+1)
+-	.endif
  	.endm
  
--	.macro	copy_u_w	rd, ws, n
-+	.macro	copy_u_w	ws, n
- 	.set	push
- 	.set	mips32r2
- 	.set	msa
--	copy_u.w \rd, $w\ws[\n]
-+	copy_u.w $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_d	rd, ws, n
-+	.macro	copy_u_d	ws, n
- 	.set	push
- 	.set	mips64r2
- 	.set	msa
--	copy_u.d \rd, $w\ws[\n]
-+	copy_u.d $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
--	.macro	insert_w	wd, n, rs
-+	.macro	insert_w	wd, n
- 	.set	push
- 	.set	mips32r2
- 	.set	msa
--	insert.w $w\wd[\n], \rs
-+	insert.w $w\wd[\n], $1
- 	.set	pop
- 	.endm
- 
--	.macro	insert_d	wd, n, rs
-+	.macro	insert_d	wd, n
- 	.set	push
- 	.set	mips64r2
- 	.set	msa
--	insert.d $w\wd[\n], \rs
-+	insert.d $w\wd[\n], $1
- 	.set	pop
- 	.endm
- #else
-@@ -307,36 +307,32 @@
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_w	rd, ws, n
-+	.macro	copy_u_w	ws, n
- 	.set	push
+ 	.macro	msa_init_all_upper
+@@ -435,6 +432,37 @@
  	.set	noat
- 	.insn
- 	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
--	move	\rd, $1
+ 	not	$1, zero
+ 	msa_init_upper	0
++	msa_init_upper	1
++	msa_init_upper	2
++	msa_init_upper	3
++	msa_init_upper	4
++	msa_init_upper	5
++	msa_init_upper	6
++	msa_init_upper	7
++	msa_init_upper	8
++	msa_init_upper	9
++	msa_init_upper	10
++	msa_init_upper	11
++	msa_init_upper	12
++	msa_init_upper	13
++	msa_init_upper	14
++	msa_init_upper	15
++	msa_init_upper	16
++	msa_init_upper	17
++	msa_init_upper	18
++	msa_init_upper	19
++	msa_init_upper	20
++	msa_init_upper	21
++	msa_init_upper	22
++	msa_init_upper	23
++	msa_init_upper	24
++	msa_init_upper	25
++	msa_init_upper	26
++	msa_init_upper	27
++	msa_init_upper	28
++	msa_init_upper	29
++	msa_init_upper	30
++	msa_init_upper	31
  	.set	pop
  	.endm
  
--	.macro	copy_u_d	rd, ws, n
-+	.macro	copy_u_d	ws, n
- 	.set	push
- 	.set	noat
- 	.insn
- 	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
--	move	\rd, $1
- 	.set	pop
- 	.endm
- 
--	.macro	insert_w	wd, n, rs
-+	.macro	insert_w	wd, n
- 	.set	push
- 	.set	noat
--	move	$1, \rs
- 	.word	INSERT_W_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
- 
--	.macro	insert_d	wd, n, rs
-+	.macro	insert_d	wd, n
- 	.set	push
- 	.set	noat
--	move	$1, \rs
- 	.word	INSERT_D_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
 -- 
 2.0.4

@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:49:17 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38423 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:49:33 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:5518 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008960AbaIXJtJLyoFE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:49:09 +0200
+        with ESMTP id S27008965AbaIXJtWDnHI9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:49:22 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 218F15B460571
-        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:49:00 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id B8DD5D1B5749A
+        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:49:12 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
+ 2014 10:49:15 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 24 Sep 2014 10:49:02 +0100
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 24 Sep 2014 10:49:15 +0100
 Received: from pburton-laptop.home (192.168.159.158) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:49:01 +0100
+ 2014 10:49:12 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>, <stable@vger.kernel.org # v3.15+>
-Subject: [PATCH 06/11] MIPS: fix mfc1 & mfhc1 emulation for mips64 systems
-Date:   Wed, 24 Sep 2014 10:45:37 +0100
-Message-ID: <1411551942-11153-7-git-send-email-paul.burton@imgtec.com>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 07/11] MIPS: ensure FCSR cause bits are clear after invoking FPU emulator
+Date:   Wed, 24 Sep 2014 10:45:38 +0100
+Message-ID: <1411551942-11153-8-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.0.4
 In-Reply-To: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
 References: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42761
+X-archive-position: 42762
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,47 +48,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit bbd426f542cb "MIPS: Simplify FP context access" modified the
-SIFROMREG & SIFROMHREG macros such that they return unsigned rather
-than signed 32b integers. I had believed that to be fine, but
-inadvertently missed the mfc1 & mfhc1 cases which write to a struct
-pt_regs regs element. On mips32 this is fine, but on mips64 those
-saved regs fields are 64b wide. Using unsigned values caused the
-32b value from the FP register to be zero rather than sign extended
-as the architecture specifies, causing incorrect emulation of the
-mfc1 & mfhc1 instructions. Fix by reintroducing the casts to signed
-integers, and therefore the sign extension.
+When running the emulator to handle an instruction that raised an FP
+unimplemented operation exception, the FCSR cause bits were being
+cleared. This is done to ensure that the kernel does not take an FP
+exception when later restoring FP context to registers. However, this
+was not being done when the emulator is invoked in response to a
+coprocessor unusable exception. This happens in 2 cases:
+
+  - There is no FPU present in the system. In this case things were
+    OK, since the FP context is never restored to hardware registers
+    and thus no FP exception may be raised when restoring FCSR.
+
+  - The FPU could not be configured to the mode required by the task.
+    In this case it would be possible for the emulator to set cause
+    bits which are later restored to hardware if the task migrates
+    to a CPU whose associated FPU does support its mode requirements,
+    or if the tasks FP mode requirements change.
+
+Consistently clear the cause bits after invoking the emulator, by moving
+the clearing to process_fpemu_return and ensuring this is always called
+before the tasks FP context is restored. This will make it easier to
+catch further paths invoking the emulator in future, as will be
+introduced in further patches.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: stable@vger.kernel.org # v3.15+
 ---
- arch/mips/math-emu/cp1emu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/kernel/traps.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index ef8447f..298c1ae 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -655,9 +655,9 @@ static inline bool hybrid_fprs(void)
- #define SIFROMREG(si, x)						\
- do {									\
- 	if (cop1_64bit(xcp) && !hybrid_fprs())				\
--		(si) = get_fpr32(&ctx->fpr[x], 0);			\
-+		(si) = (int)get_fpr32(&ctx->fpr[x], 0);			\
- 	else								\
--		(si) = get_fpr32(&ctx->fpr[(x) & ~1], (x) & 1);		\
-+		(si) = (int)get_fpr32(&ctx->fpr[(x) & ~1], (x) & 1);	\
- } while (0)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 165c275..3ea7f7a 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -700,6 +700,13 @@ asmlinkage void do_ov(struct pt_regs *regs)
  
- #define SITOREG(si, x)							\
-@@ -672,7 +672,7 @@ do {									\
- 	}								\
- } while (0)
+ int process_fpemu_return(int sig, void __user *fault_addr)
+ {
++	/*
++	 * We can't allow the emulated instruction to leave any of the cause
++	 * bits set in FCSR. If they were then the kernel would take an FP
++	 * exception when restoring FP context.
++	 */
++	current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
++
+ 	if (sig == SIGSEGV || sig == SIGBUS) {
+ 		struct siginfo si = {0};
+ 		si.si_addr = fault_addr;
+@@ -803,18 +810,12 @@ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
+ 		sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
+ 					       &fault_addr);
  
--#define SIFROMHREG(si, x)	((si) = get_fpr32(&ctx->fpr[x], 1))
-+#define SIFROMHREG(si, x)	((si) = (int)get_fpr32(&ctx->fpr[x], 1))
+-		/*
+-		 * We can't allow the emulated instruction to leave any of
+-		 * the cause bit set in $fcr31.
+-		 */
+-		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
++		/* If something went wrong, signal */
++		process_fpemu_return(sig, fault_addr);
  
- #define SITOHREG(si, x)							\
- do {									\
+ 		/* Restore the hardware register state */
+ 		own_fpu(1);	/* Using the FPU again.	 */
+ 
+-		/* If something went wrong, signal */
+-		process_fpemu_return(sig, fault_addr);
+-
+ 		goto out;
+ 	} else if (fcr31 & FPU_CSR_INV_X)
+ 		info.si_code = FPE_FLTINV;
 -- 
 2.0.4

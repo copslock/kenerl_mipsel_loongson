@@ -1,26 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:49:33 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:5518 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:49:56 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:17245 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008965AbaIXJtWDnHI9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:49:22 +0200
+        with ESMTP id S27008868AbaIXJtyYBUKH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:49:54 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B8DD5D1B5749A
-        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:49:12 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:49:15 +0100
+        by Websense Email Security Gateway with ESMTPS id C6F8096677573
+        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:49:45 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 24 Sep 2014 10:49:15 +0100
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 24 Sep 2014 10:49:47 +0100
 Received: from pburton-laptop.home (192.168.159.158) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:49:12 +0100
+ 2014 10:49:45 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 07/11] MIPS: ensure FCSR cause bits are clear after invoking FPU emulator
-Date:   Wed, 24 Sep 2014 10:45:38 +0100
-Message-ID: <1411551942-11153-8-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 08/11] MIPS: prevent FP context set via ptrace being discarded
+Date:   Wed, 24 Sep 2014 10:45:39 +0100
+Message-ID: <1411551942-11153-9-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.0.4
 In-Reply-To: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
 References: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
@@ -31,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42762
+X-archive-position: 42763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,72 +45,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When running the emulator to handle an instruction that raised an FP
-unimplemented operation exception, the FCSR cause bits were being
-cleared. This is done to ensure that the kernel does not take an FP
-exception when later restoring FP context to registers. However, this
-was not being done when the emulator is invoked in response to a
-coprocessor unusable exception. This happens in 2 cases:
-
-  - There is no FPU present in the system. In this case things were
-    OK, since the FP context is never restored to hardware registers
-    and thus no FP exception may be raised when restoring FCSR.
-
-  - The FPU could not be configured to the mode required by the task.
-    In this case it would be possible for the emulator to set cause
-    bits which are later restored to hardware if the task migrates
-    to a CPU whose associated FPU does support its mode requirements,
-    or if the tasks FP mode requirements change.
-
-Consistently clear the cause bits after invoking the emulator, by moving
-the clearing to process_fpemu_return and ensuring this is always called
-before the tasks FP context is restored. This will make it easier to
-catch further paths invoking the emulator in future, as will be
-introduced in further patches.
+If a ptracee has not used the FPU and the ptracer sets its FP context
+using PTRACE_POKEUSR, PTRACE_SETFPREGS or PTRACE_SETREGSET then that
+context will be discarded upon either the ptracee using the FPU or a
+further write to the context via ptrace. Prevent this loss by recording
+that the task has "used" math once its FP context has been written to.
+The context initialisation code that was present for the PTRACE_POKEUSR
+case is reused for the other 2 cases to provide consistent behaviour
+for the different ptrace requests.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/kernel/traps.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/mips/kernel/ptrace.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 165c275..3ea7f7a 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -700,6 +700,13 @@ asmlinkage void do_ov(struct pt_regs *regs)
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index 645b3c4..4b5543b 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -46,6 +46,26 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/syscalls.h>
  
- int process_fpemu_return(int sig, void __user *fault_addr)
- {
-+	/*
-+	 * We can't allow the emulated instruction to leave any of the cause
-+	 * bits set in FCSR. If they were then the kernel would take an FP
-+	 * exception when restoring FP context.
-+	 */
-+	current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
++static void init_fp_ctx(struct task_struct *target)
++{
++	/* If FP has been used then the target already has context */
++	if (tsk_used_math(target))
++		return;
 +
- 	if (sig == SIGSEGV || sig == SIGBUS) {
- 		struct siginfo si = {0};
- 		si.si_addr = fault_addr;
-@@ -803,18 +810,12 @@ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
- 		sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
- 					       &fault_addr);
++	/* Begin with data registers set to all 1s... */
++	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
++
++	/* ...and FCSR zeroed */
++	target->thread.fpu.fcr31 = 0;
++
++	/*
++	 * Record that the target has "used" math, such that the context
++	 * just initialised, and any modifications made by the caller,
++	 * aren't discarded.
++	 */
++	set_stopped_child_used_math(target);
++}
++
+ /*
+  * Called by kernel/ptrace.c when detaching..
+  *
+@@ -142,6 +162,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
+ 	if (!access_ok(VERIFY_READ, data, 33 * 8))
+ 		return -EIO;
  
--		/*
--		 * We can't allow the emulated instruction to leave any of
--		 * the cause bit set in $fcr31.
--		 */
--		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
-+		/* If something went wrong, signal */
-+		process_fpemu_return(sig, fault_addr);
++	init_fp_ctx(child);
+ 	fregs = get_fpu_regs(child);
  
- 		/* Restore the hardware register state */
- 		own_fpu(1);	/* Using the FPU again.	 */
+ 	for (i = 0; i < 32; i++) {
+@@ -439,6 +460,8 @@ static int fpr_set(struct task_struct *target,
  
--		/* If something went wrong, signal */
--		process_fpemu_return(sig, fault_addr);
--
- 		goto out;
- 	} else if (fcr31 & FPU_CSR_INV_X)
- 		info.si_code = FPE_FLTINV;
+ 	/* XXX fcr31  */
+ 
++	init_fp_ctx(target);
++
+ 	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
+ 		return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
+ 					  &target->thread.fpu,
+@@ -660,12 +683,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 		case FPR_BASE ... FPR_BASE + 31: {
+ 			union fpureg *fregs = get_fpu_regs(child);
+ 
+-			if (!tsk_used_math(child)) {
+-				/* FP not yet used  */
+-				memset(&child->thread.fpu, ~0,
+-				       sizeof(child->thread.fpu));
+-				child->thread.fpu.fcr31 = 0;
+-			}
++			init_fp_ctx(child);
+ #ifdef CONFIG_32BIT
+ 			if (test_thread_flag(TIF_32BIT_FPREGS)) {
+ 				/*
 -- 
 2.0.4

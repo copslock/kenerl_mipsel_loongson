@@ -1,26 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:47:19 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40709 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:47:36 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39550 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009507AbaIXJqnTeRF8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:46:43 +0200
+        with ESMTP id S27009557AbaIXJqqQQPPf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:46:46 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CEDD6F02D25FF
-        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:46:34 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:46:36 +0100
+        by Websense Email Security Gateway with ESMTPS id 128D3E5145401
+        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:46:37 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 24 Sep 2014 10:46:36 +0100
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 24 Sep 2014 10:46:39 +0100
 Received: from pburton-laptop.home (192.168.159.158) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:46:35 +0100
+ 2014 10:46:38 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 03/11] MIPS: remove MSA macro recursion
-Date:   Wed, 24 Sep 2014 10:45:34 +0100
-Message-ID: <1411551942-11153-4-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 04/11] MIPS: wrap cfcmsa & ctcmsa accesses for toolchains with MSA support
+Date:   Wed, 24 Sep 2014 10:45:35 +0100
+Message-ID: <1411551942-11153-5-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.0.4
 In-Reply-To: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
 References: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
@@ -31,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42758
+X-archive-position: 42759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,76 +45,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Recursive macros made the code more concise & worked great for the
-case where the toolchain doesn't support MSA. However, with toolchains
-which do support MSA they lead to build failures such as:
+Uses of the cfcmsa & ctcmsa instructions were not being wrapped by a
+macro in the case where the toolchain supports MSA, since the arguments
+exactly match a typical use of the instructions. However using current
+toolchains this leads to errors such as:
 
-  arch/mips/kernel/r4k_switch.S: Assembler messages:
-  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w(0+1)[2],$1'
-  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w(0+1)[3],$1'
-  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w((0+1)+1)[2],$1'
-  arch/mips/kernel/r4k_switch.S:148: Error: invalid operands `insert.w $w((0+1)+1)[3],$1'
-  ...
+  arch/mips/kernel/genex.S:437: Error: opcode not supported on this processor: mips32r2 (mips32r2) `cfcmsa $5,1'
 
-Drop the recursion from msa_init_all_upper invoking the msa_init_upper
-macro explicitly for each vector register.
+Thus uses of the instructions must be in the context of a ".set msa"
+directive, however doing that from the users of the instructions would
+be messy due to the possibility that the toolchain does not support
+MSA. Fix this by renaming the macros (prepending an underscore) in order
+to avoid recursion when attempting to emit the instructions, and provide
+implementations for the TOOLCHAIN_SUPPORTS_MSA case which ".set msa" as
+appropriate.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/asmmacro.h | 34 +++++++++++++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/asmmacro.h | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
 diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 7e4aaeb..62c4af9 100644
+index 62c4af9..0bbb3aa 100644
 --- a/arch/mips/include/asm/asmmacro.h
 +++ b/arch/mips/include/asm/asmmacro.h
-@@ -425,9 +425,6 @@
- 	insert_w \wd, 2
- 	insert_w \wd, 3
- #endif
--	.if	31-\wd
--	msa_init_upper	(\wd+1)
--	.endif
+@@ -202,6 +202,22 @@
  	.endm
  
- 	.macro	msa_init_all_upper
-@@ -435,6 +432,37 @@
+ #ifdef TOOLCHAIN_SUPPORTS_MSA
++	.macro	_cfcmsa	rd, cs
++	.set	push
++	.set	mips32r2
++	.set	msa
++	cfcmsa	\rd, $\cs
++	.set	pop
++	.endm
++
++	.macro	_ctcmsa	cd, rs
++	.set	push
++	.set	mips32r2
++	.set	msa
++	ctcmsa	$\cd, \rs
++	.set	pop
++	.endm
++
+ 	.macro	ld_d	wd, off, base
+ 	.set	push
+ 	.set	mips32r2
+@@ -274,7 +290,7 @@
+ 	/*
+ 	 * Temporary until all toolchains in use include MSA support.
+ 	 */
+-	.macro	cfcmsa	rd, cs
++	.macro	_cfcmsa	rd, cs
+ 	.set	push
  	.set	noat
- 	not	$1, zero
- 	msa_init_upper	0
-+	msa_init_upper	1
-+	msa_init_upper	2
-+	msa_init_upper	3
-+	msa_init_upper	4
-+	msa_init_upper	5
-+	msa_init_upper	6
-+	msa_init_upper	7
-+	msa_init_upper	8
-+	msa_init_upper	9
-+	msa_init_upper	10
-+	msa_init_upper	11
-+	msa_init_upper	12
-+	msa_init_upper	13
-+	msa_init_upper	14
-+	msa_init_upper	15
-+	msa_init_upper	16
-+	msa_init_upper	17
-+	msa_init_upper	18
-+	msa_init_upper	19
-+	msa_init_upper	20
-+	msa_init_upper	21
-+	msa_init_upper	22
-+	msa_init_upper	23
-+	msa_init_upper	24
-+	msa_init_upper	25
-+	msa_init_upper	26
-+	msa_init_upper	27
-+	msa_init_upper	28
-+	msa_init_upper	29
-+	msa_init_upper	30
-+	msa_init_upper	31
+ 	.insn
+@@ -283,7 +299,7 @@
  	.set	pop
  	.endm
  
+-	.macro	ctcmsa	cd, rs
++	.macro	_ctcmsa	cd, rs
+ 	.set	push
+ 	.set	noat
+ 	move	$1, \rs
+@@ -373,7 +389,7 @@
+ 	st_d	31, THREAD_FPR31, \thread
+ 	.set	push
+ 	.set	noat
+-	cfcmsa	$1, MSA_CSR
++	_cfcmsa	$1, MSA_CSR
+ 	sw	$1, THREAD_MSA_CSR(\thread)
+ 	.set	pop
+ 	.endm
+@@ -382,7 +398,7 @@
+ 	.set	push
+ 	.set	noat
+ 	lw	$1, THREAD_MSA_CSR(\thread)
+-	ctcmsa	MSA_CSR, $1
++	_ctcmsa	MSA_CSR, $1
+ 	.set	pop
+ 	ld_d	0, THREAD_FPR0, \thread
+ 	ld_d	1, THREAD_FPR1, \thread
 -- 
 2.0.4

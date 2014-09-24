@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:47:36 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39550 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2014 11:48:58 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:31606 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009557AbaIXJqqQQPPf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:46:46 +0200
+        with ESMTP id S27007197AbaIXJs52YPPK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Sep 2014 11:48:57 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 128D3E5145401
-        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:46:37 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id EBDBB55B8587E
+        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 10:48:48 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
+ 2014 10:48:50 +0100
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 24 Sep 2014 10:46:39 +0100
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 24 Sep 2014 10:48:50 +0100
 Received: from pburton-laptop.home (192.168.159.158) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 24 Sep
- 2014 10:46:38 +0100
+ 2014 10:48:49 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 04/11] MIPS: wrap cfcmsa & ctcmsa accesses for toolchains with MSA support
-Date:   Wed, 24 Sep 2014 10:45:35 +0100
-Message-ID: <1411551942-11153-5-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 05/11] MIPS: clear MSACSR cause bits when handling MSA FP exception
+Date:   Wed, 24 Sep 2014 10:45:36 +0100
+Message-ID: <1411551942-11153-6-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.0.4
 In-Reply-To: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
 References: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42759
+X-archive-position: 42760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,88 +48,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Uses of the cfcmsa & ctcmsa instructions were not being wrapped by a
-macro in the case where the toolchain supports MSA, since the arguments
-exactly match a typical use of the instructions. However using current
-toolchains this leads to errors such as:
-
-  arch/mips/kernel/genex.S:437: Error: opcode not supported on this processor: mips32r2 (mips32r2) `cfcmsa $5,1'
-
-Thus uses of the instructions must be in the context of a ".set msa"
-directive, however doing that from the users of the instructions would
-be messy due to the possibility that the toolchain does not support
-MSA. Fix this by renaming the macros (prepending an underscore) in order
-to avoid recursion when attempting to emit the instructions, and provide
-implementations for the TOOLCHAIN_SUPPORTS_MSA case which ".set msa" as
-appropriate.
+Much like for traditional scalar FP exceptions, the cause bits in the
+MSACSR register need to be cleared following an MSA FP exception.
+Without doing so the exception will simply be raised again whenever
+the kernel restores MSACSR from a tasks saved context, leading to
+undesirable spurious exceptions. Clear the cause bits from the
+handle_msa_fpe function, mirroring the way handle_fpe clears the
+cause bits in FCSR.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/asmmacro.h | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ arch/mips/kernel/genex.S | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 62c4af9..0bbb3aa 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -202,6 +202,22 @@
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index ac35e12..ae84496 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -367,6 +367,15 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	STI
  	.endm
  
- #ifdef TOOLCHAIN_SUPPORTS_MSA
-+	.macro	_cfcmsa	rd, cs
-+	.set	push
-+	.set	mips32r2
-+	.set	msa
-+	cfcmsa	\rd, $\cs
-+	.set	pop
++	.macro	__build_clear_msa_fpe
++	_cfcmsa	a1, MSA_CSR
++	li	a2, ~(0x3f << 12)
++	and	a2, a1
++	_ctcmsa	MSA_CSR, a1
++	TRACE_IRQS_ON
++	STI
 +	.endm
 +
-+	.macro	_ctcmsa	cd, rs
-+	.set	push
-+	.set	mips32r2
-+	.set	msa
-+	ctcmsa	$\cd, \rs
-+	.set	pop
-+	.endm
-+
- 	.macro	ld_d	wd, off, base
- 	.set	push
- 	.set	mips32r2
-@@ -274,7 +290,7 @@
- 	/*
- 	 * Temporary until all toolchains in use include MSA support.
- 	 */
--	.macro	cfcmsa	rd, cs
-+	.macro	_cfcmsa	rd, cs
- 	.set	push
- 	.set	noat
- 	.insn
-@@ -283,7 +299,7 @@
- 	.set	pop
- 	.endm
- 
--	.macro	ctcmsa	cd, rs
-+	.macro	_ctcmsa	cd, rs
- 	.set	push
- 	.set	noat
- 	move	$1, \rs
-@@ -373,7 +389,7 @@
- 	st_d	31, THREAD_FPR31, \thread
- 	.set	push
- 	.set	noat
--	cfcmsa	$1, MSA_CSR
-+	_cfcmsa	$1, MSA_CSR
- 	sw	$1, THREAD_MSA_CSR(\thread)
- 	.set	pop
- 	.endm
-@@ -382,7 +398,7 @@
- 	.set	push
- 	.set	noat
- 	lw	$1, THREAD_MSA_CSR(\thread)
--	ctcmsa	MSA_CSR, $1
-+	_ctcmsa	MSA_CSR, $1
- 	.set	pop
- 	ld_d	0, THREAD_FPR0, \thread
- 	ld_d	1, THREAD_FPR1, \thread
+ 	.macro	__build_clear_ade
+ 	MFC0	t0, CP0_BADVADDR
+ 	PTR_S	t0, PT_BVADDR(sp)
+@@ -425,7 +434,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	BUILD_HANDLER cpu cpu sti silent		/* #11 */
+ 	BUILD_HANDLER ov ov sti silent			/* #12 */
+ 	BUILD_HANDLER tr tr sti silent			/* #13 */
+-	BUILD_HANDLER msa_fpe msa_fpe sti silent	/* #14 */
++	BUILD_HANDLER msa_fpe msa_fpe msa_fpe silent	/* #14 */
+ 	BUILD_HANDLER fpe fpe fpe silent		/* #15 */
+ 	BUILD_HANDLER ftlb ftlb none silent		/* #16 */
+ 	BUILD_HANDLER msa msa sti silent		/* #21 */
 -- 
 2.0.4

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 04:54:34 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:18775 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009070AbaIYCvawru0s (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 04:51:30 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 04:54:51 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:63963 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009084AbaIYCvbHJdpr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 04:51:31 +0200
 Received: from 172.24.2.119 (EHLO szxeml409-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id BZX30330;
-        Thu, 25 Sep 2014 10:50:35 +0800 (CST)
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id AUU79142;
+        Thu, 25 Sep 2014 10:50:52 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml409-hub.china.huawei.com (10.82.67.136) with Microsoft SMTP Server id
- 14.3.158.1; Thu, 25 Sep 2014 10:50:20 +0800
+ 14.3.158.1; Thu, 25 Sep 2014 10:50:41 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -37,9 +37,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH v2 01/22] PCI/MSI: Clean up struct msi_chip argument
-Date:   Thu, 25 Sep 2014 11:14:11 +0800
-Message-ID: <1411614872-4009-2-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH v2 15/22] MIPS/Xlr/MSI: Use MSI chip framework to configure MSI/MSI-X irq
+Date:   Thu, 25 Sep 2014 11:14:25 +0800
+Message-ID: <1411614872-4009-16-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
 References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
@@ -47,11 +47,17 @@ MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.100.166]
 X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A020204.5423830D.0027,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2013-03-21 17:37:32
+X-Mirapoint-Loop-Id: 26f308b057489af3cc65785353f7b44c
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42785
+X-archive-position: 42786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,167 +74,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Msi_chip functions setup_irq/teardown_irq rarely use msi_chip
-argument. We can look up msi_chip pointer by the device pointer
-or irq number, so clean up msi_chip argument.
+Use MSI chip framework instead of arch MSI functions to configure
+MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-CC: Thierry Reding <thierry.reding@gmail.com>
-CC: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- drivers/irqchip/irq-armada-370-xp.c |    8 +++-----
- drivers/pci/host/pci-tegra.c        |    8 +++++---
- drivers/pci/host/pcie-designware.c  |    4 ++--
- drivers/pci/host/pcie-rcar.c        |    8 +++++---
- drivers/pci/msi.c                   |    4 ++--
- include/linux/msi.h                 |    5 ++---
- 6 files changed, 19 insertions(+), 18 deletions(-)
+ arch/mips/pci/pci-xlr.c |   15 +++++++++++++--
+ 1 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
-index df60eab..3909d06 100644
---- a/drivers/irqchip/irq-armada-370-xp.c
-+++ b/drivers/irqchip/irq-armada-370-xp.c
-@@ -129,9 +129,8 @@ static void armada_370_xp_free_msi(int hwirq)
- 	mutex_unlock(&msi_used_lock);
+diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
+index 0dde803..7bd91cc 100644
+--- a/arch/mips/pci/pci-xlr.c
++++ b/arch/mips/pci/pci-xlr.c
+@@ -214,11 +214,11 @@ static int get_irq_vector(const struct pci_dev *dev)
  }
  
--static int armada_370_xp_setup_msi_irq(struct msi_chip *chip,
--				       struct pci_dev *pdev,
--				       struct msi_desc *desc)
-+static int armada_370_xp_setup_msi_irq(struct pci_dev *pdev, 
-+		struct msi_desc *desc)
+ #ifdef CONFIG_PCI_MSI
+-void arch_teardown_msi_irq(unsigned int irq)
++void xlr_teardown_msi_irq(unsigned int irq)
+ {
+ }
+ 
+-int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
++int xlr_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
  {
  	struct msi_msg msg;
- 	int virq, hwirq;
-@@ -160,8 +159,7 @@ static int armada_370_xp_setup_msi_irq(struct msi_chip *chip,
+ 	struct pci_dev *lnk;
+@@ -263,6 +263,17 @@ int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
+ 	write_msi_msg(irq, &msg);
  	return 0;
  }
++
++static struct msi_chip xlr_msi_chip = {
++	.setup_irq = xlr_setup_msi_irq,
++	.teardown_irq = xlr_teardown_msi_irq,
++};
++
++struct msi_chip *arch_find_msi_chip(struct pci_dev *dev)
++{
++	return &xlr_msi_chip;
++}
++
+ #endif
  
--static void armada_370_xp_teardown_msi_irq(struct msi_chip *chip,
--					   unsigned int irq)
-+static void armada_370_xp_teardown_msi_irq(unsigned int irq)
- {
- 	struct irq_data *d = irq_get_irq_data(irq);
- 	unsigned long hwirq = d->hwirq;
-diff --git a/drivers/pci/host/pci-tegra.c b/drivers/pci/host/pci-tegra.c
-index 0fb0fdb..edd4040 100644
---- a/drivers/pci/host/pci-tegra.c
-+++ b/drivers/pci/host/pci-tegra.c
-@@ -1157,9 +1157,10 @@ static irqreturn_t tegra_pcie_msi_irq(int irq, void *data)
- 	return processed > 0 ? IRQ_HANDLED : IRQ_NONE;
- }
- 
--static int tegra_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
-+static int tegra_msi_setup_irq(struct pci_dev *pdev,
- 			       struct msi_desc *desc)
- {
-+	struct msi_chip *chip = pdev->bus->msi;
- 	struct tegra_msi *msi = to_tegra_msi(chip);
- 	struct msi_msg msg;
- 	unsigned int irq;
-@@ -1185,10 +1186,11 @@ static int tegra_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
- 	return 0;
- }
- 
--static void tegra_msi_teardown_irq(struct msi_chip *chip, unsigned int irq)
-+static void tegra_msi_teardown_irq(unsigned int irq)
- {
--	struct tegra_msi *msi = to_tegra_msi(chip);
- 	struct irq_data *d = irq_get_irq_data(irq);
-+	struct msi_chip *chip = irq_get_chip_data(irq);
-+	struct tegra_msi *msi = to_tegra_msi(chip);
- 
- 	tegra_msi_free(msi, d->hwirq);
- }
-diff --git a/drivers/pci/host/pcie-designware.c b/drivers/pci/host/pcie-designware.c
-index fa2fa45..517f1e1 100644
---- a/drivers/pci/host/pcie-designware.c
-+++ b/drivers/pci/host/pcie-designware.c
-@@ -342,7 +342,7 @@ static void clear_irq(unsigned int irq)
- 	msi->msi_attrib.multiple = 0;
- }
- 
--static int dw_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
-+static int dw_msi_setup_irq(struct pci_dev *pdev,
- 			struct msi_desc *desc)
- {
- 	int irq, pos, msgvec;
-@@ -383,7 +383,7 @@ static int dw_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
- 	return 0;
- }
- 
--static void dw_msi_teardown_irq(struct msi_chip *chip, unsigned int irq)
-+static void dw_msi_teardown_irq(unsigned int irq)
- {
- 	clear_irq(irq);
- }
-diff --git a/drivers/pci/host/pcie-rcar.c b/drivers/pci/host/pcie-rcar.c
-index 4884ee5..647bc9f 100644
---- a/drivers/pci/host/pcie-rcar.c
-+++ b/drivers/pci/host/pcie-rcar.c
-@@ -615,9 +615,10 @@ static irqreturn_t rcar_pcie_msi_irq(int irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
--static int rcar_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
-+static int rcar_msi_setup_irq(struct pci_dev *pdev,
- 			      struct msi_desc *desc)
- {
-+	struct msi_chip *chip = pdev->bus->msi;
- 	struct rcar_msi *msi = to_rcar_msi(chip);
- 	struct rcar_pcie *pcie = container_of(chip, struct rcar_pcie, msi.chip);
- 	struct msi_msg msg;
-@@ -645,10 +646,11 @@ static int rcar_msi_setup_irq(struct msi_chip *chip, struct pci_dev *pdev,
- 	return 0;
- }
- 
--static void rcar_msi_teardown_irq(struct msi_chip *chip, unsigned int irq)
-+static void rcar_msi_teardown_irq(unsigned int irq)
- {
--	struct rcar_msi *msi = to_rcar_msi(chip);
- 	struct irq_data *d = irq_get_irq_data(irq);
-+	struct msi_chip *chip = irq_get_chip_data(irq);
-+	struct rcar_msi *msi = to_rcar_msi(chip);
- 
- 	rcar_msi_free(msi, d->hwirq);
- }
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index aae2fc8..51d7e62 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -37,7 +37,7 @@ int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
- 	if (!chip || !chip->setup_irq)
- 		return -EINVAL;
- 
--	err = chip->setup_irq(chip, dev, desc);
-+	err = chip->setup_irq(dev, desc);
- 	if (err < 0)
- 		return err;
- 
-@@ -53,7 +53,7 @@ void __weak arch_teardown_msi_irq(unsigned int irq)
- 	if (!chip || !chip->teardown_irq)
- 		return;
- 
--	chip->teardown_irq(chip, irq);
-+	chip->teardown_irq(irq);
- }
- 
- int __weak arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 36c63cf..45ef8cb 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -68,9 +68,8 @@ struct msi_chip {
- 	struct device_node *of_node;
- 	struct list_head list;
- 
--	int (*setup_irq)(struct msi_chip *chip, struct pci_dev *dev,
--			 struct msi_desc *desc);
--	void (*teardown_irq)(struct msi_chip *chip, unsigned int irq);
-+	int (*setup_irq)(struct pci_dev *dev, struct msi_desc *desc);
-+	void (*teardown_irq)(unsigned int irq);
- };
- 
- #endif /* LINUX_MSI_H */
+ /* Extra ACK needed for XLR on chip PCI controller */
 -- 
 1.7.1

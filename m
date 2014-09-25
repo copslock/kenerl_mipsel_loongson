@@ -1,49 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 03:37:01 +0200 (CEST)
-Received: from mail-pa0-f50.google.com ([209.85.220.50]:50650 "EHLO
-        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009723AbaIYBhA2Dvy1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 03:37:00 +0200
-Received: by mail-pa0-f50.google.com with SMTP id lj1so1400735pab.37
-        for <linux-mips@linux-mips.org>; Wed, 24 Sep 2014 18:36:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=NuiVuAtL7prrdVcw8VmS5t8zKCNtiFhnPonXYM3tLfw=;
-        b=rnw3hxYmq6eHo6/0lEhsliXLF5HMvCgeXvziTIUW9cCtt+OAjx1gppkS75V9eWwqK/
-         NdzlRXa+GYjwOlilVlUf+jJ9utvXB1l2GXry15kyjiR8dF1LLmUAVUlXXLRRjXdr8arZ
-         mmPtG9cavZPUS/7qhNGaBnIrpBR16JyLhbiW5q74gxa5lWL2C24j32j3QbFegrS5rFCi
-         zv6E8b5U7/iXcxMaKEmA/5vAwMlXlUCt90eHF+mPe9wAoEwwztIb3aMo2Wzrrsli+zSo
-         f9fVZj0bz9N3271/Ok06VCY0Fey3f2ils+XGtoky63Lfdppefj1i//sRo0um5hWPcDjG
-         FUvQ==
-X-Received: by 10.69.19.202 with SMTP id gw10mr13814807pbd.106.1411609014007;
-        Wed, 24 Sep 2014 18:36:54 -0700 (PDT)
-Received: from [10.12.164.252] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id ns9sm472244pbb.70.2014.09.24.18.36.53
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Sep 2014 18:36:53 -0700 (PDT)
-Message-ID: <542371A3.8020003@gmail.com>
-Date:   Wed, 24 Sep 2014 18:36:35 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 04:51:25 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:63877 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007194AbaIYCvWesXo6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 04:51:22 +0200
+Received: from 172.24.2.119 (EHLO szxeml409-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id AUU79110;
+        Thu, 25 Sep 2014 10:50:39 +0800 (CST)
+Received: from localhost.localdomain (10.175.100.166) by
+ szxeml409-hub.china.huawei.com (10.82.67.136) with Microsoft SMTP Server id
+ 14.3.158.1; Thu, 25 Sep 2014 10:50:26 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
+        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Vrabel <david.vrabel@citrix.com>,
+        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
+        Yijing Wang <wangyijing@huawei.com>
+Subject: [PATCH v2 05/22] s390/MSI: Use __msi_mask_irq() instead of default_msi_mask_irq()
+Date:   Thu, 25 Sep 2014 11:14:15 +0800
+Message-ID: <1411614872-4009-6-git-send-email-wangyijing@huawei.com>
+X-Mailer: git-send-email 1.7.1
+In-Reply-To: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
-To:     "Jayachandran C." <jchandra@broadcom.com>
-CC:     linux-mips@linux-mips.org, ganesanr@broadcom.com
-Subject: Re: [PATCH 0/2] MIPS: Netlogic: modular build fixes
-References: <1411581311-6458-1-git-send-email-f.fainelli@gmail.com> <20140925012514.GA3703@jayachandranc.netlogicmicro.com>
-In-Reply-To: <20140925012514.GA3703@jayachandranc.netlogicmicro.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.175.100.166]
+X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A020205.542382FF.0088,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2013-03-21 17:37:32
+X-Mirapoint-Loop-Id: f8bda5302f64146b26f7a8578b0a1b99
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42774
+X-archive-position: 42775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,41 +74,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/24/2014 06:25 PM, Jayachandran C. wrote:
-> On Wed, Sep 24, 2014 at 10:55:09AM -0700, Florian Fainelli wrote:
->> Hello Ralf, Jayachandran, Ganesan
->>
->> Here are two small fixes for modular USB and AHCI builds that I encountered
->> while playing with a FVP board.
->>
->> These are based off upstream-sfr/mips-for-linux-next
-> 
-> We have a slightly different fix for this in our internal repository, I
-> was planning to submit it soon:
-> 
-> 
-> index be358a8..5c876d3 100644
-> --- a/arch/mips/netlogic/xlp/Makefile
-> +++ b/arch/mips/netlogic/xlp/Makefile
-> @@ -1,6 +1,6 @@
->  obj-y				+= setup.o nlm_hal.o cop2-ex.o dt.o
->  obj-$(CONFIG_SMP)		+= wakeup.o
-> -obj-$(CONFIG_USB)		+= usb-init.o
-> -obj-$(CONFIG_USB)		+= usb-init-xlp2.o
-> -obj-$(CONFIG_SATA_AHCI)		+= ahci-init.o
-> -obj-$(CONFIG_SATA_AHCI)		+= ahci-init-xlp2.o
-> +obj-$(subst m,y,$(CONFIG_USB))	+= usb-init.o
-> +obj-$(subst m,y,$(CONFIG_USB))	+= usb-init-xlp2.o
-> +obj-$(subst m,y,$(CONFIG_SATA_AHCI))	+= ahci-init.o
-> +obj-$(subst m,y,$(CONFIG_SATA_AHCI))	+= ahci-init-xlp2.o
-> 
-> This will add the init code when USB or SATA is enabled as module or
-> is built-in, so I think this is be a better solution.
+Now only s390/MSI use default_msi_mask_irq() and
+default_msix_mask_irq(), replace them with the common
+msi mask irq functions __msi_mask_irq() and __msix_mask_irq().
+Remove default_msi_mask_irq() and default_msix_mask_irq().
 
-Not sure which one is "better" than the other since they both solve the
-same problem, but whatever works for you also works for me! The tree
-seems to have a mix of both approaches.
+Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+---
+ arch/s390/pci/pci.c |    4 ++--
+ include/linux/msi.h |    2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-Thanks!
---
-Florian
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 2fa7b14..552b990 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -448,9 +448,9 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ 	/* Release MSI interrupts */
+ 	list_for_each_entry(msi, &pdev->msi_list, list) {
+ 		if (msi->msi_attrib.is_msix)
+-			default_msix_mask_irq(msi, 1);
++			__msix_mask_irq(msi, 1);
+ 		else
+-			default_msi_mask_irq(msi, 1, 1);
++			__msi_mask_irq(msi, 1, 1);
+ 		irq_set_msi_desc(msi->irq, NULL);
+ 		irq_free_desc(msi->irq);
+ 		msi->msg.address_lo = 0;
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index cc46a62..6fdc5c6 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -61,8 +61,6 @@ void arch_restore_msi_irqs(struct pci_dev *dev);
+ 
+ void default_teardown_msi_irqs(struct pci_dev *dev);
+ void default_restore_msi_irqs(struct pci_dev *dev);
+-#define default_msi_mask_irq	__msi_mask_irq
+-#define default_msix_mask_irq	__msix_mask_irq
+ 
+ struct msi_chip {
+ 	struct module *owner;
+-- 
+1.7.1

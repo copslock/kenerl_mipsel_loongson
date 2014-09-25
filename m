@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 09:19:29 +0200 (CEST)
-Received: from mail-wg0-f47.google.com ([74.125.82.47]:64594 "EHLO
-        mail-wg0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007098AbaIYHT1bDcsU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 09:19:27 +0200
-Received: by mail-wg0-f47.google.com with SMTP id y10so7803689wgg.30
-        for <multiple recipients>; Thu, 25 Sep 2014 00:19:22 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 09:26:32 +0200 (CEST)
+Received: from mail-wg0-f45.google.com ([74.125.82.45]:39905 "EHLO
+        mail-wg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007098AbaIYH01DJO6k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 09:26:27 +0200
+Received: by mail-wg0-f45.google.com with SMTP id x13so6812873wgg.28
+        for <multiple recipients>; Thu, 25 Sep 2014 00:26:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-type:content-disposition:in-reply-to:user-agent;
-        bh=54LPibpr5MFQmFUTqd/bsOkGnFV60cmVAemAuLuZND0=;
-        b=bKoaY56t/58urznkHS/uRE4kF9JwlEB5YoTrwHsvgoNMnfy+OGN2wIqBfCZkttv5P9
-         pcPw8GmgArX4wiOgIcEI0pDkq0DxhJRys2Xz6upnCZGJ7J/D5v8gsXZnG/CpUscsF8xh
-         J2N7IOzc53ZuYftAW8ChR3fS8BH52MHRTMfIqqsl2xS05eSgYNImPJbG3a88jA3iKG23
-         87mTFP3sqBx4Kcf17FuEwFSr39rZGhaWKJCFXIoi1mal8Hw5t6SrlJprTfdaGYswKaSR
-         YeRZvAnU3wrLKZQHQJbYtPhnvLCX8IwixSe+G2GxwufmaPfFm+2tCN37peAhH5+d9LAA
-         U2Pw==
-X-Received: by 10.180.36.84 with SMTP id o20mr36654904wij.9.1411629562222;
-        Thu, 25 Sep 2014 00:19:22 -0700 (PDT)
+        bh=apL9wiTwFhCqNmhb4tFuG3MrcgFxeRCwW2KTxtZbY8k=;
+        b=gYyYpxZJYtHVNybchtUvWX/xkZ2BB683Gn1A47q666UBOY0+yuEKh7dnN8vWZ37Zv3
+         FTt7NxlaZxrLcmBJ+iiyGZwVGfezy2WaIJl98AzU1bJVbAoGapFMGJVECuWTXD13mU/s
+         DOjzs3CHnfUnTcMyJlxbdvEuW8epDTBqJYt3D0O4oXM/hIJL8lF+TR/R2ZjSWZM7dBtz
+         U8AYVr8kePJwb3EIoocIhRtI8EQPnswQtqeWJ6y7hzsct7ao1Z3WOjHDNcpZENLMwjLI
+         Uq9VqHki8QPWH4xW9Rt5Z8lEzsdcuaZ6ZoDghyOhGhqMQR0nCnHJ+5IDEwuzlT1s+C+D
+         2aGg==
+X-Received: by 10.180.187.83 with SMTP id fq19mr35910466wic.59.1411629981806;
+        Thu, 25 Sep 2014 00:26:21 -0700 (PDT)
 Received: from localhost (port-55330.pppoe.wtnet.de. [46.59.216.211])
-        by mx.google.com with ESMTPSA id bg10sm1641250wjc.47.2014.09.25.00.19.21
+        by mx.google.com with ESMTPSA id bg10sm1660249wjc.47.2014.09.25.00.26.20
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 25 Sep 2014 00:19:21 -0700 (PDT)
-Date:   Thu, 25 Sep 2014 09:19:20 +0200
+        Thu, 25 Sep 2014 00:26:21 -0700 (PDT)
+Date:   Thu, 25 Sep 2014 09:26:20 +0200
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Yijing Wang <wangyijing@huawei.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
@@ -50,21 +50,22 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 03/22] MSI: Remove the redundant irq_set_chip_data()
-Message-ID: <20140925071919.GH12423@ulmo>
+Subject: Re: [PATCH v2 06/22] PCI/MSI: Introduce weak arch_find_msi_chip() to
+ find MSI chip
+Message-ID: <20140925072619.GI12423@ulmo>
 References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
- <1411614872-4009-4-git-send-email-wangyijing@huawei.com>
+ <1411614872-4009-7-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="mhjHhnbe5PrRcwjY"
+        protocol="application/pgp-signature"; boundary="wZdghQXYJzyo6AGC"
 Content-Disposition: inline
-In-Reply-To: <1411614872-4009-4-git-send-email-wangyijing@huawei.com>
+In-Reply-To: <1411614872-4009-7-git-send-email-wangyijing@huawei.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42800
+X-archive-position: 42801
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -82,42 +83,48 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---mhjHhnbe5PrRcwjY
+--wZdghQXYJzyo6AGC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Sep 25, 2014 at 11:14:13AM +0800, Yijing Wang wrote:
-> Currently, pcie-designware, pcie-rcar, pci-tegra drivers
-> use irq chip_data to save the msi_chip pointer. They
-> already call irq_set_chip_data() in their own MSI irq map
-> functions. So irq_set_chip_data() in arch_setup_msi_irq()
-> is useless.
+On Thu, Sep 25, 2014 at 11:14:16AM +0800, Yijing Wang wrote:
+> Introduce weak arch_find_msi_chip() to find the match msi_chip.
+> Currently, MSI chip associates pci bus to msi_chip. Because in
+> ARM platform, there may be more than one MSI controller in system.
+> Associate pci bus to msi_chip help pci device to find the match
+> msi_chip and setup MSI/MSI-X irq correctly. But in other platform,
+> like in x86. we only need one MSI chip, because all device use
+> the same MSI address/data and irq etc. So it's no need to associate
+> pci bus to MSI chip, just use a arch function, arch_find_msi_chip()
+> to return the MSI chip for simplicity. The default weak
+> arch_find_msi_chip() used in ARM platform, find the MSI chip
+> by pci bus.
 
-Again, I think this should be the other way around. If drivers do
-something that's already handled by the core, then the duplicate code
-should be dropped from the drivers.
+Can't x86 simply set the bus' .msi field anyway? It would seem to be
+easy to do and unifies the code rather than driving it further apart
+using even more of the __weak functions.
 
 Thierry
 
---mhjHhnbe5PrRcwjY
+--wZdghQXYJzyo6AGC
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUI8H3AAoJEN0jrNd/PrOhD9gP/irz9NSH3coHma+k59CgfNee
-Eadp8ruJoWHsk+kNc+VP4X8QUfFbawc4Y9GarISl2soj926zV/hj8I7CSKn7im1g
-OEWOG1+IoZY+1142DUhZRfqgw+kPIsHL2nKRK6RJCWhpIxIrh1f7/LcSyrWUbS9r
-7t6FJUljEAZ4oSmW8FDuK4hrK9s53zIKQkvv2zfbOv7sAvnYuJM4r5EteKEkxVqy
-VEwvbqgS5Ccf4PKJKnISrCAV9z4H8kYF2PN0e7+8x9l6WOsdz5yEszOJmoREGMzG
-eCUaBYi7Tl7jAqdQkJfEePdK7BotGIbuffF2j76j1TTgOKp2HEoMlTxLv9SldxMa
-9NoNSP5NzJzSyK6Pawx84xkhKnMd5TWLD7IMcDvfcMIbQ+IZiXDnNjQ9diG3RjhT
-zLyMRZc5MdOfL8ScPzrYYUATbIEFmJdB0rUZ6u9ivHdRsVqZ6pJbRz/C/QPfd92M
-dDXoVvcRDGGgaM66PbfYykArWhGI+hPG4ip3t5CpA2KLqLm9BapvqSc0H6V9y5w8
-nuBHS0pk3mojCR9naMzuOy0nqME7SU9QiOiMMvv6uZztE2y3udRmkZNHX32DSi7l
-6YLq84EA/LyOtPp9jrRH1eKZLty5qyY2mO9Le46GAragc909SMnKpNAWJyV+RLLm
-9fhn8sFnEUFKzDPptCkB
-=WmVy
+iQIcBAEBAgAGBQJUI8ObAAoJEN0jrNd/PrOhuC4P/jIBmvnDAEtAA8p9/uMyo4ub
+35EbcR8vyvkUOhtovW5OYqkxRnKAfsYNHAbYYijRRWopeBkmqYj1EiW8F3M3MbKT
+FD+87Kx/0mNqy1mNdoPnIttpaCyY9igbhmeWhE5gFFqI4L715gT4AVg7tG79gsas
+BObGQrGqdsEcdHsMae9wIm6X46Q2HcECiOp5T619C7P6/4DRXoQ6CreiwtWgh8GN
+HdDemrevFvVZI72ceWPPPSY813vykzLhvxbiMhjhiYtZSbtqmYJoNQBbeQIlhfYV
+mdIBuGWQlSAyy4+IZq/IBJ/lO4BtU4zevDvSCOnKhCUlHAZ7qNpxLtDXaZmxRQ1W
+/9BeZHt+IDeev7rXTA97oQXAwzbAabafN1FWyCUWZEq28xIYmAqQZeFA9+KKRQQm
+QMs10F3xpcayjlUXPNp7pLoWgcffcb0g8YocMo4DdMgMFQ9Pnx7jIrQ9Z46n4o+i
+u2Qb275YAwisvL1ol3S2lZ+19CdVEwp+ly/66aYviHzVYeDm2C11myPCbfCbNcPg
+M/qS6KwZzn+LyyCiLT0dmcm90UTIPZ7uw0sbwcVbq80skjhZxLT5NS7xHYnP/znG
+62a/6pxngsPcnk+b7pv2htjbxkKDjJkpn8kXGiR6sGwun0b7HheNwzanLbDPs/7B
+3QkCbl7txteq7GjETQqt
+=LNzZ
 -----END PGP SIGNATURE-----
 
---mhjHhnbe5PrRcwjY--
+--wZdghQXYJzyo6AGC--

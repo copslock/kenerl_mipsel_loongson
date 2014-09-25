@@ -1,74 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 09:42:45 +0200 (CEST)
-Received: from mail-wi0-f170.google.com ([209.85.212.170]:49769 "EHLO
-        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007194AbaIYHmm4eYTW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 09:42:42 +0200
-Received: by mail-wi0-f170.google.com with SMTP id fb4so7789708wid.3
-        for <multiple recipients>; Thu, 25 Sep 2014 00:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=yr+7wc6MHI9YGR7ES679cbQDVuanOHGU38+IuPH2Cz8=;
-        b=WSfOFbgB81ZxiRC0hL8Xxp+xY2Q89bN4GGhA5qsu9GPtZJ9ZGdL0AdkqxbUWOFa1Jn
-         koz5p1DoPoAvlngrPYIt6YbvZp566nOr4U/SkG3IN+KYJkFg1G6fvJemeRkpgF+PqQ0Z
-         Xo4EefAfnrf/6D/D7ZUMSWYTzW9icF9kKAHxh75ITmAS9es0hwJIWLEPL9wUCdtNOUJQ
-         sPkTxGWWLjQLoMW3EU0ic1H9prUhzg+apfXwcoQ+caF29eXz5ac0NdHtvWye0Iq9JDfz
-         9KjQ2W+vd3AtUNLOC3uQAkPsIS8F8WyM5ugfpyKgVe1PSgeQxd64yndQFiFxAZtX3NGA
-         lpeA==
-X-Received: by 10.180.96.226 with SMTP id dv2mr17364316wib.48.1411630957730;
-        Thu, 25 Sep 2014 00:42:37 -0700 (PDT)
-Received: from localhost (port-55330.pppoe.wtnet.de. [46.59.216.211])
-        by mx.google.com with ESMTPSA id p1sm1741281wjy.22.2014.09.25.00.42.36
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 25 Sep 2014 00:42:37 -0700 (PDT)
-Date:   Thu, 25 Sep 2014 09:42:36 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Yijing Wang <wangyijing@huawei.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Xinwei Hu <huxinwei@huawei.com>,
-        Wuyun <wuyun.wu@huawei.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
-        Bharat.Bhushan@freescale.com, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
- in all platforms
-Message-ID: <20140925074235.GN12423@ulmo>
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 11:21:25 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6767 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008971AbaIYJVTcC3l0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 11:21:19 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 637EE9F046380
+        for <linux-mips@linux-mips.org>; Thu, 25 Sep 2014 10:21:10 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 25 Sep 2014 10:21:12 +0100
+Received: from localhost.localdomain (192.168.159.161) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 25 Sep 2014 10:21:11 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v2 05/11] MIPS: clear MSACSR cause bits when handling MSA FP exception
+Date:   Thu, 25 Sep 2014 10:20:59 +0100
+Message-ID: <1411636859-19068-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.0.4
+In-Reply-To: <5422A696.7080408@cogentembedded.com>
+References: <5422A696.7080408@cogentembedded.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="O27Gs9jTTFWz3gAR"
-Content-Disposition: inline
-In-Reply-To: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <thierry.reding@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.159.161]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42806
+X-archive-position: 42807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,50 +45,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Much like for traditional scalar FP exceptions, the cause bits in the
+MSACSR register need to be cleared following an MSA FP exception.
+Without doing so the exception will simply be raised again whenever
+the kernel restores MSACSR from a tasks saved context, leading to
+undesirable spurious exceptions. Clear the cause bits from the
+handle_msa_fpe function, mirroring the way handle_fpe clears the
+cause bits in FCSR.
 
---O27Gs9jTTFWz3gAR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+---
+Changes in v2:
+  - Correct the and instruction (thanks Sergei!).
+---
+ arch/mips/kernel/genex.S | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-On Thu, Sep 25, 2014 at 11:14:10AM +0800, Yijing Wang wrote:
-> This series is based Bjorn's pci/msi branch
-> git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git pci/msi
->=20
-> Currently, there are a lot of weak arch functions in MSI code.
-> Thierry Reding Introduced MSI chip framework to configure MSI/MSI-X in ar=
-m.
-> This series use MSI chip framework to refactor MSI code across all platfo=
-rms
-> to eliminate weak arch functions. Then all MSI irqs will be managed in a=
-=20
-> unified framework. Because this series changed a lot of ARCH MSI code,
-> so tests in the platforms which MSI code modified are warmly welcomed!
-
-Apart from the comments to the individual patches I very much like where
-this is going. Thanks for taking care of this.
-
-Thierry
-
---O27Gs9jTTFWz3gAR
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJUI8drAAoJEN0jrNd/PrOhRSAQALsX6+rt+ih0Gd1v6P/pa7qN
-OXrKB5iUQqBdwt1YLNoZ55Ojb03D1gWrXOV4DE2Ot+oWcChhDHqOflN7mOfNHLwj
-94ZiLJMuHN97GQPNxto1U+ExV52tdbA8FIUIxXgeIV+PeDB55N/NQjJPXOLsLj/3
-8yDXEOE3ZTdLDCNCFPBO4NFSRSvzTMkl4He0IOcMTDqom0YZfHzLb+pJR0DPNq0n
-gpUb03/YTMlSgjIM9Ltq2wb5AdttZeJ4+MG7k/gyLJjFJr178R1szKz23l7cYZfq
-7TowM+iBQV/g3v5l/TabQOeBQDYqIl/2iSJAxc17ECtoxrW1SqSckRJfTqcPmcPi
-r0vplvHDqRXBrv+NH92zhjSts8N5nPZMjiDdSknrOJwJUFFQku8U/2A/XMX3SRxn
-H+BbOXdut+fvidu7HPtrEqlfUIK9Lvh0l8XfnBoeZdLOnZoQV4wI9NBSH4D4HLpA
-o/H5Cq5xh6o2xQFABJHoFOIdMEz5NoWZ8BPiqQJ5nWn9ErGrBmbKcll6S2rIRqZP
-/UhLXKnd3ju7cQF1kH6gu2zL8l2mWIEISUZWJ1dPsc51Y4164W6olvTZ95BGmLQc
-QunHexGBsu0mVlTLtcfVey5K9+m8zcJQel6KThgh2MSBNt54p6IEuLT4fS3e4mXE
-VE4kNZ+YiwcZhdZXalp+
-=IFC0
------END PGP SIGNATURE-----
-
---O27Gs9jTTFWz3gAR--
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index ac35e12..5a6ddc6 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -367,6 +367,15 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	STI
+ 	.endm
+ 
++	.macro	__build_clear_msa_fpe
++	_cfcmsa	a1, MSA_CSR
++	li	a2, ~(0x3f << 12)
++	and	a1, a1, a2
++	_ctcmsa	MSA_CSR, a1
++	TRACE_IRQS_ON
++	STI
++	.endm
++
+ 	.macro	__build_clear_ade
+ 	MFC0	t0, CP0_BADVADDR
+ 	PTR_S	t0, PT_BVADDR(sp)
+@@ -425,7 +434,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	BUILD_HANDLER cpu cpu sti silent		/* #11 */
+ 	BUILD_HANDLER ov ov sti silent			/* #12 */
+ 	BUILD_HANDLER tr tr sti silent			/* #13 */
+-	BUILD_HANDLER msa_fpe msa_fpe sti silent	/* #14 */
++	BUILD_HANDLER msa_fpe msa_fpe msa_fpe silent	/* #14 */
+ 	BUILD_HANDLER fpe fpe fpe silent		/* #15 */
+ 	BUILD_HANDLER ftlb ftlb none silent		/* #16 */
+ 	BUILD_HANDLER msa msa sti silent		/* #21 */
+-- 
+2.0.4

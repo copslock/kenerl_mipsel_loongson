@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 09:38:10 +0200 (CEST)
-Received: from mail-we0-f174.google.com ([74.125.82.174]:56792 "EHLO
-        mail-we0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007194AbaIYHiIijnqn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 09:38:08 +0200
-Received: by mail-we0-f174.google.com with SMTP id w62so7007670wes.33
-        for <multiple recipients>; Thu, 25 Sep 2014 00:38:03 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 09:42:45 +0200 (CEST)
+Received: from mail-wi0-f170.google.com ([209.85.212.170]:49769 "EHLO
+        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007194AbaIYHmm4eYTW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 09:42:42 +0200
+Received: by mail-wi0-f170.google.com with SMTP id fb4so7789708wid.3
+        for <multiple recipients>; Thu, 25 Sep 2014 00:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-type:content-disposition:in-reply-to:user-agent;
-        bh=6rLojZGON83WXLxZK+g7tNbcm1em7XaEjEKFh8TVGKM=;
-        b=J813lj0I0rZlvLhygRh0hGaOs6+EqXjG1IiZ4wKzxF4O/BHpRYbs4I/lvlOxGREn3p
-         0qTjdDjBQNyKhcAppRW9UjijRSzq88wDRsIsWprMxzH8dpdY3kDtkdlvYiP+wihCt6uh
-         vhV4eeUjFXEO0l4WdvjQMX3gG510dhhX7D+b1UPX8n378vHzgm92XfNVyFFixQ7ZoAtq
-         /rg2sy+0c/wixLvZchwM6swDc2DnjjhK7OlU3hd4wfvGmC7n6EutSs422/uhjx5cB7yh
-         dBR8rl66l2Wnf3F66x6wlUFBIoad7pbJKo9QxKWXpFLCnR7tuiE17aHzSOO/TaY0FVBe
-         neow==
-X-Received: by 10.180.98.131 with SMTP id ei3mr23477228wib.46.1411630683415;
-        Thu, 25 Sep 2014 00:38:03 -0700 (PDT)
+        bh=yr+7wc6MHI9YGR7ES679cbQDVuanOHGU38+IuPH2Cz8=;
+        b=WSfOFbgB81ZxiRC0hL8Xxp+xY2Q89bN4GGhA5qsu9GPtZJ9ZGdL0AdkqxbUWOFa1Jn
+         koz5p1DoPoAvlngrPYIt6YbvZp566nOr4U/SkG3IN+KYJkFg1G6fvJemeRkpgF+PqQ0Z
+         Xo4EefAfnrf/6D/D7ZUMSWYTzW9icF9kKAHxh75ITmAS9es0hwJIWLEPL9wUCdtNOUJQ
+         sPkTxGWWLjQLoMW3EU0ic1H9prUhzg+apfXwcoQ+caF29eXz5ac0NdHtvWye0Iq9JDfz
+         9KjQ2W+vd3AtUNLOC3uQAkPsIS8F8WyM5ugfpyKgVe1PSgeQxd64yndQFiFxAZtX3NGA
+         lpeA==
+X-Received: by 10.180.96.226 with SMTP id dv2mr17364316wib.48.1411630957730;
+        Thu, 25 Sep 2014 00:42:37 -0700 (PDT)
 Received: from localhost (port-55330.pppoe.wtnet.de. [46.59.216.211])
-        by mx.google.com with ESMTPSA id wx3sm1732858wjc.19.2014.09.25.00.38.02
+        by mx.google.com with ESMTPSA id p1sm1741281wjy.22.2014.09.25.00.42.36
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 25 Sep 2014 00:38:02 -0700 (PDT)
-Date:   Thu, 25 Sep 2014 09:38:01 +0200
+        Thu, 25 Sep 2014 00:42:37 -0700 (PDT)
+Date:   Thu, 25 Sep 2014 09:42:36 +0200
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Yijing Wang <wangyijing@huawei.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
@@ -50,22 +50,21 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 17/22] s390/MSI: Use MSI chip framework to configure
- MSI/MSI-X irq
-Message-ID: <20140925073800.GM12423@ulmo>
+Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
+ in all platforms
+Message-ID: <20140925074235.GN12423@ulmo>
 References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
- <1411614872-4009-18-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="W4pDZ/VvazBYHhxQ"
+        protocol="application/pgp-signature"; boundary="O27Gs9jTTFWz3gAR"
 Content-Disposition: inline
-In-Reply-To: <1411614872-4009-18-git-send-email-wangyijing@huawei.com>
+In-Reply-To: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42805
+X-archive-position: 42806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,43 +82,49 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---W4pDZ/VvazBYHhxQ
+--O27Gs9jTTFWz3gAR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 25, 2014 at 11:14:27AM +0800, Yijing Wang wrote:
-[...]
-> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-[...]
-> @@ -358,7 +358,7 @@ static void zpci_irq_handler(struct airq_struct *airq)
->  	}
->  }
-> =20
-> -int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-> +int zpci_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+On Thu, Sep 25, 2014 at 11:14:10AM +0800, Yijing Wang wrote:
+> This series is based Bjorn's pci/msi branch
+> git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git pci/msi
+>=20
+> Currently, there are a lot of weak arch functions in MSI code.
+> Thierry Reding Introduced MSI chip framework to configure MSI/MSI-X in ar=
+m.
+> This series use MSI chip framework to refactor MSI code across all platfo=
+rms
+> to eliminate weak arch functions. Then all MSI irqs will be managed in a=
+=20
+> unified framework. Because this series changed a lot of ARCH MSI code,
+> so tests in the platforms which MSI code modified are warmly welcomed!
 
-static?
+Apart from the comments to the individual patches I very much like where
+this is going. Thanks for taking care of this.
 
---W4pDZ/VvazBYHhxQ
+Thierry
+
+--O27Gs9jTTFWz3gAR
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUI8ZYAAoJEN0jrNd/PrOhT54QAIN9jc2i8zDFXQP0O2xLX151
-K/0a6f2Ke1ts4th35u5jkXxtnjEubc8RMuU2k+Dft0pOk1wQqfi7CmdJtG+MrGqI
-IZ78syU0TLzw2I2IhhCW/qIrc0eK9gcVpY5FnYxNGNsErYVOHB5w2lqj65UXkrK1
-KuKTi4wk7SBfs7D0I7UVe9CjiGte3h4Wkm0FExDPekBjlb+NheufDExalF1vv5VW
-Y/Ers3FW9kjTCLWHf+wS7Sg7a/uq8PfTG3hkn7ja7ykCouBoheB+pb1OmV5boizz
-/H9TvN+P3WCd3TCe0pz5qI8icntR/5V09HiM3OM1sGqwWopvZgKiw8RSXwJMKdb3
-4NsDxyu6glUOMpuFyDxzQ+iC94LeTq1L4C4oTfrdMdCQetJQm1DxWQYo4iPy1Luz
-cyWf37Gr7RoNuPlx++ONPfub8xDPP6LpDm7Jf1ztIuHNRnN0D/EYNP/3W6s2en4w
-0n4URoSBn7blmJQPOKQ+oNkw295vAc0bSU+NlqjdnpMhJq/Aq+olHB4Of97IKXtk
-7lLqyJAX6ISNs302AVES9Wch7UW6MWrlpxiQk3HkGZBvFExbGCTD806d0wr9+V9Y
-XcvfTABfe5ycOd28a4HwZx0BpglxbMRwarqwdwhpA9H0500K4lmTPrzZLVY+B0AB
-UxhsWg3u+nU6NtiAWuwY
-=lpw6
+iQIcBAEBAgAGBQJUI8drAAoJEN0jrNd/PrOhRSAQALsX6+rt+ih0Gd1v6P/pa7qN
+OXrKB5iUQqBdwt1YLNoZ55Ojb03D1gWrXOV4DE2Ot+oWcChhDHqOflN7mOfNHLwj
+94ZiLJMuHN97GQPNxto1U+ExV52tdbA8FIUIxXgeIV+PeDB55N/NQjJPXOLsLj/3
+8yDXEOE3ZTdLDCNCFPBO4NFSRSvzTMkl4He0IOcMTDqom0YZfHzLb+pJR0DPNq0n
+gpUb03/YTMlSgjIM9Ltq2wb5AdttZeJ4+MG7k/gyLJjFJr178R1szKz23l7cYZfq
+7TowM+iBQV/g3v5l/TabQOeBQDYqIl/2iSJAxc17ECtoxrW1SqSckRJfTqcPmcPi
+r0vplvHDqRXBrv+NH92zhjSts8N5nPZMjiDdSknrOJwJUFFQku8U/2A/XMX3SRxn
+H+BbOXdut+fvidu7HPtrEqlfUIK9Lvh0l8XfnBoeZdLOnZoQV4wI9NBSH4D4HLpA
+o/H5Cq5xh6o2xQFABJHoFOIdMEz5NoWZ8BPiqQJ5nWn9ErGrBmbKcll6S2rIRqZP
+/UhLXKnd3ju7cQF1kH6gu2zL8l2mWIEISUZWJ1dPsc51Y4164W6olvTZ95BGmLQc
+QunHexGBsu0mVlTLtcfVey5K9+m8zcJQel6KThgh2MSBNt54p6IEuLT4fS3e4mXE
+VE4kNZ+YiwcZhdZXalp+
+=IFC0
 -----END PGP SIGNATURE-----
 
---W4pDZ/VvazBYHhxQ--
+--O27Gs9jTTFWz3gAR--

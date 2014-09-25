@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 04:56:06 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:18829 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009724AbaIYCvfHF01P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 04:51:35 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 04:56:23 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:39514 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009728AbaIYCvyYOigX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 04:51:54 +0200
 Received: from 172.24.2.119 (EHLO szxeml409-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id BZX30346;
-        Thu, 25 Sep 2014 10:50:36 +0800 (CST)
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CCC72766;
+        Thu, 25 Sep 2014 10:50:58 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml409-hub.china.huawei.com (10.82.67.136) with Microsoft SMTP Server id
- 14.3.158.1; Thu, 25 Sep 2014 10:50:23 +0800
+ 14.3.158.1; Thu, 25 Sep 2014 10:50:50 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -37,9 +37,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH v2 03/22] MSI: Remove the redundant irq_set_chip_data()
-Date:   Thu, 25 Sep 2014 11:14:13 +0800
-Message-ID: <1411614872-4009-4-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH v2 21/22] tile/MSI: Use MSI chip framework to configure MSI/MSI-X irq
+Date:   Thu, 25 Sep 2014 11:14:31 +0800
+Message-ID: <1411614872-4009-22-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
 References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
@@ -51,7 +51,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42790
+X-archive-position: 42791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,37 +68,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently, pcie-designware, pcie-rcar, pci-tegra drivers
-use irq chip_data to save the msi_chip pointer. They
-already call irq_set_chip_data() in their own MSI irq map
-functions. So irq_set_chip_data() in arch_setup_msi_irq()
-is useless.
+Use MSI chip framework instead of arch MSI functions to configure
+MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
 ---
- drivers/pci/msi.c |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
+ arch/tile/kernel/pci_gx.c |   14 ++++++++++++--
+ 1 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 51d7e62..50f67a3 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -41,14 +41,13 @@ int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
- 	if (err < 0)
- 		return err;
+diff --git a/arch/tile/kernel/pci_gx.c b/arch/tile/kernel/pci_gx.c
+index e39f9c5..4912b75 100644
+--- a/arch/tile/kernel/pci_gx.c
++++ b/arch/tile/kernel/pci_gx.c
+@@ -1485,7 +1485,7 @@ static struct irq_chip tilegx_msi_chip = {
+ 	/* TBD: support set_affinity. */
+ };
  
--	irq_set_chip_data(desc->irq, chip);
--
- 	return 0;
+-int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
++static int tile_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
+ {
+ 	struct pci_controller *controller;
+ 	gxio_trio_context_t *trio_context;
+@@ -1604,7 +1604,17 @@ is_64_failure:
+ 	return ret;
  }
  
- void __weak arch_teardown_msi_irq(unsigned int irq)
+-void arch_teardown_msi_irq(unsigned int irq)
++void tile_teardown_msi_irq(unsigned int irq)
  {
--	struct msi_chip *chip = irq_get_chip_data(irq);
-+	struct msi_desc *entry = irq_get_msi_desc(irq);
-+	struct msi_chip *chip = entry->dev->bus->msi;
- 
- 	if (!chip || !chip->teardown_irq)
- 		return;
+ 	irq_free_hwirq(irq);
+ }
++
++static struct msi_chip tile_msi_chip = {
++	.setup_irq = tile_setup_msi_irq,
++	.teardown_irq = tile_teardown_msi_irq,
++};
++
++struct msi_chip *arch_find_msi_chip(struct pci_dev *dev)
++{
++	return &tile_msi_chip;
++}
 -- 
 1.7.1

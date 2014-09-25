@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 09:36:19 +0200 (CEST)
-Received: from mail-wg0-f44.google.com ([74.125.82.44]:64720 "EHLO
-        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007098AbaIYHgQtPaCN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 09:36:16 +0200
-Received: by mail-wg0-f44.google.com with SMTP id z12so3553493wgg.3
-        for <multiple recipients>; Thu, 25 Sep 2014 00:36:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 09:37:10 +0200 (CEST)
+Received: from mail-wg0-f42.google.com ([74.125.82.42]:58006 "EHLO
+        mail-wg0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007098AbaIYHhIYzMmP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 09:37:08 +0200
+Received: by mail-wg0-f42.google.com with SMTP id a1so6889391wgh.13
+        for <multiple recipients>; Thu, 25 Sep 2014 00:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-type:content-disposition:in-reply-to:user-agent;
-        bh=ZrnXqACxgJlDYBQtbgEmF7W8KL5gRWOwuaC4X0jOH9o=;
-        b=P7r91BYOGU/Wmo+EmxqQMr8VriPXS4PN9L7fbE9Z62LFeDQhdEPWAZ7vzE1XsYnNl6
-         T47t7tXVSrD7rxJsyxRcTQTF6t1dEIU2nSaNrCHlvoYW4BLsgd3hvFt/OTIqOE3MjOlG
-         FhF3bTTj4Sk5U7+QbMTT9yciCCwuUsnF9nG7MnpN/G7nWtRS0rEeElVeX539MulC7qaJ
-         GejqvqI1JNdxkjXON5MAMmUe3awbNtE75EjEvn4SLzIJUK4IiBk/vaoPVo6dtjpnS3b4
-         r5+gEzorhb07FDMGpKZ2uKYbGIqhvMEJklIdierCDSvnDRYOo9OmT/2qxC5oX79yrl7F
-         j/EQ==
-X-Received: by 10.194.191.135 with SMTP id gy7mr13427397wjc.39.1411630571582;
-        Thu, 25 Sep 2014 00:36:11 -0700 (PDT)
+        bh=q2t/TON9LNCLPcpskdxiO/+pmitEpNqzpcXY3U83BWM=;
+        b=yp4J1wO1qibsNyQmTaClCi+PJz73Ol4mooWRwYeoX9hpTbhWsM52AKJ2zkEfTOvR5z
+         r4K545YwjhJHKAfswT5LvtE1p8efyEAUJEIViL9ML5ngZJcpwvbwVkie80e2QPySH8tL
+         qaIOnBYFST/aH+FjTo7Aa9aiSGT3pMlwSsBvn9KtGJK159Z3+J7TUQ3dgcAAimKGBAL9
+         rU0d3CvsHCU15seIHcYl/h4R+VDT+K5cwwuYY3b79mX72dk3MccmFSULNkPLhx+nrlJm
+         40CFngLHPLaIE+5dWsn092+1dBPY2JGmQdegaFzrvp32hi5sHhcycQDfkOhOEHmL7FYx
+         4OIQ==
+X-Received: by 10.180.187.76 with SMTP id fq12mr16869775wic.4.1411630623224;
+        Thu, 25 Sep 2014 00:37:03 -0700 (PDT)
 Received: from localhost (port-55330.pppoe.wtnet.de. [46.59.216.211])
-        by mx.google.com with ESMTPSA id lu12sm8274722wic.4.2014.09.25.00.36.10
+        by mx.google.com with ESMTPSA id ia3sm1740135wjb.12.2014.09.25.00.37.02
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 25 Sep 2014 00:36:10 -0700 (PDT)
-Date:   Thu, 25 Sep 2014 09:36:09 +0200
+        Thu, 25 Sep 2014 00:37:02 -0700 (PDT)
+Date:   Thu, 25 Sep 2014 09:37:01 +0200
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Yijing Wang <wangyijing@huawei.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
@@ -50,22 +50,22 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 14/22] MIPS/Xlp/MSI: Use MSI chip framework to
+Subject: Re: [PATCH v2 15/22] MIPS/Xlr/MSI: Use MSI chip framework to
  configure MSI/MSI-X irq
-Message-ID: <20140925073608.GK12423@ulmo>
+Message-ID: <20140925073700.GL12423@ulmo>
 References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
- <1411614872-4009-15-git-send-email-wangyijing@huawei.com>
+ <1411614872-4009-16-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="6K2R/cS9K4qvcBNq"
+        protocol="application/pgp-signature"; boundary="nrM5Z5VIJgwP9LWp"
 Content-Disposition: inline
-In-Reply-To: <1411614872-4009-15-git-send-email-wangyijing@huawei.com>
+In-Reply-To: <1411614872-4009-16-git-send-email-wangyijing@huawei.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42803
+X-archive-position: 42804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,56 +83,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---6K2R/cS9K4qvcBNq
+--nrM5Z5VIJgwP9LWp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 25, 2014 at 11:14:24AM +0800, Yijing Wang wrote:
-> Use MSI chip framework instead of arch MSI functions to configure
-> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
-
-Nit: s/irq/IRQ/ in the above.
-
-> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-> ---
->  arch/mips/pci/msi-xlp.c |   14 ++++++++++++--
->  1 files changed, 12 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/mips/pci/msi-xlp.c b/arch/mips/pci/msi-xlp.c
-> index e469dc7..6b791ef 100644
-> --- a/arch/mips/pci/msi-xlp.c
-> +++ b/arch/mips/pci/msi-xlp.c
-> @@ -245,7 +245,7 @@ static struct irq_chip xlp_msix_chip =3D {
->  	.irq_unmask	=3D unmask_msi_irq,
->  };
+On Thu, Sep 25, 2014 at 11:14:25AM +0800, Yijing Wang wrote:
+[...]
+> diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
+[...]
+> @@ -214,11 +214,11 @@ static int get_irq_vector(const struct pci_dev *dev)
+>  }
 > =20
+>  #ifdef CONFIG_PCI_MSI
 > -void arch_teardown_msi_irq(unsigned int irq)
-> +void xlp_teardown_msi_irq(unsigned int irq)
+> +void xlr_teardown_msi_irq(unsigned int irq)
+>  {
+>  }
+> =20
+> -int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
+> +int xlr_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
 
-Should this not be static now as well?
+Can both of these now be static?
 
 Thierry
 
---6K2R/cS9K4qvcBNq
+--nrM5Z5VIJgwP9LWp
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUI8XoAAoJEN0jrNd/PrOhrs4P/Rg10uO2/sCyBwOPDpHaskVO
-8blYsnipag0xv7pyGtAeiEVLgpzcQpv+zjXPmti+R1qI1OVkUXblvYhNtz/CDMvg
-AN6CaoZI3llRg3fZwiayj3m/i1HpiXTPqYPK3sWanCUMmZJe73eUj8zMt6bH7yPG
-WsuUwWTrc2hcscIDucigcNopQ0fuh0vLYLWgiZe+qJdJIrvGkvGN4h0pHuqIkk0o
-DUyMUme8HOL1irxSWYnnmkTPx3TOAWDn7VJVxJgpIKEG0A/X1GCi/4wCkMMxtuxH
-1V0aRu/k9AsOR5BVDROfyZCHvuTVLZeXP54ehWxAyA1GwS55Z36FNsl/JLtZ2WhO
-95CX6ac9NMDLgmGr9W19SAffXn47Yy/1fvK5zq0F+taK005ajIxufmnoSVrzZsH8
-dS8MoFslKB8B2EKW5874CFVUKGx5hZTARp12WWvTfJehLTYfJNpSpdjRdI7LBggj
-/PNzvpDkiwwSVzXcJUU45wOZvaS0ImoH3Xn2GF91D/kO+jfFc52lI8Tv8Ixw7Hgl
-pJObojrzrQJe20K2NJP9xuCNXUXiI0/EbfwZf/MxE5u/FSxigS8vajMY8CFMlQ5N
-4sSi2qWsKa2ZrGMo5dyDfblWSjy1U1O752LQXn+8ddng18wDV/tk/tzZU0Xsywy6
-jGgaMyNaRi22AESZhUqv
-=xvjk
+iQIcBAEBAgAGBQJUI8YcAAoJEN0jrNd/PrOhmbYP/ikLBs/f/C3q0Ah+1wm0yIQ9
+biLioTIcSkRAsIfmKvheDIwFqrlfVwxThhAFT1+1x9N/KgeZ0hTm7/ZzogCQEn9J
+J90nv0Y1KRdY/exT1wfgVEFtITGMGqDKTScawCJSoqc/4iswAtYkap3QdftgmyDU
+acFImPmiT5rTaF3oQXhgNTgRcMMsdGOYJg/64K0snGcBGCNDYr4ZutMiEzof/G7O
+w5KUk61xP+tvpYWRebsG/ivvFVWXNwVnpAOPAq+j6ziVxLlFLvY/r7QZ0Z95kSTj
+AqufUg6h2cePrzW3VGxKJ5HL0eLS43pMofUkRFqcNv/BEeE8ZEg5wd2mNCtAroXb
+fG5+KClUrEYZ28WO5d7Bagvekb00O2SYJ6HQW9WoASguiLfMMGa0g9w8SxmES0Gv
+axepd0VObagoL/0lUjvSs73S39kzWsShRysZ9hCEsox1Xt3kinX3wwIP+k97dsKC
+LAyXKNzxzU5xtlsZONRwRx2SsBRnUApH6CgDE5SOBgSAM+Juuk/e4NES7iTHW1iA
+7DrbU7XWcMc/SLbIanZv3gig1WuNUR011kUZ9cerQpTMZ5JX+pR/f59jbtgexuEt
+2lqvEs5pj2RZfiZy+pl21B1hMz7UPuQm8Hw0NMsXQP9wPcDwLzYAqT7uhHdaBhLV
+4rVgrCyYNcw+4+MK/Nhv
+=crca
 -----END PGP SIGNATURE-----
 
---6K2R/cS9K4qvcBNq--
+--nrM5Z5VIJgwP9LWp--

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 04:57:02 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:3197 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009733AbaIYC4bq6Udd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 04:56:31 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2014 04:57:19 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:42825 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009084AbaIYC4geccUt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2014 04:56:36 +0200
 Received: from 172.24.2.119 (EHLO szxeml409-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AUU79147;
-        Thu, 25 Sep 2014 10:50:53 +0800 (CST)
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CCC72764;
+        Thu, 25 Sep 2014 10:50:57 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml409-hub.china.huawei.com (10.82.67.136) with Microsoft SMTP Server id
- 14.3.158.1; Thu, 25 Sep 2014 10:50:44 +0800
+ 14.3.158.1; Thu, 25 Sep 2014 10:50:49 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -37,9 +37,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH v2 17/22] s390/MSI: Use MSI chip framework to configure MSI/MSI-X irq
-Date:   Thu, 25 Sep 2014 11:14:27 +0800
-Message-ID: <1411614872-4009-18-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH v2 20/22] Sparc/MSI: Use MSI chip framework to configure MSI/MSI-X irq
+Date:   Thu, 25 Sep 2014 11:14:30 +0800
+Message-ID: <1411614872-4009-21-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
 References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
@@ -47,17 +47,11 @@ MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.100.166]
 X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020209.5423830E.001C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: 890479f62c42a883b34244d909f528c3
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42793
+X-archive-position: 42794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,49 +72,48 @@ Use MSI chip framework instead of arch MSI functions to configure
 MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-Acked-by: Sebastian Ott <sebott@linux.vnet.ibm.com>
 ---
- arch/s390/pci/pci.c |   14 ++++++++++++--
+ arch/sparc/kernel/pci.c |   14 ++++++++++++--
  1 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 552b990..da5316e 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -358,7 +358,7 @@ static void zpci_irq_handler(struct airq_struct *airq)
- 	}
- }
+diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
+index b36365f..2a89ee2 100644
+--- a/arch/sparc/kernel/pci.c
++++ b/arch/sparc/kernel/pci.c
+@@ -905,7 +905,7 @@ int pci_domain_nr(struct pci_bus *pbus)
+ EXPORT_SYMBOL(pci_domain_nr);
  
--int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+int zpci_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ #ifdef CONFIG_PCI_MSI
+-int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
++int sparc_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
  {
- 	struct zpci_dev *zdev = get_zdev(pdev);
- 	unsigned int hwirq, msi_vecs;
-@@ -434,7 +434,7 @@ out:
- 	return rc;
+ 	struct pci_pbm_info *pbm = pdev->dev.archdata.host_controller;
+ 	unsigned int irq;
+@@ -916,7 +916,7 @@ int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
+ 	return pbm->setup_msi_irq(&irq, pdev, desc);
  }
  
--void arch_teardown_msi_irqs(struct pci_dev *pdev)
-+static void zpci_teardown_msi_irqs(struct pci_dev *pdev)
+-void arch_teardown_msi_irq(unsigned int irq)
++void sparc_teardown_msi_irq(unsigned int irq)
  {
- 	struct zpci_dev *zdev = get_zdev(pdev);
- 	struct msi_desc *msi;
-@@ -464,6 +464,16 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
- 	airq_iv_free_bit(zpci_aisb_iv, zdev->aisb);
+ 	struct msi_desc *entry = irq_get_msi_desc(irq);
+ 	struct pci_dev *pdev = entry->dev;
+@@ -925,6 +925,16 @@ void arch_teardown_msi_irq(unsigned int irq)
+ 	if (pbm->teardown_msi_irq)
+ 		pbm->teardown_msi_irq(irq, pdev);
  }
- 
-+static struct msi_chip zpci_msi_chip = {
-+	.setup_irqs = zpci_setup_msi_irqs,
-+	.teardown_irqs = zpci_teardown_msi_irqs,
++
++static struct msi_chip sparc_msi_chip = {
++	.setup_irq = sparc_setup_msi_irq,
++	.teardown_irq = sparc_teardown_msi_irq,
 +};
 +
 +struct msi_chip *arch_find_msi_chip(struct pci_dev *dev)
 +{
-+	return &zpci_msi_chip;
++	return &sparc_msi_chip;
 +}
-+
- static void zpci_map_resources(struct zpci_dev *zdev)
- {
- 	struct pci_dev *pdev = zdev->pdev;
+ #endif /* !(CONFIG_PCI_MSI) */
+ 
+ static void ali_sound_dma_hack(struct pci_dev *pdev, int set_bit)
 -- 
 1.7.1

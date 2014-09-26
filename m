@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 03:59:36 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:21585 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009918AbaIZB7bkn343 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 03:59:31 +0200
-Received: from 172.24.2.119 (EHLO szxeml415-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AUW09653;
-        Fri, 26 Sep 2014 09:59:07 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml415-hub.china.huawei.com
- (10.82.67.154) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
- 09:59:00 +0800
-Message-ID: <5424C85E.4090006@huawei.com>
-Date:   Fri, 26 Sep 2014 09:58:54 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 04:06:23 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:44104 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009897AbaIZCGUPO0RD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 04:06:20 +0200
+Received: from 172.24.2.119 (EHLO szxeml422-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CCE09686;
+        Fri, 26 Sep 2014 10:05:04 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml422-hub.china.huawei.com
+ (10.82.67.161) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
+ 10:04:53 +0800
+Message-ID: <5424C9BD.3040506@huawei.com>
+Date:   Fri, 26 Sep 2014 10:04:45 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
@@ -40,24 +40,18 @@ CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
         "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 01/22] PCI/MSI: Clean up struct msi_chip argument
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <1411614872-4009-2-git-send-email-wangyijing@huawei.com> <20140925071536.GG12423@ulmo>
-In-Reply-To: <20140925071536.GG12423@ulmo>
+Subject: Re: [PATCH v2 03/22] MSI: Remove the redundant irq_set_chip_data()
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <1411614872-4009-4-git-send-email-wangyijing@huawei.com> <20140925071919.GH12423@ulmo>
+In-Reply-To: <20140925071919.GH12423@ulmo>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.177.27.212]
 X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020204.5424C86C.00B3,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: 5cd6542b35db9be32f3a78ca7be566a9
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42820
+X-archive-position: 42821
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,26 +68,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/9/25 15:15, Thierry Reding wrote:
-> On Thu, Sep 25, 2014 at 11:14:11AM +0800, Yijing Wang wrote:
->> Msi_chip functions setup_irq/teardown_irq rarely use msi_chip
->> argument.
+On 2014/9/25 15:19, Thierry Reding wrote:
+> On Thu, Sep 25, 2014 at 11:14:13AM +0800, Yijing Wang wrote:
+>> Currently, pcie-designware, pcie-rcar, pci-tegra drivers
+>> use irq chip_data to save the msi_chip pointer. They
+>> already call irq_set_chip_data() in their own MSI irq map
+>> functions. So irq_set_chip_data() in arch_setup_msi_irq()
+>> is useless.
 > 
-> That's not true. Out of the four drivers that you modify two use the
-> parameter. And the two that don't probably should be using it too.
-> 
-> 50% is not "rarely". =)
-> 
->>           We can look up msi_chip pointer by the device pointer
->> or irq number, so clean up msi_chip argument.
-> 
-> I don't like this particular change. The idea was to keep the API object
-> oriented so that drivers wouldn't have to know where to get the MSI chip
-> from. It also makes it more resilient against code reorganizations since
-> the core code is the only place that needs to know where to get the chip
-> from.
+> Again, I think this should be the other way around. If drivers do
+> something that's already handled by the core, then the duplicate code
+> should be dropped from the drivers.
 
-Hm, ok, Thomas also don't like this change, I will drop this one, thanks.
+Hi Thierry, this is different thing, because chip_data is specific to IRQ
+controller, and in other platform, like in x86, chip_data is used to save irq_cfg.
+So we can not call irq_set_chip_data() in core code.
+
+x86 irq piece code
+
+int arch_setup_hwirq(unsigned int irq, int node)
+{
+	struct irq_cfg *cfg;
+	unsigned long flags;
+	int ret;
+
+	cfg = alloc_irq_cfg(irq, node);
+	if (!cfg)
+		return -ENOMEM;
+
+	raw_spin_lock_irqsave(&vector_lock, flags);
+	ret = __assign_irq_vector(irq, cfg, apic->target_cpus());
+	raw_spin_unlock_irqrestore(&vector_lock, flags);
+
+	if (!ret)
+		irq_set_chip_data(irq, cfg);  ------------->Save irq_cfg
+	else
+		free_irq_cfg(irq, cfg);
+	return ret;
+}
 
 Thanks!
 Yijing.

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 11:46:32 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:54403 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 11:46:51 +0200 (CEST)
+Received: from cantor2.suse.de ([195.135.220.15]:54404 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009712AbaIZJpzVal24 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27009897AbaIZJpzWug2K (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 26 Sep 2014 11:45:55 +0200
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id A3FB9ADDC;
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id A3066ADDB;
         Fri, 26 Sep 2014 09:45:54 +0000 (UTC)
 Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.83)
         (envelope-from <jslaby@suse.cz>)
-        id 1XXS65-0008QM-Sf; Fri, 26 Sep 2014 11:45:53 +0200
+        id 1XXS65-0008QH-SA; Fri, 26 Sep 2014 11:45:53 +0200
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Jie Chen <chenj@lemote.com>, Rui Wang <wangr@lemote.com>,
+        Binbin Zhou <zhoubb@lemote.com>,
         John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 071/142] MIPS: Remove BUG_ON(!is_fpu_owner()) in do_ade()
-Date:   Fri, 26 Sep 2014 11:44:42 +0200
-Message-Id: <6540a038754f78f73075f906ce42c04f84297e3e.1411724724.git.jslaby@suse.cz>
+Subject: [PATCH 3.12 070/142] MIPS: tlbex: Fix a missing statement for HUGETLB
+Date:   Fri, 26 Sep 2014 11:44:41 +0200
+Message-Id: <ac9c2b5ec9758352df308886f87363cdbb3929d7.1411724724.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <406eb8e630446eff74211cba53a536f232bbefd1.1411724723.git.jslaby@suse.cz>
 References: <406eb8e630446eff74211cba53a536f232bbefd1.1411724723.git.jslaby@suse.cz>
@@ -30,7 +30,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42841
+X-archive-position: 42842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,61 +53,39 @@ From: Huacai Chen <chenhc@lemote.com>
 
 ===============
 
-commit 2e5767a27337812f6850b3fa362419e2f085e5c3 upstream.
+commit 8393c524a25609a30129e4a8975cf3b91f6c16a5 upstream.
 
-In do_ade(), is_fpu_owner() isn't preempt-safe. For example, when an
-unaligned ldc1 is executed, do_cpu() is called and then FPU will be
-enabled (and TIF_USEDFPU will be set for the current process). Then,
-do_ade() is called because the access is unaligned.  If the current
-process is preempted at this time, TIF_USEDFPU will be cleard.  So when
-the process is scheduled again, BUG_ON(!is_fpu_owner()) is triggered.
-
-This small program can trigger this BUG in a preemptible kernel:
-
-int main (int argc, char *argv[])
-{
-        double u64[2];
-
-        while (1) {
-                asm volatile (
-                        ".set push \n\t"
-                        ".set noreorder \n\t"
-                        "ldc1 $f3, 4(%0) \n\t"
-                        ".set pop \n\t"
-                        ::"r"(u64):
-                );
-        }
-
-        return 0;
-}
-
-V2: Remove the BUG_ON() unconditionally due to Paul's suggestion.
+In commit 2c8c53e28f1 (MIPS: Optimize TLB handlers for Octeon CPUs)
+build_r4000_tlb_refill_handler() is modified. But it doesn't compatible
+with the original code in HUGETLB case. Because there is a copy & paste
+error and one line of code is missing. It is very easy to produce a bug
+with LTP's hugemmap05 test.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Jie Chen <chenj@lemote.com>
-Signed-off-by: Rui Wang <wangr@lemote.com>
+Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Cc: John Crispin <john@phrozen.org>
 Cc: Steven J. Hill <Steven.Hill@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: Fuxin Zhang <zhangfx@lemote.com>
 Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/7496/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kernel/unaligned.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/mm/tlbex.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
-index c369a5d35527..b897dde93e7a 100644
---- a/arch/mips/kernel/unaligned.c
-+++ b/arch/mips/kernel/unaligned.c
-@@ -605,7 +605,6 @@ static void emulate_load_store_insn(struct pt_regs *regs,
- 	case sdc1_op:
- 		die_if_kernel("Unaligned FP access in kernel code", regs);
- 		BUG_ON(!used_math());
--		BUG_ON(!is_fpu_owner());
- 
- 		lose_fpu(1);	/* Save FPU state for the emulator. */
- 		res = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 9bb3a9363b06..db7a050f5c2c 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1333,6 +1333,7 @@ static void build_r4000_tlb_refill_handler(void)
+ 	}
+ #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+ 	uasm_l_tlb_huge_update(&l, p);
++	UASM_i_LW(&p, K0, 0, K1);
+ 	build_huge_update_entries(&p, htlb_info.huge_pte, K1);
+ 	build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
+ 				   htlb_info.restore_scratch);
 -- 
 2.1.0

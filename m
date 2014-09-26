@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 10:09:30 +0200 (CEST)
-Received: from mail-we0-f174.google.com ([74.125.82.174]:45726 "EHLO
-        mail-we0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008039AbaIZIJ3Jdujt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 10:09:29 +0200
-Received: by mail-we0-f174.google.com with SMTP id w62so8746293wes.19
-        for <multiple recipients>; Fri, 26 Sep 2014 01:09:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 10:09:58 +0200 (CEST)
+Received: from mail-we0-f181.google.com ([74.125.82.181]:42685 "EHLO
+        mail-we0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008039AbaIZIJ4fqNC0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 10:09:56 +0200
+Received: by mail-we0-f181.google.com with SMTP id w61so7337476wes.40
+        for <multiple recipients>; Fri, 26 Sep 2014 01:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-type:content-disposition:in-reply-to:user-agent;
-        bh=XoBRzmP3MFKF/9Dx5T0UX/0JlVthC2ct0a043hA/oNk=;
-        b=KY89qs++6wRqRQPNMSwaUiGNqmCLOfTg85Hqx4juwURfc+jFDKvtuK4anp/uUt/n1o
-         Z01cECVs2PePCbddELMEgM6IPSPM/gMsKWQv+lpi6DScQ2tN90+rr6Om0F0r3WkV28K8
-         6bkL2By7nhy1LzOu0QKzELFFSQUv94rv1I6h8GqTL7mga4h8d/XoJVb68ztZLPPXa9p0
-         lqmG5hRLkbLrtrR3DnGvBVuqCPH3U/Y4SC21wlwGzFMEme2RvjLock9xRc48REY0vgR4
-         gzJK9kTaRDduvFhFuHg/gBcSxmggBX0R9K9e7npcgGybu+6OPV7TmoAbHqkA0O3AKAND
-         EnNQ==
-X-Received: by 10.194.186.178 with SMTP id fl18mr21854113wjc.8.1411718963877;
-        Fri, 26 Sep 2014 01:09:23 -0700 (PDT)
+        bh=yp3gFGYu5NNnX9hZ6DIF69feMU5kROgGPefkH1RbFhQ=;
+        b=WAbadhZUU6XzeZgxAV9UdmyqmAIlTpFgCEedsvakqopkQXqMNh1viSJ+dMTIzywmUK
+         hvuTlGnmKf4Y7W6ZCmFyv4lv8dGyxfxSQpDQhvzR2TIzp21/grTv4HJRJ1qOA69eesiu
+         f3opAdI5vbnInFMZhDOq5kvsflX/1NkwKVFyuOtAhbC2o4FhFXNYuqu0MtmKFSphzF1S
+         /uTt13qpHWOB80jtJjgw6bdmVgeOJrE2CZTsz0/e49efe+cI8Gx3XZWxpDzZ9zqj2lXQ
+         duepMrRJN55QJV1wmADfyA6D4WaIhyYNQ6TrLFgUagx+/tlKWbHjn86uQsJv8CAt27BM
+         oSwA==
+X-Received: by 10.194.157.230 with SMTP id wp6mr4766411wjb.15.1411718991337;
+        Fri, 26 Sep 2014 01:09:51 -0700 (PDT)
 Received: from localhost (port-6838.pppoe.wtnet.de. [84.46.26.208])
-        by mx.google.com with ESMTPSA id eh4sm1284145wic.19.2014.09.26.01.09.22
+        by mx.google.com with ESMTPSA id l4sm5269565wje.5.2014.09.26.01.09.50
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 26 Sep 2014 01:09:23 -0700 (PDT)
-Date:   Fri, 26 Sep 2014 10:09:22 +0200
+        Fri, 26 Sep 2014 01:09:50 -0700 (PDT)
+Date:   Fri, 26 Sep 2014 10:09:49 +0200
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Yijing Wang <wangyijing@huawei.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
@@ -51,22 +51,20 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         Michael Ellerman <mpe@ellerman.id.au>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Subject: Re: [PATCH v2 03/22] MSI: Remove the redundant irq_set_chip_data()
-Message-ID: <20140926080921.GE31106@ulmo>
+Message-ID: <20140926080949.GF31106@ulmo>
 References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
  <1411614872-4009-4-git-send-email-wangyijing@huawei.com>
- <20140925071919.GH12423@ulmo>
- <5424C9BD.3040506@huawei.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="2qXFWqzzG3v1+95a"
+        protocol="application/pgp-signature"; boundary="5CUMAwwhRxlRszMD"
 Content-Disposition: inline
-In-Reply-To: <5424C9BD.3040506@huawei.com>
+In-Reply-To: <1411614872-4009-4-git-send-email-wangyijing@huawei.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42834
+X-archive-position: 42835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,76 +82,71 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---2qXFWqzzG3v1+95a
+--5CUMAwwhRxlRszMD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 26, 2014 at 10:04:45AM +0800, Yijing Wang wrote:
-> On 2014/9/25 15:19, Thierry Reding wrote:
-> > On Thu, Sep 25, 2014 at 11:14:13AM +0800, Yijing Wang wrote:
-> >> Currently, pcie-designware, pcie-rcar, pci-tegra drivers
-> >> use irq chip_data to save the msi_chip pointer. They
-> >> already call irq_set_chip_data() in their own MSI irq map
-> >> functions. So irq_set_chip_data() in arch_setup_msi_irq()
-> >> is useless.
-> >=20
-> > Again, I think this should be the other way around. If drivers do
-> > something that's already handled by the core, then the duplicate code
-> > should be dropped from the drivers.
+On Thu, Sep 25, 2014 at 11:14:13AM +0800, Yijing Wang wrote:
+> Currently, pcie-designware, pcie-rcar, pci-tegra drivers
+> use irq chip_data to save the msi_chip pointer. They
+> already call irq_set_chip_data() in their own MSI irq map
+> functions. So irq_set_chip_data() in arch_setup_msi_irq()
+> is useless.
 >=20
-> Hi Thierry, this is different thing, because chip_data is specific to IRQ
-> controller, and in other platform, like in x86, chip_data is used to save=
- irq_cfg.
-> So we can not call irq_set_chip_data() in core code.
->=20
-> x86 irq piece code
->=20
-> int arch_setup_hwirq(unsigned int irq, int node)
-> {
-> 	struct irq_cfg *cfg;
-> 	unsigned long flags;
-> 	int ret;
->=20
-> 	cfg =3D alloc_irq_cfg(irq, node);
-> 	if (!cfg)
-> 		return -ENOMEM;
->=20
-> 	raw_spin_lock_irqsave(&vector_lock, flags);
-> 	ret =3D __assign_irq_vector(irq, cfg, apic->target_cpus());
-> 	raw_spin_unlock_irqrestore(&vector_lock, flags);
->=20
-> 	if (!ret)
-> 		irq_set_chip_data(irq, cfg);  ------------->Save irq_cfg
-> 	else
-> 		free_irq_cfg(irq, cfg);
-> 	return ret;
-> }
+> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+> ---
+>  drivers/pci/msi.c |    5 ++---
+>  1 files changed, 2 insertions(+), 3 deletions(-)
 
-Okay, makes sense to keep irq_set_chip_data() for driver-specific data
-then.
+Reviewed-by: Thierry Reding <treding@nvidia.com>
 
-Thierry
+>=20
+> diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+> index 51d7e62..50f67a3 100644
+> --- a/drivers/pci/msi.c
+> +++ b/drivers/pci/msi.c
+> @@ -41,14 +41,13 @@ int __weak arch_setup_msi_irq(struct pci_dev *dev, st=
+ruct msi_desc *desc)
+>  	if (err < 0)
+>  		return err;
+> =20
+> -	irq_set_chip_data(desc->irq, chip);
+> -
+>  	return 0;
+>  }
+> =20
+>  void __weak arch_teardown_msi_irq(unsigned int irq)
+>  {
+> -	struct msi_chip *chip =3D irq_get_chip_data(irq);
+> +	struct msi_desc *entry =3D irq_get_msi_desc(irq);
+> +	struct msi_chip *chip =3D entry->dev->bus->msi;
+> =20
+>  	if (!chip || !chip->teardown_irq)
+>  		return;
+> --=20
+> 1.7.1
+>=20
 
---2qXFWqzzG3v1+95a
+--5CUMAwwhRxlRszMD
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUJR8xAAoJEN0jrNd/PrOhmZMP/0tFUjT9MXPrTuCEiBWtia+2
-ElYucD565UV4FjK6aINM4dHtmn0wUW+dDXB2YDSkAp10Ku534Tfi0zNfQd/xSe6M
-SLBNIW/EK67YANcL5AvN2W1wSUn/t24SBwWJIvsoZfNJbsAcETvYySMnmLZJ2L05
-k1v9mR+KAR52QhCs9nwga/dePFV/DBQ2bFrblq6Rxu/+hxki9EqgM9JtkRXS0F7d
-DU1BqMERPy9AtP+oX5Wih6+8P15JALo4n/SETOfeeToDkhN2Zbh8Y3AoAmVAL1l1
-ym3t6fPW7CFvJIX+Qpt02+wVvFu1amMpY8mXfzQmi18VccvTqQ9ylkaaVQ+ZsK/a
-M/8qEyiKUc4T8obwUr8qb484vw7QxAlFynvU5A6AX1zlHU+yUVEklTBlVY9Av5jj
-EW6MzXAPrhro6KKqu3m8h+P0O72K+oSZOT5bPri9/MfRfW3JCzMsCNIjeGXZ50fr
-Komek7HKSPDIaIoavV7Fym7j9zddKbLvAj8DfkztLT7jmQ7i8EVb6eHwy8uMDXI7
-cds9cH4RKRvE3ArNaHaOyEomxAD1fyAsQ3SPM2vuf92pJtiwoXpGc5qgrRusMjHw
-ZfggWh7lVNYq9TP1fXQalqNmFvATMz3s1HW7lCsIf8AeuNvDkAm3pQRojX1vKPvc
-uRsheVegzi0JliNoFkzC
-=m1fq
+iQIcBAEBAgAGBQJUJR9NAAoJEN0jrNd/PrOh5cAP/2aYAkwGt796/z3rQsXfEXhG
+hPI6dXwueP4Re7P03WrSfn6JEowEsDYFLqLJJYQLwlDQa96WTd85jidBUhQRniqy
+GPHoUY+c4qiQjJak+b2y4jMMNqJnWoLw57Wd1Nmy2g2pocWKwiKA1VEem2ZZPaxR
+QxhYqhwK8IxOu092oPpVV8m2GtFSUzbuOoE0a3muYP+gExweDN6v485fm+PKfIVU
+rmCMnmkkT9oUVNYUlQDSf0xXb+t0PNJDbGZHPM3rKQFQA45Xhadzs2D/nk1CSwoj
+7EO8sq/qkfHnyXvxpvazxq2V1xsGkG63RTRmhIzP2VGDj/AI6G9AlM5dFOzPctSf
+8v8FNLESIHmHKyp9IKT1pCWg6jbRHFlhL9be5+uudiDYgvXiGjtco4Jta1hlgHNk
+Qd7zRsH6Y+ocewQ2sqDMrwkOEzetOfnGmjjtb3q6VaeahtwPdRKWhQcjfO//zIW3
+83yoON4lx7AS1aDMRywNXbk8A6ja8ndVS2amfm6TJCbIVy6A78AnCRx4n/ShluFl
+WD1TekKOyh2u2JtRagRSb0xxFwwsqzlYrOElj00zxCZJAKihIzjMf4ogfxnj2OOn
+ZEF1WTMpjTpy+QB7r22R0qFX9yVBBCgRM8heGbQXeVMPD/AvmVhx803Ry2r6SmcU
+iefPiqiqqocKKcpN4rMB
+=jw7p
 -----END PGP SIGNATURE-----
 
---2qXFWqzzG3v1+95a--
+--5CUMAwwhRxlRszMD--

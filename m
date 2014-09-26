@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 03:56:34 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:20125 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 03:59:36 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:21585 "EHLO
         szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009897AbaIZB43jwalZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 03:56:29 +0200
-Received: from 172.24.2.119 (EHLO szxeml405-hub.china.huawei.com) ([172.24.2.119])
+        by eddie.linux-mips.org with ESMTP id S27009918AbaIZB7bkn343 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 03:59:31 +0200
+Received: from 172.24.2.119 (EHLO szxeml415-hub.china.huawei.com) ([172.24.2.119])
         by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AUW09288;
-        Fri, 26 Sep 2014 09:55:26 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml405-hub.china.huawei.com
- (10.82.67.60) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
- 09:55:15 +0800
-Message-ID: <5424C77B.2060807@huawei.com>
-Date:   Fri, 26 Sep 2014 09:55:07 +0800
+        with ESMTP id AUW09653;
+        Fri, 26 Sep 2014 09:59:07 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml415-hub.china.huawei.com
+ (10.82.67.154) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
+ 09:59:00 +0800
+Message-ID: <5424C85E.4090006@huawei.com>
+Date:   Fri, 26 Sep 2014 09:58:54 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
@@ -39,26 +39,25 @@ CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
         David Vrabel <david.vrabel@citrix.com>,
         "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Liviu Dudau <Liviu.Dudau@arm.com>
-Subject: Re: [PATCH v2 02/22] PCI/MSI: Remove useless bus->msi assignment
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <1411614872-4009-3-git-send-email-wangyijing@huawei.com> <20140925070601.GF12423@ulmo>
-In-Reply-To: <20140925070601.GF12423@ulmo>
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Subject: Re: [PATCH v2 01/22] PCI/MSI: Clean up struct msi_chip argument
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <1411614872-4009-2-git-send-email-wangyijing@huawei.com> <20140925071536.GG12423@ulmo>
+In-Reply-To: <20140925071536.GG12423@ulmo>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.177.27.212]
 X-CFilter-Loop: Reflected
 X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020205.5424C792.00B0,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        refid=str=0001.0A020204.5424C86C.00B3,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
         ip=0.0.0.0,
         so=2013-05-26 15:14:31,
         dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: 92fc8dcb982db260fa22475eeee18a7a
+X-Mirapoint-Loop-Id: 5cd6542b35db9be32f3a78ca7be566a9
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42819
+X-archive-position: 42820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,53 +74,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/9/25 15:06, Thierry Reding wrote:
-> On Thu, Sep 25, 2014 at 11:14:12AM +0800, Yijing Wang wrote:
->> Currently, PCI drivers will initialize bus->msi in
->> pcibios_add_bus(). pcibios_add_bus() will be called
->> in every pci bus initialization. So the bus->msi
->> assignment in pci_alloc_child_bus() is useless.
+On 2014/9/25 15:15, Thierry Reding wrote:
+> On Thu, Sep 25, 2014 at 11:14:11AM +0800, Yijing Wang wrote:
+>> Msi_chip functions setup_irq/teardown_irq rarely use msi_chip
+>> argument.
 > 
-> I think this should be the other way around. The default should be to
-> inherit bus->msi from the parent. That way drivers don't typically have
-> to do it, yet they can still opt to override it if they need to.
+> That's not true. Out of the four drivers that you modify two use the
+> parameter. And the two that don't probably should be using it too.
 > 
-> For Tegra for example I think it would work if we assigned the MSI chip
-> to the root bus (in tegra_pcie_scan_bus()) and then have it propagated
-> to child busses in pci_alloc_child_bus() so that tegra_pcie_add_bus()
-> can be removed altogether.
+> 50% is not "rarely". =)
+> 
+>>           We can look up msi_chip pointer by the device pointer
+>> or irq number, so clean up msi_chip argument.
+> 
+> I don't like this particular change. The idea was to keep the API object
+> oriented so that drivers wouldn't have to know where to get the MSI chip
+> from. It also makes it more resilient against code reorganizations since
+> the core code is the only place that needs to know where to get the chip
+> from.
 
-Hi Thierry, thanks very much for your review and comments!
-
-Because pcibios_add_bus() and "child->msi = parent->msi;" in pci_alloc_child_bus()
-do the same thing. So I think we should use one and remove another. I like
-the latter.
-
-In addition, I consider several solutions to associate msi chip and PCI device.
-
-1. Add a msi_chip member in PCI arch sysdata to store the msi_chip pointer. Because
-all PCI devices under a PCI hostbridge always share the same msi chip, so every PCI device
-can find the msi chip by pci_bus->sysdata, but in this solution, we also need to add
-ARCH specific functions to extract msi chip from PCI arch sysdata, like pci_domain_nr().
-Then we can remove .add_bus() like tegra_pcie_add_bus() and the msi assignment in  pci_alloc_child_bus().
-
-2. Remove .add_bus() functions, associate PCI root bus and msi chip after PCI root bus created,
-as you mentioned above. In this solution we need to associate PCI root bus and msi chip in all PCI
-hostbridge drivers, like in tegra_pcie_scan_bus().
-
-
-3. Introduce a global msi chip list, currently, only in arm, there maybe more than one type MSI chip,
-but in arm, we can find msi chip by PCI hostbridge platform device's of_node, Eg. use "msi-parent" property
-to find it. Or msi chip is integrated into PCI hostbridge, we can find msi chip by compare msi_chip->dev and
-PCI hostbridge's platform device's struct device *dev pointer. And because PCI hostbridge platform device pass
-to pci_create_root_bus() as the parent device, so every PCI devices can first find the platform device, then
-to find the msi chip, this solution looks a bit ugly, but we only associate pci hostbridge and msi chip, PCI child
-buses and devices do not have to know the msi chip details.
-
-4. Last, in this series, introduced weak arch function arch_find_msi_chip(), it's the simplest one, because all platforms
-except arm, only one msi chip will exist in system.
-
-What do you think about this ?
+Hm, ok, Thomas also don't like this change, I will drop this one, thanks.
 
 Thanks!
 Yijing.

@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 04:06:23 +0200 (CEST)
-Received: from szxga01-in.huawei.com ([119.145.14.64]:44104 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 04:11:22 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:47036 "EHLO
         szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009897AbaIZCGUPO0RD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 04:06:20 +0200
-Received: from 172.24.2.119 (EHLO szxeml422-hub.china.huawei.com) ([172.24.2.119])
+        by eddie.linux-mips.org with ESMTP id S27006668AbaIZCLTcRwHm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 04:11:19 +0200
+Received: from 172.24.2.119 (EHLO szxeml420-hub.china.huawei.com) ([172.24.2.119])
         by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CCE09686;
-        Fri, 26 Sep 2014 10:05:04 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml422-hub.china.huawei.com
- (10.82.67.161) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
- 10:04:53 +0800
-Message-ID: <5424C9BD.3040506@huawei.com>
-Date:   Fri, 26 Sep 2014 10:04:45 +0800
+        with ESMTP id CCE10383;
+        Fri, 26 Sep 2014 10:10:39 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml420-hub.china.huawei.com
+ (10.82.67.159) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
+ 10:10:30 +0800
+Message-ID: <5424CB0F.2030406@huawei.com>
+Date:   Fri, 26 Sep 2014 10:10:23 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
@@ -40,9 +40,10 @@ CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
         "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 03/22] MSI: Remove the redundant irq_set_chip_data()
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <1411614872-4009-4-git-send-email-wangyijing@huawei.com> <20140925071919.GH12423@ulmo>
-In-Reply-To: <20140925071919.GH12423@ulmo>
+Subject: Re: [PATCH v2 06/22] PCI/MSI: Introduce weak arch_find_msi_chip()
+ to find MSI chip
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <1411614872-4009-7-git-send-email-wangyijing@huawei.com> <20140925072619.GI12423@ulmo>
+In-Reply-To: <20140925072619.GI12423@ulmo>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.177.27.212]
@@ -51,7 +52,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42821
+X-archive-position: 42822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,44 +69,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/9/25 15:19, Thierry Reding wrote:
-> On Thu, Sep 25, 2014 at 11:14:13AM +0800, Yijing Wang wrote:
->> Currently, pcie-designware, pcie-rcar, pci-tegra drivers
->> use irq chip_data to save the msi_chip pointer. They
->> already call irq_set_chip_data() in their own MSI irq map
->> functions. So irq_set_chip_data() in arch_setup_msi_irq()
->> is useless.
+On 2014/9/25 15:26, Thierry Reding wrote:
+> On Thu, Sep 25, 2014 at 11:14:16AM +0800, Yijing Wang wrote:
+>> Introduce weak arch_find_msi_chip() to find the match msi_chip.
+>> Currently, MSI chip associates pci bus to msi_chip. Because in
+>> ARM platform, there may be more than one MSI controller in system.
+>> Associate pci bus to msi_chip help pci device to find the match
+>> msi_chip and setup MSI/MSI-X irq correctly. But in other platform,
+>> like in x86. we only need one MSI chip, because all device use
+>> the same MSI address/data and irq etc. So it's no need to associate
+>> pci bus to MSI chip, just use a arch function, arch_find_msi_chip()
+>> to return the MSI chip for simplicity. The default weak
+>> arch_find_msi_chip() used in ARM platform, find the MSI chip
+>> by pci bus.
 > 
-> Again, I think this should be the other way around. If drivers do
-> something that's already handled by the core, then the duplicate code
-> should be dropped from the drivers.
+> Can't x86 simply set the bus' .msi field anyway? It would seem to be
+> easy to do and unifies the code rather than driving it further apart
+> using even more of the __weak functions.
 
-Hi Thierry, this is different thing, because chip_data is specific to IRQ
-controller, and in other platform, like in x86, chip_data is used to save irq_cfg.
-So we can not call irq_set_chip_data() in core code.
-
-x86 irq piece code
-
-int arch_setup_hwirq(unsigned int irq, int node)
-{
-	struct irq_cfg *cfg;
-	unsigned long flags;
-	int ret;
-
-	cfg = alloc_irq_cfg(irq, node);
-	if (!cfg)
-		return -ENOMEM;
-
-	raw_spin_lock_irqsave(&vector_lock, flags);
-	ret = __assign_irq_vector(irq, cfg, apic->target_cpus());
-	raw_spin_unlock_irqrestore(&vector_lock, flags);
-
-	if (!ret)
-		irq_set_chip_data(irq, cfg);  ------------->Save irq_cfg
-	else
-		free_irq_cfg(irq, cfg);
-	return ret;
-}
+As mentioned in the first reply, I will rework this one when we find a better solution.
 
 Thanks!
 Yijing.

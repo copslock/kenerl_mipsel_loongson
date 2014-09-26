@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 04:35:07 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:49234 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006668AbaIZCfEFZKA0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 04:35:04 +0200
-Received: from 172.24.2.119 (EHLO szxeml421-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id BZZ13705;
-        Fri, 26 Sep 2014 10:33:40 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml421-hub.china.huawei.com
- (10.82.67.160) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
- 10:33:31 +0800
-Message-ID: <5424D074.60102@huawei.com>
-Date:   Fri, 26 Sep 2014 10:33:24 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 04:45:35 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:50429 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008039AbaIZCpbrJ7GH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 04:45:31 +0200
+Received: from 172.24.2.119 (EHLO szxeml407-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id AUW15339;
+        Fri, 26 Sep 2014 10:44:42 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml407-hub.china.huawei.com
+ (10.82.67.94) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
+ 10:44:33 +0800
+Message-ID: <5424D30A.6040900@huawei.com>
+Date:   Fri, 26 Sep 2014 10:44:26 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
@@ -48,11 +48,17 @@ Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.177.27.212]
 X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A020206.5424D31C.00EC,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2013-03-21 17:37:32
+X-Mirapoint-Loop-Id: 56b6f93d00ad51ec89c4f10a5271f45f
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42828
+X-archive-position: 42829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,23 +93,24 @@ On 2014/9/25 18:38, Thomas Gleixner wrote:
 > This is really backwards. On one hand you try to get rid of the weak
 > arch functions zoo and then you invent new ones for no good
 > reason. Why can't x86 store the chip in the pci bus?
-
-Hi Thomas, I introduced this weak function , because I thought all platforms
-except arm always have only one msi chip, and I hoped to provide a simplest
-solution, less code changes. I consider several solutions to associate msi chip
-and PCI device. In my reply to Thierry in first reply,
-http://marc.info/?l=linux-pci&m=141169658208255&w=2
-Could you give me some advices ?
-
-Thanks!
-Yijing.
-
-
 > 
 > Looking deeper, I'm questioning the whole notion of different
 > msi_chips. Are this really different MSI controllers with a different
 > feature set or are this defacto multiple instances of the same
 > controller which just need a different data set?
+
+MSI chip in this series is to setup MSI irq, including IRQ allocation, Map,
+compose MSI msg ..., in different platform, many arch specific MSI irq details in it.
+It's difficult to extract the common data and code.
+
+I have a plan to rework MSI related irq_chips in kernel, PCI and Non-PCI, currently,
+HPET, DMAR and PCI have their own irq_chip and MSI related functions, write_msi_msg(),
+mask_msi_irq(), etc... I want to extract the common data set for that, so we can
+remove lots of unnecessary MSI code.
+
+Thanks!
+Yijing.
+
 > 
 > Thanks,
 > 

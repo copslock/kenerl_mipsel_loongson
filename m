@@ -1,69 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 08:21:51 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:19920 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008039AbaIZGVrz552T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 08:21:47 +0200
-Received: from 172.24.2.119 (EHLO szxeml418-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AUW36952;
-        Fri, 26 Sep 2014 14:21:04 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml418-hub.china.huawei.com
- (10.82.67.157) with Microsoft SMTP Server id 14.3.158.1; Fri, 26 Sep 2014
- 14:20:52 +0800
-Message-ID: <542505B3.7040208@huawei.com>
-Date:   Fri, 26 Sep 2014 14:20:35 +0800
-From:   Yijing Wang <wangyijing@huawei.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
-MIME-Version: 1.0
-To:     Liviu Dudau <liviu@dudau.co.uk>,
-        Thierry Reding <thierry.reding@gmail.com>
-CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2014 10:09:30 +0200 (CEST)
+Received: from mail-we0-f174.google.com ([74.125.82.174]:45726 "EHLO
+        mail-we0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008039AbaIZIJ3Jdujt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2014 10:09:29 +0200
+Received: by mail-we0-f174.google.com with SMTP id w62so8746293wes.19
+        for <multiple recipients>; Fri, 26 Sep 2014 01:09:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=XoBRzmP3MFKF/9Dx5T0UX/0JlVthC2ct0a043hA/oNk=;
+        b=KY89qs++6wRqRQPNMSwaUiGNqmCLOfTg85Hqx4juwURfc+jFDKvtuK4anp/uUt/n1o
+         Z01cECVs2PePCbddELMEgM6IPSPM/gMsKWQv+lpi6DScQ2tN90+rr6Om0F0r3WkV28K8
+         6bkL2By7nhy1LzOu0QKzELFFSQUv94rv1I6h8GqTL7mga4h8d/XoJVb68ztZLPPXa9p0
+         lqmG5hRLkbLrtrR3DnGvBVuqCPH3U/Y4SC21wlwGzFMEme2RvjLock9xRc48REY0vgR4
+         gzJK9kTaRDduvFhFuHg/gBcSxmggBX0R9K9e7npcgGybu+6OPV7TmoAbHqkA0O3AKAND
+         EnNQ==
+X-Received: by 10.194.186.178 with SMTP id fl18mr21854113wjc.8.1411718963877;
+        Fri, 26 Sep 2014 01:09:23 -0700 (PDT)
+Received: from localhost (port-6838.pppoe.wtnet.de. [84.46.26.208])
+        by mx.google.com with ESMTPSA id eh4sm1284145wic.19.2014.09.26.01.09.22
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 26 Sep 2014 01:09:23 -0700 (PDT)
+Date:   Fri, 26 Sep 2014 10:09:22 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Yijing Wang <wangyijing@huawei.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Xinwei Hu <huxinwei@huawei.com>,
         Wuyun <wuyun.wu@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-kernel@lists.infradead.org,
         Russell King <linux@arm.linux.org.uk>,
-        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
-        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
+        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
+        Bharat.Bhushan@freescale.com, x86@kernel.org,
         Arnd Bergmann <arnd@arndb.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
-        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
-        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
-        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
+        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Lucas Stach <l.stach@pengutronix.de>,
         David Vrabel <david.vrabel@citrix.com>,
-        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
- in all platforms
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <20140925074235.GN12423@ulmo> <20140925144855.GB31157@bart.dudau.co.uk> <20140925164937.GB30382@ulmo> <20140925171612.GC31157@bart.dudau.co.uk>
-In-Reply-To: <20140925171612.GC31157@bart.dudau.co.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.27.212]
-X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020202.542505D1.007E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: bc7a0eef4c8aa463ce41e250f24a1d40
-Return-Path: <wangyijing@huawei.com>
+Subject: Re: [PATCH v2 03/22] MSI: Remove the redundant irq_set_chip_data()
+Message-ID: <20140926080921.GE31106@ulmo>
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
+ <1411614872-4009-4-git-send-email-wangyijing@huawei.com>
+ <20140925071919.GH12423@ulmo>
+ <5424C9BD.3040506@huawei.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="2qXFWqzzG3v1+95a"
+Content-Disposition: inline
+In-Reply-To: <5424C9BD.3040506@huawei.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42833
+X-archive-position: 42834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangyijing@huawei.com
+X-original-sender: thierry.reding@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,72 +83,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->> The PCI core can already deal with that. An MSI chip can be set per bus
->> and the weak pcibios_add_bus() can be used to set that. Often it might
->> not even be necessary to do it via pcibios_add_bus() if you create the
->> root bus directly, since you can attach the MSI chip at that time.
-> 
-> But I'm thinking that we need to move away from pcibios_add_bus() interface to do
-> something that should be generic. You don't need to be called for every bus when all
-> you want is just the root bus in order to add the MSI chip. Also, from looking at
-> the current patchset, a lot of architectures would set the MSI chip to a global
-> variable, which means you don't have an option to choose the MSI chip based on the
-> bus.
 
-I also agree to remove the pcibios_add_bus() in arm which call .add_bus() to associate msi_chip
-and PCI bus.
+--2qXFWqzzG3v1+95a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In my opinions, all PCI devices under the same PCI hostbridge must share same msi chip, right ?
-So if we can associate msi chip and PCI hostbridge, every PCI device can find correct msi chip.
-PCI hostbridge private attributes can be saved in PCI sysdata, and this data will be propagate to
-PCI root bus and its child buses.
+On Fri, Sep 26, 2014 at 10:04:45AM +0800, Yijing Wang wrote:
+> On 2014/9/25 15:19, Thierry Reding wrote:
+> > On Thu, Sep 25, 2014 at 11:14:13AM +0800, Yijing Wang wrote:
+> >> Currently, pcie-designware, pcie-rcar, pci-tegra drivers
+> >> use irq chip_data to save the msi_chip pointer. They
+> >> already call irq_set_chip_data() in their own MSI irq map
+> >> functions. So irq_set_chip_data() in arch_setup_msi_irq()
+> >> is useless.
+> >=20
+> > Again, I think this should be the other way around. If drivers do
+> > something that's already handled by the core, then the duplicate code
+> > should be dropped from the drivers.
+>=20
+> Hi Thierry, this is different thing, because chip_data is specific to IRQ
+> controller, and in other platform, like in x86, chip_data is used to save=
+ irq_cfg.
+> So we can not call irq_set_chip_data() in core code.
+>=20
+> x86 irq piece code
+>=20
+> int arch_setup_hwirq(unsigned int irq, int node)
+> {
+> 	struct irq_cfg *cfg;
+> 	unsigned long flags;
+> 	int ret;
+>=20
+> 	cfg =3D alloc_irq_cfg(irq, node);
+> 	if (!cfg)
+> 		return -ENOMEM;
+>=20
+> 	raw_spin_lock_irqsave(&vector_lock, flags);
+> 	ret =3D __assign_irq_vector(irq, cfg, apic->target_cpus());
+> 	raw_spin_unlock_irqrestore(&vector_lock, flags);
+>=20
+> 	if (!ret)
+> 		irq_set_chip_data(irq, cfg);  ------------->Save irq_cfg
+> 	else
+> 		free_irq_cfg(irq, cfg);
+> 	return ret;
+> }
 
-> 
->>
->>> What I would like to see is a way of creating the pci_host_bridge structure outside
->>> the pci_create_root_bus(). That would then allow us to pass this sort of platform
->>> details like associated msi_chip into the host bridge and the child busses will
->>> have an easy way of finding the information needed by finding the root bus and then
->>> the host bridge structure. Then the generic pci_scan_root_bus() can be used by (mostly)
->>> everyone and the drivers can remove their kludges that try to work around the
->>> current limitations.
->>
->> I think both issues are orthogonal. Last time I checked a lot of work
->> was still necessary to unify host bridges enough so that it could be
->> shared across architectures. But perhaps some of that work has
->> happened in the meantime.
-> 
-> Breaking out the host bridge creation from root bus creation is not difficult, just not
-> agree upon. That would be the first step in making the generic host brige structure
-> useful for sharing, specially if used as a sort of "parent" structure that you can
-> wrap with your actual host bridge structure.
+Okay, makes sense to keep irq_set_chip_data() for driver-specific data
+then.
 
-Breaking out the host bridge creation is a good idea, but there need a lot of changes, we can
-do it in another series. And if we save msi chip in pci sysdata now, it will be easy to
-move it to generic pci host bridge. We can also move the pci domain number and other common info to it.
+Thierry
 
-Thanks!
-Yijing.
+--2qXFWqzzG3v1+95a
+Content-Type: application/pgp-signature
 
-> 
->>
->> But like I said, when you create the root bus, you can easily attach the
->> MSI chip to it.
-> 
-> Not if you want to use the generic pci_scan_root_bus() function. One needs to copy the code
-> and add their own needed modifications. Which makes it hard to fix bugs and prevents code
-> reuse.
-> 
-> Best regards,
-> Liviu
-> 
->>
->> Thierry
-> 
-> 
-> 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
+iQIcBAEBAgAGBQJUJR8xAAoJEN0jrNd/PrOhmZMP/0tFUjT9MXPrTuCEiBWtia+2
+ElYucD565UV4FjK6aINM4dHtmn0wUW+dDXB2YDSkAp10Ku534Tfi0zNfQd/xSe6M
+SLBNIW/EK67YANcL5AvN2W1wSUn/t24SBwWJIvsoZfNJbsAcETvYySMnmLZJ2L05
+k1v9mR+KAR52QhCs9nwga/dePFV/DBQ2bFrblq6Rxu/+hxki9EqgM9JtkRXS0F7d
+DU1BqMERPy9AtP+oX5Wih6+8P15JALo4n/SETOfeeToDkhN2Zbh8Y3AoAmVAL1l1
+ym3t6fPW7CFvJIX+Qpt02+wVvFu1amMpY8mXfzQmi18VccvTqQ9ylkaaVQ+ZsK/a
+M/8qEyiKUc4T8obwUr8qb484vw7QxAlFynvU5A6AX1zlHU+yUVEklTBlVY9Av5jj
+EW6MzXAPrhro6KKqu3m8h+P0O72K+oSZOT5bPri9/MfRfW3JCzMsCNIjeGXZ50fr
+Komek7HKSPDIaIoavV7Fym7j9zddKbLvAj8DfkztLT7jmQ7i8EVb6eHwy8uMDXI7
+cds9cH4RKRvE3ArNaHaOyEomxAD1fyAsQ3SPM2vuf92pJtiwoXpGc5qgrRusMjHw
+ZfggWh7lVNYq9TP1fXQalqNmFvATMz3s1HW7lCsIf8AeuNvDkAm3pQRojX1vKPvc
+uRsheVegzi0JliNoFkzC
+=m1fq
+-----END PGP SIGNATURE-----
 
--- 
-Thanks!
-Yijing
+--2qXFWqzzG3v1+95a--

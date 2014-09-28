@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2014 20:34:36 +0200 (CEST)
-Received: from mail-la0-f52.google.com ([209.85.215.52]:60491 "EHLO
-        mail-la0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010018AbaI1Sba3qB3t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2014 20:31:30 +0200
-Received: by mail-la0-f52.google.com with SMTP id hz20so324352lab.39
-        for <multiple recipients>; Sun, 28 Sep 2014 11:31:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2014 20:34:53 +0200 (CEST)
+Received: from mail-lb0-f175.google.com ([209.85.217.175]:40818 "EHLO
+        mail-lb0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010019AbaI1SbcEcS3g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2014 20:31:32 +0200
+Received: by mail-lb0-f175.google.com with SMTP id u10so1164732lbd.6
+        for <multiple recipients>; Sun, 28 Sep 2014 11:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=GbHxnRIgqJs2DDBPnpagjutSRiBRR+XFu3EbNjGM4CQ=;
-        b=HeiQmpPsm41JX5NoOO4/55FcC6yZXglIehldVf2ift9nG7bsDgpWr67sqUxm/hCavf
-         Tc+DIgI0eeTC2fS3UarBN3A7ooNY8oEZmT5vBtiggGgRhLJ/3IUj2sand1IrgzobP2I6
-         YvwG/y+pPoT0xnstXjhh6s0uBUbgGn0yQ5+hL3dCLUdyHhkHUQDZLHMsWtoAIRHY6ksW
-         Hlz4feZ5GPofaA51v2B2YjUrW4kfT735Y1R7mhLWFx2TBaJgKjda+ENkkM4shNHPdlp9
-         18py03nH2K05aIdIhfxDgABcwclz71cUannXoAfZ5C6JbSv7+p1k0PTerIOAR/tdLlsu
-         7UuA==
-X-Received: by 10.152.4.97 with SMTP id j1mr34146174laj.73.1411929085110;
-        Sun, 28 Sep 2014 11:31:25 -0700 (PDT)
+        bh=cHEoSFicWj0woPcDtGPUBdAUYxCQ943K8Bz+MH4e2U4=;
+        b=HbwHJbQ7pUX4B0D0+pWluwA03rAfy8R9tHrcmo+/9TooUoT1okvO4JO2SpbQnzD9FK
+         +mdocba1P7JZ3QJu5VAuI6+E4c3KiKIg1ZZ5PwyzRSc3tmztkjfRjPLrVJK4DdmbT050
+         q78UK98nOKAuoCZdozkcuZjqjStcOFylRD0RDmXMrPABZoK2NyLnlK9I9a95eX8v7bjk
+         U37qkBjhKhqUtXfXA7LzW5+fDu6tv5CjItaCp1V8wR9qMF5JpdGEbbsoK10DHhYX3uyV
+         D1xQM7lSH08E4SgyEFmMYPwADFxCfyNeuLq8H9LVbdP7yCzAQIq0XD/FqEEl2V5KtqG6
+         Slog==
+X-Received: by 10.152.42.173 with SMTP id p13mr34122305lal.23.1411929086678;
+        Sun, 28 Sep 2014 11:31:26 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id je9sm581674lbc.3.2014.09.28.11.31.22
+        by mx.google.com with ESMTPSA id je9sm581674lbc.3.2014.09.28.11.31.25
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 28 Sep 2014 11:31:24 -0700 (PDT)
+        Sun, 28 Sep 2014 11:31:25 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        linux-watchdog@vger.kernel.org
-Subject: [PATCH 12/16] watchdog: add Atheros AR2315 watchdog driver
-Date:   Sun, 28 Sep 2014 22:33:11 +0400
-Message-Id: <1411929195-23775-13-git-send-email-ryazanov.s.a@gmail.com>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH 13/16] MIPS: ar231x: register various chip devices
+Date:   Sun, 28 Sep 2014 22:33:12 +0400
+Message-Id: <1411929195-23775-14-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -37,7 +35,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42863
+X-archive-position: 42864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,225 +52,268 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Register GPIO, watchdog and flash devices.
+
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Wim Van Sebroeck <wim@iguana.be>
-Cc: linux-watchdog@vger.kernel.org
 ---
+ arch/mips/ar231x/Kconfig                        |  2 +
+ arch/mips/ar231x/ar2315.c                       | 86 ++++++++++++++++++++++++-
+ arch/mips/ar231x/ar5312.c                       | 53 ++++++++++++++-
+ arch/mips/include/asm/mach-ar231x/ar2315_regs.h |  5 ++
+ arch/mips/include/asm/mach-ar231x/ar5312_regs.h |  2 +
+ 5 files changed, 144 insertions(+), 4 deletions(-)
 
-Changes since RFC:
-  - use watchdog infrastructure
-  - remove deprecated IRQF_DISABLED flag
-  - move device registration to separate patch
-
- drivers/watchdog/Kconfig      |   8 ++
- drivers/watchdog/Makefile     |   1 +
- drivers/watchdog/ar2315-wtd.c | 167 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 176 insertions(+)
- create mode 100644 drivers/watchdog/ar2315-wtd.c
-
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index f57312f..dbace99 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1186,6 +1186,14 @@ config RALINK_WDT
- 	help
- 	  Hardware driver for the Ralink SoC Watchdog Timer.
+diff --git a/arch/mips/ar231x/Kconfig b/arch/mips/ar231x/Kconfig
+index aa0fceb..88ca061 100644
+--- a/arch/mips/ar231x/Kconfig
++++ b/arch/mips/ar231x/Kconfig
+@@ -1,9 +1,11 @@
+ config SOC_AR5312
+ 	bool "Atheros AR5312/AR2312+ SoC support"
+ 	depends on AR231X
++	select GPIO_AR5312
+ 	default y
  
-+config AR2315_WDT
-+	tristate "Atheros AR2315+ WiSoCs Watchdog Timer"
-+	select WATCHDOG_CORE
-+	depends on SOC_AR2315
-+	help
-+	  Hardware driver for the built-in watchdog timer on the Atheros
-+	  AR2315/AR2316 WiSoCs.
-+
- # PARISC Architecture
+ config SOC_AR2315
+ 	bool "Atheros AR2315+ SoC support"
+ 	depends on AR231X
++	select GPIO_AR2315
+ 	default y
+diff --git a/arch/mips/ar231x/ar2315.c b/arch/mips/ar231x/ar2315.c
+index 7791637..dab9992 100644
+--- a/arch/mips/ar231x/ar2315.c
++++ b/arch/mips/ar231x/ar2315.c
+@@ -16,7 +16,10 @@
  
- # POWERPC Architecture
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index 468c320..ef7f83b 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -133,6 +133,7 @@ obj-$(CONFIG_WDT_MTX1) += mtx-1_wdt.o
- obj-$(CONFIG_PNX833X_WDT) += pnx833x_wdt.o
- obj-$(CONFIG_SIBYTE_WDOG) += sb_wdog.o
- obj-$(CONFIG_AR7_WDT) += ar7_wdt.o
-+obj-$(CONFIG_AR2315_WDT) += ar2315-wtd.o
- obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
- obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
- octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
-diff --git a/drivers/watchdog/ar2315-wtd.c b/drivers/watchdog/ar2315-wtd.c
-new file mode 100644
-index 0000000..4fd34d2
---- /dev/null
-+++ b/drivers/watchdog/ar2315-wtd.c
-@@ -0,0 +1,167 @@
-+/*
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ *
-+ * Copyright (C) 2008 John Crispin <blogic@openwrt.org>
-+ * Based on EP93xx and ifxmips wdt driver
-+ */
-+
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/watchdog.h>
-+#include <linux/reboot.h>
-+#include <linux/init.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
 +#include <linux/platform_device.h>
-+#include <linux/io.h>
-+
-+#define DRIVER_NAME	"ar2315-wdt"
-+
-+#define CLOCK_RATE 40000000
-+
-+#define WDT_REG_TIMER		0x00
-+#define WDT_REG_CTRL		0x04
-+
-+#define WDT_CTRL_ACT_NONE	0x00000000	/* No action */
-+#define WDT_CTRL_ACT_NMI	0x00000001	/* NMI on watchdog */
-+#define WDT_CTRL_ACT_RESET	0x00000002	/* reset on watchdog */
-+
-+static int started;
-+static void __iomem *wdt_base;
-+
-+static inline void ar2315_wdt_wr(unsigned reg, u32 val)
-+{
-+	iowrite32(val, wdt_base + reg);
-+}
-+
-+static void ar2315_wdt_enable(struct watchdog_device *wdd)
-+{
-+	ar2315_wdt_wr(WDT_REG_TIMER, wdd->timeout * CLOCK_RATE);
-+}
-+
-+static int ar2315_wdt_start(struct watchdog_device *wdd)
-+{
-+	ar2315_wdt_enable(wdd);
-+	started = 1;
-+	return 0;
-+}
-+
-+static int ar2315_wdt_stop(struct watchdog_device *wdd)
-+{
-+	return 0;
-+}
-+
-+static int ar2315_wdt_ping(struct watchdog_device *wdd)
-+{
-+	ar2315_wdt_enable(wdd);
-+	return 0;
-+}
-+
-+static int ar2315_wdt_set_timeout(struct watchdog_device *wdd, unsigned val)
-+{
-+	wdd->timeout = val;
-+	return 0;
-+}
-+
-+static irqreturn_t ar2315_wdt_interrupt(int irq, void *dev)
-+{
-+	struct platform_device *pdev = (struct platform_device *)dev;
-+
-+	if (started) {
-+		dev_crit(&pdev->dev, "watchdog expired, rebooting system\n");
-+		emergency_restart();
-+	} else {
-+		ar2315_wdt_wr(WDT_REG_CTRL, 0);
-+		ar2315_wdt_wr(WDT_REG_TIMER, 0);
-+	}
-+	return IRQ_HANDLED;
-+}
-+
-+static const struct watchdog_info ar2315_wdt_info = {
-+	.identity = "ar2315 Watchdog",
-+	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING,
-+};
-+
-+static const struct watchdog_ops ar2315_wdt_ops = {
-+	.owner = THIS_MODULE,
-+	.start = ar2315_wdt_start,
-+	.stop = ar2315_wdt_stop,
-+	.ping = ar2315_wdt_ping,
-+	.set_timeout = ar2315_wdt_set_timeout,
-+};
-+
-+static struct watchdog_device ar2315_wdt_dev = {
-+	.info = &ar2315_wdt_info,
-+	.ops = &ar2315_wdt_ops,
-+	.min_timeout = 1,
-+	.max_timeout = 90,
-+	.timeout = 20,
-+};
-+
-+static int ar2315_wdt_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct resource *res;
-+	int ret = 0;
-+
-+	if (wdt_base)
-+		return -EBUSY;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	wdt_base = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(wdt_base))
-+		return PTR_ERR(wdt_base);
-+
-+	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!res) {
-+		dev_err(dev, "no IRQ resource\n");
-+		return -ENOENT;
-+	}
-+
-+	ret = devm_request_irq(dev, res->start, ar2315_wdt_interrupt, 0,
-+			       DRIVER_NAME, pdev);
-+	if (ret) {
-+		dev_err(dev, "failed to register inetrrupt\n");
-+		return ret;
-+	}
-+
-+	ar2315_wdt_dev.parent = dev;
-+	ret = watchdog_register_device(&ar2315_wdt_dev);
-+	if (ret) {
-+		dev_err(dev, "failed to register watchdog device\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ar2315_wdt_remove(struct platform_device *pdev)
-+{
-+	watchdog_unregister_device(&ar2315_wdt_dev);
-+	return 0;
-+}
-+
-+static struct platform_driver ar2315_wdt_driver = {
-+	.probe = ar2315_wdt_probe,
-+	.remove = ar2315_wdt_remove,
-+	.driver = {
-+		.name = DRIVER_NAME,
-+		.owner = THIS_MODULE,
+ #include <linux/reboot.h>
++#include <linux/delay.h>
++#include <linux/gpio.h>
+ #include <asm/bootinfo.h>
+ #include <asm/reboot.h>
+ #include <asm/time.h>
+@@ -139,6 +142,66 @@ void __init ar2315_arch_init_irq(void)
+ 	irq_set_chained_handler(AR2315_IRQ_MISC, ar2315_misc_irq_handler);
+ }
+ 
++static struct resource ar2315_spiflash_res[] = {
++	{
++		.name = "spiflash_read",
++		.flags = IORESOURCE_MEM,
++		.start = AR2315_SPI_READ,
++		.end = AR2315_SPI_READ + 0x1000000 - 1,
++	},
++	{
++		.name = "spiflash_mmr",
++		.flags = IORESOURCE_MEM,
++		.start = AR2315_SPI_MMR,
++		.end = AR2315_SPI_MMR + 12 - 1,
 +	},
 +};
 +
-+module_platform_driver(ar2315_wdt_driver);
++static struct platform_device ar2315_spiflash = {
++	.id = -1,
++	.name = "ar2315-spiflash",
++	.resource = ar2315_spiflash_res,
++	.num_resources = ARRAY_SIZE(ar2315_spiflash_res)
++};
 +
-+MODULE_DESCRIPTION("Atheros AR2315 hardware watchdog driver");
-+MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:" DRIVER_NAME);
++static struct resource ar2315_wdt_res[] = {
++	{
++		.flags = IORESOURCE_MEM,
++		.start = AR2315_WD,
++		.end = AR2315_WD + 8 - 1,
++	},
++	{
++		.flags = IORESOURCE_IRQ,
++	}
++};
++
++static struct platform_device ar2315_wdt = {
++	.id = -1,
++	.name = "ar2315-wdt",
++	.resource = ar2315_wdt_res,
++	.num_resources = ARRAY_SIZE(ar2315_wdt_res)
++};
++
++static struct resource ar2315_gpio_res[] = {
++	{
++		.name = "ar2315-gpio",
++		.flags = IORESOURCE_MEM,
++		.start = AR2315_GPIO,
++		.end = AR2315_GPIO + 0x10 - 1,
++	},
++	{
++		.name = "ar2315-gpio",
++		.flags = IORESOURCE_IRQ,
++	},
++};
++
++static struct platform_device ar2315_gpio = {
++	.id = -1,
++	.name = "ar2315-gpio",
++	.resource = ar2315_gpio_res,
++	.num_resources = ARRAY_SIZE(ar2315_gpio_res)
++};
++
+ /*
+  * NB: We use mapping size that is larger than the actual flash size,
+  * but this shouldn't be a problem here, because the flash will simply
+@@ -149,11 +212,23 @@ ar2315_flash_limit = (u8 *)KSEG1ADDR(AR2315_SPI_READ + 0x1000000);
+ 
+ void __init ar2315_init_devices(void)
+ {
++	struct resource *res;
++
+ 	if (!is_2315())
+ 		return;
+ 
+ 	/* Find board configuration */
+ 	ar231x_find_config(ar2315_flash_limit);
++
++	res = &ar2315_gpio_res[1];
++	res->start = ar2315_misc_irq_base + AR2315_MISC_IRQ_GPIO;
++	res->end = res->start;
++	platform_device_register(&ar2315_gpio);
++	res = &ar2315_wdt_res[1];
++	res->start = ar2315_misc_irq_base + AR2315_MISC_IRQ_WATCHDOG;
++	res->end = res->start;
++	platform_device_register(&ar2315_wdt);
++	platform_device_register(&ar2315_spiflash);
+ }
+ 
+ static void ar2315_restart(char *command)
+@@ -165,8 +240,15 @@ static void ar2315_restart(char *command)
+ 	/* try reset the system via reset control */
+ 	ar231x_write_reg(AR2315_COLD_RESET, AR2317_RESET_SYSTEM);
+ 
+-	/* Attempt to jump to the mips reset location - the boot loader
+-	 * itself might be able to recover the system */
++	/* Cold reset does not work on the AR2315/6, use the GPIO reset bits
++	 * a workaround. Give it some time to attempt a gpio based hardware
++	 * reset (atheros reference design workaround) */
++	gpio_request_one(AR2315_RESET_GPIO, GPIOF_OUT_INIT_LOW, "Reset");
++	mdelay(100);
++
++	/* Some boards (e.g. Senao EOC-2610) don't implement the reset logic
++	 * workaround. Attempt to jump to the mips reset location -
++	 * the boot loader itself might be able to recover the system */
+ 	mips_reset_vec();
+ }
+ 
+diff --git a/arch/mips/ar231x/ar5312.c b/arch/mips/ar231x/ar5312.c
+index f207d14..5efbe00 100644
+--- a/arch/mips/ar231x/ar5312.c
++++ b/arch/mips/ar231x/ar5312.c
+@@ -16,6 +16,8 @@
+ 
+ #include <linux/init.h>
+ #include <linux/kernel.h>
++#include <linux/platform_device.h>
++#include <linux/mtd/physmap.h>
+ #include <linux/reboot.h>
+ #include <asm/bootinfo.h>
+ #include <asm/reboot.h>
+@@ -134,15 +136,59 @@ void __init ar5312_arch_init_irq(void)
+ 	irq_set_chained_handler(AR5312_IRQ_MISC, ar5312_misc_irq_handler);
+ }
+ 
++static struct physmap_flash_data ar5312_flash_data = {
++	.width = 2,
++};
++
++static struct resource ar5312_flash_resource = {
++	.start = AR5312_FLASH,
++	.end = AR5312_FLASH + 0x800000 - 1,
++	.flags = IORESOURCE_MEM,
++};
++
++static struct platform_device ar5312_physmap_flash = {
++	.name = "physmap-flash",
++	.id = 0,
++	.dev.platform_data = &ar5312_flash_data,
++	.resource = &ar5312_flash_resource,
++	.num_resources = 1,
++};
++
++static struct resource ar5312_gpio_res[] = {
++	{
++		.name = "ar5312-gpio",
++		.flags = IORESOURCE_MEM,
++		.start = AR5312_GPIO,
++		.end = AR5312_GPIO + 0x0c - 1,
++	},
++};
++
++static struct platform_device ar5312_gpio = {
++	.name = "ar5312-gpio",
++	.id = -1,
++	.resource = ar5312_gpio_res,
++	.num_resources = ARRAY_SIZE(ar5312_gpio_res),
++};
++
+ static void __init ar5312_flash_init(void)
+ {
+-	u32 ctl;
++	u32 ctl = ar231x_read_reg(AR5312_FLASHCTL0) & AR5312_FLASHCTL_MW;
++
++	/* fixup flash width */
++	switch (ctl) {
++	case AR5312_FLASHCTL_MW16:
++		ar5312_flash_data.width = 2;
++		break;
++	case AR5312_FLASHCTL_MW8:
++	default:
++		ar5312_flash_data.width = 1;
++		break;
++	}
+ 
+ 	/*
+ 	 * Configure flash bank 0.
+ 	 * Assume 8M window size. Flash will be aliased if it's smaller
+ 	 */
+-	ctl = ar231x_read_reg(AR5312_FLASHCTL0) & AR5312_FLASHCTL_MW;
+ 	ctl |= AR5312_FLASHCTL_E | AR5312_FLASHCTL_AC_8M | AR5312_FLASHCTL_RBLE;
+ 	ctl |= 0x01 << AR5312_FLASHCTL_IDCY_S;
+ 	ctl |= 0x07 << AR5312_FLASHCTL_WST1_S;
+@@ -188,6 +234,9 @@ void __init ar5312_init_devices(void)
+ 	/* Everything else is probably AR5312 or compatible */
+ 	else
+ 		ar231x_devtype = DEV_TYPE_AR5312;
++
++	platform_device_register(&ar5312_physmap_flash);
++	platform_device_register(&ar5312_gpio);
+ }
+ 
+ static void ar5312_restart(char *command)
+diff --git a/arch/mips/include/asm/mach-ar231x/ar2315_regs.h b/arch/mips/include/asm/mach-ar231x/ar2315_regs.h
+index a65d578..ab64560 100644
+--- a/arch/mips/include/asm/mach-ar231x/ar2315_regs.h
++++ b/arch/mips/include/asm/mach-ar231x/ar2315_regs.h
+@@ -283,6 +283,11 @@
+ #define AR2315_AMBACLK_CLK_DIV_M	0x0000000c
+ #define AR2315_AMBACLK_CLK_DIV_S	2
+ 
++/* GPIO MMR base address */
++#define AR2315_GPIO			(AR2315_DSLBASE + 0x0088)
++
++#define AR2315_RESET_GPIO	5
++
+ /*
+  *  PCI Clock Control
+  */
+diff --git a/arch/mips/include/asm/mach-ar231x/ar5312_regs.h b/arch/mips/include/asm/mach-ar231x/ar5312_regs.h
+index c7055e32..fccdb4d 100644
+--- a/arch/mips/include/asm/mach-ar231x/ar5312_regs.h
++++ b/arch/mips/include/asm/mach-ar231x/ar5312_regs.h
+@@ -210,4 +210,6 @@
+ #define AR5312_MEM_CFG1_AC1_M	0x00007000	/* bank 1: SDRAM addr check */
+ #define AR5312_MEM_CFG1_AC1_S	12
+ 
++#define AR5312_GPIO		(AR5312_APBBASE  + 0x2000)
++
+ #endif	/* __ASM_MACH_AR231X_AR5312_REGS_H */
 -- 
 1.8.5.5

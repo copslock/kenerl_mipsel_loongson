@@ -1,33 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2014 20:33:27 +0200 (CEST)
-Received: from mail-la0-f44.google.com ([209.85.215.44]:45585 "EHLO
-        mail-la0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010014AbaI1SbUZYTO0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2014 20:31:20 +0200
-Received: by mail-la0-f44.google.com with SMTP id gi9so6621792lab.3
-        for <multiple recipients>; Sun, 28 Sep 2014 11:31:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2014 20:33:44 +0200 (CEST)
+Received: from mail-lb0-f169.google.com ([209.85.217.169]:35387 "EHLO
+        mail-lb0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010003AbaI1SbYrEdiv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2014 20:31:24 +0200
+Received: by mail-lb0-f169.google.com with SMTP id u10so3436388lbd.28
+        for <multiple recipients>; Sun, 28 Sep 2014 11:31:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Ko+8MZyCgIw8gIRWn8uYbCxtQci8ICkEY2k/C4+PZXg=;
-        b=yeq4ottM5bC8Mt0cP6rHxttRCuloa0L9FO4rB9r+TmiQyhONbSDkttwcHqwtz1b53g
-         StLPhWcJ8qXwz7JkFfo1qn71Aouh0OdleU2cjh5fAcfSPcuEZfBYT+H64I1SKPjhF7tx
-         2RdvOQWWL8DeZH1el9ZXOODZ4SwgcEBSF9W7vIAmRZDtSLO9yKJhESNoRkV4mQzML3De
-         QCwzPrQ8trbTO4Sh5Ufz/L1detG0CqqLxxosGHPLfzPBFhWucp9oAkcxZTAP5KL5vtzU
-         tyDfSshLsbGzZJxr736I3dDqKSRWbI+Bu3sMzvqttBSMMcJ7xSgu2ia6qJThodwR4NKg
-         lPTg==
-X-Received: by 10.112.142.104 with SMTP id rv8mr31393513lbb.59.1411929075059;
-        Sun, 28 Sep 2014 11:31:15 -0700 (PDT)
+        bh=WOtVB4L5uf8UnbfPkcVU89PVkkHPMkPGG1qfk9OTMfc=;
+        b=fx82WYdpM/IOQbVXfQ2/WSCZ+YUv7ylR9h42HtNjijmb8WWns1xm6TUnJid5WBEBgx
+         jGbcR75loAjlOnOMi1rSUfH0gT5WwvnlrTv7y6q76mVXR/SBtCB0pLNMUSBw615SkTvi
+         qXN6FhH126/HMQRKanYTcEvgWATxw7vVvsdgrkX/x/kVRLSrsmN49sJBjqlaRxVEfR3r
+         TKPwNP9j01ivr3R+voz5KUzIEpsV51JVwHeNNKICrjsXBqRTvkquzmyrsOQ6Ne/aB6n+
+         GLiznlw5o5KYazV6OYQ4pI8NDrRScAhXIoZ4UM7787Y9W+Fcfut0Y2glxqZPhE4sDXUr
+         /6fw==
+X-Received: by 10.112.55.102 with SMTP id r6mr32108738lbp.23.1411929078202;
+        Sun, 28 Sep 2014 11:31:18 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id je9sm581674lbc.3.2014.09.28.11.31.12
+        by mx.google.com with ESMTPSA id je9sm581674lbc.3.2014.09.28.11.31.15
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 28 Sep 2014 11:31:14 -0700 (PDT)
+        Sun, 28 Sep 2014 11:31:17 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH 08/16] MIPS: ar231x: add SoC type detection
-Date:   Sun, 28 Sep 2014 22:33:07 +0400
-Message-Id: <1411929195-23775-9-git-send-email-ryazanov.s.a@gmail.com>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        linux-gpio@vger.kernel.org
+Subject: [PATCH 09/16] gpio: add driver for Atheros AR5312 SoC GPIO controller
+Date:   Sun, 28 Sep 2014 22:33:08 +0400
+Message-Id: <1411929195-23775-10-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -35,7 +38,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42859
+X-archive-position: 42860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,163 +55,180 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Detect SoC type based on device ID and board configuration data.
+Atheros AR5312 SoC have a builtin GPIO controller, which could be accessed
+via memory mapped registers. This patch adds new driver for them.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Alexandre Courbot <gnurou@gmail.com>
+Cc: linux-gpio@vger.kernel.org
 ---
- arch/mips/ar231x/ar2315.c  | 22 +++++++++++++++++++++-
- arch/mips/ar231x/ar5312.c  | 22 ++++++++++++++++++++++
- arch/mips/ar231x/devices.c |  7 +++++++
- arch/mips/ar231x/devices.h | 11 +++++++++++
- 4 files changed, 61 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/ar231x/ar2315.c b/arch/mips/ar231x/ar2315.c
-index 0b973eb..7791637 100644
---- a/arch/mips/ar231x/ar2315.c
-+++ b/arch/mips/ar231x/ar2315.c
-@@ -21,6 +21,7 @@
- #include <asm/reboot.h>
- #include <asm/time.h>
+Changes since RFC:
+  - move device registration to separate patch
+
+ drivers/gpio/Kconfig       |   7 +++
+ drivers/gpio/Makefile      |   1 +
+ drivers/gpio/gpio-ar5312.c | 121 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 129 insertions(+)
+ create mode 100644 drivers/gpio/gpio-ar5312.c
+
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 9de1515..7ce411b 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -112,6 +112,13 @@ config GPIO_MAX730X
  
-+#include <ar231x_platform.h>
- #include <ar2315_regs.h>
- #include <ar231x.h>
+ comment "Memory mapped GPIO drivers:"
  
-@@ -249,7 +250,7 @@ void __init ar2315_plat_mem_setup(void)
- 
- void __init ar2315_prom_init(void)
- {
--	u32 memsize, memcfg;
-+	u32 memsize, memcfg, devid;
- 
- 	if (!is_2315())
- 		return;
-@@ -260,6 +261,25 @@ void __init ar2315_prom_init(void)
- 	memsize <<= 1 + AR231X_REG_MS(memcfg, AR2315_MEM_CFG_ROW_WIDTH);
- 	memsize <<= 3;
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
++config GPIO_AR5312
++	bool "AR5312 SoC GPIO support"
++	default y if SOC_AR5312
++	depends on SOC_AR5312
++	help
++	  Say yes here to enable GPIO support for Atheros AR5312/AR2312+ SoCs.
 +
-+	/* Detect the hardware based on the device ID */
-+	devid = ar231x_read_reg(AR2315_SREV) & AR2315_REV_CHIP;
-+	switch (devid) {
-+	case 0x91:	/* Need to check */
-+		ar231x_devtype = DEV_TYPE_AR2318;
-+		break;
-+	case 0x90:
-+		ar231x_devtype = DEV_TYPE_AR2317;
-+		break;
-+	case 0x87:
-+		ar231x_devtype = DEV_TYPE_AR2316;
-+		break;
-+	case 0x86:
-+	default:
-+		ar231x_devtype = DEV_TYPE_AR2315;
-+		break;
+ config GPIO_CLPS711X
+ 	tristate "CLPS711X GPIO support"
+ 	depends on ARCH_CLPS711X || COMPILE_TEST
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 5d024e3..fae00f4 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -17,6 +17,7 @@ obj-$(CONFIG_GPIO_ADNP)		+= gpio-adnp.o
+ obj-$(CONFIG_GPIO_ADP5520)	+= gpio-adp5520.o
+ obj-$(CONFIG_GPIO_ADP5588)	+= gpio-adp5588.o
+ obj-$(CONFIG_GPIO_AMD8111)	+= gpio-amd8111.o
++obj-$(CONFIG_GPIO_AR5312)	+= gpio-ar5312.o
+ obj-$(CONFIG_GPIO_ARIZONA)	+= gpio-arizona.o
+ obj-$(CONFIG_GPIO_BCM_KONA)	+= gpio-bcm-kona.o
+ obj-$(CONFIG_GPIO_BT8XX)	+= gpio-bt8xx.o
+diff --git a/drivers/gpio/gpio-ar5312.c b/drivers/gpio/gpio-ar5312.c
+new file mode 100644
+index 0000000..27adb61
+--- /dev/null
++++ b/drivers/gpio/gpio-ar5312.c
+@@ -0,0 +1,121 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
++ * Copyright (C) 2006 FON Technology, SL.
++ * Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
++ * Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2012 Alexandros C. Couloumbis <alex@ozo.com>
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/gpio.h>
++
++#define DRIVER_NAME	"ar5312-gpio"
++
++#define AR5312_GPIO_DO		0x00		/* output register */
++#define AR5312_GPIO_DI		0x04		/* intput register */
++#define AR5312_GPIO_CR		0x08		/* control register */
++
++#define AR5312_GPIO_CR_M(x)	(1 << (x))	/* mask for i/o */
++#define AR5312_GPIO_CR_O(x)	(0 << (x))	/* mask for output */
++#define AR5312_GPIO_CR_I(x)	(1 << (x))	/* mask for input */
++#define AR5312_GPIO_CR_INT(x)	(1 << ((x)+8))	/* mask for interrupt */
++#define AR5312_GPIO_CR_UART(x)	(1 << ((x)+16))	/* uart multiplex */
++
++#define AR5312_GPIO_NUM		8
++
++static void __iomem *ar5312_mem;
++
++static inline u32 ar5312_gpio_reg_read(unsigned reg)
++{
++	return __raw_readl(ar5312_mem + reg);
++}
++
++static inline void ar5312_gpio_reg_write(unsigned reg, u32 val)
++{
++	__raw_writel(val, ar5312_mem + reg);
++}
++
++static inline void ar5312_gpio_reg_mask(unsigned reg, u32 mask, u32 val)
++{
++	ar5312_gpio_reg_write(reg, (ar5312_gpio_reg_read(reg) & ~mask) | val);
++}
++
++static int ar5312_gpio_get_val(struct gpio_chip *chip, unsigned gpio)
++{
++	return (ar5312_gpio_reg_read(AR5312_GPIO_DI) >> gpio) & 1;
++}
++
++static void ar5312_gpio_set_val(struct gpio_chip *chip, unsigned gpio, int val)
++{
++	u32 reg = ar5312_gpio_reg_read(AR5312_GPIO_DO);
++
++	reg = val ? reg | (1 << gpio) : reg & ~(1 << gpio);
++	ar5312_gpio_reg_write(AR5312_GPIO_DO, reg);
++}
++
++static int ar5312_gpio_dir_in(struct gpio_chip *chip, unsigned gpio)
++{
++	ar5312_gpio_reg_mask(AR5312_GPIO_CR, 0, 1 << gpio);
++	return 0;
++}
++
++static int ar5312_gpio_dir_out(struct gpio_chip *chip, unsigned gpio, int val)
++{
++	ar5312_gpio_reg_mask(AR5312_GPIO_CR, 1 << gpio, 0);
++	ar5312_gpio_set_val(chip, gpio, val);
++	return 0;
++}
++
++static struct gpio_chip ar5312_gpio_chip = {
++	.label			= DRIVER_NAME,
++	.direction_input	= ar5312_gpio_dir_in,
++	.direction_output	= ar5312_gpio_dir_out,
++	.set			= ar5312_gpio_set_val,
++	.get			= ar5312_gpio_get_val,
++	.base			= 0,
++	.ngpio			= AR5312_GPIO_NUM,
++};
++
++static int ar5312_gpio_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct resource *res;
++	int ret;
++
++	if (ar5312_mem)
++		return -EBUSY;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	ar5312_mem = devm_ioremap_resource(dev, res);
++	if (IS_ERR(ar5312_mem))
++		return PTR_ERR(ar5312_mem);
++
++	ar5312_gpio_chip.dev = dev;
++	ret = gpiochip_add(&ar5312_gpio_chip);
++	if (ret) {
++		dev_err(dev, "failed to add gpiochip\n");
++		return ret;
 +	}
-+	ar231x_board.devid = devid;
- }
- 
- void __init ar2315_arch_init(void)
-diff --git a/arch/mips/ar231x/ar5312.c b/arch/mips/ar231x/ar5312.c
-index 576c790..f207d14 100644
---- a/arch/mips/ar231x/ar5312.c
-+++ b/arch/mips/ar231x/ar5312.c
-@@ -21,6 +21,7 @@
- #include <asm/reboot.h>
- #include <asm/time.h>
- 
-+#include <ar231x_platform.h>
- #include <ar5312_regs.h>
- #include <ar231x.h>
- 
-@@ -165,6 +166,8 @@ ar5312_flash_limit = (u8 *)KSEG1ADDR(AR5312_FLASH + 0x800000);
- 
- void __init ar5312_init_devices(void)
- {
-+	struct ar231x_boarddata *config;
 +
- 	if (!is_5312())
- 		return;
- 
-@@ -172,6 +175,19 @@ void __init ar5312_init_devices(void)
- 
- 	/* Locate board/radio config data */
- 	ar231x_find_config(ar5312_flash_limit);
-+	config = ar231x_board.config;
++	return 0;
++}
 +
-+	/* AR2313 has CPU minor rev. 10 */
-+	if ((current_cpu_data.processor_id & 0xff) == 0x0a)
-+		ar231x_devtype = DEV_TYPE_AR2313;
++static struct platform_driver ar5312_gpio_driver = {
++	.probe = ar5312_gpio_probe,
++	.driver = {
++		.name = DRIVER_NAME,
++		.owner = THIS_MODULE,
++	}
++};
 +
-+	/* AR2312 shares the same Silicon ID as AR5312 */
-+	else if (config->flags & BD_ISCASPER)
-+		ar231x_devtype = DEV_TYPE_AR2312;
-+
-+	/* Everything else is probably AR5312 or compatible */
-+	else
-+		ar231x_devtype = DEV_TYPE_AR5312;
- }
- 
- static void ar5312_restart(char *command)
-@@ -274,6 +290,7 @@ void __init ar5312_plat_mem_setup(void)
- void __init ar5312_prom_init(void)
- {
- 	u32 memsize, memcfg, bank0_ac, bank1_ac;
-+	u32 devid;
- 
- 	if (!is_5312())
- 		return;
-@@ -286,6 +303,11 @@ void __init ar5312_prom_init(void)
- 		  (bank1_ac ? (1 << (bank1_ac + 1)) : 0);
- 	memsize <<= 20;
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+
-+	devid = ar231x_read_reg(AR5312_REV);
-+	devid >>= AR5312_REV_WMAC_MIN_S;
-+	devid &= AR5312_REV_CHIP;
-+	ar231x_board.devid = (u16)devid;
- }
- 
- void __init ar5312_arch_init(void)
-diff --git a/arch/mips/ar231x/devices.c b/arch/mips/ar231x/devices.c
-index 0b7d42b..21f90f2 100644
---- a/arch/mips/ar231x/devices.c
-+++ b/arch/mips/ar231x/devices.c
-@@ -12,6 +12,13 @@ struct ar231x_board_config ar231x_board;
- int ar231x_devtype = DEV_TYPE_UNKNOWN;
- 
- static const char * const devtype_strings[] = {
-+	[DEV_TYPE_AR5312] = "Atheros AR5312",
-+	[DEV_TYPE_AR2312] = "Atheros AR2312",
-+	[DEV_TYPE_AR2313] = "Atheros AR2313",
-+	[DEV_TYPE_AR2315] = "Atheros AR2315",
-+	[DEV_TYPE_AR2316] = "Atheros AR2316",
-+	[DEV_TYPE_AR2317] = "Atheros AR2317",
-+	[DEV_TYPE_AR2318] = "Atheros AR2318",
- 	[DEV_TYPE_UNKNOWN] = "Atheros (unknown)",
- };
- 
-diff --git a/arch/mips/ar231x/devices.h b/arch/mips/ar231x/devices.h
-index ef50bd0..5ffa091 100644
---- a/arch/mips/ar231x/devices.h
-+++ b/arch/mips/ar231x/devices.h
-@@ -4,6 +4,17 @@
- #include <linux/cpu.h>
- 
- enum {
-+	/* handled by ar5312.c */
-+	DEV_TYPE_AR2312,
-+	DEV_TYPE_AR2313,
-+	DEV_TYPE_AR5312,
-+
-+	/* handled by ar2315.c */
-+	DEV_TYPE_AR2315,
-+	DEV_TYPE_AR2316,
-+	DEV_TYPE_AR2317,
-+	DEV_TYPE_AR2318,
-+
- 	DEV_TYPE_UNKNOWN
- };
- 
++static int __init ar5312_gpio_init(void)
++{
++	return platform_driver_register(&ar5312_gpio_driver);
++}
++subsys_initcall(ar5312_gpio_init);
 -- 
 1.8.5.5

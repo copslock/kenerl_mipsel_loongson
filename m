@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2014 04:36:57 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:46295 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006211AbaI1CgwF0O2p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2014 04:36:52 +0200
-Received: from 172.24.2.119 (EHLO szxeml405-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CAA97294;
-        Sun, 28 Sep 2014 10:35:22 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml405-hub.china.huawei.com
- (10.82.67.60) with Microsoft SMTP Server id 14.3.158.1; Sun, 28 Sep 2014
- 10:35:11 +0800
-Message-ID: <542773DD.8020105@huawei.com>
-Date:   Sun, 28 Sep 2014 10:35:09 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2014 08:12:51 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:8414 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007791AbaI1GMrg8gCy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2014 08:12:47 +0200
+Received: from 172.24.2.119 (EHLO szxeml451-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CCG15382;
+        Sun, 28 Sep 2014 14:12:03 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml451-hub.china.huawei.com
+ (10.82.67.194) with Microsoft SMTP Server id 14.3.158.1; Sun, 28 Sep 2014
+ 14:11:48 +0800
+Message-ID: <5427A6A0.5040703@huawei.com>
+Date:   Sun, 28 Sep 2014 14:11:44 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
-To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
-        Wuyun <wuyun.wu@huawei.com>,
+To:     Thierry Reding <thierry.reding@gmail.com>
+CC:     Liviu Dudau <liviu@dudau.co.uk>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
         <linux-arm-kernel@lists.infradead.org>,
         Russell King <linux@arm.linux.org.uk>,
         <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
         <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
         <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
         <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -38,12 +40,11 @@ CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
         David Vrabel <david.vrabel@citrix.com>,
         "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 06/22] PCI/MSI: Introduce weak arch_find_msi_chip()
- to find MSI chip
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <1411614872-4009-7-git-send-email-wangyijing@huawei.com> <alpine.DEB.2.10.1409251220570.4604@nanos> <5424D30A.6040900@huawei.com> <alpine.DEB.2.11.1409261236160.4567@nanos>
-In-Reply-To: <alpine.DEB.2.11.1409261236160.4567@nanos>
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
+ in all platforms
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <20140925074235.GN12423@ulmo> <20140925144855.GB31157@bart.dudau.co.uk> <20140925164937.GB30382@ulmo> <20140925171612.GC31157@bart.dudau.co.uk> <542505B3.7040208@huawei.com> <20140926085430.GG31106@ulmo> <20140926090537.GH31106@ulmo> <54277327.6070500@huawei.com>
+In-Reply-To: <54277327.6070500@huawei.com>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.177.27.212]
@@ -52,7 +53,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42848
+X-archive-position: 42849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,31 +70,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->> MSI chip in this series is to setup MSI irq, including IRQ allocation, Map,
->> compose MSI msg ..., in different platform, many arch specific MSI irq details in it.
->> It's difficult to extract the common data and code.
+On 2014/9/28 10:32, Yijing Wang wrote:
+> On 2014/9/26 17:05, Thierry Reding wrote:
+>> On Fri, Sep 26, 2014 at 10:54:32AM +0200, Thierry Reding wrote:
+>> [...]
+>>> At least for Tegra it's trivial to just hook it up in tegra_pcie_scan_bus()
+>>> directly (patch attached).
 >>
->> I have a plan to rework MSI related irq_chips in kernel, PCI and Non-PCI, currently,
->> HPET, DMAR and PCI have their own irq_chip and MSI related functions, write_msi_msg(),
->> mask_msi_irq(), etc... I want to extract the common data set for that, so we can
->> remove lots of unnecessary MSI code.
+>> Really attached this time.
+>>
+>> Thierry
+>>
 > 
-> That makes sense. Can you please make sure that this does not conflict
-> with the ongoing work Jiang is doing in the x86 irq area with
-> hierarchical irqdomains to distangle layered levels like MSI from the
-> underlying vector/irqremap mechanics.
+> It looks good to me, so I will update the arm pci hostbridge driver to assign
+> pci root bus the msi chip instead of current pcibios_add_bus(). But for other
+> platforms which only have a one msi chip, I will kept the arch_find_msi_chip()
+> temporarily for more comments, especially from Bjorn.
 
-Yes, I'm reviewing Jiang hierarchical irqdomains series, I'm interested in that changes.
-
-Thanks!
-Yijing.
+Oh, sorry, I found designware and rcar use pci_scan_root_bus(), so we can not simply
+assign msi chip to root bus in all host drivers's scan functions.
 
 > 
-> Thanks,
-> 
-> 	tglx
-> 
-> .
+> Thanks!
+> Yijing.
 > 
 
 

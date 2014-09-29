@@ -1,44 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 11:24:51 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:36546 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 11:28:41 +0200 (CEST)
+Received: from dliviu.plus.com ([80.229.23.120]:44134 "EHLO smtp.dudau.co.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008535AbaI2JYtPByAO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 Sep 2014 11:24:49 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 1131028BF2F;
-        Mon, 29 Sep 2014 11:24:04 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qa0-f48.google.com (mail-qa0-f48.google.com [209.85.216.48])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 916B628BE17;
-        Mon, 29 Sep 2014 11:23:57 +0200 (CEST)
-Received: by mail-qa0-f48.google.com with SMTP id f12so882497qad.7
-        for <multiple recipients>; Mon, 29 Sep 2014 02:24:39 -0700 (PDT)
-X-Received: by 10.140.21.104 with SMTP id 95mr21072223qgk.69.1411982678997;
- Mon, 29 Sep 2014 02:24:38 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.140.101.178 with HTTP; Mon, 29 Sep 2014 02:24:18 -0700 (PDT)
-In-Reply-To: <CACRpkda3Cq+d47DMm018nAC7ThcHAOv-tOqEbNsUY1mOSnKyoA@mail.gmail.com>
-References: <1410723213-22440-1-git-send-email-ryazanov.s.a@gmail.com>
- <1410723213-22440-10-git-send-email-ryazanov.s.a@gmail.com> <CACRpkda3Cq+d47DMm018nAC7ThcHAOv-tOqEbNsUY1mOSnKyoA@mail.gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 29 Sep 2014 11:24:18 +0200
-Message-ID: <CAOiHx==oJX_4qEigoQ4PwMYqUEek86fAY+ZYue7KWSk-Dc9HFw@mail.gmail.com>
-Subject: Re: [RFC 09/18] gpio: add driver for Atheros AR5312 SoC GPIO controller
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        id S27008535AbaI2J2j5BPEd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 29 Sep 2014 11:28:39 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by smtp.dudau.co.uk (Postfix) with SMTP id 99FA31002EC
+        for <linux-mips@linux-mips.org>; Mon, 29 Sep 2014 10:28:38 +0100 (BST)
+Received: from mail.dudau.co.uk (bart.dudau.co.uk [192.168.14.2])
+        by smtp.dudau.co.uk (Postfix) with SMTP id BACAB1002EB;
+        Mon, 29 Sep 2014 10:26:00 +0100 (BST)
+Received: by mail.dudau.co.uk (sSMTP sendmail emulation); Mon, 29 Sep 2014 10:26:00 +0100
+Date:   Mon, 29 Sep 2014 10:26:00 +0100
+From:   Liviu Dudau <liviu@dudau.co.uk>
+To:     Yijing Wang <wangyijing@huawei.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Xinwei Hu <huxinwei@huawei.com>,
+        Wuyun <wuyun.wu@huawei.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
+        Bharat.Bhushan@freescale.com, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Vrabel <david.vrabel@citrix.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
+ in all platforms
+Message-ID: <20140929092600.GA15854@bart.dudau.co.uk>
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
+ <20140925074235.GN12423@ulmo>
+ <20140925144855.GB31157@bart.dudau.co.uk>
+ <20140925164937.GB30382@ulmo>
+ <5424E09F.50701@huawei.com>
+ <20140926085030.GE31157@bart.dudau.co.uk>
+ <54276F6C.5010705@huawei.com>
+ <20140928112144.GA4671@bart.dudau.co.uk>
+ <5428B971.50101@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5428B971.50101@huawei.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-DSPAM-Result: Innocent
+X-DSPAM-Processed: Mon Sep 29 10:28:38 2014
+X-DSPAM-Confidence: 0.9899
+X-DSPAM-Probability: 0.0000
+X-DSPAM-Signature: 100,5429264648398761118289
+Return-Path: <liviu@dudau.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42878
+X-archive-position: 42879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: liviu@dudau.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,55 +81,173 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 29, 2014 at 11:18 AM, Linus Walleij
-<linus.walleij@linaro.org> wrote:
-> On Sun, Sep 14, 2014 at 9:33 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
->
->> Atheros AR5312 SoC have a builtin GPIO controller, which could be
->> accessed via memory mapped registers. This patch adds new driver
->> for them.
->>
->> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
->> Cc: Linus Walleij <linus.walleij@linaro.org>
->> Cc: Alexandre Courbot <gnurou@gmail.com>
->> Cc: linux-gpio@vger.kernel.org
-> (...)
->> -       /* Attempt to jump to the mips reset location - the boot loader
->> -        * itself might be able to recover the system */
->> +       /* Cold reset does not work on the AR2315/6, use the GPIO reset bits
->> +        * a workaround. Give it some time to attempt a gpio based hardware
->> +        * reset (atheros reference design workaround) */
->> +       gpio_request_one(AR2315_RESET_GPIO, GPIOF_OUT_INIT_LOW, "Reset");
->> +       mdelay(100);
->
-> Please try to use the new GPIO descriptor API.
-> See Documentation/gpio/consumer.txt
->
-> (...)
->> +++ b/drivers/gpio/gpio-ar2315.c
->
->> +static u32 ar2315_gpio_intmask;
->> +static u32 ar2315_gpio_intval;
->> +static unsigned ar2315_gpio_irq_base;
->> +static void __iomem *ar2315_mem;
->
-> Get rid of these local variables and put them into an allocated
-> state container, see
-> Documentation/driver-model/design-patterns.txt
->
-> Get rid of _gpio_irq_base altogether. (See comments below.)
->
-> (...)
->> +static inline u32 ar2315_gpio_reg_read(unsigned reg)
->> +{
->> +       return __raw_readl(ar2315_mem + reg);
->> +}
->
-> Use readl_relaxed()
+On Mon, Sep 29, 2014 at 09:44:17AM +0800, Yijing Wang wrote:
+> On 2014/9/28 19:21, Liviu Dudau wrote:
+> > On Sun, Sep 28, 2014 at 10:16:12AM +0800, Yijing Wang wrote:
+> >>>>>> What I would like to see is a way of creating the pci_host_bridge structure outside
+> >>>>>> the pci_create_root_bus(). That would then allow us to pass this sort of platform
+> >>>>>> details like associated msi_chip into the host bridge and the child busses will
+> >>>>>> have an easy way of finding the information needed by finding the root bus and then
+> >>>>>> the host bridge structure. Then the generic pci_scan_root_bus() can be used by (mostly)
+> >>>>>> everyone and the drivers can remove their kludges that try to work around the
+> >>>>>> current limitations.
+> >>>>
+> >>>> So I think maybe save msi chip in PCI arch sysdata is a good candidate.
+> >>>
+> >>> Except that arch sysdata at the moment is an opaque pointer. I am all in favour in
+> >>> changing the type of sysdata from void* into pci_host_bridge* and arches can wrap their old
+> >>> sysdata around the pci_host_bridge*.
+> >>
+> >> I inspected every arch and found there are almost no common stuff,
+> > 
+> > I will disagree here. Most (all?) of the structures that are passed as sysdata argument to
+> 
+> Most.
+> 
+> > pci_create_root_bus() or pci_scan_root_bus() have a set of resources for storing the MEM and
+> > IO ranges, which struct pci_host_bridge already has. So that can be factored out of the
+> > arch code. Same for pci_domain_nr. Then there are some variables that are used for communication
+> > with the platform code due to convoluted way(s) in which PCI code gets instantiated.
+> 
+> Yes, currently some archs store MEM and IO resource in pci sysdata, and others not, move the MEM and IO
+> resource to pci_host_bride could make code become simple, we can clean up the resource list argument in
+> pci scan functions.
+> 
+> > 
+> > What I am arguing here is not that the arch equivalent of pci_host_bridge structure is already
+> > common, but that by moving the members that are common out of arch sysdata into pci_host_bridge
+> > we will have more commonality and it will be easier to re-factor the code.
+> 
+> Now, I got it, thanks!
+> 
+> > 
+> >> and generic data struct should
+> >> be created in generic PCI code.
+> > 
+> > Not necessarily. What I have in mind is something like this:
+> 
+> This is a good idea, what I'm worried is this series is already large, so I think we need to post
+> another series to do it.
 
-ar2315/ar5312 is big endian, so readl_relaxed would mess up the byte
-order. There does not seem to be a big endian equivalent for _relaxed.
+I wasn't asking to do it here, I was just offering a suggestion (and sharing some experience) when
+it comes to handling msi chip in an arch independent way.
 
+> 
+> 
+> > 
+> >  - drivers/pci/ exports pci_init_host_bridge() that does the initialisation of bridge->windows
+> >    and anything else that is needed (like find_pci_host_bridge() function).
+> >  - arch code does:
+> > 
+> > 	struct pci_controller {
+> > 		struct pci_host_bridge bridge;
+> > 		.....
+> > 	};
+> > 
+> > 	#define to_pci_controller(bridge)	container_of(bridge, struct pci_controller, bridge)
+> > 
+> > 	static inline struct pci_controller *get_host_controller(const struct pci_bus *bus)
+> > 	{
+> > 		struct pci_host_bridge *bridge = find_pci_host_bridge(bus);
+> > 		if (bridge)
+> > 			return to_pci_controller(bridge);
+> > 
+> > 		return NULL;
+> > 	}
+> > 
+> > 	int arch_pci_init(....)
+> > 	{
+> > 		struct pci_controller *hose;
+> > 		....
+> > 		hose = kzalloc(sizeof(*hose), GFP_KERNEL);
+> > 		pci_init_host_bridge(&hose->bridge);
+> > 		....
+> > 		pci_scan_root_bus(...., &hose->bridge, &resources);
+> > 		....
+> > 		return 0;
+> > 	}
+> > 
+> > Then finding the right structure will be easy.
+> > 
+> >> Another, I don't like associate msi chip and every PCI device, further more,
+> >> almost all platforms except arm have only one MSI controller, and currently, PCI enumerating code doesn't need
+> >> to know the MSI chip details, like for legacy IRQ, PCI device doesn't need to know which IRQ controller they
+> >> should deliver IRQ to. I would think more about it, and hope other PCI guys can give some comments, especially from Bjorn.
+> >>
+> > 
+> > I wasn't suggesing to associate an msi chip with every PCI device, but with the pci_host_bridge.
+> > I don't expect a host bridge to have more than one msi chip, so that should be OK. Also, I'm
+> > thinking that getting the associated msi chip should be some sort of pci_host_bridge ops function,
+> > and for arches that don't care about MSI it doesn't get implemented.
+> 
+> Currently, a property "msi-parent" was introduced in arm, and all msi chip integrated in irq chip controller will
+> be added to of_pci_msi_chip_list. PCI host driver find the match msi chip by its of_node.
 
-Regards
-Jonas
+OK. But as you might have seen that still implies open coding a separate version of pci_scan_root_bus().
+
+Best regards,
+Liviu
+
+> 
+> Thanks!
+> Yijing.
+> 
+> > 
+> > Best regards,
+> > Liviu
+> > 
+> >  
+> >> Thanks!
+> >> Yijing.
+> >>
+> >>>
+> >>> Best regards,
+> >>> Liviu
+> >>>
+> >>>>
+> >>>>>
+> >>>>> I think both issues are orthogonal. Last time I checked a lot of work
+> >>>>> was still necessary to unify host bridges enough so that it could be
+> >>>>> shared across architectures. But perhaps some of that work has
+> >>>>> happened in the meantime.
+> >>>>>
+> >>>>> But like I said, when you create the root bus, you can easily attach the
+> >>>>> MSI chip to it.
+> >>>>>
+> >>>>> Thierry
+> >>>>>
+> >>>>
+> >>>>
+> >>>> -- 
+> >>>> Thanks!
+> >>>> Yijing
+> >>>>
+> >>>>
+> >>>
+> >>
+> >>
+> >> -- 
+> >> Thanks!
+> >> Yijing
+> >>
+> >>
+> > 
+> 
+> 
+> -- 
+> Thanks!
+> Yijing
+> 
+> 
+
+-- 
+-------------------
+   .oooO
+   (   )
+    \ (  Oooo.
+     \_) (   )
+          ) /
+         (_/
+
+ One small step
+   for me ...

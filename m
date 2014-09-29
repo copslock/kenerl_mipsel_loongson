@@ -1,67 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 10:38:28 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:51510 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008572AbaI2Ii00hWN4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 10:38:26 +0200
-Received: from weser.hi.pengutronix.de ([2001:67c:670:100:fa0f:41ff:fe58:4010])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <l.stach@pengutronix.de>)
-        id 1XYWSo-0003Uq-PP; Mon, 29 Sep 2014 10:37:46 +0200
-Message-ID: <1411979850.2625.7.camel@pengutronix.de>
-Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
- in all platforms
-From:   Lucas Stach <l.stach@pengutronix.de>
-To:     Yijing Wang <wangyijing@huawei.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Liviu Dudau <liviu@dudau.co.uk>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Xinwei Hu <huxinwei@huawei.com>,
-        Wuyun <wuyun.wu@huawei.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
-        Bharat.Bhushan@freescale.com, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date:   Mon, 29 Sep 2014 10:37:30 +0200
-In-Reply-To: <5427A6A0.5040703@huawei.com>
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>
-         <20140925074235.GN12423@ulmo> <20140925144855.GB31157@bart.dudau.co.uk>
-         <20140925164937.GB30382@ulmo> <20140925171612.GC31157@bart.dudau.co.uk>
-         <542505B3.7040208@huawei.com> <20140926085430.GG31106@ulmo>
-         <20140926090537.GH31106@ulmo> <54277327.6070500@huawei.com>
-         <5427A6A0.5040703@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.5-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:fa0f:41ff:fe58:4010
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <l.stach@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 11:03:28 +0200 (CEST)
+Received: from mail-ie0-f177.google.com ([209.85.223.177]:34302 "EHLO
+        mail-ie0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008572AbaI2JD0O1Q0A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 11:03:26 +0200
+Received: by mail-ie0-f177.google.com with SMTP id x19so18549829ier.8
+        for <linux-mips@linux-mips.org>; Mon, 29 Sep 2014 02:03:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=hmrTIR4yJo2kSMUjAkVTe1MN5LAD5OhqUMaKoFsR99c=;
+        b=Vk+PsP4Zr175Rh+yccBJ0cEJtellAsnnFN/Wd4hLK9mAKZl1xjbG4EIBOODhXlOSJK
+         QmpauG0PtPMMZ2K7EqlBag3oTIU6Qre9jgPklvBa+OBW4RjqtmvzKyspmU4piHJTLgR6
+         IVnclFVPvvN3GZeuUtv6IdAv6IbsZ/gvImNobUUs9LAkwCZwFuk2EhjwPPz6pWg08RPW
+         2eKk/cxuZkHaSAFyXGQrbZB7JhHiO2YwveEvkXbkSnzeAOCNQ4bx+w6ujDWL7ihmXDnS
+         meezZ37L4fy6yDSNeuikPtpcc/LS41tZAXGsm0dba67pBrkySZZAKQhanFTlopgMtZe7
+         SytA==
+X-Gm-Message-State: ALoCoQlikpaJwPTqmTVZBpjBaj6d8QFInDbMsnXyNqFMTQ9EXiWlXkxfXoz1gdeceUKAQMMCbU5/
+MIME-Version: 1.0
+X-Received: by 10.50.115.73 with SMTP id jm9mr50217344igb.3.1411981400190;
+ Mon, 29 Sep 2014 02:03:20 -0700 (PDT)
+Received: by 10.43.102.201 with HTTP; Mon, 29 Sep 2014 02:03:20 -0700 (PDT)
+In-Reply-To: <1410723213-22440-9-git-send-email-ryazanov.s.a@gmail.com>
+References: <1410723213-22440-1-git-send-email-ryazanov.s.a@gmail.com>
+        <1410723213-22440-9-git-send-email-ryazanov.s.a@gmail.com>
+Date:   Mon, 29 Sep 2014 11:03:20 +0200
+Message-ID: <CACRpkda2nNqb9iARw+ze=vsdmXVePGu+Fb5PMGo75FSCGJ+tDA@mail.gmail.com>
+Subject: Re: [RFC 08/18] gpio: add driver for Atheros AR5312 SoC GPIO controller
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42874
+X-archive-position: 42875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: l.stach@pengutronix.de
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,33 +55,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am Sonntag, den 28.09.2014, 14:11 +0800 schrieb Yijing Wang:
-> On 2014/9/28 10:32, Yijing Wang wrote:
-> > On 2014/9/26 17:05, Thierry Reding wrote:
-> >> On Fri, Sep 26, 2014 at 10:54:32AM +0200, Thierry Reding wrote:
-> >> [...]
-> >>> At least for Tegra it's trivial to just hook it up in tegra_pcie_scan_bus()
-> >>> directly (patch attached).
-> >>
-> >> Really attached this time.
-> >>
-> >> Thierry
-> >>
-> > 
-> > It looks good to me, so I will update the arm pci hostbridge driver to assign
-> > pci root bus the msi chip instead of current pcibios_add_bus(). But for other
-> > platforms which only have a one msi chip, I will kept the arch_find_msi_chip()
-> > temporarily for more comments, especially from Bjorn.
-> 
-> Oh, sorry, I found designware and rcar use pci_scan_root_bus(), so we can not simply
-> assign msi chip to root bus in all host drivers's scan functions.
+On Sun, Sep 14, 2014 at 9:33 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
 
-Designware will switch away from pci_scan_root_bus() in the 3.18 cycle
-and I would think it would be no problem to to the same with rcar.
+> Atheros AR5312 SoC have a builtin GPIO controller, which could be accessed
+> via memory mapped registers. This patch adds new driver for them.
+>
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Alexandre Courbot <gnurou@gmail.com>
+> Cc: linux-gpio@vger.kernel.org
+(...)
 
-Regards,
-Lucas
+> diff --git a/arch/mips/ar231x/Kconfig b/arch/mips/ar231x/Kconfig
+> diff --git a/arch/mips/ar231x/ar5312.c b/arch/mips/ar231x/ar5312.c
+> diff --git a/arch/mips/include/asm/mach-ar231x/ar5312_regs.h b/arch/mips/include/asm/mach-ar231x/ar5312_regs.h
 
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+Please put these MIPS-related changes into a separate patch
+to be handled through the MIPS git tree.
+
+This driver seems surplus, it's just MMIO. Use
+drivers/gpio/gpio-generic.c instead.
+
+Yours,
+Linus Walleij

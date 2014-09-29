@@ -1,63 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 12:14:03 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:3859 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010064AbaI2KOBpAviO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 12:14:01 +0200
-Received: from 172.24.2.119 (EHLO szxeml457-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CAC55763;
-        Mon, 29 Sep 2014 18:13:29 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml457-hub.china.huawei.com
- (10.82.67.200) with Microsoft SMTP Server id 14.3.158.1; Mon, 29 Sep 2014
- 18:13:20 +0800
-Message-ID: <542930BD.2090907@huawei.com>
-Date:   Mon, 29 Sep 2014 18:13:17 +0800
-From:   Yijing Wang <wangyijing@huawei.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 14:48:31 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:43574 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009297AbaI2Ms2u0ZB1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 29 Sep 2014 14:48:28 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 8308928BEAF;
+        Mon, 29 Sep 2014 14:47:31 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qg0-f46.google.com (mail-qg0-f46.google.com [209.85.192.46])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 0F7A328AD3E;
+        Mon, 29 Sep 2014 14:47:02 +0200 (CEST)
+Received: by mail-qg0-f46.google.com with SMTP id a108so95537qge.19
+        for <multiple recipients>; Mon, 29 Sep 2014 05:47:43 -0700 (PDT)
+X-Received: by 10.224.165.1 with SMTP id g1mr1165451qay.97.1411994863047; Mon,
+ 29 Sep 2014 05:47:43 -0700 (PDT)
 MIME-Version: 1.0
-To:     Lucas Stach <l.stach@pengutronix.de>
-CC:     Thierry Reding <thierry.reding@gmail.com>,
-        Liviu Dudau <liviu@dudau.co.uk>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
-        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
-        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
-        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
- in all platforms
-References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com>     <20140925074235.GN12423@ulmo> <20140925144855.GB31157@bart.dudau.co.uk>         <20140925164937.GB30382@ulmo> <20140925171612.GC31157@bart.dudau.co.uk>         <542505B3.7040208@huawei.com> <20140926085430.GG31106@ulmo>     <20140926090537.GH31106@ulmo> <54277327.6070500@huawei.com>     <5427A6A0.5040703@huawei.com> <1411979850.2625.7.camel@pengutronix.de>
-In-Reply-To: <1411979850.2625.7.camel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.27.212]
-X-CFilter-Loop: Reflected
-Return-Path: <wangyijing@huawei.com>
+Received: by 10.140.101.178 with HTTP; Mon, 29 Sep 2014 05:47:22 -0700 (PDT)
+In-Reply-To: <1411929195-23775-6-git-send-email-ryazanov.s.a@gmail.com>
+References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com> <1411929195-23775-6-git-send-email-ryazanov.s.a@gmail.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Mon, 29 Sep 2014 14:47:22 +0200
+Message-ID: <CAOiHx==peRWkQjSOJvtJVKoiRdiugiu6-hmrEsafWw3K8HS1Ww@mail.gmail.com>
+Subject: Re: [PATCH 05/16] MIPS: ar231x: add early printk support
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42884
+X-archive-position: 42885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangyijing@huawei.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,39 +47,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/9/29 16:37, Lucas Stach wrote:
-> Am Sonntag, den 28.09.2014, 14:11 +0800 schrieb Yijing Wang:
->> On 2014/9/28 10:32, Yijing Wang wrote:
->>> On 2014/9/26 17:05, Thierry Reding wrote:
->>>> On Fri, Sep 26, 2014 at 10:54:32AM +0200, Thierry Reding wrote:
->>>> [...]
->>>>> At least for Tegra it's trivial to just hook it up in tegra_pcie_scan_bus()
->>>>> directly (patch attached).
->>>>
->>>> Really attached this time.
->>>>
->>>> Thierry
->>>>
->>>
->>> It looks good to me, so I will update the arm pci hostbridge driver to assign
->>> pci root bus the msi chip instead of current pcibios_add_bus(). But for other
->>> platforms which only have a one msi chip, I will kept the arch_find_msi_chip()
->>> temporarily for more comments, especially from Bjorn.
->>
->> Oh, sorry, I found designware and rcar use pci_scan_root_bus(), so we can not simply
->> assign msi chip to root bus in all host drivers's scan functions.
-> 
-> Designware will switch away from pci_scan_root_bus() in the 3.18 cycle
-> and I would think it would be no problem to to the same with rcar.
+On Sun, Sep 28, 2014 at 8:33 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+> ---
+>  arch/mips/Kconfig               |  1 +
+>  arch/mips/ar231x/Makefile       |  2 ++
+>  arch/mips/ar231x/early_printk.c | 45 +++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 48 insertions(+)
+>  create mode 100644 arch/mips/ar231x/early_printk.c
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index bd81f7a..b89bfdf 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -83,6 +83,7 @@ config AR231X
+>         select SYS_SUPPORTS_BIG_ENDIAN
+>         select SYS_SUPPORTS_32BIT_KERNEL
+>         select ARCH_REQUIRE_GPIOLIB
+> +       select SYS_HAS_EARLY_PRINTK
+>         help
+>           Support for Atheros AR231x and Atheros AR531x based boards
+>
+> diff --git a/arch/mips/ar231x/Makefile b/arch/mips/ar231x/Makefile
+> index 201b7d4..eabad7d 100644
+> --- a/arch/mips/ar231x/Makefile
+> +++ b/arch/mips/ar231x/Makefile
+> @@ -10,5 +10,7 @@
+>
+>  obj-y += board.o prom.o devices.o
+>
+> +obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+> +
+>  obj-$(CONFIG_SOC_AR5312) += ar5312.o
+>  obj-$(CONFIG_SOC_AR2315) += ar2315.o
+> diff --git a/arch/mips/ar231x/early_printk.c b/arch/mips/ar231x/early_printk.c
+> new file mode 100644
+> index 0000000..393c5ab
+> --- /dev/null
+> +++ b/arch/mips/ar231x/early_printk.c
+> @@ -0,0 +1,45 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
+> + */
+> +
+> +#include <linux/mm.h>
+> +#include <linux/io.h>
+> +#include <linux/serial_reg.h>
+> +
+> +#include <ar2315_regs.h>
+> +#include <ar5312_regs.h>
+> +#include "devices.h"
+> +
+> +static inline void prom_uart_wr(void __iomem *base, unsigned reg,
+> +                               unsigned char ch)
+> +{
+> +       __raw_writel(ch, base + 4 * reg);
+> +}
+> +
+> +static inline unsigned char prom_uart_rr(void __iomem *base, unsigned reg)
+> +{
+> +       return __raw_readl(base + 4 * reg);
+> +}
+> +
+> +void prom_putchar(unsigned char ch)
+> +{
+> +       static void __iomem *base;
+> +
+> +       if (unlikely(base == NULL)) {
+> +               if (is_2315())
+> +                       base = (void __iomem *)(KSEG1ADDR(AR2315_UART0));
+> +               else
+> +                       base = (void __iomem *)(KSEG1ADDR(AR5312_UART0));
+> +       }
+> +
+> +       while ((prom_uart_rr(base, UART_LSR) & UART_LSR_THRE) == 0)
+> +               ;
+> +       prom_uart_wr(base, UART_TX, ch);
+> +       while ((prom_uart_rr(base, UART_LSR) & UART_LSR_THRE) == 0)
+> +               ;
+> +}
 
-Good.
 
-> 
-> Regards,
-> Lucas
-> 
+Have you tried using EARLY_PRINTK_8250 instead? Since this is a 8250 anyway.
 
 
--- 
-Thanks!
-Yijing
+Jonas

@@ -1,40 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 11:50:42 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:37536 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008572AbaI2JulHYGL3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 Sep 2014 11:50:41 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id DC22228BE17;
-        Mon, 29 Sep 2014 11:49:54 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f171.google.com (mail-qc0-f171.google.com [209.85.216.171])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 61E3F28BEE0;
-        Mon, 29 Sep 2014 11:49:49 +0200 (CEST)
-Received: by mail-qc0-f171.google.com with SMTP id i17so1827680qcy.16
-        for <multiple recipients>; Mon, 29 Sep 2014 02:50:30 -0700 (PDT)
-X-Received: by 10.224.165.1 with SMTP id g1mr213244qay.97.1411984230742; Mon,
- 29 Sep 2014 02:50:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 12:13:42 +0200 (CEST)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:3558 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008535AbaI2KNiyN09G (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 12:13:38 +0200
+Received: from 172.24.2.119 (EHLO szxeml417-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CAC55600;
+        Mon, 29 Sep 2014 18:12:54 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml417-hub.china.huawei.com
+ (10.82.67.156) with Microsoft SMTP Server id 14.3.158.1; Mon, 29 Sep 2014
+ 18:12:40 +0800
+Message-ID: <5429308A.7030201@huawei.com>
+Date:   Mon, 29 Sep 2014 18:12:26 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
-Received: by 10.140.101.178 with HTTP; Mon, 29 Sep 2014 02:50:10 -0700 (PDT)
-In-Reply-To: <1411929195-23775-4-git-send-email-ryazanov.s.a@gmail.com>
-References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com> <1411929195-23775-4-git-send-email-ryazanov.s.a@gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 29 Sep 2014 11:50:10 +0200
-Message-ID: <CAOiHx=nxZ+R6iiGiNJpDnOVieCgz5YH+i4WAuvb=gA6GNPTp9g@mail.gmail.com>
-Subject: Re: [PATCH 03/16] MIPS: ar231x: add basic AR2315 SoC support
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+To:     Liviu Dudau <liviu@dudau.co.uk>
+CC:     Thierry Reding <thierry.reding@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
+        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Vrabel <david.vrabel@citrix.com>,
+        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Subject: Re: [PATCH v2 00/22] Use MSI chip framework to configure MSI/MSI-X
+ in all platforms
+References: <1411614872-4009-1-git-send-email-wangyijing@huawei.com> <20140925074235.GN12423@ulmo> <20140925144855.GB31157@bart.dudau.co.uk> <20140925164937.GB30382@ulmo> <5424E09F.50701@huawei.com> <20140926085030.GE31157@bart.dudau.co.uk> <54276F6C.5010705@huawei.com> <20140928112144.GA4671@bart.dudau.co.uk> <5428B971.50101@huawei.com> <20140929092600.GA15854@bart.dudau.co.uk>
+In-Reply-To: <20140929092600.GA15854@bart.dudau.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.27.212]
+X-CFilter-Loop: Reflected
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42882
+X-archive-position: 42883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,12 +70,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Sep 28, 2014 at 8:33 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
-> Add basic support for Atheros AR2315+ SoCs: registers definition file
-> and initial setup code.
+>>> Not necessarily. What I have in mind is something like this:
+>>
+>> This is a good idea, what I'm worried is this series is already large, so I think we need to post
+>> another series to do it.
+> 
+> I wasn't asking to do it here, I was just offering a suggestion (and sharing some experience) when
+> it comes to handling msi chip in an arch independent way.
 
-Same comment regarding the style of checking the SoC family as for patch 2.
+It's a good suggestion, thanks! :)
 
-
-Regards
-Jonas
+> 
+>>
+>>

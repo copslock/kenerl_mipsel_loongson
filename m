@@ -1,41 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 22:57:31 +0200 (CEST)
-Received: from mail-yh0-f44.google.com ([209.85.213.44]:37949 "EHLO
-        mail-yh0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010110AbaI2U53Csmsn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 22:57:29 +0200
-Received: by mail-yh0-f44.google.com with SMTP id i57so574899yha.3
-        for <multiple recipients>; Mon, 29 Sep 2014 13:57:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 23:01:34 +0200 (CEST)
+Received: from mail-yh0-f41.google.com ([209.85.213.41]:38708 "EHLO
+        mail-yh0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010112AbaI2VBbpcrtt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 23:01:31 +0200
+Received: by mail-yh0-f41.google.com with SMTP id i57so926613yha.14
+        for <multiple recipients>; Mon, 29 Sep 2014 14:01:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=/H47ocaMPFrS6ZJf5dpruTb+d6GZmlmxW5Jw8XZlbWY=;
-        b=YIGeRdKSK5Ov1feUqOI04cmTM/oGoDDYbuIE3Kr83ml1MB4TVfV0+0UVW8oXFR1q2T
-         tmXvYF0qm2IyG8R/qXurba/UcfJtTIyNzxpYl74cmFspaE0tBpmZeF0iWccI3dY6JVBo
-         xLipMtzfGvMXpMtQs5Y0zY0+48YBB5k2vOg0nzj5frve4CuFtdpZgCBqr4ziCgP02etV
-         /BTNtqu1wwAJxFhRngaOIyNKeBEdZDna9I0UNlZHOgZ0bpJ5hHJJ4d2SMI6de7vetetr
-         MP50FNdYUkG+Ia6tvp6yDzZnHwz2D9hbWRAndflp5PD+wiItrSBh3FT++qeEhzO55aml
-         puIg==
-X-Received: by 10.236.161.66 with SMTP id v42mr4817792yhk.117.1412024243135;
- Mon, 29 Sep 2014 13:57:23 -0700 (PDT)
+        bh=n3BqHGJWrNbHuLmXt0W1Edbu6YUyxvjqJj6p7NoB5P8=;
+        b=z2DrJnVTFE7MWHmsZGaNbYsSxtshicsCwKPmAwgEFJD3UuEzh8oP92P2lYFl+MScVh
+         yJH6SFpDwNt+OlEiFT4sjxPymlaTWPM874JYg/yK7FQ82AnhgmO9PYvF0dEcNRBzJHBD
+         b25PWLN9gluPCHmBlYXDcCO36wIMgbm2/2mNH+xsXDTuGg5NEspb59D8dxgWrvc6pOWK
+         8RYNDT/3Von+groKf517Y2TNTWsXAJJp6oBEgPylX3XVTdh0vhb71k/VPGCHBFFvvffe
+         atHagg3nQ/nG6dTcUOnyHB3/piqy4cOBvEt1AsUi9DuLmKUjXPX01HXQdgvubXARfMfH
+         FsWA==
+X-Received: by 10.236.29.211 with SMTP id i59mr6031060yha.96.1412024485573;
+ Mon, 29 Sep 2014 14:01:25 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.170.153.135 with HTTP; Mon, 29 Sep 2014 13:57:02 -0700 (PDT)
-In-Reply-To: <CAOiHx=m-adJVEhOFmmRn73PHGTxJXVvZytt2T=EtgCQj4BQxgg@mail.gmail.com>
+Received: by 10.170.153.135 with HTTP; Mon, 29 Sep 2014 14:01:05 -0700 (PDT)
+In-Reply-To: <20140929204619.GA32273@roeck-us.net>
 References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
- <1411929195-23775-2-git-send-email-ryazanov.s.a@gmail.com> <CAOiHx=m-adJVEhOFmmRn73PHGTxJXVvZytt2T=EtgCQj4BQxgg@mail.gmail.com>
+ <1411929195-23775-13-git-send-email-ryazanov.s.a@gmail.com>
+ <54287F13.3080509@roeck-us.net> <CAHNKnsRCsz=m1bJX+LmAOh8CLUuuAvGmva8NpYvQSa4VK1L=PA@mail.gmail.com>
+ <20140929204619.GA32273@roeck-us.net>
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Tue, 30 Sep 2014 00:57:02 +0400
-Message-ID: <CAHNKnsQU9u1x0M7+xwRrrn2_x0O-AJVLP4FrzXjUpQjt2JcFeg@mail.gmail.com>
-Subject: Re: [PATCH 01/16] MIPS: ar231x: add common parts
-To:     Jonas Gorski <jogo@openwrt.org>
+Date:   Tue, 30 Sep 2014 01:01:05 +0400
+Message-ID: <CAHNKnsRrwtyWywK4n-vmK5ebNjDVhd-FjigLheBmGF2qabdYTQ@mail.gmail.com>
+Subject: Re: [PATCH 12/16] watchdog: add Atheros AR2315 watchdog driver
+To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        linux-watchdog@vger.kernel.org
 Content-Type: text/plain; charset=ISO-8859-1
 Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42892
+X-archive-position: 42893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,244 +56,285 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-09-29 13:30 GMT+04:00 Jonas Gorski <jogo@openwrt.org>:
-> On Sun, Sep 28, 2014 at 8:33 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
->> Add common code for Atheros AR5312 and Atheros AR2315 SoCs families.
+2014-09-30 0:46 GMT+04:00 Guenter Roeck <linux@roeck-us.net>:
+> On Tue, Sep 30, 2014 at 12:14:58AM +0400, Sergey Ryazanov wrote:
+>> 2014-09-29 1:35 GMT+04:00 Guenter Roeck <linux@roeck-us.net>:
+>> > On 09/28/2014 11:33 AM, Sergey Ryazanov wrote:
+>> >>
+>> >> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+>> >> Cc: Wim Van Sebroeck <wim@iguana.be>
+>> >> Cc: linux-watchdog@vger.kernel.org
+>> >> ---
+>> >>
+>> >> Changes since RFC:
+>> >>    - use watchdog infrastructure
+>> >>    - remove deprecated IRQF_DISABLED flag
+>> >>    - move device registration to separate patch
+>> >>
+>> >>   drivers/watchdog/Kconfig      |   8 ++
+>> >>   drivers/watchdog/Makefile     |   1 +
+>> >>   drivers/watchdog/ar2315-wtd.c | 167
+>> >> ++++++++++++++++++++++++++++++++++++++++++
+>> >>   3 files changed, 176 insertions(+)
+>> >>   create mode 100644 drivers/watchdog/ar2315-wtd.c
+>> >>
+>> >> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+>> >> index f57312f..dbace99 100644
+>> >> --- a/drivers/watchdog/Kconfig
+>> >> +++ b/drivers/watchdog/Kconfig
+>> >> @@ -1186,6 +1186,14 @@ config RALINK_WDT
+>> >>         help
+>> >>           Hardware driver for the Ralink SoC Watchdog Timer.
+>> >>
+>> >> +config AR2315_WDT
+>> >> +       tristate "Atheros AR2315+ WiSoCs Watchdog Timer"
+>> >> +       select WATCHDOG_CORE
+>> >> +       depends on SOC_AR2315
+>> >> +       help
+>> >> +         Hardware driver for the built-in watchdog timer on the Atheros
+>> >> +         AR2315/AR2316 WiSoCs.
+>> >> +
+>> >>   # PARISC Architecture
+>> >>
+>> >>   # POWERPC Architecture
+>> >> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+>> >> index 468c320..ef7f83b 100644
+>> >> --- a/drivers/watchdog/Makefile
+>> >> +++ b/drivers/watchdog/Makefile
+>> >> @@ -133,6 +133,7 @@ obj-$(CONFIG_WDT_MTX1) += mtx-1_wdt.o
+>> >>   obj-$(CONFIG_PNX833X_WDT) += pnx833x_wdt.o
+>> >>   obj-$(CONFIG_SIBYTE_WDOG) += sb_wdog.o
+>> >>   obj-$(CONFIG_AR7_WDT) += ar7_wdt.o
+>> >> +obj-$(CONFIG_AR2315_WDT) += ar2315-wtd.o
+>> >>   obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
+>> >>   obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+>> >>   octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
+>> >> diff --git a/drivers/watchdog/ar2315-wtd.c b/drivers/watchdog/ar2315-wtd.c
+>> >> new file mode 100644
+>> >> index 0000000..4fd34d2
+>> >> --- /dev/null
+>> >> +++ b/drivers/watchdog/ar2315-wtd.c
+>> >> @@ -0,0 +1,167 @@
+>> >> +/*
+>> >> + * This program is free software; you can redistribute it and/or modify
+>> >> + * it under the terms of the GNU General Public License as published by
+>> >> + * the Free Software Foundation; either version 2 of the License, or
+>> >> + * (at your option) any later version.
+>> >> + *
+>> >> + * This program is distributed in the hope that it will be useful,
+>> >> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> >> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>> >> + * GNU General Public License for more details.
+>> >> + *
+>> >> + * You should have received a copy of the GNU General Public License
+>> >> + * along with this program; if not, see <http://www.gnu.org/licenses/>.
+>> >> + *
+>> >> + * Copyright (C) 2008 John Crispin <blogic@openwrt.org>
+>> >> + * Based on EP93xx and ifxmips wdt driver
+>> >> + */
+>> >> +
+>> >> +#include <linux/interrupt.h>
+>> >> +#include <linux/module.h>
+>> >> +#include <linux/watchdog.h>
+>> >> +#include <linux/reboot.h>
+>> >> +#include <linux/init.h>
+>> >> +#include <linux/platform_device.h>
+>> >> +#include <linux/io.h>
+>> >> +
+>> >> +#define DRIVER_NAME    "ar2315-wdt"
+>> >> +
+>> >> +#define CLOCK_RATE 40000000
+>> >> +
+>> >> +#define WDT_REG_TIMER          0x00
+>> >> +#define WDT_REG_CTRL           0x04
+>> >> +
+>> >> +#define WDT_CTRL_ACT_NONE      0x00000000      /* No action */
+>> >> +#define WDT_CTRL_ACT_NMI       0x00000001      /* NMI on watchdog */
+>> >> +#define WDT_CTRL_ACT_RESET     0x00000002      /* reset on watchdog */
+>> >> +
+>> >
+>> > What are those defines for ? They don't seem to be used.
+>> >
+>> This defines for reference. There no documentation for this chips, so
+>> I left this defines as some kind of documentation.
 >>
->> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
->> ---
->>  arch/mips/Kbuild.platforms                         |  1 +
->>  arch/mips/Kconfig                                  | 13 ++++
->>  arch/mips/ar231x/Makefile                          | 11 ++++
->>  arch/mips/ar231x/Platform                          |  6 ++
->>  arch/mips/ar231x/board.c                           | 53 +++++++++++++++
->>  arch/mips/ar231x/devices.c                         | 20 ++++++
->>  arch/mips/ar231x/devices.h                         | 22 +++++++
->>  arch/mips/ar231x/prom.c                            | 26 ++++++++
->>  arch/mips/include/asm/mach-ar231x/ar231x.h         | 29 +++++++++
->>  .../asm/mach-ar231x/cpu-feature-overrides.h        | 76 ++++++++++++++++++++++
->>  arch/mips/include/asm/mach-ar231x/dma-coherence.h  | 64 ++++++++++++++++++
->>  arch/mips/include/asm/mach-ar231x/gpio.h           | 16 +++++
->>  arch/mips/include/asm/mach-ar231x/war.h            | 25 +++++++
->>  13 files changed, 362 insertions(+)
->>  create mode 100644 arch/mips/ar231x/Makefile
->>  create mode 100644 arch/mips/ar231x/Platform
->>  create mode 100644 arch/mips/ar231x/board.c
->>  create mode 100644 arch/mips/ar231x/devices.c
->>  create mode 100644 arch/mips/ar231x/devices.h
->>  create mode 100644 arch/mips/ar231x/prom.c
->>  create mode 100644 arch/mips/include/asm/mach-ar231x/ar231x.h
->>  create mode 100644 arch/mips/include/asm/mach-ar231x/cpu-feature-overrides.h
->>  create mode 100644 arch/mips/include/asm/mach-ar231x/dma-coherence.h
->>  create mode 100644 arch/mips/include/asm/mach-ar231x/gpio.h
->>  create mode 100644 arch/mips/include/asm/mach-ar231x/war.h
+> If they are not used, please drop those defines. They only create unnecessary
+> confusion if unused.
+>
+Ok.
+
+>> > If the watchdog can result in an immediate restart, as
+>> > this define suggests, why don't you use it but rely on
+>> > the interrupt handler instead ?
+>> >
+>> AFAIK some of chips have a HW bug in restarting unit, so chip specific
+>> restart routine (in arch code) use a lot of hacks to reset chip. So we
+>> use interrupt to call reset function, which should reliably reset
+>> chip.
 >>
->> diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
->> index f5e18bf..ee1940a 100644
->> --- a/arch/mips/Kbuild.platforms
->> +++ b/arch/mips/Kbuild.platforms
->> @@ -1,6 +1,7 @@
->>  # All platforms listed in alphabetic order
+>> > This means the watchdog won't really fire if it times out, but depend
+>> > on the interrupt handler to work. Which it won't if there is a real
+>> > problem and interrupts are disabled (or if the system hangs entirely).
+>> >
+>> Sure. But without reset function call from the interrupt handler we
+>> can not reliable reset chip (see above).
 >>
->>  platforms += alchemy
->> +platforms += ar231x
->>  platforms += ar7
->>  platforms += ath79
->>  platforms += bcm47xx
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> index 01c0389..6adae4c 100644
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
->> @@ -73,6 +73,19 @@ config MIPS_ALCHEMY
->>         select SYS_SUPPORTS_ZBOOT
->>         select COMMON_CLK
+>> >> +static int started;
+>> >> +static void __iomem *wdt_base;
+>> >> +
+>> >> +static inline void ar2315_wdt_wr(unsigned reg, u32 val)
+>> >> +{
+>> >> +       iowrite32(val, wdt_base + reg);
+>> >> +}
+>> >> +
+>> >> +static void ar2315_wdt_enable(struct watchdog_device *wdd)
+>> >> +{
+>> >> +       ar2315_wdt_wr(WDT_REG_TIMER, wdd->timeout * CLOCK_RATE);
+>> >> +}
+>> >> +
+>> >> +static int ar2315_wdt_start(struct watchdog_device *wdd)
+>> >> +{
+>> >> +       ar2315_wdt_enable(wdd);
+>> >> +       started = 1;
+>> >
+>> >
+>> > I don't really see why you would need this variable.
+>> >
+>> To protect against spurious interrupts, since the watchdog timer could
+>> be started by bootloader.
 >>
->> +config AR231X
+> Then it would be appropriate to stop it in the probe function.
 >
-> I would suggest naming it ATH25, to match the other atheros target (ATH79).
-I have been thinking about such name. But decided to keep code closer
-to owrt realization. May be maintainers could suggest smth. Ralf, what
-do you think?
+Yes sure.
 
+>> >
+>> >> +       return 0;
+>> >> +}
+>> >> +
+>> >> +static int ar2315_wdt_stop(struct watchdog_device *wdd)
+>> >> +{
+>> >> +       return 0;
+>> >> +}
+>> >> +
+>> >> +static int ar2315_wdt_ping(struct watchdog_device *wdd)
+>> >> +{
+>> >> +       ar2315_wdt_enable(wdd);
+>> >> +       return 0;
+>> >> +}
+>> >> +
+>> >> +static int ar2315_wdt_set_timeout(struct watchdog_device *wdd, unsigned
+>> >> val)
+>> >> +{
+>> >> +       wdd->timeout = val;
+>> >> +       return 0;
+>> >> +}
+>> >> +
+>> >> +static irqreturn_t ar2315_wdt_interrupt(int irq, void *dev)
+>> >> +{
+>> >> +       struct platform_device *pdev = (struct platform_device *)dev;
+>> >> +
+>> >> +       if (started) {
+>> >> +               dev_crit(&pdev->dev, "watchdog expired, rebooting
+>> >> system\n");
+>> >> +               emergency_restart();
+>> >> +       } else {
+>> >> +               ar2315_wdt_wr(WDT_REG_CTRL, 0);
+>> >> +               ar2315_wdt_wr(WDT_REG_TIMER, 0);
+>> >> +       }
+>> >
+>> >
+>> > This is quite unusual.
+>> > Why not stop the watchdog in the stop function ? Quite apparently
+>> > it can be stopped, or at least this is what it looks like.
+>> >
+>> The started variable is set to true inside the watchdog start routine,
+>> but it never reset to false. This code only disable the watchdog when
+>> it was started by bootloader.
+>>
+>> > When do you expect this function to be called in the first place
+>> > with started == 1 ?
+>> >
+>> > If the idea is to stop the watchdog if it was already enabled
+>> > when probing the driver, why don't you stop it there ?
+>> >
+>> Sure, I will try to do that.
+>>
+>> >> +       return IRQ_HANDLED;
+>> >> +}
+>> >> +
+>> >> +static const struct watchdog_info ar2315_wdt_info = {
+>> >> +       .identity = "ar2315 Watchdog",
+>> >> +       .options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING,
+>> >> +};
+>> >> +
+>> >> +static const struct watchdog_ops ar2315_wdt_ops = {
+>> >> +       .owner = THIS_MODULE,
+>> >> +       .start = ar2315_wdt_start,
+>> >> +       .stop = ar2315_wdt_stop,
+>> >> +       .ping = ar2315_wdt_ping,
+>> >> +       .set_timeout = ar2315_wdt_set_timeout,
+>> >> +};
+>> >> +
+>> >> +static struct watchdog_device ar2315_wdt_dev = {
+>> >> +       .info = &ar2315_wdt_info,
+>> >> +       .ops = &ar2315_wdt_ops,
+>> >> +       .min_timeout = 1,
+>> >> +       .max_timeout = 90,
+>> >> +       .timeout = 20,
+>> >> +};
+>> >> +
+>> >> +static int ar2315_wdt_probe(struct platform_device *pdev)
+>> >> +{
+>> >> +       struct device *dev = &pdev->dev;
+>> >> +       struct resource *res;
+>> >> +       int ret = 0;
+>> >> +
+>> >> +       if (wdt_base)
+>> >> +               return -EBUSY;
+>> >> +
+>> >> +       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> >> +       wdt_base = devm_ioremap_resource(dev, res);
+>> >> +       if (IS_ERR(wdt_base))
+>> >> +               return PTR_ERR(wdt_base);
+>> >> +
+>> >> +       res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+>> >> +       if (!res) {
+>> >> +               dev_err(dev, "no IRQ resource\n");
+>> >> +               return -ENOENT;
+>> >> +       }
+>> >> +
+>> >> +       ret = devm_request_irq(dev, res->start, ar2315_wdt_interrupt, 0,
+>> >> +                              DRIVER_NAME, pdev);
+>> >> +       if (ret) {
+>> >> +               dev_err(dev, "failed to register inetrrupt\n");
+>> >> +               return ret;
+>> >> +       }
+>> >> +
+>> >> +       ar2315_wdt_dev.parent = dev;
+>> >> +       ret = watchdog_register_device(&ar2315_wdt_dev);
+>> >> +       if (ret) {
+>> >> +               dev_err(dev, "failed to register watchdog device\n");
+>> >> +               return ret;
+>> >> +       }
+>> >> +
+>> >> +       return 0;
+>> >> +}
+>> >> +
+>> >> +static int ar2315_wdt_remove(struct platform_device *pdev)
+>> >> +{
+>> >> +       watchdog_unregister_device(&ar2315_wdt_dev);
+>> >
+>> >
+>> > Why don't you stop the watchdog on remove ?
+>> >
+>> While the watchdog is running, the watchdog core prevents the module
+>> unloading, so this routine could not be called while the watchdog is
+>> running. Isn't it?
+>>
+> Only you never stop the watchdog nor disable the chip interrupt,
+> even on close (the stop function above does nothing).
 >
->> +       bool "Atheros AR231x/AR531x SoC support"
->> +       select CEVT_R4K
->> +       select CSRC_R4K
->> +       select DMA_NONCOHERENT
->> +       select IRQ_CPU
->> +       select SYS_HAS_CPU_MIPS32_R1
->> +       select SYS_SUPPORTS_BIG_ENDIAN
->> +       select SYS_SUPPORTS_32BIT_KERNEL
->> +       select ARCH_REQUIRE_GPIOLIB
->> +       help
->> +         Support for Atheros AR231x and Atheros AR531x based boards
->> +
->>  config AR7
->>         bool "Texas Instruments AR7"
->>         select BOOT_ELF32
->> diff --git a/arch/mips/ar231x/Makefile b/arch/mips/ar231x/Makefile
->> new file mode 100644
->> index 0000000..9199fa1
->> --- /dev/null
->> +++ b/arch/mips/ar231x/Makefile
->> @@ -0,0 +1,11 @@
->> +#
->> +# This file is subject to the terms and conditions of the GNU General Public
->> +# License.  See the file "COPYING" in the main directory of this archive
->> +# for more details.
->> +#
->> +# Copyright (C) 2006 FON Technology, SL.
->> +# Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
->> +# Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
->> +#
->> +
->> +obj-y += board.o prom.o devices.o
->> diff --git a/arch/mips/ar231x/Platform b/arch/mips/ar231x/Platform
->> new file mode 100644
->> index 0000000..c924fd1
->> --- /dev/null
->> +++ b/arch/mips/ar231x/Platform
->> @@ -0,0 +1,6 @@
->> +#
->> +# Atheros AR531X/AR231X WiSoC
->> +#
->> +platform-$(CONFIG_AR231X)      += ar231x/
->> +cflags-$(CONFIG_AR231X)                += -I$(srctree)/arch/mips/include/asm/mach-ar231x
->> +load-$(CONFIG_AR231X)          += 0xffffffff80041000
->> diff --git a/arch/mips/ar231x/board.c b/arch/mips/ar231x/board.c
->> new file mode 100644
->> index 0000000..9cde045
->> --- /dev/null
->> +++ b/arch/mips/ar231x/board.c
->> @@ -0,0 +1,53 @@
->> +/*
->> + * This file is subject to the terms and conditions of the GNU General Public
->> + * License.  See the file "COPYING" in the main directory of this archive
->> + * for more details.
->> + *
->> + * Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
->> + * Copyright (C) 2006 FON Technology, SL.
->> + * Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
->> + * Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
->> + */
->> +
->> +#include <linux/init.h>
->> +#include <linux/interrupt.h>
->> +#include <asm/irq_cpu.h>
->> +#include <asm/reboot.h>
->> +#include <asm/bootinfo.h>
->> +#include <asm/time.h>
->> +
->> +static void ar231x_halt(void)
->> +{
->> +       local_irq_disable();
->> +       while (1)
->> +               ;
->> +}
->> +
->> +void __init plat_mem_setup(void)
->> +{
->> +       _machine_halt = ar231x_halt;
->> +       pm_power_off = ar231x_halt;
->> +
->> +       /* Disable data watchpoints */
->> +       write_c0_watchlo0(0);
->> +}
->> +
->> +asmlinkage void plat_irq_dispatch(void)
->> +{
->> +}
->> +
->> +void __init plat_time_init(void)
->> +{
->> +}
->> +
->> +unsigned int __cpuinit get_c0_compare_int(void)
->> +{
->> +       return CP0_LEGACY_COMPARE_IRQ;
->> +}
->> +
->> +void __init arch_init_irq(void)
->> +{
->> +       clear_c0_status(ST0_IM);
->> +       mips_cpu_irq_init();
->> +}
->> +
->> diff --git a/arch/mips/ar231x/devices.c b/arch/mips/ar231x/devices.c
->> new file mode 100644
->> index 0000000..f71a643
->> --- /dev/null
->> +++ b/arch/mips/ar231x/devices.c
->> @@ -0,0 +1,20 @@
->> +#include <linux/kernel.h>
->> +#include <linux/init.h>
->> +#include <asm/bootinfo.h>
->> +
->> +#include "devices.h"
->> +
->> +int ar231x_devtype = DEV_TYPE_UNKNOWN;
->> +
->> +static const char * const devtype_strings[] = {
->> +       [DEV_TYPE_UNKNOWN] = "Atheros (unknown)",
->> +};
->> +
->> +const char *get_system_type(void)
->> +{
->> +       if ((ar231x_devtype >= ARRAY_SIZE(devtype_strings)) ||
->> +           !devtype_strings[ar231x_devtype])
->> +               return devtype_strings[DEV_TYPE_UNKNOWN];
->> +       return devtype_strings[ar231x_devtype];
->> +}
->> +
->> diff --git a/arch/mips/ar231x/devices.h b/arch/mips/ar231x/devices.h
->> new file mode 100644
->> index 0000000..1590577
->> --- /dev/null
->> +++ b/arch/mips/ar231x/devices.h
->> @@ -0,0 +1,22 @@
->> +#ifndef __AR231X_DEVICES_H
->> +#define __AR231X_DEVICES_H
->> +
->> +#include <linux/cpu.h>
->> +
->> +enum {
->> +       DEV_TYPE_UNKNOWN
->> +};
->> +
->> +extern int ar231x_devtype;
->> +
->> +static inline bool is_2315(void)
->
-> Since this is matching the whole family of ar231x SoCs, I would
-> suggest to give it a prefix and call it ath25_is_231x.
-Only AR2315 and later chips have the 4KEc core.
-
->> +{
->> +       return (current_cpu_data.cputype == CPU_4KEC);
->
-> Unnecessary ().
-Thank you, I missed this braces during cleanup.
-
->
->> +}
->> +
->> +static inline bool is_5312(void)
->
-> Same comment here for 5312 -> 531x.
->
-This test is true for AR5312, AR2312 and AR2313 (see SoC type
-detection patch), also we support only AR5312 SoC from whole AR531x
-series.
-
->> +{
->> +       return !is_2315();
->> +}
->> +
->> +#endif
->
->
-> Regards
-> Jonas
+Oops. I really forget to disable interrupt. Thank you!
 
 -- 
 BR,

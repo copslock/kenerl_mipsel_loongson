@@ -1,17 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 02:53:10 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52456 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2014 03:17:26 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52603 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007843AbaI2AxIkGvei (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 02:53:08 +0200
-Date:   Mon, 29 Sep 2014 01:53:08 +0100 (BST)
+        by eddie.linux-mips.org with ESMTP id S27010035AbaI2BRYRimfH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Sep 2014 03:17:24 +0200
+Date:   Mon, 29 Sep 2014 02:17:24 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Isamu Mogi <isamu@leafytree.jp>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: R3000: Fix debug output for Virtual page number
-In-Reply-To: <1410278429-8541-1-git-send-email-isamu@leafytree.jp>
-Message-ID: <alpine.LFD.2.11.1409290145370.21156@eddie.linux-mips.org>
-References: <1410278429-8541-1-git-send-email-isamu@leafytree.jp>
+To:     Joshua Kinard <kumba@gentoo.org>
+cc:     linux-mips@linux-mips.org
+Subject: Re: IRIX support removal from the GNU toolchain
+In-Reply-To: <5410F03B.6080505@gentoo.org>
+Message-ID: <alpine.LFD.2.11.1409290213450.21156@eddie.linux-mips.org>
+References: <alpine.LFD.2.11.1409110007340.11957@eddie.linux-mips.org> <5410F03B.6080505@gentoo.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -19,7 +18,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42870
+X-archive-position: 42871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,18 +35,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 10 Sep 2014, Isamu Mogi wrote:
+On Wed, 10 Sep 2014, Joshua Kinard wrote:
 
-> Virtual page number of R3000 in entryhi is 20 bit from MSB. But in
-> dump_tlb(), the bit mask to read it from entryhi is 19 bit (0xffffe000).
-> The patch fixes that to 0xfffff000.
+> My understanding is that IRIX was already removed from gcc two years ago,
+> deprecated in 4.7 and removed in 4.8:
 > 
-> Signed-off-by: Isamu Mogi <isamu@leafytree.jp>
+> https://gcc.gnu.org/ml/libstdc++/2012-03/msg00067.html
+> 
+> Not sure about binutils -- links to the mailing lists in question?
 
-Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
+http://sourceware.org/ml/binutils/2014-09/msg00040.html
+http://sourceware.org/ml/gdb/2014-09/msg00041.html
+http://sourceware.org/ml/gdb/2014-09/msg00065.html
 
- It would be good to add appropriate macros to <asm/mipsregs.h> too, to 
-avoid magic numbers and decrease the likelihood of issues like this.  As a 
-separate change, that is, of course, and not a prerequisite.
+-- and messages downthread.
 
   Maciej

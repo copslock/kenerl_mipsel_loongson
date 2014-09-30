@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:04:04 +0200 (CEST)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:45335 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:04:22 +0200 (CEST)
+Received: from mail-pa0-f42.google.com ([209.85.220.42]:56847 "EHLO
         mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010194AbaI3SBgpyCWp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:36 +0200
-Received: by mail-pa0-f42.google.com with SMTP id et14so2234355pad.15
-        for <linux-mips@linux-mips.org>; Tue, 30 Sep 2014 11:01:30 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S27010116AbaI3SBjQ3NB- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:39 +0200
+Received: by mail-pa0-f42.google.com with SMTP id et14so2292695pad.29
+        for <multiple recipients>; Tue, 30 Sep 2014 11:01:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ChZnLayeWlzfu0earURMuL+E2RpUnLMpjWI/Gv4Oi/c=;
-        b=vLOqm+bo/43K2m6Sc90847V+Q0Mu/dGfyC2bccvslqatGbMF1pWdHuIqko6vVbGq8o
-         uETNyjPX9e5MpjpKeENBWJOFhR6cFfZAo5aViNaaDBi1lh3yyKLHDF7mkqk3A6gU2Y0p
-         gw+1zLmjA1x1NigkzwBPHGPqkyxHPG6qHNuAWBx+ZWSFMS20/EAw9bkW4MEbw0J8stLq
-         ALeFzIvOY+MFrL/Qlbtv4NyOOJg2zZ+jjsJU/gPtbv8hNW5SLa+QSOL5AczI6V4SuMZ3
-         FOE6GsThSJUZi9/OufYP83YRpO6gyOCnlRcepTvxnbzs6DDECqIbqZ6IuTLWTuEFwNzc
-         zdjg==
-X-Received: by 10.66.220.230 with SMTP id pz6mr70413698pac.145.1412100090693;
-        Tue, 30 Sep 2014 11:01:30 -0700 (PDT)
+        bh=1jTsrjIy7XPXCWfuk8ulIaPqKvEJId6ShVaPWTNgoDI=;
+        b=yj1Za2whQ+BkBD6abAdE/tJhcGNoxf7xsJcIp9AmS0GHifa7jXcob/SfPz4CvyTvnY
+         7UKp7SIwgokc6jPRkvEBVwgVZcThfmd2hv1B3Uudx1ZfwB9Mm0nRs+6t/Ymu1SciNo+t
+         KpracvyPWSQN7rMcx+s8rl1ru+EMCmhVTTGT18EHiJNtcoX5krsAq7aafF7mSVWpFIrK
+         28RHyXYvzObpvfEwuzLTZjC+m3mp1zLd7FJ+U+vx1bBUB0JE9l//KMFZLyy29fOTfC4n
+         roZss9jVs8Y2MMwlZ/AOONeLLBve995VihX65mlkukMWvuc5hGHZ4rHZw8tGn5iGwCD8
+         XwYA==
+X-Received: by 10.66.162.40 with SMTP id xx8mr72097131pab.31.1412100093148;
+        Tue, 30 Sep 2014 11:01:33 -0700 (PDT)
 Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by mx.google.com with ESMTPSA id js7sm15716457pbc.62.2014.09.30.11.01.29
+        by mx.google.com with ESMTPSA id b4sm15815976pdh.2.2014.09.30.11.01.32
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 30 Sep 2014 11:01:30 -0700 (PDT)
+        Tue, 30 Sep 2014 11:01:32 -0700 (PDT)
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -29,10 +29,10 @@ Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
         xen-devel@lists.xenproject.org, Guenter Roeck <linux@roeck-us.net>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [RFC PATCH 09/16] metag: support poweroff through poweroff handler call chain
-Date:   Tue, 30 Sep 2014 11:00:49 -0700
-Message-Id: <1412100056-15517-10-git-send-email-linux@roeck-us.net>
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [RFC PATCH 10/16] mips: support poweroff through poweroff handler call chain
+Date:   Tue, 30 Sep 2014 11:00:50 -0700
+Message-Id: <1412100056-15517-11-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
 References: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
@@ -40,7 +40,7 @@ Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42915
+X-archive-position: 42916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,24 +61,22 @@ The kernel core now supports a poweroff handler call chain
 to remove power from the system. Call it if pm_power_off
 is set to NULL.
 
-Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/metag/kernel/process.c | 2 ++
+ arch/mips/kernel/reset.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/metag/kernel/process.c b/arch/metag/kernel/process.c
-index 483dff9..ff7f3eb 100644
---- a/arch/metag/kernel/process.c
-+++ b/arch/metag/kernel/process.c
-@@ -92,6 +92,8 @@ void machine_power_off(void)
+diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
+index 07fc524..c3391d7 100644
+--- a/arch/mips/kernel/reset.c
++++ b/arch/mips/kernel/reset.c
+@@ -41,4 +41,6 @@ void machine_power_off(void)
  {
  	if (pm_power_off)
  		pm_power_off();
 +	else
 +		do_kernel_poweroff();
- 	smp_send_stop();
- 	hard_processor_halt(HALT_OK);
  }
 -- 
 1.9.1

@@ -1,44 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 19:30:29 +0200 (CEST)
-Received: from charlotte.tuxdriver.com ([70.61.120.58]:38148 "EHLO
-        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010116AbaI3RaY3X4HL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 19:30:24 +0200
-Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
-        (envelope-from <linville@tuxdriver.com>)
-        id 1XZ1FY-0007PH-K5; Tue, 30 Sep 2014 13:30:08 -0400
-Received: from linville-x1.hq.tuxdriver.com (localhost.localdomain [127.0.0.1])
-        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.6) with ESMTP id s8UHKmWA021763;
-        Tue, 30 Sep 2014 13:20:48 -0400
-Received: (from linville@localhost)
-        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.8/Submit) id s8UHKjnv021762;
-        Tue, 30 Sep 2014 13:20:45 -0400
-Date:   Tue, 30 Sep 2014 13:20:45 -0400
-From:   "John W. Linville" <linville@tuxdriver.com>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
-        linux-wireless@vger.kernel.org, ath5k-devel@venema.h4ckr.net
-Subject: Re: [PATCH 15/16] ath5k: update dependencies
-Message-ID: <20140930172044.GE11919@tuxdriver.com>
-References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
- <1411929195-23775-16-git-send-email-ryazanov.s.a@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1411929195-23775-16-git-send-email-ryazanov.s.a@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linville@tuxdriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:01:23 +0200 (CEST)
+Received: from mail-pd0-f177.google.com ([209.85.192.177]:47814 "EHLO
+        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010116AbaI3SBOfvAiB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:14 +0200
+Received: by mail-pd0-f177.google.com with SMTP id v10so1203633pde.36
+        for <multiple recipients>; Tue, 30 Sep 2014 11:01:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=oi+m2S0CLgQPfP07XCEY/z99OwYBXdE6QMixGlAt21M=;
+        b=oXChEz22HY8wzogz2X7XldDFDLF56P0s1Cma1OHoeCccYpVMl2KHD8vdc7LmHhPtWT
+         fmqgLMZeqJnjbDwdBKo7X0IcH7m4MRNubh2kRz6jUHlMDjSbnA++xxfGIGxQ4drbQ8uK
+         +O7EP7gPJqi0nJXzmDi6P8wHgNNQe2vdQt8HBdeWPc2NVxuq/6Hqo1K9+ZzUXG+6QXZW
+         f5jCq1QUbXMe8rXDR4n1AR6g+0FVzgC20G9oewYHX6JeGsGClp/U/YrKtNthI2ilOW/s
+         B73D5GrWH7kZITKb9Mdfavg5JBThumLrK8FhGm1t8muCvNkTCeyqVPn01yIrM3Goa+Pc
+         OQng==
+X-Received: by 10.70.53.35 with SMTP id y3mr62810451pdo.43.1412100067914;
+        Tue, 30 Sep 2014 11:01:07 -0700 (PDT)
+Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by mx.google.com with ESMTPSA id oq6sm15784198pdb.45.2014.09.30.11.01.06
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 30 Sep 2014 11:01:07 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, Guenter Roeck <linux@roeck-us.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Romain Perier <romain.perier@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [RFC PATCH 00/16] kernel: Add support for poweroff handler call chain
+Date:   Tue, 30 Sep 2014 11:00:40 -0700
+Message-Id: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42904
+X-archive-position: 42906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@tuxdriver.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,139 +81,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch does not seem to apply to wireless-next.  What tree is it
-based upon?
+Various drivers implement architecture and/or device specific means to
+remove power from the system.  For the most part, those drivers set the
+global variable pm_power_off to point to a function within the driver.
 
-John
+This mechanism has a number of drawbacks.  Typically only one scheme
+to remove power is supported (at least if pm_power_off is used).
+At least in theory there can be multiple means remove power, some of
+which may be less desirable.  For example, some mechanisms may only
+power off the CPU or the CPU card, while another may power off the
+entire system.  Others may really just execute a restart sequence
+or drop into the ROM monitor.  Using pm_power_off can also be racy
+if the function pointer is set from a driver built as module, as the
+driver may be in the process of being unloaded when pm_power_off is
+called.  If there are multiple poweroff handlers in the system, removing
+a module with such a handler may inadvertently reset the pointer to
+pm_power_off to NULL, leaving the system with no means to remove power.
 
-On Sun, Sep 28, 2014 at 10:33:14PM +0400, Sergey Ryazanov wrote:
-> - Use config symbol defined in the driver instead of arch specific one for
->   conditional compilation.
-> - Rename the ATHEROS_AR231X config symbol to AR231X.
-> - Some of AR231x SoCs (e.g. AR2315) have PCI bus support, so remove !PCI
->   dependency, which block AHB support build.
-> 
-> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-> Cc: Jiri Slaby <jirislaby@gmail.com>
-> Cc: Nick Kossifidis <mickflemm@gmail.com>
-> Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: ath5k-devel@lists.ath5k.org
-> ---
-> 
-> Changes since RFC:
->   - merge together patches that update ath5k dependencies
-> 
->  drivers/net/wireless/ath/ath5k/Kconfig | 10 +++++-----
->  drivers/net/wireless/ath/ath5k/ath5k.h |  2 +-
->  drivers/net/wireless/ath/ath5k/base.c  |  4 ++--
->  drivers/net/wireless/ath/ath5k/led.c   |  4 ++--
->  4 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath5k/Kconfig b/drivers/net/wireless/ath/ath5k/Kconfig
-> index c9f81a3..2b2a399 100644
-> --- a/drivers/net/wireless/ath/ath5k/Kconfig
-> +++ b/drivers/net/wireless/ath/ath5k/Kconfig
-> @@ -1,13 +1,13 @@
->  config ATH5K
->  	tristate "Atheros 5xxx wireless cards support"
-> -	depends on (PCI || ATHEROS_AR231X) && MAC80211
-> +	depends on (PCI || AR231X) && MAC80211
->  	select ATH_COMMON
->  	select MAC80211_LEDS
->  	select LEDS_CLASS
->  	select NEW_LEDS
->  	select AVERAGE
-> -	select ATH5K_AHB if (ATHEROS_AR231X && !PCI)
-> -	select ATH5K_PCI if (!ATHEROS_AR231X && PCI)
-> +	select ATH5K_AHB if AR231X
-> +	select ATH5K_PCI if !AR231X
->  	---help---
->  	  This module adds support for wireless adapters based on
->  	  Atheros 5xxx chipset.
-> @@ -54,14 +54,14 @@ config ATH5K_TRACER
->  
->  config ATH5K_AHB
->  	bool "Atheros 5xxx AHB bus support"
-> -	depends on (ATHEROS_AR231X && !PCI)
-> +	depends on AR231X
->  	---help---
->  	  This adds support for WiSoC type chipsets of the 5xxx Atheros
->  	  family.
->  
->  config ATH5K_PCI
->  	bool "Atheros 5xxx PCI bus support"
-> -	depends on (!ATHEROS_AR231X && PCI)
-> +	depends on (!AR231X && PCI)
->  	---help---
->  	  This adds support for PCI type chipsets of the 5xxx Atheros
->  	  family.
-> diff --git a/drivers/net/wireless/ath/ath5k/ath5k.h b/drivers/net/wireless/ath/ath5k/ath5k.h
-> index 85316bb..1ed7a88 100644
-> --- a/drivers/net/wireless/ath/ath5k/ath5k.h
-> +++ b/drivers/net/wireless/ath/ath5k/ath5k.h
-> @@ -1647,7 +1647,7 @@ static inline struct ath_regulatory *ath5k_hw_regulatory(struct ath5k_hw *ah)
->  	return &(ath5k_hw_common(ah)->regulatory);
->  }
->  
-> -#ifdef CONFIG_ATHEROS_AR231X
-> +#ifdef CONFIG_ATH5K_AHB
->  #define AR5K_AR2315_PCI_BASE	((void __iomem *)0xb0100000)
->  
->  static inline void __iomem *ath5k_ahb_reg(struct ath5k_hw *ah, u16 reg)
-> diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
-> index 8ad2550..dd42487 100644
-> --- a/drivers/net/wireless/ath/ath5k/base.c
-> +++ b/drivers/net/wireless/ath/ath5k/base.c
-> @@ -99,7 +99,7 @@ static int ath5k_reset(struct ath5k_hw *ah, struct ieee80211_channel *chan,
->  
->  /* Known SREVs */
->  static const struct ath5k_srev_name srev_names[] = {
-> -#ifdef CONFIG_ATHEROS_AR231X
-> +#ifdef CONFIG_ATH5K_AHB
->  	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R2 },
->  	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R7 },
->  	{ "2313",	AR5K_VERSION_MAC,	AR5K_SREV_AR2313_R8 },
-> @@ -142,7 +142,7 @@ static const struct ath5k_srev_name srev_names[] = {
->  	{ "5413",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5413 },
->  	{ "5424",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5424 },
->  	{ "5133",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5133 },
-> -#ifdef CONFIG_ATHEROS_AR231X
-> +#ifdef CONFIG_ATH5K_AHB
->  	{ "2316",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2316 },
->  	{ "2317",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2317 },
->  #endif
-> diff --git a/drivers/net/wireless/ath/ath5k/led.c b/drivers/net/wireless/ath/ath5k/led.c
-> index 48a6a69b..c730677 100644
-> --- a/drivers/net/wireless/ath/ath5k/led.c
-> +++ b/drivers/net/wireless/ath/ath5k/led.c
-> @@ -162,7 +162,7 @@ int ath5k_init_leds(struct ath5k_hw *ah)
->  {
->  	int ret = 0;
->  	struct ieee80211_hw *hw = ah->hw;
-> -#ifndef CONFIG_ATHEROS_AR231X
-> +#ifndef CONFIG_ATH5K_AHB
->  	struct pci_dev *pdev = ah->pdev;
->  #endif
->  	char name[ATH5K_LED_MAX_NAME_LEN + 1];
-> @@ -171,7 +171,7 @@ int ath5k_init_leds(struct ath5k_hw *ah)
->  	if (!ah->pdev)
->  		return 0;
->  
-> -#ifdef CONFIG_ATHEROS_AR231X
-> +#ifdef CONFIG_ATH5K_AHB
->  	match = NULL;
->  #else
->  	match = pci_match_id(&ath5k_led_devices[0], pdev);
-> -- 
-> 1.8.5.5
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-wireless" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+Introduce a system poweroff handler call chain to solve the described
+problems.  This call chain is expected to be executed from the
+architecture specific machine_power_off() function.  Drivers providing
+system poweroff functionality are expected to register with this call chain.
+By using the priority field in the notifier block, callers can control
+poweroff handler execution sequence and thus ensure that the poweroff
+handler with the optimal capabilities to remove power for a given system
+is called first.
 
--- 
-John W. Linville		Someday the world will need a hero, and you
-linville@tuxdriver.com			might be all we have.  Be ready.
+The poweroff handler is introduced in multiple steps
+
+1) Implement poweroff handler API.
+   Patch 01/16.
+2) Ensure that pm_power_off is only called from machine_restart.
+   Patches 02/16 and 03/16.
+3) Implement call to poweroff handler in architecture specific
+   machine_restart code.
+   Patches 03/16 to 13/16.
+4) Convert all drivers to register with poweroff handler
+   instead of setting pm_power_off directly.
+   Patches 15/16 and 16/16 (examples).
+   This can be done in two steps: First convert all drivers which can
+   be built as modules, then convert the remaining drivers (possibly after
+   unexporting pm_powr_off).
+5) Unexport pm_power_off for all architectures,
+   and drop it entirely for architectures where it is not really used.
+6) [optional] Convert machine specific architecture code to register 
+   with poweroff handler instead of setting pm_power_off directly,
+   and remove pm_power_off entirely from the system.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Romain Perier <romain.perier@gmail.com>
+Cc: James E.J. Bottomley <jejb@parisc-linux.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Russell King <linux@arm.linux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Haavard Skinnemoen <hskinnemoen@gmail.com>
+Cc: Hans-Christian Egtvedt <egtvedt@samfundet.no>
+Cc: Mark Salter <msalter@redhat.com>
+Cc: Aurelien Jacquiot <a-jacquiot@ti.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Guan Xuetao <gxt@mprc.pku.edu.cn>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+
+----------------------------------------------------------------
+Guenter Roeck (16):
+      kernel: Add support for poweroff handler call chain
+      hwmon: (ab8500) Call kernel_power_off instead of pm_power_off
+      parisc: support poweroff through poweroff handler call chain
+      arm: support poweroff through poweroff handler call chain
+      arm64: support poweroff through poweroff handler call chain
+      avr32: support poweroff through poweroff handler call chain
+      c6x: support poweroff through poweroff handler call chain
+      ia64: support poweroff through poweroff handler call chain
+      metag: support poweroff through poweroff handler call chain
+      mips: support poweroff through poweroff handler call chain
+      sh: support poweroff through poweroff handler call chain
+      unicore32: support poweroff through poweroff handler call chain
+      x86: support poweroff through poweroff handler call chain
+      x86/xen: support poweroff through poweroff handler call chain
+      power/reset: restart-poweroff: Register with kernel poweroff handler
+      mfd: palmas: Register with kernel poweroff handler
+
+ arch/arm/kernel/process.c              |  2 +
+ arch/arm64/kernel/process.c            |  2 +
+ arch/avr32/kernel/process.c            |  2 +
+ arch/c6x/kernel/process.c              |  2 +
+ arch/ia64/kernel/process.c             |  2 +
+ arch/metag/kernel/process.c            |  2 +
+ arch/mips/kernel/reset.c               |  2 +
+ arch/parisc/kernel/process.c           |  7 ++-
+ arch/sh/kernel/reboot.c                |  2 +
+ arch/unicore32/kernel/process.c        |  2 +
+ arch/x86/kernel/reboot.c               |  4 ++
+ arch/x86/xen/enlighten.c               |  2 +
+ drivers/hwmon/ab8500.c                 |  5 ++-
+ drivers/mfd/palmas.c                   | 30 +++++++------
+ drivers/parisc/power.c                 |  3 +-
+ drivers/power/reset/restart-poweroff.c | 24 +++++-----
+ include/linux/mfd/palmas.h             |  3 ++
+ include/linux/reboot.h                 |  4 ++
+ kernel/reboot.c                        | 81 ++++++++++++++++++++++++++++++++++
+ 19 files changed, 149 insertions(+), 32 deletions(-)

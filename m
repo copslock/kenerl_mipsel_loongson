@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:05:49 +0200 (CEST)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:50120 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010204AbaI3SBvm5-8L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:51 +0200
-Received: by mail-pd0-f180.google.com with SMTP id fp1so5594571pdb.25
-        for <linux-mips@linux-mips.org>; Tue, 30 Sep 2014 11:01:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:06:07 +0200 (CEST)
+Received: from mail-pd0-f181.google.com ([209.85.192.181]:42424 "EHLO
+        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010205AbaI3SByNVqNg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:54 +0200
+Received: by mail-pd0-f181.google.com with SMTP id z10so5560216pdj.26
+        for <linux-mips@linux-mips.org>; Tue, 30 Sep 2014 11:01:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wg2XW74gD/Zbn5fEfiZUMJ6VabrKK3ppqtzol0flCAQ=;
-        b=vH0+RmoDA7HlG2CqFCPAXzFnaE3CT4mY72JrZpjpTj9rRSKAaOkP11DutEJA1/RtK3
-         fKE+UZOsw9NWxTdFIAzUI21bNCBxrERZte20hURLgZZa4ZAlxqVFm11sfq31l+vIB2Mw
-         5+rBOJ5bbjZ+krP3r0HHSlklB1Lcpl+Ntf41Wr5WK6EzHmPx2/tj5ggpaMv8D8mCpvkl
-         awNlLK9LCGgV+7cGgRZ+9jcwbtdKp6cb/MbClQm1p5v2VWhP4E5OxwZK8eTmr2wH3clP
-         vy10kT6VhPlpJCavgPfxLLc+AwaXnjGpX+nl2i/1t3ii3AxRmRBDUxLeP+0Dj9s2pWaF
-         kWhA==
-X-Received: by 10.70.51.136 with SMTP id k8mr28637449pdo.132.1412100105817;
-        Tue, 30 Sep 2014 11:01:45 -0700 (PDT)
+        bh=s7ufAtV/ZoQ2+ziCYficZ7QndekSVO3B0hrlF3X88LQ=;
+        b=E7XBhfMWgo1ACzLXjlN4D9zrCMI88vNgFKUk1rLu9okB8VbTquFJQw9fonbmgWv4wj
+         /9Jlg62RHfVIXgDINbemqnwuXm9l6cOE9UcBgeQMpnHUuuIFgN/KvauT5qFmTQatsvaY
+         4Q9Cp4R0c/pfts2BW+QPVOmd8qaYESOLnYX3HS2MNCdmIJsYQ74q4gAgciRzDRM7B3Dn
+         CUsP0rn0bSAuA4NjzC1BxQfet7ogkqF6sVa0X8GpG3uujRD0t3uavdxbKyDy6goi6HYm
+         QyqTeFDTyM/F/4pSEgHuBoJhWqsHp8Hmx2IlVaGVyDISZqCexD/gsK9RIHYcksGkUEUC
+         McMg==
+X-Received: by 10.70.87.169 with SMTP id az9mr87830076pdb.63.1412100108312;
+        Tue, 30 Sep 2014 11:01:48 -0700 (PDT)
 Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by mx.google.com with ESMTPSA id rz8sm15716763pbc.63.2014.09.30.11.01.45
+        by mx.google.com with ESMTPSA id z1sm15802891pdb.21.2014.09.30.11.01.47
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 30 Sep 2014 11:01:45 -0700 (PDT)
+        Tue, 30 Sep 2014 11:01:47 -0700 (PDT)
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -29,12 +29,11 @@ Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
         xen-devel@lists.xenproject.org, Guenter Roeck <linux@roeck-us.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Subject: [RFC PATCH 15/16] power/reset: restart-poweroff: Register with kernel poweroff handler
-Date:   Tue, 30 Sep 2014 11:00:55 -0700
-Message-Id: <1412100056-15517-16-git-send-email-linux@roeck-us.net>
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [RFC PATCH 16/16] mfd: palmas: Register with kernel poweroff handler
+Date:   Tue, 30 Sep 2014 11:00:56 -0700
+Message-Id: <1412100056-15517-17-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
 References: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
@@ -42,7 +41,7 @@ Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42921
+X-archive-position: 42922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,68 +58,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Register with kernel poweroff handler instead of seting pm_power_off
-directly.  Register as poweroff handler of last resort since the driver
-does not really power off the system but executes a restart.
+Register with kernel poweroff handler instead of setting pm_power_off
+directly.
 
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Cc: Lee Jones <lee.jones@linaro.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/power/reset/restart-poweroff.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/mfd/palmas.c       | 30 +++++++++++++++++-------------
+ include/linux/mfd/palmas.h |  3 +++
+ 2 files changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/power/reset/restart-poweroff.c b/drivers/power/reset/restart-poweroff.c
-index edd707e..82d058f 100644
---- a/drivers/power/reset/restart-poweroff.c
-+++ b/drivers/power/reset/restart-poweroff.c
-@@ -12,35 +12,33 @@
-  */
- #include <linux/kernel.h>
- #include <linux/init.h>
-+#include <linux/notifier.h>
- #include <linux/platform_device.h>
- #include <linux/of_platform.h>
- #include <linux/module.h>
- #include <linux/reboot.h>
--#include <asm/system_misc.h>
+diff --git a/drivers/mfd/palmas.c b/drivers/mfd/palmas.c
+index 28cb048..e8ef345a 100644
+--- a/drivers/mfd/palmas.c
++++ b/drivers/mfd/palmas.c
+@@ -19,6 +19,7 @@
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <linux/reboot.h>
+ #include <linux/regmap.h>
+ #include <linux/err.h>
+ #include <linux/mfd/core.h>
+@@ -425,20 +426,18 @@ static void palmas_dt_to_pdata(struct i2c_client *i2c,
+ 			"ti,system-power-controller");
+ }
  
--static void restart_poweroff_do_poweroff(void)
-+static int restart_poweroff_do_poweroff(struct notifier_block *this,
-+					unsigned long unused1, void *unused2)
+-static struct palmas *palmas_dev;
+-static void palmas_power_off(void)
++static int palmas_power_off(struct notifier_block *this, unsigned long unused1,
++			    void *unused2)
  {
- 	reboot_mode = REBOOT_HARD;
- 	machine_restart(NULL);
++	struct palmas *palmas = container_of(this, struct palmas, poweroff_nb);
+ 	unsigned int addr;
+ 	int ret, slave;
+ 
+-	if (!palmas_dev)
+-		return;
+-
+ 	slave = PALMAS_BASE_TO_SLAVE(PALMAS_PMU_CONTROL_BASE);
+ 	addr = PALMAS_BASE_TO_REG(PALMAS_PMU_CONTROL_BASE, PALMAS_DEV_CTRL);
+ 
+ 	ret = regmap_update_bits(
+-			palmas_dev->regmap[slave],
++			palmas->regmap[slave],
+ 			addr,
+ 			PALMAS_DEV_CTRL_DEV_ON,
+ 			0);
+@@ -446,6 +445,8 @@ static void palmas_power_off(void)
+ 	if (ret)
+ 		pr_err("%s: Unable to write to DEV_CTRL_DEV_ON: %d\n",
+ 				__func__, ret);
 +
 +	return NOTIFY_DONE;
  }
  
-+static struct notifier_block restart_poweroff_handler = {
-+	.notifier_call = restart_poweroff_do_poweroff,
-+};
-+
- static int restart_poweroff_probe(struct platform_device *pdev)
- {
--	/* If a pm_power_off function has already been added, leave it alone */
--	if (pm_power_off != NULL) {
--		dev_err(&pdev->dev,
--			"pm_power_off function already registered");
--		return -EBUSY;
--	}
--
--	pm_power_off = &restart_poweroff_do_poweroff;
--	return 0;
-+	return register_restart_handler(&restart_poweroff_handler);
- }
+ static unsigned int palmas_features = PALMAS_PMIC_FEATURE_SMPS10_BOOST;
+@@ -668,9 +669,15 @@ no_irq:
+ 		ret = of_platform_populate(node, NULL, NULL, &i2c->dev);
+ 		if (ret < 0) {
+ 			goto err_irq;
+-		} else if (pdata->pm_off && !pm_power_off) {
+-			palmas_dev = palmas;
+-			pm_power_off = palmas_power_off;
++		} else if (pdata->pm_off) {
++			palmas->poweroff_nb.notifier_call = palmas_power_off;
++			palmas->poweroff_nb.priority = 128;
++			ret = register_poweroff_handler(&palmas->poweroff_nb);
++			if (ret) {
++				dev_err(palmas->dev,
++					"cannot register poweroff handler");
++				ret = 0;
++			}
+ 		}
+ 	}
  
- static int restart_poweroff_remove(struct platform_device *pdev)
- {
--	if (pm_power_off == &restart_poweroff_do_poweroff)
+@@ -698,10 +705,7 @@ static int palmas_i2c_remove(struct i2c_client *i2c)
+ 			i2c_unregister_device(palmas->i2c_clients[i]);
+ 	}
+ 
+-	if (palmas == palmas_dev) {
 -		pm_power_off = NULL;
-+	unregister_restart_handler(&restart_poweroff_handler);
+-		palmas_dev = NULL;
+-	}
++	unregister_poweroff_handler(&palmas->poweroff_nb);
  
  	return 0;
  }
+diff --git a/include/linux/mfd/palmas.h b/include/linux/mfd/palmas.h
+index fb0390a..4715057 100644
+--- a/include/linux/mfd/palmas.h
++++ b/include/linux/mfd/palmas.h
+@@ -18,6 +18,7 @@
+ 
+ #include <linux/usb/otg.h>
+ #include <linux/leds.h>
++#include <linux/notifier.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/extcon.h>
+@@ -68,6 +69,8 @@ struct palmas {
+ 	struct i2c_client *i2c_clients[PALMAS_NUM_CLIENTS];
+ 	struct regmap *regmap[PALMAS_NUM_CLIENTS];
+ 
++	struct notifier_block poweroff_nb;
++
+ 	/* Stored chip id */
+ 	int id;
+ 
 -- 
 1.9.1

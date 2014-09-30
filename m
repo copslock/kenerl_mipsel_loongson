@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:02:53 +0200 (CEST)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:41779 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010187AbaI3SB0l2cIr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:26 +0200
-Received: by mail-pa0-f42.google.com with SMTP id et14so2292278pad.29
-        for <linux-mips@linux-mips.org>; Tue, 30 Sep 2014 11:01:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:03:09 +0200 (CEST)
+Received: from mail-pa0-f48.google.com ([209.85.220.48]:43084 "EHLO
+        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010191AbaI3SB3JBH4w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:29 +0200
+Received: by mail-pa0-f48.google.com with SMTP id eu11so2214175pac.21
+        for <linux-mips@linux-mips.org>; Tue, 30 Sep 2014 11:01:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=UQk2ZZIEsVV7XoBvwBpR2xNqiFttFEVsvwGJrA9ovjo=;
-        b=RpgJOc5f6D4ezqK8vg12ZsWDCubAigAMtWGnSg09mE3LDY2cksZZ0QTwtto/Ra15ax
-         yDO7QBUwhaqRqjfuIeEQH+T6Hor5SLCAR6m10hb/43wJcfd1PCRQAzi7SHtcJnQ+gnS9
-         EOmoNWNZalEbu0nnRVJ+W72p87mGOQ6sAoBX20q7TSwWpQyaMg8mEZHqIpLRjlGP/ZBq
-         TGo2Ol4D0/QlIDtuktQl+RyZA0XtqnNq7rwkwhfSBBW4BvyBNZsGxNce6KPzqnsK3e7s
-         hzmro+ZTqCXzp4yTMb4x860bb61Jigw2Dmo4oQ9PlOmQ6gqu7J9zTMhFIrSTfILrfZZt
-         8+2g==
-X-Received: by 10.68.95.227 with SMTP id dn3mr72199435pbb.108.1412100075765;
-        Tue, 30 Sep 2014 11:01:15 -0700 (PDT)
+        bh=l0ih17lI6gLUFbnReJlh1XiIUybLfUhsfMTgyyqRLFE=;
+        b=JJ1JFLtC0WTcVqWHax+xx1aKWBWGCpkaWUAfurr2/+S8wX0o+EO/DGlAkCw2e4T8fj
+         fCK2NWlKRhrbhmUu+GVwmx/mANJ73tnqkDqcatiBQY7vRA7HU/FCFFn3QvLrNcfvdAxr
+         lAM6vFQhd1gh19amzz1JwO5IkOJ3VXM2wbJCFHxbJNp4512/hPXs9xdbMDvsqRUlWfmd
+         QQ9nmVibgb3cGOfYG4fyJMtjY+x7ThPjXAZd77nr+oM9qGtZPR5lFKUkH2IZzW4dnjqx
+         dOKShG+rXyic944v/Z7mvmtCV+yiIO0Pl8YJ6b9xu00dy3xUlYeS9/dWkKhdkBDY0zeF
+         Yk6A==
+X-Received: by 10.70.65.34 with SMTP id u2mr90724887pds.58.1412100083255;
+        Tue, 30 Sep 2014 11:01:23 -0700 (PDT)
 Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by mx.google.com with ESMTPSA id f2sm15798823pdd.25.2014.09.30.11.01.14
+        by mx.google.com with ESMTPSA id z1sm15802187pdb.21.2014.09.30.11.01.22
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 30 Sep 2014 11:01:15 -0700 (PDT)
+        Tue, 30 Sep 2014 11:01:22 -0700 (PDT)
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -29,11 +29,11 @@ Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
         xen-devel@lists.xenproject.org, Guenter Roeck <linux@roeck-us.net>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>
-Subject: [RFC PATCH 03/16] parisc: support poweroff through poweroff handler call chain
-Date:   Tue, 30 Sep 2014 11:00:43 -0700
-Message-Id: <1412100056-15517-4-git-send-email-linux@roeck-us.net>
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>
+Subject: [RFC PATCH 06/16] avr32: support poweroff through poweroff handler call chain
+Date:   Tue, 30 Sep 2014 11:00:46 -0700
+Message-Id: <1412100056-15517-7-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
 References: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
@@ -41,7 +41,7 @@ Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42911
+X-archive-position: 42912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,65 +59,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 The kernel core now supports a poweroff handler call chain
-to remove power from the system. Call it from machine_power_off.
+to remove power from the system. Call it if pm_power_off
+is set to NULL.
 
-Also, do not use pm_power_off as alternate pointer to machine_power_off.
-Have the parisc/power driver call kernel_power_off() which in turn will
-call machine_power_off().
-
-Cc: James E.J. Bottomley <jejb@parisc-linux.org>
-Cc: Helge Deller <deller@gmx.de>
+Cc: Haavard Skinnemoen <hskinnemoen@gmail.com>
+Cc: Hans-Christian Egtvedt <egtvedt@samfundet.no>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/parisc/kernel/process.c | 7 +++++--
- drivers/parisc/power.c       | 3 +--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/avr32/kernel/process.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index 0bbbf0d..21d1ab3 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -42,6 +42,7 @@
- #include <linux/module.h>
- #include <linux/personality.h>
- #include <linux/ptrace.h>
-+#include <linux/reboot.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/stddef.h>
-@@ -133,7 +134,9 @@ void machine_power_off(void)
- 	pdc_soft_power_button(0);
- 	
- 	pdc_chassis_send_status(PDC_CHASSIS_DIRECT_SHUTDOWN);
--		
-+
-+	do_kernel_poweroff();
-+
- 	/* It seems we have no way to power the system off via
- 	 * software. The user has to press the button himself. */
- 
-@@ -141,7 +144,7 @@ void machine_power_off(void)
- 	       "Please power this system off now.");
+diff --git a/arch/avr32/kernel/process.c b/arch/avr32/kernel/process.c
+index 42a53e74..6bd6289 100644
+--- a/arch/avr32/kernel/process.c
++++ b/arch/avr32/kernel/process.c
+@@ -50,6 +50,8 @@ void machine_power_off(void)
+ {
+ 	if (pm_power_off)
+ 		pm_power_off();
++	else
++		do_kernel_poweroff();
  }
  
--void (*pm_power_off)(void) = machine_power_off;
-+void (*pm_power_off)(void);
- EXPORT_SYMBOL(pm_power_off);
- 
- /*
-diff --git a/drivers/parisc/power.c b/drivers/parisc/power.c
-index 90cca5e..de5b2ff 100644
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -95,8 +95,7 @@ static void process_shutdown(void)
- 		/* send kill signal */
- 		if (kill_cad_pid(SIGINT, 1)) {
- 			/* just in case killing init process failed */
--			if (pm_power_off)
--				pm_power_off();
-+			kernel_power_off();
- 		}
- 	}
- }
+ void machine_restart(char *cmd)
 -- 
 1.9.1

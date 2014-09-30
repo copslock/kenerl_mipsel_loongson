@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:02:01 +0200 (CEST)
-Received: from mail-pd0-f181.google.com ([209.85.192.181]:38477 "EHLO
-        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010154AbaI3SBTSFoXC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:19 +0200
-Received: by mail-pd0-f181.google.com with SMTP id z10so5559344pdj.26
-        for <linux-mips@linux-mips.org>; Tue, 30 Sep 2014 11:01:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 20:02:18 +0200 (CEST)
+Received: from mail-pd0-f175.google.com ([209.85.192.175]:61837 "EHLO
+        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010186AbaI3SBYWnC6b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 20:01:24 +0200
+Received: by mail-pd0-f175.google.com with SMTP id v10so1199927pde.34
+        for <linux-mips@linux-mips.org>; Tue, 30 Sep 2014 11:01:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=9PcH9vkqtbwsQEhiONThBwmzk2VQhEfeE7yLBkZxmg8=;
-        b=SF6B8zhBABnJvHJcJpUhdlVKHl4srwi2kmAkFGImYdDKRg7wRv9uPAo8ouWn4WvJGc
-         DfcKipMxk2k7unsqfOQ4D+YcPKOoQnkzscGCYFA6CffrqNlA9oF4n2Qg3B5iwLQ8/Kky
-         TugkkGbVBhcSdRuaVY/oU5LjCwWnCesRw9EUANsHE9wNPAzP1SEpZIXS5QfumaFSYpLN
-         UlJbdgjlZAFtlATlSNlNoixWS7w2y9aA8cvdaub7cONnDj+4mp1+3EIvBDUgbpbTt/VX
-         nhlSV9jtGdgXBWVQ1F6hXoizor4KjQSOISt/2vWhFyDQ9h5oNelLtufDv56ROWV5M2Lc
-         ksHQ==
-X-Received: by 10.69.20.10 with SMTP id gy10mr38012021pbd.119.1412100073196;
-        Tue, 30 Sep 2014 11:01:13 -0700 (PDT)
+        bh=xODcnWye9e26D/cYKydhptCAo4/qMB6B5smOr7yy5Ag=;
+        b=PnPEu7DoVXBPTDnYESzx4pzDFHEDjX64WSaGL2Z0wCT7T3FvKObwX4E2rn5HurUX2p
+         Mf69hxe+wyNbtCJeRDwDrm85wR0WW0DKdGFe8Vi0NfDbymUy7OpqyPrvsCoNI41ZCd+7
+         yV9Sl7sMBZM1shpzFNJbZBO78Mw4okfUQij3m2N/mByPdB8deGo5avMB+fWhm8UH6K/E
+         vRzGXz/H4yekJJFYrpDwRQs6cPxUkl3CRsvJXFHmBpII5/WZQhHbet+UTvuk2w20Fcsk
+         cvNlcEf3/GcAK9d/Zc2QXEQLvvCdjPSyohI88E9a1+W2tBMZ3VsakbTLoUB+knA2iisV
+         am3Q==
+X-Received: by 10.70.101.138 with SMTP id fg10mr38976119pdb.1.1412100078313;
+        Tue, 30 Sep 2014 11:01:18 -0700 (PDT)
 Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by mx.google.com with ESMTPSA id n3sm6561773pda.7.2014.09.30.11.01.12
+        by mx.google.com with ESMTPSA id f2sm15796187pdo.29.2014.09.30.11.01.17
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 30 Sep 2014 11:01:12 -0700 (PDT)
+        Tue, 30 Sep 2014 11:01:17 -0700 (PDT)
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -29,10 +29,10 @@ Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
         xen-devel@lists.xenproject.org, Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.de>
-Subject: [RFC PATCH 02/16] hwmon: (ab8500) Call kernel_power_off instead of pm_power_off
-Date:   Tue, 30 Sep 2014 11:00:42 -0700
-Message-Id: <1412100056-15517-3-git-send-email-linux@roeck-us.net>
+        Russell King <linux@arm.linux.org.uk>
+Subject: [RFC PATCH 04/16] arm: support poweroff through poweroff handler call chain
+Date:   Tue, 30 Sep 2014 11:00:44 -0700
+Message-Id: <1412100056-15517-5-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
 References: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
@@ -40,7 +40,7 @@ Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42908
+X-archive-position: 42909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,47 +57,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Drivers should not call pm_power_off directly; it is not guaranteed
-to be non-NULL. Call kernel_power_off instead.
+The kernel core now supports a poweroff handler call chain
+to remove power from the system. Call it if pm_power_off
+is set to NULL.
 
-Cc: Jean Delvare <jdelvare@suse.de>
+Cc: Russell King <linux@arm.linux.org.uk>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
-I already submitted this patch separately as non-RFC. It is included
-in this series for completeness.
+ arch/arm/kernel/process.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- drivers/hwmon/ab8500.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hwmon/ab8500.c b/drivers/hwmon/ab8500.c
-index d844dc8..8b6a4f4 100644
---- a/drivers/hwmon/ab8500.c
-+++ b/drivers/hwmon/ab8500.c
-@@ -6,7 +6,7 @@
-  *
-  * When the AB8500 thermal warning temperature is reached (threshold cannot
-  * be changed by SW), an interrupt is set, and if no further action is taken
-- * within a certain time frame, pm_power off will be called.
-+ * within a certain time frame, kernel_power_off will be called.
-  *
-  * When AB8500 thermal shutdown temperature is reached a hardware shutdown of
-  * the AB8500 will occur.
-@@ -21,6 +21,7 @@
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/power/ab8500.h>
-+#include <linux/reboot.h>
- #include <linux/slab.h>
- #include <linux/sysfs.h>
- #include "abx500.h"
-@@ -106,7 +107,7 @@ static void ab8500_thermal_power_off(struct work_struct *work)
+diff --git a/arch/arm/kernel/process.c b/arch/arm/kernel/process.c
+index 250b6f6..848c578 100644
+--- a/arch/arm/kernel/process.c
++++ b/arch/arm/kernel/process.c
+@@ -207,6 +207,8 @@ void machine_power_off(void)
  
- 	dev_warn(&abx500_data->pdev->dev, "Power off due to critical temp\n");
- 
--	pm_power_off();
-+	kernel_power_off();
+ 	if (pm_power_off)
+ 		pm_power_off();
++	else
++		do_kernel_poweroff();
  }
  
- static ssize_t ab8500_show_name(struct device *dev,
+ /*
 -- 
 1.9.1

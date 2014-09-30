@@ -1,55 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 16:31:24 +0200 (CEST)
-Received: from mail-we0-f169.google.com ([74.125.82.169]:32982 "EHLO
-        mail-we0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010180AbaI3ObUhCY7g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 16:31:20 +0200
-Received: by mail-we0-f169.google.com with SMTP id w61so2418399wes.14
-        for <multiple recipients>; Tue, 30 Sep 2014 07:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-type:mime-version:content-transfer-encoding;
-        bh=zQgCmgGUM/wn+eqSNcSjOS4foxO2YGaphqXarXY5WcQ=;
-        b=EyUuRR83iHx2WofCrjkUTIBYi9RQU9bUT9H9um0FVJen/S7ucwNzq3bKIYyxTUrwtN
-         sk+D8Yk579BXu2+lzNCep9+5A44Uw+UEU8ElsThdqFlnz5+y0pHboM1NtIQJAsXSZhof
-         lW8vigBPCBEfOfqBtiLyGvLUL6Nl8dC9T7iveOrkQkDYHqAuZq+M5G6A1Uuuo/hXu9g1
-         83bMvIY4ObModpUgz4tX/IbRvAGtBlJLXvckSae4Uju9ADwOU07+Ea0X0oEfkdAlJgq2
-         nNvJUIb3BaKb/3+dBEf2WVoDa7hFIfgXK8E63yRz+bvBgA7prrJKamUjaDKD0eHZsSgg
-         M3pg==
-X-Received: by 10.180.89.230 with SMTP id br6mr6515747wib.16.1412087475357;
-        Tue, 30 Sep 2014 07:31:15 -0700 (PDT)
-Received: from [10.24.135.53] ([160.92.7.69])
-        by mx.google.com with ESMTPSA id mz16sm15364481wic.13.2014.09.30.07.31.13
-        for <multiple recipients>
-        (version=SSLv3 cipher=RC4-SHA bits=128/128);
-        Tue, 30 Sep 2014 07:31:14 -0700 (PDT)
-Message-ID: <1412087471.10205.12.camel@L80496>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2014 18:28:11 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34128 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006150AbaI3Q2IIsknj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Sep 2014 18:28:08 +0200
+Date:   Tue, 30 Sep 2014 17:28:08 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Thibaut Robert <thibaut.robert@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] tc: fix warning and coding style
-From:   Thibaut Robert <thibaut.robert@gmail.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Tue, 30 Sep 2014 16:31:11 +0200
-In-Reply-To: <CAMuHMdWHMK7NxX9AUg3ihwds41dKW26A_jFnZELw5N9shMaBKw@mail.gmail.com>
+In-Reply-To: <1412079396-26005-1-git-send-email-thibaut.robert@gmail.com>
+Message-ID: <alpine.LFD.2.11.1409301720050.21156@eddie.linux-mips.org>
 References: <1412079396-26005-1-git-send-email-thibaut.robert@gmail.com>
-         <CAMuHMdXj=b0G7foTRkcEtRC_De8+WjVefxBfW=s1sjaXLeF5nQ@mail.gmail.com>
-         <1412085083.10205.8.camel@L80496>
-         <CAMuHMdWHMK7NxX9AUg3ihwds41dKW26A_jFnZELw5N9shMaBKw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <thibaut.robert@gmail.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=ISO-8859-7
+Content-Transfer-Encoding: 8BIT
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42900
+X-archive-position: 42902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thibaut.robert@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,10 +37,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le mardi 30 septembre 2014 Ã  16:08 +0200, Geert Uytterhoeven a Ã©crit :
-> I guess that's acceptable, as tc is probably limited to 32-bit anyway. Maciej?
-> 
-> Note that there's also %pa, for phys_addr_t/resource_size_t.
-Yes, but unfortunately that needs a reference so we can't use it.
+On Tue, 30 Sep 2014, Thibaut Robert wrote:
 
-Thibaut
+> Fix checkpatch warnings:
+> WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+> WARNING: Possible unnecessary 'out of memory' message
+> WARNING: quoted string split across lines
+> WARNING: Use #include <linux/io.h> instead of <asm/io.h>
+> 
+> Fix gcc warning:
+> warning: format ¡%d¢ expects argument of type ¡int¢, but argument 4 has type ¡resource_size_t¢ [-Wformat=]
+> 
+> As resource_size_t can be 32 or 64 bits (depending on CONFIG_RESOURCES_64BIT), this patch uses "%lld" format along with a cast to u64 for printing resource_size_t values
+> 
+> Signed-off-by: Thibaut Robert <thibaut.robert@gmail.com>
+> ---
+
+ NAK.  These issues have already been taken care of via the LMO tree; the
+original change has been archived here:
+
+http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=alpine.LFD.2.11.1404062030280.15266%40eddie.linux-mips.org
+
+and is on the way to Linus's tree (IIUC; Ralf, please acknowledge).
+
+ If you think there's anything wrong still left afterwards, except from 
+the message wrapping (as I'm not going to approve any modification to go 
+beyond 79 columns; this is nonsense), then please send an incremental 
+change on top of that.
+
+ Thanks for your contribution anyway.
+
+  Maciej

@@ -1,36 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2014 00:21:10 +0200 (CEST)
-Received: from filtteri5.pp.htv.fi ([213.243.153.188]:57533 "EHLO
-        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010259AbaJAWVIEc6dL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Oct 2014 00:21:08 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri5.pp.htv.fi (Postfix) with ESMTP id F262A5A6F25;
-        Thu,  2 Oct 2014 01:20:59 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
-        with ESMTP id DGsEJ2aY1kpt; Thu,  2 Oct 2014 01:20:53 +0300 (EEST)
-Received: from cooljazz.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id D8FAB5BC011;
-        Thu,  2 Oct 2014 01:21:00 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: [PATCH RESEND] MIPS/loongson2_cpufreq: Fix CPU clock rate setting mismerge
-Date:   Thu,  2 Oct 2014 01:21:00 +0300
-Message-Id: <1412202060-2112-1-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.1.0
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2014 11:45:51 +0200 (CEST)
+Received: from smtp02.citrix.com ([66.165.176.63]:56174 "EHLO
+        SMTP02.CITRIX.COM" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009620AbaJBJptJxLyO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Oct 2014 11:45:49 +0200
+X-IronPort-AV: E=Sophos;i="5.04,638,1406592000"; 
+   d="scan'208";a="178466624"
+Message-ID: <542D1EC4.10100@citrix.com>
+Date:   Thu, 2 Oct 2014 10:45:40 +0100
+From:   David Vrabel <david.vrabel@citrix.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Icedove/24.5.0
+MIME-Version: 1.0
+To:     Guenter Roeck <linux@roeck-us.net>, <linux-kernel@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>, <linux-ia64@vger.kernel.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-parisc@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, <xen-devel@lists.xenproject.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        <linux-metag@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [Xen-devel] [RFC PATCH 14/16] x86/xen: support poweroff through
+ poweroff handler call chain
+References: <1412100056-15517-1-git-send-email-linux@roeck-us.net> <1412100056-15517-15-git-send-email-linux@roeck-us.net>
+In-Reply-To: <1412100056-15517-15-git-send-email-linux@roeck-us.net>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-DLP:  MIA1
+Return-Path: <david.vrabel@citrix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42927
+X-archive-position: 42928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: david.vrabel@citrix.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,41 +48,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-During 3.16 merge window, parts of the commit 8e8acb32960f
-(MIPS/loongson2_cpufreq: Fix CPU clock rate setting) seem to have
-been deleted probably due to a mismerge, and as a result cpufreq
-is broken again on Loongson2 boards in 3.16 and newer kernels.
-Fix by repeating the fix.
+On 30/09/14 19:00, Guenter Roeck wrote:
+> The kernel core now supports a poweroff handler call chain
+> to remove power from the system. Call it if pm_power_off
+> is set to NULL.
+> 
+> Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+> Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>  arch/x86/xen/enlighten.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+> index c0cb11f..645d00f 100644
+> --- a/arch/x86/xen/enlighten.c
+> +++ b/arch/x86/xen/enlighten.c
+> @@ -1322,6 +1322,8 @@ static void xen_machine_power_off(void)
+>  {
+>  	if (pm_power_off)
+>  		pm_power_off();
+> +	else
+> +		do_kernel_poweroff();
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: stable@vger.kernel.org # 3.16
----
- arch/mips/loongson/lemote-2f/clock.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Why isn't this if (pm_power_off) check in do_kernel_poweroff()?
 
-diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
-index a217061..462e34d 100644
---- a/arch/mips/loongson/lemote-2f/clock.c
-+++ b/arch/mips/loongson/lemote-2f/clock.c
-@@ -91,6 +91,7 @@ EXPORT_SYMBOL(clk_put);
- 
- int clk_set_rate(struct clk *clk, unsigned long rate)
- {
-+	unsigned int rate_khz = rate / 1000;
- 	struct cpufreq_frequency_table *pos;
- 	int ret = 0;
- 	int regval;
-@@ -107,9 +108,9 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
- 		propagate_rate(clk);
- 
- 	cpufreq_for_each_valid_entry(pos, loongson2_clockmod_table)
--		if (rate == pos->frequency)
-+		if (rate_khz == pos->frequency)
- 			break;
--	if (rate != pos->frequency)
-+	if (rate_khz != pos->frequency)
- 		return -ENOTSUPP;
- 
- 	clk->rate = rate;
--- 
-2.1.0
+That way when you finally remove pm_power_off you need only update one
+place.  A quick skim of the other archs suggest this would work for them
+too.
+
+David

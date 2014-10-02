@@ -1,78 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2014 15:29:10 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:54067 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010478AbaJBN3HsbpCt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Oct 2014 15:29:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Subject:CC:To:MIME-Version:From:Date:Message-ID; bh=WoAA1w37VG1xh32TRD3BqYmoHXkZpHmAqNmf2NpTa7k=;
-        b=VOLBvov6M20nyOq3o3f8HLUrVNcURQNoFKAx7BYoQtQ6lE8NOfc1I4r7KbXijjW9dAxjZL++blCh3Yz3DU/rxwEFIaKkUiE3ma0JD0NcmWrxpoTSp3F6wzxuSbcPlZd5wmudHTXUo1GcsJXOGw7Ts2qQb8HV6b5w4NVFK2B50co=;
-Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1XZgRJ-000Xfw-5f
-        for linux-mips@linux-mips.org; Thu, 02 Oct 2014 13:29:01 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:49260 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1XZgPZ-000We3-D4; Thu, 02 Oct 2014 13:27:14 +0000
-Message-ID: <542D52AC.3040009@roeck-us.net>
-Date:   Thu, 02 Oct 2014 06:27:08 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2014 15:49:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49837 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010478AbaJBNtMYBQ2I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Oct 2014 15:49:12 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 67070F7670456;
+        Thu,  2 Oct 2014 14:49:02 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 2 Oct
+ 2014 14:49:05 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 2 Oct 2014 14:49:04 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.65) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 2 Oct 2014 14:49:04 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        Jayachandran C <jchandra@broadcom.com>,
+        <netdev@vger.kernel.org>
+Subject: [PATCH] staging: xlr_net: Replace obsolete nlm_cop2_{enable,restore} macros
+Date:   Thu, 2 Oct 2014 14:48:49 +0100
+Message-ID: <1412257729-12351-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.1.1
 MIME-Version: 1.0
-To:     David Vrabel <david.vrabel@citrix.com>,
-        linux-kernel@vger.kernel.org
-CC:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-parisc@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-sh@vger.kernel.org,
-        Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [Xen-devel] [RFC PATCH 14/16] x86/xen: support poweroff through
- poweroff handler call chain
-References: <1412100056-15517-1-git-send-email-linux@roeck-us.net> <1412100056-15517-15-git-send-email-linux@roeck-us.net> <542D1EC4.10100@citrix.com>
-In-Reply-To: <542D1EC4.10100@citrix.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-CTCH-PVer: 0000001
-X-CTCH-Spam: Suspect
-X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020207.542D531D.007F,ss=2,re=0.000,recu=0.000,reip=0.000,cl=2,cld=1,fgs=0
-X-CTCH-Score: 0.000
-X-CTCH-ScoreCust: 0.000
-X-CTCH-Rules: 
-X-CTCH-SenderID: linux@roeck-us.net
-X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 13
-X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 0
-X-CTCH-SenderID-TotalConfirmed: 0
-X-CTCH-SenderID-TotalBulk: 0
-X-CTCH-SenderID-TotalVirus: 0
-X-CTCH-SenderID-TotalRecipients: 0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.65]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42929
+X-archive-position: 42930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,40 +51,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/02/2014 02:45 AM, David Vrabel wrote:
-> On 30/09/14 19:00, Guenter Roeck wrote:
->> The kernel core now supports a poweroff handler call chain
->> to remove power from the system. Call it if pm_power_off
->> is set to NULL.
->>
->> Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
->> Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: H. Peter Anvin <hpa@zytor.com>
->> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->> ---
->>   arch/x86/xen/enlighten.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
->> index c0cb11f..645d00f 100644
->> --- a/arch/x86/xen/enlighten.c
->> +++ b/arch/x86/xen/enlighten.c
->> @@ -1322,6 +1322,8 @@ static void xen_machine_power_off(void)
->>   {
->>   	if (pm_power_off)
->>   		pm_power_off();
->> +	else
->> +		do_kernel_poweroff();
->
-> Why isn't this if (pm_power_off) check in do_kernel_poweroff()?
->
-> That way when you finally remove pm_power_off you need only update one
-> place.  A quick skim of the other archs suggest this would work for them
-> too.
->
+Commit 64f6ebe63914 ("MIPS: Netlogic: rename nlm_cop2_save/restore")
+replaced nlm_cop2_enable with nlm_cop2_enable_irqsave and
+nlm_cop2_restore with nlm_cop2_disable_irqrestore but it did not
+update the xlr_net driver to use the new macros resulting into build
+problems like this:
 
-Good idea. I'll do that for the next version of the patch set.
+drivers/staging/netlogic/xlr_net.c: In function 'send_to_rfr_fifo':
+drivers/staging/netlogic/xlr_net.c:128:3: error: implicit declaration of
+function 'nlm_cop2_enable' [-Werror=implicit-function-declaration]
+mflags = nlm_cop2_enable();
+^
+drivers/staging/netlogic/xlr_net.c:130:3: error: implicit declaration of
+function 'nlm_cop2_restore' [-Werror=implicit-function-declaration]
+nlm_cop2_restore(mflags);
 
-Guenter
+Therefore rename these cases as well
+
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: devel@driverdev.osuosl.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Jayachandran C <jchandra@broadcom.com>
+Cc: netdev@vger.kernel.org
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ drivers/staging/netlogic/xlr_net.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/staging/netlogic/xlr_net.c b/drivers/staging/netlogic/xlr_net.c
+index 9bf407d6241a..469f75f0f818 100644
+--- a/drivers/staging/netlogic/xlr_net.c
++++ b/drivers/staging/netlogic/xlr_net.c
+@@ -125,9 +125,9 @@ static int send_to_rfr_fifo(struct xlr_net_priv *priv, void *addr)
+ 	msg.msg3 = 0;
+ 	stnid = priv->nd->rfr_station;
+ 	do {
+-		mflags = nlm_cop2_enable();
++		mflags = nlm_cop2_enable_irqsave();
+ 		ret = nlm_fmn_send(1, 0, stnid, &msg);
+-		nlm_cop2_restore(mflags);
++		nlm_cop2_disable_irqrestore(mflags);
+ 		if (ret == 0)
+ 			return 0;
+ 	} while (++num_try < 10000);
+@@ -298,9 +298,9 @@ static netdev_tx_t xlr_net_start_xmit(struct sk_buff *skb,
+ 	u32 flags;
+ 
+ 	xlr_make_tx_desc(&msg, virt_to_phys(skb->data), skb);
+-	flags = nlm_cop2_enable();
++	flags = nlm_cop2_enable_irqsave();
+ 	ret = nlm_fmn_send(2, 0, priv->nd->tx_stnid, &msg);
+-	nlm_cop2_restore(flags);
++	nlm_cop2_disable_irqrestore(flags);
+ 	if (ret)
+ 		dev_kfree_skb_any(skb);
+ 	return NETDEV_TX_OK;
+-- 
+2.1.1

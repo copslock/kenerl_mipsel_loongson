@@ -1,44 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2014 17:17:30 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:23355 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010488AbaJCPR2yE0Rf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 3 Oct 2014 17:17:28 +0200
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s93FHOx6030781
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 3 Oct 2014 11:17:24 -0400
-Received: from [10.3.113.98] (ovpn-113-98.phx2.redhat.com [10.3.113.98])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s93FHMpT007204;
-        Fri, 3 Oct 2014 11:17:22 -0400
-Message-ID: <1412349442.5410.14.camel@deneb.redhat.com>
-Subject: Re: [RFC PATCH 07/16] c6x: support poweroff through poweroff
- handler call chain
-From:   Mark Salter <msalter@redhat.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Aurelien Jacquiot <a-jacquiot@ti.com>
-Date:   Fri, 03 Oct 2014 11:17:22 -0400
-In-Reply-To: <1412100056-15517-8-git-send-email-linux@roeck-us.net>
-References: <1412100056-15517-1-git-send-email-linux@roeck-us.net>
-         <1412100056-15517-8-git-send-email-linux@roeck-us.net>
-Organization: Red Hat, Inc
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
-Return-Path: <msalter@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2014 17:50:44 +0200 (CEST)
+Received: from mail-wg0-f52.google.com ([74.125.82.52]:45632 "EHLO
+        mail-wg0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010488AbaJCPumo8MDD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Oct 2014 17:50:42 +0200
+Received: by mail-wg0-f52.google.com with SMTP id a1so1843077wgh.11
+        for <multiple recipients>; Fri, 03 Oct 2014 08:50:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=VmRKcyLxTXUqogXiHgxvJljVxtK79afrUpfuAzjrWac=;
+        b=gKZZlmPc7Cz0nAHyOKcIhQEbXpU65yvm/kgMqCK4sNWV09SCGtyc+H5Qr2cDBO1xo4
+         kMnv7ww2Pf+VlDdSi5zXuWgPLrjPIIrzR2p84M0XUre6zND0eK6dszgeDYLrSen6frv9
+         PM/s1fZYgEiPmWCLx3JDbY+Y49Y1z1eSMoZ71N0PHAnj1mq+kAEZ/h1uQjeicWhCdok4
+         opZIOTK354oBYzNhfGrcfMdlMejKroRg6YSbJmubJlNq9MHbNW1e9at9nFyGB9EoUioZ
+         Q1Dm8TI7K4f/YOTqFIZ8cQQa8TDNBl60tsEN5kxrIBxYatSLFLdfLrNE9HWZN6t/V5Vy
+         jnDg==
+X-Received: by 10.194.78.4 with SMTP id x4mr8543939wjw.44.1412351437433;
+        Fri, 03 Oct 2014 08:50:37 -0700 (PDT)
+Received: from cizrna.lan (37-48-55-252.tmcz.cz. [37.48.55.252])
+        by mx.google.com with ESMTPSA id cz3sm8364946wjb.23.2014.10.03.08.50.34
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 03 Oct 2014 08:50:36 -0700 (PDT)
+From:   Tomeu Vizoso <tomeu.vizoso@collabora.com>
+Cc:     Mike Turquette <mturquette@linaro.org>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Alchemy: Remove direct access to prepare_count field of struct clk
+Date:   Fri,  3 Oct 2014 17:50:00 +0200
+Message-Id: <1412351404-28818-1-git-send-email-tomeu.vizoso@collabora.com>
+X-Mailer: git-send-email 1.9.3
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <tomeu.vizoso@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42938
+X-archive-position: 42939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: msalter@redhat.com
+X-original-sender: tomeu.vizoso@collabora.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,31 +54,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2014-09-30 at 11:00 -0700, Guenter Roeck wrote:
-> The kernel core now supports a poweroff handler call chain
-> to remove power from the system. Call it if pm_power_off
-> is set to NULL.
-> 
-> Cc: Mark Salter <msalter@redhat.com>
-> Cc: Aurelien Jacquiot <a-jacquiot@ti.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
+Replacing it with a call to __clk_is_prepared(), which isn't entirely
+equivalent but in practice shouldn't matter.
 
-Acked-by: Mark Salter <msalter@redhat.com>
+Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+---
+ arch/mips/alchemy/common/clock.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
->  arch/c6x/kernel/process.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/c6x/kernel/process.c b/arch/c6x/kernel/process.c
-> index 57d2ea8..ddf088e 100644
-> --- a/arch/c6x/kernel/process.c
-> +++ b/arch/c6x/kernel/process.c
-> @@ -75,6 +75,8 @@ void machine_power_off(void)
->  {
->  	if (pm_power_off)
->  		pm_power_off();
-> +	else
-> +		do_kernel_poweroff();
->  	halt_loop();
->  }
->  
+diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
+index d7557cd..203e440 100644
+--- a/arch/mips/alchemy/common/clock.c
++++ b/arch/mips/alchemy/common/clock.c
+@@ -37,7 +37,6 @@
+ #include <linux/io.h>
+ #include <linux/clk-provider.h>
+ #include <linux/clkdev.h>
+-#include <linux/clk-private.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+@@ -397,10 +396,10 @@ static long alchemy_clk_fgcs_detr(struct clk_hw *hw, unsigned long rate,
+ 			break;
+ 
+ 		/* if this parent is currently unused, remember it.
+-		 * XXX: I know it's a layering violation, but it works
+-		 * so well.. (if (!clk_has_active_children(pc)) )
++		 * XXX: we would actually want clk_has_active_children()
++		 * but this is a good-enough approximation for now.
+ 		 */
+-		if (pc->prepare_count == 0) {
++		if (!__clk_is_prepared(pc)) {
+ 			if (!free)
+ 				free = pc;
+ 		}
+-- 
+1.9.3

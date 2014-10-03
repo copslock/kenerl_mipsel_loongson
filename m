@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Oct 2014 00:06:13 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57598 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Oct 2014 00:06:30 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57602 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010192AbaJCWGL2NSYU (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27010193AbaJCWGLjlo18 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 4 Oct 2014 00:06:11 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 14AB1B16;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BE910B24;
         Fri,  3 Oct 2014 22:06:05 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Aurelien Jarno <aurelien@aurel32.net>,
+        stable@vger.kernel.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 118/238] MIPS: ZBOOT: add missing <linux/string.h> include
-Date:   Fri,  3 Oct 2014 14:30:33 -0700
-Message-Id: <20141003212917.447893583@linuxfoundation.org>
+Subject: [PATCH 3.14 119/238] MIPS: mcount: Adjust stack pointer for static trace in MIPS32
+Date:   Fri,  3 Oct 2014 14:30:34 -0700
+Message-Id: <20141003212917.485230712@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.2
 In-Reply-To: <20141003212913.680985295@linuxfoundation.org>
 References: <20141003212913.680985295@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42944
+X-archive-position: 42945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,50 +46,69 @@ X-list: linux-mips
 
 ------------------
 
-From: Aurelien Jarno <aurelien@aurel32.net>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit 29593fd5a8149462ed6fad0d522234facdaee6c8 upstream.
+commit 8a574cfa2652545eb95595d38ac2a0bb501af0ae upstream.
 
-Commit dc4d7b37 (MIPS: ZBOOT: gather string functions into string.c)
-moved the string related functions into a separate file, which might
-cause the following build error, depending on the configuration:
+Every mcount() call in the MIPS 32-bit kernel is done as follows:
 
-| CC      arch/mips/boot/compressed/decompress.o
-| In file included from linux/arch/mips/boot/compressed/../../../../lib/decompress_unxz.c:234:0,
-|                  from linux/arch/mips/boot/compressed/decompress.c:67:
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c: In function 'fill_temp':
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c:162:2: error: implicit declaration of function 'memcpy' [-Werror=implicit-function-declaration]
-| cc1: some warnings being treated as errors
-| linux/scripts/Makefile.build:308: recipe for target 'arch/mips/boot/compressed/decompress.o' failed
-| make[6]: *** [arch/mips/boot/compressed/decompress.o] Error 1
-| linux/arch/mips/Makefile:308: recipe for target 'vmlinuz' failed
+[...]
+move at, ra
+jal _mcount
+addiu sp, sp, -8
+[...]
 
-It does not fail with the standard configuration, as when
-CONFIG_DYNAMIC_DEBUG is not enabled <linux/string.h> gets included in
-include/linux/dynamic_debug.h. There might be other ways for it to
-get indirectly included.
+but upon returning from the mcount() function, the stack pointer
+is not adjusted properly. This is explained in details in 58b69401c797
+(MIPS: Function tracer: Fix broken function tracing).
 
-We can't add the include directly in xz_dec_stream.c as some
-architectures might want to use a different version for the boot/
-directory (see for example arch/x86/boot/string.h).
+Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
+fixed the stack manipulation for 64-bit but it didn't fix it completely
+for MIPS32.
 
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7420/
+Patchwork: https://patchwork.linux-mips.org/patch/7792/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/boot/compressed/decompress.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/kernel/mcount.S |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/mips/boot/compressed/decompress.c
-+++ b/arch/mips/boot/compressed/decompress.c
-@@ -13,6 +13,7 @@
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -123,7 +123,11 @@ NESTED(_mcount, PT_SIZE, ra)
+ 	 nop
+ #endif
+ 	b	ftrace_stub
++#ifdef CONFIG_32BIT
++	 addiu sp, sp, 8
++#else
+ 	 nop
++#endif
  
- #include <linux/types.h>
- #include <linux/kernel.h>
-+#include <linux/string.h>
+ static_trace:
+ 	MCOUNT_SAVE_REGS
+@@ -133,6 +137,9 @@ static_trace:
+ 	 move	a1, AT		/* arg2: parent's return address */
  
- #include <asm/addrspace.h>
+ 	MCOUNT_RESTORE_REGS
++#ifdef CONFIG_32BIT
++	addiu sp, sp, 8
++#endif
+ 	.globl ftrace_stub
+ ftrace_stub:
+ 	RETURN_BACK
+@@ -177,6 +184,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
+ 	jal	prepare_ftrace_return
+ 	 nop
+ 	MCOUNT_RESTORE_REGS
++#ifndef CONFIG_DYNAMIC_FTRACE
++#ifdef CONFIG_32BIT
++	addiu sp, sp, 8
++#endif
++#endif
+ 	RETURN_BACK
+ 	END(ftrace_graph_caller)
  

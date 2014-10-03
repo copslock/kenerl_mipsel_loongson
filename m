@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2014 23:43:09 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56426 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2014 23:43:27 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56427 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010509AbaJCVnHZa06u (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27010511AbaJCVnHZa06u (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 3 Oct 2014 23:43:07 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BBFB1B30;
-        Fri,  3 Oct 2014 21:42:59 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 17FE8B31;
+        Fri,  3 Oct 2014 21:43:00 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        stable@vger.kernel.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.16 193/357] MIPS: Fix MFC1 & MFHC1 emulation for 64-bit MIPS systems
-Date:   Fri,  3 Oct 2014 14:29:39 -0700
-Message-Id: <20141003212939.272207482@linuxfoundation.org>
+Subject: [PATCH 3.16 194/357] MIPS: mcount: Adjust stack pointer for static trace in MIPS32
+Date:   Fri,  3 Oct 2014 14:29:40 -0700
+Message-Id: <20141003212939.303109449@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.2
 In-Reply-To: <20141003212933.458851516@linuxfoundation.org>
 References: <20141003212933.458851516@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42941
+X-archive-position: 42942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,51 +46,69 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit c8c0da6bdf0f0d6f59fc23aab6ee373a131df82d upstream.
+commit 8a574cfa2652545eb95595d38ac2a0bb501af0ae upstream.
 
-Commit bbd426f542cb "MIPS: Simplify FP context access" modified the
-SIFROMREG & SIFROMHREG macros such that they return unsigned rather
-than signed 32b integers. I had believed that to be fine, but
-inadvertently missed the MFC1 & MFHC1 cases which write to a struct
-pt_regs regs element. On MIPS32 this is fine, but on 64 bit those
-saved regs' fields are 64 bit wide. Using unsigned values caused the
-32 bit value from the FP register to be zero rather than sign extended
-as the architecture specifies, causing incorrect emulation of the
-MFC1 & MFHc1 instructions. Fix by reintroducing the casts to signed
-integers, and therefore the sign extension.
+Every mcount() call in the MIPS 32-bit kernel is done as follows:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+[...]
+move at, ra
+jal _mcount
+addiu sp, sp, -8
+[...]
+
+but upon returning from the mcount() function, the stack pointer
+is not adjusted properly. This is explained in details in 58b69401c797
+(MIPS: Function tracer: Fix broken function tracing).
+
+Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
+fixed the stack manipulation for 64-bit but it didn't fix it completely
+for MIPS32.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7848/
+Patchwork: https://patchwork.linux-mips.org/patch/7792/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/math-emu/cp1emu.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/kernel/mcount.S |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -650,9 +650,9 @@ static inline int cop1_64bit(struct pt_r
- #define SIFROMREG(si, x)						\
- do {									\
- 	if (cop1_64bit(xcp))						\
--		(si) = get_fpr32(&ctx->fpr[x], 0);			\
-+		(si) = (int)get_fpr32(&ctx->fpr[x], 0);			\
- 	else								\
--		(si) = get_fpr32(&ctx->fpr[(x) & ~1], (x) & 1);		\
-+		(si) = (int)get_fpr32(&ctx->fpr[(x) & ~1], (x) & 1);	\
- } while (0)
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -123,7 +123,11 @@ NESTED(_mcount, PT_SIZE, ra)
+ 	 nop
+ #endif
+ 	b	ftrace_stub
++#ifdef CONFIG_32BIT
++	 addiu sp, sp, 8
++#else
+ 	 nop
++#endif
  
- #define SITOREG(si, x)							\
-@@ -667,7 +667,7 @@ do {									\
- 	}								\
- } while (0)
+ static_trace:
+ 	MCOUNT_SAVE_REGS
+@@ -133,6 +137,9 @@ static_trace:
+ 	 move	a1, AT		/* arg2: parent's return address */
  
--#define SIFROMHREG(si, x)	((si) = get_fpr32(&ctx->fpr[x], 1))
-+#define SIFROMHREG(si, x)	((si) = (int)get_fpr32(&ctx->fpr[x], 1))
+ 	MCOUNT_RESTORE_REGS
++#ifdef CONFIG_32BIT
++	addiu sp, sp, 8
++#endif
+ 	.globl ftrace_stub
+ ftrace_stub:
+ 	RETURN_BACK
+@@ -177,6 +184,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
+ 	jal	prepare_ftrace_return
+ 	 nop
+ 	MCOUNT_RESTORE_REGS
++#ifndef CONFIG_DYNAMIC_FTRACE
++#ifdef CONFIG_32BIT
++	addiu sp, sp, 8
++#endif
++#endif
+ 	RETURN_BACK
+ 	END(ftrace_graph_caller)
  
- #define SITOHREG(si, x)							\
- do {									\

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2014 23:43:46 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56425 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Oct 2014 00:06:13 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57598 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010517AbaJCVnMY7pvI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Oct 2014 23:43:12 +0200
+        by eddie.linux-mips.org with ESMTP id S27010192AbaJCWGL2NSYU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Oct 2014 00:06:11 +0200
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 687D5B36;
-        Fri,  3 Oct 2014 21:42:59 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 14AB1B16;
+        Fri,  3 Oct 2014 22:06:05 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.16 192/357] MIPS: ZBOOT: add missing <linux/string.h> include
-Date:   Fri,  3 Oct 2014 14:29:38 -0700
-Message-Id: <20141003212939.242980927@linuxfoundation.org>
+Subject: [PATCH 3.14 118/238] MIPS: ZBOOT: add missing <linux/string.h> include
+Date:   Fri,  3 Oct 2014 14:30:33 -0700
+Message-Id: <20141003212917.447893583@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.2
-In-Reply-To: <20141003212933.458851516@linuxfoundation.org>
-References: <20141003212933.458851516@linuxfoundation.org>
+In-Reply-To: <20141003212913.680985295@linuxfoundation.org>
+References: <20141003212913.680985295@linuxfoundation.org>
 User-Agent: quilt/0.63-1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42943
+X-archive-position: 42944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,7 +41,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16-stable review patch.  If anyone has any objections, please let me know.
+3.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

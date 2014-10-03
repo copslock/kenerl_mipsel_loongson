@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2014 19:45:28 +0200 (CEST)
-Received: from charlotte.tuxdriver.com ([70.61.120.58]:46587 "EHLO
-        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006810AbaJBRp0johog (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Oct 2014 19:45:26 +0200
-Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
-        (envelope-from <linville@tuxdriver.com>)
-        id 1XZkRB-0002sI-5l; Thu, 02 Oct 2014 13:45:09 -0400
-Received: from linville-x1.hq.tuxdriver.com (localhost.localdomain [127.0.0.1])
-        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.6) with ESMTP id s92HbmrG019941;
-        Thu, 2 Oct 2014 13:37:48 -0400
-Received: (from linville@localhost)
-        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.8/Submit) id s92Hbkm4019940;
-        Thu, 2 Oct 2014 13:37:46 -0400
-Date:   Thu, 2 Oct 2014 13:37:46 -0400
-From:   "John W. Linville" <linville@tuxdriver.com>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        ath5k-devel@venema.h4ckr.net
-Subject: Re: [PATCH 15/16] ath5k: update dependencies
-Message-ID: <20141002173746.GB12208@tuxdriver.com>
-References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
- <1411929195-23775-16-git-send-email-ryazanov.s.a@gmail.com>
- <20140930172044.GE11919@tuxdriver.com>
- <CAHNKnsSNO3-mzcKcGdnxEndbq6y_Pr0Gqrv2dMVCZZssgqMnWA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHNKnsSNO3-mzcKcGdnxEndbq6y_Pr0Gqrv2dMVCZZssgqMnWA@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linville@tuxdriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2014 02:30:17 +0200 (CEST)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:34063 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010191AbaJCAaP3ckeb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Oct 2014 02:30:15 +0200
+Received: by mail-pa0-f49.google.com with SMTP id hz1so353005pad.36
+        for <multiple recipients>; Thu, 02 Oct 2014 17:30:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=KxwsBNz+OFPwgdU9AfU/HSd+wgKHwKfk63CTN79yh5A=;
+        b=BGpO2lIs+P5ohnmVtLm4MrzIib/kZCrEfJ53lphHxIuVT25qDliFqqv45XTNG0yBm3
+         fhdnSsXxedt36nPEJ1X/VFuOEyevyGNMPqrqWUTmuqKFCySVBaswQESOkvtgvET0gGYk
+         RleMwsGs3rL7eNCjSD/gwX/QpQeSQCVTjWp2Q6DndVBsLhY0ZkEgHNtACiBIqR3BM0+S
+         kqc2+CDbGEgsotyFKeBordStNiT9HWwQCWPRpVaFyOGoZB0f00cl1QuGv/eNCMO+66kQ
+         sWqucvA2dihmBro2kCvSacuxNMPkd67x3FPQ9oLIv9S32OpYOBU5b4bUAkhSjzbXTs4I
+         dobg==
+X-Received: by 10.66.141.77 with SMTP id rm13mr1022012pab.91.1412296208815;
+        Thu, 02 Oct 2014 17:30:08 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id wi10sm4972075pbc.95.2014.10.02.17.30.07
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 02 Oct 2014 17:30:08 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: DTS: add a .gitignore file to ignore .dtb
+Date:   Thu,  2 Oct 2014 17:29:47 -0700
+Message-Id: <1412296187-2370-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42931
+X-archive-position: 42932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@tuxdriver.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,21 +51,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 01, 2014 at 06:41:34PM +0400, Sergey Ryazanov wrote:
-> 2014-09-30 21:20 GMT+04:00 John W. Linville <linville@tuxdriver.com>:
-> > This patch does not seem to apply to wireless-next.  What tree is it
-> > based upon?
-> >
-> > John
-> >
-> Its based on linux-mips. I thought that ath5k was not changed in
-> recent time and did not  rebase patch on top of wireless-next.
-> 
-> John, could you delay patch merging? There is an idea to rename ar231x
-> in ath25, to be consistent with ath79 for AR71xx/AR9xxx.
+Build for Broadcom XLP revealed that we are not ignoring DTB files and
+that would clobber the git status output. Fix that by adding a
+.gitignore file in arch/mips/boot/dts/.
 
-OK
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ arch/mips/boot/dts/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 arch/mips/boot/dts/.gitignore
 
+diff --git a/arch/mips/boot/dts/.gitignore b/arch/mips/boot/dts/.gitignore
+new file mode 100644
+index 000000000000..b60ed208c779
+--- /dev/null
++++ b/arch/mips/boot/dts/.gitignore
+@@ -0,0 +1 @@
++*.dtb
 -- 
-John W. Linville		Someday the world will need a hero, and you
-linville@tuxdriver.com			might be all we have.  Be ready.
+1.9.1

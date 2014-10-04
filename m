@@ -1,35 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Oct 2014 00:24:32 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:58363 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010193AbaJCWYNPI-J0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Oct 2014 00:24:13 +0200
-Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5A0FEB32;
-        Fri,  3 Oct 2014 22:24:07 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.10 069/143] MIPS: mcount: Adjust stack pointer for static trace in MIPS32
-Date:   Fri,  3 Oct 2014 14:34:24 -0700
-Message-Id: <20141003213316.586033870@linuxfoundation.org>
-X-Mailer: git-send-email 2.1.2
-In-Reply-To: <20141003213314.470709810@linuxfoundation.org>
-References: <20141003213314.470709810@linuxfoundation.org>
-User-Agent: quilt/0.63-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Oct 2014 05:17:25 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56281 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008971AbaJDDRYI1p0o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Oct 2014 05:17:24 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 04E943E695205;
+        Sat,  4 Oct 2014 04:17:16 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 4 Oct
+ 2014 04:17:16 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 4 Oct
+ 2014 04:17:16 +0100
+Received: from [127.0.1.1] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 3 Oct 2014
+ 20:17:14 -0700
+Subject: [PATCH 0/3] MIPS executable stack protection
+To:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
+        <david.daney@cavium.com>, <peterz@infradead.org>,
+        <paul.gortmaker@windriver.com>, <davidlohr@hp.com>,
+        <macro@linux-mips.org>, <chenhc@lemote.com>, <zajec5@gmail.com>,
+        <james.hogan@imgtec.com>, <keescook@chromium.org>,
+        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
+        <blogic@openwrt.org>, <jchandra@broadcom.com>,
+        <paul.burton@imgtec.com>, <qais.yousef@imgtec.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <markos.chandras@imgtec.com>, <manuel.lauss@gmail.com>,
+        <akpm@linux-foundation.org>, <lars.persson@axis.com>
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Date:   Fri, 3 Oct 2014 20:17:14 -0700
+Message-ID: <20141004030438.28569.85536.stgit@linux-yegoshin>
+User-Agent: StGit/0.15
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42947
+X-archive-position: 42948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,73 +56,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.10-stable review patch.  If anyone has any objections, please let me know.
+The following series implements an executable stack protection in MIPS.
 
-------------------
+It sets up a per-thread 'VDSO' page and appropriate TLB support.
+Page is set write-protected from user and is maintained via kernel VA.
+MIPS FPU emulation is shifted to new page and stack is relieved for
+execute protection as is as all data pages in default setup during ELF
+binary initialization. The real protection is controlled by GLIBC and
+it can do stack protected now as it is done in other architectures and
+I learned today that GLIBC team is ready for this.
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+Note: actual execute-protection depends from HW capability, of course.
 
-commit 8a574cfa2652545eb95595d38ac2a0bb501af0ae upstream.
-
-Every mcount() call in the MIPS 32-bit kernel is done as follows:
-
-[...]
-move at, ra
-jal _mcount
-addiu sp, sp, -8
-[...]
-
-but upon returning from the mcount() function, the stack pointer
-is not adjusted properly. This is explained in details in 58b69401c797
-(MIPS: Function tracer: Fix broken function tracing).
-
-Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
-fixed the stack manipulation for 64-bit but it didn't fix it completely
-for MIPS32.
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7792/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+This patch is required for MIPS32/64 R2 emulation on MIPS R6 architecture.
+Without it 'ssh-keygen' crashes pretty fast on attempt to execute instruction
+in stack.
 ---
- arch/mips/kernel/mcount.S |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -123,7 +123,11 @@ NESTED(_mcount, PT_SIZE, ra)
- 	 nop
- #endif
- 	b	ftrace_stub
-+#ifdef CONFIG_32BIT
-+	 addiu sp, sp, 8
-+#else
- 	 nop
-+#endif
- 
- static_trace:
- 	MCOUNT_SAVE_REGS
-@@ -133,6 +137,9 @@ static_trace:
- 	 move	a1, AT		/* arg2: parent's return address */
- 
- 	MCOUNT_RESTORE_REGS
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-@@ -181,6 +188,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
- 	jal	prepare_ftrace_return
- 	 nop
- 	MCOUNT_RESTORE_REGS
-+#ifndef CONFIG_DYNAMIC_FTRACE
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
-+#endif
- 	RETURN_BACK
- 	END(ftrace_graph_caller)
- 
+Leonid Yegoshin (3):
+      MIPS: mips_flush_cache_range is added
+      MIPS: Setup an instruction emulation in VDSO protected page instead of user stack
+      MIPS: set stack/data protection as non-executable
+
+
+ arch/mips/include/asm/cacheflush.h  |    3 +
+ arch/mips/include/asm/mmu.h         |    2 +
+ arch/mips/include/asm/page.h        |    2 -
+ arch/mips/include/asm/processor.h   |    2 -
+ arch/mips/include/asm/switch_to.h   |   12 ++++
+ arch/mips/include/asm/thread_info.h |    3 +
+ arch/mips/include/asm/tlbmisc.h     |    1 
+ arch/mips/include/asm/vdso.h        |    2 +
+ arch/mips/kernel/process.c          |    7 ++
+ arch/mips/kernel/vdso.c             |   41 ++++++++++++-
+ arch/mips/math-emu/dsemul.c         |  114 ++++++++++++++++++++++++++---------
+ arch/mips/mm/c-octeon.c             |    8 ++
+ arch/mips/mm/c-r3k.c                |    8 ++
+ arch/mips/mm/c-r4k.c                |   43 +++++++++++++
+ arch/mips/mm/c-tx39.c               |    9 +++
+ arch/mips/mm/cache.c                |    4 +
+ arch/mips/mm/fault.c                |    5 ++
+ arch/mips/mm/tlb-r4k.c              |   39 ++++++++++++
+ 18 files changed, 273 insertions(+), 32 deletions(-)
+
+-- 
+Signature

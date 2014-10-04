@@ -1,69 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Oct 2014 18:04:02 +0200 (CEST)
-Received: from mail-vc0-f178.google.com ([209.85.220.178]:53254 "EHLO
-        mail-vc0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010519AbaJDQEAO2wKl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Oct 2014 18:04:00 +0200
-Received: by mail-vc0-f178.google.com with SMTP id hq12so1754765vcb.37
-        for <multiple recipients>; Sat, 04 Oct 2014 09:03:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=QEWaIYBfpH2LyBO2Sopf8EpJQkDBrdi/ttt6Hq/27Fg=;
-        b=iekPpE14l2gQgs/qz2IAxxq/GTsILJraqVgnNBCNBvdHJUW2UZ4/5unnJxuVTm0BtR
-         4JegH+0l9UPQcz/6HsG/a+OcXbf+BuhArjcu2OuTQC+abULU2RDZD/4oqN93cZ+DpMO8
-         K/n3FT+0MBo+JT8r5zTw+M1yO7AOLlXlD9lqNvgDMxhb1h7L+ebcPUZtwdCxVx1GEJpw
-         A8C658HBSeoBSfkE8O/zYjGk5NE8sty7XeDYotnG8Fey5rqXhf6MpY92gw+fN0q2QdOo
-         PHtX3KF0n4WRjz67t6Wcf3vxNlaVXYsOPIlpbNL6XUnXTL88xQhIztu0QbCJ67vUoHsR
-         ZUkQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=QEWaIYBfpH2LyBO2Sopf8EpJQkDBrdi/ttt6Hq/27Fg=;
-        b=A1svTCPf9sRC9KDhrN+BqA6Il0pKOYWQkceuOB5zL0yzyOwn+95+CwhgTWSy6cVYjw
-         YgCfRX+8UAkNLPwoABu9sxZ3f+6srKF7QNI89TFIMkcbY+pGlF0R83N6GURXgdQlA8/s
-         1RPlO+CIoAIkUc5uhy9qv2e1zVhyq1giMMe70=
-MIME-Version: 1.0
-X-Received: by 10.52.166.102 with SMTP id zf6mr13262vdb.62.1412438633845; Sat,
- 04 Oct 2014 09:03:53 -0700 (PDT)
-Received: by 10.220.3.148 with HTTP; Sat, 4 Oct 2014 09:03:53 -0700 (PDT)
-In-Reply-To: <20141004082307.GS10583@worktop.programming.kicks-ass.net>
-References: <20141004030438.28569.85536.stgit@linux-yegoshin>
-        <20141004082307.GS10583@worktop.programming.kicks-ass.net>
-Date:   Sat, 4 Oct 2014 09:03:53 -0700
-X-Google-Sender-Auth: a5LSQBCKbsHbsdRVmigCIx0FDaE
-Message-ID: <CA+55aFynSp90n=jdUdmY7nq-9t4pHS82Tj-WfZOBfot7ip0hBw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] MIPS executable stack protection
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Oct 2014 18:17:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4954 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010069AbaJDQRTRR0hE convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Oct 2014 18:17:19 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 122A02D67E17A;
+        Sat,  4 Oct 2014 17:17:09 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 4 Oct
+ 2014 17:17:12 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by klmail02.kl.imgtec.org
+ (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 4 Oct
+ 2014 17:17:11 +0100
+Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
+ bamail02.ba.imgtec.org ([::1]) with mapi id 14.03.0174.001; Sat, 4 Oct 2014
+ 09:17:04 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+CC:     Peter Zijlstra <peterz@infradead.org>,
         linux-mips <linux-mips@linux-mips.org>,
-        Zubair.Kakakhel@imgtec.com, David Daney <david.daney@cavium.com>,
+        Zubair Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        David Daney <david.daney@cavium.com>,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
         Davidlohr Bueso <davidlohr@hp.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>, chenhc@lemote.com,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Kees Cook <keescook@chromium.org>, alex@alex-smith.me.uk,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        "chenhc@lemote.com" <chenhc@lemote.com>,
+        =?iso-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Kees Cook <keescook@chromium.org>,
+        "alex@alex-smith.me.uk" <alex@alex-smith.me.uk>,
         Thomas Gleixner <tglx@linutronix.de>,
-        John Crispin <blogic@openwrt.org>, jchandra@broadcom.com,
-        paul.burton@imgtec.com, qais.yousef@imgtec.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, markos.chandras@imgtec.com,
-        Manuel Lauss <manuel.lauss@gmail.com>,
+        John Crispin <blogic@openwrt.org>,
+        "jchandra@broadcom.com" <jchandra@broadcom.com>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        Qais Yousef <Qais.Yousef@imgtec.com>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        "Manuel Lauss" <manuel.lauss@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        lars.persson@axis.com
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus971@gmail.com>
+        "lars.persson@axis.com" <lars.persson@axis.com>
+Subject: Re: [PATCH 0/3] MIPS executable stack protection
+Thread-Topic: [PATCH 0/3] MIPS executable stack protection
+Thread-Index: AQHP34Gysxw0os/VaEewjedDoGfZbpwgDy6AgACAvYD//45ViA==
+Date:   Sat, 4 Oct 2014 16:17:03 +0000
+Message-ID: <vi8ojsasknll8us53fy9myb8.1412439420039@email.android.com>
+References: <20141004030438.28569.85536.stgit@linux-yegoshin>
+        <20141004082307.GS10583@worktop.programming.kicks-ass.net>,<CA+55aFynSp90n=jdUdmY7nq-9t4pHS82Tj-WfZOBfot7ip0hBw@mail.gmail.com>
+In-Reply-To: <CA+55aFynSp90n=jdUdmY7nq-9t4pHS82Tj-WfZOBfot7ip0hBw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42954
+X-archive-position: 42955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,6 +75,14 @@ List-owner: <mailto:ralf@linux-mips.org>
 List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
+
+Linus, it works on CPU with hardware page table walker - MIPS P5600 aka Apache.
+
+I was involved in architecture development of HTW and took care of it.
+
+
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
+
 
 On Sat, Oct 4, 2014 at 1:23 AM, Peter Zijlstra <peterz@infradead.org> wrote:
 > On Fri, Oct 03, 2014 at 08:17:14PM -0700, Leonid Yegoshin wrote:

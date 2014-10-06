@@ -1,43 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 00:17:16 +0200 (CEST)
-Received: from mail-by2on0055.outbound.protection.outlook.com ([207.46.100.55]:55808
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010553AbaJFWROfj0kL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Oct 2014 00:17:14 +0200
-Received: from dl.caveonetworks.com (64.2.3.195) by
- BY2PR07MB584.namprd07.prod.outlook.com (10.141.221.156) with Microsoft SMTP
- Server (TLS) id 15.0.1044.10; Mon, 6 Oct 2014 22:17:06 +0000
-Message-ID: <543314DF.20808@caviumnetworks.com>
-Date:   Mon, 6 Oct 2014 15:17:03 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Rich Felker <dalias@libc.org>
-CC:     David Daney <ddaney.cavm@gmail.com>, <libc-alpha@sourceware.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 01:10:45 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49740 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010553AbaJFXKn6gwP8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 01:10:43 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1XbHOi-0008V9-00; Mon, 06 Oct 2014 23:08:56 +0000
+Date:   Mon, 6 Oct 2014 19:08:56 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>, libc-alpha@sourceware.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         David Daney <david.daney@cavium.com>
 Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com> <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx>
-In-Reply-To: <20141006215813.GB23797@brightrain.aerifal.cx>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-ClientProxiedBy: BY2PR07CA021.namprd07.prod.outlook.com (10.255.247.46) To
- BY2PR07MB584.namprd07.prod.outlook.com (10.141.221.156)
-X-Microsoft-Antispam: UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BY2PR07MB584;
-X-Forefront-PRVS: 03569407CC
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(51704005)(189002)(479174003)(377454003)(199003)(24454002)(77096002)(53416004)(110136001)(20776003)(47776003)(21056001)(64706001)(97736003)(42186005)(23756003)(31966008)(65816999)(76176999)(54356999)(50986999)(80022003)(87976001)(85852003)(46102003)(65956001)(92566001)(101416001)(122386002)(19580395003)(69596002)(120916001)(83506001)(36756003)(81156004)(561944003)(33656002)(102836001)(4396001)(105586002)(106356001)(10300001)(66066001)(92726001)(99396003)(107046002)(76482002)(85306004)(95666004)(93886004)(50466002)(40100002);DIR:OUT;SFP:1101;SCL:1;SRVR:BY2PR07MB584;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Message-ID: <20141006230856.GC23797@brightrain.aerifal.cx>
+References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
+ <20141006205459.GZ23797@brightrain.aerifal.cx>
+ <5433071B.4050606@caviumnetworks.com>
+ <20141006213101.GA23797@brightrain.aerifal.cx>
+ <54330D79.80102@caviumnetworks.com>
+ <20141006215813.GB23797@brightrain.aerifal.cx>
+ <543314DF.20808@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <543314DF.20808@caviumnetworks.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42974
+X-archive-position: 42975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: dalias@libc.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,112 +46,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/06/2014 02:58 PM, Rich Felker wrote:
-> On Mon, Oct 06, 2014 at 02:45:29PM -0700, David Daney wrote:
->> On 10/06/2014 02:31 PM, Rich Felker wrote:
->>> On Mon, Oct 06, 2014 at 02:18:19PM -0700, David Daney wrote:
->>>>> Userspace should play no part in this; requiring userspace to help
->>>>> make special accomodations for fpu emulation largely defeats the
->>>>> purpose of fpu emulation.
->>>>
->>>> That is certainly one way of looking at it.  Really it is opinion,
->>>> rather than fact though.
->>>
->>> It's an opinion, yes, but it has substantial reason behind it.
->>>
->>>> GLibc is full of code (see ld.so) that in earlier incantations of
->>>> Unix/Linux was in kernel space, and was moved to userspace.  Given
->>>> that there is a partitioning of code between kernel space and
->>>> userspace, I think it not totally unreasonable to consider doing
->>>> some of this in userspace.
->>>>
->>>> Even on systems with hardware FPU, the architecture specification
->>>> allows for/requires emulation of certain cases (denormals, etc.)  So
->>>> it is already a requirement that userspace cooperate by always
->>>> having free space below $SP for use by the kernel.  So the current
->>>> situation is that userspace is providing services for the kernel FPU
->>>> emulator.
->>>>
->>>> My suggestion is to change the nature of the way these services are
->>>> provided by the userspace program.
->>>
->>> But this isn't setup by the userspace program. It's setup by the
->>> kernel on program entry. Despite that, though, I think it's an
->>> unnecessary (and undocumented!) constraint; the fact that it requires
->>> the stack to be executable makes it even more harmful and
->>> inappropriate.
->>>
->>
->> The management of the stack is absolutely done by userspace code.
->> Any time you do pthread_create(), userspace code does mmap() to
->> allocate the stack area, it then sets permissions on the area, and
->> then it passes the address of the area to clone().
->
-> This is hardly management.
->
->> Furthermore the
->> userspace code has to be very careful in its use of the $sp
->> register, so that it doesn't store data in places that will be
->> used/clobbered by the kernel.
->
-> This is not "being careful". The stack pointer can never become
-> invalid unless you do wacky things in asm or invoke UB.
->
->> All of this is under the control of the userspace program and done
->> with userspace code.
->
-> For the most part it just happens by default. There is no particular
-> intentionality needed, and certainly no hideous MIPS-specific hacks
-> needed.
->
+On Mon, Oct 06, 2014 at 03:17:03PM -0700, David Daney wrote:
+> >>Furthermore the
+> >>userspace code has to be very careful in its use of the $sp
+> >>register, so that it doesn't store data in places that will be
+> >>used/clobbered by the kernel.
+> >
+> >This is not "being careful". The stack pointer can never become
+> >invalid unless you do wacky things in asm or invoke UB.
+> >
+> >>All of this is under the control of the userspace program and done
+> >>with userspace code.
+> >
+> >For the most part it just happens by default. There is no particular
+> >intentionality needed, and certainly no hideous MIPS-specific hacks
+> >needed.
+> 
+> Yes, it happens by default.  But it wasn't magic.  It took careful
+> work by the ABI and toolchain designers to make it work.
 
-Yes, it happens by default.  But it wasn't magic.  It took careful work 
-by the ABI and toolchain designers to make it work.
+Here I disagree. All of these things are completely universal, not
+MIPS-specific.
 
+> >>I appreciate the fact that libc authors might prefer *not* to write
+> >>more code, but they could, especially if they wanted to add the
+> >>feature of non-executable stacks to their library implementation.
+> >
+> >So your position is that:
+> 
+> It is not really a position that I have.  Rather a proposal for one
+> possible way to make non-executable stacks work on MIPS.
+> 
+> >
+> >1. A non-exec-stack system can only run new code produced to do extra
+> >    stuff in userspace.
+> 
+> Any non-executable stack solution for MIPS will require changes to
+> the toolchain/libc.  So it is merely a question of what form the
+> change should take.
 
->> I appreciate the fact that libc authors might prefer *not* to write
->> more code, but they could, especially if they wanted to add the
->> feature of non-executable stacks to their library implementation.
->
-> So your position is that:
+I disagree with this, at least for the most part. If the kernel does
+the fpu emulation correctly, there's no reason it shouldn't be
+possible to run existing binaries on a hardened kernel that does not
+even support executable stack.
 
-It is not really a position that I have.  Rather a proposal for one 
-possible way to make non-executable stacks work on MIPS.
+> >2. The startup code needs to do special work in userspace on MIPS to
+> >    setup an executable area for fpu emulation.
+> 
+> Yes. Similar to how startup code has to do special work to set up
+> the TLS areas,
 
->
-> 1. A non-exec-stack system can only run new code produced to do extra
->     stuff in userspace.
+Yes. Actually the simple way to implement this in userspace would be
+with a page-sized, page-aligned object in TLS and a special call to
+mprotect and your new syscall. One thing I'm not clear on: should this
+memory have permissions r-x or rwx? If it has rwx, that defeats a lot
+of the purpose of non-executable-stack. Hopefully it's r-x and the
+kernel bypasses the non-writability to write to it.
 
-Any non-executable stack solution for MIPS will require changes to the 
-toolchain/libc.  So it is merely a question of what form the change 
-should take.
+> and load shared libraries.
 
+Dynamic linking is completely a separate matter. Not all programs are
+even dynamic-linked.
 
->
-> 2. The startup code needs to do special work in userspace on MIPS to
->     setup an executable area for fpu emulation.
+> >3. Every call to clone/CLONE_VM needs to be accompanied by a call to
+> >    mmap and this new syscall to set the address, and every call to
+> >    SYS_exit needs to be accompanies by a call to munmap for the
+> >    corresponding mapping.
+> >
+> 
+> No, We don't have to mmap() on each thread creation.  Many threads
+> (perhaps 512) could be handled by a single page, so the normal case
+> would be a single mmap() for the life of the program.
 
-Yes. Similar to how startup code has to do special work to set up the 
-TLS areas, and load shared libraries.
+That's nice from a standpoint of avoiding memory waste, but it's
+problematic if .////
 
->
-> 3. Every call to clone/CLONE_VM needs to be accompanied by a call to
->     mmap and this new syscall to set the address, and every call to
->     SYS_exit needs to be accompanies by a call to munmap for the
->     corresponding mapping.
->
+> >This is a huge ill-designed mess.
+> >
+> 
+> Have you seen the alternatives?
 
-No, We don't have to mmap() on each thread creation.  Many threads 
-(perhaps 512) could be handled by a single page, so the normal case 
-would be a single mmap() for the life of the program.
+I proposed a couple and I think they're much less ugly. Could you
+point me to the others?
 
+But perhaps you could clarify one thing for me: why is any of this
+even needed? A delay slot only exists for branch instructions, and I
+can't see any reason the kernel can't just emulate the branch
+instruction at the same time. This is a very restricted class of
+instructions that should not require any complex emulation of memory
+permissions, just manipulation of the resulting program counter value
+after the floating point instruction finishes. Or am I missing
+something?
 
-> This is a huge ill-designed mess.
->
+> Have you ever wondered why MIPS doesn't have non-executable stack support?
 
-Have you seen the alternatives?
+I wasn't even aware that it didn't until your email.
 
-Have you ever wondered why MIPS doesn't have non-executable stack support?
-
-> Rich
->
+Rich

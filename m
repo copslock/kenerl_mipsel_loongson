@@ -1,56 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Oct 2014 22:42:46 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32107 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010649AbaJFUmobs2vg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Oct 2014 22:42:44 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2F1F7822033CB;
-        Mon,  6 Oct 2014 21:42:33 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 6 Oct
- 2014 21:42:36 +0100
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
- (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 6 Oct
- 2014 21:42:36 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 6 Oct
- 2014 21:42:35 +0100
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 6 Oct 2014
- 13:42:32 -0700
-Message-ID: <5432FEB8.401@imgtec.com>
-Date:   Mon, 6 Oct 2014 13:42:32 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Oct 2014 22:55:11 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49717 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010651AbaJFUzJv7UGv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Oct 2014 22:55:09 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1XbFJ5-0006tI-00; Mon, 06 Oct 2014 20:54:59 +0000
+Date:   Mon, 6 Oct 2014 16:54:59 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     libc-alpha@sourceware.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+Message-ID: <20141006205459.GZ23797@brightrain.aerifal.cx>
+References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
-        <david.daney@cavium.com>, <peterz@infradead.org>,
-        <paul.gortmaker@windriver.com>, <davidlohr@hp.com>,
-        <macro@linux-mips.org>, <chenhc@lemote.com>, <zajec5@gmail.com>,
-        <james.hogan@imgtec.com>, <keescook@chromium.org>,
-        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
-        <blogic@openwrt.org>, <jchandra@broadcom.com>,
-        <qais.yousef@imgtec.com>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <markos.chandras@imgtec.com>,
-        <manuel.lauss@gmail.com>, <akpm@linux-foundation.org>,
-        <lars.persson@axis.com>
-Subject: Re: [PATCH 2/3] MIPS: Setup an instruction emulation in VDSO protected
- page instead of user stack
-References: <20141004030438.28569.85536.stgit@linux-yegoshin> <20141004031730.28569.38511.stgit@linux-yegoshin> <20141006122917.GB4704@pburton-laptop>
-In-Reply-To: <20141006122917.GB4704@pburton-laptop>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42968
+X-archive-position: 42969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: dalias@libc.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,47 +39,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/06/2014 05:29 AM, Paul Burton wrote:
+On Mon, Oct 06, 2014 at 01:23:30PM -0700, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> In order for MIPS to be able to support a non-executable stack, we
+> need to supply a method to specify a userspace area that can be used
+> for executing emulated branch delay slot instructions.
+> 
+> We add a new system call, sys_set_fpuemul_xol_area so that userspace
+> threads that are using the FPU can specify the location of the FPU
+> emulation out of line execution area.
+> 
+> Background:
+> 
+> MIPS floating point support requires that any instruction that cannot
+> be directly executed by the FPU, be emulated by the kernel.  Part of
+> this emulation involves executing non-FPU instructions that fall in
+> the delay slots of FP branch instructions.  Since the beginning of
+> MIPS/Linux time, this has been done by placing the instructions on the
+> userspace thread stack, and executing them there, as the instructions
+> must be executed in the MM context of the thread receiving the
+> emulation.
+> 
+> Because of this, the de facto MIPS Linux userspace ABI requires that
+> the userspace thread have an executable stack.  It is de facto,
+> because it is not written anywhere that this must be the case, but it
+> is never the less a requirement.
+> 
+> Problem:
+> 
+> How do we get MIPS Linux to use a non-executable stack in the face of
+> the FPU emulation problem?
+> 
+> Since userspace desires to change the ABI, put some of the onus on the
+> userspace code.  Any userspace thread desiring a non-executable stack,
+> must allocate a 4-byte aligned area at least 8 bytes long with that
+> has read/write/execute permissions and pass the address of that area
+> to the kernel with the new sys_set_fpuemul_xol_area system call.
+> 
+> This is similar to how we require userspace to notify the kernel of
+> the value of the thread local pointer.
 
->>
->> First some general questions: is there any reason to need the page used
->> to be at the same virtual address for each thread? I can't think of one,
->> and if that's the case then why not simply allocate a series of pages
->> per-thread via mmap_region or similar, on demand when a thread first
->> executes an FP branch instruction? That would of course consume some
->> more virtual address space, but would avoid the hassles of manually
->> prodding at the TLB, tracking ASIDs & flushing the caches. Perhaps the
->> shrinker interface could be used to allow freeing those pages if & when
->> it becomes necessary for long running threads.
-The only reason to have the same virtual address is to keep mmap 
-accounting the same. An original 'VDSO' is presented in mmap for all 
-threads of the same mmap.
+Userspace should play no part in this; requiring userspace to help
+make special accomodations for fpu emulation largely defeats the
+purpose of fpu emulation. The kernel is perfectly capable of mapping
+an appropriate page. The mapping should happen at exec time, and at
+clone time with CLONE_VM unless the kernel is going to handle mutual
+exclusion so that only one thread can be using the page at a time.
+(Using one page for the whole process, and excluding simultaneous
+execution of fpu emulation in multiple threads, may be the more
+practical approach.)
 
-As for another approach, I think it may be too much code to handle it 
-and too much implicit interlinks with common Linux code and GLIBC/bionic.
+As an alternative, if the space of possible instruction with a delay
+slot is sufficiently small, all such instructions could be mapped as
+immutable code in a shared mapping, each at a fixed offset in the
+mapping. I suspect this would be borderline-impractical (multiple
+megabytes?), but it is the cleanest solution otherwise.
 
->>
->> Also VDSO is really a misnomer throughout, as I've pointed out to you
->> before. I'm aware it's an existing misnomer, but it would be nice if
->> we could clear that up rather than repeat it...
->>
-Yes, I agree but that is outside of this patch. I think it has sense to 
-rename the current stuff to something like "Emulation" right before some 
-patch which implement the real VDSO capability on MIPS.
-
->> +		if (get_isa16_mode(regs->cp0_epc)) {
->> +			*(u16 *)&fr->emul = (u16)(ir >> 16);
->> +			*((u16 *)(&fr->emul) + 1) = (u16)(ir & 0xffff);
-> This microMIPS case doesn't set badinst, as I pointed out internally.
-Thank you, I missed it, may be due to long citation. I will add it.
-
->   I
-> think it would be much cleaner if you were to do something along the
-> lines of:
->
-I try to keep it as close as an original code for better understanding. 
-Even with it there are questions.
-
-Your variant may be cleaner but it may be some next style change patch.
-
-- Leonid.
+Rich

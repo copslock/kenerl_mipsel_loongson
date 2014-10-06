@@ -1,50 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Oct 2014 22:23:46 +0200 (CEST)
-Received: from mail-ig0-f173.google.com ([209.85.213.173]:40801 "EHLO
-        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010647AbaJFUXol1rN0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Oct 2014 22:23:44 +0200
-Received: by mail-ig0-f173.google.com with SMTP id h18so3115868igc.6
-        for <linux-mips@linux-mips.org>; Mon, 06 Oct 2014 13:23:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=29067FeTYx7pZ9NqiO9WfrvqW7Bq3flmPET4h/ZHTPo=;
-        b=kEtsZWrv6BrZshYusoBpKluUdX0WgZiBMYIDXtdGXIASU97bJ/ymp6VFRIa1ZUXRqE
-         JK0YIlYDAEgzML6lnp95+Rnx1S7AtQGxRFr/8ll+ZROIgIwlJwouxCP/u0G1sVO9+Obq
-         rxAWuw80sGpHj8E7Tuy+LgB5OftyMafH02ZYRJvuFK54StO05CKilEqacZEAWcJMkjik
-         ki+MhTpjZFVa1TVfJ4TQjILCu2w3USxGPAK9n5L802T7j9ahrFTRvt2N7GPKs8YOl6T7
-         6NyjIXDMhASiZC26Mym1LNx9G/Zsn334iHiG2vM+mcITQXG3TdQ8PoAWEW6icoF79FAQ
-         n+Pw==
-X-Received: by 10.42.15.201 with SMTP id m9mr6249016ica.80.1412627017983;
-        Mon, 06 Oct 2014 13:23:37 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id qo8sm10393327igb.7.2014.10.06.13.23.37
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 06 Oct 2014 13:23:37 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id s96KNZ0L004344;
-        Mon, 6 Oct 2014 13:23:35 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id s96KNWvr004343;
-        Mon, 6 Oct 2014 13:23:32 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     libc-alpha@sourceware.org
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-Date:   Mon,  6 Oct 2014 13:23:30 -0700
-Message-Id: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Oct 2014 22:42:46 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:32107 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010649AbaJFUmobs2vg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Oct 2014 22:42:44 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 2F1F7822033CB;
+        Mon,  6 Oct 2014 21:42:33 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 6 Oct
+ 2014 21:42:36 +0100
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
+ (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 6 Oct
+ 2014 21:42:36 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 6 Oct
+ 2014 21:42:35 +0100
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 6 Oct 2014
+ 13:42:32 -0700
+Message-ID: <5432FEB8.401@imgtec.com>
+Date:   Mon, 6 Oct 2014 13:42:32 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+MIME-Version: 1.0
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
+        <david.daney@cavium.com>, <peterz@infradead.org>,
+        <paul.gortmaker@windriver.com>, <davidlohr@hp.com>,
+        <macro@linux-mips.org>, <chenhc@lemote.com>, <zajec5@gmail.com>,
+        <james.hogan@imgtec.com>, <keescook@chromium.org>,
+        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
+        <blogic@openwrt.org>, <jchandra@broadcom.com>,
+        <qais.yousef@imgtec.com>, <linux-kernel@vger.kernel.org>,
+        <ralf@linux-mips.org>, <markos.chandras@imgtec.com>,
+        <manuel.lauss@gmail.com>, <akpm@linux-foundation.org>,
+        <lars.persson@axis.com>
+Subject: Re: [PATCH 2/3] MIPS: Setup an instruction emulation in VDSO protected
+ page instead of user stack
+References: <20141004030438.28569.85536.stgit@linux-yegoshin> <20141004031730.28569.38511.stgit@linux-yegoshin> <20141006122917.GB4704@pburton-laptop>
+In-Reply-To: <20141006122917.GB4704@pburton-laptop>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42967
+X-archive-position: 42968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,250 +63,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On 10/06/2014 05:29 AM, Paul Burton wrote:
 
-In order for MIPS to be able to support a non-executable stack, we
-need to supply a method to specify a userspace area that can be used
-for executing emulated branch delay slot instructions.
+>>
+>> First some general questions: is there any reason to need the page used
+>> to be at the same virtual address for each thread? I can't think of one,
+>> and if that's the case then why not simply allocate a series of pages
+>> per-thread via mmap_region or similar, on demand when a thread first
+>> executes an FP branch instruction? That would of course consume some
+>> more virtual address space, but would avoid the hassles of manually
+>> prodding at the TLB, tracking ASIDs & flushing the caches. Perhaps the
+>> shrinker interface could be used to allow freeing those pages if & when
+>> it becomes necessary for long running threads.
+The only reason to have the same virtual address is to keep mmap 
+accounting the same. An original 'VDSO' is presented in mmap for all 
+threads of the same mmap.
 
-We add a new system call, sys_set_fpuemul_xol_area so that userspace
-threads that are using the FPU can specify the location of the FPU
-emulation out of line execution area.
+As for another approach, I think it may be too much code to handle it 
+and too much implicit interlinks with common Linux code and GLIBC/bionic.
 
-Background:
+>>
+>> Also VDSO is really a misnomer throughout, as I've pointed out to you
+>> before. I'm aware it's an existing misnomer, but it would be nice if
+>> we could clear that up rather than repeat it...
+>>
+Yes, I agree but that is outside of this patch. I think it has sense to 
+rename the current stuff to something like "Emulation" right before some 
+patch which implement the real VDSO capability on MIPS.
 
-MIPS floating point support requires that any instruction that cannot
-be directly executed by the FPU, be emulated by the kernel.  Part of
-this emulation involves executing non-FPU instructions that fall in
-the delay slots of FP branch instructions.  Since the beginning of
-MIPS/Linux time, this has been done by placing the instructions on the
-userspace thread stack, and executing them there, as the instructions
-must be executed in the MM context of the thread receiving the
-emulation.
+>> +		if (get_isa16_mode(regs->cp0_epc)) {
+>> +			*(u16 *)&fr->emul = (u16)(ir >> 16);
+>> +			*((u16 *)(&fr->emul) + 1) = (u16)(ir & 0xffff);
+> This microMIPS case doesn't set badinst, as I pointed out internally.
+Thank you, I missed it, may be due to long citation. I will add it.
 
-Because of this, the de facto MIPS Linux userspace ABI requires that
-the userspace thread have an executable stack.  It is de facto,
-because it is not written anywhere that this must be the case, but it
-is never the less a requirement.
+>   I
+> think it would be much cleaner if you were to do something along the
+> lines of:
+>
+I try to keep it as close as an original code for better understanding. 
+Even with it there are questions.
 
-Problem:
+Your variant may be cleaner but it may be some next style change patch.
 
-How do we get MIPS Linux to use a non-executable stack in the face of
-the FPU emulation problem?
-
-Since userspace desires to change the ABI, put some of the onus on the
-userspace code.  Any userspace thread desiring a non-executable stack,
-must allocate a 4-byte aligned area at least 8 bytes long with that
-has read/write/execute permissions and pass the address of that area
-to the kernel with the new sys_set_fpuemul_xol_area system call.
-
-This is similar to how we require userspace to notify the kernel of
-the value of the thread local pointer.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
----
-
-First attempt to libc-alpha@ failed due to anti-spam technology,
-reattempting to a reduced list of recipients.
-
-This patch has only been compile tested, and lacks the userspace
-component.  It is presented as an alternate approch to the recently
-proposed MIPS non-executable stack patches posted here:
-
-http://www.linux-mips.org/archives/linux-mips/2014-10/msg00024.html
-
- arch/mips/include/asm/thread_info.h |  2 ++
- arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
- arch/mips/kernel/process.c          |  1 +
- arch/mips/kernel/scall32-o32.S      |  1 +
- arch/mips/kernel/scall64-64.S       |  1 +
- arch/mips/kernel/scall64-n32.S      |  1 +
- arch/mips/kernel/scall64-o32.S      |  1 +
- arch/mips/kernel/syscall.c          |  8 ++++++++
- arch/mips/math-emu/dsemul.c         | 11 +++++++----
- 9 files changed, 31 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index 7de8658..20d47f6 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -26,6 +26,7 @@ struct thread_info {
- 	struct exec_domain	*exec_domain;	/* execution domain */
- 	unsigned long		flags;		/* low level flags */
- 	unsigned long		tp_value;	/* thread pointer */
-+	unsigned long		fpu_emul_xol;	/* FPU emul eXecute Out of Line VA */
- 	__u32			cpu;		/* current CPU */
- 	int			preempt_count;	/* 0 => preemptable, <0 => BUG */
- 
-@@ -46,6 +47,7 @@ struct thread_info {
- 	.task		= &tsk,			\
- 	.exec_domain	= &default_exec_domain, \
- 	.flags		= _TIF_FIXADE,		\
-+	.fpu_emul_xol	= ~0ul,			\
- 	.cpu		= 0,			\
- 	.preempt_count	= INIT_PREEMPT_COUNT,	\
- 	.addr_limit	= KERNEL_DS,		\
-diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
-index fdb4923..f1270ee 100644
---- a/arch/mips/include/uapi/asm/unistd.h
-+++ b/arch/mips/include/uapi/asm/unistd.h
-@@ -375,16 +375,17 @@
- #define __NR_seccomp			(__NR_Linux + 352)
- #define __NR_getrandom			(__NR_Linux + 353)
- #define __NR_memfd_create		(__NR_Linux + 354)
-+#define __NR_set_fpuemul_xol_area	(__NR_Linux + 355)
- 
- /*
-  * Offset of the last Linux o32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		354
-+#define __NR_Linux_syscalls		355
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
- 
- #define __NR_O32_Linux			4000
--#define __NR_O32_Linux_syscalls		354
-+#define __NR_O32_Linux_syscalls		355
- 
- #if _MIPS_SIM == _MIPS_SIM_ABI64
- 
-@@ -707,16 +708,17 @@
- #define __NR_seccomp			(__NR_Linux + 312)
- #define __NR_getrandom			(__NR_Linux + 313)
- #define __NR_memfd_create		(__NR_Linux + 314)
-+#define __NR_set_fpuemul_xol_area	(__NR_Linux + 315)
- 
- /*
-  * Offset of the last Linux 64-bit flavoured syscall
-  */
--#define __NR_Linux_syscalls		314
-+#define __NR_Linux_syscalls		315
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
- 
- #define __NR_64_Linux			5000
--#define __NR_64_Linux_syscalls		314
-+#define __NR_64_Linux_syscalls		315
- 
- #if _MIPS_SIM == _MIPS_SIM_NABI32
- 
-@@ -1043,15 +1045,16 @@
- #define __NR_seccomp			(__NR_Linux + 316)
- #define __NR_getrandom			(__NR_Linux + 317)
- #define __NR_memfd_create		(__NR_Linux + 318)
-+#define __NR_set_fpuemul_xol_area	(__NR_Linux + 319)
- 
- /*
-  * Offset of the last N32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		318
-+#define __NR_Linux_syscalls		319
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
- 
- #define __NR_N32_Linux			6000
--#define __NR_N32_Linux_syscalls		318
-+#define __NR_N32_Linux_syscalls		319
- 
- #endif /* _UAPI_ASM_UNISTD_H */
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 636b074..6dde6bb 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -151,6 +151,7 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
- 
- 	if (clone_flags & CLONE_SETTLS)
- 		ti->tp_value = regs->regs[7];
-+	ti->fpu_emul_xol = ~0ul;
- 
- 	return 0;
- }
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index 744cd10..8c19a39 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -579,3 +579,4 @@ EXPORT(sys_call_table)
- 	PTR	sys_seccomp
- 	PTR	sys_getrandom
- 	PTR	sys_memfd_create
-+	PTR	sys_set_fpuemul_xol_area	/* 4355 */
-diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-index 002b1bc..0b9f72e 100644
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -434,4 +434,5 @@ EXPORT(sys_call_table)
- 	PTR	sys_seccomp
- 	PTR	sys_getrandom
- 	PTR	sys_memfd_create
-+	PTR	sys_set_fpuemul_xol_area	/* 5315 */
- 	.size	sys_call_table,.-sys_call_table
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index ca6cbbe..48f1760 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -427,4 +427,5 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_seccomp
- 	PTR	sys_getrandom
- 	PTR	sys_memfd_create
-+	PTR	sys_set_fpuemul_xol_area
- 	.size	sysn32_call_table,.-sysn32_call_table
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index 9e10d11..60def68 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -564,4 +564,5 @@ EXPORT(sys32_call_table)
- 	PTR	sys_seccomp
- 	PTR	sys_getrandom
- 	PTR	sys_memfd_create
-+	PTR	sys_set_fpuemul_xol_area	/* 4355 */
- 	.size	sys32_call_table,.-sys32_call_table
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-index 4a4f9dd..5f9d9e8 100644
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -96,6 +96,14 @@ SYSCALL_DEFINE1(set_thread_area, unsigned long, addr)
- 	return 0;
- }
- 
-+SYSCALL_DEFINE1(set_fpuemul_xol_area, unsigned long, addr)
-+{
-+	struct thread_info *ti = task_thread_info(current);
-+
-+	ti->fpu_emul_xol = addr;
-+	return 0;
-+}
-+
- static inline int mips_atomic_set(unsigned long addr, unsigned long new)
- {
- 	unsigned long old, tmp;
-diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
-index 4f514f3..bf4ff61 100644
---- a/arch/mips/math-emu/dsemul.c
-+++ b/arch/mips/math-emu/dsemul.c
-@@ -34,6 +34,7 @@ struct emuframe {
- int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- {
- 	extern asmlinkage void handle_dsemulret(void);
-+	struct thread_info *ti = task_thread_info(current);
- 	struct emuframe __user *fr;
- 	int err;
- 
-@@ -64,10 +65,12 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- 	 * branches, but gives us a cleaner interface to the exception
- 	 * handler (single entry point).
- 	 */
--
--	/* Ensure that the two instructions are in the same cache line */
--	fr = (struct emuframe __user *)
--		((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
-+	if (ti->fpu_emul_xol != ~0ul)
-+		fr = (struct emuframe *)ti->fpu_emul_xol;
-+	else
-+		/* Ensure that the two instructions are in the same cache line */
-+		fr = (struct emuframe __user *)
-+			((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
- 
- 	/* Verify that the stack pointer is not competely insane */
- 	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
--- 
-1.7.11.7
+- Leonid.

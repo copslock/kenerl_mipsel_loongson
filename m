@@ -1,43 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 01:49:09 +0200 (CEST)
-Received: from mail-bn1bon0088.outbound.protection.outlook.com ([157.56.111.88]:56288
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010553AbaJFXtINcAKH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Oct 2014 01:49:08 +0200
-Received: from dl.caveonetworks.com (64.2.3.195) by
- DM2PR07MB590.namprd07.prod.outlook.com (10.141.176.140) with Microsoft SMTP
- Server (TLS) id 15.0.1044.10; Mon, 6 Oct 2014 23:49:00 +0000
-Message-ID: <54332A64.5020605@caviumnetworks.com>
-Date:   Mon, 6 Oct 2014 16:48:52 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 01:54:33 +0200 (CEST)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:36871 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010553AbaJFXycNHr8R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 01:54:32 +0200
+Received: by mail-lb0-f182.google.com with SMTP id z11so5044818lbi.41
+        for <linux-mips@linux-mips.org>; Mon, 06 Oct 2014 16:54:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=okE0E3YccKTe2KcBbl4o1pv9dI/dQesIciyYv0CtjCg=;
+        b=bXs42Ln7eLyhLR/IhwMgBQZi5QFAj/fg8bj+9C18DEZThV15let/L5bZGQaZJQ1NE5
+         NS70UP8QF5K9y/rzdRuxcyI5TG3X1Ovw2GeruJ7elwrtAGTwFArcQCv9WoubTVxNbRtQ
+         2xuDUerS0jhBuibEd8pSVopf/S5h+0+dSwx7n1PUDe+JD+zvSw5gsT8jmSRQoy8YSPEM
+         hSK3JiGyfxNxqX1PTv8yHayHN4NhXOvieG0l1mRExv5k3rNppMXkKRKQMfhIvDo5ACAE
+         p/KZVvN3lm4mkG0/vnfqAZAG7CGtiA93IIEZFiLZfC9nCx53rvr4cb9/B7QX6c4D7bFp
+         W6pg==
+X-Gm-Message-State: ALoCoQk5VW1cKlYHWJhntyYgbyAMdFaDey+vxqiVp8Vxs3gFU4NM0Omp1zSSBPE6NPvU19t4SRBP
+X-Received: by 10.152.205.9 with SMTP id lc9mr100577lac.37.1412639666719; Mon,
+ 06 Oct 2014 16:54:26 -0700 (PDT)
 MIME-Version: 1.0
-To:     Andy Lutomirski <luto@amacapital.net>
-CC:     Rich Felker <dalias@libc.org>, David Daney <ddaney.cavm@gmail.com>,
-        <libc-alpha@sourceware.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, David Daney <david.daney@cavium.com>
+Received: by 10.152.36.106 with HTTP; Mon, 6 Oct 2014 16:54:06 -0700 (PDT)
+In-Reply-To: <54332A64.5020605@caviumnetworks.com>
+References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
+ <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com>
+ <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com>
+ <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net>
+ <54332A64.5020605@caviumnetworks.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Mon, 6 Oct 2014 16:54:06 -0700
+Message-ID: <CALCETrXt4xNCW9+UbEzhST5Eo6s9ymNOc16C+EGi2Pr=GrEZuA@mail.gmail.com>
 Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com> <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net>
-In-Reply-To: <543327E7.4020608@amacapital.net>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-ClientProxiedBy: BN1PR07CA0041.namprd07.prod.outlook.com (10.255.193.16) To
- DM2PR07MB590.namprd07.prod.outlook.com (10.141.176.140)
-X-Microsoft-Antispam: UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:DM2PR07MB590;
-X-Forefront-PRVS: 03569407CC
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(479174003)(377454003)(189002)(199003)(24454002)(51704005)(66066001)(53416004)(20776003)(42186005)(54356999)(23746002)(87266999)(85852003)(65806001)(50986999)(110136001)(65956001)(65816999)(92566001)(122386002)(76176999)(21056001)(50466002)(46102003)(99136001)(92726001)(87976001)(31966008)(83506001)(69596002)(97736003)(101416001)(33656002)(102836001)(93886004)(80316001)(4396001)(85306004)(95666004)(36756003)(47776003)(76482002)(80022003)(120916001)(106356001)(105586002)(77096002)(99396003)(10300001)(107046002)(40100002)(81156004);DIR:OUT;SFP:1101;SCL:1;SRVR:DM2PR07MB590;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Rich Felker <dalias@libc.org>, David Daney <ddaney.cavm@gmail.com>,
+        libc-alpha <libc-alpha@sourceware.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42977
+X-archive-position: 42978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,20 +59,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/06/2014 04:38 PM, Andy Lutomirski wrote:
-> On 10/06/2014 02:58 PM, Rich Felker wrote:
->> On Mon, Oct 06, 2014 at 02:45:29PM -0700, David Daney wrote:
-[...]
->> This is a huge ill-designed mess.
+On Mon, Oct 6, 2014 at 4:48 PM, David Daney <ddaney@caviumnetworks.com> wrote:
+> On 10/06/2014 04:38 PM, Andy Lutomirski wrote:
+>>
+>> On 10/06/2014 02:58 PM, Rich Felker wrote:
+>>>
+>>> On Mon, Oct 06, 2014 at 02:45:29PM -0700, David Daney wrote:
 >
-> Amen.
+> [...]
+>>>
+>>> This is a huge ill-designed mess.
+>>
+>>
+>> Amen.
+>>
+>> Can the kernel not just emulate the instructions directly?
 >
-> Can the kernel not just emulate the instructions directly?
+>
+> In theory it could, but since there can be implementation defined
+> instructions, there is no way to achieve full instruction set coverage for
+> all possible machines.
 
-In theory it could, but since there can be implementation defined 
-instructions, there is no way to achieve full instruction set coverage 
-for all possible machines.
+Can modern user code just avoid constructs that require this kind of
+trampoline hack?  If so, can this be solved the same way that x86
+added no-exec stacks?  (I.e. mark all the binaries as supporting
+non-executable stacks and letting them crash if they screw it up.)
 
->  Can it single-step through them in place?
+Knowing very little about MIPS, it sounds like this is the kernel
+compensating for a dumb assembler.
 
-No.  If it could, we wouldn't be having this informative discussion.
+--Andy

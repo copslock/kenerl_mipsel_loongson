@@ -1,55 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Oct 2014 22:12:25 +0200 (CEST)
-Received: from mail-ig0-f178.google.com ([209.85.213.178]:48682 "EHLO
-        mail-ig0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010644AbaJFUMXaP75g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Oct 2014 22:12:23 +0200
-Received: by mail-ig0-f178.google.com with SMTP id l13so3460286iga.17
-        for <multiple recipients>; Mon, 06 Oct 2014 13:12:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Oct 2014 22:23:46 +0200 (CEST)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:40801 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010647AbaJFUXol1rN0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Oct 2014 22:23:44 +0200
+Received: by mail-ig0-f173.google.com with SMTP id h18so3115868igc.6
+        for <linux-mips@linux-mips.org>; Mon, 06 Oct 2014 13:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id;
-        bh=5BozhqMCiPelhuA79pcazC0DQVKO+HZGlLO61UxZwH4=;
-        b=yrwKeadYIhU5d30qHYDirYHvJHBDf5kGFmqBhGblukaoG6zHLkOt4VJoJtIcszI12F
-         8bgyhSQMekNnB0JKWMSjBNtnZOmucCXuq46/nQmkVOomAp92XtNhFUStE+PG/VAEebXr
-         boG8cYpkmZDNalTWajiwjCXZBO5WPUvManT+DAzB0Zz4qRK+XOPC3l9/GVfs/we323Ay
-         HX6XS6nXFTfmfvMAoiByZtbW+t6uRdgt9EKW6PJxatMknljlTWO6KZa98mZRiQByDHDq
-         tAaEvcjxriXKnQbBmfFlaZshACpE8TkZSa3NojG5fvbZiFBWPZhZAuTA/ectvr2z+gHv
-         oBPQ==
-X-Received: by 10.50.73.163 with SMTP id m3mr24825414igv.28.1412626337157;
-        Mon, 06 Oct 2014 13:12:17 -0700 (PDT)
+        bh=29067FeTYx7pZ9NqiO9WfrvqW7Bq3flmPET4h/ZHTPo=;
+        b=kEtsZWrv6BrZshYusoBpKluUdX0WgZiBMYIDXtdGXIASU97bJ/ymp6VFRIa1ZUXRqE
+         JK0YIlYDAEgzML6lnp95+Rnx1S7AtQGxRFr/8ll+ZROIgIwlJwouxCP/u0G1sVO9+Obq
+         rxAWuw80sGpHj8E7Tuy+LgB5OftyMafH02ZYRJvuFK54StO05CKilEqacZEAWcJMkjik
+         ki+MhTpjZFVa1TVfJ4TQjILCu2w3USxGPAK9n5L802T7j9ahrFTRvt2N7GPKs8YOl6T7
+         6NyjIXDMhASiZC26Mym1LNx9G/Zsn334iHiG2vM+mcITQXG3TdQ8PoAWEW6icoF79FAQ
+         n+Pw==
+X-Received: by 10.42.15.201 with SMTP id m9mr6249016ica.80.1412627017983;
+        Mon, 06 Oct 2014 13:23:37 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id f19sm10374369igo.10.2014.10.06.13.12.16
+        by mx.google.com with ESMTPSA id qo8sm10393327igb.7.2014.10.06.13.23.37
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 06 Oct 2014 13:12:16 -0700 (PDT)
+        Mon, 06 Oct 2014 13:23:37 -0700 (PDT)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id s96KCD6r004164;
-        Mon, 6 Oct 2014 13:12:13 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id s96KNZ0L004344;
+        Mon, 6 Oct 2014 13:23:35 -0700
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id s96KC8ZT004163;
-        Mon, 6 Oct 2014 13:12:08 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id s96KNWvr004343;
+        Mon, 6 Oct 2014 13:23:32 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
-To:     Zubair.Kakakhel@imgtec.com, peterz@infradead.org,
-        paul.gortmaker@windriver.com, davidlohr@hp.com,
-        macro@linux-mips.org, chenhc@lemote.com, zajec5@gmail.com,
-        james.hogan@imgtec.com, keescook@chromium.org,
-        alex@alex-smith.me.uk, tglx@linutronix.de, blogic@openwrt.org,
-        jchandra@broadcom.com, paul.burton@imgtec.com,
-        qais.yousef@imgtec.com, ralf@linux-mips.org,
-        markos.chandras@imgtec.com, manuel.lauss@gmail.com,
-        akpm@linux-foundation.org, lars.persson@axis.com,
-        torvalds@linux-foundation.org
+To:     libc-alpha@sourceware.org
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        libc-alpha@sourceware.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Allow FPU emulator to use non-stack area.
-Date:   Mon,  6 Oct 2014 13:11:57 -0700
-Message-Id: <1412626317-4128-1-git-send-email-ddaney.cavm@gmail.com>
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+Date:   Mon,  6 Oct 2014 13:23:30 -0700
+Message-Id: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42966
+X-archive-position: 42967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -108,6 +99,9 @@ the value of the thread local pointer.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
+
+First attempt to libc-alpha@ failed due to anti-spam technology,
+reattempting to a reduced list of recipients.
 
 This patch has only been compile tested, and lacks the userspace
 component.  It is presented as an alternate approch to the recently

@@ -1,82 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:42:57 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:52157 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010670AbaJGFcTje2w0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:32:19 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=C9K3YgqJ4LXgPWVvhs0AhDdLB8r7RvJvTt8ntj/ReaA=;
-        b=6bIFiT4kIR8fv4v/XnRM/zfLAJLcYn33VmnbkvHkcrb5hWH9j12bu38T5T1dtEP0cBCHpl9rWgM/5Doo/JinjPGkFI/4u74qbRPFE3oLDFZFPdt6A1ZNva4Um1TOXgRbZwohE7pgGTMEPIzXSc6vSisHbZhRaX97opfLiF8YvrU=;
-Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1XbNNd-002oqT-Gy
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:32:13 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32947 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1XbNMC-002hqy-J6; Tue, 07 Oct 2014 05:30:45 +0000
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     adi-buildroot-devel@lists.sourceforge.net,
-        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
-        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
-        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        openipmi-developer@lists.sourceforge.net,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 09:47:08 +0200 (CEST)
+Received: from mail-wg0-f41.google.com ([74.125.82.41]:39741 "EHLO
+        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010665AbaJGHrHWgqyi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 09:47:07 +0200
+Received: by mail-wg0-f41.google.com with SMTP id b13so8636691wgh.24
+        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 00:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=ljhMuyd51f4k0Z5zW98JIwCujsPK9bIbZfKS9koq4X8=;
+        b=xyDG0do2YlEKTn/8WIr+lcRHKvoNZt7xJ179n9+YabPWYfgIi1eMCRMtxYiR2lp/Wk
+         gZBpQ/cK288xubTR0VzK4V9mGSfQnatNphJj/bLSwwB3VfFtdn76JmTB4mqyq4FTnKN1
+         CDIUkVqoQypnfB9uEkQx3IL0jvD/DVzQH3WBKGSy908id60v8GanRFmSYLQuJ3IB9NYb
+         NHzvgn2HbKGLpNlkXQX6+cMhGo34LXgjqch/MOlgbzqqfvbrhUx6uT2yTu4BpYoKCSrV
+         BpQLpPU9Elerv+4M6e9RG90XSkmMOSK5FaxzPzExiAEKfRNCWShjh+Ayr994vVMaffv3
+         Q/lQ==
+X-Received: by 10.194.93.193 with SMTP id cw1mr2662708wjb.50.1412668022144;
+        Tue, 07 Oct 2014 00:47:02 -0700 (PDT)
+Received: from [128.178.145.84] (lsro1pc38.epfl.ch. [128.178.145.84])
+        by mx.google.com with ESMTPSA id am1sm19684284wjc.29.2014.10.07.00.47.00
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Oct 2014 00:47:01 -0700 (PDT)
+Message-ID: <54339A73.40107@gmail.com>
+Date:   Tue, 07 Oct 2014 09:46:59 +0200
+From:   =?windows-1252?Q?Philippe_R=E9tornaz?= 
+        <philippe.retornaz@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.1
+MIME-Version: 1.0
+To:     Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org
+CC:     linux-m32r-ja@ml.linux-m32r.org, linux-mips@linux-mips.org,
+        linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Heiko Stuebner <heiko@sntech.de>,
+        Len Brown <len.brown@intel.com>, linux-xtensa@linux-xtensa.org,
+        Pavel Machek <pavel@ucw.cz>, devel@driverdev.osuosl.org,
+        linux-s390@vger.kernel.org, lguest@lists.ozlabs.org,
+        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
+        linux-sh@vger.kernel.org, Alexander Graf <agraf@suse.de>,
+        linux-acpi@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        xen-devel@lists.xenproject.org, devicetree@vger.kernel.org,
         user-mode-linux-devel@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Guenter Roeck <linux@roeck-us.net>,
+        linux-pm@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-m68k@lists.linux-m68k.org, linux-am33-list@redhat.com,
+        linux-tegra@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-cris-kernel@axis.com,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>
-Subject: [PATCH 44/44] kernel: Remove pm_power_off
-Date:   Mon,  6 Oct 2014 22:28:46 -0700
-Message-Id: <1412659726-29957-45-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=2.6
-X-CTCH-PVer: 0000001
-X-CTCH-Spam: Suspect
-X-CTCH-VOD: Unknown
-X-CTCH-Flags: 512
-X-CTCH-RefID: str=0001.0A020202.54337ADD.00C7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
-X-CTCH-Score: 0.000
-X-CTCH-ScoreCust: 0.000
-X-CTCH-Rules: 
-X-CTCH-SenderID: linux@roeck-us.net
-X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 1395
-X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 208
-X-CTCH-SenderID-TotalConfirmed: 0
-X-CTCH-SenderID-TotalBulk: 0
-X-CTCH-SenderID-TotalVirus: 0
-X-CTCH-SenderID-TotalRecipients: 0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+        linux-alpha@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Romain Perier <romain.perier@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 01/44] kernel: Add support for poweroff handler call chain
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-2-git-send-email-linux@roeck-us.net>
+In-Reply-To: <1412659726-29957-2-git-send-email-linux@roeck-us.net>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <philippe.retornaz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43037
+X-archive-position: 43038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: philippe.retornaz@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,62 +80,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-No users of pm_power_off are left, so it is safe to remove the function.
+Hello
 
-Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Len Brown <len.brown@intel.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- include/linux/pm.h              |  1 -
- kernel/power/poweroff_handler.c | 10 +---------
- 2 files changed, 1 insertion(+), 10 deletions(-)
+This seems exactly what I would need on the mc13783 to handle cleanly 
+the poweroff,
+but after reading this patchset I have the following question:
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 45271b5..fce7645 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -31,7 +31,6 @@
- /*
-  * Callbacks for platform drivers to implement.
-  */
--extern void (*pm_power_off)(void);
- extern void (*pm_power_off_prepare)(void);
- 
- /*
-diff --git a/kernel/power/poweroff_handler.c b/kernel/power/poweroff_handler.c
-index 96f59ef..01a3a39 100644
---- a/kernel/power/poweroff_handler.c
-+++ b/kernel/power/poweroff_handler.c
-@@ -20,12 +20,6 @@
- #include <linux/types.h>
- 
- /*
-- * If set, calling this function will power off the system immediately.
-- */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
--/*
-  *	Notifier list for kernel code which wants to be called
-  *	to power off the system.
-  */
-@@ -163,8 +157,6 @@ int register_poweroff_handler_simple(void (*handler)(void), int priority)
-  */
- void do_kernel_poweroff(void)
- {
--	if (pm_power_off)
--		pm_power_off();
- 	atomic_notifier_call_chain(&poweroff_handler_list, 0, NULL);
- }
- 
-@@ -175,6 +167,6 @@ void do_kernel_poweroff(void)
-  */
- bool have_kernel_poweroff(void)
- {
--	return pm_power_off != NULL || poweroff_handler_list.head != NULL;
-+	return poweroff_handler_list.head != NULL;
- }
- EXPORT_SYMBOL(have_kernel_poweroff);
--- 
-1.9.1
+[...]
+
+> +/*
+> + *	Notifier list for kernel code which wants to be called
+> + *	to power off the system.
+> + */
+> +static ATOMIC_NOTIFIER_HEAD(poweroff_handler_list);
+
+[...]
+
+> +void do_kernel_poweroff(void)
+> +{
+> +	atomic_notifier_call_chain(&poweroff_handler_list, 0, NULL);
+> +}
+> +
+
+It seems that the poweroff callback needs to be atomic as per
+_atomic_notifier_call_chain documentation:
+
+	"Calls each function in a notifier chain in turn.  The functions
+	 run in an atomic context"
+
+But this is a problem for many MFD (mc13783, twl4030 etc ...) which are
+accessible on only a blocking bus (SPI, I2C).
+
+What I am missing here ?
+
+Thanks,
+
+Philippe

@@ -1,45 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:09:06 +0200 (CEST)
-Received: from mail-bl2on0098.outbound.protection.outlook.com ([65.55.169.98]:10368
-        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010711AbaJGQJFNuMAJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Oct 2014 18:09:05 +0200
-Received: from dl.caveonetworks.com (64.2.3.195) by
- CO2PR07MB588.namprd07.prod.outlook.com (10.141.229.153) with Microsoft SMTP
- Server (TLS) id 15.0.1044.10; Tue, 7 Oct 2014 16:08:56 +0000
-Message-ID: <54341013.2030509@caviumnetworks.com>
-Date:   Tue, 7 Oct 2014 09:08:51 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:21:42 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:39745 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010725AbaJGQVlSFf-w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 18:21:41 +0200
+Received: by mail-ob0-f177.google.com with SMTP id uy5so5688241obc.36
+        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 09:21:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=/S9ld/v9IRe2TGu1eVonTVy5PAK6Pny6Ukc3sN8k8Kk=;
+        b=gqAFtE3lHXbH/A3RoVueMll07nzq2/QPVvfxLPvzjZ9XiKTXBAGBxAB5G5SYY5WO0t
+         NJ3lbfjWLuayQfVcFVQ4b5v3qCq0lr2E/oc1aW2sDXLYsCFGySj/GkowcQMWWZiHU8pX
+         v3FZGegnWirtyV6pnyPXPP6Pq7lLGG1O8Wy+WVqyXXNt6WbSME1naKZwDt6vQG3mhYJ7
+         csp46gxjBFEgkxKDiA4kbmTH/OdaP/0KROJB3YVN+yHkQjmLfWRFtIVxEuBTAJuQeqmn
+         1DGMYwnyjj3rmHqiDHLyA4pDBOWF5pPtWq2UR6FQGe7CJETQXE0FOVTKH/fKkrn9sB/r
+         PeFQ==
+X-Gm-Message-State: ALoCoQnfgd12oFH1zt8RCXEYBfzp1iCgg4GK7z0kG8yKSKypk1x2VAPgR/nXP/TUPXHvxAi5PN3t
+X-Received: by 10.60.94.167 with SMTP id dd7mr5483036oeb.4.1412698892569;
+        Tue, 07 Oct 2014 09:21:32 -0700 (PDT)
+Received: from [192.168.1.12] (cpe-72-182-51-248.austin.res.rr.com. [72.182.51.248])
+        by mx.google.com with ESMTPSA id h1sm12365224obw.21.2014.10.07.09.21.21
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 07 Oct 2014 09:21:31 -0700 (PDT)
+Message-ID: <543412F7.8040909@landley.net>
+Date:   Tue, 07 Oct 2014 11:21:11 -0500
+From:   Rob Landley <rob@landley.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-To:     Rich Felker <dalias@libc.org>
-CC:     David Daney <david.s.daney@gmail.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        David Daney <ddaney.cavm@gmail.com>,
-        <libc-alpha@sourceware.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-References: <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net> <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx> <543334CE.8060305@caviumnetworks.com> <20141007004915.GF23797@brightrain.aerifal.cx> <54337127.40806@gmail.com> <20141007111102.GH23797@brightrain.aerifal.cx>
-In-Reply-To: <20141007111102.GH23797@brightrain.aerifal.cx>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+To:     Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org
+CC:     adi-buildroot-devel@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        openipmi-developer@lists.sourceforge.net,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 05/44] mfd: as3722: Drop reference to pm_power_off from
+ devicetree bindings
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-6-git-send-email-linux@roeck-us.net>
+In-Reply-To: <1412659726-29957-6-git-send-email-linux@roeck-us.net>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-ClientProxiedBy: BLUPR07CA083.namprd07.prod.outlook.com (25.160.24.38) To
- CO2PR07MB588.namprd07.prod.outlook.com (10.141.229.153)
-X-Microsoft-Antispam: UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CO2PR07MB588;
-X-Forefront-PRVS: 035748864E
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(479174003)(377454003)(51704005)(199003)(24454002)(189002)(69596002)(54356999)(50986999)(110136001)(87976001)(120916001)(21056001)(117636001)(101416001)(36756003)(76482002)(83506001)(99396003)(59896002)(122386002)(85852003)(87266999)(46102003)(102836001)(93886004)(4396001)(80022003)(64126003)(95666004)(106356001)(107046002)(81156004)(50466002)(105586002)(99136001)(92566001)(77096002)(85306004)(76176999)(66066001)(47776003)(65806001)(97736003)(20776003)(92726001)(64706001)(42186005)(31966008)(65816999)(23756003)(53416004)(40100002)(62816006);DIR:OUT;SFP:1101;SCL:1;SRVR:CO2PR07MB588;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <rob@landley.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43065
+X-archive-position: 43066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: rob@landley.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,42 +76,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/07/2014 04:11 AM, Rich Felker wrote:
-> On Mon, Oct 06, 2014 at 09:50:47PM -0700, David Daney wrote:
->>>> the out-of-line execution trick, but do it somewhere other than in
->>>> stack memory.
->>> How do you answer Andy Lutomirski's question about what happens when a
->>> signal handler interrupts execution while the program counter is
->>> pointing at this "out-of-line execution" trampoline? This seems like a
->>> show-stopper for using anything other than the stack.
->> It would be nice to support, but not doing so would not be a
->> regression from current behavior.
->
-> It's not just "nice" to support, it's mandatory. Otherwise you will
-> execute essentially *random instructions* in this case, providing a
-> very nice attack vector that can almost certainly be elevated to
-> arbitrary code execution via timing of signals during floating point
-> code.
->
-> The current behavior in regards to this is correct: because you have a
-> *stack*, each trampoline is pushed onto the stack in its own context,
-> and popped when it's no longer needed. You can have arbitrarily many
-> such trampolines up to the stack size. Note that each nested signal
-> handler already requires sizeof(ucontext_t) in stack space, so these
-> trampolines are a negligible additional cost without major effects on
-> the number of signal handlers you can nest without overflowing the
-> stack.
+On 10/07/14 00:28, Guenter Roeck wrote:
+> Devicetree bindings are supposed to be operating system independent
+> and should thus not describe how a specific functionality is implemented
+> in Linux.
 
-Yes, the stack takes care of the allocations, but the current 
-implementation has many problems:
+So your argument is that linux/Documentation/devicetree/bindings should
+not be specific to Linux. Merely hosted in the Linux kernel source
+repository.
 
-1) Signals clobber the emulation area.
-2) Signals caused by the emulation, have incorrect saved machine state.
+Well that's certainly a point of view.
 
-We have a low bar to pass, any new solution doesn't have to be perfect, 
-it only has to be an improvement.
-
-Keep in mind that we are not starting from a clean slate, there are many 
-years of legacy code that has built up here.
-
-David Daney
+Rob

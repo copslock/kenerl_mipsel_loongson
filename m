@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:02:36 +0200 (CEST)
-Received: from vps0.lunn.ch ([178.209.37.122]:53362 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010711AbaJGQCeJHW5E (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Oct 2014 18:02:34 +0200
-Received: from lunn by vps0.lunn.ch with local (Exim 4.80)
-        (envelope-from <andrew@lunn.ch>)
-        id 1XbXDE-00052e-Ge; Tue, 07 Oct 2014 18:02:08 +0200
-Date:   Tue, 7 Oct 2014 18:02:08 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-kernel@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
-        linux-mips@linux-mips.org, linux-efi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        lguest@lists.ozlabs.org, linux-c6x-dev@linux-c6x.org,
-        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-        linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, xen-devel@lists.xenproject.org,
-        devicetree@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-pm@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-m68k@lists.linux-m68k.org, linux-am33-list@redhat.com,
-        linux-tegra@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-cris-kernel@axis.com,
-        David Woodhouse <dwmw2@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 23/44] power/reset: qnap-poweroff: Register with kernel
- poweroff handler
-Message-ID: <20141007160208.GD19005@lunn.ch>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-24-git-send-email-linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:04:50 +0200 (CEST)
+Received: from mail-by2on0066.outbound.protection.outlook.com ([207.46.100.66]:44832
+        "EHLO na01-by2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010711AbaJGQEsd3JiP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Oct 2014 18:04:48 +0200
+Received: from dl.caveonetworks.com (64.2.3.195) by
+ CO2PR07MB585.namprd07.prod.outlook.com (10.141.229.146) with Microsoft SMTP
+ Server (TLS) id 15.0.1044.10; Tue, 7 Oct 2014 16:04:39 +0000
+Message-ID: <54340F14.6030809@caviumnetworks.com>
+Date:   Tue, 7 Oct 2014 09:04:36 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1412659726-29957-24-git-send-email-linux@roeck-us.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <andrew@lunn.ch>
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
+CC:     David Daney <david.s.daney@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Daney <ddaney.cavm@gmail.com>,
+        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com> <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net> <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx> <543334CE.8060305@caviumnetworks.com> <20141007004915.GF23797@brightrain.aerifal.cx> <54337127.40806@gmail.com> <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-ClientProxiedBy: BY2PR07CA020.namprd07.prod.outlook.com (10.255.247.45) To
+ CO2PR07MB585.namprd07.prod.outlook.com (10.141.229.146)
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CO2PR07MB585;
+X-Forefront-PRVS: 035748864E
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(51704005)(189002)(199003)(377454003)(479174003)(24454002)(83506001)(120916001)(50466002)(80316001)(46102003)(92566001)(21056001)(80022003)(69596002)(110136001)(99136001)(4396001)(99396003)(65816999)(76482002)(50986999)(122386002)(23756003)(87266999)(66066001)(85852003)(54356999)(64126003)(92726001)(33656002)(107046002)(42186005)(95666004)(101416001)(106356001)(64706001)(47776003)(102836001)(53416004)(20776003)(81156004)(31966008)(59896002)(65806001)(77096002)(105586002)(93886004)(76176999)(87976001)(36756003)(85306004)(97736003)(40100002);DIR:OUT;SFP:1101;SCL:1;SRVR:CO2PR07MB585;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43062
+X-archive-position: 43063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew@lunn.ch
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,103 +56,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 06, 2014 at 10:28:25PM -0700, Guenter Roeck wrote:
-> Register with kernel poweroff handler instead of setting pm_power_off
-> directly. Register with default priority value of 128 to reflect that
-> the original code generates an error if another poweroff handler has
-> already been registered when the driver is loaded.
-> 
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-> Cc: David Woodhouse <dwmw2@infradead.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+On 10/07/2014 02:13 AM, Matthew Fortune wrote:
+>>>> the out-of-line execution trick, but do it somewhere other than in
+>>>> stack memory.
+>>> How do you answer Andy Lutomirski's question about what happens when a
+>>> signal handler interrupts execution while the program counter is
+>>> pointing at this "out-of-line execution" trampoline? This seems like a
+>>> show-stopper for using anything other than the stack.
+>> It would be nice to support, but not doing so would not be a regression
+>> from current behavior.
+>
+> It seems appropriate to mention another issue which should be addressed as
+> part of the overall FPU emulation work...
+>
+>  From what I can see the out-of-line execution of delay slot instructions
+> will break micromips R3 addiupc, and all MIPS32r6 and MIPS64r6 PC-relative
+> instructions (inc load/store) as they will have the wrong base. Is there
+> anything in the current set of proposals that can address this (beyond
+> adding restrictions to what is ABI allowed in FPU branch delay slots)?
+>
+> This is an issue whether the stack is executable or not but does directly
+> relate to the topic of FPU emulation.  It sounds like the kernel would not
+> be able to emulate a pc-relative load/store even if it was a special case
+> as it would not run in the correct MM context? [be gentle, I'm no expert
+> in this area].
+>
 
-Acked-by: Andrew Lunn <andrew@lunn.ch>
+I haven't studied the r6 ISA in depth.  But you are correct, the r6 ISA 
+cannot be supported with the eXecute-Out-of-Line tricks due to the PC 
+relative instructions.
 
-Thanks
-	Andrew
+So probably the best path forward is to abandon the current method, and 
+bite the bullet and write an entire instruction set emulator.  It 
+doesn't have to be fast.
 
-> ---
->  drivers/power/reset/qnap-poweroff.c | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/power/reset/qnap-poweroff.c b/drivers/power/reset/qnap-poweroff.c
-> index a75db7f..c474980 100644
-> --- a/drivers/power/reset/qnap-poweroff.c
-> +++ b/drivers/power/reset/qnap-poweroff.c
-> @@ -16,7 +16,9 @@
->  
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> +#include <linux/notifier.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pm.h>
->  #include <linux/serial_reg.h>
->  #include <linux/kallsyms.h>
->  #include <linux/of.h>
-> @@ -55,7 +57,8 @@ static void __iomem *base;
->  static unsigned long tclk;
->  static const struct power_off_cfg *cfg;
->  
-> -static void qnap_power_off(void)
-> +static int qnap_power_off(struct notifier_block *this, unsigned long unused1,
-> +			  void *unused2)
->  {
->  	const unsigned divisor = ((tclk + (8 * cfg->baud)) / (16 * cfg->baud));
->  
-> @@ -72,14 +75,20 @@ static void qnap_power_off(void)
->  
->  	/* send the power-off command to PIC */
->  	writel(cfg->cmd, UART1_REG(TX));
-> +
-> +	return NOTIFY_DONE;
->  }
->  
-> +static struct notifier_block qnap_poweroff_nb = {
-> +	.notifier_call = qnap_power_off,
-> +	.priority = 128,
-> +};
-> +
->  static int qnap_power_off_probe(struct platform_device *pdev)
->  {
->  	struct device_node *np = pdev->dev.of_node;
->  	struct resource *res;
->  	struct clk *clk;
-> -	char symname[KSYM_NAME_LEN];
->  
->  	const struct of_device_id *match =
->  		of_match_node(qnap_power_off_of_match_table, np);
-> @@ -106,22 +115,13 @@ static int qnap_power_off_probe(struct platform_device *pdev)
->  
->  	tclk = clk_get_rate(clk);
->  
-> -	/* Check that nothing else has already setup a handler */
-> -	if (pm_power_off) {
-> -		lookup_symbol_name((ulong)pm_power_off, symname);
-> -		dev_err(&pdev->dev,
-> -			"pm_power_off already claimed %p %s",
-> -			pm_power_off, symname);
-> -		return -EBUSY;
-> -	}
-> -	pm_power_off = qnap_power_off;
-> -
-> -	return 0;
-> +	return register_poweroff_handler(&qnap_poweroff_nb);
->  }
->  
->  static int qnap_power_off_remove(struct platform_device *pdev)
->  {
-> -	pm_power_off = NULL;
-> +	unregister_poweroff_handler(&qnap_poweroff_nb);
-> +
->  	return 0;
->  }
->  
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+David Daney
+
+
+> Matthew
+>

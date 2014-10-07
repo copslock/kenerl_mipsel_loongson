@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:32:48 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51348 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:33:04 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51467 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010672AbaJGFavlXnKp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:51 +0200
+        with ESMTP id S27010677AbaJGFa7TXalT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=A29Znti1Q44C4ORp3L2TfK0F+dX9IxYJrEIa3yDbvJ8=;
-        b=osL0DWIqszt9pp3mGtxoNWZkOm6Q0u4y0mzVCh0rTfR5uR4bV1FtvlkXXzwzd4JjV1GJ3eQSKl95J7nnhL85+jwSjVtNNX+OV2tzirw6VhXnTh5NPkJkzuc7RnuCP0JoIzV0A1/VU6TXeqUXdud3mXVIh1qkH/a58TZsdY+d2kg=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=WCM5jw5aO1BzJ7n7QDZKNq2x+ihEWdbYaJ2DetEMjw8=;
+        b=NJAUTPWxjYGFy74MCh6EO1C4JsHNbY1PT+7mWS8yPg9WQEBfkdObx7a1oGADsIcmVtvCJp6lqmXKcgZdPIfhgIgmwzJqYT/f94lhC1phXBMVqtC7xnCxa00TKehvd2GbEwKVa6BGK5mk6rw4F3ZUjw0IDRiY/Sh3KGxVVCQA9xE=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNMD-002hu1-Fy
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:45 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32915 helo=localhost)
+        id 1XbNML-002iYu-0u
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:53 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32925 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNLD-002bYx-2W; Tue, 07 Oct 2014 05:29:45 +0000
+        id 1XbNLJ-002c3v-34; Tue, 07 Oct 2014 05:29:49 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -35,9 +35,9 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         Sebastian Reichel <sre@kernel.org>,
         Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
         David Woodhouse <dwmw2@infradead.org>
-Subject: [PATCH 20/44] power/reset: restart-poweroff: Register with kernel poweroff handler
-Date:   Mon,  6 Oct 2014 22:28:22 -0700
-Message-Id: <1412659726-29957-21-git-send-email-linux@roeck-us.net>
+Subject: [PATCH 22/44] power/reset: as3722-poweroff: Register with kernel poweroff handler
+Date:   Mon,  6 Oct 2014 22:28:24 -0700
+Message-Id: <1412659726-29957-23-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
@@ -47,13 +47,13 @@ X-CTCH-PVer: 0000001
 X-CTCH-Spam: Unknown
 X-CTCH-VOD: Unknown
 X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020208.54337A85.00A7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-RefID: str=0001.0A020203.54337A8D.0050,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 807
+X-CTCH-SenderID-TotalMessages: 891
 X-CTCH-SenderID-TotalSpam: 0
 X-CTCH-SenderID-TotalSuspected: 0
 X-CTCH-SenderID-TotalConfirmed: 0
@@ -73,7 +73,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43001
+X-archive-position: 43002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,67 +90,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Register with kernel poweroff handler instead of seting pm_power_off
-directly.  Register as poweroff handler of last resort since the driver
-does not really power off the system but executes a restart.
+Register with kernel poweroff handler instead of setting pm_power_off
+directly. Register with a low priority value of 64 to reflect that
+the original code only sets pm_power_off if it was not already set.
 
 Cc: Sebastian Reichel <sre@kernel.org>
 Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
 Cc: David Woodhouse <dwmw2@infradead.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/power/reset/restart-poweroff.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/power/reset/as3722-poweroff.c | 36 ++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/power/reset/restart-poweroff.c b/drivers/power/reset/restart-poweroff.c
-index edd707e..5437697 100644
---- a/drivers/power/reset/restart-poweroff.c
-+++ b/drivers/power/reset/restart-poweroff.c
-@@ -12,35 +12,34 @@
-  */
- #include <linux/kernel.h>
- #include <linux/init.h>
-+#include <linux/notifier.h>
- #include <linux/platform_device.h>
- #include <linux/of_platform.h>
- #include <linux/module.h>
-+#include <linux/pm.h>
- #include <linux/reboot.h>
--#include <asm/system_misc.h>
+diff --git a/drivers/power/reset/as3722-poweroff.c b/drivers/power/reset/as3722-poweroff.c
+index 6849711..7ebaed9 100644
+--- a/drivers/power/reset/as3722-poweroff.c
++++ b/drivers/power/reset/as3722-poweroff.c
+@@ -17,32 +17,33 @@
  
--static void restart_poweroff_do_poweroff(void)
-+static int restart_poweroff_do_poweroff(struct notifier_block *this,
-+					unsigned long unused1, void *unused2)
+ #include <linux/mfd/as3722.h>
+ #include <linux/module.h>
++#include <linux/notifier.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/platform_device.h>
++#include <linux/pm.h>
+ #include <linux/slab.h>
+ 
+ struct as3722_poweroff {
+ 	struct device *dev;
+ 	struct as3722 *as3722;
++	struct notifier_block poweroff_nb;
+ };
+ 
+-static struct as3722_poweroff *as3722_pm_poweroff;
+-
+-static void as3722_pm_power_off(void)
++static int as3722_power_off(struct notifier_block *this, unsigned long unused1,
++			    void *unused2)
  {
- 	reboot_mode = REBOOT_HARD;
- 	machine_restart(NULL);
++	struct as3722_poweroff *as3722_poweroff =
++		container_of(this, struct as3722_poweroff, poweroff_nb);
+ 	int ret;
+ 
+-	if (!as3722_pm_poweroff) {
+-		pr_err("AS3722 poweroff is not initialised\n");
+-		return;
+-	}
+-
+-	ret = as3722_update_bits(as3722_pm_poweroff->as3722,
++	ret = as3722_update_bits(as3722_poweroff->as3722,
+ 		AS3722_RESET_CONTROL_REG, AS3722_POWER_OFF, AS3722_POWER_OFF);
+ 	if (ret < 0)
+-		dev_err(as3722_pm_poweroff->dev,
++		dev_err(as3722_poweroff->dev,
+ 			"RESET_CONTROL_REG update failed, %d\n", ret);
 +
 +	return NOTIFY_DONE;
  }
  
-+static struct notifier_block restart_poweroff_handler = {
-+	.notifier_call = restart_poweroff_do_poweroff,
-+};
-+
- static int restart_poweroff_probe(struct platform_device *pdev)
- {
--	/* If a pm_power_off function has already been added, leave it alone */
--	if (pm_power_off != NULL) {
--		dev_err(&pdev->dev,
--			"pm_power_off function already registered");
--		return -EBUSY;
--	}
--
--	pm_power_off = &restart_poweroff_do_poweroff;
+ static int as3722_poweroff_probe(struct platform_device *pdev)
+@@ -63,18 +64,19 @@ static int as3722_poweroff_probe(struct platform_device *pdev)
+ 
+ 	as3722_poweroff->as3722 = dev_get_drvdata(pdev->dev.parent);
+ 	as3722_poweroff->dev = &pdev->dev;
+-	as3722_pm_poweroff = as3722_poweroff;
+-	if (!pm_power_off)
+-		pm_power_off = as3722_pm_power_off;
++	as3722_poweroff->poweroff_nb.notifier_call = as3722_power_off;
++	as3722_poweroff->poweroff_nb.priority = 64;
+ 
 -	return 0;
-+	return register_poweroff_handler(&restart_poweroff_handler);
++	platform_set_drvdata(pdev, as3722_poweroff);
++
++	return register_poweroff_handler(&as3722_poweroff->poweroff_nb);
  }
  
- static int restart_poweroff_remove(struct platform_device *pdev)
+ static int as3722_poweroff_remove(struct platform_device *pdev)
  {
--	if (pm_power_off == &restart_poweroff_do_poweroff)
+-	if (pm_power_off == as3722_pm_power_off)
 -		pm_power_off = NULL;
-+	unregister_poweroff_handler(&restart_poweroff_handler);
+-	as3722_pm_poweroff = NULL;
++	struct as3722_poweroff *as3722_poweroff = platform_get_drvdata(pdev);
++
++	unregister_poweroff_handler(&as3722_poweroff->poweroff_nb);
  
  	return 0;
  }

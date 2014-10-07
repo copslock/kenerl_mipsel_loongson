@@ -1,121 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 10:32:52 +0200 (CEST)
-Received: from mail-lb0-f178.google.com ([209.85.217.178]:57038 "EHLO
-        mail-lb0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009571AbaJGIcuXAk0f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 10:32:50 +0200
-Received: by mail-lb0-f178.google.com with SMTP id w7so5765724lbi.9
-        for <multiple recipients>; Tue, 07 Oct 2014 01:32:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=Mg5d5qP7jH6SVcgYlxpwYggn5Iy+dnN1aWDSQMc8AgE=;
-        b=AD0sqFZjKt2wPsJyaRpIYvKcdC/wefVhLMer72TSHgg3bAzFrYtJwQ0iiMH6ovvyrB
-         wTqlMxwtXAU3wU6WiB9kNgeLg7SlSMG3/cYF+aiURsk504qw6VCXrlfOFxUAwo7q0ch9
-         f2egpi2iVutLYIa/8GhakkeQUxr1/xv/5wds+58MSpuQSydbFYLF7yL+k5RRFjwK1/J/
-         YuJHfMsQi1LUjtkEKwuVZkDHmi9OgATHnhhgQHMfBabO4Tk+m6RJ8YPv0y0+PSG+rDkI
-         u2vl77wubLAqquVplhvYuDb1W+lncRS21RZuNOntv2wh7C+fNCeg7YI2ZvBSgmONrZpf
-         nN+Q==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 10:43:48 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47155 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010680AbaJGInqnZ51j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 10:43:46 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8867C2DE87727;
+        Tue,  7 Oct 2014 09:43:37 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 7 Oct 2014 09:43:39 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 7 Oct
+ 2014 09:43:38 +0100
+Message-ID: <5433A7BB.1090207@imgtec.com>
+Date:   Tue, 7 Oct 2014 09:43:39 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-X-Received: by 10.112.142.104 with SMTP id rv8mr2231170lbb.59.1412670764837;
- Tue, 07 Oct 2014 01:32:44 -0700 (PDT)
-Received: by 10.152.30.34 with HTTP; Tue, 7 Oct 2014 01:32:44 -0700 (PDT)
-In-Reply-To: <1412659726-29957-9-git-send-email-linux@roeck-us.net>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
-        <1412659726-29957-9-git-send-email-linux@roeck-us.net>
-Date:   Tue, 7 Oct 2014 10:32:44 +0200
-X-Google-Sender-Auth: t1uDeYcNgUgiBYL2fRgSRtusDG8
-Message-ID: <CAMuHMdXQfYqhHnVKLHZvTyqE8Ke7jWEu7LKLR9ZfVQaO8mNtBw@mail.gmail.com>
-Subject: Re: [PATCH 08/44] kernel: Move pm_power_off to common code
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        lguest@lists.ozlabs.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "moderated list:PANASONIC MN10300..." <linux-am33-list@redhat.com>,
-        Cris <linux-cris-kernel@axis.com>, linux-efi@vger.kernel.org,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        linux-m32r-ja@ml.linux-m32r.org,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-tegra@vger.kernel.org,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        openipmi-developer@lists.sourceforge.net,
-        uml-devel <user-mode-linux-devel@lists.sourceforge.net>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-c6x-dev@linux-c6x.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:METAG ARCHITECTURE" <linux-metag@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Steven Miao <realmz6@gmail.com>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        David Howells <dhowells@redhat.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Chen Liqin <liqin.linux@gmail.com>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>, <Zubair.Kakakhel@imgtec.com>,
+        <peterz@infradead.org>, <paul.gortmaker@windriver.com>,
+        <davidlohr@hp.com>, <macro@linux-mips.org>, <chenhc@lemote.com>,
+        <zajec5@gmail.com>, <keescook@chromium.org>,
+        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
+        <blogic@openwrt.org>, <jchandra@broadcom.com>,
+        <paul.burton@imgtec.com>, <qais.yousef@imgtec.com>,
+        <ralf@linux-mips.org>, <markos.chandras@imgtec.com>,
+        <manuel.lauss@gmail.com>, <akpm@linux-foundation.org>,
+        <lars.persson@axis.com>, <torvalds@linux-foundation.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <libc-alpha@sourceware.org>, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] MIPS: Allow FPU emulator to use non-stack area.
+References: <1412626317-4128-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1412626317-4128-1-git-send-email-ddaney.cavm@gmail.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43043
+X-archive-position: 43044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -128,24 +57,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 7, 2014 at 7:28 AM, Guenter Roeck <linux@roeck-us.net> wrote:
-> pm_power_off is defined for all architectures. Move it to common code.
->
-> Have all architectures call do_kernel_poweroff instead of pm_power_off.
-> Some architectures point pm_power_off to machine_power_off. For those,
-> call do_kernel_poweroff from machine_power_off instead.
+Hi David,
 
->  arch/m68k/kernel/process.c         |  6 +-----
+On 06/10/14 21:11, David Daney wrote:
+> Any userspace thread desiring a non-executable stack,
+> must allocate a 4-byte aligned area at least 8 bytes long
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+<snip>
 
-Gr{oetje,eeting}s,
+> +SYSCALL_DEFINE1(set_fpuemul_xol_area, unsigned long, addr)
+> +{
+> +	struct thread_info *ti = task_thread_info(current);
+> +
+> +	ti->fpu_emul_xol = addr;
+> +	return 0;
+> +}
+> +
 
-                        Geert
+<snip>
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> -	/* Ensure that the two instructions are in the same cache line */
+> -	fr = (struct emuframe __user *)
+> -		((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
+> +	if (ti->fpu_emul_xol != ~0ul)
+> +		fr = (struct emuframe *)ti->fpu_emul_xol;
+> +	else
+> +		/* Ensure that the two instructions are in the same cache line */
+> +		fr = (struct emuframe __user *)
+> +			((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+I know your patch was more an RFC, but on a technical note, this
+comment/code seems to imply that the address should be 8 byte aligned
+(rather than 4 byte) so they both land in the same cache line. Also, I
+think the alignment should be validated in the syscall.
+
+Cheers
+James

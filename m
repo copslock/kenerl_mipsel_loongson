@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 21:22:22 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49817 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010745AbaJGTWVC-nRA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 21:22:21 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1XbaJn-0002Nh-00; Tue, 07 Oct 2014 19:21:07 +0000
-Date:   Tue, 7 Oct 2014 15:21:07 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        David Daney <david.s.daney@gmail.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        David Daney <ddaney.cavm@gmail.com>,
-        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-Message-ID: <20141007192107.GN23797@brightrain.aerifal.cx>
-References: <54332A64.5020605@caviumnetworks.com>
- <20141007000514.GD23797@brightrain.aerifal.cx>
- <543334CE.8060305@caviumnetworks.com>
- <20141007004915.GF23797@brightrain.aerifal.cx>
- <54337127.40806@gmail.com>
- <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
- <543431DA.4090809@imgtec.com>
- <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com>
- <20141007190943.GM23797@brightrain.aerifal.cx>
- <54343C2B.2080801@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54343C2B.2080801@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dalias@aerifal.cx>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 21:27:30 +0200 (CEST)
+Received: from mail-yk0-f169.google.com ([209.85.160.169]:38477 "EHLO
+        mail-yk0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010752AbaJGT13Z8R30 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 21:27:29 +0200
+Received: by mail-yk0-f169.google.com with SMTP id 10so3185265ykt.28
+        for <multiple recipients>; Tue, 07 Oct 2014 12:27:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:subject:date:message-id;
+        bh=3A+rmKiSd/NST8rj+QMKCnzTGf8xqfcN4KAGH9sQGm0=;
+        b=KZsVlRiJloW/yNz5AcJV9+JwY6NJFbIHxxXYoKX4tUYcTrFCQdWlYKfl0HzcEsYnGA
+         pgkrG5BOJyMYRXGAvaynNw81DBz/plpTrWw+QEb+AKIJTIDSD4gqVPpWS80oatbEQoRA
+         /8CtOW8w+0B63QzEZG0oz5Q7CrD3qRLT11JJyVDc1Of+LNsE08j6n3pdFUM3PR9NTL3x
+         d//fgTjbbOngE1jg7UciJoM+8n6GBuYZ890l2yQb40+hr7QF48TEfTdtJQ9czqcODCtW
+         u9UCj6EGJyFTUrhA3rB/fvwTvTVEnM4dX9xwrxmRIRSjlUSvRrav8RseabEiwsLXNitn
+         Mc3w==
+X-Received: by 10.236.26.41 with SMTP id b29mr8539301yha.36.1412710043280;
+        Tue, 07 Oct 2014 12:27:23 -0700 (PDT)
+Received: from t430.minyard.home (pool-173-57-152-84.dllstx.fios.verizon.net. [173.57.152.84])
+        by mx.google.com with ESMTPSA id q40sm8886213yhg.32.2014.10.07.12.27.21
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Oct 2014 12:27:22 -0700 (PDT)
+Received: from t430.minyard.home (t430.minyard.home [127.0.0.1])
+        by t430.minyard.home (8.14.7/8.14.7) with ESMTP id s97JRKfn017529;
+        Tue, 7 Oct 2014 14:27:20 -0500
+Received: (from cminyard@localhost)
+        by t430.minyard.home (8.14.7/8.14.7/Submit) id s97JRKRO017527;
+        Tue, 7 Oct 2014 14:27:20 -0500
+From:   minyard@acm.org
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Subject: 
+Date:   Tue,  7 Oct 2014 14:27:11 -0500
+Message-Id: <1412710034-16908-1-git-send-email-minyard@acm.org>
+X-Mailer: git-send-email 1.8.3.1
+Return-Path: <tcminyard@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43086
+X-archive-position: 43087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@libc.org
+X-original-sender: minyard@acm.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,21 +56,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 07, 2014 at 12:16:59PM -0700, Leonid Yegoshin wrote:
-> On 10/07/2014 12:09 PM, Rich Felker wrote:
-> >I agree completely here. We should not break things (or, as it
-> >seems, leave them broken) for common usage cases that affect
-> >everyone just to coddle proprietary vendor-specific instructions.
-> >The latter just should not be used in delay slots unless the chip
-> >vendor also promises to provide fpu branch in hardware. Rich
-> And what do you propose - remove a current in-stack emulation and
-> you still think it doesn't break a status-quo?
+I'm dealing with issues with bad backtraces in MIPS kdumps.  This
+patch series fixes the issues with these backtraces.
 
-The in-stack trampoline support could be left but used only for
-emulating instructions the kernel doesn't know. This would make all
-normal binaries immediately usable with non-executable stack, and
-would avoid the only potential source of regressions. Ultimately I
-think the "xol" stuff should be removed, but that could be a long term
-goal.
+Note that this does not currently enable DWARF unwinding on the
+restore side.  It's less useful (unless you have a backtrace that
+runs through the restore code).  It could be done, I think,
+without major hassle, but I'll save that for future assuming
+these sorts of changes are ok.
 
-Rich
+Those moves a lot of generic stuff from the x86 dwarf2.h to a new
+asm-generic version, but does not make any functional changes to
+that code.

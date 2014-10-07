@@ -1,64 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 21:40:36 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45996 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010752AbaJGTkf2exOn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 21:40:35 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id BCBA8825345B8;
-        Tue,  7 Oct 2014 20:40:24 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 7 Oct 2014 20:40:28 +0100
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0195.001; Tue, 7 Oct 2014 20:40:27 +0100
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Andy Lutomirski <luto@amacapital.net>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     David Daney <david.s.daney@gmail.com>,
-        Rich Felker <dalias@libc.org>,
-        David Daney <ddaney@caviumnetworks.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 22:03:41 +0200 (CEST)
+Received: from mail-ig0-f182.google.com ([209.85.213.182]:62279 "EHLO
+        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010752AbaJGUDk32H43 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 22:03:40 +0200
+Received: by mail-ig0-f182.google.com with SMTP id hn18so5624487igb.9
+        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 13:03:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=YHTwlKV2cx8uBOaEn07Wo5JRVEAZ/XJzC/1zjfJfT4Y=;
+        b=SpARIQj7cLOIDChlZUi9gQw5ecrsMdTb5FO1h4CrK+2o6zn0zHZA28eb1VLjtNLBs7
+         XSFY/9I5HYYyt82s70Yw6s8otUk+OOOoS7WV8YAnrKr1sIqWQx8MtfamsCuOAkWr9XtM
+         /siAWxll7ThHRpfYTNQ/9GhQiD7YB4rluaXtw4Jh75wtvYLu/QpY7J91HEZV0zVuQBQ6
+         rnSawIWGzis+4z8HkVTLrui+E6xUbbPtnK0FDrHvsBgBhIdM5AnqzwHBfuYn3rpT4bW5
+         WlNklOYPrC8KMYtqjc4dfHmfhv+jA3cVGJANyfffVD7FXmSstRe+uGntaLqgMiPqzTUf
+         TrTA==
+X-Received: by 10.50.56.42 with SMTP id x10mr41042703igp.1.1412712214425;
+        Tue, 07 Oct 2014 13:03:34 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id m7sm3169289igj.18.2014.10.07.13.03.32
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 07 Oct 2014 13:03:33 -0700 (PDT)
+Message-ID: <54344714.1000600@gmail.com>
+Date:   Tue, 07 Oct 2014 13:03:32 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Andy Lutomirski <luto@amacapital.net>
+CC:     Rich Felker <dalias@libc.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        David Daney <david.s.daney@gmail.com>,
         David Daney <ddaney.cavm@gmail.com>,
         "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         David Daney <david.daney@cavium.com>
-Subject: RE: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-Thread-Topic: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-Thread-Index: AQHP4aN00Rru6iu58k+v+yCGGiYzx5wje4qAgAAGhYCAAAOMgIAABAuAgAADj4CAABvzgIAAAvcAgAAEkwCAAAfXAIAABHWAgABDfICAAFdDkIAAjnQAgAADP4CAAB08wA==
-Date:   Tue, 7 Oct 2014 19:40:27 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F1EBEE@LEMAIL01.le.imgtec.org>
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
- <20141006205459.GZ23797@brightrain.aerifal.cx>
- <5433071B.4050606@caviumnetworks.com>
- <20141006213101.GA23797@brightrain.aerifal.cx>
- <54330D79.80102@caviumnetworks.com>
- <20141006215813.GB23797@brightrain.aerifal.cx>
- <543327E7.4020608@amacapital.net> <54332A64.5020605@caviumnetworks.com>
- <20141007000514.GD23797@brightrain.aerifal.cx>
- <543334CE.8060305@caviumnetworks.com>
- <20141007004915.GF23797@brightrain.aerifal.cx> <54337127.40806@gmail.com>
- <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
- <543431DA.4090809@imgtec.com>
- <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com>
-In-Reply-To: <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.159.206]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+References: <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx> <543334CE.8060305@caviumnetworks.com> <20141007004915.GF23797@brightrain.aerifal.cx> <54337127.40806@gmail.com> <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org> <543431DA.4090809@imgtec.com> <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com> <20141007190943.GM23797@brightrain.aerifal.cx> <54343C2B.2080801@imgtec.com> <20141007192107.GN23797@brightrain.aerifal.cx> <CALCETrU8qPL1qKGk7FqM=LCnoeSfuwDV_bG_a=5zcOKtWfkdGw@mail.gmail.com>
+In-Reply-To: <CALCETrU8qPL1qKGk7FqM=LCnoeSfuwDV_bG_a=5zcOKtWfkdGw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43093
+X-archive-position: 43094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,31 +64,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-PiA+DQo+ID4gNCkgIFRoZSB2b2ljZSBmb3IgZG9pbmcgYW55IGluc3RydWN0aW9uIGVtdWxhdGlv
-biBpbiBrZXJuZWwgLSBpdCBpcyBub3QgYQ0KPiA+IE1JUFMgYnVzaW5lc3MgbW9kZWwgdG8gZm9y
-Y2UgY3VzdG9tZXIgdG8gcHV0IGRldGFpbHMgb2YgYWxsIENvcHJvY2Vzc29yIDINCj4gPiBpbnN0
-cnVjdGlvbnMgcHVibGljLiBXZSBwcm92aWRlIGFuIGludGVyZmFjZSBhbmQgdGhlIHJlc3QgaXMg
-YSBjdXN0b21lcg0KPiA+IGJ1c2luZXNzLiBCZXNpZGVzIHRoYXQgaXQgaXMgcmVhbGx5IHBhaW5m
-dWwgdG8gbWFrZSBhIGRpZmZlcmVudGlhdGlvbg0KPiA+IGJldHdlZW4gQ2F2aXVtIE9jdGVvbiBh
-bmQgc29tZSBhbm90aGVyIENQVSBpbnN0cnVjdGlvbnMgd2l0aCB0aGUgc2FtZQ0KPiA+IG9wY29k
-ZS4gT24gb3RoZXIgc2lkZSwgbGVhdmluZyBlbXVsYXRpb24gb2YgdGhlaXIgaW5zdHJ1Y3Rpb25z
-IHRvIHRoZW0gaXMNCj4gPiBub3QgYSB3aXNlIGFmdGVyIGhhdmluZyBzb21lIGdvb2Qgd2F5IGRv
-aW5nIHRoYXQgbXVsdGlwbGUgeWVhcnMuDQo+IA0KPiBJTU8gdGhpcyBpcyBhbGwgYmFja3dhcmRz
-LiAgSWYgTUlQUyBjdXN0b21lcnMgcHV0IHByb3ByaWV0YXJ5DQo+IGluc3RydWN0aW9ucyBpbnRv
-IHRoZWlyIElTQSwgdGhleSBsZWF2ZSBvdXQgdGhlIEZQVSwgYW5kIHRoZXkgcHV0IGENCj4gcHJv
-cHJpZXRhcnkgaW5zbiBpbiBhIGJyYW5jaCBkZWxheSBzbG90LCB0aGVuIEkgdGhpbmsgdGhhdCB0
-aGV5DQo+IGRlc2VydmUgYSBmYXRhbCBzaWduYWwuDQo+IA0KPiBUaGVyZSdzIGEgcmVhbGx5IGVh
-c3kgc29sdXRpb24gZm9yIG5ldyBzeXN0ZW1zOiBmaXggdGhlIHRvb2xjaGFpbi4NCj4gVGVhY2gg
-dGhlIGFzc2VtYmxlciB0byBkaXNhbGxvdyBhbnkgcHJvcHJpZXRhcnkgaW5zdHJ1Y3Rpb25zIGlu
-IGFuIEZQDQo+IGJyYW5jaCBkZWxheSBzbG90Lg0KDQpJIHRoaW5rIEknZCBiZSBtb3N0bHkgaW4g
-ZmF2b3VyIG9mIHRoaXMgZnJvbSBhIHRvb2xjaGFpbiBwZXJzcGVjdGl2ZSBidXQNCm9ubHkgZnJv
-bSB0aGUgcGVyc3BlY3RpdmUgb2YgRlAgYnJhbmNoIGluc3RydWN0aW9ucy4gVGhpcyBzdGlsbCBs
-ZWF2ZXMgYQ0KcHJvYmxlbSBmb3Igbm9ybWFsIGJyYW5jaGVzIHNob3VsZCBhbnkgb2YgdGhlbSBn
-ZXQgcmVtb3ZlZCBhbmQgbmVlZCBlbXVsYXRpbmcuDQpUaGUgZ2VuZXJhbCBmb3JtIG9mIGJsdHph
-bCBhbmQgYmdlemFsIHdvdWxkIGJlIHRoZSBleGFtcGxlIGhlcmUgb2YgYnJhbmNoZXMNCndoaWNo
-IGFyZSByZW1vdmVkIGluIFI2IChUaGUgc3BlY2lhbCBjYXNlIG9mIHVzaW5nICQwIHJlbWFpbnMp
-LiBUaGlzIGlzDQpyZWFsbHkgbmljaGUgYnV0IG15IHBvaW50IGlzIG1vcmUgYWJvdXQgaG93IHdl
-IHdvdWxkIGRlYWwgd2l0aCBzdWNoIGEgdGhpbmcNCmlmIGl0IGhhcHBlbmVkLiBUaGUgYW5zd2Vy
-IG1heSBiZSBqdXN0IHRvIHNjcmVhbSBhbmQgc2hvdXQgYW5kIGRpc2NvdXJhZ2UgdGhlDQpyZW1v
-dmFsIG9mIHN1Y2ggaW5zdHJ1Y3Rpb25zIGZyb20gdGhlIGFyY2hpdGVjdHVyZS4NCg0KTWF0dGhl
-dw0KDQo=
+On 10/07/2014 12:28 PM, Andy Lutomirski wrote:
+> On Tue, Oct 7, 2014 at 12:21 PM, Rich Felker <dalias@libc.org> wrote:
+>> On Tue, Oct 07, 2014 at 12:16:59PM -0700, Leonid Yegoshin wrote:
+>>> On 10/07/2014 12:09 PM, Rich Felker wrote:
+>>>> I agree completely here. We should not break things (or, as it
+>>>> seems, leave them broken) for common usage cases that affect
+>>>> everyone just to coddle proprietary vendor-specific instructions.
+>>>> The latter just should not be used in delay slots unless the chip
+>>>> vendor also promises to provide fpu branch in hardware. Rich
+>>> And what do you propose - remove a current in-stack emulation and
+>>> you still think it doesn't break a status-quo?
+>>
+>> The in-stack trampoline support could be left but used only for
+>> emulating instructions the kernel doesn't know. This would make all
+>> normal binaries immediately usable with non-executable stack, and
+>> would avoid the only potential source of regressions. Ultimately I
+>> think the "xol" stuff should be removed, but that could be a long term
+>> goal.
+>
+> Does anything break if the xol stuff is disabled for PT_GNU_STACK tasks?
+>
+
+The instructions must be executed, if you turn on a non-executable 
+stack, you cannot execute them on the stack, so they must be handled in 
+another way, which is the subject of this thread.
+
+Options:
+
+1a) XOL kernel manages the memory
+1b) XOL userspace manages the menory
+2) Emulate the instructions.
+3) I don't think there is a 3rd. option.
+
+As the imgtec people have said, you have to do #2 for their new r6 ISA, 
+as it uses PC relative instructions.
+
+I really think we should bite the bullet and do #2 for everything, it 
+will be the cleanest long term solutions.
+
+David Daney

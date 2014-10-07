@@ -1,51 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 21:19:38 +0200 (CEST)
-Received: from mail-oi0-f42.google.com ([209.85.218.42]:49545 "EHLO
-        mail-oi0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010745AbaJGTTh0EobY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 21:19:37 +0200
-Received: by mail-oi0-f42.google.com with SMTP id a141so5691364oig.29
-        for <multiple recipients>; Tue, 07 Oct 2014 12:19:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:message-id:date:from:reply-to:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=jHAvmisRgJNXnKcB49aehgjsYy6qpUU5YARdXXsDIgg=;
-        b=ue1gudqD5WNh5OkU6PCzAHnc9m8PiuH5/4tcmvD5n09sYr1PzBpUmn5rFUDZtnqpld
-         ftwEWBYXvl3VULsjyXxp78IEweeq68PhrBFWmTMMQTezU8HhEKuqez1Kfl92+ml/zVEh
-         VuTGcG5UzUyGyQYdiKsKXS9oSuI7t3XJbMPbTK6Hvhle29vtN7JQKb/q9gERqxYblt0p
-         wY6zdIg4boZl9I8QemkkH8MKGQ/uiwFFUIkdngXhHa2/+ZaILKEK9tw1Tl+8fYCP77t3
-         77DDDhEaDw2kVGfIWCEhedH9X81L3WmDoxvQfaJTie4ibkgxO/iCr+eK9blEUuqslZ9X
-         VO/g==
-X-Received: by 10.182.19.195 with SMTP id h3mr6743724obe.43.1412709571125;
-        Tue, 07 Oct 2014 12:19:31 -0700 (PDT)
-Received: from t430.minyard.home (pool-173-57-152-84.dllstx.fios.verizon.net. [173.57.152.84])
-        by mx.google.com with ESMTPSA id b4sm12474827oed.2.2014.10.07.12.19.29
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 07 Oct 2014 12:19:30 -0700 (PDT)
-Message-ID: <54343CC0.1010309@acm.org>
-Date:   Tue, 07 Oct 2014 14:19:28 -0500
-From:   Corey Minyard <minyard@acm.org>
-Reply-To: minyard@acm.org
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 21:22:22 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49817 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010745AbaJGTWVC-nRA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 21:22:21 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1XbaJn-0002Nh-00; Tue, 07 Oct 2014 19:21:07 +0000
+Date:   Tue, 7 Oct 2014 15:21:07 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        David Daney <david.s.daney@gmail.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+Message-ID: <20141007192107.GN23797@brightrain.aerifal.cx>
+References: <54332A64.5020605@caviumnetworks.com>
+ <20141007000514.GD23797@brightrain.aerifal.cx>
+ <543334CE.8060305@caviumnetworks.com>
+ <20141007004915.GF23797@brightrain.aerifal.cx>
+ <54337127.40806@gmail.com>
+ <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
+ <543431DA.4090809@imgtec.com>
+ <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com>
+ <20141007190943.GM23797@brightrain.aerifal.cx>
+ <54343C2B.2080801@imgtec.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org, Corey Minyard <cminyard@mvista.com>
-Subject: Re: [PATCH 2/3] Move generic dwarf2 operations from x86 to asm-generic
-References: <1412707854-15555-1-git-send-email-minyard@acm.org> <1412707854-15555-3-git-send-email-minyard@acm.org> <20141007191759.GN7428@linux-mips.org>
-In-Reply-To: <20141007191759.GN7428@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <tcminyard@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54343C2B.2080801@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43085
+X-archive-position: 43086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minyard@acm.org
+X-original-sender: dalias@libc.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,10 +55,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/07/2014 02:17 PM, Ralf Baechle wrote:
-> This will need to be reposted to linux-kernel.
->
->   Ralf
-Ok, reposting the series.  Thanks.
+On Tue, Oct 07, 2014 at 12:16:59PM -0700, Leonid Yegoshin wrote:
+> On 10/07/2014 12:09 PM, Rich Felker wrote:
+> >I agree completely here. We should not break things (or, as it
+> >seems, leave them broken) for common usage cases that affect
+> >everyone just to coddle proprietary vendor-specific instructions.
+> >The latter just should not be used in delay slots unless the chip
+> >vendor also promises to provide fpu branch in hardware. Rich
+> And what do you propose - remove a current in-stack emulation and
+> you still think it doesn't break a status-quo?
 
--corey
+The in-stack trampoline support could be left but used only for
+emulating instructions the kernel doesn't know. This would make all
+normal binaries immediately usable with non-executable stack, and
+would avoid the only potential source of regressions. Ultimately I
+think the "xol" stuff should be removed, but that could be a long term
+goal.
+
+Rich

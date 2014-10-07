@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 20:51:58 +0200 (CEST)
-Received: from mail-yk0-f169.google.com ([209.85.160.169]:37658 "EHLO
-        mail-yk0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010743AbaJGSv5Q6wye (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 20:51:57 +0200
-Received: by mail-yk0-f169.google.com with SMTP id 10so3157920ykt.28
-        for <multiple recipients>; Tue, 07 Oct 2014 11:51:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 20:52:19 +0200 (CEST)
+Received: from mail-yh0-f52.google.com ([209.85.213.52]:49918 "EHLO
+        mail-yh0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010743AbaJGSwRckZUW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 20:52:17 +0200
+Received: by mail-yh0-f52.google.com with SMTP id 29so3220610yhl.25
+        for <multiple recipients>; Tue, 07 Oct 2014 11:52:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Db12MzLhRY/9eu13o0cdw1kt8ntCkihA/jPvASHn0h4=;
-        b=o3zG2i64zaDVchu33IsxkhVJfssygAoT70BnBNECEY5UCjoSqmy1xraAv1H0hjj499
-         vFq8rfq29Jf6m99ShXilufh9KbAC0CXKy3bcqqc07t+8fN2V/2KqQKG2gNf6XP08FINF
-         QZpiNOHgkGfXOiSOBjySv2ApniKAeTDPcw0pb7tCQga/mpjnTUFOhLniDqyzKztA5nSB
-         nhVKIg92OliJCHUfS0NggC1o+ox7byMrkjIA5dWitUpAOXjjfbg7J2wBbgWdiiPG+tEX
-         518W25m16snH6uI6Ey8CHqVQDArkbBN9oYeK6MnBMBFdwkVkgB6EKOmn1Ni4eZHp/1UW
-         mdzQ==
-X-Received: by 10.236.61.6 with SMTP id v6mr8107022yhc.32.1412707911198;
-        Tue, 07 Oct 2014 11:51:51 -0700 (PDT)
+        bh=wKrucuR0ekaDe3Gb8w3wsq4NFnCEpnPKsdNpt2SjGDw=;
+        b=qgnKYByFdUW7uxHKIf0aFGLrLxIkv0S2LsJSGrFdxbvp35EV+nlWrhhYJw4c24oQPa
+         i8/wIxEkgWMRAdXwQQ2e3mxOT6EgzVV7ci/4mKhL1v0Gx7YgEdJnNT2uEPyow8YBf6YJ
+         LdkX+uNtn+YWXJfJJ18hCi11Ke+pVxlBebgTJfaDIvuVpqalPg7thSj0b+fe2f0r+o35
+         ByW5aYUE1NTDCf5sDGNi+VH37fUYhDXejE9DSHVTm+Tzq7AcM+tu0ItfIN3ccRk30flr
+         sopBJXUNFXvvhkkVwn9GWdA3jlgMyK3kXjRx2IM8TX635WB5D+IqiSPONR7sM1rM/1UH
+         TpQg==
+X-Received: by 10.236.208.2 with SMTP id p2mr6021697yho.173.1412707931574;
+        Tue, 07 Oct 2014 11:52:11 -0700 (PDT)
 Received: from t430.minyard.home (pool-173-57-152-84.dllstx.fios.verizon.net. [173.57.152.84])
-        by mx.google.com with ESMTPSA id 26sm6037477yhw.51.2014.10.07.11.51.50
+        by mx.google.com with ESMTPSA id t65sm8856860yht.12.2014.10.07.11.52.10
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Oct 2014 11:51:50 -0700 (PDT)
+        Tue, 07 Oct 2014 11:52:10 -0700 (PDT)
 Received: from t430.minyard.home (t430.minyard.home [127.0.0.1])
-        by t430.minyard.home (8.14.7/8.14.7) with ESMTP id s97IpdX3016113;
-        Tue, 7 Oct 2014 13:51:49 -0500
+        by t430.minyard.home (8.14.7/8.14.7) with ESMTP id s97Ipx3O016137;
+        Tue, 7 Oct 2014 13:52:09 -0500
 Received: (from cminyard@localhost)
-        by t430.minyard.home (8.14.7/8.14.7/Submit) id s97IpSUY016102;
-        Tue, 7 Oct 2014 13:51:28 -0500
+        by t430.minyard.home (8.14.7/8.14.7/Submit) id s97IpntK016127;
+        Tue, 7 Oct 2014 13:51:49 -0500
 From:   minyard@acm.org
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH 2/3] Move generic dwarf2 operations from x86 to asm-generic
-Date:   Tue,  7 Oct 2014 13:50:53 -0500
-Message-Id: <1412707854-15555-3-git-send-email-minyard@acm.org>
+Subject: [PATCH 3/3] mips: Add DWARF unwinding to assembly
+Date:   Tue,  7 Oct 2014 13:50:54 -0500
+Message-Id: <1412707854-15555-4-git-send-email-minyard@acm.org>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1412707854-15555-1-git-send-email-minyard@acm.org>
 References: <1412707854-15555-1-git-send-email-minyard@acm.org>
@@ -41,7 +41,7 @@ Return-Path: <tcminyard@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43079
+X-archive-position: 43080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,183 +60,614 @@ X-list: linux-mips
 
 From: Corey Minyard <cminyard@mvista.com>
 
-A lot of arch/x86/include/asm/dwarf2.h was generic, move it to
-asm-generic so other arches can get to it.
+This will allow kdump dumps and kgdb to work correctly
+with MIPS.
 
 Signed-off-by: Corey Minyard <cminyard@mvista.com>
 ---
- arch/x86/include/asm/dwarf2.h | 74 +----------------------------------------
- include/asm-generic/dwarf2.h  | 77 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+), 73 deletions(-)
- create mode 100644 include/asm-generic/dwarf2.h
+ arch/mips/Makefile                 |  14 ++-
+ arch/mips/include/asm/asm.h        |  13 +-
+ arch/mips/include/asm/dwarf2.h     |   6 +
+ arch/mips/include/asm/stackframe.h | 245 +++++++++++++++++++++----------------
+ arch/mips/kernel/entry.S           |   2 +-
+ arch/mips/kernel/genex.S           |  21 ++--
+ arch/mips/mm/tlbex-fault.S         |   7 +-
+ 7 files changed, 187 insertions(+), 121 deletions(-)
+ create mode 100644 arch/mips/include/asm/dwarf2.h
 
-diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
-index f6f1598..3360e2a 100644
---- a/arch/x86/include/asm/dwarf2.h
-+++ b/arch/x86/include/asm/dwarf2.h
-@@ -1,79 +1,7 @@
- #ifndef _ASM_X86_DWARF2_H
- #define _ASM_X86_DWARF2_H
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index bbac51e1..6a76ee6 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -238,11 +238,23 @@ ifdef CONFIG_64BIT
+   endif
+ endif
  
--#ifndef __ASSEMBLY__
--#warning "asm/dwarf2.h should be only included in pure assembly files"
--#endif
--
--/*
-- * Macros for dwarf2 CFI unwind table entries.
-- * See "as.info" for details on these pseudo ops. Unfortunately
-- * they are only supported in very new binutils, so define them
-- * away for older version.
-- */
--
--#ifdef CONFIG_AS_CFI
--
--#define CFI_STARTPROC		.cfi_startproc
--#define CFI_ENDPROC		.cfi_endproc
--#define CFI_DEF_CFA		.cfi_def_cfa
--#define CFI_DEF_CFA_REGISTER	.cfi_def_cfa_register
--#define CFI_DEF_CFA_OFFSET	.cfi_def_cfa_offset
--#define CFI_ADJUST_CFA_OFFSET	.cfi_adjust_cfa_offset
--#define CFI_OFFSET		.cfi_offset
--#define CFI_REL_OFFSET		.cfi_rel_offset
--#define CFI_REGISTER		.cfi_register
--#define CFI_RESTORE		.cfi_restore
--#define CFI_REMEMBER_STATE	.cfi_remember_state
--#define CFI_RESTORE_STATE	.cfi_restore_state
--#define CFI_UNDEFINED		.cfi_undefined
--#define CFI_ESCAPE		.cfi_escape
--
--#ifdef CONFIG_AS_CFI_SIGNAL_FRAME
--#define CFI_SIGNAL_FRAME	.cfi_signal_frame
--#else
--#define CFI_SIGNAL_FRAME
--#endif
--
--#if defined(CONFIG_AS_CFI_SECTIONS) && defined(__ASSEMBLY__)
--	/*
--	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
--	 * The latter we currently just discard since we don't do DWARF
--	 * unwinding at runtime.  So only the offline DWARF information is
--	 * useful to anyone.  Note we should not use this directive if this
--	 * file is used in the vDSO assembly, or if vmlinux.lds.S gets
--	 * changed so it doesn't discard .eh_frame.
--	 */
--	.cfi_sections .debug_frame
--#endif
--
--#else
--
--/*
-- * Due to the structure of pre-exisiting code, don't use assembler line
-- * comment character # to ignore the arguments. Instead, use a dummy macro.
-- */
--.macro cfi_ignore a=0, b=0, c=0, d=0
--.endm
--
--#define CFI_STARTPROC		cfi_ignore
--#define CFI_ENDPROC		cfi_ignore
--#define CFI_DEF_CFA		cfi_ignore
--#define CFI_DEF_CFA_REGISTER	cfi_ignore
--#define CFI_DEF_CFA_OFFSET	cfi_ignore
--#define CFI_ADJUST_CFA_OFFSET	cfi_ignore
--#define CFI_OFFSET		cfi_ignore
--#define CFI_REL_OFFSET		cfi_ignore
--#define CFI_REGISTER		cfi_ignore
--#define CFI_RESTORE		cfi_ignore
--#define CFI_REMEMBER_STATE	cfi_ignore
--#define CFI_RESTORE_STATE	cfi_ignore
--#define CFI_UNDEFINED		cfi_ignore
--#define CFI_ESCAPE		cfi_ignore
--#define CFI_SIGNAL_FRAME	cfi_ignore
--
--#endif
--
-+#include <asm-generic/dwarf2.h>
+-KBUILD_AFLAGS	+= $(cflags-y)
++
++# do binutils support CFI?
++cfireg := $$$$0
++cfi := $(call as-instr,.cfi_startproc\n.cfi_rel_offset $(cfireg)$(comma)0\n.cfi_endproc,-DCONFIG_AS_CFI=1)
++# is .cfi_signal_frame supported too?
++cfi-sigframe := $(call as-instr,.cfi_startproc\n.cfi_signal_frame\n.cfi_endproc,-DCONFIG_AS_CFI_SIGNAL_FRAME=1)
++cfi-sections := $(call as-instr,.cfi_sections .debug_frame,-DCONFIG_AS_CFI_SECTIONS=1)
++
++KBUILD_AFLAGS	+= $(cfi) $(cfi-sigframe) $(cfi-sections) $(cflags-y)
+ KBUILD_CFLAGS	+= $(cflags-y)
+ KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
+ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
+ 
++# This is required to get dwarf unwinding tables into .debug_frame
++# instead of .eh_frame so we don't discard them.
++KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
++
+ bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
+ 		  VMLINUX_ENTRY_ADDRESS=$(entry-y)
+ 
+diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+index 7c26b28..8eb79862 100644
+--- a/arch/mips/include/asm/asm.h
++++ b/arch/mips/include/asm/asm.h
+@@ -19,6 +19,9 @@
+ 
+ #include <asm/sgidefs.h>
+ #include <asm/asm-eva.h>
++#ifdef __ASSEMBLY__
++#include <asm/dwarf2.h>
++#endif
+ 
+ #ifndef CAT
+ #ifdef __STDC__
+@@ -54,7 +57,9 @@
+ 		.align	2;				\
+ 		.type	symbol, @function;		\
+ 		.ent	symbol, 0;			\
+-symbol:		.frame	sp, 0, ra
++symbol:		.frame	sp, 0, ra;			\
++		CFI_STARTPROC
++
+ 
  /*
-  * An attempt to make CFI annotations more or less
-  * correct and shorter. It is implied that you know
-diff --git a/include/asm-generic/dwarf2.h b/include/asm-generic/dwarf2.h
+  * NESTED - declare nested routine entry point
+@@ -63,13 +68,15 @@ symbol:		.frame	sp, 0, ra
+ 		.globl	symbol;				\
+ 		.align	2;				\
+ 		.type	symbol, @function;		\
+-		.ent	symbol, 0;			 \
+-symbol:		.frame	sp, framesize, rpc
++		.ent	symbol, 0;			\
++symbol:		.frame	sp, framesize, rpc;		\
++		CFI_STARTPROC
+ 
+ /*
+  * END - mark end of function
+  */
+ #define END(function)					\
++		CFI_ENDPROC;				\
+ 		.end	function;			\
+ 		.size	function, .-function
+ 
+diff --git a/arch/mips/include/asm/dwarf2.h b/arch/mips/include/asm/dwarf2.h
 new file mode 100644
-index 0000000..19a677f
+index 0000000..1728acd
 --- /dev/null
-+++ b/include/asm-generic/dwarf2.h
-@@ -0,0 +1,77 @@
-+#ifndef _ASM_GENERIC_DWARF2_H
-+#define _ASM_GENERIC_DWARF2_H
++++ b/arch/mips/include/asm/dwarf2.h
+@@ -0,0 +1,6 @@
++#ifndef _ASM_MIPS_DWARF2_H
++#define _ASM_MIPS_DWARF2_H
 +
-+#ifndef __ASSEMBLY__
-+#warning "asm/dwarf2.h should be only included in pure assembly files"
-+#endif
++#include <asm-generic/dwarf2.h>
 +
-+/*
-+ * Macros for dwarf2 CFI unwind table entries.
-+ * See "as.info" for details on these pseudo ops. Unfortunately
-+ * they are only supported in very new binutils, so define them
-+ * away for older version.
-+ */
++#endif /* _ASM_MIPS_DWARF2_H */
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index b188c79..0976f03 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -18,6 +18,30 @@
+ #include <asm/mipsregs.h>
+ #include <asm/asm-offsets.h>
+ #include <asm/thread_info.h>
++#include <asm/dwarf2.h>
 +
-+#ifdef CONFIG_AS_CFI
++/* Make the addition of cfi info a little easier. */
++	.macro cfi_rel_offset reg offset=0 docfi=0
++	.if \docfi
++	CFI_REL_OFFSET \reg, \offset
++	.endif
++	.endm
 +
-+#define CFI_STARTPROC		.cfi_startproc
-+#define CFI_ENDPROC		.cfi_endproc
-+#define CFI_DEF_CFA		.cfi_def_cfa
-+#define CFI_DEF_CFA_REGISTER	.cfi_def_cfa_register
-+#define CFI_DEF_CFA_OFFSET	.cfi_def_cfa_offset
-+#define CFI_ADJUST_CFA_OFFSET	.cfi_adjust_cfa_offset
-+#define CFI_OFFSET		.cfi_offset
-+#define CFI_REL_OFFSET		.cfi_rel_offset
-+#define CFI_REGISTER		.cfi_register
-+#define CFI_RESTORE		.cfi_restore
-+#define CFI_REMEMBER_STATE	.cfi_remember_state
-+#define CFI_RESTORE_STATE	.cfi_restore_state
-+#define CFI_UNDEFINED		.cfi_undefined
-+#define CFI_ESCAPE		.cfi_escape
++	.macro cfi_st reg offset=0 docfi=0
++	LONG_S	\reg, \offset(sp)
++	cfi_rel_offset \reg, \offset, \docfi
++	.endm
 +
-+#ifdef CONFIG_AS_CFI_SIGNAL_FRAME
-+#define CFI_SIGNAL_FRAME	.cfi_signal_frame
-+#else
-+#define CFI_SIGNAL_FRAME
-+#endif
++	.macro cfi_restore reg offset=0 docfi=0
++	.if \docfi
++	CFI_RESTORE \reg
++	.endif
++	.endm
 +
-+#if defined(CONFIG_AS_CFI_SECTIONS) && defined(__ASSEMBLY__)
-+	/*
-+	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
-+	 * The latter we currently just discard since we don't do DWARF
-+	 * unwinding at runtime.  So only the offline DWARF information is
-+	 * useful to anyone.  Note we should not use this directive if this
-+	 * file is used in the vDSO assembly, or if vmlinux.lds.S gets
-+	 * changed so it doesn't discard .eh_frame.
-+	 */
-+	.cfi_sections .debug_frame
-+#endif
++	.macro cfi_ld reg offset=0 docfi=0
++	LONG_L	\reg, \offset(sp)
++	cfi_restore \reg \offset \docfi
++	.endm
+ 
+ #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+ #define STATMASK 0x3f
+@@ -25,14 +49,14 @@
+ #define STATMASK 0x1f
+ #endif
+ 
+-		.macro	SAVE_AT
++		.macro	SAVE_AT docfi=0
+ 		.set	push
+ 		.set	noat
+-		LONG_S	$1, PT_R1(sp)
++		cfi_st	$1, PT_R1, \docfi
+ 		.set	pop
+ 		.endm
+ 
+-		.macro	SAVE_TEMP
++		.macro	SAVE_TEMP docfi=0
+ #ifdef CONFIG_CPU_HAS_SMARTMIPS
+ 		mflhxu	v1
+ 		LONG_S	v1, PT_LO(sp)
+@@ -44,20 +68,20 @@
+ 		mfhi	v1
+ #endif
+ #ifdef CONFIG_32BIT
+-		LONG_S	$8, PT_R8(sp)
+-		LONG_S	$9, PT_R9(sp)
++		cfi_st	$8, PT_R8, \docfi
++		cfi_st	$9, PT_R9, \docfi
+ #endif
+-		LONG_S	$10, PT_R10(sp)
+-		LONG_S	$11, PT_R11(sp)
+-		LONG_S	$12, PT_R12(sp)
++		cfi_st	$10, PT_R10, \docfi
++		cfi_st	$11, PT_R11, \docfi
++		cfi_st	$12, PT_R12, \docfi
+ #ifndef CONFIG_CPU_HAS_SMARTMIPS
+ 		LONG_S	v1, PT_HI(sp)
+ 		mflo	v1
+ #endif
+-		LONG_S	$13, PT_R13(sp)
+-		LONG_S	$14, PT_R14(sp)
+-		LONG_S	$15, PT_R15(sp)
+-		LONG_S	$24, PT_R24(sp)
++		cfi_st	$13, PT_R13, \docfi
++		cfi_st	$14, PT_R14, \docfi
++		cfi_st	$15, PT_R15, \docfi
++		cfi_st	$24, PT_R24, \docfi
+ #ifndef CONFIG_CPU_HAS_SMARTMIPS
+ 		LONG_S	v1, PT_LO(sp)
+ #endif
+@@ -71,16 +95,16 @@
+ #endif
+ 		.endm
+ 
+-		.macro	SAVE_STATIC
+-		LONG_S	$16, PT_R16(sp)
+-		LONG_S	$17, PT_R17(sp)
+-		LONG_S	$18, PT_R18(sp)
+-		LONG_S	$19, PT_R19(sp)
+-		LONG_S	$20, PT_R20(sp)
+-		LONG_S	$21, PT_R21(sp)
+-		LONG_S	$22, PT_R22(sp)
+-		LONG_S	$23, PT_R23(sp)
+-		LONG_S	$30, PT_R30(sp)
++		.macro	SAVE_STATIC docfi=0
++		cfi_st	$16, PT_R16, \docfi
++		cfi_st	$17, PT_R17, \docfi
++		cfi_st	$18, PT_R18, \docfi
++		cfi_st	$19, PT_R19, \docfi
++		cfi_st	$20, PT_R20, \docfi
++		cfi_st	$21, PT_R21, \docfi
++		cfi_st	$22, PT_R22, \docfi
++		cfi_st	$23, PT_R23, \docfi
++		cfi_st	$30, PT_R30, \docfi
+ 		.endm
+ 
+ #ifdef CONFIG_SMP
+@@ -143,7 +167,7 @@
+ 		.endm
+ #endif
+ 
+-		.macro	SAVE_SOME
++		.macro	SAVE_SOME docfi=0
+ 		.set	push
+ 		.set	noat
+ 		.set	reorder
+@@ -157,16 +181,26 @@
+ 		get_saved_sp
+ #ifndef CONFIG_CPU_DADDI_WORKAROUNDS
+ 8:		move	k0, sp
++		.if \docfi
++		CFI_REGISTER sp, k0
++		.endif
+ 		PTR_SUBU sp, k1, PT_SIZE
+ #else
+ 		.set	at=k0
+ 8:		PTR_SUBU k1, PT_SIZE
+ 		.set	noat
+ 		move	k0, sp
++		.if \docfi
++		CFI_REGISTER sp, k0
++		.endif
+ 		move	sp, k1
+ #endif
+-		LONG_S	k0, PT_R29(sp)
+-		LONG_S	$3, PT_R3(sp)
++		.if \docfi
++		CFI_DEF_CFA sp,0
++		.endif
++		cfi_st	k0, PT_R29, \docfi
++		cfi_rel_offset  sp, PT_R29, \docfi
++		cfi_st	v1, PT_R3, \docfi
+ 		/*
+ 		 * You might think that you don't need to save $0,
+ 		 * but the FPU emulator and gdb remote debug stub
+@@ -174,23 +208,26 @@
+ 		 */
+ 		LONG_S	$0, PT_R0(sp)
+ 		mfc0	v1, CP0_STATUS
+-		LONG_S	$2, PT_R2(sp)
++		cfi_st	v0, PT_R2, \docfi
+ 		LONG_S	v1, PT_STATUS(sp)
+-		LONG_S	$4, PT_R4(sp)
++		cfi_st	$4, PT_R4, \docfi
+ 		mfc0	v1, CP0_CAUSE
+-		LONG_S	$5, PT_R5(sp)
++		cfi_st	$5, PT_R5, \docfi
+ 		LONG_S	v1, PT_CAUSE(sp)
+-		LONG_S	$6, PT_R6(sp)
++		cfi_st	$6, PT_R6, \docfi
+ 		MFC0	v1, CP0_EPC
+-		LONG_S	$7, PT_R7(sp)
++		cfi_st	$7, PT_R7, \docfi
+ #ifdef CONFIG_64BIT
+-		LONG_S	$8, PT_R8(sp)
+-		LONG_S	$9, PT_R9(sp)
++		cfi_st	$8, PT_R8, \docfi
++		cfi_st	$9, PT_R9, \docfi
+ #endif
+ 		LONG_S	v1, PT_EPC(sp)
+-		LONG_S	$25, PT_R25(sp)
+-		LONG_S	$28, PT_R28(sp)
+-		LONG_S	$31, PT_R31(sp)
++		.if \docfi
++		CFI_REL_OFFSET ra, PT_EPC
++		.endif
++		cfi_st	$25, PT_R25, \docfi
++		cfi_st	$28, PT_R28, \docfi
++		cfi_st	$31, PT_R31, \docfi
+ 		ori	$28, sp, _THREAD_MASK
+ 		xori	$28, _THREAD_MASK
+ #ifdef CONFIG_CPU_CAVIUM_OCTEON
+@@ -200,21 +237,21 @@
+ 		.set	pop
+ 		.endm
+ 
+-		.macro	SAVE_ALL
+-		SAVE_SOME
+-		SAVE_AT
+-		SAVE_TEMP
+-		SAVE_STATIC
++		.macro	SAVE_ALL docfi=0
++		SAVE_SOME \docfi
++		SAVE_AT \docfi
++		SAVE_TEMP \docfi
++		SAVE_STATIC \docfi
+ 		.endm
+ 
+-		.macro	RESTORE_AT
++		.macro	RESTORE_AT docfi=0
+ 		.set	push
+ 		.set	noat
+-		LONG_L	$1,  PT_R1(sp)
++		cfi_ld	$1, PT_R1, \docfi
+ 		.set	pop
+ 		.endm
+ 
+-		.macro	RESTORE_TEMP
++		.macro	RESTORE_TEMP docfi=0
+ #ifdef CONFIG_CPU_CAVIUM_OCTEON
+ 		/* Restore the Octeon multiplier state */
+ 		jal	octeon_mult_restore
+@@ -233,33 +270,33 @@
+ 		mthi	$24
+ #endif
+ #ifdef CONFIG_32BIT
+-		LONG_L	$8, PT_R8(sp)
+-		LONG_L	$9, PT_R9(sp)
++		cfi_ld	$8, PT_R8, \docfi
++		cfi_ld	$9, PT_R9, \docfi
+ #endif
+-		LONG_L	$10, PT_R10(sp)
+-		LONG_L	$11, PT_R11(sp)
+-		LONG_L	$12, PT_R12(sp)
+-		LONG_L	$13, PT_R13(sp)
+-		LONG_L	$14, PT_R14(sp)
+-		LONG_L	$15, PT_R15(sp)
+-		LONG_L	$24, PT_R24(sp)
++		cfi_ld	$10, PT_R10, \docfi
++		cfi_ld	$11, PT_R11, \docfi
++		cfi_ld	$12, PT_R12, \docfi
++		cfi_ld	$13, PT_R13, \docfi
++		cfi_ld	$14, PT_R14, \docfi
++		cfi_ld	$15, PT_R15, \docfi
++		cfi_ld	$24, PT_R24, \docfi
+ 		.endm
+ 
+-		.macro	RESTORE_STATIC
+-		LONG_L	$16, PT_R16(sp)
+-		LONG_L	$17, PT_R17(sp)
+-		LONG_L	$18, PT_R18(sp)
+-		LONG_L	$19, PT_R19(sp)
+-		LONG_L	$20, PT_R20(sp)
+-		LONG_L	$21, PT_R21(sp)
+-		LONG_L	$22, PT_R22(sp)
+-		LONG_L	$23, PT_R23(sp)
+-		LONG_L	$30, PT_R30(sp)
++		.macro	RESTORE_STATIC docfi=0
++		cfi_ld	$16, PT_R16, \docfi
++		cfi_ld	$17, PT_R17, \docfi
++		cfi_ld	$18, PT_R18, \docfi
++		cfi_ld	$19, PT_R19, \docfi
++		cfi_ld	$20, PT_R20, \docfi
++		cfi_ld	$21, PT_R21, \docfi
++		cfi_ld	$22, PT_R22, \docfi
++		cfi_ld	$23, PT_R23, \docfi
++		cfi_ld	$30, PT_R30, \docfi
+ 		.endm
+ 
+ #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+ 
+-		.macro	RESTORE_SOME
++		.macro	RESTORE_SOME docfi=0
+ 		.set	push
+ 		.set	reorder
+ 		.set	noat
+@@ -274,30 +311,30 @@
+ 		and	v0, v1
+ 		or	v0, a0
+ 		mtc0	v0, CP0_STATUS
+-		LONG_L	$31, PT_R31(sp)
+-		LONG_L	$28, PT_R28(sp)
+-		LONG_L	$25, PT_R25(sp)
+-		LONG_L	$7,  PT_R7(sp)
+-		LONG_L	$6,  PT_R6(sp)
+-		LONG_L	$5,  PT_R5(sp)
+-		LONG_L	$4,  PT_R4(sp)
+-		LONG_L	$3,  PT_R3(sp)
+-		LONG_L	$2,  PT_R2(sp)
++		cfi_ld	$31, PT_R31, \docfi
++		cfi_ld	$28, PT_R28, \docfi
++		cfi_ld	$25, PT_R25, \docfi
++		cfi_ld	$7,  PT_R7, \docfi
++		cfi_ld	$6,  PT_R6, \docfi
++		cfi_ld	$5,  PT_R5, \docfi
++		cfi_ld	$4,  PT_R4, \docfi
++		cfi_ld	$3,  PT_R3, \docfi
++		cfi_ld	$2,  PT_R2, \docfi
+ 		.set	pop
+ 		.endm
+ 
+-		.macro	RESTORE_SP_AND_RET
++		.macro	RESTORE_SP_AND_RET docfi=0
+ 		.set	push
+ 		.set	noreorder
+ 		LONG_L	k0, PT_EPC(sp)
+-		LONG_L	sp, PT_R29(sp)
++		cfi_ld	sp, PT_R29, \docfi
+ 		jr	k0
+ 		 rfe
+ 		.set	pop
+ 		.endm
+ 
+ #else
+-		.macro	RESTORE_SOME
++		.macro	RESTORE_SOME docfi=0
+ 		.set	push
+ 		.set	reorder
+ 		.set	noat
+@@ -314,24 +351,28 @@
+ 		mtc0	v0, CP0_STATUS
+ 		LONG_L	v1, PT_EPC(sp)
+ 		MTC0	v1, CP0_EPC
+-		LONG_L	$31, PT_R31(sp)
+-		LONG_L	$28, PT_R28(sp)
+-		LONG_L	$25, PT_R25(sp)
++		cfi_ld	$31, PT_R31, \docfi
++		cfi_ld	$28, PT_R28, \docfi
++		cfi_ld	$25, PT_R25, \docfi
+ #ifdef CONFIG_64BIT
+-		LONG_L	$8, PT_R8(sp)
+-		LONG_L	$9, PT_R9(sp)
++		cfi_ld	$8, PT_R8, \docfi
++		cfi_ld	$9, PT_R9, \docfi
+ #endif
+-		LONG_L	$7,  PT_R7(sp)
+-		LONG_L	$6,  PT_R6(sp)
+-		LONG_L	$5,  PT_R5(sp)
+-		LONG_L	$4,  PT_R4(sp)
+-		LONG_L	$3,  PT_R3(sp)
+-		LONG_L	$2,  PT_R2(sp)
++		cfi_ld	$7,  PT_R7, \docfi
++		cfi_ld	$6,  PT_R6, \docfi
++		cfi_ld	$5,  PT_R5, \docfi
++		cfi_ld	$4,  PT_R4, \docfi
++		cfi_ld	$3,  PT_R3, \docfi
++		cfi_ld	$2,  PT_R2, \docfi
+ 		.set	pop
+ 		.endm
+ 
+-		.macro	RESTORE_SP_AND_RET
+-		LONG_L	sp, PT_R29(sp)
++		.macro	RESTORE_SP docfi=0
++		cfi_ld	sp, PT_R29, \docfi
++		.endm
 +
-+#else
-+
-+/*
-+ * Due to the structure of pre-exisiting code, don't use assembler line
-+ * comment character # to ignore the arguments. Instead, use a dummy macro.
-+ */
-+.macro cfi_ignore a=0, b=0, c=0, d=0
-+.endm
-+
-+#define CFI_STARTPROC		cfi_ignore
-+#define CFI_ENDPROC		cfi_ignore
-+#define CFI_DEF_CFA		cfi_ignore
-+#define CFI_DEF_CFA_REGISTER	cfi_ignore
-+#define CFI_DEF_CFA_OFFSET	cfi_ignore
-+#define CFI_ADJUST_CFA_OFFSET	cfi_ignore
-+#define CFI_OFFSET		cfi_ignore
-+#define CFI_REL_OFFSET		cfi_ignore
-+#define CFI_REGISTER		cfi_ignore
-+#define CFI_RESTORE		cfi_ignore
-+#define CFI_REMEMBER_STATE	cfi_ignore
-+#define CFI_RESTORE_STATE	cfi_ignore
-+#define CFI_UNDEFINED		cfi_ignore
-+#define CFI_ESCAPE		cfi_ignore
-+#define CFI_SIGNAL_FRAME	cfi_ignore
-+
-+#endif
-+
-+#endif /* _ASM_GENERIC_DWARF2_H */
++		.macro	RESTORE_SP_AND_RET docfi=0
++		RESTORE_SP \docfi
+ 		.set	arch=r4000
+ 		eret
+ 		.set	mips0
+@@ -339,24 +380,20 @@
+ 
+ #endif
+ 
+-		.macro	RESTORE_SP
+-		LONG_L	sp, PT_R29(sp)
+-		.endm
+-
+-		.macro	RESTORE_ALL
+-		RESTORE_TEMP
+-		RESTORE_STATIC
+-		RESTORE_AT
+-		RESTORE_SOME
+-		RESTORE_SP
++		.macro	RESTORE_ALL docfi=0
++		RESTORE_TEMP \docfi
++		RESTORE_STATIC \docfi
++		RESTORE_AT \docfi
++		RESTORE_SOME \docfi
++		RESTORE_SP \docfi
+ 		.endm
+ 
+-		.macro	RESTORE_ALL_AND_RET
+-		RESTORE_TEMP
+-		RESTORE_STATIC
+-		RESTORE_AT
+-		RESTORE_SOME
+-		RESTORE_SP_AND_RET
++		.macro	RESTORE_ALL_AND_RET docfi=0
++		RESTORE_TEMP \docfi
++		RESTORE_STATIC \docfi
++		RESTORE_AT \docfi
++		RESTORE_SOME \docfi
++		RESTORE_SP_AND_RET \docfi
+ 		.endm
+ 
+ /*
+diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
+index 4353d32..6eb3b28 100644
+--- a/arch/mips/kernel/entry.S
++++ b/arch/mips/kernel/entry.S
+@@ -144,7 +144,7 @@ FEXPORT(syscall_exit_partial)
+ 	li	t0, _TIF_ALLWORK_MASK
+ 	and	t0, a2
+ 	beqz	t0, restore_partial
+-	SAVE_STATIC
++	SAVE_STATIC docfi=0
+ syscall_exit_work:
+ 	LONG_L	t0, PT_STATUS(sp)		# returning to kernel mode?
+ 	andi	t0, t0, KU_USER
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index ac35e12..68c8d34 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -151,6 +151,7 @@ LEAF(__r4k_wait)
+ 	.align	5
+ BUILD_ROLLBACK_PROLOGUE handle_int
+ NESTED(handle_int, PT_SIZE, sp)
++	CFI_SIGNAL_FRAME
+ #ifdef CONFIG_TRACE_IRQFLAGS
+ 	/*
+ 	 * Check to see if the interrupted code has just disabled
+@@ -182,18 +183,18 @@ NESTED(handle_int, PT_SIZE, sp)
+ 1:
+ 	.set pop
+ #endif
+-	SAVE_ALL
++	SAVE_ALL docfi=1
+ 	CLI
+ 	TRACE_IRQS_OFF
+ 
+ 	LONG_L	s0, TI_REGS($28)
+ 	LONG_S	sp, TI_REGS($28)
+-	PTR_LA	ra, ret_from_irq
+ 	PTR_LA  v0, plat_irq_dispatch
+-	jr	v0
++	jal	v0
+ #ifdef CONFIG_CPU_MICROMIPS
+ 	nop
+ #endif
++	j	ret_from_irq
+ 	END(handle_int)
+ 
+ 	__INIT
+@@ -233,8 +234,8 @@ NESTED(except_vec_ejtag_debug, 0, sp)
+  */
+ BUILD_ROLLBACK_PROLOGUE except_vec_vi
+ NESTED(except_vec_vi, 0, sp)
+-	SAVE_SOME
+-	SAVE_AT
++	SAVE_SOME docfi=1
++	SAVE_AT docfi=1
+ 	.set	push
+ 	.set	noreorder
+ 	PTR_LA	v1, except_vec_vi_handler
+@@ -263,8 +264,8 @@ NESTED(except_vec_vi_handler, 0, sp)
+ 
+ 	LONG_L	s0, TI_REGS($28)
+ 	LONG_S	sp, TI_REGS($28)
+-	PTR_LA	ra, ret_from_irq
+-	jr	v0
++	jal	v0
++	j	ret_from_irq
+ 	END(except_vec_vi_handler)
+ 
+ /*
+@@ -322,6 +323,7 @@ NESTED(except_vec_nmi, 0, sp)
+ 	__FINIT
+ 
+ NESTED(nmi_handler, PT_SIZE, sp)
++	CFI_SIGNAL_FRAME
+ 	.set	push
+ 	.set	noat
+ 	/*
+@@ -400,6 +402,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	.macro	__BUILD_HANDLER exception handler clear verbose ext
+ 	.align	5
+ 	NESTED(handle_\exception, PT_SIZE, sp)
++	CFI_SIGNAL_FRAME
+ 	.set	noat
+ 	SAVE_ALL
+ 	FEXPORT(handle_\exception\ext)
+@@ -407,8 +410,8 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	.set	at
+ 	__BUILD_\verbose \exception
+ 	move	a0, sp
+-	PTR_LA	ra, ret_from_exception
+-	j	do_\handler
++	jal	do_\handler
++	j	ret_from_exception
+ 	END(handle_\exception)
+ 	.endm
+ 
+diff --git a/arch/mips/mm/tlbex-fault.S b/arch/mips/mm/tlbex-fault.S
+index 318855e..c91cde8 100644
+--- a/arch/mips/mm/tlbex-fault.S
++++ b/arch/mips/mm/tlbex-fault.S
+@@ -12,14 +12,15 @@
+ 
+ 	.macro tlb_do_page_fault, write
+ 	NESTED(tlb_do_page_fault_\write, PT_SIZE, sp)
+-	SAVE_ALL
++	CFI_SIGNAL_FRAME
++	SAVE_ALL docfi=1
+ 	MFC0	a2, CP0_BADVADDR
+ 	KMODE
+ 	move	a0, sp
+ 	REG_S	a2, PT_BVADDR(sp)
+ 	li	a1, \write
+-	PTR_LA	ra, ret_from_exception
+-	j	do_page_fault
++	jal	do_page_fault
++	j	ret_from_exception
+ 	END(tlb_do_page_fault_\write)
+ 	.endm
+ 
 -- 
 1.8.3.1

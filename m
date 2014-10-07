@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:30:39 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:50941 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:30:56 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51019 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010661AbaJGFaXD6YJU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:23 +0200
+        with ESMTP id S27010668AbaJGFa21ch7b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=cIdAPz0kaAL1xF4qWYWwTieXLQYa14OC7yN1haJYCOg=;
-        b=mEcYn3E6/MXETv4khprhc+TQg1Vz7li3ca6Mz3coc0YhEizEHwEvQQe0EAR9of9vB1XRMgfsaBfr2k1ykxp1wYN9rYgHFE5aM+Ux9wuUB69cpPTDyJN6KESaJNxzVssq6ndDn+YjP5kuOB3yKfShjbQO9ZtY0mcRy2VlsoCHpmk=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=a8nffvwre76GzKAGA5GKBqSzTARe65bfOAZvqVBTm20=;
+        b=rzTLL9SHibll7GxQfoXM/KVeGBVpRS/29ckgctR2fI09l2tMzsCRJAs+ZsYJI9kLfp9jdyedV/6UeTlD9aNrKHZEb/+1zbD1l15P/942y7gCG8plKO6KfqHU/T1Zq51mbiXa1zSuKBnLTpWcJj09pFXwTCobCTJuRIRMOn2k7lI=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNLi-002eGe-6x
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:14 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32897 helo=localhost)
+        id 1XbNLq-002eq2-6B
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:22 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32899 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNKb-002Zwh-2p; Tue, 07 Oct 2014 05:29:05 +0000
+        id 1XbNKf-002Zzp-HF; Tue, 07 Oct 2014 05:29:10 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -32,12 +32,12 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
         Guenter Roeck <linux@roeck-us.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Joshua Thompson <funaho@jurai.org>
-Subject: [PATCH 04/44] m68k: Replace mach_power_off with pm_power_off
-Date:   Mon,  6 Oct 2014 22:28:06 -0700
-Message-Id: <1412659726-29957-5-git-send-email-linux@roeck-us.net>
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 06/44] gpio-poweroff: Drop reference to pm_power_off from devicetree bindings
+Date:   Mon,  6 Oct 2014 22:28:08 -0700
+Message-Id: <1412659726-29957-7-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
@@ -47,13 +47,13 @@ X-CTCH-PVer: 0000001
 X-CTCH-Spam: Unknown
 X-CTCH-VOD: Unknown
 X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020204.54337A66.00C7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-RefID: str=0001.0A020208.54337A6E.007A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 499
+X-CTCH-SenderID-TotalMessages: 573
 X-CTCH-SenderID-TotalSpam: 0
 X-CTCH-SenderID-TotalSuspected: 0
 X-CTCH-SenderID-TotalConfirmed: 0
@@ -73,7 +73,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42994
+X-archive-position: 42995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,120 +90,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace mach_power_off with pm_power_off to simplify the subsequent
-move of pm_power_off to generic code.
+pm_power_off is an implementation detail. Replace it with a more generic
+description of the driver's functionality.
 
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Greg Ungerer <gerg@uclinux.org>
-Cc: Joshua Thompson <funaho@jurai.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Pawel Moll <pawel.moll@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/m68k/emu/natfeat.c         | 3 ++-
- arch/m68k/include/asm/machdep.h | 1 -
- arch/m68k/kernel/process.c      | 5 +++--
- arch/m68k/kernel/setup_mm.c     | 1 -
- arch/m68k/kernel/setup_no.c     | 1 -
- arch/m68k/mac/config.c          | 3 ++-
- 6 files changed, 7 insertions(+), 7 deletions(-)
+ Documentation/devicetree/bindings/gpio/gpio-poweroff.txt | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/m68k/emu/natfeat.c b/arch/m68k/emu/natfeat.c
-index 71b78ec..91e2ae7 100644
---- a/arch/m68k/emu/natfeat.c
-+++ b/arch/m68k/emu/natfeat.c
-@@ -15,6 +15,7 @@
- #include <linux/string.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/pm.h>
- #include <linux/io.h>
- #include <asm/machdep.h>
- #include <asm/natfeat.h>
-@@ -90,5 +91,5 @@ void __init nf_init(void)
- 	pr_info("NatFeats found (%s, %lu.%lu)\n", buf, version >> 16,
- 		version & 0xffff);
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt b/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
+index d4eab92..c95a1a6 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
++++ b/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
+@@ -2,12 +2,12 @@ Driver a GPIO line that can be used to turn the power off.
  
--	mach_power_off = nf_poweroff;
-+	pm_power_off = nf_poweroff;
- }
-diff --git a/arch/m68k/include/asm/machdep.h b/arch/m68k/include/asm/machdep.h
-index 953ca21..f9fac51 100644
---- a/arch/m68k/include/asm/machdep.h
-+++ b/arch/m68k/include/asm/machdep.h
-@@ -24,7 +24,6 @@ extern int (*mach_set_rtc_pll)(struct rtc_pll_info *);
- extern int (*mach_set_clock_mmss)(unsigned long);
- extern void (*mach_reset)( void );
- extern void (*mach_halt)( void );
--extern void (*mach_power_off)( void );
- extern unsigned long (*mach_hd_init) (unsigned long, unsigned long);
- extern void (*mach_hd_setup)(char *, int *);
- extern long mach_max_dma_address;
-diff --git a/arch/m68k/kernel/process.c b/arch/m68k/kernel/process.c
-index c55ff71..afe3d6e 100644
---- a/arch/m68k/kernel/process.c
-+++ b/arch/m68k/kernel/process.c
-@@ -22,6 +22,7 @@
- #include <linux/unistd.h>
- #include <linux/ptrace.h>
- #include <linux/user.h>
-+#include <linux/pm.h>
- #include <linux/reboot.h>
- #include <linux/init_task.h>
- #include <linux/mqueue.h>
-@@ -77,8 +78,8 @@ void machine_halt(void)
+ The driver supports both level triggered and edge triggered power off.
+ At driver load time, the driver will request the given gpio line and
+-install a pm_power_off handler. If the optional properties 'input' is
+-not found, the GPIO line will be driven in the inactive
++install a handler to power off the system. If the optional properties
++'input' is not found, the GPIO line will be driven in the inactive
+ state. Otherwise its configured as an input.
  
- void machine_power_off(void)
- {
--	if (mach_power_off)
--		mach_power_off();
-+	if (pm_power_off)
-+		pm_power_off();
- 	for (;;);
- }
+-When the pm_power_off is called, the gpio is configured as an output,
+-and drive active, so triggering a level triggered power off
++When the the poweroff handler is called, the gpio is configured as an
++output, and drive active, so triggering a level triggered power off
+ condition. This will also cause an inactive->active edge condition, so
+ triggering positive edge triggered power off. After a delay of 100ms,
+ the GPIO is set to inactive, thus causing an active->inactive edge,
+@@ -24,7 +24,7 @@ Required properties:
  
-diff --git a/arch/m68k/kernel/setup_mm.c b/arch/m68k/kernel/setup_mm.c
-index 5b8ec4d..002fea6 100644
---- a/arch/m68k/kernel/setup_mm.c
-+++ b/arch/m68k/kernel/setup_mm.c
-@@ -96,7 +96,6 @@ EXPORT_SYMBOL(mach_get_rtc_pll);
- EXPORT_SYMBOL(mach_set_rtc_pll);
- void (*mach_reset)( void );
- void (*mach_halt)( void );
--void (*mach_power_off)( void );
- long mach_max_dma_address = 0x00ffffff; /* default set to the lower 16MB */
- #ifdef CONFIG_HEARTBEAT
- void (*mach_heartbeat) (int);
-diff --git a/arch/m68k/kernel/setup_no.c b/arch/m68k/kernel/setup_no.c
-index 88c27d9..1520156 100644
---- a/arch/m68k/kernel/setup_no.c
-+++ b/arch/m68k/kernel/setup_no.c
-@@ -55,7 +55,6 @@ int (*mach_hwclk) (int, struct rtc_time*);
- /* machine dependent reboot functions */
- void (*mach_reset)(void);
- void (*mach_halt)(void);
--void (*mach_power_off)(void);
+ Optional properties:
+ - input : Initially configure the GPIO line as an input. Only reconfigure
+-  it to an output when the pm_power_off function is called. If this optional
++  it to an output when the poweroff handler is called. If this optional
+   property is not specified, the GPIO is initialized as an output in its
+   inactive state.
  
- #ifdef CONFIG_M68000
- #if defined(CONFIG_M68328)
-diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
-index a471eab..677913ff 100644
---- a/arch/m68k/mac/config.c
-+++ b/arch/m68k/mac/config.c
-@@ -16,6 +16,7 @@
- #include <linux/tty.h>
- #include <linux/console.h>
- #include <linux/interrupt.h>
-+#include <linux/pm.h>
- /* keyb */
- #include <linux/random.h>
- #include <linux/delay.h>
-@@ -159,7 +160,7 @@ void __init config_mac(void)
- 	mach_set_clock_mmss = mac_set_clock_mmss;
- 	mach_reset = mac_reset;
- 	mach_halt = mac_poweroff;
--	mach_power_off = mac_poweroff;
-+	pm_power_off = mac_poweroff;
- 	mach_max_dma_address = 0xffffffff;
- #if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
- 	mach_beep = mac_mksound;
 -- 
 1.9.1

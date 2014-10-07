@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 02:30:08 +0200 (CEST)
-Received: from mail-lb0-f174.google.com ([209.85.217.174]:42264 "EHLO
-        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010553AbaJGAaHJudKf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 02:30:07 +0200
-Received: by mail-lb0-f174.google.com with SMTP id p9so5223107lbv.19
-        for <linux-mips@linux-mips.org>; Mon, 06 Oct 2014 17:30:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=eIX9ojz/21xtQSNYqt7IqIZEAaydxUf58gJqd7jruJQ=;
-        b=N/5p5/6LBvqE/ljTyZB8nG/tGRevKfNPQW065AbB97vdLCKwQZUff6m84agia68xR0
-         eNX7NYVCT1Vu1CAfez3iLcQFEweNo67G4zbgK32TNkO+SUN44HjwHX2QEK3PGpKrxgcT
-         UiiBfvdgI1d9fkSFYZgWGmJZhSJ+Jkhn6mJp+Hj9rZH2GqVWMg+eUnyBy8G5Txie/iOf
-         0UsTqT6qSQ1iJvAJuszeD1PdNgBWQ4K+P/kBXNx2BK3/mFi+pyLUout1eNvevE93Nj+m
-         Af0t357yd1wzKt+RGDQe/w8V4g7D5b2Yfa29RG3uh9uQvHj/GPQVFa5kqFJC603KOvzZ
-         WLlg==
-X-Gm-Message-State: ALoCoQme5Lr9tQIjZw5YW7o5Nne4GLOrKjI/U44yX6bF/b0X/zZgR64xRXGYpoa8ibFB5+2EK6R7
-X-Received: by 10.152.21.42 with SMTP id s10mr230271lae.61.1412641801647; Mon,
- 06 Oct 2014 17:30:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 02:32:55 +0200 (CEST)
+Received: from mail-bl2on0083.outbound.protection.outlook.com ([65.55.169.83]:29797
+        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010553AbaJGAcxuerSQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Oct 2014 02:32:53 +0200
+Received: from dl.caveonetworks.com (64.2.3.195) by
+ DM2PR07MB591.namprd07.prod.outlook.com (10.141.176.142) with Microsoft SMTP
+ Server (TLS) id 15.0.1044.10; Tue, 7 Oct 2014 00:32:39 +0000
+Message-ID: <543334A2.3060203@caviumnetworks.com>
+Date:   Mon, 6 Oct 2014 17:32:34 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Received: by 10.152.36.106 with HTTP; Mon, 6 Oct 2014 17:29:41 -0700 (PDT)
-In-Reply-To: <CA+=Sn1n_S-JT1pZwMtDGM+Vkbp7rsg4bPAeESwJpSkbx8vqn5g@mail.gmail.com>
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
- <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com>
- <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com>
- <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net>
- <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx>
- <CA+=Sn1nR2ugXUf=V9F9O6VLAP1d6WhBDioZzu0G05-8z6KMMuA@mail.gmail.com>
- <20141007002147.GE23797@brightrain.aerifal.cx> <CA+=Sn1n_S-JT1pZwMtDGM+Vkbp7rsg4bPAeESwJpSkbx8vqn5g@mail.gmail.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Mon, 6 Oct 2014 17:29:41 -0700
-Message-ID: <CALCETrXz+rYB0JxuXLPZroWCsqHqajfemiG1ohS7o33QebwQkA@mail.gmail.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-To:     Andrew Pinski <pinskia@gmail.com>
-Cc:     Rich Felker <dalias@libc.org>,
-        David Daney <ddaney@caviumnetworks.com>,
+To:     Andy Lutomirski <luto@amacapital.net>
+CC:     Andrew Pinski <pinskia@gmail.com>, Rich Felker <dalias@libc.org>,
         David Daney <ddaney.cavm@gmail.com>,
         GNU C Library <libc-alpha@sourceware.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         David Daney <david.daney@cavium.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com> <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net> <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx> <CA+=Sn1nR2ugXUf=V9F9O6VLAP1d6WhBDioZzu0G05-8z6KMMuA@mail.gmail.com> <20141007002147.GE23797@brightrain.aerifal.cx> <CA+=Sn1n_S-JT1pZwMtDGM+Vkbp7rsg4bPAeESwJpSkbx8vqn5g@mail.gmail.com> <CALCETrXz+rYB0JxuXLPZroWCsqHqajfemiG1ohS7o33QebwQkA@mail.gmail.com>
+In-Reply-To: <CALCETrXz+rYB0JxuXLPZroWCsqHqajfemiG1ohS7o33QebwQkA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-ClientProxiedBy: BLUPR07CA078.namprd07.prod.outlook.com (25.160.24.33) To
+ DM2PR07MB591.namprd07.prod.outlook.com (10.141.176.142)
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:DM2PR07MB591;
+X-Forefront-PRVS: 035748864E
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(189002)(479174003)(377454003)(24454002)(199003)(51704005)(66066001)(20776003)(47776003)(81156004)(107046002)(21056001)(85852003)(65956001)(99136001)(65816999)(76176999)(92726001)(92566001)(50466002)(97736003)(87976001)(4396001)(31966008)(110136001)(40100002)(102836001)(106356001)(65806001)(105586002)(23676002)(69596002)(80022003)(87266999)(95666004)(50986999)(101416001)(83506001)(120916001)(19580395003)(42186005)(19580405001)(80316001)(33656002)(93886004)(85306004)(36756003)(99396003)(10300001)(54356999)(76482002)(77096002)(46102003)(122386002)(53416004);DIR:OUT;SFP:1101;SCL:1;SRVR:DM2PR07MB591;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42983
+X-archive-position: 42984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,44 +53,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 6, 2014 at 5:28 PM, Andrew Pinski <pinskia@gmail.com> wrote:
-> On Mon, Oct 6, 2014 at 5:21 PM, Rich Felker <dalias@libc.org> wrote:
->> On Mon, Oct 06, 2014 at 05:11:38PM -0700, Andrew Pinski wrote:
->>> On Mon, Oct 6, 2014 at 5:05 PM, Rich Felker <dalias@libc.org> wrote:
->>> > On Mon, Oct 06, 2014 at 04:48:52PM -0700, David Daney wrote:
->>> >> On 10/06/2014 04:38 PM, Andy Lutomirski wrote:
->>> >> >On 10/06/2014 02:58 PM, Rich Felker wrote:
->>> >> >>On Mon, Oct 06, 2014 at 02:45:29PM -0700, David Daney wrote:
->>> >> [...]
->>> >> >>This is a huge ill-designed mess.
->>> >> >
->>> >> >Amen.
->>> >> >
->>> >> >Can the kernel not just emulate the instructions directly?
->>> >>
->>> >> In theory it could, but since there can be implementation defined
->>> >> instructions, there is no way to achieve full instruction set
->>> >> coverage for all possible machines.
->>> >
->>> > Is the issue really implementation-defined instructions with delay
->>> > slots? If so it sounds like a made-up issue. They're not going to
->>> > occur in real binaries. Certainly a compiler is not going to generate
->>> > implementation-defined instructions, and if you're writing the asm by
->>> > hand, you just don't put floating point instructions in the delay
->>> > slot.
+On 10/06/2014 05:29 PM, Andy Lutomirski wrote:
+> On Mon, Oct 6, 2014 at 5:28 PM, Andrew Pinski <pinskia@gmail.com> wrote:
+>> On Mon, Oct 6, 2014 at 5:21 PM, Rich Felker <dalias@libc.org> wrote:
+>>> On Mon, Oct 06, 2014 at 05:11:38PM -0700, Andrew Pinski wrote:
+>>>> On Mon, Oct 6, 2014 at 5:05 PM, Rich Felker <dalias@libc.org> wrote:
+>>>>> On Mon, Oct 06, 2014 at 04:48:52PM -0700, David Daney wrote:
+>>>>>> On 10/06/2014 04:38 PM, Andy Lutomirski wrote:
+>>>>>>> On 10/06/2014 02:58 PM, Rich Felker wrote:
+>>>>>>>> On Mon, Oct 06, 2014 at 02:45:29PM -0700, David Daney wrote:
+>>>>>> [...]
+>>>>>>>> This is a huge ill-designed mess.
+>>>>>>>
+>>>>>>> Amen.
+>>>>>>>
+>>>>>>> Can the kernel not just emulate the instructions directly?
+>>>>>>
+>>>>>> In theory it could, but since there can be implementation defined
+>>>>>> instructions, there is no way to achieve full instruction set
+>>>>>> coverage for all possible machines.
+>>>>>
+>>>>> Is the issue really implementation-defined instructions with delay
+>>>>> slots? If so it sounds like a made-up issue. They're not going to
+>>>>> occur in real binaries. Certainly a compiler is not going to generate
+>>>>> implementation-defined instructions, and if you're writing the asm by
+>>>>> hand, you just don't put floating point instructions in the delay
+>>>>> slot.
+>>>>
+>>>> It is not the instruction with delay slot but rather the instruction
+>>>> in the delay slot itself.
 >>>
->>> It is not the instruction with delay slot but rather the instruction
->>> in the delay slot itself.
+>>> An instruction in the delay slot for the instruction being emulated?
+>>> How would that arise? Are there floating point instructions with delay
+>>> slots?
 >>
->> An instruction in the delay slot for the instruction being emulated?
->> How would that arise? Are there floating point instructions with delay
->> slots?
+>> Yes branches.
 >
-> Yes branches.
+> I admit I have no idea what's going here, but I find it hard to
+> believe that having the kernel fix this up for new code is desirable.
+> Unless MIPS can round-trip a trap *very* quickly, performance will be
+> awful for any code that has this problem.
+>
 
-I admit I have no idea what's going here, but I find it hard to
-believe that having the kernel fix this up for new code is desirable.
-Unless MIPS can round-trip a trap *very* quickly, performance will be
-awful for any code that has this problem.
+It is FPU *emulation*, of course the performance will suck.  We don't 
+care about performance, we just want it to execute correctly.
 
---Andy
+David Daney

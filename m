@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:31:12 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51094 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:31:30 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51217 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010667AbaJGFafDH4tf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:35 +0200
+        with ESMTP id S27010669AbaJGFapHOWJD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=fD06dG8SQ62nXw9VVhR1FS+Wpq813TK7ktqA6PlV+yc=;
-        b=6ADP5gE91z03FukcVhUoi6+FSfuklut1j2qFZfB9QofyjUib2eTdGKPE1pcsoxHicjrNfdzGpJ6wahNSJ9t+WPooKY8qJbUPHmSd8QJlF+5f7Tcspr+R1vKl/Ni1UqG2ujGaIJbmEcTCg5reNwMZjVTyOu1MUMIuXLOIuJ3fAHY=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=I3SR4Q/d4aHJTkUJ5Y3TcLRykrT2is/gOCrUpJykK/E=;
+        b=2AVU1WSm5W7j+0O6Np81P10ByPdZ5awONROIedEfs8wY4bXEI844lwiNtZrzuMM5D7gbI6Z6ac32sJowU/I3p6tpafFWZMocKRX7+XlZVDaRh172hpVd1anq17NVZa5p9x4Mog6tiGhehLXD2P7BkpvHQwUH/mEoNJ/7HqM8rfE=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNLw-002fiq-Pd
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:28 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32900 helo=localhost)
+        id 1XbNM6-002gzP-Sq
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:38 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32896 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNKh-002a15-Ll; Tue, 07 Oct 2014 05:29:12 +0000
+        id 1XbNKZ-002Zv6-0R; Tue, 07 Oct 2014 05:29:03 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -32,12 +32,11 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
         Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 07/44] qnap-poweroff: Drop reference to pm_power_off from devicetree bindings
-Date:   Mon,  6 Oct 2014 22:28:09 -0700
-Message-Id: <1412659726-29957-8-git-send-email-linux@roeck-us.net>
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>
+Subject: [PATCH 03/44] hibernate: Call have_kernel_poweroff instead of checking pm_power_off
+Date:   Mon,  6 Oct 2014 22:28:05 -0700
+Message-Id: <1412659726-29957-4-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
@@ -47,13 +46,13 @@ X-CTCH-PVer: 0000001
 X-CTCH-Spam: Unknown
 X-CTCH-VOD: Unknown
 X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020207.54337A75.0031,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-RefID: str=0001.0A020202.54337A7F.0031,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 631
+X-CTCH-SenderID-TotalMessages: 737
 X-CTCH-SenderID-TotalSpam: 0
 X-CTCH-SenderID-TotalSuspected: 0
 X-CTCH-SenderID-TotalConfirmed: 0
@@ -73,7 +72,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42996
+X-archive-position: 42997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,31 +89,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace reference to pm_power_off (which is an implementation detail)
-and replace it with a more generic description of the driver's functionality.
+Poweroff handlers may now be installed with register_poweroff_handler.
+Use the new API function have_kernel_poweroff to determine if a poweroff
+handler has been installed.
 
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Pawel Moll <pawel.moll@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Len Brown <len.brown@intel.com>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/power/hibernate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt b/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt
-index af25e77..1e2260a 100644
---- a/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt
-+++ b/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt
-@@ -3,8 +3,8 @@
- QNAP NAS devices have a microcontroller controlling the main power
- supply. This microcontroller is connected to UART1 of the Kirkwood and
- Orion5x SoCs. Sending the character 'A', at 19200 baud, tells the
--microcontroller to turn the power off. This driver adds a handler to
--pm_power_off which is called to turn the power off.
-+microcontroller to turn the power off. This driver installs a handler
-+to power off the system.
- 
- Synology NAS devices use a similar scheme, but a different baud rate,
- 9600, and a different character, '1'.
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index a9dfa79..20353c5 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -602,7 +602,7 @@ static void power_down(void)
+ 	case HIBERNATION_PLATFORM:
+ 		hibernation_platform_enter();
+ 	case HIBERNATION_SHUTDOWN:
+-		if (pm_power_off)
++		if (have_kernel_poweroff())
+ 			kernel_power_off();
+ 		break;
+ #ifdef CONFIG_SUSPEND
 -- 
 1.9.1

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:30:56 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51019 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:31:12 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51094 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010668AbaJGFa21ch7b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:28 +0200
+        with ESMTP id S27010667AbaJGFafDH4tf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=a8nffvwre76GzKAGA5GKBqSzTARe65bfOAZvqVBTm20=;
-        b=rzTLL9SHibll7GxQfoXM/KVeGBVpRS/29ckgctR2fI09l2tMzsCRJAs+ZsYJI9kLfp9jdyedV/6UeTlD9aNrKHZEb/+1zbD1l15P/942y7gCG8plKO6KfqHU/T1Zq51mbiXa1zSuKBnLTpWcJj09pFXwTCobCTJuRIRMOn2k7lI=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=fD06dG8SQ62nXw9VVhR1FS+Wpq813TK7ktqA6PlV+yc=;
+        b=6ADP5gE91z03FukcVhUoi6+FSfuklut1j2qFZfB9QofyjUib2eTdGKPE1pcsoxHicjrNfdzGpJ6wahNSJ9t+WPooKY8qJbUPHmSd8QJlF+5f7Tcspr+R1vKl/Ni1UqG2ujGaIJbmEcTCg5reNwMZjVTyOu1MUMIuXLOIuJ3fAHY=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNLq-002eq2-6B
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:22 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32899 helo=localhost)
+        id 1XbNLw-002fiq-Pd
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:28 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32900 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNKf-002Zzp-HF; Tue, 07 Oct 2014 05:29:10 +0000
+        id 1XbNKh-002a15-Ll; Tue, 07 Oct 2014 05:29:12 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -35,9 +35,9 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 06/44] gpio-poweroff: Drop reference to pm_power_off from devicetree bindings
-Date:   Mon,  6 Oct 2014 22:28:08 -0700
-Message-Id: <1412659726-29957-7-git-send-email-linux@roeck-us.net>
+Subject: [PATCH 07/44] qnap-poweroff: Drop reference to pm_power_off from devicetree bindings
+Date:   Mon,  6 Oct 2014 22:28:09 -0700
+Message-Id: <1412659726-29957-8-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
@@ -47,13 +47,13 @@ X-CTCH-PVer: 0000001
 X-CTCH-Spam: Unknown
 X-CTCH-VOD: Unknown
 X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020208.54337A6E.007A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-RefID: str=0001.0A020207.54337A75.0031,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 573
+X-CTCH-SenderID-TotalMessages: 631
 X-CTCH-SenderID-TotalSpam: 0
 X-CTCH-SenderID-TotalSuspected: 0
 X-CTCH-SenderID-TotalConfirmed: 0
@@ -73,7 +73,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42995
+X-archive-position: 42996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,46 +90,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-pm_power_off is an implementation detail. Replace it with a more generic
-description of the driver's functionality.
+Replace reference to pm_power_off (which is an implementation detail)
+and replace it with a more generic description of the driver's functionality.
 
 Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Pawel Moll <pawel.moll@arm.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- Documentation/devicetree/bindings/gpio/gpio-poweroff.txt | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt b/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
-index d4eab92..c95a1a6 100644
---- a/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
-+++ b/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
-@@ -2,12 +2,12 @@ Driver a GPIO line that can be used to turn the power off.
+diff --git a/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt b/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt
+index af25e77..1e2260a 100644
+--- a/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt
++++ b/Documentation/devicetree/bindings/power_supply/qnap-poweroff.txt
+@@ -3,8 +3,8 @@
+ QNAP NAS devices have a microcontroller controlling the main power
+ supply. This microcontroller is connected to UART1 of the Kirkwood and
+ Orion5x SoCs. Sending the character 'A', at 19200 baud, tells the
+-microcontroller to turn the power off. This driver adds a handler to
+-pm_power_off which is called to turn the power off.
++microcontroller to turn the power off. This driver installs a handler
++to power off the system.
  
- The driver supports both level triggered and edge triggered power off.
- At driver load time, the driver will request the given gpio line and
--install a pm_power_off handler. If the optional properties 'input' is
--not found, the GPIO line will be driven in the inactive
-+install a handler to power off the system. If the optional properties
-+'input' is not found, the GPIO line will be driven in the inactive
- state. Otherwise its configured as an input.
- 
--When the pm_power_off is called, the gpio is configured as an output,
--and drive active, so triggering a level triggered power off
-+When the the poweroff handler is called, the gpio is configured as an
-+output, and drive active, so triggering a level triggered power off
- condition. This will also cause an inactive->active edge condition, so
- triggering positive edge triggered power off. After a delay of 100ms,
- the GPIO is set to inactive, thus causing an active->inactive edge,
-@@ -24,7 +24,7 @@ Required properties:
- 
- Optional properties:
- - input : Initially configure the GPIO line as an input. Only reconfigure
--  it to an output when the pm_power_off function is called. If this optional
-+  it to an output when the poweroff handler is called. If this optional
-   property is not specified, the GPIO is initialized as an output in its
-   inactive state.
- 
+ Synology NAS devices use a similar scheme, but a different baud rate,
+ 9600, and a different character, '1'.
 -- 
 1.9.1

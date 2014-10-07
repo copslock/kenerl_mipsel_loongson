@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:40:42 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51984 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:40:58 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51985 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010700AbaJGFbsfhMdF (ORCPT
+        with ESMTP id S27010701AbaJGFbsktEVY (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=PGY33B28DCZ8qi9IY9bxC1BOXPSWzOF4PIrh3TZDhrY=;
-        b=VEXDVzYRBLESOKmKX4JH3OjxakVB9pt1rRSWf7Hq1hYFE0ovybL8TpKRVaRqNem9Ad74rKmKTG7FeyFW83rnknHjNz1f8Qv/IXANqNefRCyU/TpxYrnENeWdKKmMPIgYJG0Q/wW9r1IZtBxRmRllm1Zg6Cv9CgXSYyNnLYxxmw8=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=nzfgGbpF9AJ52/AKTblagoIgMTkJbORI3DpsN3yY8Yk=;
+        b=jTpe7zFk/tHgPjDMYKknpiNAoOdOmOyUZJUQKkCS7tywdyFs1+6SllVFbk/AY47/6bIFwLn0mfox/9RwHEqo2q38LD+0bNpWOaIDmVUtB37UKuyzO0jasXgteEmgdiFxdM9LKgQcXoyw/krwNpM88KJer1xYlV3qF3OaIDADXwk=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNN8-002njV-Cn
+        id 1XbNN8-002njQ-Cj
         for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:42 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32943 helo=localhost)
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32927 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNM2-002gQH-S4; Tue, 07 Oct 2014 05:30:35 +0000
+        id 1XbNLN-002cBN-55; Tue, 07 Oct 2014 05:29:53 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -31,29 +31,26 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH 40/44] x86: intel-mid: Drop registration of dummy poweroff handlers
-Date:   Mon,  6 Oct 2014 22:28:42 -0700
-Message-Id: <1412659726-29957-41-git-send-email-linux@roeck-us.net>
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 24/44] power/reset: msm-powroff: Register with kernel poweroff handler
+Date:   Mon,  6 Oct 2014 22:28:26 -0700
+Message-Id: <1412659726-29957-25-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=0.3
+X-OutGoing-Spam-Status: No, score=2.8
 X-CTCH-PVer: 0000001
 X-CTCH-Spam: Unknown
 X-CTCH-VOD: Unknown
 X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020206.54337ABE.00B7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-RefID: str=0001.0A020207.54337ABE.00CA,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 1287
+X-CTCH-SenderID-TotalMessages: 1289
 X-CTCH-SenderID-TotalSpam: 0
 X-CTCH-SenderID-TotalSuspected: 163
 X-CTCH-SenderID-TotalConfirmed: 0
@@ -73,7 +70,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43029
+X-archive-position: 43030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,62 +87,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A dummy poweroff handler does not serve any purpose. Drop it.
+Register with kernel poweroff handler instead of setting pm_power_off
+directly. Select proprity 0 since the code does not really poweroff
+the system.
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/x86/platform/intel-mid/intel-mid.c | 5 -----
- arch/x86/platform/intel-mid/mfld.c      | 5 -----
- 2 files changed, 10 deletions(-)
+ drivers/power/reset/msm-poweroff.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/platform/intel-mid/intel-mid.c b/arch/x86/platform/intel-mid/intel-mid.c
-index 1bbedc4..4b70666 100644
---- a/arch/x86/platform/intel-mid/intel-mid.c
-+++ b/arch/x86/platform/intel-mid/intel-mid.c
-@@ -67,10 +67,6 @@ static void *(*get_intel_mid_ops[])(void) = INTEL_MID_OPS_INIT;
- enum intel_mid_cpu_type __intel_mid_cpu_chip;
- EXPORT_SYMBOL_GPL(__intel_mid_cpu_chip);
+diff --git a/drivers/power/reset/msm-poweroff.c b/drivers/power/reset/msm-poweroff.c
+index 774f9a3..189bcd3 100644
+--- a/drivers/power/reset/msm-poweroff.c
++++ b/drivers/power/reset/msm-poweroff.c
+@@ -19,6 +19,7 @@
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/module.h>
++#include <linux/notifier.h>
+ #include <linux/reboot.h>
  
--static void intel_mid_power_off(void)
--{
--};
--
- static void intel_mid_reboot(void)
- {
- 	intel_scu_ipc_simple_command(IPCMSG_COLD_BOOT, 0);
-@@ -183,7 +179,6 @@ void __init x86_intel_mid_early_setup(void)
- 
- 	legacy_pic = &null_legacy_pic;
- 
--	pm_power_off = intel_mid_power_off;
- 	machine_ops.emergency_restart  = intel_mid_reboot;
- 
- 	/* Avoid searching for BIOS MP tables */
-diff --git a/arch/x86/platform/intel-mid/mfld.c b/arch/x86/platform/intel-mid/mfld.c
-index 23381d2..cf6842f 100644
---- a/arch/x86/platform/intel-mid/mfld.c
-+++ b/arch/x86/platform/intel-mid/mfld.c
-@@ -23,10 +23,6 @@ static struct intel_mid_ops penwell_ops = {
- 	.arch_setup = penwell_arch_setup,
- };
- 
--static void mfld_power_off(void)
--{
--}
--
- static unsigned long __init mfld_calibrate_tsc(void)
- {
- 	unsigned long fast_calibrate;
-@@ -61,7 +57,6 @@ static unsigned long __init mfld_calibrate_tsc(void)
- static void __init penwell_arch_setup(void)
- {
- 	x86_platform.calibrate_tsc = mfld_calibrate_tsc;
--	pm_power_off = mfld_power_off;
+ #include <asm/system_misc.h>
+@@ -31,12 +32,19 @@ static void do_msm_restart(enum reboot_mode reboot_mode, const char *cmd)
+ 	mdelay(10000);
  }
  
- void *get_penwell_ops(void)
+-static void do_msm_poweroff(void)
++static int do_msm_poweroff(struct notifier_block *this,
++			   unsigned long unused1, void *unused2)
+ {
+ 	/* TODO: Add poweroff capability */
+ 	do_msm_restart(REBOOT_HARD, NULL);
++
++	return NOTIFY_DONE;
+ }
+ 
++static struct notifier_block msm_powroff_nb = {
++	.notifier_call = do_msm_poweroff,
++};
++
+ static int msm_restart_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -47,7 +55,8 @@ static int msm_restart_probe(struct platform_device *pdev)
+ 	if (IS_ERR(msm_ps_hold))
+ 		return PTR_ERR(msm_ps_hold);
+ 
+-	pm_power_off = do_msm_poweroff;
++	if (register_poweroff_handler(&msm_powroff_nb))
++		dev_err(&pdev->dev, "Failed to register poweroff handler\n");
+ 	arm_pm_restart = do_msm_restart;
+ 	return 0;
+ }
 -- 
 1.9.1

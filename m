@@ -1,53 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:07:08 +0200 (CEST)
-Received: from vps0.lunn.ch ([178.209.37.122]:53381 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010711AbaJGQHGJgjYN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Oct 2014 18:07:06 +0200
-Received: from lunn by vps0.lunn.ch with local (Exim 4.80)
-        (envelope-from <andrew@lunn.ch>)
-        id 1XbXHa-000548-Ti; Tue, 07 Oct 2014 18:06:38 +0200
-Date:   Tue, 7 Oct 2014 18:06:38 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-kernel@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
-        linux-mips@linux-mips.org, linux-efi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        lguest@lists.ozlabs.org, linux-c6x-dev@linux-c6x.org,
-        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-        linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, xen-devel@lists.xenproject.org,
-        devicetree@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-pm@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-m68k@lists.linux-m68k.org, linux-am33-list@redhat.com,
-        linux-tegra@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-cris-kernel@axis.com,
-        David Woodhouse <dwmw2@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 20/44] power/reset: restart-poweroff: Register with
- kernel poweroff handler
-Message-ID: <20141007160638.GE19005@lunn.ch>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-21-git-send-email-linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:09:06 +0200 (CEST)
+Received: from mail-bl2on0098.outbound.protection.outlook.com ([65.55.169.98]:10368
+        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010711AbaJGQJFNuMAJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Oct 2014 18:09:05 +0200
+Received: from dl.caveonetworks.com (64.2.3.195) by
+ CO2PR07MB588.namprd07.prod.outlook.com (10.141.229.153) with Microsoft SMTP
+ Server (TLS) id 15.0.1044.10; Tue, 7 Oct 2014 16:08:56 +0000
+Message-ID: <54341013.2030509@caviumnetworks.com>
+Date:   Tue, 7 Oct 2014 09:08:51 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1412659726-29957-21-git-send-email-linux@roeck-us.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <andrew@lunn.ch>
+To:     Rich Felker <dalias@libc.org>
+CC:     David Daney <david.s.daney@gmail.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Daney <ddaney.cavm@gmail.com>,
+        <libc-alpha@sourceware.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+References: <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net> <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx> <543334CE.8060305@caviumnetworks.com> <20141007004915.GF23797@brightrain.aerifal.cx> <54337127.40806@gmail.com> <20141007111102.GH23797@brightrain.aerifal.cx>
+In-Reply-To: <20141007111102.GH23797@brightrain.aerifal.cx>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-ClientProxiedBy: BLUPR07CA083.namprd07.prod.outlook.com (25.160.24.38) To
+ CO2PR07MB588.namprd07.prod.outlook.com (10.141.229.153)
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CO2PR07MB588;
+X-Forefront-PRVS: 035748864E
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(479174003)(377454003)(51704005)(199003)(24454002)(189002)(69596002)(54356999)(50986999)(110136001)(87976001)(120916001)(21056001)(117636001)(101416001)(36756003)(76482002)(83506001)(99396003)(59896002)(122386002)(85852003)(87266999)(46102003)(102836001)(93886004)(4396001)(80022003)(64126003)(95666004)(106356001)(107046002)(81156004)(50466002)(105586002)(99136001)(92566001)(77096002)(85306004)(76176999)(66066001)(47776003)(65806001)(97736003)(20776003)(92726001)(64706001)(42186005)(31966008)(65816999)(23756003)(53416004)(40100002)(62816006);DIR:OUT;SFP:1101;SCL:1;SRVR:CO2PR07MB588;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43064
+X-archive-position: 43065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew@lunn.ch
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,89 +52,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 06, 2014 at 10:28:22PM -0700, Guenter Roeck wrote:
-> Register with kernel poweroff handler instead of seting pm_power_off
-> directly.  Register as poweroff handler of last resort since the driver
-> does not really power off the system but executes a restart.
+On 10/07/2014 04:11 AM, Rich Felker wrote:
+> On Mon, Oct 06, 2014 at 09:50:47PM -0700, David Daney wrote:
+>>>> the out-of-line execution trick, but do it somewhere other than in
+>>>> stack memory.
+>>> How do you answer Andy Lutomirski's question about what happens when a
+>>> signal handler interrupts execution while the program counter is
+>>> pointing at this "out-of-line execution" trampoline? This seems like a
+>>> show-stopper for using anything other than the stack.
+>> It would be nice to support, but not doing so would not be a
+>> regression from current behavior.
+>
+> It's not just "nice" to support, it's mandatory. Otherwise you will
+> execute essentially *random instructions* in this case, providing a
+> very nice attack vector that can almost certainly be elevated to
+> arbitrary code execution via timing of signals during floating point
+> code.
+>
+> The current behavior in regards to this is correct: because you have a
+> *stack*, each trampoline is pushed onto the stack in its own context,
+> and popped when it's no longer needed. You can have arbitrarily many
+> such trampolines up to the stack size. Note that each nested signal
+> handler already requires sizeof(ucontext_t) in stack space, so these
+> trampolines are a negligible additional cost without major effects on
+> the number of signal handlers you can nest without overflowing the
+> stack.
 
-I would not say last resort, this is how it is designed to work. There
-is no way to turn the power off from with linux, it is designed that
-u-boot will put the hardware into minimal power consumption until the
-"power" button is pressed.
+Yes, the stack takes care of the allocations, but the current 
+implementation has many problems:
 
-Other than that, 
+1) Signals clobber the emulation area.
+2) Signals caused by the emulation, have incorrect saved machine state.
 
-Acked-by: Andrew Lunn <andrew@lunn.ch>
+We have a low bar to pass, any new solution doesn't have to be perfect, 
+it only has to be an improvement.
 
-Thanks
-	Andrew
+Keep in mind that we are not starting from a clean slate, there are many 
+years of legacy code that has built up here.
 
-> 
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-> Cc: David Woodhouse <dwmw2@infradead.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
->  drivers/power/reset/restart-poweroff.c | 25 ++++++++++++-------------
->  1 file changed, 12 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/power/reset/restart-poweroff.c b/drivers/power/reset/restart-poweroff.c
-> index edd707e..5437697 100644
-> --- a/drivers/power/reset/restart-poweroff.c
-> +++ b/drivers/power/reset/restart-poweroff.c
-> @@ -12,35 +12,34 @@
->   */
->  #include <linux/kernel.h>
->  #include <linux/init.h>
-> +#include <linux/notifier.h>
->  #include <linux/platform_device.h>
->  #include <linux/of_platform.h>
->  #include <linux/module.h>
-> +#include <linux/pm.h>
->  #include <linux/reboot.h>
-> -#include <asm/system_misc.h>
->  
-> -static void restart_poweroff_do_poweroff(void)
-> +static int restart_poweroff_do_poweroff(struct notifier_block *this,
-> +					unsigned long unused1, void *unused2)
->  {
->  	reboot_mode = REBOOT_HARD;
->  	machine_restart(NULL);
-> +
-> +	return NOTIFY_DONE;
->  }
->  
-> +static struct notifier_block restart_poweroff_handler = {
-> +	.notifier_call = restart_poweroff_do_poweroff,
-> +};
-> +
->  static int restart_poweroff_probe(struct platform_device *pdev)
->  {
-> -	/* If a pm_power_off function has already been added, leave it alone */
-> -	if (pm_power_off != NULL) {
-> -		dev_err(&pdev->dev,
-> -			"pm_power_off function already registered");
-> -		return -EBUSY;
-> -	}
-> -
-> -	pm_power_off = &restart_poweroff_do_poweroff;
-> -	return 0;
-> +	return register_poweroff_handler(&restart_poweroff_handler);
->  }
->  
->  static int restart_poweroff_remove(struct platform_device *pdev)
->  {
-> -	if (pm_power_off == &restart_poweroff_do_poweroff)
-> -		pm_power_off = NULL;
-> +	unregister_poweroff_handler(&restart_poweroff_handler);
->  
->  	return 0;
->  }
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+David Daney

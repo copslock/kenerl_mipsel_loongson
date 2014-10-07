@@ -1,34 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 03:39:00 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49770 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010658AbaJGBi6qgLUJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 03:38:58 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1XbJjj-0000HT-00; Tue, 07 Oct 2014 01:38:47 +0000
-Date:   Mon, 6 Oct 2014 21:38:47 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>, libc-alpha@sourceware.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-Message-ID: <20141007013847.GG23797@brightrain.aerifal.cx>
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
- <54333B9C.2040302@paralogos.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54333B9C.2040302@paralogos.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dalias@aerifal.cx>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 05:58:01 +0200 (CEST)
+Received: from mail-pa0-f46.google.com ([209.85.220.46]:65467 "EHLO
+        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009202AbaJGD6AYu-lM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 05:58:00 +0200
+Received: by mail-pa0-f46.google.com with SMTP id fa1so6350975pad.5
+        for <multiple recipients>; Mon, 06 Oct 2014 20:57:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=cU+KDGyex4pm2jPv+iJ6sWXAztx+HpE2RW7xqaXePmg=;
+        b=DIdOWolbZlMC8QDoOP1qoNxc4PyHt6ecIaTmpgsQx6xHL4R2YwKy0Pfqbk+k190v9w
+         aDQmr0k7kY5nIjIugMY7BFv3O4ySJP0HRzFf3DJmyRRsuvpIFtWYVOMQ2D3ihPp/YNX5
+         8qcrzsk4PKxV0qrLBurt9BzcbOGi9jHW7mH5m3IxwZLdz71j5a12uaCeed4ysVAu4TRr
+         9iOj2dgtU+5RndFyaovGIvAVr1j/5pgUj6vJugJ/sKj5yKq2WHnt6G4kd7tqfWiI8RXW
+         RGrB0Q+2ndugG3lBeVIXRv+4fy//3qpprwv18ba4htGGlIHAtOnt5mJwiA1njWRFjuoy
+         KoEQ==
+X-Received: by 10.66.185.49 with SMTP id ez17mr1061314pac.58.1412654273770;
+        Mon, 06 Oct 2014 20:57:53 -0700 (PDT)
+Received: from masabert (p89164-omed01.osaka.ocn.ne.jp. [153.140.100.164])
+        by mx.google.com with ESMTPSA id 16sm12469494pdj.42.2014.10.06.20.57.51
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 Oct 2014 20:57:52 -0700 (PDT)
+Received: by masabert (Postfix, from userid 1000)
+        id B591DE0356; Tue,  7 Oct 2014 12:57:47 +0900 (JST)
+From:   Masanari Iida <standby24x7@gmail.com>
+To:     linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
+Cc:     Masanari Iida <standby24x7@gmail.com>
+Subject: [PATCH] MIPS: rtlx: Remove unnecessary KERN_DEBUG in rtlx.c
+Date:   Tue,  7 Oct 2014 12:57:45 +0900
+Message-Id: <1412654265-31983-1-git-send-email-standby24x7@gmail.com>
+X-Mailer: git-send-email 2.1.1.273.g97b8860
+Return-Path: <standby24x7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 42989
+X-archive-position: 42990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@libc.org
+X-original-sender: standby24x7@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,97 +53,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 06, 2014 at 06:02:20PM -0700, Kevin D. Kissell wrote:
-> On 10/06/2014 01:23 PM, David Daney wrote:
-> >From: David Daney <david.daney@cavium.com>
-> >
-> >In order for MIPS to be able to support a non-executable stack, we
-> >need to supply a method to specify a userspace area that can be used
-> >for executing emulated branch delay slot instructions.
-> >
-> >We add a new system call, sys_set_fpuemul_xol_area so that userspace
-> >threads that are using the FPU can specify the location of the FPU
-> >emulation out of line execution area.
-> >
-> >Background:
-> >
-> >MIPS floating point support requires that any instruction that cannot
-> >be directly executed by the FPU, be emulated by the kernel.  Part of
-> >this emulation involves executing non-FPU instructions that fall in
-> >the delay slots of FP branch instructions.  Since the beginning of
-> >MIPS/Linux time, this has been done by placing the instructions on the
-> >userspace thread stack, and executing them there, as the instructions
-> >must be executed in the MM context of the thread receiving the
-> >emulation.
-> Well, actually it doesn't go back to the beginning of MIPS/Linux
-> time - I was the b*astard who took the user-mode functional emulator
-> from Algorithmics and got it to work in the MIPS Linux kernel
-> context, some time in the early 2000s.  It was all pretty
-> straightforward, except for the
-> delay-slot-of-an-emulated-FP-conditional-branch problem. As you
-> note, it may be a load or store (though not a branch), so it needs
-> to be done in the user's MM context, and the user stack has nice
-> properties of being intrinsically per-thread and re-entrancy
-> tolerant.
+This patch remove unnecessary KERNL_DEBUG in pr_debug() within rtlx.c.
 
-If the space of possible instructions that need to run in the user's
-MM context is sufficiently small, perhaps we could emulate the rest in
-kernelspace and have a fixed code mapping exposed to userspace
-containing each possible MM-context-dependent instruction combination.
+Signed-off-by: Masanari Iida <standby24x7@gmail.com>
+---
+ arch/mips/kernel/rtlx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-As an alternative, the kernel could expose emulator code to run in
-userspace as part of the vdso or other magic kernel-provided pages,
-and this code would be capable of emulating arbitrary instructions,
-which would of course take place in the user MM context.
-
-This does not solve the problem for hardware with custom instructions,
-but I still believe it's totally reasonable to say that the ABI does
-not allow putting custom instructions in delay slots for coprocessor
-branches.
-
-> >Because of this, the de facto MIPS Linux userspace ABI requires that
-> >the userspace thread have an executable stack.  It is de facto,
-> >because it is not written anywhere that this must be the case, but it
-> >is never the less a requirement.
-> IIRC, when I first did the code, we already needed this for signal
-> trampolines.  I just extended it.  Is it no longer required for
-> signal support?  If not, how are signal trampolines now done, and
-> could this not be re-extended to the FP branch delay slot emulation
-> problem?
-
-Signal trampolines were nonsense to begin with. The code needed is
-fixed, not variable per-signal-instance, so it can be provided by libc
-or by the kernel in the vdso page or similar.
-
-> >Problem:
-> >
-> >How do we get MIPS Linux to use a non-executable stack in the face of
-> >the FPU emulation problem?
-> >
-> >Since userspace desires to change the ABI, put some of the onus on the
-> >userspace code.  Any userspace thread desiring a non-executable stack,
-> >must allocate a 4-byte aligned area at least 8 bytes long with that
-> >has read/write/execute permissions and pass the address of that area
-> >to the kernel with the new sys_set_fpuemul_xol_area system call.
-> >
-> >This is similar to how we require userspace to notify the kernel of
-> >the value of the thread local pointer.
-> It's easy for me to criticise, since I'm no longer responsible for
-> maintenance, but I hope you'll excuse me for commenting that, while
-> this seems like a small enough and neat enough patch per se,  I find
-> it disagreeable to break legacy binaries and to see a mechanism
-> whose name and implementation is so strictly tied to the one
-> purpose.  Even if it's only used for the FP delay slot emulation
-> today, shouldn't it be designed/coded/documented as a sort of
-> generic trampoline scratchpad?  And shouldn't we try to design
-> things so that legacy code with FP but no new magic system call
-> "just works"?  e.g. auto-allocate and initialize the space for a
-> thread the first time it actually needs to emulate an FP branch?
-
-"First time it actually needs to emulate" does not work, since it may
-be impossible to allocate at that time, and then there's no way the
-program can proceed. The allocation must be done at a time when you
-can report failure, which means at the time of execve (for the main
-thread) and clone (for other threads).
-
-Rich
+diff --git a/arch/mips/kernel/rtlx.c b/arch/mips/kernel/rtlx.c
+index 31b1b76..c5c4fd5 100644
+--- a/arch/mips/kernel/rtlx.c
++++ b/arch/mips/kernel/rtlx.c
+@@ -94,12 +94,12 @@ int rtlx_open(int index, int can_sleep)
+ 	int ret = 0;
+ 
+ 	if (index >= RTLX_CHANNELS) {
+-		pr_debug(KERN_DEBUG "rtlx_open index out of range\n");
++		pr_debug("rtlx_open index out of range\n");
+ 		return -ENOSYS;
+ 	}
+ 
+ 	if (atomic_inc_return(&channel_wqs[index].in_open) > 1) {
+-		pr_debug(KERN_DEBUG "rtlx_open channel %d already opened\n", index);
++		pr_debug("rtlx_open channel %d already opened\n", index);
+ 		ret = -EBUSY;
+ 		goto out_fail;
+ 	}
+-- 
+2.1.1.273.g97b8860

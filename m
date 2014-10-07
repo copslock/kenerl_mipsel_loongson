@@ -1,39 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2014 01:20:30 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48650 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010787AbaJGXU0fxZVN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Oct 2014 01:20:26 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s97NKMa9015628;
-        Wed, 8 Oct 2014 01:20:22 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s97NKKF3015627;
-        Wed, 8 Oct 2014 01:20:20 +0200
-Date:   Wed, 8 Oct 2014 01:20:20 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Rich Felker <dalias@libc.org>, David Daney <ddaney.cavm@gmail.com>,
-        libc-alpha@sourceware.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-Message-ID: <20141007232019.GA30470@linux-mips.org>
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
- <20141006205459.GZ23797@brightrain.aerifal.cx>
- <5433071B.4050606@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2014 01:21:56 +0200 (CEST)
+Received: from v094114.home.net.pl ([79.96.170.134]:54931 "HELO
+        v094114.home.net.pl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S27010787AbaJGXVyfbese (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Oct 2014 01:21:54 +0200
+Received: from afeu97.neoplus.adsl.tpnet.pl [95.49.124.97] (HELO vostro.rjw.lan)
+ by serwer1319399.home.pl [79.96.170.134] with SMTP (IdeaSmtpServer v0.80)
+ id 0b23d1089c40ac7f; Wed, 8 Oct 2014 01:21:48 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        openipmi-developer@lists.sourceforge.net,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>
+Subject: Re: [PATCH 03/44] hibernate: Call have_kernel_poweroff instead of checking pm_power_off
+Date:   Wed, 08 Oct 2014 01:41:56 +0200
+Message-ID: <1798000.odl6y9uKis@vostro.rjw.lan>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-rc5+; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <1412659726-29957-4-git-send-email-linux@roeck-us.net>
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-4-git-send-email-linux@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5433071B.4050606@caviumnetworks.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+Return-Path: <rjw@rjwysocki.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43095
+X-archive-position: 43096
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: rjw@rjwysocki.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,28 +55,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 06, 2014 at 02:18:19PM -0700, David Daney wrote:
-
-> >As an alternative, if the space of possible instruction with a delay
-> >slot is sufficiently small, all such instructions could be mapped as
-> >immutable code in a shared mapping, each at a fixed offset in the
-> >mapping. I suspect this would be borderline-impractical (multiple
-> >megabytes?), but it is the cleanest solution otherwise.
-> >
+On Monday, October 06, 2014 10:28:05 PM Guenter Roeck wrote:
+> Poweroff handlers may now be installed with register_poweroff_handler.
+> Use the new API function have_kernel_poweroff to determine if a poweroff
+> handler has been installed.
 > 
-> Yes, there are 2^32 possible instructions.  Each one is 4 bytes, plus you
-> need a way to exit after the instruction has executed, which would require
-> another instruction.  So you would need 32GB of memory to hold all those
-> instructions, larger than the 32-bit virtual address space.
+> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Len Brown <len.brown@intel.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-Plus errata support for some older CPUs requires no other instructions
-that might cause an exception to be present in the same cache line inflating
-the size to 32 bytes per instruction.
+ACK
 
-I've contemplated a full emulation - but that would require an emulator that
-is capable of most of the instruction set.  With all the random ASEs around
-that would be hard to implement while the FPU emulator trampoline as currently
-used has the advantage of automatically supporting ASEs, known and unknown.
-So it's a huge bonus for maintenance.
+> ---
+>  kernel/power/hibernate.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+> index a9dfa79..20353c5 100644
+> --- a/kernel/power/hibernate.c
+> +++ b/kernel/power/hibernate.c
+> @@ -602,7 +602,7 @@ static void power_down(void)
+>  	case HIBERNATION_PLATFORM:
+>  		hibernation_platform_enter();
+>  	case HIBERNATION_SHUTDOWN:
+> -		if (pm_power_off)
+> +		if (have_kernel_poweroff())
+>  			kernel_power_off();
+>  		break;
+>  #ifdef CONFIG_SUSPEND
+> 
 
-  Ralf
+-- 
+I speak only for myself.
+Rafael J. Wysocki, Intel Open Source Technology Center.

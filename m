@@ -1,37 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:21:42 +0200 (CEST)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:39745 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010725AbaJGQVlSFf-w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 18:21:41 +0200
-Received: by mail-ob0-f177.google.com with SMTP id uy5so5688241obc.36
-        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 09:21:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=/S9ld/v9IRe2TGu1eVonTVy5PAK6Pny6Ukc3sN8k8Kk=;
-        b=gqAFtE3lHXbH/A3RoVueMll07nzq2/QPVvfxLPvzjZ9XiKTXBAGBxAB5G5SYY5WO0t
-         NJ3lbfjWLuayQfVcFVQ4b5v3qCq0lr2E/oc1aW2sDXLYsCFGySj/GkowcQMWWZiHU8pX
-         v3FZGegnWirtyV6pnyPXPP6Pq7lLGG1O8Wy+WVqyXXNt6WbSME1naKZwDt6vQG3mhYJ7
-         csp46gxjBFEgkxKDiA4kbmTH/OdaP/0KROJB3YVN+yHkQjmLfWRFtIVxEuBTAJuQeqmn
-         1DGMYwnyjj3rmHqiDHLyA4pDBOWF5pPtWq2UR6FQGe7CJETQXE0FOVTKH/fKkrn9sB/r
-         PeFQ==
-X-Gm-Message-State: ALoCoQnfgd12oFH1zt8RCXEYBfzp1iCgg4GK7z0kG8yKSKypk1x2VAPgR/nXP/TUPXHvxAi5PN3t
-X-Received: by 10.60.94.167 with SMTP id dd7mr5483036oeb.4.1412698892569;
-        Tue, 07 Oct 2014 09:21:32 -0700 (PDT)
-Received: from [192.168.1.12] (cpe-72-182-51-248.austin.res.rr.com. [72.182.51.248])
-        by mx.google.com with ESMTPSA id h1sm12365224obw.21.2014.10.07.09.21.21
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 07 Oct 2014 09:21:31 -0700 (PDT)
-Message-ID: <543412F7.8040909@landley.net>
-Date:   Tue, 07 Oct 2014 11:21:11 -0500
-From:   Rob Landley <rob@landley.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
-MIME-Version: 1.0
-To:     Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org
-CC:     adi-buildroot-devel@lists.sourceforge.net,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:23:17 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:43971 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010726AbaJGQXOfjr3D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 18:23:14 +0200
+Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7A3EC8DE;
+        Tue,  7 Oct 2014 16:23:07 +0000 (UTC)
+Date:   Tue, 7 Oct 2014 09:23:06 -0700
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
         devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
         lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
         linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
@@ -46,24 +25,27 @@ CC:     adi-buildroot-devel@lists.sourceforge.net,
         linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 05/44] mfd: as3722: Drop reference to pm_power_off from
- devicetree bindings
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-6-git-send-email-linux@roeck-us.net>
-In-Reply-To: <1412659726-29957-6-git-send-email-linux@roeck-us.net>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <rob@landley.net>
+        Julian Andres Klode <jak@jak-linux.org>,
+        Marc Dietrich <marvin24@gmx.de>
+Subject: Re: [PATCH 29/44] staging: nvec: Register with kernel poweroff
+ handler
+Message-ID: <20141007162306.GA2913@kroah.com>
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
+ <1412659726-29957-30-git-send-email-linux@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1412659726-29957-30-git-send-email-linux@roeck-us.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43066
+X-archive-position: 43067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rob@landley.net
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,15 +58,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/07/14 00:28, Guenter Roeck wrote:
-> Devicetree bindings are supposed to be operating system independent
-> and should thus not describe how a specific functionality is implemented
-> in Linux.
+On Mon, Oct 06, 2014 at 10:28:31PM -0700, Guenter Roeck wrote:
+> Register with kernel poweroff handler instead of setting pm_power_off
+> directly. Register with default priority value of 128 since we don't know
+> any better.
+> 
+> Cc: Julian Andres Klode <jak@jak-linux.org>
+> Cc: Marc Dietrich <marvin24@gmx.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>  drivers/staging/nvec/nvec.c | 24 +++++++++++++++---------
+>  drivers/staging/nvec/nvec.h |  2 ++
+>  2 files changed, 17 insertions(+), 9 deletions(-)
 
-So your argument is that linux/Documentation/devicetree/bindings should
-not be specific to Linux. Merely hosted in the Linux kernel source
-repository.
-
-Well that's certainly a point of view.
-
-Rob
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

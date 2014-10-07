@@ -1,59 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 20:45:02 +0200 (CEST)
-Received: from mail-la0-f44.google.com ([209.85.215.44]:54847 "EHLO
-        mail-la0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010743AbaJGSpBFT328 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 20:45:01 +0200
-Received: by mail-la0-f44.google.com with SMTP id gb8so7063533lab.3
-        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 11:44:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=FPYeoe5YiSyM1uidi0bRyQI9yltJZLjXmzLodymgQzE=;
-        b=XGmkrfwBv6RPXCZMBBxYZes26UQJ8nKeSSjuSgdxlNTVaZLdifSDac0JxQZ+HTUHBu
-         u1Q4/xxQ2OLsjlXpgV5iGR/uAJcmfGd+tjij08dWOGWSaUDKFL1r7frbyc0m4syTCVgG
-         +Jo9aQowhFQ0r1myle2n3Nh2cAPBuANsEjWU9+KJ/LKOvkp4G60Sc8NcwMqi0wDcka8x
-         RHZ85GW78kmZJZZDNAH4BWkJKQxB5KgoBnpPrhYFhhA2H/RAVfqQXMB1ZwotWZSytc9m
-         q+w0nRs0F0v1pH5oW7OzgL9FesAvHwFJZipkmDkRHI2ea215lJZxiHV0LjnSPUTo9pB7
-         rpWQ==
-X-Gm-Message-State: ALoCoQnSbvKJuhrj4wM0ngoGKpPHSwP60LFUuoZfvtX8gMl38lerkd3mxx3LrJGkhSdT0Mgg9VaV
-X-Received: by 10.152.8.194 with SMTP id t2mr682012laa.85.1412707495508; Tue,
- 07 Oct 2014 11:44:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 20:50:32 +0200 (CEST)
+Received: from mail-bn1on0086.outbound.protection.outlook.com ([157.56.110.86]:56496
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010743AbaJGSuaoby33 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Oct 2014 20:50:30 +0200
+Received: from dl.caveonetworks.com (64.2.3.195) by
+ BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155) with Microsoft SMTP
+ Server (TLS) id 15.0.1044.10; Tue, 7 Oct 2014 18:50:22 +0000
+Message-ID: <543435EA.7060406@caviumnetworks.com>
+Date:   Tue, 7 Oct 2014 11:50:18 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Received: by 10.152.36.106 with HTTP; Tue, 7 Oct 2014 11:44:35 -0700 (PDT)
-In-Reply-To: <543431DA.4090809@imgtec.com>
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com>
- <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com>
- <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com>
- <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net>
- <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx>
- <543334CE.8060305@caviumnetworks.com> <20141007004915.GF23797@brightrain.aerifal.cx>
- <54337127.40806@gmail.com> <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
- <543431DA.4090809@imgtec.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Tue, 7 Oct 2014 11:44:35 -0700
-Message-ID: <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+To:     Andy Lutomirski <luto@amacapital.net>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
         David Daney <david.s.daney@gmail.com>,
         Rich Felker <dalias@libc.org>,
-        David Daney <ddaney@caviumnetworks.com>,
         David Daney <ddaney.cavm@gmail.com>,
         "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         David Daney <david.daney@cavium.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com> <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net> <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx> <543334CE.8060305@caviumnetworks.com> <20141007004915.GF23797@brightrain.aerifal.cx> <54337127.40806@gmail.com> <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org> <543431DA.4090809@imgtec.com> <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com>
+In-Reply-To: <CALCETrUQEbb=DotSzsneN7Hano_eC-EoTMko6uKcyZXvEcktkw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-ClientProxiedBy: BLUPR07CA097.namprd07.prod.outlook.com (25.160.24.52) To
+ BY2PR07MB583.namprd07.prod.outlook.com (10.141.221.155)
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BY2PR07MB583;
+X-Forefront-PRVS: 035748864E
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(199003)(51704005)(377454003)(479174003)(189002)(51444003)(164054003)(24454002)(65816999)(50986999)(23676002)(87266999)(81156004)(95666004)(54356999)(66066001)(99396003)(120916001)(76176999)(21056001)(87976001)(65806001)(64706001)(110136001)(47776003)(76482002)(20776003)(106356001)(85852003)(99136001)(105586002)(122386002)(36756003)(33656002)(80316001)(19580395003)(64126003)(92726001)(92566001)(107046002)(83506001)(101416001)(69596002)(102836001)(19580405001)(77096002)(4396001)(93886004)(31966008)(97736003)(42186005)(50466002)(85306004)(59896002)(80022003)(46102003)(53416004)(40100002);DIR:OUT;SFP:1101;SCL:1;SRVR:BY2PR07MB583;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43075
+X-archive-position: 43076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,40 +56,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 7, 2014 at 11:32 AM, Leonid Yegoshin
-<Leonid.Yegoshin@imgtec.com> wrote:
-> Well, I am not a subscriber to mail-list, so I read it the first time and
-> some notes:
+On 10/07/2014 11:44 AM, Andy Lutomirski wrote:
+> On Tue, Oct 7, 2014 at 11:32 AM, Leonid Yegoshin
+> <Leonid.Yegoshin@imgtec.com> wrote:
+>> Well, I am not a subscriber to mail-list, so I read it the first time and
+>> some notes:
+>>
+>
+>>
+>> 3)  The signal happened during execution of emulated instruction - signals
+>> are under control of kernel and we can easily delay a signal during
+>> execution of emulated instruction until return from do_dsemulret. It is not
+>> a big deal - nor code, nor performance. Thank you for good point.
+>
+> If you go down this particular rabbit hole, you will never come back out.
+>
+> What happens if one of those out-of-line instructions causes a
+> synchronous trap?  What if SIGSTOP arrives before ret?  What if
+> another thread removes the magic ret sequence?
+>
+>>
+>> 4)  The voice for doing any instruction emulation in kernel - it is not a
+>> MIPS business model to force customer to put details of all Coprocessor 2
+>> instructions public. We provide an interface and the rest is a customer
+>> business. Besides that it is really painful to make a differentiation
+>> between Cavium Octeon and some another CPU instructions with the same
+>> opcode. On other side, leaving emulation of their instructions to them is
+>> not a wise after having some good way doing that multiple years.
+>
+> IMO this is all backwards.  If MIPS customers put proprietary
+> instructions into their ISA, they leave out the FPU, and they put a
+> proprietary insn in a branch delay slot, then I think that they
+> deserve a fatal signal.
+>
+> There's a really easy solution for new systems: fix the toolchain.
+> Teach the assembler to disallow any proprietary instructions in an FP
+> branch delay slot.
 >
 
+Yes, gas for MIPS already has an instruction attribute for instructions 
+that cannot be placed in delay slots.  It should be a fairly simple 
+matter to extend this to instructions that cannot be emulated.
+
+Thanks,
+David Daney
+
+
+> --Andy
 >
-> 3)  The signal happened during execution of emulated instruction - signals
-> are under control of kernel and we can easily delay a signal during
-> execution of emulated instruction until return from do_dsemulret. It is not
-> a big deal - nor code, nor performance. Thank you for good point.
-
-If you go down this particular rabbit hole, you will never come back out.
-
-What happens if one of those out-of-line instructions causes a
-synchronous trap?  What if SIGSTOP arrives before ret?  What if
-another thread removes the magic ret sequence?
-
->
-> 4)  The voice for doing any instruction emulation in kernel - it is not a
-> MIPS business model to force customer to put details of all Coprocessor 2
-> instructions public. We provide an interface and the rest is a customer
-> business. Besides that it is really painful to make a differentiation
-> between Cavium Octeon and some another CPU instructions with the same
-> opcode. On other side, leaving emulation of their instructions to them is
-> not a wise after having some good way doing that multiple years.
-
-IMO this is all backwards.  If MIPS customers put proprietary
-instructions into their ISA, they leave out the FPU, and they put a
-proprietary insn in a branch delay slot, then I think that they
-deserve a fatal signal.
-
-There's a really easy solution for new systems: fix the toolchain.
-Teach the assembler to disallow any proprietary instructions in an FP
-branch delay slot.
-
---Andy

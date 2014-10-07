@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:33:22 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51468 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:33:38 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51500 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010678AbaJGFa7YQRuH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:30:59 +0200
+        with ESMTP id S27010675AbaJGFbBl5QYr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=jSv1A0iGDwJOZ0eAO+kS+95MK7kD4hVCLcWqbgH0MJw=;
-        b=7j7oC318vobKwAczHsF3Vg58RtAEVXcAjvqEOSnLeSICwm5IfUWUWkvlgn82rZyswXHubPtyBrpvHupqdKWz28W5TcHBVJpsFNk3eP4zLEQogXWKxvGpk+QagFBjwpHid3mxWZhMOU0c8+RVQiZmx7AKFdeLcMkS4kjw9oFwJxQ=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=dEpznAkDNuwarjUTxY3qBjZxB4aEtytQWY3/s2Nrp8Y=;
+        b=5PolFc5ltvszFWFWxinMYtDUjUM36l/ME1ZhOYPBTZ1W+XjG8XyrsNCu0RiNyMTyNquR+Q1KeMrm2IMzoswOjk2iPReHARZ4Oz36RWBWPzbTUWl5WYEexqzdzRG2S1ROh3TqhBCMQxPOyAHb2H8pWqqqLwHu7+4Na51hQXTj0sY=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNML-002iZC-1h
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:53 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32918 helo=localhost)
+        id 1XbNMN-002j2s-EF
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:30:55 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32905 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNLG-002bgp-US; Tue, 07 Oct 2014 05:29:47 +0000
+        id 1XbNKr-002aPm-12; Tue, 07 Oct 2014 05:29:21 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -32,30 +32,29 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
         Guenter Roeck <linux@roeck-us.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Subject: [PATCH 21/44] power/reset: gpio-poweroff: Register with kernel poweroff handler
-Date:   Mon,  6 Oct 2014 22:28:23 -0700
-Message-Id: <1412659726-29957-22-git-send-email-linux@roeck-us.net>
+        Lee Jones <lee.jones@linaro.org>,
+        Samuel Ortiz <sameo@linux.intel.com>
+Subject: [PATCH 10/44] mfd: axp20x: Register with kernel poweroff handler
+Date:   Mon,  6 Oct 2014 22:28:12 -0700
+Message-Id: <1412659726-29957-11-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=0.3
+X-OutGoing-Spam-Status: No, score=2.8
 X-CTCH-PVer: 0000001
-X-CTCH-Spam: Unknown
+X-CTCH-Spam: Suspect
 X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020206.54337A8D.0089,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-Flags: 512
+X-CTCH-RefID: str=0001.0A020208.54337A8F.00CE,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 890
+X-CTCH-SenderID-TotalMessages: 923
 X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 0
+X-CTCH-SenderID-TotalSuspected: 5
 X-CTCH-SenderID-TotalConfirmed: 0
 X-CTCH-SenderID-TotalBulk: 0
 X-CTCH-SenderID-TotalVirus: 0
@@ -73,7 +72,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43003
+X-archive-position: 43004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -94,104 +93,88 @@ Register with kernel poweroff handler instead of setting pm_power_off
 directly. Register with a low priority value of 64 to reflect that
 the original code only sets pm_power_off if it was not already set.
 
-Other changes:
-
-Drop note that there can not be an additional instance of this driver.
-The original reason no longer applies, it should be obvious that there
-can only be one instance of the driver if static variables are used to
-reflect its state, and support for multiple instances can now be added
-easily if needed by avoiding static variables.
-
-Do not create an error message if another poweroff handler has already been
-registered. This is perfectly normal and acceptable.
-
-Do not display a warning traceback if the poweroff handler fails to
-power off the system. There may be other poweroff handlers.
-
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/power/reset/gpio-poweroff.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/mfd/axp20x.c       | 30 +++++++++++++++++-------------
+ include/linux/mfd/axp20x.h |  1 +
+ 2 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/power/reset/gpio-poweroff.c b/drivers/power/reset/gpio-poweroff.c
-index ce849bc..e95a7a1 100644
---- a/drivers/power/reset/gpio-poweroff.c
-+++ b/drivers/power/reset/gpio-poweroff.c
-@@ -14,18 +14,18 @@
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index dee6539..238db4c 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -17,7 +17,8 @@
+ #include <linux/interrupt.h>
  #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/delay.h>
+ #include <linux/module.h>
+-#include <linux/pm_runtime.h>
 +#include <linux/notifier.h>
 +#include <linux/pm.h>
- #include <linux/platform_device.h>
- #include <linux/gpio/consumer.h>
- #include <linux/of_platform.h>
- #include <linux/module.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+ #include <linux/regulator/consumer.h>
+@@ -161,11 +162,16 @@ static struct mfd_cell axp20x_cells[] = {
+ 	},
+ };
  
--/*
-- * Hold configuration here, cannot be more than one instance of the driver
-- * since pm_power_off itself is global.
-- */
- static struct gpio_desc *reset_gpio;
- 
--static void gpio_poweroff_do_poweroff(void)
-+static int gpio_poweroff_do_poweroff(struct notifier_block *this,
-+				     unsigned long unused1, void *unused2)
+-static struct axp20x_dev *axp20x_pm_power_off;
+-static void axp20x_power_off(void)
++static int axp20x_power_off(struct notifier_block *this, unsigned long unused1,
++			    void *unused2)
 +
  {
- 	BUG_ON(!reset_gpio);
- 
-@@ -42,20 +42,18 @@ static void gpio_poweroff_do_poweroff(void)
- 	/* give it some time */
- 	mdelay(3000);
- 
--	WARN_ON(1);
+-	regmap_write(axp20x_pm_power_off->regmap, AXP20X_OFF_CTRL,
+-		     AXP20X_OFF);
++	struct axp20x_dev *axp20x = container_of(this, struct axp20x_dev,
++						 poweroff_nb);
++
++	regmap_write(axp20x->regmap, AXP20X_OFF_CTRL, AXP20X_OFF);
++
 +	return NOTIFY_DONE;
  }
  
-+static struct notifier_block gpio_poweroff_nb = {
-+	.notifier_call = gpio_poweroff_do_poweroff,
-+	.priority = 64,
-+};
-+
- static int gpio_poweroff_probe(struct platform_device *pdev)
- {
- 	bool input = false;
--
--	/* If a pm_power_off function has already been added, leave it alone */
--	if (pm_power_off != NULL) {
--		dev_err(&pdev->dev,
--			"%s: pm_power_off function already registered",
--		       __func__);
--		return -EBUSY;
--	}
-+	int err;
- 
- 	reset_gpio = devm_gpiod_get(&pdev->dev, NULL);
- 	if (IS_ERR(reset_gpio))
-@@ -77,14 +75,16 @@ static int gpio_poweroff_probe(struct platform_device *pdev)
- 		}
+ static int axp20x_i2c_probe(struct i2c_client *i2c,
+@@ -215,10 +221,11 @@ static int axp20x_i2c_probe(struct i2c_client *i2c,
+ 		return ret;
  	}
  
--	pm_power_off = &gpio_poweroff_do_poweroff;
--	return 0;
-+	err = register_poweroff_handler(&gpio_poweroff_nb);
-+	if (err)
-+		dev_err(&pdev->dev, "Failed to register poweroff handler\n");
-+
-+	return err;
- }
+-	if (!pm_power_off) {
+-		axp20x_pm_power_off = axp20x;
+-		pm_power_off = axp20x_power_off;
+-	}
++	axp20x->poweroff_nb.notifier_call = axp20x_power_off;
++	axp20x->poweroff_nb.priority = 64;
++	ret = register_poweroff_handler(&axp20x->poweroff_nb);
++	if (ret)
++		dev_err(&i2c->dev, "failed to register poweroff handler\n");
  
- static int gpio_poweroff_remove(struct platform_device *pdev)
+ 	dev_info(&i2c->dev, "AXP20X driver loaded\n");
+ 
+@@ -229,10 +236,7 @@ static int axp20x_i2c_remove(struct i2c_client *i2c)
  {
--	if (pm_power_off == &gpio_poweroff_do_poweroff)
--		pm_power_off = NULL;
-+	unregister_poweroff_handler(&gpio_poweroff_nb);
+ 	struct axp20x_dev *axp20x = i2c_get_clientdata(i2c);
  
- 	return 0;
- }
+-	if (axp20x == axp20x_pm_power_off) {
+-		axp20x_pm_power_off = NULL;
+-		pm_power_off = NULL;
+-	}
++	unregister_poweroff_handler(&axp20x->poweroff_nb);
+ 
+ 	mfd_remove_devices(axp20x->dev);
+ 	regmap_del_irq_chip(axp20x->i2c_client->irq, axp20x->regmap_irqc);
+diff --git a/include/linux/mfd/axp20x.h b/include/linux/mfd/axp20x.h
+index d0e31a2..8f23b39 100644
+--- a/include/linux/mfd/axp20x.h
++++ b/include/linux/mfd/axp20x.h
+@@ -175,6 +175,7 @@ struct axp20x_dev {
+ 	struct regmap			*regmap;
+ 	struct regmap_irq_chip_data	*regmap_irqc;
+ 	long				variant;
++	struct notifier_block		poweroff_nb;
+ };
+ 
+ #endif /* __LINUX_MFD_AXP20X_H */
 -- 
 1.9.1

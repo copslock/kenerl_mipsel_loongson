@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:36:09 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51692 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:36:26 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51696 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010686AbaJGFbP6Yyvn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:15 +0200
+        with ESMTP id S27010687AbaJGFbQpgkw0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=+MX46fT9TZ0q//fVCdD69KBKSZrBxB5Rwc5SN9HgzpA=;
-        b=Vzp9fX5ARLVP+yX7XjxJY9hJbliwIarq7c0FdJ/WjqkmIitRhxSuVXYBnFZ7HOKJF05OacQx0XGeQ06dYXm54gcZxU0VG0yRGrfjGnheHN8tFbysEt1A1OHTFB4/ObrNk2EhWMYZ30i+f6GTe5gb8dQZ8JoSOrR1hfrUhcEFyp8=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=C5/zgksP5rmyjYJWibCtfNKrmzKSx1BsuOizBQgzpbw=;
+        b=hnNGFjZ7agVitSe/7ZreKkkewxHIUqmT+LMeC/JO6vDXEFWH1VZgrYRk96zXmbhhWQZBSOeHOjDd1TN/9ao44JDd7lGd3MFgGC/8AJBmUyVgHax0Q4BZO+17h+6F/qjRMjWokak+snv0aQM/KTYv6e4i0XzWHcEp5e5F9t3mpwY=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNMb-002kgE-Qr
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:09 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32935 helo=localhost)
+        id 1XbNMc-002kiC-FW
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:10 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32909 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNLg-002eBm-L3; Tue, 07 Oct 2014 05:30:13 +0000
+        id 1XbNKz-002acn-Vm; Tue, 07 Oct 2014 05:29:30 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -32,29 +32,29 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
         Guenter Roeck <linux@roeck-us.net>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>
-Subject: [PATCH 32/44] arm64: psci: Register with kernel poweroff handler
-Date:   Mon,  6 Oct 2014 22:28:34 -0700
-Message-Id: <1412659726-29957-33-git-send-email-linux@roeck-us.net>
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH 14/44] mfd: tps80031: Register with kernel poweroff handler
+Date:   Mon,  6 Oct 2014 22:28:16 -0700
+Message-Id: <1412659726-29957-15-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=0.3
+X-OutGoing-Spam-Status: No, score=2.8
 X-CTCH-PVer: 0000001
-X-CTCH-Spam: Unknown
+X-CTCH-Spam: Suspect
 X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020204.54337A9E.0018,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-Flags: 512
+X-CTCH-RefID: str=0001.0A020208.54337A9E.00CE,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 1061
+X-CTCH-SenderID-TotalMessages: 1065
 X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 54
+X-CTCH-SenderID-TotalSuspected: 56
 X-CTCH-SenderID-TotalConfirmed: 0
 X-CTCH-SenderID-TotalBulk: 0
 X-CTCH-SenderID-TotalVirus: 0
@@ -72,7 +72,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43013
+X-archive-position: 43014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,27 +90,99 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Register with kernel poweroff handler instead of setting pm_power_off
-directly.
+directly. Register with a low priority value of 64 to reflect that
+the original code only sets pm_power_off if it was not already set.
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Cc: Lee Jones <lee.jones@linaro.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/arm64/kernel/psci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/tps80031.c       | 30 ++++++++++++++++++------------
+ include/linux/mfd/tps80031.h |  2 ++
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/kernel/psci.c b/arch/arm64/kernel/psci.c
-index 5539547..c1f3d09 100644
---- a/arch/arm64/kernel/psci.c
-+++ b/arch/arm64/kernel/psci.c
-@@ -286,7 +286,7 @@ static int __init psci_0_2_init(struct device_node *np)
+diff --git a/drivers/mfd/tps80031.c b/drivers/mfd/tps80031.c
+index ed6c5b0..24625a6 100644
+--- a/drivers/mfd/tps80031.c
++++ b/drivers/mfd/tps80031.c
+@@ -147,7 +147,6 @@ static const struct tps80031_pupd_data tps80031_pupds[] = {
+ 	[TPS80031_CTLI2C_SCL]		= PUPD_DATA(4, 0,	BIT(2)),
+ 	[TPS80031_CTLI2C_SDA]		= PUPD_DATA(4, 0,	BIT(3)),
+ };
+-static struct tps80031 *tps80031_power_off_dev;
  
- 	arm_pm_restart = psci_sys_reset;
+ int tps80031_ext_power_req_config(struct device *dev,
+ 		unsigned long ext_ctrl_flag, int preq_bit,
+@@ -209,11 +208,17 @@ int tps80031_ext_power_req_config(struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(tps80031_ext_power_req_config);
  
--	pm_power_off = psci_sys_poweroff;
-+	register_poweroff_handler_simple(psci_sys_poweroff, 128);
+-static void tps80031_power_off(void)
++static int tps80031_power_off(struct notifier_block *this,
++			      unsigned long unused1, void *unused2)
+ {
+-	dev_info(tps80031_power_off_dev->dev, "switching off PMU\n");
+-	tps80031_write(tps80031_power_off_dev->dev, TPS80031_SLAVE_ID1,
+-				TPS80031_PHOENIX_DEV_ON, TPS80031_DEVOFF);
++	struct tps80031 *tps80031 = container_of(this, struct tps80031,
++						 poweroff_nb);
++
++	dev_info(tps80031->dev, "switching off PMU\n");
++	tps80031_write(tps80031->dev, TPS80031_SLAVE_ID1,
++		       TPS80031_PHOENIX_DEV_ON, TPS80031_DEVOFF);
++
++	return NOTIFY_DONE;
+ }
  
- out_put_node:
- 	of_node_put(np);
+ static void tps80031_pupd_init(struct tps80031 *tps80031,
+@@ -501,9 +506,13 @@ static int tps80031_probe(struct i2c_client *client,
+ 		goto fail_mfd_add;
+ 	}
+ 
+-	if (pdata->use_power_off && !pm_power_off) {
+-		tps80031_power_off_dev = tps80031;
+-		pm_power_off = tps80031_power_off;
++	if (pdata->use_power_off) {
++		tps80031->poweroff_nb.notifier_call = tps80031_power_off;
++		tps80031->poweroff_nb.priority = 64;
++		ret = register_poweroff_handler(&tps80031->poweroff_nb);
++		if (ret)
++			dev_err(&client->dev,
++				"Failed to register poweroff handler\n");
+ 	}
+ 	return 0;
+ 
+@@ -523,10 +532,7 @@ static int tps80031_remove(struct i2c_client *client)
+ 	struct tps80031 *tps80031 = i2c_get_clientdata(client);
+ 	int i;
+ 
+-	if (tps80031_power_off_dev == tps80031) {
+-		tps80031_power_off_dev = NULL;
+-		pm_power_off = NULL;
+-	}
++	unregister_poweroff_handler(&tps80031->poweroff_nb);
+ 
+ 	mfd_remove_devices(tps80031->dev);
+ 
+diff --git a/include/linux/mfd/tps80031.h b/include/linux/mfd/tps80031.h
+index 2c75c9c..49bc006 100644
+--- a/include/linux/mfd/tps80031.h
++++ b/include/linux/mfd/tps80031.h
+@@ -24,6 +24,7 @@
+ #define __LINUX_MFD_TPS80031_H
+ 
+ #include <linux/device.h>
++#include <linux/notifier.h>
+ #include <linux/regmap.h>
+ 
+ /* Pull-ups/Pull-downs */
+@@ -513,6 +514,7 @@ struct tps80031 {
+ 	struct i2c_client	*clients[TPS80031_NUM_SLAVES];
+ 	struct regmap		*regmap[TPS80031_NUM_SLAVES];
+ 	struct regmap_irq_chip_data *irq_data;
++	struct notifier_block	poweroff_nb;
+ };
+ 
+ struct tps80031_pupd_init_data {
 -- 
 1.9.1

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:35:36 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51655 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:35:51 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51661 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010683AbaJGFbMqSpkk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:12 +0200
+        with ESMTP id S27010685AbaJGFbNTOvK4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=S43PgswNqqxpYh10AHneJ6OTl/IqMCEOwGzzM9XPqeE=;
-        b=xDRleZJseO9wHZTRBrs1e1nGRQ+PBTrmmCD7/iCfWaMsu47lTKMSoU9zwSWVT8K0iHom5GmgbWa4xEZcnG6c5saWbfmJsUUfyrtrLoEPir/mdRk+rq2gR+nenrzKdV7uQ3sGQfVUbT5V4oY2O3QbrRlZjbGCt15fClpc1HciN7E=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=7mvLKglzhfviHXvYJrtV7ll7hkQ6H9rcg96FVrnOSQY=;
+        b=lKkdjn6u+fbdi2TFUGeoOWexTNElQS0JgN1VC+HgeVFqOBs1aeVa2RwfuVMpT9zhDVB/ZGrxAzEqxr551JK8AzhFk5zoUc2a975+dNj16wmYNGXDJhVliwXtusMx1FXPGwlDNtTRnBQSh6Ga14G8p7dNXMAF6CaUjk/gx2caZe4=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNMY-002kDE-DL
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:06 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32904 helo=localhost)
+        id 1XbNMY-002kVm-VY
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:07 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32932 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNKo-002aNb-P6; Tue, 07 Oct 2014 05:29:19 +0000
+        id 1XbNLX-002dCW-GQ; Tue, 07 Oct 2014 05:30:04 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -32,29 +32,30 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
         Guenter Roeck <linux@roeck-us.net>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH 09/44] mfd: palmas: Register with kernel poweroff handler
-Date:   Mon,  6 Oct 2014 22:28:11 -0700
-Message-Id: <1412659726-29957-10-git-send-email-linux@roeck-us.net>
+        Julian Andres Klode <jak@jak-linux.org>,
+        Marc Dietrich <marvin24@gmx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 29/44] staging: nvec: Register with kernel poweroff handler
+Date:   Mon,  6 Oct 2014 22:28:31 -0700
+Message-Id: <1412659726-29957-30-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=2.8
+X-OutGoing-Spam-Status: No, score=0.3
 X-CTCH-PVer: 0000001
-X-CTCH-Spam: Suspect
+X-CTCH-Spam: Unknown
 X-CTCH-VOD: Unknown
-X-CTCH-Flags: 512
-X-CTCH-RefID: str=0001.0A020207.54337A9A.00E3,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
+X-CTCH-Flags: 0
+X-CTCH-RefID: str=0001.0A020208.54337A9B.005D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 1033
+X-CTCH-SenderID-TotalMessages: 1038
 X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 39
+X-CTCH-SenderID-TotalSuspected: 41
 X-CTCH-SenderID-TotalConfirmed: 0
 X-CTCH-SenderID-TotalBulk: 0
 X-CTCH-SenderID-TotalVirus: 0
@@ -72,7 +73,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43011
+X-archive-position: 43012
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,114 +91,101 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Register with kernel poweroff handler instead of setting pm_power_off
-directly. Register with a low priority value of 64 to reflect that
-the original code only sets pm_power_off if it was not already set.
+directly. Register with default priority value of 128 since we don't know
+any better.
 
-Cc: Samuel Ortiz <sameo@linux.intel.com>
-Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Julian Andres Klode <jak@jak-linux.org>
+Cc: Marc Dietrich <marvin24@gmx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/mfd/palmas.c       | 30 +++++++++++++++++-------------
- include/linux/mfd/palmas.h |  3 +++
- 2 files changed, 20 insertions(+), 13 deletions(-)
+ drivers/staging/nvec/nvec.c | 24 +++++++++++++++---------
+ drivers/staging/nvec/nvec.h |  2 ++
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mfd/palmas.c b/drivers/mfd/palmas.c
-index 28cb048..4d78847 100644
---- a/drivers/mfd/palmas.c
-+++ b/drivers/mfd/palmas.c
-@@ -19,6 +19,7 @@
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
-+#include <linux/pm.h>
- #include <linux/regmap.h>
- #include <linux/err.h>
+diff --git a/drivers/staging/nvec/nvec.c b/drivers/staging/nvec/nvec.c
+index a93208a..33d406c 100644
+--- a/drivers/staging/nvec/nvec.c
++++ b/drivers/staging/nvec/nvec.c
+@@ -33,6 +33,7 @@
  #include <linux/mfd/core.h>
-@@ -425,20 +426,18 @@ static void palmas_dt_to_pdata(struct i2c_client *i2c,
- 			"ti,system-power-controller");
- }
+ #include <linux/mutex.h>
+ #include <linux/notifier.h>
++#include <linux/pm.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
+@@ -80,8 +81,6 @@ enum nvec_sleep_subcmds {
+ #define LID_SWITCH BIT(1)
+ #define PWR_BUTTON BIT(15)
  
--static struct palmas *palmas_dev;
--static void palmas_power_off(void)
-+static int palmas_power_off(struct notifier_block *this, unsigned long unused1,
-+			    void *unused2)
- {
-+	struct palmas *palmas = container_of(this, struct palmas, poweroff_nb);
- 	unsigned int addr;
- 	int ret, slave;
- 
--	if (!palmas_dev)
--		return;
+-static struct nvec_chip *nvec_power_handle;
 -
- 	slave = PALMAS_BASE_TO_SLAVE(PALMAS_PMU_CONTROL_BASE);
- 	addr = PALMAS_BASE_TO_REG(PALMAS_PMU_CONTROL_BASE, PALMAS_DEV_CTRL);
+ static const struct mfd_cell nvec_devices[] = {
+ 	{
+ 		.name = "nvec-kbd",
+@@ -759,12 +758,17 @@ static void nvec_disable_i2c_slave(struct nvec_chip *nvec)
+ }
+ #endif
  
- 	ret = regmap_update_bits(
--			palmas_dev->regmap[slave],
-+			palmas->regmap[slave],
- 			addr,
- 			PALMAS_DEV_CTRL_DEV_ON,
- 			0);
-@@ -446,6 +445,8 @@ static void palmas_power_off(void)
- 	if (ret)
- 		pr_err("%s: Unable to write to DEV_CTRL_DEV_ON: %d\n",
- 				__func__, ret);
+-static void nvec_power_off(void)
++static int nvec_power_off(struct notifier_block *this, unsigned long unused1,
++			  void *unused2)
+ {
++	struct nvec_chip *nvec = container_of(this, struct nvec_chip,
++					      poweroff_nb);
+ 	char ap_pwr_down[] = { NVEC_SLEEP, AP_PWR_DOWN };
+ 
+-	nvec_toggle_global_events(nvec_power_handle, false);
+-	nvec_write_async(nvec_power_handle, ap_pwr_down, 2);
++	nvec_toggle_global_events(nvec, false);
++	nvec_write_async(nvec, ap_pwr_down, 2);
 +
 +	return NOTIFY_DONE;
  }
  
- static unsigned int palmas_features = PALMAS_PMIC_FEATURE_SMPS10_BOOST;
-@@ -668,9 +669,15 @@ no_irq:
- 		ret = of_platform_populate(node, NULL, NULL, &i2c->dev);
- 		if (ret < 0) {
- 			goto err_irq;
--		} else if (pdata->pm_off && !pm_power_off) {
--			palmas_dev = palmas;
--			pm_power_off = palmas_power_off;
-+		} else if (pdata->pm_off) {
-+			palmas->poweroff_nb.notifier_call = palmas_power_off;
-+			palmas->poweroff_nb.priority = 64;
-+			ret = register_poweroff_handler(&palmas->poweroff_nb);
-+			if (ret) {
-+				dev_err(palmas->dev,
-+					"Failed to register poweroff handler");
-+				ret = 0;
-+			}
- 		}
- 	}
+ /*
+@@ -878,8 +882,11 @@ static int tegra_nvec_probe(struct platform_device *pdev)
+ 	nvec->nvec_status_notifier.notifier_call = nvec_status_notifier;
+ 	nvec_register_notifier(nvec, &nvec->nvec_status_notifier, 0);
  
-@@ -698,10 +705,7 @@ static int palmas_i2c_remove(struct i2c_client *i2c)
- 			i2c_unregister_device(palmas->i2c_clients[i]);
- 	}
+-	nvec_power_handle = nvec;
+-	pm_power_off = nvec_power_off;
++	nvec->poweroff_nb.notifier_call = nvec_power_off;
++	nvec->poweroff_nb.priority = 128;
++	ret = register_poweroff_handler(&nvec->poweroff_nb);
++	if (ret)
++		dev_err(nvec->dev, "Failed to register poweroff handler\n");
  
--	if (palmas == palmas_dev) {
--		pm_power_off = NULL;
--		palmas_dev = NULL;
--	}
-+	unregister_poweroff_handler(&palmas->poweroff_nb);
+ 	/* Get Firmware Version */
+ 	msg = nvec_write_sync(nvec, get_firmware_version, 2);
+@@ -914,13 +921,12 @@ static int tegra_nvec_remove(struct platform_device *pdev)
+ {
+ 	struct nvec_chip *nvec = platform_get_drvdata(pdev);
+ 
++	unregister_poweroff_handler(&nvec->poweroff_nb);
+ 	nvec_toggle_global_events(nvec, false);
+ 	mfd_remove_devices(nvec->dev);
+ 	nvec_unregister_notifier(nvec, &nvec->nvec_status_notifier);
+ 	cancel_work_sync(&nvec->rx_work);
+ 	cancel_work_sync(&nvec->tx_work);
+-	/* FIXME: needs check wether nvec is responsible for power off */
+-	pm_power_off = NULL;
  
  	return 0;
  }
-diff --git a/include/linux/mfd/palmas.h b/include/linux/mfd/palmas.h
-index fb0390a..4715057 100644
---- a/include/linux/mfd/palmas.h
-+++ b/include/linux/mfd/palmas.h
-@@ -18,6 +18,7 @@
+diff --git a/drivers/staging/nvec/nvec.h b/drivers/staging/nvec/nvec.h
+index e271375..e5ee2af 100644
+--- a/drivers/staging/nvec/nvec.h
++++ b/drivers/staging/nvec/nvec.h
+@@ -163,6 +163,8 @@ struct nvec_chip {
+ 	struct nvec_msg *last_sync_msg;
  
- #include <linux/usb/otg.h>
- #include <linux/leds.h>
-+#include <linux/notifier.h>
- #include <linux/regmap.h>
- #include <linux/regulator/driver.h>
- #include <linux/extcon.h>
-@@ -68,6 +69,8 @@ struct palmas {
- 	struct i2c_client *i2c_clients[PALMAS_NUM_CLIENTS];
- 	struct regmap *regmap[PALMAS_NUM_CLIENTS];
- 
-+	struct notifier_block poweroff_nb;
+ 	int state;
 +
- 	/* Stored chip id */
- 	int id;
++	struct notifier_block poweroff_nb;
+ };
  
+ extern int nvec_write_async(struct nvec_chip *nvec, const unsigned char *data,
 -- 
 1.9.1

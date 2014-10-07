@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 13:20:16 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49789 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010703AbaJGLUPD8N2I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 13:20:15 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1XbSnE-0001TV-00; Tue, 07 Oct 2014 11:19:00 +0000
-Date:   Tue, 7 Oct 2014 07:19:00 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-Cc:     David Daney <david.s.daney@gmail.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        David Daney <ddaney.cavm@gmail.com>,
-        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-Message-ID: <20141007111859.GI23797@brightrain.aerifal.cx>
-References: <20141006213101.GA23797@brightrain.aerifal.cx>
- <54330D79.80102@caviumnetworks.com>
- <20141006215813.GB23797@brightrain.aerifal.cx>
- <543327E7.4020608@amacapital.net>
- <54332A64.5020605@caviumnetworks.com>
- <20141007000514.GD23797@brightrain.aerifal.cx>
- <543334CE.8060305@caviumnetworks.com>
- <20141007004915.GF23797@brightrain.aerifal.cx>
- <54337127.40806@gmail.com>
- <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 13:53:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6909 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010494AbaJGLxUuvKNF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 13:53:20 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 77DC6F2DEA786;
+        Tue,  7 Oct 2014 12:53:11 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 7 Oct 2014 12:53:13 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 7 Oct
+ 2014 12:53:13 +0100
+Message-ID: <5433D429.3020804@imgtec.com>
+Date:   Tue, 7 Oct 2014 12:53:13 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dalias@aerifal.cx>
+To:     David Daney <david.s.daney@gmail.com>,
+        "Kevin D. Kissell" <kevink@paralogos.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        <libc-alpha@sourceware.org>, Leonid <Leonid.Yegoshin@imgtec.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com> <54333B9C.2040302@paralogos.com> <54336CED.3040106@gmail.com>
+In-Reply-To: <54336CED.3040106@gmail.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43052
+X-archive-position: 43053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@libc.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,30 +51,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 07, 2014 at 09:13:22AM +0000, Matthew Fortune wrote:
-> From what I can see the out-of-line execution of delay slot instructions
-> will break micromips R3 addiupc, and all MIPS32r6 and MIPS64r6 PC-relative
-> instructions (inc load/store) as they will have the wrong base. Is there
-> anything in the current set of proposals that can address this (beyond
-> adding restrictions to what is ABI allowed in FPU branch delay slots)?
+On 07/10/14 05:32, David Daney wrote:
+> If the kernel automatically allocated the emulation locations, what
+> would happen if there were a signal that interrupted the emulation, and
+> the signal handler did a longjump to somewhere else?  How would we clean
+> up the now unused emulation memory allocations?
 
-Yes. If a trampoline is being generated to replace the delay slot
-instruction, it can just contain more complex code to duplicate what
-the PC-relative instruction would have done. Since the ABI already
-assumes a stack is available, it can use the stack to backup registers
-it needs for scratch space and restore them.
+AFAICT, Leonid's implementation also has this problem, and that has a
+separate stack of emuframes per thread managed completely by the kernel.
 
-> This is an issue whether the stack is executable or not but does directly
-> relate to the topic of FPU emulation.  It sounds like the kernel would not
-> be able to emulate a pc-relative load/store even if it was a special case
-> as it would not run in the correct MM context? [be gentle, I'm no expert
-> in this area].
+Essentially the kernel doesn't manage the stack, userland does, and
+userland can choose to skip over sigframes and emuframes with siglongjmp
+without telling the kernel.
 
-Really everything should be done in the kernel, and it's not as hard
-as people are making it look. The kernel _already_ has to enforce MM
-context permissions for every syscall that reads or writes user memory
-(e.g. futex with PI mutexes or FUTEX_WAKE_OP, or even simple things
-like read/write) so there's no reason it can't do emulated
-loads/stores the exact same way.
+Userland can even switch between contexts (which includes stack) with
+setcontext (coroutines etc) which breaks the assumption in Leonid's
+patches that emuframes will be completed in reverse order to them being
+started, again demonstrating that it is essentially userland that
+manages the stack.
 
-Rich
+I think any attempt by the kernel to keep track of user stacks (e.g. by
+storing a stack pointer along with the emuframe so that unused emuframes
+can be discarded later when stack pointer goes high again) will be
+foiled by setcontext.
+
+Hmm, I can't see a way forward that doesn't involve invasive userland
+handling & ABI changes other than giving up with non-executable stacks
+or limiting permitted instructions in delay slots to those Linux knows
+how to emulate directly.
+
+Cheers
+James

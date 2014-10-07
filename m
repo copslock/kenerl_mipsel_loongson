@@ -1,73 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 09:47:08 +0200 (CEST)
-Received: from mail-wg0-f41.google.com ([74.125.82.41]:39741 "EHLO
-        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010665AbaJGHrHWgqyi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 09:47:07 +0200
-Received: by mail-wg0-f41.google.com with SMTP id b13so8636691wgh.24
-        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 00:47:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=ljhMuyd51f4k0Z5zW98JIwCujsPK9bIbZfKS9koq4X8=;
-        b=xyDG0do2YlEKTn/8WIr+lcRHKvoNZt7xJ179n9+YabPWYfgIi1eMCRMtxYiR2lp/Wk
-         gZBpQ/cK288xubTR0VzK4V9mGSfQnatNphJj/bLSwwB3VfFtdn76JmTB4mqyq4FTnKN1
-         CDIUkVqoQypnfB9uEkQx3IL0jvD/DVzQH3WBKGSy908id60v8GanRFmSYLQuJ3IB9NYb
-         NHzvgn2HbKGLpNlkXQX6+cMhGo34LXgjqch/MOlgbzqqfvbrhUx6uT2yTu4BpYoKCSrV
-         BpQLpPU9Elerv+4M6e9RG90XSkmMOSK5FaxzPzExiAEKfRNCWShjh+Ayr994vVMaffv3
-         Q/lQ==
-X-Received: by 10.194.93.193 with SMTP id cw1mr2662708wjb.50.1412668022144;
-        Tue, 07 Oct 2014 00:47:02 -0700 (PDT)
-Received: from [128.178.145.84] (lsro1pc38.epfl.ch. [128.178.145.84])
-        by mx.google.com with ESMTPSA id am1sm19684284wjc.29.2014.10.07.00.47.00
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 09:52:53 +0200 (CEST)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:51667 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010668AbaJGHwwbWZvU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 09:52:52 +0200
+Received: by mail-ig0-f173.google.com with SMTP id h18so3771727igc.6
+        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 00:52:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=+auz6WJ8RkQR71wTNzglwUDDFzMINOhPs6uufeylVyU=;
+        b=Y6oUTtfxoTsPKtxLpWJUrchxGr8d7BV0kpkpePoiz/0hVHuSRQmNOnCOzcQ1lV5oWj
+         sBvdQ1uvnIru561NSryFW6SHFePg0Z92wTPomQtifFUez+PUwik09C3ZAp5fzw1wLgAQ
+         7zOdK+hevUsDztwlRwYXZqS0M1rHB5FuhF+aRZryOaO+O8X796iAbF4swE9eR9OEHLnV
+         Vs94A1O99ZJNJEwJu2OVDuNRce5Jji1DP0CV5Kv3BVc1+iTlkpm8T+X+DjaMhbEdgm5w
+         cPEX5QeLIMOiK2N3NQAyLyK42XRdRHyDDWUK8hoeAowOLEHiHQp9OA8d4N6vWgb2zxgi
+         cTrQ==
+X-Gm-Message-State: ALoCoQmZlrK9MveUKIOYX+dktczeK8CjTnayuZDw/2lj3San7Cek28ybDU7K8i8GGHg4107Ykdld
+X-Received: by 10.50.30.102 with SMTP id r6mr2943915igh.18.1412668366477;
+        Tue, 07 Oct 2014 00:52:46 -0700 (PDT)
+Received: from lee--X1 (host109-148-233-9.range109-148.btcentralplus.com. [109.148.233.9])
+        by mx.google.com with ESMTPSA id m7sm1922290igj.18.2014.10.07.00.52.41
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Oct 2014 00:47:01 -0700 (PDT)
-Message-ID: <54339A73.40107@gmail.com>
-Date:   Tue, 07 Oct 2014 09:46:59 +0200
-From:   =?windows-1252?Q?Philippe_R=E9tornaz?= 
-        <philippe.retornaz@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.1
-MIME-Version: 1.0
-To:     Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org
-CC:     linux-m32r-ja@ml.linux-m32r.org, linux-mips@linux-mips.org,
-        linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org,
-        Heiko Stuebner <heiko@sntech.de>,
-        Len Brown <len.brown@intel.com>, linux-xtensa@linux-xtensa.org,
-        Pavel Machek <pavel@ucw.cz>, devel@driverdev.osuosl.org,
-        linux-s390@vger.kernel.org, lguest@lists.ozlabs.org,
-        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
-        linux-sh@vger.kernel.org, Alexander Graf <agraf@suse.de>,
-        linux-acpi@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        xen-devel@lists.xenproject.org, devicetree@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-pm@vger.kernel.org,
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 07 Oct 2014 00:52:45 -0700 (PDT)
+Date:   Tue, 7 Oct 2014 08:52:38 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org,
         adi-buildroot-devel@lists.sourceforge.net,
-        linux-m68k@lists.linux-m68k.org, linux-am33-list@redhat.com,
-        linux-tegra@vger.kernel.org,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         openipmi-developer@lists.sourceforge.net,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-cris-kernel@axis.com,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-alpha@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Romain Perier <romain.perier@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 01/44] kernel: Add support for poweroff handler call chain
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-2-git-send-email-linux@roeck-us.net>
-In-Reply-To: <1412659726-29957-2-git-send-email-linux@roeck-us.net>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <philippe.retornaz@gmail.com>
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Samuel Ortiz <sameo@linux.intel.com>
+Subject: Re: [PATCH 18/44] mfd: twl4030-power: Register with kernel poweroff
+ handler
+Message-ID: <20141007075238.GA25331@lee--X1>
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
+ <1412659726-29957-19-git-send-email-linux@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1412659726-29957-19-git-send-email-linux@roeck-us.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <lee.jones@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43038
+X-archive-position: 43039
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: philippe.retornaz@gmail.com
+X-original-sender: lee.jones@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,39 +77,127 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello
+On Mon, 06 Oct 2014, Guenter Roeck wrote:
 
-This seems exactly what I would need on the mc13783 to handle cleanly 
-the poweroff,
-but after reading this patchset I have the following question:
-
-[...]
-
-> +/*
-> + *	Notifier list for kernel code which wants to be called
-> + *	to power off the system.
-> + */
-> +static ATOMIC_NOTIFIER_HEAD(poweroff_handler_list);
-
-[...]
-
-> +void do_kernel_poweroff(void)
-> +{
-> +	atomic_notifier_call_chain(&poweroff_handler_list, 0, NULL);
-> +}
+> Register with kernel poweroff handler instead of setting pm_power_off
+> directly. Register with a low priority value of 64 to reflect that
+> the original code only sets pm_power_off if it was not already set.
+> 
+> Make twl4030_power_off static as it is only called from the twl4030-power
+> driver.
+> 
+> Cc: Samuel Ortiz <sameo@linux.intel.com>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>  drivers/mfd/twl4030-power.c | 25 +++++++++++++++++++++----
+>  include/linux/i2c/twl.h     |  1 -
+>  2 files changed, 21 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
+> index 4d3ff37..bd6b830 100644
+> --- a/drivers/mfd/twl4030-power.c
+> +++ b/drivers/mfd/twl4030-power.c
+> @@ -25,9 +25,10 @@
+>   */
+>  
+>  #include <linux/module.h>
+> -#include <linux/pm.h>
+> +#include <linux/notifier.h>
+>  #include <linux/i2c/twl.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/pm.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+>  
+> @@ -611,7 +612,8 @@ twl4030_power_configure_resources(const struct twl4030_power_data *pdata)
+>   * After a successful execution, TWL shuts down the power to the SoC
+>   * and all peripherals connected to it.
+>   */
+> -void twl4030_power_off(void)
+> +static int twl4030_power_off(struct notifier_block *this, unsigned long unused1,
+> +			     void *unused2)
+>  {
+>  	int err;
+>  
+> @@ -619,8 +621,15 @@ void twl4030_power_off(void)
+>  			       TWL4030_PM_MASTER_P1_SW_EVENTS);
+>  	if (err)
+>  		pr_err("TWL4030 Unable to power off\n");
 > +
+> +	return NOTIFY_DONE;
+>  }
+>  
+> +static struct notifier_block twl4030_poweroff_nb = {
+> +	.notifier_call = twl4030_power_off,
+> +	.priority = 64,
 
-It seems that the poweroff callback needs to be atomic as per
-_atomic_notifier_call_chain documentation:
+64 out of what?  How is this calculated?  Wouldn't it be better to
+define these?
 
-	"Calls each function in a notifier chain in turn.  The functions
-	 run in an atomic context"
+> +};
+> +
+>  static bool twl4030_power_use_poweroff(const struct twl4030_power_data *pdata,
+>  					struct device_node *node)
+>  {
+> @@ -836,7 +845,7 @@ static int twl4030_power_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	/* Board has to be wired properly to use this feature */
+> -	if (twl4030_power_use_poweroff(pdata, node) && !pm_power_off) {
+> +	if (twl4030_power_use_poweroff(pdata, node)) {
+>  		/* Default for SEQ_OFFSYNC is set, lets ensure this */
+>  		err = twl_i2c_read_u8(TWL_MODULE_PM_MASTER, &val,
+>  				      TWL4030_PM_MASTER_CFG_P123_TRANSITION);
+> @@ -853,7 +862,13 @@ static int twl4030_power_probe(struct platform_device *pdev)
+>  			}
+>  		}
+>  
+> -		pm_power_off = twl4030_power_off;
+> +		err = register_poweroff_handler(&twl4030_poweroff_nb);
+> +		if (err) {
+> +			dev_err(&pdev->dev,
+> +				"Failed to register poweroff handler\n");
 
-But this is a problem for many MFD (mc13783, twl4030 etc ...) which are
-accessible on only a blocking bus (SPI, I2C).
+If this is not fatal, you should issue a dev_warn() instead.
 
-What I am missing here ?
+> +			/* Not a fatal error */
+> +			err = 0;
 
-Thanks,
+How about using your own variable for this?  Then you don't have to
+worry about resetting it.
 
-Philippe
+> +		}
+>  	}
+>  
+>  relock:
+> @@ -869,6 +884,8 @@ relock:
+>  
+>  static int twl4030_power_remove(struct platform_device *pdev)
+>  {
+> +	unregister_poweroff_handler(&twl4030_poweroff_nb);
+
+Perhaps a naive question, but is there any way you can do this using
+devres (devm_* managed resources)?
+
+>  	return 0;
+>  }
+>  
+> diff --git a/include/linux/i2c/twl.h b/include/linux/i2c/twl.h
+> index 8cfb50f..f8544f1 100644
+> --- a/include/linux/i2c/twl.h
+> +++ b/include/linux/i2c/twl.h
+> @@ -680,7 +680,6 @@ struct twl4030_power_data {
+>  };
+>  
+>  extern int twl4030_remove_script(u8 flags);
+> -extern void twl4030_power_off(void);
+>  
+>  struct twl4030_codec_data {
+>  	unsigned int digimic_delay; /* in ms */
+
+-- 
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

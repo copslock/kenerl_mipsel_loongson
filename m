@@ -1,67 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 13:03:56 +0200 (CEST)
-Received: from cam-admin0.cambridge.arm.com ([217.140.96.50]:53343 "EHLO
-        cam-admin0.cambridge.arm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010703AbaJGLDzFJHk3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 13:03:55 +0200
-Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
-        by cam-admin0.cambridge.arm.com (8.12.6/8.12.6) with ESMTP id s97B3Zwo019260;
-        Tue, 7 Oct 2014 12:03:35 +0100 (BST)
-Date:   Tue, 7 Oct 2014 12:03:32 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "lguest@lists.ozlabs.org" <lguest@lists.ozlabs.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-am33-list@redhat.com" <linux-am33-list@redhat.com>,
-        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-m32r-ja@ml.linux-m32r.org" <linux-m32r-ja@ml.linux-m32r.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "openipmi-developer@lists.sourceforge.net" 
-        <openipmi-developer@lists.sourceforge.net>,
-        "user-mode-linux-devel@lists.sourceforge.net" 
-        <user-mode-linux-devel@lists.sourceforge.net>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@vger.kernel.org" <linux-m68k@vger.kernel.org>,
-        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <Pawel.Moll@arm.com>
-Subject: Re: [PATCH 06/44] gpio-poweroff: Drop reference to pm_power_off from
- devicetree bindings
-Message-ID: <20141007110332.GF24725@leverpostej>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-7-git-send-email-linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 13:12:52 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49779 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010703AbaJGLMugWOif (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 13:12:50 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1XbSfW-0001Sp-00; Tue, 07 Oct 2014 11:11:02 +0000
+Date:   Tue, 7 Oct 2014 07:11:02 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     David Daney <david.s.daney@gmail.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Daney <ddaney.cavm@gmail.com>, libc-alpha@sourceware.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
+Message-ID: <20141007111102.GH23797@brightrain.aerifal.cx>
+References: <5433071B.4050606@caviumnetworks.com>
+ <20141006213101.GA23797@brightrain.aerifal.cx>
+ <54330D79.80102@caviumnetworks.com>
+ <20141006215813.GB23797@brightrain.aerifal.cx>
+ <543327E7.4020608@amacapital.net>
+ <54332A64.5020605@caviumnetworks.com>
+ <20141007000514.GD23797@brightrain.aerifal.cx>
+ <543334CE.8060305@caviumnetworks.com>
+ <20141007004915.GF23797@brightrain.aerifal.cx>
+ <54337127.40806@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1412659726-29957-7-git-send-email-linux@roeck-us.net>
+In-Reply-To: <54337127.40806@gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <mark.rutland@arm.com>
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43050
+X-archive-position: 43051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.rutland@arm.com
+X-original-sender: dalias@libc.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,52 +51,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 07, 2014 at 06:28:08AM +0100, Guenter Roeck wrote:
-> pm_power_off is an implementation detail. Replace it with a more generic
-> description of the driver's functionality.
-> 
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Pawel Moll <pawel.moll@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
+On Mon, Oct 06, 2014 at 09:50:47PM -0700, David Daney wrote:
+> >>the out-of-line execution trick, but do it somewhere other than in
+> >>stack memory.
+> >How do you answer Andy Lutomirski's question about what happens when a
+> >signal handler interrupts execution while the program counter is
+> >pointing at this "out-of-line execution" trampoline? This seems like a
+> >show-stopper for using anything other than the stack.
+> It would be nice to support, but not doing so would not be a
+> regression from current behavior.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+It's not just "nice" to support, it's mandatory. Otherwise you will
+execute essentially *random instructions* in this case, providing a
+very nice attack vector that can almost certainly be elevated to
+arbitrary code execution via timing of signals during floating point
+code.
 
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
->  Documentation/devicetree/bindings/gpio/gpio-poweroff.txt | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+The current behavior in regards to this is correct: because you have a
+*stack*, each trampoline is pushed onto the stack in its own context,
+and popped when it's no longer needed. You can have arbitrarily many
+such trampolines up to the stack size. Note that each nested signal
+handler already requires sizeof(ucontext_t) in stack space, so these
+trampolines are a negligible additional cost without major effects on
+the number of signal handlers you can nest without overflowing the
+stack.
+
+> >>One way of doing this is to have the kernel magically generate
+> >>thread local memory regions.
+> >>
+> >>Another option is to have userspace manage the out-of-line execution areas.
+> >>
+> >>As is often the case, each approach has different pluses and minuses.
+> >Having the kernel magically do it would be better, but I'm doubtful
+> >that solution works anyway due to the above signal handler/nesting
+> >issue.
 > 
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt b/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
-> index d4eab92..c95a1a6 100644
-> --- a/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-poweroff.txt
-> @@ -2,12 +2,12 @@ Driver a GPIO line that can be used to turn the power off.
->  
->  The driver supports both level triggered and edge triggered power off.
->  At driver load time, the driver will request the given gpio line and
-> -install a pm_power_off handler. If the optional properties 'input' is
-> -not found, the GPIO line will be driven in the inactive
-> +install a handler to power off the system. If the optional properties
-> +'input' is not found, the GPIO line will be driven in the inactive
->  state. Otherwise its configured as an input.
->  
-> -When the pm_power_off is called, the gpio is configured as an output,
-> -and drive active, so triggering a level triggered power off
-> +When the the poweroff handler is called, the gpio is configured as an
-> +output, and drive active, so triggering a level triggered power off
->  condition. This will also cause an inactive->active edge condition, so
->  triggering positive edge triggered power off. After a delay of 100ms,
->  the GPIO is set to inactive, thus causing an active->inactive edge,
-> @@ -24,7 +24,7 @@ Required properties:
->  
->  Optional properties:
->  - input : Initially configure the GPIO line as an input. Only reconfigure
-> -  it to an output when the pm_power_off function is called. If this optional
-> +  it to an output when the poweroff handler is called. If this optional
->    property is not specified, the GPIO is initialized as an output in its
->    inactive state.
->  
-> -- 
-> 1.9.1
-> 
-> 
+> So the perfect is the enemy of the good?  No non-executable stack
+> for you, MIPS.
+
+No, regressions that make the situation worse than executable-stack
+are not "good" to begin with, even if it weren't for the other design
+issues and dumping everything on userspace for the sake of being lazy
+in the kernel.
+
+Rich

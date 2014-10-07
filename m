@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:39:19 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51834 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:39:37 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51838 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010666AbaJGFb3TkTUW (ORCPT
+        with ESMTP id S27010667AbaJGFb33wiew (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=3/uDnzKkwzNsSiksMNXxFi6zTrcbJE9jH82ZnT7EV94=;
-        b=ZcUhORLwAvPYytgCwN9Rel+43DSdDe97Sp8JAVjCwLdDIb3Tj3C/lFemM8CIIFLlBV9Zfd4Ewjp0UTLcF0t+f+4kcKvIaH5E6MRd7E9gBw/VCpxJYxUxgvoU9m6PewdK7vQmuTFlKVvb6i8GZ3xw1jnw5m5FAf98a4mlsrphUDc=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=2z1No0RuAcrfRkWSirpx3cs8MJLNrK/64HCoGXq+Gqc=;
+        b=R5m8YWt9kIeXb1aZ42VoFX6bw+lcJH6XP1p8oSfbGBxJMKj1F3MMZ/uNtI1Y2IUF6265cJWGhFYgWGPcgww6wdJX7ocFKMGyylVCena8XLPsQ/yowmlsS9+MGnO7R8T3eMZrtfd7ulRjdTWjxHW0MYLAVMJdmKfYESO8+V3AJC4=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNMo-002m60-Pe
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:22 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32913 helo=localhost)
+        id 1XbNMo-002m6X-Uo
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:23 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32912 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNL8-002bS5-PH; Tue, 07 Oct 2014 05:29:39 +0000
+        id 1XbNL6-002b7p-Oj; Tue, 07 Oct 2014 05:29:37 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -34,9 +34,9 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         Guenter Roeck <linux@roeck-us.net>,
         Samuel Ortiz <sameo@linux.intel.com>,
         Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH 18/44] mfd: twl4030-power: Register with kernel poweroff handler
-Date:   Mon,  6 Oct 2014 22:28:20 -0700
-Message-Id: <1412659726-29957-19-git-send-email-linux@roeck-us.net>
+Subject: [PATCH 17/44] mfd: tps65910: Register with kernel poweroff handler
+Date:   Mon,  6 Oct 2014 22:28:19 -0700
+Message-Id: <1412659726-29957-18-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
@@ -46,15 +46,15 @@ X-CTCH-PVer: 0000001
 X-CTCH-Spam: Suspect
 X-CTCH-VOD: Unknown
 X-CTCH-Flags: 512
-X-CTCH-RefID: str=0001.0A020206.54337AAB.0023,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
+X-CTCH-RefID: str=0001.0A020204.54337AAB.0057,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 1169
+X-CTCH-SenderID-TotalMessages: 1173
 X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 104
+X-CTCH-SenderID-TotalSuspected: 106
 X-CTCH-SenderID-TotalConfirmed: 0
 X-CTCH-SenderID-TotalBulk: 0
 X-CTCH-SenderID-TotalVirus: 0
@@ -72,7 +72,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43024
+X-archive-position: 43025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -93,103 +93,93 @@ Register with kernel poweroff handler instead of setting pm_power_off
 directly. Register with a low priority value of 64 to reflect that
 the original code only sets pm_power_off if it was not already set.
 
-Make twl4030_power_off static as it is only called from the twl4030-power
-driver.
-
 Cc: Samuel Ortiz <sameo@linux.intel.com>
 Cc: Lee Jones <lee.jones@linaro.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/mfd/twl4030-power.c | 25 +++++++++++++++++++++----
- include/linux/i2c/twl.h     |  1 -
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ drivers/mfd/tps65910.c       | 27 ++++++++++++++++++---------
+ include/linux/mfd/tps65910.h |  3 +++
+ 2 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
-index 4d3ff37..bd6b830 100644
---- a/drivers/mfd/twl4030-power.c
-+++ b/drivers/mfd/twl4030-power.c
-@@ -25,9 +25,10 @@
-  */
- 
- #include <linux/module.h>
--#include <linux/pm.h>
+diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
+index f243e75..0b114d3 100644
+--- a/drivers/mfd/tps65910.c
++++ b/drivers/mfd/tps65910.c
+@@ -23,6 +23,8 @@
+ #include <linux/irq.h>
+ #include <linux/irqdomain.h>
+ #include <linux/mfd/core.h>
 +#include <linux/notifier.h>
- #include <linux/i2c/twl.h>
- #include <linux/platform_device.h>
 +#include <linux/pm.h>
+ #include <linux/regmap.h>
+ #include <linux/mfd/tps65910.h>
  #include <linux/of.h>
- #include <linux/of_device.h>
+@@ -437,19 +439,20 @@ struct tps65910_board *tps65910_parse_dt(struct i2c_client *client,
+ }
+ #endif
  
-@@ -611,7 +612,8 @@ twl4030_power_configure_resources(const struct twl4030_power_data *pdata)
-  * After a successful execution, TWL shuts down the power to the SoC
-  * and all peripherals connected to it.
-  */
--void twl4030_power_off(void)
-+static int twl4030_power_off(struct notifier_block *this, unsigned long unused1,
-+			     void *unused2)
+-static struct i2c_client *tps65910_i2c_client;
+-static void tps65910_power_off(void)
++static int tps65910_power_off(struct notifier_block *this,
++			      unsigned long unused1, void *unused2)
  {
- 	int err;
+-	struct tps65910 *tps65910;
+-
+-	tps65910 = dev_get_drvdata(&tps65910_i2c_client->dev);
++	struct tps65910 *tps65910 = container_of(this, struct tps65910,
++						 poweroff_nb);
  
-@@ -619,8 +621,15 @@ void twl4030_power_off(void)
- 			       TWL4030_PM_MASTER_P1_SW_EVENTS);
- 	if (err)
- 		pr_err("TWL4030 Unable to power off\n");
+ 	if (tps65910_reg_set_bits(tps65910, TPS65910_DEVCTRL,
+ 			DEVCTRL_PWR_OFF_MASK) < 0)
+-		return;
++		return NOTIFY_DONE;
+ 
+ 	tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
+ 			DEVCTRL_DEV_ON_MASK);
 +
 +	return NOTIFY_DONE;
  }
  
-+static struct notifier_block twl4030_poweroff_nb = {
-+	.notifier_call = twl4030_power_off,
-+	.priority = 64,
-+};
-+
- static bool twl4030_power_use_poweroff(const struct twl4030_power_data *pdata,
- 					struct device_node *node)
- {
-@@ -836,7 +845,7 @@ static int twl4030_power_probe(struct platform_device *pdev)
+ static int tps65910_i2c_probe(struct i2c_client *i2c,
+@@ -500,9 +503,13 @@ static int tps65910_i2c_probe(struct i2c_client *i2c,
+ 	tps65910_ck32k_init(tps65910, pmic_plat_data);
+ 	tps65910_sleepinit(tps65910, pmic_plat_data);
+ 
+-	if (pmic_plat_data->pm_off && !pm_power_off) {
+-		tps65910_i2c_client = i2c;
+-		pm_power_off = tps65910_power_off;
++	if (pmic_plat_data->pm_off) {
++		tps65910->poweroff_nb.notifier_call = tps65910_power_off;
++		tps65910->poweroff_nb.priority = 64;
++		ret = register_poweroff_handler(&tps65910->poweroff_nb);
++		if (ret)
++			dev_err(&i2c->dev,
++				"failed to register poweroff handler\n");
  	}
  
- 	/* Board has to be wired properly to use this feature */
--	if (twl4030_power_use_poweroff(pdata, node) && !pm_power_off) {
-+	if (twl4030_power_use_poweroff(pdata, node)) {
- 		/* Default for SEQ_OFFSYNC is set, lets ensure this */
- 		err = twl_i2c_read_u8(TWL_MODULE_PM_MASTER, &val,
- 				      TWL4030_PM_MASTER_CFG_P123_TRANSITION);
-@@ -853,7 +862,13 @@ static int twl4030_power_probe(struct platform_device *pdev)
- 			}
- 		}
- 
--		pm_power_off = twl4030_power_off;
-+		err = register_poweroff_handler(&twl4030_poweroff_nb);
-+		if (err) {
-+			dev_err(&pdev->dev,
-+				"Failed to register poweroff handler\n");
-+			/* Not a fatal error */
-+			err = 0;
-+		}
- 	}
- 
- relock:
-@@ -869,6 +884,8 @@ relock:
- 
- static int twl4030_power_remove(struct platform_device *pdev)
+ 	ret = mfd_add_devices(tps65910->dev, -1,
+@@ -522,6 +529,8 @@ static int tps65910_i2c_remove(struct i2c_client *i2c)
  {
-+	unregister_poweroff_handler(&twl4030_poweroff_nb);
-+
- 	return 0;
- }
+ 	struct tps65910 *tps65910 = i2c_get_clientdata(i2c);
  
-diff --git a/include/linux/i2c/twl.h b/include/linux/i2c/twl.h
-index 8cfb50f..f8544f1 100644
---- a/include/linux/i2c/twl.h
-+++ b/include/linux/i2c/twl.h
-@@ -680,7 +680,6 @@ struct twl4030_power_data {
++	unregister_poweroff_handler(&tps65910->poweroff_nb);
++
+ 	tps65910_irq_exit(tps65910);
+ 	mfd_remove_devices(tps65910->dev);
+ 
+diff --git a/include/linux/mfd/tps65910.h b/include/linux/mfd/tps65910.h
+index 6483a6f..65cae2c 100644
+--- a/include/linux/mfd/tps65910.h
++++ b/include/linux/mfd/tps65910.h
+@@ -905,6 +905,9 @@ struct tps65910 {
+ 	/* IRQ Handling */
+ 	int chip_irq;
+ 	struct regmap_irq_chip_data *irq_data;
++
++	/* Poweroff handling */
++	struct notifier_block poweroff_nb;
  };
  
- extern int twl4030_remove_script(u8 flags);
--extern void twl4030_power_off(void);
- 
- struct twl4030_codec_data {
- 	unsigned int digimic_delay; /* in ms */
+ struct tps65910_platform_data {
 -- 
 1.9.1

@@ -1,69 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:59:02 +0200 (CEST)
-Received: from cam-admin0.cambridge.arm.com ([217.140.96.50]:60028 "EHLO
-        cam-admin0.cambridge.arm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010625AbaJGQ7BKObjf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 18:59:01 +0200
-Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
-        by cam-admin0.cambridge.arm.com (8.12.6/8.12.6) with ESMTP id s97Gwdwo009466;
-        Tue, 7 Oct 2014 17:58:39 +0100 (BST)
-Date:   Tue, 7 Oct 2014 17:58:35 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Rob Landley <rob@landley.net>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "lguest@lists.ozlabs.org" <lguest@lists.ozlabs.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-am33-list@redhat.com" <linux-am33-list@redhat.com>,
-        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-m32r-ja@ml.linux-m32r.org" <linux-m32r-ja@ml.linux-m32r.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "openipmi-developer@lists.sourceforge.net" 
-        <openipmi-developer@lists.sourceforge.net>,
-        "user-mode-linux-devel@lists.sourceforge.net" 
-        <user-mode-linux-devel@lists.sourceforge.net>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@vger.kernel.org" <linux-m68k@vger.kernel.org>,
-        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 18:59:39 +0200 (CEST)
+Received: from mail-ie0-f170.google.com ([209.85.223.170]:40552 "EHLO
+        mail-ie0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010625AbaJGQ7ikdXtv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 18:59:38 +0200
+Received: by mail-ie0-f170.google.com with SMTP id rd18so5787272iec.15
+        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 09:59:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=IQmBW/ecm0PlBOnNT1tmvTyGhPpEN+BG3k+K+8XnQAY=;
+        b=pWBorCMq1eXduZiVcf3gaU7QHS/EPu8ZXHWt+PfF9KdK7ozE3k2wh89+u0Q8g8ikqp
+         EQn+BXYNgkI3hRDGELWv+3nLHjQRlfe5O9Vb7vY1STmktBCVFAP+OFAKX0iRnva2EMus
+         JfhaO00M36epbU0e4sCCgGOfCQw2xnM2O2jpfXFxCVdmqPycGvCCW9FgM1HTuS7sr9cB
+         O64d7T/vj6muGVnt2VytRs6qAo+IFyfJul4+FqDxnqY7hEVUfD3Nhf4AypscddyjZTBL
+         u64KIGIicQavYjyK29H/pF4hUkOr006m6zf0ypKh6fXqLkjVnW/y42h5kYgh3AJ3wOtG
+         Ld4Q==
+X-Received: by 10.50.25.65 with SMTP id a1mr33614579igg.3.1412701172477;
+        Tue, 07 Oct 2014 09:59:32 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id z5sm12441449igl.21.2014.10.07.09.59.29
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 07 Oct 2014 09:59:31 -0700 (PDT)
+Message-ID: <54341BF1.9020001@gmail.com>
+Date:   Tue, 07 Oct 2014 09:59:29 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Guenter Roeck <linux@roeck-us.net>, Rob Landley <rob@landley.net>
+CC:     linux-kernel@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        openipmi-developer@lists.sourceforge.net,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
         Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <Pawel.Moll@arm.com>
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>
 Subject: Re: [PATCH 05/44] mfd: as3722: Drop reference to pm_power_off from
  devicetree bindings
-Message-ID: <20141007165835.GE27216@leverpostej>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-6-git-send-email-linux@roeck-us.net>
- <543412F7.8040909@landley.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <543412F7.8040909@landley.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <mark.rutland@arm.com>
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-6-git-send-email-linux@roeck-us.net> <543412F7.8040909@landley.net> <20141007163131.GE28835@roeck-us.net>
+In-Reply-To: <20141007163131.GE28835@roeck-us.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43069
+X-archive-position: 43070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.rutland@arm.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,32 +75,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 07, 2014 at 05:21:11PM +0100, Rob Landley wrote:
-> On 10/07/14 00:28, Guenter Roeck wrote:
-> > Devicetree bindings are supposed to be operating system independent
-> > and should thus not describe how a specific functionality is implemented
-> > in Linux.
-> 
-> So your argument is that linux/Documentation/devicetree/bindings should
-> not be specific to Linux. Merely hosted in the Linux kernel source
-> repository.
+On 10/07/2014 09:31 AM, Guenter Roeck wrote:
+> On Tue, Oct 07, 2014 at 11:21:11AM -0500, Rob Landley wrote:
+>> On 10/07/14 00:28, Guenter Roeck wrote:
+>>> Devicetree bindings are supposed to be operating system independent
+>>> and should thus not describe how a specific functionality is implemented
+>>> in Linux.
+>>
+>> So your argument is that linux/Documentation/devicetree/bindings should
+>> not be specific to Linux. Merely hosted in the Linux kernel source
+>> repository.
+>>
+>> Well that's certainly a point of view.
+>>
+> Not specifically my argument, really, and nothing new either. But, yes, I do
+> think that devicetree bindings descriptions should not include implementation
+> details, especially since those may change over time (as is the case here).
+>
 
-Precisely. If nothing else as a general guideline this keeps us honest,
-and prevents us from embedding arbitrary implementation details into
-bidnings that cause pain later when we want to change things at either
-end.
+I fully agree.
 
-There are already otehr users of these bindings, so we can't really
-claim they're strictly Linux-specific anyhow.
+Many device trees come from outside the kernel (i.e. they are supplied 
+by the system boot environment).  Obviously these device trees cannot be 
+changed at the whim of kernel developers, *and* it is perfectly 
+reasonable to think that software other than the Linux kernel will run 
+on this type of system too.
 
-> Well that's certainly a point of view.
+So yes, it is really true, device trees are not a Linux kernel private 
+implementation detail, they are really an external ABI that, although 
+documented in the kernel source tree, cannot be changed in incompatible 
+ways as time progresses.
 
-As far as I am aware, it's the point of view shared by the device tree
-maintainers, and it's been that way for a while.
-
-I don't really follow your concern. For one thing were this followed
-more strictly this file wouldn't need patching at all to correct for
-this Linux-internal rework...
-
-Thanks,
-Mark.
+David Daney

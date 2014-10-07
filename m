@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:36:42 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51762 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 07:36:58 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51780 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010668AbaJGFbVuv8sW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:21 +0200
+        with ESMTP id S27010688AbaJGFbXGwi6k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 07:31:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=ECtg6tj+A0PPNJqz/9i7QDAJVbZ2MCBRkRG0jfFaVYU=;
-        b=cYbo2lR5IxI47DN5+Y9VzHqD0pXwe8xa+FIyaKWlCzp2pDp2nRsMlBnizHJgJp9wxFLHEaT8/QDmj5H8Y2hU7YIZzMpm8P17ITomvB5TDbLXj3t4b+RqK7Jqg0605FsJJWNxApcbjFCVRy3uvjmTKR6aU4Cwy/7S14bXHFN2yq4=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=Qh59DK4kcVAuuuLyySrApAGW5vSZ61rwTBVxl+gfAe0=;
+        b=dRGFKrsS5vUKNSazgy+PGmplaSvfM5Xqq/8qXwsWzyC4bH2z/RYf9Skzc593VWfTnItRyfuVDBuBvd5Xmz7ElKHnFaZ87clxPCjsiihLvJmvtnbT6IF4hd3Pu2ZznnS2ZAfcgT8iVvUD/OY3+OnFij/iFpCuGhZc1AhQGWQt8Yo=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNMh-002lF2-Hv
-        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:15 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32937 helo=localhost)
+        id 1XbNMi-002laI-TP
+        for linux-mips@linux-mips.org; Tue, 07 Oct 2014 05:31:17 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32911 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XbNLl-002ef2-TG; Tue, 07 Oct 2014 05:30:19 +0000
+        id 1XbNL4-002b5E-LJ; Tue, 07 Oct 2014 05:29:35 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     adi-buildroot-devel@lists.sourceforge.net,
@@ -32,29 +32,29 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
         Guenter Roeck <linux@roeck-us.net>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>
-Subject: [PATCH 34/44] ia64: Register with kernel poweroff handler
-Date:   Mon,  6 Oct 2014 22:28:36 -0700
-Message-Id: <1412659726-29957-35-git-send-email-linux@roeck-us.net>
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH 16/44] mfd: tps6586x: Register with kernel poweroff handler
+Date:   Mon,  6 Oct 2014 22:28:18 -0700
+Message-Id: <1412659726-29957-17-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
 X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=0.3
+X-OutGoing-Spam-Status: No, score=2.8
 X-CTCH-PVer: 0000001
-X-CTCH-Spam: Unknown
+X-CTCH-Spam: Suspect
 X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020207.54337AA3.00DA,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-Flags: 512
+X-CTCH-RefID: str=0001.0A020207.54337AA5.0048,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 1109
+X-CTCH-SenderID-TotalMessages: 1127
 X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 75
+X-CTCH-SenderID-TotalSuspected: 83
 X-CTCH-SenderID-TotalConfirmed: 0
 X-CTCH-SenderID-TotalBulk: 0
 X-CTCH-SenderID-TotalVirus: 0
@@ -72,7 +72,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43015
+X-archive-position: 43016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,34 +90,91 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Register with kernel poweroff handler instead of setting pm_power_off
-directly. Register with lower priority of 64 to reflect that the call
-is expected to be replaced at some point.
+directly. Register with a low priority value of 64 to reflect that
+the original code only sets pm_power_off if it was not already set.
 
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Cc: Lee Jones <lee.jones@linaro.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/ia64/sn/kernel/setup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/tps6586x.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/arch/ia64/sn/kernel/setup.c b/arch/ia64/sn/kernel/setup.c
-index 36182c8..6c83425 100644
---- a/arch/ia64/sn/kernel/setup.c
-+++ b/arch/ia64/sn/kernel/setup.c
-@@ -488,12 +488,12 @@ void __init sn_setup(char **cmdline_p)
- 	sn_timer_init();
+diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
+index 8e1dbc4..bc14509 100644
+--- a/drivers/mfd/tps6586x.c
++++ b/drivers/mfd/tps6586x.c
+@@ -21,10 +21,12 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/notifier.h>
+ #include <linux/slab.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
+ #include <linux/platform_device.h>
++#include <linux/pm.h>
+ #include <linux/regmap.h>
+ #include <linux/of.h>
  
- 	/*
--	 * set pm_power_off to a SAL call to allow
-+	 * set poweroff handler to a SAL call to allow
- 	 * sn machines to power off. The SAL call can be replaced
- 	 * by an ACPI interface call when ACPI is fully implemented
- 	 * for sn.
- 	 */
--	pm_power_off = ia64_sn_power_down;
-+	register_poweroff_handler_simple(ia64_sn_power_down, 64);
- 	current->thread.flags |= IA64_THREAD_MIGRATION;
+@@ -133,6 +135,8 @@ struct tps6586x {
+ 	u32			irq_en;
+ 	u8			mask_reg[5];
+ 	struct irq_domain	*irq_domain;
++
++	struct notifier_block	poweroff_nb;
+ };
+ 
+ static inline struct tps6586x *dev_to_tps6586x(struct device *dev)
+@@ -472,13 +476,18 @@ static const struct regmap_config tps6586x_regmap_config = {
+ 	.cache_type = REGCACHE_RBTREE,
+ };
+ 
+-static struct device *tps6586x_dev;
+-static void tps6586x_power_off(void)
++static int tps6586x_power_off(struct notifier_block *this,
++			      unsigned long unused1, void *unused2)
+ {
+-	if (tps6586x_clr_bits(tps6586x_dev, TPS6586X_SUPPLYENE, EXITSLREQ_BIT))
+-		return;
++	struct tps6586x *tps6586x = container_of(this, struct tps6586x,
++						 poweroff_nb);
++
++	if (tps6586x_clr_bits(tps6586x->dev, TPS6586X_SUPPLYENE, EXITSLREQ_BIT))
++		return NOTIFY_DONE;
+ 
+-	tps6586x_set_bits(tps6586x_dev, TPS6586X_SUPPLYENE, SLEEP_MODE_BIT);
++	tps6586x_set_bits(tps6586x->dev, TPS6586X_SUPPLYENE, SLEEP_MODE_BIT);
++
++	return NOTIFY_DONE;
  }
  
+ static void tps6586x_print_version(struct i2c_client *client, int version)
+@@ -575,9 +584,13 @@ static int tps6586x_i2c_probe(struct i2c_client *client,
+ 		goto err_add_devs;
+ 	}
+ 
+-	if (pdata->pm_off && !pm_power_off) {
+-		tps6586x_dev = &client->dev;
+-		pm_power_off = tps6586x_power_off;
++	if (pdata->pm_off) {
++		tps6586x->poweroff_nb.notifier_call = tps6586x_power_off;
++		tps6586x->poweroff_nb.priority = 64;
++		ret = register_poweroff_handler(&tps6586x->poweroff_nb);
++		if (ret)
++			dev_err(&client->dev,
++				"failed to register poweroff handler\n");
+ 	}
+ 
+ 	return 0;
+@@ -594,6 +607,8 @@ static int tps6586x_i2c_remove(struct i2c_client *client)
+ {
+ 	struct tps6586x *tps6586x = i2c_get_clientdata(client);
+ 
++	unregister_poweroff_handler(&tps6586x->poweroff_nb);
++
+ 	tps6586x_remove_subdevs(tps6586x);
+ 	mfd_remove_devices(tps6586x->dev);
+ 	if (client->irq)
 -- 
 1.9.1

@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 09:52:53 +0200 (CEST)
-Received: from mail-ig0-f173.google.com ([209.85.213.173]:51667 "EHLO
-        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010668AbaJGHwwbWZvU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 09:52:52 +0200
-Received: by mail-ig0-f173.google.com with SMTP id h18so3771727igc.6
-        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 00:52:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 10:01:04 +0200 (CEST)
+Received: from mail-ig0-f179.google.com ([209.85.213.179]:36035 "EHLO
+        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010665AbaJGIBDSu0Lp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 10:01:03 +0200
+Received: by mail-ig0-f179.google.com with SMTP id h18so4267101igc.0
+        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2014 01:00:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-type:content-disposition
          :content-transfer-encoding:in-reply-to:user-agent;
-        bh=+auz6WJ8RkQR71wTNzglwUDDFzMINOhPs6uufeylVyU=;
-        b=Y6oUTtfxoTsPKtxLpWJUrchxGr8d7BV0kpkpePoiz/0hVHuSRQmNOnCOzcQ1lV5oWj
-         sBvdQ1uvnIru561NSryFW6SHFePg0Z92wTPomQtifFUez+PUwik09C3ZAp5fzw1wLgAQ
-         7zOdK+hevUsDztwlRwYXZqS0M1rHB5FuhF+aRZryOaO+O8X796iAbF4swE9eR9OEHLnV
-         Vs94A1O99ZJNJEwJu2OVDuNRce5Jji1DP0CV5Kv3BVc1+iTlkpm8T+X+DjaMhbEdgm5w
-         cPEX5QeLIMOiK2N3NQAyLyK42XRdRHyDDWUK8hoeAowOLEHiHQp9OA8d4N6vWgb2zxgi
-         cTrQ==
-X-Gm-Message-State: ALoCoQmZlrK9MveUKIOYX+dktczeK8CjTnayuZDw/2lj3San7Cek28ybDU7K8i8GGHg4107Ykdld
-X-Received: by 10.50.30.102 with SMTP id r6mr2943915igh.18.1412668366477;
-        Tue, 07 Oct 2014 00:52:46 -0700 (PDT)
+        bh=fbO0x+dbtEI+osNOFoN6mlB2Ti38IfEik6IoHTaZtD4=;
+        b=aBGi9U9rjvcBqxMvtcZVdsDDXCAG2OFUrHUud+z2kjU2p3gY27nt3GmTRl+/X94pwU
+         oIOZ5DS83sGajM7jb9z55Ahh8dln8PIM5SK+Nu4vtkjQ2JLwXX48Qnbu6FOxhe6SlZzG
+         ICc0apL0/JPT39aDi6Ahg5xqS8WfoKl/AATqVeqzo1ZRDE6F6iFjIsh8bjxEBJxNeGyH
+         s8oelKxRnt3YGrjR/Rg273VV+iyGP5mIszUWPcKgS6o8wSYlX2yShuIn00oVqDqSagi/
+         CicqXyI7dZxhnY0A2rzR3ZvuNiPFQkkpT2hrTmhpuJgCWBCZtFa7w3FY2eIRSZEXMz85
+         DkiQ==
+X-Gm-Message-State: ALoCoQlePIQ8nMSu2HVbSlLfL1JoYFyxyRZHzLuiDK7k6BwZHhEpmcZoGsuIgkYGgITV8K0rD1BD
+X-Received: by 10.42.61.137 with SMTP id u9mr2520721ich.54.1412668857025;
+        Tue, 07 Oct 2014 01:00:57 -0700 (PDT)
 Received: from lee--X1 (host109-148-233-9.range109-148.btcentralplus.com. [109.148.233.9])
-        by mx.google.com with ESMTPSA id m7sm1922290igj.18.2014.10.07.00.52.41
+        by mx.google.com with ESMTPSA id j2sm11554920igm.21.2014.10.07.01.00.51
         for <multiple recipients>
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 07 Oct 2014 00:52:45 -0700 (PDT)
-Date:   Tue, 7 Oct 2014 08:52:38 +0100
+        Tue, 07 Oct 2014 01:00:56 -0700 (PDT)
+Date:   Tue, 7 Oct 2014 09:00:48 +0100
 From:   Lee Jones <lee.jones@linaro.org>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-kernel@vger.kernel.org,
@@ -44,23 +44,24 @@ Cc:     linux-kernel@vger.kernel.org,
         linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Linus Walleij <linus.walleij@linaro.org>,
         Samuel Ortiz <sameo@linux.intel.com>
-Subject: Re: [PATCH 18/44] mfd: twl4030-power: Register with kernel poweroff
+Subject: Re: [PATCH 12/44] mfd: ab8500-sysctrl: Register with kernel poweroff
  handler
-Message-ID: <20141007075238.GA25331@lee--X1>
+Message-ID: <20141007080048.GB25331@lee--X1>
 References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-19-git-send-email-linux@roeck-us.net>
+ <1412659726-29957-13-git-send-email-linux@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1412659726-29957-19-git-send-email-linux@roeck-us.net>
+In-Reply-To: <1412659726-29957-13-git-send-email-linux@roeck-us.net>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <lee.jones@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43039
+X-archive-position: 43040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,118 +84,48 @@ On Mon, 06 Oct 2014, Guenter Roeck wrote:
 > directly. Register with a low priority value of 64 to reflect that
 > the original code only sets pm_power_off if it was not already set.
 > 
-> Make twl4030_power_off static as it is only called from the twl4030-power
-> driver.
-> 
-> Cc: Samuel Ortiz <sameo@linux.intel.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
 > Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Samuel Ortiz <sameo@linux.intel.com>
 > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 > ---
->  drivers/mfd/twl4030-power.c | 25 +++++++++++++++++++++----
->  include/linux/i2c/twl.h     |  1 -
->  2 files changed, 21 insertions(+), 5 deletions(-)
+>  drivers/mfd/ab8500-sysctrl.c | 26 +++++++++++++++-----------
+>  1 file changed, 15 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/mfd/twl4030-power.c b/drivers/mfd/twl4030-power.c
-> index 4d3ff37..bd6b830 100644
-> --- a/drivers/mfd/twl4030-power.c
-> +++ b/drivers/mfd/twl4030-power.c
-> @@ -25,9 +25,10 @@
->   */
->  
->  #include <linux/module.h>
-> -#include <linux/pm.h>
-> +#include <linux/notifier.h>
->  #include <linux/i2c/twl.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pm.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
->  
-> @@ -611,7 +612,8 @@ twl4030_power_configure_resources(const struct twl4030_power_data *pdata)
->   * After a successful execution, TWL shuts down the power to the SoC
->   * and all peripherals connected to it.
->   */
-> -void twl4030_power_off(void)
-> +static int twl4030_power_off(struct notifier_block *this, unsigned long unused1,
-> +			     void *unused2)
+> diff --git a/drivers/mfd/ab8500-sysctrl.c b/drivers/mfd/ab8500-sysctrl.c
+> index 8e0dae5..677438f 100644
+> --- a/drivers/mfd/ab8500-sysctrl.c
+> +++ b/drivers/mfd/ab8500-sysctrl.c
+> @@ -6,6 +6,7 @@
+
+[...]
+
+> +static int ab8500_power_off(struct notifier_block *this, unsigned long unused1,
+> +			    void *unused2)
 >  {
->  	int err;
+>  	sigset_t old;
+>  	sigset_t all;
+> @@ -34,11 +36,6 @@ static void ab8500_power_off(void)
+>  	struct power_supply *psy;
+>  	int ret;
 >  
-> @@ -619,8 +621,15 @@ void twl4030_power_off(void)
->  			       TWL4030_PM_MASTER_P1_SW_EVENTS);
->  	if (err)
->  		pr_err("TWL4030 Unable to power off\n");
+> -	if (sysctrl_dev == NULL) {
+> -		pr_err("%s: sysctrl not initialized\n", __func__);
+> -		return;
+> -	}
+
+Can you explain the purpose of this change please?
+
+>  	/*
+>  	 * If we have a charger connected and we're powering off,
+>  	 * reboot into charge-only mode.
+> @@ -83,8 +80,15 @@ shutdown:
+>  					 AB8500_STW4500CTRL1_SWRESET4500N);
+>  		(void)sigprocmask(SIG_SETMASK, &old, NULL);
+>  	}
 > +
 > +	return NOTIFY_DONE;
 >  }
->  
-> +static struct notifier_block twl4030_poweroff_nb = {
-> +	.notifier_call = twl4030_power_off,
-> +	.priority = 64,
-
-64 out of what?  How is this calculated?  Wouldn't it be better to
-define these?
-
-> +};
-> +
->  static bool twl4030_power_use_poweroff(const struct twl4030_power_data *pdata,
->  					struct device_node *node)
->  {
-> @@ -836,7 +845,7 @@ static int twl4030_power_probe(struct platform_device *pdev)
->  	}
->  
->  	/* Board has to be wired properly to use this feature */
-> -	if (twl4030_power_use_poweroff(pdata, node) && !pm_power_off) {
-> +	if (twl4030_power_use_poweroff(pdata, node)) {
->  		/* Default for SEQ_OFFSYNC is set, lets ensure this */
->  		err = twl_i2c_read_u8(TWL_MODULE_PM_MASTER, &val,
->  				      TWL4030_PM_MASTER_CFG_P123_TRANSITION);
-> @@ -853,7 +862,13 @@ static int twl4030_power_probe(struct platform_device *pdev)
->  			}
->  		}
->  
-> -		pm_power_off = twl4030_power_off;
-> +		err = register_poweroff_handler(&twl4030_poweroff_nb);
-> +		if (err) {
-> +			dev_err(&pdev->dev,
-> +				"Failed to register poweroff handler\n");
-
-If this is not fatal, you should issue a dev_warn() instead.
-
-> +			/* Not a fatal error */
-> +			err = 0;
-
-How about using your own variable for this?  Then you don't have to
-worry about resetting it.
-
-> +		}
->  	}
->  
->  relock:
-> @@ -869,6 +884,8 @@ relock:
->  
->  static int twl4030_power_remove(struct platform_device *pdev)
->  {
-> +	unregister_poweroff_handler(&twl4030_poweroff_nb);
-
-Perhaps a naive question, but is there any way you can do this using
-devres (devm_* managed resources)?
-
->  	return 0;
->  }
->  
-> diff --git a/include/linux/i2c/twl.h b/include/linux/i2c/twl.h
-> index 8cfb50f..f8544f1 100644
-> --- a/include/linux/i2c/twl.h
-> +++ b/include/linux/i2c/twl.h
-> @@ -680,7 +680,6 @@ struct twl4030_power_data {
->  };
->  
->  extern int twl4030_remove_script(u8 flags);
-> -extern void twl4030_power_off(void);
->  
->  struct twl4030_codec_data {
->  	unsigned int digimic_delay; /* in ms */
 
 -- 
 Lee Jones

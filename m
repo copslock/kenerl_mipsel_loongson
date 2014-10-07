@@ -1,49 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 12:52:44 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50570 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010694AbaJGKwmfb14E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 12:52:42 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2865A954A5F16;
-        Tue,  7 Oct 2014 11:52:33 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 7 Oct 2014 11:52:35 +0100
-Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 7 Oct
- 2014 11:52:35 +0100
-Message-ID: <5433C5F2.2050506@imgtec.com>
-Date:   Tue, 7 Oct 2014 11:52:34 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
-MIME-Version: 1.0
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        David Daney <david.s.daney@gmail.com>,
-        Rich Felker <dalias@libc.org>,
-        David Daney <ddaney@caviumnetworks.com>
-CC:     Andy Lutomirski <luto@amacapital.net>,
-        David Daney <ddaney.cavm@gmail.com>,
-        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2014 13:00:17 +0200 (CEST)
+Received: from cam-admin0.cambridge.arm.com ([217.140.96.50]:53199 "EHLO
+        cam-admin0.cambridge.arm.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010703AbaJGLAPhlO-a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2014 13:00:15 +0200
+Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
+        by cam-admin0.cambridge.arm.com (8.12.6/8.12.6) with ESMTP id s97Axiwo018647;
+        Tue, 7 Oct 2014 11:59:44 +0100 (BST)
+Date:   Tue, 7 Oct 2014 11:59:41 +0100
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "lguest@lists.ozlabs.org" <lguest@lists.ozlabs.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-am33-list@redhat.com" <linux-am33-list@redhat.com>,
+        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-m32r-ja@ml.linux-m32r.org" <linux-m32r-ja@ml.linux-m32r.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "openipmi-developer@lists.sourceforge.net" 
+        <openipmi-developer@lists.sourceforge.net>,
+        "user-mode-linux-devel@lists.sourceforge.net" 
+        <user-mode-linux-devel@lists.sourceforge.net>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-m68k@vger.kernel.org" <linux-m68k@vger.kernel.org>,
+        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        "Leonid Yegoshin" <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH resend] MIPS: Allow FPU emulator to use non-stack area.
-References: <1412627010-4311-1-git-send-email-ddaney.cavm@gmail.com> <20141006205459.GZ23797@brightrain.aerifal.cx> <5433071B.4050606@caviumnetworks.com> <20141006213101.GA23797@brightrain.aerifal.cx> <54330D79.80102@caviumnetworks.com> <20141006215813.GB23797@brightrain.aerifal.cx> <543327E7.4020608@amacapital.net> <54332A64.5020605@caviumnetworks.com> <20141007000514.GD23797@brightrain.aerifal.cx> <543334CE.8060305@caviumnetworks.com> <20141007004915.GF23797@brightrain.aerifal.cx> <54337127.40806@gmail.com> <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F1E173@LEMAIL01.le.imgtec.org>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <Pawel.Moll@arm.com>
+Subject: Re: [PATCH 05/44] mfd: as3722: Drop reference to pm_power_off from
+ devicetree bindings
+Message-ID: <20141007105941.GD24725@leverpostej>
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
+ <1412659726-29957-6-git-send-email-linux@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1412659726-29957-6-git-send-email-linux@roeck-us.net>
+Thread-Topic: [PATCH 05/44] mfd: as3722: Drop reference to pm_power_off from
+ devicetree bindings
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <mark.rutland@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43047
+X-archive-position: 43048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: mark.rutland@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,35 +78,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/10/14 10:13, Matthew Fortune wrote:
->>>> the out-of-line execution trick, but do it somewhere other than in
->>>> stack memory.
->>> How do you answer Andy Lutomirski's question about what happens when a
->>> signal handler interrupts execution while the program counter is
->>> pointing at this "out-of-line execution" trampoline? This seems like a
->>> show-stopper for using anything other than the stack.
->> It would be nice to support, but not doing so would not be a regression
->> from current behavior.
+On Tue, Oct 07, 2014 at 06:28:07AM +0100, Guenter Roeck wrote:
+> Devicetree bindings are supposed to be operating system independent
+> and should thus not describe how a specific functionality is implemented
+> in Linux.
 > 
-> It seems appropriate to mention another issue which should be addressed as
-> part of the overall FPU emulation work...
-> 
-> From what I can see the out-of-line execution of delay slot instructions
-> will break micromips R3 addiupc, and all MIPS32r6 and MIPS64r6 PC-relative
-> instructions (inc load/store) as they will have the wrong base. Is there
-> anything in the current set of proposals that can address this (beyond
-> adding restrictions to what is ABI allowed in FPU branch delay slots)?
-> 
-> This is an issue whether the stack is executable or not but does directly
-> relate to the topic of FPU emulation.  It sounds like the kernel would not
-> be able to emulate a pc-relative load/store even if it was a special case
-> as it would not run in the correct MM context? [be gentle, I'm no expert
-> in this area].
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Pawel Moll <pawel.moll@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>  Documentation/devicetree/bindings/mfd/as3722.txt | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-I think special casing and emulating them in the kernel would work in
-these cases, since it'd be a known set of instructions rather than
-arbitrary unknown instructions, the kernel needs to read/write safely
-into the user address space all the time for system calls.
+Thanks for the fix-up!
 
-Cheers
-James
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+
+Mark.
+
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/as3722.txt b/Documentation/devicetree/bindings/mfd/as3722.txt
+> index 4f64b2a..0b2a609 100644
+> --- a/Documentation/devicetree/bindings/mfd/as3722.txt
+> +++ b/Documentation/devicetree/bindings/mfd/as3722.txt
+> @@ -122,8 +122,7 @@ Following are properties of regulator subnode.
+>  
+>  Power-off:
+>  =========
+> -AS3722 supports the system power off by turning off all its rail. This
+> -is provided through pm_power_off.
+> +AS3722 supports the system power off by turning off all its rails.
+>  The device node should have the following properties to enable this
+>  functionality
+>  ams,system-power-controller: Boolean, to enable the power off functionality
+> -- 
+> 1.9.1
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

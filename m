@@ -1,38 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2014 12:34:36 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12243 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010829AbaJHKeeRaje0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Oct 2014 12:34:34 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 54604237F115A
-        for <linux-mips@linux-mips.org>; Wed,  8 Oct 2014 11:34:25 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 8 Oct 2014 11:34:27 +0100
-Received: from [192.168.154.56] (192.168.154.56) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 8 Oct
- 2014 11:34:26 +0100
-Message-ID: <54351332.9020309@imgtec.com>
-Date:   Wed, 8 Oct 2014 11:34:26 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2014 13:06:55 +0200 (CEST)
+Received: from mx10.pku.edu.cn ([162.105.129.173]:49222 "EHLO mail.pku.edu.cn"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010829AbaJHLGwY4GWm convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Oct 2014 13:06:52 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.pku.edu.cn (tmailer) with ESMTP id D3E7913809A;
+        Wed,  8 Oct 2014 19:06:41 +0800 (CST)
+Received: from mail.pku.edu.cn ([127.0.0.1])
+        by localhost (bj-mail03.pku.edu.cn [127.0.0.1]) (theinterface-new, port 10024)
+        with ESMTP id AnYU2pFtmIXW; Wed,  8 Oct 2014 19:06:32 +0800 (CST)
+Received: from bj-mail03.pku.edu.cn (bj-mail03.pku.edu.cn [162.105.129.123])
+        by mail.pku.edu.cn (tmailer) with ESMTP id 5454D138082;
+        Wed,  8 Oct 2014 19:06:32 +0800 (CST)
+Date:   Wed, 8 Oct 2014 19:06:32 +0800 (CST)
+From:   =?gbk?B?WHVldGFvIEd1YW4g?= <gxt@pku.edu.cn>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        openipmi-developer@lists.sourceforge.net,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Steven Miao <realmz6@gmail.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        David Howells <dhowells@redhat.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Hirokazu Takata <takata@linux-m32r.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        David Vrabel <david.vrabel@citrix.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>
+Message-ID: <218135571.28324.1412766392198.JavaMail.root@bj-mail03.pku.edu.cn>
+In-Reply-To: <1412659726-29957-9-git-send-email-linux@roeck-us.net>
+Subject: =?utf-8?Q?=E5=9B=9E=E5=A4=8D=EF=BC=9A_[PATCH_08/44]_kernel:_Mov?=
+ =?utf-8?Q?e_pm=5Fpower=5Foff_to_common_code?=
 MIME-Version: 1.0
-To:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: IP22/IP32: Add missing ifdefs to Platform files
-References: <543496C6.7000005@gentoo.org>
-In-Reply-To: <543496C6.7000005@gentoo.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.56]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [162.105.129.94]
+Return-Path: <gxt@pku.edu.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43108
+X-archive-position: 43109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: gxt@pku.edu.cn
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,44 +109,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/08/2014 02:43 AM, Joshua Kinard wrote:
-> In arch/mips/sgi-ip22/Platform and arch/mips/sgi-ip32/Platform, ifdefs for
-> CONFIG_SGI_IP22 and CONFIG_SGI_IP32 are missing, which can cause the
-> definitions for these platforms to get included in builds for other platforms.
->  This patch adds these missing ifdefs, which matches IP27's Platform file.
-> 
-> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-> ---
->  arch/mips/sgi-ip22/Platform |    8 +++++---
->  arch/mips/sgi-ip32/Platform |    9 ++++++---
->  2 files changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/mips/sgi-ip22/Platform b/arch/mips/sgi-ip22/Platform
-> index b7a4b7e..5fa3c7a 100644
-> --- a/arch/mips/sgi-ip22/Platform
-> +++ b/arch/mips/sgi-ip22/Platform
-> @@ -7,7 +7,8 @@
->  # current variable will break so for 64-bit kernels we have to raise the start
->  # address by 8kb.
->  #
-> -platform-$(CONFIG_SGI_IP22)		+= sgi-ip22/
-> +ifdef CONFIG_SGI_IP22
-> +platform-$(CONFIG_SGI_IP22)	+= sgi-ip22/
->  cflags-$(CONFIG_SGI_IP22)	+= -I$(srctree)/arch/mips/include/asm/mach-ip22
->  ifdef CONFIG_32BIT
->  load-$(CONFIG_SGI_IP22)		+= 0xffffffff88002000
-> @@ -15,6 +16,7 @@ endif
->  ifdef CONFIG_64BIT
->  load-$(CONFIG_SGI_IP22)		+= 0xffffffff88004000
->  endif
-> +endif
->  
 
-I could be wrong but isn't that functionally the same thing? As in, if
-CONFIG_SGI_IP22 is not enabled, the sgi-ip22 etc are not included.
-That's the same thing as the original code was doing no? Why do you need
-to hide all the $FOO-$(CONFIG_SGI_IP22) in a separate #ifdef block. What
-problem are you trying to solve?
+----- Guenter Roeck <linux@roeck-us.net> 写道：
+> pm_power_off is defined for all architectures. Move it to common code.
+> 
+> Have all architectures call do_kernel_poweroff instead of pm_power_off.
+> Some architectures point pm_power_off to machine_power_off. For those,
+> call do_kernel_poweroff from machine_power_off instead.
+> 
 
--- 
-markos
+For UniCore32 part,
+
+Acked-by: Xuetao Guan <gxt@mprc.pku.edu.cn>
+
+Thanks
+Xuetao

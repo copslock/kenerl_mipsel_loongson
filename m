@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 17:08:56 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53908
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 17:09:13 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53909
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27010969AbaJIPIGESxgd (ORCPT
+        with ESMTP id S27010971AbaJIPIGk0b5D (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 17:08:06 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 03/10] MIPS: ralink: add rt_sysc_m32 helper
-Date:   Thu,  9 Oct 2014 01:52:58 +0200
-Message-Id: <1412812385-64820-4-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 04/10] MIPS: ralink: add a bootrom dumper module
+Date:   Thu,  9 Oct 2014 01:52:59 +0200
+Message-Id: <1412812385-64820-5-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412812385-64820-1-git-send-email-blogic@openwrt.org>
 References: <1412812385-64820-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43139
+X-archive-position: 43140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,30 +33,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We already have a read and write wrapper. This adds the missing mask wrapper.
+This patch adds a trivial driver that allows userland to extract the bootrom of
+a SoC via debugfs.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/mach-ralink/ralink_regs.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/mips/ralink/Makefile  |    2 ++
+ arch/mips/ralink/bootrom.c |   48 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
+ create mode 100644 arch/mips/ralink/bootrom.c
 
-diff --git a/arch/mips/include/asm/mach-ralink/ralink_regs.h b/arch/mips/include/asm/mach-ralink/ralink_regs.h
-index 5a508f9..bd93014 100644
---- a/arch/mips/include/asm/mach-ralink/ralink_regs.h
-+++ b/arch/mips/include/asm/mach-ralink/ralink_regs.h
-@@ -26,6 +26,13 @@ static inline u32 rt_sysc_r32(unsigned reg)
- 	return __raw_readl(rt_sysc_membase + reg);
- }
+diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+index 98ae349..584a8d9 100644
+--- a/arch/mips/ralink/Makefile
++++ b/arch/mips/ralink/Makefile
+@@ -17,4 +17,6 @@ obj-$(CONFIG_SOC_MT7620) += mt7620.o
  
-+static inline void rt_sysc_m32(u32 clr, u32 set, unsigned reg)
-+{
-+	u32 val = rt_sysc_r32(reg) & ~clr;
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ 
++obj-$(CONFIG_DEBUG_FS) += bootrom.o
 +
-+	__raw_writel(val | set, rt_sysc_membase + reg);
+ obj-y += dts/
+diff --git a/arch/mips/ralink/bootrom.c b/arch/mips/ralink/bootrom.c
+new file mode 100644
+index 0000000..5403468
+--- /dev/null
++++ b/arch/mips/ralink/bootrom.c
+@@ -0,0 +1,48 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/debugfs.h>
++#include <linux/seq_file.h>
++
++#define BOOTROM_OFFSET	0x10118000
++#define BOOTROM_SIZE	0x8000
++
++static void __iomem *membase = (void __iomem *) KSEG1ADDR(BOOTROM_OFFSET);
++
++static int bootrom_show(struct seq_file *s, void *unused)
++{
++	seq_write(s, membase, BOOTROM_SIZE);
++
++	return 0;
 +}
 +
- static inline void rt_memc_w32(u32 val, unsigned reg)
- {
- 	__raw_writel(val, rt_memc_membase + reg);
++static int bootrom_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, bootrom_show, NULL);
++}
++
++static const struct file_operations bootrom_file_ops = {
++	.open		= bootrom_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++};
++
++static int bootrom_setup(void)
++{
++	if (!debugfs_create_file("bootrom", 0444,
++			NULL, NULL, &bootrom_file_ops)) {
++		pr_err("Failed to create bootrom debugfs file\n");
++
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++postcore_initcall(bootrom_setup);
 -- 
 1.7.10.4

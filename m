@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 17:09:13 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53909
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 17:09:31 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53910
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27010971AbaJIPIGk0b5D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 17:08:06 +0200
+        with ESMTP id S27010962AbaJIPIHVkwU1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 17:08:07 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 04/10] MIPS: ralink: add a bootrom dumper module
-Date:   Thu,  9 Oct 2014 01:52:59 +0200
-Message-Id: <1412812385-64820-5-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 05/10] MIPS: ralink: add illegal access driver
+Date:   Thu,  9 Oct 2014 01:53:00 +0200
+Message-Id: <1412812385-64820-6-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412812385-64820-1-git-send-email-blogic@openwrt.org>
 References: <1412812385-64820-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43140
+X-archive-position: 43141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,33 +33,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch adds a trivial driver that allows userland to extract the bootrom of
-a SoC via debugfs.
+These SoCs have a special irq that fires upon an illegal memmory access.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/Makefile  |    2 ++
- arch/mips/ralink/bootrom.c |   48 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
- create mode 100644 arch/mips/ralink/bootrom.c
+ arch/mips/ralink/Makefile  |    2 +
+ arch/mips/ralink/ill_acc.c |   87 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
+ create mode 100644 arch/mips/ralink/ill_acc.c
 
 diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-index 98ae349..584a8d9 100644
+index 584a8d9..fc57c16 100644
 --- a/arch/mips/ralink/Makefile
 +++ b/arch/mips/ralink/Makefile
-@@ -17,4 +17,6 @@ obj-$(CONFIG_SOC_MT7620) += mt7620.o
+@@ -10,6 +10,8 @@ obj-y := prom.o of.o reset.o clk.o irq.o timer.o
  
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ obj-$(CONFIG_CLKEVT_RT3352) += cevt-rt3352.o
  
-+obj-$(CONFIG_DEBUG_FS) += bootrom.o
++obj-$(CONFIG_RALINK_ILL_ACC) += ill_acc.o
 +
- obj-y += dts/
-diff --git a/arch/mips/ralink/bootrom.c b/arch/mips/ralink/bootrom.c
+ obj-$(CONFIG_SOC_RT288X) += rt288x.o
+ obj-$(CONFIG_SOC_RT305X) += rt305x.o
+ obj-$(CONFIG_SOC_RT3883) += rt3883.o
+diff --git a/arch/mips/ralink/ill_acc.c b/arch/mips/ralink/ill_acc.c
 new file mode 100644
-index 0000000..5403468
+index 0000000..e20b02e
 --- /dev/null
-+++ b/arch/mips/ralink/bootrom.c
-@@ -0,0 +1,48 @@
++++ b/arch/mips/ralink/ill_acc.c
+@@ -0,0 +1,87 @@
 +/*
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms of the GNU General Public License version 2 as published
@@ -68,45 +69,84 @@ index 0000000..5403468
 + * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
 + */
 +
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
++#include <linux/interrupt.h>
++#include <linux/of_platform.h>
++#include <linux/of_irq.h>
 +
-+#define BOOTROM_OFFSET	0x10118000
-+#define BOOTROM_SIZE	0x8000
++#include <asm/mach-ralink/ralink_regs.h>
 +
-+static void __iomem *membase = (void __iomem *) KSEG1ADDR(BOOTROM_OFFSET);
++#define REG_ILL_ACC_ADDR	0x10
++#define REG_ILL_ACC_TYPE	0x14
 +
-+static int bootrom_show(struct seq_file *s, void *unused)
-+{
-+	seq_write(s, membase, BOOTROM_SIZE);
++#define ILL_INT_STATUS		BIT(31)
++#define ILL_ACC_WRITE		BIT(30)
++#define ILL_ACC_LEN_M		0xff
++#define ILL_ACC_OFF_M		0xf
++#define ILL_ACC_OFF_S		16
++#define ILL_ACC_ID_M		0x7
++#define ILL_ACC_ID_S		8
 +
-+	return 0;
-+}
++#define	DRV_NAME		"ill_acc"
 +
-+static int bootrom_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, bootrom_show, NULL);
-+}
-+
-+static const struct file_operations bootrom_file_ops = {
-+	.open		= bootrom_open,
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.release	= single_release,
++static const char * const ill_acc_ids[] = {
++	"cpu", "dma", "ppe", "pdma rx", "pdma tx", "pci/e", "wmac", "usb",
 +};
 +
-+static int bootrom_setup(void)
++static irqreturn_t ill_acc_irq_handler(int irq, void *_priv)
 +{
-+	if (!debugfs_create_file("bootrom", 0444,
-+			NULL, NULL, &bootrom_file_ops)) {
-+		pr_err("Failed to create bootrom debugfs file\n");
++	struct device *dev = (struct device *) _priv;
++	u32 addr = rt_memc_r32(REG_ILL_ACC_ADDR);
++	u32 type = rt_memc_r32(REG_ILL_ACC_TYPE);
 +
++	dev_err(dev, "illegal %s access from %s - addr:0x%08x offset:%d len:%d\n",
++		(type & ILL_ACC_WRITE) ? ("write") : ("read"),
++		ill_acc_ids[(type >> ILL_ACC_ID_S) & ILL_ACC_ID_M],
++		addr, (type >> ILL_ACC_OFF_S) & ILL_ACC_OFF_M,
++		type & ILL_ACC_LEN_M);
++
++	rt_memc_w32(REG_ILL_ACC_TYPE, REG_ILL_ACC_TYPE);
++
++	return IRQ_HANDLED;
++}
++
++static int __init ill_acc_of_setup(void)
++{
++	struct platform_device *pdev;
++	struct device_node *np;
++	int irq;
++
++	/* somehow this driver breaks on RT5350 */
++	if (of_machine_is_compatible("ralink,rt5350-soc"))
++		return -EINVAL;
++
++	np = of_find_compatible_node(NULL, NULL, "ralink,rt3050-memc");
++	if (!np)
++		return -EINVAL;
++
++	pdev = of_find_device_by_node(np);
++	if (!pdev) {
++		pr_err("%s: failed to lookup pdev\n", np->name);
 +		return -EINVAL;
 +	}
 +
++	irq = irq_of_parse_and_map(np, 0);
++	if (!irq) {
++		dev_err(&pdev->dev, "failed to get irq\n");
++		return -EINVAL;
++	}
++
++	if (request_irq(irq, ill_acc_irq_handler, 0, "ill_acc", &pdev->dev)) {
++		dev_err(&pdev->dev, "failed to request irq\n");
++		return -EINVAL;
++	}
++
++	rt_memc_w32(ILL_INT_STATUS, REG_ILL_ACC_TYPE);
++
++	dev_info(&pdev->dev, "irq registered\n");
++
 +	return 0;
 +}
 +
-+postcore_initcall(bootrom_setup);
++arch_initcall(ill_acc_of_setup);
 -- 
 1.7.10.4

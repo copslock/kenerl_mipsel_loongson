@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 17:08:37 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53907
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 17:08:56 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53908
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27010965AbaJIPIFJxm-F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 17:08:05 +0200
+        with ESMTP id S27010969AbaJIPIGESxgd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 17:08:06 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 02/10] MIPS: ralink: add a helper for reading the ECO version
-Date:   Thu,  9 Oct 2014 01:52:57 +0200
-Message-Id: <1412812385-64820-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 03/10] MIPS: ralink: add rt_sysc_m32 helper
+Date:   Thu,  9 Oct 2014 01:52:58 +0200
+Message-Id: <1412812385-64820-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412812385-64820-1-git-send-email-blogic@openwrt.org>
 References: <1412812385-64820-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43138
+X-archive-position: 43139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,24 +33,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+We already have a read and write wrapper. This adds the missing mask wrapper.
+
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/mach-ralink/mt7620.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/include/asm/mach-ralink/ralink_regs.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-ralink/mt7620.h b/arch/mips/include/asm/mach-ralink/mt7620.h
-index 6f9b24f..7ff9290 100644
---- a/arch/mips/include/asm/mach-ralink/mt7620.h
-+++ b/arch/mips/include/asm/mach-ralink/mt7620.h
-@@ -105,4 +105,9 @@
- #define MT7620_GPIO_MODE_EPHY		BIT(15)
- #define MT7620_GPIO_MODE_WDT		BIT(22)
+diff --git a/arch/mips/include/asm/mach-ralink/ralink_regs.h b/arch/mips/include/asm/mach-ralink/ralink_regs.h
+index 5a508f9..bd93014 100644
+--- a/arch/mips/include/asm/mach-ralink/ralink_regs.h
++++ b/arch/mips/include/asm/mach-ralink/ralink_regs.h
+@@ -26,6 +26,13 @@ static inline u32 rt_sysc_r32(unsigned reg)
+ 	return __raw_readl(rt_sysc_membase + reg);
+ }
  
-+static inline int mt7620_get_eco(void)
++static inline void rt_sysc_m32(u32 clr, u32 set, unsigned reg)
 +{
-+	return rt_sysc_r32(SYSC_REG_CHIP_REV) & CHIP_REV_ECO_MASK;
++	u32 val = rt_sysc_r32(reg) & ~clr;
++
++	__raw_writel(val | set, rt_sysc_membase + reg);
 +}
 +
- #endif
+ static inline void rt_memc_w32(u32 val, unsigned reg)
+ {
+ 	__raw_writel(val, rt_memc_membase + reg);
 -- 
 1.7.10.4

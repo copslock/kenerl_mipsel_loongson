@@ -1,39 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2014 15:28:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47356 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010840AbaJHN2zQy0DB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Oct 2014 15:28:55 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B3AE1710EDB20
-        for <linux-mips@linux-mips.org>; Wed,  8 Oct 2014 14:28:45 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 8 Oct 2014 14:28:48 +0100
-Received: from [192.168.154.56] (192.168.154.56) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 8 Oct
- 2014 14:28:47 +0100
-Message-ID: <54353C0F.6000704@imgtec.com>
-Date:   Wed, 8 Oct 2014 14:28:47 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 03:32:43 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.11.231]:40809 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010844AbaJIBcmFDpYB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 03:32:42 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 1CEAB13F7D5;
+        Thu,  9 Oct 2014 01:32:34 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 034D513F907; Thu,  9 Oct 2014 01:32:33 +0000 (UTC)
+Received: from [10.46.167.8] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 322D013F92C;
+        Thu,  9 Oct 2014 01:32:33 +0000 (UTC)
+Message-ID: <5435E5B0.90900@codeaurora.org>
+Date:   Wed, 08 Oct 2014 18:32:32 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130329 Thunderbird/17.0.5
 MIME-Version: 1.0
-To:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: Kconfig: Add choice symbol to select microMIPS
- or SmartMIPS
-References: <1401785177-7904-1-git-send-email-markos.chandras@imgtec.com> <1405928774-20630-1-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1405928774-20630-1-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"
+To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>
+CC:     Mike Turquette <mturquette@linaro.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Alex Elder <elder@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-omap@vger.kernel.org,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Matt Porter <mporter@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Tim Kryger <tim.kryger@linaro.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: Re: [PATCH v2 0/8] Per-user clock constraints
+References: <1412695334-2608-1-git-send-email-tomeu.vizoso@collabora.com>
+In-Reply-To: <1412695334-2608-1-git-send-email-tomeu.vizoso@collabora.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.56]
-Return-Path: <Markos.Chandras@imgtec.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43111
+X-archive-position: 43113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,37 +59,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/21/2014 08:46 AM, Markos Chandras wrote:
-> microMIPS and SmartMIPS can't be used together. This fixes the
-> following build problem:
-> 
-> Warning: the 32-bit microMIPS architecture does not support the `smartmips'
-> extension
-> arch/mips/kernel/entry.S:90: Error: unrecognized opcode `mtlhx $24'
-> [...]
-> arch/mips/kernel/entry.S:109: Error: unrecognized opcode `mtlhx $24'
-> 
-> Link: https://dmz-portal.mips.com/bugz/show_bug.cgi?id=1021
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
-> Hi Ralf,
-> 
-> Here is v2 of that patch, making SmartMIPS and microMIPS a
-> choice symbol as you requested in
-> http://www.linux-mips.org/archives/linux-mips/2014-06/msg00011.html
-> 
-> However, I still feel this is wrong since these two ASEs are completely
-> unrelated. The v1 of the patch is probably better in my opinion.
-> If the user fails to find the 'smartmips' option due to having 'micromips'
-> enabled, he/she can always search for the 'smartmips' symbol in the
-> menuconfig and he/she will notice the dependency on !micromips.
-> And if the user knows what he is doing he will probably never want to
-> use 'smartmips' and 'micromips' together.
-> ---
-> 
-Hi,
+On 10/07/2014 08:21 AM, Tomeu Vizoso wrote:
+> Hello,
+>
+> this second version of the series adds several cleanups that were suggested by
+> Stephen Boyd and contains several improvements to the seventh patch (clk: Make
+> clk API return per-user struct clk instances) that were suggested by him during
+> the review of v1.
+>
+> The first six patches are just cleanups that should be desirable on their own,
+> and that should make easier to review the actual per-user clock patch.
+>
+> The seventh patch actually moves the per-clock data that was stored in struct
+> clk to a new struct clk_core and adds references to it from both struct clk and
+> struct clk_hw. struct clk is now ready to contain information that is specific
+> to a given clk consumer.
+>
+> The eighth patch adds API for setting floor and ceiling constraints and stores
+> that information on the per-user struct clk, which is iterable from struct
+> clk_core.
+>
+>
 
-Any comments on that one?
+As said in the patches, can you please indicate which baseline this is 
+on? Also can you rebase onto clk-next if you send again before that is 
+merged into 3.18-rc1? There are some changes in the debugfs part that 
+will conflict. I'll review the more complicated parts in detail soon.
 
 -- 
-markos
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

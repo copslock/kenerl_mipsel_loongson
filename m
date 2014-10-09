@@ -1,53 +1,65 @@
-From: Aurelien Jarno <aurelien@aurel32.net>
-Date: Sun, 20 Jul 2014 19:58:23 +0200
-Subject: MIPS: ZBOOT: add missing <linux/string.h> include
-Message-ID: <20140720175823.h6rCGuA3nkBaRfMgPkFqg6W0m5pNT76tH6e4VkWouiY@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 22:51:51 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:42050 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011000AbaJIUvtLDMxI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 22:51:49 +0200
+Received: from c-76-102-4-12.hsd1.ca.comcast.net ([76.102.4.12] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1XcKge-0003Ji-Mm; Thu, 09 Oct 2014 20:51:48 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1XcKgc-0005sf-VZ; Thu, 09 Oct 2014 13:51:46 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.13.y.z extended stable] Patch "MIPS: mcount: Adjust stack pointer for static trace in MIPS32" has been added to staging queue
+Date:   Thu,  9 Oct 2014 13:51:46 -0700
+Message-Id: <1412887906-22574-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 43170
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 29593fd5a8149462ed6fad0d522234facdaee6c8 upstream.
+This is a note to let you know that I have just added a patch titled
 
-Commit dc4d7b37 (MIPS: ZBOOT: gather string functions into string.c)
-moved the string related functions into a separate file, which might
-cause the following build error, depending on the configuration:
+    MIPS: mcount: Adjust stack pointer for static trace in MIPS32
 
-| CC      arch/mips/boot/compressed/decompress.o
-| In file included from linux/arch/mips/boot/compressed/../../../../lib/decompress_unxz.c:234:0,
-|                  from linux/arch/mips/boot/compressed/decompress.c:67:
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c: In function 'fill_temp':
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c:162:2: error: implicit declaration of function 'memcpy' [-Werror=implicit-function-declaration]
-| cc1: some warnings being treated as errors
-| linux/scripts/Makefile.build:308: recipe for target 'arch/mips/boot/compressed/decompress.o' failed
-| make[6]: *** [arch/mips/boot/compressed/decompress.o] Error 1
-| linux/arch/mips/Makefile:308: recipe for target 'vmlinuz' failed
+to the linux-3.13.y-queue branch of the 3.13.y.z extended stable tree 
+which can be found at:
 
-It does not fail with the standard configuration, as when
-CONFIG_DYNAMIC_DEBUG is not enabled <linux/string.h> gets included in
-include/linux/dynamic_debug.h. There might be other ways for it to
-get indirectly included.
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
 
-We can't add the include directly in xz_dec_stream.c as some
-architectures might want to use a different version for the boot/
-directory (see for example arch/x86/boot/string.h).
+This patch is scheduled to be released in version 3.13.11.9.
 
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7420/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/boot/compressed/decompress.c | 1 +
- 1 file changed, 1 insertion(+)
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
-index a8c6fd6..193ceae 100644
---- a/arch/mips/boot/compressed/decompress.c
-+++ b/arch/mips/boot/compressed/decompress.c
-@@ -13,6 +13,7 @@
+For more information about the 3.13.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
- #include <linux/types.h>
- #include <linux/kernel.h>
-+#include <linux/string.h>
+Thanks.
+-Kamal
 
- #include <asm/addrspace.h>
-
---
-1.9.1
+------

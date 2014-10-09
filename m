@@ -1,90 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 12:49:44 +0200 (CEST)
-Received: from mail-ig0-f171.google.com ([209.85.213.171]:34848 "EHLO
-        mail-ig0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010918AbaJIKtnTAEml (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 12:49:43 +0200
-Received: by mail-ig0-f171.google.com with SMTP id h15so11995805igd.16
-        for <linux-mips@linux-mips.org>; Thu, 09 Oct 2014 03:49:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=VOEUqRhutNv4JOTU1TKR0XMZmavVbzA4G92j+CPJoYY=;
-        b=Hkd14FC5eMEC3D0qyah0d3RLEy7Zk1KKL/dTRtjMDAaeA3gF3IM4XwzXlvUhh0o7s/
-         LmVOPDlXFOLW6EvE8EGSQAuffQpPAtohBeVbf9FoWnnVE6ikttL1gghSnEh8oNjdVp4u
-         N61c030JuRFMrj4FiG6t+omRmSzSo92UC5zt74COTO0hVuz246TZPMm8z51AFSRVnoRZ
-         TuhP9+5CA2mP5NBVq3uMIOdBvsQwq2wY8gQszs27oou0leWDcXdHmtEiqcGO1eKwFb6K
-         MalN1MpDc01QMc/deSGjfEBXiXauOGt4eVicLLqlBHKEOg50xUjxJf28QEbcuUiTUmaE
-         efZQ==
-X-Gm-Message-State: ALoCoQn88hmCk3/sLvrT7Gd/67I8OctG+MOCaR5wpmz/rUlG8P039Wf79FHbwXNGdOG4w/W9Yfsr
-X-Received: by 10.50.79.132 with SMTP id j4mr55127359igx.9.1412851776888;
-        Thu, 09 Oct 2014 03:49:36 -0700 (PDT)
-Received: from lee--X1 (host109-148-233-9.range109-148.btcentralplus.com. [109.148.233.9])
-        by mx.google.com with ESMTPSA id e7sm7827780igi.18.2014.10.09.03.49.31
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Thu, 09 Oct 2014 03:49:36 -0700 (PDT)
-Date:   Thu, 9 Oct 2014 11:49:27 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        "linux-m32r-ja@ml.linux-m32r.org" <linux-m32r-ja@ml.linux-m32r.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "lguest@lists.ozlabs.org" <lguest@lists.ozlabs.org>,
-        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "user-mode-linux-devel@lists.sourceforge.net" 
-        <user-mode-linux-devel@lists.sourceforge.net>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 13:31:49 +0200 (CEST)
+Received: from mail-la0-f41.google.com ([209.85.215.41]:55852 "EHLO
+        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010929AbaJILbsYrKbi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 13:31:48 +0200
+Received: by mail-la0-f41.google.com with SMTP id pn19so972930lab.14
+        for <linux-mips@linux-mips.org>; Thu, 09 Oct 2014 04:31:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=kf+cqRDl98Q0i4Vr4y6etZpLn5a5O2TB68fBVoNIwDA=;
+        b=e1jnVsy+l6PHDRMWsXNxfLa2Wk/7ORMF4vGT3hC2azx9H2J9qa7YD9+d29ISmNvbR8
+         zFCJQxzy01cYcqOzic1HTM5p68vTCFL9tjbAR6GdEsy2XqJedvP5Px3yIKcEQosoUBsH
+         bkYOogvhsqan3bYtLAbyC50nMlXPcyj50t62q0DcvVEsu36dgInM3a8jIiIR7Q/HzcXf
+         R5FBP0riGIqHe5JpMYoouR0XRj8EDADD2urNVSYDkBPjPChlNlcYaUE6G4O2wHlu8gdG
+         2c5BP88x3P5smLYKZ9oPUNVzdlWNVPRDZpwzrkC4Oy08BKkWUbkeQ9c8sxFwi+HWadwz
+         F5ig==
+MIME-Version: 1.0
+X-Received: by 10.152.203.204 with SMTP id ks12mr18349771lac.65.1412854300507;
+ Thu, 09 Oct 2014 04:31:40 -0700 (PDT)
+Received: by 10.152.30.34 with HTTP; Thu, 9 Oct 2014 04:31:40 -0700 (PDT)
+In-Reply-To: <1412659726-29957-2-git-send-email-linux@roeck-us.net>
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
+        <1412659726-29957-2-git-send-email-linux@roeck-us.net>
+Date:   Thu, 9 Oct 2014 13:31:40 +0200
+X-Google-Sender-Auth: jpwkCvafUZ3nfaT--DQh65doIVk
+Message-ID: <CAMuHMdVOBnZ=pyVeGSxbOT9MtRR2iNY4V-PUm0NU=UFQ2pxE_g@mail.gmail.com>
+Subject: Re: [PATCH 01/44] kernel: Add support for poweroff handler call chain
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "adi-buildroot-devel@lists.sourceforge.net" 
         <adi-buildroot-devel@lists.sourceforge.net>,
-        "linux-m68k@vger.kernel.org" <linux-m68k@vger.kernel.org>,
-        "linux-am33-list@redhat.com" <linux-am33-list@redhat.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "openipmi-developer@lists.sourceforge.net" 
-        <openipmi-developer@lists.sourceforge.net>,
-        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        lguest@lists.ozlabs.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        "moderated list:PANASONIC MN10300..." <linux-am33-list@redhat.com>,
+        Cris <linux-cris-kernel@axis.com>, linux-efi@vger.kernel.org,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        linux-m32r-ja@ml.linux-m32r.org,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-tegra@vger.kernel.org,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        openipmi-developer@lists.sourceforge.net,
+        uml-devel <user-mode-linux-devel@lists.sourceforge.net>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 12/44] mfd: ab8500-sysctrl: Register with kernel poweroff
- handler
-Message-ID: <20141009104927.GN20647@lee--X1>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-13-git-send-email-linux@roeck-us.net>
- <20141007080048.GB25331@lee--X1>
- <20141009103656.GF17836@e104818-lin.cambridge.arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20141009103656.GF17836@e104818-lin.cambridge.arm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <lee.jones@linaro.org>
+        linux-c6x-dev@linux-c6x.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:METAG ARCHITECTURE" <linux-metag@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Romain Perier <romain.perier@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Alexander Graf <agraf@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43126
+X-archive-position: 43127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lee.jones@linaro.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,44 +86,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 09 Oct 2014, Catalin Marinas wrote:
+On Tue, Oct 7, 2014 at 7:28 AM, Guenter Roeck <linux@roeck-us.net> wrote:
+> +int register_poweroff_handler_simple(void (*handler)(void), int priority)
+> +{
+> +       char symname[KSYM_NAME_LEN];
+> +
+> +       if (poweroff_handler_data.handler) {
+> +               lookup_symbol_name((unsigned long)poweroff_handler_data.handler,
+> +                                  symname);
+> +               pr_warn("Poweroff function already registered (%s)", symname);
+> +               lookup_symbol_name((unsigned long)handler, symname);
+> +               pr_cont(", cannot register %s\n", symname);
 
-> On Tue, Oct 07, 2014 at 09:00:48AM +0100, Lee Jones wrote:
-> > On Mon, 06 Oct 2014, Guenter Roeck wrote:
-> > > --- a/drivers/mfd/ab8500-sysctrl.c
-> > > +++ b/drivers/mfd/ab8500-sysctrl.c
-> > > @@ -6,6 +6,7 @@
-> > 
-> > [...]
-> > 
-> > > +static int ab8500_power_off(struct notifier_block *this, unsigned long unused1,
-> > > +			    void *unused2)
-> > >  {
-> > >  	sigset_t old;
-> > >  	sigset_t all;
-> > > @@ -34,11 +36,6 @@ static void ab8500_power_off(void)
-> > >  	struct power_supply *psy;
-> > >  	int ret;
-> > >  
-> > > -	if (sysctrl_dev == NULL) {
-> > > -		pr_err("%s: sysctrl not initialized\n", __func__);
-> > > -		return;
-> > > -	}
-> > 
-> > Can you explain the purpose of this change please?
-> 
-> I guess it's because the sysctrl_dev is already initialised when
-> registering the power_off handler, so there isn't a way to call the
-> above function with a NULL sysctrl_dev. Probably even with the original
-> code you didn't need this check (after some race fix in
-> ab8500_sysctrl_remove but races is one of the things Guenter's patches
-> try to address).
+Doesn't %ps work to look up symbols?
 
-Sounds reasonable, although I think this change should be part of
-another patch.
+pr_warn("Poweroff function already registered (%ps), cannot register
+%ps\n", poweroff_handler_data.handler, handler);
 
--- 
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> +               return -EBUSY;
+> +       }
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

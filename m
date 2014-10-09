@@ -1,88 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 17:54:17 +0200 (CEST)
-Received: from mail-pd0-f173.google.com ([209.85.192.173]:52272 "EHLO
-        mail-pd0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010966AbaJIPyQZrH2N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 17:54:16 +0200
-Received: by mail-pd0-f173.google.com with SMTP id g10so12447pdj.32
-        for <linux-mips@linux-mips.org>; Thu, 09 Oct 2014 08:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=yTHPn6FXE9DCZLPDU0xnaAN7oKKZ0p3HDnJX2zJudGk=;
-        b=a8hdupblssG+OYy2DtvfEv1Vq+JRlB3PoxRYDmE/CJ1tsmvGfHN0RGLImT80BVJFHm
-         q1gbyW+BRFVKRsdsErApbeYGJU/E2WCPnZ3M1TJGAvcCcilrM1xiIstXEjJEIeumeZou
-         W8AJn3rYi0UfUL7KV3kFJaTqdzP4r+aNORpaWq4YgA/P9dHjb56VxMUyerQYA8fFvIaY
-         VG5FDpelavOY4fwSgrYqqxTDKrMtlw4ZSTMa9yg4yBun+v/9uO64yBBFjb+Jek5Q7tf7
-         m13jnF0bscDjGj8Qd4zOa7IH/6DWBdBLQe18mbd3ca1zkjzFYrDSKvDsC1siSQfVJKsO
-         T5GA==
-X-Received: by 10.70.95.104 with SMTP id dj8mr567497pdb.84.1412870049428;
-        Thu, 09 Oct 2014 08:54:09 -0700 (PDT)
-Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by mx.google.com with ESMTPSA id od12sm852957pdb.96.2014.10.09.08.54.08
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 18:19:39 +0200 (CEST)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:37278 "EHLO
+        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010966AbaJIQThx-tER (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 18:19:37 +0200
+Received: by mail-la0-f49.google.com with SMTP id q1so1565260lam.36
+        for <linux-mips@linux-mips.org>; Thu, 09 Oct 2014 09:19:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=aLweDzXD5YgHEZQMGoSoZZwhf7Bt0D4pMdCKOk7Pzjg=;
+        b=aOipowSjx04mQdLQcQyRRUH4H5k9/Gnt3TlQDNPZrMLk9ejIH5UMNECe3aQlWmUrPJ
+         aKNZCO36tygOudQ9g8yPt/6CwkMIzUcJfkDWb33+IV9wajSPReHt29pmfDTPysmq4ZDu
+         +CanjUORs9wa+8S/5T1R2sroLhSQ96JZJZ0Qm0bE9p585Jo+/+X76So/fgBMcEOKv0v0
+         sR0dtczsjfEmJGFj89BBhMELL7iYUqlA7EafyKPiPyb3xIzXAgcNbpBNN8Qi9u7nvAN1
+         Wxi4QkQ0On8wrI0+YaK0/iTXLbji4mCY+H2g54oIHrMqFINfn2ebA6gIZ2Der/xgQUcz
+         2E3Q==
+X-Gm-Message-State: ALoCoQlMeRWRrD1NTL2JHmf6cQrMmMDPh1cmHYPil1P+3bCuDAjKQDxEeD5+Rmp3YpG5Fn7S3Eej
+X-Received: by 10.112.135.42 with SMTP id pp10mr18621711lbb.17.1412871571845;
+        Thu, 09 Oct 2014 09:19:31 -0700 (PDT)
+Received: from wasted.cogentembedded.com (ppp17-169.pppoe.mtu-net.ru. [81.195.17.169])
+        by mx.google.com with ESMTPSA id p5sm1092720lag.1.2014.10.09.09.19.30
         for <multiple recipients>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Thu, 09 Oct 2014 08:54:08 -0700 (PDT)
-Date:   Thu, 9 Oct 2014 08:54:04 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        "linux-m32r-ja@ml.linux-m32r.org" <linux-m32r-ja@ml.linux-m32r.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "lguest@lists.ozlabs.org" <lguest@lists.ozlabs.org>,
-        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "user-mode-linux-devel@lists.sourceforge.net" 
-        <user-mode-linux-devel@lists.sourceforge.net>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        "linux-m68k@vger.kernel.org" <linux-m68k@vger.kernel.org>,
-        "linux-am33-list@redhat.com" <linux-am33-list@redhat.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "openipmi-developer@lists.sourceforge.net" 
-        <openipmi-developer@lists.sourceforge.net>,
-        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 12/44] mfd: ab8500-sysctrl: Register with kernel poweroff
- handler
-Message-ID: <20141009155404.GC31987@roeck-us.net>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-13-git-send-email-linux@roeck-us.net>
- <20141007080048.GB25331@lee--X1>
- <20141009103656.GF17836@e104818-lin.cambridge.arm.com>
- <20141009104927.GN20647@lee--X1>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 Oct 2014 09:19:31 -0700 (PDT)
+Message-ID: <5436B591.3000008@cogentembedded.com>
+Date:   Thu, 09 Oct 2014 20:19:29 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20141009104927.GN20647@lee--X1>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <groeck7@gmail.com>
+To:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 05/10] MIPS: ralink: add illegal access driver
+References: <1412812385-64820-1-git-send-email-blogic@openwrt.org> <1412812385-64820-6-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1412812385-64820-6-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43149
+X-archive-position: 43150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,45 +60,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 09, 2014 at 11:49:27AM +0100, Lee Jones wrote:
-> On Thu, 09 Oct 2014, Catalin Marinas wrote:
-> 
-> > On Tue, Oct 07, 2014 at 09:00:48AM +0100, Lee Jones wrote:
-> > > On Mon, 06 Oct 2014, Guenter Roeck wrote:
-> > > > --- a/drivers/mfd/ab8500-sysctrl.c
-> > > > +++ b/drivers/mfd/ab8500-sysctrl.c
-> > > > @@ -6,6 +6,7 @@
-> > > 
-> > > [...]
-> > > 
-> > > > +static int ab8500_power_off(struct notifier_block *this, unsigned long unused1,
-> > > > +			    void *unused2)
-> > > >  {
-> > > >  	sigset_t old;
-> > > >  	sigset_t all;
-> > > > @@ -34,11 +36,6 @@ static void ab8500_power_off(void)
-> > > >  	struct power_supply *psy;
-> > > >  	int ret;
-> > > >  
-> > > > -	if (sysctrl_dev == NULL) {
-> > > > -		pr_err("%s: sysctrl not initialized\n", __func__);
-> > > > -		return;
-> > > > -	}
-> > > 
-> > > Can you explain the purpose of this change please?
-> > 
-> > I guess it's because the sysctrl_dev is already initialised when
-> > registering the power_off handler, so there isn't a way to call the
-> > above function with a NULL sysctrl_dev. Probably even with the original
-> > code you didn't need this check (after some race fix in
-> > ab8500_sysctrl_remove but races is one of the things Guenter's patches
-> > try to address).
-> 
-> Sounds reasonable, although I think this change should be part of
-> another patch.
-> 
-Turns out the options are to either drop the check or to use the device
-managed function to register the poweroff handler. I decided to keep
-the check and use the device managed function.
+Hello.
 
-Guenter
+On 10/09/2014 03:53 AM, John Crispin wrote:
+
+> These SoCs have a special irq that fires upon an illegal memmory access.
+
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> ---
+>   arch/mips/ralink/Makefile  |    2 +
+>   arch/mips/ralink/ill_acc.c |   87 ++++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 89 insertions(+)
+>   create mode 100644 arch/mips/ralink/ill_acc.c
+
+[...]
+> diff --git a/arch/mips/ralink/ill_acc.c b/arch/mips/ralink/ill_acc.c
+> new file mode 100644
+> index 0000000..e20b02e
+> --- /dev/null
+> +++ b/arch/mips/ralink/ill_acc.c
+> @@ -0,0 +1,87 @@
+[...]
+> +static const char * const ill_acc_ids[] = {
+> +	"cpu", "dma", "ppe", "pdma rx", "pdma tx", "pci/e", "wmac", "usb",
+> +};
+> +
+> +static irqreturn_t ill_acc_irq_handler(int irq, void *_priv)
+> +{
+> +	struct device *dev = (struct device *) _priv;
+> +	u32 addr = rt_memc_r32(REG_ILL_ACC_ADDR);
+> +	u32 type = rt_memc_r32(REG_ILL_ACC_TYPE);
+> +
+> +	dev_err(dev, "illegal %s access from %s - addr:0x%08x offset:%d len:%d\n",
+> +		(type & ILL_ACC_WRITE) ? ("write") : ("read"),
+
+    Hm, why these () around string literals? Not that the ones before ? are 
+needed too...
+
+WBR, Sergei

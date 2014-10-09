@@ -1,58 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 00:59:53 +0200 (CEST)
-Received: from mail-bn1on0079.outbound.protection.outlook.com ([157.56.110.79]:64055
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011012AbaJIW7vXjeAf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 10 Oct 2014 00:59:51 +0200
-Received: from CO2PR07MB587.namprd07.prod.outlook.com (10.141.229.150) by
- CO2PR07MB972.namprd07.prod.outlook.com (10.141.229.28) with Microsoft SMTP
- Server (TLS) id 15.0.1044.10; Thu, 9 Oct 2014 22:59:37 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by
- CO2PR07MB587.namprd07.prod.outlook.com (10.141.229.150) with Microsoft SMTP
- Server (TLS) id 15.0.1044.10; Thu, 9 Oct 2014 22:59:30 +0000
-Message-ID: <5437134E.5040601@caviumnetworks.com>
-Date:   Thu, 9 Oct 2014 15:59:26 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 01:10:28 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:62800 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011019AbaJIXK1MU4Hp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 01:10:27 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 6E0269F62B388;
+        Fri, 10 Oct 2014 00:10:14 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
+ 2014 00:10:18 +0100
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
+ (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
+ 2014 00:10:18 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
+ 2014 00:10:18 +0100
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 9 Oct 2014
+ 16:10:16 -0700
+Message-ID: <543715D7.1020505@imgtec.com>
+Date:   Thu, 9 Oct 2014 16:10:15 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
 MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>,
-        <Zubair.Kakakhel@imgtec.com>, <geert+renesas@glider.be>,
-        <david.daney@cavium.com>, <peterz@infradead.org>,
-        <paul.gortmaker@windriver.com>, <davidlohr@hp.com>,
-        <macro@linux-mips.org>, <chenhc@lemote.com>, <richard@nod.at>,
-        <zajec5@gmail.com>, <james.hogan@imgtec.com>,
-        <keescook@chromium.org>, <alex@alex-smith.me.uk>,
-        <tglx@linutronix.de>, <blogic@openwrt.org>,
-        <jchandra@broadcom.com>, <paul.burton@imgtec.com>,
-        <qais.yousef@imgtec.com>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <markos.chandras@imgtec.com>,
-        <dengcheng.zhu@imgtec.com>, <manuel.lauss@gmail.com>,
-        <akpm@linux-foundation.org>, <lars.persson@axis.com>
-Subject: Re: [PATCH v2 0/3] MIPS executable stack protection
-References: <20141009195030.31230.58695.stgit@linux-yegoshin> <5437015B.3010205@gmail.com> <543709D0.6000501@imgtec.com>
-In-Reply-To: <543709D0.6000501@imgtec.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
+        <geert+renesas@glider.be>, <david.daney@cavium.com>,
+        <peterz@infradead.org>, <paul.gortmaker@windriver.com>,
+        <davidlohr@hp.com>, <macro@linux-mips.org>, <chenhc@lemote.com>,
+        <richard@nod.at>, <zajec5@gmail.com>, <keescook@chromium.org>,
+        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
+        <blogic@openwrt.org>, <jchandra@broadcom.com>,
+        <paul.burton@imgtec.com>, <qais.yousef@imgtec.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <markos.chandras@imgtec.com>, <dengcheng.zhu@imgtec.com>,
+        <manuel.lauss@gmail.com>, <akpm@linux-foundation.org>,
+        <lars.persson@axis.com>
+Subject: Re: [PATCH v2 2/3] MIPS: Setup an instruction emulation in VDSO protected
+ page instead of user stack
+References: <20141009195030.31230.58695.stgit@linux-yegoshin> <20141009200017.31230.69698.stgit@linux-yegoshin> <20141009224304.GA4818@jhogan-linux.le.imgtec.org>
+In-Reply-To: <20141009224304.GA4818@jhogan-linux.le.imgtec.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-ClientProxiedBy: BN1PR07CA0036.namprd07.prod.outlook.com (10.255.193.11) To
- CO2PR07MB587.namprd07.prod.outlook.com (10.141.229.150)
-X-Microsoft-Antispam: UriScan:;UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CO2PR07MB587;
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Forefront-PRVS: 0359162B6D
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(377454003)(479174003)(51704005)(189002)(51444003)(199003)(24454002)(20776003)(80316001)(46102003)(50986999)(47776003)(64706001)(42186005)(83506001)(76176999)(23676002)(19580395003)(80022003)(4396001)(36756003)(92726001)(33656002)(95666004)(66066001)(87266999)(54356999)(69596002)(65806001)(92566001)(65956001)(110136001)(65816999)(97736003)(85306004)(122386002)(21056001)(53416004)(81156004)(31966008)(76482002)(106356001)(101416001)(107046002)(561944003)(102836001)(50466002)(105586002)(77096002)(87976001)(99396003)(40100002)(120916001)(85852003)(64126003)(59896002);DIR:OUT;SFP:1101;SCL:1;SRVR:CO2PR07MB587;H:dl.caveonetworks.com;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CO2PR07MB972;
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43177
+X-archive-position: 43178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,152 +64,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/09/2014 03:18 PM, Leonid Yegoshin wrote:
-> On 10/09/2014 02:42 PM, David Daney wrote:
->> On 10/09/2014 01:00 PM, Leonid Yegoshin wrote:
->>> The following series implements an executable stack protection in MIPS.
->>>
->>> It sets up a per-thread 'VDSO' page and appropriate TLB support.
->>> Page is set write-protected from user and is maintained via kernel VA.
->>> MIPS FPU emulation is shifted to new page and stack is relieved for
->>> execute protection as is as all data pages in default setup during ELF
->>> binary initialization. The real protection is controlled by GLIBC and
->>> it can do stack protected now as it is done in other architectures and
->>> I learned today that GLIBC team is ready for this.
->>
->> What does it mean to be 'ready'?  If they committed patches before
->> there was kernel support, that it putting the cart before the horse.
->> GlibC's state cannot be used as valid reason for committing major
->> kernel changes.  There would be no regression in any GLibC based
->> system as a result of not merging this patch.
-> Rich Fuhler said me that they discussed it internally and have a
-> solution to fix their problem (ignoring PT_GNU_STACK on first library
-> load - they need to sort out the logic). But we need to split both issue
-> - right now stack can't be protected because of emulation. If they set
-> stack protected then emulation fails on CPU without FPU.
-
-Yes, we understand why non-executable stack is not compatible with the 
-FPU emulator.
-
+>> Small stack of emulation blocks is supported because nested traps are possible
+>> in MIPS32/64 R6 emulation mix with FPU emulation.
+> Could you please clarify how this nesting of emulation blocks could
+> happen now that signals are handled more cleanly.
 >
->>
->>>
->>> Note: actual execute-protection depends from HW capability, of course.
->>>
->>> This patch is required for MIPS32/64 R2 emulation on MIPS R6
->>> architecture.
->>> Without it 'ssh-keygen' crashes pretty fast on attempt to execute
->>> instruction
->>> in stack.
->>
->> There is much more blocking MIPS32/64 R2 emulation on MIPS R6 than
->> just this patch isn't there?
+> I.e. isn't the emuframe stuff only required for instructions in branch
+> delay slots, and branches shouldn't be in branch delay slots anyway, so
+> I don't get how they could nest.
 >
-> This one is critical - ssh-keygen crashes during running MIPS R2. I have
-> a patch in my R6 repository but GLIBC still can't set stack executable
-> and security suffers.
+It may be a case for mix of FPU and MIPS R6 emulations. I just keep both 
+emulators separate as much as possible but I assume that without prove 
+it may be stackable - some rollback is needed to join both and it may 
+(probably) cause a double emulation setup - dsemul may be called twice 
+for the same pair of instructions. I didn't see that yet, honestly and 
+you may be right.
 
-But is the R6 code already in the lmo or kernel.org repositories?
-
-If not, then the lack of this patch is not a gating issue.  If this 
-patch is really needed for R6 support, why not submit the R6 
-prerequisite patches first?
-
-If this patch has nothing to do with MIPS R6, then state that.
-
->
->>
->> Also, if you are supporting MIPS R6, this patch doesn't even work,
->> because it doesn't handle PC relative instructions at all.
->
-> It seems like you missed my statement - adding support for PC-relative
-> instruction is just 5 lines of code. I just refrain from this until
-> toolchain starts generating that.
-
-How can it be just 5 lines of code?  You have to emulate all those 
-instructions:
-
-   ADDIUPC
-   AUIPC
-   ALUIPC
-   LDPC
-   LWPC
-   LWUPC
-
-I think that is all of them.  You can emulate all of those in 5 lines of 
-code?
-
-We need to support everything the toolchain could product in the future. 
-  I don't think it makes sense to add all this stuff when it is well 
-known that it doesn't solve the problem for MIPS R6, especially when the 
-justification for the patch is that it is needed for R6.
-
-I understand what your goals are here, I have spend many months working 
-towards a non-executable stack (see the patches that moved the signal 
-trampolines off the stack).  But I am worried that there are many cases 
-that it will not handle.
-
->
-> Besides that, this version 2 of patch just passed 20-22 hours on P5600
-> and Virtuoso (no FPU on both) under SOAK test and it gets around 1 per
-> hour of signal right at emulated instruction in VDSO and unwind works
-> (as I can see in debug prints).
->
-
-I'm not saying that the patch doesn't work under your highly constrained 
-test conditions, I believe that it does.
-
-I am not familiar with the SOAK test.  Does it really put faulting 
-instructions the delay slots of FP branch instructions, catch the 
-resulting signal, and then throw an exception from the signal handler?
-
-
->>
->>
->> The recent discussions on this subject, including many comments from
->> Imgtec e-mail addresses, brought to light the need to use an
->> instruction set emulator for newer MIPSr6 ISA processors.
->
-> In Imgtec I am only one who works on MIPS R6 SW and FPU branch emulation
-> and I say you - it is not needed, this solution is enough.
-
-It can't be true the PC relative support is not needed, why did you add 
-the PC relative instructions, if you didn't want to use them in Linux 
-userspace?
-
-Really what I was talking about was a wider audience, the people that 
-will write tools and code that target userspace.  They will want a 
-solution without a bunch of restrictions forced upon them by the 
-limitations of the FPU emulator.
-
->
->>
->> In light of this, why does it make sense to merge this patch, instead
->> of taking the approach of emulating the instructions in the delay slot?
->
-> Well, because it does exist now. But full MIPS emulator... for all
-> ASEs... for any MIPS vendor... I even doesn't want to estimate an amount
-> of time and code size to develop it.
->
-> Besides that, you missed my another statement - we don't force customer
-> to disclose all details of their COP2 instructions.
-
-Here is my proposal:
-
-1) Add an emulator for all documented MIPS R6 instructions that can 
-appear in a linux userspace delay slot.
-
-2) Document as not supported placing COP2 instructions in FP branch 
-delay slots.
-
-3) Get rid of this execute-out-of-line code in the FPU emulator all 
-together.
-
-4) Enable non-execute stack.
-
-In order to have full MIPS R6 support in the kernel, you will need an 
-emulator for a subset of the instructions anyhow.  Going to a full ISA 
-emulator will be a little more work, but it shouldn't be too hard.
-
-
-David Daney
+And as for signals - it is a different issue, some signal may happen 
+before or after emulated instruction in emulation block and I see that. 
+But I see it only before because of probability for it is a lot of 
+higher. Unwinding is need because signal handler may not return but 
+longjump to somewhere.

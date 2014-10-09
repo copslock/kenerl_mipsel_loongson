@@ -1,32 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 18:42:24 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:52698 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010968AbaJIQmWYCfoC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Oct 2014 18:42:22 +0200
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 2858A280621;
-        Thu,  9 Oct 2014 18:41:28 +0200 (CEST)
-Received: from dicker-alter.lan (p548CBAD8.dip0.t-ipconnect.de [84.140.186.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Thu,  9 Oct 2014 18:41:28 +0200 (CEST)
-Message-ID: <5436BAEA.4020702@openwrt.org>
-Date:   Thu, 09 Oct 2014 18:42:18 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 20:56:33 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:58465
+        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S27010986AbaJIS42OIX8A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 20:56:28 +0200
 From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
-MIME-Version: 1.0
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 08/10] MIPS: ralink: add rt2880 wmac clock
-References: <1412812385-64820-1-git-send-email-blogic@openwrt.org> <1412812385-64820-9-git-send-email-blogic@openwrt.org> <5436B5E1.4060201@cogentembedded.com>
-In-Reply-To: <5436B5E1.4060201@cogentembedded.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 0/4] pinctrl: ralink: add support for rt2880 pinmux
+Date:   Thu,  9 Oct 2014 04:55:23 +0200
+Message-Id: <1412823327-10296-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43153
+X-archive-position: 43154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,32 +32,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This series adds a pinctrl driver for ralink SoC. as it touches both arch and
+pinctrl files i would prefer to have this go via the mips tree with the other
+ralink pathes that i have sent.
 
-On 09/10/2014 18:20, Sergei Shtylyov wrote:
-> On 10/09/2014 03:53 AM, John Crispin wrote:
->
->> Register the wireleass mac clock on rt2880. This is required by the
->> wifi driver.
->
->> Signed-off-by: John Crispin <blogic@openwrt.org>
->> ---
->>   arch/mips/ralink/rt288x.c |    3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->
->> diff --git a/arch/mips/ralink/rt288x.c b/arch/mips/ralink/rt288x.c
->> index f87de1a..90e8934 100644
->> --- a/arch/mips/ralink/rt288x.c
->> +++ b/arch/mips/ralink/rt288x.c
->> @@ -76,7 +76,7 @@ struct ralink_pinmux rt_gpio_pinmux = {
->>
->>   void __init ralink_clk_init(void)
->>   {
->> -    unsigned long cpu_rate;
->> +    unsigned long cpu_rate, wmac_rate = 40000000;
->
->    Why you need this variable at all?
-in theory there can be a 20mhz clock. the code follows the same pattern
-as the other SoCs. due to lack of datasheet do however not know how to
-read the clock register. if you see this as a problem we can change it.
-   
-    John
+John Crispin (4):
+  MIPS: ralink: cleanup the soc specific pinmux data
+  pinctrl: ralink: add a pinctrl driver for the rt2880 family of SoCs
+  pinctrl: ralink: add binding documentation
+  MIPS: ralink: always enable pinctrl on ralink SoC
+
+ .../bindings/pinctrl/ralink,rt2880-pinmux.txt      |   74 +++
+ arch/mips/Kconfig                                  |    2 +
+ arch/mips/include/asm/mach-ralink/mt7620.h         |   41 +-
+ arch/mips/include/asm/mach-ralink/pinmux.h         |   55 +++
+ arch/mips/include/asm/mach-ralink/rt305x.h         |   35 +-
+ arch/mips/include/asm/mach-ralink/rt3883.h         |   16 +-
+ arch/mips/ralink/common.h                          |   19 -
+ arch/mips/ralink/mt7620.c                          |  159 +++----
+ arch/mips/ralink/rt288x.c                          |   62 +--
+ arch/mips/ralink/rt305x.c                          |  153 +++----
+ arch/mips/ralink/rt3883.c                          |  173 ++-----
+ drivers/pinctrl/Kconfig                            |    5 +
+ drivers/pinctrl/Makefile                           |    1 +
+ drivers/pinctrl/pinctrl-rt2880.c                   |  474 ++++++++++++++++++++
+ 14 files changed, 849 insertions(+), 420 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/ralink,rt2880-pinmux.txt
+ create mode 100644 arch/mips/include/asm/mach-ralink/pinmux.h
+ create mode 100644 drivers/pinctrl/pinctrl-rt2880.c
+
+-- 
+1.7.10.4

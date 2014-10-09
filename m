@@ -1,55 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 22:01:08 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49353 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011003AbaJIUAgHSXpR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 22:00:36 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A3F8541DFF6E1;
-        Thu,  9 Oct 2014 21:00:25 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 9 Oct
- 2014 21:00:29 +0100
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
- (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 9 Oct
- 2014 21:00:29 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 9 Oct
- 2014 21:00:28 +0100
-Received: from [127.0.1.1] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 9 Oct 2014
- 13:00:26 -0700
-Subject: [PATCH v2 3/3] MIPS: set stack/data protection as non-executable
-To:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
-        <geert+renesas@glider.be>, <david.daney@cavium.com>,
-        <peterz@infradead.org>, <paul.gortmaker@windriver.com>,
-        <davidlohr@hp.com>, <macro@linux-mips.org>, <chenhc@lemote.com>,
-        <richard@nod.at>, <zajec5@gmail.com>, <james.hogan@imgtec.com>,
-        <keescook@chromium.org>, <alex@alex-smith.me.uk>,
-        <tglx@linutronix.de>, <blogic@openwrt.org>,
-        <jchandra@broadcom.com>, <paul.burton@imgtec.com>,
-        <qais.yousef@imgtec.com>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <markos.chandras@imgtec.com>,
-        <dengcheng.zhu@imgtec.com>, <manuel.lauss@gmail.com>,
-        <akpm@linux-foundation.org>, <lars.persson@axis.com>
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Date:   Thu, 9 Oct 2014 13:00:26 -0700
-Message-ID: <20141009200026.31230.82569.stgit@linux-yegoshin>
-In-Reply-To: <20141009195030.31230.58695.stgit@linux-yegoshin>
-References: <20141009195030.31230.58695.stgit@linux-yegoshin>
-User-Agent: StGit/0.15
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2014 22:24:21 +0200 (CEST)
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:49234 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010999AbaJIUYUVQILC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Oct 2014 22:24:20 +0200
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id BCAD981E3A; Thu,  9 Oct 2014 22:24:19 +0200 (CEST)
+Date:   Thu, 9 Oct 2014 22:24:19 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        openipmi-developer@lists.sourceforge.net,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Steven Miao <realmz6@gmail.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        David Howells <dhowells@redhat.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Hirokazu Takata <takata@linux-m32r.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        David Vrabel <david.vrabel@citrix.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>
+Subject: Re: [PATCH 08/44] kernel: Move pm_power_off to common code
+Message-ID: <20141009202419.GA16885@amd>
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
+ <1412659726-29957-9-git-send-email-linux@roeck-us.net>
+ <20141009103847.GC6787@amd>
+ <54368A30.9070101@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54368A30.9070101@roeck-us.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43162
+X-archive-position: 43163
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: pavel@denx.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,26 +105,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a last step of 3 patches which shift FPU emulation out of
-stack into protected area. So, it disables a default executable stack.
+Hi!
 
-Additionally, it sets a default data area non-executable protection.
+> >>@@ -184,6 +179,8 @@ machine_halt(void)
+> >>  void
+> >>  machine_power_off(void)
+> >>  {
+> >>+	do_kernel_poweroff();
+> >>+
+> >
+> >poweroff -> power_off for consistency.
+> >
+> Dunno; matter of personal preference. I started with that, but ultimately went
+> with poweroff to distinguish poweroff handler functions from existing code,
+> specifically kernel_power_off().
 
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
----
- arch/mips/include/asm/page.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+That works for you, but once it is merged, it is ugly/confusing typo.
+									Pavel
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 3be8180..d49ba81 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -230,7 +230,7 @@ extern int __virt_addr_valid(const volatile void *kaddr);
- #define virt_addr_valid(kaddr)						\
- 	__virt_addr_valid((const volatile void *) (kaddr))
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
-+#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
- 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
- 
- #define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
+-- 
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html

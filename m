@@ -1,52 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 12:08:50 +0200 (CEST)
-Received: from mail-lb0-f180.google.com ([209.85.217.180]:62525 "EHLO
-        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011063AbaJJKIsaV8x6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 12:08:48 +0200
-Received: by mail-lb0-f180.google.com with SMTP id n15so2731526lbi.39
-        for <linux-mips@linux-mips.org>; Fri, 10 Oct 2014 03:08:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=uBogezZKxyWXP/d12lE21gOTLooIk8AcgZnoLefvYsc=;
-        b=L00Br0gFnf+YAVPx2HBFi8e4qmPBpNCX66khLQS08Ns+PNZJQE+Ll0fTe7vmx97Zd7
-         LSoqfZ4OjjLxlFLY9uxyV8mN8LaHgZjT6xBT+AqbZHEs2YGvoFO5MfODquWFrAT9KS9f
-         JlRdxCthVa4QPVaLpf4BiZy/my7VZ6B/XqjRzMTcGt/AG3Ey8Zjvy1GBE2pB8KO3a1Q5
-         U6Ty28G96Ow5t+tyHCorXDQP7IzVMHUnOnMGIg3EEYy/EWr1s9vlbvUoGublPfjGwBI1
-         FfrD5FgQWq7ibHo/F09rE4uM0tF9suy0SSUy77npPx0TAPfHWwCdJkjFeJHT8b5OQTrl
-         Ukpg==
-X-Gm-Message-State: ALoCoQmaqfi5rnNbD7WfU7SVzDpV3DjTbe7dfZzcgQB5JPU92ssd93ca55f9k/2tVwUsurEMp2Cg
-X-Received: by 10.152.19.167 with SMTP id g7mr3639317lae.31.1412935718866;
-        Fri, 10 Oct 2014 03:08:38 -0700 (PDT)
-Received: from [192.168.2.5] (ppp18-197.pppoe.mtu-net.ru. [81.195.18.197])
-        by mx.google.com with ESMTPSA id xe10sm1682492lbb.37.2014.10.10.03.08.37
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 Oct 2014 03:08:37 -0700 (PDT)
-Message-ID: <5437B020.3000405@cogentembedded.com>
-Date:   Fri, 10 Oct 2014 14:08:32 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.1.2
-MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/4] MIPS: ralink: add support for MT7620n
-References: <1412927388-60721-1-git-send-email-blogic@openwrt.org> <1412927388-60721-4-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1412927388-60721-4-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 12:20:12 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:49849
+        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S27011074AbaJJKUKUt-l4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 12:20:10 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Felipe Balbi <balbi@ti.com>
+Cc:     linux-usb@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH] USB: phy: add ralink SoC driver
+Date:   Fri, 10 Oct 2014 12:20:01 +0200
+Message-Id: <1412936401-57511-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43200
+X-archive-position: 43201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,58 +31,244 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+RT3352, RT5350 and the MT762x SoCs all have a usb phy that we need to setup.
 
-On 10/10/2014 11:49 AM, John Crispin wrote:
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ drivers/usb/phy/Kconfig      |    8 ++
+ drivers/usb/phy/Makefile     |    1 +
+ drivers/usb/phy/phy-ralink.c |  192 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 201 insertions(+)
+ create mode 100644 drivers/usb/phy/phy-ralink.c
 
-> This is the small version of MT7620a.
-
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> ---
->   arch/mips/include/asm/mach-ralink/mt7620.h |    7 ++-----
->   arch/mips/ralink/mt7620.c                  |   20 +++++++++++++-------
->   2 files changed, 15 insertions(+), 12 deletions(-)
-
-[...]
-
-> diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
-> index 24fb40a..e4b1f82 100644
-> --- a/arch/mips/ralink/mt7620.c
-> +++ b/arch/mips/ralink/mt7620.c
-[...]
-> @@ -298,22 +299,27 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
->   	u32 cfg0;
->   	u32 pmu0;
->   	u32 pmu1;
-> +	u32 bga;
->
->   	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
->   	n1 = __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
-> +	rev = __raw_readl(sysc + SYSC_REG_CHIP_REV);
-> +	bga = (rev >> CHIP_REV_PKG_SHIFT) & CHIP_REV_PKG_MASK;
->
-> -	if (n0 == MT7620N_CHIP_NAME0 && n1 == MT7620N_CHIP_NAME1) {
-> -		name = "MT7620N";
-> -		soc_info->compatible = "ralink,mt7620n-soc";
-> -	} else if (n0 == MT7620A_CHIP_NAME0 && n1 == MT7620A_CHIP_NAME1) {
-> +	if (n0 != MT7620_CHIP_NAME0 || n1 != MT7620_CHIP_NAME1)
-> +		panic("mt7620: unknown SoC, n0:%08x n1:%08x\n", n0, n1);
-> +
-> +	if (bga) {
->   		name = "MT7620A";
->   		soc_info->compatible = "ralink,mt7620a-soc";
->   	} else {
-> -		panic("mt7620: unknown SoC, n0:%08x n1:%08x", n0, n1);
-> +		name = "MT7620N";
-> +		soc_info->compatible = "ralink,mt7620n-soc";
-> +#ifdef CONFIG_PCI
-
-    I suggest:
-
-		if (IS_ENABLED(CONFIG_PCI))
-
-in order to avoid this #ifdef.
-
-[...]
-
-WBR, Sergei
+diff --git a/drivers/usb/phy/Kconfig b/drivers/usb/phy/Kconfig
+index e253fa0..ba0ef3a 100644
+--- a/drivers/usb/phy/Kconfig
++++ b/drivers/usb/phy/Kconfig
+@@ -215,6 +215,14 @@ config USB_RCAR_GEN2_PHY
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called phy-rcar-gen2-usb.
+ 
++config USB_RALINK_PHY
++	bool "Ralink USB PHY controller Driver"
++	depends on MIPS && RALINK
++	select USB_PHY
++	help
++	  Enable this to support ralink USB phy controller for ralink
++	  SoCs.
++
+ config USB_ULPI
+ 	bool "Generic ULPI Transceiver Driver"
+ 	depends on ARM || ARM64
+diff --git a/drivers/usb/phy/Makefile b/drivers/usb/phy/Makefile
+index 24a9133..1bebfc5 100644
+--- a/drivers/usb/phy/Makefile
++++ b/drivers/usb/phy/Makefile
+@@ -24,6 +24,7 @@ obj-$(CONFIG_USB_ISP1301)		+= phy-isp1301.o
+ obj-$(CONFIG_USB_MSM_OTG)		+= phy-msm-usb.o
+ obj-$(CONFIG_USB_MV_OTG)		+= phy-mv-usb.o
+ obj-$(CONFIG_USB_MXS_PHY)		+= phy-mxs-usb.o
++obj-$(CONFIG_USB_RALINK_PHY)		+= phy-ralink.o
+ obj-$(CONFIG_USB_RCAR_PHY)		+= phy-rcar-usb.o
+ obj-$(CONFIG_USB_RCAR_GEN2_PHY)		+= phy-rcar-gen2-usb.o
+ obj-$(CONFIG_USB_ULPI)			+= phy-ulpi.o
+diff --git a/drivers/usb/phy/phy-ralink.c b/drivers/usb/phy/phy-ralink.c
+new file mode 100644
+index 0000000..c54b2a8
+--- /dev/null
++++ b/drivers/usb/phy/phy-ralink.c
+@@ -0,0 +1,192 @@
++/*
++ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ *
++ * based on: Renesas R-Car USB phy driver
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/delay.h>
++#include <linux/io.h>
++#include <linux/usb/otg.h>
++#include <linux/of_platform.h>
++#include <linux/platform_device.h>
++#include <linux/spinlock.h>
++#include <linux/module.h>
++#include <linux/reset.h>
++
++#include <asm/mach-ralink/ralink_regs.h>
++
++#define RT_SYSC_REG_SYSCFG1		0x014
++#define RT_SYSC_REG_CLKCFG1		0x030
++#define RT_SYSC_REG_USB_PHY_CFG		0x05c
++
++#define RT_RSTCTRL_UDEV			BIT(25)
++#define RT_RSTCTRL_UHST			BIT(22)
++#define RT_SYSCFG1_USB0_HOST_MODE	BIT(10)
++
++#define MT7620_CLKCFG1_UPHY0_CLK_EN	BIT(25)
++#define MT7620_CLKCFG1_UPHY1_CLK_EN	BIT(22)
++#define RT_CLKCFG1_UPHY1_CLK_EN		BIT(20)
++#define RT_CLKCFG1_UPHY0_CLK_EN		BIT(18)
++
++#define USB_PHY_UTMI_8B60M		BIT(1)
++#define UDEV_WAKEUP			BIT(0)
++
++static atomic_t usb_pwr_ref = ATOMIC_INIT(0);
++static struct reset_control *rstdev;
++static struct reset_control *rsthost;
++static u32 phy_clk;
++
++static void usb_phy_enable(int state)
++{
++	if (state)
++		rt_sysc_m32(0, phy_clk, RT_SYSC_REG_CLKCFG1);
++	else
++		rt_sysc_m32(phy_clk, 0, RT_SYSC_REG_CLKCFG1);
++	mdelay(100);
++}
++
++static int usb_power_on(struct usb_phy *phy)
++{
++	if (atomic_inc_return(&usb_pwr_ref) == 1) {
++		u32 t;
++
++		usb_phy_enable(1);
++
++		if (OTG_STATE_B_HOST) {
++			rt_sysc_m32(0, RT_SYSCFG1_USB0_HOST_MODE,
++					RT_SYSC_REG_SYSCFG1);
++			if (!IS_ERR(rsthost))
++				reset_control_deassert(rsthost);
++		} else {
++			rt_sysc_m32(RT_SYSCFG1_USB0_HOST_MODE, 0,
++					RT_SYSC_REG_SYSCFG1);
++			if (!IS_ERR(rstdev))
++				reset_control_deassert(rstdev);
++		}
++		mdelay(100);
++
++		t = rt_sysc_r32(RT_SYSC_REG_USB_PHY_CFG);
++		dev_info(phy->dev, "remote usb device wakeup %s\n",
++				(t & UDEV_WAKEUP) ? "enabled" : "disabled");
++		if (t & USB_PHY_UTMI_8B60M)
++			dev_info(phy->dev, "UTMI 8bit 60MHz\n");
++		else
++			dev_info(phy->dev, "UTMI 16bit 30MHz\n");
++	}
++
++	return 0;
++}
++
++static void usb_power_off(struct usb_phy *phy)
++{
++	if (atomic_dec_return(&usb_pwr_ref) == 0) {
++		usb_phy_enable(0);
++		if (!IS_ERR(rstdev))
++			reset_control_assert(rstdev);
++		if (!IS_ERR(rsthost))
++			reset_control_assert(rsthost);
++	}
++}
++
++static int usb_set_host(struct usb_otg *otg, struct usb_bus *host)
++{
++	otg->gadget = NULL;
++	otg->host = host;
++
++	return 0;
++}
++
++static int usb_set_peripheral(struct usb_otg *otg,
++		struct usb_gadget *gadget)
++{
++	otg->host = NULL;
++	otg->gadget = gadget;
++
++	return 0;
++}
++
++static const struct of_device_id ralink_usbphy_dt_match[] = {
++	{
++		.compatible = "ralink,rt3xxx-usbphy",
++		.data = (void *) (RT_CLKCFG1_UPHY1_CLK_EN |
++					RT_CLKCFG1_UPHY0_CLK_EN)
++	}, {
++		.compatible = "ralink,mt7620a-usbphy",
++		.data = (void *) (MT7620_CLKCFG1_UPHY1_CLK_EN |
++					MT7620_CLKCFG1_UPHY0_CLK_EN)
++	}, {},
++};
++MODULE_DEVICE_TABLE(of, ralink_usbphy_dt_match);
++
++static int usb_phy_probe(struct platform_device *pdev)
++{
++	const struct of_device_id *match;
++	struct device *dev = &pdev->dev;
++	struct usb_otg *otg;
++	struct usb_phy *phy;
++	int ret;
++
++	match = of_match_device(ralink_usbphy_dt_match, &pdev->dev);
++	phy_clk = (int) match->data;
++
++	rsthost = devm_reset_control_get(&pdev->dev, "host");
++	rstdev = devm_reset_control_get(&pdev->dev, "device");
++
++	phy = devm_kzalloc(dev, sizeof(*phy), GFP_KERNEL);
++	if (!phy)
++		return -ENOMEM;
++
++	otg = devm_kzalloc(&pdev->dev, sizeof(*otg), GFP_KERNEL);
++	if (!otg)
++		return -ENOMEM;
++
++	phy->dev = dev;
++	phy->label = dev_name(dev);
++	phy->init = usb_power_on;
++	phy->shutdown = usb_power_off;
++	otg->set_host = usb_set_host;
++	otg->set_peripheral = usb_set_peripheral;
++	otg->phy = phy;
++	phy->otg = otg;
++	ret = usb_add_phy(phy, USB_PHY_TYPE_USB2);
++
++	if (ret < 0) {
++		dev_err(dev, "usb phy addition error\n");
++		return ret;
++	}
++
++	platform_set_drvdata(pdev, phy);
++
++	dev_info(&pdev->dev, "loaded\n");
++
++	return ret;
++}
++
++static int usb_phy_remove(struct platform_device *pdev)
++{
++	struct usb_phy *phy = platform_get_drvdata(pdev);
++
++	usb_remove_phy(phy);
++
++	return 0;
++}
++
++static struct platform_driver usb_phy_driver = {
++	.driver		= {
++		.owner	= THIS_MODULE,
++		.name	= "rt3xxx-usbphy",
++		.of_match_table = of_match_ptr(ralink_usbphy_dt_match),
++	},
++	.probe		= usb_phy_probe,
++	.remove		= usb_phy_remove,
++};
++
++module_platform_driver(usb_phy_driver);
++
++MODULE_LICENSE("GPL v2");
++MODULE_DESCRIPTION("Ralink USB phy");
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
+-- 
+1.7.10.4

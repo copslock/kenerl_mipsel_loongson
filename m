@@ -1,54 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 02:07:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45162 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011026AbaJJAHUX9kjm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 02:07:20 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id AF595945067A9;
-        Fri, 10 Oct 2014 01:07:08 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
- 2014 01:07:13 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
- 2014 01:07:12 +0100
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 9 Oct 2014
- 17:07:11 -0700
-Message-ID: <5437232F.60800@imgtec.com>
-Date:   Thu, 9 Oct 2014 17:07:11 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
-MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
-        <geert+renesas@glider.be>, <david.daney@cavium.com>,
-        <peterz@infradead.org>, <paul.gortmaker@windriver.com>,
-        <davidlohr@hp.com>, <macro@linux-mips.org>, <chenhc@lemote.com>,
-        <richard@nod.at>, <zajec5@gmail.com>, <keescook@chromium.org>,
-        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
-        <blogic@openwrt.org>, <jchandra@broadcom.com>,
-        <paul.burton@imgtec.com>, <qais.yousef@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
-        <markos.chandras@imgtec.com>, <dengcheng.zhu@imgtec.com>,
-        <manuel.lauss@gmail.com>, <akpm@linux-foundation.org>,
-        <lars.persson@axis.com>
-Subject: Re: [PATCH v2 2/3] MIPS: Setup an instruction emulation in VDSO protected
- page instead of user stack
-References: <20141009195030.31230.58695.stgit@linux-yegoshin> <20141009200017.31230.69698.stgit@linux-yegoshin> <20141009224304.GA4818@jhogan-linux.le.imgtec.org> <543715D7.1020505@imgtec.com> <20141009234044.GB4818@jhogan-linux.le.imgtec.org>
-In-Reply-To: <20141009234044.GB4818@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 05:40:29 +0200 (CEST)
+Received: from mail-pd0-f176.google.com ([209.85.192.176]:45514 "EHLO
+        mail-pd0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009481AbaJJDk1xKKzr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 05:40:27 +0200
+Received: by mail-pd0-f176.google.com with SMTP id fp1so856323pdb.21
+        for <multiple recipients>; Thu, 09 Oct 2014 20:40:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=2/+8nUz6Q5aLElhAhdeSYsVKUv26KYmoT/g7ik/0ea0=;
+        b=pCjV+Y6PxN3RA3KKvcjdUeM7X2m1pGxviXwZEUfp27xc6sPaSs5v03sJLcmRchpjk8
+         YKSLqwbx7XjswBFUNJjXT+p9e4upeLJ8I9fru9sX03I5KuHitvAJkK1nVoElTDsAs7Aj
+         HhNDcWB1RQMwktR6w9qbLU4E/wv8xwjG4rEcXmWnwdRw15GTaGAE47YaO0yot9qinQ1c
+         kVnVdrMGtY3IYmdOMxnr0cf/VcMaesOBRTYhIR0CVbxW09RW2U4TVVclvRAiRddione2
+         01PbcCSX9P4FGCXouw58jjCJZojILRIz0bSiLB5XIeD3Pv5FhZILic/7FGo1b4qu4atJ
+         T6Rw==
+X-Received: by 10.66.226.36 with SMTP id rp4mr2170132pac.61.1412912421122;
+        Thu, 09 Oct 2014 20:40:21 -0700 (PDT)
+Received: from localhost.localdomain ([171.213.62.98])
+        by mx.google.com with ESMTPSA id sa6sm1563051pbb.29.2014.10.09.20.40.18
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 09 Oct 2014 20:40:20 -0700 (PDT)
+From:   Kelvin Cheung <keguang.zhang@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH 0/6] MIPS: Loongson1B: Fixes and updates
+Date:   Fri, 10 Oct 2014 11:39:58 +0800
+Message-Id: <1412912402-6002-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <keguang.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43181
+X-archive-position: 43182
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,50 +50,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/09/2014 04:40 PM, James Hogan wrote:
->
->> It may be a case for mix of FPU and MIPS R6 emulations. I just keep both
->> emulators separate as much as possible but I assume that without prove
->> it may be stackable - some rollback is needed to join both and it may
->> (probably) cause a double emulation setup - dsemul may be called twice
->> for the same pair of instructions. I didn't see that yet, honestly and
->> you may be right.
-> If the only time they're used is for emulation of a branch delay slot
-> instruction which should never be another branch, and signals always
-> undo the emuframe before being handled (btw, should the BD bit in cause
-> get set if rewinding for signal handlers/gdb?), then it stands to reason
-> it should never nest.
+These patches are mainly fixes/updates for Loongson1B,
+and moreover, add cpufreq support.
 
-I don't want to give a chance. If it is proved excessive, then slashing 
-it - 15minutes, it doesn't harm.
+Kelvin Cheung (6):
+  MIPS: Loongson1B: Fix reboot problem on LS1B
+  MIPS: Loongson1B: Improve early printk
+  MIPS: Loongson1B: Some fixes/updates for LS1B
+  MIPS: Loongson1B: Add a clockevent/clocksource using PWM Timer
+  clk: ls1x: Update relationship among all clocks
+  cpufreq: Loongson1: Add cpufreq driver for Loongson1B
 
-OK, I will spend some time to look into that, it have sense to 
-reconsider after unwinding signals.
+ arch/mips/Kconfig                                |   1 +
+ arch/mips/include/asm/mach-loongson1/cpufreq.h   |  23 +++
+ arch/mips/include/asm/mach-loongson1/loongson1.h |   8 +-
+ arch/mips/include/asm/mach-loongson1/platform.h  |  10 +-
+ arch/mips/include/asm/mach-loongson1/regs-clk.h  |  23 ++-
+ arch/mips/include/asm/mach-loongson1/regs-mux.h  |  67 +++++++
+ arch/mips/include/asm/mach-loongson1/regs-pwm.h  |  29 +++
+ arch/mips/include/asm/mach-loongson1/regs-wdt.h  |  11 +-
+ arch/mips/loongson1/Kconfig                      |  42 ++++-
+ arch/mips/loongson1/common/Makefile              |   2 +-
+ arch/mips/loongson1/common/clock.c               |  28 ---
+ arch/mips/loongson1/common/platform.c            | 141 ++++++++++++--
+ arch/mips/loongson1/common/prom.c                |  30 ++-
+ arch/mips/loongson1/common/reset.c               |  20 +-
+ arch/mips/loongson1/common/time.c                | 226 +++++++++++++++++++++++
+ arch/mips/loongson1/ls1b/board.c                 |  12 +-
+ drivers/clk/clk-ls1x.c                           | 109 ++++++++---
+ drivers/cpufreq/Kconfig                          |  10 +
+ drivers/cpufreq/Makefile                         |   1 +
+ drivers/cpufreq/ls1x-cpufreq.c                   | 217 ++++++++++++++++++++++
+ 20 files changed, 889 insertions(+), 121 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson1/cpufreq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/regs-mux.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/regs-pwm.h
+ delete mode 100644 arch/mips/loongson1/common/clock.c
+ create mode 100644 arch/mips/loongson1/common/time.c
+ create mode 100644 drivers/cpufreq/ls1x-cpufreq.c
 
->
-> You could then avoid the whole stack and per-thread thing and just have
-> a maximum of one emuframe dedicated to each thread or allocated on
-> demand, and if there genuinely is a use case for nesting later on, worry
-> about it then.
-
-As I understand, you propose to allocate some space in mmap.
-
-This requires a stuff to handle allocation of user space beyond VMAs.
-It also may have some pain during thread creation, stopping and 
-subsequent cloning because that memory allocator should service that 
-events too and it may be not easy if emulation blocks are packed into 
-page. If it is not packed then it waste of user space and put additional 
-constraint to number of thread on single mmap.
-
-Some cooperation with GLIBC may be needed to prevent re-use of user 
-address space, at a moment not sure the extent of it.
-
-I estimated that it can be much more troubling.
-
->
-> So long as the kernel handles a long sequence of sequential emulated
-> branches gracefully (not necessarily correctly).
->
-I don't understand a question. Each pair/single instruction is emulated 
-separately but there is some pipeline of that, even in FPU emulator, it 
-is just not this patch issue.
+-- 
+1.9.1

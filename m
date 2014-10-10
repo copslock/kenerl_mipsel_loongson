@@ -1,52 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 12:24:31 +0200 (CEST)
-Received: from bombadil.infradead.org ([198.137.202.9]:40476 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011062AbaJJKYaSVFWw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 12:24:30 +0200
-Received: from 178-85-85-44.dynamic.upc.nl ([178.85.85.44] helo=worktop)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1XcXMn-0000Dz-3n; Fri, 10 Oct 2014 10:24:09 +0000
-Received: by worktop (Postfix, from userid 1000)
-        id C1E806E0D80; Fri, 10 Oct 2014 12:24:06 +0200 (CEST)
-Date:   Fri, 10 Oct 2014 12:24:06 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Zubair.Kakakhel@imgtec.com,
-        geert+renesas@glider.be, david.daney@cavium.com,
-        paul.gortmaker@windriver.com, davidlohr@hp.com,
-        macro@linux-mips.org, chenhc@lemote.com, richard@nod.at,
-        zajec5@gmail.com, keescook@chromium.org, alex@alex-smith.me.uk,
-        tglx@linutronix.de, blogic@openwrt.org, jchandra@broadcom.com,
-        paul.burton@imgtec.com, qais.yousef@imgtec.com,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-        markos.chandras@imgtec.com, dengcheng.zhu@imgtec.com,
-        manuel.lauss@gmail.com, akpm@linux-foundation.org,
-        lars.persson@axis.com
-Subject: Re: [PATCH v2 2/3] MIPS: Setup an instruction emulation in VDSO
- protected page instead of user stack
-Message-ID: <20141010102406.GK10832@worktop.programming.kicks-ass.net>
-References: <20141009195030.31230.58695.stgit@linux-yegoshin>
- <20141009200017.31230.69698.stgit@linux-yegoshin>
- <20141009224304.GA4818@jhogan-linux.le.imgtec.org>
- <543715D7.1020505@imgtec.com>
- <20141009234044.GB4818@jhogan-linux.le.imgtec.org>
- <5437232F.60800@imgtec.com>
- <20141010100334.GD4818@jhogan-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 14:37:49 +0200 (CEST)
+Received: from mail-la0-f41.google.com ([209.85.215.41]:39104 "EHLO
+        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011068AbaJJMhsHnsA1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 14:37:48 +0200
+Received: by mail-la0-f41.google.com with SMTP id pn19so3197194lab.14
+        for <linux-mips@linux-mips.org>; Fri, 10 Oct 2014 05:37:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=iy35wAKFHTJWcsre0wuV1oUNaUZx4MTGsrYl17aifpM=;
+        b=Xz8pgw4SV7cFudGCmcAnR8TtNo8MnXWnEn3hWSEjF8llulEchtpwIkw4cRP07dE2Xr
+         OYbH5fBF3YkRdqhsjx1nyazivgLL+XgK9h5tMPglysc0R5oehxpnbbeSHYupjCCliYsM
+         hlpVwHfvyG2J0szrs6GgE8AZfb57w7P1lzcGuQWGB8W5oj6C4+ae0e1J6AK3PhrTz4Ls
+         4ASGYwAhDY/abUZXfCk1/yJ4Fl59mnmHrMscYZlhlAyOvt7CyZ7+DIYiEg3z8afc5JVH
+         Wq7PO79hKJ9FHoGS7PyVkfdCDxef7ge1ywLsNX+HxVF4ff+/twXDp5zN75NMQ6v1K6gJ
+         cEFQ==
+X-Gm-Message-State: ALoCoQlf+iWnb1Ht/dYY8PABG0v1s5S6MyXgRkyxkXiAWZBMHpMy2/thVz2mbUDdaIegJkcmvuY0
+X-Received: by 10.152.43.99 with SMTP id v3mr4576820lal.13.1412944655396;
+        Fri, 10 Oct 2014 05:37:35 -0700 (PDT)
+Received: from [192.168.2.5] (ppp18-197.pppoe.mtu-net.ru. [81.195.18.197])
+        by mx.google.com with ESMTPSA id dw2sm1791382lbc.38.2014.10.10.05.37.34
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 10 Oct 2014 05:37:34 -0700 (PDT)
+Message-ID: <5437D30E.6030602@cogentembedded.com>
+Date:   Fri, 10 Oct 2014 16:37:34 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20141010100334.GD4818@jhogan-linux.le.imgtec.org>
-User-Agent: Mutt/1.5.22.1 (2013-10-16)
-Return-Path: <peterz@infradead.org>
+To:     John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] DT: Add documentation for gpio-rt2880
+References: <1412885241-12476-1-git-send-email-blogic@openwrt.org> <5436F058.6010406@cogentembedded.com> <54376E45.8020904@openwrt.org>
+In-Reply-To: <54376E45.8020904@openwrt.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43203
+X-archive-position: 43204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,35 +57,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 10, 2014 at 11:03:34AM +0100, James Hogan wrote:
-> Hi Leonid,
-> 
-> On Thu, Oct 09, 2014 at 05:07:11PM -0700, Leonid Yegoshin wrote:
-> > On 10/09/2014 04:40 PM, James Hogan wrote:
-> > > You could then avoid the whole stack and per-thread thing and just have
-> > > a maximum of one emuframe dedicated to each thread or allocated on
-> > > demand, and if there genuinely is a use case for nesting later on, worry
-> > > about it then.
-> > 
-> > As I understand, you propose to allocate some space in mmap.
-> 
-> No, sorry if I wasn't very clear. I just mean that you can get away with
-> a single kernel managed page per mm, with an emuframe allocated
-> per-thread which that thread always uses, since they never nest, which I
-> think simplifies the whole thing significantly.
-> 
-> The allocation could be smarter than that of course in case you have
-> thousands of threads and only a subset doing lots of FP branches, but a
-> single thread should never need more than one at a time since the new
-> signal behaviour effectively makes the delay slot emulation sort of
-> atomic from the point of view of usermode, and the kernel knows for sure
-> whether BD emulation is in progress from the PC.
-> 
-> (If there is some other way than signals that I haven't taken into
-> account that the emulation could be pre-empted then please let me know!)
+On 10/10/2014 9:27 AM, John Crispin wrote:
 
-Right, look at uprobes, it does exactly all this with a single page.
-Slot allocation will block waiting for a free slot when all are in use.
+    Hm, why didn't you reply to me but only to linux-mips?
 
-If you need to support nesting, you need to do greedy slot allocation,
-which is possible with limited nesting.
+>>> +- interrupts : Specify the INTC interrupt number +-
+>>> ralink,num-gpios : Specify the number of GPIOs +-
+>>> ralink,register-map : The register layout depends on the GPIO
+>>> bank and actual +        SoC type. Register offsets need to be in
+>>> this order. +        [ INT, EDGE, RENA, FENA, DATA, DIR, POL,
+>>> SET, RESET, TOGGLE ]
+
+>> This should be determined by the "compatible" property alone, I
+>> think.
+
+> we specifically put this into dts as almost each of the SoC versions
+> has a different register layout. i really want to avoid having to
+> patch the gpio driver whenever ralink/mtk decides to "change the
+> registers yet again".
+
+    Yes, that's what we have to do in e.g. driver/net/ethernet/sh_eth.c.
+There are 5 register layouts known by now, 2 of them were added recently. :-)
+
+> I can change it if must be.
+
+    Yes, I think it must be this way.
+
+> but i really would
+> prefer to keep it this way as it will safe me lots of time in future
+
+> 	John
+
+WBR, Sergei

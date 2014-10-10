@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 05:41:35 +0200 (CEST)
-Received: from mail-pa0-f48.google.com ([209.85.220.48]:40102 "EHLO
-        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010261AbaJJDkhjfn0x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 05:40:37 +0200
-Received: by mail-pa0-f48.google.com with SMTP id eu11so897719pac.7
-        for <multiple recipients>; Thu, 09 Oct 2014 20:40:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 05:43:11 +0200 (CEST)
+Received: from mail-pa0-f43.google.com ([209.85.220.43]:37359 "EHLO
+        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009471AbaJJDnJcs550 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 05:43:09 +0200
+Received: by mail-pa0-f43.google.com with SMTP id lf10so914105pab.16
+        for <multiple recipients>; Thu, 09 Oct 2014 20:43:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=VC4NJGf1vgP7i+lrJ+uR4D5bhMszNJ1+HtFlfyGzUfM=;
-        b=MnPQJzm7841X5FGQY+0hDB8swNKydvRctCsBK8bqpQCkGQVLyzQV83LESpTeXMUI/u
-         EXBQ8bm1ZsqqqEo9Re/6z08EsF06W+fsCnOF0tsQt62I7LEpFUGMC4HGwUhqafr2bpRC
-         jKNmE+N2Z7zdUtReSg3c5tYvqyohTmIrrIZpszrclFGKN5a6vX1+VP3zSR28RI1ZwNhG
-         dXGNUDiUt/OmSWkKQMdHmlfvyQXsWPSZSJDDfZ4Y4kzMps1aC3TwMJFpYv1KxAh6TPAG
-         /wvpRFF8VoQkPSP5E2mWuFl6PdepfnFRZl6GqP26QLj0nLHef+oGvX+lAc7zDRd3kwIR
-         WI2Q==
-X-Received: by 10.68.197.65 with SMTP id is1mr2165820pbc.125.1412912431571;
-        Thu, 09 Oct 2014 20:40:31 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id;
+        bh=PRcF2GaJD/0EaCpYOrl2iE112nQ6x1hMBeCxOtOobC0=;
+        b=u6qAYTAPt5478KKc4rh3Os0zLzI2oSWLO8g+AwuzF/0JPNWpQaNOvnx72Stf4/EHwg
+         QoiwKDsId6+iJFFmXuL4alekdWMPyMYwBftkwbRorUSaQlBVJVoVnTGroPhBnWrY1Ovi
+         9rd22Hn+pkedAtwwaurqBbrwrSkXIejW1kb2ZqIY9O01u9/dqJzh42pDi5UGj6Sg4hwC
+         50IGa0ISyFkDYJk0BKfUxM2LGf9ofxzrNYur2xp37NX/hwlajV8FaSAEEpXhI8n54wgu
+         uxHIRX006bKvweQKEQ7vhx8XveHY00sL9hfhA4FqXgfI7ZCyQ2HguK+WB51s1Q0qT1Xt
+         nQdg==
+X-Received: by 10.66.152.41 with SMTP id uv9mr2207246pab.25.1412912583490;
+        Thu, 09 Oct 2014 20:43:03 -0700 (PDT)
 Received: from localhost.localdomain ([171.213.62.98])
-        by mx.google.com with ESMTPSA id sa6sm1563051pbb.29.2014.10.09.20.40.29
+        by mx.google.com with ESMTPSA id x13sm1941007pdk.22.2014.10.09.20.43.00
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 09 Oct 2014 20:40:30 -0700 (PDT)
+        Thu, 09 Oct 2014 20:43:02 -0700 (PDT)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH 4/6] MIPS: Loongson1B: Add a clockevent/clocksource using PWM Timer
-Date:   Fri, 10 Oct 2014 11:40:02 +0800
-Message-Id: <1412912402-6002-5-git-send-email-keguang.zhang@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     mturquette@linaro.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH 5/6] clk: ls1x: Update relationship among all clocks
+Date:   Fri, 10 Oct 2014 11:42:51 +0800
+Message-Id: <1412912571-6151-1-git-send-email-keguang.zhang@gmail.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1412912402-6002-1-git-send-email-keguang.zhang@gmail.com>
-References: <1412912402-6002-1-git-send-email-keguang.zhang@gmail.com>
 Return-Path: <keguang.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43186
+X-archive-position: 43187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,351 +51,168 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch add a clockevent/clocksource using PWM Timer for Loongson1B,
-which is based on earlier work by Tang, Haifeng.
+ - Add clock lookups for APB devices.
+ - Update clock relationship to make it more exact and clear.
+                                 _____
+         _______________________|     |
+ OSC ___/                       | MUX |___ XXX CLK
+        \___ PLL ___ XXX DIV ___|     |
+                                |_____|
 
 Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 ---
- arch/mips/loongson1/Kconfig         |  41 ++++++-
- arch/mips/loongson1/common/Makefile |   2 +-
- arch/mips/loongson1/common/clock.c  |  28 -----
- arch/mips/loongson1/common/time.c   | 226 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 266 insertions(+), 31 deletions(-)
- delete mode 100644 arch/mips/loongson1/common/clock.c
- create mode 100644 arch/mips/loongson1/common/time.c
+ drivers/clk/clk-ls1x.c | 109 ++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 80 insertions(+), 29 deletions(-)
 
-diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
-index 4ed9744..a2b796e 100644
---- a/arch/mips/loongson1/Kconfig
-+++ b/arch/mips/loongson1/Kconfig
-@@ -5,8 +5,8 @@ choice
+diff --git a/drivers/clk/clk-ls1x.c b/drivers/clk/clk-ls1x.c
+index f20b750..ca80103 100644
+--- a/drivers/clk/clk-ls1x.c
++++ b/drivers/clk/clk-ls1x.c
+@@ -15,7 +15,8 @@
  
- config LOONGSON1_LS1B
- 	bool "Loongson LS1B board"
--	select CEVT_R4K
--	select CSRC_R4K
-+	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
-+	select CSRC_R4K if !MIPS_EXTERNAL_TIMER
- 	select SYS_HAS_CPU_LOONGSON1B
- 	select DMA_NONCOHERENT
- 	select BOOT_ELF32
-@@ -21,4 +21,41 @@ config LOONGSON1_LS1B
+ #include <loongson1.h>
  
- endchoice
+-#define OSC	33
++#define OSC		(33 * 1000000)
++#define DIV_APB		2
  
-+menuconfig CEVT_CSRC_LS1X
-+	bool "Use PWM Timer for clockevent/clocksource"
-+	select MIPS_EXTERNAL_TIMER
-+	depends on CPU_LOONGSON1
-+	help
-+	  This option changes the default clockevent/clocksource to PWM Timer,
-+	  and is required by Loongson1 CPUFreq support.
-+
-+	  If unsure, say N.
-+
-+choice
-+	prompt  "Select clockevent/clocksource"
-+	depends on CEVT_CSRC_LS1X
-+	default TIMER_USE_PWM0
-+
-+config TIMER_USE_PWM0
-+	bool "Use PWM Timer 0"
-+	help
-+	  Use PWM Timer 0 as the default clockevent/clocksourcer.
-+
-+config TIMER_USE_PWM1
-+	bool "Use PWM Timer 1"
-+	help
-+	  Use PWM Timer 1 as the default clockevent/clocksourcer.
-+
-+config TIMER_USE_PWM2
-+	bool "Use PWM Timer 2"
-+	help
-+	  Use PWM Timer 2 as the default clockevent/clocksourcer.
-+
-+config TIMER_USE_PWM3
-+	bool "Use PWM Timer 3"
-+	help
-+	  Use PWM Timer 3 as the default clockevent/clocksourcer.
-+
-+endchoice
-+
- endif # MACH_LOONGSON1
-diff --git a/arch/mips/loongson1/common/Makefile b/arch/mips/loongson1/common/Makefile
-index b279770..723b4ce 100644
---- a/arch/mips/loongson1/common/Makefile
-+++ b/arch/mips/loongson1/common/Makefile
-@@ -2,4 +2,4 @@
- # Makefile for common code of loongson1 based machines.
- #
+ static DEFINE_SPINLOCK(_lock);
  
--obj-y	+= clock.o irq.o platform.o prom.o reset.o setup.o
-+obj-y	+= time.o irq.o platform.o prom.o reset.o setup.o
-diff --git a/arch/mips/loongson1/common/clock.c b/arch/mips/loongson1/common/clock.c
-deleted file mode 100644
-index b4437f1..0000000
---- a/arch/mips/loongson1/common/clock.c
-+++ /dev/null
-@@ -1,28 +0,0 @@
--/*
-- * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
-- *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
+@@ -29,13 +30,12 @@ static void ls1x_pll_clk_disable(struct clk_hw *hw)
+ }
+ 
+ static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
+-					     unsigned long parent_rate)
++					  unsigned long parent_rate)
+ {
+ 	u32 pll, rate;
+ 
+ 	pll = __raw_readl(LS1X_CLK_PLL_FREQ);
+-	rate = ((12 + (pll & 0x3f)) * 1000000) +
+-		((((pll >> 8) & 0x3ff) * 1000000) >> 10);
++	rate = 12 + (pll & 0x3f) + (((pll >> 8) & 0x3ff) >> 10);
+ 	rate *= OSC;
+ 	rate >>= 1;
+ 
+@@ -48,8 +48,10 @@ static const struct clk_ops ls1x_pll_clk_ops = {
+ 	.recalc_rate = ls1x_pll_recalc_rate,
+ };
+ 
+-static struct clk * __init clk_register_pll(struct device *dev,
+-	 const char *name, const char *parent_name, unsigned long flags)
++static struct clk *__init clk_register_pll(struct device *dev,
++					   const char *name,
++					   const char *parent_name,
++					   unsigned long flags)
+ {
+ 	struct clk_hw *hw;
+ 	struct clk *clk;
+@@ -78,34 +80,83 @@ static struct clk * __init clk_register_pll(struct device *dev,
+ 	return clk;
+ }
+ 
++static const char const *cpu_parents[] = { "cpu_clk_div", "osc_33m_clk", };
++static const char const *ahb_parents[] = { "ahb_clk_div", "osc_33m_clk", };
++static const char const *dc_parents[] = { "dc_clk_div", "osc_33m_clk", };
++
+ void __init ls1x_clk_init(void)
+ {
+ 	struct clk *clk;
+ 
+-	clk = clk_register_pll(NULL, "pll_clk", NULL, CLK_IS_ROOT);
+-	clk_prepare_enable(clk);
 -
--#include <linux/clk.h>
--#include <linux/err.h>
--#include <asm/time.h>
--#include <platform.h>
+-	clk = clk_register_divider(NULL, "cpu_clk", "pll_clk",
+-			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_CPU_SHIFT,
+-			DIV_CPU_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
+-	clk_prepare_enable(clk);
+-	clk_register_clkdev(clk, "cpu", NULL);
 -
--void __init plat_time_init(void)
--{
--	struct clk *clk;
+-	clk = clk_register_divider(NULL, "dc_clk", "pll_clk",
+-			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
+-			DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
+-	clk_prepare_enable(clk);
+-	clk_register_clkdev(clk, "dc", NULL);
 -
--	/* Initialize LS1X clocks */
--	ls1x_clk_init();
--
--	/* setup mips r4k timer */
--	clk = clk_get(NULL, "cpu");
--	if (IS_ERR(clk))
--		panic("unable to get cpu clock, err=%ld", PTR_ERR(clk));
--
--	mips_hpt_frequency = clk_get_rate(clk) / 2;
--}
-diff --git a/arch/mips/loongson1/common/time.c b/arch/mips/loongson1/common/time.c
-new file mode 100644
-index 0000000..df0f850
---- /dev/null
-+++ b/arch/mips/loongson1/common/time.c
-@@ -0,0 +1,226 @@
-+/*
-+ * Copyright (c) 2014 Zhang, Keguang <keguang.zhang@gmail.com>
-+ *
-+ * This program is free software; you can redistribute	it and/or modify it
-+ * under  the terms of	the GNU General	 Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
+-	clk = clk_register_divider(NULL, "ahb_clk", "pll_clk",
+-			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_DDR_SHIFT,
+-			DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
+-	clk_prepare_enable(clk);
+-	clk_register_clkdev(clk, "ahb", NULL);
++	clk = clk_register_fixed_rate(NULL, "osc_33m_clk", NULL, CLK_IS_ROOT,
++				      OSC);
++	clk_register_clkdev(clk, "osc_33m_clk", NULL);
 +
-+#include <linux/clk.h>
-+#include <linux/interrupt.h>
-+#include <asm/time.h>
++	/* clock derived from 33 MHz OSC clk */
++	clk = clk_register_pll(NULL, "pll_clk", "osc_33m_clk", 0);
++	clk_register_clkdev(clk, "pll_clk", NULL);
 +
-+#include <loongson1.h>
-+#include <platform.h>
-+
-+#ifdef CONFIG_CEVT_CSRC_LS1X
-+
-+#if defined(CONFIG_TIMER_USE_PWM1)
-+#define LS1X_TIMER_BASE	LS1X_PWM1_BASE
-+#define LS1X_TIMER_IRQ	LS1X_PWM1_IRQ
-+
-+#elif defined(CONFIG_TIMER_USE_PWM2)
-+#define LS1X_TIMER_BASE	LS1X_PWM2_BASE
-+#define LS1X_TIMER_IRQ	LS1X_PWM2_IRQ
-+
-+#elif defined(CONFIG_TIMER_USE_PWM3)
-+#define LS1X_TIMER_BASE	LS1X_PWM3_BASE
-+#define LS1X_TIMER_IRQ	LS1X_PWM3_IRQ
-+
-+#else
-+#define LS1X_TIMER_BASE	LS1X_PWM0_BASE
-+#define LS1X_TIMER_IRQ	LS1X_PWM0_IRQ
-+#endif
-+
-+DEFINE_RAW_SPINLOCK(ls1x_timer_lock);
-+
-+static void __iomem *timer_base;
-+static uint32_t ls1x_jiffies_per_tick;
-+
-+static inline void ls1x_pwmtimer_set_period(uint32_t period)
-+{
-+	__raw_writel(period, timer_base + PWM_HRC);
-+	__raw_writel(period, timer_base + PWM_LRC);
-+}
-+
-+static inline void ls1x_pwmtimer_restart(void)
-+{
-+	__raw_writel(0x0, timer_base + PWM_CNT);
-+	__raw_writel(INT_EN | CNT_EN, timer_base + PWM_CTRL);
-+}
-+
-+void __init ls1x_pwmtimer_init(void)
-+{
-+	timer_base = ioremap(LS1X_TIMER_BASE, 0xf);
-+	if (!timer_base)
-+		panic("Failed to remap timer registers");
-+
-+	ls1x_jiffies_per_tick = DIV_ROUND_CLOSEST(mips_hpt_frequency, HZ);
-+
-+	ls1x_pwmtimer_set_period(ls1x_jiffies_per_tick);
-+	ls1x_pwmtimer_restart();
-+}
-+
-+static cycle_t ls1x_clocksource_read(struct clocksource *cs)
-+{
-+	unsigned long flags;
-+	int count;
-+	u32 jifs;
-+	static int old_count;
-+	static u32 old_jifs;
-+
-+	raw_spin_lock_irqsave(&ls1x_timer_lock, flags);
-+	/*
-+	 * Although our caller may have the read side of xtime_lock,
-+	 * this is now a seqlock, and we are cheating in this routine
-+	 * by having side effects on state that we cannot undo if
-+	 * there is a collision on the seqlock and our caller has to
-+	 * retry.  (Namely, old_jifs and old_count.)  So we must treat
-+	 * jiffies as volatile despite the lock.  We read jiffies
-+	 * before latching the timer count to guarantee that although
-+	 * the jiffies value might be older than the count (that is,
-+	 * the counter may underflow between the last point where
-+	 * jiffies was incremented and the point where we latch the
-+	 * count), it cannot be newer.
++	/* clock derived from PLL clk */
++	/*                                 _____
++	 *         _______________________|     |
++	 * OSC ___/                       | MUX |___ CPU CLK
++	 *        \___ PLL ___ CPU DIV ___|     |
++	 *                                |_____|
 +	 */
-+	jifs = jiffies;
-+	/* read the count */
-+	count = __raw_readl(timer_base + PWM_CNT);
++	clk = clk_register_divider(NULL, "cpu_clk_div", "pll_clk",
++				   CLK_GET_RATE_NOCACHE, LS1X_CLK_PLL_DIV,
++				   DIV_CPU_SHIFT, DIV_CPU_WIDTH,
++				   CLK_DIVIDER_ONE_BASED |
++				   CLK_DIVIDER_ROUND_CLOSEST, &_lock);
++	clk_register_clkdev(clk, "cpu_clk_div", NULL);
++	clk = clk_register_mux(NULL, "cpu_clk", cpu_parents,
++			       ARRAY_SIZE(cpu_parents),
++			       CLK_SET_RATE_NO_REPARENT, LS1X_CLK_PLL_DIV,
++			       BYPASS_CPU_SHIFT, BYPASS_CPU_WIDTH, 0, &_lock);
++	clk_register_clkdev(clk, "cpu_clk", NULL);
 +
-+	/*
-+	 * It's possible for count to appear to go the wrong way for this
-+	 * reason:
-+	 *
-+	 *  The timer counter underflows, but we haven't handled the resulting
-+	 *  interrupt and incremented jiffies yet.
-+	 *
-+	 * Previous attempts to handle these cases intelligently were buggy, so
-+	 * we just do the simple thing now.
++	/*                                 _____
++	 *         _______________________|     |
++	 * OSC ___/                       | MUX |___ DC  CLK
++	 *        \___ PLL ___ DC  DIV ___|     |
++	 *                                |_____|
 +	 */
-+	if (count < old_count && jifs == old_jifs)
-+		count = old_count;
++	clk = clk_register_divider(NULL, "dc_clk_div", "pll_clk",
++				   0, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
++				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
++	clk_register_clkdev(clk, "dc_clk_div", NULL);
++	clk = clk_register_mux(NULL, "dc_clk", dc_parents,
++			       ARRAY_SIZE(dc_parents),
++			       CLK_SET_RATE_NO_REPARENT, LS1X_CLK_PLL_DIV,
++			       BYPASS_DC_SHIFT, BYPASS_DC_WIDTH, 0, &_lock);
++	clk_register_clkdev(clk, "dc_clk", NULL);
 +
-+	old_count = count;
-+	old_jifs = jifs;
-+
-+	raw_spin_unlock_irqrestore(&ls1x_timer_lock, flags);
-+
-+	return (cycle_t) (jifs * ls1x_jiffies_per_tick) + count;
-+}
-+
-+static struct clocksource ls1x_clocksource = {
-+	.name		= "ls1x-pwmtimer",
-+	.read		= ls1x_clocksource_read,
-+	.mask		= CLOCKSOURCE_MASK(24),
-+	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
-+};
-+
-+static irqreturn_t ls1x_clockevent_isr(int irq, void *devid)
-+{
-+	struct clock_event_device *cd = devid;
-+
-+	ls1x_pwmtimer_restart();
-+	cd->event_handler(cd);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void ls1x_clockevent_set_mode(enum clock_event_mode mode,
-+				     struct clock_event_device *cd)
-+{
-+	raw_spin_lock(&ls1x_timer_lock);
-+	switch (mode) {
-+	case CLOCK_EVT_MODE_PERIODIC:
-+		ls1x_pwmtimer_set_period(ls1x_jiffies_per_tick);
-+		ls1x_pwmtimer_restart();
-+	case CLOCK_EVT_MODE_RESUME:
-+		__raw_writel(INT_EN | CNT_EN, timer_base + PWM_CTRL);
-+		break;
-+	case CLOCK_EVT_MODE_ONESHOT:
-+	case CLOCK_EVT_MODE_SHUTDOWN:
-+		__raw_writel(__raw_readl(timer_base + PWM_CTRL) & ~CNT_EN,
-+			     timer_base + PWM_CTRL);
-+		break;
-+	default:
-+		break;
-+	}
-+	raw_spin_unlock(&ls1x_timer_lock);
-+}
-+
-+static int ls1x_clockevent_set_next(unsigned long evt,
-+				    struct clock_event_device *cd)
-+{
-+	raw_spin_lock(&ls1x_timer_lock);
-+	ls1x_pwmtimer_set_period(evt);
-+	ls1x_pwmtimer_restart();
-+	raw_spin_unlock(&ls1x_timer_lock);
-+
-+	return 0;
-+}
-+
-+static struct clock_event_device ls1x_clockevent = {
-+	.name		= "ls1x-pwmtimer",
-+	.features	= CLOCK_EVT_FEAT_PERIODIC,
-+	.rating		= 300,
-+	.irq		= LS1X_TIMER_IRQ,
-+	.set_next_event	= ls1x_clockevent_set_next,
-+	.set_mode	= ls1x_clockevent_set_mode,
-+};
-+
-+static struct irqaction ls1x_pwmtimer_irqaction = {
-+	.name		= "ls1x-pwmtimer",
-+	.handler	= ls1x_clockevent_isr,
-+	.dev_id		= &ls1x_clockevent,
-+	.flags		= IRQF_PERCPU | IRQF_TIMER,
-+};
-+
-+static void __init ls1x_time_init(void)
-+{
-+	struct clock_event_device *cd = &ls1x_clockevent;
-+	int ret;
-+
-+	if (!mips_hpt_frequency)
-+		panic("Invalid timer clock rate");
-+
-+	ls1x_pwmtimer_init();
-+
-+	clockevent_set_clock(cd, mips_hpt_frequency);
-+	cd->max_delta_ns = clockevent_delta2ns(0xffffff, cd);
-+	cd->min_delta_ns = clockevent_delta2ns(0x000300, cd);
-+	cd->cpumask = cpumask_of(smp_processor_id());
-+	clockevents_register_device(cd);
-+
-+	ls1x_clocksource.rating = 200 + mips_hpt_frequency / 10000000;
-+	ret = clocksource_register_hz(&ls1x_clocksource, mips_hpt_frequency);
-+	if (ret)
-+		panic(KERN_ERR "Failed to register clocksource: %d\n", ret);
-+
-+	setup_irq(LS1X_TIMER_IRQ, &ls1x_pwmtimer_irqaction);
-+}
-+#endif /* CONFIG_CEVT_CSRC_LS1X */
-+
-+void __init plat_time_init(void)
-+{
-+	struct clk *clk = NULL;
-+
-+	/* initialize LS1X clocks */
-+	ls1x_clk_init();
-+
-+#ifdef CONFIG_CEVT_CSRC_LS1X
-+	/* setup LS1X PWM timer */
-+	clk = clk_get(NULL, "ls1x_pwmtimer");
-+	if (IS_ERR(clk))
-+		panic("unable to get timer clock, err=%ld", PTR_ERR(clk));
-+
-+	mips_hpt_frequency = clk_get_rate(clk);
-+	ls1x_time_init();
-+#else
-+	/* setup mips r4k timer */
-+	clk = clk_get(NULL, "cpu_clk");
-+	if (IS_ERR(clk))
-+		panic("unable to get cpu clock, err=%ld", PTR_ERR(clk));
-+
-+	mips_hpt_frequency = clk_get_rate(clk) / 2;
-+#endif /* CONFIG_CEVT_CSRC_LS1X */
-+}
++	/*                                 _____
++	 *         _______________________|     |
++	 * OSC ___/                       | MUX |___ DDR CLK
++	 *        \___ PLL ___ DDR DIV ___|     |
++	 *                                |_____|
++	 */
++	clk = clk_register_divider(NULL, "ahb_clk_div", "pll_clk",
++				   0, LS1X_CLK_PLL_DIV, DIV_DDR_SHIFT,
++				   DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED,
++				   &_lock);
++	clk_register_clkdev(clk, "ahb_clk_div", NULL);
++	clk = clk_register_mux(NULL, "ahb_clk", ahb_parents,
++			       ARRAY_SIZE(ahb_parents),
++			       CLK_SET_RATE_NO_REPARENT, LS1X_CLK_PLL_DIV,
++			       BYPASS_DDR_SHIFT, BYPASS_DDR_WIDTH, 0, &_lock);
++	clk_register_clkdev(clk, "ahb_clk", NULL);
+ 	clk_register_clkdev(clk, "stmmaceth", NULL);
+ 
+-	clk = clk_register_fixed_factor(NULL, "apb_clk", "ahb_clk", 0, 1, 2);
+-	clk_prepare_enable(clk);
+-	clk_register_clkdev(clk, "apb", NULL);
++	/* clock derived from AHB clk */
++	/* APB clk is always half of the AHB clk */
++	clk = clk_register_fixed_factor(NULL, "apb_clk", "ahb_clk", 0, 1,
++					DIV_APB);
++	clk_register_clkdev(clk, "apb_clk", NULL);
++	clk_register_clkdev(clk, "ls1x_i2c", NULL);
++	clk_register_clkdev(clk, "ls1x_pwmtimer", NULL);
++	clk_register_clkdev(clk, "ls1x_spi", NULL);
++	clk_register_clkdev(clk, "ls1x_wdt", NULL);
+ 	clk_register_clkdev(clk, "serial8250", NULL);
+ }
 -- 
 1.9.1

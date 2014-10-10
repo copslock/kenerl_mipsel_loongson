@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:31:15 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:36774
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:31:32 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:36775
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011134AbaJJW3SAqY1n (ORCPT
+        with ESMTP id S27011135AbaJJW3SZSAZ6 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2014 00:29:18 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 07/10] MIPS: lantiq: copy the commandline from the devicetree
-Date:   Sat, 11 Oct 2014 00:02:31 +0200
-Message-Id: <1412978554-31344-8-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 08/10] MIPS: lantiq: the detection of the gpe clock is broken
+Date:   Sat, 11 Oct 2014 00:02:32 +0200
+Message-Id: <1412978554-31344-9-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
 References: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43232
+X-archive-position: 43233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,31 +33,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a regression caused by:
-commit afb46f7996e91aeb36e07bc92cf96e8045bec00e
-Author: Rob Herring <robh@kernel.org>
-Date:   Wed Apr 2 19:07:24 2014 -0500
-mips: ralink: convert to use unflatten_and_copy_device_tree
+The code to detect unfused SoCs was broken due to missing register masking.
 
-Make the of init code reuse the cmdline defined inside the dts.
-
+Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/prom.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/lantiq/falcon/sysctrl.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 157f590..a71dc1a 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -77,6 +77,8 @@ void __init plat_mem_setup(void)
- 	 * parsed resulting in our memory appearing
- 	 */
- 	__dt_setup_arch(__dtb_start);
-+
-+	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
- }
+diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
+index 8f1866d..92cf10e 100644
+--- a/arch/mips/lantiq/falcon/sysctrl.c
++++ b/arch/mips/lantiq/falcon/sysctrl.c
+@@ -147,12 +147,11 @@ static void falcon_gpe_enable(void)
+ 	if (status & (1 << (GPPC_OFFSET + 1)))
+ 		return;
  
- void __init device_tree_init(void)
+-	if (status_r32(STATUS_CONFIG) == 0)
++	freq = (status_r32(STATUS_CONFIG) &
++		GPEFREQ_MASK) >>
++		GPEFREQ_OFFSET;
++	if (freq == 0)
+ 		freq = 1; /* use 625MHz on unfused chip */
+-	else
+-		freq = (status_r32(STATUS_CONFIG) &
+-			GPEFREQ_MASK) >>
+-			GPEFREQ_OFFSET;
+ 
+ 	/* apply new frequency */
+ 	sysctl_w32_mask(SYSCTL_SYS1, 7 << (GPPC_OFFSET + 1),
 -- 
 1.7.10.4

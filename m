@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 09:50:12 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:46027
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 09:50:29 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:46028
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011046AbaJJHtytk3Dc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 09:49:54 +0200
+        with ESMTP id S27011047AbaJJHtzPtnIj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 09:49:55 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 1/4] MIPS: ralink: cleanup early_printk
-Date:   Fri, 10 Oct 2014 09:49:45 +0200
-Message-Id: <1412927388-60721-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 2/4] MIPS: ralink: allow loading irq registers from the devicetree
+Date:   Fri, 10 Oct 2014 09:49:46 +0200
+Message-Id: <1412927388-60721-3-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412927388-60721-1-git-send-email-blogic@openwrt.org>
 References: <1412927388-60721-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43192
+X-archive-position: 43193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,81 +33,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for the new MT7621/8 SoC and kill ifdefs.
-Cleanup some whitespace error while we are at it.
-
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/early_printk.c |   45 ++++++++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 15 deletions(-)
+ arch/mips/ralink/irq.c |   34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/ralink/early_printk.c b/arch/mips/ralink/early_printk.c
-index b46d041..255d695 100644
---- a/arch/mips/ralink/early_printk.c
-+++ b/arch/mips/ralink/early_printk.c
-@@ -12,21 +12,24 @@
- #include <asm/addrspace.h>
+diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+index 781b3d1..62ad64b 100644
+--- a/arch/mips/ralink/irq.c
++++ b/arch/mips/ralink/irq.c
+@@ -20,14 +20,6 @@
  
- #ifdef CONFIG_SOC_RT288X
--#define EARLY_UART_BASE         0x300c00
-+#define EARLY_UART_BASE		0x300c00
-+#define CHIPID_BASE		0x300004
-+#elif defined(CONFIG_SOC_MT7621)
-+#define EARLY_UART_BASE		0x1E000c00
-+#define CHIPID_BASE		0x1E000004
- #else
--#define EARLY_UART_BASE         0x10000c00
-+#define EARLY_UART_BASE		0x10000c00
-+#define CHIPID_BASE		0x10000004
- #endif
+ #include "common.h"
  
--#define UART_REG_RX             0x00
--#define UART_REG_TX             0x04
--#define UART_REG_IER            0x08
--#define UART_REG_IIR            0x0c
--#define UART_REG_FCR            0x10
--#define UART_REG_LCR            0x14
--#define UART_REG_MCR            0x18
--#define UART_REG_LSR            0x1c
-+#define MT7628_CHIP_NAME1	0x20203832
+-/* INTC register offsets */
+-#define INTC_REG_STATUS0	0x00
+-#define INTC_REG_STATUS1	0x04
+-#define INTC_REG_TYPE		0x20
+-#define INTC_REG_RAW_STATUS	0x30
+-#define INTC_REG_ENABLE		0x34
+-#define INTC_REG_DISABLE	0x38
+-
+ #define INTC_INT_GLOBAL		BIT(31)
+ 
+ #define RALINK_CPU_IRQ_INTC	(MIPS_CPU_IRQ_BASE + 2)
+@@ -44,16 +36,34 @@
+ 
+ #define RALINK_INTC_IRQ_PERFC   (RALINK_INTC_IRQ_BASE + 9)
+ 
++enum rt_intc_regs_enum {
++	INTC_REG_STATUS0 = 0,
++	INTC_REG_STATUS1,
++	INTC_REG_TYPE,
++	INTC_REG_RAW_STATUS,
++	INTC_REG_ENABLE,
++	INTC_REG_DISABLE,
++};
 +
-+#define UART_REG_TX		0x04
-+#define UART_REG_LSR		0x14
-+#define UART_REG_LSR_RT2880	0x1c
++static u32 rt_intc_regs[] = {
++	[INTC_REG_STATUS0] = 0x00,
++	[INTC_REG_STATUS1] = 0x04,
++	[INTC_REG_TYPE] = 0x20,
++	[INTC_REG_RAW_STATUS] = 0x30,
++	[INTC_REG_ENABLE] = 0x34,
++	[INTC_REG_DISABLE] = 0x38,
++};
++
+ static void __iomem *rt_intc_membase;
  
- static __iomem void *uart_membase = (__iomem void *) KSEG1ADDR(EARLY_UART_BASE);
-+static __iomem void *chipid_membase = (__iomem void *) KSEG1ADDR(CHIPID_BASE);
- 
- static inline void uart_w32(u32 val, unsigned reg)
+ static inline void rt_intc_w32(u32 val, unsigned reg)
  {
-@@ -38,11 +41,23 @@ static inline u32 uart_r32(unsigned reg)
- 	return __raw_readl(uart_membase + reg);
+-	__raw_writel(val, rt_intc_membase + reg);
++	__raw_writel(val, rt_intc_membase + rt_intc_regs[reg]);
  }
  
-+static inline int soc_is_mt7628(void)
-+{
-+	return IS_ENABLED(CONFIG_SOC_MT7620) &&
-+		(__raw_readl(chipid_membase) == MT7628_CHIP_NAME1);
-+}
-+
- void prom_putchar(unsigned char ch)
+ static inline u32 rt_intc_r32(unsigned reg)
  {
--	while ((uart_r32(UART_REG_LSR) & UART_LSR_THRE) == 0)
--		;
--	uart_w32(ch, UART_REG_TX);
--	while ((uart_r32(UART_REG_LSR) & UART_LSR_THRE) == 0)
--		;
-+	if (IS_ENABLED(CONFIG_SOC_MT7621) || soc_is_mt7628()) {
-+		uart_w32(ch, UART_TX);
-+		while ((uart_r32(UART_REG_LSR) & UART_LSR_THRE) == 0)
-+			;
-+	} else {
-+		while ((uart_r32(UART_REG_LSR_RT2880) & UART_LSR_THRE) == 0)
-+			;
-+		uart_w32(ch, UART_REG_TX);
-+		while ((uart_r32(UART_REG_LSR_RT2880) & UART_LSR_THRE) == 0)
-+			;
-+	}
+-	return __raw_readl(rt_intc_membase + reg);
++	return __raw_readl(rt_intc_membase + rt_intc_regs[reg]);
  }
+ 
+ static void ralink_intc_irq_unmask(struct irq_data *d)
+@@ -134,6 +144,10 @@ static int __init intc_of_init(struct device_node *node,
+ 	struct irq_domain *domain;
+ 	int irq;
+ 
++	if (!of_property_read_u32_array(node, "ralink,intc-registers",
++							rt_intc_regs, 6))
++		pr_info("intc: using register map from devicetree\n");
++
+ 	irq = irq_of_parse_and_map(node, 0);
+ 	if (!irq)
+ 		panic("Failed to get INTC IRQ");
 -- 
 1.7.10.4

@@ -1,56 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 12:03:44 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:10217 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011062AbaJJKDmTnFKv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 12:03:42 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CAC8B30334382;
-        Fri, 10 Oct 2014 11:03:32 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 10 Oct 2014 11:03:35 +0100
-Received: from localhost (192.168.154.101) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
- 2014 11:03:33 +0100
-Date:   Fri, 10 Oct 2014 11:03:34 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
-        <geert+renesas@glider.be>, <david.daney@cavium.com>,
-        <peterz@infradead.org>, <paul.gortmaker@windriver.com>,
-        <davidlohr@hp.com>, <macro@linux-mips.org>, <chenhc@lemote.com>,
-        <richard@nod.at>, <zajec5@gmail.com>, <keescook@chromium.org>,
-        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
-        <blogic@openwrt.org>, <jchandra@broadcom.com>,
-        <paul.burton@imgtec.com>, <qais.yousef@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
-        <markos.chandras@imgtec.com>, <dengcheng.zhu@imgtec.com>,
-        <manuel.lauss@gmail.com>, <akpm@linux-foundation.org>,
-        <lars.persson@axis.com>
-Subject: Re: [PATCH v2 2/3] MIPS: Setup an instruction emulation in VDSO
- protected page instead of user stack
-Message-ID: <20141010100334.GD4818@jhogan-linux.le.imgtec.org>
-References: <20141009195030.31230.58695.stgit@linux-yegoshin>
- <20141009200017.31230.69698.stgit@linux-yegoshin>
- <20141009224304.GA4818@jhogan-linux.le.imgtec.org>
- <543715D7.1020505@imgtec.com>
- <20141009234044.GB4818@jhogan-linux.le.imgtec.org>
- <5437232F.60800@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 12:08:50 +0200 (CEST)
+Received: from mail-lb0-f180.google.com ([209.85.217.180]:62525 "EHLO
+        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011063AbaJJKIsaV8x6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 12:08:48 +0200
+Received: by mail-lb0-f180.google.com with SMTP id n15so2731526lbi.39
+        for <linux-mips@linux-mips.org>; Fri, 10 Oct 2014 03:08:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=uBogezZKxyWXP/d12lE21gOTLooIk8AcgZnoLefvYsc=;
+        b=L00Br0gFnf+YAVPx2HBFi8e4qmPBpNCX66khLQS08Ns+PNZJQE+Ll0fTe7vmx97Zd7
+         LSoqfZ4OjjLxlFLY9uxyV8mN8LaHgZjT6xBT+AqbZHEs2YGvoFO5MfODquWFrAT9KS9f
+         JlRdxCthVa4QPVaLpf4BiZy/my7VZ6B/XqjRzMTcGt/AG3Ey8Zjvy1GBE2pB8KO3a1Q5
+         U6Ty28G96Ow5t+tyHCorXDQP7IzVMHUnOnMGIg3EEYy/EWr1s9vlbvUoGublPfjGwBI1
+         FfrD5FgQWq7ibHo/F09rE4uM0tF9suy0SSUy77npPx0TAPfHWwCdJkjFeJHT8b5OQTrl
+         Ukpg==
+X-Gm-Message-State: ALoCoQmaqfi5rnNbD7WfU7SVzDpV3DjTbe7dfZzcgQB5JPU92ssd93ca55f9k/2tVwUsurEMp2Cg
+X-Received: by 10.152.19.167 with SMTP id g7mr3639317lae.31.1412935718866;
+        Fri, 10 Oct 2014 03:08:38 -0700 (PDT)
+Received: from [192.168.2.5] (ppp18-197.pppoe.mtu-net.ru. [81.195.18.197])
+        by mx.google.com with ESMTPSA id xe10sm1682492lbb.37.2014.10.10.03.08.37
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 10 Oct 2014 03:08:37 -0700 (PDT)
+Message-ID: <5437B020.3000405@cogentembedded.com>
+Date:   Fri, 10 Oct 2014 14:08:32 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <5437232F.60800@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.101]
-Return-Path: <James.Hogan@imgtec.com>
+To:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/4] MIPS: ralink: add support for MT7620n
+References: <1412927388-60721-1-git-send-email-blogic@openwrt.org> <1412927388-60721-4-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1412927388-60721-4-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43199
+X-archive-position: 43200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,46 +59,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Leonid,
+Hello.
 
-On Thu, Oct 09, 2014 at 05:07:11PM -0700, Leonid Yegoshin wrote:
-> On 10/09/2014 04:40 PM, James Hogan wrote:
-> > You could then avoid the whole stack and per-thread thing and just have
-> > a maximum of one emuframe dedicated to each thread or allocated on
-> > demand, and if there genuinely is a use case for nesting later on, worry
-> > about it then.
-> 
-> As I understand, you propose to allocate some space in mmap.
+On 10/10/2014 11:49 AM, John Crispin wrote:
 
-No, sorry if I wasn't very clear. I just mean that you can get away with
-a single kernel managed page per mm, with an emuframe allocated
-per-thread which that thread always uses, since they never nest, which I
-think simplifies the whole thing significantly.
+> This is the small version of MT7620a.
 
-The allocation could be smarter than that of course in case you have
-thousands of threads and only a subset doing lots of FP branches, but a
-single thread should never need more than one at a time since the new
-signal behaviour effectively makes the delay slot emulation sort of
-atomic from the point of view of usermode, and the kernel knows for sure
-whether BD emulation is in progress from the PC.
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> ---
+>   arch/mips/include/asm/mach-ralink/mt7620.h |    7 ++-----
+>   arch/mips/ralink/mt7620.c                  |   20 +++++++++++++-------
+>   2 files changed, 15 insertions(+), 12 deletions(-)
 
-(If there is some other way than signals that I haven't taken into
-account that the emulation could be pre-empted then please let me know!)
+[...]
 
-> > So long as the kernel handles a long sequence of sequential emulated
-> > branches gracefully (not necessarily correctly).
-> >
-> I don't understand a question. Each pair/single instruction is emulated 
-> separately but there is some pipeline of that, even in FPU emulator, it 
-> is just not this patch issue.
+> diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
+> index 24fb40a..e4b1f82 100644
+> --- a/arch/mips/ralink/mt7620.c
+> +++ b/arch/mips/ralink/mt7620.c
+[...]
+> @@ -298,22 +299,27 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+>   	u32 cfg0;
+>   	u32 pmu0;
+>   	u32 pmu1;
+> +	u32 bga;
+>
+>   	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
+>   	n1 = __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
+> +	rev = __raw_readl(sysc + SYSC_REG_CHIP_REV);
+> +	bga = (rev >> CHIP_REV_PKG_SHIFT) & CHIP_REV_PKG_MASK;
+>
+> -	if (n0 == MT7620N_CHIP_NAME0 && n1 == MT7620N_CHIP_NAME1) {
+> -		name = "MT7620N";
+> -		soc_info->compatible = "ralink,mt7620n-soc";
+> -	} else if (n0 == MT7620A_CHIP_NAME0 && n1 == MT7620A_CHIP_NAME1) {
+> +	if (n0 != MT7620_CHIP_NAME0 || n1 != MT7620_CHIP_NAME1)
+> +		panic("mt7620: unknown SoC, n0:%08x n1:%08x\n", n0, n1);
+> +
+> +	if (bga) {
+>   		name = "MT7620A";
+>   		soc_info->compatible = "ralink,mt7620a-soc";
+>   	} else {
+> -		panic("mt7620: unknown SoC, n0:%08x n1:%08x", n0, n1);
+> +		name = "MT7620N";
+> +		soc_info->compatible = "ralink,mt7620n-soc";
+> +#ifdef CONFIG_PCI
 
-I just mean an (illegal/undefined) sequence of FPU branch instructions
-in one anothers delay slots shouldn't be able to crash the kernel.
+    I suggest:
 
-Actually 2 of them would be enough to verify the kernel didn't get too
-confused. Maybe the second will be detected & ignored, or maybe it
-doesn't matter if the first emuframe gets overwritten by the second one
-from the kernels point of view.
+		if (IS_ENABLED(CONFIG_PCI))
 
-Cheers
-James
+in order to avoid this #ifdef.
+
+[...]
+
+WBR, Sergei

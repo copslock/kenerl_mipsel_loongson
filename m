@@ -1,26 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:32:06 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:36779
-        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011137AbaJJW3vTw0jZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2014 00:29:51 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 10/10] MIPS: lantiq: refactor the falcon sysctrl code
-Date:   Sat, 11 Oct 2014 00:02:34 +0200
-Message-Id: <1412978554-31344-11-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
-References: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
-Return-Path: <blogic@nbd.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:48:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45966 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010897AbaJJWsKFXQgk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2014 00:48:10 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id A8A59F972C3F6;
+        Fri, 10 Oct 2014 23:47:58 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
+ 2014 23:48:02 +0100
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
+ (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
+ 2014 23:48:02 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 10 Oct
+ 2014 23:48:02 +0100
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 10 Oct
+ 2014 15:47:56 -0700
+Message-ID: <5438621C.8020708@imgtec.com>
+Date:   Fri, 10 Oct 2014 15:47:56 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+MIME-Version: 1.0
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
+        <geert+renesas@glider.be>, <david.daney@cavium.com>,
+        <peterz@infradead.org>, <paul.gortmaker@windriver.com>,
+        <davidlohr@hp.com>, <macro@linux-mips.org>, <chenhc@lemote.com>,
+        <richard@nod.at>, <zajec5@gmail.com>, <keescook@chromium.org>,
+        <alex@alex-smith.me.uk>, <tglx@linutronix.de>,
+        <blogic@openwrt.org>, <jchandra@broadcom.com>,
+        <paul.burton@imgtec.com>, <qais.yousef@imgtec.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <markos.chandras@imgtec.com>, <dengcheng.zhu@imgtec.com>,
+        <manuel.lauss@gmail.com>, <akpm@linux-foundation.org>,
+        <lars.persson@axis.com>
+Subject: Re: [PATCH v2 2/3] MIPS: Setup an instruction emulation in VDSO protected
+ page instead of user stack
+References: <20141009195030.31230.58695.stgit@linux-yegoshin> <20141009200017.31230.69698.stgit@linux-yegoshin> <20141009224304.GA4818@jhogan-linux.le.imgtec.org> <543715D7.1020505@imgtec.com> <20141009234044.GB4818@jhogan-linux.le.imgtec.org> <5437232F.60800@imgtec.com> <20141010100334.GD4818@jhogan-linux.le.imgtec.org>
+In-Reply-To: <20141010100334.GD4818@jhogan-linux.le.imgtec.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43235
+X-archive-position: 43236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,139 +64,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is a lot of redundant code. Put this into a helper function.
+On 10/10/2014 03:03 AM, James Hogan wrote:
+> I just mean an (illegal/undefined) sequence of FPU branch instructions 
+> in one anothers delay slots shouldn't be able to crash the kernel. 
+> Actually 2 of them would be enough to verify the kernel didn't get too 
+> confused. Maybe the second will be detected & ignored, or maybe it 
+> doesn't matter if the first emuframe gets overwritten by the second 
+> one from the kernels point of view.
 
-Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/lantiq/falcon/sysctrl.c |   97 ++++++++++++++++---------------------
- 1 file changed, 41 insertions(+), 56 deletions(-)
+Yes, I am looking into that sequences. I try to keep both emulators 
+isolated from the rest of kernel and from each other as much as possible 
+but intercalls via illegal combinations are still possible.
 
-diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
-index c000b56..dbfe18d 100644
---- a/arch/mips/lantiq/falcon/sysctrl.c
-+++ b/arch/mips/lantiq/falcon/sysctrl.c
-@@ -63,17 +63,26 @@
- #define ACTS_PADCTRL3	0x00200000
- #define ACTS_PADCTRL4	0x00400000
- 
--#define sysctl_w32(m, x, y)	ltq_w32((x), sysctl_membase[m] + (y))
--#define sysctl_r32(m, x)	ltq_r32(sysctl_membase[m] + (x))
-+#define sysctl_w32(m, val, reg)	ltq_w32((val), sysctl_membase[m] + (reg))
-+#define sysctl_r32(m, reg)	ltq_r32(sysctl_membase[m] + (reg))
- #define sysctl_w32_mask(m, clear, set, reg)	\
- 		sysctl_w32(m, (sysctl_r32(m, reg) & ~(clear)) | (set), reg)
- 
--#define status_w32(x, y)	ltq_w32((x), status_membase + (y))
--#define status_r32(x)		ltq_r32(status_membase + (x))
-+#define status_w32(val, reg)	sysctl_w32(3, val, reg)
-+#define status_r32(reg)		sysctl_r32(3, reg)
- 
--static void __iomem *sysctl_membase[3], *status_membase;
-+static const char * const sysctrl_compatible[] = {
-+	"lantiq,sys1-falcon",
-+	"lantiq,syseth-falcon",
-+	"lantiq,sysgpe-falcon",
-+	"lantiq,status-falcon",
-+	"lantiq,ebu-falcon"
-+};
-+
-+static void __iomem *sysctl_membase[ARRAY_SIZE(sysctrl_compatible)];
- void __iomem *ltq_sys1_membase, *ltq_ebu_membase;
- 
-+
- void falcon_trigger_hrst(int level)
- {
- 	sysctl_w32(SYSCTL_SYS1, level & 1, SYS1_HRSTOUTC);
-@@ -182,62 +191,38 @@ static inline void clkdev_add_sys(const char *dev, unsigned int module,
- 	clkdev_add(&clk->cl);
- }
- 
-+void __iomem * __init sysctrl_init(const char *compatible)
-+{
-+	struct device_node *np;
-+	struct resource res;
-+	void __iomem *base;
-+
-+	np = of_find_compatible_node(NULL, NULL, compatible);
-+	if (!np)
-+		panic("Failed to load node '%s'", compatible);
-+
-+	if (of_address_to_resource(np, 0, &res))
-+		panic("Failed to get '%s' resources", compatible);
-+
-+	if (request_mem_region(res.start, resource_size(&res), res.name) < 0)
-+		pr_err("Failed to request '%s' mem-region\n", compatible);
-+
-+	base = ioremap_nocache(res.start, resource_size(&res));
-+	if (!base)
-+		panic("Failed to remap '%s' resources", compatible);
-+
-+	return base;
-+}
-+
- void __init ltq_soc_init(void)
- {
--	struct device_node *np_status =
--		of_find_compatible_node(NULL, NULL, "lantiq,status-falcon");
--	struct device_node *np_ebu =
--		of_find_compatible_node(NULL, NULL, "lantiq,ebu-falcon");
--	struct device_node *np_sys1 =
--		of_find_compatible_node(NULL, NULL, "lantiq,sys1-falcon");
--	struct device_node *np_syseth =
--		of_find_compatible_node(NULL, NULL, "lantiq,syseth-falcon");
--	struct device_node *np_sysgpe =
--		of_find_compatible_node(NULL, NULL, "lantiq,sysgpe-falcon");
--	struct resource res_status, res_ebu, res_sys[3];
- 	int i;
- 
--	/* check if all the core register ranges are available */
--	if (!np_status || !np_ebu || !np_sys1 || !np_syseth || !np_sysgpe)
--		panic("Failed to load core nodes from devicetree");
--
--	if (of_address_to_resource(np_status, 0, &res_status) ||
--			of_address_to_resource(np_ebu, 0, &res_ebu) ||
--			of_address_to_resource(np_sys1, 0, &res_sys[0]) ||
--			of_address_to_resource(np_syseth, 0, &res_sys[1]) ||
--			of_address_to_resource(np_sysgpe, 0, &res_sys[2]))
--		panic("Failed to get core resources");
--
--	if ((request_mem_region(res_status.start, resource_size(&res_status),
--				res_status.name) < 0) ||
--		(request_mem_region(res_ebu.start, resource_size(&res_ebu),
--				res_ebu.name) < 0) ||
--		(request_mem_region(res_sys[0].start,
--				resource_size(&res_sys[0]),
--				res_sys[0].name) < 0) ||
--		(request_mem_region(res_sys[1].start,
--				resource_size(&res_sys[1]),
--				res_sys[1].name) < 0) ||
--		(request_mem_region(res_sys[2].start,
--				resource_size(&res_sys[2]),
--				res_sys[2].name) < 0))
--		pr_err("Failed to request core reources");
--
--	status_membase = ioremap_nocache(res_status.start,
--					resource_size(&res_status));
--	ltq_ebu_membase = ioremap_nocache(res_ebu.start,
--					resource_size(&res_ebu));
--
--	if (!status_membase || !ltq_ebu_membase)
--		panic("Failed to remap core resources");
--
--	for (i = 0; i < 3; i++) {
--		sysctl_membase[i] = ioremap_nocache(res_sys[i].start,
--						resource_size(&res_sys[i]));
--		if (!sysctl_membase[i])
--			panic("Failed to remap sysctrl resources");
--	}
-+	for (i = 0; i < ARRAY_SIZE(sysctrl_compatible); i++)
-+		sysctl_membase[i] = sysctrl_init(sysctrl_compatible[i]);
-+
- 	ltq_sys1_membase = sysctl_membase[0];
-+	ltq_ebu_membase = sysctl_membase[4];
- 
- 	falcon_gpe_enable();
- 
--- 
-1.7.10.4
+
+ > From Peter Zijlstra:
+
+ > Right, look at uprobes, it does exactly all this with a single page.
+ > Slot allocation will block waiting for a free slot when all are in use.
+
+I don't see a reason to change my 300 lines design into much more 
+lengthy code. That code has more links to the rest of kernel and high 
+possibility to execute atomic operation/locks/mutex/etc - I can't do it 
+for emulation of MIPS locking instructions.
+
+- Leonid.

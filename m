@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 09:50:29 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:46028
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 09:50:48 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:46029
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011047AbaJJHtzPtnIj (ORCPT
+        with ESMTP id S27011048AbaJJHtzrTjBU (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 09:49:55 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 2/4] MIPS: ralink: allow loading irq registers from the devicetree
-Date:   Fri, 10 Oct 2014 09:49:46 +0200
-Message-Id: <1412927388-60721-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 3/4] MIPS: ralink: add support for MT7620n
+Date:   Fri, 10 Oct 2014 09:49:47 +0200
+Message-Id: <1412927388-60721-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412927388-60721-1-git-send-email-blogic@openwrt.org>
 References: <1412927388-60721-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43193
+X-archive-position: 43194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,77 +33,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This is the small version of MT7620a.
+
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/irq.c |   34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ arch/mips/include/asm/mach-ralink/mt7620.h |    7 ++-----
+ arch/mips/ralink/mt7620.c                  |   20 +++++++++++++-------
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
-index 781b3d1..62ad64b 100644
---- a/arch/mips/ralink/irq.c
-+++ b/arch/mips/ralink/irq.c
-@@ -20,14 +20,6 @@
+diff --git a/arch/mips/include/asm/mach-ralink/mt7620.h b/arch/mips/include/asm/mach-ralink/mt7620.h
+index a05c14c2..863aea5 100644
+--- a/arch/mips/include/asm/mach-ralink/mt7620.h
++++ b/arch/mips/include/asm/mach-ralink/mt7620.h
+@@ -25,11 +25,8 @@
+ #define SYSC_REG_CPLL_CONFIG0		0x54
+ #define SYSC_REG_CPLL_CONFIG1		0x58
  
- #include "common.h"
- 
--/* INTC register offsets */
--#define INTC_REG_STATUS0	0x00
--#define INTC_REG_STATUS1	0x04
--#define INTC_REG_TYPE		0x20
--#define INTC_REG_RAW_STATUS	0x30
--#define INTC_REG_ENABLE		0x34
--#define INTC_REG_DISABLE	0x38
+-#define MT7620N_CHIP_NAME0		0x33365452
+-#define MT7620N_CHIP_NAME1		0x20203235
 -
- #define INTC_INT_GLOBAL		BIT(31)
+-#define MT7620A_CHIP_NAME0		0x3637544d
+-#define MT7620A_CHIP_NAME1		0x20203032
++#define MT7620_CHIP_NAME0		0x3637544d
++#define MT7620_CHIP_NAME1		0x20203032
  
- #define RALINK_CPU_IRQ_INTC	(MIPS_CPU_IRQ_BASE + 2)
-@@ -44,16 +36,34 @@
+ #define SYSCFG0_XTAL_FREQ_SEL		BIT(6)
  
- #define RALINK_INTC_IRQ_PERFC   (RALINK_INTC_IRQ_BASE + 9)
- 
-+enum rt_intc_regs_enum {
-+	INTC_REG_STATUS0 = 0,
-+	INTC_REG_STATUS1,
-+	INTC_REG_TYPE,
-+	INTC_REG_RAW_STATUS,
-+	INTC_REG_ENABLE,
-+	INTC_REG_DISABLE,
-+};
-+
-+static u32 rt_intc_regs[] = {
-+	[INTC_REG_STATUS0] = 0x00,
-+	[INTC_REG_STATUS1] = 0x04,
-+	[INTC_REG_TYPE] = 0x20,
-+	[INTC_REG_RAW_STATUS] = 0x30,
-+	[INTC_REG_ENABLE] = 0x34,
-+	[INTC_REG_DISABLE] = 0x38,
-+};
-+
- static void __iomem *rt_intc_membase;
- 
- static inline void rt_intc_w32(u32 val, unsigned reg)
- {
--	__raw_writel(val, rt_intc_membase + reg);
-+	__raw_writel(val, rt_intc_membase + rt_intc_regs[reg]);
+diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
+index 24fb40a..e4b1f82 100644
+--- a/arch/mips/ralink/mt7620.c
++++ b/arch/mips/ralink/mt7620.c
+@@ -277,6 +277,7 @@ void __init ralink_clk_init(void)
+ 	ralink_clk_add("10000500.uart", periph_rate);
+ 	ralink_clk_add("10000b00.spi", sys_rate);
+ 	ralink_clk_add("10000c00.uartlite", periph_rate);
++	ralink_clk_add("10180000.wmac", xtal_rate);
  }
  
- static inline u32 rt_intc_r32(unsigned reg)
- {
--	return __raw_readl(rt_intc_membase + reg);
-+	return __raw_readl(rt_intc_membase + rt_intc_regs[reg]);
- }
+ void __init ralink_of_remap(void)
+@@ -298,22 +299,27 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+ 	u32 cfg0;
+ 	u32 pmu0;
+ 	u32 pmu1;
++	u32 bga;
  
- static void ralink_intc_irq_unmask(struct irq_data *d)
-@@ -134,6 +144,10 @@ static int __init intc_of_init(struct device_node *node,
- 	struct irq_domain *domain;
- 	int irq;
+ 	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
+ 	n1 = __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
++	rev = __raw_readl(sysc + SYSC_REG_CHIP_REV);
++	bga = (rev >> CHIP_REV_PKG_SHIFT) & CHIP_REV_PKG_MASK;
  
-+	if (!of_property_read_u32_array(node, "ralink,intc-registers",
-+							rt_intc_regs, 6))
-+		pr_info("intc: using register map from devicetree\n");
+-	if (n0 == MT7620N_CHIP_NAME0 && n1 == MT7620N_CHIP_NAME1) {
+-		name = "MT7620N";
+-		soc_info->compatible = "ralink,mt7620n-soc";
+-	} else if (n0 == MT7620A_CHIP_NAME0 && n1 == MT7620A_CHIP_NAME1) {
++	if (n0 != MT7620_CHIP_NAME0 || n1 != MT7620_CHIP_NAME1)
++		panic("mt7620: unknown SoC, n0:%08x n1:%08x\n", n0, n1);
 +
- 	irq = irq_of_parse_and_map(node, 0);
- 	if (!irq)
- 		panic("Failed to get INTC IRQ");
++	if (bga) {
+ 		name = "MT7620A";
+ 		soc_info->compatible = "ralink,mt7620a-soc";
+ 	} else {
+-		panic("mt7620: unknown SoC, n0:%08x n1:%08x", n0, n1);
++		name = "MT7620N";
++		soc_info->compatible = "ralink,mt7620n-soc";
++#ifdef CONFIG_PCI
++		panic("mt7620n is only supported for non pci kernels");
++#endif
+ 	}
+ 
+-	rev = __raw_readl(sysc + SYSC_REG_CHIP_REV);
+-
+ 	snprintf(soc_info->sys_type, RAMIPS_SYS_TYPE_LEN,
+ 		"Ralink %s ver:%u eco:%u",
+ 		name,
 -- 
 1.7.10.4

@@ -1,46 +1,133 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 17:16:44 +0200 (CEST)
-Received: from devils.ext.ti.com ([198.47.26.153]:53115 "EHLO
-        devils.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011086AbaJJPQmuFP47 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 17:16:42 +0200
-Received: from dlelxv90.itg.ti.com ([172.17.2.17])
-        by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id s9AFGagB004526;
-        Fri, 10 Oct 2014 10:16:36 -0500
-Received: from DLEE71.ent.ti.com (dlee71.ent.ti.com [157.170.170.114])
-        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id s9AFGanW028556;
-        Fri, 10 Oct 2014 10:16:36 -0500
-Received: from dflp32.itg.ti.com (10.64.6.15) by DLEE71.ent.ti.com
- (157.170.170.114) with Microsoft SMTP Server id 14.3.174.1; Fri, 10 Oct 2014
- 10:16:35 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])     by
- dflp32.itg.ti.com (8.14.3/8.13.8) with ESMTP id s9AFGYiE027377;        Fri, 10 Oct
- 2014 10:16:35 -0500
-Date:   Fri, 10 Oct 2014 10:16:33 -0500
-From:   Felipe Balbi <balbi@ti.com>
-To:     John Crispin <blogic@openwrt.org>
-CC:     <balbi@ti.com>, <linux-usb@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] USB: phy: add ralink SoC driver
-Message-ID: <20141010151633.GF31348@saruman>
-Reply-To: <balbi@ti.com>
-References: <1412936401-57511-1-git-send-email-blogic@openwrt.org>
- <20141010135826.GC31348@saruman>
- <5437F4DC.2070509@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 18:57:57 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:33489 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011102AbaJJQ5zzNfYN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 18:57:55 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Subject:CC:To:MIME-Version:From:Date:Message-ID; bh=GeTamrlv1VO56GLSNtO+MA4zt0M3dOMz1NxH7IEcuus=;
+        b=bVGHuA50L6w5y+yDVA97S9MUCHZ6uapWZzYaHDfBFJFRw9VI8lqMKrvbsYukM4ngacQ7IaXezTy+319dAn24fIobLWWKiLsGE9cAMShrj5GckTI4WPsu4jngS9wvHPHc7bpkLiQju2WkSxyz79rcb6sCzqrJOm+MN3bnGhaM4Hs=;
+Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1XcdVl-002oTV-NZ
+        for linux-mips@linux-mips.org; Fri, 10 Oct 2014 16:57:49 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:47224 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1XcdS5-002ity-ST; Fri, 10 Oct 2014 16:54:02 +0000
+Message-ID: <54380F20.3060800@roeck-us.net>
+Date:   Fri, 10 Oct 2014 09:53:52 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="Pql/uPZNXIm1JCle"
-Content-Disposition: inline
-In-Reply-To: <5437F4DC.2070509@openwrt.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <balbi@ti.com>
+To:     Pavel Machek <pavel@denx.de>
+CC:     linux-kernel@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        openipmi-developer@lists.sourceforge.net,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Steven Miao <realmz6@gmail.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        David Howells <dhowells@redhat.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Hirokazu Takata <takata@linux-m32r.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        David Vrabel <david.vrabel@citrix.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>
+Subject: Re: [PATCH 08/44] kernel: Move pm_power_off to common code
+References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-9-git-send-email-linux@roeck-us.net> <20141009103847.GC6787@amd> <54368A30.9070101@roeck-us.net> <20141009202419.GA16885@amd>
+In-Reply-To: <20141009202419.GA16885@amd>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=0.0
+X-CTCH-PVer: 0000001
+X-CTCH-Spam: Suspect
+X-CTCH-VOD: Unknown
+X-CTCH-Flags: 512
+X-CTCH-RefID: str=0001.0A020208.5438100D.0310,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=512,sb=0
+X-CTCH-Score: 0.000
+X-CTCH-ScoreCust: 0.000
+X-CTCH-Rules: 
+X-CTCH-SenderID: linux@roeck-us.net
+X-CTCH-SenderID-Flags: 0
+X-CTCH-SenderID-TotalMessages: 54
+X-CTCH-SenderID-TotalSpam: 0
+X-CTCH-SenderID-TotalSuspected: 54
+X-CTCH-SenderID-TotalConfirmed: 0
+X-CTCH-SenderID-TotalBulk: 0
+X-CTCH-SenderID-TotalVirus: 0
+X-CTCH-SenderID-TotalRecipients: 0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43210
+X-archive-position: 43212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: balbi@ti.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,52 +140,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Pql/uPZNXIm1JCle
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 10/09/2014 01:24 PM, Pavel Machek wrote:
+> Hi!
+>
+>>>> @@ -184,6 +179,8 @@ machine_halt(void)
+>>>>   void
+>>>>   machine_power_off(void)
+>>>>   {
+>>>> +	do_kernel_poweroff();
+>>>> +
+>>>
+>>> poweroff -> power_off for consistency.
+>>>
+>> Dunno; matter of personal preference. I started with that, but ultimately went
+>> with poweroff to distinguish poweroff handler functions from existing code,
+>> specifically kernel_power_off().
+>
+> That works for you, but once it is merged, it is ugly/confusing typo.
+> 									Pavel
+>
 
-On Fri, Oct 10, 2014 at 05:01:48PM +0200, John Crispin wrote:
->=20
-> On 10/10/2014 15:58, Felipe Balbi wrote:
-> > On Fri, Oct 10, 2014 at 12:20:01PM +0200, John Crispin wrote:
-> >> RT3352, RT5350 and the MT762x SoCs all have a usb phy that we need to =
-setup.
-> >>
-> >> Signed-off-by: John Crispin <blogic@openwrt.org>
-> > new PHY drivers only on drivers/phy ;-)
-> >
-> i that hope i am not the first to get it wrong. I will prepare/send a
-> fixed version.
+Ok, no problem, I'll change it.
 
-of course not, happens all the time :-) We're still transitioning things
-over.
-
-Thanks
-
---=20
-balbi
-
---Pql/uPZNXIm1JCle
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJUN/hRAAoJEIaOsuA1yqREFSQP/jDoFErtYeiHf4meVNWrwST3
-BpqktvAGq6kM3kmKvo2YTAO9DulDABrK49gHKo2Hn7bSsHezmNfGVOgJG1lUbGdZ
-8/EcueKM0Cl4psAwt6inmR8iwDKnDbWwGOhxV9wrJvNUhr9NBiZ1Da6i0n1AUX/C
-y6HAYkjC/WeOfGIG1hdMHyNJhi9fo7g8D0SeA5q5BMKhxSoigAZUE8AeCrLX8M7x
-2Ci0/phjSgwDIbSienf6IhnRCjPMtIju+PpXwpgQZPbEd3g4JUAZchHUAoyayH82
-GCfiS/oMy1GjIQszT3SQZyrIRM0F+Y4MjeL1BYpF88O5hp7ZCyKyBk1pLMWo8Ax6
-xmSqtoOmaTLi15WVVkZsR1odpFKNC2ulm8v4tJIr0mfpED1Q91VW2O1CCuJ3GyGW
-Wg08geZZCLpgEdbWgfQbvoZQ9hrQe0CWNLmXDbzUvec6A6cHCZbMFShajKnkuou7
-SvzlfYWmq0I6cafETIjP8lEg9ahjZ/vhuy00+HTxT+o0iWUPO1I9VMT0D5tTbSXD
-BauOD/DJBH9yqirCNruHaBUkdxsLs607TpNzfpYnEKBAs710DJe95ZkFCWyDCtvi
-rs5uYMWQBmCRJmRGhpC2Vi8JvrBNPq6/o7qJZiC/iJ8rZjnnrqxbY2EBk8Kwsjxn
-7xUv+sy5cuiCWz+SJi5t
-=hZIu
------END PGP SIGNATURE-----
-
---Pql/uPZNXIm1JCle--
+Guenter

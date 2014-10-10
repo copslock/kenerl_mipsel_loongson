@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:30:59 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:36773
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:31:15 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:36774
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011132AbaJJW3Rcye12 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2014 00:29:17 +0200
+        with ESMTP id S27011134AbaJJW3SAqY1n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2014 00:29:18 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 06/10] MIPS: lantiq: move eiu init after irq_domain register
-Date:   Sat, 11 Oct 2014 00:02:30 +0200
-Message-Id: <1412978554-31344-7-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 07/10] MIPS: lantiq: copy the commandline from the devicetree
+Date:   Sat, 11 Oct 2014 00:02:31 +0200
+Message-Id: <1412978554-31344-8-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
 References: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43231
+X-archive-position: 43232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,78 +33,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The eiu init failed as the irq_domain was not yet available.
+This is a regression caused by:
+commit afb46f7996e91aeb36e07bc92cf96e8045bec00e
+Author: Rob Herring <robh@kernel.org>
+Date:   Wed Apr 2 19:07:24 2014 -0500
+mips: ralink: convert to use unflatten_and_copy_device_tree
+
+Make the of init code reuse the cmdline defined inside the dts.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/irq.c |   48 ++++++++++++++++++++++++------------------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ arch/mips/lantiq/prom.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index 030568a..7bdbd2d 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -378,30 +378,6 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
- 			panic("Failed to remap icu memory");
- 	}
- 
--	/* the external interrupts are optional and xway only */
--	eiu_node = of_find_compatible_node(NULL, NULL, "lantiq,eiu-xway");
--	if (eiu_node && !of_address_to_resource(eiu_node, 0, &res)) {
--		/* find out how many external irq sources we have */
--		exin_avail = of_irq_count(eiu_node);
--
--		if (exin_avail > MAX_EIU)
--			exin_avail = MAX_EIU;
--
--		ret = of_irq_to_resource_table(eiu_node,
--						ltq_eiu_irq, exin_avail);
--		if (ret != exin_avail)
--			panic("failed to load external irq resources");
--
--		if (request_mem_region(res.start, resource_size(&res),
--							res.name) < 0)
--			pr_err("Failed to request eiu memory");
--
--		ltq_eiu_membase = ioremap_nocache(res.start,
--							resource_size(&res));
--		if (!ltq_eiu_membase)
--			panic("Failed to remap eiu memory");
--	}
--
- 	/* turn off all irqs by default */
- 	for (i = 0; i < MAX_IM; i++) {
- 		/* make sure all irqs are turned off by default */
-@@ -458,6 +434,30 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
- 	if (MIPS_CPU_TIMER_IRQ != 7)
- 		irq_create_mapping(ltq_domain, MIPS_CPU_TIMER_IRQ);
- 
-+	/* the external interrupts are optional and xway only */
-+	eiu_node = of_find_compatible_node(NULL, NULL, "lantiq,eiu-xway");
-+	if (eiu_node && !of_address_to_resource(eiu_node, 0, &res)) {
-+		/* find out how many external irq sources we have */
-+		exin_avail = of_irq_count(eiu_node);
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 157f590..a71dc1a 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -77,6 +77,8 @@ void __init plat_mem_setup(void)
+ 	 * parsed resulting in our memory appearing
+ 	 */
+ 	__dt_setup_arch(__dtb_start);
 +
-+		if (exin_avail > MAX_EIU)
-+			exin_avail = MAX_EIU;
-+
-+		ret = of_irq_to_resource_table(eiu_node,
-+						ltq_eiu_irq, exin_avail);
-+		if (ret != exin_avail)
-+			panic("failed to load external irq resources");
-+
-+		if (request_mem_region(res.start, resource_size(&res),
-+							res.name) < 0)
-+			pr_err("Failed to request eiu memory");
-+
-+		ltq_eiu_membase = ioremap_nocache(res.start,
-+							resource_size(&res));
-+		if (!ltq_eiu_membase)
-+			panic("Failed to remap eiu memory");
-+	}
-+
- 	return 0;
++	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
  }
  
+ void __init device_tree_init(void)
 -- 
 1.7.10.4

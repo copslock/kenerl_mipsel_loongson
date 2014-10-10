@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:29:32 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:36768
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 00:29:54 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:36769
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011008AbaJJW3PXrDLx (ORCPT
+        with ESMTP id S27011013AbaJJW3PtiiJQ (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2014 00:29:15 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 01/10] MIPS: lantiq: handle vmmc memory reservation
-Date:   Sat, 11 Oct 2014 00:02:25 +0200
-Message-Id: <1412978554-31344-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 02/10] MIPS: lantiq: add reset-controller api support
+Date:   Sat, 11 Oct 2014 00:02:26 +0200
+Message-Id: <1412978554-31344-3-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
 References: <1412978554-31344-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43226
+X-archive-position: 43227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,101 +33,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Lantiq SoCs have a 2nd mips core called "voice mips macro core (vmmc)"
-which is used to run the voice firmware. This driver allows us to register
-a chunk of memory that the voice driver can later use for the 2nd core.
+Add a reset-controller binding for the reset registers found on the lantiq
+SoC.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/xway/Makefile |    2 ++
- arch/mips/lantiq/xway/vmmc.c   |   69 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 71 insertions(+)
- create mode 100644 arch/mips/lantiq/xway/vmmc.c
+ arch/mips/Kconfig             |    2 ++
+ arch/mips/lantiq/xway/reset.c |   61 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index 087497d..a2edc53 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1,3 +1,5 @@
- obj-y := prom.o sysctrl.o clk.o reset.o dma.o gptu.o dcdc.o
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 380cce3..46bee77 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -268,6 +268,8 @@ config LANTIQ
+ 	select USE_OF
+ 	select PINCTRL
+ 	select PINCTRL_LANTIQ
++	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
  
-+obj-y += vmmc.o
-+
- obj-$(CONFIG_XRX200_PHY_FW) += xrx200_phy_fw.o
-diff --git a/arch/mips/lantiq/xway/vmmc.c b/arch/mips/lantiq/xway/vmmc.c
-new file mode 100644
-index 0000000..696cd57
---- /dev/null
-+++ b/arch/mips/lantiq/xway/vmmc.c
-@@ -0,0 +1,69 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2012 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_gpio.h>
-+#include <linux/dma-mapping.h>
-+
-+#include <lantiq_soc.h>
-+
-+static unsigned int *cp1_base;
-+
-+unsigned int *ltq_get_cp1_base(void)
+ config LASAT
+ 	bool "LASAT Networks platforms"
+diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
+index 1fa0f17..a1e06b7 100644
+--- a/arch/mips/lantiq/xway/reset.c
++++ b/arch/mips/lantiq/xway/reset.c
+@@ -14,6 +14,7 @@
+ #include <linux/delay.h>
+ #include <linux/of_address.h>
+ #include <linux/of_platform.h>
++#include <linux/reset-controller.h>
+ 
+ #include <asm/reboot.h>
+ 
+@@ -113,6 +114,66 @@ void ltq_reset_once(unsigned int module, ulong u)
+ 	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) & ~module, RCU_RST_REQ);
+ }
+ 
++static int ltq_assert_device(struct reset_controller_dev *rcdev,
++				unsigned long id)
 +{
-+	if (!cp1_base)
-+		panic("no cp1 base was set\n");
++	u32 val;
 +
-+	return cp1_base;
-+}
-+EXPORT_SYMBOL(ltq_get_cp1_base);
++	if (id < 8)
++		return -1;
 +
-+static int vmmc_probe(struct platform_device *pdev)
-+{
-+#define CP1_SIZE       (1 << 20)
-+	int gpio_count;
-+	dma_addr_t dma;
-+
-+	cp1_base =
-+		(void *) CPHYSADDR(dma_alloc_coherent(NULL, CP1_SIZE,
-+						    &dma, GFP_ATOMIC));
-+
-+	gpio_count = of_gpio_count(pdev->dev.of_node);
-+	while (gpio_count > 0) {
-+		enum of_gpio_flags flags;
-+		int gpio = of_get_gpio_flags(pdev->dev.of_node,
-+					     --gpio_count, &flags);
-+		if (gpio_request(gpio, "vmmc-relay"))
-+			continue;
-+		dev_info(&pdev->dev, "requested GPIO %d\n", gpio);
-+		gpio_direction_output(gpio,
-+				      (flags & OF_GPIO_ACTIVE_LOW) ? (0) : (1));
-+	}
-+
-+	dev_info(&pdev->dev, "reserved %dMB at 0x%p", CP1_SIZE >> 20, cp1_base);
++	val = ltq_rcu_r32(RCU_RST_REQ);
++	val |= BIT(id);
++	ltq_rcu_w32(val, RCU_RST_REQ);
 +
 +	return 0;
 +}
 +
-+static const struct of_device_id vmmc_match[] = {
-+	{ .compatible = "lantiq,vmmc-xway" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, vmmc_match);
++static int ltq_deassert_device(struct reset_controller_dev *rcdev,
++				  unsigned long id)
++{
++	u32 val;
 +
-+static struct platform_driver vmmc_driver = {
-+	.probe = vmmc_probe,
-+	.driver = {
-+		.name = "lantiq,vmmc",
-+		.owner = THIS_MODULE,
-+		.of_match_table = vmmc_match,
-+	},
++	if (id < 8)
++		return -1;
++
++	val = ltq_rcu_r32(RCU_RST_REQ);
++	val &= ~BIT(id);
++	ltq_rcu_w32(val, RCU_RST_REQ);
++
++	return 0;
++}
++
++static int ltq_reset_device(struct reset_controller_dev *rcdev,
++			       unsigned long id)
++{
++	ltq_assert_device(rcdev, id);
++	return ltq_deassert_device(rcdev, id);
++}
++
++static struct reset_control_ops reset_ops = {
++	.reset = ltq_reset_device,
++	.assert = ltq_assert_device,
++	.deassert = ltq_deassert_device,
 +};
 +
-+module_platform_driver(vmmc_driver);
++static struct reset_controller_dev reset_dev = {
++	.ops			= &reset_ops,
++	.owner			= THIS_MODULE,
++	.nr_resets		= 32,
++	.of_reset_n_cells	= 1,
++};
++
++void ltq_rst_init(void)
++{
++	reset_dev.of_node = of_find_compatible_node(NULL, NULL,
++						"lantiq,xway-reset");
++	if (!reset_dev.of_node)
++		pr_err("Failed to find reset controller node");
++	else
++		reset_controller_register(&reset_dev);
++}
++
+ static void ltq_machine_restart(char *command)
+ {
+ 	local_irq_disable();
 -- 
 1.7.10.4

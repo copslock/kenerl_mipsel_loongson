@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 11:34:29 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:48907
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2014 11:43:55 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:49109
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011065AbaJJJeMDMxuq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 11:34:12 +0200
+        with ESMTP id S27011062AbaJJJnxg6eNZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Oct 2014 11:43:53 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 2/2] MIPS: ralink: add MT7621 support
-Date:   Fri, 10 Oct 2014 11:34:05 +0200
-Message-Id: <1412933645-55061-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH] MIPS: ralink: add rt2880 pci driver
+Date:   Fri, 10 Oct 2014 11:43:48 +0200
+Message-Id: <1412934228-56554-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1412933645-55061-1-git-send-email-blogic@openwrt.org>
-References: <1412933645-55061-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43197
+X-archive-position: 43198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,396 +31,328 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is the big APSoC made by mediatek. It is based on 1004k and has 2 cores
-running at 800mhz. Each core has 2 VPEs. Unlike all the other SoCs from this
-family, MT7621 has no wireless mac. It relies on pcie cards being present for
-wifi.
-
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/mach-ralink/mt7621.h |   39 ++++++
- arch/mips/ralink/Kconfig                   |   13 ++
- arch/mips/ralink/Makefile                  |    3 +
- arch/mips/ralink/Platform                  |    5 +
- arch/mips/ralink/malta-amon.c              |   72 +++++++++++
- arch/mips/ralink/mt7621.c                  |  186 ++++++++++++++++++++++++++++
- 6 files changed, 318 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-ralink/mt7621.h
- create mode 100644 arch/mips/ralink/malta-amon.c
- create mode 100644 arch/mips/ralink/mt7621.c
+ arch/mips/pci/Makefile     |    1 +
+ arch/mips/pci/pci-rt2880.c |  285 ++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/ralink/Kconfig   |    1 +
+ 3 files changed, 287 insertions(+)
+ create mode 100644 arch/mips/pci/pci-rt2880.c
 
-diff --git a/arch/mips/include/asm/mach-ralink/mt7621.h b/arch/mips/include/asm/mach-ralink/mt7621.h
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index 6523d55..64a0caa 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -42,6 +42,7 @@ obj-$(CONFIG_SIBYTE_BCM1x80)	+= pci-bcm1480.o pci-bcm1480ht.o
+ obj-$(CONFIG_SNI_RM)		+= fixup-sni.o ops-sni.o
+ obj-$(CONFIG_LANTIQ)		+= fixup-lantiq.o
+ obj-$(CONFIG_PCI_LANTIQ)	+= pci-lantiq.o ops-lantiq.o
++obj-$(CONFIG_SOC_RT2880)	+= pci-rt2880.o
+ obj-$(CONFIG_SOC_RT3883)	+= pci-rt3883.o
+ obj-$(CONFIG_TANBAC_TB0219)	+= fixup-tb0219.o
+ obj-$(CONFIG_TANBAC_TB0226)	+= fixup-tb0226.o
+diff --git a/arch/mips/pci/pci-rt2880.c b/arch/mips/pci/pci-rt2880.c
 new file mode 100644
-index 0000000..21c8dc2
+index 0000000..a457494
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-ralink/mt7621.h
-@@ -0,0 +1,39 @@
++++ b/arch/mips/pci/pci-rt2880.c
+@@ -0,0 +1,285 @@
 +/*
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
++ *  Ralink RT288x SoC PCI register definitions
 + *
-+ * Parts of this file are based on Ralink's 2.6.21 BSP
++ *  Copyright (C) 2009 John Crispin <blogic@openwrt.org>
++ *  Copyright (C) 2009 Gabor Juhos <juhosg@openwrt.org>
 + *
-+ * Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ *  Parts of this file are based on Ralink's 2.6.21 BSP
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
 + */
 +
-+#ifndef _MT7621_REGS_H_
-+#define _MT7621_REGS_H_
-+
-+#define MT7621_SYSC_BASE		0x1E000000
-+
-+#define SYSC_REG_CHIP_NAME0		0x00
-+#define SYSC_REG_CHIP_NAME1		0x04
-+#define SYSC_REG_CHIP_REV		0x0c
-+#define SYSC_REG_SYSTEM_CONFIG0		0x10
-+#define SYSC_REG_SYSTEM_CONFIG1		0x14
-+
-+#define CHIP_REV_PKG_MASK		0x1
-+#define CHIP_REV_PKG_SHIFT		16
-+#define CHIP_REV_VER_MASK		0xf
-+#define CHIP_REV_VER_SHIFT		8
-+#define CHIP_REV_ECO_MASK		0xf
-+
-+#define MT7621_DRAM_BASE                0x0
-+#define MT7621_DDR2_SIZE_MIN		32
-+#define MT7621_DDR2_SIZE_MAX		256
-+
-+#define MT7621_CHIP_NAME0		0x3637544D
-+#define MT7621_CHIP_NAME1		0x20203132
-+
-+#define MIPS_GIC_IRQ_BASE           (MIPS_CPU_IRQ_BASE + 8)
-+
-+#endif
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index ca31156..4705678 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -34,6 +34,15 @@ choice
- 	config SOC_MT7620
- 		bool "MT7620/8"
- 
-+	config SOC_MT7621
-+		bool "MT7621"
-+		select MIPS_CPU_SCACHE
-+		select SYS_SUPPORTS_MULTITHREADING
-+		select SYS_SUPPORTS_SMP
-+		select SYS_SUPPORTS_MIPS_CMP
-+		select IRQ_GIC
-+		select HW_HAS_PCI
-+
- endchoice
- 
- choice
-@@ -65,6 +74,10 @@ choice
- 		bool "MT7620A eval kit"
- 		depends on SOC_MT7620
- 
-+	config DTB_MT7621_EVAL
-+		bool "MT7621 eval kit"
-+		depends on SOC_MT7621
-+
- endchoice
- 
- endif
-diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-index 7bf1b96..e4baf8e 100644
---- a/arch/mips/ralink/Makefile
-+++ b/arch/mips/ralink/Makefile
-@@ -19,6 +19,9 @@ obj-$(CONFIG_SOC_RT288X) += rt288x.o
- obj-$(CONFIG_SOC_RT305X) += rt305x.o
- obj-$(CONFIG_SOC_RT3883) += rt3883.o
- obj-$(CONFIG_SOC_MT7620) += mt7620.o
-+obj-$(CONFIG_SOC_MT7621) += mt7621.o
-+
-+obj-$(CONFIG_MIPS_MT_SMP) += malta-amon.o
- 
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
- 
-diff --git a/arch/mips/ralink/Platform b/arch/mips/ralink/Platform
-index 6d9c8c4..6095fcc 100644
---- a/arch/mips/ralink/Platform
-+++ b/arch/mips/ralink/Platform
-@@ -27,3 +27,8 @@ cflags-$(CONFIG_SOC_RT3883)	+= -I$(srctree)/arch/mips/include/asm/mach-ralink/rt
- #
- load-$(CONFIG_SOC_MT7620)	+= 0xffffffff80000000
- cflags-$(CONFIG_SOC_MT7620)	+= -I$(srctree)/arch/mips/include/asm/mach-ralink/mt7620
-+
-+# Ralink MT7621
-+#
-+load-$(CONFIG_SOC_MT7621)	+= 0xffffffff80001000
-+cflags-$(CONFIG_SOC_MT7621)	+= -I$(srctree)/arch/mips/include/asm/mach-ralink/mt7621
-diff --git a/arch/mips/ralink/malta-amon.c b/arch/mips/ralink/malta-amon.c
-new file mode 100644
-index 0000000..f5af18b
---- /dev/null
-+++ b/arch/mips/ralink/malta-amon.c
-@@ -0,0 +1,72 @@
-+/*
-+ *  Copyright (C) 2007  MIPS Technologies, Inc.
-+ *	All rights reserved.
-+
-+ *  This program is free software; you can distribute it and/or modify it
-+ *  under the terms of the GNU General Public License (Version 2) as
-+ *  published by the Free Software Foundation.
-+ *
-+ *  Arbitrary Monitor interface
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/smp.h>
-+
-+#include <asm/addrspace.h>
-+#include <asm/mips-boards/launch.h>
-+#include <asm/mipsmtregs.h>
-+
-+int amon_cpu_avail(int cpu)
-+{
-+	struct cpulaunch *launch = (struct cpulaunch *)CKSEG0ADDR(CPULAUNCH);
-+
-+	if (cpu < 0 || cpu >= NCPULAUNCH) {
-+		pr_debug("avail: cpu%d is out of range\n", cpu);
-+		return 0;
-+	}
-+
-+	launch += cpu;
-+	if (!(launch->flags & LAUNCH_FREADY)) {
-+		pr_debug("avail: cpu%d is not ready\n", cpu);
-+		return 0;
-+	}
-+	if (launch->flags & (LAUNCH_FGO|LAUNCH_FGONE)) {
-+		pr_debug("avail: too late.. cpu%d is already gone\n", cpu);
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
-+void amon_cpu_start(int cpu,
-+		    unsigned long pc, unsigned long sp,
-+		    unsigned long gp, unsigned long a0)
-+{
-+	volatile struct cpulaunch *launch =
-+		(struct cpulaunch  *)CKSEG0ADDR(CPULAUNCH);
-+
-+	if (!amon_cpu_avail(cpu))
-+		return;
-+	if (cpu == smp_processor_id()) {
-+		pr_debug("launch: I am cpu%d!\n", cpu);
-+		return;
-+	}
-+	launch += cpu;
-+
-+	pr_debug("launch: starting cpu%d\n", cpu);
-+
-+	launch->pc = pc;
-+	launch->gp = gp;
-+	launch->sp = sp;
-+	launch->a0 = a0;
-+
-+	smp_wmb();		/* Target must see parameters before go */
-+	launch->flags |= LAUNCH_FGO;
-+	smp_wmb();		/* Target must see go before we poll  */
-+
-+	while ((launch->flags & LAUNCH_FGONE) == 0)
-+		;
-+	smp_rmb();	/* Target will be updating flags soon */
-+	pr_debug("launch: cpu%d gone!\n", cpu);
-+}
-diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
-new file mode 100644
-index 0000000..73cfda7
---- /dev/null
-+++ b/arch/mips/ralink/mt7621.c
-@@ -0,0 +1,186 @@
-+/*
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ *
-+ * Parts of this file are based on Ralink's 2.6.21 BSP
-+ *
-+ * Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/io.h>
 +#include <linux/init.h>
 +#include <linux/module.h>
-+#include <asm/gcmpregs.h>
++#include <linux/of_platform.h>
++#include <linux/of_irq.h>
++#include <linux/of_pci.h>
 +
-+#include <asm/mipsregs.h>
-+#include <asm/smp-ops.h>
-+#include <asm/mach-ralink/ralink_regs.h>
-+#include <asm/mach-ralink/mt7621.h>
++#include <asm/mach-ralink/rt288x.h>
 +
-+#include <pinmux.h>
++#define RT2880_PCI_BASE		0x00440000
++#define RT288X_CPU_IRQ_PCI	4
 +
-+#include "common.h"
++#define RT2880_PCI_MEM_BASE	0x20000000
++#define RT2880_PCI_MEM_SIZE	0x10000000
++#define RT2880_PCI_IO_BASE	0x00460000
++#define RT2880_PCI_IO_SIZE	0x00010000
 +
-+#define SYSC_REG_SYSCFG		0x10
-+#define SYSC_REG_CPLL_CLKCFG0	0x2c
-+#define SYSC_REG_CUR_CLK_STS	0x44
-+#define CPU_CLK_SEL		(BIT(30) | BIT(31))
++#define RT2880_PCI_REG_PCICFG_ADDR	0x00
++#define RT2880_PCI_REG_PCIMSK_ADDR	0x0c
++#define RT2880_PCI_REG_BAR0SETUP_ADDR	0x10
++#define RT2880_PCI_REG_IMBASEBAR0_ADDR	0x18
++#define RT2880_PCI_REG_CONFIG_ADDR	0x20
++#define RT2880_PCI_REG_CONFIG_DATA	0x24
++#define RT2880_PCI_REG_MEMBASE		0x28
++#define RT2880_PCI_REG_IOBASE		0x2c
++#define RT2880_PCI_REG_ID		0x30
++#define RT2880_PCI_REG_CLASS		0x34
++#define RT2880_PCI_REG_SUBID		0x38
++#define RT2880_PCI_REG_ARBCTL		0x80
 +
-+#define MT7621_GPIO_MODE_UART1		1
-+#define MT7621_GPIO_MODE_I2C		2
-+#define MT7621_GPIO_MODE_UART2		3
-+#define MT7621_GPIO_MODE_UART3		5
-+#define MT7621_GPIO_MODE_JTAG		7
-+#define MT7621_GPIO_MODE_WDT_MASK	0x3
-+#define MT7621_GPIO_MODE_WDT_SHIFT	8
-+#define MT7621_GPIO_MODE_WDT_GPIO	1
-+#define MT7621_GPIO_MODE_PCIE_RST	0
-+#define MT7621_GPIO_MODE_PCIE_REF	2
-+#define MT7621_GPIO_MODE_PCIE_MASK	0x3
-+#define MT7621_GPIO_MODE_PCIE_SHIFT	10
-+#define MT7621_GPIO_MODE_PCIE_GPIO	1
-+#define MT7621_GPIO_MODE_MDIO		12
-+#define MT7621_GPIO_MODE_RGMII1		14
-+#define MT7621_GPIO_MODE_RGMII2		15
-+#define MT7621_GPIO_MODE_SPI_MASK	0x3
-+#define MT7621_GPIO_MODE_SPI_SHIFT	16
-+#define MT7621_GPIO_MODE_SPI_GPIO	1
-+#define MT7621_GPIO_MODE_SDHCI_MASK	0x3
-+#define MT7621_GPIO_MODE_SDHCI_SHIFT	18
-+#define MT7621_GPIO_MODE_SDHCI_GPIO	1
++static void __iomem *rt2880_pci_base;
++static DEFINE_SPINLOCK(rt2880_pci_lock);
 +
-+static struct rt2880_pmx_func uart1_grp[] =  { FUNC("uart1", 0, 1, 2) };
-+static struct rt2880_pmx_func i2c_grp[] =  { FUNC("i2c", 0, 3, 2) };
-+static struct rt2880_pmx_func uart3_grp[] = { FUNC("uart3", 0, 5, 4) };
-+static struct rt2880_pmx_func uart2_grp[] = { FUNC("uart2", 0, 9, 4) };
-+static struct rt2880_pmx_func jtag_grp[] = { FUNC("jtag", 0, 13, 5) };
-+static struct rt2880_pmx_func wdt_grp[] = {
-+	FUNC("wdt rst", 0, 18, 1),
-+	FUNC("wdt refclk", 2, 18, 1),
-+};
-+static struct rt2880_pmx_func pcie_rst_grp[] = {
-+	FUNC("pcie rst", MT7621_GPIO_MODE_PCIE_RST, 19, 1),
-+	FUNC("pcie refclk", MT7621_GPIO_MODE_PCIE_REF, 19, 1)
-+};
-+static struct rt2880_pmx_func mdio_grp[] = { FUNC("mdio", 0, 20, 2) };
-+static struct rt2880_pmx_func rgmii2_grp[] = { FUNC("rgmii2", 0, 22, 12) };
-+static struct rt2880_pmx_func spi_grp[] = {
-+	FUNC("spi", 0, 34, 7),
-+	FUNC("nand", 2, 34, 8),
-+};
-+static struct rt2880_pmx_func sdhci_grp[] = {
-+	FUNC("sdhci", 0, 41, 8),
-+	FUNC("nand", 2, 41, 8),
-+};
-+static struct rt2880_pmx_func rgmii1_grp[] = { FUNC("rgmii1", 0, 49, 12) };
-+
-+static struct rt2880_pmx_group mt7621_pinmux_data[] = {
-+	GRP("uart1", uart1_grp, 1, MT7621_GPIO_MODE_UART1),
-+	GRP("i2c", i2c_grp, 1, MT7621_GPIO_MODE_I2C),
-+	GRP("uart3", uart2_grp, 1, MT7621_GPIO_MODE_UART2),
-+	GRP("uart2", uart3_grp, 1, MT7621_GPIO_MODE_UART3),
-+	GRP("jtag", jtag_grp, 1, MT7621_GPIO_MODE_JTAG),
-+	GRP_G("wdt", wdt_grp, MT7621_GPIO_MODE_WDT_MASK,
-+		MT7621_GPIO_MODE_WDT_GPIO, MT7621_GPIO_MODE_WDT_SHIFT),
-+	GRP_G("pcie", pcie_rst_grp, MT7621_GPIO_MODE_PCIE_MASK,
-+		MT7621_GPIO_MODE_PCIE_GPIO, MT7621_GPIO_MODE_PCIE_SHIFT),
-+	GRP("mdio", mdio_grp, 1, MT7621_GPIO_MODE_MDIO),
-+	GRP("rgmii2", rgmii2_grp, 1, MT7621_GPIO_MODE_RGMII2),
-+	GRP_G("spi", spi_grp, MT7621_GPIO_MODE_SPI_MASK,
-+		MT7621_GPIO_MODE_SPI_GPIO, MT7621_GPIO_MODE_SPI_SHIFT),
-+	GRP_G("sdhci", sdhci_grp, MT7621_GPIO_MODE_SDHCI_MASK,
-+		MT7621_GPIO_MODE_SDHCI_GPIO, MT7621_GPIO_MODE_SDHCI_SHIFT),
-+	GRP("rgmii1", rgmii1_grp, 1, MT7621_GPIO_MODE_RGMII1),
-+	{ 0 }
-+};
-+
-+void __init ralink_clk_init(void)
++static u32 rt2880_pci_reg_read(u32 reg)
 +{
-+	int cpu_fdiv = 0;
-+	int cpu_ffrac = 0;
-+	int fbdiv = 0;
-+	u32 clk_sts, syscfg;
-+	u8 clk_sel = 0, xtal_mode;
-+	u32 cpu_clk;
++	return readl(rt2880_pci_base + reg);
++}
 +
-+	if ((rt_sysc_r32(SYSC_REG_CPLL_CLKCFG0) & CPU_CLK_SEL) != 0)
-+		clk_sel = 1;
++static void rt2880_pci_reg_write(u32 val, u32 reg)
++{
++	writel(val, rt2880_pci_base + reg);
++}
 +
-+	switch (clk_sel) {
-+	case 0:
-+		clk_sts = rt_sysc_r32(SYSC_REG_CUR_CLK_STS);
-+		cpu_fdiv = ((clk_sts >> 8) & 0x1F);
-+		cpu_ffrac = (clk_sts & 0x1F);
-+		cpu_clk = (500 * cpu_ffrac / cpu_fdiv) * 1000 * 1000;
-+		break;
++static inline u32 rt2880_pci_get_cfgaddr(unsigned int bus, unsigned int slot,
++					 unsigned int func, unsigned int where)
++{
++	return ((bus << 16) | (slot << 11) | (func << 8) | (where & 0xfc) |
++		0x80000000);
++}
 +
++static int rt2880_pci_config_read(struct pci_bus *bus, unsigned int devfn,
++				  int where, int size, u32 *val)
++{
++	unsigned long flags;
++	u32 address;
++	u32 data;
++
++	address = rt2880_pci_get_cfgaddr(bus->number, PCI_SLOT(devfn),
++					 PCI_FUNC(devfn), where);
++
++	spin_lock_irqsave(&rt2880_pci_lock, flags);
++	rt2880_pci_reg_write(address, RT2880_PCI_REG_CONFIG_ADDR);
++	data = rt2880_pci_reg_read(RT2880_PCI_REG_CONFIG_DATA);
++	spin_unlock_irqrestore(&rt2880_pci_lock, flags);
++
++	switch (size) {
 +	case 1:
-+		fbdiv = ((rt_sysc_r32(0x648) >> 4) & 0x7F) + 1;
-+		syscfg = rt_sysc_r32(SYSC_REG_SYSCFG);
-+		xtal_mode = (syscfg >> 6) & 0x7;
-+		if (xtal_mode >= 6) {
-+			/* 25Mhz Xtal */
-+			cpu_clk = 25 * fbdiv * 1000 * 1000;
-+		} else if (xtal_mode >= 3) {
-+			/* 40Mhz Xtal */
-+			cpu_clk = 40 * fbdiv * 1000 * 1000;
-+		} else {
-+			/* 20Mhz Xtal */
-+			cpu_clk = 20 * fbdiv * 1000 * 1000;
-+		}
++		*val = (data >> ((where & 3) << 3)) & 0xff;
++		break;
++	case 2:
++		*val = (data >> ((where & 3) << 3)) & 0xffff;
++		break;
++	case 4:
++		*val = data;
 +		break;
 +	}
-+	cpu_clk = 880000000;
-+	ralink_clk_add("cpu", cpu_clk);
-+	ralink_clk_add("1e000b00.spi", 50000000);
-+	ralink_clk_add("1e000c00.uartlite", 50000000);
-+	ralink_clk_add("1e000d00.uart", 50000000);
++
++	return PCIBIOS_SUCCESSFUL;
 +}
 +
-+void __init ralink_of_remap(void)
++static int rt2880_pci_config_write(struct pci_bus *bus, unsigned int devfn,
++				   int where, int size, u32 val)
 +{
-+	rt_sysc_membase = plat_of_remap_node("mtk,mt7621-sysc");
-+	rt_memc_membase = plat_of_remap_node("mtk,mt7621-memc");
++	unsigned long flags;
++	u32 address;
++	u32 data;
 +
-+	if (!rt_sysc_membase || !rt_memc_membase)
-+		panic("Failed to remap core resources");
-+}
++	address = rt2880_pci_get_cfgaddr(bus->number, PCI_SLOT(devfn),
++					 PCI_FUNC(devfn), where);
 +
-+void prom_soc_init(struct ralink_soc_info *soc_info)
-+{
-+	void __iomem *sysc = (void __iomem *) KSEG1ADDR(MT7621_SYSC_BASE);
-+	unsigned char *name = NULL;
-+	u32 n0;
-+	u32 n1;
-+	u32 rev;
++	spin_lock_irqsave(&rt2880_pci_lock, flags);
++	rt2880_pci_reg_write(address, RT2880_PCI_REG_CONFIG_ADDR);
++	data = rt2880_pci_reg_read(RT2880_PCI_REG_CONFIG_DATA);
 +
-+	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
-+	n1 = __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
-+
-+	if (n0 == MT7621_CHIP_NAME0 && n1 == MT7621_CHIP_NAME1) {
-+		name = "MT7621";
-+		soc_info->compatible = "mtk,mt7621-soc";
-+	} else {
-+		panic("mt7621: unknown SoC, n0:%08x n1:%08x\n", n0, n1);
++	switch (size) {
++	case 1:
++		data = (data & ~(0xff << ((where & 3) << 3))) |
++		       (val << ((where & 3) << 3));
++		break;
++	case 2:
++		data = (data & ~(0xffff << ((where & 3) << 3))) |
++		       (val << ((where & 3) << 3));
++		break;
++	case 4:
++		data = val;
++		break;
 +	}
 +
-+	rev = __raw_readl(sysc + SYSC_REG_CHIP_REV);
++	rt2880_pci_reg_write(data, RT2880_PCI_REG_CONFIG_DATA);
++	spin_unlock_irqrestore(&rt2880_pci_lock, flags);
 +
-+	snprintf(soc_info->sys_type, RAMIPS_SYS_TYPE_LEN,
-+		"Mediatek %s ver:%u eco:%u",
-+		name,
-+		(rev >> CHIP_REV_VER_SHIFT) & CHIP_REV_VER_MASK,
-+		(rev & CHIP_REV_ECO_MASK));
-+
-+	soc_info->mem_size_min = MT7621_DDR2_SIZE_MIN;
-+	soc_info->mem_size_max = MT7621_DDR2_SIZE_MAX;
-+	soc_info->mem_base = MT7621_DRAM_BASE;
-+
-+	rt2880_pinmux_data = mt7621_pinmux_data;
-+
-+	if (register_cmp_smp_ops())
-+		panic("failed to register_vsmp_smp_ops()");
++	return PCIBIOS_SUCCESSFUL;
 +}
++
++static struct pci_ops rt2880_pci_ops = {
++	.read	= rt2880_pci_config_read,
++	.write	= rt2880_pci_config_write,
++};
++
++static struct resource rt2880_pci_mem_resource = {
++	.name	= "PCI MEM space",
++	.start	= RT2880_PCI_MEM_BASE,
++	.end	= RT2880_PCI_MEM_BASE + RT2880_PCI_MEM_SIZE - 1,
++	.flags	= IORESOURCE_MEM,
++};
++
++static struct resource rt2880_pci_io_resource = {
++	.name	= "PCI IO space",
++	.start	= RT2880_PCI_IO_BASE,
++	.end	= RT2880_PCI_IO_BASE + RT2880_PCI_IO_SIZE - 1,
++	.flags	= IORESOURCE_IO,
++};
++
++static struct pci_controller rt2880_pci_controller = {
++	.pci_ops	= &rt2880_pci_ops,
++	.mem_resource	= &rt2880_pci_mem_resource,
++	.io_resource	= &rt2880_pci_io_resource,
++};
++
++static inline u32 rt2880_pci_read_u32(unsigned long reg)
++{
++	unsigned long flags;
++	u32 address;
++	u32 ret;
++
++	address = rt2880_pci_get_cfgaddr(0, 0, 0, reg);
++
++	spin_lock_irqsave(&rt2880_pci_lock, flags);
++	rt2880_pci_reg_write(address, RT2880_PCI_REG_CONFIG_ADDR);
++	ret = rt2880_pci_reg_read(RT2880_PCI_REG_CONFIG_DATA);
++	spin_unlock_irqrestore(&rt2880_pci_lock, flags);
++
++	return ret;
++}
++
++static inline void rt2880_pci_write_u32(unsigned long reg, u32 val)
++{
++	unsigned long flags;
++	u32 address;
++
++	address = rt2880_pci_get_cfgaddr(0, 0, 0, reg);
++
++	spin_lock_irqsave(&rt2880_pci_lock, flags);
++	rt2880_pci_reg_write(address, RT2880_PCI_REG_CONFIG_ADDR);
++	rt2880_pci_reg_write(val, RT2880_PCI_REG_CONFIG_DATA);
++	spin_unlock_irqrestore(&rt2880_pci_lock, flags);
++}
++
++int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++{
++	u16 cmd;
++	int irq = -1;
++
++	if (dev->bus->number != 0)
++		return irq;
++
++	switch (PCI_SLOT(dev->devfn)) {
++	case 0x00:
++		rt2880_pci_write_u32(PCI_BASE_ADDRESS_0, 0x08000000);
++		(void) rt2880_pci_read_u32(PCI_BASE_ADDRESS_0);
++		break;
++	case 0x11:
++		irq = RT288X_CPU_IRQ_PCI;
++		break;
++	default:
++		pr_err("%s:%s[%d] trying to alloc unknown pci irq\n",
++		       __FILE__, __func__, __LINE__);
++		BUG();
++		break;
++	}
++
++	pci_write_config_byte((struct pci_dev *) dev,
++		PCI_CACHE_LINE_SIZE, 0x14);
++	pci_write_config_byte((struct pci_dev *) dev, PCI_LATENCY_TIMER, 0xFF);
++	pci_read_config_word((struct pci_dev *) dev, PCI_COMMAND, &cmd);
++	cmd |= PCI_COMMAND_MASTER | PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
++		PCI_COMMAND_INVALIDATE | PCI_COMMAND_FAST_BACK |
++		PCI_COMMAND_SERR | PCI_COMMAND_WAIT | PCI_COMMAND_PARITY;
++	pci_write_config_word((struct pci_dev *) dev, PCI_COMMAND, cmd);
++	pci_write_config_byte((struct pci_dev *) dev, PCI_INTERRUPT_LINE,
++			      dev->irq);
++	return irq;
++}
++
++static int rt288x_pci_probe(struct platform_device *pdev)
++{
++	void __iomem *io_map_base;
++	int i;
++
++	rt2880_pci_base = ioremap_nocache(RT2880_PCI_BASE, PAGE_SIZE);
++
++	io_map_base = ioremap(RT2880_PCI_IO_BASE, RT2880_PCI_IO_SIZE);
++	rt2880_pci_controller.io_map_base = (unsigned long) io_map_base;
++	set_io_port_base((unsigned long) io_map_base);
++
++	ioport_resource.start = RT2880_PCI_IO_BASE;
++	ioport_resource.end = RT2880_PCI_IO_BASE + RT2880_PCI_IO_SIZE - 1;
++
++	rt2880_pci_reg_write(0, RT2880_PCI_REG_PCICFG_ADDR);
++	for (i = 0; i < 0xfffff; i++)
++		;
++
++	rt2880_pci_reg_write(0x79, RT2880_PCI_REG_ARBCTL);
++	rt2880_pci_reg_write(0x07FF0001, RT2880_PCI_REG_BAR0SETUP_ADDR);
++	rt2880_pci_reg_write(RT2880_PCI_MEM_BASE, RT2880_PCI_REG_MEMBASE);
++	rt2880_pci_reg_write(RT2880_PCI_IO_BASE, RT2880_PCI_REG_IOBASE);
++	rt2880_pci_reg_write(0x08000000, RT2880_PCI_REG_IMBASEBAR0_ADDR);
++	rt2880_pci_reg_write(0x08021814, RT2880_PCI_REG_ID);
++	rt2880_pci_reg_write(0x00800001, RT2880_PCI_REG_CLASS);
++	rt2880_pci_reg_write(0x28801814, RT2880_PCI_REG_SUBID);
++	rt2880_pci_reg_write(0x000c0000, RT2880_PCI_REG_PCIMSK_ADDR);
++
++	rt2880_pci_write_u32(PCI_BASE_ADDRESS_0, 0x08000000);
++	(void) rt2880_pci_read_u32(PCI_BASE_ADDRESS_0);
++
++	register_pci_controller(&rt2880_pci_controller);
++	return 0;
++}
++
++int pcibios_plat_dev_init(struct pci_dev *dev)
++{
++	return 0;
++}
++
++static const struct of_device_id rt288x_pci_match[] = {
++	{ .compatible = "ralink,rt288x-pci" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, rt288x_pci_match);
++
++static struct platform_driver rt288x_pci_driver = {
++	.probe = rt288x_pci_probe,
++	.driver = {
++		.name = "rt288x-pci",
++		.owner = THIS_MODULE,
++		.of_match_table = rt288x_pci_match,
++	},
++};
++
++int __init pcibios_init(void)
++{
++	int ret = platform_driver_register(&rt288x_pci_driver);
++
++	if (ret)
++		pr_info("rt288x-pci: Error registering platform driver!");
++
++	return ret;
++}
++
++arch_initcall(pcibios_init);
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 186b209..4705678 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -21,6 +21,7 @@ choice
+ 	config SOC_RT288X
+ 		bool "RT288x"
+ 		select MIPS_L1_CACHE_SHIFT_4
++		select HW_HAS_PCI
+ 
+ 	config SOC_RT305X
+ 		bool "RT305x"
 -- 
 1.7.10.4

@@ -1,45 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2014 12:09:36 +0200 (CEST)
-Received: from mail-lb0-f172.google.com ([209.85.217.172]:48185 "EHLO
-        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011144AbaJKKJeG8-lo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2014 12:09:34 +0200
-Received: by mail-lb0-f172.google.com with SMTP id b6so4352589lbj.17
-        for <multiple recipients>; Sat, 11 Oct 2014 03:09:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=qVhjWgEFULh/ZAeQckSDuxWHJLoqD4AjCOpKv8OS/n4=;
-        b=yOFpr/R1BgjUZiO/gpjmWChIfQnl2ksEgypZYzNawB2L/K5+DTdCCDbsFyRan3/d3O
-         69AnW/JCQGIj2U6l1MiRnjv1eil77CBULJJ5yixp8zyy4NKGO6AxeWUBFioBkGY/vW19
-         4fRJQQ1DKIXLfxPE5ToDDumu+Mc6yGaiyJL8Htlwh4OvA9Z1VXkkhJGFghyiUlCHVMKS
-         fWopR+Ly5NZhY1MkfGPdMoTdg6S1xEg6CDyu8ab2GVmq05T9dq0R4P4UJ0kzxaOkn3Mo
-         DKGm/DSpD7N13+JvU+HU2MM0j+54WNfwOrY6sRSx60DEHFVxVvLBqCn8GHmuPY/r1UX9
-         2ewQ==
-X-Received: by 10.152.9.2 with SMTP id v2mr10754336laa.36.1413022168488;
-        Sat, 11 Oct 2014 03:09:28 -0700 (PDT)
-Received: from localhost.localdomain (p4FD8D0F1.dip0.t-ipconnect.de. [79.216.208.241])
-        by mx.google.com with ESMTPSA id ai1sm2549513lbd.12.2014.10.11.03.09.26
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 11 Oct 2014 03:09:27 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [RFC PATCH v3] MIPS: fix build with binutils 2.24.51+
-Date:   Sat, 11 Oct 2014 12:09:24 +0200
-Message-Id: <1413022164-317664-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 2.1.2
-Return-Path: <manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Oct 2014 06:51:37 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:23788 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009514AbaJLEvfa0z83 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 12 Oct 2014 06:51:35 +0200
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP; 11 Oct 2014 21:51:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.04,703,1406617200"; 
+   d="scan'208";a="604027236"
+Received: from unknown (HELO localhost.localdomain.org) ([10.239.48.107])
+  by fmsmga001.fm.intel.com with ESMTP; 11 Oct 2014 21:51:25 -0700
+From:   Qiaowei Ren <qiaowei.ren@intel.com>
+To:     "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>
+Cc:     x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        Qiaowei Ren <qiaowei.ren@intel.com>
+Subject: [PATCH v9 00/12] Intel MPX support
+Date:   Sun, 12 Oct 2014 12:41:43 +0800
+Message-Id: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com>
+X-Mailer: git-send-email 1.7.1
+Return-Path: <qiaowei.ren@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43240
+X-archive-position: 43241
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: qiaowei.ren@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,410 +43,194 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Starting with version 2.24.51.20140728 MIPS binutils complain loudly
-about mixing soft-float and hard-float object files, leading to this
-build failure since GCC is invoked with "-msoft-float" on MIPS:
+This patch set adds support for the Memory Protection eXtensions
+(MPX) feature found in future Intel processors. MPX is used in
+conjunction with compiler changes to check memory references, and
+can be used to catch buffer overflow or underflow.
 
-{standard input}: Warning: .gnu_attribute 4,3 requires `softfloat'
-  LD      arch/mips/alchemy/common/built-in.o
-mipsel-softfloat-linux-gnu-ld: Warning: arch/mips/alchemy/common/built-in.o
- uses -msoft-float (set by arch/mips/alchemy/common/prom.o),
- arch/mips/alchemy/common/sleeper.o uses -mhard-float
+For MPX to work, changes are required in the kernel, binutils and
+compiler. No source changes are required for applications, just a
+recompile.
 
-To fix this, we detect if GAS is new enough to support "-msoft-float" command
-option, and if it does, we can let GCC pass it to GAS;  but then we also need
-to sprinkle the files which make use of floating point registers with the
-necessary ".set hardfloat" directives.
+There are a lot of moving parts of this to all work right:
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-I've only tested a mips32r1 build, but at least binutils-2.23 and a
-snapshot from today (with the MIPS fp changes) compile a bootable
-kernel.
+===== Example Compiler / Application / Kernel Interaction =====
 
-Tests on 64bit and with MSA and other extensions also appreciated!
+1. Application developer compiles with -fmpx.  The compiler will add the
+   instrumentation as well as some setup code called early after the app
+   starts. New instruction prefixes are noops for old CPUs.
+2. That setup code allocates (virtual) space for the "bounds directory",
+   points the "bndcfgu" register to the directory and notifies the
+   kernel (via the new prctl(PR_MPX_ENABLE_MANAGEMENT)) that the app will
+   be using MPX.
+3. The kernel detects that the CPU has MPX, allows the new prctl() to
+   succeed, and notes the location of the bounds directory. Userspace is
+   expected to keep the bounds directory at that location. We note it
+   instead of reading it each time because the 'xsave' operation needed
+   to access the bounds directory register is an expensive operation.
+4. If the application needs to spill bounds out of the 4 registers, it
+   issues a bndstx instruction.  Since the bounds directory is empty at
+   this point, a bounds fault (#BR) is raised, the kernel allocates a
+   bounds table (in the user address space) and makes the relevant
+   entry in the bounds directory point to the new table. [1]
+5. If the application violates the bounds specified in the bounds
+   registers, a separate kind of #BR is raised which will deliver a
+   signal with information about the violation in the 'struct siginfo'.
+6. Whenever memory is freed, we know that it can no longer contain
+   valid pointers, and we attempt to free the associated space in the
+   bounds tables. If an entire table becomes unused, we will attempt
+   to free the table and remove the entry in the directory.
 
-v3: incorporate Maciej's suggestions:
-	- detect if gas can handle -msoft-float and ".set hardfloat"
-	- apply .set hardfloat only where really necessary
+To summarize, there are essentially three things interacting here:
 
-v2: cover more files
+GCC with -fmpx:
+ * enables annotation of code with MPX instructions and prefixes
+ * inserts code early in the application to call in to the "gcc runtime"
+GCC MPX Runtime:
+ * Checks for hardware MPX support in cpuid leaf
+ * allocates virtual space for the bounds directory (malloc()
+   essentially)
+ * points the hardware BNDCFGU register at the directory
+ * calls a new prctl() to notify the kernel to start managing the
+   bounds directories
+Kernel MPX Code:
+ * Checks for hardware MPX support in cpuid leaf
+ * Handles #BR exceptions and sends SIGSEGV to the app when it violates
+   bounds, like during a buffer overflow.
+ * When bounds are spilled in to an unallocated bounds table, the kernel
+   notices in the #BR exception, allocates the virtual space, then
+   updates the bounds directory to point to the new table. It keeps
+   special track of the memory with a specific ->vm_ops for MPX.
+ * Frees unused bounds tables at the time that the memory they described
+   is unmapped. (See "cleanup unused bound tables")
 
-This was introduced in binutils commit  351cdf24d223290b15fa991e5052ec9e9bd1e284
-("[MIPS] Implement O32 FPXX, FP64 and FP64A ABI extensions").
+===== Testing =====
 
- arch/mips/Makefile                  |  9 +++++++++
- arch/mips/include/asm/asmmacro-32.h |  5 +++++
- arch/mips/include/asm/asmmacro.h    | 18 ++++++++++++++++++
- arch/mips/include/asm/fpregdef.h    | 14 ++++++++++++++
- arch/mips/include/asm/mipsregs.h    | 19 +++++++++++++++++++
- arch/mips/kernel/genex.S            |  1 +
- arch/mips/kernel/r2300_switch.S     |  5 +++++
- arch/mips/kernel/r4k_fpu.S          |  7 +++++++
- arch/mips/kernel/r4k_switch.S       |  9 +++++++++
- arch/mips/kernel/r6000_fpu.S        |  5 +++++
- 10 files changed, 92 insertions(+)
+This patchset has been tested on real internal hardware platform at Intel.
+We have some simple unit tests in user space, which directly call MPX
+instructions to produce #BR to let kernel allocate bounds tables and cause
+bounds violations. We also compiled several benchmarks with an MPX-enabled
+compiler and ran them with this patch set. We found a number of bugs in this
+code in these tests.
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index bbac51e1..35005e1 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -93,6 +93,15 @@ LDFLAGS_vmlinux			+= -G 0 -static -n -nostdlib
- KBUILD_AFLAGS_MODULE		+= -mlong-calls
- KBUILD_CFLAGS_MODULE		+= -mlong-calls
+1. For more info on why the kernel does these allocations, see the patch
+"on-demand kernel allocation of bounds tables"
 
-+#
-+# pass -msoft-float to GAS if it supports it.  However on newer binutils
-+# (specifically newer than 2.24.51.20140728) we then also need to explicitly
-+# set ".set hardfloat" in all files which manipulate floating point registers.
-+#
-+ifneq ($(call as-option,-Wa$(comma)-msoft-float,),)
-+	cflags-y		+= -DGAS_HAS_SET_HARDFLOAT -Wa,-msoft-float
-+endif
-+
- cflags-y += -ffreestanding
+Future TODO items:
+1) support 32-bit binaries on 64-bit kernels.
 
- #
-diff --git a/arch/mips/include/asm/asmmacro-32.h b/arch/mips/include/asm/asmmacro-32.h
-index e38c281..a97ce53 100644
---- a/arch/mips/include/asm/asmmacro-32.h
-+++ b/arch/mips/include/asm/asmmacro-32.h
-@@ -12,6 +12,9 @@
- #include <asm/fpregdef.h>
- #include <asm/mipsregs.h>
+Changes since v1:
+  * check to see if #BR occurred in userspace or kernel space.
+  * use generic structure and macro as much as possible when
+    decode mpx instructions.
 
-+	.set push
-+	SET_HARDFLOAT
-+
- 	.macro	fpu_save_single thread tmp=t0
- 	cfc1	\tmp,  fcr31
- 	swc1	$f0,  THREAD_FPR0_LS64(\thread)
-@@ -86,6 +89,8 @@
- 	ctc1	\tmp, fcr31
- 	.endm
+Changes since v2:
+  * fix some compile warnings.
+  * update documentation.
 
-+	.set pop
-+
- 	.macro	cpu_save_nonscratch thread
- 	LONG_S	s0, THREAD_REG16(\thread)
- 	LONG_S	s1, THREAD_REG17(\thread)
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index cd9a98b..6caf876 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -57,6 +57,8 @@
- #endif /* CONFIG_CPU_MIPSR2 */
+Changes since v3:
+  * correct some syntax errors at documentation, and document
+    extended struct siginfo.
+  * for kill the process when the error code of BNDSTATUS is 3.
+  * add some comments.
+  * remove new prctl() commands.
+  * fix some compile warnings for 32-bit.
 
- 	.macro	fpu_save_16even thread tmp=t0
-+	.set	push
-+	SET_HARDFLOAT
- 	cfc1	\tmp, fcr31
- 	sdc1	$f0,  THREAD_FPR0_LS64(\thread)
- 	sdc1	$f2,  THREAD_FPR2_LS64(\thread)
-@@ -75,11 +77,13 @@
- 	sdc1	$f28, THREAD_FPR28_LS64(\thread)
- 	sdc1	$f30, THREAD_FPR30_LS64(\thread)
- 	sw	\tmp, THREAD_FCR31(\thread)
-+	.set	pop
- 	.endm
+Changes since v4:
+  * raise SIGBUS if the allocations of the bound tables fail.
 
- 	.macro	fpu_save_16odd thread
- 	.set	push
- 	.set	mips64r2
-+	SET_HARDFLOAT
- 	sdc1	$f1,  THREAD_FPR1_LS64(\thread)
- 	sdc1	$f3,  THREAD_FPR3_LS64(\thread)
- 	sdc1	$f5,  THREAD_FPR5_LS64(\thread)
-@@ -110,6 +114,8 @@
- 	.endm
+Changes since v5:
+  * hook unmap() path to cleanup unused bounds tables, and use
+    new prctl() command to register bounds directory address to
+    struct mm_struct to check whether one process is MPX enabled
+    during unmap().
+  * in order track precisely MPX memory usage, add MPX specific
+    mmap interface and one VM_MPX flag to check whether a VMA
+    is MPX bounds table.
+  * add macro cpu_has_mpx to do performance optimization.
+  * sync struct figinfo for mips with general version to avoid
+    build issue.
 
- 	.macro	fpu_restore_16even thread tmp=t0
-+	.set	push
-+	SET_HARDFLOAT
- 	lw	\tmp, THREAD_FCR31(\thread)
- 	ldc1	$f0,  THREAD_FPR0_LS64(\thread)
- 	ldc1	$f2,  THREAD_FPR2_LS64(\thread)
-@@ -133,6 +139,7 @@
- 	.macro	fpu_restore_16odd thread
- 	.set	push
- 	.set	mips64r2
-+	SET_HARDFLOAT
- 	ldc1	$f1,  THREAD_FPR1_LS64(\thread)
- 	ldc1	$f3,  THREAD_FPR3_LS64(\thread)
- 	ldc1	$f5,  THREAD_FPR5_LS64(\thread)
-@@ -277,6 +284,7 @@
- 	.macro	cfcmsa	rd, cs
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	.insn
- 	.word	CFC_MSA_INSN | (\cs << 11)
- 	move	\rd, $1
-@@ -286,6 +294,7 @@
- 	.macro	ctcmsa	cd, rs
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	move	$1, \rs
- 	.word	CTC_MSA_INSN | (\cd << 6)
- 	.set	pop
-@@ -294,6 +303,7 @@
- 	.macro	ld_d	wd, off, base
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	add	$1, \base, \off
- 	.word	LDD_MSA_INSN | (\wd << 6)
- 	.set	pop
-@@ -302,6 +312,7 @@
- 	.macro	st_d	wd, off, base
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	add	$1, \base, \off
- 	.word	STD_MSA_INSN | (\wd << 6)
- 	.set	pop
-@@ -310,6 +321,7 @@
- 	.macro	copy_u_w	rd, ws, n
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	.insn
- 	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
- 	/* move triggers an assembler bug... */
-@@ -320,6 +332,7 @@
- 	.macro	copy_u_d	rd, ws, n
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	.insn
- 	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
- 	/* move triggers an assembler bug... */
-@@ -330,6 +343,7 @@
- 	.macro	insert_w	wd, n, rs
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	/* move triggers an assembler bug... */
- 	or	$1, \rs, zero
- 	.word	INSERT_W_MSA_INSN | (\n << 16) | (\wd << 6)
-@@ -339,6 +353,7 @@
- 	.macro	insert_d	wd, n, rs
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	/* move triggers an assembler bug... */
- 	or	$1, \rs, zero
- 	.word	INSERT_D_MSA_INSN | (\n << 16) | (\wd << 6)
-@@ -381,6 +396,7 @@
- 	st_d	31, THREAD_FPR31, \thread
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	cfcmsa	$1, MSA_CSR
- 	sw	$1, THREAD_MSA_CSR(\thread)
- 	.set	pop
-@@ -389,6 +405,7 @@
- 	.macro	msa_restore_all	thread
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	lw	$1, THREAD_MSA_CSR(\thread)
- 	ctcmsa	MSA_CSR, $1
- 	.set	pop
-@@ -441,6 +458,7 @@
- 	.macro	msa_init_all_upper
- 	.set	push
- 	.set	noat
-+	SET_HARDFLOAT
- 	not	$1, zero
- 	msa_init_upper	0
- 	.set	pop
-diff --git a/arch/mips/include/asm/fpregdef.h b/arch/mips/include/asm/fpregdef.h
-index 429481f..f184ba0 100644
---- a/arch/mips/include/asm/fpregdef.h
-+++ b/arch/mips/include/asm/fpregdef.h
-@@ -14,6 +14,20 @@
+Changes since v6:
+  * because arch_vma_name is removed, this patchset have toset MPX
+    specific ->vm_ops to do the same thing.
+  * fix warnings for 32 bit arch.
+  * add more description into these patches.
 
- #include <asm/sgidefs.h>
+Changes since v7:
+  * introduce VM_ARCH_2 flag. 
+  * remove all of the pr_debug()s.
+  * fix prctl numbers in documentation.
+  * fix some bugs on bounds tables freeing.
 
-+/*
-+ * starting with binutils 2.24.51.20140729, MIPS binutils warn about mixing
-+ * hardfloat and softfloat object files.  The kernel build uses soft-float by
-+ * default, so we also need to pass -msoft-float along to GAS if it supports it.
-+ * But this in turn causes assembler errors in files which access hardfloat
-+ * registers.  We detect if GAS supports "-msoft-float" in the Makefile and
-+ * explicitly put ".set hardfloat" where floating point registers are touched.
-+ */
-+#ifdef GAS_HAS_SET_HARDFLOAT
-+#define SET_HARDFLOAT .set hardfloat
-+#else
-+#define SET_HARDFLOAT
-+#endif
-+
- #if _MIPS_SIM == _MIPS_SIM_ABI32
+Changes since v8:
+  * add new patch to rename cfg_reg_u and status_reg.
+  * add new patch to use disabled features from Dave's patches.
+  * add new patch to sync struct siginfo for IA64.
+  * rename two new prctl() commands to PR_MPX_ENABLE_MANAGEMENT and
+    PR_MPX_DISABLE_MANAGEMENT, check whether the management of bounds
+    tables in kernel is enabled at #BR fault time, and add locking to
+    protect the access to 'bd_addr'.
+  * update the documentation file to add more content about on-demand
+    allocation of bounds tables, etc..
 
- /*
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index cf3b580..889c012 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1324,6 +1324,7 @@ do {									\
- /*
-  * Macros to access the floating point coprocessor control registers
-  */
-+#ifdef GAS_HAS_SET_HARDFLOAT
- #define read_32bit_cp1_register(source)					\
- ({									\
- 	int __res;							\
-@@ -1334,11 +1335,29 @@ do {									\
- 	"	# gas fails to assemble cfc1 for some archs,	\n"	\
- 	"	# like Octeon.					\n"	\
- 	"	.set	mips1					\n"	\
-+	"	.set	hardfloat				\n"	\
- 	"	cfc1	%0,"STR(source)"			\n"	\
- 	"	.set	pop					\n"	\
- 	: "=r" (__res));						\
- 	__res;								\
- })
-+#else
-+#define read_32bit_cp1_register(source)					\
-+({									\
-+	int __res;							\
-+									\
-+	__asm__ __volatile__(						\
-+	"	.set	push					\n"	\
-+	"	.set	reorder					\n"	\
-+	"	# gas fails to assemble cfc1 for some archs,	\n"	\
-+	"	# like Octeon.					\n"	\
-+	"	.set	mips1					\n"	\
-+	"	cfc1	%0,"STR(source)"			\n"	\
-+	"	.set	pop					\n"	\
-+	: "=r" (__res));						\
-+	__res;								\
-+})
-+#endif
+Qiaowei Ren (12):
+  mm: distinguish VMAs with different vm_ops
+  x86, mpx: rename cfg_reg_u and status_reg
+  x86, mpx: add MPX specific mmap interface
+  x86, mpx: add MPX to disaabled features
+  x86, mpx: on-demand kernel allocation of bounds tables
+  mpx: extend siginfo structure to include bound violation information
+  mips: sync struct siginfo with general version
+  ia64: sync struct siginfo with general version
+  x86, mpx: decode MPX instruction to get bound violation information
+  x86, mpx: add prctl commands PR_MPX_ENABLE_MANAGEMENT,
+    PR_MPX_DISABLE_MANAGEMENT
+  x86, mpx: cleanup unused bound tables
+  x86, mpx: add documentation on Intel MPX
 
- #ifdef HAVE_AS_DSP
- #define rddsp(mask)							\
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index ac35e12..a5e26dd 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -358,6 +358,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	.set	push
- 	/* gas fails to assemble cfc1 for some archs (octeon).*/ \
- 	.set	mips1
-+	SET_HARDFLOAT
- 	cfc1	a1, fcr31
- 	li	a2, ~(0x3f << 12)
- 	and	a2, a1
-diff --git a/arch/mips/kernel/r2300_switch.S b/arch/mips/kernel/r2300_switch.S
-index 20b7b04..435ea65 100644
---- a/arch/mips/kernel/r2300_switch.S
-+++ b/arch/mips/kernel/r2300_switch.S
-@@ -120,6 +120,9 @@ LEAF(_restore_fp)
 
- #define FPU_DEFAULT  0x00000000
+Qiaowei Ren (12):
+  x86, mpx: introduce VM_MPX to indicate that a VMA is MPX specific
+  x86, mpx: rename cfg_reg_u and status_reg
+  x86, mpx: add MPX specific mmap interface
+  x86, mpx: add MPX to disaabled features
+  x86, mpx: on-demand kernel allocation of bounds tables
+  mpx: extend siginfo structure to include bound violation information
+  mips: sync struct siginfo with general version
+  ia64: sync struct siginfo with general version
+  x86, mpx: decode MPX instruction to get bound violation information
+  x86, mpx: add prctl commands PR_MPX_ENABLE_MANAGEMENT,
+    PR_MPX_DISABLE_MANAGEMENT
+  x86, mpx: cleanup unused bound tables
+  x86, mpx: add documentation on Intel MPX
 
-+	.set push
-+	SET_HARDFLOAT
-+
- LEAF(_init_fpu)
- 	mfc0	t0, CP0_STATUS
- 	li	t1, ST0_CU1
-@@ -165,3 +168,5 @@ LEAF(_init_fpu)
- 	mtc1	t0, $f31
- 	jr	ra
- 	END(_init_fpu)
-+
-+	.set pop
-diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-index 8352523..4a827a3 100644
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -21,6 +21,7 @@
-
- 	.macro	EX insn, reg, src
- 	.set	push
-+	SET_HARDFLOAT
- 	.set	nomacro
- .ex\@:	\insn	\reg, \src
- 	.set	pop
-@@ -33,7 +34,10 @@
- 	.set	arch=r4000
-
- LEAF(_save_fp_context)
-+	.set	push
-+	SET_HARDFLOAT
- 	cfc1	t1, fcr31
-+	.set	pop
-
- #if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2)
- 	.set	push
-@@ -191,7 +195,10 @@ LEAF(_restore_fp_context)
- 	EX	ldc1 $f26, SC_FPREGS+208(a0)
- 	EX	ldc1 $f28, SC_FPREGS+224(a0)
- 	EX	ldc1 $f30, SC_FPREGS+240(a0)
-+	.set push
-+	SET_HARDFLOAT
- 	ctc1	t1, fcr31
-+	.set pop
- 	jr	ra
- 	 li	v0, 0					# success
- 	END(_restore_fp_context)
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 4c4ec18..6467a8b 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -65,8 +65,12 @@
- 	bgtz	a3, 1f
-
- 	/* Save 128b MSA vector context + scalar FP control & status. */
-+	.set push
-+	SET_HARDFLOAT
- 	cfc1	t1, fcr31
- 	msa_save_all	a0
-+	.set pop	/* SET_HARDFLOAT */
-+
- 	sw	t1, THREAD_FCR31(a0)
- 	b	2f
-
-@@ -161,6 +165,9 @@ LEAF(_init_msa_upper)
-
- #define FPU_DEFAULT  0x00000000
-
-+	.set push
-+	SET_HARDFLOAT
-+
- LEAF(_init_fpu)
- 	mfc0	t0, CP0_STATUS
- 	li	t1, ST0_CU1
-@@ -291,3 +298,5 @@ LEAF(_init_fpu)
- #endif
- 	jr	ra
- 	END(_init_fpu)
-+
-+	.set pop	/* SET_HARDFLOAT */
-diff --git a/arch/mips/kernel/r6000_fpu.S b/arch/mips/kernel/r6000_fpu.S
-index da0fbe4..4707738 100644
---- a/arch/mips/kernel/r6000_fpu.S
-+++ b/arch/mips/kernel/r6000_fpu.S
-@@ -18,6 +18,9 @@
-
- 	.set	noreorder
- 	.set	mips2
-+	.set	push
-+	SET_HARDFLOAT
-+
- 	/* Save floating point context */
- 	LEAF(_save_fp_context)
- 	mfc0	t0,CP0_STATUS
-@@ -85,3 +88,5 @@
- 1:	jr	ra
- 	 nop
- 	END(_restore_fp_context)
-+
-+	.set pop	/* SET_HARDFLOAT */
---
-2.1.2
+ Documentation/x86/intel_mpx.txt          |  245 +++++++++++++++
+ arch/ia64/include/uapi/asm/siginfo.h     |    8 +-
+ arch/mips/include/uapi/asm/siginfo.h     |    4 +
+ arch/x86/Kconfig                         |    4 +
+ arch/x86/include/asm/disabled-features.h |    8 +-
+ arch/x86/include/asm/mmu_context.h       |   25 ++
+ arch/x86/include/asm/mpx.h               |  101 ++++++
+ arch/x86/include/asm/processor.h         |   22 ++-
+ arch/x86/kernel/Makefile                 |    1 +
+ arch/x86/kernel/mpx.c                    |  488 ++++++++++++++++++++++++++++++
+ arch/x86/kernel/setup.c                  |    8 +
+ arch/x86/kernel/traps.c                  |   86 ++++++-
+ arch/x86/mm/Makefile                     |    2 +
+ arch/x86/mm/mpx.c                        |  385 +++++++++++++++++++++++
+ fs/exec.c                                |    2 +
+ fs/proc/task_mmu.c                       |    1 +
+ include/asm-generic/mmu_context.h        |   11 +
+ include/linux/mm.h                       |    6 +
+ include/linux/mm_types.h                 |    3 +
+ include/uapi/asm-generic/siginfo.h       |    9 +-
+ include/uapi/linux/prctl.h               |    6 +
+ kernel/signal.c                          |    4 +
+ kernel/sys.c                             |   12 +
+ mm/mmap.c                                |    2 +
+ 24 files changed, 1436 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/x86/intel_mpx.txt
+ create mode 100644 arch/x86/include/asm/mpx.h
+ create mode 100644 arch/x86/kernel/mpx.c
+ create mode 100644 arch/x86/mm/mpx.c

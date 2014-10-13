@@ -1,30 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Oct 2014 15:50:27 +0200 (CEST)
-Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:45902 "EHLO
-        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011275AbaJMNuRhsfOC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Oct 2014 15:50:17 +0200
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.83)
-        (envelope-from <jslaby@suse.cz>)
-        id 1Xdg0g-0003uN-FP; Mon, 13 Oct 2014 15:50:02 +0200
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to the 3.12 stable tree] MIPS: ZBOOT: add missing <linux/string.h> include
-Date:   Mon, 13 Oct 2014 15:49:38 +0200
-Message-Id: <1413208201-14602-67-git-send-email-jslaby@suse.cz>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1413208201-14602-1-git-send-email-jslaby@suse.cz>
-References: <1413208201-14602-1-git-send-email-jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Oct 2014 23:42:17 +0200 (CEST)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:38564 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011312AbaJMVmPsB8YQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Oct 2014 23:42:15 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id A11085A6F1D;
+        Tue, 14 Oct 2014 00:42:07 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id F86Z-xEnlK3B; Tue, 14 Oct 2014 00:42:01 +0300 (EEST)
+Received: from cooljazz.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp6.welho.com (Postfix) with ESMTP id C4FD05BC003;
+        Tue, 14 Oct 2014 00:42:08 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Alex Smith <alex@alex-smith.me.uk>, linux-mips@linux-mips.org
+Cc:     stable@vger.kernel.org
+Subject: [PATCH] MIPS: uapi/asm/ptrace.h: add a missing include
+Date:   Tue, 14 Oct 2014 00:42:08 +0300
+Message-Id: <1413236528-1427-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.1.2
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43255
+X-archive-position: 43256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,58 +42,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aurelien Jarno <aurelien@aurel32.net>
+Commit a79ebea62010 (MIPS: ptrace: Fix user pt_regs definition,
+use in ptrace_{get, set}regs()) converted struct pt_regs to use __u64.
+Some userspace applications (e.g. GDB) include this file directly,
+and fail to see this type. Fix by including <linux/types.h>.
 
-This patch has been added to the 3.12 stable tree. If you have any
-objections, please let us know.
+The patch fixes the following build failure with GDB 7.8 when using
+GLIBC headers created against Linux 3.17:
 
-===============
+In file included from /home/aaro/los/work/shared/gdb-7.8/gdb/mips-linux-nat.c:37:0:
+/home/aaro/los/work/mips/rootfs/mips-linux-gnu/usr/include/asm/ptrace.h:32:2: error: unknown type name '__u64'
+  __u64 regs[32];
+  ^
+/home/aaro/los/work/mips/rootfs/mips-linux-gnu/usr/include/asm/ptrace.h:35:2: error: unknown type name '__u64'
+  __u64 lo;
+  ^
+/home/aaro/los/work/mips/rootfs/mips-linux-gnu/usr/include/asm/ptrace.h:36:2: error: unknown type name '__u64'
+  __u64 hi;
+  ^
 
-commit 29593fd5a8149462ed6fad0d522234facdaee6c8 upstream.
-
-Commit dc4d7b37 (MIPS: ZBOOT: gather string functions into string.c)
-moved the string related functions into a separate file, which might
-cause the following build error, depending on the configuration:
-
-| CC      arch/mips/boot/compressed/decompress.o
-| In file included from linux/arch/mips/boot/compressed/../../../../lib/decompress_unxz.c:234:0,
-|                  from linux/arch/mips/boot/compressed/decompress.c:67:
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c: In function 'fill_temp':
-| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c:162:2: error: implicit declaration of function 'memcpy' [-Werror=implicit-function-declaration]
-| cc1: some warnings being treated as errors
-| linux/scripts/Makefile.build:308: recipe for target 'arch/mips/boot/compressed/decompress.o' failed
-| make[6]: *** [arch/mips/boot/compressed/decompress.o] Error 1
-| linux/arch/mips/Makefile:308: recipe for target 'vmlinuz' failed
-
-It does not fail with the standard configuration, as when
-CONFIG_DYNAMIC_DEBUG is not enabled <linux/string.h> gets included in
-include/linux/dynamic_debug.h. There might be other ways for it to
-get indirectly included.
-
-We can't add the include directly in xz_dec_stream.c as some
-architectures might want to use a different version for the boot/
-directory (see for example arch/x86/boot/string.h).
-
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7420/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Fixes: a79ebea62010 ("MIPS: ptrace: Fix user pt_regs definition, use in ptrace_{get, set}regs()")
+Cc: stable@vger.kernel.org # 3.17
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- arch/mips/boot/compressed/decompress.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/uapi/asm/ptrace.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
-index 2c9573098c0d..d498a1f9bccf 100644
---- a/arch/mips/boot/compressed/decompress.c
-+++ b/arch/mips/boot/compressed/decompress.c
-@@ -13,6 +13,7 @@
+diff --git a/arch/mips/include/uapi/asm/ptrace.h b/arch/mips/include/uapi/asm/ptrace.h
+index bbcfb8b..91a3d19 100644
+--- a/arch/mips/include/uapi/asm/ptrace.h
++++ b/arch/mips/include/uapi/asm/ptrace.h
+@@ -9,6 +9,8 @@
+ #ifndef _UAPI_ASM_PTRACE_H
+ #define _UAPI_ASM_PTRACE_H
  
- #include <linux/types.h>
- #include <linux/kernel.h>
-+#include <linux/string.h>
- 
- #include <asm/addrspace.h>
- 
++#include <linux/types.h>
++
+ /* 0 - 31 are integer registers, 32 - 63 are fp registers.  */
+ #define FPR_BASE	32
+ #define PC		64
 -- 
-2.1.1
+2.1.2

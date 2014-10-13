@@ -1,47 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 11:52:50 +0200 (CEST)
-Received: from mail-oi0-f47.google.com ([209.85.218.47]:63553 "EHLO
-        mail-oi0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011590AbaJPJwtCLAid (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 11:52:49 +0200
-Received: by mail-oi0-f47.google.com with SMTP id a141so2374331oig.6
-        for <linux-mips@linux-mips.org>; Thu, 16 Oct 2014 02:52:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=C2kgXaINDlbm/AZfV6fs4f36JY8reCNZR7Lv9GpU9bs=;
-        b=EaA1XuFFQJu1U43URNsIfejtCok4cU6QRqPLzw3xFGrpZtvLiPvjJ0708p2juKIIkK
-         oJzG8fvJ1Rfo5DBglfu00+MIJyOect+XRxgRBDsFUfsfBTG7EpmDfWnwpU0Hj6aq5jo8
-         2t97SHeo0xvNwqvph1wWMzah+AHcOP0/VsTwv1/4DspGafqekt4S1ZzEL6maCwoPC73r
-         ZD0vAhR2hiDhnVZf8HDs9jUNqeS0puDAb+df5wgixRCf54d88gS71eIIVLI3m/RRt4+n
-         PJUqMjvlno56UrBR8hdIuKDhObxc3KIXX0pLP8so4cSmaxxDR/N4xWhjotI3WdEKYtRD
-         Ea8g==
-X-Gm-Message-State: ALoCoQm3C+FWF0R4lJO6WYg8WUvUVjMDQ3QEmVqnvEdIuKfEomeX90bmlKbuwQMN6WdwHoGpf5mC
-MIME-Version: 1.0
-X-Received: by 10.202.204.200 with SMTP id c191mr73062oig.81.1413453162623;
- Thu, 16 Oct 2014 02:52:42 -0700 (PDT)
-Received: by 10.182.233.170 with HTTP; Thu, 16 Oct 2014 02:52:42 -0700 (PDT)
-In-Reply-To: <CAJhJPsVV74gVEMpMZfBcnm-=sHivpPZGY==tzT-rXsv82B0Scg@mail.gmail.com>
-References: <CAJhJPsVV74gVEMpMZfBcnm-=sHivpPZGY==tzT-rXsv82B0Scg@mail.gmail.com>
-Date:   Thu, 16 Oct 2014 15:22:42 +0530
-Message-ID: <CAKohpomFP5=eO7hFJyXQqM6_jOGT9gY+f3g3qqKgYwg5rgh3Ag@mail.gmail.com>
-Subject: Re: [PATCH 6/6] cpufreq: Loongson1: Add cpufreq driver for Loongson1B (UPDATED)
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Kelvin Cheung <keguang.zhang@gmail.com>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <viresh.kumar@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 12:06:57 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53883
+        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S27011486AbaJPKGxv6ZiZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 12:06:53 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Wim Van Sebroeck <wim@iguana.be>
+Cc:     linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH V2] watchdog: add MT7621 watchdog support
+Date:   Mon, 13 Oct 2014 14:15:46 +0200
+Message-Id: <1413202546-2780-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43299
+X-archive-position: 43300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viresh.kumar@linaro.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,71 +31,266 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 16 October 2014 15:00, Kelvin Cheung <keguang.zhang@gmail.com> wrote:
+This patch adds support for the watchdog core found on newer mediatek/ralink
+Wifi SoCs.
 
-Just to let u know, your mails are probably generated in html whereas they
-should be in text mode.
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+Changes since V1
 
-> 2014-10-16 16:23 GMT+08:00 Viresh Kumar <viresh.kumar@linaro.org>:
->>
->> This is not how we send updated versions, GIT and other tools will commit
->> the "(UPDATED)" part while applying. What you were required to do was
->> something like:
->>
->> git format-patch A..B --subject-prefix="PATCH V2"
->
->
-> I use 'updated' because only one patch in the patch set need to be updated.
-> If you insist, I will regenerate this patch.
+* fix the comments identifying the driver
+* add a comment to the code setting the prescaler
+* use watchdog_init_timeout
+* use devm_reset_control_get
+* get rid of the miscdev code
 
-Even in that case you can do what I was saying. No, you don't need to resend
-for that reason now. :)
+ .../devicetree/bindings/watchdog/mt7621-wdt.txt    |   12 ++
+ drivers/watchdog/Kconfig                           |    7 +
+ drivers/watchdog/Makefile                          |    1 +
+ drivers/watchdog/mt7621_wdt.c                      |  186 ++++++++++++++++++++
+ 4 files changed, 206 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt
+ create mode 100644 drivers/watchdog/mt7621_wdt.c
 
->> On 15 October 2014 12:53, Kelvin Cheung <keguang.zhang@gmail.com> wrote:
->> > +static int ls1x_cpufreq_remove(struct platform_device *pdev)
->> > +{
->> > +       cpufreq_unregister_notifier(&ls1x_cpufreq_notifier_block,
->> > +                                   CPUFREQ_TRANSITION_NOTIFIER);
->> > +       cpufreq_unregister_driver(&ls1x_cpufreq_driver);
->> > +       clk_put(ls1x_cpufreq.osc_clk);
->> > +       clk_put(ls1x_cpufreq.clk);
->> > +
->> > +       return 0;
->> > +}
->> > +
->> > +static int ls1x_cpufreq_probe(struct platform_device *pdev)
->> > +{
->> > +       struct plat_ls1x_cpufreq *pdata = pdev->dev.platform_data;
->> > +       struct clk *clk;
->> > +       int ret;
->> > +
->> > +       if (!pdata)
->> > +               return -EINVAL;
->> > +       if (!pdata->clk_name)
->> > +               return -EINVAL;
->> > +       if (!pdata->osc_clk_name)
->> > +               return -EINVAL;
->>
->> I didn't wanted you to do this, You could have done this:
->>
->>        if (!pdata || !pdata->clk_name || !pdata->osc_clk_name)
->>                return -EINVAL;
->>
->> So, just a || instead of && :)
->>
->> > +
->> > +       ls1x_cpufreq.dev = &pdev->dev;
->> > +
->> > +       clk = clk_get(NULL, pdata->clk_name);
->>
->> I believe we agreed for devm_clk_get(), isn't it ?
->
->
-> In my case I think clk_get() is enough.
-
-Obviously its enough but wouldn't it be better to use a infrastructure
-which is somewhat better ?
-
-> Moreover, most of cpufreq drivers use clk_get().
-
-So what? Is that a good enough reason for adopting a good change?
+diff --git a/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt b/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt
+new file mode 100644
+index 0000000..c15ef0e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt
+@@ -0,0 +1,12 @@
++Ralink Watchdog Timers
++
++Required properties:
++- compatible: must be "mediatek,mt7621-wdt"
++- reg: physical base address of the controller and length of the register range
++
++Example:
++
++	watchdog@100 {
++		compatible = "mediatek,mt7621-wdt";
++		reg = <0x100 0x10>;
++	};
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index f57312f..9ee0d32 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -1186,6 +1186,13 @@ config RALINK_WDT
+ 	help
+ 	  Hardware driver for the Ralink SoC Watchdog Timer.
+ 
++config MT7621_WDT
++	tristate "Mediatek SoC watchdog"
++	select WATCHDOG_CORE
++	depends on SOC_MT7620 || SOC_MT7621
++	help
++	  Hardware driver for the Mediatek/Ralink SoC Watchdog Timer.
++
+ # PARISC Architecture
+ 
+ # POWERPC Architecture
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 468c320..5b2031e 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -138,6 +138,7 @@ obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+ octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
+ obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
+ obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
++obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+ 
+ # PARISC Architecture
+ 
+diff --git a/drivers/watchdog/mt7621_wdt.c b/drivers/watchdog/mt7621_wdt.c
+new file mode 100644
+index 0000000..0cb9e0b
+--- /dev/null
++++ b/drivers/watchdog/mt7621_wdt.c
+@@ -0,0 +1,186 @@
++/*
++ * Ralink MT7621/MT7628 built-in hardware watchdog timer
++ *
++ * Copyright (C) 2014 John Crispin <blogic@openwrt.org>
++ *
++ * This driver was based on: drivers/watchdog/rt2880_wdt.c
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ */
++
++#include <linux/clk.h>
++#include <linux/reset.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/watchdog.h>
++#include <linux/moduleparam.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-ralink/ralink_regs.h>
++
++#define SYSC_RSTSTAT			0x38
++#define WDT_RST_CAUSE			BIT(1)
++
++#define RALINK_WDT_TIMEOUT		30
++
++#define TIMER_REG_TMRSTAT		0x00
++#define TIMER_REG_TMR1LOAD		0x24
++#define TIMER_REG_TMR1CTL		0x20
++
++#define TMR1CTL_ENABLE			BIT(7)
++#define TMR1CTL_RESTART			BIT(9)
++#define TMR1CTL_PRESCALE_SHIFT		16
++
++static void __iomem *mt7621_wdt_base;
++static struct reset_control *mt7621_wdt_reset;
++
++static bool nowayout = WATCHDOG_NOWAYOUT;
++module_param(nowayout, bool, 0);
++MODULE_PARM_DESC(nowayout,
++		 "Watchdog cannot be stopped once started (default="
++		 __MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
++
++static inline void rt_wdt_w32(unsigned reg, u32 val)
++{
++	iowrite32(val, mt7621_wdt_base + reg);
++}
++
++static inline u32 rt_wdt_r32(unsigned reg)
++{
++	return ioread32(mt7621_wdt_base + reg);
++}
++
++static int mt7621_wdt_ping(struct watchdog_device *w)
++{
++	rt_wdt_w32(TIMER_REG_TMRSTAT, TMR1CTL_RESTART);
++
++	return 0;
++}
++
++static int mt7621_wdt_set_timeout(struct watchdog_device *w, unsigned int t)
++{
++	w->timeout = t;
++	rt_wdt_w32(TIMER_REG_TMR1LOAD, t * 1000);
++	mt7621_wdt_ping(w);
++
++	return 0;
++}
++
++static int mt7621_wdt_start(struct watchdog_device *w)
++{
++	u32 t;
++
++	/* set the prescaler to 1ms == 1000us */
++	rt_wdt_w32(TIMER_REG_TMR1CTL, 1000 << TMR1CTL_PRESCALE_SHIFT);
++
++	mt7621_wdt_set_timeout(w, w->timeout);
++
++	t = rt_wdt_r32(TIMER_REG_TMR1CTL);
++	t |= TMR1CTL_ENABLE;
++	rt_wdt_w32(TIMER_REG_TMR1CTL, t);
++
++	return 0;
++}
++
++static int mt7621_wdt_stop(struct watchdog_device *w)
++{
++	u32 t;
++
++	mt7621_wdt_ping(w);
++
++	t = rt_wdt_r32(TIMER_REG_TMR1CTL);
++	t &= ~TMR1CTL_ENABLE;
++	rt_wdt_w32(TIMER_REG_TMR1CTL, t);
++
++	return 0;
++}
++
++static int mt7621_wdt_bootcause(void)
++{
++	if (rt_sysc_r32(SYSC_RSTSTAT) & WDT_RST_CAUSE)
++		return WDIOF_CARDRESET;
++
++	return 0;
++}
++
++static struct watchdog_info mt7621_wdt_info = {
++	.identity = "Mediatek Watchdog",
++	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
++};
++
++static struct watchdog_ops mt7621_wdt_ops = {
++	.owner = THIS_MODULE,
++	.start = mt7621_wdt_start,
++	.stop = mt7621_wdt_stop,
++	.ping = mt7621_wdt_ping,
++	.set_timeout = mt7621_wdt_set_timeout,
++};
++
++static struct watchdog_device mt7621_wdt_dev = {
++	.info = &mt7621_wdt_info,
++	.ops = &mt7621_wdt_ops,
++	.min_timeout = 1,
++	.max_timeout = 0xfffful / 1000,
++};
++
++static int mt7621_wdt_probe(struct platform_device *pdev)
++{
++	struct resource *res;
++	int ret;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	mt7621_wdt_base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(mt7621_wdt_base))
++		return PTR_ERR(mt7621_wdt_base);
++
++	mt7621_wdt_reset = devm_reset_control_get(&pdev->dev, NULL);
++	if (!IS_ERR(mt7621_wdt_reset))
++		reset_control_deassert(mt7621_wdt_reset);
++
++	mt7621_wdt_dev.dev = &pdev->dev;
++	mt7621_wdt_dev.bootstatus = mt7621_wdt_bootcause();
++
++	watchdog_init_timeout(&mt7621_wdt_dev, mt7621_wdt_dev.max_timeout, &pdev->dev);
++	watchdog_set_nowayout(&mt7621_wdt_dev, nowayout);
++
++	ret = watchdog_register_device(&mt7621_wdt_dev);
++
++	return 0;
++}
++
++static int mt7621_wdt_remove(struct platform_device *pdev)
++{
++	watchdog_unregister_device(&mt7621_wdt_dev);
++
++	return 0;
++}
++
++static void mt7621_wdt_shutdown(struct platform_device *pdev)
++{
++	mt7621_wdt_stop(&mt7621_wdt_dev);
++}
++
++static const struct of_device_id mt7621_wdt_match[] = {
++	{ .compatible = "mediatek,mt7621-wdt" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, mt7621_wdt_match);
++
++static struct platform_driver mt7621_wdt_driver = {
++	.probe		= mt7621_wdt_probe,
++	.remove		= mt7621_wdt_remove,
++	.shutdown	= mt7621_wdt_shutdown,
++	.driver		= {
++		.name		= KBUILD_MODNAME,
++		.owner		= THIS_MODULE,
++		.of_match_table	= mt7621_wdt_match,
++	},
++};
++
++module_platform_driver(mt7621_wdt_driver);
++
++MODULE_DESCRIPTION("MediaTek MT762x hardware watchdog driver");
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org");
++MODULE_LICENSE("GPL v2");
+-- 
+1.7.10.4

@@ -1,124 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2014 06:31:32 +0200 (CEST)
-Received: from relmlor4.renesas.com ([210.160.252.174]:41144 "EHLO
-        relmlie3.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010103AbaJNEb3rsZCa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Oct 2014 06:31:29 +0200
-Received: from unknown (HELO relmlir4.idc.renesas.com) ([10.200.68.154])
-  by relmlie3.idc.renesas.com with ESMTP; 14 Oct 2014 13:31:25 +0900
-Received: from relmlac3.idc.renesas.com (relmlac3.idc.renesas.com [10.200.69.23])
-        by relmlir4.idc.renesas.com (Postfix) with ESMTP id 26BD23F9C6;
-        Tue, 14 Oct 2014 13:31:25 +0900 (JST)
-Received: by relmlac3.idc.renesas.com (Postfix, from userid 0)
-        id 17A89180A1; Tue, 14 Oct 2014 13:31:25 +0900 (JST)
-Received: from relmlac3.idc.renesas.com (localhost [127.0.0.1])
-        by relmlac3.idc.renesas.com (Postfix) with ESMTP id 0FFD5180A0;
-        Tue, 14 Oct 2014 13:31:25 +0900 (JST)
-Received: from relmlii1.idc.renesas.com [10.200.68.65] 
-         by relmlac3.idc.renesas.com with ESMTP id PAM28738;
-         Tue, 14 Oct 2014 13:31:25 +0900
-X-IronPort-AV: E=Sophos;i="5.04,714,1406559600"; 
-   d="scan'208";a="171187046"
-Received: from mail-sg1lp0092.outbound.protection.outlook.com (HELO APAC01-SG1-obe.outbound.protection.outlook.com) ([207.46.51.92])
-  by relmlii1.idc.renesas.com with ESMTP/TLS/AES256-SHA; 14 Oct 2014 13:31:18 +0900
-Received: from pcepx30.hoku.renesas.com.renesas.com (211.11.155.140) by
- SINPR06MB090.apcprd06.prod.outlook.com (10.242.54.12) with Microsoft SMTP
- Server (TLS) id 15.0.1049.19; Tue, 14 Oct 2014 04:31:10 +0000
-Date:   Tue, 14 Oct 2014 13:29:29 +0900
-Message-ID: <87oatfi89i.wl%hirokazu.takata.wj@renesas.com>
-From:   Hirokazu TAKATA <hirokazu.takata.wj@renesas.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     <linux-kernel@vger.kernel.org>,
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        <devel@driverdev.osuosl.org>, <devicetree@vger.kernel.org>,
-        <lguest@lists.ozlabs.org>, <linux-acpi@vger.kernel.org>,
-        <linux-alpha@vger.kernel.org>, <linux-am33-list@redhat.com>,
-        <linux-cris-kernel@axis.com>, <linux-efi@vger.kernel.org>,
-        <linux-hexagon@vger.kernel.org>, <linux-m32r-ja@ml.linux-m32r.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        <linux-tegra@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
-        <openipmi-developer@lists.sourceforge.net>,
-        <user-mode-linux-devel@lists.sourceforge.net>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-c6x-dev@linux-c6x.org>, <linux-ia64@vger.kernel.org>,
-        <linux-m68k@lists.linux-m68k.org>, <linux-metag@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linux-parisc@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <xen-devel@lists.xenproject.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Steven Miao <realmz6@gmail.com>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        David Howells <dhowells@redhat.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Chen Liqin <liqin.linux@gmail.com>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH 08/44] kernel: Move pm_power_off to common code
-In-Reply-To: <1412659726-29957-9-git-send-email-linux@roeck-us.net>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
-        <1412659726-29957-9-git-send-email-linux@roeck-us.net>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/24.3 Mule/6.0 (HANACHIRUSATO)
-Renesas-ECN: H07-0010RT
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [211.11.155.140]
-X-ClientProxiedBy: SIXPR06CA0048.apcprd06.prod.outlook.com (25.160.171.166) To
- SINPR06MB090.apcprd06.prod.outlook.com (10.242.54.12)
-X-Microsoft-Antispam: UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:SINPR06MB090;
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Forefront-PRVS: 03648EFF89
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6009001)(199003)(51704005)(189002)(47776003)(92726001)(558084003)(20776003)(122386002)(105586002)(106356001)(76176999)(95666004)(19580395003)(54356999)(85852003)(77096002)(64706001)(86362001)(36756003)(40100003)(107046002)(66066001)(92566001)(19580405001)(50986999)(85306004)(42186005)(21056001)(87976001)(31966008)(50466002)(4396001)(97736003)(33646002)(23726002)(111086002)(101416001)(110136001)(76482002)(120916001)(46406003)(102836001)(46102003)(80022003)(83506001);DIR:OUT;SFP:1102;SCL:1;SRVR:SINPR06MB090;H:pcepx30.hoku.renesas.com.renesas.com;FPR:;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:;
-X-OriginatorOrg: renesas.com
-Return-Path: <hirokazu.takata.wj@renesas.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2014 09:23:00 +0200 (CEST)
+Received: from mail-oi0-f43.google.com ([209.85.218.43]:53091 "EHLO
+        mail-oi0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011348AbaJNHW7P-8Qd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Oct 2014 09:22:59 +0200
+Received: by mail-oi0-f43.google.com with SMTP id u20so15452358oif.2
+        for <linux-mips@linux-mips.org>; Tue, 14 Oct 2014 00:22:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=TsKSYsiBG6qCtQky0JpvEhYCImCIDCtVNPS1hMifb04=;
+        b=XtD6YcVaTC0u+WgkUbcfe+sBKN5bdezszugwUCLDZOwpwhDw33qTyg5RHF2P+5o0kE
+         hcI9kV7ZNN0/HDMBv4+MfdfDA9NxkmJ8KtKkJwKnMarQWO+XII+snHRVAqrMQMlzjLgd
+         LLRu4Fs8qI7SkotHBanAkteWTzRtKli/IFoIpYdDwrF+vBRpjkCFRygmm2nTNXYOswnr
+         DQdpi5ofKeHCyKlDsVT9MW59IZuJ7zAzVofQMKvsurCtuM6Kr39PEseMwv9jwevBtt/E
+         0WNlA4wFiaG4CRSOjVsD6avac7C2Ixy6HjwFMXHk3SUF5FNKU7yUKmADyVWXspoB4yfW
+         huUw==
+X-Gm-Message-State: ALoCoQk6DnJwuEhjPNqF+G8VI+dbV44xTbcmXWsnUQdQrBBy89B7VM+/MoTFIV76EN3MsCoN2Nxz
+MIME-Version: 1.0
+X-Received: by 10.202.194.67 with SMTP id s64mr3088964oif.22.1413271373211;
+ Tue, 14 Oct 2014 00:22:53 -0700 (PDT)
+Received: by 10.182.233.170 with HTTP; Tue, 14 Oct 2014 00:22:53 -0700 (PDT)
+In-Reply-To: <CAJhJPsW+h9DEEEKfhBdz3e4tTxmA_ZBR6SbLr2jY6XJY7pMHhA@mail.gmail.com>
+References: <CAJhJPsW+h9DEEEKfhBdz3e4tTxmA_ZBR6SbLr2jY6XJY7pMHhA@mail.gmail.com>
+Date:   Tue, 14 Oct 2014 12:52:53 +0530
+Message-ID: <CAKohpomcJM53bnRA7ef-+61KHq0DxTZ=Lf3oEUWejif5X+g_2Q@mail.gmail.com>
+Subject: Re: [PATCH 6/6] cpufreq: Loongson1: Add cpufreq driver for Loongson1B
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
+Cc:     Mike Turquette <mturquette@linaro.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43257
+X-archive-position: 43258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hirokazu.takata.wj@renesas.com
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -131,11 +55,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Guenter Roeck <linux@roeck-us.net>
->  arch/m32r/kernel/process.c         |  8 ++++----
+On 14 October 2014 12:29, Kelvin Cheung <keguang.zhang@gmail.com> wrote:
+>
+> 2014-10-10 12:40 GMT+08:00 Viresh Kumar <viresh.kumar@linaro.org>:
 
-Acked-by: Hirokazu Takata <takata@linux-m32r.org>
+>> > +#include <cpufreq.h>
+>> > +#include <loongson1.h>
+>>
+>> Okay, it looks like I have forgotten some of the C basics :)
+>> But wouldn't the above two lines search for this file in <include/*>, unless
+>> you have compiled it with something like -I include/linux ??
+>> And even then I don't think loongson1.h is present there ..
+>>
+>> What am I missing ?
+>
+>
+> The two header files are located in arch/mips/include/asm/mach-loongson1
 
-Thank you.
+Okay, but I didn't knew it works this way as well. I thought preprocessor will
+search in include/ and arch/mips/include/ directories only and so you need to
+do this:
 
--- takata
+#include <asm/mach-loongson1/cpufreq.h>
+
+Do you know why it works directly in your case? Probably for readability above
+might be better ?
+
+>> > +static int ls1x_cpufreq_notifier(struct notifier_block *nb,
+>> > +                                unsigned long val, void *data)
+>> > +{
+>> > +       if (val == CPUFREQ_POSTCHANGE)
+>> > +               current_cpu_data.udelay_val = loops_per_jiffy;
+>> > +
+>> > +       return NOTIFY_OK;
+>> > +}
+>>
+>> Why don't you do this at a single place in mips core instead of every
+>> mips cpufreq driver ?
+>
+>
+> Most of MIPS CPUs use performance counter as the system timer, which is built-in to the CPU core. They can't do cpufreq due to lack of external timer. Therefore, the above section is not a common code.
+
+Not sure if I understood your reply Or you understood mine :)
+Let me try again to clarify the question. On freq change you need
+to update 'current_cpu_data.udelay_val', this is done in both
+loongson drivers.
+
+What I was asking you is to register the notifier in some core code,
+so that this isn't required to be done in all cpufreq drivers.
+
+NOTE: The notifier routine will only be called if cpufreq is enabled
+for the platform..
+
+>> > +static int ls1x_cpufreq_probe(struct platform_device *pdev)
+>> > +{
+>> > +       struct plat_ls1x_cpufreq *pdata = pdev->dev.platform_data;
+>> > +       struct clk *clk;
+>> > +       int ret;
+>> > +
+>>
+>> Try this code here:
+>>
+>> pdata = NULL;
+>>
+>> > +       if (!pdata && !pdata->clk_name && !pdata->osc_clk_name) {
+>>
+>> And tell me what happens here then. :)
+>
+>
+> I will add an error message here.
+
+Did you try what I asked you to? I wasn't talking about the message..
+Though you better add it as well..
+
+What I have asked you will result in kernel crash ..

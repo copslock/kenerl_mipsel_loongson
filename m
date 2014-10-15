@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2014 04:32:39 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:16626 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2014 04:32:56 +0200 (CEST)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:16670 "EHLO
         szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011459AbaJOC0X3di-J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Oct 2014 04:26:23 +0200
+        by eddie.linux-mips.org with ESMTP id S27011471AbaJOC0ZUZwpm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Oct 2014 04:26:25 +0200
 Received: from 172.24.2.119 (EHLO szxeml412-hub.china.huawei.com) ([172.24.2.119])
         by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CAT35439;
+        with ESMTP id CAT35438;
         Wed, 15 Oct 2014 10:26:03 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml412-hub.china.huawei.com (10.82.67.91) with Microsoft SMTP Server id
- 14.3.158.1; Wed, 15 Oct 2014 10:25:52 +0800
+ 14.3.158.1; Wed, 15 Oct 2014 10:25:56 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -38,9 +38,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Liviu Dudau <liviu@dudau.co.uk>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH v3 21/27] Powerpc/MSI: Use MSI chip framework to configure MSI/MSI-X irq
-Date:   Wed, 15 Oct 2014 11:07:09 +0800
-Message-ID: <1413342435-7876-22-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH v3 23/27] arm/iop13xx/MSI: Use MSI chip framework to configure MSI/MSI-X irq
+Date:   Wed, 15 Oct 2014 11:07:11 +0800
+Message-ID: <1413342435-7876-24-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
 References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
@@ -52,7 +52,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43281
+X-archive-position: 43282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,90 +74,85 @@ MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
 ---
-Hi Michael,
-   I dropped the Acked-by , because this version has a
-lot changes compared to last. So, I guess you may want to check it again.
----
- arch/powerpc/include/asm/pci-bridge.h |   15 +++++++++++++++
- arch/powerpc/kernel/msi.c             |   12 ++++++++++--
- arch/powerpc/kernel/pci-common.c      |    3 +++
- 3 files changed, 28 insertions(+), 2 deletions(-)
+ arch/arm/mach-iop13xx/include/mach/pci.h |    4 ++++
+ arch/arm/mach-iop13xx/iq81340mc.c        |    3 +++
+ arch/arm/mach-iop13xx/iq81340sc.c        |    5 ++++-
+ arch/arm/mach-iop13xx/msi.c              |   11 +++++++++--
+ 4 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
-index 4ca90a3..233553e 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -32,6 +32,10 @@ struct pci_controller {
- 	int self_busno;
- 	struct resource busn;
+diff --git a/arch/arm/mach-iop13xx/include/mach/pci.h b/arch/arm/mach-iop13xx/include/mach/pci.h
+index 59f42b5..c87ac3a 100644
+--- a/arch/arm/mach-iop13xx/include/mach/pci.h
++++ b/arch/arm/mach-iop13xx/include/mach/pci.h
+@@ -11,6 +11,10 @@ void iop13xx_atu_select(struct hw_pci *plat_pci);
+ void iop13xx_pci_init(void);
+ void iop13xx_map_pci_memory(void);
  
 +#ifdef CONFIG_PCI_MSI
-+	struct msi_chip *msi_chip;
++extern struct msi_chip iop13xx_msi_chip;
 +#endif
 +
- 	void __iomem *io_base_virt;
- #ifdef CONFIG_PPC64
- 	void *io_base_alloc;
-@@ -94,6 +98,17 @@ struct pci_controller {
- 	void *private_data;
+ #define IOP_PCI_STATUS_ERROR (PCI_STATUS_PARITY |	     \
+ 			       PCI_STATUS_SIG_TARGET_ABORT | \
+ 			       PCI_STATUS_REC_TARGET_ABORT | \
+diff --git a/arch/arm/mach-iop13xx/iq81340mc.c b/arch/arm/mach-iop13xx/iq81340mc.c
+index 9cd07d3..1f499b6 100644
+--- a/arch/arm/mach-iop13xx/iq81340mc.c
++++ b/arch/arm/mach-iop13xx/iq81340mc.c
+@@ -59,6 +59,9 @@ static struct hw_pci iq81340mc_pci __initdata = {
+ 	.map_irq	= iq81340mc_pcix_map_irq,
+ 	.scan		= iop13xx_scan_bus,
+ 	.preinit	= iop13xx_pci_init,
++#ifdef CONFIG_PCI_MSI
++	.msi_chip	= &iop13xx_msi_chip,
++#endif
  };
  
+ static int __init iq81340mc_pci_init(void)
+diff --git a/arch/arm/mach-iop13xx/iq81340sc.c b/arch/arm/mach-iop13xx/iq81340sc.c
+index b3ec11c..8bdfdc5 100644
+--- a/arch/arm/mach-iop13xx/iq81340sc.c
++++ b/arch/arm/mach-iop13xx/iq81340sc.c
+@@ -60,7 +60,10 @@ static struct hw_pci iq81340sc_pci __initdata = {
+ 	.setup		= iop13xx_pci_setup,
+ 	.scan		= iop13xx_scan_bus,
+ 	.map_irq	= iq81340sc_atux_map_irq,
+-	.preinit	= iop13xx_pci_init
++	.preinit	= iop13xx_pci_init,
 +#ifdef CONFIG_PCI_MSI
-+extern struct msi_chip ppc_msi_chip;
-+
-+static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
-+{
-+	struct pci_controller *hose = bus->sysdata;
-+
-+	return hose->msi_chip;
-+}
++	.msi_chip	= &iop13xx_msi_chip,
 +#endif
-+
- /* These are used for config access before all the PCI probing
-    has been done. */
- extern int early_read_config_byte(struct pci_controller *hose, int bus,
-diff --git a/arch/powerpc/kernel/msi.c b/arch/powerpc/kernel/msi.c
-index 71bd161..f38b67c 100644
---- a/arch/powerpc/kernel/msi.c
-+++ b/arch/powerpc/kernel/msi.c
-@@ -13,7 +13,8 @@
+ };
  
- #include <asm/machdep.h>
+ static int __init iq81340sc_pci_init(void)
+diff --git a/arch/arm/mach-iop13xx/msi.c b/arch/arm/mach-iop13xx/msi.c
+index e7730cf..3135a63 100644
+--- a/arch/arm/mach-iop13xx/msi.c
++++ b/arch/arm/mach-iop13xx/msi.c
+@@ -132,7 +132,8 @@ static struct irq_chip iop13xx_msi_chip = {
+ 	.irq_unmask = unmask_msi_irq,
+ };
  
--int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
-+static int ppc_setup_msi_irqs(struct msi_chip *chip,
-+		struct pci_dev *dev, int nvec, int type)
+-int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
++static int iop13xx_setup_msi_irq(struct msi_chip *chip,
++		struct pci_dev *dev, struct msi_desc *desc)
  {
- 	if (!ppc_md.setup_msi_irqs || !ppc_md.teardown_msi_irqs) {
- 		pr_debug("msi: Platform doesn't provide MSI callbacks.\n");
-@@ -27,7 +28,13 @@ int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
- 	return ppc_md.setup_msi_irqs(dev, nvec, type);
+ 	int id, irq = irq_alloc_desc_from(IRQ_IOP13XX_MSI_0, -1);
+ 	struct msi_msg msg;
+@@ -159,7 +160,13 @@ int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
+ 	return 0;
  }
  
--void arch_teardown_msi_irqs(struct pci_dev *dev)
-+static void ppc_teardown_msi_irqs(struct msi_chip *chip,
-+		struct pci_dev *dev)
+-void arch_teardown_msi_irq(unsigned int irq)
++static void iop13xx_teardown_msi_irq(struct msi_chip *chip,
++		unsigned int irq)
  {
- 	ppc_md.teardown_msi_irqs(dev);
+ 	irq_free_desc(irq);
  }
 +
-+struct msi_chip ppc_msi_chip = {
-+	.setup_irqs = ppc_setup_msi_irqs,
-+	.teardown_irqs = ppc_teardown_msi_irqs,
++struct msi_chip iop13xx_chip = {
++	.setup_irq = iop13xx_setup_msi_irq,
++	.teardown_irq = iop13xx_teardown_msi_irq,
 +};
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index b2814e2..9f18b42 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -1594,6 +1594,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
- 	/* Wire up PHB bus resources */
- 	pcibios_setup_phb_resources(hose, &resources);
- 
-+#ifdef CONFIG_PCI_MSI
-+	hose->msi_chip = &ppc_msi_chip;
-+#endif
- 	hose->busn.start = hose->first_busno;
- 	hose->busn.end	 = hose->last_busno;
- 	hose->busn.flags = IORESOURCE_BUS;
 -- 
 1.7.1

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2014 04:32:03 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:57812 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2014 04:32:22 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:57811 "EHLO
         szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011460AbaJOC0Wlc1Ci (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Oct 2014 04:26:22 +0200
+        by eddie.linux-mips.org with ESMTP id S27011456AbaJOC0XGKRqG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Oct 2014 04:26:23 +0200
 Received: from 172.24.2.119 (EHLO szxeml412-hub.china.huawei.com) ([172.24.2.119])
         by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AVO63799;
+        with ESMTP id AVO63800;
         Wed, 15 Oct 2014 10:25:58 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml412-hub.china.huawei.com (10.82.67.91) with Microsoft SMTP Server id
- 14.3.158.1; Wed, 15 Oct 2014 10:25:45 +0800
+ 14.3.158.1; Wed, 15 Oct 2014 10:25:50 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -38,9 +38,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Liviu Dudau <liviu@dudau.co.uk>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH v3 18/27] MIPS/Xlp: Remove the dead function destroy_irq() to fix build error
-Date:   Wed, 15 Oct 2014 11:07:06 +0800
-Message-ID: <1413342435-7876-19-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH v3 20/27] MIPS/Xlr/MSI: Use MSI chip framework to configure MSI/MSI-X irq
+Date:   Wed, 15 Oct 2014 11:07:08 +0800
+Message-ID: <1413342435-7876-21-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
 References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
@@ -49,16 +49,16 @@ Content-Type: text/plain
 X-Originating-IP: [10.175.100.166]
 X-CFilter-Loop: Reflected
 X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020206.543DDB36.0181,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        refid=str=0001.0A020206.543DDB37.004D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
         ip=0.0.0.0,
         so=2013-05-26 15:14:31,
         dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: 2f02b8c0cbe2e526cbd60b8ad861fcf5
+X-Mirapoint-Loop-Id: 2a592ec8fea66c42bba217ed0721ce4c
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43279
+X-archive-position: 43280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,37 +75,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 465665f78a7 ("mips: Kill pointless destroy_irq()") removed
-the destroy_irq(). So remove the leftover one in xlp_setup_msix()
-to fix build error.
-
-arch/mips/pci/msi-xlp.c: In function 'xlp_setup_msix':
-arch/mips/pci/msi-xlp.c:447:3: error: implicit declaration of function 'destroy_irq'..
-cc1: some warnings being treated as errors
-make[1]: *** [arch/mips/pci/msi-xlp.o] Error 1
-make: *** [arch/mips/pci/] Error 2
+Use MSI chip framework instead of arch MSI functions to configure
+MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/pci/msi-xlp.c |    4 +---
- 1 files changed, 1 insertions(+), 3 deletions(-)
+ arch/mips/pci/pci-xlr.c |   17 +++++++++++++++--
+ 1 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/pci/msi-xlp.c b/arch/mips/pci/msi-xlp.c
-index fa374fe..e469dc7 100644
---- a/arch/mips/pci/msi-xlp.c
-+++ b/arch/mips/pci/msi-xlp.c
-@@ -443,10 +443,8 @@ static int xlp_setup_msix(uint64_t lnkbase, int node, int link,
- 	msg.data = 0xc00 | msixvec;
+diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
+index 0dde803..0e611de 100644
+--- a/arch/mips/pci/pci-xlr.c
++++ b/arch/mips/pci/pci-xlr.c
+@@ -149,6 +149,8 @@ static struct resource nlm_pci_io_resource = {
+ 	.flags		= IORESOURCE_IO,
+ };
  
- 	ret = irq_set_msi_desc(xirq, desc);
--	if (ret < 0) {
--		destroy_irq(xirq);
-+	if (ret < 0)
- 		return ret;
--	}
++static struct msi_chip xlr_msi_chip;
++
+ struct pci_controller nlm_pci_controller = {
+ 	.index		= 0,
+ 	.pci_ops	= &nlm_pci_ops,
+@@ -156,6 +158,9 @@ struct pci_controller nlm_pci_controller = {
+ 	.mem_offset	= 0x00000000UL,
+ 	.io_resource	= &nlm_pci_io_resource,
+ 	.io_offset	= 0x00000000UL,
++#ifdef CONFIG_PCI_MSI
++	.msi_chip = &xlr_msi_chip,
++#endif
+ };
  
- 	write_msi_msg(xirq, &msg);
+ /*
+@@ -214,11 +219,13 @@ static int get_irq_vector(const struct pci_dev *dev)
+ }
+ 
+ #ifdef CONFIG_PCI_MSI
+-void arch_teardown_msi_irq(unsigned int irq)
++static void xlr_teardown_msi_irq(struct msi_chip *chip,
++		unsigned int irq)
+ {
+ }
+ 
+-int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
++static int xlr_setup_msi_irq(struct msi_chip *chip,
++		struct pci_dev *dev, struct msi_desc *desc)
+ {
+ 	struct msi_msg msg;
+ 	struct pci_dev *lnk;
+@@ -263,6 +270,12 @@ int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
+ 	write_msi_msg(irq, &msg);
  	return 0;
+ }
++
++static struct msi_chip xlr_msi_chip = {
++	.setup_irq = xlr_setup_msi_irq,
++	.teardown_irq = xlr_teardown_msi_irq,
++};
++
+ #endif
+ 
+ /* Extra ACK needed for XLR on chip PCI controller */
 -- 
 1.7.1

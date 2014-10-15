@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2014 04:32:22 +0200 (CEST)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:57811 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011456AbaJOC0XGKRqG (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2014 04:32:39 +0200 (CEST)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:16626 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011459AbaJOC0X3di-J (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 15 Oct 2014 04:26:23 +0200
 Received: from 172.24.2.119 (EHLO szxeml412-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AVO63800;
-        Wed, 15 Oct 2014 10:25:58 +0800 (CST)
+        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CAT35439;
+        Wed, 15 Oct 2014 10:26:03 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml412-hub.china.huawei.com (10.82.67.91) with Microsoft SMTP Server id
- 14.3.158.1; Wed, 15 Oct 2014 10:25:50 +0800
+ 14.3.158.1; Wed, 15 Oct 2014 10:25:52 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -38,9 +38,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Liviu Dudau <liviu@dudau.co.uk>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH v3 20/27] MIPS/Xlr/MSI: Use MSI chip framework to configure MSI/MSI-X irq
-Date:   Wed, 15 Oct 2014 11:07:08 +0800
-Message-ID: <1413342435-7876-21-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH v3 21/27] Powerpc/MSI: Use MSI chip framework to configure MSI/MSI-X irq
+Date:   Wed, 15 Oct 2014 11:07:09 +0800
+Message-ID: <1413342435-7876-22-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
 References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
@@ -48,17 +48,11 @@ MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.100.166]
 X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020206.543DDB37.004D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: 2a592ec8fea66c42bba217ed0721ce4c
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43280
+X-archive-position: 43281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,60 +74,90 @@ MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
 ---
- arch/mips/pci/pci-xlr.c |   17 +++++++++++++++--
- 1 files changed, 15 insertions(+), 2 deletions(-)
+Hi Michael,
+   I dropped the Acked-by , because this version has a
+lot changes compared to last. So, I guess you may want to check it again.
+---
+ arch/powerpc/include/asm/pci-bridge.h |   15 +++++++++++++++
+ arch/powerpc/kernel/msi.c             |   12 ++++++++++--
+ arch/powerpc/kernel/pci-common.c      |    3 +++
+ 3 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
-index 0dde803..0e611de 100644
---- a/arch/mips/pci/pci-xlr.c
-+++ b/arch/mips/pci/pci-xlr.c
-@@ -149,6 +149,8 @@ static struct resource nlm_pci_io_resource = {
- 	.flags		= IORESOURCE_IO,
- };
+diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+index 4ca90a3..233553e 100644
+--- a/arch/powerpc/include/asm/pci-bridge.h
++++ b/arch/powerpc/include/asm/pci-bridge.h
+@@ -32,6 +32,10 @@ struct pci_controller {
+ 	int self_busno;
+ 	struct resource busn;
  
-+static struct msi_chip xlr_msi_chip;
-+
- struct pci_controller nlm_pci_controller = {
- 	.index		= 0,
- 	.pci_ops	= &nlm_pci_ops,
-@@ -156,6 +158,9 @@ struct pci_controller nlm_pci_controller = {
- 	.mem_offset	= 0x00000000UL,
- 	.io_resource	= &nlm_pci_io_resource,
- 	.io_offset	= 0x00000000UL,
 +#ifdef CONFIG_PCI_MSI
-+	.msi_chip = &xlr_msi_chip,
++	struct msi_chip *msi_chip;
 +#endif
++
+ 	void __iomem *io_base_virt;
+ #ifdef CONFIG_PPC64
+ 	void *io_base_alloc;
+@@ -94,6 +98,17 @@ struct pci_controller {
+ 	void *private_data;
  };
  
- /*
-@@ -214,11 +219,13 @@ static int get_irq_vector(const struct pci_dev *dev)
++#ifdef CONFIG_PCI_MSI
++extern struct msi_chip ppc_msi_chip;
++
++static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
++{
++	struct pci_controller *hose = bus->sysdata;
++
++	return hose->msi_chip;
++}
++#endif
++
+ /* These are used for config access before all the PCI probing
+    has been done. */
+ extern int early_read_config_byte(struct pci_controller *hose, int bus,
+diff --git a/arch/powerpc/kernel/msi.c b/arch/powerpc/kernel/msi.c
+index 71bd161..f38b67c 100644
+--- a/arch/powerpc/kernel/msi.c
++++ b/arch/powerpc/kernel/msi.c
+@@ -13,7 +13,8 @@
+ 
+ #include <asm/machdep.h>
+ 
+-int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
++static int ppc_setup_msi_irqs(struct msi_chip *chip,
++		struct pci_dev *dev, int nvec, int type)
+ {
+ 	if (!ppc_md.setup_msi_irqs || !ppc_md.teardown_msi_irqs) {
+ 		pr_debug("msi: Platform doesn't provide MSI callbacks.\n");
+@@ -27,7 +28,13 @@ int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+ 	return ppc_md.setup_msi_irqs(dev, nvec, type);
  }
  
- #ifdef CONFIG_PCI_MSI
--void arch_teardown_msi_irq(unsigned int irq)
-+static void xlr_teardown_msi_irq(struct msi_chip *chip,
-+		unsigned int irq)
+-void arch_teardown_msi_irqs(struct pci_dev *dev)
++static void ppc_teardown_msi_irqs(struct msi_chip *chip,
++		struct pci_dev *dev)
  {
- }
- 
--int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
-+static int xlr_setup_msi_irq(struct msi_chip *chip,
-+		struct pci_dev *dev, struct msi_desc *desc)
- {
- 	struct msi_msg msg;
- 	struct pci_dev *lnk;
-@@ -263,6 +270,12 @@ int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
- 	write_msi_msg(irq, &msg);
- 	return 0;
+ 	ppc_md.teardown_msi_irqs(dev);
  }
 +
-+static struct msi_chip xlr_msi_chip = {
-+	.setup_irq = xlr_setup_msi_irq,
-+	.teardown_irq = xlr_teardown_msi_irq,
++struct msi_chip ppc_msi_chip = {
++	.setup_irqs = ppc_setup_msi_irqs,
++	.teardown_irqs = ppc_teardown_msi_irqs,
 +};
-+
- #endif
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index b2814e2..9f18b42 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1594,6 +1594,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
+ 	/* Wire up PHB bus resources */
+ 	pcibios_setup_phb_resources(hose, &resources);
  
- /* Extra ACK needed for XLR on chip PCI controller */
++#ifdef CONFIG_PCI_MSI
++	hose->msi_chip = &ppc_msi_chip;
++#endif
+ 	hose->busn.start = hose->first_busno;
+ 	hose->busn.end	 = hose->last_busno;
+ 	hose->busn.flags = IORESOURCE_BUS;
 -- 
 1.7.1

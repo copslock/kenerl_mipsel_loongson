@@ -1,65 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 21:53:56 +0200 (CEST)
-Received: from mail-vc0-f180.google.com ([209.85.220.180]:51276 "EHLO
-        mail-vc0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011629AbaJPTxyZayZw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 21:53:54 +0200
-Received: by mail-vc0-f180.google.com with SMTP id le20so3278922vcb.39
-        for <linux-mips@linux-mips.org>; Thu, 16 Oct 2014 12:53:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=8+h/+Gxa6tdLIUGWuhNCIXOy4K4rsKLsaqlKcQVewNY=;
-        b=ZAOp5WuIIzBIJ8PHIL2QxLb7vCJ2UavcblQFYdsUI+vLFh8fQo8gFrtEUhx7rxrRro
-         nsHyDdPx+FddV3cId2pkeRMw0OUxSDJ9vKrhyQpFcAZc5Gi85FRhxUmp/WNNryKhRRQ3
-         mRKduV/wSURSV0XrMBT0zby2x1u0wUVP8QpCXsYAsXSukes8bTUHLgqdik0Km/yVd5Wp
-         jetdq3sEsrY5XrXPVHfz1dI3khR7AkDDWG6WI94513vJS5KJtl4LbR1HyincHOu0DR/z
-         0OKbmMNPzUgRYPhlNeAncMBkEy1kc0xVqgGWGpsT19ogTIb1abznVwfklJiaCjtm/ej0
-         tynw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=8+h/+Gxa6tdLIUGWuhNCIXOy4K4rsKLsaqlKcQVewNY=;
-        b=Ch8FfhGEI9jjYA6FFjStALeTyDtuFNqii+FImON0B9BMq63bvPIan3e6LxgPgdTBZF
-         eiJfklB+5BOXg5UQRn1xHbtVYEWtJOxbqC8eX4RWz/sB3LnjYIMH0Yu3ZyTwydyruOj2
-         hVj5jdZMT3xoioTntabU/pU/4wTddTRI5ZenM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=8+h/+Gxa6tdLIUGWuhNCIXOy4K4rsKLsaqlKcQVewNY=;
-        b=UTnmpCq3g2pGf4tmRu9HWPY6HvEG7dPHKAHorJbQ3Pia8YKT//e3kwKofx5VTcRgm0
-         pgvrd/khMPs67WUMvVFyrY3CZrWV79VhDYaxrOZv6OyKMJ4SnHL3HlhMHM+lfl/+Z84T
-         Ijx03xYCS45dfTK9M6f5EZyFea9XhgERx1AFpZ4obwHTxI5U/TZS1qdzL5+W/v+cC2I9
-         6EMu7K1v7X7JT/L6Yq7ehWF/2DloR8dgPDCokocf/uG74UH/Mwpw1Ba8RYZ5B3oYIq1Q
-         BcRIlL+LOjOEKvw6aFEsKUQJlwEjGVYLhLQzmS850tYAN5cmejwp9mnpRrHA3/tENmRP
-         idOw==
-X-Gm-Message-State: ALoCoQnV/hU9k6QQ57bGmlzW4xMv0pdJ1MWQA2S0yfOIaOlKzqe3dswOX8JW6l30FoqxadF9KSGh
-MIME-Version: 1.0
-X-Received: by 10.52.37.71 with SMTP id w7mr3061130vdj.27.1413489228195; Thu,
- 16 Oct 2014 12:53:48 -0700 (PDT)
-Received: by 10.52.168.200 with HTTP; Thu, 16 Oct 2014 12:53:48 -0700 (PDT)
-In-Reply-To: <1413198978-61926-1-git-send-email-blogic@openwrt.org>
-References: <1413198978-61926-1-git-send-email-blogic@openwrt.org>
-Date:   Thu, 16 Oct 2014 12:53:48 -0700
-X-Google-Sender-Auth: 2_Q20bbPoA3qFOyJ7eeKtfmFUIE
-Message-ID: <CAL1qeaF5am7hDDWn_0Kxu9adv27uG6R9WWNk=AG06iAA_qJt6Q@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: disabling CM regions deadlocks mt7621
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 22:01:22 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:37464
+        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S27011629AbaJPUBUl5UN5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 22:01:20 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Wim Van Sebroeck <wim@iguana.be>
+Cc:     linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH V3] watchdog: add MT7621 watchdog support
+Date:   Thu, 16 Oct 2014 22:01:04 +0200
+Message-Id: <1413489665-52342-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43311
+X-archive-position: 43312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,23 +31,274 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi John,
+This patch adds support for the watchdog core found on newer mediatek/ralink
+Wifi SoCs.
 
-On Mon, Oct 13, 2014 at 4:16 AM, John Crispin <blogic@openwrt.org> wrote:
-> While updating the mt7621 code to make use of the mips-cm i had to apply the
-> following patch to get the unit booting. With this patch applied the SoC boots
-> fine with and all 4 cores work.
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+This patch is for 3.18 and is part of a larger number of mediatek/ralink
+patches. Ideally this patch can go upstream with the rest via the linux-mips
+tree once it has been Ack'ed to avoid merge order problems.
 
-Hmm... where does it hang?  Can you tell if it's the access to the GCR
-registers causing the hang or some subsequent access?
+Changes since V2
+* specify the SoCs in the Kconfig help text
 
-> The MT7621 has a broken iocu so i guess this might be related ? could someone that
-> actually knows what those registers do enlighten me please :)
+Changes since V1
+* fix the comments identifying the driver
+* add a comment to the code setting the prescaler
+* use watchdog_init_timeout
+* use devm_reset_control_get
+* get rid of the miscdev code
 
-Adding Paul who probably knows more.
 
-Do you know what the initial values of the GCR_REGn_{BASE,MASK}
-registers are?  Perhaps they're initially enabled and by writing the
-base address first we screw up some translation?  It looks like just
-writing 0 to the mask register should also disable the region, at
-least according to the interAptiv manual I have.
+ .../devicetree/bindings/watchdog/mt7621-wdt.txt    |   12 ++
+ drivers/watchdog/Kconfig                           |    7 +
+ drivers/watchdog/Makefile                          |    1 +
+ drivers/watchdog/mt7621_wdt.c                      |  187 ++++++++++++++++++++
+ 4 files changed, 207 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt
+ create mode 100644 drivers/watchdog/mt7621_wdt.c
+
+diff --git a/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt b/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt
+new file mode 100644
+index 0000000..c15ef0e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt
+@@ -0,0 +1,12 @@
++Ralink Watchdog Timers
++
++Required properties:
++- compatible: must be "mediatek,mt7621-wdt"
++- reg: physical base address of the controller and length of the register range
++
++Example:
++
++	watchdog@100 {
++		compatible = "mediatek,mt7621-wdt";
++		reg = <0x100 0x10>;
++	};
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index f57312f..19eda1a 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -1186,6 +1186,13 @@ config RALINK_WDT
+ 	help
+ 	  Hardware driver for the Ralink SoC Watchdog Timer.
+ 
++config MT7621_WDT
++	tristate "Mediatek SoC watchdog"
++	select WATCHDOG_CORE
++	depends on SOC_MT7620 || SOC_MT7621
++	help
++	  Hardware driver for the Mediatek/Ralink MT7621/8 SoC Watchdog Timer.
++
+ # PARISC Architecture
+ 
+ # POWERPC Architecture
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 468c320..5b2031e 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -138,6 +138,7 @@ obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+ octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
+ obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
+ obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
++obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+ 
+ # PARISC Architecture
+ 
+diff --git a/drivers/watchdog/mt7621_wdt.c b/drivers/watchdog/mt7621_wdt.c
+new file mode 100644
+index 0000000..342027e
+--- /dev/null
++++ b/drivers/watchdog/mt7621_wdt.c
+@@ -0,0 +1,187 @@
++/*
++ * Ralink MT7621/MT7628 built-in hardware watchdog timer
++ *
++ * Copyright (C) 2014 John Crispin <blogic@openwrt.org>
++ *
++ * This driver was based on: drivers/watchdog/rt2880_wdt.c
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ */
++
++#include <linux/clk.h>
++#include <linux/reset.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/watchdog.h>
++#include <linux/moduleparam.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-ralink/ralink_regs.h>
++
++#define SYSC_RSTSTAT			0x38
++#define WDT_RST_CAUSE			BIT(1)
++
++#define RALINK_WDT_TIMEOUT		30
++
++#define TIMER_REG_TMRSTAT		0x00
++#define TIMER_REG_TMR1LOAD		0x24
++#define TIMER_REG_TMR1CTL		0x20
++
++#define TMR1CTL_ENABLE			BIT(7)
++#define TMR1CTL_RESTART			BIT(9)
++#define TMR1CTL_PRESCALE_SHIFT		16
++
++static void __iomem *mt7621_wdt_base;
++static struct reset_control *mt7621_wdt_reset;
++
++static bool nowayout = WATCHDOG_NOWAYOUT;
++module_param(nowayout, bool, 0);
++MODULE_PARM_DESC(nowayout,
++		 "Watchdog cannot be stopped once started (default="
++		 __MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
++
++static inline void rt_wdt_w32(unsigned reg, u32 val)
++{
++	iowrite32(val, mt7621_wdt_base + reg);
++}
++
++static inline u32 rt_wdt_r32(unsigned reg)
++{
++	return ioread32(mt7621_wdt_base + reg);
++}
++
++static int mt7621_wdt_ping(struct watchdog_device *w)
++{
++	rt_wdt_w32(TIMER_REG_TMRSTAT, TMR1CTL_RESTART);
++
++	return 0;
++}
++
++static int mt7621_wdt_set_timeout(struct watchdog_device *w, unsigned int t)
++{
++	w->timeout = t;
++	rt_wdt_w32(TIMER_REG_TMR1LOAD, t * 1000);
++	mt7621_wdt_ping(w);
++
++	return 0;
++}
++
++static int mt7621_wdt_start(struct watchdog_device *w)
++{
++	u32 t;
++
++	/* set the prescaler to 1ms == 1000us */
++	rt_wdt_w32(TIMER_REG_TMR1CTL, 1000 << TMR1CTL_PRESCALE_SHIFT);
++
++	mt7621_wdt_set_timeout(w, w->timeout);
++
++	t = rt_wdt_r32(TIMER_REG_TMR1CTL);
++	t |= TMR1CTL_ENABLE;
++	rt_wdt_w32(TIMER_REG_TMR1CTL, t);
++
++	return 0;
++}
++
++static int mt7621_wdt_stop(struct watchdog_device *w)
++{
++	u32 t;
++
++	mt7621_wdt_ping(w);
++
++	t = rt_wdt_r32(TIMER_REG_TMR1CTL);
++	t &= ~TMR1CTL_ENABLE;
++	rt_wdt_w32(TIMER_REG_TMR1CTL, t);
++
++	return 0;
++}
++
++static int mt7621_wdt_bootcause(void)
++{
++	if (rt_sysc_r32(SYSC_RSTSTAT) & WDT_RST_CAUSE)
++		return WDIOF_CARDRESET;
++
++	return 0;
++}
++
++static struct watchdog_info mt7621_wdt_info = {
++	.identity = "Mediatek Watchdog",
++	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
++};
++
++static struct watchdog_ops mt7621_wdt_ops = {
++	.owner = THIS_MODULE,
++	.start = mt7621_wdt_start,
++	.stop = mt7621_wdt_stop,
++	.ping = mt7621_wdt_ping,
++	.set_timeout = mt7621_wdt_set_timeout,
++};
++
++static struct watchdog_device mt7621_wdt_dev = {
++	.info = &mt7621_wdt_info,
++	.ops = &mt7621_wdt_ops,
++	.min_timeout = 1,
++	.max_timeout = 0xfffful / 1000,
++};
++
++static int mt7621_wdt_probe(struct platform_device *pdev)
++{
++	struct resource *res;
++	int ret;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	mt7621_wdt_base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(mt7621_wdt_base))
++		return PTR_ERR(mt7621_wdt_base);
++
++	mt7621_wdt_reset = devm_reset_control_get(&pdev->dev, NULL);
++	if (!IS_ERR(mt7621_wdt_reset))
++		reset_control_deassert(mt7621_wdt_reset);
++
++	mt7621_wdt_dev.dev = &pdev->dev;
++	mt7621_wdt_dev.bootstatus = mt7621_wdt_bootcause();
++
++	watchdog_init_timeout(&mt7621_wdt_dev, mt7621_wdt_dev.max_timeout,
++			      &pdev->dev);
++	watchdog_set_nowayout(&mt7621_wdt_dev, nowayout);
++
++	ret = watchdog_register_device(&mt7621_wdt_dev);
++
++	return 0;
++}
++
++static int mt7621_wdt_remove(struct platform_device *pdev)
++{
++	watchdog_unregister_device(&mt7621_wdt_dev);
++
++	return 0;
++}
++
++static void mt7621_wdt_shutdown(struct platform_device *pdev)
++{
++	mt7621_wdt_stop(&mt7621_wdt_dev);
++}
++
++static const struct of_device_id mt7621_wdt_match[] = {
++	{ .compatible = "mediatek,mt7621-wdt" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, mt7621_wdt_match);
++
++static struct platform_driver mt7621_wdt_driver = {
++	.probe		= mt7621_wdt_probe,
++	.remove		= mt7621_wdt_remove,
++	.shutdown	= mt7621_wdt_shutdown,
++	.driver		= {
++		.name		= KBUILD_MODNAME,
++		.owner		= THIS_MODULE,
++		.of_match_table	= mt7621_wdt_match,
++	},
++};
++
++module_platform_driver(mt7621_wdt_driver);
++
++MODULE_DESCRIPTION("MediaTek MT762x hardware watchdog driver");
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org");
++MODULE_LICENSE("GPL v2");
+-- 
+1.7.10.4

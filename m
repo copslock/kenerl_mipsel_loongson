@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 12:06:57 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53883
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 12:08:26 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:53996
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27011486AbaJPKGxv6ZiZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 12:06:53 +0200
+        with ESMTP id S27011486AbaJPKIZHZmPE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 12:08:25 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Wim Van Sebroeck <wim@iguana.be>
 Cc:     linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
 Subject: [PATCH V2] watchdog: add MT7621 watchdog support
-Date:   Mon, 13 Oct 2014 14:15:46 +0200
-Message-Id: <1413202546-2780-1-git-send-email-blogic@openwrt.org>
+Date:   Thu, 16 Oct 2014 12:08:19 +0200
+Message-Id: <1413454099-2836-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43300
+X-archive-position: 43301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

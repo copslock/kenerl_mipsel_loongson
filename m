@@ -1,66 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 15:49:33 +0200 (CEST)
-Received: from mail-qc0-f170.google.com ([209.85.216.170]:54506 "EHLO
-        mail-qc0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011613AbaJPNtbrvvtZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 15:49:31 +0200
-Received: by mail-qc0-f170.google.com with SMTP id m20so2789912qcx.15
-        for <linux-mips@linux-mips.org>; Thu, 16 Oct 2014 06:49:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=TX2H9pQEzCpMkZUwQDeIQpv7oGburMj5dDAFG06N+Ks=;
-        b=T36Dw3TCJ0ScTYbwMGdMLHeyWIdO8Tvb4o1OdtLB2tO47AUQq9udLMox4PNaoi7QLj
-         L+V+jEMq9ADlExOoaD6lCMRuFlqsor0s5V/2rIrcrcYmKNZBLHSfW2hu/2874gfHYZQk
-         qifziRMnYyJ3Sq+CiQyU3sw64NYQAy3GmY/zpsEB6dHcskALDEFyU9sxDmfvFQQwClWS
-         0HPdz8WFwz/vPhqzOBedsGIYmLcrVPW3/WRMCzcqNM5zWt8KvHxEu1IfcxHE8NJGpXqP
-         7MvuXXEyODg8EjHYnR0G4Wqi3L0GjjlXsQCx6FDrvLXs//BWXX6okTIk5BDJCaTUy0vB
-         LJ0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=TX2H9pQEzCpMkZUwQDeIQpv7oGburMj5dDAFG06N+Ks=;
-        b=VHI1tkHJ0qzog24wAZ/W4WALM92SddOX40xHVGoIGtfV6OSiFCp4/XHuxe7B2CvE6k
-         8Unra0yy3vXatfS/OBU2mrWAEaGLBoWYVkyfDt8d0vaeh7Q5SoKzAb2Hg4SERjB1qQbS
-         0WJF2EK7vtjOhMBSmRyGo4YplSaqg3Z0PrhTWaPsQ0ApEtkj22pOvBL+LVEdsOmecdhh
-         ofXLIC1aZTWk6D9wqRDsRyCZIxtjvMtEU4f2qUA3ERrzS7wWS0vxqokV9tSKmkKyuhMQ
-         DtK4CyYV4sAfy9hltysFSdlhJCeP6Njy6Szzue62p4F7SBVNZ4eO3ctRs3KL+Asemx4q
-         /y8g==
-X-Gm-Message-State: ALoCoQk3RpfjRERIfte+vo0NIuTrfz8X0R+/d1NE59njSJFfQuF/kwhuE4brZkD2iSqidYXKnZJp
-X-Received: by 10.224.45.65 with SMTP id d1mr2182755qaf.43.1413467365578; Thu,
- 16 Oct 2014 06:49:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 15:56:16 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:50599 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011609AbaJPN4OdZMqA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Oct 2014 15:56:14 +0200
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 16906284457;
+        Thu, 16 Oct 2014 15:55:11 +0200 (CEST)
+Received: from dicker-alter.lan (p548C8443.dip0.t-ipconnect.de [84.140.132.67])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Thu, 16 Oct 2014 15:55:11 +0200 (CEST)
+Message-ID: <543FCE70.80201@openwrt.org>
+Date:   Thu, 16 Oct 2014 15:56:00 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
-Received: by 10.229.161.79 with HTTP; Thu, 16 Oct 2014 06:49:05 -0700 (PDT)
-In-Reply-To: <CAErSpo45JNAFM7gYM39hsAw=O+Pe2FLJYpj3WV0p2rDe-_t+xg@mail.gmail.com>
-References: <20141015165957.4063.66741.stgit@bhelgaas-glaptop2.roam.corp.google.com>
- <20141015170617.4063.2807.stgit@bhelgaas-glaptop2.roam.corp.google.com> <CAErSpo45JNAFM7gYM39hsAw=O+Pe2FLJYpj3WV0p2rDe-_t+xg@mail.gmail.com>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Thu, 16 Oct 2014 07:49:05 -0600
-Message-ID: <CAErSpo6978-uGD6Mq+tESXVZsmZSLWCuAwyBzO9pKHg_foNZPg@mail.gmail.com>
-Subject: Re: [PATCH v1 05/10] MIPS: MT: Move "weak" from vpe_run() declaration
- to definition
-To:     Jason Wessel <jason.wessel@windriver.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        John Stultz <john.stultz@linaro.org>,
-        Eric Paris <eparis@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <bhelgaas@google.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        John Crispin <blogic@openwrt.org>,
+        Wim Van Sebroeck <wim@iguana.be>
+CC:     linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH V2] watchdog: add MT7621 watchdog support
+References: <1413454099-2836-1-git-send-email-blogic@openwrt.org> <543FCC94.1020102@roeck-us.net>
+In-Reply-To: <543FCC94.1020102@roeck-us.net>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43304
+X-archive-position: 43305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,64 +44,183 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[+cc Stephen]
+Hi
 
-On Wed, Oct 15, 2014 at 5:28 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
-> [+cc linux-mips]
->
-> On Wed, Oct 15, 2014 at 11:06 AM, Bjorn Helgaas <bhelgaas@google.com> wrote:
->> When the "weak" attribute is on a declaration in a header file, every
->> definition where the header is included becomes weak, and the linker
->> chooses one definition based on link order (see 10629d711ed7 ("PCI: Remove
->> __weak annotation from pcibios_get_phb_of_node decl")).
->>
->> Move the "weak" attribute from the declaration to the default definition so
->> we always prefer a non-weak definition over the weak one, independent of
->> link order.
->>
->> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
->> CC: linux-mips@linux-mips.org
->> ---
->>  arch/mips/include/asm/vpe.h |    2 +-
->>  arch/mips/kernel/vpe-mt.c   |    2 +-
->>  2 files changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
->> index 7849f3978fea..80e70dbd1f64 100644
->> --- a/arch/mips/include/asm/vpe.h
->> +++ b/arch/mips/include/asm/vpe.h
->> @@ -122,7 +122,7 @@ void release_vpe(struct vpe *v);
->>  void *alloc_progmem(unsigned long len);
->>  void release_progmem(void *ptr);
->>
->> -int __weak vpe_run(struct vpe *v);
->> +int vpe_run(struct vpe *v);
->>  void cleanup_tc(struct tc *tc);
->>
->>  int __init vpe_module_init(void);
->> diff --git a/arch/mips/kernel/vpe-mt.c b/arch/mips/kernel/vpe-mt.c
->> index 2e003b11a098..0e5899a2cd96 100644
->> --- a/arch/mips/kernel/vpe-mt.c
->> +++ b/arch/mips/kernel/vpe-mt.c
->> @@ -23,7 +23,7 @@ static int major;
->>  static int hw_tcs, hw_vpes;
->>
->>  /* We are prepared so configure and start the VPE... */
->> -int vpe_run(struct vpe *v)
->> +int __weak vpe_run(struct vpe *v)
->>  {
->>         unsigned long flags, val, dmt_flag;
->>         struct vpe_notifications *notifier;
->>
 
-Just FYI, this patch was in linux-next today, but I dropped it
-temporarily because Fengguang's auto-builder found the following issue
-with it:
 
-All error/warnings:
+On 16/10/2014 15:48, Guenter Roeck wrote:
+> On 10/16/2014 03:08 AM, John Crispin wrote:
+>> This patch adds support for the watchdog core found on newer 
+>> mediatek/ralink Wifi SoCs.
+>> 
+>> Signed-off-by: John Crispin <blogic@openwrt.org> --- Changes 
+>> since V1
+>> 
+>> * fix the comments identifying the driver * add a comment to the 
+>> code setting the prescaler * use watchdog_init_timeout * use 
+>> devm_reset_control_get * get rid of the miscdev code
+>> 
+>> .../devicetree/bindings/watchdog/mt7621-wdt.txt    |   12 ++ 
+>> drivers/watchdog/Kconfig                           |    7 + 
+>> drivers/watchdog/Makefile                          |    1 + 
+>> drivers/watchdog/mt7621_wdt.c                      |  186 
+>> ++++++++++++++++++++ 4 files changed, 206 insertions(+) create 
+>> mode 100644 
+>> Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt create 
+>> mode 100644 drivers/watchdog/mt7621_wdt.c
+>> 
+>> diff --git 
+>> a/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt 
+>> b/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt new 
+>> file mode 100644 index 0000000..c15ef0e --- /dev/null +++ 
+>> b/Documentation/devicetree/bindings/watchdog/mt7621-wdt.txt @@ 
+>> -0,0 +1,12 @@ +Ralink Watchdog Timers + +Required properties: +- 
+>> compatible: must be "mediatek,mt7621-wdt" +- reg: physical base 
+>> address of the controller and length of the register range + 
+>> +Example: + +    watchdog@100 { +        compatible = 
+>> "mediatek,mt7621-wdt"; +        reg = <0x100 0x10>; +    }; diff 
+>> --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+>> index f57312f..9ee0d32 100644 --- a/drivers/watchdog/Kconfig +++ 
+>> b/drivers/watchdog/Kconfig @@ -1186,6 +1186,13 @@ config 
+>> RALINK_WDT help Hardware driver for the Ralink SoC Watchdog 
+>> Timer.
+>> 
+>> +config MT7621_WDT +    tristate "Mediatek SoC watchdog" + select
+>> WATCHDOG_CORE +    depends on SOC_MT7620 || SOC_MT7621
+> 
+> There is no SOC_MT7621 symbol, at least not in the current kernel.
 
-   arch/mips/kernel/vpe.c: In function 'vpe_release':
->> arch/mips/kernel/vpe.c:830:29: error: the address of 'vpe_run' will always evaluate as 'true' [-Werror=address]
-      if ((vpe_elfload(v) >= 0) && vpe_run) {
-                                ^
-   cc1: all warnings being treated as errors
+the answer has not changed since last time. the patches are sitting in
+the linux-mips patchwork.
+
+
+
+> 
+>> +    help +      Hardware driver for the Mediatek/Ralink SoC 
+>> Watchdog Timer. +
+> How about mentioning the supported chips (7620 ? 7621 ? 7628 ?)
+
+ok
+
+> 
+>> # PARISC Architecture
+>> 
+>> # POWERPC Architecture diff --git a/drivers/watchdog/Makefile 
+>> b/drivers/watchdog/Makefile index 468c320..5b2031e 100644 --- 
+>> a/drivers/watchdog/Makefile +++ b/drivers/watchdog/Makefile @@ 
+>> -138,6 +138,7 @@ obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o 
+>> octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o 
+>> obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
+>> obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
+>> +obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+>> 
+>> # PARISC Architecture
+>> 
+>> diff --git a/drivers/watchdog/mt7621_wdt.c 
+>> b/drivers/watchdog/mt7621_wdt.c new file mode 100644 index 
+>> 0000000..0cb9e0b --- /dev/null +++ 
+>> b/drivers/watchdog/mt7621_wdt.c @@ -0,0 +1,186 @@ +/* + * Ralink 
+>> MT7621/MT7628 built-in hardware watchdog timer + *
+> MT7628 or MT7620 ?
+> 
+
+MT7621 and MT7628 as it says there. the mt7628 is a subtype of mt7620.
+it is the same core with slightly different peripherals. this is
+covered by the SOC_MT7620. there i a patch for this inside the
+linux-mips patchwork.
+
+shall i resend a V3 only with the "How about mentioning the supported
+chips (7620 ? 7621 ? 7628 ?)" fixed ?
+
+Thanks,
+	John
+
+
+
+> Thanks, Guenter
+> 
+>> + * Copyright (C) 2014 John Crispin <blogic@openwrt.org> + * + * 
+>> This driver was based on: drivers/watchdog/rt2880_wdt.c + * + * 
+>> This program is free software; you can redistribute it and/or 
+>> modify it + * under the terms of the GNU General Public License 
+>> version 2 as published + * by the Free Software Foundation. + */ 
+>> + +#include <linux/clk.h> +#include <linux/reset.h> +#include 
+>> <linux/module.h> +#include <linux/kernel.h> +#include 
+>> <linux/watchdog.h> +#include <linux/moduleparam.h> +#include 
+>> <linux/platform_device.h> + +#include 
+>> <asm/mach-ralink/ralink_regs.h> + +#define SYSC_RSTSTAT 0x38
+>> +#define WDT_RST_CAUSE            BIT(1) + +#define 
+>> RALINK_WDT_TIMEOUT        30 + +#define TIMER_REG_TMRSTAT 0x00
+>> +#define TIMER_REG_TMR1LOAD        0x24 +#define 
+>> TIMER_REG_TMR1CTL        0x20 + +#define TMR1CTL_ENABLE BIT(7)
+>> +#define TMR1CTL_RESTART            BIT(9) +#define 
+>> TMR1CTL_PRESCALE_SHIFT        16 + +static void __iomem 
+>> *mt7621_wdt_base; +static struct reset_control *mt7621_wdt_reset;
+>> + +static bool nowayout = WATCHDOG_NOWAYOUT; 
+>> +module_param(nowayout, bool, 0); +MODULE_PARM_DESC(nowayout, + 
+>> "Watchdog cannot be stopped once started (default=" + 
+>> __MODULE_STRING(WATCHDOG_NOWAYOUT) ")"); + +static inline void 
+>> rt_wdt_w32(unsigned reg, u32 val) +{ +    iowrite32(val, 
+>> mt7621_wdt_base + reg); +} + +static inline u32 
+>> rt_wdt_r32(unsigned reg) +{ +    return ioread32(mt7621_wdt_base 
+>> + reg); +} + +static int mt7621_wdt_ping(struct watchdog_device 
+>> *w) +{ +    rt_wdt_w32(TIMER_REG_TMRSTAT, TMR1CTL_RESTART); + + 
+>> return 0; +} + +static int mt7621_wdt_set_timeout(struct 
+>> watchdog_device *w, unsigned int t) +{ +    w->timeout = t; + 
+>> rt_wdt_w32(TIMER_REG_TMR1LOAD, t * 1000); + mt7621_wdt_ping(w); +
+>> +    return 0; +} + +static int mt7621_wdt_start(struct
+>> watchdog_device *w) +{ +    u32 t; + + /* set the prescaler to
+>> 1ms == 1000us */ + rt_wdt_w32(TIMER_REG_TMR1CTL, 1000 <<
+>> TMR1CTL_PRESCALE_SHIFT); + +    mt7621_wdt_set_timeout(w,
+>> w->timeout); + +    t = rt_wdt_r32(TIMER_REG_TMR1CTL); +    t |=
+>> TMR1CTL_ENABLE; + rt_wdt_w32(TIMER_REG_TMR1CTL, t); + +    return
+>> 0; +} + +static int mt7621_wdt_stop(struct watchdog_device *w) +{
+>> +    u32 t; + + mt7621_wdt_ping(w); + +    t =
+>> rt_wdt_r32(TIMER_REG_TMR1CTL); + t &= ~TMR1CTL_ENABLE; +
+>> rt_wdt_w32(TIMER_REG_TMR1CTL, t); + + return 0; +} + +static int
+>> mt7621_wdt_bootcause(void) +{ +    if (rt_sysc_r32(SYSC_RSTSTAT)
+>> & WDT_RST_CAUSE) +        return WDIOF_CARDRESET; + +    return
+>> 0; +} + +static struct watchdog_info mt7621_wdt_info = { +
+>> .identity = "Mediatek Watchdog", +    .options = WDIOF_SETTIMEOUT
+>> | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE, +}; + +static struct
+>> watchdog_ops mt7621_wdt_ops = { +    .owner = THIS_MODULE, +
+>> .start = mt7621_wdt_start, +    .stop = mt7621_wdt_stop, +
+>> .ping = mt7621_wdt_ping, +    .set_timeout =
+>> mt7621_wdt_set_timeout, +}; + +static struct watchdog_device
+>> mt7621_wdt_dev = { +    .info = &mt7621_wdt_info, +    .ops =
+>> &mt7621_wdt_ops, +    .min_timeout = 1, +    .max_timeout =
+>> 0xfffful / 1000, +}; + +static int mt7621_wdt_probe(struct
+>> platform_device *pdev) +{ +    struct resource *res; +    int
+>> ret; + +    res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> + mt7621_wdt_base = devm_ioremap_resource(&pdev->dev, res); +
+>> if (IS_ERR(mt7621_wdt_base)) +        return 
+>> PTR_ERR(mt7621_wdt_base); + +    mt7621_wdt_reset = 
+>> devm_reset_control_get(&pdev->dev, NULL); +    if 
+>> (!IS_ERR(mt7621_wdt_reset)) + 
+>> reset_control_deassert(mt7621_wdt_reset); + + mt7621_wdt_dev.dev
+>> = &pdev->dev; +    mt7621_wdt_dev.bootstatus = 
+>> mt7621_wdt_bootcause(); + + 
+>> watchdog_init_timeout(&mt7621_wdt_dev, 
+>> mt7621_wdt_dev.max_timeout, &pdev->dev); + 
+>> watchdog_set_nowayout(&mt7621_wdt_dev, nowayout); + +    ret = 
+>> watchdog_register_device(&mt7621_wdt_dev); + +    return 0; +} + 
+>> +static int mt7621_wdt_remove(struct platform_device *pdev) +{ + 
+>> watchdog_unregister_device(&mt7621_wdt_dev); + +    return 0; +} 
+>> + +static void mt7621_wdt_shutdown(struct platform_device *pdev) 
+>> +{ +    mt7621_wdt_stop(&mt7621_wdt_dev); +} + +static const 
+>> struct of_device_id mt7621_wdt_match[] = { +    { .compatible = 
+>> "mediatek,mt7621-wdt" }, +    {}, +}; +MODULE_DEVICE_TABLE(of, 
+>> mt7621_wdt_match); + +static struct platform_driver 
+>> mt7621_wdt_driver = { +    .probe        = mt7621_wdt_probe, + 
+>> .remove        = mt7621_wdt_remove, +    .shutdown    = 
+>> mt7621_wdt_shutdown, +    .driver        = { +        .name =
+>> KBUILD_MODNAME, +        .owner        = THIS_MODULE, + 
+>> .of_match_table    = mt7621_wdt_match, +    }, +}; + 
+>> +module_platform_driver(mt7621_wdt_driver); + 
+>> +MODULE_DESCRIPTION("MediaTek MT762x hardware watchdog driver"); 
+>> +MODULE_AUTHOR("John Crispin <blogic@openwrt.org"); 
+>> +MODULE_LICENSE("GPL v2");
+>> 
+> 
+> 
+> 

@@ -1,84 +1,181 @@
-From: Yoichi Yuasa <yuasa@linux-mips.org>
-Date: Wed, 2 Oct 2013 15:03:03 +0900
-Subject: [PATCH] MIPS: Fix forgotten preempt_enable() when CPU has inclusive
- pcaches
-Message-ID: <20131002060303.7N5eK_fJ8efWMefQNpe_F9AJrbv6lkiyw5WeU4UDanU@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 10:23:28 +0200 (CEST)
+Received: from mail-oi0-f47.google.com ([209.85.218.47]:33713 "EHLO
+        mail-oi0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011575AbaJPIX0jcZwj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 10:23:26 +0200
+Received: by mail-oi0-f47.google.com with SMTP id a141so2280667oig.6
+        for <linux-mips@linux-mips.org>; Thu, 16 Oct 2014 01:23:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=oHhlKXuJ6Y2g5YGnkb4P6iIsQkZxYJvR2z2Oplh/49U=;
+        b=DMCQJDueIQo5+E9NrcIwMpeINP5ozcLcvF0ZGz8wo6sjPYAoJG4KRwGoBY+kcAPFfO
+         fdEYbKsFiaNS+d1ZmQynH8BkK5EFOClJe8Qn+XIblgLzngrVezfbDIoybD+vgrfCIzdW
+         e+/W4w6k1neBnW6bCD/sk+72e/DAIKO6zN90dNgVcrud3qBYLmNrDnzOMDqfvl09VVnc
+         QlhmzlM2xEKyCvIHJC+dPvgxKusszzd0AIqRxyNiRkkBa6IRvhQvp6RxRKOQNawcSDCW
+         x1vUuYBIbK22YfznSo13SVVKowXC19SFXaLC+wLi/T8kWVtbn7E0DFa+Y3iaapXrZVWb
+         F0xg==
+X-Gm-Message-State: ALoCoQmaNCMGnMTxtg35UcRO3hn0EvRdlojKbYhifZW2RyRpLa+cbz04JmddFfa6YRrgeg+938Bf
+MIME-Version: 1.0
+X-Received: by 10.60.47.84 with SMTP id b20mr623707oen.55.1413447799658; Thu,
+ 16 Oct 2014 01:23:19 -0700 (PDT)
+Received: by 10.182.233.170 with HTTP; Thu, 16 Oct 2014 01:23:19 -0700 (PDT)
+In-Reply-To: <1413357812-16895-1-git-send-email-keguang.zhang@gmail.com>
+References: <1413357812-16895-1-git-send-email-keguang.zhang@gmail.com>
+Date:   Thu, 16 Oct 2014 13:53:19 +0530
+Message-ID: <CAKohpok9T1mT0Pb9ue0Pe8SMo4e6DEXzBn2mPoTo2rUHG+MTXQ@mail.gmail.com>
+Subject: Re: [PATCH 6/6] cpufreq: Loongson1: Add cpufreq driver for Loongson1B (UPDATED)
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
+Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <viresh.kumar@linaro.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 43296
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: viresh.kumar@linaro.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-[    1.904000] BUG: scheduling while atomic: swapper/1/0x00000002
-[    1.908000] Modules linked in:
-[    1.916000] CPU: 0 PID: 1 Comm: swapper Not tainted 3.12.0-rc2-lemote-los.git-5318619-dirty #1
-[    1.920000] Stack : 0000000031aac000 ffffffff810d0000 0000000000000052 ffffffff802730a4
-          0000000000000000 0000000000000001 ffffffff810cdf90 ffffffff810d0000
-          ffffffff8068b968 ffffffff806f5537 ffffffff810cdf90 980000009f0782e8
-          0000000000000001 ffffffff80720000 ffffffff806b0000 980000009f078000
-          980000009f290000 ffffffff805f312c 980000009f05b5d8 ffffffff80233518
-          980000009f05b5e8 ffffffff80274b7c 980000009f078000 ffffffff8068b968
-          0000000000000000 0000000000000000 0000000000000000 0000000000000000
-          0000000000000000 980000009f05b520 0000000000000000 ffffffff805f2f6c
-          0000000000000000 ffffffff80700000 ffffffff80700000 ffffffff806fc758
-          ffffffff80700000 ffffffff8020be98 ffffffff806fceb0 ffffffff805f2f6c
-          ...
-[    2.028000] Call Trace:
-[    2.032000] [<ffffffff8020be98>] show_stack+0x80/0x98
-[    2.036000] [<ffffffff805f2f6c>] __schedule_bug+0x44/0x6c
-[    2.040000] [<ffffffff805fac58>] __schedule+0x518/0x5b0
-[    2.044000] [<ffffffff805f8a58>] schedule_timeout+0x128/0x1f0
-[    2.048000] [<ffffffff80240314>] msleep+0x3c/0x60
-[    2.052000] [<ffffffff80495400>] do_probe+0x238/0x3a8
-[    2.056000] [<ffffffff804958b0>] ide_probe_port+0x340/0x7e8
-[    2.060000] [<ffffffff80496028>] ide_host_register+0x2d0/0x7a8
-[    2.064000] [<ffffffff8049c65c>] ide_pci_init_two+0x4e4/0x790
-[    2.068000] [<ffffffff8049f9b8>] amd74xx_probe+0x148/0x2c8
-[    2.072000] [<ffffffff803f571c>] pci_device_probe+0xc4/0x130
-[    2.076000] [<ffffffff80478f60>] driver_probe_device+0x98/0x270
-[    2.080000] [<ffffffff80479298>] __driver_attach+0xe0/0xe8
-[    2.084000] [<ffffffff80476ab0>] bus_for_each_dev+0x78/0xe0
-[    2.088000] [<ffffffff80478468>] bus_add_driver+0x230/0x310
-[    2.092000] [<ffffffff80479b44>] driver_register+0x84/0x158
-[    2.096000] [<ffffffff80200504>] do_one_initcall+0x104/0x160
+This is not how we send updated versions, GIT and other tools will commit
+the "(UPDATED)" part while applying. What you were required to do was
+something like:
 
-Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
-Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: linux-mips@linux-mips.org
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Patchwork: https://patchwork.linux-mips.org/patch/5941/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/mm/c-r4k.c | 2 ++
- 1 file changed, 2 insertions(+)
+git format-patch A..B --subject-prefix="PATCH V2"
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 627883b..bc6f96f 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -609,6 +609,7 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- 			r4k_blast_scache();
- 		else
- 			blast_scache_range(addr, addr + size);
-+		preempt_enable();
- 		__sync();
- 		return;
- 	}
-@@ -650,6 +651,7 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
- 			 */
- 			blast_inv_scache_range(addr, addr + size);
- 		}
-+		preempt_enable();
- 		__sync();
- 		return;
- 	}
--- 
-1.9.3
+On 15 October 2014 12:53, Kelvin Cheung <keguang.zhang@gmail.com> wrote:
+> +static int ls1x_cpufreq_remove(struct platform_device *pdev)
+> +{
+> +       cpufreq_unregister_notifier(&ls1x_cpufreq_notifier_block,
+> +                                   CPUFREQ_TRANSITION_NOTIFIER);
+> +       cpufreq_unregister_driver(&ls1x_cpufreq_driver);
+> +       clk_put(ls1x_cpufreq.osc_clk);
+> +       clk_put(ls1x_cpufreq.clk);
+> +
+> +       return 0;
+> +}
+> +
+> +static int ls1x_cpufreq_probe(struct platform_device *pdev)
+> +{
+> +       struct plat_ls1x_cpufreq *pdata = pdev->dev.platform_data;
+> +       struct clk *clk;
+> +       int ret;
+> +
+> +       if (!pdata)
+> +               return -EINVAL;
+> +       if (!pdata->clk_name)
+> +               return -EINVAL;
+> +       if (!pdata->osc_clk_name)
+> +               return -EINVAL;
 
+I didn't wanted you to do this, You could have done this:
 
---=-=-=
+       if (!pdata || !pdata->clk_name || !pdata->osc_clk_name)
+               return -EINVAL;
 
+So, just a || instead of && :)
 
--- 
-Alexandre Oliva, freedom fighter    http://FSFLA.org/~lxoliva/
-You must be the change you wish to see in the world. -- Gandhi
-Be Free! -- http://FSFLA.org/   FSF Latin America board member
-Free Software Evangelist|Red Hat Brasil GNU Toolchain Engineer
+> +
+> +       ls1x_cpufreq.dev = &pdev->dev;
+> +
+> +       clk = clk_get(NULL, pdata->clk_name);
 
---=-=-=--
+I believe we agreed for devm_clk_get(), isn't it ?
+
+> +       if (IS_ERR(clk)) {
+> +               dev_err(ls1x_cpufreq.dev, "unable to get %s clock\n",
+> +                       pdata->clk_name);
+> +               ret = PTR_ERR(clk);
+> +               goto out;
+> +       }
+> +       ls1x_cpufreq.clk = clk;
+> +
+> +       clk = clk_get_parent(clk);
+> +       if (IS_ERR(clk)) {
+> +               dev_err(ls1x_cpufreq.dev, "unable to get parent of %s clock\n",
+> +                       __clk_get_name(ls1x_cpufreq.clk));
+> +               ret = PTR_ERR(clk);
+> +               goto err_mux;
+> +       }
+> +       ls1x_cpufreq.mux_clk = clk;
+> +
+> +       clk = clk_get_parent(clk);
+> +       if (IS_ERR(clk)) {
+> +               dev_err(ls1x_cpufreq.dev, "unable to get parent of %s clock\n",
+> +                       __clk_get_name(ls1x_cpufreq.mux_clk));
+> +               ret = PTR_ERR(clk);
+> +               goto err_mux;
+> +       }
+> +       ls1x_cpufreq.pll_clk = clk;
+> +
+> +       clk = clk_get(NULL, pdata->osc_clk_name);
+> +       if (IS_ERR(clk)) {
+> +               dev_err(ls1x_cpufreq.dev, "unable to get %s clock\n",
+> +                       pdata->osc_clk_name);
+> +               ret = PTR_ERR(clk);
+> +               goto err_mux;
+> +       }
+> +       ls1x_cpufreq.osc_clk = clk;
+> +
+> +       ls1x_cpufreq.max_freq = pdata->max_freq;
+> +       ls1x_cpufreq.min_freq = pdata->min_freq;
+> +
+> +       ret = cpufreq_register_driver(&ls1x_cpufreq_driver);
+> +       if (ret) {
+> +               dev_err(ls1x_cpufreq.dev,
+> +                       "failed to register cpufreq driver: %d\n", ret);
+> +               goto err_driver;
+> +       }
+> +
+> +       ret = cpufreq_register_notifier(&ls1x_cpufreq_notifier_block,
+> +                                       CPUFREQ_TRANSITION_NOTIFIER);
+> +
+> +       if (!ret)
+> +               goto out;
+> +
+> +       dev_err(ls1x_cpufreq.dev, "failed to register cpufreq notifier: %d\n",
+> +               ret);
+> +
+> +       cpufreq_unregister_driver(&ls1x_cpufreq_driver);
+> +err_driver:
+> +       clk_put(ls1x_cpufreq.osc_clk);
+> +err_mux:
+> +       clk_put(ls1x_cpufreq.clk);
+> +out:
+> +       return ret;
+> +}
+> +
+> +static struct platform_driver ls1x_cpufreq_platdrv = {
+> +       .driver = {
+> +               .name   = "ls1x-cpufreq",
+> +               .owner  = THIS_MODULE,
+> +       },
+> +       .probe          = ls1x_cpufreq_probe,
+> +       .remove         = ls1x_cpufreq_remove,
+> +};
+> +
+> +module_platform_driver(ls1x_cpufreq_platdrv);
+> +
+> +MODULE_AUTHOR("Kelvin Cheung <keguang.zhang@gmail.com>");
+> +MODULE_DESCRIPTION("Loongson 1 CPUFreq driver");
+> +MODULE_LICENSE("GPL");
+> --
+> 1.9.1
+>

@@ -1,47 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 10:23:28 +0200 (CEST)
-Received: from mail-oi0-f47.google.com ([209.85.218.47]:33713 "EHLO
-        mail-oi0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011575AbaJPIX0jcZwj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2014 10:23:26 +0200
-Received: by mail-oi0-f47.google.com with SMTP id a141so2280667oig.6
-        for <linux-mips@linux-mips.org>; Thu, 16 Oct 2014 01:23:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=oHhlKXuJ6Y2g5YGnkb4P6iIsQkZxYJvR2z2Oplh/49U=;
-        b=DMCQJDueIQo5+E9NrcIwMpeINP5ozcLcvF0ZGz8wo6sjPYAoJG4KRwGoBY+kcAPFfO
-         fdEYbKsFiaNS+d1ZmQynH8BkK5EFOClJe8Qn+XIblgLzngrVezfbDIoybD+vgrfCIzdW
-         e+/W4w6k1neBnW6bCD/sk+72e/DAIKO6zN90dNgVcrud3qBYLmNrDnzOMDqfvl09VVnc
-         QlhmzlM2xEKyCvIHJC+dPvgxKusszzd0AIqRxyNiRkkBa6IRvhQvp6RxRKOQNawcSDCW
-         x1vUuYBIbK22YfznSo13SVVKowXC19SFXaLC+wLi/T8kWVtbn7E0DFa+Y3iaapXrZVWb
-         F0xg==
-X-Gm-Message-State: ALoCoQmaNCMGnMTxtg35UcRO3hn0EvRdlojKbYhifZW2RyRpLa+cbz04JmddFfa6YRrgeg+938Bf
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2014 11:06:28 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:39791 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010767AbaJPJG1P0ruM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Oct 2014 11:06:27 +0200
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 015D82803BB;
+        Thu, 16 Oct 2014 11:05:28 +0200 (CEST)
+Received: from dicker-alter.lan (p548C8443.dip0.t-ipconnect.de [84.140.132.67])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Thu, 16 Oct 2014 11:05:27 +0200 (CEST)
+Message-ID: <543F8A91.9050602@openwrt.org>
+Date:   Thu, 16 Oct 2014 11:06:25 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
-X-Received: by 10.60.47.84 with SMTP id b20mr623707oen.55.1413447799658; Thu,
- 16 Oct 2014 01:23:19 -0700 (PDT)
-Received: by 10.182.233.170 with HTTP; Thu, 16 Oct 2014 01:23:19 -0700 (PDT)
-In-Reply-To: <1413357812-16895-1-git-send-email-keguang.zhang@gmail.com>
-References: <1413357812-16895-1-git-send-email-keguang.zhang@gmail.com>
-Date:   Thu, 16 Oct 2014 13:53:19 +0530
-Message-ID: <CAKohpok9T1mT0Pb9ue0Pe8SMo4e6DEXzBn2mPoTo2rUHG+MTXQ@mail.gmail.com>
-Subject: Re: [PATCH 6/6] cpufreq: Loongson1: Add cpufreq driver for Loongson1B (UPDATED)
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Kelvin Cheung <keguang.zhang@gmail.com>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
+To:     Andrew Bresticker <abrestic@chromium.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: ralink: add gic support
+References: <1412933645-55061-1-git-send-email-blogic@openwrt.org> <CAL1qeaHPSdLwec5-V8PHLuyicgNUF74vO0gY7Y7U2k-etQ7eBw@mail.gmail.com>
+In-Reply-To: <CAL1qeaHPSdLwec5-V8PHLuyicgNUF74vO0gY7Y7U2k-etQ7eBw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <viresh.kumar@linaro.org>
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43296
+X-archive-position: 43297
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viresh.kumar@linaro.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,128 +43,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is not how we send updated versions, GIT and other tools will commit
-the "(UPDATED)" part while applying. What you were required to do was
-something like:
+Hi Andrew,
 
-git format-patch A..B --subject-prefix="PATCH V2"
+>> +static int __init
+>> +of_gic_init(struct device_node *node,
+>> +                               struct device_node *parent)
+>> +       if (of_address_to_resource(node, 2, &gcmp))
+>> +               panic("Failed to get gic memory range");
+>> +       if (request_mem_region(gcmp.start, resource_size(&gcmp),
+>> +                               gcmp.name) < 0)
+>> +               panic("Failed to request gcmp memory");
+> Ah, so this SoC has a CM2 as well.  Is it at the address reported by
+> C0_CMGCRBase?  If so, then mips_cm_probe() will be able to find it and
+> set it up.  Otherwise, device-tree based probing should probably be
+> added to the mips-cm driver.
 
-On 15 October 2014 12:53, Kelvin Cheung <keguang.zhang@gmail.com> wrote:
-> +static int ls1x_cpufreq_remove(struct platform_device *pdev)
-> +{
-> +       cpufreq_unregister_notifier(&ls1x_cpufreq_notifier_block,
-> +                                   CPUFREQ_TRANSITION_NOTIFIER);
-> +       cpufreq_unregister_driver(&ls1x_cpufreq_driver);
-> +       clk_put(ls1x_cpufreq.osc_clk);
-> +       clk_put(ls1x_cpufreq.clk);
-> +
-> +       return 0;
-> +}
-> +
-> +static int ls1x_cpufreq_probe(struct platform_device *pdev)
-> +{
-> +       struct plat_ls1x_cpufreq *pdata = pdev->dev.platform_data;
-> +       struct clk *clk;
-> +       int ret;
-> +
-> +       if (!pdata)
-> +               return -EINVAL;
-> +       if (!pdata->clk_name)
-> +               return -EINVAL;
-> +       if (!pdata->osc_clk_name)
-> +               return -EINVAL;
+i change my code and made use of mips-cm. unit boots fine now and indeed
+C0_CMGCRBase holds the valid address. I will look into updating the gic
+code to use the generic driver once i cleaned up the remainig mt7621
+patches.
 
-I didn't wanted you to do this, You could have done this:
+i had to apply a hack to mips-cm.c to disable the "disable CM regions"
+code, this deadlocked the mt7621. i will send a separate regarding this
+in a sec.
 
-       if (!pdata || !pdata->clk_name || !pdata->osc_clk_name)
-               return -EINVAL;
-
-So, just a || instead of && :)
-
-> +
-> +       ls1x_cpufreq.dev = &pdev->dev;
-> +
-> +       clk = clk_get(NULL, pdata->clk_name);
-
-I believe we agreed for devm_clk_get(), isn't it ?
-
-> +       if (IS_ERR(clk)) {
-> +               dev_err(ls1x_cpufreq.dev, "unable to get %s clock\n",
-> +                       pdata->clk_name);
-> +               ret = PTR_ERR(clk);
-> +               goto out;
-> +       }
-> +       ls1x_cpufreq.clk = clk;
-> +
-> +       clk = clk_get_parent(clk);
-> +       if (IS_ERR(clk)) {
-> +               dev_err(ls1x_cpufreq.dev, "unable to get parent of %s clock\n",
-> +                       __clk_get_name(ls1x_cpufreq.clk));
-> +               ret = PTR_ERR(clk);
-> +               goto err_mux;
-> +       }
-> +       ls1x_cpufreq.mux_clk = clk;
-> +
-> +       clk = clk_get_parent(clk);
-> +       if (IS_ERR(clk)) {
-> +               dev_err(ls1x_cpufreq.dev, "unable to get parent of %s clock\n",
-> +                       __clk_get_name(ls1x_cpufreq.mux_clk));
-> +               ret = PTR_ERR(clk);
-> +               goto err_mux;
-> +       }
-> +       ls1x_cpufreq.pll_clk = clk;
-> +
-> +       clk = clk_get(NULL, pdata->osc_clk_name);
-> +       if (IS_ERR(clk)) {
-> +               dev_err(ls1x_cpufreq.dev, "unable to get %s clock\n",
-> +                       pdata->osc_clk_name);
-> +               ret = PTR_ERR(clk);
-> +               goto err_mux;
-> +       }
-> +       ls1x_cpufreq.osc_clk = clk;
-> +
-> +       ls1x_cpufreq.max_freq = pdata->max_freq;
-> +       ls1x_cpufreq.min_freq = pdata->min_freq;
-> +
-> +       ret = cpufreq_register_driver(&ls1x_cpufreq_driver);
-> +       if (ret) {
-> +               dev_err(ls1x_cpufreq.dev,
-> +                       "failed to register cpufreq driver: %d\n", ret);
-> +               goto err_driver;
-> +       }
-> +
-> +       ret = cpufreq_register_notifier(&ls1x_cpufreq_notifier_block,
-> +                                       CPUFREQ_TRANSITION_NOTIFIER);
-> +
-> +       if (!ret)
-> +               goto out;
-> +
-> +       dev_err(ls1x_cpufreq.dev, "failed to register cpufreq notifier: %d\n",
-> +               ret);
-> +
-> +       cpufreq_unregister_driver(&ls1x_cpufreq_driver);
-> +err_driver:
-> +       clk_put(ls1x_cpufreq.osc_clk);
-> +err_mux:
-> +       clk_put(ls1x_cpufreq.clk);
-> +out:
-> +       return ret;
-> +}
-> +
-> +static struct platform_driver ls1x_cpufreq_platdrv = {
-> +       .driver = {
-> +               .name   = "ls1x-cpufreq",
-> +               .owner  = THIS_MODULE,
-> +       },
-> +       .probe          = ls1x_cpufreq_probe,
-> +       .remove         = ls1x_cpufreq_remove,
-> +};
-> +
-> +module_platform_driver(ls1x_cpufreq_platdrv);
-> +
-> +MODULE_AUTHOR("Kelvin Cheung <keguang.zhang@gmail.com>");
-> +MODULE_DESCRIPTION("Loongson 1 CPUFreq driver");
-> +MODULE_LICENSE("GPL");
-> --
-> 1.9.1
->
+    John

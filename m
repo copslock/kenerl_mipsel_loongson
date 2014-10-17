@@ -1,63 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2014 09:43:39 +0200 (CEST)
-Received: from szxga01-in.huawei.com ([119.145.14.64]:7580 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010868AbaJQHng6fFEu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Oct 2014 09:43:36 +0200
-Received: from 172.24.2.119 (EHLO SZXEML454-HUB.china.huawei.com) ([172.24.2.119])
-        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CCZ14716;
-        Fri, 17 Oct 2014 15:42:43 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by SZXEML454-HUB.china.huawei.com
- (10.82.67.197) with Microsoft SMTP Server id 14.3.158.1; Fri, 17 Oct 2014
- 15:42:20 +0800
-Message-ID: <5440C84E.6050408@huawei.com>
-Date:   Fri, 17 Oct 2014 15:42:06 +0800
-From:   Yijing Wang <wangyijing@huawei.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
-MIME-Version: 1.0
-To:     Michael Ellerman <mpe@ellerman.id.au>
-CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
-        Wuyun <wuyun.wu@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
-        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
-        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
-        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        David Vrabel <david.vrabel@citrix.com>,
-        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Liviu Dudau <liviu@dudau.co.uk>
-Subject: Re: [PATCH v3 21/27] Powerpc/MSI: Use MSI chip framework to configure
- MSI/MSI-X irq
-References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>     <1413342435-7876-22-git-send-email-wangyijing@huawei.com> <1413530600.21650.5.camel@concordia>
-In-Reply-To: <1413530600.21650.5.camel@concordia>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.27.212]
-X-CFilter-Loop: Reflected
-Return-Path: <wangyijing@huawei.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2014 10:11:58 +0200 (CEST)
+Received: from cantor2.suse.de ([195.135.220.15]:57522 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010868AbaJQIL4mND56 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Oct 2014 10:11:56 +0200
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 5C28DADC0;
+        Fri, 17 Oct 2014 08:11:56 +0000 (UTC)
+Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.83)
+        (envelope-from <jslaby@suse.cz>)
+        id 1Xf2df-0000DL-BL; Fri, 17 Oct 2014 10:11:55 +0200
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 076/197] MIPS: ZBOOT: add missing <linux/string.h> include
+Date:   Fri, 17 Oct 2014 10:09:52 +0200
+Message-Id: <8cc50e190b4cd308975d3f6886c8a49f4f5c5ce3.1413533329.git.jslaby@suse.cz>
+X-Mailer: git-send-email 2.1.1
+In-Reply-To: <7d97f39bc813aa9f11fe03d602885f81de07007c.1413533329.git.jslaby@suse.cz>
+References: <7d97f39bc813aa9f11fe03d602885f81de07007c.1413533329.git.jslaby@suse.cz>
+In-Reply-To: <cover.1413533329.git.jslaby@suse.cz>
+References: <cover.1413533329.git.jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43321
+X-archive-position: 43322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangyijing@huawei.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,41 +42,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/10/17 15:23, Michael Ellerman wrote:
-> On Wed, 2014-10-15 at 11:07 +0800, Yijing Wang wrote:
->> Use MSI chip framework instead of arch MSI functions to configure
->> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
->>
->> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
->> ---
->> Hi Michael,
->>    I dropped the Acked-by , because this version has a
->> lot changes compared to last. So, I guess you may want to check it again.
-> 
-> OK thanks.
-> 
-> Still looks OK and boots on one of my test systems that uses MSI.
+From: Aurelien Jarno <aurelien@aurel32.net>
 
-Good!
+3.12-stable review patch.  If anyone has any objections, please let me know.
 
-> 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (for powerpc)
+===============
 
-Thanks very much!
+commit 29593fd5a8149462ed6fad0d522234facdaee6c8 upstream.
 
-Thanks!
-Yijing.
+Commit dc4d7b37 (MIPS: ZBOOT: gather string functions into string.c)
+moved the string related functions into a separate file, which might
+cause the following build error, depending on the configuration:
 
-> 
-> 
-> cheers
-> 
-> 
-> 
-> .
-> 
+| CC      arch/mips/boot/compressed/decompress.o
+| In file included from linux/arch/mips/boot/compressed/../../../../lib/decompress_unxz.c:234:0,
+|                  from linux/arch/mips/boot/compressed/decompress.c:67:
+| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c: In function 'fill_temp':
+| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c:162:2: error: implicit declaration of function 'memcpy' [-Werror=implicit-function-declaration]
+| cc1: some warnings being treated as errors
+| linux/scripts/Makefile.build:308: recipe for target 'arch/mips/boot/compressed/decompress.o' failed
+| make[6]: *** [arch/mips/boot/compressed/decompress.o] Error 1
+| linux/arch/mips/Makefile:308: recipe for target 'vmlinuz' failed
 
+It does not fail with the standard configuration, as when
+CONFIG_DYNAMIC_DEBUG is not enabled <linux/string.h> gets included in
+include/linux/dynamic_debug.h. There might be other ways for it to
+get indirectly included.
 
+We can't add the include directly in xz_dec_stream.c as some
+architectures might want to use a different version for the boot/
+directory (see for example arch/x86/boot/string.h).
+
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/7420/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/boot/compressed/decompress.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+index 2c9573098c0d..d498a1f9bccf 100644
+--- a/arch/mips/boot/compressed/decompress.c
++++ b/arch/mips/boot/compressed/decompress.c
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/kernel.h>
++#include <linux/string.h>
+ 
+ #include <asm/addrspace.h>
+ 
 -- 
-Thanks!
-Yijing
+2.1.1

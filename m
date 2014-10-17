@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2014 08:28:03 +0200 (CEST)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:65490 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010828AbaJQG2BfvgRP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Oct 2014 08:28:01 +0200
-Received: by mail-pa0-f42.google.com with SMTP id bj1so232930pad.15
-        for <multiple recipients>; Thu, 16 Oct 2014 23:27:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2014 08:37:28 +0200 (CEST)
+Received: from mail-pd0-f181.google.com ([209.85.192.181]:63019 "EHLO
+        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010821AbaJQGh0ECNda (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Oct 2014 08:37:26 +0200
+Received: by mail-pd0-f181.google.com with SMTP id z10so228476pdj.26
+        for <multiple recipients>; Thu, 16 Oct 2014 23:37:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id;
-        bh=OZcnGJxX5CMqwA3ZxII+FOrz8p/7VFPRMJkZfDfXbmM=;
-        b=rAOAjLO5YLOGaHZb3adEFlEZLIvRz8js9Mbn8OWOp9T2pEZlCcNVoI02gkSYOBa4fk
-         LzGrYhKuUrkxEfDzE3fQ3mPYweX9tHmybD6hfotwgi4qIk4yPoOUasCjSBqkzsPzUWut
-         e8Yr2lTy1QfDqD/orRUPodjErn4fjdwNwyKeJh84ykbZZapUX2EhnEf9FU9xP40LDST6
-         b0O4v4g5cjKMdWUhBmyIw/BA+hydV1drlpy7cHyAHN5/knjTuKT/3iuEvjmjZYPblbMk
-         d1qN/nl7PQ/tXD7P8VbvaCFR+67VkG/eWY8m4oHw8uMFvOnGVt9g7SkGmRyrxXr8hglk
-         2cGg==
-X-Received: by 10.70.89.142 with SMTP id bo14mr6314654pdb.69.1413527274871;
-        Thu, 16 Oct 2014 23:27:54 -0700 (PDT)
+        bh=Ppr7TD/FBcpoQejPKt9BC9gYfQ+PCltsmX5cxZHSKFo=;
+        b=jrgTgUaMBdFDfkzumIRQGj4ogRCpTgUEv0ZJ+Uto8ZdMPgEYzoZKN8V25Fx6KQQeSB
+         zSB1P1DOmgiMBeY4loqvbxc0IIvpKOslt9Hv4mDn8xSxuWER0P65zsCQ5gTOiy1jzUu6
+         lXVKgu0pC8BSOrJ8l64NnFQaf4k/SDgmmmdM50GUWZpuwfbolbLKyplFu2GhxNUNj1aN
+         383lzKvPmIlR4xETUoZqxDmSfooXw6bybFsqN4zUfRmgtEeiIOguGVDaPt7w1BgYnC+n
+         8OqRjPTuo+Y5iIY9bdC0+o3jVk6ZbCIBw42BThxu8MS2SMZE6Q8wSutQKhw1FkcYk+Ay
+         7zOw==
+X-Received: by 10.66.222.100 with SMTP id ql4mr6255638pac.123.1413527839623;
+        Thu, 16 Oct 2014 23:37:19 -0700 (PDT)
 Received: from localhost.localdomain ([125.71.160.238])
-        by mx.google.com with ESMTPSA id po6sm488079pbb.56.2014.10.16.23.27.47
+        by mx.google.com with ESMTPSA id ot8sm551538pbc.1.2014.10.16.23.37.13
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 16 Oct 2014 23:27:53 -0700 (PDT)
+        Thu, 16 Oct 2014 23:37:18 -0700 (PDT)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
 To:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     rjw@rjwysocki.net, viresh.kumar@linaro.org,
         linux-mips@linux-mips.org, ralf@linux-mips.org,
         Kelvin Cheung <keguang.zhang@gmail.com>
 Subject: [PATCH V2 6/6] cpufreq: Loongson1: Add cpufreq driver for Loongson1B
-Date:   Fri, 17 Oct 2014 14:27:33 +0800
-Message-Id: <1413527253-22632-1-git-send-email-keguang.zhang@gmail.com>
+Date:   Fri, 17 Oct 2014 14:37:06 +0800
+Message-Id: <1413527826-22906-1-git-send-email-keguang.zhang@gmail.com>
 X-Mailer: git-send-email 1.9.1
 Return-Path: <keguang.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43318
+X-archive-position: 43319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,6 +56,13 @@ This patch adds cpufreq driver for Loongson1B which
 is capable of changing the CPU frequency dynamically.
 
 Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+
+---
+V2:
+   Use devm_clk_get() instead of clk_get().
+   Other minor fixes.
+V1:
+   Add cpufreq driver for Loongson1B.
 ---
  drivers/cpufreq/Kconfig        |  10 ++
  drivers/cpufreq/Makefile       |   1 +

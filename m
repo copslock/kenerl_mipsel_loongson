@@ -1,36 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2014 10:12:14 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:57536 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010871AbaJQIL4r2rzN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Oct 2014 10:11:56 +0200
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 7D51FADD1;
-        Fri, 17 Oct 2014 08:11:56 +0000 (UTC)
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.83)
-        (envelope-from <jslaby@suse.cz>)
-        id 1Xf2df-0000DQ-Bh; Fri, 17 Oct 2014 10:11:55 +0200
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 077/197] MIPS: mcount: Adjust stack pointer for static trace in MIPS32
-Date:   Fri, 17 Oct 2014 10:09:53 +0200
-Message-Id: <2eca54d0920a9beff88cbbdc58176559ac7644a5.1413533329.git.jslaby@suse.cz>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <7d97f39bc813aa9f11fe03d602885f81de07007c.1413533329.git.jslaby@suse.cz>
-References: <7d97f39bc813aa9f11fe03d602885f81de07007c.1413533329.git.jslaby@suse.cz>
-In-Reply-To: <cover.1413533329.git.jslaby@suse.cz>
-References: <cover.1413533329.git.jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2014 10:17:52 +0200 (CEST)
+Received: from mail-oi0-f46.google.com ([209.85.218.46]:38584 "EHLO
+        mail-oi0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010871AbaJQIRqxi0bg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Oct 2014 10:17:46 +0200
+Received: by mail-oi0-f46.google.com with SMTP id h136so218400oig.33
+        for <linux-mips@linux-mips.org>; Fri, 17 Oct 2014 01:17:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=yIOjse0fv1Bx2LYjiLT0jZphQeGKl+u03bZy0MyBxsY=;
+        b=R12x66+EXXqrevu94zzzPW+9tr8zvwaMWyB493jsB0nAzNMwkatTGqQS4OPPPXIokv
+         NLIv8PW3yrWqu0IhXlWPDggQatex54fm2WI/sXjdLV/cZw2dUmgx3TbCKFZBb+a6lu3b
+         /YNZuAgbIPdwWnHJUHVvA8YccVqoATeFPEgMV2/gE6t86gFsXiV0+GRQCK5QkWYJSlW9
+         TwLHOtXkl1iLosBX3vJl7kRWGVx6FqqQaRLPMW/YaX4hEWshqpxQ04z/DRqMqaU+i/sS
+         VmbjHMeJmNcZqQkvQXHigbXfu4UCzbRMOv+i8JKj0X8kMWJ4ZxByubBLvp4Rj4166r1B
+         M7MA==
+X-Gm-Message-State: ALoCoQk3pqMdJhwbCvl1LjVVypA+fZYOe17yB9WLXc73z1ISU+I8rYEjj1n7ZbtVZy8SOzn6HOhd
+MIME-Version: 1.0
+X-Received: by 10.60.178.229 with SMTP id db5mr5745018oec.28.1413533860556;
+ Fri, 17 Oct 2014 01:17:40 -0700 (PDT)
+Received: by 10.182.233.170 with HTTP; Fri, 17 Oct 2014 01:17:40 -0700 (PDT)
+In-Reply-To: <1413527826-22906-1-git-send-email-keguang.zhang@gmail.com>
+References: <1413527826-22906-1-git-send-email-keguang.zhang@gmail.com>
+Date:   Fri, 17 Oct 2014 13:47:40 +0530
+Message-ID: <CAKohpo=iRubshWkv0xj6DDomeR-wdYs3y2QebCgW5u-dvu0J3g@mail.gmail.com>
+Subject: Re: [PATCH V2 6/6] cpufreq: Loongson1: Add cpufreq driver for Loongson1B
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
+Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43323
+X-archive-position: 43324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,76 +54,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+On 17 October 2014 12:07, Kelvin Cheung <keguang.zhang@gmail.com> wrote:
+> V2:
+>    Use devm_clk_get() instead of clk_get().
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
-
-===============
-
-commit 8a574cfa2652545eb95595d38ac2a0bb501af0ae upstream.
-
-Every mcount() call in the MIPS 32-bit kernel is done as follows:
-
-[...]
-move at, ra
-jal _mcount
-addiu sp, sp, -8
-[...]
-
-but upon returning from the mcount() function, the stack pointer
-is not adjusted properly. This is explained in details in 58b69401c797
-(MIPS: Function tracer: Fix broken function tracing).
-
-Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
-fixed the stack manipulation for 64-bit but it didn't fix it completely
-for MIPS32.
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7792/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/kernel/mcount.S | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 539b6294b613..8f89ff4ed524 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -123,7 +123,11 @@ NESTED(_mcount, PT_SIZE, ra)
- 	 nop
- #endif
- 	b	ftrace_stub
-+#ifdef CONFIG_32BIT
-+	 addiu sp, sp, 8
-+#else
- 	 nop
-+#endif
- 
- static_trace:
- 	MCOUNT_SAVE_REGS
-@@ -133,6 +137,9 @@ static_trace:
- 	 move	a1, AT		/* arg2: parent's return address */
- 
- 	MCOUNT_RESTORE_REGS
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-@@ -177,6 +184,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
- 	jal	prepare_ftrace_return
- 	 nop
- 	MCOUNT_RESTORE_REGS
-+#ifndef CONFIG_DYNAMIC_FTRACE
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
-+#endif
- 	RETURN_BACK
- 	END(ftrace_graph_caller)
- 
--- 
-2.1.1
+Search for a few drivers which have used this API and understand how
+to use it.

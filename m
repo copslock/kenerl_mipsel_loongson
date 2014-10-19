@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2014 20:06:51 +0200 (CEST)
-Received: from mail-ig0-f173.google.com ([209.85.213.173]:41242 "EHLO
-        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011799AbaJSSGuBnO0o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Oct 2014 20:06:50 +0200
-Received: by mail-ig0-f173.google.com with SMTP id h18so4156664igc.0
-        for <linux-mips@linux-mips.org>; Sun, 19 Oct 2014 11:06:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2014 20:07:20 +0200 (CEST)
+Received: from mail-ie0-f180.google.com ([209.85.223.180]:39156 "EHLO
+        mail-ie0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011806AbaJSSHTEzBs5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Oct 2014 20:07:19 +0200
+Received: by mail-ie0-f180.google.com with SMTP id x19so3472162ier.39
+        for <linux-mips@linux-mips.org>; Sun, 19 Oct 2014 11:07:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=RtgJe+YPs1O4n3RHdQFKhbXg6Nj+vzhlDRRDMKyFZ5M=;
-        b=aiGpL+3ttIdnXoHRCSyyD9ee7byNBoTXBYlwW3NV8uv33KM7p4z9i/ATUNyQIMQ1fp
-         9SpBtyiaviV3K4MGpmJdkcbBeg+pFkWYLEWeC1Ay2GBa0JZh6AjYFcTjpupllEHwZC9T
-         zG0aJFqzRLAPmy2LOK0FqjV38bOPmo4q8crrnp5xGg4JyF/Uxb5YIMAuWaOHEar6ihIp
-         cRY61RQP1dGohWgL0i4yVqtNqTg8NzfkhcaZRN8AGZijQmqU/VnWY9owCK6U/Sr6MOTN
-         Fc1cfKx6BT5PuRW0MyzjpGa9pobOlz6NSxP6uiwM8hJXDz5sia2Q+AjIwHAXjyUXh5mb
-         iN3w==
-X-Received: by 10.42.236.19 with SMTP id ki19mr2724083icb.73.1413742003806;
- Sun, 19 Oct 2014 11:06:43 -0700 (PDT)
+        bh=oEzlVylx1LrSAMziAEc4CSWZhIHFJNOkmRb0yClb5vc=;
+        b=svaXpKq9ZTJZ+h732NLl91jJukKQVkx+2bqjAfqIn30/SmSdvL5oMWkZ0NbkkpWXRc
+         yss6238DkFoe/WrYrcRwqKDe1TbNmbLc5uNBDjd6pu++tgKNHF5iRKW26bqfzvAmPRrA
+         T9kf1qmgjkCPOGmuHnU0S17AvDW8XCAUeruFdHCCijEpkSgWVp1o+T1dZOaYnezf/pxd
+         JXQkIP/aueytaNMZT6QOr+ZZX1kyKfzZtL+y+uqzUG/KmPTo1j7wZXk1Z1+BHcHRixkq
+         ng06fztaEhoVu+Q/uJwWYq50h/SQWsnJoNdabbW0CrzDkyYBudxESC0Kli4qvnNmUFJ5
+         P2tg==
+X-Received: by 10.42.94.131 with SMTP id b3mr2426523icn.92.1413742033155; Sun,
+ 19 Oct 2014 11:07:13 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.33.203 with HTTP; Sun, 19 Oct 2014 11:06:03 -0700 (PDT)
-In-Reply-To: <1413685818-32265-1-git-send-email-cernekee@gmail.com>
-References: <1413685818-32265-1-git-send-email-cernekee@gmail.com>
+Received: by 10.107.33.203 with HTTP; Sun, 19 Oct 2014 11:06:32 -0700 (PDT)
+In-Reply-To: <1413685818-32265-2-git-send-email-cernekee@gmail.com>
+References: <1413685818-32265-1-git-send-email-cernekee@gmail.com> <1413685818-32265-2-git-send-email-cernekee@gmail.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Sun, 19 Oct 2014 11:06:03 -0700
-Message-ID: <CAGVrzca5gOs1mCeVokC0NHJCf7P7CL5BLtR8dXiPwpL5nWnU9g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] tty: serial: bcm63xx: Allow bcm63xx_uart to be built
- on other platforms
+Date:   Sun, 19 Oct 2014 11:06:32 -0700
+Message-ID: <CAGVrzcYA8FWUTuDg1uksiOwMcJHwUcscbhEDkiv9PE02p9E1sw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] tty: serial: bcm63xx: Update the Kconfig help text
 To:     Kevin Cernekee <cernekee@gmail.com>
 Cc:     Greg KH <gregkh@linuxfoundation.org>, jslaby@suse.cz,
         mbizon <mbizon@freebox.fr>, Jonas Gorski <jogo@openwrt.org>,
@@ -37,7 +36,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43338
+X-archive-position: 43339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,35 +54,53 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 2014-10-18 19:30 GMT-07:00 Kevin Cernekee <cernekee@gmail.com>:
-> This device was originally supported on bcm63xx only, but it shows up on
-> a wide variety of MIPS and ARM chipsets spanning multiple product lines.
-> Now that the driver has eliminated dependencies on bcm63xx-specific
-> header files, we can build it on any non-bcm63xx kernel.
->
-> Compile-tested on x86, both statically and as a module.  Tested for
-> functionality on bcm3384 (a new MIPS platform under active development).
+> Remove incorrect "bcm963xx_uart" module name; add a list of known users;
+> tweak grammar/indentation/capitalization.
 >
 > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
 Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
 > ---
->  drivers/tty/serial/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/tty/serial/Kconfig | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
 >
 > diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-> index 649b784..4a5c0c8 100644
+> index 4a5c0c8..815b652 100644
 > --- a/drivers/tty/serial/Kconfig
 > +++ b/drivers/tty/serial/Kconfig
-> @@ -1283,7 +1283,7 @@ config SERIAL_TIMBERDALE
+> @@ -1281,22 +1281,24 @@ config SERIAL_TIMBERDALE
+>         Add support for UART controller on timberdale.
+>
 >  config SERIAL_BCM63XX
->         tristate "bcm63xx serial port support"
+> -       tristate "bcm63xx serial port support"
+> +       tristate "Broadcom BCM63xx/BCM33xx UART support"
 >         select SERIAL_CORE
-> -       depends on BCM63XX
-> +       depends on MIPS || ARM || COMPILE_TEST
+>         depends on MIPS || ARM || COMPILE_TEST
 >         help
->           If you have a bcm63xx CPU, you can enable its onboard
->           serial port by enabling this options.
+> -         If you have a bcm63xx CPU, you can enable its onboard
+> -         serial port by enabling this options.
+> +         This enables the driver for the onchip UART core found on
+> +         the following chipsets:
+>
+> -          To compile this driver as a module, choose M here: the
+> -          module will be called bcm963xx_uart.
+> +           BCM33xx (cable modem)
+> +           BCM63xx/BCM63xxx (DSL)
+> +           BCM68xx (PON)
+> +           BCM7xxx (STB) - DOCSIS console
+>
+>  config SERIAL_BCM63XX_CONSOLE
+> -       bool "Console on bcm63xx serial port"
+> +       bool "Console on BCM63xx serial port"
+>         depends on SERIAL_BCM63XX=y
+>         select SERIAL_CORE_CONSOLE
+>         help
+> -         If you have enabled the serial port on the bcm63xx CPU
+> +         If you have enabled the serial port on the BCM63xx CPU
+>           you can make it the console by answering Y to this option.
+>
+>  config SERIAL_GRLIB_GAISLER_APBUART
 > --
 > 2.1.1
 >

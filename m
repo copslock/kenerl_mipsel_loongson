@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:06:00 +0200 (CEST)
-Received: from mail-vc0-f202.google.com ([209.85.220.202]:33689 "EHLO
-        mail-vc0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011968AbaJTTERAO-m5 (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:06:16 +0200 (CEST)
+Received: from mail-ig0-f202.google.com ([209.85.213.202]:39079 "EHLO
+        mail-ig0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011970AbaJTTERLb9WL (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 21:04:17 +0200
-Received: by mail-vc0-f202.google.com with SMTP id hy10so471715vcb.5
-        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 12:04:11 -0700 (PDT)
+Received: by mail-ig0-f202.google.com with SMTP id r10so853506igi.5
+        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 12:04:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=dV/QL51tEAUedsDqhafLfZctIpkw59vFg2z7G3pUr78=;
-        b=iM6WSV8C8EtPgmpq09e2V95UIEMpYaVm9hK+W2QE4MNLlB8A/qdN+FSpOdRu7cPvca
-         tQBEb69Be9iZ57mBXXpIyHnMSTI7KF3GAb7jAQ3C48HB9AoqWpyMBd4UsxFhCzVULEZC
-         M4S2GUVlMNpkNpxt9e6kXRVNo5dqRJa+Xem/eKuRWviT87EivFjJl1zKmkt9ECegZ3s3
-         selHB9tGAbNm/S24aAq5R17GGMicUMGKvWNxfJDmzH6d6pQyMa7MIGBpf5Aky9c7gZHb
-         YrtggsZqxHrHXnhNQGbj/hDpaB1YtQjuL7pdIjmvy2bdX4qQ1nRGfhAfd1AlzcXfv8AH
-         XD5g==
-X-Gm-Message-State: ALoCoQmvn4utdj7Sukf6YVjyMnJF/aLTtJiAzyZeVltKpnTBjjTNr7c1sn2aOXFnrutosDHkQn/0
-X-Received: by 10.236.29.204 with SMTP id i52mr12766618yha.14.1413831851162;
-        Mon, 20 Oct 2014 12:04:11 -0700 (PDT)
+        bh=dybuS8Nn8pqfeiTYI6Go0g7+BrfzOay9eCDeHInqP2E=;
+        b=hknxk5p89fTawIgcr+78NhOhyV8mhqWFxHrLrk9iwsyGGQpzI1r1gcwoDiAiL3Wn1l
+         Wo2pArEcLK8EkJmhsMcD0LfpCWODt25wox6dB8dtm3JGrnHMC6iKl799S6V3szr0dV4O
+         qUmPlprrpBFd2ZdviNhfGs8xdeovrnJwgV0QmYtISaIW3ySKokMAyu7/nqJz7E+/elm6
+         dgVR2mCN47ae/EN85fNnK72pIMjBBthgeamqTf/WbCYHN5PG0RIopiQpcHzFGPE8jLPg
+         O1uS+FvwSDKe4UYc4K5IJXdtijVkmmhAyJn7/8JB0J48Bc+9qMZjmw8km+yO7bl4hcIe
+         UeDA==
+X-Gm-Message-State: ALoCoQlgyTmiwlf0QWqTbx+OL9gHMBtxOEpRCQ4GeGDZdgGGEtm4UDyqKeeNj/yygoJ2lR3sVYiE
+X-Received: by 10.182.38.135 with SMTP id g7mr18949009obk.10.1413831850718;
+        Mon, 20 Oct 2014 12:04:10 -0700 (PDT)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id k66si435341yho.7.2014.10.20.12.04.10
+        by gmr-mx.google.com with ESMTPS id e24si437283yhe.3.2014.10.20.12.04.09
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Oct 2014 12:04:11 -0700 (PDT)
+        Mon, 20 Oct 2014 12:04:10 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id LUNvf60n.2; Mon, 20 Oct 2014 12:04:11 -0700
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id ezN2XdvX.2; Mon, 20 Oct 2014 12:04:10 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 34F6A220B02; Mon, 20 Oct 2014 12:04:10 -0700 (PDT)
+        id B6F5E220D57; Mon, 20 Oct 2014 12:04:09 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
@@ -38,9 +38,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
         John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 07/19] irqchip: mips-gic: Clean up header file
-Date:   Mon, 20 Oct 2014 12:03:54 -0700
-Message-Id: <1413831846-32100-8-git-send-email-abrestic@chromium.org>
+Subject: [PATCH 06/19] MIPS: Move gic.h to include/linux/irqchip/mips-gic.h
+Date:   Mon, 20 Oct 2014 12:03:53 -0700
+Message-Id: <1413831846-32100-7-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
 References: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
@@ -48,7 +48,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43365
+X-archive-position: 43366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,222 +65,316 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove duplicate #defines and unnecessary #includes, fix parenthesization,
-and re-order register definitions in ascending order.
+Now that the MIPS GIC irqchip lives in drivers/irqchip/, move
+its header over to include/linux/irqchip/.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- drivers/irqchip/irq-mips-gic.c   |   4 +-
- include/linux/irqchip/mips-gic.h | 129 ++++++++-------------------------------
- 2 files changed, 29 insertions(+), 104 deletions(-)
+ arch/mips/include/asm/mips-boards/maltaint.h                    | 2 +-
+ arch/mips/include/asm/mips-boards/sead3int.h                    | 2 +-
+ arch/mips/kernel/cevt-gic.c                                     | 2 +-
+ arch/mips/kernel/cevt-r4k.c                                     | 2 +-
+ arch/mips/kernel/csrc-gic.c                                     | 3 +--
+ arch/mips/kernel/smp-cmp.c                                      | 2 +-
+ arch/mips/kernel/smp-cps.c                                      | 2 +-
+ arch/mips/kernel/smp-gic.c                                      | 2 +-
+ arch/mips/kernel/smp-mt.c                                       | 2 +-
+ arch/mips/mti-malta/malta-int.c                                 | 2 +-
+ arch/mips/mti-malta/malta-time.c                                | 2 +-
+ arch/mips/mti-sead3/sead3-ehci.c                                | 2 +-
+ arch/mips/mti-sead3/sead3-int.c                                 | 2 +-
+ arch/mips/mti-sead3/sead3-net.c                                 | 2 +-
+ arch/mips/mti-sead3/sead3-platform.c                            | 2 +-
+ arch/mips/mti-sead3/sead3-time.c                                | 2 +-
+ drivers/irqchip/irq-mips-gic.c                                  | 2 +-
+ arch/mips/include/asm/gic.h => include/linux/irqchip/mips-gic.h | 0
+ 18 files changed, 17 insertions(+), 18 deletions(-)
+ rename arch/mips/include/asm/gic.h => include/linux/irqchip/mips-gic.h (100%)
 
+diff --git a/arch/mips/include/asm/mips-boards/maltaint.h b/arch/mips/include/asm/mips-boards/maltaint.h
+index 38b06a0..987ff58 100644
+--- a/arch/mips/include/asm/mips-boards/maltaint.h
++++ b/arch/mips/include/asm/mips-boards/maltaint.h
+@@ -10,7 +10,7 @@
+ #ifndef _MIPS_MALTAINT_H
+ #define _MIPS_MALTAINT_H
+ 
+-#include <asm/gic.h>
++#include <linux/irqchip/mips-gic.h>
+ 
+ /*
+  * Interrupts 0..15 are used for Malta ISA compatible interrupts
+diff --git a/arch/mips/include/asm/mips-boards/sead3int.h b/arch/mips/include/asm/mips-boards/sead3int.h
+index 59d6c32..8932c7d 100644
+--- a/arch/mips/include/asm/mips-boards/sead3int.h
++++ b/arch/mips/include/asm/mips-boards/sead3int.h
+@@ -10,7 +10,7 @@
+ #ifndef _MIPS_SEAD3INT_H
+ #define _MIPS_SEAD3INT_H
+ 
+-#include <asm/gic.h>
++#include <linux/irqchip/mips-gic.h>
+ 
+ /* SEAD-3 GIC address space definitions. */
+ #define GIC_BASE_ADDR		0x1b1c0000
+diff --git a/arch/mips/kernel/cevt-gic.c b/arch/mips/kernel/cevt-gic.c
+index 4f9262a..9caa68a 100644
+--- a/arch/mips/kernel/cevt-gic.c
++++ b/arch/mips/kernel/cevt-gic.c
+@@ -10,9 +10,9 @@
+ #include <linux/percpu.h>
+ #include <linux/smp.h>
+ #include <linux/irq.h>
++#include <linux/irqchip/mips-gic.h>
+ 
+ #include <asm/time.h>
+-#include <asm/gic.h>
+ #include <asm/mips-boards/maltaint.h>
+ 
+ DEFINE_PER_CPU(struct clock_event_device, gic_clockevent_device);
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index fd0ef8d..6acaad0 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -11,10 +11,10 @@
+ #include <linux/percpu.h>
+ #include <linux/smp.h>
+ #include <linux/irq.h>
++#include <linux/irqchip/mips-gic.h>
+ 
+ #include <asm/time.h>
+ #include <asm/cevt-r4k.h>
+-#include <asm/gic.h>
+ 
+ static int mips_next_event(unsigned long delta,
+ 			   struct clock_event_device *evt)
+diff --git a/arch/mips/kernel/csrc-gic.c b/arch/mips/kernel/csrc-gic.c
+index ab615c6..0bf28e6 100644
+--- a/arch/mips/kernel/csrc-gic.c
++++ b/arch/mips/kernel/csrc-gic.c
+@@ -6,10 +6,9 @@
+  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+  */
+ #include <linux/init.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/time.h>
+ 
+-#include <asm/gic.h>
+-
+ static cycle_t gic_hpt_read(struct clocksource *cs)
+ {
+ 	return gic_read_count();
+diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+index fc8a515..1e0a93c 100644
+--- a/arch/mips/kernel/smp-cmp.c
++++ b/arch/mips/kernel/smp-cmp.c
+@@ -24,6 +24,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/interrupt.h>
+ #include <linux/compiler.h>
++#include <linux/irqchip/mips-gic.h>
+ 
+ #include <linux/atomic.h>
+ #include <asm/cacheflush.h>
+@@ -37,7 +38,6 @@
+ #include <asm/mipsmtregs.h>
+ #include <asm/mips_mt.h>
+ #include <asm/amon.h>
+-#include <asm/gic.h>
+ 
+ static void cmp_init_secondary(void)
+ {
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index cd20aca..bed7590 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -9,13 +9,13 @@
+  */
+ 
+ #include <linux/io.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/smp.h>
+ #include <linux/types.h>
+ 
+ #include <asm/bcache.h>
+-#include <asm/gic.h>
+ #include <asm/mips-cm.h>
+ #include <asm/mips-cpc.h>
+ #include <asm/mips_mt.h>
+diff --git a/arch/mips/kernel/smp-gic.c b/arch/mips/kernel/smp-gic.c
+index 3b21a96..5f0ab5b 100644
+--- a/arch/mips/kernel/smp-gic.c
++++ b/arch/mips/kernel/smp-gic.c
+@@ -12,9 +12,9 @@
+  * option) any later version.
+  */
+ 
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/printk.h>
+ 
+-#include <asm/gic.h>
+ #include <asm/mips-cpc.h>
+ #include <asm/smp-ops.h>
+ 
+diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
+index d60475f..ad86951 100644
+--- a/arch/mips/kernel/smp-mt.c
++++ b/arch/mips/kernel/smp-mt.c
+@@ -21,6 +21,7 @@
+ #include <linux/sched.h>
+ #include <linux/cpumask.h>
+ #include <linux/interrupt.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/compiler.h>
+ #include <linux/smp.h>
+ 
+@@ -34,7 +35,6 @@
+ #include <asm/mipsregs.h>
+ #include <asm/mipsmtregs.h>
+ #include <asm/mips_mt.h>
+-#include <asm/gic.h>
+ 
+ static void __init smvp_copy_vpe_config(void)
+ {
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index 864d482..6ea4033 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -18,6 +18,7 @@
+ #include <linux/smp.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/kernel.h>
+ #include <linux/random.h>
+@@ -33,7 +34,6 @@
+ #include <asm/mips-boards/generic.h>
+ #include <asm/mips-boards/msc01_pci.h>
+ #include <asm/msc01_ic.h>
+-#include <asm/gic.h>
+ #include <asm/setup.h>
+ #include <asm/rtlx.h>
+ 
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index 39f3902..608655f 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -24,6 +24,7 @@
+ #include <linux/sched.h>
+ #include <linux/spinlock.h>
+ #include <linux/interrupt.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/timex.h>
+ #include <linux/mc146818rtc.h>
+ 
+@@ -37,7 +38,6 @@
+ #include <asm/time.h>
+ #include <asm/mc146818-time.h>
+ #include <asm/msc01_ic.h>
+-#include <asm/gic.h>
+ 
+ #include <asm/mips-boards/generic.h>
+ #include <asm/mips-boards/maltaint.h>
+diff --git a/arch/mips/mti-sead3/sead3-ehci.c b/arch/mips/mti-sead3/sead3-ehci.c
+index 4ddaa0f..014dd7b 100644
+--- a/arch/mips/mti-sead3/sead3-ehci.c
++++ b/arch/mips/mti-sead3/sead3-ehci.c
+@@ -9,8 +9,8 @@
+ #include <linux/irq.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/platform_device.h>
++#include <linux/irqchip/mips-gic.h>
+ 
+-#include <asm/gic.h>
+ #include <asm/mips-boards/sead3int.h>
+ 
+ struct resource ehci_resources[] = {
+diff --git a/arch/mips/mti-sead3/sead3-int.c b/arch/mips/mti-sead3/sead3-int.c
+index 995c401..5c6b949 100644
+--- a/arch/mips/mti-sead3/sead3-int.c
++++ b/arch/mips/mti-sead3/sead3-int.c
+@@ -7,9 +7,9 @@
+  */
+ #include <linux/init.h>
+ #include <linux/irq.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/io.h>
+ 
+-#include <asm/gic.h>
+ #include <asm/irq_cpu.h>
+ #include <asm/setup.h>
+ 
+diff --git a/arch/mips/mti-sead3/sead3-net.c b/arch/mips/mti-sead3/sead3-net.c
+index c9f728a..46176b8 100644
+--- a/arch/mips/mti-sead3/sead3-net.c
++++ b/arch/mips/mti-sead3/sead3-net.c
+@@ -7,10 +7,10 @@
+  */
+ #include <linux/module.h>
+ #include <linux/irq.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/platform_device.h>
+ #include <linux/smsc911x.h>
+ 
+-#include <asm/gic.h>
+ #include <asm/mips-boards/sead3int.h>
+ 
+ static struct smsc911x_platform_config sead3_smsc911x_data = {
+diff --git a/arch/mips/mti-sead3/sead3-platform.c b/arch/mips/mti-sead3/sead3-platform.c
+index d9661eb..53ee6f1 100644
+--- a/arch/mips/mti-sead3/sead3-platform.c
++++ b/arch/mips/mti-sead3/sead3-platform.c
+@@ -7,9 +7,9 @@
+  */
+ #include <linux/module.h>
+ #include <linux/init.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/serial_8250.h>
+ 
+-#include <asm/gic.h>
+ #include <asm/mips-boards/sead3int.h>
+ 
+ #define UART(base)							\
+diff --git a/arch/mips/mti-sead3/sead3-time.c b/arch/mips/mti-sead3/sead3-time.c
+index fd40de3..ec1dd24 100644
+--- a/arch/mips/mti-sead3/sead3-time.c
++++ b/arch/mips/mti-sead3/sead3-time.c
+@@ -6,9 +6,9 @@
+  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+  */
+ #include <linux/init.h>
++#include <linux/irqchip/mips-gic.h>
+ 
+ #include <asm/cpu.h>
+-#include <asm/gic.h>
+ #include <asm/setup.h>
+ #include <asm/time.h>
+ #include <asm/irq.h>
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 64a9729..adcb9b2 100644
+index afa3663..64a9729 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -253,8 +253,8 @@ static unsigned int gic_get_int(void)
- 	intrmask = intrmask_regs[smp_processor_id()].intrmask;
- 	pcpu_mask = pcpu_masks[smp_processor_id()].pcpu_mask;
+@@ -9,13 +9,13 @@
+ #include <linux/bitmap.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
++#include <linux/irqchip/mips-gic.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
+ #include <linux/irq.h>
+ #include <linux/clocksource.h>
  
--	pending_reg = GIC_REG(SHARED, GIC_SH_PEND_31_0);
--	intrmask_reg = GIC_REG(SHARED, GIC_SH_MASK_31_0);
-+	pending_reg = GIC_REG(SHARED, GIC_SH_PEND);
-+	intrmask_reg = GIC_REG(SHARED, GIC_SH_MASK);
- 
- 	for (i = 0; i < BITS_TO_LONGS(gic_shared_intrs); i++) {
- 		pending[i] = gic_read(pending_reg);
-diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
-index 285944c..0350eff 100644
---- a/include/linux/irqchip/mips-gic.h
-+++ b/include/linux/irqchip/mips-gic.h
-@@ -4,17 +4,11 @@
-  * for more details.
-  *
-  * Copyright (C) 2000, 07 MIPS Technologies, Inc.
-- *
-- * GIC Register Definitions
-- *
-  */
--#ifndef _ASM_GICREGS_H
--#define _ASM_GICREGS_H
--
--#include <linux/bitmap.h>
--#include <linux/threads.h>
-+#ifndef __LINUX_IRQCHIP_MIPS_GIC_H
-+#define __LINUX_IRQCHIP_MIPS_GIC_H
- 
--#include <irq.h>
-+#include <linux/clocksource.h>
- 
- #define GIC_MAX_INTRS			256
- 
-@@ -50,108 +44,42 @@
- #define GIC_SH_COUNTER_63_32_OFS	0x0014
- #define GIC_SH_REVISIONID_OFS		0x0020
- 
--/* Interrupt Polarity */
--#define GIC_SH_POL_31_0_OFS		0x0100
--#define GIC_SH_POL_63_32_OFS		0x0104
--#define GIC_SH_POL_95_64_OFS		0x0108
--#define GIC_SH_POL_127_96_OFS		0x010c
--#define GIC_SH_POL_159_128_OFS		0x0110
--#define GIC_SH_POL_191_160_OFS		0x0114
--#define GIC_SH_POL_223_192_OFS		0x0118
--#define GIC_SH_POL_255_224_OFS		0x011c
--
--/* Edge/Level Triggering */
--#define GIC_SH_TRIG_31_0_OFS		0x0180
--#define GIC_SH_TRIG_63_32_OFS		0x0184
--#define GIC_SH_TRIG_95_64_OFS		0x0188
--#define GIC_SH_TRIG_127_96_OFS		0x018c
--#define GIC_SH_TRIG_159_128_OFS		0x0190
--#define GIC_SH_TRIG_191_160_OFS		0x0194
--#define GIC_SH_TRIG_223_192_OFS		0x0198
--#define GIC_SH_TRIG_255_224_OFS		0x019c
--
--/* Dual Edge Triggering */
--#define GIC_SH_DUAL_31_0_OFS		0x0200
--#define GIC_SH_DUAL_63_32_OFS		0x0204
--#define GIC_SH_DUAL_95_64_OFS		0x0208
--#define GIC_SH_DUAL_127_96_OFS		0x020c
--#define GIC_SH_DUAL_159_128_OFS		0x0210
--#define GIC_SH_DUAL_191_160_OFS		0x0214
--#define GIC_SH_DUAL_223_192_OFS		0x0218
--#define GIC_SH_DUAL_255_224_OFS		0x021c
-+/* Convert an interrupt number to a byte offset/bit for multi-word registers */
-+#define GIC_INTR_OFS(intr)		(((intr) / 32) * 4)
-+#define GIC_INTR_BIT(intr)		((intr) % 32)
-+
-+/* Polarity : Reset Value is always 0 */
-+#define GIC_SH_SET_POLARITY_OFS		0x0100
-+
-+/* Triggering : Reset Value is always 0 */
-+#define GIC_SH_SET_TRIGGER_OFS		0x0180
-+
-+/* Dual edge triggering : Reset Value is always 0 */
-+#define GIC_SH_SET_DUAL_OFS		0x0200
- 
- /* Set/Clear corresponding bit in Edge Detect Register */
- #define GIC_SH_WEDGE_OFS		0x0280
- 
--/* Reset Mask - Disables Interrupt */
--#define GIC_SH_RMASK_31_0_OFS		0x0300
--#define GIC_SH_RMASK_63_32_OFS		0x0304
--#define GIC_SH_RMASK_95_64_OFS		0x0308
--#define GIC_SH_RMASK_127_96_OFS		0x030c
--#define GIC_SH_RMASK_159_128_OFS	0x0310
--#define GIC_SH_RMASK_191_160_OFS	0x0314
--#define GIC_SH_RMASK_223_192_OFS	0x0318
--#define GIC_SH_RMASK_255_224_OFS	0x031c
--
--/* Set Mask (WO) - Enables Interrupt */
--#define GIC_SH_SMASK_31_0_OFS		0x0380
--#define GIC_SH_SMASK_63_32_OFS		0x0384
--#define GIC_SH_SMASK_95_64_OFS		0x0388
--#define GIC_SH_SMASK_127_96_OFS		0x038c
--#define GIC_SH_SMASK_159_128_OFS	0x0390
--#define GIC_SH_SMASK_191_160_OFS	0x0394
--#define GIC_SH_SMASK_223_192_OFS	0x0398
--#define GIC_SH_SMASK_255_224_OFS	0x039c
-+/* Mask manipulation */
-+#define GIC_SH_RMASK_OFS		0x0300
-+#define GIC_SH_SMASK_OFS		0x0380
- 
- /* Global Interrupt Mask Register (RO) - Bit Set == Interrupt enabled */
--#define GIC_SH_MASK_31_0_OFS		0x0400
--#define GIC_SH_MASK_63_32_OFS		0x0404
--#define GIC_SH_MASK_95_64_OFS		0x0408
--#define GIC_SH_MASK_127_96_OFS		0x040c
--#define GIC_SH_MASK_159_128_OFS		0x0410
--#define GIC_SH_MASK_191_160_OFS		0x0414
--#define GIC_SH_MASK_223_192_OFS		0x0418
--#define GIC_SH_MASK_255_224_OFS		0x041c
-+#define GIC_SH_MASK_OFS			0x0400
- 
- /* Pending Global Interrupts (RO) */
--#define GIC_SH_PEND_31_0_OFS		0x0480
--#define GIC_SH_PEND_63_32_OFS		0x0484
--#define GIC_SH_PEND_95_64_OFS		0x0488
--#define GIC_SH_PEND_127_96_OFS		0x048c
--#define GIC_SH_PEND_159_128_OFS		0x0490
--#define GIC_SH_PEND_191_160_OFS		0x0494
--#define GIC_SH_PEND_223_192_OFS		0x0498
--#define GIC_SH_PEND_255_224_OFS		0x049c
--
--#define GIC_SH_INTR_MAP_TO_PIN_BASE_OFS 0x0500
-+#define GIC_SH_PEND_OFS			0x0480
- 
- /* Maps Interrupt X to a Pin */
-+#define GIC_SH_INTR_MAP_TO_PIN_BASE_OFS 0x0500
- #define GIC_SH_MAP_TO_PIN(intr)		(4 * (intr))
- 
--#define GIC_SH_INTR_MAP_TO_VPE_BASE_OFS 0x2000
--
- /* Maps Interrupt X to a VPE */
-+#define GIC_SH_INTR_MAP_TO_VPE_BASE_OFS 0x2000
- #define GIC_SH_MAP_TO_VPE_REG_OFF(intr, vpe) \
- 	((32 * (intr)) + (((vpe) / 32) * 4))
- #define GIC_SH_MAP_TO_VPE_REG_BIT(vpe)	(1 << ((vpe) % 32))
- 
--/* Convert an interrupt number to a byte offset/bit for multi-word registers */
--#define GIC_INTR_OFS(intr) (((intr) / 32)*4)
--#define GIC_INTR_BIT(intr) ((intr) % 32)
--
--/* Polarity : Reset Value is always 0 */
--#define GIC_SH_SET_POLARITY_OFS		0x0100
--
--/* Triggering : Reset Value is always 0 */
--#define GIC_SH_SET_TRIGGER_OFS		0x0180
--
--/* Dual edge triggering : Reset Value is always 0 */
--#define GIC_SH_SET_DUAL_OFS		0x0200
--
--/* Mask manipulation */
--#define GIC_SH_SMASK_OFS		0x0380
--#define GIC_SH_RMASK_OFS		0x0300
--
- /* Register Map for Local Section */
- #define GIC_VPE_CTL_OFS			0x0000
- #define GIC_VPE_PEND_OFS		0x0004
-@@ -200,8 +128,8 @@
- #define GIC_SH_CONFIG_NUMVPES_SHF	0
- #define GIC_SH_CONFIG_NUMVPES_MSK	(MSK(8) << GIC_SH_CONFIG_NUMVPES_SHF)
- 
--#define GIC_SH_WEDGE_SET(intr)		(intr | (0x1 << 31))
--#define GIC_SH_WEDGE_CLR(intr)		(intr & ~(0x1 << 31))
-+#define GIC_SH_WEDGE_SET(intr)		((intr) | (0x1 << 31))
-+#define GIC_SH_WEDGE_CLR(intr)		((intr) & ~(0x1 << 31))
- 
- #define GIC_MAP_TO_PIN_SHF		31
- #define GIC_MAP_TO_PIN_MSK		(MSK(1) << GIC_MAP_TO_PIN_SHF)
-@@ -278,10 +206,10 @@
- #define GIC_CPU_PIN_OFFSET	2
- 
- /* Add 2 to convert non-EIC hardware interrupt to EIC vector number. */
--#define GIC_CPU_TO_VEC_OFFSET	(2)
-+#define GIC_CPU_TO_VEC_OFFSET	2
- 
- /* Mapped interrupt to pin X, then GIC will generate the vector (X+1). */
--#define GIC_PIN_TO_VEC_OFFSET	(1)
-+#define GIC_PIN_TO_VEC_OFFSET	1
- 
- /* Local GIC interrupts. */
- #define GIC_LOCAL_INT_WD	0 /* GIC watchdog */
-@@ -301,9 +229,6 @@
- #define GIC_SHARED_TO_HWIRQ(x)	(GIC_SHARED_HWIRQ_BASE + (x))
- #define GIC_HWIRQ_TO_SHARED(x)	((x) - GIC_SHARED_HWIRQ_BASE)
- 
--#include <linux/clocksource.h>
--#include <linux/irq.h>
--
- extern unsigned int gic_present;
- extern unsigned int gic_frequency;
- 
-@@ -322,4 +247,4 @@ extern unsigned int plat_ipi_resched_int_xlate(unsigned int);
- extern unsigned int gic_get_timer_pending(void);
- extern int gic_get_c0_compare_int(void);
- extern int gic_get_c0_perfcount_int(void);
--#endif /* _ASM_GICREGS_H */
-+#endif /* __LINUX_IRQCHIP_MIPS_GIC_H */
+ #include <asm/io.h>
+-#include <asm/gic.h>
+ #include <asm/setup.h>
+ #include <asm/traps.h>
+ #include <linux/hardirq.h>
+diff --git a/arch/mips/include/asm/gic.h b/include/linux/irqchip/mips-gic.h
+similarity index 100%
+rename from arch/mips/include/asm/gic.h
+rename to include/linux/irqchip/mips-gic.h
 -- 
 2.1.0.rc2.206.gedb03e5

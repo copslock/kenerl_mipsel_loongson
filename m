@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 22:57:03 +0200 (CEST)
-Received: from mail-pd0-f171.google.com ([209.85.192.171]:49722 "EHLO
-        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011970AbaJTUzLtPK3c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 22:55:11 +0200
-Received: by mail-pd0-f171.google.com with SMTP id ft15so5701207pdb.2
-        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 13:55:05 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 22:57:21 +0200 (CEST)
+Received: from mail-pa0-f46.google.com ([209.85.220.46]:33560 "EHLO
+        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011971AbaJTUzNkaQ6V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 22:55:13 +0200
+Received: by mail-pa0-f46.google.com with SMTP id fa1so5954516pad.33
+        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 13:55:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=kyL4NquGDJwdcIUtQJQhy0cCq6kpi6NuUuum6i++DRg=;
-        b=xHswFeeGjeb57xXJyj265w/G0iDG6bXdomH1AaYmzOqklwDHY44E9dgzJbE7+6DuR7
-         YshTvtVOjFi+tMqNBtjqRhZJhSsWYasHPttD0lYj/o5A0w3plA77bcNTEACHVj/lz3tn
-         KeIVYwpACF/6Juozn9yHzxUuZf+QdWn2yMRQ6Plgdgu0/mYT9gGlfXZYRnd8+9KXlhxb
-         ukVn4+Z11WfvjKHm3Ao9sFifwU/I6EXTfD6MgOpTM0+D7v3KfnPtwB+RqqBmKfAL4BwC
-         luWZ3CdpclCo1HCXkbFgKLZ5YNDPJUy1w6AqfmgVI+BuHuD1OVrwC4AUs4vqE43vI3Kw
-         N8NQ==
-X-Received: by 10.66.141.165 with SMTP id rp5mr6124563pab.121.1413838505841;
-        Mon, 20 Oct 2014 13:55:05 -0700 (PDT)
+        bh=nGNfwPKDnEJCCZ+DPCGCw5UrwlosZoF72Y+OEXjkxrM=;
+        b=fMPflMjn4In8P1H1iAGyodkdg1v5tUR5d/a9JtBh0fWnih13Paq0BEbVtWMiVbNpcF
+         Y51X/eDTD2ufdtAGrDzbemQxntRO1sDAu1EbQpgEGpakdMaCyhl1jPhSYH4uyp36ioqd
+         Jk4CA216LJJTa8YuFFKnmsdpUUKT0uTnNGw3AL2+DVXyr0NsLT+f/G8k+6oZG8qdZp9y
+         lC0DwltkTptpZiCyrZOrB2+5kDDQUln3fsMGpbG83oS2FiOxpFXZ2MxBy5+8DrV+Odoh
+         pXtGGyqLiNkdX11huABmYxeaoMtF4xg1qc+RVaMlr7TyCo+uTtR6jw8guTOIB4Hjic6q
+         wsrA==
+X-Received: by 10.70.128.40 with SMTP id nl8mr6156916pdb.131.1413838507698;
+        Mon, 20 Oct 2014 13:55:07 -0700 (PDT)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id fr7sm9954083pdb.79.2014.10.20.13.55.04
+        by mx.google.com with ESMTPSA id fr7sm9954083pdb.79.2014.10.20.13.55.05
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 20 Oct 2014 13:55:05 -0700 (PDT)
+        Mon, 20 Oct 2014 13:55:06 -0700 (PDT)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org,
         grant.likely@linaro.org
 Cc:     geert@linux-m68k.org, f.fainelli@gmail.com, mbizon@freebox.fr,
         jogo@openwrt.org, linux-mips@linux-mips.org,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH V2 7/9] tty: serial: of-serial: Suppress warnings if OF earlycon is invoked twice
-Date:   Mon, 20 Oct 2014 13:54:06 -0700
-Message-Id: <1413838448-29464-8-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V2 8/9] tty: serial: of-serial: Allow OF earlycon to default to "on"
+Date:   Mon, 20 Oct 2014 13:54:07 -0700
+Message-Id: <1413838448-29464-9-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1413838448-29464-1-git-send-email-cernekee@gmail.com>
 References: <1413838448-29464-1-git-send-email-cernekee@gmail.com>
@@ -38,7 +38,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43386
+X-archive-position: 43387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,84 +55,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Specifying "earlycon earlycon" on the kernel command line yields this
-warning:
+On many development systems it is very common to see failures during the
+early stages of the boot process, e.g. SMP boot or PCIe initialization.
+This is one likely reason why some existing earlyprintk implementations,
+such as arch/mips/kernel/early_printk.c, are enabled unconditionally
+at compile time.
 
-    bootconsole [uart0] enabled
-    ------------[ cut here ]------------
-    WARNING: CPU: 0 PID: 0 at kernel/printk/printk.c:2391 register_console+0x244/0x3fc()
-    console 'uart0' already registered
-    CPU: 0 PID: 0 Comm: swapper Not tainted 3.18.0-rc1+ #2
-    Stack : 00000000 00000004 80af0000 80af0000 00000000 00000000 00000000 00000000
-              80ad4e12 00000036 00000000 00000000 00010000 805abe88 805606b4 805abae7
-              00000000 00000000 80ad38d8 805abe88 8055f304 43d42d03 9988c6a1 804e2710
-              805b0000 80032854 00000000 00000000 8056492c 80599c84 80599c84 805606b4
-              00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-              ...
-    Call Trace:
-    [<8001a22c>] show_stack+0x64/0x7c
-    [<804e47d8>] dump_stack+0xc8/0xfc
-    [<80032aa8>] warn_slowpath_common+0x7c/0xac
-    [<80032b38>] warn_slowpath_fmt+0x2c/0x38
-    [<80076524>] register_console+0x244/0x3fc
-    [<805d8314>] of_setup_earlycon+0x74/0x98
-    [<805daa40>] early_init_dt_scan_chosen_serial+0x104/0x134
-    [<805c51a0>] do_early_param+0xc4/0x13c
-    [<8004efa0>] parse_args+0x284/0x444
-    [<805c56cc>] parse_early_options+0x34/0x40
-    [<805c5714>] parse_early_param+0x3c/0x58
-    [<805c87a4>] setup_arch+0xec/0x6e4
-    [<805c57d4>] start_kernel+0x94/0x458
-
-    ---[ end trace dc8fa200cb88537f ]---
-
-In this case the duplicate "earlycon" was entered directly, but there are
-other cases where this could happen inadvertently:
-
- - Some platforms allow user bootargs to be concatenated with builtin
-   bootargs, e.g. CONFIG_CMDLINE_EXTEND.
-
- - Other platforms may want to hardwire earlycon to ON, so it isn't
-   nice if a user manually specifying "earlycon" on the command line sees
-   a big scary warning.
-
-So, we will treat "earlycon" as a flag, and if happens to be requested
-multiple times the kernel will not print any warnings.
+Now that earlycon's operating parameters can be passed into the kernel
+via DT, it is helpful to be able to configure the kernel to turn it on
+automatically.  Introduce a new CONFIG_SERIAL_EARLYCON_FORCE option for
+this purpose.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- drivers/of/fdt.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/of/fdt.c           |  5 +++++
+ drivers/tty/serial/Kconfig | 11 +++++++++++
+ 2 files changed, 16 insertions(+)
 
 diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index d1ffca8..20193cc 100644
+index 20193cc..3e2ea1e 100644
 --- a/drivers/of/fdt.c
 +++ b/drivers/of/fdt.c
-@@ -755,6 +755,11 @@ int __init early_init_dt_scan_chosen_serial(void)
- 	int l;
- 	const struct of_device_id *match = __earlycon_of_table;
- 	const void *fdt = initial_boot_params;
-+	static int done;
-+
-+	if (done)
-+		return -EBUSY;
-+	done = 1;
+@@ -1013,6 +1013,11 @@ bool __init early_init_dt_verify(void *params)
  
- 	offset = fdt_path_offset(fdt, "/chosen");
- 	if (offset < 0)
-@@ -792,10 +797,9 @@ int __init early_init_dt_scan_chosen_serial(void)
- 
- static int __init setup_of_earlycon(char *buf)
+ void __init early_init_dt_scan_nodes(void)
  {
--	if (buf)
--		return 0;
--
--	return early_init_dt_scan_chosen_serial();
-+	if (!buf)
-+		early_init_dt_scan_chosen_serial();
-+	return 0;
- }
- early_param("earlycon", setup_of_earlycon);
- #endif
++#ifdef CONFIG_SERIAL_EARLYCON_FORCE
++	if (early_init_dt_scan_chosen_serial() < 0)
++		pr_warn("Unable to set up earlycon from stdout-path\n");
++#endif
++
+ 	/* Retrieve various information from the /chosen node */
+ 	of_scan_flat_dt(early_init_dt_scan_chosen, boot_command_line);
+ 
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index fdd851e..bc4ebcc 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -14,6 +14,17 @@ config SERIAL_EARLYCON
+ 	  the console before standard serial driver is probed. The console is
+ 	  enabled when early_param is processed.
+ 
++config SERIAL_EARLYCON_FORCE
++	bool "Always enable early console"
++	depends on SERIAL_EARLYCON
++	help
++	  Traditionally, enabling the early console has required passing in
++	  the "earlycon" parameter on the kernel command line.  On systems
++	  under development it may be desirable to enable earlycon
++	  unconditionally rather than to force the user to manually add it
++	  to the boot argument string, as boot failures often occur before
++	  the standard serial driver is probed.
++
+ source "drivers/tty/serial/8250/Kconfig"
+ 
+ comment "Non-8250 serial port support"
 -- 
 2.1.1

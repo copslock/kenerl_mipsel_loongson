@@ -1,62 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 15:41:59 +0200 (CEST)
-Received: from mail-wi0-f173.google.com ([209.85.212.173]:55310 "EHLO
-        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011915AbaJTNl50Yi5p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 15:41:57 +0200
-Received: by mail-wi0-f173.google.com with SMTP id fb4so7194525wid.6
-        for <multiple recipients>; Mon, 20 Oct 2014 06:41:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=uOxidT5Go4bgri11MQIaFJlXocz+IG1CrbINcCoLHHc=;
-        b=sUepTEdGmY9X9u2lkCafAh/Dl9cDIjE1mrjFRpLcVroC5hbOX1N66DqB27BlSNt8It
-         Lc/R+sW842b4gaYMYu69iqlIZuazK1wbe5QZWZh+hB1aOxPc92HmW7iwd9lgVkIg606M
-         aauHbaltGBJxTLkDhzHJITrJbVaqUdbXHOfdBSpvNRCL5g77GXZokWUZ/T1oYhVK2ENH
-         NueVsmUB0nE1EIrIueSGS3nastF7RKoiLo/NoCF/VRumNlqSHW917nOhuYZE1DWr6qFa
-         Be3hrBbkYZqR93T2HmlHxN0Ieajdd63pMyJeaYo/mmwsqSguzkpmVbnly/h4TbMiCvSI
-         CXRw==
-X-Received: by 10.180.212.81 with SMTP id ni17mr20630599wic.41.1413812512079;
-        Mon, 20 Oct 2014 06:41:52 -0700 (PDT)
-Received: from cizrna.lan (37-48-34-187.tmcz.cz. [37.48.34.187])
-        by mx.google.com with ESMTPSA id pc8sm11927091wjb.36.2014.10.20.06.41.48
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Oct 2014 06:41:51 -0700 (PDT)
-From:   Tomeu Vizoso <tomeu.vizoso@collabora.com>
-To:     Mike Turquette <mturquette@linaro.org>
-Cc:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        =?UTF-8?q?Emilio=20L=C3=B3pez?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Alex Elder <elder@linaro.org>,
-        Matt Porter <mporter@linaro.org>,
-        Tim Kryger <tim.kryger@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 6/8] clk: Change clk_ops->determine_rate to return a clk_hw as the best parent
-Date:   Mon, 20 Oct 2014 15:40:06 +0200
-Message-Id: <1413812442-24956-7-git-send-email-tomeu.vizoso@collabora.com>
-X-Mailer: git-send-email 1.9.3
-In-Reply-To: <1413812442-24956-1-git-send-email-tomeu.vizoso@collabora.com>
-References: <1413812442-24956-1-git-send-email-tomeu.vizoso@collabora.com>
-Return-Path: <tomeu.vizoso@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 17:27:17 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:36906 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011932AbaJTP1My0eOP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 20 Oct 2014 17:27:12 +0200
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1XgErV-0000Qz-Ai; Mon, 20 Oct 2014 17:27:09 +0200
+Date:   Mon, 20 Oct 2014 17:27:09 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, 764223@bugs.debian.org,
+        Martin Zobel-Helas <zobel@debian.org>
+Subject: Re: [PATCH V3 4/8] MIPS: Add NUMA support for Loongson-3
+Message-ID: <20141020152709.GD19066@hall.aurel32.net>
+References: <1403754092-26607-1-git-send-email-chenhc@lemote.com>
+ <1403754092-26607-5-git-send-email-chenhc@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <1403754092-26607-5-git-send-email-chenhc@lemote.com>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43355
+X-archive-position: 43356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tomeu.vizoso@collabora.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,490 +46,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is in preparation for clock providers to not have to deal with struct clk.
+Hi,
 
-Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+On Thu, Jun 26, 2014 at 11:41:28AM +0800, Huacai Chen wrote:
+> Multiple Loongson-3A chips can be interconnected with HT0-bus. This is
+> a CC-NUMA system that every chip (node) has its own local memory and
+> cache coherency is maintained by hardware. The 64-bit physical memory
+> address format is as follows:
+> 
+> 0x-0000-YZZZ-ZZZZ-ZZZZ
+> 
+> The high 16 bits should be 0, which means the real physical address
+> supported by Loongson-3 is 48-bit. The "Y" bits is the base address of
+> each node, which can be also considered as the node-id. The "Z" bits is
+> the address offset within a node, which means every node has a 44 bits
+> address space.
+> 
+> Macros XPHYSADDR and MAX_PHYSMEM_BITS are modified unconditionally,
+> because many other MIPS CPUs have also extended their address spaces.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
 
----
-v4:	* Make sure that best_parent_p is populated with the current parent
-	  before calling clk_ops.determine_rate()
+[snip]
 
-v3:	* Rebase on top of linux-next 20141009
-	* Update Documentation/clk.txt
----
- Documentation/clk.txt               |  2 +-
- arch/mips/alchemy/common/clock.c    | 10 +++++-----
- drivers/clk/at91/clk-programmable.c |  4 ++--
- drivers/clk/bcm/clk-kona.c          |  4 ++--
- drivers/clk/clk-composite.c         |  9 +++++----
- drivers/clk/clk.c                   | 17 +++++++++++------
- drivers/clk/hisilicon/clk-hi3620.c  |  2 +-
- drivers/clk/qcom/clk-rcg.c          | 20 ++++++++++++--------
- drivers/clk/qcom/clk-rcg2.c         | 28 +++++++++++++++++-----------
- drivers/clk/sunxi/clk-factors.c     |  4 ++--
- drivers/clk/sunxi/clk-sun6i-ar100.c |  4 ++--
- include/linux/clk-provider.h        |  4 ++--
- 12 files changed, 62 insertions(+), 46 deletions(-)
+> diff --git a/arch/mips/include/asm/sparsemem.h b/arch/mips/include/asm/sparsemem.h
+> index d2da53c..b1071c1 100644
+> --- a/arch/mips/include/asm/sparsemem.h
+> +++ b/arch/mips/include/asm/sparsemem.h
+> @@ -11,7 +11,7 @@
+>  #else
+>  # define SECTION_SIZE_BITS	28
+>  #endif
+> -#define MAX_PHYSMEM_BITS	35
+> +#define MAX_PHYSMEM_BITS	48
+>  
+>  #endif /* CONFIG_SPARSEMEM */
+>  #endif /* _MIPS_SPARSEMEM_H */
 
-diff --git a/Documentation/clk.txt b/Documentation/clk.txt
-index 1fee72f..4ff8462 100644
---- a/Documentation/clk.txt
-+++ b/Documentation/clk.txt
-@@ -74,7 +74,7 @@ the operations defined in clk.h:
- 		long		(*determine_rate)(struct clk_hw *hw,
- 						unsigned long rate,
- 						unsigned long *best_parent_rate,
--						struct clk **best_parent_clk);
-+						struct clk_hw **best_parent_clk);
- 		int		(*set_parent)(struct clk_hw *hw, u8 index);
- 		u8		(*get_parent)(struct clk_hw *hw);
- 		int		(*set_rate)(struct clk_hw *hw,
-diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
-index 203e440..48a9dfc 100644
---- a/arch/mips/alchemy/common/clock.c
-+++ b/arch/mips/alchemy/common/clock.c
-@@ -374,7 +374,7 @@ static long alchemy_calc_div(unsigned long rate, unsigned long prate,
- 
- static long alchemy_clk_fgcs_detr(struct clk_hw *hw, unsigned long rate,
- 					unsigned long *best_parent_rate,
--					struct clk **best_parent_clk,
-+					struct clk_hw **best_parent_clk,
- 					int scale, int maxdiv)
- {
- 	struct clk *pc, *bpc, *free;
-@@ -453,7 +453,7 @@ static long alchemy_clk_fgcs_detr(struct clk_hw *hw, unsigned long rate,
- 	}
- 
- 	*best_parent_rate = bpr;
--	*best_parent_clk = bpc;
-+	*best_parent_clk = __clk_get_hw(bpc);
- 	return br;
- }
- 
-@@ -547,7 +547,7 @@ static unsigned long alchemy_clk_fgv1_recalc(struct clk_hw *hw,
- 
- static long alchemy_clk_fgv1_detr(struct clk_hw *hw, unsigned long rate,
- 					unsigned long *best_parent_rate,
--					struct clk **best_parent_clk)
-+					struct clk_hw **best_parent_clk)
- {
- 	return alchemy_clk_fgcs_detr(hw, rate, best_parent_rate,
- 				     best_parent_clk, 2, 512);
-@@ -679,7 +679,7 @@ static unsigned long alchemy_clk_fgv2_recalc(struct clk_hw *hw,
- 
- static long alchemy_clk_fgv2_detr(struct clk_hw *hw, unsigned long rate,
- 					unsigned long *best_parent_rate,
--					struct clk **best_parent_clk)
-+					struct clk_hw **best_parent_clk)
- {
- 	struct alchemy_fgcs_clk *c = to_fgcs_clk(hw);
- 	int scale, maxdiv;
-@@ -898,7 +898,7 @@ static int alchemy_clk_csrc_setr(struct clk_hw *hw, unsigned long rate,
- 
- static long alchemy_clk_csrc_detr(struct clk_hw *hw, unsigned long rate,
- 					unsigned long *best_parent_rate,
--					struct clk **best_parent_clk)
-+					struct clk_hw **best_parent_clk)
- {
- 	struct alchemy_fgcs_clk *c = to_fgcs_clk(hw);
- 	int scale = c->dt[2] == 3 ? 1 : 2; /* au1300 check */
-diff --git a/drivers/clk/at91/clk-programmable.c b/drivers/clk/at91/clk-programmable.c
-index 62e2509..bbdb1b9 100644
---- a/drivers/clk/at91/clk-programmable.c
-+++ b/drivers/clk/at91/clk-programmable.c
-@@ -57,7 +57,7 @@ static unsigned long clk_programmable_recalc_rate(struct clk_hw *hw,
- static long clk_programmable_determine_rate(struct clk_hw *hw,
- 					    unsigned long rate,
- 					    unsigned long *best_parent_rate,
--					    struct clk **best_parent_clk)
-+					    struct clk_hw **best_parent_hw)
- {
- 	struct clk *parent = NULL;
- 	long best_rate = -EINVAL;
-@@ -84,7 +84,7 @@ static long clk_programmable_determine_rate(struct clk_hw *hw,
- 		if (best_rate < 0 || (rate - tmp_rate) < (rate - best_rate)) {
- 			best_rate = tmp_rate;
- 			*best_parent_rate = parent_rate;
--			*best_parent_clk = parent;
-+			*best_parent_hw = __clk_get_hw(parent);
- 		}
- 
- 		if (!best_rate)
-diff --git a/drivers/clk/bcm/clk-kona.c b/drivers/clk/bcm/clk-kona.c
-index 95af2e6..1c06f6f 100644
---- a/drivers/clk/bcm/clk-kona.c
-+++ b/drivers/clk/bcm/clk-kona.c
-@@ -1032,7 +1032,7 @@ static long kona_peri_clk_round_rate(struct clk_hw *hw, unsigned long rate,
- }
- 
- static long kona_peri_clk_determine_rate(struct clk_hw *hw, unsigned long rate,
--		unsigned long *best_parent_rate, struct clk **best_parent)
-+		unsigned long *best_parent_rate, struct clk_hw **best_parent)
- {
- 	struct kona_clk *bcm_clk = to_kona_clk(hw);
- 	struct clk *clk = hw->clk;
-@@ -1075,7 +1075,7 @@ static long kona_peri_clk_determine_rate(struct clk_hw *hw, unsigned long rate,
- 		if (delta < best_delta) {
- 			best_delta = delta;
- 			best_rate = other_rate;
--			*best_parent = parent;
-+			*best_parent = __clk_get_hw(parent);
- 			*best_parent_rate = parent_rate;
- 		}
- 	}
-diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
-index b9355da..4386697 100644
---- a/drivers/clk/clk-composite.c
-+++ b/drivers/clk/clk-composite.c
-@@ -57,7 +57,7 @@ static unsigned long clk_composite_recalc_rate(struct clk_hw *hw,
- 
- static long clk_composite_determine_rate(struct clk_hw *hw, unsigned long rate,
- 					unsigned long *best_parent_rate,
--					struct clk **best_parent_p)
-+					struct clk_hw **best_parent_p)
- {
- 	struct clk_composite *composite = to_clk_composite(hw);
- 	const struct clk_ops *rate_ops = composite->rate_ops;
-@@ -80,8 +80,9 @@ static long clk_composite_determine_rate(struct clk_hw *hw, unsigned long rate,
- 		*best_parent_p = NULL;
- 
- 		if (__clk_get_flags(hw->clk) & CLK_SET_RATE_NO_REPARENT) {
--			*best_parent_p = clk_get_parent(mux_hw->clk);
--			*best_parent_rate = __clk_get_rate(*best_parent_p);
-+			parent = clk_get_parent(mux_hw->clk);
-+			*best_parent_p = __clk_get_hw(parent);
-+			*best_parent_rate = __clk_get_rate(parent);
- 
- 			return rate_ops->round_rate(rate_hw, rate,
- 						    best_parent_rate);
-@@ -103,7 +104,7 @@ static long clk_composite_determine_rate(struct clk_hw *hw, unsigned long rate,
- 
- 			if (!rate_diff || !*best_parent_p
- 				       || best_rate_diff > rate_diff) {
--				*best_parent_p = parent;
-+				*best_parent_p = __clk_get_hw(parent);
- 				*best_parent_rate = parent_rate;
- 				best_rate_diff = rate_diff;
- 				best_rate = tmp_rate;
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 909fbae..1050c16 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -702,7 +702,7 @@ struct clk *__clk_lookup(const char *name)
-  */
- long __clk_mux_determine_rate(struct clk_hw *hw, unsigned long rate,
- 			      unsigned long *best_parent_rate,
--			      struct clk **best_parent_p)
-+			      struct clk_hw **best_parent_p)
- {
- 	struct clk *clk = hw->clk, *parent, *best_parent = NULL;
- 	int i, num_parents;
-@@ -738,7 +738,7 @@ long __clk_mux_determine_rate(struct clk_hw *hw, unsigned long rate,
- 
- out:
- 	if (best_parent)
--		*best_parent_p = best_parent;
-+		*best_parent_p = best_parent->hw;
- 	*best_parent_rate = best;
- 
- 	return best;
-@@ -946,6 +946,7 @@ unsigned long __clk_round_rate(struct clk *clk, unsigned long rate)
- {
- 	unsigned long parent_rate = 0;
- 	struct clk *parent;
-+	struct clk_hw *parent_hw;
- 
- 	if (!clk)
- 		return 0;
-@@ -954,10 +955,11 @@ unsigned long __clk_round_rate(struct clk *clk, unsigned long rate)
- 	if (parent)
- 		parent_rate = parent->rate;
- 
--	if (clk->ops->determine_rate)
-+	if (clk->ops->determine_rate) {
-+		parent_hw = parent ? parent->hw : NULL;
- 		return clk->ops->determine_rate(clk->hw, rate, &parent_rate,
--						&parent);
--	else if (clk->ops->round_rate)
-+						&parent_hw);
-+	} else if (clk->ops->round_rate)
- 		return clk->ops->round_rate(clk->hw, rate, &parent_rate);
- 	else if (clk->flags & CLK_SET_RATE_PARENT)
- 		return __clk_round_rate(clk->parent, rate);
-@@ -1345,6 +1347,7 @@ static struct clk *clk_calc_new_rates(struct clk *clk, unsigned long rate)
- {
- 	struct clk *top = clk;
- 	struct clk *old_parent, *parent;
-+	struct clk_hw *parent_hw;
- 	unsigned long best_parent_rate = 0;
- 	unsigned long new_rate;
- 	int p_index = 0;
-@@ -1360,9 +1363,11 @@ static struct clk *clk_calc_new_rates(struct clk *clk, unsigned long rate)
- 
- 	/* find the closest rate and parent clk/rate */
- 	if (clk->ops->determine_rate) {
-+		parent_hw = parent ? parent->hw : NULL;
- 		new_rate = clk->ops->determine_rate(clk->hw, rate,
- 						    &best_parent_rate,
--						    &parent);
-+						    &parent_hw);
-+		parent = parent_hw->clk;
- 	} else if (clk->ops->round_rate) {
- 		new_rate = clk->ops->round_rate(clk->hw, rate,
- 						&best_parent_rate);
-diff --git a/drivers/clk/hisilicon/clk-hi3620.c b/drivers/clk/hisilicon/clk-hi3620.c
-index 339945d..480c24e 100644
---- a/drivers/clk/hisilicon/clk-hi3620.c
-+++ b/drivers/clk/hisilicon/clk-hi3620.c
-@@ -296,7 +296,7 @@ static unsigned long mmc_clk_recalc_rate(struct clk_hw *hw,
- 
- static long mmc_clk_determine_rate(struct clk_hw *hw, unsigned long rate,
- 			      unsigned long *best_parent_rate,
--			      struct clk **best_parent_p)
-+			      struct clk_hw **best_parent_p)
- {
- 	struct clk_mmc *mclk = to_mmc(hw);
- 	unsigned long best = 0;
-diff --git a/drivers/clk/qcom/clk-rcg.c b/drivers/clk/qcom/clk-rcg.c
-index b6e6959..0b93972 100644
---- a/drivers/clk/qcom/clk-rcg.c
-+++ b/drivers/clk/qcom/clk-rcg.c
-@@ -368,16 +368,17 @@ clk_dyn_rcg_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 
- static long _freq_tbl_determine_rate(struct clk_hw *hw,
- 		const struct freq_tbl *f, unsigned long rate,
--		unsigned long *p_rate, struct clk **p)
-+		unsigned long *p_rate, struct clk_hw **p_hw)
- {
- 	unsigned long clk_flags;
-+	struct clk *p;
- 
- 	f = qcom_find_freq(f, rate);
- 	if (!f)
- 		return -EINVAL;
- 
- 	clk_flags = __clk_get_flags(hw->clk);
--	*p = clk_get_parent_by_index(hw->clk, f->src);
-+	p = clk_get_parent_by_index(hw->clk, f->src);
- 	if (clk_flags & CLK_SET_RATE_PARENT) {
- 		rate = rate * f->pre_div;
- 		if (f->n) {
-@@ -387,15 +388,16 @@ static long _freq_tbl_determine_rate(struct clk_hw *hw,
- 			rate = tmp;
- 		}
- 	} else {
--		rate =  __clk_get_rate(*p);
-+		rate =  __clk_get_rate(p);
- 	}
-+	*p_hw = __clk_get_hw(p);
- 	*p_rate = rate;
- 
- 	return f->freq;
- }
- 
- static long clk_rcg_determine_rate(struct clk_hw *hw, unsigned long rate,
--		unsigned long *p_rate, struct clk **p)
-+		unsigned long *p_rate, struct clk_hw **p)
- {
- 	struct clk_rcg *rcg = to_clk_rcg(hw);
- 
-@@ -403,7 +405,7 @@ static long clk_rcg_determine_rate(struct clk_hw *hw, unsigned long rate,
- }
- 
- static long clk_dyn_rcg_determine_rate(struct clk_hw *hw, unsigned long rate,
--		unsigned long *p_rate, struct clk **p)
-+		unsigned long *p_rate, struct clk_hw **p)
- {
- 	struct clk_dyn_rcg *rcg = to_clk_dyn_rcg(hw);
- 
-@@ -411,13 +413,15 @@ static long clk_dyn_rcg_determine_rate(struct clk_hw *hw, unsigned long rate,
- }
- 
- static long clk_rcg_bypass_determine_rate(struct clk_hw *hw, unsigned long rate,
--		unsigned long *p_rate, struct clk **p)
-+		unsigned long *p_rate, struct clk_hw **p_hw)
- {
- 	struct clk_rcg *rcg = to_clk_rcg(hw);
- 	const struct freq_tbl *f = rcg->freq_tbl;
-+	struct clk *p;
- 
--	*p = clk_get_parent_by_index(hw->clk, f->src);
--	*p_rate = __clk_round_rate(*p, rate);
-+	p = clk_get_parent_by_index(hw->clk, f->src);
-+	*p_hw = __clk_get_hw(p);
-+	*p_rate = __clk_round_rate(p, rate);
- 
- 	return *p_rate;
- }
-diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
-index cfa9eb4..08b8b37 100644
---- a/drivers/clk/qcom/clk-rcg2.c
-+++ b/drivers/clk/qcom/clk-rcg2.c
-@@ -175,16 +175,17 @@ clk_rcg2_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 
- static long _freq_tbl_determine_rate(struct clk_hw *hw,
- 		const struct freq_tbl *f, unsigned long rate,
--		unsigned long *p_rate, struct clk **p)
-+		unsigned long *p_rate, struct clk_hw **p_hw)
- {
- 	unsigned long clk_flags;
-+	struct clk *p;
- 
- 	f = qcom_find_freq(f, rate);
- 	if (!f)
- 		return -EINVAL;
- 
- 	clk_flags = __clk_get_flags(hw->clk);
--	*p = clk_get_parent_by_index(hw->clk, f->src);
-+	p = clk_get_parent_by_index(hw->clk, f->src);
- 	if (clk_flags & CLK_SET_RATE_PARENT) {
- 		if (f->pre_div) {
- 			rate /= 2;
-@@ -198,15 +199,16 @@ static long _freq_tbl_determine_rate(struct clk_hw *hw,
- 			rate = tmp;
- 		}
- 	} else {
--		rate =  __clk_get_rate(*p);
-+		rate =  __clk_get_rate(p);
- 	}
-+	*p_hw = __clk_get_hw(p);
- 	*p_rate = rate;
- 
- 	return f->freq;
- }
- 
- static long clk_rcg2_determine_rate(struct clk_hw *hw, unsigned long rate,
--		unsigned long *p_rate, struct clk **p)
-+		unsigned long *p_rate, struct clk_hw **p)
- {
- 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
- 
-@@ -359,7 +361,7 @@ static int clk_edp_pixel_set_rate_and_parent(struct clk_hw *hw,
- }
- 
- static long clk_edp_pixel_determine_rate(struct clk_hw *hw, unsigned long rate,
--				 unsigned long *p_rate, struct clk **p)
-+				 unsigned long *p_rate, struct clk_hw **p)
- {
- 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
- 	const struct freq_tbl *f = rcg->freq_tbl;
-@@ -371,7 +373,7 @@ static long clk_edp_pixel_determine_rate(struct clk_hw *hw, unsigned long rate,
- 	u32 hid_div;
- 
- 	/* Force the correct parent */
--	*p = clk_get_parent_by_index(hw->clk, f->src);
-+	*p = __clk_get_hw(clk_get_parent_by_index(hw->clk, f->src));
- 
- 	if (src_rate == 810000000)
- 		frac = frac_table_810m;
-@@ -410,18 +412,20 @@ const struct clk_ops clk_edp_pixel_ops = {
- EXPORT_SYMBOL_GPL(clk_edp_pixel_ops);
- 
- static long clk_byte_determine_rate(struct clk_hw *hw, unsigned long rate,
--			 unsigned long *p_rate, struct clk **p)
-+			 unsigned long *p_rate, struct clk_hw **p_hw)
- {
- 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
- 	const struct freq_tbl *f = rcg->freq_tbl;
- 	unsigned long parent_rate, div;
- 	u32 mask = BIT(rcg->hid_width) - 1;
-+	struct clk *p;
- 
- 	if (rate == 0)
- 		return -EINVAL;
- 
--	*p = clk_get_parent_by_index(hw->clk, f->src);
--	*p_rate = parent_rate = __clk_round_rate(*p, rate);
-+	p = clk_get_parent_by_index(hw->clk, f->src);
-+	*p_hw = __clk_get_hw(p);
-+	*p_rate = parent_rate = __clk_round_rate(p, rate);
- 
- 	div = DIV_ROUND_UP((2 * parent_rate), rate) - 1;
- 	div = min_t(u32, div, mask);
-@@ -472,14 +476,16 @@ static const struct frac_entry frac_table_pixel[] = {
- };
- 
- static long clk_pixel_determine_rate(struct clk_hw *hw, unsigned long rate,
--				 unsigned long *p_rate, struct clk **p)
-+				 unsigned long *p_rate, struct clk_hw **p)
- {
- 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
- 	unsigned long request, src_rate;
- 	int delta = 100000;
- 	const struct freq_tbl *f = rcg->freq_tbl;
- 	const struct frac_entry *frac = frac_table_pixel;
--	struct clk *parent = *p = clk_get_parent_by_index(hw->clk, f->src);
-+	struct clk *parent = clk_get_parent_by_index(hw->clk, f->src);
-+
-+	*p = __clk_get_hw(parent);
- 
- 	for (; frac->num; frac++) {
- 		request = (rate * frac->den) / frac->num;
-diff --git a/drivers/clk/sunxi/clk-factors.c b/drivers/clk/sunxi/clk-factors.c
-index f83ba09..57d621d 100644
---- a/drivers/clk/sunxi/clk-factors.c
-+++ b/drivers/clk/sunxi/clk-factors.c
-@@ -81,7 +81,7 @@ static long clk_factors_round_rate(struct clk_hw *hw, unsigned long rate,
- 
- static long clk_factors_determine_rate(struct clk_hw *hw, unsigned long rate,
- 				       unsigned long *best_parent_rate,
--				       struct clk **best_parent_p)
-+				       struct clk_hw **best_parent_p)
- {
- 	struct clk *clk = hw->clk, *parent, *best_parent = NULL;
- 	int i, num_parents;
-@@ -108,7 +108,7 @@ static long clk_factors_determine_rate(struct clk_hw *hw, unsigned long rate,
- 	}
- 
- 	if (best_parent)
--		*best_parent_p = best_parent;
-+		*best_parent_p = __clk_get_hw(best_parent);
- 	*best_parent_rate = best;
- 
- 	return best_child_rate;
-diff --git a/drivers/clk/sunxi/clk-sun6i-ar100.c b/drivers/clk/sunxi/clk-sun6i-ar100.c
-index acca532..3d282fb 100644
---- a/drivers/clk/sunxi/clk-sun6i-ar100.c
-+++ b/drivers/clk/sunxi/clk-sun6i-ar100.c
-@@ -46,7 +46,7 @@ static unsigned long ar100_recalc_rate(struct clk_hw *hw,
- 
- static long ar100_determine_rate(struct clk_hw *hw, unsigned long rate,
- 				 unsigned long *best_parent_rate,
--				 struct clk **best_parent_clk)
-+				 struct clk_hw **best_parent_clk)
- {
- 	int nparents = __clk_get_num_parents(hw->clk);
- 	long best_rate = -EINVAL;
-@@ -100,7 +100,7 @@ static long ar100_determine_rate(struct clk_hw *hw, unsigned long rate,
- 
- 		tmp_rate = (parent_rate >> shift) / div;
- 		if (!*best_parent_clk || tmp_rate > best_rate) {
--			*best_parent_clk = parent;
-+			*best_parent_clk = __clk_get_hw(parent);
- 			*best_parent_rate = parent_rate;
- 			best_rate = tmp_rate;
- 		}
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-index 55f3b49..4ccd388 100644
---- a/include/linux/clk-provider.h
-+++ b/include/linux/clk-provider.h
-@@ -176,7 +176,7 @@ struct clk_ops {
- 					unsigned long *parent_rate);
- 	long		(*determine_rate)(struct clk_hw *hw, unsigned long rate,
- 					unsigned long *best_parent_rate,
--					struct clk **best_parent_clk);
-+					struct clk_hw **best_parent_hw);
- 	int		(*set_parent)(struct clk_hw *hw, u8 index);
- 	u8		(*get_parent)(struct clk_hw *hw);
- 	int		(*set_rate)(struct clk_hw *hw, unsigned long rate,
-@@ -552,7 +552,7 @@ bool __clk_is_enabled(struct clk *clk);
- struct clk *__clk_lookup(const char *name);
- long __clk_mux_determine_rate(struct clk_hw *hw, unsigned long rate,
- 			      unsigned long *best_parent_rate,
--			      struct clk **best_parent_p);
-+			      struct clk_hw **best_parent_p);
- 
- /*
-  * FIXME clock api without lock protection
+This part of the patch has broken Loongson 2E support. The pata_via
+module fails to allocate memory in the DMA zone:
+
+| [    4.708000] swapper: page allocation failure: order:0, mode:0x10d1
+| [    4.716000] CPU: 0 PID: 1 Comm: swapper Not tainted 3.17-1-loongson-2e #1 Debian 3.17-1~exp1
+| [    4.724000] Stack : 0000000000000050 ffffffff8016c7d8 0000000000000004 000000000000000b
+|           0000000000000000 0000000000000000 0000000000000000 0000000000000000
+|           ffffffff8074b9f0 ffffffff8080f347 ffffffff8092e3b8 980000002e06b868
+|           0000000000000001 0000000000000000 0000000000000000 0000000000000000
+|           0000000000000000 ffffffff80655c84 00000000000010d1 980000002e06f838
+|           0000000000000001 ffffffff8016ddec 980000002e06b460 00ffffff8074b9f0
+|           0000000000000000 0000000000000000 0000000000000000 0000000000000000
+|           0000000000000000 980000002e06f780 0000000000000000 ffffffff801f72e8
+|           0000000000000000 00000000bc3e288d 00000000000010d1 0000000000000000
+|           0000000000000001 ffffffff801098f0 ffffffff80892718 ffffffff801f72e8
+|           ...
+| [    4.792000] Call Trace:
+| [    4.796000] [<ffffffff801098f0>] show_stack+0x78/0x90
+| [    4.800000] [<ffffffff801f72e8>] warn_alloc_failed+0x100/0x148
+| [    4.808000] [<ffffffff801faabc>] __alloc_pages_nodemask+0x6e4/0x9c0
+| [    4.812000] [<ffffffff801fadbc>] __get_free_pages+0x24/0xa0
+| [    4.820000] [<ffffffff8011988c>] mips_dma_alloc_coherent+0x10c/0x1e0
+| [    4.824000] [<ffffffff804a925c>] dmam_alloc_coherent+0x84/0x100
+| [    4.832000] [<ffffffff804ed540>] ata_bmdma_port_start+0x48/0x68
+| [    4.840000] [<ffffffff804f3a1c>] via_port_start+0x2c/0x70
+| [    4.844000] [<ffffffff804d904c>] ata_host_start+0x124/0x270
+| [    4.848000] [<ffffffff804edfac>] ata_pci_sff_activate_host+0x54/0x270
+| [    4.856000] [<ffffffff804ee688>] ata_pci_init_one+0x150/0x208
+| [    4.864000] [<ffffffff804f36ac>] via_init_one+0x1b4/0x2d8
+| [    4.868000] [<ffffffff80424268>] pci_device_probe+0xb0/0x100
+| [    4.876000] [<ffffffff804984ac>] driver_probe_device+0xdc/0x400
+| [    4.880000] [<ffffffff804988a0>] __driver_attach+0xd0/0xd8
+| [    4.888000] [<ffffffff80496260>] bus_for_each_dev+0x70/0xc0
+| [    4.892000] [<ffffffff804978c8>] bus_add_driver+0x128/0x248
+| [    4.896000] [<ffffffff80499308>] driver_register+0x90/0x138
+| [    4.904000] [<ffffffff801005c0>] do_one_initcall+0x110/0x210
+| [    4.908000] [<ffffffff808a8e60>] kernel_init_freeable+0x17c/0x248
+| [    4.916000] [<ffffffff806546f8>] kernel_init+0x20/0x118
+| [    4.920000] [<ffffffff80103d50>] ret_from_kernel_thread+0x14/0x1c
+| [    4.928000]
+| [    4.928000] Mem-Info:
+| [    4.932000] DMA per-cpu:
+| [    4.936000] CPU    0: hi:    0, btch:   1 usd:   0
+| [    4.940000] Normal per-cpu:
+| [    4.944000] CPU    0: hi:   42, btch:   7 usd:  37
+| [    4.948000] active_anon:0 inactive_anon:0 isolated_anon:0
+| [    4.948000]  active_file:1657 inactive_file:1899 isolated_file:0
+| [    4.948000]  unevictable:0 dirty:0 writeback:0 unstable:0
+| [    4.948000]  free:25711 slab_reclaimable:315 slab_unreclaimable:191
+| [    4.948000]  mapped:0 shmem:0 pagetables:0 bounce:0
+| [    4.948000]  free_cma:0
+| [    4.980000] DMA free:0kB min:0kB low:0kB high:0kB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB isolated(anon):0kB isolated(file):0k
+| B present:16384kB managed:0kB mlocked:0kB dirty:0kB writeback:0kB mapped:0kB shmem:0kB slab_reclaimable:0kB slab_unreclaimable:0kB kernel_stack:0kB pagetables:0kB unstable:0
+| kB bounce:0kB free_cma:0kB writeback_tmp:0kB pages_scanned:0 all_unreclaimable? yes
+| [    5.020000] lowmem_reserve[]: 0 116 116
+| [    5.024000] Normal free:411376kB min:2752kB low:3440kB high:4128kB active_anon:0kB inactive_anon:0kB active_file:26512kB inactive_file:30384kB unevictable:0kB isolated(an
+| on):0kB isolated(file):0kB present:638960kB managed:478096kB mlocked:0kB dirty:0kB writeback:0kB mapped:0kB shmem:0kB slab_reclaimable:5040kB slab_unreclaimable:3056kB kerne
+| l_stack:352kB pagetables:0kB unstable:0kB bounce:0kB free_cma:0kB writeback_tmp:0kB pages_scanned:0 all_unreclaimable? no
+| [    5.064000] lowmem_reserve[]: 0 0 0
+| [    5.068000] DMA: 0*16kB 0*32kB 0*64kB 0*128kB 0*256kB 0*512kB 0*1024kB 0*2048kB 0*4096kB 0*8192kB 0*16384kB 0*32768kB = 0kB
+| [    5.080000] Normal: 5*16kB (EM) 5*32kB (UEM) 2*64kB (EM) 3*128kB (EM) 6*256kB (UEM) 3*512kB (EM) 2*1024kB (M) 6*2048kB (EM) 2*4096kB (UM) 3*8192kB (EM) 2*16384kB (EM) 10*
+| 32768kB (MR) = 411376kB
+| [    5.100000] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=32768kB
+| [    5.108000] 3559 total pagecache pages
+| [    5.112000] 0 pages in swap cache
+| [    5.116000] Swap cache stats: add 0, delete 0, find 0/0
+| [    5.120000] Free swap  = 0kB
+| [    5.124000] Total swap = 0kB
+| [    5.128000] 40959 pages RAM
+| [    5.132000] 0 pages HighMem/MovableOnly
+| [    5.136000] 10054 pages reserved
+| [    5.140000] pata_via 0000:00:05.1: failed to start port 0 (errno=-12)
+| [    5.144000] pata_via: probe of 0000:00:05.1 failed with error -12
+
+Does anyone has an idea of the problem, or have experienced the issue
+with other MIPS platforms?
+
+Thanks,
+Aurelien
+
 -- 
-1.9.3
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

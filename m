@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 22:55:03 +0200 (CEST)
-Received: from mail-pa0-f50.google.com ([209.85.220.50]:38381 "EHLO
-        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011950AbaJTUzBdGJfv (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 22:55:21 +0200 (CEST)
+Received: from mail-pa0-f43.google.com ([209.85.220.43]:60645 "EHLO
+        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011930AbaJTUzBxmM1B (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 22:55:01 +0200
-Received: by mail-pa0-f50.google.com with SMTP id kx10so5887827pab.23
-        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 13:54:54 -0700 (PDT)
+Received: by mail-pa0-f43.google.com with SMTP id lf10so5944126pab.2
+        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 13:54:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=+TiHzdDgCEoOlsvm4cuRpb+qTYPgTx2xT0oFApNm7os=;
-        b=cM7frNX92DxmQOx90kbUm28Ol8Xtka/14CCHRoFWUaMbLRZwrdqCcbNhBtkBo1twBj
-         W2jXlqvk5uWJn+a6yx/synhCrf9s/PFNYGJZfTg54NBA2JUpHMbyPzXAZ1/Q+8nHgwfP
-         pQodVZF5xu9RJsV6PdBwOCDEQHIeDpy7KFxyZ5iFEo6H08PR2NJBG+3IRYH0mbaSDpKb
-         Yk+4WHR3TRrgwHHts9UMsn5UthADDJCFnG+I3+7RPWqQWS5x8EZhWLuMmR32o5Hs9lzp
-         Umet84J0WojKFSkNpuf/vkNayIOsqPWEV+Uo+MOrkDs01ahiM+v3FVt+SIMfimtUrdyK
-         jwkA==
-X-Received: by 10.66.140.102 with SMTP id rf6mr30252884pab.1.1413838494343;
-        Mon, 20 Oct 2014 13:54:54 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=8T6wcHrs0YplUg7jynimfhQz+s5KaOxsLTerO3zmj5w=;
+        b=LMDAomLCfny4GjCdM0qanG0Xl6rOivnvUr6B4dDHsMJhXygYPh6fZ66Ysm+cMH6jxz
+         noO/wFDtaSGnZXqlo+14N1W87Pn39rJCvPMNEGxmS+sfgYLndvMK8mWgtThoLFZrUzuP
+         jSslMg+SwvsirJTi9HY5893Ht4Mbva0yxVCMHqX+EqTgoumLF9Nj5RyW28WhsViydWr1
+         G/VmvqszVCUbV4qdhSOT3OiyBImQV4s/tFhFOx5ToqEf4eaxZnyxK/3ErQkhVP2/EICx
+         bgC6SnhdtmRro+W4h/DNi0f9KNVUfUtxK5PK9T/7ZCHMTssFVwYgtTFVUTV5y+ZV6FdN
+         u1pA==
+X-Received: by 10.66.243.36 with SMTP id wv4mr30377981pac.36.1413838495973;
+        Mon, 20 Oct 2014 13:54:55 -0700 (PDT)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id fr7sm9954083pdb.79.2014.10.20.13.54.52
+        by mx.google.com with ESMTPSA id fr7sm9954083pdb.79.2014.10.20.13.54.54
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 20 Oct 2014 13:54:53 -0700 (PDT)
+        Mon, 20 Oct 2014 13:54:55 -0700 (PDT)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org,
         grant.likely@linaro.org
 Cc:     geert@linux-m68k.org, f.fainelli@gmail.com, mbizon@freebox.fr,
         jogo@openwrt.org, linux-mips@linux-mips.org,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH V2 0/9] bcm63xx_uart and of-serial updates
-Date:   Mon, 20 Oct 2014 13:53:59 -0700
-Message-Id: <1413838448-29464-1-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V2 1/9] tty: serial: bcm63xx: Allow bcm63xx_uart to be built on other platforms
+Date:   Mon, 20 Oct 2014 13:54:00 -0700
+Message-Id: <1413838448-29464-2-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
+In-Reply-To: <1413838448-29464-1-git-send-email-cernekee@gmail.com>
+References: <1413838448-29464-1-git-send-email-cernekee@gmail.com>
 Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43379
+X-archive-position: 43380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,49 +55,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In the course of bringing up a new platform[1] that uses this hardware,
-I made a couple of improvements:
+This device was originally supported on bcm63xx only, but it shows up on
+a wide variety of MIPS and ARM chipsets spanning multiple product lines.
+Now that the driver has eliminated dependencies on bcm63xx-specific
+header files, we can build it on any non-bcm63xx kernel.
 
- - Allow the driver to be built for targets that do not define
-   CONFIG_BCM63xx (as mine doesn't)
- - Use devm_ioremap_resource() to simplify the initialization code
- - Allow OF earlycon to be hardwired "on" in the kernel build, so it can
-   eventually replace the MIPS EARLY_PRINTK scheme
- - Update documentation; fix typos/grammar
+Compile-tested on x86, both statically and as a module.  Tested for
+functionality on bcm3384 (a new MIPS platform under active development).
 
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ drivers/tty/serial/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V1->V2:
-
- - Add acks from Florian
- - Rebase on tty-next (3.18-rc1)
- - bcm63xx_uart: add patches 3,4,6
- - Rework my earlycon change (patches 7,8) to use a config option
-   instead of a function call
-
-[1] https://github.com/cernekee/linux/commits/bcm3384
-
-
-Kevin Cernekee (9):
-  tty: serial: bcm63xx: Allow bcm63xx_uart to be built on other
-    platforms
-  tty: serial: bcm63xx: Update the Kconfig help text
-  tty: serial: bcm63xx: Fix typo in MODULE_DESCRIPTION
-  Documentation: DT: Add entries for bcm63xx UART
-  tty: serial: bcm63xx: Enable DT earlycon support
-  tty: serial: bcm63xx: Eliminate unnecessary request/release functions
-  tty: serial: of-serial: Suppress warnings if OF earlycon is invoked
-    twice
-  tty: serial: of-serial: Allow OF earlycon to default to "on"
-  MAINTAINERS: Add entry for rp2 (Rocketport Express/Infinity) driver
-
- .../devicetree/bindings/serial/bcm63xx-uart.txt    | 34 ++++++++++++++
- MAINTAINERS                                        |  6 +++
- drivers/of/fdt.c                                   | 17 +++++--
- drivers/tty/serial/Kconfig                         | 30 +++++++++----
- drivers/tty/serial/bcm63xx_uart.c                  | 52 +++++++++++++---------
- include/linux/serial_bcm63xx.h                     |  2 -
- 6 files changed, 106 insertions(+), 35 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/serial/bcm63xx-uart.txt
-
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index 649b784..4a5c0c8 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -1283,7 +1283,7 @@ config SERIAL_TIMBERDALE
+ config SERIAL_BCM63XX
+ 	tristate "bcm63xx serial port support"
+ 	select SERIAL_CORE
+-	depends on BCM63XX
++	depends on MIPS || ARM || COMPILE_TEST
+ 	help
+ 	  If you have a bcm63xx CPU, you can enable its onboard
+ 	  serial port by enabling this options.
 -- 
 2.1.1

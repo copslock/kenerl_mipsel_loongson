@@ -1,50 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 15:41:18 +0200 (CEST)
-Received: from mail-wi0-f175.google.com ([209.85.212.175]:54807 "EHLO
-        mail-wi0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011915AbaJTNlQlgh0G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 15:41:16 +0200
-Received: by mail-wi0-f175.google.com with SMTP id d1so7179260wiv.8
-        for <multiple recipients>; Mon, 20 Oct 2014 06:41:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 15:41:33 +0200 (CEST)
+Received: from mail-wi0-f176.google.com ([209.85.212.176]:52706 "EHLO
+        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011923AbaJTNlYeHKkx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 15:41:24 +0200
+Received: by mail-wi0-f176.google.com with SMTP id hi2so7153512wib.9
+        for <multiple recipients>; Mon, 20 Oct 2014 06:41:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=1xi3aVbKsj0xPno7vNUsynu8UA6HUZ9E7/CC+6gV4+c=;
-        b=WfclLQAarXr6klFSQqT6hp5ibznK8wrXZDt0umvFA7c3zwZGRRS+C4e4AheTr4Y6+v
-         8m9CD1S6Skzyc1wqGlzxf1LVzMm+gtZqt7QZcl/CNxA5m7Mlms8VA2S7urNlF9qyqToR
-         OFWFVngPDNL90nHmmBEAlAWGTBthjbPi9DmwDa4OkKjLY9BhsdI4g9KlaaOZPHGBIjJ+
-         v42vF8AnOOZ2FphBD4KKLnVzjD5XCHJQOpUugg589rdR8KTbuDAl7fFR00RhxxHFgbBR
-         vKjbF+moi6OQ7XcE+wlEhEHEwrQtptkytukkRMx4n1HgOSV6jDAef5SLBmB9UfYzUMyo
-         iKpg==
-X-Received: by 10.180.205.171 with SMTP id lh11mr20397287wic.66.1413812471355;
-        Mon, 20 Oct 2014 06:41:11 -0700 (PDT)
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=dOqooTy4Ptxz5Z5el8o0yLyJYwiRF0SSP4s6W3+/hFY=;
+        b=idSQ6O8g4Dc1JBN9g7W8WVak+J3jHwpTAgWphKuVvIGS2JH60h7zwbnBg39j4WxmNT
+         4AnyB+Mx+GaLNnf4iGvYCvU6WjuNwkQvyQ+AUA6Ed+h09GwEU9MjMDRVZsu7s6rWapD3
+         UobYVPdOfad96xfEarEQLVv0yTx4WlSKV4XWbkCHRujaagfZvKVtchBN84VpYBpbO2xF
+         hWQlU1ratZIGJsxXurF4zkWW0Yb2CfOcdPI7h7gxCa01Ke1ETt00GYhO63Q5JPZRDeuc
+         It3LIOFCykLe8cCazeZrYWMQZKBCWgcT7cVyTxz5ft852z25vTPLXoZohQjL/L13CSjS
+         J/3w==
+X-Received: by 10.194.24.197 with SMTP id w5mr33890143wjf.71.1413812478180;
+        Mon, 20 Oct 2014 06:41:18 -0700 (PDT)
 Received: from cizrna.lan (37-48-34-187.tmcz.cz. [37.48.34.187])
-        by mx.google.com with ESMTPSA id pc8sm11927091wjb.36.2014.10.20.06.41.07
+        by mx.google.com with ESMTPSA id pc8sm11927091wjb.36.2014.10.20.06.41.15
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Oct 2014 06:41:09 -0700 (PDT)
+        Mon, 20 Oct 2014 06:41:17 -0700 (PDT)
 From:   Tomeu Vizoso <tomeu.vizoso@collabora.com>
 To:     Mike Turquette <mturquette@linaro.org>
 Cc:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
         Stephen Boyd <sboyd@codeaurora.org>,
         Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Alex Elder <elder@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-omap@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>,
-        Matt Porter <mporter@linaro.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Tim Kryger <tim.kryger@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH v4 0/8] Per-user clock constraints
-Date:   Mon, 20 Oct 2014 15:40:00 +0200
-Message-Id: <1413812442-24956-1-git-send-email-tomeu.vizoso@collabora.com>
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/8] MIPS: Alchemy: Remove direct access to prepare_count field of struct clk
+Date:   Mon, 20 Oct 2014 15:40:01 +0200
+Message-Id: <1413812442-24956-2-git-send-email-tomeu.vizoso@collabora.com>
 X-Mailer: git-send-email 1.9.3
+In-Reply-To: <1413812442-24956-1-git-send-email-tomeu.vizoso@collabora.com>
+References: <1413812442-24956-1-git-send-email-tomeu.vizoso@collabora.com>
 Return-Path: <tomeu.vizoso@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43353
+X-archive-position: 43354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,72 +57,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+Replacing it with a call to __clk_is_prepared(), which isn't entirely
+equivalent but in practice shouldn't matter.
 
-this fourth version of the series is mainly intended to address many good
-comments from Stephen Boyd, most notably:
+Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
+---
+ arch/mips/alchemy/common/clock.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-* Make sure that best_parent_p is populated with the current parent before
-calling clk_ops.determine_rate()
-
-* Make sure we don't lose information about the caller in of_clk_get_*
-
-* Refresh the effective rate after a per-user clk is removed
-
-* Store requested rate and re-apply it when constraints are updated
-
-The first six patches are just cleanups that should be desirable on their own,
-and that should make easier to review the actual per-user clock patch.
-
-The seventh patch actually moves the per-clock data that was stored in struct
-clk to a new struct clk_core and adds references to it from both struct clk and
-struct clk_hw. struct clk is now ready to contain information that is specific
-to a given clk consumer.
-
-The eighth patch adds API for setting floor and ceiling constraints and stores
-that information on the per-user struct clk, which is iterable from struct
-clk_core.
-
-They are based on top of 3.18-rc1.
-
-http://cgit.collabora.com/git/user/tomeu/linux.git/log/?h=per-user-clk-constraints-v4
-
-Thanks,
-
-Tomeu
-
-Tomeu Vizoso (8):
-  MIPS: Alchemy: Remove direct access to prepare_count field of struct
-    clk
-  clk: Remove unused function __clk_get_prepare_count
-  clk: Don't try to use a struct clk* after it could have been freed
-  clk: Don't expose __clk_get_accuracy
-  clk: change clk_debugfs_add_file to take a struct clk_hw
-  clk: Change clk_ops->determine_rate to return a clk_hw as the best
-    parent
-  clk: Make clk API return per-user struct clk instances
-  clk: Add floor and ceiling constraints to clock rates
-
- Documentation/clk.txt                   |   2 +-
- arch/arm/mach-omap2/cclock3xxx_data.c   | 108 +++--
- arch/arm/mach-omap2/clock.h             |  11 +-
- arch/arm/mach-omap2/clock_common_data.c |   5 +-
- arch/mips/alchemy/common/clock.c        |  17 +-
- drivers/clk/at91/clk-programmable.c     |   4 +-
- drivers/clk/bcm/clk-kona.c              |   4 +-
- drivers/clk/clk-composite.c             |   9 +-
- drivers/clk/clk.c                       | 788 +++++++++++++++++++++-----------
- drivers/clk/clk.h                       |   5 +
- drivers/clk/clkdev.c                    |  73 ++-
- drivers/clk/hisilicon/clk-hi3620.c      |   2 +-
- drivers/clk/qcom/clk-rcg.c              |  20 +-
- drivers/clk/qcom/clk-rcg2.c             |  28 +-
- drivers/clk/sunxi/clk-factors.c         |   4 +-
- drivers/clk/sunxi/clk-sun6i-ar100.c     |   4 +-
- include/linux/clk-private.h             |  41 +-
- include/linux/clk-provider.h            |  17 +-
- include/linux/clk.h                     |  18 +
- 19 files changed, 771 insertions(+), 389 deletions(-)
-
+diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
+index d7557cd..203e440 100644
+--- a/arch/mips/alchemy/common/clock.c
++++ b/arch/mips/alchemy/common/clock.c
+@@ -37,7 +37,6 @@
+ #include <linux/io.h>
+ #include <linux/clk-provider.h>
+ #include <linux/clkdev.h>
+-#include <linux/clk-private.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+@@ -397,10 +396,10 @@ static long alchemy_clk_fgcs_detr(struct clk_hw *hw, unsigned long rate,
+ 			break;
+ 
+ 		/* if this parent is currently unused, remember it.
+-		 * XXX: I know it's a layering violation, but it works
+-		 * so well.. (if (!clk_has_active_children(pc)) )
++		 * XXX: we would actually want clk_has_active_children()
++		 * but this is a good-enough approximation for now.
+ 		 */
+-		if (pc->prepare_count == 0) {
++		if (!__clk_is_prepared(pc)) {
+ 			if (!free)
+ 				free = pc;
+ 		}
 -- 
 1.9.3

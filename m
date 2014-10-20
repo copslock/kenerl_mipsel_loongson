@@ -1,45 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 23:25:35 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.131]:50898 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011918AbaJTVZbwiY2R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 23:25:31 +0200
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue006) with ESMTP (Nemesis)
-        id 0LmAhq-1YGDQr2Ft4-00ZvL5; Mon, 20 Oct 2014 23:25:11 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org,
-        grant.likely@linaro.org, geert@linux-m68k.org,
-        f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
-        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH V2 4/9] Documentation: DT: Add entries for bcm63xx UART
-Date:   Mon, 20 Oct 2014 23:25:10 +0200
-Message-ID: <2100909.UrHPDWWSai@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <6216923.cK1phqtEXn@wuerfel>
-References: <1413838448-29464-1-git-send-email-cernekee@gmail.com> <1413838448-29464-5-git-send-email-cernekee@gmail.com> <6216923.cK1phqtEXn@wuerfel>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:McSvJM41Aa1hvbFCp/hMJz7qfF/EIcHB/v7OKEYI5RO
- G9wx37WeNek/N659LUPy6YeBPZG99gZRRzJphjP14n5/IoEuZ3
- qc6uu4wk2SA67LV7LQe6qsDUfELqMFr+Mr9ktQ+90Gn4jih8Zg
- mdfqQ6zbZJLlTUc/MdBzy4lJSkqOUXMPP7QeetLllE5gd0FFi5
- fIHu122okRdVPGGGwbBktnYWmTFdvfal2xlYo4tJpRoRIKPsAm
- AtfU0RUPGz1TQIxlnZdiTszbPToEabDgFM4Vq7C6yvsWsjZA2i
- DbN9F85/K4xEkKXtBqEbOcUN40LQZxqMXdrmhqn2o/kIOaMh6B
- fKQbzhKH3FfbrpBZm6vg=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 00:34:39 +0200 (CEST)
+Received: from mail-ig0-f169.google.com ([209.85.213.169]:52080 "EHLO
+        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011950AbaJTWegySei2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 00:34:36 +0200
+Received: by mail-ig0-f169.google.com with SMTP id uq10so7253312igb.0
+        for <multiple recipients>; Mon, 20 Oct 2014 15:34:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=+lkteHufKcNtpRpVy8cWk6lAEQnV6urPp/Ro+DpC3cY=;
+        b=rXm7vIj0QWCkKkvsteA5gFzKJ/SBmpczi6AQuDTPka3KP1UEd/IPlCM6731rxZHCyS
+         /6YMS4A7L2rHS57RfwFXP5+vXhLCuURCSCPP/0/JNMn7gAPIThjsWY2KOr/dGBzB9OwS
+         /sjL+fAKxE/BmNwa0RduTPzebinSaDZBsmFGrImu7BONMWdTmJjKFFkrlEF2/lRVMc1r
+         roJNoQzxUzn19Utk3H5LdmWrbzVbUu7ThN79jXY7Rj3B8Z9DLdLkgDxPJlR9X0QbqHiS
+         QPMBk5fUUrtafB2QusoGuyZBH+2TR1BeP5QJmWbWqPSVsnX4biWGoCPKjOCDYbjC3rG7
+         XLZQ==
+X-Received: by 10.50.21.99 with SMTP id u3mr21477396ige.35.1413844470719;
+        Mon, 20 Oct 2014 15:34:30 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id h3sm5174557ioe.44.2014.10.20.15.34.29
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 20 Oct 2014 15:34:30 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id s9KMYS0n030140;
+        Mon, 20 Oct 2014 15:34:28 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id s9KMYPjA030139;
+        Mon, 20 Oct 2014 15:34:25 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: tlbex: Properly fix HUGE TLB Refill exception handler
+Date:   Mon, 20 Oct 2014 15:34:23 -0700
+Message-Id: <1413844463-30106-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43390
+X-archive-position: 43391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,53 +59,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 20 October 2014 23:20:08 Arnd Bergmann wrote:
-> 
-> In this example, the clock output name of the clock provider is
-> the same as the clock input of the consumer, that is almost always
-> a bug and would not be a good example at all.
-> 
-> 
+From: David Daney <david.daney@cavium.com>
 
-Ah, found the bug: the MIPS code is written to ignore the device
-and just look up a global clock name:
+In commit 8393c524a25609 (MIPS: tlbex: Fix a missing statement for
+HUGETLB), the TLB Refill handler was fixed so that non-OCTEON targets
+would work properly with huge pages.  The change was incorrect in that
+it broke the OCTEON case.
 
-struct clk *clk_get(struct device *dev, const char *id)
-{
-        if (!strcmp(id, "enet0"))
-                return &clk_enet0;
-        if (!strcmp(id, "enet1"))
-                return &clk_enet1;
-        if (!strcmp(id, "enetsw"))
-                return &clk_enetsw;
-        if (!strcmp(id, "ephy"))
-                return &clk_ephy;
-        if (!strcmp(id, "usbh"))
-                return &clk_usbh;
-        if (!strcmp(id, "usbd"))
-                return &clk_usbd;
-        if (!strcmp(id, "spi"))
-                return &clk_spi;
-        if (!strcmp(id, "hsspi"))
-                return &clk_hsspi;
-        if (!strcmp(id, "xtm"))
-                return &clk_xtm;
-        if (!strcmp(id, "periph"))
-                return &clk_periph;
-        if ((BCMCPU_IS_3368() || BCMCPU_IS_6358()) && !strcmp(id, "pcm"))
-                return &clk_pcm;
-        if ((BCMCPU_IS_6362() || BCMCPU_IS_6368()) && !strcmp(id, "ipsec"))
-                return &clk_ipsec;
-        if ((BCMCPU_IS_6328() || BCMCPU_IS_6362()) && !strcmp(id, "pcie"))
-                return &clk_pcie;
-        return ERR_PTR(-ENOENT);
-}
+The problem is shown here:
 
-This should be changed to use the drivers/clk/clkdev.c lookup code if
-you want to share drivers between architectures.
+    xxx0:	df7a0000 	ld	k0,0(k1)
+    .
+    .
+    .
+    xxxc0:	df610000 	ld	at,0(k1)
+    xxxc4:	335a0ff0 	andi	k0,k0,0xff0
+    xxxc8:	e825ffcd 	bbit1	at,0x5,0x0
+    xxxcc:	003ad82d 	daddu	k1,at,k0
+    .
+    .
+    .
 
-In particular, the "enet0"/"enet1" clock name makes no sense -- the
-clock input name should be independent of the instance, aside from
-the question of which output of the provider it is wired up to.
+In the non-octeon case there is a destructive test for the huge PTE
+bit, and then at 0, $k0 is reloaded (that is what the 8393c524a25609
+patch added).
 
-	Arnd
+In the octeon case, we modify k1 in the branch delay slot, but we
+never need k0 again, so the new load is not needed, but since k1 is
+modified, if we do the load, we load from a garbage location and then
+get a nested TLB Refill, which is seen in userspace as either SIGBUS
+or SIGSEGV (depending on the garbage).
+
+The real fix is to only do this reloading if it is needed, and never
+where it is harmful.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: <stable@vger.kernel.org>
+---
+ arch/mips/mm/tlbex.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index a08dd53..b5f228e 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1062,6 +1062,7 @@ static void build_update_entries(u32 **p, unsigned int tmp, unsigned int ptep)
+ struct mips_huge_tlb_info {
+ 	int huge_pte;
+ 	int restore_scratch;
++	bool need_reload_pte;
+ };
+ 
+ static struct mips_huge_tlb_info
+@@ -1076,6 +1077,7 @@ build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
+ 
+ 	rv.huge_pte = scratch;
+ 	rv.restore_scratch = 0;
++	rv.need_reload_pte = false;
+ 
+ 	if (check_for_high_segbits) {
+ 		UASM_i_MFC0(p, tmp, C0_BADVADDR);
+@@ -1264,6 +1266,7 @@ static void build_r4000_tlb_refill_handler(void)
+ 	} else {
+ 		htlb_info.huge_pte = K0;
+ 		htlb_info.restore_scratch = 0;
++		htlb_info.need_reload_pte = true;
+ 		vmalloc_mode = refill_noscratch;
+ 		/*
+ 		 * create the plain linear handler
+@@ -1300,7 +1303,8 @@ static void build_r4000_tlb_refill_handler(void)
+ 	}
+ #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+ 	uasm_l_tlb_huge_update(&l, p);
+-	UASM_i_LW(&p, K0, 0, K1);
++	if (htlb_info.need_reload_pte)
++		UASM_i_LW(&p, htlb_info.huge_pte, 0, K1);
+ 	build_huge_update_entries(&p, htlb_info.huge_pte, K1);
+ 	build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
+ 				   htlb_info.restore_scratch);
+-- 
+1.7.11.7

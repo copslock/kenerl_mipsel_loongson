@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:07:41 +0200 (CEST)
-Received: from mail-oi0-f74.google.com ([209.85.218.74]:55990 "EHLO
-        mail-oi0-f74.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011977AbaJTTESwrihZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 21:04:18 +0200
-Received: by mail-oi0-f74.google.com with SMTP id v63so830546oia.1
-        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 12:04:12 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:07:59 +0200 (CEST)
+Received: from mail-ig0-f201.google.com ([209.85.213.201]:64852 "EHLO
+        mail-ig0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011983AbaJTTET4u7DN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 21:04:19 +0200
+Received: by mail-ig0-f201.google.com with SMTP id h15so853770igd.4
+        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 12:04:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=MhGtkbJwskJ6gZ8kvpd/6omuajmZGqGMjJeakJ2jkV4=;
-        b=mz6K60nVYx/Bp4OCtbIvI146d7sNOwarC1kC0ncDqRQAiKpVm9d3YAe9ARQid7b6jZ
-         X6wegHdjaDdUIPTNYKNWFcbfETndcNpbYqswtjvStZ8LDA3yHmit5peZ70wMHHdPEjiH
-         v/8/er7UH+21f5+KjG7mb2OGC7QhuHplB7m78OX8Rg4FnyVYgzM0Thmyb3uFgVLd6zQz
-         Z8YZRiKruN3sd+THUyucABmo5Co0bIa/TB0QinevYA2wHnjvNlDqmZQ93kewZhWGo9XA
-         h3AauMkieoiNkjRsjA4P0HXKG8bqrg3mlp+F7Jd7+YtMJGzchEN6vuLeA2w8V8Ibuu4b
-         KAPw==
-X-Gm-Message-State: ALoCoQk1QoY5kaySzcyp5PzTFsMGNkLBGR/piVOTN8PBI7G2N5iSqum9RkAfPN8+5GVXMca6fZtw
-X-Received: by 10.182.98.197 with SMTP id ek5mr18418233obb.30.1413831852626;
-        Mon, 20 Oct 2014 12:04:12 -0700 (PDT)
+        bh=re6CzWbGIuadicnnhACrUjlS8PO0RnbJp6npV1vq/A0=;
+        b=Z977x/3UBYpj9rSmmzac3LpVhzDO7dt18PqNT/fZ++Pk2vvqp/W7HSQdQFbiKi/g9C
+         BcTflX2iFihzO3GOqqw7BIrYJ28SynR/1wWrTZvYCeZ5Wsu4EEBCXwiEcGJJJLzihkLc
+         yvUVn6nphMTqRuFNWP3xR0cI332sO3d81AtQfOnlq3JrqAASdKUoqVfXASAt2YuCP5By
+         3iSK+11FRpdUBPmkCPRO7Dt2qPGNMlCwiyeqmY0RT/bfF2w2ehNEnsf1/yWQYznfq5cC
+         MnZx7oTpbtJiZ+u3OxRHiBxB4ZZj5arg8O9tLIjk3mFV40UiBdm2WdNCrNKTjqhh/GKE
+         8U9w==
+X-Gm-Message-State: ALoCoQkHpPLBmw9YPic+6u/O6DJiQPYzrXIE8ST8GRAXuktduok//G5Kr4UxjBXr8QzMmbX0m5jF
+X-Received: by 10.182.27.193 with SMTP id v1mr19710495obg.40.1413831854140;
+        Mon, 20 Oct 2014 12:04:14 -0700 (PDT)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id e24si437290yhe.3.2014.10.20.12.04.11
+        by gmr-mx.google.com with ESMTPS id t28si436277yhb.4.2014.10.20.12.04.13
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Oct 2014 12:04:12 -0700 (PDT)
+        Mon, 20 Oct 2014 12:04:14 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id LUNvf60n.3; Mon, 20 Oct 2014 12:04:12 -0700
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id LUNvf60n.4; Mon, 20 Oct 2014 12:04:14 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id B3991220B02; Mon, 20 Oct 2014 12:04:11 -0700 (PDT)
+        id 3C014220D57; Mon, 20 Oct 2014 12:04:13 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
@@ -38,9 +38,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
         John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 10/19] irqchip: mips-gic: Use GIC_SH_WEDGE_{SET,CLR} macros
-Date:   Mon, 20 Oct 2014 12:03:57 -0700
-Message-Id: <1413831846-32100-11-git-send-email-abrestic@chromium.org>
+Subject: [PATCH 13/19] clocksource: mips-gic: Staticize local symbols
+Date:   Mon, 20 Oct 2014 12:04:00 -0700
+Message-Id: <1413831846-32100-14-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
 References: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
@@ -48,7 +48,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43371
+X-archive-position: 43372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,34 +65,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the GIC_SH_WEDGE_{SET,CLR} macros provided by mips-gic.h.
+There are a number of variables and functions which are unnecessarily
+global.  Mark them static.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- drivers/irqchip/irq-mips-gic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clocksource/mips-gic-timer.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 188760c..165cf1e 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -206,7 +206,7 @@ static void gic_bind_eic_interrupt(int irq, int set)
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index 3cf5912..2603f50 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -15,8 +15,8 @@
  
- void gic_send_ipi(unsigned int intr)
+ #include <asm/time.h>
+ 
+-DEFINE_PER_CPU(struct clock_event_device, gic_clockevent_device);
+-int gic_timer_irq_installed;
++static DEFINE_PER_CPU(struct clock_event_device, gic_clockevent_device);
++static int gic_timer_irq_installed;
+ 
+ static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
  {
--	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), 0x80000000 | intr);
-+	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_SET(intr));
+@@ -30,13 +30,13 @@ static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
+ 	return res;
  }
  
- int gic_get_c0_compare_int(void)
-@@ -270,7 +270,7 @@ static void gic_ack_irq(struct irq_data *d)
+-void gic_set_clock_mode(enum clock_event_mode mode,
++static void gic_set_clock_mode(enum clock_event_mode mode,
+ 				struct clock_event_device *evt)
  {
- 	unsigned int irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
- 
--	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), irq);
-+	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_CLR(irq));
+ 	/* Nothing to do ...  */
  }
  
- static int gic_set_type(struct irq_data *d, unsigned int type)
+-irqreturn_t gic_compare_interrupt(int irq, void *dev_id)
++static irqreturn_t gic_compare_interrupt(int irq, void *dev_id)
+ {
+ 	struct clock_event_device *cd;
+ 	int cpu = smp_processor_id();
+@@ -53,7 +53,7 @@ struct irqaction gic_compare_irqaction = {
+ 	.name = "timer",
+ };
+ 
+-void gic_event_handler(struct clock_event_device *dev)
++static void gic_event_handler(struct clock_event_device *dev)
+ {
+ }
+ 
 -- 
 2.1.0.rc2.206.gedb03e5

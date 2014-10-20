@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:07:05 +0200 (CEST)
-Received: from mail-vc0-f201.google.com ([209.85.220.201]:54505 "EHLO
-        mail-vc0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011982AbaJTTET1Ozmo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 21:04:19 +0200
-Received: by mail-vc0-f201.google.com with SMTP id hq11so473918vcb.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:07:24 +0200 (CEST)
+Received: from mail-ob0-f201.google.com ([209.85.214.201]:55803 "EHLO
+        mail-ob0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011979AbaJTTES6wo2P (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 21:04:18 +0200
+Received: by mail-ob0-f201.google.com with SMTP id m8so828106obr.4
         for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 12:04:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=qrcLI8ERZkWRoSDtExbzxH46Z1BRHYchXBb9VGA11bQ=;
-        b=cMCINY6WhV4Fp0ZaD2Chsv2UnTubaHBr7VTGfZo03EuArpZNzOY0GQOCXbdaV6Dtqj
-         xAmwSP47NfJ+bn3p4s3w4BKDlvbBKGWEH7yAfHkYsrsPaQLvwBpirnTObhCkOuhLE+/L
-         8nxRtgIaZV/KWQQU8fGDrf3z4i3PRmc531XnZSy1rnUDIq30Ea2qktYfN7bxY8MbJgYW
-         wLGuAZvjJNqW6LcTK3AzaNzKEmj1FRihDbpMPRC25Jrs4WIkiD/Bauw6smytWBuawfa3
-         o8SEnjvs05Gq1ENOqlsyI6Hz8Xrarz4TfWFLXjypQojcY8Igx6zR3+jUy5xLSXRuuFlz
-         0h0A==
-X-Gm-Message-State: ALoCoQkUaK1gyuxR434xKW5wW2GVj1AqXMFQV5Dg2xny+yvl+vqmPt+TSZC7c2QdQLVXh+404DTY
-X-Received: by 10.236.63.41 with SMTP id z29mr19243231yhc.15.1413831853718;
+        bh=/CYirOPbiDzPGU1tfnK7jJnnbhphGMNVzJkPKZcoxT4=;
+        b=FN+KicbngtNw/XbAhkitKn+mTND5E1jICRaJ7V2f64hQj+hhVEEUmJzTglzvUzcHon
+         Sk97+Rq9gmGQWlQWMXoQthYzoElf1Uk/dlD8UiNgVkSIq9r4VVRaSvjVLdHZdHgDBfKh
+         Fx7rivZC83ARr+Qwt6qp6pnYe3SnxS2HzLpcMPtgg5Y2lhuqMDWqEnJ36MQEvA6vJSdx
+         /4SNNEz3Z3EXFzl51EMVqmp4zPM1OkCUp6vTIGZUQbDIB1Sj7VfsEA8xSNVz8fW1Q3KZ
+         T5JDhptTb9yzum2Y1eNZPOUV8WdVG99h8zA77Tc/Fx41qgS3tnwYedd9/G/KgFcRtwsP
+         hJ8w==
+X-Gm-Message-State: ALoCoQmcYwg1gDyuVLw+/ndt7F4OZvlOAf4Cs1LGIrA7gh6BRsbZKUE9A/UImFQAI3TjyxY4DzNJ
+X-Received: by 10.182.4.7 with SMTP id g7mr20202201obg.36.1413831853228;
         Mon, 20 Oct 2014 12:04:13 -0700 (PDT)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id n24si435320yha.6.2014.10.20.12.04.12
+        by gmr-mx.google.com with ESMTPS id t28si436274yhb.4.2014.10.20.12.04.12
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
         Mon, 20 Oct 2014 12:04:13 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id ezN2XdvX.4; Mon, 20 Oct 2014 12:04:13 -0700
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id SSPIjhGM.3; Mon, 20 Oct 2014 12:04:13 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id BA02D220B02; Mon, 20 Oct 2014 12:04:12 -0700 (PDT)
+        id 3FCA3220B55; Mon, 20 Oct 2014 12:04:12 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
@@ -38,9 +38,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
         John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 12/19] clocksource: mips-gic: Combine with GIC clockevent driver
-Date:   Mon, 20 Oct 2014 12:03:59 -0700
-Message-Id: <1413831846-32100-13-git-send-email-abrestic@chromium.org>
+Subject: [PATCH 11/19] MIPS: Move GIC clocksource driver to drivers/clocksource/
+Date:   Mon, 20 Oct 2014 12:03:58 -0700
+Message-Id: <1413831846-32100-12-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
 References: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
@@ -48,7 +48,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43369
+X-archive-position: 43370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,301 +65,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Combine the GIC clocksource driver with the GIC clockevent driver from
-arch/mips/kernel/cevt-gic.c and remove the clockevent driver's separate
-Kconfig symbol.
+Move the GIC clocksource driver to drivers/clocksource/mips-gic-timer.c.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- arch/mips/Kconfig                    |  13 -----
- arch/mips/include/asm/time.h         |   2 +-
- arch/mips/kernel/Makefile            |   1 -
- arch/mips/kernel/cevt-gic.c          | 103 -----------------------------------
- drivers/clocksource/mips-gic-timer.c |  90 ++++++++++++++++++++++++++++++
- drivers/irqchip/irq-mips-gic.c       |   2 +-
- 6 files changed, 92 insertions(+), 119 deletions(-)
- delete mode 100644 arch/mips/kernel/cevt-gic.c
+ arch/mips/Kconfig                                                 | 8 ++------
+ arch/mips/kernel/Makefile                                         | 1 -
+ arch/mips/mti-malta/malta-time.c                                  | 2 +-
+ drivers/clocksource/Kconfig                                       | 4 ++++
+ drivers/clocksource/Makefile                                      | 1 +
+ .../kernel/csrc-gic.c => drivers/clocksource/mips-gic-timer.c     | 0
+ drivers/irqchip/irq-mips-gic.c                                    | 2 +-
+ 7 files changed, 9 insertions(+), 9 deletions(-)
+ rename arch/mips/kernel/csrc-gic.c => drivers/clocksource/mips-gic-timer.c (100%)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 5b1d44b..88ef7f4 100644
+index 4195267..5b1d44b 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -907,10 +907,6 @@ config CEVT_GT641XX
- config CEVT_R4K
+@@ -315,7 +315,7 @@ config MIPS_MALTA
+ 	select BOOT_RAW
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+-	select CSRC_GIC
++	select CLKSRC_MIPS_GIC
+ 	select DMA_MAYBE_COHERENT
+ 	select GENERIC_ISA_DMA
+ 	select HAVE_PCSPKR_PLATFORM
+@@ -357,7 +357,7 @@ config MIPS_SEAD3
+ 	select BUILTIN_DTB
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+-	select CSRC_GIC
++	select CLKSRC_MIPS_GIC
+ 	select CPU_MIPSR2_IRQ_VI
+ 	select CPU_MIPSR2_IRQ_EI
+ 	select DMA_NONCOHERENT
+@@ -926,10 +926,6 @@ config CSRC_IOASIC
+ config CSRC_R4K
  	bool
  
--config CEVT_GIC
+-config CSRC_GIC
 -	select MIPS_CM
 -	bool
 -
- config CEVT_SB1250
+ config CSRC_SB1250
  	bool
  
-@@ -1880,15 +1876,6 @@ config FORCE_MAX_ZONEORDER
- 	  The page size is not necessarily 4KB.  Keep this in mind
- 	  when choosing a value for this option.
- 
--config CEVT_GIC
--	bool "Use GIC global counter for clock events"
--	depends on MIPS_GIC && !MIPS_SEAD3
--	help
--	  Use the GIC global counter for the clock events. The R4K clock
--	  event driver is always present, so if the platform ends up not
--	  detecting a GIC, it will fall back to the R4K timer for the
--	  generation of clock events.
--
- config BOARD_SCACHE
- 	bool
- 
-diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
-index 7969933..5f30aab 100644
---- a/arch/mips/include/asm/time.h
-+++ b/arch/mips/include/asm/time.h
-@@ -57,7 +57,7 @@ extern int gic_clockevent_init(void);
- 
- static inline int mips_clockevent_init(void)
- {
--#if   defined(CONFIG_CEVT_GIC)
-+#if   defined(CONFIG_CLKSRC_MIPS_GIC)
- 	return (gic_clockevent_init() | r4k_clockevent_init());
- #elif defined(CONFIG_CEVT_R4K)
- 	return r4k_clockevent_init();
 diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 3d1ea51..e64fe1d 100644
+index 3982e51..3d1ea51 100644
 --- a/arch/mips/kernel/Makefile
 +++ b/arch/mips/kernel/Makefile
-@@ -18,7 +18,6 @@ endif
- obj-$(CONFIG_CEVT_BCM1480)	+= cevt-bcm1480.o
- obj-$(CONFIG_CEVT_R4K)		+= cevt-r4k.o
- obj-$(CONFIG_CEVT_DS1287)	+= cevt-ds1287.o
--obj-$(CONFIG_CEVT_GIC)		+= cevt-gic.o
- obj-$(CONFIG_CEVT_GT641XX)	+= cevt-gt641xx.o
+@@ -23,7 +23,6 @@ obj-$(CONFIG_CEVT_GT641XX)	+= cevt-gt641xx.o
  obj-$(CONFIG_CEVT_SB1250)	+= cevt-sb1250.o
  obj-$(CONFIG_CEVT_TXX9)		+= cevt-txx9.o
-diff --git a/arch/mips/kernel/cevt-gic.c b/arch/mips/kernel/cevt-gic.c
-deleted file mode 100644
-index 9caa68a..0000000
---- a/arch/mips/kernel/cevt-gic.c
-+++ /dev/null
-@@ -1,103 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2013  Imagination Technologies Ltd.
-- */
--#include <linux/clockchips.h>
--#include <linux/interrupt.h>
--#include <linux/percpu.h>
--#include <linux/smp.h>
--#include <linux/irq.h>
--#include <linux/irqchip/mips-gic.h>
--
--#include <asm/time.h>
--#include <asm/mips-boards/maltaint.h>
--
--DEFINE_PER_CPU(struct clock_event_device, gic_clockevent_device);
--int gic_timer_irq_installed;
--
--
--static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
--{
--	u64 cnt;
--	int res;
--
--	cnt = gic_read_count();
--	cnt += (u64)delta;
--	gic_write_cpu_compare(cnt, cpumask_first(evt->cpumask));
--	res = ((int)(gic_read_count() - cnt) >= 0) ? -ETIME : 0;
--	return res;
--}
--
--void gic_set_clock_mode(enum clock_event_mode mode,
--				struct clock_event_device *evt)
--{
--	/* Nothing to do ...  */
--}
--
--irqreturn_t gic_compare_interrupt(int irq, void *dev_id)
--{
--	struct clock_event_device *cd;
--	int cpu = smp_processor_id();
--
--	gic_write_compare(gic_read_compare());
--	cd = &per_cpu(gic_clockevent_device, cpu);
--	cd->event_handler(cd);
--	return IRQ_HANDLED;
--}
--
--struct irqaction gic_compare_irqaction = {
--	.handler = gic_compare_interrupt,
--	.flags = IRQF_PERCPU | IRQF_TIMER,
--	.name = "timer",
--};
--
--
--void gic_event_handler(struct clock_event_device *dev)
--{
--}
--
--int gic_clockevent_init(void)
--{
--	unsigned int cpu = smp_processor_id();
--	struct clock_event_device *cd;
--	unsigned int irq;
--
--	if (!cpu_has_counter || !gic_frequency)
--		return -ENXIO;
--
--	irq = MIPS_GIC_IRQ_BASE + GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
--
--	cd = &per_cpu(gic_clockevent_device, cpu);
--
--	cd->name		= "MIPS GIC";
--	cd->features		= CLOCK_EVT_FEAT_ONESHOT |
--				  CLOCK_EVT_FEAT_C3STOP;
--
--	clockevent_set_clock(cd, gic_frequency);
--
--	/* Calculate the min / max delta */
--	cd->max_delta_ns	= clockevent_delta2ns(0x7fffffff, cd);
--	cd->min_delta_ns	= clockevent_delta2ns(0x300, cd);
--
--	cd->rating		= 300;
--	cd->irq			= irq;
--	cd->cpumask		= cpumask_of(cpu);
--	cd->set_next_event	= gic_next_event;
--	cd->set_mode		= gic_set_clock_mode;
--	cd->event_handler	= gic_event_handler;
--
--	clockevents_register_device(cd);
--
--	if (!gic_timer_irq_installed) {
--		setup_percpu_irq(irq, &gic_compare_irqaction);
--		gic_timer_irq_installed = 1;
--	}
--
--	enable_percpu_irq(irq, IRQ_TYPE_NONE);
--
--
--	return 0;
--}
-diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index 0bf28e6..3cf5912 100644
---- a/drivers/clocksource/mips-gic-timer.c
-+++ b/drivers/clocksource/mips-gic-timer.c
-@@ -5,10 +5,100 @@
-  *
-  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-  */
-+#include <linux/clockchips.h>
- #include <linux/init.h>
-+#include <linux/interrupt.h>
- #include <linux/irqchip/mips-gic.h>
-+#include <linux/percpu.h>
-+#include <linux/smp.h>
- #include <linux/time.h>
+ obj-$(CONFIG_CSRC_BCM1480)	+= csrc-bcm1480.o
+-obj-$(CONFIG_CSRC_GIC)		+= csrc-gic.o
+ obj-$(CONFIG_CSRC_IOASIC)	+= csrc-ioasic.o
+ obj-$(CONFIG_CSRC_R4K)		+= csrc-r4k.o
+ obj-$(CONFIG_CSRC_SB1250)	+= csrc-sb1250.o
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index 608655f..028fae0 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -183,7 +183,7 @@ void __init plat_time_init(void)
+ 		freq = freqround(gic_frequency, 5000);
+ 		printk("GIC frequency %d.%02d MHz\n", freq/1000000,
+ 		       (freq%1000000)*100/1000000);
+-#ifdef CONFIG_CSRC_GIC
++#ifdef CONFIG_CLKSRC_MIPS_GIC
+ 		gic_clocksource_init(gic_frequency);
+ #endif
+ 	}
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 9042060..cb7e7f4 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -223,4 +223,8 @@ config CLKSRC_VERSATILE
+ 	  ARM Versatile, RealView and Versatile Express reference
+ 	  platforms.
  
-+#include <asm/time.h>
++config CLKSRC_MIPS_GIC
++	bool
++	depends on MIPS_GIC
 +
-+DEFINE_PER_CPU(struct clock_event_device, gic_clockevent_device);
-+int gic_timer_irq_installed;
-+
-+static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
-+{
-+	u64 cnt;
-+	int res;
-+
-+	cnt = gic_read_count();
-+	cnt += (u64)delta;
-+	gic_write_cpu_compare(cnt, cpumask_first(evt->cpumask));
-+	res = ((int)(gic_read_count() - cnt) >= 0) ? -ETIME : 0;
-+	return res;
-+}
-+
-+void gic_set_clock_mode(enum clock_event_mode mode,
-+				struct clock_event_device *evt)
-+{
-+	/* Nothing to do ...  */
-+}
-+
-+irqreturn_t gic_compare_interrupt(int irq, void *dev_id)
-+{
-+	struct clock_event_device *cd;
-+	int cpu = smp_processor_id();
-+
-+	gic_write_compare(gic_read_compare());
-+	cd = &per_cpu(gic_clockevent_device, cpu);
-+	cd->event_handler(cd);
-+	return IRQ_HANDLED;
-+}
-+
-+struct irqaction gic_compare_irqaction = {
-+	.handler = gic_compare_interrupt,
-+	.flags = IRQF_PERCPU | IRQF_TIMER,
-+	.name = "timer",
-+};
-+
-+void gic_event_handler(struct clock_event_device *dev)
-+{
-+}
-+
-+int gic_clockevent_init(void)
-+{
-+	unsigned int cpu = smp_processor_id();
-+	struct clock_event_device *cd;
-+	unsigned int irq;
-+
-+	if (!cpu_has_counter || !gic_frequency)
-+		return -ENXIO;
-+
-+	irq = MIPS_GIC_IRQ_BASE + GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
-+
-+	cd = &per_cpu(gic_clockevent_device, cpu);
-+
-+	cd->name		= "MIPS GIC";
-+	cd->features		= CLOCK_EVT_FEAT_ONESHOT |
-+				  CLOCK_EVT_FEAT_C3STOP;
-+
-+	clockevent_set_clock(cd, gic_frequency);
-+
-+	/* Calculate the min / max delta */
-+	cd->max_delta_ns	= clockevent_delta2ns(0x7fffffff, cd);
-+	cd->min_delta_ns	= clockevent_delta2ns(0x300, cd);
-+
-+	cd->rating		= 300;
-+	cd->irq			= irq;
-+	cd->cpumask		= cpumask_of(cpu);
-+	cd->set_next_event	= gic_next_event;
-+	cd->set_mode		= gic_set_clock_mode;
-+	cd->event_handler	= gic_event_handler;
-+
-+	clockevents_register_device(cd);
-+
-+	if (!gic_timer_irq_installed) {
-+		setup_percpu_irq(irq, &gic_compare_irqaction);
-+		gic_timer_irq_installed = 1;
-+	}
-+
-+	enable_percpu_irq(irq, IRQ_TYPE_NONE);
-+
-+	return 0;
-+}
-+
- static cycle_t gic_hpt_read(struct clocksource *cs)
- {
- 	return gic_read_count();
+ endmenu
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index 756f6f1..e23fc2d 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -46,3 +46,4 @@ obj-$(CONFIG_CLKSRC_METAG_GENERIC)	+= metag_generic.o
+ obj-$(CONFIG_ARCH_HAS_TICK_BROADCAST)	+= dummy_timer.o
+ obj-$(CONFIG_ARCH_KEYSTONE)		+= timer-keystone.o
+ obj-$(CONFIG_CLKSRC_VERSATILE)		+= versatile.o
++obj-$(CONFIG_CLKSRC_MIPS_GIC)		+= mips-gic-timer.o
+diff --git a/arch/mips/kernel/csrc-gic.c b/drivers/clocksource/mips-gic-timer.c
+similarity index 100%
+rename from arch/mips/kernel/csrc-gic.c
+rename to drivers/clocksource/mips-gic-timer.c
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 99687ed..5c856e6 100644
+index 165cf1e..99687ed 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
 @@ -103,7 +103,7 @@ static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
  		  GIC_SH_MAP_TO_VPE_REG_BIT(vpe));
  }
  
--#if defined(CONFIG_CLKSRC_MIPS_GIC) || defined(CONFIG_CEVT_GIC)
-+#ifdef CONFIG_CLKSRC_MIPS_GIC
+-#if defined(CONFIG_CSRC_GIC) || defined(CONFIG_CEVT_GIC)
++#if defined(CONFIG_CLKSRC_MIPS_GIC) || defined(CONFIG_CEVT_GIC)
  cycle_t gic_read_count(void)
  {
  	unsigned int hi, hi2, lo;

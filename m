@@ -1,49 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 09:21:51 +0200 (CEST)
-Received: from mail-la0-f45.google.com ([209.85.215.45]:54418 "EHLO
-        mail-la0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011777AbaJTHVtOBf26 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 20 Oct 2014 09:21:49 +0200
-Received: by mail-la0-f45.google.com with SMTP id q1so3396012lam.32
-        for <multiple recipients>; Mon, 20 Oct 2014 00:21:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type:content-transfer-encoding;
-        bh=Mauj8OJ0gP3iOPPHmepjyMbkqvu4ZsaVgnm+XLChJlY=;
-        b=lgXpxdsVKXaqmF4D/Wo8R6tfF1HU9/53+6nDjE46awBKN9Danjp5iPlcZQbVCzwHZ5
-         ckW1mJ/tRM63tieFLqMC4OfFhKqE3DomFcNAKZ0EuUxuxPpw5U59311hTUs/a5Lg8MJZ
-         92E+M5NmeCw1yKKEBgEUtcbm9BJXilIryiviM4UELrmDGKkzfBmBeNlSQzr47OR2Yrb9
-         1j9kcaJyDFrIQ69cDkaC8K0lgpKSo4B2fo86RBR69WeWn9yMMAc1s97mY5QGqZ0vqaQ7
-         JEM+rCXXK/CQ9jng5G9+riC36OtSTR1OSsacfLt+RcRQSlIdLaxuJiHe6SjTOGBjoCQI
-         1sdA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 10:39:43 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15913 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011880AbaJTIjmOHlTm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 10:39:42 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id E18EF3EAB8CB8;
+        Mon, 20 Oct 2014 09:39:33 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 20 Oct 2014 09:39:35 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.141) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 20 Oct 2014 09:39:34 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: ftrace: Fix a microMIPS build problem
+Date:   Mon, 20 Oct 2014 09:39:31 +0100
+Message-ID: <1413794371-5272-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.1.2
 MIME-Version: 1.0
-X-Received: by 10.112.97.135 with SMTP id ea7mr25610758lbb.46.1413789703718;
- Mon, 20 Oct 2014 00:21:43 -0700 (PDT)
-Received: by 10.152.30.34 with HTTP; Mon, 20 Oct 2014 00:21:43 -0700 (PDT)
-In-Reply-To: <1413741866-48496-1-git-send-email-stefan.hengelein@fau.de>
-References: <1413741866-48496-1-git-send-email-stefan.hengelein@fau.de>
-Date:   Mon, 20 Oct 2014 09:21:43 +0200
-X-Google-Sender-Auth: DajWq-TIoe5lQvweGOrtfQL_ti8
-Message-ID: <CAMuHMdU_z+vAFR1VdRpTGUYNOOpzdRmfQJAQ7Nqe40pdvx9Y1w@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: MSP71xx: remove compilation error
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Stefan Hengelein <stefan.hengelein@fau.de>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.141]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43348
+X-archive-position: 43349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,56 +44,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Oct 19, 2014 at 8:04 PM, Stefan Hengelein
-<stefan.hengelein@fau.de> wrote:
-> When CONFIG_MIPS_MT_SMP is enabled, the following compilation error
-> occurs:
->
-> arch/mips/pmcs-msp71xx/msp_irq_cic.c:134: error: ‘irq’ undeclared
->
-> This code clearly never saw a compiler.
-> The surrounding code suggests, that 'd->irq' was intended, not
-> 'irq'.
->
-> This error was found with vampyr.
->
-> Signed-off-by: Stefan Hengelein <stefan.hengelein@fau.de>
+Code before the .fixup section needs to have the .insn directive.
+This has no side effects on MIPS32/64 but it affects the way microMIPS
+loads the address for the return label.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Fixes: d7881fbdf866d7d0 ("MIPS: msp71xx: Convert to new irq_chip functions")
+Fixes the following build problem:
+mips-linux-gnu-ld: arch/mips/built-in.o: .fixup+0x4a0: Unsupported jump between
+ISA modes; consider recompiling with interlinking enabled.
+mips-linux-gnu-ld: final link failed: Bad value
+Makefile:819: recipe for target 'vmlinux' failed
 
-(from 2011 ;-)
+The fix is similar to 1658f914ff91c3bf ("MIPS: microMIPS:
+Disable LL/SC and fix linker bug.")
 
-> ---
->  arch/mips/pmcs-msp71xx/msp_irq_cic.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/pmcs-msp71xx/msp_irq_cic.c b/arch/mips/pmcs-msp71xx/msp_irq_cic.c
-> index b8df2f7..1207ec4 100644
-> --- a/arch/mips/pmcs-msp71xx/msp_irq_cic.c
-> +++ b/arch/mips/pmcs-msp71xx/msp_irq_cic.c
-> @@ -131,11 +131,11 @@ static int msp_cic_irq_set_affinity(struct irq_data *d,
->         int cpu;
->         unsigned long flags;
->         unsigned int  mtflags;
-> -       unsigned long imask = (1 << (irq - MSP_CIC_INTBASE));
-> +       unsigned long imask = (1 << (d->irq - MSP_CIC_INTBASE));
->         volatile u32 *cic_mask = (volatile u32 *)CIC_VPE0_MSK_REG;
->
->         /* timer balancing should be disabled in kernel code */
-> -       BUG_ON(irq == MSP_INT_VPE0_TIMER || irq == MSP_INT_VPE1_TIMER);
-> +       BUG_ON(d->irq == MSP_INT_VPE0_TIMER || d->irq == MSP_INT_VPE1_TIMER);
->
->         LOCK_CORE(flags, mtflags);
->         /* enable if any of each VPE's TCs require this IRQ */
+Cc: stable@vger.kernel.org
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/include/asm/ftrace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+index 992aaba603b5..b463f2aa5a61 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -24,7 +24,7 @@ do {							\
+ 	asm volatile (					\
+ 		"1: " load " %[tmp_dst], 0(%[tmp_src])\n"	\
+ 		"   li %[tmp_err], 0\n"			\
+-		"2:\n"					\
++		"2: .insn\n"				\
+ 							\
+ 		".section .fixup, \"ax\"\n"		\
+ 		"3: li %[tmp_err], 1\n"			\
+@@ -46,7 +46,7 @@ do {						\
+ 	asm volatile (				\
+ 		"1: " store " %[tmp_src], 0(%[tmp_dst])\n"\
+ 		"   li %[tmp_err], 0\n"		\
+-		"2:\n"				\
++		"2: .insn\n"			\
+ 						\
+ 		".section .fixup, \"ax\"\n"	\
+ 		"3: li %[tmp_err], 1\n"		\
+-- 
+2.1.2

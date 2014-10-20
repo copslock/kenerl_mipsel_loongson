@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:08:32 +0200 (CEST)
-Received: from mail-pd0-f202.google.com ([209.85.192.202]:33329 "EHLO
-        mail-pd0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011987AbaJTTEVWGm2H (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2014 21:08:48 +0200 (CEST)
+Received: from mail-oi0-f74.google.com ([209.85.218.74]:46128 "EHLO
+        mail-oi0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011988AbaJTTEVYqc0n (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2014 21:04:21 +0200
-Received: by mail-pd0-f202.google.com with SMTP id fp1so953599pdb.5
-        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 12:04:14 -0700 (PDT)
+Received: by mail-oi0-f74.google.com with SMTP id v63so829294oia.5
+        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2014 12:04:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=jNMiUBogV2aiF4Zs9fM4Qk/jh6/jKi/IuCi/JJI4fKc=;
-        b=AyWlHgn/pLviv+6T/OeYbYgAM6h0lnVchEsOvOF9hGAmqWZxSLW086MOBM5XtaaFCH
-         CWMJ/0j1wLatu32st/smDTQAcPTy5qN3hZLrt4MhBe8piZ21ho8KEFc4UEFdEdkWw2Qo
-         zUv7uW09E3tgZ11Rllz7nk+9ya4+pPkueIq6fpllaZFYbv2VygxTrf1A339B0BrG0juT
-         daWcxaz4QqraYzwcQAKLNeZmnhz7ba1AvwFOTtwyNopTW4WZolUQWp8ABqAL5jYp89zh
-         N3TkVxieWmgSrjbylF+KxT+woE8TOtFy9a1T3XDUXWI1RmUiXIqSBqdj88hLqHA99Rlg
-         w+zQ==
-X-Gm-Message-State: ALoCoQlECgMJL9QnFoZdTIRDoQL9ejTn8WKr7R+RaM2yxWrjx62EB6KkHTUFObP6iY8GjoaxCgCg
-X-Received: by 10.70.37.200 with SMTP id a8mr19030179pdk.1.1413831854669;
-        Mon, 20 Oct 2014 12:04:14 -0700 (PDT)
+        bh=JZSu9+NUtma0J6Eo7Iq6gVtfYU4gLzVxf1XW5yU454k=;
+        b=izvH5hUJqqOl5fNwlvzRpHwbKiAJ/+nGHaXGmB2Yla7fy6ngUTSkfmyyXODlkiOG/Z
+         LmGnAAe0ibim/H9fX5z6nE2A1kRbAVw92A8DM1a8hR/dZXvDFvVkuC9Bp9chtuLcVrve
+         95GD2cvmimKDqhmS6I80wbQbBCjTcKIRsaw0FXJnOgw9/gNrTCv04u41twE3dkPkGpQ9
+         V5O/zMS9RO5dzEKYWs8nSb/4b9gn3fVo0GkL4Be5X7xkzrnTtd7CBPiuqXjwa1h7RK+g
+         Xygr/4ySvN/b57p1iHpPq3Y/8rvBqrOnmM3SizOva7UciXlGUWhDXf4hdS0yFo2C9Cp1
+         R1uw==
+X-Gm-Message-State: ALoCoQlyl/RkSWop5s/bqdM19pKvyKbNWh89mL5iz9C2woQ3nUDrzRk9sywuWTKECb4No3Uq/UMG
+X-Received: by 10.182.104.69 with SMTP id gc5mr14415912obb.18.1413831855636;
+        Mon, 20 Oct 2014 12:04:15 -0700 (PDT)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id t28si436278yhb.4.2014.10.20.12.04.13
+        by gmr-mx.google.com with ESMTPS id s23si438201yhf.0.2014.10.20.12.04.14
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Oct 2014 12:04:14 -0700 (PDT)
+        Mon, 20 Oct 2014 12:04:15 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id SSPIjhGM.4; Mon, 20 Oct 2014 12:04:14 -0700
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id LUNvf60n.5; Mon, 20 Oct 2014 12:04:15 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id B4342220B55; Mon, 20 Oct 2014 12:04:13 -0700 (PDT)
+        id B0A85220D57; Mon, 20 Oct 2014 12:04:14 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
@@ -38,9 +38,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
         John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 14/19] clocksource: mips-gic: Move gic_frequency to clocksource driver
-Date:   Mon, 20 Oct 2014 12:04:01 -0700
-Message-Id: <1413831846-32100-15-git-send-email-abrestic@chromium.org>
+Subject: [PATCH 16/19] clocksource: mips-gic: Use percpu_dev_id
+Date:   Mon, 20 Oct 2014 12:04:03 -0700
+Message-Id: <1413831846-32100-17-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
 References: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
@@ -48,7 +48,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43374
+X-archive-position: 43375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,75 +65,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There's no reason for gic_frequency to be global any more and it
-certainly doesn't belong in the GIC irqchip driver, so move it to
-the GIC clocksource driver.
+Since the GIC timer IRQ is a percpu IRQ, we can use percpu_dev_id
+to pass the IRQ handler the correct clock_event_device.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- arch/mips/mti-malta/malta-time.c     | 2 ++
- drivers/clocksource/mips-gic-timer.c | 3 +++
- drivers/irqchip/irq-mips-gic.c       | 1 -
- include/linux/irqchip/mips-gic.h     | 1 -
- 4 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/clocksource/mips-gic-timer.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
-index 028fae0..ce02dbd 100644
---- a/arch/mips/mti-malta/malta-time.c
-+++ b/arch/mips/mti-malta/malta-time.c
-@@ -46,6 +46,8 @@ static int mips_cpu_timer_irq;
- static int mips_cpu_perf_irq;
- extern int cp0_perfcount_irq;
- 
-+static unsigned int gic_frequency;
-+
- static void mips_timer_dispatch(void)
- {
- 	do_IRQ(mips_cpu_timer_irq);
 diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index 2603f50..bced17d 100644
+index 763aa1c..05bdfe1 100644
 --- a/drivers/clocksource/mips-gic-timer.c
 +++ b/drivers/clocksource/mips-gic-timer.c
-@@ -17,6 +17,7 @@
+@@ -39,17 +39,16 @@ static void gic_set_clock_mode(enum clock_event_mode mode,
  
- static DEFINE_PER_CPU(struct clock_event_device, gic_clockevent_device);
- static int gic_timer_irq_installed;
-+static unsigned int gic_frequency;
- 
- static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
+ static irqreturn_t gic_compare_interrupt(int irq, void *dev_id)
  {
-@@ -112,6 +113,8 @@ static struct clocksource gic_clocksource = {
+-	struct clock_event_device *cd;
+-	int cpu = smp_processor_id();
++	struct clock_event_device *cd = dev_id;
  
- void __init gic_clocksource_init(unsigned int frequency)
- {
-+	gic_frequency = frequency;
-+
- 	/* Set clocksource mask. */
- 	gic_clocksource.mask = CLOCKSOURCE_MASK(gic_get_count_width());
+ 	gic_write_compare(gic_read_compare());
+-	cd = &per_cpu(gic_clockevent_device, cpu);
+ 	cd->event_handler(cd);
+ 	return IRQ_HANDLED;
+ }
  
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 5c856e6..2949a9c 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -18,7 +18,6 @@
- #include <asm/setup.h>
- #include <asm/traps.h>
- 
--unsigned int gic_frequency;
- unsigned int gic_present;
- 
- struct gic_pcpu_mask {
-diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
-index 0350eff..420f77b 100644
---- a/include/linux/irqchip/mips-gic.h
-+++ b/include/linux/irqchip/mips-gic.h
-@@ -230,7 +230,6 @@
- #define GIC_HWIRQ_TO_SHARED(x)	((x) - GIC_SHARED_HWIRQ_BASE)
- 
- extern unsigned int gic_present;
--extern unsigned int gic_frequency;
- 
- extern void gic_init(unsigned long gic_base_addr,
- 	unsigned long gic_addrspace_size, unsigned int cpu_vec,
+ struct irqaction gic_compare_irqaction = {
+ 	.handler = gic_compare_interrupt,
++	.percpu_dev_id = &gic_clockevent_device,
+ 	.flags = IRQF_PERCPU | IRQF_TIMER,
+ 	.name = "timer",
+ };
 -- 
 2.1.0.rc2.206.gedb03e5

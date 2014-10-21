@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:36:33 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:49253 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:48:44 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:49690 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011966AbaJUXgbpLu5M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Oct 2014 01:36:31 +0200
+        id S27011966AbaJUXslp0Yu1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Oct 2014 01:48:41 +0200
 Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 95680284830;
-        Wed, 22 Oct 2014 01:35:24 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id 1F5AB2805E2;
+        Wed, 22 Oct 2014 01:47:32 +0200 (CEST)
 Received: from Dicker-Alter.local (ip-109-47-149-127.web.vodafone.de [109.47.149.127])
         by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Wed, 22 Oct 2014 01:35:24 +0200 (CEST)
-Message-ID: <5446EDF9.3010107@openwrt.org>
-Date:   Wed, 22 Oct 2014 01:36:25 +0200
+        Wed, 22 Oct 2014 01:47:32 +0200 (CEST)
+Message-ID: <5446F0D2.7050603@openwrt.org>
+Date:   Wed, 22 Oct 2014 01:48:34 +0200
 From:   John Crispin <blogic@openwrt.org>
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
 To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>
 CC:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 01/13] MIPS: ath25: add common parts
-References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com> <1413932631-12866-2-git-send-email-ryazanov.s.a@gmail.com>
-In-Reply-To: <1413932631-12866-2-git-send-email-ryazanov.s.a@gmail.com>
+Subject: Re: [PATCH v2 02/13] MIPS: ath25: add basic AR5312 SoC support
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com> <1413932631-12866-3-git-send-email-ryazanov.s.a@gmail.com>
+In-Reply-To: <1413932631-12866-3-git-send-email-ryazanov.s.a@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43461
+X-archive-position: 43462
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,327 +43,310 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Sergey,
-
-Thanks for the patches, a few comments inline
+1 comment inline
 
 On 22/10/2014 01:03, Sergey Ryazanov wrote:
-> Add common code for Atheros AR5312 and Atheros AR2315 SoCs families.
+> Add basic support for Atheros AR5312/AR2312 SoCs: registers
+> definition file and initial setup code.
 > 
-> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-> ---
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com> ---
 > 
-> Changes since v1:
->   - rename MIPS machine ar231x -> ath25
+> Changes since v1: - rename MIPS machine ar231x -> ath25
 > 
->  arch/mips/Kbuild.platforms                         |  1 +
->  arch/mips/Kconfig                                  | 13 ++++
->  arch/mips/ath25/Makefile                           | 11 ++++
->  arch/mips/ath25/Platform                           |  6 ++
->  arch/mips/ath25/board.c                            | 53 +++++++++++++++
->  arch/mips/ath25/devices.c                          | 11 ++++
->  arch/mips/ath25/devices.h                          | 16 +++++
->  arch/mips/ath25/prom.c                             | 26 ++++++++
->  arch/mips/include/asm/mach-ath25/ath25.h           | 29 +++++++++
->  .../include/asm/mach-ath25/cpu-feature-overrides.h | 76 ++++++++++++++++++++++
->  arch/mips/include/asm/mach-ath25/dma-coherence.h   | 64 ++++++++++++++++++
->  arch/mips/include/asm/mach-ath25/gpio.h            | 16 +++++
->  arch/mips/include/asm/mach-ath25/war.h             | 25 +++++++
->  13 files changed, 347 insertions(+)
->  create mode 100644 arch/mips/ath25/Makefile
->  create mode 100644 arch/mips/ath25/Platform
->  create mode 100644 arch/mips/ath25/board.c
->  create mode 100644 arch/mips/ath25/devices.c
->  create mode 100644 arch/mips/ath25/devices.h
->  create mode 100644 arch/mips/ath25/prom.c
->  create mode 100644 arch/mips/include/asm/mach-ath25/ath25.h
->  create mode 100644 arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
->  create mode 100644 arch/mips/include/asm/mach-ath25/dma-coherence.h
->  create mode 100644 arch/mips/include/asm/mach-ath25/gpio.h
->  create mode 100644 arch/mips/include/asm/mach-ath25/war.h
+> arch/mips/Kconfig                              |   1 + 
+> arch/mips/ath25/Kconfig                        |   4 + 
+> arch/mips/ath25/Makefile                       |   2 + 
+> arch/mips/ath25/ar5312.c                       | 134
+> +++++++++++++++++ arch/mips/ath25/ar5312.h                       |
+> 18 +++ arch/mips/ath25/board.c                        |   7 + 
+> arch/mips/ath25/prom.c                         |   5 + 
+> arch/mips/include/asm/mach-ath25/ar5312_regs.h | 190
+> +++++++++++++++++++++++++ 8 files changed, 361 insertions(+) create
+> mode 100644 arch/mips/ath25/Kconfig create mode 100644
+> arch/mips/ath25/ar5312.c create mode 100644
+> arch/mips/ath25/ar5312.h create mode 100644
+> arch/mips/include/asm/mach-ath25/ar5312_regs.h
 > 
-> diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-> index f5e18bf..1780c74 100644
-> --- a/arch/mips/Kbuild.platforms
-> +++ b/arch/mips/Kbuild.platforms
-> @@ -2,6 +2,7 @@
->  
->  platforms += alchemy
->  platforms += ar7
-> +platforms += ath25
->  platforms += ath79
->  platforms += bcm47xx
->  platforms += bcm63xx
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 652bd79..54abb9a 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -96,6 +96,19 @@ config AR7
->  	  Support for the Texas Instruments AR7 System-on-a-Chip
->  	  family: TNETD7100, 7200 and 7300.
->  
-> +config ATH25
-> +	bool "Atheros AR231x/AR531x SoC support"
-> +	select CEVT_R4K
-> +	select CSRC_R4K
-> +	select DMA_NONCOHERENT
-> +	select IRQ_CPU
-> +	select SYS_HAS_CPU_MIPS32_R1
-> +	select SYS_SUPPORTS_BIG_ENDIAN
-> +	select SYS_SUPPORTS_32BIT_KERNEL
-> +	select ARCH_REQUIRE_GPIOLIB
-
-you probably do not want to select GPIOLIB since the driver is dropped
-from the series.
-
-[snip]
-
-
-> diff --git a/arch/mips/ath25/board.c b/arch/mips/ath25/board.c
-> new file mode 100644
-> index 0000000..cbc6d7b
-> --- /dev/null
-> +++ b/arch/mips/ath25/board.c
-> @@ -0,0 +1,53 @@
-> +/*
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
-> + * Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
-> + * Copyright (C) 2006 FON Technology, SL.
-> + * Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
-> + * Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/interrupt.h>
-> +#include <asm/irq_cpu.h>
-> +#include <asm/reboot.h>
-> +#include <asm/bootinfo.h>
-> +#include <asm/time.h>
-> +
-> +static void ath25_halt(void)
-> +{
-> +	local_irq_disable();
-> +	while (1)
-> +		;
-
-please use unreachable() macro here from include/linux/compiler.h
-
-[snip]
-
-> diff --git a/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
-> new file mode 100644
-> index 0000000..c1aebdc
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
-> @@ -0,0 +1,76 @@
-> +/*
-> + *  Atheros AR231x/AR531x SoC specific CPU feature overrides
-> + *
-> + *  Copyright (C) 2008 Gabor Juhos <juhosg@openwrt.org>
-> + *
-> + *  This file was derived from: include/asm-mips/cpu-features.h
-> + *	Copyright (C) 2003, 2004 Ralf Baechle
-> + *	Copyright (C) 2004 Maciej W. Rozycki
-> + *
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License version 2 as published
-> + *  by the Free Software Foundation.
-> + *
-> + */
-> +#ifndef __ASM_MACH_ATH25_CPU_FEATURE_OVERRIDES_H
-> +#define __ASM_MACH_ATH25_CPU_FEATURE_OVERRIDES_H
-> +
-> +/*
-> + * The Atheros AR531x/AR231x SoCs have MIPS 4Kc/4KEc core.
-> + */
-> +#define cpu_has_tlb			1
-> +#define cpu_has_4kex			1
-> +#define cpu_has_3k_cache		0
-> +#define cpu_has_4k_cache		1
-> +#define cpu_has_tx39_cache		0
-> +#define cpu_has_sb1_cache		0
-> +#define cpu_has_fpu			0
-> +#define cpu_has_32fpr			0
-> +#define cpu_has_counter			1
-> +/* #define cpu_has_watch		? */
-> +/* #define cpu_has_divec		? */
-> +/* #define cpu_has_vce			? */
-> +/* #define cpu_has_cache_cdex_p		? */
-> +/* #define cpu_has_cache_cdex_s		? */
-> +/* #define cpu_has_prefetch		? */
-> +/* #define cpu_has_mcheck		? */
-> +#define cpu_has_ejtag			1
-> +
-> +/*
-> + * The MIPS 4Kc V0.9 core in the AR5312/AR2312 have problems with the
-> + * ll/sc instructions.
-> + */
-> +#define cpu_has_llsc			0
-> +
-> +#define cpu_has_mips16			0
-> +#define cpu_has_mdmx			0
-> +#define cpu_has_mips3d			0
-> +#define cpu_has_smartmips		0
-> +
-> +/* #define cpu_has_vtag_icache		? */
-> +/* #define cpu_has_dc_aliases		? */
-> +/* #define cpu_has_ic_fills_f_dc	? */
-> +/* #define cpu_has_pindexed_dcache	? */
-> +
-> +/* #define cpu_icache_snoops_remote_store	? */
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig index
+> 54abb9a..baa1c5b 100644 --- a/arch/mips/Kconfig +++
+> b/arch/mips/Kconfig @@ -848,6 +848,7 @@ config MIPS_PARAVIRT 
+> endchoice
+> 
+> source "arch/mips/alchemy/Kconfig" +source
+> "arch/mips/ath25/Kconfig" source "arch/mips/ath79/Kconfig" source
+> "arch/mips/bcm47xx/Kconfig" source "arch/mips/bcm63xx/Kconfig" diff
+> --git a/arch/mips/ath25/Kconfig b/arch/mips/ath25/Kconfig new file
+> mode 100644 index 0000000..cf933ea --- /dev/null +++
+> b/arch/mips/ath25/Kconfig @@ -0,0 +1,4 @@ +config SOC_AR5312 +	bool
+> "Atheros AR5312/AR2312+ SoC support" +	depends on ATH25 +	default
+> y diff --git a/arch/mips/ath25/Makefile b/arch/mips/ath25/Makefile 
+> index 9199fa1..3361619 100644 --- a/arch/mips/ath25/Makefile +++
+> b/arch/mips/ath25/Makefile @@ -9,3 +9,5 @@ #
+> 
+> obj-y += board.o prom.o devices.o + +obj-$(CONFIG_SOC_AR5312) +=
+> ar5312.o diff --git a/arch/mips/ath25/ar5312.c
+> b/arch/mips/ath25/ar5312.c new file mode 100644 index
+> 0000000..80d7ed7 --- /dev/null +++ b/arch/mips/ath25/ar5312.c @@
+> -0,0 +1,134 @@ +/* + * This file is subject to the terms and
+> conditions of the GNU General Public + * License.  See the file
+> "COPYING" in the main directory of this archive + * for more
+> details. + * + * Copyright (C) 2003 Atheros Communications, Inc.,
+> All Rights Reserved. + * Copyright (C) 2006 FON Technology, SL. + *
+> Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org> + * Copyright (C)
+> 2006-2009 Felix Fietkau <nbd@openwrt.org> + * Copyright (C) 2012
+> Alexandros C. Couloumbis <alex@ozo.com> + */ + +/* + * Platform
+> devices for Atheros AR5312 SoCs + */ + +#include <linux/init.h> 
+> +#include <linux/kernel.h> +#include <linux/reboot.h> +#include
+> <asm/bootinfo.h> +#include <asm/reboot.h> +#include <asm/time.h> + 
+> +#include <ar5312_regs.h> +#include <ath25.h> + +#include
+> "devices.h" +#include "ar5312.h" + +static void ar5312_restart(char
+> *command) +{ +	/* reset the system */ +	local_irq_disable(); +
+> while (1) +		ath25_write_reg(AR5312_RESET, AR5312_RESET_SYSTEM); 
+> +} + +/* + * This table is indexed by bits 5..4 of the CLOCKCTL1
+> register + * to determine the predevisor value. + */ +static
+> unsigned clockctl1_predivide_table[4] __initdata = { 1, 2, 4, 5 }; 
+> + +static unsigned __init ar5312_cpu_frequency(void) +{ +	u32
+> scratch, devid, clock_ctl1; +	u32 predivide_mask, multiplier_mask,
+> doubler_mask; +	unsigned predivide_shift, multiplier_shift; +
+> unsigned predivide_select, predivisor, multiplier; + +	/* Trust the
+> bootrom's idea of cpu frequency. */ +	scratch =
+> ath25_read_reg(AR5312_SCRATCH); +	if (scratch) +		return scratch; 
+> + +	devid = ath25_read_reg(AR5312_REV); +	devid = (devid &
+> AR5312_REV_MAJ) >> AR5312_REV_MAJ_S; +	if (devid ==
+> AR5312_REV_MAJ_AR2313) { +		predivide_mask =
+> AR2313_CLOCKCTL1_PREDIVIDE_MASK; +		predivide_shift =
+> AR2313_CLOCKCTL1_PREDIVIDE_SHIFT; +		multiplier_mask =
+> AR2313_CLOCKCTL1_MULTIPLIER_MASK; +		multiplier_shift =
+> AR2313_CLOCKCTL1_MULTIPLIER_SHIFT; +		doubler_mask =
+> AR2313_CLOCKCTL1_DOUBLER_MASK; +	} else { /* AR5312 and AR2312 */ +
+> predivide_mask = AR5312_CLOCKCTL1_PREDIVIDE_MASK; +
+> predivide_shift = AR5312_CLOCKCTL1_PREDIVIDE_SHIFT; +
+> multiplier_mask = AR5312_CLOCKCTL1_MULTIPLIER_MASK; +
+> multiplier_shift = AR5312_CLOCKCTL1_MULTIPLIER_SHIFT; +
+> doubler_mask = AR5312_CLOCKCTL1_DOUBLER_MASK; +	} + +	/* +	 *
+> Clocking is derived from a fixed 40MHz input clock. +	 * +	 *
+> cpu_freq = input_clock * MULT (where MULT is PLL multiplier) +	 *
+> sys_freq = cpu_freq / 4	  (used for APB clock, serial, +	 *
+> flash, Timer, Watchdog Timer) +	 * +	 *  cnt_freq = cpu_freq / 2
+> (use for CPU count/compare) +	 * +	 * So, for example, with a PLL
+> multiplier of 5, we have +	 * +	 *  cpu_freq = 200MHz +	 *
+> sys_freq = 50MHz +	 *  cnt_freq = 100MHz +	 * +	 * We compute the
+> CPU frequency, based on PLL settings. +	 */ + +	clock_ctl1 =
+> ath25_read_reg(AR5312_CLOCKCTL1); +	predivide_select = (clock_ctl1
+> & predivide_mask) >> predivide_shift; +	predivisor =
+> clockctl1_predivide_table[predivide_select]; +	multiplier =
+> (clock_ctl1 & multiplier_mask) >> multiplier_shift; + +	if
+> (clock_ctl1 & doubler_mask) +		multiplier <<= 1; + +	return
+> (40000000 / predivisor) * multiplier; +} + +static inline unsigned
+> ar5312_sys_frequency(void) +{ +	return ar5312_cpu_frequency() / 4; 
+> +} + +void __init ar5312_plat_time_init(void) +{ +
+> mips_hpt_frequency = ar5312_cpu_frequency() / 2; +} + +void __init
+> ar5312_plat_mem_setup(void) +{ +	/* Clear any lingering AHB errors
+> */ +	ath25_read_reg(AR5312_PROCADDR); +
+> ath25_read_reg(AR5312_DMAADDR); +	ath25_write_reg(AR5312_WD_CTRL,
+> AR5312_WD_CTRL_IGNORE_EXPIRATION); + +	_machine_restart =
+> ar5312_restart; +} + +void __init ar5312_prom_init(void) +{ +	u32
+> memsize, memcfg, bank0_ac, bank1_ac; + +	/* Detect memory size */ +
+> memcfg = ath25_read_reg(AR5312_MEM_CFG1); +	bank0_ac =
+> ATH25_REG_MS(memcfg, AR5312_MEM_CFG1_AC0); +	bank1_ac =
+> ATH25_REG_MS(memcfg, AR5312_MEM_CFG1_AC1); +	memsize = (bank0_ac ?
+> (1 << (bank0_ac + 1)) : 0) + +		  (bank1_ac ? (1 << (bank1_ac + 1))
+> : 0); +	memsize <<= 20; +	add_memory_region(0, memsize,
+> BOOT_MEM_RAM); +} + diff --git a/arch/mips/ath25/ar5312.h
+> b/arch/mips/ath25/ar5312.h new file mode 100644 index
+> 0000000..339b28e --- /dev/null +++ b/arch/mips/ath25/ar5312.h @@
+> -0,0 +1,18 @@ +#ifndef __AR5312_H +#define __AR5312_H + +#ifdef
+> CONFIG_SOC_AR5312 + +void ar5312_plat_time_init(void); +void
+> ar5312_plat_mem_setup(void); +void ar5312_prom_init(void); + 
+> +#else + +static inline void ar5312_plat_time_init(void) {} +static
+> inline void ar5312_plat_mem_setup(void) {} +static inline void
+> ar5312_prom_init(void) {} + +#endif + +#endif	/* __AR5312_H */ diff
+> --git a/arch/mips/ath25/board.c b/arch/mips/ath25/board.c index
+> cbc6d7b..80683e3 100644 --- a/arch/mips/ath25/board.c +++
+> b/arch/mips/ath25/board.c @@ -16,6 +16,8 @@ #include
+> <asm/bootinfo.h> #include <asm/time.h>
+> 
+> +#include "ar5312.h" + static void ath25_halt(void) { 
+> local_irq_disable(); @@ -28,6 +30,9 @@ void __init
+> plat_mem_setup(void) _machine_halt = ath25_halt; pm_power_off =
+> ath25_halt;
+> 
+> +	if (is_ar5312()) +		ar5312_plat_mem_setup(); +
 
 
-please drop the ones with a "?"
+if i am reading this correct then is_ar5312() can return true even if
+CONFIG_SOC_AR5312 is not selected
 
-> +
-> +#define cpu_has_mips32r1		1
-> +
-> +#define cpu_has_mips64r1		0
-> +#define cpu_has_mips64r2		0
-> +
-> +#define cpu_has_dsp			0
-> +#define cpu_has_mipsmt			0
-> +
-> +/* #define cpu_has_nofpuex		? */
-> +#define cpu_has_64bits			0
-> +#define cpu_has_64bit_zero_reg		0
-> +#define cpu_has_64bit_gp_regs		0
-> +#define cpu_has_64bit_addresses		0
-> +
-> +/* #define cpu_has_inclusive_pcaches	? */
-> +
-> +/* #define cpu_dcache_line_size()	? */
-> +/* #define cpu_icache_line_size()	? */
+how about
+
+if (IS_ENABLED(CONFIG_SOC_AR5312) && is_ar5312())
+	pr_info("AR5312");
+else if (IS_ENABLED(CONFIG_SOC_AR2315) && is_ar2315())
+	pr_info("AR2315");
+else
+	panic("failed to init memory");
+
+somewhere early in the code
 
 
-same here
-
-> +
-> +#endif /* __ASM_MACH_ATH25_CPU_FEATURE_OVERRIDES_H */
-> diff --git a/arch/mips/include/asm/mach-ath25/dma-coherence.h b/arch/mips/include/asm/mach-ath25/dma-coherence.h
-> new file mode 100644
-> index 0000000..8b3d0cc
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-ath25/dma-coherence.h
-> @@ -0,0 +1,64 @@
-> +/*
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
-> + * Copyright (C) 2006  Ralf Baechle <ralf@linux-mips.org>
-> + * Copyright (C) 2007  Felix Fietkau <nbd@openwrt.org>
-> + *
-> + */
-> +#ifndef __ASM_MACH_ATH25_DMA_COHERENCE_H
-> +#define __ASM_MACH_ATH25_DMA_COHERENCE_H
-> +
-> +#include <linux/device.h>
-> +
-> +static inline dma_addr_t
-> +plat_map_dma_mem(struct device *dev, void *addr, size_t size)
-> +{
-> +	return virt_to_phys(addr);
-> +}
-> +
-> +static inline dma_addr_t
-> +plat_map_dma_mem_page(struct device *dev, struct page *page)
-> +{
-> +	return page_to_phys(page);
-> +}
-> +
-> +static inline unsigned long
-> +plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
-> +{
-> +	return dma_addr;
-> +}
-> +
-> +static inline void
-> +plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr, size_t size,
-> +		   enum dma_data_direction direction)
-> +{
-> +}
-> +
-> +static inline int plat_dma_supported(struct device *dev, u64 mask)
-> +{
-> +	return 1;
-> +}
-> +
-> +static inline void plat_extra_sync_for_device(struct device *dev)
-> +{
-> +}
-> +
-> +static inline int plat_dma_mapping_error(struct device *dev,
-> +					 dma_addr_t dma_addr)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline int plat_device_is_coherent(struct device *dev)
-> +{
-> +#ifdef CONFIG_DMA_COHERENT
-> +	return 1;
-> +#endif
-> +#ifdef CONFIG_DMA_NONCOHERENT
-> +	return 0;
-> +#endif
-> +}
-> +
-> +#endif /* __ASM_MACH_ATH25_DMA_COHERENCE_H */
-> diff --git a/arch/mips/include/asm/mach-ath25/gpio.h b/arch/mips/include/asm/mach-ath25/gpio.h
-> new file mode 100644
-> index 0000000..713564b
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-ath25/gpio.h
-> @@ -0,0 +1,16 @@
-> +#ifndef __ASM_MACH_ATH25_GPIO_H
-> +#define __ASM_MACH_ATH25_GPIO_H
-> +
-> +#include <asm-generic/gpio.h>
-> +
-> +#define gpio_get_value __gpio_get_value
-> +#define gpio_set_value __gpio_set_value
-> +#define gpio_cansleep __gpio_cansleep
-> +#define gpio_to_irq __gpio_to_irq
-> +
-> +static inline int irq_to_gpio(unsigned irq)
-> +{
-> +	return -EINVAL;
-> +}
-> +
-> +#endif	/* __ASM_MACH_ATH25_GPIO_H */
-> diff --git a/arch/mips/include/asm/mach-ath25/war.h b/arch/mips/include/asm/mach-ath25/war.h
-> new file mode 100644
-> index 0000000..e3a5250
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-ath25/war.h
-> @@ -0,0 +1,25 @@
-> +/*
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
-> + * Copyright (C) 2008 Felix Fietkau <nbd@openwrt.org>
-> + */
-> +#ifndef __ASM_MACH_ATH25_WAR_H
-> +#define __ASM_MACH_ATH25_WAR_H
-> +
-> +#define R4600_V1_INDEX_ICACHEOP_WAR	0
-> +#define R4600_V1_HIT_CACHEOP_WAR	0
-> +#define R4600_V2_HIT_CACHEOP_WAR	0
-> +#define R5432_CP0_INTERRUPT_WAR		0
-> +#define BCM1250_M3_WAR			0
-> +#define SIBYTE_1956_WAR			0
-> +#define MIPS4K_ICACHE_REFILL_WAR	0
-> +#define MIPS_CACHE_SYNC_WAR		0
-> +#define TX49XX_ICACHE_INDEX_INV_WAR	0
-> +#define RM9000_CDEX_SMP_WAR		0
-> +#define ICACHE_REFILLS_WORKAROUND_WAR	0
-> +#define R10000_LLSC_WAR			0
-> +#define MIPS34K_MISSED_ITLB_WAR		0
-> +
-> +#endif /* __ASM_MACH_ATH25_WAR_H */
+> /* Disable data watchpoints */ write_c0_watchlo0(0); } @@ -38,6
+> +43,8 @@ asmlinkage void plat_irq_dispatch(void)
+> 
+> void __init plat_time_init(void) { +	if (is_ar5312()) +
+> ar5312_plat_time_init(); }
+> 
+> unsigned int __cpuinit get_c0_compare_int(void) diff --git
+> a/arch/mips/ath25/prom.c b/arch/mips/ath25/prom.c index
+> edf82be..ec60b0f 100644 --- a/arch/mips/ath25/prom.c +++
+> b/arch/mips/ath25/prom.c @@ -17,8 +17,13 @@ #include
+> <linux/init.h> #include <asm/bootinfo.h>
+> 
+> +#include "devices.h" +#include "ar5312.h" + void __init
+> prom_init(void) { +	if (is_ar5312()) +		ar5312_prom_init(); }
+> 
+> void __init prom_free_prom_memory(void) diff --git
+> a/arch/mips/include/asm/mach-ath25/ar5312_regs.h
+> b/arch/mips/include/asm/mach-ath25/ar5312_regs.h new file mode
+> 100644 index 0000000..76856d8 --- /dev/null +++
+> b/arch/mips/include/asm/mach-ath25/ar5312_regs.h @@ -0,0 +1,190 @@ 
+> +/* + * This file is subject to the terms and conditions of the GNU
+> General Public + * License.  See the file "COPYING" in the main
+> directory of this archive + * for more details. + * + * Copyright
+> (C) 2003 Atheros Communications, Inc.,  All Rights Reserved. + *
+> Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org> + * Copyright (C)
+> 2006 Felix Fietkau <nbd@openwrt.org> + */ + +#ifndef
+> __ASM_MACH_ATH25_AR5312_REGS_H +#define
+> __ASM_MACH_ATH25_AR5312_REGS_H + +/* + * Address Map + * + * The
+> AR5312 supports 2 enet MACS, even though many reference boards
+> only + * actually use 1 of them (i.e. Only MAC 0 is actually
+> connected to an enet + * PHY or PHY switch. The AR2312 supports 1
+> enet MAC. + */ +#define AR5312_WLAN0		0x18000000 +#define
+> AR5312_WLAN1		0x18500000 +#define AR5312_ENET0		0x18100000 +#define
+> AR5312_ENET1		0x18200000 +#define AR5312_SDRAMCTL		0x18300000 
+> +#define AR5312_FLASHCTL		0x18400000 +#define AR5312_APBBASE
+> 0x1c000000 +#define AR5312_UART0		0x1c000000	/* UART MMR */ 
+> +#define AR5312_FLASH		0x1e000000 + +/* + * Need these defines to
+> determine true number of ethernet MACs + */ +#define
+> AR5312_AR5312_REV2	0x0052		/* AR5312 WMAC (AP31) */ +#define
+> AR5312_AR5312_REV7	0x0057		/* AR5312 WMAC (AP30-040) */ +#define
+> AR5312_AR2313_REV8	0x0058		/* AR2313 WMAC (AP43-030) */ + +/*
+> Reset/Timer Block Address Map */ +#define AR5312_RESETTMR
+> (AR5312_APBBASE  + 0x3000) +#define AR5312_TIMER		(AR5312_RESETTMR
+> + 0x0000) /* countdown timer */ +#define AR5312_WD_CTRL
+> (AR5312_RESETTMR + 0x0008) /* watchdog cntrl */ +#define
+> AR5312_WD_TIMER		(AR5312_RESETTMR + 0x000c) /* watchdog timer */ 
+> +#define AR5312_ISR		(AR5312_RESETTMR + 0x0010) /* Intr Status Reg
+> */ +#define AR5312_IMR		(AR5312_RESETTMR + 0x0014) /* Intr Mask Reg
+> */ +#define AR5312_RESET		(AR5312_RESETTMR + 0x0020) +#define
+> AR5312_CLOCKCTL1	(AR5312_RESETTMR + 0x0064) +#define AR5312_SCRATCH
+> (AR5312_RESETTMR + 0x006c) +#define AR5312_PROCADDR
+> (AR5312_RESETTMR + 0x0070) +#define AR5312_PROC1		(AR5312_RESETTMR
+> + 0x0074) +#define AR5312_DMAADDR		(AR5312_RESETTMR + 0x0078) 
+> +#define AR5312_DMA1		(AR5312_RESETTMR + 0x007c) +#define
+> AR5312_ENABLE		(AR5312_RESETTMR + 0x0080) /* interface enb */ 
+> +#define AR5312_REV		(AR5312_RESETTMR + 0x0090) /* revision */ + 
+> +/* AR5312_WD_CTRL register bit field definitions */ +#define
+> AR5312_WD_CTRL_IGNORE_EXPIRATION	0x0000 +#define AR5312_WD_CTRL_NMI
+> 0x0001 +#define AR5312_WD_CTRL_RESET			0x0002 + +/* AR5312_ISR
+> register bit field definitions */ +#define AR5312_ISR_TIMER	0x0001 
+> +#define AR5312_ISR_AHBPROC	0x0002 +#define AR5312_ISR_AHBDMA
+> 0x0004 +#define AR5312_ISR_GPIO		0x0008 +#define AR5312_ISR_UART0
+> 0x0010 +#define AR5312_ISR_UART0DMA	0x0020 +#define AR5312_ISR_WD
+> 0x0040 +#define AR5312_ISR_LOCAL	0x0080 + +/* AR5312_RESET register
+> bit field definitions */ +#define AR5312_RESET_SYSTEM		0x00000001
+> /* cold reset full system */ +#define AR5312_RESET_PROC		0x00000002
+> /* cold reset MIPS core */ +#define AR5312_RESET_WLAN0		0x00000004
+> /* cold reset WLAN MAC/BB */ +#define AR5312_RESET_EPHY0
+> 0x00000008  /* cold reset ENET0 phy */ +#define AR5312_RESET_EPHY1
+> 0x00000010  /* cold reset ENET1 phy */ +#define AR5312_RESET_ENET0
+> 0x00000020  /* cold reset ENET0 MAC */ +#define AR5312_RESET_ENET1
+> 0x00000040  /* cold reset ENET1 MAC */ +#define AR5312_RESET_UART0
+> 0x00000100  /* cold reset UART0 */ +#define AR5312_RESET_WLAN1
+> 0x00000200  /* cold reset WLAN MAC/BB */ +#define AR5312_RESET_APB
+> 0x00000400  /* cold reset APB ar5312 */ +#define
+> AR5312_RESET_WARM_PROC		0x00001000  /* warm reset MIPS core */ 
+> +#define AR5312_RESET_WARM_WLAN0_MAC	0x00002000  /* warm reset
+> WLAN0 MAC */ +#define AR5312_RESET_WARM_WLAN0_BB	0x00004000  /*
+> warm reset WLAN0 BB */ +#define AR5312_RESET_NMI		0x00010000  /*
+> send an NMI to the CPU */ +#define AR5312_RESET_WARM_WLAN1_MAC
+> 0x00020000  /* warm reset WLAN1 MAC */ +#define
+> AR5312_RESET_WARM_WLAN1_BB	0x00040000  /* warm reset WLAN1 BB */ 
+> +#define AR5312_RESET_LOCAL_BUS		0x00080000  /* reset local bus */ 
+> +#define AR5312_RESET_WDOG		0x00100000  /* last reset was a wdt */ 
+> + +#define AR5312_RESET_WMAC0_BITS		(AR5312_RESET_WLAN0 |\ +
+> AR5312_RESET_WARM_WLAN0_MAC |\ +					 AR5312_RESET_WARM_WLAN0_BB) 
+> + +#define AR5312_RESET_WMAC1_BITS		(AR5312_RESET_WLAN1 |\ +
+> AR5312_RESET_WARM_WLAN1_MAC |\ +					 AR5312_RESET_WARM_WLAN1_BB) 
+> + +/* AR5312_CLOCKCTL1 register bit field definitions */ +#define
+> AR5312_CLOCKCTL1_PREDIVIDE_MASK		0x00000030 +#define
+> AR5312_CLOCKCTL1_PREDIVIDE_SHIFT	4 +#define
+> AR5312_CLOCKCTL1_MULTIPLIER_MASK	0x00001f00 +#define
+> AR5312_CLOCKCTL1_MULTIPLIER_SHIFT	8 +#define
+> AR5312_CLOCKCTL1_DOUBLER_MASK		0x00010000 + +/* Valid for AR5312
+> and AR2312 */ +#define AR5312_CLOCKCTL1_PREDIVIDE_MASK		0x00000030 
+> +#define AR5312_CLOCKCTL1_PREDIVIDE_SHIFT	4 +#define
+> AR5312_CLOCKCTL1_MULTIPLIER_MASK	0x00001f00 +#define
+> AR5312_CLOCKCTL1_MULTIPLIER_SHIFT	8 +#define
+> AR5312_CLOCKCTL1_DOUBLER_MASK		0x00010000 + +/* Valid for AR2313
+> */ +#define AR2313_CLOCKCTL1_PREDIVIDE_MASK		0x00003000 +#define
+> AR2313_CLOCKCTL1_PREDIVIDE_SHIFT	12 +#define
+> AR2313_CLOCKCTL1_MULTIPLIER_MASK	0x001f0000 +#define
+> AR2313_CLOCKCTL1_MULTIPLIER_SHIFT	16 +#define
+> AR2313_CLOCKCTL1_DOUBLER_MASK		0x00000000 + +/* AR5312_ENABLE
+> register bit field definitions */ +#define AR5312_ENABLE_WLAN0
+> 0x0001 +#define AR5312_ENABLE_ENET0			0x0002 +#define
+> AR5312_ENABLE_ENET1			0x0004 +#define
+> AR5312_ENABLE_UART_AND_WLAN1_PIO	0x0008   /* UART & WLAN1 PIOs */ 
+> +#define AR5312_ENABLE_WLAN1_DMA			0x0010   /* WLAN1 DMAs */ 
+> +#define AR5312_ENABLE_WLAN1		(AR5312_ENABLE_UART_AND_WLAN1_PIO |\ 
+> +					 AR5312_ENABLE_WLAN1_DMA) + +/* AR5312_REV register bit field
+> definitions */ +#define AR5312_REV_WMAC_MAJ	0xf000 +#define
+> AR5312_REV_WMAC_MAJ_S	12 +#define AR5312_REV_WMAC_MIN	0x0f00 
+> +#define AR5312_REV_WMAC_MIN_S	8 +#define AR5312_REV_MAJ		0x00f0 
+> +#define AR5312_REV_MAJ_S	4 +#define AR5312_REV_MIN		0x000f 
+> +#define AR5312_REV_MIN_S	0 +#define AR5312_REV_CHIP
+> (AR5312_REV_MAJ|AR5312_REV_MIN) + +/* Major revision numbers, bits
+> 7..4 of Revision ID register */ +#define AR5312_REV_MAJ_AR5312
+> 0x4 +#define AR5312_REV_MAJ_AR2313		0x5 + +/* Minor revision
+> numbers, bits 3..0 of Revision ID register */ +#define
+> AR5312_REV_MIN_DUAL		0x0	/* Dual WLAN version */ +#define
+> AR5312_REV_MIN_SINGLE		0x1	/* Single WLAN version */ + +/*
+> AR5312_FLASHCTL register bit field definitions */ +#define
+> AR5312_FLASHCTL_IDCY	0x0000000f	/* Idle cycle turnaround time */ 
+> +#define AR5312_FLASHCTL_IDCY_S	0 +#define AR5312_FLASHCTL_WST1
+> 0x000003e0	/* Wait state 1 */ +#define AR5312_FLASHCTL_WST1_S	5 
+> +#define AR5312_FLASHCTL_RBLE	0x00000400	/* Read byte lane enable
+> */ +#define AR5312_FLASHCTL_WST2	0x0000f800	/* Wait state 2 */ 
+> +#define AR5312_FLASHCTL_WST2_S	11 +#define AR5312_FLASHCTL_AC
+> 0x00070000	/* Flash addr check (added) */ +#define
+> AR5312_FLASHCTL_AC_S	16 +#define AR5312_FLASHCTL_AC_128K
+> 0x00000000 +#define AR5312_FLASHCTL_AC_256K	0x00010000 +#define
+> AR5312_FLASHCTL_AC_512K	0x00020000 +#define AR5312_FLASHCTL_AC_1M
+> 0x00030000 +#define AR5312_FLASHCTL_AC_2M	0x00040000 +#define
+> AR5312_FLASHCTL_AC_4M	0x00050000 +#define AR5312_FLASHCTL_AC_8M
+> 0x00060000 +#define AR5312_FLASHCTL_AC_RES	0x00070000	/* 16MB is
+> not supported */ +#define AR5312_FLASHCTL_E	0x00080000	/* Flash
+> bank enable (added) */ +#define AR5312_FLASHCTL_BUSERR	0x01000000
+> /* Bus transfer error flag */ +#define AR5312_FLASHCTL_WPERR
+> 0x02000000	/* Write protect error flag */ +#define
+> AR5312_FLASHCTL_WP	0x04000000	/* Write protect */ +#define
+> AR5312_FLASHCTL_BM	0x08000000	/* Burst mode */ +#define
+> AR5312_FLASHCTL_MW	0x30000000	/* Mem width */ +#define
+> AR5312_FLASHCTL_MW8	0x00000000	/* Mem width x8 */ +#define
+> AR5312_FLASHCTL_MW16	0x10000000	/* Mem width x16 */ +#define
+> AR5312_FLASHCTL_MW32	0x20000000	/* Mem width x32 (not supp) */ 
+> +#define AR5312_FLASHCTL_ATNR	0x00000000	/* Access == no retry */ 
+> +#define AR5312_FLASHCTL_ATR	0x80000000	/* Access == retry every
+> */ +#define AR5312_FLASHCTL_ATR4	0xc0000000	/* Access == retry
+> every 4 */ + +/* ARM Flash Controller -- 3 flash banks with either
+> x8 or x16 devices.  */ +#define AR5312_FLASHCTL0	(AR5312_FLASHCTL +
+> 0x00) +#define AR5312_FLASHCTL1	(AR5312_FLASHCTL + 0x04) +#define
+> AR5312_FLASHCTL2	(AR5312_FLASHCTL + 0x08) + +/* ARM SDRAM
+> Controller -- just enough to determine memory size */ +#define
+> AR5312_MEM_CFG1		(AR5312_SDRAMCTL + 0x04) +#define
+> AR5312_MEM_CFG1_AC0_M	0x00000700	/* bank 0: SDRAM addr check */ 
+> +#define AR5312_MEM_CFG1_AC0_S	8 +#define AR5312_MEM_CFG1_AC1_M
+> 0x00007000	/* bank 1: SDRAM addr check */ +#define
+> AR5312_MEM_CFG1_AC1_S	12 + +#endif	/*
+> __ASM_MACH_ATH25_AR5312_REGS_H */
 > 

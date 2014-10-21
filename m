@@ -1,52 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 13:07:51 +0200 (CEST)
-Received: from mail-wi0-f171.google.com ([209.85.212.171]:54898 "EHLO
-        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012029AbaJULHsPOR7S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 13:07:48 +0200
-Received: by mail-wi0-f171.google.com with SMTP id em10so9657133wid.10
-        for <linux-mips@linux-mips.org>; Tue, 21 Oct 2014 04:07:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=0tLSSnNlSMioxxXC0Yq088vNOdLr6U/Cmy/PC+nrCXY=;
-        b=LmZbObZXtvvJ5x1RgY9AH/20pSUiXuaPDCBcV9t6kwMstuHnYuoGTTe3+lkJsvzd9C
-         UivghwdJaRpOSUjJt87rBkZ71nQm+C2ue4jNlg2SyEXvMTLtwoeFgQwx82t0Phv6CSCg
-         gGLVe33rrIGsKa7H9g7UJBPXjaU3xAoT2O/flyRBsizk4KmAfwkOM+N4PrIXJH6TFeqr
-         fZ+mHb/KWl1ATCN1FUl/X7eFbkgkKs9ckQSIxETaNr/1XSXFMGA7F69dCC3tsE+2hJg8
-         AENwkUlT37VpJB29H83xJTqS8Za4L4eRKxa97E6kLIYU8mSjKonS17f/GIXvHDYUEnF0
-         WeZA==
-X-Received: by 10.194.237.9 with SMTP id uy9mr40711799wjc.69.1413889660238;
-        Tue, 21 Oct 2014 04:07:40 -0700 (PDT)
-Received: from netboy (197.56.253.84.static.wline.lns.sme.cust.swisscom.ch. [84.253.56.197])
-        by mx.google.com with ESMTPSA id hu3sm15019346wjb.17.2014.10.21.04.07.38
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 21 Oct 2014 04:07:39 -0700 (PDT)
-Date:   Tue, 21 Oct 2014 13:07:25 +0200
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Jonathan Corbet <corbet@lwn.net>,
-        netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Documentation: ptp: Fix build failure on MIPS cross
- builds
-Message-ID: <20141021110724.GA16479@netboy>
-References: <1413794538-28465-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 14:11:39 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9395 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012026AbaJUMLailMWc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 14:11:30 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 9C8EE372DA236;
+        Tue, 21 Oct 2014 13:11:21 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 21 Oct
+ 2014 13:11:23 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 21 Oct 2014 13:11:23 +0100
+Received: from [192.168.154.141] (192.168.154.141) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 21 Oct
+ 2014 13:11:22 +0100
+Message-ID: <54464D6A.5000501@imgtec.com>
+Date:   Tue, 21 Oct 2014 13:11:22 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1413794538-28465-1-git-send-email-markos.chandras@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <richardcochran@gmail.com>
+To:     Richard Cochran <richardcochran@gmail.com>
+CC:     <linux-mips@linux-mips.org>, Jonathan Corbet <corbet@lwn.net>,
+        <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] Documentation: ptp: Fix build failure on MIPS cross builds
+References: <1413794538-28465-1-git-send-email-markos.chandras@imgtec.com> <20141021110724.GA16479@netboy>
+In-Reply-To: <20141021110724.GA16479@netboy>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.141]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43420
+X-archive-position: 43421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: richardcochran@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,27 +51,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 20, 2014 at 09:42:18AM +0100, Markos Chandras wrote:
-> diff --git a/Documentation/ptp/Makefile b/Documentation/ptp/Makefile
-> index 293d6c09a11f..397c1cd2eda7 100644
-> --- a/Documentation/ptp/Makefile
-> +++ b/Documentation/ptp/Makefile
-> @@ -1,5 +1,15 @@
->  # List of programs to build
-> +ifndef CROSS_COMPILE
->  hostprogs-y := testptp
-> +else
-> +# MIPS system calls are defined based on the -mabi that is passed
-> +# to the toolchain which may or may not be a valid option
-> +# for the host toolchain. So disable testptp if target architecture
-> +# is MIPS but the host isn't.
-> +ifndef CONFIG_MIPS
-> +hostprogs-y := testptp
-> +endif
-> +endif
+On 10/21/2014 12:07 PM, Richard Cochran wrote:
+> On Mon, Oct 20, 2014 at 09:42:18AM +0100, Markos Chandras wrote:
+>> diff --git a/Documentation/ptp/Makefile b/Documentation/ptp/Makefile
+>> index 293d6c09a11f..397c1cd2eda7 100644
+>> --- a/Documentation/ptp/Makefile
+>> +++ b/Documentation/ptp/Makefile
+>> @@ -1,5 +1,15 @@
+>>  # List of programs to build
+>> +ifndef CROSS_COMPILE
+>>  hostprogs-y := testptp
+>> +else
+>> +# MIPS system calls are defined based on the -mabi that is passed
+>> +# to the toolchain which may or may not be a valid option
+>> +# for the host toolchain. So disable testptp if target architecture
+>> +# is MIPS but the host isn't.
+>> +ifndef CONFIG_MIPS
+>> +hostprogs-y := testptp
+>> +endif
+>> +endif
+> 
+> It seems like a shame to simply give up and not compile this at all.
+> Is there no way to correctly cross compile this for MIPS?
+> 
+> Thanks,
+> Richard
+> 
 
-It seems like a shame to simply give up and not compile this at all.
-Is there no way to correctly cross compile this for MIPS?
+As far as I can see you don't cross-compile the file. You use the host
+toolchain. There is no clean way to build it for host if you have your
+kernel configured for MIPS. Perhaps maybe you could define
+__MIPS_SIM_{ABI64, ABI32, NABI32} in the gcc command line (-D...) but
+this is a bit ugly. Or maybe use the host headers instead of the ones in
+the kernel source.
 
-Thanks,
-Richard
+-- 
+markos

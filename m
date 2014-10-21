@@ -1,58 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 23:34:00 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.11.231]:47236 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012079AbaJUVd6AWaNV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 23:33:58 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id DE2F313FD91;
-        Tue, 21 Oct 2014 21:33:50 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id CDF9A13FD97; Tue, 21 Oct 2014 21:33:50 +0000 (UTC)
-Received: from [10.46.167.8] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C408B13FD91;
-        Tue, 21 Oct 2014 21:33:49 +0000 (UTC)
-Message-ID: <5446D13C.5020402@codeaurora.org>
-Date:   Tue, 21 Oct 2014 14:33:48 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 00:05:19 +0200 (CEST)
+Received: from mail-vc0-f170.google.com ([209.85.220.170]:57814 "EHLO
+        mail-vc0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011966AbaJUWFR6K-k0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 00:05:17 +0200
+Received: by mail-vc0-f170.google.com with SMTP id hy10so1134857vcb.15
+        for <linux-mips@linux-mips.org>; Tue, 21 Oct 2014 15:05:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pefoley.com; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=j79SmYnaY+v+repBLfIirE3d12H/QkcKWH4RpDIzJ1c=;
+        b=myXT3NRdys1j32K+r3yp2HDfEwC54cGtXHC6m4QGLbXyo3XHITkNN2L0VuKgtHTEQ8
+         JQRbBy4DnI3GanoQIJ1aDUW+YEPTf4+ZSYrQPRoZL1A8fwmEKlTcntfucZZil3r2SaYG
+         oZSL8S29UB+jEQLSnkK2k6fM0PIfozVEEanEc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=j79SmYnaY+v+repBLfIirE3d12H/QkcKWH4RpDIzJ1c=;
+        b=a1g6wbuR5lq0yvhlyL54RMyDWi90CQHiY5dc905Sm10X/vXFyTicUdnYc+M8vlP7Bd
+         HOnPxAsfTXh3tEV8TXu7shyNblRy1CW8Z1Qzdq664fluv4LqdfAgHbuASLHe2CHxUoKB
+         LxP2lkORLdTBHXXm2I5EC72H1p9GyYKa2s24F1O08WDtol6hMPoeZKhw/5cOrfh8OzF6
+         SEQKfxmaDQNrDYgp1eTXtNSn5DX4x4crmQTgbCd5TVvs7tzJRvnMf4iB2yLwrk1urx7C
+         1i1WCyCjm6P/jMiTmGmzEKzNtSl00Har64glnF3F6PHz6kxQjsoo5VCt7wIkIvIPac+o
+         63yQ==
+X-Gm-Message-State: ALoCoQnke2FaOYpWOaY/++QLPDkofCrH1G4/8idM5N1iDtQAQ+otagsT4zJpacL4zKsrWXJihYV5
+X-Received: by 10.221.56.201 with SMTP id wd9mr32781878vcb.16.1413929111814;
+ Tue, 21 Oct 2014 15:05:11 -0700 (PDT)
 MIME-Version: 1.0
-To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Mike Turquette <mturquette@linaro.org>
-CC:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        =?windows-1252?Q?Emilio_L=F3pez?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Alex Elder <elder@linaro.org>,
-        Matt Porter <mporter@linaro.org>,
-        Tim Kryger <tim.kryger@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 6/8] clk: Change clk_ops->determine_rate to return
- a clk_hw as the best parent
-References: <1413812442-24956-1-git-send-email-tomeu.vizoso@collabora.com> <1413812442-24956-7-git-send-email-tomeu.vizoso@collabora.com>
-In-Reply-To: <1413812442-24956-7-git-send-email-tomeu.vizoso@collabora.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Received: by 10.221.44.8 with HTTP; Tue, 21 Oct 2014 15:04:51 -0700 (PDT)
+X-Originating-IP: [2001:470:8:ee7:39bc:72a7:a0a6:e1f0]
+In-Reply-To: <20141021182757.GA3960@localhost.localdomain>
+References: <1413794538-28465-1-git-send-email-markos.chandras@imgtec.com>
+ <20141021110724.GA16479@netboy> <20141021.123544.9516812519754063.davem@davemloft.net>
+ <544690CB.4030307@gmail.com> <20141021182757.GA3960@localhost.localdomain>
+From:   Peter Foley <pefoley2@pefoley.com>
+Date:   Tue, 21 Oct 2014 18:04:51 -0400
+Message-ID: <CAOFdcFNYHgupvMChb4NedMsUMAOmE8k0D_F5eRjL-8H8ft=eRw@mail.gmail.com>
+Subject: Re: [PATCH] Documentation: ptp: Fix build failure on MIPS cross builds
+To:     Richard Cochran <richardcochran@gmail.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        David Miller <davem@davemloft.net>, markos.chandras@imgtec.com,
+        linux-mips@linux-mips.org, corbet@lwn.net, netdev@vger.kernel.org,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <pefoley2@pefoley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43434
+X-archive-position: 43435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: pefoley2@pefoley.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,15 +66,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/20/2014 06:40 AM, Tomeu Vizoso wrote:
-> This is in preparation for clock providers to not have to deal with struct clk.
+On Tue, Oct 21, 2014 at 2:27 PM, Richard Cochran
+<richardcochran@gmail.com> wrote:
+> On Tue, Oct 21, 2014 at 09:58:51AM -0700, David Daney wrote:
+>> What I don't understand is why we are using hostprogs in this
+>> Makefile.  Isn't this a program that would run on the target, not
+>> the build host?
 >
-> Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+> Yes.
 >
->
+> Peter, could you please fix it?
 
-Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+The intention of these changes was to generate more compiliation
+coverage for code in Documentation/
+The underlying issue is that this doesn't work for cross-compiling
+because kbuild doesn't have cross-compile support for userspace code.
+I submitted a patch to disable building Documentation when
+cross-compiling, as the consensus in the thread that resulted in that
+patch (https://lkml.org/lkml/2014/10/8/510) was that implementing
+targetprogs in kbuild was not currently worth it.
+I can try to take a crack at adding targetprogs support, but I'm
+rather busy right now, so it may take a little while.
+
+Thanks,
+
+Peter

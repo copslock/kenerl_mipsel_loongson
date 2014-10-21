@@ -1,59 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 00:05:19 +0200 (CEST)
-Received: from mail-vc0-f170.google.com ([209.85.220.170]:57814 "EHLO
-        mail-vc0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011966AbaJUWFR6K-k0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 00:05:17 +0200
-Received: by mail-vc0-f170.google.com with SMTP id hy10so1134857vcb.15
-        for <linux-mips@linux-mips.org>; Tue, 21 Oct 2014 15:05:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 00:23:30 +0200 (CEST)
+Received: from mail-pd0-f179.google.com ([209.85.192.179]:58245 "EHLO
+        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012031AbaJUWX3OZSWN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 00:23:29 +0200
+Received: by mail-pd0-f179.google.com with SMTP id r10so2215668pdi.38
+        for <linux-mips@linux-mips.org>; Tue, 21 Oct 2014 15:23:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pefoley.com; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=j79SmYnaY+v+repBLfIirE3d12H/QkcKWH4RpDIzJ1c=;
-        b=myXT3NRdys1j32K+r3yp2HDfEwC54cGtXHC6m4QGLbXyo3XHITkNN2L0VuKgtHTEQ8
-         JQRbBy4DnI3GanoQIJ1aDUW+YEPTf4+ZSYrQPRoZL1A8fwmEKlTcntfucZZil3r2SaYG
-         oZSL8S29UB+jEQLSnkK2k6fM0PIfozVEEanEc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=j79SmYnaY+v+repBLfIirE3d12H/QkcKWH4RpDIzJ1c=;
-        b=a1g6wbuR5lq0yvhlyL54RMyDWi90CQHiY5dc905Sm10X/vXFyTicUdnYc+M8vlP7Bd
-         HOnPxAsfTXh3tEV8TXu7shyNblRy1CW8Z1Qzdq664fluv4LqdfAgHbuASLHe2CHxUoKB
-         LxP2lkORLdTBHXXm2I5EC72H1p9GyYKa2s24F1O08WDtol6hMPoeZKhw/5cOrfh8OzF6
-         SEQKfxmaDQNrDYgp1eTXtNSn5DX4x4crmQTgbCd5TVvs7tzJRvnMf4iB2yLwrk1urx7C
-         1i1WCyCjm6P/jMiTmGmzEKzNtSl00Har64glnF3F6PHz6kxQjsoo5VCt7wIkIvIPac+o
-         63yQ==
-X-Gm-Message-State: ALoCoQnke2FaOYpWOaY/++QLPDkofCrH1G4/8idM5N1iDtQAQ+otagsT4zJpacL4zKsrWXJihYV5
-X-Received: by 10.221.56.201 with SMTP id wd9mr32781878vcb.16.1413929111814;
- Tue, 21 Oct 2014 15:05:11 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.221.44.8 with HTTP; Tue, 21 Oct 2014 15:04:51 -0700 (PDT)
-X-Originating-IP: [2001:470:8:ee7:39bc:72a7:a0a6:e1f0]
-In-Reply-To: <20141021182757.GA3960@localhost.localdomain>
-References: <1413794538-28465-1-git-send-email-markos.chandras@imgtec.com>
- <20141021110724.GA16479@netboy> <20141021.123544.9516812519754063.davem@davemloft.net>
- <544690CB.4030307@gmail.com> <20141021182757.GA3960@localhost.localdomain>
-From:   Peter Foley <pefoley2@pefoley.com>
-Date:   Tue, 21 Oct 2014 18:04:51 -0400
-Message-ID: <CAOFdcFNYHgupvMChb4NedMsUMAOmE8k0D_F5eRjL-8H8ft=eRw@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: ptp: Fix build failure on MIPS cross builds
-To:     Richard Cochran <richardcochran@gmail.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        David Miller <davem@davemloft.net>, markos.chandras@imgtec.com,
-        linux-mips@linux-mips.org, corbet@lwn.net, netdev@vger.kernel.org,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <pefoley2@pefoley.com>
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=sqsiLEnV7IK9IjnMO9vUSFtwefR0UaCt9WfkhYJspOk=;
+        b=AVAAVX16scT07W8IEH0rNohBB2t1RxtfXAlty1hNkWxxbkF2wxa43k+7139yuCuYH+
+         m4RtNSbb6vQCHaYCC6UKm4MIMuSfHCNpz8QZQNFsv+U/g7p8ArlmDdPbPhIggfisWawB
+         nbD/gkT7m8PG4/8BKZ2US3BAElIlzZwPhoDgeFt07DoseRRvB1p5f13KC1X2y/btfUSk
+         6mQgRWz4EAT5Zr6j20jNEIWfNS+rjAprw0DXG0LS1A9Z3fX8PVywxbrNocAon6V0oHlZ
+         vwE2K1txuM8beRP0bKfjANcuy6FAPoidsLm1+hhfkFiAUo0pS370u5UmTBa1Khoym7Q/
+         q5Fg==
+X-Received: by 10.70.35.111 with SMTP id g15mr77476pdj.155.1413930202491;
+        Tue, 21 Oct 2014 15:23:22 -0700 (PDT)
+Received: from localhost (b32.net. [192.81.132.72])
+        by mx.google.com with ESMTPSA id al4sm12702816pbc.19.2014.10.21.15.23.20
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 21 Oct 2014 15:23:21 -0700 (PDT)
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     gregkh@linuxfoundation.org, jslaby@suse.cz
+Cc:     robh@kernel.org, grant.likely@linaro.org, arnd@arndb.de,
+        geert@linux-m68k.org, f.fainelli@gmail.com, mbizon@freebox.fr,
+        jogo@openwrt.org, linux-mips@linux-mips.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH V3 00/10] bcm63xx_uart and of-serial updates
+Date:   Tue, 21 Oct 2014 15:22:56 -0700
+Message-Id: <1413930186-23168-1-git-send-email-cernekee@gmail.com>
+X-Mailer: git-send-email 2.1.1
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43435
+X-archive-position: 43436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pefoley2@pefoley.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,29 +53,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 21, 2014 at 2:27 PM, Richard Cochran
-<richardcochran@gmail.com> wrote:
-> On Tue, Oct 21, 2014 at 09:58:51AM -0700, David Daney wrote:
->> What I don't understand is why we are using hostprogs in this
->> Makefile.  Isn't this a program that would run on the target, not
->> the build host?
->
-> Yes.
->
-> Peter, could you please fix it?
+V2->V3:
+
+Change DT clock node based on review feedback (thanks Arnd!)
+
+Rebase on Linus' master branch
 
 
-The intention of these changes was to generate more compiliation
-coverage for code in Documentation/
-The underlying issue is that this doesn't work for cross-compiling
-because kbuild doesn't have cross-compile support for userspace code.
-I submitted a patch to disable building Documentation when
-cross-compiling, as the consensus in the thread that resulted in that
-patch (https://lkml.org/lkml/2014/10/8/510) was that implementing
-targetprogs in kbuild was not currently worth it.
-I can try to take a crack at adding targetprogs support, but I'm
-rather busy right now, so it may take a little while.
+Kevin Cernekee (10):
+  tty: serial: bcm63xx: Allow bcm63xx_uart to be built on other
+    platforms
+  tty: serial: bcm63xx: Add support for unnamed clock outputs from DT
+  tty: serial: bcm63xx: Update the Kconfig help text
+  tty: serial: bcm63xx: Fix typo in MODULE_DESCRIPTION
+  Documentation: DT: Add entries for bcm63xx UART
+  tty: serial: bcm63xx: Enable DT earlycon support
+  tty: serial: bcm63xx: Eliminate unnecessary request/release functions
+  tty: serial: of-serial: Suppress warnings if OF earlycon is invoked
+    twice
+  tty: serial: of-serial: Allow OF earlycon to default to "on"
+  MAINTAINERS: Add entry for rp2 (Rocketport Express/Infinity) driver
 
-Thanks,
+ .../devicetree/bindings/serial/bcm63xx-uart.txt    | 30 ++++++++++++
+ MAINTAINERS                                        |  6 +++
+ drivers/of/fdt.c                                   | 17 +++++--
+ drivers/tty/serial/Kconfig                         | 30 ++++++++----
+ drivers/tty/serial/bcm63xx_uart.c                  | 55 +++++++++++++---------
+ include/linux/serial_bcm63xx.h                     |  2 -
+ 6 files changed, 104 insertions(+), 36 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/serial/bcm63xx-uart.txt
 
-Peter
+-- 
+2.1.1

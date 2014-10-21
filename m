@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 06:30:11 +0200 (CEST)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:50725 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011988AbaJUE2sIdM4U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 06:28:48 +0200
-Received: by mail-pa0-f46.google.com with SMTP id fa1so523324pad.5
-        for <multiple recipients>; Mon, 20 Oct 2014 21:28:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 06:30:28 +0200 (CEST)
+Received: from mail-pd0-f177.google.com ([209.85.192.177]:41849 "EHLO
+        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011989AbaJUE2tUBWV3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 06:28:49 +0200
+Received: by mail-pd0-f177.google.com with SMTP id v10so496516pde.8
+        for <multiple recipients>; Mon, 20 Oct 2014 21:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=VJjyHDvslQkXAABGDH4ZQ4fSqozpVdoJxIp1ODVpKMk=;
-        b=HjAJii+xO1QFVnuBWHvQd2yGO8/KVWomL4Cc0c6JK45NnP6rtZlhzDdrBUzd/hxFZO
-         DD/uKa+x03ZB4QlLy+jgOpzvDmRmPmM7+4vBwII4aELd+acEosjYSl5OWqVD4EgRFGYE
-         ExzfxEIPRZTvCvp0irObmd2icTjCh8I9zj3uMUNTC+dRmNJssKrOZm3h05gScXgxpBxm
-         7X3TnN75BQLL+uTqrnA/HzX/15s2804hx0BLjrTgTea79q4JNtf9nFw737LycsFzyWQz
-         0NZExKO/jkpjtqgxtmWJtjiwbhuO5acoFgEZcJ12hWT9Et643Yu3dXqGExrD+87zIKrN
-         y8mg==
-X-Received: by 10.68.65.74 with SMTP id v10mr31961915pbs.96.1413865722013;
-        Mon, 20 Oct 2014 21:28:42 -0700 (PDT)
+        bh=YuUmjakZacpKDnQGTPC0XHI61fNV3YM+mwXdbrEmNHg=;
+        b=CaIwWBTfrLq8oiNCgy6NP7Jt5ZLwFmdXlYhkXJ1sOvzJAwkdbPhU/lfPenUcGTCgKn
+         rJI4D/6+1ZczSFvuHYKYAkIU3FixgFJkGff1D7CwcSj1/cTpS9SkX92ome8U/J3ICXrP
+         la6/OLZ8IEYSHp2eF9NsvfrfKbAFN2W37EwYhN+ODAbKd+sgYsUoeEI8xfU8ckrEgKwq
+         ucnmpi4D3WjC97Nr+URiLbBIoygN6uhASTVl+55w6sySkkzng1TXTjimVC+f7b7RZtm3
+         zRWp766XgFUEWhYk2Ay7vRdXnhBF/XQcKtqEj/YyXta3qjcLquNxt/RLQt/UF/F5ZL/o
+         VyQw==
+X-Received: by 10.70.48.106 with SMTP id k10mr7246615pdn.143.1413865723257;
+        Mon, 20 Oct 2014 21:28:43 -0700 (PDT)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id b2sm10498181pbu.42.2014.10.20.21.28.40
+        by mx.google.com with ESMTPSA id b2sm10498181pbu.42.2014.10.20.21.28.42
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 20 Oct 2014 21:28:41 -0700 (PDT)
+        Mon, 20 Oct 2014 21:28:42 -0700 (PDT)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
         jfraser@broadcom.com, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org
-Subject: [PATCH/RFC 05/17] MIPS: BMIPS: Mask off timer IRQs when hot-unplugging a CPU
-Date:   Mon, 20 Oct 2014 21:27:55 -0700
-Message-Id: <1413865687-15255-6-git-send-email-cernekee@gmail.com>
+Subject: [PATCH/RFC 06/17] MIPS: BMIPS: Explicitly configure reset vectors prior to secondary boot
+Date:   Mon, 20 Oct 2014 21:27:56 -0700
+Message-Id: <1413865687-15255-7-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1413865687-15255-1-git-send-email-cernekee@gmail.com>
 References: <1413865687-15255-1-git-send-email-cernekee@gmail.com>
@@ -37,7 +37,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43403
+X-archive-position: 43404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,83 +54,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Jon Fraser <jfraser@broadcom.com>
+The secondary CPU's reset vector needs to be set to KSEG1 for a cold
+boot (release from reset), or KSEG0 for a warm restart.  On a cold boot
+KSEG0 may be unavailable (BMIPS4380), and on a warm restart KSEG1 may
+be unavailable (XKS01 mode on 4380 or 5000).
 
-CPU interrupts need to be disabled on a cpu being taken down.
-When a cpu is hot-plugged out of the system the following sequence occurs.
-
-On the CPU where the hotplug sequence was initiated:
-    cpu_down
-        _cpu_down {
-            __cpu_notify(CPU_DOWN_PREPARE
-            __stop_machine(take_cpu_down
-                wait for cpu to run disable code.
-            __cpu_die
-        }
-
-On the CPU  being disabled:
-    take_cpu_down
-        __cpu_disable {
-            mp_ops->cpu_disable
-                bmips_cpu_disable
-                    clear_c0_status(IE_IRQ5) (added)
-            cpu_notify(CPU_DYING...
-        }
-
-Before the cpu_notifier is called with CPU_DYING, all interrupts on the
-dying cpu must be disabled.  This guarantees that before tick_notify is
-called with the CPU_DYING event and sets the clock device pointer to
-NULL, there can not be any more clock interrupts.
-
-When this wasn't done, an unfortunately-timed timer interrupt sometimes
-caused hangs immediately prior to system suspend:
-
-    Debug PM is not enabled. To enable partial suspend, rebuild kernel with CONFIG_PM_DEBUG
-    Pass 1 out of 1,PM: Syncing filesystems ... mode=none, tp1=done.
-    1, flags=5, cycle_tp=, sleep=
-    Freezing user space processes ... (elapsed 0.01 seconds) done.
-    Freezing remaining freezable tasks ... (elapsed 0.01 seconds) done.
-    PM: suspend of devices complete after 54.199 msecs
-    PM: late suspend of devices complete after 0.172 msecs
-    Disabling non-boot CPUs ...
-    SMP: CPU1 is offline
-    INFO: rcu_sched detected stalls on CPUs/tasks: { 3} (detected by 0, t=62537 jiffies)
-    Call Trace:
-    [<804baa78>] dump_stack+0x8/0x34
-    [<8008a2d8>] __rcu_pending+0x4b8/0x55c
-    [<8008adf4>] rcu_check_callbacks+0x78/0x180
-    [<80037830>] update_process_times+0x40/0x6c
-    [<80072fe4>] tick_sched_timer+0x74/0xe4
-    [<80050180>] __run_hrtimer.clone.30+0x64/0x140
-    [<80051150>] hrtimer_interrupt+0x19c/0x4bc
-    [<8000cdb8>] c0_compare_interrupt+0x50/0x88
-    [<80081b18>] handle_irq_event_percpu+0x5c/0x2f4
-    [<80086490>] handle_percpu_irq+0x8c/0xc0
-    [<800811b4>] generic_handle_irq+0x34/0x54
-    [<800067dc>] do_IRQ+0x18/0x2c
-    [<8000375c>] plat_irq_dispatch+0xd0/0x128
-    [<80004a04>] ret_from_irq+0x0/0x4
-    [<80004c40>] r4k_wait+0x20/0x40
-    [<80006b6c>] cpu_idle+0x98/0xf0
-    [<805d3988>] start_kernel+0x424/0x440
-
-Signed-off-by: Jon Fraser <jfraser@broadcom.com>
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- arch/mips/kernel/smp-bmips.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/kernel/smp-bmips.c | 29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
 diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 887c3ea..f7b1bee 100644
+index f7b1bee..162391d 100644
 --- a/arch/mips/kernel/smp-bmips.c
 +++ b/arch/mips/kernel/smp-bmips.c
-@@ -375,6 +375,7 @@ static int bmips_cpu_disable(void)
+@@ -47,6 +47,8 @@ cpumask_t bmips_booted_mask;
+ #define RESET_FROM_KSEG0		0x80080800
+ #define RESET_FROM_KSEG1		0xa0080800
  
- 	set_cpu_online(cpu, false);
- 	cpu_clear(cpu, cpu_callin_map);
-+	clear_c0_status(IE_IRQ5);
++static void bmips_set_reset_vec(int cpu, u32 val);
++
+ #ifdef CONFIG_SMP
  
- 	local_flush_tlb_all();
- 	local_flush_icache_range(0, ~0);
+ /* initial $sp, $gp - used by arch/mips/kernel/bmips_vec.S */
+@@ -198,6 +200,9 @@ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
+ 	pr_info("SMP: Booting CPU%d...\n", cpu);
+ 
+ 	if (cpumask_test_cpu(cpu, &bmips_booted_mask)) {
++		/* kseg1 might not exist if this CPU enabled XKS01 */
++		bmips_set_reset_vec(cpu, RESET_FROM_KSEG0);
++
+ 		switch (current_cpu_type()) {
+ 		case CPU_BMIPS4350:
+ 		case CPU_BMIPS4380:
+@@ -207,8 +212,9 @@ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
+ 			bmips5000_send_ipi_single(cpu, 0);
+ 			break;
+ 		}
+-	}
+-	else {
++	} else {
++		bmips_set_reset_vec(cpu, RESET_FROM_KSEG1);
++
+ 		switch (current_cpu_type()) {
+ 		case CPU_BMIPS4350:
+ 		case CPU_BMIPS4380:
+@@ -229,31 +235,12 @@ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
+  */
+ static void bmips_init_secondary(void)
+ {
+-	/* move NMI vector to kseg0, in case XKS01 is enabled */
+-
+-	void __iomem *cbr;
+-	unsigned long old_vec;
+-	unsigned long relo_vector;
+-	int boot_cpu;
+-
+ 	switch (current_cpu_type()) {
+ 	case CPU_BMIPS4350:
+ 	case CPU_BMIPS4380:
+-		cbr = BMIPS_GET_CBR();
+-
+-		boot_cpu = !!(read_c0_brcm_cmt_local() & (1 << 31));
+-		relo_vector = boot_cpu ? BMIPS_RELO_VECTOR_CONTROL_0 :
+-				  BMIPS_RELO_VECTOR_CONTROL_1;
+-
+-		old_vec = __raw_readl(cbr + relo_vector);
+-		__raw_writel(old_vec & ~0x20000000, cbr + relo_vector);
+-
+ 		clear_c0_cause(smp_processor_id() ? C_SW1 : C_SW0);
+ 		break;
+ 	case CPU_BMIPS5000:
+-		write_c0_brcm_bootvec(read_c0_brcm_bootvec() &
+-			(smp_processor_id() & 0x01 ? ~0x20000000 : ~0x2000));
+-
+ 		write_c0_brcm_action(ACTION_CLR_IPI(smp_processor_id(), 0));
+ 		break;
+ 	}
 -- 
 2.1.1

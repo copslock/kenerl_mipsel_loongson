@@ -1,37 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:07:15 +0200 (CEST)
-Received: from mail-lb0-f172.google.com ([209.85.217.172]:48151 "EHLO
-        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012099AbaJUXD4QuKCG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 01:03:56 +0200
-Received: by mail-lb0-f172.google.com with SMTP id b6so1917183lbj.17
-        for <multiple recipients>; Tue, 21 Oct 2014 16:03:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:07:31 +0200 (CEST)
+Received: from mail-lb0-f174.google.com ([209.85.217.174]:49979 "EHLO
+        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012113AbaJUXD5e1N0w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 01:03:57 +0200
+Received: by mail-lb0-f174.google.com with SMTP id p9so1872241lbv.5
+        for <multiple recipients>; Tue, 21 Oct 2014 16:03:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=VqZe/HbjBAPJraEMFFvrjSGcriNC+tsx91SyRg0q9ho=;
-        b=oMxeqfyZeY/H9Xu/6kJ0ampkoSWP95LcJgei3KKej0IPDwPyimrmmHs6PfpzNVQXPQ
-         l+qu0Jm22dOQNbeBE8iqWYuHuKFB27RXZmEcy5XP4VEXF0iExk68lQojmaPR20UgE9lA
-         jSCYRnQysNj2qr9Cmw43b4R4/E5QbjYM10VJID36UScg39set8aBELRRv3/sNHaP+Vek
-         KtT7rWyaGcb9H6ozr0uBTneXMze6MyS8uC/LUxmeKIXxzp4T2vQ9jAJRb3hnz2ZoYH15
-         nY6NCPRR/kZXjFhTXYTiqjqNpJEM6VgXTdp5J1dgxztlajjeqmMNux+9mYlBu0f118fe
-         Skhg==
-X-Received: by 10.112.150.68 with SMTP id ug4mr19558552lbb.82.1413932630901;
-        Tue, 21 Oct 2014 16:03:50 -0700 (PDT)
+        bh=ErYkUVZZfmAf2fpLqWCmpsHTVxu4UsCXmMgEngoM6+U=;
+        b=hK4TElucHEYCQ7jERotIpVzrLzozdxlZ80l3HIQBmQf2bzi7NB+WgnVRC7w28yXBp/
+         kCNsLwnF4ZwYPQkFQuvm3RjXgpLqLM1nYVbMIKv43U1+QyXN3VzKhI1tf8qzLJUEpYTj
+         Mbl49ZwQL8HwzQbcqrlJDgALqYrCqhYpXEXIG5rjNUOhc+emBRMMYM5B6UQhPT5YCPI+
+         IgtYJ8YMKNUQCBcFF2fs3U4uKDda/iM6OpSyPWt4i+qCCnvZCKQj2HcUjH1bNNiNg4AF
+         7Qsb7DR+WOiLsi3FrpmFVEYXnyiIMaW/NLhm+X1bJdN0xyq2SHjn9Xb/oFFFnY2V76u/
+         Liog==
+X-Received: by 10.112.29.175 with SMTP id l15mr37254107lbh.39.1413932632205;
+        Tue, 21 Oct 2014 16:03:52 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id lk5sm5077133lac.45.2014.10.21.16.03.49
+        by mx.google.com with ESMTPSA id lk5sm5077133lac.45.2014.10.21.16.03.50
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Oct 2014 16:03:50 -0700 (PDT)
+        Tue, 21 Oct 2014 16:03:51 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
-        linux-wireless@vger.kernel.org, ath5k-devel@lists.ath5k.org
-Subject: [PATCH v2 12/13] ath5k: update dependencies
-Date:   Wed, 22 Oct 2014 03:03:50 +0400
-Message-Id: <1413932631-12866-13-git-send-email-ryazanov.s.a@gmail.com>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH v2 13/13] MIPS: ath25: add Wireless device support
+Date:   Wed, 22 Oct 2014 03:03:51 +0400
+Message-Id: <1413932631-12866-14-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -39,7 +35,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43459
+X-archive-position: 43460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,142 +52,157 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-- Use config symbol defined in the driver instead of arch specific one for
-  conditional compilation.
-- Rename the ATHEROS_AR231X config symbol to ATH25.
-- Fix include (ar231x_platform.h -> ath25_platform.h).
-- Some of AR231x SoCs (e.g. AR2315) have PCI bus support, so remove !PCI
-  dependency, which block AHB support build.
+Atheros AR5312 and AR2315 both have a builtin wireless device, this
+patch add helper code and register platform device for all supported
+WiSoCs.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Jiri Slaby <jirislaby@gmail.com>
-Cc: Nick Kossifidis <mickflemm@gmail.com>
-Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: ath5k-devel@lists.ath5k.org
 ---
 
-Changes since RFC:
-  - merge together patches that update ath5k dependencies
-
 Changes since v1:
-  - rename config symbol AR231X -> ATH25
-  - rename arch header ar231x_platform.h -> ath25_platform.h
+  - rename MIPS machine ar231x -> ath25
 
- drivers/net/wireless/ath/ath5k/Kconfig | 10 +++++-----
- drivers/net/wireless/ath/ath5k/ahb.c   |  2 +-
- drivers/net/wireless/ath/ath5k/ath5k.h |  2 +-
- drivers/net/wireless/ath/ath5k/base.c  |  4 ++--
- drivers/net/wireless/ath/ath5k/led.c   |  4 ++--
- 5 files changed, 11 insertions(+), 11 deletions(-)
+ arch/mips/ath25/ar2315.c  |  1 +
+ arch/mips/ath25/ar5312.c  | 22 +++++++++++++++++++
+ arch/mips/ath25/devices.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/ath25/devices.h |  1 +
+ 4 files changed, 78 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath5k/Kconfig b/drivers/net/wireless/ath/ath5k/Kconfig
-index c9f81a3..2399a39 100644
---- a/drivers/net/wireless/ath/ath5k/Kconfig
-+++ b/drivers/net/wireless/ath/ath5k/Kconfig
-@@ -1,13 +1,13 @@
- config ATH5K
- 	tristate "Atheros 5xxx wireless cards support"
--	depends on (PCI || ATHEROS_AR231X) && MAC80211
-+	depends on (PCI || ATH25) && MAC80211
- 	select ATH_COMMON
- 	select MAC80211_LEDS
- 	select LEDS_CLASS
- 	select NEW_LEDS
- 	select AVERAGE
--	select ATH5K_AHB if (ATHEROS_AR231X && !PCI)
--	select ATH5K_PCI if (!ATHEROS_AR231X && PCI)
-+	select ATH5K_AHB if ATH25
-+	select ATH5K_PCI if !ATH25
- 	---help---
- 	  This module adds support for wireless adapters based on
- 	  Atheros 5xxx chipset.
-@@ -54,14 +54,14 @@ config ATH5K_TRACER
- 
- config ATH5K_AHB
- 	bool "Atheros 5xxx AHB bus support"
--	depends on (ATHEROS_AR231X && !PCI)
-+	depends on ATH25
- 	---help---
- 	  This adds support for WiSoC type chipsets of the 5xxx Atheros
- 	  family.
- 
- config ATH5K_PCI
- 	bool "Atheros 5xxx PCI bus support"
--	depends on (!ATHEROS_AR231X && PCI)
-+	depends on (!ATH25 && PCI)
- 	---help---
- 	  This adds support for PCI type chipsets of the 5xxx Atheros
- 	  family.
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index 79bffe1..8f387cf 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -20,7 +20,7 @@
- #include <linux/platform_device.h>
- #include <linux/etherdevice.h>
- #include <linux/export.h>
--#include <ar231x_platform.h>
-+#include <ath25_platform.h>
- #include "ath5k.h"
- #include "debug.h"
- #include "base.h"
-diff --git a/drivers/net/wireless/ath/ath5k/ath5k.h b/drivers/net/wireless/ath/ath5k/ath5k.h
-index 85316bb..1ed7a88 100644
---- a/drivers/net/wireless/ath/ath5k/ath5k.h
-+++ b/drivers/net/wireless/ath/ath5k/ath5k.h
-@@ -1647,7 +1647,7 @@ static inline struct ath_regulatory *ath5k_hw_regulatory(struct ath5k_hw *ah)
- 	return &(ath5k_hw_common(ah)->regulatory);
+diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c
+index 76679c0..b39440e 100644
+--- a/arch/mips/ath25/ar2315.c
++++ b/arch/mips/ath25/ar2315.c
+@@ -227,6 +227,7 @@ void __init ar2315_init_devices(void)
+ 	res->end = res->start;
+ 	platform_device_register(&ar2315_wdt);
+ 	platform_device_register(&ar2315_spiflash);
++	ath25_add_wmac(0, AR2315_WLAN0, AR2315_IRQ_WLAN0);
  }
  
--#ifdef CONFIG_ATHEROS_AR231X
-+#ifdef CONFIG_ATH5K_AHB
- #define AR5K_AR2315_PCI_BASE	((void __iomem *)0xb0100000)
+ static void ar2315_restart(char *command)
+diff --git a/arch/mips/ath25/ar5312.c b/arch/mips/ath25/ar5312.c
+index 99c2745..043cf96 100644
+--- a/arch/mips/ath25/ar5312.c
++++ b/arch/mips/ath25/ar5312.c
+@@ -231,6 +231,28 @@ void __init ar5312_init_devices(void)
  
- static inline void __iomem *ath5k_ahb_reg(struct ath5k_hw *ah, u16 reg)
-diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
-index 59a8724..bc9cb35 100644
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -99,7 +99,7 @@ static int ath5k_reset(struct ath5k_hw *ah, struct ieee80211_channel *chan,
+ 	platform_device_register(&ar5312_physmap_flash);
+ 	platform_device_register(&ar5312_gpio);
++
++	switch (ath25_soc) {
++	case ATH25_SOC_AR5312:
++		if (!ath25_board.radio)
++			return;
++
++		if (!(config->flags & BD_WLAN0))
++			break;
++
++		ath25_add_wmac(0, AR5312_WLAN0, AR5312_IRQ_WLAN0);
++		break;
++	case ATH25_SOC_AR2312:
++	case ATH25_SOC_AR2313:
++		if (!ath25_board.radio)
++			return;
++		break;
++	default:
++		break;
++	}
++
++	if (config->flags & BD_WLAN1)
++		ath25_add_wmac(1, AR5312_WLAN1, AR5312_IRQ_WLAN1);
+ }
  
- /* Known SREVs */
- static const struct ath5k_srev_name srev_names[] = {
--#ifdef CONFIG_ATHEROS_AR231X
-+#ifdef CONFIG_ATH5K_AHB
- 	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R2 },
- 	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R7 },
- 	{ "2313",	AR5K_VERSION_MAC,	AR5K_SREV_AR2313_R8 },
-@@ -142,7 +142,7 @@ static const struct ath5k_srev_name srev_names[] = {
- 	{ "5413",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5413 },
- 	{ "5424",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5424 },
- 	{ "5133",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5133 },
--#ifdef CONFIG_ATHEROS_AR231X
-+#ifdef CONFIG_ATH5K_AHB
- 	{ "2316",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2316 },
- 	{ "2317",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2317 },
- #endif
-diff --git a/drivers/net/wireless/ath/ath5k/led.c b/drivers/net/wireless/ath/ath5k/led.c
-index 2062d11..ca4b7cc 100644
---- a/drivers/net/wireless/ath/ath5k/led.c
-+++ b/drivers/net/wireless/ath/ath5k/led.c
-@@ -163,7 +163,7 @@ int ath5k_init_leds(struct ath5k_hw *ah)
+ static void ar5312_restart(char *command)
+diff --git a/arch/mips/ath25/devices.c b/arch/mips/ath25/devices.c
+index 6218547..7a64567 100644
+--- a/arch/mips/ath25/devices.c
++++ b/arch/mips/ath25/devices.c
+@@ -1,6 +1,7 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/serial_8250.h>
++#include <linux/platform_device.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <ath25_platform.h>
+@@ -11,6 +12,45 @@
+ struct ar231x_board_config ath25_board;
+ enum ath25_soc_type ath25_soc = ATH25_SOC_UNKNOWN;
+ 
++static struct resource ath25_wmac0_res[] = {
++	{
++		.name = "wmac0_membase",
++		.flags = IORESOURCE_MEM,
++	},
++	{
++		.name = "wmac0_irq",
++		.flags = IORESOURCE_IRQ,
++	}
++};
++
++static struct resource ath25_wmac1_res[] = {
++	{
++		.name = "wmac1_membase",
++		.flags = IORESOURCE_MEM,
++	},
++	{
++		.name = "wmac1_irq",
++		.flags = IORESOURCE_IRQ,
++	}
++};
++
++static struct platform_device ath25_wmac[] = {
++	{
++		.id = 0,
++		.name = "ar231x-wmac",
++		.resource = ath25_wmac0_res,
++		.num_resources = ARRAY_SIZE(ath25_wmac0_res),
++		.dev.platform_data = &ath25_board,
++	},
++	{
++		.id = 1,
++		.name = "ar231x-wmac",
++		.resource = ath25_wmac1_res,
++		.num_resources = ARRAY_SIZE(ath25_wmac1_res),
++		.dev.platform_data = &ath25_board,
++	},
++};
++
+ static const char * const soc_type_strings[] = {
+ 	[ATH25_SOC_AR5312] = "Atheros AR5312",
+ 	[ATH25_SOC_AR2312] = "Atheros AR2312",
+@@ -46,6 +86,20 @@ void __init ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk)
+ 	early_serial_setup(&s);
+ }
+ 
++int __init ath25_add_wmac(int nr, u32 base, int irq)
++{
++	struct resource *res;
++
++	ath25_wmac[nr].dev.platform_data = &ath25_board;
++	res = &ath25_wmac[nr].resource[0];
++	res->start = base;
++	res->end = base + 0x10000 - 1;
++	res++;
++	res->start = irq;
++	res->end = irq;
++	return platform_device_register(&ath25_wmac[nr]);
++}
++
+ static int __init ath25_register_devices(void)
  {
- 	int ret = 0;
- 	struct ieee80211_hw *hw = ah->hw;
--#ifndef CONFIG_ATHEROS_AR231X
-+#ifndef CONFIG_ATH5K_AHB
- 	struct pci_dev *pdev = ah->pdev;
- #endif
- 	char name[ATH5K_LED_MAX_NAME_LEN + 1];
-@@ -172,7 +172,7 @@ int ath5k_init_leds(struct ath5k_hw *ah)
- 	if (!ah->pdev)
- 		return 0;
+ 	if (is_ar5312())
+diff --git a/arch/mips/ath25/devices.h b/arch/mips/ath25/devices.h
+index 8555e32..eb8a1d1 100644
+--- a/arch/mips/ath25/devices.h
++++ b/arch/mips/ath25/devices.h
+@@ -24,6 +24,7 @@ extern void (*ath25_irq_dispatch)(void);
  
--#ifdef CONFIG_ATHEROS_AR231X
-+#ifdef CONFIG_ATH5K_AHB
- 	match = NULL;
- #else
- 	match = pci_match_id(&ath5k_led_devices[0], pdev);
+ int ath25_find_config(const u8 *flash_limit);
+ void ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk);
++int ath25_add_wmac(int nr, u32 base, int irq);
+ 
+ static inline bool is_ar2315(void)
+ {
 -- 
 1.8.5.5

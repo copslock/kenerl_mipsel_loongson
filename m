@@ -1,50 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 21:31:58 +0200 (CEST)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:36076 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012067AbaJUTb4s-LmB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 21:31:56 +0200
-Received: by mail-pa0-f52.google.com with SMTP id fb1so2051163pad.39
-        for <multiple recipients>; Tue, 21 Oct 2014 12:31:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 22:04:19 +0200 (CEST)
+Received: from mail-qa0-f49.google.com ([209.85.216.49]:58826 "EHLO
+        mail-qa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012068AbaJUUER2q66D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 22:04:17 +0200
+Received: by mail-qa0-f49.google.com with SMTP id f12so1397798qad.8
+        for <linux-mips@linux-mips.org>; Tue, 21 Oct 2014 13:04:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=XVEQepKstnDxAhZ/z3cYtX0jFOkyEykZkwxyAI7ACVo=;
-        b=T4uAd0l5ajb99au09OuXfOi84p1j/2siQKVug7XonnkLLITLT9ZybB5rBfSful52kV
-         85LjSpmXABKIolL9btWFjGHfi+wfJMv6RoYYwyk/oSmGb/eJmwYnP5TJ9HiIcZ0hU4wu
-         pK/1c0qDbzp2Mjp40gGSNTGwaUKojRVbuM13Yt9krR+BhIWMKUfbYw+WrSRgHmboiNW2
-         PaEoH7q2eaIBA1/S89NWlUyLm792Wo860p+fpeRusg96nkBIqVgVOs6YjB8IfpJ+JlHD
-         Drih6/KjVeqjtzbf5pW05M4R5GkA3XgRQAGGJKvQDoRKOYtDN94kXEdPDXEQlE7hzpME
-         e1vA==
-X-Received: by 10.68.222.70 with SMTP id qk6mr37420153pbc.65.1413919909516;
-        Tue, 21 Oct 2014 12:31:49 -0700 (PDT)
-Received: from [10.12.164.252] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id 16sm12604902pdj.42.2014.10.21.12.31.48
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Oct 2014 12:31:48 -0700 (PDT)
-Message-ID: <5446B491.2010701@gmail.com>
-Date:   Tue, 21 Oct 2014 12:31:29 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=u+WEpeuDMHhTlbaVFQNQwK05bC3Ye9oJqDgo7N3ZDJ0=;
+        b=a9seZyuQ0R7cjNGHvWEKHjDuSZCcETmokANAXgdx52ISSKxi/D4FVOQAYuy9hYuG92
+         Q5SI4t7GLfCZj2QWqhFQqfo1rGBYdEMbRx81TX2ZlXhJ37L4FEsYWfBZxcfapOWrV8OU
+         F1ez1dcvKkzbSUNIyaCVSjZDqjy2HLNcQWHWjNaVLR6z97E9JBuSpdlZqqWQZTBTgeGF
+         W9HYmOuJPtmoiVHDk2fbFNkjvOGt7BLy1YUTsFER57twjUmC8SHCvVjIf1l+c7TPOIH2
+         DxJG0FSMdQWWGBa4epAIfSvne3XkNrnTybOyWFKNXvOhqs0nVgZhUnG1ZgkYrcgNJpiW
+         fu/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=u+WEpeuDMHhTlbaVFQNQwK05bC3Ye9oJqDgo7N3ZDJ0=;
+        b=hczk/uWF2VpKjO0DY6rn6PKZWnZnEuMM88x+p4TsbuuIT3WWOwBZMCI6ugsrTG3PL3
+         fS/S2/1426FsSeCcofauQ812kzYK9zbCNQEzXgyRI6w29poLfuf/gAewTMIkasM94NTz
+         MHyzhUvvS9Jl5vpFVJPSKHjc4cApz3oLMZBzkqEzJ2ZuLfW4mIk3DxqpzQvtYCPF+FLi
+         kvhv7yGBLs3RdjdZI//LsMgAYE/8kp5ksdFKcvPzXe/p3dMIi7B5AjgBHWs8cVqzRpZu
+         oPwgYB2I7aDqxsSqYwh3gN/xP9IBUB7VSraLh2A1DkLFk5fAqEwtZJoZBft2myBG6OeM
+         2BUQ==
+X-Gm-Message-State: ALoCoQks9+MA6HLskDuUPKprE3qsP4OE9Y++TXwGdlOj8KwnV2Yuk5nosmL/9uAfHUkHeZpEgQJC
+X-Received: by 10.140.82.144 with SMTP id h16mr45269625qgd.40.1413921851245;
+ Tue, 21 Oct 2014 13:04:11 -0700 (PDT)
 MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@gmail.com>, ralf@linux-mips.org
-CC:     mbizon@freebox.fr, jogo@openwrt.org, jfraser@broadcom.com,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH/RFC 00/17] MIPS: BMIPS updates and BCM3384 platform support
-References: <1413865687-15255-1-git-send-email-cernekee@gmail.com>
-In-Reply-To: <1413865687-15255-1-git-send-email-cernekee@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Received: by 10.229.164.210 with HTTP; Tue, 21 Oct 2014 13:03:50 -0700 (PDT)
+In-Reply-To: <CAErSpo6KnNKz8z1dcHqKTO6450MfGRm0nLk65sTvAcnUmGqiQQ@mail.gmail.com>
+References: <20141015165957.4063.66741.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+ <20141015170602.4063.5577.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+ <CAErSpo7K2dhNWz7HL_JCrB6pvq5+aeOYCwD2YV1_DLtcVcAKfA@mail.gmail.com> <CAErSpo6KnNKz8z1dcHqKTO6450MfGRm0nLk65sTvAcnUmGqiQQ@mail.gmail.com>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Tue, 21 Oct 2014 14:03:50 -0600
+Message-ID: <CAErSpo5=SH9Ld72bXx4OeTPhd46CBRUsadZtqQu3ATb=8ZOMeQ@mail.gmail.com>
+Subject: Re: [PATCH v1 03/10] MIPS: CPC: Make mips_cpc_phys_base() static
+To:     Jason Wessel <jason.wessel@windriver.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Eric Paris <eparis@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43429
+X-archive-position: 43430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,97 +72,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/20/2014 09:27 PM, Kevin Cernekee wrote:
-> This patch series adds support for the Linux BMIPS5000 application
-> processor on BCM3384, a cable modem chipset.  It incorporates the
-> latest bugfixes and workarounds available for the BMIPS SMP and cache
-> maintenance code.
-> 
-> The bootloader code[1] passes a device tree blob describing the
-> memory setup, bootargs, peripheral configuration, clocks, etc.  For
-> this reason, very little needs to be hardcoded in the kernel.
+On Wed, Oct 15, 2014 at 5:28 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
+> [+cc linux-mips for real this time.  sheesh]
+>
+> On Wed, Oct 15, 2014 at 5:27 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
+>> [+cc linux-mips@linux-mips.org]
+>>
+>> On Wed, Oct 15, 2014 at 11:06 AM, Bjorn Helgaas <bhelgaas@google.com> wrote:
+>>> There's only one implementation of mips_cpc_phys_base(), and it's only used
+>>> within the same file, so it doesn't need to be weak, and it doesn't need an
+>>> extern declaration.
+>>>
+>>> Remove the extern mips_cpc_phys_base() declaration and make it static.
+>>>
+>>> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+>>> CC: linux-mips@linux-mips.org
 
-This really looks good to me, thanks!
+I'm dropping this patch from my series because I haven't seen any
+response from the MIPS folks.
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-
-> 
-> Dependencies:
-> 
->  - bcm63xx_uart and of-serial changes, under review on the linux-serial
->    list
-> 
->  - OHCI changes, pending inclusion on usb.git -next
-> 
-> [1] https://github.com/broadcom/aeolus
-> 
-> 
-> Jon Fraser (2):
->   MIPS: BMIPS: Allow BMIPS3300 to utilize SMP ebase relocation code
->   MIPS: BMIPS: Mask off timer IRQs when hot-unplugging a CPU
-> 
-> Kevin Cernekee (15):
->   MIPS: BMIPS: Fix ".previous without corresponding .section" warnings
->   MIPS: BMIPS: Align secondary boot sequence with latest firmware
->     releases
->   MIPS: BMIPS: Introduce helper function to change the reset vector
->   MIPS: BMIPS: Explicitly configure reset vectors prior to secondary
->     boot
->   MIPS: Allow MIPS_CPU_SCACHE to be used with different line sizes
->   MIPS: BMIPS: Select the appropriate L1_CACHE_SHIFT for 438x and 5000
->     CPUs
->   MIPS: BMIPS: Let each platform customize the CPU1 IRQ mask
->   MIPS: BMIPS: Add special cache handling in c-r4k.c
->   MIPS: BMIPS: Add PRId for BMIPS5200 (Whirlwind)
->   MIPS: Create a helper function for DT setup
->   Documentation: DT: Add entries for BCM3384 and its peripherals
->   Documentation: DT: Add "mti" vendor prefix
->   MIPS: bcm3384: Initial commit of bcm3384 platform support
->   MAINTAINERS: Add entry for BCM33xx cable chips
->   MAINTAINERS: Add entry for bcm63xx/bcm33xx UDC gadget driver
-> 
->  .../devicetree/bindings/mips/brcm/bcm3384-intc.txt |  37 ++++
->  .../devicetree/bindings/mips/brcm/bmips.txt        |   8 +
->  .../devicetree/bindings/mips/brcm/cm-dsl.txt       |  11 ++
->  .../devicetree/bindings/mips/brcm/usb.txt          |  11 ++
->  .../devicetree/bindings/vendor-prefixes.txt        |   1 +
->  MAINTAINERS                                        |  14 ++
->  arch/mips/Kbuild.platforms                         |   1 +
->  arch/mips/Kconfig                                  |  30 +++-
->  arch/mips/bcm3384/Makefile                         |   1 +
->  arch/mips/bcm3384/Platform                         |   7 +
->  arch/mips/bcm3384/dma.c                            |  81 +++++++++
->  arch/mips/bcm3384/irq.c                            | 193 +++++++++++++++++++++
->  arch/mips/bcm3384/setup.c                          |  97 +++++++++++
->  arch/mips/boot/dts/Makefile                        |   1 +
->  arch/mips/boot/dts/bcm3384.dtsi                    | 109 ++++++++++++
->  arch/mips/boot/dts/bcm93384wvg.dts                 |  32 ++++
->  arch/mips/configs/bcm3384_defconfig                |  78 +++++++++
->  arch/mips/include/asm/bmips.h                      |   1 +
->  arch/mips/include/asm/cpu.h                        |   1 +
->  arch/mips/include/asm/mach-bcm3384/dma-coherence.h |  48 +++++
->  arch/mips/include/asm/mach-bcm3384/war.h           |  24 +++
->  arch/mips/include/asm/prom.h                       |   1 +
->  arch/mips/kernel/bmips_vec.S                       |   3 -
->  arch/mips/kernel/cpu-probe.c                       |   1 +
->  arch/mips/kernel/prom.c                            |  18 ++
->  arch/mips/kernel/smp-bmips.c                       | 114 +++++++-----
->  arch/mips/lantiq/prom.c                            |  11 +-
->  arch/mips/mm/c-r4k.c                               |  43 +++++
->  arch/mips/ralink/of.c                              |  14 +-
->  29 files changed, 924 insertions(+), 67 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mips/brcm/bcm3384-intc.txt
->  create mode 100644 Documentation/devicetree/bindings/mips/brcm/bmips.txt
->  create mode 100644 Documentation/devicetree/bindings/mips/brcm/cm-dsl.txt
->  create mode 100644 Documentation/devicetree/bindings/mips/brcm/usb.txt
->  create mode 100644 arch/mips/bcm3384/Makefile
->  create mode 100644 arch/mips/bcm3384/Platform
->  create mode 100644 arch/mips/bcm3384/dma.c
->  create mode 100644 arch/mips/bcm3384/irq.c
->  create mode 100644 arch/mips/bcm3384/setup.c
->  create mode 100644 arch/mips/boot/dts/bcm3384.dtsi
->  create mode 100644 arch/mips/boot/dts/bcm93384wvg.dts
->  create mode 100644 arch/mips/configs/bcm3384_defconfig
->  create mode 100644 arch/mips/include/asm/mach-bcm3384/dma-coherence.h
->  create mode 100644 arch/mips/include/asm/mach-bcm3384/war.h
-> 
+>>> ---
+>>>  arch/mips/include/asm/mips-cpc.h |   10 ----------
+>>>  arch/mips/kernel/mips-cpc.c      |    2 +-
+>>>  2 files changed, 1 insertion(+), 11 deletions(-)
+>>>
+>>> diff --git a/arch/mips/include/asm/mips-cpc.h b/arch/mips/include/asm/mips-cpc.h
+>>> index e139a534e0fd..8ff92cd74bde 100644
+>>> --- a/arch/mips/include/asm/mips-cpc.h
+>>> +++ b/arch/mips/include/asm/mips-cpc.h
+>>> @@ -28,16 +28,6 @@ extern void __iomem *mips_cpc_base;
+>>>  extern phys_t mips_cpc_default_phys_base(void);
+>>>
+>>>  /**
+>>> - * mips_cpc_phys_base - retrieve the physical base address of the CPC
+>>> - *
+>>> - * This function returns the physical base address of the Cluster Power
+>>> - * Controller memory mapped registers, or 0 if no Cluster Power Controller
+>>> - * is present. It may be overriden by individual platforms which determine
+>>> - * this address in a different way.
+>>> - */
+>>> -extern phys_t __weak mips_cpc_phys_base(void);
+>>> -
+>>> -/**
+>>>   * mips_cpc_probe - probe for a Cluster Power Controller
+>>>   *
+>>>   * Attempt to detect the presence of a Cluster Power Controller. Returns 0 if
+>>> diff --git a/arch/mips/kernel/mips-cpc.c b/arch/mips/kernel/mips-cpc.c
+>>> index ba473608a347..36c20ae509d8 100644
+>>> --- a/arch/mips/kernel/mips-cpc.c
+>>> +++ b/arch/mips/kernel/mips-cpc.c
+>>> @@ -21,7 +21,7 @@ static DEFINE_PER_CPU_ALIGNED(spinlock_t, cpc_core_lock);
+>>>
+>>>  static DEFINE_PER_CPU_ALIGNED(unsigned long, cpc_core_lock_flags);
+>>>
+>>> -phys_t __weak mips_cpc_phys_base(void)
+>>> +static phys_t mips_cpc_phys_base(void)
+>>>  {
+>>>         u32 cpc_base;
+>>>
+>>>

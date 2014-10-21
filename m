@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:06:56 +0200 (CEST)
-Received: from mail-la0-f48.google.com ([209.85.215.48]:47163 "EHLO
-        mail-la0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012111AbaJUXDyjQ0zG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 01:03:54 +0200
-Received: by mail-la0-f48.google.com with SMTP id gi9so1990003lab.35
-        for <multiple recipients>; Tue, 21 Oct 2014 16:03:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:07:15 +0200 (CEST)
+Received: from mail-lb0-f172.google.com ([209.85.217.172]:48151 "EHLO
+        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012099AbaJUXD4QuKCG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 01:03:56 +0200
+Received: by mail-lb0-f172.google.com with SMTP id b6so1917183lbj.17
+        for <multiple recipients>; Tue, 21 Oct 2014 16:03:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=qDAQfODsGung14cSYVUMKpjOTxXa7Qp/mUTBjZRKTOc=;
-        b=iZ2heIka25a54zsq+Ix8yiBKb1hMTu6zoV3Va7bIovc59o81kMpr1fhxFqvPUqWpwk
-         63ryTOr/Y7fE/LzEGy/3tQHUVSyPq5oFlkYaeeSn/TxcWNYHYJrh0GTMds0AT9zv0vA5
-         E137y/ilsFdQSX33Xr2KJQA/xkk8FlaEtEWUgaj8A0+N8Ew7n/BwyzjOxabnyOwr28Tk
-         lzb/rhquknMBq5gXSen2ZnDUKExlyEZiwJTgu0YPcSDSJx8UIHEHZiFUfmxosEog/vf6
-         FJqmqDVRVDjVxLPIODxLySrCrCgafBp7ldUzjm3zrAFVApyigXI+TMUTMRQ9rK1he2Wk
-         z1+w==
-X-Received: by 10.112.169.106 with SMTP id ad10mr37833032lbc.13.1413932629236;
-        Tue, 21 Oct 2014 16:03:49 -0700 (PDT)
+        bh=VqZe/HbjBAPJraEMFFvrjSGcriNC+tsx91SyRg0q9ho=;
+        b=oMxeqfyZeY/H9Xu/6kJ0ampkoSWP95LcJgei3KKej0IPDwPyimrmmHs6PfpzNVQXPQ
+         l+qu0Jm22dOQNbeBE8iqWYuHuKFB27RXZmEcy5XP4VEXF0iExk68lQojmaPR20UgE9lA
+         jSCYRnQysNj2qr9Cmw43b4R4/E5QbjYM10VJID36UScg39set8aBELRRv3/sNHaP+Vek
+         KtT7rWyaGcb9H6ozr0uBTneXMze6MyS8uC/LUxmeKIXxzp4T2vQ9jAJRb3hnz2ZoYH15
+         nY6NCPRR/kZXjFhTXYTiqjqNpJEM6VgXTdp5J1dgxztlajjeqmMNux+9mYlBu0f118fe
+         Skhg==
+X-Received: by 10.112.150.68 with SMTP id ug4mr19558552lbb.82.1413932630901;
+        Tue, 21 Oct 2014 16:03:50 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id lk5sm5077133lac.45.2014.10.21.16.03.47
+        by mx.google.com with ESMTPSA id lk5sm5077133lac.45.2014.10.21.16.03.49
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Oct 2014 16:03:48 -0700 (PDT)
+        Tue, 21 Oct 2014 16:03:50 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linux MIPS <linux-mips@linux-mips.org>,
@@ -29,9 +29,9 @@ Cc:     Linux MIPS <linux-mips@linux-mips.org>,
         Nick Kossifidis <mickflemm@gmail.com>,
         "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
         linux-wireless@vger.kernel.org, ath5k-devel@lists.ath5k.org
-Subject: [PATCH v2 11/13] ath5k: revert AHB bus support removing
-Date:   Wed, 22 Oct 2014 03:03:49 +0400
-Message-Id: <1413932631-12866-12-git-send-email-ryazanov.s.a@gmail.com>
+Subject: [PATCH v2 12/13] ath5k: update dependencies
+Date:   Wed, 22 Oct 2014 03:03:50 +0400
+Message-Id: <1413932631-12866-13-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -39,7 +39,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43458
+X-archive-position: 43459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,426 +56,142 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This reverts commit 093ec3c5337434f40d77c1af06c139da3e5ba6dc.
+- Use config symbol defined in the driver instead of arch specific one for
+  conditional compilation.
+- Rename the ATHEROS_AR231X config symbol to ATH25.
+- Fix include (ar231x_platform.h -> ath25_platform.h).
+- Some of AR231x SoCs (e.g. AR2315) have PCI bus support, so remove !PCI
+  dependency, which block AHB support build.
 
-AHB bus code has been removed, since we did not have support Atheros
-AR231x SoC, required for building the AHB version of ath5k. Now that
-support WiSoC chips added we can restore functionality back.
-
-Singed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Cc: Jiri Slaby <jirislaby@gmail.com>
 Cc: Nick Kossifidis <mickflemm@gmail.com>
 Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
 Cc: linux-wireless@vger.kernel.org
 Cc: ath5k-devel@lists.ath5k.org
 ---
- drivers/net/wireless/ath/ath5k/Kconfig  |  14 +-
- drivers/net/wireless/ath/ath5k/Makefile |   1 +
- drivers/net/wireless/ath/ath5k/ahb.c    | 234 ++++++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath5k/ath5k.h  |  28 ++++
- drivers/net/wireless/ath/ath5k/base.c   |  14 ++
- drivers/net/wireless/ath/ath5k/led.c    |   6 +
- 6 files changed, 294 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/wireless/ath/ath5k/ahb.c
+
+Changes since RFC:
+  - merge together patches that update ath5k dependencies
+
+Changes since v1:
+  - rename config symbol AR231X -> ATH25
+  - rename arch header ar231x_platform.h -> ath25_platform.h
+
+ drivers/net/wireless/ath/ath5k/Kconfig | 10 +++++-----
+ drivers/net/wireless/ath/ath5k/ahb.c   |  2 +-
+ drivers/net/wireless/ath/ath5k/ath5k.h |  2 +-
+ drivers/net/wireless/ath/ath5k/base.c  |  4 ++--
+ drivers/net/wireless/ath/ath5k/led.c   |  4 ++--
+ 5 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath5k/Kconfig b/drivers/net/wireless/ath/ath5k/Kconfig
-index 93caf8e68..c9f81a3 100644
+index c9f81a3..2399a39 100644
 --- a/drivers/net/wireless/ath/ath5k/Kconfig
 +++ b/drivers/net/wireless/ath/ath5k/Kconfig
-@@ -1,12 +1,13 @@
+@@ -1,13 +1,13 @@
  config ATH5K
  	tristate "Atheros 5xxx wireless cards support"
--	depends on PCI && MAC80211
-+	depends on (PCI || ATHEROS_AR231X) && MAC80211
+-	depends on (PCI || ATHEROS_AR231X) && MAC80211
++	depends on (PCI || ATH25) && MAC80211
  	select ATH_COMMON
  	select MAC80211_LEDS
  	select LEDS_CLASS
  	select NEW_LEDS
  	select AVERAGE
--	select ATH5K_PCI
-+	select ATH5K_AHB if (ATHEROS_AR231X && !PCI)
-+	select ATH5K_PCI if (!ATHEROS_AR231X && PCI)
+-	select ATH5K_AHB if (ATHEROS_AR231X && !PCI)
+-	select ATH5K_PCI if (!ATHEROS_AR231X && PCI)
++	select ATH5K_AHB if ATH25
++	select ATH5K_PCI if !ATH25
  	---help---
  	  This module adds support for wireless adapters based on
  	  Atheros 5xxx chipset.
-@@ -51,9 +52,16 @@ config ATH5K_TRACER
+@@ -54,14 +54,14 @@ config ATH5K_TRACER
  
- 	  If unsure, say N.
+ config ATH5K_AHB
+ 	bool "Atheros 5xxx AHB bus support"
+-	depends on (ATHEROS_AR231X && !PCI)
++	depends on ATH25
+ 	---help---
+ 	  This adds support for WiSoC type chipsets of the 5xxx Atheros
+ 	  family.
  
-+config ATH5K_AHB
-+	bool "Atheros 5xxx AHB bus support"
-+	depends on (ATHEROS_AR231X && !PCI)
-+	---help---
-+	  This adds support for WiSoC type chipsets of the 5xxx Atheros
-+	  family.
-+
  config ATH5K_PCI
  	bool "Atheros 5xxx PCI bus support"
--	depends on PCI
-+	depends on (!ATHEROS_AR231X && PCI)
+-	depends on (!ATHEROS_AR231X && PCI)
++	depends on (!ATH25 && PCI)
  	---help---
  	  This adds support for PCI type chipsets of the 5xxx Atheros
  	  family.
-diff --git a/drivers/net/wireless/ath/ath5k/Makefile b/drivers/net/wireless/ath/ath5k/Makefile
-index 51e2d86..1b3a34f 100644
---- a/drivers/net/wireless/ath/ath5k/Makefile
-+++ b/drivers/net/wireless/ath/ath5k/Makefile
-@@ -17,5 +17,6 @@ ath5k-y				+= ani.o
- ath5k-y				+= sysfs.o
- ath5k-y				+= mac80211-ops.o
- ath5k-$(CONFIG_ATH5K_DEBUG)	+= debug.o
-+ath5k-$(CONFIG_ATH5K_AHB)	+= ahb.o
- ath5k-$(CONFIG_ATH5K_PCI)	+= pci.o
- obj-$(CONFIG_ATH5K)		+= ath5k.o
 diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-new file mode 100644
-index 0000000..79bffe1
---- /dev/null
+index 79bffe1..8f387cf 100644
+--- a/drivers/net/wireless/ath/ath5k/ahb.c
 +++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -0,0 +1,234 @@
-+/*
-+ * Copyright (c) 2008-2009 Atheros Communications Inc.
-+ * Copyright (c) 2009 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (c) 2009 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ * Permission to use, copy, modify, and/or distribute this software for any
-+ * purpose with or without fee is hereby granted, provided that the above
-+ * copyright notice and this permission notice appear in all copies.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-+ */
-+
-+#include <linux/nl80211.h>
-+#include <linux/platform_device.h>
-+#include <linux/etherdevice.h>
-+#include <linux/export.h>
-+#include <ar231x_platform.h>
-+#include "ath5k.h"
-+#include "debug.h"
-+#include "base.h"
-+#include "reg.h"
-+
-+/* return bus cachesize in 4B word units */
-+static void ath5k_ahb_read_cachesize(struct ath_common *common, int *csz)
-+{
-+	*csz = L1_CACHE_BYTES >> 2;
-+}
-+
-+static bool
-+ath5k_ahb_eeprom_read(struct ath_common *common, u32 off, u16 *data)
-+{
-+	struct ath5k_hw *ah = common->priv;
-+	struct platform_device *pdev = to_platform_device(ah->dev);
-+	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
-+	u16 *eeprom, *eeprom_end;
-+
-+	eeprom = (u16 *) bcfg->radio;
-+	eeprom_end = ((void *) bcfg->config) + BOARD_CONFIG_BUFSZ;
-+
-+	eeprom += off;
-+	if (eeprom > eeprom_end)
-+		return false;
-+
-+	*data = *eeprom;
-+	return true;
-+}
-+
-+int ath5k_hw_read_srev(struct ath5k_hw *ah)
-+{
-+	struct platform_device *pdev = to_platform_device(ah->dev);
-+	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
-+	ah->ah_mac_srev = bcfg->devid;
-+	return 0;
-+}
-+
-+static int ath5k_ahb_eeprom_read_mac(struct ath5k_hw *ah, u8 *mac)
-+{
-+	struct platform_device *pdev = to_platform_device(ah->dev);
-+	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
-+	u8 *cfg_mac;
-+
-+	if (to_platform_device(ah->dev)->id == 0)
-+		cfg_mac = bcfg->config->wlan0_mac;
-+	else
-+		cfg_mac = bcfg->config->wlan1_mac;
-+
-+	memcpy(mac, cfg_mac, ETH_ALEN);
-+	return 0;
-+}
-+
-+static const struct ath_bus_ops ath_ahb_bus_ops = {
-+	.ath_bus_type = ATH_AHB,
-+	.read_cachesize = ath5k_ahb_read_cachesize,
-+	.eeprom_read = ath5k_ahb_eeprom_read,
-+	.eeprom_read_mac = ath5k_ahb_eeprom_read_mac,
-+};
-+
-+/*Initialization*/
-+static int ath_ahb_probe(struct platform_device *pdev)
-+{
-+	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
-+	struct ath5k_hw *ah;
-+	struct ieee80211_hw *hw;
-+	struct resource *res;
-+	void __iomem *mem;
-+	int irq;
-+	int ret = 0;
-+	u32 reg;
-+
-+	if (!dev_get_platdata(&pdev->dev)) {
-+		dev_err(&pdev->dev, "no platform data specified\n");
-+		ret = -EINVAL;
-+		goto err_out;
-+	}
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (res == NULL) {
-+		dev_err(&pdev->dev, "no memory resource found\n");
-+		ret = -ENXIO;
-+		goto err_out;
-+	}
-+
-+	mem = ioremap_nocache(res->start, resource_size(res));
-+	if (mem == NULL) {
-+		dev_err(&pdev->dev, "ioremap failed\n");
-+		ret = -ENOMEM;
-+		goto err_out;
-+	}
-+
-+	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (res == NULL) {
-+		dev_err(&pdev->dev, "no IRQ resource found\n");
-+		ret = -ENXIO;
-+		goto err_iounmap;
-+	}
-+
-+	irq = res->start;
-+
-+	hw = ieee80211_alloc_hw(sizeof(struct ath5k_hw), &ath5k_hw_ops);
-+	if (hw == NULL) {
-+		dev_err(&pdev->dev, "no memory for ieee80211_hw\n");
-+		ret = -ENOMEM;
-+		goto err_iounmap;
-+	}
-+
-+	ah = hw->priv;
-+	ah->hw = hw;
-+	ah->dev = &pdev->dev;
-+	ah->iobase = mem;
-+	ah->irq = irq;
-+	ah->devid = bcfg->devid;
-+
-+	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
-+		/* Enable WMAC AHB arbitration */
-+		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg |= AR5K_AR2315_AHB_ARB_CTL_WLAN;
-+		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+
-+		/* Enable global WMAC swapping */
-+		reg = ioread32((void __iomem *) AR5K_AR2315_BYTESWAP);
-+		reg |= AR5K_AR2315_BYTESWAP_WMAC;
-+		iowrite32(reg, (void __iomem *) AR5K_AR2315_BYTESWAP);
-+	} else {
-+		/* Enable WMAC DMA access (assuming 5312 or 231x*/
-+		/* TODO: check other platforms */
-+		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		if (to_platform_device(ah->dev)->id == 0)
-+			reg |= AR5K_AR5312_ENABLE_WLAN0;
-+		else
-+			reg |= AR5K_AR5312_ENABLE_WLAN1;
-+		iowrite32(reg, (void __iomem *) AR5K_AR5312_ENABLE);
-+
-+		/*
-+		 * On a dual-band AR5312, the multiband radio is only
-+		 * used as pass-through. Disable 2 GHz support in the
-+		 * driver for it
-+		 */
-+		if (to_platform_device(ah->dev)->id == 0 &&
-+		    (bcfg->config->flags & (BD_WLAN0 | BD_WLAN1)) ==
-+		     (BD_WLAN1 | BD_WLAN0))
-+			ah->ah_capabilities.cap_needs_2GHz_ovr = true;
-+		else
-+			ah->ah_capabilities.cap_needs_2GHz_ovr = false;
-+	}
-+
-+	ret = ath5k_init_ah(ah, &ath_ahb_bus_ops);
-+	if (ret != 0) {
-+		dev_err(&pdev->dev, "failed to attach device, err=%d\n", ret);
-+		ret = -ENODEV;
-+		goto err_free_hw;
-+	}
-+
-+	platform_set_drvdata(pdev, hw);
-+
-+	return 0;
-+
-+ err_free_hw:
-+	ieee80211_free_hw(hw);
-+ err_iounmap:
-+        iounmap(mem);
-+ err_out:
-+	return ret;
-+}
-+
-+static int ath_ahb_remove(struct platform_device *pdev)
-+{
-+	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
-+	struct ieee80211_hw *hw = platform_get_drvdata(pdev);
-+	struct ath5k_hw *ah;
-+	u32 reg;
-+
-+	if (!hw)
-+		return 0;
-+
-+	ah = hw->priv;
-+
-+	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
-+		/* Disable WMAC AHB arbitration */
-+		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg &= ~AR5K_AR2315_AHB_ARB_CTL_WLAN;
-+		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+	} else {
-+		/*Stop DMA access */
-+		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		if (to_platform_device(ah->dev)->id == 0)
-+			reg &= ~AR5K_AR5312_ENABLE_WLAN0;
-+		else
-+			reg &= ~AR5K_AR5312_ENABLE_WLAN1;
-+		iowrite32(reg, (void __iomem *) AR5K_AR5312_ENABLE);
-+	}
-+
-+	ath5k_deinit_ah(ah);
-+	iounmap(ah->iobase);
-+	ieee80211_free_hw(hw);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver ath_ahb_driver = {
-+	.probe      = ath_ahb_probe,
-+	.remove     = ath_ahb_remove,
-+	.driver		= {
-+		.name	= "ar231x-wmac",
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+module_platform_driver(ath_ahb_driver);
+@@ -20,7 +20,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/etherdevice.h>
+ #include <linux/export.h>
+-#include <ar231x_platform.h>
++#include <ath25_platform.h>
+ #include "ath5k.h"
+ #include "debug.h"
+ #include "base.h"
 diff --git a/drivers/net/wireless/ath/ath5k/ath5k.h b/drivers/net/wireless/ath/ath5k/ath5k.h
-index ed24682..85316bb 100644
+index 85316bb..1ed7a88 100644
 --- a/drivers/net/wireless/ath/ath5k/ath5k.h
 +++ b/drivers/net/wireless/ath/ath5k/ath5k.h
-@@ -1647,6 +1647,32 @@ static inline struct ath_regulatory *ath5k_hw_regulatory(struct ath5k_hw *ah)
+@@ -1647,7 +1647,7 @@ static inline struct ath_regulatory *ath5k_hw_regulatory(struct ath5k_hw *ah)
  	return &(ath5k_hw_common(ah)->regulatory);
  }
  
-+#ifdef CONFIG_ATHEROS_AR231X
-+#define AR5K_AR2315_PCI_BASE	((void __iomem *)0xb0100000)
-+
-+static inline void __iomem *ath5k_ahb_reg(struct ath5k_hw *ah, u16 reg)
-+{
-+	/* On AR2315 and AR2317 the PCI clock domain registers
-+	 * are outside of the WMAC register space */
-+	if (unlikely((reg >= 0x4000) && (reg < 0x5000) &&
-+	    (ah->ah_mac_srev >= AR5K_SREV_AR2315_R6)))
-+		return AR5K_AR2315_PCI_BASE + reg;
-+
-+	return ah->iobase + reg;
-+}
-+
-+static inline u32 ath5k_hw_reg_read(struct ath5k_hw *ah, u16 reg)
-+{
-+	return ioread32(ath5k_ahb_reg(ah, reg));
-+}
-+
-+static inline void ath5k_hw_reg_write(struct ath5k_hw *ah, u32 val, u16 reg)
-+{
-+	iowrite32(val, ath5k_ahb_reg(ah, reg));
-+}
-+
-+#else
-+
- static inline u32 ath5k_hw_reg_read(struct ath5k_hw *ah, u16 reg)
- {
- 	return ioread32(ah->iobase + reg);
-@@ -1657,6 +1683,8 @@ static inline void ath5k_hw_reg_write(struct ath5k_hw *ah, u32 val, u16 reg)
- 	iowrite32(val, ah->iobase + reg);
- }
+-#ifdef CONFIG_ATHEROS_AR231X
++#ifdef CONFIG_ATH5K_AHB
+ #define AR5K_AR2315_PCI_BASE	((void __iomem *)0xb0100000)
  
-+#endif
-+
- static inline enum ath_bus_type ath5k_get_bus_type(struct ath5k_hw *ah)
- {
- 	return ath5k_hw_common(ah)->bus_ops->ath_bus_type;
+ static inline void __iomem *ath5k_ahb_reg(struct ath5k_hw *ah, u16 reg)
 diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
-index a4a09bb..59a8724 100644
+index 59a8724..bc9cb35 100644
 --- a/drivers/net/wireless/ath/ath5k/base.c
 +++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -99,6 +99,15 @@ static int ath5k_reset(struct ath5k_hw *ah, struct ieee80211_channel *chan,
+@@ -99,7 +99,7 @@ static int ath5k_reset(struct ath5k_hw *ah, struct ieee80211_channel *chan,
  
  /* Known SREVs */
  static const struct ath5k_srev_name srev_names[] = {
-+#ifdef CONFIG_ATHEROS_AR231X
-+	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R2 },
-+	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R7 },
-+	{ "2313",	AR5K_VERSION_MAC,	AR5K_SREV_AR2313_R8 },
-+	{ "2315",	AR5K_VERSION_MAC,	AR5K_SREV_AR2315_R6 },
-+	{ "2315",	AR5K_VERSION_MAC,	AR5K_SREV_AR2315_R7 },
-+	{ "2317",	AR5K_VERSION_MAC,	AR5K_SREV_AR2317_R1 },
-+	{ "2317",	AR5K_VERSION_MAC,	AR5K_SREV_AR2317_R2 },
-+#else
- 	{ "5210",	AR5K_VERSION_MAC,	AR5K_SREV_AR5210 },
- 	{ "5311",	AR5K_VERSION_MAC,	AR5K_SREV_AR5311 },
- 	{ "5311A",	AR5K_VERSION_MAC,	AR5K_SREV_AR5311A },
-@@ -117,6 +126,7 @@ static const struct ath5k_srev_name srev_names[] = {
- 	{ "5418",	AR5K_VERSION_MAC,	AR5K_SREV_AR5418 },
- 	{ "2425",	AR5K_VERSION_MAC,	AR5K_SREV_AR2425 },
- 	{ "2417",	AR5K_VERSION_MAC,	AR5K_SREV_AR2417 },
-+#endif
- 	{ "xxxxx",	AR5K_VERSION_MAC,	AR5K_SREV_UNKNOWN },
- 	{ "5110",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5110 },
- 	{ "5111",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5111 },
-@@ -132,6 +142,10 @@ static const struct ath5k_srev_name srev_names[] = {
+-#ifdef CONFIG_ATHEROS_AR231X
++#ifdef CONFIG_ATH5K_AHB
+ 	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R2 },
+ 	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R7 },
+ 	{ "2313",	AR5K_VERSION_MAC,	AR5K_SREV_AR2313_R8 },
+@@ -142,7 +142,7 @@ static const struct ath5k_srev_name srev_names[] = {
  	{ "5413",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5413 },
  	{ "5424",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5424 },
  	{ "5133",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5133 },
-+#ifdef CONFIG_ATHEROS_AR231X
-+	{ "2316",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2316 },
-+	{ "2317",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2317 },
-+#endif
- 	{ "xxxxx",	AR5K_VERSION_RAD,	AR5K_SREV_UNKNOWN },
- };
- 
+-#ifdef CONFIG_ATHEROS_AR231X
++#ifdef CONFIG_ATH5K_AHB
+ 	{ "2316",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2316 },
+ 	{ "2317",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2317 },
+ #endif
 diff --git a/drivers/net/wireless/ath/ath5k/led.c b/drivers/net/wireless/ath/ath5k/led.c
-index 0beb7e7..2062d11 100644
+index 2062d11..ca4b7cc 100644
 --- a/drivers/net/wireless/ath/ath5k/led.c
 +++ b/drivers/net/wireless/ath/ath5k/led.c
-@@ -163,14 +163,20 @@ int ath5k_init_leds(struct ath5k_hw *ah)
+@@ -163,7 +163,7 @@ int ath5k_init_leds(struct ath5k_hw *ah)
  {
  	int ret = 0;
  	struct ieee80211_hw *hw = ah->hw;
-+#ifndef CONFIG_ATHEROS_AR231X
+-#ifndef CONFIG_ATHEROS_AR231X
++#ifndef CONFIG_ATH5K_AHB
  	struct pci_dev *pdev = ah->pdev;
-+#endif
+ #endif
  	char name[ATH5K_LED_MAX_NAME_LEN + 1];
- 	const struct pci_device_id *match;
- 
+@@ -172,7 +172,7 @@ int ath5k_init_leds(struct ath5k_hw *ah)
  	if (!ah->pdev)
  		return 0;
  
-+#ifdef CONFIG_ATHEROS_AR231X
-+	match = NULL;
-+#else
+-#ifdef CONFIG_ATHEROS_AR231X
++#ifdef CONFIG_ATH5K_AHB
+ 	match = NULL;
+ #else
  	match = pci_match_id(&ath5k_led_devices[0], pdev);
-+#endif
- 	if (match) {
- 		__set_bit(ATH_STAT_LEDSOFT, ah->status);
- 		ah->led_pin = ATH_PIN(match->driver_data);
 -- 
 1.8.5.5

@@ -1,45 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:07:31 +0200 (CEST)
-Received: from mail-lb0-f174.google.com ([209.85.217.174]:49979 "EHLO
-        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012113AbaJUXD5e1N0w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 01:03:57 +0200
-Received: by mail-lb0-f174.google.com with SMTP id p9so1872241lbv.5
-        for <multiple recipients>; Tue, 21 Oct 2014 16:03:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ErYkUVZZfmAf2fpLqWCmpsHTVxu4UsCXmMgEngoM6+U=;
-        b=hK4TElucHEYCQ7jERotIpVzrLzozdxlZ80l3HIQBmQf2bzi7NB+WgnVRC7w28yXBp/
-         kCNsLwnF4ZwYPQkFQuvm3RjXgpLqLM1nYVbMIKv43U1+QyXN3VzKhI1tf8qzLJUEpYTj
-         Mbl49ZwQL8HwzQbcqrlJDgALqYrCqhYpXEXIG5rjNUOhc+emBRMMYM5B6UQhPT5YCPI+
-         IgtYJ8YMKNUQCBcFF2fs3U4uKDda/iM6OpSyPWt4i+qCCnvZCKQj2HcUjH1bNNiNg4AF
-         7Qsb7DR+WOiLsi3FrpmFVEYXnyiIMaW/NLhm+X1bJdN0xyq2SHjn9Xb/oFFFnY2V76u/
-         Liog==
-X-Received: by 10.112.29.175 with SMTP id l15mr37254107lbh.39.1413932632205;
-        Tue, 21 Oct 2014 16:03:52 -0700 (PDT)
-Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id lk5sm5077133lac.45.2014.10.21.16.03.50
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Oct 2014 16:03:51 -0700 (PDT)
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH v2 13/13] MIPS: ath25: add Wireless device support
-Date:   Wed, 22 Oct 2014 03:03:51 +0400
-Message-Id: <1413932631-12866-14-git-send-email-ryazanov.s.a@gmail.com>
-X-Mailer: git-send-email 1.8.1.5
-In-Reply-To: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
-References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
-Return-Path: <ryazanov.s.a@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 01:36:33 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:49253 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011966AbaJUXgbpLu5M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Oct 2014 01:36:31 +0200
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 95680284830;
+        Wed, 22 Oct 2014 01:35:24 +0200 (CEST)
+Received: from Dicker-Alter.local (ip-109-47-149-127.web.vodafone.de [109.47.149.127])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Wed, 22 Oct 2014 01:35:24 +0200 (CEST)
+Message-ID: <5446EDF9.3010107@openwrt.org>
+Date:   Wed, 22 Oct 2014 01:36:25 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+MIME-Version: 1.0
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2 01/13] MIPS: ath25: add common parts
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com> <1413932631-12866-2-git-send-email-ryazanov.s.a@gmail.com>
+In-Reply-To: <1413932631-12866-2-git-send-email-ryazanov.s.a@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43460
+X-archive-position: 43461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ryazanov.s.a@gmail.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,157 +43,327 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Atheros AR5312 and AR2315 both have a builtin wireless device, this
-patch add helper code and register platform device for all supported
-WiSoCs.
+Hi Sergey,
 
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
----
+Thanks for the patches, a few comments inline
 
-Changes since v1:
-  - rename MIPS machine ar231x -> ath25
+On 22/10/2014 01:03, Sergey Ryazanov wrote:
+> Add common code for Atheros AR5312 and Atheros AR2315 SoCs families.
+> 
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+> ---
+> 
+> Changes since v1:
+>   - rename MIPS machine ar231x -> ath25
+> 
+>  arch/mips/Kbuild.platforms                         |  1 +
+>  arch/mips/Kconfig                                  | 13 ++++
+>  arch/mips/ath25/Makefile                           | 11 ++++
+>  arch/mips/ath25/Platform                           |  6 ++
+>  arch/mips/ath25/board.c                            | 53 +++++++++++++++
+>  arch/mips/ath25/devices.c                          | 11 ++++
+>  arch/mips/ath25/devices.h                          | 16 +++++
+>  arch/mips/ath25/prom.c                             | 26 ++++++++
+>  arch/mips/include/asm/mach-ath25/ath25.h           | 29 +++++++++
+>  .../include/asm/mach-ath25/cpu-feature-overrides.h | 76 ++++++++++++++++++++++
+>  arch/mips/include/asm/mach-ath25/dma-coherence.h   | 64 ++++++++++++++++++
+>  arch/mips/include/asm/mach-ath25/gpio.h            | 16 +++++
+>  arch/mips/include/asm/mach-ath25/war.h             | 25 +++++++
+>  13 files changed, 347 insertions(+)
+>  create mode 100644 arch/mips/ath25/Makefile
+>  create mode 100644 arch/mips/ath25/Platform
+>  create mode 100644 arch/mips/ath25/board.c
+>  create mode 100644 arch/mips/ath25/devices.c
+>  create mode 100644 arch/mips/ath25/devices.h
+>  create mode 100644 arch/mips/ath25/prom.c
+>  create mode 100644 arch/mips/include/asm/mach-ath25/ath25.h
+>  create mode 100644 arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
+>  create mode 100644 arch/mips/include/asm/mach-ath25/dma-coherence.h
+>  create mode 100644 arch/mips/include/asm/mach-ath25/gpio.h
+>  create mode 100644 arch/mips/include/asm/mach-ath25/war.h
+> 
+> diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+> index f5e18bf..1780c74 100644
+> --- a/arch/mips/Kbuild.platforms
+> +++ b/arch/mips/Kbuild.platforms
+> @@ -2,6 +2,7 @@
+>  
+>  platforms += alchemy
+>  platforms += ar7
+> +platforms += ath25
+>  platforms += ath79
+>  platforms += bcm47xx
+>  platforms += bcm63xx
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 652bd79..54abb9a 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -96,6 +96,19 @@ config AR7
+>  	  Support for the Texas Instruments AR7 System-on-a-Chip
+>  	  family: TNETD7100, 7200 and 7300.
+>  
+> +config ATH25
+> +	bool "Atheros AR231x/AR531x SoC support"
+> +	select CEVT_R4K
+> +	select CSRC_R4K
+> +	select DMA_NONCOHERENT
+> +	select IRQ_CPU
+> +	select SYS_HAS_CPU_MIPS32_R1
+> +	select SYS_SUPPORTS_BIG_ENDIAN
+> +	select SYS_SUPPORTS_32BIT_KERNEL
+> +	select ARCH_REQUIRE_GPIOLIB
 
- arch/mips/ath25/ar2315.c  |  1 +
- arch/mips/ath25/ar5312.c  | 22 +++++++++++++++++++
- arch/mips/ath25/devices.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/ath25/devices.h |  1 +
- 4 files changed, 78 insertions(+)
+you probably do not want to select GPIOLIB since the driver is dropped
+from the series.
 
-diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c
-index 76679c0..b39440e 100644
---- a/arch/mips/ath25/ar2315.c
-+++ b/arch/mips/ath25/ar2315.c
-@@ -227,6 +227,7 @@ void __init ar2315_init_devices(void)
- 	res->end = res->start;
- 	platform_device_register(&ar2315_wdt);
- 	platform_device_register(&ar2315_spiflash);
-+	ath25_add_wmac(0, AR2315_WLAN0, AR2315_IRQ_WLAN0);
- }
- 
- static void ar2315_restart(char *command)
-diff --git a/arch/mips/ath25/ar5312.c b/arch/mips/ath25/ar5312.c
-index 99c2745..043cf96 100644
---- a/arch/mips/ath25/ar5312.c
-+++ b/arch/mips/ath25/ar5312.c
-@@ -231,6 +231,28 @@ void __init ar5312_init_devices(void)
- 
- 	platform_device_register(&ar5312_physmap_flash);
- 	platform_device_register(&ar5312_gpio);
-+
-+	switch (ath25_soc) {
-+	case ATH25_SOC_AR5312:
-+		if (!ath25_board.radio)
-+			return;
-+
-+		if (!(config->flags & BD_WLAN0))
-+			break;
-+
-+		ath25_add_wmac(0, AR5312_WLAN0, AR5312_IRQ_WLAN0);
-+		break;
-+	case ATH25_SOC_AR2312:
-+	case ATH25_SOC_AR2313:
-+		if (!ath25_board.radio)
-+			return;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	if (config->flags & BD_WLAN1)
-+		ath25_add_wmac(1, AR5312_WLAN1, AR5312_IRQ_WLAN1);
- }
- 
- static void ar5312_restart(char *command)
-diff --git a/arch/mips/ath25/devices.c b/arch/mips/ath25/devices.c
-index 6218547..7a64567 100644
---- a/arch/mips/ath25/devices.c
-+++ b/arch/mips/ath25/devices.c
-@@ -1,6 +1,7 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/serial_8250.h>
-+#include <linux/platform_device.h>
- #include <asm/bootinfo.h>
- 
- #include <ath25_platform.h>
-@@ -11,6 +12,45 @@
- struct ar231x_board_config ath25_board;
- enum ath25_soc_type ath25_soc = ATH25_SOC_UNKNOWN;
- 
-+static struct resource ath25_wmac0_res[] = {
-+	{
-+		.name = "wmac0_membase",
-+		.flags = IORESOURCE_MEM,
-+	},
-+	{
-+		.name = "wmac0_irq",
-+		.flags = IORESOURCE_IRQ,
-+	}
-+};
-+
-+static struct resource ath25_wmac1_res[] = {
-+	{
-+		.name = "wmac1_membase",
-+		.flags = IORESOURCE_MEM,
-+	},
-+	{
-+		.name = "wmac1_irq",
-+		.flags = IORESOURCE_IRQ,
-+	}
-+};
-+
-+static struct platform_device ath25_wmac[] = {
-+	{
-+		.id = 0,
-+		.name = "ar231x-wmac",
-+		.resource = ath25_wmac0_res,
-+		.num_resources = ARRAY_SIZE(ath25_wmac0_res),
-+		.dev.platform_data = &ath25_board,
-+	},
-+	{
-+		.id = 1,
-+		.name = "ar231x-wmac",
-+		.resource = ath25_wmac1_res,
-+		.num_resources = ARRAY_SIZE(ath25_wmac1_res),
-+		.dev.platform_data = &ath25_board,
-+	},
-+};
-+
- static const char * const soc_type_strings[] = {
- 	[ATH25_SOC_AR5312] = "Atheros AR5312",
- 	[ATH25_SOC_AR2312] = "Atheros AR2312",
-@@ -46,6 +86,20 @@ void __init ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk)
- 	early_serial_setup(&s);
- }
- 
-+int __init ath25_add_wmac(int nr, u32 base, int irq)
-+{
-+	struct resource *res;
-+
-+	ath25_wmac[nr].dev.platform_data = &ath25_board;
-+	res = &ath25_wmac[nr].resource[0];
-+	res->start = base;
-+	res->end = base + 0x10000 - 1;
-+	res++;
-+	res->start = irq;
-+	res->end = irq;
-+	return platform_device_register(&ath25_wmac[nr]);
-+}
-+
- static int __init ath25_register_devices(void)
- {
- 	if (is_ar5312())
-diff --git a/arch/mips/ath25/devices.h b/arch/mips/ath25/devices.h
-index 8555e32..eb8a1d1 100644
---- a/arch/mips/ath25/devices.h
-+++ b/arch/mips/ath25/devices.h
-@@ -24,6 +24,7 @@ extern void (*ath25_irq_dispatch)(void);
- 
- int ath25_find_config(const u8 *flash_limit);
- void ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk);
-+int ath25_add_wmac(int nr, u32 base, int irq);
- 
- static inline bool is_ar2315(void)
- {
--- 
-1.8.5.5
+[snip]
+
+
+> diff --git a/arch/mips/ath25/board.c b/arch/mips/ath25/board.c
+> new file mode 100644
+> index 0000000..cbc6d7b
+> --- /dev/null
+> +++ b/arch/mips/ath25/board.c
+> @@ -0,0 +1,53 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
+> + * Copyright (C) 2006 FON Technology, SL.
+> + * Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
+> + * Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
+> + */
+> +
+> +#include <linux/init.h>
+> +#include <linux/interrupt.h>
+> +#include <asm/irq_cpu.h>
+> +#include <asm/reboot.h>
+> +#include <asm/bootinfo.h>
+> +#include <asm/time.h>
+> +
+> +static void ath25_halt(void)
+> +{
+> +	local_irq_disable();
+> +	while (1)
+> +		;
+
+please use unreachable() macro here from include/linux/compiler.h
+
+[snip]
+
+> diff --git a/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
+> new file mode 100644
+> index 0000000..c1aebdc
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
+> @@ -0,0 +1,76 @@
+> +/*
+> + *  Atheros AR231x/AR531x SoC specific CPU feature overrides
+> + *
+> + *  Copyright (C) 2008 Gabor Juhos <juhosg@openwrt.org>
+> + *
+> + *  This file was derived from: include/asm-mips/cpu-features.h
+> + *	Copyright (C) 2003, 2004 Ralf Baechle
+> + *	Copyright (C) 2004 Maciej W. Rozycki
+> + *
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License version 2 as published
+> + *  by the Free Software Foundation.
+> + *
+> + */
+> +#ifndef __ASM_MACH_ATH25_CPU_FEATURE_OVERRIDES_H
+> +#define __ASM_MACH_ATH25_CPU_FEATURE_OVERRIDES_H
+> +
+> +/*
+> + * The Atheros AR531x/AR231x SoCs have MIPS 4Kc/4KEc core.
+> + */
+> +#define cpu_has_tlb			1
+> +#define cpu_has_4kex			1
+> +#define cpu_has_3k_cache		0
+> +#define cpu_has_4k_cache		1
+> +#define cpu_has_tx39_cache		0
+> +#define cpu_has_sb1_cache		0
+> +#define cpu_has_fpu			0
+> +#define cpu_has_32fpr			0
+> +#define cpu_has_counter			1
+> +/* #define cpu_has_watch		? */
+> +/* #define cpu_has_divec		? */
+> +/* #define cpu_has_vce			? */
+> +/* #define cpu_has_cache_cdex_p		? */
+> +/* #define cpu_has_cache_cdex_s		? */
+> +/* #define cpu_has_prefetch		? */
+> +/* #define cpu_has_mcheck		? */
+> +#define cpu_has_ejtag			1
+> +
+> +/*
+> + * The MIPS 4Kc V0.9 core in the AR5312/AR2312 have problems with the
+> + * ll/sc instructions.
+> + */
+> +#define cpu_has_llsc			0
+> +
+> +#define cpu_has_mips16			0
+> +#define cpu_has_mdmx			0
+> +#define cpu_has_mips3d			0
+> +#define cpu_has_smartmips		0
+> +
+> +/* #define cpu_has_vtag_icache		? */
+> +/* #define cpu_has_dc_aliases		? */
+> +/* #define cpu_has_ic_fills_f_dc	? */
+> +/* #define cpu_has_pindexed_dcache	? */
+> +
+> +/* #define cpu_icache_snoops_remote_store	? */
+
+
+please drop the ones with a "?"
+
+> +
+> +#define cpu_has_mips32r1		1
+> +
+> +#define cpu_has_mips64r1		0
+> +#define cpu_has_mips64r2		0
+> +
+> +#define cpu_has_dsp			0
+> +#define cpu_has_mipsmt			0
+> +
+> +/* #define cpu_has_nofpuex		? */
+> +#define cpu_has_64bits			0
+> +#define cpu_has_64bit_zero_reg		0
+> +#define cpu_has_64bit_gp_regs		0
+> +#define cpu_has_64bit_addresses		0
+> +
+> +/* #define cpu_has_inclusive_pcaches	? */
+> +
+> +/* #define cpu_dcache_line_size()	? */
+> +/* #define cpu_icache_line_size()	? */
+
+
+same here
+
+> +
+> +#endif /* __ASM_MACH_ATH25_CPU_FEATURE_OVERRIDES_H */
+> diff --git a/arch/mips/include/asm/mach-ath25/dma-coherence.h b/arch/mips/include/asm/mach-ath25/dma-coherence.h
+> new file mode 100644
+> index 0000000..8b3d0cc
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-ath25/dma-coherence.h
+> @@ -0,0 +1,64 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2006  Ralf Baechle <ralf@linux-mips.org>
+> + * Copyright (C) 2007  Felix Fietkau <nbd@openwrt.org>
+> + *
+> + */
+> +#ifndef __ASM_MACH_ATH25_DMA_COHERENCE_H
+> +#define __ASM_MACH_ATH25_DMA_COHERENCE_H
+> +
+> +#include <linux/device.h>
+> +
+> +static inline dma_addr_t
+> +plat_map_dma_mem(struct device *dev, void *addr, size_t size)
+> +{
+> +	return virt_to_phys(addr);
+> +}
+> +
+> +static inline dma_addr_t
+> +plat_map_dma_mem_page(struct device *dev, struct page *page)
+> +{
+> +	return page_to_phys(page);
+> +}
+> +
+> +static inline unsigned long
+> +plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
+> +{
+> +	return dma_addr;
+> +}
+> +
+> +static inline void
+> +plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr, size_t size,
+> +		   enum dma_data_direction direction)
+> +{
+> +}
+> +
+> +static inline int plat_dma_supported(struct device *dev, u64 mask)
+> +{
+> +	return 1;
+> +}
+> +
+> +static inline void plat_extra_sync_for_device(struct device *dev)
+> +{
+> +}
+> +
+> +static inline int plat_dma_mapping_error(struct device *dev,
+> +					 dma_addr_t dma_addr)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline int plat_device_is_coherent(struct device *dev)
+> +{
+> +#ifdef CONFIG_DMA_COHERENT
+> +	return 1;
+> +#endif
+> +#ifdef CONFIG_DMA_NONCOHERENT
+> +	return 0;
+> +#endif
+> +}
+> +
+> +#endif /* __ASM_MACH_ATH25_DMA_COHERENCE_H */
+> diff --git a/arch/mips/include/asm/mach-ath25/gpio.h b/arch/mips/include/asm/mach-ath25/gpio.h
+> new file mode 100644
+> index 0000000..713564b
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-ath25/gpio.h
+> @@ -0,0 +1,16 @@
+> +#ifndef __ASM_MACH_ATH25_GPIO_H
+> +#define __ASM_MACH_ATH25_GPIO_H
+> +
+> +#include <asm-generic/gpio.h>
+> +
+> +#define gpio_get_value __gpio_get_value
+> +#define gpio_set_value __gpio_set_value
+> +#define gpio_cansleep __gpio_cansleep
+> +#define gpio_to_irq __gpio_to_irq
+> +
+> +static inline int irq_to_gpio(unsigned irq)
+> +{
+> +	return -EINVAL;
+> +}
+> +
+> +#endif	/* __ASM_MACH_ATH25_GPIO_H */
+> diff --git a/arch/mips/include/asm/mach-ath25/war.h b/arch/mips/include/asm/mach-ath25/war.h
+> new file mode 100644
+> index 0000000..e3a5250
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-ath25/war.h
+> @@ -0,0 +1,25 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2008 Felix Fietkau <nbd@openwrt.org>
+> + */
+> +#ifndef __ASM_MACH_ATH25_WAR_H
+> +#define __ASM_MACH_ATH25_WAR_H
+> +
+> +#define R4600_V1_INDEX_ICACHEOP_WAR	0
+> +#define R4600_V1_HIT_CACHEOP_WAR	0
+> +#define R4600_V2_HIT_CACHEOP_WAR	0
+> +#define R5432_CP0_INTERRUPT_WAR		0
+> +#define BCM1250_M3_WAR			0
+> +#define SIBYTE_1956_WAR			0
+> +#define MIPS4K_ICACHE_REFILL_WAR	0
+> +#define MIPS_CACHE_SYNC_WAR		0
+> +#define TX49XX_ICACHE_INDEX_INV_WAR	0
+> +#define RM9000_CDEX_SMP_WAR		0
+> +#define ICACHE_REFILLS_WORKAROUND_WAR	0
+> +#define R10000_LLSC_WAR			0
+> +#define MIPS34K_MISSED_ITLB_WAR		0
+> +
+> +#endif /* __ASM_MACH_ATH25_WAR_H */
+> 

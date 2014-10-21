@@ -1,45 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 07:50:16 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.131]:50622 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011198AbaJUFuPKtQii (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 07:50:15 +0200
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue001) with ESMTP (Nemesis)
-        id 0LbUlf-1YQlE43gPD-00l9uD; Tue, 21 Oct 2014 07:49:52 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>, gregkh@linuxfoundation.org,
-        jslaby@suse.cz, robh@kernel.org, grant.likely@linaro.org,
-        geert@linux-m68k.org, mbizon@freebox.fr, jogo@openwrt.org,
-        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH V2 4/9] Documentation: DT: Add entries for bcm63xx UART
-Date:   Tue, 21 Oct 2014 07:49:51 +0200
-Message-ID: <3370097.yeNWMGbi8v@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <54459281.7050004@gmail.com>
-References: <1413838448-29464-1-git-send-email-cernekee@gmail.com> <2100909.UrHPDWWSai@wuerfel> <54459281.7050004@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 10:29:35 +0200 (CEST)
+Received: from mail-ig0-f179.google.com ([209.85.213.179]:36331 "EHLO
+        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012007AbaJUI3dsG4de (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 10:29:33 +0200
+Received: by mail-ig0-f179.google.com with SMTP id h18so890118igc.0
+        for <linux-mips@linux-mips.org>; Tue, 21 Oct 2014 01:29:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=3ttcazI9p1EwJ3SpNCJQWpBLOhtHTeoBJ35v9NIYwfo=;
+        b=dEgh7TwfLIKpjkzScsXgjIYHvVX/g0dTePEyWTHfwkEKBlZY2LO1uCuGL+LH03HQXH
+         GIu2JfeIdXOXzNH/mO7qZTG2GwhCHzE5wgVF5qGFy3bz4wjq1jwyHVR0m0jJR2SNWyj/
+         zPqZgfeDl0W2mkHowvV4z4Bn1+zfy7rdRjGqMveGgBoYrhwaW7UpfBgIFJ94cHzp02yy
+         XRidlXHoDRjaZfFJkZCIIToVtOJlh913ZuCzFNbYguIwGV5jf7fNGL0rYfZqo3hz/2G4
+         4d2G1VMianYZh6jybtuStufhURJzWiomBwSl9ZWQey8Bmh2/qryBfu/0L0+egctU4MtA
+         O67w==
+X-Gm-Message-State: ALoCoQkaM1l5v3yRHDWvuDGVizf557Bin75/pSltv8mZvL1AoZhYxqrYGuDyaRsstW7BkrgVmluy
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:TswApH9CcVDWh9D/CSvIYdX+Pes/QbrBQADedFuUZir
- qPOWxotxATO1kThjbVzdJh4FiS4oPeaGv/I2vKEci/o2O3hON6
- cIrmKKvuh493MZmVi9Exd/wIUFZtwjOidtGj2MJt208MGE/LXG
- 5fIoEiEEYw2349UeeUTmvARYX/WHFmHdoLzKBVLkLobYIQ+ZN7
- L9Wro1K9jeifaz/ib9+dTQ1lHUrvwi7mJtt0c8fYqwa9PVTwGF
- trdRE2DPxQVRngX9BgQ3z6pExsWXNVDMNjxbpvJDWVoJP0KG21
- YFsTurF2Ssc8vNpxzbbGF6YUXFiIM4zeGMLw91X1jQzKB6zVeg
- BGgfLD4Aw9kRiw0MZ3aw=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+X-Received: by 10.50.117.104 with SMTP id kd8mr24216424igb.3.1413880167350;
+ Tue, 21 Oct 2014 01:29:27 -0700 (PDT)
+Received: by 10.43.102.201 with HTTP; Tue, 21 Oct 2014 01:29:27 -0700 (PDT)
+In-Reply-To: <CAHNKnsSj-=0aFHD574yRW9BpH1ONhy7K0NA8xri2ez6ab_MPMA@mail.gmail.com>
+References: <1410723213-22440-1-git-send-email-ryazanov.s.a@gmail.com>
+        <1410723213-22440-10-git-send-email-ryazanov.s.a@gmail.com>
+        <CACRpkda3Cq+d47DMm018nAC7ThcHAOv-tOqEbNsUY1mOSnKyoA@mail.gmail.com>
+        <CAHNKnsSj-=0aFHD574yRW9BpH1ONhy7K0NA8xri2ez6ab_MPMA@mail.gmail.com>
+Date:   Tue, 21 Oct 2014 10:29:27 +0200
+Message-ID: <CACRpkda7XffyCvsG7CAMwF0qDW9bJ_m+xxFhhMAqd_r=O4B8+g@mail.gmail.com>
+Subject: Re: [RFC 09/18] gpio: add driver for Atheros AR5312 SoC GPIO controller
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43416
+X-archive-position: 43417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,30 +57,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 20 October 2014 15:53:53 Florian Fainelli wrote:
-> 
-> For now, I suppose that s simple fix could be to use an anonymous clock
-> request when probed via DT. This code you quote dates from 2008 when
-> there was no clkdev in the kernel at all. So something like this would
-> probably do it for now:
-> 
-> diff --git a/drivers/tty/serial/bcm63xx_uart.c
-> b/drivers/tty/serial/bcm63xx_uart.c
-> index e0b87d507670..1b914b85dd31 100644
-> --- a/drivers/tty/serial/bcm63xx_uart.c
-> +++ b/drivers/tty/serial/bcm63xx_uart.c
-> @@ -819,7 +819,7 @@ static int bcm_uart_probe(struct platform_device *pdev)
->         if (!res_irq)
->                 return -ENODEV;
-> 
-> -       clk = clk_get(&pdev->dev, "periph");
-> +       clk = clk_get(&pdev->dev, pdev->dev.of_node ? NULL : "periph");
->         if (IS_ERR(clk))
->                 return -ENODEV;
-> 
-> 
+On Mon, Sep 29, 2014 at 10:43 PM, Sergey Ryazanov
+<ryazanov.s.a@gmail.com> wrote:
+> 2014-09-29 13:18 GMT+04:00 Linus Walleij <linus.walleij@linaro.org>:
 
-Yes, that would work. Just make sure the same bug doesn't creep in
-for other drivers you are converting.
+>>> +static u32 ar2315_gpio_intmask;
+>>> +static u32 ar2315_gpio_intval;
+>>> +static unsigned ar2315_gpio_irq_base;
+>>> +static void __iomem *ar2315_mem;
+>>
+>> Get rid of these local variables and put them into an allocated
+>> state container, see
+>> Documentation/driver-model/design-patterns.txt
+>>
+> AR2315 SoC contains only one GPIO unit, so there are no reasons to
+> increase driver complexity. But if you insist, I will add state
+> container.
 
-	Arnd
+I insist. It makes the driver easier to maintain if it looks like
+most other drivers instead of using static locals.
+
+>> Convoluted, I would use an if() else construct rather than the ? operator.
+>>
+> Convoluted, but 3 lines shorter :) And checkpatch has no objections.
+
+True but it's me who is going to be maintaining this, not checkpatch.
+
+Yours,
+Linus Walleij

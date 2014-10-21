@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 06:33:22 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:39254 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012000AbaJUE3CZQEVo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 06:29:02 +0200
-Received: by mail-pa0-f49.google.com with SMTP id hz1so509191pad.36
-        for <multiple recipients>; Mon, 20 Oct 2014 21:28:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 06:33:39 +0200 (CEST)
+Received: from mail-pd0-f170.google.com ([209.85.192.170]:37715 "EHLO
+        mail-pd0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012001AbaJUE3DhWXJv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 06:29:03 +0200
+Received: by mail-pd0-f170.google.com with SMTP id z10so497668pdj.29
+        for <multiple recipients>; Mon, 20 Oct 2014 21:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=a1thbJDxDOKqe72Rmpeca7q9voYmJ5OXkiQ9CLqavTU=;
-        b=cpK8cngFISzNVIvimdEDkAWnMASAk4dUg+61AZiN+9NfShsElCap43QtTWG8xUOPub
-         ctTx45KpUdK/SCGIOjecLz45Ow2d1OSc7xkL1i2MC+lUWM0VNUv2Pc0+VC52+E1a9RFT
-         kwtAP7xExB5Lba/jPCROK81RtSAnPBdZ9PheV5fn/voR2JeVD5PHwgEhspwFcNRlqtQD
-         xhClYM9mwkaRSfomWYUcZUeOgQOnlR4N8AcQ/aleRUiAmuOqxjhh0RDysjL2Ra25YsM3
-         pA9y8WldW36cQ6DrJGqLcldm4aL57CKdWrs+cvL0UqJQYuvi+lYjxgePC2DaIaM5RdeL
-         vmSA==
-X-Received: by 10.68.111.161 with SMTP id ij1mr567150pbb.10.1413865736335;
-        Mon, 20 Oct 2014 21:28:56 -0700 (PDT)
+        bh=hiaC4iBtCySvuUsUTurtzGjhw66f68p8dPRgxtHsULc=;
+        b=n1fXmp1NY0I0r4OyGEl5SjwllZgLNU5ZpaMEJs9k2HKDCMQ6jer3X3mrsby+czLf20
+         QFmiG4tYXb//a9/qryFxihXt6r0LsrpDO1PnJlz5m0UACty1CuEYpT5p5VLHUxDfrPH6
+         zPELla03KLXS0EbBCyhHaLyzQdEKPcWCwbFV+G30hUd6Ch3PgEx+o1LDPJAdoQ4pylhS
+         7QWV/5XgO3O+LnsLgBV69ddPsfMoyo+1pUHGCnsuM9/CnnmiKosVszlSBMz0GGpKbKmv
+         fzIOkMazoqG5P/JkFYvspkkerpnIA2ojBKetHZQy/LFYB0lajhFp1ipuB4WCog0h+fCz
+         eyvQ==
+X-Received: by 10.68.69.16 with SMTP id a16mr32281500pbu.55.1413865737573;
+        Mon, 20 Oct 2014 21:28:57 -0700 (PDT)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id b2sm10498181pbu.42.2014.10.20.21.28.55
+        by mx.google.com with ESMTPSA id b2sm10498181pbu.42.2014.10.20.21.28.56
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 20 Oct 2014 21:28:55 -0700 (PDT)
+        Mon, 20 Oct 2014 21:28:57 -0700 (PDT)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
         jfraser@broadcom.com, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org
-Subject: [PATCH/RFC 16/17] MAINTAINERS: Add entry for BCM33xx cable chips
-Date:   Mon, 20 Oct 2014 21:28:06 -0700
-Message-Id: <1413865687-15255-17-git-send-email-cernekee@gmail.com>
+Subject: [PATCH/RFC 17/17] MAINTAINERS: Add entry for bcm63xx/bcm33xx UDC gadget driver
+Date:   Mon, 20 Oct 2014 21:28:07 -0700
+Message-Id: <1413865687-15255-18-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1413865687-15255-1-git-send-email-cernekee@gmail.com>
 References: <1413865687-15255-1-git-send-email-cernekee@gmail.com>
@@ -37,7 +37,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43414
+X-archive-position: 43415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,31 +54,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add myself as a maintainer for the new BCM3384 board support code.
+This hardware shows up on the newly-supported BCM3384 cable chip, as well
+as several old BCM63xx DSL chips.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index d483627..96608c7 100644
+index 96608c7..7916665 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2069,6 +2069,14 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/swarren/linux-rpi.git
- S:	Maintained
- N:	bcm2835
+@@ -2093,6 +2093,12 @@ S:	Maintained
+ F:	arch/arm/mach-bcm/bcm63xx.c
+ F:	arch/arm/include/debug/bcm63xx.S
  
-+BROADCOM BCM33XX MIPS ARCHITECTURE
++BROADCOM BCM63XX/BCM33XX UDC DRIVER
 +M:	Kevin Cernekee <cernekee@gmail.com>
-+L:	linux-mips@linux-mips.org
++L:	linux-usb@vger.kernel.org
 +S:	Maintained
-+F:	arch/mips/bcm3384/*
-+F:	arch/mips/include/asm/mach-bcm3384/*
-+F:	arch/mips/kernel/*bmips*
++F:	drivers/usb/gadget/udc/bcm63xx_udc.*
 +
- BROADCOM BCM5301X ARM ARCHITECTURE
- M:	Hauke Mehrtens <hauke@hauke-m.de>
- L:	linux-arm-kernel@lists.infradead.org
+ BROADCOM BCM7XXX ARM ARCHITECTURE
+ M:	Marc Carino <marc.ceeeee@gmail.com>
+ M:	Brian Norris <computersforpeace@gmail.com>
 -- 
 2.1.1

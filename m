@@ -1,51 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 03:12:49 +0200 (CEST)
-Received: from [103.7.29.150] ([103.7.29.150]:49323 "EHLO smtpbg63.qq.com"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011849AbaJUBMnvVLud (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Oct 2014 03:12:43 +0200
-X-QQ-GoodBg: 0
-X-QQ-SSF: 00100000000000F0
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 107.170.108.197
-X-QQ-STYLE: 
-X-QQ-mid: bizmail38t1413853940t266221
-From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
-To:     "=?utf-8?B?QXVyZWxpZW4gSmFybm8=?=" <aurelien@aurel32.net>,
-        "=?utf-8?B?bHhvbGl2YQ==?=" <lxoliva@fsfla.org>
-Cc:     "=?utf-8?B?UmFsZiBCYWVjaGxl?=" <ralf@linux-mips.org>,
-        "=?utf-8?B?Sm9obiBDcmlzcGlu?=" <john@phrozen.org>,
-        "=?utf-8?B?U3RldmVuIEouIEhpbGw=?=" <Steven.Hill@imgtec.com>,
-        "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
-        "=?utf-8?B?RnV4aW4gWmhhbmc=?=" <zhangfx@lemote.com>,
-        "=?utf-8?B?d3V6aGFuZ2ppbg==?=" <wuzhangjin@gmail.com>,
-        "=?utf-8?B?NzY0MjIz?=" <764223@bugs.debian.org>,
-        "=?utf-8?B?TWFydGluIFpvYmVsLUhlbGFz?=" <zobel@debian.org>
-Subject: Re: [PATCH V3 4/8] MIPS: Add NUMA support for Loongson-3
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: base64
-Date:   Tue, 21 Oct 2014 09:12:20 +0800
-X-Priority: 3
-Message-ID: <tencent_0776AD7D4916DB68797D8B03@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <1403754092-26607-1-git-send-email-chenhc@lemote.com>
-        <1403754092-26607-5-git-send-email-chenhc@lemote.com>
-        <20141020152709.GD19066@hall.aurel32.net>
-In-Reply-To: <20141020152709.GD19066@hall.aurel32.net>
-X-QQ-ReplyHash: 2449630392
-X-QQ-SENDSIZE: 520
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2014 03:33:36 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:14879 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011849AbaJUBddUtVFr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2014 03:33:33 +0200
+Received: from 172.24.2.119 (EHLO szxeml407-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CDD01800;
+        Tue, 21 Oct 2014 09:32:36 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml407-hub.china.huawei.com
+ (10.82.67.94) with Microsoft SMTP Server id 14.3.158.1; Tue, 21 Oct 2014
+ 09:32:21 +0800
+Message-ID: <5445B794.30601@huawei.com>
+Date:   Tue, 21 Oct 2014 09:32:04 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
+MIME-Version: 1.0
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "huxinwei@huawei.com" <huxinwei@huawei.com>,
+        Wuyun <wuyun.wu@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "arnab.basu@freescale.com" <arnab.basu@freescale.com>,
+        "Bharat.Bhushan@freescale.com" <Bharat.Bhushan@freescale.com>,
+        "x86@kernel.org" <x86@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        "Tony Luck" <tony.luck@intel.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Vrabel <david.vrabel@citrix.com>,
+        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
+        Liviu Dudau <liviu@dudau.co.uk>
+Subject: Re: [PATCH v3 04/27] arm/MSI: Save MSI chip in pci_sys_data
+References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com> <1413342435-7876-5-git-send-email-wangyijing@huawei.com> <20141020172158.GA8017@e102568-lin.cambridge.arm.com>
+In-Reply-To: <20141020172158.GA8017@e102568-lin.cambridge.arm.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.27.212]
+X-CFilter-Loop: Reflected
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43394
+X-archive-position: 43395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,145 +79,165 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SGksIEF1cmVsaWVuLA0KDQpBbGV4YW5kcmUgT2xpdmEgbWVldCB0aGUgc2FtZSBwcm9ibGVt
-LCBhbmQgdGhlIHJvb3QgY2F1c2UgaXMgYXJjaC9taXBzL2luY2x1ZGUvYXNtL3NwYXJzZW1l
-bS5oLA0KI2RlZmluZSBNQVhfUEhZU01FTV9CSVRTICAgICAgICA0OA0KVGhpcyBsaW5lIGlz
-IG5vdCBzdWl0YWJsZSBmb3IgTG9vbmdzb24tMi4gTXkgb3JpZ2luYWwgcGF0Y2ggbWFrZSB0
-aGlzIGxpbmUgZGVwZW5kIG9uIENPTkZJR19OVU1BLCBidXQgUmFsZiBzdWdnZXN0IHRvIHJl
-bW92ZSB0aGF0IGRlcGVuZGVuY3kuDQpNYXliZSB3ZSBzaG91bGQgYnJpbmcgYmFjayBOVU1B
-IGRlcGVuZGVuY3kgYWdhaW4/DQoNCkh1YWNhaQ0KIA0KLS0tLS0tLS0tLS0tLS0tLS0tIE9y
-aWdpbmFsIC0tLS0tLS0tLS0tLS0tLS0tLQ0KRnJvbTogICJBdXJlbGllbiBKYXJubyI8YXVy
-ZWxpZW5AYXVyZWwzMi5uZXQ+Ow0KRGF0ZTogIE1vbiwgT2N0IDIwLCAyMDE0IDExOjI3IFBN
-DQpUbzogICJIdWFjYWkgQ2hlbiI8Y2hlbmhjQGxlbW90ZS5jb20+OyANCkNjOiAgIlJhbGYg
-QmFlY2hsZSI8cmFsZkBsaW51eC1taXBzLm9yZz47ICJKb2huIENyaXNwaW4iPGpvaG5AcGhy
-b3plbi5vcmc+OyAiU3RldmVuIEouIEhpbGwiPFN0ZXZlbi5IaWxsQGltZ3RlYy5jb20+OyAi
-bGludXgtbWlwcyI8bGludXgtbWlwc0BsaW51eC1taXBzLm9yZz47ICJGdXhpbiBaaGFuZyI8
-emhhbmdmeEBsZW1vdGUuY29tPjsgInd1emhhbmdqaW4iPHd1emhhbmdqaW5AZ21haWwuY29t
-PjsgIjc2NDIyMyI8NzY0MjIzQGJ1Z3MuZGViaWFuLm9yZz47ICJNYXJ0aW4gWm9iZWwtSGVs
-YXMiPHpvYmVsQGRlYmlhbi5vcmc+OyANClN1YmplY3Q6ICBSZTogW1BBVENIIFYzIDQvOF0g
-TUlQUzogQWRkIE5VTUEgc3VwcG9ydCBmb3IgTG9vbmdzb24tMw0KDQogDQpIaSwNCg0KT24g
-VGh1LCBKdW4gMjYsIDIwMTQgYXQgMTE6NDE6MjhBTSArMDgwMCwgSHVhY2FpIENoZW4gd3Jv
-dGU6DQo+IE11bHRpcGxlIExvb25nc29uLTNBIGNoaXBzIGNhbiBiZSBpbnRlcmNvbm5lY3Rl
-ZCB3aXRoIEhUMC1idXMuIFRoaXMgaXMNCj4gYSBDQy1OVU1BIHN5c3RlbSB0aGF0IGV2ZXJ5
-IGNoaXAgKG5vZGUpIGhhcyBpdHMgb3duIGxvY2FsIG1lbW9yeSBhbmQNCj4gY2FjaGUgY29o
-ZXJlbmN5IGlzIG1haW50YWluZWQgYnkgaGFyZHdhcmUuIFRoZSA2NC1iaXQgcGh5c2ljYWwg
-bWVtb3J5DQo+IGFkZHJlc3MgZm9ybWF0IGlzIGFzIGZvbGxvd3M6DQo+IA0KPiAweC0wMDAw
-LVlaWlotWlpaWi1aWlpaDQo+IA0KPiBUaGUgaGlnaCAxNiBiaXRzIHNob3VsZCBiZSAwLCB3
-aGljaCBtZWFucyB0aGUgcmVhbCBwaHlzaWNhbCBhZGRyZXNzDQo+IHN1cHBvcnRlZCBieSBM
-b29uZ3Nvbi0zIGlzIDQ4LWJpdC4gVGhlICJZIiBiaXRzIGlzIHRoZSBiYXNlIGFkZHJlc3Mg
-b2YNCj4gZWFjaCBub2RlLCB3aGljaCBjYW4gYmUgYWxzbyBjb25zaWRlcmVkIGFzIHRoZSBu
-b2RlLWlkLiBUaGUgIloiIGJpdHMgaXMNCj4gdGhlIGFkZHJlc3Mgb2Zmc2V0IHdpdGhpbiBh
-IG5vZGUsIHdoaWNoIG1lYW5zIGV2ZXJ5IG5vZGUgaGFzIGEgNDQgYml0cw0KPiBhZGRyZXNz
-IHNwYWNlLg0KPiANCj4gTWFjcm9zIFhQSFlTQUREUiBhbmQgTUFYX1BIWVNNRU1fQklUUyBh
-cmUgbW9kaWZpZWQgdW5jb25kaXRpb25hbGx5LA0KPiBiZWNhdXNlIG1hbnkgb3RoZXIgTUlQ
-UyBDUFVzIGhhdmUgYWxzbyBleHRlbmRlZCB0aGVpciBhZGRyZXNzIHNwYWNlcy4NCj4gDQo+
-IFNpZ25lZC1vZmYtYnk6IEh1YWNhaSBDaGVuIDxjaGVuaGNAbGVtb3RlLmNvbT4NCj4gLS0t
-DQoNCltzbmlwXQ0KDQo+IGRpZmYgLS1naXQgYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vc3Bh
-cnNlbWVtLmggYi9hcmNoL21pcHMvaW5jbHVkZS9hc20vc3BhcnNlbWVtLmgNCj4gaW5kZXgg
-ZDJkYTUzYy4uYjEwNzFjMSAxMDA2NDQNCj4gLS0tIGEvYXJjaC9taXBzL2luY2x1ZGUvYXNt
-L3NwYXJzZW1lbS5oDQo+ICsrKyBiL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9zcGFyc2VtZW0u
-aA0KPiBAQCAtMTEsNyArMTEsNyBAQA0KPiAgI2Vsc2UNCj4gICMgZGVmaW5lIFNFQ1RJT05f
-U0laRV9CSVRTCTI4DQo+ICAjZW5kaWYNCj4gLSNkZWZpbmUgTUFYX1BIWVNNRU1fQklUUwkz
-NQ0KPiArI2RlZmluZSBNQVhfUEhZU01FTV9CSVRTCTQ4DQo+ICANCj4gICNlbmRpZiAvKiBD
-T05GSUdfU1BBUlNFTUVNICovDQo+ICAjZW5kaWYgLyogX01JUFNfU1BBUlNFTUVNX0ggKi8N
-Cg0KVGhpcyBwYXJ0IG9mIHRoZSBwYXRjaCBoYXMgYnJva2VuIExvb25nc29uIDJFIHN1cHBv
-cnQuIFRoZSBwYXRhX3ZpYQ0KbW9kdWxlIGZhaWxzIHRvIGFsbG9jYXRlIG1lbW9yeSBpbiB0
-aGUgRE1BIHpvbmU6DQoNCnwgWyAgICA0LjcwODAwMF0gc3dhcHBlcjogcGFnZSBhbGxvY2F0
-aW9uIGZhaWx1cmU6IG9yZGVyOjAsIG1vZGU6MHgxMGQxDQp8IFsgICAgNC43MTYwMDBdIENQ
-VTogMCBQSUQ6IDEgQ29tbTogc3dhcHBlciBOb3QgdGFpbnRlZCAzLjE3LTEtbG9vbmdzb24t
-MmUgIzEgRGViaWFuIDMuMTctMX5leHAxDQp8IFsgICAgNC43MjQwMDBdIFN0YWNrIDogMDAw
-MDAwMDAwMDAwMDA1MCBmZmZmZmZmZjgwMTZjN2Q4IDAwMDAwMDAwMDAwMDAwMDQgMDAwMDAw
-MDAwMDAwMDAwYg0KfCAgICAgICAgICAgMDAwMDAwMDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAw
-MDAwIDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDAwMDAwMA0KfCAgICAgICAgICAgZmZm
-ZmZmZmY4MDc0YjlmMCBmZmZmZmZmZjgwODBmMzQ3IGZmZmZmZmZmODA5MmUzYjggOTgwMDAw
-MDAyZTA2Yjg2OA0KfCAgICAgICAgICAgMDAwMDAwMDAwMDAwMDAwMSAwMDAwMDAwMDAwMDAw
-MDAwIDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDAwMDAwMA0KfCAgICAgICAgICAgMDAw
-MDAwMDAwMDAwMDAwMCBmZmZmZmZmZjgwNjU1Yzg0IDAwMDAwMDAwMDAwMDEwZDEgOTgwMDAw
-MDAyZTA2ZjgzOA0KfCAgICAgICAgICAgMDAwMDAwMDAwMDAwMDAwMSBmZmZmZmZmZjgwMTZk
-ZGVjIDk4MDAwMDAwMmUwNmI0NjAgMDBmZmZmZmY4MDc0YjlmMA0KfCAgICAgICAgICAgMDAw
-MDAwMDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDAwIDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAw
-MDAwMDAwMDAwMA0KfCAgICAgICAgICAgMDAwMDAwMDAwMDAwMDAwMCA5ODAwMDAwMDJlMDZm
-NzgwIDAwMDAwMDAwMDAwMDAwMDAgZmZmZmZmZmY4MDFmNzJlOA0KfCAgICAgICAgICAgMDAw
-MDAwMDAwMDAwMDAwMCAwMDAwMDAwMGJjM2UyODhkIDAwMDAwMDAwMDAwMDEwZDEgMDAwMDAw
-MDAwMDAwMDAwMA0KfCAgICAgICAgICAgMDAwMDAwMDAwMDAwMDAwMSBmZmZmZmZmZjgwMTA5
-OGYwIGZmZmZmZmZmODA4OTI3MTggZmZmZmZmZmY4MDFmNzJlOA0KfCAgICAgICAgICAgLi4u
-DQp8IFsgICAgNC43OTIwMDBdIENhbGwgVHJhY2U6DQp8IFsgICAgNC43OTYwMDBdIFs8ZmZm
-ZmZmZmY4MDEwOThmMD5dIHNob3dfc3RhY2srMHg3OC8weDkwDQp8IFsgICAgNC44MDAwMDBd
-IFs8ZmZmZmZmZmY4MDFmNzJlOD5dIHdhcm5fYWxsb2NfZmFpbGVkKzB4MTAwLzB4MTQ4DQp8
-IFsgICAgNC44MDgwMDBdIFs8ZmZmZmZmZmY4MDFmYWFiYz5dIF9fYWxsb2NfcGFnZXNfbm9k
-ZW1hc2srMHg2ZTQvMHg5YzANCnwgWyAgICA0LjgxMjAwMF0gWzxmZmZmZmZmZjgwMWZhZGJj
-Pl0gX19nZXRfZnJlZV9wYWdlcysweDI0LzB4YTANCnwgWyAgICA0LjgyMDAwMF0gWzxmZmZm
-ZmZmZjgwMTE5ODhjPl0gbWlwc19kbWFfYWxsb2NfY29oZXJlbnQrMHgxMGMvMHgxZTANCnwg
-WyAgICA0LjgyNDAwMF0gWzxmZmZmZmZmZjgwNGE5MjVjPl0gZG1hbV9hbGxvY19jb2hlcmVu
-dCsweDg0LzB4MTAwDQp8IFsgICAgNC44MzIwMDBdIFs8ZmZmZmZmZmY4MDRlZDU0MD5dIGF0
-YV9ibWRtYV9wb3J0X3N0YXJ0KzB4NDgvMHg2OA0KfCBbICAgIDQuODQwMDAwXSBbPGZmZmZm
-ZmZmODA0ZjNhMWM+XSB2aWFfcG9ydF9zdGFydCsweDJjLzB4NzANCnwgWyAgICA0Ljg0NDAw
-MF0gWzxmZmZmZmZmZjgwNGQ5MDRjPl0gYXRhX2hvc3Rfc3RhcnQrMHgxMjQvMHgyNzANCnwg
-WyAgICA0Ljg0ODAwMF0gWzxmZmZmZmZmZjgwNGVkZmFjPl0gYXRhX3BjaV9zZmZfYWN0aXZh
-dGVfaG9zdCsweDU0LzB4MjcwDQp8IFsgICAgNC44NTYwMDBdIFs8ZmZmZmZmZmY4MDRlZTY4
-OD5dIGF0YV9wY2lfaW5pdF9vbmUrMHgxNTAvMHgyMDgNCnwgWyAgICA0Ljg2NDAwMF0gWzxm
-ZmZmZmZmZjgwNGYzNmFjPl0gdmlhX2luaXRfb25lKzB4MWI0LzB4MmQ4DQp8IFsgICAgNC44
-NjgwMDBdIFs8ZmZmZmZmZmY4MDQyNDI2OD5dIHBjaV9kZXZpY2VfcHJvYmUrMHhiMC8weDEw
-MA0KfCBbICAgIDQuODc2MDAwXSBbPGZmZmZmZmZmODA0OTg0YWM+XSBkcml2ZXJfcHJvYmVf
-ZGV2aWNlKzB4ZGMvMHg0MDANCnwgWyAgICA0Ljg4MDAwMF0gWzxmZmZmZmZmZjgwNDk4OGEw
-Pl0gX19kcml2ZXJfYXR0YWNoKzB4ZDAvMHhkOA0KfCBbICAgIDQuODg4MDAwXSBbPGZmZmZm
-ZmZmODA0OTYyNjA+XSBidXNfZm9yX2VhY2hfZGV2KzB4NzAvMHhjMA0KfCBbICAgIDQuODky
-MDAwXSBbPGZmZmZmZmZmODA0OTc4Yzg+XSBidXNfYWRkX2RyaXZlcisweDEyOC8weDI0OA0K
-fCBbICAgIDQuODk2MDAwXSBbPGZmZmZmZmZmODA0OTkzMDg+XSBkcml2ZXJfcmVnaXN0ZXIr
-MHg5MC8weDEzOA0KfCBbICAgIDQuOTA0MDAwXSBbPGZmZmZmZmZmODAxMDA1YzA+XSBkb19v
-bmVfaW5pdGNhbGwrMHgxMTAvMHgyMTANCnwgWyAgICA0LjkwODAwMF0gWzxmZmZmZmZmZjgw
-OGE4ZTYwPl0ga2VybmVsX2luaXRfZnJlZWFibGUrMHgxN2MvMHgyNDgNCnwgWyAgICA0Ljkx
-NjAwMF0gWzxmZmZmZmZmZjgwNjU0NmY4Pl0ga2VybmVsX2luaXQrMHgyMC8weDExOA0KfCBb
-ICAgIDQuOTIwMDAwXSBbPGZmZmZmZmZmODAxMDNkNTA+XSByZXRfZnJvbV9rZXJuZWxfdGhy
-ZWFkKzB4MTQvMHgxYw0KfCBbICAgIDQuOTI4MDAwXQ0KfCBbICAgIDQuOTI4MDAwXSBNZW0t
-SW5mbzoNCnwgWyAgICA0LjkzMjAwMF0gRE1BIHBlci1jcHU6DQp8IFsgICAgNC45MzYwMDBd
-IENQVSAgICAwOiBoaTogICAgMCwgYnRjaDogICAxIHVzZDogICAwDQp8IFsgICAgNC45NDAw
-MDBdIE5vcm1hbCBwZXItY3B1Og0KfCBbICAgIDQuOTQ0MDAwXSBDUFUgICAgMDogaGk6ICAg
-NDIsIGJ0Y2g6ICAgNyB1c2Q6ICAzNw0KfCBbICAgIDQuOTQ4MDAwXSBhY3RpdmVfYW5vbjow
-IGluYWN0aXZlX2Fub246MCBpc29sYXRlZF9hbm9uOjANCnwgWyAgICA0Ljk0ODAwMF0gIGFj
-dGl2ZV9maWxlOjE2NTcgaW5hY3RpdmVfZmlsZToxODk5IGlzb2xhdGVkX2ZpbGU6MA0KfCBb
-ICAgIDQuOTQ4MDAwXSAgdW5ldmljdGFibGU6MCBkaXJ0eTowIHdyaXRlYmFjazowIHVuc3Rh
-YmxlOjANCnwgWyAgICA0Ljk0ODAwMF0gIGZyZWU6MjU3MTEgc2xhYl9yZWNsYWltYWJsZToz
-MTUgc2xhYl91bnJlY2xhaW1hYmxlOjE5MQ0KfCBbICAgIDQuOTQ4MDAwXSAgbWFwcGVkOjAg
-c2htZW06MCBwYWdldGFibGVzOjAgYm91bmNlOjANCnwgWyAgICA0Ljk0ODAwMF0gIGZyZWVf
-Y21hOjANCnwgWyAgICA0Ljk4MDAwMF0gRE1BIGZyZWU6MGtCIG1pbjowa0IgbG93OjBrQiBo
-aWdoOjBrQiBhY3RpdmVfYW5vbjowa0IgaW5hY3RpdmVfYW5vbjowa0IgYWN0aXZlX2ZpbGU6
-MGtCIGluYWN0aXZlX2ZpbGU6MGtCIHVuZXZpY3RhYmxlOjBrQiBpc29sYXRlZChhbm9uKTow
-a0IgaXNvbGF0ZWQoZmlsZSk6MGsNCnwgQiBwcmVzZW50OjE2Mzg0a0IgbWFuYWdlZDowa0Ig
-bWxvY2tlZDowa0IgZGlydHk6MGtCIHdyaXRlYmFjazowa0IgbWFwcGVkOjBrQiBzaG1lbTow
-a0Igc2xhYl9yZWNsYWltYWJsZTowa0Igc2xhYl91bnJlY2xhaW1hYmxlOjBrQiBrZXJuZWxf
-c3RhY2s6MGtCIHBhZ2V0YWJsZXM6MGtCIHVuc3RhYmxlOjANCnwga0IgYm91bmNlOjBrQiBm
-cmVlX2NtYTowa0Igd3JpdGViYWNrX3RtcDowa0IgcGFnZXNfc2Nhbm5lZDowIGFsbF91bnJl
-Y2xhaW1hYmxlPyB5ZXMNCnwgWyAgICA1LjAyMDAwMF0gbG93bWVtX3Jlc2VydmVbXTogMCAx
-MTYgMTE2DQp8IFsgICAgNS4wMjQwMDBdIE5vcm1hbCBmcmVlOjQxMTM3NmtCIG1pbjoyNzUy
-a0IgbG93OjM0NDBrQiBoaWdoOjQxMjhrQiBhY3RpdmVfYW5vbjowa0IgaW5hY3RpdmVfYW5v
-bjowa0IgYWN0aXZlX2ZpbGU6MjY1MTJrQiBpbmFjdGl2ZV9maWxlOjMwMzg0a0IgdW5ldmlj
-dGFibGU6MGtCIGlzb2xhdGVkKGFuDQp8IG9uKTowa0IgaXNvbGF0ZWQoZmlsZSk6MGtCIHBy
-ZXNlbnQ6NjM4OTYwa0IgbWFuYWdlZDo0NzgwOTZrQiBtbG9ja2VkOjBrQiBkaXJ0eTowa0Ig
-d3JpdGViYWNrOjBrQiBtYXBwZWQ6MGtCIHNobWVtOjBrQiBzbGFiX3JlY2xhaW1hYmxlOjUw
-NDBrQiBzbGFiX3VucmVjbGFpbWFibGU6MzA1NmtCIGtlcm5lDQp8IGxfc3RhY2s6MzUya0Ig
-cGFnZXRhYmxlczowa0IgdW5zdGFibGU6MGtCIGJvdW5jZTowa0IgZnJlZV9jbWE6MGtCIHdy
-aXRlYmFja190bXA6MGtCIHBhZ2VzX3NjYW5uZWQ6MCBhbGxfdW5yZWNsYWltYWJsZT8gbm8N
-CnwgWyAgICA1LjA2NDAwMF0gbG93bWVtX3Jlc2VydmVbXTogMCAwIDANCnwgWyAgICA1LjA2
-ODAwMF0gRE1BOiAwKjE2a0IgMCozMmtCIDAqNjRrQiAwKjEyOGtCIDAqMjU2a0IgMCo1MTJr
-QiAwKjEwMjRrQiAwKjIwNDhrQiAwKjQwOTZrQiAwKjgxOTJrQiAwKjE2Mzg0a0IgMCozMjc2
-OGtCID0gMGtCDQp8IFsgICAgNS4wODAwMDBdIE5vcm1hbDogNSoxNmtCIChFTSkgNSozMmtC
-IChVRU0pIDIqNjRrQiAoRU0pIDMqMTI4a0IgKEVNKSA2KjI1NmtCIChVRU0pIDMqNTEya0Ig
-KEVNKSAyKjEwMjRrQiAoTSkgNioyMDQ4a0IgKEVNKSAyKjQwOTZrQiAoVU0pIDMqODE5MmtC
-IChFTSkgMioxNjM4NGtCIChFTSkgMTAqDQp8IDMyNzY4a0IgKE1SKSA9IDQxMTM3NmtCDQp8
-IFsgICAgNS4xMDAwMDBdIE5vZGUgMCBodWdlcGFnZXNfdG90YWw9MCBodWdlcGFnZXNfZnJl
-ZT0wIGh1Z2VwYWdlc19zdXJwPTAgaHVnZXBhZ2VzX3NpemU9MzI3NjhrQg0KfCBbICAgIDUu
-MTA4MDAwXSAzNTU5IHRvdGFsIHBhZ2VjYWNoZSBwYWdlcw0KfCBbICAgIDUuMTEyMDAwXSAw
-IHBhZ2VzIGluIHN3YXAgY2FjaGUNCnwgWyAgICA1LjExNjAwMF0gU3dhcCBjYWNoZSBzdGF0
-czogYWRkIDAsIGRlbGV0ZSAwLCBmaW5kIDAvMA0KfCBbICAgIDUuMTIwMDAwXSBGcmVlIHN3
-YXAgID0gMGtCDQp8IFsgICAgNS4xMjQwMDBdIFRvdGFsIHN3YXAgPSAwa0INCnwgWyAgICA1
-LjEyODAwMF0gNDA5NTkgcGFnZXMgUkFNDQp8IFsgICAgNS4xMzIwMDBdIDAgcGFnZXMgSGln
-aE1lbS9Nb3ZhYmxlT25seQ0KfCBbICAgIDUuMTM2MDAwXSAxMDA1NCBwYWdlcyByZXNlcnZl
-ZA0KfCBbICAgIDUuMTQwMDAwXSBwYXRhX3ZpYSAwMDAwOjAwOjA1LjE6IGZhaWxlZCB0byBz
-dGFydCBwb3J0IDAgKGVycm5vPS0xMikNCnwgWyAgICA1LjE0NDAwMF0gcGF0YV92aWE6IHBy
-b2JlIG9mIDAwMDA6MDA6MDUuMSBmYWlsZWQgd2l0aCBlcnJvciAtMTINCg0KRG9lcyBhbnlv
-bmUgaGFzIGFuIGlkZWEgb2YgdGhlIHByb2JsZW0sIG9yIGhhdmUgZXhwZXJpZW5jZWQgdGhl
-IGlzc3VlDQp3aXRoIG90aGVyIE1JUFMgcGxhdGZvcm1zPw0KDQpUaGFua3MsDQpBdXJlbGll
-bg0KDQotLSANCkF1cmVsaWVuIEphcm5vICAgICAgICAgICAgICAgICAgICAgICAgICBHUEc6
-IDQwOTZSLzFEREQ4QzlCDQphdXJlbGllbkBhdXJlbDMyLm5ldCAgICAgICAgICAgICAgICAg
-aHR0cDovL3d3dy5hdXJlbDMyLm5ldA==
+On 2014/10/21 1:21, Lorenzo Pieralisi wrote:
+> On Wed, Oct 15, 2014 at 04:06:52AM +0100, Yijing Wang wrote:
+>> Saving msi chip in pci_sys_data can make pci bus and
+>> devices don't need to know msi chip detail, it also
+>> make pci enumeration code be decoupled from msi chip.
+>> In fact, all pci devices under the same pci hostbridge
+>> share same msi chip. So msi chip should be seen as one
+>> of resources or attributes to be initialized in pci host
+>> bridge driver. Currently, pci hostbridge drivers create
+>> pci_host_bridge in pci_create_root_bus(), and pass arch
+>> specific pci sysdata to core pci scan functions. So pci
+>> arch sysdata is good place to save msi chip.
+>>
+>> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+>> ---
+>>  arch/arm/include/asm/mach/pci.h |    6 ++++++
+>>  arch/arm/include/asm/pci.h      |    9 +++++++++
+>>  arch/arm/kernel/bios32.c        |    3 +++
+>>  drivers/pci/msi.c               |    6 ++++++
+>>  include/linux/pci.h             |    9 +++++++++
+>>  5 files changed, 33 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/arch/arm/include/asm/mach/pci.h b/arch/arm/include/asm/mach/pci.h
+>> index 7fc4278..59b0d87 100644
+>> --- a/arch/arm/include/asm/mach/pci.h
+>> +++ b/arch/arm/include/asm/mach/pci.h
+>> @@ -22,6 +22,9 @@ struct hw_pci {
+>>  #ifdef CONFIG_PCI_DOMAINS
+>>  	int		domain;
+>>  #endif
+>> +#ifdef CONFIG_PCI_MSI
+>> +	struct msi_chip *msi_chip;
+>> +#endif
+>>  	struct pci_ops	*ops;
+>>  	int		nr_controllers;
+>>  	void		**private_data;
+>> @@ -47,6 +50,9 @@ struct pci_sys_data {
+>>  #ifdef CONFIG_PCI_DOMAINS
+>>  	int		domain;
+>>  #endif
+>> +#ifdef CONFIG_PCI_MSI
+>> +	struct msi_chip *msi_chip;
+>> +#endif
+> 
+> This struct is defined for ARM only. We are trying to remove dependency on it
+> so that we can have a single driver for ARM32 and ARM64 systems without
+> pcibios dependency. Why can't we add this msi chip data to the host
+> bridge struct instead ? I understand it is all a matter of how to pass
+> the pointer to pci_scan_root_bus(), where the bridge is created.
+> We could initialize the msi chip on the bridge through the bus pointer
+> returned by the pci_scan_root_bus() function.
+
+As mentioned in Patch 0, I will refactor generic pci hostbridge in another series,
+We need not only save msi_chip into pci_host_bridge, and other common info, like domain_nr,
+resources.
+
+Thanks!
+Yijing.
+
+> 
+> Thanks,
+> Lorenzo
+> 
+>>  	struct list_head node;
+>>  	int		busnr;		/* primary bus number			*/
+>>  	u64		mem_offset;	/* bus->cpu memory mapping offset	*/
+>> diff --git a/arch/arm/include/asm/pci.h b/arch/arm/include/asm/pci.h
+>> index 7e95d85..b562c09 100644
+>> --- a/arch/arm/include/asm/pci.h
+>> +++ b/arch/arm/include/asm/pci.h
+>> @@ -31,6 +31,15 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>>  }
+>>  #endif /* CONFIG_PCI_DOMAINS */
+>>  
+>> +#ifdef CONFIG_PCI_MSI
+>> +static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
+>> +{
+>> +	struct pci_sys_data *root = bus->sysdata;
+>> +
+>> +	return root->msi_chip;
+>> +}
+>> +#endif
+>> +
+>>  /*
+>>   * The PCI address space does equal the physical memory address space.
+>>   * The networking and block device layers use this boolean for bounce
+>> diff --git a/arch/arm/kernel/bios32.c b/arch/arm/kernel/bios32.c
+>> index 17a26c1..a19038d 100644
+>> --- a/arch/arm/kernel/bios32.c
+>> +++ b/arch/arm/kernel/bios32.c
+>> @@ -471,6 +471,9 @@ static void pcibios_init_hw(struct device *parent, struct hw_pci *hw,
+>>  #ifdef CONFIG_PCI_DOMAINS
+>>  		sys->domain  = hw->domain;
+>>  #endif
+>> +#ifdef CONFIG_PCI_MSI
+>> +		sys->msi_chip = hw->msi_chip;
+>> +#endif
+>>  		sys->busnr   = busnr;
+>>  		sys->swizzle = hw->swizzle;
+>>  		sys->map_irq = hw->map_irq;
+>> diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+>> index 22e413c..f11108c 100644
+>> --- a/drivers/pci/msi.c
+>> +++ b/drivers/pci/msi.c
+>> @@ -35,6 +35,9 @@ int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
+>>  	struct msi_chip *chip = dev->bus->msi;
+>>  	int err;
+>>  
+>> +	if (!chip)
+>> +		chip = pci_msi_chip(dev->bus);
+>> +
+>>  	if (!chip || !chip->setup_irq)
+>>  		return -EINVAL;
+>>  
+>> @@ -50,6 +53,9 @@ void __weak arch_teardown_msi_irq(unsigned int irq)
+>>  	struct msi_desc *entry = irq_get_msi_desc(irq);
+>>  	struct msi_chip *chip = entry->dev->bus->msi;
+>>  
+>> +	if (!chip)
+>> +		chip = pci_msi_chip(entry->dev->bus);
+>> +
+>>  	if (!chip || !chip->teardown_irq)
+>>  		return;
+>>  
+>> diff --git a/include/linux/pci.h b/include/linux/pci.h
+>> index 9cd2721..7a48b40 100644
+>> --- a/include/linux/pci.h
+>> +++ b/include/linux/pci.h
+>> @@ -1433,6 +1433,15 @@ static inline int pci_get_new_domain_nr(void) { return -ENOSYS; }
+>>  
+>>  #include <asm/pci.h>
+>>  
+>> +/* Just avoid compile error, will be clean up later */
+>> +#ifdef CONFIG_PCI_MSI
+>> +
+>> +#ifndef pci_msi_chip
+>> +#define pci_msi_chip(bus)	NULL
+>> +#endif
+>> +
+>> +#endif
+>> +
+>>  /* these helpers provide future and backwards compatibility
+>>   * for accessing popular PCI BAR info */
+>>  #define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
+>> -- 
+>> 1.7.1
+>>
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+>> the body of a message to majordomo@vger.kernel.org
+>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>> Please read the FAQ at  http://www.tux.org/lkml/
+>>
+> 
+> 
+> .
+> 
+
+
+-- 
+Thanks!
+Yijing

@@ -1,60 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 16:10:06 +0200 (CEST)
-Received: from mail-vc0-f182.google.com ([209.85.220.182]:63575 "EHLO
-        mail-vc0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012133AbaJVOKF2YL5m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 16:10:05 +0200
-Received: by mail-vc0-f182.google.com with SMTP id la4so2021332vcb.13
-        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2014 07:09:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 16:11:34 +0200 (CEST)
+Received: from mail-yh0-f48.google.com ([209.85.213.48]:50682 "EHLO
+        mail-yh0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012134AbaJVOLcWYCCC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 16:11:32 +0200
+Received: by mail-yh0-f48.google.com with SMTP id v1so3476029yhn.7
+        for <multiple recipients>; Wed, 22 Oct 2014 07:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pefoley.com; s=google;
+        d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=eQtT3KnejPd/LfpaV7oL2/OQeWetWSl1n6e/esKXa1Q=;
-        b=ej1w5S42FMjR8tMeCZRYu96iDmBgg9JSDuabbud0HDkfqxSG1vSCerJls5ffsPplhI
-         hslCTgufMTYbBELS4hO2HEPUGdLEYQfyI/NNNgrRpdfMskJGIto8Vz9/PYZp1rGh5zPP
-         WeKb47F/x150LecXmybejDhnoI+lCQMsAotL8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=eQtT3KnejPd/LfpaV7oL2/OQeWetWSl1n6e/esKXa1Q=;
-        b=MbQmJzMWj0Bxkov6a+dEne/b4oJ7jKZg/4hcWbks+n9flQnzkPGtYPRmLemc6+DTI7
-         i8+ITlma99toK84Rgu7BRdsviXqnAMYDIGJINRaZ4eQzQct8571IJyRGQ932StgYwfMQ
-         9tIoDToPOGAh3SMsUygR3JTTkafCVdvMPZXq0WrJiZyvKfa3uPt3d4NYKF9KlvcZM0pM
-         jGnYkZRGEy1dbARQjHSwwfW2V74hCbTdvnEWadgWP8Z+BLEdDyrhekMtit8yeyJhuW7F
-         SJ4c3boglACkmolz2teYWx+POpFHxFElMME0E44Vqd8B7ZKMeJdpaCqj38lb+eDXWOWx
-         Q6Yg==
-X-Gm-Message-State: ALoCoQm1bn31KQ1pIN5Gk54ArPTVh9ONsOt8Nf42F0a7sLRuVCqBmYYUHjWE8z6B0maLrqc78K9x
-X-Received: by 10.220.213.197 with SMTP id gx5mr1349450vcb.51.1413986999226;
- Wed, 22 Oct 2014 07:09:59 -0700 (PDT)
+        bh=FYetDZXVV6ceUrhUNukBaxN7jh6dPKFxRd6UcYhjWpg=;
+        b=jjpJhTpU2NMFIdkhWUyonPgulhWEzM2rVGkAYzpHmkAqJFf6TE/gOKJQ6gjvuiOZaW
+         4rlZaPYzIWOsKK6yoqrbl+tJimmaI572oW7dnNcNDTT0zDLYi51BRzi/WyOc3cejOzvX
+         A1alne+kasIEcPKI9QUQ1S5ZpLFgDANX8mtV67VOxGM1ATv4INnFzmUgrGtqOAl3D2WI
+         6fMaaLXMyK6JZZDFKmwgqJAtoi55y05WFbSAhrM8JtCKblrnhwY6Cb9UWu1Wx0NvRjz+
+         V5oAR8GE/z/Pbfmmj1o5+O/pDV5UbJl/8BooQ7nMKWKBH3eHtMAuuKY0zo/bQvkFEIcL
+         JQtw==
+X-Received: by 10.236.28.112 with SMTP id f76mr1874882yha.195.1413987086080;
+ Wed, 22 Oct 2014 07:11:26 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.221.44.8 with HTTP; Wed, 22 Oct 2014 07:09:37 -0700 (PDT)
-X-Originating-IP: [2001:470:8:ee7:bd21:7cf6:92dd:9d5c]
-In-Reply-To: <20141022080302.GA4037@localhost.localdomain>
-References: <1413794538-28465-1-git-send-email-markos.chandras@imgtec.com>
- <20141021110724.GA16479@netboy> <20141021.123544.9516812519754063.davem@davemloft.net>
- <544690CB.4030307@gmail.com> <20141021182757.GA3960@localhost.localdomain>
- <CAOFdcFNYHgupvMChb4NedMsUMAOmE8k0D_F5eRjL-8H8ft=eRw@mail.gmail.com> <20141022080302.GA4037@localhost.localdomain>
-From:   Peter Foley <pefoley2@pefoley.com>
-Date:   Wed, 22 Oct 2014 10:09:37 -0400
-Message-ID: <CAOFdcFO=aLHKtogCf3Sz+XFFcm56JSTi=Om7S+XLdr71YCnFaw@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: ptp: Fix build failure on MIPS cross builds
-To:     Richard Cochran <richardcochran@gmail.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        David Miller <davem@davemloft.net>, markos.chandras@imgtec.com,
-        linux-mips@linux-mips.org, corbet@lwn.net, netdev@vger.kernel.org,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <pefoley2@pefoley.com>
+Received: by 10.170.153.196 with HTTP; Wed, 22 Oct 2014 07:11:05 -0700 (PDT)
+In-Reply-To: <5446F0D2.7050603@openwrt.org>
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
+ <1413932631-12866-3-git-send-email-ryazanov.s.a@gmail.com> <5446F0D2.7050603@openwrt.org>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Wed, 22 Oct 2014 18:11:05 +0400
+Message-ID: <CAHNKnsSG7ZUwAby00wQAHX-N024VOvki02XAjY2AAP0YuTZy6A@mail.gmail.com>
+Subject: Re: [PATCH v2 02/13] MIPS: ath25: add basic AR5312 SoC support
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43486
+X-archive-position: 43487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pefoley2@pefoley.com
+X-original-sender: ryazanov.s.a@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,13 +52,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 22, 2014 at 4:03 AM, Richard Cochran
-<richardcochran@gmail.com> wrote:
-> In the mean time, I would like to restore the testptp.mk that *does*
-> cross compile, so that people may use the test program if they
-> want. In fact I use this all the time, and so I am a bit annoyed that
-> something working was deleted and replaced with something broken.
+2014-10-22 3:48 GMT+04:00 John Crispin <blogic@openwrt.org>:
+> 1 comment inline
+>
+> On 22/10/2014 01:03, Sergey Ryazanov wrote:
+>> Add basic support for Atheros AR5312/AR2312 SoCs: registers
+>> definition file and initial setup code.
+>>
+>> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com> ---
+>>
+>> Changes since v1: - rename MIPS machine ar231x -> ath25
+>>
 
-Sure, I didn't realize that anyone was actually using testptp.mk on a
-regular basis.
-Feel free to restore it.
+[snip]
+
+>> void __init prom_init(void)
+>> {
+>>+       if (is_ar5312())
+>>+               ar5312_prom_init();
+>> }
+>
+> if i am reading this correct then is_ar5312() can return true even if
+> CONFIG_SOC_AR5312 is not selected
+>
+Yep. It checks the version of SoC MIPS core, to distinguish chip
+families. If SOC_AR5312 or SOC_AR2315 not selected then respective
+chip specific functions are replaced by stubs.
+
+> how about
+>
+> if (IS_ENABLED(CONFIG_SOC_AR5312) && is_ar5312())
+>         pr_info("AR5312");
+> else if (IS_ENABLED(CONFIG_SOC_AR2315) && is_ar2315())
+>         pr_info("AR2315");
+> else
+>         panic("failed to init memory");
+>
+> somewhere early in the code
+>
+
+If you want show to user some message, when kernel was built with
+wrong options, then may be:
+
+#if !defined(CONFIG_SOC_AR5312) && !defined(CONFIG_SOC_AR2315)
+#error "You should select at least one SoC support option"
+#endif
+
+if (!IS_ENABLED(CONFIG_SOC_AR5312) && is_ar5312())
+        panic("AR5312 SoC support is not builtin");
+if (!IS_ENABLED(CONFIG_SOC_AR2315) && is_ar2315())
+        panic("AR5312 SoC support is not builtin");
+
+IMHO these checks in general is odd.
+
+-- 
+BR,
+Sergey

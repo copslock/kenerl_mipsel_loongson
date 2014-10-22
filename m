@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 10:34:40 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:35677 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011292AbaJVIej3YUCi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Oct 2014 10:34:39 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9M8YcM4003860;
-        Wed, 22 Oct 2014 10:34:38 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9M8YcZ3003859;
-        Wed, 22 Oct 2014 10:34:38 +0200
-Date:   Wed, 22 Oct 2014 10:34:37 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Cc:     Ben Hutchings <ben@decadent.org.uk>
-Subject: Single MIPS kernel
-Message-ID: <20141022083437.GB18581@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 10:40:02 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:37892 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011282AbaJVIkARJSCr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Oct 2014 10:40:00 +0200
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 9F3302800EA;
+        Wed, 22 Oct 2014 10:38:53 +0200 (CEST)
+Received: from dicker-alter.lan (p548C87DD.dip0.t-ipconnect.de [84.140.135.221])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Wed, 22 Oct 2014 10:38:53 +0200 (CEST)
+Message-ID: <54476D5B.3070503@openwrt.org>
+Date:   Wed, 22 Oct 2014 10:39:55 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2 09/13] MIPS: ath25: register various chip devices
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com> <1413932631-12866-10-git-send-email-ryazanov.s.a@gmail.com>
+In-Reply-To: <1413932631-12866-10-git-send-email-ryazanov.s.a@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43473
+X-archive-position: 43474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,59 +43,172 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This question comes up every once in a while and I've also been approached
-during ELCE in Düsseldorf why there is no single MIPS kernel for all
-platforms, so I thought I should post a writeup on the topic.
 
-The primary reason is that MIPS kernels are using non-PIC kernels.  This
-means code is linked to a particular absolute address.  The link address
-depends on the memory range available on a particular system's available
-memory range - there is no one size that fits all systems, not even a
-large fraction of supported systems.
 
-What does it take to make kernels relocatable?  A current kernel is not
-relocatable.  One might do something along the lines of userland where
-the dynamic linker is in a similar situation and needs to first relocate
-itself before it can perform its actual job.
+On 22/10/2014 01:03, Sergey Ryazanov wrote:
+> Register GPIO, watchdog and flash devices.
+> 
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com> ---
+> 
+> Changes since v1: - rename MIPS machine ar231x -> ath25
+> 
+> arch/mips/ath25/Kconfig                        |  2 + 
+> arch/mips/ath25/ar2315.c                       | 86
+> +++++++++++++++++++++++++- arch/mips/ath25/ar5312.c
+> | 53 +++++++++++++++- 
+> arch/mips/include/asm/mach-ath25/ar2315_regs.h |  5 ++ 
+> arch/mips/include/asm/mach-ath25/ar5312_regs.h |  2 + 5 files
+> changed, 144 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/mips/ath25/Kconfig b/arch/mips/ath25/Kconfig 
+> index ca3dde4..7bcdbf3 100644 --- a/arch/mips/ath25/Kconfig +++
+> b/arch/mips/ath25/Kconfig @@ -1,9 +1,11 @@ config SOC_AR5312 bool
+> "Atheros AR5312/AR2312+ SoC support" depends on ATH25 +	select
+> GPIO_AR5312 default y
+> 
+> config SOC_AR2315 bool "Atheros AR2315+ SoC support" depends on
+> ATH25 +	select GPIO_AR2315 default y
 
-Two approaches.  First keeping the non-PIC code.  That requires keeping
-the entire relocation.  A lasat_defconfig vmlinux is 5733098 bytes but
-built with --emit-relocs to keep the reloc information in the final
-binary the vmlinux file grows to 7217342 bytes!  A quick look at the
-reloc sections:
+please do not select these 2 until the driver
 
-Section Headers:
-  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
-  [ 2] .rel.text         REL             00000000 461538 0eedf8 08     34   1  4
-  [ 4] .rel__ex_table    REL             00000000 550330 0040e0 08     34   3  4
-  [ 8] .rel.rodata       REL             00000000 554410 0310e0 08     34   7  4
-  [10] .rel.pci_fixup    REL             00000000 5854f0 000998 08     34   9  4
-  [12] .rel__ksymtab     REL             00000000 585e88 00b3b0 08     34  11  4
-  [14] .rel__ksymtab_gpl REL             00000000 591238 007180 08     34  13  4
-  [17] .rel__param       REL             00000000 5983b8 000858 08     34  16  4
-  [19] .rel__modver      REL             00000000 598c10 000038 08     34  18  4
-  [21] .rel.data         REL             00000000 598c48 00a130 08     34  20  4
-  [23] .rel.init.text    REL             00000000 5a2d78 00f008 08     34  22  4
-  [25] .rel.init.data    REL             00000000 5b1d80 001d08 08     34  24  4
-  [27] .rel.exit.text    REL             00000000 5b3a88 000b78 08     34  26  4
 
-The approach could probably be optimized but as a first order approximation
-this demonstrates there would be plenty of bloat to the binary.  Positive
-side of this approach: no runtime penalty.
+> diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c 
+> index f239035..ac784d7 100644 --- a/arch/mips/ath25/ar2315.c +++
+> b/arch/mips/ath25/ar2315.c @@ -16,7 +16,10 @@
+> 
+> #include <linux/init.h> #include <linux/kernel.h> +#include
+> <linux/platform_device.h> #include <linux/reboot.h> +#include
+> <linux/delay.h> +#include <linux/gpio.h> #include <asm/bootinfo.h> 
+> #include <asm/reboot.h> #include <asm/time.h> @@ -136,6 +139,66 @@
+> void __init ar2315_arch_init_irq(void) 
+> irq_set_chained_handler(AR2315_IRQ_MISC, ar2315_misc_irq_handler); 
+> }
+> 
+> +static struct resource ar2315_spiflash_res[] = { +	{ +		.name =
+> "spiflash_read", +		.flags = IORESOURCE_MEM, +		.start =
+> AR2315_SPI_READ, +		.end = AR2315_SPI_READ + 0x1000000 - 1, +	}, +
+> { +		.name = "spiflash_mmr", +		.flags = IORESOURCE_MEM, +		.start
+> = AR2315_SPI_MMR, +		.end = AR2315_SPI_MMR + 12 - 1, +	}, +}; + 
+> +static struct platform_device ar2315_spiflash = { +	.id = -1, +
+> .name = "ar2315-spiflash", +	.resource = ar2315_spiflash_res, +
+> .num_resources = ARRAY_SIZE(ar2315_spiflash_res) +}; + +static
+> struct resource ar2315_wdt_res[] = { +	{ +		.flags =
+> IORESOURCE_MEM, +		.start = AR2315_WD, +		.end = AR2315_WD + 8 -
+> 1, +	}, +	{ +		.flags = IORESOURCE_IRQ, +	} +}; + +static struct
+> platform_device ar2315_wdt = { +	.id = -1, +	.name = "ar2315-wdt", 
+> +	.resource = ar2315_wdt_res, +	.num_resources =
+> ARRAY_SIZE(ar2315_wdt_res) +}; + +static struct resource
+> ar2315_gpio_res[] = { +	{ +		.name = "ar2315-gpio", +		.flags =
+> IORESOURCE_MEM, +		.start = AR2315_GPIO, +		.end = AR2315_GPIO +
+> 0x10 - 1, +	}, +	{ +		.name = "ar2315-gpio", +		.flags =
+> IORESOURCE_IRQ, +	}, +}; + +static struct platform_device
+> ar2315_gpio = { +	.id = -1, +	.name = "ar2315-gpio", +	.resource =
+> ar2315_gpio_res, +	.num_resources = ARRAY_SIZE(ar2315_gpio_res) 
+> +}; +
 
-Alternatively: make the kernel PIC code.  Over the thumb that'd going to
-inflate the kernel by 10 or 15%.  Less than above approach but there'd
-also be significant runtime overhead.  Probably nothing for a world where
-benchmarks like network performance on 64 byte packets decide on the
-fate of a product on the market.
 
-Obviously there is the difference between 32 and 64 bit kernels.  64 bit
-uses additional instructions that are not available on 32 bit processors
-and using just 32 bit instructions won't fly on 64 bit kernels.
+i think none of these needs to be part of the series. add them with
+their corresponding drivers please
 
-Hardware detection.  That's all easy in a device tree world but in all
-reality many of the existing systems don't support device tree yet so a
-generic kernel would have to figure out what platform it's running on
-which would end up in something like an ISA style device probe.
+> /* * NB: We use mapping size that is larger than the actual flash
+> size, * but this shouldn't be a problem here, because the flash
+> will simply @@ -146,8 +209,20 @@ ar2315_flash_limit = (u8
+> *)KSEG1ADDR(AR2315_SPI_READ + 0x1000000);
+> 
+> void __init ar2315_init_devices(void) { +	struct resource *res; + 
+> /* Find board configuration */ 
+> ath25_find_config(ar2315_flash_limit); + +	res =
+> &ar2315_gpio_res[1]; +	res->start = ar2315_misc_irq_base +
+> AR2315_MISC_IRQ_GPIO; +	res->end = res->start; +
+> platform_device_register(&ar2315_gpio); +	res =
+> &ar2315_wdt_res[1]; +	res->start = ar2315_misc_irq_base +
+> AR2315_MISC_IRQ_WATCHDOG; +	res->end = res->start; +
+> platform_device_register(&ar2315_wdt); +
+> platform_device_register(&ar2315_spiflash); }
+> 
+> static void ar2315_restart(char *command) @@ -159,8 +234,15 @@
+> static void ar2315_restart(char *command) /* try reset the system
+> via reset control */ ath25_write_reg(AR2315_COLD_RESET,
+> AR2317_RESET_SYSTEM);
+> 
+> -	/* Attempt to jump to the mips reset location - the boot loader -
+> * itself might be able to recover the system */ +	/* Cold reset
+> does not work on the AR2315/6, use the GPIO reset bits +	 * a
+> workaround. Give it some time to attempt a gpio based hardware +	 *
+> reset (atheros reference design workaround) */ +
+> gpio_request_one(AR2315_RESET_GPIO, GPIOF_OUT_INIT_LOW, "Reset");
 
-  Ralf
+same here ...
+
+
+> +	mdelay(100); + +	/* Some boards (e.g. Senao EOC-2610) don't
+> implement the reset logic +	 * workaround. Attempt to jump to the
+> mips reset location - +	 * the boot loader itself might be able to
+> recover the system */ mips_reset_vec(); }
+> 
+> diff --git a/arch/mips/ath25/ar5312.c b/arch/mips/ath25/ar5312.c 
+> index faa0633..99c2745 100644 --- a/arch/mips/ath25/ar5312.c +++
+> b/arch/mips/ath25/ar5312.c @@ -16,6 +16,8 @@
+> 
+> #include <linux/init.h> #include <linux/kernel.h> +#include
+> <linux/platform_device.h> +#include <linux/mtd/physmap.h> #include
+> <linux/reboot.h> #include <asm/bootinfo.h> #include <asm/reboot.h> 
+> @@ -131,15 +133,59 @@ void __init ar5312_arch_init_irq(void) 
+> irq_set_chained_handler(AR5312_IRQ_MISC, ar5312_misc_irq_handler); 
+> }
+> 
+> +static struct physmap_flash_data ar5312_flash_data = { +	.width =
+> 2, +}; + +static struct resource ar5312_flash_resource = { +	.start
+> = AR5312_FLASH, +	.end = AR5312_FLASH + 0x800000 - 1, +	.flags =
+> IORESOURCE_MEM, +}; + +static struct platform_device
+> ar5312_physmap_flash = { +	.name = "physmap-flash", +	.id = 0, +
+> .dev.platform_data = &ar5312_flash_data, +	.resource =
+> &ar5312_flash_resource, +	.num_resources = 1, +}; + +static struct
+> resource ar5312_gpio_res[] = { +	{ +		.name = "ar5312-gpio", +
+> .flags = IORESOURCE_MEM, +		.start = AR5312_GPIO, +		.end =
+> AR5312_GPIO + 0x0c - 1, +	}, +}; + +static struct platform_device
+> ar5312_gpio = { +	.name = "ar5312-gpio", +	.id = -1, +	.resource =
+> ar5312_gpio_res, +	.num_resources = ARRAY_SIZE(ar5312_gpio_res), 
+> +}; +
+
+and here .. etc etc
+
+> static void __init ar5312_flash_init(void) { -	u32 ctl; +	u32 ctl =
+> ath25_read_reg(AR5312_FLASHCTL0) & AR5312_FLASHCTL_MW; + +	/* fixup
+> flash width */ +	switch (ctl) { +	case AR5312_FLASHCTL_MW16: +
+> ar5312_flash_data.width = 2; +		break; +	case AR5312_FLASHCTL_MW8: 
+> +	default: +		ar5312_flash_data.width = 1; +		break; +	}
+> 
+> /* * Configure flash bank 0. * Assume 8M window size. Flash will be
+> aliased if it's smaller */ -	ctl = ath25_read_reg(AR5312_FLASHCTL0)
+> & AR5312_FLASHCTL_MW; ctl |= AR5312_FLASHCTL_E |
+> AR5312_FLASHCTL_AC_8M | AR5312_FLASHCTL_RBLE; ctl |= 0x01 <<
+> AR5312_FLASHCTL_IDCY_S; ctl |= 0x07 << AR5312_FLASHCTL_WST1_S; @@
+> -182,6 +228,9 @@ void __init ar5312_init_devices(void) /*
+> Everything else is probably AR5312 or compatible */ else ath25_soc
+> = ATH25_SOC_AR5312; + +
+> platform_device_register(&ar5312_physmap_flash); +
+> platform_device_register(&ar5312_gpio); }
+> 
+> static void ar5312_restart(char *command) diff --git
+> a/arch/mips/include/asm/mach-ath25/ar2315_regs.h
+> b/arch/mips/include/asm/mach-ath25/ar2315_regs.h index
+> e680abc..d61c8a1 100644 ---
+> a/arch/mips/include/asm/mach-ath25/ar2315_regs.h +++
+> b/arch/mips/include/asm/mach-ath25/ar2315_regs.h @@ -283,6 +283,11
+> @@ #define AR2315_AMBACLK_CLK_DIV_M	0x0000000c #define
+> AR2315_AMBACLK_CLK_DIV_S	2
+> 
+> +/* GPIO MMR base address */ +#define AR2315_GPIO			(AR2315_DSLBASE
+> + 0x0088) + +#define AR2315_RESET_GPIO	5 + /* *  PCI Clock Control 
+> */ diff --git a/arch/mips/include/asm/mach-ath25/ar5312_regs.h
+> b/arch/mips/include/asm/mach-ath25/ar5312_regs.h index
+> afcd0b2..d715385 100644 ---
+> a/arch/mips/include/asm/mach-ath25/ar5312_regs.h +++
+> b/arch/mips/include/asm/mach-ath25/ar5312_regs.h @@ -210,4 +210,6
+> @@ #define AR5312_MEM_CFG1_AC1_M	0x00007000	/* bank 1: SDRAM addr
+> check */ #define AR5312_MEM_CFG1_AC1_S	12
+> 
+> +#define AR5312_GPIO		(AR5312_APBBASE  + 0x2000) + #endif	/*
+> __ASM_MACH_ATH25_AR5312_REGS_H */
+> 

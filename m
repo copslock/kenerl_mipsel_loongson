@@ -1,48 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 13:03:26 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60306 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012094AbaJVLDZLUDKt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 13:03:25 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9D979329C5926;
-        Wed, 22 Oct 2014 12:03:15 +0100 (IST)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 22 Oct
- 2014 12:03:17 +0100
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 22 Oct 2014 12:03:17 +0100
-Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 22 Oct
- 2014 12:03:16 +0100
-Message-ID: <54478EF4.7050909@imgtec.com>
-Date:   Wed, 22 Oct 2014 12:03:16 +0100
-From:   Qais Yousef <qais.yousef@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 14:19:40 +0200 (CEST)
+Received: from mail-ie0-f175.google.com ([209.85.223.175]:44830 "EHLO
+        mail-ie0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012115AbaJVMThfqs5a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 14:19:37 +0200
+Received: by mail-ie0-f175.google.com with SMTP id at20so3302192iec.20
+        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2014 05:19:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=8ZudfRSECAtxtqrTFseJYqvGiBQ1AbRz4UNuaDhDpow=;
+        b=OzERVMLAXwgHepAP6br1MQPtV8C/8F6jb/zf/IvXTy7V5irDueMYKcrL2v6hs9AtXi
+         zY2lYl2wlJGciY7k2w1way8Sm3OU08gTbYLc/DwN5WHKeoFHUNiT8dvyLWNnO+b5x2fK
+         XJ234Rk/9UMWxWX3mIxdW3Kfcz8/fvrmXTz+kGE69V4P/f8pnpGkkpUUX1QiFsNOpOVW
+         xMC/Mna9Vz4Mpu4eg4eyVkNC2s53G94qCY+FWuw52PoXvHUds4Tzf3ea86dB8w7yB89U
+         +v9ZECgGTzTVtf9gTV3e9w05vRMjI1xcXRiPWsr7j0Hm3Tyn8/+R2EGySv7A67SZh8U9
+         wi5w==
+X-Gm-Message-State: ALoCoQlit3qBk88HiDVcTDmu6eZernxCu292wyW5ppAYEP+Ni0WILveRHgCO+aJS/9XNHd/j6mKZ
+X-Received: by 10.107.164.71 with SMTP id n68mr3018207ioe.17.1413980371100;
+        Wed, 22 Oct 2014 05:19:31 -0700 (PDT)
+Received: from hash ([2001:470:1d:6db:230:48ff:fe9d:9c89])
+        by mx.google.com with ESMTPSA id 93sm7438398iol.40.2014.10.22.05.19.29
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Wed, 22 Oct 2014 05:19:30 -0700 (PDT)
+Received: from bob by hash with local (Exim 4.80)
+        (envelope-from <me@bobcopeland.com>)
+        id 1Xgurw-00054T-Q6; Wed, 22 Oct 2014 08:18:24 -0400
+Date:   Wed, 22 Oct 2014 08:18:24 -0400
+From:   Bob Copeland <me@bobcopeland.com>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
+        linux-wireless@vger.kernel.org, ath5k-devel@lists.ath5k.org
+Subject: Re: [PATCH v2 11/13] ath5k: revert AHB bus support removing
+Message-ID: <20141022121824.GA19113@localhost>
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
+ <1413932631-12866-12-git-send-email-ryazanov.s.a@gmail.com>
 MIME-Version: 1.0
-To:     Andrew Bresticker <abrestic@chromium.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Jason Cooper" <jason@lakedaemon.net>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "John Crispin" <blogic@openwrt.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/19] MIPS GIC cleanup, part 2
-References: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
-In-Reply-To: <1413831846-32100-1-git-send-email-abrestic@chromium.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1413932631-12866-12-git-send-email-ryazanov.s.a@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <me@bobcopeland.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43480
+X-archive-position: 43481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: me@bobcopeland.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,82 +67,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/20/2014 08:03 PM, Andrew Bresticker wrote:
-> Second round of cleanups for the MIPS GIC drivers:
->   - Patches 1 through 5 get rid of the ugly REG() macros and instead use
->     proper iomem accessors.
->   - Patches 6 and 7 move the GIC header to linux/irqchip/ and clean it up.
->   - Patches 8 through 10 are misc. GIC irqchip cleanups.
->   - Patches 11 and 12 combine the GIC clocksource and clockevent drivers and
->     move them to drivers/clocksource/.
->   - Patches 13 through 19 are various cleanups for the GIC clocksource driver.
->
-> Boot tested on Malta and (with additional out-of-tree patches) a platform
-> based on the IMG Pistachio SoC.  Build tested for SEAD-3.
+On Wed, Oct 22, 2014 at 03:03:49AM +0400, Sergey Ryazanov wrote:
+> This reverts commit 093ec3c5337434f40d77c1af06c139da3e5ba6dc.
+> 
+> AHB bus code has been removed, since we did not have support Atheros
+> AR231x SoC, required for building the AHB version of ath5k. Now that
+> support WiSoC chips added we can restore functionality back.
+> 
+> Singed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+  ^^^^^^
 
-I used your github tree to boot test this on sead3 and it worked fine.
+Please keep the patches away from the stove! (SCNR)
 
-Except for the one comment I had, feel free to add my 
-tested-and-reviewed by.
-
-Nice work :)
-
-Qais
-
-> Based on 3.18-rc1 + part 1 of my GIC cleanup series [0].  A tree with both
-> series is available at:
->    https://github.com/abrestic/linux/commits/mips-gic-cleanup-pt2-v1
->
-> [0] https://lkml.org/lkml/2014/9/18/487
->
-> Andrew Bresticker (19):
->    MIPS: Malta: Use gic_read_count() to read GIC timer
->    irqchip: mips-gic: Export function to read counter width
->    MIPS: sead3: Stop using GIC REG macros
->    MIPS: Malta: Stop using GIC REG macros
->    irqchip: mips-gic: Use proper iomem accessors
->    MIPS: Move gic.h to include/linux/irqchip/mips-gic.h
->    irqchip: mips-gic: Clean up header file
->    irqchip: mips-gic: Clean up #includes
->    irqchip: mips-gic: Remove gic_{pending,itrmask}_regs
->    irqchip: mips-gic: Use GIC_SH_WEDGE_{SET,CLR} macros
->    MIPS: Move GIC clocksource driver to drivers/clocksource/
->    clocksource: mips-gic: Combine with GIC clockevent driver
->    clocksource: mips-gic: Staticize local symbols
->    clocksource: mips-gic: Move gic_frequency to clocksource driver
->    clocksource: mips-gic: Remove gic_event_handler
->    clocksource: mips-gic: Use percpu_dev_id
->    clocksource: mips-gic: Use CPU notifiers to setup the timer
->    clocksource: mips-gic: Use clockevents_config_and_register
->    clocksource: mips-gic: Bump up rating of GIC timer
->
->   arch/mips/Kconfig                                  |  21 +-
->   arch/mips/include/asm/mips-boards/maltaint.h       |   2 +-
->   arch/mips/include/asm/mips-boards/sead3int.h       |   2 +-
->   arch/mips/include/asm/time.h                       |   5 +-
->   arch/mips/kernel/Makefile                          |   2 -
->   arch/mips/kernel/cevt-gic.c                        | 103 ---------
->   arch/mips/kernel/cevt-r4k.c                        |   2 +-
->   arch/mips/kernel/csrc-gic.c                        |  40 ----
->   arch/mips/kernel/smp-cmp.c                         |   2 +-
->   arch/mips/kernel/smp-cps.c                         |   2 +-
->   arch/mips/kernel/smp-gic.c                         |   2 +-
->   arch/mips/kernel/smp-mt.c                          |   2 +-
->   arch/mips/mti-malta/malta-int.c                    |  15 +-
->   arch/mips/mti-malta/malta-time.c                   |  20 +-
->   arch/mips/mti-sead3/sead3-ehci.c                   |   2 +-
->   arch/mips/mti-sead3/sead3-int.c                    |   9 +-
->   arch/mips/mti-sead3/sead3-net.c                    |   2 +-
->   arch/mips/mti-sead3/sead3-platform.c               |   2 +-
->   arch/mips/mti-sead3/sead3-time.c                   |   2 +-
->   drivers/clocksource/Kconfig                        |   4 +
->   drivers/clocksource/Makefile                       |   1 +
->   drivers/clocksource/mips-gic-timer.c               | 139 ++++++++++++
->   drivers/irqchip/irq-mips-gic.c                     | 243 +++++++++++++--------
->   .../asm/gic.h => include/linux/irqchip/mips-gic.h  | 203 +++--------------
->   24 files changed, 363 insertions(+), 464 deletions(-)
->   delete mode 100644 arch/mips/kernel/cevt-gic.c
->   delete mode 100644 arch/mips/kernel/csrc-gic.c
->   create mode 100644 drivers/clocksource/mips-gic-timer.c
->   rename arch/mips/include/asm/gic.h => include/linux/irqchip/mips-gic.h (61%)
->
+-- 
+Bob Copeland %% www.bobcopeland.com

@@ -1,36 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 10:49:46 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:38279 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011282AbaJVItoGr9X9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Oct 2014 10:49:44 +0200
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id BF11628BB4A;
-        Wed, 22 Oct 2014 10:48:38 +0200 (CEST)
-Received: from dicker-alter.lan (p548C87DD.dip0.t-ipconnect.de [84.140.135.221])
-        by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Wed, 22 Oct 2014 10:48:38 +0200 (CEST)
-Message-ID: <54476FA4.4040303@openwrt.org>
-Date:   Wed, 22 Oct 2014 10:49:40 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2014 11:28:17 +0200 (CEST)
+Received: from mail-la0-f46.google.com ([209.85.215.46]:63967 "EHLO
+        mail-la0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012035AbaJVJ2PjS3kn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2014 11:28:15 +0200
+Received: by mail-la0-f46.google.com with SMTP id gi9so2607295lab.33
+        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2014 02:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=sZXti4+C1SGXAfX4QEvtbvPXBBl3OO8r10AgsAIDFBg=;
+        b=wM95iQrp6SmT8ua9+WRVOa/GVVfuq0V1nO2gJ8iIo4BHq+3nAp0eyOdAdmQxn7OujD
+         B0D8132SpsNJp/Xqf57DaHLt319LhIoetT6pzLBFALw9tr7rTLxBzPstnO5S4pE3L09v
+         /3qOWpJOa3gRkGW3vwsAhm387RtK96cDbsXGkOjDsN93TsQBBrS1+fo+Xg76FS1TmyCz
+         fdUjFxY/lWhZYkG5o/W3etG6ApEMIMkldvdhBDRIJy5TfMWGEAH1VNiANJ/75Pabj0vk
+         t0hE8Tq573K3MtZ2kwYXCAXtnzsF+AJDJLdGthZSaMGSy8DwCj8TbFCX6AENhOAdrdFS
+         IMQQ==
+X-Received: by 10.112.201.201 with SMTP id kc9mr34109565lbc.76.1413970089995;
+ Wed, 22 Oct 2014 02:28:09 -0700 (PDT)
 MIME-Version: 1.0
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 04/13] MIPS: ath25: add interrupts handling routines
-References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com> <1413932631-12866-5-git-send-email-ryazanov.s.a@gmail.com>
-In-Reply-To: <1413932631-12866-5-git-send-email-ryazanov.s.a@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+Received: by 10.112.11.233 with HTTP; Wed, 22 Oct 2014 02:27:49 -0700 (PDT)
+In-Reply-To: <1413930186-23168-10-git-send-email-cernekee@gmail.com>
+References: <1413930186-23168-1-git-send-email-cernekee@gmail.com> <1413930186-23168-10-git-send-email-cernekee@gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 22 Oct 2014 17:27:49 +0800
+X-Google-Sender-Auth: LTCXN1Bs1ZoAgWVNMgrNlYJ6UL0
+Message-ID: <CAL_Jsq+AuqTOU7UFdYi28YGjL1QorY=3zOSccN43Vb1a=q6SHw@mail.gmail.com>
+Subject: Re: [PATCH V3 09/10] tty: serial: of-serial: Allow OF earlycon to
+ default to "on"
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>,
+        Grant Likely <grant.likely@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Florian Fainelli <f.fainelli@gmail.com>, mbizon@freebox.fr,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43476
+X-archive-position: 43477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,31 +61,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Wed, Oct 22, 2014 at 6:23 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+> On many development systems it is very common to see failures during the
+> early stages of the boot process, e.g. SMP boot or PCIe initialization.
+> This is one likely reason why some existing earlyprintk implementations,
+> such as arch/mips/kernel/early_printk.c, are enabled unconditionally
+> at compile time.
+>
+> Now that earlycon's operating parameters can be passed into the kernel
+> via DT, it is helpful to be able to configure the kernel to turn it on
+> automatically.  Introduce a new CONFIG_SERIAL_EARLYCON_FORCE option for
+> this purpose.
 
-just stumbled across this aswell ->
+You can already force this using the CMDLINE_EXTEND option. I'm not
+sure we need more options.
 
-On 22/10/2014 01:03, Sergey Ryazanov wrote:
-> +static void ar2315_misc_irq_handler(unsigned irq, struct irq_desc
-> *desc) +{ +	u32 pending = ath25_read_reg(AR2315_ISR) &
-> ath25_read_reg(AR2315_IMR); +	unsigned base =
-> ar2315_misc_irq_base; + +	if (pending & AR2315_ISR_SPI) +
-> generic_handle_irq(base + AR2315_MISC_IRQ_SPI); +	else if (pending
-> & AR2315_ISR_TIMER) +		generic_handle_irq(base +
-> AR2315_MISC_IRQ_TIMER); +	else if (pending & AR2315_ISR_AHB) +
-> generic_handle_irq(base + AR2315_MISC_IRQ_AHB); +	else if (pending
-> & AR2315_ISR_GPIO) { +		ath25_write_reg(AR2315_ISR,
-> AR2315_ISR_GPIO); +		generic_handle_irq(base +
-> AR2315_MISC_IRQ_GPIO); +	} else if (pending & AR2315_ISR_UART0) +
-> generic_handle_irq(base + AR2315_MISC_IRQ_UART0); +	else if
-> (pending & AR2315_ISR_WD) { +		ath25_write_reg(AR2315_ISR,
-> AR2315_ISR_WD); +		generic_handle_irq(base +
-> AR2315_MISC_IRQ_WATCHDOG); +	} else +		spurious_interrupt(); +} +
+>
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> ---
+>  drivers/of/fdt.c           |  5 +++++
+>  drivers/tty/serial/Kconfig | 11 +++++++++++
+>  2 files changed, 16 insertions(+)
+>
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index 20193cc..3e2ea1e 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -1013,6 +1013,11 @@ bool __init early_init_dt_verify(void *params)
+>
+>  void __init early_init_dt_scan_nodes(void)
+>  {
+> +#ifdef CONFIG_SERIAL_EARLYCON_FORCE
+> +       if (early_init_dt_scan_chosen_serial() < 0)
+> +               pr_warn("Unable to set up earlycon from stdout-path\n");
+> +#endif
 
-please use {} for all or none of the blocks. in this case it needs to
-be for all as there are 2 multi-line blocks
+Doesn't this make the earlycon get scanned and setup twice? Hopefully
+that is safe...
 
-looking forward to V3, i think we are getting close now and i can
-already see this in 3.19 :)
+This also introduces the scanning at another point in time during boot
+which may not work depending on the arch.
 
-	John
+Rob
+
+> +
+>         /* Retrieve various information from the /chosen node */
+>         of_scan_flat_dt(early_init_dt_scan_chosen, boot_command_line);
+>
+> diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+> index fdd851e..bc4ebcc 100644
+> --- a/drivers/tty/serial/Kconfig
+> +++ b/drivers/tty/serial/Kconfig
+> @@ -14,6 +14,17 @@ config SERIAL_EARLYCON
+>           the console before standard serial driver is probed. The console is
+>           enabled when early_param is processed.
+>
+> +config SERIAL_EARLYCON_FORCE
+> +       bool "Always enable early console"
+> +       depends on SERIAL_EARLYCON
+> +       help
+> +         Traditionally, enabling the early console has required passing in
+> +         the "earlycon" parameter on the kernel command line.  On systems
+> +         under development it may be desirable to enable earlycon
+> +         unconditionally rather than to force the user to manually add it
+> +         to the boot argument string, as boot failures often occur before
+> +         the standard serial driver is probed.
+> +
+>  source "drivers/tty/serial/8250/Kconfig"
+>
+>  comment "Non-8250 serial port support"
+> --
+> 2.1.1
+>

@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 19:29:29 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48297 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 20:19:29 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:48625 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27012276AbaJWR31ry9qe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Oct 2014 19:29:27 +0200
+        id S27010103AbaJWST2ENEkv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 Oct 2014 20:19:28 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9NHTQJC005809;
-        Thu, 23 Oct 2014 19:29:26 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9NIJQS2006746;
+        Thu, 23 Oct 2014 20:19:26 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9NHTQDE005808;
-        Thu, 23 Oct 2014 19:29:26 +0200
-Date:   Thu, 23 Oct 2014 19:29:26 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9NIJQae006745;
+        Thu, 23 Oct 2014 20:19:26 +0200
+Date:   Thu, 23 Oct 2014 20:19:26 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Markos Chandras <markos.chandras@imgtec.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: idle: Remove leftover __pastwait symbol and its
- references
-Message-ID: <20141023172926.GD1673@linux-mips.org>
-References: <1410872228-12116-1-git-send-email-markos.chandras@imgtec.com>
+Subject: Re: [PATCH 2/3] MIPS: sead3: Build the I2C related devices if
+ CONFIG_I2C is enabled
+Message-ID: <20141023181925.GA6719@linux-mips.org>
+References: <1412847261-7930-1-git-send-email-markos.chandras@imgtec.com>
+ <1412847261-7930-3-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1410872228-12116-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1412847261-7930-3-git-send-email-markos.chandras@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43542
+X-archive-position: 43543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,28 +44,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 16, 2014 at 01:57:08PM +0100, Markos Chandras wrote:
+On Thu, Oct 09, 2014 at 10:34:20AM +0100, Markos Chandras wrote:
 
-> The __pastwait symbol was only used by the address_is_in_r4k_wait_irqoff
-> function but this is no longer used since the SMTC removal in commit
-> b633648c5ad3 ('MIPS: MT: Remove SMTC support'). That symbol also led to
-> build failures under certain random configuration due to the way the
-> compiler compiled the r4k_wait_irqoff function. If that function was
-> called multiple times, the __pastwait symbol was redefined breaking the
-> build like this:
-
-Applied.  If this problems show up again on older kernels that still have
-SMTC we still can cook up a different fix.
-
-> CHK     include/generated/compile.h
-> CC      arch/mips/kernel/idle.o
-> {standard input}: Assembler messages:
-> {standard input}:527: Error: symbol `__pastwait' is already defined
+> There is no point building the drivers for the i2c related devices if
+> CONFIG_I2C is not enabled.
 > 
-> Link: http://www.linux-mips.org/archives/linux-mips/2009-06/msg00282.html
+> This also fixes a randconfig problem:
+> 
+> arch/mips/mti-sead3/sead3-pic32-i2c-drv.c: In function 'i2c_platform_probe':
+> arch/mips/mti-sead3/sead3-pic32-i2c-drv.c:345:2: error: implicit declaration of
+> function 'i2c_add_numbered_adapter' [-Werror=implicit-function-declaration]
+>   ret = i2c_add_numbered_adapter(&priv->adap);
+>     ^
+> arch/mips/mti-sead3/sead3-pic32-i2c-drv.c: In function
+> 'i2c_platform_remove':
+> arch/mips/mti-sead3/sead3-pic32-i2c-drv.c:361:2: error: implicit declaration
+> of function 'i2c_del_adapter' [-Werror=implicit-function-declaration]
+> i2c_del_adapter(&priv->adap);
 
-When posting any kind of reference please always use the permanent links.
+The platform devices should always be registered.
 
-Applied,
+And why on earth is there an I2C drivers in arch?  That should rather
+go to drivers/i2c/busses/.
 
   Ralf

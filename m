@@ -1,40 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 15:55:14 +0200 (CEST)
-Received: from demumfd002.nsn-inter.net ([93.183.12.31]:57719 "EHLO
-        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012258AbaJWNzMJv80j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 15:55:12 +0200
-Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
-        by demumfd002.nsn-inter.net (8.14.3/8.14.3) with ESMTP id s9NDt4gc014071
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 23 Oct 2014 13:55:04 GMT
-Received: from [10.151.38.178] ([10.151.38.178])
-        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id s9NDt4qd019303;
-        Thu, 23 Oct 2014 15:55:04 +0200
-Message-ID: <544908B8.7050109@nsn.com>
-Date:   Thu, 23 Oct 2014 15:55:04 +0200
-From:   Alexander Sverdlin <alexander.sverdlin@nsn.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 16:26:59 +0200 (CEST)
+Received: from mail-ig0-f181.google.com ([209.85.213.181]:40587 "EHLO
+        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012257AbaJWO06aXC1z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 16:26:58 +0200
+Received: by mail-ig0-f181.google.com with SMTP id l13so1566355iga.14
+        for <multiple recipients>; Thu, 23 Oct 2014 07:26:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=Ua2d3a14TLB64YoFe32xmHzQtZthz5Mezv7yHlbb3Mg=;
+        b=UyoHz3YPYdqiHkdqn6x0r3g3L+KoH/9n9+/Z9/MEKhzXFRSorBhG8yvZwGI+Tb7XXW
+         z5l82KoHG9LzELH3MJW+9lVx3gjPXNbs7kWQbf21XhRoiK6mc5ysOC1rV1ycAwsIDSxd
+         XwWwgws5Ffj4bmP3DgPdSWQQLXxrVs/+Qw/UFaGkGhmZlK6mghIxSyXawkOZ1Z6OAP4D
+         yZwBvZNFNsNd17OF/b5URg2Cma+s7VkhoZyQc1UdKPtJcpqoG/FmX3/Ie2caz9/uqr6Z
+         4LID++bQTHqjBHHPyiAlsPdoqWSJ+M5mBtHYuwv+TSZWiRTbJ4XUy2iax14uQaldousu
+         wFRQ==
+X-Received: by 10.42.79.205 with SMTP id s13mr2181035ick.71.1414074412030;
+ Thu, 23 Oct 2014 07:26:52 -0700 (PDT)
 MIME-Version: 1.0
-To:     ddaney.cavm@gmail.com, ralf@linux-mips.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH] Make Octeon GPIO IRQ chip CPU hotplug-aware
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 1135
-X-purgate-ID: 151667::1414072504-00001FC1-806B6981/0/0
-Return-Path: <alexander.sverdlin@nsn.com>
+Received: by 10.107.169.25 with HTTP; Thu, 23 Oct 2014 07:26:31 -0700 (PDT)
+In-Reply-To: <CAGXxSxXTroiohkMVDfCxFeDo4ty+q5WKFR5Q8p3oc8eut8BfsQ@mail.gmail.com>
+References: <1400997742-9393-1-git-send-email-chenj@lemote.com> <CAGXxSxXTroiohkMVDfCxFeDo4ty+q5WKFR5Q8p3oc8eut8BfsQ@mail.gmail.com>
+From:   cee1 <fykcee1@gmail.com>
+Date:   Thu, 23 Oct 2014 22:26:31 +0800
+Message-ID: <CAGXxSxXF7GRWTvWLdbpLN9P05V9xq=00Joh1a-Qwn6vuFfzrJg@mail.gmail.com>
+Subject: Re: [v4, Resend] MIPS: lib: csum_partial: more instruction paral
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
+        =?UTF-8?B?5ZC056ug6YeR?= <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <fykcee1@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43534
+X-archive-position: 43535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.sverdlin@nsn.com
+X-original-sender: fykcee1@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,33 +52,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Alexander Sverdlin <alexander.sverdlin@nsn.com>
+Hi Ralf,
 
-Make Octeon GPIO IRQ chip CPU hotplug-aware
+Are you happy with the patch and the math explanation? Then it may be
+merged? :-)
 
-Seems that irq_cpu_offline callbacks were forgotten in v1 and v2 CIU
-GPIO chips. There is such a callback for octeon_irq_chip_ciu2_gpio,
-covering CIU2 chips. Without this callback GPIO IRQs are not being migrated
-during core offlining. Patch is tested on Octeon II.
 
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nsn.com>
 
 ---
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -809,6 +809,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio_v2 = {
- 	.irq_set_type = octeon_irq_ciu_gpio_set_type,
- #ifdef CONFIG_SMP
- 	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
-+	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
- #endif
- 	.flags = IRQCHIP_SET_TYPE_MASKED,
- };
-@@ -823,6 +824,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio = {
- 	.irq_set_type = octeon_irq_ciu_gpio_set_type,
- #ifdef CONFIG_SMP
- 	.irq_set_affinity = octeon_irq_ciu_set_affinity,
-+	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
- #endif
- 	.flags = IRQCHIP_SET_TYPE_MASKED,
- };
+Regards,
+
+- cee1

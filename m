@@ -1,49 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 17:59:19 +0200 (CEST)
-Received: from mail-yh0-f53.google.com ([209.85.213.53]:45613 "EHLO
-        mail-yh0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012242AbaJWP7RXHRHS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 17:59:17 +0200
-Received: by mail-yh0-f53.google.com with SMTP id z6so1215251yhz.40
-        for <multiple recipients>; Thu, 23 Oct 2014 08:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=JGHqqP7yT/YGRcY2AmdVFFtIP962LzQEhcNbE5CTZ7U=;
-        b=fbMGi7mq9PvYS27RTm758zAAZY0L8OOK6QM3xDI4BPXCrhfOS0yGaogQ0zjBesIoOu
-         NgwylhxQSbit/7UfzI+in9ONnlEdjWrd92g+73MVX80rXUI6niv9rfyZlJWU79viB32R
-         IoLLXrLRJt1j5n5BTOhyOAnIZjDQepGAjM47N9zOYAQSEQVsxdle52ISW7y6mmLpZQX0
-         1fh4p49WBbTF2ghB0+yQ57lEltqPkdZP9ALU2mI0S6xiUjdjNpnILR+LMoOZQ9mbvm0f
-         V09XLULb1SQP7jMDIk0ziO1A0lZUahI5UYGRbFHNHvIm2WuNtcNaGJ0x8GWW+9XyAFHa
-         HwJA==
-X-Received: by 10.170.111.5 with SMTP id d5mr453955ykb.20.1414079950993;
-        Thu, 23 Oct 2014 08:59:10 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id qo2sm1260615igb.21.2014.10.23.08.59.09
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 23 Oct 2014 08:59:10 -0700 (PDT)
-Message-ID: <544925CC.7040801@gmail.com>
-Date:   Thu, 23 Oct 2014 08:59:08 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 18:21:29 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12290 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012261AbaJWQV1F3bJx convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 18:21:27 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id E84514677EABF;
+        Thu, 23 Oct 2014 17:21:16 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 23 Oct
+ 2014 17:21:19 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 23 Oct 2014 17:21:19 +0100
+Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
+ LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
+ 14.03.0195.001; Thu, 23 Oct 2014 17:21:15 +0100
+From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: RE: [RFC PATCH v3] MIPS: fix build with binutils 2.24.51+
+Thread-Topic: [RFC PATCH v3] MIPS: fix build with binutils 2.24.51+
+Thread-Index: AQHP7tTlY+v35gXcskOJOMYg117xgJw909MA
+Date:   Thu, 23 Oct 2014 16:21:14 +0000
+Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F31A9C@LEMAIL01.le.imgtec.org>
+References: <1413022164-317664-1-git-send-email-manuel.lauss@gmail.com>
+ <54491CC4.2060304@imgtec.com>
+In-Reply-To: <54491CC4.2060304@imgtec.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.152.76]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Alexander Sverdlin <alexander.sverdlin@nsn.com>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Make Octeon GPIO IRQ chip CPU hotplug-aware
-References: <544908B8.7050109@nsn.com>
-In-Reply-To: <544908B8.7050109@nsn.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Return-Path: <Matthew.Fortune@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43538
+X-archive-position: 43539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: Matthew.Fortune@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,46 +58,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/23/2014 06:55 AM, Alexander Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@nsn.com>
->
-> Make Octeon GPIO IRQ chip CPU hotplug-aware
->
-> Seems that irq_cpu_offline callbacks were forgotten in v1 and v2 CIU
-> GPIO chips. There is such a callback for octeon_irq_chip_ciu2_gpio,
-> covering CIU2 chips. Without this callback GPIO IRQs are not being migrated
-> during core offlining. Patch is tested on Octeon II.
->
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nsn.com>
+Markos Chandras <Markos.Chandras@imgtec.com> writes:
+> (top posting so Matthew can see the entire patch)
+> 
+> +CC Matthew Fortune who has some comments on the patch.
+> 
+> On 10/11/2014 11:09 AM, Manuel Lauss wrote:
+> > diff --git a/arch/mips/include/asm/asmmacro-32.h
+> b/arch/mips/include/asm/asmmacro-32.h
+> > index e38c281..a97ce53 100644
+> > --- a/arch/mips/include/asm/asmmacro-32.h
+> > +++ b/arch/mips/include/asm/asmmacro-32.h
+> > @@ -12,6 +12,9 @@
+> >  #include <asm/fpregdef.h>
+> >  #include <asm/mipsregs.h>
+> >
+> > +	.set push
+> > +	SET_HARDFLOAT
+> > +
+> >  	.macro	fpu_save_single thread tmp=t0
+> >  	cfc1	\tmp,  fcr31
+> >  	swc1	$f0,  THREAD_FPR0_LS64(\thread)
+> > @@ -86,6 +89,8 @@
+> >  	ctc1	\tmp, fcr31
+> >  	.endm
+> >
+> > +	.set pop
+> > +
 
-Acked-by: David Daney <david.daney@cavium.com>
+Any reason for putting the push/pop outside of the macro here but
+inside the macros elsewhere?
 
-Ralf, please apply.
+> > diff --git a/arch/mips/include/asm/mipsregs.h
+> b/arch/mips/include/asm/mipsregs.h
+> > index cf3b580..889c012 100644
+> > --- a/arch/mips/include/asm/mipsregs.h
+> > +++ b/arch/mips/include/asm/mipsregs.h
+> > @@ -1324,6 +1324,7 @@ do {
+> 	\
+> >  /*
+> >   * Macros to access the floating point coprocessor control registers
+> >   */
+> > +#ifdef GAS_HAS_SET_HARDFLOAT
+> >  #define read_32bit_cp1_register(source)					\
+> >  ({									\
+> >  	int __res;							\
+> > @@ -1334,11 +1335,29 @@ do {
+> 		\
+> >  	"	# gas fails to assemble cfc1 for some archs,	\n"	\
+> >  	"	# like Octeon.					\n"	\
+> >  	"	.set	mips1					\n"	\
+> > +	"	.set	hardfloat				\n"	\
+> >  	"	cfc1	%0,"STR(source)"			\n"	\
+> >  	"	.set	pop					\n"	\
+> >  	: "=r" (__res));						\
+> >  	__res;								\
+> >  })
+> > +#else
+> > +#define read_32bit_cp1_register(source)					\
+> > +({									\
+> > +	int __res;							\
+> > +									\
+> > +	__asm__ __volatile__(						\
+> > +	"	.set	push					\n"	\
+> > +	"	.set	reorder					\n"	\
+> > +	"	# gas fails to assemble cfc1 for some archs,	\n"	\
+> > +	"	# like Octeon.					\n"	\
+> > +	"	.set	mips1					\n"	\
+> > +	"	cfc1	%0,"STR(source)"			\n"	\
+> > +	"	.set	pop					\n"	\
+> > +	: "=r" (__res));						\
+> > +	__res;								\
+> > +})
+> > +#endif
 
-Thanks,
-David Daney
+This looks fairly ugly. I believe you can just add the hardfloat using:
 
+> >  	"	# gas fails to assemble cfc1 for some archs,	\n"	\
+> >  	"	# like Octeon.					\n"	\
+> >  	"	.set	mips1					\n"	\
+> > +	"	"STR(SET_HARDFLOAT)"			\n"	\
+> >  	"	cfc1	%0,"STR(source)"			\n"	\
+> >  	"	.set	pop					\n"	\
+> >  	: "=r" (__res));						\
+> >  	__res;								\
 
->
-> ---
-> --- a/arch/mips/cavium-octeon/octeon-irq.c
-> +++ b/arch/mips/cavium-octeon/octeon-irq.c
-> @@ -809,6 +809,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio_v2 = {
->   	.irq_set_type = octeon_irq_ciu_gpio_set_type,
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
-> +	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
->   #endif
->   	.flags = IRQCHIP_SET_TYPE_MASKED,
->   };
-> @@ -823,6 +824,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio = {
->   	.irq_set_type = octeon_irq_ciu_gpio_set_type,
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity,
-> +	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
->   #endif
->   	.flags = IRQCHIP_SET_TYPE_MASKED,
->   };
->
->
->
+The ctc1/cfc1 instructions are quite unusual as they were (before my binutils
+patch) floating point instructions but are general purpose after the patch.
+While that may indicate that you don't need .set hardfloat to use ctc1/cfc1
+that is not true when you consider using a new compiler and/or the
+-Wa,-msoft-float CFLAGS patch with an old assembler. It would therefore be
+wise to test the kernel patch with an assembler which pre-dates my FPXX
+patch to make sure that all instances of ctc1/cfc1 have been caught.
+
+That is the reason why Markos saw issues with using one of the mentor
+toolchains with your patch in place.
+
+Markos' secondary issue relating to odd-numbered single-precision registers
+is probably something to address on the GCC side but I haven't quite
+figured out what the root cause is. I'm trying to avoid the kernel having to
+add both .set hardfloat and .set oddspreg as I think it is legitimate for
+the kernel to expect that when enabling hardfloat in a softfloat module then
+the standard hardfloat ABI should apply to that region and all registers
+should be available.
+
+Hope that is helpful,
+
+Matthew

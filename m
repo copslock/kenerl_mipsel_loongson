@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 08:40:13 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:10447 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011440AbaJWGkKNqJVD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 08:40:10 +0200
-Received: from 172.24.2.119 (EHLO szxeml408-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CBD42120;
-        Thu, 23 Oct 2014 14:39:48 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by szxeml408-hub.china.huawei.com
- (10.82.67.95) with Microsoft SMTP Server id 14.3.158.1; Thu, 23 Oct 2014
- 14:39:39 +0800
-Message-ID: <5448A2A7.9090407@huawei.com>
-Date:   Thu, 23 Oct 2014 14:39:35 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 08:41:37 +0200 (CEST)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:51968 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011437AbaJWGlfNJVra (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 08:41:35 +0200
+Received: from 172.24.2.119 (EHLO szxeml416-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id AVY43481;
+        Thu, 23 Oct 2014 14:41:07 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml416-hub.china.huawei.com
+ (10.82.67.155) with Microsoft SMTP Server id 14.3.158.1; Thu, 23 Oct 2014
+ 14:40:54 +0800
+Message-ID: <5448A2F2.7060001@huawei.com>
+Date:   Thu, 23 Oct 2014 14:40:50 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
@@ -41,19 +41,24 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Liviu Dudau <liviu@dudau.co.uk>
-Subject: Re: [PATCH v3 09/27] arm/PCI: Clean unused pcibios_add_bus() and
- pcibios_remove_bus()
-References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com> <1413342435-7876-10-git-send-email-wangyijing@huawei.com> <20141023053858.GD11770@google.com>
-In-Reply-To: <20141023053858.GD11770@google.com>
+Subject: Re: [PATCH v3 10/27] PCI/MSI: Remove useless bus->msi assignment
+References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com> <1413342435-7876-11-git-send-email-wangyijing@huawei.com> <20141023054121.GE11770@google.com>
+In-Reply-To: <20141023054121.GE11770@google.com>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.177.27.212]
 X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A020202.5448A307.0162,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2013-03-21 17:37:32
+X-Mirapoint-Loop-Id: 2d23c51c586ec84e4869088c814f38cf
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43528
+X-archive-position: 43529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,57 +75,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->>  /*
->>   * Swizzle the device pin each time we cross a bridge.  If a platform does
->>   * not provide a swizzle function, we perform the standard PCI swizzling.
->> @@ -478,8 +464,6 @@ static void pcibios_init_hw(struct device *parent, struct hw_pci *hw,
->>  		sys->swizzle = hw->swizzle;
->>  		sys->map_irq = hw->map_irq;
->>  		sys->align_resource = hw->align_resource;
->> -		sys->add_bus = hw->add_bus;
->> -		sys->remove_bus = hw->remove_bus;
->>  		INIT_LIST_HEAD(&sys->resources);
+On 2014/10/23 13:41, Bjorn Helgaas wrote:
+> On Wed, Oct 15, 2014 at 11:06:58AM +0800, Yijing Wang wrote:
+>> Now msi chip is saved in pci_sys_data in arm,
+>> we could clean the bus->msi assignment in
+>> pci core.
+>>
+>> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+>> CC: Thierry Reding <thierry.reding@gmail.com>
+>> CC: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+>> ---
+>>  drivers/pci/probe.c |    1 -
+>>  1 files changed, 0 insertions(+), 1 deletions(-)
+>>
+>> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+>> index efa48dc..98bf4c3 100644
+>> --- a/drivers/pci/probe.c
+>> +++ b/drivers/pci/probe.c
+>> @@ -682,7 +682,6 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
 >>  
->>  		if (hw->private_data)
+>>  	child->parent = parent;
+>>  	child->ops = parent->ops;
+>> -	child->msi = parent->msi;
 > 
-> What do the core changes below have to do with the ARM changes above?
-> They should be a separate patch unless they can't be separated.
+> This needs an explanation of why ARM was the only arch to depend on this.
 
-Hm, it's not the thing have to do, because the changes below is only used by arm arch, so I put it here
-together. It's ok to split the core changes out to another one.
+OK, will add explanation in next version.
 
 > 
->> diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
->> index f11108c..56e54ad 100644
->> --- a/drivers/pci/msi.c
->> +++ b/drivers/pci/msi.c
->> @@ -32,12 +32,10 @@ int pci_msi_ignore_mask;
+>>  	child->sysdata = parent->sysdata;
+>>  	child->bus_flags = parent->bus_flags;
 >>  
->>  int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
->>  {
->> -	struct msi_chip *chip = dev->bus->msi;
->> +	struct msi_chip *chip;
->>  	int err;
->>  
->> -	if (!chip)
->> -		chip = pci_msi_chip(dev->bus);
->> -
->> +	chip = pci_msi_chip(dev->bus);
->>  	if (!chip || !chip->setup_irq)
->>  		return -EINVAL;
->>  
->> @@ -51,10 +49,7 @@ int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
->>  void __weak arch_teardown_msi_irq(unsigned int irq)
->>  {
->>  	struct msi_desc *entry = irq_get_msi_desc(irq);
->> -	struct msi_chip *chip = entry->dev->bus->msi;
->> -
->> -	if (!chip)
->> -		chip = pci_msi_chip(entry->dev->bus);
->> +	struct msi_chip *chip = pci_msi_chip(entry->dev->bus);
->>  
->>  	if (!chip || !chip->teardown_irq)
->>  		return;
 >> -- 
 >> 1.7.1
 >>

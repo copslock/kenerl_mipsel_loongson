@@ -1,57 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 06:47:57 +0200 (CEST)
-Received: from mail-la0-f46.google.com ([209.85.215.46]:40481 "EHLO
-        mail-la0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011368AbaJWEr4H0NNm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 06:47:56 +0200
-Received: by mail-la0-f46.google.com with SMTP id gi9so203098lab.19
-        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2014 21:47:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 07:18:43 +0200 (CEST)
+Received: from mail-ig0-f182.google.com ([209.85.213.182]:56794 "EHLO
+        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011437AbaJWFSmALQR- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 07:18:42 +0200
+Received: by mail-ig0-f182.google.com with SMTP id hn18so782792igb.9
+        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2014 22:18:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=br0h8YhNGKOy2FwP6+Fn5Jl4mconwigbrCSa3g7tGUA=;
-        b=k4z2ShHcnBU0xBILPM50yXMF0ghK/wYp2znbfZpZBb3/BjZ0CWPE/WiJFJ6HaA+Cwa
-         BmHL0CeHxK/KmjD/TRZcdR8oaBTHKlMJHGr9HQYZil2D+lUR6GwUdItqEw2wrUAz6LGK
-         LaZSPN01uzI8UGGb+DSs780QVkjR57EMYjLMlvJFV2VYpx68v5P6R2QBx3W7RGj6jM64
-         5DI2xKfC3oVouAYInTcquIlgEdTO8Fp3VgG4jcOOdiWKKEWkbTgrZtdnyDeFiayAf6/8
-         GIAuXe1w/+w227imsSCZzTMKJcPjuZVwqlmYvzsoeV8Qz/0f/6AwcT5WoUTflt8ywynM
-         eoOA==
-X-Received: by 10.152.43.97 with SMTP id v1mr2281391lal.3.1414039670577; Wed,
- 22 Oct 2014 21:47:50 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.112.11.233 with HTTP; Wed, 22 Oct 2014 21:47:30 -0700 (PDT)
-In-Reply-To: <CAJiQ=7BrfnyOQYptBCTR8GP8hLq4+q1NQ2H988wHK=8PnkqLkg@mail.gmail.com>
-References: <1413930186-23168-1-git-send-email-cernekee@gmail.com>
- <1413930186-23168-10-git-send-email-cernekee@gmail.com> <CAL_Jsq+AuqTOU7UFdYi28YGjL1QorY=3zOSccN43Vb1a=q6SHw@mail.gmail.com>
- <CAJiQ=7BrfnyOQYptBCTR8GP8hLq4+q1NQ2H988wHK=8PnkqLkg@mail.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 23 Oct 2014 12:47:30 +0800
-X-Google-Sender-Auth: s_uhSp7ulJxY33qyFgdMXitIEws
-Message-ID: <CAL_JsqJbva6i5BwDMf9f0TcuToxzP2u9_oe1t92zQXJyS077oA@mail.gmail.com>
-Subject: Re: [PATCH V3 09/10] tty: serial: of-serial: Allow OF earlycon to
- default to "on"
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Grant Likely <grant.likely@linaro.org>,
+        d=google.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=Mrs5Z5fRsWI5dyjNAmPaoFO56v1HlCSVSUBlYYG+pnQ=;
+        b=bBtKCpHtOXUPK8hy1kjq0yGyOvBEUen2HdBLar72o6xwg1TlaaOyx1MOnB44uTeXtB
+         npB3jfH2WeJPT+Zzv8slNiZ0RYCnaeJWpx4Fysu1/QzDh7BNnxReLAErRS4nnlmYkL8K
+         IGItl+jBOu1feq1mgfsh23fzVvRSDqZUEQGiBbCWFRhpG9bqyLUDcIdrgXe2oHtGuOsn
+         KcoY1G1/W9UH20ZiRLxLq/bSnc4DYuxvfmzSwRxMcvoOiEVlgit/Q8/qNO+dwFRD+UXR
+         p7dCA5wS25gH9vLlALdtSBtX8w/0+5isljVbV/pBehFdYUbGDxPHwAK7FUnxFuIW3CbR
+         kaxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=Mrs5Z5fRsWI5dyjNAmPaoFO56v1HlCSVSUBlYYG+pnQ=;
+        b=e1wLgKpzp06CvLi201Sbub/TPGRDWuWFoL45jR5qDlKvVYrjewKQGcLDd84/6240QS
+         xSrIO9CH9vXs3PZ7KyY2fD2sBOq2KQs0IZZxUWCzIY8a4uDTQcmDOO6Xv/lHuAVsCIh9
+         faXfn/Xs3kzhM6/MfyyGst6O5r9KsIfJ/bvuFR5fLWh2roYIq4A4yo46SeGMzHNjBbbM
+         VGwUGFaeceF38HUcIzFIMUnhRugNmjaPe3u3/mz79Nz2EJWmUTj7ynElAOyV6Xee1+sQ
+         Veij5WEJeNA/wUIA4tU5/yj6iwp6gJq+GIh07QEe2/+6p05GPv6rq5S1jNAootCamx0F
+         cOKw==
+X-Gm-Message-State: ALoCoQkNhVmtnlP58uTqdQKi8FSgMsWe6Rh4VdRSRZgHafWd4UuxoGzT3BiNm+bbGruYUg+/WAAS
+X-Received: by 10.50.128.163 with SMTP id np3mr39053588igb.28.1414041514650;
+        Wed, 22 Oct 2014 22:18:34 -0700 (PDT)
+Received: from google.com ([172.16.51.27])
+        by mx.google.com with ESMTPSA id n12sm1788089igk.12.2014.10.22.22.18.32
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Wed, 22 Oct 2014 22:18:34 -0700 (PDT)
+Date:   Wed, 22 Oct 2014 23:18:31 -0600
+From:   Bjorn Helgaas <bhelgaas@google.com>
+To:     Yijing Wang <wangyijing@huawei.com>
+Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
+        Bharat.Bhushan@freescale.com, x86@kernel.org,
         Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <robherring2@gmail.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Vrabel <david.vrabel@citrix.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        Liviu Dudau <liviu@dudau.co.uk>
+Subject: Re: [PATCH v3 05/27] PCI: tegra: Save msi chip in pci_sys_data
+Message-ID: <20141023051831.GB11770@google.com>
+References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
+ <1413342435-7876-6-git-send-email-wangyijing@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1413342435-7876-6-git-send-email-wangyijing@huawei.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43520
+X-archive-position: 43521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,92 +94,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 23, 2014 at 11:25 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
-> On Wed, Oct 22, 2014 at 2:27 AM, Rob Herring <robh@kernel.org> wrote:
->> On Wed, Oct 22, 2014 at 6:23 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
->>> On many development systems it is very common to see failures during the
->>> early stages of the boot process, e.g. SMP boot or PCIe initialization.
->>> This is one likely reason why some existing earlyprintk implementations,
->>> such as arch/mips/kernel/early_printk.c, are enabled unconditionally
->>> at compile time.
->>>
->>> Now that earlycon's operating parameters can be passed into the kernel
->>> via DT, it is helpful to be able to configure the kernel to turn it on
->>> automatically.  Introduce a new CONFIG_SERIAL_EARLYCON_FORCE option for
->>> this purpose.
->>
->> You can already force this using the CMDLINE_EXTEND option. I'm not
->> sure we need more options.
->
-> Hi Rob,
->
-> Now that earlycon can get all of its parameters from DT, do you think
-> it might make sense to drop the command line option entirely from
-> fdt.c and enable it all of the time if stdout-path is set correctly?
->
-> From the user's standpoint, how important is it to be able to run
-> without earlycon?
+On Wed, Oct 15, 2014 at 11:06:53AM +0800, Yijing Wang wrote:
+> Save msi chip in pci_sys_data instead of assign
+> msi chip to every pci bus in .add_bus().
+> 
+> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+> ---
+>  drivers/pci/host/pci-tegra.c |   13 +++----------
+>  1 files changed, 3 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/pci/host/pci-tegra.c b/drivers/pci/host/pci-tegra.c
+> index 3d43874..5af0525 100644
+> --- a/drivers/pci/host/pci-tegra.c
+> +++ b/drivers/pci/host/pci-tegra.c
+> @@ -694,15 +694,6 @@ static int tegra_pcie_map_irq(const struct pci_dev *pdev, u8 slot, u8 pin)
+>  	return irq;
+>  }
+>  
+> -static void tegra_pcie_add_bus(struct pci_bus *bus)
+> -{
+> -	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+> -		struct tegra_pcie *pcie = sys_to_pcie(bus->sysdata);
+> -
+> -		bus->msi = &pcie->msi.chip;
+> -	}
+> -}
+> -
+>  static struct pci_bus *tegra_pcie_scan_bus(int nr, struct pci_sys_data *sys)
+>  {
+>  	struct tegra_pcie *pcie = sys_to_pcie(sys);
+> @@ -1881,11 +1872,13 @@ static int tegra_pcie_enable(struct tegra_pcie *pcie)
+>  
+>  	memset(&hw, 0, sizeof(hw));
+>  
+> +#ifdef CONFIG_PCI_MSI
+> +	hw.msi_chip = &pcie->msi.chip;
+> +#endif
 
-It may affect boot time for one although if you care you probably
-disable console altogether.
+Why did you use "#ifdef CONFIG_PCI_MSI" instead of the
+"IS_ENABLED(CONFIG_PCI_MSI)" used previously?
 
-I think we'd just have to add a noearlycon option instead if we made
-it the default. It's never been the default before, so I don't think
-we should change now. There's also an implicit requirement that the
-bootloader has configured the uart already. You could easily hang if
-the uart has not been setup.
+It's true that CONFIG_PCI_MSI will never be a tristate symbol, so we don't
+really *need* the extra smarts of IS_ENABLED(), but I'm fairly sympathetic
+to James' argument [1] that we should just use IS_ENABLED() all the time
+because it's simpler overall.
 
->>>  void __init early_init_dt_scan_nodes(void)
->>>  {
->>> +#ifdef CONFIG_SERIAL_EARLYCON_FORCE
->>> +       if (early_init_dt_scan_chosen_serial() < 0)
->>> +               pr_warn("Unable to set up earlycon from stdout-path\n");
->>> +#endif
->>
->> Doesn't this make the earlycon get scanned and setup twice? Hopefully
->> that is safe...
->
-> Patch 08/10 makes it safe.  Without Patch 08/10, specifying "earlycon
-> earlycon" also generates a backtrace.
->
->> This also introduces the scanning at another point in time during boot
->> which may not work depending on the arch.
->
-> Currently the sequence looks like:
->
->  - arch code calls early_init_dt_scan() to populate boot_command_line
-> and memory ranges
->
->  - arch code might do some other stuff, possibly setting up page
-> tables, register mappings, etc.
+If you want to change the #ifdef to IS_ENABLED(), that should be a separate
+patch from your msi_chip change, and we can debate the merits of that by
+itself.
 
-Yes, like the page table needed to map your earlycon uart.
+[1] http://lkml.iu.edu//hypermail/linux/kernel/1204.3/00081.html
 
->  - arch code calls parse_early_param() to look at the final command line
->
->  - parse_early_param() might call early_init_dt_scan_chosen_serial()
->
-> So we're assuming that the arch code knows not to call
-> parse_early_param() until the mappings are configured.  But this is an
-> implicit requirement, and might not be totally obvious.  Since
-> SERIAL_EARLYCON is enabled by the UART driver, not the arch code, it
-> is possible that some platforms have ordering issues here that won't
-> be discovered until somebody tries to use earlycon.
-
-Right, if you enable earlycon and the architecture doesn't support it,
-you will crash. This is not really new. Doing "earlycon=uart8250..."
-on ARM will crash as long as the 8250 driver has supported that
-option.
-
-> Would it be more straightforward to have the arch code explicitly call
-> early_init_dt_scan_chosen_serial() to indicate that it is ready for
-> the early UART driver to run?
-
-Yes, but then when do you handle earlycon command line option for
-non-DT case? Having these at different points in time is asking for
-problems.
-
-Also, I've been trying to reduce the number of DT hooks into the arch
-code, so adding that would be moving in the wrong direction.
-
-Rob
+>  	hw.nr_controllers = 1;
+>  	hw.private_data = (void **)&pcie;
+>  	hw.setup = tegra_pcie_setup;
+>  	hw.map_irq = tegra_pcie_map_irq;
+> -	hw.add_bus = tegra_pcie_add_bus;
+>  	hw.scan = tegra_pcie_scan_bus;
+>  	hw.ops = &tegra_pcie_ops;
+>  
+> -- 
+> 1.7.1
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/

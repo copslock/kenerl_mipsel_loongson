@@ -1,45 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 05:13:36 +0200 (CEST)
-Received: from resqmta-ch2-07v.sys.comcast.net ([69.252.207.39]:44909 "EHLO
-        resqmta-ch2-07v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011350AbaJWDNedqFXn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 05:13:34 +0200
-Received: from resomta-ch2-13v.sys.comcast.net ([69.252.207.109])
-        by resqmta-ch2-07v.sys.comcast.net with comcast
-        id 6TCv1p0032N9P4d01TDRul; Thu, 23 Oct 2014 03:13:25 +0000
-Received: from [192.168.1.13] ([69.251.152.165])
-        by resomta-ch2-13v.sys.comcast.net with comcast
-        id 6TDN1p00B3aNLgd01TDNlw; Thu, 23 Oct 2014 03:13:25 +0000
-Message-ID: <54487246.605@gentoo.org>
-Date:   Wed, 22 Oct 2014 23:13:10 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 05:26:10 +0200 (CEST)
+Received: from mail-qa0-f46.google.com ([209.85.216.46]:56358 "EHLO
+        mail-qa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011355AbaJWD0Ios0YQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 05:26:08 +0200
+Received: by mail-qa0-f46.google.com with SMTP id s7so139218qap.5
+        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2014 20:26:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=+Cz8goUcxuBko5swo1/tsPArNW301Q8tNhG+ia/OEAY=;
+        b=U2XleHw+Ks2FVpGe9Yqt0+FX8vhowj8l+hw937IA9dHicNxmDewIfRwl+F0+0nx/ZY
+         +1OznWakptkoeoiC7LXoHhk+9+NQFOg4OYVDDLtJJxnz8s4+UsIqZ88yQvaqSPcH852n
+         XQfY2ZfJd/Da5eaH2d+HG4QUHXJK8xfiMtUV0COV/J6FHpNYYvmr2dJKZgvTU1c2xWRm
+         gtfVJ9qdWelJivJXrS8icV51W/8UxQ0+2tl9RkBd55qm30gpVf5rs5fhXrpO/Erkb3Eg
+         aHf05ZEnA4kMFamWcVSQkoP5/PgOGXBemYARYTyGdEryNANMNfZRLuDdqpDeBaXwUpqq
+         fe1Q==
+X-Received: by 10.140.91.72 with SMTP id y66mr3286391qgd.52.1414034762808;
+ Wed, 22 Oct 2014 20:26:02 -0700 (PDT)
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: Single MIPS kernel
-References: <20141022083437.GB18581@linux-mips.org>         <5447F155.60106@gmail.com> <20141022192018.GD12502@linux-mips.org>         <1414016140.5994.9.camel@decadent.org.uk>         <20141022232233.GF12502@linux-mips.org> <1414026131.5994.20.camel@decadent.org.uk>
-In-Reply-To: <1414026131.5994.20.camel@decadent.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1414034005;
-        bh=dVIYJRXn7eiW+jsBgNbqt9nFy8K7zRkPdOVpqHWoSQ4=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=MMFGbOfdKhcZ2Phcy2rNZpXnoSwkLV9Ewh+fIAF6s7PPmBM8YXGY8AUTa1F2neUtv
-         Vgwgy6lR5+Zz4T5fDrNqXknte1FI2hA63wt6zGLWP7lleXGlEKrn5BDSMHAJ7UG7eN
-         iXOe1ssYC3hpgsPwAG845kwDitRErxOAfClgATSwdYzskeSaOFFHrykpsXHfkepnFp
-         CXoRC7NojzuxE82mCj/JNzExlgLaX4NzOsFcWi5IvMG8RV10TgScYmUdWVT2QNy3ZE
-         Yb4Sx/2Vef64MOj0O4ZgZJK0EMsKAARBkk+HOl0IxIj3gcD5gOUNaikgiahGhg5rSk
-         UXWUv2JNiyWQQ==
-Return-Path: <kumba@gentoo.org>
+Received: by 10.140.93.8 with HTTP; Wed, 22 Oct 2014 20:25:42 -0700 (PDT)
+In-Reply-To: <CAL_Jsq+AuqTOU7UFdYi28YGjL1QorY=3zOSccN43Vb1a=q6SHw@mail.gmail.com>
+References: <1413930186-23168-1-git-send-email-cernekee@gmail.com>
+ <1413930186-23168-10-git-send-email-cernekee@gmail.com> <CAL_Jsq+AuqTOU7UFdYi28YGjL1QorY=3zOSccN43Vb1a=q6SHw@mail.gmail.com>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Wed, 22 Oct 2014 20:25:42 -0700
+Message-ID: <CAJiQ=7BrfnyOQYptBCTR8GP8hLq4+q1NQ2H988wHK=8PnkqLkg@mail.gmail.com>
+Subject: Re: [PATCH V3 09/10] tty: serial: of-serial: Allow OF earlycon to
+ default to "on"
+To:     Rob Herring <robh@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>,
+        Grant Likely <grant.likely@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43516
+X-archive-position: 43517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,61 +62,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/22/2014 21:02, Ben Hutchings wrote:
-> On Thu, 2014-10-23 at 01:22 +0200, Ralf Baechle wrote:
->> On Wed, Oct 22, 2014 at 11:15:40PM +0100, Ben Hutchings wrote:
+On Wed, Oct 22, 2014 at 2:27 AM, Rob Herring <robh@kernel.org> wrote:
+> On Wed, Oct 22, 2014 at 6:23 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+>> On many development systems it is very common to see failures during the
+>> early stages of the boot process, e.g. SMP boot or PCIe initialization.
+>> This is one likely reason why some existing earlyprintk implementations,
+>> such as arch/mips/kernel/early_printk.c, are enabled unconditionally
+>> at compile time.
 >>
->>>>
->>>> That's probably more of an implementation detail.  I'm more concerned about
->>>> the overall bloat.  I think many embedded users are so addivted to benchmark
->>>> results that this going to make or break the whole scheme.
->>>
->>> If you can make relocation a configuration option (as on x86), it would
->>> allow distributions to build multiplatform kernels without preventing
->>> embedded users from building a kernel optimised for their specific
->>> system.  But I know very little about MIPS or how intrusive the changes
->>> for relocation would have to be.  Perhaps it would be too much of a
->>> maintenance burden to make this an option.
->>
->> The scope of the changes is relativly limited - we're much more concerned
->> about the impact on binary size, memory size or performance of the
->> various approaches under discussion.
->>
->> I wonder kernels for which platforms would Debian want to unify?
-> 
-> I don't have high expectations for being able to unify those we
-> currently support.  Realistically, I expect that most development effort
-> will go into new platforms.  (What we saw with ARM was that
-> multi-platform was implemented for most ARMv7 platforms (for which we
-> now need only 2 configurations) but only slowly for older chips (4
-> configurations, and that's after dropping 2 platforms).)
-> 
-> Anyway, we have one 32-bit configuration for each byte order
-> (4kc-malta), and the following 64-bit configurations:
-> 
-> [big-endian]
-> r4k-ip22:      CONFIG_SGI_IP22, CONFIG_CPU_R4X00
-> r5k-ip32:      CONFIG_SGI_IP32, CONFIG_CPU_R5000
+>> Now that earlycon's operating parameters can be passed into the kernel
+>> via DT, it is helpful to be able to configure the kernel to turn it on
+>> automatically.  Introduce a new CONFIG_SERIAL_EARLYCON_FORCE option for
+>> this purpose.
+>
+> You can already force this using the CMDLINE_EXTEND option. I'm not
+> sure we need more options.
 
-As far as I know, IRIX includes kernels specific to each SGI system (IPxx), but
-it seems they're CPU agnostic.  They are relocatable, though.  Been awhile
-since I watched sash boot followed by an IRIX kernel, but it does 3-4
-relocations before finally booting.  So a relocatable MIPS kernel on the SGI
-platforms seems possible.  Probably requires arcane knowledge of ARCS, though.
+Hi Rob,
 
-Bootloader-wise, Stan's 'arcload' can handle booting multiple kernels across
-various SGI platforms.  We used it on the Gentoo SGI LiveCD back in 2006 to
-create a single CD that could boot on IP22, IP27, IP30, & IP32, using different
-kernels for each system and CPU (I think there was one volume header slot left
-at the end for arcload itself).
+Now that earlycon can get all of its parameters from DT, do you think
+it might make sense to drop the command line option entirely from
+fdt.c and enable it all of the time if stdout-path is set correctly?
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
+From the user's standpoint, how important is it to be able to run
+without earlycon?
 
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
+>>  void __init early_init_dt_scan_nodes(void)
+>>  {
+>> +#ifdef CONFIG_SERIAL_EARLYCON_FORCE
+>> +       if (early_init_dt_scan_chosen_serial() < 0)
+>> +               pr_warn("Unable to set up earlycon from stdout-path\n");
+>> +#endif
+>
+> Doesn't this make the earlycon get scanned and setup twice? Hopefully
+> that is safe...
 
---Emperor Turhan, Centauri Republic
+Patch 08/10 makes it safe.  Without Patch 08/10, specifying "earlycon
+earlycon" also generates a backtrace.
+
+> This also introduces the scanning at another point in time during boot
+> which may not work depending on the arch.
+
+Currently the sequence looks like:
+
+ - arch code calls early_init_dt_scan() to populate boot_command_line
+and memory ranges
+
+ - arch code might do some other stuff, possibly setting up page
+tables, register mappings, etc.
+
+ - arch code calls parse_early_param() to look at the final command line
+
+ - parse_early_param() might call early_init_dt_scan_chosen_serial()
+
+So we're assuming that the arch code knows not to call
+parse_early_param() until the mappings are configured.  But this is an
+implicit requirement, and might not be totally obvious.  Since
+SERIAL_EARLYCON is enabled by the UART driver, not the arch code, it
+is possible that some platforms have ordering issues here that won't
+be discovered until somebody tries to use earlycon.
+
+Would it be more straightforward to have the arch code explicitly call
+early_init_dt_scan_chosen_serial() to indicate that it is ready for
+the early UART driver to run?

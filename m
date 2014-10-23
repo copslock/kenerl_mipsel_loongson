@@ -1,44 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 03:02:20 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40125 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012184AbaJWBCStfIl4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 03:02:18 +0200
-Received: from [88.202.169.74] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1Xh6nB-0000MJ-Ro; Thu, 23 Oct 2014 02:02:17 +0100
-Received: from ben by deadeye with local (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1Xh6nA-0000Pk-Pt; Thu, 23 Oct 2014 02:02:16 +0100
-Message-ID: <1414026131.5994.20.camel@decadent.org.uk>
-Subject: Re: Single MIPS kernel
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        Debian kernel maintainers <debian-kernel@lists.debian.org>
-Date:   Thu, 23 Oct 2014 02:02:11 +0100
-In-Reply-To: <20141022232233.GF12502@linux-mips.org>
-References: <20141022083437.GB18581@linux-mips.org>
-         <5447F155.60106@gmail.com> <20141022192018.GD12502@linux-mips.org>
-         <1414016140.5994.9.camel@decadent.org.uk>
-         <20141022232233.GF12502@linux-mips.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-EfFuqWW+XdryF2FG0CHj"
-X-Mailer: Evolution 3.12.7-1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 88.202.169.74
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 03:18:23 +0200 (CEST)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:19417 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012186AbaJWBSVEf30A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 03:18:21 +0200
+Received: from 172.24.2.119 (EHLO szxeml415-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CDG06814;
+        Thu, 23 Oct 2014 09:17:42 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml415-hub.china.huawei.com
+ (10.82.67.154) with Microsoft SMTP Server id 14.3.158.1; Thu, 23 Oct 2014
+ 09:17:25 +0800
+Message-ID: <5448571F.6030105@huawei.com>
+Date:   Thu, 23 Oct 2014 09:17:19 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
+MIME-Version: 1.0
+To:     Bjorn Helgaas <bhelgaas@google.com>
+CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
+        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Vrabel <david.vrabel@citrix.com>,
+        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
+        Liviu Dudau <liviu@dudau.co.uk>
+Subject: Re: [PATCH v3 24/27] IA64/MSI: Use MSI chip framework to configure
+ MSI/MSI-X irq
+References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com> <1413342435-7876-25-git-send-email-wangyijing@huawei.com> <20141022235345.GE4795@google.com>
+In-Reply-To: <20141022235345.GE4795@google.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.27.212]
+X-CFilter-Loop: Reflected
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43514
+X-archive-position: 43515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,98 +70,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 2014/10/23 7:53, Bjorn Helgaas wrote:
+> On Wed, Oct 15, 2014 at 11:07:12AM +0800, Yijing Wang wrote:
+>> Use MSI chip framework instead of arch MSI functions to configure
+>> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
+> 
+> This needs slightly more detail.  You're using the MSI chip framework
+> "instead of arch MSI functions".  Well, there are still arch-specific
+> functions, i.e., arch_ia64_setup_msi_irq() and
+> arch_ia64_teardown_msi_irq().
+> 
+> We used to have arch_setup_msi_irq() which had a weak default
+> implementation, and a strong arch-specific implementation here, and you're
+> replacing that model with the new "msi-ops" model.  I don't know how you
+> want to write that, but it's not that you're getting rid of the
+> arch-specific code; you're keeping arch-specific code but structuring it
+> differently.
 
---=-EfFuqWW+XdryF2FG0CHj
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hm, I will rename the msi-ops functions.
 
-On Thu, 2014-10-23 at 01:22 +0200, Ralf Baechle wrote:
-> On Wed, Oct 22, 2014 at 11:15:40PM +0100, Ben Hutchings wrote:
->=20
-> > >=20
-> > > That's probably more of an implementation detail.  I'm more concerned=
- about
-> > > the overall bloat.  I think many embedded users are so addivted to be=
-nchmark
-> > > results that this going to make or break the whole scheme.
-> >=20
-> > If you can make relocation a configuration option (as on x86), it would
-> > allow distributions to build multiplatform kernels without preventing
-> > embedded users from building a kernel optimised for their specific
-> > system.  But I know very little about MIPS or how intrusive the changes
-> > for relocation would have to be.  Perhaps it would be too much of a
-> > maintenance burden to make this an option.
->=20
-> The scope of the changes is relativly limited - we're much more concerned
-> about the impact on binary size, memory size or performance of the
-> various approaches under discussion.
->=20
-> I wonder kernels for which platforms would Debian want to unify?
+> 
+>> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+>> ---
+>>  arch/ia64/include/asm/pci.h |   10 ++++++++++
+>>  arch/ia64/kernel/msi_ia64.c |   14 ++++++++++----
+>>  arch/ia64/pci/pci.c         |    1 +
+>>  3 files changed, 21 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
+>> index 52af5ed..907dcba 100644
+>> --- a/arch/ia64/include/asm/pci.h
+>> +++ b/arch/ia64/include/asm/pci.h
+>> @@ -94,6 +94,7 @@ struct pci_controller {
+>>  	int segment;
+>>  	int node;		/* nearest node with memory or NUMA_NO_NODE for global allocation */
+>>  
+>> +	struct msi_chip *msi_chip;
+>>  	void *platform_data;
+>>  };
+>>  
+>> @@ -101,6 +102,15 @@ struct pci_controller {
+>>  #define PCI_CONTROLLER(busdev) ((struct pci_controller *) busdev->sysdata)
+>>  #define pci_domain_nr(busdev)    (PCI_CONTROLLER(busdev)->segment)
+>>  
+>> +extern struct msi_chip chip;
+> 
+> Please make this name more descriptive.  "chip" is way too generic for a
+> global name.
 
-I don't have high expectations for being able to unify those we
-currently support.  Realistically, I expect that most development effort
-will go into new platforms.  (What we saw with ARM was that
-multi-platform was implemented for most ARMv7 platforms (for which we
-now need only 2 configurations) but only slowly for older chips (4
-configurations, and that's after dropping 2 platforms).)
+OK, what about rename it to ia64_msi_chip, and rename the original static irq_chip ia64_msi_chip to
+static irq_chip msi_chip like in x86.
 
-Anyway, we have one 32-bit configuration for each byte order
-(4kc-malta), and the following 64-bit configurations:
+> 
+>> +static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
+>> +{
+>> +	struct pci_controller *ctrl = bus->sysdata;
+>> +
+>> +	return ctrl->msi_chip;
+>> +}
+>> +
+>>  extern struct pci_ops pci_root_ops;
+>>  
+>>  static inline int pci_proc_domain(struct pci_bus *bus)
+>> diff --git a/arch/ia64/kernel/msi_ia64.c b/arch/ia64/kernel/msi_ia64.c
+>> index 8c3730c..401fc98 100644
+>> --- a/arch/ia64/kernel/msi_ia64.c
+>> +++ b/arch/ia64/kernel/msi_ia64.c
+>> @@ -112,15 +112,16 @@ static struct irq_chip ia64_msi_chip = {
+>>  };
+>>  
+>>  
+>> -int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
+>> +static int arch_ia64_setup_msi_irq(struct msi_chip *chip,
+>> +		struct pci_dev *dev, struct msi_desc *desc)
+>>  {
+>>  	if (platform_setup_msi_irq)
+>> -		return platform_setup_msi_irq(pdev, desc);
+>> +		return platform_setup_msi_irq(dev, desc);
+>>  
+>> -	return ia64_setup_msi_irq(pdev, desc);
+>> +	return ia64_setup_msi_irq(dev, desc);
+> 
+> Please don't make gratuitous changes ("pdev" -> "dev") at the same time,
+> especially since the rest of the file still uses "pdev".
 
-[big-endian]
-r4k-ip22:      CONFIG_SGI_IP22, CONFIG_CPU_R4X00
-r5k-ip32:      CONFIG_SGI_IP32, CONFIG_CPU_R5000
-sb1-bcm91250a: CONFIG_SIBYTE_SWARM, CONFIG_CPU_SB1
-5kc-malta:     CONFIG_MIPS_MALTA, CONFIG_CPU_MIPS64_R1
-octeon:        CONFIG_CAVIUM_OCTEON_SOC
+OK.
 
-[little-endian]
-sb1-bcm91250a: CONFIG_SIBYTE_SWARM, CONFIG_CPU_SB1
-5kc-malta:     CONFIG_MIPS_MALTA, CONFIG_CPU_MIPS64_R1
-loongson-2e:   CONFIG_MACH_LOONGSON, CONFIG_LEMOTE_FULOONG2E
-loongson-2f:   CONFIG_MACH_LOONGSON, CONFIG_LEMOTE_MACH2F
-loongson-3:    CONFIG_MACH_LOONGSON, CONFIG_LOONGSON_MACH3X
+> 
+>>  }
+>>  
+>> -void arch_teardown_msi_irq(unsigned int irq)
+>> +static void arch_ia64_teardown_msi_irq(struct msi_chip *chip, unsigned int irq)
+>>  {
+>>  	if (platform_teardown_msi_irq)
+>>  		return platform_teardown_msi_irq(irq);
+>> @@ -128,6 +129,11 @@ void arch_teardown_msi_irq(unsigned int irq)
+>>  	return ia64_teardown_msi_irq(irq);
+>>  }
+>>  
+>> +struct msi_chip chip = {
+>> +	.setup_irq = arch_ia64_setup_msi_irq,
+>> +	.teardown_irq = arch_ia64_teardown_msi_irq,
+>> +};
+>> +
+>>  #ifdef CONFIG_INTEL_IOMMU
+>>  #ifdef CONFIG_SMP
+>>  static int dmar_msi_set_affinity(struct irq_data *data,
+>> diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
+>> index 291a582..299b67d 100644
+>> --- a/arch/ia64/pci/pci.c
+>> +++ b/arch/ia64/pci/pci.c
+>> @@ -437,6 +437,7 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+>>  
+>>  	controller->companion = device;
+>>  	controller->node = acpi_get_node(device->handle);
+>> +	controller->msi_chip = &chip;
+>>  
+>>  	info = kzalloc(sizeof(*info), GFP_KERNEL);
+>>  	if (!info) {
+>> -- 
+>> 1.7.1
+>>
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+>> the body of a message to majordomo@vger.kernel.org
+>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>> Please read the FAQ at  http://www.tux.org/lkml/
+> 
+> .
+> 
 
-In general, I want our kernel packages to support any hardware that is
-or has been generally available to buy, that can feasibly run a general
-purpose distribution.  I'm somewhat hopeful that Prpl members will be
-introducing new platforms that fit this description in the near future.
 
-But I also want the packages to build natively in a few hours on each
-architecture.  Currently, it takes about 17 hours on little-endian
-(Loongson 3A, quad-core) and longer on big-endian (Octeon v0.3, 6 cores
-used).  So I can't accept a further increase in the number of
-configurations as new MIPS platforms appear.  Without multi-platform
-support, we will have to drop one platform for each one we add, so we'll
-have to be quite picky about adding them.
-
-Ben.
-
---=20
-Ben Hutchings
-Q.  Which is the greater problem in the world today, ignorance or apathy?
-A.  I don't know and I couldn't care less.
-
---=-EfFuqWW+XdryF2FG0CHj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIVAwUAVEhTmOe/yOyVhhEJAQrx0BAAqO0XfwGpzH7mERQIfPUbXaU3r08t8qlE
-tevZX3LQyb4mI67ynC8l2ykEnrrI4pJPO7UqUSedniMac5OlI/Qfz/WgK9nFElxZ
-63JuWR/rWc4OxvVl8/b+W9CEukinx0DMVxgWjryso8MreftTCiOz9Ox0lFsCdWml
-wi3YiOLqP6Ls9rBz3VPG4D4ubkua2YZC2yEd+1xZNzUHUb8uIDeMkem8lSmEWV9o
-MqYQJKpKp6LYFMbTZQW7dAODI2u76q2P1gdlxUMTcU5Ymnv/xX2cUqL6W84149r+
-Z9sXdqPtX+k//VCPT0Lu2Q3EMf+R5mmWjJucZZTmRxVWFzAZxAOQ64bGMmyPlZBO
-mPRR5iZ5tsPmvQY9O5BCJJTA7Rkm3uoI/1kvAyBjgDMvTgMXTHjGBGUXZZzE4Ax2
-mbuSoe408VazSNDI7DGmkgaQua1yGhn+ws7dVkoagXoeWVxEzU/+rOwm4qiV0o+j
-+eZdTrWrk799xS4Z2ZddCksSsts8uBxguNpg/h57dZbWCKzxhJx8Ak8cbUISbq7u
-fKhOUSHDKPKhngIxxrq005aR/ufoAAL3bIXSHBhR+90EKbCfMGMm5cZiFnwmGnKG
-viqDOel94TwdJP3KuK20rMQmEOP9B5ARIAOSWRVLfaiGausbKlKZmDnaq9cvY9qn
-0ImuBzTOIuw=
-=JKRG
------END PGP SIGNATURE-----
-
---=-EfFuqWW+XdryF2FG0CHj--
+-- 
+Thanks!
+Yijing

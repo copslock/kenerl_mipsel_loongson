@@ -1,33 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 01:54:21 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:49937 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 02:10:30 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50081 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009481AbaJWXySE61Pd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Oct 2014 01:54:18 +0200
+        id S27009931AbaJXAK0K70bb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 24 Oct 2014 02:10:26 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9NNsHKh012271;
-        Fri, 24 Oct 2014 01:54:17 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9O0APE7012630;
+        Fri, 24 Oct 2014 02:10:25 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9NNsG8b012270;
-        Fri, 24 Oct 2014 01:54:16 +0200
-Date:   Fri, 24 Oct 2014 01:54:16 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9O0AOZe012629;
+        Fri, 24 Oct 2014 02:10:24 +0200
+Message-Id: <094cb31b3dafa8c614db1e03a0049e566008a2e0.1414108953.git.ralf@linux-mips.org>
+In-Reply-To: <20141023235416.GA7529@linux-mips.org>
+References: <20141023235416.GA7529@linux-mips.org>
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/3] MIPS: sead3: Only build the led driver if LEDS_CLASS
- is enabled
-Message-ID: <20141023235416.GA7529@linux-mips.org>
-References: <1412847261-7930-1-git-send-email-markos.chandras@imgtec.com>
- <1412847261-7930-4-git-send-email-markos.chandras@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1412847261-7930-4-git-send-email-markos.chandras@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Date:   Fri, 24 Oct 2014 00:41:45 +0200
+Subject: [PATCH 1/3] MIPS: SEAD3: Fix LED device registration.
+To:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Bryan Wu <cooloney@gmail.com>,
+        Richard Purdie <rpurdie@rpsys.net>, linux-leds@vger.kernel.org
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43544
+X-archive-position: 43545
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,39 +39,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 09, 2014 at 10:34:21AM +0100, Markos Chandras wrote:
+This isn't a module and shouldn't be one.
 
-> leds-sead3.c:(.text+0x7dc): undefined reference to `led_classdev_unregister'
-> leds-sead3.c:(.text+0x7e8): undefined reference to `led_classdev_unregister'
-> 
-> Reviewed-by: Steven J. Hill <Steven.Hill@imgtec.com>
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+---
+ arch/mips/mti-sead3/sead3-leds.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-Hmm...  I think there's a whole lot more broken.  Let's start with the
-Makefile:
-
--obj-y				+= leds-sead3.o sead3-leds.o
-
-Very creative filenames.  No way to know in what way foo-bar and bar-foo
-are different.  But let's take a look at sead3-leds:
-
-[...]
-module_init(led_init);
-
-MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
-MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("LED probe driver for SEAD-3");
-
-But although you were trying to make this a module, this better shouldn't
-be one, the devices should always be registered if they're there, driver
-enabled or not.
-
-Anyway this should probably become a device_initcall() and all the
-module bits should go.
-
-And now let's take a look at sead3-led..  oh wait, that's leds-sead3 -
-did I bitch about the filename before?  That's a complete device driver
-and it blows up primarily because it lives in a directory where it
-shouldn't be at all.
-
-  Ralf
+diff --git a/arch/mips/mti-sead3/sead3-leds.c b/arch/mips/mti-sead3/sead3-leds.c
+index 20102a6..c427c57 100644
+--- a/arch/mips/mti-sead3/sead3-leds.c
++++ b/arch/mips/mti-sead3/sead3-leds.c
+@@ -5,7 +5,7 @@
+  *
+  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+  */
+-#include <linux/module.h>
++#include <linux/init.h>
+ #include <linux/leds.h>
+ #include <linux/platform_device.h>
+ 
+@@ -76,8 +76,4 @@ static int __init led_init(void)
+ 	return platform_device_register(&fled_device);
+ }
+ 
+-module_init(led_init);
+-
+-MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
+-MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("LED probe driver for SEAD-3");
++device_initcall(led_init);
+-- 
+1.9.3

@@ -1,88 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 01:53:58 +0200 (CEST)
-Received: from mail-ie0-f177.google.com ([209.85.223.177]:36104 "EHLO
-        mail-ie0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012187AbaJVXx4CkFt- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 01:53:56 +0200
-Received: by mail-ie0-f177.google.com with SMTP id tp5so1666948ieb.36
-        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2014 16:53:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=rIlapdsoMyoUNpI8uhepj7s7z+/4lDWf287gQleIub0=;
-        b=fnjcmyQwhXgm0lVjA4Ri67uqENTIXk06ZeUJwQMWQmtBOuRJPbDiy6eh/2RqQztjPU
-         KtVI487M5J4oo5hZ0YA4bEvXE5wzlKQULt8/VCoesMg1Z2edk3XNLtPoISx141ZI4rXF
-         kcMZ+yRP4kmvCRAB5u5ATS772lPtdV6EzQQbemNUmYsaGNG+hLSMbE7msGJW736iZLv6
-         ZAE+hvsFnWO/ceG+CVrXN2LvCqqD2wvzg90+dSBZltMb/HAR+sAbcEE9x02jyuaiaWPE
-         nR99de0CGjuqSRJq2F/SEzIFXzFZhCCzxJsALeAlyf9JwmLqJ7ts6YcdFqbIfEkvRGZp
-         GT4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=rIlapdsoMyoUNpI8uhepj7s7z+/4lDWf287gQleIub0=;
-        b=SR3vk47Mjjm6Bz3uyryJbff7fkZ+qalhTHp6vIysXkW0hxTmQa44qwNGzqm37qGpxj
-         fNz/6jAWay9OBVZ6wZb8osgBYPKFykiHyzfMhamvlvSBfVH8CWVw9dVUeH5JUpqBCm0a
-         lF5pJ6FPhw4zyUPbf8N9cfe4yBHGWz8+JCQlNNgW8JiFja7khskHmR0DQylW6H2ry1eI
-         TePUTv9Gjzq2KagEUsSTzJ/EGuk1DPjwyihBA193MY0ZKoX/RyETMwzh1u1wRI09gCzL
-         3K1jW0B3uBUn8ieq1/t7tPdSw9Qh5A+jC1LPiri4y+5pKKdYnt+e4iOLqxZgvNrH49So
-         CJEQ==
-X-Gm-Message-State: ALoCoQlfFxRycQYp0qDcHfb6c6npGtlcIaK/zWUpjeG6SU2MzKdl2MqQrM2n7tYEuxKPu8UoZk2b
-X-Received: by 10.50.51.100 with SMTP id j4mr29748226igo.39.1414022028718;
-        Wed, 22 Oct 2014 16:53:48 -0700 (PDT)
-Received: from google.com ([172.16.51.27])
-        by mx.google.com with ESMTPSA id c13sm1133407ign.13.2014.10.22.16.53.46
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Wed, 22 Oct 2014 16:53:48 -0700 (PDT)
-Date:   Wed, 22 Oct 2014 17:53:45 -0600
-From:   Bjorn Helgaas <bhelgaas@google.com>
-To:     Yijing Wang <wangyijing@huawei.com>
-Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Xinwei Hu <huxinwei@huawei.com>, Wuyun <wuyun.wu@huawei.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-arch@vger.kernel.org, arnab.basu@freescale.com,
-        Bharat.Bhushan@freescale.com, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        xen-devel@lists.xenproject.org, Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Liviu Dudau <liviu@dudau.co.uk>
-Subject: Re: [PATCH v3 24/27] IA64/MSI: Use MSI chip framework to configure
- MSI/MSI-X irq
-Message-ID: <20141022235345.GE4795@google.com>
-References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
- <1413342435-7876-25-git-send-email-wangyijing@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1413342435-7876-25-git-send-email-wangyijing@huawei.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <bhelgaas@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2014 02:29:14 +0200 (CEST)
+Received: from mailout2.samsung.com ([203.254.224.25]:14187 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012186AbaJWA3MdQolV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2014 02:29:12 +0200
+Received: from epcpsbgr4.samsung.com
+ (u144.gpu120.samsung.co.kr [203.254.230.144])
+ by mailout2.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTP id <0NDV008ZXG0G1B50@mailout2.samsung.com> for
+ linux-mips@linux-mips.org; Thu, 23 Oct 2014 09:29:04 +0900 (KST)
+Received: from epcpsbgx2.samsung.com ( [203.254.230.44])
+        by epcpsbgr4.samsung.com (EPCPMTA) with SMTP id B8.DF.18167.0DB48445; Thu,
+ 23 Oct 2014 09:29:04 +0900 (KST)
+X-AuditID: cbfee690-f79ab6d0000046f7-31-54484bd0c215
+Received: from epmailer02 ( [203.254.219.142])
+        by epcpsbgx2.samsung.com (EPCPMTA) with SMTP id C6.5B.22636.0DB48445; Thu,
+ 23 Oct 2014 09:29:04 +0900 (KST)
+Date:   Thu, 23 Oct 2014 00:29:04 +0000 (GMT)
+From:   Eunbong Song <eunb.song@samsung.com>
+Subject: Re: Re: [PATCH] mips: add arch_trigger_all_cpu_backtrace() function
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Reply-to: eunb.song@samsung.com
+MIME-version: 1.0
+X-MTR:  20141023002307469@eunb.song
+Msgkey: 20141023002307469@eunb.song
+X-EPLocale: ko_KR.euc-kr
+X-Priority: 3
+X-EPWebmail-Msg-Type: personal
+X-EPWebmail-Reply-Demand: 0
+X-EPApproval-Locale: 
+X-EPHeader: ML
+X-MLAttribute: 
+X-RootMTR: 20141023002307469@eunb.song
+X-ParentMTR: 
+X-ArchiveUser: EV
+X-CPGSPASS: N
+X-ConfirmMail: N,general
+Content-transfer-encoding: base64
+Content-type: text/plain; charset=euc-kr
+MIME-version: 1.0
+Message-id: <863134949.204101414024143724.JavaMail.weblogic@epmlwas06c>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDJsWRmVeSWpSXmKPExsVy+t8zHd0L3h4hBrsumFpMmDqJ3YHR4+jK
+        tUwBjFENjDaJRckZmWWpCql5yfkpmXnptkqhIW66FkoKGfnFJbZK0UYGxnpGpiZ6RibmepYG
+        sVZGpkoKeYm5qbZKFbpQvUoKRckFQLW5lcVAA3JS9aDiesWpeSkOWfmlIKfoFSfmFpfmpesl
+        5+cqKZQl5pQCjVDST5jKmLHm53Pmgn8cFbu/nGJuYLzD0cXIySEkoCLR8v87I4gtIWAisfLQ
+        DihbTOLCvfVsEDXLGCVOnWSGqZn7fzZ7FyMXUHwOo8TbyzPAEiwCqhL3NsxkB7HZBLQlfhy4
+        ChYXFvCR2DP9I9hQEQEticYXL5lBmpkFVjNKvNncxwqxQV5i8unLYM28AoISJ2c+Yeli5ADa
+        piRx+6UDRFhZYt/GBhaIIyQkZk2/wAph80rMaH8KFZeTmPZ1DdSh0hLnZ22Ae2bx98dQcX6J
+        Y7d3MEHYAhJTzxyEqlGXaJr1ng3C5pNYs/At1ExBidPXuplhdt3fMpcJ5oatLU/AbmAWUJSY
+        0v2QHcLWkvjyYx8bqldAbHeJda+fsYH8LiEwl0Pi9exvzBMYlWYhqZuFZNYsJLOQ1SxgZFnF
+        KJpakFxQnJReZIIc3ZsYIclwwg7GewesDzEKcDAq8fA6sLmHCLEmlhVX5h5iTAbG00RmKdHk
+        fGDKzSuJNzQ2M7IwNTE1NjK3NMMQNjG1sDAxwiGsJM77WupnsJBAemJJanZqakFqUXxRaU5q
+        8SFGJg5OqQbGzKU7mmu9q5dI5l9rTJqdb+i36USmQ+H8sAvq83Ynnir80h8v+ejwb7n4W2Ls
+        plaPt3OG/zITvPL0qLWr2NHvD/OVYx7Wn776a+2Jmxczt5jyL2Z7K7zg14pTp89V/dydeWad
+        xJyW5Rctzh021bnqu2eKrfRVCRvGqYHNU77Pkp53Z6Nc+Zmz/kosxRmJhlrMRcWJAFeAjj+v        AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFKsWRmVeSWpSXmKPExsVy+t/tPt0L3h4hBnObjC0mTJ3E7sDocXTl
+        WqYAxqgMm4zUxJTUIoXUvOT8lMy8dFsl7+B453hTMwNDXUNLC3MlhbzE3FRbJRefAF23zByg
+        qUoKZYk5pUChgMTiYiV9O5ui/NKSVIWM/OISW6VoIwNjPSNTEz0jYwM9E4NYK0MDAyNToKqE
+        jIw1P58zF/zjqNj95RRzA+Mdji5GTg4hARWJlv/fGUFsCQETibn/Z7ND2GISF+6tZ+ti5AKq
+        mcMo8fbyDGaQBIuAqsS9DTPBitgEtCV+HLgKFhcW8JHYM/0j2CARAS2JxhcvmUGamQVWM0q8
+        2dzHCrFNXmLy6ctgzbwCghInZz5h6WLkANqmJHH7pQNEWFli38YGFogjJCRmTb/ACmHzSsxo
+        fwoVl5OY9nUNM4QtLXF+1gZGmKMXf38MFeeXOHZ7BxOELSAx9cxBqBp1iaZZ79kgbD6JNQvf
+        Qs0UlDh9rZsZZtf9LXOZYG7Y2vIE7AZmAUWJKd0P2SFsLYkvP/axoXoFxHaXWPf6GdsERtlZ
+        SFKzkLTPQtKOrGYBI8sqRtHUguSC4qT0CiO94sTc4tK8dL3k/NxNjOB09GzRDsZ/560PMQpw
+        MCrx8M7gcA8RYk0sK67MPcQowcGsJMJba+0RIsSbklhZlVqUH19UmpNafIjRFBhrE5mlRJPz
+        gakyryTe0NjA2NDQ0tzA1NDIQkmcV/5WUpCQQHpiSWp2ampBahFMHxMHp1QDY7y19Z1FSxUb
+        ubwinmgLJIccVf52t1bp9aLob89f6aWdkTFMWHnpVG2gRdTNLRPi3qt9uLa/55X67/KMiz1S
+        z7/NPnXWZ8oCoYLe2eI79jzViva/eX9yo0dQ/bb1j37b7Xb88s/64rM/FdOV93BPjzuTJZZ4
+        bP49o5J5Qmvvs354f06X22NrwR4lluKMREMt5qLiRABqGTQWXQMAAA==
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+Return-Path: <eunb.song@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43512
+X-archive-position: 43513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: eunb.song@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,118 +94,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 15, 2014 at 11:07:12AM +0800, Yijing Wang wrote:
-> Use MSI chip framework instead of arch MSI functions to configure
-> MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
-
-This needs slightly more detail.  You're using the MSI chip framework
-"instead of arch MSI functions".  Well, there are still arch-specific
-functions, i.e., arch_ia64_setup_msi_irq() and
-arch_ia64_teardown_msi_irq().
-
-We used to have arch_setup_msi_irq() which had a weak default
-implementation, and a strong arch-specific implementation here, and you're
-replacing that model with the new "msi-ops" model.  I don't know how you
-want to write that, but it's not that you're getting rid of the
-arch-specific code; you're keeping arch-specific code but structuring it
-differently.
-
-> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-> ---
->  arch/ia64/include/asm/pci.h |   10 ++++++++++
->  arch/ia64/kernel/msi_ia64.c |   14 ++++++++++----
->  arch/ia64/pci/pci.c         |    1 +
->  3 files changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
-> index 52af5ed..907dcba 100644
-> --- a/arch/ia64/include/asm/pci.h
-> +++ b/arch/ia64/include/asm/pci.h
-> @@ -94,6 +94,7 @@ struct pci_controller {
->  	int segment;
->  	int node;		/* nearest node with memory or NUMA_NO_NODE for global allocation */
->  
-> +	struct msi_chip *msi_chip;
->  	void *platform_data;
->  };
->  
-> @@ -101,6 +102,15 @@ struct pci_controller {
->  #define PCI_CONTROLLER(busdev) ((struct pci_controller *) busdev->sysdata)
->  #define pci_domain_nr(busdev)    (PCI_CONTROLLER(busdev)->segment)
->  
-> +extern struct msi_chip chip;
-
-Please make this name more descriptive.  "chip" is way too generic for a
-global name.
-
-> +static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
-> +{
-> +	struct pci_controller *ctrl = bus->sysdata;
-> +
-> +	return ctrl->msi_chip;
-> +}
-> +
->  extern struct pci_ops pci_root_ops;
->  
->  static inline int pci_proc_domain(struct pci_bus *bus)
-> diff --git a/arch/ia64/kernel/msi_ia64.c b/arch/ia64/kernel/msi_ia64.c
-> index 8c3730c..401fc98 100644
-> --- a/arch/ia64/kernel/msi_ia64.c
-> +++ b/arch/ia64/kernel/msi_ia64.c
-> @@ -112,15 +112,16 @@ static struct irq_chip ia64_msi_chip = {
->  };
->  
->  
-> -int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
-> +static int arch_ia64_setup_msi_irq(struct msi_chip *chip,
-> +		struct pci_dev *dev, struct msi_desc *desc)
->  {
->  	if (platform_setup_msi_irq)
-> -		return platform_setup_msi_irq(pdev, desc);
-> +		return platform_setup_msi_irq(dev, desc);
->  
-> -	return ia64_setup_msi_irq(pdev, desc);
-> +	return ia64_setup_msi_irq(dev, desc);
-
-Please don't make gratuitous changes ("pdev" -> "dev") at the same time,
-especially since the rest of the file still uses "pdev".
-
->  }
->  
-> -void arch_teardown_msi_irq(unsigned int irq)
-> +static void arch_ia64_teardown_msi_irq(struct msi_chip *chip, unsigned int irq)
->  {
->  	if (platform_teardown_msi_irq)
->  		return platform_teardown_msi_irq(irq);
-> @@ -128,6 +129,11 @@ void arch_teardown_msi_irq(unsigned int irq)
->  	return ia64_teardown_msi_irq(irq);
->  }
->  
-> +struct msi_chip chip = {
-> +	.setup_irq = arch_ia64_setup_msi_irq,
-> +	.teardown_irq = arch_ia64_teardown_msi_irq,
-> +};
-> +
->  #ifdef CONFIG_INTEL_IOMMU
->  #ifdef CONFIG_SMP
->  static int dmar_msi_set_affinity(struct irq_data *data,
-> diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
-> index 291a582..299b67d 100644
-> --- a/arch/ia64/pci/pci.c
-> +++ b/arch/ia64/pci/pci.c
-> @@ -437,6 +437,7 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
->  
->  	controller->companion = device;
->  	controller->node = acpi_get_node(device->handle);
-> +	controller->msi_chip = &chip;
->  
->  	info = kzalloc(sizeof(*info), GFP_KERNEL);
->  	if (!info) {
-> -- 
-> 1.7.1
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+DQoNCj4+IFRoaXMgcGF0Y2ggYWRkcyBhcmNoX3RyaWdnZXJfYWxsX2NwdV9iYWNrdHJhY2UoKSBm
+b3IgbWlwcyBhcmNoaXRlY3R1cmUuDQoNCj4gRG9uJ3QgZm9yZ2V0IHlvdXIgU2lnbmVkLW9mZi1i
+eQ0KDQpJJ20gc29ycnkgZm90IHRoaXMuIA0KDQo+PiArc3RhdGljIHZvaWQgYXJjaF9kdW1wX3N0
+YWNrKHZvaWQgKmluZm8pDQo+PiArew0KPj4gKyBzdHJ1Y3QgcHRfcmVncyAqcmVnczsgIA0KPj4g
+KyANCj4+ICsgcmVncyA9IGdldF9pcnFfcmVncygpOw0KPj4gKw0KPj4gKyBpZihyZWdzKQ0KPj4g
+KyBzaG93X3JlZ3MocmVncyk7DQo+PiArDQo+PiArIGR1bXBfc3RhY2soKTsNCj4+ICt9DQo+PiAr
+DQo+PiArdm9pZCBhcmNoX3RyaWdnZXJfYWxsX2NwdV9iYWNrdHJhY2UoYm9vbCBpbmNsdWRlX3Nl
+bGYpDQo+PiArew0KPj4gKyBzbXBfY2FsbF9mdW5jdGlvbihhcmNoX2R1bXBfc3RhY2ssIE5VTEws
+IDEpOw0KDQo+IHNob3VsZCB0aGlzIGNhbGwgYXJjaF9kdW1wX3N0YWNrIGRpcmVjdGx5IHRvbyBp
+ZiBpbmNsdWRlX3NlbGY/DQpDdXJyZW50bHksIGluIGNhc2Ugb2YgbWlwcyB0aGVyZSBpcyBubyBj
+YXNlIGluY2x1ZGVfc2VsZiBpcyB0cnVlLCBzbyB0aGlzIGlzIG5vdCBhIHByb2JsZW0uIA0KYXJj
+aF90cmlnZ2VyX2FsbF9jcHVfYmFja3RyYWNlIGNhbiBvbmx5IGJlIGNhbGxlZCBmcm9tIHRyaWdn
+ZXJfYWxsYnV0c2VsZl9jcHVfYmFja3RyYWNlKCkgaW4ga2VybmVsL3dhdGNoZG9nLmMuDQpCdXQg
+YXMgeW91IHNhaWQsIGlmIHRoZSBjYXNlIHdpbGwgYmUgYWRkZWQsIHdlIHNob3VsZCBjb25zaWRl
+ciB0aGF0Lg0KDQpUaGFua3MuDQoNCj4gQ2hlZXJzDQo+IEphbWVz

@@ -1,40 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 17:10:51 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:43172 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010600AbaJXPKsjsErk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2014 17:10:48 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1XhgVh-00049S-5L; Fri, 24 Oct 2014 17:10:37 +0200
-Date:   Fri, 24 Oct 2014 17:10:35 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Qiaowei Ren <qiaowei.ren@intel.com>
-cc:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v9 10/12] x86, mpx: add prctl commands PR_MPX_ENABLE_MANAGEMENT,
- PR_MPX_DISABLE_MANAGEMENT
-In-Reply-To: <alpine.DEB.2.11.1410241436560.5308@nanos>
-Message-ID: <alpine.DEB.2.11.1410241710020.5308@nanos>
-References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-11-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241436560.5308@nanos>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 17:54:47 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:55765 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010600AbaJXPypSpJbA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2014 17:54:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=kjlQCM+0EmlX8BHABTxQekNAn9jRj84zwg2oEd00Xn8=;
+        b=6gJbs49Js5X6+X2KjFZRNW8Mri/kl8o26mCbR+2Rt0rdgBbPPWnGFXt2BZZ4hbP0DwHM8wR/4AuTzju85cmZrApvwlvOwZJjj7cxp0aL/4C/hAdxT/r3fhpGzn2eQGInvqQfFkPEDrMtkEGzf0718ymLTfBR/ArVG9UvtsAXSb0=;
+Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1XhhCI-002Hph-ON
+        for linux-mips@linux-mips.org; Fri, 24 Oct 2014 15:54:38 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:48887 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1XhhBO-002Gmk-1y; Fri, 24 Oct 2014 15:53:43 +0000
+Date:   Fri, 24 Oct 2014 08:53:40 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net, linux390@de.ibm.com,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-cris-kernel@axis.com, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux@openrisc.net,
+        linux-m68k@vger.kernel.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        sparclinux@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net, x86@kernel.org,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 08/47] kernel: Move pm_power_off to common code
+Message-ID: <20141024155340.GA22426@roeck-us.net>
+References: <1413864783-3271-1-git-send-email-linux@roeck-us.net>
+ <1413864783-3271-9-git-send-email-linux@roeck-us.net>
+ <544A2017.7020804@imgtec.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <544A2017.7020804@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=0.0
+X-CTCH-PVer: 0000001
+X-CTCH-Spam: Unknown
+X-CTCH-VOD: Unknown
+X-CTCH-Flags: 0
+X-CTCH-RefID: str=0001.0A020208.544A763E.0272,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-Score: 0.000
+X-CTCH-ScoreCust: 0.000
+X-CTCH-Rules: C_4847,
+X-CTCH-SenderID: linux@roeck-us.net
+X-CTCH-SenderID-Flags: 0
+X-CTCH-SenderID-TotalMessages: 16
+X-CTCH-SenderID-TotalSpam: 0
+X-CTCH-SenderID-TotalSuspected: 0
+X-CTCH-SenderID-TotalConfirmed: 0
+X-CTCH-SenderID-TotalBulk: 0
+X-CTCH-SenderID-TotalVirus: 0
+X-CTCH-SenderID-TotalRecipients: 0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43560
+X-archive-position: 43561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,53 +90,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 24 Oct 2014, Thomas Gleixner wrote:
-> On Sun, 12 Oct 2014, Qiaowei Ren wrote:
-> > +int mpx_enable_management(struct task_struct *tsk)
-> > +{
-> > +	struct mm_struct *mm = tsk->mm;
-> > +	void __user *bd_base = MPX_INVALID_BOUNDS_DIR;
+On Fri, Oct 24, 2014 at 10:47:03AM +0100, James Hogan wrote:
+> Hi Guenter,
 > 
-> What's the point of initializing bd_base here. I had to look twice to
-> figure out that it gets overwritten by task_get_bounds_dir()
+> On 21/10/14 05:12, Guenter Roeck wrote:
+> > pm_power_off is defined for all architectures. Move it to common code.
+> > 
+> > Have all architectures call do_kernel_power_off instead of pm_power_off.
+> > Some architectures point pm_power_off to machine_power_off. For those,
+> > call do_kernel_power_off from machine_power_off instead.
+> > 
+> > Acked-by: David Vrabel <david.vrabel@citrix.com>
+> > Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Acked-by: Hirokazu Takata <takata@linux-m32r.org>
+> > Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
+> > Acked-by: Max Filippov <jcmvbkbc@gmail.com>
+> > Acked-by: Rafael J. Wysocki <rjw@rjwysocki.net>
+> > Acked-by: Richard Weinberger <richard@nod.at>
+> > Acked-by: Xuetao Guan <gxt@mprc.pku.edu.cn>
 > 
-> > @@ -285,6 +285,7 @@ dotraplinkage void do_bounds(struct pt_regs *regs, long error_code)
-> >  	struct xsave_struct *xsave_buf;
-> >  	struct task_struct *tsk = current;
-> >  	siginfo_t info;
-> > +	int ret = 0;
-> >  
-> >  	prev_state = exception_enter();
-> >  	if (notify_die(DIE_TRAP, "bounds", regs, error_code,
-> > @@ -312,8 +313,35 @@ dotraplinkage void do_bounds(struct pt_regs *regs, long error_code)
-> >  	 */
-> >  	switch (status & MPX_BNDSTA_ERROR_CODE) {
-> >  	case 2: /* Bound directory has invalid entry. */
-> > -		if (do_mpx_bt_fault(xsave_buf))
-> > +		down_write(&current->mm->mmap_sem);
+> For metag:
+> Acked-by: James Hogan <james.hogan@imgtec.com>
 > 
-> The handling of mm->mmap_sem here is horrible. The only reason why you
-> want to hold mmap_sem write locked in the first place is that you want
-> to cover the allocation and the mm->bd_addr check.
-> 
-> I think it's wrong to tie this to mmap_sem in the first place. If MPX
-> is enabled then you should have mm->bd_addr and an explicit mutex to
-> protect it.
-> 
-> So the logic would look like this:
-> 
->    mutex_lock(&mm->bd_mutex);
->    if (!kernel_managed(mm))
->       do_trap();
->    else if (do_mpx_bt_fault())
->       force_sig();
->    mutex_unlock(&mm->bd_mutex);
->    
-> No tricks with mmap_sem, no special return value handling. Straight
-> forward code instead of a convoluted and error prone mess.
+Thanks!
 
-After thinking about the deallocation issue, this would be mm->bd_sem.
-
-Thanks,
-
-	tglx
+Guenter

@@ -1,45 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 11:18:21 +0200 (CEST)
-Received: from mail-lb0-f176.google.com ([209.85.217.176]:46086 "EHLO
-        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010214AbaJXJSUfs3LW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2014 11:18:20 +0200
-Received: by mail-lb0-f176.google.com with SMTP id p9so2192464lbv.21
-        for <linux-mips@linux-mips.org>; Fri, 24 Oct 2014 02:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=7k9HCJQ8IQ9LbK0+h2epupIRwWa6vbv42QCMxfRXFos=;
-        b=sMWjk9+u+8pXmyYCCgeuFogXsO+IKmOmZw3hZIdh6i8Hf1xlYWgNgyVcb/ohkf1mnN
-         ctxcU/2RpE1AePspdZ4kFr/cc31xI/VA1kpfIpsC1nVh3l4eAmCauHEESF1vFU/LZXZG
-         FeGTSAn0b/JWlQXAri8Vfm7i9pCoHiZoAkFZnbELjY74s0uSgNV8hmL/XpB6sED0l3Y6
-         jV9BglZuRxdN/xUPmImioTsuRKPVSNvNjttHey24J2u6yof1CfXSR0ZotVH1ZzJMbJnj
-         gd0x6avbP9vYA3oxR9WHLUkEj3rd7zfqLMcUD7xGuouvpeLNRuJTcr4k52oHj0zol304
-         CDVQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 11:47:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30593 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010490AbaJXJrLk-erz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2014 11:47:11 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8A2C1183402BF;
+        Fri, 24 Oct 2014 10:47:02 +0100 (IST)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 24 Oct
+ 2014 10:47:04 +0100
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 24 Oct 2014 10:47:04 +0100
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 24 Oct
+ 2014 10:47:03 +0100
+Message-ID: <544A2017.7020804@imgtec.com>
+Date:   Fri, 24 Oct 2014 10:47:03 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.8.0
 MIME-Version: 1.0
-X-Received: by 10.153.5.33 with SMTP id cj1mr3152938lad.36.1414142294996; Fri,
- 24 Oct 2014 02:18:14 -0700 (PDT)
-Received: by 10.152.105.196 with HTTP; Fri, 24 Oct 2014 02:18:14 -0700 (PDT)
-In-Reply-To: <1414086028.5231.3.camel@marge.simpson.net>
-References: <CAFxy--b+j86kn6Ttc+qTTi4chDkKbrmSAxEsS7_CnzuabJAZfQ@mail.gmail.com>
-        <CAFxy--Z4FpWJbqr8OMoxgpMXa2WMSuCOA_pvtokcwcq6C-uaFg@mail.gmail.com>
-        <1414086028.5231.3.camel@marge.simpson.net>
-Date:   Fri, 24 Oct 2014 14:48:14 +0530
-Message-ID: <CAFxy--Zc+262_GzmxQTLkH4Z=G1xvqe8GWF6ov_hbd=ZKBwiQA@mail.gmail.com>
-Subject: Re: threadirqs and kthreadd_task
-From:   ajay kanala <ajaykanala321@gmail.com>
-To:     Mike Galbraith <umgwanakikbuti@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <ajaykanala321@gmail.com>
+To:     Guenter Roeck <linux@roeck-us.net>, <linux-kernel@vger.kernel.org>
+CC:     <linux-pm@vger.kernel.org>,
+        <adi-buildroot-devel@lists.sourceforge.net>, <linux390@de.ibm.com>,
+        <linux-alpha@vger.kernel.org>, <linux-am33-list@redhat.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-cris-kernel@axis.com>,
+        <linux-hexagon@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <linux@openrisc.net>, <linux-m68k@vger.kernel.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-parisc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <linux-xtensa@linux-xtensa.org>, <sparclinux@vger.kernel.org>,
+        <user-mode-linux-devel@lists.sourceforge.net>,
+        <user-mode-linux-user@lists.sourceforge.net>, <x86@kernel.org>,
+        <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH v2 08/47] kernel: Move pm_power_off to common code
+References: <1413864783-3271-1-git-send-email-linux@roeck-us.net> <1413864783-3271-9-git-send-email-linux@roeck-us.net>
+In-Reply-To: <1413864783-3271-9-git-send-email-linux@roeck-us.net>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43551
+X-archive-position: 43552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ajaykanala321@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,34 +63,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-thanks Mike for info.
-I add mips list in CC now.
+Hi Guenter,
 
-In general, the problem does not look like arch specific. Arch code is
-calling setup_irq. This code calls generic  __setup_irq. And then
-threads are created by this line in kernel/irq/manage.c:
-t = kthread_create(irq_thread, new, "irq/%d-%s", irq,
-                                   new->name);
+On 21/10/14 05:12, Guenter Roeck wrote:
+> pm_power_off is defined for all architectures. Move it to common code.
+> 
+> Have all architectures call do_kernel_power_off instead of pm_power_off.
+> Some architectures point pm_power_off to machine_power_off. For those,
+> call do_kernel_power_off from machine_power_off instead.
+> 
+> Acked-by: David Vrabel <david.vrabel@citrix.com>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Acked-by: Hirokazu Takata <takata@linux-m32r.org>
+> Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
+> Acked-by: Max Filippov <jcmvbkbc@gmail.com>
+> Acked-by: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Acked-by: Richard Weinberger <richard@nod.at>
+> Acked-by: Xuetao Guan <gxt@mprc.pku.edu.cn>
 
-and kthreadd_task is uninitialized till this point.
-
-The code looks similar for x86_64 so i am missing something obvious.
-
-Nevertheless, I am hoping someone from mips-list can throw some light
-if this feature works well on mips.
+For metag:
+Acked-by: James Hogan <james.hogan@imgtec.com>
 
 Thanks
--- Ajay
+James
 
-On Thu, Oct 23, 2014 at 11:10 PM, Mike Galbraith
-<umgwanakikbuti@gmail.com> wrote:
-> On Thu, 2014-10-23 at 22:48 +0530, ajay kanala wrote:
->> Hi,
->> any help?
->
-> You should CC the MIPS folks methinks, works fine in x86_64 at least.
->
-> -Mike
->
->
->
+> diff --git a/arch/metag/kernel/process.c b/arch/metag/kernel/process.c
+> index 483dff9..8d95773 100644
+> --- a/arch/metag/kernel/process.c
+> +++ b/arch/metag/kernel/process.c
+> @@ -67,9 +67,6 @@ void arch_cpu_idle_dead(void)
+>  }
+>  #endif
+>  
+> -void (*pm_power_off)(void);
+> -EXPORT_SYMBOL(pm_power_off);
+> -
+>  void (*soc_restart)(char *cmd);
+>  void (*soc_halt)(void);
+>  
+> @@ -90,8 +87,7 @@ void machine_halt(void)
+>  
+>  void machine_power_off(void)
+>  {
+> -	if (pm_power_off)
+> -		pm_power_off();
+> +	do_kernel_power_off();
+>  	smp_send_stop();
+>  	hard_processor_halt(HALT_OK);
+>  }

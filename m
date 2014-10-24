@@ -1,32 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 02:11:08 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50091 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010103AbaJXAK1Tkxez (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Oct 2014 02:10:27 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9O0AQgm012638;
-        Fri, 24 Oct 2014 02:10:26 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9O0APZn012637;
-        Fri, 24 Oct 2014 02:10:25 +0200
-Message-Id: <1ab02cb057a06c402549ef028e2f0d136fc58279.1414108953.git.ralf@linux-mips.org>
-In-Reply-To: <20141023235416.GA7529@linux-mips.org>
-References: <20141023235416.GA7529@linux-mips.org>
-From:   Ralf Baechle <ralf@linux-mips.org>
-Date:   Fri, 24 Oct 2014 01:50:46 +0200
-Subject: [PATCH 3/3] LED/MIPS: Move SEAD3 LED driver to where it belongs.
-To:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Bryan Wu <cooloney@gmail.com>,
-        Richard Purdie <rpurdie@rpsys.net>, linux-leds@vger.kernel.org
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2014 02:48:43 +0200 (CEST)
+Received: from mailout2.samsung.com ([203.254.224.25]:45281 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009878AbaJXAslSr9o7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2014 02:48:41 +0200
+Received: from epcpsbgr2.samsung.com
+ (u142.gpu120.samsung.co.kr [203.254.230.142])
+ by mailout2.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTP id <0NDX000I2BKX4L10@mailout2.samsung.com> for
+ linux-mips@linux-mips.org; Fri, 24 Oct 2014 09:48:33 +0900 (KST)
+Received: from epcpsbgx3.samsung.com ( [203.254.230.41])
+        by epcpsbgr2.samsung.com (EPCPMTA) with SMTP id E4.15.11124.1E1A9445; Fri,
+ 24 Oct 2014 09:48:33 +0900 (KST)
+X-AuditID: cbfee68e-f79b46d000002b74-75-5449a1e1a439
+Received: from epmailer02 ( [203.254.219.142])
+        by epcpsbgx3.samsung.com (EPCPMTA) with SMTP id 07.6E.14702.1E1A9445; Fri,
+ 24 Oct 2014 09:48:33 +0900 (KST)
+Date:   Fri, 24 Oct 2014 00:48:33 +0000 (GMT)
+From:   Eunbong Song <eunb.song@samsung.com>
+Subject: [PATCH resend] mips: add arch_trigger_all_cpu_backtrace() function
+To:     "ralf@linux-mips.org" <ralf@linux-mips.org>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Reply-to: eunb.song@samsung.com
+MIME-version: 1.0
+X-MTR:  20141024004653417@eunb.song
+Msgkey: 20141024004653417@eunb.song
+X-EPLocale: ko_KR.euc-kr
+X-Priority: 3
+X-EPWebmail-Msg-Type: personal
+X-EPWebmail-Reply-Demand: 0
+X-EPApproval-Locale: 
+X-EPHeader: ML
+X-MLAttribute: 
+X-RootMTR: 20141024004653417@eunb.song
+X-ParentMTR: 
+X-ArchiveUser: EV
+X-CPGSPASS: N
+X-ConfirmMail: N,general
+Content-transfer-encoding: base64
+Content-type: text/plain; charset=euc-kr
+MIME-version: 1.0
+Message-id: <1096029731.11011414111712740.JavaMail.weblogic@epmlwas01c>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprNJsWRmVeSWpSXmKPExsVy+t8zTd2HCz1DDB7ME7eYMHUSuwOjx9GV
+        a5kCGKMaGG0Si5IzMstSFVLzkvNTMvPSbZVCQ9x0LZQUMvKLS2yVoo0MjPWMTE30jEzM9SwN
+        Yq2MTJUU8hJzU22VKnShepUUipILgGpzK4uBBuSk6kHF9YpT81IcsvJLQU7RK07MLS7NS9dL
+        zs9VUihLzCkFGqGknzCVMWNa3wS2gjuiFa9utrE1ME4Q7WLk5BASUJFo+f+dEcSWEDCRuHdj
+        NzuELSZx4d56ti5GLqCaZYwSe5+tYIYp6nuwmBEiMYdR4tLWd0wgCRYBVYlXGyeygthsAtoS
+        Pw5cBWsQFvCR2L1sEliNiIC+xP9zb8E2MAvUSHT/XcwIcYW8xOTTl8HivAKCEidnPmHpYuQA
+        WqYk8XCvD0RYWWLTxU8sEDdISMyafoEVwuaVmNH+FCouJzHt6xqoO6Ulzs/awAjzzOLvj6Hi
+        /BLHbu9ggrAFJKaeOcgIsUpd4tkvR4gwn8SahW+hRgpKnL7WzQyz6v6WuUwwJ2xtecIK8Ymi
+        xJTuh1BfaUl8+bGPDdUnILa7xIX/e1lBwSYhMJVD4ty5E+wTGJVmIambhWTWLCSzkNUsYGRZ
+        xSiaWpBcUJyUXmSEHNubGCGpsG8H480D1ocYBTgYlXh4b8zwDBFiTSwrrsw9xJgMjKWJzFKi
+        yfnAhJtXEm9obGZkYWpiamxkbmmGIWxiamFhYoRDWEmcN0HqZ7CQQHpiSWp2ampBalF8UWlO
+        avEhRiYOTqkGRj/B5wEsMfcqAiY/cbfz88n+XhZf9Xh56f/gx/1a+19vavg9py83If2UqZLL
+        1HunJh/5pDH36f0nxy7+W8r3bMLz2EWvZRZM3JWrfuy1ouSBjBTW8pfTw0VcZWcvP1EqcbTN
+        4Oi9ktj3cWnV64vnXQsyZLHbrr2P/8/VL4yqU7j4f+8zk1773UGJpTgj0VCLuag4EQCcT70d
+        rgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrBKsWRmVeSWpSXmKPExsVy+t/tPt2HCz1DDM72i1hMmDqJ3YHR4+jK
+        tUwBjFEZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaWFuZKCnmJuam2Si4+AbpumTlA
+        U5UUyhJzSoFCAYnFxUr6djZF+aUlqQoZ+cUltkrRRgbGekamJnpGxgZ6JgaxVoYGBkamQFUJ
+        GRnT+iawFdwRrXh1s42tgXGCaBcjJ4eQgIpEy//vjCC2hICJRN+DxVC2mMSFe+vZuhi5gGrm
+        MEpc2vqOCSTBIqAq8WrjRFYQm01AW+LHgavMILawgI/E7mWTwGpEBPQl/p97yw5iMwvUSHT/
+        hRgqJCAvMfn0ZbA4r4CgxMmZT1i6GDmAlilJPNzrAxFWlth08RMLxA0SErOmX2CFsHklZrQ/
+        hYrLSUz7uoYZwpaWOD9rA9zNi78/horzSxy7vYMJwhaQmHrmICPEKnWJZ78cIcJ8EmsWvoUa
+        KShx+lo3M8yq+1vmMsGcsLXlCSvEJ4oSU7ofQn2lJfHlxz42VJ+A2O4SF/7vZZ3AKDsLSWoW
+        kvZZSNqR1SxgZFnFKJpakFxQnJReYaxXnJhbXJqXrpecn7uJEZyKni3ewfj/vPUhRgEORiUe
+        3hszPEOEWBPLiitzDzFKcDArifAe7wQK8aYkVlalFuXHF5XmpBYfYjQFxtlEZinR5Hxgmswr
+        iTc0NjA2NLQ0NzA1NLJQEueNv5UUJCSQnliSmp2aWpBaBNPHxMEp1cAYXcCWyrzu9uQ3C7/Y
+        s83hN2HtPe1UvW3jvRnT8z7HMJzRsjr3s+/H/cW9yg+aJL+LTGWbdv/7+pLHXxseGMmtfecp
+        k3u2y+rKqzRvHeU7ss9aavLdKoWCL8cES24uuWxoc7rCwsHOg0873+Tt24f349J0mXf4sH9S
+        KDlpN32Pf0PgyQXtSz4psRRnJBpqMRcVJwIAj33/+1sDAAA=
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+Return-Path: <eunb.song@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43547
+X-archive-position: 43548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: eunb.song@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,258 +94,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fixes the following randconfig problem
-
-leds-sead3.c:(.text+0x7dc): undefined reference to `led_classdev_unregister'
-leds-sead3.c:(.text+0x7e8): undefined reference to `led_classdev_unregister'
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/mti-sead3/Makefile     |  2 +-
- arch/mips/mti-sead3/leds-sead3.c | 90 ----------------------------------------
- drivers/leds/Kconfig             |  9 ++++
- drivers/leds/Makefile            |  1 +
- drivers/leds/leds-sead3.c        | 90 ++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 101 insertions(+), 91 deletions(-)
- delete mode 100644 arch/mips/mti-sead3/leds-sead3.c
- create mode 100644 drivers/leds/leds-sead3.c
-
-diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
-index febf433..aa8a857 100644
---- a/arch/mips/mti-sead3/Makefile
-+++ b/arch/mips/mti-sead3/Makefile
-@@ -15,7 +15,7 @@ obj-y				:= sead3-lcd.o sead3-display.o sead3-init.o \
- 
- obj-y				+= sead3-i2c-dev.o sead3-i2c.o \
- 				   sead3-pic32-i2c-drv.o sead3-pic32-bus.o \
--				   leds-sead3.o sead3-leds.o
-+				   sead3-leds.o
- 
- obj-$(CONFIG_EARLY_PRINTK)	+= sead3-console.o
- obj-$(CONFIG_USB_EHCI_HCD)	+= sead3-ehci.o
-diff --git a/arch/mips/mti-sead3/leds-sead3.c b/arch/mips/mti-sead3/leds-sead3.c
-deleted file mode 100644
-index e5632e6..0000000
---- a/arch/mips/mti-sead3/leds-sead3.c
-+++ /dev/null
-@@ -1,90 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-- */
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/init.h>
--#include <linux/platform_device.h>
--#include <linux/leds.h>
--#include <linux/err.h>
--#include <linux/io.h>
--
--#define DRVNAME "sead3-led"
--
--static void sead3_pled_set(struct led_classdev *led_cdev,
--		enum led_brightness value)
--{
--	pr_debug("sead3_pled_set\n");
--	writel(value, (void __iomem *)0xBF000210);	/* FIXME */
--}
--
--static void sead3_fled_set(struct led_classdev *led_cdev,
--		enum led_brightness value)
--{
--	pr_debug("sead3_fled_set\n");
--	writel(value, (void __iomem *)0xBF000218);	/* FIXME */
--}
--
--static struct led_classdev sead3_pled = {
--	.name		= "sead3::pled",
--	.brightness_set = sead3_pled_set,
--	.flags		= LED_CORE_SUSPENDRESUME,
--};
--
--static struct led_classdev sead3_fled = {
--	.name		= "sead3::fled",
--	.brightness_set = sead3_fled_set,
--	.flags		= LED_CORE_SUSPENDRESUME,
--};
--
--static int sead3_led_probe(struct platform_device *pdev)
--{
--	int ret;
--
--	ret = led_classdev_register(&pdev->dev, &sead3_pled);
--	if (ret < 0)
--		return ret;
--
--	ret = led_classdev_register(&pdev->dev, &sead3_fled);
--	if (ret < 0)
--		led_classdev_unregister(&sead3_pled);
--
--	return ret;
--}
--
--static int sead3_led_remove(struct platform_device *pdev)
--{
--	led_classdev_unregister(&sead3_pled);
--	led_classdev_unregister(&sead3_fled);
--	return 0;
--}
--
--static struct platform_driver sead3_led_driver = {
--	.probe		= sead3_led_probe,
--	.remove		= sead3_led_remove,
--	.driver		= {
--		.name		= DRVNAME,
--		.owner		= THIS_MODULE,
--	},
--};
--
--static int __init sead3_led_init(void)
--{
--	return platform_driver_register(&sead3_led_driver);
--}
--
--static void __exit sead3_led_exit(void)
--{
--	platform_driver_unregister(&sead3_led_driver);
--}
--
--module_init(sead3_led_init);
--module_exit(sead3_led_exit);
--
--MODULE_AUTHOR("Kristian Kielhofner <kris@krisk.org>");
--MODULE_DESCRIPTION("SEAD3 LED driver");
--MODULE_LICENSE("GPL");
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index a210338..b86aa85 100644
---- a/drivers/leds/Kconfig
-+++ b/drivers/leds/Kconfig
-@@ -477,6 +477,15 @@ config LEDS_MENF21BMC
- 	  This driver can also be built as a module. If so the module
- 	  will be called leds-menf21bmc.
- 
-+config LEDS_SEAD3
-+	tristate "LED support for the MIPS SEAD 3 board"
-+	depends on LEDS_CLASS && MIPS_SEAD3
-+	help
-+	  Say Y here to include support for the MEN 14F021P00 BMC LEDs.
-+
-+	  This driver can also be built as a module. If so the module
-+	  will be called leds-sead3.
-+
- comment "LED driver for blink(1) USB RGB LED is under Special HID drivers (HID_THINGM)"
- 
- config LEDS_BLINKM
-diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
-index a2b1647..4f22241 100644
---- a/drivers/leds/Makefile
-+++ b/drivers/leds/Makefile
-@@ -56,6 +56,7 @@ obj-$(CONFIG_LEDS_BLINKM)		+= leds-blinkm.o
- obj-$(CONFIG_LEDS_SYSCON)		+= leds-syscon.o
- obj-$(CONFIG_LEDS_VERSATILE)		+= leds-versatile.o
- obj-$(CONFIG_LEDS_MENF21BMC)		+= leds-menf21bmc.o
-+obj-$(CONFIG_LEDS_SEAD3)		+= leds-sead3.o
- 
- # LED SPI Drivers
- obj-$(CONFIG_LEDS_DAC124S085)		+= leds-dac124s085.o
-diff --git a/drivers/leds/leds-sead3.c b/drivers/leds/leds-sead3.c
-new file mode 100644
-index 0000000..0cf79f5
---- /dev/null
-+++ b/drivers/leds/leds-sead3.c
-@@ -0,0 +1,90 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-+ */
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/platform_device.h>
-+#include <linux/leds.h>
-+#include <linux/err.h>
-+#include <linux/io.h>
-+
-+static void sead3_pled_set(struct led_classdev *led_cdev,
-+		enum led_brightness value)
-+{
-+	pr_debug("sead3_pled_set\n");
-+	writel(value, (void __iomem *)0xBF000210);	/* FIXME */
-+}
-+
-+static void sead3_fled_set(struct led_classdev *led_cdev,
-+		enum led_brightness value)
-+{
-+	pr_debug("sead3_fled_set\n");
-+	writel(value, (void __iomem *)0xBF000218);	/* FIXME */
-+}
-+
-+static struct led_classdev sead3_pled = {
-+	.name		= "sead3::pled",
-+	.brightness_set = sead3_pled_set,
-+	.flags		= LED_CORE_SUSPENDRESUME,
-+};
-+
-+static struct led_classdev sead3_fled = {
-+	.name		= "sead3::fled",
-+	.brightness_set = sead3_fled_set,
-+	.flags		= LED_CORE_SUSPENDRESUME,
-+};
-+
-+static int sead3_led_probe(struct platform_device *pdev)
-+{
-+	int ret;
-+
-+	ret = led_classdev_register(&pdev->dev, &sead3_pled);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = led_classdev_register(&pdev->dev, &sead3_fled);
-+	if (ret < 0)
-+		led_classdev_unregister(&sead3_pled);
-+
-+	return ret;
-+}
-+
-+static int sead3_led_remove(struct platform_device *pdev)
-+{
-+	led_classdev_unregister(&sead3_pled);
-+	led_classdev_unregister(&sead3_fled);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver sead3_led_driver = {
-+	.probe		= sead3_led_probe,
-+	.remove		= sead3_led_remove,
-+	.driver		= {
-+		.name		= "sead3-led",
-+		.owner		= THIS_MODULE,
-+	},
-+};
-+
-+static int __init sead3_led_init(void)
-+{
-+	return platform_driver_register(&sead3_led_driver);
-+}
-+
-+static void __exit sead3_led_exit(void)
-+{
-+	platform_driver_unregister(&sead3_led_driver);
-+}
-+
-+module_init(sead3_led_init);
-+module_exit(sead3_led_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("SEAD3 LED driver");
-+MODULE_AUTHOR("Kristian Kielhofner <kris@krisk.org>");
-+MODULE_ALIAS("platform:sead3-led");
--- 
-1.9.3
+CkN1cnJlbnRseSwgYXJjaF90cmlnZ2VyX2FsbF9jcHVfYmFja3RyYWNlKCkgaXMgZGVmaW5lZCBp
+biBvbmx5IHg4NiBhbmQgc3BhcmMgd2hpY2ggaGFzIG5taSBpbnRlcnJ1cHQuCkJ1dCBpbiBjYXNl
+IG9mIHNvZnRsb2NrdXAgbm90IGEgaGFkcmxvY2t1cCwgaXQgY291bGQgYmUgcG9zc2libGUgdG8g
+ZHVtcCBiYWNrdHJhY2Ugb2YgYWxsIGNwdXMuCkFuZCB0aGlzIGNvdWxkIGJlIGhlbHBmdWwgZm9y
+IGRlYnVnZ2luZy4KCmZvciBleGFtcGxlLCBpZiBzeXN0ZW0gaGFzIDIgY3B1cy4KCglDUFUgMAkJ
+CQlDUFUgMQogYWNxdWlyZSByZWFkX2xvY2soKQoKCQkJCXRyeSB0byBkbyB3cml0ZV9sb2NrKCkK
+CiAsLCwKIG1pc3NpbmcgcmVhZF91bmxvY2soKQoKSW4gdGhpcyBjYXNlLCBkdW1wX3N0YWNrKCkg
+cHJpbnQgb25seSBiYWNrdHJhY2UgZm9yICJDUFUgMCIuCklmIENQVTEncyBjYWxsdHJhY2UgaXMg
+cHJpbnRlZCBpdCdzIHZlcnkgaGVscGZ1bC4KClRoaXMgcGF0Y2ggYWRkcyBhcmNoX3RyaWdnZXJf
+YWxsX2NwdV9iYWNrdHJhY2UoKSBmb3IgbWlwcyBhcmNoaXRlY3R1cmUuCkFuZCB0aGlzIGVuYWJs
+ZXMgd2hlbiBzb2Z0bG9ja3VwX2FsbF9jcHVfYmFja3RyYWNlIGlzIGVxdWFsdCB0byAxIGFuZApz
+b2Z0bG9jayBpcyBvY2N1cnJlZCB0byBkdW1wIGFsbCBjcHUncyBiYWNrdHJhY2UuCgpTaWduZWQt
+b2ZmLWJ5OiBFdW5ib25nIFNvbmcgPGV1bmIuc29uZ0BzYW1zdW5nLmNvbT4KLS0tCiBhcmNoL21p
+cHMvaW5jbHVkZS9hc20vaXJxLmggfCAgICAzICsrKwogYXJjaC9taXBzL2tlcm5lbC9wcm9jZXNz
+LmMgIHwgICAxOCArKysrKysrKysrKysrKysrKysKIDIgZmlsZXMgY2hhbmdlZCwgMjEgaW5zZXJ0
+aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL21pcHMvaW5jbHVkZS9h
+c20vaXJxLmggYi9hcmNoL21pcHMvaW5jbHVkZS9hc20vaXJxLmgKaW5kZXggMzlmMDdhZS4uNWE0
+ZTFiYiAxMDA2NDQKLS0tIGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2lycS5oCisrKyBiL2FyY2gv
+bWlwcy9pbmNsdWRlL2FzbS9pcnEuaApAQCAtNDgsNCArNDgsNyBAQCBleHRlcm4gaW50IGNwMF9j
+b21wYXJlX2lycTsKIGV4dGVybiBpbnQgY3AwX2NvbXBhcmVfaXJxX3NoaWZ0OwogZXh0ZXJuIGlu
+dCBjcDBfcGVyZmNvdW50X2lycTsKIAordm9pZCBhcmNoX3RyaWdnZXJfYWxsX2NwdV9iYWNrdHJh
+Y2UoYm9vbCk7CisjZGVmaW5lIGFyY2hfdHJpZ2dlcl9hbGxfY3B1X2JhY2t0cmFjZSBhcmNoX3Ry
+aWdnZXJfYWxsX2NwdV9iYWNrdHJhY2UKKwogI2VuZGlmIC8qIF9BU01fSVJRX0ggKi8KZGlmZiAt
+LWdpdCBhL2FyY2gvbWlwcy9rZXJuZWwvcHJvY2Vzcy5jIGIvYXJjaC9taXBzL2tlcm5lbC9wcm9j
+ZXNzLmMKaW5kZXggNjM2YjA3NC4uNTgwMWYyMSAxMDA2NDQKLS0tIGEvYXJjaC9taXBzL2tlcm5l
+bC9wcm9jZXNzLmMKKysrIGIvYXJjaC9taXBzL2tlcm5lbC9wcm9jZXNzLmMKQEAgLTQyLDYgKzQy
+LDcgQEAKICNpbmNsdWRlIDxhc20vaXNhZGVwLmg+CiAjaW5jbHVkZSA8YXNtL2luc3QuaD4KICNp
+bmNsdWRlIDxhc20vc3RhY2t0cmFjZS5oPgorI2luY2x1ZGUgPGFzbS9pcnFfcmVncy5oPgogCiAj
+aWZkZWYgQ09ORklHX0hPVFBMVUdfQ1BVCiB2b2lkIGFyY2hfY3B1X2lkbGVfZGVhZCh2b2lkKQpA
+QCAtNTMyLDMgKzUzMywyMCBAQCB1bnNpZ25lZCBsb25nIGFyY2hfYWxpZ25fc3RhY2sodW5zaWdu
+ZWQgbG9uZyBzcCkKIAogCXJldHVybiBzcCAmIEFMTUFTSzsKIH0KKworc3RhdGljIHZvaWQgYXJj
+aF9kdW1wX3N0YWNrKHZvaWQgKmluZm8pCit7CisJc3RydWN0IHB0X3JlZ3MgKnJlZ3M7ICAKKwkK
+KwlyZWdzID0gZ2V0X2lycV9yZWdzKCk7CisKKwlpZiAocmVncykKKwkJc2hvd19yZWdzKHJlZ3Mp
+OworCisJZHVtcF9zdGFjaygpOworfQorCit2b2lkIGFyY2hfdHJpZ2dlcl9hbGxfY3B1X2JhY2t0
+cmFjZShib29sIGluY2x1ZGVfc2VsZikKK3sKKwlzbXBfY2FsbF9mdW5jdGlvbihhcmNoX2R1bXBf
+c3RhY2ssIE5VTEwsIDEpOworfQotLSAKMS43LjAuMQoK

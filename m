@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Oct 2014 15:04:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:33843 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Oct 2014 15:11:30 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34014 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010814AbaJYNEtjaL-n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 25 Oct 2014 15:04:49 +0200
+        id S27010814AbaJYNL3WUwRr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 25 Oct 2014 15:11:29 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9PD4cPV017193;
-        Sat, 25 Oct 2014 15:04:38 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9PDBNOo017295;
+        Sat, 25 Oct 2014 15:11:23 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9PD4SBu017184;
-        Sat, 25 Oct 2014 15:04:28 +0200
-Date:   Sat, 25 Oct 2014 15:04:28 +0200
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9PDBFpa017294;
+        Sat, 25 Oct 2014 15:11:15 +0200
+Date:   Sat, 25 Oct 2014 15:11:15 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Yijing Wang <wangyijing@huawei.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
@@ -37,20 +37,21 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         Thierry Reding <thierry.reding@gmail.com>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
         Liviu Dudau <liviu@dudau.co.uk>
-Subject: Re: [PATCH v3 16/27] Mips/MSI: Save msi chip in pci sysdata
-Message-ID: <20141025130428.GD16738@linux-mips.org>
+Subject: Re: [PATCH v3 18/27] MIPS/Xlp: Remove the dead function
+ destroy_irq() to fix build error
+Message-ID: <20141025131115.GE16738@linux-mips.org>
 References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com>
- <1413342435-7876-17-git-send-email-wangyijing@huawei.com>
+ <1413342435-7876-19-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1413342435-7876-17-git-send-email-wangyijing@huawei.com>
+In-Reply-To: <1413342435-7876-19-git-send-email-wangyijing@huawei.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43565
+X-archive-position: 43566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,12 +68,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 15, 2014 at 11:07:04AM +0800, Yijing Wang wrote:
-
-> +static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
-> +{
-> +	struct pci_controller *control = (struct pci_controller *)bus->sysdata;
-
-bus->sysdata is void * so this cast is unnecessary.
+Applied, thanks.
 
   Ralf

@@ -1,68 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 02:10:23 +0100 (CET)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:50910 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010898AbaJ0BKTwGxCk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 02:10:19 +0100
-Received: from 172.24.2.119 (EHLO SZXEML414-HUB.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AWD64653;
-        Mon, 27 Oct 2014 09:06:44 +0800 (CST)
-Received: from [127.0.0.1] (10.177.27.212) by SZXEML414-HUB.china.huawei.com
- (10.82.67.153) with Microsoft SMTP Server id 14.3.158.1; Mon, 27 Oct 2014
- 09:06:26 +0800
-Message-ID: <544D9A8E.6030607@huawei.com>
-Date:   Mon, 27 Oct 2014 09:06:22 +0800
-From:   Yijing Wang <wangyijing@huawei.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 02:46:01 +0100 (CET)
+Received: from mga03.intel.com ([134.134.136.65]:62454 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010898AbaJ0Bp7yTs12 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 02:45:59 +0100
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP; 26 Oct 2014 18:44:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.04,792,1406617200"; 
+   d="scan'208";a="625947589"
+Received: from pgsmsx103.gar.corp.intel.com ([10.221.44.82])
+  by orsmga002.jf.intel.com with ESMTP; 26 Oct 2014 18:45:49 -0700
+Received: from kmsmsx151.gar.corp.intel.com (172.21.73.86) by
+ PGSMSX103.gar.corp.intel.com (10.221.44.82) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Mon, 27 Oct 2014 09:43:02 +0800
+Received: from shsmsx152.ccr.corp.intel.com (10.239.6.52) by
+ KMSMSX151.gar.corp.intel.com (172.21.73.86) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Mon, 27 Oct 2014 09:43:01 +0800
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.156]) by
+ SHSMSX152.ccr.corp.intel.com ([169.254.6.13]) with mapi id 14.03.0195.001;
+ Mon, 27 Oct 2014 09:43:00 +0800
+From:   "Ren, Qiaowei" <qiaowei.ren@intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
+ violation information
+Thread-Topic: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
+ violation information
+Thread-Index: AQHP5dg7yyhiQxbkmEGH5PJVxeeZs5w+vGAAgASFDTA=
+Date:   Mon, 27 Oct 2014 01:43:00 +0000
+Message-ID: <9E0BE1322F2F2246BD820DA9FC397ADE0180ED16@shsmsx102.ccr.corp.intel.com>
+References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com>
+ <1413088915-13428-10-git-send-email-qiaowei.ren@intel.com>
+ <alpine.DEB.2.11.1410241408360.5308@nanos>
+In-Reply-To: <alpine.DEB.2.11.1410241408360.5308@nanos>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
-        Wuyun <wuyun.wu@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
-        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
-        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
-        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Liviu Dudau <liviu@dudau.co.uk>
-Subject: Re: [PATCH v3 16/27] Mips/MSI: Save msi chip in pci sysdata
-References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com> <1413342435-7876-17-git-send-email-wangyijing@huawei.com> <20141025130428.GD16738@linux-mips.org>
-In-Reply-To: <20141025130428.GD16738@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.27.212]
-X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020207.544D9AA8.01C8,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: 62718a06b6d03d51a2e550dfc5780efa
-Return-Path: <wangyijing@huawei.com>
+Return-Path: <qiaowei.ren@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43569
+X-archive-position: 43570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangyijing@huawei.com
+X-original-sender: qiaowei.ren@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,24 +68,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2014/10/25 21:04, Ralf Baechle wrote:
-> On Wed, Oct 15, 2014 at 11:07:04AM +0800, Yijing Wang wrote:
-> 
->> +static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
->> +{
->> +	struct pci_controller *control = (struct pci_controller *)bus->sysdata;
-> 
-> bus->sysdata is void * so this cast is unnecessary.
-
-Yes, will update it, thanks!
-
-> 
->   Ralf
-> 
-> .
-> 
 
 
--- 
-Thanks!
-Yijing
+On 2014-10-24, Thomas Gleixner wrote:
+> On Sun, 12 Oct 2014, Qiaowei Ren wrote:
+> 
+>> This patch sets bound violation fields of siginfo struct in #BR
+>> exception handler by decoding the user instruction and constructing
+>> the faulting pointer.
+>> 
+>> This patch does't use the generic decoder, and implements a limited
+>> special-purpose decoder to decode MPX instructions, simply because
+>> the generic decoder is very heavyweight not just in terms of
+>> performance but in terms of interface -- because it has to.
+> 
+> My question still stands why using the existing decoder is an issue.
+> Performance is a complete non issue in case of a bounds violation and
+> the interface argument is just silly, really.
+> 
+
+As hpa said, we only need to decode several mpx instructions including BNDCL/BNDCU, and general decoder looks like a little heavy. Peter, what do you think about it?
+
+Thanks,
+Qiaowei

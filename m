@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 11:06:40 +0100 (CET)
-Received: from cpsmtpb-ews04.kpnxchange.com ([213.75.39.7]:59986 "EHLO
-        cpsmtpb-ews04.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011183AbaJ0KGitYvBD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 11:06:38 +0100
-Received: from cpsps-ews15.kpnxchange.com ([10.94.84.182]) by cpsmtpb-ews04.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Mon, 27 Oct 2014 11:06:32 +0100
-Received: from CPSMTPM-TLF104.kpnxchange.com ([195.121.3.7]) by cpsps-ews15.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Mon, 27 Oct 2014 11:06:31 +0100
-Received: from [192.168.10.108] ([77.173.140.92]) by CPSMTPM-TLF104.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Mon, 27 Oct 2014 11:06:31 +0100
-Message-ID: <1414404391.28499.10.camel@x220>
-Subject: MIPS: ralink: CONFIG_SOC_RT2880?
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 11:44:57 +0100 (CET)
+Received: from cpsmtpb-ews06.kpnxchange.com ([213.75.39.9]:60326 "EHLO
+        cpsmtpb-ews06.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011272AbaJ0KozMV3hc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 11:44:55 +0100
+Received: from cpsps-ews07.kpnxchange.com ([10.94.84.174]) by cpsmtpb-ews06.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Mon, 27 Oct 2014 11:44:48 +0100
+Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews07.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Mon, 27 Oct 2014 11:44:48 +0100
+Received: from [192.168.10.108] ([77.173.140.92]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Mon, 27 Oct 2014 11:44:48 +0100
+Message-ID: <1414406687.28499.17.camel@x220>
+Subject: MIPS: ralink: CONFIG_SOC_MT7621?
 From:   Paul Bolle <pebolle@tiscali.nl>
 To:     John Crispin <blogic@openwrt.org>
 Cc:     Valentin Rothberg <valentinrothberg@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Date:   Mon, 27 Oct 2014 11:06:31 +0100
+Date:   Mon, 27 Oct 2014 11:44:47 +0100
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 Oct 2014 10:06:31.0581 (UTC) FILETIME=[AE8894D0:01CFF1CD]
+X-OriginalArrivalTime: 27 Oct 2014 10:44:48.0270 (UTC) FILETIME=[077782E0:01CFF1D3]
 X-RcptDomain: linux-mips.org
 Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43576
+X-archive-position: 43577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,11 +46,13 @@ X-list: linux-mips
 
 John,
 
-Your commit 0b162e003c2c ("MIPS: ralink: add rt2880 pci driver") landed
-in today's linux-next (ie, next-20141027). It adds a check for
-CONFIG_SOC_RT2880. But there's no Kconfig symbol SOC_RT2880.
+Your commit 715f2e581856 ("MIPS: ralink: cleanup early_printk") landed
+in today's linux-next (ie, next-20141027). It adds two checks for
+CONFIG_SOC_MT7621. The patch to add Kconfig symbol SOC_MT7621 is still
+pending (see http://patchwork.linux-mips.org/patch/8033/ ).
 
-Did you perhaps mean CONFIG_SOC_RT288X here?
+Obviously, until that patch lands these two checks will always evaluate
+to false.
 
 
 Paul Bolle

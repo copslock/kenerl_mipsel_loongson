@@ -1,54 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 16:57:32 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:60362 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 16:58:08 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:60512 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011323AbaJ0P5aJP0eb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 16:57:30 +0100
+        with ESMTP id S27011323AbaJ0P6Fpb6AH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 16:58:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=9p7Kyvkd32EwYdUWVXn5amyOAEuE5K6+3Rni4Q/JRKg=;
-        b=paneM7dKkJN2pDIJDDc/2skr8r4sga518S7KRb+fu/gokcrt+I25w5eByKK0DvaKHWfgTFLhu5pix1eTgwYGuMb1Q99DunCAAxfmhMvQna2i9FD0MNcK1DiIyrWlrSJU8Cdlksn6asmUXq9gdoskziu/VReobycck8ohMMxkjx4=;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From; bh=TqeID4vPFlEKqJJlqKWxuOqCcUUefoMFGCvYY/IZuRM=;
+        b=zxE0ijZVuQMbxvUSJqIruFnAEN1aeTv4Bz5jxRQ2SDRuGzGYHMDyfgexH8uM4imm1nGTP/TVwjSnjeIoSiQD5gbutZJiadX9TXGGDTHrvh7cLD0Hve89GlAvVecpd+hchIlq7AdVJjfwPsZAFyVb874jxfbYF5cLLUYmer5HiJA=;
 Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1XimfZ-000d0d-8y
-        for linux-mips@linux-mips.org; Mon, 27 Oct 2014 15:57:22 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54030 helo=localhost)
+        id 1XimgB-000e09-0i
+        for linux-mips@linux-mips.org; Mon, 27 Oct 2014 15:57:59 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54071 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.82)
         (envelope-from <linux@roeck-us.net>)
-        id 1Ximea-000bQF-CI; Mon, 27 Oct 2014 15:56:22 +0000
+        id 1Ximfq-000dUh-FL; Mon, 27 Oct 2014 15:57:39 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-pm@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        adi-buildroot-devel@lists.sourceforge.net, linux390@de.ibm.com,
-        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-cris-kernel@axis.com, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux@lists.openrisc.net,
-        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net, x86@kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: [PATCH v3 08/47] kernel: Move pm_power_off to common code
-Date:   Mon, 27 Oct 2014 08:55:15 -0700
-Message-Id: <1414425354-10359-9-git-send-email-linux@roeck-us.net>
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: [PATCH v3 40/47] mips: Register with kernel power-off handler
+Date:   Mon, 27 Oct 2014 08:55:47 -0700
+Message-Id: <1414425354-10359-41-git-send-email-linux@roeck-us.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1414425354-10359-1-git-send-email-linux@roeck-us.net>
 References: <1414425354-10359-1-git-send-email-linux@roeck-us.net>
 X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=2.5
+X-OutGoing-Spam-Status: No, score=-1.0
 X-CTCH-PVer: 0000001
 X-CTCH-Spam: Unknown
 X-CTCH-VOD: Unknown
 X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020208.544E6B61.01BC,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-RefID: str=0001.0A020209.544E6B87.0032,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
 X-CTCH-Score: 0.000
 X-CTCH-ScoreCust: 0.000
 X-CTCH-Rules: 
 X-CTCH-SenderID: linux@roeck-us.net
 X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 188
+X-CTCH-SenderID-TotalMessages: 276
 X-CTCH-SenderID-TotalSpam: 0
 X-CTCH-SenderID-TotalSuspected: 0
 X-CTCH-SenderID-TotalConfirmed: 0
@@ -68,7 +58,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43595
+X-archive-position: 43596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,888 +75,530 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-pm_power_off is defined for all architectures. Move it to common code.
+Register with kernel power-off handler instead of setting pm_power_off
+directly.
 
-Have all architectures call do_kernel_power_off instead of pm_power_off.
-Some architectures point pm_power_off to machine_power_off. For those,
-call do_kernel_power_off from machine_power_off instead.
+If there is an indication that there can be more than one power-off handler,
+use register_power_off_handler, otherwise use register_power_off_handler_simple
+to register the power-off handler.
 
-Acked-by: David Vrabel <david.vrabel@citrix.com>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Hirokazu Takata <takata@linux-m32r.org>
-Acked-by: James Hogan <james.hogan@imgtec.com>
-Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
-Acked-by: Rafael J. Wysocki <rjw@rjwysocki.net>
-Acked-by: Richard Weinberger <richard@nod.at>
-Acked-by: Xuetao Guan <gxt@mprc.pku.edu.cn>
+If the power-off handler only resets or stops the system, select the fallback
+priority to indicate that the power-off handler is one of last resort.
+If the power-off handler powers off the system, select the default priority,
+unless the power-off handler installation code suggests that there can be
+more than one power-off handler and the new handler is only installed
+conditionally. In this case, install the handler with low priority.
+
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
 Acked-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
 v3:
 - Replace poweroff in all newly introduced variables and in text
   with power_off or power-off as appropriate
+- Replace POWEROFF_PRIORITY_xxx with POWER_OFF_PRIORITY_xxx
 v2:
-- do_kernel_poweroff -> do_kernel_power_off
-- have_kernel_poweroff -> have_kernel_power_off
+- Use defines to specify poweroff handler priorities
 
- arch/alpha/kernel/process.c        |  9 +++------
- arch/arc/kernel/reset.c            |  5 +----
- arch/arm/kernel/process.c          |  5 +----
- arch/arm64/kernel/process.c        |  5 +----
- arch/avr32/kernel/process.c        |  6 +-----
- arch/blackfin/kernel/process.c     |  3 ---
- arch/blackfin/kernel/reboot.c      |  2 ++
- arch/c6x/kernel/process.c          |  9 +--------
- arch/cris/kernel/process.c         |  4 +---
- arch/frv/kernel/process.c          |  5 ++---
- arch/hexagon/kernel/reset.c        |  5 ++---
- arch/ia64/kernel/process.c         |  5 +----
- arch/m32r/kernel/process.c         |  8 ++++----
- arch/m68k/kernel/process.c         |  6 +-----
- arch/metag/kernel/process.c        |  6 +-----
- arch/microblaze/kernel/process.c   |  3 ---
- arch/microblaze/kernel/reset.c     |  1 +
- arch/mips/kernel/reset.c           |  6 +-----
- arch/mn10300/kernel/process.c      |  8 ++------
- arch/openrisc/kernel/process.c     |  8 +++++---
- arch/parisc/kernel/process.c       |  8 ++++----
- arch/powerpc/kernel/setup-common.c |  6 +++---
- arch/s390/kernel/setup.c           |  8 ++------
- arch/score/kernel/process.c        |  8 ++++----
- arch/sh/kernel/reboot.c            |  6 +-----
- arch/sparc/kernel/process_32.c     | 10 ++--------
- arch/sparc/kernel/reboot.c         |  8 ++------
- arch/tile/kernel/reboot.c          |  7 +++----
- arch/um/kernel/reboot.c            |  2 --
- arch/unicore32/kernel/process.c    |  9 +--------
- arch/x86/kernel/reboot.c           | 11 +++--------
- arch/x86/xen/enlighten.c           |  3 +--
- arch/xtensa/kernel/process.c       |  4 ----
- drivers/parisc/power.c             |  3 +--
- kernel/power/power_off_handler.c   |  8 ++++++++
- kernel/reboot.c                    |  4 ++--
- 36 files changed, 68 insertions(+), 146 deletions(-)
+ arch/mips/alchemy/board-gpr.c          |  3 ++-
+ arch/mips/alchemy/board-mtx1.c         |  3 ++-
+ arch/mips/alchemy/board-xxs1500.c      |  3 ++-
+ arch/mips/alchemy/devboards/platform.c | 17 +++++++++++++++--
+ arch/mips/ar7/setup.c                  |  3 ++-
+ arch/mips/ath79/setup.c                |  3 ++-
+ arch/mips/bcm47xx/setup.c              |  3 ++-
+ arch/mips/bcm63xx/setup.c              |  3 ++-
+ arch/mips/cobalt/setup.c               |  3 ++-
+ arch/mips/dec/setup.c                  |  3 ++-
+ arch/mips/emma/markeins/setup.c        |  3 ++-
+ arch/mips/jz4740/reset.c               |  3 ++-
+ arch/mips/lantiq/falcon/reset.c        |  3 ++-
+ arch/mips/lantiq/xway/reset.c          |  3 ++-
+ arch/mips/lasat/reset.c                |  3 ++-
+ arch/mips/loongson/common/reset.c      |  3 ++-
+ arch/mips/loongson1/common/reset.c     |  3 ++-
+ arch/mips/mti-malta/malta-reset.c      |  3 ++-
+ arch/mips/mti-sead3/sead3-reset.c      |  3 ++-
+ arch/mips/netlogic/xlp/setup.c         |  3 ++-
+ arch/mips/netlogic/xlr/setup.c         |  3 ++-
+ arch/mips/pmcs-msp71xx/msp_setup.c     |  3 ++-
+ arch/mips/pnx833x/common/setup.c       |  3 ++-
+ arch/mips/ralink/reset.c               |  3 ++-
+ arch/mips/rb532/setup.c                |  3 ++-
+ arch/mips/sgi-ip22/ip22-reset.c        |  3 ++-
+ arch/mips/sgi-ip27/ip27-reset.c        |  3 ++-
+ arch/mips/sgi-ip32/ip32-reset.c        |  3 ++-
+ arch/mips/sibyte/common/cfe.c          |  3 ++-
+ arch/mips/sni/setup.c                  |  3 ++-
+ arch/mips/txx9/generic/setup.c         |  3 ++-
+ arch/mips/vr41xx/common/pmu.c          |  3 ++-
+ 32 files changed, 77 insertions(+), 33 deletions(-)
 
-diff --git a/arch/alpha/kernel/process.c b/arch/alpha/kernel/process.c
-index 1941a07..81c43f8 100644
---- a/arch/alpha/kernel/process.c
-+++ b/arch/alpha/kernel/process.c
-@@ -24,6 +24,7 @@
- #include <linux/vt.h>
- #include <linux/mman.h>
- #include <linux/elfcore.h>
-+#include <linux/pm.h>
- #include <linux/reboot.h>
- #include <linux/tty.h>
- #include <linux/console.h>
-@@ -40,12 +41,6 @@
- #include "proto.h"
- #include "pci_impl.h"
- 
--/*
-- * Power off function, if any
-- */
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- #ifdef CONFIG_ALPHA_WTINT
- /*
-  * Sleep the CPU.
-@@ -184,6 +179,8 @@ machine_halt(void)
- void
- machine_power_off(void)
+diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
+index acf9a2a..abfc93a 100644
+--- a/arch/mips/alchemy/board-gpr.c
++++ b/arch/mips/alchemy/board-gpr.c
+@@ -89,7 +89,8 @@ void __init board_setup(void)
  {
-+	do_kernel_power_off();
-+
- 	common_shutdown(LINUX_REBOOT_CMD_POWER_OFF, NULL);
- }
+ 	printk(KERN_INFO "Trapeze ITS GPR board\n");
  
-diff --git a/arch/arc/kernel/reset.c b/arch/arc/kernel/reset.c
-index 2768fa1..0758d9d 100644
---- a/arch/arc/kernel/reset.c
-+++ b/arch/arc/kernel/reset.c
-@@ -26,9 +26,6 @@ void machine_restart(char *__unused)
+-	pm_power_off = gpr_power_off;
++	register_power_off_handler_simple(gpr_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 	_machine_halt = gpr_power_off;
+ 	_machine_restart = gpr_reset;
  
- void machine_power_off(void)
+diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
+index 1e3b102..a78df2c 100644
+--- a/arch/mips/alchemy/board-mtx1.c
++++ b/arch/mips/alchemy/board-mtx1.c
+@@ -98,7 +98,8 @@ void __init board_setup(void)
+ 	alchemy_gpio_direction_output(211, 1);	/* green on */
+ 	alchemy_gpio_direction_output(212, 0);	/* red off */
+ 
+-	pm_power_off = mtx1_power_off;
++	register_power_off_handler_simple(mtx1_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 	_machine_halt = mtx1_power_off;
+ 	_machine_restart = mtx1_reset;
+ 
+diff --git a/arch/mips/alchemy/board-xxs1500.c b/arch/mips/alchemy/board-xxs1500.c
+index 0fc53e0..6c413db 100644
+--- a/arch/mips/alchemy/board-xxs1500.c
++++ b/arch/mips/alchemy/board-xxs1500.c
+@@ -79,7 +79,8 @@ void __init board_setup(void)
  {
--	/* FIXME ::  power off ??? */
-+	do_kernel_power_off();
- 	machine_halt();
- }
--
--void (*pm_power_off) (void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
-diff --git a/arch/arm/kernel/process.c b/arch/arm/kernel/process.c
-index fe972a2..aa3f656 100644
---- a/arch/arm/kernel/process.c
-+++ b/arch/arm/kernel/process.c
-@@ -117,8 +117,6 @@ void soft_restart(unsigned long addr)
- /*
-  * Function pointers to optional machine specific functions
-  */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
+ 	u32 pin_func;
  
- void (*arm_pm_restart)(enum reboot_mode reboot_mode, const char *cmd);
+-	pm_power_off = xxs1500_power_off;
++	register_power_off_handler_simple(xxs1500_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 	_machine_halt = xxs1500_power_off;
+ 	_machine_restart = xxs1500_reset;
  
-@@ -205,8 +203,7 @@ void machine_power_off(void)
- 	local_irq_disable();
- 	smp_send_stop();
- 
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- }
- 
- /*
-diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-index fde9923..6f623a0 100644
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -68,8 +68,6 @@ void soft_restart(unsigned long addr)
- /*
-  * Function pointers to optional machine specific functions
-  */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL_GPL(pm_power_off);
- 
- void (*arm_pm_restart)(enum reboot_mode reboot_mode, const char *cmd);
- 
-@@ -129,8 +127,7 @@ void machine_power_off(void)
- {
- 	local_irq_disable();
- 	smp_send_stop();
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- }
- 
- /*
-diff --git a/arch/avr32/kernel/process.c b/arch/avr32/kernel/process.c
-index 42a53e74..529c1f6 100644
---- a/arch/avr32/kernel/process.c
-+++ b/arch/avr32/kernel/process.c
-@@ -23,9 +23,6 @@
- 
- #include <mach/pm.h>
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- /*
-  * This file handles the architecture-dependent parts of process handling..
-  */
-@@ -48,8 +45,7 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- }
- 
- void machine_restart(char *cmd)
-diff --git a/arch/blackfin/kernel/process.c b/arch/blackfin/kernel/process.c
-index 4aa5545..812dd83 100644
---- a/arch/blackfin/kernel/process.c
-+++ b/arch/blackfin/kernel/process.c
-@@ -39,9 +39,6 @@ int nr_l1stack_tasks;
- void *l1_stack_base;
- unsigned long l1_stack_len;
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
- /*
-  * The idle loop on BFIN
-  */
-diff --git a/arch/blackfin/kernel/reboot.c b/arch/blackfin/kernel/reboot.c
-index c4f50a3..387d610 100644
---- a/arch/blackfin/kernel/reboot.c
-+++ b/arch/blackfin/kernel/reboot.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/interrupt.h>
-+#include <linux/pm.h>
- #include <asm/bfin-global.h>
- #include <asm/reboot.h>
- #include <asm/bfrom.h>
-@@ -106,6 +107,7 @@ void machine_halt(void)
- __attribute__((weak))
- void native_machine_power_off(void)
- {
-+	do_kernel_power_off();
- 	idle_with_irq_disabled();
- }
- 
-diff --git a/arch/c6x/kernel/process.c b/arch/c6x/kernel/process.c
-index 57d2ea8..edf7e5a 100644
---- a/arch/c6x/kernel/process.c
-+++ b/arch/c6x/kernel/process.c
-@@ -27,12 +27,6 @@ void	(*c6x_halt)(void);
- extern asmlinkage void ret_from_fork(void);
- extern asmlinkage void ret_from_kernel_thread(void);
- 
--/*
-- * power off function, if any
-- */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- void arch_cpu_idle(void)
- {
- 	unsigned long tmp;
-@@ -73,8 +67,7 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- 	halt_loop();
- }
- 
-diff --git a/arch/cris/kernel/process.c b/arch/cris/kernel/process.c
-index b78498e..9ebd76b 100644
---- a/arch/cris/kernel/process.c
-+++ b/arch/cris/kernel/process.c
-@@ -31,9 +31,6 @@
- 
- extern void default_idle(void);
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- void arch_cpu_idle(void)
- {
- 	default_idle();
-@@ -60,6 +57,7 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
-+	do_kernel_power_off();
- }
- 
- /*
-diff --git a/arch/frv/kernel/process.c b/arch/frv/kernel/process.c
-index 5d40aeb77..502dabb 100644
---- a/arch/frv/kernel/process.c
-+++ b/arch/frv/kernel/process.c
-@@ -42,9 +42,6 @@ asmlinkage void ret_from_kernel_thread(void);
- 
- #include <asm/pgalloc.h>
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- static void core_sleep_idle(void)
- {
- #ifdef LED_DEBUG_SLEEP
-@@ -107,6 +104,8 @@ void machine_power_off(void)
- 	gdbstub_exit(0);
- #endif
- 
-+	do_kernel_power_off();
-+
- 	for (;;);
- }
- 
-diff --git a/arch/hexagon/kernel/reset.c b/arch/hexagon/kernel/reset.c
-index 76483c1..6f607b6 100644
---- a/arch/hexagon/kernel/reset.c
-+++ b/arch/hexagon/kernel/reset.c
-@@ -16,11 +16,13 @@
-  * 02110-1301, USA.
-  */
- 
-+#include <linux/pm.h>
- #include <linux/smp.h>
- #include <asm/hexagon_vm.h>
- 
- void machine_power_off(void)
- {
-+	do_kernel_power_off();
- 	smp_send_stop();
- 	__vmstop();
- }
-@@ -32,6 +34,3 @@ void machine_halt(void)
- void machine_restart(char *cmd)
- {
- }
--
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
-diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
-index b515149..88121a2 100644
---- a/arch/ia64/kernel/process.c
-+++ b/arch/ia64/kernel/process.c
-@@ -57,8 +57,6 @@ void (*ia64_mark_idle)(int);
- 
- unsigned long boot_option_idle_override = IDLE_NO_OVERRIDE;
- EXPORT_SYMBOL(boot_option_idle_override);
--void (*pm_power_off) (void);
--EXPORT_SYMBOL(pm_power_off);
- 
- void
- ia64_do_show_stack (struct unw_frame_info *info, void *arg)
-@@ -675,8 +673,7 @@ machine_halt (void)
- void
- machine_power_off (void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- 	machine_halt();
- }
- 
-diff --git a/arch/m32r/kernel/process.c b/arch/m32r/kernel/process.c
-index e69221d..65a037e 100644
---- a/arch/m32r/kernel/process.c
-+++ b/arch/m32r/kernel/process.c
-@@ -23,6 +23,7 @@
- #include <linux/fs.h>
+diff --git a/arch/mips/alchemy/devboards/platform.c b/arch/mips/alchemy/devboards/platform.c
+index be139a0..3ae40b2 100644
+--- a/arch/mips/alchemy/devboards/platform.c
++++ b/arch/mips/alchemy/devboards/platform.c
+@@ -6,6 +6,7 @@
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/map.h>
+ #include <linux/mtd/physmap.h>
++#include <linux/notifier.h>
  #include <linux/slab.h>
- #include <linux/module.h>
-+#include <linux/pm.h>
- #include <linux/ptrace.h>
- #include <linux/unistd.h>
- #include <linux/hardirq.h>
-@@ -44,9 +45,6 @@ unsigned long thread_saved_pc(struct task_struct *tsk)
- 	return tsk->thread.lr;
- }
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
- void machine_restart(char *__unused)
- {
- #if defined(CONFIG_PLAT_MAPPI3)
-@@ -67,7 +65,9 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	/* M32R_FIXME */
-+	do_kernel_power_off();
-+	for (;;)
-+		;
- }
- 
- void show_regs(struct pt_regs * regs)
-diff --git a/arch/m68k/kernel/process.c b/arch/m68k/kernel/process.c
-index afe3d6e..bbc0a63 100644
---- a/arch/m68k/kernel/process.c
-+++ b/arch/m68k/kernel/process.c
-@@ -78,14 +78,10 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- 	for (;;);
- }
- 
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- void show_regs(struct pt_regs * regs)
- {
- 	printk("\n");
-diff --git a/arch/metag/kernel/process.c b/arch/metag/kernel/process.c
-index 483dff9..8d95773 100644
---- a/arch/metag/kernel/process.c
-+++ b/arch/metag/kernel/process.c
-@@ -67,9 +67,6 @@ void arch_cpu_idle_dead(void)
- }
- #endif
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- void (*soc_restart)(char *cmd);
- void (*soc_halt)(void);
- 
-@@ -90,8 +87,7 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- 	smp_send_stop();
- 	hard_processor_halt(HALT_OK);
- }
-diff --git a/arch/microblaze/kernel/process.c b/arch/microblaze/kernel/process.c
-index b2dd371..0ebca36 100644
---- a/arch/microblaze/kernel/process.c
-+++ b/arch/microblaze/kernel/process.c
-@@ -44,9 +44,6 @@ void show_regs(struct pt_regs *regs)
- 				regs->msr, regs->ear, regs->esr, regs->fsr);
- }
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
- void flush_thread(void)
- {
- }
-diff --git a/arch/microblaze/kernel/reset.c b/arch/microblaze/kernel/reset.c
-index fbe58c6..2c6b32c 100644
---- a/arch/microblaze/kernel/reset.c
-+++ b/arch/microblaze/kernel/reset.c
-@@ -103,6 +103,7 @@ void machine_halt(void)
- void machine_power_off(void)
- {
- 	pr_notice("Machine power off...\n");
-+	do_kernel_power_off();
- 	while (1)
- 		;
- }
-diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
-index 07fc524..09e74d2 100644
---- a/arch/mips/kernel/reset.c
-+++ b/arch/mips/kernel/reset.c
-@@ -21,9 +21,6 @@
-  */
- void (*_machine_restart)(char *command);
- void (*_machine_halt)(void);
--void (*pm_power_off)(void);
--
--EXPORT_SYMBOL(pm_power_off);
- 
- void machine_restart(char *command)
- {
-@@ -39,6 +36,5 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- }
-diff --git a/arch/mn10300/kernel/process.c b/arch/mn10300/kernel/process.c
-index 3707da5..c78b2eb 100644
---- a/arch/mn10300/kernel/process.c
-+++ b/arch/mn10300/kernel/process.c
-@@ -20,6 +20,7 @@
- #include <linux/user.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
-+#include <linux/pm.h>
- #include <linux/reboot.h>
- #include <linux/percpu.h>
- #include <linux/err.h>
-@@ -45,12 +46,6 @@ unsigned long thread_saved_pc(struct task_struct *tsk)
- }
- 
- /*
-- * power off function, if any
-- */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
--/*
-  * On SMP it's slightly faster (but much more power-consuming!)
-  * to poll the ->work.need_resched flag instead of waiting for the
-  * cross-CPU IPI to arrive. Use this option with caution.
-@@ -93,6 +88,7 @@ void machine_power_off(void)
- #ifdef CONFIG_KERNEL_DEBUGGER
- 	gdbstub_exit(0);
- #endif
-+	do_kernel_power_off();
- }
- 
- void show_regs(struct pt_regs *regs)
-diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
-index 386af25..494afd2 100644
---- a/arch/openrisc/kernel/process.c
-+++ b/arch/openrisc/kernel/process.c
-@@ -25,6 +25,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mm.h>
-+#include <linux/pm.h>
- #include <linux/stddef.h>
- #include <linux/unistd.h>
- #include <linux/ptrace.h>
-@@ -51,7 +52,7 @@
-  */
- struct thread_info *current_thread_info_set[NR_CPUS] = { &init_thread_info, };
- 
--void machine_restart(void)
-+void machine_restart(char *cmd)
- {
- 	printk(KERN_INFO "*** MACHINE RESTART ***\n");
- 	__asm__("l.nop 1");
-@@ -72,11 +73,12 @@ void machine_halt(void)
- void machine_power_off(void)
- {
- 	printk(KERN_INFO "*** MACHINE POWER OFF ***\n");
-+
-+	do_kernel_power_off();
-+
- 	__asm__("l.nop 1");
- }
- 
--void (*pm_power_off) (void) = machine_power_off;
--
- /*
-  * When a process does an "exec", machine state like FPU and debug
-  * registers need to be reset.  This is a hook function for that.
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index 0bbbf0d..3f5d14a 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -41,6 +41,7 @@
- #include <linux/fs.h>
- #include <linux/module.h>
- #include <linux/personality.h>
-+#include <linux/pm.h>
- #include <linux/ptrace.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-@@ -133,7 +134,9 @@ void machine_power_off(void)
- 	pdc_soft_power_button(0);
- 	
- 	pdc_chassis_send_status(PDC_CHASSIS_DIRECT_SHUTDOWN);
--		
-+
-+	do_kernel_power_off();
-+
- 	/* It seems we have no way to power the system off via
- 	 * software. The user has to press the button himself. */
- 
-@@ -141,9 +144,6 @@ void machine_power_off(void)
- 	       "Please power this system off now.");
- }
- 
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- /*
-  * Free current thread data structures etc..
-  */
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 1362cd6..5b7a851 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -141,6 +141,9 @@ void machine_power_off(void)
- 	machine_shutdown();
- 	if (ppc_md.power_off)
- 		ppc_md.power_off();
-+
-+	do_kernel_power_off();
-+
- #ifdef CONFIG_SMP
- 	smp_send_stop();
- #endif
-@@ -151,9 +154,6 @@ void machine_power_off(void)
- /* Used by the G5 thermal driver */
- EXPORT_SYMBOL_GPL(machine_power_off);
- 
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL_GPL(pm_power_off);
--
- void machine_halt(void)
- {
- 	machine_shutdown();
-diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-index e80d9ff..267e025 100644
---- a/arch/s390/kernel/setup.c
-+++ b/arch/s390/kernel/setup.c
-@@ -263,13 +263,9 @@ void machine_power_off(void)
- 		 */
- 		console_unblank();
- 	_machine_power_off();
--}
- 
--/*
-- * Dummy power off function.
-- */
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL_GPL(pm_power_off);
-+	do_kernel_power_off();
-+}
- 
- static int __init early_parse_mem(char *p)
- {
-diff --git a/arch/score/kernel/process.c b/arch/score/kernel/process.c
-index a1519ad3..b76ea67 100644
---- a/arch/score/kernel/process.c
-+++ b/arch/score/kernel/process.c
-@@ -29,9 +29,6 @@
+ #include <linux/platform_device.h>
  #include <linux/pm.h>
- #include <linux/rcupdate.h>
+@@ -64,10 +65,22 @@ static void db1x_reset(char *c)
+ 	bcsr_write(BCSR_SYSTEM, 0);
+ }
  
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- /* If or when software machine-restart is implemented, add code here. */
- void machine_restart(char *command) {}
- 
-@@ -39,7 +36,10 @@ void machine_restart(char *command) {}
- void machine_halt(void) {}
- 
- /* If or when software machine-power-off is implemented, add code here. */
--void machine_power_off(void) {}
-+void machine_power_off(void)
++static int db1x_power_off_notify(struct notifier_block *this,
++				 unsigned long unused1, void *unused2)
 +{
-+	do_kernel_power_off();
++	db1x_power_off();
++	return NOTIFY_DONE;
 +}
- 
- void ret_from_fork(void);
- void ret_from_kernel_thread(void);
-diff --git a/arch/sh/kernel/reboot.c b/arch/sh/kernel/reboot.c
-index 04afe5b..065de12 100644
---- a/arch/sh/kernel/reboot.c
-+++ b/arch/sh/kernel/reboot.c
-@@ -11,9 +11,6 @@
- #include <asm/tlbflush.h>
- #include <asm/traps.h>
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- #ifdef CONFIG_SUPERH32
- static void watchdog_trigger_immediate(void)
++
++static struct notifier_block db1x_power_off_nb = {
++	.notifier_call = db1x_power_off_notify,
++	.priority = POWER_OFF_PRIORITY_LOW,
++};
++
+ static int __init db1x_late_setup(void)
  {
-@@ -51,8 +48,7 @@ static void native_machine_shutdown(void)
+-	if (!pm_power_off)
+-		pm_power_off = db1x_power_off;
++	if (register_power_off_handler(&db1x_power_off_nb))
++		pr_warn("dbx1: Failed to register power-off handler\n");
+ 	if (!_machine_halt)
+ 		_machine_halt = db1x_power_off;
+ 	if (!_machine_restart)
+diff --git a/arch/mips/ar7/setup.c b/arch/mips/ar7/setup.c
+index 820b7a3..7093266 100644
+--- a/arch/mips/ar7/setup.c
++++ b/arch/mips/ar7/setup.c
+@@ -91,7 +91,8 @@ void __init plat_mem_setup(void)
  
- static void native_machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
+ 	_machine_restart = ar7_machine_restart;
+ 	_machine_halt = ar7_machine_halt;
+-	pm_power_off = ar7_machine_power_off;
++	register_power_off_handler_simple(ar7_machine_power_off,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ 
+ 	io_base = (unsigned long)ioremap(AR7_REGS_BASE, 0x10000);
+ 	if (!io_base)
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 64807a4..66fe138 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -203,7 +203,8 @@ void __init plat_mem_setup(void)
+ 
+ 	_machine_restart = ath79_restart;
+ 	_machine_halt = ath79_halt;
+-	pm_power_off = ath79_halt;
++	register_power_off_handler_simple(ath79_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
  }
  
- static void native_machine_halt(void)
-diff --git a/arch/sparc/kernel/process_32.c b/arch/sparc/kernel/process_32.c
-index 50e7b62..cb8148a 100644
---- a/arch/sparc/kernel/process_32.c
-+++ b/arch/sparc/kernel/process_32.c
-@@ -48,14 +48,6 @@
-  */
- void (*sparc_idle)(void);
+ void __init plat_time_init(void)
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index c00585d..d0a142c 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -246,7 +246,8 @@ void __init plat_mem_setup(void)
  
--/* 
-- * Power-off handler instantiation for pm.h compliance
-- * This is done via auxio, but could be used as a fallback
-- * handler when auxio is not present-- unused for now...
-- */
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- /*
-  * sysctl - toggle power-off restriction for serial console 
-  * systems in machine_power_off()
-@@ -112,6 +104,8 @@ void machine_power_off(void)
- 		sbus_writeb(power_register, auxio_power_register);
+ 	_machine_restart = bcm47xx_machine_restart;
+ 	_machine_halt = bcm47xx_machine_halt;
+-	pm_power_off = bcm47xx_machine_halt;
++	register_power_off_handler_simple(bcm47xx_machine_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 	bcm47xx_board_detect();
+ 	mips_set_machine_name(bcm47xx_board_get_name());
+ }
+diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
+index 6660c7d..5050a19 100644
+--- a/arch/mips/bcm63xx/setup.c
++++ b/arch/mips/bcm63xx/setup.c
+@@ -149,7 +149,8 @@ void __init plat_mem_setup(void)
+ 
+ 	_machine_halt = bcm63xx_machine_halt;
+ 	_machine_restart = __bcm63xx_machine_reboot;
+-	pm_power_off = bcm63xx_machine_halt;
++	register_power_off_handler_simple(bcm63xx_machine_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	set_io_port_base(0);
+ 	ioport_resource.start = 0;
+diff --git a/arch/mips/cobalt/setup.c b/arch/mips/cobalt/setup.c
+index 9a8c2fe..527f331 100644
+--- a/arch/mips/cobalt/setup.c
++++ b/arch/mips/cobalt/setup.c
+@@ -78,7 +78,8 @@ void __init plat_mem_setup(void)
+ 
+ 	_machine_restart = cobalt_machine_restart;
+ 	_machine_halt = cobalt_machine_halt;
+-	pm_power_off = cobalt_machine_halt;
++	register_power_off_handler_simple(cobalt_machine_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	set_io_port_base(CKSEG1ADDR(GT_DEF_PCI0_IO_BASE));
+ 
+diff --git a/arch/mips/dec/setup.c b/arch/mips/dec/setup.c
+index 41bbffd..b5d3200 100644
+--- a/arch/mips/dec/setup.c
++++ b/arch/mips/dec/setup.c
+@@ -158,7 +158,8 @@ void __init plat_mem_setup(void)
+ 
+ 	_machine_restart = dec_machine_restart;
+ 	_machine_halt = dec_machine_halt;
+-	pm_power_off = dec_machine_power_off;
++	register_power_off_handler_simple(dec_machine_power_off,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ 
+ 	ioport_resource.start = ~0UL;
+ 	ioport_resource.end = 0UL;
+diff --git a/arch/mips/emma/markeins/setup.c b/arch/mips/emma/markeins/setup.c
+index 9100122..4ea7ffb 100644
+--- a/arch/mips/emma/markeins/setup.c
++++ b/arch/mips/emma/markeins/setup.c
+@@ -103,7 +103,8 @@ void __init plat_mem_setup(void)
+ 
+ 	_machine_restart = markeins_machine_restart;
+ 	_machine_halt = markeins_machine_halt;
+-	pm_power_off = markeins_machine_power_off;
++	register_power_off_handler_simple(markeins_machine_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	/* setup resource limits */
+ 	ioport_resource.start = EMMA2RH_PCI_IO_BASE;
+diff --git a/arch/mips/jz4740/reset.c b/arch/mips/jz4740/reset.c
+index b6c6343..157e0e2 100644
+--- a/arch/mips/jz4740/reset.c
++++ b/arch/mips/jz4740/reset.c
+@@ -114,5 +114,6 @@ void jz4740_reset_init(void)
+ {
+ 	_machine_restart = jz4740_restart;
+ 	_machine_halt = jz4740_halt;
+-	pm_power_off = jz4740_power_off;
++	register_power_off_handler_simple(jz4740_power_off,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ }
+diff --git a/arch/mips/lantiq/falcon/reset.c b/arch/mips/lantiq/falcon/reset.c
+index 5682482..7b60d36 100644
+--- a/arch/mips/lantiq/falcon/reset.c
++++ b/arch/mips/lantiq/falcon/reset.c
+@@ -83,7 +83,8 @@ static int __init mips_reboot_setup(void)
+ {
+ 	_machine_restart = machine_restart;
+ 	_machine_halt = machine_halt;
+-	pm_power_off = machine_power_off;
++	register_power_off_handler_simple(machine_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 	return 0;
+ }
+ 
+diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
+index 1fa0f17..9b37cc1 100644
+--- a/arch/mips/lantiq/xway/reset.c
++++ b/arch/mips/lantiq/xway/reset.c
+@@ -157,7 +157,8 @@ static int __init mips_reboot_setup(void)
+ 
+ 	_machine_restart = ltq_machine_restart;
+ 	_machine_halt = ltq_machine_halt;
+-	pm_power_off = ltq_machine_power_off;
++	register_power_off_handler_simple(ltq_machine_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/lasat/reset.c b/arch/mips/lasat/reset.c
+index e21f0b9..91dab32 100644
+--- a/arch/mips/lasat/reset.c
++++ b/arch/mips/lasat/reset.c
+@@ -56,5 +56,6 @@ void lasat_reboot_setup(void)
+ {
+ 	_machine_restart = lasat_machine_restart;
+ 	_machine_halt = lasat_machine_halt;
+-	pm_power_off = lasat_machine_halt;
++	register_power_off_handler_simple(lasat_machine_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ }
+diff --git a/arch/mips/loongson/common/reset.c b/arch/mips/loongson/common/reset.c
+index a60715e..32b2de8 100644
+--- a/arch/mips/loongson/common/reset.c
++++ b/arch/mips/loongson/common/reset.c
+@@ -84,7 +84,8 @@ static int __init mips_reboot_setup(void)
+ {
+ 	_machine_restart = loongson_restart;
+ 	_machine_halt = loongson_halt;
+-	pm_power_off = loongson_poweroff;
++	register_power_off_handler_simple(loongson_poweroff,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/loongson1/common/reset.c b/arch/mips/loongson1/common/reset.c
+index 547f34b..8a3cdd8 100644
+--- a/arch/mips/loongson1/common/reset.c
++++ b/arch/mips/loongson1/common/reset.c
+@@ -38,7 +38,8 @@ static int __init ls1x_reboot_setup(void)
+ {
+ 	_machine_restart = ls1x_restart;
+ 	_machine_halt = ls1x_halt;
+-	pm_power_off = ls1x_power_off;
++	register_power_off_handler_simple(ls1x_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/mti-malta/malta-reset.c b/arch/mips/mti-malta/malta-reset.c
+index 2fd2cc2..2e4489f 100644
+--- a/arch/mips/mti-malta/malta-reset.c
++++ b/arch/mips/mti-malta/malta-reset.c
+@@ -40,7 +40,8 @@ static int __init mips_reboot_setup(void)
+ {
+ 	_machine_restart = mips_machine_restart;
+ 	_machine_halt = mips_machine_halt;
+-	pm_power_off = mips_machine_power_off;
++	register_power_off_handler_simple(mips_machine_power_off,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/mti-sead3/sead3-reset.c b/arch/mips/mti-sead3/sead3-reset.c
+index e6fb244..039aaf6 100644
+--- a/arch/mips/mti-sead3/sead3-reset.c
++++ b/arch/mips/mti-sead3/sead3-reset.c
+@@ -33,7 +33,8 @@ static int __init mips_reboot_setup(void)
+ {
+ 	_machine_restart = mips_machine_restart;
+ 	_machine_halt = mips_machine_halt;
+-	pm_power_off = mips_machine_halt;
++	register_power_off_handler_simple(mips_machine_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index 4fdd9fd..68529dd 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -106,7 +106,8 @@ void __init plat_mem_setup(void)
+ #endif
+ 	_machine_restart = (void (*)(char *))nlm_linux_exit;
+ 	_machine_halt	= nlm_linux_exit;
+-	pm_power_off	= nlm_linux_exit;
++	register_power_off_handler_simple(nlm_linux_exit,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	/* memory and bootargs from DT */
+ 	xlp_early_init_devtree();
+diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+index d118b9a..898e950 100644
+--- a/arch/mips/netlogic/xlr/setup.c
++++ b/arch/mips/netlogic/xlr/setup.c
+@@ -75,7 +75,8 @@ void __init plat_mem_setup(void)
+ {
+ 	_machine_restart = (void (*)(char *))nlm_linux_exit;
+ 	_machine_halt	= nlm_linux_exit;
+-	pm_power_off	= nlm_linux_exit;
++	register_power_off_handler_simple(nlm_linux_exit,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ }
+ 
+ const char *get_system_type(void)
+diff --git a/arch/mips/pmcs-msp71xx/msp_setup.c b/arch/mips/pmcs-msp71xx/msp_setup.c
+index 4f925e0..a2b4722 100644
+--- a/arch/mips/pmcs-msp71xx/msp_setup.c
++++ b/arch/mips/pmcs-msp71xx/msp_setup.c
+@@ -144,7 +144,8 @@ void __init plat_mem_setup(void)
+ {
+ 	_machine_restart = msp_restart;
+ 	_machine_halt = msp_halt;
+-	pm_power_off = msp_power_off;
++	register_power_off_handler_simple(msp_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ }
+ 
+ void __init prom_init(void)
+diff --git a/arch/mips/pnx833x/common/setup.c b/arch/mips/pnx833x/common/setup.c
+index 99b4d94..55f7a22 100644
+--- a/arch/mips/pnx833x/common/setup.c
++++ b/arch/mips/pnx833x/common/setup.c
+@@ -51,7 +51,8 @@ int __init plat_mem_setup(void)
+ 
+ 	_machine_restart = pnx833x_machine_restart;
+ 	_machine_halt = pnx833x_machine_halt;
+-	pm_power_off = pnx833x_machine_power_off;
++	register_power_off_handler_simple(pnx833x_machine_power_off,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ 
+ 	/* IO/MEM resources. */
+ 	set_io_port_base(KSEG1);
+diff --git a/arch/mips/ralink/reset.c b/arch/mips/ralink/reset.c
+index 55c7ec5..7b6dfdf3 100644
+--- a/arch/mips/ralink/reset.c
++++ b/arch/mips/ralink/reset.c
+@@ -98,7 +98,8 @@ static int __init mips_reboot_setup(void)
+ {
+ 	_machine_restart = ralink_restart;
+ 	_machine_halt = ralink_halt;
+-	pm_power_off = ralink_halt;
++	register_power_off_handler_simple(ralink_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/rb532/setup.c b/arch/mips/rb532/setup.c
+index d0c64e7..1b95326b 100644
+--- a/arch/mips/rb532/setup.c
++++ b/arch/mips/rb532/setup.c
+@@ -44,7 +44,8 @@ void __init plat_mem_setup(void)
+ 
+ 	_machine_restart = rb_machine_restart;
+ 	_machine_halt = rb_machine_halt;
+-	pm_power_off = rb_machine_halt;
++	register_power_off_handler_simple(rb_machine_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	set_io_port_base(KSEG1);
+ 
+diff --git a/arch/mips/sgi-ip22/ip22-reset.c b/arch/mips/sgi-ip22/ip22-reset.c
+index 063c2dd..ecd1970 100644
+--- a/arch/mips/sgi-ip22/ip22-reset.c
++++ b/arch/mips/sgi-ip22/ip22-reset.c
+@@ -188,7 +188,8 @@ static int __init reboot_setup(void)
+ 
+ 	_machine_restart = sgi_machine_restart;
+ 	_machine_halt = sgi_machine_halt;
+-	pm_power_off = sgi_machine_power_off;
++	register_power_off_handler_simple(sgi_machine_power_off,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ 
+ 	res = request_irq(SGI_PANEL_IRQ, panel_int, 0, "Front Panel", NULL);
+ 	if (res) {
+diff --git a/arch/mips/sgi-ip27/ip27-reset.c b/arch/mips/sgi-ip27/ip27-reset.c
+index ac37e54..e695975 100644
+--- a/arch/mips/sgi-ip27/ip27-reset.c
++++ b/arch/mips/sgi-ip27/ip27-reset.c
+@@ -76,5 +76,6 @@ void ip27_reboot_setup(void)
+ {
+ 	_machine_restart = ip27_machine_restart;
+ 	_machine_halt = ip27_machine_halt;
+-	pm_power_off = ip27_machine_power_off;
++	register_power_off_handler_simple(ip27_machine_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ }
+diff --git a/arch/mips/sgi-ip32/ip32-reset.c b/arch/mips/sgi-ip32/ip32-reset.c
+index 1f823da..e3522fd 100644
+--- a/arch/mips/sgi-ip32/ip32-reset.c
++++ b/arch/mips/sgi-ip32/ip32-reset.c
+@@ -189,7 +189,8 @@ static __init int ip32_reboot_setup(void)
+ 
+ 	_machine_restart = ip32_machine_restart;
+ 	_machine_halt = ip32_machine_halt;
+-	pm_power_off = ip32_machine_power_off;
++	register_power_off_handler_simple(ip32_machine_power_off,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	init_timer(&blink_timer);
+ 	blink_timer.function = blink_timeout;
+diff --git a/arch/mips/sibyte/common/cfe.c b/arch/mips/sibyte/common/cfe.c
+index 588e180..bf47de7 100644
+--- a/arch/mips/sibyte/common/cfe.c
++++ b/arch/mips/sibyte/common/cfe.c
+@@ -245,7 +245,8 @@ void __init prom_init(void)
+ 
+ 	_machine_restart   = cfe_linux_restart;
+ 	_machine_halt	   = cfe_linux_halt;
+-	pm_power_off = cfe_linux_halt;
++	register_power_off_handler_simple(cfe_linux_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	/*
+ 	 * Check if a loader was used; if NOT, the 4 arguments are
+diff --git a/arch/mips/sni/setup.c b/arch/mips/sni/setup.c
+index efad85c..d278f0f 100644
+--- a/arch/mips/sni/setup.c
++++ b/arch/mips/sni/setup.c
+@@ -225,7 +225,8 @@ void __init plat_mem_setup(void)
  	}
  
-+	do_kernel_power_off();
-+
- 	machine_halt();
+ 	_machine_restart = sni_machine_restart;
+-	pm_power_off = sni_machine_power_off;
++	register_power_off_handler_simple(sni_machine_power_off,
++					  POWER_OFF_PRIORITY_DEFAULT);
+ 
+ 	sni_display_setup();
+ 	sni_console_setup();
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 2791b86..cb48e06 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -555,7 +555,8 @@ void __init plat_mem_setup(void)
+ 	/* fallback restart/halt routines */
+ 	_machine_restart = (void (*)(char *))txx9_machine_halt;
+ 	_machine_halt = txx9_machine_halt;
+-	pm_power_off = txx9_machine_halt;
++	register_power_off_handler_simple(txx9_machine_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ #ifdef CONFIG_PCI
+ 	pcibios_plat_setup = txx9_pcibios_setup;
+diff --git a/arch/mips/vr41xx/common/pmu.c b/arch/mips/vr41xx/common/pmu.c
+index d7f7558..cd9a20d 100644
+--- a/arch/mips/vr41xx/common/pmu.c
++++ b/arch/mips/vr41xx/common/pmu.c
+@@ -127,7 +127,8 @@ static int __init vr41xx_pmu_init(void)
+ 	cpu_wait = vr41xx_cpu_wait;
+ 	_machine_restart = vr41xx_restart;
+ 	_machine_halt = vr41xx_halt;
+-	pm_power_off = vr41xx_halt;
++	register_power_off_handler_simple(vr41xx_halt,
++					  POWER_OFF_PRIORITY_FALLBACK);
+ 
+ 	return 0;
  }
- 
-diff --git a/arch/sparc/kernel/reboot.c b/arch/sparc/kernel/reboot.c
-index eba7d91..3c0bb03 100644
---- a/arch/sparc/kernel/reboot.c
-+++ b/arch/sparc/kernel/reboot.c
-@@ -16,17 +16,13 @@
-  */
- int scons_pwroff = 1;
- 
--/* This isn't actually used, it exists merely to satisfy the
-- * reference in kernel/sys.c
-- */
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- void machine_power_off(void)
- {
- 	if (strcmp(of_console_device->type, "serial") || scons_pwroff)
- 		prom_halt_power_off();
- 
-+	do_kernel_power_off();
-+
- 	prom_halt();
- }
- 
-diff --git a/arch/tile/kernel/reboot.c b/arch/tile/kernel/reboot.c
-index 6c5d2c0..8ff4a7f 100644
---- a/arch/tile/kernel/reboot.c
-+++ b/arch/tile/kernel/reboot.c
-@@ -36,6 +36,9 @@ void machine_power_off(void)
- {
- 	arch_local_irq_disable_all();
- 	smp_send_stop();
-+
-+	do_kernel_power_off();
-+
- 	hv_power_off();
- }
- 
-@@ -45,7 +48,3 @@ void machine_restart(char *cmd)
- 	smp_send_stop();
- 	hv_restart((HV_VirtAddr) "vmlinux", (HV_VirtAddr) cmd);
- }
--
--/* No interesting distinction to be made here. */
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
-diff --git a/arch/um/kernel/reboot.c b/arch/um/kernel/reboot.c
-index ced8903..a82ef28 100644
---- a/arch/um/kernel/reboot.c
-+++ b/arch/um/kernel/reboot.c
-@@ -11,8 +11,6 @@
- #include <os.h>
- #include <skas.h>
- 
--void (*pm_power_off)(void);
--
- static void kill_off_processes(void)
- {
- 	if (proc_mm)
-diff --git a/arch/unicore32/kernel/process.c b/arch/unicore32/kernel/process.c
-index b008e99..9490dd5 100644
---- a/arch/unicore32/kernel/process.c
-+++ b/arch/unicore32/kernel/process.c
-@@ -56,16 +56,9 @@ void machine_halt(void)
- 	gpio_set_value(GPO_SOFT_OFF, 0);
- }
- 
--/*
-- * Function pointers to optional machine specific functions
-- */
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- 	machine_halt();
- }
- 
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 17962e6..5c09e28 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -30,12 +30,6 @@
- #include <asm/x86_init.h>
- #include <asm/efi.h>
- 
--/*
-- * Power off function, if any
-- */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- static const struct desc_ptr no_idt = {};
- 
- /*
-@@ -647,11 +641,12 @@ static void native_machine_halt(void)
- 
- static void native_machine_power_off(void)
- {
--	if (pm_power_off) {
-+	if (have_kernel_power_off()) {
- 		if (!reboot_force)
- 			machine_shutdown();
--		pm_power_off();
-+		do_kernel_power_off();
- 	}
-+
- 	/* A fallback in case there is no PM info available */
- 	tboot_shutdown(TB_SHUTDOWN_HALT);
- }
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index fac5e4f..bc08998 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -1320,8 +1320,7 @@ static void xen_machine_halt(void)
- 
- static void xen_machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_kernel_power_off();
- 	xen_reboot(SHUTDOWN_poweroff);
- }
- 
-diff --git a/arch/xtensa/kernel/process.c b/arch/xtensa/kernel/process.c
-index 1c85323..c487296 100644
---- a/arch/xtensa/kernel/process.c
-+++ b/arch/xtensa/kernel/process.c
-@@ -49,10 +49,6 @@ extern void ret_from_kernel_thread(void);
- 
- struct task_struct *current_set[NR_CPUS] = {&init_task, };
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
--
- #if XTENSA_HAVE_COPROCESSORS
- 
- void coprocessor_release_all(struct thread_info *ti)
-diff --git a/drivers/parisc/power.c b/drivers/parisc/power.c
-index ef31b77..f10cf92 100644
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -95,8 +95,7 @@ static void process_shutdown(void)
- 		/* send kill signal */
- 		if (kill_cad_pid(SIGINT, 1)) {
- 			/* just in case killing init process failed */
--			if (pm_power_off)
--				pm_power_off();
-+			kernel_power_off();
- 		}
- 	}
- }
-diff --git a/kernel/power/power_off_handler.c b/kernel/power/power_off_handler.c
-index f838e63..97b7163 100644
---- a/kernel/power/power_off_handler.c
-+++ b/kernel/power/power_off_handler.c
-@@ -22,6 +22,12 @@
- #include <linux/types.h>
- 
- /*
-+ * If set, calling this function will power off the system immediately.
-+ */
-+void (*pm_power_off)(void);
-+EXPORT_SYMBOL(pm_power_off);
-+
-+/*
-  *	Notifier list for kernel code which wants to be called
-  *	to power off the system.
-  */
-@@ -253,6 +259,8 @@ void do_kernel_power_off(void)
- 	 * removed while the call chain is traversed, but we'll have to carry
- 	 * that risk.
- 	 */
-+	if (pm_power_off)
-+		pm_power_off();
- 	raw_notifier_call_chain(&power_off_handler_list, 0, NULL);
- }
- 
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index 5925f5a..d87d921 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -306,9 +306,9 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
- 		return ret;
- 
- 	/* Instead of trying to make the power_off code look like
--	 * halt when pm_power_off is not set do it the easy way.
-+	 * halt when no power-off handler exists do it the easy way.
- 	 */
--	if ((cmd == LINUX_REBOOT_CMD_POWER_OFF) && !pm_power_off)
-+	if (cmd == LINUX_REBOOT_CMD_POWER_OFF && !have_kernel_power_off())
- 		cmd = LINUX_REBOOT_CMD_HALT;
- 
- 	mutex_lock(&reboot_mutex);
 -- 
 1.9.1

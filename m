@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 13:45:41 +0100 (CET)
-Received: from szxga03-in.huawei.com ([119.145.14.66]:40664 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011421AbaJ0MmIGx0kY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 13:42:08 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 13:46:00 +0100 (CET)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:4673 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011360AbaJ0MmLDrZQR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 13:42:11 +0100
 Received: from 172.24.2.119 (EHLO szxeml404-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
-        with ESMTP id AWE51676;
-        Mon, 27 Oct 2014 20:41:52 +0800 (CST)
+        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CBJ49245;
+        Mon, 27 Oct 2014 20:41:38 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml404-hub.china.huawei.com (10.82.67.59) with Microsoft SMTP Server id
- 14.3.158.1; Mon, 27 Oct 2014 20:41:35 +0800
+ 14.3.158.1; Mon, 27 Oct 2014 20:41:28 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -34,9 +34,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH 15/16] tile/MSI: Use MSI controller framework to configure MSI/MSI-X irq
-Date:   Mon, 27 Oct 2014 21:22:21 +0800
-Message-ID: <1414416142-31239-16-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH 10/16] Powerpc/MSI: Use MSI controller framework to configure MSI/MSI-X irq
+Date:   Mon, 27 Oct 2014 21:22:16 +0800
+Message-ID: <1414416142-31239-11-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1414416142-31239-1-git-send-email-wangyijing@huawei.com>
 References: <1414416142-31239-1-git-send-email-wangyijing@huawei.com>
@@ -44,17 +44,11 @@ MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.100.166]
 X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A020204.544E3D91.01B0,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2013-05-26 15:14:31,
-        dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: a79e6222ac16149ce64752b2f173711a
 Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43591
+X-archive-position: 43592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,73 +69,88 @@ Use MSI controller framework instead of arch MSI functions to configure
 MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/tile/include/asm/pci.h |    2 ++
- arch/tile/kernel/pci_gx.c   |   18 ++++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/pci-bridge.h |    8 ++++++++
+ arch/powerpc/kernel/msi.c             |   19 +++++++++++++++++--
+ arch/powerpc/kernel/pci-common.c      |    3 +++
+ 3 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/arch/tile/include/asm/pci.h b/arch/tile/include/asm/pci.h
-index dfedd7a..3ebd66b 100644
---- a/arch/tile/include/asm/pci.h
-+++ b/arch/tile/include/asm/pci.h
-@@ -152,6 +152,7 @@ struct pci_controller {
- 	int pio_io_index;	/* PIO region index for I/O space access */
- #endif
+diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+index 4ca90a3..f7d09d0 100644
+--- a/arch/powerpc/include/asm/pci-bridge.h
++++ b/arch/powerpc/include/asm/pci-bridge.h
+@@ -32,6 +32,10 @@ struct pci_controller {
+ 	int self_busno;
+ 	struct resource busn;
  
++#ifdef CONFIG_PCI_MSI
 +	struct msi_controller *msi_ctrl;
- 	/*
- 	 * Mem-Map regions for all the memory controllers so that Linux can
- 	 * map all of its physical memory space to the PCI bus.
-@@ -179,6 +180,7 @@ struct pci_controller {
- 	int irq_intx_table[4];
++#endif
++
+ 	void __iomem *io_base_virt;
+ #ifdef CONFIG_PPC64
+ 	void *io_base_alloc;
+@@ -94,6 +98,10 @@ struct pci_controller {
+ 	void *private_data;
  };
  
-+extern struct msi_controller tilegx_msi_ctrl;
- extern struct pci_controller pci_controllers[TILEGX_NUM_TRIO * TILEGX_TRIO_PCIES];
- extern gxio_trio_context_t trio_contexts[TILEGX_NUM_TRIO];
- extern int num_trio_shims;
-diff --git a/arch/tile/kernel/pci_gx.c b/arch/tile/kernel/pci_gx.c
-index e39f9c5..6bf5a24 100644
---- a/arch/tile/kernel/pci_gx.c
-+++ b/arch/tile/kernel/pci_gx.c
-@@ -887,6 +887,7 @@ int __init pcibios_init(void)
- 					controller->mem_offset);
- 		pci_add_resource(&resources, &controller->io_space);
- 		controller->first_busno = next_busno;
-+		controller->msi_ctrl = &tilegx_msi_ctrl;
- 		bus = pci_scan_root_bus(NULL, next_busno, controller->ops,
- 					controller, &resources);
- 		controller->root_bus = bus;
-@@ -1485,7 +1486,15 @@ static struct irq_chip tilegx_msi_chip = {
- 	/* TBD: support set_affinity. */
- };
++#ifdef CONFIG_PCI_MSI
++extern struct msi_controller ppc_msi_ctrl;
++#endif
++
+ /* These are used for config access before all the PCI probing
+    has been done. */
+ extern int early_read_config_byte(struct pci_controller *hose, int bus,
+diff --git a/arch/powerpc/kernel/msi.c b/arch/powerpc/kernel/msi.c
+index 71bd161..64a16f3 100644
+--- a/arch/powerpc/kernel/msi.c
++++ b/arch/powerpc/kernel/msi.c
+@@ -13,7 +13,15 @@
  
--int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
+ #include <asm/machdep.h>
+ 
+-int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
 +struct msi_controller *pcibios_msi_controller(struct pci_bus *bus)
 +{
-+	struct pci_controller *controller = bus->sysdata;
++	struct pci_controller *hose = bus->sysdata;
 +
-+	return controller->msi_ctrl;
++	return hose->msi_ctrl;
 +}
 +
-+static int tile_setup_msi_irq(struct msi_controller *ctrl,
-+		struct pci_dev *pdev, struct msi_desc *desc)
++static int ppc_setup_msi_irqs(struct msi_controller *ctrl,
++		struct pci_dev *dev, int nvec, int type)
  {
- 	struct pci_controller *controller;
- 	gxio_trio_context_t *trio_context;
-@@ -1604,7 +1613,12 @@ is_64_failure:
- 	return ret;
+ 	if (!ppc_md.setup_msi_irqs || !ppc_md.teardown_msi_irqs) {
+ 		pr_debug("msi: Platform doesn't provide MSI callbacks.\n");
+@@ -27,7 +35,13 @@ int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+ 	return ppc_md.setup_msi_irqs(dev, nvec, type);
  }
  
--void arch_teardown_msi_irq(unsigned int irq)
-+static void tile_teardown_msi_irq(struct msi_controller *ctrl, unsigned int irq)
+-void arch_teardown_msi_irqs(struct pci_dev *dev)
++static void ppc_teardown_msi_irqs(struct msi_controller *ctrl,
++		struct pci_dev *dev)
  {
- 	irq_free_hwirq(irq);
+ 	ppc_md.teardown_msi_irqs(dev);
  }
 +
-+struct msi_controller tilegx_msi_ctrl = {
-+	.setup_irq = tile_setup_msi_irq,
-+	.teardown_irq = tile_teardown_msi_irq,
++struct msi_controller ppc_msi_ctrl = {
++	.setup_irqs = ppc_setup_msi_irqs,
++	.teardown_irqs = ppc_teardown_msi_irqs,
 +};
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index e5dad9a..c3f28c5 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1597,6 +1597,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
+ 	/* Wire up PHB bus resources */
+ 	pcibios_setup_phb_resources(hose, &resources);
+ 
++#ifdef CONFIG_PCI_MSI
++	hose->msi_ctrl = &ppc_msi_ctrl;
++#endif
+ 	hose->busn.start = hose->first_busno;
+ 	hose->busn.end	 = hose->last_busno;
+ 	hose->busn.flags = IORESOURCE_BUS;
 -- 
 1.7.1

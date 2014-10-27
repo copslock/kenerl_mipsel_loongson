@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 17:42:44 +0100 (CET)
-Received: from mail-ig0-f171.google.com ([209.85.213.171]:57044 "EHLO
-        mail-ig0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011405AbaJ0QmjXXnyE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 17:42:39 +0100
-Received: by mail-ig0-f171.google.com with SMTP id l13so6670366iga.4
-        for <linux-mips@linux-mips.org>; Mon, 27 Oct 2014 09:42:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=bFv/1xvV/AKe4eQTtGWNYaHnyyAgTSZMY1wymk5hJo0=;
-        b=Jd93F2BC5+SPxmGLf6mnideOvpu9NWOGUJPQDf6pHjJyCdvaeCyVCA/l0hx645KhWy
-         BVKxGyaJu2VOXc/OXB8XcFxxG10WOH3EnjrZpD4hgc7c3cBUq6e4ywRMU1ZAwYI8Sc2i
-         KcYFJSJz5UOU2rgsYCCsP/SQDDFYkhZIIAQzTdxd/K5Lip/CbOrcPu50GvlAYvwqe41A
-         he5djvjEXDY48JWfm/AH+Cm/KwRliKeiGbLknE1QNlfS5353Z0DUaIjTQvHKgE0QoLXd
-         YhyEScf62+PRDlfL5RWiGyhjC8fJ+CZyhseW8PAe1ElkPj6gUmYIVbGY3ODAaERUhu9Z
-         tn+Q==
-X-Gm-Message-State: ALoCoQlSwaK5uF5aFf/ron6Ej2DnNkHYlwqPmpcLJXSY4MNaFff0rPAWzUVbCbXrVXYbrT8vDjrN
-MIME-Version: 1.0
-X-Received: by 10.107.165.19 with SMTP id o19mr5869749ioe.1.1414428153728;
- Mon, 27 Oct 2014 09:42:33 -0700 (PDT)
-Received: by 10.42.49.141 with HTTP; Mon, 27 Oct 2014 09:42:33 -0700 (PDT)
-In-Reply-To: <1412972930-16777-5-git-send-email-blogic@openwrt.org>
-References: <1412972930-16777-1-git-send-email-blogic@openwrt.org>
-        <1412972930-16777-5-git-send-email-blogic@openwrt.org>
-Date:   Mon, 27 Oct 2014 17:42:33 +0100
-Message-ID: <CACRpkdZmf6q5apZAYGtjO_GeG-BRBzTOKa53vi3J_5riqrN-zQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] MIPS: ralink: we require gpiolib
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     John Crispin <blogic@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 19:15:26 +0100 (CET)
+Received: from charlotte.tuxdriver.com ([70.61.120.58]:53014 "EHLO
+        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011024AbaJ0SPYuhJN3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 19:15:24 +0100
+Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
+        (envelope-from <linville@tuxdriver.com>)
+        id 1Xioov-0001JQ-HQ; Mon, 27 Oct 2014 14:15:09 -0400
+Received: from linville-x1.hq.tuxdriver.com (localhost.localdomain [127.0.0.1])
+        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.6) with ESMTP id s9RI5Bef012531;
+        Mon, 27 Oct 2014 14:05:11 -0400
+Received: (from linville@localhost)
+        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.8/Submit) id s9RI5A4B012530;
+        Mon, 27 Oct 2014 14:05:10 -0400
+Date:   Mon, 27 Oct 2014 14:05:10 -0400
+From:   "John W. Linville" <linville@tuxdriver.com>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
+        linux-wireless@vger.kernel.org, ath5k-devel@venema.h4ckr.net
+Subject: Re: [PATCH v2 12/13] ath5k: update dependencies
+Message-ID: <20141027180510.GF28300@tuxdriver.com>
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
+ <1413932631-12866-13-git-send-email-ryazanov.s.a@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1413932631-12866-13-git-send-email-ryazanov.s.a@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <linville@tuxdriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43601
+X-archive-position: 43602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: linville@tuxdriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,14 +51,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 10, 2014 at 10:28 PM, John Crispin <blogic@openwrt.org> wrote:
+On Wed, Oct 22, 2014 at 03:03:50AM +0400, Sergey Ryazanov wrote:
+> - Use config symbol defined in the driver instead of arch specific one for
+>   conditional compilation.
+> - Rename the ATHEROS_AR231X config symbol to ATH25.
+> - Fix include (ar231x_platform.h -> ath25_platform.h).
+> - Some of AR231x SoCs (e.g. AR2315) have PCI bus support, so remove !PCI
+>   dependency, which block AHB support build.
+> 
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+> Cc: Jiri Slaby <jirislaby@gmail.com>
+> Cc: Nick Kossifidis <mickflemm@gmail.com>
+> Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: ath5k-devel@lists.ath5k.org
 
-> Select ARCH_REQUIRE_GPIOLIB by default when building a kernel for RALINK.
->
-> Signed-off-by: John Crispin <blogic@openwrt.org>
+Acked-by: John W. Linville <linville@tuxdriver.com>
 
-Happy with selecting this, but don't think you need the altered
-mach gpio.h header. Do like x86 does.
-
-Yours,
-Linus Walleij
+-- 
+John W. Linville		Someday the world will need a hero, and you
+linville@tuxdriver.com			might be all we have.  Be ready.

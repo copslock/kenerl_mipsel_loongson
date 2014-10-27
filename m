@@ -1,24 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 02:46:01 +0100 (CET)
-Received: from mga03.intel.com ([134.134.136.65]:62454 "EHLO mga03.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 03:20:36 +0100 (CET)
+Received: from mga14.intel.com ([192.55.52.115]:40692 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010898AbaJ0Bp7yTs12 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 02:45:59 +0100
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP; 26 Oct 2014 18:44:17 -0700
+        id S27010898AbaJ0CUfNS1hh convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 03:20:35 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP; 26 Oct 2014 19:14:33 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.04,792,1406617200"; 
-   d="scan'208";a="625947589"
-Received: from pgsmsx103.gar.corp.intel.com ([10.221.44.82])
-  by orsmga002.jf.intel.com with ESMTP; 26 Oct 2014 18:45:49 -0700
-Received: from kmsmsx151.gar.corp.intel.com (172.21.73.86) by
- PGSMSX103.gar.corp.intel.com (10.221.44.82) with Microsoft SMTP Server (TLS)
- id 14.3.195.1; Mon, 27 Oct 2014 09:43:02 +0800
+   d="scan'208";a="611820582"
+Received: from pgsmsx101.gar.corp.intel.com ([10.221.44.78])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Oct 2014 19:20:24 -0700
 Received: from shsmsx152.ccr.corp.intel.com (10.239.6.52) by
- KMSMSX151.gar.corp.intel.com (172.21.73.86) with Microsoft SMTP Server (TLS)
- id 14.3.195.1; Mon, 27 Oct 2014 09:43:01 +0800
+ PGSMSX101.gar.corp.intel.com (10.221.44.78) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Mon, 27 Oct 2014 10:17:59 +0800
 Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.156]) by
  SHSMSX152.ccr.corp.intel.com ([169.254.6.13]) with mapi id 14.03.0195.001;
- Mon, 27 Oct 2014 09:43:00 +0800
+ Mon, 27 Oct 2014 10:17:58 +0800
 From:   "Ren, Qiaowei" <qiaowei.ren@intel.com>
 To:     Thomas Gleixner <tglx@linutronix.de>
 CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
@@ -28,17 +25,17 @@ CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
- violation information
-Thread-Topic: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
- violation information
-Thread-Index: AQHP5dg7yyhiQxbkmEGH5PJVxeeZs5w+vGAAgASFDTA=
-Date:   Mon, 27 Oct 2014 01:43:00 +0000
-Message-ID: <9E0BE1322F2F2246BD820DA9FC397ADE0180ED16@shsmsx102.ccr.corp.intel.com>
+Subject: RE: [PATCH v9 10/12] x86, mpx: add prctl commands
+ PR_MPX_ENABLE_MANAGEMENT, PR_MPX_DISABLE_MANAGEMENT
+Thread-Topic: [PATCH v9 10/12] x86, mpx: add prctl commands
+ PR_MPX_ENABLE_MANAGEMENT, PR_MPX_DISABLE_MANAGEMENT
+Thread-Index: AQHP5dg89KIANMH5bE2fxw5ikPyI75w+wDaAgASLc3A=
+Date:   Mon, 27 Oct 2014 02:17:58 +0000
+Message-ID: <9E0BE1322F2F2246BD820DA9FC397ADE0180ED65@shsmsx102.ccr.corp.intel.com>
 References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com>
- <1413088915-13428-10-git-send-email-qiaowei.ren@intel.com>
- <alpine.DEB.2.11.1410241408360.5308@nanos>
-In-Reply-To: <alpine.DEB.2.11.1410241408360.5308@nanos>
+ <1413088915-13428-11-git-send-email-qiaowei.ren@intel.com>
+ <alpine.DEB.2.11.1410241436560.5308@nanos>
+In-Reply-To: <alpine.DEB.2.11.1410241436560.5308@nanos>
 Accept-Language: zh-CN, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -51,7 +48,7 @@ Return-Path: <qiaowei.ren@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43570
+X-archive-position: 43571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,22 +69,53 @@ X-list: linux-mips
 
 On 2014-10-24, Thomas Gleixner wrote:
 > On Sun, 12 Oct 2014, Qiaowei Ren wrote:
+>> +int mpx_enable_management(struct task_struct *tsk) {
+>> +	struct mm_struct *mm = tsk->mm;
+>> +	void __user *bd_base = MPX_INVALID_BOUNDS_DIR;
 > 
->> This patch sets bound violation fields of siginfo struct in #BR
->> exception handler by decoding the user instruction and constructing
->> the faulting pointer.
->> 
->> This patch does't use the generic decoder, and implements a limited
->> special-purpose decoder to decode MPX instructions, simply because
->> the generic decoder is very heavyweight not just in terms of
->> performance but in terms of interface -- because it has to.
-> 
-> My question still stands why using the existing decoder is an issue.
-> Performance is a complete non issue in case of a bounds violation and
-> the interface argument is just silly, really.
+> What's the point of initializing bd_base here. I had to look twice to
+> figure out that it gets overwritten by task_get_bounds_dir()
 > 
 
-As hpa said, we only need to decode several mpx instructions including BNDCL/BNDCU, and general decoder looks like a little heavy. Peter, what do you think about it?
+I just want to put task_get_bounds_dir() outside mm->mmap_sem holding.
+
+>> @@ -285,6 +285,7 @@ dotraplinkage void do_bounds(struct pt_regs
+>> *regs,
+> long error_code)
+>>  	struct xsave_struct *xsave_buf;
+>>  	struct task_struct *tsk = current;
+>>  	siginfo_t info;
+>> +	int ret = 0;
+>> 
+>>  	prev_state = exception_enter();
+>>  	if (notify_die(DIE_TRAP, "bounds", regs, error_code, @@ -312,8
+>> +313,35 @@ dotraplinkage void do_bounds(struct pt_regs *regs, long
+> error_code)
+>>  	 */
+>>  	switch (status & MPX_BNDSTA_ERROR_CODE) {
+>>  	case 2: /* Bound directory has invalid entry. */
+>> -		if (do_mpx_bt_fault(xsave_buf))
+>> +		down_write(&current->mm->mmap_sem);
+> 
+> The handling of mm->mmap_sem here is horrible. The only reason why you
+> want to hold mmap_sem write locked in the first place is that you want
+> to cover the allocation and the mm->bd_addr check.
+> 
+> I think it's wrong to tie this to mmap_sem in the first place. If MPX
+> is enabled then you should have mm->bd_addr and an explicit mutex to protect it.
+> 
+> So the logic would look like this:
+> 
+>    mutex_lock(&mm->bd_mutex);
+>    if (!kernel_managed(mm))
+>       do_trap(); else if (do_mpx_bt_fault()) force_sig();
+>    mutex_unlock(&mm->bd_mutex);
+> No tricks with mmap_sem, no special return value handling. Straight
+> forward code instead of a convoluted and error prone mess.
+> 
+> Hmm?
+> 
+I guess this is a good solution. If so, new field 'bd_sem' have to be added into struct mm_struct.
 
 Thanks,
 Qiaowei

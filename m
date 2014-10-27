@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 19:15:44 +0100 (CET)
-Received: from charlotte.tuxdriver.com ([70.61.120.58]:53015 "EHLO
-        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011433AbaJ0SPYztBEB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 19:15:24 +0100
-Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
-        (envelope-from <linville@tuxdriver.com>)
-        id 1Xioov-0001JH-Bc; Mon, 27 Oct 2014 14:15:09 -0400
-Received: from linville-x1.hq.tuxdriver.com (localhost.localdomain [127.0.0.1])
-        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.6) with ESMTP id s9RI4faE012523;
-        Mon, 27 Oct 2014 14:04:41 -0400
-Received: (from linville@localhost)
-        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.8/Submit) id s9RI4c4f012522;
-        Mon, 27 Oct 2014 14:04:38 -0400
-Date:   Mon, 27 Oct 2014 14:04:37 -0400
-From:   "John W. Linville" <linville@tuxdriver.com>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
-        linux-wireless@vger.kernel.org, ath5k-devel@venema.h4ckr.net
-Subject: Re: [PATCH v2 11/13] ath5k: revert AHB bus support removing
-Message-ID: <20141027180436.GE28300@tuxdriver.com>
-References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
- <1413932631-12866-12-git-send-email-ryazanov.s.a@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 21:37:08 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:50357 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011436AbaJ0UhG4QFpx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 21:37:06 +0100
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1Xir26-0001ZH-R0; Mon, 27 Oct 2014 21:36:54 +0100
+Date:   Mon, 27 Oct 2014 21:36:53 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     "Ren, Qiaowei" <qiaowei.ren@intel.com>
+cc:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
+ violation information
+In-Reply-To: <9E0BE1322F2F2246BD820DA9FC397ADE0180ED16@shsmsx102.ccr.corp.intel.com>
+Message-ID: <alpine.DEB.2.11.1410272135420.5308@nanos>
+References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-10-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241408360.5308@nanos> <9E0BE1322F2F2246BD820DA9FC397ADE0180ED16@shsmsx102.ccr.corp.intel.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1413932631-12866-12-git-send-email-ryazanov.s.a@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linville@tuxdriver.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43603
+X-archive-position: 43604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@tuxdriver.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,22 +50,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 22, 2014 at 03:03:49AM +0400, Sergey Ryazanov wrote:
-> This reverts commit 093ec3c5337434f40d77c1af06c139da3e5ba6dc.
+On Mon, 27 Oct 2014, Ren, Qiaowei wrote:
+> On 2014-10-24, Thomas Gleixner wrote:
+> > On Sun, 12 Oct 2014, Qiaowei Ren wrote:
+> > 
+> >> This patch sets bound violation fields of siginfo struct in #BR
+> >> exception handler by decoding the user instruction and constructing
+> >> the faulting pointer.
+> >> 
+> >> This patch does't use the generic decoder, and implements a limited
+> >> special-purpose decoder to decode MPX instructions, simply because
+> >> the generic decoder is very heavyweight not just in terms of
+> >> performance but in terms of interface -- because it has to.
+> > 
+> > My question still stands why using the existing decoder is an issue.
+> > Performance is a complete non issue in case of a bounds violation and
+> > the interface argument is just silly, really.
+> > 
 > 
-> AHB bus code has been removed, since we did not have support Atheros
-> AR231x SoC, required for building the AHB version of ath5k. Now that
-> support WiSoC chips added we can restore functionality back.
-> 
-> Singed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-> Cc: Jiri Slaby <jirislaby@gmail.com>
-> Cc: Nick Kossifidis <mickflemm@gmail.com>
-> Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: ath5k-devel@lists.ath5k.org
+> As hpa said, we only need to decode several mpx instructions
+> including BNDCL/BNDCU, and general decoder looks like a little
+> heavy. Peter, what do you think about it?
 
-Acked-by: John W. Linville <linville@tuxdriver.com>
+You're repeating yourself. Care to read the discussion about this from
+the last round of review again?
 
--- 
-John W. Linville		Someday the world will need a hero, and you
-linville@tuxdriver.com			might be all we have.  Be ready.
+Thanks,
+
+	tglx

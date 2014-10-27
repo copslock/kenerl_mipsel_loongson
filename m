@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 13:44:12 +0100 (CET)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:4698 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 13:44:31 +0100 (CET)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:4685 "EHLO
         szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011391AbaJ0Ml6lbBNe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 13:41:58 +0100
+        by eddie.linux-mips.org with ESMTP id S27011380AbaJ0MmCROKy6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 13:42:02 +0100
 Received: from 172.24.2.119 (EHLO szxeml404-hub.china.huawei.com) ([172.24.2.119])
         by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CBJ49234;
-        Mon, 27 Oct 2014 20:41:30 +0800 (CST)
+        with ESMTP id CBJ49248;
+        Mon, 27 Oct 2014 20:41:39 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml404-hub.china.huawei.com (10.82.67.59) with Microsoft SMTP Server id
- 14.3.158.1; Mon, 27 Oct 2014 20:41:19 +0800
+ 14.3.158.1; Mon, 27 Oct 2014 20:41:30 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -34,9 +34,9 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         "Thomas Petazzoni" <thomas.petazzoni@free-electrons.com>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH 04/16] Irq_remapping/MSI: Use MSI controller framework to configure MSI/MSI-X irq
-Date:   Mon, 27 Oct 2014 21:22:10 +0800
-Message-ID: <1414416142-31239-5-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH 11/16] s390/MSI: Use MSI controller framework to configure MSI/MSI-X irq
+Date:   Mon, 27 Oct 2014 21:22:17 +0800
+Message-ID: <1414416142-31239-12-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1414416142-31239-1-git-send-email-wangyijing@huawei.com>
 References: <1414416142-31239-1-git-send-email-wangyijing@huawei.com>
@@ -48,7 +48,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43586
+X-archive-position: 43587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,47 +69,74 @@ Use MSI controller framework instead of arch MSI functions to configure
 MSI/MSI-X irq. So we can manage MSI/MSI-X irq in a unified framework.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+Acked-by: Sebastian Ott <sebott@linux.vnet.ibm.com>
 ---
- drivers/iommu/irq_remapping.c |   11 ++++++++---
- 1 files changed, 8 insertions(+), 3 deletions(-)
+ arch/s390/include/asm/pci.h |    1 +
+ arch/s390/pci/pci.c         |   19 +++++++++++++++++--
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/irq_remapping.c b/drivers/iommu/irq_remapping.c
-index 74a1767..6db1459 100644
---- a/drivers/iommu/irq_remapping.c
-+++ b/drivers/iommu/irq_remapping.c
-@@ -140,8 +140,8 @@ error:
- 	return ret;
+diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
+index c030900..bf14da2 100644
+--- a/arch/s390/include/asm/pci.h
++++ b/arch/s390/include/asm/pci.h
+@@ -88,6 +88,7 @@ struct zpci_dev {
+ 	u32 uid;			/* user defined id */
+ 	u8 util_str[CLP_UTIL_STR_LEN];	/* utility string */
+ 
++	struct msi_controller *msi_ctrl;
+ 	/* IRQ stuff */
+ 	u64		msi_addr;	/* MSI address */
+ 	struct airq_iv *aibv;		/* adapter interrupt bit vector */
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 552b990..beed5ab 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -358,7 +358,15 @@ static void zpci_irq_handler(struct airq_struct *airq)
+ 	}
  }
  
--static int irq_remapping_setup_msi_irqs(struct pci_dev *dev,
--					int nvec, int type)
-+static int irq_remapping_setup_msi_irqs(struct msi_controller *ctrl,
-+		struct pci_dev *dev, int nvec, int type)
+-int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
++struct msi_controller *pcibios_msi_controller(struct pci_bus *bus)
++{
++	struct zpci_dev *zpci = bus->sysdata;
++
++	return zpci->msi_ctrl;
++}
++
++static int zpci_setup_msi_irqs(struct msi_controller *ctrl,
++		struct pci_dev *pdev, int nvec, int type)
  {
- 	if (type == PCI_CAP_ID_MSI)
- 		return do_setup_msi_irqs(dev, nvec);
-@@ -149,6 +149,11 @@ static int irq_remapping_setup_msi_irqs(struct pci_dev *dev,
- 		return do_setup_msix_irqs(dev, nvec);
+ 	struct zpci_dev *zdev = get_zdev(pdev);
+ 	unsigned int hwirq, msi_vecs;
+@@ -434,7 +442,8 @@ out:
+ 	return rc;
  }
  
-+static struct msi_controller remap_msi_ctrl = {
-+	.setup_irqs = irq_remapping_setup_msi_irqs,
-+	.teardown_irq = native_teardown_msi_irq,
+-void arch_teardown_msi_irqs(struct pci_dev *pdev)
++static void zpci_teardown_msi_irqs(struct msi_controller *ctrl,
++		struct pci_dev *pdev)
+ {
+ 	struct zpci_dev *zdev = get_zdev(pdev);
+ 	struct msi_desc *msi;
+@@ -464,6 +473,11 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ 	airq_iv_free_bit(zpci_aisb_iv, zdev->aisb);
+ }
+ 
++static struct msi_controller zpci_msi_ctrl = {
++	.setup_irqs = zpci_setup_msi_irqs,
++	.teardown_irqs = zpci_teardown_msi_irqs,
 +};
 +
- static void eoi_ioapic_pin_remapped(int apic, int pin, int vector)
+ static void zpci_map_resources(struct zpci_dev *zdev)
  {
- 	/*
-@@ -166,9 +171,9 @@ static void __init irq_remapping_modify_x86_ops(void)
- 	x86_io_apic_ops.set_affinity	= set_remapped_irq_affinity;
- 	x86_io_apic_ops.setup_entry	= setup_ioapic_remapped_entry;
- 	x86_io_apic_ops.eoi_ioapic_pin	= eoi_ioapic_pin_remapped;
--	x86_msi.setup_msi_irqs		= irq_remapping_setup_msi_irqs;
- 	x86_msi.setup_hpet_msi		= setup_hpet_msi_remapped;
- 	x86_msi.compose_msi_msg		= compose_remapped_msi_msg;
-+	x86_msi_ctrl = &remap_msi_ctrl;
- }
+ 	struct pci_dev *pdev = zdev->pdev;
+@@ -749,6 +763,7 @@ static int zpci_scan_bus(struct zpci_dev *zdev)
+ 	if (ret)
+ 		return ret;
  
- static __init int setup_nointremap(char *str)
++	zdev->msi_ctrl = &zpci_msi_ctrl;
+ 	zdev->bus = pci_scan_root_bus(NULL, ZPCI_BUS_NR, &pci_root_ops,
+ 				      zdev, &resources);
+ 	if (!zdev->bus) {
 -- 
 1.7.1

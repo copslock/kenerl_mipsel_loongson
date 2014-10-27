@@ -1,45 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Oct 2014 02:39:21 +0100 (CET)
-Received: from mail-ig0-f173.google.com ([209.85.213.173]:37095 "EHLO
-        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010649AbaJZBjSX72tI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Oct 2014 02:39:18 +0100
-Received: by mail-ig0-f173.google.com with SMTP id r10so1447630igi.0
-        for <multiple recipients>; Sat, 25 Oct 2014 18:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=8258ABwF4SBAda53lDOS09w0SJhNJ2BaV7t09+1MqCg=;
-        b=soMhnoJGK/8DOY6tjGKDhYT6rSrrD8n+K6TarWVVc4Nu+MHUlZNwrhyMBZeW5VSw/9
-         jG4SSfKQNxwutw6D7yQga2CL2dgYmkTC3uoz8uRepIMKDTWV7IH85pXaBN89Q6LmFaYg
-         opIjoRdzFMya2p8Xnao5PsZ6y5yzjlZLX52soTiI5ySPkdBaSKpKcNVaUTFu62itBn4f
-         u/pSDIshseD6KhmaN8FkDkp6uG6zTE4UAXY+0L+HucyOsVbNlL4Tp+IV+c3LFzOGPbvL
-         Y/KdDrQIuL4d7ktxHkoUDqkgNhRPaIBO+Hk3xnorRoAa6L2geyxdlUlKJGTpmJ4tLrmH
-         LcEA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 02:10:23 +0100 (CET)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:50910 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010898AbaJ0BKTwGxCk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 02:10:19 +0100
+Received: from 172.24.2.119 (EHLO SZXEML414-HUB.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id AWD64653;
+        Mon, 27 Oct 2014 09:06:44 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by SZXEML414-HUB.china.huawei.com
+ (10.82.67.153) with Microsoft SMTP Server id 14.3.158.1; Mon, 27 Oct 2014
+ 09:06:26 +0800
+Message-ID: <544D9A8E.6030607@huawei.com>
+Date:   Mon, 27 Oct 2014 09:06:22 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
-X-Received: by 10.42.184.6 with SMTP id ci6mr11342894icb.33.1414287552258;
- Sat, 25 Oct 2014 18:39:12 -0700 (PDT)
-Received: by 10.64.128.167 with HTTP; Sat, 25 Oct 2014 18:39:12 -0700 (PDT)
-In-Reply-To: <540042D9.1050208@imgtec.com>
-References: <1409283416-16926-1-git-send-email-chenhc@lemote.com>
-        <540042D9.1050208@imgtec.com>
-Date:   Sun, 26 Oct 2014 09:39:12 +0800
-Message-ID: <CAAhV-H7UR4L5F21QLhaAUcsNO0ow_6zcSSLsYMXCW_jWWhf3QQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Loongson: Fix the write-combine CCA value setting
-From:   Huacai Chen <chenhuacai@gmail.com>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Xinwei Hu <huxinwei@huawei.com>,
+        Wuyun <wuyun.wu@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-arch@vger.kernel.org>, <arnab.basu@freescale.com>,
+        <Bharat.Bhushan@freescale.com>, <x86@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+        <xen-devel@lists.xenproject.org>, Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>, <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        "Tony Luck" <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <sparclinux@vger.kernel.org>, Chris Metcalf <cmetcalf@tilera.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Vrabel <david.vrabel@citrix.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        Liviu Dudau <liviu@dudau.co.uk>
+Subject: Re: [PATCH v3 16/27] Mips/MSI: Save msi chip in pci sysdata
+References: <1413342435-7876-1-git-send-email-wangyijing@huawei.com> <1413342435-7876-17-git-send-email-wangyijing@huawei.com> <20141025130428.GD16738@linux-mips.org>
+In-Reply-To: <20141025130428.GD16738@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.27.212]
+X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A020207.544D9AA8.01C8,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2013-03-21 17:37:32
+X-Mirapoint-Loop-Id: 62718a06b6d03d51a2e550dfc5780efa
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43567
+X-archive-position: 43569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,30 +75,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Ralf,
+On 2014/10/25 21:04, Ralf Baechle wrote:
+> On Wed, Oct 15, 2014 at 11:07:04AM +0800, Yijing Wang wrote:
+> 
+>> +static inline struct msi_chip *pci_msi_chip(struct pci_bus *bus)
+>> +{
+>> +	struct pci_controller *control = (struct pci_controller *)bus->sysdata;
+> 
+> bus->sysdata is void * so this cast is unnecessary.
 
-Can this patch be merged in 3.18?
+Yes, will update it, thanks!
 
-Huacai
+> 
+>   Ralf
+> 
+> .
+> 
 
-On Fri, Aug 29, 2014 at 5:07 PM, Markos Chandras
-<Markos.Chandras@imgtec.com> wrote:
-> On 08/29/2014 04:36 AM, Huacai Chen wrote:
->> All Loongson-2/3 processors support _CACHE_UNCACHED_ACCELERATED, not
->> only Loongson-3A.
->>
->> Signed-off-by: Huacai Chen <chenhc@lemote.com>
->> ---
-> Hi,
->
-> Thanks for the patch.
->
-> Ralf, perhaps you can merge it with
->
-> http://git.linux-mips.org/?p=ralf/upstream-sfr.git;a=commit;h=2ac2118deca510649c15b0ba6ce433c37bba345c
->
-> Thanks in advance.
->
-> --
-> markos
->
+
+-- 
+Thanks!
+Yijing

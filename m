@@ -1,40 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 18:57:58 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:33106 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011669AbaJ1R55KzYLR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 18:57:57 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1XjB1f-0007q7-Qz; Tue, 28 Oct 2014 18:57:47 +0100
-Date:   Tue, 28 Oct 2014 18:57:46 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Dave Hansen <dave.hansen@intel.com>
-cc:     Qiaowei Ren <qiaowei.ren@intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v9 05/12] x86, mpx: on-demand kernel allocation of bounds
- tables
-In-Reply-To: <544FD5D4.4090404@intel.com>
-Message-ID: <alpine.DEB.2.11.1410281851390.5308@nanos>
-References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-6-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241257300.5308@nanos> <544FD5D4.4090404@intel.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 22:09:13 +0100 (CET)
+Received: from mail-yk0-f181.google.com ([209.85.160.181]:38987 "EHLO
+        mail-yk0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011726AbaJ1VJLv0oJm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 22:09:11 +0100
+Received: by mail-yk0-f181.google.com with SMTP id 19so720897ykq.26
+        for <multiple recipients>; Tue, 28 Oct 2014 14:09:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=ttHbP7SxL/LC7HZkKSonmSR+ufEhbv6OBRXfJKrUyaA=;
+        b=ySbEtzTa3J5sBYci5mU8Q8P+nrQZoOp/Ll6GB0COOD4cPZCC2S8kMPjZSh8T2kFo0l
+         i03ForVNJQA8fTzs2yTkJU/v+Qj/gqsuxIXwnV+F+1pNYwyQcFWT9XCJmZSHFpoPlZOf
+         0yVEZRvtoS98GAGtY1Sl3qGiqq/JwttS+MBiCBtvo9Hj2qoxEWMRcWqgQRF6OQTQ02lX
+         5TXGhouydDF8gr/OeP1mIsRMb2NMO0I37X11/9HEfHmLhF2QaR9yMpAs94W6aWuh/heY
+         6YC/mnp9X+DzGJERka0sMwbNoNoSrgz/AQ7jxg+M8XqHzmRv4fgIXz+xgZ4ZavHOkqdq
+         8InQ==
+X-Received: by 10.170.83.198 with SMTP id z189mr6594761ykz.70.1414530545567;
+ Tue, 28 Oct 2014 14:09:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Received: by 10.170.153.196 with HTTP; Tue, 28 Oct 2014 14:08:45 -0700 (PDT)
+In-Reply-To: <CACRpkdZk9ZmoRELY8mT-6hbPkM3j9xPJzDFs1fyW17BxqxT0UQ@mail.gmail.com>
+References: <1411929195-23775-1-git-send-email-ryazanov.s.a@gmail.com>
+ <1411929195-23775-11-git-send-email-ryazanov.s.a@gmail.com>
+ <CACRpkdYWNjE1KS8GQo0fRrgT-Siwe7=SAOGQqBVqoW+Ypg-jAw@mail.gmail.com>
+ <CAHNKnsSj6gdZgc9JqWgskMB8v49t04g5B1TKC3TTnTgch4zNtA@mail.gmail.com> <CACRpkdZk9ZmoRELY8mT-6hbPkM3j9xPJzDFs1fyW17BxqxT0UQ@mail.gmail.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Wed, 29 Oct 2014 00:08:45 +0300
+Message-ID: <CAHNKnsRgH9tZ2T9JpVRGARarzSJAmwzyw6cF+VgR1XQ9UkKRuA@mail.gmail.com>
+Subject: Re: [PATCH 10/16] gpio: add driver for Atheros AR2315 SoC GPIO controller
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43647
+X-archive-position: 43648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: ryazanov.s.a@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,50 +56,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 28 Oct 2014, Dave Hansen wrote:
+2014-10-28 17:37 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
+> On Wed, Oct 15, 2014 at 1:12 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
+>> 2014-10-15 12:58 GMT+04:00, Linus Walleij <linus.walleij@linaro.org>:
+>>> On Sun, Sep 28, 2014 at 8:33 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com>
+>
+>> I have one more generic question: could you merge driver without
+>> GPIOLIB_IRQCHIP usage?
+>
+> No.
+>
+Ok.
 
-> On 10/24/2014 05:08 AM, Thomas Gleixner wrote:
-> > On Sun, 12 Oct 2014, Qiaowei Ren wrote:
-> >> +	/*
-> >> +	 * Go poke the address of the new bounds table in to the
-> >> +	 * bounds directory entry out in userspace memory.  Note:
-> >> +	 * we may race with another CPU instantiating the same table.
-> >> +	 * In that case the cmpxchg will see an unexpected
-> >> +	 * 'actual_old_val'.
-> >> +	 */
-> >> +	ret = user_atomic_cmpxchg_inatomic(&actual_old_val, bd_entry,
-> >> +					   expected_old_val, bt_addr);
-> > 
-> > This is fully preemptible non-atomic context, right?
-> > 
-> > So this wants a proper comment, why using
-> > user_atomic_cmpxchg_inatomic() is the right thing to do here.
-> 
-> Hey Thomas,
-> 
-> How's this for a new comment?  Does this cover the points you think need
-> clarified?
-> 
-> ====
-> 
-> The kernel has allocated a bounds table and needs to point the
-> (userspace-allocated) directory to it.  The directory entry is the
-> *only* place we track that this table was allocated, so we essentially
-> use it instead of an kernel data structure for synchronization.  A
-> copy_to_user()-style function would not give us the atomicity that we need.
-> 
-> If two threads race to instantiate a table, the cmpxchg ensures we know
-> which one lost the race and that the loser frees the table that they
-> just allocated.
+>> Currently no one driver for the AR231x SoCs
+>> uses irq_domain and I do not like to enable IRQ_DOMAIN just for one
+>> driver. I plan to convert drivers to make them irq_domain aware a bit
+>> later.
+>
+> I don't believe any such promises. It's nothing personal, just I've
+> been burned too many times by people promising to "fix later".
+>
+Now I drop the driver from the series and return to the development a
+bit later, when finished the basic code for the MIPS architecture. In
+that case I will have a time to write the driver that does not require
+further fixes.
 
-Yup. That explains the cmpxchg.
 
-The other thing which puzzled me was that it calls
-user_atomic_cmpxchg_inatomic() but the context is not atomic at
-all. Its fully preemptible and actually we want it to be able to
-handle the fault. The implementation does that, just the function
-itself suggest something different.
- 
-Thanks,
+>>>> +static u32 ar2315_gpio_intmask;
+>>>> +static u32 ar2315_gpio_intval;
+>>>> +static unsigned ar2315_gpio_irq_base;
+>>>> +static void __iomem *ar2315_mem;
+>>>
+>>> No static locals. Allocate and use a state container, see
+>>> Documentation/driver-model/design-patterns.txt
+>>>
+>> Is that rule mandatory for drivers, which serve only one device?
+>
+> There is no central authority which decides what is mandatory
+> or not. It is mandatory to get a driver past the GPIO maintainer.
+>
+Nice point :)
 
-	tglx
+>>>> +static inline u32 ar2315_gpio_reg_read(unsigned reg)
+>>>> +{
+>>>> +       return __raw_readl(ar2315_mem + reg);
+>>>> +}
+>>>
+>>> Use readl_relaxed() instead.
+>>>
+>> readl_relaxed() converts the bit ordering and seems inapplicable in this case.
+>
+> It assumes the peripherals IO memory is little endian.
+>
+> If the IO memory for this device is little endian, please stay with
+> [readl|writel]_relaxed so it looks familiar.
+>
+> Or is this machine really using big endian hardware registers?
+> In that case I understand your comment...
+>
+Yes, AR5312 and AR2315 SoCs are big endian machines with big endian registers.
+
+
+>>> When you use the state container, you need to do a
+>>> state dereference like that:
+>>>
+>>> mystate->base + reg
+>>>
+>>> So I don't think these inlines buy you anything. Just use
+>>> readl/writel_relaxed directly in the code.
+>>>
+>> These helpers make code shorter and clearer. I can use macros if you
+>> do preferred.
+>
+> No big deal. Keep it if you like it this way.
+>
+>>> So why is .set_type() not implemented and instead hard-coded into
+>>> the unmask function? Please fix this. It will be called by the
+>>> core eventually no matter what.
+>>>
+>> The interrupt configuration is a bit complex. This controller could be
+>> configured to generate interrupts only for two lines at once. Or in
+>> other words: user could select any two lines to generate interrupt.
+>
+> Oh well, better just handle it I guess...
+>
+Will do in v2.
+
+>>>> +static int __init ar2315_gpio_init(void)
+>>>> +{
+>>>> +       return platform_driver_register(&ar2315_gpio_driver);
+>>>> +}
+>>>> +subsys_initcall(ar2315_gpio_init);
+>>>
+>>> Why are you using subsys_initcall()?
+>>>
+>>> This should not be necessary.
+>>>
+>> I have users of GPIO in arch code, what called earlier than the
+>> devices initcall.
+>
+> OK? Why are there such users that early and what do they
+> use the GPIOs for? Any reason they cannot be device_initcall()s?
+>
+One GPIO line is used in reset handler to be able to reliably reset
+the chip. This is a workaround from vendor's reference design to
+eliminate a hw bug in the reset circuit of the AR2315 SoC. So I prefer
+to have GPIO controller in ready state as soon as possible.
+
+> Yours,
+> Linus Walleij
+
+-- 
+BR,
+Sergey

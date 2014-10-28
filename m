@@ -1,33 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 00:21:50 +0100 (CET)
-Received: from mail-la0-f53.google.com ([209.85.215.53]:64944 "EHLO
-        mail-la0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011812AbaJ1XTMMaGD0 (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 00:22:10 +0100 (CET)
+Received: from mail-la0-f51.google.com ([209.85.215.51]:56137 "EHLO
+        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011814AbaJ1XTMMaGD0 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 00:19:12 +0100
-Received: by mail-la0-f53.google.com with SMTP id mc6so1547026lab.26
-        for <multiple recipients>; Tue, 28 Oct 2014 16:19:04 -0700 (PDT)
+Received: by mail-la0-f51.google.com with SMTP id q1so1571009lam.10
+        for <multiple recipients>; Tue, 28 Oct 2014 16:19:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wW5X+a1UYXy5Y1Bkw1P/7rGnqV+x+urqDHInDYIyj7I=;
-        b=iV0tGCh2yOAHjZ/CfkHyziYO08Ej8+QZtSffEVfhHCZQUByg/iAfu2xuXhC3lz6e3J
-         anU1lGC1Z5v1YlVlZBilkjLhF1R3k9BqGsfhBEzDCMdht1gqWEqJRtMld7IdgTcCKRMF
-         aRvR5LR8rQtVTbl6b5JsfYomJ5IlYJButx1zho5T2UWl4oI7CQXAOBEIR8ibAX1kZE2L
-         VN3ItrFP5UoEQfvVSuvXhM4ql8zG3WAYBtE/pw740lfNsjpNHXJ+VQg/a+5HyaHptycR
-         wYB/+08gObs9TB8iLGm7cAsb3FUnmj8716E/dgw3DTFY/8QRKVRvfOkCbGO1AdvYbY7S
-         o/WA==
-X-Received: by 10.152.203.139 with SMTP id kq11mr7412784lac.63.1414538344527;
-        Tue, 28 Oct 2014 16:19:04 -0700 (PDT)
+        bh=yg46JU24jAdoU+9lDitJabaV0aSIYprCDn/dkpq5uBo=;
+        b=sU0fmMEUjrTcL5soERS6XZ+G08NU/7RPlsAZx0K18TnlmX34ebvWf7Jjx/WMU2EWFA
+         pbTkVASYK8hmEnMxUu95UIDtcYoe1m3lLmhOP37tLSFWlZLaF3U03UH4+oXO7Lp4k3se
+         e8XaaRKTGxlyyAAew3Xzrl2KyfYD9hCg1uELc+DzLZ6itb7034g+LIz1diKCVDhqIN9Y
+         48Qo37qcZkHdvBifTi/0IqRnY549gYP7MRKKmYXPc8SYJIMizJNdGI4N2gB8BCv/YPWL
+         xbVOphfUv4xHlzNPEzwes1h5TAxb1xxMLe6cI4g0krStSfEuW9rYn0QUYV0jx75I/ep5
+         3SEQ==
+X-Received: by 10.152.27.134 with SMTP id t6mr7324294lag.17.1414538346646;
+        Tue, 28 Oct 2014 16:19:06 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id i6sm1173752laf.47.2014.10.28.16.19.02
+        by mx.google.com with ESMTPSA id i6sm1173752laf.47.2014.10.28.16.19.04
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 Oct 2014 16:19:03 -0700 (PDT)
+        Tue, 28 Oct 2014 16:19:05 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH v3 10/13] MIPS: ath25: add AR2315 PCI host controller driver
-Date:   Wed, 29 Oct 2014 03:18:47 +0400
-Message-Id: <1414538330-5548-11-git-send-email-ryazanov.s.a@gmail.com>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
+        linux-wireless@vger.kernel.org, ath5k-devel@lists.ath5k.org
+Subject: [PATCH v3 11/13] ath5k: revert AHB bus support removing
+Date:   Wed, 29 Oct 2014 03:18:48 +0400
+Message-Id: <1414538330-5548-12-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1414538330-5548-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1414538330-5548-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -35,7 +39,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43661
+X-archive-position: 43662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,711 +56,434 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add PCI host controller driver and DMA address calculation hook.
+This reverts commit 093ec3c5337434f40d77c1af06c139da3e5ba6dc.
+
+AHB bus code has been removed, since we did not have support Atheros
+AR231x SoC, required for building the AHB version of ath5k. Now that
+support WiSoC chips added we can restore functionality back.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Acked-by: John W. Linville <linville@tuxdriver.com>
+Cc: Jiri Slaby <jirislaby@gmail.com>
+Cc: Nick Kossifidis <mickflemm@gmail.com>
+Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: ath5k-devel@lists.ath5k.org
 ---
 
-Changes since RFC:
-  - use dynamic IRQ numbers allocation
-
 Changes since v1:
-  - rename MIPS machine ar231x -> ath25
+  - fresh patch
 
 Changes since v2:
-  - fix a typo inside the PCI controller features description
-  - add state container instead of set of static variables
-  - truely remap the PCI controller MMR (avoid KSEG1ADDR usage)
-  - pass memory regions via platform device resources
-  - move AHB related configuration to arch code
-  - move PCI related stuff from the common header to PCI host driver
-  - use irq_domain
+  - fix typo in SoB line
 
- arch/mips/ath25/Kconfig                          |   7 +
- arch/mips/ath25/ar2315.c                         |  57 +++
- arch/mips/include/asm/mach-ath25/dma-coherence.h |  24 +-
- arch/mips/pci/Makefile                           |   1 +
- arch/mips/pci/pci-ar2315.c                       | 511 +++++++++++++++++++++++
- 5 files changed, 597 insertions(+), 3 deletions(-)
- create mode 100644 arch/mips/pci/pci-ar2315.c
+ drivers/net/wireless/ath/ath5k/Kconfig  |  14 +-
+ drivers/net/wireless/ath/ath5k/Makefile |   1 +
+ drivers/net/wireless/ath/ath5k/ahb.c    | 234 ++++++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath5k/ath5k.h  |  28 ++++
+ drivers/net/wireless/ath/ath5k/base.c   |  14 ++
+ drivers/net/wireless/ath/ath5k/led.c    |   6 +
+ 6 files changed, 294 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath5k/ahb.c
 
-diff --git a/arch/mips/ath25/Kconfig b/arch/mips/ath25/Kconfig
-index ca3dde4..fc19dd5 100644
---- a/arch/mips/ath25/Kconfig
-+++ b/arch/mips/ath25/Kconfig
-@@ -7,3 +7,10 @@ config SOC_AR2315
- 	bool "Atheros AR2315+ SoC support"
- 	depends on ATH25
- 	default y
-+
-+config PCI_AR2315
-+	bool "Atheros AR2315 PCI controller support"
-+	depends on SOC_AR2315
-+	select HW_HAS_PCI
-+	select PCI
-+	default y
-diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c
-index 52805b7..f024789 100644
---- a/arch/mips/ath25/ar2315.c
-+++ b/arch/mips/ath25/ar2315.c
-@@ -19,6 +19,7 @@
- #include <linux/bitops.h>
- #include <linux/irqdomain.h>
- #include <linux/interrupt.h>
-+#include <linux/platform_device.h>
- #include <linux/reboot.h>
- #include <asm/bootinfo.h>
- #include <asm/reboot.h>
-@@ -133,6 +134,10 @@ static void ar2315_irq_dispatch(void)
+diff --git a/drivers/net/wireless/ath/ath5k/Kconfig b/drivers/net/wireless/ath/ath5k/Kconfig
+index 93caf8e68..c9f81a3 100644
+--- a/drivers/net/wireless/ath/ath5k/Kconfig
++++ b/drivers/net/wireless/ath/ath5k/Kconfig
+@@ -1,12 +1,13 @@
+ config ATH5K
+ 	tristate "Atheros 5xxx wireless cards support"
+-	depends on PCI && MAC80211
++	depends on (PCI || ATHEROS_AR231X) && MAC80211
+ 	select ATH_COMMON
+ 	select MAC80211_LEDS
+ 	select LEDS_CLASS
+ 	select NEW_LEDS
+ 	select AVERAGE
+-	select ATH5K_PCI
++	select ATH5K_AHB if (ATHEROS_AR231X && !PCI)
++	select ATH5K_PCI if (!ATHEROS_AR231X && PCI)
+ 	---help---
+ 	  This module adds support for wireless adapters based on
+ 	  Atheros 5xxx chipset.
+@@ -51,9 +52,16 @@ config ATH5K_TRACER
  
- 	if (pending & CAUSEF_IP3)
- 		do_IRQ(AR2315_IRQ_WLAN0);
-+#ifdef CONFIG_PCI_AR2315
-+	else if (pending & CAUSEF_IP5)
-+		do_IRQ(AR2315_IRQ_LCBUS_PCI);
-+#endif
- 	else if (pending & CAUSEF_IP2)
- 		do_IRQ(AR2315_IRQ_MISC);
- 	else if (pending & CAUSEF_IP7)
-@@ -296,10 +301,62 @@ void __init ar2315_plat_mem_setup(void)
- 	_machine_restart = ar2315_restart;
- }
+ 	  If unsure, say N.
  
-+#ifdef CONFIG_PCI_AR2315
-+static struct resource ar2315_pci_res[] = {
-+	{
-+		.name = "ar2315-pci-ctrl",
-+		.flags = IORESOURCE_MEM,
-+		.start = AR2315_PCI_BASE,
-+		.end = AR2315_PCI_BASE + AR2315_PCI_SIZE - 1,
-+	},
-+	{
-+		.name = "ar2315-pci-ext",
-+		.flags = IORESOURCE_MEM,
-+		.start = AR2315_PCI_EXT_BASE,
-+		.end = AR2315_PCI_EXT_BASE + AR2315_PCI_EXT_SIZE - 1,
-+	},
-+	{
-+		.name = "ar2315-pci",
-+		.flags = IORESOURCE_IRQ,
-+		.start = AR2315_IRQ_LCBUS_PCI,
-+		.end = AR2315_IRQ_LCBUS_PCI,
-+	},
-+};
-+#endif
++config ATH5K_AHB
++	bool "Atheros 5xxx AHB bus support"
++	depends on (ATHEROS_AR231X && !PCI)
++	---help---
++	  This adds support for WiSoC type chipsets of the 5xxx Atheros
++	  family.
 +
- void __init ar2315_arch_init(void)
- {
- 	unsigned irq = irq_create_mapping(ar2315_misc_irq_domain,
- 					  AR2315_MISC_IRQ_UART0);
- 
- 	ath25_serial_setup(AR2315_UART0_BASE, irq, ar2315_apb_frequency());
-+
-+#ifdef CONFIG_PCI_AR2315
-+	if (ath25_soc == ATH25_SOC_AR2315) {
-+		/* Reset PCI DMA logic */
-+		ar2315_rst_reg_mask(AR2315_RESET, 0, AR2315_RESET_PCIDMA);
-+		msleep(20);
-+		ar2315_rst_reg_mask(AR2315_RESET, AR2315_RESET_PCIDMA, 0);
-+		msleep(20);
-+
-+		/* Configure endians */
-+		ar2315_rst_reg_mask(AR2315_ENDIAN_CTL, 0, AR2315_CONFIG_PCIAHB |
-+				    AR2315_CONFIG_PCIAHB_BRIDGE);
-+
-+		/* Configure as PCI host with DMA */
-+		ar2315_rst_reg_write(AR2315_PCICLK, AR2315_PCICLK_PLLC_CLKM |
-+				  (AR2315_PCICLK_IN_FREQ_DIV_6 <<
-+				   AR2315_PCICLK_DIV_S));
-+		ar2315_rst_reg_mask(AR2315_AHB_ARB_CTL, 0, AR2315_ARB_PCI);
-+		ar2315_rst_reg_mask(AR2315_IF_CTL, AR2315_IF_PCI_CLK_MASK |
-+				    AR2315_IF_MASK, AR2315_IF_PCI |
-+				    AR2315_IF_PCI_HOST | AR2315_IF_PCI_INTR |
-+				    (AR2315_IF_PCI_CLK_OUTPUT_CLK <<
-+				     AR2315_IF_PCI_CLK_SHIFT));
-+
-+		platform_device_register_simple("ar2315-pci", -1,
-+						ar2315_pci_res,
-+						ARRAY_SIZE(ar2315_pci_res));
-+	}
-+#endif
- }
-diff --git a/arch/mips/include/asm/mach-ath25/dma-coherence.h b/arch/mips/include/asm/mach-ath25/dma-coherence.h
-index 8b3d0cc..d8009c9 100644
---- a/arch/mips/include/asm/mach-ath25/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-ath25/dma-coherence.h
-@@ -12,22 +12,40 @@
- 
- #include <linux/device.h>
- 
-+/*
-+ * We need some arbitrary non-zero value to be programmed to the BAR1 register
-+ * of PCI host controller to enable DMA. The same value should be used as the
-+ * offset to calculate the physical address of DMA buffer for PCI devices.
-+ */
-+#define AR2315_PCI_HOST_SDRAM_BASEADDR	0x20000000
-+
-+static inline dma_addr_t ath25_dev_offset(struct device *dev)
-+{
-+#ifdef CONFIG_PCI
-+	extern struct bus_type pci_bus_type;
-+
-+	if (dev && dev->bus == &pci_bus_type)
-+		return AR2315_PCI_HOST_SDRAM_BASEADDR;
-+#endif
-+	return 0;
-+}
-+
- static inline dma_addr_t
- plat_map_dma_mem(struct device *dev, void *addr, size_t size)
- {
--	return virt_to_phys(addr);
-+	return virt_to_phys(addr) + ath25_dev_offset(dev);
- }
- 
- static inline dma_addr_t
- plat_map_dma_mem_page(struct device *dev, struct page *page)
- {
--	return page_to_phys(page);
-+	return page_to_phys(page) + ath25_dev_offset(dev);
- }
- 
- static inline unsigned long
- plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
- {
--	return dma_addr;
-+	return dma_addr - ath25_dev_offset(dev);
- }
- 
- static inline void
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index 6523d55..ab6c857 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -19,6 +19,7 @@ obj-$(CONFIG_BCM47XX)		+= pci-bcm47xx.o
- obj-$(CONFIG_BCM63XX)		+= pci-bcm63xx.o fixup-bcm63xx.o \
- 					ops-bcm63xx.o
- obj-$(CONFIG_MIPS_ALCHEMY)	+= pci-alchemy.o
-+obj-$(CONFIG_PCI_AR2315)	+= pci-ar2315.o
- obj-$(CONFIG_SOC_AR71XX)	+= pci-ar71xx.o
- obj-$(CONFIG_PCI_AR724X)	+= pci-ar724x.o
- obj-$(CONFIG_MIPS_PCI_VIRTIO)	+= pci-virtio-guest.o
-diff --git a/arch/mips/pci/pci-ar2315.c b/arch/mips/pci/pci-ar2315.c
+ config ATH5K_PCI
+ 	bool "Atheros 5xxx PCI bus support"
+-	depends on PCI
++	depends on (!ATHEROS_AR231X && PCI)
+ 	---help---
+ 	  This adds support for PCI type chipsets of the 5xxx Atheros
+ 	  family.
+diff --git a/drivers/net/wireless/ath/ath5k/Makefile b/drivers/net/wireless/ath/ath5k/Makefile
+index 51e2d86..1b3a34f 100644
+--- a/drivers/net/wireless/ath/ath5k/Makefile
++++ b/drivers/net/wireless/ath/ath5k/Makefile
+@@ -17,5 +17,6 @@ ath5k-y				+= ani.o
+ ath5k-y				+= sysfs.o
+ ath5k-y				+= mac80211-ops.o
+ ath5k-$(CONFIG_ATH5K_DEBUG)	+= debug.o
++ath5k-$(CONFIG_ATH5K_AHB)	+= ahb.o
+ ath5k-$(CONFIG_ATH5K_PCI)	+= pci.o
+ obj-$(CONFIG_ATH5K)		+= ath5k.o
+diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
 new file mode 100644
-index 0000000..bd2b3b6
+index 0000000..79bffe1
 --- /dev/null
-+++ b/arch/mips/pci/pci-ar2315.c
-@@ -0,0 +1,511 @@
++++ b/drivers/net/wireless/ath/ath5k/ahb.c
+@@ -0,0 +1,234 @@
 +/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
++ * Copyright (c) 2008-2009 Atheros Communications Inc.
++ * Copyright (c) 2009 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (c) 2009 Imre Kaloz <kaloz@openwrt.org>
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * Permission to use, copy, modify, and/or distribute this software for any
++ * purpose with or without fee is hereby granted, provided that the above
++ * copyright notice and this permission notice appear in all copies.
 + *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
++ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 + */
 +
-+/**
-+ * Both AR2315 and AR2316 chips have PCI interface unit, which supports DMA
-+ * and interrupt. PCI interface supports MMIO access method, but does not
-+ * seem to support I/O ports.
-+ *
-+ * Read/write operation in the region 0x80000000-0xBFFFFFFF causes
-+ * a memory read/write command on the PCI bus. 30 LSBs of address on
-+ * the bus are taken from memory read/write request and 2 MSBs are
-+ * determined by PCI unit configuration.
-+ *
-+ * To work with the configuration space instead of memory is necessary set
-+ * the CFG_SEL bit in the PCI_MISC_CONFIG register.
-+ *
-+ * Devices on the bus can perform DMA requests via chip BAR1. PCI host
-+ * controller BARs are programmend as if an external device is programmed.
-+ * Which means that during configuration, IDSEL pin of the chip should be
-+ * asserted.
-+ *
-+ * We know (and support) only one board that uses the PCI interface -
-+ * Fonera 2.0g (FON2202). It has a USB EHCI controller connected to the
-+ * AR2315 PCI bus. IDSEL pin of USB controller is connected to AD[13] line
-+ * and IDSEL pin of AR2315 is connected to AD[16] line.
-+ */
-+
-+#include <linux/types.h>
-+#include <linux/pci.h>
++#include <linux/nl80211.h>
 +#include <linux/platform_device.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/mm.h>
-+#include <linux/delay.h>
-+#include <linux/bitops.h>
-+#include <linux/irq.h>
-+#include <linux/irqdomain.h>
-+#include <linux/io.h>
-+#include <asm/paccess.h>
++#include <linux/etherdevice.h>
++#include <linux/export.h>
++#include <ar231x_platform.h>
++#include "ath5k.h"
++#include "debug.h"
++#include "base.h"
++#include "reg.h"
 +
-+/*
-+ * PCI Bus Interface Registers
-+ */
-+#define AR2315_PCI_1MS_REG		0x0008
-+
-+#define AR2315_PCI_1MS_MASK		0x3FFFF	/* # of AHB clk cycles in 1ms */
-+
-+#define AR2315_PCI_MISC_CONFIG		0x000c
-+
-+#define AR2315_PCIMISC_TXD_EN	0x00000001	/* Enable TXD for fragments */
-+#define AR2315_PCIMISC_CFG_SEL	0x00000002	/* Mem or Config cycles */
-+#define AR2315_PCIMISC_GIG_MASK	0x0000000C	/* bits 31-30 for pci req */
-+#define AR2315_PCIMISC_RST_MODE	0x00000030
-+#define AR2315_PCIRST_INPUT	0x00000000	/* 4:5=0 rst is input */
-+#define AR2315_PCIRST_LOW	0x00000010	/* 4:5=1 rst to GND */
-+#define AR2315_PCIRST_HIGH	0x00000020	/* 4:5=2 rst to VDD */
-+#define AR2315_PCIGRANT_EN	0x00000000	/* 6:7=0 early grant en */
-+#define AR2315_PCIGRANT_FRAME	0x00000040	/* 6:7=1 grant waits 4 frame */
-+#define AR2315_PCIGRANT_IDLE	0x00000080	/* 6:7=2 grant waits 4 idle */
-+#define AR2315_PCIGRANT_GAP	0x00000000	/* 6:7=2 grant waits 4 idle */
-+#define AR2315_PCICACHE_DIS	0x00001000	/* PCI external access cache
-+						 * disable */
-+
-+#define AR2315_PCI_OUT_TSTAMP		0x0010
-+
-+#define AR2315_PCI_UNCACHE_CFG		0x0014
-+
-+#define AR2315_PCI_IN_EN		0x0100
-+
-+#define AR2315_PCI_IN_EN0	0x01	/* Enable chain 0 */
-+#define AR2315_PCI_IN_EN1	0x02	/* Enable chain 1 */
-+#define AR2315_PCI_IN_EN2	0x04	/* Enable chain 2 */
-+#define AR2315_PCI_IN_EN3	0x08	/* Enable chain 3 */
-+
-+#define AR2315_PCI_IN_DIS		0x0104
-+
-+#define AR2315_PCI_IN_DIS0	0x01	/* Disable chain 0 */
-+#define AR2315_PCI_IN_DIS1	0x02	/* Disable chain 1 */
-+#define AR2315_PCI_IN_DIS2	0x04	/* Disable chain 2 */
-+#define AR2315_PCI_IN_DIS3	0x08	/* Disable chain 3 */
-+
-+#define AR2315_PCI_IN_PTR		0x0200
-+
-+#define AR2315_PCI_OUT_EN		0x0400
-+
-+#define AR2315_PCI_OUT_EN0	0x01	/* Enable chain 0 */
-+
-+#define AR2315_PCI_OUT_DIS		0x0404
-+
-+#define AR2315_PCI_OUT_DIS0	0x01	/* Disable chain 0 */
-+
-+#define AR2315_PCI_OUT_PTR		0x0408
-+
-+/* PCI interrupt status (write one to clear) */
-+#define AR2315_PCI_ISR			0x0500
-+
-+#define AR2315_PCI_INT_TX	0x00000001	/* Desc In Completed */
-+#define AR2315_PCI_INT_TXOK	0x00000002	/* Desc In OK */
-+#define AR2315_PCI_INT_TXERR	0x00000004	/* Desc In ERR */
-+#define AR2315_PCI_INT_TXEOL	0x00000008	/* Desc In End-of-List */
-+#define AR2315_PCI_INT_RX	0x00000010	/* Desc Out Completed */
-+#define AR2315_PCI_INT_RXOK	0x00000020	/* Desc Out OK */
-+#define AR2315_PCI_INT_RXERR	0x00000040	/* Desc Out ERR */
-+#define AR2315_PCI_INT_RXEOL	0x00000080	/* Desc Out EOL */
-+#define AR2315_PCI_INT_TXOOD	0x00000200	/* Desc In Out-of-Desc */
-+#define AR2315_PCI_INT_DESCMASK	0x0000FFFF	/* Desc Mask */
-+#define AR2315_PCI_INT_EXT	0x02000000	/* Extern PCI INTA */
-+#define AR2315_PCI_INT_ABORT	0x04000000	/* PCI bus abort event */
-+
-+/* PCI interrupt mask */
-+#define AR2315_PCI_IMR			0x0504
-+
-+/* Global PCI interrupt enable */
-+#define AR2315_PCI_IER			0x0508
-+
-+#define AR2315_PCI_IER_DISABLE		0x00	/* disable pci interrupts */
-+#define AR2315_PCI_IER_ENABLE		0x01	/* enable pci interrupts */
-+
-+#define AR2315_PCI_HOST_IN_EN		0x0800
-+#define AR2315_PCI_HOST_IN_DIS		0x0804
-+#define AR2315_PCI_HOST_IN_PTR		0x0810
-+#define AR2315_PCI_HOST_OUT_EN		0x0900
-+#define AR2315_PCI_HOST_OUT_DIS		0x0904
-+#define AR2315_PCI_HOST_OUT_PTR		0x0908
-+
-+/*
-+ * PCI interrupts, which share IP5
-+ * Keep ordered according to AR2315_PCI_INT_XXX bits
-+ */
-+#define AR2315_PCI_IRQ_EXT		25
-+#define AR2315_PCI_IRQ_ABORT		26
-+#define AR2315_PCI_IRQ_COUNT		27
-+
-+/* Arbitrary size of memory region to access the configuration space */
-+#define AR2315_PCI_CFG_SIZE	0x00100000
-+
-+#define AR2315_PCI_HOST_SLOT	3
-+#define AR2315_PCI_HOST_DEVID	((0xff18 << 16) | PCI_VENDOR_ID_ATHEROS)
-+
-+/* ??? access BAR */
-+#define AR2315_PCI_HOST_MBAR0		0x10000000
-+/* RAM access BAR */
-+#define AR2315_PCI_HOST_MBAR1		AR2315_PCI_HOST_SDRAM_BASEADDR
-+/* ??? access BAR */
-+#define AR2315_PCI_HOST_MBAR2		0x30000000
-+
-+struct ar2315_pci_ctrl {
-+	void __iomem *cfg_mem;
-+	void __iomem *mmr_mem;
-+	unsigned irq;
-+	unsigned irq_ext;
-+	struct irq_domain *domain;
-+	struct pci_controller pci_ctrl;
-+	struct resource mem_res;
-+	struct resource io_res;
-+};
-+
-+static inline struct ar2315_pci_ctrl *ar2315_pci_bus_to_apc(struct pci_bus *bus)
++/* return bus cachesize in 4B word units */
++static void ath5k_ahb_read_cachesize(struct ath_common *common, int *csz)
 +{
-+	struct pci_controller *hose = bus->sysdata;
-+
-+	return container_of(hose, struct ar2315_pci_ctrl, pci_ctrl);
++	*csz = L1_CACHE_BYTES >> 2;
 +}
 +
-+static inline u32 ar2315_pci_reg_read(struct ar2315_pci_ctrl *apc, u32 reg)
++static bool
++ath5k_ahb_eeprom_read(struct ath_common *common, u32 off, u16 *data)
 +{
-+	return __raw_readl(apc->mmr_mem + reg);
++	struct ath5k_hw *ah = common->priv;
++	struct platform_device *pdev = to_platform_device(ah->dev);
++	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
++	u16 *eeprom, *eeprom_end;
++
++	eeprom = (u16 *) bcfg->radio;
++	eeprom_end = ((void *) bcfg->config) + BOARD_CONFIG_BUFSZ;
++
++	eeprom += off;
++	if (eeprom > eeprom_end)
++		return false;
++
++	*data = *eeprom;
++	return true;
 +}
 +
-+static inline void ar2315_pci_reg_write(struct ar2315_pci_ctrl *apc, u32 reg,
-+					u32 val)
++int ath5k_hw_read_srev(struct ath5k_hw *ah)
 +{
-+	__raw_writel(val, apc->mmr_mem + reg);
-+}
-+
-+static inline void ar2315_pci_reg_mask(struct ar2315_pci_ctrl *apc, u32 reg,
-+				       u32 mask, u32 val)
-+{
-+	u32 ret = ar2315_pci_reg_read(apc, reg);
-+
-+	ret &= ~mask;
-+	ret |= val;
-+	ar2315_pci_reg_write(apc, reg, ret);
-+}
-+
-+static int ar2315_pci_cfg_access(struct ar2315_pci_ctrl *apc, unsigned devfn,
-+				 int where, int size, u32 *ptr, bool write)
-+{
-+	int func = PCI_FUNC(devfn);
-+	int dev = PCI_SLOT(devfn);
-+	u32 addr = (1 << (13 + dev)) | (func << 8) | (where & ~3);
-+	u32 mask = 0xffffffff >> 8 * (4 - size);
-+	u32 sh = (where & 3) * 8;
-+	u32 value, isr;
-+
-+	/* Prevent access past the remapped area */
-+	if (addr >= AR2315_PCI_CFG_SIZE || dev > 18)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	/* Clear pending errors */
-+	ar2315_pci_reg_write(apc, AR2315_PCI_ISR, AR2315_PCI_INT_ABORT);
-+	/* Select Configuration access */
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_MISC_CONFIG, 0,
-+			    AR2315_PCIMISC_CFG_SEL);
-+
-+	mb();	/* PCI must see space change before we begin */
-+
-+	value = __raw_readl(apc->cfg_mem + addr);
-+
-+	isr = ar2315_pci_reg_read(apc, AR2315_PCI_ISR);
-+
-+	if (isr & AR2315_PCI_INT_ABORT)
-+		goto exit_err;
-+
-+	if (write) {
-+		value = (value & ~(mask << sh)) | *ptr << sh;
-+		__raw_writel(value, apc->cfg_mem + addr);
-+		isr = ar2315_pci_reg_read(apc, AR2315_PCI_ISR);
-+		if (isr & AR2315_PCI_INT_ABORT)
-+			goto exit_err;
-+	} else {
-+		*ptr = (value >> sh) & mask;
-+	}
-+
-+	goto exit;
-+
-+exit_err:
-+	ar2315_pci_reg_write(apc, AR2315_PCI_ISR, AR2315_PCI_INT_ABORT);
-+	if (!write)
-+		*ptr = 0xffffffff;
-+
-+exit:
-+	/* Select Memory access */
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_MISC_CONFIG, AR2315_PCIMISC_CFG_SEL,
-+			    0);
-+
-+	return isr & AR2315_PCI_INT_ABORT ? PCIBIOS_DEVICE_NOT_FOUND :
-+					    PCIBIOS_SUCCESSFUL;
-+}
-+
-+static inline int ar2315_pci_local_cfg_rd(struct ar2315_pci_ctrl *apc,
-+					  unsigned devfn, int where, u32 *val)
-+{
-+	return ar2315_pci_cfg_access(apc, devfn, where, sizeof(u32), val,
-+				     false);
-+}
-+
-+static inline int ar2315_pci_local_cfg_wr(struct ar2315_pci_ctrl *apc,
-+					  unsigned devfn, int where, u32 val)
-+{
-+	return ar2315_pci_cfg_access(apc, devfn, where, sizeof(u32), &val,
-+				     true);
-+}
-+
-+static int ar2315_pci_cfg_read(struct pci_bus *bus, unsigned devfn, int where,
-+			       int size, u32 *value)
-+{
-+	struct ar2315_pci_ctrl *apc = ar2315_pci_bus_to_apc(bus);
-+
-+	if (PCI_SLOT(devfn) == AR2315_PCI_HOST_SLOT)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	return ar2315_pci_cfg_access(apc, devfn, where, size, value, false);
-+}
-+
-+static int ar2315_pci_cfg_write(struct pci_bus *bus, unsigned devfn, int where,
-+				int size, u32 value)
-+{
-+	struct ar2315_pci_ctrl *apc = ar2315_pci_bus_to_apc(bus);
-+
-+	if (PCI_SLOT(devfn) == AR2315_PCI_HOST_SLOT)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	return ar2315_pci_cfg_access(apc, devfn, where, size, &value, true);
-+}
-+
-+static struct pci_ops ar2315_pci_ops = {
-+	.read	= ar2315_pci_cfg_read,
-+	.write	= ar2315_pci_cfg_write,
-+};
-+
-+static int ar2315_pci_host_setup(struct ar2315_pci_ctrl *apc)
-+{
-+	unsigned devfn = PCI_DEVFN(AR2315_PCI_HOST_SLOT, 0);
-+	int res;
-+	u32 id;
-+
-+	res = ar2315_pci_local_cfg_rd(apc, devfn, PCI_VENDOR_ID, &id);
-+	if (res != PCIBIOS_SUCCESSFUL || id != AR2315_PCI_HOST_DEVID)
-+		return -ENODEV;
-+
-+	/* Program MBARs */
-+	ar2315_pci_local_cfg_wr(apc, devfn, PCI_BASE_ADDRESS_0,
-+				AR2315_PCI_HOST_MBAR0);
-+	ar2315_pci_local_cfg_wr(apc, devfn, PCI_BASE_ADDRESS_1,
-+				AR2315_PCI_HOST_MBAR1);
-+	ar2315_pci_local_cfg_wr(apc, devfn, PCI_BASE_ADDRESS_2,
-+				AR2315_PCI_HOST_MBAR2);
-+
-+	/* Run */
-+	ar2315_pci_local_cfg_wr(apc, devfn, PCI_COMMAND, PCI_COMMAND_MEMORY |
-+				PCI_COMMAND_MASTER | PCI_COMMAND_SPECIAL |
-+				PCI_COMMAND_INVALIDATE | PCI_COMMAND_PARITY |
-+				PCI_COMMAND_SERR | PCI_COMMAND_FAST_BACK);
-+
++	struct platform_device *pdev = to_platform_device(ah->dev);
++	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
++	ah->ah_mac_srev = bcfg->devid;
 +	return 0;
 +}
 +
-+static void ar2315_pci_irq_handler(unsigned irq, struct irq_desc *desc)
++static int ath5k_ahb_eeprom_read_mac(struct ath5k_hw *ah, u8 *mac)
 +{
-+	struct ar2315_pci_ctrl *apc = irq_get_handler_data(irq);
-+	u32 pending = ar2315_pci_reg_read(apc, AR2315_PCI_ISR) &
-+		      ar2315_pci_reg_read(apc, AR2315_PCI_IMR);
-+	unsigned pci_irq = 0;
++	struct platform_device *pdev = to_platform_device(ah->dev);
++	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
++	u8 *cfg_mac;
 +
-+	if (pending)
-+		pci_irq = irq_find_mapping(apc->domain, __ffs(pending));
-+
-+	if (pci_irq)
-+		generic_handle_irq(pci_irq);
++	if (to_platform_device(ah->dev)->id == 0)
++		cfg_mac = bcfg->config->wlan0_mac;
 +	else
-+		spurious_interrupt();
-+}
++		cfg_mac = bcfg->config->wlan1_mac;
 +
-+static void ar2315_pci_irq_mask(struct irq_data *d)
-+{
-+	struct ar2315_pci_ctrl *apc = irq_data_get_irq_chip_data(d);
-+
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_IMR, BIT(d->hwirq), 0);
-+}
-+
-+static void ar2315_pci_irq_mask_ack(struct irq_data *d)
-+{
-+	struct ar2315_pci_ctrl *apc = irq_data_get_irq_chip_data(d);
-+	u32 m = BIT(d->hwirq);
-+
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_IMR, m, 0);
-+	ar2315_pci_reg_write(apc, AR2315_PCI_ISR, m);
-+}
-+
-+static void ar2315_pci_irq_unmask(struct irq_data *d)
-+{
-+	struct ar2315_pci_ctrl *apc = irq_data_get_irq_chip_data(d);
-+
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_IMR, 0, BIT(d->hwirq));
-+}
-+
-+static struct irq_chip ar2315_pci_irq_chip = {
-+	.name = "AR2315-PCI",
-+	.irq_mask = ar2315_pci_irq_mask,
-+	.irq_mask_ack = ar2315_pci_irq_mask_ack,
-+	.irq_unmask = ar2315_pci_irq_unmask,
-+};
-+
-+static int ar2315_pci_irq_map(struct irq_domain *d, unsigned irq,
-+			      irq_hw_number_t hw)
-+{
-+	irq_set_chip_and_handler(irq, &ar2315_pci_irq_chip, handle_level_irq);
-+	irq_set_chip_data(irq, d->host_data);
++	memcpy(mac, cfg_mac, ETH_ALEN);
 +	return 0;
 +}
 +
-+static struct irq_domain_ops ar2315_pci_irq_domain_ops = {
-+	.map = ar2315_pci_irq_map,
++static const struct ath_bus_ops ath_ahb_bus_ops = {
++	.ath_bus_type = ATH_AHB,
++	.read_cachesize = ath5k_ahb_read_cachesize,
++	.eeprom_read = ath5k_ahb_eeprom_read,
++	.eeprom_read_mac = ath5k_ahb_eeprom_read_mac,
 +};
 +
-+static void ar2315_pci_irq_init(struct ar2315_pci_ctrl *apc)
++/*Initialization*/
++static int ath_ahb_probe(struct platform_device *pdev)
 +{
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_IER, AR2315_PCI_IER_ENABLE, 0);
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_IMR, (AR2315_PCI_INT_ABORT |
-+			    AR2315_PCI_INT_EXT), 0);
-+
-+	apc->irq_ext = irq_create_mapping(apc->domain, AR2315_PCI_IRQ_EXT);
-+
-+	irq_set_chained_handler(apc->irq, ar2315_pci_irq_handler);
-+	irq_set_handler_data(apc->irq, apc);
-+
-+	/* Clear any pending Abort or external Interrupts
-+	 * and enable interrupt processing */
-+	ar2315_pci_reg_write(apc, AR2315_PCI_ISR, AR2315_PCI_INT_ABORT |
-+						  AR2315_PCI_INT_EXT);
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_IER, 0, AR2315_PCI_IER_ENABLE);
-+}
-+
-+static int ar2315_pci_probe(struct platform_device *pdev)
-+{
-+	struct ar2315_pci_ctrl *apc;
-+	struct device *dev = &pdev->dev;
++	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
++	struct ath5k_hw *ah;
++	struct ieee80211_hw *hw;
 +	struct resource *res;
-+	int irq, err;
++	void __iomem *mem;
++	int irq;
++	int ret = 0;
++	u32 reg;
 +
-+	apc = devm_kzalloc(dev, sizeof(*apc), GFP_KERNEL);
-+	if (!apc)
-+		return -ENOMEM;
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return -EINVAL;
-+	apc->irq = irq;
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-+					   "ar2315-pci-ctrl");
-+	apc->mmr_mem = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(apc->mmr_mem))
-+		return PTR_ERR(apc->mmr_mem);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-+					   "ar2315-pci-ext");
-+	if (!res)
-+		return -EINVAL;
-+
-+	apc->mem_res.name = "AR2315 PCI mem space";
-+	apc->mem_res.parent = res;
-+	apc->mem_res.start = res->start;
-+	apc->mem_res.end = res->end;
-+	apc->mem_res.flags = IORESOURCE_MEM;
-+
-+	/* Remap PCI config space */
-+	apc->cfg_mem = devm_ioremap_nocache(dev, res->start,
-+					    AR2315_PCI_CFG_SIZE);
-+	if (!apc->cfg_mem) {
-+		dev_err(dev, "failed to remap PCI config space\n");
-+		return -ENOMEM;
++	if (!dev_get_platdata(&pdev->dev)) {
++		dev_err(&pdev->dev, "no platform data specified\n");
++		ret = -EINVAL;
++		goto err_out;
 +	}
 +
-+	/* Reset the PCI bus by setting bits 5-4 in PCI_MCFG */
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_MISC_CONFIG,
-+			    AR2315_PCIMISC_RST_MODE,
-+			    AR2315_PCIRST_LOW);
-+	msleep(100);
-+
-+	/* Bring the PCI out of reset */
-+	ar2315_pci_reg_mask(apc, AR2315_PCI_MISC_CONFIG,
-+			    AR2315_PCIMISC_RST_MODE,
-+			    AR2315_PCIRST_HIGH | AR2315_PCICACHE_DIS | 0x8);
-+
-+	ar2315_pci_reg_write(apc, AR2315_PCI_UNCACHE_CFG,
-+			     0x1E | /* 1GB uncached */
-+			     (1 << 5) | /* Enable uncached */
-+			     (0x2 << 30) /* Base: 0x80000000 */);
-+	ar2315_pci_reg_read(apc, AR2315_PCI_UNCACHE_CFG);
-+
-+	msleep(500);
-+
-+	err = ar2315_pci_host_setup(apc);
-+	if (err)
-+		return err;
-+
-+	apc->domain = irq_domain_add_linear(NULL, AR2315_PCI_IRQ_COUNT,
-+					    &ar2315_pci_irq_domain_ops, apc);
-+	if (!apc->domain) {
-+		dev_err(dev, "failed to add IRQ domain\n");
-+		return -ENOMEM;
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (res == NULL) {
++		dev_err(&pdev->dev, "no memory resource found\n");
++		ret = -ENXIO;
++		goto err_out;
 +	}
 +
-+	ar2315_pci_irq_init(apc);
++	mem = ioremap_nocache(res->start, resource_size(res));
++	if (mem == NULL) {
++		dev_err(&pdev->dev, "ioremap failed\n");
++		ret = -ENOMEM;
++		goto err_out;
++	}
 +
-+	/* PCI controller does not support I/O ports */
-+	apc->io_res.name = "AR2315 IO space";
-+	apc->io_res.start = 0;
-+	apc->io_res.end = 0;
-+	apc->io_res.flags = IORESOURCE_IO,
++	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (res == NULL) {
++		dev_err(&pdev->dev, "no IRQ resource found\n");
++		ret = -ENXIO;
++		goto err_iounmap;
++	}
 +
-+	apc->pci_ctrl.pci_ops = &ar2315_pci_ops;
-+	apc->pci_ctrl.mem_resource = &apc->mem_res,
-+	apc->pci_ctrl.io_resource = &apc->io_res,
++	irq = res->start;
 +
-+	register_pci_controller(&apc->pci_ctrl);
++	hw = ieee80211_alloc_hw(sizeof(struct ath5k_hw), &ath5k_hw_ops);
++	if (hw == NULL) {
++		dev_err(&pdev->dev, "no memory for ieee80211_hw\n");
++		ret = -ENOMEM;
++		goto err_iounmap;
++	}
 +
-+	dev_info(dev, "register PCI controller\n");
++	ah = hw->priv;
++	ah->hw = hw;
++	ah->dev = &pdev->dev;
++	ah->iobase = mem;
++	ah->irq = irq;
++	ah->devid = bcfg->devid;
++
++	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
++		/* Enable WMAC AHB arbitration */
++		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
++		reg |= AR5K_AR2315_AHB_ARB_CTL_WLAN;
++		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
++
++		/* Enable global WMAC swapping */
++		reg = ioread32((void __iomem *) AR5K_AR2315_BYTESWAP);
++		reg |= AR5K_AR2315_BYTESWAP_WMAC;
++		iowrite32(reg, (void __iomem *) AR5K_AR2315_BYTESWAP);
++	} else {
++		/* Enable WMAC DMA access (assuming 5312 or 231x*/
++		/* TODO: check other platforms */
++		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
++		if (to_platform_device(ah->dev)->id == 0)
++			reg |= AR5K_AR5312_ENABLE_WLAN0;
++		else
++			reg |= AR5K_AR5312_ENABLE_WLAN1;
++		iowrite32(reg, (void __iomem *) AR5K_AR5312_ENABLE);
++
++		/*
++		 * On a dual-band AR5312, the multiband radio is only
++		 * used as pass-through. Disable 2 GHz support in the
++		 * driver for it
++		 */
++		if (to_platform_device(ah->dev)->id == 0 &&
++		    (bcfg->config->flags & (BD_WLAN0 | BD_WLAN1)) ==
++		     (BD_WLAN1 | BD_WLAN0))
++			ah->ah_capabilities.cap_needs_2GHz_ovr = true;
++		else
++			ah->ah_capabilities.cap_needs_2GHz_ovr = false;
++	}
++
++	ret = ath5k_init_ah(ah, &ath_ahb_bus_ops);
++	if (ret != 0) {
++		dev_err(&pdev->dev, "failed to attach device, err=%d\n", ret);
++		ret = -ENODEV;
++		goto err_free_hw;
++	}
++
++	platform_set_drvdata(pdev, hw);
++
++	return 0;
++
++ err_free_hw:
++	ieee80211_free_hw(hw);
++ err_iounmap:
++        iounmap(mem);
++ err_out:
++	return ret;
++}
++
++static int ath_ahb_remove(struct platform_device *pdev)
++{
++	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
++	struct ieee80211_hw *hw = platform_get_drvdata(pdev);
++	struct ath5k_hw *ah;
++	u32 reg;
++
++	if (!hw)
++		return 0;
++
++	ah = hw->priv;
++
++	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
++		/* Disable WMAC AHB arbitration */
++		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
++		reg &= ~AR5K_AR2315_AHB_ARB_CTL_WLAN;
++		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
++	} else {
++		/*Stop DMA access */
++		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
++		if (to_platform_device(ah->dev)->id == 0)
++			reg &= ~AR5K_AR5312_ENABLE_WLAN0;
++		else
++			reg &= ~AR5K_AR5312_ENABLE_WLAN1;
++		iowrite32(reg, (void __iomem *) AR5K_AR5312_ENABLE);
++	}
++
++	ath5k_deinit_ah(ah);
++	iounmap(ah->iobase);
++	ieee80211_free_hw(hw);
 +
 +	return 0;
 +}
 +
-+static struct platform_driver ar2315_pci_driver = {
-+	.probe = ar2315_pci_probe,
-+	.driver = {
-+		.name = "ar2315-pci",
-+		.owner = THIS_MODULE,
++static struct platform_driver ath_ahb_driver = {
++	.probe      = ath_ahb_probe,
++	.remove     = ath_ahb_remove,
++	.driver		= {
++		.name	= "ar231x-wmac",
++		.owner	= THIS_MODULE,
 +	},
 +};
 +
-+static int __init ar2315_pci_init(void)
-+{
-+	return platform_driver_register(&ar2315_pci_driver);
-+}
-+arch_initcall(ar2315_pci_init);
++module_platform_driver(ath_ahb_driver);
+diff --git a/drivers/net/wireless/ath/ath5k/ath5k.h b/drivers/net/wireless/ath/ath5k/ath5k.h
+index ed24682..85316bb 100644
+--- a/drivers/net/wireless/ath/ath5k/ath5k.h
++++ b/drivers/net/wireless/ath/ath5k/ath5k.h
+@@ -1647,6 +1647,32 @@ static inline struct ath_regulatory *ath5k_hw_regulatory(struct ath5k_hw *ah)
+ 	return &(ath5k_hw_common(ah)->regulatory);
+ }
+ 
++#ifdef CONFIG_ATHEROS_AR231X
++#define AR5K_AR2315_PCI_BASE	((void __iomem *)0xb0100000)
 +
-+int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++static inline void __iomem *ath5k_ahb_reg(struct ath5k_hw *ah, u16 reg)
 +{
-+	struct ar2315_pci_ctrl *apc = ar2315_pci_bus_to_apc(dev->bus);
++	/* On AR2315 and AR2317 the PCI clock domain registers
++	 * are outside of the WMAC register space */
++	if (unlikely((reg >= 0x4000) && (reg < 0x5000) &&
++	    (ah->ah_mac_srev >= AR5K_SREV_AR2315_R6)))
++		return AR5K_AR2315_PCI_BASE + reg;
 +
-+	return slot ? 0 : apc->irq_ext;
++	return ah->iobase + reg;
 +}
 +
-+int pcibios_plat_dev_init(struct pci_dev *dev)
++static inline u32 ath5k_hw_reg_read(struct ath5k_hw *ah, u16 reg)
 +{
-+	return 0;
++	return ioread32(ath5k_ahb_reg(ah, reg));
 +}
++
++static inline void ath5k_hw_reg_write(struct ath5k_hw *ah, u32 val, u16 reg)
++{
++	iowrite32(val, ath5k_ahb_reg(ah, reg));
++}
++
++#else
++
+ static inline u32 ath5k_hw_reg_read(struct ath5k_hw *ah, u16 reg)
+ {
+ 	return ioread32(ah->iobase + reg);
+@@ -1657,6 +1683,8 @@ static inline void ath5k_hw_reg_write(struct ath5k_hw *ah, u32 val, u16 reg)
+ 	iowrite32(val, ah->iobase + reg);
+ }
+ 
++#endif
++
+ static inline enum ath_bus_type ath5k_get_bus_type(struct ath5k_hw *ah)
+ {
+ 	return ath5k_hw_common(ah)->bus_ops->ath_bus_type;
+diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
+index a4a09bb..59a8724 100644
+--- a/drivers/net/wireless/ath/ath5k/base.c
++++ b/drivers/net/wireless/ath/ath5k/base.c
+@@ -99,6 +99,15 @@ static int ath5k_reset(struct ath5k_hw *ah, struct ieee80211_channel *chan,
+ 
+ /* Known SREVs */
+ static const struct ath5k_srev_name srev_names[] = {
++#ifdef CONFIG_ATHEROS_AR231X
++	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R2 },
++	{ "5312",	AR5K_VERSION_MAC,	AR5K_SREV_AR5312_R7 },
++	{ "2313",	AR5K_VERSION_MAC,	AR5K_SREV_AR2313_R8 },
++	{ "2315",	AR5K_VERSION_MAC,	AR5K_SREV_AR2315_R6 },
++	{ "2315",	AR5K_VERSION_MAC,	AR5K_SREV_AR2315_R7 },
++	{ "2317",	AR5K_VERSION_MAC,	AR5K_SREV_AR2317_R1 },
++	{ "2317",	AR5K_VERSION_MAC,	AR5K_SREV_AR2317_R2 },
++#else
+ 	{ "5210",	AR5K_VERSION_MAC,	AR5K_SREV_AR5210 },
+ 	{ "5311",	AR5K_VERSION_MAC,	AR5K_SREV_AR5311 },
+ 	{ "5311A",	AR5K_VERSION_MAC,	AR5K_SREV_AR5311A },
+@@ -117,6 +126,7 @@ static const struct ath5k_srev_name srev_names[] = {
+ 	{ "5418",	AR5K_VERSION_MAC,	AR5K_SREV_AR5418 },
+ 	{ "2425",	AR5K_VERSION_MAC,	AR5K_SREV_AR2425 },
+ 	{ "2417",	AR5K_VERSION_MAC,	AR5K_SREV_AR2417 },
++#endif
+ 	{ "xxxxx",	AR5K_VERSION_MAC,	AR5K_SREV_UNKNOWN },
+ 	{ "5110",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5110 },
+ 	{ "5111",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5111 },
+@@ -132,6 +142,10 @@ static const struct ath5k_srev_name srev_names[] = {
+ 	{ "5413",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5413 },
+ 	{ "5424",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5424 },
+ 	{ "5133",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_5133 },
++#ifdef CONFIG_ATHEROS_AR231X
++	{ "2316",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2316 },
++	{ "2317",	AR5K_VERSION_RAD,	AR5K_SREV_RAD_2317 },
++#endif
+ 	{ "xxxxx",	AR5K_VERSION_RAD,	AR5K_SREV_UNKNOWN },
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath5k/led.c b/drivers/net/wireless/ath/ath5k/led.c
+index 0beb7e7..2062d11 100644
+--- a/drivers/net/wireless/ath/ath5k/led.c
++++ b/drivers/net/wireless/ath/ath5k/led.c
+@@ -163,14 +163,20 @@ int ath5k_init_leds(struct ath5k_hw *ah)
+ {
+ 	int ret = 0;
+ 	struct ieee80211_hw *hw = ah->hw;
++#ifndef CONFIG_ATHEROS_AR231X
+ 	struct pci_dev *pdev = ah->pdev;
++#endif
+ 	char name[ATH5K_LED_MAX_NAME_LEN + 1];
+ 	const struct pci_device_id *match;
+ 
+ 	if (!ah->pdev)
+ 		return 0;
+ 
++#ifdef CONFIG_ATHEROS_AR231X
++	match = NULL;
++#else
+ 	match = pci_match_id(&ath5k_led_devices[0], pdev);
++#endif
+ 	if (match) {
+ 		__set_bit(ATH_STAT_LEDSOFT, ah->status);
+ 		ah->led_pin = ATH_PIN(match->driver_data);
 -- 
 1.8.5.5

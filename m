@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 11:42:58 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:55352 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011577AbaJ1Km5MKsyn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 11:42:57 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1Xj4Eg-0002Kl-Nx; Tue, 28 Oct 2014 11:42:46 +0100
-Date:   Tue, 28 Oct 2014 11:42:45 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Ren Qiaowei <qiaowei.ren@intel.com>
-cc:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v9 11/12] x86, mpx: cleanup unused bound tables
-In-Reply-To: <544F300B.7050002@intel.com>
-Message-ID: <alpine.DEB.2.11.1410281044420.5308@nanos>
-References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-12-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241451280.5308@nanos> <544DB873.1010207@intel.com> <alpine.DEB.2.11.1410272138540.5308@nanos>
- <544F300B.7050002@intel.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 11:45:42 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26651 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011574AbaJ1KplS8wHJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 11:45:41 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 40073B82DBBBE;
+        Tue, 28 Oct 2014 10:45:32 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 28 Oct 2014 10:45:34 +0000
+Received: from [192.168.154.149] (192.168.154.149) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 28 Oct
+ 2014 10:45:33 +0000
+Message-ID: <544F73CD.1010409@imgtec.com>
+Date:   Tue, 28 Oct 2014 10:45:33 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+To:     <iamjoonsoo.kim@lge.com>
+CC:     <cl@linux.com>, <penberg@kernel.org>, <rientjes@google.com>,
+        <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+Subject: Boot problems on Malta with EVA (bisected to 12220dea07f1 "mm/slab:
+ support slab merge")
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.149]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43618
+X-archive-position: 43619
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,69 +47,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 28 Oct 2014, Ren Qiaowei wrote:
-> On 10/28/2014 04:49 AM, Thomas Gleixner wrote:
-> > On Mon, 27 Oct 2014, Ren Qiaowei wrote:
-> > > If so, I guess that there are some questions needed to be considered:
-> > > 
-> > > 1) Almost all palces which call do_munmap() will need to add
-> > > mpx_pre_unmap/post_unmap calls, like vm_munmap(), mremap(), shmdt(), etc..
-> > 
-> > What's the problem with that?
-> > 
-> 
-> For example:
-> 
-> shmdt()
->     down_write(mm->mmap_sem);
->     vma = find_vma();
->     while (vma)
->         do_munmap();
->     up_write(mm->mmap_sem);
-> 
-> We could not simply add mpx_pre_unmap() before do_munmap() or down_write().
-> And seems like it is a little hard for shmdt() to be changed to match this
-> solution, right?
+Hi,
 
-Everything which does not fall in place right away seems to be a
-little hard, heavy weight or whatever excuses you have for it.
+It seems I am unable to boot my Malta with EVA. The problem appeared in
+the 3.18 merge window. I bisected the problem (between v3.17 and
+v3.18-rc1) and I found the following commit responsible for the broken boot.
 
-It's not that hard, really. We can simply split out the search code
-into a seperate function and use it for both problems.
+commit 12220dea07f1ac6ac717707104773d771c3f3077
+Author: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Date:   Thu Oct 9 15:26:24 2014 -0700
 
-Yes, it is quite some work to do, but its straight forward.
+    mm/slab: support slab merge
 
-> > > 3) According to Dave, those bounds tables related to adjacent VMAs within
-> > > the
-> > > start and the end possibly don't have to be fully unmmaped, and we only
-> > > need
-> > > free the part of backing physical memory.
-> > 
-> > Care to explain why that's a problem?
-> > 
-> 
-> I guess you mean one new field mm->bd_remove_vmas should be added into staruct
-> mm, right?
 
-That was just to demonstrate the approach. I'm giving you a hint how
-to do it, I'm not telling you what the exact solution will be. If I
-need to do that, then I can implement it myself right away.
+Reverting my tree back to the parent of that commit
+423c929cbbecc60e9c407f9048e58f5422f7995d ("
+mm/slab_common: commonize slab merge logic")
 
-> For those VMAs which we only need to free part of backing physical memory, we
-> could not clear bounds directory entries and should also mark the range of
-> backing physical memory within this vma. If so, maybe there are too many new
-> fields which will be added into mm struct, right?
+restores the boot for me.
 
-If we need more data to carry over from pre to post, we can allocate a
-proper data structure and just add a pointer to that to mm. And it's
-not written in stone, that you need to carry that information from pre
-to post. You could do the unmap/zap work in the pre phase already and
-reduce mpx_post_unmap() to up_write(mm->bt_sem).
+I don't quite understand the commit yet so let me know if you need more
+information to debug this problem
 
-I gave you an idea and the center point of that idea is to have a
-separate rwsem to protect against the various races, fault handling
-etc. You still have to think about the implementation details.
+Here is the kernel log of the failed boot.
 
-Thanks,
+Calibrating delay loop... 19.86 BogoMIPS (lpj=99328)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 4096 (order: 0, 16384 bytes)
+Mountpoint-cache hash table entries: 4096 (order: 0, 16384 bytes)
+Kernel bug detected[#1]:
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 3.17.0-05639-g12220dea07f1 #1631
+task: 1f04f5d8 ti: 1f050000 task.ti: 1f050000
+$ 0   : 00000000 806c0000 00000080 00000000
+$ 4   : 1f048080 00000001 00000001 00000000
+$ 8   : 1f04f5d8 00000001 fffffffc 00000000
+$12   : 00000000 ffffffff fffef7b7 00000000
+$16   : 1f048080 1f00ec00 1f048180 806ba998
+$20   : 1f00ec00 80660000 1f03b780 806ad380
+$24   : 00000000 80154d70
+$28   : 1f050000 1f053d48 806ba8ec 80141184
+Hi    : 00000000
+Lo    : 0b532b80
+epc   : 80141190 alloc_unbound_pwq+0x234/0x304
+    Not tainted
+ra    : 80141184 alloc_unbound_pwq+0x228/0x304
+Status: 1000dc03        KERNEL EXL IE
+Cause : 00800034
+PrId  : 0001a82d (MIPS P5600)
+Modules linked in:
+Process swapper/0 (pid: 1, threadinfo=1f050000, task=1f04f5d8, tls=00000000)
+Stack : 1f03b880 00000002 1f03b800 80140d90 1f048180 1f03b880 00000002
+1f03b800
+          1f03bb80 801417a4 1f0481e0 0000000e 1f048180 00000200 1f048180
+1f048190
+          00000002 1f048188 80660000 80660000 8065af94 80141dc0 0110d710
+00000100
+          8065af94 806ad380 8065b200 8013ea70 1f048280 1f053e0c 8065af98
+1f0481e0
+          00000000 00000004 80660000 80660000 80660000 80660000 80660000
+80660000
+          ...
+Call Trace:
+[<80141190>] alloc_unbound_pwq+0x234/0x304
+[<801417a4>] apply_workqueue_attrs+0x11c/0x294
+[<80141dc0>] __alloc_workqueue_key+0x23c/0x470
+[<80683de4>] init_workqueues+0x320/0x400
+[<8010058c>] do_one_initcall+0xe8/0x23c
+[<8067cbec>] kernel_init_freeable+0x9c/0x224
+[<80565fd8>] kernel_init+0x10/0x100
+[<80104e38>] ret_from_kernel_thread+0x14/0x1c
 
-	tglx
+
+Code: 10400032  00408021  320200ff <00020336> 00002821  02002021
+0c0defb0  24060100  26020074
+---[ end trace cb88537fdc8fa200 ]---
+Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+
+---[ end Kernel panic - not syncing: Attempted to kill init!
+exitcode=0x0000000b
+
+-- 
+markos

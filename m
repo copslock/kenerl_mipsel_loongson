@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2014 23:30:05 +0100 (CET)
-Received: from mail-qg0-f41.google.com ([209.85.192.41]:65514 "EHLO
-        mail-qg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011058AbaJ0WaC5-Cui (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Oct 2014 23:30:02 +0100
-Received: by mail-qg0-f41.google.com with SMTP id q107so2560400qgd.14
-        for <multiple recipients>; Mon, 27 Oct 2014 15:29:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=5h+IuidmHwo8DU7hz8APS4mbhQaKKRrENDM87U7gmgs=;
-        b=ez/m80o0xYk/5fZsvaDnp8RyZAplSQoDBuFdWu1WfiTr2BqdvpDR5iHkTX0hEUXcNK
-         DozjZ2nZ8Ubz6HPJb6bE6QCRbnxvzm5Y2NQybcL4k5xvNoyIhbgE455R7ezwmKkchVQS
-         zyHMVK8N7LtVc8D4lDCU/UUf7ikvCbaSAm2oTPafg2Z8arV92Xua4sHJnl1SQCB3gvBH
-         xWf9igB1R2e+hQvq3wNkzY2DGVbIdWVz+0bV/LNV/eMHVIb9XNdEKovyX4TyT/CJ2C04
-         p7sLoUhOkogCKT4ur2lz7bfsQ5P6UhRpkg/aWvxP9PkFwwMSjT04RYI8WpSfJn3H0DTf
-         L9Ng==
-X-Received: by 10.140.91.87 with SMTP id y81mr22855710qgd.52.1414448996919;
- Mon, 27 Oct 2014 15:29:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 06:59:43 +0100 (CET)
+Received: from mga14.intel.com ([192.55.52.115]:12449 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010998AbaJ1F7lTVrE3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Oct 2014 06:59:41 +0100
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP; 27 Oct 2014 22:53:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.97,862,1389772800"; 
+   d="scan'208";a="407084556"
+Received: from rqw-ubuntu.sh.intel.com (HELO [10.239.37.69]) ([10.239.37.69])
+  by FMSMGA003.fm.intel.com with ESMTP; 27 Oct 2014 22:51:31 -0700
+Message-ID: <544F300B.7050002@intel.com>
+Date:   Tue, 28 Oct 2014 13:56:27 +0800
+From:   Ren Qiaowei <qiaowei.ren@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Mon, 27 Oct 2014 15:29:36 -0700 (PDT)
-In-Reply-To: <1414445904-4781-3-git-send-email-abrestic@chromium.org>
-References: <1414445904-4781-1-git-send-email-abrestic@chromium.org> <1414445904-4781-3-git-send-email-abrestic@chromium.org>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Mon, 27 Oct 2014 15:29:36 -0700
-Message-ID: <CAJiQ=7Bk4jiByynau2nR_BO6o5Rg3LpumNpDOpb=UQaYQCSknQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] irqchip: mips-gic: Use __raw_{readl,writel} for GIC registers
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v9 11/12] x86, mpx: cleanup unused bound tables
+References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-12-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241451280.5308@nanos> <544DB873.1010207@intel.com> <alpine.DEB.2.11.1410272138540.5308@nanos>
+In-Reply-To: <alpine.DEB.2.11.1410272138540.5308@nanos>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <qiaowei.ren@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43610
+X-archive-position: 43611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: qiaowei.ren@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,52 +46,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 27, 2014 at 2:38 PM, Andrew Bresticker
-<abrestic@chromium.org> wrote:
-> No byte swapping is necessary for accessing the GIC registers.
+On 10/28/2014 04:49 AM, Thomas Gleixner wrote:
+> On Mon, 27 Oct 2014, Ren Qiaowei wrote:
+>> If so, I guess that there are some questions needed to be considered:
+>>
+>> 1) Almost all palces which call do_munmap() will need to add
+>> mpx_pre_unmap/post_unmap calls, like vm_munmap(), mremap(), shmdt(), etc..
 >
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> ---
->  drivers/irqchip/irq-mips-gic.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> What's the problem with that?
 >
-> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-> index 61ac482..7ec3c18 100644
-> --- a/drivers/irqchip/irq-mips-gic.c
-> +++ b/drivers/irqchip/irq-mips-gic.c
-> @@ -37,12 +37,12 @@ static void __gic_irq_dispatch(void);
+
+For example:
+
+shmdt()
+     down_write(mm->mmap_sem);
+     vma = find_vma();
+     while (vma)
+         do_munmap();
+     up_write(mm->mmap_sem);
+
+We could not simply add mpx_pre_unmap() before do_munmap() or 
+down_write(). And seems like it is a little hard for shmdt() to be 
+changed to match this solution, right?
+
+>> 2) before mpx_post_unmap() call, it is possible for those bounds tables within
+>> mm->bd_remove_vmas to be re-used.
+>>
+>> In this case, userspace may do new mapping and access one address which will
+>> cover one of those bounds tables. During this period, HW will check if one
+>> bounds table exist, if yes one fault won't be produced.
 >
->  static inline unsigned int gic_read(unsigned int reg)
->  {
-> -       return readl(gic_base + reg);
-> +       return __raw_readl(gic_base + reg);
->  }
+> Errm. Before user space can use the bounds table for the new mapping
+> it needs to add the entries, right? So:
 >
->  static inline void gic_write(unsigned int reg, unsigned int val)
->  {
-> -       writel(val, gic_base + reg);
-> +       __raw_writel(val, gic_base + reg);
->  }
+> CPU 0					CPU 1
+>
+> down_write(mm->bd_sem);
+> mpx_pre_unmap();
+>     clear bounds directory entries	
+> unmap();
+> 					map()
+> 					write_bounds_entry()
+> 					trap()
+> 					  down_read(mm->bd_sem);
+> mpx_post_unmap();
+> up_write(mm->bd_sem);
+> 					  allocate_bounds_table();
+>
+> That's the whole point of bd_sem.
+>
 
-Hi Andrew,
+Yes. Got it.
 
-I just ran into a related problem on bcm3384, a big-endian platform on
-which readl/writel perform extra endian swaps (CONFIG_SWAP_IO_SPACE).
-My solution was twofold:
+>> 3) According to Dave, those bounds tables related to adjacent VMAs within the
+>> start and the end possibly don't have to be fully unmmaped, and we only need
+>> free the part of backing physical memory.
+>
+> Care to explain why that's a problem?
+>
 
- - Change the irq_reg_{readl,writel} macros so that they can be
-configured to use the __raw_ variants on individual platforms
+I guess you mean one new field mm->bd_remove_vmas should be added into 
+staruct mm, right?
 
- - Use irq_reg_{readl,writel} instead of directly invoking
-__raw_{readl,writel} in our irqchip driver, so that the irqchip driver
-code always uses the same I/O accessors as the helper functions we're
-using from kernel/irq/generic-chip.c
+For those VMAs which we only need to free part of backing physical 
+memory, we could not clear bounds directory entries and should also mark 
+the range of backing physical memory within this vma. If so, maybe there 
+are too many new fields which will be added into mm struct, right?
 
-The two commits are posted here:
-
-https://github.com/cernekee/linux/commit/52923b7bbaf99385a813a6f54de6ff810e11638c
-https://github.com/cernekee/linux/commit/371f990bd1b9e980ffbea63f6375d13156f3e731
-
-I haven't submitted them yet since they need to be retested on our LE platforms.
-
-Do you think a similar approach might be suitable for the irq-mips-gic driver?
+Thanks,
+Qiaowei

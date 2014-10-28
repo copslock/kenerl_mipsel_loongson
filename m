@@ -1,49 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 23:05:24 +0100 (CET)
-Received: from mail-qc0-f178.google.com ([209.85.216.178]:44131 "EHLO
-        mail-qc0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011735AbaJ1WFWyEGgu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 23:05:22 +0100
-Received: by mail-qc0-f178.google.com with SMTP id b13so1550392qcw.37
-        for <multiple recipients>; Tue, 28 Oct 2014 15:05:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 00:18:56 +0100 (CET)
+Received: from mail-lb0-f172.google.com ([209.85.217.172]:47373 "EHLO
+        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011494AbaJ1XSyx2F3R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 00:18:54 +0100
+Received: by mail-lb0-f172.google.com with SMTP id n15so1544489lbi.17
+        for <multiple recipients>; Tue, 28 Oct 2014 16:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=FePCSEBBhW5XQxG7K8BLD9KPwxn+UCBItNyPWI9nIc4=;
-        b=zDnMlCsMBkyc8NwQ5J9rolbK85sOPTP42seyBZ+eTf5UrCTPEkXOYc7ufQmX/f47vW
-         PKSPfeMN/eHn71oBPqPHfAUD5ZCtZR6BfkmMiHZHVeZTe43LRuJe23umd0u7dQ4hNoKd
-         HPgAxDvxziffMUD4Ue5vmAk1zW+04YrPYkz+/ooCpEkBZYECbfJoyagkGc82nFdhavcz
-         SVYE3C/HBywzXjp8RxYk6VxKHt67TRFaRhfBrXiFb4wXIPDUpKjQL2/RmAA6zX+Rkx6u
-         /cu+HndYeJpp9RUmLrVakzJA3P2XAI/kmXpXX11xYP/gMRhC9dl6LepR8ehw5cIzgfsA
-         m20Q==
-X-Received: by 10.224.135.196 with SMTP id o4mr9142190qat.35.1414533916916;
- Tue, 28 Oct 2014 15:05:16 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Tue, 28 Oct 2014 15:04:56 -0700 (PDT)
-In-Reply-To: <CAL1qeaEw-1RYcAo9Vo2e3gsV1JBVsJVOP0WSqpfrErCw0xufNw@mail.gmail.com>
-References: <1414445904-4781-1-git-send-email-abrestic@chromium.org>
- <1414445904-4781-3-git-send-email-abrestic@chromium.org> <CAJiQ=7Bk4jiByynau2nR_BO6o5Rg3LpumNpDOpb=UQaYQCSknQ@mail.gmail.com>
- <CAL1qeaEw-1RYcAo9Vo2e3gsV1JBVsJVOP0WSqpfrErCw0xufNw@mail.gmail.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Tue, 28 Oct 2014 15:04:56 -0700
-Message-ID: <CAJiQ=7AvWzUu6ZYaaF54Pdz0iagwU9SgQOC=mw9ZYSu0JBTCJw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] irqchip: mips-gic: Use __raw_{readl,writel} for GIC registers
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+        h=from:to:cc:subject:date:message-id;
+        bh=LaD8AJgjecwqzR0zlEOkh6Yd2XHe0rmgdFo+sqHqRvU=;
+        b=T6DofCf9W3xRt7MCvvMfDxcflj0tlLsVARmaXzoYMj5HhRFsAmnQ4vDHIqNkc0dc44
+         gQ8wYOAsU/Lzs0UWe6lZiQPH7lyxhhEy6ruKikw8QY4C8mYfQ1ldTJqDokNsG0oga2/d
+         p3QL1vB00qkTkNYzJWxvgwyzak5xDRtkTtlTURKI0mTC2Vti28uIbZbiflAiOzYJE46u
+         xD2GCZSfSqZDihLJS8CR4g+2K0lF9tbthFoz3UWs8fZtGoPJ08FgG/8NWUnYUiNOHqR6
+         zFm1G5lcHZuXd+kFvKdTYp6bby9KbWSjH2+3uxcLvEX4gXuyuBxbACq69mKQR8b//ou5
+         SiMw==
+X-Received: by 10.152.45.72 with SMTP id k8mr7297281lam.79.1414538328318;
+        Tue, 28 Oct 2014 16:18:48 -0700 (PDT)
+Received: from rsa-laptop.internal.lan ([217.25.229.52])
+        by mx.google.com with ESMTPSA id i6sm1173752laf.47.2014.10.28.16.18.46
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 Oct 2014 16:18:47 -0700 (PDT)
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH v3 00/13] MIPS: support for the Atheros AR231X SoCs
+Date:   Wed, 29 Oct 2014 03:18:37 +0400
+Message-Id: <1414538330-5548-1-git-send-email-ryazanov.s.a@gmail.com>
+X-Mailer: git-send-email 1.8.1.5
+Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43650
+X-archive-position: 43651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ryazanov.s.a@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,36 +50,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 28, 2014 at 2:39 PM, Andrew Bresticker
-<abrestic@chromium.org> wrote:
->> I just ran into a related problem on bcm3384, a big-endian platform on
->> which readl/writel perform extra endian swaps (CONFIG_SWAP_IO_SPACE).
->> My solution was twofold:
->>
->>  - Change the irq_reg_{readl,writel} macros so that they can be
->> configured to use the __raw_ variants on individual platforms
->>
->>  - Use irq_reg_{readl,writel} instead of directly invoking
->> __raw_{readl,writel} in our irqchip driver, so that the irqchip driver
->> code always uses the same I/O accessors as the helper functions we're
->> using from kernel/irq/generic-chip.c
->
-> You could also specify your own irq_reg_{readl,writel} in your
-> platform's irq.h.  Though since it seems like this is pretty common on
-> MIPS platforms, maybe it makes more sense to have a Kconfig option.
-> I've added the irqchip maintainers to see what they think.
+This patch set contains initial support for the following Atheros SoCs: AR5312,
+AR2312, AR2313, AR2315, AR2316, AR2317, AR2318.
 
-I thought about just adding it to my own <irq.h>, but it looks like
-several other platforms also use the __raw_ variants:
+- Patches 1 through 10 and patch 13 add support for different parts of AR231x
+  SoCs.
+- Patch 11 recover ath5k AHB bus support
+- Patch 12 updates ath5k dependecies
 
-$ git grep -l __raw_ drivers/irqchip/
-drivers/irqchip/exynos-combiner.c
-drivers/irqchip/irq-brcmstb-l2.c
-drivers/irqchip/irq-mxs.c
-drivers/irqchip/irq-s3c24xx.c
+The code was successfully tested with AR2313, AR2315 and AR2317 SoCs.
 
-Aside from irq-brcmstb-l2, these don't currently reference any of the
-irq_gc_* functions.  But if they wanted to do so in the future (e.g.
-because newer helper functions are introduced) they would need
-generic-chip.c to use the __raw_  accessors.  So having the Kconfig
-option would simplify things.
+This code has been written by OpenWRT developers and it resided in OpenWRT's
+tree for a long time. My work was to cleanup the code and its rebase on the
+latest linux-mips tree.
+
+Changes since RFC:
+  - use dynamic IRQ numbers allocation
+  - group ath5 related changes in one patch
+  - group devices registration in separate patch
+
+Changes since v1:
+  - rename MIPS machine ar231x -> ath25
+  - drop the GPIO and Watchdog drivers, since they need more work
+  - add patch which recover ath5k AHB bus support
+  - rebased on top of 3.18-rc1
+
+Changes since v2:
+  - use irq_domain
+  - truely remap I/O memory (avoid KSEG1ADDR usage)
+  - move some headers from global include directory to machine specific dir
+  - a lot of cosmetic changes
+
+Sergey Ryazanov (13):
+  MIPS: ath25: add common parts
+  MIPS: ath25: add basic AR5312 SoC support
+  MIPS: ath25: add basic AR2315 SoC support
+  MIPS: ath25: add interrupts handling routines
+  MIPS: ath25: add early printk support
+  MIPS: ath25: add UART support
+  MIPS: ath25: add board configuration detection
+  MIPS: ath25: add SoC type detection
+  MIPS: ath25: register AR5312 flash controller
+  MIPS: ath25: add AR2315 PCI host controller driver
+  ath5k: revert AHB bus support removing
+  ath5k: update dependencies
+  MIPS: ath25: add Wireless device support
+
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  15 +
+ arch/mips/ath25/Kconfig                            |  16 +
+ arch/mips/ath25/Makefile                           |  16 +
+ arch/mips/ath25/Platform                           |   6 +
+ arch/mips/ath25/ar2315.c                           | 364 +++++++++++++++
+ arch/mips/ath25/ar2315.h                           |  22 +
+ arch/mips/ath25/ar2315_regs.h                      | 410 +++++++++++++++++
+ arch/mips/ath25/ar5312.c                           | 393 ++++++++++++++++
+ arch/mips/ath25/ar5312.h                           |  22 +
+ arch/mips/ath25/ar5312_regs.h                      | 224 +++++++++
+ arch/mips/ath25/board.c                            | 235 ++++++++++
+ arch/mips/ath25/devices.c                          | 125 +++++
+ arch/mips/ath25/devices.h                          |  43 ++
+ arch/mips/ath25/early_printk.c                     |  45 ++
+ arch/mips/ath25/prom.c                             |  26 ++
+ arch/mips/include/asm/mach-ath25/ath25_platform.h  |  73 +++
+ .../include/asm/mach-ath25/cpu-feature-overrides.h |  64 +++
+ arch/mips/include/asm/mach-ath25/dma-coherence.h   |  82 ++++
+ arch/mips/include/asm/mach-ath25/gpio.h            |  16 +
+ arch/mips/include/asm/mach-ath25/war.h             |  25 +
+ arch/mips/pci/Makefile                             |   1 +
+ arch/mips/pci/pci-ar2315.c                         | 511 +++++++++++++++++++++
+ drivers/net/wireless/ath/ath5k/Kconfig             |  14 +-
+ drivers/net/wireless/ath/ath5k/Makefile            |   1 +
+ drivers/net/wireless/ath/ath5k/ahb.c               | 234 ++++++++++
+ drivers/net/wireless/ath/ath5k/ath5k.h             |  28 ++
+ drivers/net/wireless/ath/ath5k/base.c              |  14 +
+ drivers/net/wireless/ath/ath5k/led.c               |   6 +
+ 29 files changed, 3029 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/ath25/Kconfig
+ create mode 100644 arch/mips/ath25/Makefile
+ create mode 100644 arch/mips/ath25/Platform
+ create mode 100644 arch/mips/ath25/ar2315.c
+ create mode 100644 arch/mips/ath25/ar2315.h
+ create mode 100644 arch/mips/ath25/ar2315_regs.h
+ create mode 100644 arch/mips/ath25/ar5312.c
+ create mode 100644 arch/mips/ath25/ar5312.h
+ create mode 100644 arch/mips/ath25/ar5312_regs.h
+ create mode 100644 arch/mips/ath25/board.c
+ create mode 100644 arch/mips/ath25/devices.c
+ create mode 100644 arch/mips/ath25/devices.h
+ create mode 100644 arch/mips/ath25/early_printk.c
+ create mode 100644 arch/mips/ath25/prom.c
+ create mode 100644 arch/mips/include/asm/mach-ath25/ath25_platform.h
+ create mode 100644 arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-ath25/dma-coherence.h
+ create mode 100644 arch/mips/include/asm/mach-ath25/gpio.h
+ create mode 100644 arch/mips/include/asm/mach-ath25/war.h
+ create mode 100644 arch/mips/pci/pci-ar2315.c
+ create mode 100644 drivers/net/wireless/ath/ath5k/ahb.c
+
+-- 
+1.8.5.5

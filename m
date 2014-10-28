@@ -1,43 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 07:01:34 +0100 (CET)
-Received: from mga11.intel.com ([192.55.52.93]:47879 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010998AbaJ1GBd2zY0h (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Oct 2014 07:01:33 +0100
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP; 27 Oct 2014 23:01:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.97,862,1389772800"; 
-   d="scan'208";a="407085163"
-Received: from rqw-ubuntu.sh.intel.com (HELO [10.239.37.69]) ([10.239.37.69])
-  by FMSMGA003.fm.intel.com with ESMTP; 27 Oct 2014 22:53:25 -0700
-Message-ID: <544F307D.7090701@intel.com>
-Date:   Tue, 28 Oct 2014 13:58:21 +0800
-From:   Ren Qiaowei <qiaowei.ren@intel.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 08:08:33 +0100 (CET)
+Received: from mail-yh0-f43.google.com ([209.85.213.43]:40052 "EHLO
+        mail-yh0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011464AbaJ1HIaunBMx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 08:08:30 +0100
+Received: by mail-yh0-f43.google.com with SMTP id z6so25030yhz.30
+        for <multiple recipients>; Tue, 28 Oct 2014 00:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=ulxz9SI7g/FSs39Mq3FEAIaL6zlw4m0qQ3Fl18WHd0k=;
+        b=dJ+IquuXM57mXFP8HzJp1crQ1u3sB5CjMxxtLj0DIsLsRqBhXFoUnVuCVNAOr39gLB
+         UGMdE0pY+sZSjWYsSEM+3X5S+z3npUKEw/RIS7rWkqnBJ7qTJ6tEHPENnSyhdnefc658
+         HBzp//SH/rKURdw7sROPm3wB7hePnrHonD+0bhAX5TXrI9BfYJduHnKlioOz5kpGUcfI
+         iZn/N4zAZ2mfphDJHOytVU68zwtJxnKRWw2SQPT6OGVvIuGawJp/1uU5/eQnLuwa7Kq7
+         gjl1CVrdfe2MgKWpI6aew55RPsi/b2st0aevzQjTk/GngDT0TUWAbCjjTze1kz/flB5w
+         nrXg==
+X-Received: by 10.236.14.97 with SMTP id c61mr1179582yhc.132.1414480104578;
+ Tue, 28 Oct 2014 00:08:24 -0700 (PDT)
 MIME-Version: 1.0
-To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
- violation information
-References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-10-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241408360.5308@nanos> <9E0BE1322F2F2246BD820DA9FC397ADE0180ED16@shsmsx102.ccr.corp.intel.com> <alpine.DEB.2.11.1410272135420.5308@nanos>
-In-Reply-To: <alpine.DEB.2.11.1410272135420.5308@nanos>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <qiaowei.ren@intel.com>
+Received: by 10.170.153.196 with HTTP; Tue, 28 Oct 2014 00:08:04 -0700 (PDT)
+In-Reply-To: <20141027180436.GE28300@tuxdriver.com>
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
+ <1413932631-12866-12-git-send-email-ryazanov.s.a@gmail.com> <20141027180436.GE28300@tuxdriver.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Tue, 28 Oct 2014 11:08:04 +0400
+Message-ID: <CAHNKnsTWvZy=-TBv-KPjCOD-vhwcxUUGv61doYUm0F77if-pqw@mail.gmail.com>
+Subject: Re: [PATCH v2 11/13] ath5k: revert AHB bus support removing
+To:     "John W. Linville" <linville@tuxdriver.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        ath5k-devel@venema.h4ckr.net
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43613
+X-archive-position: 43614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qiaowei.ren@intel.com
+X-original-sender: ryazanov.s.a@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,33 +57,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/28/2014 04:36 AM, Thomas Gleixner wrote:
-> On Mon, 27 Oct 2014, Ren, Qiaowei wrote:
->> On 2014-10-24, Thomas Gleixner wrote:
->>> On Sun, 12 Oct 2014, Qiaowei Ren wrote:
->>>
->>>> This patch sets bound violation fields of siginfo struct in #BR
->>>> exception handler by decoding the user instruction and constructing
->>>> the faulting pointer.
->>>>
->>>> This patch does't use the generic decoder, and implements a limited
->>>> special-purpose decoder to decode MPX instructions, simply because
->>>> the generic decoder is very heavyweight not just in terms of
->>>> performance but in terms of interface -- because it has to.
->>>
->>> My question still stands why using the existing decoder is an issue.
->>> Performance is a complete non issue in case of a bounds violation and
->>> the interface argument is just silly, really.
->>>
+2014-10-27 21:04 GMT+03:00 John W. Linville <linville@tuxdriver.com>:
+> On Wed, Oct 22, 2014 at 03:03:49AM +0400, Sergey Ryazanov wrote:
+>> This reverts commit 093ec3c5337434f40d77c1af06c139da3e5ba6dc.
 >>
->> As hpa said, we only need to decode several mpx instructions
->> including BNDCL/BNDCU, and general decoder looks like a little
->> heavy. Peter, what do you think about it?
+>> AHB bus code has been removed, since we did not have support Atheros
+>> AR231x SoC, required for building the AHB version of ath5k. Now that
+>> support WiSoC chips added we can restore functionality back.
+>>
+>> Singed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+>> Cc: Jiri Slaby <jirislaby@gmail.com>
+>> Cc: Nick Kossifidis <mickflemm@gmail.com>
+>> Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
+>> Cc: linux-wireless@vger.kernel.org
+>> Cc: ath5k-devel@lists.ath5k.org
 >
-> You're repeating yourself. Care to read the discussion about this from
-> the last round of review again?
+> Acked-by: John W. Linville <linville@tuxdriver.com>
 >
+John, should I include these two patches in v3 or you already merge
+them in your tree?
 
-Ok. I will go through it again. Thanks.
-
-- Qiaowei
+-- 
+BR,
+Sergey

@@ -1,44 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 14:55:18 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:52835 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011594AbaJ1NzR3fPlv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Oct 2014 14:55:17 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9SDtGhT023681;
-        Tue, 28 Oct 2014 14:55:16 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9SDtG8X023680;
-        Tue, 28 Oct 2014 14:55:16 +0100
-Date:   Tue, 28 Oct 2014 14:55:16 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: Re: [PATCH] MIPS: BCM47XX: Make bcma init NVRAM instead of bcm47xx
- polling it
-Message-ID: <20141028135515.GF16320@linux-mips.org>
-References: <1414499423-16662-1-git-send-email-zajec5@gmail.com>
- <20141028124804.GC16320@linux-mips.org>
- <CACna6rxSCZJ=oUNXVYEbkSZuiyUyy96amkMKbg7pdEXkVmtkZw@mail.gmail.com>
- <20141028131315.GD16320@linux-mips.org>
- <CACna6rz78HtA6AVxQP0PWiuRSbGZvtNudHz46jLOx860kis2UA@mail.gmail.com>
- <20141028132602.GE16320@linux-mips.org>
- <CACna6rzJfJGwHP62ru=c3M0CcfrJZa7aUhMn0JQym7RgxwgPAA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 15:00:27 +0100 (CET)
+Received: from charlotte.tuxdriver.com ([70.61.120.58]:45490 "EHLO
+        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011346AbaJ1OAWLMdg7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 15:00:22 +0100
+Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
+        (envelope-from <linville@tuxdriver.com>)
+        id 1Xj7Jg-0004iG-UC; Tue, 28 Oct 2014 10:00:09 -0400
+Received: from linville-x1.hq.tuxdriver.com (localhost.localdomain [127.0.0.1])
+        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.6) with ESMTP id s9SDn5sK027154;
+        Tue, 28 Oct 2014 09:49:05 -0400
+Received: (from linville@localhost)
+        by linville-x1.hq.tuxdriver.com (8.14.8/8.14.8/Submit) id s9SDmxZH027150;
+        Tue, 28 Oct 2014 09:48:59 -0400
+Date:   Tue, 28 Oct 2014 09:48:59 -0400
+From:   "John W. Linville" <linville@tuxdriver.com>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        ath5k-devel@venema.h4ckr.net
+Subject: Re: [PATCH v2 11/13] ath5k: revert AHB bus support removing
+Message-ID: <20141028134859.GB26283@tuxdriver.com>
+References: <1413932631-12866-1-git-send-email-ryazanov.s.a@gmail.com>
+ <1413932631-12866-12-git-send-email-ryazanov.s.a@gmail.com>
+ <20141027180436.GE28300@tuxdriver.com>
+ <CAHNKnsTWvZy=-TBv-KPjCOD-vhwcxUUGv61doYUm0F77if-pqw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACna6rzJfJGwHP62ru=c3M0CcfrJZa7aUhMn0JQym7RgxwgPAA@mail.gmail.com>
+In-Reply-To: <CAHNKnsTWvZy=-TBv-KPjCOD-vhwcxUUGv61doYUm0F77if-pqw@mail.gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <linville@tuxdriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43636
+X-archive-position: 43637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: linville@tuxdriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,44 +54,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 28, 2014 at 02:46:30PM +0100, Rafał Miłecki wrote:
-
-> On 28 October 2014 14:26, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > On Tue, Oct 28, 2014 at 02:18:33PM +0100, Rafał Miłecki wrote:
-> >
-> >> 7605 is V1 with mistakes pointed by Hauke
-> >> 7611 is V2 which fixes things pointed by Hauke
+On Tue, Oct 28, 2014 at 11:08:04AM +0400, Sergey Ryazanov wrote:
+> 2014-10-27 21:04 GMT+03:00 John W. Linville <linville@tuxdriver.com>:
+> > On Wed, Oct 22, 2014 at 03:03:49AM +0400, Sergey Ryazanov wrote:
+> >> This reverts commit 093ec3c5337434f40d77c1af06c139da3e5ba6dc.
 > >>
-> >> Please use
-> >> http://patchwork.linux-mips.org/patch/7611/
+> >> AHB bus code has been removed, since we did not have support Atheros
+> >> AR231x SoC, required for building the AHB version of ath5k. Now that
+> >> support WiSoC chips added we can restore functionality back.
+> >>
+> >> Singed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+> >> Cc: Jiri Slaby <jirislaby@gmail.com>
+> >> Cc: Nick Kossifidis <mickflemm@gmail.com>
+> >> Cc: "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
+> >> Cc: linux-wireless@vger.kernel.org
+> >> Cc: ath5k-devel@lists.ath5k.org
 > >
-> > Ah, 7611 has a different subject that's why I didn't notice there was a
-> > v2.
+> > Acked-by: John W. Linville <linville@tuxdriver.com>
 > >
-> > All three of
-> >
-> >   https://patchwork.linux-mips.org/patch/7611/
-> >   https://patchwork.linux-mips.org/patch/7612/
-> >   https://patchwork.linux-mips.org/patch/8233/
-> >
-> > applied.  Thanks!
-> 
-> Thank you! To avoid similar confusion in the future, I've created
-> patchwork account that will allow me to mark old (superseded) patches.
-> 
-> In case you find time to push two more pending BCM47XX patches, it
-> would be great to see them in your tree.
-> 
-> 1) [V2] MIPS: BCM47XX: Move SPROM fallback code into sprom.c
-> http://patchwork.linux-mips.org/patch/8232/
-> It's a rebased version of patch sent ~2 months ago (7617) that was
-> Acked-by Hauke
-> 
-> 2) MIPS: BCM47XX: Initialize bcma bus later (with mm available)
-> http://patchwork.linux-mips.org/patch/8234/
-> It's resend-ing of RFC patch (7606) that also was Acked-by Hauke.
+> John, should I include these two patches in v3 or you already merge
+> them in your tree?
 
-I'm working my way through but with the occasional test build it's going
-to take a while to work through that 7 mile deep puddle :)
+I was intending to indicate to Ralf that I'm OK with him merging them
+as part of the larger series in his tree.  I have not merged them.
 
-  Ralf
+John
+-- 
+John W. Linville		Someday the world will need a hero, and you
+linville@tuxdriver.com			might be all we have.  Be ready.

@@ -1,52 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 17:13:17 +0100 (CET)
-Received: from mail-ie0-f176.google.com ([209.85.223.176]:33878 "EHLO
-        mail-ie0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011105AbaJ1QNQ0ZiRW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 17:13:16 +0100
-Received: by mail-ie0-f176.google.com with SMTP id rd18so1009601iec.35
-        for <linux-mips@linux-mips.org>; Tue, 28 Oct 2014 09:13:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=eksZIjj4UxNrFB5zskGgxalFyBdhxukkw8OLMcAT4Qs=;
-        b=ciCW+iUr2KTaI4ePRpqe8H/oACCw/YZrzMdg2T14B8NSrdar1gaJhl+Lih9317zXsg
-         bO1jzH70E4GJVfrZ6Xz2AqDzLwnpPI6Dy9XBas0pNUuWtdKGO9tjPhNanj0KUmFvlpP2
-         izvIbZe0PXbVf1xGrijKUmrKFCVVjmfUi8mCJt9ccp26gxeaZ54OTOzKz4blSqjdAd6H
-         qgb9HkqmETjlR1377VJWdkldPPdtQySkHX5EFYL++wWxcCMIrPILgRMmfjR4T2XIYHqD
-         XsEWHRu67o/Vrc/HTCQqwQjQ6vrgvrI2DRBNdPayXTfJRZRzbX673sJcKhwRnhhh8VY5
-         24/A==
-X-Gm-Message-State: ALoCoQlrRvPGZu7F2YNVgjcna8qG1WeWAWHZ39/vjmxKx9V+1sjr2obOxLCM8ro2+h+PxNJbDB0e
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 18:43:59 +0100 (CET)
+Received: from mga09.intel.com ([134.134.136.24]:53466 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011669AbaJ1Rn6IYgZT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Oct 2014 18:43:58 +0100
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP; 28 Oct 2014 10:42:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.04,804,1406617200"; 
+   d="scan'208";a="597816713"
+Received: from ray.jf.intel.com (HELO [10.7.199.163]) ([10.7.199.163])
+  by orsmga001.jf.intel.com with ESMTP; 28 Oct 2014 10:43:48 -0700
+Message-ID: <544FD5D4.4090404@intel.com>
+Date:   Tue, 28 Oct 2014 10:43:48 -0700
+From:   Dave Hansen <dave.hansen@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.2
 MIME-Version: 1.0
-X-Received: by 10.107.168.201 with SMTP id e70mr3161551ioj.89.1414512765061;
- Tue, 28 Oct 2014 09:12:45 -0700 (PDT)
-Received: by 10.42.49.141 with HTTP; Tue, 28 Oct 2014 09:12:44 -0700 (PDT)
-In-Reply-To: <CAHNKnsThQb8zstGhRJjFFJx6eKtFd-NZuK9wND-Puex2OCY=Hw@mail.gmail.com>
-References: <1410723213-22440-1-git-send-email-ryazanov.s.a@gmail.com>
-        <1410723213-22440-10-git-send-email-ryazanov.s.a@gmail.com>
-        <CACRpkda3Cq+d47DMm018nAC7ThcHAOv-tOqEbNsUY1mOSnKyoA@mail.gmail.com>
-        <CAHNKnsSj-=0aFHD574yRW9BpH1ONhy7K0NA8xri2ez6ab_MPMA@mail.gmail.com>
-        <CACRpkda7XffyCvsG7CAMwF0qDW9bJ_m+xxFhhMAqd_r=O4B8+g@mail.gmail.com>
-        <CAHNKnsThQb8zstGhRJjFFJx6eKtFd-NZuK9wND-Puex2OCY=Hw@mail.gmail.com>
-Date:   Tue, 28 Oct 2014 17:12:44 +0100
-Message-ID: <CACRpkdbBLTOxjszvqj=Br9wqLU_6X_cC_7DOpFcT_+=QrapZrA@mail.gmail.com>
-Subject: Re: [RFC 09/18] gpio: add driver for Atheros AR5312 SoC GPIO controller
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Qiaowei Ren <qiaowei.ren@intel.com>
+CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v9 05/12] x86, mpx: on-demand kernel allocation of bounds
+ tables
+References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-6-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241257300.5308@nanos>
+In-Reply-To: <alpine.DEB.2.11.1410241257300.5308@nanos>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <dave.hansen@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43645
+X-archive-position: 43646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: dave.hansen@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,18 +47,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 21, 2014 at 10:59 AM, Sergey Ryazanov
-<ryazanov.s.a@gmail.com> wrote:
+On 10/24/2014 05:08 AM, Thomas Gleixner wrote:
+> On Sun, 12 Oct 2014, Qiaowei Ren wrote:
+>> +	/*
+>> +	 * Go poke the address of the new bounds table in to the
+>> +	 * bounds directory entry out in userspace memory.  Note:
+>> +	 * we may race with another CPU instantiating the same table.
+>> +	 * In that case the cmpxchg will see an unexpected
+>> +	 * 'actual_old_val'.
+>> +	 */
+>> +	ret = user_atomic_cmpxchg_inatomic(&actual_old_val, bd_entry,
+>> +					   expected_old_val, bt_addr);
+> 
+> This is fully preemptible non-atomic context, right?
+> 
+> So this wants a proper comment, why using
+> user_atomic_cmpxchg_inatomic() is the right thing to do here.
 
-> BTW, the use of the irq_domain framework is required or I could
-> opencode some stuff?
+Hey Thomas,
 
-Whatever makes sense. If you write something that looks very
-convoluted compared to doing it with irqdomain, you're doing
-something wrong.
+How's this for a new comment?  Does this cover the points you think need
+clarified?
 
-But shouldn't this driver be using GPIOLIB_IRQCHIP by the way?
-That includes irqdomain handling.
+====
 
-Yours,
-Linus Walleij
+The kernel has allocated a bounds table and needs to point the
+(userspace-allocated) directory to it.  The directory entry is the
+*only* place we track that this table was allocated, so we essentially
+use it instead of an kernel data structure for synchronization.  A
+copy_to_user()-style function would not give us the atomicity that we need.
+
+If two threads race to instantiate a table, the cmpxchg ensures we know
+which one lost the race and that the loser frees the table that they
+just allocated.

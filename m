@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 00:20:23 +0100 (CET)
-Received: from mail-lb0-f172.google.com ([209.85.217.172]:60828 "EHLO
-        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011793AbaJ1XTBhdDp2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 00:19:01 +0100
-Received: by mail-lb0-f172.google.com with SMTP id n15so1544648lbi.17
-        for <multiple recipients>; Tue, 28 Oct 2014 16:18:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 00:20:39 +0100 (CET)
+Received: from mail-lb0-f173.google.com ([209.85.217.173]:65472 "EHLO
+        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011798AbaJ1XTDcFtuM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 00:19:03 +0100
+Received: by mail-lb0-f173.google.com with SMTP id l4so1520888lbv.4
+        for <multiple recipients>; Tue, 28 Oct 2014 16:18:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Ua4UuESTcQ/iIXhneRQzr0r2v1mnOT5zdZLOUcolRd8=;
-        b=qiQzCj1iwKxllvuZowLBOdswMibJN7PZB0C33qAjHRBWX5I4lyeChLpyEdT++DUogd
-         DGnnSV6LAPtuDBjGDtd2h7fzuIcRNpz217tdQAkRCwjJ7HGGTngPtBb/VKGSoocOO//t
-         z50jQ3Hs2SRDjusXJQLIsFnW9PMWt3UHQXKlnGzWtjpJaEX0NDqIxuU+9Dq+ceNPKr1P
-         Zj7L7mc4LwvpChhNr4FMZmcdMpmr72aBpWxWTO0J+PS4/MjN9vfM41Z8QGHJJ73vd2bF
-         GS65EZcT/LLNAuSMF8ItB37MKPwl9sAbGL7uvvqNkzF1dzjQxFIPm0qkzr6lfCKv6PB9
-         eiOA==
-X-Received: by 10.112.48.3 with SMTP id h3mr7442078lbn.71.1414538336225;
-        Tue, 28 Oct 2014 16:18:56 -0700 (PDT)
+        bh=pOV5K/8iOzWgCxYe1T/dzANRQ+rRttjSsrWzb6RMqo8=;
+        b=kllhkGNyP1uEAkZY3hC9Ge8ceJ4XbeeIwn0cuZ6ns9WDrarfQ2Tirx6V/yccCv+6QO
+         89FnrdUBmle9OqG+hejfibsDmR4k+6PLCSJWD6nFc6vpbhxP5TDDdSAin4KYzbN0VR/o
+         YK6lhJTHJfDGhOHQhmPEZE4zf1Du2cZ0s2a0CBN/QlUhXEnffeTXgldgMSCGwhHYu+yM
+         5K9CZz9bMqEtkKbBWMR1cRiWFaeGwCHk38BE98YjaEdQmIRRhHEI6oTlCVEJQl47rK39
+         0TPCVrcxwmyhBHNQKsSjsBGZWfzc+EgRijOViqVNw3Iff6tyRGXQYPywacTTGZ6dtdGX
+         8k8Q==
+X-Received: by 10.112.148.130 with SMTP id ts2mr7401032lbb.43.1414538337980;
+        Tue, 28 Oct 2014 16:18:57 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id i6sm1173752laf.47.2014.10.28.16.18.54
+        by mx.google.com with ESMTPSA id i6sm1173752laf.47.2014.10.28.16.18.56
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 Oct 2014 16:18:55 -0700 (PDT)
+        Tue, 28 Oct 2014 16:18:57 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH v3 05/13] MIPS: ath25: add early printk support
-Date:   Wed, 29 Oct 2014 03:18:42 +0400
-Message-Id: <1414538330-5548-6-git-send-email-ryazanov.s.a@gmail.com>
+Subject: [PATCH v3 06/13] MIPS: ath25: add UART support
+Date:   Wed, 29 Oct 2014 03:18:43 +0400
+Message-Id: <1414538330-5548-7-git-send-email-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 1.8.1.5
 In-Reply-To: <1414538330-5548-1-git-send-email-ryazanov.s.a@gmail.com>
 References: <1414538330-5548-1-git-send-email-ryazanov.s.a@gmail.com>
@@ -35,7 +35,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43656
+X-archive-position: 43657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,89 +55,151 @@ X-list: linux-mips
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 ---
 
+Changes since RFC:
+  - register UART during arch initialization
+
 Changes since v1:
   - rename MIPS machine ar231x -> ath25
 
- arch/mips/Kconfig              |  1 +
- arch/mips/ath25/Makefile       |  2 ++
- arch/mips/ath25/early_printk.c | 45 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+)
- create mode 100644 arch/mips/ath25/early_printk.c
+Changes since v2:
+  - add missed include
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3daeed5..f6ad0c8 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -106,6 +106,7 @@ config ATH25
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_HAS_EARLY_PRINTK
- 	help
- 	  Support for Atheros AR231x and Atheros AR531x based boards
+ arch/mips/ath25/ar2315.c  |  8 ++++++++
+ arch/mips/ath25/ar2315.h  |  2 ++
+ arch/mips/ath25/ar5312.c  |  8 ++++++++
+ arch/mips/ath25/ar5312.h  |  2 ++
+ arch/mips/ath25/devices.c | 30 ++++++++++++++++++++++++++++++
+ arch/mips/ath25/devices.h |  2 ++
+ 6 files changed, 52 insertions(+)
+
+diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c
+index d92aa91..d10eac4 100644
+--- a/arch/mips/ath25/ar2315.c
++++ b/arch/mips/ath25/ar2315.c
+@@ -267,3 +267,11 @@ void __init ar2315_plat_mem_setup(void)
  
-diff --git a/arch/mips/ath25/Makefile b/arch/mips/ath25/Makefile
-index 201b7d4..eabad7d 100644
---- a/arch/mips/ath25/Makefile
-+++ b/arch/mips/ath25/Makefile
-@@ -10,5 +10,7 @@
- 
- obj-y += board.o prom.o devices.o
- 
-+obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ 	_machine_restart = ar2315_restart;
+ }
 +
- obj-$(CONFIG_SOC_AR5312) += ar5312.o
- obj-$(CONFIG_SOC_AR2315) += ar2315.o
-diff --git a/arch/mips/ath25/early_printk.c b/arch/mips/ath25/early_printk.c
-new file mode 100644
-index 0000000..c7cf432
---- /dev/null
-+++ b/arch/mips/ath25/early_printk.c
-@@ -0,0 +1,45 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
-+ */
-+
-+#include <linux/mm.h>
-+#include <linux/io.h>
-+#include <linux/serial_reg.h>
-+
-+#include "devices.h"
-+#include "ar2315_regs.h"
-+#include "ar5312_regs.h"
-+
-+static inline void prom_uart_wr(void __iomem *base, unsigned reg,
-+				unsigned char ch)
++void __init ar2315_arch_init(void)
 +{
-+	__raw_writel(ch, base + 4 * reg);
++	unsigned irq = irq_create_mapping(ar2315_misc_irq_domain,
++					  AR2315_MISC_IRQ_UART0);
++
++	ath25_serial_setup(AR2315_UART0_BASE, irq, ar2315_apb_frequency());
++}
+diff --git a/arch/mips/ath25/ar2315.h b/arch/mips/ath25/ar2315.h
+index da5b843..4af5f4c 100644
+--- a/arch/mips/ath25/ar2315.h
++++ b/arch/mips/ath25/ar2315.h
+@@ -6,12 +6,14 @@
+ void ar2315_arch_init_irq(void);
+ void ar2315_plat_time_init(void);
+ void ar2315_plat_mem_setup(void);
++void ar2315_arch_init(void);
+ 
+ #else
+ 
+ static inline void ar2315_arch_init_irq(void) {}
+ static inline void ar2315_plat_time_init(void) {}
+ static inline void ar2315_plat_mem_setup(void) {}
++static inline void ar2315_arch_init(void) {}
+ 
+ #endif
+ 
+diff --git a/arch/mips/ath25/ar5312.c b/arch/mips/ath25/ar5312.c
+index b99a02a..398d4fd 100644
+--- a/arch/mips/ath25/ar5312.c
++++ b/arch/mips/ath25/ar5312.c
+@@ -265,3 +265,11 @@ void __init ar5312_plat_mem_setup(void)
+ 
+ 	_machine_restart = ar5312_restart;
+ }
++
++void __init ar5312_arch_init(void)
++{
++	unsigned irq = irq_create_mapping(ar5312_misc_irq_domain,
++					  AR5312_MISC_IRQ_UART0);
++
++	ath25_serial_setup(AR5312_UART0_BASE, irq, ar5312_sys_frequency());
++}
+diff --git a/arch/mips/ath25/ar5312.h b/arch/mips/ath25/ar5312.h
+index 254f04f..86dfc6d 100644
+--- a/arch/mips/ath25/ar5312.h
++++ b/arch/mips/ath25/ar5312.h
+@@ -6,12 +6,14 @@
+ void ar5312_arch_init_irq(void);
+ void ar5312_plat_time_init(void);
+ void ar5312_plat_mem_setup(void);
++void ar5312_arch_init(void);
+ 
+ #else
+ 
+ static inline void ar5312_arch_init_irq(void) {}
+ static inline void ar5312_plat_time_init(void) {}
+ static inline void ar5312_plat_mem_setup(void) {}
++static inline void ar5312_arch_init(void) {}
+ 
+ #endif
+ 
+diff --git a/arch/mips/ath25/devices.c b/arch/mips/ath25/devices.c
+index e30afbc..400419d 100644
+--- a/arch/mips/ath25/devices.c
++++ b/arch/mips/ath25/devices.c
+@@ -1,11 +1,41 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
++#include <linux/serial_8250.h>
+ #include <asm/bootinfo.h>
+ 
+ #include "devices.h"
++#include "ar5312.h"
++#include "ar2315.h"
+ 
+ const char *get_system_type(void)
+ {
+ 	return "Atheros (unknown)";
+ }
+ 
++void __init ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk)
++{
++	struct uart_port s;
++
++	memset(&s, 0, sizeof(s));
++
++	s.flags = UPF_BOOT_AUTOCONF | UPF_SKIP_TEST | UPF_IOREMAP;
++	s.iotype = UPIO_MEM32;
++	s.irq = irq;
++	s.regshift = 2;
++	s.mapbase = mapbase;
++	s.uartclk = uartclk;
++
++	early_serial_setup(&s);
 +}
 +
-+static inline unsigned char prom_uart_rr(void __iomem *base, unsigned reg)
++static int __init ath25_arch_init(void)
 +{
-+	return __raw_readl(base + 4 * reg);
++	if (is_ar5312())
++		ar5312_arch_init();
++	else
++		ar2315_arch_init();
++
++	return 0;
 +}
 +
-+void prom_putchar(unsigned char ch)
-+{
-+	static void __iomem *base;
++arch_initcall(ath25_arch_init);
+diff --git a/arch/mips/ath25/devices.h b/arch/mips/ath25/devices.h
+index 2985586..23b53cb 100644
+--- a/arch/mips/ath25/devices.h
++++ b/arch/mips/ath25/devices.h
+@@ -9,6 +9,8 @@
+ 
+ extern void (*ath25_irq_dispatch)(void);
+ 
++void ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk);
 +
-+	if (unlikely(base == NULL)) {
-+		if (is_ar2315())
-+			base = (void __iomem *)(KSEG1ADDR(AR2315_UART0_BASE));
-+		else
-+			base = (void __iomem *)(KSEG1ADDR(AR5312_UART0_BASE));
-+	}
-+
-+	while ((prom_uart_rr(base, UART_LSR) & UART_LSR_THRE) == 0)
-+		;
-+	prom_uart_wr(base, UART_TX, ch);
-+	while ((prom_uart_rr(base, UART_LSR) & UART_LSR_THRE) == 0)
-+		;
-+}
-+
+ static inline bool is_ar2315(void)
+ {
+ 	return (current_cpu_data.cputype == CPU_4KEC);
 -- 
 1.8.5.5

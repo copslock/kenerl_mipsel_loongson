@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 12:26:06 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41607 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 12:30:42 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57986 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011574AbaJ1L0FSNf91 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 12:26:05 +0100
+        with ESMTP id S27011577AbaJ1Lal3oRkf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 12:30:41 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 7B52B856A2A19
-        for <linux-mips@linux-mips.org>; Tue, 28 Oct 2014 11:25:56 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id B8A4AF3858C5;
+        Tue, 28 Oct 2014 11:30:32 +0000 (GMT)
 Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 28 Oct
- 2014 11:25:58 +0000
+ 2014 11:30:34 +0000
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 28 Oct 2014 11:25:58 +0000
-Received: from pburton-laptop.home (192.168.159.114) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 28 Oct
- 2014 11:25:57 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>, <stable@vger.kernel.org # v3.15+>
-Subject: [PATCH] MIPS: fix EVA & non-SMP non-FPU FP context signal handling
-Date:   Tue, 28 Oct 2014 11:25:51 +0000
-Message-ID: <1414495551-15955-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.1.2
+ 14.3.195.1; Tue, 28 Oct 2014 11:30:34 +0000
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.89) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 28 Oct 2014 11:30:33 +0000
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <ralf@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] mips: cma: Do not reserve memory if not required
+Date:   Tue, 28 Oct 2014 11:28:34 +0000
+Message-ID: <1414495714-40815-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [192.168.159.114]
-Return-Path: <Paul.Burton@imgtec.com>
+X-Originating-IP: [192.168.154.89]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43621
+X-archive-position: 43622
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,49 +46,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The save_fp_context & restore_fp_context pointers were being assigned
-to the wrong variables if either:
+Even if CMA is disabled, the for_each_memblock macro expands
+to run reserve_bootmem once. Hence, reserve_bootmem attempts to
+reserve location 0 of size 0.
 
-  - The kernel is configured for UP & runs on a system without an FPU,
-    since b2ead5282885 "MIPS: Move & rename
-    fpu_emulator_{save,restore}_context".
+Add a check to avoid that.
 
-  - The kernel is configured for EVA, since ca750649e08c "MIPS: kernel:
-    signal: Prevent save/restore FPU context in user memory".
+Issue was highlighted during testing with EVA enabled.
+resrve_bootmem used to exit gracefully when passed arguments to
+reserve 0 size location at 0 without EVA.
 
-This would lead to FP context being clobbered incorrectly when setting
-up a sigcontext, then the garbage values being saved uselessly when
-returning from the signal.
+But with EVA enabled, macros would point to different addresses
+and the code would trigger a BUG.
 
-Fix by swapping the pointer assignments appropriately.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: stable@vger.kernel.org # v3.15+
+Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Tested-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/kernel/signal.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/setup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index e1112be..8b1a84e 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -649,13 +649,13 @@ static int signal_setup(void)
- 		save_fp_context = _save_fp_context;
- 		restore_fp_context = _restore_fp_context;
- 	} else {
--		save_fp_context = copy_fp_from_sigcontext;
--		restore_fp_context = copy_fp_to_sigcontext;
-+		save_fp_context = copy_fp_to_sigcontext;
-+		restore_fp_context = copy_fp_from_sigcontext;
- 	}
- #endif /* CONFIG_SMP */
- #else
--	save_fp_context = copy_fp_from_sigcontext;;
--	restore_fp_context = copy_fp_to_sigcontext;
-+	save_fp_context = copy_fp_to_sigcontext;
-+	restore_fp_context = copy_fp_from_sigcontext;
- #endif
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 938f157..eacfd7d 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -683,7 +683,8 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	dma_contiguous_reserve(PFN_PHYS(max_low_pfn));
+ 	/* Tell bootmem about cma reserved memblock section */
+ 	for_each_memblock(reserved, reg)
+-		reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
++		if (reg->size != 0)
++			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
+ }
  
- 	return 0;
+ static void __init resource_init(void)
 -- 
-2.0.4
+1.9.1

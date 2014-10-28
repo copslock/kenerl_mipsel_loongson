@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 11:56:11 +0100 (CET)
-Received: from mail-lb0-f180.google.com ([209.85.217.180]:56575 "EHLO
-        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011577AbaJ1K4KWYwVK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 11:56:10 +0100
-Received: by mail-lb0-f180.google.com with SMTP id z12so351405lbi.11
-        for <linux-mips@linux-mips.org>; Tue, 28 Oct 2014 03:56:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=tcv05u7F0Wyxeg2w1tzYJaBWCl7g6VIVUitOpRqnG90=;
-        b=STDWC3r+GEvHhSdXlwPYezgw2O7bdgrio7PJZbz7esq2kCd8lwVzEbvoLXw754TqbV
-         rIaVvQDer3ztxn+UiBPr350pZ7/wv0KLBt5dbvPiD5vvr56ixXZ4gbj6Uif9VSONdtSW
-         uORFXwXRbc+aEFbDeZ2z1tvQo42+qP5gytCcQfkT8BkKCJs6ph/eoKdgZO/OGy+4MHfz
-         /TVSr2wfg4bu4Q/bgWMVNfG60gyqcWShSUAj3G8PCHJQqbQNWBwGvcDQtVG5kyemyXbd
-         znD8rBaJ2XRuaDHy7Fld6SEdu60B0oegQqObv31wjgbwIiPsiAg6EBDzhlwfkshVsIkC
-         H/Jg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2014 12:26:06 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:41607 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011574AbaJ1L0FSNf91 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2014 12:26:05 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 7B52B856A2A19
+        for <linux-mips@linux-mips.org>; Tue, 28 Oct 2014 11:25:56 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 28 Oct
+ 2014 11:25:58 +0000
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 28 Oct 2014 11:25:58 +0000
+Received: from pburton-laptop.home (192.168.159.114) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 28 Oct
+ 2014 11:25:57 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>, <stable@vger.kernel.org # v3.15+>
+Subject: [PATCH] MIPS: fix EVA & non-SMP non-FPU FP context signal handling
+Date:   Tue, 28 Oct 2014 11:25:51 +0000
+Message-ID: <1414495551-15955-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.1.2
 MIME-Version: 1.0
-X-Received: by 10.152.10.99 with SMTP id h3mr2575073lab.94.1414493764701; Tue,
- 28 Oct 2014 03:56:04 -0700 (PDT)
-Received: by 10.152.105.196 with HTTP; Tue, 28 Oct 2014 03:56:04 -0700 (PDT)
-In-Reply-To: <CAFxy--Zc+262_GzmxQTLkH4Z=G1xvqe8GWF6ov_hbd=ZKBwiQA@mail.gmail.com>
-References: <CAFxy--b+j86kn6Ttc+qTTi4chDkKbrmSAxEsS7_CnzuabJAZfQ@mail.gmail.com>
-        <CAFxy--Z4FpWJbqr8OMoxgpMXa2WMSuCOA_pvtokcwcq6C-uaFg@mail.gmail.com>
-        <1414086028.5231.3.camel@marge.simpson.net>
-        <CAFxy--Zc+262_GzmxQTLkH4Z=G1xvqe8GWF6ov_hbd=ZKBwiQA@mail.gmail.com>
-Date:   Tue, 28 Oct 2014 16:26:04 +0530
-Message-ID: <CAFxy--azsv1sFyemn+gUwocAo6vCQJHVEL4TfUGqqwOHDVGcLQ@mail.gmail.com>
-Subject: Re: threadirqs and kthreadd_task
-From:   ajay kanala <ajaykanala321@gmail.com>
-To:     Mike Galbraith <umgwanakikbuti@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <ajaykanala321@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.159.114]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43620
+X-archive-position: 43621
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ajaykanala321@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,41 +46,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
-Any pointers from mips list?  Was the option working on any mips arch?
+The save_fp_context & restore_fp_context pointers were being assigned
+to the wrong variables if either:
 
-Thanks for the help.
--- Ajay
+  - The kernel is configured for UP & runs on a system without an FPU,
+    since b2ead5282885 "MIPS: Move & rename
+    fpu_emulator_{save,restore}_context".
 
-On Fri, Oct 24, 2014 at 2:48 PM, ajay kanala <ajaykanala321@gmail.com> wrote:
-> thanks Mike for info.
-> I add mips list in CC now.
->
-> In general, the problem does not look like arch specific. Arch code is
-> calling setup_irq. This code calls generic  __setup_irq. And then
-> threads are created by this line in kernel/irq/manage.c:
-> t = kthread_create(irq_thread, new, "irq/%d-%s", irq,
->                                    new->name);
->
-> and kthreadd_task is uninitialized till this point.
->
-> The code looks similar for x86_64 so i am missing something obvious.
->
-> Nevertheless, I am hoping someone from mips-list can throw some light
-> if this feature works well on mips.
->
-> Thanks
-> -- Ajay
->
-> On Thu, Oct 23, 2014 at 11:10 PM, Mike Galbraith
-> <umgwanakikbuti@gmail.com> wrote:
->> On Thu, 2014-10-23 at 22:48 +0530, ajay kanala wrote:
->>> Hi,
->>> any help?
->>
->> You should CC the MIPS folks methinks, works fine in x86_64 at least.
->>
->> -Mike
->>
->>
->>
+  - The kernel is configured for EVA, since ca750649e08c "MIPS: kernel:
+    signal: Prevent save/restore FPU context in user memory".
+
+This would lead to FP context being clobbered incorrectly when setting
+up a sigcontext, then the garbage values being saved uselessly when
+returning from the signal.
+
+Fix by swapping the pointer assignments appropriately.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: stable@vger.kernel.org # v3.15+
+---
+ arch/mips/kernel/signal.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index e1112be..8b1a84e 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -649,13 +649,13 @@ static int signal_setup(void)
+ 		save_fp_context = _save_fp_context;
+ 		restore_fp_context = _restore_fp_context;
+ 	} else {
+-		save_fp_context = copy_fp_from_sigcontext;
+-		restore_fp_context = copy_fp_to_sigcontext;
++		save_fp_context = copy_fp_to_sigcontext;
++		restore_fp_context = copy_fp_from_sigcontext;
+ 	}
+ #endif /* CONFIG_SMP */
+ #else
+-	save_fp_context = copy_fp_from_sigcontext;;
+-	restore_fp_context = copy_fp_to_sigcontext;
++	save_fp_context = copy_fp_to_sigcontext;
++	restore_fp_context = copy_fp_from_sigcontext;
+ #endif
+ 
+ 	return 0;
+-- 
+2.0.4

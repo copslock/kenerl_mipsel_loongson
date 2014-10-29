@@ -1,83 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 18:25:36 +0100 (CET)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:48092 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011831AbaJ2RZeBF2SP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 18:25:34 +0100
-Received: by mail-pa0-f46.google.com with SMTP id lf10so3585513pab.33
-        for <linux-mips@linux-mips.org>; Wed, 29 Oct 2014 10:25:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 18:37:00 +0100 (CET)
+Received: from mail-pd0-f174.google.com ([209.85.192.174]:58717 "EHLO
+        mail-pd0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011831AbaJ2Rg7XhooT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 18:36:59 +0100
+Received: by mail-pd0-f174.google.com with SMTP id p10so3369335pdj.5
+        for <multiple recipients>; Wed, 29 Oct 2014 10:36:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=2giQ+gCv7hgtihhhDFOcYlMMUWyArYRYATQPEM16Viw=;
-        b=mwOyUAxvBtgHq1I3G7Icv66DVOUdErj2NdYod35+Zlatsv2Z8RHlT2W8RcfEq/lmlr
-         LvNlvwj31TXfkdsQxHsF6bQ6kaNkxP38xFoHv4MfYrhVw2+974vztiaKrSxsHPywbU0e
-         CrReXlt+Gln4WhI0Gu7D8yGkIwpDdRmKh5LAQ3Ta7WN19lD2yQ0his7ZLTivmk4eI8A8
-         WtWuWYMO6reBf6Mm2+7F4geKhigf6QayClOM0O9h3w2ErrQXaRjWKXDmIBKXQQM3zCKh
-         x2l99Tmn7OTW0oG0zgtAqp5OLL72FA90JKRYct39EdKn6q8DgIUzrVOTykN8ki2UtUxE
-         oy1w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=2giQ+gCv7hgtihhhDFOcYlMMUWyArYRYATQPEM16Viw=;
-        b=eJOQf+6DzXdPaezNnXRs2OfoFoIaFcrTWA4CLTEUQRpR/tZ0QHh2SlKvkO6JcsUq6a
-         /2Km0wIviJKOi+huKBlgY3jkv4tqKZmsYpjqeUkRFvjGY7SqMf8BQcRRcOqwmRXou33u
-         nG7AUEsYjX6XuBWVJwjLizOv4cmQRZSl0lprI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=2giQ+gCv7hgtihhhDFOcYlMMUWyArYRYATQPEM16Viw=;
-        b=hLkgdHTuGQTWkLXsdx4UNycBzYnB9tutN5yBA+ihBeyH9pP34qB7VLd57GF+wvpkvM
-         WCoagLhJT7tdj+4/V39Be2PzzKl9ylwUr/BZNe3ot9Wld0GOasH9S+Aqx/RQf/rkn1Kt
-         7G3v1y3mgBzUkiLEVDtFDyJ0PlO5d42OMhFng5x2R/rELGkKihvcFVkcXg7vLoooqR02
-         xw9AbBl1kaxX1IMxqzdi/Wny/pZZ3XeLg/r1d2uhYemp/+q2oOG77f99ezcAFplzQJ37
-         iQYR4jknGWg82gupJ8IoQpjiwHRtcOSTc5E7ukPj6tXuwVd7BNcYYTdASg8GBusCRQmn
-         aNnQ==
-X-Gm-Message-State: ALoCoQnwgw/R/CTi/xNkv3IwCC01QI6cl2N7Q7F3eayRRshVClQ1iYLH21a/HrmSGmxeBkZ7Xutd
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=FehaPKOVYO+yXr7rtELS2t/qzGpJFtYylk2AaznMNcg=;
+        b=ocSJhPlytzQz8cONhwq0VFXOLHLCw4gH6uo3rK5zIW99oilIMaXl6CC+MZvgUoys/e
+         +I5aSQJwR9sQDyNIoQbQRTw5KzWUZ7C/uc/tmqLWRcOBQ9BqHsf/D8i3a8xr4AEQ7v9g
+         +Y6bDwdRdsp5yPDiEKN9XF4azhzHvr9LdPnafPMdKZuOE3JwreUA2QGRD6zzcG+ostGx
+         r82do7yAw8WLFfIulkedoRHYLfnueYmsgszeengU1vQu/GLbe7gt+SlLnkTCQxqnP12S
+         wcjHBB/tmD90pbX3MOKx7LFx57JR9xO6XYl/Aosq1PLcJ1s1n6fsJBxIk1zBjjl1PFDm
+         kAkw==
+X-Received: by 10.70.39.35 with SMTP id m3mr11820661pdk.70.1414604212870;
+        Wed, 29 Oct 2014 10:36:52 -0700 (PDT)
+Received: from [10.12.164.252] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id tv4sm4909666pab.28.2014.10.29.10.36.51
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Oct 2014 10:36:52 -0700 (PDT)
+Message-ID: <54512599.4080500@gmail.com>
+Date:   Wed, 29 Oct 2014 10:36:25 -0700
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-X-Received: by 10.66.157.161 with SMTP id wn1mr11727640pab.40.1414603527602;
- Wed, 29 Oct 2014 10:25:27 -0700 (PDT)
-Received: by 10.70.118.170 with HTTP; Wed, 29 Oct 2014 10:25:27 -0700 (PDT)
-In-Reply-To: <5451201C.9090106@imgtec.com>
-References: <1414541562-10076-1-git-send-email-abrestic@chromium.org>
-        <1414541562-10076-3-git-send-email-abrestic@chromium.org>
-        <5450B1B1.5070301@imgtec.com>
-        <CAL1qeaFeoKFbea7eiiXaw87PYUWO1JmP5xxdLLpW2RrFCprtZg@mail.gmail.com>
-        <5451201C.9090106@imgtec.com>
-Date:   Wed, 29 Oct 2014 10:25:27 -0700
-X-Google-Sender-Auth: RzLYAdF_FXrjFSKL8bRiPcUGvSU
-Message-ID: <CAL1qeaEOifj-R2vcWzzh2i5S3ogBf3eZ4X8PbVa1j_BtsgFCwA@mail.gmail.com>
-Subject: Re: [PATCH V3 2/4] of: Add binding document for MIPS GIC
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul <Paul.Burton@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Kevin Cernekee <cernekee@gmail.com>
+CC:     tglx@linutronix.de, jason@lakedaemon.net, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
+References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <11255905.1JsQYcArO7@wuerfel>
+In-Reply-To: <11255905.1JsQYcArO7@wuerfel>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43714
+X-archive-position: 43715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,72 +58,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 29, 2014 at 10:13 AM, James Hogan <james.hogan@imgtec.com> wrote:
-> On 29/10/14 16:55, Andrew Bresticker wrote:
->> Hi James,
+On 10/29/2014 12:43 AM, Arnd Bergmann wrote:
+> On Tuesday 28 October 2014 20:58:48 Kevin Cernekee wrote:
 >>
->> On Wed, Oct 29, 2014 at 2:21 AM, James Hogan <james.hogan@imgtec.com> wrote:
->>> Hi Andrew,
->>>
->>> On 29/10/14 00:12, Andrew Bresticker wrote:
->>>>  - changed compatible string to include CPU version
->>>
->>>> +Required properties:
->>>> +- compatible : Should be "mti,<cpu>-gic".  Supported variants:
->>>> +  - "mti,interaptiv-gic"
->>>
->>>> +Required properties for timer sub-node:
->>>> +- compatible : Should be "mti,<cpu>-gic-timer".  Supported variants:
->>>> +  - "mti,interaptiv-gic-timer"
->>>
->>> Erm, I'm a bit confused...
->>> Why do you include the core name in the compatible string?
->>>
->>> You seem to be suggesting that:
->>>
->>> 1) The GIC/timer drivers need to know what core they're running on.
->>>
->>> Is that really true?
->>
->> They don't now, but it's possible that a future CPU has a newer
->> revision of the GIC which has some differences that need to be
->> accounted for in the driver.
->>
->>> 2) It isn't possible to probe the core type.
->>>
->>> But the kernel already knows this, so what's wrong with using
->>> current_cpu_type() like everything else that needs to know?
->>>
->>> 3) Every new core should require a new compatible string to be added
->>> before the GIC will work. You don't even have a generic compatible
->>> string that DT can specify after the core specific one as a fallback.
->>
->> Yes, adding a generic compatible string would be a good idea.
->>
->>> Please lets not do this unless it's actually necessary (which AFAICT it
->>> really isn't).
->>
->> The point of this was to future-proof these bindings and I though that
->> CPU type was the best way to indicate version in the compatible
->> string.  This is also how it's done for the ARM GIC and arch timers.
->> Perhaps the best thing to do is to require both a core-specific
->> ("mti,interaptiv-gic") and generic ("mti,gic") compatible string and
->> just match on the generic one for now until there's a need to use the
->> core-specific one.  Thoughts?
->
-> FPGA boards like Malta are something else to consider (when it is
-> eventually converted to DT - Paul on CC knows more than me). You might
-> load an interAptiv, or a proAptiv, or a P5600 bitstream, and the gic
-> setup will be pretty much the same I think, since e.g. the address
-> depends on where it is convenient to put it in the address space of the
-> platform.
+>> +#ifdef CONFIG_RAW_IRQ_ACCESSORS
+>> +
+>> +#ifndef irq_reg_writel
+>> +# define irq_reg_writel(val, addr)     __raw_writel(val, addr)
+>> +#endif
+>> +#ifndef irq_reg_readl
+>> +# define irq_reg_readl(addr)           __raw_readl(addr)
+>> +#endif
+>> +
+>> +#else
+>> +
+> 
+> No, this is just wrong: registers almost always have a fixed endianess
+> indenpent of CPU endianess, so if you use __raw_writel, it will be
+> broken on one or the other.
 
-Ah, I didn't realize that the CPU bitstream could be changed
-independently of the GIC.
-In that case, the CPU revision isn't that useful.
+Our brcmstb platforms had an endian strap settings for MIPS-based
+platforms, and for most peripherals this would be just completely
+transparent, as the HW always will do the internal swapping, such that
+host CPU does read/writes in its native endianess regardless of the
+actual strap settings.
 
-> Any thoughts on the existence of current_cpu_type(), and the GIC
-> revision register? They pretty much make encoding of core in compatible
-> string redundant I think.
+AFAICT bcm3384, a MIPS-based Cable Modem platform has only one endianess
+setting: BE, and the HW only supports that specific endianess.
 
-Ok, I suppose using the revision register is fine then.
+> 
+> If you have a machine that uses big-endian registers in the interrupt
+> controller, you need to find a way to use the correct accessors
+> (e.g. iowrite32be) and use them independent of what endianess the CPU
+> is running.
+> 
+> As this code is being used on all sorts of platforms, you can't assume
+> that they all use the same endianess, which makes it rather tricky.
+
+I think the more general problem with the use of readl_*() I/O accessors
+is that they just happen to work fine on most platforms out there: ARM
+Little-endian, because this nicely matches the endianess expected by the
+HW and that does not enforce an audit of whether your actual peripheral
+expects little-endian writes to be done.
+
+The other problem is that readl() on ARM implies a barrier, which is not
+necesarily true/necessary for some other platforms such as some MIPS
+processors.
+
+> 
+> As the first step, you can probably introduce a new Kconfig symbol
+> GENERIC_IRQ_CHIP_BE, and then make that mutually exclusive with the
+> existing users that all use little-endian registers:
+> 
+> #if defined(CONFIG_GENERIC_IRQ_CHIP) && !defined(CONFIG_GENERIC_IRQ_CHIP_BE)
+> #define irq_reg_writel(val, addr)     writel(val, addr)
+> #else if defined(CONFIG_GENERIC_IRQ_CHIP_BE) && !defined(CONFIG_GENERIC_IRQ_CHIP)
+> #define irq_reg_writel(val, addr)     iowrite32be(val, addr)
+> #else
+> /* provoke a compile error when this is used */
+> #define irq_reg_writel(val, addr)	irq_reg_writel_unknown_endian(val, addr)
+> #endif
+> 
+> and
+> 
+> --- a/kernel/irq/Makefile
+> +++ b/kernel/irq/Makefile
+> @@ -1,5 +1,6 @@
+>  
+>  obj-y := irqdesc.o handle.o manage.o spurious.o resend.o chip.o dummychip.o devres.o
+> +obj-$(CONFIG_GENERIC_IRQ_CHIP_BE) += generic-chip.o
+>  obj-$(CONFIG_GENERIC_IRQ_CHIP) += generic-chip.o
+>  obj-$(CONFIG_GENERIC_IRQ_PROBE) += autoprobe.o
+>  obj-$(CONFIG_IRQ_DOMAIN) += irqdomain.o
+> 
+> Note that you might also have a case where you have more than
+> one generic irqchip driver built into the kernel, which require
+> different endianess. We can't really support that case without
+> changing the generic-chip implementation.
+> 
+> 	Arnd
+> 

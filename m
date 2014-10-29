@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 08:29:55 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.131]:64451 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 08:43:41 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.17.10]:51240 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011823AbaJ2H3x309z8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 08:29:53 +0100
+        with ESMTP id S27011870AbaJ2HnkoXz3- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 08:43:40 +0100
 Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue001) with ESMTP (Nemesis)
-        id 0Lnopk-1YGEXF2EQa-00fzCZ; Wed, 29 Oct 2014 08:29:33 +0100
+        by mrelayeu.kundenserver.de (node=mreue104) with ESMTP (Nemesis)
+        id 0LtnUL-1YB82j41vp-011DcH; Wed, 29 Oct 2014 08:43:17 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Kevin Cernekee <cernekee@gmail.com>
 Cc:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
         ralf@linux-mips.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, mbizon@freebox.fr, jogo@openwrt.org,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/11] irqchip: brcmstb-l2: Eliminate dependency on ARM code
-Date:   Wed, 29 Oct 2014 08:29:33 +0100
-Message-ID: <4427811.Si9a9OX0zn@wuerfel>
+Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
+Date:   Wed, 29 Oct 2014 08:43:16 +0100
+Message-ID: <11255905.1JsQYcArO7@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1414555138-6500-2-git-send-email-cernekee@gmail.com>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <1414555138-6500-2-git-send-email-cernekee@gmail.com>
+In-Reply-To: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
+References: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:djXYKn5dpSWTWMIsfZD4hl4YtxeMiPM8m3/hiWj1pAS
- 4QF2nbHf3XRUDf/GXtHVEbH0mk+rObN3qvb4omhEWToQJolQ27
- XAzHrpHkCFA9RNxX6vtuA69tuv3xpebNXgzcItxIPhq5CgafPs
- YJ1N3aHtO0YcInJOqRc4pvsBYt3U35oXqKUdpk5iVJCfl8MFcs
- LfaYZdtfw24VH707LsKTHhs3Zh+BLzs9v7qSkeg4ZHqOI1Cwvx
- /9wLGMCOKLvoZX9N41+JgCp3guf2mi4SdzSuXcLMfq80sxLmpN
- +IdFm9dFVLpKQcAR7f2f5o7XEJTrNcReSPhKf6ukauSgQR4qR/
- 2TbjArYcM8OfZiGATFnM=
+X-Provags-ID: V02:K0:6ediLdvmXOT2etVy9oSrfGaUg4I4e/r15vTCrRHXOoY
+ 3KBvjUgaMPz3kEZ3R4q41L3mVEjXxkJzFhaTdPRywroYBTxDFn
+ ztwALW/Iknj7zr/75cQEaftx53AbiOF/i+Gy/Pxzxl0SnckSUE
+ iOddSFBq98Z6m8F5gnP7xAAtyFminHfDwaALyJIoyxe68FSW8C
+ RdyXqxjM690M0sWmg0O1Rrx2zLUib8F0+o1ZtPDD8E2a8NpLHp
+ 7ihx4RCxTbL2JN8CjFCZQpstKvw54Y2kREDck2fvqZle6suoFN
+ 3KdBvOvw8/02/tKkwrR2jwYNXvM0/iwf7Wv+rcJrgLmlTkstYB
+ qVQfxIvLAwwzudYNj1fM=
 X-UI-Out-Filterresults: notjunk:1;
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43683
+X-archive-position: 43684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,12 +51,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 28 October 2014 20:58:49 Kevin Cernekee wrote:
-> The irq-brcmstb-l2 driver has a single dependency on the ARM code, the
-> do_bad_IRQ macro.  Expand this macro in-place so that the driver can be
-> built on non-ARM platforms.
+On Tuesday 28 October 2014 20:58:48 Kevin Cernekee wrote:
 > 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> 
+> +#ifdef CONFIG_RAW_IRQ_ACCESSORS
+> +
+> +#ifndef irq_reg_writel
+> +# define irq_reg_writel(val, addr)     __raw_writel(val, addr)
+> +#endif
+> +#ifndef irq_reg_readl
+> +# define irq_reg_readl(addr)           __raw_readl(addr)
+> +#endif
+> +
+> +#else
+> +
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+No, this is just wrong: registers almost always have a fixed endianess
+indenpent of CPU endianess, so if you use __raw_writel, it will be
+broken on one or the other.
+
+If you have a machine that uses big-endian registers in the interrupt
+controller, you need to find a way to use the correct accessors
+(e.g. iowrite32be) and use them independent of what endianess the CPU
+is running.
+
+As this code is being used on all sorts of platforms, you can't assume
+that they all use the same endianess, which makes it rather tricky.
+
+As the first step, you can probably introduce a new Kconfig symbol
+GENERIC_IRQ_CHIP_BE, and then make that mutually exclusive with the
+existing users that all use little-endian registers:
+
+#if defined(CONFIG_GENERIC_IRQ_CHIP) && !defined(CONFIG_GENERIC_IRQ_CHIP_BE)
+#define irq_reg_writel(val, addr)     writel(val, addr)
+#else if defined(CONFIG_GENERIC_IRQ_CHIP_BE) && !defined(CONFIG_GENERIC_IRQ_CHIP)
+#define irq_reg_writel(val, addr)     iowrite32be(val, addr)
+#else
+/* provoke a compile error when this is used */
+#define irq_reg_writel(val, addr)	irq_reg_writel_unknown_endian(val, addr)
+#endif
+
+and
+
+--- a/kernel/irq/Makefile
++++ b/kernel/irq/Makefile
+@@ -1,5 +1,6 @@
+ 
+ obj-y := irqdesc.o handle.o manage.o spurious.o resend.o chip.o dummychip.o devres.o
++obj-$(CONFIG_GENERIC_IRQ_CHIP_BE) += generic-chip.o
+ obj-$(CONFIG_GENERIC_IRQ_CHIP) += generic-chip.o
+ obj-$(CONFIG_GENERIC_IRQ_PROBE) += autoprobe.o
+ obj-$(CONFIG_IRQ_DOMAIN) += irqdomain.o
+
+Note that you might also have a case where you have more than
+one generic irqchip driver built into the kernel, which require
+different endianess. We can't really support that case without
+changing the generic-chip implementation.
+
+	Arnd

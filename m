@@ -1,80 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 17:56:12 +0100 (CET)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:59272 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012156AbaJ2Q4CL6zbK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 17:56:02 +0100
-Received: by mail-pa0-f52.google.com with SMTP id fa1so3525593pad.39
-        for <linux-mips@linux-mips.org>; Wed, 29 Oct 2014 09:55:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 17:56:51 +0100 (CET)
+Received: from mail-pd0-f180.google.com ([209.85.192.180]:38665 "EHLO
+        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012156AbaJ2Q4sKbn6d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 17:56:48 +0100
+Received: by mail-pd0-f180.google.com with SMTP id ft15so3289592pdb.25
+        for <multiple recipients>; Wed, 29 Oct 2014 09:56:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=AyiYQmRh8EecBe6nx8lsM2c5sqxAUUUhozFoPQaCM/g=;
-        b=hqwjbr1iahY6uMsemmftvN0QTVL+vIFFX5GptLI4/mVHCZ+NFqO56ByM7+RXm9DAzh
-         JNzf8bfp9EMQa3Y2SuiFXBzSGRbzPwM2xubPtS0OWvwC6d8StOJmxcbbe7E1n5liTO8x
-         ptZOcWaAfsEk46/fRgDck6PhmjLwXFN16mSpdaTcNsmdwWLIviSffX5EKhRmJKCRzc/O
-         MRNO49hvxLNPY/iJ52h+idT2scGTAR97cAOueFoOho5P8kJbmHFS9nTO1gxd60J5tPp1
-         JyTtaHsez3f/u0IOhxHbFx8sePYjRexJVP9wBSIide8nFI3fLTPQTMTkQ9g8CXRZcoZ1
-         LfsQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=AyiYQmRh8EecBe6nx8lsM2c5sqxAUUUhozFoPQaCM/g=;
-        b=jI25kDoT/U7TYgD9rFPixP46yo/E434mGX1gsqMORuLuDxCFVwd2FecmksWiKpn6Kp
-         C40gQTboS+4TS9IxYasGqrhWhhaOKnDPpyE93syMJkNZUVbvz/oUsptIiI2ZW0p4iaoJ
-         UKhbfrJvUhVjwW4dcReCip+LXomtz5pJKxfvE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=AyiYQmRh8EecBe6nx8lsM2c5sqxAUUUhozFoPQaCM/g=;
-        b=HJZRMXYkCHXfke4xI+9G5ru+ckn/9Xv0pJl8eI75QicNkwCpbfpUtZk7WccqrYSpTE
-         vNdlvIZiua3dQOKG+q5K9m4xjPA9PzFTZsDu8C1UlBOowCdI2gyKly6P1INjGSKQ6Lk5
-         RgzU9xHwQxNJuITpHNQ3imsisoowvD+9CChKcjGIGRL/xaJgxNET4/2/T8YiJJscO+KJ
-         Ped+cXJ+sCVfDw9EIe/POJR6cChF2ZsjeLYnzVIbmaBCo5R5ORR7WuEtmwxs1oUEnvQ2
-         n3Yl4gbYxmcGTz0KBcsaQAGXJomJpcQeWiMsWMbA8EzDvuxqLLQYp/k/x+YJPtsjfeCU
-         Rhfg==
-X-Gm-Message-State: ALoCoQnbH+4QwImWdhCdoxb7FFhofDAyOMo1FtOHspEdx15iHb1JGlZX52mMLlqcwDssoQoJMcP5
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=3ujmXphCAO3He4y+QExGLGzL83iBNIVJLrbibioZ9Zc=;
+        b=rUmnkMfF76xSXt8OJpjmRfBZljEjQcVffUclRJWDPwQy8YyaA0piTf4baIStvT8F5P
+         letruUrNbpei9aFTL7QlUecfakDS0j+mgRGvS2Q/7xuQ39XjwFyA9x9se43X5RuB0dTZ
+         vKh4obn7L0t+1FgtfgUjq81Yck0azCR+1xs20uTkBb/Ya/cOWtftw5n5RGsdCfbpJA0j
+         uZ/LSczQn61Z70ZbCDSpQJvdvFnOHfSnAZoTwZpZPGHVIyBaO1Kvm6C4tzL/bq5IZJVE
+         vlXFo2GmJYal0SrRye2qF7U1lhfid/+fKLWZ8l+ZSUgNwNCfhwBPoc5jeeQbVNFjFIyd
+         ldMw==
+X-Received: by 10.70.38.165 with SMTP id h5mr11378846pdk.121.1414601802068;
+        Wed, 29 Oct 2014 09:56:42 -0700 (PDT)
+Received: from [10.12.164.252] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id h3sm4030565pdl.22.2014.10.29.09.56.40
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Oct 2014 09:56:41 -0700 (PDT)
+Message-ID: <54511C2E.50007@gmail.com>
+Date:   Wed, 29 Oct 2014 09:56:14 -0700
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-X-Received: by 10.70.51.195 with SMTP id m3mr11568704pdo.27.1414601756123;
- Wed, 29 Oct 2014 09:55:56 -0700 (PDT)
-Received: by 10.70.118.170 with HTTP; Wed, 29 Oct 2014 09:55:56 -0700 (PDT)
-In-Reply-To: <5450B1B1.5070301@imgtec.com>
-References: <1414541562-10076-1-git-send-email-abrestic@chromium.org>
-        <1414541562-10076-3-git-send-email-abrestic@chromium.org>
-        <5450B1B1.5070301@imgtec.com>
-Date:   Wed, 29 Oct 2014 09:55:56 -0700
-X-Google-Sender-Auth: aie1nVPGjk_dC-h9SLT8YI0mBG8
-Message-ID: <CAL1qeaFeoKFbea7eiiXaw87PYUWO1JmP5xxdLLpW2RrFCprtZg@mail.gmail.com>
-Subject: Re: [PATCH V3 2/4] of: Add binding document for MIPS GIC
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+To:     Kevin Cernekee <cernekee@gmail.com>, tglx@linutronix.de,
+        jason@lakedaemon.net, ralf@linux-mips.org
+CC:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 11/11] irqchip: Decouple bcm7120-l2 from brcmstb-l2
+References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <1414555138-6500-11-git-send-email-cernekee@gmail.com>
+In-Reply-To: <1414555138-6500-11-git-send-email-cernekee@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43707
+X-archive-position: 43708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,53 +58,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+On 10/28/2014 08:58 PM, Kevin Cernekee wrote:
+> Some chips, such as BCM6328, only require the former driver.  Some
+> BCM7xxx STB configurations only require the latter driver.  Treat them
+> as two separate entities, and update the mach-bcm dependencies to
+> reflect the change.
+> 
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
-On Wed, Oct 29, 2014 at 2:21 AM, James Hogan <james.hogan@imgtec.com> wrote:
-> Hi Andrew,
->
-> On 29/10/14 00:12, Andrew Bresticker wrote:
->>  - changed compatible string to include CPU version
->
->> +Required properties:
->> +- compatible : Should be "mti,<cpu>-gic".  Supported variants:
->> +  - "mti,interaptiv-gic"
->
->> +Required properties for timer sub-node:
->> +- compatible : Should be "mti,<cpu>-gic-timer".  Supported variants:
->> +  - "mti,interaptiv-gic-timer"
->
-> Erm, I'm a bit confused...
-> Why do you include the core name in the compatible string?
->
-> You seem to be suggesting that:
->
-> 1) The GIC/timer drivers need to know what core they're running on.
->
-> Is that really true?
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
-They don't now, but it's possible that a future CPU has a newer
-revision of the GIC which has some differences that need to be
-accounted for in the driver.
-
-> 2) It isn't possible to probe the core type.
->
-> But the kernel already knows this, so what's wrong with using
-> current_cpu_type() like everything else that needs to know?
->
-> 3) Every new core should require a new compatible string to be added
-> before the GIC will work. You don't even have a generic compatible
-> string that DT can specify after the core specific one as a fallback.
-
-Yes, adding a generic compatible string would be a good idea.
-
-> Please lets not do this unless it's actually necessary (which AFAICT it
-> really isn't).
-
-The point of this was to future-proof these bindings and I though that
-CPU type was the best way to indicate version in the compatible
-string.  This is also how it's done for the ARM GIC and arch timers.
-Perhaps the best thing to do is to require both a core-specific
-("mti,interaptiv-gic") and generic ("mti,gic") compatible string and
-just match on the generic one for now until there's a need to use the
-core-specific one.  Thoughts?
+> ---
+>  arch/arm/mach-bcm/Kconfig        | 1 +
+>  drivers/irqchip/Kconfig          | 5 +++++
+>  drivers/irqchip/Makefile         | 4 ++--
+>  drivers/irqchip/irq-bcm7120-l2.c | 2 +-
+>  4 files changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/mach-bcm/Kconfig b/arch/arm/mach-bcm/Kconfig
+> index 2abad74..bf47eb0 100644
+> --- a/arch/arm/mach-bcm/Kconfig
+> +++ b/arch/arm/mach-bcm/Kconfig
+> @@ -125,6 +125,7 @@ config ARCH_BRCMSTB
+>  	select HAVE_ARM_ARCH_TIMER
+>  	select BRCMSTB_GISB_ARB
+>  	select BRCMSTB_L2_IRQ
+> +	select BCM7120_L2_IRQ
+>  	help
+>  	  Say Y if you intend to run the kernel on a Broadcom ARM-based STB
+>  	  chipset.
+> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+> index 6a03c65..2d52b07 100644
+> --- a/drivers/irqchip/Kconfig
+> +++ b/drivers/irqchip/Kconfig
+> @@ -51,6 +51,11 @@ config ATMEL_AIC5_IRQ
+>  	select MULTI_IRQ_HANDLER
+>  	select SPARSE_IRQ
+>  
+> +config BCM7120_L2_IRQ
+> +	bool
+> +	select GENERIC_IRQ_CHIP
+> +	select IRQ_DOMAIN
+> +
+>  config BRCMSTB_L2_IRQ
+>  	bool
+>  	select GENERIC_IRQ_CHIP
+> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+> index 173bb5f..f0909d0 100644
+> --- a/drivers/irqchip/Makefile
+> +++ b/drivers/irqchip/Makefile
+> @@ -35,6 +35,6 @@ obj-$(CONFIG_TB10X_IRQC)		+= irq-tb10x.o
+>  obj-$(CONFIG_XTENSA)			+= irq-xtensa-pic.o
+>  obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
+>  obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
+> -obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o \
+> -					   irq-bcm7120-l2.o
+> +obj-$(CONFIG_BCM7120_L2_IRQ)		+= irq-bcm7120-l2.o
+> +obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o
+>  obj-$(CONFIG_KEYSTONE_IRQ)		+= irq-keystone.o
+> diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+> index 734fece..91065b9 100644
+> --- a/drivers/irqchip/irq-bcm7120-l2.c
+> +++ b/drivers/irqchip/irq-bcm7120-l2.c
+> @@ -247,5 +247,5 @@ out_unmap:
+>  	kfree(data);
+>  	return ret;
+>  }
+> -IRQCHIP_DECLARE(brcmstb_l2_intc, "brcm,bcm7120-l2-intc",
+> +IRQCHIP_DECLARE(bcm7120_l2_intc, "brcm,bcm7120-l2-intc",
+>  		bcm7120_l2_intc_of_init);
+> 

@@ -1,45 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 22:31:12 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:40653 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010101AbaJ2VbL3gKda (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 22:31:11 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1Xjapf-0004kN-BC; Wed, 29 Oct 2014 22:31:07 +0100
-Date:   Wed, 29 Oct 2014 22:31:06 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Arnd Bergmann <arnd@arndb.de>
-cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 22:34:41 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60825 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010101AbaJ2VekQc2SM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 22:34:40 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C0A69C1FD2710;
+        Wed, 29 Oct 2014 21:34:29 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 29 Oct
+ 2014 21:34:32 +0000
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 29 Oct 2014 21:34:32 +0000
+Received: from localhost (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 29 Oct
+ 2014 21:34:31 +0000
+Date:   Wed, 29 Oct 2014 21:34:31 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Andrew Bresticker <abrestic@chromium.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Ian Campbell" <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use
- __raw_{readl_writel}
-In-Reply-To: <22478002.kqKBdeLAKz@wuerfel>
-Message-ID: <alpine.DEB.2.11.1410292226050.5308@nanos>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <5338153.4SY4TFtus9@wuerfel> <CAJiQ=7C7SzT2ngQzP=dQqdQz=+ShJ_Jf0z4kwFgvUKg1G3vrAw@mail.gmail.com> <22478002.kqKBdeLAKz@wuerfel>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Paul <Paul.Burton@imgtec.com>
+Subject: Re: [PATCH V3 2/4] of: Add binding document for MIPS GIC
+Message-ID: <20141029213431.GF30260@jhogan-linux.le.imgtec.org>
+References: <1414541562-10076-1-git-send-email-abrestic@chromium.org>
+ <1414541562-10076-3-git-send-email-abrestic@chromium.org>
+ <5450B1B1.5070301@imgtec.com>
+ <CAL1qeaFeoKFbea7eiiXaw87PYUWO1JmP5xxdLLpW2RrFCprtZg@mail.gmail.com>
+ <5451201C.9090106@imgtec.com>
+ <CAL1qeaEOifj-R2vcWzzh2i5S3ogBf3eZ4X8PbVa1j_BtsgFCwA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <CAL1qeaEOifj-R2vcWzzh2i5S3ogBf3eZ4X8PbVa1j_BtsgFCwA@mail.gmail.com>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43726
+X-archive-position: 43727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,42 +69,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 29 Oct 2014, Arnd Bergmann wrote:
-> On Wednesday 29 October 2014 13:09:47 Kevin Cernekee wrote:
-> > generic-chip.c already has a fair amount of indirection, with pointers
-> > to saved masks, user-specified register offsets, and such.  Is there a
-> > concern that introducing, say, a pair of readl/writel function
-> > pointers, would cause an unacceptable performance drop?
+Hi Andrew,
+
+On Wed, Oct 29, 2014 at 10:25:27AM -0700, Andrew Bresticker wrote:
+> On Wed, Oct 29, 2014 at 10:13 AM, James Hogan <james.hogan@imgtec.com> wrote:
+> > On 29/10/14 16:55, Andrew Bresticker wrote:
+> >> On Wed, Oct 29, 2014 at 2:21 AM, James Hogan <james.hogan@imgtec.com> wrote:
+> >>> Please lets not do this unless it's actually necessary (which AFAICT it
+> >>> really isn't).
+> >>
+> >> The point of this was to future-proof these bindings and I though that
+> >> CPU type was the best way to indicate version in the compatible
+> >> string.  This is also how it's done for the ARM GIC and arch timers.
+> >> Perhaps the best thing to do is to require both a core-specific
+> >> ("mti,interaptiv-gic") and generic ("mti,gic") compatible string and
+> >> just match on the generic one for now until there's a need to use the
+> >> core-specific one.  Thoughts?
+> >
+> > FPGA boards like Malta are something else to consider (when it is
+> > eventually converted to DT - Paul on CC knows more than me). You might
+> > load an interAptiv, or a proAptiv, or a P5600 bitstream, and the gic
+> > setup will be pretty much the same I think, since e.g. the address
+> > depends on where it is convenient to put it in the address space of the
+> > platform.
 > 
-> I don't know. Thomas' reply suggests that it isn't. Doing byteswap
-> in software at a register access is usually free in terms of CPU
-> cycles, but an indirect function call can be noticeable if we do
-> that a lot.
+> Ah, I didn't realize that the CPU bitstream could be changed
+> independently of the GIC.
 
-I did not say that it is free. I merily said that I prefer to have
-this solved at the core level rather than at the driver level. So you
-have several options to do so:
+To clarify, the GIC is still closely bound to the CPU and contained
+within the FPGA bitstream. The register interface should I believe
+always comply with some version of the GIC architecture specification,
+and I don't think anybody wants per-bitstream DT files / kernels, so in
+practice the way the GIC is set up for Malta (how interrupt lines are
+connected up and where in address space GIC can go) is unlikely to
+become incompatible.
 
-1) Indirections
-
-2) Different functions for the different access modes
-
-3) Alternatives
-
-#1 Is the simplest solution, but imposes the overhead of an indirect
-   function call for something trivial
-
-#2 The most efficient and flexible way if you have to provide
-   different access modes for different drivers. But it comes with the
-   price of increasing the text foot print.
-
-#3 Smart and efficient, but requires that on a particular system all
-   drivers use the same access mode.
-
-Thanks,
-
-	tglx
-
-
-
-  
+Cheers
+James

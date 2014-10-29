@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 20:14:26 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.10]:65507 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 20:14:44 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.131]:60096 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012154AbaJ2TOYmvBvU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 20:14:24 +0100
+        with ESMTP id S27012150AbaJ2TOkrq2Oo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 20:14:40 +0100
 Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue102) with ESMTP (Nemesis)
-        id 0LmLZq-1YJRk52sNe-00ZtSk; Wed, 29 Oct 2014 20:14:07 +0100
+        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
+        id 0Lg4q7-1YPi9X0hP1-00pf1b; Wed, 29 Oct 2014 20:14:20 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Kevin Cernekee <cernekee@gmail.com>, tglx@linutronix.de,
+        jason@lakedaemon.net, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
-Date:   Wed, 29 Oct 2014 20:14:06 +0100
-Message-ID: <5338153.4SY4TFtus9@wuerfel>
+Date:   Wed, 29 Oct 2014 20:14:19 +0100
+Message-ID: <2708949.pfRevDjuZe@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAJiQ=7BcVH52-PCo40dSEoNHjT1Pg8X88uq-KZ6tQPKYWaM94A@mail.gmail.com>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <11255905.1JsQYcArO7@wuerfel> <CAJiQ=7BcVH52-PCo40dSEoNHjT1Pg8X88uq-KZ6tQPKYWaM94A@mail.gmail.com>
+In-Reply-To: <54512599.4080500@gmail.com>
+References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <11255905.1JsQYcArO7@wuerfel> <54512599.4080500@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:ua4Cwi0S++JTe3kGKEuzHZ8sM09l93JoNa/T5HnpE2X
- 0aS4HQAw2Sx4xDTb65kL8gCPv0w72fxqne/KMViAyabh3v/GqT
- FOAxzICTwdnTHEG1dYVUHNIDj/ns0Hcdxj9Vwq2bLfuLKd11jY
- LYAiWn45pSPizShN4CI/AQDEH4OFnjqSp3sb9RbBkdQgq4OV9B
- jqlWg2L/t5RysHSlCZMOcFvV383akmHzWyvVJh17MtaKa6u/iE
- VaGmr4xiXaJHkJBH59AW5NaJ+3M818RaJrmWbizT0AzxAILCiN
- ecEX4Qx1EYmM2fe/W2aMdrEoEBwhryghuZum6ul9ZlmfGydRX1
- +G7poFWTnK4IzHBAplQY=
+X-Provags-ID: V02:K0:cz0xjSYTpBbTZqfbPwfAIytB+3/vXnHoecdkHKIQbn9
+ KilSLBYiaZk+7U7Bn6JmNkQIu9pFzQns2QYneNjVtQJYK+KSR7
+ U5xutHWqG3NS/barW386+XymuQtgpCgTzKYcrNs7rfSgDzd1vf
+ wMp8SAXQJ8UuruBFJ78wYFVkoahQyLTDx5qEHQsPHm29t4B0B7
+ 2P5KPXMc8sXlu+STetOefCEm2+cikwVhaIpyk+kpb5efuUFX0M
+ Zk6fbJDRfGMvITcphZSP8sA+PRHad5HEYSNMxmrBjmUQ9p/3my
+ T01U3e5/1IElwwfTyAYFJULapoWBqY0sRofVbialrg/fuhgRvS
+ KSxLvgGozUY0mqV0K0l8=
 X-UI-Out-Filterresults: notjunk:1;
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43721
+X-archive-position: 43722
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,8 +51,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday 29 October 2014 11:48:39 Kevin Cernekee wrote:
-> On Wed, Oct 29, 2014 at 12:43 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+On Wednesday 29 October 2014 10:36:25 Florian Fainelli wrote:
+> On 10/29/2014 12:43 AM, Arnd Bergmann wrote:
 > > On Tuesday 28 October 2014 20:58:48 Kevin Cernekee wrote:
 > >>
 > >> +#ifdef CONFIG_RAW_IRQ_ACCESSORS
@@ -71,180 +66,65 @@ On Wednesday 29 October 2014 11:48:39 Kevin Cernekee wrote:
 > >> +
 > >> +#else
 > >> +
-> >
+> > 
 > > No, this is just wrong: registers almost always have a fixed endianess
 > > indenpent of CPU endianess, so if you use __raw_writel, it will be
 > > broken on one or the other.
-> >
+> 
+> Our brcmstb platforms had an endian strap settings for MIPS-based
+> platforms, and for most peripherals this would be just completely
+> transparent, as the HW always will do the internal swapping, such that
+> host CPU does read/writes in its native endianess regardless of the
+> actual strap settings.
+
+That's irrelevant, it just makes matters worse because then you
+might run into all combinations of big-endian and little-endian
+kernels vs MMIO registers.
+
+> AFAICT bcm3384, a MIPS-based Cable Modem platform has only one endianess
+> setting: BE, and the HW only supports that specific endianess.
+
+But they might have a secondary interrupt controller on a PCI card that
+uses the same driver in the little-endian mode.
+
 > > If you have a machine that uses big-endian registers in the interrupt
 > > controller, you need to find a way to use the correct accessors
 > > (e.g. iowrite32be) and use them independent of what endianess the CPU
 > > is running.
-> >
+> > 
 > > As this code is being used on all sorts of platforms, you can't assume
 > > that they all use the same endianess, which makes it rather tricky.
-> >
-> > As the first step, you can probably introduce a new Kconfig symbol
-> > GENERIC_IRQ_CHIP_BE, and then make that mutually exclusive with the
-> > existing users that all use little-endian registers:
-> >
-> > #if defined(CONFIG_GENERIC_IRQ_CHIP) && !defined(CONFIG_GENERIC_IRQ_CHIP_BE)
-> > #define irq_reg_writel(val, addr)     writel(val, addr)
-> > #else if defined(CONFIG_GENERIC_IRQ_CHIP_BE) && !defined(CONFIG_GENERIC_IRQ_CHIP)
-> > #define irq_reg_writel(val, addr)     iowrite32be(val, addr)
-> > #else
-> > /* provoke a compile error when this is used */
-> > #define irq_reg_writel(val, addr)       irq_reg_writel_unknown_endian(val, addr)
-> > #endif
 > 
-> Thanks for the quick feedback, guys.  Let me try to fill in a little
-> more background information.
-> 
-> The irqchip drivers in question can be used on a variety of different SoCs:
-> 
-> BCM7xxx STB chip with ARM host (always LE)
-> BCM7xxx STB chip with MIPS host (user-selectable LE or BE via jumper)
-> BCM33xx cable chip with MIPS host (always BE)
-> BCM33xx cable chip with ARM host (always LE)
-> BCM63xx[x] DSL chip with MIPS host (always BE)
-> BCM63xx[x] DSL chip with ARM host (always LE, I think)
-> BCM68xx PON chip with MIPS host (always BE)
->
-> The host CPU is connected to the peripheral/register interface using a
-> 32-bit wide data bus.  A simple 32-bit store originating from the host
-> CPU, targeted to an onchip SoC peripheral, will never need endian
-> swapping.  i.e. this code works equally well on all supported systems
-> regardless of endianness:
-> 
->     volatile u32 *foo = (void *)MY_REG_VA;
->     *foo = 0x12345678;
-> 
-> 8-bit and 16-bit accesses may be another story, but only appear in a
-> few very special peripherals.
+> I think the more general problem with the use of readl_*() I/O accessors
+> is that they just happen to work fine on most platforms out there: ARM
+> Little-endian, because this nicely matches the endianess expected by the
+> HW and that does not enforce an audit of whether your actual peripheral
+> expects little-endian writes to be done.
 
-Sorry, but this makes no sense. If you run a little-endian kernel
-on one of the MIPS systems that you marked as "always BE", or a
-big-endian kernel on the systems that are marked "always LE",
-then you have to byte swap.
+Most peripherals have registers that are designed for PCI compatibility,
+and PCI mandates little-endian registers. This has very little to do with
+the architecture.
 
-Same for the BCM7xxx MIPS chip if the jumper sets the strapping
-pin the opposite way from the running kernel, although I can see
-the argument that you would hope nobody does that.
-On the other hand, if you give hardware designers two ways to do
-something, of course they will do both eventually, so I'm sure
-someone has already done it (probably not supported using upstream
-Linux)
+We also have a lot of peripherals that have big-endian registers, e.g
+for things that are shared between ARM and PowerPC.
 
-> The problem we see here is that irq_reg_{readl,writel} use
-> readl/writel to access a non-PCI peripheral, thus adding an unwanted
-> endian swap.  And I can't avoid using the irq_reg_* accessors unless I
-> skip using GENERIC_IRQ_CHIP.
+The only hardware that is causing problems is the kind where the hardware
+developer tried to be helpful by making it possible to change endianess,
+and this is what causes endless nightmares for kernel developers.
 
-That is probably the best way forward.
+I think the easiest solution here is to make this irqchip not use
+the irq-generic logic, because it clearly is not generic.
 
-> So, a few possible solutions include:
-> 
-> 1) Implement your CONFIG_GENERIC_IRQ_CHIP_BE suggestion.  This could
-> probably be made to work, but I would need to define
-> CONFIG_GENERIC_IRQ_CHIP / CONFIG_GENERIC_IRQ_CHIP_BE conditionally
-> based on whether the build was LE or BE.  It would be nicer if the
-> driver didn't have to think about endianness because we know all of
-> these register accesses are always "native."
+> The other problem is that readl() on ARM implies a barrier, which is not
+> necesarily true/necessary for some other platforms such as some MIPS
+> processors.
 
-If you want to support "native" you have three endianess settings
-to support in your driver, not one, and a run-time selection
-that looks at the "big-endian" property in DT as well as the
-endianess that the kernel was built for.
+readl has to provide the semantics that PCI devices expect on x86.
+On x86, it implies a barrier, so everything else has to do the same.
 
-> 2) Offer a common way for irqchips to force GENERIC_IRQ_CHIP to use
-> the __raw_ variants.  Since there are already other irqchip drivers
-> using __raw_*, this seems like it might be useful to others someday.
-
-The drivers using __raw_ today (exynos, mxs, s3c24xx) are all broken
-and should be fixed. This is all old code that was written without
-taking endianess into consideration and breaks if you try to run a
-big-endian kernel.
- 
-> 3) Stuff my __raw_ definitions into the mach-specific <irq.h>.
-
-That would still break the use of secondary interrupt controllers
-using generic irqchip.
-
-> 4) Don't use GENERIC_IRQ_CHIP at all; just reimplement the helpers
-> locally using __raw_* macros.
-
-This would break the ARM machines, unless you make it depend on
-the CPU architecture. You should still check for the "big-endian"
-property to see if the strapping pin was actually set the way
-you expect it.
-
-> > registers almost always have a fixed endianess
-> > indenpent of CPU endianess
-> 
-> Going back to this statement - in my own personal experience, SoCs are
-> usually designed such that extra swaps are NOT necessary when
-> accessing onchip peripherals.  Although I've seen a few cases where
-> 1-2 peripherals, often third party IP cores, needed special treatment.
-
-In my experience, the opposite is true: hardware designers will put
-anything in the SoCs that they happen to need, and disregard the
-specifications for endianess if they exist. If you are lucky, each
-part gets used in only one form, but some people are crazy enough
-to put the byte swaps into hardware and make life miserable for us.
-
-> FWIW, several of the BCM7xxx peripherals default to "native" mode (no
-> swap for either LE/BE), but can be optionally reconfigured as LE in
-> order to preserve compatibility with the standard AHCI/SDHCI/...
-> drivers that use the PCI accessors.
-
-The reconfigurability is definitely the worst part.
-
-> Not sure how easy it is to figure out which other SoCs do require the
-> swap, as we'd need to exclude both PCI drivers and LE hosts whose
-> drivers just used plain readl.  But a quick look around the drivers/
-> tree shows quite a few users of the __raw_ accessors:
-> 
-> $ git grep -l __raw_readl drivers | wc -l
-> 228
-
-Most of these are bugs. About half of them are for Samsung SoCs,
-and this is after we've spent a lot of time changing other drivers
-for the same chips to use readl() in order to make them work with
-big-endian kernels.
-
-> By contrast, for BE-only registers:
-> 
-> $ git grep -lE "(ioread32be)|(readl_be)" drivers/ | wc -l
-> 42
-
-Most big-endian drivers come from powerpc, which uses in_be32:
-
-git grep in_be32 | wc -l
-    950
-
-These drivers typically work just as well on little-endian kernels.
-
-> The latter list seems to include a lot of FPGAs.  Maybe it costs them
-> too many gates/LEs to support both endian orderings.
-
-The FPGA developers are priviledged because they can fix their hardware
-when they get it wrong ;-)
-
-> Or, we could add IRQ_GC_NATIVE_IO and/or IRQ_GC_BE_IO to enum irq_gc_flags.
->
-> Would either of these choices satisfy everyone's goals?
-
-This is what I meant with doing extra work in the case where we want to
-support both in the same kernel. We would only enable the runtime
-logic if both GENERIC_IRQ_CHIP and GENERIC_IRQ_CHIP_BE are set, and
-leave it up to the platform to select the right one. For MIPS BCM7xxx,
-you could use
-
-config BCM7xxx
-	select GENERIC_IRQ_CHIP if CPU_LITTLE_ENDIAN
-	select GENERIC_IRQ_CHIP_BE if CPU_BIG_ENDIAN
-
-so you would default to the hardwired big-endian accessor unless
-some other drivers selects GENERIC_IRQ_CHIP.
+If you know that a driver does not need barriers, you can use
+readl_relaxed(). It doesn't currently work on all architectures, but
+it works on MIPS and I have a patch series from Will Deacon that I want
+to push to make it work everywhere.
 
 	Arnd

@@ -1,51 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 17:56:51 +0100 (CET)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:38665 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012156AbaJ2Q4sKbn6d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 17:56:48 +0100
-Received: by mail-pd0-f180.google.com with SMTP id ft15so3289592pdb.25
-        for <multiple recipients>; Wed, 29 Oct 2014 09:56:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 17:57:07 +0100 (CET)
+Received: from mail-pd0-f179.google.com ([209.85.192.179]:33940 "EHLO
+        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012181AbaJ2Q5AR-1f5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 17:57:00 +0100
+Received: by mail-pd0-f179.google.com with SMTP id g10so3319945pdj.38
+        for <linux-mips@linux-mips.org>; Wed, 29 Oct 2014 09:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=3ujmXphCAO3He4y+QExGLGzL83iBNIVJLrbibioZ9Zc=;
-        b=rUmnkMfF76xSXt8OJpjmRfBZljEjQcVffUclRJWDPwQy8YyaA0piTf4baIStvT8F5P
-         letruUrNbpei9aFTL7QlUecfakDS0j+mgRGvS2Q/7xuQ39XjwFyA9x9se43X5RuB0dTZ
-         vKh4obn7L0t+1FgtfgUjq81Yck0azCR+1xs20uTkBb/Ya/cOWtftw5n5RGsdCfbpJA0j
-         uZ/LSczQn61Z70ZbCDSpQJvdvFnOHfSnAZoTwZpZPGHVIyBaO1Kvm6C4tzL/bq5IZJVE
-         vlXFo2GmJYal0SrRye2qF7U1lhfid/+fKLWZ8l+ZSUgNwNCfhwBPoc5jeeQbVNFjFIyd
-         ldMw==
-X-Received: by 10.70.38.165 with SMTP id h5mr11378846pdk.121.1414601802068;
-        Wed, 29 Oct 2014 09:56:42 -0700 (PDT)
-Received: from [10.12.164.252] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id h3sm4030565pdl.22.2014.10.29.09.56.40
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Oct 2014 09:56:41 -0700 (PDT)
-Message-ID: <54511C2E.50007@gmail.com>
-Date:   Wed, 29 Oct 2014 09:56:14 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=vxvgwHr6Kyfbpp8/fI2YB1/AbzdJdrLYDUQ8gZFJzAE=;
+        b=al26jcOTZCHN3yoMonPy1T7Fway98cv5Nm2qPPjnSwiJjz825A70885Z7kgk30A+YF
+         K3QOe1fvpyyzkdMd8OA6OoGy2LAkd3NkndoFjv+p8fV3IKEZ/AHa5q+VMvyk4fjyt/6t
+         urzZRMX9azz5YB2TjtaZRmtHFEQYAP8z7ue64hYnUvLHQIjQPX8jfsPnNgxz3VmXqe1Z
+         Cpouy02vEy1RbPaq7+a1xf+YA+1pTZFHWf0+dEax5HsfREEqTmMvp/5tqXBnnBIdEtn3
+         Y0AeoU0OyYqrf9ceHMaX4V0XtBN5f6Bmb4/DJpZijf/gTtr+Zg8INunwtaZPcfQ7smJR
+         Ftig==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=vxvgwHr6Kyfbpp8/fI2YB1/AbzdJdrLYDUQ8gZFJzAE=;
+        b=iTH+U9fJrXLMMFtKMmV+q6IBkS4n7/zfmCt5SB3TbNTlbNPom+BiMMf+pwPrNto3Jh
+         cxsVEFWjSGZueAc4Z/+Q3nyHn3axFNu4b3HRL+TU9wbZUFXYjmORT2SBeLY8+AFrCXiJ
+         BKjX4s3h7p2Nrlpi+zJhC2+tw1JIUp2V71KAs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=vxvgwHr6Kyfbpp8/fI2YB1/AbzdJdrLYDUQ8gZFJzAE=;
+        b=K2VFTTsdnA1/Ld7Lnf9/mCU8fmhNm7KS0R/qYaOrafhozKdrC8qYoaQLnzdH337yfh
+         zUHK5XWjSXEjLqDHZDIr1AfvPVk1mgvLzqtNiZHnZcJupTm/faTQQT6nklrfrXliFDT2
+         B+t1XZJqfGPsNt6uvJC2Pk9zHq04ZnWMKsKbxRP+OmDaiCsopLLKdiIk1tHt95c+eF8u
+         FUwcoMiP6ddCP+LhcyEGx3O34C7xC9GylAwZUVhCy1QJJUR3QTOHtrm9KMxHzNu1zJ/r
+         Oc9SXYrBPTFYwdjr2MyMs7GTmX9tWgKI99mR0977iU2L1enmN7IR29Fag/RXq2W77ZFG
+         va1Q==
+X-Gm-Message-State: ALoCoQkwrstpiXRxQRIUK5+Cx92PAtVDPQ1qhb0ejURFll4/0HVUPLMgR/mKRnPUa7cfekRJelxZ
 MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@gmail.com>, tglx@linutronix.de,
-        jason@lakedaemon.net, ralf@linux-mips.org
-CC:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 11/11] irqchip: Decouple bcm7120-l2 from brcmstb-l2
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <1414555138-6500-11-git-send-email-cernekee@gmail.com>
-In-Reply-To: <1414555138-6500-11-git-send-email-cernekee@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+X-Received: by 10.67.23.164 with SMTP id ib4mr11859048pad.50.1414601814296;
+ Wed, 29 Oct 2014 09:56:54 -0700 (PDT)
+Received: by 10.70.118.170 with HTTP; Wed, 29 Oct 2014 09:56:54 -0700 (PDT)
+In-Reply-To: <5450C915.9030600@imgtec.com>
+References: <1414541562-10076-1-git-send-email-abrestic@chromium.org>
+        <1414541562-10076-3-git-send-email-abrestic@chromium.org>
+        <5450C915.9030600@imgtec.com>
+Date:   Wed, 29 Oct 2014 09:56:54 -0700
+X-Google-Sender-Auth: nf0vOtmAyBuo1dvklz0N-NDiFZk
+Message-ID: <CAL1qeaGm1Ma=B-gJV2ovnLNYFooq6bv12rODq4d8cGtKLeNy-g@mail.gmail.com>
+Subject: Re: [PATCH V3 2/4] of: Add binding document for MIPS GIC
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Qais Yousef <qais.yousef@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43708
+X-archive-position: 43709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,73 +86,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/28/2014 08:58 PM, Kevin Cernekee wrote:
-> Some chips, such as BCM6328, only require the former driver.  Some
-> BCM7xxx STB configurations only require the latter driver.  Treat them
-> as two separate entities, and update the mach-bcm dependencies to
-> reflect the change.
-> 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+On Wed, Oct 29, 2014 at 4:01 AM, Qais Yousef <qais.yousef@imgtec.com> wrote:
+> On 10/29/2014 12:12 AM, Andrew Bresticker wrote:
+>>
+>> +- mti,available-cpu-vectors : Specifies the list of CPU interrupt vectors
+>> +  to which the GIC may route interrupts.  May contain up to 6 entries,
+>> one
+>> +  for each of the CPU's hardware interrupt vectors.  Valid values are 2 -
+>> 7.
+>> +  This property is ignored if the CPU is started in EIC mode.
+>> +
+>
+>
+> Wouldn't it be better to have this in the reversed sense ie:
+> mti,nonavailable-cpu-vectors? I think the assumption that by default they're
+> all available unless something else is connected to them which is unlikely
+> in most cases. It can be made optional property then.
+>
+> I don't have a strong opinion about it though.
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-
-> ---
->  arch/arm/mach-bcm/Kconfig        | 1 +
->  drivers/irqchip/Kconfig          | 5 +++++
->  drivers/irqchip/Makefile         | 4 ++--
->  drivers/irqchip/irq-bcm7120-l2.c | 2 +-
->  4 files changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/mach-bcm/Kconfig b/arch/arm/mach-bcm/Kconfig
-> index 2abad74..bf47eb0 100644
-> --- a/arch/arm/mach-bcm/Kconfig
-> +++ b/arch/arm/mach-bcm/Kconfig
-> @@ -125,6 +125,7 @@ config ARCH_BRCMSTB
->  	select HAVE_ARM_ARCH_TIMER
->  	select BRCMSTB_GISB_ARB
->  	select BRCMSTB_L2_IRQ
-> +	select BCM7120_L2_IRQ
->  	help
->  	  Say Y if you intend to run the kernel on a Broadcom ARM-based STB
->  	  chipset.
-> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index 6a03c65..2d52b07 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -51,6 +51,11 @@ config ATMEL_AIC5_IRQ
->  	select MULTI_IRQ_HANDLER
->  	select SPARSE_IRQ
->  
-> +config BCM7120_L2_IRQ
-> +	bool
-> +	select GENERIC_IRQ_CHIP
-> +	select IRQ_DOMAIN
-> +
->  config BRCMSTB_L2_IRQ
->  	bool
->  	select GENERIC_IRQ_CHIP
-> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-> index 173bb5f..f0909d0 100644
-> --- a/drivers/irqchip/Makefile
-> +++ b/drivers/irqchip/Makefile
-> @@ -35,6 +35,6 @@ obj-$(CONFIG_TB10X_IRQC)		+= irq-tb10x.o
->  obj-$(CONFIG_XTENSA)			+= irq-xtensa-pic.o
->  obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
->  obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
-> -obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o \
-> -					   irq-bcm7120-l2.o
-> +obj-$(CONFIG_BCM7120_L2_IRQ)		+= irq-bcm7120-l2.o
-> +obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o
->  obj-$(CONFIG_KEYSTONE_IRQ)		+= irq-keystone.o
-> diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-> index 734fece..91065b9 100644
-> --- a/drivers/irqchip/irq-bcm7120-l2.c
-> +++ b/drivers/irqchip/irq-bcm7120-l2.c
-> @@ -247,5 +247,5 @@ out_unmap:
->  	kfree(data);
->  	return ret;
->  }
-> -IRQCHIP_DECLARE(brcmstb_l2_intc, "brcm,bcm7120-l2-intc",
-> +IRQCHIP_DECLARE(bcm7120_l2_intc, "brcm,bcm7120-l2-intc",
->  		bcm7120_l2_intc_of_init);
-> 
+Actually, I think I like the reversed sense as well.  Perhaps
+"mti,reserved-cpu-vectors"?

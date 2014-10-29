@@ -1,45 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 00:22:49 +0100 (CET)
-Received: from mail-lb0-f179.google.com ([209.85.217.179]:57728 "EHLO
-        mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011819AbaJ1XTRNHnkt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 00:19:17 +0100
-Received: by mail-lb0-f179.google.com with SMTP id w7so1534717lbi.10
-        for <multiple recipients>; Tue, 28 Oct 2014 16:19:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=WBpeFR9LDOIcsSx+nU0K8VFe0YtDIYtAdc2+c7xtn0Y=;
-        b=WAgtoekMOOa62o4rGj9FeG3cPNnpHNvYOAtIqsl+flnnKEwIgZrRCgwmxsaxQiuIub
-         bxqRFSJYGp1kwBufeJRV1TkRG2jbuLxxXuNBOnrCNqpZV9fKX1kC9Fs2qpotpPC8Wub3
-         eEKixL+nV4fOCnzl69X2QwNK9cHxRlDZX9eD5ItxOpFUKLOjLjizOZFBOS+MvWCz96dx
-         njoJoQVS5/UPZ+Yv9Z4Tnr6ugiQHi2fX6+H4yWvQWyOzYDP8Bu6rdfBmimSSHHExjsYK
-         6hCUq1JLAhsCACua2Stn8azySTEw0fjIOjWLoypiVzqXQQz+sKvpqUKgJW1KfJ4sGgDD
-         cTrQ==
-X-Received: by 10.152.36.33 with SMTP id n1mr6978472laj.95.1414538349896;
-        Tue, 28 Oct 2014 16:19:09 -0700 (PDT)
-Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id i6sm1173752laf.47.2014.10.28.16.19.08
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 01:12:56 +0100 (CET)
+Received: from mail-ie0-f202.google.com ([209.85.223.202]:60788 "EHLO
+        mail-ie0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011607AbaJ2AMyw7dGM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 01:12:54 +0100
+Received: by mail-ie0-f202.google.com with SMTP id tr6so294346ieb.5
+        for <linux-mips@linux-mips.org>; Tue, 28 Oct 2014 17:12:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=QaW3yHCfrQ48mFZ1Nsbfsp/cD6qPHs+yPD+WujB6Qdw=;
+        b=VQyIjZoUs8vHzFfrtg5vmeRpYgtVB/PLJBiAO01JFRw4/nt+Ch2k2g2+/KrfimKxMQ
+         6dpax3IzrrCFq1VzGs0rZJxMzbV1pxlLS0wl2IEz69liOAePOicfanZSiB6TA7vyB9zf
+         f6l56Gh/WmtDUYKWH7/LY4A4r6hfoIeW2OGPc/UihEOqaxQDj5cFbkalpIg4MbOUpUho
+         VxYSjbpR31RithLvUZRk33WLuGvZbYBdlUgQpYVyhAPRkIecQ3RP0yXTo93brQ/KhfCc
+         BjoyXV08S62gFdfK3H4HeJ5XXbIRB7GYo7sFU+zMsVtuCmiB+gIUwpWSONCwZb26mrDJ
+         tYSg==
+X-Gm-Message-State: ALoCoQkw1VsCRvz8dhps/hQTf4YImOEsFNIwvAR6urS81kRETRCp8KP73IntElPxqE7lTxPsh3tX
+X-Received: by 10.182.92.234 with SMTP id cp10mr4957160obb.49.1414541567621;
+        Tue, 28 Oct 2014 17:12:47 -0700 (PDT)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id n22si201720yhd.1.2014.10.28.17.12.46
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 Oct 2014 16:19:08 -0700 (PDT)
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH v3 13/13] MIPS: ath25: add Wireless device support
-Date:   Wed, 29 Oct 2014 03:18:50 +0400
-Message-Id: <1414538330-5548-14-git-send-email-ryazanov.s.a@gmail.com>
-X-Mailer: git-send-email 1.8.1.5
-In-Reply-To: <1414538330-5548-1-git-send-email-ryazanov.s.a@gmail.com>
-References: <1414538330-5548-1-git-send-email-ryazanov.s.a@gmail.com>
-Return-Path: <ryazanov.s.a@gmail.com>
+        Tue, 28 Oct 2014 17:12:47 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id wPYM9Wc7.1; Tue, 28 Oct 2014 17:12:47 -0700
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id 0FE52220E88; Tue, 28 Oct 2014 17:12:45 -0700 (PDT)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Andrew Bresticker <abrestic@chromium.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH V3 0/4] MIPS: GIC device-tree support
+Date:   Tue, 28 Oct 2014 17:12:38 -0700
+Message-Id: <1414541562-10076-1-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43664
+X-archive-position: 43665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ryazanov.s.a@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,158 +68,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Atheros AR5312 and AR2315 both have a builtin wireless device, this
-patch add helper code and register platform device for all supported
-WiSoCs.
+This series add support for mapping and routing GIC interrupts as well
+as setting up the GIC timer through device-tree.  Patches 1 adds the
+"mti" vendor prefix, patch 2 adds the GIC binding document, and patches
+3 and 4 add device-tree support for the GIC irqchip and clocksource drivers,
+respectively.
 
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
----
+Based on next-20141028, which includes part 1 [0] and part 2 [1] of my
+GIC cleanup series.
 
-Changes since v1:
-  - rename MIPS machine ar231x -> ath25
+Changes from v2:
+ - added back third cell to specifier to differentiate between shared and
+   local interrupts
+ - added timer sub-node and it's properties
+ - changed compatible string to include CPU version
+ - rebased on GIC cleanup series
 
- arch/mips/ath25/ar2315.c  |  2 ++
- arch/mips/ath25/ar5312.c  | 22 +++++++++++++++++++
- arch/mips/ath25/devices.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/ath25/devices.h |  1 +
- 4 files changed, 79 insertions(+)
+Changes from v1:
+ - updated bindings to drop third interrupt cell and remove CPU interrupt
+   controller as the parent of the GIC
+ - moved GIC to drivers/irqchip/
+ - other minor fixes/cleanups
 
-diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c
-index f024789..2befa7d 100644
---- a/arch/mips/ath25/ar2315.c
-+++ b/arch/mips/ath25/ar2315.c
-@@ -171,6 +171,8 @@ void __init ar2315_init_devices(void)
- {
- 	/* Find board configuration */
- 	ath25_find_config(AR2315_SPI_READ_BASE, AR2315_SPI_READ_SIZE);
-+
-+	ath25_add_wmac(0, AR2315_WLAN0_BASE, AR2315_IRQ_WLAN0);
- }
- 
- static void ar2315_restart(char *command)
-diff --git a/arch/mips/ath25/ar5312.c b/arch/mips/ath25/ar5312.c
-index 383dd6c..b6887f7 100644
---- a/arch/mips/ath25/ar5312.c
-+++ b/arch/mips/ath25/ar5312.c
-@@ -246,6 +246,28 @@ void __init ar5312_init_devices(void)
- 		ath25_soc = ATH25_SOC_AR5312;
- 
- 	platform_device_register(&ar5312_physmap_flash);
-+
-+	switch (ath25_soc) {
-+	case ATH25_SOC_AR5312:
-+		if (!ath25_board.radio)
-+			return;
-+
-+		if (!(config->flags & BD_WLAN0))
-+			break;
-+
-+		ath25_add_wmac(0, AR5312_WLAN0_BASE, AR5312_IRQ_WLAN0);
-+		break;
-+	case ATH25_SOC_AR2312:
-+	case ATH25_SOC_AR2313:
-+		if (!ath25_board.radio)
-+			return;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	if (config->flags & BD_WLAN1)
-+		ath25_add_wmac(1, AR5312_WLAN1_BASE, AR5312_IRQ_WLAN1);
- }
- 
- static void ar5312_restart(char *command)
-diff --git a/arch/mips/ath25/devices.c b/arch/mips/ath25/devices.c
-index 6218547..7a64567 100644
---- a/arch/mips/ath25/devices.c
-+++ b/arch/mips/ath25/devices.c
-@@ -1,6 +1,7 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/serial_8250.h>
-+#include <linux/platform_device.h>
- #include <asm/bootinfo.h>
- 
- #include <ath25_platform.h>
-@@ -11,6 +12,45 @@
- struct ar231x_board_config ath25_board;
- enum ath25_soc_type ath25_soc = ATH25_SOC_UNKNOWN;
- 
-+static struct resource ath25_wmac0_res[] = {
-+	{
-+		.name = "wmac0_membase",
-+		.flags = IORESOURCE_MEM,
-+	},
-+	{
-+		.name = "wmac0_irq",
-+		.flags = IORESOURCE_IRQ,
-+	}
-+};
-+
-+static struct resource ath25_wmac1_res[] = {
-+	{
-+		.name = "wmac1_membase",
-+		.flags = IORESOURCE_MEM,
-+	},
-+	{
-+		.name = "wmac1_irq",
-+		.flags = IORESOURCE_IRQ,
-+	}
-+};
-+
-+static struct platform_device ath25_wmac[] = {
-+	{
-+		.id = 0,
-+		.name = "ar231x-wmac",
-+		.resource = ath25_wmac0_res,
-+		.num_resources = ARRAY_SIZE(ath25_wmac0_res),
-+		.dev.platform_data = &ath25_board,
-+	},
-+	{
-+		.id = 1,
-+		.name = "ar231x-wmac",
-+		.resource = ath25_wmac1_res,
-+		.num_resources = ARRAY_SIZE(ath25_wmac1_res),
-+		.dev.platform_data = &ath25_board,
-+	},
-+};
-+
- static const char * const soc_type_strings[] = {
- 	[ATH25_SOC_AR5312] = "Atheros AR5312",
- 	[ATH25_SOC_AR2312] = "Atheros AR2312",
-@@ -46,6 +86,20 @@ void __init ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk)
- 	early_serial_setup(&s);
- }
- 
-+int __init ath25_add_wmac(int nr, u32 base, int irq)
-+{
-+	struct resource *res;
-+
-+	ath25_wmac[nr].dev.platform_data = &ath25_board;
-+	res = &ath25_wmac[nr].resource[0];
-+	res->start = base;
-+	res->end = base + 0x10000 - 1;
-+	res++;
-+	res->start = irq;
-+	res->end = irq;
-+	return platform_device_register(&ath25_wmac[nr]);
-+}
-+
- static int __init ath25_register_devices(void)
- {
- 	if (is_ar5312())
-diff --git a/arch/mips/ath25/devices.h b/arch/mips/ath25/devices.h
-index 55adcf4..04d4141 100644
---- a/arch/mips/ath25/devices.h
-+++ b/arch/mips/ath25/devices.h
-@@ -28,6 +28,7 @@ extern void (*ath25_irq_dispatch)(void);
- 
- int ath25_find_config(phys_addr_t offset, unsigned long size);
- void ath25_serial_setup(u32 mapbase, int irq, unsigned int uartclk);
-+int ath25_add_wmac(int nr, u32 base, int irq);
- 
- static inline bool is_ar2315(void)
- {
+[0] https://lkml.org/lkml/2014/9/18/487
+[1] https://lkml.org/lkml/2014/10/20/481
+
+Andrew Bresticker (4):
+  of: Add vendor prefix for MIPS Technologies, Inc.
+  of: Add binding document for MIPS GIC
+  irqchip: mips-gic: Add device-tree support
+  clocksource: mips-gic: Add device-tree support
+
+ .../bindings/interrupt-controller/mips-gic.txt     | 55 +++++++++++++++++
+ .../devicetree/bindings/vendor-prefixes.txt        |  1 +
+ drivers/clocksource/Kconfig                        |  1 +
+ drivers/clocksource/mips-gic-timer.c               | 37 ++++++++---
+ drivers/irqchip/irq-mips-gic.c                     | 71 ++++++++++++++++++++--
+ .../dt-bindings/interrupt-controller/mips-gic.h    |  9 +++
+ 6 files changed, 162 insertions(+), 12 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
+ create mode 100644 include/dt-bindings/interrupt-controller/mips-gic.h
+
 -- 
-1.8.5.5
+2.1.0.rc2.206.gedb03e5

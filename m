@@ -1,53 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 00:05:53 +0100 (CET)
-Received: from mail-qg0-f49.google.com ([209.85.192.49]:56512 "EHLO
-        mail-qg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011766AbaJ2XFrvE9Tk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 00:05:47 +0100
-Received: by mail-qg0-f49.google.com with SMTP id z60so320695qgd.36
-        for <multiple recipients>; Wed, 29 Oct 2014 16:05:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=+S9UIx0t32XSHXwkHZmPDCBR6YYxTGH9IPWZBRTOnRw=;
-        b=0kS4qUkNXTPa1kRoNCncbE182+ec237WmexXoWR+bxE1eu3hMqR1ywppmJn01lcHb4
-         9PFJpi2zf5/fahQcZaOzYQ1uWfIwhLtCsEzESYRIoBYm+LRCfHUkQxtq7J8eckRPfU9C
-         rwVLmrwCV2/TdK3Dji/Lr3wJgDP5uWV8hovAh52ohnmijs5lYViYoU8NKcOnYhDKi3y8
-         jYZyk5i9bbpTYOpVbbIfv85fOd56Bhrh7JRdatSvhIVeZh1aeKJP21uKrUCI1xv5kYqa
-         TmKzok+vO99USrTxL8+G2nbhwxYw0+3qnhd2YHT6+0mjiVfOpkelZDXs8Wx+3pmWyyJ+
-         TpNA==
-X-Received: by 10.140.102.169 with SMTP id w38mr19560200qge.95.1414623941678;
- Wed, 29 Oct 2014 16:05:41 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Wed, 29 Oct 2014 16:05:21 -0700 (PDT)
-In-Reply-To: <22478002.kqKBdeLAKz@wuerfel>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
- <5338153.4SY4TFtus9@wuerfel> <CAJiQ=7C7SzT2ngQzP=dQqdQz=+ShJ_Jf0z4kwFgvUKg1G3vrAw@mail.gmail.com>
- <22478002.kqKBdeLAKz@wuerfel>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Wed, 29 Oct 2014 16:05:21 -0700
-Message-ID: <CAJiQ=7DWEr9Oej6=+3vqKL_fJd2-wvQjx2Xw4dYwyE3AGDXOUA@mail.gmail.com>
-Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 00:20:02 +0100 (CET)
+Received: from mail-ob0-f202.google.com ([209.85.214.202]:52936 "EHLO
+        mail-ob0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012203AbaJ2XUANbT3v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 00:20:00 +0100
+Received: by mail-ob0-f202.google.com with SMTP id wm4so613555obc.5
+        for <linux-mips@linux-mips.org>; Wed, 29 Oct 2014 16:19:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=f4Hm3eUYS9XTBVDID6+syxLL6qAukC9Hx41P8Z/kVaM=;
+        b=bnnQV/gJCmCgXCH/Rz4Zl61apb75UY+C2IquFt6WqhhMUI5Uu3cMjIKkRrCE0m98dq
+         YGUXGeJw61PDKEFPkxSpMlXsb7IMEV8LwxDhHxMw08ZsPTdqq6izVig5rcVqqKaxu+K+
+         bFowXpoRj7J7kDRtO6rEhF5UBzONRmACTgfkVMzYsMYIAkh5pkwfLwTFaVusoDQU2iWB
+         FCIjd6HFE7PedtILwbiis0RTc3ZcworUm9Om6qEE6q1MMiAxrlIrGAdHCE7MUePeg5ax
+         mDrmCdp9eQUBgraPn1AKviSWLr7lpIIukMLcOrQE9Xp0vRfdIFJuhO+YxBkxYy/y8pBi
+         mgkA==
+X-Gm-Message-State: ALoCoQnqUOgv9SUt8Ck0CZ3ig9TzSie2hXMFz914Y4oV9vR1eKhBu9XCeg59DE/eBBWchNDL4OKF
+X-Received: by 10.42.52.1 with SMTP id h1mr10457224icg.23.1414624793774;
+        Wed, 29 Oct 2014 16:19:53 -0700 (PDT)
+Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
+        by gmr-mx.google.com with ESMTPS id k66si347928yho.7.2014.10.29.16.19.52
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Oct 2014 16:19:53 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id 2ESSSMJc.1; Wed, 29 Oct 2014 16:19:53 -0700
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id 261BD220775; Wed, 29 Oct 2014 16:19:52 -0700 (PDT)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Andrew Bresticker <abrestic@chromium.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V4 1/4] of: Add vendor prefix for MIPS Technologies, Inc.
+Date:   Wed, 29 Oct 2014 16:19:47 -0700
+Message-Id: <1414624790-15690-2-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
+In-Reply-To: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
+References: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43730
+X-archive-position: 43731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,75 +72,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 29, 2014 at 2:13 PM, Arnd Bergmann <arnd@arndb.de> wrote:
-> On Wednesday 29 October 2014 13:09:47 Kevin Cernekee wrote:
->> On Wed, Oct 29, 2014 at 12:14 PM, Arnd Bergmann <arnd@arndb.de> wrote:
->> >> The host CPU is connected to the peripheral/register interface using a
->> >> 32-bit wide data bus.  A simple 32-bit store originating from the host
->> >> CPU, targeted to an onchip SoC peripheral, will never need endian
->> >> swapping.  i.e. this code works equally well on all supported systems
->> >> regardless of endianness:
->> >>
->> >>     volatile u32 *foo = (void *)MY_REG_VA;
->> >>     *foo = 0x12345678;
->> >>
->> >> 8-bit and 16-bit accesses may be another story, but only appear in a
->> >> few very special peripherals.
->> >
->> > Sorry, but this makes no sense. If you run a little-endian kernel
->> > on one of the MIPS systems that you marked as "always BE", or a
->> > big-endian kernel on the systems that are marked "always LE",
->> > then you have to byte swap.
->>
->> If I ran an LE MIPS kernel on a BE system, it would hang on boot.  I
->> know this through experience.
->
-> What is a "BE system" then? Is the CPU core not capable of running
-> code either way?
+Add the vendor prefix "mti" for MIPS Technologies, Inc.
 
-On the MIPS BCM7xxx chips, LE/BE support was a design requirement.  So:
+Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+---
+I'll update the users of the "mips" prefix to use "mti" instead once
+this lands.
 
- - The chips include a strap pin for LE/BE so it can be configured
-through board jumpers.  This is the only supported method of switching
-endianness.
+No changes from v2/v3.
+New for v2.
+---
+ Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
- - Endianness interactions and performance concerns have been analyzed
-for all peripherals, buses, and data flows.
-
- - As Florian mentioned earlier, the LE/BE strap preconfigures several
-hardware blocks at boot time, e.g. telling the SPI controller how to
-arrange the incoming data such that the MSB of each instruction word
-read from flash shows up in the right place.
-
- - The entire software stack (and even the cross toolchain) needs to
-be compiled for either LE or BE.
-
-So in this context a "BE system" is a BCM7xxx MIPS chip strapped for
-BE, or one of the BCM33xx/BCM63xx/BCM68xx MIPS chips that is hardwired
-and verified for BE only.
-
->> Does this actually work on other architectures like ARM?  I still see
->> compile-time checks for CONFIG_CPU_ENDIAN* in a couple of places under
->> arch/arm.
->
-> Yes, it should work on any architecture that supports both modes. It
-> definitely works on all ARM cores I know, and on most PowerPC cores.
-> I always assumed that MIPS was bi-endian as well, but according to
-> what you say I guess it is not.
->
-> ARM and PowerPC can actually switch endianess in the kernel, and this
-> is what they do in the first instruction when you run a different
-> endianess from what the boot loader runs as it calls into the kernel.
-> The ARM boot protocol requires entering the kernel in little-endian
-> mode, while I think on PowerPC the boot loader is supposed to detect
-> the format of the kernel binary and pick the right mode before calling
-> it.
-
-Is it the intention to allow runtime endian switching on any
-ARM/PowerPC platform (even the Samsung products you mentioned)?  Or
-only on the boards that were designed to operate this way?
-
-Our problem becomes much simpler if we assume that the majority of
-systems have a fixed endianness, and only a few special cases need to
-accommodate the different kernel/register endianness permutations
-you've listed.
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+index 0979393..0221b49 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.txt
++++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+@@ -98,6 +98,7 @@ mitsubishi	Mitsubishi Electric Corporation
+ mosaixtech	Mosaix Technologies, Inc.
+ moxa	Moxa
+ mpl	MPL AG
++mti	MIPS Technologies, Inc.
+ mundoreader	Mundo Reader S.L.
+ murata	Murata Manufacturing Co., Ltd.
+ mxicy	Macronix International Co., Ltd.
+-- 
+2.1.0.rc2.206.gedb03e5

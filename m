@@ -1,49 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 19:02:02 +0100 (CET)
-Received: from cam-admin0.cambridge.arm.com ([217.140.96.50]:60244 "EHLO
-        cam-admin0.cambridge.arm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012149AbaJ2SCAe8hQK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 19:02:00 +0100
-Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
-        by cam-admin0.cambridge.arm.com (8.12.6/8.12.6) with ESMTP id s9TI1awo019234;
-        Wed, 29 Oct 2014 18:01:36 GMT
-Date:   Wed, 29 Oct 2014 18:01:25 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <Pawel.Moll@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V3 2/4] of: Add binding document for MIPS GIC
-Message-ID: <20141029180125.GD26471@leverpostej>
-References: <1414541562-10076-1-git-send-email-abrestic@chromium.org>
- <1414541562-10076-3-git-send-email-abrestic@chromium.org>
- <5450B1B1.5070301@imgtec.com>
- <CAL1qeaFeoKFbea7eiiXaw87PYUWO1JmP5xxdLLpW2RrFCprtZg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 19:49:07 +0100 (CET)
+Received: from mail-qa0-f46.google.com ([209.85.216.46]:51801 "EHLO
+        mail-qa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011673AbaJ2StGOehPN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 19:49:06 +0100
+Received: by mail-qa0-f46.google.com with SMTP id s7so2586430qap.5
+        for <multiple recipients>; Wed, 29 Oct 2014 11:49:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=TijFK+A1KCz57+54Y4kFD1qBUm9ia3e1yIYUkhNggyU=;
+        b=rd0mguy/M0UV4gU3pHK/qJBivcFT7n255FUn6nwpYWknkzClst5npifEbQfOLrbhuI
+         WxFfB1eswhzuDs8XYhY6IOqAqLJurslNG1ctYYlzd1l4Z8B8JMAO2zXb1yZCNfX2t1um
+         wv1L+5kCaZ6h+Yd/eo9BNPEj6Y+WzSJJGCAJm3TThvT2S0+opFvBYO6savTrZ5EOcn4w
+         Y1/lcB7zQsOHKIwyFRoTWFBrdCgbljmxWhthXiFDaVSzQp1UzWvDjyPd+14WOlygigBn
+         IwxDSqSpPS7Oas4XyVogO1r0tUEJ7+snSeISBWgDipuFuxpUERYENB2OkfhHp3hpGqTX
+         xf5A==
+X-Received: by 10.140.102.169 with SMTP id w38mr17600456qge.95.1414608539829;
+ Wed, 29 Oct 2014 11:48:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL1qeaFeoKFbea7eiiXaw87PYUWO1JmP5xxdLLpW2RrFCprtZg@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <mark.rutland@arm.com>
+Received: by 10.140.89.113 with HTTP; Wed, 29 Oct 2014 11:48:39 -0700 (PDT)
+In-Reply-To: <11255905.1JsQYcArO7@wuerfel>
+References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <11255905.1JsQYcArO7@wuerfel>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Wed, 29 Oct 2014 11:48:39 -0700
+Message-ID: <CAJiQ=7BcVH52-PCo40dSEoNHjT1Pg8X88uq-KZ6tQPKYWaM94A@mail.gmail.com>
+Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Jason Cooper <jason@lakedaemon.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43718
+X-archive-position: 43719
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.rutland@arm.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,78 +58,158 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 29, 2014 at 04:55:56PM +0000, Andrew Bresticker wrote:
-> Hi James,
-> 
-> On Wed, Oct 29, 2014 at 2:21 AM, James Hogan <james.hogan@imgtec.com> wrote:
-> > Hi Andrew,
-> >
-> > On 29/10/14 00:12, Andrew Bresticker wrote:
-> >>  - changed compatible string to include CPU version
-> >
-> >> +Required properties:
-> >> +- compatible : Should be "mti,<cpu>-gic".  Supported variants:
-> >> +  - "mti,interaptiv-gic"
-> >
-> >> +Required properties for timer sub-node:
-> >> +- compatible : Should be "mti,<cpu>-gic-timer".  Supported variants:
-> >> +  - "mti,interaptiv-gic-timer"
-> >
-> > Erm, I'm a bit confused...
-> > Why do you include the core name in the compatible string?
-> >
-> > You seem to be suggesting that:
-> >
-> > 1) The GIC/timer drivers need to know what core they're running on.
-> >
-> > Is that really true?
-> 
-> They don't now, but it's possible that a future CPU has a newer
-> revision of the GIC which has some differences that need to be
-> accounted for in the driver.
+On Wed, Oct 29, 2014 at 12:43 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Tuesday 28 October 2014 20:58:48 Kevin Cernekee wrote:
+>>
+>> +#ifdef CONFIG_RAW_IRQ_ACCESSORS
+>> +
+>> +#ifndef irq_reg_writel
+>> +# define irq_reg_writel(val, addr)     __raw_writel(val, addr)
+>> +#endif
+>> +#ifndef irq_reg_readl
+>> +# define irq_reg_readl(addr)           __raw_readl(addr)
+>> +#endif
+>> +
+>> +#else
+>> +
+>
+> No, this is just wrong: registers almost always have a fixed endianess
+> indenpent of CPU endianess, so if you use __raw_writel, it will be
+> broken on one or the other.
+>
+> If you have a machine that uses big-endian registers in the interrupt
+> controller, you need to find a way to use the correct accessors
+> (e.g. iowrite32be) and use them independent of what endianess the CPU
+> is running.
+>
+> As this code is being used on all sorts of platforms, you can't assume
+> that they all use the same endianess, which makes it rather tricky.
+>
+> As the first step, you can probably introduce a new Kconfig symbol
+> GENERIC_IRQ_CHIP_BE, and then make that mutually exclusive with the
+> existing users that all use little-endian registers:
+>
+> #if defined(CONFIG_GENERIC_IRQ_CHIP) && !defined(CONFIG_GENERIC_IRQ_CHIP_BE)
+> #define irq_reg_writel(val, addr)     writel(val, addr)
+> #else if defined(CONFIG_GENERIC_IRQ_CHIP_BE) && !defined(CONFIG_GENERIC_IRQ_CHIP)
+> #define irq_reg_writel(val, addr)     iowrite32be(val, addr)
+> #else
+> /* provoke a compile error when this is used */
+> #define irq_reg_writel(val, addr)       irq_reg_writel_unknown_endian(val, addr)
+> #endif
 
-At that point you can allocate a new compatible string. Until then you
-don't necessarily need to distinguish.
+Thanks for the quick feedback, guys.  Let me try to fill in a little
+more background information.
 
-Is the timer defined by the architecture, or is it specific to this CPU
-(and might get reused in future)?
+The irqchip drivers in question can be used on a variety of different SoCs:
 
-> > 2) It isn't possible to probe the core type.
-> >
-> > But the kernel already knows this, so what's wrong with using
-> > current_cpu_type() like everything else that needs to know?
-> >
-> > 3) Every new core should require a new compatible string to be added
-> > before the GIC will work. You don't even have a generic compatible
-> > string that DT can specify after the core specific one as a fallback.
-> 
-> Yes, adding a generic compatible string would be a good idea.
-> 
-> > Please lets not do this unless it's actually necessary (which AFAICT it
-> > really isn't).
-> 
-> The point of this was to future-proof these bindings and I though that
-> CPU type was the best way to indicate version in the compatible
-> string.  This is also how it's done for the ARM GIC and arch timers.
-> Perhaps the best thing to do is to require both a core-specific
-> ("mti,interaptiv-gic") and generic ("mti,gic") compatible string and
-> just match on the generic one for now until there's a need to use the
-> core-specific one.  Thoughts?
+BCM7xxx STB chip with ARM host (always LE)
+BCM7xxx STB chip with MIPS host (user-selectable LE or BE via jumper)
+BCM33xx cable chip with MIPS host (always BE)
+BCM33xx cable chip with ARM host (always LE)
+BCM63xx[x] DSL chip with MIPS host (always BE)
+BCM63xx[x] DSL chip with ARM host (always LE, I think)
+BCM68xx PON chip with MIPS host (always BE)
 
-If this timer is architected you can have a generic string for now, with
-each CPU having a more specific string just in case, e.g.
+The host CPU is connected to the peripheral/register interface using a
+32-bit wide data bus.  A simple 32-bit store originating from the host
+CPU, targeted to an onchip SoC peripheral, will never need endian
+swapping.  i.e. this code works equally well on all supported systems
+regardless of endianness:
 
-	compatible = "mti,interaptiv-gic-timer", "mti,gic-timer".
+    volatile u32 *foo = (void *)MY_REG_VA;
+    *foo = 0x12345678;
 
-The kernel driver can currently match just "mti,gic-timer", andd
-everything should be fine if it turns out nothing changes with new CPUs:
+8-bit and 16-bit accesses may be another story, but only appear in a
+few very special peripherals.
 
-	compatible = "mti,newcpu-gic-timer", "mti,gic-timer";
+The external PCI/PCIe address space, by contrast, is always mapped
+"bytewise," such that a 32-bit word's LSB is at offset 0 and the MSB
+is at offset 3.  On the BE platforms, readl/writel/readw/writew will
+implement an extra endian swap, allowing stock PCI device drivers such
+as bnx2 or e1000e to work without modification.  (The other option is
+to byteswap the data but use address swizzling for 8/16 bit accesses,
+that isn't enabled by default.)
 
-If the new CPU's timer doesn't quite match, you add its comaptible
-string to the driver, and drop "mti,gic-timer" from the node's
-comaptible list:
+The problem we see here is that irq_reg_{readl,writel} use
+readl/writel to access a non-PCI peripheral, thus adding an unwanted
+endian swap.  And I can't avoid using the irq_reg_* accessors unless I
+skip using GENERIC_IRQ_CHIP.
 
-	compatible = "mti,newcpu-gic-timer";
+So, a few possible solutions include:
 
-Mark.
+1) Implement your CONFIG_GENERIC_IRQ_CHIP_BE suggestion.  This could
+probably be made to work, but I would need to define
+CONFIG_GENERIC_IRQ_CHIP / CONFIG_GENERIC_IRQ_CHIP_BE conditionally
+based on whether the build was LE or BE.  It would be nicer if the
+driver didn't have to think about endianness because we know all of
+these register accesses are always "native."
+
+2) Offer a common way for irqchips to force GENERIC_IRQ_CHIP to use
+the __raw_ variants.  Since there are already other irqchip drivers
+using __raw_*, this seems like it might be useful to others someday.
+
+3) Stuff my __raw_ definitions into the mach-specific <irq.h>.
+
+4) Don't use GENERIC_IRQ_CHIP at all; just reimplement the helpers
+locally using __raw_* macros.
+
+> registers almost always have a fixed endianess
+> indenpent of CPU endianess
+
+Going back to this statement - in my own personal experience, SoCs are
+usually designed such that extra swaps are NOT necessary when
+accessing onchip peripherals.  Although I've seen a few cases where
+1-2 peripherals, often third party IP cores, needed special treatment.
+
+FWIW, several of the BCM7xxx peripherals default to "native" mode (no
+swap for either LE/BE), but can be optionally reconfigured as LE in
+order to preserve compatibility with the standard AHCI/SDHCI/...
+drivers that use the PCI accessors.
+
+Not sure how easy it is to figure out which other SoCs do require the
+swap, as we'd need to exclude both PCI drivers and LE hosts whose
+drivers just used plain readl.  But a quick look around the drivers/
+tree shows quite a few users of the __raw_ accessors:
+
+$ git grep -l __raw_readl drivers | wc -l
+228
+
+By contrast, for BE-only registers:
+
+$ git grep -lE "(ioread32be)|(readl_be)" drivers/ | wc -l
+42
+
+The latter list seems to include a lot of FPGAs.  Maybe it costs them
+too many gates/LEs to support both endian orderings.
+
+
+Thomas:
+> How does that work with multi arch kernels?
+
+I am assuming this question refers to e.g. CONFIG_ARCH_MULTIPLATFORM
+
+If GENERIC_IRQ_CHIP is being used, the current implementation of
+generic-chip.c will have to pick one global definition of
+irq_reg_{readl,writel} for all supported SoCs.
+
+One possibility is that individual irqchip drivers requiring special
+accessors can pass in their own function pointers, similar to this:
+
+struct sdhci_ops {
+#ifdef CONFIG_MMC_SDHCI_IO_ACCESSORS
+u32 (*read_l)(struct sdhci_host *host, int reg);
+u16 (*read_w)(struct sdhci_host *host, int reg);
+u8 (*read_b)(struct sdhci_host *host, int reg);
+void (*write_l)(struct sdhci_host *host, u32 val, int reg);
+void (*write_w)(struct sdhci_host *host, u16 val, int reg);
+void (*write_b)(struct sdhci_host *host, u8 val, int reg);
+#endif
+
+and fall back to readl/writel if none are supplied.  It would be nice
+if this provided common definitions for the __raw_ and maybe the BE
+variants too.
+
+Or, we could add IRQ_GC_NATIVE_IO and/or IRQ_GC_BE_IO to enum irq_gc_flags.
+
+Would either of these choices satisfy everyone's goals?

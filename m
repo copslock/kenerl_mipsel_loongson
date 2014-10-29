@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 05:01:09 +0100 (CET)
-Received: from mail-pa0-f50.google.com ([209.85.220.50]:44323 "EHLO
-        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011839AbaJ2D7WcdWJt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 04:59:22 +0100
-Received: by mail-pa0-f50.google.com with SMTP id eu11so2240175pac.23
-        for <multiple recipients>; Tue, 28 Oct 2014 20:59:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 05:01:26 +0100 (CET)
+Received: from mail-pd0-f177.google.com ([209.85.192.177]:34329 "EHLO
+        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011846AbaJ2D7XIb0lV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 04:59:23 +0100
+Received: by mail-pd0-f177.google.com with SMTP id v10so2110726pde.22
+        for <multiple recipients>; Tue, 28 Oct 2014 20:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=OIOtLRpYPeq0rHwuKbrMjVI/x2UK6rxN3smjGYa0siI=;
-        b=EBnYcm8NZYQA3W0mv5fpAujJqRgyHeYBCfj5oSZfxIksaIPICQi29lV37UxBRJVc/g
-         uVSxb8Yg515tD+69toIJ/pD/lIGi2Odke9l8xpbgXqsTKpeKmX2sILg8oNs6e090a46S
-         Xy0L/C/op0zt/N8v6IP5q+C2MJYeBDIXR7W4r62IZHt+sDqOHsRFEyd5SJ57pbm40aDP
-         0eR7h9ARoixHzlLJ+A2rcoEDLH2LIvbH4cSgxM0R8kqBO/yxrTEuwLpshk1N3MlmGSzA
-         VO6KxX5/6srC7BukvH6C6Y31wrZ9pbZu7bVxkReUdowHcYI9G4bJ1PnUa5YP9718blhx
-         k2vA==
-X-Received: by 10.68.183.34 with SMTP id ej2mr7596303pbc.75.1414555153316;
-        Tue, 28 Oct 2014 20:59:13 -0700 (PDT)
+        bh=OpcLw/6B4QVRLTUN4KWTKAuDq66MAqz5/zI7+1sn5GA=;
+        b=pJcdNmXHtSD9WlB5qM1XNwgLt34Vt/IUDR2KvW6XH26RjHUpft9McawwRhU2xcLJt6
+         drxHlwd//vtqEAw+DVEVwU/XSCL2H0Ju07uDcsYVmvlO6mc81Ovph3VENOZXddi5LElr
+         FP1hy2sWuDRuZ4MAgsUKMtdqc9DbTIHEdiKz2emBb2sStgkzKlqCuSj1mTAPi2nKJHwh
+         U1wJm3hkkf0tiysVRCiyksFntKo6f6QS5cg8RMQnhEHveS24WFXToQWPlJzJvkjYhMNi
+         W9zvihZBfSWmA1lqzFeBkm6o8CcMSsY8a6sJKmSh2uD2mGXBV7FXXq3mxJzBdMK2gXt/
+         SXqQ==
+X-Received: by 10.68.108.36 with SMTP id hh4mr7898303pbb.108.1414555157060;
+        Tue, 28 Oct 2014 20:59:17 -0700 (PDT)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id kj9sm2946249pbc.37.2014.10.28.20.59.11
+        by mx.google.com with ESMTPSA id kj9sm2946249pbc.37.2014.10.28.20.59.14
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 28 Oct 2014 20:59:12 -0700 (PDT)
+        Tue, 28 Oct 2014 20:59:15 -0700 (PDT)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
         ralf@linux-mips.org
 Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: [PATCH 06/11] irqchip: bcm7120-l2: Use irq_reg_* accessors
-Date:   Tue, 28 Oct 2014 20:58:53 -0700
-Message-Id: <1414555138-6500-6-git-send-email-cernekee@gmail.com>
+Subject: [PATCH 08/11] irqchip: bcm7120-l2: Fix missing nibble in gc->unused mask
+Date:   Tue, 28 Oct 2014 20:58:55 -0700
+Message-Id: <1414555138-6500-8-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
 References: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
@@ -37,7 +37,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43677
+X-archive-position: 43678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,57 +54,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This keeps things consistent between the "core" bcm7120-l2 driver and the
-helpers in generic-chip.c.
+This mask should have been 0xffff_ffff, not 0x0fff_ffff.
+
+The change should not have an effect on current users (STB) because bits
+31:27 are unused.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- drivers/irqchip/irq-bcm7120-l2.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-bcm7120-l2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index 6472b71..f041992 100644
+index f041992..e9331f8 100644
 --- a/drivers/irqchip/irq-bcm7120-l2.c
 +++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -48,7 +48,7 @@ static void bcm7120_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- 
- 	chained_irq_enter(chip, desc);
- 
--	status = __raw_readl(b->base + IRQSTAT);
-+	status = irq_reg_readl(b->base + IRQSTAT);
- 	do {
- 		irq = ffs(status) - 1;
- 		status &= ~(1 << irq);
-@@ -66,10 +66,10 @@ static void bcm7120_l2_intc_suspend(struct irq_data *d)
- 
- 	irq_gc_lock(gc);
- 	/* Save the current mask and the interrupt forward mask */
--	b->saved_mask = __raw_readl(b->base + IRQEN) | b->irq_fwd_mask;
-+	b->saved_mask = irq_reg_readl(b->base + IRQEN) | b->irq_fwd_mask;
- 	if (b->can_wake) {
- 		reg = b->saved_mask | gc->wake_active;
--		__raw_writel(reg, b->base + IRQEN);
-+		irq_reg_writel(reg, b->base + IRQEN);
+@@ -171,7 +171,7 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
  	}
- 	irq_gc_unlock(gc);
- }
-@@ -81,7 +81,7 @@ static void bcm7120_l2_intc_resume(struct irq_data *d)
  
- 	/* Restore the saved mask */
- 	irq_gc_lock(gc);
--	__raw_writel(b->saved_mask, b->base + IRQEN);
-+	irq_reg_writel(b->saved_mask, b->base + IRQEN);
- 	irq_gc_unlock(gc);
- }
- 
-@@ -133,7 +133,7 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
- 	/* Enable all interrupt specified in the interrupt forward mask and have
- 	 * the other disabled
- 	 */
--	__raw_writel(data->irq_fwd_mask, data->base + IRQEN);
-+	irq_reg_writel(data->irq_fwd_mask, data->base + IRQEN);
- 
- 	num_parent_irqs = of_irq_count(dn);
- 	if (num_parent_irqs <= 0) {
+ 	gc = irq_get_domain_generic_chip(data->domain, 0);
+-	gc->unused = 0xfffffff & ~data->irq_map_mask;
++	gc->unused = 0xffffffff & ~data->irq_map_mask;
+ 	gc->reg_base = data->base;
+ 	gc->private = data;
+ 	ct = gc->chip_types;
 -- 
 2.1.1

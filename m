@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 17:54:58 +0100 (CET)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:55687 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 17:55:17 +0100 (CET)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:56474 "EHLO
         mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012151AbaJ2QyoPpNtO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 17:54:44 +0100
-Received: by mail-pa0-f52.google.com with SMTP id fa1so3523526pad.39
-        for <multiple recipients>; Wed, 29 Oct 2014 09:54:36 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S27012150AbaJ2QzA1i8P2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 17:55:00 +0100
+Received: by mail-pa0-f52.google.com with SMTP id fa1so3500735pad.25
+        for <multiple recipients>; Wed, 29 Oct 2014 09:54:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:user-agent:mime-version:to:cc:subject
          :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=0YjfXpj4dF1YWJkXL/v5X2i7khcu/ZOBe4cfiAkFYWM=;
-        b=nj0GuZ1D7YPszyX3FhH3hoiGzvWTltEf5ECxj3agecR9+HWukuMEou/arYeVduBZcJ
-         r8Tp668srsxXU3aBabD1bVyg6VAqaJEC1dgZyCYgdfddlw0OF35jmQKn6loHGvxNP/WS
-         XvrHOG/Of+otpXVPVDyffcbkMFp7b1Y2TfwIqsGLtV5tSp9P4dV/EtjaUXjclGzjDOvC
-         0IWBuSMs+8tZyd0/O492+bYxO6MYanfGNmvQPT3j9aoOD84C+zB1MOucP/XeIm/lsj6T
-         0o6zZII85bx/5VlkgHlrXe9vRij6Vd0C+DHnFE4FAQZ9//bQWohHCHD3b+E7jgrZqvFl
-         zcfQ==
-X-Received: by 10.70.56.103 with SMTP id z7mr2141169pdp.164.1414601676447;
-        Wed, 29 Oct 2014 09:54:36 -0700 (PDT)
+        bh=S2uf5nNU3kamqnzxjqi8W066Y6zQFL+/yYa9TG4SKes=;
+        b=eFe2sD3BAtsGPCpbnA5eWgqUNo5j0FmUBKIBSyWywASSExtjH5QgqOpLLwE7CQ0usj
+         krzSXrll9hvaPkOhYvzpQ/Twn3vJ1ahDUX09Cd1ovfiRMEriCpz49pRTnR/01hxDGwUp
+         QVAOXMWi1bhvpxuaUYsVVpVJG9/fq82bK6zdxO8dHk2DoDEkXwR6B1G0SAK6kvYRgW3M
+         o2+1vIJrpsKaSYDuaKPsCzIEnHnlK923xbBEv7jB04YloPOjAHZzI3ChKinYpaXQuSX/
+         oAMEiFYEW59E22lyhJ70znq91nz36e+MEgp68E1W6npj8QvFEeekf9oazPPxwJTdj9N2
+         T3vA==
+X-Received: by 10.66.170.14 with SMTP id ai14mr2607797pac.136.1414601694374;
+        Wed, 29 Oct 2014 09:54:54 -0700 (PDT)
 Received: from [10.12.164.252] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id rh5sm4850759pdb.4.2014.10.29.09.54.35
+        by mx.google.com with ESMTPSA id bj7sm1050224pad.20.2014.10.29.09.54.53
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Oct 2014 09:54:35 -0700 (PDT)
-Message-ID: <54511BB1.2070202@gmail.com>
-Date:   Wed, 29 Oct 2014 09:54:09 -0700
+        Wed, 29 Oct 2014 09:54:53 -0700 (PDT)
+Message-ID: <54511BC3.6050305@gmail.com>
+Date:   Wed, 29 Oct 2014 09:54:27 -0700
 From:   Florian Fainelli <f.fainelli@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
@@ -32,16 +32,16 @@ To:     Kevin Cernekee <cernekee@gmail.com>, tglx@linutronix.de,
         jason@lakedaemon.net, ralf@linux-mips.org
 CC:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 06/11] irqchip: bcm7120-l2: Use irq_reg_* accessors
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <1414555138-6500-6-git-send-email-cernekee@gmail.com>
-In-Reply-To: <1414555138-6500-6-git-send-email-cernekee@gmail.com>
+Subject: Re: [PATCH 07/11] irqchip: brcmstb-l2: Use irq_reg_* accessors
+References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <1414555138-6500-7-git-send-email-cernekee@gmail.com>
+In-Reply-To: <1414555138-6500-7-git-send-email-cernekee@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43703
+X-archive-position: 43704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,59 +59,81 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 10/28/2014 08:58 PM, Kevin Cernekee wrote:
-> This keeps things consistent between the "core" bcm7120-l2 driver and the
-> helpers in generic-chip.c.
+> This change was just made on bcm7120-l2, so let's keep things consistent
+> between the two drivers.
 > 
 > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
 Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
 > ---
->  drivers/irqchip/irq-bcm7120-l2.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  drivers/irqchip/irq-brcmstb-l2.c | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-> index 6472b71..f041992 100644
-> --- a/drivers/irqchip/irq-bcm7120-l2.c
-> +++ b/drivers/irqchip/irq-bcm7120-l2.c
-> @@ -48,7 +48,7 @@ static void bcm7120_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
+> diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
+> index c9bdf20..8b82b86 100644
+> --- a/drivers/irqchip/irq-brcmstb-l2.c
+> +++ b/drivers/irqchip/irq-brcmstb-l2.c
+> @@ -58,8 +58,8 @@ static void brcmstb_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
 >  
 >  	chained_irq_enter(chip, desc);
 >  
-> -	status = __raw_readl(b->base + IRQSTAT);
-> +	status = irq_reg_readl(b->base + IRQSTAT);
+> -	status = __raw_readl(b->base + CPU_STATUS) &
+> -		~(__raw_readl(b->base + CPU_MASK_STATUS));
+> +	status = irq_reg_readl(b->base + CPU_STATUS) &
+> +		~(irq_reg_readl(b->base + CPU_MASK_STATUS));
+>  
+>  	if (status == 0) {
+>  		raw_spin_lock(&desc->lock);
+> @@ -71,7 +71,7 @@ static void brcmstb_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
 >  	do {
 >  		irq = ffs(status) - 1;
+>  		/* ack at our level */
+> -		__raw_writel(1 << irq, b->base + CPU_CLEAR);
+> +		irq_reg_writel(1 << irq, b->base + CPU_CLEAR);
 >  		status &= ~(1 << irq);
-> @@ -66,10 +66,10 @@ static void bcm7120_l2_intc_suspend(struct irq_data *d)
+>  		generic_handle_irq(irq_find_mapping(b->domain, irq));
+>  	} while (status);
+> @@ -86,12 +86,12 @@ static void brcmstb_l2_intc_suspend(struct irq_data *d)
 >  
 >  	irq_gc_lock(gc);
->  	/* Save the current mask and the interrupt forward mask */
-> -	b->saved_mask = __raw_readl(b->base + IRQEN) | b->irq_fwd_mask;
-> +	b->saved_mask = irq_reg_readl(b->base + IRQEN) | b->irq_fwd_mask;
+>  	/* Save the current mask */
+> -	b->saved_mask = __raw_readl(b->base + CPU_MASK_STATUS);
+> +	b->saved_mask = irq_reg_readl(b->base + CPU_MASK_STATUS);
+>  
 >  	if (b->can_wake) {
->  		reg = b->saved_mask | gc->wake_active;
-> -		__raw_writel(reg, b->base + IRQEN);
-> +		irq_reg_writel(reg, b->base + IRQEN);
+>  		/* Program the wakeup mask */
+> -		__raw_writel(~gc->wake_active, b->base + CPU_MASK_SET);
+> -		__raw_writel(gc->wake_active, b->base + CPU_MASK_CLEAR);
+> +		irq_reg_writel(~gc->wake_active, b->base + CPU_MASK_SET);
+> +		irq_reg_writel(gc->wake_active, b->base + CPU_MASK_CLEAR);
 >  	}
 >  	irq_gc_unlock(gc);
 >  }
-> @@ -81,7 +81,7 @@ static void bcm7120_l2_intc_resume(struct irq_data *d)
+> @@ -103,11 +103,11 @@ static void brcmstb_l2_intc_resume(struct irq_data *d)
+>  
+>  	irq_gc_lock(gc);
+>  	/* Clear unmasked non-wakeup interrupts */
+> -	__raw_writel(~b->saved_mask & ~gc->wake_active, b->base + CPU_CLEAR);
+> +	irq_reg_writel(~b->saved_mask & ~gc->wake_active, b->base + CPU_CLEAR);
 >  
 >  	/* Restore the saved mask */
->  	irq_gc_lock(gc);
-> -	__raw_writel(b->saved_mask, b->base + IRQEN);
-> +	irq_reg_writel(b->saved_mask, b->base + IRQEN);
+> -	__raw_writel(b->saved_mask, b->base + CPU_MASK_SET);
+> -	__raw_writel(~b->saved_mask, b->base + CPU_MASK_CLEAR);
+> +	irq_reg_writel(b->saved_mask, b->base + CPU_MASK_SET);
+> +	irq_reg_writel(~b->saved_mask, b->base + CPU_MASK_CLEAR);
 >  	irq_gc_unlock(gc);
 >  }
 >  
-> @@ -133,7 +133,7 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
->  	/* Enable all interrupt specified in the interrupt forward mask and have
->  	 * the other disabled
->  	 */
-> -	__raw_writel(data->irq_fwd_mask, data->base + IRQEN);
-> +	irq_reg_writel(data->irq_fwd_mask, data->base + IRQEN);
+> @@ -132,8 +132,8 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
+>  	}
 >  
->  	num_parent_irqs = of_irq_count(dn);
->  	if (num_parent_irqs <= 0) {
+>  	/* Disable all interrupts by default */
+> -	__raw_writel(0xffffffff, data->base + CPU_MASK_SET);
+> -	__raw_writel(0xffffffff, data->base + CPU_CLEAR);
+> +	irq_reg_writel(0xffffffff, data->base + CPU_MASK_SET);
+> +	irq_reg_writel(0xffffffff, data->base + CPU_CLEAR);
+>  
+>  	data->parent_irq = irq_of_parse_and_map(np, 0);
+>  	if (data->parent_irq < 0) {
 > 

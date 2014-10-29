@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 12:01:51 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:37520 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 12:09:54 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53041 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011935AbaJ2LBttSM-K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 12:01:49 +0100
+        with ESMTP id S27011908AbaJ2LJxaH9OV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 12:09:53 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 03248698B4A87;
-        Wed, 29 Oct 2014 11:01:41 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 161898D09A2B4;
+        Wed, 29 Oct 2014 11:09:45 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 29 Oct 2014 11:01:42 +0000
+ 14.3.195.1; Wed, 29 Oct 2014 11:09:46 +0000
 Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 29 Oct
- 2014 11:01:42 +0000
-Message-ID: <5450C915.9030600@imgtec.com>
-Date:   Wed, 29 Oct 2014 11:01:41 +0000
+ 2014 11:09:46 +0000
+Message-ID: <5450CAF9.3040902@imgtec.com>
+Date:   Wed, 29 Oct 2014 11:09:45 +0000
 From:   Qais Yousef <qais.yousef@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.8.0
 MIME-Version: 1.0
@@ -41,7 +41,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43697
+X-archive-position: 43698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,17 +59,12 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 10/29/2014 12:12 AM, Andrew Bresticker wrote:
-> +- mti,available-cpu-vectors : Specifies the list of CPU interrupt vectors
-> +  to which the GIC may route interrupts.  May contain up to 6 entries, one
-> +  for each of the CPU's hardware interrupt vectors.  Valid values are 2 - 7.
-> +  This property is ignored if the CPU is started in EIC mode.
-> +
+> +- reg : Base address and length of the GIC registers.
+>
 
-Wouldn't it be better to have this in the reversed sense ie: 
-mti,nonavailable-cpu-vectors? I think the assumption that by default 
-they're all available unless something else is connected to them which 
-is unlikely in most cases. It can be made optional property then.
-
-I don't have a strong opinion about it though.
+Also except for sead3, the base address should be properly reported by 
+the hardware. The size is fixed (for a specific version of GIC at least 
+- which is also reported by the hardware). So it would be nice to make 
+this optional.
 
 Qais

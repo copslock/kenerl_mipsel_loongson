@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 00:20:55 +0100 (CET)
-Received: from mail-ie0-f201.google.com ([209.85.223.201]:55463 "EHLO
-        mail-ie0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012222AbaJ2XUBEqaqs (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 00:21:11 +0100 (CET)
+Received: from mail-qc0-f201.google.com ([209.85.216.201]:62195 "EHLO
+        mail-qc0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012224AbaJ2XUBtbQsv (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 00:20:01 +0100
-Received: by mail-ie0-f201.google.com with SMTP id rd18so66332iec.4
+Received: by mail-qc0-f201.google.com with SMTP id l6so285221qcy.2
         for <linux-mips@linux-mips.org>; Wed, 29 Oct 2014 16:19:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=MQghENNELzxHTF32OXkt8L2oacxEfwyARV32oubf0pk=;
-        b=EpM5IFQBO5WJqqQdCizfUJo6o7ueOHARu2M1wxifzlISqIqmUtLY1Isgd/tmitNH76
-         bEtf51HSce89nDMHCi2aRl1tLYQLY2tBFkOqfEVNxqvGtcj+VSAAcERqTCISMoCAZeU/
-         Hc1nVdwnMxEinAgqG0Z6287NwrI/eHWoZzRIg1zUkZVD9pyKZA6sQl0EeFWqxlO/urm0
-         oqxFqKV1GXGX+x7UaWbg2YCrfDRoRtY7z6Brs7z1CXOYIWb7sBp3Uamw1q40zcU3CGEl
-         FllJNpSjzwqWJYUhN8M/rBdMDqZzgw0usGHC/iam6E3VJ374VmqkjUVsu8oaFYX31WNf
-         ZJxg==
-X-Gm-Message-State: ALoCoQmB1ds8N/x19hgHXhdyI2gO7WAw0LPVSQVuhGLkMEe6bA8VPDD+WQN+a0JvfErZrOJ9f26T
-X-Received: by 10.42.110.66 with SMTP id o2mr2522868icp.11.1414624794894;
-        Wed, 29 Oct 2014 16:19:54 -0700 (PDT)
-Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id l45si351046yha.2.2014.10.29.16.19.53
+        bh=TJF9KpjLw3SHIWiQ2conhJ3NtLzhC8/BWuJgjraZSL4=;
+        b=HfHdU/UsHHSPxrMkEhXHXsup695pqPKcCl4TGagHATkWMTs5XnxwfLqSJpp2wp7APz
+         VhrmT47IuGrsNEDM0hbP1RTiq9ufcCn/K42b6OGI0Yf1GiCWN/7AVcfwXy4W578qItGe
+         ded8xStwy1jH+ckeBwKFctinmo+CZtd3w6GEQlIlNV5pz7l+JWavL8H8lTDDKfNcoINg
+         S9/pQkwkQKCUjWVH1JRtT0uZK6iDgxbzkhzCfVmrqY0U8PbxZIkUXfLhebGKRQJHyscK
+         GTrlOon2eUOAjMsuiRIxEBgQrrGRh5wdglS0tQcYNVQvTc7Tmb5wHZB8oEMWI4OfZzgF
+         dx9Q==
+X-Gm-Message-State: ALoCoQm6yYWsUzqnu8e3wqdqv2lY+fKFekHDni6e2dl5wzHYsP8ydjsP+lZSVY35Lm4C8IUNY5ro
+X-Received: by 10.236.13.105 with SMTP id a69mr3835532yha.16.1414624795871;
+        Wed, 29 Oct 2014 16:19:55 -0700 (PDT)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id n22si350859yhd.1.2014.10.29.16.19.54
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Oct 2014 16:19:54 -0700 (PDT)
+        Wed, 29 Oct 2014 16:19:55 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id gG2lLkjr.1; Wed, 29 Oct 2014 16:19:54 -0700
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id xM7nvPus.1; Wed, 29 Oct 2014 16:19:55 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 34A212208BA; Wed, 29 Oct 2014 16:19:53 -0700 (PDT)
+        id 32BCC2205C1; Wed, 29 Oct 2014 16:19:54 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -45,9 +45,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         James Hogan <james.hogan@imgtec.com>,
         Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V4 3/4] irqchip: mips-gic: Add device-tree support
-Date:   Wed, 29 Oct 2014 16:19:49 -0700
-Message-Id: <1414624790-15690-4-git-send-email-abrestic@chromium.org>
+Subject: [PATCH V4 4/4] clocksource: mips-gic: Add device-tree support
+Date:   Wed, 29 Oct 2014 16:19:50 -0700
+Message-Id: <1414624790-15690-5-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
 References: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
@@ -55,7 +55,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43734
+X-archive-position: 43735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,158 +72,145 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add device-tree support for the MIPS GIC.  Update the GIC irqdomain's
-xlate() callback to handle the three-cell specifier described in the
-MIPS GIC binding document.
+Parse the GIC timer frequency and interrupt from the device-tree.
+Since the GIC timer requires the GIC irqchip to have been set up
+already and is a sub-node of the GIC, probe the GIC timer from the
+GIC irqchip.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
 Changes from v3:
- - use reserved-cpu-vectors property
- - read GIC base from CM if no reg property present
-Changes from v2:
- - rebased on GIC irqchip cleanups
- - updated for change in bindings
- - only parse first CPU vector
- - allow platforms to use EIC mode
-Changes from v1:
- - updated for change in bindings
- - set base address and enable bit in GCR_GIC_BASE
+ - probe from GIC irqchip
+New for v3.
 ---
- drivers/irqchip/irq-mips-gic.c | 92 +++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 87 insertions(+), 5 deletions(-)
+ drivers/clocksource/Kconfig          |  1 +
+ drivers/clocksource/mips-gic-timer.c | 35 ++++++++++++++++++++++++++++-------
+ drivers/irqchip/irq-mips-gic.c       |  7 +++++++
+ include/linux/irqchip/mips-gic.h     |  3 +++
+ 4 files changed, 39 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 61ac482..8a9ef74 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -12,12 +12,18 @@
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index cb7e7f4..89836dc 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -226,5 +226,6 @@ config CLKSRC_VERSATILE
+ config CLKSRC_MIPS_GIC
+ 	bool
+ 	depends on MIPS_GIC
++	select CLKSRC_OF
+ 
+ endmenu
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index a749c81..b59f04b 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -11,6 +11,7 @@
  #include <linux/interrupt.h>
- #include <linux/irq.h>
  #include <linux/irqchip/mips-gic.h>
-+#include <linux/of_address.h>
- #include <linux/sched.h>
+ #include <linux/notifier.h>
++#include <linux/of_irq.h>
+ #include <linux/percpu.h>
  #include <linux/smp.h>
+ #include <linux/time.h>
+@@ -101,8 +102,6 @@ static int gic_clockevent_init(void)
+ 	if (!cpu_has_counter || !gic_frequency)
+ 		return -ENXIO;
  
-+#include <asm/mips-cm.h>
- #include <asm/setup.h>
- #include <asm/traps.h>
+-	gic_timer_irq = MIPS_GIC_IRQ_BASE +
+-		GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
+ 	setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
  
-+#include <dt-bindings/interrupt-controller/mips-gic.h>
-+
-+#include "irqchip.h"
-+
- unsigned int gic_present;
- 
- struct gic_pcpu_mask {
-@@ -662,14 +668,34 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 	return gic_shared_irq_domain_map(d, virq, hw);
- }
- 
-+static int gic_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
-+				const u32 *intspec, unsigned int intsize,
-+				irq_hw_number_t *out_hwirq,
-+				unsigned int *out_type)
-+{
-+	if (intsize != 3)
-+		return -EINVAL;
-+
-+	if (intspec[0] == GIC_SHARED)
-+		*out_hwirq = GIC_SHARED_TO_HWIRQ(intspec[1]);
-+	else if (intspec[0] == GIC_LOCAL)
-+		*out_hwirq = GIC_LOCAL_TO_HWIRQ(intspec[1]);
-+	else
-+		return -EINVAL;
-+	*out_type = intspec[2] & IRQ_TYPE_SENSE_MASK;
-+
-+	return 0;
-+}
-+
- static struct irq_domain_ops gic_irq_domain_ops = {
- 	.map = gic_irq_domain_map,
--	.xlate = irq_domain_xlate_twocell,
-+	.xlate = gic_irq_domain_xlate,
+ 	register_cpu_notifier(&gic_cpu_nb);
+@@ -123,17 +122,39 @@ static struct clocksource gic_clocksource = {
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
  };
  
--void __init gic_init(unsigned long gic_base_addr,
--		     unsigned long gic_addrspace_size, unsigned int cpu_vec,
--		     unsigned int irqbase)
-+static void __init __gic_init(unsigned long gic_base_addr,
-+			      unsigned long gic_addrspace_size,
-+			      unsigned int cpu_vec, unsigned int irqbase,
-+			      struct device_node *node)
+-void __init gic_clocksource_init(unsigned int frequency)
++static void __init __gic_clocksource_init(void)
  {
- 	unsigned int gicconfig;
+-	gic_frequency = frequency;
+-
+ 	/* Set clocksource mask. */
+ 	gic_clocksource.mask = CLOCKSOURCE_MASK(gic_get_count_width());
  
-@@ -695,7 +721,7 @@ void __init gic_init(unsigned long gic_base_addr,
- 					gic_irq_dispatch);
- 	}
+ 	/* Calculate a somewhat reasonable rating value. */
+-	gic_clocksource.rating = 200 + frequency / 10000000;
++	gic_clocksource.rating = 200 + gic_frequency / 10000000;
  
--	gic_irq_domain = irq_domain_add_simple(NULL, GIC_NUM_LOCAL_INTRS +
-+	gic_irq_domain = irq_domain_add_simple(node, GIC_NUM_LOCAL_INTRS +
- 					       gic_shared_intrs, irqbase,
- 					       &gic_irq_domain_ops, NULL);
- 	if (!gic_irq_domain)
-@@ -705,3 +731,59 @@ void __init gic_init(unsigned long gic_base_addr,
+-	clocksource_register_hz(&gic_clocksource, frequency);
++	clocksource_register_hz(&gic_clocksource, gic_frequency);
  
- 	gic_ipi_init();
+ 	gic_clockevent_init();
  }
 +
-+void __init gic_init(unsigned long gic_base_addr,
-+		     unsigned long gic_addrspace_size,
-+		     unsigned int cpu_vec, unsigned int irqbase)
++void __init gic_clocksource_init(unsigned int frequency)
 +{
-+	__gic_init(gic_base_addr, gic_addrspace_size, cpu_vec, irqbase, NULL);
++	gic_frequency = frequency;
++	gic_timer_irq = MIPS_GIC_IRQ_BASE +
++		GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
++
++	__gic_clocksource_init();
 +}
 +
-+static int __init gic_of_init(struct device_node *node,
-+			      struct device_node *parent)
++void __init gic_clocksource_of_init(struct device_node *node)
 +{
-+	struct resource res;
-+	unsigned int cpu_vec, i = 0, reserved = 0;
-+	phys_addr_t gic_base;
-+	size_t gic_len;
-+
-+	/* Find the first available CPU vector. */
-+	while (!of_property_read_u32_index(node, "mti,reserved-cpu-vectors",
-+					   i++, &cpu_vec))
-+		reserved |= BIT(cpu_vec);
-+	for (cpu_vec = 2; cpu_vec < 8; cpu_vec++) {
-+		if (!(reserved & BIT(cpu_vec)))
-+			break;
++	if (of_property_read_u32(node, "clock-frequency", &gic_frequency)) {
++		pr_err("GIC frequency not specified.\n");
++		return;
 +	}
-+	if (cpu_vec == 8) {
-+		pr_err("No CPU vectors available for GIC\n");
-+		return -ENODEV;
++	gic_timer_irq = irq_of_parse_and_map(node, 0);
++	if (!gic_timer_irq) {
++		pr_err("GIC timer IRQ not specified.\n");
++		return;
 +	}
 +
-+	if (of_address_to_resource(node, 0, &res)) {
-+		/*
-+		 * Probe the CM for the GIC base address if not specified
-+		 * in the device-tree.
-+		 */
-+		if (mips_cm_present()) {
-+			gic_base = read_gcr_gic_base() &
-+				~CM_GCR_GIC_BASE_GICEN_MSK;
-+			gic_len = 0x20000;
-+		} else {
-+			pr_err("Failed to get GIC memory range\n");
-+			return -ENODEV;
-+		}
-+	} else {
-+		gic_base = res.start;
-+		gic_len = resource_size(&res);
-+	}
-+
-+	if (mips_cm_present())
-+		write_gcr_gic_base(gic_base | CM_GCR_GIC_BASE_GICEN_MSK);
-+	gic_present = true;
-+
-+	__gic_init(gic_base, gic_len, cpu_vec, 0, node);
-+
-+	return 0;
++	__gic_clocksource_init();
 +}
-+IRQCHIP_DECLARE(mips_gic, "mti,gic", gic_of_init);
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 8a9ef74..3145e87 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -742,6 +742,7 @@ void __init gic_init(unsigned long gic_base_addr,
+ static int __init gic_of_init(struct device_node *node,
+ 			      struct device_node *parent)
+ {
++	struct device_node *child;
+ 	struct resource res;
+ 	unsigned int cpu_vec, i = 0, reserved = 0;
+ 	phys_addr_t gic_base;
+@@ -784,6 +785,12 @@ static int __init gic_of_init(struct device_node *node,
+ 
+ 	__gic_init(gic_base, gic_len, cpu_vec, 0, node);
+ 
++	/* Set up the GIC timer, if present. */
++	for_each_child_of_node(node, child) {
++		if (of_device_is_compatible(child, "mti,gic-timer"))
++			gic_clocksource_of_init(child);
++	}
++
+ 	return 0;
+ }
+ IRQCHIP_DECLARE(mips_gic, "mti,gic", gic_of_init);
+diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
+index 420f77b..7b383b2 100644
+--- a/include/linux/irqchip/mips-gic.h
++++ b/include/linux/irqchip/mips-gic.h
+@@ -229,12 +229,15 @@
+ #define GIC_SHARED_TO_HWIRQ(x)	(GIC_SHARED_HWIRQ_BASE + (x))
+ #define GIC_HWIRQ_TO_SHARED(x)	((x) - GIC_SHARED_HWIRQ_BASE)
+ 
++struct device_node;
++
+ extern unsigned int gic_present;
+ 
+ extern void gic_init(unsigned long gic_base_addr,
+ 	unsigned long gic_addrspace_size, unsigned int cpu_vec,
+ 	unsigned int irqbase);
+ extern void gic_clocksource_init(unsigned int);
++extern void gic_clocksource_of_init(struct device_node *node);
+ extern cycle_t gic_read_count(void);
+ extern unsigned int gic_get_count_width(void);
+ extern cycle_t gic_read_compare(void);
 -- 
 2.1.0.rc2.206.gedb03e5

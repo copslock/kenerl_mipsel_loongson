@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 04:59:50 +0100 (CET)
-Received: from mail-pd0-f179.google.com ([209.85.192.179]:40907 "EHLO
-        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011827AbaJ2D7P3qhA1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 04:59:15 +0100
-Received: by mail-pd0-f179.google.com with SMTP id g10so2105117pdj.24
-        for <multiple recipients>; Tue, 28 Oct 2014 20:59:09 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2014 05:00:07 +0100 (CET)
+Received: from mail-pd0-f175.google.com ([209.85.192.175]:48400 "EHLO
+        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011833AbaJ2D7QbwBA4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2014 04:59:16 +0100
+Received: by mail-pd0-f175.google.com with SMTP id y13so2124126pdi.20
+        for <multiple recipients>; Tue, 28 Oct 2014 20:59:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=WBO7qX+yOnxby+bFQdWD2boMi/i+WKAsK7GF17RU1UA=;
-        b=rcwKREcnmkkIHLL68poCtq+p68lQZuZ0sy1edjFfRJ8PF3itoU9p5/j6fQVK7gyuEX
-         Zy6xgOS074m0KKXjPJ9I87VhWWeVZj+RTZJ/IK8mAwEIcpN/jALjk87dQ2LxIznoh85E
-         eEy76ZnKbU84EfgYgxc6E2Q3IcW+VdxtHTI5QwcdQx+KYT8g6SkPak1z8vYfPhj1JzVV
-         nMXLLgS05TAS2gybmwnRzoi5fWibBoF1RHvzptfjh89ceGdY4ovDhwFZKOmJd1AKCyPT
-         V47shvTtldcu0//wqG8IfGgtGGNqZWNu3/wHOLfNhAM8MvP13k89pifNINPx3oUsiiTe
-         a0mQ==
-X-Received: by 10.66.233.37 with SMTP id tt5mr7923551pac.11.1414555149013;
-        Tue, 28 Oct 2014 20:59:09 -0700 (PDT)
+        bh=eg1PyhKWGwL5tsDRan0uiRJciOJIXeLZxA6+VCNoTaA=;
+        b=BKJ6OUkdpJDhUy+H/EPB1pwNIWcBdnCCxFGKGwGM5iRJd0azh6lvlRUQzrHZvHKhOC
+         KQoIPCY3hQNHBbmdRuq11PtSq4C3A/t0zoArBMbHfJSgjf0lhOwwH+5DMoH0s3k2AoNo
+         ph8mmaq1wi9zteRm9MRr32qskH/Y1Om2oCtV6lpbmLWGZVK1wLj6VxgJ/sKYwvCJYvLT
+         wcp03ALCy87YWS+6+AUOLYZLAc0LOUxIZAgKKBM6/lMp5uDWp5QtNCRbUUtsK7e7HTlT
+         M97K5M6aefpCieHdV1Ve2u5hvOoj59ZBUqrrVPgaFBJ/7m4P0PZWHagh1t0Va7E4Whuh
+         798A==
+X-Received: by 10.66.220.3 with SMTP id ps3mr8102464pac.8.1414555150453;
+        Tue, 28 Oct 2014 20:59:10 -0700 (PDT)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id kj9sm2946249pbc.37.2014.10.28.20.59.07
+        by mx.google.com with ESMTPSA id kj9sm2946249pbc.37.2014.10.28.20.59.09
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 28 Oct 2014 20:59:08 -0700 (PDT)
+        Tue, 28 Oct 2014 20:59:09 -0700 (PDT)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
         ralf@linux-mips.org
 Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: [PATCH 03/11] irqchip: bcm7120-l2: Eliminate bad IRQ check
-Date:   Tue, 28 Oct 2014 20:58:50 -0700
-Message-Id: <1414555138-6500-3-git-send-email-cernekee@gmail.com>
+Subject: [PATCH 04/11] irqchip: Remove ARM dependency for bcm7120-l2 and brcmstb-l2
+Date:   Tue, 28 Oct 2014 20:58:51 -0700
+Message-Id: <1414555138-6500-4-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
 References: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
@@ -37,7 +37,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43673
+X-archive-position: 43674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,57 +54,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This check may be prone to race conditions, e.g.
-
-1) Some external event (e.g. GPIO level) causes an IRQ to become pending
-2) Peripheral asserts the L2 IRQ
-3) CPU takes an interrupt
-4) The event from #1 goes away
-5) bcm7120_l2_intc_irq_handle() reads back a 0 status
-
-Unlike the hardware supported by brcmstb-l2, the bcm7120-l2 controller
-does not latch the IRQ status.  Bits can change if the inputs to the
-controller change.  Also, do_bad_IRQ() is an ARM-specific macro.
-
-So let's just nuke it.
+This can compile for MIPS (or anything else) now.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- drivers/irqchip/irq-bcm7120-l2.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/irqchip/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index b9f4fb8..49d8f3d 100644
---- a/drivers/irqchip/irq-bcm7120-l2.c
-+++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -27,8 +27,6 @@
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 6f0e80b..6a03c65 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -53,7 +53,6 @@ config ATMEL_AIC5_IRQ
  
- #include "irqchip.h"
- 
--#include <asm/mach/irq.h>
--
- /* Register offset in the L2 interrupt controller */
- #define IRQEN		0x00
- #define IRQSTAT		0x04
-@@ -51,19 +49,12 @@ static void bcm7120_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- 	chained_irq_enter(chip, desc);
- 
- 	status = __raw_readl(b->base + IRQSTAT);
--
--	if (status == 0) {
--		do_bad_IRQ(irq, desc);
--		goto out;
--	}
--
- 	do {
- 		irq = ffs(status) - 1;
- 		status &= ~(1 << irq);
- 		generic_handle_irq(irq_find_mapping(b->domain, irq));
- 	} while (status);
- 
--out:
- 	chained_irq_exit(chip, desc);
- }
+ config BRCMSTB_L2_IRQ
+ 	bool
+-	depends on ARM
+ 	select GENERIC_IRQ_CHIP
+ 	select IRQ_DOMAIN
  
 -- 
 2.1.1

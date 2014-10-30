@@ -1,87 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 02:09:12 +0100 (CET)
-Received: from mailout3.samsung.com ([203.254.224.33]:64651 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012203AbaJ3BJIjFTKd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 02:09:08 +0100
-Received: from epcpsbgr4.samsung.com
- (u144.gpu120.samsung.co.kr [203.254.230.144])
- by mailout3.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTP id <0NE800JK0GJ1CY40@mailout3.samsung.com> for
- linux-mips@linux-mips.org; Thu, 30 Oct 2014 10:09:01 +0900 (KST)
-Received: from epcpsbgx3.samsung.com ( [203.254.230.44])
-        by epcpsbgr4.samsung.com (EPCPMTA) with SMTP id A7.77.18167.DAF81545; Thu,
- 30 Oct 2014 10:09:01 +0900 (KST)
-X-AuditID: cbfee690-f79ab6d0000046f7-28-54518fad73ca
-Received: from epmailer02 ( [203.254.219.142])
-        by epcpsbgx3.samsung.com (EPCPMTA) with SMTP id 11.44.14702.DAF81545; Thu,
- 30 Oct 2014 10:09:01 +0900 (KST)
-Date:   Thu, 30 Oct 2014 01:09:01 +0000 (GMT)
-From:   Eunbong Song <eunb.song@samsung.com>
-Subject: [PATCH] staging: octeon-ethernet: disable load balance for receiving
- packet when CONFIG_RPS is enabled.
-To:     "ralf@linux-mips.org" <ralf@linux-mips.org>, david.daney@cavium.com
-Cc:     gregkh@linuxfoundation.org, linux-mips@linux-mips.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Reply-to: eunb.song@samsung.com
-MIME-version: 1.0
-X-MTR:  20141030010643849@eunb.song
-Msgkey: 20141030010643849@eunb.song
-X-EPLocale: ko_KR.euc-kr
-X-Priority: 3
-X-EPWebmail-Msg-Type: personal
-X-EPWebmail-Reply-Demand: 0
-X-EPApproval-Locale: 
-X-EPHeader: ML
-X-MLAttribute: 
-X-RootMTR: 20141030010643849@eunb.song
-X-ParentMTR: 
-X-ArchiveUser: EV
-X-CPGSPASS: N
-X-ConfirmMail: N,general
-Content-transfer-encoding: base64
-Content-type: text/plain; charset=euc-kr
-MIME-version: 1.0
-Message-id: <141769840.281701414631339613.JavaMail.weblogic@epmlwas07d>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprHJsWRmVeSWpSXmKPExsVy+t8zHd21/YEhBvt/81lMmDqJ3YHR4+jK
-        tUwBjFENjDaJRckZmWWpCql5yfkpmXnptkqhIW66FkoKGfnFJbZK0UYGxnpGpiZ6RibmepYG
-        sVZGpkoKeYm5qbZKFbpQvUoKRckFQLW5lcVAA3JS9aDiesWpeSkOWfmlIKfoFSfmFpfmpesl
-        5+cqKZQl5pQCjVDST5jKmPHsRhN7wQPuimPXetkaGLdwdzFycggJqEi0/P/OCGJLCJhI/H63
-        EMoWk7hwbz1bFyMXUM0yRolDB06zwxTdPdfBDJGYwyix++RKVpAEi4CqxOvf09hAbDYBbYkf
-        B64yg9jCAgUSK7t2gdkiAn4Sx27/ZwdpZhZoY5T4//Y9O8QZ8hKTT18Gs3kFBCVOznzCArFN
-        SeLGoxaouLLEhbmHmCHiEhKzpl9ghbB5JWa0P4Wql5OY9nUNVI20xPlZG+DeWfz9MVScH+iI
-        HUwQtoDE1DMHoWrUJbZtuc8GYfNJrFn4FmqmoMTpa93MMLvub5nLBHPD1pYnYDcwCyhKTOl+
-        yA5ha0l8+bGPDd0vvALuEu1besFBKiEwkUPi7cte5gmMSrOQ1M1CMmsWklnIahYwsqxiFE0t
-        SC4oTkovMkGO8E2MkIQ4YQfjvQPWhxgFOBiVeHgd0gJChFgTy4orcw8xJgMjaiKzlGhyPjDt
-        5pXEGxqbGVmYmpgaG5lbmmEIm5haWJgY4RBWEud9LfUzWEggPbEkNTs1tSC1KL6oNCe1+BAj
-        EwenVANjxtWL5Qxlp6y+/6u7kyWnOnVL4iOPi80+HOueL5g9WWXd2UObIoX6rr+crGhxvJQ5
-        y2v9Y3PW9UozHs79ZPSTY8Yhlb1MOgvCFzZPCfZ1jEvad7rDzFGH0/tNjuirBoUWxjP6UUfa
-        /p1kS7598MLeB2tP9U06seLR6Vc7fh2Y/49ljXBS+OFVdkosxRmJhlrMRcWJABPcNw6xAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNKsWRmVeSWpSXmKPExsVy+t/tPt21/YEhBvPm8FhMmDqJ3YHR4+jK
-        tUwBjFEZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaWFuZKCnmJuam2Si4+AbpumTlA
-        U5UUyhJzSoFCAYnFxUr6djZF+aUlqQoZ+cUltkrRRgbGekamJnpGxgZ6JgaxVoYGBkamQFUJ
-        GRnPbjSxFzzgrjh2rZetgXELdxcjJ4eQgIpEy//vjCC2hICJxN1zHcwQtpjEhXvr2boYuYBq
-        5jBK7D65khUkwSKgKvH69zQ2EJtNQFvix4GrYA3CAgUSK7t2gdkiAn4Sx27/ZwdpZhZoY5T4
-        //Y9O8Q2eYnJpy+D2bwCghInZz5hgdimJHHjUQtUXFniwtxDUFdISMyafoEVwuaVmNH+FKpe
-        TmLa1zVQNdIS52dtYIS5evH3x1BxfqAjdjBB2AISU88chKpRl9i25T4bhM0nsWbhW6iZghKn
-        r3Uzw+y6v2UuE8wNW1uegN3ALKAoMaX7ITuErSXx5cc+NnS/8Aq4S7Rv6WWbwCg7C0lqFpL2
-        WUjakdUsYGRZxSiaWpBcUJyUXmGsV5yYW1yal66XnJ+7iRGckJ4t3sH4/7z1IUYBDkYlHt4X
-        yQEhQqyJZcWVuYcYJTiYlUR4RToCQ4R4UxIrq1KL8uOLSnNSiw8xmgKjbSKzlGhyPjBZ5pXE
-        GxobGBsaWpobmBoaWSiJ88bfSgoSEkhPLEnNTk0tSC2C6WPi4JRqYDTbfNrw5o1mPtOkXUd7
-        ++q2brKIMuR5z7ut8Ktd3Dr5TM77PUVWutZz1qoanMw/5J3VdP9Qmtt6zshHD3rjzVVmFe9v
-        uqvdm7fBY6bFhulLH7iI9WqxHFka9vKibO+GTSxf961ZMbOM0/VC/8aP3LKnw5wDLdwMHle6
-        TpG9tlmlfLFIWLudjRJLcUaioRZzUXEiANQcoFBeAwAA
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-Return-Path: <eunb.song@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 02:49:06 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:37522 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012203AbaJ3BtCNpuLJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 02:49:02 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 958C5DB0CF29E;
+        Thu, 30 Oct 2014 01:48:54 +0000 (GMT)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 30 Oct
+ 2014 01:48:54 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 30 Oct
+ 2014 01:48:54 +0000
+Received: from [127.0.1.1] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 29 Oct
+ 2014 18:48:52 -0700
+Subject: [PATCH] MIPS: DMA: fix coherent alloc in non-coherent systems
+To:     <linux-mips@linux-mips.org>, <nbd@openwrt.org>, <yanh@lemote.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <alex.smith@imgtec.com>, <taohl@lemote.com>, <chenhc@lemote.com>,
+        <blogic@openwrt.org>
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Date:   Wed, 29 Oct 2014 18:48:52 -0700
+Message-ID: <20141030014753.13189.48344.stgit@linux-yegoshin>
+User-Agent: StGit/0.15
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43737
+X-archive-position: 43738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eunb.song@samsung.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,23 +49,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ckl0J3MgYmV0dGVyIGRpc2FibGUgbG9hZCBiYWxhbmNlIGZvciByZWNlaXZpbmcgcGFja2V0IHdo
-ZW4gQ09ORklHX1JQUyBpcyBlbmFibGVkLgpJZiBub3QsIG9jdGVvbi1ldGhlcm5ldCBkcml2ZXIg
-c2VsZWN0IENQVSBhbmQgdGhlbiB0aGUgcnBzIHNlbGVjdCBhZ2FpbiBDUFUuCkl0IGNhbiBiZSBp
-cGkgaW50ZXJydXB0cyBvdmVyaGVhZCBhbmQgcGFja2V0IHJlb3JkZXJpbmcgY291bGQgYmUgcG9z
-c2libGUuCgpTaWduZWQtb2ZmLWJ5OiBFdW5ib25nIFNvbmcgPGV1bmIuc29uZ0BzYW1zdW5nLmNv
-bT4KLS0tCiBkcml2ZXJzL3N0YWdpbmcvb2N0ZW9uL2V0aGVybmV0LXJ4LmMgfCAgICAyICsrCiAx
-IGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
-aXQgYS9kcml2ZXJzL3N0YWdpbmcvb2N0ZW9uL2V0aGVybmV0LXJ4LmMgYi9kcml2ZXJzL3N0YWdp
-bmcvb2N0ZW9uL2V0aGVybmV0LXJ4LmMKaW5kZXggYjJiNmMzYy4uNDRlMzcyZiAxMDA2NDQKLS0t
-IGEvZHJpdmVycy9zdGFnaW5nL29jdGVvbi9ldGhlcm5ldC1yeC5jCisrKyBiL2RyaXZlcnMvc3Rh
-Z2luZy9vY3Rlb24vZXRoZXJuZXQtcnguYwpAQCAtMjg2LDYgKzI4Niw3IEBAIHN0YXRpYyBpbnQg
-Y3ZtX29jdF9uYXBpX3BvbGwoc3RydWN0IG5hcGlfc3RydWN0ICpuYXBpLCBpbnQgYnVkZ2V0KQog
-CQkJZGlkX3dvcmtfcmVxdWVzdCA9IDE7CiAJCX0KIAorI2lmbmRlZiBDT05GSUdfUlBTCiAJCWlm
-IChyeF9jb3VudCA9PSAwKSB7CiAJCQkvKgogCQkJICogRmlyc3QgdGltZSB0aHJvdWdoLCBzZWUg
-aWYgdGhlcmUgaXMgZW5vdWdoCkBAIC0zMDAsNiArMzAxLDcgQEAgc3RhdGljIGludCBjdm1fb2N0
-X25hcGlfcG9sbChzdHJ1Y3QgbmFwaV9zdHJ1Y3QgKm5hcGksIGludCBidWRnZXQpCiAJCQlpZiAo
-YmFja2xvZyA+IGJ1ZGdldCAqIGNvcmVzX2luX3VzZSAmJiBuYXBpICE9IE5VTEwpCiAJCQkJY3Zt
-X29jdF9lbmFibGVfb25lX2NwdSgpOwogCQl9CisjZW5kaWYKIAkJcnhfY291bnQrKzsKIAogCQlz
-a2JfaW5faHcgPSBVU0VfU0tCVUZGU19JTl9IVyAmJiB3b3JrLT53b3JkMi5zLmJ1ZnMgPT0gMTsK
-LS0gCjEuNy4wLjEK
+A default dma_alloc_coherent() fails to alloc a coherent memory on non-coherent
+systems in case of device->coherent_dma_mask covering the whole memory space.
+
+In case of non-coherent systems the coherent memory on MIPS is restricted by
+size of un-cachable segment and should be located in ZONE_DMA.
+
+Added __GFP_DMA flag in case of non-coherent systems to enforce an allocation
+of coherent memory in ZONE_DMA.
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+---
+ .../include/asm/mach-cavium-octeon/dma-coherence.h |    2 +-
+ arch/mips/include/asm/mach-generic/dma-coherence.h |    2 +-
+ arch/mips/include/asm/mach-ip27/dma-coherence.h    |    2 +-
+ arch/mips/include/asm/mach-ip32/dma-coherence.h    |    2 +-
+ arch/mips/include/asm/mach-jazz/dma-coherence.h    |    2 +-
+ .../mips/include/asm/mach-loongson/dma-coherence.h |    2 +-
+ arch/mips/mm/dma-default.c                         |   11 ++++++++---
+ 7 files changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+index f9f4486..fe0b465 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+@@ -52,7 +52,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 	return 0;
+ }
+ 
+-static inline int plat_device_is_coherent(struct device *dev)
++static inline int plat_device_is_coherent(const struct device *dev)
+ {
+ 	return 1;
+ }
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index b4563df..2283996 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -47,7 +47,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 	return 1;
+ }
+ 
+-static inline int plat_device_is_coherent(struct device *dev)
++static inline int plat_device_is_coherent(const struct device *dev)
+ {
+ #ifdef CONFIG_DMA_COHERENT
+ 	return 1;
+diff --git a/arch/mips/include/asm/mach-ip27/dma-coherence.h b/arch/mips/include/asm/mach-ip27/dma-coherence.h
+index 4ffddfd..c7767e3 100644
+--- a/arch/mips/include/asm/mach-ip27/dma-coherence.h
++++ b/arch/mips/include/asm/mach-ip27/dma-coherence.h
+@@ -58,7 +58,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 	return 1;
+ }
+ 
+-static inline int plat_device_is_coherent(struct device *dev)
++static inline int plat_device_is_coherent(const struct device *dev)
+ {
+ 	return 1;		/* IP27 non-cohernet mode is unsupported */
+ }
+diff --git a/arch/mips/include/asm/mach-ip32/dma-coherence.h b/arch/mips/include/asm/mach-ip32/dma-coherence.h
+index 104cfbc..a6b6a55 100644
+--- a/arch/mips/include/asm/mach-ip32/dma-coherence.h
++++ b/arch/mips/include/asm/mach-ip32/dma-coherence.h
+@@ -80,7 +80,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 	return 1;
+ }
+ 
+-static inline int plat_device_is_coherent(struct device *dev)
++static inline int plat_device_is_coherent(const struct device *dev)
+ {
+ 	return 0;		/* IP32 is non-cohernet */
+ }
+diff --git a/arch/mips/include/asm/mach-jazz/dma-coherence.h b/arch/mips/include/asm/mach-jazz/dma-coherence.h
+index 949003e..57c1a6c 100644
+--- a/arch/mips/include/asm/mach-jazz/dma-coherence.h
++++ b/arch/mips/include/asm/mach-jazz/dma-coherence.h
+@@ -48,7 +48,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 	return 1;
+ }
+ 
+-static inline int plat_device_is_coherent(struct device *dev)
++static inline int plat_device_is_coherent(const struct device *dev)
+ {
+ 	return 0;
+ }
+diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+index 6a90275..555d21b 100644
+--- a/arch/mips/include/asm/mach-loongson/dma-coherence.h
++++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+@@ -69,7 +69,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 	return 1;
+ }
+ 
+-static inline int plat_device_is_coherent(struct device *dev)
++static inline int plat_device_is_coherent(const struct device *dev)
+ {
+ #ifdef CONFIG_DMA_NONCOHERENT
+ 	return 0;
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 42c819a..36e2237 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -69,7 +69,7 @@ static inline int cpu_needs_post_dma_flush(struct device *dev)
+ 		boot_cpu_type() == CPU_BMIPS5000);
+ }
+ 
+-static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
++static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp, int coherent)
+ {
+ 	gfp_t dma_flag;
+ 
+@@ -81,6 +81,11 @@ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+ 		dma_flag = __GFP_DMA;
+ 	else
+ #endif
++#ifdef CONFIG_ZONE_DMA
++	     if (coherent && !plat_device_is_coherent(dev))
++			dma_flag = __GFP_DMA;
++	else
++#endif
+ #if defined(CONFIG_ZONE_DMA32) && defined(CONFIG_ZONE_DMA)
+ 	     if (dev->coherent_dma_mask < DMA_BIT_MASK(32))
+ 			dma_flag = __GFP_DMA;
+@@ -111,7 +116,7 @@ void *dma_alloc_noncoherent(struct device *dev, size_t size,
+ {
+ 	void *ret;
+ 
+-	gfp = massage_gfp_flags(dev, gfp);
++	gfp = massage_gfp_flags(dev, gfp, 0);
+ 
+ 	ret = (void *) __get_free_pages(gfp, get_order(size));
+ 
+@@ -132,7 +137,7 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 	if (dma_alloc_from_coherent(dev, size, dma_handle, &ret))
+ 		return ret;
+ 
+-	gfp = massage_gfp_flags(dev, gfp);
++	gfp = massage_gfp_flags(dev, gfp, 1);
+ 
+ 	ret = (void *) __get_free_pages(gfp, get_order(size));
+ 

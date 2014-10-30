@@ -1,53 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 00:23:01 +0100 (CET)
-Received: from mail-qc0-f182.google.com ([209.85.216.182]:46504 "EHLO
-        mail-qc0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011766AbaJ2XW7DBuzO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 00:22:59 +0100
-Received: by mail-qc0-f182.google.com with SMTP id m20so3259358qcx.41
-        for <multiple recipients>; Wed, 29 Oct 2014 16:22:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=tK87EsHKcxc/nGVI/4Gh87o3EivxQ00qWKNBzMlVEI8=;
-        b=hl0nHbBBvwdKRVonZtr8wcxgcQn5oCAsPri6Q6iL1ltcHA3ug/fsW9ZTW6ViRXT5yc
-         7Q8ZHpSqRTN+4zWfIW5yLUMPRuuoz9Z1unhq8HD5DM7osOBjc01UtEzkJNEh/v6A3Kbn
-         fXVdQS+ij2cLdYjMoR0h5HlsqLQKhgDtyPnv0jUkQsXDFECosYfBnjJaASlZiR6O7gcY
-         P2tl4yvIDQ/o+yjwdXpOxsV49K/FIbRhKvBuANyEoH1AIVGZIUCvtW9I6qDaKPQYWmSD
-         FFGemMIATGUIbx+wK16vsq14Bivf3tpsr67PDqQNyUHiRcgnWXXYWs330N4fT2fFEBTI
-         2drw==
-X-Received: by 10.140.91.87 with SMTP id y81mr19609574qgd.52.1414624971737;
- Wed, 29 Oct 2014 16:22:51 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Wed, 29 Oct 2014 16:22:31 -0700 (PDT)
-In-Reply-To: <7518897.LmfE2WsusV@wuerfel>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
- <1414555138-6500-10-git-send-email-cernekee@gmail.com> <7518897.LmfE2WsusV@wuerfel>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Wed, 29 Oct 2014 16:22:31 -0700
-Message-ID: <CAJiQ=7D+QhFjg7mR49KE2Lu1SC72djBLhbv4sC37tSTga+BVCQ@mail.gmail.com>
-Subject: Re: [PATCH 10/11] irqchip: bcm7120-l2: Extend driver to support 64+
- bit controllers
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 02:09:12 +0100 (CET)
+Received: from mailout3.samsung.com ([203.254.224.33]:64651 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012203AbaJ3BJIjFTKd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 02:09:08 +0100
+Received: from epcpsbgr4.samsung.com
+ (u144.gpu120.samsung.co.kr [203.254.230.144])
+ by mailout3.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTP id <0NE800JK0GJ1CY40@mailout3.samsung.com> for
+ linux-mips@linux-mips.org; Thu, 30 Oct 2014 10:09:01 +0900 (KST)
+Received: from epcpsbgx3.samsung.com ( [203.254.230.44])
+        by epcpsbgr4.samsung.com (EPCPMTA) with SMTP id A7.77.18167.DAF81545; Thu,
+ 30 Oct 2014 10:09:01 +0900 (KST)
+X-AuditID: cbfee690-f79ab6d0000046f7-28-54518fad73ca
+Received: from epmailer02 ( [203.254.219.142])
+        by epcpsbgx3.samsung.com (EPCPMTA) with SMTP id 11.44.14702.DAF81545; Thu,
+ 30 Oct 2014 10:09:01 +0900 (KST)
+Date:   Thu, 30 Oct 2014 01:09:01 +0000 (GMT)
+From:   Eunbong Song <eunb.song@samsung.com>
+Subject: [PATCH] staging: octeon-ethernet: disable load balance for receiving
+ packet when CONFIG_RPS is enabled.
+To:     "ralf@linux-mips.org" <ralf@linux-mips.org>, david.daney@cavium.com
+Cc:     gregkh@linuxfoundation.org, linux-mips@linux-mips.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Reply-to: eunb.song@samsung.com
+MIME-version: 1.0
+X-MTR:  20141030010643849@eunb.song
+Msgkey: 20141030010643849@eunb.song
+X-EPLocale: ko_KR.euc-kr
+X-Priority: 3
+X-EPWebmail-Msg-Type: personal
+X-EPWebmail-Reply-Demand: 0
+X-EPApproval-Locale: 
+X-EPHeader: ML
+X-MLAttribute: 
+X-RootMTR: 20141030010643849@eunb.song
+X-ParentMTR: 
+X-ArchiveUser: EV
+X-CPGSPASS: N
+X-ConfirmMail: N,general
+Content-transfer-encoding: base64
+Content-type: text/plain; charset=euc-kr
+MIME-version: 1.0
+Message-id: <141769840.281701414631339613.JavaMail.weblogic@epmlwas07d>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprHJsWRmVeSWpSXmKPExsVy+t8zHd21/YEhBvt/81lMmDqJ3YHR4+jK
+        tUwBjFENjDaJRckZmWWpCql5yfkpmXnptkqhIW66FkoKGfnFJbZK0UYGxnpGpiZ6RibmepYG
+        sVZGpkoKeYm5qbZKFbpQvUoKRckFQLW5lcVAA3JS9aDiesWpeSkOWfmlIKfoFSfmFpfmpesl
+        5+cqKZQl5pQCjVDST5jKmPHsRhN7wQPuimPXetkaGLdwdzFycggJqEi0/P/OCGJLCJhI/H63
+        EMoWk7hwbz1bFyMXUM0yRolDB06zwxTdPdfBDJGYwyix++RKVpAEi4CqxOvf09hAbDYBbYkf
+        B64yg9jCAgUSK7t2gdkiAn4Sx27/ZwdpZhZoY5T4//Y9O8QZ8hKTT18Gs3kFBCVOznzCArFN
+        SeLGoxaouLLEhbmHmCHiEhKzpl9ghbB5JWa0P4Wql5OY9nUNVI20xPlZG+DeWfz9MVScH+iI
+        HUwQtoDE1DMHoWrUJbZtuc8GYfNJrFn4FmqmoMTpa93MMLvub5nLBHPD1pYnYDcwCyhKTOl+
+        yA5ha0l8+bGPDd0vvALuEu1besFBKiEwkUPi7cte5gmMSrOQ1M1CMmsWklnIahYwsqxiFE0t
+        SC4oTkovMkGO8E2MkIQ4YQfjvQPWhxgFOBiVeHgd0gJChFgTy4orcw8xJgMjaiKzlGhyPjDt
+        5pXEGxqbGVmYmpgaG5lbmmEIm5haWJgY4RBWEud9LfUzWEggPbEkNTs1tSC1KL6oNCe1+BAj
+        EwenVANjxtWL5Qxlp6y+/6u7kyWnOnVL4iOPi80+HOueL5g9WWXd2UObIoX6rr+crGhxvJQ5
+        y2v9Y3PW9UozHs79ZPSTY8Yhlb1MOgvCFzZPCfZ1jEvad7rDzFGH0/tNjuirBoUWxjP6UUfa
+        /p1kS7598MLeB2tP9U06seLR6Vc7fh2Y/49ljXBS+OFVdkosxRmJhlrMRcWJABPcNw6xAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNKsWRmVeSWpSXmKPExsVy+t/tPt21/YEhBvPm8FhMmDqJ3YHR4+jK
+        tUwBjFEZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaWFuZKCnmJuam2Si4+AbpumTlA
+        U5UUyhJzSoFCAYnFxUr6djZF+aUlqQoZ+cUltkrRRgbGekamJnpGxgZ6JgaxVoYGBkamQFUJ
+        GRnPbjSxFzzgrjh2rZetgXELdxcjJ4eQgIpEy//vjCC2hICJxN1zHcwQtpjEhXvr2boYuYBq
+        5jBK7D65khUkwSKgKvH69zQ2EJtNQFvix4GrYA3CAgUSK7t2gdkiAn4Sx27/ZwdpZhZoY5T4
+        //Y9O8Q2eYnJpy+D2bwCghInZz5hgdimJHHjUQtUXFniwtxDUFdISMyafoEVwuaVmNH+FKpe
+        TmLa1zVQNdIS52dtYIS5evH3x1BxfqAjdjBB2AISU88chKpRl9i25T4bhM0nsWbhW6iZghKn
+        r3Uzw+y6v2UuE8wNW1uegN3ALKAoMaX7ITuErSXx5cc+NnS/8Aq4S7Rv6WWbwCg7C0lqFpL2
+        WUjakdUsYGRZxSiaWpBcUJyUXmGsV5yYW1yal66XnJ+7iRGckJ4t3sH4/7z1IUYBDkYlHt4X
+        yQEhQqyJZcWVuYcYJTiYlUR4RToCQ4R4UxIrq1KL8uOLSnNSiw8xmgKjbSKzlGhyPjBZ5pXE
+        GxobGBsaWpobmBoaWSiJ88bfSgoSEkhPLEnNTk0tSC2C6WPi4JRqYDTbfNrw5o1mPtOkXUd7
+        ++q2brKIMuR5z7ut8Ktd3Dr5TM77PUVWutZz1qoanMw/5J3VdP9Qmtt6zshHD3rjzVVmFe9v
+        uqvdm7fBY6bFhulLH7iI9WqxHFka9vKibO+GTSxf961ZMbOM0/VC/8aP3LKnw5wDLdwMHle6
+        TpG9tlmlfLFIWLudjRJLcUaioRZzUXEiANQcoFBeAwAA
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+Return-Path: <eunb.song@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43736
+X-archive-position: 43737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: eunb.song@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,48 +94,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 29, 2014 at 12:53 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> On Tuesday 28 October 2014 20:58:57 Kevin Cernekee wrote:
->> Most implementations of the bcm7120-l2 controller only have a single
->> 32-bit enable word + 32-bit status word.  But some instances have added
->> more enable/status pairs in order to support 64+ IRQs (which are all
->> ORed into one parent IRQ input).  Make the following changes to allow
->> the driver to support this:
->>
->>  - Extend DT bindings so that multiple words can be specified for the
->>    reg property, various masks, etc.
->>
->>  - Add loops to the probe/handle functions to deal with each word
->>    separately
->>
->>  - Allocate 1 generic-chip for every 32 IRQs, so we can still use the
->>    clr/set helper functions
->>
->>  - Update the documentation
->>
->> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
->
-> You should probably specify a 'big-endian' DT property for the driver
-> to check. If you have both LE and BE versions of this device, we
-> must make sure that we use the correct accessors.
->
-> As long as we don't need to build a kernel that supports both (if
-> I understand you correctly, the ARM SoCs use a LE instance of this
-> device, while the MIPS SoCs use a BE version) you can still decide
-> at compile-time which one you want, but please add the runtime check
-> now, so if we ever get a new combination we can handle it at runtime
-> with a more complex driver implementation.
-
-Under discussion in the other thread...
-
-> If I read your code right, you have decided to use one IRQ domain
-> per register set, rather than one domain for all of them. I don't
-> know which of the two ways is better here, but it would be good if
-> you could explain in the patch description why you did it like this.
-
-This uses one domain per bcm7120-l2 DT node.  If the DT node defines
-multiple enable/status pairs (i.e. >=64 IRQs) then the driver will
-create a single IRQ domain with 2+ generic chips.
-
-Multiple generic chips are required because the generic-chip code can
-only handle one enable/status register pair per instance.
+Ckl0J3MgYmV0dGVyIGRpc2FibGUgbG9hZCBiYWxhbmNlIGZvciByZWNlaXZpbmcgcGFja2V0IHdo
+ZW4gQ09ORklHX1JQUyBpcyBlbmFibGVkLgpJZiBub3QsIG9jdGVvbi1ldGhlcm5ldCBkcml2ZXIg
+c2VsZWN0IENQVSBhbmQgdGhlbiB0aGUgcnBzIHNlbGVjdCBhZ2FpbiBDUFUuCkl0IGNhbiBiZSBp
+cGkgaW50ZXJydXB0cyBvdmVyaGVhZCBhbmQgcGFja2V0IHJlb3JkZXJpbmcgY291bGQgYmUgcG9z
+c2libGUuCgpTaWduZWQtb2ZmLWJ5OiBFdW5ib25nIFNvbmcgPGV1bmIuc29uZ0BzYW1zdW5nLmNv
+bT4KLS0tCiBkcml2ZXJzL3N0YWdpbmcvb2N0ZW9uL2V0aGVybmV0LXJ4LmMgfCAgICAyICsrCiAx
+IGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3N0YWdpbmcvb2N0ZW9uL2V0aGVybmV0LXJ4LmMgYi9kcml2ZXJzL3N0YWdp
+bmcvb2N0ZW9uL2V0aGVybmV0LXJ4LmMKaW5kZXggYjJiNmMzYy4uNDRlMzcyZiAxMDA2NDQKLS0t
+IGEvZHJpdmVycy9zdGFnaW5nL29jdGVvbi9ldGhlcm5ldC1yeC5jCisrKyBiL2RyaXZlcnMvc3Rh
+Z2luZy9vY3Rlb24vZXRoZXJuZXQtcnguYwpAQCAtMjg2LDYgKzI4Niw3IEBAIHN0YXRpYyBpbnQg
+Y3ZtX29jdF9uYXBpX3BvbGwoc3RydWN0IG5hcGlfc3RydWN0ICpuYXBpLCBpbnQgYnVkZ2V0KQog
+CQkJZGlkX3dvcmtfcmVxdWVzdCA9IDE7CiAJCX0KIAorI2lmbmRlZiBDT05GSUdfUlBTCiAJCWlm
+IChyeF9jb3VudCA9PSAwKSB7CiAJCQkvKgogCQkJICogRmlyc3QgdGltZSB0aHJvdWdoLCBzZWUg
+aWYgdGhlcmUgaXMgZW5vdWdoCkBAIC0zMDAsNiArMzAxLDcgQEAgc3RhdGljIGludCBjdm1fb2N0
+X25hcGlfcG9sbChzdHJ1Y3QgbmFwaV9zdHJ1Y3QgKm5hcGksIGludCBidWRnZXQpCiAJCQlpZiAo
+YmFja2xvZyA+IGJ1ZGdldCAqIGNvcmVzX2luX3VzZSAmJiBuYXBpICE9IE5VTEwpCiAJCQkJY3Zt
+X29jdF9lbmFibGVfb25lX2NwdSgpOwogCQl9CisjZW5kaWYKIAkJcnhfY291bnQrKzsKIAogCQlz
+a2JfaW5faHcgPSBVU0VfU0tCVUZGU19JTl9IVyAmJiB3b3JrLT53b3JkMi5zLmJ1ZnMgPT0gMTsK
+LS0gCjEuNy4wLjEK

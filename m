@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 03:24:55 +0100 (CET)
-Received: from mail-pd0-f171.google.com ([209.85.192.171]:39331 "EHLO
-        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012266AbaJ3CUJoYeLp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 03:20:09 +0100
-Received: by mail-pd0-f171.google.com with SMTP id r10so4160933pdi.30
-        for <multiple recipients>; Wed, 29 Oct 2014 19:20:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 05:17:14 +0100 (CET)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:46221 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010223AbaJ3ERIszkIT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 05:17:08 +0100
+Received: by mail-pa0-f50.google.com with SMTP id eu11so4655777pac.9
+        for <multiple recipients>; Wed, 29 Oct 2014 21:17:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=l0UW4vjW5BTXEkBSI9xBmNpRZZKZl6xrpgccFpmfzvc=;
-        b=rJ+mjn/m//kNOC9bv22pJivEGh9Cff7OpE8wqfE4gV4R3xrz+6RuyAWCuwRaP/W7UX
-         WGK09Ftc4j+4zgRoRH401EIgBrY8cy9KiRzNJuu1+BhElVCk68Sx6xmKQh3KSTaB7DMN
-         0U9Ec3wOGPrWBUpUIZceypsn0rKEoV7MctH5jP3TsckPJnM8kKCZtgS4QAygzjnYXvEY
-         +gjlWgb7F+9DcSXu3YDCPURU7LSYI/5oD3BjIZGInwxm4oaRpKlcetNtop8duL8ptmkl
-         W9Q5Tq0gcURRDZIW2Wnd11ekOsZvanTc3XsTbd8sN2Mxrtk61W+sO6p0r6Va2oha5AWg
-         aQ6g==
-X-Received: by 10.68.235.103 with SMTP id ul7mr14062826pbc.63.1414635601843;
-        Wed, 29 Oct 2014 19:20:01 -0700 (PDT)
-Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id d17sm5524269pdj.32.2014.10.29.19.20.00
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=1u2upSM6tjE3aN6e5V3UG1rfYS4lMhb4iQ8zBdfdMTM=;
+        b=ly+gOdPvIs5cWW7GRYdFUnqmuxm8vijXw+zGMX73l0JTMhSnZ0bwsEWaIfb2iKo4mG
+         VYKYDETh/F5BzSjYPSH/BfhW0BLL/z7kSzE2uJXwDxvMoR7bfFUxcz/GLfcPcmvPRsGC
+         0RW6clXyVwPlskU+he6mTY2oeQAkVBn9hQFgW7Nwwjxzw7hJbyIy1qvA17dS2eIE3ryx
+         I5vaC4NwM4V7jrbd6ifKSFqY4WaFJrL1IKrFabgr95OnyEWxzulbwRUeUjZV1Q2NqBqk
+         h6ywBL0lRXZVjdc+iUjEfNauqTtVWRdQnArhFrC6K/11sYu64sp1Ta20qCuNcY3i55z/
+         pS6g==
+X-Received: by 10.68.68.132 with SMTP id w4mr14488356pbt.93.1414642622295;
+        Wed, 29 Oct 2014 21:17:02 -0700 (PDT)
+Received: from brian-ubuntu (cpe-76-173-170-164.socal.res.rr.com. [76.173.170.164])
+        by mx.google.com with ESMTPSA id nq2sm5689531pdb.74.2014.10.29.21.17.00
         for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 29 Oct 2014 19:20:01 -0700 (PDT)
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     arnd@arndb.de, f.fainelli@gmail.com, tglx@linutronix.de,
-        jason@lakedaemon.net, ralf@linux-mips.org, lethal@linux-sh.org
-Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Wed, 29 Oct 2014 21:17:01 -0700 (PDT)
+Date:   Wed, 29 Oct 2014 21:16:58 -0700
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     arnd@arndb.de, f.fainelli@gmail.com, tglx@linutronix.de,
+        jason@lakedaemon.net, ralf@linux-mips.org, lethal@linux-sh.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: [PATCH V2 15/15] irqchip: bcm7120-l2: Enable big endian register accesses on BE kernels
-Date:   Wed, 29 Oct 2014 19:18:08 -0700
-Message-Id: <1414635488-14137-16-git-send-email-cernekee@gmail.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1414635488-14137-1-git-send-email-cernekee@gmail.com>
+Subject: Re: [PATCH V2 06/15] genirq: Generic chip: Optimize for fixed-endian
+ systems
+Message-ID: <20141030041658.GB29070@brian-ubuntu>
 References: <1414635488-14137-1-git-send-email-cernekee@gmail.com>
-Return-Path: <cernekee@gmail.com>
+ <1414635488-14137-7-git-send-email-cernekee@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1414635488-14137-7-git-send-email-cernekee@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43754
+X-archive-position: 43755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,61 +61,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On all supported SoCs, the kernel will be built with CONFIG_CPU_BIG_ENDIAN
-iff the CPU is running in BE mode.  Leverage this fact to autodetect
-the MMIO byte ordering to use in generic-chip.c.
+On Wed, Oct 29, 2014 at 07:17:59PM -0700, Kevin Cernekee wrote:
+> @@ -19,7 +20,14 @@ static DEFINE_RAW_SPINLOCK(gc_lock);
+>  
+>  static int is_big_endian(struct irq_chip_generic *gc)
+>  {
+> -	return !!(gc->domain->gc->gc_flags & IRQ_GC_BE_IO);
+> +	if (IS_ENABLED(CONFIG_GENERIC_IRQ_CHIP) &&
+> +	    !IS_ENABLED(CONFIG_GENERIC_IRQ_CHIP_BE))
+> +		return 0;
+> +	else if (IS_ENABLED(CONFIG_GENERIC_IRQ_CHIP_BE) &&
+> +		 !IS_ENABLED(CONFIG_GENERIC_IRQ_CHIP))
+> +		return 1;
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- drivers/irqchip/Kconfig          | 2 ++
- drivers/irqchip/irq-bcm7120-l2.c | 9 ++++++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+Would XOR make this any easier to read? e.g.:
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index afdc1f3..db44694 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -51,11 +51,13 @@ config ATMEL_AIC5_IRQ
- config BCM7120_L2_IRQ
- 	bool
- 	select GENERIC_IRQ_CHIP
-+	select GENERIC_IRQ_CHIP_BE
- 	select IRQ_DOMAIN
- 
- config BRCMSTB_L2_IRQ
- 	bool
- 	select GENERIC_IRQ_CHIP
-+	select GENERIC_IRQ_CHIP_BE
- 	select IRQ_DOMAIN
- 
- config DW_APB_ICTL
-diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index e53a3a6..5324249 100644
---- a/drivers/irqchip/irq-bcm7120-l2.c
-+++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -132,7 +132,7 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
- 	const __be32 *map_mask;
- 	int num_parent_irqs;
- 	int ret = 0, len;
--	unsigned int idx, irq;
-+	unsigned int idx, irq, flags;
- 
- 	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
-@@ -195,9 +195,12 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
- 		goto out_unmap;
- 	}
- 
-+	flags = IRQ_GC_INIT_MASK_CACHE;
-+	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-+		flags |= IRQ_GC_BE_IO;
-+
- 	ret = irq_alloc_domain_generic_chips(data->domain, IRQS_PER_WORD, 1,
--				dn->full_name, handle_level_irq, clr, 0,
--				IRQ_GC_INIT_MASK_CACHE);
-+				dn->full_name, handle_level_irq, clr, 0, flags);
- 	if (ret) {
- 		pr_err("failed to allocate generic irq chip\n");
- 		goto out_free_domain;
--- 
-2.1.1
+	if (IS_ENABLED(CONFIG_GENERIC_IRQ_CHIP) ^
+	    IS_ENABLED(CONFIG_GENERIC_IRQ_CHIP_BE))
+		return IS_ENABLED(CONFIG_GENERIC_IRQ_CHIP_BE);
+	else
+		...
+
+> +	else
+> +		return !!(gc->domain->gc->gc_flags & IRQ_GC_BE_IO);
+>  }
+>  
+>  static void irq_reg_writel(struct irq_chip_generic *gc,
+
+Brian

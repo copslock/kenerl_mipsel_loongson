@@ -1,40 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 10:07:05 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.187]:57453 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 10:10:17 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.17.24]:61824 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012245AbaJ3JG769yws (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 10:06:59 +0100
+        with ESMTP id S27012246AbaJ3JKL3DwVw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 10:10:11 +0100
 Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
-        id 0MAASz-1XuRrJ1Arp-00BM3L; Thu, 30 Oct 2014 10:06:52 +0100
+        by mrelayeu.kundenserver.de (node=mreue104) with ESMTP (Nemesis)
+        id 0LiUpQ-1YMPwW0wm4-00cku2; Thu, 30 Oct 2014 10:10:04 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Kevin Cernekee <cernekee@gmail.com>, f.fainelli@gmail.com,
-        jason@lakedaemon.net, ralf@linux-mips.org, lethal@linux-sh.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH V2 03/15] genirq: Generic chip: Move irq_reg_{readl,writel} accessors into generic-chip.c
-Date:   Thu, 30 Oct 2014 10:06:51 +0100
-Message-ID: <6552163.gt4ABVyYlA@wuerfel>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 10/11] irqchip: bcm7120-l2: Extend driver to support 64+ bit controllers
+Date:   Thu, 30 Oct 2014 10:10:03 +0100
+Message-ID: <1819614.RKinL4RR5c@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <alpine.DEB.2.11.1410300941290.5308@nanos>
-References: <1414635488-14137-1-git-send-email-cernekee@gmail.com> <1414635488-14137-4-git-send-email-cernekee@gmail.com> <alpine.DEB.2.11.1410300941290.5308@nanos>
+In-Reply-To: <CAJiQ=7D+QhFjg7mR49KE2Lu1SC72djBLhbv4sC37tSTga+BVCQ@mail.gmail.com>
+References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <7518897.LmfE2WsusV@wuerfel> <CAJiQ=7D+QhFjg7mR49KE2Lu1SC72djBLhbv4sC37tSTga+BVCQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:gfzDjLTecc2L7VX+0HAgY1/wdJkjqZy0Zay/zOLZhK+
- Vu0K7I+ZdhuxNrAMlbkpvua7VgTqt+8KyXnmN4YcC0WhxrGQkY
- sz9oKRqbxbNMj7665jbwkg2jqNuW2HJROWVL2PLPH6iEqhjgCp
- +cAMhwWdNhHfLrVqrCHl3CzxMmO7pni5859GKPVg5K2E/ZYvqX
- m1nrzDt1Js2pcMnxprF8D/A/CrzS7he5lJh4t0wmnX5aehJ/V8
- 7lniCt7Aokd8TraRH+/Ei+ibpm9y+vYynXfn2JpzJ7KXrWOJks
- HAM8SBz4kzZypukJ/a3omRvt74bfs/PmE+XlILmnTeTswEQtw0
- VWJu55w0FDlDkzeReqnw=
+X-Provags-ID: V02:K0:jbNa0XWXVSPjIKP3903oQzg6yEIckIBIV4MJOoTZtVn
+ cwRqT8a80s0LlcZTh1p/xhYJnVshA2ppI409oUm3ChjTkC7sA7
+ znKEQg3XYqDjXnpzk18M/4ncemMuHTjVEdwj/PaSX8zg1EAxcM
+ 8ExSp4hDYX+1qQj139wTWGXyxySTTGbb5HliewO7LH+54fJPZX
+ tW5Uuw2FttQ9cFvKMRrwZDIB/s4N/1YvsNZhYEbmo1jKHZem2m
+ SP6hP61ugZx1/1HF5q1e/sFbQ6TXaMbcXD+ZlZGI87PP0lZ7K7
+ j5dCWsIsLCYn4YCsGp56neiV3/f1J0KLk5NfhoDhi2lVBwrlQT
+ qTfJKQPkett+DPz33EvQ=
 X-UI-Out-Filterresults: notjunk:1;
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43760
+X-archive-position: 43761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,32 +56,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 30 October 2014 09:43:02 Thomas Gleixner wrote:
-> > diff --git a/include/linux/irq.h b/include/linux/irq.h
-> > index 03f48d9..8049e93 100644
-> > --- a/include/linux/irq.h
-> > +++ b/include/linux/irq.h
-> > @@ -639,13 +639,6 @@ void arch_teardown_hwirq(unsigned int irq);
-> >  void irq_init_desc(unsigned int irq);
-> >  #endif
-> >  
-> > -#ifndef irq_reg_writel
-> > -# define irq_reg_writel(val, addr)   writel(val, addr)
-> > -#endif
-> > -#ifndef irq_reg_readl
-> > -# define irq_reg_readl(addr)         readl(addr)
-> > -#endif
-> > -
+On Wednesday 29 October 2014 16:22:31 Kevin Cernekee wrote:
 > 
-> Brilliant patch that.
+> This uses one domain per bcm7120-l2 DT node.  If the DT node defines
+> multiple enable/status pairs (i.e. >=64 IRQs) then the driver will
+> create a single IRQ domain with 2+ generic chips.
 > 
-> # git grep -l irq_reg_readl drivers/irqchip/
-> drivers/irqchip/irq-atmel-aic.c
-> drivers/irqchip/irq-atmel-aic5.c
-> drivers/irqchip/irq-sunxi-nmi.c
-> drivers/irqchip/irq-tb10x.c
+> Multiple generic chips are required because the generic-chip code can
+> only handle one enable/status register pair per instance.
+> 
 
-Patch 1/15 changes these all. I think it's still broken because patch 2/15
-is wrong, but it's not /that/ obviously broken.
+Makes sense. Just make sure you have that explanation in the patch
+description.
 
 	Arnd

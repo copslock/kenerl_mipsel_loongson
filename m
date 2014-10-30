@@ -1,49 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 10:59:02 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.131]:56376 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011905AbaJ3J7Akem4u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 10:59:00 +0100
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue002) with ESMTP (Nemesis)
-        id 0MClSU-1Xs3yY3ZJK-009QPc; Thu, 30 Oct 2014 10:58:45 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
-Date:   Thu, 30 Oct 2014 10:58:44 +0100
-Message-ID: <7309232.oJGU5dTioF@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAJiQ=7DWEr9Oej6=+3vqKL_fJd2-wvQjx2Xw4dYwyE3AGDXOUA@mail.gmail.com>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <22478002.kqKBdeLAKz@wuerfel> <CAJiQ=7DWEr9Oej6=+3vqKL_fJd2-wvQjx2Xw4dYwyE3AGDXOUA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 11:07:40 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:23962 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011905AbaJ3KHjaGgYz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 11:07:39 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 531B5BE3AB7E1;
+        Thu, 30 Oct 2014 10:07:30 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 30 Oct 2014 10:07:32 +0000
+Received: from [192.168.154.101] (192.168.154.101) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 30 Oct
+ 2014 10:07:31 +0000
+Message-ID: <54520DE4.9090008@imgtec.com>
+Date:   Thu, 30 Oct 2014 10:07:32 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:Iug792cKnoGQFknf3yuji5nXersgjxtqw0uBMLaEjTI
- cKdjtDXTDPTOGFL71ZPdXQhqdhxCeKoR2PWT/vL/ce4thxxXwb
- kfYtGhuj45JKRd6NmuD5vHje7ufUA1cyrsvMYPHmJEcn5lpskt
- RvJRNbcmihINt5RkIc7EihHTN0d3cv5X3ecSrC6AEHZhSyXg6Y
- H9Kg2Qk84Ebs2u+0Wvso4WM/LqTnmc8QP0HrvBTPIRVEdrTl+o
- eY2g+jCY0/+pug9Rqu20IuL7J8BOeDov6kJMVq8WxY4oCjY2kQ
- eyCd0r2AAmQVO8MQ9qzpVb1i811fC/HIxuz9lLzhC2ItU4Bu8h
- 9cW1YPqYuf4m3yjEHfZ8=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>, <nbd@openwrt.org>, <yanh@lemote.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <alex.smith@imgtec.com>, <taohl@lemote.com>, <chenhc@lemote.com>,
+        <blogic@openwrt.org>
+Subject: Re: [PATCH] MIPS: DMA: fix coherent alloc in non-coherent systems
+References: <20141030014753.13189.48344.stgit@linux-yegoshin>
+In-Reply-To: <20141030014753.13189.48344.stgit@linux-yegoshin>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.101]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43767
+X-archive-position: 43768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,135 +50,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday 29 October 2014 16:05:21 Kevin Cernekee wrote:
-> On Wed, Oct 29, 2014 at 2:13 PM, Arnd Bergmann <arnd@arndb.de> wrote:
-> > On Wednesday 29 October 2014 13:09:47 Kevin Cernekee wrote:
-> >> On Wed, Oct 29, 2014 at 12:14 PM, Arnd Bergmann <arnd@arndb.de> wrote:
-> >> >> The host CPU is connected to the peripheral/register interface using a
-> >> >> 32-bit wide data bus.  A simple 32-bit store originating from the host
-> >> >> CPU, targeted to an onchip SoC peripheral, will never need endian
-> >> >> swapping.  i.e. this code works equally well on all supported systems
-> >> >> regardless of endianness:
-> >> >>
-> >> >>     volatile u32 *foo = (void *)MY_REG_VA;
-> >> >>     *foo = 0x12345678;
-> >> >>
-> >> >> 8-bit and 16-bit accesses may be another story, but only appear in a
-> >> >> few very special peripherals.
-> >> >
-> >> > Sorry, but this makes no sense. If you run a little-endian kernel
-> >> > on one of the MIPS systems that you marked as "always BE", or a
-> >> > big-endian kernel on the systems that are marked "always LE",
-> >> > then you have to byte swap.
-> >>
-> >> If I ran an LE MIPS kernel on a BE system, it would hang on boot.  I
-> >> know this through experience.
-> >
-> > What is a "BE system" then? Is the CPU core not capable of running
-> > code either way?
+Hi Leonid,
+
+On 30/10/14 01:48, Leonid Yegoshin wrote:
+> A default dma_alloc_coherent() fails to alloc a coherent memory on non-coherent
+> systems in case of device->coherent_dma_mask covering the whole memory space.
 > 
-> On the MIPS BCM7xxx chips, LE/BE support was a design requirement.  So:
-> 
->  - The chips include a strap pin for LE/BE so it can be configured
-> through board jumpers.  This is the only supported method of switching
-> endianness.
-> 
->  - Endianness interactions and performance concerns have been analyzed
-> for all peripherals, buses, and data flows.
-> 
->  - As Florian mentioned earlier, the LE/BE strap preconfigures several
-> hardware blocks at boot time, e.g. telling the SPI controller how to
-> arrange the incoming data such that the MSB of each instruction word
-> read from flash shows up in the right place.
-> 
->  - The entire software stack (and even the cross toolchain) needs to
-> be compiled for either LE or BE.
-> 
-> So in this context a "BE system" is a BCM7xxx MIPS chip strapped for
-> BE, or one of the BCM33xx/BCM63xx/BCM68xx MIPS chips that is hardwired
-> and verified for BE only.
+> In case of non-coherent systems the coherent memory on MIPS is restricted by
+> size of un-cachable segment and should be located in ZONE_DMA.
 
-Ah, I think I understand what you mean now. So this strapping is done
-for legacy operating systems that are not endian-aware and hardwired
-to one or the other.
+Has this pretty much always been broken?
 
-In Linux, we don't care about that, we have the source and we can
-just make it run on any hardware we care about. If you port a kernel
-to such a platform, the best strategy is to ignore what the SoC
-vendor tried to do for the other OSs and set the chip into "never
-translate" in hardware so you can handle it correctly in the kernel.
+> @@ -81,6 +81,11 @@ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+>  		dma_flag = __GFP_DMA;
+>  	else
+>  #endif
+> +#ifdef CONFIG_ZONE_DMA
+> +	     if (coherent && !plat_device_is_coherent(dev))
 
-Presumably you want to keep the boot loader, so unfortunately
-that can mean having to override the setting in early kernel code
-before you touch any hardware. The nasty part is when the hardware
-designers put a byteswap logic in front of the flash, because then
-you have to create an image that stores the bootloader in opposite
-endianess from the kernel, but I'd assume that's still better than
-the hacks from the vendor BSP.
+Broken indentation. Please fix to use tabs.
 
-You have multiple problems if you rely on the byteswaps being
-done in hardware:
+> +			dma_flag = __GFP_DMA;
+> +	else
+> +#endif
+>  #if defined(CONFIG_ZONE_DMA32) && defined(CONFIG_ZONE_DMA)
+>  	     if (dev->coherent_dma_mask < DMA_BIT_MASK(32))
+>  			dma_flag = __GFP_DMA;
 
-- You can't build a kernel that runs on all SoCs, not even all
-  systems using the same SoC when that strapping pin gives you
-  two incompatible versions
+Other than that, this patch looks okay to me (but those with more
+experience with MIPS DMA than me may know better).
 
-- Any MMIO access to device memory storing byte streams (network
-  packets, audio, block, ...) will be swapped the same way that
-  the registers do, which means you now have to do the expensive
-  byte swaps (memcpy_fromio) in software instead of the cheap ones
-  (writel)
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
-- If the hardware swap was implemented wrong, all the addresses
-  for 8 or 16 bit MMIO registers are wrong too and you have to
-  fix them up in software, which is much worse than swapping the
-  contents.
-
-- It's impossible to share device drivers with saner hardware
-  platforms that let the CPU access MMIO registers in whichever
-  way the device expects it.
-
-> >> Does this actually work on other architectures like ARM?  I still see
-> >> compile-time checks for CONFIG_CPU_ENDIAN* in a couple of places under
-> >> arch/arm.
-> >
-> > Yes, it should work on any architecture that supports both modes. It
-> > definitely works on all ARM cores I know, and on most PowerPC cores.
-> > I always assumed that MIPS was bi-endian as well, but according to
-> > what you say I guess it is not.
-> >
-> > ARM and PowerPC can actually switch endianess in the kernel, and this
-> > is what they do in the first instruction when you run a different
-> > endianess from what the boot loader runs as it calls into the kernel.
-> > The ARM boot protocol requires entering the kernel in little-endian
-> > mode, while I think on PowerPC the boot loader is supposed to detect
-> > the format of the kernel binary and pick the right mode before calling
-> > it.
-> 
-> Is it the intention to allow runtime endian switching on any
-> ARM/PowerPC platform (even the Samsung products you mentioned)?  Or
-> only on the boards that were designed to operate this way?
-
-Any sane SoC will come without byteswapping on the buses, so that's
-trivial to handle. You just have to build kernel and userspace in the
-same endianess and have to ensure that all drivers use the correct
-accessors that match what the hardware does.
-
-The Samsung platforms get it wrong because they tried to optimize
-out the barriers implied by writel, before we had writel_relaxed.
-When nobody made a mistake like that, you can run a kernel of either
-endianess on any hardware.
-
-> Our problem becomes much simpler if we assume that the majority of
-> systems have a fixed endianness, and only a few special cases need to
-> accommodate the different kernel/register endianness permutations
-> you've listed.
-
-Good point. It seems that there is currently no support for BCM7xxx
-in upstream Linux, and that is the only one that has the crazy
-strapping pin, so I guess you could avoid a lot of the problems by
-changing the MIPS code to assume BE registers, and if anybody wants
-to submit BCM7xxx MIPS support to mainline, they have to make sure
-it's in the right mode.
-
-	Arnd
+Thanks
+James

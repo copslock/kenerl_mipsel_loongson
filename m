@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 18:17:19 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25007 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 19:38:26 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59141 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012259AbaJ3RRSCQjpb convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 18:17:18 +0100
+        with ESMTP id S27012328AbaJ3SiYOXsLW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 19:38:24 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 4A20140321EA3;
-        Thu, 30 Oct 2014 17:17:08 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+        by Websense Email Security Gateway with ESMTPS id 6EBA07342480C;
+        Thu, 30 Oct 2014 18:38:13 +0000 (GMT)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 30 Oct
- 2014 17:17:10 +0000
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 30 Oct 2014 17:17:10 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0195.001; Thu, 30 Oct 2014 17:17:10 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Manuel Lauss <manuel.lauss@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-CC:     Markos Chandras <Markos.Chandras@imgtec.com>
-Subject: RE: [RFC PATCH v4] MIPS: fix build with binutils 2.24.51+
-Thread-Topic: [RFC PATCH v4] MIPS: fix build with binutils 2.24.51+
-Thread-Index: AQHP71OuH0A1wmf7OU2YCIumpQwto5w/Cfgw
-Date:   Thu, 30 Oct 2014 17:17:10 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F3856D@LEMAIL01.le.imgtec.org>
-References: <1414132079-155342-1-git-send-email-manuel.lauss@gmail.com>
-In-Reply-To: <1414132079-155342-1-git-send-email-manuel.lauss@gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.152.76]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ 2014 18:38:17 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 30 Oct
+ 2014 18:38:16 +0000
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 30 Oct
+ 2014 11:38:13 -0700
+Message-ID: <54528595.8070009@imgtec.com>
+Date:   Thu, 30 Oct 2014 11:38:13 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <nbd@openwrt.org>, <yanh@lemote.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <alex.smith@imgtec.com>, <taohl@lemote.com>, <chenhc@lemote.com>,
+        <blogic@openwrt.org>
+Subject: Re: [PATCH] MIPS: DMA: fix coherent alloc in non-coherent systems
+References: <20141030014753.13189.48344.stgit@linux-yegoshin> <54520DE4.9090008@imgtec.com>
+In-Reply-To: <54520DE4.9090008@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43788
+X-archive-position: 43789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,63 +52,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Manuel,
-
-Sorry for taking a while to respond to you, from a toolchain perspective
-I think this patch is looking good with one extra change as below. I'll
-leave the kernel guys to comment further.
-
-Manuel Lauss <manuel.lauss@gmail.com> writes:
-> diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-> index 8352523..f21c046 100644
-> --- a/arch/mips/kernel/r4k_fpu.S
-> +++ b/arch/mips/kernel/r4k_fpu.S
-> @@ -33,10 +34,14 @@
->  	.set	arch=r4000
-> 
->  LEAF(_save_fp_context)
-> +	.set	push
-> +	SET_HARDFLOAT
->  	cfc1	t1, fcr31
-> +	.set	pop
-> 
->  #if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2)
->  	.set	push
-> +	SET_HARDFLOAT
->  #ifdef CONFIG_CPU_MIPS32_R2
->  	.set	mips64r2
-
-I know you haven't modified the lines with .set mips64r2 on them but
-they are not strictly correct.
-Instead of mips64r2 (which is dangerous to put in 32-bit code for a
-variety of reasons unless absolutely critical)... this should be:
-
-.set mips32r2
-.set fp=64
-
-There should be no need to protect this change based on assembler version
-as I believe .set fp=... support predates .set mips64r2. This change
-protects the kernel source from failing to build depending on how future
-toolchains are configured and it would be ideal to include in this patch
-to keep all these tweaks in one place.
-
-For the record the issue is that .set mips64r2 is getting used with the
-O32 ABI which is OK albeit weird. Under some circumstances the use of
-.set mips64r2 will result in implicitly setting fp=64 which is required
-for the SDC1 instructions which follow, however it will not always set
-fp=64. Markos has a set of tools which are configured such that .set
-mips64r2 used with an O32 ABI will not switch to 64-bit FP registers
-which is the reason he has seen a problem which you can't reproduce.
-
-> @@ -150,6 +161,7 @@ LEAF(_restore_fp_context)
-> 
->  #if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2)
->  	.set	push
-> +	SET_HARDFLOAT
->  #ifdef CONFIG_CPU_MIPS32_R2
->  	.set	mips64r2
-
-Likewise.
-
-Thanks,
-Matthew
+On 10/30/2014 03:07 AM, James Hogan wrote:
+> Hi Leonid,
+>
+> On 30/10/14 01:48, Leonid Yegoshin wrote:
+>> A default dma_alloc_coherent() fails to alloc a coherent memory on non-coherent
+>> systems in case of device->coherent_dma_mask covering the whole memory space.
+>>
+>> In case of non-coherent systems the coherent memory on MIPS is restricted by
+>> size of un-cachable segment and should be located in ZONE_DMA.
+> Has this pretty much always been broken?
+>
+>
+Yes, but it can be seen on MIPS32 EVA-based CPUs.

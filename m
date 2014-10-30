@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 20:04:06 +0100 (CET)
-Received: from mail-qc0-f178.google.com ([209.85.216.178]:62965 "EHLO
-        mail-qc0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012329AbaJ3TEEe99Mw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 20:04:04 +0100
-Received: by mail-qc0-f178.google.com with SMTP id b13so5379349qcw.9
-        for <multiple recipients>; Thu, 30 Oct 2014 12:03:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 20:24:42 +0100 (CET)
+Received: from mail-qg0-f43.google.com ([209.85.192.43]:40321 "EHLO
+        mail-qg0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012329AbaJ3TYlc5FbV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 20:24:41 +0100
+Received: by mail-qg0-f43.google.com with SMTP id f51so4520490qge.16
+        for <multiple recipients>; Thu, 30 Oct 2014 12:24:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=IaSlDUluxJlAFKvzfkSVZi8BbzeS8IQ6g9EpB/kj9hI=;
-        b=EVYjZc54tmyiYtQJqEMEksgPsS77X/5VdMZcKXQh2I+lazJr18bEONGEjxfiuI6aQd
-         4sZjLuvJTauytyu6Bl753S8DpQjxU+rrVztESsXr0B4Hbyms7Ty/siF2c7vuTMSTRgTg
-         RKtasGqfFU0THOqJeaE3lwAuoAAaul3HXY17VBwfjqIQZ2hqAj3thSWLDnAPLjSzBU+K
-         gDzTpZL6HqNEwWMK+ikHwkerZ0AqJhscZ0JBKCPyxd0MiSTYNXGV1l3nP6TvcyuIfof2
-         H0OG+gsVw52r2ZTOEe3fNf+vykzhcH/JGZplFtux8RERLcATKffWN8Lh4MNkfsthOZAL
-         b9ZQ==
-X-Received: by 10.140.48.41 with SMTP id n38mr28098675qga.1.1414695838365;
- Thu, 30 Oct 2014 12:03:58 -0700 (PDT)
+        bh=gqExm+Duij9xLRhxKkZsaNZWi7IoUVpm9RDwDcqBK2E=;
+        b=Dwm4zQ5tFm6+9Tt0ug+rERaYfuCleYEaKzHb4sM/4hXH31JWtkRnNmzjoKaD1UCgAP
+         qwcHoJ9VEawhu+aO3Eg5Q0hlLB6PK9GsVJ+vqdERymm83cAGQGZ/Yr0i3tth34nh+bL0
+         4btHP9BGhnFjxhZ44/DncmPrMRVI1lLbOtvzpT2x4hJVVztEaU7OJAcKMGKtzS01DfVq
+         8+F6Tm8MZXbG5eJSs/zxGIP/gm7gDxNGxpUPpDe4iY+fKnglyfxuPNj9DrY/BmrvxFBO
+         igKzsx67rRFcps+g9TcyShG4pYIWNHqI5FjRVHOv6rVfM5pAERalOBbTlM0rRduUJyKE
+         NOeA==
+X-Received: by 10.224.79.146 with SMTP id p18mr28100509qak.67.1414697062936;
+ Thu, 30 Oct 2014 12:24:22 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Thu, 30 Oct 2014 12:03:38 -0700 (PDT)
-In-Reply-To: <7309232.oJGU5dTioF@wuerfel>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com>
- <22478002.kqKBdeLAKz@wuerfel> <CAJiQ=7DWEr9Oej6=+3vqKL_fJd2-wvQjx2Xw4dYwyE3AGDXOUA@mail.gmail.com>
- <7309232.oJGU5dTioF@wuerfel>
+Received: by 10.140.89.113 with HTTP; Thu, 30 Oct 2014 12:24:02 -0700 (PDT)
+In-Reply-To: <54521C65.8060603@cogentembedded.com>
+References: <1414635488-14137-1-git-send-email-cernekee@gmail.com>
+ <1414635488-14137-9-git-send-email-cernekee@gmail.com> <54521C65.8060603@cogentembedded.com>
 From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Thu, 30 Oct 2014 12:03:38 -0700
-Message-ID: <CAJiQ=7DD_ivNyJpZnQFKfaFBM5nk0Gb-S-5wfXuF9fxZ_FWHvA@mail.gmail.com>
-Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Date:   Thu, 30 Oct 2014 12:24:02 -0700
+Message-ID: <CAJiQ=7BekWsmcDfQ-oKXAza_pEXHNFCQAisvo2m+D7Km2t_meQ@mail.gmail.com>
+Subject: Re: [PATCH V2 08/15] irqchip: bcm7120-l2: Eliminate bad IRQ check
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         Florian Fainelli <f.fainelli@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         Maxime Bizon <mbizon@freebox.fr>,
@@ -43,7 +44,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43790
+X-archive-position: 43791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,149 +61,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 30, 2014 at 2:58 AM, Arnd Bergmann <arnd@arndb.de> wrote:
->> On the MIPS BCM7xxx chips, LE/BE support was a design requirement.  So:
->>
->>  - The chips include a strap pin for LE/BE so it can be configured
->> through board jumpers.  This is the only supported method of switching
->> endianness.
->>
->>  - Endianness interactions and performance concerns have been analyzed
->> for all peripherals, buses, and data flows.
->>
->>  - As Florian mentioned earlier, the LE/BE strap preconfigures several
->> hardware blocks at boot time, e.g. telling the SPI controller how to
->> arrange the incoming data such that the MSB of each instruction word
->> read from flash shows up in the right place.
->>
->>  - The entire software stack (and even the cross toolchain) needs to
->> be compiled for either LE or BE.
->>
->> So in this context a "BE system" is a BCM7xxx MIPS chip strapped for
->> BE, or one of the BCM33xx/BCM63xx/BCM68xx MIPS chips that is hardwired
->> and verified for BE only.
+On Thu, Oct 30, 2014 at 4:09 AM, Sergei Shtylyov wrote:
+>> diff --git a/drivers/irqchip/irq-bcm7120-l2.c
+>> b/drivers/irqchip/irq-bcm7120-l2.c
+>> index b9f4fb8..49d8f3d 100644
+>> --- a/drivers/irqchip/irq-bcm7120-l2.c
+>> +++ b/drivers/irqchip/irq-bcm7120-l2.c
 >
-> Ah, I think I understand what you mean now. So this strapping is done
-> for legacy operating systems that are not endian-aware and hardwired
-> to one or the other.
-
-Hmm, maybe, but this wasn't done for legacy reasons.  The system was
-designed to run in either endianness, with the understanding that all
-software would be built for either LE or BE and that the hardware
-would be strapped for one or the other.
-
-On dev boards this is a jumper on the board, but on production boards
-it is often immutable.
-
-> In Linux, we don't care about that, we have the source and we can
-> just make it run on any hardware we care about. If you port a kernel
-> to such a platform, the best strategy is to ignore what the SoC
-> vendor tried to do for the other OSs and set the chip into "never
-> translate" in hardware so you can handle it correctly in the kernel.
-
-Right, the intention was to remain source-compatible between LE/BE,
-but not binary-compatible.
-
-Either the __raw_ accessors, or dynamically choosing between
-readl/ioread32be based on CONFIG_CPU_BIG_ENDIAN (or DT properties, if
-absolutely necessary), would work.  We've usually chosen the __raw_
-path as it simplifies the code; all we want is a simple "load word"
-instruction with no swapping on either LE or BE.
-
-The registers themselves are automatically accessed in native endian
-order regardless of the CPU's configuration, due to the way the bus
-interfaces were designed.
-
-> Presumably you want to keep the boot loader, so unfortunately
-> that can mean having to override the setting in early kernel code
-> before you touch any hardware. The nasty part is when the hardware
-> designers put a byteswap logic in front of the flash, because then
-> you have to create an image that stores the bootloader in opposite
-> endianess from the kernel, but I'd assume that's still better than
-> the hacks from the vendor BSP.
-
-FWIW, these platforms have 4 different flash controllers, and each one
-has its own unique byteswap hardware.
-
-Everything works OK today, but changing the endianness at runtime
-could open a big can of worms.
-
-> You have multiple problems if you rely on the byteswaps being
-> done in hardware:
+> [...]
+>>
+>> @@ -51,19 +49,12 @@ static void bcm7120_l2_intc_irq_handle(unsigned int
+>> irq, struct irq_desc *desc)
+>>         chained_irq_enter(chip, desc);
+>>
+>>         status = __raw_readl(b->base + IRQSTAT);
+>> -
+>> -       if (status == 0) {
+>> -               do_bad_IRQ(irq, desc);
+>> -               goto out;
+>> -       }
+>> -
+>>         do {
 >
-> - You can't build a kernel that runs on all SoCs, not even all
->   systems using the same SoC when that strapping pin gives you
->   two incompatible versions
-
-Correct.  It was never a requirement to use a single image for both LE and BE.
-
-> - Any MMIO access to device memory storing byte streams (network
->   packets, audio, block, ...) will be swapped the same way that
->   the registers do, which means you now have to do the expensive
->   byte swaps (memcpy_fromio) in software instead of the cheap ones
->   (writel)
-
-The various endianness settings also affect our CPU's "view" of DRAM.
-All current BCM7xxx SoCs have extra logic to make sure that packet
-data, disk sectors from SATA, and other "bulky" transfers all arrive
-in a suitable byte order.
-
-> - If the hardware swap was implemented wrong, all the addresses
->   for 8 or 16 bit MMIO registers are wrong too and you have to
->   fix them up in software, which is much worse than swapping the
->   contents.
-
-We have this mode available on some of the peripherals, but chose not to use it.
-
-One situation where it can prove useful: for PCIe enable the HW
-byteswap, so readl() can be implemented as a straight 32-bit load with
-no swap.  The lesser-used 8-bit and 16-bit accessors would then
-implement address swizzling.  Other memory-mapped SoC peripherals that
-Linux wants to treat as PCIe devices (accessing via readl/writel) can
-then be configured for no HW byteswap.
-
-> - It's impossible to share device drivers with saner hardware
->   platforms that let the CPU access MMIO registers in whichever
->   way the device expects it.
-
-That depends somewhat on whether we're talking about binary-level
-compatibility, or source-level compatibility.  For the latter case, we
-can always redefine readl() to match the hardware at compile time.  On
-MIPS this can be done through CONFIG_SWAP_IO_SPACE.
-
->> Is it the intention to allow runtime endian switching on any
->> ARM/PowerPC platform (even the Samsung products you mentioned)?  Or
->> only on the boards that were designed to operate this way?
 >
-> Any sane SoC will come without byteswapping on the buses, so that's
-> trivial to handle. You just have to build kernel and userspace in the
-> same endianess and have to ensure that all drivers use the correct
-> accessors that match what the hardware does.
+>    I think this needs to now become:
 >
-> The Samsung platforms get it wrong because they tried to optimize
-> out the barriers implied by writel, before we had writel_relaxed.
-> When nobody made a mistake like that, you can run a kernel of either
-> endianess on any hardware.
-
-Hmm, OK.  So it sounds like Samsung used the __raw_ macros to avoid
-the barriers, but inadvertently nuked the endian swap.  bcm7120-l2
-used the __raw_ macros to avoid the endian swap, and barriers were a
-"don't care."
-
->> Our problem becomes much simpler if we assume that the majority of
->> systems have a fixed endianness, and only a few special cases need to
->> accommodate the different kernel/register endianness permutations
->> you've listed.
+>         while (status) {
 >
-> Good point. It seems that there is currently no support for BCM7xxx
-> in upstream Linux, and that is the only one that has the crazy
-> strapping pin, so I guess you could avoid a lot of the problems by
-> changing the MIPS code to assume BE registers, and if anybody wants
-> to submit BCM7xxx MIPS support to mainline, they have to make sure
-> it's in the right mode.
+>>                 irq = ffs(status) - 1;
+>>                 status &= ~(1 << irq);
+>
+>
+>    In case 'status' is 0, 'irq' will be equal to -1. How does the shift by
+> negative value work?
+>
+>>                 generic_handle_irq(irq_find_mapping(b->domain, irq));
+>>         } while (status);
 
-One catch is that almost all BCM7xxx MIPS systems are actually LE, and
-BE gets less test coverage.  Some boards cannot even be configured for
-BE.  BE has mostly been kept around to accommodate a few customers
-with legacy code, not out of a burning desire to support both modes of
-operation...
+That's a good point.  We need to check for 0 somehow.
+
+This code gets replaced in patch 13/15 anyway, but I'll fix it in the
+next round.
+
+Thanks!

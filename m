@@ -1,53 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 16:25:34 +0100 (CET)
-Received: from mail-qg0-f53.google.com ([209.85.192.53]:62510 "EHLO
-        mail-qg0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012304AbaJ3PZdE3K3R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 16:25:33 +0100
-Received: by mail-qg0-f53.google.com with SMTP id z107so4076517qgd.26
-        for <multiple recipients>; Thu, 30 Oct 2014 08:25:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=NUGTpNQyI4omEEGwxopWBBXoPgKewRDjmuO5356mQrQ=;
-        b=S/LzZLiWGc1KkgtRgJI8RVuPHCimsrCu4k00x5m0aFBxi1wsmYXCfNC1EaH8IzSMGL
-         YFy/LaEtiVIsNApM8azbElh+dvmvheHZU4WjCEd0wSstDXidstSBoKgSIaUAcHlFchTo
-         JJCrxfLvMhGT+uyomMoTNxJqjQcupAh3mQ4IgiYS2yA8prDpTsJxVGhm71z0WJkVkxRR
-         XP/OIU8XKsFTVmntDwUuYRI/4rzgibUF+sIKucYiDhGU4zkMw53yIs97Q7ebqZWih1+W
-         ybh24catgt2oEYvQPnYZqqJOPI1Vs7kUrasYaisVOENF7A0+RWiAmrx/3y2l3koHwWyy
-         3C3w==
-X-Received: by 10.224.69.67 with SMTP id y3mr27487486qai.76.1414682723597;
- Thu, 30 Oct 2014 08:25:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 17:10:37 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:48906 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012316AbaJ3QKeTx0Mw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Oct 2014 17:10:34 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id s9UGAWsj016682;
+        Thu, 30 Oct 2014 17:10:32 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id s9UGASS1016681;
+        Thu, 30 Oct 2014 17:10:28 +0100
+Date:   Thu, 30 Oct 2014 17:10:28 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Isamu Mogi <isamu@leafytree.jp>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] MIPS: R3000: Fix debug output for Virtual page
+ number
+Message-ID: <20141030161028.GE20282@linux-mips.org>
+References: <1410278429-8541-1-git-send-email-isamu@leafytree.jp>
+ <1414674458-7583-1-git-send-email-isamu@leafytree.jp>
+ <1414674458-7583-2-git-send-email-isamu@leafytree.jp>
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Thu, 30 Oct 2014 08:25:03 -0700 (PDT)
-In-Reply-To: <1879572.mbc2eHiUuo@wuerfel>
-References: <1414635488-14137-1-git-send-email-cernekee@gmail.com>
- <2294092.AHz8W66sEP@wuerfel> <alpine.DEB.2.11.1410301142010.5308@nanos> <1879572.mbc2eHiUuo@wuerfel>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Thu, 30 Oct 2014 08:25:03 -0700
-Message-ID: <CAJiQ=7BZpDM8fxzJj_bSfHMuWTQ2eFerWkXz0inxJy9O6p4d=A@mail.gmail.com>
-Subject: Re: [PATCH V2 02/15] sh: Eliminate unused irq_reg_{readl,writel} accessors
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1414674458-7583-2-git-send-email-isamu@leafytree.jp>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43786
+X-archive-position: 43787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,34 +45,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 30, 2014 at 3:48 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> On Thursday 30 October 2014 11:43:00 Thomas Gleixner wrote:
->> On Thu, 30 Oct 2014, Arnd Bergmann wrote:
->>
->> > On Wednesday 29 October 2014 19:17:55 Kevin Cernekee wrote:
->> > > Defining these macros way down in arch/sh/.../irq.c doesn't cause
->> > > kernel/irq/generic-chip.c to use them.  As far as I can tell this code
->> > > has no effect.
->> > >
->> > > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
->> >
->> > Actually it overrides the 32-bit accessors with 16-bit accessors,
->> > which does seem intentional and certainly has an effect.
->>
->> Not really. Neither arch/sh/boards/mach-se/7343/irq.c nor
->> arch/sh/boards/mach-se/7722/irq.c actually use
->> irq_reg_readl/writel. They simply define it.
->
-> Ah, that makes things easier. I looked at the commits that introduced
-> them, and even then they were unused. Probably an artifact from an
-> earlier version of the patch which did not get merged.
+On Thu, Oct 30, 2014 at 10:07:36PM +0900, Isamu Mogi wrote:
 
-I suspect that the intention was to put them into the machine's
-<irq.h> so that generic-chip.c would pick them up.  The sh irq.c files
-do call ioread16/iowrite16 themselves, and like bcm7120-l2, they
-utilize irq_gc_mask_{set,clr}_bit from generic-chip.c.
+> Virtual page number of R3000 in entryhi is 20 bit from MSB. But in
+> dump_tlb(), the bit mask to read it from entryhi is 19 bit (0xffffe000).
+> The patch fixes that to 0xfffff000.
 
-This may be something for the maintainers (Paul?) to double-check, but
-if the submission worked as-is, maybe overriding the I/O accessors
-wasn't actually needed.  Or maybe there are subtle and unfortunate
-side effects on adjacent registers.
+Looks like a cut and paste issue from the R4000 code.
+
+Will apply,
+
+  Ralf

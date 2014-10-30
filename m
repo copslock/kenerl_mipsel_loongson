@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 10:01:32 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.13]:62891 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 10:03:44 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:53215 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011905AbaJ3JBZnBk0m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 10:01:25 +0100
+        with ESMTP id S27012245AbaJ3JDiOBZ0a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 10:03:38 +0100
 Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue102) with ESMTP (Nemesis)
-        id 0LbrjI-1YSgjq1Y0a-00jGuZ; Thu, 30 Oct 2014 10:00:54 +0100
+        by mrelayeu.kundenserver.de (node=mreue002) with ESMTP (Nemesis)
+        id 0Li5LP-1YNRuY12uZ-00nRe4; Thu, 30 Oct 2014 10:03:17 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Kevin Cernekee <cernekee@gmail.com>
 Cc:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
         ralf@linux-mips.org, lethal@linux-sh.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH V2 02/15] sh: Eliminate unused irq_reg_{readl,writel} accessors
-Date:   Thu, 30 Oct 2014 10:00:53 +0100
-Message-ID: <2294092.AHz8W66sEP@wuerfel>
+Subject: Re: [PATCH V2 15/15] irqchip: bcm7120-l2: Enable big endian register accesses on BE kernels
+Date:   Thu, 30 Oct 2014 10:03:16 +0100
+Message-ID: <2482894.SCbMWLltbW@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1414635488-14137-3-git-send-email-cernekee@gmail.com>
-References: <1414635488-14137-1-git-send-email-cernekee@gmail.com> <1414635488-14137-3-git-send-email-cernekee@gmail.com>
+In-Reply-To: <1414635488-14137-16-git-send-email-cernekee@gmail.com>
+References: <1414635488-14137-1-git-send-email-cernekee@gmail.com> <1414635488-14137-16-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:e3TtAz2L9mLbIRap6VmEIxNB0pAGCkL7rgiCN6la9qN
- LEU493gLcJoel3khvC/egfUOs22deG2U92iY1ImEg9bkw1o8Os
- TNPrEpbgbm2iE7zo8dwncRdtUaySMO/p9NeE/XNbF1SxtmDXtS
- nShMuaOpkNSWu/sCGVurcGhVfkbwGfLXodw1DMXDqKslG/17FN
- DdB6uPfgLX4XdEYsHzib2JRlkYG9F/Yi2fhuKxKYHv5odaYnAb
- kWTaLnQjxW0a2ogZPBDORlnJ3ctkpFRVM9mU3chfuCa9JGl+94
- cZSRsgTTyXQU/2fEm7fDtAxnb5dcFaEYtJHFAfFDT/0Z2HAtCi
- U0CZJrYIuBqYOECqgj30=
+X-Provags-ID: V02:K0:tpoEWdDuQjtQSdA6jmm335RXXRtiOEcNq5MXn7sgzn6
+ rHFqAiMg7Re8oHrY3okyopfINNlxvZdZRhmyZOLn8wM3NOLI+T
+ MEHm2ZsdsoGPonjhUlxj9+bccJ4iLEdBWH996ywWR29b2l5JLg
+ B+MJeaGG1COg1o7yv3Kpk4bMN8YYcY8EQF9ff5QRe/Ln238lT5
+ i+iROb+NVV3XoC78XPGcglbtc7vqLwyhZKkx7112rUsILm3X8v
+ 5kSrKpGBqkOP/kThMmtKoO0i2iLHG9fpoCpdBVe2rRdpYLYiQ9
+ yIV9kqilGcgsZUdW31AmHQGcJhlegx7QGCO9JJb4YvCOu+8516
+ DRTZ0nkByr9kEicYiVak=
 X-UI-Out-Filterresults: notjunk:1;
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43757
+X-archive-position: 43758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,33 +51,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday 29 October 2014 19:17:55 Kevin Cernekee wrote:
-> Defining these macros way down in arch/sh/.../irq.c doesn't cause
-> kernel/irq/generic-chip.c to use them.  As far as I can tell this code
-> has no effect.
+On Wednesday 29 October 2014 19:18:08 Kevin Cernekee wrote:
 > 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> +       flags = IRQ_GC_INIT_MASK_CACHE;
+> +       if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
+> +               flags |= IRQ_GC_BE_IO;
+> +
+> 
 
-Actually it overrides the 32-bit accessors with 16-bit accessors,
-which does seem intentional and certainly has an effect.
+As I said before, I think you should take this from a DT property instead
+of making it dependent on the CPU endianess. Otherwise things go horribly
+wrong e.g. when someone runs a big-endian kernel on one of the ARM
+based chips.
 
 	Arnd
-
->  arch/sh/boards/mach-se/7343/irq.c | 3 ---
->  arch/sh/boards/mach-se/7722/irq.c | 3 ---
->  2 files changed, 6 deletions(-)
-> 
-> diff --git a/arch/sh/boards/mach-se/7343/irq.c b/arch/sh/boards/mach-se/7343/irq.c
-> index 7646bf0..1087dba 100644
-> --- a/arch/sh/boards/mach-se/7343/irq.c
-> +++ b/arch/sh/boards/mach-se/7343/irq.c
-> @@ -14,9 +14,6 @@
->  #define DRV_NAME "SE7343-FPGA"
->  #define pr_fmt(fmt) DRV_NAME ": " fmt
->  
-> -#define irq_reg_readl  ioread16
-> -#define irq_reg_writel iowrite16
-> -
->  #include <linux/init.h>
->  #include <linux/irq.h>
->  #include <linux/interrupt.h>

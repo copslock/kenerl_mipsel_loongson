@@ -1,49 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 20:52:56 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.24]:59427 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012329AbaJ3TwzFT466 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 20:52:55 +0100
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue102) with ESMTP (Nemesis)
-        id 0M89Y1-1XxJpS3uXB-00vhXT; Thu, 30 Oct 2014 20:52:44 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jason Cooper <jason@lakedaemon.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 21:24:56 +0100 (CET)
+Received: from mail-wi0-f178.google.com ([209.85.212.178]:58793 "EHLO
+        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012329AbaJ3UYxbCwmA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 21:24:53 +0100
+Received: by mail-wi0-f178.google.com with SMTP id q5so8474017wiv.11
+        for <multiple recipients>; Thu, 30 Oct 2014 13:24:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=IhwpaHMktVjAckelP0lD4Cx6H5GPGHOr6VWddpAvOtQ=;
+        b=XoSXpD5HxRn3oBl4wx55qV9xYbx1e7jMlATY3WbQT3osrATpIf1D5hSeGeGqMk+kcq
+         NqBgM0wBmBlVQXJ81UFY0ajaTskJ23d9lggO44XEwLUuA3lh94tygbJ2ifEQStuN+coX
+         atjug0WEPtvb0dEVbRdvfQXCbbscarWUFdpFxzHmGrzK/Yh5+XAiGEv+ycwSApbiliFV
+         kdH9C41M3wgwQ10//ldZLPyZBZ42UuW9UUboZc9W6b3QlshhUdy2Q+/We1INCL7hZzz2
+         N7EAJwMJvUOH9Mak9Y/14U7vz8Upag476Qwz/Vea1tNa6gQY7TZPfpcp7a+fwa0Bjf1D
+         1qCw==
+X-Received: by 10.194.8.73 with SMTP id p9mr23028394wja.87.1414700688017;
+        Thu, 30 Oct 2014 13:24:48 -0700 (PDT)
+Received: from dargo.roarinelk.net (62-47-35-79.adsl.highway.telekom.at. [62.47.35.79])
+        by mx.google.com with ESMTPSA id h8sm9835300wjs.43.2014.10.30.13.24.46
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 30 Oct 2014 13:24:47 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 01/11] irqchip: Allow irq_reg_{readl,writel} to use __raw_{readl_writel}
-Date:   Thu, 30 Oct 2014 20:52:42 +0100
-Message-ID: <7275578.mKZ88H670E@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAJiQ=7DD_ivNyJpZnQFKfaFBM5nk0Gb-S-5wfXuF9fxZ_FWHvA@mail.gmail.com>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <7309232.oJGU5dTioF@wuerfel> <CAJiQ=7DD_ivNyJpZnQFKfaFBM5nk0Gb-S-5wfXuF9fxZ_FWHvA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:YNq2CJwy3kvK6Ch3SJknx7Sanw2u2j5aHhnEqhr4YXY
- YGHQhhWqnvkz2Pggqg2AqUnX9PyJb5PBFpuEYg6AOzY4htO43/
- jJ75BXGbLa2MQpCmIXXba1Uv6Hu5XapNNGpyfscLKPntxk5zOk
- K/m2OxinKv2Q910Q39cY4Lt7qLZPEMfexnnaVK4ua8lmQBNMoV
- +xOvKQ86cdc64e640KaOt2t8ibcGMRr8ga9KWna+nUKChf674D
- ZVOmSwgAVNl1WPIRg7LFF0wzGSLmSmUwkiDTncQJiKvC+JF2Ki
- E7Hu/dW5t5lgu0grmF68O+f+B/Cqo2uVG8mbYdaPFdksPtl0M1
- O6MkrJy0UNF3JO2mrTkE=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [RFC PATCH v5] MIPS: fix build with binutils 2.24.51+
+Date:   Thu, 30 Oct 2014 21:24:43 +0100
+Message-Id: <1414700683-121426-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 2.1.2
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43792
+X-archive-position: 43793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,151 +54,588 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 30 October 2014 12:03:38 Kevin Cernekee wrote:
-> On Thu, Oct 30, 2014 at 2:58 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> >> On the MIPS BCM7xxx chips, LE/BE support was a design requirement.  So:
-> >>
-> >>  - The chips include a strap pin for LE/BE so it can be configured
-> >> through board jumpers.  This is the only supported method of switching
-> >> endianness.
-> >>
-> >>  - Endianness interactions and performance concerns have been analyzed
-> >> for all peripherals, buses, and data flows.
-> >>
-> >>  - As Florian mentioned earlier, the LE/BE strap preconfigures several
-> >> hardware blocks at boot time, e.g. telling the SPI controller how to
-> >> arrange the incoming data such that the MSB of each instruction word
-> >> read from flash shows up in the right place.
-> >>
-> >>  - The entire software stack (and even the cross toolchain) needs to
-> >> be compiled for either LE or BE.
-> >>
-> >> So in this context a "BE system" is a BCM7xxx MIPS chip strapped for
-> >> BE, or one of the BCM33xx/BCM63xx/BCM68xx MIPS chips that is hardwired
-> >> and verified for BE only.
-> >
-> > Ah, I think I understand what you mean now. So this strapping is done
-> > for legacy operating systems that are not endian-aware and hardwired
-> > to one or the other.
-> 
-> Hmm, maybe, but this wasn't done for legacy reasons.  The system was
-> designed to run in either endianness, with the understanding that all
-> software would be built for either LE or BE and that the hardware
-> would be strapped for one or the other.
-> 
-> On dev boards this is a jumper on the board, but on production boards
-> it is often immutable.
+Starting with version 2.24.51.20140728 MIPS binutils complain loudly
+about mixing soft-float and hard-float object files, leading to this
+build failure since GCC is invoked with "-msoft-float" on MIPS:
 
-But only legacy OSs would need the jumper or the pin. Any modern OS
-like Linux should just work in either endianess independent of how
-the registers are done.
+{standard input}: Warning: .gnu_attribute 4,3 requires `softfloat'
+  LD      arch/mips/alchemy/common/built-in.o
+mipsel-softfloat-linux-gnu-ld: Warning: arch/mips/alchemy/common/built-in.o
+ uses -msoft-float (set by arch/mips/alchemy/common/prom.o),
+ arch/mips/alchemy/common/sleeper.o uses -mhard-float
 
-> > In Linux, we don't care about that, we have the source and we can
-> > just make it run on any hardware we care about. If you port a kernel
-> > to such a platform, the best strategy is to ignore what the SoC
-> > vendor tried to do for the other OSs and set the chip into "never
-> > translate" in hardware so you can handle it correctly in the kernel.
-> 
-> Right, the intention was to remain source-compatible between LE/BE,
-> but not binary-compatible.
+To fix this, we detect if GAS is new enough to support "-msoft-float" command
+option, and if it does, we can let GCC pass it to GAS;  but then we also need
+to sprinkle the files which make use of floating point registers with the
+necessary ".set hardfloat" directives.
 
-Well, I guess they failed on the "source-compatible" part ;-)
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+Compiles with binutils 2.23 and current git head, 32bit mips32r1 tested only.
 
-> Either the __raw_ accessors, or dynamically choosing between
-> readl/ioread32be based on CONFIG_CPU_BIG_ENDIAN (or DT properties, if
-> absolutely necessary), would work. 
+Tests on 64bit and with MSA and other extensions also appreciated!
+Markos: I can't reproduce the malta defconfig error you're seeing, at least
+not with sourceware sources.
 
-No, this is just wrong. Don't ever assume that the endianess of the
-kernel has anything to do with how the hardware is built. You can
-make it a separate Kconfig option, and you can make it default
-to CPU_BIG_ENDIAN, but the two things are fundamentally different,
-whatever the hardware designers try to tell you.
+v5: fixed issues with code for 32bit mips32r2 using .set mips64r2 outlined
+    by Matthew: what the code really wants is 64bit float support, but not
+    64bit mips code.
 
-> > You have multiple problems if you rely on the byteswaps being
-> > done in hardware:
-> >
-> > - You can't build a kernel that runs on all SoCs, not even all
-> >   systems using the same SoC when that strapping pin gives you
-> >   two incompatible versions
-> 
-> Correct.  It was never a requirement to use a single image for both LE and BE.
+v4: fixed issues outlined by Markos and Matthew.
 
-I didn't mean one kernel image that runs in both BE and LE mode, that
-would be crazy. What I mean is one image that can run on the SoC
-in either strapping mode but with the CPU endianess set the way that
-matches how the kernel is built.
+v3: incorporate Maciej's suggestions:
+	- detect if gas can handle -msoft-float and ".set hardfloat"
+	- apply .set hardfloat only where really necessary
 
-> > - Any MMIO access to device memory storing byte streams (network
-> >   packets, audio, block, ...) will be swapped the same way that
-> >   the registers do, which means you now have to do the expensive
-> >   byte swaps (memcpy_fromio) in software instead of the cheap ones
-> >   (writel)
-> 
-> The various endianness settings also affect our CPU's "view" of DRAM.
-> All current BCM7xxx SoCs have extra logic to make sure that packet
-> data, disk sectors from SATA, and other "bulky" transfers all arrive
-> in a suitable byte order.
+v2: cover more files
 
-Wow, that seems like a lot of hardware effort to gain basically
-nothing. If they managed to get this right, at least it won't
-make it harder to support the hardware properly.
+This was introduced in binutils commit  351cdf24d223290b15fa991e5052ec9e9bd1e284
+("[MIPS] Implement O32 FPXX, FP64 and FP64A ABI extensions").
 
-So the byte stream data is never swapped, or always swapped an even
-number of times, regardless of the strapping pin, right?
 
-> > - If the hardware swap was implemented wrong, all the addresses
-> >   for 8 or 16 bit MMIO registers are wrong too and you have to
-> >   fix them up in software, which is much worse than swapping the
-> >   contents.
-> 
-> We have this mode available on some of the peripherals, but chose not to use it.
-> 
-> One situation where it can prove useful: for PCIe enable the HW
-> byteswap, so readl() can be implemented as a straight 32-bit load with
-> no swap.  The lesser-used 8-bit and 16-bit accessors would then
-> implement address swizzling.  Other memory-mapped SoC peripherals that
-> Linux wants to treat as PCIe devices (accessing via readl/writel) can
-> then be configured for no HW byteswap.
+ arch/mips/Makefile                  |  9 +++++++++
+ arch/mips/include/asm/asmmacro-32.h |  6 ++++++
+ arch/mips/include/asm/asmmacro.h    | 18 ++++++++++++++++++
+ arch/mips/include/asm/fpregdef.h    | 14 ++++++++++++++
+ arch/mips/include/asm/fpu.h         |  4 ++--
+ arch/mips/include/asm/mipsregs.h    | 11 ++++++++++-
+ arch/mips/kernel/branch.c           |  8 ++------
+ arch/mips/kernel/genex.S            |  1 +
+ arch/mips/kernel/r2300_fpu.S        |  6 ++++++
+ arch/mips/kernel/r2300_switch.S     |  5 +++++
+ arch/mips/kernel/r4k_fpu.S          | 24 ++++++++++++++++++++++--
+ arch/mips/kernel/r4k_switch.S       | 12 +++++++++++-
+ arch/mips/kernel/r6000_fpu.S        |  5 +++++
+ 13 files changed, 111 insertions(+), 12 deletions(-)
 
-This is the part where it gets really crazy and the only sane way to
-deal with it is to turn off the entire swizzling in hardware.
-
-> > - It's impossible to share device drivers with saner hardware
-> >   platforms that let the CPU access MMIO registers in whichever
-> >   way the device expects it.
-> 
-> That depends somewhat on whether we're talking about binary-level
-> compatibility, or source-level compatibility.  For the latter case, we
-> can always redefine readl() to match the hardware at compile time.  On
-> MIPS this can be done through CONFIG_SWAP_IO_SPACE.
-
-That option seems to be incompatible with running one kernel across
-multiple SoC families, if each of them does it differently.
-
-The comment in arch/mips/include/asm/mach-generic/mangle-port.h
-suggests that it was originally meant only for PIO access, not
-for MMIO, but asm/io.h uses it for both.
-
-> >> Our problem becomes much simpler if we assume that the majority of
-> >> systems have a fixed endianness, and only a few special cases need to
-> >> accommodate the different kernel/register endianness permutations
-> >> you've listed.
-> >
-> > Good point. It seems that there is currently no support for BCM7xxx
-> > in upstream Linux, and that is the only one that has the crazy
-> > strapping pin, so I guess you could avoid a lot of the problems by
-> > changing the MIPS code to assume BE registers, and if anybody wants
-> > to submit BCM7xxx MIPS support to mainline, they have to make sure
-> > it's in the right mode.
-> 
-> One catch is that almost all BCM7xxx MIPS systems are actually LE, and
-> BE gets less test coverage.  Some boards cannot even be configured for
-> BE.  BE has mostly been kept around to accommodate a few customers
-> with legacy code, not out of a burning desire to support both modes of
-> operation...
-
-If all the boards can be configured for LE, then you can just make this
-mode required when upstreaming the kernel port, independent of how the
-kernel runs.
-
-	Arnd
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 23cb948..5807647 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -93,6 +93,15 @@ LDFLAGS_vmlinux			+= -G 0 -static -n -nostdlib
+ KBUILD_AFLAGS_MODULE		+= -mlong-calls
+ KBUILD_CFLAGS_MODULE		+= -mlong-calls
+ 
++#
++# pass -msoft-float to GAS if it supports it.  However on newer binutils
++# (specifically newer than 2.24.51.20140728) we then also need to explicitly
++# set ".set hardfloat" in all files which manipulate floating point registers.
++#
++ifneq ($(call as-option,-Wa$(comma)-msoft-float,),)
++	cflags-y		+= -DGAS_HAS_SET_HARDFLOAT -Wa,-msoft-float
++endif
++
+ cflags-y += -ffreestanding
+ 
+ #
+diff --git a/arch/mips/include/asm/asmmacro-32.h b/arch/mips/include/asm/asmmacro-32.h
+index e38c281..cdac7b3 100644
+--- a/arch/mips/include/asm/asmmacro-32.h
++++ b/arch/mips/include/asm/asmmacro-32.h
+@@ -13,6 +13,8 @@
+ #include <asm/mipsregs.h>
+ 
+ 	.macro	fpu_save_single thread tmp=t0
++	.set push
++	SET_HARDFLOAT
+ 	cfc1	\tmp,  fcr31
+ 	swc1	$f0,  THREAD_FPR0_LS64(\thread)
+ 	swc1	$f1,  THREAD_FPR1_LS64(\thread)
+@@ -47,9 +49,12 @@
+ 	swc1	$f30, THREAD_FPR30_LS64(\thread)
+ 	swc1	$f31, THREAD_FPR31_LS64(\thread)
+ 	sw	\tmp, THREAD_FCR31(\thread)
++	.set pop
+ 	.endm
+ 
+ 	.macro	fpu_restore_single thread tmp=t0
++	.set push
++	SET_HARDFLOAT
+ 	lw	\tmp, THREAD_FCR31(\thread)
+ 	lwc1	$f0,  THREAD_FPR0_LS64(\thread)
+ 	lwc1	$f1,  THREAD_FPR1_LS64(\thread)
+@@ -84,6 +89,7 @@
+ 	lwc1	$f30, THREAD_FPR30_LS64(\thread)
+ 	lwc1	$f31, THREAD_FPR31_LS64(\thread)
+ 	ctc1	\tmp, fcr31
++	.set pop
+ 	.endm
+ 
+ 	.macro	cpu_save_nonscratch thread
+diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
+index cd9a98b..6caf876 100644
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -57,6 +57,8 @@
+ #endif /* CONFIG_CPU_MIPSR2 */
+ 
+ 	.macro	fpu_save_16even thread tmp=t0
++	.set	push
++	SET_HARDFLOAT
+ 	cfc1	\tmp, fcr31
+ 	sdc1	$f0,  THREAD_FPR0_LS64(\thread)
+ 	sdc1	$f2,  THREAD_FPR2_LS64(\thread)
+@@ -75,11 +77,13 @@
+ 	sdc1	$f28, THREAD_FPR28_LS64(\thread)
+ 	sdc1	$f30, THREAD_FPR30_LS64(\thread)
+ 	sw	\tmp, THREAD_FCR31(\thread)
++	.set	pop
+ 	.endm
+ 
+ 	.macro	fpu_save_16odd thread
+ 	.set	push
+ 	.set	mips64r2
++	SET_HARDFLOAT
+ 	sdc1	$f1,  THREAD_FPR1_LS64(\thread)
+ 	sdc1	$f3,  THREAD_FPR3_LS64(\thread)
+ 	sdc1	$f5,  THREAD_FPR5_LS64(\thread)
+@@ -110,6 +114,8 @@
+ 	.endm
+ 
+ 	.macro	fpu_restore_16even thread tmp=t0
++	.set	push
++	SET_HARDFLOAT
+ 	lw	\tmp, THREAD_FCR31(\thread)
+ 	ldc1	$f0,  THREAD_FPR0_LS64(\thread)
+ 	ldc1	$f2,  THREAD_FPR2_LS64(\thread)
+@@ -133,6 +139,7 @@
+ 	.macro	fpu_restore_16odd thread
+ 	.set	push
+ 	.set	mips64r2
++	SET_HARDFLOAT
+ 	ldc1	$f1,  THREAD_FPR1_LS64(\thread)
+ 	ldc1	$f3,  THREAD_FPR3_LS64(\thread)
+ 	ldc1	$f5,  THREAD_FPR5_LS64(\thread)
+@@ -277,6 +284,7 @@
+ 	.macro	cfcmsa	rd, cs
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	.insn
+ 	.word	CFC_MSA_INSN | (\cs << 11)
+ 	move	\rd, $1
+@@ -286,6 +294,7 @@
+ 	.macro	ctcmsa	cd, rs
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	move	$1, \rs
+ 	.word	CTC_MSA_INSN | (\cd << 6)
+ 	.set	pop
+@@ -294,6 +303,7 @@
+ 	.macro	ld_d	wd, off, base
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	add	$1, \base, \off
+ 	.word	LDD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+@@ -302,6 +312,7 @@
+ 	.macro	st_d	wd, off, base
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	add	$1, \base, \off
+ 	.word	STD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+@@ -310,6 +321,7 @@
+ 	.macro	copy_u_w	rd, ws, n
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	.insn
+ 	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
+ 	/* move triggers an assembler bug... */
+@@ -320,6 +332,7 @@
+ 	.macro	copy_u_d	rd, ws, n
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	.insn
+ 	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
+ 	/* move triggers an assembler bug... */
+@@ -330,6 +343,7 @@
+ 	.macro	insert_w	wd, n, rs
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	/* move triggers an assembler bug... */
+ 	or	$1, \rs, zero
+ 	.word	INSERT_W_MSA_INSN | (\n << 16) | (\wd << 6)
+@@ -339,6 +353,7 @@
+ 	.macro	insert_d	wd, n, rs
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	/* move triggers an assembler bug... */
+ 	or	$1, \rs, zero
+ 	.word	INSERT_D_MSA_INSN | (\n << 16) | (\wd << 6)
+@@ -381,6 +396,7 @@
+ 	st_d	31, THREAD_FPR31, \thread
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	cfcmsa	$1, MSA_CSR
+ 	sw	$1, THREAD_MSA_CSR(\thread)
+ 	.set	pop
+@@ -389,6 +405,7 @@
+ 	.macro	msa_restore_all	thread
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	lw	$1, THREAD_MSA_CSR(\thread)
+ 	ctcmsa	MSA_CSR, $1
+ 	.set	pop
+@@ -441,6 +458,7 @@
+ 	.macro	msa_init_all_upper
+ 	.set	push
+ 	.set	noat
++	SET_HARDFLOAT
+ 	not	$1, zero
+ 	msa_init_upper	0
+ 	.set	pop
+diff --git a/arch/mips/include/asm/fpregdef.h b/arch/mips/include/asm/fpregdef.h
+index 429481f..f184ba0 100644
+--- a/arch/mips/include/asm/fpregdef.h
++++ b/arch/mips/include/asm/fpregdef.h
+@@ -14,6 +14,20 @@
+ 
+ #include <asm/sgidefs.h>
+ 
++/*
++ * starting with binutils 2.24.51.20140729, MIPS binutils warn about mixing
++ * hardfloat and softfloat object files.  The kernel build uses soft-float by
++ * default, so we also need to pass -msoft-float along to GAS if it supports it.
++ * But this in turn causes assembler errors in files which access hardfloat
++ * registers.  We detect if GAS supports "-msoft-float" in the Makefile and
++ * explicitly put ".set hardfloat" where floating point registers are touched.
++ */
++#ifdef GAS_HAS_SET_HARDFLOAT
++#define SET_HARDFLOAT .set hardfloat
++#else
++#define SET_HARDFLOAT
++#endif
++
+ #if _MIPS_SIM == _MIPS_SIM_ABI32
+ 
+ /*
+diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
+index 4d0aeda..dd56241 100644
+--- a/arch/mips/include/asm/fpu.h
++++ b/arch/mips/include/asm/fpu.h
+@@ -145,8 +145,8 @@ static inline void lose_fpu(int save)
+ 	if (is_msa_enabled()) {
+ 		if (save) {
+ 			save_msa(current);
+-			asm volatile("cfc1 %0, $31"
+-				: "=r"(current->thread.fpu.fcr31));
++			current->thread.fpu.fcr31 =
++					read_32bit_cp1_register(CP1_STATUS);
+ 		}
+ 		disable_msa();
+ 		clear_thread_flag(TIF_USEDMSA);
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index cf3b580..b46cd22 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1324,7 +1324,7 @@ do {									\
+ /*
+  * Macros to access the floating point coprocessor control registers
+  */
+-#define read_32bit_cp1_register(source)					\
++#define _read_32bit_cp1_register(source, gas_hardfloat)			\
+ ({									\
+ 	int __res;							\
+ 									\
+@@ -1334,12 +1334,21 @@ do {									\
+ 	"	# gas fails to assemble cfc1 for some archs,	\n"	\
+ 	"	# like Octeon.					\n"	\
+ 	"	.set	mips1					\n"	\
++	"	"STR(gas_hardfloat)"				\n"	\
+ 	"	cfc1	%0,"STR(source)"			\n"	\
+ 	"	.set	pop					\n"	\
+ 	: "=r" (__res));						\
+ 	__res;								\
+ })
+ 
++#ifdef GAS_HAS_SET_HARDFLOAT
++#define read_32bit_cp1_register(source)					\
++	_read_32bit_cp1_register(source, .set hardfloat)
++#else
++#define read_32bit_cp1_register(source)					\
++	_read_32bit_cp1_register(source, )
++#endif
++
+ #ifdef HAVE_AS_DSP
+ #define rddsp(mask)							\
+ ({									\
+diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
+index 7b2df22..4d7d99d 100644
+--- a/arch/mips/kernel/branch.c
++++ b/arch/mips/kernel/branch.c
+@@ -144,7 +144,7 @@ int __mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+ 		case mm_bc1t_op:
+ 			preempt_disable();
+ 			if (is_fpu_owner())
+-				asm volatile("cfc1\t%0,$31" : "=r" (fcr31));
++			        fcr31 = read_32bit_cp1_register(CP1_STATUS);
+ 			else
+ 				fcr31 = current->thread.fpu.fcr31;
+ 			preempt_enable();
+@@ -562,11 +562,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 	case cop1_op:
+ 		preempt_disable();
+ 		if (is_fpu_owner())
+-			asm volatile(
+-				".set push\n"
+-				"\t.set mips1\n"
+-				"\tcfc1\t%0,$31\n"
+-				"\t.set pop" : "=r" (fcr31));
++		        fcr31 = read_32bit_cp1_register(CP1_STATUS);
+ 		else
+ 			fcr31 = current->thread.fpu.fcr31;
+ 		preempt_enable();
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index ac35e12..a5e26dd 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -358,6 +358,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	.set	push
+ 	/* gas fails to assemble cfc1 for some archs (octeon).*/ \
+ 	.set	mips1
++	SET_HARDFLOAT
+ 	cfc1	a1, fcr31
+ 	li	a2, ~(0x3f << 12)
+ 	and	a2, a1
+diff --git a/arch/mips/kernel/r2300_fpu.S b/arch/mips/kernel/r2300_fpu.S
+index f31063d..5ce3b74 100644
+--- a/arch/mips/kernel/r2300_fpu.S
++++ b/arch/mips/kernel/r2300_fpu.S
+@@ -28,6 +28,8 @@
+ 	.set	mips1
+ 	/* Save floating point context */
+ LEAF(_save_fp_context)
++	.set	push
++	SET_HARDFLOAT
+ 	li	v0, 0					# assume success
+ 	cfc1	t1,fcr31
+ 	EX(swc1 $f0,(SC_FPREGS+0)(a0))
+@@ -65,6 +67,7 @@ LEAF(_save_fp_context)
+ 	EX(sw	t1,(SC_FPC_CSR)(a0))
+ 	cfc1	t0,$0				# implementation/version
+ 	jr	ra
++	.set	pop
+ 	.set	nomacro
+ 	 EX(sw	t0,(SC_FPC_EIR)(a0))
+ 	.set	macro
+@@ -80,6 +83,8 @@ LEAF(_save_fp_context)
+  * stack frame which might have been changed by the user.
+  */
+ LEAF(_restore_fp_context)
++	.set	push
++	SET_HARDFLOAT
+ 	li	v0, 0					# assume success
+ 	EX(lw t0,(SC_FPC_CSR)(a0))
+ 	EX(lwc1 $f0,(SC_FPREGS+0)(a0))
+@@ -116,6 +121,7 @@ LEAF(_restore_fp_context)
+ 	EX(lwc1 $f31,(SC_FPREGS+248)(a0))
+ 	jr	ra
+ 	 ctc1	t0,fcr31
++	.set	pop
+ 	END(_restore_fp_context)
+ 	.set	reorder
+ 
+diff --git a/arch/mips/kernel/r2300_switch.S b/arch/mips/kernel/r2300_switch.S
+index 20b7b04..435ea65 100644
+--- a/arch/mips/kernel/r2300_switch.S
++++ b/arch/mips/kernel/r2300_switch.S
+@@ -120,6 +120,9 @@ LEAF(_restore_fp)
+ 
+ #define FPU_DEFAULT  0x00000000
+ 
++	.set push
++	SET_HARDFLOAT
++
+ LEAF(_init_fpu)
+ 	mfc0	t0, CP0_STATUS
+ 	li	t1, ST0_CU1
+@@ -165,3 +168,5 @@ LEAF(_init_fpu)
+ 	mtc1	t0, $f31
+ 	jr	ra
+ 	END(_init_fpu)
++
++	.set pop
+diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
+index 8352523..876c0b1 100644
+--- a/arch/mips/kernel/r4k_fpu.S
++++ b/arch/mips/kernel/r4k_fpu.S
+@@ -21,6 +21,7 @@
+ 
+ 	.macro	EX insn, reg, src
+ 	.set	push
++	SET_HARDFLOAT
+ 	.set	nomacro
+ .ex\@:	\insn	\reg, \src
+ 	.set	pop
+@@ -33,12 +34,17 @@
+ 	.set	arch=r4000
+ 
+ LEAF(_save_fp_context)
++	.set	push
++	SET_HARDFLOAT
+ 	cfc1	t1, fcr31
++	.set	pop
+ 
+ #if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2)
+ 	.set	push
++	SET_HARDFLOAT
+ #ifdef CONFIG_CPU_MIPS32_R2
+-	.set	mips64r2
++	.set	mips32r2
++	.set	fp=64
+ 	mfc0	t0, CP0_STATUS
+ 	sll	t0, t0, 5
+ 	bgez	t0, 1f			# skip storing odd if FR=0
+@@ -64,6 +70,8 @@ LEAF(_save_fp_context)
+ 1:	.set	pop
+ #endif
+ 
++	.set push
++	SET_HARDFLOAT
+ 	/* Store the 16 even double precision registers */
+ 	EX	sdc1 $f0, SC_FPREGS+0(a0)
+ 	EX	sdc1 $f2, SC_FPREGS+16(a0)
+@@ -84,11 +92,14 @@ LEAF(_save_fp_context)
+ 	EX	sw t1, SC_FPC_CSR(a0)
+ 	jr	ra
+ 	 li	v0, 0					# success
++	.set pop
+ 	END(_save_fp_context)
+ 
+ #ifdef CONFIG_MIPS32_COMPAT
+ 	/* Save 32-bit process floating point context */
+ LEAF(_save_fp_context32)
++	.set push
++	SET_HARDFLOAT
+ 	cfc1	t1, fcr31
+ 
+ 	mfc0	t0, CP0_STATUS
+@@ -134,6 +145,7 @@ LEAF(_save_fp_context32)
+ 	EX	sw t1, SC32_FPC_CSR(a0)
+ 	cfc1	t0, $0				# implementation/version
+ 	EX	sw t0, SC32_FPC_EIR(a0)
++	.set pop
+ 
+ 	jr	ra
+ 	 li	v0, 0					# success
+@@ -150,8 +162,10 @@ LEAF(_restore_fp_context)
+ 
+ #if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2)
+ 	.set	push
++	SET_HARDFLOAT
+ #ifdef CONFIG_CPU_MIPS32_R2
+-	.set	mips64r2
++	.set	mips32r2
++	.set	fp=64
+ 	mfc0	t0, CP0_STATUS
+ 	sll	t0, t0, 5
+ 	bgez	t0, 1f			# skip loading odd if FR=0
+@@ -175,6 +189,8 @@ LEAF(_restore_fp_context)
+ 	EX	ldc1 $f31, SC_FPREGS+248(a0)
+ 1:	.set pop
+ #endif
++	.set push
++	SET_HARDFLOAT
+ 	EX	ldc1 $f0, SC_FPREGS+0(a0)
+ 	EX	ldc1 $f2, SC_FPREGS+16(a0)
+ 	EX	ldc1 $f4, SC_FPREGS+32(a0)
+@@ -192,6 +208,7 @@ LEAF(_restore_fp_context)
+ 	EX	ldc1 $f28, SC_FPREGS+224(a0)
+ 	EX	ldc1 $f30, SC_FPREGS+240(a0)
+ 	ctc1	t1, fcr31
++	.set pop
+ 	jr	ra
+ 	 li	v0, 0					# success
+ 	END(_restore_fp_context)
+@@ -199,6 +216,8 @@ LEAF(_restore_fp_context)
+ #ifdef CONFIG_MIPS32_COMPAT
+ LEAF(_restore_fp_context32)
+ 	/* Restore an o32 sigcontext.  */
++	.set push
++	SET_HARDFLOAT
+ 	EX	lw t1, SC32_FPC_CSR(a0)
+ 
+ 	mfc0	t0, CP0_STATUS
+@@ -242,6 +261,7 @@ LEAF(_restore_fp_context32)
+ 	ctc1	t1, fcr31
+ 	jr	ra
+ 	 li	v0, 0					# success
++	.set pop
+ 	END(_restore_fp_context32)
+ #endif
+ 
+diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
+index 4c4ec18..e2b5ab6 100644
+--- a/arch/mips/kernel/r4k_switch.S
++++ b/arch/mips/kernel/r4k_switch.S
+@@ -65,8 +65,12 @@
+ 	bgtz	a3, 1f
+ 
+ 	/* Save 128b MSA vector context + scalar FP control & status. */
++	.set push
++	SET_HARDFLOAT
+ 	cfc1	t1, fcr31
+ 	msa_save_all	a0
++	.set pop	/* SET_HARDFLOAT */
++
+ 	sw	t1, THREAD_FCR31(a0)
+ 	b	2f
+ 
+@@ -161,6 +165,9 @@ LEAF(_init_msa_upper)
+ 
+ #define FPU_DEFAULT  0x00000000
+ 
++	.set push
++	SET_HARDFLOAT
++
+ LEAF(_init_fpu)
+ 	mfc0	t0, CP0_STATUS
+ 	li	t1, ST0_CU1
+@@ -232,7 +239,8 @@ LEAF(_init_fpu)
+ 
+ #ifdef CONFIG_CPU_MIPS32_R2
+ 	.set    push
+-	.set    mips64r2
++	.set    mips32r2
++	.set	fp=64
+ 	sll     t0, t0, 5			# is Status.FR set?
+ 	bgez    t0, 1f				# no: skip setting upper 32b
+ 
+@@ -291,3 +299,5 @@ LEAF(_init_fpu)
+ #endif
+ 	jr	ra
+ 	END(_init_fpu)
++
++	.set pop	/* SET_HARDFLOAT */
+diff --git a/arch/mips/kernel/r6000_fpu.S b/arch/mips/kernel/r6000_fpu.S
+index da0fbe4..4707738 100644
+--- a/arch/mips/kernel/r6000_fpu.S
++++ b/arch/mips/kernel/r6000_fpu.S
+@@ -18,6 +18,9 @@
+ 
+ 	.set	noreorder
+ 	.set	mips2
++	.set	push
++	SET_HARDFLOAT
++
+ 	/* Save floating point context */
+ 	LEAF(_save_fp_context)
+ 	mfc0	t0,CP0_STATUS
+@@ -85,3 +88,5 @@
+ 1:	jr	ra
+ 	 nop
+ 	END(_restore_fp_context)
++
++	.set pop	/* SET_HARDFLOAT */
+-- 
+2.1.2

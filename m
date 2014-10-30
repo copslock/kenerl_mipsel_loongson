@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 12:25:33 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.130]:55091 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012259AbaJ3LZcTpfks (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 12:25:32 +0100
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue002) with ESMTP (Nemesis)
-        id 0LhGOe-1YNWOZ447E-00mcfg; Thu, 30 Oct 2014 12:25:00 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>, f.fainelli@gmail.com,
-        tglx@linutronix.de, jason@lakedaemon.net, ralf@linux-mips.org,
-        lethal@linux-sh.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mbizon@freebox.fr, jogo@openwrt.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH V2 09/15] irqchip: Remove ARM dependency for bcm7120-l2 and brcmstb-l2
-Date:   Thu, 30 Oct 2014 12:24:59 +0100
-Message-ID: <3334166.jta5WKHbUO@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <54521CA6.1000802@cogentembedded.com>
-References: <1414635488-14137-1-git-send-email-cernekee@gmail.com> <1414635488-14137-10-git-send-email-cernekee@gmail.com> <54521CA6.1000802@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 12:50:37 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:44414 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012277AbaJ3LuVTLi7I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 12:50:21 +0100
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1XjoF6-0002lp-Ix; Thu, 30 Oct 2014 12:50:16 +0100
+Date:   Thu, 30 Oct 2014 12:50:15 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Arnd Bergmann <arnd@arndb.de>
+cc:     Kevin Cernekee <cernekee@gmail.com>, f.fainelli@gmail.com,
+        jason@lakedaemon.net, ralf@linux-mips.org, lethal@linux-sh.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH V2 03/15] genirq: Generic chip: Move irq_reg_{readl,writel}
+ accessors into generic-chip.c
+In-Reply-To: <alpine.DEB.2.11.1410301103300.5308@nanos>
+Message-ID: <alpine.DEB.2.11.1410301248120.5308@nanos>
+References: <1414635488-14137-1-git-send-email-cernekee@gmail.com> <1414635488-14137-4-git-send-email-cernekee@gmail.com> <alpine.DEB.2.11.1410300941290.5308@nanos> <6552163.gt4ABVyYlA@wuerfel> <alpine.DEB.2.11.1410301103300.5308@nanos>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:Vrq6N3YlcXBjZfZqqYy6wraeCXI6YqW8ZrpCtAiya5X
- V32ymQs1H8R54mAA/mn7nt3MK9f7vgYz1fY9Y5zlUggRJ8b0uV
- 1CljUSGKqUcSogRqXx2rU5HrgsnuhgSo6u8O9PaWpSbqEcX08X
- GSIpyrJokEKrR3Nv3OZV6JFrnTIAuyjhdQ6SXH3kYDyw+RfF3f
- 8n9793v+d3RJHcjYGMVMqmkC9ooUDXCdagjPCoE7wAYTVbZPEe
- muqbDm+JEzd7xTo2LfDw0ubVhHnQLDm2cYuytkz4/aI6i5mPBY
- zAFnjE7Nq4WiKy3jRefW2FpIrKltthOKltZTiFXh3y2sDK2WoK
- kOtxU6mwmkKB0jYITjvc=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43776
+X-archive-position: 43777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,22 +47,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 30 October 2014 14:10:30 Sergei Shtylyov wrote:
-> > diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> > index b21f12f..09c79d1 100644
-> > --- a/drivers/irqchip/Kconfig
-> > +++ b/drivers/irqchip/Kconfig
-> > @@ -50,7 +50,6 @@ config ATMEL_AIC5_IRQ
-> >
-> >   config BRCMSTB_L2_IRQ
-> >       bool
-> > -     depends on ARM
+On Thu, 30 Oct 2014, Thomas Gleixner wrote:
+> On Thu, 30 Oct 2014, Arnd Bergmann wrote:
+> > On Thursday 30 October 2014 09:43:02 Thomas Gleixner wrote:
+> > > > diff --git a/include/linux/irq.h b/include/linux/irq.h
+> > > > index 03f48d9..8049e93 100644
+> > > > --- a/include/linux/irq.h
+> > > > +++ b/include/linux/irq.h
+> > > > @@ -639,13 +639,6 @@ void arch_teardown_hwirq(unsigned int irq);
+> > > >  void irq_init_desc(unsigned int irq);
+> > > >  #endif
+> > > >  
+> > > > -#ifndef irq_reg_writel
+> > > > -# define irq_reg_writel(val, addr)   writel(val, addr)
+> > > > -#endif
+> > > > -#ifndef irq_reg_readl
+> > > > -# define irq_reg_readl(addr)         readl(addr)
+> > > > -#endif
+> > > > -
+> > > 
+> > > Brilliant patch that.
+> > > 
+> > > # git grep -l irq_reg_readl drivers/irqchip/
+> > > drivers/irqchip/irq-atmel-aic.c
+> > > drivers/irqchip/irq-atmel-aic5.c
+> > > drivers/irqchip/irq-sunxi-nmi.c
+> > > drivers/irqchip/irq-tb10x.c
+> > 
+> > Patch 1/15 changes these all. I think it's still broken because patch 2/15
+> > is wrong, but it's not /that/ obviously broken.
 > 
->     How about the following?
-> 
->         depends on ARM || MIPS || COMPILE_TEST
-> 
+> Oops. Missed that.
 
-Makes no sense when the driver isn't user-selectable.
+But looking at: drivers/irqchip/irq-sunxi-nmi.c
 
-	Arnd
+It's using the generic chip. So while the generic chip uses the
+accessor function, the driver implementation which implements extra
+functionality will use something hardcoded. While it does not break
+the current setup, it's wrong nevertheless.
+
+Thanks,
+
+	tglx

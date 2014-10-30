@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 10:10:17 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.24]:61824 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2014 10:12:46 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.130]:58919 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012246AbaJ3JKL3DwVw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 10:10:11 +0100
+        with ESMTP id S27011905AbaJ3JMkrH9Fx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2014 10:12:40 +0100
 Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue104) with ESMTP (Nemesis)
-        id 0LiUpQ-1YMPwW0wm4-00cku2; Thu, 30 Oct 2014 10:10:04 +0100
+        by mrelayeu.kundenserver.de (node=mreue005) with ESMTP (Nemesis)
+        id 0Lvg76-1Y9Kzq44jc-017RS8; Thu, 30 Oct 2014 10:12:31 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 10/11] irqchip: bcm7120-l2: Extend driver to support 64+ bit controllers
-Date:   Thu, 30 Oct 2014 10:10:03 +0100
-Message-ID: <1819614.RKinL4RR5c@wuerfel>
+Cc:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
+        ralf@linux-mips.org, lethal@linux-sh.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH V2 10/15] irqchip: bcm7120-l2: Make sure all register accesses use base+offset
+Date:   Thu, 30 Oct 2014 10:12:30 +0100
+Message-ID: <2226258.WJYuvIUVPE@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAJiQ=7D+QhFjg7mR49KE2Lu1SC72djBLhbv4sC37tSTga+BVCQ@mail.gmail.com>
-References: <1414555138-6500-1-git-send-email-cernekee@gmail.com> <7518897.LmfE2WsusV@wuerfel> <CAJiQ=7D+QhFjg7mR49KE2Lu1SC72djBLhbv4sC37tSTga+BVCQ@mail.gmail.com>
+In-Reply-To: <1414635488-14137-11-git-send-email-cernekee@gmail.com>
+References: <1414635488-14137-1-git-send-email-cernekee@gmail.com> <1414635488-14137-11-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:jbNa0XWXVSPjIKP3903oQzg6yEIckIBIV4MJOoTZtVn
- cwRqT8a80s0LlcZTh1p/xhYJnVshA2ppI409oUm3ChjTkC7sA7
- znKEQg3XYqDjXnpzk18M/4ncemMuHTjVEdwj/PaSX8zg1EAxcM
- 8ExSp4hDYX+1qQj139wTWGXyxySTTGbb5HliewO7LH+54fJPZX
- tW5Uuw2FttQ9cFvKMRrwZDIB/s4N/1YvsNZhYEbmo1jKHZem2m
- SP6hP61ugZx1/1HF5q1e/sFbQ6TXaMbcXD+ZlZGI87PP0lZ7K7
- j5dCWsIsLCYn4YCsGp56neiV3/f1J0KLk5NfhoDhi2lVBwrlQT
- qTfJKQPkett+DPz33EvQ=
+X-Provags-ID: V02:K0:Np3i8NdMzrmBIwB5aK02n+NKgyCcgMtQmSykV9JP9Ky
+ UCJ/K42KtALI2XozPSl0M3WGkthDqTFQ1+VesHiyd+MGWwnclb
+ yHR8T2LJs5QbMdnjjdNJ2LUMOAOlS/313l6lmDpocJ7IW9VU9l
+ EU5LFbzJG2U9SoGNaMibBcQ97vnVTD/2DQogRJwt/gGw9HRpMt
+ vfxbyNaeq5aJu1xfDASNtZsMVsU0coE8EemOa2VumHx1nu2jZu
+ fGIVEtZq/blnuJGylS9AWilmA33MAEj9h6gSnTKA8cp18n6KGo
+ NIAwj0jkCg4ojmi7b1MKzhWI1Xn8w0Yl87jC7Ev1FDvU/+u9zm
+ PRVXNT6cH1ATptHQTgyc=
 X-UI-Out-Filterresults: notjunk:1;
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43761
+X-archive-position: 43762
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,17 +51,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday 29 October 2014 16:22:31 Kevin Cernekee wrote:
+On Wednesday 29 October 2014 19:18:03 Kevin Cernekee wrote:
+> A couple of accesses to IRQEN (base+0x00) just used "base" directly, so
+> they would break if IRQEN ever became nonzero.  Make sure that all
+> reads/writes specify the register offset constant.
 > 
-> This uses one domain per bcm7120-l2 DT node.  If the DT node defines
-> multiple enable/status pairs (i.e. >=64 IRQs) then the driver will
-> create a single IRQ domain with 2+ generic chips.
-> 
-> Multiple generic chips are required because the generic-chip code can
-> only handle one enable/status register pair per instance.
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 > 
 
-Makes sense. Just make sure you have that explanation in the patch
-description.
+Now you no longer convert them this driver to use irq_reg_{readl,writel}, which
+breaks support for big-endian ARM.
 
 	Arnd

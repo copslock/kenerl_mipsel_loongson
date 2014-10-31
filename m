@@ -1,47 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 14:31:00 +0100 (CET)
-Received: from mail-wi0-f173.google.com ([209.85.212.173]:59045 "EHLO
-        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012297AbaJaNa6enect (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2014 14:30:58 +0100
-Received: by mail-wi0-f173.google.com with SMTP id n3so1312190wiv.12
-        for <multiple recipients>; Fri, 31 Oct 2014 06:30:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=5HdWq67Hy1P7VUSeMke4FuvLslly+7+kxDNbgsV+Gdo=;
-        b=KzLRrbY7pXM/GE+o190wLcG3pRB58cQdJoUrqnLMZFY2+45v6A3wmixuQv4vPvKnYC
-         /em/hzbbCxgFck/DjBq3TR9zqkVYvhvQAxM+9buR7o+Vc3ZuBDmf7bDzCBjzm+zzMBV2
-         cHHbWkmoOGJ2zpwQsJl9rgSZtfDSGh9e93XA4YWFgZYtruJuKIEZuJi7Yez0t7RLifZW
-         706F1ZRj86eOmV1seSrPcRhorddNPT6haHTtRwIyIviLNG1Fw8jNx7V/e73nSuDt945Q
-         nmE43oVyoXk/J2DACBDvRbLpOERxCKqbHrGoyTvBDoksV6xzLTyeCmCk1wYBt00VlwTU
-         FPQg==
-X-Received: by 10.180.74.76 with SMTP id r12mr4064100wiv.6.1414762253281; Fri,
- 31 Oct 2014 06:30:53 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.217.55.200 with HTTP; Fri, 31 Oct 2014 06:30:13 -0700 (PDT)
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F603F9@LEMAIL01.le.imgtec.org>
-References: <1414700683-121426-1-git-send-email-manuel.lauss@gmail.com>
- <54537551.6080404@imgtec.com> <6D39441BF12EF246A7ABCE6654B0235320F603F9@LEMAIL01.le.imgtec.org>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Fri, 31 Oct 2014 14:30:13 +0100
-Message-ID: <CAOLZvyFkP-wDZcv4u9gbwciTeCpYg=khL48+cs3hAkdxauyYTg@mail.gmail.com>
-Subject: Re: [RFC PATCH v5] MIPS: fix build with binutils 2.24.51+
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 16:58:11 +0100 (CET)
+Received: from resqmta-po-12v.sys.comcast.net ([96.114.154.171]:52174 "EHLO
+        resqmta-po-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012297AbaJaP6HaXqcP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2014 16:58:07 +0100
+Received: from resomta-po-15v.sys.comcast.net ([96.114.154.239])
+        by resqmta-po-12v.sys.comcast.net with comcast
+        id 9rxm1p0015AAYLo01ry1fW; Fri, 31 Oct 2014 15:58:01 +0000
+Received: from gentwo.org ([98.213.233.247])
+        by resomta-po-15v.sys.comcast.net with comcast
+        id 9rHG1p00F5Lw0ES01rHGHZ; Fri, 31 Oct 2014 15:17:18 +0000
+Received: by gentwo.org (Postfix, from userid 1001)
+        id 3D1D5182; Fri, 31 Oct 2014 10:17:16 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by gentwo.org (Postfix) with ESMTP id 39827140;
+        Fri, 31 Oct 2014 10:17:16 -0500 (CDT)
+Date:   Fri, 31 Oct 2014 10:17:16 -0500 (CDT)
+From:   Christoph Lameter <cl@linux.com>
+X-X-Sender: cl@gentwo.org
+To:     Joonsoo Kim <iamjoonsoo.kim@lge.com>
+cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH for v3.18] mm/slab: fix unalignment problem on Malta with
+ EVA due to slab merge
+In-Reply-To: <1414742912-14852-1-git-send-email-iamjoonsoo.kim@lge.com>
+Message-ID: <alpine.DEB.2.11.1410311015490.14859@gentwo.org>
+References: <1414742912-14852-1-git-send-email-iamjoonsoo.kim@lge.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1414771081;
+        bh=eI+/L5PEzDfYM0gKAgC0QopUBCuWSky5bsnL260oZb4=;
+        h=Received:Received:Received:Received:Date:From:To:Subject:
+         Message-ID:Content-Type;
+        b=ZWDiQ/UTSvsACwLxou6foKmHS867/TG3l3qmEcEnMB0Tz11bmlOSELkj61381+pO5
+         rBJ2Fg0zGyLqK6vLjH1Qpv/FwMXTFvY9PUnfW2pgoa+BZ+juF06K5BTFrhoowXH//4
+         SIBKe20S/2QkRhlUw/zgPTGWQFXY5UYCe+DNiM3ljC6WdgLYEUWM2LnMB0TaLEaa1d
+         k1P/NAF74YVLD+ZenQCOams99KW0F9zMEEOG4/PfRIcaWn2iPOsVcj1xqZdbE/doGt
+         zUPXGqgEhis5mKPeFaar4lQgKnhIqpOOEI/CHOrPZxeR2Z9CRE2KZOnZtLiUDhbViv
+         QKuhT36qUjX2w==
+Return-Path: <cl@linux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43805
+X-archive-position: 43806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: cl@linux.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,7 +62,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Okay, let me build a 64bit toolchain and I'll see what I can do about
-that error.
+On Fri, 31 Oct 2014, Joonsoo Kim wrote:
 
-Manuel
+> alloc_unbound_pwq() allocates slab object from pool_workqueue. This
+> kmem_cache requires 256 bytes alignment, but, current merging code
+> doesn't honor that, and merge it with kmalloc-256. kmalloc-256 requires
+> only cacheline size alignment so that above failure occurs. However,
+> in x86, kmalloc-256 is luckily aligned in 256 bytes, so the problem
+> didn't happen on it.
+
+That luck will run out when you enable debugging. But then that also
+usually means disablign merging.
+
+> To fix this problem, this patch introduces alignment mismatch check
+> in find_mergeable(). This will fix the problem.
+
+Acked-by: Christoph Lameter <cl@linux.com>

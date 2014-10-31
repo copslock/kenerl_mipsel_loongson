@@ -1,40 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 10:09:29 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:48956 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012102AbaJaJJ1wYlZk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2014 10:09:27 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1Xk8Co-0002tm-I4; Fri, 31 Oct 2014 10:09:14 +0100
-Date:   Fri, 31 Oct 2014 10:09:13 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Ren Qiaowei <qiaowei.ren@intel.com>
-cc:     Dave Hansen <dave.hansen@intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
- violation information
-In-Reply-To: <5452EFF7.4090204@intel.com>
-Message-ID: <alpine.DEB.2.11.1410311007230.5308@nanos>
-References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-10-git-send-email-qiaowei.ren@intel.com> <5452BDD8.2080605@intel.com> <5452EFF7.4090204@intel.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 12:34:28 +0100 (CET)
+Received: from hqemgate14.nvidia.com ([216.228.121.143]:13490 "EHLO
+        hqemgate14.nvidia.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012367AbaJaLe1N0bI4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2014 12:34:27 +0100
+Received: from hqnvupgp08.nvidia.com (Not Verified[216.228.121.13]) by hqemgate14.nvidia.com
+        id <B545374000000>; Fri, 31 Oct 2014 04:35:28 -0700
+Received: from hqemhub02.nvidia.com ([172.20.12.94])
+  by hqnvupgp08.nvidia.com (PGP Universal service);
+  Fri, 31 Oct 2014 04:33:36 -0700
+X-PGP-Universal: processed;
+        by hqnvupgp08.nvidia.com on Fri, 31 Oct 2014 04:33:36 -0700
+Received: from HQMAIL105.nvidia.com (172.20.187.12) by hqemhub02.nvidia.com
+ (172.20.150.31) with Microsoft SMTP Server (TLS) id 8.3.342.0; Fri, 31 Oct
+ 2014 04:34:19 -0700
+Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.847.32; Fri, 31 Oct
+ 2014 11:34:01 +0000
+Received: from deemhub01.nvidia.com (10.21.69.137) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.847.32 via Frontend
+ Transport; Fri, 31 Oct 2014 11:34:00 +0000
+Received: from tbergstrom-lnx.Nvidia.com (10.21.65.27) by deemhub01.nvidia.com
+ (10.21.69.137) with Microsoft SMTP Server id 8.3.342.0; Fri, 31 Oct 2014
+ 12:33:58 +0100
+Received: by tbergstrom-lnx.Nvidia.com (Postfix, from userid 1002)      id
+ 833512086D; Fri, 31 Oct 2014 13:33:58 +0200 (EET)
+Date:   Fri, 31 Oct 2014 13:33:58 +0200
+From:   Peter De Schrijver <pdeschrijver@nvidia.com>
+To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Mike Turquette <mturquette@linaro.org>
+CC:     Mike Turquette <mturquette@linaro.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        "Alex Elder" <elder@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <linux-omap@vger.kernel.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        "Matt Porter" <mporter@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: Re: [PATCH v5 0/7] Per-user clock constraints
+Message-ID: <20141031113358.GY32045@tbergstrom-lnx.Nvidia.com>
+References: <1414666135-14313-1-git-send-email-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1414666135-14313-1-git-send-email-tomeu.vizoso@collabora.com>
+X-NVConfidentiality: public
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pdeschrijver@nvidia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43801
+X-archive-position: 43802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: pdeschrijver@nvidia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,35 +71,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 31 Oct 2014, Ren Qiaowei wrote:
-> On 10/31/2014 06:38 AM, Dave Hansen wrote:
-> > > @@ -316,6 +317,11 @@ dotraplinkage void do_bounds(struct pt_regs *regs,
-> > > long error_code)
-> > >   		break;
-> > > 
-> > >   	case 1: /* Bound violation. */
-> > > +		do_mpx_bounds(regs, &info, xsave_buf);
-> > > +		do_trap(X86_TRAP_BR, SIGSEGV, "bounds", regs,
-> > > +				error_code, &info);
-> > > +		break;
-> > > +
-> > >   	case 0: /* No exception caused by Intel MPX operations. */
-> > >   		do_trap(X86_TRAP_BR, SIGSEGV, "bounds", regs, error_code,
-> > > NULL);
-> > >   		break;
-> > > 
-> > 
-> > So, siginfo is stack-allocarted here.  do_mpx_bounds() can error out if
-> > it sees an invalid bndregno.  We still send the signal with the &info
-> > whether or not we filled the 'info' in do_mpx_bounds().
-> > 
-> > Can't this leak some kernel stack out in the 'info'?
-> > 
+On Thu, Oct 30, 2014 at 11:48:26AM +0100, Tomeu Vizoso wrote:
+> Hello,
 > 
-> This should check the return value of do_mpx_bounds and should be fixed.
+> this fifth version of the series has just one change, suggested by Stephen:
+> 
+> * Initialize clk.ceiling_constraint to ULONG_MAX and warn about new floor
+> constraints being higher than the existing ceiling.
+> 
+> The first five patches are just cleanups that should be desirable on their own,
+> and that should make easier to review the actual per-user clock patch.
+> 
+> The sixth patch actually moves the per-clock data that was stored in struct
+> clk to a new struct clk_core and adds references to it from both struct clk and
+> struct clk_hw. struct clk is now ready to contain information that is specific
+> to a given clk consumer.
+> 
+> The seventh patch adds API for setting floor and ceiling constraints and stores
+> that information on the per-user struct clk, which is iterable from struct
+> clk_core.
+> 
+> They are based on top of 3.18-rc1.
+> 
+> http://cgit.collabora.com/git/user/tomeu/linux.git/log/?h=per-user-clk-constraints-v5
+> 
 
-And how's that answering Dave's question about leaking stack information? 
+Acked-By: Peter De Schrijver <pdeschrijver@nvidia.com>
+
+Mike,
+
+Do you think this will be merged for 3.19?
 
 Thanks,
 
-	tglx
+Peter.

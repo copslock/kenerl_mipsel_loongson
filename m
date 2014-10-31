@@ -1,48 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 17:35:34 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:18198 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012381AbaJaQfcq9ZAS convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2014 17:35:32 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id F15D7C6934317;
-        Fri, 31 Oct 2014 16:35:23 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 31 Oct 2014 16:35:26 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Fri, 31 Oct 2014 16:35:26 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: RE: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-Thread-Topic: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-Thread-Index: AQHP9SQynyyKZQdHPUiykN8MJvqg/JxKYQaAgAAFHKA=
-Date:   Fri, 31 Oct 2014 16:35:25 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F62676@LEMAIL01.le.imgtec.org>
-References: <1414771394-24314-1-git-send-email-manuel.lauss@gmail.com>
- <5453B53D.7060409@imgtec.com>
-In-Reply-To: <5453B53D.7060409@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.152.76]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 21:16:24 +0100 (CET)
+Received: from mga03.intel.com ([134.134.136.65]:2843 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012393AbaJaUQWjd0fW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 31 Oct 2014 21:16:22 +0100
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP; 31 Oct 2014 13:14:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.07,295,1413270000"; 
+   d="scan'208";a="599966426"
+Received: from ray.jf.intel.com (HELO [10.7.199.171]) ([10.7.199.171])
+  by orsmga001.jf.intel.com with ESMTP; 31 Oct 2014 13:16:14 -0700
+Message-ID: <5453EE0E.8060200@intel.com>
+Date:   Fri, 31 Oct 2014 13:16:14 -0700
+From:   Dave Hansen <dave.hansen@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.2
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        "Ren, Qiaowei" <qiaowei.ren@intel.com>
+CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v9 09/12] x86, mpx: decode MPX instruction to get bound
+ violation information
+References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-10-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241408360.5308@nanos> <9E0BE1322F2F2246BD820DA9FC397ADE0180ED16@shsmsx102.ccr.corp.intel.com> <alpine.DEB.2.11.1410272135420.5308@nanos>
+In-Reply-To: <alpine.DEB.2.11.1410272135420.5308@nanos>
+Content-Type: multipart/mixed;
+ boundary="------------020507090901020103010601"
+Return-Path: <dave.hansen@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43810
+X-archive-position: 43811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: dave.hansen@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,40 +50,398 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> > Tests with MSA and other extensions also appreciated!
-> >
-> > v6: #undef fp so that the preprocessor does not replace the fp in
-> > 	.set fp=64 with $30...  Fixes 64bit build.
-> 
-> Technically speaking, a maltasmvp_defconfig selects CONFIG_32BIT=y so
-> it's still a 32-bit build.
-> > [...]
-> 
-> Ok the fp problem went away but I still have the even/odd errors with my
-> tools
-> 
-> arch/mips/kernel/r4k_switch.S: Assembler messages:
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 1
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 3
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 5
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 7
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 9
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 11
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 13
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 15
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 17
-> arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> was 19
+This is a multi-part message in MIME format.
+--------------020507090901020103010601
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
 
-Could you send me the .s and compile flags?
+On 10/27/2014 01:36 PM, Thomas Gleixner wrote:
+> You're repeating yourself. Care to read the discussion about this from
+> the last round of review again?
 
-Matthew 
+OK, so here's a rewritten decoder.  I think it's a lot more robust and
+probably fixes a bug or two.  This ends up saving ~70 lines of code out
+of ~300 or so for the old patch.
+
+I'll include this in the next series, but I'm posting it early and often
+to make sure I'm on the right track.
+
+There is also a preparatory patch or two, but they're small.
+
+--------------020507090901020103010601
+Content-Type: text/x-patch;
+ name="mpx-new-decoder.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="mpx-new-decoder.patch"
+
+
+This patch sets bound violation fields of siginfo struct in #BR
+exception handler by decoding the user instruction and constructing
+the faulting pointer.
+
+We have to be very careful when decoding these instructions.  They
+are completely controlled by userspace and may be changed at any
+time up to and including the point where we try to copy them in to
+the kernel.  They may or may not be MPX instructions and could be
+completely invalid for all we know.
+
+Note: This code is based on Qiaowei Ren's specialized MPX
+decoder, but uses the generic decoder whenever possible.  It was
+tested for robustness by generating a completely random data
+stream and trying to decode that stream.  I also unmapped random
+pages inside the stream to test the "partial instruction" short
+read code.
+
+We kzalloc() the siginfo instead of stack allocating it because
+we need to memset() it anyway, and doing this makes it much more
+clear when it got initialized by the MPX instruction decoder.
+
+Changes from the old decoder:
+ * Use the generic decoder instead of custom functions.  Saved
+   ~70 lines of code overall.
+ * Remove insn->addr_bytes code (never used??)
+ * Make sure never to possibly overflow the regoff[] array, plus
+   check the register range correctly in 32 and 64-bit modes.
+ * Allow get_reg() to return an error and have mpx_get_addr_ref()
+   handle when it sees errors.
+ * Only call insn_get_*() near where we actually use the values
+   instead if trying to call them all at once.
+ * Handle short reads from copy_from_user() and check the actual
+   number of read bytes against what we expect from
+   insn_get_length().  If a read stops in the middle of an
+   instruction, we error out.
+ * Actually check the opcodes intead of ignoring them.
+ * Dynamically kzalloc() siginfo_t so we don't leak any stack
+   data.
+ * Detect and handle decoder failures instead of ignoring them.
+
+
+Signed-off-by: Qiaowei Ren <qiaowei.ren@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@intel.com>
+---
+
+ b/arch/x86/include/asm/mpx.h |    8 +
+ b/arch/x86/kernel/mpx.c      |  229 +++++++++++++++++++++++++++++++++++++++++++
+ b/arch/x86/kernel/traps.c    |   19 +++
+ 3 files changed, 255 insertions(+), 1 deletion(-)
+
+diff -puN arch/x86/include/asm/mpx.h~mpx-new-decoder arch/x86/include/asm/mpx.h
+--- a/arch/x86/include/asm/mpx.h~mpx-new-decoder	2014-10-31 11:36:17.130106540 -0700
++++ b/arch/x86/include/asm/mpx.h	2014-10-31 12:51:19.518584587 -0700
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/types.h>
+ #include <asm/ptrace.h>
++#include <asm/insn.h>
+ 
+ /*
+  * NULL is theoretically a valid place to put the bounds
+@@ -59,11 +60,18 @@ unsigned long mpx_mmap(unsigned long len
+ 
+ #ifdef CONFIG_X86_INTEL_MPX
+ int do_mpx_bt_fault(struct xsave_struct *xsave_buf);
++siginfo_t *mpx_generate_signifo(struct pt_regs *regs,
++				struct xsave_struct *xsave_buf);
+ #else
+ static inline int do_mpx_bt_fault(struct xsave_struct *xsave_buf)
+ {
+ 	return -EINVAL;
+ }
++siginfo_t *mpx_generate_signifo(struct pt_regs *regs,
++				struct xsave_struct *xsave_buf);
++{
++	return NULL;
++}
+ #endif /* CONFIG_X86_INTEL_MPX */
+ 
+ #endif /* _ASM_X86_MPX_H */
+diff -puN arch/x86/kernel/mpx.c~mpx-new-decoder arch/x86/kernel/mpx.c
+--- a/arch/x86/kernel/mpx.c~mpx-new-decoder	2014-10-31 11:36:17.131106585 -0700
++++ b/arch/x86/kernel/mpx.c	2014-10-31 13:12:22.644915144 -0700
+@@ -81,6 +81,163 @@ int mpx_disable_management(struct task_s
+ 	return 0;
+ }
+ 
++enum reg_type {
++	REG_TYPE_RM = 0,
++	REG_TYPE_INDEX,
++	REG_TYPE_BASE,
++};
++
++static unsigned long get_reg_offset(struct insn *insn, struct pt_regs *regs,
++				    enum reg_type type)
++{
++	int regno = 0;
++
++	static const int regoff[] = {
++		offsetof(struct pt_regs, ax),
++		offsetof(struct pt_regs, cx),
++		offsetof(struct pt_regs, dx),
++		offsetof(struct pt_regs, bx),
++		offsetof(struct pt_regs, sp),
++		offsetof(struct pt_regs, bp),
++		offsetof(struct pt_regs, si),
++		offsetof(struct pt_regs, di),
++#ifdef CONFIG_X86_64
++		offsetof(struct pt_regs, r8),
++		offsetof(struct pt_regs, r9),
++		offsetof(struct pt_regs, r10),
++		offsetof(struct pt_regs, r11),
++		offsetof(struct pt_regs, r12),
++		offsetof(struct pt_regs, r13),
++		offsetof(struct pt_regs, r14),
++		offsetof(struct pt_regs, r15),
++#endif
++	};
++	int nr_registers = ARRAY_SIZE(regoff);
++	/*
++	 * Don't possibly decode a 32-bit instructions as
++	 * reading a 64-bit-only register.
++	 */
++	if (IS_ENABLED(CONFIG_X86_64) && !insn->x86_64)
++		nr_registers -= 8;
++
++	switch (type) {
++	case REG_TYPE_RM:
++		regno = X86_MODRM_RM(insn->modrm.value);
++		if (X86_REX_B(insn->rex_prefix.value) == 1)
++			regno += 8;
++		break;
++
++	case REG_TYPE_INDEX:
++		regno = X86_SIB_INDEX(insn->sib.value);
++		if (X86_REX_X(insn->rex_prefix.value) == 1)
++			regno += 8;
++		break;
++
++	case REG_TYPE_BASE:
++		regno = X86_SIB_BASE(insn->sib.value);
++		if (X86_REX_B(insn->rex_prefix.value) == 1)
++			regno += 8;
++		break;
++
++	default:
++		printk(KERN_ERR "invalid register type");
++		BUG();
++		break;
++	}
++
++	if (regno > nr_registers) {
++		WARN_ONCE(1, "decoded an instruction with an invalid register");
++		return -EINVAL;
++	}
++	return regoff[regno];
++}
++
++/*
++ * return the address being referenced be instruction
++ * for rm=3 returning the content of the rm reg
++ * for rm!=3 calculates the address using SIB and Disp
++ */
++static void __user *mpx_get_addr_ref(struct insn *insn, struct pt_regs *regs)
++{
++	unsigned long addr, addr_offset;
++	unsigned long base, base_offset;
++	unsigned long indx, indx_offset;
++	insn_byte_t sib;
++
++	insn_get_modrm(insn);
++	insn_get_sib(insn);
++	sib = insn->sib.value;
++
++	if (X86_MODRM_MOD(insn->modrm.value) == 3) {
++		addr_offset = get_reg_offset(insn, regs, REG_TYPE_RM);
++		if (addr_offset < 0)
++			goto out_err;
++		addr = regs_get_register(regs, addr_offset);
++	} else {
++		if (insn->sib.nbytes) {
++			base_offset = get_reg_offset(insn, regs, REG_TYPE_BASE);
++			if (base_offset < 0)
++				goto out_err;
++
++			indx_offset = get_reg_offset(insn, regs, REG_TYPE_INDEX);
++			if (indx_offset < 0)
++				goto out_err;
++
++			base = regs_get_register(regs, base_offset);
++			indx = regs_get_register(regs, indx_offset);
++			addr = base + indx * (1 << X86_SIB_SCALE(sib));
++		} else {
++			addr_offset = get_reg_offset(insn, regs, REG_TYPE_RM);
++			if (addr_offset < 0)
++				goto out_err;
++			addr = regs_get_register(regs, addr_offset);
++		}
++		addr += insn->displacement.value;
++	}
++	return (void __user *)addr;
++out_err:
++	return (void __user *)-1;
++}
++
++static int mpx_insn_decode(struct insn *insn,
++			   struct pt_regs *regs)
++{
++	unsigned char buf[MAX_INSN_SIZE];
++	int x86_64 = !test_thread_flag(TIF_IA32);
++	int not_copied;
++	int nr_copied;
++
++	not_copied = copy_from_user(buf, (void __user *)regs->ip, sizeof(buf));
++	insn_init(insn, buf, sizeof(buf), x86_64);
++	nr_copied = sizeof(buf) - not_copied;
++	insn_get_length(insn);
++	/*
++	 * copy_from_user() tries to get as many bytes as we could see
++	 * in the largest possible instruction.  If the instruction we
++	 * are after is shorter than that _and_ we attempt to copy from
++	 * something unreadable, we might get a short read.  This is OK
++	 * as long as the read did not stop in the middle of the
++	 * instruction.  Check to see if we got a partial instruction.
++	 */
++	if (nr_copied < insn->length)
++		return -EFAULT;
++
++	insn_get_opcode(insn);
++	/*
++	 * We only _really_ need to decode bndcl/bndcn/bndcu
++	 * Error out on anything else.
++	 */
++	if (insn->opcode.bytes[0] != 0x0f)
++		goto bad_opcode;
++	if ((insn->opcode.bytes[1] != 0x1a) &&
++	    (insn->opcode.bytes[1] != 0x1b))
++		goto bad_opcode;
++
++	return 0;
++bad_opcode:
++	return -EINVAL;
++}
++
+ /*
+  * With 32-bit mode, MPX_BT_SIZE_BYTES is 4MB, and the size of each
+  * bounds table is 16KB. With 64-bit mode, MPX_BT_SIZE_BYTES is 2GB,
+@@ -187,3 +344,75 @@ int do_mpx_bt_fault(struct xsave_struct
+ 
+ 	return allocate_bt((long __user *)bd_entry);
+ }
++
++/*
++ * If a bounds overflow occurs then a #BR is generated. This
++ * function decodes MPX instructions to get violation address
++ * and set this address into extended struct siginfo.
++ *
++ * Note that this is not a super precise way of doing this.
++ * Userspace could have, by the time we get here, written
++ * anything it wants in to the instructions.  We can not
++ * trust anything about it.  They might not be valid
++ * instructions or might encode invalid registers, etc...
++ *
++ * The caller is expected to kfree() the returned siginfo_t.
++ */
++siginfo_t *mpx_generate_siginfo(struct pt_regs *regs,
++				struct xsave_struct *xsave_buf)
++{
++	struct insn insn;
++	uint8_t bndregno;
++	int err;
++	siginfo_t *info,
++
++	err = mpx_insn_decode(&insn, regs);
++	if (err)
++		goto err_out;
++
++	/*
++	 * We know at this point that we are only dealing with
++	 * MPX instructions.
++	 */
++	insn_get_modrm(&insn);
++	bndregno = X86_MODRM_REG(insn.modrm.value);
++	if (bndregno > 3) {
++		err = -EINVAL;
++		goto err_out;
++	}
++	info = kzalloc(sizeof(*info), GFP_KERNEL);
++	if (!info) {
++		err = -ENOMEM;
++		goto err_out;
++	}
++	/*
++	 * The registers are always 64-bit, but the upper 32
++	 * bits are ignored in 32-bit mode.  Also, note that the
++	 * upper bounds are architecturally represented in 1's
++	 * complement form.
++	 *
++	 * The 'unsigned long' cast is because the compiler
++	 * complains when casting from integers to different-size
++	 * pointers.
++	 */
++	info->si_lower = (void __user *)(unsigned long)
++		(xsave_buf->bnd[bndregno].lb);
++	info->si_upper = (void __user *)(unsigned long)
++		(~xsave_buf->bnd[bndregno].ub);
++	info->si_addr_lsb = 0;
++	info->si_signo = SIGSEGV;
++	info->si_errno = 0;
++	info->si_code = SEGV_BNDERR;
++	info->si_addr = mpx_get_addr_ref(&insn, regs);
++	/*
++	 * We were not able to extract an address from the instruction,
++	 * probably because there was something invalid in it.
++	 */
++	if (info->si_addr == (void *)-1) {
++		err = -EINVAL;
++		goto out_err
++	}
++	return info;
++err_out:
++	return ERR_PTR(err);
++}
+diff -puN arch/x86/kernel/traps.c~mpx-new-decoder arch/x86/kernel/traps.c
+--- a/arch/x86/kernel/traps.c~mpx-new-decoder	2014-10-31 11:36:17.133106677 -0700
++++ b/arch/x86/kernel/traps.c	2014-10-31 12:55:42.637301627 -0700
+@@ -210,7 +210,6 @@ static void do_error_trap(struct pt_regs
+ {
+ 	enum ctx_state prev_state = exception_enter();
+ 	siginfo_t info;
+-	int ret = 0;
+ 
+ 	if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) !=
+ 			NOTIFY_STOP) {
+@@ -285,6 +284,8 @@ dotraplinkage void do_bounds(struct pt_r
+ 	unsigned long status;
+ 	struct xsave_struct *xsave_buf;
+ 	struct task_struct *tsk = current;
++	struct siginfo_t *info;
++	int ret = 0;
+ 
+ 	prev_state = exception_enter();
+ 	if (notify_die(DIE_TRAP, "bounds", regs, error_code,
+@@ -344,6 +345,22 @@ dotraplinkage void do_bounds(struct pt_r
+ 		break;
+ 
+ 	case 1: /* Bound violation. */
++		info = mpx_generate_siginfo(regs, xsave_buf);
++		if (!PTR_ERR(info)) {
++			/*
++			 * Success, we decoded the instruction and retrieved
++			 * an 'info' containing the address being accessed
++			 * which caused the exception.
++			 */
++			do_trap(X86_TRAP_BR, SIGSEGV, "bounds", regs,
++					error_code, info);
++			kfree(info);
++			break;
++		}
++		/*
++		 * We failed to decode the MPX instruction.  Act as if
++		 * the exception was not caused by MPX and fall through.
++		 */
+ 	case 0: /* No exception caused by Intel MPX operations. */
+ 		do_trap(X86_TRAP_BR, SIGSEGV, "bounds", regs, error_code, NULL);
+ 		break;
+_
+
+--------------020507090901020103010601--

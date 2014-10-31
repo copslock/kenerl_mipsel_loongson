@@ -1,64 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 12:34:28 +0100 (CET)
-Received: from hqemgate14.nvidia.com ([216.228.121.143]:13490 "EHLO
-        hqemgate14.nvidia.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012367AbaJaLe1N0bI4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2014 12:34:27 +0100
-Received: from hqnvupgp08.nvidia.com (Not Verified[216.228.121.13]) by hqemgate14.nvidia.com
-        id <B545374000000>; Fri, 31 Oct 2014 04:35:28 -0700
-Received: from hqemhub02.nvidia.com ([172.20.12.94])
-  by hqnvupgp08.nvidia.com (PGP Universal service);
-  Fri, 31 Oct 2014 04:33:36 -0700
-X-PGP-Universal: processed;
-        by hqnvupgp08.nvidia.com on Fri, 31 Oct 2014 04:33:36 -0700
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by hqemhub02.nvidia.com
- (172.20.150.31) with Microsoft SMTP Server (TLS) id 8.3.342.0; Fri, 31 Oct
- 2014 04:34:19 -0700
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.847.32; Fri, 31 Oct
- 2014 11:34:01 +0000
-Received: from deemhub01.nvidia.com (10.21.69.137) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.847.32 via Frontend
- Transport; Fri, 31 Oct 2014 11:34:00 +0000
-Received: from tbergstrom-lnx.Nvidia.com (10.21.65.27) by deemhub01.nvidia.com
- (10.21.69.137) with Microsoft SMTP Server id 8.3.342.0; Fri, 31 Oct 2014
- 12:33:58 +0100
-Received: by tbergstrom-lnx.Nvidia.com (Postfix, from userid 1002)      id
- 833512086D; Fri, 31 Oct 2014 13:33:58 +0200 (EET)
-Date:   Fri, 31 Oct 2014 13:33:58 +0200
-From:   Peter De Schrijver <pdeschrijver@nvidia.com>
-To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Mike Turquette <mturquette@linaro.org>
-CC:     Mike Turquette <mturquette@linaro.org>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        "Alex Elder" <elder@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linux-omap@vger.kernel.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        "Matt Porter" <mporter@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: Re: [PATCH v5 0/7] Per-user clock constraints
-Message-ID: <20141031113358.GY32045@tbergstrom-lnx.Nvidia.com>
-References: <1414666135-14313-1-git-send-email-tomeu.vizoso@collabora.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2014 12:41:15 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18773 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009840AbaJaLlNUvwCl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2014 12:41:13 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 047A7EB8F9441;
+        Fri, 31 Oct 2014 11:41:04 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 31 Oct 2014 11:41:06 +0000
+Received: from [192.168.154.149] (192.168.154.149) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 31 Oct
+ 2014 11:41:05 +0000
+Message-ID: <54537551.6080404@imgtec.com>
+Date:   Fri, 31 Oct 2014 11:41:05 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1414666135-14313-1-git-send-email-tomeu.vizoso@collabora.com>
-X-NVConfidentiality: public
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <pdeschrijver@nvidia.com>
+To:     Manuel Lauss <manuel.lauss@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+CC:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [RFC PATCH v5] MIPS: fix build with binutils 2.24.51+
+References: <1414700683-121426-1-git-send-email-manuel.lauss@gmail.com>
+In-Reply-To: <1414700683-121426-1-git-send-email-manuel.lauss@gmail.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.149]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43802
+X-archive-position: 43803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pdeschrijver@nvidia.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,37 +49,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 30, 2014 at 11:48:26AM +0100, Tomeu Vizoso wrote:
-> Hello,
+On 10/30/2014 08:24 PM, Manuel Lauss wrote:
+> Starting with version 2.24.51.20140728 MIPS binutils complain loudly
+> about mixing soft-float and hard-float object files, leading to this
+> build failure since GCC is invoked with "-msoft-float" on MIPS:
 > 
-> this fifth version of the series has just one change, suggested by Stephen:
+> {standard input}: Warning: .gnu_attribute 4,3 requires `softfloat'
+>   LD      arch/mips/alchemy/common/built-in.o
+> mipsel-softfloat-linux-gnu-ld: Warning: arch/mips/alchemy/common/built-in.o
+>  uses -msoft-float (set by arch/mips/alchemy/common/prom.o),
+>  arch/mips/alchemy/common/sleeper.o uses -mhard-float
 > 
-> * Initialize clk.ceiling_constraint to ULONG_MAX and warn about new floor
-> constraints being higher than the existing ceiling.
+> To fix this, we detect if GAS is new enough to support "-msoft-float" command
+> option, and if it does, we can let GCC pass it to GAS;  but then we also need
+> to sprinkle the files which make use of floating point registers with the
+> necessary ".set hardfloat" directives.
 > 
-> The first five patches are just cleanups that should be desirable on their own,
-> and that should make easier to review the actual per-user clock patch.
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
+> Compiles with binutils 2.23 and current git head, 32bit mips32r1 tested only.
 > 
-> The sixth patch actually moves the per-clock data that was stored in struct
-> clk to a new struct clk_core and adds references to it from both struct clk and
-> struct clk_hw. struct clk is now ready to contain information that is specific
-> to a given clk consumer.
+> Tests on 64bit and with MSA and other extensions also appreciated!
+> Markos: I can't reproduce the malta defconfig error you're seeing, at least
+> not with sourceware sources.
 > 
-> The seventh patch adds API for setting floor and ceiling constraints and stores
-> that information on the per-user struct clk, which is iterable from struct
-> clk_core.
+> v5: fixed issues with code for 32bit mips32r2 using .set mips64r2 outlined
+>     by Matthew: what the code really wants is 64bit float support, but not
+>     64bit mips code.
 > 
-> They are based on top of 3.18-rc1.
+> v4: fixed issues outlined by Markos and Matthew.
 > 
-> http://cgit.collabora.com/git/user/tomeu/linux.git/log/?h=per-user-clk-constraints-v5
+> v3: incorporate Maciej's suggestions:
+> 	- detect if gas can handle -msoft-float and ".set hardfloat"
+> 	- apply .set hardfloat only where really necessary
+> 
+> v2: cover more files
+> 
+> This was introduced in binutils commit  351cdf24d223290b15fa991e5052ec9e9bd1e284
+> ("[MIPS] Implement O32 FPXX, FP64 and FP64A ABI extensions").
 > 
 
-Acked-By: Peter De Schrijver <pdeschrijver@nvidia.com>
+Hello,
 
-Mike,
+I still can't build it with the toolchain I am using over here. This is
+with a regular maltasmvp_defconfig
 
-Do you think this will be merged for 3.19?
+arch/mips/kernel/r4k_fpu.S: Assembler messages:
+arch/mips/kernel/r4k_fpu.S:47: Warning: tried to set unrecognized
+symbol: $30=64
 
-Thanks,
+arch/mips/kernel/r4k_fpu.S:54: Error: float register should be even, was 1
+arch/mips/kernel/r4k_fpu.S:55: Error: float register should be even, was 3
+arch/mips/kernel/r4k_fpu.S:56: Error: float register should be even, was 5
+arch/mips/kernel/r4k_fpu.S:57: Error: float register should be even, was 7
+arch/mips/kernel/r4k_fpu.S:58: Error: float register should be even, was 9
+arch/mips/kernel/r4k_fpu.S:59: Error: float register should be even, was 11
+arch/mips/kernel/r4k_fpu.S:60: Error: float register should be even, was 13
+arch/mips/kernel/r4k_fpu.S:61: Error: float register should be even, was 15
+arch/mips/kernel/r4k_fpu.S:62: Error: float register should be even, was 17
+arch/mips/kernel/r4k_fpu.S:63: Error: float register should be even, was 19
+arch/mips/kernel/r4k_fpu.S:64: Error: float register should be even, was 21
+arch/mips/kernel/r4k_fpu.S:65: Error: float register should be even, was 23
+arch/mips/kernel/r4k_fpu.S:66: Error: float register should be even, was 25
+arch/mips/kernel/r4k_fpu.S:67: Error: float register should be even, was 27
+arch/mips/kernel/r4k_fpu.S:68: Error: float register should be even, was 29
+arch/mips/kernel/r4k_fpu.S:69: Error: float register should be even, was 31
+arch/mips/kernel/r4k_fpu.S:168: Warning: tried to set unrecognized
+symbol: $30=64
 
-Peter.
+
+-- 
+markos

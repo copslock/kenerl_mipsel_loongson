@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2014 23:39:46 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49040 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2014 23:40:04 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49225 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012430AbaKAWj2IGALC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Nov 2014 23:39:28 +0100
+        by eddie.linux-mips.org with ESMTP id S27012437AbaKAWjdNGD5O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Nov 2014 23:39:33 +0100
 Received: from deadeye.wl.decadent.org.uk ([192.168.4.249] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
         (Exim 4.80)
         (envelope-from <ben@decadent.org.uk>)
-        id 1XkhKO-0004ll-5T; Sat, 01 Nov 2014 22:39:24 +0000
+        id 1XkhKM-0004lr-B5; Sat, 01 Nov 2014 22:39:22 +0000
 Received: from ben by deadeye with local (Exim 4.84)
         (envelope-from <ben@decadent.org.uk>)
-        id 1XkhKH-00015u-Py; Sat, 01 Nov 2014 22:39:17 +0000
+        id 1XkhKH-00010q-2r; Sat, 01 Nov 2014 22:39:17 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org,
-        "Markos Chandras" <markos.chandras@imgtec.com>
+CC:     akpm@linux-foundation.org, "Aurelien Jarno" <aurelien@aurel32.net>,
+        "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Date:   Sat, 01 Nov 2014 22:28:03 +0000
-Message-ID: <lsq.1414880883.28269400@decadent.org.uk>
+Message-ID: <lsq.1414880883.953329422@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.2 071/102] MIPS: mcount: Adjust stack pointer for static
- trace in MIPS32
+Subject: [PATCH 3.2 008/102] MIPS: ZBOOT: add missing <linux/string.h> include
 In-Reply-To: <lsq.1414880882.522510247@decadent.org.uk>
 X-SA-Exim-Connect-IP: 192.168.4.249
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -33,7 +31,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43820
+X-archive-position: 43821
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,68 +52,49 @@ X-list: linux-mips
 
 ------------------
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+From: Aurelien Jarno <aurelien@aurel32.net>
 
-commit 8a574cfa2652545eb95595d38ac2a0bb501af0ae upstream.
+commit 29593fd5a8149462ed6fad0d522234facdaee6c8 upstream.
 
-Every mcount() call in the MIPS 32-bit kernel is done as follows:
+Commit dc4d7b37 (MIPS: ZBOOT: gather string functions into string.c)
+moved the string related functions into a separate file, which might
+cause the following build error, depending on the configuration:
 
-[...]
-move at, ra
-jal _mcount
-addiu sp, sp, -8
-[...]
+| CC      arch/mips/boot/compressed/decompress.o
+| In file included from linux/arch/mips/boot/compressed/../../../../lib/decompress_unxz.c:234:0,
+|                  from linux/arch/mips/boot/compressed/decompress.c:67:
+| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c: In function 'fill_temp':
+| linux/arch/mips/boot/compressed/../../../../lib/xz/xz_dec_stream.c:162:2: error: implicit declaration of function 'memcpy' [-Werror=implicit-function-declaration]
+| cc1: some warnings being treated as errors
+| linux/scripts/Makefile.build:308: recipe for target 'arch/mips/boot/compressed/decompress.o' failed
+| make[6]: *** [arch/mips/boot/compressed/decompress.o] Error 1
+| linux/arch/mips/Makefile:308: recipe for target 'vmlinuz' failed
 
-but upon returning from the mcount() function, the stack pointer
-is not adjusted properly. This is explained in details in 58b69401c797
-(MIPS: Function tracer: Fix broken function tracing).
+It does not fail with the standard configuration, as when
+CONFIG_DYNAMIC_DEBUG is not enabled <linux/string.h> gets included in
+include/linux/dynamic_debug.h. There might be other ways for it to
+get indirectly included.
 
-Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
-fixed the stack manipulation for 64-bit but it didn't fix it completely
-for MIPS32.
+We can't add the include directly in xz_dec_stream.c as some
+architectures might want to use a different version for the boot/
+directory (see for example arch/x86/boot/string.h).
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7792/
+Patchwork: https://patchwork.linux-mips.org/patch/7420/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/mcount.S | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/mips/boot/compressed/decompress.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -119,7 +119,11 @@ NESTED(_mcount, PT_SIZE, ra)
- 	 nop
- #endif
- 	b	ftrace_stub
-+#ifdef CONFIG_32BIT
-+	 addiu sp, sp, 8
-+#else
- 	 nop
-+#endif
+--- a/arch/mips/boot/compressed/decompress.c
++++ b/arch/mips/boot/compressed/decompress.c
+@@ -13,6 +13,7 @@
  
- static_trace:
- 	MCOUNT_SAVE_REGS
-@@ -129,6 +133,9 @@ static_trace:
- 	 move	a1, AT		/* arg2: parent's return address */
+ #include <linux/types.h>
+ #include <linux/kernel.h>
++#include <linux/string.h>
  
- 	MCOUNT_RESTORE_REGS
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-@@ -177,6 +184,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
- 	jal	prepare_ftrace_return
- 	 nop
- 	MCOUNT_RESTORE_REGS
-+#ifndef CONFIG_DYNAMIC_FTRACE
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
-+#endif
- 	RETURN_BACK
- 	END(ftrace_graph_caller)
+ #include <asm/addrspace.h>
  

@@ -1,91 +1,62 @@
-From: David Daney <david.daney@cavium.com>
-Date: Mon, 20 Oct 2014 15:34:23 -0700
-Subject: MIPS: tlbex: Properly fix HUGE TLB Refill exception handler
-Message-ID: <20141020223423.AfKamsLSNCCLIaHBM26xIPUY1Pl91pRAGJVwUZMIyhg@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2014 02:59:36 +0100 (CET)
+Received: from smtp.gentoo.org ([140.211.166.183]:33673 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012346AbaKAB7fJX3hI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 1 Nov 2014 02:59:35 +0100
+Received: from vapier.wh0rd.info (localhost [127.0.0.1])
+        by smtp.gentoo.org (Postfix) with ESMTP id 3E78F340494;
+        Sat,  1 Nov 2014 01:59:20 +0000 (UTC)
+From:   Mike Frysinger <vapier@gentoo.org>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: asm/ptrace.h: include linux/types.h
+Date:   Fri, 31 Oct 2014 21:59:19 -0400
+Message-Id: <1414807159-6036-1-git-send-email-vapier@gentoo.org>
+X-Mailer: git-send-email 2.1.2
+Return-Path: <vapier@gentoo.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 43815
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: vapier@gentoo.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 9e0f162a36914937a937358fcb45e0609ef2bfc4 upstream.
+The header uses __u64 but doesn't include linux/types.h which breaks
+userspace apps that try to use asm/ptrace.h.  Like gdb:
 
-In commit 8393c524a25609 (MIPS: tlbex: Fix a missing statement for
-HUGETLB), the TLB Refill handler was fixed so that non-OCTEON targets
-would work properly with huge pages.  The change was incorrect in that
-it broke the OCTEON case.
+In file included from mips-linux-nat.c:37:0:
+/usr/include/asm/ptrace.h:32:2: error: unknown type name '__u64'
+  __u64 regs[32];
 
-The problem is shown here:
-
-    xxx0:	df7a0000 	ld	k0,0(k1)
-    .
-    .
-    .
-    xxxc0:	df610000 	ld	at,0(k1)
-    xxxc4:	335a0ff0 	andi	k0,k0,0xff0
-    xxxc8:	e825ffcd 	bbit1	at,0x5,0x0
-    xxxcc:	003ad82d 	daddu	k1,at,k0
-    .
-    .
-    .
-
-In the non-octeon case there is a destructive test for the huge PTE
-bit, and then at 0, $k0 is reloaded (that is what the 8393c524a25609
-patch added).
-
-In the octeon case, we modify k1 in the branch delay slot, but we
-never need k0 again, so the new load is not needed, but since k1 is
-modified, if we do the load, we load from a garbage location and then
-get a nested TLB Refill, which is seen in userspace as either SIGBUS
-or SIGSEGV (depending on the garbage).
-
-The real fix is to only do this reloading if it is needed, and never
-where it is harmful.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8151/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
 ---
- arch/mips/mm/tlbex.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/mips/include/uapi/asm/ptrace.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index ec90a27..4b95653 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1057,6 +1057,7 @@ static void build_update_entries(u32 **p, unsigned int tmp, unsigned int ptep)
- struct mips_huge_tlb_info {
- 	int huge_pte;
- 	int restore_scratch;
-+	bool need_reload_pte;
- };
-
- static struct mips_huge_tlb_info
-@@ -1071,6 +1072,7 @@ build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
-
- 	rv.huge_pte = scratch;
- 	rv.restore_scratch = 0;
-+	rv.need_reload_pte = false;
-
- 	if (check_for_high_segbits) {
- 		UASM_i_MFC0(p, tmp, C0_BADVADDR);
-@@ -1259,6 +1261,7 @@ static void build_r4000_tlb_refill_handler(void)
- 	} else {
- 		htlb_info.huge_pte = K0;
- 		htlb_info.restore_scratch = 0;
-+		htlb_info.need_reload_pte = true;
- 		vmalloc_mode = refill_noscratch;
- 		/*
- 		 * create the plain linear handler
-@@ -1295,7 +1298,8 @@ static void build_r4000_tlb_refill_handler(void)
- 	}
- #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
- 	uasm_l_tlb_huge_update(&l, p);
--	UASM_i_LW(&p, K0, 0, K1);
-+	if (htlb_info.need_reload_pte)
-+		UASM_i_LW(&p, htlb_info.huge_pte, 0, K1);
- 	build_huge_update_entries(&p, htlb_info.huge_pte, K1);
- 	build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
- 				   htlb_info.restore_scratch);
---
-1.9.1
+diff --git a/arch/mips/include/uapi/asm/ptrace.h b/arch/mips/include/uapi/asm/ptrace.h
+index bbcfb8b..91a3d19 100644
+--- a/arch/mips/include/uapi/asm/ptrace.h
++++ b/arch/mips/include/uapi/asm/ptrace.h
+@@ -9,6 +9,8 @@
+ #ifndef _UAPI_ASM_PTRACE_H
+ #define _UAPI_ASM_PTRACE_H
+ 
++#include <linux/types.h>
++
+ /* 0 - 31 are integer registers, 32 - 63 are fp registers.  */
+ #define FPR_BASE	32
+ #define PC		64
+-- 
+2.1.2

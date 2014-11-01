@@ -1,50 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2014 11:17:24 +0100 (CET)
-Received: from cassarossa.samfundet.no ([193.35.52.29]:56930 "EHLO
-        cassarossa.samfundet.no" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012215AbaKAKRV4Exr0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Nov 2014 11:17:21 +0100
-Received: from egtvedt by cassarossa.samfundet.no with local (Exim 4.80)
-        (envelope-from <egtvedt@samfundet.no>)
-        id 1XkVjZ-0003c6-QA; Sat, 01 Nov 2014 11:16:37 +0100
-Date:   Sat, 1 Nov 2014 11:16:37 +0100
-From:   Hans-Christian Egtvedt <egtvedt@samfundet.no>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-kernel@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
-        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
-        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        openipmi-developer@lists.sourceforge.net,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>
-Subject: Re: [PATCH 33/44] avr32: atngw100: Register with kernel poweroff
- handler
-Message-ID: <20141101101637.GA5765@samfundet.no>
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net>
- <1412659726-29957-34-git-send-email-linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2014 13:19:38 +0100 (CET)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:48394 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012225AbaKAMTgktWD3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Nov 2014 13:19:36 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 22FFA56F1DF;
+        Sat,  1 Nov 2014 14:19:36 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id 1y9nsKm6+lcQ; Sat,  1 Nov 2014 14:19:29 +0200 (EET)
+Received: from drone (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 8DE3B5BC003;
+        Sat,  1 Nov 2014 14:19:29 +0200 (EET)
+Date:   Sat, 1 Nov 2014 14:19:29 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Mike Frysinger <vapier@gentoo.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: asm/ptrace.h: include linux/types.h
+Message-ID: <20141101121929.GA18404@drone.musicnaut.iki.fi>
+References: <1414807159-6036-1-git-send-email-vapier@gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1412659726-29957-34-git-send-email-linux@roeck-us.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <egtvedt@samfundet.no>
+In-Reply-To: <1414807159-6036-1-git-send-email-vapier@gentoo.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43816
+X-archive-position: 43817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: egtvedt@samfundet.no
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,33 +46,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Around Mon 06 Oct 2014 22:28:35 -0700 or thereabout, Guenter Roeck wrote:
-> Register with kernel poweroff handler instead of setting pm_power_off
-> directly.
-> 
-> Cc: Haavard Skinnemoen <hskinnemoen@gmail.com>
-> Cc: Hans-Christian Egtvedt <egtvedt@samfundet.no>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Hi,
 
-Acked-by: Hans-Christian Egtvedt <egtvedt@samfundet.no>
+On Fri, Oct 31, 2014 at 09:59:19PM -0400, Mike Frysinger wrote:
+> The header uses __u64 but doesn't include linux/types.h which breaks
+> userspace apps that try to use asm/ptrace.h.  Like gdb:
 
-> ---
->  arch/avr32/boards/atngw100/mrmt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/avr32/boards/atngw100/mrmt.c b/arch/avr32/boards/atngw100/mrmt.c
-> index 91146b4..54d0c27 100644
-> --- a/arch/avr32/boards/atngw100/mrmt.c
-> +++ b/arch/avr32/boards/atngw100/mrmt.c
-> @@ -274,7 +274,7 @@ static int __init mrmt1_init(void)
->  {
->  	gpio_set_value( PIN_PWR_ON, 1 );	/* Ensure PWR_ON is enabled */
->  
-> -	pm_power_off = mrmt_power_off;
-> +	register_poweroff_handler_simple(mrmt_power_off, 128);
->  
->  	/* Setup USARTS (other than console) */
->  	at32_map_usart(2, 1, 0);	/* USART 2: /dev/ttyS1, RMT1:DB9M */
--- 
-mvh
-Hans-Christian Egtvedt
+Already fixed in the mainline, see cdb685ad44996e9a113a10002cb42d40ff29db99
+(MIPS: ptrace.h: Add a missing include).
+
+A.

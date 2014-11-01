@@ -1,86 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2014 18:03:20 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:47144 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012225AbaKARDSaSCJ0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Nov 2014 18:03:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Subject:CC:To:MIME-Version:From:Date:Message-ID; bh=+vyobUtl6o+NbWxalKaZXZhrn9jkKWElOVIpoJS9yKM=;
-        b=8HYClz2bG/I0l/otDvrmOcGtvH5W9XibcmFaeK9mu2Zv6n2jvucdVZJclrw+8pZdCXnHgzj34agQymeZBNwQcQnipk6PgXc57W9e/L6rBQZOJgSPNIzNlth5+oIJUp8OINfG4R14DueHoHKH/ti7UbmdXYXgZTmdn9LT4KWvnmg=;
-Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1Xkc51-000cMs-Ah
-        for linux-mips@linux-mips.org; Sat, 01 Nov 2014 17:03:11 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:34590 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1Xkc4r-000aNg-FX; Sat, 01 Nov 2014 17:03:02 +0000
-Message-ID: <54551242.2020604@roeck-us.net>
-Date:   Sat, 01 Nov 2014 10:02:58 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2014 23:39:29 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49021 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011436AbaKAWj1bsayg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Nov 2014 23:39:27 +0100
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.249] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1XkhKN-0004ly-RB; Sat, 01 Nov 2014 22:39:24 +0000
+Received: from ben by deadeye with local (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1XkhKH-00016U-Sj; Sat, 01 Nov 2014 22:39:17 +0000
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-To:     Hans-Christian Egtvedt <egtvedt@samfundet.no>
-CC:     linux-kernel@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
-        lguest@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
-        linux-cris-kernel@axis.com, linux-efi@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        openipmi-developer@lists.sourceforge.net,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>
-Subject: Re: [PATCH 33/44] avr32: atngw100: Register with kernel poweroff
- handler
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-34-git-send-email-linux@roeck-us.net> <20141101101637.GA5765@samfundet.no>
-In-Reply-To: <20141101101637.GA5765@samfundet.no>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=0.0
-X-CTCH-PVer: 0000001
-X-CTCH-Spam: Unknown
-X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020208.5455124F.00E7,ss=1,re=0.001,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-X-CTCH-Score: 0.001
-X-CTCH-ScoreCust: 0.000
-X-CTCH-Rules: C_4847,
-X-CTCH-SenderID: linux@roeck-us.net
-X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 19
-X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 0
-X-CTCH-SenderID-TotalConfirmed: 0
-X-CTCH-SenderID-TotalBulk: 0
-X-CTCH-SenderID-TotalVirus: 0
-X-CTCH-SenderID-TotalRecipients: 0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, "Yoichi Yuasa" <yuasa@linux-mips.org>,
+        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "Aaro Koskinen" <aaro.koskinen@iki.fi>
+Date:   Sat, 01 Nov 2014 22:28:03 +0000
+Message-ID: <lsq.1414880883.73864227@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.2 078/102] MIPS: Fix forgotten preempt_enable() when CPU
+ has inclusive pcaches
+In-Reply-To: <lsq.1414880882.522510247@decadent.org.uk>
+X-SA-Exim-Connect-IP: 192.168.4.249
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43818
+X-archive-position: 43819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -93,18 +50,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/01/2014 03:16 AM, Hans-Christian Egtvedt wrote:
-> Around Mon 06 Oct 2014 22:28:35 -0700 or thereabout, Guenter Roeck wrote:
->> Register with kernel poweroff handler instead of setting pm_power_off
->> directly.
->>
->> Cc: Haavard Skinnemoen <hskinnemoen@gmail.com>
->> Cc: Hans-Christian Egtvedt <egtvedt@samfundet.no>
->> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->
-> Acked-by: Hans-Christian Egtvedt <egtvedt@samfundet.no>
->
+3.2.64-rc1 review patch.  If anyone has any objections, please let me know.
 
-Thanks!
+------------------
 
-Guenter
+From: Yoichi Yuasa <yuasa@linux-mips.org>
+
+commit 5596b0b245fb9d2cefb5023b11061050351c1398 upstream.
+
+[    1.904000] BUG: scheduling while atomic: swapper/1/0x00000002
+[    1.908000] Modules linked in:
+[    1.916000] CPU: 0 PID: 1 Comm: swapper Not tainted 3.12.0-rc2-lemote-los.git-5318619-dirty #1
+[    1.920000] Stack : 0000000031aac000 ffffffff810d0000 0000000000000052 ffffffff802730a4
+          0000000000000000 0000000000000001 ffffffff810cdf90 ffffffff810d0000
+          ffffffff8068b968 ffffffff806f5537 ffffffff810cdf90 980000009f0782e8
+          0000000000000001 ffffffff80720000 ffffffff806b0000 980000009f078000
+          980000009f290000 ffffffff805f312c 980000009f05b5d8 ffffffff80233518
+          980000009f05b5e8 ffffffff80274b7c 980000009f078000 ffffffff8068b968
+          0000000000000000 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 980000009f05b520 0000000000000000 ffffffff805f2f6c
+          0000000000000000 ffffffff80700000 ffffffff80700000 ffffffff806fc758
+          ffffffff80700000 ffffffff8020be98 ffffffff806fceb0 ffffffff805f2f6c
+          ...
+[    2.028000] Call Trace:
+[    2.032000] [<ffffffff8020be98>] show_stack+0x80/0x98
+[    2.036000] [<ffffffff805f2f6c>] __schedule_bug+0x44/0x6c
+[    2.040000] [<ffffffff805fac58>] __schedule+0x518/0x5b0
+[    2.044000] [<ffffffff805f8a58>] schedule_timeout+0x128/0x1f0
+[    2.048000] [<ffffffff80240314>] msleep+0x3c/0x60
+[    2.052000] [<ffffffff80495400>] do_probe+0x238/0x3a8
+[    2.056000] [<ffffffff804958b0>] ide_probe_port+0x340/0x7e8
+[    2.060000] [<ffffffff80496028>] ide_host_register+0x2d0/0x7a8
+[    2.064000] [<ffffffff8049c65c>] ide_pci_init_two+0x4e4/0x790
+[    2.068000] [<ffffffff8049f9b8>] amd74xx_probe+0x148/0x2c8
+[    2.072000] [<ffffffff803f571c>] pci_device_probe+0xc4/0x130
+[    2.076000] [<ffffffff80478f60>] driver_probe_device+0x98/0x270
+[    2.080000] [<ffffffff80479298>] __driver_attach+0xe0/0xe8
+[    2.084000] [<ffffffff80476ab0>] bus_for_each_dev+0x78/0xe0
+[    2.088000] [<ffffffff80478468>] bus_add_driver+0x230/0x310
+[    2.092000] [<ffffffff80479b44>] driver_register+0x84/0x158
+[    2.096000] [<ffffffff80200504>] do_one_initcall+0x104/0x160
+
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: linux-mips@linux-mips.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Patchwork: https://patchwork.linux-mips.org/patch/5941/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/mm/c-r4k.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -606,6 +606,7 @@ static void r4k_dma_cache_wback_inv(unsi
+ 			r4k_blast_scache();
+ 		else
+ 			blast_scache_range(addr, addr + size);
++		preempt_enable();
+ 		__sync();
+ 		return;
+ 	}
+@@ -647,6 +648,7 @@ static void r4k_dma_cache_inv(unsigned l
+ 			 */
+ 			blast_inv_scache_range(addr, addr + size);
+ 		}
++		preempt_enable();
+ 		__sync();
+ 		return;
+ 	}

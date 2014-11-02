@@ -1,48 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Nov 2014 02:08:51 +0100 (CET)
-Received: from mail-pd0-f173.google.com ([209.85.192.173]:36852 "EHLO
-        mail-pd0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012455AbaKBBFOqYZeB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Nov 2014 02:05:14 +0100
-Received: by mail-pd0-f173.google.com with SMTP id v10so9490013pde.32
-        for <multiple recipients>; Sat, 01 Nov 2014 18:05:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ufBomCgKcn54a1fMOIHIEk8eGwcJ8UaPoWJ6+v66xfo=;
-        b=Hdq6yJ54s5Uxf7py1t2jQEBFabcgQSg35LctmU+GvRIAPuT2zxI2jBvFlKt4HgDTIn
-         Wnim2IGjo0QTdY/9F+tRO0SwpsqWRJk9LanbEmy+YNK88G98WUq7a200W7pMBZKendCA
-         2D/A1VPqWAWiDyloYSWi15P0VKmeJcLrxoF9r63Glgu7NOcByeqYdXqofUnM5Og9rZ9n
-         3Afj00x7ZyW2Yn/amc3191PIjQKP1ZURI9VffO4i3NPaELevxUZ8iqva1BVcUUvKLVnj
-         Sap0JXBUKgQiFPyitvYv5YctOI8HS04Bqtq+4Skqdm+P05ZZPOC1lraPEq2NgMwakQiz
-         TrSA==
-X-Received: by 10.68.185.98 with SMTP id fb2mr71pbc.142.1414890308500;
-        Sat, 01 Nov 2014 18:05:08 -0700 (PDT)
-Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id f7sm13488343pdj.15.2014.11.01.18.05.06
-        for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 01 Nov 2014 18:05:07 -0700 (PDT)
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     arnd@arndb.de, f.fainelli@gmail.com, tglx@linutronix.de,
-        jason@lakedaemon.net, ralf@linux-mips.org
-Cc:     linux-sh@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: [PATCH V3 14/14] irqchip: brcmstb-l2: Convert driver to use irq_reg_{readl,writel}
-Date:   Sat,  1 Nov 2014 18:04:01 -0700
-Message-Id: <1414890241-9938-15-git-send-email-cernekee@gmail.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1414890241-9938-1-git-send-email-cernekee@gmail.com>
-References: <1414890241-9938-1-git-send-email-cernekee@gmail.com>
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Nov 2014 11:53:57 +0100 (CET)
+Received: from resqmta-ch2-07v.sys.comcast.net ([69.252.207.39]:53088 "EHLO
+        resqmta-ch2-07v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010609AbaKBKx4NP3is (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Nov 2014 11:53:56 +0100
+Received: from resomta-ch2-05v.sys.comcast.net ([69.252.207.101])
+        by resqmta-ch2-07v.sys.comcast.net with comcast
+        id Aatp1p0022Bo0NV01atpem; Sun, 02 Nov 2014 10:53:49 +0000
+Received: from [192.168.1.13] ([69.251.152.165])
+        by resomta-ch2-05v.sys.comcast.net with comcast
+        id Aato1p0023aNLgd01atooy; Sun, 02 Nov 2014 10:53:49 +0000
+Message-ID: <54560D3B.8060602@gentoo.org>
+Date:   Sun, 02 Nov 2014 05:53:47 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1414925629;
+        bh=2WqrMtwdJ33fD6V3SyeSWzhv4vfRunZCOW9AK/2Ar1s=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=mxzELVKtGXHOrbpNi7FNCDctJfCMnqL2QTq+5P4kPAQocR4gC2nCB/EE0/PLpqBjP
+         11iq7K4Mlkhr93QZkVmalhpGQVsBu10KpFsrlrM/MWKWld8GLkj9XmUqOvaX4Q4Liu
+         TGqC6DXMjtgwGBhw3Xik1LObIx36l75f7N6rkog1bEDvqGzaqQ7JCdfNLHl3MRGE7P
+         1LUP/VSegDfByQkvTlJ/oPsDwfVbmAVVBMreSxMh45n4sX2GqxbdwN+8/0gdcK5X6h
+         Jf5LWwkh+j5wSkeRJKqN0YqxihLk+eqfpWLCYa4V+c1enwvQHPtQkP/2emPH0FBuvH
+         RFh1SeJL59t1g==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43836
+X-archive-position: 43837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,124 +50,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This effectively converts the __raw_ accessors to the non-__raw_
-equivalents.  To handle BE, we pass IRQ_GC_BE_IO, similar to what was
-done in irq-bcm7120-l2.c.
 
-Since irq_reg_writel now takes an irq_chip_generic argument, writel must
-be used for the initial hardware reset in the probe function.  But that
-operation never needs endian swapping, so it's probably not a big deal.
+So I have been testing the Onyx2 I have out the last few days with the IOC3
+metadriver used on Octane, and I can get it to boot, but if
+CONFIG_TRANSPARENT_HUGEPAGE is enabled in the kernel, bus errors can happen.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- drivers/irqchip/irq-brcmstb-l2.c | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+If I use CONFIG_PAGE_SIZE_4KB, I get bus errors rather frequently -- running
+Gentoo's 'emerge' command  can produce one.  Switch to CONFIG_PAGE_SIZE_16KB,
+and the bus errors are far less frequent.  I suspect CONFIG_PAGE_SIZE_64KB will
+be even less.
 
-diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
-index c9bdf20..4aa653a 100644
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -18,6 +18,7 @@
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/module.h>
-+#include <linux/kconfig.h>
- #include <linux/platform_device.h>
- #include <linux/spinlock.h>
- #include <linux/of.h>
-@@ -53,13 +54,14 @@ struct brcmstb_l2_intc_data {
- static void brcmstb_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- {
- 	struct brcmstb_l2_intc_data *b = irq_desc_get_handler_data(desc);
-+	struct irq_chip_generic *gc = irq_get_domain_generic_chip(b->domain, 0);
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
- 	u32 status;
- 
- 	chained_irq_enter(chip, desc);
- 
--	status = __raw_readl(b->base + CPU_STATUS) &
--		~(__raw_readl(b->base + CPU_MASK_STATUS));
-+	status = irq_reg_readl(gc, CPU_STATUS) &
-+		~(irq_reg_readl(gc, CPU_MASK_STATUS));
- 
- 	if (status == 0) {
- 		raw_spin_lock(&desc->lock);
-@@ -71,7 +73,7 @@ static void brcmstb_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- 	do {
- 		irq = ffs(status) - 1;
- 		/* ack at our level */
--		__raw_writel(1 << irq, b->base + CPU_CLEAR);
-+		irq_reg_writel(gc, 1 << irq, CPU_CLEAR);
- 		status &= ~(1 << irq);
- 		generic_handle_irq(irq_find_mapping(b->domain, irq));
- 	} while (status);
-@@ -86,12 +88,12 @@ static void brcmstb_l2_intc_suspend(struct irq_data *d)
- 
- 	irq_gc_lock(gc);
- 	/* Save the current mask */
--	b->saved_mask = __raw_readl(b->base + CPU_MASK_STATUS);
-+	b->saved_mask = irq_reg_readl(gc, CPU_MASK_STATUS);
- 
- 	if (b->can_wake) {
- 		/* Program the wakeup mask */
--		__raw_writel(~gc->wake_active, b->base + CPU_MASK_SET);
--		__raw_writel(gc->wake_active, b->base + CPU_MASK_CLEAR);
-+		irq_reg_writel(gc, ~gc->wake_active, CPU_MASK_SET);
-+		irq_reg_writel(gc, gc->wake_active, CPU_MASK_CLEAR);
- 	}
- 	irq_gc_unlock(gc);
- }
-@@ -103,11 +105,11 @@ static void brcmstb_l2_intc_resume(struct irq_data *d)
- 
- 	irq_gc_lock(gc);
- 	/* Clear unmasked non-wakeup interrupts */
--	__raw_writel(~b->saved_mask & ~gc->wake_active, b->base + CPU_CLEAR);
-+	irq_reg_writel(gc, ~b->saved_mask & ~gc->wake_active, CPU_CLEAR);
- 
- 	/* Restore the saved mask */
--	__raw_writel(b->saved_mask, b->base + CPU_MASK_SET);
--	__raw_writel(~b->saved_mask, b->base + CPU_MASK_CLEAR);
-+	irq_reg_writel(gc, b->saved_mask, CPU_MASK_SET);
-+	irq_reg_writel(gc, ~b->saved_mask, CPU_MASK_CLEAR);
- 	irq_gc_unlock(gc);
- }
- 
-@@ -119,6 +121,7 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 	struct irq_chip_generic *gc;
- 	struct irq_chip_type *ct;
- 	int ret;
-+	unsigned int flags;
- 
- 	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
-@@ -132,8 +135,8 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 	}
- 
- 	/* Disable all interrupts by default */
--	__raw_writel(0xffffffff, data->base + CPU_MASK_SET);
--	__raw_writel(0xffffffff, data->base + CPU_CLEAR);
-+	writel(0xffffffff, data->base + CPU_MASK_SET);
-+	writel(0xffffffff, data->base + CPU_CLEAR);
- 
- 	data->parent_irq = irq_of_parse_and_map(np, 0);
- 	if (data->parent_irq < 0) {
-@@ -149,9 +152,16 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 		goto out_unmap;
- 	}
- 
-+	/* MIPS chips strapped for BE will automagically configure the
-+	 * peripheral registers for CPU-native byte order.
-+	 */
-+	flags = 0;
-+	if (IS_ENABLED(CONFIG_MIPS) && IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-+		flags |= IRQ_GC_BE_IO;
-+
- 	/* Allocate a single Generic IRQ chip for this node */
- 	ret = irq_alloc_domain_generic_chips(data->domain, 32, 1,
--				np->full_name, handle_edge_irq, clr, 0, 0);
-+				np->full_name, handle_edge_irq, clr, 0, flags);
- 	if (ret) {
- 		pr_err("failed to allocate generic irq chip\n");
- 		goto out_free_domain;
+Disable CONFIG_TRANSPARENT_HUGEPAGE, and the machine works pretty good.  It's
+been up for almost 8 hours compiling, and not a single bus error yet.  It's got
+2x node board with dual R12K/400MHz CPUs per node.
+
+I'm not really sure what CONFIG_TRANSPARENT_HUGEPAGE is enabling that's causing
+R12K CPUs on the IP27 such a headache (and on Octane, really screws up R14K
+CPUs).  I tried getting a core dump on one of the bus errors, but that produces a
+truncated or corrupted core file that actually crashed GDB, plus I get a nice
+oops message in dmesg:
+
+[ 1302.260000] CPU: 0 PID: 1179 Comm: emerge Not tainted 3.17.1-mipsgit-20141006 #57
+[ 1302.260000] task: a8000000ffbbf288 ti: a8000000fa6f0000 task.ti: a8000000fa6f0000
+[ 1302.260000] $ 0   : 0000000000000000 0000000000000001 0000000000000000 a8000000ff5ad800
+[ 1302.260000] $ 4   : a8000000006d5480 00000000000f9c00 00000001f380173f a800000001000000
+[ 1302.260000] $ 8   : 00000001f380173f 0000000000100077 a8000000fe77a000 0000000000000000
+[ 1302.260000] $12   : 0000000000660000 0000000000000000 0000000000000000 776bc40c00000004
+[ 1302.260000] $16   : 0000000000e00000 0000000000000000 00000000018ee000 6db6db6db6db6db7
+[ 1302.260000] $20   : 00000000000000ca a8000000006d5480 a8000000ff65fa68 0000000000001000
+[ 1302.260000] $24   : 0000000000000000 a8000000000469c0
+[ 1302.260000] $28   : a8000000fa6f0000 a8000000fa6f3a00 0000000000e00000 a800000000046720
+[ 1302.260000] Hi    : 00000000002ed400
+[ 1302.260000] Lo    : 00000000000f9c00
+[ 1302.260000] epc   : a8000000000467e4 r4k_flush_cache_page+0x104/0x2e0
+[ 1302.260000]     Not tainted
+[ 1302.260000] ra    : a800000000046720 r4k_flush_cache_page+0x40/0x2e0
+[ 1302.260000] Status: 90001ce3 KX SX UX KERNEL EXL IE
+[ 1302.260000] Cause : 0000c010
+[ 1302.260000] BadVA : 00000001f380173f
+[ 1302.260000] PrId  : 00000e35 (R12000)
+[ 1302.260000] Process emerge (pid: 1179, threadinfo=a8000000fa6f0000, task=a8000000ffbbf288, tls=00000000778d2490)
+[ 1302.260000] Stack : a8000000ff65fa68 0000000000e00000 00000000000f9c00 a8000000006d5480
+          a8000000ff65fa68 0000000000001000 0000000000e00000 a80000000010cb00
+          a8000000046a2000 a8000000ff65fa68 00000000018ee000 6db6db6db6db6db7
+          a8000000fe7fdce0 a8000000000375ec a8000000ff4e5800 a8000000005fbd90
+          0000000300000080 a8000000ff668580 a8000000005fbd90 5349474900000080
+          a8000000fa6f3ad8 a8000000005fbd90 0000000600000088 a8000000ff5ad928
+          a8000000005fbd90 46494c4500002bf9 c000000000101000 0000000a00000080
+          0000000000000000 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 0000000000000000 0000000000000000
+          ...
+[ 1302.260000] Call Trace:
+[ 1302.260000] [<a8000000000467e4>] r4k_flush_cache_page+0x104/0x2e0
+[ 1302.260000] [<a80000000010cb00>] get_dump_page+0xc8/0xe8
+[ 1302.260000] [<a8000000000375ec>] elf_core_dump+0x1294/0x14d8
+[ 1302.260000] [<a8000000001b41e4>] do_coredump+0x5e4/0x1048
+[ 1302.260000] [<a80000000005c0b8>] get_signal+0x1b8/0x710
+[ 1302.260000] [<a8000000000299c0>] do_signal+0x18/0x240
+[ 1302.260000] [<a80000000002a4c8>] do_notify_resume+0x70/0x88
+[ 1302.260000] [<a8000000000255ac>] work_notifysig+0x10/0x18
+[ 1302.260000]
+[ 1302.260000]
+Code: 0010327a  30c60ff8  00c8302d <dcc60000> 30c80001  1100003e  00000000  bfb40000  df880000
+[ 1305.340000] ---[ end trace c7649a6433db8d18 ]---
+
+Thoughts?
+
+
 -- 
-2.1.1
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

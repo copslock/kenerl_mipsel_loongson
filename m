@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 09:18:43 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.10]:59440 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011139AbaKDISlrdwLt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 09:18:41 +0100
-Received: from wuerfel.localnet (HSI-KBW-134-3-133-35.hsi14.kabel-badenwuerttemberg.de [134.3.133.35])
-        by mrelayeu.kundenserver.de (node=mreue105) with ESMTP (Nemesis)
-        id 0LbacF-1YS4kE40WB-00lGDS; Tue, 04 Nov 2014 09:18:18 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Kevin Cernekee <cernekee@gmail.com>, f.fainelli@gmail.com,
-        jason@lakedaemon.net, ralf@linux-mips.org,
-        linux-sh@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH V3 00/14] genirq endian fixes; bcm7120/brcmstb IRQ updates
-Date:   Tue, 04 Nov 2014 09:18:17 +0100
-Message-ID: <2690630.v59x1FdWZd@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <alpine.DEB.2.11.1411032117050.5308@nanos>
-References: <1414890241-9938-1-git-send-email-cernekee@gmail.com> <2217077.1aQXS9nJph@wuerfel> <alpine.DEB.2.11.1411032117050.5308@nanos>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 14:40:17 +0100 (CET)
+Received: from mail-ob0-f169.google.com ([209.85.214.169]:54988 "EHLO
+        mail-ob0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012586AbaKDNkQoLgSB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 14:40:16 +0100
+Received: by mail-ob0-f169.google.com with SMTP id va2so10934730obc.0
+        for <linux-mips@linux-mips.org>; Tue, 04 Nov 2014 05:40:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=QSyIkFJqaVcltnUFBRCXkNzcJasIiB9Dur7j0cdEbNA=;
+        b=oSAc9v+laxUNdCGPElctPlzv+ydcANpfuWUn/T5anwgNiV3ihrGzZBHVdgq9WQqusM
+         n/MBjboj3HzJ7MXYbFnuiPNAQsEtlg3IRmpp7lB98qrQtxvjzA9Q0PfPWQgX1cDUkEXt
+         ZfgBlX1cy1WSL7BMTXmU2TH2FHUrWAv5q22Ien9umzb6Xb4KtMP3yTxwz6+/3U2eQIyj
+         veot64gAffpe+nr9QOIrfeAYPwwg5wm1JLbtxX05OVlek5hwEtyP/SByrrdeboVJCRFu
+         b61etu5rjPW+f7f2zzjw0wx7qHFpdhl/uzD5SSM5TrJ46l7s8WeaQOLpZ6drOszDkli2
+         ZxVw==
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:wwz9ruhg09eCzhx+CA4vvIu0xojgAcFEciki6eN1xBu
- Hi32iUwzlA9Y0LBKkG4hpU8xiLRBavTBwiv9bG6Z6ShlCq7JiH
- 2eGxCOvN+fp+JN403pvpN8FjwVps0fQ3KX6GkmszGX81ExNMKO
- SaAhreqp1YYJPEw7dpygTknvkm37R7Rc7ddVBpWr7SvwM/YvAC
- 3fA0bpDdceurnbD/5nN6CJEhrEFejvlzLdtm2ZXWN7S0aAn1Of
- RP6ZvRi035tN2l/QGzYY7PMykxZMj/naRgpDjC/+bRZEHQdnMp
- jrqsZRoWjLRLBcmzHEddaghOOVGyLtNUGXFShWP8rpCCCjuHNT
- OPiVCH28H/kTL/sD/mis=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+X-Received: by 10.182.120.10 with SMTP id ky10mr1653564obb.68.1415108410291;
+ Tue, 04 Nov 2014 05:40:10 -0800 (PST)
+Received: by 10.60.41.193 with HTTP; Tue, 4 Nov 2014 05:40:09 -0800 (PST)
+Date:   Tue, 4 Nov 2014 21:40:09 +0800
+Message-ID: <CAKcpw6WiuqJ5Cn4FNoYQEga8KBhZAZ4ohx35MqsdaOZDL6bABA@mail.gmail.com>
+Subject: Problems of kernel of Loongson 3
+From:   YunQiang Su <wzssyqa@gmail.com>
+To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+Cc:     linux-mips@linux-mips.org, Aurelien Jarno <aurelien@aurel32.net>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <wzssyqa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43862
+X-archive-position: 43863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: wzssyqa@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,31 +47,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 03 November 2014 21:18:20 Thomas Gleixner wrote:
-> On Mon, 3 Nov 2014, Arnd Bergmann wrote:
-> > On Saturday 01 November 2014 18:03:47 Kevin Cernekee wrote:
-> > > V2->V3:
-> > > 
-> > >  - Move updated irq_reg_{readl,writel} functions back into <linux/irq.h>
-> > >    so they can be called by irqchip drivers
-> > > 
-> > >  - Add gc->reg_{readl,writel} function pointers so that irqchip
-> > >    drivers like arch/sh/boards/mach-se/{7343,7722}/irq.c can override them
-> > > 
-> > >  - CC: linux-sh list in lieu of Paul's defunct linux-sh.org email address
-> > > 
-> > >  - Fix handling of zero L2 status in bcm7120-l2.c
-> > > 
-> > >  - Rebase on Linus' head of tree
-> > 
-> > Looks all great. I also looked at the series now and am very happy
-> > about how it turned out.
-> 
-> Does that translate to an Acked-by on the whole lot?
-> 
-> Jason, can you please pick that lot up with an Acked-by-me on the
-> changes to the existing infrastructure?
+I have tested the kernel 3.16, and 3.17 of Debian on loongson 3.
+I met 2 major problems:
 
-Yes, I should have been more explicit:
+1. On the Lemote 6100 and Yeeloong 8133, load command hangs
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+ PMON> load (wd0,0)/vmlinux-3.16-3-loongson-3
+ Loading file: (wd0,0)/vmlinux-3.16-3-loongson-3
+ (elf64)
+ 0x80200000/9171584 + 0x80abf280/34201152(z)
+
+ It also hangs on the dev board from Lemote.
+ While it can boot on dev boards from Loongson.
+
+ 3.15 kernel works fine on both boards.
+
+2. If without radeon non-free firmware in initrd/vmlinux,
+ the screen can display nothing.
+ It makes us difficult to patch debian-install to support Loongson 3.
+ A automatic fallback may be needed when nonfree firmware is not available.
+
+-- 
+YunQiang Su

@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 15:37:06 +0100 (CET)
-Received: from mail-oi0-f45.google.com ([209.85.218.45]:37356 "EHLO
-        mail-oi0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012586AbaKDOhBnoJCp convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 4 Nov 2014 15:37:01 +0100
-Received: by mail-oi0-f45.google.com with SMTP id v63so6992378oia.4
-        for <linux-mips@linux-mips.org>; Tue, 04 Nov 2014 06:36:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=wcXjQBc/JeWU5ETO2hAn4xKuVYzDSQpzw2t57q04sPQ=;
-        b=I4XARU0IVQM015ev98/KcenLVQZO2ACy/Bii4U07Pq8ZUiTLvRuQtkQTCpl2fH/zXs
-         nHqi4g3WSLoY7ZabxKxHl5Odg8NlML6tfv2WnTZ3u6zjsm3PA/Q+Ar7273DEYWuhBQnS
-         mOWj3BpUYHXbTNckmhXdbQiJw3L37lVwIBBUHtFgKGJlSPkmBtYSU58TOId/T/2Mia8i
-         AkTD+935aLMMZm8br/Igl9IPHot0gTl8Hycn+t+IWUie8ExODxxipHex27jwtBSKd2Tb
-         sHMnRX+RFWkVpy4AaXwWgqjwlm5UF8FDSeqKLGxYp5asyq5l+EdUZURpP5zhKeh6mvLE
-         MbVw==
-MIME-Version: 1.0
-X-Received: by 10.182.98.168 with SMTP id ej8mr8678771obb.41.1415111815542;
- Tue, 04 Nov 2014 06:36:55 -0800 (PST)
-Received: by 10.60.41.193 with HTTP; Tue, 4 Nov 2014 06:36:55 -0800 (PST)
-In-Reply-To: <tencent_7A73C86D635497A07A126836@qq.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 15:48:50 +0100 (CET)
+Received: from smtpproxy19.qq.com ([184.105.206.84]:42410 "EHLO
+        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012586AbaKDOsqkbkDS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 15:48:46 +0100
+X-QQ-GoodBg: 0
+X-QQ-SSF: 00100000000000F0
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 121.239.234.106
+X-QQ-STYLE: 
+X-QQ-mid: bizmail38t1415112508t6865103
+From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
+To:     "=?utf-8?B?WXVuUWlhbmcgU3U=?=" <wzssyqa@gmail.com>
+Cc:     "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
+        "=?utf-8?B?QXVyZWxpZW4gSmFybm8=?=" <aurelien@aurel32.net>
+Subject: Re: Problems of kernel of Loongson 3
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: base64
+Date:   Tue, 4 Nov 2014 22:48:28 +0800
+X-Priority: 3
+Message-ID: <tencent_23B90CE67AF56A127F8ADA05@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
 References: <CAKcpw6WiuqJ5Cn4FNoYQEga8KBhZAZ4ohx35MqsdaOZDL6bABA@mail.gmail.com>
         <tencent_7A73C86D635497A07A126836@qq.com>
-Date:   Tue, 4 Nov 2014 22:36:55 +0800
-Message-ID: <CAKcpw6Wb5+GMMHELghc4b2kss1bSGLqPw1k+MeJUsXzPA1Eb5w@mail.gmail.com>
-Subject: Re: Problems of kernel of Loongson 3
-From:   YunQiang Su <wzssyqa@gmail.com>
-To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Aurelien Jarno <aurelien@aurel32.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wzssyqa@gmail.com>
+        <CAKcpw6Wb5+GMMHELghc4b2kss1bSGLqPw1k+MeJUsXzPA1Eb5w@mail.gmail.com>
+In-Reply-To: <CAKcpw6Wb5+GMMHELghc4b2kss1bSGLqPw1k+MeJUsXzPA1Eb5w@mail.gmail.com>
+X-QQ-ReplyHash: 2836562599
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43865
+X-archive-position: 43866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wzssyqa@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,56 +52,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 4, 2014 at 10:24 PM, 陈华才 <chenhc@lemote.com> wrote:
-> Hi,
->
-> 1, You can try 3.16 from master branch here:
-> http://dev.lemote.com/cgit/linux-official.git/
-
-OK, I will try it. Even though, we still need a patch to make it can
-use on Lemote machiens.
-
->
-> 2, Since 3.14, radeon cannot support non-firmware display. This is confirmed by drm maintainers.
-
-How can x86 machines display something when firmwares are missing?
-Use something like vesa when firmwares are lost?
-
->
-> Huacai
->
-> ------------------ Original ------------------
-> From:  "YunQiang Su"<wzssyqa@gmail.com>;
-> Date:  Tue, Nov 4, 2014 09:40 PM
-> To:  "陈华才"<chenhc@lemote.com>;
-> Cc:  "linux-mips"<linux-mips@linux-mips.org>; "Aurelien Jarno"<aurelien@aurel32.net>;
-> Subject:  Problems of kernel of Loongson 3
->
->
-> I have tested the kernel 3.16, and 3.17 of Debian on loongson 3.
-> I met 2 major problems:
->
-> 1. On the Lemote 6100 and Yeeloong 8133, load command hangs
->
->  PMON> load (wd0,0)/vmlinux-3.16-3-loongson-3
->  Loading file: (wd0,0)/vmlinux-3.16-3-loongson-3
->  (elf64)
->  0x80200000/9171584 + 0x80abf280/34201152(z)
->
->  It also hangs on the dev board from Lemote.
->  While it can boot on dev boards from Loongson.
->
->  3.15 kernel works fine on both boards.
->
-> 2. If without radeon non-free firmware in initrd/vmlinux,
->  the screen can display nothing.
->  It makes us difficult to patch debian-install to support Loongson 3.
->  A automatic fallback may be needed when nonfree firmware is not available.
->
-> --
-> YunQiang Su
-
-
-
--- 
-YunQiang Su
+SGksDQoNCjEsIG1haW5zdHJlYW0ga2VybmVsIGhhcyBvbmx5IGJhc2ljIExvb25nc29uLTMg
+c3VwcG9ydCwgbm90IGZ1bGwtZnVuY3Rpb25hbCwgc29tZXRoaW5nIGhhcyBtaXNzaW5nLg0K
+MiwgVW5mb3J0dW5hdGVseSwgbm8gVkVTQSBkcml2ZXIgb24gTG9vbmdzb24uLi4NCg0KSHVh
+Y2FpDQogDQotLS0tLS0tLS0tLS0tLS0tLS0gT3JpZ2luYWwgLS0tLS0tLS0tLS0tLS0tLS0t
+DQpGcm9tOiAgIll1blFpYW5nIFN1Ijx3enNzeXFhQGdtYWlsLmNvbT47DQpEYXRlOiAgVHVl
+LCBOb3YgNCwgMjAxNCAxMDozNiBQTQ0KVG86ICAi6ZmI5Y2O5omNIjxjaGVuaGNAbGVtb3Rl
+LmNvbT47IA0KQ2M6ICAibGludXgtbWlwcyI8bGludXgtbWlwc0BsaW51eC1taXBzLm9yZz47
+ICJBdXJlbGllbiBKYXJubyI8YXVyZWxpZW5AYXVyZWwzMi5uZXQ+OyANClN1YmplY3Q6ICBS
+ZTogUHJvYmxlbXMgb2Yga2VybmVsIG9mIExvb25nc29uIDMNCg0KIA0KT24gVHVlLCBOb3Yg
+NCwgMjAxNCBhdCAxMDoyNCBQTSwg6ZmI5Y2O5omNIDxjaGVuaGNAbGVtb3RlLmNvbT4gd3Jv
+dGU6DQo+IEhpLA0KPg0KPiAxLCBZb3UgY2FuIHRyeSAzLjE2IGZyb20gbWFzdGVyIGJyYW5j
+aCBoZXJlOg0KPiBodHRwOi8vZGV2LmxlbW90ZS5jb20vY2dpdC9saW51eC1vZmZpY2lhbC5n
+aXQvDQoNCk9LLCBJIHdpbGwgdHJ5IGl0LiBFdmVuIHRob3VnaCwgd2Ugc3RpbGwgbmVlZCBh
+IHBhdGNoIHRvIG1ha2UgaXQgY2FuDQp1c2Ugb24gTGVtb3RlIG1hY2hpZW5zLg0KDQo+DQo+
+IDIsIFNpbmNlIDMuMTQsIHJhZGVvbiBjYW5ub3Qgc3VwcG9ydCBub24tZmlybXdhcmUgZGlz
+cGxheS4gVGhpcyBpcyBjb25maXJtZWQgYnkgZHJtIG1haW50YWluZXJzLg0KDQpIb3cgY2Fu
+IHg4NiBtYWNoaW5lcyBkaXNwbGF5IHNvbWV0aGluZyB3aGVuIGZpcm13YXJlcyBhcmUgbWlz
+c2luZz8NClVzZSBzb21ldGhpbmcgbGlrZSB2ZXNhIHdoZW4gZmlybXdhcmVzIGFyZSBsb3N0
+Pw0KDQo+DQo+IEh1YWNhaQ0KPg0KPiAtLS0tLS0tLS0tLS0tLS0tLS0gT3JpZ2luYWwgLS0t
+LS0tLS0tLS0tLS0tLS0tDQo+IEZyb206ICAiWXVuUWlhbmcgU3UiPHd6c3N5cWFAZ21haWwu
+Y29tPjsNCj4gRGF0ZTogIFR1ZSwgTm92IDQsIDIwMTQgMDk6NDAgUE0NCj4gVG86ICAi6ZmI
+5Y2O5omNIjxjaGVuaGNAbGVtb3RlLmNvbT47DQo+IENjOiAgImxpbnV4LW1pcHMiPGxpbnV4
+LW1pcHNAbGludXgtbWlwcy5vcmc+OyAiQXVyZWxpZW4gSmFybm8iPGF1cmVsaWVuQGF1cmVs
+MzIubmV0PjsNCj4gU3ViamVjdDogIFByb2JsZW1zIG9mIGtlcm5lbCBvZiBMb29uZ3NvbiAz
+DQo+DQo+DQo+IEkgaGF2ZSB0ZXN0ZWQgdGhlIGtlcm5lbCAzLjE2LCBhbmQgMy4xNyBvZiBE
+ZWJpYW4gb24gbG9vbmdzb24gMy4NCj4gSSBtZXQgMiBtYWpvciBwcm9ibGVtczoNCj4NCj4g
+MS4gT24gdGhlIExlbW90ZSA2MTAwIGFuZCBZZWVsb29uZyA4MTMzLCBsb2FkIGNvbW1hbmQg
+aGFuZ3MNCj4NCj4gIFBNT04+IGxvYWQgKHdkMCwwKS92bWxpbnV4LTMuMTYtMy1sb29uZ3Nv
+bi0zDQo+ICBMb2FkaW5nIGZpbGU6ICh3ZDAsMCkvdm1saW51eC0zLjE2LTMtbG9vbmdzb24t
+Mw0KPiAgKGVsZjY0KQ0KPiAgMHg4MDIwMDAwMC85MTcxNTg0ICsgMHg4MGFiZjI4MC8zNDIw
+MTE1Mih6KQ0KPg0KPiAgSXQgYWxzbyBoYW5ncyBvbiB0aGUgZGV2IGJvYXJkIGZyb20gTGVt
+b3RlLg0KPiAgV2hpbGUgaXQgY2FuIGJvb3Qgb24gZGV2IGJvYXJkcyBmcm9tIExvb25nc29u
+Lg0KPg0KPiAgMy4xNSBrZXJuZWwgd29ya3MgZmluZSBvbiBib3RoIGJvYXJkcy4NCj4NCj4g
+Mi4gSWYgd2l0aG91dCByYWRlb24gbm9uLWZyZWUgZmlybXdhcmUgaW4gaW5pdHJkL3ZtbGlu
+dXgsDQo+ICB0aGUgc2NyZWVuIGNhbiBkaXNwbGF5IG5vdGhpbmcuDQo+ICBJdCBtYWtlcyB1
+cyBkaWZmaWN1bHQgdG8gcGF0Y2ggZGViaWFuLWluc3RhbGwgdG8gc3VwcG9ydCBMb29uZ3Nv
+biAzLg0KPiAgQSBhdXRvbWF0aWMgZmFsbGJhY2sgbWF5IGJlIG5lZWRlZCB3aGVuIG5vbmZy
+ZWUgZmlybXdhcmUgaXMgbm90IGF2YWlsYWJsZS4NCj4NCj4gLS0NCj4gWXVuUWlhbmcgU3UN
+Cg0KDQoNCi0tIA0KWXVuUWlhbmcgU3U=

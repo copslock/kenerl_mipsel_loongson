@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 07:16:25 +0100 (CET)
-Received: from mail-pd0-f179.google.com ([209.85.192.179]:64653 "EHLO
-        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012576AbaKDGOgIpSub (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 07:14:36 +0100
-Received: by mail-pd0-f179.google.com with SMTP id g10so12912489pdj.24
-        for <multiple recipients>; Mon, 03 Nov 2014 22:14:30 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 07:16:44 +0100 (CET)
+Received: from mail-pa0-f47.google.com ([209.85.220.47]:52076 "EHLO
+        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011073AbaKDGP2pmS8i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 07:15:28 +0100
+Received: by mail-pa0-f47.google.com with SMTP id kx10so13765566pab.20
+        for <multiple recipients>; Mon, 03 Nov 2014 22:15:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=4vt6pdbzoDZ39P2H7PmNbUHCnVESaVk3mMSdfAKL4VY=;
-        b=SV7yByLW1gIV32X10nSkMDiydH9lLNcgZBrmKpIttQTfUQfV+silvnHyx/ADYhWvkv
-         R4dUMOdzaC4Algjc135kWQp/PYPhYM4k0wxil6MZbb9P/cwX6YeY+iiAvgk3CgVmjqiV
-         I1Z0apTqLcHFyBR55OdiuQyaqfL1IQgCM3luC96nqDVV7cmlVbcgkKc5bBkDutsLyD2K
-         QT4+I0qPTLKoEUl8Nb87FyBupFl1hBw3BZtid+UR0cHm6RuSpVaDwDAvTGHumODZY5v+
-         /sBrbRQuGi1cChnecqASa9xs8O+ZlPncj7i+13pQ1o8e+KY/DYXePygIec9yZXDnB9p8
-         9kHg==
-X-Received: by 10.66.254.164 with SMTP id aj4mr8211408pad.116.1415081670058;
-        Mon, 03 Nov 2014 22:14:30 -0800 (PST)
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=LJpqLrWmsnkjsHZLNKTu8dEqBW+8jSY3FxjVtlJZJkI=;
+        b=DD/PW1Cyhyq8s1MSed57r37QGPtMOocxf5beOHob/tktx78wZH6igok/TLFrt4Bjp2
+         BXPtT/f1acpeT0Njh+GSXpWSc6EeES0aW4vMK0IktNhLbijTqMa6iKrClB81qhHjLDnj
+         crjZ5tIhlco6JpbSTST9ViNz7pT4ajR+pxbEXvytUdyAb23skZLWfUzZUS5571QWzIfU
+         Xeh4ZDFBMezMScDMZR3hcfI+5LSZGf3YxcKf0q9ECRNwZIlt3Q21wb7LiyYdHbGvyLiM
+         HMEoCtSM5KPI7Su3QM7b/MJVGFaMv9olSQArejOQTE04eWpEriCv1U9/ffqBjgAC6wnv
+         DXBA==
+X-Received: by 10.68.211.193 with SMTP id ne1mr27363681pbc.49.1415081722480;
+        Mon, 03 Nov 2014 22:15:22 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id cs9sm7712498pac.8.2014.11.03.22.14.25
+        by mx.google.com with ESMTPSA id bz3sm3423506pab.41.2014.11.03.22.15.18
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 03 Nov 2014 22:14:29 -0800 (PST)
+        Mon, 03 Nov 2014 22:15:22 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
@@ -29,17 +29,15 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 09/12] MIPS: Loongson-3: Add chipset ACPI platform driver
-Date:   Tue,  4 Nov 2014 14:13:30 +0800
-Message-Id: <1415081610-25639-10-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V2 10/12] MIPS: Loongson-3: Add oprofile support
+Date:   Tue,  4 Nov 2014 14:15:07 +0800
+Message-Id: <1415081707-25753-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1415081610-25639-1-git-send-email-chenhc@lemote.com>
-References: <1415081610-25639-1-git-send-email-chenhc@lemote.com>
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43858
+X-archive-position: 43859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,185 +54,278 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This add south-bridge (SB700/SB710/SB800 chipset) ACPI platform driver
-for Loongson-3. This will be used by EC (Embedded Controller, used by
-laptops) driver and STR (Suspend To RAM).
+Loongson-3 has two groups of performance counters, they are 4 sub-
+registers of CP0's REG25. This patch add oprofile support.
+
+REG25, sel 0: Perf Control of group 0;
+REG25, sel 1: Perf Counter of group 0;
+REG25, sel 2: Perf Control of group 1;
+REG25, sel 3: Perf Counter of group 1.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson/common/pci.c   |    6 ++
- drivers/platform/mips/Makefile    |    2 +-
- drivers/platform/mips/acpi_init.c |  131 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 138 insertions(+), 1 deletions(-)
- create mode 100644 drivers/platform/mips/acpi_init.c
+ arch/mips/oprofile/Makefile             |    1 +
+ arch/mips/oprofile/common.c             |    4 +
+ arch/mips/oprofile/op_model_loongson3.c |  220 +++++++++++++++++++++++++++++++
+ 3 files changed, 225 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/oprofile/op_model_loongson3.c
 
-diff --git a/arch/mips/loongson/common/pci.c b/arch/mips/loongson/common/pci.c
-index 003ab4e..4e25756 100644
---- a/arch/mips/loongson/common/pci.c
-+++ b/arch/mips/loongson/common/pci.c
-@@ -78,6 +78,8 @@ static void __init setup_pcimap(void)
- #endif
- }
+diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
+index 9c0a678..070afdb 100644
+--- a/arch/mips/oprofile/Makefile
++++ b/arch/mips/oprofile/Makefile
+@@ -14,3 +14,4 @@ oprofile-$(CONFIG_CPU_R10000)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_SB1)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_XLR)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_LOONGSON2)	+= op_model_loongson2.o
++oprofile-$(CONFIG_CPU_LOONGSON3)	+= op_model_loongson3.o
+diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+index e747324..feb9879 100644
+--- a/arch/mips/oprofile/common.c
++++ b/arch/mips/oprofile/common.c
+@@ -18,6 +18,7 @@
  
-+extern int sbx00_acpi_init(void);
-+
- static int __init pcibios_init(void)
- {
- 	setup_pcimap();
-@@ -89,6 +91,10 @@ static int __init pcibios_init(void)
- #endif
- 	register_pci_controller(&loongson_pci_controller);
+ extern struct op_mips_model op_model_mipsxx_ops __weak;
+ extern struct op_mips_model op_model_loongson2_ops __weak;
++extern struct op_mips_model op_model_loongson3_ops __weak;
  
-+#ifdef CONFIG_CPU_LOONGSON3
-+	sbx00_acpi_init();
-+#endif
-+
- 	return 0;
- }
+ static struct op_mips_model *model;
  
-diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
-index 15723a6..acf0084 100644
---- a/drivers/platform/mips/Makefile
-+++ b/drivers/platform/mips/Makefile
-@@ -1 +1 @@
--obj-y += cpu_hwmon.o
-+obj-y += acpi_init.o cpu_hwmon.o
-diff --git a/drivers/platform/mips/acpi_init.c b/drivers/platform/mips/acpi_init.c
+@@ -104,6 +105,9 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+ 	case CPU_LOONGSON2:
+ 		lmodel = &op_model_loongson2_ops;
+ 		break;
++	case CPU_LOONGSON3:
++		lmodel = &op_model_loongson3_ops;
++		break;
+ 	};
+ 
+ 	if (!lmodel)
+diff --git a/arch/mips/oprofile/op_model_loongson3.c b/arch/mips/oprofile/op_model_loongson3.c
 new file mode 100644
-index 0000000..ee2825c
+index 0000000..8bcf7fc
 --- /dev/null
-+++ b/drivers/platform/mips/acpi_init.c
-@@ -0,0 +1,131 @@
-+#include <linux/io.h>
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/export.h>
-+
-+#define SBX00_ACPI_IO_BASE 0x800
-+#define SBX00_ACPI_IO_SIZE 0x100
-+
-+#define ACPI_PM_EVT_BLK         (SBX00_ACPI_IO_BASE + 0x00) /* 4 bytes */
-+#define ACPI_PM1_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x04) /* 2 bytes */
-+#define ACPI_PMA_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x0F) /* 1 byte */
-+#define ACPI_PM_TMR_BLK         (SBX00_ACPI_IO_BASE + 0x18) /* 4 bytes */
-+#define ACPI_GPE0_BLK           (SBX00_ACPI_IO_BASE + 0x10) /* 8 bytes */
-+#define ACPI_END                (SBX00_ACPI_IO_BASE + 0x80)
-+
-+#define PM_INDEX        0xCD6
-+#define PM_DATA         0xCD7
-+#define PM2_INDEX       0xCD0
-+#define PM2_DATA        0xCD1
-+
++++ b/arch/mips/oprofile/op_model_loongson3.c
+@@ -0,0 +1,220 @@
 +/*
-+ * SCI interrupt need acpi space, allocate here
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
 + */
++#include <linux/init.h>
++#include <linux/cpu.h>
++#include <linux/smp.h>
++#include <linux/proc_fs.h>
++#include <linux/oprofile.h>
++#include <linux/spinlock.h>
++#include <linux/interrupt.h>
++#include <asm/uaccess.h>
++#include <irq.h>
++#include <loongson.h>
++#include "op_impl.h"
 +
-+static int __init register_acpi_resource(void)
++#define LOONGSON3_PERFCNT_OVERFLOW	(1ULL << 63)
++
++#define LOONGSON3_PERFCTRL_EXL		(1UL << 0)
++#define LOONGSON3_PERFCTRL_KERNEL	(1UL << 1)
++#define LOONGSON3_PERFCTRL_SUPERVISOR	(1UL << 2)
++#define LOONGSON3_PERFCTRL_USER		(1UL << 3)
++#define LOONGSON3_PERFCTRL_ENABLE	(1UL << 4)
++#define LOONGSON3_PERFCTRL_W		(1UL << 30)
++#define LOONGSON3_PERFCTRL_M		(1UL << 31)
++#define LOONGSON3_PERFCTRL_EVENT(idx, event) \
++	(((event) & (idx ? 0x0f : 0x3f)) << 5)
++
++/* Loongson-3 PerfCount performance counter1 register */
++#define read_c0_perflo1() __read_64bit_c0_register($25, 0)
++#define write_c0_perflo1(val) __write_64bit_c0_register($25, 0, val)
++#define read_c0_perfhi1() __read_64bit_c0_register($25, 1)
++#define write_c0_perfhi1(val) __write_64bit_c0_register($25, 1, val)
++
++/* Loongson-3 PerfCount performance counter2 register */
++#define read_c0_perflo2() __read_64bit_c0_register($25, 2)
++#define write_c0_perflo2(val) __write_64bit_c0_register($25, 2, val)
++#define read_c0_perfhi2() __read_64bit_c0_register($25, 3)
++#define write_c0_perfhi2(val) __write_64bit_c0_register($25, 3, val)
++
++static int (*save_perf_irq)(void);
++
++static struct loongson3_register_config {
++	unsigned int control1;
++	unsigned int control2;
++	unsigned long long reset_counter1;
++	unsigned long long reset_counter2;
++	int ctr1_enable, ctr2_enable;
++} reg;
++
++static void reset_counters(void *arg)
 +{
-+	request_region(SBX00_ACPI_IO_BASE, SBX00_ACPI_IO_SIZE, "acpi");
++	write_c0_perfhi1(0);
++	write_c0_perfhi2(0);
++	write_c0_perflo1(0xc0000000);
++	write_c0_perflo2(0x40000000);
++}
++
++/* Compute all of the registers in preparation for enabling profiling. */
++static void loongson3_reg_setup(struct op_counter_config *ctr)
++{
++	unsigned int control1 = 0;
++	unsigned int control2 = 0;
++
++	reg.reset_counter1 = 0;
++	reg.reset_counter2 = 0;
++	/* Compute the performance counter control word. */
++	/* For now count kernel and user mode */
++	if (ctr[0].enabled) {
++		control1 |= LOONGSON3_PERFCTRL_EVENT(0, ctr[0].event) |
++					LOONGSON3_PERFCTRL_ENABLE;
++		if (ctr[0].kernel)
++			control1 |= LOONGSON3_PERFCTRL_KERNEL;
++		if (ctr[0].user)
++			control1 |= LOONGSON3_PERFCTRL_USER;
++		reg.reset_counter1 = 0x8000000000000000ULL - ctr[0].count;
++	}
++
++	if (ctr[1].enabled) {
++		control2 |= LOONGSON3_PERFCTRL_EVENT(1, ctr[1].event) |
++					LOONGSON3_PERFCTRL_ENABLE;
++		if (ctr[1].kernel)
++			control2 |= LOONGSON3_PERFCTRL_KERNEL;
++		if (ctr[1].user)
++			control2 |= LOONGSON3_PERFCTRL_USER;
++		reg.reset_counter2 = 0x8000000000000000ULL - ctr[1].count;
++	}
++
++	if (ctr[0].enabled)
++		control1 |= LOONGSON3_PERFCTRL_EXL;
++	if (ctr[1].enabled)
++		control2 |= LOONGSON3_PERFCTRL_EXL;
++
++	reg.control1 = control1;
++	reg.control2 = control2;
++	reg.ctr1_enable = ctr[0].enabled;
++	reg.ctr2_enable = ctr[1].enabled;
++}
++
++/* Program all of the registers in preparation for enabling profiling. */
++static void loongson3_cpu_setup(void *args)
++{
++	uint64_t perfcount1, perfcount2;
++
++	perfcount1 = reg.reset_counter1;
++	perfcount2 = reg.reset_counter2;
++	write_c0_perfhi1(perfcount1);
++	write_c0_perfhi2(perfcount2);
++}
++
++static void loongson3_cpu_start(void *args)
++{
++	/* Start all counters on current CPU */
++	reg.control1 |= (LOONGSON3_PERFCTRL_W|LOONGSON3_PERFCTRL_M);
++	reg.control2 |= (LOONGSON3_PERFCTRL_W|LOONGSON3_PERFCTRL_M);
++
++	if (reg.ctr1_enable)
++		write_c0_perflo1(reg.control1);
++	if (reg.ctr2_enable)
++		write_c0_perflo2(reg.control2);
++}
++
++static void loongson3_cpu_stop(void *args)
++{
++	/* Stop all counters on current CPU */
++	write_c0_perflo1(0xc0000000);
++	write_c0_perflo2(0x40000000);
++	memset(&reg, 0, sizeof(reg));
++}
++
++static int loongson3_perfcount_handler(void)
++{
++	unsigned long flags;
++	uint64_t counter1, counter2;
++	uint32_t cause, handled = IRQ_NONE;
++	struct pt_regs *regs = get_irq_regs();
++
++	cause = read_c0_cause();
++	if (!(cause & CAUSEF_PCI))
++		return handled;
++
++	counter1 = read_c0_perfhi1();
++	counter2 = read_c0_perfhi2();
++
++	local_irq_save(flags);
++
++	if (counter1 & LOONGSON3_PERFCNT_OVERFLOW) {
++		if (reg.ctr1_enable)
++			oprofile_add_sample(regs, 0);
++		counter1 = reg.reset_counter1;
++	}
++	if (counter2 & LOONGSON3_PERFCNT_OVERFLOW) {
++		if (reg.ctr2_enable)
++			oprofile_add_sample(regs, 1);
++		counter2 = reg.reset_counter2;
++	}
++
++	local_irq_restore(flags);
++
++	write_c0_perfhi1(counter1);
++	write_c0_perfhi2(counter2);
++
++	if (!(cause & CAUSEF_TI))
++		handled = IRQ_HANDLED;
++
++	return handled;
++}
++
++static int loongson3_cpu_callback(struct notifier_block *nfb,
++	unsigned long action, void *hcpu)
++{
++	switch (action) {
++	case CPU_STARTING:
++	case CPU_STARTING_FROZEN:
++		write_c0_perflo1(reg.control1);
++		write_c0_perflo2(reg.control2);
++		break;
++	case CPU_DYING:
++	case CPU_DYING_FROZEN:
++		write_c0_perflo1(0xc0000000);
++		write_c0_perflo2(0x40000000);
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++static struct notifier_block loongson3_notifier_block = {
++	.notifier_call = loongson3_cpu_callback
++};
++
++static int __init loongson3_init(void)
++{
++	on_each_cpu(reset_counters, NULL, 1);
++	register_hotcpu_notifier(&loongson3_notifier_block);
++	save_perf_irq = perf_irq;
++	perf_irq = loongson3_perfcount_handler;
++
 +	return 0;
 +}
 +
-+static void pmio_write_index(u16 index, u8 reg, u8 value)
++static void loongson3_exit(void)
 +{
-+	outb(reg, index);
-+	outb(value, index + 1);
++	on_each_cpu(reset_counters, NULL, 1);
++	unregister_hotcpu_notifier(&loongson3_notifier_block);
++	perf_irq = save_perf_irq;
 +}
 +
-+static u8 pmio_read_index(u16 index, u8 reg)
-+{
-+	outb(reg, index);
-+	return inb(index + 1);
-+}
-+
-+void pm_iowrite(u8 reg, u8 value)
-+{
-+	pmio_write_index(PM_INDEX, reg, value);
-+}
-+EXPORT_SYMBOL(pm_iowrite);
-+
-+u8 pm_ioread(u8 reg)
-+{
-+	return pmio_read_index(PM_INDEX, reg);
-+}
-+EXPORT_SYMBOL(pm_ioread);
-+
-+void pm2_iowrite(u8 reg, u8 value)
-+{
-+	pmio_write_index(PM2_INDEX, reg, value);
-+}
-+EXPORT_SYMBOL(pm2_iowrite);
-+
-+u8 pm2_ioread(u8 reg)
-+{
-+	return pmio_read_index(PM2_INDEX, reg);
-+}
-+EXPORT_SYMBOL(pm2_ioread);
-+
-+void sci_interrupt_setup(void)
-+{
-+	u32 temp32;
-+
-+	/* pm1 base */
-+	pm_iowrite(0x22, ACPI_PM1_CNT_BLK & 0xff);
-+	pm_iowrite(0x23, ACPI_PM1_CNT_BLK >> 8);
-+
-+	/* gpm base */
-+	pm_iowrite(0x28, ACPI_GPE0_BLK & 0xFF);
-+	pm_iowrite(0x29, ACPI_GPE0_BLK >> 8);
-+
-+	/* gpm base */
-+	pm_iowrite(0x2e, ACPI_END & 0xFF);
-+	pm_iowrite(0x2f, ACPI_END >> 8);
-+
-+	/* io decode: When AcpiDecodeEnable set, South-Bridge uses the contents
-+	 * of the PM registers at index 20-2B to decode ACPI I/O address. e.g.,
-+	 * AcpiSmiEn & SmiCmdEn */
-+	pm_iowrite(0x0E, 1<<3 | 0<<2);
-+
-+	/* SCI_EN set */
-+	outw(1, ACPI_PM1_CNT_BLK);
-+
-+	/* enable to generate SCI */
-+	pm_iowrite(0x10, pm_ioread(0x10) | 1);
-+
-+	/* gpm3/gpm9 enable */
-+	temp32 = inl(ACPI_GPE0_BLK + 4);
-+	outl(temp32 | (1 << 14) | (1 << 22), ACPI_GPE0_BLK + 4);
-+
-+	/* set gpm9 as input */
-+	pm_iowrite(0x8d, pm_ioread(0x8d) & (~(1 << 1)));
-+
-+	/* set gpm9 as non-output */
-+	pm_iowrite(0x94, pm_ioread(0x94) | (1 << 3));
-+
-+	/* gpm3 config ACPI trigger SCIOUT */
-+	pm_iowrite(0x33, pm_ioread(0x33) & (~(3 << 4)));
-+
-+	/* gpm9 config ACPI trigger SCIOUT */
-+	pm_iowrite(0x3d, pm_ioread(0x3d) & (~(3 << 2)));
-+
-+	/* gpm3 config falling edge trigger */
-+	pm_iowrite(0x37, pm_ioread(0x37) & (~(1 << 6)));
-+
-+	/* set gpm3 pull-down enable */
-+	temp32 = pm2_ioread(0xf6);
-+	temp32 |= ((1 << 7) | (1 << 3));
-+	pm2_iowrite(0xf6, temp32);
-+
-+	/* set gpm9 pull-down enable */
-+	temp32 = pm2_ioread(0xf8);
-+	temp32 |= ((1 << 5) | (1 << 1));
-+	pm2_iowrite(0xf8, temp32);
-+}
-+
-+int __init sbx00_acpi_init(void)
-+{
-+	register_acpi_resource();
-+
-+	sci_interrupt_setup();
-+
-+	return 0;
-+}
++struct op_mips_model op_model_loongson3_ops = {
++	.reg_setup	= loongson3_reg_setup,
++	.cpu_setup	= loongson3_cpu_setup,
++	.init		= loongson3_init,
++	.exit		= loongson3_exit,
++	.cpu_start	= loongson3_cpu_start,
++	.cpu_stop	= loongson3_cpu_stop,
++	.cpu_type	= "mips/loongson3",
++	.num_counters	= 2
++};
 -- 
 1.7.7.3

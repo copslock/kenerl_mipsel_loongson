@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 07:16:44 +0100 (CET)
-Received: from mail-pa0-f47.google.com ([209.85.220.47]:52076 "EHLO
-        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011073AbaKDGP2pmS8i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 07:15:28 +0100
-Received: by mail-pa0-f47.google.com with SMTP id kx10so13765566pab.20
-        for <multiple recipients>; Mon, 03 Nov 2014 22:15:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 07:17:00 +0100 (CET)
+Received: from mail-pa0-f54.google.com ([209.85.220.54]:39840 "EHLO
+        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010958AbaKDGPvSzwKj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 07:15:51 +0100
+Received: by mail-pa0-f54.google.com with SMTP id rd3so13878337pab.27
+        for <multiple recipients>; Mon, 03 Nov 2014 22:15:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=LJpqLrWmsnkjsHZLNKTu8dEqBW+8jSY3FxjVtlJZJkI=;
-        b=DD/PW1Cyhyq8s1MSed57r37QGPtMOocxf5beOHob/tktx78wZH6igok/TLFrt4Bjp2
-         BXPtT/f1acpeT0Njh+GSXpWSc6EeES0aW4vMK0IktNhLbijTqMa6iKrClB81qhHjLDnj
-         crjZ5tIhlco6JpbSTST9ViNz7pT4ajR+pxbEXvytUdyAb23skZLWfUzZUS5571QWzIfU
-         Xeh4ZDFBMezMScDMZR3hcfI+5LSZGf3YxcKf0q9ECRNwZIlt3Q21wb7LiyYdHbGvyLiM
-         HMEoCtSM5KPI7Su3QM7b/MJVGFaMv9olSQArejOQTE04eWpEriCv1U9/ffqBjgAC6wnv
-         DXBA==
-X-Received: by 10.68.211.193 with SMTP id ne1mr27363681pbc.49.1415081722480;
-        Mon, 03 Nov 2014 22:15:22 -0800 (PST)
+        bh=xYyPelAX5GqULfl3aJ/hFBemHGgWXgo0oAQZfT0OcI0=;
+        b=FXFGBYZZzDlGvQkXIw27gQkhyyXSZCadLl2t9ULcWykJSB7TnnXWbKMYJ0XPyOyksD
+         CHIra1SKCjI0ADizeBV2bLZEKbUim/j1Dtp59FH8J+FaUQl/YxJOLqxdxLkRbRQU9b/7
+         sQEvo+Mgjm0OUB2q4bU5dIqgXONCoNIKrYykP+uDdae8hxRM8AOMm+4HhYMs1AjTFlfH
+         A1h5UbzExKaln+799igUF2d3mZaRt2GGjZ+vEUl8bTM6UibvVGUsJK/SZ0CJ3MOig5kB
+         dgiiz+wGsgJkp7W/94LPHqedjCeiJlAoyMR7I3ytU2ml/td4HiWlKb02I8jPUE4g7Q71
+         w3vA==
+X-Received: by 10.68.112.193 with SMTP id is1mr48271959pbb.35.1415081744884;
+        Mon, 03 Nov 2014 22:15:44 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id bz3sm3423506pab.41.2014.11.03.22.15.18
+        by mx.google.com with ESMTPSA id g13sm19001013pat.45.2014.11.03.22.15.41
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 03 Nov 2014 22:15:22 -0800 (PST)
+        Mon, 03 Nov 2014 22:15:44 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 10/12] MIPS: Loongson-3: Add oprofile support
-Date:   Tue,  4 Nov 2014 14:15:07 +0800
-Message-Id: <1415081707-25753-1-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>
+Subject: [PATCH V2 11/12] MIPS: Loongson-3: Add RS780/SBX00 HPET support
+Date:   Tue,  4 Nov 2014 14:15:31 +0800
+Message-Id: <1415081731-25794-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43859
+X-archive-position: 43860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,278 +55,437 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3 has two groups of performance counters, they are 4 sub-
-registers of CP0's REG25. This patch add oprofile support.
+CPUFreq driver need external timer, so add hpet at first.
 
-REG25, sel 0: Perf Control of group 0;
-REG25, sel 1: Perf Counter of group 0;
-REG25, sel 2: Perf Control of group 1;
-REG25, sel 3: Perf Counter of group 1.
+In Loongson 3, only Core-0 can receive external interrupt. As a result,
+timekeeping cannot absolutely use HPET timer. We use a hybrid solution:
+Core-0 use HPET as its clock event device, but other cores still use
+MIPS; clock source is global and doesn't need interrupt, so use HPET.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
 ---
- arch/mips/oprofile/Makefile             |    1 +
- arch/mips/oprofile/common.c             |    4 +
- arch/mips/oprofile/op_model_loongson3.c |  220 +++++++++++++++++++++++++++++++
- 3 files changed, 225 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/oprofile/op_model_loongson3.c
+ arch/mips/include/asm/hpet.h           |   73 +++++++++
+ arch/mips/loongson/Kconfig             |   12 ++
+ arch/mips/loongson/common/time.c       |    5 +
+ arch/mips/loongson/loongson-3/Makefile |    2 +
+ arch/mips/loongson/loongson-3/hpet.c   |  257 ++++++++++++++++++++++++++++++++
+ arch/mips/loongson/loongson-3/irq.c    |    2 +-
+ 6 files changed, 350 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/include/asm/hpet.h
+ create mode 100644 arch/mips/loongson/loongson-3/hpet.c
 
-diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
-index 9c0a678..070afdb 100644
---- a/arch/mips/oprofile/Makefile
-+++ b/arch/mips/oprofile/Makefile
-@@ -14,3 +14,4 @@ oprofile-$(CONFIG_CPU_R10000)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_SB1)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_XLR)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_LOONGSON2)	+= op_model_loongson2.o
-+oprofile-$(CONFIG_CPU_LOONGSON3)	+= op_model_loongson3.o
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index e747324..feb9879 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -18,6 +18,7 @@
- 
- extern struct op_mips_model op_model_mipsxx_ops __weak;
- extern struct op_mips_model op_model_loongson2_ops __weak;
-+extern struct op_mips_model op_model_loongson3_ops __weak;
- 
- static struct op_mips_model *model;
- 
-@@ -104,6 +105,9 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
- 	case CPU_LOONGSON2:
- 		lmodel = &op_model_loongson2_ops;
- 		break;
-+	case CPU_LOONGSON3:
-+		lmodel = &op_model_loongson3_ops;
-+		break;
- 	};
- 
- 	if (!lmodel)
-diff --git a/arch/mips/oprofile/op_model_loongson3.c b/arch/mips/oprofile/op_model_loongson3.c
+diff --git a/arch/mips/include/asm/hpet.h b/arch/mips/include/asm/hpet.h
 new file mode 100644
-index 0000000..8bcf7fc
+index 0000000..18a8f77
 --- /dev/null
-+++ b/arch/mips/oprofile/op_model_loongson3.c
-@@ -0,0 +1,220 @@
++++ b/arch/mips/include/asm/hpet.h
+@@ -0,0 +1,73 @@
++#ifndef _ASM_HPET_H
++#define _ASM_HPET_H
++
++#ifdef CONFIG_RS780_HPET
++
++#define HPET_MMAP_SIZE		1024
++
++#define HPET_ID			0x000
++#define HPET_PERIOD		0x004
++#define HPET_CFG		0x010
++#define HPET_STATUS		0x020
++#define HPET_COUNTER	0x0f0
++
++#define HPET_Tn_CFG(n)		(0x100 + 0x20 * n)
++#define HPET_Tn_CMP(n)		(0x108 + 0x20 * n)
++#define HPET_Tn_ROUTE(n)	(0x110 + 0x20 * n)
++
++#define HPET_T0_IRS		0x001
++#define HPET_T1_IRS		0x002
++#define HPET_T3_IRS		0x004
++
++#define HPET_T0_CFG		0x100
++#define HPET_T0_CMP		0x108
++#define HPET_T0_ROUTE	0x110
++#define HPET_T1_CFG		0x120
++#define HPET_T1_CMP		0x128
++#define HPET_T1_ROUTE	0x130
++#define HPET_T2_CFG		0x140
++#define HPET_T2_CMP		0x148
++#define HPET_T2_ROUTE	0x150
++
++#define HPET_ID_REV			0x000000ff
++#define HPET_ID_NUMBER		0x00001f00
++#define HPET_ID_64BIT		0x00002000
++#define HPET_ID_LEGSUP		0x00008000
++#define HPET_ID_VENDOR		0xffff0000
++#define HPET_ID_NUMBER_SHIFT	8
++#define HPET_ID_VENDOR_SHIFT	16
++
++#define HPET_CFG_ENABLE		0x001
++#define HPET_CFG_LEGACY		0x002
++#define HPET_LEGACY_8254		2
++#define HPET_LEGACY_RTC		8
++
++#define HPET_TN_LEVEL		0x0002
++#define HPET_TN_ENABLE		0x0004
++#define HPET_TN_PERIODIC	0x0008
++#define HPET_TN_PERIODIC_CAP	0x0010
++#define HPET_TN_64BIT_CAP	0x0020
++#define HPET_TN_SETVAL		0x0040
++#define HPET_TN_32BIT		0x0100
++#define HPET_TN_ROUTE		0x3e00
++#define HPET_TN_FSB			0x4000
++#define HPET_TN_FSB_CAP		0x8000
++#define HPET_TN_ROUTE_SHIFT	9
++
++/* Max HPET Period is 10^8 femto sec as in HPET spec */
++#define HPET_MAX_PERIOD		100000000UL
 +/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
++ * Min HPET period is 10^5 femto sec just for safety. If it is less than this,
++ * then 32 bit HPET counter wrapsaround in less than 0.5 sec.
 + */
++#define HPET_MIN_PERIOD		100000UL
++
++#define HPET_ADDR		0x20000
++#define HPET_MMIO_ADDR	0x90000e0000020000
++#define HPET_FREQ		14318780
++#define HPET_COMPARE_VAL	((HPET_FREQ + HZ / 2) / HZ)
++#define HPET_T0_IRQ		0
++
++extern void __init setup_hpet_timer(void);
++#endif /* CONFIG_RS780_HPET */
++#endif /* _ASM_HPET_H */
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 72f830ac..156de85 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -108,6 +108,18 @@ config CS5536_MFGPT
+ 
+ 	  If unsure, say Yes.
+ 
++config RS780_HPET
++	bool "RS780/SBX00 HPET Timer"
++	depends on LOONGSON_MACH3X
++	select MIPS_EXTERNAL_TIMER
++	help
++	  This option enables the hpet timer of AMD RS780/SBX00.
++
++	  If you want to enable the Loongson3 CPUFreq Driver, Please enable
++	  this option at first, otherwise, You will get wrong system time.
++
++	  If unsure, say Yes.
++
+ config LOONGSON_SUSPEND
+ 	bool
+ 	default y
+diff --git a/arch/mips/loongson/common/time.c b/arch/mips/loongson/common/time.c
+index 262a1f6..e1a5382a 100644
+--- a/arch/mips/loongson/common/time.c
++++ b/arch/mips/loongson/common/time.c
+@@ -12,6 +12,7 @@
+  */
+ #include <asm/mc146818-time.h>
+ #include <asm/time.h>
++#include <asm/hpet.h>
+ 
+ #include <loongson.h>
+ #include <cs5536/cs5536_mfgpt.h>
+@@ -21,7 +22,11 @@ void __init plat_time_init(void)
+ 	/* setup mips r4k timer */
+ 	mips_hpt_frequency = cpu_clock_freq / 2;
+ 
++#ifdef CONFIG_RS780_HPET
++	setup_hpet_timer();
++#else
+ 	setup_mfgpt0_timer();
++#endif
+ }
+ 
+ void read_persistent_clock(struct timespec *ts)
+diff --git a/arch/mips/loongson/loongson-3/Makefile b/arch/mips/loongson/loongson-3/Makefile
+index 69809a3..622fead 100644
+--- a/arch/mips/loongson/loongson-3/Makefile
++++ b/arch/mips/loongson/loongson-3/Makefile
+@@ -6,3 +6,5 @@ obj-y			+= irq.o cop2-ex.o platform.o
+ obj-$(CONFIG_SMP)	+= smp.o
+ 
+ obj-$(CONFIG_NUMA)	+= numa.o
++
++obj-$(CONFIG_RS780_HPET) += hpet.o
+diff --git a/arch/mips/loongson/loongson-3/hpet.c b/arch/mips/loongson/loongson-3/hpet.c
+new file mode 100644
+index 0000000..e898d68
+--- /dev/null
++++ b/arch/mips/loongson/loongson-3/hpet.c
+@@ -0,0 +1,257 @@
 +#include <linux/init.h>
-+#include <linux/cpu.h>
-+#include <linux/smp.h>
-+#include <linux/proc_fs.h>
-+#include <linux/oprofile.h>
++#include <linux/pci.h>
++#include <linux/percpu.h>
++#include <linux/delay.h>
 +#include <linux/spinlock.h>
 +#include <linux/interrupt.h>
-+#include <asm/uaccess.h>
-+#include <irq.h>
-+#include <loongson.h>
-+#include "op_impl.h"
 +
-+#define LOONGSON3_PERFCNT_OVERFLOW	(1ULL << 63)
++#include <asm/hpet.h>
++#include <asm/time.h>
 +
-+#define LOONGSON3_PERFCTRL_EXL		(1UL << 0)
-+#define LOONGSON3_PERFCTRL_KERNEL	(1UL << 1)
-+#define LOONGSON3_PERFCTRL_SUPERVISOR	(1UL << 2)
-+#define LOONGSON3_PERFCTRL_USER		(1UL << 3)
-+#define LOONGSON3_PERFCTRL_ENABLE	(1UL << 4)
-+#define LOONGSON3_PERFCTRL_W		(1UL << 30)
-+#define LOONGSON3_PERFCTRL_M		(1UL << 31)
-+#define LOONGSON3_PERFCTRL_EVENT(idx, event) \
-+	(((event) & (idx ? 0x0f : 0x3f)) << 5)
++#define SMBUS_CFG_BASE		(loongson_sysconf.ht_control_base + 0x0300a000)
++#define SMBUS_PCI_REG40		0x40
++#define SMBUS_PCI_REG64		0x64
++#define SMBUS_PCI_REGB4		0xb4
 +
-+/* Loongson-3 PerfCount performance counter1 register */
-+#define read_c0_perflo1() __read_64bit_c0_register($25, 0)
-+#define write_c0_perflo1(val) __write_64bit_c0_register($25, 0, val)
-+#define read_c0_perfhi1() __read_64bit_c0_register($25, 1)
-+#define write_c0_perfhi1(val) __write_64bit_c0_register($25, 1, val)
++static DEFINE_SPINLOCK(hpet_lock);
++DEFINE_PER_CPU(struct clock_event_device, hpet_clockevent_device);
 +
-+/* Loongson-3 PerfCount performance counter2 register */
-+#define read_c0_perflo2() __read_64bit_c0_register($25, 2)
-+#define write_c0_perflo2(val) __write_64bit_c0_register($25, 2, val)
-+#define read_c0_perfhi2() __read_64bit_c0_register($25, 3)
-+#define write_c0_perfhi2(val) __write_64bit_c0_register($25, 3, val)
-+
-+static int (*save_perf_irq)(void);
-+
-+static struct loongson3_register_config {
-+	unsigned int control1;
-+	unsigned int control2;
-+	unsigned long long reset_counter1;
-+	unsigned long long reset_counter2;
-+	int ctr1_enable, ctr2_enable;
-+} reg;
-+
-+static void reset_counters(void *arg)
++static unsigned int smbus_read(int offset)
 +{
-+	write_c0_perfhi1(0);
-+	write_c0_perfhi2(0);
-+	write_c0_perflo1(0xc0000000);
-+	write_c0_perflo2(0x40000000);
++	return *(volatile unsigned int *)(SMBUS_CFG_BASE + offset);
 +}
 +
-+/* Compute all of the registers in preparation for enabling profiling. */
-+static void loongson3_reg_setup(struct op_counter_config *ctr)
++static void smbus_write(int offset, int data)
 +{
-+	unsigned int control1 = 0;
-+	unsigned int control2 = 0;
-+
-+	reg.reset_counter1 = 0;
-+	reg.reset_counter2 = 0;
-+	/* Compute the performance counter control word. */
-+	/* For now count kernel and user mode */
-+	if (ctr[0].enabled) {
-+		control1 |= LOONGSON3_PERFCTRL_EVENT(0, ctr[0].event) |
-+					LOONGSON3_PERFCTRL_ENABLE;
-+		if (ctr[0].kernel)
-+			control1 |= LOONGSON3_PERFCTRL_KERNEL;
-+		if (ctr[0].user)
-+			control1 |= LOONGSON3_PERFCTRL_USER;
-+		reg.reset_counter1 = 0x8000000000000000ULL - ctr[0].count;
-+	}
-+
-+	if (ctr[1].enabled) {
-+		control2 |= LOONGSON3_PERFCTRL_EVENT(1, ctr[1].event) |
-+					LOONGSON3_PERFCTRL_ENABLE;
-+		if (ctr[1].kernel)
-+			control2 |= LOONGSON3_PERFCTRL_KERNEL;
-+		if (ctr[1].user)
-+			control2 |= LOONGSON3_PERFCTRL_USER;
-+		reg.reset_counter2 = 0x8000000000000000ULL - ctr[1].count;
-+	}
-+
-+	if (ctr[0].enabled)
-+		control1 |= LOONGSON3_PERFCTRL_EXL;
-+	if (ctr[1].enabled)
-+		control2 |= LOONGSON3_PERFCTRL_EXL;
-+
-+	reg.control1 = control1;
-+	reg.control2 = control2;
-+	reg.ctr1_enable = ctr[0].enabled;
-+	reg.ctr2_enable = ctr[1].enabled;
++	*(volatile unsigned int *)(SMBUS_CFG_BASE + offset) = data;
 +}
 +
-+/* Program all of the registers in preparation for enabling profiling. */
-+static void loongson3_cpu_setup(void *args)
++static void smbus_enable(int offset, int bit)
 +{
-+	uint64_t perfcount1, perfcount2;
++	unsigned int cfg = smbus_read(offset);
 +
-+	perfcount1 = reg.reset_counter1;
-+	perfcount2 = reg.reset_counter2;
-+	write_c0_perfhi1(perfcount1);
-+	write_c0_perfhi2(perfcount2);
++	cfg |= bit;
++	smbus_write(offset, cfg);
 +}
 +
-+static void loongson3_cpu_start(void *args)
++static int hpet_read(int offset)
 +{
-+	/* Start all counters on current CPU */
-+	reg.control1 |= (LOONGSON3_PERFCTRL_W|LOONGSON3_PERFCTRL_M);
-+	reg.control2 |= (LOONGSON3_PERFCTRL_W|LOONGSON3_PERFCTRL_M);
-+
-+	if (reg.ctr1_enable)
-+		write_c0_perflo1(reg.control1);
-+	if (reg.ctr2_enable)
-+		write_c0_perflo2(reg.control2);
++	return *(volatile unsigned int *)(HPET_MMIO_ADDR + offset);
 +}
 +
-+static void loongson3_cpu_stop(void *args)
++static void hpet_write(int offset, int data)
 +{
-+	/* Stop all counters on current CPU */
-+	write_c0_perflo1(0xc0000000);
-+	write_c0_perflo2(0x40000000);
-+	memset(&reg, 0, sizeof(reg));
++	*(volatile unsigned int *)(HPET_MMIO_ADDR + offset) = data;
 +}
 +
-+static int loongson3_perfcount_handler(void)
++static void hpet_start_counter(void)
 +{
-+	unsigned long flags;
-+	uint64_t counter1, counter2;
-+	uint32_t cause, handled = IRQ_NONE;
-+	struct pt_regs *regs = get_irq_regs();
++	unsigned int cfg = hpet_read(HPET_CFG);
 +
-+	cause = read_c0_cause();
-+	if (!(cause & CAUSEF_PCI))
-+		return handled;
-+
-+	counter1 = read_c0_perfhi1();
-+	counter2 = read_c0_perfhi2();
-+
-+	local_irq_save(flags);
-+
-+	if (counter1 & LOONGSON3_PERFCNT_OVERFLOW) {
-+		if (reg.ctr1_enable)
-+			oprofile_add_sample(regs, 0);
-+		counter1 = reg.reset_counter1;
-+	}
-+	if (counter2 & LOONGSON3_PERFCNT_OVERFLOW) {
-+		if (reg.ctr2_enable)
-+			oprofile_add_sample(regs, 1);
-+		counter2 = reg.reset_counter2;
-+	}
-+
-+	local_irq_restore(flags);
-+
-+	write_c0_perfhi1(counter1);
-+	write_c0_perfhi2(counter2);
-+
-+	if (!(cause & CAUSEF_TI))
-+		handled = IRQ_HANDLED;
-+
-+	return handled;
++	cfg |= HPET_CFG_ENABLE;
++	hpet_write(HPET_CFG, cfg);
 +}
 +
-+static int loongson3_cpu_callback(struct notifier_block *nfb,
-+	unsigned long action, void *hcpu)
++static void hpet_stop_counter(void)
 +{
-+	switch (action) {
-+	case CPU_STARTING:
-+	case CPU_STARTING_FROZEN:
-+		write_c0_perflo1(reg.control1);
-+		write_c0_perflo2(reg.control2);
++	unsigned int cfg = hpet_read(HPET_CFG);
++
++	cfg &= ~HPET_CFG_ENABLE;
++	hpet_write(HPET_CFG, cfg);
++}
++
++static void hpet_reset_counter(void)
++{
++	hpet_write(HPET_COUNTER, 0);
++	hpet_write(HPET_COUNTER + 4, 0);
++}
++
++static void hpet_restart_counter(void)
++{
++	hpet_stop_counter();
++	hpet_reset_counter();
++	hpet_start_counter();
++}
++
++static void hpet_enable_legacy_int(void)
++{
++	/* Do nothing on Loongson-3 */
++}
++
++static void hpet_set_mode(enum clock_event_mode mode,
++				struct clock_event_device *evt)
++{
++	int cfg = 0;
++
++	spin_lock(&hpet_lock);
++	switch (mode) {
++	case CLOCK_EVT_MODE_PERIODIC:
++		pr_info("set clock event to periodic mode!\n");
++		/* stop counter */
++		hpet_stop_counter();
++
++		/* enables the timer0 to generate a periodic interrupt */
++		cfg = hpet_read(HPET_T0_CFG);
++		cfg &= ~HPET_TN_LEVEL;
++		cfg |= HPET_TN_ENABLE | HPET_TN_PERIODIC |
++				HPET_TN_SETVAL | HPET_TN_32BIT;
++		hpet_write(HPET_T0_CFG, cfg);
++
++		/* set the comparator */
++		hpet_write(HPET_T0_CMP, HPET_COMPARE_VAL);
++		udelay(1);
++		hpet_write(HPET_T0_CMP, HPET_COMPARE_VAL);
++
++		/* start counter */
++		hpet_start_counter();
 +		break;
-+	case CPU_DYING:
-+	case CPU_DYING_FROZEN:
-+		write_c0_perflo1(0xc0000000);
-+		write_c0_perflo2(0x40000000);
++	case CLOCK_EVT_MODE_SHUTDOWN:
++	case CLOCK_EVT_MODE_UNUSED:
++		cfg = hpet_read(HPET_T0_CFG);
++		cfg &= ~HPET_TN_ENABLE;
++		hpet_write(HPET_T0_CFG, cfg);
++		break;
++	case CLOCK_EVT_MODE_ONESHOT:
++		pr_info("set clock event to one shot mode!\n");
++		cfg = hpet_read(HPET_T0_CFG);
++		/* set timer0 type
++		 * 1 : periodic interrupt
++		 * 0 : non-periodic(oneshot) interrupt
++		 */
++		cfg &= ~HPET_TN_PERIODIC;
++		cfg |= HPET_TN_ENABLE | HPET_TN_32BIT;
++		hpet_write(HPET_T0_CFG, cfg);
++		break;
++	case CLOCK_EVT_MODE_RESUME:
++		hpet_enable_legacy_int();
 +		break;
 +	}
-+
-+	return NOTIFY_OK;
++	spin_unlock(&hpet_lock);
 +}
 +
-+static struct notifier_block loongson3_notifier_block = {
-+	.notifier_call = loongson3_cpu_callback
++static int hpet_next_event(unsigned long delta,
++		struct clock_event_device *evt)
++{
++	unsigned int cnt;
++	int res;
++
++	cnt = hpet_read(HPET_COUNTER);
++	cnt += delta;
++	hpet_write(HPET_T0_CMP, cnt);
++
++	res = ((int)(hpet_read(HPET_COUNTER) - cnt) > 0) ? -ETIME : 0;
++	return res;
++}
++
++static irqreturn_t hpet_irq_handler(int irq, void *data)
++{
++	int is_irq;
++	struct clock_event_device *cd;
++	unsigned int cpu = smp_processor_id();
++
++	is_irq = hpet_read(HPET_STATUS);
++	if (is_irq & HPET_T0_IRS) {
++		/* clear the TIMER0 irq status register */
++		hpet_write(HPET_STATUS, HPET_T0_IRS);
++		cd = &per_cpu(hpet_clockevent_device, cpu);
++		cd->event_handler(cd);
++		return IRQ_HANDLED;
++	}
++	return IRQ_NONE;
++}
++
++static struct irqaction hpet_irq = {
++	.handler = hpet_irq_handler,
++	.flags = IRQF_DISABLED | IRQF_NOBALANCING | IRQF_TIMER,
++	.name = "hpet",
 +};
 +
-+static int __init loongson3_init(void)
++/*
++ * hpet address assignation and irq setting should be done in bios.
++ * but pmon don't do this, we just setup here directly.
++ * The operation under is normal. unfortunately, hpet_setup process
++ * is before pci initialize.
++ *
++ * {
++ *	struct pci_dev *pdev;
++ *
++ *	pdev = pci_get_device(PCI_VENDOR_ID_ATI, PCI_DEVICE_ID_ATI_SBX00_SMBUS, NULL);
++ *	pci_write_config_word(pdev, SMBUS_PCI_REGB4, HPET_ADDR);
++ *
++ *	...
++ * }
++ */
++static void hpet_setup(void)
 +{
-+	on_each_cpu(reset_counters, NULL, 1);
-+	register_hotcpu_notifier(&loongson3_notifier_block);
-+	save_perf_irq = perf_irq;
-+	perf_irq = loongson3_perfcount_handler;
++	/* set hpet base address */
++	smbus_write(SMBUS_PCI_REGB4, HPET_ADDR);
 +
-+	return 0;
++	/* enable decodeing of access to HPET MMIO*/
++	smbus_enable(SMBUS_PCI_REG40, (1 << 28));
++
++	/* HPET irq enable */
++	smbus_enable(SMBUS_PCI_REG64, (1 << 10));
++
++	hpet_enable_legacy_int();
 +}
 +
-+static void loongson3_exit(void)
++void __init setup_hpet_timer(void)
 +{
-+	on_each_cpu(reset_counters, NULL, 1);
-+	unregister_hotcpu_notifier(&loongson3_notifier_block);
-+	perf_irq = save_perf_irq;
++	unsigned int cpu = smp_processor_id();
++	struct clock_event_device *cd;
++
++	hpet_setup();
++
++	cd = &per_cpu(hpet_clockevent_device, cpu);
++	cd->name = "hpet";
++	cd->rating = 320;
++	cd->features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
++	cd->set_mode = hpet_set_mode;
++	cd->set_next_event = hpet_next_event;
++	cd->irq = HPET_T0_IRQ;
++	cd->cpumask = cpumask_of(cpu);
++	clockevent_set_clock(cd, HPET_FREQ);
++	cd->max_delta_ns = clockevent_delta2ns(0x7fffffff, cd);
++	cd->min_delta_ns = 5000;
++
++	clockevents_register_device(cd);
++	setup_irq(HPET_T0_IRQ, &hpet_irq);
++	pr_info("hpet clock event device register\n");
 +}
 +
-+struct op_mips_model op_model_loongson3_ops = {
-+	.reg_setup	= loongson3_reg_setup,
-+	.cpu_setup	= loongson3_cpu_setup,
-+	.init		= loongson3_init,
-+	.exit		= loongson3_exit,
-+	.cpu_start	= loongson3_cpu_start,
-+	.cpu_stop	= loongson3_cpu_stop,
-+	.cpu_type	= "mips/loongson3",
-+	.num_counters	= 2
++static cycle_t hpet_read_counter(struct clocksource *cs)
++{
++	return (cycle_t)hpet_read(HPET_COUNTER);
++}
++
++static void hpet_suspend(struct clocksource *cs)
++{
++}
++
++static void hpet_resume(struct clocksource *cs)
++{
++	hpet_setup();
++	hpet_restart_counter();
++}
++
++static struct clocksource csrc_hpet = {
++	.name = "hpet",
++	/* mips clocksource rating is less than 300, so hpet is better. */
++	.rating = 300,
++	.read = hpet_read_counter,
++	.mask = CLOCKSOURCE_MASK(32),
++	/* oneshot mode work normal with this flag */
++	.flags = CLOCK_SOURCE_IS_CONTINUOUS,
++	.suspend = hpet_suspend,
++	.resume = hpet_resume,
++	.mult = 0,
++	.shift = 10,
 +};
++
++int __init init_hpet_clocksource(void)
++{
++	csrc_hpet.mult = clocksource_hz2mult(HPET_FREQ, csrc_hpet.shift);
++	return clocksource_register_hz(&csrc_hpet, HPET_FREQ);
++}
++
++arch_initcall(init_hpet_clocksource);
+diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
+index 5813d94..21221ed 100644
+--- a/arch/mips/loongson/loongson-3/irq.c
++++ b/arch/mips/loongson/loongson-3/irq.c
+@@ -9,7 +9,7 @@
+ 
+ #include "smp.h"
+ 
+-unsigned int ht_irq[] = {1, 3, 4, 5, 6, 7, 8, 12, 14, 15};
++unsigned int ht_irq[] = {0, 1, 3, 4, 5, 6, 7, 8, 12, 14, 15};
+ 
+ static void ht_irqdispatch(void)
+ {
 -- 
 1.7.7.3

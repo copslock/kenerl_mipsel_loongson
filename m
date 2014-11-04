@@ -1,41 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 18:03:05 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:42819 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011381AbaKDRDD1tBvK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 18:03:03 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1XlhVK-0000GY-TK; Tue, 04 Nov 2014 18:02:51 +0100
-Date:   Tue, 4 Nov 2014 18:02:50 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Dave Hansen <dave.hansen@intel.com>
-cc:     Ren Qiaowei <qiaowei.ren@intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        x86@kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v9 11/12] x86, mpx: cleanup unused bound tables
-In-Reply-To: <5458F819.2010503@intel.com>
-Message-ID: <alpine.DEB.2.11.1411041726140.4245@nanos>
-References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-12-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241451280.5308@nanos> <544DB873.1010207@intel.com> <alpine.DEB.2.11.1410272138540.5308@nanos>
- <5457EB67.70904@intel.com> <alpine.DEB.2.11.1411032205320.5308@nanos> <5458F819.2010503@intel.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Nov 2014 00:49:25 +0100 (CET)
+Received: from mail-pd0-f181.google.com ([209.85.192.181]:51414 "EHLO
+        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012622AbaKDXtXk70bu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Nov 2014 00:49:23 +0100
+Received: by mail-pd0-f181.google.com with SMTP id y10so14674567pdj.12
+        for <linux-mips@linux-mips.org>; Tue, 04 Nov 2014 15:49:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=/99aDLPM9N1H9EzOGw5vxENJCv4cnI3rCD6e0vZeTi0=;
+        b=amvMhH2m27PE9+oc1f907TgaUJidfBWmk79N1FowMDgC1wc3TYjlk/TjmXAuD+GMj5
+         fC8OAZo4CjOGjThxsVaZMri0tf14qNtFnnUXVufSmlJgq+3zlffXX8VFhBpRNWo/ryDi
+         G9oWzZfxGHMMiLiOiLz5jcefcKTySsw0KAEvjlQXdoVKtxBdsn67QWsqf5rZEwowji1L
+         MoQnkhPreyzeXCZpViOVjMpipButKA4O8FP4MSsO/NddlMjp2YHTZV9A56Cz4SGu27wL
+         3N1AYZFpvKP+pKsp3lb/FnlLiEkKSbIGF3g/xpbPBhDEvwiFVtObvbdIE/KF+0DtPfWg
+         UP6Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=/99aDLPM9N1H9EzOGw5vxENJCv4cnI3rCD6e0vZeTi0=;
+        b=RnReNXUStgnJTYPJJjWTLBxlHVoJDbTpJ5JtYT8OVhR9kZDBOmHrVGzhmqRVmqQ0kT
+         j1S1elQDSlR0jVqTt1MSlKCzzKEITqAG6aGj7+q7kIEd/oIJFqFnHXaudRN3LwHGUD/D
+         L5Cn7YJsJLydpC1IdGxmXBVdildDjvoTQODjg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=/99aDLPM9N1H9EzOGw5vxENJCv4cnI3rCD6e0vZeTi0=;
+        b=g6TG4yhiaxH07OVuhN81VlXCaFdokxxdarIbOe2PJjpPSUwqqMSqodn9oPpPsERco1
+         GCyi69JIZ4FRnie/9AWe2UL/upFUMeu63Wbg18kMO5gA/wHAuqM2aa1QGwZP79ZctDM+
+         rjmiMGqlXyvoTon2kMmkGO8TIDLy77V5EzierPnXpXBSYZIKdO/wQ3CBM0MBOT19Cf34
+         o1Z4DxlYd80GdG7f9sX7PS99iSobZCzdF1AA2K0bgdhJlRiCm9lOgUFPeBHPiqc01QTb
+         fkQqtsZlGbn7A2KbN4cWiNFxudqzw506j6DHAm09F6sZMwyOc+6a84sDJtSHxSkqQ/Mr
+         6FmA==
+X-Gm-Message-State: ALoCoQnJHamVQ3Cw4FlGUTtCBbyQeUsnv+l83v4Phy98mYi1L4z2Usl2uZL70yoFvkUYn2fI7qAE
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+X-Received: by 10.68.255.133 with SMTP id aq5mr54264947pbd.0.1415144956970;
+ Tue, 04 Nov 2014 15:49:16 -0800 (PST)
+Received: by 10.70.118.170 with HTTP; Tue, 4 Nov 2014 15:49:16 -0800 (PST)
+In-Reply-To: <20141029175142.GC26471@leverpostej>
+References: <1414541562-10076-1-git-send-email-abrestic@chromium.org>
+        <1414541562-10076-5-git-send-email-abrestic@chromium.org>
+        <20141029175142.GC26471@leverpostej>
+Date:   Tue, 4 Nov 2014 15:49:16 -0800
+X-Google-Sender-Auth: 3ZIhdXobjDyVckOe5k3bldYwIYA
+Message-ID: <CAL1qeaG0EpxdbV+QxAsdYgAWc19yWf8eLW0mfVxevQaJDxER6w@mail.gmail.com>
+Subject: Re: [PATCH V3 4/4] clocksource: mips-gic: Add device-tree support
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <Pawel.Moll@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43869
+X-archive-position: 43870
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,66 +86,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 4 Nov 2014, Dave Hansen wrote:
-> On 11/03/2014 01:29 PM, Thomas Gleixner wrote:
-> > On Mon, 3 Nov 2014, Dave Hansen wrote:
-> 
-> > That's not really true. You can evaluate that information with
-> > mmap_sem held for read as well. Nothing can change the mappings until
-> > you drop it. So you could do:
-> > 
-> >    down_write(mm->bd_sem);
-> >    down_read(mm->mmap_sem;
-> >    evaluate_size_of_shm_to_unmap();
-> >    clear_bounds_directory_entries();
-> >    up_read(mm->mmap_sem);
-> >    do_the_real_shm_unmap();
-> >    up_write(mm->bd_sem);
-> > 
-> > That should still be covered by the above scheme.
-> 
-> Yep, that'll work.  It just means rewriting the shmdt()/mremap() code to
-> do a "dry run" of sorts.
+Hi Mark,
 
-Right. So either that or we hold bd_sem write locked accross all write
-locked mmap_sem sections. Dunno, which solution is prettier :)
+>> +static void __init gic_clocksource_of_init(struct device_node *node)
+>> +{
+>> +     if (of_property_read_u32(node, "clock-frequency", &gic_frequency)) {
+>> +             pr_err("GIC frequency not specified.\n");
+>> +             return;
+>> +     }
+>> +     gic_timer_irq = irq_of_parse_and_map(node, 0);
+>> +     if (!gic_timer_irq) {
+>> +             pr_err("GIC timer IRQ not specified.\n");
+>> +             return;
+>> +     }
+>> +
+>> +     __gic_clocksource_init();
+>> +}
+>> +CLOCKSOURCE_OF_DECLARE(mips_gic_timer, "mti,interaptiv-gic-timer",
+>> +                    gic_clocksource_of_init);
+>
+> Your binding document expected the timer node under the GIC node, and it
+> looks like this relies on GIC internals. Hwoever, this allows for people
+> to put the timer node anywhere (and it turns out people are _really_ bad
+> at putting things together as the binding author expected).
+>
+> It might be better if the GIC driver detected the sub node and probed
+> the clocksource driver (or registered a platform device that the
+> clocksource driver gets registered from). that could prevent some
+> horrible issues with probe ordering and/or bad dts.
 
-> Do you have any concerns about adding another mutex to these paths?
+Probing the clocksource during probe of the irqchip doesn't work
+because time-keeping isn't set up at the time.  Registering a platform
+device for the timer pushes back GIC timer registration to later in
+the boot process (assuming it now becomes a module_platform_driver)
+and makes it rather non-parallel to how it's done in the non-DT case
+(this could be changed, though IMO it's a lot of churn just to thwart
+bad DT authors).
 
-You mean bd_sem? I don't think its an issue. You need to get mmap_sem
-for write as well. So 
-
-> munmap() isn't as hot of a path as the allocation side, but it does
-> worry me a bit that we're going to perturb some workloads.  We might
-> need to find a way to optimize out the bd_sem activity on processes that
-> never used MPX.
-
-I think using mm->bd_addr as a conditional for the bd_sem/mpx activity
-is good enough. You just need to make sure that you store the result
-of the starting conditional and use it for the closing one as well.
-
-   mpx = mpx_pre_unmap(mm);
-       {
-	  if (!kernel_managing_bounds_tables(mm)
-       	     return 0;
-	  down_write(mm->bd_sem);
-	  ...
-	  return 1;
-       }
-
-   unmap();
-
-   mxp_post_unmap(mm, mpx);
-       {
-          if (mpx) {
-	     ....
-	     up_write(mm->bd_sem);
-       }
-
-So this serializes nicely with the bd_sem protected write to
-mm->bd_addr. There is a race there, but I don't think it matters. The
-worst thing what can happen is a stale bound table.
+Probe ordering shouldn't be an issue because irqchips are probed
+before clocksources.  Perhaps checking for the presence of GIC
+(there's the global gic_present) and node->parent (to enforce the
+parent-child relationship) would be sufficient?
 
 Thanks,
-
-	tglx
+Andrew

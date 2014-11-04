@@ -1,46 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 06:51:30 +0100 (CET)
-Received: from resqmta-ch2-10v.sys.comcast.net ([69.252.207.42]:54511 "EHLO
-        resqmta-ch2-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010958AbaKDFv1nhbaI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 06:51:27 +0100
-Received: from resomta-ch2-18v.sys.comcast.net ([69.252.207.114])
-        by resqmta-ch2-10v.sys.comcast.net with comcast
-        id BHr21p0012Udklx01HrLnp; Tue, 04 Nov 2014 05:51:20 +0000
-Received: from [192.168.1.13] ([69.251.152.165])
-        by resomta-ch2-18v.sys.comcast.net with comcast
-        id BHrK1p00E3aNLgd01HrLCt; Tue, 04 Nov 2014 05:51:20 +0000
-Message-ID: <54586952.60805@gentoo.org>
-Date:   Tue, 04 Nov 2014 00:51:14 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
-References: <54560D3B.8060602@gentoo.org> <5457CF0A.7020303@gmail.com> <5458272A.7050309@gentoo.org> <54582A91.8040401@gmail.com> <54582D1B.9060502@gentoo.org> <54582F50.5010202@gmail.com>
-In-Reply-To: <54582F50.5010202@gmail.com>
-Content-Type: multipart/mixed;
- boundary="------------010000000701070307070402"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1415080280;
-        bh=0dE03AD7etu4ti1/SzAa7JtJg3GCV6vjhy9N4lNV97g=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=S14IHs9lkMJCYfF1JdkZ5pNYhIK+JdN8Tcd98D8qy86REwQFSU4Ft/j4j5LLjWnBo
-         7YADsWs1QhmIQnO6dBkSXv/gBFzr6HSDYoFeIxAnp4sNz6nxXNYgFjsbtRD8lNVfNE
-         iS+j68vWGYIWPavtvYAh/PS0cCqIh/h+0RmtAKtBBFScfDPyj+P0SimudCguPBJFmJ
-         dk2tMLrsbGAO4Mtb5SS2tJLmhn2ChpfA+BgDbjmSC/+xPnlaR2uRdfe8wby1iDkdT+
-         yExNqFWKkIWP3SoFhV/4ibJq9H/O7ZjOaSYNVcMy7AjECvgYh4eMCLni743C/aCh8x
-         sQ30dfOhDxhyg==
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 07:13:55 +0100 (CET)
+Received: from mail-pd0-f170.google.com ([209.85.192.170]:49351 "EHLO
+        mail-pd0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010958AbaKDGNwgLTPk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 07:13:52 +0100
+Received: by mail-pd0-f170.google.com with SMTP id z10so13014798pdj.15
+        for <multiple recipients>; Mon, 03 Nov 2014 22:13:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=oSwFIOM3nJLyY3SSEn2jUvIjo4do/fpE3T8RWE1C42A=;
+        b=H1VHx+mLPzCnekwqHbelRKZ5O4t0GPkaF/edBGScj7em4Id/nzCvn+tGLwNTo00shr
+         G1ey1OI1341kQCUaL6UdGxovTrZvmjOK/kpBMXjfMLHnziE/uwFfv+4bHpxaaeupVYSo
+         tStDkG8QJdDM5JfVOYwM/gYnjxAmxX9wA/alLbfLDHTKdJhdIGDmMF+RVzqPJjHrPHTI
+         5gdrrDw0LUMKpNM0Pvp6GBd+s5F0Ib+BiZvTZ63LF/vUtwYv7C24URa1/9nZNR7d9O1+
+         8xWqXb+V2tau8uBHt/gJ534AXlsN2WrO/frizWht1jJrVVWtFVnnFs9305h8T6os0wcZ
+         EPgw==
+X-Received: by 10.69.26.197 with SMTP id ja5mr13819164pbd.111.1415081625787;
+        Mon, 03 Nov 2014 22:13:45 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPSA id cs9sm7712498pac.8.2014.11.03.22.13.41
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 03 Nov 2014 22:13:45 -0800 (PST)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>
+Subject: [PATCH V2 00/12] MIPS: Loongson-3: Improve kernel functionality
+Date:   Tue,  4 Nov 2014 14:13:21 +0800
+Message-Id: <1415081610-25639-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43848
+X-archive-position: 43849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,544 +55,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------010000000701070307070402
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+This patchset is prepared for the next 3.19 release for Linux/MIPS. In
+this series we promote Loongson-3's ISA level to MIPS64R1 since it is
+not fully compatible with MIPS64R2. Multi-node DMA and coherent cache
+features are both added here. LEFI firmware interface is improved to
+make the kernel more generic (machtypes can be dropped). Besides, we
+add some basic platform drivers (GPIO, CPU Hwmon, ACPI init, oprofile,
+HPET and CPUFreq) for Loongson-3. 
 
-On 11/03/2014 20:43, David Daney wrote:
-> On 11/03/2014 05:34 PM, Joshua Kinard wrote:
->> On 11/03/2014 20:23, David Daney wrote:
->>> On 11/03/2014 05:08 PM, Joshua Kinard wrote:
->>>> On 11/03/2014 13:52, David Daney wrote:
->>>>> On 11/02/2014 02:53 AM, Joshua Kinard wrote:
->>>>>>
->>>>>> So I have been testing the Onyx2 I have out the last few days with the IOC3
->>>>>> metadriver used on Octane, and I can get it to boot, but if
->>>>>> CONFIG_TRANSPARENT_HUGEPAGE is enabled in the kernel, bus errors can happen.
->>>>>>
->>>>>> If I use CONFIG_PAGE_SIZE_4KB, I get bus errors rather frequently -- running
->>>>>> Gentoo's 'emerge' command  can produce one.  Switch to
->>>>>> CONFIG_PAGE_SIZE_16KB,
->>>>>> and the bus errors are far less frequent.  I suspect CONFIG_PAGE_SIZE_64KB
->>>>>> will
->>>>>> be even less.
->>>>>>
->>>>>> Disable CONFIG_TRANSPARENT_HUGEPAGE, and the machine works pretty good. 
->>>>>> It's
->>>>>> been up for almost 8 hours compiling, and not a single bus error yet.  It's
->>>>>> got
->>>>>> 2x node board with dual R12K/400MHz CPUs per node.
->>>>>>
->>>>>> I'm not really sure what CONFIG_TRANSPARENT_HUGEPAGE is enabling that's
->>>>>> causing
->>>>>> R12K CPUs on the IP27 such a headache (and on Octane, really screws up R14K
->>>>>> CPUs).  I tried getting a core dump on one of the bus errors, but that
->>>>>> produces a
->>>>>> truncated or corrupted core file that actually crashed GDB, plus I get a
->>>>>> nice
->>>>>> oops message in dmesg:
->>>>>
->>>>> Well, as its name implies, if you enable CONFIG_TRANSPARENT_HUGEPAGE, huge
->>>>> pages will be created and used in the background transparently to the
->>>>> userspace
->>>>> application.
->>>>>
->>>>> With 4KB base page size, the huge pages will be 2MB in size..  I don't know
->>>>> much about the R10K/R12K/R14K CPUs, but it is possible that either their TLBs
->>>>> cannot handle such pages, or that the TLB Exception handlers don't contain
->>>>> proper code for these CPUs.
->>>>>
->>>>> For each doubling of the base PAGE_SIZE, the huge page size will increase
->>>>> by a
->>>>> factor of 4.  So with 16KB base pages the huge page size would be 32MB, since
->>>>> there are many fewer opportunities to transparently use a 32MB page, I would
->>>>> expect any errors related to huge pages to be correspondingly less frequent.
->>>>>
->>>>> With 64KB PAGE_SIZE the huge page size is 512MB, and It is likely that that
->>>>> could never be used by normal userspace programs.
->>>>
->>>> I checked the R10K/R12K manual, and the PageMask register there has bits 24:13
->>>> open for setting a mask value.  It looks like these CPUs only support a page
->>>> size from 4KB to 16MB (so a 2MB page size should work w/ transparent
->>>> hugepages).  I assume that the R14K on the Octane might be the same (but I
->>>> don't have a manual specific to the R14k, so I don't know).  All of the
->>>> remaining bits in that register read 0 and must have 0's written back.
->>>>
->>>> I guess I could find a way to have the kernel trigger a non-fatal oops/dump
->>>> the
->>>> registers on a bus error and get a look at the cause register to see if that
->>>> sheds any light on things.  Doesn't a SIGBUS on MIPS typically mean that an
->>>> address wasn't aligned on a 32-bit boundary?  Or could it also mean other
->>>> things?
->>>>
->>>> I believe that the R10K is largely compatible with the R4K-style TLB setup,
->>>> but
->>>> Ralf or someone else more knowledge in that area will have to verify.  Maybe
->>>> the R10k-family CPUs need their own TLB routines, or what currently exists
->>>> needs modifications?  I have not tried to understand the whole TLB thing in
->>>> MIPS yet, so that's a bit of voodoo to me.
->>>
->>> I haven't checked, but there may be workarounds required in the TLB management
->>> code that are not in place for the huge page case.  When the huge TLB code was
->>> developed, we didn't do any testing on R10K.  Somebody should dump the
->>> exception handlers and carefully look at the rest of the huge TLB management
->>> code, and check to see that any required workarounds are in place.
->>
->> How does one dump the exception handlers?  Is it a debug switch somewhere?
->>
-> 
-> Add as the very first line of tlbex.c "#define DEBUG 1"
-> 
-> Then rebuild, and pass "debug" on the kernel command line.
-> 
-> The output can be fed though gas, and then disassembled with objdump -d
+V1 -> V2:
+1, Add a patch to fix Loongson's CCA setting.
+2, Rework the third patch.
+3, Rebase the code for 3.19.
 
-Had to fiddle with gas a little bit, but that was because I was using
-cross-compiler.  Got it to work, though.  tlb1-no-transparent-hugepage.dis is
-without CONFIG_TRANSPARENT_HUGEPAGE, while tlb2-transparent-hugepage.dis is
-with that option enabled.  I don't think any of the other patches/hacks I've
-added to my IP27 build have affected the output.
+Huacai Chen(12):
+ MIPS: Loongson: Fix the write-combine CCA value setting.
+ MIPS: Loongson: set Loongson-3's ISA level to MIPS64R1.
+ MIPS: Loongson-3: Add PHYS48_TO_HT40 support.
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: Loongson: Allow booting from any core.
+ MIPS: Loongson: Improve LEFI firmware interface.
+ MIPS: Loongson: Add Loongson-3A/3B GPIO support.
+ MIPS: Loongson-3: Add CPU Hwmon platform driver.
+ MIPS: Loongson-3: Add chipset ACPI platform driver.
+ MIPS: Loongson-3: Add oprofile support.
+ MIPS: Loongson-3: Add RS780/SBX00 HPET support.
+ MIPS: Loongson: Make CPUFreq usable for Loongson-3.
 
-I saw that CPU1 through CPU3 also dumped r4000_tlb_refill only, but that looks
-to be the same across all of the CPUs, so I only compiled/disassembled the
-output from CPU0.
-
---J
-
-
->>>>>> [ 1302.260000] CPU: 0 PID: 1179 Comm: emerge Not tainted
->>>>>> 3.17.1-mipsgit-20141006 #57
->>>>>> [ 1302.260000] task: a8000000ffbbf288 ti: a8000000fa6f0000 task.ti:
->>>>>> a8000000fa6f0000
->>>>>> [ 1302.260000] $ 0   : 0000000000000000 0000000000000001 0000000000000000
->>>>>> a8000000ff5ad800
->>>>>> [ 1302.260000] $ 4   : a8000000006d5480 00000000000f9c00 00000001f380173f
->>>>>> a800000001000000
->>>>>> [ 1302.260000] $ 8   : 00000001f380173f 0000000000100077 a8000000fe77a000
->>>>>> 0000000000000000
->>>>>> [ 1302.260000] $12   : 0000000000660000 0000000000000000 0000000000000000
->>>>>> 776bc40c00000004
->>>>>> [ 1302.260000] $16   : 0000000000e00000 0000000000000000 00000000018ee000
->>>>>> 6db6db6db6db6db7
->>>>>> [ 1302.260000] $20   : 00000000000000ca a8000000006d5480 a8000000ff65fa68
->>>>>> 0000000000001000
->>>>>> [ 1302.260000] $24   : 0000000000000000 a8000000000469c0
->>>>>> [ 1302.260000] $28   : a8000000fa6f0000 a8000000fa6f3a00 0000000000e00000
->>>>>> a800000000046720
->>>>>> [ 1302.260000] Hi    : 00000000002ed400
->>>>>> [ 1302.260000] Lo    : 00000000000f9c00
->>>>>> [ 1302.260000] epc   : a8000000000467e4 r4k_flush_cache_page+0x104/0x2e0
->>>>>> [ 1302.260000]     Not tainted
->>>>>> [ 1302.260000] ra    : a800000000046720 r4k_flush_cache_page+0x40/0x2e0
->>>>>> [ 1302.260000] Status: 90001ce3 KX SX UX KERNEL EXL IE
->>>>>> [ 1302.260000] Cause : 0000c010
->>>>>> [ 1302.260000] BadVA : 00000001f380173f
->>>>>> [ 1302.260000] PrId  : 00000e35 (R12000)
->>>>>> [ 1302.260000] Process emerge (pid: 1179, threadinfo=a8000000fa6f0000,
->>>>>> task=a8000000ffbbf288, tls=00000000778d2490)
->>>>>> [ 1302.260000] Stack : a8000000ff65fa68 0000000000e00000 00000000000f9c00
->>>>>> a8000000006d5480
->>>>>>              a8000000ff65fa68 0000000000001000 0000000000e00000
->>>>>> a80000000010cb00
->>>>>>              a8000000046a2000 a8000000ff65fa68 00000000018ee000
->>>>>> 6db6db6db6db6db7
->>>>>>              a8000000fe7fdce0 a8000000000375ec a8000000ff4e5800
->>>>>> a8000000005fbd90
->>>>>>              0000000300000080 a8000000ff668580 a8000000005fbd90
->>>>>> 5349474900000080
->>>>>>              a8000000fa6f3ad8 a8000000005fbd90 0000000600000088
->>>>>> a8000000ff5ad928
->>>>>>              a8000000005fbd90 46494c4500002bf9 c000000000101000
->>>>>> 0000000a00000080
->>>>>>              0000000000000000 0000000000000000 0000000000000000
->>>>>> 0000000000000000
->>>>>>              0000000000000000 0000000000000000 0000000000000000
->>>>>> 0000000000000000
->>>>>>              0000000000000000 0000000000000000 0000000000000000
->>>>>> 0000000000000000
->>>>>>              ...
->>>>>> [ 1302.260000] Call Trace:
->>>>>> [ 1302.260000] [<a8000000000467e4>] r4k_flush_cache_page+0x104/0x2e0
->>>>>> [ 1302.260000] [<a80000000010cb00>] get_dump_page+0xc8/0xe8
->>>>>> [ 1302.260000] [<a8000000000375ec>] elf_core_dump+0x1294/0x14d8
->>>>>> [ 1302.260000] [<a8000000001b41e4>] do_coredump+0x5e4/0x1048
->>>>>> [ 1302.260000] [<a80000000005c0b8>] get_signal+0x1b8/0x710
->>>>>> [ 1302.260000] [<a8000000000299c0>] do_signal+0x18/0x240
->>>>>> [ 1302.260000] [<a80000000002a4c8>] do_notify_resume+0x70/0x88
->>>>>> [ 1302.260000] [<a8000000000255ac>] work_notifysig+0x10/0x18
->>>>>> [ 1302.260000]
->>>>>> [ 1302.260000]
->>>>>> Code: 0010327a  30c60ff8  00c8302d <dcc60000> 30c80001  1100003e  00000000
->>>>>> bfb40000  df880000
->>>>>> [ 1305.340000] ---[ end trace c7649a6433db8d18 ]---
->>>>>>
->>>>>> Thoughts?
-
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
-
---------------010000000701070307070402
-Content-Type: text/plain; charset=windows-1252;
- name="tlb1-no-transparent-hugepage.dis"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="tlb1-no-transparent-hugepage.dis"
-
-CnRsYjE6ICAgICBmaWxlIGZvcm1hdCBlbGY2NC10cmFkYmlnbWlwcwoKCkRpc2Fzc2VtYmx5
-IG9mIHNlY3Rpb24gLnRleHQ6CgowMDAwMDAwMDAwMDAwMDAwIDx0bGJtaXNzX2hhbmRsZXI+
-OgogICAwOgk0MDI1MjAwMCAJZG1mYzAJYTEsJDQKICAgNDoJMDAwNTJkZmEgCWRzcmwJYTEs
-YTEsMHgxNwogICA4OgkzYzA2YTgwMCAJbHVpCWEyLDB4YTgwMAogICBjOgkwMDA2MzQzOCAJ
-ZHNsbAlhMixhMiwweDEwCiAgMTA6CTY0YzYwMDkxIAlkYWRkaXUJYTIsYTIsMTQ1CiAgMTQ6
-CTAwMDYzNDM4IAlkc2xsCWEyLGEyLDB4MTAKICAxODoJMDBjNTMwMmQgCWRhZGR1CWEyLGEy
-LGExCiAgMWM6CWZjYzQ0MTAwIAlzZAlhMCwxNjY0MChhMikKICAyMDoJMDNlMDAwMDggCWpy
-CXJhCiAgMjQ6CTAwMDAwMDAwIAlub3AKCS4uLgoKMDAwMDAwMDAwMDAwMDA0OCA8cjQwMDBf
-dGxiX2xvYWQ+OgogIDQ4Ogk0MDNhMjAwMCAJZG1mYzAJazAsJDQKICA0YzoJMDAxYWQ2YmEg
-CWRzcmwJazAsazAsMHgxYQogIDUwOgkwMDFhZDFmOCAJZHNsbAlrMCxrMCwweDcKICA1NDoJ
-M2MxYmE4MDAgCWx1aQlrMSwweGE4MDAKICA1ODoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgx
-MAogIDVjOgk2NzdiMDA5MSAJZGFkZGl1CWsxLGsxLDE0NQogIDYwOgkwMDFiZGMzOCAJZHNs
-bAlrMSxrMSwweDEwCiAgNjQ6CTY3N2I1NTAwIAlkYWRkaXUJazEsazEsMjE3NjAKICA2ODoJ
-MDM1YmQwMmQgCWRhZGR1CWswLGswLGsxCiAgNmM6CWZmNDEwMDAwIAlzZAlhdCwwKGswKQog
-IDcwOglmZjQyMDAwOCAJc2QJdjAsOChrMCkKICA3NDoJNDAzYjQwMDAgCWRtZmMwCWsxLCQ4
-CiAgNzg6CTAwMWIwYWJlIAlkc3JsMzIJYXQsazEsMHhhCiAgN2M6CTE0MjAwMDI2IAlibmV6
-CWF0LDExOCA8cjQwMDBfdGxiX2xvYWQrMHhkMD4KICA4MDoJNDAyMTIwMDAgCWRtZmMwCWF0
-LCQ0CiAgODQ6CTAwMDEwZGZhIAlkc3JsCWF0LGF0LDB4MTcKICA4ODoJM2MxYmE4MDAgCWx1
-aQlrMSwweGE4MDAKICA4YzoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgxMAogIDkwOgk2Nzdi
-MDA5MSAJZGFkZGl1CWsxLGsxLDE0NQogIDk0OgkwMDFiZGMzOCAJZHNsbAlrMSxrMSwweDEw
-CiAgOTg6CTAwM2IwODJkIAlkYWRkdQlhdCxhdCxrMQogIDljOgk0MDNiNDAwMCAJZG1mYzAJ
-azEsJDgKICBhMDoJZGMyMTQxMDAgCWxkCWF0LDE2NjQwKGF0KQogIGE0OgkwMDFiZGViYSAJ
-ZHNybAlrMSxrMSwweDFhCiAgYTg6CTMzN2JmZmY4IAlhbmRpCWsxLGsxLDB4ZmZmOAogIGFj
-OgkwMDNiMDgyZCAJZGFkZHUJYXQsYXQsazEKICBiMDoJNDAzYjQwMDAgCWRtZmMwCWsxLCQ4
-CiAgYjQ6CWRjMjEwMDAwIAlsZAlhdCwwKGF0KQogIGI4OgkwMDFiZGI3YSAJZHNybAlrMSxr
-MSwweGQKICBiYzoJMzM3YmZmZjggCWFuZGkJazEsazEsMHhmZmY4CiAgYzA6CTAwM2IwODJk
-IAlkYWRkdQlhdCxhdCxrMQogIGM0OglkMDNiMDAwMCAJbGxkCWsxLDAoYXQpCiAgYzg6CTQy
-MDAwMDA4IAl0bGJwCiAgY2M6CTMzNjIwMDAzIAlhbmRpCXYwLGsxLDB4MwogIGQwOgkzODQy
-MDAwMyAJeG9yaQl2MCx2MCwweDMKICBkNDoJMTQ0MDAwMTYgCWJuZXoJdjAsMTMwIDxyNDAw
-MF90bGJfbG9hZCsweGU4PgogIGQ4OgkzNzdiMDA0OCAJb3JpCWsxLGsxLDB4NDgKICBkYzoJ
-ZjAzYjAwMDAgCXNjZAlrMSwwKGF0KQogIGUwOgk1MzYwZmZmOCAJYmVxemwJazEsYzQgPHI0
-MDAwX3RsYl9sb2FkKzB4N2M+CiAgZTQ6CTAwMDAwMDAwIAlub3AKICBlODoJMzQyMTAwMDgg
-CW9yaQlhdCxhdCwweDgKICBlYzoJMzgyMTAwMDggCXhvcmkJYXQsYXQsMHg4CiAgZjA6CWRj
-M2IwMDAwIAlsZAlrMSwwKGF0KQogIGY0OglkYzIxMDAwOCAJbGQJYXQsOChhdCkKICBmODoJ
-MDAxYmQ5N2EgCWRzcmwJazEsazEsMHg1CiAgZmM6CTQwYmIxMDAwIAlkbXRjMAlrMSwkMgog
-MTAwOgkwMDAxMDk3YSAJZHNybAlhdCxhdCwweDUKIDEwNDoJNDBhMTE4MDAgCWRtdGMwCWF0
-LCQzCiAxMDg6CTQyMDAwMDAyIAl0bGJ3aQogMTBjOglkZjQxMDAwMCAJbGQJYXQsMChrMCkK
-IDExMDoJZGY0MjAwMDggCWxkCXYwLDgoazApCiAxMTQ6CTQyMDAwMDE4IAllcmV0CiAxMTg6
-CTNjMDFhODAwIAlsdWkJYXQsMHhhODAwCiAxMWM6CTAwMDEwYzM4IAlkc2xsCWF0LGF0LDB4
-MTAKIDEyMDoJNjQyMTAwOGYgCWRhZGRpdQlhdCxhdCwxNDMKIDEyNDoJMDAwMTBjMzggCWRz
-bGwJYXQsYXQsMHgxMAogMTI4OgkxMDAwZmZkZSAJYglhNCA8cjQwMDBfdGxiX2xvYWQrMHg1
-Yz4KIDEyYzoJNjQyMTAwMDAgCWRhZGRpdQlhdCxhdCwwCiAxMzA6CWRmNDEwMDAwIAlsZAlh
-dCwwKGswKQogMTM0OglkZjQyMDAwOCAJbGQJdjAsOChrMCkKIDEzODoJMDgwMTBjYzggCWoJ
-NDMzMjAgPHI0MDAwX3RsYl9yZWZpbGwrMHg0MmNkOD4KIDEzYzoJMDAwMDAwMDAgCW5vcAoJ
-Li4uCgowMDAwMDAwMDAwMDAwMjQ4IDxyNDAwMF90bGJfc3RvcmU+OgogMjQ4Ogk0MDNhMjAw
-MCAJZG1mYzAJazAsJDQKIDI0YzoJMDAxYWQ2YmEgCWRzcmwJazAsazAsMHgxYQogMjUwOgkw
-MDFhZDFmOCAJZHNsbAlrMCxrMCwweDcKIDI1NDoJM2MxYmE4MDAgCWx1aQlrMSwweGE4MDAK
-IDI1ODoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgxMAogMjVjOgk2NzdiMDA5MSAJZGFkZGl1
-CWsxLGsxLDE0NQogMjYwOgkwMDFiZGMzOCAJZHNsbAlrMSxrMSwweDEwCiAyNjQ6CTY3N2I1
-NTAwIAlkYWRkaXUJazEsazEsMjE3NjAKIDI2ODoJMDM1YmQwMmQgCWRhZGR1CWswLGswLGsx
-CiAyNmM6CWZmNDEwMDAwIAlzZAlhdCwwKGswKQogMjcwOglmZjQyMDAwOCAJc2QJdjAsOChr
-MCkKIDI3NDoJNDAzYjQwMDAgCWRtZmMwCWsxLCQ4CiAyNzg6CTAwMWIwYWJlIAlkc3JsMzIJ
-YXQsazEsMHhhCiAyN2M6CTE0MjAwMDI3IAlibmV6CWF0LDMxYyA8cjQwMDBfdGxiX3N0b3Jl
-KzB4ZDQ+CiAyODA6CTQwMjEyMDAwIAlkbWZjMAlhdCwkNAogMjg0OgkwMDAxMGRmYSAJZHNy
-bAlhdCxhdCwweDE3CiAyODg6CTNjMWJhODAwIAlsdWkJazEsMHhhODAwCiAyOGM6CTAwMWJk
-YzM4IAlkc2xsCWsxLGsxLDB4MTAKIDI5MDoJNjc3YjAwOTEgCWRhZGRpdQlrMSxrMSwxNDUK
-IDI5NDoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgxMAogMjk4OgkwMDNiMDgyZCAJZGFkZHUJ
-YXQsYXQsazEKIDI5YzoJNDAzYjQwMDAgCWRtZmMwCWsxLCQ4CiAyYTA6CWRjMjE0MTAwIAls
-ZAlhdCwxNjY0MChhdCkKIDJhNDoJMDAxYmRlYmEgCWRzcmwJazEsazEsMHgxYQogMmE4Ogkz
-MzdiZmZmOCAJYW5kaQlrMSxrMSwweGZmZjgKIDJhYzoJMDAzYjA4MmQgCWRhZGR1CWF0LGF0
-LGsxCiAyYjA6CTQwM2I0MDAwIAlkbWZjMAlrMSwkOAogMmI0OglkYzIxMDAwMCAJbGQJYXQs
-MChhdCkKIDJiODoJMDAxYmRiN2EgCWRzcmwJazEsazEsMHhkCiAyYmM6CTMzN2JmZmY4IAlh
-bmRpCWsxLGsxLDB4ZmZmOAogMmMwOgkwMDNiMDgyZCAJZGFkZHUJYXQsYXQsazEKIDJjNDoJ
-ZDAzYjAwMDAgCWxsZAlrMSwwKGF0KQogMmM4Ogk0MjAwMDAwOCAJdGxicAogMmNjOgkzMzYy
-MDAwNSAJYW5kaQl2MCxrMSwweDUKIDJkMDoJMzg0MjAwMDUgCXhvcmkJdjAsdjAsMHg1CiAy
-ZDQ6CTE0NDAwMDE3IAlibmV6CXYwLDMzNCA8cjQwMDBfdGxiX3N0b3JlKzB4ZWM+CiAyZDg6
-CTAwMDAwMDAwIAlub3AKIDJkYzoJMzc3YjAwZDggCW9yaQlrMSxrMSwweGQ4CiAyZTA6CWYw
-M2IwMDAwIAlzY2QJazEsMChhdCkKIDJlNDoJNTM2MGZmZjcgCWJlcXpsCWsxLDJjNCA8cjQw
-MDBfdGxiX3N0b3JlKzB4N2M+CiAyZTg6CTAwMDAwMDAwIAlub3AKIDJlYzoJMzQyMTAwMDgg
-CW9yaQlhdCxhdCwweDgKIDJmMDoJMzgyMTAwMDggCXhvcmkJYXQsYXQsMHg4CiAyZjQ6CWRj
-M2IwMDAwIAlsZAlrMSwwKGF0KQogMmY4OglkYzIxMDAwOCAJbGQJYXQsOChhdCkKIDJmYzoJ
-MDAxYmQ5N2EgCWRzcmwJazEsazEsMHg1CiAzMDA6CTQwYmIxMDAwIAlkbXRjMAlrMSwkMgog
-MzA0OgkwMDAxMDk3YSAJZHNybAlhdCxhdCwweDUKIDMwODoJNDBhMTE4MDAgCWRtdGMwCWF0
-LCQzCiAzMGM6CTQyMDAwMDAyIAl0bGJ3aQogMzEwOglkZjQxMDAwMCAJbGQJYXQsMChrMCkK
-IDMxNDoJZGY0MjAwMDggCWxkCXYwLDgoazApCiAzMTg6CTQyMDAwMDE4IAllcmV0CiAzMWM6
-CTNjMDFhODAwIAlsdWkJYXQsMHhhODAwCiAzMjA6CTAwMDEwYzM4IAlkc2xsCWF0LGF0LDB4
-MTAKIDMyNDoJNjQyMTAwOGYgCWRhZGRpdQlhdCxhdCwxNDMKIDMyODoJMDAwMTBjMzggCWRz
-bGwJYXQsYXQsMHgxMAogMzJjOgkxMDAwZmZkZCAJYgkyYTQgPHI0MDAwX3RsYl9zdG9yZSsw
-eDVjPgogMzMwOgk2NDIxMDAwMCAJZGFkZGl1CWF0LGF0LDAKIDMzNDoJZGY0MTAwMDAgCWxk
-CWF0LDAoazApCiAzMzg6CWRmNDIwMDA4IAlsZAl2MCw4KGswKQogMzNjOgkwODAxMGQxMyAJ
-agk0MzQ0YyA8cjQwMDBfdGxiX3JlZmlsbCsweDQyZTA0PgogMzQwOgkwMDAwMDAwMCAJbm9w
-CgkuLi4KCjAwMDAwMDAwMDAwMDA0NDggPHI0MDAwX3RsYl9tb2RpZnk+OgogNDQ4Ogk0MDNh
-MjAwMCAJZG1mYzAJazAsJDQKIDQ0YzoJMDAxYWQ2YmEgCWRzcmwJazAsazAsMHgxYQogNDUw
-OgkwMDFhZDFmOCAJZHNsbAlrMCxrMCwweDcKIDQ1NDoJM2MxYmE4MDAgCWx1aQlrMSwweGE4
-MDAKIDQ1ODoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgxMAogNDVjOgk2NzdiMDA5MSAJZGFk
-ZGl1CWsxLGsxLDE0NQogNDYwOgkwMDFiZGMzOCAJZHNsbAlrMSxrMSwweDEwCiA0NjQ6CTY3
-N2I1NTAwIAlkYWRkaXUJazEsazEsMjE3NjAKIDQ2ODoJMDM1YmQwMmQgCWRhZGR1CWswLGsw
-LGsxCiA0NmM6CWZmNDEwMDAwIAlzZAlhdCwwKGswKQogNDcwOglmZjQyMDAwOCAJc2QJdjAs
-OChrMCkKIDQ3NDoJNDAzYjQwMDAgCWRtZmMwCWsxLCQ4CiA0Nzg6CTAwMWIwYWJlIAlkc3Js
-MzIJYXQsazEsMHhhCiA0N2M6CTE0MjAwMDI1IAlibmV6CWF0LDUxNCA8cjQwMDBfdGxiX21v
-ZGlmeSsweGNjPgogNDgwOgk0MDIxMjAwMCAJZG1mYzAJYXQsJDQKIDQ4NDoJMDAwMTBkZmEg
-CWRzcmwJYXQsYXQsMHgxNwogNDg4OgkzYzFiYTgwMCAJbHVpCWsxLDB4YTgwMAogNDhjOgkw
-MDFiZGMzOCAJZHNsbAlrMSxrMSwweDEwCiA0OTA6CTY3N2IwMDkxIAlkYWRkaXUJazEsazEs
-MTQ1CiA0OTQ6CTAwMWJkYzM4IAlkc2xsCWsxLGsxLDB4MTAKIDQ5ODoJMDAzYjA4MmQgCWRh
-ZGR1CWF0LGF0LGsxCiA0OWM6CTQwM2I0MDAwIAlkbWZjMAlrMSwkOAogNGEwOglkYzIxNDEw
-MCAJbGQJYXQsMTY2NDAoYXQpCiA0YTQ6CTAwMWJkZWJhIAlkc3JsCWsxLGsxLDB4MWEKIDRh
-ODoJMzM3YmZmZjggCWFuZGkJazEsazEsMHhmZmY4CiA0YWM6CTAwM2IwODJkIAlkYWRkdQlh
-dCxhdCxrMQogNGIwOgk0MDNiNDAwMCAJZG1mYzAJazEsJDgKIDRiNDoJZGMyMTAwMDAgCWxk
-CWF0LDAoYXQpCiA0Yjg6CTAwMWJkYjdhIAlkc3JsCWsxLGsxLDB4ZAogNGJjOgkzMzdiZmZm
-OCAJYW5kaQlrMSxrMSwweGZmZjgKIDRjMDoJMDAzYjA4MmQgCWRhZGR1CWF0LGF0LGsxCiA0
-YzQ6CWQwM2IwMDAwIAlsbGQJazEsMChhdCkKIDRjODoJNDIwMDAwMDggCXRsYnAKIDRjYzoJ
-MzM2MjAwMDQgCWFuZGkJdjAsazEsMHg0CiA0ZDA6CTEwNDAwMDE2IAliZXF6CXYwLDUyYyA8
-cjQwMDBfdGxiX21vZGlmeSsweGU0PgogNGQ0OgkzNzdiMDBkOCAJb3JpCWsxLGsxLDB4ZDgK
-IDRkODoJZjAzYjAwMDAgCXNjZAlrMSwwKGF0KQogNGRjOgk1MzYwZmZmOSAJYmVxemwJazEs
-NGM0IDxyNDAwMF90bGJfbW9kaWZ5KzB4N2M+CiA0ZTA6CTAwMDAwMDAwIAlub3AKIDRlNDoJ
-MzQyMTAwMDggCW9yaQlhdCxhdCwweDgKIDRlODoJMzgyMTAwMDggCXhvcmkJYXQsYXQsMHg4
-CiA0ZWM6CWRjM2IwMDAwIAlsZAlrMSwwKGF0KQogNGYwOglkYzIxMDAwOCAJbGQJYXQsOChh
-dCkKIDRmNDoJMDAxYmQ5N2EgCWRzcmwJazEsazEsMHg1CiA0Zjg6CTQwYmIxMDAwIAlkbXRj
-MAlrMSwkMgogNGZjOgkwMDAxMDk3YSAJZHNybAlhdCxhdCwweDUKIDUwMDoJNDBhMTE4MDAg
-CWRtdGMwCWF0LCQzCiA1MDQ6CTQyMDAwMDAyIAl0bGJ3aQogNTA4OglkZjQxMDAwMCAJbGQJ
-YXQsMChrMCkKIDUwYzoJZGY0MjAwMDggCWxkCXYwLDgoazApCiA1MTA6CTQyMDAwMDE4IAll
-cmV0CiA1MTQ6CTNjMDFhODAwIAlsdWkJYXQsMHhhODAwCiA1MTg6CTAwMDEwYzM4IAlkc2xs
-CWF0LGF0LDB4MTAKIDUxYzoJNjQyMTAwOGYgCWRhZGRpdQlhdCxhdCwxNDMKIDUyMDoJMDAw
-MTBjMzggCWRzbGwJYXQsYXQsMHgxMAogNTI0OgkxMDAwZmZkZiAJYgk0YTQgPHI0MDAwX3Rs
-Yl9tb2RpZnkrMHg1Yz4KIDUyODoJNjQyMTAwMDAgCWRhZGRpdQlhdCxhdCwwCiA1MmM6CWRm
-NDEwMDAwIAlsZAlhdCwwKGswKQogNTMwOglkZjQyMDAwOCAJbGQJdjAsOChrMCkKIDUzNDoJ
-MDgwMTBkMTMgCWoJNDM0NGMgPHI0MDAwX3RsYl9yZWZpbGwrMHg0MmUwND4KIDUzODoJMDAw
-MDAwMDAgCW5vcAoJLi4uCgowMDAwMDAwMDAwMDAwNjQ4IDxyNDAwMF90bGJfcmVmaWxsPjoK
-IDY0ODoJMDc0MTAwMDYgCWJnZXoJazAsNjY0IDxyNDAwMF90bGJfcmVmaWxsKzB4MWM+CiA2
-NGM6CTNjMWJhODAwIAlsdWkJazEsMHhhODAwCiA2NTA6CTAwMWJkYzM4IAlkc2xsCWsxLGsx
-LDB4MTAKIDY1NDoJNjc3YjAwOGYgCWRhZGRpdQlrMSxrMSwxNDMKIDY1ODoJMDAxYmRjMzgg
-CWRzbGwJazEsazEsMHgxMAogNjVjOgkxMDAwMDAyNiAJYgk2ZjggPHI0MDAwX3RsYl9yZWZp
-bGwrMHhiMD4KIDY2MDoJNjc3YjAwMDAgCWRhZGRpdQlrMSxrMSwwCiA2NjQ6CTNjMWJhODAw
-IAlsdWkJazEsMHhhODAwCiA2Njg6CTAwMWJkYzM4IAlkc2xsCWsxLGsxLDB4MTAKIDY2YzoJ
-Njc3YjAwMDQgCWRhZGRpdQlrMSxrMSw0CiA2NzA6CTAwMWJkYzM4IAlkc2xsCWsxLGsxLDB4
-MTAKIDY3NDoJNjc3YjMzMjAgCWRhZGRpdQlrMSxrMSwxMzA4OAogNjc4OgkwMzYwMDAwOCAJ
-anIJazEKIDY3YzoJMDAwMDAwMDAgCW5vcAoJLi4uCiA2Yzg6CTQwM2E0MDAwIAlkbWZjMAlr
-MCwkOAogNmNjOgkwMDFhZGFiZSAJZHNybDMyCWsxLGswLDB4YQogNmQwOgkxNzYwZmZkZCAJ
-Ym5leglrMSw2NDggPHI0MDAwX3RsYl9yZWZpbGw+CiA2ZDQ6CTQwM2IyMDAwIAlkbWZjMAlr
-MSwkNAogNmQ4OgkwMDFiZGRmYSAJZHNybAlrMSxrMSwweDE3CiA2ZGM6CTNjMWFhODAwIAls
-dWkJazAsMHhhODAwCiA2ZTA6CTAwMWFkNDM4IAlkc2xsCWswLGswLDB4MTAKIDZlNDoJNjc1
-YTAwOTEgCWRhZGRpdQlrMCxrMCwxNDUKIDZlODoJMDAxYWQ0MzggCWRzbGwJazAsazAsMHgx
-MAogNmVjOgkwMzdhZDgyZCAJZGFkZHUJazEsazEsazAKIDZmMDoJNDAzYTQwMDAgCWRtZmMw
-CWswLCQ4CiA2ZjQ6CWRmN2I0MTAwIAlsZAlrMSwxNjY0MChrMSkKIDZmODoJMDAxYWQ2YmEg
-CWRzcmwJazAsazAsMHgxYQogNmZjOgkzMzVhZmZmOCAJYW5kaQlrMCxrMCwweGZmZjgKIDcw
-MDoJMDM3YWQ4MmQgCWRhZGR1CWsxLGsxLGswCiA3MDQ6CTQwM2FhMDAwIAlkbWZjMAlrMCwk
-MjAKIDcwODoJZGY3YjAwMDAgCWxkCWsxLDAoazEpCiA3MGM6CTAwMWFkMTNhIAlkc3JsCWsw
-LGswLDB4NAogNzEwOgkzMzVhZmZmMCAJYW5kaQlrMCxrMCwweGZmZjAKIDcxNDoJMDM3YWQ4
-MmQgCWRhZGR1CWsxLGsxLGswCiA3MTg6CWRmN2EwMDAwIAlsZAlrMCwwKGsxKQogNzFjOglk
-ZjdiMDAwOCAJbGQJazEsOChrMSkKIDcyMDoJMDAxYWQxN2EgCWRzcmwJazAsazAsMHg1CiA3
-MjQ6CTQwYmExMDAwIAlkbXRjMAlrMCwkMgogNzI4OgkwMDFiZDk3YSAJZHNybAlrMSxrMSww
-eDUKIDcyYzoJNDBiYjE4MDAgCWRtdGMwCWsxLCQzCiA3MzA6CTQyMDAwMDA2IAl0bGJ3cgog
-NzM0Ogk0MjAwMDAxOCAJZXJldAoJLi4uCg==
---------------010000000701070307070402
-Content-Type: text/plain; charset=windows-1252;
- name="tlb2-transparent-hugepage.dis"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="tlb2-transparent-hugepage.dis"
-
-CnRsYjI6ICAgICBmaWxlIGZvcm1hdCBlbGY2NC10cmFkYmlnbWlwcwoKCkRpc2Fzc2VtYmx5
-IG9mIHNlY3Rpb24gLnRleHQ6CgowMDAwMDAwMDAwMDAwMDAwIDx0bGJtaXNzX2hhbmRsZXI+
-OgogICAwOgk0MDI1MjAwMCAJZG1mYzAJYTEsJDQKICAgNDoJMDAwNTJkZmEgCWRzcmwJYTEs
-YTEsMHgxNwogICA4OgkzYzA2YTgwMCAJbHVpCWEyLDB4YTgwMAogICBjOgkwMDA2MzQzOCAJ
-ZHNsbAlhMixhMiwweDEwCiAgMTA6CTY0YzYwMDkyIAlkYWRkaXUJYTIsYTIsMTQ2CiAgMTQ6
-CTAwMDYzNDM4IAlkc2xsCWEyLGEyLDB4MTAKICAxODoJMDBjNTMwMmQgCWRhZGR1CWEyLGEy
-LGExCiAgMWM6CWZjYzQ0MTAwIAlzZAlhMCwxNjY0MChhMikKICAyMDoJMDNlMDAwMDggCWpy
-CXJhCiAgMjQ6CTAwMDAwMDAwIAlub3AKCS4uLgoKMDAwMDAwMDAwMDAwMDA0OCA8cjQwMDBf
-dGxiX2xvYWQ+OgogIDQ4Ogk0MDNhMjAwMCAJZG1mYzAJazAsJDQKICA0YzoJMDAxYWQ2YmEg
-CWRzcmwJazAsazAsMHgxYQogIDUwOgkwMDFhZDFmOCAJZHNsbAlrMCxrMCwweDcKICA1NDoJ
-M2MxYmE4MDAgCWx1aQlrMSwweGE4MDAKICA1ODoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgx
-MAogIDVjOgk2NzdiMDA5MiAJZGFkZGl1CWsxLGsxLDE0NgogIDYwOgkwMDFiZGMzOCAJZHNs
-bAlrMSxrMSwweDEwCiAgNjQ6CTY3N2I1NTAwIAlkYWRkaXUJazEsazEsMjE3NjAKICA2ODoJ
-MDM1YmQwMmQgCWRhZGR1CWswLGswLGsxCiAgNmM6CWZmNDEwMDAwIAlzZAlhdCwwKGswKQog
-IDcwOglmZjQyMDAwOCAJc2QJdjAsOChrMCkKICA3NDoJNDAzYjQwMDAgCWRtZmMwCWsxLCQ4
-CiAgNzg6CTAwMWIwYWJlIAlkc3JsMzIJYXQsazEsMHhhCiAgN2M6CTE0MjAwMDI5IAlibmV6
-CWF0LDEyNCA8cjQwMDBfdGxiX2xvYWQrMHhkYz4KICA4MDoJNDAyMTIwMDAgCWRtZmMwCWF0
-LCQ0CiAgODQ6CTAwMDEwZGZhIAlkc3JsCWF0LGF0LDB4MTcKICA4ODoJM2MxYmE4MDAgCWx1
-aQlrMSwweGE4MDAKICA4YzoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgxMAogIDkwOgk2Nzdi
-MDA5MiAJZGFkZGl1CWsxLGsxLDE0NgogIDk0OgkwMDFiZGMzOCAJZHNsbAlrMSxrMSwweDEw
-CiAgOTg6CTAwM2IwODJkIAlkYWRkdQlhdCxhdCxrMQogIDljOgk0MDNiNDAwMCAJZG1mYzAJ
-azEsJDgKICBhMDoJZGMyMTQxMDAgCWxkCWF0LDE2NjQwKGF0KQogIGE0OgkwMDFiZGViYSAJ
-ZHNybAlrMSxrMSwweDFhCiAgYTg6CTMzN2JmZmY4IAlhbmRpCWsxLGsxLDB4ZmZmOAogIGFj
-OgkwMDNiMDgyZCAJZGFkZHUJYXQsYXQsazEKICBiMDoJZGMzYjAwMDAgCWxkCWsxLDAoYXQp
-CiAgYjQ6CTMzN2IwMDIwIAlhbmRpCWsxLGsxLDB4MjAKICBiODoJMTc2MDAwMjAgCWJuZXoJ
-azEsMTNjIDxyNDAwMF90bGJfbG9hZCsweGY0PgogIGJjOgk0MDNiNDAwMCAJZG1mYzAJazEs
-JDgKICBjMDoJZGMyMTAwMDAgCWxkCWF0LDAoYXQpCiAgYzQ6CTAwMWJkYjdhIAlkc3JsCWsx
-LGsxLDB4ZAogIGM4OgkzMzdiZmZmOCAJYW5kaQlrMSxrMSwweGZmZjgKICBjYzoJMDAzYjA4
-MmQgCWRhZGR1CWF0LGF0LGsxCiAgZDA6CWQwM2IwMDAwIAlsbGQJazEsMChhdCkKICBkNDoJ
-NDIwMDAwMDggCXRsYnAKICBkODoJMzM2MjAwMDMgCWFuZGkJdjAsazEsMHgzCiAgZGM6CTM4
-NDIwMDAzIAl4b3JpCXYwLHYwLDB4MwogIGUwOgkxNDQwMDAyYyAJYm5legl2MCwxOTQgPHI0
-MDAwX3RsYl9sb2FkKzB4MTRjPgogIGU0OgkzNzdiMDEwOCAJb3JpCWsxLGsxLDB4MTA4CiAg
-ZTg6CWYwM2IwMDAwIAlzY2QJazEsMChhdCkKICBlYzoJNTM2MGZmZjggCWJlcXpsCWsxLGQw
-IDxyNDAwMF90bGJfbG9hZCsweDg4PgogIGYwOgkwMDAwMDAwMCAJbm9wCiAgZjQ6CTM0MjEw
-MDA4IAlvcmkJYXQsYXQsMHg4CiAgZjg6CTM4MjEwMDA4IAl4b3JpCWF0LGF0LDB4OAogIGZj
-OglkYzNiMDAwMCAJbGQJazEsMChhdCkKIDEwMDoJZGMyMTAwMDggCWxkCWF0LDgoYXQpCiAx
-MDQ6CTAwMWJkOWZhIAlkc3JsCWsxLGsxLDB4NwogMTA4Ogk0MGJiMTAwMCAJZG10YzAJazEs
-JDIKIDEwYzoJMDAwMTA5ZmEgCWRzcmwJYXQsYXQsMHg3CiAxMTA6CTQwYTExODAwIAlkbXRj
-MAlhdCwkMwogMTE0Ogk0MjAwMDAwMiAJdGxid2kKIDExODoJZGY0MTAwMDAgCWxkCWF0LDAo
-azApCiAxMWM6CWRmNDIwMDA4IAlsZAl2MCw4KGswKQogMTIwOgk0MjAwMDAxOCAJZXJldAog
-MTI0OgkzYzAxYTgwMCAJbHVpCWF0LDB4YTgwMAogMTI4OgkwMDAxMGMzOCAJZHNsbAlhdCxh
-dCwweDEwCiAxMmM6CTY0MjEwMDkwIAlkYWRkaXUJYXQsYXQsMTQ0CiAxMzA6CTAwMDEwYzM4
-IAlkc2xsCWF0LGF0LDB4MTAKIDEzNDoJMTAwMGZmZGIgCWIJYTQgPHI0MDAwX3RsYl9sb2Fk
-KzB4NWM+CiAxMzg6CTY0MjEwMDAwIAlkYWRkaXUJYXQsYXQsMAogMTNjOglkMDNiMDAwMCAJ
-bGxkCWsxLDAoYXQpCiAxNDA6CTMzNjIwMDAzIAlhbmRpCXYwLGsxLDB4MwogMTQ0OgkzODQy
-MDAwMyAJeG9yaQl2MCx2MCwweDMKIDE0ODoJMTQ0MDAwMTIgCWJuZXoJdjAsMTk0IDxyNDAw
-MF90bGJfbG9hZCsweDE0Yz4KIDE0YzoJNDIwMDAwMDggCXRsYnAKIDE1MDoJMzc3YjAxMDgg
-CW9yaQlrMSxrMSwweDEwOAogMTU0OglmMDNiMDAwMCAJc2NkCWsxLDAoYXQpCiAxNTg6CTEz
-NjBmZmY4IAliZXF6CWsxLDEzYyA8cjQwMDBfdGxiX2xvYWQrMHhmND4KIDE1YzoJZGMzYjAw
-MDAgCWxkCWsxLDAoYXQpCiAxNjA6CTNjMDEwMDQwIAlsdWkJYXQsMHg0MAogMTY0OgkwMDFi
-ZDlmYSAJZHNybAlrMSxrMSwweDcKIDE2ODoJNDBiYjEwMDAgCWRtdGMwCWsxLCQyCiAxNmM6
-CTAzNjFkODJkIAlkYWRkdQlrMSxrMSxhdAogMTcwOgk0MGJiMTgwMCAJZG10YzAJazEsJDMK
-IDE3NDoJM2MxYjFmZmYgCWx1aQlrMSwweDFmZmYKIDE3ODoJMzc3YmUwMDAgCW9yaQlrMSxr
-MSwweGUwMDAKIDE3YzoJNDA5YjI4MDAgCW10YzAJazEsJDUKIDE4MDoJNDIwMDAwMDIgCXRs
-YndpCiAxODQ6CTNjMWIwMDAxIAlsdWkJazEsMHgxCiAxODg6CTM3N2JlMDAwIAlvcmkJazEs
-azEsMHhlMDAwCiAxOGM6CTEwMDBmZmUyIAliCTExOCA8cjQwMDBfdGxiX2xvYWQrMHhkMD4K
-IDE5MDoJNDA5YjI4MDAgCW10YzAJazEsJDUKIDE5NDoJZGY0MTAwMDAgCWxkCWF0LDAoazAp
-CiAxOTg6CWRmNDIwMDA4IAlsZAl2MCw4KGswKQogMTljOgkwODAxMGYxNCAJagk0M2M1MCA8
-cjQwMDBfdGxiX3JlZmlsbCsweDQzNjA4PgogMWEwOgkwMDAwMDAwMCAJbm9wCgkuLi4KCjAw
-MDAwMDAwMDAwMDAyNDggPHI0MDAwX3RsYl9zdG9yZT46CiAyNDg6CTQwM2EyMDAwIAlkbWZj
-MAlrMCwkNAogMjRjOgkwMDFhZDZiYSAJZHNybAlrMCxrMCwweDFhCiAyNTA6CTAwMWFkMWY4
-IAlkc2xsCWswLGswLDB4NwogMjU0OgkzYzFiYTgwMCAJbHVpCWsxLDB4YTgwMAogMjU4Ogkw
-MDFiZGMzOCAJZHNsbAlrMSxrMSwweDEwCiAyNWM6CTY3N2IwMDkyIAlkYWRkaXUJazEsazEs
-MTQ2CiAyNjA6CTAwMWJkYzM4IAlkc2xsCWsxLGsxLDB4MTAKIDI2NDoJNjc3YjU1MDAgCWRh
-ZGRpdQlrMSxrMSwyMTc2MAogMjY4OgkwMzViZDAyZCAJZGFkZHUJazAsazAsazEKIDI2YzoJ
-ZmY0MTAwMDAgCXNkCWF0LDAoazApCiAyNzA6CWZmNDIwMDA4IAlzZAl2MCw4KGswKQogMjc0
-Ogk0MDNiNDAwMCAJZG1mYzAJazEsJDgKIDI3ODoJMDAxYjBhYmUgCWRzcmwzMglhdCxrMSww
-eGEKIDI3YzoJMTQyMDAwMmEgCWJuZXoJYXQsMzI4IDxyNDAwMF90bGJfc3RvcmUrMHhlMD4K
-IDI4MDoJNDAyMTIwMDAgCWRtZmMwCWF0LCQ0CiAyODQ6CTAwMDEwZGZhIAlkc3JsCWF0LGF0
-LDB4MTcKIDI4ODoJM2MxYmE4MDAgCWx1aQlrMSwweGE4MDAKIDI4YzoJMDAxYmRjMzggCWRz
-bGwJazEsazEsMHgxMAogMjkwOgk2NzdiMDA5MiAJZGFkZGl1CWsxLGsxLDE0NgogMjk0Ogkw
-MDFiZGMzOCAJZHNsbAlrMSxrMSwweDEwCiAyOTg6CTAwM2IwODJkIAlkYWRkdQlhdCxhdCxr
-MQogMjljOgk0MDNiNDAwMCAJZG1mYzAJazEsJDgKIDJhMDoJZGMyMTQxMDAgCWxkCWF0LDE2
-NjQwKGF0KQogMmE0OgkwMDFiZGViYSAJZHNybAlrMSxrMSwweDFhCiAyYTg6CTMzN2JmZmY4
-IAlhbmRpCWsxLGsxLDB4ZmZmOAogMmFjOgkwMDNiMDgyZCAJZGFkZHUJYXQsYXQsazEKIDJi
-MDoJZGMzYjAwMDAgCWxkCWsxLDAoYXQpCiAyYjQ6CTMzN2IwMDIwIAlhbmRpCWsxLGsxLDB4
-MjAKIDJiODoJMTc2MDAwMjEgCWJuZXoJazEsMzQwIDxyNDAwMF90bGJfc3RvcmUrMHhmOD4K
-IDJiYzoJNDAzYjQwMDAgCWRtZmMwCWsxLCQ4CiAyYzA6CWRjMjEwMDAwIAlsZAlhdCwwKGF0
-KQogMmM0OgkwMDFiZGI3YSAJZHNybAlrMSxrMSwweGQKIDJjODoJMzM3YmZmZjggCWFuZGkJ
-azEsazEsMHhmZmY4CiAyY2M6CTAwM2IwODJkIAlkYWRkdQlhdCxhdCxrMQogMmQwOglkMDNi
-MDAwMCAJbGxkCWsxLDAoYXQpCiAyZDQ6CTQyMDAwMDA4IAl0bGJwCiAyZDg6CTMzNjIwMDA1
-IAlhbmRpCXYwLGsxLDB4NQogMmRjOgkzODQyMDAwNSAJeG9yaQl2MCx2MCwweDUKIDJlMDoJ
-MTQ0MDAwMmUgCWJuZXoJdjAsMzljIDxyNDAwMF90bGJfc3RvcmUrMHgxNTQ+CiAyZTQ6CTAw
-MDAwMDAwIAlub3AKIDJlODoJMzc3YjAzMTggCW9yaQlrMSxrMSwweDMxOAogMmVjOglmMDNi
-MDAwMCAJc2NkCWsxLDAoYXQpCiAyZjA6CTUzNjBmZmY3IAliZXF6bAlrMSwyZDAgPHI0MDAw
-X3RsYl9zdG9yZSsweDg4PgogMmY0OgkwMDAwMDAwMCAJbm9wCiAyZjg6CTM0MjEwMDA4IAlv
-cmkJYXQsYXQsMHg4CiAyZmM6CTM4MjEwMDA4IAl4b3JpCWF0LGF0LDB4OAogMzAwOglkYzNi
-MDAwMCAJbGQJazEsMChhdCkKIDMwNDoJZGMyMTAwMDggCWxkCWF0LDgoYXQpCiAzMDg6CTAw
-MWJkOWZhIAlkc3JsCWsxLGsxLDB4NwogMzBjOgk0MGJiMTAwMCAJZG10YzAJazEsJDIKIDMx
-MDoJMDAwMTA5ZmEgCWRzcmwJYXQsYXQsMHg3CiAzMTQ6CTQwYTExODAwIAlkbXRjMAlhdCwk
-MwogMzE4Ogk0MjAwMDAwMiAJdGxid2kKIDMxYzoJZGY0MTAwMDAgCWxkCWF0LDAoazApCiAz
-MjA6CWRmNDIwMDA4IAlsZAl2MCw4KGswKQogMzI0Ogk0MjAwMDAxOCAJZXJldAogMzI4Ogkz
-YzAxYTgwMCAJbHVpCWF0LDB4YTgwMAogMzJjOgkwMDAxMGMzOCAJZHNsbAlhdCxhdCwweDEw
-CiAzMzA6CTY0MjEwMDkwIAlkYWRkaXUJYXQsYXQsMTQ0CiAzMzQ6CTAwMDEwYzM4IAlkc2xs
-CWF0LGF0LDB4MTAKIDMzODoJMTAwMGZmZGEgCWIJMmE0IDxyNDAwMF90bGJfc3RvcmUrMHg1
-Yz4KIDMzYzoJNjQyMTAwMDAgCWRhZGRpdQlhdCxhdCwwCiAzNDA6CWQwM2IwMDAwIAlsbGQJ
-azEsMChhdCkKIDM0NDoJMzM2MjAwMDUgCWFuZGkJdjAsazEsMHg1CiAzNDg6CTM4NDIwMDA1
-IAl4b3JpCXYwLHYwLDB4NQogMzRjOgkxNDQwMDAxMyAJYm5legl2MCwzOWMgPHI0MDAwX3Rs
-Yl9zdG9yZSsweDE1ND4KIDM1MDoJMDAwMDAwMDAgCW5vcAogMzU0Ogk0MjAwMDAwOCAJdGxi
-cAogMzU4OgkzNzdiMDMxOCAJb3JpCWsxLGsxLDB4MzE4CiAzNWM6CWYwM2IwMDAwIAlzY2QJ
-azEsMChhdCkKIDM2MDoJMTM2MGZmZjcgCWJlcXoJazEsMzQwIDxyNDAwMF90bGJfc3RvcmUr
-MHhmOD4KIDM2NDoJZGMzYjAwMDAgCWxkCWsxLDAoYXQpCiAzNjg6CTNjMDEwMDQwIAlsdWkJ
-YXQsMHg0MAogMzZjOgkwMDFiZDlmYSAJZHNybAlrMSxrMSwweDcKIDM3MDoJNDBiYjEwMDAg
-CWRtdGMwCWsxLCQyCiAzNzQ6CTAzNjFkODJkIAlkYWRkdQlrMSxrMSxhdAogMzc4Ogk0MGJi
-MTgwMCAJZG10YzAJazEsJDMKIDM3YzoJM2MxYjFmZmYgCWx1aQlrMSwweDFmZmYKIDM4MDoJ
-Mzc3YmUwMDAgCW9yaQlrMSxrMSwweGUwMDAKIDM4NDoJNDA5YjI4MDAgCW10YzAJazEsJDUK
-IDM4ODoJNDIwMDAwMDIgCXRsYndpCiAzOGM6CTNjMWIwMDAxIAlsdWkJazEsMHgxCiAzOTA6
-CTM3N2JlMDAwIAlvcmkJazEsazEsMHhlMDAwCiAzOTQ6CTEwMDBmZmUxIAliCTMxYyA8cjQw
-MDBfdGxiX3N0b3JlKzB4ZDQ+CiAzOTg6CTQwOWIyODAwIAltdGMwCWsxLCQ1CiAzOWM6CWRm
-NDEwMDAwIAlsZAlhdCwwKGswKQogM2EwOglkZjQyMDAwOCAJbGQJdjAsOChrMCkKIDNhNDoJ
-MDgwMTBmNWYgCWoJNDNkN2MgPHI0MDAwX3RsYl9yZWZpbGwrMHg0MzczND4KIDNhODoJMDAw
-MDAwMDAgCW5vcAoJLi4uCgowMDAwMDAwMDAwMDAwNDQ4IDxyNDAwMF90bGJfbW9kaWZ5PjoK
-IDQ0ODoJNDAzYTIwMDAgCWRtZmMwCWswLCQ0CiA0NGM6CTAwMWFkNmJhIAlkc3JsCWswLGsw
-LDB4MWEKIDQ1MDoJMDAxYWQxZjggCWRzbGwJazAsazAsMHg3CiA0NTQ6CTNjMWJhODAwIAls
-dWkJazEsMHhhODAwCiA0NTg6CTAwMWJkYzM4IAlkc2xsCWsxLGsxLDB4MTAKIDQ1YzoJNjc3
-YjAwOTIgCWRhZGRpdQlrMSxrMSwxNDYKIDQ2MDoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgx
-MAogNDY0Ogk2NzdiNTUwMCAJZGFkZGl1CWsxLGsxLDIxNzYwCiA0Njg6CTAzNWJkMDJkIAlk
-YWRkdQlrMCxrMCxrMQogNDZjOglmZjQxMDAwMCAJc2QJYXQsMChrMCkKIDQ3MDoJZmY0MjAw
-MDggCXNkCXYwLDgoazApCiA0NzQ6CTQwM2I0MDAwIAlkbWZjMAlrMSwkOAogNDc4OgkwMDFi
-MGFiZSAJZHNybDMyCWF0LGsxLDB4YQogNDdjOgkxNDIwMDAyOCAJYm5leglhdCw1MjAgPHI0
-MDAwX3RsYl9tb2RpZnkrMHhkOD4KIDQ4MDoJNDAyMTIwMDAgCWRtZmMwCWF0LCQ0CiA0ODQ6
-CTAwMDEwZGZhIAlkc3JsCWF0LGF0LDB4MTcKIDQ4ODoJM2MxYmE4MDAgCWx1aQlrMSwweGE4
-MDAKIDQ4YzoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgxMAogNDkwOgk2NzdiMDA5MiAJZGFk
-ZGl1CWsxLGsxLDE0NgogNDk0OgkwMDFiZGMzOCAJZHNsbAlrMSxrMSwweDEwCiA0OTg6CTAw
-M2IwODJkIAlkYWRkdQlhdCxhdCxrMQogNDljOgk0MDNiNDAwMCAJZG1mYzAJazEsJDgKIDRh
-MDoJZGMyMTQxMDAgCWxkCWF0LDE2NjQwKGF0KQogNGE0OgkwMDFiZGViYSAJZHNybAlrMSxr
-MSwweDFhCiA0YTg6CTMzN2JmZmY4IAlhbmRpCWsxLGsxLDB4ZmZmOAogNGFjOgkwMDNiMDgy
-ZCAJZGFkZHUJYXQsYXQsazEKIDRiMDoJZGMzYjAwMDAgCWxkCWsxLDAoYXQpCiA0YjQ6CTMz
-N2IwMDIwIAlhbmRpCWsxLGsxLDB4MjAKIDRiODoJMTc2MDAwMWYgCWJuZXoJazEsNTM4IDxy
-NDAwMF90bGJfbW9kaWZ5KzB4ZjA+CiA0YmM6CTQwM2I0MDAwIAlkbWZjMAlrMSwkOAogNGMw
-OglkYzIxMDAwMCAJbGQJYXQsMChhdCkKIDRjNDoJMDAxYmRiN2EgCWRzcmwJazEsazEsMHhk
-CiA0Yzg6CTMzN2JmZmY4IAlhbmRpCWsxLGsxLDB4ZmZmOAogNGNjOgkwMDNiMDgyZCAJZGFk
-ZHUJYXQsYXQsazEKIDRkMDoJZDAzYjAwMDAgCWxsZAlrMSwwKGF0KQogNGQ0Ogk0MjAwMDAw
-OCAJdGxicAogNGQ4OgkzMzYyMDAwNCAJYW5kaQl2MCxrMSwweDQKIDRkYzoJMTA0MDAwMmIg
-CWJlcXoJdjAsNThjIDxyNDAwMF90bGJfbW9kaWZ5KzB4MTQ0PgogNGUwOgkzNzdiMDMxOCAJ
-b3JpCWsxLGsxLDB4MzE4CiA0ZTQ6CWYwM2IwMDAwIAlzY2QJazEsMChhdCkKIDRlODoJNTM2
-MGZmZjkgCWJlcXpsCWsxLDRkMCA8cjQwMDBfdGxiX21vZGlmeSsweDg4PgogNGVjOgkwMDAw
-MDAwMCAJbm9wCiA0ZjA6CTM0MjEwMDA4IAlvcmkJYXQsYXQsMHg4CiA0ZjQ6CTM4MjEwMDA4
-IAl4b3JpCWF0LGF0LDB4OAogNGY4OglkYzNiMDAwMCAJbGQJazEsMChhdCkKIDRmYzoJZGMy
-MTAwMDggCWxkCWF0LDgoYXQpCiA1MDA6CTAwMWJkOWZhIAlkc3JsCWsxLGsxLDB4NwogNTA0
-Ogk0MGJiMTAwMCAJZG10YzAJazEsJDIKIDUwODoJMDAwMTA5ZmEgCWRzcmwJYXQsYXQsMHg3
-CiA1MGM6CTQwYTExODAwIAlkbXRjMAlhdCwkMwogNTEwOgk0MjAwMDAwMiAJdGxid2kKIDUx
-NDoJZGY0MTAwMDAgCWxkCWF0LDAoazApCiA1MTg6CWRmNDIwMDA4IAlsZAl2MCw4KGswKQog
-NTFjOgk0MjAwMDAxOCAJZXJldAogNTIwOgkzYzAxYTgwMCAJbHVpCWF0LDB4YTgwMAogNTI0
-OgkwMDAxMGMzOCAJZHNsbAlhdCxhdCwweDEwCiA1Mjg6CTY0MjEwMDkwIAlkYWRkaXUJYXQs
-YXQsMTQ0CiA1MmM6CTAwMDEwYzM4IAlkc2xsCWF0LGF0LDB4MTAKIDUzMDoJMTAwMGZmZGMg
-CWIJNGE0IDxyNDAwMF90bGJfbW9kaWZ5KzB4NWM+CiA1MzQ6CTY0MjEwMDAwIAlkYWRkaXUJ
-YXQsYXQsMAogNTM4OglkMDNiMDAwMCAJbGxkCWsxLDAoYXQpCiA1M2M6CTMzNjIwMDA0IAlh
-bmRpCXYwLGsxLDB4NAogNTQwOgkxMDQwMDAxMiAJYmVxegl2MCw1OGMgPHI0MDAwX3RsYl9t
-b2RpZnkrMHgxNDQ+CiA1NDQ6CTQyMDAwMDA4IAl0bGJwCiA1NDg6CTM3N2IwMzE4IAlvcmkJ
-azEsazEsMHgzMTgKIDU0YzoJZjAzYjAwMDAgCXNjZAlrMSwwKGF0KQogNTUwOgkxMzYwZmZm
-OSAJYmVxeglrMSw1MzggPHI0MDAwX3RsYl9tb2RpZnkrMHhmMD4KIDU1NDoJZGMzYjAwMDAg
-CWxkCWsxLDAoYXQpCiA1NTg6CTNjMDEwMDQwIAlsdWkJYXQsMHg0MAogNTVjOgkwMDFiZDlm
-YSAJZHNybAlrMSxrMSwweDcKIDU2MDoJNDBiYjEwMDAgCWRtdGMwCWsxLCQyCiA1NjQ6CTAz
-NjFkODJkIAlkYWRkdQlrMSxrMSxhdAogNTY4Ogk0MGJiMTgwMCAJZG10YzAJazEsJDMKIDU2
-YzoJM2MxYjFmZmYgCWx1aQlrMSwweDFmZmYKIDU3MDoJMzc3YmUwMDAgCW9yaQlrMSxrMSww
-eGUwMDAKIDU3NDoJNDA5YjI4MDAgCW10YzAJazEsJDUKIDU3ODoJNDIwMDAwMDIgCXRsYndp
-CiA1N2M6CTNjMWIwMDAxIAlsdWkJazEsMHgxCiA1ODA6CTM3N2JlMDAwIAlvcmkJazEsazEs
-MHhlMDAwCiA1ODQ6CTEwMDBmZmUzIAliCTUxNCA8cjQwMDBfdGxiX21vZGlmeSsweGNjPgog
-NTg4Ogk0MDliMjgwMCAJbXRjMAlrMSwkNQogNThjOglkZjQxMDAwMCAJbGQJYXQsMChrMCkK
-IDU5MDoJZGY0MjAwMDggCWxkCXYwLDgoazApCiA1OTQ6CTA4MDEwZjVmIAlqCTQzZDdjIDxy
-NDAwMF90bGJfcmVmaWxsKzB4NDM3MzQ+CiA1OTg6CTAwMDAwMDAwIAlub3AKCS4uLgoKMDAw
-MDAwMDAwMDAwMDY0OCA8cjQwMDBfdGxiX3JlZmlsbD46CiA2NDg6CWRmN2EwMDAwIAlsZAlr
-MCwwKGsxKQogNjRjOgkzYzFiMDA0MCAJbHVpCWsxLDB4NDAKIDY1MDoJMDAxYWQxZmEgCWRz
-cmwJazAsazAsMHg3CiA2NTQ6CTQwYmExMDAwIAlkbXRjMAlrMCwkMgogNjU4OgkwMzViZDAy
-ZCAJZGFkZHUJazAsazAsazEKIDY1YzoJNDBiYTE4MDAgCWRtdGMwCWswLCQzCiA2NjA6CTNj
-MWExZmZmIAlsdWkJazAsMHgxZmZmCiA2NjQ6CTM3NWFlMDAwIAlvcmkJazAsazAsMHhlMDAw
-CiA2Njg6CTQwOWEyODAwIAltdGMwCWswLCQ1CiA2NmM6CTQyMDAwMDA2IAl0bGJ3cgogNjcw
-OgkzYzFhMDAwMSAJbHVpCWswLDB4MQogNjc0OgkzNzVhZTAwMCAJb3JpCWswLGswLDB4ZTAw
-MAogNjc4OgkxMDAwMDAzMSAJYgk3NDAgPHI0MDAwX3RsYl9yZWZpbGwrMHhmOD4KIDY3YzoJ
-NDA5YTI4MDAgCW10YzAJazAsJDUKIDY4MDoJMDc0MTAwMDYgCWJnZXoJazAsNjljIDxyNDAw
-MF90bGJfcmVmaWxsKzB4NTQ+CiA2ODQ6CTNjMWJhODAwIAlsdWkJazEsMHhhODAwCiA2ODg6
-CTAwMWJkYzM4IAlkc2xsCWsxLGsxLDB4MTAKIDY4YzoJNjc3YjAwOTAgCWRhZGRpdQlrMSxr
-MSwxNDQKIDY5MDoJMDAxYmRjMzggCWRzbGwJazEsazEsMHgxMAogNjk0OgkxMDAwMDAxOCAJ
-Ygk2ZjggPHI0MDAwX3RsYl9yZWZpbGwrMHhiMD4KIDY5ODoJNjc3YjAwMDAgCWRhZGRpdQlr
-MSxrMSwwCiA2OWM6CTNjMWJhODAwIAlsdWkJazEsMHhhODAwCiA2YTA6CTAwMWJkYzM4IAlk
-c2xsCWsxLGsxLDB4MTAKIDZhNDoJNjc3YjAwMDQgCWRhZGRpdQlrMSxrMSw0CiA2YTg6CTAw
-MWJkYzM4IAlkc2xsCWsxLGsxLDB4MTAKIDZhYzoJNjc3YjNjNTAgCWRhZGRpdQlrMSxrMSwx
-NTQ0MAogNmIwOgkwMzYwMDAwOCAJanIJazEKIDZiNDoJMDAwMDAwMDAgCW5vcAoJLi4uCiA2
-Yzg6CTQwM2E0MDAwIAlkbWZjMAlrMCwkOAogNmNjOgkwMDFhZGFiZSAJZHNybDMyCWsxLGsw
-LDB4YQogNmQwOgkxNzYwZmZlYiAJYm5leglrMSw2ODAgPHI0MDAwX3RsYl9yZWZpbGwrMHgz
-OD4KIDZkNDoJNDAzYjIwMDAgCWRtZmMwCWsxLCQ0CiA2ZDg6CTAwMWJkZGZhIAlkc3JsCWsx
-LGsxLDB4MTcKIDZkYzoJM2MxYWE4MDAgCWx1aQlrMCwweGE4MDAKIDZlMDoJMDAxYWQ0Mzgg
-CWRzbGwJazAsazAsMHgxMAogNmU0Ogk2NzVhMDA5MiAJZGFkZGl1CWswLGswLDE0NgogNmU4
-OgkwMDFhZDQzOCAJZHNsbAlrMCxrMCwweDEwCiA2ZWM6CTAzN2FkODJkIAlkYWRkdQlrMSxr
-MSxrMAogNmYwOgk0MDNhNDAwMCAJZG1mYzAJazAsJDgKIDZmNDoJZGY3YjQxMDAgCWxkCWsx
-LDE2NjQwKGsxKQogNmY4OgkwMDFhZDZiYSAJZHNybAlrMCxrMCwweDFhCiA2ZmM6CTMzNWFm
-ZmY4IAlhbmRpCWswLGswLDB4ZmZmOAogNzAwOgkwMzdhZDgyZCAJZGFkZHUJazEsazEsazAK
-IDcwNDoJZGY3YTAwMDAgCWxkCWswLDAoazEpCiA3MDg6CTMzNWEwMDIwIAlhbmRpCWswLGsw
-LDB4MjAKIDcwYzoJMTc0MGZmY2UgCWJuZXoJazAsNjQ4IDxyNDAwMF90bGJfcmVmaWxsPgog
-NzEwOgk0MDNhYTAwMCAJZG1mYzAJazAsJDIwCiA3MTQ6CWRmN2IwMDAwIAlsZAlrMSwwKGsx
-KQogNzE4OgkwMDFhZDEzYSAJZHNybAlrMCxrMCwweDQKIDcxYzoJMzM1YWZmZjAgCWFuZGkJ
-azAsazAsMHhmZmYwCiA3MjA6CTAzN2FkODJkIAlkYWRkdQlrMSxrMSxrMAogNzI0OglkZjdh
-MDAwMCAJbGQJazAsMChrMSkKIDcyODoJZGY3YjAwMDggCWxkCWsxLDgoazEpCiA3MmM6CTAw
-MWFkMWZhIAlkc3JsCWswLGswLDB4NwogNzMwOgk0MGJhMTAwMCAJZG10YzAJazAsJDIKIDcz
-NDoJMDAxYmQ5ZmEgCWRzcmwJazEsazEsMHg3CiA3Mzg6CTQwYmIxODAwIAlkbXRjMAlrMSwk
-MwogNzNjOgk0MjAwMDAwNiAJdGxid3IKIDc0MDoJNDIwMDAwMTggCWVyZXQKCS4uLgo=
---------------010000000701070307070402--
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+---
+ arch/mips/Kconfig                                  |    4 +
+ arch/mips/include/asm/bootinfo.h                   |    5 +-
+ arch/mips/include/asm/cpu-features.h               |    3 +
+ arch/mips/include/asm/hpet.h                       |   73 ++++++
+ arch/mips/include/asm/mach-loongson/boot_param.h   |   49 ++++-
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    3 +-
+ .../mips/include/asm/mach-loongson/dma-coherence.h |   30 +++-
+ arch/mips/include/asm/mach-loongson/irq.h          |    3 +-
+ arch/mips/include/asm/mach-loongson/loongson.h     |    7 +-
+ .../include/asm/mach-loongson/loongson_hwmon.h     |   55 +++++
+ arch/mips/include/asm/mach-loongson/machine.h      |    2 +-
+ arch/mips/include/asm/mach-loongson/topology.h     |    2 +-
+ arch/mips/include/asm/mach-loongson/workarounds.h  |    7 +
+ arch/mips/kernel/cpu-probe.c                       |    5 +-
+ arch/mips/kernel/smp.c                             |    3 +-
+ arch/mips/loongson/Kconfig                         |   18 ++
+ arch/mips/loongson/common/dma-swiotlb.c            |   10 +
+ arch/mips/loongson/common/early_printk.c           |    2 +-
+ arch/mips/loongson/common/env.c                    |   37 +++-
+ arch/mips/loongson/common/gpio.c                   |   53 +++--
+ arch/mips/loongson/common/machtype.c               |    5 +-
+ arch/mips/loongson/common/pci.c                    |    6 +
+ arch/mips/loongson/common/platform.c               |   13 +-
+ arch/mips/loongson/common/serial.c                 |   48 +++-
+ arch/mips/loongson/common/time.c                   |    5 +
+ arch/mips/loongson/common/uart_base.c              |   30 +--
+ arch/mips/loongson/loongson-3/Makefile             |    4 +-
+ arch/mips/loongson/loongson-3/clock.c              |  191 +++++++++++++++
+ arch/mips/loongson/loongson-3/hpet.c               |  257 ++++++++++++++++++++
+ arch/mips/loongson/loongson-3/irq.c                |   16 +-
+ arch/mips/loongson/loongson-3/numa.c               |   12 +-
+ arch/mips/loongson/loongson-3/platform.c           |   43 ++++
+ arch/mips/loongson/loongson-3/smp.c                |   70 ++++--
+ arch/mips/mm/c-r4k.c                               |   18 ++
+ arch/mips/oprofile/Makefile                        |    1 +
+ arch/mips/oprofile/common.c                        |    4 +
+ arch/mips/oprofile/op_model_loongson3.c            |  220 +++++++++++++++++
+ drivers/cpufreq/Kconfig                            |   14 +
+ drivers/cpufreq/Makefile                           |    1 +
+ drivers/cpufreq/loongson3_cpufreq.c                |  240 ++++++++++++++++++
+ drivers/platform/Makefile                          |    1 +
+ drivers/platform/mips/Makefile                     |    1 +
+ drivers/platform/mips/acpi_init.c                  |  131 ++++++++++
+ drivers/platform/mips/cpu_hwmon.c                  |  206 ++++++++++++++++
+ 44 files changed, 1798 insertions(+), 110 deletions(-)
+ create mode 100644 arch/mips/include/asm/hpet.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/loongson_hwmon.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/workarounds.h
+ create mode 100644 arch/mips/loongson/loongson-3/clock.c
+ create mode 100644 arch/mips/loongson/loongson-3/hpet.c
+ create mode 100644 arch/mips/loongson/loongson-3/platform.c
+ create mode 100644 arch/mips/oprofile/op_model_loongson3.c
+ create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
+ create mode 100644 drivers/platform/mips/Makefile
+ create mode 100644 drivers/platform/mips/acpi_init.c
+ create mode 100644 drivers/platform/mips/cpu_hwmon.c
+--
+1.7.7.3

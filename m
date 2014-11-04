@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 14:40:17 +0100 (CET)
-Received: from mail-ob0-f169.google.com ([209.85.214.169]:54988 "EHLO
-        mail-ob0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012586AbaKDNkQoLgSB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Nov 2014 14:40:16 +0100
-Received: by mail-ob0-f169.google.com with SMTP id va2so10934730obc.0
-        for <linux-mips@linux-mips.org>; Tue, 04 Nov 2014 05:40:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        bh=QSyIkFJqaVcltnUFBRCXkNzcJasIiB9Dur7j0cdEbNA=;
-        b=oSAc9v+laxUNdCGPElctPlzv+ydcANpfuWUn/T5anwgNiV3ihrGzZBHVdgq9WQqusM
-         n/MBjboj3HzJ7MXYbFnuiPNAQsEtlg3IRmpp7lB98qrQtxvjzA9Q0PfPWQgX1cDUkEXt
-         ZfgBlX1cy1WSL7BMTXmU2TH2FHUrWAv5q22Ien9umzb6Xb4KtMP3yTxwz6+/3U2eQIyj
-         veot64gAffpe+nr9QOIrfeAYPwwg5wm1JLbtxX05OVlek5hwEtyP/SByrrdeboVJCRFu
-         b61etu5rjPW+f7f2zzjw0wx7qHFpdhl/uzD5SSM5TrJ46l7s8WeaQOLpZ6drOszDkli2
-         ZxVw==
-MIME-Version: 1.0
-X-Received: by 10.182.120.10 with SMTP id ky10mr1653564obb.68.1415108410291;
- Tue, 04 Nov 2014 05:40:10 -0800 (PST)
-Received: by 10.60.41.193 with HTTP; Tue, 4 Nov 2014 05:40:09 -0800 (PST)
-Date:   Tue, 4 Nov 2014 21:40:09 +0800
-Message-ID: <CAKcpw6WiuqJ5Cn4FNoYQEga8KBhZAZ4ohx35MqsdaOZDL6bABA@mail.gmail.com>
-Subject: Problems of kernel of Loongson 3
-From:   YunQiang Su <wzssyqa@gmail.com>
-To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
-Cc:     linux-mips@linux-mips.org, Aurelien Jarno <aurelien@aurel32.net>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <wzssyqa@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2014 15:25:01 +0100 (CET)
+Received: from smtpbgsg2.qq.com ([54.254.200.128]:48394 "EHLO smtpbgsg2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012586AbaKDOYz6dpSe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 4 Nov 2014 15:24:55 +0100
+X-QQ-GoodBg: 0
+X-QQ-SSF: 00100000000000F0
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 121.239.234.106
+X-QQ-STYLE: 
+X-QQ-mid: bizmail38t1415111069t9051215
+From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
+To:     "=?utf-8?B?WXVuUWlhbmcgU3U=?=" <wzssyqa@gmail.com>
+Cc:     "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
+        "=?utf-8?B?QXVyZWxpZW4gSmFybm8=?=" <aurelien@aurel32.net>
+Subject: Re:Problems of kernel of Loongson 3
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: base64
+Date:   Tue, 4 Nov 2014 22:24:29 +0800
+X-Priority: 3
+Message-ID: <tencent_7A73C86D635497A07A126836@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <CAKcpw6WiuqJ5Cn4FNoYQEga8KBhZAZ4ohx35MqsdaOZDL6bABA@mail.gmail.com>
+In-Reply-To: <CAKcpw6WiuqJ5Cn4FNoYQEga8KBhZAZ4ohx35MqsdaOZDL6bABA@mail.gmail.com>
+X-QQ-ReplyHash: 372629710
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43863
+X-archive-position: 43864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wzssyqa@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,25 +50,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I have tested the kernel 3.16, and 3.17 of Debian on loongson 3.
-I met 2 major problems:
-
-1. On the Lemote 6100 and Yeeloong 8133, load command hangs
-
- PMON> load (wd0,0)/vmlinux-3.16-3-loongson-3
- Loading file: (wd0,0)/vmlinux-3.16-3-loongson-3
- (elf64)
- 0x80200000/9171584 + 0x80abf280/34201152(z)
-
- It also hangs on the dev board from Lemote.
- While it can boot on dev boards from Loongson.
-
- 3.15 kernel works fine on both boards.
-
-2. If without radeon non-free firmware in initrd/vmlinux,
- the screen can display nothing.
- It makes us difficult to patch debian-install to support Loongson 3.
- A automatic fallback may be needed when nonfree firmware is not available.
-
--- 
-YunQiang Su
+SGksDQoNCjEsIFlvdSBjYW4gdHJ5IDMuMTYgZnJvbSBtYXN0ZXIgYnJhbmNoIGhlcmU6DQpo
+dHRwOi8vZGV2LmxlbW90ZS5jb20vY2dpdC9saW51eC1vZmZpY2lhbC5naXQvDQoNCjIsIFNp
+bmNlIDMuMTQsIHJhZGVvbiBjYW5ub3Qgc3VwcG9ydCBub24tZmlybXdhcmUgZGlzcGxheS4g
+VGhpcyBpcyBjb25maXJtZWQgYnkgZHJtIG1haW50YWluZXJzLg0KIA0KSHVhY2FpDQoNCi0t
+LS0tLS0tLS0tLS0tLS0tLSBPcmlnaW5hbCAtLS0tLS0tLS0tLS0tLS0tLS0NCkZyb206ICAi
+WXVuUWlhbmcgU3UiPHd6c3N5cWFAZ21haWwuY29tPjsNCkRhdGU6ICBUdWUsIE5vdiA0LCAy
+MDE0IDA5OjQwIFBNDQpUbzogICLpmYjljY7miY0iPGNoZW5oY0BsZW1vdGUuY29tPjsgDQpD
+YzogICJsaW51eC1taXBzIjxsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnPjsgIkF1cmVsaWVu
+IEphcm5vIjxhdXJlbGllbkBhdXJlbDMyLm5ldD47IA0KU3ViamVjdDogIFByb2JsZW1zIG9m
+IGtlcm5lbCBvZiBMb29uZ3NvbiAzDQoNCiANCkkgaGF2ZSB0ZXN0ZWQgdGhlIGtlcm5lbCAz
+LjE2LCBhbmQgMy4xNyBvZiBEZWJpYW4gb24gbG9vbmdzb24gMy4NCkkgbWV0IDIgbWFqb3Ig
+cHJvYmxlbXM6DQoNCjEuIE9uIHRoZSBMZW1vdGUgNjEwMCBhbmQgWWVlbG9vbmcgODEzMywg
+bG9hZCBjb21tYW5kIGhhbmdzDQoNCiBQTU9OPiBsb2FkICh3ZDAsMCkvdm1saW51eC0zLjE2
+LTMtbG9vbmdzb24tMw0KIExvYWRpbmcgZmlsZTogKHdkMCwwKS92bWxpbnV4LTMuMTYtMy1s
+b29uZ3Nvbi0zDQogKGVsZjY0KQ0KIDB4ODAyMDAwMDAvOTE3MTU4NCArIDB4ODBhYmYyODAv
+MzQyMDExNTIoeikNCg0KIEl0IGFsc28gaGFuZ3Mgb24gdGhlIGRldiBib2FyZCBmcm9tIExl
+bW90ZS4NCiBXaGlsZSBpdCBjYW4gYm9vdCBvbiBkZXYgYm9hcmRzIGZyb20gTG9vbmdzb24u
+DQoNCiAzLjE1IGtlcm5lbCB3b3JrcyBmaW5lIG9uIGJvdGggYm9hcmRzLg0KDQoyLiBJZiB3
+aXRob3V0IHJhZGVvbiBub24tZnJlZSBmaXJtd2FyZSBpbiBpbml0cmQvdm1saW51eCwNCiB0
+aGUgc2NyZWVuIGNhbiBkaXNwbGF5IG5vdGhpbmcuDQogSXQgbWFrZXMgdXMgZGlmZmljdWx0
+IHRvIHBhdGNoIGRlYmlhbi1pbnN0YWxsIHRvIHN1cHBvcnQgTG9vbmdzb24gMy4NCiBBIGF1
+dG9tYXRpYyBmYWxsYmFjayBtYXkgYmUgbmVlZGVkIHdoZW4gbm9uZnJlZSBmaXJtd2FyZSBp
+cyBub3QgYXZhaWxhYmxlLg0KDQotLSANCll1blFpYW5nIFN1

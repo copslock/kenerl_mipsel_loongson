@@ -1,52 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Nov 2014 17:22:50 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:13227 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012670AbaKEQWrtoZFo convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Nov 2014 17:22:47 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 31E99D885EE29;
-        Wed,  5 Nov 2014 16:22:39 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 5 Nov
- 2014 16:22:41 +0000
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 5 Nov 2014 16:22:41 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Wed, 5 Nov 2014 16:22:40 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Manuel Lauss <manuel.lauss@gmail.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: RE: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-Thread-Topic: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-Thread-Index: AQHP9SQynyyKZQdHPUiykN8MJvqg/JxKYQaAgAACeQCAB9uCEA==
-Date:   Wed, 5 Nov 2014 16:22:39 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F6B3D9@LEMAIL01.le.imgtec.org>
-References: <1414771394-24314-1-git-send-email-manuel.lauss@gmail.com>
- <5453B53D.7060409@imgtec.com>
- <CAOLZvyH781d4TALUTCsSGWEzr6dRGmSzaeDKG=bdD8vQoOT2pw@mail.gmail.com>
-In-Reply-To: <CAOLZvyH781d4TALUTCsSGWEzr6dRGmSzaeDKG=bdD8vQoOT2pw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.152.76]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Nov 2014 21:37:05 +0100 (CET)
+Received: from mail-qc0-f178.google.com ([209.85.216.178]:60185 "EHLO
+        mail-qc0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012612AbaKEUhDE6zAj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Nov 2014 21:37:03 +0100
+Received: by mail-qc0-f178.google.com with SMTP id b13so1433777qcw.9
+        for <multiple recipients>; Wed, 05 Nov 2014 12:36:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=ABC1JwBuirksxWcccQPgpdZN6fNaI/22N2U95nXZZi8=;
+        b=hueFvZig1gHoqqu0awqG3zxTzouCnHZFa5z1VMmQaxQQibHtfmIMIkwlVpOorO7HjM
+         QX3CTbp6JctYxs/QxgozeQt9EogjdZmrypq/vIL4KVjpRPG27BqgYgrg3+/ujjZwgjtS
+         RwWF/bdOHE2j2UH+kO6ffnyijOMMmuZA3fYcdFNwrvJFOV9be30Njai++nbvIZSnorxd
+         jN+MKcTgU8PDZmu4w0Th9vThPs6/XHcUes31rbl9AsjpKwson5WCxQxdJ5/6Z+xeW2a/
+         mPF9mq8a2gnqnT9K4uKw2MHRQuZluGMcjze8J4ZjTSn5hhdv31FCSHelKygVp4T0LThH
+         doWw==
+X-Received: by 10.140.102.169 with SMTP id w38mr86804763qge.95.1415219816011;
+ Wed, 05 Nov 2014 12:36:56 -0800 (PST)
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+Received: by 10.140.89.113 with HTTP; Wed, 5 Nov 2014 12:36:34 -0800 (PST)
+In-Reply-To: <1404831204-30659-8-git-send-email-jogo@openwrt.org>
+References: <1404831204-30659-1-git-send-email-jogo@openwrt.org> <1404831204-30659-8-git-send-email-jogo@openwrt.org>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Wed, 5 Nov 2014 12:36:34 -0800
+Message-ID: <CAJiQ=7ArNiqSRo3cDsWH+pE_9C3B8DiKUWwKYV+ajwY1+JdXXQ@mail.gmail.com>
+Subject: Re: [PATCH 7/8] MIPS: BCM63XX: remove !RUNTIME_DETECT in cpu-feature-overrides
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43877
+X-archive-position: 43878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,103 +55,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+On Tue, Jul 8, 2014 at 7:53 AM, Jonas Gorski <jogo@openwrt.org> wrote:
+> All three SoCs have in common they have a BMIPS32/BMIPS3300 CPU, so
+> we can replace this as no SoC with BMIPS4350 support enabled.
+>
+> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+> ---
+>  arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
+> index e9c408e..bc1167d 100644
+> --- a/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
+> +++ b/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
+> @@ -24,7 +24,7 @@
+>  #define cpu_has_smartmips              0
+>  #define cpu_has_vtag_icache            0
+>
+> -#if !defined(BCMCPU_RUNTIME_DETECT) && (defined(CONFIG_BCM63XX_CPU_6348) || defined(CONFIG_BCM63XX_CPU_6345) || defined(CONFIG_BCM63XX_CPU_6338))
+> +#if !defined(CONFIG_SYS_HAS_CPU_BMIPS4350)
+>  #define cpu_has_dc_aliases             0
+>  #endif
 
-The issues Markos has seen will be resolved in the toolchain so this
-patch is good to go.
+Note that BCM6318 uses a 40nm BMIPS3300 with a 32kB D$.  I haven't
+actually booted one of these myself but I would assume the way size is
+either 16kB or 8kB.
 
-Matthew
+I'm seeing another issue with the generic cpu_has_dc_aliases
+implementation (cpu_data[0].dcache.flags & MIPS_CACHE_ALIASES).  The
+HIGHMEM check in paging_init() runs before cpu_cache_init(), so
+cpu_data[0].dcache.flags is still 0 and cpu_has_dc_aliases will never
+be true at this point unless it was defined at compile time.
 
-> -----Original Message-----
-> From: Manuel Lauss [mailto:manuel.lauss@gmail.com]
-> Sent: 31 October 2014 16:23
-> To: Markos Chandras
-> Cc: Linux-MIPS; Matthew Fortune; Maciej W. Rozycki; Ralf Baechle
-> Subject: Re: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-> 
-> I didn't encounter this error with what will be gcc-4.9.3.
-> 
-> 
-> Manuel
-> 
-> On Fri, Oct 31, 2014 at 5:13 PM, Markos Chandras
-> <Markos.Chandras@imgtec.com> wrote:
-> > On 10/31/2014 04:03 PM, Manuel Lauss wrote:
-> >> Starting with version 2.24.51.20140728 MIPS binutils complain loudly
-> >> about mixing soft-float and hard-float object files, leading to this
-> >> build failure since GCC is invoked with "-msoft-float" on MIPS:
-> >>
-> >> {standard input}: Warning: .gnu_attribute 4,3 requires `softfloat'
-> >>   LD      arch/mips/alchemy/common/built-in.o
-> >> mipsel-softfloat-linux-gnu-ld: Warning: arch/mips/alchemy/common/built-
-> in.o
-> >>  uses -msoft-float (set by arch/mips/alchemy/common/prom.o),
-> >>  arch/mips/alchemy/common/sleeper.o uses -mhard-float
-> >>
-> >> To fix this, we detect if GAS is new enough to support "-msoft-float"
-> command
-> >> option, and if it does, we can let GCC pass it to GAS;  but then we
-> also need
-> >> to sprinkle the files which make use of floating point registers with
-> the
-> >> necessary ".set hardfloat" directives.
-> >>
-> >> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-> >> ---
-> >> Compiles with binutils 2.23 and current git head, tested with alchemy
-> (mips32r1)
-> >> and maltasmvp_defconfig (64bit)
-> >>
-> >> Tests with MSA and other extensions also appreciated!
-> >>
-> >> v6: #undef fp so that the preprocessor does not replace the fp in
-> >>       .set fp=64 with $30...  Fixes 64bit build.
-> >
-> > Technically speaking, a maltasmvp_defconfig selects CONFIG_32BIT=y so
-> > it's still a 32-bit build.
-> >> [...]
-> >
-> > Ok the fp problem went away but I still have the even/odd errors with my
-> > tools
-> >
-> > arch/mips/kernel/r4k_switch.S: Assembler messages:
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 1
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 3
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 5
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 7
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 9
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 11
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 13
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 15
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 17
-> > arch/mips/kernel/r4k_switch.S:81: Error: float register should be even,
-> > was 19
-> >
-> > The following patch did not help either:
-> >
-> > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > index 58076472bdd8..b8bb7e170fee 100644
-> > --- a/arch/mips/Makefile
-> > +++ b/arch/mips/Makefile
-> > @@ -56,7 +56,7 @@ ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> >    endif
-> >  endif
-> >  cflags-y += $(call cc-option, -mno-check-zero-division)
-> > -
-> > +cflags-y += -mno-odd-spreg
-> >
-> > This is with a regular maltasmvp_defconfig
-> >
-> > I guess my gcc version is newer than yours. Matthew?
-> >
-> > --
-> > markos
+There seem to be some other problems with the way the HIGHMEM check is
+handled, and I'm tempted to just move it after cpu_cache_init() and
+make it a fatal error condition.  Then it can be removed entirely when
+imgtec finalizes the "cache aliases + HIGHMEM" patch series.
+
+Any opinions?

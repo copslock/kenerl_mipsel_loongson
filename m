@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Nov 2014 18:42:42 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:34535 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012733AbaKFRmkzCU3z convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Nov 2014 18:42:40 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id AAB491538C; Thu,  6 Nov 2014 17:42:34 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
-References: <1415290998-10328-1-git-send-email-mans@mansr.com>
-        <545BAB03.7050600@gmail.com>
-Date:   Thu, 06 Nov 2014 17:42:34 +0000
-In-Reply-To: <545BAB03.7050600@gmail.com> (David Daney's message of "Thu, 06
-        Nov 2014 09:08:19 -0800")
-Message-ID: <yw1x8ujokyyd.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Nov 2014 19:49:27 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35034 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012802AbaKFStZmBvTn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Nov 2014 19:49:25 +0100
+Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9BF607D6;
+        Thu,  6 Nov 2014 18:49:18 +0000 (UTC)
+Date:   Thu, 6 Nov 2014 10:49:18 -0800
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     jslaby@suse.cz, robh@kernel.org, grant.likely@linaro.org,
+        arnd@arndb.de, geert@linux-m68k.org, f.fainelli@gmail.com,
+        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH V3 00/10] bcm63xx_uart and of-serial updates
+Message-ID: <20141106184918.GA2279@kroah.com>
+References: <1413930186-23168-1-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1413930186-23168-1-git-send-email-cernekee@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43883
+X-archive-position: 43884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,47 +42,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David Daney <ddaney.cavm@gmail.com> writes:
+On Tue, Oct 21, 2014 at 03:22:56PM -0700, Kevin Cernekee wrote:
+> V2->V3:
+> 
+> Change DT clock node based on review feedback (thanks Arnd!)
+> 
+> Rebase on Linus' master branch
+> 
+> 
+> Kevin Cernekee (10):
+>   tty: serial: bcm63xx: Allow bcm63xx_uart to be built on other
+>     platforms
+>   tty: serial: bcm63xx: Add support for unnamed clock outputs from DT
+>   tty: serial: bcm63xx: Update the Kconfig help text
+>   tty: serial: bcm63xx: Fix typo in MODULE_DESCRIPTION
+>   Documentation: DT: Add entries for bcm63xx UART
+>   tty: serial: bcm63xx: Enable DT earlycon support
+>   tty: serial: bcm63xx: Eliminate unnecessary request/release functions
+>   tty: serial: of-serial: Suppress warnings if OF earlycon is invoked
+>     twice
+>   tty: serial: of-serial: Allow OF earlycon to default to "on"
+>   MAINTAINERS: Add entry for rp2 (Rocketport Express/Infinity) driver
+> 
+>  .../devicetree/bindings/serial/bcm63xx-uart.txt    | 30 ++++++++++++
+>  MAINTAINERS                                        |  6 +++
+>  drivers/of/fdt.c                                   | 17 +++++--
+>  drivers/tty/serial/Kconfig                         | 30 ++++++++----
+>  drivers/tty/serial/bcm63xx_uart.c                  | 55 +++++++++++++---------
+>  include/linux/serial_bcm63xx.h                     |  2 -
+>  6 files changed, 104 insertions(+), 36 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/serial/bcm63xx-uart.txt
 
-> On 11/06/2014 08:23 AM, Mans Rullgard wrote:
->> This is an adaptation of the optimised do_div() for ARM by
->> Nicolas Pitre implementing division by a constant using a
->> multiplication by the inverse.  Ideally, the compiler would
->> do this internally as it does for 32-bit operands, but it
->> doesn't.
->>
->> This version of the code requires an assembler with support
->> for the DSP ASE syntax since accessing the hi/lo registers
->> sanely from inline asm is impossible without this.
->
-> It is easy to access hi/lo from inline asm.  It is true that it is
-> difficult to use them as input/output registers.
+I've applied 8 of these patches, not patches 08 or 09 at this time.
 
-Of course they can be accessed directly, but that tends to produce worse
-code since the compiler then can't schedule the mfhi/mflo (or mthi/mtlo
-on entry to the asm) around other instructions to avoid stalling.
+thanks,
 
-> You should use MFHI/MFLO and to move the results to some general
-> purpose registers.  Then mention "hi", "lo" in the clobbers statement
-> for the inline asm.
-
-In some cases, results in needless bouncing between hi/lo and gprs.
-It's better to let the compiler decide if and when to retrieve the
-values.
-
-Moreover, using "ka" constraints lets the compiler use the additional
-accumulator registers available on CPUs with the DSP ASE.
-
-> FWIW, it seems like you are missing the clobbers in your inline asm below.
-
-No clobbers are needed when using explicit input/output arguments.  In
-fact, if hi/lo were marked as clobbered this would fail to compile as
-these would then be unavailable as inputs or outputs.
-
-Is there a compelling reason to support old assembler versions without
-this syntax?  I'm not sure when this was added, but I see references to
-it from 2005.
-
--- 
-Måns Rullgård
-mans@mansr.com
+greg k-h

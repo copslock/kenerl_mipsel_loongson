@@ -1,35 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Nov 2014 19:49:27 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35034 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012802AbaKFStZmBvTn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Nov 2014 19:49:25 +0100
-Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9BF607D6;
-        Thu,  6 Nov 2014 18:49:18 +0000 (UTC)
-Date:   Thu, 6 Nov 2014 10:49:18 -0800
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     jslaby@suse.cz, robh@kernel.org, grant.likely@linaro.org,
-        arnd@arndb.de, geert@linux-m68k.org, f.fainelli@gmail.com,
-        mbizon@freebox.fr, jogo@openwrt.org, linux-mips@linux-mips.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH V3 00/10] bcm63xx_uart and of-serial updates
-Message-ID: <20141106184918.GA2279@kroah.com>
-References: <1413930186-23168-1-git-send-email-cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Nov 2014 22:50:12 +0100 (CET)
+Received: from mga14.intel.com ([192.55.52.115]:65495 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012832AbaKFVuL0yWN- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Nov 2014 22:50:11 +0100
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP; 06 Nov 2014 13:43:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.97,862,1389772800"; 
+   d="scan'208";a="412659345"
+Received: from unknown (HELO [10.255.13.117]) ([10.255.13.117])
+  by FMSMGA003.fm.intel.com with ESMTP; 06 Nov 2014 13:41:28 -0800
+Message-ID: <545BED0B.8000001@intel.com>
+Date:   Thu, 06 Nov 2014 13:50:03 -0800
+From:   Dave Hansen <dave.hansen@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1413930186-23168-1-git-send-email-cernekee@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <gregkh@linuxfoundation.org>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Qiaowei Ren <qiaowei.ren@intel.com>
+CC:     "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v9 11/12] x86, mpx: cleanup unused bound tables
+References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-12-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241451280.5308@nanos>
+In-Reply-To: <alpine.DEB.2.11.1410241451280.5308@nanos>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <dave.hansen@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43884
+X-archive-position: 43885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: dave.hansen@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,39 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 21, 2014 at 03:22:56PM -0700, Kevin Cernekee wrote:
-> V2->V3:
-> 
-> Change DT clock node based on review feedback (thanks Arnd!)
-> 
-> Rebase on Linus' master branch
-> 
-> 
-> Kevin Cernekee (10):
->   tty: serial: bcm63xx: Allow bcm63xx_uart to be built on other
->     platforms
->   tty: serial: bcm63xx: Add support for unnamed clock outputs from DT
->   tty: serial: bcm63xx: Update the Kconfig help text
->   tty: serial: bcm63xx: Fix typo in MODULE_DESCRIPTION
->   Documentation: DT: Add entries for bcm63xx UART
->   tty: serial: bcm63xx: Enable DT earlycon support
->   tty: serial: bcm63xx: Eliminate unnecessary request/release functions
->   tty: serial: of-serial: Suppress warnings if OF earlycon is invoked
->     twice
->   tty: serial: of-serial: Allow OF earlycon to default to "on"
->   MAINTAINERS: Add entry for rp2 (Rocketport Express/Infinity) driver
-> 
->  .../devicetree/bindings/serial/bcm63xx-uart.txt    | 30 ++++++++++++
->  MAINTAINERS                                        |  6 +++
->  drivers/of/fdt.c                                   | 17 +++++--
->  drivers/tty/serial/Kconfig                         | 30 ++++++++----
->  drivers/tty/serial/bcm63xx_uart.c                  | 55 +++++++++++++---------
->  include/linux/serial_bcm63xx.h                     |  2 -
->  6 files changed, 104 insertions(+), 36 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/serial/bcm63xx-uart.txt
+Instead of all of these games with dropping and reacquiring mmap_sem and
+adding other locks, or deferring the work, why don't we just do a
+get_user_pages()?  Something along the lines of:
 
-I've applied 8 of these patches, not patches 08 or 09 at this time.
+while (1) {
+	ret = cmpxchg(addr)
+	if (!ret)
+		break;
+	if (ret == -EFAULT)
+		get_user_pages(addr);
+}
 
-thanks,
-
-greg k-h
+Does anybody see a problem with that?

@@ -1,48 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 12:05:52 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17282 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012736AbaKGLFuiSml- convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 12:05:50 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 658BEC393F936;
-        Fri,  7 Nov 2014 11:05:42 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 7 Nov 2014 11:05:44 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Fri, 7 Nov 2014 11:05:44 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: RE: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-Thread-Topic: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-Thread-Index: AQHP9SQynyyKZQdHPUiykN8MJvqg/JxUc14AgACXORA=
-Date:   Fri, 7 Nov 2014 11:05:42 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F6C533@LEMAIL01.le.imgtec.org>
-References: <1414771394-24314-1-git-send-email-manuel.lauss@gmail.com>
- <20141107020204.GA24423@linux-mips.org>
-In-Reply-To: <20141107020204.GA24423@linux-mips.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.152.76]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 12:26:00 +0100 (CET)
+Received: from dotsec.net ([62.75.224.215]:49226 "EHLO styx.dotsec.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012736AbaKGLZ7AsosM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Nov 2014 12:25:59 +0100
+Received: from e177050201.adsl.alicedsl.de ([85.177.50.201] helo=localhost.localdomain)
+        by styx.dotsec.net with esmtpa (Exim 4.71)
+        (envelope-from <albeu@free.fr>)
+        id 1XmheC-0000i1-Rr; Fri, 07 Nov 2014 12:24:57 +0100
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Alban Bedel <albeu@free.fr>
+Subject: [PATCH 1/2] MIPS: FW: Fix parsing u-boot environment
+Date:   Fri,  7 Nov 2014 12:23:00 +0100
+Message-Id: <1415359381-27257-1-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+X-SA-Score: -1.0
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43909
+X-archive-position: 43910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,30 +37,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> +(mips1) `cfc1 $2,$31'
-> make[1]: *** [arch/mips/math-emu/cp1emu.o] Error 1
-> make: *** [arch/mips/math-emu] Error 2
-> make: *** Waiting for unfinished jobs....
+When reading u-boot's key=value pairs it should skip the '=' and not
+use the next argument.
 
-This is the offending code in cp1emu.c:
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/fw/lib/cmdline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-                        if (is_fpu_owner())
-                                asm volatile(
-                                        ".set push\n"
-                                        "\t.set mips1\n"
-                                        "\tcfc1\t%0,$31\n"
-                                        "\t.set pop" : "=r" (fcr31));
-                        else
-                                fcr31 = current->thread.fpu.fcr31;
-                        preempt_enable();
-
-I'm not sure how this can have built with binutils 2.23 (as indicated by
-Manuel and not built with 2.24). The reason this works with the latest
-version of binutils 2.24.x is that cfc1 has been reclassified as not an
-FPU instruction.
-
-This just needs the hardfloat annotation adding via the macro as in the
-other cases.
-
-Thanks,
-Matthew
+diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
+index ffd0345..cc5d168 100644
+--- a/arch/mips/fw/lib/cmdline.c
++++ b/arch/mips/fw/lib/cmdline.c
+@@ -68,7 +68,7 @@ char *fw_getenv(char *envname)
+ 					result = fw_envp(index + 1);
+ 					break;
+ 				} else if (fw_envp(index)[i] == '=') {
+-					result = (fw_envp(index + 1) + i);
++					result = (fw_envp(index) + i + 1);
+ 					break;
+ 				}
+ 			}
+-- 
+2.0.0

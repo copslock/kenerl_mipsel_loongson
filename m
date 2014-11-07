@@ -1,49 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 19:35:19 +0100 (CET)
-Received: from mail-ie0-f182.google.com ([209.85.223.182]:61671 "EHLO
-        mail-ie0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012811AbaKGSfSGjPr8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 19:35:18 +0100
-Received: by mail-ie0-f182.google.com with SMTP id rd18so5733420iec.27
-        for <multiple recipients>; Fri, 07 Nov 2014 10:35:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 23:45:40 +0100 (CET)
+Received: from mail-pa0-f42.google.com ([209.85.220.42]:37103 "EHLO
+        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012912AbaKGWpiCzy64 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 23:45:38 +0100
+Received: by mail-pa0-f42.google.com with SMTP id bj1so4390651pad.15
+        for <linux-mips@linux-mips.org>; Fri, 07 Nov 2014 14:45:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=iYMFRBMzf4I41zmThTFeA2BUIQzCr4D922r3APhYsCk=;
-        b=Gu1z7uDLyKrXuAH5KK+x+zOVC1yZ+H5e57AP8rm8PCTO7/fuopsV4P1TKHap2JQpxQ
-         hkZHiS1Ux+NMbWR06yW46DH4fikQVxhOR9ZqxOCn6OG8O2u2Lw3St2wvFvduut3523Qr
-         3Z6QPtJO8Xqb75j4K9vEpULIWiyxnb20yL4+eF25aRhiy2KpIkEaChuKeDFmG5P0+pkU
-         3/BzRL3ct0CeJRsMvHF8pI+7Iayq/wkRYgd82jz4hh5vEDm5QOd/MTwo/uZQnd8A2tyC
-         IZTVK9IdQEGSSXeiHxMc/6ARqRgqrHpuxrgTYxsWek9bo5bnF8PIGNlDGRJZYNUKkadm
-         UMmw==
-X-Received: by 10.50.39.80 with SMTP id n16mr5916429igk.49.1415385312293;
-        Fri, 07 Nov 2014 10:35:12 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id 5sm991161igl.17.2014.11.07.10.35.11
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 07 Nov 2014 10:35:11 -0800 (PST)
-Message-ID: <545D10DE.5000804@gmail.com>
-Date:   Fri, 07 Nov 2014 10:35:10 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=G35VrwEZ2f1z4huop9EEkQgaB9SZzg87AbV0C0LoQKk=;
+        b=bieyfq7t3Q8mxRRuMYxmuFbUwoGhBlBb4XiTZ0LpOo1BxuFaMiRPQgJj5kwiExjHM/
+         H1jXh2qi/KBJ4f5xtT6rY9Kz/z86u3Lcp4EoXwb+PAA3V58Pdclvw81/7w1qTbFnpk5U
+         ISJNcA2phyvX9GU+g4muPemtgmDB7yrLaqPjD/lm3qAC5IpjGn4NRIu+74RMkoc0V+oY
+         tAgDBDhkToYdMpWYEgkqSHW/UHfkv2oBKpLrflhJI7mqBRiEY3FlmsfxRdLgLSsAFaHG
+         K/Dj8Q6rlTc4VE9baEOBYx6cqSMEx/EulWbiaEgUvgc3gXkmEFDR7mSd+EmqY8pKlHo2
+         N9PQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=G35VrwEZ2f1z4huop9EEkQgaB9SZzg87AbV0C0LoQKk=;
+        b=KPs5mqRbCHpr2TwKAQzpYt5ZCd2N9CvXRlh0Q93CLtCuYt1a8WH/2yBDEm6BRqJgOP
+         27eTkVOrE3LRXYA053sNWht9PsT7c8qg2UZEV1b4ytHbjDJ/9P4j+5iAEopJIWe3s5S+
+         PQHnJE0s+HXs8meGZtgAlVO+3bJdOm4xLRbo8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=G35VrwEZ2f1z4huop9EEkQgaB9SZzg87AbV0C0LoQKk=;
+        b=X42gdfG79xa6vAsz34Ya1eO6cayeEPhFaFapHpcNOBW0dgCa5Vna9QtbeQv8vOVRdW
+         lWncVHG+Ea5VcOLLYf960cKbgWsgI9mCrEsiGBxYZM9r4HO+umLBLUnphnUJbUIMKOCg
+         OfY4ri9HfS07i1SSD0tqAWA9hthLlChuv1cAPrgO5fId/axl42shjMBVLL7nn5/yllIe
+         mtn1MjGmvvDGY6PsweOdrKrU0kzbVomBPzoN8qV5EmV2WLCLVoJUU8UvlRcwIk1vOk3e
+         Mj2r5S7uoR5qF9y7qS5KEP9Mo/I7O/GPuVaFKmCXfk/zd7bW629FZqDWkdF0Wzj4nzd8
+         Rv7Q==
+X-Gm-Message-State: ALoCoQnv9IxwhuDNBEF0zVa+lhcRrP9o0PkRFNWhyeXBAEqBLHWz6YXjDuHOXiYnBY8EivIlZOrZ
 MIME-Version: 1.0
-To:     =?ISO-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
-References: <1415290998-10328-1-git-send-email-mans@mansr.com>        <20141107005031.GA22697@linux-mips.org>        <yw1xbnojkazo.fsf@unicorn.mansr.com>        <20141107113545.GC24423@linux-mips.org> <yw1x389vjbsm.fsf@unicorn.mansr.com>
-In-Reply-To: <yw1x389vjbsm.fsf@unicorn.mansr.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <ddaney.cavm@gmail.com>
+X-Received: by 10.70.88.165 with SMTP id bh5mr15215680pdb.51.1415400330587;
+ Fri, 07 Nov 2014 14:45:30 -0800 (PST)
+Received: by 10.70.118.170 with HTTP; Fri, 7 Nov 2014 14:45:30 -0800 (PST)
+In-Reply-To: <20141107041742.GH3698@titan.lakedaemon.net>
+References: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
+        <1414624790-15690-4-git-send-email-abrestic@chromium.org>
+        <20141107041742.GH3698@titan.lakedaemon.net>
+Date:   Fri, 7 Nov 2014 14:45:30 -0800
+X-Google-Sender-Auth: qVXuNPjKbSS1dB4vrSRuBzW4FW0
+Message-ID: <CAL1qeaFpA8Ar3ef4Utd94SVtVfzP2=HVKwDc-2XgWuV+6sWswQ@mail.gmail.com>
+Subject: Re: [PATCH V4 3/4] irqchip: mips-gic: Add device-tree support
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Jason Cooper <jason@lakedaemon.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43923
+X-archive-position: 43924
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,28 +88,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/07/2014 07:00 AM, Måns Rullgård wrote:
-[...]
+On Thu, Nov 6, 2014 at 8:17 PM, Jason Cooper <jason@lakedaemon.net> wrote:
+> On Wed, Oct 29, 2014 at 04:19:49PM -0700, Andrew Bresticker wrote:
+>> Add device-tree support for the MIPS GIC.  Update the GIC irqdomain's
+>> xlate() callback to handle the three-cell specifier described in the
+>> MIPS GIC binding document.
+>>
+>> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+>> Acked-by: Arnd Bergmann <arnd@arndb.de>
+>> ---
+>> Changes from v3:
+>>  - use reserved-cpu-vectors property
+>>  - read GIC base from CM if no reg property present
+>> Changes from v2:
+>>  - rebased on GIC irqchip cleanups
+>>  - updated for change in bindings
+>>  - only parse first CPU vector
+>>  - allow platforms to use EIC mode
+>> Changes from v1:
+>>  - updated for change in bindings
+>>  - set base address and enable bit in GCR_GIC_BASE
+>> ---
+>>  drivers/irqchip/irq-mips-gic.c | 92 +++++++++++++++++++++++++++++++++++++++---
+>>  1 file changed, 87 insertions(+), 5 deletions(-)
 >
->> As for access to hi/lo, I tried to explicitly put a variable in the lo
->> register.  Which sort of works for very simple cases but as expected it's
->> easy to get GCC to spill its RTL guts because it runs out of spill
->> registers.  It maybe can be made to work but I'd feel nervous about its
->> stability unless a GCC guru approved this method.
+> I assume this is going though the mips tree...
 >
-> The "x" constraint can be used to move a double-word to/from the hi/lo
-> registers.  On DSP targets, the "ka" constraint provides access to the
-> three additional hi/lo pairs while on a non-DSP targets it degenerates
-> to "x".  The "ka" constraint is available since gcc 4.3.0.  I see no
-> reason not to allow this extra flexibility.
->
+> Acked-by: Jason Cooper <jason@lakedaemon.net>
 
-What would the performance penalty be to hand code the assembly so that 
-only mips32 instructions are used (i.e. no MADD), and transfers from 
-hi/lo were all explicitly coded so that there were no hi/lo register 
-constraints, but only clobbers of "hi", "lo"?
+Yup, that's the plan.
 
-That would give you something usable on any 32-bit CPU with any version 
-of GCC.
-
-David Daney
+Thanks,
+Andrew

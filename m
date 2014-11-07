@@ -1,35 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 16:00:33 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:38767 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012876AbaKGPAcH63pK convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 16:00:32 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id 76A071538A; Fri,  7 Nov 2014 15:00:25 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
-References: <1415290998-10328-1-git-send-email-mans@mansr.com>
-        <20141107005031.GA22697@linux-mips.org>
-        <yw1xbnojkazo.fsf@unicorn.mansr.com>
-        <20141107113545.GC24423@linux-mips.org>
-Date:   Fri, 07 Nov 2014 15:00:25 +0000
-In-Reply-To: <20141107113545.GC24423@linux-mips.org> (Ralf Baechle's message
-        of "Fri, 7 Nov 2014 12:35:45 +0100")
-Message-ID: <yw1x389vjbsm.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 18:35:02 +0100 (CET)
+Received: from mail-oi0-f46.google.com ([209.85.218.46]:35309 "EHLO
+        mail-oi0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012786AbaKGRe7nb8sn convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Nov 2014 18:34:59 +0100
+Received: by mail-oi0-f46.google.com with SMTP id g201so2713327oib.19
+        for <linux-mips@linux-mips.org>; Fri, 07 Nov 2014 09:34:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=RB98acsu0dbY4oADIO3YvqHac6UagUkhg9VDYsTpu5k=;
+        b=V9jCU6s+FGdS6Mlbj8bdJ2ANEGKbPbi9WdtBiy+4SibdtzHbHt04MoyLICv4UKMzcu
+         3WiB2cFXdsMMsfuBaE3VPimW0ySCslDTpqnGDat/FGl4judgFQIjihjJ23dag6KZHnnA
+         1j8xmqSctwD7kVxtCputKimnyMIq3yulLrxE4WhCbo5qR0XL00luVMUfeQPqWeXhLw+s
+         NHTHnBrwDA5uqWgOHsGf6dtCp7QCoXxnKQhAHfiqpbJn3olWPLDSJyZH+12JOO69edvF
+         D4v8QXDGbPUjFWm5Wgq0ZrYlBus9HyRNsSYwfzMI88GXcTJfVyQRqt/XhnwXuXtMGM0v
+         Lnuw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+X-Received: by 10.182.27.193 with SMTP id v1mr10944560obg.20.1415381693209;
+ Fri, 07 Nov 2014 09:34:53 -0800 (PST)
+Received: by 10.60.41.193 with HTTP; Fri, 7 Nov 2014 09:34:53 -0800 (PST)
+In-Reply-To: <tencent_36E25D7005ABF4617D924048@qq.com>
+References: <CAKcpw6WiuqJ5Cn4FNoYQEga8KBhZAZ4ohx35MqsdaOZDL6bABA@mail.gmail.com>
+        <tencent_7A73C86D635497A07A126836@qq.com>
+        <CAKcpw6Wb5+GMMHELghc4b2kss1bSGLqPw1k+MeJUsXzPA1Eb5w@mail.gmail.com>
+        <tencent_23B90CE67AF56A127F8ADA05@qq.com>
+        <CAKcpw6VSQMKba62BQW9M6OmAzf6AyDuje57K0=+Mpb1DkAq__Q@mail.gmail.com>
+        <tencent_36E25D7005ABF4617D924048@qq.com>
+Date:   Sat, 8 Nov 2014 01:34:53 +0800
+Message-ID: <CAKcpw6VXR4OJWsuemiwJ2sfaMhN+4rn2Py_svUxDVe4P09PR8A@mail.gmail.com>
+Subject: Re: Problems of kernel of Loongson 3
+From:   YunQiang Su <wzssyqa@gmail.com>
+To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        Aurelien Jarno <aurelien@aurel32.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Return-Path: <wzssyqa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43920
+X-archive-position: 43921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: wzssyqa@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,83 +58,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf Baechle <ralf@linux-mips.org> writes:
-
-> On Fri, Nov 07, 2014 at 02:20:11AM +0000, M�ns Rullg�rd wrote:
->> Date:   Fri, 07 Nov 2014 02:20:11 +0000
->> From: M�ns Rullg�rd <mans@mansr.com>
->> To: Ralf Baechle <ralf@linux-mips.org>
->> Cc: linux-mips@linux-mips.org
->> Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant
->>  divisor
->> Content-Type: text/plain; charset=iso-8859-1
->> 
->> Ralf Baechle <ralf@linux-mips.org> writes:
->> 
->> > On Thu, Nov 06, 2014 at 04:23:18PM +0000, Mans Rullgard wrote:
->> >
->> >> This is an adaptation of the optimised do_div() for ARM by
->> >> Nicolas Pitre implementing division by a constant using a
->> >> multiplication by the inverse.  Ideally, the compiler would
->> >> do this internally as it does for 32-bit operands, but it
->> >> doesn't.
->> >> 
->> >> This version of the code requires an assembler with support
->> >> for the DSP ASE syntax since accessing the hi/lo registers
->> >> sanely from inline asm is impossible without this.  Building
->> >> for a CPU without this extension still works, however.
->> >> 
->> >> It also does not protect against the WAR hazards for the
->> >> hi/lo registers present on CPUs prior to MIPS IV.
->> >> 
->> >> I have only tested it as far as booting and light use with
->> >> the BUG_ON enabled wihtout encountering any issues.
->> >> 
->> >> The inverse computation code is a straight copy from ARM,
->> >> so this should probably be moved to a shared location.
->> >
->> > Can you explain why you need __div64_fls()?  There's __fls() which on
->> > MIPS is carefully written to make use of the CLZ rsp. DCLZ instructions
->> > where available; the fallback implementation is looking fairly similar
->> > to your code.
->> 
->> The regular __fls() doesn't necessarily evaluate at compile-time, which
->> is required here.  The normal __fls() could of course be amended to
->> bypass the CLZ instruction for constant arguments.
->> 
->> > MADD is named MAD on some older CPUs; yet other CPUs don't have it
->> > at all.  I take it you tried to make GCC emit the instruction but it
->> > doesn't?
->> 
->> GCC generates MADDU instructions only in the most trivial of cases.  For
->> instance, (x >> 32) * (u32)y with 64-bit x and y produces far from
->> optimal code.  In fact, looking at it again, I see it is even more
->> stupid than I thought, so there needs to be more asm, not less.
->> 
->> Reading the manuals more carefully, it appears that MADDU is only
->> reliably available starting with MIPS32 (btw, this information is
->> annoyingly hard to find).  Thus this code should be restricted to such
->> targets (which probably covers most current users) unless someone feels
->> like writing a version for these older CPUs.
+On Wed, Nov 5, 2014 at 9:49 AM, 陈华才 <chenhc@lemote.com> wrote:
+> Only radeon cards support now.
 >
-> I'm primarily concered about not enabling MADD where it's not available.
-> As for pre-MIPS32 processors - we can do the manual reading about where
-> to enable MAD(D) later.
+>
+> ------------------ Original ------------------
+> From:  "YunQiang Su"<wzssyqa@gmail.com>;
+> Date:  Tue, Nov 4, 2014 10:53 PM
+> To:  "陈华才"<chenhc@lemote.com>;
+> Cc:  "linux-mips"<linux-mips@linux-mips.org>; "Aurelien Jarno"<aurelien@aurel32.net>;
+> Subject:  Re: Problems of kernel of Loongson 3
+>
+>
+> On Tue, Nov 4, 2014 at 10:48 PM, 陈华才 <chenhc@lemote.com> wrote:
+>> Hi,
+>>
+>> 1, mainstream kernel has only basic Loongson-3 support, not full-functional, something has missing.
+>> 2, Unfortunately, no VESA driver on Loongson...
+>
 
-A simple ifdef will take care of that.
+Do you have a pmon update for Lemote's machine to work with the new kernel?
 
-> As for access to hi/lo, I tried to explicitly put a variable in the lo
-> register.  Which sort of works for very simple cases but as expected it's
-> easy to get GCC to spill its RTL guts because it runs out of spill
-> registers.  It maybe can be made to work but I'd feel nervous about its
-> stability unless a GCC guru approved this method.
+> AHhhhh, then what to do if to work with other graphic cards?
+>
+>>
+>> Huacai
+>>
+>> ------------------ Original ------------------
+>> From:  "YunQiang Su"<wzssyqa@gmail.com>;
+>> Date:  Tue, Nov 4, 2014 10:36 PM
+>> To:  "陈华才"<chenhc@lemote.com>;
+>> Cc:  "linux-mips"<linux-mips@linux-mips.org>; "Aurelien Jarno"<aurelien@aurel32.net>;
+>> Subject:  Re: Problems of kernel of Loongson 3
+>>
+>>
+>> On Tue, Nov 4, 2014 at 10:24 PM, 陈华才 <chenhc@lemote.com> wrote:
+>>> Hi,
+>>>
+>>> 1, You can try 3.16 from master branch here:
+>>> http://dev.lemote.com/cgit/linux-official.git/
+>>
+>> OK, I will try it. Even though, we still need a patch to make it can
+>> use on Lemote machiens.
+>>
+>>>
+>>> 2, Since 3.14, radeon cannot support non-firmware display. This is confirmed by drm maintainers.
+>>
+>> How can x86 machines display something when firmwares are missing?
+>> Use something like vesa when firmwares are lost?
+>>
+>>>
+>>> Huacai
+>>>
+>>> ------------------ Original ------------------
+>>> From:  "YunQiang Su"<wzssyqa@gmail.com>;
+>>> Date:  Tue, Nov 4, 2014 09:40 PM
+>>> To:  "陈华才"<chenhc@lemote.com>;
+>>> Cc:  "linux-mips"<linux-mips@linux-mips.org>; "Aurelien Jarno"<aurelien@aurel32.net>;
+>>> Subject:  Problems of kernel of Loongson 3
+>>>
+>>>
+>>> I have tested the kernel 3.16, and 3.17 of Debian on loongson 3.
+>>> I met 2 major problems:
+>>>
+>>> 1. On the Lemote 6100 and Yeeloong 8133, load command hangs
+>>>
+>>>  PMON> load (wd0,0)/vmlinux-3.16-3-loongson-3
+>>>  Loading file: (wd0,0)/vmlinux-3.16-3-loongson-3
+>>>  (elf64)
+>>>  0x80200000/9171584 + 0x80abf280/34201152(z)
+>>>
+>>>  It also hangs on the dev board from Lemote.
+>>>  While it can boot on dev boards from Loongson.
+>>>
+>>>  3.15 kernel works fine on both boards.
+>>>
+>>> 2. If without radeon non-free firmware in initrd/vmlinux,
+>>>  the screen can display nothing.
+>>>  It makes us difficult to patch debian-install to support Loongson 3.
+>>>  A automatic fallback may be needed when nonfree firmware is not available.
+>>>
+>>> --
+>>> YunQiang Su
+>>
+>>
+>>
+>> --
+>> YunQiang Su
+>
+>
+>
+> --
+> YunQiang Su
 
-The "x" constraint can be used to move a double-word to/from the hi/lo
-registers.  On DSP targets, the "ka" constraint provides access to the
-three additional hi/lo pairs while on a non-DSP targets it degenerates
-to "x".  The "ka" constraint is available since gcc 4.3.0.  I see no
-reason not to allow this extra flexibility.
+
 
 -- 
-M�ns Rullg�rd
-mans@mansr.com
+YunQiang Su

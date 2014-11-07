@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 13:29:11 +0100 (CET)
-Received: from mail-wg0-f42.google.com ([74.125.82.42]:41604 "EHLO
-        mail-wg0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012759AbaKGM3JyOPnF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 13:29:09 +0100
-Received: by mail-wg0-f42.google.com with SMTP id k14so3554537wgh.15
-        for <multiple recipients>; Fri, 07 Nov 2014 04:29:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=NpfE9UvcLYDiwb7fRXzppqOmSUufnX+MCbQjxZwIU8s=;
-        b=Fgf2M5Rin4PftHDvPK0d9qTgoGhPIUnYRv+IWDNeGpXB8YsvkNNO2G5Fw+6HUT1IqC
-         F3P+jryjG7GCV62s8UIoQxC2WGDH3nUeEdqBfJuz9Bc9I/s3AgG4pxVKNoeab6y6YTjP
-         JQjo6sjOhBvAcqK2E+axYUpJEgQDozIckzQCucwhGJUxPd6HE8YPDJeJxvjLoJ90Lc+D
-         /Yitwd7aTGUdTquYM60zsCF14o4lvmJCaYUK/LnnWaVGE3SDx3A17O+6USbFzyNfc5Ye
-         +YrQX/uytnIdpOO2mCTy0J96zG0oxTnc4k4zzZo9Nq1JfmICAQ4u/tLlXs0CPx2J0S21
-         3/rg==
-X-Received: by 10.180.109.17 with SMTP id ho17mr4634413wib.4.1415363344423;
- Fri, 07 Nov 2014 04:29:04 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 13:43:20 +0100 (CET)
+Received: from mail-la0-f42.google.com ([209.85.215.42]:41954 "EHLO
+        mail-la0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012860AbaKGMnSOjR6V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 13:43:18 +0100
+Received: by mail-la0-f42.google.com with SMTP id gq15so4408801lab.1
+        for <linux-mips@linux-mips.org>; Fri, 07 Nov 2014 04:43:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=r52llT7syWq6VWGzO504xKbTUYMebrcH8jUavV2o9u4=;
+        b=jrCJ1dLoQs66pzWjj3kiVjTx2F9U5/3aN5jjM0hxGTeTTt2eNZ3T0Pw7Nnucd4W3B7
+         UueEY/LPBNtrot62b8BpXv7NcA+K0GSc7P1Mhy48MYPF1tayUlT5L6fRTNMZtE9Qu9+x
+         feOUGMnDLpiTztct3/TrMKTlxxCEIa10s9EgpP1UV7Z/rxfll/ObdF/h/6122aIjixpm
+         Lfc9YwjhpGQQLpSO1//YP2df6APoujnN6rAz2G+yKV3SY74d6z60WVcjWsPliOctr0Gl
+         3Ti7xQD9d9/xZeVL3Qc1QqPWTm33VBkLJSIs7U7re8lJCL27pGvgmmTrqYvbGXE83kGk
+         Xzzg==
+X-Gm-Message-State: ALoCoQkQPUHQBV4yt2LkU7qH/Ksrfk8MD/fssNXLF90XQob7mbYALotvbQYMv+Jyc6Tw4oOnD03b
+X-Received: by 10.152.27.38 with SMTP id q6mr2060490lag.92.1415364192525;
+        Fri, 07 Nov 2014 04:43:12 -0800 (PST)
+Received: from [192.168.2.5] (ppp28-203.pppoe.mtu-net.ru. [81.195.28.203])
+        by mx.google.com with ESMTPSA id ba19sm3189203lab.31.2014.11.07.04.43.10
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 07 Nov 2014 04:43:11 -0800 (PST)
+Message-ID: <545CBE5E.3050906@cogentembedded.com>
+Date:   Fri, 07 Nov 2014 15:43:10 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Received: by 10.217.55.200 with HTTP; Fri, 7 Nov 2014 04:28:24 -0800 (PST)
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F6C533@LEMAIL01.le.imgtec.org>
-References: <1414771394-24314-1-git-send-email-manuel.lauss@gmail.com>
- <20141107020204.GA24423@linux-mips.org> <6D39441BF12EF246A7ABCE6654B0235320F6C533@LEMAIL01.le.imgtec.org>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Fri, 7 Nov 2014 13:28:24 +0100
-Message-ID: <CAOLZvyEuKHq+DUZ_RNaEU+y3PSeiJBvBjyU0uJRz+D9A=fo7JA@mail.gmail.com>
-Subject: Re: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@gmail.com>
+To:     Alban Bedel <albeu@free.fr>, linux-kernel@vger.kernel.org
+CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: FW: Fix parsing u-boot environment
+References: <1415359381-27257-1-git-send-email-albeu@free.fr>
+In-Reply-To: <1415359381-27257-1-git-send-email-albeu@free.fr>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43917
+X-archive-position: 43918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,41 +58,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 7, 2014 at 12:05 PM, Matthew Fortune
-<Matthew.Fortune@imgtec.com> wrote:
->> +(mips1) `cfc1 $2,$31'
->> make[1]: *** [arch/mips/math-emu/cp1emu.o] Error 1
->> make: *** [arch/mips/math-emu] Error 2
->> make: *** Waiting for unfinished jobs....
->
-> This is the offending code in cp1emu.c:
->
->                         if (is_fpu_owner())
->                                 asm volatile(
->                                         ".set push\n"
->                                         "\t.set mips1\n"
->                                         "\tcfc1\t%0,$31\n"
->                                         "\t.set pop" : "=r" (fcr31));
->                         else
->                                 fcr31 = current->thread.fpu.fcr31;
->                         preempt_enable();
->
->
-> I'm not sure how this can have built with binutils 2.23 (as indicated by
-> Manuel and not built with 2.24). The reason this works with the latest
-> version of binutils 2.24.x is that cfc1 has been reclassified as not an
-> FPU instruction.
->
-> This just needs the hardfloat annotation adding via the macro as in the
-> other cases.
+Hello.
 
+On 11/7/2014 2:23 PM, Alban Bedel wrote:
 
-Oh I know how to fix it.  However I'm unsure why I didn't run into this
-while testing.  I've repeatedly built a cavium-octeon, malta and my
-alchemy defconfigs
-and never hit this.
+> When reading u-boot's key=value pairs it should skip the '=' and not
+> use the next argument.
 
-I'll send out a revised patch shortly.
+> Signed-off-by: Alban Bedel <albeu@free.fr>
+> ---
+>   arch/mips/fw/lib/cmdline.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you!
-        Manuel
+> diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
+> index ffd0345..cc5d168 100644
+> --- a/arch/mips/fw/lib/cmdline.c
+> +++ b/arch/mips/fw/lib/cmdline.c
+> @@ -68,7 +68,7 @@ char *fw_getenv(char *envname)
+>   					result = fw_envp(index + 1);
+>   					break;
+>   				} else if (fw_envp(index)[i] == '=') {
+> -					result = (fw_envp(index + 1) + i);
+> +					result = (fw_envp(index) + i + 1);
+
+    Perhaps it's time to drop the useless outer parens?
+
+WBR, Sergei

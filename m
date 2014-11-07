@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 12:32:14 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:52134 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012736AbaKGLcMtnXnN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 12:32:12 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2CF671586C7F2;
-        Fri,  7 Nov 2014 11:32:04 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 7 Nov
- 2014 11:32:06 +0000
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 7 Nov 2014 11:32:06 +0000
-Received: from [192.168.154.149] (192.168.154.149) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 7 Nov
- 2014 11:32:05 +0000
-Message-ID: <545CADB5.3050703@imgtec.com>
-Date:   Fri, 7 Nov 2014 11:32:05 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 12:35:48 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:35756 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012736AbaKGLfrJUFqF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Nov 2014 12:35:47 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sA7BZkNF001547;
+        Fri, 7 Nov 2014 12:35:46 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sA7BZjYF001546;
+        Fri, 7 Nov 2014 12:35:45 +0100
+Date:   Fri, 7 Nov 2014 12:35:45 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
+Message-ID: <20141107113545.GC24423@linux-mips.org>
+References: <1415290998-10328-1-git-send-email-mans@mansr.com>
+ <20141107005031.GA22697@linux-mips.org>
+ <yw1xbnojkazo.fsf@unicorn.mansr.com>
 MIME-Version: 1.0
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
-References: <1414771394-24314-1-git-send-email-manuel.lauss@gmail.com> <20141107020204.GA24423@linux-mips.org> <6D39441BF12EF246A7ABCE6654B0235320F6C533@LEMAIL01.le.imgtec.org>
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F6C533@LEMAIL01.le.imgtec.org>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.149]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <yw1xbnojkazo.fsf@unicorn.mansr.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43912
+X-archive-position: 43913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,42 +45,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/07/2014 11:05 AM, Matthew Fortune wrote:
->> +(mips1) `cfc1 $2,$31'
->> make[1]: *** [arch/mips/math-emu/cp1emu.o] Error 1
->> make: *** [arch/mips/math-emu] Error 2
->> make: *** Waiting for unfinished jobs....
+On Fri, Nov 07, 2014 at 02:20:11AM +0000, Måns Rullgård wrote:
+> Date:   Fri, 07 Nov 2014 02:20:11 +0000
+> From: Måns Rullgård <mans@mansr.com>
+> To: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant
+>  divisor
+> Content-Type: text/plain; charset=iso-8859-1
 > 
-> This is the offending code in cp1emu.c:
+> Ralf Baechle <ralf@linux-mips.org> writes:
 > 
->                         if (is_fpu_owner())
->                                 asm volatile(
->                                         ".set push\n"
->                                         "\t.set mips1\n"
->                                         "\tcfc1\t%0,$31\n"
->                                         "\t.set pop" : "=r" (fcr31));
->                         else
->                                 fcr31 = current->thread.fpu.fcr31;
->                         preempt_enable();
+> > On Thu, Nov 06, 2014 at 04:23:18PM +0000, Mans Rullgard wrote:
+> >
+> >> This is an adaptation of the optimised do_div() for ARM by
+> >> Nicolas Pitre implementing division by a constant using a
+> >> multiplication by the inverse.  Ideally, the compiler would
+> >> do this internally as it does for 32-bit operands, but it
+> >> doesn't.
+> >> 
+> >> This version of the code requires an assembler with support
+> >> for the DSP ASE syntax since accessing the hi/lo registers
+> >> sanely from inline asm is impossible without this.  Building
+> >> for a CPU without this extension still works, however.
+> >> 
+> >> It also does not protect against the WAR hazards for the
+> >> hi/lo registers present on CPUs prior to MIPS IV.
+> >> 
+> >> I have only tested it as far as booting and light use with
+> >> the BUG_ON enabled wihtout encountering any issues.
+> >> 
+> >> The inverse computation code is a straight copy from ARM,
+> >> so this should probably be moved to a shared location.
+> >
+> > Can you explain why you need __div64_fls()?  There's __fls() which on
+> > MIPS is carefully written to make use of the CLZ rsp. DCLZ instructions
+> > where available; the fallback implementation is looking fairly similar
+> > to your code.
 > 
-> I'm not sure how this can have built with binutils 2.23 (as indicated by
-> Manuel and not built with 2.24). The reason this works with the latest
-> version of binutils 2.24.x is that cfc1 has been reclassified as not an
-> FPU instruction.
+> The regular __fls() doesn't necessarily evaluate at compile-time, which
+> is required here.  The normal __fls() could of course be amended to
+> bypass the CLZ instruction for constant arguments.
 > 
-> This just needs the hardfloat annotation adding via the macro as in the
-> other cases.
+> > MADD is named MAD on some older CPUs; yet other CPUs don't have it
+> > at all.  I take it you tried to make GCC emit the instruction but it
+> > doesn't?
 > 
-> Thanks,
-> Matthew
+> GCC generates MADDU instructions only in the most trivial of cases.  For
+> instance, (x >> 32) * (u32)y with 64-bit x and y produces far from
+> optimal code.  In fact, looking at it again, I see it is even more
+> stupid than I thought, so there needs to be more asm, not less.
 > 
-I am confused about this comment. The problem is reproducible with the
-latest Mentor toolchain which uses the following gas
-GNU assembler version 2.24.51 (mips-linux-gnu) using BFD version
-(Sourcery CodeBench Lite 2014.05-27) 2.24.51.20140217.
+> Reading the manuals more carefully, it appears that MADDU is only
+> reliably available starting with MIPS32 (btw, this information is
+> annoyingly hard to find).  Thus this code should be restricted to such
+> targets (which probably covers most current users) unless someone feels
+> like writing a version for these older CPUs.
 
-I am not sure how Manuel's patch triggered this problem on Mentor to be
-honest.
+I'm primarily concered about not enabling MADD where it's not available.
+As for pre-MIPS32 processors - we can do the manual reading about where
+to enable MAD(D) later.
 
--- 
-markos
+As for access to hi/lo, I tried to explicitly put a variable in the lo
+register.  Which sort of works for very simple cases but as expected it's
+easy to get GCC to spill its RTL guts because it runs out of spill
+registers.  It maybe can be made to work but I'd feel nervous about its
+stability unless a GCC guru approved this method.
+
+  Ralf

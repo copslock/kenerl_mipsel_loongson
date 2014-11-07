@@ -1,33 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 03:20:19 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:36229 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012844AbaKGCURmN8m- convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 03:20:17 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id 570681538E; Fri,  7 Nov 2014 02:20:11 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
-References: <1415290998-10328-1-git-send-email-mans@mansr.com>
-        <20141107005031.GA22697@linux-mips.org>
-Date:   Fri, 07 Nov 2014 02:20:11 +0000
-In-Reply-To: <20141107005031.GA22697@linux-mips.org> (Ralf Baechle's message
-        of "Fri, 7 Nov 2014 01:50:32 +0100")
-Message-ID: <yw1xbnojkazo.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 05:18:01 +0100 (CET)
+Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:54032 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27006516AbaKGER7oHH5l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 05:17:59 +0100
+Received: from pool-96-249-243-124.nrflva.fios.verizon.net ([96.249.243.124] helo=titan)
+        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <jason@lakedaemon.net>)
+        id 1Xmaza-0004Qz-PZ; Fri, 07 Nov 2014 04:17:46 +0000
+Received: from titan.lakedaemon.net (localhost [127.0.0.1])
+        by titan (Postfix) with ESMTP id CE174613F6F;
+        Thu,  6 Nov 2014 23:17:42 -0500 (EST)
+X-Mail-Handler: Dyn Standard SMTP by Dyn
+X-Originating-IP: 96.249.243.124
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX19AEvorYSdVIl0OqVdjlI33+CiaQJpYWO4=
+X-DKIM: OpenDKIM Filter v2.0.1 titan CE174613F6F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
+        s=mail; t=1415333862;
+        bh=p0PCwfeHExreB0G6M/UNlH4tve0hXOanG1nRttFOr2o=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To;
+        b=AoWipwu+okReArdoyCwoDyzC7XPFxMMeJe0Fu0BC2kqHoli9Ti16jPBqP8eIozUAP
+         +oZSJmepmg4BpweXGwFZmum9PSFFgnxpGXFgduC+FE8aj5QfNXlcNB9BqRJYlHmyxh
+         Zs3F3fhSegLRJSGK79nIBA0sLPVGc9T8hHbvd25eN+/NIs/PmOtFtHG4t2Mkzl+OaB
+         7d6bK0oT/Mfj/PL1stVOJitmNl0ODskqm31a+hIH8w0x7UsplKnqMaRiw18z0PdR2w
+         KtfUERtWZyrNt3lDqpXq6xCyv1FI4Yl3rjIb34ekgoNCM+8QqItGbYCCu7m0aQxUm4
+         3L5+H4f5Jlggw==
+Date:   Thu, 6 Nov 2014 23:17:42 -0500
+From:   Jason Cooper <jason@lakedaemon.net>
+To:     Andrew Bresticker <abrestic@chromium.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V4 3/4] irqchip: mips-gic: Add device-tree support
+Message-ID: <20141107041742.GH3698@titan.lakedaemon.net>
+References: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
+ <1414624790-15690-4-git-send-email-abrestic@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1414624790-15690-4-git-send-email-abrestic@chromium.org>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <jason@lakedaemon.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43890
+X-archive-position: 43891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: jason@lakedaemon.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,54 +74,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf Baechle <ralf@linux-mips.org> writes:
+Andrew,
 
-> On Thu, Nov 06, 2014 at 04:23:18PM +0000, Mans Rullgard wrote:
->
->> This is an adaptation of the optimised do_div() for ARM by
->> Nicolas Pitre implementing division by a constant using a
->> multiplication by the inverse.  Ideally, the compiler would
->> do this internally as it does for 32-bit operands, but it
->> doesn't.
->> 
->> This version of the code requires an assembler with support
->> for the DSP ASE syntax since accessing the hi/lo registers
->> sanely from inline asm is impossible without this.  Building
->> for a CPU without this extension still works, however.
->> 
->> It also does not protect against the WAR hazards for the
->> hi/lo registers present on CPUs prior to MIPS IV.
->> 
->> I have only tested it as far as booting and light use with
->> the BUG_ON enabled wihtout encountering any issues.
->> 
->> The inverse computation code is a straight copy from ARM,
->> so this should probably be moved to a shared location.
->
-> Can you explain why you need __div64_fls()?  There's __fls() which on
-> MIPS is carefully written to make use of the CLZ rsp. DCLZ instructions
-> where available; the fallback implementation is looking fairly similar
-> to your code.
+On Wed, Oct 29, 2014 at 04:19:49PM -0700, Andrew Bresticker wrote:
+> Add device-tree support for the MIPS GIC.  Update the GIC irqdomain's
+> xlate() callback to handle the three-cell specifier described in the
+> MIPS GIC binding document.
+> 
+> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> Changes from v3:
+>  - use reserved-cpu-vectors property
+>  - read GIC base from CM if no reg property present
+> Changes from v2:
+>  - rebased on GIC irqchip cleanups
+>  - updated for change in bindings
+>  - only parse first CPU vector
+>  - allow platforms to use EIC mode
+> Changes from v1:
+>  - updated for change in bindings
+>  - set base address and enable bit in GCR_GIC_BASE
+> ---
+>  drivers/irqchip/irq-mips-gic.c | 92 +++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 87 insertions(+), 5 deletions(-)
 
-The regular __fls() doesn't necessarily evaluate at compile-time, which
-is required here.  The normal __fls() could of course be amended to
-bypass the CLZ instruction for constant arguments.
+I assume this is going though the mips tree...
 
-> MADD is named MAD on some older CPUs; yet other CPUs don't have it
-> at all.  I take it you tried to make GCC emit the instruction but it
-> doesn't?
+Acked-by: Jason Cooper <jason@lakedaemon.net>
 
-GCC generates MADDU instructions only in the most trivial of cases.  For
-instance, (x >> 32) * (u32)y with 64-bit x and y produces far from
-optimal code.  In fact, looking at it again, I see it is even more
-stupid than I thought, so there needs to be more asm, not less.
+thx,
 
-Reading the manuals more carefully, it appears that MADDU is only
-reliably available starting with MIPS32 (btw, this information is
-annoyingly hard to find).  Thus this code should be restricted to such
-targets (which probably covers most current users) unless someone feels
-like writing a version for these older CPUs.
-
--- 
-Måns Rullgård
-mans@mansr.com
+Jason.

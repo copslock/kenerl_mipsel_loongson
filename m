@@ -1,31 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 01:50:35 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:59569 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 03:02:08 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:59877 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27012836AbaKGAudW5BjX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Nov 2014 01:50:33 +0100
+        id S27012855AbaKGCCHG-kPf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Nov 2014 03:02:07 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sA70oWTf023490;
-        Fri, 7 Nov 2014 01:50:32 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sA7225nt024588;
+        Fri, 7 Nov 2014 03:02:05 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sA70oWgj023489;
-        Fri, 7 Nov 2014 01:50:32 +0100
-Date:   Fri, 7 Nov 2014 01:50:32 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sA7225eh024587;
+        Fri, 7 Nov 2014 03:02:05 +0100
+Date:   Fri, 7 Nov 2014 03:02:04 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Mans Rullgard <mans@mansr.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
-Message-ID: <20141107005031.GA22697@linux-mips.org>
-References: <1415290998-10328-1-git-send-email-mans@mansr.com>
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [RFC PATCH v6] MIPS: fix build with binutils 2.24.51+
+Message-ID: <20141107020204.GA24423@linux-mips.org>
+References: <1414771394-24314-1-git-send-email-manuel.lauss@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1415290998-10328-1-git-send-email-mans@mansr.com>
+In-Reply-To: <1414771394-24314-1-git-send-email-manuel.lauss@gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43888
+X-archive-position: 43889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,35 +45,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 06, 2014 at 04:23:18PM +0000, Mans Rullgard wrote:
+On Fri, Oct 31, 2014 at 05:03:14PM +0100, Manuel Lauss wrote:
 
-> This is an adaptation of the optimised do_div() for ARM by
-> Nicolas Pitre implementing division by a constant using a
-> multiplication by the inverse.  Ideally, the compiler would
-> do this internally as it does for 32-bit operands, but it
-> doesn't.
-> 
-> This version of the code requires an assembler with support
-> for the DSP ASE syntax since accessing the hi/lo registers
-> sanely from inline asm is impossible without this.  Building
-> for a CPU without this extension still works, however.
-> 
-> It also does not protect against the WAR hazards for the
-> hi/lo registers present on CPUs prior to MIPS IV.
-> 
-> I have only tested it as far as booting and light use with
-> the BUG_ON enabled wihtout encountering any issues.
-> 
-> The inverse computation code is a straight copy from ARM,
-> so this should probably be moved to a shared location.
+With this patch applied and binutils 2.24 I'm getting this:
 
-Can you explain why you need __div64_fls()?  There's __fls() which on
-MIPS is carefully written to make use of the CLZ rsp. DCLZ instructions
-where available; the fallback implementation is looking fairly similar
-to your code.
+[...]
+{standard input}: Assembler messages:
+{standard input}:4248: Error: opcode not supported on this processor: mips1
++(mips1) `cfc1 $2,$31'
+make[1]: *** [arch/mips/math-emu/cp1emu.o] Error 1
+make: *** [arch/mips/math-emu] Error 2
+make: *** Waiting for unfinished jobs....
 
-MADD is named MAD on some older CPUs; yet other CPUs don't have it
-at all.  I take it you tried to make GCC emit the instruction but it
-doesn't?
+for all defconfigs.
 
   Ralf

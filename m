@@ -1,63 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 05:18:01 +0100 (CET)
-Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:54032 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 06:00:21 +0100 (CET)
+Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:43887 "EHLO
         mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006516AbaKGER7oHH5l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 05:17:59 +0100
+        by eddie.linux-mips.org with ESMTP id S27006516AbaKGFAUkGG59 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 06:00:20 +0100
 Received: from pool-96-249-243-124.nrflva.fios.verizon.net ([96.249.243.124] helo=titan)
         by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
         (Exim 4.72)
         (envelope-from <jason@lakedaemon.net>)
-        id 1Xmaza-0004Qz-PZ; Fri, 07 Nov 2014 04:17:46 +0000
+        id 1Xmbee-0001YD-UO; Fri, 07 Nov 2014 05:00:13 +0000
 Received: from titan.lakedaemon.net (localhost [127.0.0.1])
-        by titan (Postfix) with ESMTP id CE174613F6F;
-        Thu,  6 Nov 2014 23:17:42 -0500 (EST)
+        by titan (Postfix) with ESMTP id B8590614035;
+        Fri,  7 Nov 2014 00:00:09 -0500 (EST)
 X-Mail-Handler: Dyn Standard SMTP by Dyn
 X-Originating-IP: 96.249.243.124
 X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX19AEvorYSdVIl0OqVdjlI33+CiaQJpYWO4=
-X-DKIM: OpenDKIM Filter v2.0.1 titan CE174613F6F
+X-MHO-User: U2FsdGVkX19QfMO2roM4AJ+pb3AcN6O5Ox5Qg4gUKyA=
+X-DKIM: OpenDKIM Filter v2.0.1 titan B8590614035
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
-        s=mail; t=1415333862;
-        bh=p0PCwfeHExreB0G6M/UNlH4tve0hXOanG1nRttFOr2o=;
+        s=mail; t=1415336409;
+        bh=3qGJ7mf+wJOt7GziCadMsgThryr7KQCmuMAZnNnEIkY=;
         h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
          Content-Type:In-Reply-To;
-        b=AoWipwu+okReArdoyCwoDyzC7XPFxMMeJe0Fu0BC2kqHoli9Ti16jPBqP8eIozUAP
-         +oZSJmepmg4BpweXGwFZmum9PSFFgnxpGXFgduC+FE8aj5QfNXlcNB9BqRJYlHmyxh
-         Zs3F3fhSegLRJSGK79nIBA0sLPVGc9T8hHbvd25eN+/NIs/PmOtFtHG4t2Mkzl+OaB
-         7d6bK0oT/Mfj/PL1stVOJitmNl0ODskqm31a+hIH8w0x7UsplKnqMaRiw18z0PdR2w
-         KtfUERtWZyrNt3lDqpXq6xCyv1FI4Yl3rjIb34ekgoNCM+8QqItGbYCCu7m0aQxUm4
-         3L5+H4f5Jlggw==
-Date:   Thu, 6 Nov 2014 23:17:42 -0500
+        b=cLxWK6iS5aD0Xnb9RRnYhos6u+eEW8W9m/JVGQRJQxZRaNuDWwAGpKL1n0PytPffD
+         iJmptVs9y9sR5rNfXE6wFfanbAwMo8KHgrwEoqOegxyf24ecQDXVdtzcOp3g1R3RIe
+         nQXB15f3r0+Sv+RcdEPDn7s1wKbsof50WfKuGInO0W2T7qOm9OI4XCa/iFP9iXfy18
+         ks5NjVBw9Yqux9FfIX7CPxZBE0AGeqoRPiAqc4axCFI0XAMpQYaRdajF09Oih3CzGU
+         NeVftP5CPACLB1l/f4XNkvxkL9w0nBXdHy0+exz7jEwaWTysWK4HSSr3LltLJSr5tW
+         JFeFSpK7QVxXw==
+Date:   Fri, 7 Nov 2014 00:00:09 -0500
 From:   Jason Cooper <jason@lakedaemon.net>
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V4 3/4] irqchip: mips-gic: Add device-tree support
-Message-ID: <20141107041742.GH3698@titan.lakedaemon.net>
-References: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
- <1414624790-15690-4-git-send-email-abrestic@chromium.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     arnd@arndb.de, f.fainelli@gmail.com, tglx@linutronix.de,
+        ralf@linux-mips.org, linux-sh@vger.kernel.org,
+        sergei.shtylyov@cogentembedded.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, mbizon@freebox.fr, jogo@openwrt.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH V3 00/14] genirq endian fixes; bcm7120/brcmstb IRQ
+ updates
+Message-ID: <20141107050009.GI3698@titan.lakedaemon.net>
+References: <1414890241-9938-1-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1414624790-15690-4-git-send-email-abrestic@chromium.org>
+In-Reply-To: <1414890241-9938-1-git-send-email-cernekee@gmail.com>
 User-Agent: Mutt/1.5.20 (2009-06-14)
 Return-Path: <jason@lakedaemon.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43891
+X-archive-position: 43892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,34 +65,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Andrew,
+Kevin,
 
-On Wed, Oct 29, 2014 at 04:19:49PM -0700, Andrew Bresticker wrote:
-> Add device-tree support for the MIPS GIC.  Update the GIC irqdomain's
-> xlate() callback to handle the three-cell specifier described in the
-> MIPS GIC binding document.
-> 
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> Changes from v3:
->  - use reserved-cpu-vectors property
->  - read GIC base from CM if no reg property present
-> Changes from v2:
->  - rebased on GIC irqchip cleanups
->  - updated for change in bindings
->  - only parse first CPU vector
->  - allow platforms to use EIC mode
-> Changes from v1:
->  - updated for change in bindings
->  - set base address and enable bit in GCR_GIC_BASE
-> ---
->  drivers/irqchip/irq-mips-gic.c | 92 +++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 87 insertions(+), 5 deletions(-)
+On Sat, Nov 01, 2014 at 06:03:47PM -0700, Kevin Cernekee wrote:
+...
+> Kevin Cernekee (14):
+>   sh: Eliminate unused irq_reg_{readl,writel} accessors
+>   genirq: Generic chip: Change irq_reg_{readl,writel} arguments
+>   genirq: Generic chip: Allow irqchip drivers to override
+>     irq_reg_{readl,writel}
+>   genirq: Generic chip: Add big endian I/O accessors
+>   irqchip: brcmstb-l2: Eliminate dependency on ARM code
+>   irqchip: bcm7120-l2: Eliminate bad IRQ check
+>   irqchip: bcm7120-l2, brcmstb-l2: Remove ARM Kconfig dependency
+>   irqchip: bcm7120-l2: Make sure all register accesses use base+offset
+>   irqchip: bcm7120-l2: Fix missing nibble in gc->unused mask
+>   irqchip: bcm7120-l2: Use gc->mask_cache to simplify suspend/resume
+>     functions
+>   irqchip: bcm7120-l2: Extend driver to support 64+ bit controllers
+>   irqchip: bcm7120-l2: Decouple driver from brcmstb-l2
+>   irqchip: bcm7120-l2: Convert driver to use irq_reg_{readl,writel}
+>   irqchip: brcmstb-l2: Convert driver to use irq_reg_{readl,writel}
 
-I assume this is going though the mips tree...
+Patches 2, 3, and 4 applied to irqchip/core with Thomas' and Arnd's Acks
+added.  Patches 5-$ added to irqchip/core with Arnd's Ack added where it
+was missing.
 
-Acked-by: Jason Cooper <jason@lakedaemon.net>
+I've left patch #1 for the sh maintainers.
 
 thx,
 

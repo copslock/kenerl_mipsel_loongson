@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 07:49:24 +0100 (CET)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:46037 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012112AbaKGGp3GcwpT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 07:45:29 +0100
-Received: by mail-pa0-f42.google.com with SMTP id bj1so2954578pad.1
-        for <multiple recipients>; Thu, 06 Nov 2014 22:45:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ufBomCgKcn54a1fMOIHIEk8eGwcJ8UaPoWJ6+v66xfo=;
-        b=Q77M7re5HfekNcM4cmbmo3Dxyqgn1BW/i7XXn1zbPu1kuQRGmXpzQuqRVtW8VSSs/N
-         UtH7D+dEiMk+BEvo1FTQjayhu1dsPNcBhqoQc6f7XKot08RkWS0JA8gLdlI+UzrxgbeQ
-         r4MtVkILfqRQ1Ut6rn3IqNeBGoPOw3Yz463oBwZtsj6UdfWaMNUUjeam9ubFp0l7gMg7
-         eO7WVo8BNiJ6siA52qkPHoFn/jtEuUOPw7xXY7ATIEKZslY/wxeW+h/8hQXYmJ9Ke0If
-         TangDJ+5U6M23fvVcbJBFAPL7yexL8oeMgBDWyiXiFkL8OnCA9dSiDRmK3CNb1nRxfbd
-         pH/g==
-X-Received: by 10.70.128.203 with SMTP id nq11mr9961984pdb.88.1415342723264;
-        Thu, 06 Nov 2014 22:45:23 -0800 (PST)
-Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id fy4sm7686827pbb.42.2014.11.06.22.45.21
-        for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 06 Nov 2014 22:45:22 -0800 (PST)
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     tglx@linutronix.de, jason@lakedaemon.net, linux-sh@vger.kernel.org
-Cc:     arnd@arndb.de, f.fainelli@gmail.com, ralf@linux-mips.org,
-        sergei.shtylyov@cogentembedded.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mbizon@freebox.fr, jogo@openwrt.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH V4 14/14] irqchip: brcmstb-l2: Convert driver to use irq_reg_{readl,writel}
-Date:   Thu,  6 Nov 2014 22:44:29 -0800
-Message-Id: <1415342669-30640-15-git-send-email-cernekee@gmail.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
-References: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 11:22:33 +0100 (CET)
+Received: from resqmta-ch2-04v.sys.comcast.net ([69.252.207.36]:35054 "EHLO
+        resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012814AbaKGKWbK3EG4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 11:22:31 +0100
+Received: from resomta-ch2-11v.sys.comcast.net ([69.252.207.107])
+        by resqmta-ch2-04v.sys.comcast.net with comcast
+        id CaNN1p0012Ka2Q501aNNWV; Fri, 07 Nov 2014 10:22:22 +0000
+Received: from [192.168.1.13] ([69.251.152.165])
+        by resomta-ch2-11v.sys.comcast.net with comcast
+        id CaNM1p00N3aNLgd01aNNbl; Fri, 07 Nov 2014 10:22:22 +0000
+Message-ID: <545C9D4D.4090501@gentoo.org>
+Date:   Fri, 07 Nov 2014 05:22:05 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
+References: <54560D3B.8060602@gentoo.org> <5457CF0A.7020303@gmail.com> <5458272A.7050309@gentoo.org> <54582A91.8040401@gmail.com> <20141105160945.GB13785@linux-mips.org>
+In-Reply-To: <20141105160945.GB13785@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1415355742;
+        bh=y8U8c2CEyPewfEj3ko9Xp5AdV7yFVlwzRMnlLspQu1Y=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=kIYIrqgY9NBKKm76JpOLKALDTq3VfM1L+A205Pi5Ztl11/9Cxmmg1shR+TyQfGgad
+         tC3vKrcwL1ISbMEqWV4qSwCgeVJmwzZTxbu/aJHSYVKnQa/iAAwHip1a5yYHCdD42z
+         M2f7DXBnck9fkzkxGFBmTjlmcRLKg8DfgcVo5pE9UnxR8iQZTEehKI5n4St1C2tsgq
+         r/WpiL9+GUJkFzXrLLId8AZu9BPjDhpDo1dy2w214gfVHEGYaj2cFKRFZG83dUhDK+
+         rp7ggbPd7ET0yzxg9Ge6XQnPhCtUNttceZP1t/jVasfCQXwjaDeYtXH543VOqFipE3
+         GlW2E8A7uV/Nw==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43907
+X-archive-position: 43908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,124 +54,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This effectively converts the __raw_ accessors to the non-__raw_
-equivalents.  To handle BE, we pass IRQ_GC_BE_IO, similar to what was
-done in irq-bcm7120-l2.c.
+On 11/05/2014 11:09, Ralf Baechle wrote:
+> On Mon, Nov 03, 2014 at 05:23:29PM -0800, David Daney wrote:
+> 
+>> I haven't checked, but there may be workarounds required in the TLB
+>> management code that are not in place for the huge page case.  When the huge
+>> TLB code was developed, we didn't do any testing on R10K.  Somebody should
+>> dump the exception handlers and carefully look at the rest of the huge TLB
+>> management code, and check to see that any required workarounds are in
+>> place.
+> 
+> Joshua, if you happen to have R10000 errata sheets around, maybe you could
+> check if there's anything suspicious?  Off the top of my head I don't recall
+> any R10000 TLB erratas but the R10000 had plenty of erratas due to it's - by
+> the standards of the time - high complexity.
+> 
+>   Ralf
 
-Since irq_reg_writel now takes an irq_chip_generic argument, writel must
-be used for the initial hardware reset in the probe function.  But that
-operation never needs endian swapping, so it's probably not a big deal.
+All I have are errata sheets for Rev 2.3, 2.4, and 2.5 of the R10K.  Nothing
+specific on the R12K, and nil for the R14K/R16K.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- drivers/irqchip/irq-brcmstb-l2.c | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+That said, poking through other areas of the R10K/R12K User Manual, there are
+paragraphs titled "Errata" and regarding the PageMask register or TLB, they
+state this:
 
-diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
-index c9bdf20..4aa653a 100644
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -18,6 +18,7 @@
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/module.h>
-+#include <linux/kconfig.h>
- #include <linux/platform_device.h>
- #include <linux/spinlock.h>
- #include <linux/of.h>
-@@ -53,13 +54,14 @@ struct brcmstb_l2_intc_data {
- static void brcmstb_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- {
- 	struct brcmstb_l2_intc_data *b = irq_desc_get_handler_data(desc);
-+	struct irq_chip_generic *gc = irq_get_domain_generic_chip(b->domain, 0);
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
- 	u32 status;
- 
- 	chained_irq_enter(chip, desc);
- 
--	status = __raw_readl(b->base + CPU_STATUS) &
--		~(__raw_readl(b->base + CPU_MASK_STATUS));
-+	status = irq_reg_readl(gc, CPU_STATUS) &
-+		~(irq_reg_readl(gc, CPU_MASK_STATUS));
- 
- 	if (status == 0) {
- 		raw_spin_lock(&desc->lock);
-@@ -71,7 +73,7 @@ static void brcmstb_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- 	do {
- 		irq = ffs(status) - 1;
- 		/* ack at our level */
--		__raw_writel(1 << irq, b->base + CPU_CLEAR);
-+		irq_reg_writel(gc, 1 << irq, CPU_CLEAR);
- 		status &= ~(1 << irq);
- 		generic_handle_irq(irq_find_mapping(b->domain, irq));
- 	} while (status);
-@@ -86,12 +88,12 @@ static void brcmstb_l2_intc_suspend(struct irq_data *d)
- 
- 	irq_gc_lock(gc);
- 	/* Save the current mask */
--	b->saved_mask = __raw_readl(b->base + CPU_MASK_STATUS);
-+	b->saved_mask = irq_reg_readl(gc, CPU_MASK_STATUS);
- 
- 	if (b->can_wake) {
- 		/* Program the wakeup mask */
--		__raw_writel(~gc->wake_active, b->base + CPU_MASK_SET);
--		__raw_writel(gc->wake_active, b->base + CPU_MASK_CLEAR);
-+		irq_reg_writel(gc, ~gc->wake_active, CPU_MASK_SET);
-+		irq_reg_writel(gc, gc->wake_active, CPU_MASK_CLEAR);
- 	}
- 	irq_gc_unlock(gc);
- }
-@@ -103,11 +105,11 @@ static void brcmstb_l2_intc_resume(struct irq_data *d)
- 
- 	irq_gc_lock(gc);
- 	/* Clear unmasked non-wakeup interrupts */
--	__raw_writel(~b->saved_mask & ~gc->wake_active, b->base + CPU_CLEAR);
-+	irq_reg_writel(gc, ~b->saved_mask & ~gc->wake_active, CPU_CLEAR);
- 
- 	/* Restore the saved mask */
--	__raw_writel(b->saved_mask, b->base + CPU_MASK_SET);
--	__raw_writel(~b->saved_mask, b->base + CPU_MASK_CLEAR);
-+	irq_reg_writel(gc, b->saved_mask, CPU_MASK_SET);
-+	irq_reg_writel(gc, ~b->saved_mask, CPU_MASK_CLEAR);
- 	irq_gc_unlock(gc);
- }
- 
-@@ -119,6 +121,7 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 	struct irq_chip_generic *gc;
- 	struct irq_chip_type *ct;
- 	int ret;
-+	unsigned int flags;
- 
- 	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
-@@ -132,8 +135,8 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 	}
- 
- 	/* Disable all interrupts by default */
--	__raw_writel(0xffffffff, data->base + CPU_MASK_SET);
--	__raw_writel(0xffffffff, data->base + CPU_CLEAR);
-+	writel(0xffffffff, data->base + CPU_MASK_SET);
-+	writel(0xffffffff, data->base + CPU_CLEAR);
- 
- 	data->parent_irq = irq_of_parse_and_map(np, 0);
- 	if (data->parent_irq < 0) {
-@@ -149,9 +152,16 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 		goto out_unmap;
- 	}
- 
-+	/* MIPS chips strapped for BE will automagically configure the
-+	 * peripheral registers for CPU-native byte order.
-+	 */
-+	flags = 0;
-+	if (IS_ENABLED(CONFIG_MIPS) && IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-+		flags |= IRQ_GC_BE_IO;
-+
- 	/* Allocate a single Generic IRQ chip for this node */
- 	ret = irq_alloc_domain_generic_chips(data->domain, 32, 1,
--				np->full_name, handle_edge_irq, clr, 0, 0);
-+				np->full_name, handle_edge_irq, clr, 0, flags);
- 	if (ret) {
- 		pr_err("failed to allocate generic irq chip\n");
- 		goto out_free_domain;
+Page 41
+The calculated address is translated from a 44-bit virtual address into a
+40-bit physical address using a translation-lookaside buffer. The TLB contains
+64 entries, each of which can translate two pages. Each entry can select a page
+size ranging from 4 Kbytes to 16 Mbytes, inclusive, in __powers__ of 4, as
+shown in Figure 1-6.
+
+Page 316:
+Translated virtual addresses retrieve data in blocks, which are called pages.
+In the R10000 processor, the size of each page may be selected from a range
+that runs from 4 Kbytes to 16 Mbytes inclusive, __in_powers_of_4__ (that is, 4
+Kbytes, 16 Kbytes, 64 Kbytes, etc.).
+
+So my guess is unless hugepages can happen in powers of 4, they're not
+compatible w/ the R10K-series (and likely not the R5K/RM7K, either, since they
+all have the same 24:13 bits in the PageMask register).  It seems the logical
+choice would be to remove 'select CPU_SUPPORTS_HUGEPAGES' from CPU_R5000,
+CPU_NEVADA, CPU_R10000, and CPU_RM7000 in arch/mips/Kconfig.
+
 -- 
-2.1.1
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

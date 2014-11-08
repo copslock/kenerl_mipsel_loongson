@@ -1,36 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2014 03:18:42 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:41651 "EHLO unicorn.mansr.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2014 12:36:34 +0100 (CET)
+Received: from smtp5-g21.free.fr ([212.27.42.5]:54611 "EHLO smtp5-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012847AbaKHCSlGc-rV convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Nov 2014 03:18:41 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id ED4A01538A; Sat,  8 Nov 2014 02:18:33 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
-References: <1415290998-10328-1-git-send-email-mans@mansr.com>
-        <20141107005031.GA22697@linux-mips.org>
-        <yw1xbnojkazo.fsf@unicorn.mansr.com>
-        <20141107113545.GC24423@linux-mips.org>
-        <yw1x389vjbsm.fsf@unicorn.mansr.com> <545D10DE.5000804@gmail.com>
-Date:   Sat, 08 Nov 2014 02:18:33 +0000
-In-Reply-To: <545D10DE.5000804@gmail.com> (David Daney's message of "Fri, 07
-        Nov 2014 10:35:10 -0800")
-Message-ID: <yw1xtx2aigee.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+        id S27012739AbaKHLgc1yBSb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 8 Nov 2014 12:36:32 +0100
+Received: from tock (unknown [78.50.171.175])
+        (Authenticated sender: albeu)
+        by smtp5-g21.free.fr (Postfix) with ESMTPSA id 3A364D48061;
+        Sat,  8 Nov 2014 12:34:02 +0100 (CET)
+Date:   Sat, 8 Nov 2014 12:36:25 +0100
+From:   Alban <albeu@free.fr>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     Aban Bedel <albeu@free.fr>, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: FW: Fix parsing u-boot environment
+Message-ID: <20141108123625.5bf49656@tock>
+In-Reply-To: <545CBE5E.3050906@cogentembedded.com>
+References: <1415359381-27257-1-git-send-email-albeu@free.fr>
+        <545CBE5E.3050906@cogentembedded.com>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43928
+X-archive-position: 43929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,39 +42,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David Daney <ddaney.cavm@gmail.com> writes:
+On Fri, 07 Nov 2014 15:43:10 +0300
+Sergei Shtylyov <sergei.shtylyov@cogentembedded.com> wrote:
 
-> On 11/07/2014 07:00 AM, Måns Rullgård wrote:
-> [...]
->>
->>> As for access to hi/lo, I tried to explicitly put a variable in the lo
->>> register.  Which sort of works for very simple cases but as expected it's
->>> easy to get GCC to spill its RTL guts because it runs out of spill
->>> registers.  It maybe can be made to work but I'd feel nervous about its
->>> stability unless a GCC guru approved this method.
->>
->> The "x" constraint can be used to move a double-word to/from the hi/lo
->> registers.  On DSP targets, the "ka" constraint provides access to the
->> three additional hi/lo pairs while on a non-DSP targets it degenerates
->> to "x".  The "ka" constraint is available since gcc 4.3.0.  I see no
->> reason not to allow this extra flexibility.
->
-> What would the performance penalty be to hand code the assembly so
-> that only mips32 instructions are used (i.e. no MADD), and transfers
-> from hi/lo were all explicitly coded so that there were no hi/lo
-> register constraints, but only clobbers of "hi", "lo"?
+> Hello.
+> 
+> On 11/7/2014 2:23 PM, Alban Bedel wrote:
+> 
+> > When reading u-boot's key=value pairs it should skip the '=' and not
+> > use the next argument.
+> 
+> > Signed-off-by: Alban Bedel <albeu@free.fr>
+> > ---
+> >   arch/mips/fw/lib/cmdline.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> > diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
+> > index ffd0345..cc5d168 100644
+> > --- a/arch/mips/fw/lib/cmdline.c
+> > +++ b/arch/mips/fw/lib/cmdline.c
+> > @@ -68,7 +68,7 @@ char *fw_getenv(char *envname)
+> >   					result = fw_envp(index +
+> > 1); break;
+> >   				} else if (fw_envp(index)[i] ==
+> > '=') {
+> > -					result = (fw_envp(index +
+> > 1) + i);
+> > +					result = (fw_envp(index) +
+> > i + 1);
+> 
+>     Perhaps it's time to drop the useless outer parens?
 
-It's hard to say in absolute numbers.  However, the pre-mips32
-equivalent of MADDU looks something like this:
+I agree, I'm sending a new serie.
 
-        multu   $4, $5
-        mflo    $6
-        mfhi    $7
-        addu    $8, $8, $6
-        addu    $9, $9, $7
-        sltu    $6, $8, $6
-        addu    $9, $9, $6
-
--- 
-Måns Rullgård
-mans@mansr.com
+Alban

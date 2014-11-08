@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2014 02:19:18 +0100 (CET)
-Received: from v094114.home.net.pl ([79.96.170.134]:52655 "HELO
-        v094114.home.net.pl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S27012940AbaKHBTQez9Oj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Nov 2014 02:19:16 +0100
-Received: from afcu95.neoplus.adsl.tpnet.pl [95.49.72.95] (HELO vostro.rjw.lan)
- by serwer1319399.home.pl [79.96.170.134] with SMTP (IdeaSmtpServer v0.80)
- id 7237f5939e9f3a3d; Sat, 8 Nov 2014 02:19:09 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Kelvin Cheung <keguang.zhang@gmail.com>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH V3 6/6] cpufreq: Loongson1: Add cpufreq driver for Loongson1B
-Date:   Sat, 08 Nov 2014 02:40 +0100
-Message-ID: <15391417.y1hO0MjdpJ@vostro.rjw.lan>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-rc5+; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAKohponU38r6V_VvGz0bd_nXsNeZQy5=KYK2UGKAQxpey7q9cg@mail.gmail.com>
-References: <1413541411-26609-1-git-send-email-keguang.zhang@gmail.com> <CAKohponU38r6V_VvGz0bd_nXsNeZQy5=KYK2UGKAQxpey7q9cg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2014 03:18:42 +0100 (CET)
+Received: from unicorn.mansr.com ([81.2.72.234]:41651 "EHLO unicorn.mansr.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012847AbaKHCSlGc-rV convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Nov 2014 03:18:41 +0100
+Received: by unicorn.mansr.com (Postfix, from userid 51770)
+        id ED4A01538A; Sat,  8 Nov 2014 02:18:33 +0000 (GMT)
+From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant divisor
+References: <1415290998-10328-1-git-send-email-mans@mansr.com>
+        <20141107005031.GA22697@linux-mips.org>
+        <yw1xbnojkazo.fsf@unicorn.mansr.com>
+        <20141107113545.GC24423@linux-mips.org>
+        <yw1x389vjbsm.fsf@unicorn.mansr.com> <545D10DE.5000804@gmail.com>
+Date:   Sat, 08 Nov 2014 02:18:33 +0000
+In-Reply-To: <545D10DE.5000804@gmail.com> (David Daney's message of "Fri, 07
+        Nov 2014 10:35:10 -0800")
+Message-ID: <yw1xtx2aigee.fsf@unicorn.mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-Return-Path: <rjw@rjwysocki.net>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mru@mansr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43927
+X-archive-position: 43928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rjw@rjwysocki.net
+X-original-sender: mans@mansr.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,96 +43,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday, October 17, 2014 04:07:50 PM Viresh Kumar wrote:
-> On 17 October 2014 15:53, Kelvin Cheung <keguang.zhang@gmail.com> wrote:
-> > This patch adds cpufreq driver for Loongson1B which
-> > is capable of changing the CPU frequency dynamically.
-> >
-> > Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
-> >
-> > ---
-> > V3:
-> >    Remove superfluous devm_clk_put().
-> 
-> Sorry for being bad to you :)
-> 
-> > +static int ls1x_cpufreq_probe(struct platform_device *pdev)
-> > +{
-> > +       struct plat_ls1x_cpufreq *pdata = pdev->dev.platform_data;
-> > +       struct clk *clk;
-> > +       int ret;
-> > +
-> > +       if (!pdata || !pdata->clk_name || !pdata->osc_clk_name)
-> > +               return -EINVAL;
-> > +
-> > +       ls1x_cpufreq.dev = &pdev->dev;
-> > +
-> > +       clk = devm_clk_get(&pdev->dev, pdata->clk_name);
-> > +       if (IS_ERR(clk)) {
-> > +               dev_err(ls1x_cpufreq.dev, "unable to get %s clock\n",
-> > +                       pdata->clk_name);
-> > +               ret = PTR_ERR(clk);
-> > +               goto out;
-> > +       }
-> > +       ls1x_cpufreq.clk = clk;
-> > +
-> > +       clk = clk_get_parent(clk);
-> > +       if (IS_ERR(clk)) {
-> > +               dev_err(ls1x_cpufreq.dev, "unable to get parent of %s clock\n",
-> > +                       __clk_get_name(ls1x_cpufreq.clk));
-> > +               ret = PTR_ERR(clk);
-> > +               goto out;
-> > +       }
-> > +       ls1x_cpufreq.mux_clk = clk;
-> > +
-> > +       clk = clk_get_parent(clk);
-> > +       if (IS_ERR(clk)) {
-> > +               dev_err(ls1x_cpufreq.dev, "unable to get parent of %s clock\n",
-> > +                       __clk_get_name(ls1x_cpufreq.mux_clk));
-> > +               ret = PTR_ERR(clk);
-> > +               goto out;
-> > +       }
-> > +       ls1x_cpufreq.pll_clk = clk;
-> > +
-> > +       clk = devm_clk_get(&pdev->dev, pdata->osc_clk_name);
-> > +       if (IS_ERR(clk)) {
-> > +               dev_err(ls1x_cpufreq.dev, "unable to get %s clock\n",
-> > +                       pdata->osc_clk_name);
-> > +               ret = PTR_ERR(clk);
-> > +               goto out;
-> > +       }
-> > +       ls1x_cpufreq.osc_clk = clk;
-> > +
-> > +       ls1x_cpufreq.max_freq = pdata->max_freq;
-> > +       ls1x_cpufreq.min_freq = pdata->min_freq;
-> > +
-> > +       ret = cpufreq_register_driver(&ls1x_cpufreq_driver);
-> > +       if (ret) {
-> > +               dev_err(ls1x_cpufreq.dev,
-> > +                       "failed to register cpufreq driver: %d\n", ret);
-> > +               goto out;
-> > +       }
-> > +
-> > +       ret = cpufreq_register_notifier(&ls1x_cpufreq_notifier_block,
-> > +                                       CPUFREQ_TRANSITION_NOTIFIER);
-> > +
-> > +       if (!ret)
-> > +               goto out;
-> > +
-> > +       dev_err(ls1x_cpufreq.dev, "failed to register cpufreq notifier: %d\n",
-> > +               ret);
-> > +
-> > +       cpufreq_unregister_driver(&ls1x_cpufreq_driver);
-> > +out:
-> 
-> But all these goto out; doesn't make sense anymore. Just issue returns
-> from all places and add
-> 
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+David Daney <ddaney.cavm@gmail.com> writes:
 
-Patch queued up for 3.19-rc1, thanks!
+> On 11/07/2014 07:00 AM, Måns Rullgård wrote:
+> [...]
+>>
+>>> As for access to hi/lo, I tried to explicitly put a variable in the lo
+>>> register.  Which sort of works for very simple cases but as expected it's
+>>> easy to get GCC to spill its RTL guts because it runs out of spill
+>>> registers.  It maybe can be made to work but I'd feel nervous about its
+>>> stability unless a GCC guru approved this method.
+>>
+>> The "x" constraint can be used to move a double-word to/from the hi/lo
+>> registers.  On DSP targets, the "ka" constraint provides access to the
+>> three additional hi/lo pairs while on a non-DSP targets it degenerates
+>> to "x".  The "ka" constraint is available since gcc 4.3.0.  I see no
+>> reason not to allow this extra flexibility.
+>
+> What would the performance penalty be to hand code the assembly so
+> that only mips32 instructions are used (i.e. no MADD), and transfers
+> from hi/lo were all explicitly coded so that there were no hi/lo
+> register constraints, but only clobbers of "hi", "lo"?
 
+It's hard to say in absolute numbers.  However, the pre-mips32
+equivalent of MADDU looks something like this:
+
+        multu   $4, $5
+        mflo    $6
+        mfhi    $7
+        addu    $8, $8, $6
+        addu    $9, $9, $7
+        sltu    $6, $8, $6
+        addu    $9, $9, $6
 
 -- 
-I speak only for myself.
-Rafael J. Wysocki, Intel Open Source Technology Center.
+Måns Rullgård
+mans@mansr.com

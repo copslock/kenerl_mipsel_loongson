@@ -1,81 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2014 23:45:40 +0100 (CET)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:37103 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012912AbaKGWpiCzy64 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Nov 2014 23:45:38 +0100
-Received: by mail-pa0-f42.google.com with SMTP id bj1so4390651pad.15
-        for <linux-mips@linux-mips.org>; Fri, 07 Nov 2014 14:45:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=G35VrwEZ2f1z4huop9EEkQgaB9SZzg87AbV0C0LoQKk=;
-        b=bieyfq7t3Q8mxRRuMYxmuFbUwoGhBlBb4XiTZ0LpOo1BxuFaMiRPQgJj5kwiExjHM/
-         H1jXh2qi/KBJ4f5xtT6rY9Kz/z86u3Lcp4EoXwb+PAA3V58Pdclvw81/7w1qTbFnpk5U
-         ISJNcA2phyvX9GU+g4muPemtgmDB7yrLaqPjD/lm3qAC5IpjGn4NRIu+74RMkoc0V+oY
-         tAgDBDhkToYdMpWYEgkqSHW/UHfkv2oBKpLrflhJI7mqBRiEY3FlmsfxRdLgLSsAFaHG
-         K/Dj8Q6rlTc4VE9baEOBYx6cqSMEx/EulWbiaEgUvgc3gXkmEFDR7mSd+EmqY8pKlHo2
-         N9PQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=G35VrwEZ2f1z4huop9EEkQgaB9SZzg87AbV0C0LoQKk=;
-        b=KPs5mqRbCHpr2TwKAQzpYt5ZCd2N9CvXRlh0Q93CLtCuYt1a8WH/2yBDEm6BRqJgOP
-         27eTkVOrE3LRXYA053sNWht9PsT7c8qg2UZEV1b4ytHbjDJ/9P4j+5iAEopJIWe3s5S+
-         PQHnJE0s+HXs8meGZtgAlVO+3bJdOm4xLRbo8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=G35VrwEZ2f1z4huop9EEkQgaB9SZzg87AbV0C0LoQKk=;
-        b=X42gdfG79xa6vAsz34Ya1eO6cayeEPhFaFapHpcNOBW0dgCa5Vna9QtbeQv8vOVRdW
-         lWncVHG+Ea5VcOLLYf960cKbgWsgI9mCrEsiGBxYZM9r4HO+umLBLUnphnUJbUIMKOCg
-         OfY4ri9HfS07i1SSD0tqAWA9hthLlChuv1cAPrgO5fId/axl42shjMBVLL7nn5/yllIe
-         mtn1MjGmvvDGY6PsweOdrKrU0kzbVomBPzoN8qV5EmV2WLCLVoJUU8UvlRcwIk1vOk3e
-         Mj2r5S7uoR5qF9y7qS5KEP9Mo/I7O/GPuVaFKmCXfk/zd7bW629FZqDWkdF0Wzj4nzd8
-         Rv7Q==
-X-Gm-Message-State: ALoCoQnv9IxwhuDNBEF0zVa+lhcRrP9o0PkRFNWhyeXBAEqBLHWz6YXjDuHOXiYnBY8EivIlZOrZ
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2014 01:49:26 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:39869 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012929AbaKHAtYR0fVo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 8 Nov 2014 01:49:24 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sA80nNhv015216;
+        Sat, 8 Nov 2014 01:49:23 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sA80nM5l015215;
+        Sat, 8 Nov 2014 01:49:22 +0100
+Date:   Sat, 8 Nov 2014 01:49:22 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-mips@linux-mips.org
+Subject: MIPS: Pull request
+Message-ID: <20141108004922.GA14896@linux-mips.org>
 MIME-Version: 1.0
-X-Received: by 10.70.88.165 with SMTP id bh5mr15215680pdb.51.1415400330587;
- Fri, 07 Nov 2014 14:45:30 -0800 (PST)
-Received: by 10.70.118.170 with HTTP; Fri, 7 Nov 2014 14:45:30 -0800 (PST)
-In-Reply-To: <20141107041742.GH3698@titan.lakedaemon.net>
-References: <1414624790-15690-1-git-send-email-abrestic@chromium.org>
-        <1414624790-15690-4-git-send-email-abrestic@chromium.org>
-        <20141107041742.GH3698@titan.lakedaemon.net>
-Date:   Fri, 7 Nov 2014 14:45:30 -0800
-X-Google-Sender-Auth: qVXuNPjKbSS1dB4vrSRuBzW4FW0
-Message-ID: <CAL1qeaFpA8Ar3ef4Utd94SVtVfzP2=HVKwDc-2XgWuV+6sWswQ@mail.gmail.com>
-Subject: Re: [PATCH V4 3/4] irqchip: mips-gic: Add device-tree support
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Jason Cooper <jason@lakedaemon.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43924
+X-archive-position: 43925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,35 +40,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 6, 2014 at 8:17 PM, Jason Cooper <jason@lakedaemon.net> wrote:
-> On Wed, Oct 29, 2014 at 04:19:49PM -0700, Andrew Bresticker wrote:
->> Add device-tree support for the MIPS GIC.  Update the GIC irqdomain's
->> xlate() callback to handle the three-cell specifier described in the
->> MIPS GIC binding document.
->>
->> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
->> Acked-by: Arnd Bergmann <arnd@arndb.de>
->> ---
->> Changes from v3:
->>  - use reserved-cpu-vectors property
->>  - read GIC base from CM if no reg property present
->> Changes from v2:
->>  - rebased on GIC irqchip cleanups
->>  - updated for change in bindings
->>  - only parse first CPU vector
->>  - allow platforms to use EIC mode
->> Changes from v1:
->>  - updated for change in bindings
->>  - set base address and enable bit in GCR_GIC_BASE
->> ---
->>  drivers/irqchip/irq-mips-gic.c | 92 +++++++++++++++++++++++++++++++++++++++---
->>  1 file changed, 87 insertions(+), 5 deletions(-)
->
-> I assume this is going though the mips tree...
->
-> Acked-by: Jason Cooper <jason@lakedaemon.net>
+The following changes since commit cac7f2429872d3733dc3f9915857b1691da2eb2f:
 
-Yup, that's the plan.
+  Linux 3.18-rc2 (2014-10-26 16:48:41 -0700)
 
-Thanks,
-Andrew
+are available in the git repository at:
+
+  git://git.linux-mips.org/pub/scm/ralf/upstream-linus.git upstream
+
+for you to fetch changes up to 842dfc11ea9a21f9825167c8a4f2834b205b0a79:
+
+  MIPS: Fix build with binutils 2.24.51+ (2014-11-07 15:07:36 +0100)
+
+This weeks' round of MIPS bug fixes for 3.18:
+
+ o Wire up the bpf syscall
+ o Fix TLB dump output for R3000 class TLBs
+ o Fix strnlen_user return value if no NUL character was found.
+ o Fix build with binutils 2.24.51+.  While there is no binutils 2.25
+   release yet, toolchains derived from binutils 2.24.51+ are already in
+   common use.
+ o The Octeon GPIO code forgot to offline GPIO IRQs.
+ o Fix build error for XLP.
+ o Fix possible BUG assertion with EVA for CMA
+
+Please consider pulling,
+
+  Ralf
+
+----------------------------------------------------------------
+Alexander Sverdlin (1):
+      MIPS: Octeon: Make Octeon GPIO IRQ chip CPU hotplug-aware
+
+Isamu Mogi (1):
+      MIPS: R3000: Fix debug output for Virtual page number
+
+Manuel Lauss (1):
+      MIPS: Fix build with binutils 2.24.51+
+
+Ralf Baechle (2):
+      MIPS: Wire up bpf syscall.
+      MIPS: Fix strnlen_user() return value in case of overlong strings.
+
+Yijing Wang (1):
+      MIPS/Xlp: Remove the dead function destroy_irq() to fix build error
+
+Zubair Lutfullah Kakakhel (1):
+      MIPS: CMA: Do not reserve memory if not required
+
+ arch/mips/Makefile                   |  9 +++++++++
+ arch/mips/cavium-octeon/octeon-irq.c |  2 ++
+ arch/mips/include/asm/asmmacro-32.h  |  6 ++++++
+ arch/mips/include/asm/asmmacro.h     | 18 ++++++++++++++++++
+ arch/mips/include/asm/fpregdef.h     | 14 ++++++++++++++
+ arch/mips/include/asm/fpu.h          |  4 ++--
+ arch/mips/include/asm/mipsregs.h     | 11 ++++++++++-
+ arch/mips/include/uapi/asm/unistd.h  | 15 +++++++++------
+ arch/mips/kernel/branch.c            |  8 ++------
+ arch/mips/kernel/genex.S             |  1 +
+ arch/mips/kernel/r2300_fpu.S         |  6 ++++++
+ arch/mips/kernel/r2300_switch.S      |  5 +++++
+ arch/mips/kernel/r4k_fpu.S           | 27 +++++++++++++++++++++++++--
+ arch/mips/kernel/r4k_switch.S        | 15 ++++++++++++++-
+ arch/mips/kernel/r6000_fpu.S         |  5 +++++
+ arch/mips/kernel/scall32-o32.S       |  1 +
+ arch/mips/kernel/scall64-64.S        |  1 +
+ arch/mips/kernel/scall64-n32.S       |  1 +
+ arch/mips/kernel/scall64-o32.S       |  1 +
+ arch/mips/kernel/setup.c             |  3 ++-
+ arch/mips/lib/r3k_dump_tlb.c         |  4 ++--
+ arch/mips/lib/strnlen_user.S         |  6 ++++--
+ arch/mips/math-emu/cp1emu.c          |  6 +-----
+ arch/mips/pci/msi-xlp.c              |  4 +---
+ 24 files changed, 142 insertions(+), 31 deletions(-)

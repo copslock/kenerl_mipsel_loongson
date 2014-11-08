@@ -1,33 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2014 01:49:26 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:39869 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27012929AbaKHAtYR0fVo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 8 Nov 2014 01:49:24 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sA80nNhv015216;
-        Sat, 8 Nov 2014 01:49:23 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sA80nM5l015215;
-        Sat, 8 Nov 2014 01:49:22 +0100
-Date:   Sat, 8 Nov 2014 01:49:22 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-mips@linux-mips.org
-Subject: MIPS: Pull request
-Message-ID: <20141108004922.GA14896@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2014 01:56:19 +0100 (CET)
+Received: from smtpbgsg2.qq.com ([54.254.200.128]:32799 "EHLO smtpbgsg2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012926AbaKHA4PO1moM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 8 Nov 2014 01:56:15 +0100
+X-QQ-GoodBg: 0
+X-QQ-SSF: 00100000000000F0
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 107.170.108.197
+X-QQ-STYLE: 
+X-QQ-mid: bizmail38t1415408146t8587380
+From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
+To:     "=?utf-8?B?WXVuUWlhbmcgU3U=?=" <wzssyqa@gmail.com>
+Cc:     "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
+        "=?utf-8?B?QXVyZWxpZW4gSmFybm8=?=" <aurelien@aurel32.net>
+Subject: Re: Problems of kernel of Loongson 3
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: base64
+Date:   Sat, 8 Nov 2014 08:55:46 +0800
+X-Priority: 3
+Message-ID: <tencent_2B8FFD0B4CDD65A640BD3318@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <CAKcpw6WiuqJ5Cn4FNoYQEga8KBhZAZ4ohx35MqsdaOZDL6bABA@mail.gmail.com>
+        <tencent_7A73C86D635497A07A126836@qq.com>
+        <CAKcpw6Wb5+GMMHELghc4b2kss1bSGLqPw1k+MeJUsXzPA1Eb5w@mail.gmail.com>
+        <tencent_23B90CE67AF56A127F8ADA05@qq.com>
+        <CAKcpw6VSQMKba62BQW9M6OmAzf6AyDuje57K0=+Mpb1DkAq__Q@mail.gmail.com>
+        <tencent_36E25D7005ABF4617D924048@qq.com>
+        <CAKcpw6VXR4OJWsuemiwJ2sfaMhN+4rn2Py_svUxDVe4P09PR8A@mail.gmail.com>
+In-Reply-To: <CAKcpw6VXR4OJWsuemiwJ2sfaMhN+4rn2Py_svUxDVe4P09PR8A@mail.gmail.com>
+X-QQ-ReplyHash: 2662576631
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43925
+X-archive-position: 43926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,76 +56,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The following changes since commit cac7f2429872d3733dc3f9915857b1691da2eb2f:
-
-  Linux 3.18-rc2 (2014-10-26 16:48:41 -0700)
-
-are available in the git repository at:
-
-  git://git.linux-mips.org/pub/scm/ralf/upstream-linus.git upstream
-
-for you to fetch changes up to 842dfc11ea9a21f9825167c8a4f2834b205b0a79:
-
-  MIPS: Fix build with binutils 2.24.51+ (2014-11-07 15:07:36 +0100)
-
-This weeks' round of MIPS bug fixes for 3.18:
-
- o Wire up the bpf syscall
- o Fix TLB dump output for R3000 class TLBs
- o Fix strnlen_user return value if no NUL character was found.
- o Fix build with binutils 2.24.51+.  While there is no binutils 2.25
-   release yet, toolchains derived from binutils 2.24.51+ are already in
-   common use.
- o The Octeon GPIO code forgot to offline GPIO IRQs.
- o Fix build error for XLP.
- o Fix possible BUG assertion with EVA for CMA
-
-Please consider pulling,
-
-  Ralf
-
-----------------------------------------------------------------
-Alexander Sverdlin (1):
-      MIPS: Octeon: Make Octeon GPIO IRQ chip CPU hotplug-aware
-
-Isamu Mogi (1):
-      MIPS: R3000: Fix debug output for Virtual page number
-
-Manuel Lauss (1):
-      MIPS: Fix build with binutils 2.24.51+
-
-Ralf Baechle (2):
-      MIPS: Wire up bpf syscall.
-      MIPS: Fix strnlen_user() return value in case of overlong strings.
-
-Yijing Wang (1):
-      MIPS/Xlp: Remove the dead function destroy_irq() to fix build error
-
-Zubair Lutfullah Kakakhel (1):
-      MIPS: CMA: Do not reserve memory if not required
-
- arch/mips/Makefile                   |  9 +++++++++
- arch/mips/cavium-octeon/octeon-irq.c |  2 ++
- arch/mips/include/asm/asmmacro-32.h  |  6 ++++++
- arch/mips/include/asm/asmmacro.h     | 18 ++++++++++++++++++
- arch/mips/include/asm/fpregdef.h     | 14 ++++++++++++++
- arch/mips/include/asm/fpu.h          |  4 ++--
- arch/mips/include/asm/mipsregs.h     | 11 ++++++++++-
- arch/mips/include/uapi/asm/unistd.h  | 15 +++++++++------
- arch/mips/kernel/branch.c            |  8 ++------
- arch/mips/kernel/genex.S             |  1 +
- arch/mips/kernel/r2300_fpu.S         |  6 ++++++
- arch/mips/kernel/r2300_switch.S      |  5 +++++
- arch/mips/kernel/r4k_fpu.S           | 27 +++++++++++++++++++++++++--
- arch/mips/kernel/r4k_switch.S        | 15 ++++++++++++++-
- arch/mips/kernel/r6000_fpu.S         |  5 +++++
- arch/mips/kernel/scall32-o32.S       |  1 +
- arch/mips/kernel/scall64-64.S        |  1 +
- arch/mips/kernel/scall64-n32.S       |  1 +
- arch/mips/kernel/scall64-o32.S       |  1 +
- arch/mips/kernel/setup.c             |  3 ++-
- arch/mips/lib/r3k_dump_tlb.c         |  4 ++--
- arch/mips/lib/strnlen_user.S         |  6 ++++--
- arch/mips/math-emu/cp1emu.c          |  6 +-----
- arch/mips/pci/msi-xlp.c              |  4 +---
- 24 files changed, 142 insertions(+), 31 deletions(-)
+SGksDQoNCkxhdGVzdCBQTU9OIGZvciBBMTAwNCAoTGFwdG9wKTogaHR0cDovL2Rldi5sZW1v
+dGUuY29tL2ZpbGVzL3VwbG9hZC9sbS9rZXJuZWwvdGVzdGluZy9wbW9uLUExMDA0LTIuMS40
+LmJpbg0KTGF0ZXN0IFBNT04gZm9yIEExMDAxICg2MTAwIElUWCk6IGh0dHA6Ly9kZXYubGVt
+b3RlLmNvbS9maWxlcy91cGxvYWQvbG0va2VybmVsL3Rlc3RpbmcvcG1vbi1BMTEwMS00LjAu
+MS5iaW4NCg0KSHVhY2FpDQogDQogDQotLS0tLS0tLS0tLS0tLS0tLS0gT3JpZ2luYWwgLS0t
+LS0tLS0tLS0tLS0tLS0tDQpGcm9tOiAgIll1blFpYW5nIFN1Ijx3enNzeXFhQGdtYWlsLmNv
+bT47DQpEYXRlOiAgU2F0LCBOb3YgOCwgMjAxNCAwMTozNCBBTQ0KVG86ICAi6ZmI5Y2O5omN
+IjxjaGVuaGNAbGVtb3RlLmNvbT47IA0KQ2M6ICAibGludXgtbWlwcyI8bGludXgtbWlwc0Bs
+aW51eC1taXBzLm9yZz47ICJBdXJlbGllbiBKYXJubyI8YXVyZWxpZW5AYXVyZWwzMi5uZXQ+
+OyANClN1YmplY3Q6ICBSZTogUHJvYmxlbXMgb2Yga2VybmVsIG9mIExvb25nc29uIDMNCg0K
+IA0KT24gV2VkLCBOb3YgNSwgMjAxNCBhdCA5OjQ5IEFNLCDpmYjljY7miY0gPGNoZW5oY0Bs
+ZW1vdGUuY29tPiB3cm90ZToNCj4gT25seSByYWRlb24gY2FyZHMgc3VwcG9ydCBub3cuDQo+
+DQo+DQo+IC0tLS0tLS0tLS0tLS0tLS0tLSBPcmlnaW5hbCAtLS0tLS0tLS0tLS0tLS0tLS0N
+Cj4gRnJvbTogICJZdW5RaWFuZyBTdSI8d3pzc3lxYUBnbWFpbC5jb20+Ow0KPiBEYXRlOiAg
+VHVlLCBOb3YgNCwgMjAxNCAxMDo1MyBQTQ0KPiBUbzogICLpmYjljY7miY0iPGNoZW5oY0Bs
+ZW1vdGUuY29tPjsNCj4gQ2M6ICAibGludXgtbWlwcyI8bGludXgtbWlwc0BsaW51eC1taXBz
+Lm9yZz47ICJBdXJlbGllbiBKYXJubyI8YXVyZWxpZW5AYXVyZWwzMi5uZXQ+Ow0KPiBTdWJq
+ZWN0OiAgUmU6IFByb2JsZW1zIG9mIGtlcm5lbCBvZiBMb29uZ3NvbiAzDQo+DQo+DQo+IE9u
+IFR1ZSwgTm92IDQsIDIwMTQgYXQgMTA6NDggUE0sIOmZiOWNjuaJjSA8Y2hlbmhjQGxlbW90
+ZS5jb20+IHdyb3RlOg0KPj4gSGksDQo+Pg0KPj4gMSwgbWFpbnN0cmVhbSBrZXJuZWwgaGFz
+IG9ubHkgYmFzaWMgTG9vbmdzb24tMyBzdXBwb3J0LCBub3QgZnVsbC1mdW5jdGlvbmFsLCBz
+b21ldGhpbmcgaGFzIG1pc3NpbmcuDQo+PiAyLCBVbmZvcnR1bmF0ZWx5LCBubyBWRVNBIGRy
+aXZlciBvbiBMb29uZ3Nvbi4uLg0KPg0KDQpEbyB5b3UgaGF2ZSBhIHBtb24gdXBkYXRlIGZv
+ciBMZW1vdGUncyBtYWNoaW5lIHRvIHdvcmsgd2l0aCB0aGUgbmV3IGtlcm5lbD8NCg0KPiBB
+SGhoaGgsIHRoZW4gd2hhdCB0byBkbyBpZiB0byB3b3JrIHdpdGggb3RoZXIgZ3JhcGhpYyBj
+YXJkcz8NCj4NCj4+DQo+PiBIdWFjYWkNCj4+DQo+PiAtLS0tLS0tLS0tLS0tLS0tLS0gT3Jp
+Z2luYWwgLS0tLS0tLS0tLS0tLS0tLS0tDQo+PiBGcm9tOiAgIll1blFpYW5nIFN1Ijx3enNz
+eXFhQGdtYWlsLmNvbT47DQo+PiBEYXRlOiAgVHVlLCBOb3YgNCwgMjAxNCAxMDozNiBQTQ0K
+Pj4gVG86ICAi6ZmI5Y2O5omNIjxjaGVuaGNAbGVtb3RlLmNvbT47DQo+PiBDYzogICJsaW51
+eC1taXBzIjxsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnPjsgIkF1cmVsaWVuIEphcm5vIjxh
+dXJlbGllbkBhdXJlbDMyLm5ldD47DQo+PiBTdWJqZWN0OiAgUmU6IFByb2JsZW1zIG9mIGtl
+cm5lbCBvZiBMb29uZ3NvbiAzDQo+Pg0KPj4NCj4+IE9uIFR1ZSwgTm92IDQsIDIwMTQgYXQg
+MTA6MjQgUE0sIOmZiOWNjuaJjSA8Y2hlbmhjQGxlbW90ZS5jb20+IHdyb3RlOg0KPj4+IEhp
+LA0KPj4+DQo+Pj4gMSwgWW91IGNhbiB0cnkgMy4xNiBmcm9tIG1hc3RlciBicmFuY2ggaGVy
+ZToNCj4+PiBodHRwOi8vZGV2LmxlbW90ZS5jb20vY2dpdC9saW51eC1vZmZpY2lhbC5naXQv
+DQo+Pg0KPj4gT0ssIEkgd2lsbCB0cnkgaXQuIEV2ZW4gdGhvdWdoLCB3ZSBzdGlsbCBuZWVk
+IGEgcGF0Y2ggdG8gbWFrZSBpdCBjYW4NCj4+IHVzZSBvbiBMZW1vdGUgbWFjaGllbnMuDQo+
+Pg0KPj4+DQo+Pj4gMiwgU2luY2UgMy4xNCwgcmFkZW9uIGNhbm5vdCBzdXBwb3J0IG5vbi1m
+aXJtd2FyZSBkaXNwbGF5LiBUaGlzIGlzIGNvbmZpcm1lZCBieSBkcm0gbWFpbnRhaW5lcnMu
+DQo+Pg0KPj4gSG93IGNhbiB4ODYgbWFjaGluZXMgZGlzcGxheSBzb21ldGhpbmcgd2hlbiBm
+aXJtd2FyZXMgYXJlIG1pc3Npbmc/DQo+PiBVc2Ugc29tZXRoaW5nIGxpa2UgdmVzYSB3aGVu
+IGZpcm13YXJlcyBhcmUgbG9zdD8NCj4+DQo+Pj4NCj4+PiBIdWFjYWkNCj4+Pg0KPj4+IC0t
+LS0tLS0tLS0tLS0tLS0tLSBPcmlnaW5hbCAtLS0tLS0tLS0tLS0tLS0tLS0NCj4+PiBGcm9t
+OiAgIll1blFpYW5nIFN1Ijx3enNzeXFhQGdtYWlsLmNvbT47DQo+Pj4gRGF0ZTogIFR1ZSwg
+Tm92IDQsIDIwMTQgMDk6NDAgUE0NCj4+PiBUbzogICLpmYjljY7miY0iPGNoZW5oY0BsZW1v
+dGUuY29tPjsNCj4+PiBDYzogICJsaW51eC1taXBzIjxsaW51eC1taXBzQGxpbnV4LW1pcHMu
+b3JnPjsgIkF1cmVsaWVuIEphcm5vIjxhdXJlbGllbkBhdXJlbDMyLm5ldD47DQo+Pj4gU3Vi
+amVjdDogIFByb2JsZW1zIG9mIGtlcm5lbCBvZiBMb29uZ3NvbiAzDQo+Pj4NCj4+Pg0KPj4+
+IEkgaGF2ZSB0ZXN0ZWQgdGhlIGtlcm5lbCAzLjE2LCBhbmQgMy4xNyBvZiBEZWJpYW4gb24g
+bG9vbmdzb24gMy4NCj4+PiBJIG1ldCAyIG1ham9yIHByb2JsZW1zOg0KPj4+DQo+Pj4gMS4g
+T24gdGhlIExlbW90ZSA2MTAwIGFuZCBZZWVsb29uZyA4MTMzLCBsb2FkIGNvbW1hbmQgaGFu
+Z3MNCj4+Pg0KPj4+ICBQTU9OPiBsb2FkICh3ZDAsMCkvdm1saW51eC0zLjE2LTMtbG9vbmdz
+b24tMw0KPj4+ICBMb2FkaW5nIGZpbGU6ICh3ZDAsMCkvdm1saW51eC0zLjE2LTMtbG9vbmdz
+b24tMw0KPj4+ICAoZWxmNjQpDQo+Pj4gIDB4ODAyMDAwMDAvOTE3MTU4NCArIDB4ODBhYmYy
+ODAvMzQyMDExNTIoeikNCj4+Pg0KPj4+ICBJdCBhbHNvIGhhbmdzIG9uIHRoZSBkZXYgYm9h
+cmQgZnJvbSBMZW1vdGUuDQo+Pj4gIFdoaWxlIGl0IGNhbiBib290IG9uIGRldiBib2FyZHMg
+ZnJvbSBMb29uZ3Nvbi4NCj4+Pg0KPj4+ICAzLjE1IGtlcm5lbCB3b3JrcyBmaW5lIG9uIGJv
+dGggYm9hcmRzLg0KPj4+DQo+Pj4gMi4gSWYgd2l0aG91dCByYWRlb24gbm9uLWZyZWUgZmly
+bXdhcmUgaW4gaW5pdHJkL3ZtbGludXgsDQo+Pj4gIHRoZSBzY3JlZW4gY2FuIGRpc3BsYXkg
+bm90aGluZy4NCj4+PiAgSXQgbWFrZXMgdXMgZGlmZmljdWx0IHRvIHBhdGNoIGRlYmlhbi1p
+bnN0YWxsIHRvIHN1cHBvcnQgTG9vbmdzb24gMy4NCj4+PiAgQSBhdXRvbWF0aWMgZmFsbGJh
+Y2sgbWF5IGJlIG5lZWRlZCB3aGVuIG5vbmZyZWUgZmlybXdhcmUgaXMgbm90IGF2YWlsYWJs
+ZS4NCj4+Pg0KPj4+IC0tDQo+Pj4gWXVuUWlhbmcgU3UNCj4+DQo+Pg0KPj4NCj4+IC0tDQo+
+PiBZdW5RaWFuZyBTdQ0KPg0KPg0KPg0KPiAtLQ0KPiBZdW5RaWFuZyBTdQ0KDQoNCg0KLS0g
+DQpZdW5RaWFuZyBTdQ==

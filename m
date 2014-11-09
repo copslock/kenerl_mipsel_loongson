@@ -1,59 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Nov 2014 05:30:23 +0100 (CET)
-Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:56104 "EHLO
-        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007304AbaKIEaWGzCFw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 9 Nov 2014 05:30:22 +0100
-Received: from pool-96-249-243-124.nrflva.fios.verizon.net ([96.249.243.124] helo=titan)
-        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <jason@lakedaemon.net>)
-        id 1XnK8k-000HCZ-2x; Sun, 09 Nov 2014 04:30:14 +0000
-Received: from titan.lakedaemon.net (localhost [127.0.0.1])
-        by titan (Postfix) with ESMTP id 426836155F7;
-        Sat,  8 Nov 2014 23:30:10 -0500 (EST)
-X-Mail-Handler: Dyn Standard SMTP by Dyn
-X-Originating-IP: 96.249.243.124
-X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX19/BuFEd1mK8bYlEiMADFzkURv07a2ayA4=
-X-DKIM: OpenDKIM Filter v2.0.1 titan 426836155F7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
-        s=mail; t=1415507410;
-        bh=X2vzGKybZ2wtvhFihfT5rp+bM/O24RIqI5ABKgnyvIM=;
-        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To;
-        b=ZEamxgZ6wwsuD7MZeXk8XpoqgWKxntQfPfvIASqB05Evhr+uLCstc49gzIvptp5y8
-         OF/bc+O3a3Zneewu+cHCWPQ/fXI5VfjzllRD1BGLol6exh0QI00B1ldlTyS3+P+VeS
-         6ocMQd5hItrThQuyWbUalOlKiv52LSD32mSXmXG+cb7+mTHfIzgCgLGkWHH7xb589s
-         NNELZAaLTCeQXWYsz9fkEQ37BTLPXhdXVZLz+NWYexsOfzWFJSusVaCyQdK3Z1mWVg
-         rB2UC78x5oNbkG6dO+jNq+T2LPpR5wGPrdsNRqo/aaBrbciNClnmbp1W4LKPMxnR7M
-         xRmqKTgfZuzqQ==
-Date:   Sat, 8 Nov 2014 23:30:10 -0500
-From:   Jason Cooper <jason@lakedaemon.net>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     tglx@linutronix.de, linux-sh@vger.kernel.org, arnd@arndb.de,
-        f.fainelli@gmail.com, ralf@linux-mips.org,
-        sergei.shtylyov@cogentembedded.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mbizon@freebox.fr, jogo@openwrt.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH V4 00/14] genirq endian fixes; bcm7120/brcmstb IRQ
- updates
-Message-ID: <20141109043010.GR3698@titan.lakedaemon.net>
-References: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
- <20141107122745.GJ3698@titan.lakedaemon.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20141107122745.GJ3698@titan.lakedaemon.net>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <jason@lakedaemon.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Nov 2014 09:56:34 +0100 (CET)
+Received: from mail-pa0-f42.google.com ([209.85.220.42]:52651 "EHLO
+        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013061AbaKII4d1vtA4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 9 Nov 2014 09:56:33 +0100
+Received: by mail-pa0-f42.google.com with SMTP id bj1so6310485pad.1
+        for <linux-mips@linux-mips.org>; Sun, 09 Nov 2014 00:56:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=hny+BuWeqMS+DA+IpstQ6EN1tPyxgw7+rPFXjlH/yVE=;
+        b=GDa3wVk5//DgoZGq8v2/Fet58HYxgk3s6tqfvNF+LLJwGibpN620RgRuJRhJCEWvIC
+         gY5w5hTNtMK6NHODk4Quc+1J/49KgT5N/VGBllJYy3wQBBJhLqWC8dobo3dJdV+VNKwW
+         0fFpUCOqIrMf1QLUuDu04uRocyFOGzG7WxKArdfH4+n0hMmLyKhIq946qvWpq2HwPIQE
+         gRgtEoRYBNGVR5dT73cAqjuh3y+b0Iebwo0OQLkHdKfwgb9D+QjtR3SKWdHcBE+INRdW
+         fakLZh21gGbYN5ucf92wosKMJen7nRv9rpW1nvN/zfDwG40sPIBGLp5s+H8jKP1fP5ok
+         mpSg==
+X-Received: by 10.68.68.141 with SMTP id w13mr24468184pbt.82.1415523387143;
+        Sun, 09 Nov 2014 00:56:27 -0800 (PST)
+Received: from localhost (b32.net. [192.81.132.72])
+        by mx.google.com with ESMTPSA id i11sm13248958pbq.84.2014.11.09.00.56.25
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 09 Nov 2014 00:56:26 -0800 (PST)
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org
+Cc:     grant.likely@linaro.org, f.fainelli@gmail.com, mbizon@freebox.fr,
+        jogo@openwrt.org, linux-mips@linux-mips.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH 1/2] of: Fix crash if an earlycon driver is not found
+Date:   Sun,  9 Nov 2014 00:55:47 -0800
+Message-Id: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
+X-Mailer: git-send-email 2.1.1
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43933
+X-archive-position: 43934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jason@lakedaemon.net
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,23 +53,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 07, 2014 at 07:27:45AM -0500, Jason Cooper wrote:
-> Thomas,
-> 
-> On Thu, Nov 06, 2014 at 10:44:15PM -0800, Kevin Cernekee wrote:
-> > V3->V4:
-> > 
-> >  - Fix buildbot bisectability warning on patch 02/14 (missing include)
-> 
-> Dammit.  :(  Even if I had created a topic branch for this series, I
-> still would have put the genirq changes in /core, then based a brcm
-> branch off of that.
-> 
-> I'm inclined to think I should just drop v3 and apply v4, as a revert
-> commit wouldn't solve the bisectability issue.
+__earlycon_of_table_sentinel.compatible is a char[128], not a pointer, so
+it will never be NULL.  Checking it against NULL causes the match loop to
+run past the end of the array, and eventually match a bogus entry, under
+the following conditions:
 
-Ok, no complaints, so it's done.
+ - Kernel command line specifies "earlycon" with no parameters
+ - DT has a stdout-path pointing to a UART node
+ - The UART driver doesn't use OF_EARLYCON_DECLARE (or maybe the console
+   driver is compiled out)
 
-thx,
+Fix this by checking to see if match->compatible is a non-empty string.
 
-Jason.
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+Cc: <stable@vger.kernel.org> # 3.16+
+---
+ drivers/of/fdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index d1ffca8..30e97bc 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -773,7 +773,7 @@ int __init early_init_dt_scan_chosen_serial(void)
+ 	if (offset < 0)
+ 		return -ENODEV;
+ 
+-	while (match->compatible) {
++	while (match->compatible[0]) {
+ 		unsigned long addr;
+ 		if (fdt_node_check_compatible(fdt, offset, match->compatible)) {
+ 			match++;
+-- 
+2.1.1

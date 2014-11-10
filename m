@@ -1,39 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 13:32:58 +0100 (CET)
-Received: from cpsmtpb-ews09.kpnxchange.com ([213.75.39.14]:64402 "EHLO
-        cpsmtpb-ews09.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006150AbaKJMc4JEEV6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 13:32:56 +0100
-Received: from cpsps-ews26.kpnxchange.com ([10.94.84.192]) by cpsmtpb-ews09.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Mon, 10 Nov 2014 13:32:49 +0100
-Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews26.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Mon, 10 Nov 2014 13:32:49 +0100
-Received: from [192.168.10.108] ([77.173.140.92]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Mon, 10 Nov 2014 13:32:49 +0100
-Message-ID: <1415622769.21229.15.camel@x220>
-Subject: Re: MIPS: ralink: CONFIG_RALINK_ILL_ACC?
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Valentin Rothberg <valentinrothberg@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 10 Nov 2014 13:32:49 +0100
-In-Reply-To: <544E188B.9000707@openwrt.org>
-References: <1414403681.28499.4.camel@x220> <544E188B.9000707@openwrt.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Nov 2014 12:32:49.0369 (UTC) FILETIME=[70493C90:01CFFCE2]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 15:14:31 +0100 (CET)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:40192 "EHLO
+        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006150AbaKJOO2DrW8B (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 15:14:28 +0100
+Received: by mail-la0-f49.google.com with SMTP id ge10so7552709lab.8
+        for <linux-mips@linux-mips.org>; Mon, 10 Nov 2014 06:14:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=Pf00S+wvPnSj7rycPsJC4gZWuARkBY0jH9R/4FjGTFY=;
+        b=ZOR6xxOwEcUa9eJ9uxVScK5IiWCv99xvkBMxWWCFMZUqVAnm1G1h8Cqx4Mj5K4w66R
+         IIplZuFeQUyjfdlhV6p8XnoFBxfuBBsPbVg6Fm2Rc2NEZH7hBIa1FCKyaw37apEvstvg
+         harJnxCVb0X3UEi2j//vF5Gt62lrooHbI3ItoDnZK3zVyKOaUf8gdsrRuB0dnAaI2TrP
+         Vi95cB7yJtyScNAubzyl0IHNZ15IspeYRw7yqlpx8NZO5ySvuIsRpj+CSH87WIm5o1qq
+         hx74O+YcL6nR7NxjSB1OBOTqMB/zCcbPYjrhrvy30IrW6AwdacWfAbsFtcRgC5gtShpR
+         mZaw==
+X-Received: by 10.152.5.100 with SMTP id r4mr29821768lar.26.1415628861715;
+ Mon, 10 Nov 2014 06:14:21 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.112.11.233 with HTTP; Mon, 10 Nov 2014 06:14:01 -0800 (PST)
+In-Reply-To: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
+References: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Mon, 10 Nov 2014 08:14:01 -0600
+X-Google-Sender-Auth: hSlUfLhNmnx3aiYdqqCzCoO6Ayc
+Message-ID: <CAL_Jsq+iVfFGYEF575spQ5MaYPzo1QSfLUZP1M=TpH0+HdGS6A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] of: Fix crash if an earlycon driver is not found
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>,
+        Grant Likely <grant.likely@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43951
+X-archive-position: 43952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,42 +60,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi John,
+On Sun, Nov 9, 2014 at 2:55 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+> __earlycon_of_table_sentinel.compatible is a char[128], not a pointer, so
+> it will never be NULL.  Checking it against NULL causes the match loop to
+> run past the end of the array, and eventually match a bogus entry, under
+> the following conditions:
+>
+>  - Kernel command line specifies "earlycon" with no parameters
+>  - DT has a stdout-path pointing to a UART node
+>  - The UART driver doesn't use OF_EARLYCON_DECLARE (or maybe the console
+>    driver is compiled out)
+>
+> Fix this by checking to see if match->compatible is a non-empty string.
+>
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> Cc: <stable@vger.kernel.org> # 3.16+
 
-This message never made it to my Inbox. I copied it from a mips' list
-archive om the web. That kept this issue on my TODO list, although it
-actually was resolved quite quickly.
+Thanks. I'll queue this up.
 
-On Mon, 2014-10-27 at 11:03 +0100, John Crispin wrote:
-> On 27/10/2014 10:54, Paul Bolle wrote:
-> > Your commit 78865eacb4aa ("MIPS: ralink: add illegal access
-> > driver") landed in today's linux-next (ie, next-20141027). That
-> > commit dates back to May 16, 2013! It adds a driver that is built
-> > if CONFIG_RALINK_ILL_ACC is set. But there's no Kconfig symbol
-> > RALINK_ILL_ACC.
-> > 
-> > I assume that patch that adds this symbol is queued somewhere. Is
-> > that correct?
-> 
-> i'll look into it. the commit that move all dts files to a central
-> folder broke some of my patches so i had to rebase them. apparently
-> the bit that adds the symbol got lost.
+BTW, you should not add stable CC when submitting for review, but
+rather add a note for the maintainer to apply to stable. Only if a
+commit is in mainline already and not flagged for stable, then you
+send the patch with the stable tag to get the commit added to stable.
+It's a bit confusing...
 
-(CONFIG_RALINK_ILL_ACC was already gone in next-20141029. So that issue
-is resolved, as far as I care.)
+Rob
 
-> out of interest, how did you spot this ?
-
-See https://lkml.org/lkml/2014/9/26/456:
-    I have a 800 line perl monster that checks for stuff like this. It's not
-    very sophisticated but smart enough to spot typos like this one. I try
-    to have it check each linux-next (and mainline) release.
-
-    (I think Valentin Rothberg is trying to automate this properly. See
-    http://www.linuxplumbersconf.org/2014/ocw/sessions/1863 .)
-
-This is the last time I'll put pressure on Valentin _publicly_, I
-promise!
-
-
-Paul Bolle
+> ---
+>  drivers/of/fdt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index d1ffca8..30e97bc 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -773,7 +773,7 @@ int __init early_init_dt_scan_chosen_serial(void)
+>         if (offset < 0)
+>                 return -ENODEV;
+>
+> -       while (match->compatible) {
+> +       while (match->compatible[0]) {
+>                 unsigned long addr;
+>                 if (fdt_node_check_compatible(fdt, offset, match->compatible)) {
+>                         match++;
+> --
+> 2.1.1
+>

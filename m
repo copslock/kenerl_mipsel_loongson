@@ -1,47 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 08:04:20 +0100 (CET)
-Received: from resqmta-po-04v.sys.comcast.net ([96.114.154.163]:46587 "EHLO
-        resqmta-po-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012946AbaKJHETBV4iT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 08:04:19 +0100
-Received: from resomta-po-09v.sys.comcast.net ([96.114.154.233])
-        by resqmta-po-04v.sys.comcast.net with comcast
-        id Dj4C1p00252QWKC01j4C9L; Mon, 10 Nov 2014 07:04:12 +0000
-Received: from [192.168.1.13] ([76.100.35.31])
-        by resomta-po-09v.sys.comcast.net with comcast
-        id Dj4B1p0010gJalY01j4Bld; Mon, 10 Nov 2014 07:04:12 +0000
-Message-ID: <5460636A.5090401@gentoo.org>
-Date:   Mon, 10 Nov 2014 02:04:10 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 09:13:58 +0100 (CET)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:39845 "EHLO
+        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013170AbaKJINzXOcf1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 09:13:55 +0100
+Received: by mail-la0-f49.google.com with SMTP id ge10so7277932lab.36
+        for <multiple recipients>; Mon, 10 Nov 2014 00:13:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=TfYtljAxafclvPkU6FIrkQ6hsQQmJsm/YTDbNqXWEo8=;
+        b=x0abNwjDoy8MKbb2c2PXh6or330SyDYNYBZw89SAKTHD1938d+moCetQU7ovNIBQzz
+         g3bL2pFSTCX7O+f8Ge0gd5Z7eJol2KhuPm4L5CAc3lexN/rdbeQX7cCO/GItxu12lwwN
+         euqHFfGH8gFzFK3+zpKXgfwgQ1mRGQ7wWM/oqHuANaP/5m2T4abF7WL6GO2JOvQT1won
+         vCTDOhdeM/UkFS9lQZ3im+m0jl46cPRz3pHT0UzeTtezSvEPO7MxVs4LgbEGwZinLxXm
+         Us0Y8hZPHHl/LUtxWV0fpgGaNoDFTA+ZlODcQx1znU9zS3mfPdXZljy2GiSb6sv1SPA0
+         n52A==
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
-References: <54560D3B.8060602@gentoo.org> <5457CF0A.7020303@gmail.com> <5458272A.7050309@gentoo.org> <54582A91.8040401@gmail.com> <20141105160945.GB13785@linux-mips.org> <545C9D4D.4090501@gentoo.org> <545D0FC4.7020205@gmail.com> <545EB09C.40006@gentoo.org>
-In-Reply-To: <545EB09C.40006@gentoo.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1415603052;
-        bh=DlnKe3ZrK7toU7paP1jMpzO70vg6czZWGk2+mjK6GCo=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=n0NiU1tWAdR0CzXnDOao71olyL9Cr5LVGX5WfHtWoQ0tTQQtU4p4XrQ+Oi/qjxxJ/
-         xztFUsBmhou2vVnliDDadLJjO2NnrKUUGFaModjcPEAFghqAwBIjpviD0WTCHSMoHl
-         OqVZA542i/nJABpWRYH0WNkKhj7NNPxvMUItows4/LBFCBRokubj4+sWXD5J+lh4AS
-         y9w1RnPt8dBm4Cq1gI6BtIPbhQDLZ7PX4NdGvs1fRjLckjay53/mKxjlT7kKL+Ox6M
-         747EUa6LOVw6ZSeGOoErbN334n8wYWLi9+RANZBsWE6eTCBpphj2cC4oWvcY1n8+df
-         jJXETaQcvYUKg==
-Return-Path: <kumba@gentoo.org>
+X-Received: by 10.112.138.196 with SMTP id qs4mr1031584lbb.83.1415607229807;
+ Mon, 10 Nov 2014 00:13:49 -0800 (PST)
+Received: by 10.152.30.34 with HTTP; Mon, 10 Nov 2014 00:13:49 -0800 (PST)
+In-Reply-To: <1415342669-30640-2-git-send-email-cernekee@gmail.com>
+References: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
+        <1415342669-30640-2-git-send-email-cernekee@gmail.com>
+Date:   Mon, 10 Nov 2014 09:13:49 +0100
+X-Google-Sender-Auth: 9_HLBUHKFsUX7h9xMC4VvLrdqYs
+Message-ID: <CAMuHMdW+L8YbE8Z8jrtnm8xWk63sRGaFdM7TPM6MmrDg9XwHuQ@mail.gmail.com>
+Subject: Re: [PATCH V4 01/14] sh: Eliminate unused irq_reg_{readl,writel} accessors
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43940
+X-archive-position: 43941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,62 +63,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/08/2014 19:09, Joshua Kinard wrote:
-> On 11/07/2014 13:30, David Daney wrote:
->> On 11/07/2014 02:22 AM, Joshua Kinard wrote:
->> [...]
->>>
->>> So my guess is unless hugepages can happen in powers of 4,
->>
->> Huge  pages are currently only supported on MIPS64 for this reason.
->>
->> huge_page_mask_size = (normal_page_size/8 * normal_page_size) / 2;
->>
->> If you take log2 of everything you get
->>
->> huge_page_mask_bits = normal_page_bits - 3 + normal_page_bits - 1
->>   = 2 * normal_page_bits - 4 (always even)
->>
->> So all page sizes result in huge pages that meet the power of 4 criterion.
-> 
-> Well, looks like I'll have to bisect to hunt the problem down.  Obviously there
-> is something with transparent hugepages that the R10K-family dislikes.  Just a
-> question of "what?".  Seems like I'm the only one left with this kind of
-> equipment and interest to play with it :)
+On Fri, Nov 7, 2014 at 7:44 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+> Defining these macros way down in arch/sh/.../irq.c doesn't cause
+> kernel/irq/generic-chip.c to use them.  As far as I can tell this code
+> has no effect.
+>
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
-I gave up on bisecting this.  3.7 and 3.9 kernels are not bootable on my Onyx2
-w/o additional patches to fix the PCI probing code to deal with the card cage I
-have in my system (basically, it stops probing after it discovers the first PCI
-bus).  Even with that fixed, normal init refused to load on those kernels, and
-dash as init just outright crashed.  Must be some other IP27 bug that was fixed
-at some point, and I didn't feel like applying multiple patches to every bisect
-checkout, which might've altered results and led me to blaming the wrong commit.
+Compared preprocessor and asm output before and after, no difference
+except for line numbers, so
 
-It does look like the PageMask register is getting set to the correct values on
-PAGE_SIZE_4K and PAGE_SIZE_16K when a hugepage is needed (PM_1M and PM_16M).
-The PAGE_SIZE_64K case wouldn't be valid on R10k, as that uses PM_256M for a
-hugepage, which is bits 28:13 in PageMask and that would lead to "undefined
-behavior".  I'm assuming another register is getting set to an incorrect value
-in the huge pagecase (EntryLo0 or EntryLo1?  EntryHi?), but I don't have the
-required knowledge to fiddle w/ the TLB code to figure it out.
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-So, I sent in the patch that marks CPU_SUPPORTS_HUGEPAGES as BROKEN until
-someone feels like tackling it (if ever).
+Gr{oetje,eeting}s,
 
-Sidenote: Is it possible to add additional CP0 registers to a register dump on
-a panic or oops?  I looked around ptrace.c and ptrace.h and see where these
-registers are setup and printed out, but I can't find out where the actual
-values are fetched from the CPU and put into struct pt_regs.  I am assuming
-it's a snippet of asm somewhere.  Adding R10K's PageMask, Config, ErrorEpc, And
-Context/XContext registers seems like useful debugging info.
+                        Geert
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,55 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 20:51:24 +0100 (CET)
-Received: from mail-qg0-f41.google.com ([209.85.192.41]:60462 "EHLO
-        mail-qg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013230AbaKJTvXRfFhT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 20:51:23 +0100
-Received: by mail-qg0-f41.google.com with SMTP id q107so6108037qgd.28
-        for <linux-mips@linux-mips.org>; Mon, 10 Nov 2014 11:51:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=RK6XmvqVuWI72XZg1LmY0LAoPmdZaM2jPP7eqcqTf7s=;
-        b=XymqcOe4geVAB05PNL+Bs+73Ax9RMcUX7Xhya9rHqpf6JIYSb8O3UNVOk5oY8Q9NNW
-         iZJtjhWNNw0dDkg9sk17ZoCzioCCtJuEFAlO8qNUSnQ4JXjR5kCiGmAPL5FlVcTcWktA
-         svF1Uol678jLjVewkyga1HtZLqhIyY+oiByvVWMluNIu3TSUs/HU/0idpGh1aP892gSt
-         7Jfg3wCzA9U3ScDzqdqlOnwRG4tTHWho2sXtd19HlY26O+g7K4BgPj5koz4BdJxzK9gb
-         rZiQ+JQSLUqJzIJegwG8uFPybKewVdxBCcfF6W5W601znJgYBENxmkV0M6U6ZiD9cxGa
-         D7MQ==
-X-Received: by 10.224.148.18 with SMTP id n18mr14320000qav.100.1415649076720;
- Mon, 10 Nov 2014 11:51:16 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 22:30:26 +0100 (CET)
+Received: from elvis.franken.de ([193.175.24.41]:59224 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011908AbaKJVaYqyJLy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Nov 2014 22:30:24 +0100
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1XnwXY-0007w7-00; Mon, 10 Nov 2014 22:30:24 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id 21C761D33B; Mon, 10 Nov 2014 22:30:10 +0100 (CET)
+Date:   Mon, 10 Nov 2014 22:30:10 +0100
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Joshua Kinard <kumba@gentoo.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
+Message-ID: <20141110213009.GA29367@alpha.franken.de>
+References: <5457CF0A.7020303@gmail.com>
+ <5458272A.7050309@gentoo.org>
+ <54582A91.8040401@gmail.com>
+ <20141105160945.GB13785@linux-mips.org>
+ <545C9D4D.4090501@gentoo.org>
+ <545D0FC4.7020205@gmail.com>
+ <545EB09C.40006@gentoo.org>
+ <5460636A.5090401@gentoo.org>
+ <20141110105106.GA4302@linux-mips.org>
+ <20141110112039.GA7294@alpha.franken.de>
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Mon, 10 Nov 2014 11:50:56 -0800 (PST)
-In-Reply-To: <CAL_JsqLYoUKr71Q-hfLQhXOVL72Gy7PkO-Zd4rBc0Fn-prOqTw@mail.gmail.com>
-References: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
- <1415523348-4631-2-git-send-email-cernekee@gmail.com> <CAL_JsqLXznpCo3YjN+XqF6cDG38C6dKzO9DHJmzi6=sNnAU=hQ@mail.gmail.com>
- <CAJiQ=7DUV0isdRooz6112Ncx07+9RE5DS5tMBwxr47hTWA8PAw@mail.gmail.com> <CAL_JsqLYoUKr71Q-hfLQhXOVL72Gy7PkO-Zd4rBc0Fn-prOqTw@mail.gmail.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Mon, 10 Nov 2014 11:50:56 -0800
-Message-ID: <CAJiQ=7C5ki+9opnH68Kw9a573PmO=ANeiVutmVROUP2Typn2qw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] tty: serial: bcm63xx: Allow device nodes to be
- renamed to /dev/ttyBCM*
-To:     Rob Herring <robh@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Grant Likely <grant.likely@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20141110112039.GA7294@alpha.franken.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43969
+X-archive-position: 43970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,29 +52,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 10, 2014 at 11:22 AM, Rob Herring <robh@kernel.org> wrote:
->>> This can be solved with a udev rule to create sym links.
->>
->> Is it safe to register two console drivers named "ttyS" with the same
->> major/minor numbers?  Maybe there is a trick to making them coexist?
->
-> No, but I think you can do dynamic minor numbers. I seem to recall
-> this coming up with the Samsung UARTs a while back.
+On Mon, Nov 10, 2014 at 12:20:39PM +0100, Thomas Bogendoerfer wrote:
+> On Mon, Nov 10, 2014 at 11:51:06AM +0100, Ralf Baechle wrote:
+> > Thomas,
+> > 
+> > can you test CONFIG_TRANSPARENT_HUGEPAGE on an IP28?
+> > 
+> > All in all the R10000's TLB is unproblematic; my gut feeling is that
+> > rather something else specific to IP27 is spoiling the broth.
+> 
+> I'll give it a spin later today.
 
-The other variations I've seen in the tree are:
+looks like IP28 has more problems than HUGEPAGES... even without
+huge pages enabled it locks up during upgrading debian packages:-(
+My gut feeling is that there is another spot hitting the ll/sc errata
+stuff for this old R10k CPU.
 
-nwpserial: ttySQ, major 4 minor 68 (not 64)
+So no new data out of that.
 
-sunhv, sunsab, sunsu, sunzilog: set uart_driver->major to 4 but let
-uart_driver->minor default to 0
+Thomas.
 
-SERIAL_ATMEL_TTYAT: compile-time selectable between ttySn (4/64) and
-ttyATn (204/154).  txx9 does something similar using
-SERIAL_TXX9_STDSERIAL.
-
-A whole bunch of other SoC serial drivers use major 204 and a custom
-name like "ttyAL".  Some of these show up in
-Documentation/devices.txt; others don't.  ~3 drivers use 204/64 from
-the middle of the Altix assigned range.
-
-What is the current best practice for new drivers?
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

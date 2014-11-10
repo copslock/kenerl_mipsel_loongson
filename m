@@ -1,45 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 22:30:26 +0100 (CET)
-Received: from elvis.franken.de ([193.175.24.41]:59224 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011908AbaKJVaYqyJLy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Nov 2014 22:30:24 +0100
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1XnwXY-0007w7-00; Mon, 10 Nov 2014 22:30:24 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id 21C761D33B; Mon, 10 Nov 2014 22:30:10 +0100 (CET)
-Date:   Mon, 10 Nov 2014 22:30:10 +0100
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Joshua Kinard <kumba@gentoo.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
-Message-ID: <20141110213009.GA29367@alpha.franken.de>
-References: <5457CF0A.7020303@gmail.com>
- <5458272A.7050309@gentoo.org>
- <54582A91.8040401@gmail.com>
- <20141105160945.GB13785@linux-mips.org>
- <545C9D4D.4090501@gentoo.org>
- <545D0FC4.7020205@gmail.com>
- <545EB09C.40006@gentoo.org>
- <5460636A.5090401@gentoo.org>
- <20141110105106.GA4302@linux-mips.org>
- <20141110112039.GA7294@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 23:00:15 +0100 (CET)
+Received: from mail-pd0-f176.google.com ([209.85.192.176]:50485 "EHLO
+        mail-pd0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011908AbaKJWALwkvHS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 23:00:11 +0100
+Received: by mail-pd0-f176.google.com with SMTP id ft15so8662308pdb.21
+        for <linux-mips@linux-mips.org>; Mon, 10 Nov 2014 14:00:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version:content-type;
+        bh=DOvHW3b41N9MIL2KbsYLOnh3H89QEr5vVcY6ZnLAyBg=;
+        b=X1RfXZXmgdyDHJlCRENe959kM/BmkhGVMwza7PFO6mRTj+u4FUwtMbXIBTr0TFiWkF
+         BvWnU1uiqmozvA4ae2u9J33wN/iYtmX6ugMgoscoVW13Uu6fWkFLSHBGzkf5hxYfZEv0
+         35HbJReXEkMgIrJsJtQ/OKn41AnowvEZah4wGR0TOmhF+bkvwk1l2JBkNiuzyrfR5DYL
+         OWpkJUwVdaDnvLqjZlr2CKlvMkhQk6ugH5Ej/RLbduDIWRQXFxQXC5TZIt5lvgj4YqBe
+         bdgMGHfBKv4g8xJC29u1zjrg+FxTBLZR8XjuNskD2mWl/0+hb3hrCSQYzozHhqhCHDt4
+         KqVw==
+X-Gm-Message-State: ALoCoQnI0+kZZC65dqgk07c2bpy1KYT+T1/yfwUA2LgO+newmSoF7uJlZB1pn9dTrfS5qxb2uSTB
+X-Received: by 10.66.90.230 with SMTP id bz6mr6963617pab.125.1415656805418;
+        Mon, 10 Nov 2014 14:00:05 -0800 (PST)
+Received: from localhost (c-67-183-17-239.hsd1.wa.comcast.net. [67.183.17.239])
+        by mx.google.com with ESMTPSA id db7sm17471299pdb.27.2014.11.10.14.00.03
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 10 Nov 2014 14:00:04 -0800 (PST)
+From:   Kevin Hilman <khilman@kernel.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     tglx@linutronix.de, jason@lakedaemon.net, linux-sh@vger.kernel.org,
+        arnd@arndb.de, f.fainelli@gmail.com, ralf@linux-mips.org,
+        sergei.shtylyov@cogentembedded.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, mbizon@freebox.fr, jogo@openwrt.org,
+        linux-mips@linux-mips.org, nicolas.ferre@atmel.com,
+        alexandre.belloni@free-electrons.com,
+        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH V4 04/14] genirq: Generic chip: Add big endian I/O accessors
+References: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
+        <1415342669-30640-5-git-send-email-cernekee@gmail.com>
+Date:   Mon, 10 Nov 2014 14:00:02 -0800
+In-Reply-To: <1415342669-30640-5-git-send-email-cernekee@gmail.com> (Kevin
+        Cernekee's message of "Thu, 6 Nov 2014 22:44:19 -0800")
+Message-ID: <7hy4riogwt.fsf@deeprootsystems.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20141110112039.GA7294@alpha.franken.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: text/plain
+Return-Path: <khilman@deeprootsystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43970
+X-archive-position: 43971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: khilman@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,26 +64,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 10, 2014 at 12:20:39PM +0100, Thomas Bogendoerfer wrote:
-> On Mon, Nov 10, 2014 at 11:51:06AM +0100, Ralf Baechle wrote:
-> > Thomas,
-> > 
-> > can you test CONFIG_TRANSPARENT_HUGEPAGE on an IP28?
-> > 
-> > All in all the R10000's TLB is unproblematic; my gut feeling is that
-> > rather something else specific to IP27 is spoiling the broth.
-> 
-> I'll give it a spin later today.
+Kevin Cernekee <cernekee@gmail.com> writes:
 
-looks like IP28 has more problems than HUGEPAGES... even without
-huge pages enabled it locks up during upgrading debian packages:-(
-My gut feeling is that there is another spot hitting the ll/sc errata
-stuff for this old R10k CPU.
+> Use io{read,write}32be if the caller specified IRQ_GC_BE_IO when creating
+> the irqchip.
+>
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
-So no new data out of that.
+I bisected a couple ARM boot failures in next-20141110 on atmel sama5 platforms down to
+this patch, though I'm not quite yet sure how it's causing the failure.
+I'm not getting any console output, so haven't been able to dig deeper
+yet.  Maybe the atmel maintainers (Cc'd) can help dig.
 
-Thomas.
+I've confirmed that reverting $SUBJECT patch (commit
+b79055952badbd73710685643bab44104f2509ea2) on top of next-20141110 gets
+things booting again.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Also, it only happens with sama5_defconfig, not with multi_v7_defconfig.
+
+Kevin

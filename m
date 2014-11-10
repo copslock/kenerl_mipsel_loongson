@@ -1,53 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 15:14:31 +0100 (CET)
-Received: from mail-la0-f49.google.com ([209.85.215.49]:40192 "EHLO
-        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006150AbaKJOO2DrW8B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 15:14:28 +0100
-Received: by mail-la0-f49.google.com with SMTP id ge10so7552709lab.8
-        for <linux-mips@linux-mips.org>; Mon, 10 Nov 2014 06:14:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=Pf00S+wvPnSj7rycPsJC4gZWuARkBY0jH9R/4FjGTFY=;
-        b=ZOR6xxOwEcUa9eJ9uxVScK5IiWCv99xvkBMxWWCFMZUqVAnm1G1h8Cqx4Mj5K4w66R
-         IIplZuFeQUyjfdlhV6p8XnoFBxfuBBsPbVg6Fm2Rc2NEZH7hBIa1FCKyaw37apEvstvg
-         harJnxCVb0X3UEi2j//vF5Gt62lrooHbI3ItoDnZK3zVyKOaUf8gdsrRuB0dnAaI2TrP
-         Vi95cB7yJtyScNAubzyl0IHNZ15IspeYRw7yqlpx8NZO5ySvuIsRpj+CSH87WIm5o1qq
-         hx74O+YcL6nR7NxjSB1OBOTqMB/zCcbPYjrhrvy30IrW6AwdacWfAbsFtcRgC5gtShpR
-         mZaw==
-X-Received: by 10.152.5.100 with SMTP id r4mr29821768lar.26.1415628861715;
- Mon, 10 Nov 2014 06:14:21 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 15:22:39 +0100 (CET)
+Received: from resqmta-po-03v.sys.comcast.net ([96.114.154.162]:59672 "EHLO
+        resqmta-po-03v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006150AbaKJOWar4a6r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 15:22:30 +0100
+Received: from resomta-po-10v.sys.comcast.net ([96.114.154.234])
+        by resqmta-po-03v.sys.comcast.net with comcast
+        id DqMf1p00653iAfU01qNQZC; Mon, 10 Nov 2014 14:22:24 +0000
+Received: from [192.168.1.13] ([76.100.35.31])
+        by resomta-po-10v.sys.comcast.net with comcast
+        id DqNM1p00Z0gJalY01qNNuK; Mon, 10 Nov 2014 14:22:23 +0000
+Message-ID: <5460CA1D.9060907@gentoo.org>
+Date:   Mon, 10 Nov 2014 09:22:21 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Received: by 10.112.11.233 with HTTP; Mon, 10 Nov 2014 06:14:01 -0800 (PST)
-In-Reply-To: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
-References: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 10 Nov 2014 08:14:01 -0600
-X-Google-Sender-Auth: hSlUfLhNmnx3aiYdqqCzCoO6Ayc
-Message-ID: <CAL_Jsq+iVfFGYEF575spQ5MaYPzo1QSfLUZP1M=TpH0+HdGS6A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] of: Fix crash if an earlycon driver is not found
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Grant Likely <grant.likely@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <robherring2@gmail.com>
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
+References: <54560D3B.8060602@gentoo.org> <5457CF0A.7020303@gmail.com> <5458272A.7050309@gentoo.org> <54582A91.8040401@gmail.com> <20141105160945.GB13785@linux-mips.org> <545C9D4D.4090501@gentoo.org> <545D0FC4.7020205@gmail.com> <545EB09C.40006@gentoo.org> <5460636A.5090401@gentoo.org> <20141110105106.GA4302@linux-mips.org> <20141110112039.GA7294@alpha.franken.de>
+In-Reply-To: <20141110112039.GA7294@alpha.franken.de>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1415629344;
+        bh=1VU3slWM0IGC2l4E+ZLf13cOs3oD6q9gdptKfmnNxu8=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=ejIdfrdXboMCYSKuobdY9YsgwPUrgeY9nd438VG2CSqwprC2Ks0AjO4t2S7esFj1r
+         X28Fu4oFWjul5nWIbq6o3fJcr9oPEaV6NSUayicB8pPQ9+kuig/1MSHZtp2AfU2s6D
+         JwsN2Bmp2l4kMS2+UZVQqXLEUH/SGRxTF23OYyeowGxzgtuEcS80NUi9xkcR7cjT22
+         1O08G14dATzuFFKLTd4nTDrS/vQ8OBYD0OolpfxQxAaUVmFwaLOLMfycUCgJojKiiC
+         KGsEmQGPDeuJA70bP5wypzjBOSvirGzn8JtA05Fo393HSMVMK7GAnZvlXqV5TkwWfV
+         ECy+pXQYmKgXw==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43952
+X-archive-position: 43953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,49 +55,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Nov 9, 2014 at 2:55 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
-> __earlycon_of_table_sentinel.compatible is a char[128], not a pointer, so
-> it will never be NULL.  Checking it against NULL causes the match loop to
-> run past the end of the array, and eventually match a bogus entry, under
-> the following conditions:
->
->  - Kernel command line specifies "earlycon" with no parameters
->  - DT has a stdout-path pointing to a UART node
->  - The UART driver doesn't use OF_EARLYCON_DECLARE (or maybe the console
->    driver is compiled out)
->
-> Fix this by checking to see if match->compatible is a non-empty string.
->
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> Cc: <stable@vger.kernel.org> # 3.16+
+On 11/10/2014 06:20, Thomas Bogendoerfer wrote:
+> On Mon, Nov 10, 2014 at 11:51:06AM +0100, Ralf Baechle wrote:
+>> Thomas,
+>>
+>> can you test CONFIG_TRANSPARENT_HUGEPAGE on an IP28?
+>>
+>> All in all the R10000's TLB is unproblematic; my gut feeling is that
+>> rather something else specific to IP27 is spoiling the broth.
+> 
+> I'll give it a spin later today.
+> 
+> Thomas.
 
-Thanks. I'll queue this up.
+Try testing with and without CONFIG_HUGETLBFS in the kernel.  File systems ->
+Pseudo filesystems -> HugeTLB file system support
 
-BTW, you should not add stable CC when submitting for review, but
-rather add a note for the maintainer to apply to stable. Only if a
-commit is in mainline already and not flagged for stable, then you
-send the patch with the stable tag to get the commit added to stable.
-It's a bit confusing...
+So far, it seems adding that option in with CONFIG_TRANSPARENT_HUGEPAGE makes
+both IP27 and IP30 behave.  Without, I get data bus errors or segfaults on IP27
+running Gentoo's "emerge" program on PAGE_SIZE_4K.
 
-Rob
+IP30 seems to be fine on an R12000 with or without that option, but I only have
+a dual R12K module to test against.  I've only had the R14K dual module for a
+few days, and I could not reproduce the bus errors on that module, either.  So
+I wonder if there is something funny with the hardware on the single R14K
+module, which I did get IBE's on before.  And whether that will behave once
+CONFIG_HUGETLBFS is in the kernel.
 
-> ---
->  drivers/of/fdt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index d1ffca8..30e97bc 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -773,7 +773,7 @@ int __init early_init_dt_scan_chosen_serial(void)
->         if (offset < 0)
->                 return -ENODEV;
->
-> -       while (match->compatible) {
-> +       while (match->compatible[0]) {
->                 unsigned long addr;
->                 if (fdt_node_check_compatible(fdt, offset, match->compatible)) {
->                         match++;
-> --
-> 2.1.1
->
+If so, maybe the fix is to make CONFIG_HUGETLBFS automatically selected if
+CONFIG_TRANSPARENT_HUGEPAGE?
+
+--J

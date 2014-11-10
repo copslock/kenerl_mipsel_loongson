@@ -1,36 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 17:59:14 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:51482 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 18:04:01 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:51618 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013247AbaKJQ7MVTRwd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Nov 2014 17:59:12 +0100
+        id S27013248AbaKJRD77dzQs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Nov 2014 18:03:59 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAAGx9Y6011313;
-        Mon, 10 Nov 2014 17:59:09 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAAH3w3i011444;
+        Mon, 10 Nov 2014 18:03:58 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAAGx8ff011305;
-        Mon, 10 Nov 2014 17:59:08 +0100
-Date:   Mon, 10 Nov 2014 17:59:07 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAAH3wVn011443;
+        Mon, 10 Nov 2014 18:03:58 +0100
+Date:   Mon, 10 Nov 2014 18:03:58 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 02/12] MIPS: Loongson: set Loongson-3's ISA level to
- MIPS64R1
-Message-ID: <20141110165907.GA11091@linux-mips.org>
-References: <1415081610-25639-1-git-send-email-chenhc@lemote.com>
- <1415081610-25639-3-git-send-email-chenhc@lemote.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Joshua Kinard <kumba@gentoo.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
+Message-ID: <20141110170357.GB11091@linux-mips.org>
+References: <54582A91.8040401@gmail.com>
+ <20141105160945.GB13785@linux-mips.org>
+ <545C9D4D.4090501@gentoo.org>
+ <545D0FC4.7020205@gmail.com>
+ <545EB09C.40006@gentoo.org>
+ <5460636A.5090401@gentoo.org>
+ <20141110105106.GA4302@linux-mips.org>
+ <20141110112039.GA7294@alpha.franken.de>
+ <5460CA1D.9060907@gentoo.org>
+ <5460EDED.3030600@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1415081610-25639-3-git-send-email-chenhc@lemote.com>
+In-Reply-To: <5460EDED.3030600@gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43962
+X-archive-position: 43963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,134 +53,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 04, 2014 at 02:13:23PM +0800, Huacai Chen wrote:
+On Mon, Nov 10, 2014 at 08:55:09AM -0800, David Daney wrote:
 
-> In CPU manual Loongson-3 is MIPS64R2 compatible, but during tests we
-> found that its EI/DI instructions have problems. So we just set the ISA
-> level to MIPS64R1.
+> Yes, you may be on to something here.  Certianly basic huge TLB support must
+> be in place for TRANSPARENT_HUGEPAGE to work.
+> 
+> It could be that the Kconfig symbols for the various portions of huge page
+> support are missing the required dependencies.
+> 
+> FWIW, I always build with a huge page Kconfig options set.
+> 
+> I have:
+> $ grep HUGE .config
+> CONFIG_SYS_SUPPORTS_HUGETLBFS=y
+> CONFIG_MIPS_HUGE_TLB_SUPPORT=y
+> CONFIG_CPU_SUPPORTS_HUGEPAGES=y
+> CONFIG_TRANSPARENT_HUGEPAGE=y
+> CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS=y
+> # CONFIG_TRANSPARENT_HUGEPAGE_MADVISE is not set
+> CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE=y
+> CONFIG_HUGETLBFS=y
+> CONFIG_HUGETLB_PAGE=y
+> 
+> I suspect that you may not need CONFIG_HUGETLBFS, but CONFIG_HUGETLB_PAGE is
+> probably essential.
 
-That's a bit a heavyhanded move - it will disable ALL R2 optimizations
-and feature support - try running git grep -w cpu_has_mips_r2 arch/mips.
-Also it will cause the kernel to missreport the CPU has R1 or as in
-case of the Loongson 2 with this patch even as MIPS III which in turn
-will mean certain programs will fail to detect and exploit the full
-capabilities of the CPU.
+IP27 also has NUMA as the only in-tree MIPS system - and it's NUMA support
+is not in the best support state to say the least.  Just an observation -
+at this point in time there is no obvious connection between either
 
-Was this really intended?  I doubt it.
+  R10000 <-> transparent huge page
 
-I suggest a bit of a less heavy-handed approach as illustrated in below
-incomplete patch.
+or
 
-Would that work for you?
+  NUMA <-> transparent huge page
 
   Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/include/asm/asmmacro.h          | 3 ++-
- arch/mips/include/asm/irqflags.h          | 7 ++++---
- arch/mips/include/asm/mach-ip22/war.h     | 1 +
- arch/mips/include/asm/mach-loongson/war.h | 1 +
- arch/mips/include/asm/war.h               | 7 +++++++
- 5 files changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 6caf876..d477c34 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -11,6 +11,7 @@
- #include <asm/hazards.h>
- #include <asm/asm-offsets.h>
- #include <asm/msa.h>
-+#include <asm/war.h>
- 
- #ifdef CONFIG_32BIT
- #include <asm/asmmacro-32.h>
-@@ -19,7 +20,7 @@
- #include <asm/asmmacro-64.h>
- #endif
- 
--#ifdef CONFIG_CPU_MIPSR2
-+#if defined(CONFIG_CPU_MIPSR2) && !LOONGSON3_EI_DI_WAR
- 	.macro	local_irq_enable reg=t0
- 	ei
- 	irq_enable_hazard
-diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
-index 0fa5fdc..fcfd371 100644
---- a/arch/mips/include/asm/irqflags.h
-+++ b/arch/mips/include/asm/irqflags.h
-@@ -16,6 +16,7 @@
- #include <linux/compiler.h>
- #include <linux/stringify.h>
- #include <asm/hazards.h>
-+#include <asm/war.h>
- 
- #ifdef CONFIG_CPU_MIPSR2
- 
-@@ -59,7 +60,7 @@ static inline void arch_local_irq_restore(unsigned long flags)
- 	"	.set	push						\n"
- 	"	.set	noreorder					\n"
- 	"	.set	noat						\n"
--#if defined(CONFIG_IRQ_CPU)
-+#if defined(CONFIG_IRQ_CPU) && !LOONGSON3_EI_DI_WAR
- 	/*
- 	 * Slow, but doesn't suffer from a relatively unlikely race
- 	 * condition we're having since days 1.
-@@ -89,7 +90,7 @@ static inline void __arch_local_irq_restore(unsigned long flags)
- 	"	.set	push						\n"
- 	"	.set	noreorder					\n"
- 	"	.set	noat						\n"
--#if defined(CONFIG_IRQ_CPU)
-+#if defined(CONFIG_IRQ_CPU) && !LOONGSON3_EI_DI_WAR
- 	/*
- 	 * Slow, but doesn't suffer from a relatively unlikely race
- 	 * condition we're having since days 1.
-@@ -126,7 +127,7 @@ static inline void arch_local_irq_enable(void)
- 	"	.set	push						\n"
- 	"	.set	reorder						\n"
- 	"	.set	noat						\n"
--#if   defined(CONFIG_CPU_MIPSR2)
-+#if defined(CONFIG_CPU_MIPSR2) && !LOONGSON3_EI_DI_WAR
- 	"	ei							\n"
- #else
- 	"	mfc0	$1,$12						\n"
-diff --git a/arch/mips/include/asm/mach-ip22/war.h b/arch/mips/include/asm/mach-ip22/war.h
-index fba6405..3520b0a 100644
---- a/arch/mips/include/asm/mach-ip22/war.h
-+++ b/arch/mips/include/asm/mach-ip22/war.h
-@@ -18,6 +18,7 @@
- #define R5432_CP0_INTERRUPT_WAR		0
- #define BCM1250_M3_WAR			0
- #define SIBYTE_1956_WAR			0
-+#define LOONGSON3_EI_DI_WAR		0
- #define MIPS4K_ICACHE_REFILL_WAR	0
- #define MIPS_CACHE_SYNC_WAR		0
- #define TX49XX_ICACHE_INDEX_INV_WAR	0
-diff --git a/arch/mips/include/asm/mach-loongson/war.h b/arch/mips/include/asm/mach-loongson/war.h
-index f2570df..cf5385f 100644
---- a/arch/mips/include/asm/mach-loongson/war.h
-+++ b/arch/mips/include/asm/mach-loongson/war.h
-@@ -14,6 +14,7 @@
- #define R5432_CP0_INTERRUPT_WAR		0
- #define BCM1250_M3_WAR			0
- #define SIBYTE_1956_WAR			0
-+#define LOONGSON3_EI_DI_WAR		1
- #define MIPS4K_ICACHE_REFILL_WAR	0
- #define MIPS_CACHE_SYNC_WAR		0
- #define TX49XX_ICACHE_INDEX_INV_WAR	0
-diff --git a/arch/mips/include/asm/war.h b/arch/mips/include/asm/war.h
-index 9344e24..ceb9030 100644
---- a/arch/mips/include/asm/war.h
-+++ b/arch/mips/include/asm/war.h
-@@ -233,4 +233,11 @@
- #error Check setting of MIPS34K_MISSED_ITLB_WAR for your platform
- #endif
- 
-+/*
-+ * On certain Loongson 3 cores DI/EI don't work properly.
-+ */
-+#ifndef LOONGSON3_EI_DI_WAR
-+#error Check setting of LOONGSON3_EI_DI_WAR for your platform
-+#endif
-+
- #endif /* _ASM_WAR_H */

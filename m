@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 09:17:38 +0100 (CET)
-Received: from resqmta-ch2-08v.sys.comcast.net ([69.252.207.40]:46286 "EHLO
-        resqmta-ch2-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013170AbaKJIRge8lXO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2014 09:17:36 +0100
-Received: from resomta-ch2-05v.sys.comcast.net ([69.252.207.101])
-        by resqmta-ch2-08v.sys.comcast.net with comcast
-        id DkHW1p0032Bo0NV01kHWYg; Mon, 10 Nov 2014 08:17:30 +0000
-Received: from [192.168.1.13] ([76.100.35.31])
-        by resomta-ch2-05v.sys.comcast.net with comcast
-        id DkHV1p0090gJalY01kHV7F; Mon, 10 Nov 2014 08:17:30 +0000
-Message-ID: <54607499.2070806@gentoo.org>
-Date:   Mon, 10 Nov 2014 03:17:29 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2014 11:51:14 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:48113 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27013194AbaKJKvJb-vpr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Nov 2014 11:51:09 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAAAp7cJ004753;
+        Mon, 10 Nov 2014 11:51:07 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAAAp6YI004752;
+        Mon, 10 Nov 2014 11:51:06 +0100
+Date:   Mon, 10 Nov 2014 11:51:06 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Joshua Kinard <kumba@gentoo.org>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
+Message-ID: <20141110105106.GA4302@linux-mips.org>
+References: <54560D3B.8060602@gentoo.org>
+ <5457CF0A.7020303@gmail.com>
+ <5458272A.7050309@gentoo.org>
+ <54582A91.8040401@gmail.com>
+ <20141105160945.GB13785@linux-mips.org>
+ <545C9D4D.4090501@gentoo.org>
+ <545D0FC4.7020205@gmail.com>
+ <545EB09C.40006@gentoo.org>
+ <5460636A.5090401@gentoo.org>
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: IP30: SMP Help
-References: <5457187D.6030708@gentoo.org>
-In-Reply-To: <5457187D.6030708@gentoo.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1415607450;
-        bh=v+fDI3eInnmS+J5vaj3d+wiGn02TQUa84QQZoarkJEM=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=GQAfIi5MNSeWtR98nFihR6WF588tJ/R6TEYWT80+sWMBgoM1OBclAiksmu4rX7fpx
-         F/yjMJR9Esh/+A0jMYJw1foaKYg7ZUpoRjzG/hcNq09LUKzf6MIjjdmMA93FlAlcvg
-         QxbvnyDJnbFb6dfJSxUw5iiWjUPxWWKEKAGCC8GrKC1/D4kFTg+XbNy51xuV0L3GjT
-         aquH5V6/k+qd/F2LG9tGUjFNOeK5qve9/WF3RuzGFcZwfuBLI4QVihqZ6acpKz7RPm
-         ZObPQIWj+r81pFwXAsiur0O1xEv9ONnKlCCYONdt7D1+IApnDp1/a675/NwyHB/Ayl
-         QUB+vmnPus3QQ==
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5460636A.5090401@gentoo.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43942
+X-archive-position: 43943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,45 +52,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/03/2014 00:54, Joshua Kinard wrote:
+Thomas,
+
+can you test CONFIG_TRANSPARENT_HUGEPAGE on an IP28?
+
+All in all the R10000's TLB is unproblematic; my gut feeling is that
+rather something else specific to IP27 is spoiling the broth.
+
+  Ralf
+
+On Mon, Nov 10, 2014 at 02:04:10AM -0500, Joshua Kinard wrote:
+> Date:   Mon, 10 Nov 2014 02:04:10 -0500
+> From: Joshua Kinard <kumba@gentoo.org>
+> To: David Daney <ddaney.cavm@gmail.com>
+> CC: Ralf Baechle <ralf@linux-mips.org>, Linux MIPS List
+>  <linux-mips@linux-mips.org>
+> Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
+> Content-Type: text/plain; charset=windows-1252
 > 
-> I've recently acquired a dual R14000 CPU for the Octane, so I am trying to get
-> SMP working again, but I can't get things setup properly.  I've attached both
-> ip30-irq.c and ip30-smp.c -- does anyone see any immediate problems (or just
-> where I am doing it wrong)?
+> On 11/08/2014 19:09, Joshua Kinard wrote:
+> > On 11/07/2014 13:30, David Daney wrote:
+> >> On 11/07/2014 02:22 AM, Joshua Kinard wrote:
+> >> [...]
+> >>>
+> >>> So my guess is unless hugepages can happen in powers of 4,
+> >>
+> >> Huge  pages are currently only supported on MIPS64 for this reason.
+> >>
+> >> huge_page_mask_size = (normal_page_size/8 * normal_page_size) / 2;
+> >>
+> >> If you take log2 of everything you get
+> >>
+> >> huge_page_mask_bits = normal_page_bits - 3 + normal_page_bits - 1
+> >>   = 2 * normal_page_bits - 4 (always even)
+> >>
+> >> So all page sizes result in huge pages that meet the power of 4 criterion.
+> > 
+> > Well, looks like I'll have to bisect to hunt the problem down.  Obviously there
+> > is something with transparent hugepages that the R10K-family dislikes.  Just a
+> > question of "what?".  Seems like I'm the only one left with this kind of
+> > equipment and interest to play with it :)
 > 
-> Most reboot cycles with this code panics because init exited with a code of 0xa
-> or 0xb (which matches w/ SIGSEGV or SIGBUS).  Randomly, I can acquire a dash
-> shell by passing init=/bin/dash.  I can't do much in it, though.  A basic 'ls'
-> either segfaults or triggers a SIGBUS.  If I execute 'ls' enough times, it
-> eventually works.  Can't get much farther beyond that.
+> I gave up on bisecting this.  3.7 and 3.9 kernels are not bootable on my Onyx2
+> w/o additional patches to fix the PCI probing code to deal with the card cage I
+> have in my system (basically, it stops probing after it discovers the first PCI
+> bus).  Even with that fixed, normal init refused to load on those kernels, and
+> dash as init just outright crashed.  Must be some other IP27 bug that was fixed
+> at some point, and I didn't feel like applying multiple patches to every bisect
+> checkout, which might've altered results and led me to blaming the wrong commit.
+> 
+> It does look like the PageMask register is getting set to the correct values on
+> PAGE_SIZE_4K and PAGE_SIZE_16K when a hugepage is needed (PM_1M and PM_16M).
+> The PAGE_SIZE_64K case wouldn't be valid on R10k, as that uses PM_256M for a
+> hugepage, which is bits 28:13 in PageMask and that would lead to "undefined
+> behavior".  I'm assuming another register is getting set to an incorrect value
+> in the huge pagecase (EntryLo0 or EntryLo1?  EntryHi?), but I don't have the
+> required knowledge to fiddle w/ the TLB code to figure it out.
+> 
+> So, I sent in the patch that marks CPU_SUPPORTS_HUGEPAGES as BROKEN until
+> someone feels like tackling it (if ever).
+> 
+> Sidenote: Is it possible to add additional CP0 registers to a register dump on
+> a panic or oops?  I looked around ptrace.c and ptrace.h and see where these
+> registers are setup and printed out, but I can't find out where the actual
+> values are fetched from the CPU and put into struct pt_regs.  I am assuming
+> it's a snippet of asm somewhere.  Adding R10K's PageMask, Config, ErrorEpc, And
+> Context/XContext registers seems like useful debugging info.
+> 
+> -- 
+> Joshua Kinard
+> Gentoo/MIPS
+> kumba@gentoo.org
+> 4096R/D25D95E3 2011-03-28
+> 
+> "The past tempts us, the present confuses us, the future frightens us.  And our
+> lives slip away, moment by moment, lost in that vast, terrible in-between."
+> 
+> --Emperor Turhan, Centauri Republic
 
-I take it no one has any feedback or tips on this?
-
-I think one of the problems is I'm not syncing the CPU timers (IP7) correctly.
- The old IP30 SMP code used a timer broadcast trick yo do this, sharing a
-single IRQ, #63.  However, 63 is one of the hardware error IRQs.  Still not
-sure how that ever worked.
-
-I've tried using the sync-r4k module...that just hangs in the sync function.
-atomics seemed messed up (I wonder if PR61538 has something to do...).  Also
-tried re-implementing the timer broadcast but that just hangs because the two
-CPUs get into a deadlock situation w/ each trying to tell the other about the
-timer broadcast event.  Not even sure if I should be using
-spin_lock/spin_unlock or spin_lock_irqsave/spin_unlock_irqrestore for the HEART
-irq code or SMP IRQ code.  Each MIPS SMP machine seems to use a completely
-different mechanism in the kernel.  IP27 doesn't even enable the CPU timer
-IRQs, it looks, and relies solely on the HUB timer present on each nodeboard.
-
-So, yeah, out of ideas.
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+  Ralf

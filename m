@@ -1,46 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 10:39:01 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:56059 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013355AbaKKJjAGTLdj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Nov 2014 10:39:00 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAB9cwDW027789;
-        Tue, 11 Nov 2014 10:38:58 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAB9cvgg027788;
-        Tue, 11 Nov 2014 10:38:57 +0100
-Date:   Tue, 11 Nov 2014 10:38:57 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:     Joshua Kinard <kumba@gentoo.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IP27: CONFIG_TRANSPARENT_HUGEPAGE triggers bus errors
-Message-ID: <20141111093857.GB27259@linux-mips.org>
-References: <20141105160945.GB13785@linux-mips.org>
- <545C9D4D.4090501@gentoo.org>
- <545D0FC4.7020205@gmail.com>
- <545EB09C.40006@gentoo.org>
- <5460636A.5090401@gentoo.org>
- <20141110105106.GA4302@linux-mips.org>
- <20141110112039.GA7294@alpha.franken.de>
- <20141110213009.GA29367@alpha.franken.de>
- <20141111074758.GF9302@linux-mips.org>
- <20141111092407.GA4736@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 10:42:44 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:51122 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013349AbaKKJmmHWhFI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 10:42:42 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id ECB54E67AF297;
+        Tue, 11 Nov 2014 09:42:33 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 11 Nov 2014 09:42:36 +0000
+Received: from [192.168.154.149] (192.168.154.149) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 11 Nov
+ 2014 09:42:35 +0000
+Message-ID: <5461DA0B.2050505@imgtec.com>
+Date:   Tue, 11 Nov 2014 09:42:35 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20141111092407.GA4736@alpha.franken.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/3] MIPS: kernel: traps: Replace printk with pr_info
+ for MC exceptions
+References: <1415636404-11979-1-git-send-email-markos.chandras@imgtec.com> <1415636404-11979-2-git-send-email-markos.chandras@imgtec.com> <5460EAFC.8020004@gmail.com>
+In-Reply-To: <5460EAFC.8020004@gmail.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.149]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43978
+X-archive-position: 43979
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,22 +47,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 11, 2014 at 10:24:07AM +0100, Thomas Bogendoerfer wrote:
-
-> On Tue, Nov 11, 2014 at 08:47:58AM +0100, Ralf Baechle wrote:
-> > On Mon, Nov 10, 2014 at 10:30:10PM +0100, Thomas Bogendoerfer wrote:
-> > 
-> > > looks like IP28 has more problems than HUGEPAGES... even without
-> > > huge pages enabled it locks up during upgrading debian packages:-(
-> > > My gut feeling is that there is another spot hitting the ll/sc errata
-> > > stuff for this old R10k CPU.
-> > 
-> > You have the dreaded v2.6 CPU?
+On 11/10/2014 04:42 PM, David Daney wrote:
+> On 11/10/2014 08:20 AM, Markos Chandras wrote:
+>> printk should not be used without a KERN_ facility level
+>>
+>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>> ---
+>>   arch/mips/kernel/traps.c | 12 ++++++------
+>>   1 file changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+>> index 22b19c275044..51fa5c3aa4fe 100644
+>> --- a/arch/mips/kernel/traps.c
+>> +++ b/arch/mips/kernel/traps.c
+>> @@ -1380,12 +1380,12 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
+>>       show_regs(regs);
+>>
+>>       if (multi_match) {
+>> -        printk("Index    : %0x\n", read_c0_index());
+>> -        printk("Pagemask: %0x\n", read_c0_pagemask());
+>> -        printk("EntryHi : %0*lx\n", field, read_c0_entryhi());
+>> -        printk("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
+>> -        printk("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
+>> -        printk("\n");
+>> +        pr_info("Index    : %0x\n", read_c0_index());
+>> +        pr_info("Pagemask: %0x\n", read_c0_pagemask());
+>> +        pr_info("EntryHi : %0*lx\n", field, read_c0_entryhi());
+>> +        pr_info("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
+>> +        pr_info("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
+>> +        pr_info("\n");
 > 
-> V2.5 even.
+> MachineCheck is a serious problem, If we change this at all, I would
+> suggest pr_err() instead.
+> 
+> David Daney
+Hi,
 
-I'm impressed.  Not sure if I've ever seen a v2.5 errata sheet.  So far
-I thought the v2.6 CPUs in my one Origin were the only ones that ever
-left the SGI campus.
+Ok I will change all of them to pr_err().
 
-  Ralf
+-- 
+markos

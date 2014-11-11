@@ -1,40 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 10:42:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:51122 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013349AbaKKJmmHWhFI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 10:42:42 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id ECB54E67AF297;
-        Tue, 11 Nov 2014 09:42:33 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 11 Nov 2014 09:42:36 +0000
-Received: from [192.168.154.149] (192.168.154.149) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 11 Nov
- 2014 09:42:35 +0000
-Message-ID: <5461DA0B.2050505@imgtec.com>
-Date:   Tue, 11 Nov 2014 09:42:35 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 11:03:19 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:49469 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27013355AbaKKKDRKj-yb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 11:03:17 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 106)
+        id 74DB2746; Tue, 11 Nov 2014 11:03:19 +0100 (CET)
+Received: from bbrezillon (col31-4-88-188-80-5.fbx.proxad.net [88.188.80.5])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 74226744;
+        Tue, 11 Nov 2014 11:03:18 +0100 (CET)
+Date:   Tue, 11 Nov 2014 11:03:08 +0100
+From:   Boris Brezillon <boris.brezillon@free-electrons.com>
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>, linux-sh@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        nicolas.ferre@atmel.com, Olof Johansson <olof@lixom.net>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH V4 04/14] genirq: Generic chip: Add big endian I/O
+ accessors
+Message-ID: <20141111110308.5bf7bbef@bbrezillon>
+In-Reply-To: <20141110230301.GV4068@piout.net>
+References: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
+        <1415342669-30640-5-git-send-email-cernekee@gmail.com>
+        <7hy4riogwt.fsf@deeprootsystems.com>
+        <CAJiQ=7CYjy-sWc-M3m2Mg8si8JacpDH=RPPm8S-Q4m88wk3Sqg@mail.gmail.com>
+        <20141110230301.GV4068@piout.net>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/3] MIPS: kernel: traps: Replace printk with pr_info
- for MC exceptions
-References: <1415636404-11979-1-git-send-email-markos.chandras@imgtec.com> <1415636404-11979-2-git-send-email-markos.chandras@imgtec.com> <5460EAFC.8020004@gmail.com>
-In-Reply-To: <5460EAFC.8020004@gmail.com>
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.149]
-Return-Path: <Markos.Chandras@imgtec.com>
+Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43979
+X-archive-position: 43980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: boris.brezillon@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,43 +59,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/10/2014 04:42 PM, David Daney wrote:
-> On 11/10/2014 08:20 AM, Markos Chandras wrote:
->> printk should not be used without a KERN_ facility level
->>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> ---
->>   arch/mips/kernel/traps.c | 12 ++++++------
->>   1 file changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
->> index 22b19c275044..51fa5c3aa4fe 100644
->> --- a/arch/mips/kernel/traps.c
->> +++ b/arch/mips/kernel/traps.c
->> @@ -1380,12 +1380,12 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
->>       show_regs(regs);
->>
->>       if (multi_match) {
->> -        printk("Index    : %0x\n", read_c0_index());
->> -        printk("Pagemask: %0x\n", read_c0_pagemask());
->> -        printk("EntryHi : %0*lx\n", field, read_c0_entryhi());
->> -        printk("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
->> -        printk("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
->> -        printk("\n");
->> +        pr_info("Index    : %0x\n", read_c0_index());
->> +        pr_info("Pagemask: %0x\n", read_c0_pagemask());
->> +        pr_info("EntryHi : %0*lx\n", field, read_c0_entryhi());
->> +        pr_info("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
->> +        pr_info("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
->> +        pr_info("\n");
-> 
-> MachineCheck is a serious problem, If we change this at all, I would
-> suggest pr_err() instead.
-> 
-> David Daney
 Hi,
 
-Ok I will change all of them to pr_err().
+On Tue, 11 Nov 2014 00:03:01 +0100
+Alexandre Belloni <alexandre.belloni@free-electrons.com> wrote:
+
+> Adding Boris in Cc: as he wrote that part.
+
+Thanks for putting me in the loop.
+
+> 
+> On 10/11/2014 at 14:11:44 -0800, Kevin Cernekee wrote :
+> > On Mon, Nov 10, 2014 at 2:00 PM, Kevin Hilman <khilman@kernel.org> wrote:
+> > > Kevin Cernekee <cernekee@gmail.com> writes:
+> > >
+> > >> Use io{read,write}32be if the caller specified IRQ_GC_BE_IO when creating
+> > >> the irqchip.
+> > >>
+> > >> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> > >
+> > > I bisected a couple ARM boot failures in next-20141110 on atmel sama5 platforms down to
+> > > this patch, though I'm not quite yet sure how it's causing the failure.
+> > > I'm not getting any console output, so haven't been able to dig deeper
+> > > yet.  Maybe the atmel maintainers (Cc'd) can help dig.
+> > >
+> > > I've confirmed that reverting $SUBJECT patch (commit
+> > > b79055952badbd73710685643bab44104f2509ea2) on top of next-20141110 gets
+> > > things booting again.
+> > >
+> > > Also, it only happens with sama5_defconfig, not with multi_v7_defconfig.
+> > 
+> > In drivers/irqchip/irq-atmel-aic-common.c I see:
+> > 
+> >         ret = irq_alloc_domain_generic_chips(domain, 32, 1, name,
+> >                                              handle_level_irq, 0, 0,
+> >                                              IRQCHIP_SKIP_SET_WAKE);
+> > 
+> > and IRQCHIP_SKIP_SET_WAKE is (1 << 4), same as IRQ_GC_BE_IO.
+> > 
+> > Is it possible that the caller is passing values intended for
+> > irq_chip->flags into a function expecting
+> > irq_domain_chip_generic->gc_flags ?
+
+Indeed, I don't know what I tried to do in the first place but this is
+completely wrong.
+First because the last argument is not a valid flag as you pointed out,
+then because I clearly have set irq_set_wake and thus setting
+IRQCHIP_SKIP_SET_WAKE makes no sense.
+
+I also realized I should directly pass handle_fasteoi_irq and not
+handle_level_irq for the handler, that clr flags (IRQ_NOREQUEST |
+IRQ_NOPROBE | IRQ_NOAUTOEN) are missing and that IRQ_GC_INIT_MASK_CACHE
+is missing too.
+
+I'll propose a patch fixing all those bugs.
+
+Sorry for the inconvenience :-(.
+
+Regards,
+
+Boris
 
 -- 
-markos
+Boris Brezillon, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

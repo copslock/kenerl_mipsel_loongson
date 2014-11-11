@@ -1,43 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 14:34:09 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:50695 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013367AbaKKNeHomqcE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 14:34:07 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id 1DC9F748; Tue, 11 Nov 2014 14:34:10 +0100 (CET)
-Received: from localhost.localdomain (col31-4-88-188-80-5.fbx.proxad.net [88.188.80.5])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 2B25B74D;
-        Tue, 11 Nov 2014 14:33:48 +0100 (CET)
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>, linux-sh@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH] irqchip: atmel-aic: fix irqdomain initialization
-Date:   Tue, 11 Nov 2014 14:33:36 +0100
-Message-Id: <1415712816-9202-1-git-send-email-boris.brezillon@free-electrons.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <20141110230301.GV4068@piout.net>
-References: <20141110230301.GV4068@piout.net>
-Return-Path: <boris.brezillon@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 15:19:39 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:59725 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27013387AbaKKOThyzaMD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Nov 2014 15:19:37 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sABEJa3t004012;
+        Tue, 11 Nov 2014 15:19:36 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sABEJaaS004009;
+        Tue, 11 Nov 2014 15:19:36 +0100
+Date:   Tue, 11 Nov 2014 15:19:36 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 01/11] MIPS: push .set arch=r4000 into the functions
+ needing it
+Message-ID: <20141111141935.GB29662@linux-mips.org>
+References: <1411551942-11153-1-git-send-email-paul.burton@imgtec.com>
+ <1411551942-11153-2-git-send-email-paul.burton@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1411551942-11153-2-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44000
+X-archive-position: 44001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,56 +44,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-First of all IRQCHIP_SKIP_SET_WAKE is not a valid irq_gc_flags and thus
-should not be passed as the last argument of
-irq_alloc_domain_generic_chips.
+On Wed, Sep 24, 2014 at 10:45:32AM +0100, Paul Burton wrote:
 
-Then pass the correct handler (handle_fasteoi_irq) to
-irq_alloc_domain_generic_chips instead of manually re-setting it in the
-initialization loop.
+> The {save,restore}_fp_context{,32} functions require that the assembler
+> allows the use of sdc instructions on any FP register, and this is
+> acomplished by setting the arch to r4000. However this has the effect
+> of enabling the assembler to use mips64 instructions in the expansion
+> of pseudo-instructions. This was done in the (now-reverted) commit
+> eec43a224cf1 "MIPS: Save/restore MSA context around signals" which
+> led to my mistakenly believing that there was an assembler bug, when
+> in reality the assembler was just emitting mips64 instructions. Avoid
+> the issue for future commits which will add code to r4k_fpu.S by
+> pushing the .set arch=r4000 directives into the functions that require
+> it, and remove the spurious assertion declaring the assembler bug.
 
-And eventually initialize default irq flags to the pseudo standard:
-IRQ_REQUEST | IRQ_PROBE | IRQ_AUTOEN.
+I'm getting rejects applying patches 1 and 2 of this series and 3 looks
+like it's likely not to apply either.  I suspect that's due to a
+conflict with 842dfc11 (MIPS: Fix build with binutils 2.24.51+).  Can
+you respin?
 
-Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
----
-Hello Kevin,
+Thanks!
 
-This patch has not been tested yet but it should solve the issue you've
-experienced with the IRQ_GC_BE_IO flag and the atmel-aic driver.
-
-I'll test it tomorrow and let you know if it actually works.
-
-Regards,
-
-Boris
-
- drivers/irqchip/irq-atmel-aic-common.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/irqchip/irq-atmel-aic-common.c b/drivers/irqchip/irq-atmel-aic-common.c
-index 656cfe3..d111ac7 100644
---- a/drivers/irqchip/irq-atmel-aic-common.c
-+++ b/drivers/irqchip/irq-atmel-aic-common.c
-@@ -243,8 +243,9 @@ struct irq_domain *__init aic_common_of_init(struct device_node *node,
- 	}
- 
- 	ret = irq_alloc_domain_generic_chips(domain, 32, 1, name,
--					     handle_level_irq, 0, 0,
--					     IRQCHIP_SKIP_SET_WAKE);
-+					     handle_fasteoi_irq,
-+					     IRQ_NOREQUEST | IRQ_NOPROBE |
-+					     IRQ_NOAUTOEN, 0, 0);
- 	if (ret)
- 		goto err_domain_remove;
- 
-@@ -256,7 +257,6 @@ struct irq_domain *__init aic_common_of_init(struct device_node *node,
- 		gc->unused = 0;
- 		gc->wake_enabled = ~0;
- 		gc->chip_types[0].type = IRQ_TYPE_SENSE_MASK;
--		gc->chip_types[0].handler = handle_fasteoi_irq;
- 		gc->chip_types[0].chip.irq_eoi = irq_gc_eoi;
- 		gc->chip_types[0].chip.irq_set_wake = irq_gc_set_wake;
- 		gc->chip_types[0].chip.irq_shutdown = aic_common_shutdown;
--- 
-1.9.1
+  Ralf

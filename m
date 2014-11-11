@@ -1,47 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 17:26:58 +0100 (CET)
-Received: from demumfd002.nsn-inter.net ([93.183.12.31]:46354 "EHLO
-        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013227AbaKKQ0viLcjc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 17:26:51 +0100
-Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
-        by demumfd002.nsn-inter.net (8.14.3/8.14.3) with ESMTP id sABGQavf011945
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 11 Nov 2014 16:26:37 GMT
-Received: from ak-desktop.emea.nsn-net.net ([10.144.35.206])
-        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with SMTP id sABGQZ1Z012074;
-        Tue, 11 Nov 2014 17:26:35 +0100
-Received: by ak-desktop.emea.nsn-net.net (sSMTP sendmail emulation); Tue, 11 Nov 2014 18:24:12 +0200
-Date:   Tue, 11 Nov 2014 18:24:12 +0200
-From:   Aaro Koskinen <aaro.koskinen@nsn.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 17:35:28 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:32833 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27013415AbaKKQf0hhR6V (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Nov 2014 17:35:26 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sABGZPxK007179;
+        Tue, 11 Nov 2014 17:35:25 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sABGZPmO007178;
+        Tue, 11 Nov 2014 17:35:25 +0100
+Date:   Tue, 11 Nov 2014 17:35:25 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Aaro Koskinen <aaro.koskinen@nsn.com>
 Cc:     David Daney <ddaney.cavm@gmail.com>,
         David Daney <david.daney@cavium.com>,
         linux-mips@linux-mips.org, Aaro Koskinen <aaro.koskinen@iki.fi>
 Subject: Re: [PATCH] MIPS: cavium-octeon: fix early boot hang on EBH5600 board
-Message-ID: <20141111162412.GD6632@ak-desktop.emea.nsn-net.net>
+Message-ID: <20141111163525.GD29662@linux-mips.org>
 References: <1383142087-25995-1-git-send-email-aaro.koskinen@nsn.com>
  <52729302.6090505@gmail.com>
  <20141111161910.GC29662@linux-mips.org>
+ <20141111162412.GD6632@ak-desktop.emea.nsn-net.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20141111161910.GC29662@linux-mips.org>
+In-Reply-To: <20141111162412.GD6632@ak-desktop.emea.nsn-net.net>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 454
-X-purgate-ID: 151667::1415723197-00001FC1-63312256/0/0
-Return-Path: <aaro.koskinen@nsn.com>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44007
+X-archive-position: 44008
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nsn.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,18 +47,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Tue, Nov 11, 2014 at 06:24:12PM +0200, Aaro Koskinen wrote:
 
-On Tue, Nov 11, 2014 at 05:19:10PM +0100, Ralf Baechle wrote:
-> On Thu, Oct 31, 2013 at 10:27:30AM -0700, David Daney wrote:
-> > I am looking at this, but it could be a few days before I can render an
-> > opinion about it.
+> > Drop?  Apply?  Apply carbon dating first?
 > 
-> This is still pending in http://patchwork.linux-mips.org/patch/6090/.
-> 
-> Drop?  Apply?  Apply carbon dating first?
+> This one is already applied to mainline
+> (b2e4f1560f7388f8157dd2c828211abbfad0e806).
 
-This one is already applied to mainline
-(b2e4f1560f7388f8157dd2c828211abbfad0e806).
+Ah, great thanks.  I dropped it then.
 
-A.
+We have a bunch more patches that are pending for very long time; I'm
+going to post them in the next days.  Not 377 days though :)
+
+  Ralf

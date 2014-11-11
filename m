@@ -1,57 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 20:50:48 +0100 (CET)
-Received: from mail-qg0-f49.google.com ([209.85.192.49]:59177 "EHLO
-        mail-qg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013253AbaKKTuqhy4ST (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 20:50:46 +0100
-Received: by mail-qg0-f49.google.com with SMTP id z60so7802247qgd.36
-        for <linux-mips@linux-mips.org>; Tue, 11 Nov 2014 11:50:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=6H/1xp8BxVYsw5lXfSTKvI7qWrY6kMpJDHeFHE6hcoM=;
-        b=V03ZRgnDHvnrIMm+cbH/D0d7UM/4Zb2Tc08RCuS703YRrheITHpqZsaao8TPKi0Ewk
-         Z1yUV8nIFPBGPx0u4IuV1NMCB2ejwUWgqFESXnH7lQ99bVp/p42HYyX+3/qL7dN9lMO6
-         /SV4RP8wbmCPKX3cKEH8fqRHgqcYYKlE1/Zxhx1lSJsT5E9bQCBeQdVSRDYuyzuM8vjX
-         +GLHxupj82yRZ6upLsQXXqd0a1vRxMxmI8ondsiiFBmJjM+uizpdWjogF0aXgm6pYtVD
-         T4VHTKpZyC3XeM5Eg9Yn107R08+RNmg0t+hzxqQxKRhwxSgaV/7GVTnUD2/Mlmltnqum
-         rx8w==
-X-Received: by 10.140.46.98 with SMTP id j89mr52924624qga.106.1415735440842;
- Tue, 11 Nov 2014 11:50:40 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 21:44:14 +0100 (CET)
+Received: from mga02.intel.com ([134.134.136.20]:10832 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013227AbaKKUoMebGfR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Nov 2014 21:44:12 +0100
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP; 11 Nov 2014 12:44:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.07,362,1413270000"; 
+   d="scan'208";a="635280383"
+Received: from justinda-mobl1.ger.corp.intel.com (HELO [10.255.13.126]) ([10.255.13.126])
+  by orsmga002.jf.intel.com with ESMTP; 11 Nov 2014 12:44:02 -0800
+Message-ID: <54627512.7060806@intel.com>
+Date:   Tue, 11 Nov 2014 12:44:02 -0800
+From:   Dave Hansen <dave.hansen@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Tue, 11 Nov 2014 11:50:20 -0800 (PST)
-In-Reply-To: <CAL_JsqKE=p_d53A7n4QZpQc_z0tbAp0bhZGerjsUt2BSSvGgtw@mail.gmail.com>
-References: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
- <1415523348-4631-2-git-send-email-cernekee@gmail.com> <CAL_JsqLXznpCo3YjN+XqF6cDG38C6dKzO9DHJmzi6=sNnAU=hQ@mail.gmail.com>
- <CAJiQ=7DUV0isdRooz6112Ncx07+9RE5DS5tMBwxr47hTWA8PAw@mail.gmail.com>
- <CAL_JsqLYoUKr71Q-hfLQhXOVL72Gy7PkO-Zd4rBc0Fn-prOqTw@mail.gmail.com>
- <CAJiQ=7C5ki+9opnH68Kw9a573PmO=ANeiVutmVROUP2Typn2qw@mail.gmail.com> <CAL_JsqKE=p_d53A7n4QZpQc_z0tbAp0bhZGerjsUt2BSSvGgtw@mail.gmail.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Tue, 11 Nov 2014 11:50:20 -0800
-Message-ID: <CAJiQ=7BkuAMCf+oJaBAuP16WUtftD1c1HfMgD9_ajQGK-u8_zQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] tty: serial: bcm63xx: Allow device nodes to be
- renamed to /dev/ttyBCM*
-To:     Rob Herring <robh@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Grant Likely <grant.likely@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+CC:     Qiaowei Ren <qiaowei.ren@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v9 11/12] x86, mpx: cleanup unused bound tables
+References: <1413088915-13428-1-git-send-email-qiaowei.ren@intel.com> <1413088915-13428-12-git-send-email-qiaowei.ren@intel.com> <alpine.DEB.2.11.1410241451280.5308@nanos> <545BED0B.8000001@intel.com> <alpine.DEB.2.11.1411111213450.3935@nanos>
+In-Reply-To: <alpine.DEB.2.11.1411111213450.3935@nanos>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <dave.hansen@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44013
+X-archive-position: 44014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: dave.hansen@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,114 +46,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 11, 2014 at 9:35 AM, Rob Herring <robh@kernel.org> wrote:
->> What is the current best practice for new drivers?
->
-> I think it would be using dynamic numbering, but would be good to have
-> others weigh in here. It looks like a dynamic major would solve your
-> problem. See tty_register_driver. Also, there was a patch to make this
-> the fallback behavior instead of an error[1], but it was never merged
-> (and it's not clear why). This was the Samsung related change I was
-> remembering.
->
-> Rob
->
-> [1] http://lists.linaro.org/pipermail/linaro-kernel/2014-January/010383.html
+On 11/11/2014 10:27 AM, Thomas Gleixner wrote:
+> On Thu, 6 Nov 2014, Dave Hansen wrote:
+>> Instead of all of these games with dropping and reacquiring mmap_sem and
+>> adding other locks, or deferring the work, why don't we just do a
+>> get_user_pages()?  Something along the lines of:
+>>
+>> while (1) {
+>> 	ret = cmpxchg(addr)
+>> 	if (!ret)
+>> 		break;
+>> 	if (ret == -EFAULT)
+>> 		get_user_pages(addr);
+>> }
+>>
+>> Does anybody see a problem with that?
+> 
+> You want to do that under mmap_sem write held, right? Not a problem per
+> se, except that you block normal faults for a possibly long time when
+> the page(s) need to be swapped in.
 
-This doesn't seem to fix the coexistence problems with the 8250
-driver.  Perhaps it is time to write a simpler version of the 8250
-driver geared toward embedded applications?  Some items on my wishlist
-include:
+Yeah, it might hold mmap_sem for write while doing this in the unmap
+path.  But, that's only if the bounds directory entry has been swapped
+out.  There's only 1 pointer of bounds directory entries there for every
+1MB of data, so it _should_ be relatively rare.  It would mean that
+nobody's been accessing a 512MB swath of data controlled by the same
+page of the bounds directory.
 
- - OF_EARLYCON support
- - Native-endian and big-endian register support
- - Move to a pure runtime-enumerated model and drop the ISA code
- - Drop support for obsolete chips (16450, 8250) and quirks for obsolete PCs
+If it gets to be an issue, we can always add some code to fault it in
+before mmap_sem is acquired.
 
-It looks like sunsu, serial-tegra, omap-serial, and possibly others
-have already started down this path.  Or I could just write a
-dedicated uart_bcm7xxx driver if that's easier...
+FWIW, I believe we have a fairly long road ahead of us to optimize MPX
+in practice.  I have a list of things I want to go investigate, but I
+have not looked in to it in detail at all.
 
-Here are my results after grabbing V2 of Tushar's patch from the list
-archives and reverting the bcm63xx_uart driver to claim "ttyS" with
-major 4, minor 64:
+> But yes, this might solve most of the issues at hand. Did not think
+> about GUP at all :(
 
- - Building with CONFIG_SERIAL_8250_NR_UARTS=0 rendered the 8250-based
-system unbootable (it dies with no output right after the bootconsole
-is disabled)
-
- - Building with CONFIG_SERIAL_8250_NR_UARTS=1 rendered the
-bcm63xx_uart-based system unbootable, with the following output:
-
-Serial: 8250/16550 driver, 1 ports, IRQ sharing disabled
-Default device node (4:64) for ttyS is busy, using dynamic major number
-bcm63xx_uart 10000100.serial: ttyS0 at MMIO 0x10000100 (irq = 28,
-base_baud = 1562500) is a bcm63xx_uart
-console [ttyS0] enabled
-console [ttyS0] enabled
-bootconsole [uart0] disabled
-bootconsole [uart0] disabled
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1 at fs/sysfs/dir.c:31 sysfs_warn_dup+0x64/0xbc()
-sysfs: cannot create duplicate filename '/class/tty/ttyS0'
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 3.18.0-rc4+ #384
-Stack : 00000000 00000004 00000000 80075444 00000000 00000000 00000000 00000000
-      809e5012 0000003a 00000001 00000000 00010000 87c282b8 8056dac4 805b9ce7
-      00000001 00000000 809e39d8 87c282b8 87c6ae10 00000001 87c6ae10 804edeb0
-      805c0000 80032984 00000000 00000000 80571d28 87c2da84 87c2da84 8056dac4
-      00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-      ...
-Call Trace:
-[<8001a00c>] show_stack+0x64/0x7c
-[<804eff94>] dump_stack+0xc8/0xfc
-[<80032bd8>] warn_slowpath_common+0x7c/0xac
-[<80032c68>] warn_slowpath_fmt+0x2c/0x38
-[<8015c784>] sysfs_warn_dup+0x64/0xbc
-[<8015cabc>] sysfs_do_create_link_sd.isra.2+0xec/0xf4
-[<802c193c>] device_add+0x4b0/0x59c
-[<802a452c>] tty_register_device_attr+0xe4/0x278
-[<802b625c>] uart_add_one_port+0x344/0x474
-[<802bbffc>] bcm_uart_probe+0x14c/0x240
-[<802c6c20>] platform_drv_probe+0x54/0xc4
-[<802c51bc>] really_probe+0xa0/0x2cc
-[<802c5544>] __driver_attach+0xd0/0xd8
-[<802c3660>] bus_for_each_dev+0x68/0xb0
-[<802c4160>] bus_add_driver+0x168/0x230
-[<802c5f6c>] driver_register+0x84/0x138
-[<805e86ec>] bcm_uart_init+0x30/0x58
-[<805d4ce0>] do_one_initcall+0x148/0x208
-[<805d4f0c>] kernel_init_freeable+0x16c/0x228
-[<804eb6dc>] kernel_init+0x10/0x100
-[<80013ce8>] ret_from_kernel_thread+0x14/0x1c
-
----[ end trace dc92a8c272541296 ]---
-bcm63xx_uart 10000100.serial: Cannot register tty device on line 0
-libphy: Fixed MDIO Bus: probed
-usbcore: registered new interface driver asix
-usbcore: registered new interface driver ax88179_178a
-usbcore: registered new interface driver cdc_ether
-usbcore: registered new interface driver net1080
-usbcore: registered new interface driver cdc_subset
-usbcore: registered new interface driver zaurus
-usbcore: registered new interface driver cdc_ncm
-ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
-ehci-platform: EHCI generic platform driver
-ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
-ohci-platform: OHCI generic platform driver
-usbcore: registered new interface driver usb-storage
-TCP: cubic registered
-NET: Registered protocol family 10
-sit: IPv6 over IPv4 tunneling driver
-NET: Registered protocol family 17
-Freeing unused kernel memory: 4144K (805d4000 - 809e0000)
-starting pid 797, tty '': '/etc/init.d/rcS'
-Mounting virtual filesystems
-Starting mdev
-Configuring lo interface
-Configuring sit0 interface
-Starting network services
-starting pid 826, tty '': '/bin/cttyhack /bin/sh -l'
-process '/bin/cttyhack /bin/sh -l' (pid 826) exited. Scheduling for restart.
-starting pid 828, tty '': '/bin/cttyhack /bin/sh -l'
-process '/bin/cttyhack /bin/sh -l' (pid 828) exited. Scheduling for restart.
-starting pid 830, tty '': '/bin/cttyhack /bin/sh -l'
+Whew.  Fixing it was getting nasty and complicated. :)

@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 12:07:05 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:57827 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013363AbaKKLHD5i8vF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Nov 2014 12:07:03 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sABB72HB029408;
-        Tue, 11 Nov 2014 12:07:02 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sABB72tp029407;
-        Tue, 11 Nov 2014 12:07:02 +0100
-Date:   Tue, 11 Nov 2014 12:07:02 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-pm@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>
-Subject: Re: [PATCH V2 12/12] MIPS: Loongson: Make CPUFreq usable for
- Loongson-3
-Message-ID: <20141111110702.GA28822@linux-mips.org>
-References: <1415081928-25899-1-git-send-email-chenhc@lemote.com>
- <20141111105748.GK27259@linux-mips.org>
- <CAAhV-H7H+7TYyvbecaS6C1NEq7DEnjez2Z_eHnpix0+m_5FDoA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAhV-H7H+7TYyvbecaS6C1NEq7DEnjez2Z_eHnpix0+m_5FDoA@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 12:09:33 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:40655 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013353AbaKKLJcSCYME (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 12:09:32 +0100
+Received: from bl15-104-53.dsl.telepac.pt ([188.80.104.53] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1Xo9KE-0006vx-Kc; Tue, 11 Nov 2014 11:09:30 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 034/170] MIPS: cp1emu: Fix ISA restrictions for cop1x_op instructions
+Date:   Tue, 11 Nov 2014 11:06:33 +0000
+Message-Id: <1415704129-12709-35-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1415704129-12709-1-git-send-email-luis.henriques@canonical.com>
+References: <1415704129-12709-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 43991
+X-archive-position: 43992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,15 +42,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 11, 2014 at 07:02:48PM +0800, Huacai Chen wrote:
+3.16.7-ckt1 -stable review patch.  If anyone has any objections, please let me know.
 
-> Loops_per_jiffy is set on startup and doesn't change later. It reflect
-> the maximum value frequency, but for CPU hotplug, a new online CPU may
-> not run at the maximum frequency (remain the old value before it is
-> offline).
+------------------
 
-As suspected.  But what if a CPU is hotunplugged, then the clockrate
-for all the CPUs changes and then the gets re-hotplugged into the system.
-Wouldn't in that case the udelay_val be used?
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-  Ralf
+commit a5466d7bba9af83a82cc7c081b2a7d557cde3204 upstream.
+
+Commit 08a07904e1828 ("MIPS: math-emu: Remove most ifdefery") removed
+the #ifdef ISA conditions and switched to runtime detection. However,
+according to the instruction set manual, the cop1x_op instructions are
+available in >=MIPS32r2 as well. This fixes a problem on MIPS32r2
+with the ntpd package which failed to execute with a SIGILL exit code due
+to the fact that a madd.d instruction was not being emulated.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: 08a07904e1828 ("MIPS: math-emu: Remove most ifdefery")
+Cc: linux-mips@linux-mips.org
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/8173/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/math-emu/cp1emu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 7a4727795a70..51a0fde4bec1 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -1023,7 +1023,7 @@ emul:
+ 					goto emul;
+ 
+ 				case cop1x_op:
+-					if (cpu_has_mips_4_5 || cpu_has_mips64)
++					if (cpu_has_mips_4_5 || cpu_has_mips64 || cpu_has_mips32r2)
+ 						/* its one of ours */
+ 						goto emul;
+ 
+@@ -1068,7 +1068,7 @@ emul:
+ 		break;
+ 
+ 	case cop1x_op:
+-		if (!cpu_has_mips_4_5 && !cpu_has_mips64)
++		if (!cpu_has_mips_4_5 && !cpu_has_mips64 && !cpu_has_mips32r2)
+ 			return SIGILL;
+ 
+ 		sig = fpux_emu(xcp, ctx, ir, fault_addr);
+-- 
+2.1.0

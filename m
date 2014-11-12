@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 06:47:37 +0100 (CET)
-Received: from mail-pa0-f54.google.com ([209.85.220.54]:64740 "EHLO
-        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012552AbaKLFrdYlhRY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 06:47:33 +0100
-Received: by mail-pa0-f54.google.com with SMTP id hz1so1028246pad.27
-        for <multiple recipients>; Tue, 11 Nov 2014 21:47:27 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 09:47:12 +0100 (CET)
+Received: from mail-pd0-f170.google.com ([209.85.192.170]:35150 "EHLO
+        mail-pd0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013480AbaKLIrKzZvwC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 09:47:10 +0100
+Received: by mail-pd0-f170.google.com with SMTP id z10so11902799pdj.29
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 00:47:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=zIC86PrYeziYsIA9DCEQ0hu8mN5BMtuKD1VUTA0QI2s=;
-        b=NkmV56NzDIL3Fyy22tluW/UKzU08W/f3K5hEL58JwWVNb50DWF3fp73IT4TwIaUL15
-         SzVEaGZb2Cpjd7LPKuMoNSZf1H5MloExBc2VDi303Cb/RHJ9pCxabmXjuOCCqRbnFm2f
-         1QBZbQqZ6NomOxOvhN3eWGv4qQZIV+svWyoljmPmI7y0dzuTUsQfxakNk4xWVVuD+4b1
-         x1tqkSbs1gO/F88O4oWqUUwwjbRi76DWTFbd42yzRmkrsSM4xXv6mHPeasXdeY/SEEJa
-         rDR/ljxIJUQ/MqY5kbKzh1WciF3syCXCOb1LtZxedvbpEVQHXuieQrCvUD9MF4q5Whoo
-         /SxA==
-X-Received: by 10.67.14.7 with SMTP id fc7mr2298940pad.55.1415771247352;
-        Tue, 11 Nov 2014 21:47:27 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id xy3sm20956806pbb.38.2014.11.11.21.47.24
+        h=from:to:cc:subject:date:message-id;
+        bh=ollv7ocTNmfvs+uNP7BWiEPGHCjic9GdD/wztlhKTd8=;
+        b=ehKCQzfLaWKhLKAmxYC7ap8QLB81dq215aAWDwe2fc2egoJHMGWEBePTP1xm86UMu/
+         UGg26tgOA52fb26qu46cXq1m+ljFxRnsU8EdZPsyDSFpjZXPS529cFHlXPLfVArazHvS
+         LalySrDzkzy1fuc+/kznXN1x0C9eps71IYT2mad9Hbpc49+7zpHlGhU+7udEjymzYF1t
+         K5vd17URUpEs8WQDSQKfef8Px7/FviOcd8piZCPR5H2TtfLbp24rVaZze0QWVic2QIA4
+         JL/nZL3vYDvXFGn7k7kUHkzXHBAOUj5NOP5ge55QmwUNJAWXkuQeRH+wxXaInkn9FtQ5
+         zZTg==
+X-Received: by 10.66.226.235 with SMTP id rv11mr45250234pac.41.1415782024838;
+        Wed, 12 Nov 2014 00:47:04 -0800 (PST)
+Received: from localhost (b32.net. [192.81.132.72])
+        by mx.google.com with ESMTPSA id p10sm18804833pds.63.2014.11.12.00.47.03
         for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 11 Nov 2014 21:47:26 -0800 (PST)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH] MIPS: Fix a copy & paste error in unistd.h
-Date:   Wed, 12 Nov 2014 13:47:14 +0800
-Message-Id: <1415771234-6364-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-Return-Path: <chenhuacai@gmail.com>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 12 Nov 2014 00:47:04 -0800 (PST)
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org
+Cc:     tushar.behera@linaro.org, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        grant.likely@linaro.org, f.fainelli@gmail.com, mbizon@freebox.fr,
+        jogo@openwrt.org, linux-mips@linux-mips.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH/RFC 0/8] UART driver support for BMIPS multiplatform kernels
+Date:   Wed, 12 Nov 2014 00:46:25 -0800
+Message-Id: <1415781993-7755-1-git-send-email-cernekee@gmail.com>
+X-Mailer: git-send-email 2.1.1
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44027
+X-archive-position: 44028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,26 +54,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 5df4c8dbbc (MIPS: Wire up bpf syscall.) break the N32 build
-because of a copy & paste error.
+Use the pxa serial driver to support BCM7xxx's UARTs; add code to allow
+native-endian operation on both LE and BE systems.  Enable OF_EARLYCON
+in the pxa driver.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/uapi/asm/unistd.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+After applying these changes I am able to build a multiplatform kernel
+that boots to the prompt on BCM6328 (bcm63xx_uart) and BCM7346 (pxa).
 
-diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
-index 9dc5856..d001bb1 100644
---- a/arch/mips/include/uapi/asm/unistd.h
-+++ b/arch/mips/include/uapi/asm/unistd.h
-@@ -1045,7 +1045,7 @@
- #define __NR_seccomp			(__NR_Linux + 316)
- #define __NR_getrandom			(__NR_Linux + 317)
- #define __NR_memfd_create		(__NR_Linux + 318)
--#define __NR_memfd_create		(__NR_Linux + 319)
-+#define __NR_bpf			(__NR_Linux + 319)
- 
- /*
-  * Offset of the last N32 flavoured syscall
+
+Kevin Cernekee (7):
+  serial: core: Add big_endian flag
+  of: Add helper function to check MMIO register endianness
+  serial: pxa: Add fifo-size and {big,native}-endian properties
+  serial: pxa: Make the driver buildable for BCM7xxx set-top platforms
+  serial: pxa: Update DT binding documentation
+  serial: earlycon: Set uart_port->big_endian based on DT properties
+  serial: pxa: Add OF_EARLYCON support
+
+Tushar Behera (1):
+  tty: Fallback to use dynamic major number
+
+ .../devicetree/bindings/serial/mrvl-serial.txt     | 34 +++++++++++-
+ drivers/of/base.c                                  | 23 ++++++++
+ drivers/of/fdt.c                                   |  9 +++-
+ drivers/tty/serial/Kconfig                         |  2 +-
+ drivers/tty/serial/earlycon.c                      |  3 +-
+ drivers/tty/serial/pxa.c                           | 62 +++++++++++++++++++++-
+ drivers/tty/tty_io.c                               | 19 +++++--
+ include/linux/of.h                                 |  6 +++
+ include/linux/serial_core.h                        |  5 +-
+ 9 files changed, 152 insertions(+), 11 deletions(-)
+
 -- 
-1.7.7.3
+2.1.1

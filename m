@@ -1,53 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 22:20:54 +0100 (CET)
-Received: from mail-wi0-f170.google.com ([209.85.212.170]:60383 "EHLO
-        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013413AbaKLVUvGEmcc (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 22:21:11 +0100 (CET)
+Received: from mail-wg0-f46.google.com ([74.125.82.46]:38871 "EHLO
+        mail-wg0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013420AbaKLVUv03Q0Y (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 22:20:51 +0100
-Received: by mail-wi0-f170.google.com with SMTP id r20so6262830wiv.3
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 13:20:45 -0800 (PST)
+Received: by mail-wg0-f46.google.com with SMTP id x13so15384564wgg.33
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 13:20:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
          :date:message-id;
-        bh=bpF2LVw9a/eM0JSl2DA87CXDGZKMcGt3KMz96XNgWI0=;
-        b=EFzPBGUQSKB0EkHBbgkoivM+y9AmbB0sChfdTiJqScmXh/gpBdioT4U58EYV4gp20+
-         CRmXtUi252MZysBQ+xzIjyDcOXDsQuWeM+ixQPi6yuX8LXzVsDzmFlFN+pflDg/d8NZQ
-         lkXriObaI/wMaQe8bE+iJAj3VzT1NShvtwhHbdElNhxqow7PIpA++Tw399E3GC+CNzeh
-         iUfTDJggnOhVxCg8LW+MhNmw6gTSticPG6PwtcSCHDfUgrk6UD3W0aKbtTg9v6vpRg86
-         lKsxYYxhahAKs361UzhzmeZJckTc3jCfDNLT+1018e0PqMTmbiHRaMXqEaD8Z1hV9AEC
-         sJ+Q==
-X-Gm-Message-State: ALoCoQkFBJ49+wzt5R4uK8TKtL5pGCrlAUyhSsBV+VKOyzsLVGu1yb9wsb/vO2QgU6m0tKtAylQx
-X-Received: by 10.180.221.72 with SMTP id qc8mr192959wic.19.1415827245729;
-        Wed, 12 Nov 2014 13:20:45 -0800 (PST)
+        bh=CBOhiQqIOKw3hksM+MKa3tF8Qyn7QLMosP8FDszFMPY=;
+        b=coLViYM+CR0C6rOKfEp7r+/1klcXTK49huzUbjF8IYGWh5Whi6AjEJ7bTtu+TBfKIx
+         ZeFQYwrvkb+3Rx5HXGLVPBW7ZSVpyBYnS57b2N6AFZB+7tolgfAn3BvOB3i2zkvelWEI
+         FN9Ana54XzGzezKmE0yc7rLID0IY0UhFZ8DjmdCeYq5wNIRRQja21jmoJgcoyHyt0Wwd
+         Z3ukPJ6dIim+hTxcFL5aisBOD6SB3HJWScr1Qag7hn8tSoS5YxuJxhlPaEUAXL/bxKug
+         UDWtF8N3M0NxcIwPFhw06FSYWWucggkXOz7cQtIw8QxTwbg6XcIIVANPoPcZ1yipVHWy
+         g+lw==
+X-Gm-Message-State: ALoCoQm1t+ivmddl6DGDPes2Myg/lTwVeMpMUoP7lkQ5dlA4jYGMZ6gfJWiHIRZub6RXPcymVjru
+X-Received: by 10.194.60.45 with SMTP id e13mr68027282wjr.109.1415827246172;
+        Wed, 12 Nov 2014 13:20:46 -0800 (PST)
 Received: from trevor.secretlab.ca (host86-166-83-112.range86-166.btcentralplus.com. [86.166.83.112])
-        by mx.google.com with ESMTPSA id jw2sm23118787wid.3.2014.11.12.13.20.43
+        by mx.google.com with ESMTPSA id bj7sm32916003wjc.33.2014.11.12.13.20.43
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
         Wed, 12 Nov 2014 13:20:44 -0800 (PST)
 Received: by trevor.secretlab.ca (Postfix, from userid 1000)
-        id 672A3C41CF4; Wed, 12 Nov 2014 17:12:09 +0000 (GMT)
+        id 49BE5C41C69; Wed, 12 Nov 2014 17:11:10 +0000 (GMT)
 From:   Grant Likely <grant.likely@linaro.org>
 Subject: Re: [PATCH 1/2] of: Fix crash if an earlycon driver is not found
-To:     Rob Herring <robh@kernel.org>, Kevin Cernekee <cernekee@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        stable@vger.kernel.org
-In-Reply-To: <CAL_Jsq+iVfFGYEF575spQ5MaYPzo1QSfLUZP1M=TpH0+HdGS6A@mail.gmail.com>
+To:     Kevin Cernekee <cernekee@gmail.com>, gregkh@linuxfoundation.org,
+        jslaby@suse.cz, robh@kernel.org
+Cc:     f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
+        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+        devicetree@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
 References: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
-        <CAL_Jsq+iVfFGYEF575spQ5MaYPzo1QSfLUZP1M=TpH0+HdGS6A@mail.gmail.com>
-Date:   Wed, 12 Nov 2014 17:12:09 +0000
-Message-Id: <20141112171209.672A3C41CF4@trevor.secretlab.ca>
+Date:   Wed, 12 Nov 2014 17:11:10 +0000
+Message-Id: <20141112171110.49BE5C41C69@trevor.secretlab.ca>
 Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44088
+X-archive-position: 44089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,35 +58,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 10 Nov 2014 08:14:01 -0600
-, Rob Herring <robh@kernel.org>
+On Sun,  9 Nov 2014 00:55:47 -0800
+, Kevin Cernekee <cernekee@gmail.com>
  wrote:
-> On Sun, Nov 9, 2014 at 2:55 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
-> > __earlycon_of_table_sentinel.compatible is a char[128], not a pointer, so
-> > it will never be NULL.  Checking it against NULL causes the match loop to
-> > run past the end of the array, and eventually match a bogus entry, under
-> > the following conditions:
-> >
-> >  - Kernel command line specifies "earlycon" with no parameters
-> >  - DT has a stdout-path pointing to a UART node
-> >  - The UART driver doesn't use OF_EARLYCON_DECLARE (or maybe the console
-> >    driver is compiled out)
-> >
-> > Fix this by checking to see if match->compatible is a non-empty string.
-> >
-> > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> > Cc: <stable@vger.kernel.org> # 3.16+
+> __earlycon_of_table_sentinel.compatible is a char[128], not a pointer, so
+> it will never be NULL.  Checking it against NULL causes the match loop to
+> run past the end of the array, and eventually match a bogus entry, under
+> the following conditions:
 > 
-> Thanks. I'll queue this up.
+>  - Kernel command line specifies "earlycon" with no parameters
+>  - DT has a stdout-path pointing to a UART node
+>  - The UART driver doesn't use OF_EARLYCON_DECLARE (or maybe the console
+>    driver is compiled out)
 > 
-> BTW, you should not add stable CC when submitting for review, but
-> rather add a note for the maintainer to apply to stable. Only if a
-> commit is in mainline already and not flagged for stable, then you
-> send the patch with the stable tag to get the commit added to stable.
-> It's a bit confusing...
+> Fix this by checking to see if match->compatible is a non-empty string.
+> 
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> Cc: <stable@vger.kernel.org> # 3.16+
 
-
-Oops, since you've picked it up I'll drop it from my tree. I'll let you
-send the pull req to Linus.
+Applied, thanks. Although a more robust fix would probably to be
+checking for the end address of the section. This is a safe fix though,
+so I'm picking it up.
 
 g.
+
+> ---
+>  drivers/of/fdt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index d1ffca8..30e97bc 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -773,7 +773,7 @@ int __init early_init_dt_scan_chosen_serial(void)
+>  	if (offset < 0)
+>  		return -ENODEV;
+>  
+> -	while (match->compatible) {
+> +	while (match->compatible[0]) {
+>  		unsigned long addr;
+>  		if (fdt_node_check_compatible(fdt, offset, match->compatible)) {
+>  			match++;
+> -- 
+> 2.1.1
+> 

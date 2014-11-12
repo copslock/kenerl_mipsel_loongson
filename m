@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 09:47:12 +0100 (CET)
-Received: from mail-pd0-f170.google.com ([209.85.192.170]:35150 "EHLO
-        mail-pd0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013480AbaKLIrKzZvwC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 09:47:10 +0100
-Received: by mail-pd0-f170.google.com with SMTP id z10so11902799pdj.29
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 00:47:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 09:47:28 +0100 (CET)
+Received: from mail-pd0-f179.google.com ([209.85.192.179]:42627 "EHLO
+        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013484AbaKLIrMh332e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 09:47:12 +0100
+Received: by mail-pd0-f179.google.com with SMTP id g10so11905578pdj.10
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 00:47:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=ollv7ocTNmfvs+uNP7BWiEPGHCjic9GdD/wztlhKTd8=;
-        b=ehKCQzfLaWKhLKAmxYC7ap8QLB81dq215aAWDwe2fc2egoJHMGWEBePTP1xm86UMu/
-         UGg26tgOA52fb26qu46cXq1m+ljFxRnsU8EdZPsyDSFpjZXPS529cFHlXPLfVArazHvS
-         LalySrDzkzy1fuc+/kznXN1x0C9eps71IYT2mad9Hbpc49+7zpHlGhU+7udEjymzYF1t
-         K5vd17URUpEs8WQDSQKfef8Px7/FviOcd8piZCPR5H2TtfLbp24rVaZze0QWVic2QIA4
-         JL/nZL3vYDvXFGn7k7kUHkzXHBAOUj5NOP5ge55QmwUNJAWXkuQeRH+wxXaInkn9FtQ5
-         zZTg==
-X-Received: by 10.66.226.235 with SMTP id rv11mr45250234pac.41.1415782024838;
-        Wed, 12 Nov 2014 00:47:04 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=e2uFQusJJ5vxIw3tOTJTr94O9l13vRw7Ap4ZHqZyPQw=;
+        b=huws2PbOntipX2LnTGErYz8EMJnjePLf5oE0JKzJcmwBuXtMd8g7QXUysuncdbrGH4
+         IygPqaZ0rhxGMpwo3odNSHbGUdBrvYNtcmPkFfF2DKEqAUZj6Uf4wvnyqt71CZtvmVcg
+         V5w/Tu1jqE+QxRCs/mboP3Vn4VhWeC1p3FI6HYmfFtnoXLtt1u6n+5xdWq4kteQbze21
+         sJgI5Wbu9bccYChH5+V0es8B7J8+SgZrYcQC6qSlGGwFx69fO0vYupcBkJKjo9McIm2R
+         Q8FVnDgZaKI9axDXBMEk2IejD/N5/neyd8mfZUDQpdTR/DCkPzCkce81TG4e5lt1O5JB
+         YkKQ==
+X-Received: by 10.66.124.228 with SMTP id ml4mr46017995pab.42.1415782026679;
+        Wed, 12 Nov 2014 00:47:06 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id p10sm18804833pds.63.2014.11.12.00.47.03
+        by mx.google.com with ESMTPSA id p10sm18804833pds.63.2014.11.12.00.47.04
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 12 Nov 2014 00:47:04 -0800 (PST)
+        Wed, 12 Nov 2014 00:47:06 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org
 Cc:     tushar.behera@linaro.org, daniel@zonque.org,
@@ -29,15 +29,17 @@ Cc:     tushar.behera@linaro.org, daniel@zonque.org,
         grant.likely@linaro.org, f.fainelli@gmail.com, mbizon@freebox.fr,
         jogo@openwrt.org, linux-mips@linux-mips.org,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH/RFC 0/8] UART driver support for BMIPS multiplatform kernels
-Date:   Wed, 12 Nov 2014 00:46:25 -0800
-Message-Id: <1415781993-7755-1-git-send-email-cernekee@gmail.com>
+Subject: [PATCH/RFC 1/8] tty: Fallback to use dynamic major number
+Date:   Wed, 12 Nov 2014 00:46:26 -0800
+Message-Id: <1415781993-7755-2-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
+In-Reply-To: <1415781993-7755-1-git-send-email-cernekee@gmail.com>
+References: <1415781993-7755-1-git-send-email-cernekee@gmail.com>
 Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44028
+X-archive-position: 44029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,36 +56,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the pxa serial driver to support BCM7xxx's UARTs; add code to allow
-native-endian operation on both LE and BE systems.  Enable OF_EARLYCON
-in the pxa driver.
+From: Tushar Behera <tushar.behera@linaro.org>
 
-After applying these changes I am able to build a multiplatform kernel
-that boots to the prompt on BCM6328 (bcm63xx_uart) and BCM7346 (pxa).
+In a multi-platform scenario, the hard-coded major/minor numbers in
+serial drivers may conflict with each other. A typical scenario is
+observed with amba-pl011 and samsung-uart drivers, both of these
+drivers use same set of major/minor numbers. If both of these drivers
+are enabled, probe of samsung-uart driver fails because the desired
+node is busy.
 
+The issue is fixed by adding a fallback in driver core, so that we can
+use dynamic major number in case device node allocation fails for
+hard-coded major/minor number.
 
-Kevin Cernekee (7):
-  serial: core: Add big_endian flag
-  of: Add helper function to check MMIO register endianness
-  serial: pxa: Add fifo-size and {big,native}-endian properties
-  serial: pxa: Make the driver buildable for BCM7xxx set-top platforms
-  serial: pxa: Update DT binding documentation
-  serial: earlycon: Set uart_port->big_endian based on DT properties
-  serial: pxa: Add OF_EARLYCON support
+Signed-off-by: Tushar Behera <tushar.behera@linaro.org>
+[cernekee: fix checkpatch warnings]
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ drivers/tty/tty_io.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-Tushar Behera (1):
-  tty: Fallback to use dynamic major number
-
- .../devicetree/bindings/serial/mrvl-serial.txt     | 34 +++++++++++-
- drivers/of/base.c                                  | 23 ++++++++
- drivers/of/fdt.c                                   |  9 +++-
- drivers/tty/serial/Kconfig                         |  2 +-
- drivers/tty/serial/earlycon.c                      |  3 +-
- drivers/tty/serial/pxa.c                           | 62 +++++++++++++++++++++-
- drivers/tty/tty_io.c                               | 19 +++++--
- include/linux/of.h                                 |  6 +++
- include/linux/serial_core.h                        |  5 +-
- 9 files changed, 152 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 0508a1d..a6d4d9a 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -3365,6 +3365,22 @@ int tty_register_driver(struct tty_driver *driver)
+ 	dev_t dev;
+ 	struct device *d;
+ 
++	if (driver->major) {
++		dev = MKDEV(driver->major, driver->minor_start);
++		error = register_chrdev_region(dev, driver->num, driver->name);
++		/* In case of error, fall back to dynamic allocation */
++		if (error < 0) {
++			pr_warn("Default device node (%d:%d) for %s is busy, using dynamic major number\n",
++				driver->major, driver->minor_start,
++				driver->name);
++			driver->major = 0;
++		}
++	}
++
++	/*
++	 * Don't replace the following check with an else to above if statement,
++	 * as it may also be called as a fallback.
++	 */
+ 	if (!driver->major) {
+ 		error = alloc_chrdev_region(&dev, driver->minor_start,
+ 						driver->num, driver->name);
+@@ -3372,9 +3388,6 @@ int tty_register_driver(struct tty_driver *driver)
+ 			driver->major = MAJOR(dev);
+ 			driver->minor_start = MINOR(dev);
+ 		}
+-	} else {
+-		dev = MKDEV(driver->major, driver->minor_start);
+-		error = register_chrdev_region(dev, driver->num, driver->name);
+ 	}
+ 	if (error < 0)
+ 		goto err;
 -- 
 2.1.1

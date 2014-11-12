@@ -1,53 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 10:04:35 +0100 (CET)
-Received: from mail-qa0-f46.google.com ([209.85.216.46]:62386 "EHLO
-        mail-qa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013493AbaKLJEehJ8y- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 10:04:34 +0100
-Received: by mail-qa0-f46.google.com with SMTP id n8so8104924qaq.5
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 01:04:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=OJ0cPatBC6yXa3L5jAGfBz8wB828pI5aPiBrjdj+Qd8=;
-        b=OEKykpo12xMP7IDA/1nOb2V/aiZ4R56JPjqw8RKyGVs19NnvxFicc0YFcRABPvBNx2
-         ttYTRr3w7YGHKoYFSLXoLn/rFgAixHzrUCwTRCO5qxJ1c0WWFTxSc54K3+eLTzZPO7SE
-         JqEVrEnLA5oiLzKoJrW7T2lDDP+jAAcKvkJ8A3Ki15pE0dkNE0kO3stfE98gxWgJNrKG
-         nfLSritVBhsCcBFi1C+c6btLKwy1idPOzM24V7pI6NGIvrJqpCVZxq2Ax/u4uzfRB3dX
-         P6nkGz2smiA3bZqVY2BUnIhEcZJ50UqfuE64Ww7qsiI4a2nyIMVlHM6MdkbIvyZzGrgV
-         6p0w==
-X-Received: by 10.140.48.11 with SMTP id n11mr32906541qga.1.1415783068849;
- Wed, 12 Nov 2014 01:04:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 10:04:53 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.131]:62705 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013510AbaKLJEqrVXjV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 10:04:46 +0100
+Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
+        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
+        id 0MCMK5-1XfNBF2kYz-00999d; Wed, 12 Nov 2014 10:04:29 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org,
+        tushar.behera@linaro.org, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        grant.likely@linaro.org, f.fainelli@gmail.com, mbizon@freebox.fr,
+        jogo@openwrt.org, linux-mips@linux-mips.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH/RFC 5/8] serial: pxa: Make the driver buildable for BCM7xxx set-top platforms
+Date:   Wed, 12 Nov 2014 10:04:27 +0100
+Message-ID: <3356477.HitZEsNa4H@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <1415781993-7755-6-git-send-email-cernekee@gmail.com>
+References: <1415781993-7755-1-git-send-email-cernekee@gmail.com> <1415781993-7755-6-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Wed, 12 Nov 2014 01:04:08 -0800 (PST)
-In-Reply-To: <54631F64.8080009@suse.cz>
-References: <1415781993-7755-1-git-send-email-cernekee@gmail.com>
- <1415781993-7755-4-git-send-email-cernekee@gmail.com> <54631F64.8080009@suse.cz>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Wed, 12 Nov 2014 01:04:08 -0800
-Message-ID: <CAJiQ=7ADy1U60R-o1soMyqYWXqw2OqQg7vfB9L5pzeac+Yv=SA@mail.gmail.com>
-Subject: Re: [PATCH/RFC 3/8] of: Add helper function to check MMIO register endianness
-To:     Jiri Slaby <jslaby@suse.cz>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>, tushar.behera@linaro.org,
-        daniel@zonque.org, haojian.zhuang@gmail.com,
-        robert.jarzmik@free.fr, Grant Likely <grant.likely@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V02:K0:ojZ68wdoF/H0fSdm36XZXF76K9vcLGcCU8RT7acyySh
+ /wg+q9C6R7wZ+6y55oGMHxuFe7bYc6VnpczWJuJi06dGUtXhHT
+ 2oHymi0sFRRIG+6JqBOMzrMYmx2/2FkQt/ssCWdLBv1IBqx2uS
+ zMx46qksZPfc4LnJvsTr2uehVVih/kmsqJfAwfLd7GksncWaaD
+ 4aObUBff1rgXPRBhXBzFIQ5OpCJzNMT8w9lJihxzym4L4NbFAT
+ 4T/W7aNLiS5Fp8gyb/GvbkI58mQ9USZVllRPCM16fRIm36LKQ6
+ ZwVxpUMKNzNej5OnTFMp9lp7njUh1wcoftnFUGmAC4oBbU9ZwG
+ 5mSyKtSppIrIGormTK+Y=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44040
+X-archive-position: 44041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,41 +53,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 12, 2014 at 12:50 AM, Jiri Slaby <jslaby@suse.cz> wrote:
->>  /**
->> + *  of_device_is_big_endian - check if a device has BE registers
->> + *
->> + *  @device: Node to check for availability
+On Wednesday 12 November 2014 00:46:30 Kevin Cernekee wrote:
+> Remove the platform dependency in Kconfig and add an appropriate
+> compatible string.  Note that BCM7401 has one 16550A-compatible UART
+> in the UPG uart_clk domain, and two proprietary UARTs in the 27 MHz
+> clock domain.  This driver handles the former one.
+> 
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
-Oops, just noticed a copy/paste error here.
+Can you explain why you are using the PXA serial driver instead of the
+8250 driver, if this is 16550A compatible? I don't know the history
+why PXA is using a separate driver.
 
->> + *
->> + *  Returns 1 if the device has a "big-endian" property, or if the kernel
->> + *  was compiled for BE *and* the device has a "native-endian" property.
->> + *  Returns 0 otherwise.
->> + *
->> + *  Callers would nominally use ioread32be/iowrite32be if
->> + *  of_device_is_big_endian() == 1, or readl/writel otherwise.
->> + */
->> +int of_device_is_big_endian(const struct device_node *device)
->> +{
->> +     if (of_property_read_bool(device, "big-endian"))
->> +             return 1;
->> +     if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) &&
->> +         of_property_read_bool(device, "native-endian"))
->> +             return 1;
->> +     return 0;
->> +}
->
-> This should actually return bool and use true/false.
-
-Well, the other APIs currently return an int:
-
-extern int of_device_is_compatible(const struct device_node *device,
-                                   const char *);
-extern int of_device_is_available(const struct device_node *device);
-[...]
-extern int of_machine_is_compatible(const char *compat);
-
-Do you think it is best to change all of them at once, or just the
-newly introduced function?
+	Arnd

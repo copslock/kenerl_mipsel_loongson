@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 10:04:08 +0100 (CET)
-Received: from mail-wg0-f44.google.com ([74.125.82.44]:33708 "EHLO
-        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013493AbaKLJEGRR7Qi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 10:04:06 +0100
-Received: by mail-wg0-f44.google.com with SMTP id x12so13577274wgg.17
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 01:04:01 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 10:04:35 +0100 (CET)
+Received: from mail-qa0-f46.google.com ([209.85.216.46]:62386 "EHLO
+        mail-qa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013493AbaKLJEehJ8y- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 10:04:34 +0100
+Received: by mail-qa0-f46.google.com with SMTP id n8so8104924qaq.5
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 01:04:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=rDkuW6PdX2bEd8p5ATb68ssVP8b9JcF4f+XmZ6h1hGg=;
-        b=PZN6kKxN07hkjr/Zg5xyzKjDoBP3Hr4grxYdlezfzYXNv2W6UtW87RAieejh1GZx18
-         K2J5xcdHq5vo6sFYWmXHge/gkZC+L0z+fu9gqGkOHBop8+UDK3CDgFMBr2eDbk/0pEnj
-         Kzixl8PBFAKp/0YbkXjjobfGxfeUsdaB8yiZBDiJyREZljqXi8Jpknd4WfG0zTzGOf1Y
-         DOa7Gt6II2IK9JdbGvHEARUJd4o7efwHbvVW8xhlsP/cdLyKcWI7FfRtm7BRs3xtRFyH
-         56jY1kzlO9vvxRtvJLUQ+B3vsa8NHZckOayT5yh6pqYX2QmTHPBIkpQtEZKazwYqrIH+
-         izlw==
-X-Received: by 10.180.73.45 with SMTP id i13mr48310912wiv.32.1415783040990;
-        Wed, 12 Nov 2014 01:04:00 -0800 (PST)
-Received: from ?IPv6:2a01:4240:53f0:43fb::cbb? ([2a01:4240:53f0:43fb::cbb])
-        by mx.google.com with ESMTPSA id ht9sm20764776wib.8.2014.11.12.01.03.59
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 Nov 2014 01:04:00 -0800 (PST)
-Message-ID: <5463227E.9050304@suse.cz>
-Date:   Wed, 12 Nov 2014 10:03:58 +0100
-From:   Jiri Slaby <jslaby@suse.cz>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=OJ0cPatBC6yXa3L5jAGfBz8wB828pI5aPiBrjdj+Qd8=;
+        b=OEKykpo12xMP7IDA/1nOb2V/aiZ4R56JPjqw8RKyGVs19NnvxFicc0YFcRABPvBNx2
+         ttYTRr3w7YGHKoYFSLXoLn/rFgAixHzrUCwTRCO5qxJ1c0WWFTxSc54K3+eLTzZPO7SE
+         JqEVrEnLA5oiLzKoJrW7T2lDDP+jAAcKvkJ8A3Ki15pE0dkNE0kO3stfE98gxWgJNrKG
+         nfLSritVBhsCcBFi1C+c6btLKwy1idPOzM24V7pI6NGIvrJqpCVZxq2Ax/u4uzfRB3dX
+         P6nkGz2smiA3bZqVY2BUnIhEcZJ50UqfuE64Ww7qsiI4a2nyIMVlHM6MdkbIvyZzGrgV
+         6p0w==
+X-Received: by 10.140.48.11 with SMTP id n11mr32906541qga.1.1415783068849;
+ Wed, 12 Nov 2014 01:04:28 -0800 (PST)
 MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@gmail.com>, gregkh@linuxfoundation.org,
-        robh@kernel.org
-CC:     tushar.behera@linaro.org, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        grant.likely@linaro.org, f.fainelli@gmail.com, mbizon@freebox.fr,
-        jogo@openwrt.org, linux-mips@linux-mips.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH/RFC 4/8] serial: pxa: Add fifo-size and {big,native}-endian
- properties
-References: <1415781993-7755-1-git-send-email-cernekee@gmail.com> <1415781993-7755-5-git-send-email-cernekee@gmail.com>
-In-Reply-To: <1415781993-7755-5-git-send-email-cernekee@gmail.com>
-Content-Type: text/plain; charset=iso-8859-2
-Content-Transfer-Encoding: 7bit
-Return-Path: <jirislaby@gmail.com>
+Received: by 10.140.89.113 with HTTP; Wed, 12 Nov 2014 01:04:08 -0800 (PST)
+In-Reply-To: <54631F64.8080009@suse.cz>
+References: <1415781993-7755-1-git-send-email-cernekee@gmail.com>
+ <1415781993-7755-4-git-send-email-cernekee@gmail.com> <54631F64.8080009@suse.cz>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Wed, 12 Nov 2014 01:04:08 -0800
+Message-ID: <CAJiQ=7ADy1U60R-o1soMyqYWXqw2OqQg7vfB9L5pzeac+Yv=SA@mail.gmail.com>
+Subject: Re: [PATCH/RFC 3/8] of: Add helper function to check MMIO register endianness
+To:     Jiri Slaby <jslaby@suse.cz>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>, tushar.behera@linaro.org,
+        daniel@zonque.org, haojian.zhuang@gmail.com,
+        robert.jarzmik@free.fr, Grant Likely <grant.likely@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44039
+X-archive-position: 44040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,33 +60,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/12/2014, 09:46 AM, Kevin Cernekee wrote:
-> With a few tweaks, the PXA serial driver can handle other 16550A clones.
-> Add a fifo-size DT property to override the FIFO depth (BCM7xxx uses 32),
-> and {native,big}-endian properties similar to regmap to support SoCs that
-> have BE or "automagic endian" registers.
-> 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> ---
->  drivers/tty/serial/pxa.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/pxa.c b/drivers/tty/serial/pxa.c
-> index 21b7d8b..78ed7ee 100644
-> --- a/drivers/tty/serial/pxa.c
-> +++ b/drivers/tty/serial/pxa.c
-> @@ -60,13 +60,19 @@ struct uart_pxa_port {
->  static inline unsigned int serial_in(struct uart_pxa_port *up, int offset)
->  {
->  	offset <<= 2;
-> -	return readl(up->port.membase + offset);
-> +	if (!up->port.big_endian)
-> +		return readl(up->port.membase + offset);
-> +	else
-> +		return ioread32be(up->port.membase + offset);
+On Wed, Nov 12, 2014 at 12:50 AM, Jiri Slaby <jslaby@suse.cz> wrote:
+>>  /**
+>> + *  of_device_is_big_endian - check if a device has BE registers
+>> + *
+>> + *  @device: Node to check for availability
 
-This needn't fly IMO, unless you map the space using iomap (not ioremap).
+Oops, just noticed a copy/paste error here.
 
--- 
-js
-suse labs
+>> + *
+>> + *  Returns 1 if the device has a "big-endian" property, or if the kernel
+>> + *  was compiled for BE *and* the device has a "native-endian" property.
+>> + *  Returns 0 otherwise.
+>> + *
+>> + *  Callers would nominally use ioread32be/iowrite32be if
+>> + *  of_device_is_big_endian() == 1, or readl/writel otherwise.
+>> + */
+>> +int of_device_is_big_endian(const struct device_node *device)
+>> +{
+>> +     if (of_property_read_bool(device, "big-endian"))
+>> +             return 1;
+>> +     if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) &&
+>> +         of_property_read_bool(device, "native-endian"))
+>> +             return 1;
+>> +     return 0;
+>> +}
+>
+> This should actually return bool and use true/false.
+
+Well, the other APIs currently return an int:
+
+extern int of_device_is_compatible(const struct device_node *device,
+                                   const char *);
+extern int of_device_is_available(const struct device_node *device);
+[...]
+extern int of_machine_is_compatible(const char *compat);
+
+Do you think it is best to change all of them at once, or just the
+newly introduced function?

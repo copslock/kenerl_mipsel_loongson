@@ -1,34 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 22:16:37 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:50351 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013413AbaKLVQeBT3GK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Nov 2014 22:16:34 +0100
-Received: from [IPv6:2001:470:7259:0:855b:83cf:788:3e2] (unknown [IPv6:2001:470:7259:0:855b:83cf:788:3e2])
-        by hauke-m.de (Postfix) with ESMTPSA id 9263120025;
-        Wed, 12 Nov 2014 22:16:33 +0100 (CET)
-Message-ID: <5463CE30.2080405@hauke-m.de>
-Date:   Wed, 12 Nov 2014 22:16:32 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-CC:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] MIPS: BCM47XX: Move NVRAM driver to the drivers/misc/
-References: <1415735146-31552-1-git-send-email-zajec5@gmail.com>
-In-Reply-To: <1415735146-31552-1-git-send-email-zajec5@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 22:20:54 +0100 (CET)
+Received: from mail-wi0-f170.google.com ([209.85.212.170]:60383 "EHLO
+        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013413AbaKLVUvGEmcc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 22:20:51 +0100
+Received: by mail-wi0-f170.google.com with SMTP id r20so6262830wiv.3
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 13:20:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
+         :date:message-id;
+        bh=bpF2LVw9a/eM0JSl2DA87CXDGZKMcGt3KMz96XNgWI0=;
+        b=EFzPBGUQSKB0EkHBbgkoivM+y9AmbB0sChfdTiJqScmXh/gpBdioT4U58EYV4gp20+
+         CRmXtUi252MZysBQ+xzIjyDcOXDsQuWeM+ixQPi6yuX8LXzVsDzmFlFN+pflDg/d8NZQ
+         lkXriObaI/wMaQe8bE+iJAj3VzT1NShvtwhHbdElNhxqow7PIpA++Tw399E3GC+CNzeh
+         iUfTDJggnOhVxCg8LW+MhNmw6gTSticPG6PwtcSCHDfUgrk6UD3W0aKbtTg9v6vpRg86
+         lKsxYYxhahAKs361UzhzmeZJckTc3jCfDNLT+1018e0PqMTmbiHRaMXqEaD8Z1hV9AEC
+         sJ+Q==
+X-Gm-Message-State: ALoCoQkFBJ49+wzt5R4uK8TKtL5pGCrlAUyhSsBV+VKOyzsLVGu1yb9wsb/vO2QgU6m0tKtAylQx
+X-Received: by 10.180.221.72 with SMTP id qc8mr192959wic.19.1415827245729;
+        Wed, 12 Nov 2014 13:20:45 -0800 (PST)
+Received: from trevor.secretlab.ca (host86-166-83-112.range86-166.btcentralplus.com. [86.166.83.112])
+        by mx.google.com with ESMTPSA id jw2sm23118787wid.3.2014.11.12.13.20.43
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Nov 2014 13:20:44 -0800 (PST)
+Received: by trevor.secretlab.ca (Postfix, from userid 1000)
+        id 672A3C41CF4; Wed, 12 Nov 2014 17:12:09 +0000 (GMT)
+From:   Grant Likely <grant.likely@linaro.org>
+Subject: Re: [PATCH 1/2] of: Fix crash if an earlycon driver is not found
+To:     Rob Herring <robh@kernel.org>, Kevin Cernekee <cernekee@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        stable@vger.kernel.org
+In-Reply-To: <CAL_Jsq+iVfFGYEF575spQ5MaYPzo1QSfLUZP1M=TpH0+HdGS6A@mail.gmail.com>
+References: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
+        <CAL_Jsq+iVfFGYEF575spQ5MaYPzo1QSfLUZP1M=TpH0+HdGS6A@mail.gmail.com>
+Date:   Wed, 12 Nov 2014 17:12:09 +0000
+Message-Id: <20141112171209.672A3C41CF4@trevor.secretlab.ca>
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44087
+X-archive-position: 44088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: grant.likely@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,90 +64,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/11/2014 08:45 PM, Rafał Miłecki wrote:
-> After Broadcom switched from MIPS to ARM for their home routers we need
-> to have NVRAM driver in some common place (not arch/mips/).
-> We were thinking about putting it in bus directory, however there are
-> two possible buses for MIPS: drivers/ssb/ and drivers/bcma/. So this
-> won't fit there neither.
-> This is why I would like to move this driver to the drivers/misc/
-
-I will do a more detailed review when you send a patch with -M
-
-> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
-> ---
->  arch/mips/Kconfig                                  |   1 +
->  arch/mips/bcm47xx/Makefile                         |   2 +-
->  arch/mips/bcm47xx/board.c                          |   2 +-
->  arch/mips/bcm47xx/nvram.c                          | 228 --------------------
->  arch/mips/bcm47xx/setup.c                          |   1 -
->  arch/mips/bcm47xx/sprom.c                          |   1 -
->  arch/mips/bcm47xx/time.c                           |   1 -
->  arch/mips/include/asm/mach-bcm47xx/bcm47xx.h       |   1 +
->  arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h |  21 --
->  drivers/bcma/driver_mips.c                         |   2 +-
->  drivers/misc/Kconfig                               |   9 +
->  drivers/misc/Makefile                              |   1 +
->  drivers/misc/bcm47xx_nvram.c                       | 230 +++++++++++++++++++++
->  drivers/net/ethernet/broadcom/b44.c                |   2 +-
->  drivers/net/ethernet/broadcom/bgmac.c              |   2 +-
->  drivers/ssb/driver_chipcommon_pmu.c                |   2 +-
->  drivers/ssb/driver_mipscore.c                      |   2 +-
->  include/linux/bcm47xx_nvram.h                      |  18 ++
->  18 files changed, 267 insertions(+), 259 deletions(-)
->  delete mode 100644 arch/mips/bcm47xx/nvram.c
->  delete mode 100644 arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h
->  create mode 100644 drivers/misc/bcm47xx_nvram.c
->  create mode 100644 include/linux/bcm47xx_nvram.h
-
-....
-
-> diff --git a/include/linux/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
-> new file mode 100644
-> index 0000000..5ed6917
-> --- /dev/null
-> +++ b/include/linux/bcm47xx_nvram.h
-> @@ -0,0 +1,18 @@
-> +/*
-> + *  This program is free software; you can redistribute  it and/or modify it
-> + *  under  the terms of  the GNU General  Public License as published by the
-> + *  Free Software Foundation;  either version 2 of the  License, or (at your
-> + *  option) any later version.
-> + */
-> +
-> +#ifndef __BCM47XX_NVRAM_H
-> +#define __BCM47XX_NVRAM_H
-> +
-> +#include <linux/types.h>
-> +#include <linux/kernel.h>
-> +
-> +int bcm47xx_nvram_init_from_mem(u32 base, u32 lim);
-> +int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len);
-> +int bcm47xx_nvram_gpio_pin(const char *name);
-
-Could you change this to something like this:
-
-#ifdef CONFIG_BCM47XX_NVRAM
-int bcm47xx_nvram_init_from_mem(u32 base, u32 lim);
-int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len);
-int bcm47xx_nvram_gpio_pin(const char *name);
-#else
-static inline int bcm47xx_nvram_init_from_mem(u32 base, u32 lim) {return
--1;};
-static inline int bcm47xx_nvram_getenv(const char *name, char *val,
-size_t val_len) {return -1;};
-static inline int bcm47xx_nvram_gpio_pin(const char *name) {return -1;};
-#endif
-
-and use something better than -1.
-
-This way we can get rid of these  all other the code.
-#ifdef CONFIG_BCM47XX
-..
-#endif
-
-If this is planed in the next patch I would be fine with that.
-
-> +
-> +#endif /* __BCM47XX_NVRAM_H */
+On Mon, 10 Nov 2014 08:14:01 -0600
+, Rob Herring <robh@kernel.org>
+ wrote:
+> On Sun, Nov 9, 2014 at 2:55 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+> > __earlycon_of_table_sentinel.compatible is a char[128], not a pointer, so
+> > it will never be NULL.  Checking it against NULL causes the match loop to
+> > run past the end of the array, and eventually match a bogus entry, under
+> > the following conditions:
+> >
+> >  - Kernel command line specifies "earlycon" with no parameters
+> >  - DT has a stdout-path pointing to a UART node
+> >  - The UART driver doesn't use OF_EARLYCON_DECLARE (or maybe the console
+> >    driver is compiled out)
+> >
+> > Fix this by checking to see if match->compatible is a non-empty string.
+> >
+> > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> > Cc: <stable@vger.kernel.org> # 3.16+
 > 
+> Thanks. I'll queue this up.
+> 
+> BTW, you should not add stable CC when submitting for review, but
+> rather add a note for the maintainer to apply to stable. Only if a
+> commit is in mainline already and not flagged for stable, then you
+> send the patch with the stable tag to get the commit added to stable.
+> It's a bit confusing...
+
+
+Oops, since you've picked it up I'll drop it from my tree. I'll let you
+send the pull req to Linus.
+
+g.

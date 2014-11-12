@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 20:43:53 +0100 (CET)
-Received: from mail-vc0-f201.google.com ([209.85.220.201]:44134 "EHLO
-        mail-vc0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013552AbaKLTnwMiQKU (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 20:44:12 +0100 (CET)
+Received: from mail-ie0-f202.google.com ([209.85.223.202]:39531 "EHLO
+        mail-ie0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013557AbaKLTnwucWiP (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 20:43:52 +0100
-Received: by mail-vc0-f201.google.com with SMTP id id10so192921vcb.2
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 11:43:46 -0800 (PST)
+Received: by mail-ie0-f202.google.com with SMTP id tr6so2098879ieb.5
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 11:43:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=hmb1QOjqU8U7pNtwaqLJ5B9jRpEpg39bnWhf+/MTMME=;
-        b=CDrewNkQdHM6iiScl+dZzxDjTiRKhiKn946J0M2YJghnB7dPdOqjjgYmMe8vYoptr5
-         bbN1RGsATjUYUyu+f5bCc7+S5bDh3iYAuhnIlEy9bByYkdA7ieEsEjdCZF/Azu3Xuxsd
-         wMz40fMcuTppsJwxYXt+BRAOn4d+0LYZMBg6PpWlAj0ZkQEOLv74KbQ3uWGiVXZwPJcY
-         up2QUg8llHBgTE6Otvgq8eXkdDGHFgMHKWXApwHt8hmkPmuHH9YhpRZtiLxGirjn13HQ
-         U7JQ8MIqWOp3lu0uCMJhcOA9imEr3cNZi0qZ1SYvCiopXKtopViFp3aQo8n8TnHjJLij
-         SA6g==
-X-Gm-Message-State: ALoCoQmyxHk9ka57+6vp++n36F/e1qdnfrsYA15pNYFQVtf8qlbNCuwgJ72KeeAGdeuJd2V3DDQf
-X-Received: by 10.236.98.71 with SMTP id u47mr38073691yhf.30.1415821426245;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=cd1MpAfh2htv9h3tfuWKuNCraOUyG4eDsgicJLIonqk=;
+        b=APlHwZ1MnhYwFqVd9++sSAk63Snsy8O8OWkuYVl0wnw0L1NRFiRL32tfpITsY/yIw7
+         LrUgz8lK6hem+gmv17D03AFmKbiZ+StfRqn4f6XAwxILpJYH111UdGWzWQ9AKNuO4k8t
+         feG3KsFEXqvdUTONtZ9gZgjrOg06cQcTVizwoyhUAtvcTqIwJKIonUwe/9uN9psNSePG
+         97RTupfIE0EcN0synrWab6xxAPbVo6gXgNr7KI0LMSbG/2FQRbn3snr5lQVNId+IjWmy
+         aCr4cwg0GhmflFoLrBi8d8TXCDkVJgLGqmdWF+8U45Q4j8+nPPk5Cqa+InjjO+rkXL5c
+         B5ow==
+X-Gm-Message-State: ALoCoQmhj40da1SbHWLcoRyN7q3oZBfhrb+JQXKMZrpR+qAQLUuboGRVmcZA1SV1SOnMAXLGVJVq
+X-Received: by 10.50.3.97 with SMTP id b1mr27136299igb.4.1415821426765;
         Wed, 12 Nov 2014 11:43:46 -0800 (PST)
-Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id k66si962781yho.7.2014.11.12.11.43.44
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id r6si931599yhg.1.2014.11.12.11.43.45
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
         Wed, 12 Nov 2014 11:43:46 -0800 (PST)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id ITh2pWoo.1; Wed, 12 Nov 2014 11:43:46 -0800
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id mx0hRWrO.1; Wed, 12 Nov 2014 11:43:46 -0800
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 6C2A7220B2A; Wed, 12 Nov 2014 11:43:44 -0800 (PST)
+        id 0C0E4220BC1; Wed, 12 Nov 2014 11:43:45 -0800 (PST)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -44,15 +45,17 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         James Hogan <james.hogan@imgtec.com>,
         Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V5 0/4] MIPS: GIC device-tree support
-Date:   Wed, 12 Nov 2014 11:43:35 -0800
-Message-Id: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
+Subject: [PATCH V5 1/4] of: Add vendor prefix for MIPS Technologies, Inc.
+Date:   Wed, 12 Nov 2014 11:43:36 -0800
+Message-Id: <1415821419-26974-2-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
+In-Reply-To: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
+References: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
 Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44070
+X-archive-position: 44071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,56 +72,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series add support for mapping and routing GIC interrupts as well
-as setting up the GIC timer through device-tree.  Patches 1 adds the
-"mti" vendor prefix, patch 2 adds the GIC binding document, and patches
-3 and 4 add device-tree support for the GIC irqchip and clocksource drivers,
-respectively.
+Add the vendor prefix "mti" for MIPS Technologies, Inc.
 
-Based on next-20141028, which includes part 1 [0] and part 2 [1] of my
-GIC cleanup series.
+Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+---
+I'll update the users of the "mips" prefix to use "mti" instead once
+this lands.
 
-Changes from v4:
- - don't probe clocksource from irqchip; just WARN() if device-tree
-   is incorrect
+No changes from v2/v3/v4.
+New for v2.
+---
+ Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes from v3:
- - dropped the CPU name from the compatible string
- - replaced available-cpu-vectors property with reserved-cpu-vectors
- - made reg property optional
- - probed GIC timer from GIC irqchip driver
-
-Changes from v2:
- - added back third cell to specifier to differentiate between shared and
-   local interrupts
- - added timer sub-node and it's properties
- - changed compatible string to include CPU version
- - rebased on GIC cleanup series
-
-Changes from v1:
- - updated bindings to drop third interrupt cell and remove CPU interrupt
-   controller as the parent of the GIC
- - moved GIC to drivers/irqchip/
- - other minor fixes/cleanups
-
-[0] https://lkml.org/lkml/2014/9/18/487
-[1] https://lkml.org/lkml/2014/10/20/481
-
-Andrew Bresticker (4):
-  of: Add vendor prefix for MIPS Technologies, Inc.
-  of: Add binding document for MIPS GIC
-  irqchip: mips-gic: Add device-tree support
-  clocksource: mips-gic: Add device-tree support
-
- .../bindings/interrupt-controller/mips-gic.txt     | 55 +++++++++++++
- .../devicetree/bindings/vendor-prefixes.txt        |  1 +
- drivers/clocksource/Kconfig                        |  1 +
- drivers/clocksource/mips-gic-timer.c               | 41 ++++++++--
- drivers/irqchip/irq-mips-gic.c                     | 92 ++++++++++++++++++++--
- .../dt-bindings/interrupt-controller/mips-gic.h    |  9 +++
- 6 files changed, 187 insertions(+), 12 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
- create mode 100644 include/dt-bindings/interrupt-controller/mips-gic.h
-
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+index 0979393..0221b49 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.txt
++++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+@@ -98,6 +98,7 @@ mitsubishi	Mitsubishi Electric Corporation
+ mosaixtech	Mosaix Technologies, Inc.
+ moxa	Moxa
+ mpl	MPL AG
++mti	MIPS Technologies, Inc.
+ mundoreader	Mundo Reader S.L.
+ murata	Murata Manufacturing Co., Ltd.
+ mxicy	Macronix International Co., Ltd.
 -- 
 2.1.0.rc2.206.gedb03e5

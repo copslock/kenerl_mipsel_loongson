@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 02:44:31 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54739 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 02:52:56 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55363 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013452AbaKLBoNLu2L5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 02:44:13 +0100
+        by eddie.linux-mips.org with ESMTP id S27013432AbaKLBwvjRHXE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 02:52:51 +0100
 Received: from localhost (unknown [59.10.106.2])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A09449FF;
-        Wed, 12 Nov 2014 01:44:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1DE75A03;
+        Wed, 12 Nov 2014 01:52:44 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 095/203] MIPS: tlbex: Properly fix HUGE TLB Refill exception handler
-Date:   Wed, 12 Nov 2014 10:16:05 +0900
-Message-Id: <20141112011547.057644131@linuxfoundation.org>
+Subject: [PATCH 3.10 063/123] MIPS: tlbex: Properly fix HUGE TLB Refill exception handler
+Date:   Wed, 12 Nov 2014 10:17:09 +0900
+Message-Id: <20141112011721.884831157@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.3
-In-Reply-To: <20141112011542.686743533@linuxfoundation.org>
-References: <20141112011542.686743533@linuxfoundation.org>
+In-Reply-To: <20141112011718.985171261@linuxfoundation.org>
+References: <20141112011718.985171261@linuxfoundation.org>
 User-Agent: quilt/0.63-1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-15
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44024
+X-archive-position: 44025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.14-stable review patch.  If anyone has any objections, please let me know.
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,15 +99,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -1057,6 +1057,7 @@ static void build_update_entries(u32 **p
+@@ -1091,6 +1091,7 @@ static void __cpuinit build_update_entri
  struct mips_huge_tlb_info {
  	int huge_pte;
  	int restore_scratch;
 +	bool need_reload_pte;
  };
  
- static struct mips_huge_tlb_info
-@@ -1071,6 +1072,7 @@ build_fast_tlb_refill_handler (u32 **p,
+ static struct mips_huge_tlb_info __cpuinit
+@@ -1105,6 +1106,7 @@ build_fast_tlb_refill_handler (u32 **p,
  
  	rv.huge_pte = scratch;
  	rv.restore_scratch = 0;
@@ -115,7 +115,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	if (check_for_high_segbits) {
  		UASM_i_MFC0(p, tmp, C0_BADVADDR);
-@@ -1259,6 +1261,7 @@ static void build_r4000_tlb_refill_handl
+@@ -1293,6 +1295,7 @@ static void __cpuinit build_r4000_tlb_re
  	} else {
  		htlb_info.huge_pte = K0;
  		htlb_info.restore_scratch = 0;
@@ -123,7 +123,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		vmalloc_mode = refill_noscratch;
  		/*
  		 * create the plain linear handler
-@@ -1295,7 +1298,8 @@ static void build_r4000_tlb_refill_handl
+@@ -1329,7 +1332,8 @@ static void __cpuinit build_r4000_tlb_re
  	}
  #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
  	uasm_l_tlb_huge_update(&l, p);

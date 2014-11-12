@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 13:17:42 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:65122 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013498AbaKLMRiA-C-M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 13:17:38 +0100
-Received: by mail-pa0-f49.google.com with SMTP id lj1so12640616pab.8
-        for <multiple recipients>; Wed, 12 Nov 2014 04:17:32 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 13:18:38 +0100 (CET)
+Received: from mail-pd0-f175.google.com ([209.85.192.175]:38208 "EHLO
+        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013495AbaKLMSguB9zv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 13:18:36 +0100
+Received: by mail-pd0-f175.google.com with SMTP id y13so12190454pdi.20
+        for <multiple recipients>; Wed, 12 Nov 2014 04:18:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=dbskvQKwzW7IDc2eZ4Agd+0Rf0Rro8iLUAkW3yl1tDc=;
-        b=APkTkTP2byk93as42b13FJIpaO/LaRIf8y6p+bdtbL/khpB5Zws3FZV6+14SDYYe81
-         jFBPFrIk4hcgTESFG9gN67Vq1bWPSliowqeTtklIaweWiAqweV3GAg7OMAr37ugsBrF4
-         TnWcTfMoFTLIAEJ5BNo6KhhNiv4GsPx3ZyLM5u2FYZrk4Cc8IF/oKC8g1egM+r0X/8PN
-         tHXUqdUxOJLTESjB4qMZouW37KRxZ8LP4SCIwSCxcCnoj+bbRM0E37FFtlIkexKJmg74
-         UyzdMxlQ3TzD/S5ul3KEzOayUIgDEdffNxG+Lj2FzgmQAi2irrerhia7fHlTgzzMoPX7
-         f3ZA==
-X-Received: by 10.70.43.229 with SMTP id z5mr46856905pdl.25.1415794652362;
-        Wed, 12 Nov 2014 04:17:32 -0800 (PST)
+        bh=uDukDpYkrT/W0AsHdQSO4GkcutjssZL+p/Xi3B8BQ1U=;
+        b=lFdKtL/ApfAUgU4nX0LpZgBgxvsMlSB/Zs8NC0KAWslawGCRK31DCUmKGyNyxj09aV
+         Z8YVbA9o/uIzWGuBoeUCxgvM5+/0q8RzQkIvayDkdKiSlMqccDf34k4HuxYG7bfgOk2G
+         st1fRRKg2bDoWBONWg8cT2GuBRypDWAORq9kwa0Wfr2zGms8rJSrvvVcCQAhWf3Fgty2
+         EaWxJXuHhi4r7DO2jCPNqwCMeUk7wzNM3hojjCAY0+4BAGTSSlDRKC4jQdLkvrVM9VbL
+         jXdANxxBYkJ1WVRdwac1vyqVYMFVg5KlXfCtn7rwSIQeh3JJZwBd2fSYmqSnIwfNA8+P
+         CVkA==
+X-Received: by 10.68.227.104 with SMTP id rz8mr46971819pbc.4.1415794710901;
+        Wed, 12 Nov 2014 04:18:30 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id uk10sm22195051pac.30.2014.11.12.04.17.29
+        by mx.google.com with ESMTPSA id is15sm21992064pbd.87.2014.11.12.04.18.27
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 12 Nov 2014 04:17:31 -0800 (PST)
+        Wed, 12 Nov 2014 04:18:30 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>
-Subject: [PATCH V3 1/5] MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature
-Date:   Wed, 12 Nov 2014 20:17:21 +0800
-Message-Id: <1415794641-7530-1-git-send-email-chenhc@lemote.com>
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-gpio@vger.kernel.org,
+        Huacai Chen <chenhc@lemote.com>, Hongbing Hu <huhb@lemote.com>
+Subject: [PATCH V3 2/5] MIPS: Loongson: Add Loongson-3A/3B GPIO support
+Date:   Wed, 12 Nov 2014 20:18:20 +0800
+Message-Id: <1415794700-7579-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44052
+X-archive-position: 44053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,136 +54,399 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
-feature named cpu_has_coherent_cache and use it to modify MIPS's cache
-flushing functions.
+Improve Loongson-2's GPIO driver to support Loongson-3A/3B, and move it
+to drivers/gpio directory.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hongbing Hu <huhb@lemote.com>
 ---
- arch/mips/Kconfig                                  |    3 ++
- arch/mips/include/asm/cpu-features.h               |    3 ++
- .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
- arch/mips/mm/c-r4k.c                               |   21 ++++++++++++++++++++
- 4 files changed, 28 insertions(+), 0 deletions(-)
+ arch/mips/Kconfig                     |    1 +
+ arch/mips/configs/lemote2f_defconfig  |    1 +
+ arch/mips/configs/loongson3_defconfig |    1 +
+ arch/mips/loongson/common/Makefile    |    1 -
+ arch/mips/loongson/common/gpio.c      |  139 -------------------------------
+ drivers/gpio/Kconfig                  |    6 ++
+ drivers/gpio/Makefile                 |    1 +
+ drivers/gpio/gpio-loongson.c          |  148 +++++++++++++++++++++++++++++++++
+ 8 files changed, 158 insertions(+), 140 deletions(-)
+ delete mode 100644 arch/mips/loongson/common/gpio.c
+ create mode 100644 drivers/gpio/gpio-loongson.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4a7e0c1..e10d704 100644
+index e10d704..7541a0e 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -1597,6 +1597,7 @@ config CPU_BMIPS5000
- config SYS_HAS_CPU_LOONGSON3
- 	bool
- 	select CPU_SUPPORTS_CPUFREQ
-+	select CPU_SUPPORTS_COHERENT_CACHE
+@@ -1199,6 +1199,7 @@ config CPU_LOONGSON3
+ 	select CPU_SUPPORTS_HUGEPAGES
+ 	select WEAK_ORDERING
+ 	select WEAK_REORDERING_BEYOND_LLSC
++	select ARCH_REQUIRE_GPIOLIB
+ 	help
+ 		The Loongson 3 processor implements the MIPS64R2 instruction
+ 		set with many extensions.
+diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
+index 227a9de..0549b01 100644
+--- a/arch/mips/configs/lemote2f_defconfig
++++ b/arch/mips/configs/lemote2f_defconfig
+@@ -172,6 +172,7 @@ CONFIG_SERIAL_8250_FOURPORT=y
+ CONFIG_LEGACY_PTY_COUNT=16
+ CONFIG_HW_RANDOM=y
+ CONFIG_RTC=y
++CONFIG_GPIO_LOONGSON=y
+ CONFIG_THERMAL=y
+ CONFIG_MEDIA_SUPPORT=m
+ CONFIG_VIDEO_DEV=m
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+index 1c6191e..e7a9bb4 100644
+--- a/arch/mips/configs/loongson3_defconfig
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -243,6 +243,7 @@ CONFIG_HW_RANDOM=y
+ CONFIG_RAW_DRIVER=m
+ CONFIG_I2C_CHARDEV=y
+ CONFIG_I2C_PIIX4=y
++CONFIG_GPIO_LOONGSON=y
+ CONFIG_SENSORS_LM75=m
+ CONFIG_SENSORS_LM93=m
+ CONFIG_SENSORS_W83627HF=m
+diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+index 0bb9cc9..15fef59 100644
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -4,7 +4,6 @@
  
- config SYS_HAS_CPU_LOONGSON2E
+ obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
+     bonito-irq.o mem.o machtype.o platform.o
+-obj-$(CONFIG_GPIOLIB) += gpio.o
+ obj-$(CONFIG_PCI) += pci.o
+ 
+ #
+diff --git a/arch/mips/loongson/common/gpio.c b/arch/mips/loongson/common/gpio.c
+deleted file mode 100644
+index 29dbaa2..0000000
+--- a/arch/mips/loongson/common/gpio.c
++++ /dev/null
+@@ -1,139 +0,0 @@
+-/*
+- *  STLS2F GPIO Support
+- *
+- *  Copyright (c) 2008 Richard Liu,  STMicroelectronics	 <richard.liu@st.com>
+- *  Copyright (c) 2008-2010 Arnaud Patard <apatard@mandriva.com>
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License as published by
+- *  the Free Software Foundation; either version 2 of the License, or
+- *  (at your option) any later version.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/spinlock.h>
+-#include <linux/err.h>
+-#include <asm/types.h>
+-#include <loongson.h>
+-#include <linux/gpio.h>
+-
+-#define STLS2F_N_GPIO		4
+-#define STLS2F_GPIO_IN_OFFSET	16
+-
+-static DEFINE_SPINLOCK(gpio_lock);
+-
+-int gpio_get_value(unsigned gpio)
+-{
+-	u32 val;
+-	u32 mask;
+-
+-	if (gpio >= STLS2F_N_GPIO)
+-		return __gpio_get_value(gpio);
+-
+-	mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
+-	spin_lock(&gpio_lock);
+-	val = LOONGSON_GPIODATA;
+-	spin_unlock(&gpio_lock);
+-
+-	return (val & mask) != 0;
+-}
+-EXPORT_SYMBOL(gpio_get_value);
+-
+-void gpio_set_value(unsigned gpio, int state)
+-{
+-	u32 val;
+-	u32 mask;
+-
+-	if (gpio >= STLS2F_N_GPIO) {
+-		__gpio_set_value(gpio, state);
+-		return ;
+-	}
+-
+-	mask = 1 << gpio;
+-
+-	spin_lock(&gpio_lock);
+-	val = LOONGSON_GPIODATA;
+-	if (state)
+-		val |= mask;
+-	else
+-		val &= (~mask);
+-	LOONGSON_GPIODATA = val;
+-	spin_unlock(&gpio_lock);
+-}
+-EXPORT_SYMBOL(gpio_set_value);
+-
+-int gpio_cansleep(unsigned gpio)
+-{
+-	if (gpio < STLS2F_N_GPIO)
+-		return 0;
+-	else
+-		return __gpio_cansleep(gpio);
+-}
+-EXPORT_SYMBOL(gpio_cansleep);
+-
+-static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
+-{
+-	u32 temp;
+-	u32 mask;
+-
+-	if (gpio >= STLS2F_N_GPIO)
+-		return -EINVAL;
+-
+-	spin_lock(&gpio_lock);
+-	mask = 1 << gpio;
+-	temp = LOONGSON_GPIOIE;
+-	temp |= mask;
+-	LOONGSON_GPIOIE = temp;
+-	spin_unlock(&gpio_lock);
+-
+-	return 0;
+-}
+-
+-static int ls2f_gpio_direction_output(struct gpio_chip *chip,
+-		unsigned gpio, int level)
+-{
+-	u32 temp;
+-	u32 mask;
+-
+-	if (gpio >= STLS2F_N_GPIO)
+-		return -EINVAL;
+-
+-	gpio_set_value(gpio, level);
+-	spin_lock(&gpio_lock);
+-	mask = 1 << gpio;
+-	temp = LOONGSON_GPIOIE;
+-	temp &= (~mask);
+-	LOONGSON_GPIOIE = temp;
+-	spin_unlock(&gpio_lock);
+-
+-	return 0;
+-}
+-
+-static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+-{
+-	return gpio_get_value(gpio);
+-}
+-
+-static void ls2f_gpio_set_value(struct gpio_chip *chip,
+-		unsigned gpio, int value)
+-{
+-	gpio_set_value(gpio, value);
+-}
+-
+-static struct gpio_chip ls2f_chip = {
+-	.label			= "ls2f",
+-	.direction_input	= ls2f_gpio_direction_input,
+-	.get			= ls2f_gpio_get_value,
+-	.direction_output	= ls2f_gpio_direction_output,
+-	.set			= ls2f_gpio_set_value,
+-	.base			= 0,
+-	.ngpio			= STLS2F_N_GPIO,
+-};
+-
+-static int __init ls2f_gpio_setup(void)
+-{
+-	return gpiochip_add(&ls2f_chip);
+-}
+-arch_initcall(ls2f_gpio_setup);
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 0959ca9..1ef82b2 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -452,6 +452,12 @@ config GPIO_GRGPIO
+ 	  Select this to support Aeroflex Gaisler GRGPIO cores from the GRLIB
+ 	  VHDL IP core library.
+ 
++config GPIO_LOONGSON
++	tristate "Loongson-2/3 GPIO support"
++	depends on CPU_LOONGSON2 || CPU_LOONGSON3
++	help
++	  driver for GPIO functionality on Loongson-2F/3A/3B processors.
++
+ config GPIO_TB10X
  	bool
-@@ -1760,6 +1761,8 @@ config CPU_SUPPORTS_HUGEPAGES
- 	bool
- config CPU_SUPPORTS_UNCACHED_ACCELERATED
- 	bool
-+config CPU_SUPPORTS_COHERENT_CACHE
-+	bool
- config MIPS_PGD_C0_CONTEXT
- 	bool
- 	default y if 64BIT && CPU_MIPSR2 && !CPU_XLP
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 2897cfa..f20bf5a 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -148,6 +148,9 @@
- #ifndef cpu_has_pindexed_dcache
- #define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
- #endif
-+#ifndef cpu_has_coherent_cache
-+#define cpu_has_coherent_cache	0
+ 	select GENERIC_IRQ_CHIP
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index e5d346c..2153a71 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -39,6 +39,7 @@ obj-$(CONFIG_GPIO_JANZ_TTL)	+= gpio-janz-ttl.o
+ obj-$(CONFIG_GPIO_KEMPLD)	+= gpio-kempld.o
+ obj-$(CONFIG_ARCH_KS8695)	+= gpio-ks8695.o
+ obj-$(CONFIG_GPIO_INTEL_MID)	+= gpio-intel-mid.o
++obj-$(CONFIG_GPIO_LOONGSON)	+= gpio-loongson.o
+ obj-$(CONFIG_GPIO_LP3943)	+= gpio-lp3943.o
+ obj-$(CONFIG_ARCH_LPC32XX)	+= gpio-lpc32xx.o
+ obj-$(CONFIG_GPIO_LYNXPOINT)	+= gpio-lynxpoint.o
+diff --git a/drivers/gpio/gpio-loongson.c b/drivers/gpio/gpio-loongson.c
+new file mode 100644
+index 0000000..394fb1d
+--- /dev/null
++++ b/drivers/gpio/gpio-loongson.c
+@@ -0,0 +1,148 @@
++/*
++ *  Loongson-2F/3A/3B GPIO Support
++ *
++ *  Copyright (c) 2008 Richard Liu,  STMicroelectronics	 <richard.liu@st.com>
++ *  Copyright (c) 2008-2010 Arnaud Patard <apatard@mandriva.com>
++ *  Copyright (c) 2014 Huacai Chen <chenhc@lemote.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/spinlock.h>
++#include <linux/err.h>
++#include <asm/types.h>
++#include <loongson.h>
++#include <linux/gpio.h>
++
++#define STLS2F_N_GPIO		4
++#define STLS3A_N_GPIO		16
++
++#ifdef CONFIG_CPU_LOONGSON3
++#define LOONGSON_N_GPIO	STLS3A_N_GPIO
++#else
++#define LOONGSON_N_GPIO	STLS2F_N_GPIO
 +#endif
- #ifndef cpu_has_local_ebase
- #define cpu_has_local_ebase	1
- #endif
-diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-index 6d69332..7efb191 100644
---- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-@@ -58,5 +58,6 @@
- #define cpu_has_local_ebase	0
- 
- #define cpu_has_wsbh		IS_ENABLED(CONFIG_CPU_LOONGSON3)
-+#define cpu_has_coherent_cache	IS_ENABLED(CONFIG_CPU_SUPPORTS_COHERENT_CACHE)
- 
- #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index fbcd867..7b6c7f6 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -420,6 +420,9 @@ static void r4k_blast_scache_setup(void)
- 
- static inline void local_r4k___flush_cache_all(void * args)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
 +
- 	switch (current_cpu_type()) {
- 	case CPU_LOONGSON2:
- 	case CPU_LOONGSON3:
-@@ -447,6 +450,9 @@ static inline void local_r4k___flush_cache_all(void * args)
- 
- static void r4k___flush_cache_all(void)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
++#define LOONGSON_GPIO_IN_OFFSET	16
 +
- 	r4k_on_each_cpu(local_r4k___flush_cache_all, NULL);
- }
- 
-@@ -493,6 +499,9 @@ static void r4k_flush_cache_range(struct vm_area_struct *vma,
- {
- 	int exec = vma->vm_flags & VM_EXEC;
- 
-+	if (cpu_has_coherent_cache)
-+		return;
++static DEFINE_SPINLOCK(gpio_lock);
 +
- 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
- 		r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
- }
-@@ -616,6 +625,9 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
- {
- 	struct flush_cache_page_args args;
- 
-+	if (cpu_has_coherent_cache)
-+		return;
++int gpio_get_value(unsigned gpio)
++{
++	u32 val;
++	u32 mask;
 +
- 	args.vma = vma;
- 	args.addr = addr;
- 	args.pfn = pfn;
-@@ -625,11 +637,17 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
- 
- static inline void local_r4k_flush_data_cache_page(void * addr)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
++	if (gpio >= LOONGSON_N_GPIO)
++		return __gpio_get_value(gpio);
 +
- 	r4k_blast_dcache_page((unsigned long) addr);
- }
- 
- static void r4k_flush_data_cache_page(unsigned long addr)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
++	mask = 1 << (gpio + LOONGSON_GPIO_IN_OFFSET);
++	spin_lock(&gpio_lock);
++	val = LOONGSON_GPIODATA;
++	spin_unlock(&gpio_lock);
 +
- 	if (in_atomic())
- 		local_r4k_flush_data_cache_page((void *)addr);
- 	else
-@@ -814,6 +832,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
- 
- static void r4k_flush_cache_sigtramp(unsigned long addr)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
++	return (val & mask) != 0;
++}
++EXPORT_SYMBOL(gpio_get_value);
 +
- 	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
- }
- 
++void gpio_set_value(unsigned gpio, int state)
++{
++	u32 val;
++	u32 mask;
++
++	if (gpio >= LOONGSON_N_GPIO) {
++		__gpio_set_value(gpio, state);
++		return ;
++	}
++
++	mask = 1 << gpio;
++
++	spin_lock(&gpio_lock);
++	val = LOONGSON_GPIODATA;
++	if (state)
++		val |= mask;
++	else
++		val &= (~mask);
++	LOONGSON_GPIODATA = val;
++	spin_unlock(&gpio_lock);
++}
++EXPORT_SYMBOL(gpio_set_value);
++
++int gpio_cansleep(unsigned gpio)
++{
++	if (gpio < LOONGSON_N_GPIO)
++		return 0;
++	else
++		return __gpio_cansleep(gpio);
++}
++EXPORT_SYMBOL(gpio_cansleep);
++
++static int loongson_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
++{
++	u32 temp;
++	u32 mask;
++
++	if (gpio >= LOONGSON_N_GPIO)
++		return -EINVAL;
++
++	spin_lock(&gpio_lock);
++	mask = 1 << gpio;
++	temp = LOONGSON_GPIOIE;
++	temp |= mask;
++	LOONGSON_GPIOIE = temp;
++	spin_unlock(&gpio_lock);
++
++	return 0;
++}
++
++static int loongson_gpio_direction_output(struct gpio_chip *chip,
++		unsigned gpio, int level)
++{
++	u32 temp;
++	u32 mask;
++
++	if (gpio >= LOONGSON_N_GPIO)
++		return -EINVAL;
++
++	gpio_set_value(gpio, level);
++	spin_lock(&gpio_lock);
++	mask = 1 << gpio;
++	temp = LOONGSON_GPIOIE;
++	temp &= (~mask);
++	LOONGSON_GPIOIE = temp;
++	spin_unlock(&gpio_lock);
++
++	return 0;
++}
++
++static int loongson_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
++{
++	return gpio_get_value(gpio);
++}
++
++static void loongson_gpio_set_value(struct gpio_chip *chip,
++		unsigned gpio, int value)
++{
++	gpio_set_value(gpio, value);
++}
++
++static struct gpio_chip loongson_chip = {
++	.label                  = "Loongson-gpio-chip",
++	.direction_input        = loongson_gpio_direction_input,
++	.get                    = loongson_gpio_get_value,
++	.direction_output       = loongson_gpio_direction_output,
++	.set                    = loongson_gpio_set_value,
++	.base			= 0,
++	.ngpio                  = LOONGSON_N_GPIO,
++};
++
++static int __init loongson_gpio_setup(void)
++{
++	return gpiochip_add(&loongson_chip);
++}
++postcore_initcall(loongson_gpio_setup);
 -- 
 1.7.7.3

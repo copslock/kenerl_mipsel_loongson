@@ -1,54 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 14:41:12 +0100 (CET)
-Received: from mail-wi0-f172.google.com ([209.85.212.172]:38792 "EHLO
-        mail-wi0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013385AbaKLNlLJu1y5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 14:41:11 +0100
-Received: by mail-wi0-f172.google.com with SMTP id bs8so4921811wib.11
-        for <multiple recipients>; Wed, 12 Nov 2014 05:41:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=KXuGcxWmzhC8QymyRiTB7zBkPXado1vGKZAh2E9V6pM=;
-        b=qiRtkLvmdcDGrl0r2XxRb+RhkJlSc/+AciO6tfRecsYcBqYzDO4Q0Xbrovuw7YhM3V
-         SnFyc5p8jwPg4OKD/934/403WaDBTXVvMqlnu9cUMGqQPjUr7u8GbC4lrBCQmOv5tS6J
-         uANKU8RbZpLdTmLT+dAJsm3eKbcCUweZS8Vlwfn9OY+uD68TdbeJEmNP98pkc4f5rmi7
-         vIEwnPeMeTYwAH3BdFFMVE8y/oSLIignyj4oAlZq6/k+TbgUwiaurJebmBFPdNzDfN/4
-         9lqH//lWHLcBx5nmUKsm41vsImuOjHyUCQUNfLe3UxTrsgJSgncQKhD1aI0/MqZ/Vlnz
-         nzpg==
-X-Received: by 10.194.157.137 with SMTP id wm9mr64529197wjb.5.1415799665892;
-        Wed, 12 Nov 2014 05:41:05 -0800 (PST)
-Received: from localhost (port-8254.pppoe.wtnet.de. [84.46.32.94])
-        by mx.google.com with ESMTPSA id t9sm31490596wjf.41.2014.11.12.05.41.04
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 Nov 2014 05:41:05 -0800 (PST)
-Date:   Wed, 12 Nov 2014 14:41:04 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/10] binfmt_elf: allow arch code to examine PT_LOPROC
- ... PT_HIPROC headers
-Message-ID: <20141112134059.GA12619@ulmo>
-References: <1410420623-11691-1-git-send-email-paul.burton@imgtec.com>
- <1410420623-11691-4-git-send-email-paul.burton@imgtec.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="/04w6evG8XlLl3ft"
-Content-Disposition: inline
-In-Reply-To: <1410420623-11691-4-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <thierry.reding@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 18:04:57 +0100 (CET)
+Received: from mga02.intel.com ([134.134.136.20]:56919 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012517AbaKLRE4KrnD0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Nov 2014 18:04:56 +0100
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 12 Nov 2014 09:04:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.07,370,1413270000"; 
+   d="scan'208";a="606712165"
+Received: from viggo.jf.intel.com (HELO localhost.localdomain) ([10.23.232.122])
+  by orsmga001.jf.intel.com with ESMTP; 12 Nov 2014 09:04:42 -0800
+Subject: [PATCH 00/11] [v10] Intel MPX support
+To:     hpa@zytor.com
+Cc:     tglx@linutronix.de, mingo@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        qiaowei.ren@intel.com, Dave Hansen <dave@sr71.net>
+From:   Dave Hansen <dave@sr71.net>
+Date:   Wed, 12 Nov 2014 09:04:43 -0800
+Message-Id: <20141112170443.B4BD0899@viggo.jf.intel.com>
+Return-Path: <dave@sr71.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44057
+X-archive-position: 44058
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: dave@sr71.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,100 +40,186 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---/04w6evG8XlLl3ft
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Sep 11, 2014 at 08:30:16AM +0100, Paul Burton wrote:
-> MIPS is introducing new variants of its O32 ABI which differ in their
-> handling of floating point, in order to enable a gradual transition
-> towards a world where mips32 binaries can take advantage of new hardware
-> features only available when configured for certain FP modes. In order
-> to do this ELF binaries are being augmented with a new section that
-> indicates, amongst other things, the FP mode requirements of the binary.
-> The presence & location of such a section is indicated by a program
-> header in the PT_LOPROC ... PT_HIPROC range.
->=20
-> In order to allow the MIPS architecture code to examine the program
-> header & section in question, pass all program headers in this range
-> to an architecture-specific arch_elf_pt_proc function. This function
-> may return an error if the header is deemed invalid or unsuitable for
-> the system, in which case that error will be returned from
-> load_elf_binary and upwards through the execve syscall.
->=20
-> A means is required for the architecture code to make a decision once
-> it is known that all such headers have been seen, but before it is too
-> late to return from an execve syscall. For this purpose the
-> arch_check_elf function is added, and called once, after all PT_LOPROC
-> to PT_HIPROC headers have been passed to arch_elf_pt_proc but before
-> the code which invoked execve has been lost. This enables the
-> architecture code to make a decision based upon all the headers present
-> in an ELF binary and its interpreter, as is required to forbid
-> conflicting FP ABI requirements between an ELF & its interpreter.
->=20
-> In order to allow data to be stored throughout the calls to the above
-> functions, struct arch_elf_state is introduced.
->=20
-> Finally a variant of the SET_PERSONALITY macro is introduced which
-> accepts a pointer to the struct arch_elf_state, allowing it to act
-> based upon state observed from the architecture specific program
-> headers.
->=20
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
->  fs/Kconfig.binfmt   |  3 +++
->  fs/binfmt_elf.c     | 36 ++++++++++++++++++++++++--
->  include/linux/elf.h | 73 +++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 110 insertions(+), 2 deletions(-)
-
-Hi Ralf,
-
-This commit showed up in linux-next and causes a warning in linux/elf.h
-because it doesn't know struct file. I've fixed it locally with this:
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
 ---
-diff --git a/include/linux/elf.h b/include/linux/elf.h
-index 6bd15043a585..dac5caaa3509 100644
---- a/include/linux/elf.h
-+++ b/include/linux/elf.h
-@@ -4,6 +4,8 @@
- #include <asm/elf.h>
- #include <uapi/linux/elf.h>
-=20
-+struct file;
-+
- #ifndef elf_read_implies_exec
-   /* Executables for which elf_read_implies_exec() returns TRUE will
-      have the READ_IMPLIES_EXEC personality flag set automatically.
+
+Why am I cc'ing you on this?
+
+mips/ia64 folks: the only patch that applies to you is the'
+	 	 'struct siginfo' one.
+mm folks: the most interesting patches are the last 2 (excluding
+	  the Documentation/ one).
+
 ---
 
-Would you mind squashing that into the above commit to get rid of the
-warning?
+Changes since v9:
+ * New instruction decoder.  Uses generic infrastructure instead
+   of "private" MPX decoder. (details in that patch)
+ * Switched over to using get_user_pages() to handle faults when
+   we touch userspace.
+ * Lots of clarified comments and grammar fixups.
+ * Merged arch/x86/kernel/mpx.c and arch/x86/mm/mpx.c
+ * #ifdef'd the smaps display of the MPX flag (compile error on
+   non-x86)
+ * Added code to use new functions to access the "xsaves" compact
+   buffers.  The old direct access method was broken since 3.17
 
-Thierry
+We (Intel) are also trying to get some code merged in to GCC for
+MPX.  It will be calling the new prctl()s introduced in this set.
+We need to get those numbers locked down an reserved in the
+kernel before we push the GCC code, though.
 
---/04w6evG8XlLl3ft
-Content-Type: application/pgp-signature
+This currently requires booting with 'noxsaves' to work around
+what I presume is an issue in the x86 'xsaves' code.  I'll work
+with the folks responsible to get it fixed up properlye
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+---
 
-iQIcBAEBAgAGBQJUY2NrAAoJEN0jrNd/PrOhMZAP/ip2wx0tCBbkgiDNfM9HOXxN
-GZ0klGP3rHX4XS5YDPySPCW+y78I37vmm8p0yAduAXxoDeN6keLnfYPHHSiqV4yM
-lmJTZKIcC19TmYGlMQHjNFJRFoVpiRDqHtin6Jq21nCdP/qp/28WxTos8oTpwrA1
-ILHSFa71C04EYbyX1DQjYaOt2miHRLnFQNfR1t75lG7tGel1HQbyLRyTiAHHUncZ
-KH7Xwojt9RZQKn9MvCMBtVK86KRYFjuRP8UIaKtktfiw5rGfFFXB7M+enJQVnVsy
-MQpg2bC3uUlT9E9KVxUjRX4h4IXc5UYiqEDObAUZ6q/8mICVNS4pNYy4khP0I9hj
-fShM4S2bUeDfB48FDEiwyqvFdvfFC3Bl91ajYTYld2B2D9EiecrFU5ze5onrMW0A
-fkeXCZA4Yn/POHSio3JYFvMAOBDa8XDZ3TgmcYPqfLpYB6Kej1d04ApO3S3klz09
-71RCj27HiXBN1NCF+tH7NUsZkzkYTe+zJO2JXnHkK+rpSTISmhJxgJj+gbrrS5MS
-iMcOhITSJ4tm0WX3viQmLsecXz/czy/L0P1kDkxdWS067uaRMJKHVDKuw5c/3GL1
-tfP479DOsKezpAUfdZbQY6dWAlmoQqhIgC8UZxH2Km4lZRNQ1+8dAevKB896ivx1
-CXROQdROu1FcBeNtkNa9
-=kOJM
------END PGP SIGNATURE-----
+This patch set adds support for the Memory Protection eXtensions
+(MPX) feature found in future Intel processors. MPX is used in
+conjunction with compiler changes to check memory references, and
+can be used to catch buffer overflow or underflow.
 
---/04w6evG8XlLl3ft--
+For MPX to work, changes are required in the kernel, binutils and
+compiler. No source changes are required for applications, just a
+recompile.
+
+There are a lot of moving parts of this to all work right:
+
+===== Example Compiler / Application / Kernel Interaction =====
+
+1. Application developer compiles with -fmpx.  The compiler will add the
+   instrumentation as well as some setup code called early after the app
+   starts. New instruction prefixes are noops for old CPUs.
+2. That setup code allocates (virtual) space for the "bounds directory",
+   points the "bndcfgu" register to the directory and notifies the
+   kernel (via the new prctl(PR_MPX_ENABLE_MANAGEMENT)) that the app will
+   be using MPX.
+3. The kernel detects that the CPU has MPX, allows the new prctl() to
+   succeed, and notes the location of the bounds directory. Userspace is
+   expected to keep the bounds directory at that location. We note it
+   instead of reading it each time because the 'xsave' operation needed
+   to access the bounds directory register is an expensive operation.
+4. If the application needs to spill bounds out of the 4 registers, it
+   issues a bndstx instruction.  Since the bounds directory is empty at
+   this point, a bounds fault (#BR) is raised, the kernel allocates a
+   bounds table (in the user address space) and makes the relevant
+   entry in the bounds directory point to the new table. [1]
+5. If the application violates the bounds specified in the bounds
+   registers, a separate kind of #BR is raised which will deliver a
+   signal with information about the violation in the 'struct siginfo'.
+6. Whenever memory is freed, we know that it can no longer contain
+   valid pointers, and we attempt to free the associated space in the
+   bounds tables. If an entire table becomes unused, we will attempt
+   to free the table and remove the entry in the directory.
+
+To summarize, there are essentially three things interacting here:
+
+GCC with -fmpx:
+ * enables annotation of code with MPX instructions and prefixes
+ * inserts code early in the application to call in to the "gcc runtime"
+GCC MPX Runtime:
+ * Checks for hardware MPX support in cpuid leaf
+ * allocates virtual space for the bounds directory (malloc()
+   essentially)
+ * points the hardware BNDCFGU register at the directory
+ * calls a new prctl() to notify the kernel to start managing the
+   bounds directories
+Kernel MPX Code:
+ * Checks for hardware MPX support in cpuid leaf
+ * Handles #BR exceptions and sends SIGSEGV to the app when it violates
+   bounds, like during a buffer overflow.
+ * When bounds are spilled in to an unallocated bounds table, the kernel
+   notices in the #BR exception, allocates the virtual space, then
+   updates the bounds directory to point to the new table. It keeps
+   special track of the memory with a specific ->vm_ops for MPX.
+ * Frees unused bounds tables at the time that the memory they described
+   is unmapped. (See "cleanup unused bound tables")
+
+===== Testing =====
+
+This patchset has been tested on real internal hardware platform at Intel.
+We have some simple unit tests in user space, which directly call MPX
+instructions to produce #BR to let kernel allocate bounds tables and cause
+bounds violations. We also compiled several benchmarks with an MPX-enabled
+compiler and ran them with this patch set. We found a number of bugs in this
+code in these tests.
+
+1. For more info on why the kernel does these allocations, see the patch
+"on-demand kernel allocation of bounds tables"
+
+Future TODO items:
+1) support 32-bit binaries on 64-bit kernels.
+2) Remove dependence on mmap_sem for ->bd_addr serialization
+3) Lots of performance work
+4) Manpage (not a kernel patch, but worth mentioning)  I have a
+   patch to do it and will submit once this is merged.
+5) prctl() so we can write wrappers to disable MPX in children
+6) Tracepoints to help diagnose what's going on
+
+Changes since v1:
+  * check to see if #BR occurred in userspace or kernel space.
+  * use generic structure and macro as much as possible when
+    decode mpx instructions.
+
+Changes since v2:
+  * fix some compile warnings.
+  * update documentation.
+
+Changes since v3:
+  * correct some syntax errors at documentation, and document
+    extended struct siginfo.
+  * for kill the process when the error code of BNDSTATUS is 3.
+  * add some comments.
+  * remove new prctl() commands.
+  * fix some compile warnings for 32-bit.
+
+Changes since v4:
+  * raise SIGBUS if the allocations of the bound tables fail.
+
+Changes since v5:
+  * hook unmap() path to cleanup unused bounds tables, and use
+    new prctl() command to register bounds directory address to
+    struct mm_struct to check whether one process is MPX enabled
+    during unmap().
+  * in order track precisely MPX memory usage, add MPX specific
+    mmap interface and one VM_MPX flag to check whether a VMA
+    is MPX bounds table.
+  * add macro cpu_has_mpx to do performance optimization.
+  * sync struct figinfo for mips with general version to avoid
+    build issue.
+
+Changes since v6:
+  * because arch_vma_name is removed, this patchset have toset MPX
+    specific ->vm_ops to do the same thing.
+  * fix warnings for 32 bit arch.
+  * add more description into these patches.
+
+Changes since v7:
+  * introduce VM_ARCH_2 flag. 
+  * remove all of the pr_debug()s.
+  * fix prctl numbers in documentation.
+  * fix some bugs on bounds tables freeing.
+
+Changes since v8:
+  * add new patch to rename cfg_reg_u and status_reg.
+  * add new patch to use disabled features from Dave's patches.
+  * add new patch to sync struct siginfo for IA64.
+  * rename two new prctl() commands to PR_MPX_ENABLE_MANAGEMENT and
+    PR_MPX_DISABLE_MANAGEMENT, check whether the management of bounds
+    tables in kernel is enabled at #BR fault time, and add locking to
+    protect the access to 'bd_addr'.
+  * update the documentation file to add more content about on-demand
+    allocation of bounds tables, etc..
+
+Changes since v9:
+ * New instruction decoder.  Uses generic infrastructure instead
+   of "private" MPX decoder. (details in that patch)
+ * Switched over to using get_user_pages() to handle faults when
+   we touch userspace.
+ * Lots of clarified comments and grammar fixups.
+ * Merged arch/x86/kernel/mpx.c and arch/x86/mm/mpx.c
+ * #ifdef'd the smaps display of the MPX flag (compile error on
+   non-x86)
+ * Added code to use new functions to access the "xsaves" compact

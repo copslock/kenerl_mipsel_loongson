@@ -1,65 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 20:45:01 +0100 (CET)
-Received: from mail-ie0-f202.google.com ([209.85.223.202]:40818 "EHLO
-        mail-ie0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013559AbaKLTn7DpW4k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 20:43:59 +0100
-Received: by mail-ie0-f202.google.com with SMTP id tr6so2098892ieb.5
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 11:43:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=aV0ACcUWG2VK4qeJo7l4ke/n6G0YQI6hmINrTlSb7yk=;
-        b=Fa8d0uBvimoCmmwdYQhDlFbNz43+SYVpBo3o8jYQHfyMqECaif7m/ka7MGX1EHkeUa
-         h+mEmzD7nYUNqlN/z2cKrFTH8oGGkLj1rd/9/6o2CK/U/BB6jlMBZu5ONM/OrbAGhH0T
-         t1t3hT7nC4pg8JkGwTDyV2gCXNpEUo7azI6yhGgyWtZsV/9P6RDE+Xcy0otaKvQY2zy8
-         kD/j6j54f3YDgW9X0I7NPDSETgtwhPxj52M05fORIloVnlkUtYsXyPP8l6ByINRizR2h
-         aSCAYcIWWs4mmPunRzcSqSgyNBem8FVZdlYtSMP+jIPDcYcfyRIdeJ6nvZPBAzaPYENr
-         J25A==
-X-Gm-Message-State: ALoCoQm65h7fnc4zQx01drM8xvjI7w2JiI9ILHEyVJw8iWrsU7KRu3DYbj7y7zyzTiADnO7N/gOr
-X-Received: by 10.182.121.170 with SMTP id ll10mr39270929obb.12.1415821428272;
-        Wed, 12 Nov 2014 11:43:48 -0800 (PST)
-Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
-        by gmr-mx.google.com with ESMTPS id k66si962784yho.7.2014.11.12.11.43.46
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 21:54:40 +0100 (CET)
+Received: from mail-pd0-f174.google.com ([209.85.192.174]:58790 "EHLO
+        mail-pd0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013563AbaKLUyiR9emK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 21:54:38 +0100
+Received: by mail-pd0-f174.google.com with SMTP id p10so12917870pdj.19
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 12:54:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=BHuLM3LanXiBAFyeZ4vbNd6QsxRGVwcN4EuWnfR5Uo0=;
+        b=sAABLGddDLd0QKTNLNJ2TphTu4l0p+6tLwWrg2lflFYAMTevVPIvJrnD4jyPoQoss9
+         MLyJiY4i3aG3px08uYYkLheGf2Ej9sE6FSmyYvWYB49wqHNYcucRnf4WgIXlEHm79WcG
+         RCU1etbDeR5qlvxXXSaMV90Uvwlea3jyyP7sI4hXYOZiRbmn+GsGQYzq12/m83GubZOb
+         a/lG5EgNh1a84+WMqb0+qrZZ3k+zzK9N7g9wQPxkcG6xqwqOiyRaDzojFW1/wC3UzZYM
+         fOy6t2hfHPIEmyxUP9JFCxpVDoa14ewQtlp7QTUFf/p5rUTYaduoN1KqHw+ZYR3+IDgB
+         IIkw==
+X-Received: by 10.68.143.226 with SMTP id sh2mr50304712pbb.62.1415825671909;
+        Wed, 12 Nov 2014 12:54:31 -0800 (PST)
+Received: from localhost (b32.net. [192.81.132.72])
+        by mx.google.com with ESMTPSA id z15sm23050495pdi.6.2014.11.12.12.54.29
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 Nov 2014 11:43:48 -0800 (PST)
-Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id OjFoWQ9n.1; Wed, 12 Nov 2014 11:43:48 -0800
-Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 6AC2E220B2A; Wed, 12 Nov 2014 11:43:46 -0800 (PST)
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Andrew Bresticker <abrestic@chromium.org>,
-        John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V5 3/4] irqchip: mips-gic: Add device-tree support
-Date:   Wed, 12 Nov 2014 11:43:38 -0800
-Message-Id: <1415821419-26974-4-git-send-email-abrestic@chromium.org>
-X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
-In-Reply-To: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
-References: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
-Return-Path: <abrestic@google.com>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 12 Nov 2014 12:54:30 -0800 (PST)
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org
+Cc:     arnd@arndb.de, daniel@zonque.org, haojian.zhuang@gmail.com,
+        robert.jarzmik@free.fr, grant.likely@linaro.org,
+        f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
+        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH V2 00/10] UART driver support for BMIPS multiplatform kernels
+Date:   Wed, 12 Nov 2014 12:53:57 -0800
+Message-Id: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
+X-Mailer: git-send-email 2.1.1
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44074
+X-archive-position: 44075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,160 +54,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add device-tree support for the MIPS GIC.  Update the GIC irqdomain's
-xlate() callback to handle the three-cell specifier described in the
-MIPS GIC binding document.
+V1->V2:
 
-Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Jason Cooper <jason@lakedaemon.net>
----
-No changes from v4.
-Changes from v3:
- - use reserved-cpu-vectors property
- - read GIC base from CM if no reg property present
-Changes from v2:
- - rebased on GIC irqchip cleanups
- - updated for change in bindings
- - only parse first CPU vector
- - allow platforms to use EIC mode
-Changes from v1:
- - updated for change in bindings
- - set base address and enable bit in GCR_GIC_BASE
----
- drivers/irqchip/irq-mips-gic.c | 92 +++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 87 insertions(+), 5 deletions(-)
+Add a new UPIO_MEM32BE iotype instead of a separate big_endian flag.
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 61ac482..8a9ef74 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -12,12 +12,18 @@
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <linux/irqchip/mips-gic.h>
-+#include <linux/of_address.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
- 
-+#include <asm/mips-cm.h>
- #include <asm/setup.h>
- #include <asm/traps.h>
- 
-+#include <dt-bindings/interrupt-controller/mips-gic.h>
-+
-+#include "irqchip.h"
-+
- unsigned int gic_present;
- 
- struct gic_pcpu_mask {
-@@ -662,14 +668,34 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 	return gic_shared_irq_domain_map(d, virq, hw);
- }
- 
-+static int gic_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
-+				const u32 *intspec, unsigned int intsize,
-+				irq_hw_number_t *out_hwirq,
-+				unsigned int *out_type)
-+{
-+	if (intsize != 3)
-+		return -EINVAL;
-+
-+	if (intspec[0] == GIC_SHARED)
-+		*out_hwirq = GIC_SHARED_TO_HWIRQ(intspec[1]);
-+	else if (intspec[0] == GIC_LOCAL)
-+		*out_hwirq = GIC_LOCAL_TO_HWIRQ(intspec[1]);
-+	else
-+		return -EINVAL;
-+	*out_type = intspec[2] & IRQ_TYPE_SENSE_MASK;
-+
-+	return 0;
-+}
-+
- static struct irq_domain_ops gic_irq_domain_ops = {
- 	.map = gic_irq_domain_map,
--	.xlate = irq_domain_xlate_twocell,
-+	.xlate = gic_irq_domain_xlate,
- };
- 
--void __init gic_init(unsigned long gic_base_addr,
--		     unsigned long gic_addrspace_size, unsigned int cpu_vec,
--		     unsigned int irqbase)
-+static void __init __gic_init(unsigned long gic_base_addr,
-+			      unsigned long gic_addrspace_size,
-+			      unsigned int cpu_vec, unsigned int irqbase,
-+			      struct device_node *node)
- {
- 	unsigned int gicconfig;
- 
-@@ -695,7 +721,7 @@ void __init gic_init(unsigned long gic_base_addr,
- 					gic_irq_dispatch);
- 	}
- 
--	gic_irq_domain = irq_domain_add_simple(NULL, GIC_NUM_LOCAL_INTRS +
-+	gic_irq_domain = irq_domain_add_simple(node, GIC_NUM_LOCAL_INTRS +
- 					       gic_shared_intrs, irqbase,
- 					       &gic_irq_domain_ops, NULL);
- 	if (!gic_irq_domain)
-@@ -705,3 +731,59 @@ void __init gic_init(unsigned long gic_base_addr,
- 
- 	gic_ipi_init();
- }
-+
-+void __init gic_init(unsigned long gic_base_addr,
-+		     unsigned long gic_addrspace_size,
-+		     unsigned int cpu_vec, unsigned int irqbase)
-+{
-+	__gic_init(gic_base_addr, gic_addrspace_size, cpu_vec, irqbase, NULL);
-+}
-+
-+static int __init gic_of_init(struct device_node *node,
-+			      struct device_node *parent)
-+{
-+	struct resource res;
-+	unsigned int cpu_vec, i = 0, reserved = 0;
-+	phys_addr_t gic_base;
-+	size_t gic_len;
-+
-+	/* Find the first available CPU vector. */
-+	while (!of_property_read_u32_index(node, "mti,reserved-cpu-vectors",
-+					   i++, &cpu_vec))
-+		reserved |= BIT(cpu_vec);
-+	for (cpu_vec = 2; cpu_vec < 8; cpu_vec++) {
-+		if (!(reserved & BIT(cpu_vec)))
-+			break;
-+	}
-+	if (cpu_vec == 8) {
-+		pr_err("No CPU vectors available for GIC\n");
-+		return -ENODEV;
-+	}
-+
-+	if (of_address_to_resource(node, 0, &res)) {
-+		/*
-+		 * Probe the CM for the GIC base address if not specified
-+		 * in the device-tree.
-+		 */
-+		if (mips_cm_present()) {
-+			gic_base = read_gcr_gic_base() &
-+				~CM_GCR_GIC_BASE_GICEN_MSK;
-+			gic_len = 0x20000;
-+		} else {
-+			pr_err("Failed to get GIC memory range\n");
-+			return -ENODEV;
-+		}
-+	} else {
-+		gic_base = res.start;
-+		gic_len = resource_size(&res);
-+	}
-+
-+	if (mips_cm_present())
-+		write_gcr_gic_base(gic_base | CM_GCR_GIC_BASE_GICEN_MSK);
-+	gic_present = true;
-+
-+	__gic_init(gic_base, gic_len, cpu_vec, 0, node);
-+
-+	return 0;
-+}
-+IRQCHIP_DECLARE(mips_gic, "mti,gic", gic_of_init);
+Change some of the of_*_is_* APIs to return bool, where appropriate.
+
+Fix a few minor comment issues.
+
+
+Kevin Cernekee (9):
+  serial: core: Add big-endian iotype
+  of: Fix of_device_is_compatible() comment
+  of: Change of_device_is_available() to return bool
+  of: Add helper function to check MMIO register endianness
+  serial: pxa: Add fifo-size and {big,native}-endian properties
+  serial: pxa: Make the driver buildable for BCM7xxx set-top platforms
+  serial: pxa: Update DT binding documentation
+  serial: earlycon: Set UPIO_MEM32BE based on DT properties
+  serial: pxa: Add OF_EARLYCON support
+
+Tushar Behera (1):
+  tty: Fallback to use dynamic major number
+
+ .../devicetree/bindings/serial/mrvl-serial.txt     | 34 +++++++++++-
+ drivers/of/base.c                                  | 47 ++++++++++++----
+ drivers/of/fdt.c                                   |  9 ++-
+ drivers/tty/serial/Kconfig                         |  2 +-
+ drivers/tty/serial/earlycon.c                      |  4 +-
+ drivers/tty/serial/pxa.c                           | 64 +++++++++++++++++++++-
+ drivers/tty/serial/serial_core.c                   |  2 +
+ drivers/tty/tty_io.c                               | 19 ++++++-
+ include/linux/of.h                                 | 12 +++-
+ include/linux/serial_core.h                        | 15 ++---
+ 10 files changed, 176 insertions(+), 32 deletions(-)
+
 -- 
-2.1.0.rc2.206.gedb03e5
+2.1.1

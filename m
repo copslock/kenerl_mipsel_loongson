@@ -1,65 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2014 23:58:18 +0100 (CET)
-Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:56657 "EHLO
-        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013109AbaKKW6QY1Ceb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Nov 2014 23:58:16 +0100
-Received: from pool-96-249-243-124.nrflva.fios.verizon.net ([96.249.243.124] helo=titan)
-        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <jason@lakedaemon.net>)
-        id 1XoKNw-000K9J-QG; Tue, 11 Nov 2014 22:58:04 +0000
-Received: from titan.lakedaemon.net (localhost [127.0.0.1])
-        by titan (Postfix) with ESMTP id 49838618413;
-        Tue, 11 Nov 2014 17:58:00 -0500 (EST)
-X-Mail-Handler: Dyn Standard SMTP by Dyn
-X-Originating-IP: 96.249.243.124
-X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX18f1R+RtxneLArJnc29pUVIwat/pAPmtjA=
-X-DKIM: OpenDKIM Filter v2.0.1 titan 49838618413
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
-        s=mail; t=1415746680;
-        bh=hgZSsEVZbthvP/fI7rSlrhzSR+VnxK14yXXVqZdsYqs=;
-        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To;
-        b=vw/CLXmceVkaNk9xf+LtaW0Jf/p6MNA3tFQd0PpjKh6ekSG/pFDQmMpf/yQ9OAIns
-         GwzdN4sqlvbG5azEizySDWIZjO/PI/u8TTK8+1xL5Xey/K69UzluqUmjQoFoxKQvgC
-         BVNPIaGPvxyFqRvOXBMHrETkwJkm15nUGEoiyKEhSQdzRMymDlSlzkwSCJNfqoMNjJ
-         MYpeQJIGXJZK8s96IN1Lob+O4g3Hh6EA1z0KnqVC9WJz8z424HfY0gL3Gb6gkk4AoA
-         s2TV2+wL/Gab2TF8l4lbKp4tq8t7RR0Q7wmi7IxTeWfqH26m5oQoTChoepdzm7hNBQ
-         GzFrNaGVUQsWw==
-Date:   Tue, 11 Nov 2014 17:58:00 -0500
-From:   Jason Cooper <jason@lakedaemon.net>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, linux-sh@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] irqchip: atmel-aic: fix irqdomain initialization
-Message-ID: <20141111225800.GE3698@titan.lakedaemon.net>
-References: <20141110230301.GV4068@piout.net>
- <1415712816-9202-1-git-send-email-boris.brezillon@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 02:28:47 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53317 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013464AbaKLB2o0Ukh4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 02:28:44 +0100
+Received: from localhost (unknown [59.10.106.2])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 195C09AA;
+        Wed, 12 Nov 2014 01:28:36 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Alex Smith <alex@alex-smith.me.uk>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.17 144/319] MIPS: ptrace.h: Add a missing include
+Date:   Wed, 12 Nov 2014 10:14:42 +0900
+Message-Id: <20141112011016.330887734@linuxfoundation.org>
+X-Mailer: git-send-email 2.1.3
+In-Reply-To: <20141112010952.553519040@linuxfoundation.org>
+References: <20141112010952.553519040@linuxfoundation.org>
+User-Agent: quilt/0.63-1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1415712816-9202-1-git-send-email-boris.brezillon@free-electrons.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <jason@lakedaemon.net>
+Content-Type: text/plain; charset=ISO-8859-15
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44017
+X-archive-position: 44018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jason@lakedaemon.net
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,40 +42,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 11, 2014 at 02:33:36PM +0100, Boris Brezillon wrote:
-> First of all IRQCHIP_SKIP_SET_WAKE is not a valid irq_gc_flags and thus
-> should not be passed as the last argument of
-> irq_alloc_domain_generic_chips.
-> 
-> Then pass the correct handler (handle_fasteoi_irq) to
-> irq_alloc_domain_generic_chips instead of manually re-setting it in the
-> initialization loop.
-> 
-> And eventually initialize default irq flags to the pseudo standard:
-> IRQ_REQUEST | IRQ_PROBE | IRQ_AUTOEN.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> ---
-> Hello Kevin,
-> 
-> This patch has not been tested yet but it should solve the issue you've
-> experienced with the IRQ_GC_BE_IO flag and the atmel-aic driver.
-> 
-> I'll test it tomorrow and let you know if it actually works.
-> 
-> Regards,
-> 
-> Boris
-> 
->  drivers/irqchip/irq-atmel-aic-common.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+3.17-stable review patch.  If anyone has any objections, please let me know.
 
-Applied to irqchip/urgent with Kevin's Tested-by.  Also, flagged for
-stable, v3.17 and up.
+------------------
 
-Boris, once this is in mainline, you may want to generate a patch
-against older versions (in the arch dir) for the stable team.
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-thx,
+commit cdb685ad44996e9a113a10002cb42d40ff29db99 upstream.
 
-Jason.
+Commit a79ebea62010 (MIPS: ptrace: Fix user pt_regs definition,
+use in ptrace_{get, set}regs()) converted struct pt_regs to use __u64.
+Some userspace applications (e.g. GDB) include this file directly,
+and fail to see this type. Fix by including <linux/types.h>.
+
+The patch fixes the following build failure with GDB 7.8 when using
+GLIBC headers created against Linux 3.17:
+
+In file included from /home/aaro/los/work/shared/gdb-7.8/gdb/mips-linux-nat.c:37:0:
+/home/aaro/los/work/mips/rootfs/mips-linux-gnu/usr/include/asm/ptrace.h:32:2: error: unknown type name '__u64'
+  __u64 regs[32];
+  ^
+/home/aaro/los/work/mips/rootfs/mips-linux-gnu/usr/include/asm/ptrace.h:35:2: error: unknown type name '__u64'
+  __u64 lo;
+  ^
+/home/aaro/los/work/mips/rootfs/mips-linux-gnu/usr/include/asm/ptrace.h:36:2: error: unknown type name '__u64'
+  __u64 hi;
+  ^
+
+Fixes: a79ebea62010 ("MIPS: ptrace: Fix user pt_regs definition, use in ptrace_{get, set}regs()")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Alex Smith <alex@alex-smith.me.uk>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/8067/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/include/uapi/asm/ptrace.h |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/arch/mips/include/uapi/asm/ptrace.h
++++ b/arch/mips/include/uapi/asm/ptrace.h
+@@ -9,6 +9,8 @@
+ #ifndef _UAPI_ASM_PTRACE_H
+ #define _UAPI_ASM_PTRACE_H
+ 
++#include <linux/types.h>
++
+ /* 0 - 31 are integer registers, 32 - 63 are fp registers.  */
+ #define FPR_BASE	32
+ #define PC		64

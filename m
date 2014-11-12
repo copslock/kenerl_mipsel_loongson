@@ -1,49 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 21:57:26 +0100 (CET)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:59109 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013563AbaKLUy4AHlIm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 21:54:56 +0100
-Received: by mail-pa0-f46.google.com with SMTP id lf10so13741190pab.33
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 12:54:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=LnyfKTd3jbsxIG026k2YuGW6demfTZ1jNR9cJmkyr0s=;
-        b=uvDNZiQ6yB4sbxVyiXykhjNW1bIjqQd5y6RpSOh1ZyBIG3nNLn+2fjFJ/g+W3qRFOM
-         ZZmoSuV06nHDO20KkSR+B/hn3+ALyOf/oYpoX6jCF72FdwltSlMlCY30i8LhQYPLaDw8
-         PzneNEoay6BAwXxMRtu62oiQ9JLQs0mIlfFj0LjFtz23UYRJAH/VQ4OZCgHp36ImrP/Z
-         3nCIE7qkeGNIO6O+2jVpQppun/yJyaG2ssXsL8XT1SP139wP74x71DYycvckfeiBXPyt
-         qYKj/asKOwguDgVzCD8wAd7JPobh1VW2jWMbGt2CKOniD671cVeOjooFRWlQDSMmrM2Q
-         LPVA==
-X-Received: by 10.68.68.137 with SMTP id w9mr50631228pbt.71.1415825690370;
-        Wed, 12 Nov 2014 12:54:50 -0800 (PST)
-Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id z15sm23050495pdi.6.2014.11.12.12.54.48
-        for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 12 Nov 2014 12:54:49 -0800 (PST)
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org
-Cc:     arnd@arndb.de, daniel@zonque.org, haojian.zhuang@gmail.com,
-        robert.jarzmik@free.fr, grant.likely@linaro.org,
-        f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
-        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH V2 10/10] serial: pxa: Add OF_EARLYCON support
-Date:   Wed, 12 Nov 2014 12:54:07 -0800
-Message-Id: <1415825647-6024-11-git-send-email-cernekee@gmail.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
-References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 22:09:40 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:50328 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013413AbaKLVJgTyPg6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Nov 2014 22:09:36 +0100
+Received: from [IPv6:2001:470:7259:0:855b:83cf:788:3e2] (unknown [IPv6:2001:470:7259:0:855b:83cf:788:3e2])
+        by hauke-m.de (Postfix) with ESMTPSA id DE82920025;
+        Wed, 12 Nov 2014 22:09:35 +0100 (CET)
+Message-ID: <5463CC8F.5000309@hauke-m.de>
+Date:   Wed, 12 Nov 2014 22:09:35 +0100
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] MIPS: BCM47XX: Move NVRAM driver to the drivers/misc/
+References: <1415735146-31552-1-git-send-email-zajec5@gmail.com> <15071020.3LPpWWN4p1@wuerfel>
+In-Reply-To: <15071020.3LPpWWN4p1@wuerfel>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44085
+X-archive-position: 44086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,69 +41,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Implement a bare bones earlycon; this assumes that the bootloader sets
-up the tty parameters.  Matches all three compatible strings.
+On 11/12/2014 10:43 AM, Arnd Bergmann wrote:
+> On Tuesday 11 November 2014 20:45:46 Rafał Miłecki wrote:
+>> After Broadcom switched from MIPS to ARM for their home routers we need
+>> to have NVRAM driver in some common place (not arch/mips/).
+>> We were thinking about putting it in bus directory, however there are
+>> two possible buses for MIPS: drivers/ssb/ and drivers/bcma/. So this
+>> won't fit there neither.
+>> This is why I would like to move this driver to the drivers/misc/
+>>
+>> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+>>
+> 
+> I think drivers/soc would be more appropriate, as this is a purely
+> in-kernel interface, and it interacts with other drivers, while
+> drivers/misc is generally for oddball devices that don't fit in
+> elsewhere and have their own user interface.
+> 
+> I don't remember if what we had concluded on the previous discussion.
+> I think I suggested converting the nvram variables into DT properties
+> on ARM. The API certainly feels obscure, so it would be nice to
+> keep it out of the modern port if we can come up with a better alternative
+> to pass the same information.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- drivers/tty/serial/pxa.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+When there would be devices shipping with device tree in the boot loader
+with this SoC I would go for using device tree for this purpose, but I
+do not think there are any and I do not know what Broadcom plans are.
 
-diff --git a/drivers/tty/serial/pxa.c b/drivers/tty/serial/pxa.c
-index 086b371..0140108 100644
---- a/drivers/tty/serial/pxa.c
-+++ b/drivers/tty/serial/pxa.c
-@@ -761,6 +761,51 @@ static struct console serial_pxa_console = {
- 	.data		= &serial_pxa_reg,
- };
- 
-+static struct uart_pxa_port serial_pxa_early_port __initdata;
-+
-+static void __init early_wait_for_xmitr(struct uart_pxa_port *up)
-+{
-+	/* it's unsafe to call udelay() in the "early" variant */
-+	while ((serial_in(up, UART_LSR) & BOTH_EMPTY) != BOTH_EMPTY)
-+		;
-+}
-+
-+static void __init serial_pxa_early_putchar(struct uart_port *port, int ch)
-+{
-+	struct uart_pxa_port *up = (struct uart_pxa_port *)port;
-+
-+	early_wait_for_xmitr(up);
-+	serial_out(up, UART_TX, ch);
-+}
-+
-+static void __init serial_pxa_early_write(struct console *con, const char *s,
-+					  unsigned n)
-+{
-+	uart_console_write(&serial_pxa_early_port.port, s, n,
-+			   serial_pxa_early_putchar);
-+	early_wait_for_xmitr(&serial_pxa_early_port);
-+}
-+
-+static int __init serial_pxa_early_console_setup(struct earlycon_device *device,
-+						 const char *opt)
-+{
-+	if (!device->port.membase)
-+		return -ENODEV;
-+
-+	serial_pxa_early_port.port.membase = device->port.membase;
-+	serial_pxa_early_port.port.iotype = device->port.iotype;
-+
-+	device->con->write = serial_pxa_early_write;
-+	return 0;
-+}
-+
-+OF_EARLYCON_DECLARE(pxa_uart, "mrvl,pxa-uart",
-+		    serial_pxa_early_console_setup);
-+OF_EARLYCON_DECLARE(mmp_uart, "mrvl,mmp-uart",
-+		    serial_pxa_early_console_setup);
-+OF_EARLYCON_DECLARE(bcm7401_upg_uart, "brcm,bcm7401-upg-uart",
-+		    serial_pxa_early_console_setup);
-+
- #define PXA_CONSOLE	&serial_pxa_console
- #else
- #define PXA_CONSOLE	NULL
--- 
-2.1.1
+The nvram partition contains all configuration information about the
+device like the MAC addresses, the calibration data for the Wifi chips
+(either in the SoC or attached via PCIe/USB), default configuration for
+the switch and so on. I think expect for the MAC addresses these values
+do not vary on one series of boards, but I am to completely sure about
+the calibration data. For the mac address we have to parse this as long
+as the boot loader does not provide these information in some other way.
+
+My plan would be that we integrate this nvram support into Linux also
+for the ARM SoCs at first and then make the old drivers also take device
+tree attributes. For new drivers we can make them use device tree
+attributes only.
+
+Hauke

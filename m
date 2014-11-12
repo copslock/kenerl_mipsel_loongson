@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 21:55:45 +0100 (CET)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:46637 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013564AbaKLUypFux7A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 21:54:45 +0100
-Received: by mail-pa0-f45.google.com with SMTP id lf10so13690036pab.18
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 12:54:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 21:56:04 +0100 (CET)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:34056 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013572AbaKLUyqxeSE2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 21:54:46 +0100
+Received: by mail-pa0-f49.google.com with SMTP id lj1so13632635pab.22
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 12:54:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=dFrpL4yoNUv9jpM/ApukSzfp54H1KFaozfaBRAb6+fA=;
-        b=bWC6SMv4Pg4HiTAYQIO8p50YpCuKTjArWwJQXsOlOa0Amc82bRfEyWlrZJKSv/cDTy
-         bg8RUGJSt0sAM/IQXTlpRaDTR1KWttIyxEHA4mconXbq+bQDaVYzkq34tLhrDtBHffKb
-         ZOAALh0yGeYcm6CzmtccvujjQQDGyDKxzEjJSar8M+fODz5A5MWJKfzeayaJ5CWQVf/n
-         N6rdKa9DT+dGxCuqURPIGGV06kuntCpDIggvffRyaO3Dx9SGUBklbh9quSXCmKboU7Z7
-         IE3yrP9/1jJ9CD/CJq4yqlfBO/7FMKp1AXoCbXVvt7cuY2s5269yW8nD/KFtjblqymb5
-         kg7Q==
-X-Received: by 10.66.234.72 with SMTP id uc8mr50224442pac.51.1415825679297;
-        Wed, 12 Nov 2014 12:54:39 -0800 (PST)
+        bh=BP/TDbxkUoKA2qolpTpzmoRx2W43GqdXq2lSglbDMVA=;
+        b=jtG5H7tbnInsUkXbu0NPNhDchFAq1Fqe7OSxH9utLkY4qS8CQSI+09BGCTCRe01ZLS
+         EyhcgW1ze7lrngssjs+rdOFmQQdxZiVrfcD+3mlOfHf3tc47dxch2FCwFwjEWQILhyiB
+         CfXeC0At8XWW/JrNRrz6uRGBOCpUiPE9wi7i3EzswOR59IFN+eXuvAcbNkaicNMcD0DZ
+         GjVVuqZkV2Ti/QvKy69cOcuaZ9rjSfLinnXAZcAubXNDbQjj7376xF1151BG3Gx+NbwO
+         KKbZGtvi//H5b45srw230iZK8TXG6L0QC4zrPulfZcaLYAsXgA1XdZVQTUSMNGFiGzV7
+         dBhw==
+X-Received: by 10.68.234.130 with SMTP id ue2mr6543703pbc.12.1415825681253;
+        Wed, 12 Nov 2014 12:54:41 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id z15sm23050495pdi.6.2014.11.12.12.54.37
+        by mx.google.com with ESMTPSA id z15sm23050495pdi.6.2014.11.12.12.54.39
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 12 Nov 2014 12:54:38 -0800 (PST)
+        Wed, 12 Nov 2014 12:54:40 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org
 Cc:     arnd@arndb.de, daniel@zonque.org, haojian.zhuang@gmail.com,
@@ -29,9 +29,9 @@ Cc:     arnd@arndb.de, daniel@zonque.org, haojian.zhuang@gmail.com,
         f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
         linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH V2 04/10] of: Change of_device_is_available() to return bool
-Date:   Wed, 12 Nov 2014 12:54:01 -0800
-Message-Id: <1415825647-6024-5-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V2 05/10] of: Add helper function to check MMIO register endianness
+Date:   Wed, 12 Nov 2014 12:54:02 -0800
+Message-Id: <1415825647-6024-6-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
 References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
@@ -39,7 +39,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44079
+X-archive-position: 44080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,96 +56,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This function can only return true or false; using a bool makes it more
-obvious to the reader.
+SoC peripherals can come in several different flavors:
+
+ - little-endian: registers always need to be accessed in LE mode (so the
+   kernel should perform a swap if the CPU is running BE)
+
+ - big-endian: registers always need to be accessed in BE mode (so the
+   kernel should perform a swap if the CPU is running LE)
+
+ - native-endian: the bus will automatically swap accesses, so the kernel
+   should never swap
+
+Introduce a function that checks an OF device node to see whether it
+contains a "big-endian" or "native-endian" property.  For the former case,
+always return true.  For the latter case, return true iff the kernel was
+built for BE (implying that the BE MMIO accessors do not perform a swap).
+Otherwise return false, assuming LE registers.
+
+LE registers are assumed by default because most existing drivers (libahci,
+serial8250, usb) always use readl/writel in the absence of instructions
+to the contrary, so that will be our fallback.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- drivers/of/base.c  | 22 +++++++++++-----------
- include/linux/of.h |  6 +++---
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/of/base.c  | 23 +++++++++++++++++++++++
+ include/linux/of.h |  6 ++++++
+ 2 files changed, 29 insertions(+)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 707395c..81c095f 100644
+index 81c095f..35d95a1 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -507,27 +507,27 @@ EXPORT_SYMBOL(of_machine_is_compatible);
-  *
-  *  @device: Node to check for availability, with locks already held
-  *
-- *  Returns 1 if the status property is absent or set to "okay" or "ok",
-- *  0 otherwise
-+ *  Returns true if the status property is absent or set to "okay" or "ok",
-+ *  false otherwise
-  */
--static int __of_device_is_available(const struct device_node *device)
-+static bool __of_device_is_available(const struct device_node *device)
- {
- 	const char *status;
- 	int statlen;
- 
- 	if (!device)
--		return 0;
-+		return false;
- 
- 	status = __of_get_property(device, "status", &statlen);
- 	if (status == NULL)
--		return 1;
-+		return true;
- 
- 	if (statlen > 0) {
- 		if (!strcmp(status, "okay") || !strcmp(status, "ok"))
--			return 1;
-+			return true;
- 	}
- 
--	return 0;
-+	return false;
- }
+@@ -552,6 +552,29 @@ bool of_device_is_available(const struct device_node *device)
+ EXPORT_SYMBOL(of_device_is_available);
  
  /**
-@@ -535,13 +535,13 @@ static int __of_device_is_available(const struct device_node *device)
++ *  of_device_is_big_endian - check if a device has BE registers
++ *
++ *  @device: Node to check for endianness
++ *
++ *  Returns true if the device has a "big-endian" property, or if the kernel
++ *  was compiled for BE *and* the device has a "native-endian" property.
++ *  Returns false otherwise.
++ *
++ *  Callers would nominally use ioread32be/iowrite32be if
++ *  of_device_is_big_endian() == true, or readl/writel otherwise.
++ */
++bool of_device_is_big_endian(const struct device_node *device)
++{
++	if (of_property_read_bool(device, "big-endian"))
++		return true;
++	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) &&
++	    of_property_read_bool(device, "native-endian"))
++		return true;
++	return false;
++}
++EXPORT_SYMBOL(of_device_is_big_endian);
++
++/**
+  *	of_get_parent - Get a node's parent if any
+  *	@node:	Node to get parent
   *
-  *  @device: Node to check for availability
-  *
-- *  Returns 1 if the status property is absent or set to "okay" or "ok",
-- *  0 otherwise
-+ *  Returns true if the status property is absent or set to "okay" or "ok",
-+ *  false otherwise
-  */
--int of_device_is_available(const struct device_node *device)
-+bool of_device_is_available(const struct device_node *device)
- {
- 	unsigned long flags;
--	int res;
-+	bool res;
- 
- 	raw_spin_lock_irqsave(&devtree_lock, flags);
- 	res = __of_device_is_available(device);
 diff --git a/include/linux/of.h b/include/linux/of.h
-index 29f0adc..7aaaa59 100644
+index 7aaaa59..fc70b01 100644
 --- a/include/linux/of.h
 +++ b/include/linux/of.h
-@@ -275,7 +275,7 @@ extern int of_property_read_string_helper(struct device_node *np,
- 					      const char **out_strs, size_t sz, int index);
+@@ -276,6 +276,7 @@ extern int of_property_read_string_helper(struct device_node *np,
  extern int of_device_is_compatible(const struct device_node *device,
  				   const char *);
--extern int of_device_is_available(const struct device_node *device);
-+extern bool of_device_is_available(const struct device_node *device);
+ extern bool of_device_is_available(const struct device_node *device);
++extern bool of_device_is_big_endian(const struct device_node *device);
  extern const void *of_get_property(const struct device_node *node,
  				const char *name,
  				int *lenp);
-@@ -426,9 +426,9 @@ static inline int of_device_is_compatible(const struct device_node *device,
- 	return 0;
+@@ -431,6 +432,11 @@ static inline bool of_device_is_available(const struct device_node *device)
+ 	return false;
  }
  
--static inline int of_device_is_available(const struct device_node *device)
-+static inline bool of_device_is_available(const struct device_node *device)
- {
--	return 0;
++static inline bool of_device_is_big_endian(const struct device_node *device)
++{
 +	return false;
- }
- 
++}
++
  static inline struct property *of_find_property(const struct device_node *np,
+ 						const char *name,
+ 						int *lenp)
 -- 
 2.1.1

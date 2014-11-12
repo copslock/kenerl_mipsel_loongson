@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 20:44:28 +0100 (CET)
-Received: from mail-ie0-f202.google.com ([209.85.223.202]:57185 "EHLO
-        mail-ie0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013558AbaKLTnxYZaWf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 20:43:53 +0100
-Received: by mail-ie0-f202.google.com with SMTP id tr6so2098886ieb.5
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 11:43:47 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 20:44:44 +0100 (CET)
+Received: from mail-pd0-f202.google.com ([209.85.192.202]:38708 "EHLO
+        mail-pd0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013554AbaKLTnzf5fJY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 20:43:55 +0100
+Received: by mail-pd0-f202.google.com with SMTP id ft15so2070915pdb.1
+        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 11:43:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=iJJXpfALwZpNEe4LF0i8lzr3DPab4g+J94owMiLr5P8=;
-        b=MGqdwi03NvdykOygWiN7acJAhWP/yV+8KHikHz2JRPxBY40BjWxDSMx0eZimk/fTn6
-         /Zb3MqczI2h8cJ3yG7Evkz4n2Rz8mDFB9pupFhbJ6kpRoT6eavMG/5pGtsP6mA0VhLDS
-         cJtKO1i8cD9a6DS0UgfFn8Wd3Auxdt0ILNAo7z+fWpMY0mErNEp0c3Vas9BZwaQnByAf
-         GJkUPfeqCPsHCfYUdYgl9r7MwVB3M1Kf/RKQQ+fEbDkF1tUQdPyMvXGs56lPdNAl867n
-         sc9sySbKpuSnJ/fyGeVx6HRZJmUDxJxe5LLAoHiKJQI7fFLnfc9YpYzWM56xwOfujN7B
-         /JGQ==
-X-Gm-Message-State: ALoCoQlblJI9e64njkRP4bcQwPnRS99dcxC/1jRNDQmFeipB/VCvPgdW75P9q0rRoez+AzUnjY2R
-X-Received: by 10.182.240.226 with SMTP id wd2mr37598821obc.6.1415821427520;
-        Wed, 12 Nov 2014 11:43:47 -0800 (PST)
+        bh=CczhxnDX+wBA2FN74WL4mPtQDgOshyhZc6EAlkKFW4c=;
+        b=hk+xDG+3o7rHhG5DFiJZYKwn+Pocl+z18bHbhf2JnbTb3MQXOHU+5RCYPcCH5MED3l
+         PWDHyRyfXIWCKtmJCjEmdsvezOWHnIq6Yn68aL21QRECrSNIr+37wTKvkOnxK/yS5v3p
+         tG6qW9m5+5Qh95kggr+1vHTXesYjTHXVzsqDBbga1xbhAqwpEW1e6BJFtFLaBZ++oUlz
+         7UKDj6ALKyE6WC0RKQ0fipmwmnPwCoYcNt9+4czqi0avKljHzWder5pacHfqEJpwHiKX
+         QLTxo0Qn4tMLUDce5RE+M+6JONtxQgLwHi4d5j/R7BlXSwg23JOG3dtQAxCnnKN/WXQo
+         D8HA==
+X-Gm-Message-State: ALoCoQmdSQ5bT+ZwxE7yoFGhEQm5sn0Z18l0UCPvPPlYvrGbBFUC87jexwhdrwcsA5JD7LGHIqzB
+X-Received: by 10.66.161.3 with SMTP id xo3mr37587657pab.22.1415821429241;
+        Wed, 12 Nov 2014 11:43:49 -0800 (PST)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id r6si931600yhg.1.2014.11.12.11.43.46
+        by gmr-mx.google.com with ESMTPS id t28si964438yhb.4.2014.11.12.11.43.47
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 Nov 2014 11:43:47 -0800 (PST)
+        Wed, 12 Nov 2014 11:43:49 -0800 (PST)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id bfkxVGud.1; Wed, 12 Nov 2014 11:43:47 -0800
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id uqzOe2m2.1; Wed, 12 Nov 2014 11:43:49 -0800
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id A2BBD220C22; Wed, 12 Nov 2014 11:43:45 -0800 (PST)
+        id 763D3220BC1; Wed, 12 Nov 2014 11:43:47 -0800 (PST)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -45,9 +45,9 @@ Cc:     Andrew Bresticker <abrestic@chromium.org>,
         James Hogan <james.hogan@imgtec.com>,
         Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V5 2/4] of: Add binding document for MIPS GIC
-Date:   Wed, 12 Nov 2014 11:43:37 -0800
-Message-Id: <1415821419-26974-3-git-send-email-abrestic@chromium.org>
+Subject: [PATCH V5 4/4] clocksource: mips-gic: Add device-tree support
+Date:   Wed, 12 Nov 2014 11:43:39 -0800
+Message-Id: <1415821419-26974-5-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.1.0.rc2.206.gedb03e5
 In-Reply-To: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
 References: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
@@ -55,7 +55,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44072
+X-archive-position: 44073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,110 +72,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Global Interrupt Controller (GIC) present on certain MIPS systems
-can be used to route external interrupts to individual VPEs and CPU
-interrupt vectors.  It also supports a timer and software-generated
-interrupts.
+Parse the GIC timer frequency and interrupt from the device-tree.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
-No changes from v4.
+Changes from v4:
+ - don't probe from irqchip; just warn if DT is wrong
 Changes from v3:
- - removed CPU name from compatible string
- - removed available-cpu-vectors, added reserved-cpu-vectors
- - made reg property optional
-Changes from v2:
- - added third cell to specify local vs. shared
- - added documentation for timer sub-node
- - changed compatible string to include CPU version
-Changes from v1:
- - moved from mips/ to interrupt-controller/
- - removed interrupts and interrupt-parent properties
- - added available-cpu-vectors property
- - dropped third cell in interrupt specifier
+ - probe from GIC irqchip
+New for v3.
 ---
- .../bindings/interrupt-controller/mips-gic.txt     | 55 ++++++++++++++++++++++
- .../dt-bindings/interrupt-controller/mips-gic.h    |  9 ++++
- 2 files changed, 64 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
- create mode 100644 include/dt-bindings/interrupt-controller/mips-gic.h
+ drivers/clocksource/Kconfig          |  1 +
+ drivers/clocksource/mips-gic-timer.c | 41 ++++++++++++++++++++++++++++++------
+ 2 files changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-new file mode 100644
-index 0000000..5a65478
---- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-@@ -0,0 +1,55 @@
-+MIPS Global Interrupt Controller (GIC)
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index cb7e7f4..89836dc 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -226,5 +226,6 @@ config CLKSRC_VERSATILE
+ config CLKSRC_MIPS_GIC
+ 	bool
+ 	depends on MIPS_GIC
++	select CLKSRC_OF
+ 
+ endmenu
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index a749c81..3bd31b1 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -11,6 +11,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/irqchip/mips-gic.h>
+ #include <linux/notifier.h>
++#include <linux/of_irq.h>
+ #include <linux/percpu.h>
+ #include <linux/smp.h>
+ #include <linux/time.h>
+@@ -101,8 +102,6 @@ static int gic_clockevent_init(void)
+ 	if (!cpu_has_counter || !gic_frequency)
+ 		return -ENXIO;
+ 
+-	gic_timer_irq = MIPS_GIC_IRQ_BASE +
+-		GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
+ 	setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
+ 
+ 	register_cpu_notifier(&gic_cpu_nb);
+@@ -123,17 +122,45 @@ static struct clocksource gic_clocksource = {
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+-void __init gic_clocksource_init(unsigned int frequency)
++static void __init __gic_clocksource_init(void)
+ {
+-	gic_frequency = frequency;
+-
+ 	/* Set clocksource mask. */
+ 	gic_clocksource.mask = CLOCKSOURCE_MASK(gic_get_count_width());
+ 
+ 	/* Calculate a somewhat reasonable rating value. */
+-	gic_clocksource.rating = 200 + frequency / 10000000;
++	gic_clocksource.rating = 200 + gic_frequency / 10000000;
+ 
+-	clocksource_register_hz(&gic_clocksource, frequency);
++	clocksource_register_hz(&gic_clocksource, gic_frequency);
+ 
+ 	gic_clockevent_init();
+ }
 +
-+The MIPS GIC routes external interrupts to individual VPEs and IRQ pins.
-+It also supports local (per-processor) interrupts and software-generated
-+interrupts which can be used as IPIs.  The GIC also includes a free-running
-+global timer, per-CPU count/compare timers, and a watchdog.
++void __init gic_clocksource_init(unsigned int frequency)
++{
++	gic_frequency = frequency;
++	gic_timer_irq = MIPS_GIC_IRQ_BASE +
++		GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
 +
-+Required properties:
-+- compatible : Should be "mti,gic".
-+- interrupt-controller : Identifies the node as an interrupt controller
-+- #interrupt-cells : Specifies the number of cells needed to encode an
-+  interrupt specifier.  Should be 3.
-+  - The first cell is the type of interrupt, local or shared.
-+    See <include/dt-bindings/interrupt-controller/mips-gic.h>.
-+  - The second cell is the GIC interrupt number.
-+  - The third cell encodes the interrupt flags.
-+    See <include/dt-bindings/interrupt-controller/irq.h> for a list of valid
-+    flags.
++	__gic_clocksource_init();
++}
 +
-+Optional properties:
-+- reg : Base address and length of the GIC registers.  If not present,
-+  the base address reported by the hardware GCR_GIC_BASE will be used.
-+- mti,reserved-cpu-vectors : Specifies the list of CPU interrupt vectors
-+  to which the GIC may not route interrupts.  Valid values are 2 - 7.
-+  This property is ignored if the CPU is started in EIC mode.
++static void __init gic_clocksource_of_init(struct device_node *node)
++{
++	if (WARN_ON(!gic_present || !node->parent ||
++		    !of_device_is_compatible(node->parent, "mti,gic")))
++		return;
 +
-+Required properties for timer sub-node:
-+- compatible : Should be "mti,gic-timer".
-+- interrupts : Interrupt for the GIC local timer.
-+- clock-frequency : Clock frequency at which the GIC timers operate.
++	if (of_property_read_u32(node, "clock-frequency", &gic_frequency)) {
++		pr_err("GIC frequency not specified.\n");
++		return;
++	}
++	gic_timer_irq = irq_of_parse_and_map(node, 0);
++	if (!gic_timer_irq) {
++		pr_err("GIC timer IRQ not specified.\n");
++		return;
++	}
 +
-+Example:
-+
-+	gic: interrupt-controller@1bdc0000 {
-+		compatible = "mti,gic";
-+		reg = <0x1bdc0000 0x20000>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <3>;
-+
-+		mti,reserved-cpu-vectors = <7>;
-+
-+		timer {
-+			compatible = "mti,gic-timer";
-+			interrupts = <GIC_LOCAL 1 IRQ_TYPE_NONE>;
-+			clock-frequency = <50000000>;
-+		};
-+	};
-+
-+	uart@18101400 {
-+		...
-+		interrupt-parent = <&gic>;
-+		interrupts = <GIC_SHARED 24 IRQ_TYPE_LEVEL_HIGH>;
-+		...
-+	};
-diff --git a/include/dt-bindings/interrupt-controller/mips-gic.h b/include/dt-bindings/interrupt-controller/mips-gic.h
-new file mode 100644
-index 0000000..cf35a57
---- /dev/null
-+++ b/include/dt-bindings/interrupt-controller/mips-gic.h
-@@ -0,0 +1,9 @@
-+#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_MIPS_GIC_H
-+#define _DT_BINDINGS_INTERRUPT_CONTROLLER_MIPS_GIC_H
-+
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+#define GIC_SHARED 0
-+#define GIC_LOCAL 1
-+
-+#endif
++	__gic_clocksource_init();
++}
++CLOCKSOURCE_OF_DECLARE(mips_gic_timer, "mti,gic-timer",
++		       gic_clocksource_of_init);
 -- 
 2.1.0.rc2.206.gedb03e5

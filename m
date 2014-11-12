@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 13:18:38 +0100 (CET)
-Received: from mail-pd0-f175.google.com ([209.85.192.175]:38208 "EHLO
-        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013495AbaKLMSguB9zv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 13:18:36 +0100
-Received: by mail-pd0-f175.google.com with SMTP id y13so12190454pdi.20
-        for <multiple recipients>; Wed, 12 Nov 2014 04:18:31 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 13:19:16 +0100 (CET)
+Received: from mail-pd0-f180.google.com ([209.85.192.180]:38560 "EHLO
+        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013495AbaKLMTOtJqZp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 13:19:14 +0100
+Received: by mail-pd0-f180.google.com with SMTP id ft15so12032475pdb.25
+        for <multiple recipients>; Wed, 12 Nov 2014 04:19:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=uDukDpYkrT/W0AsHdQSO4GkcutjssZL+p/Xi3B8BQ1U=;
-        b=lFdKtL/ApfAUgU4nX0LpZgBgxvsMlSB/Zs8NC0KAWslawGCRK31DCUmKGyNyxj09aV
-         Z8YVbA9o/uIzWGuBoeUCxgvM5+/0q8RzQkIvayDkdKiSlMqccDf34k4HuxYG7bfgOk2G
-         st1fRRKg2bDoWBONWg8cT2GuBRypDWAORq9kwa0Wfr2zGms8rJSrvvVcCQAhWf3Fgty2
-         EaWxJXuHhi4r7DO2jCPNqwCMeUk7wzNM3hojjCAY0+4BAGTSSlDRKC4jQdLkvrVM9VbL
-         jXdANxxBYkJ1WVRdwac1vyqVYMFVg5KlXfCtn7rwSIQeh3JJZwBd2fSYmqSnIwfNA8+P
-         CVkA==
-X-Received: by 10.68.227.104 with SMTP id rz8mr46971819pbc.4.1415794710901;
-        Wed, 12 Nov 2014 04:18:30 -0800 (PST)
+        bh=0WgHhzs+iLJ30Fk1tuXRYfYYU+gkVA/c4ISPb6oX50c=;
+        b=M0wH+iGc/ARa0eNuBgL3UpOcaMVWaOlCVmiiFOHYC0mTxbCNF3QgpMyEMrFxNt2IW8
+         JW0P59Ud7UW9bVQ7BmuxsEImxgDd8q3eHbzdoTUJNcYfr/NcdUuQLON5R00itr3Z0C+S
+         9yTE9fphO/+jpdTJNZaTW2mnYDu2PA/Ilno89VcpfBl/7P63HhZaIH7rSFCtP7GeTVTJ
+         0D8JCEDpPBE4kVkYgqXZvN0fAyHltx4cTKV6E/YoNtC8EFnyDG4BK1+FvACELLH8POhc
+         IpMW4xGgQgXK4QLlQHTIars5au0pDwQ1AmhDXa8ZEn9MRskNZJDgPjPnNmu1ney567yF
+         oYvQ==
+X-Received: by 10.70.43.229 with SMTP id z5mr46865965pdl.25.1415794748548;
+        Wed, 12 Nov 2014 04:19:08 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id is15sm21992064pbd.87.2014.11.12.04.18.27
+        by mx.google.com with ESMTPSA id r2sm4987202pdi.60.2014.11.12.04.19.06
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 12 Nov 2014 04:18:30 -0800 (PST)
+        Wed, 12 Nov 2014 04:19:08 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-gpio@vger.kernel.org,
-        Huacai Chen <chenhc@lemote.com>, Hongbing Hu <huhb@lemote.com>
-Subject: [PATCH V3 2/5] MIPS: Loongson: Add Loongson-3A/3B GPIO support
-Date:   Wed, 12 Nov 2014 20:18:20 +0800
-Message-Id: <1415794700-7579-1-git-send-email-chenhc@lemote.com>
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V3 3/5] MIPS: Loongson-3: Add CPU Hwmon platform driver
+Date:   Wed, 12 Nov 2014 20:18:58 +0800
+Message-Id: <1415794738-7621-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44053
+X-archive-position: 44054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,399 +54,344 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Improve Loongson-2's GPIO driver to support Loongson-3A/3B, and move it
-to drivers/gpio directory.
+This add CPU Hwmon (temperature sensor) platform driver for Loongson-3.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Hongbing Hu <huhb@lemote.com>
 ---
- arch/mips/Kconfig                     |    1 +
- arch/mips/configs/lemote2f_defconfig  |    1 +
- arch/mips/configs/loongson3_defconfig |    1 +
- arch/mips/loongson/common/Makefile    |    1 -
- arch/mips/loongson/common/gpio.c      |  139 -------------------------------
- drivers/gpio/Kconfig                  |    6 ++
- drivers/gpio/Makefile                 |    1 +
- drivers/gpio/gpio-loongson.c          |  148 +++++++++++++++++++++++++++++++++
- 8 files changed, 158 insertions(+), 140 deletions(-)
- delete mode 100644 arch/mips/loongson/common/gpio.c
- create mode 100644 drivers/gpio/gpio-loongson.c
+ arch/mips/include/asm/mach-loongson/loongson.h |    4 +
+ arch/mips/loongson/common/env.c                |    9 +
+ drivers/platform/Kconfig                       |    3 +
+ drivers/platform/Makefile                      |    1 +
+ drivers/platform/mips/Kconfig                  |   26 +++
+ drivers/platform/mips/Makefile                 |    1 +
+ drivers/platform/mips/cpu_hwmon.c              |  206 ++++++++++++++++++++++++
+ 7 files changed, 250 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/platform/mips/Kconfig
+ create mode 100644 drivers/platform/mips/Makefile
+ create mode 100644 drivers/platform/mips/cpu_hwmon.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e10d704..7541a0e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1199,6 +1199,7 @@ config CPU_LOONGSON3
- 	select CPU_SUPPORTS_HUGEPAGES
- 	select WEAK_ORDERING
- 	select WEAK_REORDERING_BEYOND_LLSC
-+	select ARCH_REQUIRE_GPIOLIB
- 	help
- 		The Loongson 3 processor implements the MIPS64R2 instruction
- 		set with many extensions.
-diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-index 227a9de..0549b01 100644
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -172,6 +172,7 @@ CONFIG_SERIAL_8250_FOURPORT=y
- CONFIG_LEGACY_PTY_COUNT=16
- CONFIG_HW_RANDOM=y
- CONFIG_RTC=y
-+CONFIG_GPIO_LOONGSON=y
- CONFIG_THERMAL=y
- CONFIG_MEDIA_SUPPORT=m
- CONFIG_VIDEO_DEV=m
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
-index 1c6191e..e7a9bb4 100644
---- a/arch/mips/configs/loongson3_defconfig
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -243,6 +243,7 @@ CONFIG_HW_RANDOM=y
- CONFIG_RAW_DRIVER=m
- CONFIG_I2C_CHARDEV=y
- CONFIG_I2C_PIIX4=y
-+CONFIG_GPIO_LOONGSON=y
- CONFIG_SENSORS_LM75=m
- CONFIG_SENSORS_LM93=m
- CONFIG_SENSORS_W83627HF=m
-diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
-index 0bb9cc9..15fef59 100644
---- a/arch/mips/loongson/common/Makefile
-+++ b/arch/mips/loongson/common/Makefile
-@@ -4,7 +4,6 @@
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index 5459ac0..9783103 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -255,6 +255,10 @@ static inline void do_perfcnt_IRQ(void)
+ extern u64 loongson_chipcfg[MAX_PACKAGES];
+ #define LOONGSON_CHIPCFG(id) (*(volatile u32 *)(loongson_chipcfg[id]))
  
- obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
-     bonito-irq.o mem.o machtype.o platform.o
--obj-$(CONFIG_GPIOLIB) += gpio.o
- obj-$(CONFIG_PCI) += pci.o
- 
- #
-diff --git a/arch/mips/loongson/common/gpio.c b/arch/mips/loongson/common/gpio.c
-deleted file mode 100644
-index 29dbaa2..0000000
---- a/arch/mips/loongson/common/gpio.c
-+++ /dev/null
-@@ -1,139 +0,0 @@
--/*
-- *  STLS2F GPIO Support
-- *
-- *  Copyright (c) 2008 Richard Liu,  STMicroelectronics	 <richard.liu@st.com>
-- *  Copyright (c) 2008-2010 Arnaud Patard <apatard@mandriva.com>
-- *
-- *  This program is free software; you can redistribute it and/or modify
-- *  it under the terms of the GNU General Public License as published by
-- *  the Free Software Foundation; either version 2 of the License, or
-- *  (at your option) any later version.
-- */
--
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <linux/module.h>
--#include <linux/spinlock.h>
--#include <linux/err.h>
--#include <asm/types.h>
--#include <loongson.h>
--#include <linux/gpio.h>
--
--#define STLS2F_N_GPIO		4
--#define STLS2F_GPIO_IN_OFFSET	16
--
--static DEFINE_SPINLOCK(gpio_lock);
--
--int gpio_get_value(unsigned gpio)
--{
--	u32 val;
--	u32 mask;
--
--	if (gpio >= STLS2F_N_GPIO)
--		return __gpio_get_value(gpio);
--
--	mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
--	spin_lock(&gpio_lock);
--	val = LOONGSON_GPIODATA;
--	spin_unlock(&gpio_lock);
--
--	return (val & mask) != 0;
--}
--EXPORT_SYMBOL(gpio_get_value);
--
--void gpio_set_value(unsigned gpio, int state)
--{
--	u32 val;
--	u32 mask;
--
--	if (gpio >= STLS2F_N_GPIO) {
--		__gpio_set_value(gpio, state);
--		return ;
--	}
--
--	mask = 1 << gpio;
--
--	spin_lock(&gpio_lock);
--	val = LOONGSON_GPIODATA;
--	if (state)
--		val |= mask;
--	else
--		val &= (~mask);
--	LOONGSON_GPIODATA = val;
--	spin_unlock(&gpio_lock);
--}
--EXPORT_SYMBOL(gpio_set_value);
--
--int gpio_cansleep(unsigned gpio)
--{
--	if (gpio < STLS2F_N_GPIO)
--		return 0;
--	else
--		return __gpio_cansleep(gpio);
--}
--EXPORT_SYMBOL(gpio_cansleep);
--
--static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
--{
--	u32 temp;
--	u32 mask;
--
--	if (gpio >= STLS2F_N_GPIO)
--		return -EINVAL;
--
--	spin_lock(&gpio_lock);
--	mask = 1 << gpio;
--	temp = LOONGSON_GPIOIE;
--	temp |= mask;
--	LOONGSON_GPIOIE = temp;
--	spin_unlock(&gpio_lock);
--
--	return 0;
--}
--
--static int ls2f_gpio_direction_output(struct gpio_chip *chip,
--		unsigned gpio, int level)
--{
--	u32 temp;
--	u32 mask;
--
--	if (gpio >= STLS2F_N_GPIO)
--		return -EINVAL;
--
--	gpio_set_value(gpio, level);
--	spin_lock(&gpio_lock);
--	mask = 1 << gpio;
--	temp = LOONGSON_GPIOIE;
--	temp &= (~mask);
--	LOONGSON_GPIOIE = temp;
--	spin_unlock(&gpio_lock);
--
--	return 0;
--}
--
--static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
--{
--	return gpio_get_value(gpio);
--}
--
--static void ls2f_gpio_set_value(struct gpio_chip *chip,
--		unsigned gpio, int value)
--{
--	gpio_set_value(gpio, value);
--}
--
--static struct gpio_chip ls2f_chip = {
--	.label			= "ls2f",
--	.direction_input	= ls2f_gpio_direction_input,
--	.get			= ls2f_gpio_get_value,
--	.direction_output	= ls2f_gpio_direction_output,
--	.set			= ls2f_gpio_set_value,
--	.base			= 0,
--	.ngpio			= STLS2F_N_GPIO,
--};
--
--static int __init ls2f_gpio_setup(void)
--{
--	return gpiochip_add(&ls2f_chip);
--}
--arch_initcall(ls2f_gpio_setup);
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 0959ca9..1ef82b2 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -452,6 +452,12 @@ config GPIO_GRGPIO
- 	  Select this to support Aeroflex Gaisler GRGPIO cores from the GRLIB
- 	  VHDL IP core library.
- 
-+config GPIO_LOONGSON
-+	tristate "Loongson-2/3 GPIO support"
-+	depends on CPU_LOONGSON2 || CPU_LOONGSON3
-+	help
-+	  driver for GPIO functionality on Loongson-2F/3A/3B processors.
++/* Chip Temperature registor of each physical cpu package, PRid >= Loongson-3A */
++extern u64 loongson_chiptemp[MAX_PACKAGES];
++#define LOONGSON_CHIPTEMP(id) (*(volatile u32 *)(loongson_chiptemp[id]))
 +
- config GPIO_TB10X
- 	bool
- 	select GENERIC_IRQ_CHIP
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index e5d346c..2153a71 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -39,6 +39,7 @@ obj-$(CONFIG_GPIO_JANZ_TTL)	+= gpio-janz-ttl.o
- obj-$(CONFIG_GPIO_KEMPLD)	+= gpio-kempld.o
- obj-$(CONFIG_ARCH_KS8695)	+= gpio-ks8695.o
- obj-$(CONFIG_GPIO_INTEL_MID)	+= gpio-intel-mid.o
-+obj-$(CONFIG_GPIO_LOONGSON)	+= gpio-loongson.o
- obj-$(CONFIG_GPIO_LP3943)	+= gpio-lp3943.o
- obj-$(CONFIG_ARCH_LPC32XX)	+= gpio-lpc32xx.o
- obj-$(CONFIG_GPIO_LYNXPOINT)	+= gpio-lynxpoint.o
-diff --git a/drivers/gpio/gpio-loongson.c b/drivers/gpio/gpio-loongson.c
+ /* Freq Control register of each physical cpu package, PRid >= Loongson-3B */
+ extern u64 loongson_freqctrl[MAX_PACKAGES];
+ #define LOONGSON_FREQCTRL(id) (*(volatile u32 *)(loongson_freqctrl[id]))
+diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
+index 045ea3d..22f04ca 100644
+--- a/arch/mips/loongson/common/env.c
++++ b/arch/mips/loongson/common/env.c
+@@ -29,6 +29,7 @@ struct efi_memory_map_loongson *loongson_memmap;
+ struct loongson_system_configuration loongson_sysconf;
+ 
+ u64 loongson_chipcfg[MAX_PACKAGES] = {0xffffffffbfc00180};
++u64 loongson_chiptemp[MAX_PACKAGES];
+ u64 loongson_freqctrl[MAX_PACKAGES];
+ 
+ unsigned long long smp_group[4];
+@@ -97,6 +98,10 @@ void __init prom_init_env(void)
+ 		loongson_chipcfg[1] = 0x900010001fe00180;
+ 		loongson_chipcfg[2] = 0x900020001fe00180;
+ 		loongson_chipcfg[3] = 0x900030001fe00180;
++		loongson_chiptemp[0] = 0x900000001fe0019c;
++		loongson_chiptemp[1] = 0x900010001fe0019c;
++		loongson_chiptemp[2] = 0x900020001fe0019c;
++		loongson_chiptemp[3] = 0x900030001fe0019c;
+ 		loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
+ 		loongson_sysconf.workarounds = WORKAROUND_CPUFREQ;
+ 	} else if (ecpu->cputype == Loongson_3B) {
+@@ -110,6 +115,10 @@ void __init prom_init_env(void)
+ 		loongson_chipcfg[1] = 0x900020001fe00180;
+ 		loongson_chipcfg[2] = 0x900040001fe00180;
+ 		loongson_chipcfg[3] = 0x900060001fe00180;
++		loongson_chiptemp[0] = 0x900000001fe0019c;
++		loongson_chiptemp[1] = 0x900020001fe0019c;
++		loongson_chiptemp[2] = 0x900040001fe0019c;
++		loongson_chiptemp[3] = 0x900060001fe0019c;
+ 		loongson_freqctrl[0] = 0x900000001fe001d0;
+ 		loongson_freqctrl[1] = 0x900020001fe001d0;
+ 		loongson_freqctrl[2] = 0x900040001fe001d0;
+diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
+index 09fde58..eacabd1 100644
+--- a/drivers/platform/Kconfig
++++ b/drivers/platform/Kconfig
+@@ -4,5 +4,8 @@ endif
+ if GOLDFISH
+ source "drivers/platform/goldfish/Kconfig"
+ endif
++if MIPS
++source "drivers/platform/mips/Kconfig"
++endif
+ 
+ source "drivers/platform/chrome/Kconfig"
+diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
+index 3656b7b..f2dbc00 100644
+--- a/drivers/platform/Makefile
++++ b/drivers/platform/Makefile
+@@ -5,4 +5,5 @@
+ obj-$(CONFIG_X86)		+= x86/
+ obj-$(CONFIG_OLPC)		+= olpc/
+ obj-$(CONFIG_GOLDFISH)		+= goldfish/
++obj-$(CONFIG_CPU_LOONGSON3)	+= mips/
+ obj-$(CONFIG_CHROME_PLATFORMS)	+= chrome/
+diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
 new file mode 100644
-index 0000000..394fb1d
+index 0000000..c2f1ede
 --- /dev/null
-+++ b/drivers/gpio/gpio-loongson.c
-@@ -0,0 +1,148 @@
-+/*
-+ *  Loongson-2F/3A/3B GPIO Support
-+ *
-+ *  Copyright (c) 2008 Richard Liu,  STMicroelectronics	 <richard.liu@st.com>
-+ *  Copyright (c) 2008-2010 Arnaud Patard <apatard@mandriva.com>
-+ *  Copyright (c) 2014 Huacai Chen <chenhc@lemote.com>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ */
++++ b/drivers/platform/mips/Kconfig
+@@ -0,0 +1,26 @@
++#
++# MIPS Platform Specific Drivers
++#
 +
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/spinlock.h>
++menuconfig MIPS_PLATFORM_DEVICES
++	bool "MIPS Platform Specific Device Drivers"
++	default y
++	help
++	  Say Y here to get to see options for device drivers of various
++	  MIPS platforms, including vendor-specific netbook/laptop/desktop
++	  extension and hardware monitor drivers. This option itself does
++	  not add any kernel code.
++
++	  If you say N, all options in this submenu will be skipped and disabled.
++
++if MIPS_PLATFORM_DEVICES
++
++config CPU_HWMON
++	tristate "Loongson CPU HWMon Driver"
++	depends on LOONGSON_MACH3X
++	select HWMON
++	default y
++	help
++	  Loongson-3A/3B CPU Hwmon (temperature sensor) driver.
++
++endif # MIPS_PLATFORM_DEVICES
+diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
+new file mode 100644
+index 0000000..8dfd039
+--- /dev/null
++++ b/drivers/platform/mips/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
+diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
+new file mode 100644
+index 0000000..529950a
+--- /dev/null
++++ b/drivers/platform/mips/cpu_hwmon.c
+@@ -0,0 +1,206 @@
 +#include <linux/err.h>
-+#include <asm/types.h>
++#include <linux/module.h>
++#include <linux/reboot.h>
++#include <linux/jiffies.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
++
 +#include <loongson.h>
-+#include <linux/gpio.h>
++#include <boot_param.h>
++#include <loongson_hwmon.h>
 +
-+#define STLS2F_N_GPIO		4
-+#define STLS3A_N_GPIO		16
-+
-+#ifdef CONFIG_CPU_LOONGSON3
-+#define LOONGSON_N_GPIO	STLS3A_N_GPIO
-+#else
-+#define LOONGSON_N_GPIO	STLS2F_N_GPIO
-+#endif
-+
-+#define LOONGSON_GPIO_IN_OFFSET	16
-+
-+static DEFINE_SPINLOCK(gpio_lock);
-+
-+int gpio_get_value(unsigned gpio)
++/*
++ * Loongson-3 series cpu has two sensors inside,
++ * each of them from 0 to 255,
++ * if more than 127, that is dangerous.
++ * here only provide sensor1 data, because it always hot than sensor0
++ */
++int loongson3_cpu_temp(int cpu)
 +{
-+	u32 val;
-+	u32 mask;
++	u32 reg;
 +
-+	if (gpio >= LOONGSON_N_GPIO)
-+		return __gpio_get_value(gpio);
++	reg = LOONGSON_CHIPTEMP(cpu);
++	if (loongson_sysconf.cputype == Loongson_3A)
++		reg = (reg >> 8) & 0xff;
++	else if (loongson_sysconf.cputype == Loongson_3B)
++		reg = ((reg >> 8) & 0xff) - 100;
 +
-+	mask = 1 << (gpio + LOONGSON_GPIO_IN_OFFSET);
-+	spin_lock(&gpio_lock);
-+	val = LOONGSON_GPIODATA;
-+	spin_unlock(&gpio_lock);
-+
-+	return (val & mask) != 0;
-+}
-+EXPORT_SYMBOL(gpio_get_value);
-+
-+void gpio_set_value(unsigned gpio, int state)
-+{
-+	u32 val;
-+	u32 mask;
-+
-+	if (gpio >= LOONGSON_N_GPIO) {
-+		__gpio_set_value(gpio, state);
-+		return ;
-+	}
-+
-+	mask = 1 << gpio;
-+
-+	spin_lock(&gpio_lock);
-+	val = LOONGSON_GPIODATA;
-+	if (state)
-+		val |= mask;
-+	else
-+		val &= (~mask);
-+	LOONGSON_GPIODATA = val;
-+	spin_unlock(&gpio_lock);
-+}
-+EXPORT_SYMBOL(gpio_set_value);
-+
-+int gpio_cansleep(unsigned gpio)
-+{
-+	if (gpio < LOONGSON_N_GPIO)
-+		return 0;
-+	else
-+		return __gpio_cansleep(gpio);
-+}
-+EXPORT_SYMBOL(gpio_cansleep);
-+
-+static int loongson_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
-+{
-+	u32 temp;
-+	u32 mask;
-+
-+	if (gpio >= LOONGSON_N_GPIO)
-+		return -EINVAL;
-+
-+	spin_lock(&gpio_lock);
-+	mask = 1 << gpio;
-+	temp = LOONGSON_GPIOIE;
-+	temp |= mask;
-+	LOONGSON_GPIOIE = temp;
-+	spin_unlock(&gpio_lock);
-+
-+	return 0;
++	return (int)reg * 1000;
 +}
 +
-+static int loongson_gpio_direction_output(struct gpio_chip *chip,
-+		unsigned gpio, int level)
-+{
-+	u32 temp;
-+	u32 mask;
++static struct device *cpu_hwmon_dev;
 +
-+	if (gpio >= LOONGSON_N_GPIO)
-+		return -EINVAL;
++static ssize_t get_hwmon_name(struct device *dev,
++			struct device_attribute *attr, char *buf);
++static SENSOR_DEVICE_ATTR(name, S_IRUGO, get_hwmon_name, NULL, 0);
 +
-+	gpio_set_value(gpio, level);
-+	spin_lock(&gpio_lock);
-+	mask = 1 << gpio;
-+	temp = LOONGSON_GPIOIE;
-+	temp &= (~mask);
-+	LOONGSON_GPIOIE = temp;
-+	spin_unlock(&gpio_lock);
-+
-+	return 0;
-+}
-+
-+static int loongson_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-+{
-+	return gpio_get_value(gpio);
-+}
-+
-+static void loongson_gpio_set_value(struct gpio_chip *chip,
-+		unsigned gpio, int value)
-+{
-+	gpio_set_value(gpio, value);
-+}
-+
-+static struct gpio_chip loongson_chip = {
-+	.label                  = "Loongson-gpio-chip",
-+	.direction_input        = loongson_gpio_direction_input,
-+	.get                    = loongson_gpio_get_value,
-+	.direction_output       = loongson_gpio_direction_output,
-+	.set                    = loongson_gpio_set_value,
-+	.base			= 0,
-+	.ngpio                  = LOONGSON_N_GPIO,
++static struct attribute *cpu_hwmon_attributes[] = {
++	&sensor_dev_attr_name.dev_attr.attr,
++	NULL
 +};
 +
-+static int __init loongson_gpio_setup(void)
++/* Hwmon device attribute group */
++static struct attribute_group cpu_hwmon_attribute_group = {
++	.attrs = cpu_hwmon_attributes,
++};
++
++/* Hwmon device get name */
++static ssize_t get_hwmon_name(struct device *dev,
++			struct device_attribute *attr, char *buf)
 +{
-+	return gpiochip_add(&loongson_chip);
++	return sprintf(buf, "cpu-hwmon\n");
 +}
-+postcore_initcall(loongson_gpio_setup);
++
++static ssize_t get_cpu0_temp(struct device *dev,
++			struct device_attribute *attr, char *buf);
++static ssize_t get_cpu1_temp(struct device *dev,
++			struct device_attribute *attr, char *buf);
++static ssize_t cpu0_temp_label(struct device *dev,
++			struct device_attribute *attr, char *buf);
++static ssize_t cpu1_temp_label(struct device *dev,
++			struct device_attribute *attr, char *buf);
++
++static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, get_cpu0_temp, NULL, 1);
++static SENSOR_DEVICE_ATTR(temp1_label, S_IRUGO, cpu0_temp_label, NULL, 1);
++static SENSOR_DEVICE_ATTR(temp2_input, S_IRUGO, get_cpu1_temp, NULL, 2);
++static SENSOR_DEVICE_ATTR(temp2_label, S_IRUGO, cpu1_temp_label, NULL, 2);
++
++static const struct attribute *hwmon_cputemp1[] = {
++	&sensor_dev_attr_temp1_input.dev_attr.attr,
++	&sensor_dev_attr_temp1_label.dev_attr.attr,
++	NULL
++};
++
++static const struct attribute *hwmon_cputemp2[] = {
++	&sensor_dev_attr_temp2_input.dev_attr.attr,
++	&sensor_dev_attr_temp2_label.dev_attr.attr,
++	NULL
++};
++
++static ssize_t cpu0_temp_label(struct device *dev,
++			struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "CPU 0 Temprature\n");
++}
++
++static ssize_t cpu1_temp_label(struct device *dev,
++			struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "CPU 1 Temprature\n");
++}
++
++static ssize_t get_cpu0_temp(struct device *dev,
++			struct device_attribute *attr, char *buf)
++{
++	int value = loongson3_cpu_temp(0);
++	return sprintf(buf, "%d\n", value);
++}
++
++static ssize_t get_cpu1_temp(struct device *dev,
++			struct device_attribute *attr, char *buf)
++{
++	int value = loongson3_cpu_temp(1);
++	return sprintf(buf, "%d\n", value);
++}
++
++static int create_sysfs_cputemp_files(struct kobject *kobj)
++{
++	int ret;
++
++	ret = sysfs_create_files(kobj, hwmon_cputemp1);
++	if (ret)
++		goto sysfs_create_temp1_fail;
++
++	if (loongson_sysconf.nr_cpus <= loongson_sysconf.cores_per_package)
++		return 0;
++
++	ret = sysfs_create_files(kobj, hwmon_cputemp2);
++	if (ret)
++		goto sysfs_create_temp2_fail;
++
++	return 0;
++
++sysfs_create_temp2_fail:
++	sysfs_remove_files(kobj, hwmon_cputemp1);
++
++sysfs_create_temp1_fail:
++	return -1;
++}
++
++static void remove_sysfs_cputemp_files(struct kobject *kobj)
++{
++	sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp1);
++
++	if (loongson_sysconf.nr_cpus > loongson_sysconf.cores_per_package)
++		sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp2);
++}
++
++#define CPU_THERMAL_THRESHOLD 90000
++static struct delayed_work thermal_work;
++
++static void do_thermal_timer(struct work_struct *work)
++{
++	int value = loongson3_cpu_temp(0);
++	if (value <= CPU_THERMAL_THRESHOLD)
++		schedule_delayed_work(&thermal_work, msecs_to_jiffies(5000));
++	else
++		orderly_poweroff(true);
++}
++
++static int __init loongson_hwmon_init(void)
++{
++	int ret;
++
++	pr_info("Loongson Hwmon Enter...\n");
++
++	cpu_hwmon_dev = hwmon_device_register(NULL);
++	if (IS_ERR(cpu_hwmon_dev)) {
++		ret = -ENOMEM;
++		pr_err("hwmon_device_register fail!\n");
++		goto fail_hwmon_device_register;
++	}
++
++	ret = sysfs_create_group(&cpu_hwmon_dev->kobj,
++				&cpu_hwmon_attribute_group);
++	if (ret) {
++		pr_err("fail to create loongson hwmon!\n");
++		goto fail_sysfs_create_group_hwmon;
++	}
++
++	ret = create_sysfs_cputemp_files(&cpu_hwmon_dev->kobj);
++	if (ret) {
++		pr_err("fail to create cpu temprature interface!\n");
++		goto fail_create_sysfs_cputemp_files;
++	}
++
++	INIT_DEFERRABLE_WORK(&thermal_work, do_thermal_timer);
++	schedule_delayed_work(&thermal_work, msecs_to_jiffies(20000));
++
++	return ret;
++
++fail_create_sysfs_cputemp_files:
++	sysfs_remove_group(&cpu_hwmon_dev->kobj,
++				&cpu_hwmon_attribute_group);
++
++fail_sysfs_create_group_hwmon:
++	hwmon_device_unregister(cpu_hwmon_dev);
++
++fail_hwmon_device_register:
++	return ret;
++}
++
++static void __exit loongson_hwmon_exit(void)
++{
++	cancel_delayed_work_sync(&thermal_work);
++	remove_sysfs_cputemp_files(&cpu_hwmon_dev->kobj);
++	sysfs_remove_group(&cpu_hwmon_dev->kobj,
++				&cpu_hwmon_attribute_group);
++	hwmon_device_unregister(cpu_hwmon_dev);
++}
++
++module_init(loongson_hwmon_init);
++module_exit(loongson_hwmon_exit);
++
++MODULE_AUTHOR("Yu Xiang <xiangy@lemote.com>");
++MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
++MODULE_DESCRIPTION("Loongson CPU Hwmon driver");
 -- 
 1.7.7.3

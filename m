@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 07:07:11 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:33763 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 07:07:28 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:33767 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012575AbaKMGGAPTJOR (ORCPT
+        with ESMTP id S27012576AbaKMGGAQQLZb (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 07:06:00 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <Steven.Hill@imgtec.com>)
-        id 1XonXU-0007Qu-Q2; Thu, 13 Nov 2014 00:05:52 -0600
+        id 1XonXU-0007Qu-UW; Thu, 13 Nov 2014 00:05:52 -0600
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org
-Subject: [PATCH 02/11] MIPS: Revert fixrange_init() limiting to the FIXMAP region.
-Date:   Thu, 13 Nov 2014 00:05:34 -0600
-Message-Id: <1415858743-24492-3-git-send-email-Steven.Hill@imgtec.com>
+Subject: [PATCH 04/11] MIPS: Removal of execute bit in page tables for HEAP/BSS.
+Date:   Thu, 13 Nov 2014 00:05:36 -0600
+Message-Id: <1415858743-24492-5-git-send-email-Steven.Hill@imgtec.com>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1415858743-24492-1-git-send-email-Steven.Hill@imgtec.com>
 References: <1415858743-24492-1-git-send-email-Steven.Hill@imgtec.com>
@@ -20,7 +20,7 @@ Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44095
+X-archive-position: 44096
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,47 +39,33 @@ X-list: linux-mips
 
 From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-This patch refactors commit 464fd83e841a16f4ea1325b33eb08170ef5cd1f4
-(MIPS: Limit fixrange_init() to the FIXMAP region) and correctly
-calculates the right length while taking into account page table
-alignment by PMD.
+Patch removes eXecute bit in the page tables for HEAP/BSS. It
+boosts performance because page marked X is flushed each time
+after COW/swap from cache even for cache coherent systems in
+Harvard architectures (!cpu_has_ic_fills_f_dc). This patch also
+sets eXecute Inhibit (XI) protection of HEAP/BSS on CPUs which
+support it, like proAptiv cores.
 
 Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 ---
- arch/mips/mm/init.c       |    6 +++---
- arch/mips/mm/pgtable-64.c |    2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/page.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 5efe70f..ed217db 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -232,11 +232,11 @@ void __init fixrange_init(unsigned long start, unsigned long end,
- 	k = __pmd_offset(vaddr);
- 	pgd = pgd_base + i;
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index ec7b54d..b7f2c4e 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -233,7 +233,9 @@ extern int __virt_addr_valid(const volatile void *kaddr);
+ #define virt_addr_valid(kaddr)						\
+ 	__virt_addr_valid((const volatile void *) (kaddr))
  
--	for ( ; (i < PTRS_PER_PGD) && (vaddr < end); pgd++, i++) {
-+	for ( ; (i < PTRS_PER_PGD) && (vaddr != end); pgd++, i++) {
- 		pud = (pud_t *)pgd;
--		for ( ; (j < PTRS_PER_PUD) && (vaddr < end); pud++, j++) {
-+		for ( ; (j < PTRS_PER_PUD) && (vaddr != end); pud++, j++) {
- 			pmd = (pmd_t *)pud;
--			for (; (k < PTRS_PER_PMD) && (vaddr < end); pmd++, k++) {
-+			for (; (k < PTRS_PER_PMD) && (vaddr != end); pmd++, k++) {
- 				if (pmd_none(*pmd)) {
- 					pte = (pte_t *) alloc_bootmem_low_pages(PAGE_SIZE);
- 					set_pmd(pmd, __pmd((unsigned long)pte));
-diff --git a/arch/mips/mm/pgtable-64.c b/arch/mips/mm/pgtable-64.c
-index e8adc00..a6ae0f1 100644
---- a/arch/mips/mm/pgtable-64.c
-+++ b/arch/mips/mm/pgtable-64.c
-@@ -107,5 +107,5 @@ void __init pagetable_init(void)
- 	 * Fixed mappings:
- 	 */
- 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
-+	fixrange_init(vaddr, 0, pgd_base);
- }
+-#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
++#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
++				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
++#define VM_STACK_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
+ 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+ 
+ #define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
 -- 
 1.7.10.4

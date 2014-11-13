@@ -1,55 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 20:08:42 +0100 (CET)
-Received: from mail-qc0-f176.google.com ([209.85.216.176]:40096 "EHLO
-        mail-qc0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013529AbaKMTIeDVA8e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 20:08:34 +0100
-Received: by mail-qc0-f176.google.com with SMTP id x3so11711555qcv.35
-        for <linux-mips@linux-mips.org>; Thu, 13 Nov 2014 11:08:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=EmTyISJDKQonI8ekfhwES2dj5kteORIZqQCCppLUEs0=;
-        b=eifiCKBrtmxtmuh/jl0myQGR2ZzfDjS/9QLMJ52Fk9uN7uk0JoXhI9Foz3+0rTPnVM
-         LgFG/5IWuJiyptwSfSayzFEBN2ASptIe3vMR6mCB9t9Nmn3na/ZTHwJ07gLgCXeFPK5X
-         gD66+YCvYf5mRorgL4hj+Yb7E+UISAe9c1TtBU5XTi0famSFCymdn9TPi826hjAxYXJB
-         mLM+nFVcXP9DtzwcDdyPgpB6pmwAmIxiPDTAGZv+LnsxuPQOwy1JC+OAE7OzWBHVtc9y
-         fD5nr72K4kUX5/yOr5QnoJL+g6MGpO8hipf/5p0Utf51xp7prilw7Eh8DqliqXXKBta7
-         EpWg==
-X-Received: by 10.224.115.82 with SMTP id h18mr5353461qaq.76.1415905708257;
- Thu, 13 Nov 2014 11:08:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 22:37:42 +0100 (CET)
+Received: from mail-bl2on0054.outbound.protection.outlook.com ([65.55.169.54]:53791
+        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009415AbaKMVhlRufZW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Nov 2014 22:37:41 +0100
+Received: from BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141) by
+ BN1PR07MB021.namprd07.prod.outlook.com (10.255.225.39) with Microsoft SMTP
+ Server (TLS) id 15.1.16.15; Thu, 13 Nov 2014 21:37:28 +0000
+Received: from localhost.localdomain (2.165.41.20) by
+ BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141) with Microsoft SMTP
+ Server (TLS) id 15.1.16.15; Thu, 13 Nov 2014 21:37:19 +0000
+From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+To:     Alan Stern <stern@rowland.harvard.edu>
+CC:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>
+Subject: [PATCH 0/3] USB: host: Misc patches to remove hard-coded octeon platform information
+Date:   Thu, 13 Nov 2014 22:36:27 +0100
+Message-ID: <1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Thu, 13 Nov 2014 11:08:08 -0800 (PST)
-In-Reply-To: <4606459.kh8mb8TEgZ@wuerfel>
-References: <1415781993-7755-1-git-send-email-cernekee@gmail.com>
- <3356477.HitZEsNa4H@wuerfel> <CAJiQ=7AFr5vR+FEc8B3CAZLb5GYujNxtaz7TU2FU0D3oModZ7w@mail.gmail.com>
- <4606459.kh8mb8TEgZ@wuerfel>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Thu, 13 Nov 2014 11:08:08 -0800
-Message-ID: <CAJiQ=7DoFk7ZSjHygaMWHyBTpxJFbQX4onh2xqixaqORQODsVg@mail.gmail.com>
-Subject: Re: [PATCH/RFC 5/8] serial: pxa: Make the driver buildable for
- BCM7xxx set-top platforms
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.cz>,
-        Rob Herring <robh@kernel.org>, daniel@zonque.org,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        robert.jarzmik@free.fr, Grant Likely <grant.likely@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [2.165.41.20]
+X-ClientProxiedBy: AM2PR03CA0029.eurprd03.prod.outlook.com (25.160.207.39) To
+ BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141)
+X-Microsoft-Antispam: UriScan:;UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB389;
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB389;
+X-Forefront-PRVS: 0394259C80
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6069001)(6009001)(189002)(199003)(164054003)(120916001)(110136001)(15202345003)(4396001)(97736003)(33646002)(102836001)(87286001)(50466002)(88136002)(122386002)(2171001)(87976001)(50226001)(19580395003)(89996001)(15395725005)(104166001)(50986999)(47776003)(92726001)(92566001)(64706001)(86362001)(93916002)(48376002)(95666004)(42186005)(40100003)(106356001)(66066001)(21056001)(101416001)(20776003)(62966003)(229853001)(15975445006)(77096003)(77156002)(36756003)(107046002)(31966008)(46102003)(105586002)(6606295002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN1PR07MB389;H:localhost.localdomain;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB389;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB021;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44142
+X-archive-position: 44143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: andreas.herrmann@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,51 +56,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 13, 2014 at 1:42 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> TTY naming is a mess today, and you seem to be caught in the middle
-> of it trying to work around the inherent problems. Extending the PXA
-> driver is an interesting approach since as you say it's a very nice
-> clean subset of the 8250 driver, but that doesn't mean that it's
-> a good long-term strategy, as we will likely have more chips with
-> 8250 variants.
->
-> Some of the ways forward that I can see are:
->
-> - (your approach) use and extend the pxa serial driver for new SoCs,
->   possibly migrate some of the existing users of 8250 to use that
->   and leave 8250 alone.
->
-> - fix the problem you see in a different way, and get the 8250 driver
->   to solve your problem. Possibly integrate the pxa driver back into
->   8250 in eventually, as we did with the omap driver.
+Hi Alan,
 
-Do you think it might make sense to come up with a set of guidelines
-that ensure that SoCs using a non-serial8250 driver (like pxa) on
-16550-compatible hardware can be easily moved back to serial8250
-someday?
+With following patches I want to base octeon ehci/ohci device
+configuration on device tree information.
 
-e.g. maybe I should be adding a reg-shift property to my pxa DT entry.
-It isn't necessary for pxa.c, but if we ever move to serial8250 it
-will be necessary.
+I picked up patches that were submitted in May. See
+http://marc.info/?l=linux-usb&m=140135823325811&w=2
+and http://marc.info/?l=linux-mips&m=140139694721623&w=2
 
-> - Do a fresh start for a general-purpose soc-type 8250 driver, using
->   tty_port instead of uart_port as the abstraction layer.
+Patch #1 is your "untested preliminary pass" to remove
+ [oe]hci-octeon drivers.
+Patch #2 is the removal of hard-coded platform information (but now
+ rebased on your patch)
+Patch #3 adapts dma_mask for ehci (as used in ehci-octeon)
 
-Hmm, does that mean we can't use the serial_core.c helpers?
+Overall diffstat is
 
->   Use that for
->   all new socs instead of extending the 8250 driver more, possibly
->   migrating some of the existing 8250 users.
+ arch/mips/cavium-octeon/octeon-platform.c |  380 +++++++++++++++++++++++------
+ arch/mips/configs/cavium_octeon_defconfig |    3 +
+ drivers/usb/host/Kconfig                  |   18 +-
+ drivers/usb/host/Makefile                 |    1 -
+ drivers/usb/host/ehci-hcd.c               |    5 -
+ drivers/usb/host/ehci-octeon.c            |  188 --------------
+ drivers/usb/host/ehci-platform.c          |    4 +-
+ drivers/usb/host/octeon2-common.c         |  200 ---------------
+ drivers/usb/host/ohci-hcd.c               |    5 -
+ drivers/usb/host/ohci-octeon.c            |  202 ---------------
+ drivers/usb/host/ohci-platform.c          |    1 +
+ include/linux/usb/ehci_pdriver.h          |    1 +
+ 12 files changed, 330 insertions(+), 678 deletions(-)
 
-One nice thing about a brand new driver is that we can use dynamic
-major/minor numbers unconditionally without breaking existing users.
-If either pxa.c or bcm63xx_uart.c had used dynamic numbers, I could
-drop Tushar's original workaround.
+Patches are based on v3.18-rc4-65-g2c54396
 
-Another advantage is that we can assume all users have DT, simplifying
-the probe function.
+Comments welcome.
 
-Would it be helpful to split parts of pxa.c and/or serial8250 into a
-"lib8250", similar to libahci, that can be called by many different
-implementations (some of which have special features like DMA
-support)?
+
+Thanks,
+
+Andreas

@@ -1,36 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 16:29:16 +0100 (CET)
-Received: from www.sr71.net ([198.145.64.142]:51087 "EHLO blackbird.sr71.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013612AbaKMP3OZ7Ic3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Nov 2014 16:29:14 +0100
-Received: from [127.0.0.1] (c-76-115-204-134.hsd1.or.comcast.net [76.115.204.134])
-        (Authenticated sender: dave)
-        by blackbird.sr71.net (Postfix) with ESMTPSA id AF7EDFA897;
-        Thu, 13 Nov 2014 07:29:06 -0800 (PST)
-Message-ID: <5464CE41.2090601@sr71.net>
-Date:   Thu, 13 Nov 2014 07:29:05 -0800
-From:   Dave Hansen <dave@sr71.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     hpa@zytor.com, mingo@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        qiaowei.ren@intel.com, dave.hansen@linux.intel.com
-Subject: Re: [PATCH 10/11] x86, mpx: cleanup unused bound tables
-References: <20141112170443.B4BD0899@viggo.jf.intel.com> <20141112170512.C932CF4D@viggo.jf.intel.com> <alpine.DEB.2.11.1411131541520.3935@nanos>
-In-Reply-To: <alpine.DEB.2.11.1411131541520.3935@nanos>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <dave@sr71.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 16:52:21 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:38125 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013586AbaKMPwTak55J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 16:52:19 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1Xowgu-0007pf-No; Thu, 13 Nov 2014 09:52:12 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [PATCH 6/8] MIPS: Add MFHC0 and MTHC0 instructions to uasm.
+Date:   Thu, 13 Nov 2014 09:52:02 -0600
+Message-Id: <1415893924-36351-7-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1415893924-36351-1-git-send-email-Steven.Hill@imgtec.com>
+References: <1415893924-36351-1-git-send-email-Steven.Hill@imgtec.com>
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44130
+X-archive-position: 44131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave@sr71.net
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,93 +37,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/13/2014 06:55 AM, Thomas Gleixner wrote:
-> On Wed, 12 Nov 2014, Dave Hansen wrote:
->> +/*
->> + * Get the base of bounds tables pointed by specific bounds
->> + * directory entry.
->> + */
->> +static int get_bt_addr(struct mm_struct *mm,
->> +			long __user *bd_entry, unsigned long *bt_addr)
->> +{
->> +	int ret;
->> +	int valid;
->> +
->> +	if (!access_ok(VERIFY_READ, (bd_entry), sizeof(*bd_entry)))
->> +		return -EFAULT;
->> +
->> +	while (1) {
->> +		int need_write = 0;
->> +
->> +		pagefault_disable();
->> +		ret = get_user(*bt_addr, bd_entry);
->> +		pagefault_enable();
->> +		if (!ret)
->> +			break;
->> +		if (ret == -EFAULT)
->> +			ret = mpx_resolve_fault(bd_entry, need_write);
->> +		/*
->> +		 * If we could not resolve the fault, consider it
->> +		 * userspace's fault and error out.
->> +		 */
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	valid = *bt_addr & MPX_BD_ENTRY_VALID_FLAG;
->> +	*bt_addr &= MPX_BT_ADDR_MASK;
->> +
->> +	/*
->> +	 * When the kernel is managing bounds tables, a bounds directory
->> +	 * entry will either have a valid address (plus the valid bit)
->> +	 * *OR* be completely empty. If we see a !valid entry *and* some
->> +	 * data in the address field, we know something is wrong. This
->> +	 * -EINVAL return will cause a SIGSEGV.
->> +	 */
->> +	if (!valid && *bt_addr)
->> +		return -EINVAL;
->> +	/*
->> +	 * Not present is OK.  It just means there was no bounds table
->> +	 * for this memory, which is completely OK.  Make sure to distinguish
->> +	 * this from -EINVAL, which will cause a SEGV.
->> +	 */
->> +	if (!valid)
->> +		return -ENOENT;
-> 
-> So here you have the extra -ENOENT return value, but at the
-> direct/indirect call sites you ignore -EINVAL or everything.
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-I've gone and audited the call sites and cleaned this up a bit.
+New instructions for Extended Physical Addressing (XPA) functionality.
 
->> +static int mpx_unmap_tables(struct mm_struct *mm,
->> +		unsigned long start, unsigned long end)
-> 
->> +	ret = unmap_edge_bts(mm, start, end);
->> +	if (ret == -EFAULT)
->> +		return ret;
-> 
-> So here you ignore EINVAL despite claiming that it will cause a
-> SIGSEGV. So this should be:
-> 
-> 	switch (ret) {
-> 	case 0:
-> 	case -ENOENT:	break;
-> 	default:	return ret;
-> 	}
-> 
->> +	for (bd_entry = bde_start + 1; bd_entry < bde_end; bd_entry++) {
->> +		ret = get_bt_addr(mm, bd_entry, &bt_addr);
->> +		/*
->> +		 * If we encounter an issue like a bad bounds-directory
->> +		 * we should still try the next one.
->> +		 */
->> +		if (ret)
->> +			continue;
-> 
-> You ignore all error returns. 
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/include/asm/uasm.h      |    2 ++
+ arch/mips/include/uapi/asm/inst.h |    7 ++++---
+ arch/mips/mm/uasm-mips.c          |    2 ++
+ arch/mips/mm/uasm.c               |   14 ++++++++------
+ 4 files changed, 16 insertions(+), 9 deletions(-)
 
-That was somewhat intentional with the idea that if we have a problem in
-the middle of a large unmap we should attempt to complete the unmap.
-But, I've changed my mind.  If we have any kind of validity issue, we
-should just SIGSEGV and not attempt to keep unmapping things.  I've
-updated the patch.
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index 708c5d4..fc1cdd2 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -136,9 +136,11 @@ Ip_u1s2(_lui);
+ Ip_u2s3u1(_lw);
+ Ip_u3u1u2(_lwx);
+ Ip_u1u2u3(_mfc0);
++Ip_u1u2u3(_mfhc0);
+ Ip_u1(_mfhi);
+ Ip_u1(_mflo);
+ Ip_u1u2u3(_mtc0);
++Ip_u1u2u3(_mthc0);
+ Ip_u3u1u2(_mul);
+ Ip_u3u1u2(_or);
+ Ip_u2u1u3(_ori);
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index 4bfdb9d..89c2243 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -108,9 +108,10 @@ enum rt_op {
+  */
+ enum cop_op {
+ 	mfc_op	      = 0x00, dmfc_op	    = 0x01,
+-	cfc_op	      = 0x02, mfhc_op	    = 0x03,
+-	mtc_op        = 0x04, dmtc_op	    = 0x05,
+-	ctc_op	      = 0x06, mthc_op	    = 0x07,
++	cfc_op	      = 0x02, mfhc0_op	    = 0x02,
++	mfhc_op       = 0x03, mtc_op	    = 0x04,
++	dmtc_op	      = 0x05, ctc_op	    = 0x06,
++	mthc0_op      = 0x06, mthc_op	    = 0x07,
+ 	bc_op	      = 0x08, cop_op	    = 0x10,
+ 	copm_op	      = 0x18
+ };
+diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
+index 6708a2d..8e02291 100644
+--- a/arch/mips/mm/uasm-mips.c
++++ b/arch/mips/mm/uasm-mips.c
+@@ -96,9 +96,11 @@ static struct insn insn_table[] = {
+ 	{ insn_lw,  M(lw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+ 	{ insn_lwx, M(spec3_op, 0, 0, 0, lwx_op, lx_op), RS | RT | RD },
+ 	{ insn_mfc0,  M(cop0_op, mfc_op, 0, 0, 0, 0),  RT | RD | SET},
++	{ insn_mfhc0,  M(cop0_op, mfhc0_op, 0, 0, 0, 0),  RT | RD | SET},
+ 	{ insn_mfhi,  M(spec_op, 0, 0, 0, 0, mfhi_op), RD },
+ 	{ insn_mflo,  M(spec_op, 0, 0, 0, 0, mflo_op), RD },
+ 	{ insn_mtc0,  M(cop0_op, mtc_op, 0, 0, 0, 0),  RT | RD | SET},
++	{ insn_mthc0,  M(cop0_op, mthc0_op, 0, 0, 0, 0),  RT | RD | SET},
+ 	{ insn_mul, M(spec2_op, 0, 0, 0, 0, mul_op), RS | RT | RD},
+ 	{ insn_ori,  M(ori_op, 0, 0, 0, 0, 0),	RS | RT | UIMM },
+ 	{ insn_or,  M(spec_op, 0, 0, 0, 0, or_op),  RS | RT | RD },
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index a01b0d6..4adf302 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -51,12 +51,12 @@ enum opcode {
+ 	insn_dsll32, insn_dsra, insn_dsrl, insn_dsrl32, insn_dsubu, insn_eret,
+ 	insn_ext, insn_ins, insn_j, insn_jal, insn_jalr, insn_jr, insn_lb,
+ 	insn_ld, insn_ldx, insn_lh, insn_ll, insn_lld, insn_lui, insn_lw,
+-	insn_lwx, insn_mfc0, insn_mfhi, insn_mflo, insn_mtc0, insn_mul,
+-	insn_or, insn_ori, insn_pref, insn_rfe, insn_rotr, insn_sc, insn_scd,
+-	insn_sd, insn_sll, insn_sllv, insn_slt, insn_sltiu, insn_sltu, insn_sra,
+-	insn_srl, insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall,
+-	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh,
+-	insn_xor, insn_xori, insn_yield,
++	insn_lwx, insn_mfc0, insn_mfhc0, insn_mfhi, insn_mflo, insn_mtc0,
++	insn_mthc0, insn_mul, insn_or, insn_ori, insn_pref, insn_rfe,
++	insn_rotr, insn_sc, insn_scd, insn_sd, insn_sll, insn_sllv, insn_slt,
++	insn_sltiu, insn_sltu, insn_sra, insn_srl, insn_srlv, insn_subu,
++	insn_sw, insn_sync, insn_syscall, insn_tlbp, insn_tlbr, insn_tlbwi,
++	insn_tlbwr, insn_wait, insn_wsbh, insn_xor, insn_xori, insn_yield,
+ };
+ 
+ struct insn {
+@@ -284,9 +284,11 @@ I_u2s3u1(_lld)
+ I_u1s2(_lui)
+ I_u2s3u1(_lw)
+ I_u1u2u3(_mfc0)
++I_u1u2u3(_mfhc0)
+ I_u1(_mfhi)
+ I_u1(_mflo)
+ I_u1u2u3(_mtc0)
++I_u1u2u3(_mthc0)
+ I_u3u1u2(_mul)
+ I_u2u1u3(_ori)
+ I_u3u1u2(_or)
+-- 
+1.7.10.4

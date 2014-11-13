@@ -1,51 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 22:38:39 +0100 (CET)
-Received: from mail-bn1on0091.outbound.protection.outlook.com ([157.56.110.91]:52688
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013647AbaKMViXk7U-o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Nov 2014 22:38:23 +0100
-Received: from BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141) by
- BN1PR07MB008.namprd07.prod.outlook.com (10.255.225.38) with Microsoft SMTP
- Server (TLS) id 15.1.16.15; Thu, 13 Nov 2014 21:38:15 +0000
-Received: from localhost.localdomain (2.165.41.20) by
- BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141) with Microsoft SMTP
- Server (TLS) id 15.1.16.15; Thu, 13 Nov 2014 21:38:13 +0000
-From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-To:     Alan Stern <stern@rowland.harvard.edu>
-CC:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        David Daney <david.daney@cavium.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-usb <linux-usb@vger.kernel.org>
-Subject: [PATCH 3/3] USB: host: Introduce flag to enable use of 64-bit dma_mask for ehci-platform
-Date:   Thu, 13 Nov 2014 22:36:30 +0100
-Message-ID: <1415914590-31647-4-git-send-email-andreas.herrmann@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com>
-References: <1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 22:51:10 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:42467 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009415AbaKMVvGfNy1n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 22:51:06 +0100
+Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
+        by relay1.mentorg.com with esmtp 
+        id 1Xp2I7-0001PX-HA from Maciej_Rozycki@mentor.com ; Thu, 13 Nov 2014 13:50:59 -0800
+Received: from localhost (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
+ (137.202.0.104) with Microsoft SMTP Server (TLS) id 14.3.181.6; Thu, 13 Nov
+ 2014 21:50:58 +0000
+Date:   Thu, 13 Nov 2014 21:50:54 +0000
+From:   "Maciej W. Rozycki" <macro@codesourcery.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: copy_to_user_page: Avoid ptrace(2) I-cache
+ incoherency
+In-Reply-To: <20140321100727.GJ4365@linux-mips.org>
+Message-ID: <alpine.DEB.1.10.1411132049590.2881@tp.orcam.me.uk>
+References: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk> <20140321100727.GJ4365@linux-mips.org>
+User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [2.165.41.20]
-X-ClientProxiedBy: AM2PR03CA0029.eurprd03.prod.outlook.com (25.160.207.39) To
- BN1PR07MB389.namprd07.prod.outlook.com (10.141.58.141)
-X-Microsoft-Antispam: UriScan:;UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB389;
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB389;
-X-Forefront-PRVS: 0394259C80
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6069001)(6009001)(189002)(199003)(120916001)(110136001)(4396001)(97736003)(76176999)(33646002)(102836001)(87286001)(50466002)(88136002)(122386002)(2171001)(87976001)(50226001)(19580395003)(89996001)(104166001)(50986999)(19580405001)(47776003)(92726001)(92566001)(64706001)(86362001)(93916002)(48376002)(95666004)(42186005)(40100003)(106356001)(66066001)(21056001)(101416001)(20776003)(62966003)(229853001)(77096003)(77156002)(36756003)(107046002)(31966008)(46102003)(105586002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN1PR07MB389;H:localhost.localdomain;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB389;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB008;
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <Andreas.Herrmann@caviumnetworks.com>
+Content-Type: text/plain; charset="US-ASCII"
+Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44146
+X-archive-position: 44147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.herrmann@caviumnetworks.com
+X-original-sender: macro@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,77 +43,115 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ehci-octeon driver used a 64-bit dma_mask. With removal of ehci-octeon
-and usage of ehci-platform ehci dma_mask is now limited to 32 bits
-(coerced in ehci_platform_probe).
+On Fri, 21 Mar 2014, Ralf Baechle wrote:
 
-Provide a flag in ehci platform data to allow use of 64 bits for
-dma_mask.
+> >  Please apply.  I've seen these SIGTRAPs in some NetLogic GDB testing and 
+> > the removal of this cpu_has_ic_fills_f_dc condition from copy_to_user_page 
+> > is really necessary; also the Au1200 document is very explicit about the 
+> > requirement of I-cache invalidation in software (see Section 2.3.7.3 
+> > "Instruction Cache Coherency").
+> 
+> You found a bug and yes, the fix you sent improves things a bit.  But
+> there is also the cache on a cache coherent system where a page might
+> be marked for a delayed cache flush with SetPageDcacheDirty(), then
+> flushed by flush_cache_page() before eventually the delayed cacheflush
+> flushes it once more for a good meassure.
+> 
+> What do you think about below patch to also deal with the duplicate flushing?
+> 
+>   Ralf
+> 
+>  arch/mips/mm/init.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+> index 6b59617..80072ef 100644
+> --- a/arch/mips/mm/init.c
+> +++ b/arch/mips/mm/init.c
+> @@ -227,13 +227,13 @@ void copy_to_user_page(struct vm_area_struct *vma,
+>  		void *vto = kmap_coherent(page, vaddr) + (vaddr & ~PAGE_MASK);
+>  		memcpy(vto, src, len);
+>  		kunmap_coherent();
+> +		if (vma->vm_flags & VM_EXEC)
+> +			flush_cache_page(vma, vaddr, page_to_pfn(page));
+>  	} else {
+>  		memcpy(dst, src, len);
+>  		if (cpu_has_dc_aliases)
+>  			SetPageDcacheDirty(page);
+>  	}
+> -	if ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc)
+> -		flush_cache_page(vma, vaddr, page_to_pfn(page));
+>  }
+>  
+>  void copy_from_user_page(struct vm_area_struct *vma,
 
-Cc: David Daney <david.daney@cavium.com>
-Cc: Alex Smith <alex.smith@imgtec.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
----
- arch/mips/cavium-octeon/octeon-platform.c |    4 +---
- drivers/usb/host/ehci-platform.c          |    3 ++-
- include/linux/usb/ehci_pdriver.h          |    1 +
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ This clearly won't work, because `cpu_has_dc_aliases' is unset for 
+NetLogic processors and therefore the second leg of the conditional you 
+propose to patch is taken, whereas your change applies to the first leg.
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index eea60b6..12410a2 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -310,6 +310,7 @@ static struct usb_ehci_pdata octeon_ehci_pdata = {
- #ifdef __BIG_ENDIAN
- 	.big_endian_mmio	= 1,
- #endif
-+	.dma_mask_64	= 1,
- 	.power_on	= octeon_ehci_power_on,
- 	.power_off	= octeon_ehci_power_off,
- };
-@@ -331,8 +332,6 @@ static void __init octeon_ehci_hw_start(struct device *dev)
- 	octeon2_usb_clocks_stop();
- }
- 
--static u64 octeon_ehci_dma_mask = DMA_BIT_MASK(64);
--
- static int __init octeon_ehci_device_init(void)
- {
- 	struct platform_device *pd;
-@@ -347,7 +346,6 @@ static int __init octeon_ehci_device_init(void)
- 	if (!pd)
- 		return 0;
- 
--	pd->dev.dma_mask = &octeon_ehci_dma_mask;
- 	pd->dev.platform_data = &octeon_ehci_pdata;
- 	octeon_ehci_hw_start(&pd->dev);
- 
-diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
-index 2da18ea..6df808b 100644
---- a/drivers/usb/host/ehci-platform.c
-+++ b/drivers/usb/host/ehci-platform.c
-@@ -155,7 +155,8 @@ static int ehci_platform_probe(struct platform_device *dev)
- 	if (!pdata)
- 		pdata = &ehci_platform_defaults;
- 
--	err = dma_coerce_mask_and_coherent(&dev->dev, DMA_BIT_MASK(32));
-+	err = dma_coerce_mask_and_coherent(&dev->dev,
-+		pdata->dma_mask_64 ? DMA_BIT_MASK(64) : DMA_BIT_MASK(32));
- 	if (err)
- 		return err;
- 
-diff --git a/include/linux/usb/ehci_pdriver.h b/include/linux/usb/ehci_pdriver.h
-index 7eb4dcd..f69529e 100644
---- a/include/linux/usb/ehci_pdriver.h
-+++ b/include/linux/usb/ehci_pdriver.h
-@@ -45,6 +45,7 @@ struct usb_ehci_pdata {
- 	unsigned	big_endian_desc:1;
- 	unsigned	big_endian_mmio:1;
- 	unsigned	no_io_watchdog:1;
-+	unsigned	dma_mask_64:1;
- 
- 	/* Turn on all power and clocks */
- 	int (*power_on)(struct platform_device *pdev);
--- 
-1.7.9.5
+ So if you want to tackle the case of SetPageDcacheDirty, then here it 
+has to be something along the lines of:
+
+{
+	int delayed_cache_flush = 0
+
+        if (cpu_has_dc_aliases &&
+	    page_mapped(page) && !Page_dcache_dirty(page)) {
+		void *vto = kmap_coherent(page, vaddr) + (vaddr & ~PAGE_MASK);
+		memcpy(vto, src, len);
+		kunmap_coherent();
+	} else {
+		memcpy(dst, src, len);
+		if (cpu_has_dc_aliases) {
+			delayed_cache_flush = 1;
+			SetPageDcacheDirty(page);
+		}
+	}
+	if (!delayed_cache_flush && (vma->vm_flags & VM_EXEC))
+		flush_cache_page(vma, vaddr, page_to_pfn(page));
+}
+
+and then all the places where the delayed flush is made (a couple, 
+according to Page_dcache_dirty() references) updated accordingly to 
+synchronise the I-cache too.
+
+ Although it seems to me we may have no easy way to access VM flags 
+there, so perhaps another page flag to mark the required I-cache flush 
+too?  Like:
+
+	if ((vma->vm_flags & VM_EXEC)) {
+		if (delayed_cache_flush)
+			SetPageIcacheStale(page);
+		else
+			flush_cache_page(vma, vaddr, page_to_pfn(page));
+	}
+
+?  WDYT?
+
+On Fri, 21 Mar 2014, David Daney wrote:
+
+> The problem only happens when modifying target executable code through the
+> ptrace() system call.
+> 
+> For all cases where a program is modifying its own executable memory, 
+> we require that it make the special mips cacheflush system call.
+> 
+> I don't object to modifying this file, but I wonder if the call to the 
+> flushing function should be pushed up into the ptrace() code.
+
+ Hmm, good point, although it looks to me a lot of __access_remote_vm() 
+code would have to be carried over or maybe factored out somehow from 
+mm/memory.c to arch/mips/kernel/ptrace.c.  So although it sounds to me 
+like a reasonable idea overall, it also appears to me it would best be 
+done as a separate project rather than a part of a fix for this specific 
+bug.
+
+ Especially as overall what we do here is an extreme overkill.  Call to 
+ptrace(PTRACE_POKETEXT, ...) are typically made to patch up single 
+instructions so at most two cache lines need to be sychronised whereas 
+we use a sledgehammer and kill a whole page worth of cache data -- 
+always painful and even more painful if you go up to 16kB let alone 64kB 
+with the page size.  Then from the MIPS32r2 ISA onwards we have the 
+SYNCI instruction that could be used instead that would save even more.
+
+  Maciej

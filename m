@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 16:52:21 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:38125 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 16:52:39 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:38126 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013586AbaKMPwTak55J (ORCPT
+        with ESMTP id S27013627AbaKMPwTeoTIa (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 16:52:19 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <Steven.Hill@imgtec.com>)
-        id 1Xowgu-0007pf-No; Thu, 13 Nov 2014 09:52:12 -0600
+        id 1Xowgv-0007pf-1x; Thu, 13 Nov 2014 09:52:13 -0600
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org
-Subject: [PATCH 6/8] MIPS: Add MFHC0 and MTHC0 instructions to uasm.
-Date:   Thu, 13 Nov 2014 09:52:02 -0600
-Message-Id: <1415893924-36351-7-git-send-email-Steven.Hill@imgtec.com>
+Subject: [PATCH 8/8] MIPS: XPA: Add new configuration file.
+Date:   Thu, 13 Nov 2014 09:52:04 -0600
+Message-Id: <1415893924-36351-9-git-send-email-Steven.Hill@imgtec.com>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1415893924-36351-1-git-send-email-Steven.Hill@imgtec.com>
 References: <1415893924-36351-1-git-send-email-Steven.Hill@imgtec.com>
@@ -20,7 +20,7 @@ Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44131
+X-archive-position: 44132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,100 +39,214 @@ X-list: linux-mips
 
 From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-New instructions for Extended Physical Addressing (XPA) functionality.
+Add in new config files for enabling a XPA platform.
 
 Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 ---
- arch/mips/include/asm/uasm.h      |    2 ++
- arch/mips/include/uapi/asm/inst.h |    7 ++++---
- arch/mips/mm/uasm-mips.c          |    2 ++
- arch/mips/mm/uasm.c               |   14 ++++++++------
- 4 files changed, 16 insertions(+), 9 deletions(-)
+ arch/mips/configs/maltaup_xpa_defconfig |  195 +++++++++++++++++++++++++++++++
+ 1 file changed, 195 insertions(+)
+ create mode 100644 arch/mips/configs/maltaup_xpa_defconfig
 
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index 708c5d4..fc1cdd2 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -136,9 +136,11 @@ Ip_u1s2(_lui);
- Ip_u2s3u1(_lw);
- Ip_u3u1u2(_lwx);
- Ip_u1u2u3(_mfc0);
-+Ip_u1u2u3(_mfhc0);
- Ip_u1(_mfhi);
- Ip_u1(_mflo);
- Ip_u1u2u3(_mtc0);
-+Ip_u1u2u3(_mthc0);
- Ip_u3u1u2(_mul);
- Ip_u3u1u2(_or);
- Ip_u2u1u3(_ori);
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 4bfdb9d..89c2243 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -108,9 +108,10 @@ enum rt_op {
-  */
- enum cop_op {
- 	mfc_op	      = 0x00, dmfc_op	    = 0x01,
--	cfc_op	      = 0x02, mfhc_op	    = 0x03,
--	mtc_op        = 0x04, dmtc_op	    = 0x05,
--	ctc_op	      = 0x06, mthc_op	    = 0x07,
-+	cfc_op	      = 0x02, mfhc0_op	    = 0x02,
-+	mfhc_op       = 0x03, mtc_op	    = 0x04,
-+	dmtc_op	      = 0x05, ctc_op	    = 0x06,
-+	mthc0_op      = 0x06, mthc_op	    = 0x07,
- 	bc_op	      = 0x08, cop_op	    = 0x10,
- 	copm_op	      = 0x18
- };
-diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
-index 6708a2d..8e02291 100644
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -96,9 +96,11 @@ static struct insn insn_table[] = {
- 	{ insn_lw,  M(lw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
- 	{ insn_lwx, M(spec3_op, 0, 0, 0, lwx_op, lx_op), RS | RT | RD },
- 	{ insn_mfc0,  M(cop0_op, mfc_op, 0, 0, 0, 0),  RT | RD | SET},
-+	{ insn_mfhc0,  M(cop0_op, mfhc0_op, 0, 0, 0, 0),  RT | RD | SET},
- 	{ insn_mfhi,  M(spec_op, 0, 0, 0, 0, mfhi_op), RD },
- 	{ insn_mflo,  M(spec_op, 0, 0, 0, 0, mflo_op), RD },
- 	{ insn_mtc0,  M(cop0_op, mtc_op, 0, 0, 0, 0),  RT | RD | SET},
-+	{ insn_mthc0,  M(cop0_op, mthc0_op, 0, 0, 0, 0),  RT | RD | SET},
- 	{ insn_mul, M(spec2_op, 0, 0, 0, 0, mul_op), RS | RT | RD},
- 	{ insn_ori,  M(ori_op, 0, 0, 0, 0, 0),	RS | RT | UIMM },
- 	{ insn_or,  M(spec_op, 0, 0, 0, 0, or_op),  RS | RT | RD },
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index a01b0d6..4adf302 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -51,12 +51,12 @@ enum opcode {
- 	insn_dsll32, insn_dsra, insn_dsrl, insn_dsrl32, insn_dsubu, insn_eret,
- 	insn_ext, insn_ins, insn_j, insn_jal, insn_jalr, insn_jr, insn_lb,
- 	insn_ld, insn_ldx, insn_lh, insn_ll, insn_lld, insn_lui, insn_lw,
--	insn_lwx, insn_mfc0, insn_mfhi, insn_mflo, insn_mtc0, insn_mul,
--	insn_or, insn_ori, insn_pref, insn_rfe, insn_rotr, insn_sc, insn_scd,
--	insn_sd, insn_sll, insn_sllv, insn_slt, insn_sltiu, insn_sltu, insn_sra,
--	insn_srl, insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall,
--	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh,
--	insn_xor, insn_xori, insn_yield,
-+	insn_lwx, insn_mfc0, insn_mfhc0, insn_mfhi, insn_mflo, insn_mtc0,
-+	insn_mthc0, insn_mul, insn_or, insn_ori, insn_pref, insn_rfe,
-+	insn_rotr, insn_sc, insn_scd, insn_sd, insn_sll, insn_sllv, insn_slt,
-+	insn_sltiu, insn_sltu, insn_sra, insn_srl, insn_srlv, insn_subu,
-+	insn_sw, insn_sync, insn_syscall, insn_tlbp, insn_tlbr, insn_tlbwi,
-+	insn_tlbwr, insn_wait, insn_wsbh, insn_xor, insn_xori, insn_yield,
- };
- 
- struct insn {
-@@ -284,9 +284,11 @@ I_u2s3u1(_lld)
- I_u1s2(_lui)
- I_u2s3u1(_lw)
- I_u1u2u3(_mfc0)
-+I_u1u2u3(_mfhc0)
- I_u1(_mfhi)
- I_u1(_mflo)
- I_u1u2u3(_mtc0)
-+I_u1u2u3(_mthc0)
- I_u3u1u2(_mul)
- I_u2u1u3(_ori)
- I_u3u1u2(_or)
+diff --git a/arch/mips/configs/maltaup_xpa_defconfig b/arch/mips/configs/maltaup_xpa_defconfig
+new file mode 100644
+index 0000000..df5914a
+--- /dev/null
++++ b/arch/mips/configs/maltaup_xpa_defconfig
+@@ -0,0 +1,195 @@
++CONFIG_MIPS_MALTA=y
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_CPU_MIPS32_R2=y
++CONFIG_CPU_MIPS32_R5_FEATURES=y
++CONFIG_CPU_MIPS32_R5_XPA=y
++CONFIG_PAGE_SIZE_16KB=y
++CONFIG_HZ_100=y
++CONFIG_LOCALVERSION="up"
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_AUDIT=y
++CONFIG_NO_HZ=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=15
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_EMBEDDED=y
++CONFIG_SLAB=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++# CONFIG_BLK_DEV_BSG is not set
++CONFIG_PCI=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_NET_IPIP=m
++CONFIG_IP_MROUTE=y
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++# CONFIG_INET_LRO is not set
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_TUNNEL=m
++CONFIG_BRIDGE=m
++CONFIG_VLAN_8021Q=m
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_PRIO=m
++CONFIG_NET_SCH_RED=m
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++CONFIG_NET_SCH_INGRESS=m
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_CLS_IND=y
++# CONFIG_WIRELESS is not set
++CONFIG_DEVTMPFS=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++CONFIG_IDE=y
++# CONFIG_IDE_PROC_FS is not set
++# CONFIG_IDEPCI_PCIBUS_ORDER is not set
++CONFIG_BLK_DEV_GENERIC=y
++CONFIG_BLK_DEV_PIIX=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_NET_VENDOR_ADAPTEC is not set
++# CONFIG_NET_VENDOR_ALTEON is not set
++CONFIG_PCNET32=y
++# CONFIG_NET_VENDOR_ATHEROS is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_BROCADE is not set
++# CONFIG_NET_VENDOR_CHELSIO is not set
++# CONFIG_NET_VENDOR_CISCO is not set
++# CONFIG_NET_VENDOR_DEC is not set
++# CONFIG_NET_VENDOR_DLINK is not set
++# CONFIG_NET_VENDOR_EMULEX is not set
++# CONFIG_NET_VENDOR_EXAR is not set
++# CONFIG_NET_VENDOR_HP is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MELLANOX is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_MYRI is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_NVIDIA is not set
++# CONFIG_NET_VENDOR_OKI is not set
++# CONFIG_NET_PACKET_ENGINE is not set
++# CONFIG_NET_VENDOR_QLOGIC is not set
++# CONFIG_NET_VENDOR_REALTEK is not set
++# CONFIG_NET_VENDOR_RDC is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SILAN is not set
++# CONFIG_NET_VENDOR_SIS is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_SUN is not set
++# CONFIG_NET_VENDOR_TEHUTI is not set
++# CONFIG_NET_VENDOR_TI is not set
++# CONFIG_NET_VENDOR_TOSHIBA is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_WLAN is not set
++# CONFIG_VT is not set
++CONFIG_LEGACY_PTY_COUNT=16
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_HW_RANDOM=y
++# CONFIG_HWMON is not set
++CONFIG_FB=y
++CONFIG_FIRMWARE_EDID=y
++CONFIG_FB_MATROX=y
++CONFIG_FB_MATROX_G=y
++CONFIG_USB=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_UHCI_HCD=y
++CONFIG_USB_STORAGE=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_TRIGGER_TIMER=y
++CONFIG_LEDS_TRIGGER_IDE_DISK=y
++CONFIG_LEDS_TRIGGER_HEARTBEAT=y
++CONFIG_LEDS_TRIGGER_BACKLIGHT=y
++CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_CMOS=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
++CONFIG_XFS_FS=y
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++CONFIG_QUOTA=y
++CONFIG_QFMT_V2=y
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_CIFS=m
++CONFIG_CIFS_WEAK_PW_HASH=y
++CONFIG_CIFS_XATTR=y
++CONFIG_CIFS_POSIX=y
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_ISO8859_1=m
++# CONFIG_FTRACE is not set
++CONFIG_CRYPTO_NULL=m
++CONFIG_CRYPTO_PCBC=m
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++# CONFIG_CRYPTO_HW is not set
 -- 
 1.7.10.4

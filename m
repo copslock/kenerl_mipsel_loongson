@@ -1,40 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 01:17:37 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:47150 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013576AbaKMARVgsaMS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Nov 2014 01:17:21 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAD0GKxj008094;
-        Thu, 13 Nov 2014 01:16:20 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAD0GJvO008093;
-        Thu, 13 Nov 2014 01:16:19 +0100
-Date:   Thu, 13 Nov 2014 01:16:19 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/10] binfmt_elf: allow arch code to examine PT_LOPROC
- ... PT_HIPROC headers
-Message-ID: <20141113001618.GC3839@linux-mips.org>
-References: <1410420623-11691-1-git-send-email-paul.burton@imgtec.com>
- <1410420623-11691-4-git-send-email-paul.burton@imgtec.com>
- <20141112134059.GA12619@ulmo>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20141112134059.GA12619@ulmo>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 07:06:01 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:33764 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011082AbaKMGF7y31NQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 07:05:59 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1XonXU-0007Qu-Re; Thu, 13 Nov 2014 00:05:52 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [PATCH 03/11] MIPS: Rearrange PTE bits into fixed positions for MIPS R2.
+Date:   Thu, 13 Nov 2014 00:05:35 -0600
+Message-Id: <1415858743-24492-4-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1415858743-24492-1-git-send-email-Steven.Hill@imgtec.com>
+References: <1415858743-24492-1-git-send-email-Steven.Hill@imgtec.com>
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44090
+X-archive-position: 44091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,34 +37,170 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 12, 2014 at 02:41:04PM +0100, Thierry Reding wrote:
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-> Hi Ralf,
-> 
-> This commit showed up in linux-next and causes a warning in linux/elf.h
-> because it doesn't know struct file. I've fixed it locally with this:
-> 
-> ---
-> diff --git a/include/linux/elf.h b/include/linux/elf.h
-> index 6bd15043a585..dac5caaa3509 100644
-> --- a/include/linux/elf.h
-> +++ b/include/linux/elf.h
-> @@ -4,6 +4,8 @@
->  #include <asm/elf.h>
->  #include <uapi/linux/elf.h>
->  
-> +struct file;
-> +
->  #ifndef elf_read_implies_exec
->    /* Executables for which elf_read_implies_exec() returns TRUE will
->       have the READ_IMPLIES_EXEC personality flag set automatically.
-> ---
-> 
-> Would you mind squashing that into the above commit to get rid of the
-> warning?
+Previously, code did a runtime check of RIXI and made runtime
+shifts/rotates to fit the largest PFN into the PTE as possible.
+However, since there is no HUGE page support for MIPS32R2 there
+is a way to fit all bits in fixed positions. The PTE low bits
+are defined as:
 
-To fix the warnings reported by sfr on powerpc64 this morning I moved
-most of the code added to <linux/elf.h> into fs/binfmt_elf.c.  That
-should also have taken care of the warnings you saw for ARM.
+   CCC D V G RI(=R) XI M A W P
 
-  Ralf
+A TLB refill will do a ROTR 4/6 (RIXI) or SRL 4/6 to strip out
+low bits. All 20 bits of the PFN are preserved in the high bits.
+The bits for MIPS64R2 are now defined as:
+
+   CCC D V G RI XI [S H] M A W R P
+
+A TLB refill will do a ROTR 7/9 (RIXI) or [D]SRL 7/9 to strip
+out low bits. The PFN size in the 64-bit PTE is 49 bits for
+16KB pages and 51 bits for 4KB pages.
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/include/asm/pgtable-bits.h |  101 ++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/cpu-probe.c         |    4 ++
+ 2 files changed, 105 insertions(+)
+
+diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
+index e747bfa..f336281 100644
+--- a/arch/mips/include/asm/pgtable-bits.h
++++ b/arch/mips/include/asm/pgtable-bits.h
+@@ -102,6 +102,8 @@
+ #define _CACHE_MASK		(1 << _CACHE_UNCACHED_SHIFT)
+ 
+ #else /* 'Normal' r4K case */
++
++#ifndef CONFIG_CPU_MIPSR2
+ /*
+  * When using the RI/XI bit support, we have 13 bits of flags below
+  * the physical address. The RI/XI bits are placed such that a SRL 5
+@@ -154,6 +156,105 @@
+ #define _PAGE_NO_READ_SHIFT	(cpu_has_rixi ? _PAGE_NO_EXEC_SHIFT + 1 : _PAGE_NO_EXEC_SHIFT)
+ #define _PAGE_NO_READ		({BUG_ON(!cpu_has_rixi); 1 << _PAGE_NO_READ_SHIFT; })
+ 
++#else /* CONFIG_CPU_MIPSR2 */
++
++#ifdef CONFIG_64BIT
++
++/*
++ * Low bits are: CCC D V G RI XI [S H] M A W R P
++ * TLB refill will do a ROTR 7/9 (in case of cpu_has_rixi),
++ * or SRL/DSRL 7/9 to strip low bits.
++ * PFN size in high bits is 49 or 51 bit --> 512TB or 4*512TB for 4KB pages
++ */
++
++#define _PAGE_PRESENT_SHIFT     (0)
++#define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
++/* implemented in software, should be unused if cpu_has_rixi. */
++#define _PAGE_READ_SHIFT        (_PAGE_PRESENT_SHIFT + 1)
++#define _PAGE_READ              (1 << _PAGE_READ_SHIFT)
++/* implemented in software */
++#define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
++#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
++/* implemented in software */
++#define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
++#define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
++/* implemented in software */
++#define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
++#define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
++/* set:pagecache unset:swap */
++#define _PAGE_FILE		(_PAGE_MODIFIED)
++
++#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
++/* huge tlb page */
++#define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
++#define _PAGE_HUGE		(1 << _PAGE_HUGE_SHIFT)
++#define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT + 1)
++#define _PAGE_SPLITTING		(1 << _PAGE_SPLITTING_SHIFT)
++#else
++#define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT)
++#define _PAGE_HUGE		({BUG(); 1; })	/* Dummy value */
++#define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT)
++#define _PAGE_SPLITTING		({BUG(); 1; })	/* Dummy value */
++#endif /* CONFIG_MIPS_HUGE_TLB_SUPPORT */
++
++/* Page cannot be executed */
++#define _PAGE_NO_EXEC_SHIFT     (_PAGE_SPLITTING_SHIFT + 1)
++#define _PAGE_NO_EXEC           (1 << _PAGE_NO_EXEC_SHIFT)
++
++/* Page cannot be read */
++#define _PAGE_NO_READ_SHIFT     (_PAGE_NO_EXEC_SHIFT + 1)
++#define _PAGE_NO_READ           (1 << _PAGE_NO_READ_SHIFT)
++
++#else /* !CONFIG_64BIT */
++
++#ifndef CONFIG_MIPS_HUGE_TLB_SUPPORT
++
++/*
++ * No HUGE page support
++ * Low bits are: CCC D V G RI(=R) XI M A W P
++ * TLB refill will do a ROTR 6 (in case of cpu_has_rixi),
++ * or SRL 6 to strip low bits.
++ * All 20 bits PFN are preserved in high bits (4GB in 4KB pages)
++ */
++
++#define _PAGE_PRESENT_SHIFT     (0)
++#define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
++/* implemented in software */
++#define _PAGE_WRITE_SHIFT       (_PAGE_PRESENT_SHIFT + 1)
++#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
++/* implemented in software */
++#define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
++#define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
++/* implemented in software */
++#define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
++#define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
++/* set:pagecache unset:swap */
++#define _PAGE_FILE		(_PAGE_MODIFIED)
++
++/* huge tlb page dummies */
++#define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT)
++#define _PAGE_HUGE		({BUG(); 1; })	/* Dummy value */
++#define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT)
++#define _PAGE_SPLITTING		({BUG(); 1; })	/* Dummy value */
++
++/* Page cannot be executed */
++#define _PAGE_NO_EXEC_SHIFT     (_PAGE_SPLITTING_SHIFT + 1)
++#define _PAGE_NO_EXEC           (1 << _PAGE_NO_EXEC_SHIFT)
++
++/* Page cannot be read */
++#define _PAGE_NO_READ_SHIFT     (_PAGE_NO_EXEC_SHIFT + 1)
++#define _PAGE_NO_READ           (1 << _PAGE_NO_READ_SHIFT)
++
++/* implemented in software, should be unused if cpu_has_rixi. */
++#define _PAGE_READ_SHIFT        (_PAGE_NO_READ_SHIFT)
++#define _PAGE_READ              (1 << _PAGE_READ_SHIFT)
++
++#endif /* !CONFIG_MIPS_HUGE_TLB_SUPPORT */
++
++#endif /* CONFIG_64BIT */
++
++#endif /* !CONFIG_CPU_MIPSR2 */
++
+ #define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
+ #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+ 
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 5342674..17d7e12 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -399,10 +399,14 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 
+ 	if (config3 & MIPS_CONF3_SM) {
+ 		c->ases |= MIPS_ASE_SMARTMIPS;
++#if defined(CONFIG_64BIT) || !defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
+ 		c->options |= MIPS_CPU_RIXI;
++#endif
+ 	}
++#if defined(CONFIG_64BIT) || !defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
+ 	if (config3 & MIPS_CONF3_RXI)
+ 		c->options |= MIPS_CPU_RIXI;
++#endif
+ 	if (config3 & MIPS_CONF3_DSP)
+ 		c->ases |= MIPS_ASE_DSP;
+ 	if (config3 & MIPS_CONF3_DSP2P)
+-- 
+1.7.10.4

@@ -1,51 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2014 22:21:11 +0100 (CET)
-Received: from mail-wg0-f46.google.com ([74.125.82.46]:38871 "EHLO
-        mail-wg0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013420AbaKLVUv03Q0Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Nov 2014 22:20:51 +0100
-Received: by mail-wg0-f46.google.com with SMTP id x13so15384564wgg.33
-        for <linux-mips@linux-mips.org>; Wed, 12 Nov 2014 13:20:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
-         :date:message-id;
-        bh=CBOhiQqIOKw3hksM+MKa3tF8Qyn7QLMosP8FDszFMPY=;
-        b=coLViYM+CR0C6rOKfEp7r+/1klcXTK49huzUbjF8IYGWh5Whi6AjEJ7bTtu+TBfKIx
-         ZeFQYwrvkb+3Rx5HXGLVPBW7ZSVpyBYnS57b2N6AFZB+7tolgfAn3BvOB3i2zkvelWEI
-         FN9Ana54XzGzezKmE0yc7rLID0IY0UhFZ8DjmdCeYq5wNIRRQja21jmoJgcoyHyt0Wwd
-         Z3ukPJ6dIim+hTxcFL5aisBOD6SB3HJWScr1Qag7hn8tSoS5YxuJxhlPaEUAXL/bxKug
-         UDWtF8N3M0NxcIwPFhw06FSYWWucggkXOz7cQtIw8QxTwbg6XcIIVANPoPcZ1yipVHWy
-         g+lw==
-X-Gm-Message-State: ALoCoQm1t+ivmddl6DGDPes2Myg/lTwVeMpMUoP7lkQ5dlA4jYGMZ6gfJWiHIRZub6RXPcymVjru
-X-Received: by 10.194.60.45 with SMTP id e13mr68027282wjr.109.1415827246172;
-        Wed, 12 Nov 2014 13:20:46 -0800 (PST)
-Received: from trevor.secretlab.ca (host86-166-83-112.range86-166.btcentralplus.com. [86.166.83.112])
-        by mx.google.com with ESMTPSA id bj7sm32916003wjc.33.2014.11.12.13.20.43
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 Nov 2014 13:20:44 -0800 (PST)
-Received: by trevor.secretlab.ca (Postfix, from userid 1000)
-        id 49BE5C41C69; Wed, 12 Nov 2014 17:11:10 +0000 (GMT)
-From:   Grant Likely <grant.likely@linaro.org>
-Subject: Re: [PATCH 1/2] of: Fix crash if an earlycon driver is not found
-To:     Kevin Cernekee <cernekee@gmail.com>, gregkh@linuxfoundation.org,
-        jslaby@suse.cz, robh@kernel.org
-Cc:     f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
-        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
-References: <1415523348-4631-1-git-send-email-cernekee@gmail.com>
-Date:   Wed, 12 Nov 2014 17:11:10 +0000
-Message-Id: <20141112171110.49BE5C41C69@trevor.secretlab.ca>
-Return-Path: <glikely@secretlab.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 01:17:37 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47150 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27013576AbaKMARVgsaMS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Nov 2014 01:17:21 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAD0GKxj008094;
+        Thu, 13 Nov 2014 01:16:20 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAD0GJvO008093;
+        Thu, 13 Nov 2014 01:16:19 +0100
+Date:   Thu, 13 Nov 2014 01:16:19 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 03/10] binfmt_elf: allow arch code to examine PT_LOPROC
+ ... PT_HIPROC headers
+Message-ID: <20141113001618.GC3839@linux-mips.org>
+References: <1410420623-11691-1-git-send-email-paul.burton@imgtec.com>
+ <1410420623-11691-4-git-send-email-paul.burton@imgtec.com>
+ <20141112134059.GA12619@ulmo>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20141112134059.GA12619@ulmo>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44089
+X-archive-position: 44090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@linaro.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,47 +47,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun,  9 Nov 2014 00:55:47 -0800
-, Kevin Cernekee <cernekee@gmail.com>
- wrote:
-> __earlycon_of_table_sentinel.compatible is a char[128], not a pointer, so
-> it will never be NULL.  Checking it against NULL causes the match loop to
-> run past the end of the array, and eventually match a bogus entry, under
-> the following conditions:
-> 
->  - Kernel command line specifies "earlycon" with no parameters
->  - DT has a stdout-path pointing to a UART node
->  - The UART driver doesn't use OF_EARLYCON_DECLARE (or maybe the console
->    driver is compiled out)
-> 
-> Fix this by checking to see if match->compatible is a non-empty string.
-> 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> Cc: <stable@vger.kernel.org> # 3.16+
+On Wed, Nov 12, 2014 at 02:41:04PM +0100, Thierry Reding wrote:
 
-Applied, thanks. Although a more robust fix would probably to be
-checking for the end address of the section. This is a safe fix though,
-so I'm picking it up.
-
-g.
-
+> Hi Ralf,
+> 
+> This commit showed up in linux-next and causes a warning in linux/elf.h
+> because it doesn't know struct file. I've fixed it locally with this:
+> 
 > ---
->  drivers/of/fdt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index d1ffca8..30e97bc 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -773,7 +773,7 @@ int __init early_init_dt_scan_chosen_serial(void)
->  	if (offset < 0)
->  		return -ENODEV;
+> diff --git a/include/linux/elf.h b/include/linux/elf.h
+> index 6bd15043a585..dac5caaa3509 100644
+> --- a/include/linux/elf.h
+> +++ b/include/linux/elf.h
+> @@ -4,6 +4,8 @@
+>  #include <asm/elf.h>
+>  #include <uapi/linux/elf.h>
 >  
-> -	while (match->compatible) {
-> +	while (match->compatible[0]) {
->  		unsigned long addr;
->  		if (fdt_node_check_compatible(fdt, offset, match->compatible)) {
->  			match++;
-> -- 
-> 2.1.1
+> +struct file;
+> +
+>  #ifndef elf_read_implies_exec
+>    /* Executables for which elf_read_implies_exec() returns TRUE will
+>       have the READ_IMPLIES_EXEC personality flag set automatically.
+> ---
 > 
+> Would you mind squashing that into the above commit to get rid of the
+> warning?
+
+To fix the warnings reported by sfr on powerpc64 this morning I moved
+most of the code added to <linux/elf.h> into fs/binfmt_elf.c.  That
+should also have taken care of the warnings you saw for ARM.
+
+  Ralf

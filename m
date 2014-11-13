@@ -1,48 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 15:12:08 +0100 (CET)
-Received: from mail-ig0-f174.google.com ([209.85.213.174]:42992 "EHLO
-        mail-ig0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013508AbaKMOMEeWsGm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 15:12:04 +0100
-Received: by mail-ig0-f174.google.com with SMTP id hn18so5060134igb.1
-        for <multiple recipients>; Thu, 13 Nov 2014 06:11:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=GWecSnFHSBDfApcfAsyAKV1xhkHrjY7sBshx+3vxE3U=;
-        b=Ba1AuFJh7Ybcy3CKmlamKP4zmnjjyiK0PYp1llX2UvAFC60vEcSHHmnclvqWC0sTV7
-         6cGTQbRfsWc8UGuSuuui0JHwG70tQYGLzevdCzSBVD47bqk89GnpVJTno7rxnhQM8UIg
-         u3Jf51MwkDrGgVNysGtU5lv5ZmrPSfHt5FO2PsAp5iAPCCfhn0TpmdDlLFUHTW/so76e
-         rI6w69JSIxwMBw4xbaKveztrCbbIB1YRBQxwuGoJ0x5uU0gwlKyoLBZJ5cI2srKIsp/X
-         7U8Sp5Oz8CPeyVg47wtPBMn9DWuROWOCgRNkLT5buCuRPM5ShH3SkIbuSJ4OL59J1Dad
-         PorQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 15:29:38 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:57081 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013511AbaKMO3h2I7wz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 15:29:37 +0100
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1XovOn-0007Xn-WA; Thu, 13 Nov 2014 15:29:26 +0100
+Date:   Thu, 13 Nov 2014 15:29:26 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Dave Hansen <dave@sr71.net>
+cc:     hpa@zytor.com, mingo@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        qiaowei.ren@intel.com, dave.hansen@linux.intel.com
+Subject: Re: [PATCH 09/11] x86, mpx: on-demand kernel allocation of bounds
+ tables
+In-Reply-To: <20141112170510.3D07BA53@viggo.jf.intel.com>
+Message-ID: <alpine.DEB.2.11.1411131454130.3935@nanos>
+References: <20141112170443.B4BD0899@viggo.jf.intel.com> <20141112170510.3D07BA53@viggo.jf.intel.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-X-Received: by 10.50.171.129 with SMTP id au1mr4752840igc.0.1415887918790;
- Thu, 13 Nov 2014 06:11:58 -0800 (PST)
-Received: by 10.64.176.211 with HTTP; Thu, 13 Nov 2014 06:11:58 -0800 (PST)
-In-Reply-To: <1415876887-13957-1-git-send-email-James.Cowgill@imgtec.com>
-References: <1415876887-13957-1-git-send-email-James.Cowgill@imgtec.com>
-Date:   Thu, 13 Nov 2014 22:11:58 +0800
-X-Google-Sender-Auth: PD7N5cSSQroVs_4NorfAmsVZGIA
-Message-ID: <CAAhV-H4Ox-zq+-PAM+NdzptQo=s9KC9FSoUa51okB2V-MF+XLA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mips: fix __node_distances undefined error on loongson3
-From:   Huacai Chen <chenhc@lemote.com>
-To:     James Cowgill <James.Cowgill@imgtec.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Wei Yongjun <yongjun_wei@trendmicro.com.cn>,
-        James Hogan <james.hogan@imgtec.com>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44120
+X-archive-position: 44121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,43 +47,160 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Thanks.
-Reviewed-by: Huacai Chen <chenhc@lemote.com>
+On Wed, 12 Nov 2014, Dave Hansen wrote:
+> 
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> Thomas, I know you're not a huge fan of using mm->mmap_sem for serializing
+> this stuff.  But, now that we are not adding an additional lock a la
+> mm->bd_sem, I can't quite justify adding another lock and trying to
+> reconcile the interactions and ording with mmap_sem.
+> 
+> We are only adding two spots where we acquire mmap_sem and did not. All of
+> the other "use" is in places where it is held already.  Those two points
+> of new use are *tiny* and can easily be replaced in the future.
 
-On Thu, Nov 13, 2014 at 7:08 PM, James Cowgill <James.Cowgill@imgtec.com> wrote:
-> export the __node_distances symbol in the loongson3 numa code to fix the
-> build error:
->
->   Building modules, stage 2.
->   MODPOST 221 modules
-> ERROR: "__node_distances" [drivers/block/nvme.ko] undefined!
-> scripts/Makefile.modpost:90: recipe for target '__modpost' failed
->
-> when building the kernel with:
->  CONFIG_CPU_LOONGSON3=y
->  CONFIG_NUMA=y
->  CONFIG_BLK_DEV_NVME=m
->
-> Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-> Cc: <stable@vger.kernel.org> # v3.17+
-> Reviewed-by: James Hogan <james.hogan@imgtec.com>
-> ---
->  arch/mips/loongson/loongson-3/numa.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/mips/loongson/loongson-3/numa.c b/arch/mips/loongson/loongson-3/numa.c
-> index 37ed184..42323bc 100644
-> --- a/arch/mips/loongson/loongson-3/numa.c
-> +++ b/arch/mips/loongson/loongson-3/numa.c
-> @@ -33,6 +33,7 @@
->
->  static struct node_data prealloc__node_data[MAX_NUMNODES];
->  unsigned char __node_distances[MAX_NUMNODES][MAX_NUMNODES];
-> +EXPORT_SYMBOL(__node_distances);
->  struct node_data *__node_data[MAX_NUMNODES];
->  EXPORT_SYMBOL(__node_data);
->
-> --
-> 2.1.3
->
->
+I'm fine with that as long as we dont have the "drop, reacquire, handle
+races of all sorts" dance.
+
+
+> +static inline void arch_bprm_mm_init(struct mm_struct *mm,
+> +		struct vm_area_struct *vma)
+> +{
+> +#ifdef CONFIG_X86_INTEL_MPX
+> +	mm->bd_addr = MPX_INVALID_BOUNDS_DIR;
+> +#endif
+> +}
+> +
+
+I'd rather have in mpx.h
+
+static inline void mpx_mm_init(struct mm_struct *mm)
+{
+#ifdef CONFIG_X86_INTEL_MPX
+ 	mm->bd_addr = MPX_INVALID_BOUNDS_DIR;
+#endif
+}
+
+and make this
+
+static inline void arch_bprm_mm_init(struct mm_struct *mm,
+       		   		     struct vm_area_struct *vma)
+{
+	mpx_mm_init(mm);
+}
+
+So this #ifdef can be replaced
+
+> +++ b/arch/x86/kernel/setup.c	2014-11-12 08:49:26.494916477 -0800
+> @@ -959,6 +959,13 @@ void __init setup_arch(char **cmdline_p)
+>  	init_mm.end_code = (unsigned long) _etext;
+>  	init_mm.end_data = (unsigned long) _edata;
+>  	init_mm.brk = _brk_end;
+> +#ifdef CONFIG_X86_INTEL_MPX
+> +	/*
+> +	 * NULL is theoretically a valid place to put the bounds
+> +	 * directory, so point this at an invalid address.
+> +	 */
+> +	init_mm.bd_addr = MPX_INVALID_BOUNDS_DIR;
+> +#endif
+
+with
+
+	mpx_mm_init(&init_mm);
+
+> +dotraplinkage void do_bounds(struct pt_regs *regs, long error_code)
+> +{
+> +	enum ctx_state prev_state;
+> +	struct bndcsr *bndcsr;
+> +	struct xsave_struct *xsave_buf;
+> +	struct task_struct *tsk = current;
+> +	siginfo_t *info;
+> +
+> +	prev_state = exception_enter();
+> +	if (notify_die(DIE_TRAP, "bounds", regs, error_code,
+> +			X86_TRAP_BR, SIGSEGV) == NOTIFY_STOP)
+> +		goto exit;
+> +	conditional_sti(regs);
+> +
+> +	if (!user_mode(regs))
+> +		die("bounds", regs, error_code);
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_MPX)) {
+> +		/* The exception is not from Intel MPX */
+> +		goto exit_trap;
+> +	}
+> +
+> +	fpu_save_init(&tsk->thread.fpu);
+
+That lacks a comment why we need to do an xsave here.
+
+> +	xsave_buf = &(tsk->thread.fpu.state->xsave);
+> +	bndcsr = get_xsave_addr(xsave_buf, XSTATE_BNDCSR);
+> +	if (!bndcsr)
+> +		goto exit_trap;
+
+...
+
+> +exit:
+> +	exception_exit(prev_state);
+
+And this lacks a:
+
+    	 return;
+
+Otherwise you can avoid the whole exercise above and just jump to
+exit_trap :)
+
+> +exit_trap:
+> +	/*
+> +	 * This path out is for all the cases where we could not
+> +	 * handle the exception in some way (like allocating a
+> +	 * table or telling userspace about it.  We will also end
+> +	 * up here if the kernel has MPX turned off at compile
+> +	 * time..
+> +	 */
+> +	do_trap(X86_TRAP_BR, SIGSEGV, "bounds", regs, error_code, NULL);
+> +	exception_exit(prev_state);
+> +}
+
+> +int mpx_handle_bd_fault(struct xsave_struct *xsave_buf)
+> +{
+> +	int ret = 0;
+> +	/*
+> +	 * Userspace never asked us to manage the bounds tables,
+> +	 * so refuse to help.
+> +	 */
+> +	if (!kernel_managing_mpx_tables(current->mm)) {
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	ret = do_mpx_bt_fault(xsave_buf);
+> +	if (ret) {
+> +		force_sig(SIGSEGV, current);
+> +		/*
+> +		 * The force_sig() is essentially "handling" this
+> +		 * exception.  Return 0 so that the traps.c code
+> +		 * does not take any further action.
+> +		 */
+> +		ret = 0;
+> +	}
+> +out:
+> +	return ret;
+
+Wee. That's convoluted.
+
+	if (!kernel_managing_mpx_tables(current->mm))
+		return -EINVAL;
+	if (do_mpx_bt_fault(xsave_buf)) {
+		/* Add comment */
+		force_sig(SIGSEGV, current);
+	}
+	return 0;
+
+Does the same thing in a readable form :)
+
+Thanks,
+
+	tglx

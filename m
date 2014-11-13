@@ -1,56 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 13:25:28 +0100 (CET)
-Received: from mail-wg0-f44.google.com ([74.125.82.44]:56211 "EHLO
-        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013422AbaKMMZ1g53dl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 13:25:27 +0100
-Received: by mail-wg0-f44.google.com with SMTP id x12so16736734wgg.17
-        for <multiple recipients>; Thu, 13 Nov 2014 04:25:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=Gi/NsOAsgaKxMTQe2GELTfWRjJN+wmEorG5CKYxlluM=;
-        b=TpduRVsbxyNFrejRJUgacUskrF14Ghxz3FpGGlJdReIdH02fBpFPjw9p78U11YVXuO
-         pAPO07YJ0gZHN2NURVALbIRacOdM9nc4D+/+Z5h+DYiVWJjB/JggW79MGGXHCG5+dhmt
-         IoAZVeurzNAWEnKj4FRDqecNRnOD7SeO+rgHGaCtsk143hpJ3nMV3vltpJtQMCPXcQVe
-         oHGXf5rFyHnzSINzRZF//ZnpYxzkwVbjI08hVMnxGM33IpMZbOALJorCcbf4DVToc0hk
-         G1hczorVT7zwPuSy9LrC9HsyFGA+VItl0U+e1/9jeXsH5JtyoPjNKm5BO28Z88TX7wo+
-         toFg==
-X-Received: by 10.194.79.201 with SMTP id l9mr3405086wjx.59.1415881522412;
-        Thu, 13 Nov 2014 04:25:22 -0800 (PST)
-Received: from localhost (port-8254.pppoe.wtnet.de. [84.46.32.94])
-        by mx.google.com with ESMTPSA id cu9sm35369108wjb.0.2014.11.13.04.25.21
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 13:25:48 +0100 (CET)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:46132 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013586AbaKMMZjd5ydc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 13:25:39 +0100
+Received: by mail-lb0-f177.google.com with SMTP id z12so4145909lbi.22
+        for <linux-mips@linux-mips.org>; Thu, 13 Nov 2014 04:25:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=AyzDsWm/PZkUs1FPlIaXLUOU6hbpwLZlnuil/0/COvg=;
+        b=lXssEMd7+N3Ofa6rYMs42C8pu+Ok7IEvwHpUJRyNlt/9MbTEySqFdghEclj03HgOrc
+         Kvppi2BFKWCiGL9D4RpRArqdkjTZk1OQ82rOp59PHZ2x0+ervYvREMIZaEzutPVhGtCv
+         BWPhgZEUw15sD7XKbuBbG08OC4SCn4Uz1D6KrcW4OGUI5Z8blRbvaaNysS7svv35P1Kt
+         YGjuLK1d7bV2aV1n7ZLlRSivxYWURXy/+LtIr+Y3FcX0RLSeQm6kaNYYFKOSyz0NPTsW
+         rRK4kirKpGTJs9NkQZ59ttKkUufsiM+feCBjTTwz0tS2A9C1DXe7hbA4dFBbQzalsYYu
+         aJdg==
+X-Gm-Message-State: ALoCoQk8XzMy1dtGeKzHIKl4h6hn5KAeF1znVSPIbT1CL7ggomcllhxebEgKu2ZbZk5/mShx+kgk
+X-Received: by 10.152.43.80 with SMTP id u16mr2126282lal.53.1415881534108;
+        Thu, 13 Nov 2014 04:25:34 -0800 (PST)
+Received: from [192.168.2.5] (ppp83-237-250-130.pppoe.mtu-net.ru. [83.237.250.130])
+        by mx.google.com with ESMTPSA id f6sm7454828lbh.10.2014.11.13.04.25.32
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 13 Nov 2014 04:25:21 -0800 (PST)
-Date:   Thu, 13 Nov 2014 13:25:20 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/10] binfmt_elf: allow arch code to examine PT_LOPROC
- ... PT_HIPROC headers
-Message-ID: <20141113122515.GF23422@ulmo>
-References: <1410420623-11691-1-git-send-email-paul.burton@imgtec.com>
- <1410420623-11691-4-git-send-email-paul.burton@imgtec.com>
- <20141112134059.GA12619@ulmo>
- <20141113001618.GC3839@linux-mips.org>
+        Thu, 13 Nov 2014 04:25:33 -0800 (PST)
+Message-ID: <5464A33C.1060502@cogentembedded.com>
+Date:   Thu, 13 Nov 2014 15:25:32 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="7uYPyRQQ5N0D02nI"
-Content-Disposition: inline
-In-Reply-To: <20141113001618.GC3839@linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <thierry.reding@gmail.com>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org
+CC:     ralf@linux-mips.org
+Subject: Re: [PATCH 06/11] MIPS: Add CP0 macros for extended EntryLo registers
+References: <1415858743-24492-1-git-send-email-Steven.Hill@imgtec.com> <1415858743-24492-7-git-send-email-Steven.Hill@imgtec.com>
+In-Reply-To: <1415858743-24492-7-git-send-email-Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44116
+X-archive-position: 44117
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,67 +59,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hello.
 
---7uYPyRQQ5N0D02nI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 11/13/2014 9:05 AM, Steven J. Hill wrote:
 
-On Thu, Nov 13, 2014 at 01:16:19AM +0100, Ralf Baechle wrote:
-> On Wed, Nov 12, 2014 at 02:41:04PM +0100, Thierry Reding wrote:
->=20
-> > Hi Ralf,
-> >=20
-> > This commit showed up in linux-next and causes a warning in linux/elf.h
-> > because it doesn't know struct file. I've fixed it locally with this:
-> >=20
-> > ---
-> > diff --git a/include/linux/elf.h b/include/linux/elf.h
-> > index 6bd15043a585..dac5caaa3509 100644
-> > --- a/include/linux/elf.h
-> > +++ b/include/linux/elf.h
-> > @@ -4,6 +4,8 @@
-> >  #include <asm/elf.h>
-> >  #include <uapi/linux/elf.h>
-> > =20
-> > +struct file;
-> > +
-> >  #ifndef elf_read_implies_exec
-> >    /* Executables for which elf_read_implies_exec() returns TRUE will
-> >       have the READ_IMPLIES_EXEC personality flag set automatically.
-> > ---
-> >=20
-> > Would you mind squashing that into the above commit to get rid of the
-> > warning?
->=20
-> To fix the warnings reported by sfr on powerpc64 this morning I moved
-> most of the code added to <linux/elf.h> into fs/binfmt_elf.c.  That
-> should also have taken care of the warnings you saw for ARM.
+> From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-These changes didn't make it into today's next, but manually applying
-them I can indeed verify that the build warning is gone.
+> Add read/write macros to access the upper bits of the
+> extended EntryLo0 and EntryLo1 registers used by XPA.
 
-Thierry
+> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> ---
+>   arch/mips/include/asm/mipsregs.h |   39 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 39 insertions(+)
 
---7uYPyRQQ5N0D02nI
-Content-Type: application/pgp-signature
+> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+> index d767838..eaae8b0 100644
+> --- a/arch/mips/include/asm/mipsregs.h
+> +++ b/arch/mips/include/asm/mipsregs.h
+> @@ -997,6 +997,39 @@ do {									\
+>   	local_irq_restore(__flags);					\
+>   } while (0)
+>
+> +#define __readx_32bit_c0_register(source)				\
+> +({									\
+> +	unsigned int __res;						\
+> +									\
+> +	__asm__ __volatile__(						\
+> +	"	.set	push					\n"	\
+> +	"	.set	noat					\n"	\
+> +	"	.set	mips32r2				\n"	\
+> +	"	.insn						\n"	\
+> +	"	# mfhc0 $1, %1					\n"	\
+> +	"	.word	(0x40410000 | ((%1 & 0x1f) << 11))	\n"	\
+> +	"	move	%0, $1					\n"	\
+> +	"	.set	pop					\n"	\
+> +	: "=r" (__res)							\
+> +	: "i" (source));						\
+> +	__res;								\
+> +})
+> +
+> +#define __writex_32bit_c0_register(register, value)			\
+> +do {									\
+> +	__asm__ __volatile__(						\
+> +	"	.set	push					\n"	\
+> +	"	.set	noat					\n"	\
+> +	"	.set	mips32r2				\n"	\
+> +	"	move	$1, %0					\n"	\
+> +	"	# mthc0 $1, %1					\n"	\
+> +	"	.insn						\n"	\
+> +	"	.word	(0x40c10000 | ((" #register " & 0x1f) << 11))	\n"	\
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+    Not %1 again?
 
-iQIcBAEBAgAGBQJUZKMrAAoJEN0jrNd/PrOhin0P/2QdZ2yXgtdvYvWELEmWLaQa
-+xSc3Lznq4yKUQZIOFUnu5mlQCixXqQWt+IS0RYGJkwinSLWOP0HudLQ3mtdlfyp
-suZMJXsUJsu7cHW6GxUvu6N+NBHZC8cZryVmOEmS72LE9i4JCAvv6zcL+DHv2nqA
-VrK8iTymt/SOACSFjzqmOfjIBaFlDXOVCj6K70Jr6hrzXlvjzpR0Vzax1VjuhJtY
-j2FepaaZ7TLfhrABBb2I/phE0JLKnKF9V3+fw9aAOLtvQl2VxVJX+2QKxXZmGlXN
-3Af2yzlQfxYSpQ3GcamToqGTos+h+PqBJBRbNe1VYswcJ1niSXjX/utdHJ4NK6vl
-qyucOEhuZF132qTVqQbIeGG8cztMHnXXxPNyY9ZumEhxEbICFXjxE2daywPtJZ5Z
-RWsZ1ulbKY+H12Fa6hmLTsFDjCBtcfBNBWXtNnVY4IlvJCwXbDoItexjR9uVXzos
-5whWtsHmb1lmmrgoBrI3bfULZSeSaxauQ2rOePAIosgHT7TdisETP8Ih7OBEkFP+
-T/uWsfZAL93Vpt0hW5nfMvZpjzK5CAAOcfwceLrLTqTz4amO2eXRMZEnN0ebOEz3
-NFV2Cy6FVk1cEvlSy8MDP9sBKdyFRXGHZBUhJwGue5AEz8Xzjs6q/drLZk52d26u
-G6Z40dryPmObkfaOzyR9
-=Qh9f
------END PGP SIGNATURE-----
+> +	"	.set	pop					\n"	\
+> +	:								\
+> +	: "r" (value), "i" (register));					\
+> +} while (0)
+> +
+[...]
 
---7uYPyRQQ5N0D02nI--
+WBR, Sergei

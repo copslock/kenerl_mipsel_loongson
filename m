@@ -1,40 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 10:23:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41828 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013585AbaKMJXwe0U8D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 10:23:52 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 26E6C69DA1D4F;
-        Thu, 13 Nov 2014 09:23:44 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 13 Nov
- 2014 09:23:46 +0000
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 13 Nov 2014 09:23:46 +0000
-Received: from [192.168.154.149] (192.168.154.149) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 13 Nov
- 2014 09:23:45 +0000
-Message-ID: <546478A1.5040306@imgtec.com>
-Date:   Thu, 13 Nov 2014 09:23:45 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 10:42:28 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.130]:51661 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012629AbaKMJm0wLFsO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 10:42:26 +0100
+Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
+        by mrelayeu.kundenserver.de (node=mreue005) with ESMTP (Nemesis)
+        id 0McRym-1XXBVP1WiW-00HeWj; Thu, 13 Nov 2014 10:42:07 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.cz>,
+        Rob Herring <robh@kernel.org>, tushar.behera@linaro.org,
+        daniel@zonque.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
+        robert.jarzmik@free.fr, Grant Likely <grant.likely@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH/RFC 5/8] serial: pxa: Make the driver buildable for BCM7xxx set-top platforms
+Date:   Thu, 13 Nov 2014 10:42:06 +0100
+Message-ID: <4606459.kh8mb8TEgZ@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CAJiQ=7AFr5vR+FEc8B3CAZLb5GYujNxtaz7TU2FU0D3oModZ7w@mail.gmail.com>
+References: <1415781993-7755-1-git-send-email-cernekee@gmail.com> <3356477.HitZEsNa4H@wuerfel> <CAJiQ=7AFr5vR+FEc8B3CAZLb5GYujNxtaz7TU2FU0D3oModZ7w@mail.gmail.com>
 MIME-Version: 1.0
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     <rostedt@goodmis.org>, <mingo@redhat.com>
-Subject: ftrace function graph with static ftrace does not work on MIPS
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.149]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V02:K0:3F9cUsHIUD6eUKFde4d+saA18l0zadbFEV2z4MhluFx
+ x2uhmU8Lctw2zO5dDNt+u4x1lySesjIVF35XsNjBIEhoN5iovp
+ ysXik0oaZIvHKfyYysbzNmnxWGrMB+mjrX7K3rYuvWr+OaoZw7
+ 1kWr3wOrQtQpu23NhwH1IXcQlI4M9rBUhjVnmSbzoI6YwGbyxx
+ Ys/fy4q/QP0cWAzU6Uy/upYc+UrK2GU9JyezMLed4upO/EjjAd
+ i5G1eoipTx/WsFKc4LnTcLD1TGZ4e79ajFJXmhUqbxjTuZ9F5F
+ FTPZQ6LvuXMzej3yfW6ouPsJmXZ65Yyt9lfO0RPDvhm33LwvQR
+ 6xOolgz37zPHhxIFKpUc=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44107
+X-archive-position: 44108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,95 +57,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Wednesday 12 November 2014 01:19:24 Kevin Cernekee wrote:
+> On Wed, Nov 12, 2014 at 1:04 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> > On Wednesday 12 November 2014 00:46:30 Kevin Cernekee wrote:
+> >> Remove the platform dependency in Kconfig and add an appropriate
+> >> compatible string.  Note that BCM7401 has one 16550A-compatible UART
+> >> in the UPG uart_clk domain, and two proprietary UARTs in the 27 MHz
+> >> clock domain.  This driver handles the former one.
+> >>
+> >> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> >
+> > Can you explain why you are using the PXA serial driver instead of the
+> > 8250 driver, if this is 16550A compatible? I don't know the history
+> > why PXA is using a separate driver.
+> 
+> I wasn't able to get serial8250 to work in any situation where another
+> driver tried to claim "ttyS"/4/64.
+> 
+> serial8250 calls uart_add_one_port() in its module_init function, even
+> if the system doesn't have any ports.  Setting nr_uarts
+> (CONFIG_SERIAL_8250_RUNTIME_UARTS) to 0 doesn't help because
+> serial8250_find_match_or_unused() will just return NULL.
+> 
+> I guess I could try to rework that logic but several cases would need
+> to be retested, going back to PCs with ISA buses and PCI add-in cards.
+> And the differences may be visible to userspace.
+> 
+> The PXA driver seemed like a much cleaner starting point, even if it
+> was intended for a different SoC.
 
-I am trying to understand why ftrace function graph doesn't work when
-using static ftrace on MIPS. So, what happens when I do 'echo
-function_graph > current_tracer' is that the ftrace_graph_caller from
-mcount.S is executed once. The function that called it is
-'core_kernel_data()' from __register_ftrace_function in
-kernel/trace/ftrace.c
+Hmm, I've seen you already posted v2 of the series, but I'm not sure
+that this is what Greg had in mind when he suggested using /dev/ttyS*
+for the other driver.
 
-However, this is the only function that is reported in the trace file
+TTY naming is a mess today, and you seem to be caught in the middle
+of it trying to work around the inherent problems. Extending the PXA
+driver is an interesting approach since as you say it's a very nice
+clean subset of the 8250 driver, but that doesn't mean that it's
+a good long-term strategy, as we will likely have more chips with
+8250 variants.
 
-# cat trace
-# tracer: function_graph
-#
-# CPU  DURATION                  FUNCTION CALLS
-# |     |   |                     |   |   |   |
- 0)               |  core_kernel_data() {
- 0)   0.000 us    |  } /* core_kernel_data */
+Some of the ways forward that I can see are:
 
-The reason that the ftrace_graph_caller is never executed after that is
-that the following as far as I understand:
+- (your approach) use and extend the pxa serial driver for new SoCs,
+  possibly migrate some of the existing users of 8250 to use that
+  and leave 8250 alone.
 
-NESTED(_mcount, PT_SIZE, ra)
-        PTR_LA  t1, ftrace_stub
-        PTR_L   t2, ftrace_trace_function /* Prepare t2 for (1) */
-        bne     t1, t2, static_trace
-         nop
+- fix the problem you see in a different way, and get the 8250 driver
+  to solve your problem. Possibly integrate the pxa driver back into
+  8250 in eventually, as we did with the omap driver.
 
-#ifdef  CONFIG_FUNCTION_GRAPH_TRACER
-        PTR_L   t3, ftrace_graph_return
-        bne     t1, t3, ftrace_graph_caller
-         nop
-        PTR_LA  t1, ftrace_graph_entry_stub
-        PTR_L   t3, ftrace_graph_entry
-        bne     t1, t3, ftrace_graph_caller
-         nop
-#endif
+- Do a fresh start for a general-purpose soc-type 8250 driver, using
+  tty_port instead of uart_port as the abstraction layer. Use that for
+  all new socs instead of extending the 8250 driver more, possibly
+  migrating some of the existing 8250 users.
 
-The previous 3 conditionals exists in arch/mips/kernel/mcount.S.
-Originally, ftrace_trace_function == ftrace_stub, so the first
-conditional is not taken and we end up executed the ftrace_graph_caller.
-All good.
-However, later on, ftrace_trace_function is set to 'ftrace_ops_no_ops',
-so the first 'bne' is taken and the ftrace_graph_caller is never
-executed after that. It is not clear to me if this behaviour is expected
-so I used QEMU to get a backtrace when ftrace_trace_function is set to
-ftrace_ops_no_ops.
+- split out the /dev/ttyS number allocation from the 8250 driver and
+  make it usable by arbitrary drivers.
 
-Old value = (ftrace_func_t) 0x8010fa90 <ftrace_stub>
-New value = (ftrace_func_t) 0x801a32f0 <ftrace_ops_no_ops>
-0x801a2578 in update_ftrace_function () at kernel/trace/ftrace.c:318
-(gdb) bt
-#0  0x801a2578 in update_ftrace_function () at kernel/trace/ftrace.c:318
-#1  0x801a2ae8 in __register_ftrace_function (ops=0x806fbcb4 <global_ops>)
-    at kernel/trace/ftrace.c:414
-#2  0x801a39ec in register_ftrace_graph (retfunc=0x801b6ab8
-<trace_graph_return>,
-    entryfunc=0x801b67b4 <trace_graph_entry>) at kernel/trace/ftrace.c:5438
-#3  0x801b63d0 in graph_trace_init (tr=<optimized out>)
-    at kernel/trace/trace_functions_graph.c:463
-#4  0x801b0b84 in tracer_init (tr=<optimized out>, t=<optimized out>)
-    at kernel/trace/trace.c:3916
-#5  tracing_set_tracer (tr=0x8093e1d8 <global_trace>,
-    buf=0x8 <error: Cannot access memory at address 0x8>) at
-kernel/trace/trace.c:4171
-#6  0x801b103c in tracing_set_trace_write (filp=<optimized out>,
-ubuf=<optimized out>,
-    cnt=<optimized out>, ppos=0x82147f00) at kernel/trace/trace.c:4209
-#7  0x80212944 in vfs_write (file=0x821fa100,
-    buf=0x806fbc8c <graph_ops> "\220\372\020\200h0o\200", <incomplete
-sequence \340>,
-    count=<optimized out>, pos=0x82147f00) at fs/read_write.c:532
-#8  0x80213164 in SYSC_write (count=<optimized out>, buf=<optimized out>,
-    fd=<optimized out>) at fs/read_write.c:583
-#9  SyS_write (fd=<optimized out>, buf=0x4bdf38, count=0xf) at
-fs/read_write.c:575
-#10 0x80112f48 in handle_sys () at arch/mips/kernel/scall32-o32.S:99
+Greg, Jiri, do you have some guidance, or possibly other ideas?
 
-So, now that the ftrace_trace_function has been set to
-'ftrace_ops_no_ops', the previous branch (as I explained before) is
-taken and the function graph related functions are not being executed
-anymore.
-
-Dynamic tracing is working (or seems it does) because the code does a
-'jal ftrace_call' and the returns back and does a 'j
-ftrace_graph_caller'. In other words, it always executes the
-ftrace_graph_caller no matter what the ftrace_trace_function is.
-
-So any ideas? Do I do something wrong?
-
--- 
-markos
+	Arnd

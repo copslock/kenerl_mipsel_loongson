@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 16:20:30 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 16:20:46 +0100 (CET)
 Received: from mga01.intel.com ([192.55.52.88]:32785 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013735AbaKNPSiowx8b (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Nov 2014 16:18:38 +0100
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+        id S27013733AbaKNPSjw-XyS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Nov 2014 16:18:39 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmsmga101.fm.intel.com with ESMTP; 14 Nov 2014 07:18:30 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.97,862,1389772800"; 
-   d="scan'208";a="416529482"
+X-IronPort-AV: E=Sophos;i="5.07,386,1413270000"; 
+   d="scan'208";a="622414768"
 Received: from viggo.jf.intel.com (HELO localhost.localdomain) ([10.23.232.122])
-  by FMSMGA003.fm.intel.com with ESMTP; 14 Nov 2014 07:09:12 -0800
-Subject: [PATCH 01/11] x86, mpx: rename cfg_reg_u and status_reg
+  by fmsmga001.fm.intel.com with ESMTP; 14 Nov 2014 07:18:21 -0800
+Subject: [PATCH 04/11] ia64: sync struct siginfo with general version
 To:     hpa@zytor.com
 Cc:     tglx@linutronix.de, mingo@redhat.com, x86@kernel.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -18,15 +18,15 @@ Cc:     tglx@linutronix.de, mingo@redhat.com, x86@kernel.org,
         qiaowei.ren@intel.com, Dave Hansen <dave@sr71.net>,
         dave.hansen@linux.intel.com
 From:   Dave Hansen <dave@sr71.net>
-Date:   Fri, 14 Nov 2014 07:18:17 -0800
+Date:   Fri, 14 Nov 2014 07:18:22 -0800
 References: <20141114151816.F56A3072@viggo.jf.intel.com>
 In-Reply-To: <20141114151816.F56A3072@viggo.jf.intel.com>
-Message-Id: <20141114151817.031762AC@viggo.jf.intel.com>
+Message-Id: <20141114151822.82B3B486@viggo.jf.intel.com>
 Return-Path: <dave@sr71.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44168
+X-archive-position: 44169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,29 +47,42 @@ X-list: linux-mips
 From: Dave Hansen <dave.hansen@linux.intel.com>
 
 
-According to Intel SDM extension, MPX configuration and status registers
-should be BNDCFGU and BNDSTATUS. This patch renames cfg_reg_u and
-status_reg to bndcfgu and bndstatus.
+New fields about bound violation are added into general struct
+siginfo. This will impact MIPS and IA64, which extend general
+struct siginfo. This patch syncs this struct for IA64 with
+general version.
 
 Signed-off-by: Qiaowei Ren <qiaowei.ren@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
 
- b/arch/x86/include/asm/processor.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ b/arch/ia64/include/uapi/asm/siginfo.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff -puN arch/x86/include/asm/processor.h~mpx-v11-rename-cfg-reg-u-and-status-reg arch/x86/include/asm/processor.h
---- a/arch/x86/include/asm/processor.h~mpx-v11-rename-cfg-reg-u-and-status-reg	2014-11-14 07:06:20.773541505 -0800
-+++ b/arch/x86/include/asm/processor.h	2014-11-14 07:06:20.777541686 -0800
-@@ -380,8 +380,8 @@ struct bndreg {
- } __packed;
+diff -puN arch/ia64/include/uapi/asm/siginfo.h~mpx-v11-ia64-sync-struct-siginfo-with-general-version arch/ia64/include/uapi/asm/siginfo.h
+--- a/arch/ia64/include/uapi/asm/siginfo.h~mpx-v11-ia64-sync-struct-siginfo-with-general-version	2014-11-14 07:06:21.923593375 -0800
++++ b/arch/ia64/include/uapi/asm/siginfo.h	2014-11-14 07:06:21.927593555 -0800
+@@ -63,6 +63,10 @@ typedef struct siginfo {
+ 			unsigned int _flags;	/* see below */
+ 			unsigned long _isr;	/* isr */
+ 			short _addr_lsb;	/* lsb of faulting address */
++			struct {
++				void __user *_lower;
++				void __user *_upper;
++			} _addr_bnd;
+ 		} _sigfault;
  
- struct bndcsr {
--	u64 cfg_reg_u;
--	u64 status_reg;
-+	u64 bndcfgu;
-+	u64 bndstatus;
- } __packed;
+ 		/* SIGPOLL */
+@@ -110,9 +114,9 @@ typedef struct siginfo {
+ /*
+  * SIGSEGV si_codes
+  */
+-#define __SEGV_PSTKOVF	(__SI_FAULT|3)	/* paragraph stack overflow */
++#define __SEGV_PSTKOVF	(__SI_FAULT|4)	/* paragraph stack overflow */
+ #undef NSIGSEGV
+-#define NSIGSEGV	3
++#define NSIGSEGV	4
  
- struct xsave_hdr_struct {
+ #undef NSIGTRAP
+ #define NSIGTRAP	4
 _

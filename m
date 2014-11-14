@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2014 23:34:53 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.130]:59572 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009415AbaKMWevwFpXE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Nov 2014 23:34:51 +0100
-Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
-        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
-        id 0MKv1o-1Xp2yO13fE-0006m5; Thu, 13 Nov 2014 23:34:40 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.cz>,
-        Rob Herring <robh@kernel.org>, daniel@zonque.org,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        robert.jarzmik@free.fr, Grant Likely <grant.likely@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH/RFC 5/8] serial: pxa: Make the driver buildable for BCM7xxx set-top platforms
-Date:   Thu, 13 Nov 2014 23:34:39 +0100
-Message-ID: <3857076.lzkrNkraM9@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAJiQ=7DoFk7ZSjHygaMWHyBTpxJFbQX4onh2xqixaqORQODsVg@mail.gmail.com>
-References: <1415781993-7755-1-git-send-email-cernekee@gmail.com> <4606459.kh8mb8TEgZ@wuerfel> <CAJiQ=7DoFk7ZSjHygaMWHyBTpxJFbQX4onh2xqixaqORQODsVg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 05:45:05 +0100 (CET)
+Received: from mail-ig0-f182.google.com ([209.85.213.182]:56493 "EHLO
+        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009680AbaKNEpES9nv9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Nov 2014 05:45:04 +0100
+Received: by mail-ig0-f182.google.com with SMTP id hn18so902566igb.9
+        for <linux-mips@linux-mips.org>; Thu, 13 Nov 2014 20:44:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=tyMjBV6iBjwTY3TjUuBPv4BoAYm8qEld58LWt7JyVSQ=;
+        b=ZjN/U+JHtsySj7mOvcK8lDbw4x6NgeQc7QeJaYs/SowTATLx/Q9bCG6Ej14MNrgV3K
+         EbX6xJ/zAJdzDe8uhFx0N89Psv0B+D8tC2nnYQOVHO377xhoPpLZnowmcvp/OpINI4NM
+         ILYwpsTca1ZipJYhKJyDVTOsUrltQVmXbq1DIzKYwiiy6EM93CBNVfy5NYre9MokTSWP
+         UlpXYMZYNDE5MG4Xw5F0KTOLmYq1aF9FSFMbTOwlKt2QkAJ333xXHogWDQUjeAD6PDqy
+         aIZIWmVfOPibD82hcMCBSx+qBqSLa2XCPg+QZVC4zeDC9iyZwH/UqrZyocnWIi+0bccL
+         pFtA==
+X-Received: by 10.50.25.100 with SMTP id b4mr3500624igg.17.1415940298244; Thu,
+ 13 Nov 2014 20:44:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:7vrma+VDbaTpMoomUZVKIohli5zaE1M8ocaAr7ybNm+
- tzWWJpRC7wPzMrskka70ly2QPer1ICzyPtd1V/J65+AgpRTzAw
- Dh0Nep9xesOW5q75wYWPGJ+ARI07tAd2ywh0JobbNP+v36I6MJ
- PnSi3TEMWzvjOE/d97GxKu20TY+gj25fzBtTYFS1wqbuxKK02F
- l85d320dQhc5CMmtDWMmFbRJ8T1QfQT9qAjsGYzO/psg8xxXPv
- Onxxm28fbV1DLCo8mPaY30u11YxutB43SpRSIiD23FoZOAIkEi
- ritgVaAwZW3f6JVxqVwygLLDDd+Zomk8nCvDVVuZkWYfS/LH7a
- bXAsK+Gla4l4DwJoeCv0=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Received: by 10.107.14.16 with HTTP; Thu, 13 Nov 2014 20:44:17 -0800 (PST)
+In-Reply-To: <1415914590-31647-4-git-send-email-andreas.herrmann@caviumnetworks.com>
+References: <1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+ <1415914590-31647-4-git-send-email-andreas.herrmann@caviumnetworks.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Date:   Thu, 13 Nov 2014 20:44:17 -0800
+Message-ID: <CAGVrzcbAjMGBdTenpJv6_OQ4oPYGScQ0gMOFsO8gf-R7Wy-=Lg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] USB: host: Introduce flag to enable use of 64-bit
+ dma_mask for ehci-platform
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44149
+X-archive-position: 44150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,70 +56,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 13 November 2014 11:08:08 Kevin Cernekee wrote:
-> On Thu, Nov 13, 2014 at 1:42 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> > TTY naming is a mess today, and you seem to be caught in the middle
-> > of it trying to work around the inherent problems. Extending the PXA
-> > driver is an interesting approach since as you say it's a very nice
-> > clean subset of the 8250 driver, but that doesn't mean that it's
-> > a good long-term strategy, as we will likely have more chips with
-> > 8250 variants.
-> >
-> > Some of the ways forward that I can see are:
-> >
-> > - (your approach) use and extend the pxa serial driver for new SoCs,
-> >   possibly migrate some of the existing users of 8250 to use that
-> >   and leave 8250 alone.
-> >
-> > - fix the problem you see in a different way, and get the 8250 driver
-> >   to solve your problem. Possibly integrate the pxa driver back into
-> >   8250 in eventually, as we did with the omap driver.
-> 
-> Do you think it might make sense to come up with a set of guidelines
-> that ensure that SoCs using a non-serial8250 driver (like pxa) on
-> 16550-compatible hardware can be easily moved back to serial8250
-> someday?
-> 
-> e.g. maybe I should be adding a reg-shift property to my pxa DT entry.
-> It isn't necessary for pxa.c, but if we ever move to serial8250 it
-> will be necessary.
+2014-11-13 13:36 GMT-08:00 Andreas Herrmann
+<andreas.herrmann@caviumnetworks.com>:
+> ehci-octeon driver used a 64-bit dma_mask. With removal of ehci-octeon
+> and usage of ehci-platform ehci dma_mask is now limited to 32 bits
+> (coerced in ehci_platform_probe).
+>
+> Provide a flag in ehci platform data to allow use of 64 bits for
+> dma_mask.
 
-I'm not sure how many others exist that are 8250-like with different
-drivers. I think it would be a good idea to have the properties in
-there, but I'm not sure if I can come up with an exhaustive list
-of requirements.
+Why not just allow enforcing an arbitrary DMA mask?
 
-> > - Do a fresh start for a general-purpose soc-type 8250 driver, using
-> >   tty_port instead of uart_port as the abstraction layer.
-> 
-> Hmm, does that mean we can't use the serial_core.c helpers?
+>
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: Alex Smith <alex.smith@imgtec.com>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+> ---
+>  arch/mips/cavium-octeon/octeon-platform.c |    4 +---
+>  drivers/usb/host/ehci-platform.c          |    3 ++-
+>  include/linux/usb/ehci_pdriver.h          |    1 +
+>  3 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+> index eea60b6..12410a2 100644
+> --- a/arch/mips/cavium-octeon/octeon-platform.c
+> +++ b/arch/mips/cavium-octeon/octeon-platform.c
+> @@ -310,6 +310,7 @@ static struct usb_ehci_pdata octeon_ehci_pdata = {
+>  #ifdef __BIG_ENDIAN
+>         .big_endian_mmio        = 1,
+>  #endif
+> +       .dma_mask_64    = 1,
+>         .power_on       = octeon_ehci_power_on,
+>         .power_off      = octeon_ehci_power_off,
+>  };
+> @@ -331,8 +332,6 @@ static void __init octeon_ehci_hw_start(struct device *dev)
+>         octeon2_usb_clocks_stop();
+>  }
+>
+> -static u64 octeon_ehci_dma_mask = DMA_BIT_MASK(64);
+> -
+>  static int __init octeon_ehci_device_init(void)
+>  {
+>         struct platform_device *pd;
+> @@ -347,7 +346,6 @@ static int __init octeon_ehci_device_init(void)
+>         if (!pd)
+>                 return 0;
+>
+> -       pd->dev.dma_mask = &octeon_ehci_dma_mask;
+>         pd->dev.platform_data = &octeon_ehci_pdata;
+>         octeon_ehci_hw_start(&pd->dev);
+>
+> diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
+> index 2da18ea..6df808b 100644
+> --- a/drivers/usb/host/ehci-platform.c
+> +++ b/drivers/usb/host/ehci-platform.c
+> @@ -155,7 +155,8 @@ static int ehci_platform_probe(struct platform_device *dev)
+>         if (!pdata)
+>                 pdata = &ehci_platform_defaults;
+>
+> -       err = dma_coerce_mask_and_coherent(&dev->dev, DMA_BIT_MASK(32));
+> +       err = dma_coerce_mask_and_coherent(&dev->dev,
+> +               pdata->dma_mask_64 ? DMA_BIT_MASK(64) : DMA_BIT_MASK(32));
+>         if (err)
+>                 return err;
+>
+> diff --git a/include/linux/usb/ehci_pdriver.h b/include/linux/usb/ehci_pdriver.h
+> index 7eb4dcd..f69529e 100644
+> --- a/include/linux/usb/ehci_pdriver.h
+> +++ b/include/linux/usb/ehci_pdriver.h
+> @@ -45,6 +45,7 @@ struct usb_ehci_pdata {
+>         unsigned        big_endian_desc:1;
+>         unsigned        big_endian_mmio:1;
+>         unsigned        no_io_watchdog:1;
+> +       unsigned        dma_mask_64:1;
+>
+>         /* Turn on all power and clocks */
+>         int (*power_on)(struct platform_device *pdev);
+> --
+> 1.7.9.5
+>
+>
 
-Correct. IIRC the consensus among the tty maintainers has been
-for some time that serial_core.c and uart_port doesn't actually do
-that much good compared to the complexity it adds in other places.
-I may misremember the exact argument.
 
-> >   Use that for
-> >   all new socs instead of extending the 8250 driver more, possibly
-> >   migrating some of the existing 8250 users.
-> 
-> One nice thing about a brand new driver is that we can use dynamic
-> major/minor numbers unconditionally without breaking existing users.
-> If either pxa.c or bcm63xx_uart.c had used dynamic numbers, I could
-> drop Tushar's original workaround.
-> 
-> Another advantage is that we can assume all users have DT, simplifying
-> the probe function.
-> 
-> Would it be helpful to split parts of pxa.c and/or serial8250 into a
-> "lib8250", similar to libahci, that can be called by many different
-> implementations (some of which have special features like DMA
-> support)?
 
-That sounds like a very good idea, yes. I had actually worked on something
-in this area years ago, but haven't followed up in some time. In particular,
-I think it makes sense to split the specific I/O register access method into
-a separate library from the code that knows about the 8250 register set,
-and from the code that performs the probing.
-
-	Arnd
+-- 
+Florian

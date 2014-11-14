@@ -1,35 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 16:23:56 +0100 (CET)
-Received: from iolanthe.rowland.org ([192.131.102.54]:46348 "HELO
-        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S27013720AbaKNPXzYQQ6m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Nov 2014 16:23:55 +0100
-Received: (qmail 22570 invoked by uid 2102); 14 Nov 2014 10:23:53 -0500
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 14 Nov 2014 10:23:53 -0500
-Date:   Fri, 14 Nov 2014 10:23:53 -0500 (EST)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@iolanthe.rowland.org
-To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        David Daney <david.daney@cavium.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-usb <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH 3/3] USB: host: Introduce flag to enable use of 64-bit
- dma_mask for ehci-platform
-In-Reply-To: <20141114085157.GA13424@alberich>
-Message-ID: <Pine.LNX.4.44L0.1411141020490.1043-100000@iolanthe.rowland.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 17:38:54 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:34863 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27013747AbaKNQis6nvcn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Nov 2014 17:38:48 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAEGcj2p018773;
+        Fri, 14 Nov 2014 17:38:45 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAEGciRf018772;
+        Fri, 14 Nov 2014 17:38:44 +0100
+Date:   Fri, 14 Nov 2014 17:38:44 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH V4 01/14] sh: Eliminate unused irq_reg_{readl,writel}
+ accessors
+Message-ID: <20141114163843.GH29662@linux-mips.org>
+References: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
+ <1415342669-30640-2-git-send-email-cernekee@gmail.com>
+ <CAMuHMdW+L8YbE8Z8jrtnm8xWk63sRGaFdM7TPM6MmrDg9XwHuQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <stern+54715d4c@rowland.harvard.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdW+L8YbE8Z8jrtnm8xWk63sRGaFdM7TPM6MmrDg9XwHuQ@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44173
+X-archive-position: 44174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stern@rowland.harvard.edu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,31 +56,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 14 Nov 2014, Andreas Herrmann wrote:
+On Mon, Nov 10, 2014 at 09:13:49AM +0100, Geert Uytterhoeven wrote:
 
-> On Thu, Nov 13, 2014 at 08:44:17PM -0800, Florian Fainelli wrote:
-> > 2014-11-13 13:36 GMT-08:00 Andreas Herrmann
-> > <andreas.herrmann@caviumnetworks.com>:
-> > > ehci-octeon driver used a 64-bit dma_mask. With removal of ehci-octeon
-> > > and usage of ehci-platform ehci dma_mask is now limited to 32 bits
-> > > (coerced in ehci_platform_probe).
-> > >
-> > > Provide a flag in ehci platform data to allow use of 64 bits for
-> > > dma_mask.
-> > 
-> > Why not just allow enforcing an arbitrary DMA mask?
+> On Fri, Nov 7, 2014 at 7:44 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+> > Defining these macros way down in arch/sh/.../irq.c doesn't cause
+> > kernel/irq/generic-chip.c to use them.  As far as I can tell this code
+> > has no effect.
+> >
+> > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 > 
-> I thought about that but as it's currently just 32 or 64 bits
-> a flag is sufficient. (At the moment I am not aware that
-> other ehci-platform devices would require something else.)
+> Compared preprocessor and asm output before and after, no difference
+> except for line numbers, so
 > 
-> I'll change the flag to a mask if desired.
-> Alan, what's your opinion about this?
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-I'm not aware of any devices that need a different DMA mask either.  
+I noticed the remainder of of this series is now in Jason Cooper's irqchip
+tree.  Is anybody still taking care of SH?  If not I can funnel it
+through the MIPS tree.
 
-Florian, do you have any reason for thinking such a thing might come 
-along?  Like Andreas, I don't mind making it more general if there's a 
-good reason to do so.
-
-Alan Stern
+  Ralf

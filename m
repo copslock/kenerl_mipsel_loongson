@@ -1,36 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 16:21:40 +0100 (CET)
-Received: from mga01.intel.com ([192.55.52.88]:35213 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013725AbaKNPTjutjMR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Nov 2014 16:19:39 +0100
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP; 14 Nov 2014 07:18:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.07,386,1413270000"; 
-   d="scan'208";a="632005803"
-Received: from viggo.jf.intel.com (HELO localhost.localdomain) ([10.23.232.122])
-  by fmsmga002.fm.intel.com with ESMTP; 14 Nov 2014 07:18:23 -0800
-Subject: [PATCH 05/11] x86, mpx: add MPX to disaabled features
-To:     hpa@zytor.com
-Cc:     tglx@linutronix.de, mingo@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        qiaowei.ren@intel.com, Dave Hansen <dave@sr71.net>,
-        dave.hansen@linux.intel.com
-From:   Dave Hansen <dave@sr71.net>
-Date:   Fri, 14 Nov 2014 07:18:23 -0800
-References: <20141114151816.F56A3072@viggo.jf.intel.com>
-In-Reply-To: <20141114151816.F56A3072@viggo.jf.intel.com>
-Message-Id: <20141114151823.B358EAD2@viggo.jf.intel.com>
-Return-Path: <dave@sr71.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 16:23:56 +0100 (CET)
+Received: from iolanthe.rowland.org ([192.131.102.54]:46348 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S27013720AbaKNPXzYQQ6m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Nov 2014 16:23:55 +0100
+Received: (qmail 22570 invoked by uid 2102); 14 Nov 2014 10:23:53 -0500
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 14 Nov 2014 10:23:53 -0500
+Date:   Fri, 14 Nov 2014 10:23:53 -0500 (EST)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH 3/3] USB: host: Introduce flag to enable use of 64-bit
+ dma_mask for ehci-platform
+In-Reply-To: <20141114085157.GA13424@alberich>
+Message-ID: <Pine.LNX.4.44L0.1411141020490.1043-100000@iolanthe.rowland.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <stern+54715d4c@rowland.harvard.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44172
+X-archive-position: 44173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave@sr71.net
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,46 +42,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Fri, 14 Nov 2014, Andreas Herrmann wrote:
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+> On Thu, Nov 13, 2014 at 08:44:17PM -0800, Florian Fainelli wrote:
+> > 2014-11-13 13:36 GMT-08:00 Andreas Herrmann
+> > <andreas.herrmann@caviumnetworks.com>:
+> > > ehci-octeon driver used a 64-bit dma_mask. With removal of ehci-octeon
+> > > and usage of ehci-platform ehci dma_mask is now limited to 32 bits
+> > > (coerced in ehci_platform_probe).
+> > >
+> > > Provide a flag in ehci platform data to allow use of 64 bits for
+> > > dma_mask.
+> > 
+> > Why not just allow enforcing an arbitrary DMA mask?
+> 
+> I thought about that but as it's currently just 32 or 64 bits
+> a flag is sufficient. (At the moment I am not aware that
+> other ehci-platform devices would require something else.)
+> 
+> I'll change the flag to a mask if desired.
+> Alan, what's your opinion about this?
 
-This allows us to use cpu_feature_enabled(X86_FEATURE_MPX) as
-both a runtime and compile-time check.
+I'm not aware of any devices that need a different DMA mask either.  
 
-When CONFIG_X86_INTEL_MPX is disabled,
-cpu_feature_enabled(X86_FEATURE_MPX) will evaluate at
-compile-time to 0. If CONFIG_X86_INTEL_MPX=y, then the cpuid
-flag will be checked at runtime.
+Florian, do you have any reason for thinking such a thing might come 
+along?  Like Andreas, I don't mind making it more general if there's a 
+good reason to do so.
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Qiaowei Ren <qiaowei.ren@intel.com>
----
-
- b/arch/x86/include/asm/disabled-features.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff -puN arch/x86/include/asm/disabled-features.h~mpx-v11-add-MPX-to-disaabled-features arch/x86/include/asm/disabled-features.h
---- a/arch/x86/include/asm/disabled-features.h~mpx-v11-add-MPX-to-disaabled-features	2014-11-14 07:06:22.297610243 -0800
-+++ b/arch/x86/include/asm/disabled-features.h	2014-11-14 07:06:22.300610378 -0800
-@@ -10,6 +10,12 @@
-  * cpu_feature_enabled().
-  */
- 
-+#ifdef CONFIG_X86_INTEL_MPX
-+# define DISABLE_MPX	0
-+#else
-+# define DISABLE_MPX	(1<<(X86_FEATURE_MPX & 31))
-+#endif
-+
- #ifdef CONFIG_X86_64
- # define DISABLE_VME		(1<<(X86_FEATURE_VME & 31))
- # define DISABLE_K6_MTRR	(1<<(X86_FEATURE_K6_MTRR & 31))
-@@ -34,6 +40,6 @@
- #define DISABLED_MASK6	0
- #define DISABLED_MASK7	0
- #define DISABLED_MASK8	0
--#define DISABLED_MASK9	0
-+#define DISABLED_MASK9	(DISABLE_MPX)
- 
- #endif /* _ASM_X86_DISABLED_FEATURES_H */
-_
+Alan Stern

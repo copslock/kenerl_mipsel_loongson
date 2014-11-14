@@ -1,49 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 05:45:05 +0100 (CET)
-Received: from mail-ig0-f182.google.com ([209.85.213.182]:56493 "EHLO
-        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009680AbaKNEpES9nv9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Nov 2014 05:45:04 +0100
-Received: by mail-ig0-f182.google.com with SMTP id hn18so902566igb.9
-        for <linux-mips@linux-mips.org>; Thu, 13 Nov 2014 20:44:58 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2014 07:28:40 +0100 (CET)
+Received: from mail-qa0-f51.google.com ([209.85.216.51]:46506 "EHLO
+        mail-qa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012688AbaKNG2ik0ZuG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Nov 2014 07:28:38 +0100
+Received: by mail-qa0-f51.google.com with SMTP id f12so11315611qad.10
+        for <multiple recipients>; Thu, 13 Nov 2014 22:28:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=tyMjBV6iBjwTY3TjUuBPv4BoAYm8qEld58LWt7JyVSQ=;
-        b=ZjN/U+JHtsySj7mOvcK8lDbw4x6NgeQc7QeJaYs/SowTATLx/Q9bCG6Ej14MNrgV3K
-         EbX6xJ/zAJdzDe8uhFx0N89Psv0B+D8tC2nnYQOVHO377xhoPpLZnowmcvp/OpINI4NM
-         ILYwpsTca1ZipJYhKJyDVTOsUrltQVmXbq1DIzKYwiiy6EM93CBNVfy5NYre9MokTSWP
-         UlpXYMZYNDE5MG4Xw5F0KTOLmYq1aF9FSFMbTOwlKt2QkAJ333xXHogWDQUjeAD6PDqy
-         aIZIWmVfOPibD82hcMCBSx+qBqSLa2XCPg+QZVC4zeDC9iyZwH/UqrZyocnWIi+0bccL
-         pFtA==
-X-Received: by 10.50.25.100 with SMTP id b4mr3500624igg.17.1415940298244; Thu,
- 13 Nov 2014 20:44:58 -0800 (PST)
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=gvFK6CEy4Z5faRfm7dliq3LEnzuWrob1xGhZ+/0jwI0=;
+        b=PRrwQiUq1vZOR4w4s1mf5V5IbqpnT6VJge3i/9ccit0Yc4qAuyyE7/yPFpRclSduGJ
+         617AT3xUX3rk1yP0Rhig0cUIpz/xuqQEy2B3rCUuDQ5Wj8OeStWCoDLfh2WmPRPEl/j+
+         /WA2xblq8B6Xdg/U5btDJDTn9EqwP+INuIECQHbkV5n/ui75RzTiYFWqjTyqfZ8s7R+D
+         J7ORuD9rRvz1NVQo8EI3suuCcwvHTaA7qvqfl7BmMi2R/TDpCgxIsOWPZ6Irra3nvf9b
+         9UcCYe+jRy+PwWBMEaWQQGWZKsVBqIwxtTsdRH40PnF31fb3QxzacSckLsHzEphNHlMh
+         5LPg==
+X-Received: by 10.140.31.35 with SMTP id e32mr8868270qge.4.1415946512416; Thu,
+ 13 Nov 2014 22:28:32 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.107.14.16 with HTTP; Thu, 13 Nov 2014 20:44:17 -0800 (PST)
-In-Reply-To: <1415914590-31647-4-git-send-email-andreas.herrmann@caviumnetworks.com>
-References: <1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com>
- <1415914590-31647-4-git-send-email-andreas.herrmann@caviumnetworks.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Thu, 13 Nov 2014 20:44:17 -0800
-Message-ID: <CAGVrzcbAjMGBdTenpJv6_OQ4oPYGScQ0gMOFsO8gf-R7Wy-=Lg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] USB: host: Introduce flag to enable use of 64-bit
- dma_mask for ehci-platform
-To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        David Daney <david.daney@cavium.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-usb <linux-usb@vger.kernel.org>
+Received: by 10.140.231.6 with HTTP; Thu, 13 Nov 2014 22:28:12 -0800 (PST)
+In-Reply-To: <20141031113358.GY32045@tbergstrom-lnx.Nvidia.com>
+References: <1414666135-14313-1-git-send-email-tomeu.vizoso@collabora.com> <20141031113358.GY32045@tbergstrom-lnx.Nvidia.com>
+From:   Tomeu Vizoso <tomeu.vizoso@collabora.com>
+Date:   Fri, 14 Nov 2014 07:28:12 +0100
+X-Google-Sender-Auth: 5V4NNtL_gIvbcNejuvjjnlWok3Y
+Message-ID: <CAAObsKARz=Y3J74Fm+MVOuH-ftK6yGSxWnNtd3LpHZjebKCGsg@mail.gmail.com>
+Subject: Re: [PATCH v5 0/7] Per-user clock constraints
+To:     Peter De Schrijver <pdeschrijver@nvidia.com>
+Cc:     Mike Turquette <mturquette@linaro.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Alex Elder <elder@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>, linux-doc@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, linux-omap@vger.kernel.org,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Matt Porter <mporter@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <tomeu.vizoso@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44150
+X-archive-position: 44151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: tomeu.vizoso@collabora.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,89 +64,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014-11-13 13:36 GMT-08:00 Andreas Herrmann
-<andreas.herrmann@caviumnetworks.com>:
-> ehci-octeon driver used a 64-bit dma_mask. With removal of ehci-octeon
-> and usage of ehci-platform ehci dma_mask is now limited to 32 bits
-> (coerced in ehci_platform_probe).
->
-> Provide a flag in ehci platform data to allow use of 64 bits for
-> dma_mask.
+On 31 October 2014 12:33, Peter De Schrijver <pdeschrijver@nvidia.com> wrote:
+> On Thu, Oct 30, 2014 at 11:48:26AM +0100, Tomeu Vizoso wrote:
+>> Hello,
+>>
+>> this fifth version of the series has just one change, suggested by Stephen:
 
-Why not just allow enforcing an arbitrary DMA mask?
+Hi Mike, how is this looking for 3.19?
 
+Regards,
+
+Tomeu
+
+>> * Initialize clk.ceiling_constraint to ULONG_MAX and warn about new floor
+>> constraints being higher than the existing ceiling.
+>>
+>> The first five patches are just cleanups that should be desirable on their own,
+>> and that should make easier to review the actual per-user clock patch.
+>>
+>> The sixth patch actually moves the per-clock data that was stored in struct
+>> clk to a new struct clk_core and adds references to it from both struct clk and
+>> struct clk_hw. struct clk is now ready to contain information that is specific
+>> to a given clk consumer.
+>>
+>> The seventh patch adds API for setting floor and ceiling constraints and stores
+>> that information on the per-user struct clk, which is iterable from struct
+>> clk_core.
+>>
+>> They are based on top of 3.18-rc1.
+>>
+>> http://cgit.collabora.com/git/user/tomeu/linux.git/log/?h=per-user-clk-constraints-v5
+>>
 >
-> Cc: David Daney <david.daney@cavium.com>
-> Cc: Alex Smith <alex.smith@imgtec.com>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-> ---
->  arch/mips/cavium-octeon/octeon-platform.c |    4 +---
->  drivers/usb/host/ehci-platform.c          |    3 ++-
->  include/linux/usb/ehci_pdriver.h          |    1 +
->  3 files changed, 4 insertions(+), 4 deletions(-)
+> Acked-By: Peter De Schrijver <pdeschrijver@nvidia.com>
 >
-> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-> index eea60b6..12410a2 100644
-> --- a/arch/mips/cavium-octeon/octeon-platform.c
-> +++ b/arch/mips/cavium-octeon/octeon-platform.c
-> @@ -310,6 +310,7 @@ static struct usb_ehci_pdata octeon_ehci_pdata = {
->  #ifdef __BIG_ENDIAN
->         .big_endian_mmio        = 1,
->  #endif
-> +       .dma_mask_64    = 1,
->         .power_on       = octeon_ehci_power_on,
->         .power_off      = octeon_ehci_power_off,
->  };
-> @@ -331,8 +332,6 @@ static void __init octeon_ehci_hw_start(struct device *dev)
->         octeon2_usb_clocks_stop();
->  }
+> Mike,
 >
-> -static u64 octeon_ehci_dma_mask = DMA_BIT_MASK(64);
-> -
->  static int __init octeon_ehci_device_init(void)
->  {
->         struct platform_device *pd;
-> @@ -347,7 +346,6 @@ static int __init octeon_ehci_device_init(void)
->         if (!pd)
->                 return 0;
+> Do you think this will be merged for 3.19?
 >
-> -       pd->dev.dma_mask = &octeon_ehci_dma_mask;
->         pd->dev.platform_data = &octeon_ehci_pdata;
->         octeon_ehci_hw_start(&pd->dev);
+> Thanks,
 >
-> diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
-> index 2da18ea..6df808b 100644
-> --- a/drivers/usb/host/ehci-platform.c
-> +++ b/drivers/usb/host/ehci-platform.c
-> @@ -155,7 +155,8 @@ static int ehci_platform_probe(struct platform_device *dev)
->         if (!pdata)
->                 pdata = &ehci_platform_defaults;
->
-> -       err = dma_coerce_mask_and_coherent(&dev->dev, DMA_BIT_MASK(32));
-> +       err = dma_coerce_mask_and_coherent(&dev->dev,
-> +               pdata->dma_mask_64 ? DMA_BIT_MASK(64) : DMA_BIT_MASK(32));
->         if (err)
->                 return err;
->
-> diff --git a/include/linux/usb/ehci_pdriver.h b/include/linux/usb/ehci_pdriver.h
-> index 7eb4dcd..f69529e 100644
-> --- a/include/linux/usb/ehci_pdriver.h
-> +++ b/include/linux/usb/ehci_pdriver.h
-> @@ -45,6 +45,7 @@ struct usb_ehci_pdata {
->         unsigned        big_endian_desc:1;
->         unsigned        big_endian_mmio:1;
->         unsigned        no_io_watchdog:1;
-> +       unsigned        dma_mask_64:1;
->
->         /* Turn on all power and clocks */
->         int (*power_on)(struct platform_device *pdev);
+> Peter.
 > --
-> 1.7.9.5
->
->
-
-
-
--- 
-Florian
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/

@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Nov 2014 23:08:22 +0100 (CET)
-Received: from relay1.mentorg.com ([192.94.38.131]:54469 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Nov 2014 23:08:38 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:54485 "EHLO
         relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013682AbaKOWIUGnTcH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Nov 2014 23:08:20 +0100
+        with ESMTP id S27013726AbaKOWIeWKEZH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Nov 2014 23:08:34 +0100
 Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
         by relay1.mentorg.com with esmtp 
-        id 1XplVt-0003rO-Km from Maciej_Rozycki@mentor.com ; Sat, 15 Nov 2014 14:08:13 -0800
+        id 1XplW8-0003tA-8M from Maciej_Rozycki@mentor.com ; Sat, 15 Nov 2014 14:08:28 -0800
 Received: from localhost (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
  (137.202.0.104) with Microsoft SMTP Server (TLS) id 14.3.181.6; Sat, 15 Nov
- 2014 22:08:12 +0000
-Date:   Sat, 15 Nov 2014 22:08:09 +0000
+ 2014 22:08:26 +0000
+Date:   Sat, 15 Nov 2014 22:08:23 +0000
 From:   "Maciej W. Rozycki" <macro@codesourcery.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>
-Subject: [PATCH 3/7] MIPS: signal.c: Fix an invalid cast in ISA mode bit
- handling
+Subject: [PATCH 4/7] MIPS: Kconfig: Only allow 32-bit microMIPS builds
 In-Reply-To: <alpine.DEB.1.10.1411140122420.2881@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.1.10.1411152059520.2881@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.1.10.1411152105480.2881@tp.orcam.me.uk>
 References: <alpine.DEB.1.10.1411140122420.2881@tp.orcam.me.uk>
 User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
 MIME-Version: 1.0
@@ -25,7 +24,7 @@ Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44186
+X-archive-position: 44187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,38 +41,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fix:
+Only allow 32-bit microMIPS builds, we're not ready yet for 64-bit 
+microMIPS support.
 
-arch/mips/kernel/signal.c: In function 'handle_signal':
-arch/mips/kernel/signal.c:533:21: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
-  unsigned int tmp = (unsigned int)current->mm->context.vdso;
-                     ^
-arch/mips/kernel/signal.c:536:9: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  vdso = (void *)tmp;
-         ^
-cc1: all warnings being treated as errors
+QEMU does have support for the 64-bit microMIPS ISA and with minor 
+tweaks it is possible to have a 64-bit processor emulated there that 
+runs microMIPS code, so despite the lack of actual 64-bit microMIPS 
+hardware there is a way to run 64-bit microMIPS Linux, but it can all be 
+considered early development and we are not there yet.  Userland tools 
+are lacking too, e.g. GCC produces bad code:
 
-when building a 64-bit kernel.
+{standard input}: Assembler messages:
+{standard input}:380: Warning: wrong size instruction in a 16-bit branch delay slot
 
-This is not really a supported configuration, but the cast is wrong 
-either way, Linux makes the assumption that sizeof(void *) equals 
-sizeof(unsigned long) and therefore the latter type is expected to be 
-used where integer operations have to be applied to pointers for some 
-reason.
+And our build fails early on, so disable the configuration, for the sake 
+of automatic random config checkers if nothing else.  Whoever needs to 
+experiment with 64-bit microMIPS support can revert this change easily.
 
 Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
 ---
-linux-umips-pointer-size.diff
-Index: linux-3.17-stable-malta64/arch/mips/kernel/signal.c
+linux-umips-32bit.diff
+Index: linux-3.18-rc4-malta/arch/mips/Kconfig
 ===================================================================
---- linux-3.17-stable-malta64.orig/arch/mips/kernel/signal.c	2014-11-14 04:06:50.000000000 +0000
-+++ linux-3.17-stable-malta64/arch/mips/kernel/signal.c	2014-11-14 16:55:05.891621120 +0000
-@@ -530,7 +530,7 @@ static void handle_signal(struct ksignal
- 	struct mips_abi *abi = current->thread.abi;
- #ifdef CONFIG_CPU_MICROMIPS
- 	void *vdso;
--	unsigned int tmp = (unsigned int)current->mm->context.vdso;
-+	unsigned long tmp = (unsigned long)current->mm->context.vdso;
+--- linux-3.18-rc4-malta.orig/arch/mips/Kconfig	2014-11-15 05:55:56.441902868 +0000
++++ linux-3.18-rc4-malta/arch/mips/Kconfig	2014-11-15 05:56:01.941907996 +0000
+@@ -2115,7 +2115,7 @@ config CPU_HAS_SMARTMIPS
+ 	  here.
  
- 	set_isa16_mode(tmp);
- 	vdso = (void *)tmp;
+ config CPU_MICROMIPS
+-	depends on SYS_SUPPORTS_MICROMIPS
++	depends on 32BIT && SYS_SUPPORTS_MICROMIPS
+ 	bool "Build kernel using microMIPS ISA"
+ 	help
+ 	  When this option is enabled the kernel will be built using the

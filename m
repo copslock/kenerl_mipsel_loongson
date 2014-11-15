@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Nov 2014 23:07:25 +0100 (CET)
-Received: from relay1.mentorg.com ([192.94.38.131]:54440 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Nov 2014 23:07:41 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:54453 "EHLO
         relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013726AbaKOWHWND9rm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Nov 2014 23:07:22 +0100
+        with ESMTP id S27013740AbaKOWHbhqfOF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Nov 2014 23:07:31 +0100
 Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
         by relay1.mentorg.com with esmtp 
-        id 1XplUu-0003ej-CC from Maciej_Rozycki@mentor.com ; Sat, 15 Nov 2014 14:07:12 -0800
+        id 1XplV7-0003h6-Gq from Maciej_Rozycki@mentor.com ; Sat, 15 Nov 2014 14:07:25 -0800
 Received: from localhost (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
  (137.202.0.104) with Microsoft SMTP Server (TLS) id 14.3.181.6; Sat, 15 Nov
- 2014 22:07:10 +0000
-Date:   Sat, 15 Nov 2014 22:07:07 +0000
+ 2014 22:07:24 +0000
+Date:   Sat, 15 Nov 2014 22:07:21 +0000
 From:   "Maciej W. Rozycki" <macro@codesourcery.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>
-Subject: [PATCH 1/7] MIPS: Kconfig: Enable microMIPS support for Malta
+Subject: [PATCH 2/7] MIPS: mm: Only build one microassembler that is
+ suitable
 In-Reply-To: <alpine.DEB.1.10.1411140122420.2881@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.1.10.1411152040190.2881@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.1.10.1411140205400.2881@tp.orcam.me.uk>
 References: <alpine.DEB.1.10.1411140122420.2881@tp.orcam.me.uk>
 User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
 MIME-Version: 1.0
@@ -24,7 +25,7 @@ Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44184
+X-archive-position: 44185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,65 +42,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add missing microMIPS support to Malta.  Currently the kernel only 
-enables support for the instruction set for the SEAD-3 board despite the 
-fact processor features have nothing to do with the board a processor is 
-installed in.
+The microMIPS microassembler is only suitable for configurations where
+the kernel itself is built to microMIPS machine code and not where only
+user microMIPS software is supported.  The former is controlled with the
+CPU_MICROMIPS configuration setting, whereas SYS_SUPPORTS_MICROMIPS is
+used for the latter.
 
-In this case there is no way to run microMIPS software in a fully 
-supported way under Linux on QEMU.  QEMU supports the emulation of a 
-Malta board, but does not emulate SEAD-3.  Linux supports running 
-microMIPS code on a SEAD-3 board, but hardcodes such support to off on 
-an emulated Malta board even if the processor selected has the microMIPS 
-instruction set implemented.
+Not only that, but with a given microMIPS vs standard MIPS kernel 
+configuration only one microassembler is needed, that matches the ISA 
+selected -- CP0.Config3.ISAOnExc is mandatory on microMIPS processors, 
+so there is never a need to mix microMIPS and standard MIPS code.
 
-Adding support for the SEAD-3 to QEMU is a major project.  Flipping a 
-bit in the kernel that shouldn't have been cleared in the first place is 
-a trivial effort.  Thus the answer is plain...
+Consequently build only the microassembler that matches the ISA selected 
+for the kernel.
 
 Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
 ---
-Hi,
-
- Depending on a processor configuration and particular software run you 
-may get away -- as long as your code doesn't trap into the kernel for 
-emulation.  This makes things even more frustrating as the thing appears 
-to run at first and then breaks in an odd place.
-
- Frankly I fail to see the point of having microMIPS disabled unless the 
-processor implied by the platform is plain too old (e.g. the DECstation) 
-or otherwise not ever supposed to support it (e.g. NetLogic or Octeon).  
-But I'll leave that for another occasion, for now let's just fix the 
-Malta that has an actual use.
-
- Hmm, we should probably have:
-
-	BUG_ON(!cpu_has_mmips && (cpu_data[0].options & MIPS_CPU_MICROMIPS));
-
-somewhere too, to avoid leading user code astray; we may consider more 
-consistency checks like this for cpu-feature-overrides.h, but this one 
-is at least semi-obvious.  Another, less invasive way could be the ELF 
-loader refusing microMIPS executables if (!cpu_has_mmips), but that has 
-the drawback the user won't notice until the last moment.
-
- We could have a similar `cpu_has_mips16' override too if people are so 
-concerned with the kernel binary size increase with optional features, 
-and consequently `cpu_has_mips', for pure-microMIPS processors.
-
- Please apply.
-
-  Maciej
-
-linux-malta-micromips.diff
-Index: linux-3.18-rc4-malta/arch/mips/Kconfig
+linux-mips-uasm-micromips.diff
+Index: linux-3.17-stable-malta/arch/mips/mm/Makefile
 ===================================================================
---- linux-3.18-rc4-malta.orig/arch/mips/Kconfig	2014-11-15 05:55:54.441908087 +0000
-+++ linux-3.18-rc4-malta/arch/mips/Kconfig	2014-11-15 05:55:56.441902868 +0000
-@@ -340,6 +340,7 @@ config MIPS_MALTA
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_MICROMIPS
- 	select SYS_SUPPORTS_MIPS_CMP
- 	select SYS_SUPPORTS_MIPS_CPS
- 	select SYS_SUPPORTS_MIPS16
+--- linux-3.17-stable-malta.orig/arch/mips/mm/Makefile	2014-11-14 19:44:22.000000000 +0000
++++ linux-3.17-stable-malta/arch/mips/mm/Makefile	2014-11-14 19:44:52.031933464 +0000
+@@ -4,7 +4,13 @@
+ 
+ obj-y				+= cache.o dma-default.o extable.o fault.o \
+ 				   gup.o init.o mmap.o page.o page-funcs.o \
+-				   tlbex.o tlbex-fault.o tlb-funcs.o uasm-mips.o
++				   tlbex.o tlbex-fault.o tlb-funcs.o
++
++ifdef CONFIG_CPU_MICROMIPS
++obj-y				+= uasm-micromips.o
++else
++obj-y				+= uasm-mips.o
++endif
+ 
+ obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
+ obj-$(CONFIG_64BIT)		+= pgtable-64.o
+@@ -22,5 +28,3 @@ obj-$(CONFIG_IP22_CPU_SCACHE)	+= sc-ip22
+ obj-$(CONFIG_R5000_CPU_SCACHE)	+= sc-r5k.o
+ obj-$(CONFIG_RM7000_CPU_SCACHE) += sc-rm7k.o
+ obj-$(CONFIG_MIPS_CPU_SCACHE)	+= sc-mips.o
+-
+-obj-$(CONFIG_SYS_SUPPORTS_MICROMIPS) += uasm-micromips.o

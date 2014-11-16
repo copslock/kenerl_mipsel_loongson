@@ -1,33 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Nov 2014 02:02:45 +0100 (CET)
-Received: from relay1.mentorg.com ([192.94.38.131]:60612 "EHLO
-        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013700AbaKPBCnSl90G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Nov 2014 02:02:43 +0100
-Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-02.mgc.mentorg.com)
-        by relay1.mentorg.com with esmtp 
-        id 1XpoEb-0002f6-Py from Maciej_Rozycki@mentor.com ; Sat, 15 Nov 2014 17:02:34 -0800
-Received: from localhost (137.202.0.76) by SVR-IES-FEM-02.mgc.mentorg.com
- (137.202.0.106) with Microsoft SMTP Server (TLS) id 14.3.181.6; Sun, 16 Nov
- 2014 01:02:32 +0000
-Date:   Sun, 16 Nov 2014 01:02:29 +0000
-From:   "Maciej W. Rozycki" <macro@codesourcery.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: c-r4k.c: Fix the 74K D-cache alias erratum
- workaround
-Message-ID: <alpine.DEB.1.10.1411160041230.2881@tp.orcam.me.uk>
-User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Nov 2014 02:50:59 +0100 (CET)
+Received: from mail-ig0-f177.google.com ([209.85.213.177]:38511 "EHLO
+        mail-ig0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013700AbaKPBuzDqudB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Nov 2014 02:50:55 +0100
+Received: by mail-ig0-f177.google.com with SMTP id uq10so2228569igb.10
+        for <multiple recipients>; Sat, 15 Nov 2014 17:50:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=uBh7PvRfotsMr48gs+37KUTkkmJIVowiArSiaXcceRU=;
+        b=tkGHjHzYIuH3wO2RbmIZgUPBgGVy5E6d9qarojiJT0Mfg8gwxG86OfVQGk1/HbP9uh
+         GrdinWzQ7awKo4W+euNqssI9h7OSdqhmR/GeDehLkFZJGmXMWRXNBg6cKCE1BFXJDmXm
+         vyPHa+W5NV7cRcxzAmbruI+qkCiBhIzf5UuS94lQuD/Mjveo91cWqXC9d9Q9hO1D1vnP
+         eqrPbck9XmY6fHTS1PtCp+T3e2obpdN/EIq1u5BuYEkM2YTxgxa3KNc1Y9NVd0g73yqv
+         HEAkrQfZWHrmlV622zCU4X0Afg19T8ZsJ/ZPtht0GSsKzjlErCUxC0JkuH2eqKFS/t2N
+         /saw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Return-Path: <Maciej_Rozycki@mentor.com>
+X-Received: by 10.51.16.37 with SMTP id ft5mr16339512igd.6.1416102648929; Sat,
+ 15 Nov 2014 17:50:48 -0800 (PST)
+Received: by 10.64.176.211 with HTTP; Sat, 15 Nov 2014 17:50:48 -0800 (PST)
+In-Reply-To: <1415771234-6364-1-git-send-email-chenhc@lemote.com>
+References: <1415771234-6364-1-git-send-email-chenhc@lemote.com>
+Date:   Sun, 16 Nov 2014 09:50:48 +0800
+X-Google-Sender-Auth: gLAfrzn_-nu2txobcbxrETWX7RY
+Message-ID: <CAAhV-H7qc_LChc8k8-RG9VsXm2MG55fOnxD37XAu2veZmDoqoQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Fix a copy & paste error in unistd.h
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44214
+X-archive-position: 44215
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@codesourcery.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,115 +56,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fix the 74K D-cache alias erratum workaround so that it actually works.  
-Our current code sets MIPS_CACHE_VTAG for the D-cache, but that flag 
-only has any effect for the I-cache.  Additionally MIPS_CACHE_PINDEX is 
-set for the D-cache if CP0.Config7.AR is also set for an affected 
-processor, leading to confusing information in the bootstrap log (the 
-flag isn't used beyond that).
+Hi, Ralf,
 
-So delete the setting of MIPS_CACHE_VTAG and rely on MIPS_CACHE_ALIASES, 
-set in a common place, removing I-cache coherency issues seen in GDB 
-testing with software breakpoints, gdbserver and ptrace(2), on affected 
-systems.
+It seems like this patch is missing during rebase.
 
-While at it add a little piece of explanation of what CP0.Config6.SYND 
-is so that people do not have to chase documentation.
+Huacai
 
-Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
----
-Hi,
-
- It looks like I-cache aliasing handling setup needs some TLC too, first 
-of all what's the purpose of checking CP0.Config7.IAR and setting the 
-MIPS_CACHE_ALIASES flag for the I-cache where the flag is nowhere used 
-afterwards?  Anyway that's something for another occasion.  For now, 
-please apply this change.
-
-  Maciej
-
-linux-mips-vtag-dcache-fix.diff
-Index: linux-3.18-rc4-malta/arch/mips/mm/c-r4k.c
-===================================================================
---- linux-3.18-rc4-malta.orig/arch/mips/mm/c-r4k.c	2014-11-16 00:08:15.511902298 +0000
-+++ linux-3.18-rc4-malta/arch/mips/mm/c-r4k.c	2014-11-16 00:20:45.131908612 +0000
-@@ -888,33 +888,39 @@ static inline void rm7k_erratum31(void)
- 	}
- }
- 
--static inline void alias_74k_erratum(struct cpuinfo_mips *c)
-+static inline int alias_74k_erratum(struct cpuinfo_mips *c)
- {
- 	unsigned int imp = c->processor_id & PRID_IMP_MASK;
- 	unsigned int rev = c->processor_id & PRID_REV_MASK;
-+	int present = 0;
- 
- 	/*
- 	 * Early versions of the 74K do not update the cache tags on a
- 	 * vtag miss/ptag hit which can occur in the case of KSEG0/KUSEG
--	 * aliases. In this case it is better to treat the cache as always
--	 * having aliases.
-+	 * aliases.  In this case it is better to treat the cache as always
-+	 * having aliases.  Also disable the synonym tag update feature
-+	 * where available.  In this case no opportunistic tag update will
-+	 * happen where a load causes a virtual address miss but a physical
-+	 * address hit during a D-cache look-up.
- 	 */
- 	switch (imp) {
- 	case PRID_IMP_74K:
- 		if (rev <= PRID_REV_ENCODE_332(2, 4, 0))
--			c->dcache.flags |= MIPS_CACHE_VTAG;
-+			present = 1;
- 		if (rev == PRID_REV_ENCODE_332(2, 4, 0))
- 			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
- 		break;
- 	case PRID_IMP_1074K:
- 		if (rev <= PRID_REV_ENCODE_332(1, 1, 0)) {
--			c->dcache.flags |= MIPS_CACHE_VTAG;
-+			present = 1;
- 			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
- 		}
- 		break;
- 	default:
- 		BUG();
- 	}
-+
-+	return present;
- }
- 
- static char *way_string[] = { NULL, "direct mapped", "2-way",
-@@ -926,6 +932,7 @@ static void probe_pcache(void)
- 	struct cpuinfo_mips *c = &current_cpu_data;
- 	unsigned int config = read_c0_config();
- 	unsigned int prid = read_c0_prid();
-+	int has_74k_erratum = 0;
- 	unsigned long config1;
- 	unsigned int lsize;
- 
-@@ -1232,7 +1239,7 @@ static void probe_pcache(void)
- 
- 	case CPU_74K:
- 	case CPU_1074K:
--		alias_74k_erratum(c);
-+		has_74k_erratum = alias_74k_erratum(c);
- 		/* Fall through. */
- 	case CPU_M14KC:
- 	case CPU_M14KEC:
-@@ -1246,7 +1253,7 @@ static void probe_pcache(void)
- 		if (!(read_c0_config7() & MIPS_CONF7_IAR) &&
- 		    (c->icache.waysize > PAGE_SIZE))
- 			c->icache.flags |= MIPS_CACHE_ALIASES;
--		if (read_c0_config7() & MIPS_CONF7_AR) {
-+		if (!has_74k_erratum && (read_c0_config7() & MIPS_CONF7_AR)) {
- 			/*
- 			 * Effectively physically indexed dcache,
- 			 * thus no virtual aliases.
-@@ -1255,7 +1262,7 @@ static void probe_pcache(void)
- 			break;
- 		}
- 	default:
--		if (c->dcache.waysize > PAGE_SIZE)
-+		if (has_74k_erratum || c->dcache.waysize > PAGE_SIZE)
- 			c->dcache.flags |= MIPS_CACHE_ALIASES;
- 	}
- 
+On Wed, Nov 12, 2014 at 1:47 PM, Huacai Chen <chenhc@lemote.com> wrote:
+> Commit 5df4c8dbbc (MIPS: Wire up bpf syscall.) break the N32 build
+> because of a copy & paste error.
+>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/include/uapi/asm/unistd.h |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+> index 9dc5856..d001bb1 100644
+> --- a/arch/mips/include/uapi/asm/unistd.h
+> +++ b/arch/mips/include/uapi/asm/unistd.h
+> @@ -1045,7 +1045,7 @@
+>  #define __NR_seccomp                   (__NR_Linux + 316)
+>  #define __NR_getrandom                 (__NR_Linux + 317)
+>  #define __NR_memfd_create              (__NR_Linux + 318)
+> -#define __NR_memfd_create              (__NR_Linux + 319)
+> +#define __NR_bpf                       (__NR_Linux + 319)
+>
+>  /*
+>   * Offset of the last N32 flavoured syscall
+> --
+> 1.7.7.3
+>

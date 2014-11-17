@@ -1,15 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 19:55:50 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.24]:55958 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013860AbaKQSzsgwd8e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 19:55:48 +0100
-Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
-        by mrelayeu.kundenserver.de (node=mreue103) with ESMTP (Nemesis)
-        id 0M3dNR-1Y8Nwj05JJ-00rJLg; Mon, 17 Nov 2014 19:55:16 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Jonas Gorski <jogo@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 20:39:31 +0100 (CET)
+Received: from mail-qa0-f42.google.com ([209.85.216.42]:32916 "EHLO
+        mail-qa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013863AbaKQTj2b-igg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 20:39:28 +0100
+Received: by mail-qa0-f42.google.com with SMTP id j7so4170780qaq.1
+        for <multiple recipients>; Mon, 17 Nov 2014 11:39:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=VSYzD6eGFggyeHtMlmg0o7KnynJ3qnCGonPzaX6NVls=;
+        b=WfqlAUUArDKdILs2AmuE1Xq/58ZZjnY3Ll4aM4TUl9l6N0pbc+trY1pQXyROE8BMYr
+         pig1oNLzr8WGrzinF2h99ODNiKJ5+zCduRqiZwyyAo9iW4nRog2rXqvYuDpBExlqM6Tt
+         JwyfWWEgAolb+UclHTq7Ql8tlmaHRqcg/Xg72RRtKkeMg5/ZAbTRMIOse9vDxJFUZy2T
+         n7Uu5TK0IS+KnivXdLy6IZ4aqBY2DfYd+ltFuACD9Q2G6/DIobJIQahLnwVZh0NteZP2
+         27PNjYcr0udA84aqxnAPOGDxlTT6Uv8UFL2TQUhto5xLZ2PChFWkrSmC3vijVh3Fn+OG
+         lDyQ==
+X-Received: by 10.140.48.11 with SMTP id n11mr36566763qga.1.1416253162638;
+ Mon, 17 Nov 2014 11:39:22 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.140.89.113 with HTTP; Mon, 17 Nov 2014 11:39:02 -0800 (PST)
+In-Reply-To: <2911624.UJRs5QOPN5@wuerfel>
+References: <1416097066-20452-1-git-send-email-cernekee@gmail.com>
+ <3480616.V2TMJFc7uE@wuerfel> <CAJiQ=7A29-v5mo1ybvE2UodOZx-FoGeBTHYcTZuX-LaqRaF1Lw@mail.gmail.com>
+ <2911624.UJRs5QOPN5@wuerfel>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Mon, 17 Nov 2014 11:39:02 -0800
+Message-ID: <CAJiQ=7BH8K=Q+JcWTKSfn6xAteOF4B6jahMu_qVd-FyZWD3pjA@mail.gmail.com>
+Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Jon Fraser <jfraser@broadcom.com>,
         Dmitry Torokhov <dtor@chromium.org>,
@@ -17,34 +37,18 @@ Cc:     Jonas Gorski <jogo@openwrt.org>,
         Jason Cooper <jason@lakedaemon.net>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
-Date:   Mon, 17 Nov 2014 19:55:15 +0100
-Message-ID: <14461008.6cZzGdpat2@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAJiQ=7An5eZ3j2+Zkx1crV9pBSVodkEQ+6ESGcFk5z0tDV7cHA@mail.gmail.com>
-References: <1416097066-20452-1-git-send-email-cernekee@gmail.com> <2018325.yOrLZndTTm@wuerfel> <CAJiQ=7An5eZ3j2+Zkx1crV9pBSVodkEQ+6ESGcFk5z0tDV7cHA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:421rEaFY5Yg1YBGWOhxVtojTlDLGGIEdfAI5x7x/YOB
- X2pIN5OencsOZN46tiNJIvDnsGix1xTt5VKUX80uhWcPspUHoz
- xKHzBylVrSGSgTyKR1hmDgbSKeVBXBhStFOSlOi/tWX/oosReF
- w36rd/FuzUffivJ9BZBX5iql0NnWvWhsueyfZ4RrFLny0+81S7
- opVhB+jmTt/vNc4uBSSDnNjmpsG0151TQEO5a2USgELhIu0fPu
- +ZMETO/t5VeX5eBiYb9/pzL3HlrU4uVD+hAVdyd0kGn9bo8X8z
- 5z06/Dkwj1/Ui3aFTUQ+W6yy5/xeoLvja7C4M4XUcby4PK8x+e
- CFFnsybqEKCBzp/CAywU=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jonas Gorski <jonas.gorski@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44242
+X-archive-position: 44243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,60 +61,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 17 November 2014 09:19:17 Kevin Cernekee wrote:
-> On Mon, Nov 17, 2014 at 8:13 AM, Arnd Bergmann <arnd@arndb.de> wrote:
-> > This is not just DT, it's actually an implementation of a boot
-> > interface. The situation here seems much more to what we had on
-> > PowerPC a long time ago than what we had on ARM before the DT
-> > conversion. I think the best approach here would be to move the
-> > platform specific bits into the decompressor code, and allow
-> > multiple implementations of that. This way you can have the
-> > generic vmlinux file that has a common DT parser, and you wrap
-> > that into one decompressor per platform, some of which can have
-> > their own board detection logic or pre-boot setup where necessary.
-> >
-> > To be honest, I think having multiple DT files linked into the
-> > kernel is a really bad idea, because it doesn't solve the
-> > scalability problem at all. What we did on ARM was to force those
-> > hacks out into external projects such as the PXA impedence
-> > matcher [https://github.com/zonque/pxa-impedance-matcher]. This
-> > can handle all weird boot protocol and adapt them to the normal
-> > well-defined interfaces we have in the kernel.
-> 
-> To some extent this is how BCM3384 was done[1].
-> 
-> There is a tradeoff here: to add support for the older platforms it is
-> easy to build a new DTB file into the kernel image, but it is a lot of
-> trouble to write a new 3rd stage bootloader.  Do we want to maximize
-> our list of supported boards, or are we shooting for a super clean
-> kernel implementation right off the bat?
+On Mon, Nov 17, 2014 at 10:46 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Monday 17 November 2014 09:01:02 Kevin Cernekee wrote:
+>> On Mon, Nov 17, 2014 at 4:16 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+>> Under arch/mips/bcm47xx I see a single mach type, but different builds
+>> for BMIPS3300 (R1/SSB) versus MIPS 74K (R2/BCMA).
+>
+> At least in Kconfig, the two are not mutually exclusive, so I assumed
+> you could enable them both at the same time.
 
-Right, when the norm is that you can't detect the board, having
-the wrapper in the kernel is the better approach, as PowerPC, which
-has a few dozen ways of linking the compressed kernel, while the
-vmlinux file uses a common method and passes everything in DT.
+Ah right, bcm47xx_defconfig doesn't actually enable
+CONFIG_CPU_MIPS32_R2.  So it will still run on R1 CPUs like BMIPS3300.
+On R2 systems it may lose a few optimizations/features.
 
-That way you can have the best of both.
+I suspect that BCM47xx could use the BMIPS multiplatform kernel, if
+somebody was willing to figure out how to convert board.c, leds.c,
+etc.
 
-> >> And unless there is one, having a
-> >> multiplatform kernel does not make much sense, as there is no sane way
-> >> to tell apart different platforms on boot.
-> >
-> > How do you normally tell boards apart on MIPS when you don't use DT?
-> 
-> On BCM7xxx (STB) kernels, we could assume the chip ID was in a known
-> register, and also we could call back into the bootloader to get a
-> somewhat-accurate board name.
-> 
-> On BCM63xx there is logic in arch/mips/bcm63xx/cpu.c to try to guess
-> the chip identity from the CPU type/revision (because the latter can
-> be read directly from CP0).
-> 
-> These systems were never really designed to support multiplatform
-> kernels.  The ARM BCM7xxx variants, by contrast, were.
+>> > If you wanted to do that however, starting with BMIPS you'd have
+>> > to make it possible to define a new platform without the
+>> > arch/mips/include/asm/mach-bmips/ directory (this should be possible
+>> > already, so the hardest part is done), replace all global function
+>> > calls (arch_init_irq, prom_init, get_system_type,  ...) with generic
+>> > platform-independent implementations or wrappers around per-platform
+>> > callbacks, and move the Kconfig section for CONFIG_BMIPS_MULTIPLATFORM
+>> > outside of the "System type" choice statement.
+>>
+>> Right.  The other question is how much support for legacy non-DT
+>> bootloaders really belongs in a true multiplatform kernel, as this
+>> stuff gets hairy fast.
+>
+> Yes, that's why I suggested following PowerPC rather than ARM in this
+> regard.  If you move the boot loader abstraction into the decompressor
+> instead of the platform code, you can avoid a lot of the problems.
 
-Guessing the chip doesn't really help you all that much of course
-as long as you don't know the board, and once you know that,
-the chip is implied.
-
-	Arnd
+One possible complication: for BCM63xx/BCM7xxx (MIPS) there is no
+decompressor in the kernel.  The firmware loads an ELF image into
+memory and jumps directly to kernel_entry.

@@ -1,62 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Dec 2014 11:20:36 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:48833 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007788AbaLAKUD4r3fj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Dec 2014 11:20:03 +0100
-Received: from bl15-144-175.dsl.telepac.pt ([188.80.144.175] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1XvO5L-0002Y9-J7; Mon, 01 Dec 2014 10:20:03 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: lib: memcpy: Restore NOP on delay slot before returning to caller" has been added to staging queue
-Date:   Mon,  1 Dec 2014 10:20:02 +0000
-Message-Id: <1417429202-21130-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.0
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44527
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Mon, 17 Nov 2014 09:32:38 +0000
+Subject: MIPS: lib: memcpy: Restore NOP on delay slot before returning to
+ caller
+Message-ID: <20141117093238.rr03zjl_PDPDBcPOvOX2RhhAj3YLvChTmUUi_lvNsnY@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 51b1029d9966060c6ad02030e6f251425b4f06c1 upstream.
 
-    MIPS: lib: memcpy: Restore NOP on delay slot before returning to caller
+Commit cf62a8b8134dd3 ("MIPS: lib: memcpy: Use macro to build the
+copy_user code") switched to a macro in order to build the memcpy
+symbols in preparation for the EVA support. However, this commit
+also removed the NOP instruction after the 'jr ra' when returning
+back to the caller. This had no visible side-effects since the next
+instruction was a load to the t0 register which was already in the
+clobbered list, but it may have undesired effects in the future
+if some other code is introduced in between the .Ldone and
+the .Ll_exc_copy labels.
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/8512/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/lib/memcpy.S | 1 +
+ 1 file changed, 1 insertion(+)
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.16.y-queue
-
-This patch is scheduled to be released in version 3.16.7-ckt3.
-
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Luis
-
-------
+diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+index c17ef80cf65a..5d3238af9b5c 100644
+--- a/arch/mips/lib/memcpy.S
++++ b/arch/mips/lib/memcpy.S
+@@ -503,6 +503,7 @@
+ 	STOREB(t0, NBYTES-2(dst), .Ls_exc_p1\@)
+ .Ldone\@:
+ 	jr	ra
++	 nop
+ 	.if __memcpy == 1
+ 	END(memcpy)
+ 	.set __memcpy, 0
+--
+2.1.0

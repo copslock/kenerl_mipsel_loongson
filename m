@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 17:13:55 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.13]:57208 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013838AbaKQQNx4zGit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 17:13:53 +0100
-Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
-        by mrelayeu.kundenserver.de (node=mreue105) with ESMTP (Nemesis)
-        id 0Lsz0c-1XwgEM1KyQ-012W5y; Mon, 17 Nov 2014 17:13:28 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jon Fraser <jfraser@broadcom.com>, dtor@chromium.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
-Date:   Mon, 17 Nov 2014 17:13:27 +0100
-Message-ID: <2018325.yOrLZndTTm@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAOiHx=ky5T7z3T3gX382d=3sw+gGUEfnwXwpcLGa_Oi5YyBwgw@mail.gmail.com>
-References: <1416097066-20452-1-git-send-email-cernekee@gmail.com> <3480616.V2TMJFc7uE@wuerfel> <CAOiHx=ky5T7z3T3gX382d=3sw+gGUEfnwXwpcLGa_Oi5YyBwgw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 17:38:17 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:46480 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013838AbaKQQiPJ0zul (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 17:38:15 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id F356DEC32608E;
+        Mon, 17 Nov 2014 16:38:05 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 17 Nov
+ 2014 16:38:08 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by klmail02.kl.imgtec.org
+ (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 17 Nov
+ 2014 16:38:08 +0000
+Received: from [192.168.159.30] (192.168.159.30) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 17 Nov
+ 2014 08:38:06 -0800
+Message-ID: <546A2465.4030103@imgtec.com>
+Date:   Mon, 17 Nov 2014 10:37:57 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:NYlqbZSnf5RW/jAy3d4f56sKxXhB/UM28+EjWDxy7hA
- yn/lLTlwn+1H6yhS2Ivs6nKk1n7aWBOaD2DiVFHuaq0wd3fkdp
- mvfjY5UaK41D9aeXrK/UTSjSd4FC/RELcMtJOcO5wcVMCjA4oA
- N2QSuZBqp61CKnkkysUn++PnJYQzyy61pEeuaATF6mg6RC+WWb
- I99HNp587MdmgbgPZtlvEOlWgz2k+dlhRl1oxXIqjilda13owm
- wwz20dzmQNQ/MWdJn+VDWKxmZGUd4baZ83ST1iKlJxoG0FG5vm
- zUt/EwISy9Zdj+QVcs/N6hh23q8hB+10bFPSd+fhc0fBwVg9HV
- EtoUFDTpm5T63v29JarM=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+To:     "Maciej W. Rozycki" <macro@codesourcery.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 0/7] MIPS: Assorted microMIPS fixes
+References: <alpine.DEB.1.10.1411140122420.2881@tp.orcam.me.uk>
+In-Reply-To: <alpine.DEB.1.10.1411140122420.2881@tp.orcam.me.uk>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.159.30]
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44233
+X-archive-position: 44234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,102 +49,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 17 November 2014 15:52:15 Jonas Gorski wrote:
-> On Mon, Nov 17, 2014 at 1:16 PM, Arnd Bergmann <arnd@arndb.de> wrote:
-> > I still think this is different in the sense that ARM multiplatform
-> > support is about combining platforms from separate mach-* directories,
-> > while your approach was to rewrite multiple mach-* directories into
-> > a single new one that remains separate from the others. While this is
-> > a great improvement, it doesn't get you any closer to having a
-> > combined BMIPS+RALINK+JZ4740+ATH79 kernel for instance. I don't know
-> > if such a kernel is something that anybody wants, or if it's even
-> > technically possible.
-> >
-> > If you wanted to do that however, starting with BMIPS you'd have
-> > to make it possible to define a new platform without the
-> > arch/mips/include/asm/mach-bmips/ directory (this should be possible
-> > already, so the hardest part is done), replace all global function
-> > calls (arch_init_irq, prom_init, get_system_type,  ...) with generic
-> > platform-independent implementations or wrappers around per-platform
-> > callbacks, and move the Kconfig section for CONFIG_BMIPS_MULTIPLATFORM
-> > outside of the "System type" choice statement.
-> > Until you do that, your platform isn't "more multipliplatform" than
-> > the others really, it just abstracts the differences between some
-> > SoCs nicer than most.
+On 11/15/2014 04:06 PM, Maciej W. Rozycki wrote:
+> Hi,
 > 
-> I guess a big blocker for such a real mips multiplatform kernel is
-> that there is still no defined (standard) interface for passing a
-> device tree to the kernel from the bootlader on mips, unlike on arm
-> (at least I'm not aware of any).
+>  In an attempt to build a kernel that supports microMIPS userland and 
+> runs on QEMU I came across the problem that, due to apparently arbitrary 
+> decisions made sometime in the past, there is no such combination 
+> possible.
+> 
+>  I went ahead and fixed our configuration to support that, but in the 
+> course of doing that I came across numerous problems that I decided to 
+> address at the same time.  This mini patch series the result.  Most of 
+> the changes are actually independent of one another, although there is a 
+> syntactical overlap between 5/7 and 7/7, so these have to be applied in 
+> order.
+> 
+>  Of course I had to draw a line somewhere so as not to get distracted 
+> too much from the actual purpose I have the need to run such a 
+> configuration, so I left some further bugs I spotted for the next 
+> occasion.
+> 
+>  Ralf, please backport these fixes to stable branches as applicable; I 
+> can supply you with a 3.17 equivalent of 5/7 as this piece has changed 
+> significantly recently and I actually had to forward-port the original 
+> change that I made to address the issue.
+> 
+>   Maciej
+> 
+Maciej,
 
-There are a few things to be worked out, I don't think this one is
-particularly hard. Looking through the list of public symbols:
+This whole patchset looks really good. I went through all of them and
+just made a few comments during review.
 
-* arch/mips/bmips/dma.c, 
-  arch/mips/include/asm/mach-bmips/dma-coherence.h:
-plat_map_dma_mem
-plat_map_dma_mem_page
-plat_dma_addr_to_phys
-plat_unmap_dma_mem
-
-This should really be done in a generic way: What Kevin's patch
-does here is to hardcode a mapping of DMA addresses. We have a way
-to express this in DT in a generic manner, using the dma-ranges
-property (currently not parsed completely on ARM yet, working on
-it, but we don't have that many special cases on modern platforms).
-Once you have the correct dma-ranges set and the code parses them
-properly, the bmips specific code could just go away, and someone
-has to do this already to support the ARM based bcm platforms I
-suspect.
-
-*arch/mips/bmips/irq.c:
-get_c0_compare_int
-arch_init_irq
-
-I don't completely understand this code, but I think once the irqchips
-all use irqdomains correctly and the code is moved to drivers/irqchip,
-this can also go away. There is already code to override
-get_c0_compare_int().
+Steve
 
 
-* arch/mips/include/asm/mach-bmips/war.h
-
-Very few platforms actually set any of the workarounds, so I guess the
-file setting them all to zero could just be moved to
-arch/mips/include/asm/mach-generic/.
-
-prom_init
-prom_free_prom_memory
-get_system_type
-plat_time_init
-find_dtb
-plat_mem_setup
-device_tree_init
-plat_of_setup
-plat_dev_init
-
-This is not just DT, it's actually an implementation of a boot
-interface. The situation here seems much more to what we had on
-PowerPC a long time ago than what we had on ARM before the DT
-conversion. I think the best approach here would be to move the
-platform specific bits into the decompressor code, and allow
-multiple implementations of that. This way you can have the
-generic vmlinux file that has a common DT parser, and you wrap
-that into one decompressor per platform, some of which can have
-their own board detection logic or pre-boot setup where necessary.
-
-To be honest, I think having multiple DT files linked into the
-kernel is a really bad idea, because it doesn't solve the
-scalability problem at all. What we did on ARM was to force those
-hacks out into external projects such as the PXA impedence
-matcher [https://github.com/zonque/pxa-impedance-matcher]. This
-can handle all weird boot protocol and adapt them to the normal
-well-defined interfaces we have in the kernel.
-
-> And unless there is one, having a
-> multiplatform kernel does not make much sense, as there is no sane way
-> to tell apart different platforms on boot.
-
-How do you normally tell boards apart on MIPS when you don't use DT?
-
-	Arnd
+Reviewed-by: Steven J. Hill <Steven.Hill@imgtec.com>

@@ -1,49 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2014 00:07:18 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:47741 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013884AbaKQXHPaa9ti (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 18 Nov 2014 00:07:15 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id C0E6528BDDD;
-        Tue, 18 Nov 2014 00:05:49 +0100 (CET)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f180.google.com (mail-qc0-f180.google.com [209.85.216.180])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id A51A428BDEA;
-        Tue, 18 Nov 2014 00:05:44 +0100 (CET)
-Received: by mail-qc0-f180.google.com with SMTP id i8so6037210qcq.25
-        for <multiple recipients>; Mon, 17 Nov 2014 15:07:08 -0800 (PST)
-X-Received: by 10.140.93.49 with SMTP id c46mr9050838qge.58.1416265628921;
- Mon, 17 Nov 2014 15:07:08 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2014 00:30:12 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:49686 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013796AbaKQXaKN2zLw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Nov 2014 00:30:10 +0100
+Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
+        by relay1.mentorg.com with esmtp 
+        id 1XqVk6-00031s-0o from Maciej_Rozycki@mentor.com ; Mon, 17 Nov 2014 15:29:58 -0800
+Received: from localhost (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
+ (137.202.0.104) with Microsoft SMTP Server (TLS) id 14.3.181.6; Mon, 17 Nov
+ 2014 23:29:56 +0000
+Date:   Mon, 17 Nov 2014 23:29:52 +0000
+From:   "Maciej W. Rozycki" <macro@codesourcery.com>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re:  MIPS: c-r4k.c: Fix the 74K D-cache alias erratum workaround
+In-Reply-To: <546A56C9.4060608@imgtec.com>
+Message-ID: <alpine.DEB.1.10.1411172321110.2881@tp.orcam.me.uk>
+References: <546A56C9.4060608@imgtec.com>
+User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
 MIME-Version: 1.0
-Received: by 10.140.95.79 with HTTP; Mon, 17 Nov 2014 15:06:48 -0800 (PST)
-In-Reply-To: <CAJiQ=7B6Xwz2iqqH4vEG8WzPOzHj7NHsuGWqq49uy-E34RHp4A@mail.gmail.com>
-References: <1416097066-20452-1-git-send-email-cernekee@gmail.com>
- <2911624.UJRs5QOPN5@wuerfel> <CAJiQ=7BH8K=Q+JcWTKSfn6xAteOF4B6jahMu_qVd-FyZWD3pjA@mail.gmail.com>
- <3357597.nYlNZ6O0nJ@wuerfel> <CAJiQ=7B6Xwz2iqqH4vEG8WzPOzHj7NHsuGWqq49uy-E34RHp4A@mail.gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Tue, 18 Nov 2014 00:06:48 +0100
-Message-ID: <CAOiHx=kutuOw4kTukm3FvSS-Fwah_yF2byDQFdpM9YQCn6x93g@mail.gmail.com>
-Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jon Fraser <jfraser@broadcom.com>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset="US-ASCII"
+Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44256
+X-archive-position: 44257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: macro@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,20 +42,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 17, 2014 at 10:21 PM, Kevin Cernekee <cernekee@gmail.com> wrote:
-> Currently the bootloader is responsible for decompressing the image.
-> On STB the bootloader typically loads a gzipped ELF file; on DSL/CM
-> the bootloader unpacks a custom image format containing an
-> LZMA-compressed kernel in some form.  So we would be
-> double-compressing the same kernel in this scheme.
+On Mon, 17 Nov 2014, Leonid Yegoshin wrote:
 
-For the latter I use a patch[1] for mips head.S that detects if
-there's a dtb appended to the vmlinux.bin, which would be trivial to
-adapt to what the well-defined (b)mips interface expects. Of course
-then there is no board detection at all, but I think that's an
-acceptable trade off.
+> > Fix the 74K D-cache alias erratum workaround so that it actually works.
+> > Our current code sets MIPS_CACHE_VTAG for the D-cache, but that flag
+> > only has any effect for the I-cache.  Additionally MIPS_CACHE_PINDEX is
+> > set for the D-cache if CP0.Config7.AR is also set for an affected
+> > processor, leading to confusing information in the bootstrap log (the
+> > flag isn't used beyond that).
+> 
+> > So delete the setting of MIPS_CACHE_VTAG and rely on MIPS_CACHE_ALIASES,
+> > set in a common place, removing I-cache coherency issues seen in GDB
+> > testing with software breakpoints, gdbserver and ptrace(2), on affected
+> > systems.
+> 
+> > While at it add a little piece of explanation of what CP0.Config6.SYND
+> > is so that people do not have to chase documentation.
+> 
+> This shift to MIPS_CACHE_ALIASES is not needed, a use of MIPS_CACHE_VTAG in
+> dcache is actually a way how to prevent some very specific situations in
+> 74K(E77)/1074K(E17) cache handling. It is not a case of cache aliasing and
+> name VTAG is used because it is related with virtual address conversion
+> tagging. I reused MIPS_CACHE_VTAG just to save some spare bits in
+> cpu_info.options and because D-cache never had virtual tagging like I-cache.
+> 
+> The setting d-cache aliases then CPU hasn't it is a significant performance
+> loss and should be avoided.
+> 
+> Please don't use this patch.
 
+ I repeat, there is no use in the current kernel of the MIPS_CACHE_VTAG 
+flag for the D-cache, there's no single piece of code throughout the 
+kernel that would check the presence of this flag once it has been set 
+and this erratum workaround piece is the only place where the flag is 
+set for the D-cache.  The flag is completely ignored for the D-cache and 
+the only existing uses of this flag are for the I-cache.
 
-Jonas
+ Leonid, I spent several hours chasing cache coherency issues util I 
+realised the workaround in its current form does not do anything, so 
+unless you propose an alternative fix, this change is the only way known 
+to bring systems affected to sanity.
 
-[1] http://git.openwrt.org/?p=openwrt.git;a=blob;f=target/linux/brcm63xx/patches-3.14/366-MIPS-add-support-for-vmlinux.bin-appended-DTB.patch;h=344e78b5b41e03bff5f3d1f9cce1e8e2cb1a9368;hb=HEAD
+ Ralf, please apply the change for now, if Leonid provides us with a 
+better fix later on, then my patch can be reverted.  Thanks.
+
+  Maciej

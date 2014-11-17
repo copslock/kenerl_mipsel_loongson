@@ -1,64 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 22:21:57 +0100 (CET)
-Received: from mail-wg0-f51.google.com ([74.125.82.51]:40958 "EHLO
-        mail-wg0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013874AbaKQVVyItm5l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 22:21:54 +0100
-Received: by mail-wg0-f51.google.com with SMTP id k14so6702480wgh.38
-        for <linux-mips@linux-mips.org>; Mon, 17 Nov 2014 13:21:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=9SCANkBJeRXuRyGAzXNdrP1+mbExT5jxyYLBv1+eFVs=;
-        b=gQvbdHsFuQMRasbU2IkrOFECEPoJmSLbyH4HTge3FVypBFf0+LOlp9RG5xKscGZ8ih
-         +Ipk/XCIXGS6U5oCpV3g8iZWUwn5vwDs0qZaQl5DYfZ7QlKOJHhiVo0Yay0N1A94YzZf
-         x6aHKVfUNP40+ONydvm+1/MLxMYcHaW7VdqD47oCM1IcYIan/CBTH1ISqrkwLo9ppjdf
-         IDcxkGkQllec0ZpAfb/4O8E+LSCOX60a+MuCrapm6dtxuhRzkim22LagdOLDOwhTINOD
-         xugAZfDk0O8KXnQL1+EZBtCLft4OW+ugAD8PmK5vogQ1BNOOHJKHQn031wS6ZT8UnUv8
-         ODfA==
-X-Gm-Message-State: ALoCoQniDchK5irZxlfqpen+NUobE0HjxxQ7etU2M18vpiXCcCqGMZUCt2Bjj9jzVCeB8smpOHlY
-X-Received: by 10.180.103.33 with SMTP id ft1mr33840580wib.71.1416259308592;
-        Mon, 17 Nov 2014 13:21:48 -0800 (PST)
-Received: from [192.168.1.15] (AToulouse-656-1-820-36.w109-215.abo.wanadoo.fr. [109.215.21.36])
-        by mx.google.com with ESMTPSA id bo1sm20379861wjc.18.2014.11.17.13.21.46
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Nov 2014 13:21:47 -0800 (PST)
-Message-ID: <546A66EA.3090107@linaro.org>
-Date:   Mon, 17 Nov 2014 22:21:46 +0100
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 22:22:17 +0100 (CET)
+Received: from mail-qc0-f181.google.com ([209.85.216.181]:59205 "EHLO
+        mail-qc0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013795AbaKQVWMegCLP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 22:22:12 +0100
+Received: by mail-qc0-f181.google.com with SMTP id m20so4345059qcx.12
+        for <multiple recipients>; Mon, 17 Nov 2014 13:22:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=D7q56/1ColYsOGeuTGJ5hdJz8KYJ3jmzzJ6yXaTYRsc=;
+        b=qc9JXTvmJDSlYzhgXcYeP7g4vu/KeZGWbtMKi4NLhCG/nNaNkz8rpETFosdEbtk9lv
+         hBtJWZtWrGbugiJTXdEw3FG8SyLtTE2Ly/dmyaL2oUjGiftf9gSN9NVMJcIscQCtP6aK
+         /loKjmvJj5Nm90rGPhCWJeZZv4og22nPVXlw1MjrJyaejxxCuwYnOiPl7DYABUlGeS7w
+         yFkZUXeUNQa4kH3a5CwrGoIcX2W4eXBCnn6NKg14sFUwPdqztV54qpLsamx9M3873nZn
+         qCWBFsAdienQisvahFCm8Hsf2pRlsJgZRfjspg0MdDb3J+VwE6aXDzsoGonjLIucNk3z
+         cOqA==
+X-Received: by 10.140.46.75 with SMTP id j69mr29725621qga.106.1416259325758;
+ Mon, 17 Nov 2014 13:22:05 -0800 (PST)
 MIME-Version: 1.0
-To:     Andrew Bresticker <abrestic@chromium.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
+Received: by 10.140.89.113 with HTTP; Mon, 17 Nov 2014 13:21:45 -0800 (PST)
+In-Reply-To: <3357597.nYlNZ6O0nJ@wuerfel>
+References: <1416097066-20452-1-git-send-email-cernekee@gmail.com>
+ <2911624.UJRs5QOPN5@wuerfel> <CAJiQ=7BH8K=Q+JcWTKSfn6xAteOF4B6jahMu_qVd-FyZWD3pjA@mail.gmail.com>
+ <3357597.nYlNZ6O0nJ@wuerfel>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Mon, 17 Nov 2014 13:21:45 -0800
+Message-ID: <CAJiQ=7B6Xwz2iqqH4vEG8WzPOzHj7NHsuGWqq49uy-E34RHp4A@mail.gmail.com>
+Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jon Fraser <jfraser@broadcom.com>,
+        Dmitry Torokhov <dtor@chromium.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-CC:     John Crispin <blogic@openwrt.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V5 4/4] clocksource: mips-gic: Add device-tree support
-References: <1415821419-26974-1-git-send-email-abrestic@chromium.org> <1415821419-26974-5-git-send-email-abrestic@chromium.org>
-In-Reply-To: <1415821419-26974-5-git-send-email-abrestic@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.lezcano@linaro.org>
+        Jason Cooper <jason@lakedaemon.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jonas Gorski <jonas.gorski@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44249
+X-archive-position: 44250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,118 +61,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/12/2014 08:43 PM, Andrew Bresticker wrote:
-> Parse the GIC timer frequency and interrupt from the device-tree.
+On Mon, Nov 17, 2014 at 12:40 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+>> One possible complication: for BCM63xx/BCM7xxx (MIPS) there is no
+>> decompressor in the kernel.  The firmware loads an ELF image into
+>> memory and jumps directly to kernel_entry.
+>>
 >
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Right, that complicates it a bit, but is there a reason why a decompressor
+> would be hard to do, or would be considered a bad thing?
+> There is already generic decompressor code in arch/mips/boot/compressed/
+> that I would assume you could use without firmware changes. Are you
+> worried about boot time overhead?
 
-Hi Andrew,
+Currently the bootloader is responsible for decompressing the image.
+On STB the bootloader typically loads a gzipped ELF file; on DSL/CM
+the bootloader unpacks a custom image format containing an
+LZMA-compressed kernel in some form.  So we would be
+double-compressing the same kernel in this scheme.
 
-through which tree is this patch supposed to go ?
+STB/DSL should be able to boot the arch/mips/boot/compressed "vmlinuz"
+ELF file; I tested STB.  CM might be questionable, but doesn't need
+decompressor mods because the bootloader is DT-aware.
 
-Is there any dependency ?
+Also, the decompressor may need to be modified so that it recognizes /
+passes / doesn't overwrite DTB blobs coming from the bootloader.  And
+to make sure it doesn't stomp on any of the code or data that our
+bootloaders use for their callback mechanisms.
 
-> ---
-> Changes from v4:
->   - don't probe from irqchip; just warn if DT is wrong
-> Changes from v3:
->   - probe from GIC irqchip
-> New for v3.
-> ---
->   drivers/clocksource/Kconfig          |  1 +
->   drivers/clocksource/mips-gic-timer.c | 41 ++++++++++++++++++++++++++++++------
->   2 files changed, 35 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index cb7e7f4..89836dc 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -226,5 +226,6 @@ config CLKSRC_VERSATILE
->   config CLKSRC_MIPS_GIC
->   	bool
->   	depends on MIPS_GIC
-> +	select CLKSRC_OF
->
->   endmenu
-> diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-> index a749c81..3bd31b1 100644
-> --- a/drivers/clocksource/mips-gic-timer.c
-> +++ b/drivers/clocksource/mips-gic-timer.c
-> @@ -11,6 +11,7 @@
->   #include <linux/interrupt.h>
->   #include <linux/irqchip/mips-gic.h>
->   #include <linux/notifier.h>
-> +#include <linux/of_irq.h>
->   #include <linux/percpu.h>
->   #include <linux/smp.h>
->   #include <linux/time.h>
-> @@ -101,8 +102,6 @@ static int gic_clockevent_init(void)
->   	if (!cpu_has_counter || !gic_frequency)
->   		return -ENXIO;
->
-> -	gic_timer_irq = MIPS_GIC_IRQ_BASE +
-> -		GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
->   	setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
->
->   	register_cpu_notifier(&gic_cpu_nb);
-> @@ -123,17 +122,45 @@ static struct clocksource gic_clocksource = {
->   	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
->   };
->
-> -void __init gic_clocksource_init(unsigned int frequency)
-> +static void __init __gic_clocksource_init(void)
->   {
-> -	gic_frequency = frequency;
-> -
->   	/* Set clocksource mask. */
->   	gic_clocksource.mask = CLOCKSOURCE_MASK(gic_get_count_width());
->
->   	/* Calculate a somewhat reasonable rating value. */
-> -	gic_clocksource.rating = 200 + frequency / 10000000;
-> +	gic_clocksource.rating = 200 + gic_frequency / 10000000;
->
-> -	clocksource_register_hz(&gic_clocksource, frequency);
-> +	clocksource_register_hz(&gic_clocksource, gic_frequency);
->
->   	gic_clockevent_init();
->   }
-> +
-> +void __init gic_clocksource_init(unsigned int frequency)
-> +{
-> +	gic_frequency = frequency;
-> +	gic_timer_irq = MIPS_GIC_IRQ_BASE +
-> +		GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_COMPARE);
-> +
-> +	__gic_clocksource_init();
-> +}
-> +
-> +static void __init gic_clocksource_of_init(struct device_node *node)
-> +{
-> +	if (WARN_ON(!gic_present || !node->parent ||
-> +		    !of_device_is_compatible(node->parent, "mti,gic")))
-> +		return;
-> +
-> +	if (of_property_read_u32(node, "clock-frequency", &gic_frequency)) {
-> +		pr_err("GIC frequency not specified.\n");
-> +		return;
-> +	}
-> +	gic_timer_irq = irq_of_parse_and_map(node, 0);
-> +	if (!gic_timer_irq) {
-> +		pr_err("GIC timer IRQ not specified.\n");
-> +		return;
-> +	}
-> +
-> +	__gic_clocksource_init();
-> +}
-> +CLOCKSOURCE_OF_DECLARE(mips_gic_timer, "mti,gic-timer",
-> +		       gic_clocksource_of_init);
->
-
-
--- 
-  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+So, one possibility is to submit a V3 patch which allows 0 or 1 DTB
+files to be compiled in statically (similar to
+CONFIG_ARM_APPENDED_DTB) and requires a DT-aware bootloader or
+decompressor for anything else.  Any opinions?

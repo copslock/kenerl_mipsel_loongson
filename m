@@ -1,35 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 17:10:46 +0100 (CET)
-Received: from relay1.mentorg.com ([192.94.38.131]:64522 "EHLO
-        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013838AbaKQQKoTOzSC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 17:10:44 +0100
-Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
-        by relay1.mentorg.com with esmtp 
-        id 1XqOsu-0004fU-Uq from Maciej_Rozycki@mentor.com ; Mon, 17 Nov 2014 08:10:37 -0800
-Received: from localhost (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
- (137.202.0.104) with Microsoft SMTP Server (TLS) id 14.3.181.6; Mon, 17 Nov
- 2014 16:10:35 +0000
-Date:   Mon, 17 Nov 2014 16:10:32 +0000
-From:   "Maciej W. Rozycki" <macro@codesourcery.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: [PATCH 2/2] MIPS: jump_label.c: Handle the microMIPS J instruction
- encoding
-In-Reply-To: <alpine.DEB.1.10.1411170524070.2881@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.1.10.1411170530220.2881@tp.orcam.me.uk>
-References: <alpine.DEB.1.10.1411170524070.2881@tp.orcam.me.uk>
-User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 17:13:55 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.17.13]:57208 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013838AbaKQQNx4zGit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 17:13:53 +0100
+Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
+        by mrelayeu.kundenserver.de (node=mreue105) with ESMTP (Nemesis)
+        id 0Lsz0c-1XwgEM1KyQ-012W5y; Mon, 17 Nov 2014 17:13:28 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jon Fraser <jfraser@broadcom.com>, dtor@chromium.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
+Date:   Mon, 17 Nov 2014 17:13:27 +0100
+Message-ID: <2018325.yOrLZndTTm@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CAOiHx=ky5T7z3T3gX382d=3sw+gGUEfnwXwpcLGa_Oi5YyBwgw@mail.gmail.com>
+References: <1416097066-20452-1-git-send-email-cernekee@gmail.com> <3480616.V2TMJFc7uE@wuerfel> <CAOiHx=ky5T7z3T3gX382d=3sw+gGUEfnwXwpcLGa_Oi5YyBwgw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Return-Path: <Maciej_Rozycki@mentor.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V02:K0:NYlqbZSnf5RW/jAy3d4f56sKxXhB/UM28+EjWDxy7hA
+ yn/lLTlwn+1H6yhS2Ivs6nKk1n7aWBOaD2DiVFHuaq0wd3fkdp
+ mvfjY5UaK41D9aeXrK/UTSjSd4FC/RELcMtJOcO5wcVMCjA4oA
+ N2QSuZBqp61CKnkkysUn++PnJYQzyy61pEeuaATF6mg6RC+WWb
+ I99HNp587MdmgbgPZtlvEOlWgz2k+dlhRl1oxXIqjilda13owm
+ wwz20dzmQNQ/MWdJn+VDWKxmZGUd4baZ83ST1iKlJxoG0FG5vm
+ zUt/EwISy9Zdj+QVcs/N6hh23q8hB+10bFPSd+fhc0fBwVg9HV
+ EtoUFDTpm5T63v29JarM=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44232
+X-archive-position: 44233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@codesourcery.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,114 +56,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Implement the microMIPS encoding of the J instruction for the purpose of 
-the static keys feature, fixing a crash early on in bootstrap as the 
-kernel is unhappy seeing the ISA bit set in jump table entries.  Make 
-sure the ISA bit correctly reflects the instruction encoding chosen for 
-the kernel, 0 for the standard MIPS and 1 for the microMIPS encoding.
+On Monday 17 November 2014 15:52:15 Jonas Gorski wrote:
+> On Mon, Nov 17, 2014 at 1:16 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+> > I still think this is different in the sense that ARM multiplatform
+> > support is about combining platforms from separate mach-* directories,
+> > while your approach was to rewrite multiple mach-* directories into
+> > a single new one that remains separate from the others. While this is
+> > a great improvement, it doesn't get you any closer to having a
+> > combined BMIPS+RALINK+JZ4740+ATH79 kernel for instance. I don't know
+> > if such a kernel is something that anybody wants, or if it's even
+> > technically possible.
+> >
+> > If you wanted to do that however, starting with BMIPS you'd have
+> > to make it possible to define a new platform without the
+> > arch/mips/include/asm/mach-bmips/ directory (this should be possible
+> > already, so the hardest part is done), replace all global function
+> > calls (arch_init_irq, prom_init, get_system_type,  ...) with generic
+> > platform-independent implementations or wrappers around per-platform
+> > callbacks, and move the Kconfig section for CONFIG_BMIPS_MULTIPLATFORM
+> > outside of the "System type" choice statement.
+> > Until you do that, your platform isn't "more multipliplatform" than
+> > the others really, it just abstracts the differences between some
+> > SoCs nicer than most.
+> 
+> I guess a big blocker for such a real mips multiplatform kernel is
+> that there is still no defined (standard) interface for passing a
+> device tree to the kernel from the bootlader on mips, unlike on arm
+> (at least I'm not aware of any).
 
-Also make sure the instruction to patch is a 32-bit NOP in the microMIPS 
-mode as by default the 16-bit short encoding is assumed
+There are a few things to be worked out, I don't think this one is
+particularly hard. Looking through the list of public symbols:
 
-Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
----
-Hi,
+* arch/mips/bmips/dma.c, 
+  arch/mips/include/asm/mach-bmips/dma-coherence.h:
+plat_map_dma_mem
+plat_map_dma_mem_page
+plat_dma_addr_to_phys
+plat_unmap_dma_mem
 
- Rather obvious, mostly a bit different bit shuffling.  I think all code 
-that reads or writes microMIPS instructions should be audited and the 
-operations abstracted so that every place does not have to repeat the 
-same steps manually, but that is something for another occasion.  
+This should really be done in a generic way: What Kevin's patch
+does here is to hardcode a mapping of DMA addresses. We have a way
+to express this in DT in a generic manner, using the dma-ranges
+property (currently not parsed completely on ARM yet, working on
+it, but we don't have that many special cases on modern platforms).
+Once you have the correct dma-ranges set and the code parses them
+properly, the bmips specific code could just go away, and someone
+has to do this already to support the ARM based bcm platforms I
+suspect.
 
- Meanwhile, please apply.
+*arch/mips/bmips/irq.c:
+get_c0_compare_int
+arch_init_irq
 
-  Maciej
+I don't completely understand this code, but I think once the irqchips
+all use irqdomains correctly and the code is moved to drivers/irqchip,
+this can also go away. There is already code to override
+get_c0_compare_int().
 
-linux-umips-jump-label.diff
-Index: linux-3.17-stable-malta-el/arch/mips/include/asm/jump_label.h
-===================================================================
---- linux-3.17-stable-malta-el.orig/arch/mips/include/asm/jump_label.h	2014-11-17 02:12:17.000000000 +0000
-+++ linux-3.17-stable-malta-el/arch/mips/include/asm/jump_label.h	2014-11-17 07:06:18.491909609 +0000
-@@ -20,9 +20,15 @@
- #define WORD_INSN ".word"
- #endif
- 
-+#ifdef CONFIG_CPU_MICROMIPS
-+#define NOP_INSN "nop32"
-+#else
-+#define NOP_INSN "nop"
-+#endif
-+
- static __always_inline bool arch_static_branch(struct static_key *key)
- {
--	asm_volatile_goto("1:\tnop\n\t"
-+	asm_volatile_goto("1:\t" NOP_INSN "\n\t"
- 		"nop\n\t"
- 		".pushsection __jump_table,  \"aw\"\n\t"
- 		WORD_INSN " 1b, %l[l_yes], %0\n\t"
-Index: linux-3.17-stable-malta-el/arch/mips/kernel/jump_label.c
-===================================================================
---- linux-3.17-stable-malta-el.orig/arch/mips/kernel/jump_label.c	2014-11-17 07:06:18.000000000 +0000
-+++ linux-3.17-stable-malta-el/arch/mips/kernel/jump_label.c	2014-11-17 08:28:23.781948719 +0000
-@@ -18,31 +18,53 @@
- 
- #ifdef HAVE_JUMP_LABEL
- 
--#define J_RANGE_MASK ((1ul << 28) - 1)
-+/*
-+ * Define parameters for the standard MIPS and the microMIPS jump
-+ * instruction encoding respectively:
-+ *
-+ * - the ISA bit of the target, either 0 or 1 respectively,
-+ *
-+ * - the amount the jump target address is shifted right to fit in the
-+ *   immediate field of the machine instruction, either 2 or 1,
-+ *
-+ * - the mask determining the size of the jump region relative to the
-+ *   delay-slot instruction, either 256MB or 128MB,
-+ *
-+ * - the jump target alignment, either 4 or 2 bytes.
-+ */
-+#define J_ISA_BIT	IS_ENABLED(CONFIG_CPU_MICROMIPS)
-+#define J_RANGE_SHIFT	(2 - J_ISA_BIT)
-+#define J_RANGE_MASK	((1ul << (26 + J_RANGE_SHIFT)) - 1)
-+#define J_ALIGN_MASK	((1ul << J_RANGE_SHIFT) - 1)
- 
- void arch_jump_label_transform(struct jump_entry *e,
- 			       enum jump_label_type type)
- {
-+	union mips_instruction *insn_p;
- 	union mips_instruction insn;
--	union mips_instruction *insn_p =
--		(union mips_instruction *)(unsigned long)e->code;
- 
--	/* Jump only works within a 256MB aligned region of its delay slot. */
-+	insn_p = (union mips_instruction *)msk_isa16_mode(e->code);
-+
-+	/* Jump only works within an aligned region its delay slot is in. */
- 	BUG_ON((e->target & ~J_RANGE_MASK) != ((e->code + 4) & ~J_RANGE_MASK));
- 
--	/* Target must have 4 byte alignment. */
--	BUG_ON((e->target & 3) != 0);
-+	/* Target must have the right alignment and ISA must be preserved. */
-+	BUG_ON((e->target & J_ALIGN_MASK) != J_ISA_BIT);
- 
- 	if (type == JUMP_LABEL_ENABLE) {
--		insn.j_format.opcode = j_op;
--		insn.j_format.target = (e->target & J_RANGE_MASK) >> 2;
-+		insn.j_format.opcode = J_ISA_BIT ? mm_j32_op : j_op;
-+		insn.j_format.target = e->target >> J_RANGE_SHIFT;
- 	} else {
- 		insn.word = 0; /* nop */
- 	}
- 
- 	get_online_cpus();
- 	mutex_lock(&text_mutex);
--	*insn_p = insn;
-+	if (IS_ENABLED(CONFIG_CPU_MICROMIPS)) {
-+		insn_p->halfword[0] = insn.word >> 16;
-+		insn_p->halfword[1] = insn.word;
-+	} else
-+		*insn_p = insn;
- 
- 	flush_icache_range((unsigned long)insn_p,
- 			   (unsigned long)insn_p + sizeof(*insn_p));
+
+* arch/mips/include/asm/mach-bmips/war.h
+
+Very few platforms actually set any of the workarounds, so I guess the
+file setting them all to zero could just be moved to
+arch/mips/include/asm/mach-generic/.
+
+prom_init
+prom_free_prom_memory
+get_system_type
+plat_time_init
+find_dtb
+plat_mem_setup
+device_tree_init
+plat_of_setup
+plat_dev_init
+
+This is not just DT, it's actually an implementation of a boot
+interface. The situation here seems much more to what we had on
+PowerPC a long time ago than what we had on ARM before the DT
+conversion. I think the best approach here would be to move the
+platform specific bits into the decompressor code, and allow
+multiple implementations of that. This way you can have the
+generic vmlinux file that has a common DT parser, and you wrap
+that into one decompressor per platform, some of which can have
+their own board detection logic or pre-boot setup where necessary.
+
+To be honest, I think having multiple DT files linked into the
+kernel is a really bad idea, because it doesn't solve the
+scalability problem at all. What we did on ARM was to force those
+hacks out into external projects such as the PXA impedence
+matcher [https://github.com/zonque/pxa-impedance-matcher]. This
+can handle all weird boot protocol and adapt them to the normal
+well-defined interfaces we have in the kernel.
+
+> And unless there is one, having a
+> multiplatform kernel does not make much sense, as there is no sane way
+> to tell apart different platforms on boot.
+
+How do you normally tell boards apart on MIPS when you don't use DT?
+
+	Arnd

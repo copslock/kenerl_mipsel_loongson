@@ -1,27 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 10:31:30 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12425 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 10:32:53 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56746 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012958AbaKQJb3HcilF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 10:31:29 +0100
+        with ESMTP id S27012958AbaKQJcvgJMVC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 10:32:51 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9063DB1F1539A;
-        Mon, 17 Nov 2014 09:31:21 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 17 Nov
- 2014 09:31:23 +0000
+        by Websense Email Security Gateway with ESMTPS id DA16D5A86215;
+        Mon, 17 Nov 2014 09:32:43 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 17 Nov 2014 09:31:23 +0000
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 17 Nov 2014 09:32:45 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.149) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 17 Nov 2014 09:31:22 +0000
+ 14.3.210.2; Mon, 17 Nov 2014 09:32:45 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>,
         <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: mm: tlb-r4k: Add missing HTW stop/start sequences
-Date:   Mon, 17 Nov 2014 09:31:07 +0000
-Message-ID: <1416216667-24462-1-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: lib: memcpy: Restore NOP on delay slot before returing to caller
+Date:   Mon, 17 Nov 2014 09:32:38 +0000
+Message-ID: <1416216758-24638-1-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.1.3
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -30,7 +27,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44223
+X-archive-position: 44224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,54 +44,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-HTW needs to stop and start again whenever the EntryHI register
-changes otherwise an inflight HTW operation might use the new
-EntryHI register for updating an old entry and that could lead
-to crashes or even a machine check exception. We fix this by
-ensuring the HTW has stop whenever the EntryHI register is about
-to change
+Commit cf62a8b8134dd3 ("MIPS: lib: memcpy: Use macro to build the
+copy_user code") switched to a macro in order to build the memcpy
+symbols in preparation for the EVA support. However, this commit
+also removed the NOP instruction after the 'jr ra' when returning
+back to the caller. This had no visible side-effects since the next
+instruction was a load to the t0 register which was already in the
+clobbered list, but it may have undesired effects in the future
+if some other code is introduced in between the .Ldone and
+the .Ll_exc_copy labels.
 
-Cc: <stable@vger.kernel.org> # v3.17+
+Cc: <stable@vger.kernel.org> # v3.15+
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/mm/tlb-r4k.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/lib/memcpy.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index fa6ebd4bc9e9..c3917e251f59 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -299,6 +299,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
- 
- 	local_irq_save(flags);
- 
-+	htw_stop();
- 	pid = read_c0_entryhi() & ASID_MASK;
- 	address &= (PAGE_MASK << 1);
- 	write_c0_entryhi(address | pid);
-@@ -346,6 +347,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
- 			tlb_write_indexed();
- 	}
- 	tlbw_use_hazard();
-+	htw_start();
- 	flush_itlb_vm(vma);
- 	local_irq_restore(flags);
- }
-@@ -422,6 +424,7 @@ __init int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
- 
- 	local_irq_save(flags);
- 	/* Save old context and create impossible VPN2 value */
-+	htw_stop();
- 	old_ctx = read_c0_entryhi();
- 	old_pagemask = read_c0_pagemask();
- 	wired = read_c0_wired();
-@@ -443,6 +446,7 @@ __init int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
- 
- 	write_c0_entryhi(old_ctx);
- 	write_c0_pagemask(old_pagemask);
-+	htw_start();
- out:
- 	local_irq_restore(flags);
- 	return ret;
+diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+index c17ef80cf65a..5d3238af9b5c 100644
+--- a/arch/mips/lib/memcpy.S
++++ b/arch/mips/lib/memcpy.S
+@@ -503,6 +503,7 @@
+ 	STOREB(t0, NBYTES-2(dst), .Ls_exc_p1\@)
+ .Ldone\@:
+ 	jr	ra
++	 nop
+ 	.if __memcpy == 1
+ 	END(memcpy)
+ 	.set __memcpy, 0
 -- 
 2.1.3

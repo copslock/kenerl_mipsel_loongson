@@ -1,54 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 20:47:44 +0100 (CET)
-Received: from mail-qg0-f42.google.com ([209.85.192.42]:39579 "EHLO
-        mail-qg0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013859AbaKQTrjddNlD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 20:47:39 +0100
-Received: by mail-qg0-f42.google.com with SMTP id i50so15822628qgf.15
-        for <multiple recipients>; Mon, 17 Nov 2014 11:47:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=5eKh+NNYDSP+JbItPWRw6XKoEgzrpSLO3Jc1l1OY82w=;
-        b=DmPVmjsMmxbzwYO3JALStRo765BkC3k9XsafVDLiSiJMQR6srdJHPrC8V1ogyy5fdY
-         /lISk1Rrr1oaLHFIGn6eiC8xKqHbA21pk45bSRGHrmyCVV0qtNFHDxP/ZnhoZJ33/XAD
-         /S/tL4rTeRtmmQgjSJ6AypShUkKLvhXhAfcrrvpTBTOVdNmTfpWylE8BleD3zp7mV2hS
-         awjwydopHIMfnubuWQqU9Zd0TdonhIVdL9QLJ8msPPW64SSQxQXuNAQpGkMFpw5eMWhX
-         MvroOviMz501GmA846bi9uS0D/4PG+b8A0l7rJTjVWLeqlxEAOiigXXmKkeNqvB5Qcxm
-         Iw0g==
-X-Received: by 10.224.148.18 with SMTP id n18mr37447123qav.100.1416253654071;
- Mon, 17 Nov 2014 11:47:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 21:13:14 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16737 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013859AbaKQUNMsnz9J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 21:13:12 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 1D2A780A6ADAF;
+        Mon, 17 Nov 2014 20:13:03 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 17 Nov
+ 2014 20:13:06 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by klmail02.kl.imgtec.org
+ (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 17 Nov
+ 2014 20:13:06 +0000
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 17 Nov
+ 2014 12:12:58 -0800
+Message-ID: <546A56C9.4060608@imgtec.com>
+Date:   Mon, 17 Nov 2014 12:12:57 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Mon, 17 Nov 2014 11:47:12 -0800 (PST)
-In-Reply-To: <14461008.6cZzGdpat2@wuerfel>
-References: <1416097066-20452-1-git-send-email-cernekee@gmail.com>
- <2018325.yOrLZndTTm@wuerfel> <CAJiQ=7An5eZ3j2+Zkx1crV9pBSVodkEQ+6ESGcFk5z0tDV7cHA@mail.gmail.com>
- <14461008.6cZzGdpat2@wuerfel>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Mon, 17 Nov 2014 11:47:12 -0800
-Message-ID: <CAJiQ=7CmFNhufdeoeH_6SuYOhf3Luwc2zwy_+8au1V8RW78rOw@mail.gmail.com>
-Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Jonas Gorski <jogo@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jon Fraser <jfraser@broadcom.com>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+To:     "Maciej W. Rozycki" <macro@codesourcery.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re:  MIPS: c-r4k.c: Fix the 74K D-cache alias erratum workaround
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44244
+X-archive-position: 44245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,42 +47,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 17, 2014 at 10:55 AM, Arnd Bergmann <arnd@arndb.de> wrote:
->> >> And unless there is one, having a
->> >> multiplatform kernel does not make much sense, as there is no sane way
->> >> to tell apart different platforms on boot.
->> >
->> > How do you normally tell boards apart on MIPS when you don't use DT?
->>
->> On BCM7xxx (STB) kernels, we could assume the chip ID was in a known
->> register, and also we could call back into the bootloader to get a
->> somewhat-accurate board name.
->>
->> On BCM63xx there is logic in arch/mips/bcm63xx/cpu.c to try to guess
->> the chip identity from the CPU type/revision (because the latter can
->> be read directly from CP0).
->>
->> These systems were never really designed to support multiplatform
->> kernels.  The ARM BCM7xxx variants, by contrast, were.
->
-> Guessing the chip doesn't really help you all that much of course
-> as long as you don't know the board, and once you know that,
-> the chip is implied.
+ > Fix the 74K D-cache alias erratum workaround so that it actually works.
+ > Our current code sets MIPS_CACHE_VTAG for the D-cache, but that flag
+ > only has any effect for the I-cache.  Additionally MIPS_CACHE_PINDEX is
+ > set for the D-cache if CP0.Config7.AR is also set for an affected
+ > processor, leading to confusing information in the bootstrap log (the
+ > flag isn't used beyond that).
 
-This mostly depends on the desired feature set, and the delta from one
-board to the next.  Many of the reference board sections are largely
-copied from a working design, but sometimes there are changes that
-affect us.  Other times there are tweaks that can be autodetected,
-like a different flash chip.
+ > So delete the setting of MIPS_CACHE_VTAG and rely on MIPS_CACHE_ALIASES,
+ > set in a common place, removing I-cache coherency issues seen in GDB
+ > testing with software breakpoints, gdbserver and ptrace(2), on affected
+ > systems.
 
-The analog interfaces like SATA/USB/Ethernet don't tend to vary all
-that much (although some may be missing ports on the board, or
-disabled on the chip).
+ > While at it add a little piece of explanation of what CP0.Config6.SYND
+ > is so that people do not have to chase documentation.
 
-The pin muxing situation leaves a lot of room for board differences,
-and on these platforms it isn't really handled in a central place.
-This gets even more challenging when combined with some of the power
-management requirements.
+This shift to MIPS_CACHE_ALIASES is not needed, a use of MIPS_CACHE_VTAG 
+in dcache is actually a way how to prevent some very specific situations 
+in 74K(E77)/1074K(E17) cache handling. It is not a case of cache 
+aliasing and name VTAG is used because it is related with virtual 
+address conversion tagging. I reused MIPS_CACHE_VTAG just to save some 
+spare bits in cpu_info.options and because D-cache never had virtual 
+tagging like I-cache.
 
-The peripherals that I added in my patch submission are among the
-easiest / safest of the bunch.
+The setting d-cache aliases then CPU hasn't it is a significant 
+performance loss and should be avoided.
+
+Please don't use this patch.
+
+- Leonid.

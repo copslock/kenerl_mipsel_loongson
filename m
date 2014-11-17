@@ -1,54 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 22:22:17 +0100 (CET)
-Received: from mail-qc0-f181.google.com ([209.85.216.181]:59205 "EHLO
-        mail-qc0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013795AbaKQVWMegCLP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 22:22:12 +0100
-Received: by mail-qc0-f181.google.com with SMTP id m20so4345059qcx.12
-        for <multiple recipients>; Mon, 17 Nov 2014 13:22:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2014 22:26:38 +0100 (CET)
+Received: from mail-vc0-f182.google.com ([209.85.220.182]:57345 "EHLO
+        mail-vc0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013876AbaKQV0gKlZRy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Nov 2014 22:26:36 +0100
+Received: by mail-vc0-f182.google.com with SMTP id im17so7793488vcb.13
+        for <linux-mips@linux-mips.org>; Mon, 17 Nov 2014 13:26:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=D7q56/1ColYsOGeuTGJ5hdJz8KYJ3jmzzJ6yXaTYRsc=;
-        b=qc9JXTvmJDSlYzhgXcYeP7g4vu/KeZGWbtMKi4NLhCG/nNaNkz8rpETFosdEbtk9lv
-         hBtJWZtWrGbugiJTXdEw3FG8SyLtTE2Ly/dmyaL2oUjGiftf9gSN9NVMJcIscQCtP6aK
-         /loKjmvJj5Nm90rGPhCWJeZZv4og22nPVXlw1MjrJyaejxxCuwYnOiPl7DYABUlGeS7w
-         yFkZUXeUNQa4kH3a5CwrGoIcX2W4eXBCnn6NKg14sFUwPdqztV54qpLsamx9M3873nZn
-         qCWBFsAdienQisvahFCm8Hsf2pRlsJgZRfjspg0MdDb3J+VwE6aXDzsoGonjLIucNk3z
-         cOqA==
-X-Received: by 10.140.46.75 with SMTP id j69mr29725621qga.106.1416259325758;
- Mon, 17 Nov 2014 13:22:05 -0800 (PST)
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=diU8P5SHkHvCv8G3nBqTp0FmrgNmdtkDM4NZ7gWI/jo=;
+        b=ckH0wYayej67/sPJYrF9VLo+PkfAxVqJQTUvfnADK/eDXcuDHYwb17ceHnvJES40WT
+         bMpZh2K+EmiVrr4Wfz++g12CAxRYCUMGvFsWIjQWVtlQkDcOUTsvPio8J3ya9V5U7KTZ
+         zyeW0tc1pNVO5gQjl7sH2GVRoUGSomNJ9Rm0MNB2EcgxMqUum22Xzi/osxafn4zzxLLn
+         oeYz1MKRQjbdoC0B+0kxeJ4dpEp1GzRTsYQHJNb79fvMT+OSpQZ/cSwPpp7vb5EXCD8G
+         IbQH+szUnpdv2zBRtiTaIdgmdQzknFdk21fpIGEurKQ8qRZmpixLKPLjkZdLtJAaWYlP
+         AdmA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=diU8P5SHkHvCv8G3nBqTp0FmrgNmdtkDM4NZ7gWI/jo=;
+        b=nAYsCGpgBonpGUlnbQGyZTALBO6leLCBv65mI5qrPvnCe9GXMgZNBbRi6XjuhmBzg9
+         3IeSexwPR5Cdqmoehfmg/c47JIRqjpeVXPGbB+EWevY5du1X10YEv+xElW0e6dW028UL
+         pg7I+e27FCYSOFjOBkGDx9I3WZId23HGa0duU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=diU8P5SHkHvCv8G3nBqTp0FmrgNmdtkDM4NZ7gWI/jo=;
+        b=P0P7qCOzxuZegnz/xBSNADIn6P+JrV4Vgn0aOv9kH5cTU/0tZY1318rqOL5SCFfiMA
+         +Ilf1/eZ+l7p9CftBSh191aEcqbpoeZ+7bQgNqEiczt6CIEgKm7qHNUyh30XKUzZDhkF
+         sny6buSlYJxIxB4l1w97kLgjKIKBmyThLpr6dUXjuBn3KeCOlR3l4fBiGIL0ywp2K+u4
+         uZBmKQWaTHhcIVc1d3Xh5kJN2OFoP0Bh+q49dbxiKasyYuGeQaP707GdB0PKYftwJVjE
+         Jtw2ot+14XdKdI/xd49Q9ubt7maqk38ErUPRwLwGfcIHUyZbb9/aiGdcWmxDLHAkhjN+
+         BK9g==
+X-Gm-Message-State: ALoCoQnqh2XAXDYtQtuX0YmG5dXgjmi4IFX9azgVAItqKLMirc0oMy98XMkTL2j88uJSQZB0hLnr
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Mon, 17 Nov 2014 13:21:45 -0800 (PST)
-In-Reply-To: <3357597.nYlNZ6O0nJ@wuerfel>
-References: <1416097066-20452-1-git-send-email-cernekee@gmail.com>
- <2911624.UJRs5QOPN5@wuerfel> <CAJiQ=7BH8K=Q+JcWTKSfn6xAteOF4B6jahMu_qVd-FyZWD3pjA@mail.gmail.com>
- <3357597.nYlNZ6O0nJ@wuerfel>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Mon, 17 Nov 2014 13:21:45 -0800
-Message-ID: <CAJiQ=7B6Xwz2iqqH4vEG8WzPOzHj7NHsuGWqq49uy-E34RHp4A@mail.gmail.com>
-Subject: Re: [PATCH V2 22/22] MIPS: Add multiplatform BMIPS target
-To:     Arnd Bergmann <arnd@arndb.de>
+X-Received: by 10.52.74.65 with SMTP id r1mr14158750vdv.62.1416259590183; Mon,
+ 17 Nov 2014 13:26:30 -0800 (PST)
+Received: by 10.52.168.200 with HTTP; Mon, 17 Nov 2014 13:26:30 -0800 (PST)
+In-Reply-To: <546A66EA.3090107@linaro.org>
+References: <1415821419-26974-1-git-send-email-abrestic@chromium.org>
+        <1415821419-26974-5-git-send-email-abrestic@chromium.org>
+        <546A66EA.3090107@linaro.org>
+Date:   Mon, 17 Nov 2014 13:26:30 -0800
+X-Google-Sender-Auth: Ua4fJoY3AKbKi06PJrGCvOTSEqc
+Message-ID: <CAL1qeaHpK0a+ONK3bhVrRk-G7iwRw_HwpjtLwi6E6EJ+rccbww@mail.gmail.com>
+Subject: Re: [PATCH V5 4/4] clocksource: mips-gic: Add device-tree support
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jon Fraser <jfraser@broadcom.com>,
-        Dmitry Torokhov <dtor@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jonas Gorski <jonas.gorski@gmail.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44250
+X-archive-position: 44251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,34 +88,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 17, 2014 at 12:40 PM, Arnd Bergmann <arnd@arndb.de> wrote:
->> One possible complication: for BCM63xx/BCM7xxx (MIPS) there is no
->> decompressor in the kernel.  The firmware loads an ELF image into
->> memory and jumps directly to kernel_entry.
+On Mon, Nov 17, 2014 at 1:21 PM, Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+> On 11/12/2014 08:43 PM, Andrew Bresticker wrote:
 >>
+>> Parse the GIC timer frequency and interrupt from the device-tree.
+>>
+>> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+>> Acked-by: Arnd Bergmann <arnd@arndb.de>
 >
-> Right, that complicates it a bit, but is there a reason why a decompressor
-> would be hard to do, or would be considered a bad thing?
-> There is already generic decompressor code in arch/mips/boot/compressed/
-> that I would assume you could use without firmware changes. Are you
-> worried about boot time overhead?
+>
+> Hi Andrew,
+>
+> through which tree is this patch supposed to go ?
+>
+> Is there any dependency ?
 
-Currently the bootloader is responsible for decompressing the image.
-On STB the bootloader typically loads a gzipped ELF file; on DSL/CM
-the bootloader unpacks a custom image format containing an
-LZMA-compressed kernel in some form.  So we would be
-double-compressing the same kernel in this scheme.
-
-STB/DSL should be able to boot the arch/mips/boot/compressed "vmlinuz"
-ELF file; I tested STB.  CM might be questionable, but doesn't need
-decompressor mods because the bootloader is DT-aware.
-
-Also, the decompressor may need to be modified so that it recognizes /
-passes / doesn't overwrite DTB blobs coming from the bootloader.  And
-to make sure it doesn't stomp on any of the code or data that our
-bootloaders use for their callback mechanisms.
-
-So, one possibility is to submit a V3 patch which allows 0 or 1 DTB
-files to be compiled in statically (similar to
-CONFIG_ARM_APPENDED_DTB) and requires a DT-aware bootloader or
-decompressor for anything else.  Any opinions?
+There are quite a few dependencies, so this series and all the other
+MIPS GIC stuff is going through the MIPS tree.

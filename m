@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 17:24:05 +0100 (CET)
-Received: from mail-qg0-f47.google.com ([209.85.192.47]:60945 "EHLO
-        mail-qg0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014026AbaKSQYDyGtMX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 17:24:03 +0100
-Received: by mail-qg0-f47.google.com with SMTP id z60so653336qgd.20
-        for <linux-mips@linux-mips.org>; Wed, 19 Nov 2014 08:23:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=6IWJOkj7aAsMVKZiLqEKnetQA3c48MU5RHIl+2IhUDQ=;
-        b=oa1UMMLLnLLX55l9Gsfitppxfok3iXkBoUDc4op5yMyDXv04kjBmfEHYN9li8B1EHL
-         wR8i3UPvGF8LKgPjQzbgajoAChXOg/9/9cV0JkBofn2kA4ZJpqLUr4hGMOiX5lS3BEnm
-         ta0jNAC6Vm5MJU0PWUoGMQ0Q1Aqil3Ex4yO9DTk65oBKMzQbBw3unon0OU6EpDIMV4U5
-         iuCzT8BUccI9nq1CEG7SUUi0AzClc0LW+h8d2VAH0v6Wq+DcWd3mL+e7Gzwoi1ZmBfrU
-         uBXPyhnhoCl+S6/2lAeWQ/7uOXy+ePDA6CkBPXAFt79l0d+l717UxJyss9ksoJ2hV/Ah
-         Z7qw==
-X-Received: by 10.140.48.11 with SMTP id n11mr52371130qga.1.1416414235977;
- Wed, 19 Nov 2014 08:23:55 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 20:03:28 +0100 (CET)
+Received: from dliviu.plus.com ([80.229.23.120]:46441 "EHLO smtp.dudau.co.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27014030AbaKSTD1Mtl20 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Nov 2014 20:03:27 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by smtp.dudau.co.uk (Postfix) with SMTP id ECEB310066F
+        for <linux-mips@linux-mips.org>; Wed, 19 Nov 2014 19:03:20 +0000 (GMT)
+Received: from mail.dudau.co.uk (bart.dudau.co.uk [192.168.14.2])
+        by smtp.dudau.co.uk (Postfix) with SMTP id A37F0FF594;
+        Wed, 19 Nov 2014 19:03:17 +0000 (GMT)
+Received: by mail.dudau.co.uk (sSMTP sendmail emulation); Wed, 19 Nov 2014 19:03:17 +0000
+Date:   Wed, 19 Nov 2014 19:03:17 +0000
+From:   Liviu Dudau <liviu@dudau.co.uk>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Yijing Wang <wangyijing@huawei.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        x86@kernel.org, sparclinux@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 5/5] PCI: Rip out pci_bus_add_devices() from
+ pci_scan_root_bus()
+Message-ID: <20141119190317.GC9162@bart.dudau.co.uk>
+References: <1416382369-13587-1-git-send-email-wangyijing@huawei.com>
+ <1416382369-13587-6-git-send-email-wangyijing@huawei.com>
+ <1645037.uypArjN50l@wuerfel>
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Wed, 19 Nov 2014 08:23:35 -0800 (PST)
-In-Reply-To: <20141119144911.9CA5FC40D73@trevor.secretlab.ca>
-References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
- <1415825647-6024-7-git-send-email-cernekee@gmail.com> <20141119144911.9CA5FC40D73@trevor.secretlab.ca>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Wed, 19 Nov 2014 08:23:35 -0800
-Message-ID: <CAJiQ=7BpOzAFTCmhER=ZVJgtQwoDKf3xPYKR8u+g-d1RQzhUKw@mail.gmail.com>
-Subject: Re: [PATCH V2 06/10] serial: pxa: Add fifo-size and
- {big,native}-endian properties
-To:     Grant Likely <grant.likely@linaro.org>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.cz>,
-        Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        daniel@zonque.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
-        robert.jarzmik@free.fr, Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1645037.uypArjN50l@wuerfel>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <liviu@dudau.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44297
+X-archive-position: 44298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: liviu@dudau.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,24 +56,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 19, 2014 at 6:49 AM, Grant Likely <grant.likely@linaro.org> wrote:
-> On Wed, 12 Nov 2014 12:54:03 -0800
-> , Kevin Cernekee <cernekee@gmail.com>
->  wrote:
->> With a few tweaks, the PXA serial driver can handle other 16550A clones.
->> Add a fifo-size DT property to override the FIFO depth (BCM7xxx uses 32),
->> and {native,big}-endian properties similar to regmap to support SoCs that
->> have BE or "automagic endian" registers.
->
-> Hold the phone, if these are 16550A clone ports, then why is the pxa
-> driver being adapted to drive them? I would expect the of_serial.c
-> driver to be used. It's already got support for multiple variants of the
-> 16550.
+On Wed, Nov 19, 2014 at 01:11:41PM +0100, Arnd Bergmann wrote:
+> On Wednesday 19 November 2014 15:32:49 Yijing Wang wrote:
+> > Just like pci_scan_bus(), we also should rip out
+> > pci_bus_add_devices() from pci_scan_root_bus().
+> > Lots platforms first call pci_scan_root_bus(), but
+> > after that, they call pci_bus_size_bridges() and
+> > pci_bus_assign_resources(). Place pci_bus_add_devices()
+> > in pci_scan_root_bus() hurts PCI scan logic.
+> 
+> I think we really need to wait for Bjorn to comment on this patch,
+> as I mentioned the idea behind pci_scan_root_bus() was to integrate
+> the scanning part, which you now undo, though I can still see this
+> working out in the long run.
+> 
+> > Should no functional change.
+> 
+> But you are moving the pci_bus_add_devices() later in a couple of
+> places. While this seems entirely reasonable, I would consider
+> it a functional change.
+> 
+> > diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
+> > index 076c35c..97f9730 100644
+> > --- a/arch/alpha/kernel/pci.c
+> > +++ b/arch/alpha/kernel/pci.c
+> > @@ -334,6 +334,8 @@ common_init_pci(void)
+> >  
+> >  		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
+> >  					hose, &resources);
+> > +		if (bus)
+> > +			pci_bus_add_devices(bus);
+> >  		hose->bus = bus;
+> >  		hose->need_domain_info = need_domain_info;
+> >  		next_busno = bus->busn_res.end + 1;
+> 
+> How about making pci_bus_add_devices() handle a NULL argument to save
+> the if() here and elsewhere?
 
-Merely building serial8250 into a multiplatform kernel breaks every
-other serial driver that uses "ttyS" and major/minor 4/64.  Even if an
-8250/16550A device is never probed.
+Actually, I would stop there if the bus is NULL and start cleaning up. If not,
+things are going to blow up three lines down when next_busno is calculated.
 
-More discussion in this thread:
+Best regards,
+Liviu
 
-http://www.spinics.net/lists/linux-serial/msg14811.html
+
+> > diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+> > index 1bf60b1..f083688 100644
+> > --- a/arch/mips/pci/pci.c
+> > +++ b/arch/mips/pci/pci.c
+> > @@ -113,6 +113,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
+> >  		if (!pci_has_flag(PCI_PROBE_ONLY)) {
+> >  			pci_bus_size_bridges(bus);
+> >  			pci_bus_assign_resources(bus);
+> > +			pci_bus_add_devices(bus);
+> >  		}
+> >  	}
+> >  }
+> 
+> This one looks wrong, I think you still want to call pci_bus_add_devices()
+> even with PCI_PROBE_ONLY set.
+> 
+> > diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
+> > index 1f80a88..007466e 100644
+> > --- a/arch/tile/kernel/pci.c
+> > +++ b/arch/tile/kernel/pci.c
+> > @@ -308,6 +308,8 @@ int __init pcibios_init(void)
+> >  			pci_add_resource(&resources, &iomem_resource);
+> >  			bus = pci_scan_root_bus(NULL, 0, controller->ops,
+> >  						controller, &resources);
+> > +			if (bus)
+> > +				pci_bus_add_devices(bus);
+> >  			controller->root_bus = bus;
+> >  			controller->last_busno = bus->busn_res.end;
+> >  		}
+> 
+> Should the pci_bus_add_devices come after setting the bus numbers here?
+> 
+> 	Arnd
+> 
+
+-- 
+-------------------
+   .oooO
+   (   )
+    \ (  Oooo.
+     \_) (   )
+          ) /
+         (_/
+
+ One small step
+   for me ...

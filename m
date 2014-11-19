@@ -1,55 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 12:50:19 +0100 (CET)
-Received: from foss-mx-na.foss.arm.com ([217.140.108.86]:44176 "EHLO
-        foss-mx-na.foss.arm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012949AbaKSLuQtroM5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 12:50:16 +0100
-Received: from foss-smtp-na-1.foss.arm.com (unknown [10.80.61.8])
-        by foss-mx-na.foss.arm.com (Postfix) with ESMTP id AA0FC220;
-        Wed, 19 Nov 2014 05:50:03 -0600 (CST)
-Received: from collaborate-mta1.arm.com (highbank-bc01-b06.austin.arm.com [10.112.81.134])
-        by foss-smtp-na-1.foss.arm.com (Postfix) with ESMTP id 066CE5FAD7;
-        Wed, 19 Nov 2014 05:49:56 -0600 (CST)
-Received: from red-moon (red-moon.cambridge.arm.com [10.1.203.137])
-        by collaborate-mta1.arm.com (Postfix) with ESMTPS id 437D413F6FA;
-        Wed, 19 Nov 2014 05:49:53 -0600 (CST)
-Date:   Wed, 19 Nov 2014 11:49:53 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Yijing Wang <wangyijing@huawei.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Liviu Dudau <liviu@dudau.co.uk>, Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH 5/5] PCI: Rip out pci_bus_add_devices() from
- pci_scan_root_bus()
-Message-ID: <20141119114953.GA12544@red-moon>
-References: <1416382369-13587-1-git-send-email-wangyijing@huawei.com>
- <1416382369-13587-6-git-send-email-wangyijing@huawei.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 13:07:01 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:35870 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011908AbaKSMG7nZJY9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 13:06:59 +0100
+Date:   Wed, 19 Nov 2014 12:06:59 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Joshua Kinard <kumba@gentoo.org>
+cc:     linux-mips@linux-mips.org
+Subject: Re: IP30: SMP Help
+In-Reply-To: <546C77F6.4030101@gentoo.org>
+Message-ID: <alpine.LFD.2.11.1411191139300.4773@eddie.linux-mips.org>
+References: <5457187D.6030708@gentoo.org> <54607499.2070806@gentoo.org> <546B11C0.90805@gentoo.org> <alpine.LFD.2.11.1411180946130.4773@eddie.linux-mips.org> <546B3D9C.6000104@gentoo.org> <alpine.LFD.2.11.1411181255420.4773@eddie.linux-mips.org>
+ <546C77F6.4030101@gentoo.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1416382369-13587-6-git-send-email-wangyijing@huawei.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <lorenzo.pieralisi@arm.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44289
+X-archive-position: 44290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lorenzo.pieralisi@arm.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,291 +36,107 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 19, 2014 at 07:32:49AM +0000, Yijing Wang wrote:
-> Just like pci_scan_bus(), we also should rip out
-> pci_bus_add_devices() from pci_scan_root_bus().
-> Lots platforms first call pci_scan_root_bus(), but
-> after that, they call pci_bus_size_bridges() and
-> pci_bus_assign_resources(). Place pci_bus_add_devices()
-> in pci_scan_root_bus() hurts PCI scan logic.
-> Should no functional change.
+On Wed, 19 Nov 2014, Joshua Kinard wrote:
 
-I agree with the patch, I do not agree it provides no functional change.
-You are actually fixing an issue on systems where the root bus
-is scanned at device_initcall time and pci drivers may have already been
-registered, so they end up being probed with possibly unassigned
-resources as you correctly mention in the log.
-
-You could move the sequence:
-
-if (!pci_has_flag(PCI_PROBE_ONLY)) {
-	pci_bus_size_bridges();
-	pci_bus_assign_resources();
-}
-
-in pci_scan_root_bus() instead of taking pci_bus_add_devices() out ?
-
-Would this break any code ? Or add a helper function:
-
-pci_scan_root_bus(..., bool assign) ?
-
-arm64 xgene code has already been fixed by reshuffling the scanning code
-sequence.
-
-I think we should have a look at eg drivers/pci/host/pcie-xilinx.c, I
-think there is a possible initcall ordering issue there (drivers being probed
-with unassigned resources).
-
-Lorenzo
-
+> >  No, user registers have to be treated as 32-bit, that is sign-extended 
+> > from bit #31 (bits 63:32 are a copy of bit #31).  Using 32-bit operations 
+> > only guarantees that, e.g. when you load a register from its stack slot 
+> > using the 32-bit LW instruction, then on a 64-bit processor it will get 
+> > sign-extended in the hardware register from bit #31 through to bit #63.  
 > 
-> Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-> CC: linux-alpha@vger.kernel.org
-> CC: linux-ia64@vger.kernel.org
-> CC: linux-mips@linux-mips.org
-> CC: linux-xtensa@linux-xtensa.org
-> CC: linux-arm-kernel@lists.infradead.org
-> CC: linux-sh@vger.kernel.org
-> CC: sparclinux@vger.kernel.org
-> ---
->  arch/alpha/kernel/pci.c          |    2 ++
->  arch/frv/mb93090-mb00/pci-vdk.c  |    6 ++++--
->  arch/ia64/sn/kernel/io_init.c    |    1 +
->  arch/microblaze/pci/pci-common.c |    1 +
->  arch/mips/pci/pci.c              |    1 +
->  arch/mn10300/unit-asb2305/pci.c  |    5 ++++-
->  arch/s390/pci/pci.c              |    2 +-
->  arch/sh/drivers/pci/pci.c        |    1 +
->  arch/sparc/kernel/leon_pci.c     |    1 +
->  arch/tile/kernel/pci.c           |    2 ++
->  arch/tile/kernel/pci_gx.c        |    2 ++
->  arch/x86/pci/common.c            |    1 +
->  arch/xtensa/kernel/pci.c         |    2 ++
->  drivers/pci/host/pci-xgene.c     |    1 +
->  drivers/pci/probe.c              |    1 -
->  15 files changed, 24 insertions(+), 5 deletions(-)
+> I've been aware of the sign-extending bit for some time.  Hence the
+> 0xffffffffxxxxxxxx-style addresses.  Regardless if the stack contains
+> 77abcdef77f00ba7, an LW insn loading that value will actually store
+> ffffffff77f00ba7 into the hardware register, right?
+
+ Nope, it'll be either 0x0000000077f00ba7 or 0x0000000077abcdef, depending 
+on the endianness.  Bit #31 is clear here and so will be bits #63:32.  
+All user software must have these bits clear in addresses as KUSEG spans 
+0x00000000-0x7fffffff.
+
+> It just seemed odd that from the 64-bit stack addresses, it looked like there
+> were two 32-bit virtual addresses (77abcdef and 77f00ba7).  I wasn't sure if
+> that was normal behavior or not for 64-bit Linux/MIPS.  Or a symptom of
+> whatever bug is present in the IP30 code I've yet to find.
+
+ This is 32-bit user code, it's (approximately) unaware it's running on a 
+64-bit OS.
+
+> >  Of course an o32 bit program does not see it, it sees the environment as 
+> > it would on a 32-bit processor as it is supposed to run the same on a true 
+> > 32-bit processor.  Well, strictly speaking this is not completely true on 
+> > Linux, for that to be the case the UX bit you see set in the Status 
+> > register dumped above would have to be cleared, but this is a historical 
+> > artefact and nobody has had the incentive to clean this up yet (in a 
+> > reference environment you want UX clear for o32, UX set for n64 and PX set 
+> > for n32 where available, otherwise UX set).  Clearing the UX bit disables 
+> > all the 64-bit instructions in the user mode making a user program unable 
+> > to see or modify the upper 32 bits of any general register (they're still 
+> > sign-extended automatically).
 > 
-> diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
-> index 076c35c..97f9730 100644
-> --- a/arch/alpha/kernel/pci.c
-> +++ b/arch/alpha/kernel/pci.c
-> @@ -334,6 +334,8 @@ common_init_pci(void)
->  
->  		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
->  					hose, &resources);
-> +		if (bus)
-> +			pci_bus_add_devices(bus);
->  		hose->bus = bus;
->  		hose->need_domain_info = need_domain_info;
->  		next_busno = bus->busn_res.end + 1;
-> diff --git a/arch/frv/mb93090-mb00/pci-vdk.c b/arch/frv/mb93090-mb00/pci-vdk.c
-> index efa5d65..2b36044 100644
-> --- a/arch/frv/mb93090-mb00/pci-vdk.c
-> +++ b/arch/frv/mb93090-mb00/pci-vdk.c
-> @@ -316,6 +316,7 @@ void pcibios_fixup_bus(struct pci_bus *bus)
->  
->  int __init pcibios_init(void)
->  {
-> +	struct pci_bus *bus;
->  	struct pci_ops *dir = NULL;
->  	LIST_HEAD(resources);
->  
-> @@ -383,12 +384,13 @@ int __init pcibios_init(void)
->  	printk("PCI: Probing PCI hardware\n");
->  	pci_add_resource(&resources, &pci_ioport_resource);
->  	pci_add_resource(&resources, &pci_iomem_resource);
-> -	pci_scan_root_bus(NULL, 0, pci_root_ops, NULL, &resources);
-> +	bus = pci_scan_root_bus(NULL, 0, pci_root_ops, NULL, &resources);
->  
->  	pcibios_irq_init();
->  	pcibios_fixup_irqs();
->  	pcibios_resource_survey();
-> -
-> +	if (bus)
-> +		pci_bus_add_devices(bus);
->  	return 0;
->  }
->  
-> diff --git a/arch/ia64/sn/kernel/io_init.c b/arch/ia64/sn/kernel/io_init.c
-> index 0b5ce82..63b43a6 100644
-> --- a/arch/ia64/sn/kernel/io_init.c
-> +++ b/arch/ia64/sn/kernel/io_init.c
-> @@ -272,6 +272,7 @@ sn_pci_controller_fixup(int segment, int busnum, struct pci_bus *bus)
->  		kfree(res);
->  		kfree(controller);
->  	}
-> +	pci_bus_add_devices(bus);
->  }
->  
->  /*
-> diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
-> index 9037914..651e25d 100644
-> --- a/arch/microblaze/pci/pci-common.c
-> +++ b/arch/microblaze/pci/pci-common.c
-> @@ -1346,6 +1346,7 @@ static void pcibios_scan_phb(struct pci_controller *hose)
->  	hose->bus = bus;
->  
->  	hose->last_busno = bus->busn_res.end;
-> +	pci_bus_add_devices(bus);
->  }
->  
->  static int __init pcibios_init(void)
-> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-> index 1bf60b1..f083688 100644
-> --- a/arch/mips/pci/pci.c
-> +++ b/arch/mips/pci/pci.c
-> @@ -113,6 +113,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
->  		if (!pci_has_flag(PCI_PROBE_ONLY)) {
->  			pci_bus_size_bridges(bus);
->  			pci_bus_assign_resources(bus);
-> +			pci_bus_add_devices(bus);
->  		}
->  	}
->  }
-> diff --git a/arch/mn10300/unit-asb2305/pci.c b/arch/mn10300/unit-asb2305/pci.c
-> index 6b4339f..860aa35 100644
-> --- a/arch/mn10300/unit-asb2305/pci.c
-> +++ b/arch/mn10300/unit-asb2305/pci.c
-> @@ -345,6 +345,7 @@ void pcibios_fixup_bus(struct pci_bus *bus)
->   */
->  static int __init pcibios_init(void)
->  {
-> +	struct pci_bus *bus;
->  	resource_size_t io_offset, mem_offset;
->  	LIST_HEAD(resources);
->  
-> @@ -376,11 +377,13 @@ static int __init pcibios_init(void)
->  
->  	pci_add_resource_offset(&resources, &pci_ioport_resource, io_offset);
->  	pci_add_resource_offset(&resources, &pci_iomem_resource, mem_offset);
-> -	pci_scan_root_bus(NULL, 0, &pci_direct_ampci, NULL, &resources);
-> +	bus = pci_scan_root_bus(NULL, 0, &pci_direct_ampci, NULL, &resources);
->  
->  	pcibios_irq_init();
->  	pcibios_fixup_irqs();
->  	pcibios_resource_survey();
-> +	if (bus)
-> +		pci_bus_add_devices(bus);
->  	return 0;
->  }
->  
-> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-> index 552b990..98247f8 100644
-> --- a/arch/s390/pci/pci.c
-> +++ b/arch/s390/pci/pci.c
-> @@ -755,7 +755,7 @@ static int zpci_scan_bus(struct zpci_dev *zdev)
->  		zpci_cleanup_bus_resources(zdev);
->  		return -EIO;
->  	}
-> -
-> +	pci_bus_add_devices(zdev->bus);
->  	zdev->bus->max_bus_speed = zdev->max_bus_speed;
->  	return 0;
->  }
-> diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-> index 1bc09ee..efc1051 100644
-> --- a/arch/sh/drivers/pci/pci.c
-> +++ b/arch/sh/drivers/pci/pci.c
-> @@ -69,6 +69,7 @@ static void pcibios_scanbus(struct pci_channel *hose)
->  
->  		pci_bus_size_bridges(bus);
->  		pci_bus_assign_resources(bus);
-> +		pci_bus_add_devices(bus);
->  	} else {
->  		pci_free_resource_list(&resources);
->  	}
-> diff --git a/arch/sparc/kernel/leon_pci.c b/arch/sparc/kernel/leon_pci.c
-> index 899b720..2971076 100644
-> --- a/arch/sparc/kernel/leon_pci.c
-> +++ b/arch/sparc/kernel/leon_pci.c
-> @@ -40,6 +40,7 @@ void leon_pci_init(struct platform_device *ofdev, struct leon_pci_info *info)
->  
->  		/* Assign devices with resources */
->  		pci_assign_unassigned_resources();
-> +		pci_bus_add_devices(root_bus);
->  	} else {
->  		pci_free_resource_list(&resources);
->  	}
-> diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
-> index 1f80a88..007466e 100644
-> --- a/arch/tile/kernel/pci.c
-> +++ b/arch/tile/kernel/pci.c
-> @@ -308,6 +308,8 @@ int __init pcibios_init(void)
->  			pci_add_resource(&resources, &iomem_resource);
->  			bus = pci_scan_root_bus(NULL, 0, controller->ops,
->  						controller, &resources);
-> +			if (bus)
-> +				pci_bus_add_devices(bus);
->  			controller->root_bus = bus;
->  			controller->last_busno = bus->busn_res.end;
->  		}
-> diff --git a/arch/tile/kernel/pci_gx.c b/arch/tile/kernel/pci_gx.c
-> index e39f9c5..3f8fb2c 100644
-> --- a/arch/tile/kernel/pci_gx.c
-> +++ b/arch/tile/kernel/pci_gx.c
-> @@ -889,6 +889,8 @@ int __init pcibios_init(void)
->  		controller->first_busno = next_busno;
->  		bus = pci_scan_root_bus(NULL, next_busno, controller->ops,
->  					controller, &resources);
-> +		if (bus)
-> +			pci_bus_add_devices(bus);
->  		controller->root_bus = bus;
->  		next_busno = bus->busn_res.end + 1;
->  	}
-> diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
-> index 7b20bcc..300d39e 100644
-> --- a/arch/x86/pci/common.c
-> +++ b/arch/x86/pci/common.c
-> @@ -475,6 +475,7 @@ void pcibios_scan_root(int busnum)
->  		pci_free_resource_list(&resources);
->  		kfree(sd);
->  	}
-> +	pci_bus_add_devices(bus);
->  }
->  
->  void __init pcibios_set_cache_line_size(void)
-> diff --git a/arch/xtensa/kernel/pci.c b/arch/xtensa/kernel/pci.c
-> index 5b34033..f2ae64e 100644
-> --- a/arch/xtensa/kernel/pci.c
-> +++ b/arch/xtensa/kernel/pci.c
-> @@ -185,6 +185,8 @@ static int __init pcibios_init(void)
->  		pci_controller_apertures(pci_ctrl, &resources);
->  		bus = pci_scan_root_bus(NULL, pci_ctrl->first_busno,
->  					pci_ctrl->ops, pci_ctrl, &resources);
-> +		if (bus)
-> +			pci_bus_add_devices(bus);
->  		pci_ctrl->bus = bus;
->  		pci_ctrl->last_busno = bus->busn_res.end;
->  		if (next_busno <= pci_ctrl->last_busno)
-> diff --git a/drivers/pci/host/pci-xgene.c b/drivers/pci/host/pci-xgene.c
-> index 9ecabfa..c17afe5 100644
-> --- a/drivers/pci/host/pci-xgene.c
-> +++ b/drivers/pci/host/pci-xgene.c
-> @@ -635,6 +635,7 @@ static int xgene_pcie_probe_bridge(struct platform_device *pdev)
->  	if (!bus)
->  		return -ENOMEM;
->  
-> +	pci_bus_add_devices(bus);
->  	platform_set_drvdata(pdev, port);
->  	return 0;
->  }
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 79775b5..2ab5a40 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -2084,7 +2084,6 @@ struct pci_bus *pci_scan_root_bus(struct device *parent, int bus,
->  	if (!found)
->  		pci_bus_update_busn_res_end(b, max);
->  
-> -	pci_bus_add_devices(b);
->  	return b;
->  }
->  EXPORT_SYMBOL(pci_scan_root_bus);
-> -- 
-> 1.7.1
+> A lot of the binaries on the Octane's filesystem are compiled w/ MIPS-IV.
+> Under o32, I know that doesn't allow for use of 64bit instructions, but I do
+> believe that o32 can still make use of newer instructions that were added in
+> the MIPS-III or MIPS-IV ISA (iirc, conditional move was one of those).
+
+ Nope, not exactly right.  You can indeed make use of MIPS IV ISA 
+additions, that are address size agnostic, however you cannot make use of 
+any MIPS III additions as all of these depend on the 64-bit mode: integer 
+operations require CP0.Status.UX to be set that is supposed not to be for 
+o32 user software and floating-point additions require CP0.Status.FR to be 
+set that is likewise supposed not to be for o32 user software.
+
+ Additionally on some processors, including the R10k family you are 
+concerned about, CP0.Status.XX has to be set for MIPS IV ISA additions to 
+be enabled, but I believe it is under Linux.
+
+> The problem seems to be, though, that there's some kind of subtle memory
+> corruption happening when I compile an IP30 kernel w/ CONFIG_SMP.  Without
+> CONFIG_SMP, it runs fine.  I was focusing on the spinlocks because I know that
+> without CONFIG_SMP, they compile away into nothing, but with CONFIG_SMP, even
+> on a uniprocessor machine, they'll convert to instructions and can still
+> highlight locking problems in the code.
+
+ I highly doubt spinlocks have any significance here, they're used and 
+work just fine across many systems.  If anything this will probably be 
+either a bug in platform code somewhere or a critical part of hardware 
+having not been correctly initialised.
+
+> So, for now, my post-analysis crash-tool is a Canon DSLR camera mounted on a
+> tripod to capture whatever debug data fits onto a single 1024x768 screen.
+
+ Does the system have any standard bus like PCI?  If so then you could get 
+an NVRAM card then and log some activity there like CPU status on entry to 
+exception handlers.  Once a crash has happened you could boot with that 
+logging disabled and retrieve your data.  Accessing hardware is easy on 
+MIPS, you can do it via XKPHYS without a need to have the MMU working, IOW 
+you'll be able to poke at hardware even if your TLB/page tables got 
+botched for some reason.  And you can bypass the cache too, which is 
+another possible place for breakage.
+
+ Of course if you have PCI then you can add an ordinary serial port card 
+there as well if the onboard port is difficult to access for some reason, 
+but serial port logging has its limitations, mainly the complexity to 
+access it and throughput.
+
+ Given the symptoms I'd first take a look at context switching code 
+though, you may be able to get away without fancy tools.
+
+> >  Please do yourself a favour and read a good MIPS architecture book; 
+> > Dominic Sweetman's "See MIPS Run" would be my recommendation and its 
+> > second edition has some focus on Linux too that might help.  Without a 
+> > good understanding of the architecture you'll be having a very, very hard 
+> > time debugging such low-level issues.
 > 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-pci" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+> I've had a copy of the 2nd edition for a few years now.  It's an excellent
+> general reference, though I admit I've skipped over the TLB chapter a few
+> times.  Hopefully a third edition comes out at some point and has more in-depth
+> coverage of Linux running on MIPS, in addition to the general MIPS overview.
+
+ I don't think it will, by now Dominic has retired.  But I don't think you 
+need anything beyond that, there's nothing specific about the MIPS port of 
+Linux that wouldn't be covered by a generic Linux book, except from the 
+processor architecture itself -- and you've got it covered there.  For the 
+rest, like newer stuff, just study the sources.
+
+  Maciej

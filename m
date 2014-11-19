@@ -1,54 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2014 22:50:20 +0100 (CET)
-Received: from mail-wg0-f44.google.com ([74.125.82.44]:53719 "EHLO
-        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013857AbaKRVuS0rV76 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Nov 2014 22:50:18 +0100
-Received: by mail-wg0-f44.google.com with SMTP id b13so2490443wgh.17
-        for <linux-mips@linux-mips.org>; Tue, 18 Nov 2014 13:50:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
-         :date:message-id;
-        bh=brK0isjVd3z/CKk7+xmahjB6PK2Z8t+g/vz9vpt4440=;
-        b=aOsEP0/sjQ8/I5puVpFCd+gxSqb2iFZ2RIVaEksAh2iOr5ZeBCxvtiAobbGxpBo/6F
-         /OxO60pq35CeXxh8O21UguPrLMP+K2LC1lxg/N/tsO0wx5gr5dZSShEKWpy1ZYLfMwCE
-         sp5LHQEIj4wYZqKMXMei6DamKIRSHaFd6cV8EEmis6lM/2UtRshXkV55q2pCo1SJovQc
-         r5k5m3O/B8V0Z+3yxY37TSwJ1wPmj4LReeZmd6eBYn11RkfTrsKWQC0Yc5swTCwmxSM+
-         KCDeW5XEbFoydHSsUoPcEd02xEUCbxRgiODzZABbZzp2DWGR/yUajBXPBLW/d8xvo2Sv
-         DJbg==
-X-Gm-Message-State: ALoCoQlHqGuIqYArkXD6Gul0EFYyO6kS6coSKH3b9TRy4JDao1xecV0D3MTjlIDy/zFOKFz2zVB7
-X-Received: by 10.194.175.67 with SMTP id by3mr50808044wjc.32.1416347411672;
-        Tue, 18 Nov 2014 13:50:11 -0800 (PST)
-Received: from trevor.secretlab.ca (host86-166-84-117.range86-166.btcentralplus.com. [86.166.84.117])
-        by mx.google.com with ESMTPSA id fo12sm10722643wic.19.2014.11.18.13.50.10
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Nov 2014 13:50:10 -0800 (PST)
-Received: by trevor.secretlab.ca (Postfix, from userid 1000)
-        id 7498FC40966; Tue, 18 Nov 2014 21:50:07 +0000 (GMT)
-From:   Grant Likely <grant.likely@linaro.org>
-Subject: Re: [PATCH V2 09/10] serial: earlycon: Set UPIO_MEM32BE based on DT
- properties
-To:     Kevin Cernekee <cernekee@gmail.com>, gregkh@linuxfoundation.org,
-        jslaby@suse.cz, robh@kernel.org
-Cc:     arnd@arndb.de, daniel@zonque.org, haojian.zhuang@gmail.com,
-        robert.jarzmik@free.fr, f.fainelli@gmail.com, mbizon@freebox.fr,
-        jogo@openwrt.org, linux-mips@linux-mips.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <1415825647-6024-10-git-send-email-cernekee@gmail.com>
-References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
-        <1415825647-6024-10-git-send-email-cernekee@gmail.com>
-Date:   Tue, 18 Nov 2014 21:50:07 +0000
-Message-Id: <20141118215007.7498FC40966@trevor.secretlab.ca>
-Return-Path: <glikely@secretlab.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 02:32:09 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33064 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013883AbaKSBcHkoOB4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 02:32:07 +0100
+Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8C386800;
+        Wed, 19 Nov 2014 01:32:00 +0000 (UTC)
+Date:   Tue, 18 Nov 2014 17:32:00 -0800
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Alexandre Oliva <lxoliva@fsfla.org>
+Cc:     stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Yoichi Yuasa <yuasa@linux-mips.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: incomplete mips patch made 3.10.55, remains broken in 3.10.58
+Message-ID: <20141119013200.GF22731@kroah.com>
+References: <orppdsbixu.fsf@free.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <orppdsbixu.fsf@free.home>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44278
+X-archive-position: 44279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@linaro.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,96 +42,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 12 Nov 2014 12:54:06 -0800
-, Kevin Cernekee <cernekee@gmail.com>
- wrote:
-> If an earlycon (stdout-path) node is being used, check for "big-endian"
-> or "native-endian" properties and pass the appropriate iotype to the
-> driver.
+On Thu, Oct 16, 2014 at 03:57:33AM -0300, Alexandre Oliva wrote:
+> Greg,
 > 
-> Note that LE sets UPIO_MEM (8-bit) but BE sets UPIO_MEM32BE (32-bit).  The
-> big-endian property only really makes sense in the context of 32-bit
-> registers, since 8-bit accesses never require data swapping.
+> Commit ff522058bd717506b2fa066fa564657f2b86477e was merged into 3.10.55
+> stable as commit 4f91cb537d2f7fa700a2b6d86a2cc77d20ee2616.
 > 
-> At some point, the of_earlycon code may want to pass in the reg-io-width,
-> reg-offset, and reg-shift parameters too.
+> Without the complement, commit 5596b0b245fb9d2cefb5023b11061050351c1398,
+> included below, cache invalidation functions modified by the former
+> patch may return between preempt_disable() and preempt_enable(), causing
+> such machines as yeeloongs to go down in flames early in the boot.
 > 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> ---
->  drivers/of/fdt.c              | 9 ++++++++-
->  drivers/tty/serial/earlycon.c | 4 ++--
->  include/linux/serial_core.h   | 2 +-
->  3 files changed, 11 insertions(+), 4 deletions(-)
+> The complement patch had already made v3.12-rc4, and it's quite
+> obviously needed and correct.  I've also tested that it fixes the
+> regression on the yeeloong.
 > 
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index 30e97bc..15f80c9 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -10,6 +10,7 @@
->   */
->  
->  #include <linux/kernel.h>
-> +#include <linux/kconfig.h>
->  #include <linux/initrd.h>
->  #include <linux/memblock.h>
->  #include <linux/of.h>
-> @@ -784,7 +785,13 @@ int __init early_init_dt_scan_chosen_serial(void)
->  		if (!addr)
->  			return -ENXIO;
->  
-> -		of_setup_earlycon(addr, match->data);
-> +		if (fdt_getprop(fdt, offset, "big-endian", NULL) ||
-> +		    (fdt_getprop(fdt, offset, "native-endian", NULL) &&
-> +		     IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))) {
-> +			of_setup_earlycon(addr, UPIO_MEM32BE, match->data);
-> +		} else {
-> +			of_setup_earlycon(addr, UPIO_MEM, match->data);
-> +		}
+> So, would you please merge it into the 3.10 stable series, at your
+> earlier convenience, so as to fix this regression?
 
-Perhaps also create an fdt_ version of the helper.
+Applied, now, thanks.
 
-Otherwise looks good to me.
-
-Acked-by: Grant Likely <grant.likely@linaro.org>
-
-g.
-
->  		return 0;
->  	}
->  	return -ENODEV;
-> diff --git a/drivers/tty/serial/earlycon.c b/drivers/tty/serial/earlycon.c
-> index a514ee6..548f7d7 100644
-> --- a/drivers/tty/serial/earlycon.c
-> +++ b/drivers/tty/serial/earlycon.c
-> @@ -148,13 +148,13 @@ int __init setup_earlycon(char *buf, const char *match,
->  	return 0;
->  }
->  
-> -int __init of_setup_earlycon(unsigned long addr,
-> +int __init of_setup_earlycon(unsigned long addr, unsigned char iotype,
->  			     int (*setup)(struct earlycon_device *, const char *))
->  {
->  	int err;
->  	struct uart_port *port = &early_console_dev.port;
->  
-> -	port->iotype = UPIO_MEM;
-> +	port->iotype = iotype;
->  	port->mapbase = addr;
->  	port->uartclk = BASE_BAUD * 16;
->  	port->membase = earlycon_map(addr, SZ_4K);
-> diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-> index d2d5bf6..0d60c64 100644
-> --- a/include/linux/serial_core.h
-> +++ b/include/linux/serial_core.h
-> @@ -310,7 +310,7 @@ struct earlycon_device {
->  int setup_earlycon(char *buf, const char *match,
->  		   int (*setup)(struct earlycon_device *, const char *));
->  
-> -extern int of_setup_earlycon(unsigned long addr,
-> +extern int of_setup_earlycon(unsigned long addr, unsigned char iotype,
->  			     int (*setup)(struct earlycon_device *, const char *));
->  
->  #define EARLYCON_DECLARE(name, func) \
-> -- 
-> 2.1.1
-> 
+greg k-h

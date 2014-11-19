@@ -1,51 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 15:26:41 +0100 (CET)
-Received: from smtpbg62.qq.com ([103.7.29.139]:35452 "EHLO smtpbg64.qq.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27014010AbaKSO0iHMglR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Nov 2014 15:26:38 +0100
-X-QQ-GoodBg: 0
-X-QQ-SSF: 00100000000000F0
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 221.225.169.142
-X-QQ-STYLE: 
-X-QQ-mid: bizmail38t1416407159t7956962
-From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
-To:     "=?utf-8?B?UmFsZiBCYWVjaGxl?=" <ralf@linux-mips.org>,
-        "=?utf-8?B?QWxleGFuZHJlIENvdXJib3Q=?=" <gnurou@gmail.com>
-Cc:     "=?utf-8?B?Sm9obiBDcmlzcGlu?=" <john@phrozen.org>,
-        "=?utf-8?B?U3RldmVuIEouIEhpbGw=?=" <Steven.Hill@imgtec.com>,
-        "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
-        "=?utf-8?B?RnV4aW4gWmhhbmc=?=" <zhangfx@lemote.com>,
-        "=?utf-8?B?d3V6aGFuZ2ppbg==?=" <wuzhangjin@gmail.com>,
-        "=?utf-8?B?bGludXgtZ3Bpb0B2Z2VyLmtlcm5lbC5vcmc=?=" 
-        <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH V4 2/6] MIPS: Move Loongson GPIO driver to drivers/gpio
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: base64
-Date:   Wed, 19 Nov 2014 22:25:59 +0800
-X-Priority: 3
-Message-ID: <tencent_15D766A360D879F4553C1872@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <1415891560-8915-1-git-send-email-chenhc@lemote.com>
-        <CAAVeFuKYgXhV_372FBQnArEFT4xEVB73P+yurJ9mF0CkKCx7eQ@mail.gmail.com>
-        <CAAVeFuJoo3X9aNYdrn5TJ-PjTzvFuEm5QTPmKYMy9NyWFy1_WA@mail.gmail.com>
-        <20141119101157.GB7213@linux-mips.org>
-In-Reply-To: <20141119101157.GB7213@linux-mips.org>
-X-QQ-ReplyHash: 1638269495
-X-QQ-SENDSIZE: 520
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 15:43:38 +0100 (CET)
+Received: from mail-wi0-f178.google.com ([209.85.212.178]:65425 "EHLO
+        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014010AbaKSOngIBNyB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 15:43:36 +0100
+Received: by mail-wi0-f178.google.com with SMTP id hi2so2093945wib.5
+        for <linux-mips@linux-mips.org>; Wed, 19 Nov 2014 06:43:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
+         :date:message-id;
+        bh=LT+UdHgYOBXivtd4JL4CiwQKY0BEHHRashKO4ih1DOE=;
+        b=Axle5aOqZyJcWYBxLHnRMEzXaS7QJRYlljAlJPFEc4cefACu3+jN9R1y0LrDEtGY9v
+         Y+s4yTefKye0x3CBZrObbqRB2oEN56IVeYQ57Vt97mdmwiNqYJbaA6dljx5Do1uIOrSR
+         WZjRjG40fRamNCWfhIu91+1g4e8q45969PPM50URpa30dMhb8BS9gYesqkM2pQy7U1yO
+         hyXl10Bh2e2rzO5DCwUHvD4BAsGm8Ert/KpHOetZsWABLHxetC7CK9UtYhwla5S3qWIp
+         8sEBxuv1cVHz9r9Ih7Z4lLydZO1GljUwB5Uw714FJlpjTbxtHfGZfk2pGxeWeEG+HBr/
+         Bupw==
+X-Gm-Message-State: ALoCoQl5+hJCgjtpKtGqxg/yzchSPiMhuy1gLFGXrw5J3kGbAszWloeLgSLOpSzNrYgERKkuKkJt
+X-Received: by 10.194.9.1 with SMTP id v1mr14541595wja.124.1416408210815;
+        Wed, 19 Nov 2014 06:43:30 -0800 (PST)
+Received: from trevor.secretlab.ca (host86-166-84-117.range86-166.btcentralplus.com. [86.166.84.117])
+        by mx.google.com with ESMTPSA id el6sm2471569wib.23.2014.11.19.06.43.29
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 19 Nov 2014 06:43:29 -0800 (PST)
+Received: by trevor.secretlab.ca (Postfix, from userid 1000)
+        id CB8E5C40D73; Wed, 19 Nov 2014 14:43:26 +0000 (GMT)
+From:   Grant Likely <grant.likely@linaro.org>
+Subject: Re: [PATCH V2 09/10] serial: earlycon: Set UPIO_MEM32BE based on DT
+ properties
+To:     Rob Herring <robh@kernel.org>, Kevin Cernekee <cernekee@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>, Arnd Bergmann <arnd@arndb.de>,
+        daniel@zonque.org, haojian.zhuang@gmail.com,
+        robert.jarzmik@free.fr, Florian Fainelli <f.fainelli@gmail.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+In-Reply-To: <CAL_JsqJ5+=kp-_bKiNxasB7gm1Pj4C6-FfO_+7DcyhvcgYEaAg@mail.gmail.com>
+References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
+        <1415825647-6024-10-git-send-email-cernekee@gmail.com>
+        <CAL_JsqJ5+=kp-_bKiNxasB7gm1Pj4C6-FfO_+7DcyhvcgYEaAg@mail.gmail.com>
+Date:   Wed, 19 Nov 2014 14:43:26 +0000
+Message-Id: <20141119144326.CB8E5C40D73@trevor.secretlab.ca>
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44292
+X-archive-position: 44293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: grant.likely@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,34 +66,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SGksIFJhbGYgYW5kIEFsZXhhbmRyZSwNCg0KU28sIEkgbmVlZCB0aHJlZSBwYXRjaGVzOiBj
-bGVhbiB1cCwgbW92ZSB0byBkcml2ZXJzL2dwaW8sIGFuZCBpbXByb3ZlIGl0IHRvIHN1cHBv
-cnQgTG9vbnNvbi0zQS8zQj8NCg0KSHVhY2FpDQogDQogDQotLS0tLS0tLS0tLS0tLS0tLS0g
-T3JpZ2luYWwgLS0tLS0tLS0tLS0tLS0tLS0tDQpGcm9tOiAgIlJhbGYgQmFlY2hsZSI8cmFs
-ZkBsaW51eC1taXBzLm9yZz47DQpEYXRlOiAgV2VkLCBOb3YgMTksIDIwMTQgMDY6MTEgUE0N
-ClRvOiAgIkFsZXhhbmRyZSBDb3VyYm90IjxnbnVyb3VAZ21haWwuY29tPjsNCkNjOiAgIkh1
-YWNhaSBDaGVuIjxjaGVuaGNAbGVtb3RlLmNvbT47ICJKb2huIENyaXNwaW4iPGpvaG5AcGhy
-b3plbi5vcmc+OyAiU3RldmVuIEouIEhpbGwiPFN0ZXZlbi5IaWxsQGltZ3RlYy5jb20+OyAi
-bGludXgtbWlwcyI8bGludXgtbWlwc0BsaW51eC1taXBzLm9yZz47ICJGdXhpbiBaaGFuZyI8
-emhhbmdmeEBsZW1vdGUuY29tPjsgInd1emhhbmdqaW4iPHd1emhhbmdqaW5AZ21haWwuY29t
-PjsgImxpbnV4LWdwaW9Admdlci5rZXJuZWwub3JnIjxsaW51eC1ncGlvQHZnZXIua2VybmVs
-Lm9yZz47DQpTdWJqZWN0OiAgUmU6IFtQQVRDSCBWNCAyLzZdIE1JUFM6IE1vdmUgTG9vbmdz
-b24gR1BJTyBkcml2ZXIgdG8gZHJpdmVycy9ncGlvDQogDQpPbiBXZWQsIE5vdiAxOSwgMjAx
-NCBhdCAwNToyMTo1NlBNICswOTAwLCBBbGV4YW5kcmUgQ291cmJvdCB3cm90ZToNCg0KPiA+
-IE9uIEZyaSwgTm92IDE0LCAyMDE0IGF0IDEyOjEyIEFNLCBIdWFjYWkgQ2hlbiA8Y2hlbmhj
-QGxlbW90ZS5jb20+IHdyb3RlOg0KPiA+PiBNb3ZlIExvb25nc29uLTIncyBHUElPIGRyaXZl
-ciB0byBkcml2ZXJzL2dwaW8gYW5kIGFkZCBLY29uZmlnIG9wdGlvbnMuDQo+ID4NCj4gPiBB
-Y2tlZC1ieTogQWxleGFuZHJlIENvdXJib3QgPGFjb3VyYm90QG52aWRpYS5jb20+DQo+ID4N
-Cj4gPiBHdWVzcyB0aGlzIHNob3VsZCBnbyB0aHJvdWdoIHRoZSBHUElPIHRyZWUgb25jZSB0
-aGUgcGxhdGZvcm0NCj4gPiBtYWludGFpbmVycyBoYXZlIGFja2VkIHRoaXM/DQo+IA0KPiBP
-dWNoLiBBZnRlciBsb29raW5nIGF0IHRoaXMgZHJpdmVyJ3MgaW1wbGVtZW50YXRpb24gSSB0
-aGluayBJIGhhdmUgdG8NCj4gdGFrZSBteSBBY2sgYmFjay4gVGhpcyBkcml2ZXIgY29tZXMg
-d2l0aCBjdXN0b20gZGVmaW5pdGlvbnMgb2YNCj4gZ3Bpb19nZXRfdmFsdWUoKSBhbmQgb3Ro
-ZXIgZnVuY3Rpb25zLCB3aGljaCB3ZSB3aWxsIHdhbnQgdG8gZ2V0IHJpZCBvZg0KPiBiZWZv
-cmUgbW92aW5nIHRoaXMgaW50byBkcml2ZXJzL2dwaW8uIENhbiB5b3UgcG9ydCB0aGlzIHRv
-IGEgcHJvcGVyDQo+IGdwaW9saWIgZHJpdmVyIGJlZm9yZSBkb2luZyB0aGUgbW92ZT8NCg0K
-QXMgdGhlIGFyY2ggbWFpbnRhaW5lciBJJ20gaGFwcHkgdG8gc2F5IGZhcmV3ZWxsIHRvIGRy
-aXZlciBjb2RlIGluIGFyY2gvbWlwcy4NCg0KQWxzbywgY2FuIHdlIHNwbGl0IHRoZSB3aG9s
-ZSBwcm9jZWR1cmUgaW50byB0d28gcGF0Y2hlcywgb25lIGZvciB0aGUgY2xlYW51cA0KYW5k
-IG9uZSBmb3IgdGhlIG1vdmU/ICBJIGRvbid0IGNhcmUgaW4gd2hpY2ggb3JkZXIuDQoNCiAg
-UmFsZg==
+On Tue, 18 Nov 2014 21:16:08 -0600
+, Rob Herring <robh@kernel.org>
+ wrote:
+> On Wed, Nov 12, 2014 at 2:54 PM, Kevin Cernekee <cernekee@gmail.com> wrote:
+> > If an earlycon (stdout-path) node is being used, check for "big-endian"
+> > or "native-endian" properties and pass the appropriate iotype to the
+> > driver.
+> >
+> > Note that LE sets UPIO_MEM (8-bit) but BE sets UPIO_MEM32BE (32-bit).  The
+> > big-endian property only really makes sense in the context of 32-bit
+> > registers, since 8-bit accesses never require data swapping.
+> >
+> > At some point, the of_earlycon code may want to pass in the reg-io-width,
+> > reg-offset, and reg-shift parameters too.
+> >
+> > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> > ---
+> >  drivers/of/fdt.c              | 9 ++++++++-
+> >  drivers/tty/serial/earlycon.c | 4 ++--
+> >  include/linux/serial_core.h   | 2 +-
+> >  3 files changed, 11 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> > index 30e97bc..15f80c9 100644
+> > --- a/drivers/of/fdt.c
+> > +++ b/drivers/of/fdt.c
+> > @@ -10,6 +10,7 @@
+> >   */
+> >
+> >  #include <linux/kernel.h>
+> > +#include <linux/kconfig.h>
+> >  #include <linux/initrd.h>
+> >  #include <linux/memblock.h>
+> >  #include <linux/of.h>
+> > @@ -784,7 +785,13 @@ int __init early_init_dt_scan_chosen_serial(void)
+> >                 if (!addr)
+> >                         return -ENXIO;
+> >
+> > -               of_setup_earlycon(addr, match->data);
+> > +               if (fdt_getprop(fdt, offset, "big-endian", NULL) ||
+> > +                   (fdt_getprop(fdt, offset, "native-endian", NULL) &&
+> 
+> Is native-endian documented?
+> 
+> > +                    IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))) {
+> > +                       of_setup_earlycon(addr, UPIO_MEM32BE, match->data);
+> > +               } else {
+> > +                       of_setup_earlycon(addr, UPIO_MEM, match->data);
+> > +               }
+> 
+> I'd rather see something like this, so we can more easily add any
+> other properties later:
+> 
+>                iotype = 0;
+>                if (fdt_getprop(fdt, offset, "big-endian", NULL) ||
+>                    (fdt_getprop(fdt, offset, "native-endian", NULL) &&
+>                     IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)))
+>                           iotype = UPIO_MEM32BE;
+> 
+>                of_setup_earlycon(addr, iotype ? : UPIO_MEM, match->data);
+
+or even initialize iotype to UPIO_MEM at the outset. :-)
+
+I've also asked for the tests in an if to be wrapped up into a helper. I
+can foresee other code wanting to use this.
+
+g.
+
+> 
+> >                 return 0;
+> >         }
+> >         return -ENODEV;
+> > diff --git a/drivers/tty/serial/earlycon.c b/drivers/tty/serial/earlycon.c
+> > index a514ee6..548f7d7 100644
+> > --- a/drivers/tty/serial/earlycon.c
+> > +++ b/drivers/tty/serial/earlycon.c
+> > @@ -148,13 +148,13 @@ int __init setup_earlycon(char *buf, const char *match,
+> >         return 0;
+> >  }
+> >
+> > -int __init of_setup_earlycon(unsigned long addr,
+> > +int __init of_setup_earlycon(unsigned long addr, unsigned char iotype,
+> >                              int (*setup)(struct earlycon_device *, const char *))
+> >  {
+> >         int err;
+> >         struct uart_port *port = &early_console_dev.port;
+> >
+> > -       port->iotype = UPIO_MEM;
+> > +       port->iotype = iotype;
+> >         port->mapbase = addr;
+> >         port->uartclk = BASE_BAUD * 16;
+> >         port->membase = earlycon_map(addr, SZ_4K);
+> > diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+> > index d2d5bf6..0d60c64 100644
+> > --- a/include/linux/serial_core.h
+> > +++ b/include/linux/serial_core.h
+> > @@ -310,7 +310,7 @@ struct earlycon_device {
+> >  int setup_earlycon(char *buf, const char *match,
+> >                    int (*setup)(struct earlycon_device *, const char *));
+> >
+> > -extern int of_setup_earlycon(unsigned long addr,
+> > +extern int of_setup_earlycon(unsigned long addr, unsigned char iotype,
+> >                              int (*setup)(struct earlycon_device *, const char *));
+> >
+> >  #define EARLYCON_DECLARE(name, func) \
+> > --
+> > 2.1.1
+> >

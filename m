@@ -1,48 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 09:22:24 +0100 (CET)
-Received: from mail-ig0-f179.google.com ([209.85.213.179]:50695 "EHLO
-        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013985AbaKSIWWFokOv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 09:22:22 +0100
-Received: by mail-ig0-f179.google.com with SMTP id r2so540203igi.12
-        for <multiple recipients>; Wed, 19 Nov 2014 00:22:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=6Qb2AjJCgG7ZbytWahyZ5vcS33SiuCp+dtGN0OH8R8c=;
-        b=xltJn8MJFEgX3mM/jKYmPL+vcORNvTXGxT5EsgQvXBD7GpZKY841rbCystqF9PXHzy
-         fvrlcdHGj4PMs2zDkwn1+YIvX5nWRAsYzCcKGYFvTsZsDFcx1kZQTWAZ+MaDar553oW1
-         VGH9sefGDT503RswkxKVr97TKJSHRoP3DsC+fRRZGrOET0+PACGc2i/8fyUNdP1dKAfI
-         VP/JWsr5TwGiaDgHOGqLJNWI7es569KW4eYjUNSA/aEhKPCmRBduif1N3u+74rtWv+08
-         KlYxA6VuQlfu9pKwtgooOveJtEV7fSjcUmbG3et4FslXmseFmSRh4laxW7HD3Y3ggOW7
-         +T5A==
-X-Received: by 10.42.126.82 with SMTP id d18mr69380ics.54.1416385336424; Wed,
- 19 Nov 2014 00:22:16 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 09:58:23 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44950 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011234AbaKSI6VNn8C0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 09:58:21 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 9705FAEEA52AA
+        for <linux-mips@linux-mips.org>; Wed, 19 Nov 2014 08:58:13 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 19 Nov
+ 2014 08:58:15 +0000
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 19 Nov 2014 08:58:15 +0000
+Received: from mchandras-linux.le.imgtec.org (192.168.154.149) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Wed, 19 Nov 2014 08:58:14 +0000
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: lib: memset: Clean up some MIPS{EL,EB} ifdefery
+Date:   Wed, 19 Nov 2014 08:58:10 +0000
+Message-ID: <1416387490-18921-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.1.3
 MIME-Version: 1.0
-Received: by 10.64.246.168 with HTTP; Wed, 19 Nov 2014 00:21:56 -0800 (PST)
-In-Reply-To: <CAAVeFuKYgXhV_372FBQnArEFT4xEVB73P+yurJ9mF0CkKCx7eQ@mail.gmail.com>
-References: <1415891560-8915-1-git-send-email-chenhc@lemote.com> <CAAVeFuKYgXhV_372FBQnArEFT4xEVB73P+yurJ9mF0CkKCx7eQ@mail.gmail.com>
-From:   Alexandre Courbot <gnurou@gmail.com>
-Date:   Wed, 19 Nov 2014 17:21:56 +0900
-Message-ID: <CAAVeFuJoo3X9aNYdrn5TJ-PjTzvFuEm5QTPmKYMy9NyWFy1_WA@mail.gmail.com>
-Subject: Re: [PATCH V4 2/6] MIPS: Move Loongson GPIO driver to drivers/gpio
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gnurou@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.149]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44283
+X-archive-position: 44284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnurou@gmail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,17 +46,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 19, 2014 at 5:11 PM, Alexandre Courbot <gnurou@gmail.com> wrote:
-> On Fri, Nov 14, 2014 at 12:12 AM, Huacai Chen <chenhc@lemote.com> wrote:
->> Move Loongson-2's GPIO driver to drivers/gpio and add Kconfig options.
->
-> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
->
-> Guess this should go through the GPIO tree once the platform
-> maintainers have acked this?
+The toolchain defines exactly one of __MIPSEB__ and
+__MIPSEL__. As a result, simplify the ifdefery a little bit.
 
-Ouch. After looking at this driver's implementation I think I have to
-take my Ack back. This driver comes with custom definitions of
-gpio_get_value() and other functions, which we will want to get rid of
-before moving this into drivers/gpio. Can you port this to a proper
-gpiolib driver before doing the move?
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/lib/memset.S | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
+index 7b0e5462ca51..c8fe6b1968fb 100644
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -114,8 +114,7 @@
+ 	R10KCBARRIER(0(ra))
+ #ifdef __MIPSEB__
+ 	EX(LONG_S_L, a1, (a0), .Lfirst_fixup\@)	/* make word/dword aligned */
+-#endif
+-#ifdef __MIPSEL__
++#else
+ 	EX(LONG_S_R, a1, (a0), .Lfirst_fixup\@)	/* make word/dword aligned */
+ #endif
+ 	PTR_SUBU	a0, t0			/* long align ptr */
+@@ -164,8 +163,7 @@
+ 	R10KCBARRIER(0(ra))
+ #ifdef __MIPSEB__
+ 	EX(LONG_S_R, a1, -1(a0), .Llast_fixup\@)
+-#endif
+-#ifdef __MIPSEL__
++#else
+ 	EX(LONG_S_L, a1, -1(a0), .Llast_fixup\@)
+ #endif
+ 1:	jr		ra
+-- 
+2.1.3

@@ -1,29 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 13:07:01 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:35870 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011908AbaKSMG7nZJY9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 13:06:59 +0100
-Date:   Wed, 19 Nov 2014 12:06:59 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-cc:     linux-mips@linux-mips.org
-Subject: Re: IP30: SMP Help
-In-Reply-To: <546C77F6.4030101@gentoo.org>
-Message-ID: <alpine.LFD.2.11.1411191139300.4773@eddie.linux-mips.org>
-References: <5457187D.6030708@gentoo.org> <54607499.2070806@gentoo.org> <546B11C0.90805@gentoo.org> <alpine.LFD.2.11.1411180946130.4773@eddie.linux-mips.org> <546B3D9C.6000104@gentoo.org> <alpine.LFD.2.11.1411181255420.4773@eddie.linux-mips.org>
- <546C77F6.4030101@gentoo.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 13:13:22 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:59902 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011908AbaKSMNUmHXxR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 13:13:20 +0100
+Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
+        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
+        id 0Lgc09-1YKxOl1IEH-00o0B7; Wed, 19 Nov 2014 13:11:42 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Yijing Wang <wangyijing@huawei.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Liviu Dudau <liviu@dudau.co.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        x86@kernel.org, sparclinux@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 5/5] PCI: Rip out pci_bus_add_devices() from pci_scan_root_bus()
+Date:   Wed, 19 Nov 2014 13:11:41 +0100
+Message-ID: <1645037.uypArjN50l@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <1416382369-13587-6-git-send-email-wangyijing@huawei.com>
+References: <1416382369-13587-1-git-send-email-wangyijing@huawei.com> <1416382369-13587-6-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V02:K0:2rQ5XDWgYD2pEVfa0ndNQ1kEeKCn7CVQmYN02ioCDHK
+ Gr98AoBTMGZwt7Dz5PB6RYPcTNaD/T5VWNZlkHuAq005YWO89f
+ PJA7NAlls7eU4UIP3QbXlwII0MII0SGw0kKYCJ8Wx5OFeFHvia
+ BFkTO69uCWnRerB4pmoFu0qSPiokkb6J3OhIpLXWnlMksKhng+
+ utF3zQ6r3lTO5JbjljmMpoJ4zEecsa1IuAN8+3OQu0MgNo/yJ/
+ qwT03r2Hcr8UxLoKRRAY0CeofGyLxr794yjGT9Wq0EEU/du7fy
+ xuPA6Osl9/gCbJ98VvhIWv2AUNy0jc8EY3PeVkVysomKNgaDQB
+ sgTZfuoqHSiAvqgpIbpo=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44290
+X-archive-position: 44291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,107 +58,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 19 Nov 2014, Joshua Kinard wrote:
+On Wednesday 19 November 2014 15:32:49 Yijing Wang wrote:
+> Just like pci_scan_bus(), we also should rip out
+> pci_bus_add_devices() from pci_scan_root_bus().
+> Lots platforms first call pci_scan_root_bus(), but
+> after that, they call pci_bus_size_bridges() and
+> pci_bus_assign_resources(). Place pci_bus_add_devices()
+> in pci_scan_root_bus() hurts PCI scan logic.
 
-> >  No, user registers have to be treated as 32-bit, that is sign-extended 
-> > from bit #31 (bits 63:32 are a copy of bit #31).  Using 32-bit operations 
-> > only guarantees that, e.g. when you load a register from its stack slot 
-> > using the 32-bit LW instruction, then on a 64-bit processor it will get 
-> > sign-extended in the hardware register from bit #31 through to bit #63.  
-> 
-> I've been aware of the sign-extending bit for some time.  Hence the
-> 0xffffffffxxxxxxxx-style addresses.  Regardless if the stack contains
-> 77abcdef77f00ba7, an LW insn loading that value will actually store
-> ffffffff77f00ba7 into the hardware register, right?
+I think we really need to wait for Bjorn to comment on this patch,
+as I mentioned the idea behind pci_scan_root_bus() was to integrate
+the scanning part, which you now undo, though I can still see this
+working out in the long run.
 
- Nope, it'll be either 0x0000000077f00ba7 or 0x0000000077abcdef, depending 
-on the endianness.  Bit #31 is clear here and so will be bits #63:32.  
-All user software must have these bits clear in addresses as KUSEG spans 
-0x00000000-0x7fffffff.
+> Should no functional change.
 
-> It just seemed odd that from the 64-bit stack addresses, it looked like there
-> were two 32-bit virtual addresses (77abcdef and 77f00ba7).  I wasn't sure if
-> that was normal behavior or not for 64-bit Linux/MIPS.  Or a symptom of
-> whatever bug is present in the IP30 code I've yet to find.
+But you are moving the pci_bus_add_devices() later in a couple of
+places. While this seems entirely reasonable, I would consider
+it a functional change.
 
- This is 32-bit user code, it's (approximately) unaware it's running on a 
-64-bit OS.
+> diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
+> index 076c35c..97f9730 100644
+> --- a/arch/alpha/kernel/pci.c
+> +++ b/arch/alpha/kernel/pci.c
+> @@ -334,6 +334,8 @@ common_init_pci(void)
+>  
+>  		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
+>  					hose, &resources);
+> +		if (bus)
+> +			pci_bus_add_devices(bus);
+>  		hose->bus = bus;
+>  		hose->need_domain_info = need_domain_info;
+>  		next_busno = bus->busn_res.end + 1;
 
-> >  Of course an o32 bit program does not see it, it sees the environment as 
-> > it would on a 32-bit processor as it is supposed to run the same on a true 
-> > 32-bit processor.  Well, strictly speaking this is not completely true on 
-> > Linux, for that to be the case the UX bit you see set in the Status 
-> > register dumped above would have to be cleared, but this is a historical 
-> > artefact and nobody has had the incentive to clean this up yet (in a 
-> > reference environment you want UX clear for o32, UX set for n64 and PX set 
-> > for n32 where available, otherwise UX set).  Clearing the UX bit disables 
-> > all the 64-bit instructions in the user mode making a user program unable 
-> > to see or modify the upper 32 bits of any general register (they're still 
-> > sign-extended automatically).
-> 
-> A lot of the binaries on the Octane's filesystem are compiled w/ MIPS-IV.
-> Under o32, I know that doesn't allow for use of 64bit instructions, but I do
-> believe that o32 can still make use of newer instructions that were added in
-> the MIPS-III or MIPS-IV ISA (iirc, conditional move was one of those).
+How about making pci_bus_add_devices() handle a NULL argument to save
+the if() here and elsewhere?
+> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+> index 1bf60b1..f083688 100644
+> --- a/arch/mips/pci/pci.c
+> +++ b/arch/mips/pci/pci.c
+> @@ -113,6 +113,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
+>  		if (!pci_has_flag(PCI_PROBE_ONLY)) {
+>  			pci_bus_size_bridges(bus);
+>  			pci_bus_assign_resources(bus);
+> +			pci_bus_add_devices(bus);
+>  		}
+>  	}
+>  }
 
- Nope, not exactly right.  You can indeed make use of MIPS IV ISA 
-additions, that are address size agnostic, however you cannot make use of 
-any MIPS III additions as all of these depend on the 64-bit mode: integer 
-operations require CP0.Status.UX to be set that is supposed not to be for 
-o32 user software and floating-point additions require CP0.Status.FR to be 
-set that is likewise supposed not to be for o32 user software.
+This one looks wrong, I think you still want to call pci_bus_add_devices()
+even with PCI_PROBE_ONLY set.
 
- Additionally on some processors, including the R10k family you are 
-concerned about, CP0.Status.XX has to be set for MIPS IV ISA additions to 
-be enabled, but I believe it is under Linux.
+> diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
+> index 1f80a88..007466e 100644
+> --- a/arch/tile/kernel/pci.c
+> +++ b/arch/tile/kernel/pci.c
+> @@ -308,6 +308,8 @@ int __init pcibios_init(void)
+>  			pci_add_resource(&resources, &iomem_resource);
+>  			bus = pci_scan_root_bus(NULL, 0, controller->ops,
+>  						controller, &resources);
+> +			if (bus)
+> +				pci_bus_add_devices(bus);
+>  			controller->root_bus = bus;
+>  			controller->last_busno = bus->busn_res.end;
+>  		}
 
-> The problem seems to be, though, that there's some kind of subtle memory
-> corruption happening when I compile an IP30 kernel w/ CONFIG_SMP.  Without
-> CONFIG_SMP, it runs fine.  I was focusing on the spinlocks because I know that
-> without CONFIG_SMP, they compile away into nothing, but with CONFIG_SMP, even
-> on a uniprocessor machine, they'll convert to instructions and can still
-> highlight locking problems in the code.
+Should the pci_bus_add_devices come after setting the bus numbers here?
 
- I highly doubt spinlocks have any significance here, they're used and 
-work just fine across many systems.  If anything this will probably be 
-either a bug in platform code somewhere or a critical part of hardware 
-having not been correctly initialised.
-
-> So, for now, my post-analysis crash-tool is a Canon DSLR camera mounted on a
-> tripod to capture whatever debug data fits onto a single 1024x768 screen.
-
- Does the system have any standard bus like PCI?  If so then you could get 
-an NVRAM card then and log some activity there like CPU status on entry to 
-exception handlers.  Once a crash has happened you could boot with that 
-logging disabled and retrieve your data.  Accessing hardware is easy on 
-MIPS, you can do it via XKPHYS without a need to have the MMU working, IOW 
-you'll be able to poke at hardware even if your TLB/page tables got 
-botched for some reason.  And you can bypass the cache too, which is 
-another possible place for breakage.
-
- Of course if you have PCI then you can add an ordinary serial port card 
-there as well if the onboard port is difficult to access for some reason, 
-but serial port logging has its limitations, mainly the complexity to 
-access it and throughput.
-
- Given the symptoms I'd first take a look at context switching code 
-though, you may be able to get away without fancy tools.
-
-> >  Please do yourself a favour and read a good MIPS architecture book; 
-> > Dominic Sweetman's "See MIPS Run" would be my recommendation and its 
-> > second edition has some focus on Linux too that might help.  Without a 
-> > good understanding of the architecture you'll be having a very, very hard 
-> > time debugging such low-level issues.
-> 
-> I've had a copy of the 2nd edition for a few years now.  It's an excellent
-> general reference, though I admit I've skipped over the TLB chapter a few
-> times.  Hopefully a third edition comes out at some point and has more in-depth
-> coverage of Linux running on MIPS, in addition to the general MIPS overview.
-
- I don't think it will, by now Dominic has retired.  But I don't think you 
-need anything beyond that, there's nothing specific about the MIPS port of 
-Linux that wouldn't be covered by a generic Linux book, except from the 
-processor architecture itself -- and you've got it covered there.  For the 
-rest, like newer stuff, just study the sources.
-
-  Maciej
+	Arnd

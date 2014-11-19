@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 23:55:20 +0100 (CET)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:52121 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014056AbaKSWzSfKE5V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 23:55:18 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2014 00:05:56 +0100 (CET)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:42502 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013891AbaKSXFyae6a0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Nov 2014 00:05:54 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 1C03019C197;
-        Thu, 20 Nov 2014 00:55:18 +0200 (EET)
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id D66E35A75FD;
+        Thu, 20 Nov 2014 01:05:44 +0200 (EET)
 X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id vXU9mY0YNML1; Thu, 20 Nov 2014 00:55:11 +0200 (EET)
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id yfVinun6YKZi; Thu, 20 Nov 2014 01:05:38 +0200 (EET)
 Received: from amd-fx-6350.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id 7A7C75BC010;
-        Thu, 20 Nov 2014 00:55:11 +0200 (EET)
+        by smtp5.welho.com (Postfix) with ESMTP id A2FA45BC003;
+        Thu, 20 Nov 2014 01:05:46 +0200 (EET)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     Huacai@filtteri2.pp.htv.fi, "Chen <chenhc"@lemote.com,
+Cc:     Huacai Chen <chenhc@lemote.com>,
         Markos Chandras <Markos.Chandras@imgtec.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: loongson: make platform serial setup always built-in
-Date:   Thu, 20 Nov 2014 00:55:06 +0200
-Message-Id: <1416437706-28720-1-git-send-email-aaro.koskinen@iki.fi>
+Subject: [PATCH RESEND] MIPS: loongson: make platform serial setup always built-in
+Date:   Thu, 20 Nov 2014 01:05:38 +0200
+Message-Id: <1416438338-21152-1-git-send-email-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 2.1.2
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44311
+X-archive-position: 44312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,6 +54,9 @@ Cc: stable@vger.kernel.org
 Reported-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
+
+	RESEND: Sorry, I screwed up the Cc: list in the original.
+
  arch/mips/loongson/common/Makefile | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 

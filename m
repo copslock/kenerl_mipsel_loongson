@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 09:11:59 +0100 (CET)
-Received: from mail-ig0-f177.google.com ([209.85.213.177]:57415 "EHLO
-        mail-ig0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013960AbaKSIL6C1YMf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 09:11:58 +0100
-Received: by mail-ig0-f177.google.com with SMTP id uq10so537151igb.10
-        for <multiple recipients>; Wed, 19 Nov 2014 00:11:52 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2014 09:22:24 +0100 (CET)
+Received: from mail-ig0-f179.google.com ([209.85.213.179]:50695 "EHLO
+        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013985AbaKSIWWFokOv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2014 09:22:22 +0100
+Received: by mail-ig0-f179.google.com with SMTP id r2so540203igi.12
+        for <multiple recipients>; Wed, 19 Nov 2014 00:22:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=QFLwH1j5WFHFNLKZvZPEZkFHzb6kx+8XmCsSbv6qK08=;
-        b=jAdiMjzOrgmaRZvg8UtR9PKMl7OjuSawIWHV5ZQi8WSCmzCX8Djw6jDqxxU/VY9iXK
-         UykoON/RNc6x5xjQct2soofOCEG1Aif7qjkoltAwDOjD4+ZmOP/9QA380ej6TITsT/tS
-         LOiT2Coy1Bq0Q95Z3ugekCg3BTjPOPK2fFWXEcnxHiRxJGHE778VT14ko+6W9LEM4VSj
-         HXxaAV5TRmRrQ0JVCpU4iN2pAsSpR1UcbujmoadDPo6XDbZj4ca7zwYhdlfqCCX3hjIp
-         oRFENC93My8z0d77wmrkBTnK/MVd5D0auEZPcJl0EOCblMonjbJXq0twIenMucwbU9oW
-         Yv5g==
-X-Received: by 10.107.166.141 with SMTP id p135mr43750815ioe.16.1416384712168;
- Wed, 19 Nov 2014 00:11:52 -0800 (PST)
+        bh=6Qb2AjJCgG7ZbytWahyZ5vcS33SiuCp+dtGN0OH8R8c=;
+        b=xltJn8MJFEgX3mM/jKYmPL+vcORNvTXGxT5EsgQvXBD7GpZKY841rbCystqF9PXHzy
+         fvrlcdHGj4PMs2zDkwn1+YIvX5nWRAsYzCcKGYFvTsZsDFcx1kZQTWAZ+MaDar553oW1
+         VGH9sefGDT503RswkxKVr97TKJSHRoP3DsC+fRRZGrOET0+PACGc2i/8fyUNdP1dKAfI
+         VP/JWsr5TwGiaDgHOGqLJNWI7es569KW4eYjUNSA/aEhKPCmRBduif1N3u+74rtWv+08
+         KlYxA6VuQlfu9pKwtgooOveJtEV7fSjcUmbG3et4FslXmseFmSRh4laxW7HD3Y3ggOW7
+         +T5A==
+X-Received: by 10.42.126.82 with SMTP id d18mr69380ics.54.1416385336424; Wed,
+ 19 Nov 2014 00:22:16 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.64.246.168 with HTTP; Wed, 19 Nov 2014 00:11:32 -0800 (PST)
-In-Reply-To: <1415891560-8915-1-git-send-email-chenhc@lemote.com>
-References: <1415891560-8915-1-git-send-email-chenhc@lemote.com>
+Received: by 10.64.246.168 with HTTP; Wed, 19 Nov 2014 00:21:56 -0800 (PST)
+In-Reply-To: <CAAVeFuKYgXhV_372FBQnArEFT4xEVB73P+yurJ9mF0CkKCx7eQ@mail.gmail.com>
+References: <1415891560-8915-1-git-send-email-chenhc@lemote.com> <CAAVeFuKYgXhV_372FBQnArEFT4xEVB73P+yurJ9mF0CkKCx7eQ@mail.gmail.com>
 From:   Alexandre Courbot <gnurou@gmail.com>
-Date:   Wed, 19 Nov 2014 17:11:32 +0900
-Message-ID: <CAAVeFuKYgXhV_372FBQnArEFT4xEVB73P+yurJ9mF0CkKCx7eQ@mail.gmail.com>
+Date:   Wed, 19 Nov 2014 17:21:56 +0900
+Message-ID: <CAAVeFuJoo3X9aNYdrn5TJ-PjTzvFuEm5QTPmKYMy9NyWFy1_WA@mail.gmail.com>
 Subject: Re: [PATCH V4 2/6] MIPS: Move Loongson GPIO driver to drivers/gpio
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -38,7 +38,7 @@ Return-Path: <gnurou@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44282
+X-archive-position: 44283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,10 +55,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 14, 2014 at 12:12 AM, Huacai Chen <chenhc@lemote.com> wrote:
-> Move Loongson-2's GPIO driver to drivers/gpio and add Kconfig options.
+On Wed, Nov 19, 2014 at 5:11 PM, Alexandre Courbot <gnurou@gmail.com> wrote:
+> On Fri, Nov 14, 2014 at 12:12 AM, Huacai Chen <chenhc@lemote.com> wrote:
+>> Move Loongson-2's GPIO driver to drivers/gpio and add Kconfig options.
+>
+> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
+>
+> Guess this should go through the GPIO tree once the platform
+> maintainers have acked this?
 
-Acked-by: Alexandre Courbot <acourbot@nvidia.com>
-
-Guess this should go through the GPIO tree once the platform
-maintainers have acked this?
+Ouch. After looking at this driver's implementation I think I have to
+take my Ack back. This driver comes with custom definitions of
+gpio_get_value() and other functions, which we will want to get rid of
+before moving this into drivers/gpio. Can you port this to a proper
+gpiolib driver before doing the move?

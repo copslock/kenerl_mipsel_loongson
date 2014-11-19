@@ -1,64 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2014 18:10:12 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:48595 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008213AbaLERJbwiF-c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2014 18:09:31 +0100
-Received: from bl20-129-121.dsl.telepac.pt ([2.81.129.121] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1XwwNf-0002Uz-Ib; Fri, 05 Dec 2014 17:09:23 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Huacai Chen <chenhc@lemote.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: Loongson: Make platform serial setup always built-in." has been added to staging queue
-Date:   Fri,  5 Dec 2014 17:09:22 +0000
-Message-Id: <1417799362-21936-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.0
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44584
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+Date: Thu, 20 Nov 2014 01:05:38 +0200
+Subject: MIPS: Loongson: Make platform serial setup always built-in.
+Message-ID: <20141119230538.PTMXBkRXA0w2fNjehx-bp2n-9BxSRQe7NtSkQdb5Iaw@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 26927f76499849e095714452b8a4e09350f6a3b9 upstream.
 
-    MIPS: Loongson: Make platform serial setup always built-in.
+If SERIAL_8250 is compiled as a module, the platform specific setup
+for Loongson will be a module too, and it will not work very well.
+At least on Loongson 3 it will trigger a build failure,
+since loongson_sysconf is not exported to modules.
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+Fix by making the platform specific serial code always built-in.
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.16.y-queue
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reported-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Markos Chandras <Markos.Chandras@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/8533/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/loongson/common/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This patch is scheduled to be released in version 3.16.7-ckt3.
-
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Luis
-
-------
+diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+index 0bb9cc9dc621..d87e03330b29 100644
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -11,7 +11,8 @@ obj-$(CONFIG_PCI) += pci.o
+ # Serial port support
+ #
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+-obj-$(CONFIG_SERIAL_8250) += serial.o
++loongson-serial-$(CONFIG_SERIAL_8250) := serial.o
++obj-y += $(loongson-serial-m) $(loongson-serial-y)
+ obj-$(CONFIG_LOONGSON_UART_BASE) += uart_base.o
+ obj-$(CONFIG_LOONGSON_MC146818) += rtc.o

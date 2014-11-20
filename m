@@ -1,53 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2014 21:14:22 +0100 (CET)
-Received: from mail-qc0-f169.google.com ([209.85.216.169]:48704 "EHLO
-        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014126AbaKTUOVQuM5d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Nov 2014 21:14:21 +0100
-Received: by mail-qc0-f169.google.com with SMTP id w7so2709473qcr.0
-        for <multiple recipients>; Thu, 20 Nov 2014 12:14:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=NO3MDL9NKgdi+R1Pp1ieZ1UGnNbRg2Gpw/aPUMIa0kE=;
-        b=o1eP9g7c9Jnvnc5OJ1FfrmUmrV40foFKNU6wKU3+oundlVT3inKsL1bEyQV0KXHSTI
-         MMLvIy+QZNa7BIv5s+liEF+l6ckNMKkrWpWhaALCmGi8rX0HeOgArNbgf7xq4sbjnX4E
-         lwF5YC8HCrxeCpTU6iQEJyB64agzGaBBwWVhsBgtMcFlJh/FGkSYsRxlv7Rm9Ds2tIo9
-         jJvIQiZ4GcHT6uS2tIE6uSNtMMMGoRhw0C6uKZ6vVbNU2cjukfOGkuxvLDD31LDzRgEv
-         WCJWZzqIm01v+jyumOGPB685WSHrNtCem/mn/HcCJdH4ulVetS/dAOtX/WhPygElIhgW
-         0t4w==
-X-Received: by 10.224.74.135 with SMTP id u7mr197630qaj.67.1416514455379; Thu,
- 20 Nov 2014 12:14:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2014 22:46:10 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:45400 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014053AbaKTVqIE2gBH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Nov 2014 22:46:08 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sAKLk1eb019831;
+        Thu, 20 Nov 2014 22:46:01 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sAKLjwXN019830;
+        Thu, 20 Nov 2014 22:45:58 +0100
+Date:   Thu, 20 Nov 2014 22:45:58 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     linux-mips@linux-mips.org, aaro.koskinen@iki.fi,
+        david.daney@cavium.com, linux-kernel@vger.kernel.org,
+        markos.chandras@imgtec.com, dengcheng.zhu@imgtec.com,
+        chenhc@lemote.com, akpm@linux-foundation.org
+Subject: Re: [PATCH] MIPS: Remove a temporary hack for debugging cache
+ flushes in SMTC configuration
+Message-ID: <20141120214557.GA19608@linux-mips.org>
+References: <20140906022738.6957.53838.stgit@linux-yegoshin>
 MIME-Version: 1.0
-Received: by 10.140.89.113 with HTTP; Thu, 20 Nov 2014 12:13:55 -0800 (PST)
-In-Reply-To: <546E2E3E.5040305@gmail.com>
-References: <1416097066-20452-1-git-send-email-cernekee@gmail.com>
- <20141120030434.GE24364@ld-irv-0074> <CAJiQ=7C8h-MAuRdgzZqx2=bg8bvy7v9pv7e7tGXWmA9ghYJiqQ@mail.gmail.com>
- <546E2E3E.5040305@gmail.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Thu, 20 Nov 2014 12:13:55 -0800
-Message-ID: <CAJiQ=7CbOtejxhcoTiJ2VOyM9CJNCdWAw7Cv5HTzwGa1VmO5Xg@mail.gmail.com>
-Subject: Re: [PATCH V2 00/22] Multiplatform BMIPS kernel
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Brian Norris <computersforpeace@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jon Fraser <jfraser@broadcom.com>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20140906022738.6957.53838.stgit@linux-yegoshin>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44325
+X-archive-position: 44326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,33 +46,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 20, 2014 at 10:09 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> Slightly unrelated, did you also try to use drivers/bus/brcmstb_gisb.c
-> on these MIPS platforms?
->
-> Its usefulness is probably lower on MIPS since we typically get accurate
-> bus errors to be decoded by the CPU and printed through the exception
-> handler, but I'd be curious if it works just fine as well.
+On Fri, Sep 05, 2014 at 07:27:38PM -0700, Leonid Yegoshin wrote:
 
-Unfortunately ERR_CAP_CLR (the first register) starts at offset 0x7e4
-on 28nm, and offset 0x0c8 on 40nm/65nm.
+> This patch removes a temporary hack for debugging SMTC configuration from
+> 
+> 	commit 41c594ab65fc89573af296d192aa5235d09717ab
+> 	Author: Ralf Baechle <ralf@linux-mips.org>
+> 	Date:   Wed Apr 5 09:45:45 2006 +0100
+> 
+> which is dropped now. Some performance degradation for multi-VPE systems
+> is removed.
 
-Just for fun I tried setting the base address to (0x104000c8 - 0x7e4)
-= 0x103ff8e4 on 7420, and then noticed that the CAP_HI_ADDR register
-only exists on the new chips with 40-bit addressing.  This prevents
-the driver from reading the valid bit from the correct location, so
-the error handler exits prematurely.  After manually hacking the code
-to renumber the registers, it worked again:
+Your patch removes the sole location from where PROTECT_CACHE_FLUSHES
+was defined leaving all the #ifdef'ed PROTECT_CACHE_FLUSHES code unused.
+So I'm more thinking of something like below.
 
-# devmem 0x103ffffc
-Data bus error, epc == 0040a21c, ra == 0040a1a0
-brcmstb_gisb_arb_decode_addr: timeout at 0x103ffffc [R timeout], core: cpu_0
-Bus error
-# devmem 0x103ffffc 32 0x5678
-brcmstb_gisb_arb_decode_addr: timeout at 0x103ffffc [W timeout], core: cpu_0
-#
+  Ralf
 
-Last night I fixed up the brcmstb reset driver to work with the old
-chips.  I'm wondering if it makes sense to just split this work into a
-new patch series, since several of the BCM7xxx ARM drivers will need
-changes (both code and DT) to run on MIPS.
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/include/asm/r4kcache.h | 59 ----------------------------------------
+ 1 file changed, 59 deletions(-)
+
+diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+index cd6e0af..e293a8d 100644
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -47,79 +47,20 @@ extern void (*r4k_blast_icache)(void);
+ 
+ #ifdef CONFIG_MIPS_MT
+ 
+-/*
+- * Optionally force single-threaded execution during I-cache flushes.
+- */
+-#define PROTECT_CACHE_FLUSHES 1
+-
+-#ifdef PROTECT_CACHE_FLUSHES
+-
+-extern int mt_protiflush;
+-extern int mt_protdflush;
+-extern void mt_cflush_lockdown(void);
+-extern void mt_cflush_release(void);
+-
+-#define BEGIN_MT_IPROT \
+-	unsigned long flags = 0;			\
+-	unsigned long mtflags = 0;			\
+-	if(mt_protiflush) {				\
+-		local_irq_save(flags);			\
+-		ehb();					\
+-		mtflags = dvpe();			\
+-		mt_cflush_lockdown();			\
+-	}
+-
+-#define END_MT_IPROT \
+-	if(mt_protiflush) {				\
+-		mt_cflush_release();			\
+-		evpe(mtflags);				\
+-		local_irq_restore(flags);		\
+-	}
+-
+-#define BEGIN_MT_DPROT \
+-	unsigned long flags = 0;			\
+-	unsigned long mtflags = 0;			\
+-	if(mt_protdflush) {				\
+-		local_irq_save(flags);			\
+-		ehb();					\
+-		mtflags = dvpe();			\
+-		mt_cflush_lockdown();			\
+-	}
+-
+-#define END_MT_DPROT \
+-	if(mt_protdflush) {				\
+-		mt_cflush_release();			\
+-		evpe(mtflags);				\
+-		local_irq_restore(flags);		\
+-	}
+-
+-#else
+-
+-#define BEGIN_MT_IPROT
+-#define BEGIN_MT_DPROT
+-#define END_MT_IPROT
+-#define END_MT_DPROT
+-
+-#endif /* PROTECT_CACHE_FLUSHES */
+-
+ #define __iflush_prologue						\
+ 	unsigned long redundance;					\
+ 	extern int mt_n_iflushes;					\
+-	BEGIN_MT_IPROT							\
+ 	for (redundance = 0; redundance < mt_n_iflushes; redundance++) {
+ 
+ #define __iflush_epilogue						\
+-	END_MT_IPROT							\
+ 	}
+ 
+ #define __dflush_prologue						\
+ 	unsigned long redundance;					\
+ 	extern int mt_n_dflushes;					\
+-	BEGIN_MT_DPROT							\
+ 	for (redundance = 0; redundance < mt_n_dflushes; redundance++) {
+ 
+ #define __dflush_epilogue \
+-	END_MT_DPROT	 \
+ 	}
+ 
+ #define __inv_dflush_prologue __dflush_prologue

@@ -1,44 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2014 02:15:49 +0100 (CET)
-Received: from mail-ie0-f169.google.com ([209.85.223.169]:46127 "EHLO
-        mail-ie0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014066AbaKTBPmDwqzB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Nov 2014 02:15:42 +0100
-Received: by mail-ie0-f169.google.com with SMTP id y20so1808972ier.14
-        for <multiple recipients>; Wed, 19 Nov 2014 17:15:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=qSHdqvJ//v1uFkELedOlxnX4NMhny5x3QuAYtxEqEFw=;
-        b=k0Q9h3fA76R9tpegL0yJPUvQCuHECciqu9afROzZornWyoih/T84J94P3+gJPOq3Fi
-         dneXxuKSEKCjlmwlSFZgbd3MjOLAFsPKian1zgJMgzYzU6DwP1RDhLFd2PTZ2YIOJQbq
-         y2x+mgQNlMfQszV7lpqAuq2e4RmXjnBo8r6ePajfSXpz4DfmkHHx/xmd/YMi9kV5jDWp
-         a1F0Jx1ZRlDThqwnoJHyJBzxJ/w7W4W3weIkWZN54HGC9ym2eDwu6l96DhoQk6VvZ8ni
-         akB8Joa6zcQHWbKd6xJ04G9MBxpcVV3DDVNBgSwErDPWtjGtWxnzZK0QkA8HMwfj2HNA
-         fQWA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2014 02:57:56 +0100 (CET)
+Received: from szxga03-in.huawei.com ([119.145.14.66]:16728 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014062AbaKTB5yn2RVR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Nov 2014 02:57:54 +0100
+Received: from 172.24.2.119 (EHLO szxeml461-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg03-dlp.huawei.com (MOS 4.4.3-GA FastPath queued)
+        with ESMTP id AXJ48693;
+        Thu, 20 Nov 2014 09:56:24 +0800 (CST)
+Received: from [127.0.0.1] (10.177.27.212) by szxeml461-hub.china.huawei.com
+ (10.82.67.204) with Microsoft SMTP Server id 14.3.158.1; Thu, 20 Nov 2014
+ 09:49:08 +0800
+Message-ID: <546D4891.80503@huawei.com>
+Date:   Thu, 20 Nov 2014 09:49:05 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Thunderbird/24.0.1
 MIME-Version: 1.0
-X-Received: by 10.51.16.37 with SMTP id ft5mr6571797igd.6.1416446136146; Wed,
- 19 Nov 2014 17:15:36 -0800 (PST)
-Received: by 10.64.176.211 with HTTP; Wed, 19 Nov 2014 17:15:36 -0800 (PST)
-In-Reply-To: <20141119192214.GH8625@linux-mips.org>
-References: <20141119192214.GH8625@linux-mips.org>
-Date:   Thu, 20 Nov 2014 09:15:36 +0800
-Message-ID: <CAAhV-H7Rshve6S6Wz0B-MuSmLBbM7LKTOJN07i99wcq=VjDJfA@mail.gmail.com>
-Subject: Re: MIPS: Pull request
-From:   Huacai Chen <chenhuacai@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        <linux-arm-kernel@lists.infradead.org>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        Liviu Dudau <liviu@dudau.co.uk>,
+        "Tony Luck" <tony.luck@intel.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-mips@linux-mips.org>, <linux-sh@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <x86@kernel.org>, <sparclinux@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        <linux-alpha@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 5/5] PCI: Rip out pci_bus_add_devices() from pci_scan_root_bus()
+References: <1416382369-13587-1-git-send-email-wangyijing@huawei.com> <1416382369-13587-6-git-send-email-wangyijing@huawei.com> <1645037.uypArjN50l@wuerfel>
+In-Reply-To: <1645037.uypArjN50l@wuerfel>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.27.212]
+X-CFilter-Loop: Reflected
+X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
+        refid=str=0001.0A010203.546D4A4B.00AA,ss=1,re=0.001,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
+        ip=0.0.0.0,
+        so=2013-05-26 15:14:31,
+        dmn=2013-03-21 17:37:32
+X-Mirapoint-Loop-Id: ec113a9ea3b5cdd499692b1b2764ac76
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44314
+X-archive-position: 44315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,87 +61,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Ralf,
+>> diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
+>> index 076c35c..97f9730 100644
+>> --- a/arch/alpha/kernel/pci.c
+>> +++ b/arch/alpha/kernel/pci.c
+>> @@ -334,6 +334,8 @@ common_init_pci(void)
+>>  
+>>  		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
+>>  					hose, &resources);
+>> +		if (bus)
+>> +			pci_bus_add_devices(bus);
+>>  		hose->bus = bus;
+>>  		hose->need_domain_info = need_domain_info;
+>>  		next_busno = bus->busn_res.end + 1;
+> 
+> How about making pci_bus_add_devices() handle a NULL argument to save
+> the if() here and elsewhere?
 
-It seems like this patch is missing during rebase:
- MIPS: Fix a copy & paste error in unistd.h
+This make sense, will update it, thanks!
 
-Huacai
+>> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+>> index 1bf60b1..f083688 100644
+>> --- a/arch/mips/pci/pci.c
+>> +++ b/arch/mips/pci/pci.c
+>> @@ -113,6 +113,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
+>>  		if (!pci_has_flag(PCI_PROBE_ONLY)) {
+>>  			pci_bus_size_bridges(bus);
+>>  			pci_bus_assign_resources(bus);
+>> +			pci_bus_add_devices(bus);
+>>  		}
+>>  	}
+>>  }
+> 
+> This one looks wrong, I think you still want to call pci_bus_add_devices()
+> even with PCI_PROBE_ONLY set.
 
-On Thu, Nov 20, 2014 at 3:22 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> Hi Linus,
->
-> The following changes since commit 206c5f60a3d902bc4b56dab2de3e88de5eb06108:
->
->   Linux 3.18-rc4 (2014-11-09 14:55:29 -0800)
->
-> are available in the git repository at:
->
->   git://git.linux-mips.org/pub/scm/ralf/upstream-linus.git upstream
->
-> for you to fetch changes up to 935c2dbec4d6d3163ee8e7409996904a734ad89a:
->
->   MIPS: jump_label.c: Handle the microMIPS J instruction encoding (2014-11-19 18:22:09 +0100)
->
-> More 3.18 fixes for MIPS:
->
->  - Backtraces were not quite working on on 64-bit kernels
->  - Loongson needs a different cache coherency setting
->  - Loongson 3 is a MIPS64 R2 version but due to erratum we treat is an
->    older architecture revision.
->  - Fix build errors due to undefined references to __node_distances for
->    certain configurations.
->  - Fix instruction decodig in the jump label code.
->  - For certain configurations copy_{from,to}_user destroy the content
->    of $3 so that register needs to be marked as clobbed by the calling
->    code.
->  - Hardware Table Walker fixes.
->  - Fill the delay slot of the last instruction of memcpy otherwise
->    whatever ends up there randomly might have undesirable effects.
->  - Ensure get_user/__get_user always zero the variable to be read even
->    in case of an error.
->
-> Please consider pulling,
->
->   Ralf
->
-> ----------------------------------------------------------------
-> This has survived the usual torture by Imagination's build farm and
-> sat in -next.
->
->
-> Aaro Koskinen (1):
->       MIPS: oprofile: Fix backtrace on 64-bit kernel
->
-> Huacai Chen (2):
->       MIPS: Loongson: Fix the write-combine CCA value setting
->       MIPS: Loongson: Set Loongson-3's ISA level to MIPS64R1
->
-> James Cowgill (2):
->       MIPS: Loongson3: Fix __node_distances undefined error
->       MIPS: IP27: Fix __node_distances undefined error
->
-> Maciej W. Rozycki (2):
->       MIPS: jump_label.c: Correct the span of the J instruction
->       MIPS: jump_label.c: Handle the microMIPS J instruction encoding
->
-> Markos Chandras (3):
->       MIPS: asm: uaccess: Add v1 register to clobber list on EVA
->       MIPS: tlb-r4k: Add missing HTW stop/start sequences
->       MIPS: lib: memcpy: Restore NOP on delay slot before returning to caller
->
-> Ralf Baechle (1):
->       MIPS: Zero variable read by get_user / __get_user in case of an error.
->
->  arch/mips/include/asm/jump_label.h                 |  8 ++++-
->  .../asm/mach-loongson/cpu-feature-overrides.h      |  2 --
->  arch/mips/include/asm/uaccess.h                    | 12 ++++---
->  arch/mips/kernel/cpu-probe.c                       |  7 ++--
->  arch/mips/kernel/jump_label.c                      | 42 ++++++++++++++++------
->  arch/mips/lib/memcpy.S                             |  1 +
->  arch/mips/loongson/loongson-3/numa.c               |  1 +
->  arch/mips/mm/tlb-r4k.c                             |  4 +++
->  arch/mips/oprofile/backtrace.c                     |  2 +-
->  arch/mips/sgi-ip27/ip27-memory.c                   |  1 +
->  10 files changed, 60 insertions(+), 20 deletions(-)
->
+Yes, this is my mistake, :(
+
+> 
+>> diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
+>> index 1f80a88..007466e 100644
+>> --- a/arch/tile/kernel/pci.c
+>> +++ b/arch/tile/kernel/pci.c
+>> @@ -308,6 +308,8 @@ int __init pcibios_init(void)
+>>  			pci_add_resource(&resources, &iomem_resource);
+>>  			bus = pci_scan_root_bus(NULL, 0, controller->ops,
+>>  						controller, &resources);
+>> +			if (bus)
+>> +				pci_bus_add_devices(bus);
+>>  			controller->root_bus = bus;
+>>  			controller->last_busno = bus->busn_res.end;
+>>  		}
+> 
+> Should the pci_bus_add_devices come after setting the bus numbers here?
+
+I think it's doesn't matter, but move it backward is ok to me.
+
+> 
+> 	Arnd
+> 
+> .
+> 
+
+
+-- 
+Thanks!
+Yijing

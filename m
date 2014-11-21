@@ -1,54 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 16:28:47 +0100 (CET)
-Received: from mail-ie0-f178.google.com ([209.85.223.178]:46669 "EHLO
-        mail-ie0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006529AbaKUP2pvYOA0 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Nov 2014 16:28:45 +0100
-Received: by mail-ie0-f178.google.com with SMTP id tp5so5141765ieb.9
-        for <multiple recipients>; Fri, 21 Nov 2014 07:28:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=ReJ9Yxi/C9VvgFAmnrXBCyMTgMTOxT0CYNoYHiDD1m0=;
-        b=Ot7GTL+jlrjRI53BaH6bF8lrRTewPI8V6Jp1GYgxtlvRJc/JQO4XhOJ807gYrKkqBc
-         cMcsNCCniT0zCB9fHU6gfJmunanz0yFgjeE/xy3/tzOQa9PlPWelS6KSGByja9UIgDP5
-         GV9wNB6RzzDY/zcPp5uIlcLrCirlUtuqYKIqlEc2luiZW57ccjVcsBbSwpIcd54URdzo
-         9CwtN4zukJmBb6fcTwkXaX7ZN5X8GhjuhdMO7JzggjrRRBwWXYznuL3/lB8J7UxGXGKN
-         Jqsd6UYjnV2iyzvtf7PNkFiKmLBJ2MA5Wm3s6u5tyXsIXxnhVMdcRZI9VjoPMnRokfgd
-         lRTw==
-X-Received: by 10.50.39.67 with SMTP id n3mr16067219igk.43.1416583719920; Fri,
- 21 Nov 2014 07:28:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 17:10:58 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:50537 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014212AbaKUQK5ExA3K (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Nov 2014 17:10:57 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sALGAuie005701;
+        Fri, 21 Nov 2014 17:10:56 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sALGAtDg005700;
+        Fri, 21 Nov 2014 17:10:55 +0100
+Date:   Fri, 21 Nov 2014 17:10:55 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     John Crispin <john@phrozen.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: git caching(?) issues with http(s)
+Message-ID: <20141121161055.GA5153@linux-mips.org>
+References: <CAOiHx=nG0Td=9_A521NVjoixitTFxVnkvTCatubuFMKuHR+PEQ@mail.gmail.com>
+ <20141121134141.GF30205@linux-mips.org>
+ <CAOiHx=nJbFvUR4mBCTGdjDFkEX1onRK8P8_c3dwGwDxoox5mow@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.64.246.168 with HTTP; Fri, 21 Nov 2014 07:28:19 -0800 (PST)
-In-Reply-To: <tencent_15D766A360D879F4553C1872@qq.com>
-References: <1415891560-8915-1-git-send-email-chenhc@lemote.com>
- <CAAVeFuKYgXhV_372FBQnArEFT4xEVB73P+yurJ9mF0CkKCx7eQ@mail.gmail.com>
- <CAAVeFuJoo3X9aNYdrn5TJ-PjTzvFuEm5QTPmKYMy9NyWFy1_WA@mail.gmail.com>
- <20141119101157.GB7213@linux-mips.org> <tencent_15D766A360D879F4553C1872@qq.com>
-From:   Alexandre Courbot <gnurou@gmail.com>
-Date:   Sat, 22 Nov 2014 00:28:19 +0900
-Message-ID: <CAAVeFu+bHZdDgqWGg-dKhGkvV81_5JA=O-whqSgpN=6T8fpqRA@mail.gmail.com>
-Subject: Re: [PATCH V4 2/6] MIPS: Move Loongson GPIO driver to drivers/gpio
-To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        wuzhangjin <wuzhangjin@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <gnurou@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOiHx=nJbFvUR4mBCTGdjDFkEX1onRK8P8_c3dwGwDxoox5mow@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44343
+X-archive-position: 44344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnurou@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,14 +45,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 19, 2014 at 11:25 PM, 陈华才 <chenhc@lemote.com> wrote:
-> Hi, Ralf and Alexandre,
->
-> So, I need three patches: clean up, move to drivers/gpio, and improve it to support Loonson-3A/3B?
+On Fri, Nov 21, 2014 at 03:03:08PM +0100, Jonas Gorski wrote:
 
-Exactly. Before accepting a new driver in drivers/gpio we would like
-to make sure it is up-to-date with respect to the current GPIO drivers
-practices.
+> >> I noticed that git over http(s) seems to get stale data (just done a
+> >> few minutes ago):
+> >>
+> >> ~$ git clone http://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
+> >> Cloning into 'upstream-sfr'...
+> >> ~$ cd upstream-sfr/
+> >> ~/upstream-sfr$ git log -1
+> >> commit 475d5928b79bb78326a645863d46ff95c5e25e5a
+> >> Merge: c6b7b9f 1062080
+> >> Author: Ralf Baechle <ralf@linux-mips.org>
+> >> Date:   Sat Aug 2 00:07:03 2014 +0200
+> >>
+> >>     Merge branch '3.16-fixes' into mips-for-linux-next
+> >
+> > Odd - but I have an idea what might be wrong.
+> >
+> > Are you seeing this only with the upstream-sfr tree?
+> 
+> Hadn't checked anything else, but looks like it also affects other trees:
+> 
+> ~# git clone http://git.linux-mips.org/pub/scm/ralf/upstream-linus.git
+> Cloning into 'upstream-linus'...
+> ~$ cd upstream-linus/
+> ~/upstream-linus$ git log -1
+> commit 475d5928b79bb78326a645863d46ff95c5e25e5a
+> Merge: c6b7b9f 1062080
+> Author: Ralf Baechle <ralf@linux-mips.org>
+> Date:   Sat Aug 2 00:07:03 2014 +0200
+> 
+>     Merge branch '3.16-fixes' into mips-for-linux-next
+> 
+> 
+> (strangely the same commit)
 
-Thanks,
-Alex.
+The issue is a stale info/refs on the server.  This file normally gets
+updated when the hook hooks/post-update is ran which in turn calls
+git-update-server-info but that just didn't happen.
+
+Can you retry?
+
+Btw, why are you using http transport anyway?  The git protocol should
+be more efficient.
+
+  Ralf

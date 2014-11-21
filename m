@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 10:19:45 +0100 (CET)
-Received: from mail-pa0-f51.google.com ([209.85.220.51]:45698 "EHLO
-        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006515AbaKUJTZyjqkJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2014 10:19:25 +0100
-Received: by mail-pa0-f51.google.com with SMTP id ey11so4462769pad.24
-        for <multiple recipients>; Fri, 21 Nov 2014 01:19:20 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 10:20:23 +0100 (CET)
+Received: from mail-pd0-f181.google.com ([209.85.192.181]:48713 "EHLO
+        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014165AbaKUJUSTZN4O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2014 10:20:18 +0100
+Received: by mail-pd0-f181.google.com with SMTP id z10so4921832pdj.12
+        for <multiple recipients>; Fri, 21 Nov 2014 01:20:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=6BoWS4/aBRjJ96Usa9+uY902WS016XaLS9MpKl8tNjQ=;
-        b=CVPFRNCUPL3sICd+My7zs3OKK5OdmaTb8YKwkay7eToWK0Hi4wMdUw3ajOFWcHGkB2
-         3JccbJPx12LhPgQ8vy3dfgJYWpdKZ4Af2OLUabNPFomvMKFLiD99HlOyoh2iPPrghKBy
-         5XCJigGInGc3I++SPRBwr6iuXT/zx1Iq6d0t9Y3GJ9zQXwYKhnQUA0F4Eg1UdYCvmcFi
-         8EJ6PQkFxG3ar0bgdJve9HpxQsVYifYTHk1oOrWd3Ei+lnfAoRo2oznVqXWnlbNtN9ET
-         8R501Iu8YKWehYqQH4kyAQqw76bcuTvdRNDvJP+WZ8oYYkHlBxHNpD0acQO1REoMwJaz
-         WIDQ==
-X-Received: by 10.68.217.231 with SMTP id pb7mr5129353pbc.124.1416561560277;
-        Fri, 21 Nov 2014 01:19:20 -0800 (PST)
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=GLKBTTDk0w3y4rT2/M/jf3tR9IdnKUd32fe4FtJwBzk=;
+        b=TtCVFLi6Rg1VF05vueQrmp3Hc9FVECJL2gaGMZgjjcIe6SwdzK3M8uRJBTTs8dCzWI
+         oymhI9bCryx5nStenVpKjiumdpM94sRX49svP+vgmi02GwpmXDlIiR/4LeFV/mCEJ40X
+         2jv8lt622mk488IyrTB03AAZnV2c0xqLTpzDce/MCPZX///leM1ILV9Y4XeZeAyBRS9x
+         bGbTv0T18cjg2ZPH2lfrvCxt0+5tHd0AiByGcVxFhSmFhELDeoCh/Zj1IHIX6QAYNo6Q
+         HclUQoaSMbCN48lkwtT5zvCrFj7noGPTMe4lGIbVAM0zNQ1OKCp/oWSAjPrtiHvOO1SZ
+         q5bQ==
+X-Received: by 10.70.47.6 with SMTP id z6mr5272479pdm.82.1416561606645;
+        Fri, 21 Nov 2014 01:20:06 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id pv7sm4222928pdb.69.2014.11.21.01.19.17
+        by mx.google.com with ESMTPSA id l6sm4245479pdr.39.2014.11.21.01.20.03
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 21 Nov 2014 01:19:19 -0800 (PST)
+        Fri, 21 Nov 2014 01:20:05 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V5 6/7] MIPS: Loongson-3: Add chipset ACPI platform driver
-Date:   Fri, 21 Nov 2014 17:18:56 +0800
-Message-Id: <1416561536-1101-2-git-send-email-chenhc@lemote.com>
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-pm@vger.kernel.org,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>
+Subject: [PATCH V5 7/7] MIPS: Loongson: Make CPUFreq usable for Loongson-3
+Date:   Fri, 21 Nov 2014 17:19:52 +0800
+Message-Id: <1416561592-1148-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1416561536-1101-1-git-send-email-chenhc@lemote.com>
-References: <1416561536-1101-1-git-send-email-chenhc@lemote.com>
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44336
+X-archive-position: 44337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,185 +55,604 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This add south-bridge (SB700/SB710/SB800 chipset) ACPI platform driver
-for Loongson-3. This will be used by EC (Embedded Controller, used by
-laptops) driver and STR (Suspend To RAM).
+Loongson-3A/3B support frequency scaling. But due to hardware
+limitation, Loongson-3A's frequency scaling is not independent for
+each core, we suggest enable Loongson-3A's CPUFreq only when there is
+one core online. Loongson-3B can adjust frequency independently for
+each core, so it can be always enabled.
+
+Each package has only one register (ChipConfig or FreqCtrl) to control
+frequency, so we need spinlocks to protect register access for multi-
+cores. However, we cannot use spinlock when a core becomes into "wait"
+status (frequency = 0), so we only enable "wait" when there is one core
+in a package online.
+
+arch/mips/kernel/smp.c is modified to guarantee udelay_val has the
+correct value while both CPU hotplug and CPUFreq are enabled.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
 ---
- arch/mips/loongson/common/pci.c   |    6 ++
- drivers/platform/mips/Makefile    |    1 +
- drivers/platform/mips/acpi_init.c |  131 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 138 insertions(+), 0 deletions(-)
- create mode 100644 drivers/platform/mips/acpi_init.c
+ arch/mips/include/asm/mach-loongson/loongson.h |    1 +
+ arch/mips/kernel/smp.c                         |    3 +-
+ arch/mips/loongson/Kconfig                     |    1 +
+ arch/mips/loongson/common/platform.c           |   13 +-
+ arch/mips/loongson/loongson-3/Makefile         |    2 +-
+ arch/mips/loongson/loongson-3/clock.c          |  191 +++++++++++++++++++
+ drivers/cpufreq/Kconfig                        |   14 ++
+ drivers/cpufreq/Makefile                       |    1 +
+ drivers/cpufreq/loongson3_cpufreq.c            |  240 ++++++++++++++++++++++++
+ 9 files changed, 461 insertions(+), 5 deletions(-)
+ create mode 100644 arch/mips/loongson/loongson-3/clock.c
+ create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
 
-diff --git a/arch/mips/loongson/common/pci.c b/arch/mips/loongson/common/pci.c
-index 003ab4e..4e25756 100644
---- a/arch/mips/loongson/common/pci.c
-+++ b/arch/mips/loongson/common/pci.c
-@@ -78,6 +78,8 @@ static void __init setup_pcimap(void)
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index 9783103..ee18a50 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -278,6 +278,7 @@ extern u64 loongson_freqctrl[MAX_PACKAGES];
+ #ifdef CONFIG_CPU_SUPPORTS_CPUFREQ
+ #include <linux/cpufreq.h>
+ extern struct cpufreq_frequency_table loongson2_clockmod_table[];
++extern struct cpufreq_frequency_table loongson3_clockmod_table[];
  #endif
- }
  
-+extern int sbx00_acpi_init(void);
+ /*
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index c94c4e9..01d676a 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -136,7 +136,8 @@ asmlinkage void start_secondary(void)
+ 	calibrate_delay();
+ 	preempt_disable();
+ 	cpu = smp_processor_id();
+-	cpu_data[cpu].udelay_val = loops_per_jiffy;
++	if (!cpu_data[cpu].udelay_val)
++		cpu_data[cpu].udelay_val = loops_per_jiffy;
+ 
+ 	cpu_set(cpu, cpu_coherent_mask);
+ 	notify_cpu_starting(cpu);
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 156de85..58a926a 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -69,6 +69,7 @@ config LOONGSON_MACH3X
+ 	select CSRC_R4K
+ 	select CEVT_R4K
+ 	select CPU_HAS_WB
++	select HAVE_CLK
+ 	select HW_HAS_PCI
+ 	select ISA
+ 	select HT_PCI
+diff --git a/arch/mips/loongson/common/platform.c b/arch/mips/loongson/common/platform.c
+index 0ed3832..7dd5ed4 100644
+--- a/arch/mips/loongson/common/platform.c
++++ b/arch/mips/loongson/common/platform.c
+@@ -17,15 +17,22 @@ static struct platform_device loongson2_cpufreq_device = {
+ 	.id = -1,
+ };
+ 
+-static int __init loongson2_cpufreq_init(void)
++static struct platform_device loongson3_cpufreq_device = {
++	.name = "loongson3_cpufreq",
++	.id = -1,
++};
 +
- static int __init pcibios_init(void)
++static int __init loongson_cpufreq_init(void)
  {
- 	setup_pcimap();
-@@ -89,6 +91,10 @@ static int __init pcibios_init(void)
- #endif
- 	register_pci_controller(&loongson_pci_controller);
+ 	struct cpuinfo_mips *c = &current_cpu_data;
  
-+#ifdef CONFIG_CPU_LOONGSON3
-+	sbx00_acpi_init();
-+#endif
-+
- 	return 0;
+ 	/* Only 2F revision and it's successors support CPUFreq */
+-	if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON2F)
++	if ((c->processor_id & PRID_REV_MASK) == PRID_REV_LOONGSON2F)
+ 		return platform_device_register(&loongson2_cpufreq_device);
++	if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A)
++		return platform_device_register(&loongson3_cpufreq_device);
+ 
+ 	return -ENODEV;
  }
  
-diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
-index 8dfd039..20e471d 100644
---- a/drivers/platform/mips/Makefile
-+++ b/drivers/platform/mips/Makefile
-@@ -1 +1,2 @@
-+obj-y += acpi_init.o
- obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
-diff --git a/drivers/platform/mips/acpi_init.c b/drivers/platform/mips/acpi_init.c
+-arch_initcall(loongson2_cpufreq_init);
++arch_initcall(loongson_cpufreq_init);
+diff --git a/arch/mips/loongson/loongson-3/Makefile b/arch/mips/loongson/loongson-3/Makefile
+index 622fead..1be6a0c 100644
+--- a/arch/mips/loongson/loongson-3/Makefile
++++ b/arch/mips/loongson/loongson-3/Makefile
+@@ -1,7 +1,7 @@
+ #
+ # Makefile for Loongson-3 family machines
+ #
+-obj-y			+= irq.o cop2-ex.o platform.o
++obj-y			+= irq.o cop2-ex.o platform.o clock.o
+ 
+ obj-$(CONFIG_SMP)	+= smp.o
+ 
+diff --git a/arch/mips/loongson/loongson-3/clock.c b/arch/mips/loongson/loongson-3/clock.c
 new file mode 100644
-index 0000000..ee2825c
+index 0000000..13dc471
 --- /dev/null
-+++ b/drivers/platform/mips/acpi_init.c
-@@ -0,0 +1,131 @@
-+#include <linux/io.h>
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/export.h>
-+
-+#define SBX00_ACPI_IO_BASE 0x800
-+#define SBX00_ACPI_IO_SIZE 0x100
-+
-+#define ACPI_PM_EVT_BLK         (SBX00_ACPI_IO_BASE + 0x00) /* 4 bytes */
-+#define ACPI_PM1_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x04) /* 2 bytes */
-+#define ACPI_PMA_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x0F) /* 1 byte */
-+#define ACPI_PM_TMR_BLK         (SBX00_ACPI_IO_BASE + 0x18) /* 4 bytes */
-+#define ACPI_GPE0_BLK           (SBX00_ACPI_IO_BASE + 0x10) /* 8 bytes */
-+#define ACPI_END                (SBX00_ACPI_IO_BASE + 0x80)
-+
-+#define PM_INDEX        0xCD6
-+#define PM_DATA         0xCD7
-+#define PM2_INDEX       0xCD0
-+#define PM2_DATA        0xCD1
-+
++++ b/arch/mips/loongson/loongson-3/clock.c
+@@ -0,0 +1,191 @@
 +/*
-+ * SCI interrupt need acpi space, allocate here
++ * Copyright (C) 2008 - 2014 Lemote Inc.
++ * Author: Yan Hua, yanh@lemote.com
++ *         Chen Huacai, chenhc@lemote.com
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + */
 +
-+static int __init register_acpi_resource(void)
++#include <linux/module.h>
++#include <linux/err.h>
++#include <linux/slab.h>
++#include <linux/cpufreq.h>
++#include <linux/platform_device.h>
++
++#include <asm/clock.h>
++
++#include <loongson.h>
++
++static LIST_HEAD(clock_list);
++static DEFINE_SPINLOCK(clock_lock);
++static DEFINE_MUTEX(clock_list_sem);
++
++/* Minimum CLK support */
++enum {
++	DC_ZERO, DC_25PT = 2, DC_37PT, DC_50PT, DC_62PT, DC_75PT,
++	DC_87PT, DC_DISABLE, DC_RESV
++};
++
++struct cpufreq_frequency_table loongson3_clockmod_table[] = {
++	{0, DC_RESV, CPUFREQ_ENTRY_INVALID},
++	{0, DC_ZERO, CPUFREQ_ENTRY_INVALID},
++	{0, DC_25PT, 0},
++	{0, DC_37PT, 0},
++	{0, DC_50PT, 0},
++	{0, DC_62PT, 0},
++	{0, DC_75PT, 0},
++	{0, DC_87PT, 0},
++	{0, DC_DISABLE, 0},
++	{0, DC_RESV, CPUFREQ_TABLE_END},
++};
++EXPORT_SYMBOL_GPL(loongson3_clockmod_table);
++
++static struct clk cpu_clks[NR_CPUS];
++static char clk_names[NR_CPUS][10];
++
++struct clk *cpu_clk_get(int cpu)
 +{
-+	request_region(SBX00_ACPI_IO_BASE, SBX00_ACPI_IO_SIZE, "acpi");
++	return &cpu_clks[cpu];
++}
++
++struct clk *clk_get(struct device *dev, const char *id)
++{
++	int i;
++	struct clk *clk;
++
++	if (!id)
++		return NULL;
++
++	for_each_possible_cpu(i) {
++		clk = &cpu_clks[i];
++		if (strcmp(clk->name, id) == 0)
++			return clk;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL(clk_get);
++
++static void propagate_rate(struct clk *clk)
++{
++	struct clk *clkp;
++
++	list_for_each_entry(clkp, &clock_list, node) {
++		if (likely(clkp->parent != clk))
++			continue;
++		if (likely(clkp->ops && clkp->ops->recalc))
++			clkp->ops->recalc(clkp);
++		if (unlikely(clkp->flags & CLK_RATE_PROPAGATES))
++			propagate_rate(clkp);
++	}
++}
++
++int clk_enable(struct clk *clk)
++{
++	return 0;
++}
++EXPORT_SYMBOL(clk_enable);
++
++void clk_disable(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_disable);
++
++unsigned long clk_get_rate(struct clk *clk)
++{
++	if (!clk)
++		return 0;
++
++	return (unsigned long)clk->rate;
++}
++EXPORT_SYMBOL(clk_get_rate);
++
++void clk_put(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_put);
++
++int clk_set_rate(struct clk *clk, unsigned long rate)
++{
++	int regval, ret = 0;
++	struct cpufreq_frequency_table *pos;
++	int cpu = clk - cpu_clks;
++	uint64_t core_id = cpu_data[cpu].core;
++	uint64_t package_id = cpu_data[cpu].package;
++
++	if (likely(clk->ops && clk->ops->set_rate)) {
++		unsigned long flags;
++
++		spin_lock_irqsave(&clock_lock, flags);
++		ret = clk->ops->set_rate(clk, rate, 0);
++		spin_unlock_irqrestore(&clock_lock, flags);
++	}
++
++	if (unlikely(clk->flags & CLK_RATE_PROPAGATES))
++		propagate_rate(clk);
++
++	cpufreq_for_each_valid_entry(pos, loongson3_clockmod_table)
++		if (rate == pos->frequency)
++			break;
++	if (rate != pos->frequency)
++		return -ENOTSUPP;
++
++	clk->rate = rate;
++
++	if (loongson_sysconf.cputype == Loongson_3A) {
++		regval = LOONGSON_CHIPCFG(package_id);
++		regval = (regval & ~0x7) | (pos->driver_data - 1);
++		LOONGSON_CHIPCFG(package_id) = regval;
++	} else if (loongson_sysconf.cputype == Loongson_3B) {
++		regval = LOONGSON_FREQCTRL(package_id);
++		regval = (regval & ~(0x7 << (core_id*4))) |
++			((pos->driver_data - 1) << (core_id*4));
++		LOONGSON_FREQCTRL(package_id) = regval;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(clk_set_rate);
++
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	if (likely(clk->ops && clk->ops->round_rate)) {
++		unsigned long flags, rounded;
++
++		spin_lock_irqsave(&clock_lock, flags);
++		rounded = clk->ops->round_rate(clk, rate);
++		spin_unlock_irqrestore(&clock_lock, flags);
++
++		return rounded;
++	}
++
++	return rate;
++}
++EXPORT_SYMBOL_GPL(clk_round_rate);
++
++static int loongson3_clock_init(void)
++{
++	int i;
++
++	for_each_possible_cpu(i) {
++		sprintf(clk_names[i], "cpu%d_clk", i);
++		cpu_clks[i].name = clk_names[i];
++		cpu_clks[i].flags = CLK_ALWAYS_ENABLED | CLK_RATE_PROPAGATES;
++		cpu_clks[i].rate = cpu_clock_freq / 1000;
++	}
++
++	/* clock table init */
++	for (i = 2;
++	     (loongson3_clockmod_table[i].frequency != CPUFREQ_TABLE_END);
++	     i++)
++		loongson3_clockmod_table[i].frequency = ((cpu_clock_freq / 1000) * i) / 8;
++
++	return 0;
++}
++arch_initcall(loongson3_clock_init);
++
++MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
++MODULE_DESCRIPTION("CPUFreq driver for Loongson 3A/3B");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+index 3489f8f..f96ef5c 100644
+--- a/drivers/cpufreq/Kconfig
++++ b/drivers/cpufreq/Kconfig
+@@ -240,6 +240,7 @@ depends on MIPS
+ 
+ config LOONGSON2_CPUFREQ
+ 	tristate "Loongson2 CPUFreq Driver"
++	depends on CPU_LOONGSON2
+ 	help
+ 	  This option adds a CPUFreq driver for loongson processors which
+ 	  support software configurable cpu frequency.
+@@ -250,6 +251,19 @@ config LOONGSON2_CPUFREQ
+ 
+ 	  If in doubt, say N.
+ 
++config LOONGSON3_CPUFREQ
++	tristate "Loongson3 CPUFreq Driver"
++	depends on CPU_LOONGSON3
++	help
++	  This option adds a CPUFreq driver for loongson processors which
++	  support software configurable cpu frequency.
++
++	  Loongson-3A and it's successors support this feature.
++
++	  For details, take a look at <file:Documentation/cpu-freq/>.
++
++	  If in doubt, say N.
++
+ endmenu
+ 
+ menu "PowerPC CPU frequency scaling drivers"
+diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
+index 40c53dc..1078930 100644
+--- a/drivers/cpufreq/Makefile
++++ b/drivers/cpufreq/Makefile
+@@ -98,6 +98,7 @@ obj-$(CONFIG_CRIS_MACH_ARTPEC3)		+= cris-artpec3-cpufreq.o
+ obj-$(CONFIG_ETRAXFS)			+= cris-etraxfs-cpufreq.o
+ obj-$(CONFIG_IA64_ACPI_CPUFREQ)		+= ia64-acpi-cpufreq.o
+ obj-$(CONFIG_LOONGSON2_CPUFREQ)		+= loongson2_cpufreq.o
++obj-$(CONFIG_LOONGSON3_CPUFREQ)		+= loongson3_cpufreq.o
+ obj-$(CONFIG_SH_CPU_FREQ)		+= sh-cpufreq.o
+ obj-$(CONFIG_SPARC_US2E_CPUFREQ)	+= sparc-us2e-cpufreq.o
+ obj-$(CONFIG_SPARC_US3_CPUFREQ)		+= sparc-us3-cpufreq.o
+diff --git a/drivers/cpufreq/loongson3_cpufreq.c b/drivers/cpufreq/loongson3_cpufreq.c
+new file mode 100644
+index 0000000..3345002
+--- /dev/null
++++ b/drivers/cpufreq/loongson3_cpufreq.c
+@@ -0,0 +1,240 @@
++/*
++ * CPUFreq driver for the loongson-3 processors
++ *
++ * All revisions of Loongson-3 processor support this feature.
++ *
++ * Copyright (C) 2008 - 2014 Lemote Inc.
++ * Author: Yan Hua, yanh@lemote.com
++ *         Chen Huacai, chenhc@lemote.com
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#include <linux/module.h>
++#include <linux/time.h>
++#include <linux/delay.h>
++#include <linux/cpufreq.h>
++#include <linux/platform_device.h>
++#include <asm/idle.h>
++#include <asm/clock.h>
++#include <asm/cevt-r4k.h>
++
++#include <loongson.h>
++
++static uint nowait;
++static spinlock_t cpufreq_reg_lock[MAX_PACKAGES];
++
++static void (*saved_cpu_wait)(void);
++extern struct clk *cpu_clk_get(int cpu);
++
++static int loongson3_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data);
++
++static struct notifier_block loongson3_cpufreq_notifier_block = {
++	.notifier_call = loongson3_cpu_freq_notifier
++};
++
++#ifdef CONFIG_SMP
++static void set_shared_udelay_val(int cpu, unsigned long lpj)
++{
++	int i;
++	cpumask_t *mask;
++
++	if (loongson_sysconf.cputype != Loongson_3A)
++		cpu_data[cpu].udelay_val = lpj;
++	else {
++		mask = topology_core_cpumask(cpu);
++		for_each_cpu(i, mask)
++			cpu_data[i].udelay_val = lpj;
++	}
++}
++
++static int loongson3_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data)
++{
++	struct cpufreq_freqs *freqs = (struct cpufreq_freqs *)data;
++	unsigned long lpj, cpu = freqs->cpu;
++	struct clock_event_device *cd = &per_cpu(mips_clockevent_device, cpu);
++
++	if (val == CPUFREQ_POSTCHANGE) {
++		lpj = cpufreq_scale(loops_per_jiffy,
++				cpu_clock_freq / 1000, freqs->new);
++		set_shared_udelay_val(cpu, lpj);
++		clockevent_set_clock(cd, freqs->new * 1000 / 2);
++	}
++
++	return 0;
++}
++#else
++static int loongson3_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data)
++{
++	if (val == CPUFREQ_POSTCHANGE)
++		current_cpu_data.udelay_val = loops_per_jiffy;
++
++	return 0;
++}
++#endif
++
++static unsigned int loongson3_cpufreq_get(unsigned int cpu)
++{
++	return clk_get_rate(cpu_clk_get(cpu));
++}
++
++/*
++ * Here we notify other drivers of the proposed change and the final change.
++ */
++static int loongson3_cpufreq_target(struct cpufreq_policy *policy,
++				     unsigned int index)
++{
++	unsigned int freq;
++	unsigned int cpu = policy->cpu;
++	unsigned int package = cpu_data[cpu].package;
++
++	if (!cpu_online(cpu))
++		return -ENODEV;
++
++	freq =
++	    ((cpu_clock_freq / 1000) *
++	     loongson3_clockmod_table[index].driver_data) / 8;
++
++	/* setting the cpu frequency */
++	spin_lock(&cpufreq_reg_lock[package]);
++	clk_set_rate(policy->clk, freq);
++	spin_unlock(&cpufreq_reg_lock[package]);
++
 +	return 0;
 +}
 +
-+static void pmio_write_index(u16 index, u8 reg, u8 value)
++static int loongson3_cpufreq_cpu_init(struct cpufreq_policy *policy)
 +{
-+	outb(reg, index);
-+	outb(value, index + 1);
++	if (!cpu_online(policy->cpu))
++		return -ENODEV;
++
++	policy->clk = cpu_clk_get(policy->cpu);
++	policy->cur = loongson3_cpufreq_get(policy->cpu);
++
++	policy->cpuinfo.transition_latency = 1000;
++
++	/* Loongson-3A: all cores in a package share one clock */
++	if (loongson_sysconf.cputype == Loongson_3A)
++		cpumask_copy(policy->cpus, topology_core_cpumask(policy->cpu));
++
++	return cpufreq_table_validate_and_show(policy,
++			&loongson3_clockmod_table[0]);
 +}
 +
-+static u8 pmio_read_index(u16 index, u8 reg)
++static int loongson3_cpufreq_exit(struct cpufreq_policy *policy)
 +{
-+	outb(reg, index);
-+	return inb(index + 1);
-+}
-+
-+void pm_iowrite(u8 reg, u8 value)
-+{
-+	pmio_write_index(PM_INDEX, reg, value);
-+}
-+EXPORT_SYMBOL(pm_iowrite);
-+
-+u8 pm_ioread(u8 reg)
-+{
-+	return pmio_read_index(PM_INDEX, reg);
-+}
-+EXPORT_SYMBOL(pm_ioread);
-+
-+void pm2_iowrite(u8 reg, u8 value)
-+{
-+	pmio_write_index(PM2_INDEX, reg, value);
-+}
-+EXPORT_SYMBOL(pm2_iowrite);
-+
-+u8 pm2_ioread(u8 reg)
-+{
-+	return pmio_read_index(PM2_INDEX, reg);
-+}
-+EXPORT_SYMBOL(pm2_ioread);
-+
-+void sci_interrupt_setup(void)
-+{
-+	u32 temp32;
-+
-+	/* pm1 base */
-+	pm_iowrite(0x22, ACPI_PM1_CNT_BLK & 0xff);
-+	pm_iowrite(0x23, ACPI_PM1_CNT_BLK >> 8);
-+
-+	/* gpm base */
-+	pm_iowrite(0x28, ACPI_GPE0_BLK & 0xFF);
-+	pm_iowrite(0x29, ACPI_GPE0_BLK >> 8);
-+
-+	/* gpm base */
-+	pm_iowrite(0x2e, ACPI_END & 0xFF);
-+	pm_iowrite(0x2f, ACPI_END >> 8);
-+
-+	/* io decode: When AcpiDecodeEnable set, South-Bridge uses the contents
-+	 * of the PM registers at index 20-2B to decode ACPI I/O address. e.g.,
-+	 * AcpiSmiEn & SmiCmdEn */
-+	pm_iowrite(0x0E, 1<<3 | 0<<2);
-+
-+	/* SCI_EN set */
-+	outw(1, ACPI_PM1_CNT_BLK);
-+
-+	/* enable to generate SCI */
-+	pm_iowrite(0x10, pm_ioread(0x10) | 1);
-+
-+	/* gpm3/gpm9 enable */
-+	temp32 = inl(ACPI_GPE0_BLK + 4);
-+	outl(temp32 | (1 << 14) | (1 << 22), ACPI_GPE0_BLK + 4);
-+
-+	/* set gpm9 as input */
-+	pm_iowrite(0x8d, pm_ioread(0x8d) & (~(1 << 1)));
-+
-+	/* set gpm9 as non-output */
-+	pm_iowrite(0x94, pm_ioread(0x94) | (1 << 3));
-+
-+	/* gpm3 config ACPI trigger SCIOUT */
-+	pm_iowrite(0x33, pm_ioread(0x33) & (~(3 << 4)));
-+
-+	/* gpm9 config ACPI trigger SCIOUT */
-+	pm_iowrite(0x3d, pm_ioread(0x3d) & (~(3 << 2)));
-+
-+	/* gpm3 config falling edge trigger */
-+	pm_iowrite(0x37, pm_ioread(0x37) & (~(1 << 6)));
-+
-+	/* set gpm3 pull-down enable */
-+	temp32 = pm2_ioread(0xf6);
-+	temp32 |= ((1 << 7) | (1 << 3));
-+	pm2_iowrite(0xf6, temp32);
-+
-+	/* set gpm9 pull-down enable */
-+	temp32 = pm2_ioread(0xf8);
-+	temp32 |= ((1 << 5) | (1 << 1));
-+	pm2_iowrite(0xf8, temp32);
-+}
-+
-+int __init sbx00_acpi_init(void)
-+{
-+	register_acpi_resource();
-+
-+	sci_interrupt_setup();
-+
 +	return 0;
 +}
++
++static struct cpufreq_driver loongson3_cpufreq_driver = {
++	.name = "loongson3",
++	.init = loongson3_cpufreq_cpu_init,
++	.verify = cpufreq_generic_frequency_table_verify,
++	.target_index = loongson3_cpufreq_target,
++	.get = loongson3_cpufreq_get,
++	.exit = loongson3_cpufreq_exit,
++	.attr = cpufreq_generic_attr,
++};
++
++static struct platform_device_id platform_device_ids[] = {
++	{
++		.name = "loongson3_cpufreq",
++	},
++	{}
++};
++
++MODULE_DEVICE_TABLE(platform, platform_device_ids);
++
++static struct platform_driver platform_driver = {
++	.driver = {
++		.name = "loongson3_cpufreq",
++		.owner = THIS_MODULE,
++	},
++	.id_table = platform_device_ids,
++};
++
++/*
++ * This is the simple version of Loongson-3 wait, Maybe we need do this in
++ * interrupt disabled content
++ */
++
++void loongson3_cpu_wait(void)
++{
++	u32 cpu_freq, shared_cpus = 0;
++	int i, cpu = smp_processor_id();
++	uint64_t core_id = cpu_data[cpu].core;
++	uint64_t package_id = cpu_data[cpu].package;
++
++	for_each_online_cpu(i)
++		if (cpu_data[i].package == package_id)
++			shared_cpus++;
++
++	if (shared_cpus > 1)
++		goto out;
++
++	if (loongson_sysconf.cputype == Loongson_3A) {
++		cpu_freq = LOONGSON_CHIPCFG(package_id);
++		LOONGSON_CHIPCFG(package_id) &= ~0x7;    /* Put CPU into wait mode */
++		LOONGSON_CHIPCFG(package_id) = cpu_freq; /* Restore CPU state */
++	} else if (loongson_sysconf.cputype == Loongson_3B) {
++		cpu_freq = LOONGSON_FREQCTRL(package_id);
++		LOONGSON_FREQCTRL(package_id) &= ~(0x7 << (core_id*4)); /* Put CPU into wait mode */
++		LOONGSON_FREQCTRL(package_id) = cpu_freq;               /* Restore CPU state */
++	}
++
++out:
++	local_irq_enable();
++}
++EXPORT_SYMBOL_GPL(loongson3_cpu_wait);
++
++static int __init cpufreq_init(void)
++{
++	int i, ret;
++
++	/* Register platform stuff */
++	ret = platform_driver_register(&platform_driver);
++	if (ret)
++		return ret;
++
++	pr_info("cpufreq: Loongson-3 CPU frequency driver.\n");
++
++	for (i = 0; i < MAX_PACKAGES; i++)
++		spin_lock_init(&cpufreq_reg_lock[i]);
++
++	cpufreq_register_notifier(&loongson3_cpufreq_notifier_block,
++				  CPUFREQ_TRANSITION_NOTIFIER);
++
++	ret = cpufreq_register_driver(&loongson3_cpufreq_driver);
++
++	if (!ret && !nowait) {
++		saved_cpu_wait = cpu_wait;
++		cpu_wait = loongson3_cpu_wait;
++	}
++
++	return ret;
++}
++
++static void __exit cpufreq_exit(void)
++{
++	if (!nowait && saved_cpu_wait)
++		cpu_wait = saved_cpu_wait;
++	cpufreq_unregister_driver(&loongson3_cpufreq_driver);
++	cpufreq_unregister_notifier(&loongson3_cpufreq_notifier_block,
++				    CPUFREQ_TRANSITION_NOTIFIER);
++
++	platform_driver_unregister(&platform_driver);
++}
++
++module_init(cpufreq_init);
++module_exit(cpufreq_exit);
++
++module_param(nowait, uint, 0644);
++MODULE_PARM_DESC(nowait, "Disable Loongson-3A/3B specific wait");
++
++MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
++MODULE_DESCRIPTION("CPUFreq driver for Loongson-3A/3B");
++MODULE_LICENSE("GPL");
 -- 
 1.7.7.3

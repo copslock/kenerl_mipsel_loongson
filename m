@@ -1,51 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 12:49:07 +0100 (CET)
-Received: from smtp.citrix.com ([66.165.176.89]:38852 "EHLO SMTP.CITRIX.COM"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 14:28:27 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:44308 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006520AbaKULtFh3sck (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Nov 2014 12:49:05 +0100
-X-IronPort-AV: E=Sophos;i="5.07,429,1413244800"; 
-   d="scan'208";a="193667428"
-Received: from ukmail1.uk.xensource.com (10.80.16.128) by smtprelay.citrix.com
- (10.13.107.78) with Microsoft SMTP Server id 14.3.181.6; Fri, 21 Nov 2014
- 06:48:56 -0500
-Received: from kaball.uk.xensource.com ([10.80.2.59])   by
- ukmail1.uk.xensource.com with esmtp (Exim 4.69)        (envelope-from
- <stefano.stabellini@eu.citrix.com>)    id 1Xrmhr-0001XK-RX; Fri, 21 Nov 2014
- 11:48:55 +0000
-Date:   Fri, 21 Nov 2014 11:48:33 +0000
-From:   Stefano Stabellini <stefano.stabellini@eu.citrix.com>
-X-X-Sender: sstabellini@kaball.uk.xensource.com
-To:     Stefano Stabellini <stefano.stabellini@eu.citrix.com>
-CC:     <gregkh@linuxfoundation.org>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Ian Campbell <Ian.Campbell@citrix.com>,
-        <konrad.wilk@oracle.com>, <linux-kernel@vger.kernel.org>,
-        <xen-devel@lists.xensource.com>, <torvalds@linux-foundation.org>,
-        <vinod.koul@intel.com>, <dmaengine@vger.kernel.org>,
-        <bhelgaas@google.com>, <jejb@parisc-linux.org>, <deller@gmx.de>,
-        <linux-parisc@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
-        <airlied@linux.ie>, <dri-devel@lists.freedesktop.org>,
-        <alexander.deucher@amd.com>, <christian.koenig@amd.com>,
-        <linux@arm.linux.org.uk>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, <linux-arm-kernel@lists.infradead.org>,
-        <dwmw2@infradead.org>
-Subject: Re: [RFC] add a struct page* parameter to dma_map_ops.unmap_page
-In-Reply-To: <alpine.DEB.2.02.1411111644490.26318@kaball.uk.xensource.com>
-Message-ID: <alpine.DEB.2.02.1411211147450.12596@kaball.uk.xensource.com>
-References: <alpine.DEB.2.02.1411111644490.26318@kaball.uk.xensource.com>
-User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
+        id S27006519AbaKUN2Zrhiv2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Nov 2014 14:28:25 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id A02FB28C0F4;
+        Fri, 21 Nov 2014 14:26:55 +0100 (CET)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qa0-f43.google.com (mail-qa0-f43.google.com [209.85.216.43])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 0B34D28C0F0;
+        Fri, 21 Nov 2014 14:26:53 +0100 (CET)
+Received: by mail-qa0-f43.google.com with SMTP id bm13so3369181qab.2
+        for <multiple recipients>; Fri, 21 Nov 2014 05:28:19 -0800 (PST)
+X-Received: by 10.224.67.8 with SMTP id p8mr6370994qai.97.1416576498972; Fri,
+ 21 Nov 2014 05:28:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-DLP:  MIA2
-Return-Path: <Stefano.Stabellini@citrix.com>
+Received: by 10.140.95.79 with HTTP; Fri, 21 Nov 2014 05:27:58 -0800 (PST)
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Fri, 21 Nov 2014 14:27:58 +0100
+Message-ID: <CAOiHx=nG0Td=9_A521NVjoixitTFxVnkvTCatubuFMKuHR+PEQ@mail.gmail.com>
+Subject: git caching(?) issues with http(s)
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44339
+X-archive-position: 44340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stefano.stabellini@eu.citrix.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,82 +45,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 17 Nov 2014, Stefano Stabellini wrote:
-> Hi all,
-> I am writing this email to ask for your advice.
-> 
-> On architectures where dma addresses are different from physical
-> addresses, it can be difficult to retrieve the physical address of a
-> page from its dma address.
-> 
-> Specifically this is the case for Xen on arm and arm64 but I think that
-> other architectures might have the same issue.
-> 
-> Knowing the physical address is necessary to be able to issue any
-> required cache maintenance operations when unmap_page,
-> sync_single_for_cpu and sync_single_for_device are called.
-> 
-> Adding a struct page* parameter to unmap_page, sync_single_for_cpu and
-> sync_single_for_device would make Linux dma handling on Xen on arm and
-> arm64 much easier and quicker.
-> 
-> I think that other drivers have similar problems, such as the Intel
-> IOMMU driver having to call find_iova and walking down an rbtree to get
-> the physical address in its implementation of unmap_page.
-> 
-> Callers have the struct page* in their hands already from the previous
-> map_page call so it shouldn't be an issue for them.  A problem does
-> exist however: there are about 280 callers of dma_unmap_page and
-> pci_unmap_page. We have even more callers of the dma_sync_single_for_*
-> functions.
-> 
-> 
-> 
-> Is such a change even conceivable? How would one go about it?
-> 
-> I think that Xen would not be the only one to gain from it, but I would
-> like to have a confirmation from others: given the magnitude of the
-> changes involved I would actually prefer to avoid them unless multiple
-> drivers/archs/subsystems could really benefit from them.
+Hi,
 
-Given the lack of interest from the community, I am going to drop this
-idea.
+I noticed that git over http(s) seems to get stale data (just done a
+few minutes ago):
+
+~$ git clone http://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
+Cloning into 'upstream-sfr'...
+~$ cd upstream-sfr/
+~/upstream-sfr$ git log -1
+commit 475d5928b79bb78326a645863d46ff95c5e25e5a
+Merge: c6b7b9f 1062080
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Sat Aug 2 00:07:03 2014 +0200
+
+    Merge branch '3.16-fixes' into mips-for-linux-next
+
+while using git:
+~$git clone git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git sfr-git
+Cloning into 'sfr-git'...
+remote: Counting objects: 4487760, done.
+remote: Compressing objects: 100% (686908/686908), done.
+Receiving objects: 100% (4487760/4487760), 823.18 MiB | 47.58 MiB/s, done.
+remote: Total 4487760 (delta 3795897), reused 4457674 (delta 3768509)
+Resolving deltas: 100% (3795897/3795897), done.
+~$ cd sfr-git
+~/sfr-git$ git log -1
+commit 8d3c99536e8ea7b5d0ca927982d88fa487b1bfe2
+Merge: 884013a 3278c5a
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Fri Nov 21 01:13:48 2014 +0100
+
+    Merge branch '3.18-fixes' into mips-for-linux-next
 
 
-
-
-> Cheers,
-> 
-> Stefano
-> 
-> 
-> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-> index d5d3881..158a765 100644
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -31,8 +31,9 @@ struct dma_map_ops {
->  			       unsigned long offset, size_t size,
->  			       enum dma_data_direction dir,
->  			       struct dma_attrs *attrs);
-> -	void (*unmap_page)(struct device *dev, dma_addr_t dma_handle,
-> -			   size_t size, enum dma_data_direction dir,
-> +	void (*unmap_page)(struct device *dev, struct page *page,
-> +			   dma_addr_t dma_handle, size_t size,
-> +			   enum dma_data_direction dir,
->  			   struct dma_attrs *attrs);
->  	int (*map_sg)(struct device *dev, struct scatterlist *sg,
->  		      int nents, enum dma_data_direction dir,
-> @@ -41,10 +42,10 @@ struct dma_map_ops {
->  			 struct scatterlist *sg, int nents,
->  			 enum dma_data_direction dir,
->  			 struct dma_attrs *attrs);
-> -	void (*sync_single_for_cpu)(struct device *dev,
-> +	void (*sync_single_for_cpu)(struct device *dev, struct page *page,
->  				    dma_addr_t dma_handle, size_t size,
->  				    enum dma_data_direction dir);
-> -	void (*sync_single_for_device)(struct device *dev,
-> +	void (*sync_single_for_device)(struct device *dev, struct page *page,
->  				       dma_addr_t dma_handle, size_t size,
->  				       enum dma_data_direction dir);
->  	void (*sync_sg_for_cpu)(struct device *dev,
-> 
+Jonas

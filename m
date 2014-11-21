@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 07:13:52 +0100 (CET)
-Received: from resqmta-ch2-01v.sys.comcast.net ([69.252.207.33]:57286 "EHLO
-        resqmta-ch2-01v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013470AbaKUGNu4vGjQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2014 07:13:50 +0100
-Received: from resomta-ch2-02v.sys.comcast.net ([69.252.207.98])
-        by resqmta-ch2-01v.sys.comcast.net with comcast
-        id J6DJ1p00227uzMh016DfS0; Fri, 21 Nov 2014 06:13:39 +0000
-Received: from [192.168.1.13] ([76.100.35.31])
-        by resomta-ch2-02v.sys.comcast.net with comcast
-        id J6De1p00F0gJalY016DeEz; Fri, 21 Nov 2014 06:13:39 +0000
-Message-ID: <546ED802.7090108@gentoo.org>
-Date:   Fri, 21 Nov 2014 01:13:22 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: IP30: SMP Help
-References: <5457187D.6030708@gentoo.org> <54607499.2070806@gentoo.org> <546B11C0.90805@gentoo.org> <alpine.LFD.2.11.1411180946130.4773@eddie.linux-mips.org> <546B3D9C.6000104@gentoo.org> <alpine.LFD.2.11.1411181255420.4773@eddie.linux-mips.org> <546C77F6.4030101@gentoo.org> <alpine.LFD.2.11.1411191139300.4773@eddie.linux-mips.org> <20141119152211.GH24165@linux-mips.org>
-In-Reply-To: <20141119152211.GH24165@linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1416550419;
-        bh=xwyE9Xt0QgnVPUN3tOveLZJDNuM0TYCPOFy2Y+fo1kE=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=CaEuxpKd2uXHDh9GY6mwHilZh0ikt36fpsQS6Tw3x1QcIfAcWwXYMPeIDDOr6dmgH
-         Pqz57fbCqAPhuxK1sqm1fQvtBdSVKAEtNp/KIiIQeumEWddckE9rW6mnak0isMyjea
-         7b54lWFRbMGJtX+kpApqVkZp4sdvooKezMzygiXktVo6B584czqHunmH0c/STUA/QE
-         eAxuQaix+5HBKnSznvAT5/qNNmQuknid/cfLqgsom0hpn5kTUKm0JS1oR0GfYEq8Sd
-         MHUoaTl2iYSlLachNcrPEweZZaS9TprHfcCqV707t8txetBkpG0D/JycA92yZlAhr+
-         d9YY7JBmDKysQ==
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 10:15:49 +0100 (CET)
+Received: from mail-pd0-f182.google.com ([209.85.192.182]:47087 "EHLO
+        mail-pd0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006542AbaKUJPnJ7szm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2014 10:15:43 +0100
+Received: by mail-pd0-f182.google.com with SMTP id r10so4929309pdi.13
+        for <multiple recipients>; Fri, 21 Nov 2014 01:15:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=lixFvA23RH2AOqTdo2jtweCXcnz1cNwMD+jlrxRqwPA=;
+        b=MTUgj8nNy4sC5HZsGL5rNb7Qr1apx+pCBip/+hTTcaKV1D49SNgVaBZH5Y1R7d0YH5
+         IzLqhap4Ll9ctJo9L266nZZGPWkTpAMp3GR1QoCseUISdSx/7dPQiqvQGdKRiAacnNwd
+         UaYCh8RBkm9yhJwN4mHNTeAfHOpm36k9BP/OqAd5yyDSVnMkCtwuLDy3YyGWmphcDdaV
+         QXXB5Q709ssJ8wrAcPQH98AJkl0qcVv21vJTvsIn22/UlpHdI6PQ+WSUhexOvAlhClt9
+         bJ+wmp8eB8OKGUKbn/NDyKr9ji1SfLbSu1xZf1/pWjUj3zwAwc3l009AqmOlQUOyxx6T
+         vDSg==
+X-Received: by 10.70.90.80 with SMTP id bu16mr5343402pdb.44.1416561336403;
+        Fri, 21 Nov 2014 01:15:36 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPSA id fb7sm4263864pab.10.2014.11.21.01.15.33
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 21 Nov 2014 01:15:35 -0800 (PST)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>
+Subject: [PATCH V5 0/7] MIPS: Loongson-3: Improve kernel functionality
+Date:   Fri, 21 Nov 2014 17:12:39 +0800
+Message-Id: <1416561160-31199-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44329
+X-archive-position: 44330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,85 +55,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/19/2014 10:22, Ralf Baechle wrote:
-> On Wed, Nov 19, 2014 at 12:06:59PM +0000, Maciej W. Rozycki wrote:
->>  I highly doubt spinlocks have any significance here, they're used and 
->> work just fine across many systems.  If anything this will probably be 
->> either a bug in platform code somewhere or a critical part of hardware 
->> having not been correctly initialised.
-> 
-> For testing purposes one could disable the secondary CPU - I believe that's
-> possible on IP30, too?  Then build an SMP kernel with NR_CPUS set to 1.
-> That's basically a glorified uniprocessor kernel on glorified uniprocessor
-> hardware then.
+This patchset is prepared for the next 3.19 release for Linux/MIPS. In
+this series we promote Loongson-3's ISA level to MIPS64R1 since it is
+not fully compatible with MIPS64R2. Multi-node DMA and coherent cache
+features are both added here. LEFI firmware interface is improved to
+make the kernel more generic (machtypes can be dropped). Besides, we
+add some basic platform drivers (GPIO, CPU Hwmon, ACPI init, oprofile,
+HPET and CPUFreq) for Loongson-3. 
 
-That's what I did, actually.  "disable 1" in the PROM and a reset to turn off
-the extra CPU.  The register dump in my earlier mail in this thread is from an
-SMP kernel running with CPU1 disabled in PROM.  NR_CPUS=2 in that build,
-though, but Octane has some data available via MP_CONF registers that can tell
-you if a CPU is online or offline, and the SMP setup code uses that to
-enumerate the possible CPUs.
+V1 -> V2:
+1, Add a patch to fix Loongson's CCA setting.
+2, Rework the third patch.
+3, Rebase the code for 3.19.
 
-I can still trigger the corrupted memory addresses in that situation.  Which is
-why I'm thinking there is something else, possibly not in the core IP30 code,
-that's causing the problem.  I've stripped the test kernel of everything else
-(no block drivers, no SCSI, no networking, etc).  I guess I can remove PCI &
-IOC3 support next and see if loading an initramfs triggers the memory
-corruption.  Might have to look closer at the memory probing code, too.
+V2 -> V3:
+1, Remove patches which have merged in upstream.
+2, Moving GPIO driver from arch/mips to drivers/gpio directory.
+3, Optimize cacheflush by moving cpu_has_coherent_cache checking from
+   local version to global version.
 
+V3 -> V4:
+1, Don't build CPU Hwmon driver unconditionally.
+2, Split the 2nd patch (Loongson GPIO driver) to two patches.
 
->>  Does the system have any standard bus like PCI?  If so then you could get 
->> an NVRAM card then and log some activity there like CPU status on entry to 
->> exception handlers.  Once a crash has happened you could boot with that 
->> logging disabled and retrieve your data.  Accessing hardware is easy on 
->> MIPS, you can do it via XKPHYS without a need to have the MMU working, IOW 
->> you'll be able to poke at hardware even if your TLB/page tables got 
->> botched for some reason.  And you can bypass the cache too, which is 
->> another possible place for breakage.
-> 
-> IP27 reserves a part of its FLASH memory for logging.  However Linux doesn't
-> support that.
+V4 -> V5:
+1, Cleanup Loongson-2F's GPIO driver before move to drivers/gpio.
 
-I did add a different RTC to my Octane, DS17887, which has 8KB of NVRAM
-available.  The driver I wrote for it can access that NVRAM, too.  Uses PIO to
-write an address to a port register and then reads a data register to get data
-in/out from the RTC (unlike O2, which can ioremap the RTC registers directly).
- Can't store much in 8KB, though.  I'll look for an NVRAM card in that case then.
+Huacai Chen(7):
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: Cleanup Loongson-2F's gpio driver.
+ MIPS: Move Loongson GPIO driver to drivers/gpio.
+ GPIO: Add Loongson-3A/3B GPIO driver support.
+ MIPS: Loongson-3: Add CPU Hwmon platform driver.
+ MIPS: Loongson-3: Add chipset ACPI platform driver.
+ MIPS: Loongson: Make CPUFreq usable for Loongson-3.
 
-Is it possible for Linux, upon a kernel crash, to actually create a full dump
-of all available memory and write that out somewhere?  NetWare had this
-capability to designate a spare volume as a crash volume, which a core dump
-could be written to using low-level access, and then you could do offline
-analysis of the dump via the NW kernel debugger on a separate workstation
-(after rebooting and copying the crash dump out).
-
-
->>  Of course if you have PCI then you can add an ordinary serial port card 
->> there as well if the onboard port is difficult to access for some reason, 
->> but serial port logging has its limitations, mainly the complexity to 
->> access it and throughput.
-> 
-> While the system has 16550 UARTs a PCI card might indeed make things
-> slightly sinpler - the setup of the IOC3 + SuperIO combo is complex,
-> even for a simple PIO driver.  However I think he shouldn't have to go
-> to such an extreme!
-
-Already got a PCI serial card installed in the PCI 'shoebox' module.
-Unfortunately, it's a Moschip, so the driver for that is part of the parallel
-port code, and that doesn't appear to be big-endian safe.  Last time I tried
-the driver, it crashed when probing for the card.  Seems most of the cheap PCI
-Serial card these days are Moschips.
-
---J
-
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+---
+ arch/mips/Kconfig                                  |    4 +
+ arch/mips/configs/lemote2f_defconfig               |    1 +
+ arch/mips/configs/loongson3_defconfig              |    1 +
+ arch/mips/include/asm/cpu-features.h               |    3 +
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
+ arch/mips/include/asm/mach-loongson/gpio.h         |   15 +-
+ arch/mips/include/asm/mach-loongson/loongson.h     |    5 +
+ arch/mips/kernel/smp.c                             |    3 +-
+ arch/mips/loongson/Kconfig                         |    1 +
+ arch/mips/loongson/common/Makefile                 |    1 -
+ arch/mips/loongson/common/env.c                    |    9 +
+ arch/mips/loongson/common/gpio.c                   |  139 -----------
+ arch/mips/loongson/common/pci.c                    |    6 +
+ arch/mips/loongson/common/platform.c               |   13 +-
+ arch/mips/loongson/loongson-3/Makefile             |    2 +-
+ arch/mips/loongson/loongson-3/clock.c              |  191 ++++++++++++++++
+ arch/mips/mm/c-r4k.c                               |   21 ++
+ drivers/cpufreq/Kconfig                            |   14 ++
+ drivers/cpufreq/Makefile                           |    1 +
+ drivers/cpufreq/loongson3_cpufreq.c                |  240 ++++++++++++++++++++
+ drivers/gpio/Kconfig                               |    6 +
+ drivers/gpio/Makefile                              |    1 +
+ drivers/gpio/gpio-loongson.c                       |  129 +++++++++++
+ drivers/platform/Kconfig                           |    3 +
+ drivers/platform/Makefile                          |    1 +
+ drivers/platform/mips/Kconfig                      |   26 ++
+ drivers/platform/mips/Makefile                     |    2 +
+ drivers/platform/mips/acpi_init.c                  |  131 +++++++++++
+ drivers/platform/mips/cpu_hwmon.c                  |  206 +++++++++++++++++
+ 29 files changed, 1024 insertions(+), 152 deletions(-)
+ delete mode 100644 arch/mips/loongson/common/gpio.c
+ create mode 100644 arch/mips/loongson/loongson-3/clock.c
+ create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
+ create mode 100644 drivers/gpio/gpio-loongson.c
+ create mode 100644 drivers/platform/mips/Kconfig
+ create mode 100644 drivers/platform/mips/Makefile
+ create mode 100644 drivers/platform/mips/acpi_init.c
+ create mode 100644 drivers/platform/mips/cpu_hwmon.c
+--
+1.7.7.3

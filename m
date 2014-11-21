@@ -1,38 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 17:10:58 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:50537 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27014212AbaKUQK5ExA3K (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Nov 2014 17:10:57 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sALGAuie005701;
-        Fri, 21 Nov 2014 17:10:56 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sALGAtDg005700;
-        Fri, 21 Nov 2014 17:10:55 +0100
-Date:   Fri, 21 Nov 2014 17:10:55 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     John Crispin <john@phrozen.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: git caching(?) issues with http(s)
-Message-ID: <20141121161055.GA5153@linux-mips.org>
-References: <CAOiHx=nG0Td=9_A521NVjoixitTFxVnkvTCatubuFMKuHR+PEQ@mail.gmail.com>
- <20141121134141.GF30205@linux-mips.org>
- <CAOiHx=nJbFvUR4mBCTGdjDFkEX1onRK8P8_c3dwGwDxoox5mow@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 21:18:39 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.11.231]:36524 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27014155AbaKUUSf5eaTi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2014 21:18:35 +0100
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 659AD13F90E;
+        Fri, 21 Nov 2014 20:18:33 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 536CA13F91F; Fri, 21 Nov 2014 20:18:33 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: mitchelh@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C96EB13F90E;
+        Fri, 21 Nov 2014 20:18:32 +0000 (UTC)
+From:   Mitchel Humpherys <mitchelh@codeaurora.org>
+To:     Stefano Stabellini <stefano.stabellini@eu.citrix.com>
+Cc:     linux-mips@linux-mips.org, airlied@linux.ie,
+        dri-devel@lists.freedesktop.org, xen-devel@lists.xensource.com,
+        linux@arm.linux.org.uk, vinod.koul@intel.com, deller@gmx.de,
+        jejb@parisc-linux.org, dwmw2@infradead.org,
+        Ian Campbell <Ian.Campbell@citrix.com>,
+        alexander.deucher@amd.com, bhelgaas@google.com,
+        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, iommu@lists.linux-foundation.org,
+        David Vrabel <david.vrabel@citrix.com>,
+        dmaengine@vger.kernel.org, torvalds@linux-foundation.org,
+        christian.koenig@amd.com
+Subject: Re: [RFC] add a struct page* parameter to dma_map_ops.unmap_page
+References: <alpine.DEB.2.02.1411111644490.26318@kaball.uk.xensource.com>
+        <alpine.DEB.2.02.1411211147450.12596@kaball.uk.xensource.com>
+Date:   Fri, 21 Nov 2014 12:18:32 -0800
+In-Reply-To: <alpine.DEB.2.02.1411211147450.12596@kaball.uk.xensource.com>
+        (Stefano Stabellini's message of "Fri, 21 Nov 2014 11:48:33 +0000")
+Message-ID: <vnkwh9xs2tpj.fsf@mitchelh-linux.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOiHx=nJbFvUR4mBCTGdjDFkEX1onRK8P8_c3dwGwDxoox5mow@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <mitchelh@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44344
+X-archive-position: 44345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mitchelh@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,49 +60,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 21, 2014 at 03:03:08PM +0100, Jonas Gorski wrote:
+On Fri, Nov 21 2014 at 03:48:33 AM, Stefano Stabellini <stefano.stabellini@eu.citrix.com> wrote:
+> On Mon, 17 Nov 2014, Stefano Stabellini wrote:
+>> Hi all,
+>> I am writing this email to ask for your advice.
+>> 
+>> On architectures where dma addresses are different from physical
+>> addresses, it can be difficult to retrieve the physical address of a
+>> page from its dma address.
+>> 
+>> Specifically this is the case for Xen on arm and arm64 but I think that
+>> other architectures might have the same issue.
+>> 
+>> Knowing the physical address is necessary to be able to issue any
+>> required cache maintenance operations when unmap_page,
+>> sync_single_for_cpu and sync_single_for_device are called.
+>> 
+>> Adding a struct page* parameter to unmap_page, sync_single_for_cpu and
+>> sync_single_for_device would make Linux dma handling on Xen on arm and
+>> arm64 much easier and quicker.
+>> 
+>> I think that other drivers have similar problems, such as the Intel
+>> IOMMU driver having to call find_iova and walking down an rbtree to get
+>> the physical address in its implementation of unmap_page.
+>> 
+>> Callers have the struct page* in their hands already from the previous
+>> map_page call so it shouldn't be an issue for them.  A problem does
+>> exist however: there are about 280 callers of dma_unmap_page and
+>> pci_unmap_page. We have even more callers of the dma_sync_single_for_*
+>> functions.
+>> 
+>> 
+>> 
+>> Is such a change even conceivable? How would one go about it?
+>> 
+>> I think that Xen would not be the only one to gain from it, but I would
+>> like to have a confirmation from others: given the magnitude of the
+>> changes involved I would actually prefer to avoid them unless multiple
+>> drivers/archs/subsystems could really benefit from them.
+>
+> Given the lack of interest from the community, I am going to drop this
+> idea.
 
-> >> I noticed that git over http(s) seems to get stale data (just done a
-> >> few minutes ago):
-> >>
-> >> ~$ git clone http://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
-> >> Cloning into 'upstream-sfr'...
-> >> ~$ cd upstream-sfr/
-> >> ~/upstream-sfr$ git log -1
-> >> commit 475d5928b79bb78326a645863d46ff95c5e25e5a
-> >> Merge: c6b7b9f 1062080
-> >> Author: Ralf Baechle <ralf@linux-mips.org>
-> >> Date:   Sat Aug 2 00:07:03 2014 +0200
-> >>
-> >>     Merge branch '3.16-fixes' into mips-for-linux-next
-> >
-> > Odd - but I have an idea what might be wrong.
-> >
-> > Are you seeing this only with the upstream-sfr tree?
-> 
-> Hadn't checked anything else, but looks like it also affects other trees:
-> 
-> ~# git clone http://git.linux-mips.org/pub/scm/ralf/upstream-linus.git
-> Cloning into 'upstream-linus'...
-> ~$ cd upstream-linus/
-> ~/upstream-linus$ git log -1
-> commit 475d5928b79bb78326a645863d46ff95c5e25e5a
-> Merge: c6b7b9f 1062080
-> Author: Ralf Baechle <ralf@linux-mips.org>
-> Date:   Sat Aug 2 00:07:03 2014 +0200
-> 
->     Merge branch '3.16-fixes' into mips-for-linux-next
-> 
-> 
-> (strangely the same commit)
+Actually it sounds like the right API design to me.  As a bonus it
+should help performance a bit as well.  For example, the current
+implementations of dma_sync_single_for_{cpu,device} and dma_unmap_page
+on ARM while using the IOMMU mapper
+(arm_iommu_sync_single_for_{cpu,device}, arm_iommu_unmap_page) all call
+iommu_iova_to_phys which generally results in a page table walk or a
+hardware register write/poll/read.
 
-The issue is a stale info/refs on the server.  This file normally gets
-updated when the hook hooks/post-update is ran which in turn calls
-git-update-server-info but that just didn't happen.
+The problem, as you mentioned, is that there are a ton of callers of the
+existing APIs.  I think David Vrabel had a good suggestion for dealing
+with this:
 
-Can you retry?
+On Mon, Nov 17 2014 at 06:43:46 AM, David Vrabel <david.vrabel@citrix.com> wrote:
+> You may need to consider a parallel set of map/unmap API calls that
+> return/accept a handle, and then converting drivers one-by-one as
+> required, instead of trying to convert every single driver at once.
 
-Btw, why are you using http transport anyway?  The git protocol should
-be more efficient.
+However, I'm not sure whether the costs of having a parallel set of APIs
+outweigh the benefits of a cleaner API and a slight performance boost...
+But I hope the idea isn't completely abandoned without some profiling or
+other evidence of its benefits (e.g. patches showing how drivers could
+be simplified with the new APIs).
 
-  Ralf
+
+-Mitch
+
+-- 
+Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project

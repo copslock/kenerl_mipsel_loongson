@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 10:19:29 +0100 (CET)
-Received: from mail-pd0-f174.google.com ([209.85.192.174]:36697 "EHLO
-        mail-pd0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006509AbaKUJTZvdXed (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2014 10:19:45 +0100 (CET)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:45698 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006515AbaKUJTZyjqkJ (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2014 10:19:25 +0100
-Received: by mail-pd0-f174.google.com with SMTP id w10so4878553pde.19
-        for <multiple recipients>; Fri, 21 Nov 2014 01:19:17 -0800 (PST)
+Received: by mail-pa0-f51.google.com with SMTP id ey11so4462769pad.24
+        for <multiple recipients>; Fri, 21 Nov 2014 01:19:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=t5REBlEFoeuCiN3zovJtUeWF2Emn4gzReNqOE1LOkI4=;
-        b=z6AyuVlz4Uka8AE8uT6LfojuWs6O5Ac6s8/SUxopXdqdgrb+cvCriqaTOViB68TVJF
-         Zr2ENCpTOuPIGLpzD3yl5bsWAyemMbS+9QExBew6pTHQ7ftPQCtsuChqJwrw1dchHQng
-         4g2YJk6OvaWejdIahPIIh8SzfBuhWZfmjjomGqJTmemaaozzorI0/BPR7PAXqPcFPiGj
-         NvEIrrwiAM8Tjl1h3ubmpl9WzQRAOEp/bSZ+oPK7I9an1IjGHBqOjLSLmEojNP+VM2nc
-         B1Q1/sOMVHSckx63N/wbU/usesO08MjeATBJkgVzxtPU4Nfa/PMBjNZnzIwX8zhMb7EN
-         0P+A==
-X-Received: by 10.70.33.1 with SMTP id n1mr5379852pdi.12.1416561557689;
-        Fri, 21 Nov 2014 01:19:17 -0800 (PST)
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=6BoWS4/aBRjJ96Usa9+uY902WS016XaLS9MpKl8tNjQ=;
+        b=CVPFRNCUPL3sICd+My7zs3OKK5OdmaTb8YKwkay7eToWK0Hi4wMdUw3ajOFWcHGkB2
+         3JccbJPx12LhPgQ8vy3dfgJYWpdKZ4Af2OLUabNPFomvMKFLiD99HlOyoh2iPPrghKBy
+         5XCJigGInGc3I++SPRBwr6iuXT/zx1Iq6d0t9Y3GJ9zQXwYKhnQUA0F4Eg1UdYCvmcFi
+         8EJ6PQkFxG3ar0bgdJve9HpxQsVYifYTHk1oOrWd3Ei+lnfAoRo2oznVqXWnlbNtN9ET
+         8R501Iu8YKWehYqQH4kyAQqw76bcuTvdRNDvJP+WZ8oYYkHlBxHNpD0acQO1REoMwJaz
+         WIDQ==
+X-Received: by 10.68.217.231 with SMTP id pb7mr5129353pbc.124.1416561560277;
+        Fri, 21 Nov 2014 01:19:20 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id pv7sm4222928pdb.69.2014.11.21.01.19.15
+        by mx.google.com with ESMTPSA id pv7sm4222928pdb.69.2014.11.21.01.19.17
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 21 Nov 2014 01:19:17 -0800 (PST)
+        Fri, 21 Nov 2014 01:19:19 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
@@ -29,15 +29,17 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V5 5/7] MIPS: Loongson-3: Add CPU Hwmon platform driver
-Date:   Fri, 21 Nov 2014 17:18:55 +0800
-Message-Id: <1416561536-1101-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V5 6/7] MIPS: Loongson-3: Add chipset ACPI platform driver
+Date:   Fri, 21 Nov 2014 17:18:56 +0800
+Message-Id: <1416561536-1101-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
+In-Reply-To: <1416561536-1101-1-git-send-email-chenhc@lemote.com>
+References: <1416561536-1101-1-git-send-email-chenhc@lemote.com>
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44335
+X-archive-position: 44336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,344 +56,185 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This add CPU Hwmon (temperature sensor) platform driver for Loongson-3.
+This add south-bridge (SB700/SB710/SB800 chipset) ACPI platform driver
+for Loongson-3. This will be used by EC (Embedded Controller, used by
+laptops) driver and STR (Suspend To RAM).
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson/loongson.h |    4 +
- arch/mips/loongson/common/env.c                |    9 +
- drivers/platform/Kconfig                       |    3 +
- drivers/platform/Makefile                      |    1 +
- drivers/platform/mips/Kconfig                  |   26 +++
- drivers/platform/mips/Makefile                 |    1 +
- drivers/platform/mips/cpu_hwmon.c              |  206 ++++++++++++++++++++++++
- 7 files changed, 250 insertions(+), 0 deletions(-)
- create mode 100644 drivers/platform/mips/Kconfig
- create mode 100644 drivers/platform/mips/Makefile
- create mode 100644 drivers/platform/mips/cpu_hwmon.c
+ arch/mips/loongson/common/pci.c   |    6 ++
+ drivers/platform/mips/Makefile    |    1 +
+ drivers/platform/mips/acpi_init.c |  131 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 138 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/platform/mips/acpi_init.c
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index 5459ac0..9783103 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -255,6 +255,10 @@ static inline void do_perfcnt_IRQ(void)
- extern u64 loongson_chipcfg[MAX_PACKAGES];
- #define LOONGSON_CHIPCFG(id) (*(volatile u32 *)(loongson_chipcfg[id]))
+diff --git a/arch/mips/loongson/common/pci.c b/arch/mips/loongson/common/pci.c
+index 003ab4e..4e25756 100644
+--- a/arch/mips/loongson/common/pci.c
++++ b/arch/mips/loongson/common/pci.c
+@@ -78,6 +78,8 @@ static void __init setup_pcimap(void)
+ #endif
+ }
  
-+/* Chip Temperature registor of each physical cpu package, PRid >= Loongson-3A */
-+extern u64 loongson_chiptemp[MAX_PACKAGES];
-+#define LOONGSON_CHIPTEMP(id) (*(volatile u32 *)(loongson_chiptemp[id]))
++extern int sbx00_acpi_init(void);
 +
- /* Freq Control register of each physical cpu package, PRid >= Loongson-3B */
- extern u64 loongson_freqctrl[MAX_PACKAGES];
- #define LOONGSON_FREQCTRL(id) (*(volatile u32 *)(loongson_freqctrl[id]))
-diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index 045ea3d..22f04ca 100644
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
-@@ -29,6 +29,7 @@ struct efi_memory_map_loongson *loongson_memmap;
- struct loongson_system_configuration loongson_sysconf;
+ static int __init pcibios_init(void)
+ {
+ 	setup_pcimap();
+@@ -89,6 +91,10 @@ static int __init pcibios_init(void)
+ #endif
+ 	register_pci_controller(&loongson_pci_controller);
  
- u64 loongson_chipcfg[MAX_PACKAGES] = {0xffffffffbfc00180};
-+u64 loongson_chiptemp[MAX_PACKAGES];
- u64 loongson_freqctrl[MAX_PACKAGES];
++#ifdef CONFIG_CPU_LOONGSON3
++	sbx00_acpi_init();
++#endif
++
+ 	return 0;
+ }
  
- unsigned long long smp_group[4];
-@@ -97,6 +98,10 @@ void __init prom_init_env(void)
- 		loongson_chipcfg[1] = 0x900010001fe00180;
- 		loongson_chipcfg[2] = 0x900020001fe00180;
- 		loongson_chipcfg[3] = 0x900030001fe00180;
-+		loongson_chiptemp[0] = 0x900000001fe0019c;
-+		loongson_chiptemp[1] = 0x900010001fe0019c;
-+		loongson_chiptemp[2] = 0x900020001fe0019c;
-+		loongson_chiptemp[3] = 0x900030001fe0019c;
- 		loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
- 		loongson_sysconf.workarounds = WORKAROUND_CPUFREQ;
- 	} else if (ecpu->cputype == Loongson_3B) {
-@@ -110,6 +115,10 @@ void __init prom_init_env(void)
- 		loongson_chipcfg[1] = 0x900020001fe00180;
- 		loongson_chipcfg[2] = 0x900040001fe00180;
- 		loongson_chipcfg[3] = 0x900060001fe00180;
-+		loongson_chiptemp[0] = 0x900000001fe0019c;
-+		loongson_chiptemp[1] = 0x900020001fe0019c;
-+		loongson_chiptemp[2] = 0x900040001fe0019c;
-+		loongson_chiptemp[3] = 0x900060001fe0019c;
- 		loongson_freqctrl[0] = 0x900000001fe001d0;
- 		loongson_freqctrl[1] = 0x900020001fe001d0;
- 		loongson_freqctrl[2] = 0x900040001fe001d0;
-diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
-index 09fde58..eacabd1 100644
---- a/drivers/platform/Kconfig
-+++ b/drivers/platform/Kconfig
-@@ -4,5 +4,8 @@ endif
- if GOLDFISH
- source "drivers/platform/goldfish/Kconfig"
- endif
-+if MIPS
-+source "drivers/platform/mips/Kconfig"
-+endif
- 
- source "drivers/platform/chrome/Kconfig"
-diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
-index 3656b7b..f2dbc00 100644
---- a/drivers/platform/Makefile
-+++ b/drivers/platform/Makefile
-@@ -5,4 +5,5 @@
- obj-$(CONFIG_X86)		+= x86/
- obj-$(CONFIG_OLPC)		+= olpc/
- obj-$(CONFIG_GOLDFISH)		+= goldfish/
-+obj-$(CONFIG_CPU_LOONGSON3)	+= mips/
- obj-$(CONFIG_CHROME_PLATFORMS)	+= chrome/
-diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
-new file mode 100644
-index 0000000..b3ae30a
---- /dev/null
-+++ b/drivers/platform/mips/Kconfig
-@@ -0,0 +1,26 @@
-+#
-+# MIPS Platform Specific Drivers
-+#
-+
-+menuconfig MIPS_PLATFORM_DEVICES
-+	bool "MIPS Platform Specific Device Drivers"
-+	default y
-+	help
-+	  Say Y here to get to see options for device drivers of various
-+	  MIPS platforms, including vendor-specific netbook/laptop/desktop
-+	  extension and hardware monitor drivers. This option itself does
-+	  not add any kernel code.
-+
-+	  If you say N, all options in this submenu will be skipped and disabled.
-+
-+if MIPS_PLATFORM_DEVICES
-+
-+config CPU_HWMON
-+	tristate "Loongson CPU HWMon Driver"
-+	depends on LOONGSON_MACH3X
-+	select HWMON
-+	default y
-+	help
-+	  Loongson-3A/3B CPU Hwmon (temperature sensor) driver.
-+
-+endif # MIPS_PLATFORM_DEVICES
 diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
-new file mode 100644
-index 0000000..8dfd039
---- /dev/null
+index 8dfd039..20e471d 100644
+--- a/drivers/platform/mips/Makefile
 +++ b/drivers/platform/mips/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
-diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
+@@ -1 +1,2 @@
++obj-y += acpi_init.o
+ obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
+diff --git a/drivers/platform/mips/acpi_init.c b/drivers/platform/mips/acpi_init.c
 new file mode 100644
-index 0000000..529950a
+index 0000000..ee2825c
 --- /dev/null
-+++ b/drivers/platform/mips/cpu_hwmon.c
-@@ -0,0 +1,206 @@
-+#include <linux/err.h>
-+#include <linux/module.h>
-+#include <linux/reboot.h>
-+#include <linux/jiffies.h>
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
++++ b/drivers/platform/mips/acpi_init.c
+@@ -0,0 +1,131 @@
++#include <linux/io.h>
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/export.h>
 +
-+#include <loongson.h>
-+#include <boot_param.h>
-+#include <loongson_hwmon.h>
++#define SBX00_ACPI_IO_BASE 0x800
++#define SBX00_ACPI_IO_SIZE 0x100
++
++#define ACPI_PM_EVT_BLK         (SBX00_ACPI_IO_BASE + 0x00) /* 4 bytes */
++#define ACPI_PM1_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x04) /* 2 bytes */
++#define ACPI_PMA_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x0F) /* 1 byte */
++#define ACPI_PM_TMR_BLK         (SBX00_ACPI_IO_BASE + 0x18) /* 4 bytes */
++#define ACPI_GPE0_BLK           (SBX00_ACPI_IO_BASE + 0x10) /* 8 bytes */
++#define ACPI_END                (SBX00_ACPI_IO_BASE + 0x80)
++
++#define PM_INDEX        0xCD6
++#define PM_DATA         0xCD7
++#define PM2_INDEX       0xCD0
++#define PM2_DATA        0xCD1
 +
 +/*
-+ * Loongson-3 series cpu has two sensors inside,
-+ * each of them from 0 to 255,
-+ * if more than 127, that is dangerous.
-+ * here only provide sensor1 data, because it always hot than sensor0
++ * SCI interrupt need acpi space, allocate here
 + */
-+int loongson3_cpu_temp(int cpu)
++
++static int __init register_acpi_resource(void)
 +{
-+	u32 reg;
-+
-+	reg = LOONGSON_CHIPTEMP(cpu);
-+	if (loongson_sysconf.cputype == Loongson_3A)
-+		reg = (reg >> 8) & 0xff;
-+	else if (loongson_sysconf.cputype == Loongson_3B)
-+		reg = ((reg >> 8) & 0xff) - 100;
-+
-+	return (int)reg * 1000;
++	request_region(SBX00_ACPI_IO_BASE, SBX00_ACPI_IO_SIZE, "acpi");
++	return 0;
 +}
 +
-+static struct device *cpu_hwmon_dev;
-+
-+static ssize_t get_hwmon_name(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static SENSOR_DEVICE_ATTR(name, S_IRUGO, get_hwmon_name, NULL, 0);
-+
-+static struct attribute *cpu_hwmon_attributes[] = {
-+	&sensor_dev_attr_name.dev_attr.attr,
-+	NULL
-+};
-+
-+/* Hwmon device attribute group */
-+static struct attribute_group cpu_hwmon_attribute_group = {
-+	.attrs = cpu_hwmon_attributes,
-+};
-+
-+/* Hwmon device get name */
-+static ssize_t get_hwmon_name(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++static void pmio_write_index(u16 index, u8 reg, u8 value)
 +{
-+	return sprintf(buf, "cpu-hwmon\n");
++	outb(reg, index);
++	outb(value, index + 1);
 +}
 +
-+static ssize_t get_cpu0_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static ssize_t get_cpu1_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static ssize_t cpu0_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static ssize_t cpu1_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+
-+static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, get_cpu0_temp, NULL, 1);
-+static SENSOR_DEVICE_ATTR(temp1_label, S_IRUGO, cpu0_temp_label, NULL, 1);
-+static SENSOR_DEVICE_ATTR(temp2_input, S_IRUGO, get_cpu1_temp, NULL, 2);
-+static SENSOR_DEVICE_ATTR(temp2_label, S_IRUGO, cpu1_temp_label, NULL, 2);
-+
-+static const struct attribute *hwmon_cputemp1[] = {
-+	&sensor_dev_attr_temp1_input.dev_attr.attr,
-+	&sensor_dev_attr_temp1_label.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute *hwmon_cputemp2[] = {
-+	&sensor_dev_attr_temp2_input.dev_attr.attr,
-+	&sensor_dev_attr_temp2_label.dev_attr.attr,
-+	NULL
-+};
-+
-+static ssize_t cpu0_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++static u8 pmio_read_index(u16 index, u8 reg)
 +{
-+	return sprintf(buf, "CPU 0 Temprature\n");
++	outb(reg, index);
++	return inb(index + 1);
 +}
 +
-+static ssize_t cpu1_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++void pm_iowrite(u8 reg, u8 value)
 +{
-+	return sprintf(buf, "CPU 1 Temprature\n");
++	pmio_write_index(PM_INDEX, reg, value);
++}
++EXPORT_SYMBOL(pm_iowrite);
++
++u8 pm_ioread(u8 reg)
++{
++	return pmio_read_index(PM_INDEX, reg);
++}
++EXPORT_SYMBOL(pm_ioread);
++
++void pm2_iowrite(u8 reg, u8 value)
++{
++	pmio_write_index(PM2_INDEX, reg, value);
++}
++EXPORT_SYMBOL(pm2_iowrite);
++
++u8 pm2_ioread(u8 reg)
++{
++	return pmio_read_index(PM2_INDEX, reg);
++}
++EXPORT_SYMBOL(pm2_ioread);
++
++void sci_interrupt_setup(void)
++{
++	u32 temp32;
++
++	/* pm1 base */
++	pm_iowrite(0x22, ACPI_PM1_CNT_BLK & 0xff);
++	pm_iowrite(0x23, ACPI_PM1_CNT_BLK >> 8);
++
++	/* gpm base */
++	pm_iowrite(0x28, ACPI_GPE0_BLK & 0xFF);
++	pm_iowrite(0x29, ACPI_GPE0_BLK >> 8);
++
++	/* gpm base */
++	pm_iowrite(0x2e, ACPI_END & 0xFF);
++	pm_iowrite(0x2f, ACPI_END >> 8);
++
++	/* io decode: When AcpiDecodeEnable set, South-Bridge uses the contents
++	 * of the PM registers at index 20-2B to decode ACPI I/O address. e.g.,
++	 * AcpiSmiEn & SmiCmdEn */
++	pm_iowrite(0x0E, 1<<3 | 0<<2);
++
++	/* SCI_EN set */
++	outw(1, ACPI_PM1_CNT_BLK);
++
++	/* enable to generate SCI */
++	pm_iowrite(0x10, pm_ioread(0x10) | 1);
++
++	/* gpm3/gpm9 enable */
++	temp32 = inl(ACPI_GPE0_BLK + 4);
++	outl(temp32 | (1 << 14) | (1 << 22), ACPI_GPE0_BLK + 4);
++
++	/* set gpm9 as input */
++	pm_iowrite(0x8d, pm_ioread(0x8d) & (~(1 << 1)));
++
++	/* set gpm9 as non-output */
++	pm_iowrite(0x94, pm_ioread(0x94) | (1 << 3));
++
++	/* gpm3 config ACPI trigger SCIOUT */
++	pm_iowrite(0x33, pm_ioread(0x33) & (~(3 << 4)));
++
++	/* gpm9 config ACPI trigger SCIOUT */
++	pm_iowrite(0x3d, pm_ioread(0x3d) & (~(3 << 2)));
++
++	/* gpm3 config falling edge trigger */
++	pm_iowrite(0x37, pm_ioread(0x37) & (~(1 << 6)));
++
++	/* set gpm3 pull-down enable */
++	temp32 = pm2_ioread(0xf6);
++	temp32 |= ((1 << 7) | (1 << 3));
++	pm2_iowrite(0xf6, temp32);
++
++	/* set gpm9 pull-down enable */
++	temp32 = pm2_ioread(0xf8);
++	temp32 |= ((1 << 5) | (1 << 1));
++	pm2_iowrite(0xf8, temp32);
 +}
 +
-+static ssize_t get_cpu0_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++int __init sbx00_acpi_init(void)
 +{
-+	int value = loongson3_cpu_temp(0);
-+	return sprintf(buf, "%d\n", value);
-+}
++	register_acpi_resource();
 +
-+static ssize_t get_cpu1_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf)
-+{
-+	int value = loongson3_cpu_temp(1);
-+	return sprintf(buf, "%d\n", value);
-+}
-+
-+static int create_sysfs_cputemp_files(struct kobject *kobj)
-+{
-+	int ret;
-+
-+	ret = sysfs_create_files(kobj, hwmon_cputemp1);
-+	if (ret)
-+		goto sysfs_create_temp1_fail;
-+
-+	if (loongson_sysconf.nr_cpus <= loongson_sysconf.cores_per_package)
-+		return 0;
-+
-+	ret = sysfs_create_files(kobj, hwmon_cputemp2);
-+	if (ret)
-+		goto sysfs_create_temp2_fail;
++	sci_interrupt_setup();
 +
 +	return 0;
-+
-+sysfs_create_temp2_fail:
-+	sysfs_remove_files(kobj, hwmon_cputemp1);
-+
-+sysfs_create_temp1_fail:
-+	return -1;
 +}
-+
-+static void remove_sysfs_cputemp_files(struct kobject *kobj)
-+{
-+	sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp1);
-+
-+	if (loongson_sysconf.nr_cpus > loongson_sysconf.cores_per_package)
-+		sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp2);
-+}
-+
-+#define CPU_THERMAL_THRESHOLD 90000
-+static struct delayed_work thermal_work;
-+
-+static void do_thermal_timer(struct work_struct *work)
-+{
-+	int value = loongson3_cpu_temp(0);
-+	if (value <= CPU_THERMAL_THRESHOLD)
-+		schedule_delayed_work(&thermal_work, msecs_to_jiffies(5000));
-+	else
-+		orderly_poweroff(true);
-+}
-+
-+static int __init loongson_hwmon_init(void)
-+{
-+	int ret;
-+
-+	pr_info("Loongson Hwmon Enter...\n");
-+
-+	cpu_hwmon_dev = hwmon_device_register(NULL);
-+	if (IS_ERR(cpu_hwmon_dev)) {
-+		ret = -ENOMEM;
-+		pr_err("hwmon_device_register fail!\n");
-+		goto fail_hwmon_device_register;
-+	}
-+
-+	ret = sysfs_create_group(&cpu_hwmon_dev->kobj,
-+				&cpu_hwmon_attribute_group);
-+	if (ret) {
-+		pr_err("fail to create loongson hwmon!\n");
-+		goto fail_sysfs_create_group_hwmon;
-+	}
-+
-+	ret = create_sysfs_cputemp_files(&cpu_hwmon_dev->kobj);
-+	if (ret) {
-+		pr_err("fail to create cpu temprature interface!\n");
-+		goto fail_create_sysfs_cputemp_files;
-+	}
-+
-+	INIT_DEFERRABLE_WORK(&thermal_work, do_thermal_timer);
-+	schedule_delayed_work(&thermal_work, msecs_to_jiffies(20000));
-+
-+	return ret;
-+
-+fail_create_sysfs_cputemp_files:
-+	sysfs_remove_group(&cpu_hwmon_dev->kobj,
-+				&cpu_hwmon_attribute_group);
-+
-+fail_sysfs_create_group_hwmon:
-+	hwmon_device_unregister(cpu_hwmon_dev);
-+
-+fail_hwmon_device_register:
-+	return ret;
-+}
-+
-+static void __exit loongson_hwmon_exit(void)
-+{
-+	cancel_delayed_work_sync(&thermal_work);
-+	remove_sysfs_cputemp_files(&cpu_hwmon_dev->kobj);
-+	sysfs_remove_group(&cpu_hwmon_dev->kobj,
-+				&cpu_hwmon_attribute_group);
-+	hwmon_device_unregister(cpu_hwmon_dev);
-+}
-+
-+module_init(loongson_hwmon_init);
-+module_exit(loongson_hwmon_exit);
-+
-+MODULE_AUTHOR("Yu Xiang <xiangy@lemote.com>");
-+MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
-+MODULE_DESCRIPTION("Loongson CPU Hwmon driver");
 -- 
 1.7.7.3

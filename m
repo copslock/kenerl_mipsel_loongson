@@ -1,42 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Nov 2014 12:57:10 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:51401 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006520AbaKVL5HM2kB8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 22 Nov 2014 12:57:07 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id E62FD28BD4C;
-        Sat, 22 Nov 2014 12:55:35 +0100 (CET)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f178.google.com (mail-qc0-f178.google.com [209.85.216.178])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id AC39028BD24;
-        Sat, 22 Nov 2014 12:55:24 +0100 (CET)
-Received: by mail-qc0-f178.google.com with SMTP id b13so5618688qcw.9
-        for <multiple recipients>; Sat, 22 Nov 2014 03:56:51 -0800 (PST)
-X-Received: by 10.224.129.9 with SMTP id m9mr13979915qas.50.1416657411721;
- Sat, 22 Nov 2014 03:56:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Nov 2014 10:45:26 +0100 (CET)
+Received: from mail-ie0-f169.google.com ([209.85.223.169]:57390 "EHLO
+        mail-ie0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006659AbaKWJpZTw4Yb convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 23 Nov 2014 10:45:25 +0100
+Received: by mail-ie0-f169.google.com with SMTP id y20so7372958ier.0
+        for <multiple recipients>; Sun, 23 Nov 2014 01:45:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=Ae6ruYkxqUx+DmT3+Y73UclQlBy7ZES0cxCpVevkX5Y=;
+        b=juad6bVlxarz0P4A1D+hRCwqYnvq5X9ZfnQHLlHGylt691/nDovmbL73eW3yY40pyR
+         JOz5IpO7/qty2wUbY92YQ8gCNJS4woHHqkPNyhZEK6f5RLJaEgiCmgo3la/3C2U2cQF1
+         N8bDd/NMpZM0+gN2EDeZpAZsIXLDl3Y3xLrrjcHHoerlTbPbNg/5irMlb3qh3PiI3JJY
+         FZnMdfxxjl0mouGn57yxCuPPrXE2oQ0kS4FZzQwfU/lRCfoyBysNadSfiZH1/qVpIE8k
+         t3zl8HRGGbeFCmhyKzZJjRx2qWDceGpUaKvgZ8AtS5iqU9h2QnztPZU5ptFRxekd682v
+         E+BQ==
 MIME-Version: 1.0
-Received: by 10.140.95.79 with HTTP; Sat, 22 Nov 2014 03:56:31 -0800 (PST)
-In-Reply-To: <20141121161055.GA5153@linux-mips.org>
-References: <CAOiHx=nG0Td=9_A521NVjoixitTFxVnkvTCatubuFMKuHR+PEQ@mail.gmail.com>
- <20141121134141.GF30205@linux-mips.org> <CAOiHx=nJbFvUR4mBCTGdjDFkEX1onRK8P8_c3dwGwDxoox5mow@mail.gmail.com>
- <20141121161055.GA5153@linux-mips.org>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Sat, 22 Nov 2014 12:56:31 +0100
-Message-ID: <CAOiHx=n4q3nj6Up8D7bEw3aNpz7+tV0LZw8bvwAC929WErP+Kw@mail.gmail.com>
-Subject: Re: git caching(?) issues with http(s)
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>
+X-Received: by 10.50.88.69 with SMTP id be5mr6406205igb.21.1416735919471; Sun,
+ 23 Nov 2014 01:45:19 -0800 (PST)
+Received: by 10.107.14.9 with HTTP; Sun, 23 Nov 2014 01:45:19 -0800 (PST)
+In-Reply-To: <5463CE30.2080405@hauke-m.de>
+References: <1415735146-31552-1-git-send-email-zajec5@gmail.com>
+        <5463CE30.2080405@hauke-m.de>
+Date:   Sun, 23 Nov 2014 10:45:19 +0100
+Message-ID: <CACna6rwq+e83me_nGQDccwSJ=sSOUF6gFLF1HSRCp3OHox-KFg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: BCM47XX: Move NVRAM driver to the drivers/misc/
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44347
+X-archive-position: 44348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,66 +56,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 21, 2014 at 5:10 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Nov 21, 2014 at 03:03:08PM +0100, Jonas Gorski wrote:
+On 12 November 2014 at 22:16, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> On 11/11/2014 08:45 PM, Rafał Miłecki wrote:
+>> After Broadcom switched from MIPS to ARM for their home routers we need
+>> to have NVRAM driver in some common place (not arch/mips/).
+>> We were thinking about putting it in bus directory, however there are
+>> two possible buses for MIPS: drivers/ssb/ and drivers/bcma/. So this
+>> won't fit there neither.
+>> This is why I would like to move this driver to the drivers/misc/
 >
->> >> I noticed that git over http(s) seems to get stale data (just done a
->> >> few minutes ago):
->> >>
->> >> ~$ git clone http://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
->> >> Cloning into 'upstream-sfr'...
->> >> ~$ cd upstream-sfr/
->> >> ~/upstream-sfr$ git log -1
->> >> commit 475d5928b79bb78326a645863d46ff95c5e25e5a
->> >> Merge: c6b7b9f 1062080
->> >> Author: Ralf Baechle <ralf@linux-mips.org>
->> >> Date:   Sat Aug 2 00:07:03 2014 +0200
->> >>
->> >>     Merge branch '3.16-fixes' into mips-for-linux-next
->> >
->> > Odd - but I have an idea what might be wrong.
->> >
->> > Are you seeing this only with the upstream-sfr tree?
->>
->> Hadn't checked anything else, but looks like it also affects other trees:
->>
->> ~# git clone http://git.linux-mips.org/pub/scm/ralf/upstream-linus.git
->> Cloning into 'upstream-linus'...
->> ~$ cd upstream-linus/
->> ~/upstream-linus$ git log -1
->> commit 475d5928b79bb78326a645863d46ff95c5e25e5a
->> Merge: c6b7b9f 1062080
->> Author: Ralf Baechle <ralf@linux-mips.org>
->> Date:   Sat Aug 2 00:07:03 2014 +0200
->>
->>     Merge branch '3.16-fixes' into mips-for-linux-next
->>
->>
->> (strangely the same commit)
+> I will do a more detailed review when you send a patch with -M
 >
-> The issue is a stale info/refs on the server.  This file normally gets
-> updated when the hook hooks/post-update is ran which in turn calls
-> git-update-server-info but that just didn't happen.
+>> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+>> ---
+>>  arch/mips/Kconfig                                  |   1 +
+>>  arch/mips/bcm47xx/Makefile                         |   2 +-
+>>  arch/mips/bcm47xx/board.c                          |   2 +-
+>>  arch/mips/bcm47xx/nvram.c                          | 228 --------------------
+>>  arch/mips/bcm47xx/setup.c                          |   1 -
+>>  arch/mips/bcm47xx/sprom.c                          |   1 -
+>>  arch/mips/bcm47xx/time.c                           |   1 -
+>>  arch/mips/include/asm/mach-bcm47xx/bcm47xx.h       |   1 +
+>>  arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h |  21 --
+>>  drivers/bcma/driver_mips.c                         |   2 +-
+>>  drivers/misc/Kconfig                               |   9 +
+>>  drivers/misc/Makefile                              |   1 +
+>>  drivers/misc/bcm47xx_nvram.c                       | 230 +++++++++++++++++++++
+>>  drivers/net/ethernet/broadcom/b44.c                |   2 +-
+>>  drivers/net/ethernet/broadcom/bgmac.c              |   2 +-
+>>  drivers/ssb/driver_chipcommon_pmu.c                |   2 +-
+>>  drivers/ssb/driver_mipscore.c                      |   2 +-
+>>  include/linux/bcm47xx_nvram.h                      |  18 ++
+>>  18 files changed, 267 insertions(+), 259 deletions(-)
+>>  delete mode 100644 arch/mips/bcm47xx/nvram.c
+>>  delete mode 100644 arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h
+>>  create mode 100644 drivers/misc/bcm47xx_nvram.c
+>>  create mode 100644 include/linux/bcm47xx_nvram.h
 >
-> Can you retry?
+> ....
+>
+>> diff --git a/include/linux/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
+>> new file mode 100644
+>> index 0000000..5ed6917
+>> --- /dev/null
+>> +++ b/include/linux/bcm47xx_nvram.h
+>> @@ -0,0 +1,18 @@
+>> +/*
+>> + *  This program is free software; you can redistribute  it and/or modify it
+>> + *  under  the terms of  the GNU General  Public License as published by the
+>> + *  Free Software Foundation;  either version 2 of the  License, or (at your
+>> + *  option) any later version.
+>> + */
+>> +
+>> +#ifndef __BCM47XX_NVRAM_H
+>> +#define __BCM47XX_NVRAM_H
+>> +
+>> +#include <linux/types.h>
+>> +#include <linux/kernel.h>
+>> +
+>> +int bcm47xx_nvram_init_from_mem(u32 base, u32 lim);
+>> +int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len);
+>> +int bcm47xx_nvram_gpio_pin(const char *name);
+>
+> Could you change this to something like this:
+>
+> #ifdef CONFIG_BCM47XX_NVRAM
+> int bcm47xx_nvram_init_from_mem(u32 base, u32 lim);
+> int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len);
+> int bcm47xx_nvram_gpio_pin(const char *name);
+> #else
+> static inline int bcm47xx_nvram_init_from_mem(u32 base, u32 lim) {return
+> -1;};
+> static inline int bcm47xx_nvram_getenv(const char *name, char *val,
+> size_t val_len) {return -1;};
+> static inline int bcm47xx_nvram_gpio_pin(const char *name) {return -1;};
+> #endif
+>
+> and use something better than -1.
+>
+> This way we can get rid of these  all other the code.
+> #ifdef CONFIG_BCM47XX
+> ..
+> #endif
 
-I am now able to clone a new, current tree, but updating my older
-tree is broken:
+How many drivers using
+#ifdef CONFIG_BCM47XX
+bcm47xx_nvram_foo(...)
+#endif
+do we have?
 
-# git pull --rebase
-error: Unable to find e213b27f3921a88768201638d6d358f0f0c80419 under
-https://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
-Cannot obtain needed blob e213b27f3921a88768201638d6d358f0f0c80419
-while processing commit fd37780aa0ee04f74e4323f45492947fcef62c35.
-error: Fetch failed.
+I think right now it is done in
+drivers/bcma/driver_mips.c
+but should be dropped anyway. We should make BCMA_DRIVER_MIPS depend on BCM47XX.
 
-But I can live with that.
+And second usage is in:
+drivers/net/ethernet/broadcom/b44.c
 
-> Btw, why are you using http transport anyway?  The git protocol should
-> be more efficient.
+Do you think it's worth doing just for b44.c?
 
-General paranoia (https) as well as occasional stupid corporate
-firewalls that won't allow anything except 80 or 443.
-
-
-Jonas
+-- 
+Rafał

@@ -1,55 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Nov 2014 22:35:47 +0100 (CET)
-Received: from mail-wi0-f176.google.com ([209.85.212.176]:64856 "EHLO
-        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006560AbaKWVfpVCtXA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Nov 2014 22:35:45 +0100
-Received: by mail-wi0-f176.google.com with SMTP id ex7so3954991wid.3
-        for <multiple recipients>; Sun, 23 Nov 2014 13:35:40 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 03:40:58 +0100 (CET)
+Received: from mail-pd0-f169.google.com ([209.85.192.169]:39496 "EHLO
+        mail-pd0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006756AbaKXCkz1qRHN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 03:40:55 +0100
+Received: by mail-pd0-f169.google.com with SMTP id fp1so8814759pdb.14
+        for <multiple recipients>; Sun, 23 Nov 2014 18:40:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=GCg2dswazwFyqxgcfEO+RArrrHLzYlEog+CzLjsNjs8=;
-        b=LAzUgMBymqykJHp11Dnx/lx8QR8M2pNtVPaEeHFfMSc4gPs7mRwu1HWLasHDidLO61
-         ak8EF5lHUqK0acUNWi7v7ggXK+Gw9iWs8jhsUti6fUzAcxeOyqsPg6gPoDMbH1W3grbg
-         n7Ow3NbyVaE70433l+OiX0wibiA5v/tQsKHV6GEG20BSBXCei6HL2XrIF6p1uNvSPH+f
-         i2eo8RU3untkf+kDiJTzohtLQnaaeqJGvzB98LqqsthSA3tCiDImEugDzewHQVhhUuOB
-         rFV4Hmsa7HGmXUzsg+lXi3FM7WkgKlPmFnkL0ukXWNV5PSmfKyuABecXQXoUOU24YkJE
-         cIig==
-X-Received: by 10.180.221.201 with SMTP id qg9mr16050401wic.29.1416778540119;
-        Sun, 23 Nov 2014 13:35:40 -0800 (PST)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id ge17sm9278842wic.0.2014.11.23.13.35.37
+        h=from:to:cc:subject:date:message-id;
+        bh=ysueBBvSmb7w0iQqZthXVN3XRbJG9tZYlwjbB2FzG04=;
+        b=F0l7ha8C2/KAd3hbhMRCPbpYCFsyQJ3+cGwfZqLrbgbPZLMpvz2Dq2EaEpjHqUwbxv
+         +8c/5Pws9aDZsK2nVZdOB/YHfkJX+x2zbyPfGQrgOU5vgwcoWkcBdFJmdncT2ptd4WYu
+         CjSExzsWsMm4q8Px3M5y+3Kau+BiOwZowimUaxf0tRiwzhNhSGYzLObLCftCzdyyBit6
+         pE9xH+XQVatzz95KnwIetjff1fcdalEXwd5ujh/B8dSk4lHsu0jgnXWPRRk54zRbyN0z
+         oylJxplbhq8/ww5x7hvUSqzblJQvX/NQrsnTe4KASRpfDS2HOFoGJunErycDwhPcetwF
+         9x2g==
+X-Received: by 10.67.4.167 with SMTP id cf7mr29003455pad.52.1416796849183;
+        Sun, 23 Nov 2014 18:40:49 -0800 (PST)
+Received: from localhost (b32.net. [192.81.132.72])
+        by mx.google.com with ESMTPSA id ml5sm10930673pab.32.2014.11.23.18.40.47
         for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 23 Nov 2014 13:35:39 -0800 (PST)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kumar Gala <galak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        Sandeep Nair <sandeep_n@ti.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH V3] MIPS: BCM47XX: Move NVRAM driver to the drivers/soc/
-Date:   Sun, 23 Nov 2014 22:35:09 +0100
-Message-Id: <1416778509-31502-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-In-Reply-To: <1416736241-12723-1-git-send-email-zajec5@gmail.com>
-References: <1416736241-12723-1-git-send-email-zajec5@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 23 Nov 2014 18:40:48 -0800 (PST)
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     f.fainelli@gmail.com, jfraser@broadcom.com, dtor@chromium.org,
+        tglx@linutronix.de, jason@lakedaemon.net, jogo@openwrt.org,
+        arnd@arndb.de, computersforpeace@gmail.com,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH V3 00/11] Multiplatform BMIPS kernel
+Date:   Sun, 23 Nov 2014 18:40:35 -0800
+Message-Id: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
+X-Mailer: git-send-email 2.1.1
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44352
+X-archive-position: 44353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,309 +54,214 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-After Broadcom switched from MIPS to ARM for their home routers we need
-to have NVRAM driver in some common place (not arch/mips/).
-We were thinking about putting it in bus directory, however there are
-two possible buses for MIPS: drivers/ssb/ and drivers/bcma/. So this
-won't fit there neither.
-This is why I would like to move this driver to the drivers/soc/
+This patch series REPLACES the following commits in Ralf's
+mips-for-linux-next branch:
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
-V2: Use drivers/soc/broadcom/ (instead of misc) and use -M for patch
-V3: Extend description in Kconfig by saying what this drivers does
-    Make calls to bcm47xx_nvram_* safe even with the driver disabled
+ab3e5d0647e3 Documentation: DT: Add entries for BCM3384 and its peripherals
+1251d9964de5 MIPS: bcm3384: Initial commit of bcm3384 platform support
+aff366c68e5c MAINTAINERS: Add entry for BCM33xx cable chips
 
-Hauke: to address your question about .h copyrights.
-1) I don't claim/have any copyrights to the
-bcm47xx_nvram_init_from_mem function name
-2) I don't think you claim/have any copyrights to the
-bcm47xx_nvram_gpio_pin or bcm47xx_nvram_getenv function names
-3) String "nvram_getenv" is not copyrightable
----
- arch/mips/Kconfig                                        |  1 +
- arch/mips/bcm47xx/Makefile                               |  2 +-
- arch/mips/bcm47xx/board.c                                |  2 +-
- arch/mips/bcm47xx/setup.c                                |  1 -
- arch/mips/bcm47xx/sprom.c                                |  1 -
- arch/mips/bcm47xx/time.c                                 |  1 -
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h             |  1 +
- drivers/bcma/driver_mips.c                               |  2 +-
- drivers/net/ethernet/broadcom/b44.c                      |  2 +-
- drivers/net/ethernet/broadcom/bgmac.c                    |  2 +-
- drivers/soc/Kconfig                                      |  1 +
- drivers/soc/Makefile                                     |  1 +
- drivers/soc/broadcom/Kconfig                             | 15 +++++++++++++++
- drivers/soc/broadcom/Makefile                            |  1 +
- .../nvram.c => drivers/soc/broadcom/bcm47xx_nvram.c      |  4 +++-
- drivers/ssb/driver_chipcommon_pmu.c                      |  2 +-
- drivers/ssb/driver_mipscore.c                            |  2 +-
- .../asm/mach-bcm47xx => include/linux}/bcm47xx_nvram.h   | 16 +++++++++++++---
- 18 files changed, 43 insertions(+), 14 deletions(-)
- create mode 100644 drivers/soc/broadcom/Kconfig
- create mode 100644 drivers/soc/broadcom/Makefile
- rename arch/mips/bcm47xx/nvram.c => drivers/soc/broadcom/bcm47xx_nvram.c (98%)
- rename {arch/mips/include/asm/mach-bcm47xx => include/linux}/bcm47xx_nvram.h (63%)
+(Ralf, if you just want to drop the above commits and target the new
+platform for 3.20+, that's fine.)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4a7e0c1..3d647e3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -134,6 +134,7 @@ config BCM47XX
- 	select USE_GENERIC_EARLY_PRINTK_8250
- 	select GPIOLIB
- 	select LEDS_GPIO_REGISTER
-+	select BCM47XX_NVRAM
- 	help
- 	 Support for BCM47XX based boards
- 
-diff --git a/arch/mips/bcm47xx/Makefile b/arch/mips/bcm47xx/Makefile
-index d58c51b..66bea4e 100644
---- a/arch/mips/bcm47xx/Makefile
-+++ b/arch/mips/bcm47xx/Makefile
-@@ -3,5 +3,5 @@
- # under Linux.
- #
- 
--obj-y				+= irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
-+obj-y				+= irq.o prom.o serial.o setup.o time.o sprom.o
- obj-y				+= board.o buttons.o leds.o workarounds.o
-diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
-index b3ae068..6e85130 100644
---- a/arch/mips/bcm47xx/board.c
-+++ b/arch/mips/bcm47xx/board.c
-@@ -1,8 +1,8 @@
- #include <linux/errno.h>
- #include <linux/export.h>
- #include <linux/string.h>
-+#include <bcm47xx.h>
- #include <bcm47xx_board.h>
--#include <bcm47xx_nvram.h>
- 
- struct bcm47xx_board_type {
- 	const enum bcm47xx_board board;
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index e43b504..b26c9c2 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -42,7 +42,6 @@
- #include <asm/reboot.h>
- #include <asm/time.h>
- #include <bcm47xx.h>
--#include <bcm47xx_nvram.h>
- #include <bcm47xx_board.h>
- 
- union bcm47xx_bus bcm47xx_bus;
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index 2eff7fe..a077ed2 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -27,7 +27,6 @@
-  */
- 
- #include <bcm47xx.h>
--#include <bcm47xx_nvram.h>
- #include <linux/if_ether.h>
- #include <linux/etherdevice.h>
- 
-diff --git a/arch/mips/bcm47xx/time.c b/arch/mips/bcm47xx/time.c
-index 2c85d92..5b46510 100644
---- a/arch/mips/bcm47xx/time.c
-+++ b/arch/mips/bcm47xx/time.c
-@@ -27,7 +27,6 @@
- #include <linux/ssb/ssb.h>
- #include <asm/time.h>
- #include <bcm47xx.h>
--#include <bcm47xx_nvram.h>
- #include <bcm47xx_board.h>
- 
- void __init plat_time_init(void)
-diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-index 7527c1d..8ed77f6 100644
---- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-@@ -22,6 +22,7 @@
- #include <linux/ssb/ssb.h>
- #include <linux/bcma/bcma.h>
- #include <linux/bcma/bcma_soc.h>
-+#include <linux/bcm47xx_nvram.h>
- 
- enum bcm47xx_bus_type {
- #ifdef CONFIG_BCM47XX_SSB
-diff --git a/drivers/bcma/driver_mips.c b/drivers/bcma/driver_mips.c
-index 8a653dc..15e278f 100644
---- a/drivers/bcma/driver_mips.c
-+++ b/drivers/bcma/driver_mips.c
-@@ -21,7 +21,7 @@
- #include <linux/serial_reg.h>
- #include <linux/time.h>
- #ifdef CONFIG_BCM47XX
--#include <bcm47xx_nvram.h>
-+#include <linux/bcm47xx_nvram.h>
- #endif
- 
- enum bcma_boot_dev {
-diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
-index 416620f..2095062 100644
---- a/drivers/net/ethernet/broadcom/b44.c
-+++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -400,7 +400,7 @@ static void b44_set_flow_ctrl(struct b44 *bp, u32 local, u32 remote)
- }
- 
- #ifdef CONFIG_BCM47XX
--#include <bcm47xx_nvram.h>
-+#include <linux/bcm47xx_nvram.h>
- static void b44_wap54g10_workaround(struct b44 *bp)
- {
- 	char buf[20];
-diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-index 05c6af6..bdda57b 100644
---- a/drivers/net/ethernet/broadcom/bgmac.c
-+++ b/drivers/net/ethernet/broadcom/bgmac.c
-@@ -16,7 +16,7 @@
- #include <linux/phy.h>
- #include <linux/interrupt.h>
- #include <linux/dma-mapping.h>
--#include <bcm47xx_nvram.h>
-+#include <linux/bcm47xx_nvram.h>
- 
- static const struct bcma_device_id bgmac_bcma_tbl[] = {
- 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_4706_MAC_GBIT, BCMA_ANY_REV, BCMA_ANY_CLASS),
-diff --git a/drivers/soc/Kconfig b/drivers/soc/Kconfig
-index 76d6bd4..6eee174 100644
---- a/drivers/soc/Kconfig
-+++ b/drivers/soc/Kconfig
-@@ -1,5 +1,6 @@
- menu "SOC (System On Chip) specific Drivers"
- 
-+source "drivers/soc/broadcom/Kconfig"
- source "drivers/soc/qcom/Kconfig"
- source "drivers/soc/ti/Kconfig"
- source "drivers/soc/versatile/Kconfig"
-diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
-index 063113d..c57e8f9 100644
---- a/drivers/soc/Makefile
-+++ b/drivers/soc/Makefile
-@@ -2,6 +2,7 @@
- # Makefile for the Linux Kernel SOC specific device drivers.
- #
- 
-+obj-y				+= broadcom/
- obj-$(CONFIG_ARCH_QCOM)		+= qcom/
- obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
- obj-$(CONFIG_SOC_TI)		+= ti/
-diff --git a/drivers/soc/broadcom/Kconfig b/drivers/soc/broadcom/Kconfig
-new file mode 100644
-index 0000000..5fa2e32
---- /dev/null
-+++ b/drivers/soc/broadcom/Kconfig
-@@ -0,0 +1,15 @@
-+#
-+# Broadcom SoC drivers
-+#
-+
-+config BCM47XX_NVRAM
-+	bool "Broadcom NVRAM driver"
-+	depends on BCM47XX || ARCH_BCM_5301X
-+	help
-+	  Broadcom home routers contain flash partition called "nvram" with all
-+	  important hardware configuration as well as some minor user setup.
-+	  NVRAM partition contains a text-like data representing name=value
-+	  pairs.
-+	  This driver provides an easy way to get value of requested parameter.
-+	  It simply reads content of NVRAM and parses it. It doesn't control any
-+	  hardware part itself.
-diff --git a/drivers/soc/broadcom/Makefile b/drivers/soc/broadcom/Makefile
-new file mode 100644
-index 0000000..f6816af
---- /dev/null
-+++ b/drivers/soc/broadcom/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_BCM47XX_NVRAM)	+= bcm47xx_nvram.o
-diff --git a/arch/mips/bcm47xx/nvram.c b/drivers/soc/broadcom/bcm47xx_nvram.c
-similarity index 98%
-rename from arch/mips/bcm47xx/nvram.c
-rename to drivers/soc/broadcom/bcm47xx_nvram.c
-index c5c381c..a4083d7 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/drivers/soc/broadcom/bcm47xx_nvram.c
-@@ -16,7 +16,7 @@
- #include <linux/kernel.h>
- #include <linux/string.h>
- #include <linux/mtd/mtd.h>
--#include <bcm47xx_nvram.h>
-+#include <linux/bcm47xx_nvram.h>
- 
- #define NVRAM_MAGIC		0x48534C46	/* 'FLSH' */
- #define NVRAM_SPACE		0x8000
-@@ -226,3 +226,5 @@ int bcm47xx_nvram_gpio_pin(const char *name)
- 	return -ENOENT;
- }
- EXPORT_SYMBOL(bcm47xx_nvram_gpio_pin);
-+
-+MODULE_LICENSE("GPLv2");
-diff --git a/drivers/ssb/driver_chipcommon_pmu.c b/drivers/ssb/driver_chipcommon_pmu.c
-index 1173a09..0942841 100644
---- a/drivers/ssb/driver_chipcommon_pmu.c
-+++ b/drivers/ssb/driver_chipcommon_pmu.c
-@@ -14,7 +14,7 @@
- #include <linux/delay.h>
- #include <linux/export.h>
- #ifdef CONFIG_BCM47XX
--#include <bcm47xx_nvram.h>
-+#include <linux/bcm47xx_nvram.h>
- #endif
- 
- #include "ssb_private.h"
-diff --git a/drivers/ssb/driver_mipscore.c b/drivers/ssb/driver_mipscore.c
-index 7b986f9..f87efef 100644
---- a/drivers/ssb/driver_mipscore.c
-+++ b/drivers/ssb/driver_mipscore.c
-@@ -16,7 +16,7 @@
- #include <linux/serial_reg.h>
- #include <linux/time.h>
- #ifdef CONFIG_BCM47XX
--#include <bcm47xx_nvram.h>
-+#include <linux/bcm47xx_nvram.h>
- #endif
- 
- #include "ssb_private.h"
-diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
-similarity index 63%
-rename from arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h
-rename to include/linux/bcm47xx_nvram.h
-index ee59ffe..659dfb7 100644
---- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_nvram.h
-+++ b/include/linux/bcm47xx_nvram.h
-@@ -1,7 +1,4 @@
- /*
-- *  Copyright (C) 2005, Broadcom Corporation
-- *  Copyright (C) 2006, Felix Fietkau <nbd@openwrt.org>
-- *
-  *  This program is free software; you can redistribute  it and/or modify it
-  *  under  the terms of  the GNU General  Public License as published by the
-  *  Free Software Foundation;  either version 2 of the  License, or (at your
-@@ -14,8 +11,21 @@
- #include <linux/types.h>
- #include <linux/kernel.h>
- 
-+#ifdef CONFIG_BCM47XX_NVRAM
- int bcm47xx_nvram_init_from_mem(u32 base, u32 lim);
- int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len);
- int bcm47xx_nvram_gpio_pin(const char *name);
-+#else
-+static inline int bcm47xx_nvram_init_from_mem(u32 base, u32 lim) {
-+	return -ENOTSUPP;
-+};
-+static inline int bcm47xx_nvram_getenv(const char *name, char *val,
-+				       size_t val_len) {
-+	return -ENOTSUPP;
-+};
-+static inline int bcm47xx_nvram_gpio_pin(const char *name) {
-+	return -ENOTSUPP;
-+};
-+#endif
- 
- #endif /* __BCM47XX_NVRAM_H */
+
+V2->V3:
+
+ - Omit the BMIPS updates that have already been accepted into Ralf's tree.
+   They are still needed, but not reposted.
+
+ - Make USB endian swap options conditional on "if CPU_BIG_ENDIAN".
+
+ - Remove board listing from Documentation/devicetree/bindings/mips/brcm/soc.txt
+
+ - Remove legacy device autodetection and chip ID decoding.  Legacy
+   boards/bootloaders will be supported by selecting a single DTB file
+   to compile into the kernel.
+
+ - Refactor quirks code to match against DT "compatible" strings, not chip IDs.
+
+ - Fix CPU1 boot (missing DT node) on 6329.
+
+ - Remove @0 / addressing properties on non-reg nodes.
+
+ - Remove bogus "brcm,bmips" bus registration.
+
+ - Move UBUS peripherals onto a "simple-bus" and set DMA ranges for this
+   bus on bcm3384_zephyr.
+
+ - Fix base addresses on 6328/6368 for "periph_intc@10000020".
+
+ - Change the MIPS_L1_CACHE_SHIFT calculation so as to minimize the impact
+   on other builds (like bcm63xx).
+
+
+This series is based on mips-for-linux-next, minus the three 3384 patches
+listed above, plus these non-MIPS patches:
+
+http://patchwork.linux-mips.org/bundle/cernekee/bmips-multi-v3-deps/?state=%2a
+http://marc.info/?l=linux-usb&m=141305106215886&w=2 (all 3/3)
+
+These are queued for tty-next / irqchip-next / usb-next.
+
+
+Re: irqchip patches in this series
+
+These apply cleanly on top of earlier bcm7120/brcmstb commits currently
+in irqchip-next.  The BMIPS commit in this series depends on both the
+irqchip-next updates, and the irqchip updates in this series.
+
+
+Re: syscon/reset
+
+I have some patches ready for the brcmstb syscon/reset drivers, but will
+submit them separately so we can get the basic platform support stuff
+nailed down first.
+
+I don't have a patch ready for gisb-arb support yet, but I have prototyped
+the change.
+
+These patches will also have interdependencies between the
+arch/mips/boot/dts changes and the drivers/ changes.
+
+
+Re: external (non-MIPS) timers:
+
+I left this problem for a future submission.  There are a couple of
+elements to consider:
+
+ - Do we want to completely eliminate CSRC_R4K and CEVT_R4K in favor of an
+   external timer, and leave mips_hpt_frequency unset?
+
+ - If so, do all platforms have a suitable timer, and is it hooked up to an
+   IRQ?  On STB we saw conflicts with other software when taking over one
+   of the UPG timers; the alternative (WKTMR) doesn't have a suitable
+   alarm/IRQ.
+
+ - Or do we want to use another timer to calibrate mips_hpt_frequency?  In
+   this case we may need to add part of that timer's driver under
+   arch/mips/bmips instead of under drivers/, so it is available early in the
+   boot process.  Unfortunately that might cause problems or redundancy
+   sharing the code with ARM platforms.
+
+ - And if we do wind up using CSRC_R4K / CEVT_R4K, we'll need a way to
+   handle the complications caused by frequency scaling.  The brcmstb
+   kernel sources posted on github do this, but it did require changes to
+   other files under arch/mips/kernel/.
+
+
+Re: dma-ranges
+
+dma.c implements a minimal remapping scheme just for the current UBUS
+peripherals.  The remapping is global, and it isn't the same mapping
+needed for PCI(e).  A more comprehensive solution will be needed before
+PCI support can be added.
+
+On chips OTHER than 3384, remapping is only required on PCI (not UBUS or
+"rdb").  Notably, BCM7445, an ARM platform currently supported upstream,
+doesn't require dma-ranges for non-PCI devices.
+
+I am hoping we can piggyback on top of the ARM dma-ranges code once it
+is merged.  This will allow for eliminating my dma.c.
+
+
+Brian Norris (1):
+  irqchip: brcmstb-l2: don't clear wakeable interrupts at init time
+
+Dmitry Torokhov (2):
+  irqchip: brcmstb-l2: fix error handling of irq_of_parse_and_map
+  irqchip: bcm7120-l2: fix error handling of irq_of_parse_and_map
+
+Kevin Cernekee (8):
+  irqchip: Update docs regarding irq_domain_add_tree()
+  irqchip: bcm7120-l2: Refactor driver for arbitrary IRQEN/IRQSTAT
+    offsets
+  irqchip: bcm7120-l2: Change DT binding to allow non-contiguous
+    IRQEN/IRQSTAT
+  irqchip: Add new driver for BCM7038-style level 1 interrupt
+    controllers
+  MIPS: Let __dt_register_buses accept a single bus type
+  MIPS: Fall back to the generic restart notifier
+  MIPS: Reorder MIPS_L1_CACHE_SHIFT priorities
+  MIPS: Add multiplatform BMIPS target
+
+ Documentation/IRQ-domain.txt                       |   3 +-
+ .../interrupt-controller/brcm,bcm7038-l1-intc.txt  |  52 ++++
+ .../interrupt-controller/brcm,bcm7120-l2-intc.txt  |   5 +-
+ .../devicetree/bindings/mips/brcm/bmips.txt        |   8 +
+ .../devicetree/bindings/mips/brcm/soc.txt          |  12 +
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  42 ++-
+ arch/mips/bmips/Kconfig                            |  50 +++
+ arch/mips/bmips/Makefile                           |   1 +
+ arch/mips/bmips/Platform                           |   7 +
+ arch/mips/bmips/dma.c                              | 141 +++++++++
+ arch/mips/bmips/irq.c                              |  38 +++
+ arch/mips/bmips/setup.c                            | 195 ++++++++++++
+ arch/mips/boot/dts/Makefile                        |   9 +
+ arch/mips/boot/dts/bcm3384_viper.dtsi              | 108 +++++++
+ arch/mips/boot/dts/bcm3384_zephyr.dtsi             | 126 ++++++++
+ arch/mips/boot/dts/bcm6328.dtsi                    |  87 ++++++
+ arch/mips/boot/dts/bcm6368.dtsi                    |  94 ++++++
+ arch/mips/boot/dts/bcm7125.dtsi                    | 107 +++++++
+ arch/mips/boot/dts/bcm7346.dtsi                    | 192 ++++++++++++
+ arch/mips/boot/dts/bcm7360.dtsi                    | 129 ++++++++
+ arch/mips/boot/dts/bcm7420.dtsi                    | 151 ++++++++++
+ arch/mips/boot/dts/bcm7425.dtsi                    | 191 ++++++++++++
+ arch/mips/boot/dts/bcm93384wvg.dts                 |  25 ++
+ arch/mips/boot/dts/bcm93384wvg_viper.dts           |  25 ++
+ arch/mips/boot/dts/bcm96368mvwg.dts                |  31 ++
+ arch/mips/boot/dts/bcm97125cbmb.dts                |  31 ++
+ arch/mips/boot/dts/bcm97346dbsmb.dts               |  58 ++++
+ arch/mips/boot/dts/bcm97360svmb.dts                |  34 +++
+ arch/mips/boot/dts/bcm97420c.dts                   |  45 +++
+ arch/mips/boot/dts/bcm97425svmb.dts                |  60 ++++
+ arch/mips/boot/dts/bcm9ejtagprb.dts                |  22 ++
+ arch/mips/configs/bmips_be_defconfig               |  86 ++++++
+ arch/mips/configs/bmips_stb_defconfig              |  86 ++++++
+ arch/mips/include/asm/mach-bmips/dma-coherence.h   |  45 +++
+ arch/mips/include/asm/mach-bmips/spaces.h          |  17 ++
+ arch/mips/include/asm/mach-bmips/war.h             |  24 ++
+ arch/mips/kernel/prom.c                            |   5 +-
+ arch/mips/kernel/reset.c                           |   2 +
+ drivers/irqchip/Kconfig                            |   5 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-bcm7038-l1.c                   | 335 +++++++++++++++++++++
+ drivers/irqchip/irq-bcm7120-l2.c                   | 105 +++++--
+ drivers/irqchip/irq-brcmstb-l2.c                   |  13 +-
+ 44 files changed, 2768 insertions(+), 36 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/brcm/bmips.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/brcm/soc.txt
+ create mode 100644 arch/mips/bmips/Kconfig
+ create mode 100644 arch/mips/bmips/Makefile
+ create mode 100644 arch/mips/bmips/Platform
+ create mode 100644 arch/mips/bmips/dma.c
+ create mode 100644 arch/mips/bmips/irq.c
+ create mode 100644 arch/mips/bmips/setup.c
+ create mode 100644 arch/mips/boot/dts/bcm3384_viper.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm3384_zephyr.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm6328.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm6368.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm7125.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm7346.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm7360.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm7420.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm7425.dtsi
+ create mode 100644 arch/mips/boot/dts/bcm93384wvg.dts
+ create mode 100644 arch/mips/boot/dts/bcm93384wvg_viper.dts
+ create mode 100644 arch/mips/boot/dts/bcm96368mvwg.dts
+ create mode 100644 arch/mips/boot/dts/bcm97125cbmb.dts
+ create mode 100644 arch/mips/boot/dts/bcm97346dbsmb.dts
+ create mode 100644 arch/mips/boot/dts/bcm97360svmb.dts
+ create mode 100644 arch/mips/boot/dts/bcm97420c.dts
+ create mode 100644 arch/mips/boot/dts/bcm97425svmb.dts
+ create mode 100644 arch/mips/boot/dts/bcm9ejtagprb.dts
+ create mode 100644 arch/mips/configs/bmips_be_defconfig
+ create mode 100644 arch/mips/configs/bmips_stb_defconfig
+ create mode 100644 arch/mips/include/asm/mach-bmips/dma-coherence.h
+ create mode 100644 arch/mips/include/asm/mach-bmips/spaces.h
+ create mode 100644 arch/mips/include/asm/mach-bmips/war.h
+ create mode 100644 drivers/irqchip/irq-bcm7038-l1.c
+
 -- 
-1.8.4.5
+2.1.1

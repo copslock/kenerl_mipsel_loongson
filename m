@@ -1,72 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 20:42:17 +0100 (CET)
-Received: from e34.co.us.ibm.com ([32.97.110.152]:50317 "EHLO
-        e34.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006921AbaKXTmMwLqIU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 20:42:12 +0100
-Received: from /spool/local
-        by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Mon, 24 Nov 2014 12:42:06 -0700
-Received: from d03dlp01.boulder.ibm.com (9.17.202.177)
-        by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Mon, 24 Nov 2014 12:42:03 -0700
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-        by d03dlp01.boulder.ibm.com (Postfix) with ESMTP id 24B461FF0045
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 12:30:47 -0700 (MST)
-Received: from d03av06.boulder.ibm.com (d03av06.boulder.ibm.com [9.17.195.245])
-        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id sAOJg2qY35717134
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 12:42:02 -0700
-Received: from d03av06.boulder.ibm.com (loopback [127.0.0.1])
-        by d03av06.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id sAOJkuTx012850
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 12:46:57 -0700
-Received: from paulmck-ThinkPad-W500 ([9.50.23.142])
-        by d03av06.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id sAOJkuct012845;
-        Mon, 24 Nov 2014 12:46:56 -0700
-Received: by paulmck-ThinkPad-W500 (Postfix, from userid 1000)
-        id 7C22D381844; Mon, 24 Nov 2014 11:42:00 -0800 (PST)
-Date:   Mon, 24 Nov 2014 11:42:00 -0800
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        David Howells <dhowells@redhat.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-x86_64@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>
-Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar
- types
-Message-ID: <20141124194200.GR5050@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
-References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
- <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com>
- <15567.1416835858@warthog.procyon.org.uk>
- <CAADnVQJQydX9OU_rem+BObR0eWc-jrrwirUYVKH9rnN=Z8LG6A@mail.gmail.com>
- <CA+55aFxc72VsGTw4yFdeC1Sq65RUjYLKPD1ORnXB2d18WBMzvg@mail.gmail.com>
- <547381D7.2070404@de.ibm.com>
- <CA+55aFy+dunTcdgB4-BXsYiLDk9pf8b_L74ky-dMixpbX3JQQA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 20:46:21 +0100 (CET)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:33157 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006914AbaKXTqTO4goF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 20:46:19 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id CE38621BC19;
+        Mon, 24 Nov 2014 21:46:18 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id 5zuyLXSuxlS7; Mon, 24 Nov 2014 21:46:12 +0200 (EET)
+Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 2F4525BC003;
+        Mon, 24 Nov 2014 21:46:12 +0200 (EET)
+Date:   Mon, 24 Nov 2014 21:46:11 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     James Cowgill <James.Cowgill@imgtec.com>,
+        "Herrmann, Andreas" <Andreas.Herrmann@caviumnetworks.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH] MIPS: octeon: Add support for the UBNT E200 board
+Message-ID: <20141124194611.GD6796@fuloong-minipc.musicnaut.iki.fi>
+References: <1416837096-52243-1-git-send-email-James.Cowgill@imgtec.com>
+ <54736A06.9070206@gmail.com>
+ <20141124191301.GC6796@fuloong-minipc.musicnaut.iki.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+55aFy+dunTcdgB4-BXsYiLDk9pf8b_L74ky-dMixpbX3JQQA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 14112419-0017-0000-0000-0000068AFF52
-Return-Path: <paulmck@linux.vnet.ibm.com>
+In-Reply-To: <20141124191301.GC6796@fuloong-minipc.musicnaut.iki.fi>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44395
+X-archive-position: 44396
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,32 +52,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 24, 2014 at 11:14:42AM -0800, Linus Torvalds wrote:
-> On Mon, Nov 24, 2014 at 11:07 AM, Christian Borntraeger
-> <borntraeger@de.ibm.com> wrote:
-> >
-> > Looks really nice, but does not work with ACCESS_ONCE is on the left-hand side:
+Hi,
+
+On Mon, Nov 24, 2014 at 09:13:01PM +0200, Aaro Koskinen wrote:
+> On Mon, Nov 24, 2014 at 09:25:26AM -0800, David Daney wrote:
+> > On 11/24/2014 05:51 AM, James Cowgill wrote:
+> > >From: Markos Chandras <markos.chandras@imgtec.com>
+> > >
+> > >Add support for the UBNT E200 board (EdgeRouter/EdgeRouter Pro 8 port).
+> > >
+> > >Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> > >Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
+> > 
+> > NACK.
+> > 
+> > As far as I know, these boards have a boot loader that supplies a correct
+> > device tree, there should be no need to hack up the kernel like this.
+> > 
+> > As far as I know, Andreas is running a kernel.org kernel on these boards
+> > without anything like this.
 > 
-> Oh, I forgot about that. And that was indeed why I had done that whole
-> helper macro originally, with ACCESS_ONCE() itself just being the
-> dereference of the pointer.
+> It gets called from Octeon Ethernet driver through cvmx_helper_link_get()
+> frequently so the console gets spammed about unknown board, and probably
+> also the link status is bogus as a result.
 
-OK, how about the following?
+Just tested with 3.18-rc6 and this behaviour has been apparently
+fixed somehow. Cool.
 
-It complains if the variable is too large, for example, long long on
-32-bit systems or large structures.  It is OK loading from and storing
-to small structures as well, which I am having a hard time thinking of
-as a disadvantage.
-
-							Thanx, Paul
-
-------------------------------------------------------------------------
-
-#define get_scalar_volatile_pointer(x) ({ \
-	volatile typeof(x) *__vp = &(x); \
-	BUILD_BUG_ON(sizeof(*__vp) != sizeof(char) && \
-		     sizeof(*__vp) != sizeof(short) && \
-		     sizeof(*__vp) != sizeof(int) && \
-		     sizeof(*__vp) != sizeof(long)); \
-	__vp; })
-#define ACCESS_ONCE(x) (*get_scalar_volatile_pointer(x))
+A.

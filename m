@@ -1,45 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 14:34:59 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.130]:52050 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006860AbaKXNeyOSg79 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 14:34:54 +0100
-Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
-        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
-        id 0MBX6o-1XkcJK3Ajm-00AWJX; Mon, 24 Nov 2014 14:34:25 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     ralf@linux-mips.org, f.fainelli@gmail.com, jfraser@broadcom.com,
-        dtor@chromium.org, tglx@linutronix.de, jason@lakedaemon.net,
-        jogo@openwrt.org, computersforpeace@gmail.com,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 00/11] Multiplatform BMIPS kernel
-Date:   Mon, 24 Nov 2014 14:34:24 +0100
-Message-ID: <5143071.8HhdKL6dxp@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
-References: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 14:53:57 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35839 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009790AbaKXNx4PN1Qz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 14:53:56 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C87C93975E8B9;
+        Mon, 24 Nov 2014 13:53:47 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 24 Nov
+ 2014 13:53:50 +0000
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 24 Nov 2014 13:53:50 +0000
+Received: from raava.le.imgtec.org (192.168.154.64) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 24 Nov
+ 2014 13:53:49 +0000
+From:   James Cowgill <James.Cowgill@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        David Daney <david.daney@cavium.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        James Cowgill <James.Cowgill@imgtec.com>
+Subject: [PATCH] MIPS: octeon: Add support for the UBNT E200 board
+Date:   Mon, 24 Nov 2014 13:51:36 +0000
+Message-ID: <1416837096-52243-1-git-send-email-James.Cowgill@imgtec.com>
+X-Mailer: git-send-email 2.1.3
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:bAmtyKAPHSvSk6e9JeDlWq9vQiruY3myVnvFHGs5ZGI
- hrJT4RAQxXyIUCfi4cUdBA7bJXqnRjNCV0ZCWIqXTsz30ZsOyX
- aGItaXuvzfhOEEoA/w3qNCgdrXM7VltsI5wDKDtDJm85Pel3MI
- MiUiqm3jldOzwz3l8Jff/bmALBjcNt+HgH6NfDKsjKLYMgAsbJ
- uF8Jul8JyCyq922pIIJfd7WbyJXpGY8vyefUkQrER1/U+X6JQq
- zwAxZum9LDwcYkzYmZo2zH14g3l39Y9pefiqqHHqKRySB5NlNv
- L618BrEEiENrCAcDZl2DYFDeR4ZJBrXqymKG0j6+0FxDMa8tS8
- bK1DqmRUfnkYCjNQMeVc=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.64]
+Return-Path: <James.Cowgill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44377
+X-archive-position: 44378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: James.Cowgill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,55 +50,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sunday 23 November 2014 18:40:35 Kevin Cernekee wrote:
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-> V2->V3:
-> 
->  - Omit the BMIPS updates that have already been accepted into Ralf's tree.
->    They are still needed, but not reposted.
-> 
->  - Make USB endian swap options conditional on "if CPU_BIG_ENDIAN".
-> 
->  - Remove board listing from Documentation/devicetree/bindings/mips/brcm/soc.txt
-> 
->  - Remove legacy device autodetection and chip ID decoding.  Legacy
->    boards/bootloaders will be supported by selecting a single DTB file
->    to compile into the kernel.
-> 
->  - Refactor quirks code to match against DT "compatible" strings, not chip IDs.
-> 
->  - Fix CPU1 boot (missing DT node) on 6329.
-> 
->  - Remove @0 / addressing properties on non-reg nodes.
-> 
->  - Remove bogus "brcm,bmips" bus registration.
-> 
->  - Move UBUS peripherals onto a "simple-bus" and set DMA ranges for this
->    bus on bcm3384_zephyr.
-> 
->  - Fix base addresses on 6328/6368 for "periph_intc@10000020".
-> 
->  - Change the MIPS_L1_CACHE_SHIFT calculation so as to minimize the impact
->    on other builds (like bcm63xx).
+Add support for the UBNT E200 board (EdgeRouter/EdgeRouter Pro 8 port).
 
-Looks nice to me overall, with the new way of handling the dtb passing,
-this seems much more flexible, and I guess it can be turned into an
-actual multiplatform build if there is ever a desire to do that.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
+---
+ arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 3 +++
+ arch/mips/include/asm/octeon/cvmx-bootinfo.h          | 2 ++
+ 2 files changed, 5 insertions(+)
 
-> Re: dma-ranges
-> 
-> dma.c implements a minimal remapping scheme just for the current UBUS
-> peripherals.  The remapping is global, and it isn't the same mapping
-> needed for PCI(e).  A more comprehensive solution will be needed before
-> PCI support can be added.
-> 
-> On chips OTHER than 3384, remapping is only required on PCI (not UBUS or
-> "rdb").  Notably, BCM7445, an ARM platform currently supported upstream,
-> doesn't require dma-ranges for non-PCI devices.
-> 
-> I am hoping we can piggyback on top of the ARM dma-ranges code once it
-> is merged.  This will allow for eliminating my dma.c.
-
-Sounds good.
-
-	Arnd
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+index 5dfef84..69ba6fb 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+@@ -186,6 +186,8 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
+ 			return 7 - ipd_port;
+ 		else
+ 			return -1;
++	case CVMX_BOARD_TYPE_UBNT_E200:
++		return -1;
+ 	case CVMX_BOARD_TYPE_CUST_DSR1000N:
+ 		/*
+ 		 * Port 2 connects to Broadcom PHY (B5081). Other ports (0-1)
+@@ -759,6 +761,7 @@ enum cvmx_helper_board_usb_clock_types __cvmx_helper_board_usb_get_clock_type(vo
+ 	case CVMX_BOARD_TYPE_LANAI2_G:
+ 	case CVMX_BOARD_TYPE_NIC10E_66:
+ 	case CVMX_BOARD_TYPE_UBNT_E100:
++	case CVMX_BOARD_TYPE_UBNT_E200:
+ 	case CVMX_BOARD_TYPE_CUST_DSR1000N:
+ 		return USB_CLOCK_TYPE_CRYSTAL_12;
+ 	case CVMX_BOARD_TYPE_NIC10E:
+diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+index 2298199..0567847 100644
+--- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
++++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+@@ -228,6 +228,7 @@ enum cvmx_board_types_enum {
+ 	 */
+ 	CVMX_BOARD_TYPE_CUST_PRIVATE_MIN = 20001,
+ 	CVMX_BOARD_TYPE_UBNT_E100 = 20002,
++	CVMX_BOARD_TYPE_UBNT_E200 = 20003,
+ 	CVMX_BOARD_TYPE_CUST_DSR1000N = 20006,
+ 	CVMX_BOARD_TYPE_CUST_PRIVATE_MAX = 30000,
+ 
+@@ -328,6 +329,7 @@ static inline const char *cvmx_board_type_to_string(enum
+ 		    /* Customer private range */
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MIN)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_UBNT_E100)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_UBNT_E200)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_DSR1000N)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MAX)
+ 	}
+-- 
+2.1.3

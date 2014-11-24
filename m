@@ -1,51 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 23:58:17 +0100 (CET)
-Received: from mail-qc0-f174.google.com ([209.85.216.174]:52411 "EHLO
-        mail-qc0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006920AbaKXW6Og0Qbp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 23:58:14 +0100
-Received: by mail-qc0-f174.google.com with SMTP id c9so7594889qcz.33
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 14:58:09 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 00:36:37 +0100 (CET)
+Received: from mail-pa0-f46.google.com ([209.85.220.46]:34741 "EHLO
+        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006785AbaKXXgeaDS1h (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 00:36:34 +0100
+Received: by mail-pa0-f46.google.com with SMTP id lj1so10512373pab.33
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 15:36:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        bh=A7CqLxbf5+mEeMcOomfFVMppuLQTPDrHv3e3eSHQft8=;
-        b=TmctrsM5qOyGp52mlel/U5WqKH4pMvDOlTYEYiN/6D6EvCJIusAFFqKo+0ScTGhAzr
-         l3YH+bxeh8wvQEm37q4iGzOeqXT/C6nRbw6VKsSmhuR6EzopgLn0WDGfHTsvzOs+lSTs
-         4iX7KNvn+qkhlaso1oVc88Z2pmtz0aoO+gDWUVBeEk56DbCftDcKiY9KbqbjCpsdPWXD
-         fkYlLUXo9bUNMwLiWZD/3dIg+vpjMi3US/KX13Jl6TB6HmtKW77YY0yBsQ9xTU6S8YEc
-         Z9XzidNadUyTx7PfDnFz0fUBAQWzB1e4g3XkZEl0C4W363OOE+MuasuUPdAQAfLpo+zU
-         J0uw==
-MIME-Version: 1.0
-X-Received: by 10.229.249.68 with SMTP id mj4mr32313091qcb.23.1416869888878;
- Mon, 24 Nov 2014 14:58:08 -0800 (PST)
-Received: by 10.96.89.33 with HTTP; Mon, 24 Nov 2014 14:58:08 -0800 (PST)
-Date:   Mon, 24 Nov 2014 14:58:08 -0800
-Message-ID: <CAADnVQ+8d0GC5OwQTdJKkmG8=vshUVqK1pPou1GCGa_iuU2v-g@mail.gmail.com>
-Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar types
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-x86_64@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <alexei.starovoitov@gmail.com>
+        h=from:to:cc:subject:date:message-id;
+        bh=QUVodX6YFyE4szYgP2azHmqzlkHCtFEbRf+X8Oi0Sfw=;
+        b=vrKxPIBIg+AWvcXupAu3CU5rtDZ5Y380qards0qqeWIKFMMlSvsWsUK7+4bf412dhy
+         tqGYUdPQpcc1GGyAIF9+vYpwwzS3NHQaQE6hK2/t19fQ6v1MGIT+VNQrgvtHYbHBw6wE
+         xtEhb5ieXfeC4PtADZmPj6gpDNoG3yvsai0NstUJF9p6IyXGeVbOf+rcxdQnZlJkPHhG
+         h+71WdfmJ4HKNC20gyxybT8pTuMGzUDCVpaoIEvj8kTRAGDmFBAJriIscXmbbtjt9x8a
+         6PuErxoh7i95EXR1B2QVHlsK8fTg15BLz6zFrG5O4sVMRTUBBkcmFm9IG4bJkPEWSNoS
+         IFrw==
+X-Received: by 10.68.189.67 with SMTP id gg3mr37450938pbc.158.1416872188106;
+        Mon, 24 Nov 2014 15:36:28 -0800 (PST)
+Received: from localhost (b32.net. [192.81.132.72])
+        by mx.google.com with ESMTPSA id aq1sm13382876pbd.29.2014.11.24.15.36.26
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 24 Nov 2014 15:36:27 -0800 (PST)
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org,
+        grant.likely@linaro.org
+Cc:     arnd@arndb.de, f.fainelli@gmail.com, linux-serial@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH V3 0/7] serial: Configure {big,native}-endian MMIO accesses via DT
+Date:   Mon, 24 Nov 2014 15:36:15 -0800
+Message-Id: <1416872182-6440-1-git-send-email-cernekee@gmail.com>
+X-Mailer: git-send-email 2.1.1
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44411
+X-archive-position: 44412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexei.starovoitov@gmail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,59 +52,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 24, 2014 at 12:34 PM, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
-> On Mon, Nov 24, 2014 at 12:04 PM, David Howells <dhowells@redhat.com> wrote:
->>
->> Reserve ACCESS_ONCE() for reading and add an ASSIGN_ONCE() or something like
->> that for writing?
->
-> I wouldn't mind that. We've had situations where reading and writing
-> isn't really similar - like alpha where reading a byte is atomic, but
-> writing one isn't.
->
-> Then we could also make it have the "get_user()/put_user()" kind of
-> semantics - .and then use the same "sizeopf()" tricks that we use for
-> get_user/put_user.
->
-> That would actually work around the gcc bug a completely different way:
->
->   #define ACCESS_ONCE(p) \
->       ({ typeof(*p) __val; __read_once_size(p, &__val, sizeof(__val)); __val; })
->
-> and then we can do things like this:
->
->   static __always_inline void __read_once_size(volatile void *p, void
-> *res, int size)
->   {
->        switch (size) {
->        case 1: *(u8 *)res = *(volatile u8 *)p; break;
->        case 2: *(u16 *)res = *(volatile u16 *)p; break;
->        case 4: *(u32 *)res = *(volatile u32 *)p; break;
-> #ifdef CONFIG_64BIT
->        case 8: *(u64 *)res = *(volatile u64 *)p; break;
-> #endif
->        }
->   }
->
-> and same for ASSIGN_ONCE(val, p).
->
-> That also hopefully avoids the whole "oops, gcc has a bug", because
-> the actual volatile access is always done using a scalar type, even if
-> the type of "__val" may in fact be a structure.
+My last submission attempted to work around serial driver coexistence
+problems on multiplatform kernels.  Since there are still questions
+surrounding the best way to solve that problem, this patch series
+will focus on the narrower topic of big endian MMIO support on serial.
 
-I've changed gcc pr58145-1.c reproducer to use
-__read_once_size() approach above, but it
-didn't help to workaround the bug.
-gcc 'sra' pass still lost 'volatile' modifier.
 
-modified reproducer:
-struct S { unsigned int data; };
-void bar(int val)
-{
-  struct S _s = { .data = val };
-  *(volatile struct S *) 0x880000UL = ACCESS_ONCE(&_s);
-}
-assembler code looks as expected, but
-internal gcc state after 'sra' pass is
-missing volatile...
+V2->V3:
+
+ - Document the new DT properties.
+
+ - Add libfdt-based wrapper, to complement the "struct device_node" based
+   version.
+
+ - Restructure early_init_dt_scan_chosen_serial() changes to use a
+   temporary variable, so it is easy to add more of_setup_earlycon()
+   properties later.
+
+ - Make of_serial and serial8250 honor the new "big-endian" property.
+
+
+This series applies cleanly to:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/glikely/linux.git devicetree/next-overlay
+
+but was tested on the mips-for-linux-next branch because my BE platform
+isn't supported in mainline yet.
+
+
+Kevin Cernekee (7):
+  of: Add helper function to check MMIO register endianness
+  of/fdt: Add endianness helper function for early init code
+  of: Document {little,big,native}-endian bindings
+  serial: core: Add big-endian iotype
+  serial: earlycon: Set UPIO_MEM32BE based on DT properties
+  serial: of_serial: Support big-endian register accesses
+  serial: 8250: Add support for big-endian MMIO accesses
+
+ .../devicetree/bindings/common-properties.txt      | 60 ++++++++++++++++++++++
+ drivers/of/base.c                                  | 23 +++++++++
+ drivers/of/fdt.c                                   | 26 +++++++++-
+ drivers/tty/serial/8250/8250_core.c                | 20 ++++++++
+ drivers/tty/serial/8250/8250_early.c               |  5 ++
+ drivers/tty/serial/earlycon.c                      |  4 +-
+ drivers/tty/serial/of_serial.c                     |  3 +-
+ drivers/tty/serial/serial_core.c                   |  2 +
+ include/linux/of.h                                 |  6 +++
+ include/linux/of_fdt.h                             |  2 +
+ include/linux/serial_core.h                        | 15 +++---
+ 11 files changed, 155 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/common-properties.txt
+
+-- 
+2.1.0

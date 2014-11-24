@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 03:41:16 +0100 (CET)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:40411 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006765AbaKXCk5LJluX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 03:40:57 +0100
-Received: by mail-pd0-f180.google.com with SMTP id p10so8823687pdj.25
-        for <multiple recipients>; Sun, 23 Nov 2014 18:40:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 03:41:33 +0100 (CET)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:51536 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006771AbaKXCk6rB0u1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 03:40:58 +0100
+Received: by mail-pa0-f51.google.com with SMTP id ey11so8668756pad.10
+        for <multiple recipients>; Sun, 23 Nov 2014 18:40:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Zt11MGmRIcaKo0zDscYobZLl9knemw4Zh6OYtnP50Dk=;
-        b=PPYBj97h4SEc7mIwfEVpOyPJQbvun8IEtG2jQbofvC8v9McqM+WELSUeVucET91u6P
-         TrZtwsc6dRQVxh/LDsB1tiZciB5+GopbxGe2FoUtfVE01exP+iPaW1J33HUW55xn0Fw1
-         Ph1PwujaBLiTcB8ZKgdEvexI8i92zUZR3KrVG/IogGJkfCpalCG9ZtlrfVldsnqmrdKu
-         3S/PmUrTIS1J8ybO3Bd5bGhuAEqJH18vKywq7d0Kh31K2wIKJYM0JE2+QFVvqv+pYDGM
-         fyguAS0WlJlhEVYEZPJJ9E6bGwbbXAMZFObGChoJJnAurz72qvvCMfD59FCskg1HVNBI
-         ZB2g==
-X-Received: by 10.66.66.135 with SMTP id f7mr29118568pat.67.1416796851059;
-        Sun, 23 Nov 2014 18:40:51 -0800 (PST)
+        bh=J0ps19CrX6OJS2+H6r/U+xecpt7o9AVIExY4F+KMNZM=;
+        b=SuclGVNJ8lUhDdLbD65aIAuNnsRo0VU2tbkTXEe2FEolottUzzijvZlAyYt8ba+kH9
+         DczmRTgXJa4vDj/IgMTc2eFiTlkXw2Vxit26WU29iFoFl4NQkCKCKCG+tODaIb+XtQW/
+         jZGi4ZCpASEvOisUP66dvE0WtiwuvmcwmgAGbTy362Wz0XHA9j72g6i0k+HkWawR7gPP
+         PepYVMVhgFFXDCMNRfisIC/BtSS8luLEGbWu5MXIXmcL9k3Dn76OuQU+3EPs56XMe0Xc
+         5SUolUAmOqNq+qwqCBEdEID04hKqAjbJTV4SkmfYkz/XC0BTTVj8XyljjzO5dVuQfkiS
+         FowA==
+X-Received: by 10.68.65.2 with SMTP id t2mr28691537pbs.39.1416796852791;
+        Sun, 23 Nov 2014 18:40:52 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id ml5sm10930673pab.32.2014.11.23.18.40.49
+        by mx.google.com with ESMTPSA id ml5sm10930673pab.32.2014.11.23.18.40.51
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sun, 23 Nov 2014 18:40:50 -0800 (PST)
+        Sun, 23 Nov 2014 18:40:52 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, jfraser@broadcom.com, dtor@chromium.org,
@@ -29,9 +29,9 @@ Cc:     f.fainelli@gmail.com, jfraser@broadcom.com, dtor@chromium.org,
         arnd@arndb.de, computersforpeace@gmail.com,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V3 01/11] irqchip: Update docs regarding irq_domain_add_tree()
-Date:   Sun, 23 Nov 2014 18:40:36 -0800
-Message-Id: <1416796846-28149-2-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V3 02/11] irqchip: brcmstb-l2: don't clear wakeable interrupts at init time
+Date:   Sun, 23 Nov 2014 18:40:37 -0800
+Message-Id: <1416796846-28149-3-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
 References: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
@@ -39,7 +39,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44354
+X-archive-position: 44355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,27 +56,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Several drivers now use this API, including the ARM GIC driver, so remove
-the outdated comment.
+From: Brian Norris <computersforpeace@gmail.com>
 
+Wakeable interrupts might be pending at boot/init time, because wakeup
+interrupts might have triggered a resume from S5. So don't clear such
+wakeups.
+
+This means that any driver which requests a wakeable interrupt bit
+should be prepared to handle an interrupt as soon as they call
+request_irq(). (This is technically already the correct development
+practice, but some drivers probably expect not to receive interrupts
+until they have performed some I/O.)
+
+Signed-off-by: Brian Norris <computersforpeace@gmail.com>
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- Documentation/IRQ-domain.txt | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/irqchip/irq-brcmstb-l2.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/IRQ-domain.txt b/Documentation/IRQ-domain.txt
-index 8a8b82c9ca53..0ccd7b7f6043 100644
---- a/Documentation/IRQ-domain.txt
-+++ b/Documentation/IRQ-domain.txt
-@@ -95,8 +95,7 @@ since it doesn't need to allocate a table as large as the largest
- hwirq number.  The disadvantage is that hwirq to IRQ number lookup is
- dependent on how many entries are in the table.
+diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
+index 4aa653a0ac72..4edd27c486c4 100644
+--- a/drivers/irqchip/irq-brcmstb-l2.c
++++ b/drivers/irqchip/irq-brcmstb-l2.c
+@@ -136,7 +136,11 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
  
--Very few drivers should need this mapping.  At the moment, powerpc
--iseries is the only user.
-+Very few drivers should need this mapping.
+ 	/* Disable all interrupts by default */
+ 	writel(0xffffffff, data->base + CPU_MASK_SET);
+-	writel(0xffffffff, data->base + CPU_CLEAR);
++
++	/* Wakeup interrupts may be retained from S5 (cold boot) */
++	data->can_wake = of_property_read_bool(np, "brcm,irq-can-wake");
++	if (!data->can_wake)
++		writel(0xffffffff, data->base + CPU_CLEAR);
  
- ==== No Map ===-
- irq_domain_add_nomap()
+ 	data->parent_irq = irq_of_parse_and_map(np, 0);
+ 	if (data->parent_irq < 0) {
+@@ -188,8 +192,7 @@ int __init brcmstb_l2_intc_of_init(struct device_node *np,
+ 	ct->chip.irq_suspend = brcmstb_l2_intc_suspend;
+ 	ct->chip.irq_resume = brcmstb_l2_intc_resume;
+ 
+-	if (of_property_read_bool(np, "brcm,irq-can-wake")) {
+-		data->can_wake = true;
++	if (data->can_wake) {
+ 		/* This IRQ chip can wake the system, set all child interrupts
+ 		 * in wake_enabled mask
+ 		 */
 -- 
 2.1.1

@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 14:31:39 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:39355 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006860AbaKXNbiME9lE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Nov 2014 14:31:38 +0100
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id sAODV6QH026747
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 24 Nov 2014 08:31:08 -0500
-Received: from warthog.procyon.org.uk ([10.3.112.3])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id sAODUxCt030761;
-        Mon, 24 Nov 2014 08:31:00 -0500
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-In-Reply-To: <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com>
-References: <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com> <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
-To:     Christian Borntraeger <borntraeger@de.ibm.com>
-Cc:     dhowells@redhat.com, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-x86_64@vger.kernel.org, linux-s390@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        paulmck@linux.vnet.ibm.com, mingo@kernel.org,
-        torvalds@linux-foundation.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>
-Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar types
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 14:34:59 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.130]:52050 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006860AbaKXNeyOSg79 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 14:34:54 +0100
+Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
+        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
+        id 0MBX6o-1XkcJK3Ajm-00AWJX; Mon, 24 Nov 2014 14:34:25 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     ralf@linux-mips.org, f.fainelli@gmail.com, jfraser@broadcom.com,
+        dtor@chromium.org, tglx@linutronix.de, jason@lakedaemon.net,
+        jogo@openwrt.org, computersforpeace@gmail.com,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 00/11] Multiplatform BMIPS kernel
+Date:   Mon, 24 Nov 2014 14:34:24 +0100
+Message-ID: <5143071.8HhdKL6dxp@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
+References: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <15470.1416835748.1@warthog.procyon.org.uk>
-From:   David Howells <dhowells@redhat.com>
-Date:   Mon, 24 Nov 2014 13:30:58 +0000
-Message-ID: <15567.1416835858@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <dhowells@redhat.com>
+X-Provags-ID: V02:K0:bAmtyKAPHSvSk6e9JeDlWq9vQiruY3myVnvFHGs5ZGI
+ hrJT4RAQxXyIUCfi4cUdBA7bJXqnRjNCV0ZCWIqXTsz30ZsOyX
+ aGItaXuvzfhOEEoA/w3qNCgdrXM7VltsI5wDKDtDJm85Pel3MI
+ MiUiqm3jldOzwz3l8Jff/bmALBjcNt+HgH6NfDKsjKLYMgAsbJ
+ uF8Jul8JyCyq922pIIJfd7WbyJXpGY8vyefUkQrER1/U+X6JQq
+ zwAxZum9LDwcYkzYmZo2zH14g3l39Y9pefiqqHHqKRySB5NlNv
+ L618BrEEiENrCAcDZl2DYFDeR4ZJBrXqymKG0j6+0FxDMa8tS8
+ bK1DqmRUfnkYCjNQMeVc=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44376
+X-archive-position: 44377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,17 +52,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Christian Borntraeger <borntraeger@de.ibm.com> wrote:
+On Sunday 23 November 2014 18:40:35 Kevin Cernekee wrote:
 
-> +#define get_scalar_volatile_pointer(x) ({ \
-> +	typeof(x) *__p = &(x); \
-> +	volatile typeof(x) *__vp = __p; \
-> +	(void)(long)*__p; __vp; })
-> +#define ACCESS_ONCE(x) (*get_scalar_volatile_pointer(x))
+> V2->V3:
+> 
+>  - Omit the BMIPS updates that have already been accepted into Ralf's tree.
+>    They are still needed, but not reposted.
+> 
+>  - Make USB endian swap options conditional on "if CPU_BIG_ENDIAN".
+> 
+>  - Remove board listing from Documentation/devicetree/bindings/mips/brcm/soc.txt
+> 
+>  - Remove legacy device autodetection and chip ID decoding.  Legacy
+>    boards/bootloaders will be supported by selecting a single DTB file
+>    to compile into the kernel.
+> 
+>  - Refactor quirks code to match against DT "compatible" strings, not chip IDs.
+> 
+>  - Fix CPU1 boot (missing DT node) on 6329.
+> 
+>  - Remove @0 / addressing properties on non-reg nodes.
+> 
+>  - Remove bogus "brcm,bmips" bus registration.
+> 
+>  - Move UBUS peripherals onto a "simple-bus" and set DMA ranges for this
+>    bus on bcm3384_zephyr.
+> 
+>  - Fix base addresses on 6328/6368 for "periph_intc@10000020".
+> 
+>  - Change the MIPS_L1_CACHE_SHIFT calculation so as to minimize the impact
+>    on other builds (like bcm63xx).
 
-Might this cause two loads from memory under some conditions?  Once for the
-fourth line and once for the fifth?
+Looks nice to me overall, with the new way of handling the dtb passing,
+this seems much more flexible, and I guess it can be turned into an
+actual multiplatform build if there is ever a desire to do that.
 
-(Apologies if this has already been discussed)
+> Re: dma-ranges
+> 
+> dma.c implements a minimal remapping scheme just for the current UBUS
+> peripherals.  The remapping is global, and it isn't the same mapping
+> needed for PCI(e).  A more comprehensive solution will be needed before
+> PCI support can be added.
+> 
+> On chips OTHER than 3384, remapping is only required on PCI (not UBUS or
+> "rdb").  Notably, BCM7445, an ARM platform currently supported upstream,
+> doesn't require dma-ranges for non-PCI devices.
+> 
+> I am hoping we can piggyback on top of the ARM dma-ranges code once it
+> is merged.  This will allow for eliminating my dma.c.
 
-David
+Sounds good.
+
+	Arnd

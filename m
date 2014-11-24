@@ -1,53 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 11:35:12 +0100 (CET)
-Received: from mail-ig0-f180.google.com ([209.85.213.180]:53533 "EHLO
-        mail-ig0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006625AbaKXKfLM3ljL convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Nov 2014 11:35:11 +0100
-Received: by mail-ig0-f180.google.com with SMTP id h15so2867390igd.13
-        for <multiple recipients>; Mon, 24 Nov 2014 02:35:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=2+q4wE4mH5ksBD+zYr4FvcKqVW9uAai67BvPXGq7klY=;
-        b=I1Jdu7tiOiRqedz37aev5nSnTBjlAeKX+Li0Nb7BVPQ33dRh3aXCBodVoM+N4s9ooE
-         3wt9PBgQhp6WZAs8EwB9Wk5t2mhLHBJW6s2t5U4zzASfYDvq85YV07iYryaGEj6dpk1h
-         LcFwnXz7gcThrS78qiWE2HZdg3neo7uvhrQFS4XB/oi/jFNjEJr8Nv3QT+yR4YIrAKKm
-         c0n68pjUHLI2CE+xdok8unxp+3GjRNIi5SaIScIGsT5fW5tPSwM5JqzwawuJHdhEbGho
-         JPIwHW9LfzuwmXJRNQD+CyS+iWTofdQ4KwRn8oxVjUGWuGyq8XKsks047itRGQ70UNuJ
-         eVZg==
-MIME-Version: 1.0
-X-Received: by 10.107.155.196 with SMTP id d187mr17593185ioe.14.1416825305331;
- Mon, 24 Nov 2014 02:35:05 -0800 (PST)
-Received: by 10.107.14.9 with HTTP; Mon, 24 Nov 2014 02:35:05 -0800 (PST)
-In-Reply-To: <alpine.DEB.2.02.1411240910100.16047@utopia.booyaka.com>
-References: <1416736241-12723-1-git-send-email-zajec5@gmail.com>
-        <1416778509-31502-1-git-send-email-zajec5@gmail.com>
-        <alpine.DEB.2.02.1411240910100.16047@utopia.booyaka.com>
-Date:   Mon, 24 Nov 2014 11:35:05 +0100
-Message-ID: <CACna6rxwwn5_e86278TAiOFZ3sVu_Exfm2x94vN2KiTJfsFujQ@mail.gmail.com>
-Subject: Re: [PATCH V3] MIPS: BCM47XX: Move NVRAM driver to the drivers/soc/
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Paul Walmsley <paul@pwsan.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kumar Gala <galak@codeaurora.org>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        Sandeep Nair <sandeep_n@ti.com>, linux-soc@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 14:03:45 +0100 (CET)
+Received: from e06smtp15.uk.ibm.com ([195.75.94.111]:51695 "EHLO
+        e06smtp15.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006818AbaKXNDnovY09 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 14:03:43 +0100
+Received: from /spool/local
+        by e06smtp15.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Mon, 24 Nov 2014 13:03:38 -0000
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp15.uk.ibm.com (192.168.101.145) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 24 Nov 2014 13:03:36 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id 99CAB219005F
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 13:03:08 +0000 (GMT)
+Received: from d06av10.portsmouth.uk.ibm.com (d06av10.portsmouth.uk.ibm.com [9.149.37.251])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id sAOD3Zek52887796
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 13:03:35 GMT
+Received: from d06av10.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av10.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id sAOD3YhN011253
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 06:03:35 -0700
+Received: from tuxmaker.boeblingen.de.ibm.com (tuxmaker.boeblingen.de.ibm.com [9.152.85.9])
+        by d06av10.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id sAOD3YNJ011249;
+        Mon, 24 Nov 2014 06:03:34 -0700
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 25651)
+        id A70D61224439; Mon, 24 Nov 2014 14:03:34 +0100 (CET)
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     "linux-arch@vger.kernel.org, linux-mips@linux-mips.org, linux-x86_64@vger.kernel.org, linux-s390"@vger.kernel.org,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        paulmck@linux.vnet.ibm.com, mingo@kernel.org,
+        torvalds@linux-foundation.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>
+Subject: [PATCH/RFC 2/7] mm: replace page table access via ACCESS_ONCE with barriers
+Date:   Mon, 24 Nov 2014 14:03:25 +0100
+Message-Id: <1416834210-61738-3-git-send-email-borntraeger@de.ibm.com>
+X-Mailer: git-send-email 1.9.3
+In-Reply-To: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
+References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 14112413-0021-0000-0000-000001E3D222
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44367
+X-archive-position: 44368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,95 +63,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 24 November 2014 at 11:02, Paul Walmsley <paul@pwsan.com> wrote:
-> Hi Rafał.
->
-> On Sun, 23 Nov 2014, Rafał Miłecki wrote:
->
->> After Broadcom switched from MIPS to ARM for their home routers we need
->> to have NVRAM driver in some common place (not arch/mips/).
->
-> So this is a driver for a chunk of NVRAM that's embedded in the SoC,
-> hanging off an I/O bus?
->
-> Is this actually some kind of RAM, or is it flash, or something else?
+ACCESS_ONCE does not work reliably on non-scalar types. For
+example gcc 4.6 and 4.7 might remove the volatile tag for such
+accesses during the SRA (scalar replacement of aggregates) step
+(https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58145)
 
-I think you missed my description (help section) in Kconfig file :) As
-it says, NVRAM is a special partition on flash.
+Let's change the code to access the page table elements with
+a barrier afterwards.
 
+Signed-off-by: Christian Borntraeger <borntraeger@de.ibm.com>
+---
+ mm/gup.c    | 4 +++-
+ mm/memory.c | 3 ++-
+ mm/rmap.c   | 3 ++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
->> We were thinking about putting it in bus directory, however there are
->> two possible buses for MIPS: drivers/ssb/ and drivers/bcma/. So this
->> won't fit there neither.
->> This is why I would like to move this driver to the drivers/soc/
->
-> Can't speak for anyone else, but I personally consider drivers/soc to be
-> primarily intended for so-called "integration" IP blocks.  Those are used
-> for SoC control functions.
->
-> So low-level NVRAM drivers would probably go somewhere else.  Here are
-> some likely possibilities, where it can live with others of its kind
-> (assuming it is something similar to RAM):
->
-> 1. the PC "CMOS memory" NVRAM driver appears to be under drivers/char, as
-> drivers/char/nvram.c.
->
-> 2. there's a generic SRAM driver, drivers/misc/sram.c
->
-> 3. while people have put some of the eFuse code under drivers/soc, in my
-> opinion, the low-level fuse access code should really go under
-> drivers/misc/fuse.
-
-I don't think NVRAM can be treated as a standard char device. Also, in
-my V1 I tried moving it to the drivers/misc/, but then drivers/soc/
-was suggested as a better place, see Arnd's reply:
-http://www.linux-mips.org/archives/linux-mips/2014-11/msg00238.html
-
-
-> Looking at arch/mips/bcm47xx/nvram.c: if the low-level NVRAM probe code
-> were moved elsewhere, the higher-level NVRAM "interpretation" functions
-> still remain: bcm47xx_nvram_getenv() and bcm47xx_nvram_gpio_pin().  Those
-> seem to be intended to parse device configuration data, yes?  And this
-> device configuration data is organized this way by platform software
-> convention -- there's no hardware requirement to store data this way in
-> the NVRAM, right?
-
-This bcm47xx_nvram driver has two ways of reading NVRAM content:
-1) Using a standard MTD API to access "nvram" partition. In such case
-flash driver is a low-level thing if you call it so.
-2) Using memory-mapped flash access window. In such case there isn't
-any extra low-level driver.
-
-The "nvram" partition is required by the bootloader (CFE). It contains
-some important info like CPU clock, RAM configuration, switch ports
-layout. Then it's used by system drivers (like Ethernet driver bgmac)
-to get info about some particular hardware parts (like PHY address,
-MAC, etc.).
-
-
-> So if the answer to the above two questions is "yes," meaning that this
-> NVRAM is used to store device probing data by software convention, then it
-> would seem to me that proposing some place like
-> drivers/devicedata/bcm47xx-nvram is a better bet (where "bcm47xx-nvram" is
-> just some kind of opaque token).  Looking at those two functions, it
-> doesn't seem like there's really anything MIPS or Broadcom or NVRAM or
-> even SoC-specific about key-value pair parsing and GPIO device data?  Or
-> am I missing something?
->
-> Actually, considering that bcm47xx_nvram_gpio_pin() isn't even used, can
-> we just drop it and save the hassle?  :-)
-
-We need this function to easily find GPIO responsible for "something".
-For example during switch initialization we need to reset it toggling
-GPIO. NVRAM contains info which GPIO should be toggled, e.g.:
-gpio4=robo_reset
-(robo means roboswitch)
-
-bcm47xx_nvram_gpio_pin is needed by out-of-tree "b53" driver that some
-tried to push upstream, but was rejected because of API.
-
-I'll also send a patch to USB host driver soon that will require
-bcm47xx_nvram_gpio_pin.
-
+diff --git a/mm/gup.c b/mm/gup.c
+index cd62c8c..e44af3c 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -917,7 +917,9 @@ static int gup_pud_range(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 
+ 	pudp = pud_offset(pgdp, addr);
+ 	do {
+-		pud_t pud = ACCESS_ONCE(*pudp);
++		pud_t pud = *pudp;
++
++		barrier();
+ 
+ 		next = pud_addr_end(addr, end);
+ 		if (pud_none(pud))
+diff --git a/mm/memory.c b/mm/memory.c
+index 3e50383..d982e35 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3202,7 +3202,8 @@ static int handle_pte_fault(struct mm_struct *mm,
+ 	pte_t entry;
+ 	spinlock_t *ptl;
+ 
+-	entry = ACCESS_ONCE(*pte);
++	entry = *pte;
++	barrier();
+ 	if (!pte_present(entry)) {
+ 		if (pte_none(entry)) {
+ 			if (vma->vm_ops) {
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 19886fb..1e54274 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -581,7 +581,8 @@ pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address)
+ 	 * without holding anon_vma lock for write.  So when looking for a
+ 	 * genuine pmde (in which to find pte), test present and !THP together.
+ 	 */
+-	pmde = ACCESS_ONCE(*pmd);
++	pmde = *pmd;
++	barrier();
+ 	if (!pmd_present(pmde) || pmd_trans_huge(pmde))
+ 		pmd = NULL;
+ out:
 -- 
-Rafał
+1.9.3

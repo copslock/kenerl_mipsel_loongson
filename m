@@ -1,49 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 21:34:42 +0100 (CET)
-Received: from mail-qa0-f48.google.com ([209.85.216.48]:59260 "EHLO
-        mail-qa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011494AbaKXUek7CpNs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 21:34:40 +0100
-Received: by mail-qa0-f48.google.com with SMTP id v10so7021243qac.35
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 12:34:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=w6LN+XmaFJXpl1vvPzY1IlIwSyzQYxommiOi4PctYWk=;
-        b=qeC624X++R3kRnnUm15INASWjXVSoSl7ghs5hEY80Rx89NB+02K2zPmM03ZP3u9l/B
-         Fsl+QCCT5bX7J6QrqCjM2orflPMJbZdHRcDkgojMlBUz9ic1yoxZtm96HrRL/dVEwm/N
-         Lw3kpkr6kBJogAmFm0I+0CjedI4AnMfeYPypD1lfTqWbWHbfV9eFq7V5q1Z7Jsavxroe
-         icxpEqLol9DR3C+NwIHEBpVje+hk8lqgITeAQh7YBCvd5Apz6AxBZVMcSKGVYeUORGNV
-         nW4scfsfeSO+GSiJ6wDkkpppz0Jc9Vw31HgAoMNpLe8r4epjaMxFPdYHYaQqn5DXXwvG
-         BmNA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=w6LN+XmaFJXpl1vvPzY1IlIwSyzQYxommiOi4PctYWk=;
-        b=cxGnK+TNbFvYgqJygf+Fr9T6PtIY0GKC+20dsglmCB8FW2EodQgjZADBQGJBPqMp3Q
-         F1d3qBtMhHiv2c2RnQg7cf6wFjwWp35v0ZWm9fWAev5Ejgyu9XJq6HDrPF5wsLw3TizD
-         1AZsLZJD7S9uvwvL42h+4pCQvgbdy5/0wOc4A=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 21:45:41 +0100 (CET)
+Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:55104 "EHLO
+        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006927AbaKXUpjxzfHT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 21:45:39 +0100
+Received: from /spool/local
+        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Mon, 24 Nov 2014 20:45:34 -0000
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 24 Nov 2014 20:45:32 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id 3A1442190045
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 20:45:04 +0000 (GMT)
+Received: from d06av04.portsmouth.uk.ibm.com (d06av04.portsmouth.uk.ibm.com [9.149.37.216])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id sAOKjVET8257930
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 20:45:31 GMT
+Received: from d06av04.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av04.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id sAOKjTNC006761
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 13:45:31 -0700
+Received: from oc1450873852.ibm.com (sig-9-79-90-165.de.ibm.com [9.79.90.165])
+        by d06av04.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id sAOKjSep006757;
+        Mon, 24 Nov 2014 13:45:28 -0700
+Message-ID: <547398E8.9070905@de.ibm.com>
+Date:   Mon, 24 Nov 2014 21:45:28 +0100
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-X-Received: by 10.224.53.132 with SMTP id m4mr31268277qag.85.1416861275230;
- Mon, 24 Nov 2014 12:34:35 -0800 (PST)
-Received: by 10.140.39.170 with HTTP; Mon, 24 Nov 2014 12:34:35 -0800 (PST)
-In-Reply-To: <12209.1416859494@warthog.procyon.org.uk>
-References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
-        <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com>
-        <15567.1416835858@warthog.procyon.org.uk>
-        <CAADnVQJQydX9OU_rem+BObR0eWc-jrrwirUYVKH9rnN=Z8LG6A@mail.gmail.com>
-        <CA+55aFxc72VsGTw4yFdeC1Sq65RUjYLKPD1ORnXB2d18WBMzvg@mail.gmail.com>
-        <547381D7.2070404@de.ibm.com>
-        <12209.1416859494@warthog.procyon.org.uk>
-Date:   Mon, 24 Nov 2014 12:34:35 -0800
-X-Google-Sender-Auth: VActRMrBy4irOfx9ZVi3KcHXGRQ
-Message-ID: <CA+55aFwHJyyo1y=-u=t798PFTeZN796hnwd9-XzEnL=JaqVmDw@mail.gmail.com>
-Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar types
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
+CC:     Linus Torvalds <torvalds@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
         linux-mips <linux-mips@linux-mips.org>,
@@ -54,16 +40,24 @@ Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
         Ingo Molnar <mingo@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus971@gmail.com>
+Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar
+ types
+References: <CAADnVQJ6eXGiasoQwyAzuejLncEHdy6MOf+m3AHnpjgn0h3+OQ@mail.gmail.com>
+In-Reply-To: <CAADnVQJ6eXGiasoQwyAzuejLncEHdy6MOf+m3AHnpjgn0h3+OQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 14112420-0005-0000-0000-00000234D8E8
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44402
+X-archive-position: 44403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,46 +70,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 24, 2014 at 12:04 PM, David Howells <dhowells@redhat.com> wrote:
->
-> Reserve ACCESS_ONCE() for reading and add an ASSIGN_ONCE() or something like
-> that for writing?
+Am 24.11.2014 um 21:29 schrieb Alexei Starovoitov:
+> On Mon, Nov 24, 2014 at 11:07 AM, Christian Borntraeger
+> <borntraeger@de.ibm.com> wrote:
+>>
+>> Anyone with a new propopal? ;-)                                        ^
+> 
+> one more proposal :)
+> #define __ACCESS_ONCE(x) ({ typeof(x) __var = 0; (volatile typeof(x) *)&(x); })
+> #define ACCESS_ONCE(x) (*__ACCESS_ONCE(x))
 
-I wouldn't mind that. We've had situations where reading and writing
-isn't really similar - like alpha where reading a byte is atomic, but
-writing one isn't.
+This seems to work. I only had to add an __always_unused to __var.
 
-Then we could also make it have the "get_user()/put_user()" kind of
-semantics - .and then use the same "sizeopf()" tricks that we use for
-get_user/put_user.
 
-That would actually work around the gcc bug a completely different way:
-
-  #define ACCESS_ONCE(p) \
-      ({ typeof(*p) __val; __read_once_size(p, &__val, sizeof(__val)); __val; })
-
-and then we can do things like this:
-
-  static __always_inline void __read_once_size(volatile void *p, void
-*res, int size)
-  {
-       switch (size) {
-       case 1: *(u8 *)res = *(volatile u8 *)p; break;
-       case 2: *(u16 *)res = *(volatile u16 *)p; break;
-       case 4: *(u32 *)res = *(volatile u32 *)p; break;
-#ifdef CONFIG_64BIT
-       case 8: *(u64 *)res = *(volatile u64 *)p; break;
-#endif
-       }
-  }
-
-and same for ASSIGN_ONCE(val, p).
-
-That also hopefully avoids the whole "oops, gcc has a bug", because
-the actual volatile access is always done using a scalar type, even if
-the type of "__val" may in fact be a structure.
-
-Christian, how painful would that be? Sorry to try to make you do a
-totally different approach..
-
-                  Linus
+> 
+> works as lvalue...
+> the basic idea is the same:
+> constant zero can be used to initialize any scalar
+> (including pointers), but unions and structs will fail to compile as:
+> "error: invalid initializer"
+> 
+> If I'm reading pr58145 gcc bug report correctly, it
+> miscompiles only structs, so we can let ACCESS_ONCE
+> to work on unions. Then the following will rejects structs only:
+> #define __ACCESS_ONCE(x) ({ (typeof(x))0; (volatile typeof(x) *)&(x); })
+> #define ACCESS_ONCE(x) (*__ACCESS_ONCE(x))
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-s390" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

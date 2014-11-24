@@ -1,65 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 20:29:47 +0100 (CET)
-Received: from mail-vc0-f180.google.com ([209.85.220.180]:58100 "EHLO
-        mail-vc0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006914AbaKXT3qbdUAa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 20:29:46 +0100
-Received: by mail-vc0-f180.google.com with SMTP id im6so4327231vcb.25
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 11:29:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=qw3T/y5Q9k0lxRnqEY2jSGesVJk6xD0aQyArmqjYRVE=;
-        b=EeIOxVzrKA62a9GBkhP26fINc3uuyhv8Nx6+PVoIMHddAQ+zS5KXy68S3UJzQZmmjo
-         ju/Io3EaWpNt2wXx5b4/0Ia941+ZFeWjTEW85/faz7WWw+caJWsFMrnzIsJIBpVt3Qul
-         uyzxHts5CBN3VI4PNmiUBGF5zNDM1G49A72BA1ZA784wvULcYRBTMmOQ2SRDI7P9Sx7Y
-         VItnzDHz0rtsZyM2qvy2LXLx2vl8PVsCs/ai3W6FG5NRt8yjJI2aB+qeFDpDMeJaeJmY
-         wHzNqp7FQp0DKSHtcxdqcnvvwAbzyrSrk8dFXXo79ftRGcBP9xLE45L8DlJXSJTqqMrj
-         PVQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=qw3T/y5Q9k0lxRnqEY2jSGesVJk6xD0aQyArmqjYRVE=;
-        b=g5o0Dv0qAtuFpBFjCMKL+qOkEQu36op/tolnqbwnU1wntJv8Z5/l/KSilIstk/nAHX
-         o3pvhz7mHb5c1YPxQMOYcycheSAqeDogx+hJwTJKnG1sEhx1/WHRo1M2jiyT48bddxoN
-         ujrx0+oVlK46/meY13TX1lwhAXVrAuTrNI5mH84ADO0qMFyLM3qncGaEfeXtODeApHBd
-         EtHjvuXp/A4XuCTQIyfFTPVym+2xhcjcYXrzVAYrArk1CpwXeoLOdxHRfWPKB/5jUUe+
-         wJXn6+MyvfYjjUwiYQE0de5D0U4c/QbL76tbTcAkf8elOKmkEdtjZdpZzHUHT6om9DGY
-         g3PA==
-X-Gm-Message-State: ALoCoQmzEbvGcnXdNHRCQX9iWERMeESxxstvQcwF4ujRZ9LE67Fz+FOu6Zb5YoSbWPywy6S4GGCp
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 20:42:17 +0100 (CET)
+Received: from e34.co.us.ibm.com ([32.97.110.152]:50317 "EHLO
+        e34.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006921AbaKXTmMwLqIU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 20:42:12 +0100
+Received: from /spool/local
+        by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Mon, 24 Nov 2014 12:42:06 -0700
+Received: from d03dlp01.boulder.ibm.com (9.17.202.177)
+        by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 24 Nov 2014 12:42:03 -0700
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+        by d03dlp01.boulder.ibm.com (Postfix) with ESMTP id 24B461FF0045
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 12:30:47 -0700 (MST)
+Received: from d03av06.boulder.ibm.com (d03av06.boulder.ibm.com [9.17.195.245])
+        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id sAOJg2qY35717134
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 12:42:02 -0700
+Received: from d03av06.boulder.ibm.com (loopback [127.0.0.1])
+        by d03av06.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id sAOJkuTx012850
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 12:46:57 -0700
+Received: from paulmck-ThinkPad-W500 ([9.50.23.142])
+        by d03av06.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id sAOJkuct012845;
+        Mon, 24 Nov 2014 12:46:56 -0700
+Received: by paulmck-ThinkPad-W500 (Postfix, from userid 1000)
+        id 7C22D381844; Mon, 24 Nov 2014 11:42:00 -0800 (PST)
+Date:   Mon, 24 Nov 2014 11:42:00 -0800
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-x86_64@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>
+Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar
+ types
+Message-ID: <20141124194200.GR5050@linux.vnet.ibm.com>
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
+ <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com>
+ <15567.1416835858@warthog.procyon.org.uk>
+ <CAADnVQJQydX9OU_rem+BObR0eWc-jrrwirUYVKH9rnN=Z8LG6A@mail.gmail.com>
+ <CA+55aFxc72VsGTw4yFdeC1Sq65RUjYLKPD1ORnXB2d18WBMzvg@mail.gmail.com>
+ <547381D7.2070404@de.ibm.com>
+ <CA+55aFy+dunTcdgB4-BXsYiLDk9pf8b_L74ky-dMixpbX3JQQA@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 10.221.38.66 with SMTP id th2mr12779744vcb.21.1416857380723;
- Mon, 24 Nov 2014 11:29:40 -0800 (PST)
-Received: by 10.52.168.200 with HTTP; Mon, 24 Nov 2014 11:29:40 -0800 (PST)
-In-Reply-To: <1416796846-28149-12-git-send-email-cernekee@gmail.com>
-References: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
-        <1416796846-28149-12-git-send-email-cernekee@gmail.com>
-Date:   Mon, 24 Nov 2014 11:29:40 -0800
-Message-ID: <CAL1qeaG+cmQDW3ceqq4kGgWBsf4RgfFpQ76OG0dg3SJy6nitgw@mail.gmail.com>
-Subject: Re: [PATCH V3 11/11] MIPS: Add multiplatform BMIPS target
-From:   Andrew Bresticker <abrestic@google.com>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>, jfraser@broadcom.com,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jonas Gorski <jogo@openwrt.org>, Arnd Bergmann <arnd@arndb.de>,
-        computersforpeace@gmail.com,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+55aFy+dunTcdgB4-BXsYiLDk9pf8b_L74ky-dMixpbX3JQQA@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 14112419-0017-0000-0000-0000068AFF52
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44394
+X-archive-position: 44395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@google.com
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,24 +79,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+On Mon, Nov 24, 2014 at 11:14:42AM -0800, Linus Torvalds wrote:
+> On Mon, Nov 24, 2014 at 11:07 AM, Christian Borntraeger
+> <borntraeger@de.ibm.com> wrote:
+> >
+> > Looks really nice, but does not work with ACCESS_ONCE is on the left-hand side:
+> 
+> Oh, I forgot about that. And that was indeed why I had done that whole
+> helper macro originally, with ACCESS_ONCE() itself just being the
+> dereference of the pointer.
 
-> +void __init plat_time_init(void)
-> +{
-> +       struct device_node *np;
-> +       u32 freq;
-> +
-> +       np = of_find_node_by_name(NULL, "cpus");
-> +       if (!np)
-> +               panic("missing 'cpus' DT node");
-> +       if (of_property_read_u32(np, "mips-hpt-frequency", &freq) < 0)
-> +               panic("missing 'mips-hpt-frequency' property");
-> +       of_node_put(np);
-> +
-> +       mips_hpt_frequency = freq;
-> +}
+OK, how about the following?
 
-Could you use common clock framework for this?  Isn't the HPT just a
-fixed factor of the CPU clock?  I'm planning on doing something very
-similar for ImgTec MIPS SoCs, so perhaps this could go in a common
-place, like the r4k clocksource driver?
+It complains if the variable is too large, for example, long long on
+32-bit systems or large structures.  It is OK loading from and storing
+to small structures as well, which I am having a hard time thinking of
+as a disadvantage.
+
+							Thanx, Paul
+
+------------------------------------------------------------------------
+
+#define get_scalar_volatile_pointer(x) ({ \
+	volatile typeof(x) *__vp = &(x); \
+	BUILD_BUG_ON(sizeof(*__vp) != sizeof(char) && \
+		     sizeof(*__vp) != sizeof(short) && \
+		     sizeof(*__vp) != sizeof(int) && \
+		     sizeof(*__vp) != sizeof(long)); \
+	__vp; })
+#define ACCESS_ONCE(x) (*get_scalar_volatile_pointer(x))

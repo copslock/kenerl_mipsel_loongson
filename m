@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 15:32:16 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:39504 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 15:39:59 +0100 (CET)
+Received: from bes.se.axis.com ([195.60.68.10]:59977 "EHLO bes.se.axis.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006676AbaKXOcOfDbRI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Nov 2014 15:32:14 +0100
+        id S27014431AbaKXOjwuq6Yh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 Nov 2014 15:39:52 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 4DC2E28BF45;
-        Mon, 24 Nov 2014 15:30:41 +0100 (CET)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f178.google.com (mail-qc0-f178.google.com [209.85.216.178])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id C60C728BF4C;
-        Mon, 24 Nov 2014 15:30:18 +0100 (CET)
-Received: by mail-qc0-f178.google.com with SMTP id b13so7790662qcw.9
-        for <multiple recipients>; Mon, 24 Nov 2014 06:31:47 -0800 (PST)
-X-Received: by 10.140.40.239 with SMTP id x102mr28713780qgx.69.1416839507716;
- Mon, 24 Nov 2014 06:31:47 -0800 (PST)
+        by bes.se.axis.com (Postfix) with ESMTP id 8A9F42E2C4;
+        Mon, 24 Nov 2014 15:39:47 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
+Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id p7hQPD7D4D2Z; Mon, 24 Nov 2014 15:39:39 +0100 (CET)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bes.se.axis.com (Postfix) with ESMTP id 2DC7C2E2B6;
+        Mon, 24 Nov 2014 15:39:39 +0100 (CET)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 16FF7766;
+        Mon, 24 Nov 2014 15:39:39 +0100 (CET)
+Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
+        by boulder.se.axis.com (Postfix) with ESMTP id 0B44B39E;
+        Mon, 24 Nov 2014 15:39:39 +0100 (CET)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by seth.se.axis.com (Postfix) with ESMTP id 094FE3E34F;
+        Mon, 24 Nov 2014 15:39:39 +0100 (CET)
+Received: from [10.94.49.1] (10.94.49.1) by xmail2.se.axis.com (10.0.5.74)
+ with Microsoft SMTP Server (TLS) id 8.3.342.0; Mon, 24 Nov 2014 15:39:38
+ +0100
+Message-ID: <5473432A.8090803@axis.com>
+Date:   Mon, 24 Nov 2014 15:39:38 +0100
+From:   Niklas Cassel <niklas.cassel@axis.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.2.0
 MIME-Version: 1.0
-Received: by 10.140.95.79 with HTTP; Mon, 24 Nov 2014 06:31:27 -0800 (PST)
-In-Reply-To: <1416796846-28149-7-git-send-email-cernekee@gmail.com>
-References: <1416796846-28149-1-git-send-email-cernekee@gmail.com> <1416796846-28149-7-git-send-email-cernekee@gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 24 Nov 2014 15:31:27 +0100
-Message-ID: <CAOiHx=ntm7AO5BU2Ge0JDC5nDgXSZwQDm05s5VTM8mLqYmCZRw@mail.gmail.com>
-Subject: Re: [PATCH V3 06/11] irqchip: bcm7120-l2: Change DT binding to allow
- non-contiguous IRQEN/IRQSTAT
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jon Fraser <jfraser@broadcom.com>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Arnd Bergmann <arnd@arndb.de>, computersforpeace@gmail.com,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+To:     "paul.burton@imgtec.com >> Paul Burton" <paul.burton@imgtec.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: MIPS_MT_SMP selects MIPS_GIC_IPI
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <niklas.cassel@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44380
+X-archive-position: 44381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: niklas.cassel@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,63 +56,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 24, 2014 at 3:40 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
-> To date, all supported controllers have had the IRQEN register at offset
-> 0x00 and the IRQSTAT register at 0x04.  So in DT we would typically see
-> something like:
->
->     reg = <0xf0406800 0x8>;
->
-> We still want to support this format, but we also need to support cases
-> where IRQEN and IRQSTAT aren't adjacent.  So, we will amend the driver to
-> accept an alternate format that looks like this:
->
->     reg = <0xf0406800 0x4 0xf0406804 0x4>;
->
-> i.e. if the first resource_size() == 4, assume that the first resource
-> points to IRQEN and that the next resource points to IRQSTAT.  If the
-> first resource_size() == 8, retain the current behavior.
->
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-
-Hmm ... the more I think about this, the less I like it.
-
-Using the amount and size of the reg-properties to infer a certain
-layout seems rather hackish and dirty to me. Maybe we should just use
-different compatible match ids for that? E.g. brcm,bm7120-l2-intc for
-the 32-bit en/stat pairs, and e.g. brcm,bcm6368-l2-intc for the 64-bit
-wide one. Or maybe make the bcm63xx one a separate driver and let it
-share code with the bcm7120-l2-intc driver.
-
-This would avoid having to specify a lot of regs (let's assume we also
-add support for affinity), and cause a lot of io(re)map calls - the
-bcm63268 one would currently look like:
-
-        reg = <0x1000002c 0x4 0x1000003c 0x4>, /* irq 0..31 -> mips irq 2 */
-               <0x10000028 0x4 0x10000038 0x4>,  /* irq 32..63 -> mips irq 2 */
-               <0x10000024 0x4 0x10000034 0x4>, /* irq 64 .. 95 -> mips irq 2 */
-               <0x10000020 0x4 0x10000030 0x4>, /* irq 96 .. 127 ->
-mips irq 2 */
-               <0x1000004c 0x4 0x1000005c 0x4>, /* irq 0.. 31 -> mips irq 3 */
-               <0x10000048 0x4 0x10000058 0x4>, /* irq 32 .. 63 -> mips irq 3 */
-               <0x10000044 0x4 0x10000054 0x4>, /* irq 64 ... 95 ->
-mips irq 3 */
-              <0x10000040 0x4 0x10000050 0x4>; /* irq 96 ... 127 ->
-mips irq 3 */
-
-where as with a different match id, we could rather allow something like
-
-        reg = <0x10000020 0x20>, /* irq 0..127 -> mips irq 2 */
-               <0x10000040 0x20>;   /* irq 0..127 -> mips irq 3 */
+Hello
 
 
-This would make the dts(i) files quite a bit more readable IMHO, and
-make it more likely that newer dts(i) files work with older kernels,
-e.g. where the mips irq3 routed registers were added - in the current
-style, the kernel would interpret these as additional irq banks. Not
-that I think this is expected/required to work, but it wouldn't hurt
-having at least a bit of backward compatibility for bisecting on a
-device that provides a newer dtb through the bootloader.
+Since commit
+
+0c2cb004b262987f7ab84d0c40b7bff74ed5d17b
+
+config MIPS_MT_SMP
+
+selects MIPS_GIC_IPI
 
 
-Jonas
+I was wondering, GIC was introduced with 1004K,
+surely not all MIPS_MT_SMP capable CPUs have a GIC?
+
+
+I'm sorry if I'm missing something obvious :)

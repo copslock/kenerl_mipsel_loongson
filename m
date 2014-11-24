@@ -1,44 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 20:13:12 +0100 (CET)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:40627 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006899AbaKXTNKwm7eK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 20:13:10 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id C85E519C1BD;
-        Mon, 24 Nov 2014 21:13:08 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id t4kBYEAxbGHK; Mon, 24 Nov 2014 21:13:02 +0200 (EET)
-Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id 209C75BC003;
-        Mon, 24 Nov 2014 21:13:02 +0200 (EET)
-Date:   Mon, 24 Nov 2014 21:13:01 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     James Cowgill <James.Cowgill@imgtec.com>,
-        "Herrmann, Andreas" <Andreas.Herrmann@caviumnetworks.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: Re: [PATCH] MIPS: octeon: Add support for the UBNT E200 board
-Message-ID: <20141124191301.GC6796@fuloong-minipc.musicnaut.iki.fi>
-References: <1416837096-52243-1-git-send-email-James.Cowgill@imgtec.com>
- <54736A06.9070206@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 20:14:49 +0100 (CET)
+Received: from mail-qg0-f42.google.com ([209.85.192.42]:45030 "EHLO
+        mail-qg0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006914AbaKXTOsZUtuP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 20:14:48 +0100
+Received: by mail-qg0-f42.google.com with SMTP id z107so5764197qgd.15
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 11:14:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=PfL3S7FCBWb0X9ZWPoDDmwbTNIbr4RzPrdJi/E/42nM=;
+        b=OJM7cxcVfSs8AN6AlaOgl2z0K2dBmDFTOLW9GL1GAo0npyZrY165/ZP0qbdj7LM3iE
+         +0YDbISCaSXSW266bK+SUdGGGAcifjF8qvvzQZ+bGLKTRkJA1jGiteMjjZqoozLRD4V4
+         zrkJfgcoyBloGbyRZ9uE/7Q1XYXwgu45F9LVhki7mtzg5Ao+Z0O3C93/d38v+vK08XZU
+         ctw0xK9IbBrl7aQqVR7gHF8w6wchESwxcyZUFDnnJuU3MKCI/FTdRCFV4jMCHGndXTHG
+         rbmgLTerEIRAkZ6xwGNiTue6l1BrlRROdRfDo0BSSYpykBwgs6cFoeDuEGgdshhZBaRZ
+         m+Ew==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=PfL3S7FCBWb0X9ZWPoDDmwbTNIbr4RzPrdJi/E/42nM=;
+        b=HFa1MqvDhQSQICLYzz6YiZmAzjSlIDUsDhssZXzh5guSeG8IhGDltbCsBtkwTx9uYv
+         o9wMo5eD+kH+i9yxZDaimy3Fh05pIt1QvPm3bweVqtwWgvlfkBi7M5TgpQhTw4ZR+Jm4
+         nGzLSxK+mfQW+byvZ3VQrJtkRAEHFwRinhLXs=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54736A06.9070206@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+X-Received: by 10.224.121.1 with SMTP id f1mr11183543qar.76.1416856482700;
+ Mon, 24 Nov 2014 11:14:42 -0800 (PST)
+Received: by 10.140.39.170 with HTTP; Mon, 24 Nov 2014 11:14:42 -0800 (PST)
+In-Reply-To: <547381D7.2070404@de.ibm.com>
+References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
+        <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com>
+        <15567.1416835858@warthog.procyon.org.uk>
+        <CAADnVQJQydX9OU_rem+BObR0eWc-jrrwirUYVKH9rnN=Z8LG6A@mail.gmail.com>
+        <CA+55aFxc72VsGTw4yFdeC1Sq65RUjYLKPD1ORnXB2d18WBMzvg@mail.gmail.com>
+        <547381D7.2070404@de.ibm.com>
+Date:   Mon, 24 Nov 2014 11:14:42 -0800
+X-Google-Sender-Auth: DN8e4-wiEsv9kGAdwGbeuGi5g-g
+Message-ID: <CA+55aFy+dunTcdgB4-BXsYiLDk9pf8b_L74ky-dMixpbX3JQQA@mail.gmail.com>
+Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar types
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+To:     Christian Borntraeger <borntraeger@de.ibm.com>
+Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-x86_64@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44392
+X-archive-position: 44393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,31 +75,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Mon, Nov 24, 2014 at 11:07 AM, Christian Borntraeger
+<borntraeger@de.ibm.com> wrote:
+>
+> Looks really nice, but does not work with ACCESS_ONCE is on the left-hand side:
 
-On Mon, Nov 24, 2014 at 09:25:26AM -0800, David Daney wrote:
-> On 11/24/2014 05:51 AM, James Cowgill wrote:
-> >From: Markos Chandras <markos.chandras@imgtec.com>
-> >
-> >Add support for the UBNT E200 board (EdgeRouter/EdgeRouter Pro 8 port).
-> >
-> >Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> >Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-> 
-> NACK.
-> 
-> As far as I know, these boards have a boot loader that supplies a correct
-> device tree, there should be no need to hack up the kernel like this.
-> 
-> As far as I know, Andreas is running a kernel.org kernel on these boards
-> without anything like this.
+Oh, I forgot about that. And that was indeed why I had done that whole
+helper macro originally, with ACCESS_ONCE() itself just being the
+dereference of the pointer.
 
-It gets called from Octeon Ethernet driver through cvmx_helper_link_get()
-frequently so the console gets spammed about unknown board, and probably
-also the link status is bogus as a result.
+Duh.
 
-I guess all those board helper functions should be factored
-out and Octeon Ethernet should use DT only. I think we need TODO
-file under staging/octeon.
-
-A.
+                  Linus

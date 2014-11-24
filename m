@@ -1,66 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 19:35:47 +0100 (CET)
-Received: from mail-qc0-f169.google.com ([209.85.216.169]:43509 "EHLO
-        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006897AbaKXSfp05X3v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 19:35:45 +0100
-Received: by mail-qc0-f169.google.com with SMTP id w7so7324067qcr.14
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 10:35:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=XkHlqmrVNc3CqnIva3OXotWfdWc583hE5vehtTEias8=;
-        b=FaFuCJSDK5HvHjbHflyqDdz01hP+3c74LgvT9TAAM1wrpAxFu2fAwBWelTDs1njXuu
-         dzG5VkfjlXFgGYzTTqJDcMb9KpJo1xeauudvcha9cTkGM+gbpEWlLGxKgKplKf1qphGT
-         dZz73ySFCsDhtCpWjGZQPAC4QQD+cCs/H9rop48aDEjwg5w+PINa8hFBCvA2bsGRhVIX
-         jEhL7kWsPUBB1MG9oa4vvIzoMEjvkwLaUje90Wvub7Zq5kHFfNFMYJLDSJZ50OV37ay3
-         GtuvOkPjARFqL7y7sP68dUDs3JBxas6lbXiYjT0fKv4p4OJl83gJfH6weU0e6WuZJthm
-         ACjg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=XkHlqmrVNc3CqnIva3OXotWfdWc583hE5vehtTEias8=;
-        b=FOGRMK//lqdZZrT7U15n9NeYBlTxaHEG21eCJkurAu/pPv52KPHAUwOY6MdJF8wJuA
-         A67gxyTQ7UMmnDxnAj0FzjIncsDP5J/zAhQYrB3LlvAbidNl1bX/eMf6oUYB2IfvO/Ny
-         d1U8YLVrml4IWo2/Sf689Nu0QEOsfXyE/RYv0=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2014 19:50:46 +0100 (CET)
+Received: from e06smtp16.uk.ibm.com ([195.75.94.112]:56494 "EHLO
+        e06smtp16.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006899AbaKXSuokYBb5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2014 19:50:44 +0100
+Received: from /spool/local
+        by e06smtp16.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Mon, 24 Nov 2014 18:50:39 -0000
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp16.uk.ibm.com (192.168.101.146) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 24 Nov 2014 18:50:36 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id E80472190045
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 18:50:08 +0000 (GMT)
+Received: from d06av01.portsmouth.uk.ibm.com (d06av01.portsmouth.uk.ibm.com [9.149.37.212])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id sAOIoaO88716694
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 18:50:36 GMT
+Received: from d06av01.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id sAOIoYIK009949
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 11:50:35 -0700
+Received: from oc1450873852.ibm.com (sig-9-79-90-165.de.ibm.com [9.79.90.165])
+        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id sAOIoYVP009932;
+        Mon, 24 Nov 2014 11:50:34 -0700
+Message-ID: <54737DF9.20009@de.ibm.com>
+Date:   Mon, 24 Nov 2014 19:50:33 +0100
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-X-Received: by 10.224.166.131 with SMTP id m3mr16729299qay.6.1416854139773;
- Mon, 24 Nov 2014 10:35:39 -0800 (PST)
-Received: by 10.140.39.170 with HTTP; Mon, 24 Nov 2014 10:35:39 -0800 (PST)
-In-Reply-To: <CAADnVQJQydX9OU_rem+BObR0eWc-jrrwirUYVKH9rnN=Z8LG6A@mail.gmail.com>
-References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com>
-        <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com>
-        <15567.1416835858@warthog.procyon.org.uk>
-        <CAADnVQJQydX9OU_rem+BObR0eWc-jrrwirUYVKH9rnN=Z8LG6A@mail.gmail.com>
-Date:   Mon, 24 Nov 2014 10:35:39 -0800
-X-Google-Sender-Auth: qVgC0ZKPuvXwFh44RghLObPilJg
-Message-ID: <CA+55aFxc72VsGTw4yFdeC1Sq65RUjYLKPD1ORnXB2d18WBMzvg@mail.gmail.com>
-Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar types
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-x86_64@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
+To:     linux-kernel@vger.kernel.org
+CC:     linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-x86_64@vger.kernel.org, linux-s390@vger.kernel.org,
         Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
+        paulmck@linux.vnet.ibm.com, mingo@kernel.org,
+        torvalds@linux-foundation.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus971@gmail.com>
+Subject: Re: [PATCH/RFC 6/7] arm64: Replace ACCESS_ONCE for spinlock code
+ with barriers
+References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com> <1416834210-61738-7-git-send-email-borntraeger@de.ibm.com>
+In-Reply-To: <1416834210-61738-7-git-send-email-borntraeger@de.ibm.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 14112418-0025-0000-0000-0000028DE730
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44388
+X-archive-position: 44389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,29 +65,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 24, 2014 at 10:02 AM, Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
->
-> If the goal is to catch non-scalar users, the following is shorter:
-> #define ACCESS_ONCE(x) (((typeof(x))0) + *(volatile typeof(x) *)&(x))
+Am 24.11.2014 um 14:03 schrieb Christian Borntraeger:
+> ACCESS_ONCE does not work reliably on non-scalar types. For
+> example gcc 4.6 and 4.7 might remove the volatile tag for such
+> accesses during the SRA (scalar replacement of aggregates) step
+> (https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58145)
+> 
+> Change the spinlock code to access the lock with a barrier.
+> 
+> Signed-off-by: Christian Borntraeger <borntraeger@de.ibm.com>
+> ---
+>  arch/arm64/include/asm/spinlock.h | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/spinlock.h b/arch/arm64/include/asm/spinlock.h
+> index c45b7b1..f72dc64 100644
+> --- a/arch/arm64/include/asm/spinlock.h
+> +++ b/arch/arm64/include/asm/spinlock.h
+> @@ -99,12 +99,15 @@ static inline int arch_spin_value_unlocked(arch_spinlock_t lock)
+> 
+>  static inline int arch_spin_is_locked(arch_spinlock_t *lock)
+>  {
+> -	return !arch_spin_value_unlocked(ACCESS_ONCE(*lock));
+> +	arch_spinlock_t lockval = *lock;
+> +	barrier();
+> +	return !arch_spin_value_unlocked(lockval);
+>  }
+> 
+>  static inline int arch_spin_is_contended(arch_spinlock_t *lock)
+>  {
+> -	arch_spinlock_t lockval = ACCESS_ONCE(*lock);
+> +	arch_spinlock_t lockval = *lock;
+> +	barrier();
+>  	return (lockval.next - lockval.owner) > 1;
+>  }
+>  #define arch_spin_is_contended	arch_spin_is_contended
+> 
+FWIW,
 
-Me likey. It probably works well in practice, although I think
+we could also make this with ACCESS_ONCE, but this requires to change the definition of arch_spinlock_t for arm64 to be a union. I am a bit reluctant to do these changes without being able to test. Let me know if this is preferred and if somebody else can test.
 
- - the "(typeof(x))0)" seems unnecessary and wrong. Why not just "0"?
-The typeof is not just longer, but it is incorrect for pointer types
-(you can add 0 to a pointer, but you cannot add two pointers together)
-
- - it does mean that the resulting type ends up being upgraded to
-"int", for the usual C type reasons.
-
-Note that the "upgraded to 'int'" is true with or without the
-"(typeof(x))0". If you add two 'char' values, the addition is still
-done in 'int'.
-
-Maybe you *meant* that typeof to fix the second problem, like so:
-
-  (typeof(x)) (0 + *(volatile typeof(x) *)&(x))
-
-Hmm? That casts the result of the addition, not the zero.
-
-             Linus
+Christian

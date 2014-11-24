@@ -1,36 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 10:16:19 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:29978 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013682AbaKYJQQEyeiq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 10:16:16 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 63AE9C07A2D1A
-        for <linux-mips@linux-mips.org>; Tue, 25 Nov 2014 09:16:08 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 25 Nov 2014 09:16:10 +0000
-Received: from mchandras-linux.le.imgtec.org (192.168.154.65) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 25 Nov 2014 09:16:09 +0000
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: asm: asmmacro: Drop unused 'reg' argument on MIPSR2
-Date:   Tue, 25 Nov 2014 09:16:06 +0000
-Message-ID: <1416906966-13944-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.1.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 10:19:52 +0100 (CET)
+Received: from e06smtp17.uk.ibm.com ([195.75.94.113]:48457 "EHLO
+        e06smtp17.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006986AbaKYJTvbASIy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 10:19:51 +0100
+Received: from /spool/local
+        by e06smtp17.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Tue, 25 Nov 2014 09:19:45 -0000
+Received: from d06dlp01.portsmouth.uk.ibm.com (9.149.20.13)
+        by e06smtp17.uk.ibm.com (192.168.101.147) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 24 Nov 2014 20:28:09 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by d06dlp01.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9EB7D17D8042
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 20:28:23 +0000 (GMT)
+Received: from d06av02.portsmouth.uk.ibm.com (d06av02.portsmouth.uk.ibm.com [9.149.37.228])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id sAOKS8jp66846830
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 20:28:08 GMT
+Received: from d06av02.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av02.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id sAOKS7pK030413
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 13:28:08 -0700
+Received: from oc1450873852.ibm.com (sig-9-79-90-165.de.ibm.com [9.79.90.165])
+        by d06av02.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id sAOKS65o030400;
+        Mon, 24 Nov 2014 13:28:06 -0700
+Message-ID: <547394D5.4020301@de.ibm.com>
+Date:   Mon, 24 Nov 2014 21:28:05 +0100
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.65]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     paulmck@linux.vnet.ibm.com,
+        Linus Torvalds <torvalds@linux-foundation.org>
+CC:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-x86_64@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>
+Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar
+ types
+References: <1416834210-61738-1-git-send-email-borntraeger@de.ibm.com> <1416834210-61738-8-git-send-email-borntraeger@de.ibm.com> <15567.1416835858@warthog.procyon.org.uk> <CAADnVQJQydX9OU_rem+BObR0eWc-jrrwirUYVKH9rnN=Z8LG6A@mail.gmail.com> <CA+55aFxc72VsGTw4yFdeC1Sq65RUjYLKPD1ORnXB2d18WBMzvg@mail.gmail.com> <547381D7.2070404@de.ibm.com> <CA+55aFy+dunTcdgB4-BXsYiLDk9pf8b_L74ky-dMixpbX3JQQA@mail.gmail.com> <20141124194200.GR5050@linux.vnet.ibm.com>
+In-Reply-To: <20141124194200.GR5050@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 14112420-0029-0000-0000-000001D66404
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44425
+X-archive-position: 44426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,32 +70,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The local_irq_{enable, disable} macros do not use the reg argument
-so drop it.
+Am 24.11.2014 um 20:42 schrieb Paul E. McKenney:
+> On Mon, Nov 24, 2014 at 11:14:42AM -0800, Linus Torvalds wrote:
+>> On Mon, Nov 24, 2014 at 11:07 AM, Christian Borntraeger
+>> <borntraeger@de.ibm.com> wrote:
+>>>
+>>> Looks really nice, but does not work with ACCESS_ONCE is on the left-hand side:
+>>
+>> Oh, I forgot about that. And that was indeed why I had done that whole
+>> helper macro originally, with ACCESS_ONCE() itself just being the
+>> dereference of the pointer.
+> 
+> OK, how about the following?
+> 
+> It complains if the variable is too large, for example, long long on
+> 32-bit systems or large structures.  It is OK loading from and storing
+> to small structures as well, which I am having a hard time thinking of
+> as a disadvantage.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/include/asm/asmmacro.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Well, the motivation for this series was that gcc  4.6 and 4.7 might ignore volatile for
+such a case, see the original thread and this data structure
 
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 6caf8766b80f..90f69c334a75 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -20,12 +20,12 @@
- #endif
- 
- #ifdef CONFIG_CPU_MIPSR2
--	.macro	local_irq_enable reg=t0
-+	.macro	local_irq_enable
- 	ei
- 	irq_enable_hazard
- 	.endm
- 
--	.macro	local_irq_disable reg=t0
-+	.macro	local_irq_disable
- 	di
- 	irq_disable_hazard
- 	.endm
--- 
-2.1.3
+union ipte_control {
+        unsigned long val;
+        struct {
+                unsigned long k  : 1;
+                unsigned long kh : 31;
+                unsigned long kg : 32;
+        };
+};
+
+> ------------------------------------------------------------------------
+> 
+> #define get_scalar_volatile_pointer(x) ({ \
+> 	volatile typeof(x) *__vp = &(x); \
+> 	BUILD_BUG_ON(sizeof(*__vp) != sizeof(char) && \
+> 		     sizeof(*__vp) != sizeof(short) && \
+> 		     sizeof(*__vp) != sizeof(int) && \
+> 		     sizeof(*__vp) != sizeof(long)); \
+> 	__vp; })
+> #define ACCESS_ONCE(x) (*get_scalar_volatile_pointer(x))
+> 
+
+This gives also several compiler errors when accessing u64 on a 32bit system. This is expected, but more widespread than expected - ouch.
+
+Christian

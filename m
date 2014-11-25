@@ -1,45 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 11:21:18 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.187]:52116 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006988AbaKYKVQaYbem (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 11:21:16 +0100
-Received: from klappe2.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
-        by mrelayeu.kundenserver.de (node=mreue004) with ESMTP (Nemesis)
-        id 0M3fC1-1YB9nh0Dlh-00rFG4; Tue, 25 Nov 2014 11:21:08 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Subject: Re: [PATCH V3 0/7] serial: Configure {big,native}-endian MMIO accesses via DT
-Date:   Tue, 25 Nov 2014 11:21:03 +0100
-User-Agent: KMail/1.12.2 (Linux/3.8.0-35-generic; KDE/4.3.2; x86_64; ; )
-Cc:     gregkh@linuxfoundation.org, jslaby@suse.cz, robh@kernel.org,
-        grant.likely@linaro.org, f.fainelli@gmail.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-References: <1416872182-6440-1-git-send-email-cernekee@gmail.com>
-In-Reply-To: <1416872182-6440-1-git-send-email-cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 11:24:00 +0100 (CET)
+Received: from mail-bn1on0085.outbound.protection.outlook.com ([157.56.110.85]:62622
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27006986AbaKYKX60BcvV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 25 Nov 2014 11:23:58 +0100
+Received: from alberich (2.164.211.155) by
+ BN1PR07MB391.namprd07.prod.outlook.com (10.141.58.147) with Microsoft SMTP
+ Server (TLS) id 15.1.16.15; Tue, 25 Nov 2014 10:23:50 +0000
+Date:   Tue, 25 Nov 2014 11:23:36 +0100
+From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+To:     Greg KH <greg@kroah.com>
+CC:     Alan Stern <stern@rowland.harvard.edu>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH 1/3] USB: host: Remove ehci-octeon and ohci-octeon drivers
+Message-ID: <20141125102336.GA15630@alberich>
+References: <1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+ <1415914590-31647-2-git-send-email-andreas.herrmann@caviumnetworks.com>
+ <20141125012134.GA5579@kroah.com>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201411251121.04160.arnd@arndb.de>
-X-Provags-ID: V02:K0:MgWV9I+XHiHiKEoKSmKDCEvO+dwF7Vjeni6oLh4G5pP
- 0P498BotTA+HD2pG1C5SDQ6hS/RkjR6w1Sk0oMFAdpsypKJ/4D
- BlHPEQsjy3nXL4czRsfJ343JEBHcQkJS+eHxOUT219wCYSdVOi
- Cn9lCV3EcGDYnZrxkWSSFpCr38dTXXf4ADjrLBBDCZQUnCzi7A
- qp2KP7fnSNgYPHGxbB9qVU3wZbl/XY+TKJJIZhMXRcV61v7zCl
- H7TQtvVUdOdMkasDqxw3mfzUX+vkPccvc4fwNBm5xblQhFtbjy
- w4zicaSofjTo2sMe1hiE80nbvGsHXjqzUGwLl2iW1Xw+zECswt
- MHyb9I6wdTqpSy77RrJ8c62N1jCH5ybB+P52benQt
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20141125012134.GA5579@kroah.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Originating-IP: [2.164.211.155]
+X-ClientProxiedBy: AM2PR03CA0020.eurprd03.prod.outlook.com (25.160.207.30) To
+ BN1PR07MB391.namprd07.prod.outlook.com (10.141.58.147)
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB391;
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB391;
+X-Forefront-PRVS: 040655413E
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(51704005)(189002)(199003)(24454002)(21056001)(40100003)(31966008)(15202345003)(19580395003)(19580405001)(33656002)(33716001)(15395725005)(101416001)(122386002)(46102003)(77156002)(4396001)(77096003)(50466002)(15975445006)(97736003)(62966003)(42186005)(83506001)(102836001)(110136001)(76176999)(54356999)(50986999)(107046002)(66066001)(120916001)(87976001)(92726001)(105586002)(64706001)(99396003)(106356001)(95666004)(86362001)(92566001)(23676002)(47776003)(20776003)(6606295002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN1PR07MB391;H:alberich;FPR:;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BN1PR07MB391;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44427
+X-archive-position: 44428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: andreas.herrmann@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,27 +57,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 25 November 2014, Kevin Cernekee wrote:
+On Mon, Nov 24, 2014 at 05:21:34PM -0800, Greg KH wrote:
+> On Thu, Nov 13, 2014 at 10:36:28PM +0100, Andreas Herrmann wrote:
+> > From: Alan Stern <stern@rowland.harvard.edu>
+> > 
+> > Remove special-purpose octeon drivers and instead use ehci-platform
+> > and ohci-platform as suggested with
+> > http://marc.info/?l=linux-mips&m=140139694721623&w=2
+> > 
+> > [andreas.herrmann:
+> > 	fixed compile error]
+> > 
+> > Cc: David Daney <david.daney@cavium.com>
+> > Cc: Alex Smith <alex.smith@imgtec.com>
+> > Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+> > Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+> > Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> > Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> > ---
+> >  arch/mips/cavium-octeon/octeon-platform.c |  274 ++++++++++++++++++++++++++++-
+> >  arch/mips/configs/cavium_octeon_defconfig |    3 +
+> >  drivers/usb/host/Kconfig                  |   18 +-
+> >  drivers/usb/host/Makefile                 |    1 -
+> >  drivers/usb/host/ehci-hcd.c               |    5 -
+> >  drivers/usb/host/ehci-octeon.c            |  188 --------------------
+> >  drivers/usb/host/octeon2-common.c         |  200 ---------------------
+> >  drivers/usb/host/ohci-hcd.c               |    5 -
+> >  drivers/usb/host/ohci-octeon.c            |  202 ---------------------
+> >  9 files changed, 285 insertions(+), 611 deletions(-)
+> >  delete mode 100644 drivers/usb/host/ehci-octeon.c
+> >  delete mode 100644 drivers/usb/host/octeon2-common.c
+> >  delete mode 100644 drivers/usb/host/ohci-octeon.c
 > 
-> My last submission attempted to work around serial driver coexistence
-> problems on multiplatform kernels.  Since there are still questions
-> surrounding the best way to solve that problem, this patch series
-> will focus on the narrower topic of big endian MMIO support on serial.
-> 
-> 
-> V2->V3:
-> 
->  - Document the new DT properties.
-> 
->  - Add libfdt-based wrapper, to complement the "struct device_node" based
->    version.
-> 
->  - Restructure early_init_dt_scan_chosen_serial() changes to use a
->    temporary variable, so it is easy to add more of_setup_earlycon()
->    properties later.
-> 
->  - Make of_serial and serial8250 honor the new "big-endian" property.
+> This doesn't apply to my usb-next or usb-testing branch of usb.git on
+> git.kernel.org, so I can't apply it :(
 
-Looks all good to me,
+Sorry, I need to rebase it (on usb-next).
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+
+Andreas

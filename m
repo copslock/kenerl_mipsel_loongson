@@ -1,63 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 01:01:03 +0100 (CET)
-Received: from mail-qc0-f169.google.com ([209.85.216.169]:59345 "EHLO
-        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012832AbaKYABB55rLD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 01:01:01 +0100
-Received: by mail-qc0-f169.google.com with SMTP id w7so7654907qcr.0
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 16:00:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=SDHHKBaB9s7hiapCAP0REKsv+tXq4rhNZ+OFBSkuJqA=;
-        b=xcHha1VaztaobrdC60FfsPJXqSiJuNhBn9M5SnjrGbArej6rvjDR/PopkpVYjl9lKd
-         HMw+VLVgUnxAl0G+3yIg9KBSZgdHvtmnifgUIYRNJcOhvIUFd6g7vwyO2T1qk/4O9lDM
-         NwNTSEPnNFG+PKOZmfMhAusg7dgkaDVa2arE5ScbCKYp6jDkxA231hu4sSU4pui8jUsY
-         zpzK5BymKOqggq7n5sIEBqbAzxe3k8+SuMCF2FoDY1jVORYDK8rffTHQqL8E9UrkY/x4
-         ZECrdzPrUfdGG4mICqmgLPFCw9kt2CtdcvbIwSaTXaP4aiOZEd2RzQvYEp49QoATe0+d
-         qXgw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=SDHHKBaB9s7hiapCAP0REKsv+tXq4rhNZ+OFBSkuJqA=;
-        b=NyQc47I7VKlZi4aoKlFiPrJrfb1EPY9MttY4Cq8/VRuAYIJMABCH41P7eoGnDUxKZL
-         TIrzGn5z4cDSm/wrMAZry1BrfP95Xu43q/ZeDwBYPAb4qBA0aueql3wO9tURPxg9y5N6
-         QFVcSGvvXJRmmChNwPd12PKnVnqNNN9GN8TOg=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 02:21:38 +0100 (CET)
+Received: from out4-smtp.messagingengine.com ([66.111.4.28]:47287 "EHLO
+        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006750AbaKYBVgovvI9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 02:21:36 +0100
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 9043220AF0
+        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 20:21:35 -0500 (EST)
+Received: from frontend1 ([10.202.2.160])
+  by compute5.internal (MEProxy); Mon, 24 Nov 2014 20:21:35 -0500
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=x-sasl-enc:date:from:to:cc:subject
+        :message-id:references:mime-version:content-type:in-reply-to; s=
+        smtpout; bh=TXaaO5M0lOcWIjCWVInFhDMQgKc=; b=qNFp9wDrAwdg818DQ2vB
+        LKOoCqptep5tZpcprgxxvLY/Pe+NuZTKaox4BDxudtKs9qAOy7Y7sqlDE0zfGVi9
+        8FoZyaE4G1auJTCKSr8JjHka4HkkL6Ef8pBsPKkzAmhQSYYMNxK30ziQXVHLMUKt
+        OPeTy4k6UvNrX4+OOkfvZb4=
+X-Sasl-enc: kaNPNkF4eyqQyRqtIkWCkwUBXsmHXz7VMt5FlWUbF+Td 1416878495
+Received: from localhost (unknown [24.22.230.10])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 2CB24C0027F;
+        Mon, 24 Nov 2014 20:21:35 -0500 (EST)
+Date:   Mon, 24 Nov 2014 17:21:34 -0800
+From:   Greg KH <greg@kroah.com>
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH 1/3] USB: host: Remove ehci-octeon and ohci-octeon drivers
+Message-ID: <20141125012134.GA5579@kroah.com>
+References: <1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com>
+ <1415914590-31647-2-git-send-email-andreas.herrmann@caviumnetworks.com>
 MIME-Version: 1.0
-X-Received: by 10.140.51.99 with SMTP id t90mr32482997qga.72.1416873655450;
- Mon, 24 Nov 2014 16:00:55 -0800 (PST)
-Received: by 10.140.39.170 with HTTP; Mon, 24 Nov 2014 16:00:55 -0800 (PST)
-In-Reply-To: <CAADnVQ+8d0GC5OwQTdJKkmG8=vshUVqK1pPou1GCGa_iuU2v-g@mail.gmail.com>
-References: <CAADnVQ+8d0GC5OwQTdJKkmG8=vshUVqK1pPou1GCGa_iuU2v-g@mail.gmail.com>
-Date:   Mon, 24 Nov 2014 16:00:55 -0800
-X-Google-Sender-Auth: cuY7Gag83mM6hOzeo1qXLwUmmC0
-Message-ID: <CA+55aFyktcMZnQHqoaCePgJVXmbi=9pTS_jz7j+j=QDuSoSFoA@mail.gmail.com>
-Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar types
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-x86_64@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus971@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1415914590-31647-2-git-send-email-andreas.herrmann@caviumnetworks.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44421
+X-archive-position: 44422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: greg@kroah.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,44 +57,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 24, 2014 at 2:58 PM, Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
->
-> I've changed gcc pr58145-1.c reproducer to use
-> __read_once_size() approach above
+On Thu, Nov 13, 2014 at 10:36:28PM +0100, Andreas Herrmann wrote:
+> From: Alan Stern <stern@rowland.harvard.edu>
+> 
+> Remove special-purpose octeon drivers and instead use ehci-platform
+> and ohci-platform as suggested with
+> http://marc.info/?l=linux-mips&m=140139694721623&w=2
+> 
+> [andreas.herrmann:
+> 	fixed compile error]
+> 
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: Alex Smith <alex.smith@imgtec.com>
+> Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> ---
+>  arch/mips/cavium-octeon/octeon-platform.c |  274 ++++++++++++++++++++++++++++-
+>  arch/mips/configs/cavium_octeon_defconfig |    3 +
+>  drivers/usb/host/Kconfig                  |   18 +-
+>  drivers/usb/host/Makefile                 |    1 -
+>  drivers/usb/host/ehci-hcd.c               |    5 -
+>  drivers/usb/host/ehci-octeon.c            |  188 --------------------
+>  drivers/usb/host/octeon2-common.c         |  200 ---------------------
+>  drivers/usb/host/ohci-hcd.c               |    5 -
+>  drivers/usb/host/ohci-octeon.c            |  202 ---------------------
+>  9 files changed, 285 insertions(+), 611 deletions(-)
+>  delete mode 100644 drivers/usb/host/ehci-octeon.c
+>  delete mode 100644 drivers/usb/host/octeon2-common.c
+>  delete mode 100644 drivers/usb/host/ohci-octeon.c
 
-I don't think you did.
-
-> modified reproducer:
-> struct S { unsigned int data; };
-> void bar(int val)
-> {
->   struct S _s = { .data = val };
->   *(volatile struct S *) 0x880000UL = ACCESS_ONCE(&_s);
-> }
-
-My approach never had "volatile struct S *". The only volatile
-pointers were the actual byte/word/etc pointers, and those generated
-temporary values that were then assigned to the final type through a
-cast.
-
-Also, note that the kernel is compiled without strict aliasing, so the
-casting to 'void *' and various smaller types is "safe" - even if the
-C standard doesn't like it.
-
-With strict aliasing, you'd need to make the read_once() macro not
-just pass in the size, there would have to be some kind of union of
-the type, and that would effectively mean that you can't use an inline
-function, you'd have to do it in a big macro (because the type would
-be per-site).
-
-So with strict aliasing, you'd have to make it something like
-
-        #define ACCESS_ONCE(p) \
-      ({ union { typeof(*p) __val; char __array[sizeof(*p)]} __u;
-__read_once_size(p, __u.__array, sizeof(__u)); __u.__val; })
-
-Pretty? No. But then, the standard C aliasing rules are so broken that
-"pretty" doesn't really come into play..
-
-                  Linus
+This doesn't apply to my usb-next or usb-testing branch of usb.git on
+git.kernel.org, so I can't apply it :(

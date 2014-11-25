@@ -1,51 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 03:28:10 +0100 (CET)
-Received: from mail-qc0-f173.google.com ([209.85.216.173]:50995 "EHLO
-        mail-qc0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006937AbaKYC2JHv320 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 03:28:09 +0100
-Received: by mail-qc0-f173.google.com with SMTP id i17so7882737qcy.18
-        for <linux-mips@linux-mips.org>; Mon, 24 Nov 2014 18:28:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        bh=WTNdLJSmkeir6COUvF3xrqnVQyzUy40kDX+f0ZmLQjg=;
-        b=WKX8ph1Ef+dB4b5rG8wHCUrQokjrzCAwPVU4UCeCFWCItf7usrpG3uDS7fpW23NNQa
-         tEpSMwhgetfqJ4ML5EUCE6p1gKUj837BF2HSZdMUzKk7thUbgftUCe013DPyb9N8WuEQ
-         GetZ4P+nUBVthL91718ncXsGj95D1hAGEoi4oY1VaCMsukEj4JbpsDDCd2m/1rw6vAXJ
-         U2lATVkps+yXh/BfKHDOTVa48dsk/Cpr5xQezOnZSS4zNdipiXH4ufKOXsnpm7maXOLX
-         F/w9gesJ/0D2LeG/lL13e9xndBFWmaKm4SKG7UiURYZKDT3Io8Dt+ewO/Qqt7Y/zksuB
-         PlGA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2014 10:16:02 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:41921 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006814AbaKYJQBJVri3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2014 10:16:01 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 33160D17EF8BC
+        for <linux-mips@linux-mips.org>; Tue, 25 Nov 2014 09:15:53 +0000 (GMT)
+Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 25 Nov
+ 2014 09:15:55 +0000
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ klmail02.kl.imgtec.org (10.40.60.222) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 25 Nov 2014 09:15:54 +0000
+Received: from mchandras-linux.le.imgtec.org (192.168.154.65) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Tue, 25 Nov 2014 09:15:54 +0000
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: Kconfig: Disable SMP/CPS for 64-bit
+Date:   Tue, 25 Nov 2014 09:15:45 +0000
+Message-ID: <1416906945-13888-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.1.3
 MIME-Version: 1.0
-X-Received: by 10.229.212.66 with SMTP id gr2mr33236724qcb.8.1416882483495;
- Mon, 24 Nov 2014 18:28:03 -0800 (PST)
-Received: by 10.96.89.33 with HTTP; Mon, 24 Nov 2014 18:28:03 -0800 (PST)
-Date:   Mon, 24 Nov 2014 18:28:03 -0800
-Message-ID: <CAADnVQJc-RO9EdBY2-Q0mONSLYxsryD3cP8+LPXTaKbjbqtvtg@mail.gmail.com>
-Subject: Re: [PATCH/RFC 7/7] kernel: Force ACCESS_ONCE to work only on scalar types
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-x86_64@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <alexei.starovoitov@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.65]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44423
+X-archive-position: 44424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexei.starovoitov@gmail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,93 +47,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 24, 2014 at 4:00 PM, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
-> On Mon, Nov 24, 2014 at 2:58 PM, Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
->>
->> I've changed gcc pr58145-1.c reproducer to use
->> __read_once_size() approach above
->
-> I don't think you did.
->
->> modified reproducer:
->> struct S { unsigned int data; };
->> void bar(int val)
->> {
->>   struct S _s = { .data = val };
->>   *(volatile struct S *) 0x880000UL = ACCESS_ONCE(&_s);
->> }
->
-> My approach never had "volatile struct S *". The only volatile
-> pointers were the actual byte/word/etc pointers, and those generated
+A 64-bit build for Malta produces far too many build problems
+when SMP/CPS is selected. Moreover, there is currently no 64-bit
+product with SMP/CPS so we disable SMP/CPS when building for
+64-bit until it is properly supported.
 
-you're right. In my invalid snippet above the ACCESS_ONCE
-to struct on stack gets optimized away and only 'volatile struct *'
-in left hand side is triggering the bug.
+Cc: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Have tried the following which blends your proposal
-with original code from Christian:
-/* bad
-#define ACCESS_ONCE(x) *((volatile typeof(x) *)&(x))
-*/
-
-/* good */
-#define ACCESS_ONCE(p) \
-      ({ typeof(*p) __val; __read_once_size(p, &__val, sizeof(__val)); __val; })
-
-static __always_inline void __read_once_size(volatile void *p, void
-*res, int size)
-{
-     switch (size) {
-     case 1: *(u8 *)res = *(volatile u8 *)p; break;
-     case 2: *(u16 *)res = *(volatile u16 *)p; break;
-     case 4: *(u32 *)res = *(volatile u32 *)p; break;
-     case 8: *(u64 *)res = *(volatile u64 *)p; break;
-     }
-}
-
-union ipte_control {
-        unsigned long val;
-        struct {
-                unsigned long k  : 1;
-                unsigned long kh : 31;
-                unsigned long kg : 32;
-        };
-};
-
-struct kvm_vcpu {
-        union ipte_control ic;
-};
-
-void ipte_unlock_siif(struct kvm_vcpu *vcpu)
-{
-        union ipte_control old, new, *ic;
-
-        ic = &vcpu->ic;
-        do {
-                new = old = ACCESS_ONCE(ic);
-                new.kh--;
-                if (!new.kh)
-                        new.k = 0;
-        } while (cmpxchg(&ic->val, old.val, new.val) != old.val);
-}
-
-generated code looks correct with and without strict-aliasing
-and volatile marking is preserved properly.
-(to check for volatile marks add -fdump-tree-optimized
- and look for {v} in *.optimized)
-
-> Pretty? No. But then, the standard C aliasing rules are so broken that
-> "pretty" doesn't really come into play..
-
-Agree. I don't see any warnings or code generation issues with and
-without strict-aliasing with your original __read_once_size(), so no need
-to play union tricks. Initially I was worried that extra always_inline
-function will make generated code worse in critical paths where
-ACCESS_ONCE is used, but after looking close enough, it seems
-all should be fine.
-
-Note, with unmodified ACCESS_ONCE all architectures (even x64)
-are missing volatile markings with gcc 4.6.3, 4.7.2 for Christian's
-use case.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d093889332c4..34d3da926589 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2077,7 +2077,7 @@ config MIPS_CMP
+ 
+ config MIPS_CPS
+ 	bool "MIPS Coherent Processing System support"
+-	depends on SYS_SUPPORTS_MIPS_CPS
++	depends on SYS_SUPPORTS_MIPS_CPS && !64BIT
+ 	select MIPS_CM
+ 	select MIPS_CPC
+ 	select MIPS_CPS_PM if HOTPLUG_CPU
+-- 
+2.1.3

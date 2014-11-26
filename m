@@ -1,54 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 21:13:48 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:48408 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007226AbaKZUNqpBB5x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Nov 2014 21:13:46 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id A84822809D9;
-        Wed, 26 Nov 2014 21:12:12 +0100 (CET)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f180.google.com (mail-qc0-f180.google.com [209.85.216.180])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id E6BB628BDF5;
-        Wed, 26 Nov 2014 21:12:03 +0100 (CET)
-Received: by mail-qc0-f180.google.com with SMTP id i8so2596696qcq.39
-        for <multiple recipients>; Wed, 26 Nov 2014 12:13:35 -0800 (PST)
-X-Received: by 10.224.165.148 with SMTP id i20mr18056827qay.67.1417032815300;
- Wed, 26 Nov 2014 12:13:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 21:46:16 +0100 (CET)
+Received: from mail-qc0-f179.google.com ([209.85.216.179]:53584 "EHLO
+        mail-qc0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007090AbaKZUqO0HHGp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 21:46:14 +0100
+Received: by mail-qc0-f179.google.com with SMTP id c9so2630681qcz.38
+        for <multiple recipients>; Wed, 26 Nov 2014 12:46:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=QfZxjreBmVpCiWZ5UOXtOOg6A+YcIM2wEoSqQNQPV9o=;
+        b=zdnpQmYbsDBT3Ti/eZQDBPsNFJTbu/lu6x+atV4Z20WM1O8/DRVIEW1JLrwQcbWy3J
+         yX28l1A92DgNcYQxs3HWtHhkg4ua8rovOrkQhaD/rPlQzPWvG9Bo2eh9gep8Iz4XMJ0P
+         EHreFiOw5NhgXed2M6LGDGPD/E2Bt1qmZmIcgrfZAcXHqOVq08veG8/wV2S7nua4x6e6
+         w7PSerU1zfEInVHAFNHazKy/QEXjSSd6VQIa99OIV3rgk/nsJlI/BtZxV6z6fvrxlaxL
+         mJ2Y3nk1eh+/2R0bANyTRTl4mpDz+cJlL0nBVzqQ90+g+U80mwnBhe2tgtDRg0bA3r1B
+         IzMw==
+X-Received: by 10.229.174.70 with SMTP id s6mr47611020qcz.7.1417034767685;
+ Wed, 26 Nov 2014 12:46:07 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.140.95.79 with HTTP; Wed, 26 Nov 2014 12:13:15 -0800 (PST)
-In-Reply-To: <CAJiQ=7DXQX8h-1+K4-NSWjFqmr8nDCU62KzcyKKXiuvLUSHpEg@mail.gmail.com>
+Received: by 10.140.89.113 with HTTP; Wed, 26 Nov 2014 12:45:47 -0800 (PST)
+In-Reply-To: <3146555.WCj2bhBSnP@wuerfel>
 References: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
- <1416796846-28149-7-git-send-email-cernekee@gmail.com> <CAOiHx=ntm7AO5BU2Ge0JDC5nDgXSZwQDm05s5VTM8mLqYmCZRw@mail.gmail.com>
- <CAJiQ=7CvpFWxDY1uad2bZz8MBG0Mvg2Jx8WBp6gHi-kD4TDvXA@mail.gmail.com>
- <CAOiHx=m+At9u=eepphG89kcusOKbBi1qqxT8k-Qyx-OMdMAJKw@mail.gmail.com>
- <CAOiHx=k_4r=jtQdi0ABvfKAw0JtHY9Z46pVUfetDmKz4d0XoFQ@mail.gmail.com> <CAJiQ=7DXQX8h-1+K4-NSWjFqmr8nDCU62KzcyKKXiuvLUSHpEg@mail.gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Wed, 26 Nov 2014 21:13:15 +0100
-Message-ID: <CAOiHx=mRonqUR_u8msKiSJVLoJMJT8CXhJeo6oQMFF+AxRE=6Q@mail.gmail.com>
-Subject: Re: [PATCH V3 06/11] irqchip: bcm7120-l2: Change DT binding to allow
- non-contiguous IRQEN/IRQSTAT
-To:     Kevin Cernekee <cernekee@gmail.com>
+ <11772640.IZcxoRkMEM@wuerfel> <CAJiQ=7BXW5iWm7t_62dpm8fDppG0JCiW+okVKhPYUKSWGQhd_Q@mail.gmail.com>
+ <3146555.WCj2bhBSnP@wuerfel>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Wed, 26 Nov 2014 12:45:47 -0800
+Message-ID: <CAJiQ=7DwhSySAa19OxfUDkvT4DLWaZ3uhPU2QJzQ6Gc7YCvDgg@mail.gmail.com>
+Subject: Re: [PATCH V3 11/11] MIPS: Add multiplatform BMIPS target
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Jon Fraser <jfraser@broadcom.com>,
         Dmitry Torokhov <dtor@chromium.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Arnd Bergmann <arnd@arndb.de>,
+        Jonas Gorski <jogo@openwrt.org>,
         Brian Norris <computersforpeace@gmail.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44476
+X-archive-position: 44477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,90 +62,132 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 26, 2014 at 7:54 PM, Kevin Cernekee <cernekee@gmail.com> wrote:
-> On Wed, Nov 26, 2014 at 2:25 AM, Jonas Gorski <jogo@openwrt.org> wrote:
->> On Wed, Nov 26, 2014 at 10:45 AM, Jonas Gorski <jogo@openwrt.org> wrote:
->>> As far as I can see, we have three distinct layouts here:
->>>
->>> a) An arbitrary number of 32-bit Mask/Status-pairs (3384/6838). No per
->>> thread support (well, not sure about 60333).
->>>
->>> b) An arbitrary length (32 to 128 bit) Mask register, followed by a
->>> same length Status register (63xx except 63381, 6818, 6828); repeated
->>> for each thread.
->>>
->>> c) A single arbitrary length (currently only 128 bit) Status register,
->>> followed by per thread same length Mask registers (63381).
->>>
->>> On a first glance this could translate to three distinct
->>> drivers/compatible properties, where each expects different reg = <>;
->>> contents.
->>>
->>> For a), it should be enough to expand the current 7120-l2 driver to
->>> accept/use more than one 0x8 length register, which should simplify
->>> the register map setup.
->>>
->>> For b) we could add a a new compatible name (maybe bcm6358-l2, because
->>> that was AFAICT the first one with blocks) that will use the 8 to 32
->>> byte length regs (one for each block). For now we could ignore the SMP
->>> capability of it and make it a variant of the 7120-l2 driver, and when
->>> we add SMP support, split it into a second different driver if we want
->>> to avoid having all the spinlock for register accesses even for a).
->>>
->>> We could then even easily document/add the extra block registers /
->>> interrrupts in documentation / the dtsi files before actually
->>> supporting them, because we only have a fixed amount of regs/irqs to
->>> expect in the !SMP case and can easily ignore the extra
->>> registers/interrupts.
->>>
->>> For c) we could add a a third compatible name (bcm63381-l2), also with
->>> its own setup routine. I would guess it doesn't matter if both
->>> thread's irqstatus register pointers point to the same region.
+On Mon, Nov 24, 2014 at 1:39 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+>> > As mentioned before, it seems like you are simply defining these all to zero,
+>> > like most other platforms do too. Why not add this file as
+>> > arch/mips/include/asm/mach-generic/war.h and delete all identical copies?
 >>
->> This split-up is especially tempting to me after I had a closer look
->> at the current 7120-l2 driver, which already accepts more than one
->> interrupt, but uses it in a different way. So even if we try to make
->> it very flexible with only one compatible property,
+>> Likewise - currently every existing MIPS machine type implements it this way.
 >>
->>    reg = <irqstatus0 irqmask0 irqstatus1 irqmask1>;
->>    interrupts = <irq0>, <irq1>;
+>> Perhaps a future patch series can generalize the way these definitions
+>> are handled on MIPS?
+>
+> I'd like to hear what Ralf thinks about it, it's really his decision.
+> What I was pointing out here are things that are still in the way of
+> a real "multiplatform" implementation. None of these are really hard
+> to do, but I don't know where you are heading with MIPS.
+
+That probably depends on what types of platforms were going to be
+supported by the multiplatform kernel.  For the case of war.h, about
+2/3rds of arch/mips/include/asm/mach-*/war.h contain all zeroes...
+
+> I think in case of the last one, it's really just a matter of moving the
+> file, you could delete the other copies later.
+
+...and so that's probably a good idea in general.
+
+>> >> +OF_DECLARE_2(irqchip, mips_cpu_intc, "mti,cpu-interrupt-controller",
+>> >> +          mips_cpu_irq_of_init);
+>> >
+>> > OF_DECLARE_2 really wasn't meant to be used directly. Can you move this
+>> > code into drivers/irqchip and make it use IRQCHIP_DECLARE()?
 >>
->> Could then mean either irq0 is for interrupts 0..31 (mask/status0) and
->> irq1 for interrupts 32 .. 64 (mask/status1), or irq0 is for interrupts
->> 0..31 on cpu0, and irq1 is for interrupts 0..31 on cpu1, and then
->> would require an additional property to tell them apart, for which we
->> then also could just use a different compatible name, and have (IMHO)
->> a lot less headache.  (I wonder why we couldn't just have had more
->> than one instance of 7120-l2 in the dts for the first case)
+>> Perhaps arch/mips/kernel/irq_cpu.c could be moved under
+>> drivers/irqchip in a future commit?  We'll probably have to change the
+>> way arch/mips/ralink invokes it too.
 >
-> I don't think we've used this driver to implement the first case yet.
+> Possibly, but that seems unrelated. Moving this file is required
+> in order to use IRQCHIP_DECLARE, which is defined in
+> drivers/irqchip/irqchip.h.
+
+arch/mips/kernel/irq_cpu.c is the actual irqchip driver containing
+mips_cpu_irq_of_init().  It probably would not make sense to move
+arch/mips/bmips/irq.c (platform IRQ stubs, not an irqchip driver)
+under drivers/irqchip.
+
+>> > Is this intended to become a generic MIPS boot interface? Better
+>> > document it in Documentation/mips/
+>>
+>> Not sure yet.  It's currently limited to BCM3384.
+>>
+>> For V4 I can add an "Entry point for arch/mips/bmips" or even an
+>> "Entry point for arch/mips" section to
+>> Documentation/devicetree/booting-without-of.txt.  Any preferences?
 >
-> The initial use of the driver was for the BCM7xxx IRQ0 block, which is
-> wired up according to the ASCII art diagram in
-> Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7120-l2-intc.txt
-> .  i.e. different sets of bits in a single irqstatus0/irqmask0 pair
-> map to different parent IRQs.  The bits handled by each parent IRQ are
-> indicated in the brcm,int-map-mask property.
+> If the goal is being able to have a multiplatform kernel
+> that can cover more than just BMIPS, I think this would have
+> to be documented as the only way for MIPS multiplatform.
 >
-> And now on BCM3384, of course, we're seeing the output from two 32-bit
-> irqstatus/irqmask words ORed together into a single parent IRQ, for
-> periph_intc.  The other instances do have their own DT nodes.
+> If that isn't possible, most of my other comments here are
+> moot, but then you shouldn't call it "multiplatform" but just
+> "generic BMIPS" or something like that.
 
-Ah indeed, I read it wrong. But it still the same "problem" of regs +
-> 1 parent interrupts already having a different meaning for bcm7120
-than what they will have for bcm63xx.
+Currently my goal is to cover BMIPS only.  Although it's possible that
+someday somebody develops a more hardware-independent implementation
+that runs on other MIPS processor variants.
 
-I just successfully* booted bcm63xx with my proposed changes to
-bcm7120-l2-intc with a hacked together bcm6358-l2-intc probe routine,
-and I now think even less that having these two in one driver merged
-is a good idea. Especially if we want to support the affinity stuff.
-There seems to be quite a bit that will need to be changed for it.
+So, I can go ahead and rename it to "Generic BMIPS" if that clarifies
+the intent.
+
+>> >> diff --git a/arch/mips/include/asm/mach-bmips/dma-coherence.h b/arch/mips/include/asm/mach-bmips/dma-coherence.h
+>> >> new file mode 100644
+>> >> index 000000000000..5481a4d1bbbf
+>> >> --- /dev/null
+>> >> +++ b/arch/mips/include/asm/mach-bmips/dma-coherence.h
+>> >> @@ -0,0 +1,45 @@
+>> >> +#ifndef __ASM_MACH_BMIPS_DMA_COHERENCE_H
+>> >> +#define __ASM_MACH_BMIPS_DMA_COHERENCE_H
+>> >> +
+>> >> +struct device;
+>> >> +
+>> >> +extern dma_addr_t plat_map_dma_mem(struct device *dev, void *addr, size_t size);
+>> >> +extern dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page);
+>> >> +extern unsigned long plat_dma_addr_to_phys(struct device *dev,
+>> >> +     dma_addr_t dma_addr);
+>> >> +extern void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
+>> >> +     size_t size, enum dma_data_direction direction);
+>> >
+>> > I think you could just add these to
+>> > arch/mips/include/asm/mach-generic/dma-coherence.h and get rid of the
+>> > header file, after adding a Kconfig symbol.
+>>
+>> Some platforms mix and match inline definitions versus externs in this file.
+>>
+>> Maybe Ralf can comment on whether we should move to an "all or nothing" model?
+>
+> To clarify where I was getting to here: In a generic multiplatform kernel,
+> you would probably want to always look at the dma-ranges properties here,
+> at least if there are one or more platforms built into the kernel that
+> don't just have a flat mapping that the current mach-generic header
+> provides.
+
+For the BMIPS case:
+
+plat_map_dma_mem* and plat_dma_addr_to_phys are just performing
+remapping, so dma-ranges would work.
+
+plat_unmap_dma_mem is used to perform an extra BMIPS-specific
+cacheflush operation.
 
 
-Jonas
+Not sure about something like this - I guess it would work with 4
+ranges as long as bits 63:39 of daddr are 0:
 
-* took me a while to find your OF_DECLARE_2() for the mips-intc - sneaky ;p.
+phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
+{
+    long nid;
+#ifdef CONFIG_PHYS48_TO_HT40
+    /* We extract 2bit node id (bit 44~47, only bit 44~45 used now) from
+     * Loongson-3's 48bit address space and embed it into 40bit */
+    nid = (daddr >> 37) & 0x3;
+    daddr = ((nid << 37) ^ daddr) | (nid << 44);
+#endif
+    return daddr;
+}
 
-P.S: I wonder how this patchset is supposed to go, as it depends on
-earlier bcm7120/generic irqchip patches marked in patchwork as "other
-subsystem".
+dma-octeon.c also has a few different cases to handle, but it looks
+like they are range remappings selected based on the machine type;
+that might still be suitable for DT.
+
+The other tests in that file (coherency, per-device DMA masks) might
+be better off as DT properties.

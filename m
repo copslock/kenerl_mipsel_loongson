@@ -1,49 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 14:15:20 +0100 (CET)
-Received: from mail-ie0-f174.google.com ([209.85.223.174]:45557 "EHLO
-        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007196AbaKZNPSuyk2C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 14:15:18 +0100
-Received: by mail-ie0-f174.google.com with SMTP id rl12so2575740iec.33
-        for <linux-mips@linux-mips.org>; Wed, 26 Nov 2014 05:15:13 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 14:33:16 +0100 (CET)
+Received: from mail-wi0-f170.google.com ([209.85.212.170]:43207 "EHLO
+        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007196AbaKZNdOlhbBA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 14:33:14 +0100
+Received: by mail-wi0-f170.google.com with SMTP id bs8so15152909wib.1
+        for <linux-mips@linux-mips.org>; Wed, 26 Nov 2014 05:33:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-type;
-        bh=bwhrYL0Ji8IFRatVio5WRkn0asZFY3ma+VOyEwFtA0E=;
-        b=CljGFPPZwp6j9IFfyMWbmvIsCwl6Fa+DlRJNdOXopOctYp/a+Cxt4mlEF46MfOIFWE
-         XtwGyhO16iM8mX8BmxPU0wSKn5srbRDlJ6OxWTpXM7J20ZIjBiWoZ20ndq2i7qu3K8Q4
-         fJ3F0ArOx50wP4uOmVZs7P+lphBwBEFqkDredREl6wKgHNvGFBUcTRwHfTybxwEtzWjY
-         QtdZvk8mXbFpixEPEUXnL2QV42kvHm0iXXj78UkN+dV7JmJwu5IAHbGgz5yKPq/ChhEA
-         5GBK1dDSBblmpHpAM19tk1XDRBJ+I/qC12OjlmrHF28UNmFL6hf83a1wUs4deXLIqKE8
-         WtiQ==
-X-Gm-Message-State: ALoCoQnKsyon6mY4n9Z5goeeO13rAGI3MlQqW4jfU+ScVbs5ltCPA5ge5iuE97xuPUneUmGj10mo
-X-Received: by 10.50.78.164 with SMTP id c4mr8373330igx.1.1417007712808; Wed,
- 26 Nov 2014 05:15:12 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.64.91.35 with HTTP; Wed, 26 Nov 2014 05:14:52 -0800 (PST)
-In-Reply-To: <20141125211116.GA9997@kroah.com>
-References: <1416872182-6440-1-git-send-email-cernekee@gmail.com>
- <20141125151018.359EAC44343@trevor.secretlab.ca> <20141125173859.GA27287@kroah.com>
- <20141125211116.GA9997@kroah.com>
+        h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
+         :date:message-id;
+        bh=gVoK+Hnwj3C8JFwhdjmM/9VYWCpVRl4zCKokOgmRdzM=;
+        b=WZu/D8NmwNc9s/wBgdrxqb6ypBDcWaduZUnc3tWfzQLT/32n0f79D/uzdBA2AF/Y31
+         wnBUzijidiYW/gsc5R4gVWVgo8WF+i5snhSe90VJMQ70kfJuizSfxOsbLGRl21yhnMxc
+         Npz9gpiT/oXclGbfgIW4lCSwtZ7+bfhO9zFNwpHzX6/NeOrJddkd1WtAiY29nfvitzHa
+         U0Kgi0dCd8yCzsqbVbRrbXtZ9Mfq5qeK9YuKi8X2Iu6lJD4XjhVzESQstC6YEApFB27D
+         nYCnxWRVXwBwGHeyXDr/0Jfaml6ICq3hSDTfgHXsHlFyfuNhkqKvpx2RM1wuvhddsNbr
+         DV1Q==
+X-Gm-Message-State: ALoCoQmYKD8uRYR17+n/SJdYzxet6sBJXXFnfPxDhaBkeTNdD+jZmrR4yOXS9S602FZkKZkY0JxX
+X-Received: by 10.180.84.132 with SMTP id z4mr41313463wiy.55.1417008789126;
+        Wed, 26 Nov 2014 05:33:09 -0800 (PST)
+Received: from trevor.secretlab.ca (host86-166-84-117.range86-166.btcentralplus.com. [86.166.84.117])
+        by mx.google.com with ESMTPSA id fm10sm6375675wjc.43.2014.11.26.05.33.07
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 26 Nov 2014 05:33:08 -0800 (PST)
+Received: by trevor.secretlab.ca (Postfix, from userid 1000)
+        id 659E9C4099B; Wed, 26 Nov 2014 13:33:06 +0000 (GMT)
 From:   Grant Likely <grant.likely@linaro.org>
-Date:   Wed, 26 Nov 2014 13:14:52 +0000
-X-Google-Sender-Auth: 7QX5monwEO-RwonRqCpliXps3A8
-Message-ID: <CACxGe6uifCPz6RM59MVODWo2WGoVBMWSFzmL9Uz3AVJ0C9-hig@mail.gmail.com>
-Subject: Re: [PATCH V3 0/7] serial: Configure {big,native}-endian MMIO
- accesses via DT
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Kevin Cernekee <cernekee@gmail.com>, Jiri Slaby <jslaby@suse.cz>,
-        Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+Subject: Re: [PATCH V2 01/10] tty: Fallback to use dynamic major number
+To:     Kevin Cernekee <cernekee@gmail.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     Jiri Slaby <jslaby@suse.cz>, Rob Herring <robh@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, daniel@zonque.org,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
         Florian Fainelli <f.fainelli@gmail.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
+        tushar.b@samsung.com
+In-Reply-To: <CAJiQ=7DOxK2NzmC9gGsnARxGMN8wRQyGX+5u5YC_vt00ADVsDg@mail.gmail.com>
+References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
+        <1415825647-6024-2-git-send-email-cernekee@gmail.com>
+        <20141125203431.GA9385@kroah.com>
+        <CAJiQ=7DOxK2NzmC9gGsnARxGMN8wRQyGX+5u5YC_vt00ADVsDg@mail.gmail.com>
+Date:   Wed, 26 Nov 2014 13:33:06 +0000
+Message-Id: <20141126133306.659E9C4099B@trevor.secretlab.ca>
 Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44468
+X-archive-position: 44469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,53 +69,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 25, 2014 at 9:11 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
-> On Tue, Nov 25, 2014 at 09:38:59AM -0800, Greg KH wrote:
->> On Tue, Nov 25, 2014 at 03:10:18PM +0000, Grant Likely wrote:
->> > On Mon, 24 Nov 2014 15:36:15 -0800
->> > , Kevin Cernekee <cernekee@gmail.com>
->> >  wrote:
->> > > My last submission attempted to work around serial driver coexistence
->> > > problems on multiplatform kernels.  Since there are still questions
->> > > surrounding the best way to solve that problem, this patch series
->> > > will focus on the narrower topic of big endian MMIO support on serial.
->> > >
->> > >
->> > > V2->V3:
->> > >
->> > >  - Document the new DT properties.
->> > >
->> > >  - Add libfdt-based wrapper, to complement the "struct device_node" based
->> > >    version.
->> > >
->> > >  - Restructure early_init_dt_scan_chosen_serial() changes to use a
->> > >    temporary variable, so it is easy to add more of_setup_earlycon()
->> > >    properties later.
->> > >
->> > >  - Make of_serial and serial8250 honor the new "big-endian" property.
->> > >
->> > >
->> > > This series applies cleanly to:
->> > >
->> > > git://git.kernel.org/pub/scm/linux/kernel/git/glikely/linux.git devicetree/next-overlay
->> > >
->> > > but was tested on the mips-for-linux-next branch because my BE platform
->> > > isn't supported in mainline yet.
->> >
->> > For the whole series:
->> > Acked-by: Grant Likely <grant.likely@linaro.org>
->> >
->> > Greg, which tree do you want to merge this through? My DT tree, or the
->> > tty tree?
->>
->> I can take these through my tty tree, thanks.
->
-> I take that back, it doesn't apply to my tty tree due to changes in the
-> of codebase.  So feel free to take all of these through your DT tree
-> please:
->
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Tue, 25 Nov 2014 15:37:16 -0800
+, Kevin Cernekee <cernekee@gmail.com>
+ wrote:
+> On Tue, Nov 25, 2014 at 12:34 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > On Wed, Nov 12, 2014 at 12:53:58PM -0800, Kevin Cernekee wrote:
+> >> From: Tushar Behera <tushar.behera@linaro.org>
+> >
+> > This email bounces, so I'm going to have to reject this patch.  I can't
+> > accept a patch from a "fake" person, let alone something that touches
+> > core code like this.
+> >
+> > Sorry, I can't accept anything in this series then.
+> 
+> Oops, guess I probably should have updated his address after the V1
+> emails bounced...
+> 
+> Before I send a new version, what do you think about the overall
+> approach?  Should we try to make serial8250 coexist with the other
+> "ttyS / major 4 / minor 64" drivers (possibly at the expense of
+> compatibility) or is it better to start with a simpler, cleaner driver
+> like serial/pxa?
 
-Applied all 7 patches. Thanks.
+Co-existing really needs to be fixed. The way to handle this might be to
+blacklist the creation of the first 4 8250 devices on certain platforms.
+It's going to be painful unfortunately.
 
 g.

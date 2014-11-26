@@ -1,13 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 22:29:16 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.24]:57003 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007221AbaKZV3LkmfvY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 22:29:11 +0100
-Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
-        by mrelayeu.kundenserver.de (node=mreue103) with ESMTP (Nemesis)
-        id 0M9ulU-1XnBdW1qgq-00B3LQ; Wed, 26 Nov 2014 22:28:46 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 23:55:16 +0100 (CET)
+Received: from mail-qa0-f54.google.com ([209.85.216.54]:40062 "EHLO
+        mail-qa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007103AbaKZWzP1phhh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 23:55:15 +0100
+Received: by mail-qa0-f54.google.com with SMTP id i13so2624408qae.13
+        for <multiple recipients>; Wed, 26 Nov 2014 14:55:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=S+BQQlcyc/5Ezrymsc7oX3Ixe2TRGEcA7v+RXo63HJw=;
+        b=NiA17hgg9Sk+Oflc5I94QXeYKK2FoqTqE7b7TRe7ILmnE+xOb1P5CoPsDUBeBm7ASP
+         0I77gNC6z1czXrcWgAjVAy+hqG/GXINQFIqYQzve99tBNofz3oXOTKIRj8pltQJ8iyjA
+         6Wpp09JvspIFEOeLExJK4Jm+x2/JfPpwB7UvAystR7hNLBgzCoOfCn5jLod4jaSd/JqY
+         LXRrBg0jQ09mWADm0wlsvdZjvV3Li5YAWT9QztLAcafvpmCI5NI3PbgW1lG3Fmr0uvNg
+         yBIthfmuqWNmdM814pvefp4x08SFAm+huf3V4xicEauDL8CstYPkaj9Rk3meNd8LWbX2
+         OjbQ==
+X-Received: by 10.140.102.169 with SMTP id w38mr48563149qge.95.1417042509545;
+ Wed, 26 Nov 2014 14:55:09 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.140.89.113 with HTTP; Wed, 26 Nov 2014 14:54:49 -0800 (PST)
+In-Reply-To: <6239602.L0sNsMk5KV@wuerfel>
+References: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
+ <3146555.WCj2bhBSnP@wuerfel> <CAJiQ=7DwhSySAa19OxfUDkvT4DLWaZ3uhPU2QJzQ6Gc7YCvDgg@mail.gmail.com>
+ <6239602.L0sNsMk5KV@wuerfel>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Wed, 26 Nov 2014 14:54:49 -0800
+Message-ID: <CAJiQ=7AJn_qDfuD=4MEDpxisrGaZ8U+62nP=xNEhBtz77omF4w@mail.gmail.com>
+Subject: Re: [PATCH V3 11/11] MIPS: Add multiplatform BMIPS target
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Jon Fraser <jfraser@broadcom.com>,
@@ -18,34 +39,18 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V3 11/11] MIPS: Add multiplatform BMIPS target
-Date:   Wed, 26 Nov 2014 22:28:45 +0100
-Message-ID: <6239602.L0sNsMk5KV@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAJiQ=7DwhSySAa19OxfUDkvT4DLWaZ3uhPU2QJzQ6Gc7YCvDgg@mail.gmail.com>
-References: <1416796846-28149-1-git-send-email-cernekee@gmail.com> <3146555.WCj2bhBSnP@wuerfel> <CAJiQ=7DwhSySAa19OxfUDkvT4DLWaZ3uhPU2QJzQ6Gc7YCvDgg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:PL6tCWJuecBrxUbaEe4Ll1kfgqDUqU5q5ivxHBgCeiL
- qyEyOceQWXLDqFK+eP1hCiPNe21ntTO4PEKCy+WTrSdrtAlerG
- 7JADVkMwqYZhFxqRoqvk6QjMRtZzglKFxV2zxuCrRkDpiAeWQz
- 78d7Vjx7oSZbfiUYQSWxU6nkR081LTkVceKavToTT90ETpilRb
- qZgfvvOF7w56wb/jTtqbI0xAdYTXb6hbG+UzaNFE4adCuLJJNt
- TwiUbZMnt8pvjQl/wFsLavlnI8mW7V0JCTTw3yuhNjqpEblPpE
- DxJTjQN3OtvP80dRCWkB5Nn1rmly2I0n1kc2iycKI05eqpSC9p
- u9XFtAAW+5HVzwA2qxWs=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Felix Fietkau <nbd@openwrt.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44479
+X-archive-position: 44480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,138 +63,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday 26 November 2014 12:45:47 Kevin Cernekee wrote:
-> On Mon, Nov 24, 2014 at 1:39 PM, Arnd Bergmann <arnd@arndb.de> wrote:
-> >> >> +OF_DECLARE_2(irqchip, mips_cpu_intc, "mti,cpu-interrupt-controller",
-> >> >> +          mips_cpu_irq_of_init);
-> >> >
-> >> > OF_DECLARE_2 really wasn't meant to be used directly. Can you move this
-> >> > code into drivers/irqchip and make it use IRQCHIP_DECLARE()?
-> >>
-> >> Perhaps arch/mips/kernel/irq_cpu.c could be moved under
-> >> drivers/irqchip in a future commit?  We'll probably have to change the
-> >> way arch/mips/ralink invokes it too.
-> >
-> > Possibly, but that seems unrelated. Moving this file is required
-> > in order to use IRQCHIP_DECLARE, which is defined in
-> > drivers/irqchip/irqchip.h.
-> 
-> arch/mips/kernel/irq_cpu.c is the actual irqchip driver containing
-> mips_cpu_irq_of_init().  It probably would not make sense to move
-> arch/mips/bmips/irq.c (platform IRQ stubs, not an irqchip driver)
-> under drivers/irqchip.
+On Wed, Nov 26, 2014 at 1:28 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+>> For the BMIPS case:
+>>
+>> plat_map_dma_mem* and plat_dma_addr_to_phys are just performing
+>> remapping, so dma-ranges would work.
+>>
+>> plat_unmap_dma_mem is used to perform an extra BMIPS-specific
+>> cacheflush operation.
+>
+> Yes, the cacheflush again would have to be abstracted. This is normally
+> done using either a platform-specific dma_map_ops struct, or using
+> a further abstraction with another function pointer.
+>
+> I'm surprised that you need the special flush operation only
+> for 'unmap' and not for 'dma_sync_*_for_cpu'. Can you check that
+> you are actually doing the right thing for drivers that reuse
+> a DMA buffer with the streaming API?
 
-I see. Makes sense.
+That's a fantastic question.  I checked an older BCM7xxx kernel tree
+and noticed that we used to implement plat_extra_sync_for_device()
+locally to do this, but the API was "garbage collected" last year:
 
-> >> > Is this intended to become a generic MIPS boot interface? Better
-> >> > document it in Documentation/mips/
-> >>
-> >> Not sure yet.  It's currently limited to BCM3384.
-> >>
-> >> For V4 I can add an "Entry point for arch/mips/bmips" or even an
-> >> "Entry point for arch/mips" section to
-> >> Documentation/devicetree/booting-without-of.txt.  Any preferences?
-> >
-> > If the goal is being able to have a multiplatform kernel
-> > that can cover more than just BMIPS, I think this would have
-> > to be documented as the only way for MIPS multiplatform.
-> >
-> > If that isn't possible, most of my other comments here are
-> > moot, but then you shouldn't call it "multiplatform" but just
-> > "generic BMIPS" or something like that.
-> 
-> Currently my goal is to cover BMIPS only.  Although it's possible that
-> someday somebody develops a more hardware-independent implementation
-> that runs on other MIPS processor variants.
-> 
-> So, I can go ahead and rename it to "Generic BMIPS" if that clarifies
-> the intent.
+commit 4e7f72660c39a81cc5745d5c6f23f9500f80d8d8
+Author: Felix Fietkau <nbd@openwrt.org>
+Date:   Thu Aug 15 11:28:30 2013 +0200
 
-Ok. One more thought: With the powerpc-approach of having platform
-specific boot wrappers (with or without uncompress code), the boot
-protocol would no longer matter to the common multiplatform
-implementation, and the specific BMIPS interface would become
-part of arch/mips/boot/bmips.c or something like that. Looking at
-the Makefile in there, MIPS already supports six different binary
-formats that can all be generated from the same vmlinux, so at the
-point when someone implements a full multiplatform implementation,
-the bmips specifics can become another binary format that encapsulates
-the vmlinux file and an optional dtb file and passes the dtb
-into the common kernel entry point when calling the actual vmlinux
-head.S.
+    MIPS: Remove unnecessary platform dma helper functions
 
-> >> >> diff --git a/arch/mips/include/asm/mach-bmips/dma-coherence.h b/arch/mips/include/asm/mach-bmips/dma-coherence.h
-> >> >> new file mode 100644
-> >> >> index 000000000000..5481a4d1bbbf
-> >> >> --- /dev/null
-> >> >> +++ b/arch/mips/include/asm/mach-bmips/dma-coherence.h
-> >> >> @@ -0,0 +1,45 @@
-> >> >> +#ifndef __ASM_MACH_BMIPS_DMA_COHERENCE_H
-> >> >> +#define __ASM_MACH_BMIPS_DMA_COHERENCE_H
-> >> >> +
-> >> >> +struct device;
-> >> >> +
-> >> >> +extern dma_addr_t plat_map_dma_mem(struct device *dev, void *addr, size_t size);
-> >> >> +extern dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page);
-> >> >> +extern unsigned long plat_dma_addr_to_phys(struct device *dev,
-> >> >> +     dma_addr_t dma_addr);
-> >> >> +extern void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
-> >> >> +     size_t size, enum dma_data_direction direction);
-> >> >
-> >> > I think you could just add these to
-> >> > arch/mips/include/asm/mach-generic/dma-coherence.h and get rid of the
-> >> > header file, after adding a Kconfig symbol.
-> >>
-> >> Some platforms mix and match inline definitions versus externs in this file.
-> >>
-> >> Maybe Ralf can comment on whether we should move to an "all or nothing" model?
-> >
-> > To clarify where I was getting to here: In a generic multiplatform kernel,
-> > you would probably want to always look at the dma-ranges properties here,
-> > at least if there are one or more platforms built into the kernel that
-> > don't just have a flat mapping that the current mach-generic header
-> > provides.
-> 
-> For the BMIPS case:
-> 
-> plat_map_dma_mem* and plat_dma_addr_to_phys are just performing
-> remapping, so dma-ranges would work.
-> 
-> plat_unmap_dma_mem is used to perform an extra BMIPS-specific
-> cacheflush operation.
+    The semantics stay the same - on Cavium Octeon the functions were dead
+    code (it overrides the MIPS DMA ops) - on other platforms they contained
+    no code at all.
 
-Yes, the cacheflush again would have to be abstracted. This is normally
-done using either a platform-specific dma_map_ops struct, or using
-a further abstraction with another function pointer.
+    Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+    Cc: linux-mips@linux-mips.org
+    Patchwork: https://patchwork.linux-mips.org/patch/5720/
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-I'm surprised that you need the special flush operation only
-for 'unmap' and not for 'dma_sync_*_for_cpu'. Can you check that
-you are actually doing the right thing for drivers that reuse
-a DMA buffer with the streaming API?
 
-> Not sure about something like this - I guess it would work with 4
-> ranges as long as bits 63:39 of daddr are 0:
-> 
-> phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
-> {
->     long nid;
-> #ifdef CONFIG_PHYS48_TO_HT40
->     /* We extract 2bit node id (bit 44~47, only bit 44~45 used now) from
->      * Loongson-3's 48bit address space and embed it into 40bit */
->     nid = (daddr >> 37) & 0x3;
->     daddr = ((nid << 37) ^ daddr) | (nid << 44);
-> #endif
->     return daddr;
-> }
-> 
-> dma-octeon.c also has a few different cases to handle, but it looks
-> like they are range remappings selected based on the machine type;
-> that might still be suitable for DT.
-> 
-> The other tests in that file (coherency, per-device DMA masks) might
-> be better off as DT properties.
+If nobody objects, I can revert this change and then add the extra
+flush to arch/mips/bmips/dma.c.
 
-I guess a platform that doesn't fit the simple model could always
-have its own dma_map_ops and not use the the dma-coherence.h interfaces.
+Or I can add some BMIPS-specific code to dma-default.c, similar to
+cpu_needs_post_dma_flush().  Could even add it to that function
+directly, although that is less intuitive:
 
-	Arnd
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index af5f046..ee6d12c 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -18,6 +18,7 @@
+ #include <linux/highmem.h>
+ #include <linux/dma-contiguous.h>
+
++#include <asm/bmips.h>
+ #include <asm/cache.h>
+ #include <asm/cpu-type.h>
+ #include <asm/io.h>
+@@ -69,6 +70,18 @@ static inline struct page *dma_addr_to_page(struct
+device *dev,
+  */
+ static inline int cpu_needs_post_dma_flush(struct device *dev)
+ {
++    if (boot_cpu_type() == CPU_BMIPS3300 ||
++        boot_cpu_type() == CPU_BMIPS4350 ||
++        boot_cpu_type() == CPU_BMIPS4380) {
++        void __iomem *cbr = BMIPS_GET_CBR();
++
++        /* Flush stale data out of the readahead cache */
++        __raw_writel(0x100, cbr + BMIPS_RAC_CONFIG);
++        __raw_readl(cbr + BMIPS_RAC_CONFIG);
++
++        return 0;
++    }
++
+     return !plat_device_is_coherent(dev) &&
+            (boot_cpu_type() == CPU_R10000 ||
+         boot_cpu_type() == CPU_R12000 ||
+
+
+This would allow for eliminating all flushes from
+arch/mips/bmips/dma.c, so the entire file could go away when we switch
+to the common dma-ranges code.
+
+Any preferences?

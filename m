@@ -1,52 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 11:25:47 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:41083 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007171AbaKZKZqTz-Gu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Nov 2014 11:25:46 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id CFA5628BDBA;
-        Wed, 26 Nov 2014 11:24:12 +0100 (CET)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f179.google.com (mail-qc0-f179.google.com [209.85.216.179])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id CF21428BE86;
-        Wed, 26 Nov 2014 11:24:04 +0100 (CET)
-Received: by mail-qc0-f179.google.com with SMTP id c9so1849109qcz.10
-        for <multiple recipients>; Wed, 26 Nov 2014 02:25:35 -0800 (PST)
-X-Received: by 10.224.3.196 with SMTP id 4mr44483256qao.79.1416997535118; Wed,
- 26 Nov 2014 02:25:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 14:15:20 +0100 (CET)
+Received: from mail-ie0-f174.google.com ([209.85.223.174]:45557 "EHLO
+        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007196AbaKZNPSuyk2C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 14:15:18 +0100
+Received: by mail-ie0-f174.google.com with SMTP id rl12so2575740iec.33
+        for <linux-mips@linux-mips.org>; Wed, 26 Nov 2014 05:15:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-type;
+        bh=bwhrYL0Ji8IFRatVio5WRkn0asZFY3ma+VOyEwFtA0E=;
+        b=CljGFPPZwp6j9IFfyMWbmvIsCwl6Fa+DlRJNdOXopOctYp/a+Cxt4mlEF46MfOIFWE
+         XtwGyhO16iM8mX8BmxPU0wSKn5srbRDlJ6OxWTpXM7J20ZIjBiWoZ20ndq2i7qu3K8Q4
+         fJ3F0ArOx50wP4uOmVZs7P+lphBwBEFqkDredREl6wKgHNvGFBUcTRwHfTybxwEtzWjY
+         QtdZvk8mXbFpixEPEUXnL2QV42kvHm0iXXj78UkN+dV7JmJwu5IAHbGgz5yKPq/ChhEA
+         5GBK1dDSBblmpHpAM19tk1XDRBJ+I/qC12OjlmrHF28UNmFL6hf83a1wUs4deXLIqKE8
+         WtiQ==
+X-Gm-Message-State: ALoCoQnKsyon6mY4n9Z5goeeO13rAGI3MlQqW4jfU+ScVbs5ltCPA5ge5iuE97xuPUneUmGj10mo
+X-Received: by 10.50.78.164 with SMTP id c4mr8373330igx.1.1417007712808; Wed,
+ 26 Nov 2014 05:15:12 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.140.95.79 with HTTP; Wed, 26 Nov 2014 02:25:14 -0800 (PST)
-In-Reply-To: <CAOiHx=m+At9u=eepphG89kcusOKbBi1qqxT8k-Qyx-OMdMAJKw@mail.gmail.com>
-References: <1416796846-28149-1-git-send-email-cernekee@gmail.com>
- <1416796846-28149-7-git-send-email-cernekee@gmail.com> <CAOiHx=ntm7AO5BU2Ge0JDC5nDgXSZwQDm05s5VTM8mLqYmCZRw@mail.gmail.com>
- <CAJiQ=7CvpFWxDY1uad2bZz8MBG0Mvg2Jx8WBp6gHi-kD4TDvXA@mail.gmail.com> <CAOiHx=m+At9u=eepphG89kcusOKbBi1qqxT8k-Qyx-OMdMAJKw@mail.gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Wed, 26 Nov 2014 11:25:14 +0100
-Message-ID: <CAOiHx=k_4r=jtQdi0ABvfKAw0JtHY9Z46pVUfetDmKz4d0XoFQ@mail.gmail.com>
-Subject: Re: [PATCH V3 06/11] irqchip: bcm7120-l2: Change DT binding to allow
- non-contiguous IRQEN/IRQSTAT
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: by 10.64.91.35 with HTTP; Wed, 26 Nov 2014 05:14:52 -0800 (PST)
+In-Reply-To: <20141125211116.GA9997@kroah.com>
+References: <1416872182-6440-1-git-send-email-cernekee@gmail.com>
+ <20141125151018.359EAC44343@trevor.secretlab.ca> <20141125173859.GA27287@kroah.com>
+ <20141125211116.GA9997@kroah.com>
+From:   Grant Likely <grant.likely@linaro.org>
+Date:   Wed, 26 Nov 2014 13:14:52 +0000
+X-Google-Sender-Auth: 7QX5monwEO-RwonRqCpliXps3A8
+Message-ID: <CACxGe6uifCPz6RM59MVODWo2WGoVBMWSFzmL9Uz3AVJ0C9-hig@mail.gmail.com>
+Subject: Re: [PATCH V3 0/7] serial: Configure {big,native}-endian MMIO
+ accesses via DT
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>, Jiri Slaby <jslaby@suse.cz>,
+        Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Jon Fraser <jfraser@broadcom.com>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Brian Norris <computersforpeace@gmail.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+        linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44467
+X-archive-position: 44468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: grant.likely@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,59 +60,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 26, 2014 at 10:45 AM, Jonas Gorski <jogo@openwrt.org> wrote:
-> As far as I can see, we have three distinct layouts here:
+On Tue, Nov 25, 2014 at 9:11 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Tue, Nov 25, 2014 at 09:38:59AM -0800, Greg KH wrote:
+>> On Tue, Nov 25, 2014 at 03:10:18PM +0000, Grant Likely wrote:
+>> > On Mon, 24 Nov 2014 15:36:15 -0800
+>> > , Kevin Cernekee <cernekee@gmail.com>
+>> >  wrote:
+>> > > My last submission attempted to work around serial driver coexistence
+>> > > problems on multiplatform kernels.  Since there are still questions
+>> > > surrounding the best way to solve that problem, this patch series
+>> > > will focus on the narrower topic of big endian MMIO support on serial.
+>> > >
+>> > >
+>> > > V2->V3:
+>> > >
+>> > >  - Document the new DT properties.
+>> > >
+>> > >  - Add libfdt-based wrapper, to complement the "struct device_node" based
+>> > >    version.
+>> > >
+>> > >  - Restructure early_init_dt_scan_chosen_serial() changes to use a
+>> > >    temporary variable, so it is easy to add more of_setup_earlycon()
+>> > >    properties later.
+>> > >
+>> > >  - Make of_serial and serial8250 honor the new "big-endian" property.
+>> > >
+>> > >
+>> > > This series applies cleanly to:
+>> > >
+>> > > git://git.kernel.org/pub/scm/linux/kernel/git/glikely/linux.git devicetree/next-overlay
+>> > >
+>> > > but was tested on the mips-for-linux-next branch because my BE platform
+>> > > isn't supported in mainline yet.
+>> >
+>> > For the whole series:
+>> > Acked-by: Grant Likely <grant.likely@linaro.org>
+>> >
+>> > Greg, which tree do you want to merge this through? My DT tree, or the
+>> > tty tree?
+>>
+>> I can take these through my tty tree, thanks.
 >
-> a) An arbitrary number of 32-bit Mask/Status-pairs (3384/6838). No per
-> thread support (well, not sure about 60333).
+> I take that back, it doesn't apply to my tty tree due to changes in the
+> of codebase.  So feel free to take all of these through your DT tree
+> please:
 >
-> b) An arbitrary length (32 to 128 bit) Mask register, followed by a
-> same length Status register (63xx except 63381, 6818, 6828); repeated
-> for each thread.
->
-> c) A single arbitrary length (currently only 128 bit) Status register,
-> followed by per thread same length Mask registers (63381).
->
-> On a first glance this could translate to three distinct
-> drivers/compatible properties, where each expects different reg = <>;
-> contents.
->
-> For a), it should be enough to expand the current 7120-l2 driver to
-> accept/use more than one 0x8 length register, which should simplify
-> the register map setup.
->
-> For b) we could add a a new compatible name (maybe bcm6358-l2, because
-> that was AFAICT the first one with blocks) that will use the 8 to 32
-> byte length regs (one for each block). For now we could ignore the SMP
-> capability of it and make it a variant of the 7120-l2 driver, and when
-> we add SMP support, split it into a second different driver if we want
-> to avoid having all the spinlock for register accesses even for a).
->
-> We could then even easily document/add the extra block registers /
-> interrrupts in documentation / the dtsi files before actually
-> supporting them, because we only have a fixed amount of regs/irqs to
-> expect in the !SMP case and can easily ignore the extra
-> registers/interrupts.
->
-> For c) we could add a a third compatible name (bcm63381-l2), also with
-> its own setup routine. I would guess it doesn't matter if both
-> thread's irqstatus register pointers point to the same region.
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-This split-up is especially tempting to me after I had a closer look
-at the current 7120-l2 driver, which already accepts more than one
-interrupt, but uses it in a different way. So even if we try to make
-it very flexible with only one compatible property,
+Applied all 7 patches. Thanks.
 
-   reg = <irqstatus0 irqmask0 irqstatus1 irqmask1>;
-   interrupts = <irq0>, <irq1>;
-
-Could then mean either irq0 is for interrupts 0..31 (mask/status0) and
-irq1 for interrupts 32 .. 64 (mask/status1), or irq0 is for interrupts
-0..31 on cpu0, and irq1 is for interrupts 0..31 on cpu1, and then
-would require an additional property to tell them apart, for which we
-then also could just use a different compatible name, and have (IMHO)
-a lot less headache.  (I wonder why we couldn't just have had more
-than one instance of 7120-l2 in the dts for the first case)
-
-
-Jonas
+g.

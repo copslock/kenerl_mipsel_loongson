@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 00:50:04 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46306 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006957AbaKYXuDBSh60 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 00:50:03 +0100
-Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6BE8DAB5;
-        Tue, 25 Nov 2014 23:49:56 +0000 (UTC)
-Date:   Tue, 25 Nov 2014 15:49:56 -0800
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Jiri Slaby <jslaby@suse.cz>, Rob Herring <robh@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, daniel@zonque.org,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Grant Likely <grant.likely@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        tushar.b@samsung.com
-Subject: Re: [PATCH V2 01/10] tty: Fallback to use dynamic major number
-Message-ID: <20141125234956.GA3138@kroah.com>
-References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
- <1415825647-6024-2-git-send-email-cernekee@gmail.com>
- <20141125203431.GA9385@kroah.com>
- <CAJiQ=7DOxK2NzmC9gGsnARxGMN8wRQyGX+5u5YC_vt00ADVsDg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJiQ=7DOxK2NzmC9gGsnARxGMN8wRQyGX+5u5YC_vt00ADVsDg@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2014 01:51:31 +0100 (CET)
+Received: from mail-pa0-f45.google.com ([209.85.220.45]:35801 "EHLO
+        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007077AbaKZAv3jKZq4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2014 01:51:29 +0100
+Received: by mail-pa0-f45.google.com with SMTP id lj1so1676722pab.18
+        for <linux-mips@linux-mips.org>; Tue, 25 Nov 2014 16:51:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=rFjqLpko14K0SO/bdnij6ljpqbZDJyOyb/1RkkzzUYY=;
+        b=AJZrTi8PiQJb7GnzQcifArXC4uQOd+l0TV/VXgWwdL3dSS8RivCfi7gbDQF/vPOC2U
+         8qXIzRvnxtrW1TxV+R/xRQLMYNJ7xScixj7w5Y9pQ3rv7+i7im2FlryCmT8mc9N/yaDd
+         QS6qszQexzcpxQYTJtfl+vXAFPTXqdgcjvh7H3jnN/kIx0PISRcme10+cRSYPh8tlUp3
+         Lgs9N2yx0WY9dPFss/M1FOZP400H+c73vqgUTaRn5SyvfX3JZjrilburytHlx7nQyJz+
+         RkS2++n6YWyDk7Z0OAeHFTLuzLPuydu6ZEYXXjEDk5tzqjEH0LZxU3zK/17Pg2XQMVWt
+         cIug==
+X-Received: by 10.68.217.231 with SMTP id pb7mr48463184pbc.124.1416963083565;
+        Tue, 25 Nov 2014 16:51:23 -0800 (PST)
+Received: from localhost (b32.net. [192.81.132.72])
+        by mx.google.com with ESMTPSA id bj11sm2614439pdb.1.2014.11.25.16.51.21
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 25 Nov 2014 16:51:23 -0800 (PST)
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     sre@kernel.org, dbaryshkov@gmail.com, dwmw2@infradead.org,
+        arnd@arndb.de, linux@prisktech.co.nz, stern@rowland.harvard.edu,
+        gregkh@linuxfoundation.org, f.fainelli@gmail.com
+Cc:     grant.likely@linaro.org, robh+dt@kernel.org,
+        computersforpeace@gmail.com, marc.ceeeee@gmail.com,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH 0/9] Extend various drivers to run on bi-endian BMIPS hosts
+Date:   Tue, 25 Nov 2014 16:49:45 -0800
+Message-Id: <1416962994-27095-1-git-send-email-cernekee@gmail.com>
+X-Mailer: git-send-email 2.1.1
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44452
+X-archive-position: 44453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,24 +56,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 25, 2014 at 03:37:16PM -0800, Kevin Cernekee wrote:
-> On Tue, Nov 25, 2014 at 12:34 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > On Wed, Nov 12, 2014 at 12:53:58PM -0800, Kevin Cernekee wrote:
-> >> From: Tushar Behera <tushar.behera@linaro.org>
-> >
-> > This email bounces, so I'm going to have to reject this patch.  I can't
-> > accept a patch from a "fake" person, let alone something that touches
-> > core code like this.
-> >
-> > Sorry, I can't accept anything in this series then.
-> 
-> Oops, guess I probably should have updated his address after the V1
-> emails bounced...
-> 
-> Before I send a new version, what do you think about the overall
-> approach?  Should we try to make serial8250 coexist with the other
-> "ttyS / major 4 / minor 64" drivers (possibly at the expense of
-> compatibility) or is it better to start with a simpler, cleaner driver
-> like serial/pxa?
+This patch series incorporates the following changes:
 
-We can't do anything "at the expense of compatibility", sorry.
+ - Extend brcmstb reset driver to work on MIPS (currently ARM-only).
+
+ - Extend brcmstb GISB bus driver to work on MIPS (currently ARM-only).
+
+ - Extend brcmstb GISB bus driver to work on BE systems (currently LE-only).
+
+ - Extend both drivers to support the older register layouts used on many
+   of the BMIPS platforms.
+
+ - Extend {ohci,ehci}-platform drivers to accept the new "native-endian"
+   DT property, to accommodate BCM7xxx platforms that can be switched
+   between LE/BE with a board jumper.
+
+
+Dependencies:
+
+power/reset: brcmstb: Register with kernel restart handler (Guenter Roeck)
+of: Add helper function to check MMIO register endianness (Kevin Cernekee)
+
+These are both tentatively accepted, but might not be present in the same
+tree yet.  As such, we might want to "review now, merge later."
+
+
+Kevin Cernekee (9):
+  power/reset: brcmstb: Make the driver buildable on MIPS
+  power/reset: brcmstb: Use the DT "compatible" string to indicate bit
+    positions
+  power/reset: brcmstb: Add support for old 65nm chips
+  bus: brcmstb_gisb: Make the driver buildable on MIPS
+  bus: brcmstb_gisb: Introduce wrapper functions for MMIO accesses
+  bus: brcmstb_gisb: Look up register offsets in a table
+  bus: brcmstb_gisb: Add register offset tables for older chips
+  bus: brcmstb_gisb: Honor the "big-endian" and "native-endian" DT
+    properties
+  usb: {ohci,ehci}-platform: Use new OF big-endian helper function
+
+ .../devicetree/bindings/arm/brcm-brcmstb.txt       |   4 +-
+ .../devicetree/bindings/bus/brcm,gisb-arb.txt      |   6 +-
+ Documentation/devicetree/bindings/usb/usb-ehci.txt |   2 +
+ Documentation/devicetree/bindings/usb/usb-ohci.txt |   2 +
+ drivers/bus/Kconfig                                |   2 +-
+ drivers/bus/brcmstb_gisb.c                         | 127 ++++++++++++++++++---
+ drivers/power/reset/Kconfig                        |   9 +-
+ drivers/power/reset/brcmstb-reboot.c               |  41 +++++--
+ drivers/usb/host/ehci-platform.c                   |   2 +-
+ drivers/usb/host/ohci-platform.c                   |   2 +-
+ 10 files changed, 161 insertions(+), 36 deletions(-)
+
+-- 
+2.1.0

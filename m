@@ -1,54 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Nov 2014 15:34:13 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.131]:61240 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007342AbaK0OeLFhC3v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Nov 2014 15:34:11 +0100
-Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
-        by mrelayeu.kundenserver.de (node=mreue002) with ESMTP (Nemesis)
-        id 0MT3QL-1XSG7n2KXd-00RmQr; Thu, 27 Nov 2014 15:33:58 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Grant Likely <grant.likely@linaro.org>
-Cc:     Peter Hurley <peter@hurleysoftware.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>, Rob Herring <robh@kernel.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        tushar.b@samsung.com
-Subject: Re: [PATCH V2 01/10] tty: Fallback to use dynamic major number
-Date:   Thu, 27 Nov 2014 15:33:58 +0100
-Message-ID: <4316435.J1BtEYnd6C@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CACxGe6uLWZav=AfaK2w17PW6vtxF8S0=OUvCMB-uFSvhs2cLtw@mail.gmail.com>
-References: <1415825647-6024-1-git-send-email-cernekee@gmail.com> <5475E4EC.7090309@hurleysoftware.com> <CACxGe6uLWZav=AfaK2w17PW6vtxF8S0=OUvCMB-uFSvhs2cLtw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Nov 2014 20:56:54 +0100 (CET)
+Received: from utopia.booyaka.com ([74.50.51.50]:38612 "EHLO
+        utopia.booyaka.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007428AbaK0T4sm0PdX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Nov 2014 20:56:48 +0100
+Received: (qmail 16839 invoked by uid 1019); 27 Nov 2014 19:56:46 -0000
+Date:   Thu, 27 Nov 2014 19:56:46 +0000 (UTC)
+From:   Paul Walmsley <paul@pwsan.com>
+To:     =?ISO-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>
+cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kumar Gala <galak@codeaurora.org>,
+        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
+        Sandeep Nair <sandeep_n@ti.com>, linux-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3] MIPS: BCM47XX: Move NVRAM driver to the
+ drivers/soc/
+In-Reply-To: <CACna6rxj8=V8me1_L8SxhV3=kgYRyKeBHkxShSMZa4kbcHimLg@mail.gmail.com>
+Message-ID: <alpine.DEB.2.02.1411271926560.1406@utopia.booyaka.com>
+References: <1416736241-12723-1-git-send-email-zajec5@gmail.com> <1416778509-31502-1-git-send-email-zajec5@gmail.com> <alpine.DEB.2.02.1411240910100.16047@utopia.booyaka.com> <CACna6rxwwn5_e86278TAiOFZ3sVu_Exfm2x94vN2KiTJfsFujQ@mail.gmail.com>
+ <alpine.DEB.2.02.1411251407290.16047@utopia.booyaka.com> <CACna6rxj8=V8me1_L8SxhV3=kgYRyKeBHkxShSMZa4kbcHimLg@mail.gmail.com>
+User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:KfJodE+LfUEy3drlenfHseRVSnMOR9cE8fURDZc5pb+
- wZX2PjnzlSFANHNOA1jQlA273Do5vf40BsQB72RZjlUDzllAJE
- xoVxO2OGWBo0Qz8iJEMfgiwdXDC4Zjy+8A/c6Gs8687cA0j6RM
- hmPTYynlTyPjFikMes0rY0FleKwQ7tSdFIxNBuJ4bB1watWDHh
- I6v+CVGASMMgJdh7DLs3iKSZY1WSpNq7c7JuD/3DRwfESadPMj
- zUlHhCfJRUuazeTaJlrZ4/hqe9/Zr5s3rxMlM2dl6m0HuD4IvO
- NGCekh2pwum3K5jEyQWOMHWKxTDrOeNvE3Cmuvvcdr0PtoRX9G
- Gl3Yd1KI8RwYd8/9sAUQ=
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: MULTIPART/MIXED; BOUNDARY="843723315-1041491994-1417118206=:1406"
+Return-Path: <paul@pwsan.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44488
+X-archive-position: 44489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: paul@pwsan.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,42 +45,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 27 November 2014 13:50:01 Grant Likely wrote:
-> 
-> Should be sufficient. Basically, if the hardware doesn't exist, the
-> driver shouldn't be trying to grab the minor numbers.
-> 
-> Also, on hardware where both exists, there should be some sane
-> fallback so that all UARTs get assigned numbers. On DT systems we can
-> also use /aliases to ensure consistent assignment of numbers.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-From what I can see, this is really the ISA compatibility code
-in the 8250 driver, and we should be able to make that optional
-or even move it into a separate glue driver.
+--843723315-1041491994-1417118206=:1406
+Content-Type: TEXT/PLAIN; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Basically the serial8250_init function tries to do a lot of things
-at once (skipping error handling):
++ lkml
 
-        serial8250_isa_init_ports();
-        ret = sunserial_register_minors(&serial8250_reg, UART_NR);
-	serial8250_reg.nr = UART_NR;
-        ret = uart_register_driver(&serial8250_reg);
-        ret = serial8250_pnp_init();
-        serial8250_isa_devs = platform_device_alloc("serial8250",
-                                                   PLAT8250_DEV_LEGACY);
-        ret = platform_device_add(serial8250_isa_devs);
-        serial8250_register_ports(&serial8250_reg, &serial8250_isa_devs->dev);
-        ret = platform_driver_register(&serial8250_isa_driver);
+Hi Rafa=C5=82,
 
-The only thing we want from this is the uart_register_driver() call,
-everything else is only needed together with the ISA support. The way
-that uart_register_driver() works unfortunately implies that you know
-the maximum number of ports at driver init time, which would need
-to be changed if you want to share the numbers.
+On Tue, 25 Nov 2014, Rafa=C5=82 Mi=C5=82ecki wrote:
 
-One idea I had a few years ago when we discussed this was to treat
-the major 4 allocation differently so you could share it between all
-sorts of drivers as an opt-in, but could have all unmodified continue
-using their own device names and numbers.
+> On 25 November 2014 at 18:50, Paul Walmsley <paul@pwsan.com> wrote:
+> >> I don't think NVRAM can be treated as a standard char device. Also, in
+> >> my V1 I tried moving it to the drivers/misc/, but then drivers/soc/
+> >> was suggested as a better place, see Arnd's reply:
+> >> http://www.linux-mips.org/archives/linux-mips/2014-11/msg00238.html
+> >
+> > Yeah.  It depends on who is going to merge the patch.  If you can persu=
+ade
+> > someone else to merge it in drivers/soc, then it doesn't really matter
+> > what I think.
+>=20
+> I'm looking for the solution that will satisfy most ppl.=20
 
-	Arnd
+Wow, that's a pretty high bar ;-)  Better IMHO to try for something that=20
+seems to make rational sense, then let others convert it into something=20
+that makes less sense afterwards, if necessary ;-)
+
+> I understand your arguments against drivers/soc/, but on the other hand=
+=20
+> I have no idea where else this driver could go.
+
+After looking around the tree to find out where similar code is located,=20
+it looks like drivers/firmware is the right place.  These days,=20
+drivers/firmware is mainly used for drivers that parse EFI bootloader=20
+data, DMI data, that sort of thing.  Quite similar to the CFE-provided=20
+data that the bcm47xx-nvram code deals with.  So, by functional analogy,=20
+drivers/firmware appears to be the right place to stash this device=20
+data-probing code.
+
+> I guess DT is older than CFE, but Broadcom decided to invent own
+> solution called NVRAM anyway. This is a bit messy, because it actually
+> stores hardware details (CPU, RAM, switch) as well as user settings
+> (e.g. LEDs behavior). I can't say why Broadcom decided to implement it
+> this way.
+
+Yep, based on what the other drivers in drivers/firmware are used for, I=20
+think drivers/firmware is the right place for the CFE parsing code.
+
+> > It sounds to me like this code is a combination of three
+> > pieces:
+> >
+> > 1. code that autoprobes the size of the "nvram" partition in the Broadc=
+om
+> > platform flash, by reading various locations in the MMIO flash aperture=
+,
+> > configured by some other system entity
+>=20
+> That's right, on MIPS we simply detect flash type (drivers/ssb &
+> driver/bcma) and using that we init NVRAM passing memory offset where
+> the flash is mapped.
+
+OK.
+
+So (as a side issue), I would suggest that when you move this code out of=
+=20
+arch/mips, the MIPS-isms in it should be removed, like KSEG1ADDR(), etc.,=
+=20
+and replaced by the standard ioremap()-type approach.  After all, Broadcom=
+=20
+could build CFE for ARM, and then we'd want to use this same code to parse=
+=20
+the CFE-provided data.
+
+Also I would suggest getting rid of the #ifdefs for the flash type, and=20
+probing it dynamically instead.  The flash setup code under drivers/ssb/=20
+and drivers/bcma/ sets up platform_devices for the flash, right?  If so=20
+then it would be best if this code could run after the bus setup code,=20
+query the Linux device model for the type of platform flash in use, and=20
+then extract the appropriate address space to probe from that data.
+
+> > 2. code that shadow copies the device data from the MMIO flash aperture
+> > into system RAM
+> >
+> > 3. code that parses the CPE-generated device data and returns it to oth=
+er
+> > drivers
+> >
+> > Does that sound accurate?
+>=20
+> Correct (s/CPE/CFE).
+
+Thanks for the correction, I must have been dreaming of telecom=20
+equipment..
+
+What do you think?  Does this sound reasonable?
+
+
+- Paul
+--843723315-1041491994-1417118206=:1406--

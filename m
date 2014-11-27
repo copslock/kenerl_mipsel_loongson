@@ -1,41 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Nov 2014 14:50:29 +0100 (CET)
-Received: from mail-ie0-f169.google.com ([209.85.223.169]:59770 "EHLO
-        mail-ie0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007400AbaK0Nu2BPVCB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Nov 2014 14:50:28 +0100
-Received: by mail-ie0-f169.google.com with SMTP id y20so4566417ier.14
-        for <linux-mips@linux-mips.org>; Thu, 27 Nov 2014 05:50:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-type;
-        bh=URiCj84wSLQM2APRmTjMOFmbcu3pdDW68d7ZdFiEn3k=;
-        b=DmV4vuS2eCoupip59O0ldYRywD/70fhddNQDAGIYAbFkVh3xFoyxV8TgznlQzQATZL
-         te96N5reoB68Hpqm1Wp+pr5ALcaR2mp9GXa1/acZelZid4aqgkaCgjdUlGYMYO5CkYl6
-         oeCd6J3jnWvq23D1T2lxPpTCwUawDXgRejGDCnm+s9/YL+/BjuS3hs774Gb9MZEJGX54
-         bYkOv8g9djzhGobKnDRWXXSflhVjjpOeOEHcIC/JfcCQEbrFHuO715Wy7ilfhjhMVrJQ
-         nS2KkOUQbBKlBptnlJ3NU2kIv4GxnbjjkjLblh46gRHsgk9UcbqIwiuIIceZ0BYBzl+l
-         0s0w==
-X-Gm-Message-State: ALoCoQlRZehd4pW/UKHhIFaTYWdDkBHIcI7/hsIb0C/KUvviVwr/7b6+iwnJdJtH6E17fftn8PQ3
-X-Received: by 10.107.12.34 with SMTP id w34mr35555751ioi.3.1417096221651;
- Thu, 27 Nov 2014 05:50:21 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.64.91.35 with HTTP; Thu, 27 Nov 2014 05:50:01 -0800 (PST)
-In-Reply-To: <5475E4EC.7090309@hurleysoftware.com>
-References: <1415825647-6024-1-git-send-email-cernekee@gmail.com>
- <1415825647-6024-2-git-send-email-cernekee@gmail.com> <20141125203431.GA9385@kroah.com>
- <CAJiQ=7DOxK2NzmC9gGsnARxGMN8wRQyGX+5u5YC_vt00ADVsDg@mail.gmail.com>
- <20141126133306.659E9C4099B@trevor.secretlab.ca> <5475E4EC.7090309@hurleysoftware.com>
-From:   Grant Likely <grant.likely@linaro.org>
-Date:   Thu, 27 Nov 2014 13:50:01 +0000
-X-Google-Sender-Auth: 6OJHuFO4w3hbCYggudgN19Ej4nI
-Message-ID: <CACxGe6uLWZav=AfaK2w17PW6vtxF8S0=OUvCMB-uFSvhs2cLtw@mail.gmail.com>
-Subject: Re: [PATCH V2 01/10] tty: Fallback to use dynamic major number
-To:     Peter Hurley <peter@hurleysoftware.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Nov 2014 15:34:13 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.131]:61240 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007342AbaK0OeLFhC3v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Nov 2014 15:34:11 +0100
+Received: from wuerfel.localnet (HSI-KBW-149-172-15-242.hsi13.kabel-badenwuerttemberg.de [149.172.15.242])
+        by mrelayeu.kundenserver.de (node=mreue002) with ESMTP (Nemesis)
+        id 0MT3QL-1XSG7n2KXd-00RmQr; Thu, 27 Nov 2014 15:33:58 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Grant Likely <grant.likely@linaro.org>
+Cc:     Peter Hurley <peter@hurleysoftware.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
         Greg KH <gregkh@linuxfoundation.org>,
         Jiri Slaby <jslaby@suse.cz>, Rob Herring <robh@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>,
+        Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Florian Fainelli <f.fainelli@gmail.com>,
@@ -45,16 +22,33 @@ Cc:     Kevin Cernekee <cernekee@gmail.com>,
         "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         tushar.b@samsung.com
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <glikely@secretlab.ca>
+Subject: Re: [PATCH V2 01/10] tty: Fallback to use dynamic major number
+Date:   Thu, 27 Nov 2014 15:33:58 +0100
+Message-ID: <4316435.J1BtEYnd6C@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CACxGe6uLWZav=AfaK2w17PW6vtxF8S0=OUvCMB-uFSvhs2cLtw@mail.gmail.com>
+References: <1415825647-6024-1-git-send-email-cernekee@gmail.com> <5475E4EC.7090309@hurleysoftware.com> <CACxGe6uLWZav=AfaK2w17PW6vtxF8S0=OUvCMB-uFSvhs2cLtw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V02:K0:KfJodE+LfUEy3drlenfHseRVSnMOR9cE8fURDZc5pb+
+ wZX2PjnzlSFANHNOA1jQlA273Do5vf40BsQB72RZjlUDzllAJE
+ xoVxO2OGWBo0Qz8iJEMfgiwdXDC4Zjy+8A/c6Gs8687cA0j6RM
+ hmPTYynlTyPjFikMes0rY0FleKwQ7tSdFIxNBuJ4bB1watWDHh
+ I6v+CVGASMMgJdh7DLs3iKSZY1WSpNq7c7JuD/3DRwfESadPMj
+ zUlHhCfJRUuazeTaJlrZ4/hqe9/Zr5s3rxMlM2dl6m0HuD4IvO
+ NGCekh2pwum3K5jEyQWOMHWKxTDrOeNvE3Cmuvvcdr0PtoRX9G
+ Gl3Yd1KI8RwYd8/9sAUQ=
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44487
+X-archive-position: 44488
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@linaro.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,40 +61,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 26, 2014 at 2:34 PM, Peter Hurley <peter@hurleysoftware.com> wrote:
-> On 11/26/2014 08:33 AM, Grant Likely wrote:
->> On Tue, 25 Nov 2014 15:37:16 -0800
->> , Kevin Cernekee <cernekee@gmail.com>
->>  wrote:
->>> On Tue, Nov 25, 2014 at 12:34 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
->>>> On Wed, Nov 12, 2014 at 12:53:58PM -0800, Kevin Cernekee wrote:
->>>>> From: Tushar Behera <tushar.behera@linaro.org>
->>>>
->>>> This email bounces, so I'm going to have to reject this patch.  I can't
->>>> accept a patch from a "fake" person, let alone something that touches
->>>> core code like this.
->>>>
->>>> Sorry, I can't accept anything in this series then.
->>>
->>> Oops, guess I probably should have updated his address after the V1
->>> emails bounced...
->>>
->>> Before I send a new version, what do you think about the overall
->>> approach?  Should we try to make serial8250 coexist with the other
->>> "ttyS / major 4 / minor 64" drivers (possibly at the expense of
->>> compatibility) or is it better to start with a simpler, cleaner driver
->>> like serial/pxa?
->>
->> Co-existing really needs to be fixed.
->
-> What are the requirements for co-existence?
-> Is it sufficient to provide 1st come-1st served minor allocation?
+On Thursday 27 November 2014 13:50:01 Grant Likely wrote:
+> 
+> Should be sufficient. Basically, if the hardware doesn't exist, the
+> driver shouldn't be trying to grab the minor numbers.
+> 
+> Also, on hardware where both exists, there should be some sane
+> fallback so that all UARTs get assigned numbers. On DT systems we can
+> also use /aliases to ensure consistent assignment of numbers.
 
-Should be sufficient. Basically, if the hardware doesn't exist, the
-driver shouldn't be trying to grab the minor numbers.
+From what I can see, this is really the ISA compatibility code
+in the 8250 driver, and we should be able to make that optional
+or even move it into a separate glue driver.
 
-Also, on hardware where both exists, there should be some sane
-fallback so that all UARTs get assigned numbers. On DT systems we can
-also use /aliases to ensure consistent assignment of numbers.
+Basically the serial8250_init function tries to do a lot of things
+at once (skipping error handling):
 
-g.
+        serial8250_isa_init_ports();
+        ret = sunserial_register_minors(&serial8250_reg, UART_NR);
+	serial8250_reg.nr = UART_NR;
+        ret = uart_register_driver(&serial8250_reg);
+        ret = serial8250_pnp_init();
+        serial8250_isa_devs = platform_device_alloc("serial8250",
+                                                   PLAT8250_DEV_LEGACY);
+        ret = platform_device_add(serial8250_isa_devs);
+        serial8250_register_ports(&serial8250_reg, &serial8250_isa_devs->dev);
+        ret = platform_driver_register(&serial8250_isa_driver);
+
+The only thing we want from this is the uart_register_driver() call,
+everything else is only needed together with the ISA support. The way
+that uart_register_driver() works unfortunately implies that you know
+the maximum number of ports at driver init time, which would need
+to be changed if you want to share the numbers.
+
+One idea I had a few years ago when we discussed this was to treat
+the major 4 allocation differently so you could share it between all
+sorts of drivers as an opt-in, but could have all unmodified continue
+using their own device names and numbers.
+
+	Arnd

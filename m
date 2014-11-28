@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2014 08:49:07 +0100 (CET)
-Received: from mail-ig0-f174.google.com ([209.85.213.174]:33201 "EHLO
-        mail-ig0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007501AbaK1HtCMZ2eY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Nov 2014 08:49:02 +0100
-Received: by mail-ig0-f174.google.com with SMTP id hn15so9552232igb.1
-        for <multiple recipients>; Thu, 27 Nov 2014 23:48:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=EZ8yycOu4Sbq3LejMO/5+xiNvN48VCjiGdluNBrj1w0=;
-        b=v7q7GzGiH++WFwxC/OcrbTBc1ja5CKzXJq6u494Gqdn1rq+f0F+GUGYYFFY5Z7ouBe
-         7vIhJlzuv1XY74qZoufVIhg72wtONLN5K3R+BVyIp6mn+euRMzow83n+r2L1Su9b2EN+
-         6qhvdahNXeE4xJg2BgaBE2diHTyKPnakthX65b0MV3tS0DiflKRqNPsCmeL7koWdzVDv
-         SoHddXWfr2nDiZjDl2vkw//azqdZDU5ENtBkTluCj3czTiZ72O6wSVvh8es7cQ+WCTSJ
-         YOpZxRfX7XgUNmqv6kz0cO9e2JWwoUzMMP2daDGY8cuqEUOlauXITIQ838LJLjLfeMvZ
-         XZXA==
-X-Received: by 10.50.21.99 with SMTP id u3mr5535255ige.43.1417160936292; Thu,
- 27 Nov 2014 23:48:56 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.64.246.168 with HTTP; Thu, 27 Nov 2014 23:48:36 -0800 (PST)
-In-Reply-To: <1416561389-1046-1-git-send-email-chenhc@lemote.com>
-References: <1416561389-1046-1-git-send-email-chenhc@lemote.com>
-From:   Alexandre Courbot <gnurou@gmail.com>
-Date:   Fri, 28 Nov 2014 16:48:36 +0900
-Message-ID: <CAAVeFu+CUCja6jxb0XONj80-6te1t31A49F4owNkWkoy7PcHuQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2014 14:15:37 +0100 (CET)
+Received: from smtpbg62.qq.com ([103.7.29.139]:56690 "EHLO smtpbg64.qq.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27007340AbaK1NPaiYWfM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Nov 2014 14:15:30 +0100
+X-QQ-GoodBg: 0
+X-QQ-SSF: 00100000000000F0
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 117.83.35.139
+X-QQ-STYLE: 
+X-QQ-mid: bizmail38t1417180496t7544757
+From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
+To:     "=?utf-8?B?QWxleGFuZHJlIENvdXJib3Q=?=" <gnurou@gmail.com>
+Cc:     "=?utf-8?B?UmFsZiBCYWVjaGxl?=" <ralf@linux-mips.org>,
+        "=?utf-8?B?Sm9obiBDcmlzcGlu?=" <john@phrozen.org>,
+        "=?utf-8?B?U3RldmVuIEouIEhpbGw=?=" <Steven.Hill@imgtec.com>,
+        "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
+        "=?utf-8?B?RnV4aW4gWmhhbmc=?=" <zhangfx@lemote.com>,
+        "=?utf-8?B?d3V6aGFuZ2ppbg==?=" <wuzhangjin@gmail.com>,
+        "=?utf-8?B?bGludXgtZ3Bpb0B2Z2VyLmtlcm5lbC5vcmc=?=" 
+        <linux-gpio@vger.kernel.org>
 Subject: Re: [PATCH V5 2/7] MIPS: Cleanup Loongson-2F's gpio driver
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gnurou@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: base64
+Date:   Fri, 28 Nov 2014 21:14:56 +0800
+X-Priority: 3
+Message-ID: <tencent_60EBDA3907E4C1985C37621B@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <1416561389-1046-1-git-send-email-chenhc@lemote.com>
+        <CAAVeFu+CUCja6jxb0XONj80-6te1t31A49F4owNkWkoy7PcHuQ@mail.gmail.com>
+In-Reply-To: <CAAVeFu+CUCja6jxb0XONj80-6te1t31A49F4owNkWkoy7PcHuQ@mail.gmail.com>
+X-QQ-ReplyHash: 4157959664
+X-QQ-SENDSIZE: 520
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44508
+X-archive-position: 44510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnurou@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,161 +56,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 21, 2014 at 6:16 PM, Huacai Chen <chenhc@lemote.com> wrote:
-> This cleanup is prepare to move the driver to drivers/gpio. Custom
-> definitions of gpio_get_value()/gpio_set_value() are dropped.
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->  arch/mips/include/asm/mach-loongson/gpio.h |   15 +++---
->  arch/mips/loongson/common/gpio.c           |   82 +++++++++++-----------------
->  2 files changed, 39 insertions(+), 58 deletions(-)
->
-> diff --git a/arch/mips/include/asm/mach-loongson/gpio.h b/arch/mips/include/asm/mach-loongson/gpio.h
-> index 211a7b7..b3b2169 100644
-> --- a/arch/mips/include/asm/mach-loongson/gpio.h
-> +++ b/arch/mips/include/asm/mach-loongson/gpio.h
-> @@ -1,8 +1,9 @@
->  /*
-> - * STLS2F GPIO Support
-> + * Loongson GPIO Support
->   *
->   * Copyright (c) 2008  Richard Liu, STMicroelectronics <richard.liu@st.com>
->   * Copyright (c) 2008-2010  Arnaud Patard <apatard@mandriva.com>
-> + * Copyright (c) 2014  Huacai Chen <chenhc@lemote.com>
->   *
->   * This program is free software; you can redistribute it and/or modify
->   * it under the terms of the GNU General Public License as published by
-> @@ -10,14 +11,14 @@
->   * (at your option) any later version.
->   */
->
-> -#ifndef __STLS2F_GPIO_H
-> -#define __STLS2F_GPIO_H
-> +#ifndef __LOONGSON_GPIO_H
-> +#define __LOONGSON_GPIO_H
->
->  #include <asm-generic/gpio.h>
->
-> -extern void gpio_set_value(unsigned gpio, int value);
-> -extern int gpio_get_value(unsigned gpio);
-> -extern int gpio_cansleep(unsigned gpio);
-> +#define gpio_get_value __gpio_get_value
-> +#define gpio_set_value __gpio_set_value
-> +#define gpio_cansleep __gpio_cansleep
-
-Since this architecture is using the standard GPIO functions, can't we
-simply get rid of this file and the ARCH_HAVE_CUSTOM_GPIO_H option so
-the already-defined inline functions in include/linux/gpio.h are used
-instead?
-
->
->  /* The chip can do interrupt
->   * but it has not been tested and doc not clear
-> @@ -32,4 +33,4 @@ static inline int irq_to_gpio(int gpio)
->         return -EINVAL;
->  }
->
-> -#endif                         /* __STLS2F_GPIO_H */
-> +#endif /* __LOONGSON_GPIO_H */
-> diff --git a/arch/mips/loongson/common/gpio.c b/arch/mips/loongson/common/gpio.c
-> index 29dbaa2..087aac3 100644
-> --- a/arch/mips/loongson/common/gpio.c
-> +++ b/arch/mips/loongson/common/gpio.c
-> @@ -24,55 +24,6 @@
->
->  static DEFINE_SPINLOCK(gpio_lock);
->
-> -int gpio_get_value(unsigned gpio)
-> -{
-> -       u32 val;
-> -       u32 mask;
-> -
-> -       if (gpio >= STLS2F_N_GPIO)
-> -               return __gpio_get_value(gpio);
-> -
-> -       mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
-> -       spin_lock(&gpio_lock);
-> -       val = LOONGSON_GPIODATA;
-> -       spin_unlock(&gpio_lock);
-> -
-> -       return (val & mask) != 0;
-> -}
-> -EXPORT_SYMBOL(gpio_get_value);
-> -
-> -void gpio_set_value(unsigned gpio, int state)
-> -{
-> -       u32 val;
-> -       u32 mask;
-> -
-> -       if (gpio >= STLS2F_N_GPIO) {
-> -               __gpio_set_value(gpio, state);
-> -               return ;
-> -       }
-> -
-> -       mask = 1 << gpio;
-> -
-> -       spin_lock(&gpio_lock);
-> -       val = LOONGSON_GPIODATA;
-> -       if (state)
-> -               val |= mask;
-> -       else
-> -               val &= (~mask);
-> -       LOONGSON_GPIODATA = val;
-> -       spin_unlock(&gpio_lock);
-> -}
-> -EXPORT_SYMBOL(gpio_set_value);
-> -
-> -int gpio_cansleep(unsigned gpio)
-> -{
-> -       if (gpio < STLS2F_N_GPIO)
-> -               return 0;
-> -       else
-> -               return __gpio_cansleep(gpio);
-> -}
-> -EXPORT_SYMBOL(gpio_cansleep);
-> -
->  static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
->  {
->         u32 temp;
-> @@ -113,13 +64,41 @@ static int ls2f_gpio_direction_output(struct gpio_chip *chip,
->
->  static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
->  {
-> -       return gpio_get_value(gpio);
-> +       u32 val;
-> +       u32 mask;
-> +
-> +       if (gpio >= STLS2F_N_GPIO)
-> +               return __gpio_get_value(gpio);
-
-This condition should not be needed. gpiolib will always use the right chip now.
-
-> +
-> +       mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
-> +       spin_lock(&gpio_lock);
-> +       val = LOONGSON_GPIODATA;
-> +       spin_unlock(&gpio_lock);
-> +
-> +       return (val & mask) != 0;
->  }
->
->  static void ls2f_gpio_set_value(struct gpio_chip *chip,
->                 unsigned gpio, int value)
->  {
-> -       gpio_set_value(gpio, value);
-> +       u32 val;
-> +       u32 mask;
-> +
-> +       if (gpio >= STLS2F_N_GPIO) {
-> +               __gpio_set_value(gpio, value);
-> +               return;
-> +       }
-
-Same here, this should not be needed at all.
-
-Also, have you tested that this driver still works after being moved
-to drivers/gpio? You are including a <loongson.h> that I am not sure
-the compiler will find from there. I also suspect the arch_initcall is
-not ideal anymore if you compile the driver as a module - you may want
-to remove that option if GPIOs are used early in system boot.
+SGksIEFsZXhhbmRyZSwNCg0KSSdtIGFmcmFpZCB0aGF0IEFSQ0hfSEFWRV9DVVNUT01fR1BJ
+T19IIGNhbm5vdCBiZSBzaW1wbHkgcmVtb3ZlZCwgYmVjYXVzZSBBUkNIX0hBVkVfQ1VTVE9N
+X0dQSU9fSCBpcyBzbGVjdGVkIGJ5IENPTkZJR19NSVBTLCBvdGhlciBNSVBTIENQVSAobm90
+IExvb25nc29uKSBtYXkgbmVlZCBpdC4NCiANCkh1YWNhaQ0KIA0KLS0tLS0tLS0tLS0tLS0t
+LS0tIE9yaWdpbmFsIC0tLS0tLS0tLS0tLS0tLS0tLQ0KRnJvbTogICJBbGV4YW5kcmUgQ291
+cmJvdCI8Z251cm91QGdtYWlsLmNvbT47DQpEYXRlOiAgRnJpLCBOb3YgMjgsIDIwMTQgMDM6
+NDggUE0NClRvOiAgIkh1YWNhaSBDaGVuIjxjaGVuaGNAbGVtb3RlLmNvbT47DQpDYzogICJS
+YWxmIEJhZWNobGUiPHJhbGZAbGludXgtbWlwcy5vcmc+OyAiSm9obiBDcmlzcGluIjxqb2hu
+QHBocm96ZW4ub3JnPjsgIlN0ZXZlbiBKLiBIaWxsIjxTdGV2ZW4uSGlsbEBpbWd0ZWMuY29t
+PjsgImxpbnV4LW1pcHMiPGxpbnV4LW1pcHNAbGludXgtbWlwcy5vcmc+OyAiRnV4aW4gWmhh
+bmciPHpoYW5nZnhAbGVtb3RlLmNvbT47ICJ3dXpoYW5namluIjx3dXpoYW5namluQGdtYWls
+LmNvbT47ICJsaW51eC1ncGlvQHZnZXIua2VybmVsLm9yZyI8bGludXgtZ3Bpb0B2Z2VyLmtl
+cm5lbC5vcmc+Ow0KU3ViamVjdDogIFJlOiBbUEFUQ0ggVjUgMi83XSBNSVBTOiBDbGVhbnVw
+IExvb25nc29uLTJGJ3MgZ3BpbyBkcml2ZXINCiANCk9uIEZyaSwgTm92IDIxLCAyMDE0IGF0
+IDY6MTYgUE0sIEh1YWNhaSBDaGVuIDxjaGVuaGNAbGVtb3RlLmNvbT4gd3JvdGU6DQo+IFRo
+aXMgY2xlYW51cCBpcyBwcmVwYXJlIHRvIG1vdmUgdGhlIGRyaXZlciB0byBkcml2ZXJzL2dw
+aW8uIEN1c3RvbQ0KPiBkZWZpbml0aW9ucyBvZiBncGlvX2dldF92YWx1ZSgpL2dwaW9fc2V0
+X3ZhbHVlKCkgYXJlIGRyb3BwZWQuDQo+DQo+IFNpZ25lZC1vZmYtYnk6IEh1YWNhaSBDaGVu
+IDxjaGVuaGNAbGVtb3RlLmNvbT4NCj4gLS0tDQo+ICBhcmNoL21pcHMvaW5jbHVkZS9hc20v
+bWFjaC1sb29uZ3Nvbi9ncGlvLmggfCAgIDE1ICsrKy0tLQ0KPiAgYXJjaC9taXBzL2xvb25n
+c29uL2NvbW1vbi9ncGlvLmMgICAgICAgICAgIHwgICA4MiArKysrKysrKysrKy0tLS0tLS0t
+LS0tLS0tLS0tDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDM5IGluc2VydGlvbnMoKyksIDU4IGRl
+bGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21h
+Y2gtbG9vbmdzb24vZ3Bpby5oIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21hY2gtbG9vbmdz
+b24vZ3Bpby5oDQo+IGluZGV4IDIxMWE3YjcuLmIzYjIxNjkgMTAwNjQ0DQo+IC0tLSBhL2Fy
+Y2gvbWlwcy9pbmNsdWRlL2FzbS9tYWNoLWxvb25nc29uL2dwaW8uaA0KPiArKysgYi9hcmNo
+L21pcHMvaW5jbHVkZS9hc20vbWFjaC1sb29uZ3Nvbi9ncGlvLmgNCj4gQEAgLTEsOCArMSw5
+IEBADQo+ICAvKg0KPiAtICogU1RMUzJGIEdQSU8gU3VwcG9ydA0KPiArICogTG9vbmdzb24g
+R1BJTyBTdXBwb3J0DQo+ICAgKg0KPiAgICogQ29weXJpZ2h0IChjKSAyMDA4ICBSaWNoYXJk
+IExpdSwgU1RNaWNyb2VsZWN0cm9uaWNzIDxyaWNoYXJkLmxpdUBzdC5jb20+DQo+ICAgKiBD
+b3B5cmlnaHQgKGMpIDIwMDgtMjAxMCAgQXJuYXVkIFBhdGFyZCA8YXBhdGFyZEBtYW5kcml2
+YS5jb20+DQo+ICsgKiBDb3B5cmlnaHQgKGMpIDIwMTQgIEh1YWNhaSBDaGVuIDxjaGVuaGNA
+bGVtb3RlLmNvbT4NCj4gICAqDQo+ICAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
+ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQ0KPiAgICogaXQgdW5k
+ZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJs
+aXNoZWQgYnkNCj4gQEAgLTEwLDE0ICsxMSwxNCBAQA0KPiAgICogKGF0IHlvdXIgb3B0aW9u
+KSBhbnkgbGF0ZXIgdmVyc2lvbi4NCj4gICAqLw0KPg0KPiAtI2lmbmRlZiBfX1NUTFMyRl9H
+UElPX0gNCj4gLSNkZWZpbmUgX19TVExTMkZfR1BJT19IDQo+ICsjaWZuZGVmIF9fTE9PTkdT
+T05fR1BJT19IDQo+ICsjZGVmaW5lIF9fTE9PTkdTT05fR1BJT19IDQo+DQo+ICAjaW5jbHVk
+ZSA8YXNtLWdlbmVyaWMvZ3Bpby5oPg0KPg0KPiAtZXh0ZXJuIHZvaWQgZ3Bpb19zZXRfdmFs
+dWUodW5zaWduZWQgZ3BpbywgaW50IHZhbHVlKTsNCj4gLWV4dGVybiBpbnQgZ3Bpb19nZXRf
+dmFsdWUodW5zaWduZWQgZ3Bpbyk7DQo+IC1leHRlcm4gaW50IGdwaW9fY2Fuc2xlZXAodW5z
+aWduZWQgZ3Bpbyk7DQo+ICsjZGVmaW5lIGdwaW9fZ2V0X3ZhbHVlIF9fZ3Bpb19nZXRfdmFs
+dWUNCj4gKyNkZWZpbmUgZ3Bpb19zZXRfdmFsdWUgX19ncGlvX3NldF92YWx1ZQ0KPiArI2Rl
+ZmluZSBncGlvX2NhbnNsZWVwIF9fZ3Bpb19jYW5zbGVlcA0KDQpTaW5jZSB0aGlzIGFyY2hp
+dGVjdHVyZSBpcyB1c2luZyB0aGUgc3RhbmRhcmQgR1BJTyBmdW5jdGlvbnMsIGNhbid0IHdl
+DQpzaW1wbHkgZ2V0IHJpZCBvZiB0aGlzIGZpbGUgYW5kIHRoZSBBUkNIX0hBVkVfQ1VTVE9N
+X0dQSU9fSCBvcHRpb24gc28NCnRoZSBhbHJlYWR5LWRlZmluZWQgaW5saW5lIGZ1bmN0aW9u
+cyBpbiBpbmNsdWRlL2xpbnV4L2dwaW8uaCBhcmUgdXNlZA0KaW5zdGVhZD8NCg0KPg0KPiAg
+LyogVGhlIGNoaXAgY2FuIGRvIGludGVycnVwdA0KPiAgICogYnV0IGl0IGhhcyBub3QgYmVl
+biB0ZXN0ZWQgYW5kIGRvYyBub3QgY2xlYXINCj4gQEAgLTMyLDQgKzMzLDQgQEAgc3RhdGlj
+IGlubGluZSBpbnQgaXJxX3RvX2dwaW8oaW50IGdwaW8pDQo+ICAgICAgICAgcmV0dXJuIC1F
+SU5WQUw7DQo+ICB9DQo+DQo+IC0jZW5kaWYgICAgICAgICAgICAgICAgICAgICAgICAgLyog
+X19TVExTMkZfR1BJT19IICovDQo+ICsjZW5kaWYgLyogX19MT09OR1NPTl9HUElPX0ggKi8N
+Cj4gZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9sb29uZ3Nvbi9jb21tb24vZ3Bpby5jIGIvYXJj
+aC9taXBzL2xvb25nc29uL2NvbW1vbi9ncGlvLmMNCj4gaW5kZXggMjlkYmFhMi4uMDg3YWFj
+MyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9taXBzL2xvb25nc29uL2NvbW1vbi9ncGlvLmMNCj4g
+KysrIGIvYXJjaC9taXBzL2xvb25nc29uL2NvbW1vbi9ncGlvLmMNCj4gQEAgLTI0LDU1ICsy
+NCw2IEBADQo+DQo+ICBzdGF0aWMgREVGSU5FX1NQSU5MT0NLKGdwaW9fbG9jayk7DQo+DQo+
+IC1pbnQgZ3Bpb19nZXRfdmFsdWUodW5zaWduZWQgZ3BpbykNCj4gLXsNCj4gLSAgICAgICB1
+MzIgdmFsOw0KPiAtICAgICAgIHUzMiBtYXNrOw0KPiAtDQo+IC0gICAgICAgaWYgKGdwaW8g
+Pj0gU1RMUzJGX05fR1BJTykNCj4gLSAgICAgICAgICAgICAgIHJldHVybiBfX2dwaW9fZ2V0
+X3ZhbHVlKGdwaW8pOw0KPiAtDQo+IC0gICAgICAgbWFzayA9IDEgPDwgKGdwaW8gKyBTVExT
+MkZfR1BJT19JTl9PRkZTRVQpOw0KPiAtICAgICAgIHNwaW5fbG9jaygmZ3Bpb19sb2NrKTsN
+Cj4gLSAgICAgICB2YWwgPSBMT09OR1NPTl9HUElPREFUQTsNCj4gLSAgICAgICBzcGluX3Vu
+bG9jaygmZ3Bpb19sb2NrKTsNCj4gLQ0KPiAtICAgICAgIHJldHVybiAodmFsICYgbWFzaykg
+IT0gMDsNCj4gLX0NCj4gLUVYUE9SVF9TWU1CT0woZ3Bpb19nZXRfdmFsdWUpOw0KPiAtDQo+
+IC12b2lkIGdwaW9fc2V0X3ZhbHVlKHVuc2lnbmVkIGdwaW8sIGludCBzdGF0ZSkNCj4gLXsN
+Cj4gLSAgICAgICB1MzIgdmFsOw0KPiAtICAgICAgIHUzMiBtYXNrOw0KPiAtDQo+IC0gICAg
+ICAgaWYgKGdwaW8gPj0gU1RMUzJGX05fR1BJTykgew0KPiAtICAgICAgICAgICAgICAgX19n
+cGlvX3NldF92YWx1ZShncGlvLCBzdGF0ZSk7DQo+IC0gICAgICAgICAgICAgICByZXR1cm4g
+Ow0KPiAtICAgICAgIH0NCj4gLQ0KPiAtICAgICAgIG1hc2sgPSAxIDw8IGdwaW87DQo+IC0N
+Cj4gLSAgICAgICBzcGluX2xvY2soJmdwaW9fbG9jayk7DQo+IC0gICAgICAgdmFsID0gTE9P
+TkdTT05fR1BJT0RBVEE7DQo+IC0gICAgICAgaWYgKHN0YXRlKQ0KPiAtICAgICAgICAgICAg
+ICAgdmFsIHw9IG1hc2s7DQo+IC0gICAgICAgZWxzZQ0KPiAtICAgICAgICAgICAgICAgdmFs
+ICY9ICh+bWFzayk7DQo+IC0gICAgICAgTE9PTkdTT05fR1BJT0RBVEEgPSB2YWw7DQo+IC0g
+ICAgICAgc3Bpbl91bmxvY2soJmdwaW9fbG9jayk7DQo+IC19DQo+IC1FWFBPUlRfU1lNQk9M
+KGdwaW9fc2V0X3ZhbHVlKTsNCj4gLQ0KPiAtaW50IGdwaW9fY2Fuc2xlZXAodW5zaWduZWQg
+Z3BpbykNCj4gLXsNCj4gLSAgICAgICBpZiAoZ3BpbyA8IFNUTFMyRl9OX0dQSU8pDQo+IC0g
+ICAgICAgICAgICAgICByZXR1cm4gMDsNCj4gLSAgICAgICBlbHNlDQo+IC0gICAgICAgICAg
+ICAgICByZXR1cm4gX19ncGlvX2NhbnNsZWVwKGdwaW8pOw0KPiAtfQ0KPiAtRVhQT1JUX1NZ
+TUJPTChncGlvX2NhbnNsZWVwKTsNCj4gLQ0KPiAgc3RhdGljIGludCBsczJmX2dwaW9fZGly
+ZWN0aW9uX2lucHV0KHN0cnVjdCBncGlvX2NoaXAgKmNoaXAsIHVuc2lnbmVkIGdwaW8pDQo+
+ICB7DQo+ICAgICAgICAgdTMyIHRlbXA7DQo+IEBAIC0xMTMsMTMgKzY0LDQxIEBAIHN0YXRp
+YyBpbnQgbHMyZl9ncGlvX2RpcmVjdGlvbl9vdXRwdXQoc3RydWN0IGdwaW9fY2hpcCAqY2hp
+cCwNCj4NCj4gIHN0YXRpYyBpbnQgbHMyZl9ncGlvX2dldF92YWx1ZShzdHJ1Y3QgZ3Bpb19j
+aGlwICpjaGlwLCB1bnNpZ25lZCBncGlvKQ0KPiAgew0KPiAtICAgICAgIHJldHVybiBncGlv
+X2dldF92YWx1ZShncGlvKTsNCj4gKyAgICAgICB1MzIgdmFsOw0KPiArICAgICAgIHUzMiBt
+YXNrOw0KPiArDQo+ICsgICAgICAgaWYgKGdwaW8gPj0gU1RMUzJGX05fR1BJTykNCj4gKyAg
+ICAgICAgICAgICAgIHJldHVybiBfX2dwaW9fZ2V0X3ZhbHVlKGdwaW8pOw0KDQpUaGlzIGNv
+bmRpdGlvbiBzaG91bGQgbm90IGJlIG5lZWRlZC4gZ3Bpb2xpYiB3aWxsIGFsd2F5cyB1c2Ug
+dGhlIHJpZ2h0IGNoaXAgbm93Lg0KDQo+ICsNCj4gKyAgICAgICBtYXNrID0gMSA8PCAoZ3Bp
+byArIFNUTFMyRl9HUElPX0lOX09GRlNFVCk7DQo+ICsgICAgICAgc3Bpbl9sb2NrKCZncGlv
+X2xvY2spOw0KPiArICAgICAgIHZhbCA9IExPT05HU09OX0dQSU9EQVRBOw0KPiArICAgICAg
+IHNwaW5fdW5sb2NrKCZncGlvX2xvY2spOw0KPiArDQo+ICsgICAgICAgcmV0dXJuICh2YWwg
+JiBtYXNrKSAhPSAwOw0KPiAgfQ0KPg0KPiAgc3RhdGljIHZvaWQgbHMyZl9ncGlvX3NldF92
+YWx1ZShzdHJ1Y3QgZ3Bpb19jaGlwICpjaGlwLA0KPiAgICAgICAgICAgICAgICAgdW5zaWdu
+ZWQgZ3BpbywgaW50IHZhbHVlKQ0KPiAgew0KPiAtICAgICAgIGdwaW9fc2V0X3ZhbHVlKGdw
+aW8sIHZhbHVlKTsNCj4gKyAgICAgICB1MzIgdmFsOw0KPiArICAgICAgIHUzMiBtYXNrOw0K
+PiArDQo+ICsgICAgICAgaWYgKGdwaW8gPj0gU1RMUzJGX05fR1BJTykgew0KPiArICAgICAg
+ICAgICAgICAgX19ncGlvX3NldF92YWx1ZShncGlvLCB2YWx1ZSk7DQo+ICsgICAgICAgICAg
+ICAgICByZXR1cm47DQo+ICsgICAgICAgfQ0KDQpTYW1lIGhlcmUsIHRoaXMgc2hvdWxkIG5v
+dCBiZSBuZWVkZWQgYXQgYWxsLg0KDQpBbHNvLCBoYXZlIHlvdSB0ZXN0ZWQgdGhhdCB0aGlz
+IGRyaXZlciBzdGlsbCB3b3JrcyBhZnRlciBiZWluZyBtb3ZlZA0KdG8gZHJpdmVycy9ncGlv
+PyBZb3UgYXJlIGluY2x1ZGluZyBhIDxsb29uZ3Nvbi5oPiB0aGF0IEkgYW0gbm90IHN1cmUN
+CnRoZSBjb21waWxlciB3aWxsIGZpbmQgZnJvbSB0aGVyZS4gSSBhbHNvIHN1c3BlY3QgdGhl
+IGFyY2hfaW5pdGNhbGwgaXMNCm5vdCBpZGVhbCBhbnltb3JlIGlmIHlvdSBjb21waWxlIHRo
+ZSBkcml2ZXIgYXMgYSBtb2R1bGUgLSB5b3UgbWF5IHdhbnQNCnRvIHJlbW92ZSB0aGF0IG9w
+dGlvbiBpZiBHUElPcyBhcmUgdXNlZCBlYXJseSBpbiBzeXN0ZW0gYm9vdC4=

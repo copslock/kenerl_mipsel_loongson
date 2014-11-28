@@ -1,49 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2014 14:15:37 +0100 (CET)
-Received: from smtpbg62.qq.com ([103.7.29.139]:56690 "EHLO smtpbg64.qq.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007340AbaK1NPaiYWfM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Nov 2014 14:15:30 +0100
-X-QQ-GoodBg: 0
-X-QQ-SSF: 00100000000000F0
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 117.83.35.139
-X-QQ-STYLE: 
-X-QQ-mid: bizmail38t1417180496t7544757
-From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
-To:     "=?utf-8?B?QWxleGFuZHJlIENvdXJib3Q=?=" <gnurou@gmail.com>
-Cc:     "=?utf-8?B?UmFsZiBCYWVjaGxl?=" <ralf@linux-mips.org>,
-        "=?utf-8?B?Sm9obiBDcmlzcGlu?=" <john@phrozen.org>,
-        "=?utf-8?B?U3RldmVuIEouIEhpbGw=?=" <Steven.Hill@imgtec.com>,
-        "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
-        "=?utf-8?B?RnV4aW4gWmhhbmc=?=" <zhangfx@lemote.com>,
-        "=?utf-8?B?d3V6aGFuZ2ppbg==?=" <wuzhangjin@gmail.com>,
-        "=?utf-8?B?bGludXgtZ3Bpb0B2Z2VyLmtlcm5lbC5vcmc=?=" 
-        <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH V5 2/7] MIPS: Cleanup Loongson-2F's gpio driver
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: base64
-Date:   Fri, 28 Nov 2014 21:14:56 +0800
-X-Priority: 3
-Message-ID: <tencent_60EBDA3907E4C1985C37621B@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <1416561389-1046-1-git-send-email-chenhc@lemote.com>
-        <CAAVeFu+CUCja6jxb0XONj80-6te1t31A49F4owNkWkoy7PcHuQ@mail.gmail.com>
-In-Reply-To: <CAAVeFu+CUCja6jxb0XONj80-6te1t31A49F4owNkWkoy7PcHuQ@mail.gmail.com>
-X-QQ-ReplyHash: 4157959664
-X-QQ-SENDSIZE: 520
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2014 15:05:06 +0100 (CET)
+Received: from mail-wg0-f49.google.com ([74.125.82.49]:49945 "EHLO
+        mail-wg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007515AbaK1OE5c-ECU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Nov 2014 15:04:57 +0100
+Received: by mail-wg0-f49.google.com with SMTP id n12so680244wgh.8
+        for <multiple recipients>; Fri, 28 Nov 2014 06:04:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=reWA9qbUrACF852cd7lQGQmnoWVRZhGz/11o12Ia22E=;
+        b=CinBIUdtZ8PNJ5P4Rneyt5FdecqDYcLlOOPDl23V6SirQdRCM8RU+nQ7K0qfX7DYFz
+         E4ZdX9Ib90xadFyKpaPinkNq0/07WClrQiWN3l1EKvACYyXPn+yOtXgboPo6g3/A3DLi
+         txtTs6mVwYTn3b8q/no30T1iwKVPOCKQf2PEmG46iQZLwUAxxQ7AnAmwSDxwp6FLkCSf
+         gPWlTQpPrQqN+vJHPI+RJLseFQBdJ8aJMYn4QZPuIsT5mFeXSpSCZaAgtIZkTt9PHAGC
+         GrOwMOCl+vSGrNLWhwy2fcnCrOVk4d7lISzCQcIo+R806qBRyCEsG44ooxd6gXJToE+8
+         wwzw==
+X-Received: by 10.194.192.40 with SMTP id hd8mr23522419wjc.46.1417183492307;
+        Fri, 28 Nov 2014 06:04:52 -0800 (PST)
+Received: from cizrna.lan (37-48-38-127.tmcz.cz. [37.48.38.127])
+        by mx.google.com with ESMTPSA id gi5sm15151428wjd.26.2014.11.28.06.04.48
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 28 Nov 2014 06:04:50 -0800 (PST)
+From:   Tomeu Vizoso <tomeu.vizoso@collabora.com>
+To:     linux@vger.kernel.org
+Cc:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        sboyd@codeaurora.org, Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Alex Elder <elder@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-omap@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>,
+        Matt Porter <mporter@linaro.org>,
+        Mike Turquette <mturquette@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Tim Kryger <tim.kryger@linaro.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH v6 0/7] Per-user clock constraints
+Date:   Fri, 28 Nov 2014 15:03:21 +0100
+Message-Id: <1417183461-8210-1-git-send-email-tomeu.vizoso@collabora.com>
+X-Mailer: git-send-email 1.9.3
+Return-Path: <tomeu.vizoso@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44510
+X-archive-position: 44511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: tomeu.vizoso@collabora.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,112 +61,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SGksIEFsZXhhbmRyZSwNCg0KSSdtIGFmcmFpZCB0aGF0IEFSQ0hfSEFWRV9DVVNUT01fR1BJ
-T19IIGNhbm5vdCBiZSBzaW1wbHkgcmVtb3ZlZCwgYmVjYXVzZSBBUkNIX0hBVkVfQ1VTVE9N
-X0dQSU9fSCBpcyBzbGVjdGVkIGJ5IENPTkZJR19NSVBTLCBvdGhlciBNSVBTIENQVSAobm90
-IExvb25nc29uKSBtYXkgbmVlZCBpdC4NCiANCkh1YWNhaQ0KIA0KLS0tLS0tLS0tLS0tLS0t
-LS0tIE9yaWdpbmFsIC0tLS0tLS0tLS0tLS0tLS0tLQ0KRnJvbTogICJBbGV4YW5kcmUgQ291
-cmJvdCI8Z251cm91QGdtYWlsLmNvbT47DQpEYXRlOiAgRnJpLCBOb3YgMjgsIDIwMTQgMDM6
-NDggUE0NClRvOiAgIkh1YWNhaSBDaGVuIjxjaGVuaGNAbGVtb3RlLmNvbT47DQpDYzogICJS
-YWxmIEJhZWNobGUiPHJhbGZAbGludXgtbWlwcy5vcmc+OyAiSm9obiBDcmlzcGluIjxqb2hu
-QHBocm96ZW4ub3JnPjsgIlN0ZXZlbiBKLiBIaWxsIjxTdGV2ZW4uSGlsbEBpbWd0ZWMuY29t
-PjsgImxpbnV4LW1pcHMiPGxpbnV4LW1pcHNAbGludXgtbWlwcy5vcmc+OyAiRnV4aW4gWmhh
-bmciPHpoYW5nZnhAbGVtb3RlLmNvbT47ICJ3dXpoYW5namluIjx3dXpoYW5namluQGdtYWls
-LmNvbT47ICJsaW51eC1ncGlvQHZnZXIua2VybmVsLm9yZyI8bGludXgtZ3Bpb0B2Z2VyLmtl
-cm5lbC5vcmc+Ow0KU3ViamVjdDogIFJlOiBbUEFUQ0ggVjUgMi83XSBNSVBTOiBDbGVhbnVw
-IExvb25nc29uLTJGJ3MgZ3BpbyBkcml2ZXINCiANCk9uIEZyaSwgTm92IDIxLCAyMDE0IGF0
-IDY6MTYgUE0sIEh1YWNhaSBDaGVuIDxjaGVuaGNAbGVtb3RlLmNvbT4gd3JvdGU6DQo+IFRo
-aXMgY2xlYW51cCBpcyBwcmVwYXJlIHRvIG1vdmUgdGhlIGRyaXZlciB0byBkcml2ZXJzL2dw
-aW8uIEN1c3RvbQ0KPiBkZWZpbml0aW9ucyBvZiBncGlvX2dldF92YWx1ZSgpL2dwaW9fc2V0
-X3ZhbHVlKCkgYXJlIGRyb3BwZWQuDQo+DQo+IFNpZ25lZC1vZmYtYnk6IEh1YWNhaSBDaGVu
-IDxjaGVuaGNAbGVtb3RlLmNvbT4NCj4gLS0tDQo+ICBhcmNoL21pcHMvaW5jbHVkZS9hc20v
-bWFjaC1sb29uZ3Nvbi9ncGlvLmggfCAgIDE1ICsrKy0tLQ0KPiAgYXJjaC9taXBzL2xvb25n
-c29uL2NvbW1vbi9ncGlvLmMgICAgICAgICAgIHwgICA4MiArKysrKysrKysrKy0tLS0tLS0t
-LS0tLS0tLS0tDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDM5IGluc2VydGlvbnMoKyksIDU4IGRl
-bGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21h
-Y2gtbG9vbmdzb24vZ3Bpby5oIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21hY2gtbG9vbmdz
-b24vZ3Bpby5oDQo+IGluZGV4IDIxMWE3YjcuLmIzYjIxNjkgMTAwNjQ0DQo+IC0tLSBhL2Fy
-Y2gvbWlwcy9pbmNsdWRlL2FzbS9tYWNoLWxvb25nc29uL2dwaW8uaA0KPiArKysgYi9hcmNo
-L21pcHMvaW5jbHVkZS9hc20vbWFjaC1sb29uZ3Nvbi9ncGlvLmgNCj4gQEAgLTEsOCArMSw5
-IEBADQo+ICAvKg0KPiAtICogU1RMUzJGIEdQSU8gU3VwcG9ydA0KPiArICogTG9vbmdzb24g
-R1BJTyBTdXBwb3J0DQo+ICAgKg0KPiAgICogQ29weXJpZ2h0IChjKSAyMDA4ICBSaWNoYXJk
-IExpdSwgU1RNaWNyb2VsZWN0cm9uaWNzIDxyaWNoYXJkLmxpdUBzdC5jb20+DQo+ICAgKiBD
-b3B5cmlnaHQgKGMpIDIwMDgtMjAxMCAgQXJuYXVkIFBhdGFyZCA8YXBhdGFyZEBtYW5kcml2
-YS5jb20+DQo+ICsgKiBDb3B5cmlnaHQgKGMpIDIwMTQgIEh1YWNhaSBDaGVuIDxjaGVuaGNA
-bGVtb3RlLmNvbT4NCj4gICAqDQo+ICAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
-ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQ0KPiAgICogaXQgdW5k
-ZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJs
-aXNoZWQgYnkNCj4gQEAgLTEwLDE0ICsxMSwxNCBAQA0KPiAgICogKGF0IHlvdXIgb3B0aW9u
-KSBhbnkgbGF0ZXIgdmVyc2lvbi4NCj4gICAqLw0KPg0KPiAtI2lmbmRlZiBfX1NUTFMyRl9H
-UElPX0gNCj4gLSNkZWZpbmUgX19TVExTMkZfR1BJT19IDQo+ICsjaWZuZGVmIF9fTE9PTkdT
-T05fR1BJT19IDQo+ICsjZGVmaW5lIF9fTE9PTkdTT05fR1BJT19IDQo+DQo+ICAjaW5jbHVk
-ZSA8YXNtLWdlbmVyaWMvZ3Bpby5oPg0KPg0KPiAtZXh0ZXJuIHZvaWQgZ3Bpb19zZXRfdmFs
-dWUodW5zaWduZWQgZ3BpbywgaW50IHZhbHVlKTsNCj4gLWV4dGVybiBpbnQgZ3Bpb19nZXRf
-dmFsdWUodW5zaWduZWQgZ3Bpbyk7DQo+IC1leHRlcm4gaW50IGdwaW9fY2Fuc2xlZXAodW5z
-aWduZWQgZ3Bpbyk7DQo+ICsjZGVmaW5lIGdwaW9fZ2V0X3ZhbHVlIF9fZ3Bpb19nZXRfdmFs
-dWUNCj4gKyNkZWZpbmUgZ3Bpb19zZXRfdmFsdWUgX19ncGlvX3NldF92YWx1ZQ0KPiArI2Rl
-ZmluZSBncGlvX2NhbnNsZWVwIF9fZ3Bpb19jYW5zbGVlcA0KDQpTaW5jZSB0aGlzIGFyY2hp
-dGVjdHVyZSBpcyB1c2luZyB0aGUgc3RhbmRhcmQgR1BJTyBmdW5jdGlvbnMsIGNhbid0IHdl
-DQpzaW1wbHkgZ2V0IHJpZCBvZiB0aGlzIGZpbGUgYW5kIHRoZSBBUkNIX0hBVkVfQ1VTVE9N
-X0dQSU9fSCBvcHRpb24gc28NCnRoZSBhbHJlYWR5LWRlZmluZWQgaW5saW5lIGZ1bmN0aW9u
-cyBpbiBpbmNsdWRlL2xpbnV4L2dwaW8uaCBhcmUgdXNlZA0KaW5zdGVhZD8NCg0KPg0KPiAg
-LyogVGhlIGNoaXAgY2FuIGRvIGludGVycnVwdA0KPiAgICogYnV0IGl0IGhhcyBub3QgYmVl
-biB0ZXN0ZWQgYW5kIGRvYyBub3QgY2xlYXINCj4gQEAgLTMyLDQgKzMzLDQgQEAgc3RhdGlj
-IGlubGluZSBpbnQgaXJxX3RvX2dwaW8oaW50IGdwaW8pDQo+ICAgICAgICAgcmV0dXJuIC1F
-SU5WQUw7DQo+ICB9DQo+DQo+IC0jZW5kaWYgICAgICAgICAgICAgICAgICAgICAgICAgLyog
-X19TVExTMkZfR1BJT19IICovDQo+ICsjZW5kaWYgLyogX19MT09OR1NPTl9HUElPX0ggKi8N
-Cj4gZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9sb29uZ3Nvbi9jb21tb24vZ3Bpby5jIGIvYXJj
-aC9taXBzL2xvb25nc29uL2NvbW1vbi9ncGlvLmMNCj4gaW5kZXggMjlkYmFhMi4uMDg3YWFj
-MyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9taXBzL2xvb25nc29uL2NvbW1vbi9ncGlvLmMNCj4g
-KysrIGIvYXJjaC9taXBzL2xvb25nc29uL2NvbW1vbi9ncGlvLmMNCj4gQEAgLTI0LDU1ICsy
-NCw2IEBADQo+DQo+ICBzdGF0aWMgREVGSU5FX1NQSU5MT0NLKGdwaW9fbG9jayk7DQo+DQo+
-IC1pbnQgZ3Bpb19nZXRfdmFsdWUodW5zaWduZWQgZ3BpbykNCj4gLXsNCj4gLSAgICAgICB1
-MzIgdmFsOw0KPiAtICAgICAgIHUzMiBtYXNrOw0KPiAtDQo+IC0gICAgICAgaWYgKGdwaW8g
-Pj0gU1RMUzJGX05fR1BJTykNCj4gLSAgICAgICAgICAgICAgIHJldHVybiBfX2dwaW9fZ2V0
-X3ZhbHVlKGdwaW8pOw0KPiAtDQo+IC0gICAgICAgbWFzayA9IDEgPDwgKGdwaW8gKyBTVExT
-MkZfR1BJT19JTl9PRkZTRVQpOw0KPiAtICAgICAgIHNwaW5fbG9jaygmZ3Bpb19sb2NrKTsN
-Cj4gLSAgICAgICB2YWwgPSBMT09OR1NPTl9HUElPREFUQTsNCj4gLSAgICAgICBzcGluX3Vu
-bG9jaygmZ3Bpb19sb2NrKTsNCj4gLQ0KPiAtICAgICAgIHJldHVybiAodmFsICYgbWFzaykg
-IT0gMDsNCj4gLX0NCj4gLUVYUE9SVF9TWU1CT0woZ3Bpb19nZXRfdmFsdWUpOw0KPiAtDQo+
-IC12b2lkIGdwaW9fc2V0X3ZhbHVlKHVuc2lnbmVkIGdwaW8sIGludCBzdGF0ZSkNCj4gLXsN
-Cj4gLSAgICAgICB1MzIgdmFsOw0KPiAtICAgICAgIHUzMiBtYXNrOw0KPiAtDQo+IC0gICAg
-ICAgaWYgKGdwaW8gPj0gU1RMUzJGX05fR1BJTykgew0KPiAtICAgICAgICAgICAgICAgX19n
-cGlvX3NldF92YWx1ZShncGlvLCBzdGF0ZSk7DQo+IC0gICAgICAgICAgICAgICByZXR1cm4g
-Ow0KPiAtICAgICAgIH0NCj4gLQ0KPiAtICAgICAgIG1hc2sgPSAxIDw8IGdwaW87DQo+IC0N
-Cj4gLSAgICAgICBzcGluX2xvY2soJmdwaW9fbG9jayk7DQo+IC0gICAgICAgdmFsID0gTE9P
-TkdTT05fR1BJT0RBVEE7DQo+IC0gICAgICAgaWYgKHN0YXRlKQ0KPiAtICAgICAgICAgICAg
-ICAgdmFsIHw9IG1hc2s7DQo+IC0gICAgICAgZWxzZQ0KPiAtICAgICAgICAgICAgICAgdmFs
-ICY9ICh+bWFzayk7DQo+IC0gICAgICAgTE9PTkdTT05fR1BJT0RBVEEgPSB2YWw7DQo+IC0g
-ICAgICAgc3Bpbl91bmxvY2soJmdwaW9fbG9jayk7DQo+IC19DQo+IC1FWFBPUlRfU1lNQk9M
-KGdwaW9fc2V0X3ZhbHVlKTsNCj4gLQ0KPiAtaW50IGdwaW9fY2Fuc2xlZXAodW5zaWduZWQg
-Z3BpbykNCj4gLXsNCj4gLSAgICAgICBpZiAoZ3BpbyA8IFNUTFMyRl9OX0dQSU8pDQo+IC0g
-ICAgICAgICAgICAgICByZXR1cm4gMDsNCj4gLSAgICAgICBlbHNlDQo+IC0gICAgICAgICAg
-ICAgICByZXR1cm4gX19ncGlvX2NhbnNsZWVwKGdwaW8pOw0KPiAtfQ0KPiAtRVhQT1JUX1NZ
-TUJPTChncGlvX2NhbnNsZWVwKTsNCj4gLQ0KPiAgc3RhdGljIGludCBsczJmX2dwaW9fZGly
-ZWN0aW9uX2lucHV0KHN0cnVjdCBncGlvX2NoaXAgKmNoaXAsIHVuc2lnbmVkIGdwaW8pDQo+
-ICB7DQo+ICAgICAgICAgdTMyIHRlbXA7DQo+IEBAIC0xMTMsMTMgKzY0LDQxIEBAIHN0YXRp
-YyBpbnQgbHMyZl9ncGlvX2RpcmVjdGlvbl9vdXRwdXQoc3RydWN0IGdwaW9fY2hpcCAqY2hp
-cCwNCj4NCj4gIHN0YXRpYyBpbnQgbHMyZl9ncGlvX2dldF92YWx1ZShzdHJ1Y3QgZ3Bpb19j
-aGlwICpjaGlwLCB1bnNpZ25lZCBncGlvKQ0KPiAgew0KPiAtICAgICAgIHJldHVybiBncGlv
-X2dldF92YWx1ZShncGlvKTsNCj4gKyAgICAgICB1MzIgdmFsOw0KPiArICAgICAgIHUzMiBt
-YXNrOw0KPiArDQo+ICsgICAgICAgaWYgKGdwaW8gPj0gU1RMUzJGX05fR1BJTykNCj4gKyAg
-ICAgICAgICAgICAgIHJldHVybiBfX2dwaW9fZ2V0X3ZhbHVlKGdwaW8pOw0KDQpUaGlzIGNv
-bmRpdGlvbiBzaG91bGQgbm90IGJlIG5lZWRlZC4gZ3Bpb2xpYiB3aWxsIGFsd2F5cyB1c2Ug
-dGhlIHJpZ2h0IGNoaXAgbm93Lg0KDQo+ICsNCj4gKyAgICAgICBtYXNrID0gMSA8PCAoZ3Bp
-byArIFNUTFMyRl9HUElPX0lOX09GRlNFVCk7DQo+ICsgICAgICAgc3Bpbl9sb2NrKCZncGlv
-X2xvY2spOw0KPiArICAgICAgIHZhbCA9IExPT05HU09OX0dQSU9EQVRBOw0KPiArICAgICAg
-IHNwaW5fdW5sb2NrKCZncGlvX2xvY2spOw0KPiArDQo+ICsgICAgICAgcmV0dXJuICh2YWwg
-JiBtYXNrKSAhPSAwOw0KPiAgfQ0KPg0KPiAgc3RhdGljIHZvaWQgbHMyZl9ncGlvX3NldF92
-YWx1ZShzdHJ1Y3QgZ3Bpb19jaGlwICpjaGlwLA0KPiAgICAgICAgICAgICAgICAgdW5zaWdu
-ZWQgZ3BpbywgaW50IHZhbHVlKQ0KPiAgew0KPiAtICAgICAgIGdwaW9fc2V0X3ZhbHVlKGdw
-aW8sIHZhbHVlKTsNCj4gKyAgICAgICB1MzIgdmFsOw0KPiArICAgICAgIHUzMiBtYXNrOw0K
-PiArDQo+ICsgICAgICAgaWYgKGdwaW8gPj0gU1RMUzJGX05fR1BJTykgew0KPiArICAgICAg
-ICAgICAgICAgX19ncGlvX3NldF92YWx1ZShncGlvLCB2YWx1ZSk7DQo+ICsgICAgICAgICAg
-ICAgICByZXR1cm47DQo+ICsgICAgICAgfQ0KDQpTYW1lIGhlcmUsIHRoaXMgc2hvdWxkIG5v
-dCBiZSBuZWVkZWQgYXQgYWxsLg0KDQpBbHNvLCBoYXZlIHlvdSB0ZXN0ZWQgdGhhdCB0aGlz
-IGRyaXZlciBzdGlsbCB3b3JrcyBhZnRlciBiZWluZyBtb3ZlZA0KdG8gZHJpdmVycy9ncGlv
-PyBZb3UgYXJlIGluY2x1ZGluZyBhIDxsb29uZ3Nvbi5oPiB0aGF0IEkgYW0gbm90IHN1cmUN
-CnRoZSBjb21waWxlciB3aWxsIGZpbmQgZnJvbSB0aGVyZS4gSSBhbHNvIHN1c3BlY3QgdGhl
-IGFyY2hfaW5pdGNhbGwgaXMNCm5vdCBpZGVhbCBhbnltb3JlIGlmIHlvdSBjb21waWxlIHRo
-ZSBkcml2ZXIgYXMgYSBtb2R1bGUgLSB5b3UgbWF5IHdhbnQNCnRvIHJlbW92ZSB0aGF0IG9w
-dGlvbiBpZiBHUElPcyBhcmUgdXNlZCBlYXJseSBpbiBzeXN0ZW0gYm9vdC4=
+Hello,
+
+this sixth version of the series has a small fix in the per-user clks commit
+and the following changes in the clk constraints patch:
+
+* Take the prepare lock before removing a per-user clk
+* Init per-user clks list before adding the first clk
+* Pass the constraints to determine_rate and let clk implementations deal
+with constraints
+* Add clk_set_rate_range
+
+A rough test module was used to test this:
+
+http://cgit.collabora.com/git/user/tomeu/linux.git/commit/?h=per-user-clk-constraints-v6&id=1bada453ab690a1c5be28667d94a4861bc84f8ef
+
+The first five patches are just cleanups that should be desirable on their own,
+and that should make easier to review the actual per-user clock patch.
+
+The sixth patch actually moves the per-clock data that was stored in struct
+clk to a new struct clk_core and adds references to it from both struct clk and
+struct clk_hw. struct clk is now ready to contain information that is specific
+to a given clk consumer.
+
+The seventh patch adds API for setting floor and ceiling constraints and stores
+that information on the per-user struct clk, which is iterable from struct
+clk_core.
+
+They are based on top of linux-next 20141128.
+
+http://cgit.collabora.com/git/user/tomeu/linux.git/log/?h=per-user-clk-constraints-v6
+
+Thanks,
+
+Tomeu
+
+Tomeu Vizoso (7):
+  clk: Remove unused function __clk_get_prepare_count
+  clk: Don't try to use a struct clk* after it could have been freed
+  clk: Don't expose __clk_get_accuracy
+  clk: change clk_debugfs_add_file to take a struct clk_hw
+  clk: Change clk_ops->determine_rate to return a clk_hw as the best
+    parent
+  clk: Make clk API return per-user struct clk instances
+  clk: Add floor and ceiling constraints to clock rates
+
+ Documentation/clk.txt                   |   4 +-
+ arch/arm/mach-omap2/cclock3xxx_data.c   | 108 +++--
+ arch/arm/mach-omap2/clock.h             |  11 +-
+ arch/arm/mach-omap2/clock_common_data.c |   5 +-
+ arch/arm/mach-omap2/dpll3xxx.c          |   2 +
+ arch/arm/mach-omap2/dpll44xx.c          |   2 +
+ arch/mips/alchemy/common/clock.c        |  18 +-
+ drivers/clk/at91/clk-programmable.c     |   6 +-
+ drivers/clk/bcm/clk-kona.c              |   6 +-
+ drivers/clk/clk-composite.c             |  18 +-
+ drivers/clk/clk.c                       | 807 +++++++++++++++++++++-----------
+ drivers/clk/clk.h                       |   5 +
+ drivers/clk/clkdev.c                    |  73 ++-
+ drivers/clk/hisilicon/clk-hi3620.c      |   4 +-
+ drivers/clk/qcom/clk-pll.c              |   1 +
+ drivers/clk/qcom/clk-rcg.c              |  24 +-
+ drivers/clk/qcom/clk-rcg2.c             |  34 +-
+ drivers/clk/sunxi/clk-factors.c         |   6 +-
+ drivers/clk/sunxi/clk-sun6i-ar100.c     |   6 +-
+ include/linux/clk-private.h             |  41 +-
+ include/linux/clk-provider.h            |  26 +-
+ include/linux/clk.h                     |  28 ++
+ include/linux/clk/ti.h                  |   4 +
+ 23 files changed, 849 insertions(+), 390 deletions(-)
+
+-- 
+1.9.3

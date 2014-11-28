@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2014 05:37:08 +0100 (CET)
-Received: from mail-pd0-f171.google.com ([209.85.192.171]:34897 "EHLO
-        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007477AbaK1Edcd6No- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Nov 2014 05:33:32 +0100
-Received: by mail-pd0-f171.google.com with SMTP id y13so5957433pdi.30
-        for <multiple recipients>; Thu, 27 Nov 2014 20:33:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2014 05:37:26 +0100 (CET)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:57276 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007484AbaK1Edelad1h (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Nov 2014 05:33:34 +0100
+Received: by mail-pa0-f52.google.com with SMTP id eu11so6063399pac.11
+        for <multiple recipients>; Thu, 27 Nov 2014 20:33:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=svLyDntgSTS6yS8kecoJVUNvucWr2vYgG1T7qgb04EM=;
-        b=Oo1OAnCOKUseb66mbQirIBxVA4sJ7Q5rNYLXV0NePxMXXpBpJm94qHdTa9O+SmGf5g
-         a1E7YBVLXE54nk24AFB7jRkpJ3lQltQ1bfAafPCIOxIyJNyQZe2a/fsiVGsglk7zhq6M
-         tH/oZb2ESxeYT39HLbgAKPnFvSvfKHli0D9X7f6Bt3H6/ziaxoLrK0fPv9L6VJo368Nb
-         haLWQjmeKG/2KeUFQHad4Zl4RATknXzepABTgvbk+jmZcXBw+cUkW/YfS6GHZ/4hlZRh
-         CronKjNLx61r3biCMRoEeerOlHbCjNvpmrM8juSZ+C+KmZ0R2di0PJRGbJLYgk/pzHJ3
-         yvVQ==
-X-Received: by 10.68.174.131 with SMTP id bs3mr67949289pbc.20.1417149206927;
-        Thu, 27 Nov 2014 20:33:26 -0800 (PST)
+        bh=c/+CdoXZebe5NAESuE/Nf1xdoi20G0abf0A6T2qV6co=;
+        b=vxVWGJdfLBdkx4bQJJGFQD8HnzTs+iuAZ00V3KFJVO4XlUY6eWmY64JjYXoIn/JzQx
+         aXAPZk+LEeFZxTeY26wF+vrJE89yWqChvqeH0LjkCG8yRGKvObI5HdFk3YtRO0Hhx3xk
+         WAaYir+cY77HVHM7DwhX2fyHPYBjemiM5/+t9ZH8rWwu/pICMHAcvElC6fSIGh7P7U8u
+         kleBGqEsrv0xL5jESKNnixUd/bSlYZdX9/XZ9oePrNb1Ry/UF6UmW+LE1/e1T28Wlsf/
+         ojDpj3z8FN5EfbJogl3Qv1sW6KOaK90HI88xJx981AYASMJSlpH7AP09Ab7xr5yrYOAn
+         Jucw==
+X-Received: by 10.66.248.36 with SMTP id yj4mr69236367pac.51.1417149208806;
+        Thu, 27 Nov 2014 20:33:28 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id u5sm8482887pdc.79.2014.11.27.20.33.25
+        by mx.google.com with ESMTPSA id u5sm8482887pdc.79.2014.11.27.20.33.27
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 27 Nov 2014 20:33:26 -0800 (PST)
+        Thu, 27 Nov 2014 20:33:28 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, jfraser@broadcom.com, dtor@chromium.org,
@@ -29,9 +29,9 @@ Cc:     f.fainelli@gmail.com, jfraser@broadcom.com, dtor@chromium.org,
         arnd@arndb.de, computersforpeace@gmail.com,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V4 14/16] MIPS: BMIPS: Document the firmware->kernel DTB interface
-Date:   Thu, 27 Nov 2014 20:32:20 -0800
-Message-Id: <1417149142-3756-15-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V4 15/16] MIPS: Add Generic BMIPS target
+Date:   Thu, 27 Nov 2014 20:32:21 -0800
+Message-Id: <1417149142-3756-16-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1417149142-3756-1-git-send-email-cernekee@gmail.com>
 References: <1417149142-3756-1-git-send-email-cernekee@gmail.com>
@@ -39,7 +39,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44505
+X-archive-position: 44506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,58 +56,820 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a new section covering the Generic BMIPS machine type.
+bmips_be_defconfig supports Linux running on the following CM and DSL
+SoCs:
+
+ - BCM3384 (BMIPS5000) cable modem application processor, BE, SMP
+ - BCM3384 (BMIPS4355) cable modem "spare CPU"*, BE
+ - BCM6328 (BMIPS4355) ADSL chip, BE
+ - BCM6368 (BMIPS4350) ADSL chip, BE, SMP
+
+*experimental; most configurations will require changing CONFIG_PHYSICAL_START
+
+bmips_stb_defconfig supports Linux running on the (nominally LE) STB
+chipsets:
+
+ - BCM7125 (BMIPS4380) set-top box chip, LE, SMP
+ - BCM7346 (BMIPS5000) set-top box chip, LE, SMP
+ - BCM7360 (BMIPS3300) set-top box chip, LE
+ - BCM7420 (BMIPS5000) set-top box chip, LE, SMP
+ - BCM7425 (BMIPS5000) set-top box chip, LE, SMP
+
+serial8250 and bcm63xx_uart do not currently coexist.  If/when this is
+fixed, it will be also possible to boot the BE image on any supported STB
+board configured for BE.  For now, each defconfig can only pick one UART
+driver, and the BE defconfig enables bcm63xx_uart.
+
+On these MIPS systems, endianness cannot be reconfigured at runtime.  On
+STB it is sometimes offered as a board jumper or 0-ohm resistor, and
+sometimes hardwired to LE only.  The CM and DSL systems always run BE.
+
+Device Tree is used to configure the following items:
+
+ - UART, USB, GENET peripherals
+ - IRQ controllers
+ - Early console base address (bcm63xx_uart only)
+ - SMP or UP mode
+ - MIPS counter frequency
+ - Memory size / regions
+ - DMA remappings
+ - Reboot sequences
+ - GISB bus error catcher
+ - Kernel command line
+
+The DT-enabled bootloader and build instructions for 3384 are posted at
+https://github.com/Broadcom/aeolus .
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- Documentation/devicetree/booting-without-of.txt | 28 +++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ .../devicetree/bindings/mips/brcm/bmips.txt        |   8 +
+ .../devicetree/bindings/mips/brcm/soc.txt          |  12 ++
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  34 ++++
+ arch/mips/bmips/Makefile                           |   1 +
+ arch/mips/bmips/Platform                           |   7 +
+ arch/mips/bmips/dma.c                              | 121 +++++++++++++
+ arch/mips/bmips/irq.c                              |  38 ++++
+ arch/mips/bmips/setup.c                            | 191 +++++++++++++++++++++
+ arch/mips/configs/bmips_be_defconfig               |  88 ++++++++++
+ arch/mips/configs/bmips_stb_defconfig              |  88 ++++++++++
+ arch/mips/include/asm/mach-bmips/dma-coherence.h   |  48 ++++++
+ arch/mips/include/asm/mach-bmips/spaces.h          |  18 ++
+ 13 files changed, 655 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/brcm/bmips.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/brcm/soc.txt
+ create mode 100644 arch/mips/bmips/Makefile
+ create mode 100644 arch/mips/bmips/Platform
+ create mode 100644 arch/mips/bmips/dma.c
+ create mode 100644 arch/mips/bmips/irq.c
+ create mode 100644 arch/mips/bmips/setup.c
+ create mode 100644 arch/mips/configs/bmips_be_defconfig
+ create mode 100644 arch/mips/configs/bmips_stb_defconfig
+ create mode 100644 arch/mips/include/asm/mach-bmips/dma-coherence.h
+ create mode 100644 arch/mips/include/asm/mach-bmips/spaces.h
 
-diff --git a/Documentation/devicetree/booting-without-of.txt b/Documentation/devicetree/booting-without-of.txt
-index 77685185cf3b..e49e423268c0 100644
---- a/Documentation/devicetree/booting-without-of.txt
-+++ b/Documentation/devicetree/booting-without-of.txt
-@@ -15,6 +15,7 @@ Table of Contents
-     1) Entry point for arch/arm
-     2) Entry point for arch/powerpc
-     3) Entry point for arch/x86
-+    4) Entry point for arch/mips/bmips
+diff --git a/Documentation/devicetree/bindings/mips/brcm/bmips.txt b/Documentation/devicetree/bindings/mips/brcm/bmips.txt
+new file mode 100644
+index 000000000000..4a8cd8f4d41a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/brcm/bmips.txt
+@@ -0,0 +1,8 @@
++* Broadcom MIPS (BMIPS) CPUs
++
++Required properties:
++- compatible: "brcm,bmips3300", "brcm,bmips4350", "brcm,bmips4380"
++              "brcm,bmips5000"
++
++- mips-hpt-frequency: This is common to all CPUs in the system so it lives
++  under the "cpus" node.
+diff --git a/Documentation/devicetree/bindings/mips/brcm/soc.txt b/Documentation/devicetree/bindings/mips/brcm/soc.txt
+new file mode 100644
+index 000000000000..f011443eb9d3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/brcm/soc.txt
+@@ -0,0 +1,12 @@
++* Broadcom cable/DSL/settop platforms
++
++Required properties:
++
++- compatible: "brcm,bcm3384", "brcm,bcm33843"
++              "brcm,bcm3384-viper", "brcm,bcm33843-viper"
++              "brcm,bcm6328", "brcm,bcm6368",
++              "brcm,bcm7125", "brcm,bcm7346", "brcm,bcm7360",
++              "brcm,bcm7420", "brcm,bcm7425"
++
++The experimental -viper variants are for running Linux on the 3384's
++BMIPS4355 cable modem CPU instead of the BMIPS5000 application processor.
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index 1780c74ed0da..a4d1e4f2ebb6 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -6,6 +6,7 @@ platforms += ath25
+ platforms += ath79
+ platforms += bcm47xx
+ platforms += bcm63xx
++platforms += bmips
+ platforms += cavium-octeon
+ platforms += cobalt
+ platforms += dec
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b4cdf722aeee..b10d5aaa6eb2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -130,6 +130,40 @@ config ATH79
+ 	help
+ 	  Support for the Atheros AR71XX/AR724X/AR913X SoCs.
  
-   II - The DT block format
-     1) Header
-@@ -288,6 +289,33 @@ it with special cases.
-   or initrd address. It simply holds information which can not be retrieved
-   otherwise like interrupt routing or a list of devices behind an I2C bus.
- 
-+4) Entry point for arch/mips/bmips
-+----------------------------------
++config BMIPS_GENERIC
++	bool "Broadcom Generic BMIPS kernel"
++	select BOOT_RAW
++	select NO_EXCEPT_FILL
++	select USE_OF
++	select CEVT_R4K
++	select CSRC_R4K
++	select SYNC_R4K
++	select COMMON_CLK
++	select BCM7038_L1_IRQ
++	select BCM7120_L2_IRQ
++	select BRCMSTB_L2_IRQ
++	select IRQ_CPU
++	select RAW_IRQ_ACCESSORS
++	select DMA_NONCOHERENT
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_BIG_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_HAS_CPU_BMIPS3300
++	select SYS_HAS_CPU_BMIPS4350
++	select SYS_HAS_CPU_BMIPS4380
++	select SYS_HAS_CPU_BMIPS5000
++	select SWAP_IO_SPACE
++	select USB_EHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
++	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
++	help
++	  Build a generic DT-based kernel image that boots on select
++	  BCM33xx cable modem chips, BCM63xx DSL chips, and BCM7xxx set-top
++	  box chips.  Note that CONFIG_CPU_BIG_ENDIAN/CONFIG_CPU_LITTLE_ENDIAN
++	  must be set appropriately for your board.
 +
-+  Some bootloaders only support a single entry point, at the start of the
-+  kernel image.  Other bootloaders will jump to the ELF start address.
-+  Both schemes are supported; CONFIG_BOOT_RAW=y and CONFIG_NO_EXCEPT_FILL=y,
-+  so the first instruction immediately jumps to kernel_entry().
+ config BCM47XX
+ 	bool "Broadcom BCM47XX based boards"
+ 	select ARCH_WANT_OPTIONAL_GPIOLIB
+diff --git a/arch/mips/bmips/Makefile b/arch/mips/bmips/Makefile
+new file mode 100644
+index 000000000000..a393955cba08
+--- /dev/null
++++ b/arch/mips/bmips/Makefile
+@@ -0,0 +1 @@
++obj-y		+= setup.o irq.o dma.o
+diff --git a/arch/mips/bmips/Platform b/arch/mips/bmips/Platform
+new file mode 100644
+index 000000000000..5f127fd7f4b5
+--- /dev/null
++++ b/arch/mips/bmips/Platform
+@@ -0,0 +1,7 @@
++#
++# Broadcom Generic BMIPS kernel
++#
++platform-$(CONFIG_BMIPS_GENERIC)	+= bmips/
++cflags-$(CONFIG_BMIPS_GENERIC)		+=				\
++		-I$(srctree)/arch/mips/include/asm/mach-bmips/
++load-$(CONFIG_BMIPS_GENERIC)		:= 0xffffffff80010000
+diff --git a/arch/mips/bmips/dma.c b/arch/mips/bmips/dma.c
+new file mode 100644
+index 000000000000..d4d115d02da5
+--- /dev/null
++++ b/arch/mips/bmips/dma.c
+@@ -0,0 +1,121 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2014 Broadcom Corporation
++ * Author: Kevin Cernekee <cernekee@gmail.com>
++ */
 +
-+  Similar to the arch/arm case (b), a DT-aware bootloader is expected to
-+  set up the following registers:
++#define pr_fmt(fmt)		"bmips-dma: " fmt
 +
-+         a0 : 0
++#include <linux/device.h>
++#include <linux/dma-direction.h>
++#include <linux/dma-mapping.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/mm.h>
++#include <linux/of.h>
++#include <linux/pci.h>
++#include <linux/printk.h>
++#include <linux/types.h>
++#include <asm/bmips.h>
++#include <asm/cpu-type.h>
++#include <dma-coherence.h>
 +
-+         a1 : 0xffffffff
++/*
++ * BCM338x has configurable address translation windows which allow the
++ * peripherals' DMA addresses to be different from the Zephyr-visible
++ * physical addresses.  e.g. usb_dma_addr = zephyr_pa ^ 0x08000000
++ *
++ * If the "brcm,ubus" node has a "dma-ranges" property we will enable this
++ * translation globally using the provided information.  This implements a
++ * very limited subset of "dma-ranges" support and it will probably be
++ * replaced by a more generic version later.
++ */
 +
-+         a2 : Physical pointer to the device tree block (defined in chapter
-+         II) in RAM.  The device tree can be located anywhere in the first
-+         512MB of the physical address space (0x00000000 - 0x1fffffff),
-+         aligned on a 64 bit boundary.
++struct bmips_dma_range {
++	u32			child_addr;
++	u32			parent_addr;
++	u32			size;
++};
 +
-+  Legacy bootloaders do not use this convention, and they do not pass in a
-+  DT block.  In this case, Linux will look for a builtin DTB, selected via
-+  CONFIG_DT_*.
++static struct bmips_dma_range *bmips_dma_ranges;
 +
-+  This convention is defined for 32-bit systems only, as there are not
-+  currently any 64-bit BMIPS implementations.
++#define FLUSH_RAC		0x100
 +
- II - The DT block format
- ========================
- 
++static dma_addr_t bmips_phys_to_dma(struct device *dev, phys_addr_t pa)
++{
++	struct bmips_dma_range *r;
++
++	for (r = bmips_dma_ranges; r && r->size; r++) {
++		if (pa >= r->child_addr &&
++		    pa < (r->child_addr + r->size))
++			return pa - r->child_addr + r->parent_addr;
++	}
++	return pa;
++}
++
++dma_addr_t plat_map_dma_mem(struct device *dev, void *addr, size_t size)
++{
++	return bmips_phys_to_dma(dev, virt_to_phys(addr));
++}
++
++dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page)
++{
++	return bmips_phys_to_dma(dev, page_to_phys(page));
++}
++
++unsigned long plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
++{
++	struct bmips_dma_range *r;
++
++	for (r = bmips_dma_ranges; r && r->size; r++) {
++		if (dma_addr >= r->parent_addr &&
++		    dma_addr < (r->parent_addr + r->size))
++			return dma_addr - r->parent_addr + r->child_addr;
++	}
++	return dma_addr;
++}
++
++static int __init bmips_init_dma_ranges(void)
++{
++	struct device_node *np =
++		of_find_compatible_node(NULL, NULL, "brcm,ubus");
++	const __be32 *data;
++	struct bmips_dma_range *r;
++	int len;
++
++	if (!np)
++		return 0;
++
++	data = of_get_property(np, "dma-ranges", &len);
++	if (!data)
++		goto out_good;
++
++	len /= sizeof(*data) * 3;
++	if (!len)
++		goto out_bad;
++
++	/* add a dummy (zero) entry at the end as a sentinel */
++	bmips_dma_ranges = kzalloc(sizeof(struct bmips_dma_range) * (len + 1),
++				   GFP_KERNEL);
++	if (!bmips_dma_ranges)
++		goto out_bad;
++
++	for (r = bmips_dma_ranges; len; len--, r++) {
++		r->child_addr = be32_to_cpup(data++);
++		r->parent_addr = be32_to_cpup(data++);
++		r->size = be32_to_cpup(data++);
++	}
++
++out_good:
++	of_node_put(np);
++	return 0;
++
++out_bad:
++	pr_err("error parsing dma-ranges property\n");
++	of_node_put(np);
++	return -EINVAL;
++}
++arch_initcall(bmips_init_dma_ranges);
+diff --git a/arch/mips/bmips/irq.c b/arch/mips/bmips/irq.c
+new file mode 100644
+index 000000000000..14552e58ff7e
+--- /dev/null
++++ b/arch/mips/bmips/irq.c
+@@ -0,0 +1,38 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2014 Broadcom Corporation
++ * Author: Kevin Cernekee <cernekee@gmail.com>
++ */
++
++#include <linux/of.h>
++#include <linux/irqchip.h>
++
++#include <asm/bmips.h>
++#include <asm/irq.h>
++#include <asm/irq_cpu.h>
++#include <asm/time.h>
++
++unsigned int get_c0_compare_int(void)
++{
++	return CP0_LEGACY_COMPARE_IRQ;
++}
++
++void __init arch_init_irq(void)
++{
++	struct device_node *dn;
++
++	/* Only the STB (bcm7038) controller supports SMP IRQ affinity */
++	dn = of_find_compatible_node(NULL, NULL, "brcm,bcm7038-l1-intc");
++	if (dn)
++		of_node_put(dn);
++	else
++		bmips_tp1_irqs = 0;
++
++	irqchip_init();
++}
++
++OF_DECLARE_2(irqchip, mips_cpu_intc, "mti,cpu-interrupt-controller",
++	     mips_cpu_irq_of_init);
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+new file mode 100644
+index 000000000000..72793bfe6633
+--- /dev/null
++++ b/arch/mips/bmips/setup.c
+@@ -0,0 +1,191 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2014 Broadcom Corporation
++ * Author: Kevin Cernekee <cernekee@gmail.com>
++ */
++
++#include <linux/init.h>
++#include <linux/bitops.h>
++#include <linux/bootmem.h>
++#include <linux/clk-provider.h>
++#include <linux/ioport.h>
++#include <linux/kernel.h>
++#include <linux/io.h>
++#include <linux/of.h>
++#include <linux/of_fdt.h>
++#include <linux/of_platform.h>
++#include <linux/smp.h>
++#include <asm/addrspace.h>
++#include <asm/bmips.h>
++#include <asm/bootinfo.h>
++#include <asm/cpu-type.h>
++#include <asm/mipsregs.h>
++#include <asm/prom.h>
++#include <asm/smp-ops.h>
++#include <asm/time.h>
++#include <asm/traps.h>
++#include <asm/fw/cfe/cfe_api.h>
++
++#define RELO_NORMAL_VEC		BIT(18)
++
++#define REG_BCM6328_OTP		((void __iomem *)CKSEG1ADDR(0x1000062c))
++#define BCM6328_TP1_DISABLED	BIT(9)
++
++static const unsigned long kbase = VMLINUX_LOAD_ADDRESS & 0xfff00000;
++
++struct bmips_quirk {
++	const char		*compatible;
++	void			(*quirk_fn)(void);
++};
++
++static void kbase_setup(void)
++{
++	__raw_writel(kbase | RELO_NORMAL_VEC,
++		     BMIPS_GET_CBR() + BMIPS_RELO_VECTOR_CONTROL_1);
++	ebase = kbase;
++}
++
++static void bcm3384_viper_quirks(void)
++{
++	/*
++	 * Some experimental CM boxes are set up to let CM own the Viper TP0
++	 * and let Linux own TP1.  This requires moving the kernel
++	 * load address to a non-conflicting region (e.g. via
++	 * CONFIG_PHYSICAL_START) and supplying an alternate DTB.
++	 * If we detect this condition, we need to move the MIPS exception
++	 * vectors up to an area that we own.
++	 *
++	 * This is distinct from the OTHER special case mentioned in
++	 * smp-bmips.c (boot on TP1, but enable SMP, then TP0 becomes our
++	 * logical CPU#1).  For the Viper TP1 case, SMP is off limits.
++	 *
++	 * Also note that many BMIPS435x CPUs do not have a
++	 * BMIPS_RELO_VECTOR_CONTROL_1 register, so it isn't safe to just
++	 * write VMLINUX_LOAD_ADDRESS into that register on every SoC.
++	 */
++	board_ebase_setup = &kbase_setup;
++	bmips_smp_enabled = 0;
++}
++
++static void bcm63xx_fixup_cpu1(void)
++{
++	/*
++	 * The bootloader has set up the CPU1 reset vector at
++	 * 0xa000_0200.
++	 * This conflicts with the special interrupt vector (IV).
++	 * The bootloader has also set up CPU1 to respond to the wrong
++	 * IPI interrupt.
++	 * Here we will start up CPU1 in the background and ask it to
++	 * reconfigure itself then go back to sleep.
++	 */
++	memcpy((void *)0xa0000200, &bmips_smp_movevec, 0x20);
++	__sync();
++	set_c0_cause(C_SW0);
++	cpumask_set_cpu(1, &bmips_booted_mask);
++}
++
++static void bcm6328_quirks(void)
++{
++	/* Check CPU1 status in OTP (it is usually disabled) */
++	if (__raw_readl(REG_BCM6328_OTP) & BCM6328_TP1_DISABLED)
++		bmips_smp_enabled = 0;
++	else
++		bcm63xx_fixup_cpu1();
++}
++
++static void bcm6368_quirks(void)
++{
++	bcm63xx_fixup_cpu1();
++}
++
++static const struct bmips_quirk bmips_quirk_list[] = {
++	{ "brcm,bcm3384-viper",		&bcm3384_viper_quirks		},
++	{ "brcm,bcm33843-viper",	&bcm3384_viper_quirks		},
++	{ "brcm,bcm6328",		&bcm6328_quirks			},
++	{ "brcm,bcm6368",		&bcm6368_quirks			},
++	{ },
++};
++
++void __init prom_init(void)
++{
++	register_bmips_smp_ops();
++}
++
++void __init prom_free_prom_memory(void)
++{
++}
++
++void __init plat_mem_setup(void)
++{
++	void *dtb;
++	const struct bmips_quirk *q;
++
++	/* Intended to somewhat resemble ARM; see Documentation/arm/Booting */
++	if (fw_arg0 == 0 && fw_arg1 == 0xffffffff)
++		dtb = phys_to_virt(fw_arg2);
++	else if (__dtb_start != __dtb_end)
++		dtb = (void *)__dtb_start;
++	else
++		panic("no dtb found");
++
++	__dt_setup_arch(dtb);
++	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
++
++	for (q = bmips_quirk_list; q->quirk_fn; q++) {
++		if (of_flat_dt_is_compatible(of_get_flat_dt_root(),
++					     q->compatible)) {
++			q->quirk_fn();
++		}
++	}
++}
++
++void __init device_tree_init(void)
++{
++	struct device_node *np;
++
++	unflatten_and_copy_device_tree();
++
++	/* Disable SMP boot unless both CPUs are listed in DT and !disabled */
++	np = of_find_node_by_name(NULL, "cpus");
++	if (np && of_get_available_child_count(np) <= 1)
++		bmips_smp_enabled = 0;
++	of_node_put(np);
++}
++
++void __init plat_time_init(void)
++{
++	struct device_node *np;
++	u32 freq;
++
++	np = of_find_node_by_name(NULL, "cpus");
++	if (!np)
++		panic("missing 'cpus' DT node");
++	if (of_property_read_u32(np, "mips-hpt-frequency", &freq) < 0)
++		panic("missing 'mips-hpt-frequency' property");
++	of_node_put(np);
++
++	mips_hpt_frequency = freq;
++}
++
++int __init plat_of_setup(void)
++{
++	return __dt_register_buses("simple-bus", NULL);
++}
++
++arch_initcall(plat_of_setup);
++
++static int __init plat_dev_init(void)
++{
++	of_clk_init(NULL);
++	return 0;
++}
++
++device_initcall(plat_dev_init);
++
++const char *get_system_type(void)
++{
++	return "Generic BMIPS kernel";
++}
+diff --git a/arch/mips/configs/bmips_be_defconfig b/arch/mips/configs/bmips_be_defconfig
+new file mode 100644
+index 000000000000..a0ee3f81f67c
+--- /dev/null
++++ b/arch/mips/configs/bmips_be_defconfig
+@@ -0,0 +1,88 @@
++CONFIG_BMIPS_GENERIC=y
++CONFIG_HIGHMEM=y
++CONFIG_SMP=y
++CONFIG_NR_CPUS=4
++# CONFIG_SECCOMP is not set
++CONFIG_MIPS_O32_FP64_SUPPORT=y
++# CONFIG_LOCALVERSION_AUTO is not set
++# CONFIG_SWAP is not set
++CONFIG_NO_HZ=y
++CONFIG_BLK_DEV_INITRD=y
++# CONFIG_RD_GZIP is not set
++CONFIG_EXPERT=y
++# CONFIG_VM_EVENT_COUNTERS is not set
++# CONFIG_SLUB_DEBUG is not set
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_IOSCHED_CFQ is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_PACKET_DIAG=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_LRO is not set
++# CONFIG_INET_DIAG is not set
++CONFIG_CFG80211=y
++CONFIG_NL80211_TESTMODE=y
++CONFIG_MAC80211=y
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++CONFIG_BRCMSTB_GISB_ARB=y
++CONFIG_MTD=y
++CONFIG_MTD_CFI=y
++CONFIG_MTD_CFI_INTELEXT=y
++CONFIG_MTD_CFI_AMDSTD=y
++CONFIG_MTD_PHYSMAP=y
++# CONFIG_BLK_DEV is not set
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_NETDEVICES=y
++CONFIG_BCMGENET=y
++CONFIG_USB_USBNET=y
++# CONFIG_INPUT is not set
++# CONFIG_SERIO is not set
++# CONFIG_VT is not set
++# CONFIG_DEVKMEM is not set
++CONFIG_SERIAL_PXA=y
++CONFIG_SERIAL_PXA_CONSOLE=y
++CONFIG_SERIAL_BCM63XX=y
++CONFIG_SERIAL_BCM63XX_CONSOLE=y
++# CONFIG_SERIAL_BCM63XX_TTYS is not set
++# CONFIG_HW_RANDOM is not set
++CONFIG_POWER_SUPPLY=y
++CONFIG_POWER_RESET=y
++CONFIG_POWER_RESET_BRCMSTB=y
++CONFIG_POWER_RESET_SYSCON=y
++# CONFIG_HWMON is not set
++CONFIG_USB=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_EHCI_HCD_PLATFORM=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_USB_STORAGE=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_FUSE_FS=y
++CONFIG_VFAT_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_CIFS=y
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ASCII=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_DEBUG_FS=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_CMDLINE_BOOL=y
++CONFIG_CMDLINE="earlycon"
++# CONFIG_CRYPTO_HW is not set
+diff --git a/arch/mips/configs/bmips_stb_defconfig b/arch/mips/configs/bmips_stb_defconfig
+new file mode 100644
+index 000000000000..400a47ec1ef1
+--- /dev/null
++++ b/arch/mips/configs/bmips_stb_defconfig
+@@ -0,0 +1,88 @@
++CONFIG_BMIPS_GENERIC=y
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_HIGHMEM=y
++CONFIG_SMP=y
++CONFIG_NR_CPUS=4
++# CONFIG_SECCOMP is not set
++CONFIG_MIPS_O32_FP64_SUPPORT=y
++# CONFIG_LOCALVERSION_AUTO is not set
++# CONFIG_SWAP is not set
++CONFIG_NO_HZ=y
++CONFIG_BLK_DEV_INITRD=y
++# CONFIG_RD_GZIP is not set
++CONFIG_EXPERT=y
++# CONFIG_VM_EVENT_COUNTERS is not set
++# CONFIG_SLUB_DEBUG is not set
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_IOSCHED_CFQ is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_PACKET_DIAG=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_LRO is not set
++# CONFIG_INET_DIAG is not set
++CONFIG_CFG80211=y
++CONFIG_NL80211_TESTMODE=y
++CONFIG_MAC80211=y
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++CONFIG_BRCMSTB_GISB_ARB=y
++CONFIG_MTD=y
++CONFIG_MTD_CFI=y
++CONFIG_MTD_CFI_INTELEXT=y
++CONFIG_MTD_CFI_AMDSTD=y
++CONFIG_MTD_PHYSMAP=y
++# CONFIG_BLK_DEV is not set
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_NETDEVICES=y
++CONFIG_BCMGENET=y
++CONFIG_USB_USBNET=y
++# CONFIG_INPUT is not set
++# CONFIG_SERIO is not set
++# CONFIG_VT is not set
++# CONFIG_DEVKMEM is not set
++CONFIG_SERIAL_8250=y
++# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_OF_PLATFORM=y
++# CONFIG_HW_RANDOM is not set
++CONFIG_POWER_SUPPLY=y
++CONFIG_POWER_RESET=y
++CONFIG_POWER_RESET_BRCMSTB=y
++CONFIG_POWER_RESET_SYSCON=y
++# CONFIG_HWMON is not set
++CONFIG_USB=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_EHCI_HCD_PLATFORM=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_USB_STORAGE=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_FUSE_FS=y
++CONFIG_VFAT_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_CIFS=y
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ASCII=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_DEBUG_FS=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_CMDLINE_BOOL=y
++CONFIG_CMDLINE="earlycon"
++# CONFIG_CRYPTO_HW is not set
+diff --git a/arch/mips/include/asm/mach-bmips/dma-coherence.h b/arch/mips/include/asm/mach-bmips/dma-coherence.h
+new file mode 100644
+index 000000000000..c8da8725f036
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bmips/dma-coherence.h
+@@ -0,0 +1,48 @@
++/*
++ * Copyright (C) 2006 Ralf Baechle <ralf@linux-mips.org>
++ * Copyright (C) 2009-2014 Broadcom Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef __ASM_MACH_BMIPS_DMA_COHERENCE_H
++#define __ASM_MACH_BMIPS_DMA_COHERENCE_H
++
++struct device;
++
++extern dma_addr_t plat_map_dma_mem(struct device *dev, void *addr, size_t size);
++extern dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page);
++extern unsigned long plat_dma_addr_to_phys(struct device *dev,
++	dma_addr_t dma_addr);
++
++static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
++	size_t size, enum dma_data_direction direction)
++{
++}
++
++static inline int plat_dma_supported(struct device *dev, u64 mask)
++{
++	/*
++	 * we fall back to GFP_DMA when the mask isn't all 1s,
++	 * so we can't guarantee allocations that must be
++	 * within a tighter range than GFP_DMA..
++	 */
++	if (mask < DMA_BIT_MASK(24))
++		return 0;
++
++	return 1;
++}
++
++static inline int plat_device_is_coherent(struct device *dev)
++{
++	return 0;
++}
++
++#endif /* __ASM_MACH_BMIPS_DMA_COHERENCE_H */
+diff --git a/arch/mips/include/asm/mach-bmips/spaces.h b/arch/mips/include/asm/mach-bmips/spaces.h
+new file mode 100644
+index 000000000000..1b05bddc8ec5
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bmips/spaces.h
+@@ -0,0 +1,18 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 1994 - 1999, 2000, 03, 04 Ralf Baechle
++ * Copyright (C) 2000, 2002  Maciej W. Rozycki
++ * Copyright (C) 1990, 1999, 2000 Silicon Graphics, Inc.
++ */
++#ifndef _ASM_BMIPS_SPACES_H
++#define _ASM_BMIPS_SPACES_H
++
++/* Avoid collisions with system base register (SBR) region on BMIPS3300 */
++#define FIXADDR_TOP		((unsigned long)(long)(int)0xff000000)
++
++#include <asm/mach-generic/spaces.h>
++
++#endif /* __ASM_BMIPS_SPACES_H */
 -- 
 2.1.0

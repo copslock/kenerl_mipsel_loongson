@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Dec 2014 21:41:33 +0100 (CET)
-Received: from mail-pa0-f54.google.com ([209.85.220.54]:37894 "EHLO
-        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007839AbaLAUlbajzhZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Dec 2014 21:41:31 +0100
-Received: by mail-pa0-f54.google.com with SMTP id fb1so11873077pad.13
-        for <multiple recipients>; Mon, 01 Dec 2014 12:41:25 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Dec 2014 21:42:04 +0100 (CET)
+Received: from mail-pd0-f172.google.com ([209.85.192.172]:53482 "EHLO
+        mail-pd0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007716AbaLAUmAAEmaI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Dec 2014 21:42:00 +0100
+Received: by mail-pd0-f172.google.com with SMTP id y13so11706340pdi.3
+        for <multiple recipients>; Mon, 01 Dec 2014 12:41:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:user-agent:mime-version:to:cc:subject
          :content-type:content-transfer-encoding;
         bh=A7E75woH+ZUFWug5UW6V5RNoSJDbxFaryl+jr8Y/tOE=;
-        b=L4gdNirVqvj1Y3dyvo9gmFC5kHDBPMrer4qgXIiIQ9UVh6KNahR+qWfWolqsS9WPWH
-         pZPQzs1LsN8M2K+jBnscC1BIdLBqLB/9UYHA/PqY3n15jlyreH+g0cOUe7l9kQr0LAIa
-         yu3vyYuKa35wKJIi05DAB4vL9NdNrdyUAd0cUJ8aM1Pv4vdLxiuuGP+2W9p91oRAiBq8
-         XKCwJXqfZK/Ssyr8VKQW37yHyfVs75NnT33lHEAZzeI8Np9X1U0vW6q6jCVuR/eetcJR
-         Yyolo0qny9x09B8bw0bgyG+EdZA7E2dBOr1pgpb6umzTjkRSodifuNPzZEXzDw80MdJ6
-         bn9Q==
-X-Received: by 10.68.195.41 with SMTP id ib9mr103135671pbc.15.1417466485142;
-        Mon, 01 Dec 2014 12:41:25 -0800 (PST)
+        b=CGWBeEhuLB58w9hlKeQQ5hhV/60UK+Y6CApKa0dwBrkXdb4fpo/yelgc1aDQg6d41/
+         kDv+Tb9VYCuB66usDFV73gfJRp46Nz7hXH0t0bC1D43GpiqoY4m7jmnKFkErJhbWypdc
+         pY8GDpurWzr9X14PGpM3azUsg6j5gilwkdaRxgiW1zWemsiImGDVv5BwpNDXOFfla8uQ
+         92fKnFumLnQOMK+K4a+z7iRBxIDvwE0nmTNWcq1cFOuUw5U9UezNtChRJ0oDxFO424Fl
+         wIgviiROkc5Cx0bjMiM9oennPNUUBruozcXtuDd/wf5sus3x+qJt3nQFQuirzHcLjciz
+         cUaQ==
+X-Received: by 10.66.231.200 with SMTP id ti8mr16671255pac.41.1417466514354;
+        Mon, 01 Dec 2014 12:41:54 -0800 (PST)
 Received: from [192.168.1.102] ([223.72.65.11])
-        by mx.google.com with ESMTPSA id qc8sm18361993pdb.70.2014.12.01.12.41.19
+        by mx.google.com with ESMTPSA id lg8sm18443187pab.41.2014.12.01.12.41.48
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 01 Dec 2014 12:41:23 -0800 (PST)
-Message-ID: <547CD2E7.7030100@gmail.com>
-Date:   Tue, 02 Dec 2014 04:43:19 +0800
+        Mon, 01 Dec 2014 12:41:53 -0800 (PST)
+Message-ID: <547CD304.20407@gmail.com>
+Date:   Tue, 02 Dec 2014 04:43:48 +0800
 From:   Chen Gang <gang.chen.5i5j@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
@@ -41,7 +41,9 @@ CC:     "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
         "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: [PATCH] arch: uapi: asm: mman.h: Support MADV_FREE for madvise()
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
@@ -49,7 +51,7 @@ Return-Path: <gang.chen.5i5j@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44532
+X-archive-position: 44533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

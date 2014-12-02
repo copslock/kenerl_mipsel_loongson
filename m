@@ -1,71 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Dec 2014 23:02:05 +0100 (CET)
-Received: from mail-ig0-f181.google.com ([209.85.213.181]:45228 "EHLO
-        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007628AbaLAWCEfzeMH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Dec 2014 23:02:04 +0100
-Received: by mail-ig0-f181.google.com with SMTP id l13so10411901iga.2
-        for <linux-mips@linux-mips.org>; Mon, 01 Dec 2014 14:01:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=systemhalted.org; s=google;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=DrOd4RDPgHNfGsFWzyxPL3GUP3lTDwXTVw3j0vruAgM=;
-        b=WgJkmGMRFsEQpfBrh939XIpzhSw0MtNOLc0euZjS1kTWLcmZgBm2pbFtiYNN2O2Pjy
-         Nhr0DsiDsGPPaasHJroThY/PGaJvQXhFD/iwTvS2eo9jRNgcOuze+NlIS8dvV5wvrZ6j
-         EUTrEu8nuy/PQ1h/Z8/6dQo+KHTUNCbeDkCIA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=DrOd4RDPgHNfGsFWzyxPL3GUP3lTDwXTVw3j0vruAgM=;
-        b=jDLp3+B+YmPITvXlXFjvR7OFBMItB3orFeqp4nBFyHFK/IqE0H2SoixCcV7h8fX3sy
-         3SQE+/H5gNjZPsHQ13gWtCMwHlvPbtEwOIygbCqlAzRjC03pD6gwLV8fdqfM5AZBmNiX
-         mcOWaA29Bcg2xzrnh5NUXzk9d9ed+rHxc2jKBdZaKc9mQ08y5JBpDe3/baRDIctxAYMU
-         0ZAx0bK3gocDA4Lw7ANvD1gtECo4ZhxbJPDb9o8nFjdWZuaxHl8UmwTy++lAEje2tdAy
-         M9/9WGMInOCWxSQKJKZHOndrH7ZbSHrdLkQq6s80ixmEGCtEtd4lcHO5k/tJe/dmjhUB
-         BZtw==
-X-Gm-Message-State: ALoCoQkh+zcM/fJgTnqKBoArWcifv7h4OPko87P6h3D3H+o+/pyVmn093wSx5oFpV/Q9VkrH+5gz
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Dec 2014 02:31:22 +0100 (CET)
+Received: from mout.gmx.net ([212.227.17.20]:60473 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007224AbaLBBbUSmXJW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 2 Dec 2014 02:31:20 +0100
+Received: from [192.168.178.22] ([78.42.221.218]) by mail.gmx.com (mrgmx101)
+ with ESMTPSA (Nemesis) id 0LlHsg-1YUOd20ir0-00b1mW; Tue, 02 Dec 2014 02:31:14
+ +0100
+Message-ID: <547D1660.8070208@gmx.de>
+Date:   Tue, 02 Dec 2014 02:31:12 +0100
+From:   Lino Sanfilippo <LinoSanfilippo@gmx.de>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-X-Received: by 10.107.138.5 with SMTP id m5mr54208586iod.85.1417471318276;
- Mon, 01 Dec 2014 14:01:58 -0800 (PST)
-Received: by 10.107.18.37 with HTTP; Mon, 1 Dec 2014 14:01:58 -0800 (PST)
-X-Originating-IP: [70.48.182.199]
-In-Reply-To: <CAMuHMdXHAZFujShNnAHY8BRv85ncrtcRvRgPS0Br0T9gSxZ+1A@mail.gmail.com>
-References: <547CD304.20407@gmail.com>
-        <CAMo8BfKg=eb7wA2O+cKO+oLDDERh2CKBS7dyAvfqvCESEHWYEg@mail.gmail.com>
-        <CAMuHMdXHAZFujShNnAHY8BRv85ncrtcRvRgPS0Br0T9gSxZ+1A@mail.gmail.com>
-Date:   Mon, 1 Dec 2014 17:01:58 -0500
-Message-ID: <CAE2sS1hDXqLvF9yY5-3d4pmDPiQy8aQ1fYov3_+BKM8uQ3ZSwA@mail.gmail.com>
-Subject: Re: [PATCH] arch: uapi: asm: mman.h: Support MADV_FREE for madvise()
-From:   "Carlos O'Donell" <carlos@systemhalted.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Max Filippov <jcmvbkbc@gmail.com>,
-        Chen Gang <gang.chen.5i5j@gmail.com>,
-        Minchan Kim <minchan@kernel.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "rth@twiddle.net" <rth@twiddle.net>,
-        "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
-        "mattst88@gmail.com" <mattst88@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "jejb@parisc-linux.org" <jejb@parisc-linux.org>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "chris@zankel.net" <chris@zankel.net>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <carlos@systemhalted.org>
+To:     Ben Hutchings <ben@decadent.org.uk>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ioc3: fix incorrect use of htons/ntohs
+References: <1417344054-4374-1-git-send-email-LinoSanfilippo@gmx.de> <1417406976.7215.126.camel@decadent.org.uk>
+In-Reply-To: <1417406976.7215.126.camel@decadent.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID:  V03:K0:Qn1jlIVijakX2LYv6MUkCZJL7HTvMhbwOAM0tj4yj6w5MMEvGmK
+ pkJmsNRelIkXilE2b/l/Jt7MSE+Etcdt7ALMw47ljAgbANXSp6noBqEllpkC0ND+xLThxkE
+ semhLS5uf7yUzLG28tNzIAb99PCY9N3rDMHp/BibP5Ydn8+AhazJSKBOe6OMdgTysfCe2pi
+ FPgKDo/0yfKfu6tvYgHYw==
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <LinoSanfilippo@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44536
+X-archive-position: 44537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carlos@systemhalted.org
+X-original-sender: LinoSanfilippo@gmx.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,27 +45,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 1, 2014 at 4:35 PM, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Mon, Dec 1, 2014 at 9:52 PM, Max Filippov <jcmvbkbc@gmail.com> wrote:
->> On Mon, Dec 1, 2014 at 11:43 PM, Chen Gang <gang.chen.5i5j@gmail.com> wrote:
->>> At present, kernel supports madvise(MADV_FREE), so can benefit to all
->>> related architectures (can grep MADV_WILLNEED or MADV_REMOVE in "arch/"
->>> to know about all related architectures).
+On 01.12.2014 05:09, Ben Hutchings wrote:
+> On Sun, 2014-11-30 at 11:40 +0100, Lino Sanfilippo wrote:
+>> The protocol type in the ip header struct is a single byte variable. So there
+>> is no need to swap bytes depending on host endianness.
+>> 
+>> Signed-off-by: Lino Sanfilippo <LinoSanfilippo@gmx.de>
+>> ---
+>> 
+>> Please note that I could not test this, since I dont have access to the
+>> concerning hardware.
+>> 
+>>  drivers/net/ethernet/sgi/ioc3-eth.c | 5 ++---
+>>  1 file changed, 2 insertions(+), 3 deletions(-)
+>> 
+>> diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
+>> index 7a254da..0bb303d 100644
+>> --- a/drivers/net/ethernet/sgi/ioc3-eth.c
+>> +++ b/drivers/net/ethernet/sgi/ioc3-eth.c
+>> @@ -540,8 +540,7 @@ static void ioc3_tcpudp_checksum(struct sk_buff *skb, uint32_t hwsum, int len)
+>>  
+>>  	/* Same as tx - compute csum of pseudo header  */
+>>  	csum = hwsum +
+>> -	       (ih->tot_len - (ih->ihl << 2)) +
+>> -	       htons((uint16_t)ih->protocol) +
+>> +	       (ih->tot_len - (ih->ihl << 2)) + ih->protocol +
+>>  	       (ih->saddr >> 16) + (ih->saddr & 0xffff) +
+>>  	       (ih->daddr >> 16) + (ih->daddr & 0xffff);
 >>
->> A similar patch has been posted a while ago:
->>
->> http://www.spinics.net/lists/linux-mm/msg81538.html
->
-> Would it be possible to use the same number everywhere?
+> 
+> The pseudo-header is specified as:
+> 
+>                      +--------+--------+--------+--------+
+>                      |           Source Address          |
+>                      +--------+--------+--------+--------+
+>                      |         Destination Address       |
+>                      +--------+--------+--------+--------+
+>                      |  zero  |  PTCL  |    TCP Length   |
+>                      +--------+--------+--------+--------+
+> 
+> The current code zero-extends the protocol number to produce the 5th
+> 16-bit word of the pseudo-header, then uses htons() to put it in
+> big-endian order, consistent with the other fields.  (Yes, it's doing
+> addition on big-endian words; this works even on little-endian machines
+> due to the way the checksum is specified.)
+> 
+> The driver should not be doing this at all, though.  It should set
+> skb->csum = hwsum; skb->ip_summed = CHECKSUM_COMPLETE; and let the
+> network stack adjust the hardware checksum.
+> 
+>> @@ -1417,7 +1416,7 @@ static int ioc3_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>>  	 */
+>>  	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+>>  		const struct iphdr *ih = ip_hdr(skb);
+>> -		const int proto = ntohs(ih->protocol);
+>> +		const int proto = ih->protocol;
+>>  		unsigned int csoff;
+>>  		uint32_t csum, ehsum;
+>>  		uint16_t *eh;
+> 
+> This should logically be __be16 proto = htons(ih->protocol), but the
+> current version should work in practice.
+> 
+> However, the driver should really use skb->csum_start and
+> skb->csum_offset to work out where the checksum belongs and which bytes
+> to cancel out.
+> 
+> Ben.
+> 
 
-Yes please. It's ridiculous that we still need patches like this.
+Hi Ben,
 
-I proposed unifying all this two years ago, but didn't follow up.
+youre right, the use of htons/ntohs is correct in this case. So thank
+you for the explanation and please ignore that patch.
 
-From glibc's perspective it would be simpler if we started using the
-same number everywhere.
-
-http://www.spinics.net/lists/linux-api/msg02064.html
-
-Cheers,
-Carlos.
+Regards,
+Lino

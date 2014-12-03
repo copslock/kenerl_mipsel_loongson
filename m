@@ -1,44 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2014 04:25:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3149 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006653AbaLCDZwbQB7O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Dec 2014 04:25:52 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 36283A4ADA148;
-        Wed,  3 Dec 2014 03:25:44 +0000 (GMT)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 3 Dec
- 2014 03:25:45 +0000
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 3 Dec
- 2014 03:25:45 +0000
-Received: from [127.0.1.1] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 2 Dec 2014
- 19:25:42 -0800
-Subject: [PATCH] Revert "MIPS: Remove race window in page fault handling"
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <james.hogan@imgtec.com>,
-        <keescook@chromium.org>, <paul.burton@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
-        <lars.persson@axis.com>, <manuel.lauss@gmail.com>,
-        <pbonzini@redhat.com>, <akpm@linux-foundation.org>,
-        <blogic@openwrt.org>, <markos.chandras@imgtec.com>
-Date:   Tue, 2 Dec 2014 19:25:42 -0800
-Message-ID: <20141203032542.15388.17340.stgit@linux-yegoshin>
-User-Agent: StGit/0.17.1-dirty
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2014 10:32:09 +0100 (CET)
+Received: from bes.se.axis.com ([195.60.68.10]:38344 "EHLO bes.se.axis.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006871AbaLCJcHGIwhj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Dec 2014 10:32:07 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by bes.se.axis.com (Postfix) with ESMTP id 638382E2BD;
+        Wed,  3 Dec 2014 10:32:01 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
+Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id 9L8vWu5bqLEM; Wed,  3 Dec 2014 10:31:58 +0100 (CET)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bes.se.axis.com (Postfix) with ESMTP id C05992E067;
+        Wed,  3 Dec 2014 10:31:57 +0100 (CET)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id A2A281136;
+        Wed,  3 Dec 2014 10:31:57 +0100 (CET)
+Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
+        by boulder.se.axis.com (Postfix) with ESMTP id 9610DAC6;
+        Wed,  3 Dec 2014 10:31:57 +0100 (CET)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by seth.se.axis.com (Postfix) with ESMTP id 920183E23F;
+        Wed,  3 Dec 2014 10:31:57 +0100 (CET)
+Received: from [10.88.41.1] (10.88.41.1) by xmail2.se.axis.com (10.0.5.74)
+ with Microsoft SMTP Server (TLS) id 8.3.342.0; Wed, 3 Dec 2014 10:31:57 +0100
+Message-ID: <1417599104.10996.16.camel@lnxlarper.se.axis.com>
+Subject: Re: [PATCH] Revert "MIPS: Remove race window in page fault handling"
+From:   Lars Persson <lars.persson@axis.com>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "james.hogan@imgtec.com" <james.hogan@imgtec.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "paul.burton@imgtec.com" <paul.burton@imgtec.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "manuel.lauss@gmail.com" <manuel.lauss@gmail.com>,
+        "pbonzini@redhat.com" <pbonzini@redhat.com>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "blogic@openwrt.org" <blogic@openwrt.org>,
+        "markos.chandras@imgtec.com" <markos.chandras@imgtec.com>
+Date:   Wed, 3 Dec 2014 10:31:44 +0100
+In-Reply-To: <20141203032542.15388.17340.stgit@linux-yegoshin>
+References: <20141203032542.15388.17340.stgit@linux-yegoshin>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4-3 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Return-Path: <lars.persson@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44552
+X-archive-position: 44553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: lars.persson@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,132 +67,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This reverts commit 64f23ab30b1fec86b91a48bf1f088840e5299971
-(commit 2a4a8b1e5d9d343e13ff22e19af7b353f7b52d6f in Linux 'master')
+Hi Leonid
 
-Unfortunately the original commit effectively kills Imagination MIPS CPUs
-performance because it enforces page cache flush each time then PTE is changed
-for our CPUs. Basically - each CoW, each process start, each library attachment
-or detachment. And it happens even in "fully-coherent" systems (in MIPS sense -
-we have non coherent I-cache). Last tendency for increasing page size to 16K-64K
-even exaggerate the performance loss.
+First let me describe the mechanism of this race condition, which was a
+fault in the kernel's MIPS architecture code. Specifically in its
+implementation of lazy dcache flushing. AFAIK, it would only hit on
+systems where the pagein code path writes to the page from the CPU.
 
-Original commit discussion says:
+The order of calls is:
+flush_dcache_page() (from the FS's readpage)
+set_pte_at()
+update_mmu_cache()
 
-    Kernel call stacks showed one thread handling an illegal instruction
-    exception while another thread was somewhere around the
-    set_pte_at/update_mmu_cache calls for the same page.
+The thread number one has executed the set_pte_at() when thread number
+two hits the same page. It finds a valid PTE and proceeds to execute
+code from a page that is not yet flushed to the point of I/D coherency.
+That flush would happen in update_mmu_cache().
 
-If this is taken correct then it points to a major problem unrelated to MIPS -
-if by chance a first thread hits the page just before set_pte_at then it should
-get a non-present PTE: set_pte_at with _PAGE_PRESENT/_PAGE_VALID flags can be
-used only on "disactivated" PTE, after pte_clear* functions, effectively -
-non-present, non-valid. And application can get SIGSEGV. It is a major race
-condition and kernel should not offer it to applications. And in my
-understanding set_pte_at is used in cases then page is available after kernel
-finishes page handling, at least in theory.
+My patch does increase number of cache flushes for CoW yes and there
+could be an optimization opportunity by playing tricks with the pte_t to
+include information about executability of the mapping. 
 
-Test note: I ran MIPS 1004K with 8 VPEs on 4 cores around 1.5 month on SOAK test
-and never seen that problem on 3.10 kernel.
+Reverting the patch is a big no-no, then we go back to a state of
+undefined CPU behavior.
 
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
----
- arch/mips/include/asm/pgtable.h |    8 +++++---
- arch/mips/mm/cache.c            |   27 ++++++++-------------------
- 2 files changed, 13 insertions(+), 22 deletions(-)
+- Lars
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index d6d1928539b1..cd5fbf42b864 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -122,9 +122,6 @@ do {									\
- 	}								\
- } while(0)
- 
--extern void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
--	pte_t pteval);
--
- #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
- 
- #define pte_none(pte)		(!(((pte).pte_low | (pte).pte_high) & ~_PAGE_GLOBAL))
-@@ -148,6 +145,7 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
- 		}
- 	}
- }
-+#define set_pte_at(mm, addr, ptep, pteval) set_pte(ptep, pteval)
- 
- static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
- {
-@@ -185,6 +183,7 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 	}
- #endif
- }
-+#define set_pte_at(mm, addr, ptep, pteval) set_pte(ptep, pteval)
- 
- static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
- {
-@@ -401,12 +400,15 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- 
- extern void __update_tlb(struct vm_area_struct *vma, unsigned long address,
- 	pte_t pte);
-+extern void __update_cache(struct vm_area_struct *vma, unsigned long address,
-+	pte_t pte);
- 
- static inline void update_mmu_cache(struct vm_area_struct *vma,
- 	unsigned long address, pte_t *ptep)
- {
- 	pte_t pte = *ptep;
- 	__update_tlb(vma, address, pte);
-+	__update_cache(vma, address, pte);
- }
- 
- static inline void update_mmu_cache_pmd(struct vm_area_struct *vma,
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index 7e3ea7766822..f7b91d3a371d 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -119,36 +119,25 @@ void __flush_anon_page(struct page *page, unsigned long vmaddr)
- 
- EXPORT_SYMBOL(__flush_anon_page);
- 
--static void mips_flush_dcache_from_pte(pte_t pteval, unsigned long address)
-+void __update_cache(struct vm_area_struct *vma, unsigned long address,
-+	pte_t pte)
- {
- 	struct page *page;
--	unsigned long pfn = pte_pfn(pteval);
-+	unsigned long pfn, addr;
-+	int exec = (vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc;
- 
-+	pfn = pte_pfn(pte);
- 	if (unlikely(!pfn_valid(pfn)))
- 		return;
--
- 	page = pfn_to_page(pfn);
- 	if (page_mapping(page) && Page_dcache_dirty(page)) {
--		unsigned long page_addr = (unsigned long) page_address(page);
--
--		if (!cpu_has_ic_fills_f_dc ||
--		    pages_do_alias(page_addr, address & PAGE_MASK))
--			flush_data_cache_page(page_addr);
-+		addr = (unsigned long) page_address(page);
-+		if (exec || pages_do_alias(addr, address & PAGE_MASK))
-+			flush_data_cache_page(addr);
- 		ClearPageDcacheDirty(page);
- 	}
- }
- 
--void set_pte_at(struct mm_struct *mm, unsigned long addr,
--        pte_t *ptep, pte_t pteval)
--{
--        if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc) {
--                if (pte_present(pteval))
--                        mips_flush_dcache_from_pte(pteval, addr);
--        }
--
--        set_pte(ptep, pteval);
--}
--
- unsigned long _page_cachable_default;
- EXPORT_SYMBOL(_page_cachable_default);
- 
+
+On Wed, 2014-12-03 at 04:25 +0100, Leonid Yegoshin wrote:
+> This reverts commit 64f23ab30b1fec86b91a48bf1f088840e5299971
+> (commit 2a4a8b1e5d9d343e13ff22e19af7b353f7b52d6f in Linux 'master')
+> 
+> Unfortunately the original commit effectively kills Imagination MIPS CPUs
+> performance because it enforces page cache flush each time then PTE is changed
+> for our CPUs. Basically - each CoW, each process start, each library attachment
+> or detachment. And it happens even in "fully-coherent" systems (in MIPS sense -
+> we have non coherent I-cache). Last tendency for increasing page size to 16K-64K
+> even exaggerate the performance loss.
+> 
+> Original commit discussion says:
+> 
+>     Kernel call stacks showed one thread handling an illegal instruction
+>     exception while another thread was somewhere around the
+>     set_pte_at/update_mmu_cache calls for the same page.
+> 
+> If this is taken correct then it points to a major problem unrelated to MIPS -
+> if by chance a first thread hits the page just before set_pte_at then it should
+> get a non-present PTE: set_pte_at with _PAGE_PRESENT/_PAGE_VALID flags can be
+> used only on "disactivated" PTE, after pte_clear* functions, effectively -
+> non-present, non-valid. And application can get SIGSEGV. It is a major race
+> condition and kernel should not offer it to applications. And in my
+> understanding set_pte_at is used in cases then page is available after kernel
+> finishes page handling, at least in theory.
+> 
+> Test note: I ran MIPS 1004K with 8 VPEs on 4 cores around 1.5 month on SOAK test
+> and never seen that problem on 3.10 kernel.
+> 
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>  
+> 

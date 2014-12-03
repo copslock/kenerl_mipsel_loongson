@@ -1,42 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2014 14:24:17 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49607 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2014 14:37:34 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:49768 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008018AbaLCNYQMdAvZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Dec 2014 14:24:16 +0100
+        id S27008013AbaLCNhbsKGE6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Dec 2014 14:37:31 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sB3DOC20016664;
-        Wed, 3 Dec 2014 14:24:12 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sB3DbTwk016890;
+        Wed, 3 Dec 2014 14:37:29 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sB3DOBmB016663;
-        Wed, 3 Dec 2014 14:24:11 +0100
-Date:   Wed, 3 Dec 2014 14:24:11 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sB3DbTgk016889;
+        Wed, 3 Dec 2014 14:37:29 +0100
+Date:   Wed, 3 Dec 2014 14:37:29 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Lars Persson <lars.persson@axis.com>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "james.hogan@imgtec.com" <james.hogan@imgtec.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "paul.burton@imgtec.com" <paul.burton@imgtec.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "manuel.lauss@gmail.com" <manuel.lauss@gmail.com>,
-        "pbonzini@redhat.com" <pbonzini@redhat.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "blogic@openwrt.org" <blogic@openwrt.org>,
-        "markos.chandras@imgtec.com" <markos.chandras@imgtec.com>
-Subject: Re: [PATCH] Revert "MIPS: Remove race window in page fault handling"
-Message-ID: <20141203132411.GA16063@linux-mips.org>
-References: <20141203032542.15388.17340.stgit@linux-yegoshin>
- <1417599104.10996.16.camel@lnxlarper.se.axis.com>
+To:     Lars Persson <lars.persson@axis.com>,
+        Jayachandran C <jchandra@broadcom.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Remove race window in page fault handling
+Message-ID: <20141203133729.GB16063@linux-mips.org>
+References: <1401532566-22929-1-git-send-email-larper@axis.com>
+ <538CAAA6.90509@gmail.com>
+ <771471B8871B5044A6CA7CCD9C26EEE10117E31EC89D@xmail2.se.axis.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1417599104.10996.16.camel@lnxlarper.se.axis.com>
+In-Reply-To: <771471B8871B5044A6CA7CCD9C26EEE10117E31EC89D@xmail2.se.axis.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44554
+X-archive-position: 44555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,36 +46,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 03, 2014 at 10:31:44AM +0100, Lars Persson wrote:
+On Tue, Jun 03, 2014 at 12:29:17PM +0200, Lars Persson wrote:
 
-> Hi Leonid
-> 
-> First let me describe the mechanism of this race condition, which was a
-> fault in the kernel's MIPS architecture code. Specifically in its
-> implementation of lazy dcache flushing. AFAIK, it would only hit on
-> systems where the pagein code path writes to the page from the CPU.
-> 
-> The order of calls is:
-> flush_dcache_page() (from the FS's readpage)
-> set_pte_at()
-> update_mmu_cache()
-> 
-> The thread number one has executed the set_pte_at() when thread number
-> two hits the same page. It finds a valid PTE and proceeds to execute
-> code from a page that is not yet flushed to the point of I/D coherency.
-> That flush would happen in update_mmu_cache().
-> 
-> My patch does increase number of cache flushes for CoW yes and there
-> could be an optimization opportunity by playing tricks with the pte_t to
-> include information about executability of the mapping. 
-> 
-> Reverting the patch is a big no-no, then we go back to a state of
-> undefined CPU behavior.
+> Good point. Would adding !cpu_has_ic_fills_f_dc as an extra condition in set_pte_at be sufficient to address your concern ?
 
-The performance issues of this patch were fairly obvious when I applied
-the patch.  At that time I choose correctness over performance.  But it
-needs proper sorting.  Too massive performance impact also is a bug and
-Leonid's sledgehammer approach to revoke the patch outright without
-anything better to replace it is not the right way either!
+Returning to this old thread ...
+
+cpu_has_ic_fills_f_dc means a CPU's data cache does not need to be
+written back to secondary cache or memory when instructions have been
+updated in memory.  In other words a CPU can refill the I-cache from
+the D-cache on an I-cache miss.
+
+Only the Alchemy cores have this handy property.
+
+The flag is also being set for XL? CPUs in
+
+  arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+
+but not anywhere in the probe code of arch/mips/mm/c-r4k.c which might
+stil be correct - but it's at least a bit sloppy and suspicious so I'm
+wondering if it's correct indeed.  Jayachandran?
 
   Ralf

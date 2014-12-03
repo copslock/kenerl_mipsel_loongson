@@ -1,33 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Dec 2014 20:47:30 +0100 (CET)
-Received: from smtp-out-013.synserver.de ([212.40.185.13]:1038 "EHLO
-        smtp-out-013.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007841AbaLBTr33A0LF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Dec 2014 20:47:29 +0100
-Received: (qmail 28061 invoked by uid 0); 2 Dec 2014 19:47:27 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@laprican.de
-X-SynServer-PPID: 27907
-Received: from ppp-82-135-76-235.dynamic.mnet-online.de (HELO lars-laptop.fritz.box) [82.135.76.235]
-  by 217.119.54.73 with SMTP; 2 Dec 2014 19:47:27 -0000
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Brian Norris <computersforpeace@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Woodhouse <dwmw2@infradead.org>
-Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] mtd: nand: jz4740: Convert to GPIO descriptor API
-Date:   Tue,  2 Dec 2014 20:48:26 +0100
-Message-Id: <1417549706-28420-1-git-send-email-lars@metafoo.de>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <lars@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2014 02:58:10 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6082 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007971AbaLCB6Igs054 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Dec 2014 02:58:08 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 4050677C0E9A1;
+        Wed,  3 Dec 2014 01:58:01 +0000 (GMT)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 3 Dec
+ 2014 01:58:02 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 3 Dec
+ 2014 01:58:02 +0000
+Received: from [127.0.1.1] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 2 Dec 2014
+ 17:57:59 -0800
+Subject: [PATCH v3 0/3] Series short description
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
+        <geert+renesas@glider.be>, <david.daney@cavium.com>,
+        <peterz@infradead.org>, <paul.gortmaker@windriver.com>,
+        <davidlohr@hp.com>, <macro@linux-mips.org>, <chenhc@lemote.com>,
+        <cl@linux.com>, <mingo@kernel.org>, <richard@nod.at>,
+        <zajec5@gmail.com>, <james.hogan@imgtec.com>,
+        <keescook@chromium.org>, <tj@kernel.org>, <alex@alex-smith.me.uk>,
+        <pbonzini@redhat.com>, <blogic@openwrt.org>,
+        <paul.burton@imgtec.com>, <qais.yousef@imgtec.com>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <markos.chandras@imgtec.com>, <dengcheng.zhu@imgtec.com>,
+        <manuel.lauss@gmail.com>, <lars.persson@axis.com>
+Date:   Tue, 2 Dec 2014 17:57:59 -0800
+Message-ID: <20141203015537.13886.50830.stgit@linux-yegoshin>
+User-Agent: StGit/0.17.1-dirty
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44547
+X-archive-position: 44548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,157 +57,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the GPIO descriptor API instead of the deprecated legacy GPIO API to
-manage the busy GPIO.
+The following series implements an executable stack protection in MIPS.
 
-The patch updates both the jz4740 nand driver and the only user of the driver
-the qi-lb60 board driver.
+It sets up a per-thread 'VDSO' page and appropriate TLB support.
+Page is set write-protected from user and is maintained via kernel VA.
+MIPS FPU emulation is shifted to new page and stack is relieved for
+execute protection as is as all data pages in default setup during ELF
+binary initialization. The real protection is controlled by GLIBC and
+it can do stack protected now as it is done in other architectures and
+I learned today that GLIBC team is ready for this.
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Note: actual execute-protection depends from HW capability, of course.
+
+This patch is required for MIPS32/64 R2 emulation on MIPS R6 architecture.
+Without it 'ssh-keygen' crashes pretty fast on attempt to execute instruction
+in stack.
+
+v2 changes:
+    - Added an optimization during mmap switch - doesn't switch if the same
+      thread is rescheduled and other threads don't intervene (Peter Zijlstra)
+    - Fixed uMIPS support (Paul Burton)
+    - Added unwinding of VDSO emulation stack at signal handler invocation,
+      hiding an emulation page (Andy Lutomirski note in other patch comments)
+
+V3 change: heavy preemption friendly.
+
 ---
-This patch should preferably be merged through the MTD tree with Ralf's ack for
-the MIPS bits.
----
- arch/mips/include/asm/mach-jz4740/jz4740_nand.h |    2 --
- arch/mips/jz4740/board-qi_lb60.c                |   11 ++++++++-
- drivers/mtd/nand/jz4740_nand.c                  |   29 ++++++++---------------
- 3 files changed, 20 insertions(+), 22 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h b/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
-index 986982d..79cff26 100644
---- a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
-+++ b/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
-@@ -27,8 +27,6 @@ struct jz_nand_platform_data {
- 
- 	struct nand_ecclayout	*ecc_layout;
- 
--	unsigned int busy_gpio;
--
- 	unsigned char banks[JZ_NAND_NUM_BANKS];
- 
- 	void (*ident_callback)(struct platform_device *, struct nand_chip *,
-diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
-index c454525..9dd051e 100644
---- a/arch/mips/jz4740/board-qi_lb60.c
-+++ b/arch/mips/jz4740/board-qi_lb60.c
-@@ -140,10 +140,18 @@ static void qi_lb60_nand_ident(struct platform_device *pdev,
- 
- static struct jz_nand_platform_data qi_lb60_nand_pdata = {
- 	.ident_callback = qi_lb60_nand_ident,
--	.busy_gpio = 94,
- 	.banks = { 1 },
- };
- 
-+static struct gpiod_lookup_table qi_lb60_nand_gpio_table = {
-+	.dev_id = "jz4740-nand.0",
-+	.table = {
-+		GPIO_LOOKUP("Bank C", 30, "busy", 0),
-+		{ },
-+	},
-+};
-+
-+
- /* Keyboard*/
- 
- #define KEY_QI_QI	KEY_F13
-@@ -472,6 +480,7 @@ static int __init qi_lb60_init_platform_devices(void)
- 	jz4740_mmc_device.dev.platform_data = &qi_lb60_mmc_pdata;
- 
- 	gpiod_add_lookup_table(&qi_lb60_audio_gpio_table);
-+	gpiod_add_lookup_table(&qi_lb60_nand_gpio_table);
- 
- 	jz4740_serial_device_register();
- 
-diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
-index a2c804d..1994996 100644
---- a/drivers/mtd/nand/jz4740_nand.c
-+++ b/drivers/mtd/nand/jz4740_nand.c
-@@ -69,7 +69,7 @@ struct jz_nand {
- 
- 	int selected_bank;
- 
--	struct jz_nand_platform_data *pdata;
-+	struct gpio_desc *busy_gpio;
- 	bool is_reading;
- };
- 
-@@ -131,7 +131,7 @@ static void jz_nand_cmd_ctrl(struct mtd_info *mtd, int dat, unsigned int ctrl)
- static int jz_nand_dev_ready(struct mtd_info *mtd)
- {
- 	struct jz_nand *nand = mtd_to_jz_nand(mtd);
--	return gpio_get_value_cansleep(nand->pdata->busy_gpio);
-+	return gpiod_get_value_cansleep(nand->busy_gpio);
- }
- 
- static void jz_nand_hwctl(struct mtd_info *mtd, int mode)
-@@ -423,14 +423,12 @@ static int jz_nand_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_free;
- 
--	if (pdata && gpio_is_valid(pdata->busy_gpio)) {
--		ret = gpio_request(pdata->busy_gpio, "NAND busy pin");
--		if (ret) {
--			dev_err(&pdev->dev,
--				"Failed to request busy gpio %d: %d\n",
--				pdata->busy_gpio, ret);
--			goto err_iounmap_mmio;
--		}
-+	nand->busy_gpio = devm_gpiod_get_optional(&pdev->dev, "busy", GPIOD_IN);
-+	if (IS_ERR(nand->busy_gpio)) {
-+		ret = PTR_ERR(nand->busy_gpio);
-+		dev_err(&pdev->dev, "Failed to request busy gpio %d\n",
-+		    ret);
-+		goto err_iounmap_mmio;
- 	}
- 
- 	mtd		= &nand->mtd;
-@@ -454,10 +452,9 @@ static int jz_nand_probe(struct platform_device *pdev)
- 	chip->cmd_ctrl = jz_nand_cmd_ctrl;
- 	chip->select_chip = jz_nand_select_chip;
- 
--	if (pdata && gpio_is_valid(pdata->busy_gpio))
-+	if (nand->busy_gpio)
- 		chip->dev_ready = jz_nand_dev_ready;
- 
--	nand->pdata = pdata;
- 	platform_set_drvdata(pdev, nand);
- 
- 	/* We are going to autodetect NAND chips in the banks specified in the
-@@ -496,7 +493,7 @@ static int jz_nand_probe(struct platform_device *pdev)
- 	}
- 	if (chipnr == 0) {
- 		dev_err(&pdev->dev, "No NAND chips found\n");
--		goto err_gpio_busy;
-+		goto err_iounmap_mmio;
- 	}
- 
- 	if (pdata && pdata->ident_callback) {
-@@ -533,9 +530,6 @@ err_unclaim_banks:
- 					 nand->bank_base[bank - 1]);
- 	}
- 	writel(0, nand->base + JZ_REG_NAND_CTRL);
--err_gpio_busy:
--	if (pdata && gpio_is_valid(pdata->busy_gpio))
--		gpio_free(pdata->busy_gpio);
- err_iounmap_mmio:
- 	jz_nand_iounmap_resource(nand->mem, nand->base);
- err_free:
-@@ -546,7 +540,6 @@ err_free:
- static int jz_nand_remove(struct platform_device *pdev)
- {
- 	struct jz_nand *nand = platform_get_drvdata(pdev);
--	struct jz_nand_platform_data *pdata = dev_get_platdata(&pdev->dev);
- 	size_t i;
- 
- 	nand_release(&nand->mtd);
-@@ -562,8 +555,6 @@ static int jz_nand_remove(struct platform_device *pdev)
- 			gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
- 		}
- 	}
--	if (pdata && gpio_is_valid(pdata->busy_gpio))
--		gpio_free(pdata->busy_gpio);
- 
- 	jz_nand_iounmap_resource(nand->mem, nand->base);
- 
--- 
-1.7.10.4
+Leonid Yegoshin (3):
+      MIPS: mips_flush_cache_range is added
+      MIPS: Setup an instruction emulation in VDSO protected page instead of user stack
+      MIPS: set stack/data protection as non-executable
+
+
+ arch/mips/include/asm/cacheflush.h   |    3 +
+ arch/mips/include/asm/fpu_emulator.h |    2 
+ arch/mips/include/asm/mmu.h          |    3 +
+ arch/mips/include/asm/page.h         |    2 
+ arch/mips/include/asm/processor.h    |    2 
+ arch/mips/include/asm/switch_to.h    |   14 +++
+ arch/mips/include/asm/thread_info.h  |    3 +
+ arch/mips/include/asm/tlbmisc.h      |    1 
+ arch/mips/include/asm/vdso.h         |    3 +
+ arch/mips/kernel/process.c           |    7 ++
+ arch/mips/kernel/signal.c            |    4 +
+ arch/mips/kernel/vdso.c              |   43 +++++++++-
+ arch/mips/math-emu/cp1emu.c          |    8 +-
+ arch/mips/math-emu/dsemul.c          |  153 ++++++++++++++++++++++++++++------
+ arch/mips/mm/c-octeon.c              |    8 ++
+ arch/mips/mm/c-r3k.c                 |    8 ++
+ arch/mips/mm/c-r4k.c                 |   43 ++++++++++
+ arch/mips/mm/c-tx39.c                |    9 ++
+ arch/mips/mm/cache.c                 |    4 +
+ arch/mips/mm/fault.c                 |    5 +
+ arch/mips/mm/tlb-r4k.c               |   42 +++++++++
+ 21 files changed, 335 insertions(+), 32 deletions(-)
+
+--
+Signature

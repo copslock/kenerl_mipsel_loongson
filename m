@@ -1,55 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2014 20:28:58 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:5396 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008036AbaLCT2z7goH0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Dec 2014 20:28:55 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CFFD54ABAB308;
-        Wed,  3 Dec 2014 19:28:45 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 3 Dec
- 2014 19:28:49 +0000
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
- (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 3 Dec
- 2014 19:28:49 +0000
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 3 Dec
- 2014 19:28:49 +0000
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 3 Dec 2014
- 11:28:47 -0800
-Message-ID: <547F646F.6020008@imgtec.com>
-Date:   Wed, 3 Dec 2014 11:28:47 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     Lars Persson <lars.persson@axis.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "james.hogan@imgtec.com" <james.hogan@imgtec.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "paul.burton@imgtec.com" <paul.burton@imgtec.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "manuel.lauss@gmail.com" <manuel.lauss@gmail.com>,
-        "pbonzini@redhat.com" <pbonzini@redhat.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "blogic@openwrt.org" <blogic@openwrt.org>,
-        "markos.chandras@imgtec.com" <markos.chandras@imgtec.com>
-Subject: Re: [PATCH] Revert "MIPS: Remove race window in page fault handling"
-References: <20141203032542.15388.17340.stgit@linux-yegoshin>    <1417599104.10996.16.camel@lnxlarper.se.axis.com>       <20141203134226.GC16063@linux-mips.org> <1417615394.10198.3.camel@lnxlarper.se.axis.com>
-In-Reply-To: <1417615394.10198.3.camel@lnxlarper.se.axis.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Dec 2014 00:44:33 +0100 (CET)
+Received: from mail-ig0-f178.google.com ([209.85.213.178]:57119 "EHLO
+        mail-ig0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007947AbaLCXocI2Jm3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Dec 2014 00:44:32 +0100
+Received: by mail-ig0-f178.google.com with SMTP id hl2so13736477igb.11
+        for <multiple recipients>; Wed, 03 Dec 2014 15:44:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=qLMh27YdKiMkmS5KFdNh1Z/OkqzvSvH2DARV5Lylg7s=;
+        b=z5X59IOblAxY4xoqm9zvbVA/ZNxRkLvM/BGlhosgijJ+LquvCYdTOaa3qBq7UBp4vb
+         w2jqnDk6wvy5E0LQMwq5eKSucjwVA99t/p/TmHYboXNN2XH1s9/ShTKicdliCoHVlMA6
+         Ov0FnTjhlMWdG1amU96SJoTCVzZFzKz71LHXOl7wlaRNFdblrbRtH8ICUX0DkHtV/Dux
+         Ngp9D8x7pZkasDqtLTLH960vfaGjV40nCuLPHW1IyY8So+fsudaNYImDlijV9FrlCVLg
+         L4M2h83fpdvDH33qo1W8U7614yeiFHVSURmU8qy/T5yp9Gln9rGk+iBQyvOu71GNjUKi
+         rK3g==
+X-Received: by 10.42.29.6 with SMTP id p6mr9155930icc.85.1417650266325;
+        Wed, 03 Dec 2014 15:44:26 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id ck1sm5341104igb.0.2014.12.03.15.44.25
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 03 Dec 2014 15:44:25 -0800 (PST)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sB3NiOgg002849;
+        Wed, 3 Dec 2014 15:44:24 -0800
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sB3NiJqP002846;
+        Wed, 3 Dec 2014 15:44:19 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Zubair.Kakakhel@imgtec.com, geert+renesas@glider.be,
+        peterz@infradead.org, paul.gortmaker@windriver.com,
+        macro@linux-mips.org, chenhc@lemote.com, cl@linux.com,
+        mingo@kernel.org, richard@nod.at, zajec5@gmail.com,
+        james.hogan@imgtec.com, keescook@chromium.org, tj@kernel.org,
+        alex@alex-smith.me.uk, pbonzini@redhat.com, blogic@openwrt.org,
+        paul.burton@imgtec.com, qais.yousef@imgtec.com,
+        linux-kernel@vger.kernel.org, markos.chandras@imgtec.com,
+        dengcheng.zhu@imgtec.com, manuel.lauss@gmail.com,
+        lars.persson@axis.com, David Daney <david.daney@cavium.com>
+Subject: [PATCH 0/3] MIPS: Get ready for non-executable stack.
+Date:   Wed,  3 Dec 2014 15:44:15 -0800
+Message-Id: <1417650258-2811-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44560
+X-archive-position: 44561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,78 +66,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Lars,
+From: David Daney <david.daney@cavium.com>
 
-Do you have a stack trace or so then you found the second VPE between 
-set_pte_at and update_mmu_cache?
-It would be interesting how it happens - generally, to get a consistent 
-SIGILL in applications due to misbehaviour of memory subsystem, the bug 
-in FS is not enough.
+Currently the MIPS FPU emulator uses eXecute Out of Line (XOL) on the
+stack to handle instructions in the delay slots of FPU branches.
+Because of this MIPS cannot have a non-executable stack.
 
-Hold on - do you use non-DMA file system?
-If so, I advice you to try this simple patch:
+A previous patch set from Leonid Yegoshin attempts to address the
+problem by moving the XOL location to a thread private mapping of a
+dedicated page.
 
-Author: Leonid Yegoshin <yegoshin@mips.com>
-Date:   Tue Apr 2 14:20:37 2013 -0700
+I present here an alternative: Add an instruction set emulator and use
+it to execute the FPU delay slot instructions.  The benefit of this
+approach is that we don't have to allocate a page per user-space
+thread for XOL, and we keep the TLB handling code slightly simpler as
+a result.
 
-     MIPS: (opt) Fix of reading I-pages from non-DMA FS devices for ID 
-cache separation
+Currently this is a proof of concept, as it doesn't yet handle MIPS64
+nor microMIPS instructions.  But it is sufficient to run the entire
+Debian distribution on a FPU-less CPU.
 
-     This optional fix provides a D-cache flush for instruction code 
-pages on
-     page faults. In case of non-DMA block device a driver doesn't know 
-that it
-     reads I-page and doesn't flush D-cache generally on systems without
-     cache aliasing. And that takes toll during page fault of 
-instruction pages.
+Comments welcome.
 
-     It is not a perfect fix, it should be considered as a temporary fix.
-     The permanent fix would track page origin in page cache and flushes 
-D-cache
-     during reception of page from driver only but not at each page fault.
-     It is not done yet.
+David Daney (3):
+  MIPS: Add FPU emulator counter for non-FPU instructions emulated.
+  MIPS: Add full ISA emulator.
+  MIPS: Use full instruction emulation for FPU emulator delay slot
+    emulation.
 
-     Change-Id: I43f5943d6ce0509729179615f6b81e77803a34ac
-     Author: Leonid Yegoshin <yegoshin@mips.com>
-     Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>(imported from 
-commit 6ebd22eb7a3d9873582ebe990a77094f971652ee)(imported from commit 
-0caf3b4a1eebb64572e81e4df6fdb3abf12c70
+ arch/mips/include/asm/fpu_emulator.h |   1 +
+ arch/mips/kernel/Makefile            |   3 +-
+ arch/mips/kernel/insn-emul.c         | 815 +++++++++++++++++++++++++++++++++++
+ arch/mips/math-emu/cp1emu.c          |  13 +-
+ arch/mips/math-emu/me-debugfs.c      |   1 +
+ 5 files changed, 830 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/kernel/insn-emul.c
 
-diff --git a/arch/mips/include/asm/cacheflush.h 
-b/arch/mips/include/asm/cacheflush.h
-index 42e5fc682590..27b17b16a96d 100644
---- a/arch/mips/include/asm/cacheflush.h
-+++ b/arch/mips/include/asm/cacheflush.h
-@@ -61,6 +61,9 @@ static inline void flush_anon_page(struct 
-vm_area_struct *vma,
-  static inline void flush_icache_page(struct vm_area_struct *vma,
-         struct page *page)
-  {
-+       if (cpu_has_dc_aliases ||
-+           ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc))
-+               __flush_dcache_page(page);
-  }
-
-  extern void (*flush_icache_range)(unsigned long start, unsigned long end);
-
-
-It fixed crash problems with non-DMA FS in a couple of our customers. 
-Without it the non-DMA root FS crashes are catastrophic in aliasing 
-systems but it is still a problem for I-cache too but much rare.
-
-Unfortunately, it is also a performance hit, however is less than run a 
-page cache flush at each PTE setup.
-
-- Leonid.
-
-On 12/03/2014 06:03 AM, Lars Persson wrote:
-> It is the flush_dcache_page() that was called from the file-system 
-> reading the page contents into memory. - Lars On Wed, 2014-12-03 at 
-> 14:42 +0100, Ralf Baechle wrote:
->> Lars, normally set_pte_at() is invoked in a cache_flush_*() 
->> set_pte_at() tlb_flush_*() sequence. So I'm wondering if you're 
->> trying to fix something in set_pte_at that actually ought to be fixed 
->> in the cache_flush_*() function. I'm wondering, have you identified 
->> which cache flush function in particular was used in the sequence in 
->> your particular bug's case? Ralf 
->
+-- 
+1.7.11.7

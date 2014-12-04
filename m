@@ -1,29 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Dec 2014 01:52:15 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60190 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008085AbaLDAwN1MVVx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Dec 2014 01:52:13 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 598ECEAAA79AC;
-        Thu,  4 Dec 2014 00:52:02 +0000 (GMT)
-Received: from KLMAIL02.kl.imgtec.org (10.40.60.222) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 4 Dec
- 2014 00:52:06 +0000
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by klmail02.kl.imgtec.org
- (10.40.60.222) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 4 Dec
- 2014 00:52:06 +0000
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 4 Dec
- 2014 00:52:06 +0000
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 3 Dec 2014
- 16:52:02 -0800
-Message-ID: <547FB032.2000000@imgtec.com>
-Date:   Wed, 3 Dec 2014 16:52:02 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Dec 2014 02:29:48 +0100 (CET)
+Received: from mail-bn1bon0091.outbound.protection.outlook.com ([157.56.111.91]:26699
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008112AbaLDB3qsLRhy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Dec 2014 02:29:46 +0100
+Received: from dl.caveonetworks.com (64.2.3.194) by
+ DM2PR0701MB1120.namprd07.prod.outlook.com (25.160.246.151) with Microsoft
+ SMTP Server (TLS) id 15.1.26.15; Thu, 4 Dec 2014 01:29:35 +0000
+Message-ID: <547FB8FB.7040803@caviumnetworks.com>
+Date:   Wed, 3 Dec 2014 17:29:31 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>,
         <ralf@linux-mips.org>, <Zubair.Kakakhel@imgtec.com>,
         <geert+renesas@glider.be>, <peterz@infradead.org>,
@@ -37,20 +26,30 @@ CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>,
         <dengcheng.zhu@imgtec.com>, <manuel.lauss@gmail.com>,
         <lars.persson@axis.com>, David Daney <david.daney@cavium.com>
 Subject: Re: [PATCH 2/3] MIPS: Add full ISA emulator.
-References: <1417650258-2811-1-git-send-email-ddaney.cavm@gmail.com> <1417650258-2811-3-git-send-email-ddaney.cavm@gmail.com> <547FA2E5.1040105@imgtec.com> <547FA8D2.2030703@caviumnetworks.com>
-In-Reply-To: <547FA8D2.2030703@caviumnetworks.com>
+References: <1417650258-2811-1-git-send-email-ddaney.cavm@gmail.com> <1417650258-2811-3-git-send-email-ddaney.cavm@gmail.com> <547FA2E5.1040105@imgtec.com> <547FA8D2.2030703@caviumnetworks.com> <547FB032.2000000@imgtec.com>
+In-Reply-To: <547FB032.2000000@imgtec.com>
 Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+X-Originating-IP: [64.2.3.194]
+X-ClientProxiedBy: BY2PR07CA055.namprd07.prod.outlook.com (10.141.251.30) To
+ DM2PR0701MB1120.namprd07.prod.outlook.com (25.160.246.151)
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:DM2PR0701MB1120;
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:DM2PR0701MB1120;
+X-Forefront-PRVS: 041517DFAB
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(979002)(6009001)(24454002)(51704005)(199003)(377454003)(189002)(479174003)(31966008)(36756003)(68736005)(53416004)(21056001)(42186005)(92726001)(92566001)(40100003)(97736003)(110136001)(107046002)(69596002)(4396001)(122386002)(81156004)(106356001)(65806001)(83506001)(64706001)(105586002)(59896002)(47776003)(20776003)(95666004)(87976001)(65816999)(23746002)(87266999)(54356999)(102836001)(76176999)(50986999)(33656002)(93886004)(77156002)(62966003)(80316001)(50466002)(46102003)(66066001)(99396003)(65956001)(64126003)(101416001)(120916001)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM2PR0701MB1120;H:dl.caveonetworks.com;FPR:;SPF:None;MLV:ovrnspm;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:DM2PR0701MB1120;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44567
+X-archive-position: 44568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,78 +62,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/03/2014 04:20 PM, David Daney wrote:
-> On 12/03/2014 03:55 PM, Leonid Yegoshin wrote:
->> On 12/03/2014 03:44 PM, David Daney wrote:
+On 12/03/2014 04:52 PM, Leonid Yegoshin wrote:
+> On 12/03/2014 04:20 PM, David Daney wrote:
+>> On 12/03/2014 03:55 PM, Leonid Yegoshin wrote:
+>>> On 12/03/2014 03:44 PM, David Daney wrote:
+>>>
+>>> (...)
+>>>
+>>> Big work
 >>
->> (...)
+>> Not really, although by number of lines of code, it is about 3x the
+>> size of your patch, it only touches the existing code in one place. It
+>> only took about 3 days to write, adding full MIPS64 and R6 support
+>> would probably be less than another week of work.
 >>
->> Big work
+>> microMIPS I haven't looked at as we don't have anything to test it on.
+>>
+>>> but it doesn't support customized instructions,
+>>
+>> GCC will never put these in the delay slot of a FPU branch, so it is
+>> not needed.
 >
-> Not really, although by number of lines of code, it is about 3x the 
-> size of your patch, it only touches the existing code in one place.  
-> It only took about 3 days to write, adding full MIPS64 and R6 support 
-> would probably be less than another week of work.
->
-> microMIPS I haven't looked at as we don't have anything to test it on.
->
->> but it doesn't support customized instructions,
->
-> GCC will never put these in the delay slot of a FPU branch, so it is 
-> not needed.
+> I doubt that it is correct in all situations and with any GCC parameter
+> combination.
 
-I doubt that it is correct in all situations and with any GCC parameter 
-combination.
-
-Never say never, if it is about toolchain. IMG Arch team was assured 
-that branch likely are never used and removed it in MIPS R6, but BGEZL 
-(or so) was a first which I hit then I ran GLIBC.
-
-Besides GCC there are LLVM and another JITs.
+My GCC experts assert that it is true.
 
 >
->> multiple ASEs,
->
-> Same as above.  But any instructions that are deemed necessary can 
-> easily be added.
->
->> MIPS R6
->
-> It is a proof of concept.  R6 can easily be added if needed.
->
-> Your XOL emulation doesn't handle R6 either, so this is no worse than 
-> your patch in that respect.
+> Never say never, if it is about toolchain. IMG Arch team was assured
+> that branch likely are never used and removed it in MIPS R6, but BGEZL
+> (or so) was a first which I hit then I ran GLIBC.
 
-You probably didn't research it well. A lot of changes in 
-arch/mips/kernel/branch.c and and arch/mips/math-emu/cp1emu.c, all of it 
-related with R6.
+The fact that the Arch Team designed R6 without bothering to determine 
+what legacy code does is not relevant to this conversation.
 
 >
->> etc.
+> Besides GCC there are LLVM and another JITs.
 >
-> GCC will never put trapping instructions in the delay slot either.
 
-It seems like it is not correct and requires a more accurate statement. 
-FPU instructions may trap, LWL and LWR traps on R6 with RI, etc. Yes, 
-there are restrictions but basing a kernel on that assumptions is 
-unsafe. The only safe is HW architecture document.
+They don't do it either.  But that is not really important.  We can 
+easily emulate faulting instructions if needed.
 
-Finally, there is a manual encoding too.
-
+>>
+>>> multiple ASEs,
+>>
+>> Same as above.  But any instructions that are deemed necessary can
+>> easily be added.
+>>
+>>> MIPS R6
+>>
+>> It is a proof of concept.  R6 can easily be added if needed.
+>>
+>> Your XOL emulation doesn't handle R6 either, so this is no worse than
+>> your patch in that respect.
 >
-> All we have to support are non-trapping and non-branch/jump 
-> instructions from the ISA manuals that can be executed from userspace 
-> processes. That makes it slightly simpler than complete ISA emulation.
+> You probably didn't research it well. A lot of changes in
+> arch/mips/kernel/branch.c and and arch/mips/math-emu/cp1emu.c, all of it
+> related with R6.
+>
+
+I looked at:
+commit 3a18ca061311f2f1ee9c44012f89c7436d392117
+
+And I saw no R6 support.
+
+Is it there, or in some other branch that isn't merged?
+
+
+>>
+>>> etc.
+>>
+>> GCC will never put trapping instructions in the delay slot either.
+>
+> It seems like it is not correct and requires a more accurate statement.
+> FPU instructions may trap, LWL and LWR traps on R6 with RI, etc. Yes,
+> there are restrictions but basing a kernel on that assumptions is
+> unsafe. The only safe is HW architecture document.
+>
+> Finally, there is a manual encoding too.
 >
 >>
->> Well, it is still not a replacement of XOL emulation.
->
-> For use by the FPU emulator, it is probably good enough
->
->> Even close.
->
-> I disagree, that is why I took the time to do it.
->
+>> All we have to support are non-trapping and non-branch/jump
+>> instructions from the ISA manuals that can be executed from userspace
+>> processes. That makes it slightly simpler than complete ISA emulation.
 >>
+>>>
+>>> Well, it is still not a replacement of XOL emulation.
+>>
+>> For use by the FPU emulator, it is probably good enough
+>>
+>>> Even close.
+>>
+>> I disagree, that is why I took the time to do it.
+>>
+>>>
+>>>
 >>
 >

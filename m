@@ -1,47 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Dec 2014 06:51:22 +0100 (CET)
-Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:46782 "EHLO
-        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006942AbaLDFvUxDTYY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Dec 2014 06:51:20 +0100
-X-IronPort-AV: E=Sophos;i="5.07,513,1413270000"; 
-   d="scan'208";a="52081010"
-Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
-  by mail-gw3-out.broadcom.com with ESMTP; 03 Dec 2014 22:00:35 -0800
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Wed, 3 Dec 2014 21:51:23 -0800
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.174.1; Wed, 3 Dec 2014 21:51:23 -0800
-Received: from jayachandranc.netlogicmicro.com (netl-snoppy.ban.broadcom.com
- [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 1828D40FE5;    Wed,  3 Dec 2014 21:50:39 -0800 (PST)
-Date:   Thu, 4 Dec 2014 11:25:58 +0530
-From:   Jayachandran C. <jchandra@broadcom.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Lars Persson <lars.persson@axis.com>,
-        David Daney <ddaney.cavm@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Remove race window in page fault handling
-Message-ID: <20141204055557.GF6017@jayachandranc.netlogicmicro.com>
-References: <1401532566-22929-1-git-send-email-larper@axis.com>
- <538CAAA6.90509@gmail.com>
- <771471B8871B5044A6CA7CCD9C26EEE10117E31EC89D@xmail2.se.axis.com>
- <20141203133729.GB16063@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Dec 2014 07:43:48 +0100 (CET)
+Received: from utopia.booyaka.com ([74.50.51.50]:49872 "EHLO
+        utopia.booyaka.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006831AbaLDGno5Fwa- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Dec 2014 07:43:44 +0100
+Received: (qmail 5331 invoked by uid 1019); 4 Dec 2014 06:43:41 -0000
+Date:   Thu, 4 Dec 2014 06:43:41 +0000 (UTC)
+From:   Paul Walmsley <paul@pwsan.com>
+To:     =?ISO-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kumar Gala <galak@codeaurora.org>,
+        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
+        Sandeep Nair <sandeep_n@ti.com>, linux-soc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V3] MIPS: BCM47XX: Move NVRAM driver to the
+ drivers/soc/
+In-Reply-To: <alpine.DEB.2.02.1411281659190.1406@utopia.booyaka.com>
+Message-ID: <alpine.DEB.2.02.1412040603450.8865@utopia.booyaka.com>
+References: <1416736241-12723-1-git-send-email-zajec5@gmail.com> <1416778509-31502-1-git-send-email-zajec5@gmail.com> <alpine.DEB.2.02.1411240910100.16047@utopia.booyaka.com> <CACna6rxwwn5_e86278TAiOFZ3sVu_Exfm2x94vN2KiTJfsFujQ@mail.gmail.com>
+ <alpine.DEB.2.02.1411251407290.16047@utopia.booyaka.com> <CACna6rxj8=V8me1_L8SxhV3=kgYRyKeBHkxShSMZa4kbcHimLg@mail.gmail.com> <alpine.DEB.2.02.1411271926560.1406@utopia.booyaka.com> <CACna6rwMjOfmnA-926udNx7jQHQ2JMnmiutQZkTxtJ85qmUw8A@mail.gmail.com>
+ <alpine.DEB.2.02.1411281659190.1406@utopia.booyaka.com>
+User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20141203133729.GB16063@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <jchandra@broadcom.com>
+Content-Type: MULTIPART/MIXED; BOUNDARY="843723315-390432641-1417675421=:8865"
+Return-Path: <paul@pwsan.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44570
+X-archive-position: 44571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: paul@pwsan.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,36 +46,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 03, 2014 at 02:37:29PM +0100, Ralf Baechle wrote:
-> On Tue, Jun 03, 2014 at 12:29:17PM +0200, Lars Persson wrote:
-> 
-> > Good point. Would adding !cpu_has_ic_fills_f_dc as an extra condition in set_pte_at be sufficient to address your concern ?
-> 
-> Returning to this old thread ...
-> 
-> cpu_has_ic_fills_f_dc means a CPU's data cache does not need to be
-> written back to secondary cache or memory when instructions have been
-> updated in memory.  In other words a CPU can refill the I-cache from
-> the D-cache on an I-cache miss.
-> 
-> Only the Alchemy cores have this handy property.
-> 
-> The flag is also being set for XL? CPUs in
-> 
->   arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-> 
-> but not anywhere in the probe code of arch/mips/mm/c-r4k.c which might
-> stil be correct - but it's at least a bit sloppy and suspicious so I'm
-> wondering if it's correct indeed.  Jayachandran?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On XLR/XLP, L1 Dcache is coherent and L1 Icache is not. We don't need to
-flush dcache when we change an executable page or range, just an icache
-flush is sufficient. At least in c-r4k.c, setting cpu_has_ic_fills_f_dc
-did what we needed.
+--843723315-390432641-1417675421=:8865
+Content-Type: TEXT/PLAIN; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-There were 2 issues, one is the usage in copy_to_user_page, for which
-a patch was posted http://patchwork.linux-mips.org/patch/6122/
-(we are using this patch). Another is that we might need a "sync" before
-the icache flush.
+Hello Rafa=C5=82,
 
-JC.
+On Fri, 28 Nov 2014, Paul Walmsley wrote:
+
+> On Thu, 27 Nov 2014, Rafa=C5=82 Mi=C5=82ecki wrote:
+>=20
+> > I'm pretty sure you look at some old version of arch/bcm47xx/nvram.c.
+> > I wouldn't dare to move such a MIPS-focused driver to some common
+> > place ;)
+> >=20
+> > Please check for the version of nvram.c in Ralf's upstream-sfr tree. I
+> > think you'll like it much more. Hopefully you will even consider it
+> > ready for moving to the drivers/firmware/ or whatever :)
+>=20
+> OK I will take a look at this, and will either send comments, or will=20
+> send a Reviewed-By:.
+
+I had the chance to take a brief look at this file, and you are right: I
+like your newer version better than the older one :-)
+
+It is too bad that it seems this flash area has to be accessed very early=
+=20
+in boot.  That certainly makes it more difficult to write something=20
+particularly elegant.  It is also a pity that it is unknown how to verify=
+=20
+that the flash MMIO window has been configured before reading from these=20
+areas of the address space.  But under the circumstances, calling=20
+bcm47xx_nvram_init_from_mem() with the appropriate addresses from the bus=
+=20
+code during early init, as you did, seems rather reasonable.  I also like=
+=20
+the code that you added to read the flash data from MTD later in boot.
+
+Here are a few very minor comments that you are welcome to take or leave=20
+as you wish.
+
+1. In nvram_find_and_copy(), the flash header copy loop uses:
+
+=09for (i =3D 0; i < sizeof(struct nvram_header); i +=3D 4)
+=09=09*dst++ =3D *src++;
+
+Consider using either __raw_readl() to read from the MMIO window, or=20
+possibly memcpy_fromio().  In theory, all MMIO accesses should use=20
+functions like these.
+
+
+2. In nvram_find_and_copy(), the flash payload copy loop uses:
+
+=09for (; i < header->len && i < NVRAM_SPACE && i < size; i +=3D 4)
+=09=09*dst++ =3D le32_to_cpu(*src++);
+
+Consider using readl() instead of the direct MMIO read & endianness=20
+conversion. =20
+
+
+3. In nvram_find_and_copy(), I don't believe that this is necessary:
+
+memset(dst, 0x0, NVRAM_SPACE - i);
+
+since nvram_buf[] is a file-static variable, and thus should have been
+initialized to all zeroes.
+
+
+4. As with #3 above, in nvram_init(), I don't believe that this is=20
+necessary:
+
+memset(dst + bytes_read, 0x0, NVRAM_SPACE - bytes_read);
+
+
+5. In bcm47xx_nvram_getenv(), this multiple assignment exists:
+
+end[0] =3D end[1] =3D '\0';
+
+Best to avoid multiple assignments, per Chapter 1 of=20
+Documentation/CodingStyle.  You might consider running checkpatch.pl on=20
+the file:
+
+$ scripts/checkpatch.pl -f --strict arch/mips/bcm47xx/nvram.c
+CHECK: No space is necessary after a cast
+#101: FILE: arch/mips/bcm47xx/nvram.c:101:
++=09src =3D (u32 *) header;
+
+CHECK: No space is necessary after a cast
+#102: FILE: arch/mips/bcm47xx/nvram.c:102:
++=09dst =3D (u32 *) nvram_buf;
+
+CHECK: multiple assignments should be avoided
+#195: FILE: arch/mips/bcm47xx/nvram.c:195:
++=09end[0] =3D end[1] =3D '\0';
+
+CHECK: Alignment should match open parenthesis
+#202: FILE: arch/mips/bcm47xx/nvram.c:202:
++=09=09if ((eq - var) =3D=3D strlen(name) &&
++=09=09=09strncmp(var, name, (eq - var)) =3D=3D 0) {
+
+
+6. bcm47xx_nvram_getenv() calls strchr().  Perhaps it would be better to=20
+use strnchr(), in case the flash data is corrupted or in an invalid=20
+format?
+
+
+7. There are a few magic numbers in this code, mostly in=20
+bcm47xx_nvram_gpio_pin().  It might be worth converting those to macros=20
+and documenting the expectations there in a comment above the macro.
+
+
+8.  The way that bcm47xx_nvram_gpio_pin() calls bcm47xx_nvram_getenv()=20
+seems a bit inefficient.  It might be better to loop over all of the keys=
+=20
+in the shadowed flash, looking for values that match "name".  Then if the=
+=20
+key name matches "gpio" plus one or two digits, the code could just return=
+=20
+the digits.  That way, only one pass is needed, rather than 32 (in the=20
+worst case).  Well, at least the reads should be coming from cached DRAM,=
+=20
+rather than flash...
+
+If you fix/address those (or correct my review ;-) ), then you're=20
+welcome to add my Reviewed-by: to a patch that moves this file out to=20
+drivers/firmware.
+
+
+regards,=20
+
+- Paul
+--843723315-390432641-1417675421=:8865--

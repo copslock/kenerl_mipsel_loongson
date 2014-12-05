@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2014 23:47:58 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:48058 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2014 23:48:16 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48069 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008237AbaLEWqE7Xfnu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2014 23:46:04 +0100
+        by eddie.linux-mips.org with ESMTP id S27008243AbaLEWqFqX5Uv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2014 23:46:05 +0100
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 77399A69;
-        Fri,  5 Dec 2014 22:45:54 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 59AD0A80;
+        Fri,  5 Dec 2014 22:45:55 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org,
         Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.17 004/122] MIPS: tlb-r4k: Add missing HTW stop/start sequences
-Date:   Fri,  5 Dec 2014 14:42:58 -0800
-Message-Id: <20141205223306.211709248@linuxfoundation.org>
+Subject: [PATCH 3.17 006/122] MIPS: asm: uaccess: Add v1 register to clobber list on EVA
+Date:   Fri,  5 Dec 2014 14:43:00 -0800
+Message-Id: <20141205223306.465117381@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.3
 In-Reply-To: <20141205223305.514276242@linuxfoundation.org>
 References: <20141205223305.514276242@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44600
+X-archive-position: 44601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,56 +48,41 @@ X-list: linux-mips
 
 From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit 6a8dff6ab16c903b0d8ef5fbf21543f39bf5d675 upstream.
+commit 58563817cfed0432e9a54476d5fc6c3aeba475e4 upstream.
 
-HTW needs to stop and start again whenever the EntryHI register
-changes otherwise an inflight HTW operation might use the new
-EntryHI register for updating an old entry and that could lead
-to crashes or even a machine check exception. We fix this by
-ensuring the HTW has stop whenever the EntryHI register is about
-to change
+When EVA is turned on and prefetching is being used in memcpy.S,
+the v1 register is being used as a helper register to the PREFE
+instruction. However, v1 ($3) was not in the clobber list, which
+means that the compiler did not preserve it across function calls,
+and that could corrupt the value of the register leading to all
+sorts of userland crashes. We fix this problem by using the
+DADDI_SCRATCH macro to define the clobbered register when
+CONFIG_EVA && CONFIG_CPU_HAS_PREFETCH are enabled.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8511/
+Patchwork: https://patchwork.linux-mips.org/patch/8510/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/mm/tlb-r4k.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/include/asm/uaccess.h |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -299,6 +299,7 @@ void __update_tlb(struct vm_area_struct
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -773,10 +773,11 @@ extern void __put_user_unaligned_unknown
+ 	"jal\t" #destination "\n\t"
+ #endif
  
- 	local_irq_save(flags);
+-#ifndef CONFIG_CPU_DADDI_WORKAROUNDS
+-#define DADDI_SCRATCH "$0"
+-#else
++#if defined(CONFIG_CPU_DADDI_WORKAROUNDS) || (defined(CONFIG_EVA) &&	\
++					      defined(CONFIG_CPU_HAS_PREFETCH))
+ #define DADDI_SCRATCH "$3"
++#else
++#define DADDI_SCRATCH "$0"
+ #endif
  
-+	htw_stop();
- 	pid = read_c0_entryhi() & ASID_MASK;
- 	address &= (PAGE_MASK << 1);
- 	write_c0_entryhi(address | pid);
-@@ -346,6 +347,7 @@ void __update_tlb(struct vm_area_struct
- 			tlb_write_indexed();
- 	}
- 	tlbw_use_hazard();
-+	htw_start();
- 	flush_itlb_vm(vma);
- 	local_irq_restore(flags);
- }
-@@ -422,6 +424,7 @@ __init int add_temporary_entry(unsigned
- 
- 	local_irq_save(flags);
- 	/* Save old context and create impossible VPN2 value */
-+	htw_stop();
- 	old_ctx = read_c0_entryhi();
- 	old_pagemask = read_c0_pagemask();
- 	wired = read_c0_wired();
-@@ -443,6 +446,7 @@ __init int add_temporary_entry(unsigned
- 
- 	write_c0_entryhi(old_ctx);
- 	write_c0_pagemask(old_pagemask);
-+	htw_start();
- out:
- 	local_irq_restore(flags);
- 	return ret;
+ extern size_t __copy_user(void *__to, const void *__from, size_t __n);

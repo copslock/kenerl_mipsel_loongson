@@ -1,56 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2014 19:51:27 +0100 (CET)
-Received: from mail-ob0-f173.google.com ([209.85.214.173]:63651 "EHLO
-        mail-ob0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008221AbaLESvWMcRo0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2014 19:51:22 +0100
-Received: by mail-ob0-f173.google.com with SMTP id uy5so984189obc.4
-        for <linux-mips@linux-mips.org>; Fri, 05 Dec 2014 10:51:16 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2014 20:06:55 +0100 (CET)
+Received: from mail-ie0-f180.google.com ([209.85.223.180]:51181 "EHLO
+        mail-ie0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008206AbaLETGx3efgJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2014 20:06:53 +0100
+Received: by mail-ie0-f180.google.com with SMTP id rp18so1287921iec.39
+        for <multiple recipients>; Fri, 05 Dec 2014 11:06:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=pO252tJ6cN78/4GALesjtaIRiaNkU4jl85no5JpPOJI=;
-        b=K/IdszfnS95+7ZBOPLCoXdrQpahS28FmYbnGozKcru+DI5PQ4ScJRq9YWXi7BC2fst
-         BVN1Rn5O71SNwK1lRm8/l3/QpI1QngzsHWXffDnHf1YOBwO/lqiRz/WcD9/wORVza3jy
-         yqUO6H8FQo2QJSBQxiDDeqv8u6Fd/9i3UAs0FpbCMcRfzhJPx6AWKnPbxCiyFTR2LIgU
-         EfI+z6oBbBMY/WJmX6W7b3+FnuPffVywMNeY+5cqj4K7xeupNQFtSo6JlIc3uWANLUEM
-         CysDx2U08NOtgdA/FJQlHwxXecmRpjiFDh6sUsyTKtDo2/swNsDcO/Scp4jbq6dzvaIT
-         XJlA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=pO252tJ6cN78/4GALesjtaIRiaNkU4jl85no5JpPOJI=;
-        b=Ynx1YFcSRRzpqmTTtVSNNABHGCZSbHkRZ8vmSE0z26qE0VZ08J06np7juFly56D3oX
-         8IXZG78akvHBTGNoCtce0cgw5Np2kGDaWQ7hhRQqhA5PnM81ch3ANrER1yvUfpwiflKz
-         5Kae0VnCGESLJEg1BF7BIBnVmjWvN4cyT3c+Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=pO252tJ6cN78/4GALesjtaIRiaNkU4jl85no5JpPOJI=;
-        b=k4rGPFLomlBRb33lplG2rJdxDW/OMdMBqMEG8GUVHgfgTh7IGfhdd739JThyaIj+YA
-         zjecTj7RuDvxIJpJEFwrRbslQs/UX34zBzGgPRF+O1oCX6OYDpNtxvXYhVkN0IaXy5WZ
-         PxbNSkvkC6x5H9kOucfJzJ8mkqtZgX3XeaZ/G++eLcLtty2CxbQ9N4GujiTEdt+n66em
-         SNkJuzfsgzEosjz26LoPfcMB+ZxjAcai2hv1iTzrinJsocNkO+sCPZHlni0GimKUC42Y
-         3eC6zSNxpuaii6qsH4sIuspWJYxrBNUGyWkfkprm2pL626/DeOQasFrWBoekdw5+h7kZ
-         7QJg==
-X-Gm-Message-State: ALoCoQnnpzFv+TZp5pa0q6CaI36gCEILp08X6bROcakAn2SZgEMsZr3GV6oOHEwndnqCJLDFKwS3
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=6PMojiU17R6rRaJnppj3u0hmTagrskgTWHx1Kkqffe8=;
+        b=UiU/qBDvNgqdBkT29Bl+J+OT0rCda/f7Fug18G53y6SnRgvvxYU5gAmpH8JBYYZZMz
+         irbf8ISHBvlP0fOhgf1/pagu21eybeeBlmS2Q2oWuM0SV2jJBjmrmI1+MquMx4GsaHfL
+         G1aWhJb+jNo2zwJT8GhTED9hwS8r01tgbo3SkeDcehuKb2dFQq0/t3m46k6fIcSkDPr9
+         R0FVAfNX0L/qVtlKqJog50VJBrfsw3WNybXJBOvZvVFeyzi1YYJSjxQo1g+4r25zGHji
+         vyT5QrwJr8GpBfivNAtdynnz08ewcBCswpfGQqTpC2OYluzC/yv9F5fSGxmnNT1G/zLz
+         2bUg==
+X-Received: by 10.107.130.30 with SMTP id e30mr16117822iod.87.1417806407425;
+        Fri, 05 Dec 2014 11:06:47 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id 39sm13265205ioi.7.2014.12.05.11.06.45
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 05 Dec 2014 11:06:46 -0800 (PST)
+Message-ID: <54820244.5010304@gmail.com>
+Date:   Fri, 05 Dec 2014 11:06:44 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-X-Received: by 10.202.200.143 with SMTP id y137mr10975888oif.38.1417805476059;
- Fri, 05 Dec 2014 10:51:16 -0800 (PST)
-Received: by 10.182.33.69 with HTTP; Fri, 5 Dec 2014 10:51:15 -0800 (PST)
-In-Reply-To: <5481EB52.6060706@gmail.com>
-References: <20141203015537.13886.50830.stgit@linux-yegoshin>
-        <20141203015824.13886.74616.stgit@linux-yegoshin>
-        <5481EB52.6060706@gmail.com>
-Date:   Fri, 5 Dec 2014 10:51:15 -0800
-X-Google-Sender-Auth: 1BTdWi0hR1syVSk-T-Cz5N7FCQY
-Message-ID: <CAGXu5jJJx0O7GhHghy+sC4fJL2O=RsO+Zgm78r9SNt-aTbhqcw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] MIPS: set stack/data protection as non-executable
-From:   Kees Cook <keescook@chromium.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+To:     Kees Cook <keescook@chromium.org>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Zubair.Kakakhel@imgtec.com, geert+renesas@glider.be,
         david.daney@cavium.com, Peter Zijlstra <peterz@infradead.org>,
@@ -69,16 +48,20 @@ Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>,
         dengcheng.zhu@imgtec.com, manuel.lauss@gmail.com,
         lars.persson@axis.com
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+Subject: Re: [PATCH v3 3/3] MIPS: set stack/data protection as non-executable
+References: <20141203015537.13886.50830.stgit@linux-yegoshin> <20141203015824.13886.74616.stgit@linux-yegoshin> <5481EB52.6060706@gmail.com> <CAGXu5jJJx0O7GhHghy+sC4fJL2O=RsO+Zgm78r9SNt-aTbhqcw@mail.gmail.com>
+In-Reply-To: <CAGXu5jJJx0O7GhHghy+sC4fJL2O=RsO+Zgm78r9SNt-aTbhqcw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44586
+X-archive-position: 44587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,66 +74,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 5, 2014 at 9:28 AM, David Daney <ddaney.cavm@gmail.com> wrote:
-> On 12/02/2014 05:58 PM, Leonid Yegoshin wrote:
+On 12/05/2014 10:51 AM, Kees Cook wrote:
+> On Fri, Dec 5, 2014 at 9:28 AM, David Daney <ddaney.cavm@gmail.com> wrote:
+>> On 12/02/2014 05:58 PM, Leonid Yegoshin wrote:
+>>>
+>>> This is a last step of 3 patches which shift FPU emulation out of
+>>> stack into protected area. So, it disables a default executable stack.
+>>>
+>>> Additionally, it sets a default data area non-executable protection.
+>>>
+>>> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 >>
->> This is a last step of 3 patches which shift FPU emulation out of
->> stack into protected area. So, it disables a default executable stack.
 >>
->> Additionally, it sets a default data area non-executable protection.
+>> NAK!
 >>
->> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>> Some programs require an executable stack, this patch will break them.
 >
->
-> NAK!
->
-> Some programs require an executable stack, this patch will break them.
+> Have you tested this?
 
-Have you tested this?
-
-> You can only select a non-executable stack in response to PT_GNU_STACK
-> program headers in the ELF file of the executable program.
-
-This is already handled by fs/binfmt_elf.c. It does the parsing of the
-PT_GNU_STACK needs, and sets up the stack flags appropriately. All the
-change to VM_DATA_DEFAULT_FLAGS does is make sure that EXSTACK_DEFAULT
-now means no VM_EXEC by default. If PT_GNU_STACK requires it, it gets
-added back in.
-
--Kees
+Do you require empirical evidence that the patch is incorrect, or is it 
+enough to just to trust me when I say that it is incorrect?  Typically 
+the burden of proof is with those proposing the patches.
 
 >
-> David Daney
+>> You can only select a non-executable stack in response to PT_GNU_STACK
+>> program headers in the ELF file of the executable program.
 >
->
->
->> ---
->>   arch/mips/include/asm/page.h |    2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
->> index 3be81803595d..d49ba81cb4ed 100644
->> --- a/arch/mips/include/asm/page.h
->> +++ b/arch/mips/include/asm/page.h
->> @@ -230,7 +230,7 @@ extern int __virt_addr_valid(const volatile void
->> *kaddr);
->>   #define virt_addr_valid(kaddr)
->> \
->>         __virt_addr_valid((const volatile void *) (kaddr))
->>
->> -#define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | VM_EXEC | \
->> +#define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | \
->>                                  VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
->>
->>   #define UNCAC_ADDR(addr)      ((addr) - PAGE_OFFSET + UNCAC_BASE)
->>
->>
->>
->>
+> This is already handled by fs/binfmt_elf.c. It does the parsing of the
+> PT_GNU_STACK needs, and sets up the stack flags appropriately. All the
+> change to VM_DATA_DEFAULT_FLAGS does is make sure that EXSTACK_DEFAULT
+> now means no VM_EXEC by default. If PT_GNU_STACK requires it, it gets
+> added back in.
 >
 
+The problem is not with "modern" executables that are properly annotated 
+with PT_GNU_STACK.
+
+My objection is to the intentional breaking of old executables that have 
+no PT_GNU_STACK annotation, but require an executable stack.  Since we 
+usually try not to break userspace, we cannot merge a patch like this one.
+
+David Daney.
 
 
--- 
-Kees Cook
-Chrome OS Security
+> -Kees
+>
+>>
+>> David Daney
+>>
+>>
+>>
+>>> ---
+>>>    arch/mips/include/asm/page.h |    2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+>>> index 3be81803595d..d49ba81cb4ed 100644
+>>> --- a/arch/mips/include/asm/page.h
+>>> +++ b/arch/mips/include/asm/page.h
+>>> @@ -230,7 +230,7 @@ extern int __virt_addr_valid(const volatile void
+>>> *kaddr);
+>>>    #define virt_addr_valid(kaddr)
+>>> \
+>>>          __virt_addr_valid((const volatile void *) (kaddr))
+>>>
+>>> -#define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | VM_EXEC | \
+>>> +#define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | \
+>>>                                   VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+>>>
+>>>    #define UNCAC_ADDR(addr)      ((addr) - PAGE_OFFSET + UNCAC_BASE)
+>>>
+>>>
+>>>
+>>>
+>>
+>
+>
+>

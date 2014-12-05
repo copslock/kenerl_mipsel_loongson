@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2014 23:48:16 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:48069 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2014 23:48:33 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48107 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008243AbaLEWqFqX5Uv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2014 23:46:05 +0100
+        by eddie.linux-mips.org with ESMTP id S27008247AbaLEWqHrUuBx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2014 23:46:07 +0100
 Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 59AD0A80;
-        Fri,  5 Dec 2014 22:45:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4F174934;
+        Fri,  5 Dec 2014 22:45:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org,
         Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.17 006/122] MIPS: asm: uaccess: Add v1 register to clobber list on EVA
-Date:   Fri,  5 Dec 2014 14:43:00 -0800
-Message-Id: <20141205223306.465117381@linuxfoundation.org>
+Subject: [PATCH 3.17 009/122] MIPS: r4kcache: Add EVA case for protected_writeback_dcache_line
+Date:   Fri,  5 Dec 2014 14:43:03 -0800
+Message-Id: <20141205223306.905029998@linuxfoundation.org>
 X-Mailer: git-send-email 2.1.3
 In-Reply-To: <20141205223305.514276242@linuxfoundation.org>
 References: <20141205223305.514276242@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44601
+X-archive-position: 44602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,41 +48,37 @@ X-list: linux-mips
 
 From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit 58563817cfed0432e9a54476d5fc6c3aeba475e4 upstream.
+commit 83fd43449baaf88fe5c03dd0081a062041837c51 upstream.
 
-When EVA is turned on and prefetching is being used in memcpy.S,
-the v1 register is being used as a helper register to the PREFE
-instruction. However, v1 ($3) was not in the clobber list, which
-means that the compiler did not preserve it across function calls,
-and that could corrupt the value of the register leading to all
-sorts of userland crashes. We fix this problem by using the
-DADDI_SCRATCH macro to define the clobbered register when
-CONFIG_EVA && CONFIG_CPU_HAS_PREFETCH are enabled.
+Commit de8974e3f76c0 ("MIPS: asm: r4kcache: Add EVA cache flushing
+functions") added cache function for EVA using the cachee instruction.
+However, it didn't add a case for the protected_writeback_dcache_line.
+mips_dsemul() calls r4k_flush_cache_sigtramp() which in turn uses
+the protected_writeback_dcache_line() to flush the trampoline code
+back to memory. This used the wrong "cache" instruction leading to
+random userland crashes on non-FPU cores.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8510/
+Patchwork: https://patchwork.linux-mips.org/patch/8331/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/uaccess.h |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/r4kcache.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -773,10 +773,11 @@ extern void __put_user_unaligned_unknown
- 	"jal\t" #destination "\n\t"
- #endif
- 
--#ifndef CONFIG_CPU_DADDI_WORKAROUNDS
--#define DADDI_SCRATCH "$0"
--#else
-+#if defined(CONFIG_CPU_DADDI_WORKAROUNDS) || (defined(CONFIG_EVA) &&	\
-+					      defined(CONFIG_CPU_HAS_PREFETCH))
- #define DADDI_SCRATCH "$3"
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -257,7 +257,11 @@ static inline void protected_flush_icach
+  */
+ static inline void protected_writeback_dcache_line(unsigned long addr)
+ {
++#ifdef CONFIG_EVA
++	protected_cachee_op(Hit_Writeback_Inv_D, addr);
 +#else
-+#define DADDI_SCRATCH "$0"
- #endif
+ 	protected_cache_op(Hit_Writeback_Inv_D, addr);
++#endif
+ }
  
- extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+ static inline void protected_writeback_scache_line(unsigned long addr)

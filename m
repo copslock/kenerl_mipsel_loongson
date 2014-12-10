@@ -1,34 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2014 21:30:23 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:40828 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007750AbaLJUaWIZN5T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Dec 2014 21:30:22 +0100
-Received: from [IPv6:2001:470:7259:0:35be:a847:adf9:95cd] (unknown [IPv6:2001:470:7259:0:35be:a847:adf9:95cd])
-        by hauke-m.de (Postfix) with ESMTPSA id BA49320107;
-        Wed, 10 Dec 2014 21:30:21 +0100 (CET)
-Message-ID: <5488AD5D.7000405@hauke-m.de>
-Date:   Wed, 10 Dec 2014 21:30:21 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Dec 2014 00:16:36 +0100 (CET)
+Received: from utopia.booyaka.com ([74.50.51.50]:32834 "EHLO
+        utopia.booyaka.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007513AbaLJXQdhBESY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Dec 2014 00:16:33 +0100
+Received: (qmail 26807 invoked by uid 1019); 10 Dec 2014 23:16:30 -0000
+Date:   Wed, 10 Dec 2014 23:16:30 +0000 (UTC)
+From:   Paul Walmsley <paul@pwsan.com>
+To:     =?ISO-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>
+cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        "H. Peter Anvin" <hpa@linux.intel.com>,
+        Ingo Molnar <mingo@elte.hu>, Ingo Molnar <mingo@kernel.org>,
+        Jeff Garzik <jgarzik@redhat.com>,
+        Jesse Barnes <jbarnes@virtuousgeek.org>,
+        Konrad Rzeszutek Wilk <konrad@kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matt Fleming <matt.fleming@intel.com>,
+        Tony Luck <tony.luck@intel.com>, linux-soc@vger.kernel.org
+Subject: Re: [PATCH][RFC] MIPS: BCM47XX: Move NVRAM driver to the
+ drivers/firmware/
+In-Reply-To: <1418212587-19774-1-git-send-email-zajec5@gmail.com>
+Message-ID: <alpine.DEB.2.02.1412102300090.29716@utopia.booyaka.com>
+References: <1418212587-19774-1-git-send-email-zajec5@gmail.com>
+User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Walmsley <paul@pwsan.com>
-Subject: Re: [PATCH V2 1/3] MIPS: BCM47XX: Fix coding style to match kernel
- standards
-References: <1418208594-16235-1-git-send-email-zajec5@gmail.com> <1418229506-30245-1-git-send-email-zajec5@gmail.com>
-In-Reply-To: <1418229506-30245-1-git-send-email-zajec5@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: MULTIPART/MIXED; BOUNDARY="843723315-108983415-1418253390=:29716"
+Return-Path: <paul@pwsan.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44617
+X-archive-position: 44618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: paul@pwsan.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,25 +50,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/10/2014 05:38 PM, Rafał Miłecki wrote:
-> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
-> ---
-> V2: Replace
-> char *nvram_var = "gpioXX";
-> with
-> char nvram_var[] = "gpioXX";
-> to fix sizeof().
-> ---
->  arch/mips/bcm47xx/bcm47xx_private.h |  4 ++++
->  arch/mips/bcm47xx/board.c           |  3 +--
->  arch/mips/bcm47xx/nvram.c           | 25 ++++++++++++++-----------
->  arch/mips/bcm47xx/prom.c            |  3 +--
->  arch/mips/bcm47xx/serial.c          |  8 ++++----
->  arch/mips/bcm47xx/setup.c           | 12 ++++++------
->  arch/mips/bcm47xx/sprom.c           |  8 ++++----
->  arch/mips/bcm47xx/time.c            |  1 -
->  8 files changed, 34 insertions(+), 30 deletions(-)
-> 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-For all 3 patches.
+--843723315-108983415-1418253390=:29716
+Content-Type: TEXT/PLAIN; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Wed, 10 Dec 2014, Rafa=C5=82 Mi=C5=82ecki wrote:
+
+> After Broadcom switched from MIPS to ARM for their home routers we need
+> to have NVRAM driver in some common place (not arch/mips/).
+> We were thinking about putting it in bus directory, however there are
+> two possible buses for MIPS: drivers/ssb/ and drivers/bcma/. So this
+> won't fit there neither.
+> This is why I would like to move this driver to the drivers/firmware/
+>=20
+> Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <zajec5@gmail.com>
+> ---
+> Hey, this is another try for the NVRAM driver. At first I tried moving it=
+ to the
+> drivers/misc/, but then decided drivers/soc/ will be better. Then after
+> discussion with Paul we decided to try drivers/firmware/ and so I do.
+>=20
+> Meanwhile I've sent few patches cleaning nvram.c: following kernel coding=
+ style
+> and using helpers like readl.
+>=20
+> I would like to get few Reviewed-by for this patch. If I get that, then I=
+'ll
+> re-send this patch to Ralf without the RFC.
+>=20
+> If you want to review nvram.c code, please make sure to check version in
+> ralf/upstream-sfr.git repository as it contains many cleanups:
+> git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
+> http://git.linux-mips.org/cgit/ralf/upstream-sfr.git/log/
+>=20
+> Mentioned patches (more cleanups):
+> http://patchwork.linux-mips.org/project/linux-mips/list/?submitter=3D478
+>=20
+> Finally: why drivers/firmware/? Please see Paul's e-mail:
+> <alpine.DEB.2.02.1411271926560.1406@utopia.booyaka.com>
+> http://www.linux-mips.org/archives/linux-mips/2014-11/msg00678.html
+>=20
+> Unfortunately there is no mailing list for drivers/firmware/, so I've
+> picked ppl with 5+ commits to this directory. Hope this is OK.
+
+Reviewed-by: Paul Walmsley <paul@pwsan.com>
+
+Just to restate, if it's unclear for any other reviewers (as it initially=
+=20
+was for me): this isn't an NVRAM driver as most folks understand the term. =
+=20
+This "NVRAM" code parses SoC configuration data that is passed to the=20
+kernel in flash from the bootloader firmware, "CFE".
+
+
+- Paul
+--843723315-108983415-1418253390=:29716--

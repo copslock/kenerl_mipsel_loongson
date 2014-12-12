@@ -1,44 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 07:17:32 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:58150 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006821AbaLLGRIIHQIZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 07:17:08 +0100
-Received: from [2001:470:1f08:1539:c97:8151:cc89:c28d] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1XzJX0-0003ef-OY; Fri, 12 Dec 2014 06:16:51 +0000
-Received: from ben by deadeye with local (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1XzJWw-0004Yj-Hg; Fri, 12 Dec 2014 06:16:46 +0000
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 10:13:36 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:27433 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006871AbaLLJNeyhV7w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 10:13:34 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id BB42934CFF29F
+        for <linux-mips@linux-mips.org>; Fri, 12 Dec 2014 09:13:26 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 12 Dec 2014 09:13:28 +0000
+Received: from [192.168.154.56] (192.168.154.56) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 12 Dec
+ 2014 09:13:28 +0000
+Message-ID: <548AB1B8.7040503@imgtec.com>
+Date:   Fri, 12 Dec 2014 09:13:28 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Markos Chandras" <Markos.Chandras@imgtec.com>,
-        "Huacai Chen" <chenhc@lemote.com>, linux-mips@linux-mips.org,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Date:   Fri, 12 Dec 2014 06:14:25 +0000
-Message-ID: <lsq.1418364865.411721390@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.2 155/164] MIPS: Loongson: Make platform serial setup
- always built-in.
-In-Reply-To: <lsq.1418364865.554543691@decadent.org.uk>
-X-SA-Exim-Connect-IP: 2001:470:1f08:1539:c97:8151:cc89:c28d
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+To:     <linux-mips@linux-mips.org>
+Subject: Re: MIPS in 3.19
+References: <20141211132746.GF31723@linux-mips.org> <CAJiQ=7C=WTzOKJ4CPGH3zB4hTr=RkF1ywn9bHs2DXpPRmwpCKg@mail.gmail.com> <20141211212240.GA6477@linux-mips.org> <548A4ACC.9050106@gmail.com>
+In-Reply-To: <548A4ACC.9050106@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.56]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44626
+X-archive-position: 44627
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,42 +45,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.2.65-rc1 review patch.  If anyone has any objections, please let me know.
+On 12/12/2014 01:54 AM, Florian Fainelli wrote:
+> On 11/12/14 13:22, Ralf Baechle wrote:
+>> On Thu, Dec 11, 2014 at 11:19:53AM -0800, Kevin Cernekee wrote:
+>>
+>>> On Thu, Dec 11, 2014 at 5:27 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+>>>>
+>>>> Kevin Cernekee (15):
+>>>>       Documentation: DT: Add entries for BCM3384 and its peripherals
+>>>
+>>>>       MIPS: bcm3384: Initial commit of bcm3384 platform support
+>>>>       MAINTAINERS: Add entry for BCM33xx cable chips
+>>>
+>>> Hi Ralf,
+>>>
+>>> Could we drop/revert these three patches for now, and then use the
+>>> "BMIPS Generic target V4" patch series to support BCM3384?  The BMIPS
+>>> Generic series incorporates a great deal of helpful feedback from Arnd
+>>> and others, and it also runs on 5+ other chips.
+>>>
+>>> It is OK if it isn't merged until 3.20+.  No rush.
+>>
+>> Too late - the pull request to Linus is out.
+> 
+> Ralf, you applied the patches without email notice, Kevin asked you to
+> drop them way before sending a pull request while he was posting v2-3-4
+> of his patch set, and now he has to deal with potential reverts, this is
+> counter productive.
+> 
+> I do not see the MIPS pull request anywhere in public email archives, so
+> we could not even say "wait" before this went out to Linus.
+> --
+> Florian
+>
 
-------------------
+I am a little confused as well. Sometimes the pull requests appear on
+LMO, some other times they don't. Would it be possible to CC LMO every
+time a pull request is sent to Linus so we have time to review it (more
+pair of eyes is not a bad thing) and comment on it if needed?
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-commit 26927f76499849e095714452b8a4e09350f6a3b9 upstream.
-
-If SERIAL_8250 is compiled as a module, the platform specific setup
-for Loongson will be a module too, and it will not work very well.
-At least on Loongson 3 it will trigger a build failure,
-since loongson_sysconf is not exported to modules.
-
-Fix by making the platform specific serial code always built-in.
-
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reported-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Markos Chandras <Markos.Chandras@imgtec.com>
-Patchwork: https://patchwork.linux-mips.org/patch/8533/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/loongson/common/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/arch/mips/loongson/common/Makefile
-+++ b/arch/mips/loongson/common/Makefile
-@@ -10,7 +10,8 @@ obj-$(CONFIG_GENERIC_GPIO) += gpio.o
- # Serial port support
- #
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
--obj-$(CONFIG_SERIAL_8250) += serial.o
-+loongson-serial-$(CONFIG_SERIAL_8250) := serial.o
-+obj-y += $(loongson-serial-m) $(loongson-serial-y)
- obj-$(CONFIG_LOONGSON_UART_BASE) += uart_base.o
- obj-$(CONFIG_LOONGSON_MC146818) += rtc.o
- 
+-- 
+markos

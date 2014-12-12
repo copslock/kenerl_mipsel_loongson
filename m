@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 15:28:16 +0100 (CET)
-Received: from mail-wg0-f47.google.com ([74.125.82.47]:57283 "EHLO
-        mail-wg0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007955AbaLLO2OTmIOj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 15:28:14 +0100
-Received: by mail-wg0-f47.google.com with SMTP id n12so9155302wgh.6
-        for <linux-mips@linux-mips.org>; Fri, 12 Dec 2014 06:28:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:date:from:to:subject:message-id
-         :mime-version:content-type:content-disposition:user-agent;
-        bh=cMihjPzOoSD9UUseJIvyQhpLPJUDxVlubUirsWa+5f8=;
-        b=lzNZhxFVJyHXpi7+qLHy8nyLARFktkjCwgkvO7LvmR5WWiPWzqeKyZrO1PvhqO0w1W
-         mA3DPY0avjjBFnzUEyJpdCRWxpiFV4N6Gk9oiAhHgmQOVEyoAI3uFAyDiQaSIiOHXV6a
-         xBPMy62jmVo0ECxvqG1edwggzfhno72FhSBT4KsYPsupD12qX8mZD7G8QP3bjDgyDxQB
-         jTgvV80vrENgn/t9vmk1DHhJY8uoJoUfltX9v6NFnrtTwGBmoRXr+sMC1VvzQgnYydWQ
-         8Vff/Ymumbr8tMvsuhkeGaPwt3oNqKunffHaXIVhaf8JH1rYpYlD3chQP91Z5iM4ZoZe
-         wxbA==
-X-Gm-Message-State: ALoCoQkT1U1YScsA2WClZEbcJliSTQpxqUjR6xRsJFQGlnIq4PAj0YHsgP4+mupMsWoIVICPJsiC
-X-Received: by 10.194.250.68 with SMTP id za4mr28295801wjc.92.1418394489034;
-        Fri, 12 Dec 2014 06:28:09 -0800 (PST)
-Received: from bordel.klfree.net (bordel.klfree.cz. [81.201.48.42])
-        by mx.google.com with ESMTPSA id p5sm2170136wix.7.2014.12.12.06.28.08
-        for <linux-mips@linux-mips.org>
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Fri, 12 Dec 2014 06:28:08 -0800 (PST)
-Date:   Fri, 12 Dec 2014 15:28:01 +0100
-From:   Petr Malat <oss@malat.biz>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Provide correct siginfo_t.si_stime
-Message-ID: <20141212142800.GA4176@bordel.klfree.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <oss@malat.biz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 16:27:34 +0100 (CET)
+Received: from mail-pa0-f43.google.com ([209.85.220.43]:57211 "EHLO
+        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008090AbaLLP10glMHc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 16:27:26 +0100
+Received: by mail-pa0-f43.google.com with SMTP id kx10so7463402pab.2
+        for <multiple recipients>; Fri, 12 Dec 2014 07:27:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=8f7nMBDuFMsWcn95hjqNY1UHgIO0/odcYFnXy6EBdak=;
+        b=Nfc30FaZfwABv71sYlOKuqZT+rJiutPv0dSB99WEcxWXwiWdxjR80wtc+BX5/9eOzq
+         RexgaIsW95NWAWdTsgs+HQRegE/9JDEKgJAx0k47XA9n+IZxnuZ0sPY2r9ZTL9eYAsRS
+         bgtPAFcZRXLnvEhGzCFEXnqdIDbKabw4be5hwSpSGdqOP2E4vsWYWo1Rje8x14MhJipG
+         9Agk+AHqvsTzOu6eoag6mOM6vrqOEpSvczM9NWam8tuf2sQRL1FkZ0QPtivXRBYw3S6G
+         N1BozdiRzKYGPMZkFkZLHh+DHom3CQd76LBwibj1/n9gYY5RI3og+xW1B4TouEIjBwK7
+         NOhA==
+X-Received: by 10.70.124.200 with SMTP id mk8mr1850708pdb.147.1418398039809;
+        Fri, 12 Dec 2014 07:27:19 -0800 (PST)
+Received: from localhost.localdomain ([59.12.167.210])
+        by mx.google.com with ESMTPSA id wv1sm1860993pab.37.2014.12.12.07.27.17
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 12 Dec 2014 07:27:19 -0800 (PST)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH] MIPS: use phys_addr_t instead of phy_t
+Date:   Sat, 13 Dec 2014 00:26:43 +0900
+Message-Id: <1418398003-1098-1-git-send-email-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 1.9.3 (Apple Git-50)
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44630
+X-archive-position: 44631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oss@malat.biz
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,89 +50,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Petr Malat <oss@malat.biz>
+add missing patch of commit "MIPS: Replace use of phys_t with phys_addr_t".
 
-Provide correct siginfo_t.si_stime on MIPS64
-
-Bug description:
-MIPS version of copy_siginfo() is not aware of alignment on platforms with
-64-bit long integers, which leads to an incorrect si_stime passed to signal
-handlers, because the last element (si_stime) of _sifields._sigchld is not
-copied. If _MIPS_SZLONG is 64, then the _sifields starts at the offset of 
-4 * sizeof(int).
-
-Patch description:
-Use the generic copy_siginfo, which doesn't have this problem.
-
-Signed-off-by: Petr Malat <oss@malat.biz>
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 ---
-Please put me on CC, I'm not signed into the mailing list.
+ arch/mips/kernel/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff -Naurp linux-3.18/arch/mips/include/asm/siginfo.h linux-3.18-new/arch/mips/include/asm/siginfo.h
---- linux-3.18/arch/mips/include/asm/siginfo.h	2014-12-07 23:21:05.000000000 +0100
-+++ linux-3.18-new/arch/mips/include/asm/siginfo.h	1970-01-01 01:00:00.000000000 +0100
-@@ -1,29 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1998, 1999, 2001, 2003 Ralf Baechle
-- * Copyright (C) 2000, 2001 Silicon Graphics, Inc.
-- */
--#ifndef _ASM_SIGINFO_H
--#define _ASM_SIGINFO_H
--
--#include <uapi/asm/siginfo.h>
--
--
--/*
-- * Duplicated here because of <asm-generic/siginfo.h> braindamage ...
-- */
--#include <linux/string.h>
--
--static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
--{
--	if (from->si_code < 0)
--		memcpy(to, from, sizeof(*to));
--	else
--		/* _sigchld is currently the largest know union member */
--		memcpy(to, from, 3*sizeof(int) + sizeof(from->_sifields._sigchld));
--}
--
--#endif /* _ASM_SIGINFO_H */
-diff -Naurp linux-3.18/arch/mips/include/uapi/asm/siginfo.h linux-3.18-new/arch/mips/include/uapi/asm/siginfo.h
---- linux-3.18/arch/mips/include/uapi/asm/siginfo.h	2014-12-07 23:21:05.000000000 +0100
-+++ linux-3.18-new/arch/mips/include/uapi/asm/siginfo.h	2014-12-11 17:11:36.698056810 +0100
-@@ -16,13 +16,6 @@
- #define HAVE_ARCH_SIGINFO_T
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index a8c20af..0589290 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -493,7 +493,7 @@ static int usermem __initdata;
  
- /*
-- * We duplicate the generic versions - <asm-generic/siginfo.h> is just borked
-- * by design ...
-- */
--#define HAVE_ARCH_COPY_SIGINFO
--struct siginfo;
--
--/*
-  * Careful to keep union _sifields from shifting ...
-  */
- #if _MIPS_SZLONG == 32
-@@ -35,8 +28,9 @@ struct siginfo;
+ static int __init early_parse_mem(char *p)
+ {
+-	phys_t start, size;
++	phys_addr_t start, size;
  
- #define __ARCH_SIGSYS
- 
--#include <asm-generic/siginfo.h>
-+#include <uapi/asm-generic/siginfo.h>
- 
-+/* We can't use generic siginfo_t, because our si_code and si_errno are swapped */
- typedef struct siginfo {
- 	int si_signo;
- 	int si_code;
-@@ -120,5 +114,6 @@ typedef struct siginfo {
- #define SI_TIMER __SI_CODE(__SI_TIMER, -3) /* sent by timer expiration */
- #define SI_MESGQ __SI_CODE(__SI_MESGQ, -4) /* sent by real time mesq state change */
- 
-+#include <asm-generic/siginfo.h>
- 
- #endif /* _UAPI_ASM_SIGINFO_H */
+ 	/*
+ 	 * If a user specifies memory size, we
+-- 
+1.9.3

@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 13:46:02 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44380 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007955AbaLLMp5W156m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 13:45:57 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D12333E9432E;
-        Fri, 12 Dec 2014 12:45:48 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 12 Dec 2014 12:45:51 +0000
-Received: from zkakakhel-linux.le.imgtec.org (192.168.154.89) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 12 Dec 2014 12:45:50 +0000
-From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-To:     <ralf@linux-mips.org>
-CC:     <Markos.Chandras@imgtec.com>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] mips: pci: Add ifdef around pci_proc_domain
-Date:   Fri, 12 Dec 2014 12:45:39 +0000
-Message-ID: <1418388339-19750-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-X-Mailer: git-send-email 1.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 15:22:37 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33677 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008032AbaLLOWgN0dDf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Dec 2014 15:22:36 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBCEMX1V013948;
+        Fri, 12 Dec 2014 15:22:33 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBCEMX1K013947;
+        Fri, 12 Dec 2014 15:22:33 +0100
+Date:   Fri, 12 Dec 2014 15:22:33 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: MIPS in 3.19
+Message-ID: <20141212142232.GA11185@linux-mips.org>
+References: <20141211132746.GF31723@linux-mips.org>
+ <CAJiQ=7C=WTzOKJ4CPGH3zB4hTr=RkF1ywn9bHs2DXpPRmwpCKg@mail.gmail.com>
+ <20141211212240.GA6477@linux-mips.org>
+ <548A4ACC.9050106@gmail.com>
+ <548AB1B8.7040503@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.89]
-Return-Path: <Zubair.Kakakhel@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <548AB1B8.7040503@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44628
+X-archive-position: 44629
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Zubair.Kakakhel@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,36 +46,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Without these, there are multiple definitions of pci_proc_domain()
-and pci_domain_nr() if linux/pci.h and asm/pci.h are included.
+On Fri, Dec 12, 2014 at 09:13:28AM +0000, Markos Chandras wrote:
 
-Add #ifdefs around them
+> I am a little confused as well. Sometimes the pull requests appear on
+> LMO, some other times they don't. Would it be possible to CC LMO every
+> time a pull request is sent to Linus so we have time to review it (more
+> pair of eyes is not a bad thing) and comment on it if needed?
 
-Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Reviewed-by: Markos Chandras <Markos.Chandras@imgtec.com>
----
- arch/mips/include/asm/pci.h | 2 ++
- 1 file changed, 2 insertions(+)
+I only recently started cc'ing the list so forgive if I sometimes forget.
+In this particular case however not cc'ing was intionsional because I
+sent out the list of patches minutes after the pull request in the email
+that started this thread.
 
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index 6952962..193b4c6 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -121,6 +121,7 @@ static inline void pci_dma_burst_advice(struct pci_dev *pdev,
- }
- #endif
- 
-+#ifdef CONFIG_PCI_DOMAINS
- #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
- 
- static inline int pci_proc_domain(struct pci_bus *bus)
-@@ -128,6 +129,7 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- 	struct pci_controller *hose = bus->sysdata;
- 	return hose->need_domain_info;
- }
-+#endif /* CONFIG_PCI_DOMAINS */
- 
- #endif /* __KERNEL__ */
- 
--- 
-1.9.1
+While it is possible to look at what's pending for Linus in upstream-sfr
+at any time, not a whole lot of people seem to do that and maybe I should
+make it a habit to post a list of what's pending by -rc5 or -rc6 by which
+time there is still time for some last minute changes.
+
+That said, already a few releases ago I started to enforce the rc5
+deadline for accepting major submission - with a few smaller exceptions,
+based on the assessed risk.  But this time the volume of patches forced
+me to be more radical or I'd probably still be shifting patches around!
+
+Now, Linus has pulled.  Let's sort the mess than move on to 3.20 ...
+
+  Ralf

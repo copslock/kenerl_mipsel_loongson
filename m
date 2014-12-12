@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 23:12:01 +0100 (CET)
-Received: from mail-pd0-f171.google.com ([209.85.192.171]:45329 "EHLO
-        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008609AbaLLWIlWbfcp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 23:08:41 +0100
-Received: by mail-pd0-f171.google.com with SMTP id y13so7971450pdi.2
-        for <multiple recipients>; Fri, 12 Dec 2014 14:08:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 23:12:19 +0100 (CET)
+Received: from mail-pa0-f54.google.com ([209.85.220.54]:49804 "EHLO
+        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008616AbaLLWImqsCHx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 23:08:42 +0100
+Received: by mail-pa0-f54.google.com with SMTP id fb1so8071949pad.13
+        for <multiple recipients>; Fri, 12 Dec 2014 14:08:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=rTW8INPeGt82J6bH0DhDmN2gNyMemWPGGMepVtSiZ4M=;
-        b=XvwS3dsfhqogYvouBquq9Kstc94BHTtHLC6WpQz1hf/dWGz0hatetVI3tGQMGh7eRg
-         qPECaGg/ZD1EGy7iUvICiOVzyDVzKyz62um7fVboOhGccsMqCiU4DGHXZxXfjKy34+ya
-         elvYqfKL9vNN4+6WPHvpKzNCeVLDJXqrnr8qqtnQGYjPG+NW1HN3R3yhEQ6xB/fJlhNs
-         aLESpEJx4BclNJVrYWfv7QdlwSp+YAjpQtEzcjc3mGdPf+yM1O8jlXDgtkEbyUkpQyJq
-         6Lz9ON70Q3qBgl2uSiN7dP1IwDXhA3zAe+7HPU6Rkf/G0pTaWarats11KgJSnI48wOvZ
-         XmVg==
-X-Received: by 10.66.90.201 with SMTP id by9mr30243265pab.148.1418422115687;
-        Fri, 12 Dec 2014 14:08:35 -0800 (PST)
+        bh=+lePaPtYFMcZVD9k1l2bNtR4oD3W7sKejs/s4zH17FM=;
+        b=QBE/oNLsTb/r/MFJJURUkvfR39cvgmzOlrUSML0v50PkbjgknI45dXsAzQoY3nxtPK
+         Lakk19o+b3LQI59hkgaxLIqCrJfTRLWKcCweQMDrOnJbmn/H747i4pK7LynZ5yiay9Q+
+         uPcubA2szJvvRej3fvbWuiWlaZ0kw0SyD/4+3r4CCunMczCYF2jFzGw5hyuKZuRm/ihq
+         muomtU71MEOByc+nU0Sw0Bfe9D9usUEgkUTbbO/hrpQcahRZPL/bzSUrO//0R4c1UF2N
+         5tnyj77yvH3KeEybcRLzJYr5mbxSjVN/GnTpspMVAPcm5ABeBFz/y4VdRxh3WiyGZcDj
+         TsYA==
+X-Received: by 10.66.228.131 with SMTP id si3mr31053967pac.32.1418422117145;
+        Fri, 12 Dec 2014 14:08:37 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id tm3sm2425841pac.12.2014.12.12.14.08.34
+        by mx.google.com with ESMTPSA id tm3sm2425841pac.12.2014.12.12.14.08.35
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 12 Dec 2014 14:08:35 -0800 (PST)
+        Fri, 12 Dec 2014 14:08:36 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
         jogo@openwrt.org, arnd@arndb.de, computersforpeace@gmail.com,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V5 13/23] MIPS: BMIPS: Flush the readahead cache after DMA
-Date:   Fri, 12 Dec 2014 14:07:04 -0800
-Message-Id: <1418422034-17099-14-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V5 14/23] MIPS: BMIPS: Document the firmware->kernel DTB interface
+Date:   Fri, 12 Dec 2014 14:07:05 -0800
+Message-Id: <1418422034-17099-15-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
 References: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
@@ -38,7 +38,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44651
+X-archive-position: 44652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,46 +55,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BMIPS 3300/435x/438x CPUs have a readahead cache that is separate from
-the L1/L2.  During a DMA operation, accesses adjacent to a DMA buffer
-may cause parts of the DMA buffer to be prefetched into the RAC.  To
-avoid possible coherency problems, flush the RAC upon DMA completion.
+Add a new section covering the Generic BMIPS machine type.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- arch/mips/mm/dma-default.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ Documentation/devicetree/booting-without-of.txt | 28 +++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index af5f046..ee6d12c 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -18,6 +18,7 @@
- #include <linux/highmem.h>
- #include <linux/dma-contiguous.h>
+diff --git a/Documentation/devicetree/booting-without-of.txt b/Documentation/devicetree/booting-without-of.txt
+index 7768518..e49e423 100644
+--- a/Documentation/devicetree/booting-without-of.txt
++++ b/Documentation/devicetree/booting-without-of.txt
+@@ -15,6 +15,7 @@ Table of Contents
+     1) Entry point for arch/arm
+     2) Entry point for arch/powerpc
+     3) Entry point for arch/x86
++    4) Entry point for arch/mips/bmips
  
-+#include <asm/bmips.h>
- #include <asm/cache.h>
- #include <asm/cpu-type.h>
- #include <asm/io.h>
-@@ -69,6 +70,18 @@ static inline struct page *dma_addr_to_page(struct device *dev,
-  */
- static inline int cpu_needs_post_dma_flush(struct device *dev)
- {
-+	if (boot_cpu_type() == CPU_BMIPS3300 ||
-+	    boot_cpu_type() == CPU_BMIPS4350 ||
-+	    boot_cpu_type() == CPU_BMIPS4380) {
-+		void __iomem *cbr = BMIPS_GET_CBR();
+   II - The DT block format
+     1) Header
+@@ -288,6 +289,33 @@ it with special cases.
+   or initrd address. It simply holds information which can not be retrieved
+   otherwise like interrupt routing or a list of devices behind an I2C bus.
+ 
++4) Entry point for arch/mips/bmips
++----------------------------------
 +
-+		/* Flush stale data out of the readahead cache */
-+		__raw_writel(0x100, cbr + BMIPS_RAC_CONFIG);
-+		__raw_readl(cbr + BMIPS_RAC_CONFIG);
++  Some bootloaders only support a single entry point, at the start of the
++  kernel image.  Other bootloaders will jump to the ELF start address.
++  Both schemes are supported; CONFIG_BOOT_RAW=y and CONFIG_NO_EXCEPT_FILL=y,
++  so the first instruction immediately jumps to kernel_entry().
 +
-+		return 0;
-+	}
++  Similar to the arch/arm case (b), a DT-aware bootloader is expected to
++  set up the following registers:
 +
- 	return !plat_device_is_coherent(dev) &&
- 	       (boot_cpu_type() == CPU_R10000 ||
- 		boot_cpu_type() == CPU_R12000 ||
++         a0 : 0
++
++         a1 : 0xffffffff
++
++         a2 : Physical pointer to the device tree block (defined in chapter
++         II) in RAM.  The device tree can be located anywhere in the first
++         512MB of the physical address space (0x00000000 - 0x1fffffff),
++         aligned on a 64 bit boundary.
++
++  Legacy bootloaders do not use this convention, and they do not pass in a
++  DT block.  In this case, Linux will look for a builtin DTB, selected via
++  CONFIG_DT_*.
++
++  This convention is defined for 32-bit systems only, as there are not
++  currently any 64-bit BMIPS implementations.
++
+ II - The DT block format
+ ========================
+ 
 -- 
 2.1.1

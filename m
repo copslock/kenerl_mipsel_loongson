@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 07:17:16 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:57827 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 07:17:32 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:58150 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006818AbaLLGQ7K-Axz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 07:16:59 +0100
+        by eddie.linux-mips.org with ESMTP id S27006821AbaLLGRIIHQIZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 07:17:08 +0100
 Received: from [2001:470:1f08:1539:c97:8151:cc89:c28d] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
         (Exim 4.80)
         (envelope-from <ben@decadent.org.uk>)
-        id 1XzJX5-0003ex-F8; Fri, 12 Dec 2014 06:16:56 +0000
+        id 1XzJX0-0003ef-OY; Fri, 12 Dec 2014 06:16:51 +0000
 Received: from ben by deadeye with local (Exim 4.84)
         (envelope-from <ben@decadent.org.uk>)
-        id 1XzJWv-0004Sa-Ln; Fri, 12 Dec 2014 06:16:45 +0000
+        id 1XzJWw-0004Yj-Hg; Fri, 12 Dec 2014 06:16:46 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Markos Chandras" <markos.chandras@imgtec.com>
+CC:     akpm@linux-foundation.org, "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+        "Markos Chandras" <Markos.Chandras@imgtec.com>,
+        "Huacai Chen" <chenhc@lemote.com>, linux-mips@linux-mips.org,
+        "Ralf Baechle" <ralf@linux-mips.org>
 Date:   Fri, 12 Dec 2014 06:14:25 +0000
-Message-ID: <lsq.1418364865.63823868@decadent.org.uk>
+Message-ID: <lsq.1418364865.411721390@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.2 079/164] MIPS: ftrace: Fix a microMIPS build problem
+Subject: [PATCH 3.2 155/164] MIPS: Loongson: Make platform serial setup
+ always built-in.
 In-Reply-To: <lsq.1418364865.554543691@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2001:470:1f08:1539:c97:8151:cc89:c28d
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -32,7 +34,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44625
+X-archive-position: 44626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,50 +55,38 @@ X-list: linux-mips
 
 ------------------
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-commit aedd153f5bb5b1f1d6d9142014f521ae2ec294cc upstream.
+commit 26927f76499849e095714452b8a4e09350f6a3b9 upstream.
 
-Code before the .fixup section needs to have the .insn directive.
-This has no side effects on MIPS32/64 but it affects the way microMIPS
-loads the address for the return label.
+If SERIAL_8250 is compiled as a module, the platform specific setup
+for Loongson will be a module too, and it will not work very well.
+At least on Loongson 3 it will trigger a build failure,
+since loongson_sysconf is not exported to modules.
 
-Fixes the following build problem:
-mips-linux-gnu-ld: arch/mips/built-in.o: .fixup+0x4a0: Unsupported jump between
-ISA modes; consider recompiling with interlinking enabled.
-mips-linux-gnu-ld: final link failed: Bad value
-Makefile:819: recipe for target 'vmlinux' failed
+Fix by making the platform specific serial code always built-in.
 
-The fix is similar to 1658f914ff91c3bf ("MIPS: microMIPS:
-Disable LL/SC and fix linker bug.")
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reported-by: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8117/
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Markos Chandras <Markos.Chandras@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/8533/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[bwh: Backported to 3.2: adjust context]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/include/asm/ftrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/loongson/common/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/ftrace.h
-+++ b/arch/mips/include/asm/ftrace.h
-@@ -24,7 +24,7 @@ do {							\
- 	asm volatile (					\
- 		"1: " load " %[" STR(dst) "], 0(%[" STR(src) "])\n"\
- 		"   li %[" STR(error) "], 0\n"		\
--		"2:\n"					\
-+		"2: .insn\n"				\
- 							\
- 		".section .fixup, \"ax\"\n"		\
- 		"3: li %[" STR(error) "], 1\n"		\
-@@ -46,7 +46,7 @@ do {						\
- 	asm volatile (				\
- 		"1: " store " %[" STR(src) "], 0(%[" STR(dst) "])\n"\
- 		"   li %[" STR(error) "], 0\n"	\
--		"2:\n"				\
-+		"2: .insn\n"			\
- 						\
- 		".section .fixup, \"ax\"\n"	\
- 		"3: li %[" STR(error) "], 1\n"	\
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -10,7 +10,8 @@ obj-$(CONFIG_GENERIC_GPIO) += gpio.o
+ # Serial port support
+ #
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+-obj-$(CONFIG_SERIAL_8250) += serial.o
++loongson-serial-$(CONFIG_SERIAL_8250) := serial.o
++obj-y += $(loongson-serial-m) $(loongson-serial-y)
+ obj-$(CONFIG_LOONGSON_UART_BASE) += uart_base.o
+ obj-$(CONFIG_LOONGSON_MC146818) += rtc.o
+ 

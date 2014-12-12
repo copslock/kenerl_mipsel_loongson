@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 23:11:46 +0100 (CET)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:41534 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008560AbaLLWIkKoVTj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 23:08:40 +0100
-Received: by mail-pa0-f52.google.com with SMTP id eu11so8059622pac.39
-        for <multiple recipients>; Fri, 12 Dec 2014 14:08:32 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 23:12:01 +0100 (CET)
+Received: from mail-pd0-f171.google.com ([209.85.192.171]:45329 "EHLO
+        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008609AbaLLWIlWbfcp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 23:08:41 +0100
+Received: by mail-pd0-f171.google.com with SMTP id y13so7971450pdi.2
+        for <multiple recipients>; Fri, 12 Dec 2014 14:08:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=YZzf0izXoq7wKTORpw7FTIQb7YPXmBG4SL95aKiphoM=;
-        b=yyHSjsUoanRHyVKyrvQ07ijmPhUClIamxbF7t3es7VfDVbWQNj3k8d5dZVqqpW1vh5
-         b1MMS7HDD3/2JwRHSQboseetVSU2P2ojqUkBibUYNAwnJ+pTejImq55iufXu81c9CZ6K
-         V18XjBwChwDkKSYVgnh0+1IdFLRqY+q8KyRsGR4L8qI2a06Z6fu+hZot5VtDAMoEAPO+
-         CJ6CHGayC6gnWZ+hbGw/nCR27oMfeC5/jnNMxURjruETVOH05l5XszrBwo78KPYBcOYM
-         Rt9/KPDr1JYZiMEfU/q7VYhEp4nGn/k9GJONGbIJh/Pxm4J1TDc/XEa/4JBlON+HoeXc
-         QMng==
-X-Received: by 10.70.36.111 with SMTP id p15mr30461940pdj.122.1418422112711;
-        Fri, 12 Dec 2014 14:08:32 -0800 (PST)
+        bh=rTW8INPeGt82J6bH0DhDmN2gNyMemWPGGMepVtSiZ4M=;
+        b=XvwS3dsfhqogYvouBquq9Kstc94BHTtHLC6WpQz1hf/dWGz0hatetVI3tGQMGh7eRg
+         qPECaGg/ZD1EGy7iUvICiOVzyDVzKyz62um7fVboOhGccsMqCiU4DGHXZxXfjKy34+ya
+         elvYqfKL9vNN4+6WPHvpKzNCeVLDJXqrnr8qqtnQGYjPG+NW1HN3R3yhEQ6xB/fJlhNs
+         aLESpEJx4BclNJVrYWfv7QdlwSp+YAjpQtEzcjc3mGdPf+yM1O8jlXDgtkEbyUkpQyJq
+         6Lz9ON70Q3qBgl2uSiN7dP1IwDXhA3zAe+7HPU6Rkf/G0pTaWarats11KgJSnI48wOvZ
+         XmVg==
+X-Received: by 10.66.90.201 with SMTP id by9mr30243265pab.148.1418422115687;
+        Fri, 12 Dec 2014 14:08:35 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id tm3sm2425841pac.12.2014.12.12.14.08.31
+        by mx.google.com with ESMTPSA id tm3sm2425841pac.12.2014.12.12.14.08.34
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 12 Dec 2014 14:08:32 -0800 (PST)
+        Fri, 12 Dec 2014 14:08:35 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
         jogo@openwrt.org, arnd@arndb.de, computersforpeace@gmail.com,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V5 11/23] MIPS: Fall back to the generic restart notifier
-Date:   Fri, 12 Dec 2014 14:07:02 -0800
-Message-Id: <1418422034-17099-12-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V5 13/23] MIPS: BMIPS: Flush the readahead cache after DMA
+Date:   Fri, 12 Dec 2014 14:07:04 -0800
+Message-Id: <1418422034-17099-14-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
 References: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
@@ -38,7 +38,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44650
+X-archive-position: 44651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,27 +55,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If the machine doesn't set its own _machine_restart callback, call the
-common do_kernel_restart() instead.  This allows arch-independent reset
-drivers from drivers/power/reset/ to be used to reboot the machine.
+BMIPS 3300/435x/438x CPUs have a readahead cache that is separate from
+the L1/L2.  During a DMA operation, accesses adjacent to a DMA buffer
+may cause parts of the DMA buffer to be prefetched into the RAC.  To
+avoid possible coherency problems, flush the RAC upon DMA completion.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- arch/mips/kernel/reset.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/mm/dma-default.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
-index 07fc524..cf23ab5 100644
---- a/arch/mips/kernel/reset.c
-+++ b/arch/mips/kernel/reset.c
-@@ -29,6 +29,8 @@ void machine_restart(char *command)
- {
- 	if (_machine_restart)
- 		_machine_restart(command);
-+	else
-+		do_kernel_restart(command);
- }
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index af5f046..ee6d12c 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -18,6 +18,7 @@
+ #include <linux/highmem.h>
+ #include <linux/dma-contiguous.h>
  
- void machine_halt(void)
++#include <asm/bmips.h>
+ #include <asm/cache.h>
+ #include <asm/cpu-type.h>
+ #include <asm/io.h>
+@@ -69,6 +70,18 @@ static inline struct page *dma_addr_to_page(struct device *dev,
+  */
+ static inline int cpu_needs_post_dma_flush(struct device *dev)
+ {
++	if (boot_cpu_type() == CPU_BMIPS3300 ||
++	    boot_cpu_type() == CPU_BMIPS4350 ||
++	    boot_cpu_type() == CPU_BMIPS4380) {
++		void __iomem *cbr = BMIPS_GET_CBR();
++
++		/* Flush stale data out of the readahead cache */
++		__raw_writel(0x100, cbr + BMIPS_RAC_CONFIG);
++		__raw_readl(cbr + BMIPS_RAC_CONFIG);
++
++		return 0;
++	}
++
+ 	return !plat_device_is_coherent(dev) &&
+ 	       (boot_cpu_type() == CPU_R10000 ||
+ 		boot_cpu_type() == CPU_R12000 ||
 -- 
 2.1.1

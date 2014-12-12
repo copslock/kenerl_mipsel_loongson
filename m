@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 23:10:05 +0100 (CET)
-Received: from mail-pa0-f50.google.com ([209.85.220.50]:64517 "EHLO
-        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008600AbaLLWI2MuqfK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 23:08:28 +0100
-Received: by mail-pa0-f50.google.com with SMTP id bj1so8034788pad.37
-        for <multiple recipients>; Fri, 12 Dec 2014 14:08:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 23:10:23 +0100 (CET)
+Received: from mail-pd0-f182.google.com ([209.85.192.182]:57233 "EHLO
+        mail-pd0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008601AbaLLWIchC-Cd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 23:08:32 +0100
+Received: by mail-pd0-f182.google.com with SMTP id p10so7886419pdj.41
+        for <multiple recipients>; Fri, 12 Dec 2014 14:08:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=nOSxOnGAmQYvqqGUoIAL4cJGNrofOhfctgPW9Nrdako=;
-        b=FVX8mgB1vuj3znEoBm2sVUH07zU/ZIUXKJFFGSK4+XKJ15wtc+VE6sskgZJGKRILnI
-         kDG3TA683/bHo5l+9ggOpfsgWL9k673OkYNegW1CUwUjtXecH2sOXeiWOeT/PRAks6gk
-         r+5RH3jXxU9UMiY5FGJvWgs7oM1k7XxAnyGcLlNkATe3b/tokeuWj8gFcPoKflr0X4HX
-         IeQhcsF2sI0X4yiPmlqpxtForqRpm8VMob7HNGsvcqp4QzJxfqhOwDa+hrzweAm6quq9
-         Sxur+WozkOEJJd2VB/bAroeGjpEXPK82o5rwZCuKrSM3RVX0GQg3Gytg0ctWz/908ukZ
-         KURA==
-X-Received: by 10.66.218.202 with SMTP id pi10mr30983627pac.28.1418422102545;
-        Fri, 12 Dec 2014 14:08:22 -0800 (PST)
+        bh=zIWaOIMz0dJYAg4nngfxaz8v/te+rwYWvrVgEkCIClY=;
+        b=vGoFu2BWVzsQD+XsQRrfzjwc6Mx8qEZnb+xRVlgEIw1ylL4aevHgjSqwuzMKqmcSpB
+         6H0NpJE5vxR1MO3HPjAC+MxJ8JQVKZoTPnT+14g55PpgmBNco8Fv4EoYi+tpEhX6+gWW
+         yVhzOYq5Lz7aCHm0M7lg0m7czDybyQlFC1vgl9fFuVtH7qTyQnRbTGzww9dBkPz3vD9s
+         Y/b+YI6fbqIbWUHdNXd5LZtIyIy0ATEt5vctYjC0TIJNJVkgM0GqpgqYLydXtOo2HW76
+         PJwOj8tYKb4qDFkL4QuOtbyEiUpjr9yZLeFhore8+eYoPLvpzNtZQBJ9KYepwKpYkSyZ
+         OhpQ==
+X-Received: by 10.66.122.100 with SMTP id lr4mr30395219pab.56.1418422106657;
+        Fri, 12 Dec 2014 14:08:26 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id tm3sm2425841pac.12.2014.12.12.14.08.21
+        by mx.google.com with ESMTPSA id tm3sm2425841pac.12.2014.12.12.14.08.22
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 12 Dec 2014 14:08:21 -0800 (PST)
+        Fri, 12 Dec 2014 14:08:26 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
         jogo@openwrt.org, arnd@arndb.de, computersforpeace@gmail.com,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V5 06/23] irqchip: bcm7120-l2: Refactor driver for arbitrary IRQEN/IRQSTAT offsets
-Date:   Fri, 12 Dec 2014 14:06:57 -0800
-Message-Id: <1418422034-17099-7-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V5 07/23] irqchip: bcm7120-l2: Split STB-specific logic into its own function
+Date:   Fri, 12 Dec 2014 14:06:58 -0800
+Message-Id: <1418422034-17099-8-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
 References: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
@@ -38,7 +38,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44644
+X-archive-position: 44645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,148 +55,256 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently the driver assumes that REG_BASE+0x00 is the IRQ enable mask,
-and REG_BASE+0x04 is the IRQ status mask.  This is true on BCM3384 and
-BCM7xxx, but it is not true for some of the controllers found on BCM63xx
-chips.  So we will change a couple of key assumptions:
+The BCM7xxx instances of this block (listed in the register manual as
+simply "IRQ0") all have the following items in common:
 
- - Don't assume that both the IRQEN and IRQSTAT registers will be
-   covered by a single ioremap() operation.
+ - brcm,int-map-mask: for routing different bits in the L2 to different
+   parent IRQs
 
- - Don't assume any particular ordering (IRQSTAT might show up before
-   IRQEN on some chips).
+ - brcm,int-fwd-mask: for hardwiring certain IRQs to bypass the L2 and
+   use dedicated L1 lines
 
- - For an L2 controller with >=64 IRQs, don't assume that every
-   IRQEN/IRQSTAT pair will use the same register spacing.
+ - one enable/status pair (32 bits only)
 
-This patch changes the "plumbing" but doesn't yet provide a way for users
-to instantiate a controller with arbitrary IRQEN/IRQSTAT offsets.
+Much of the driver code can be shared with BCM3380-style controllers, but
+in order to do this cleanly, let's split out the BCM7xxx-specific logic
+first.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- drivers/irqchip/irq-bcm7120-l2.c | 41 +++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ .../interrupt-controller/brcm,bcm7120-l2-intc.txt  |  12 +-
+ drivers/irqchip/irq-bcm7120-l2.c                   | 123 ++++++++++++---------
+ 2 files changed, 71 insertions(+), 64 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7120-l2-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7120-l2-intc.txt
+index bae1f21..44a9bb1 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7120-l2-intc.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7120-l2-intc.txt
+@@ -13,8 +13,7 @@ Such an interrupt controller has the following hardware design:
+   or if they will output an interrupt signal at this 2nd level interrupt
+   controller, in particular for UARTs
+ 
+-- typically has one 32-bit enable word and one 32-bit status word, but on
+-  some hardware may have more than one enable/status pair
++- has one 32-bit enable word and one 32-bit status word
+ 
+ - no atomic set/clear operations
+ 
+@@ -53,9 +52,7 @@ The typical hardware layout for this controller is represented below:
+ Required properties:
+ 
+ - compatible: should be "brcm,bcm7120-l2-intc"
+-- reg: specifies the base physical address and size of the registers;
+-  multiple pairs may be specified, with the first pair handling IRQ offsets
+-  0..31 and the second pair handling 32..63
++- reg: specifies the base physical address and size of the registers
+ - interrupt-controller: identifies the node as an interrupt controller
+ - #interrupt-cells: specifies the number of cells needed to encode an interrupt
+   source, should be 1.
+@@ -66,10 +63,7 @@ Required properties:
+ - brcm,int-map-mask: 32-bits bit mask describing how many and which interrupts
+   are wired to this 2nd level interrupt controller, and how they match their
+   respective interrupt parents. Should match exactly the number of interrupts
+-  specified in the 'interrupts' property, multiplied by the number of
+-  enable/status register pairs implemented by this controller.  For
+-  multiple parent IRQs with multiple enable/status words, this looks like:
+-  <irq0_w0 irq0_w1 irq1_w0 irq1_w1 ...>
++  specified in the 'interrupts' property.
+ 
+ Optional properties:
+ 
 diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index 8eec8e1..e8441ee 100644
+index e8441ee..6a62858 100644
 --- a/drivers/irqchip/irq-bcm7120-l2.c
 +++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -34,11 +34,15 @@
+@@ -34,7 +34,7 @@
  #define IRQSTAT		0x04
  
  #define MAX_WORDS	4
-+#define MAX_MAPPINGS	MAX_WORDS
+-#define MAX_MAPPINGS	MAX_WORDS
++#define MAX_MAPPINGS	(MAX_WORDS * 2)
  #define IRQS_PER_WORD	32
  
  struct bcm7120_l2_intc_data {
- 	unsigned int n_words;
--	void __iomem *base[MAX_WORDS];
-+	void __iomem *map_base[MAX_MAPPINGS];
-+	void __iomem *pair_base[MAX_WORDS];
-+	int en_offset[MAX_WORDS];
-+	int stat_offset[MAX_WORDS];
- 	struct irq_domain *domain;
+@@ -47,6 +47,8 @@ struct bcm7120_l2_intc_data {
  	bool can_wake;
  	u32 irq_fwd_mask[MAX_WORDS];
-@@ -61,7 +65,8 @@ static void bcm7120_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- 		int hwirq;
+ 	u32 irq_map_mask[MAX_WORDS];
++	int num_parent_irqs;
++	const __be32 *map_mask_prop;
+ };
  
- 		irq_gc_lock(gc);
--		pending = irq_reg_readl(gc, IRQSTAT) & gc->mask_cache;
-+		pending = irq_reg_readl(gc, b->stat_offset[idx]) &
-+					    gc->mask_cache;
- 		irq_gc_unlock(gc);
+ static void bcm7120_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
+@@ -104,7 +106,7 @@ static void bcm7120_l2_intc_resume(struct irq_data *d)
  
- 		for_each_set_bit(hwirq, &pending, IRQS_PER_WORD) {
-@@ -76,21 +81,24 @@ static void bcm7120_l2_intc_irq_handle(unsigned int irq, struct irq_desc *desc)
- static void bcm7120_l2_intc_suspend(struct irq_data *d)
+ static int bcm7120_l2_intc_init_one(struct device_node *dn,
+ 					struct bcm7120_l2_intc_data *data,
+-					int irq, const __be32 *map_mask)
++					int irq)
  {
- 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
-+	struct irq_chip_type *ct = irq_data_get_chip_type(d);
- 	struct bcm7120_l2_intc_data *b = gc->private;
+ 	int parent_irq;
+ 	unsigned int idx;
+@@ -120,7 +122,8 @@ static int bcm7120_l2_intc_init_one(struct device_node *dn,
+ 	 */
+ 	for (idx = 0; idx < data->n_words; idx++)
+ 		data->irq_map_mask[idx] |=
+-			be32_to_cpup(map_mask + irq * data->n_words + idx);
++			be32_to_cpup(data->map_mask_prop +
++				     irq * data->n_words + idx);
  
- 	irq_gc_lock(gc);
- 	if (b->can_wake)
--		irq_reg_writel(gc, gc->mask_cache | gc->wake_active, IRQEN);
-+		irq_reg_writel(gc, gc->mask_cache | gc->wake_active,
-+			       ct->regs.mask);
- 	irq_gc_unlock(gc);
+ 	irq_set_handler_data(parent_irq, data);
+ 	irq_set_chained_handler(parent_irq, bcm7120_l2_intc_irq_handle);
+@@ -128,74 +131,76 @@ static int bcm7120_l2_intc_init_one(struct device_node *dn,
+ 	return 0;
  }
  
- static void bcm7120_l2_intc_resume(struct irq_data *d)
+-int __init bcm7120_l2_intc_of_init(struct device_node *dn,
+-					struct device_node *parent)
++static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
++					     struct bcm7120_l2_intc_data *data)
++{
++	int ret;
++
++	data->map_base[0] = of_iomap(dn, 0);
++	if (!data->map_base[0]) {
++		pr_err("unable to map registers\n");
++		return -ENOMEM;
++	}
++
++	data->pair_base[0] = data->map_base[0];
++	data->en_offset[0] = IRQEN;
++	data->stat_offset[0] = IRQSTAT;
++	data->n_words = 1;
++
++	ret = of_property_read_u32_array(dn, "brcm,int-fwd-mask",
++					 data->irq_fwd_mask, data->n_words);
++	if (ret != 0 && ret != -EINVAL) {
++		/* property exists but has the wrong number of words */
++		pr_err("invalid brcm,int-fwd-mask property\n");
++		return -EINVAL;
++	}
++
++	data->map_mask_prop = of_get_property(dn, "brcm,int-map-mask", &ret);
++	if (!data->map_mask_prop ||
++	    (ret != (sizeof(__be32) * data->num_parent_irqs * data->n_words))) {
++		pr_err("invalid brcm,int-map-mask property\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++int __init bcm7120_l2_intc_probe(struct device_node *dn,
++				 struct device_node *parent,
++				 int (*iomap_regs_fn)(struct device_node *,
++					struct bcm7120_l2_intc_data *),
++				 const char *intc_name)
  {
- 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
-+	struct irq_chip_type *ct = irq_data_get_chip_type(d);
+ 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
+ 	struct bcm7120_l2_intc_data *data;
+ 	struct irq_chip_generic *gc;
+ 	struct irq_chip_type *ct;
+-	const __be32 *map_mask;
+-	int num_parent_irqs;
+-	int ret = 0, len;
++	int ret = 0;
+ 	unsigned int idx, irq, flags;
  
- 	/* Restore the saved mask */
- 	irq_gc_lock(gc);
--	irq_reg_writel(gc, gc->mask_cache, IRQEN);
-+	irq_reg_writel(gc, gc->mask_cache, ct->regs.mask);
- 	irq_gc_unlock(gc);
- }
- 
-@@ -137,9 +145,14 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
+ 	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
  		return -ENOMEM;
  
- 	for (idx = 0; idx < MAX_WORDS; idx++) {
--		data->base[idx] = of_iomap(dn, idx);
--		if (!data->base[idx])
-+		data->map_base[idx] = of_iomap(dn, idx);
-+		if (!data->map_base[idx])
- 			break;
-+
-+		data->pair_base[idx] = data->map_base[idx];
-+		data->en_offset[idx] = IRQEN;
-+		data->stat_offset[idx] = IRQSTAT;
-+
- 		data->n_words = idx + 1;
+-	for (idx = 0; idx < MAX_WORDS; idx++) {
+-		data->map_base[idx] = of_iomap(dn, idx);
+-		if (!data->map_base[idx])
+-			break;
+-
+-		data->pair_base[idx] = data->map_base[idx];
+-		data->en_offset[idx] = IRQEN;
+-		data->stat_offset[idx] = IRQSTAT;
+-
+-		data->n_words = idx + 1;
+-	}
+-	if (!data->n_words) {
+-		pr_err("failed to remap intc L2 registers\n");
+-		ret = -ENOMEM;
+-		goto out_unmap;
+-	}
+-
+-	/* Enable all interrupts specified in the interrupt forward mask;
+-	 * disable all others.  If the property doesn't exist (-EINVAL),
+-	 * assume all zeroes.
+-	 */
+-	ret = of_property_read_u32_array(dn, "brcm,int-fwd-mask",
+-					 data->irq_fwd_mask, data->n_words);
+-	if (ret == 0 || ret == -EINVAL) {
+-		for (idx = 0; idx < data->n_words; idx++)
+-			__raw_writel(data->irq_fwd_mask[idx],
+-				     data->pair_base[idx] +
+-				     data->en_offset[idx]);
+-	} else {
+-		/* property exists but has the wrong number of words */
+-		pr_err("invalid int-fwd-mask property\n");
+-		ret = -EINVAL;
+-		goto out_unmap;
+-	}
+-
+-	num_parent_irqs = of_irq_count(dn);
+-	if (num_parent_irqs <= 0) {
++	data->num_parent_irqs = of_irq_count(dn);
++	if (data->num_parent_irqs <= 0) {
+ 		pr_err("invalid number of parent interrupts\n");
+ 		ret = -ENOMEM;
+ 		goto out_unmap;
  	}
- 	if (!data->n_words) {
-@@ -157,7 +170,8 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
- 	if (ret == 0 || ret == -EINVAL) {
- 		for (idx = 0; idx < data->n_words; idx++)
- 			__raw_writel(data->irq_fwd_mask[idx],
--				     data->base[idx] + IRQEN);
-+				     data->pair_base[idx] +
-+				     data->en_offset[idx]);
- 	} else {
- 		/* property exists but has the wrong number of words */
- 		pr_err("invalid int-fwd-mask property\n");
-@@ -215,11 +229,12 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
- 		gc = irq_get_domain_generic_chip(data->domain, irq);
  
- 		gc->unused = 0xffffffff & ~data->irq_map_mask[idx];
--		gc->reg_base = data->base[idx];
- 		gc->private = data;
- 		ct = gc->chip_types;
- 
--		ct->regs.mask = IRQEN;
-+		gc->reg_base = data->pair_base[idx];
-+		ct->regs.mask = data->en_offset[idx];
+-	map_mask = of_get_property(dn, "brcm,int-map-mask", &len);
+-	if (!map_mask ||
+-	    (len != (sizeof(*map_mask) * num_parent_irqs * data->n_words))) {
+-		pr_err("invalid brcm,int-map-mask property\n");
+-		ret = -EINVAL;
++	ret = iomap_regs_fn(dn, data);
++	if (ret < 0)
+ 		goto out_unmap;
 +
- 		ct->chip.irq_mask = irq_gc_mask_clr_bit;
- 		ct->chip.irq_unmask = irq_gc_mask_set_bit;
- 		ct->chip.irq_ack = irq_gc_noop;
-@@ -237,16 +252,16 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
++	for (idx = 0; idx < data->n_words; idx++) {
++		__raw_writel(data->irq_fwd_mask[idx],
++			     data->pair_base[idx] +
++			     data->en_offset[idx]);
  	}
  
- 	pr_info("registered BCM7120 L2 intc (mem: 0x%p, parent IRQ(s): %d)\n",
--			data->base[0], num_parent_irqs);
-+			data->map_base[0], num_parent_irqs);
+-	for (irq = 0; irq < num_parent_irqs; irq++) {
+-		ret = bcm7120_l2_intc_init_one(dn, data, irq, map_mask);
++	for (irq = 0; irq < data->num_parent_irqs; irq++) {
++		ret = bcm7120_l2_intc_init_one(dn, data, irq);
+ 		if (ret)
+ 			goto out_unmap;
+ 	}
+@@ -251,8 +256,8 @@ int __init bcm7120_l2_intc_of_init(struct device_node *dn,
+ 		}
+ 	}
+ 
+-	pr_info("registered BCM7120 L2 intc (mem: 0x%p, parent IRQ(s): %d)\n",
+-			data->map_base[0], num_parent_irqs);
++	pr_info("registered %s intc (mem: 0x%p, parent IRQ(s): %d)\n",
++			intc_name, data->map_base[0], data->num_parent_irqs);
  
  	return 0;
  
- out_free_domain:
- 	irq_domain_remove(data->domain);
- out_unmap:
--	for (idx = 0; idx < MAX_WORDS; idx++) {
--		if (data->base[idx])
--			iounmap(data->base[idx]);
-+	for (idx = 0; idx < MAX_MAPPINGS; idx++) {
-+		if (data->map_base[idx])
-+			iounmap(data->map_base[idx]);
- 	}
+@@ -266,5 +271,13 @@ out_unmap:
  	kfree(data);
  	return ret;
+ }
++
++int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
++				      struct device_node *parent)
++{
++	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_7120,
++				     "BCM7120 L2");
++}
++
+ IRQCHIP_DECLARE(bcm7120_l2_intc, "brcm,bcm7120-l2-intc",
+-		bcm7120_l2_intc_of_init);
++		bcm7120_l2_intc_probe_7120);
 -- 
 2.1.1

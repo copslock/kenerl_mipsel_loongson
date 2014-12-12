@@ -1,53 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 18:28:12 +0100 (CET)
-Received: from mail-lb0-f176.google.com ([209.85.217.176]:56213 "EHLO
-        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008105AbaLLR2LFGY08 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 18:28:11 +0100
-Received: by mail-lb0-f176.google.com with SMTP id p9so6146627lbv.7
-        for <linux-mips@linux-mips.org>; Fri, 12 Dec 2014 09:28:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=awrFGXSx2vsoW1x1NDMJBTtej5DdfxIu9cm1WOKyfrU=;
-        b=YsLht15AxQf4DBrxUgq52E/Zkd4xxi3ngPIRUnUuWnzzBidOSQgLBVHsKFBSdBwMs8
-         uU1OfG7bH9eTEdV196HTMzKrVb+07Oty3aZugxPdgIw0N+9KymfVyq7oxeI90Cro/9BK
-         +1AGHCgjJIf+1eK9ppnWjSHw1hpdunmPhjReoK5W8pvrmxsg88H693AWAkl/47QNXXaz
-         p/fEhxzsEUC89uMHfYcvjcD5RjktkyhEMgJUbkjDcdUR3zQ+eBSOa2CdwXPT1hjzJEFt
-         MqFE6usEyhImKOi9ycG4ZOV6ASQu8n7iSfHl9r8q0nUyQv6GgAv9tiKgB9fHGg3nmtX/
-         EgHg==
-X-Gm-Message-State: ALoCoQlPqhpMSv417gJU8sk2eIN9ywuS6h3yZAk9zOZ9waNiKUwYNfAnO7wvj3k2ImBcjyyE4Coz
-X-Received: by 10.152.234.140 with SMTP id ue12mr16227529lac.78.1418405285333;
-        Fri, 12 Dec 2014 09:28:05 -0800 (PST)
-Received: from wasted.cogentembedded.com (ppp18-99.pppoe.mtu-net.ru. [81.195.18.99])
-        by mx.google.com with ESMTPSA id li3sm549879lbc.31.2014.12.12.09.28.03
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 12 Dec 2014 09:28:04 -0800 (PST)
-Message-ID: <548B25A3.9090303@cogentembedded.com>
-Date:   Fri, 12 Dec 2014 20:28:03 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 22:31:51 +0100 (CET)
+Received: from resqmta-po-05v.sys.comcast.net ([96.114.154.164]:46464 "EHLO
+        resqmta-po-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008034AbaLLVbuApc1z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 22:31:50 +0100
+Received: from resomta-po-15v.sys.comcast.net ([96.114.154.239])
+        by resqmta-po-05v.sys.comcast.net with comcast
+        id SlXN1p0025AAYLo01lXjp0; Fri, 12 Dec 2014 21:31:43 +0000
+Received: from [192.168.1.13] ([76.100.35.31])
+        by resomta-po-15v.sys.comcast.net with comcast
+        id SlXh1p00G0gJalY01lXiLB; Fri, 12 Dec 2014 21:31:43 +0000
+Message-ID: <548B5EAC.9030403@gentoo.org>
+Date:   Fri, 12 Dec 2014 16:31:24 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-To:     Jaedon Shin <jaedon.shin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: use phys_addr_t instead of phy_t
-References: <1418398003-1098-1-git-send-email-jaedon.shin@gmail.com>
-In-Reply-To: <1418398003-1098-1-git-send-email-jaedon.shin@gmail.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: CEVT: Make R4K's clockevent_device name more meaningful
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1418419903;
+        bh=z/FqiiB1B7QMXIGr+lJcmpRt7hKry6Df+Wu86awgmTc=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=rwNP64fJpGh5aUm3AGDIG3SrXh4AWEdhWMMXkL+a8P1tX862kOC8JV70Xfss0Dt4J
+         PlNOPUuToGYtqxsjddquacBjSieIAyMmOva3Q973Cly4eWTZR8eNbdwNo//Kzs3wTA
+         2VfLoblTCsZSn4lRBRkOwLdT5uqyTXtDBpOgo0TRPuGQPnOA2femFIneMCV6tjlPvt
+         E/xQ/ulzu6xMrF2ekMlvh4h7k5o2tR56yKmd1ADpTtu4i2dUPf9CRSji4txCYST+7G
+         3BlzAjpoGsblHrCBjqZbb5kYd3vSIyEDlJ2wKDpTQ+EFjFDj4C/vSu6ErHSMWLznRu
+         xd1jY4JrypfgA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44635
+X-archive-position: 44636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,18 +51,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Change the R4K clockevent device's name from "MIPS" to something a bit more
+meaningful, "CEVT-R4K".
 
-On 12/12/2014 06:26 PM, Jaedon Shin wrote:
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+---
+ arch/mips/kernel/cevt-r4k.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    s/phy_t/phys_t/ in the subject.
-
-> add missing patch
-
-    Maybe part?
-
-> of commit "MIPS: Replace use of phys_t with phys_addr_t".
-
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-
-WBR, Sergei
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index bc127e2..f531cac 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -178,7 +178,7 @@ int r4k_clockevent_init(void)
+ 
+ 	cd = &per_cpu(mips_clockevent_device, cpu);
+ 
+-	cd->name		= "MIPS";
++	cd->name		= "CEVT-R4K";
+ 	cd->features		= CLOCK_EVT_FEAT_ONESHOT |
+ 				  CLOCK_EVT_FEAT_C3STOP |
+ 				  CLOCK_EVT_FEAT_PERCPU;

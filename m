@@ -1,44 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 17:11:05 +0100 (CET)
-Received: from mail-qg0-f42.google.com ([209.85.192.42]:51157 "EHLO
-        mail-qg0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008109AbaLLQLDvJd94 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 17:11:03 +0100
-Received: by mail-qg0-f42.google.com with SMTP id q108so3640297qgd.29
-        for <multiple recipients>; Fri, 12 Dec 2014 08:10:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=xx5TucM77VtZPdgzODZthaqgjcusjdccMgBlmJz1UCc=;
-        b=p2lSBiRIkARVz75TbZl9qetAhunrybeYfLbG8LaZaAVVIfgswgaFNDW5IHTNPw+myY
-         6gX9JUOH5tQh0kIJHyBm39nr5vmbbR+yq9glBr+n7n3yNuMcnRlNvoXhd4yGj5yjagIP
-         lM0GA0cKffX0/72OzsW0R7bXCVvowgD8HbFNtpiiBc0xMyudOteX5OQz22p99iVqfWQC
-         1q+wKnstPm7wjEEzLIOtRjjlN6fy+XsacIIRKbbcbwtQEGLrQSgKMHHzrPcqJk6mqtnZ
-         KZzkbyBfE02aZt2Fi6Qc5th/wJWJxRrVjvZjemHRsSnBpDEoHP0sqsSS4Ezn+bVj21GX
-         IIYQ==
-X-Received: by 10.140.34.67 with SMTP id k61mr30424132qgk.95.1418400658041;
- Fri, 12 Dec 2014 08:10:58 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.140.82.48 with HTTP; Fri, 12 Dec 2014 08:10:37 -0800 (PST)
-In-Reply-To: <1418398003-1098-1-git-send-email-jaedon.shin@gmail.com>
-References: <1418398003-1098-1-git-send-email-jaedon.shin@gmail.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Fri, 12 Dec 2014 08:10:37 -0800
-Message-ID: <CAJiQ=7ALgSfawoTOKH-1iqm90q1sgukqZZwxjFjMAzX5Z6hbVQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: use phys_addr_t instead of phy_t
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 17:29:43 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:34461 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008113AbaLLQ3mDHV4m (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Dec 2014 17:29:42 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBCGTeL6016190;
+        Fri, 12 Dec 2014 17:29:40 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBCGTePA016189;
+        Fri, 12 Dec 2014 17:29:40 +0100
+Date:   Fri, 12 Dec 2014 17:29:40 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: use phys_addr_t instead of phy_t
+Message-ID: <20141212162939.GD6477@linux-mips.org>
+References: <1418398003-1098-1-git-send-email-jaedon.shin@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1418398003-1098-1-git-send-email-jaedon.shin@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44632
+X-archive-position: 44633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,11 +42,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 12, 2014 at 7:26 AM, Jaedon Shin <jaedon.shin@gmail.com> wrote:
+On Sat, Dec 13, 2014 at 12:26:43AM +0900, Jaedon Shin wrote:
+
 > add missing patch of commit "MIPS: Replace use of phys_t with phys_addr_t".
->
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 
-Thanks, this fixes a compile error seen on Linus' head of tree.
+Thanks.  That'a a patch which I was always applying in the merge commit.
+Linus should have done the same but unfortunately I forgot to advise him
+of this merge issue.
 
-Acked-by: Kevin Cernekee <cernekee@gmail.com>
+  Ralf

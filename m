@@ -1,47 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2014 23:20:02 +0100 (CET)
-Received: from resqmta-po-04v.sys.comcast.net ([96.114.154.163]:47933 "EHLO
-        resqmta-po-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008621AbaLLWUAeICsC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Dec 2014 23:20:00 +0100
-Received: from resomta-po-17v.sys.comcast.net ([96.114.154.241])
-        by resqmta-po-04v.sys.comcast.net with comcast
-        id SmHl1p0045Clt1L01mKtbL; Fri, 12 Dec 2014 22:19:53 +0000
-Received: from [192.168.1.13] ([76.100.35.31])
-        by resomta-po-17v.sys.comcast.net with comcast
-        id SmKs1p00Y0gJalY01mKttz; Fri, 12 Dec 2014 22:19:53 +0000
-Message-ID: <548B69F8.3000104@gentoo.org>
-Date:   Fri, 12 Dec 2014 17:19:36 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Dec 2014 21:36:52 +0100 (CET)
+Received: from mail-wg0-f49.google.com ([74.125.82.49]:39471 "EHLO
+        mail-wg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008610AbaLNUgu5L0uq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Dec 2014 21:36:50 +0100
+Received: by mail-wg0-f49.google.com with SMTP id n12so13016357wgh.22
+        for <linux-mips@linux-mips.org>; Sun, 14 Dec 2014 12:36:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-type:content-disposition
+         :in-reply-to:user-agent;
+        bh=eqrzihw3xTaBijZ1AoDbK1+BatD9eqvcQheOwhQDOAQ=;
+        b=lpUtv7qMvdfpopPWCxK/UZrDJv3gIEC8G7A2+rVtq+JndidEPFaq6y8WWIpSAjP1vj
+         7UrYbBpJMyKBdWQJkKb5CGSaSuPymDpSs/dIsyoPhYFCu1xkAbEAuHLK7bFaG4xNKpFW
+         PmIe43+VyxnEK5GyWMYZnE/bYffqh5b0SjeyAE6vhrOinJUcTz0gDS0V+D6JQwynu6zE
+         XMDdqkJDKrngZPrdzu6XxHpmf5bnkrgIRi4hOb6EX6xROBnO/w4GWzF4KTWU4YvXg0Nh
+         M9nSyHGLG7o7m5vigYooNf+xqoUqBMmyicF4UwLjcigcDk0A555QOpDBt881o/iN596d
+         +YMQ==
+X-Gm-Message-State: ALoCoQk18SeYKsGMJXaCbFDang5o0289RhFxqGEweAvVtH9JUM0Sy6b1ovDoHbTdSmzf3sY5jBwh
+X-Received: by 10.180.85.34 with SMTP id e2mr26140757wiz.0.1418589403943;
+        Sun, 14 Dec 2014 12:36:43 -0800 (PST)
+Received: from bordel.klfree.net (bordel.klfree.cz. [81.201.48.42])
+        by mx.google.com with ESMTPSA id pl1sm10659631wic.16.2014.12.14.12.36.42
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Sun, 14 Dec 2014 12:36:42 -0800 (PST)
+Date:   Sun, 14 Dec 2014 21:36:36 +0100
+From:   Petr Malat <oss@malat.biz>
 To:     David Daney <ddaney.cavm@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: CEVT: Make R4K's clockevent_device name more meaningful
-References: <548B5EAC.9030403@gentoo.org> <548B62D1.4000809@gmail.com>
-In-Reply-To: <548B62D1.4000809@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1418422793;
-        bh=Jffs6+H4oSsxqxaWXSZOXnPqnOzoemAgHiKR56nf8+4=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=EGK211Gf48NnAptY9zuX947nBZFzLNuQUp3lKj6gSY3nb/iMu9aTRio3WnLBMuQX2
-         1lKKmwoI3Jt5eqKUT7elxMeZuNx1BkMSrUfJOsnQnsuzmyG2zyvU50MbdTX3fr7Tjk
-         hm/loHFjYXXqmjuoPmP9yClvdqqiwiIgYPRATXLiRE5DIJ56mn7qa5B3FkzYwPif+8
-         M5OxSStiZyKntl1vNHS8YWW3qC0bsE5e6Zg48fcnVE4auj934MDOn6HI8xi8zYm4Bk
-         IFEOQiER/EcZ5A3JDfBAAyhDp73GrYrBHBc10mma/b+wxJtkXWsp4s8HsAxUwPPcPS
-         /shK2h9FiCwUw==
-Return-Path: <kumba@gentoo.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Provide correct siginfo_t.si_stime
+Message-ID: <20141214203636.GA4866@bordel.klfree.net>
+References: <20141212142800.GA4176@bordel.klfree.net>
+ <548B21C8.7020409@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="VbJkn9YxBvnuCH5J"
+Content-Disposition: inline
+In-Reply-To: <548B21C8.7020409@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <oss@malat.biz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44664
+X-archive-position: 44665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: oss@malat.biz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,44 +59,95 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/12/2014 16:49, David Daney wrote:
-> On 12/12/2014 01:31 PM, Joshua Kinard wrote:
->> Change the R4K clockevent device's name from "MIPS" to something a bit more
->> meaningful, "CEVT-R4K".
->>
-> 
-> This is visible to userspace, so how does changing this effect the kernel <-->
-> userspace ABI?  Or in other words, what uses this, and could changing it
-> possibly break things?
-> 
-> David Daney
 
-I haven't noticed any issues in userspace running this change on the Octane.
-R4k is the only clockevent_device using the name of "MIPS", so if there is some
-userspace program relying on that, I would imagine it'd fail on the other
-clockevent_device providers as they use different names.  I suspect that R4k
-was the original clockevent_device/timer, so it got defaulted to "MIPS".  Since
-there's several providers now, differentiating R4K seems logical.
+--VbJkn9YxBvnuCH5J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
---J
+On Fri, Dec 12, 2014 at 09:11:36AM -0800, David Daney wrote:
+> Please state how this patch effects binary compatibility with
+> previous releases of the kernel.
 
+Hi David,
+the kernel returns a random value in the field si_stime. With the patch
+applied, the correct value is present in the field. This is the only 
+change visible in userspace, because copy_siginfo() is used just for 
+coping done in kernel. To the userspace data are copried by a different
+function - copy_siginfo_to_user(), which copies field by field, so 
+information leakage caused by this change is not possible.
 
->> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
->> ---
->>   arch/mips/kernel/cevt-r4k.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
->> index bc127e2..f531cac 100644
->> --- a/arch/mips/kernel/cevt-r4k.c
->> +++ b/arch/mips/kernel/cevt-r4k.c
->> @@ -178,7 +178,7 @@ int r4k_clockevent_init(void)
->>
->>       cd = &per_cpu(mips_clockevent_device, cpu);
->>
->> -    cd->name        = "MIPS";
->> +    cd->name        = "CEVT-R4K";
->>       cd->features        = CLOCK_EVT_FEAT_ONESHOT |
->>                     CLOCK_EVT_FEAT_C3STOP |
->>                     CLOCK_EVT_FEAT_PERCPU;
->>
+Here is an output from a program (attached), which illustrates the 
+issue:
+
+X86_64:
+usage.ru_stime 1000 ms
+info->si_stime 1000 ms (64)
+
+MIPS (Octeon) with the patch applied:
+usage.ru_stime 1000 ms
+info->si_stime 1000 ms (64)
+
+MIPS (Octeon) without the patch (3 executions): 
+usage.ru_stime 1000 ms
+info->si_stime 5532471680 ms (20f9e1c0)
+usage.ru_stime 1000 ms
+info->si_stime 5532484000 ms (20f9e690)
+usage.ru_stime 1000 ms
+info->si_stime 5532484640 ms (20f9e6d0)
+
+Regards,
+  Petr  
+
+--VbJkn9YxBvnuCH5J
+Content-Type: text/x-csrc; charset=us-ascii
+Content-Disposition: attachment; filename="burn.c"
+
+//
+// Fork a child, which spends 1 second in system and print
+// stime obtained from getrusage and stime received in siginfo
+// of the SIGCHLD
+//
+
+#include <sys/resource.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+void handler(int sig, siginfo_t *info, void *context)
+{
+	printf("info->si_stime %ld ms (%lx)\n", 
+			1000 * info->si_stime / sysconf(_SC_CLK_TCK),
+			info->si_stime);
+}
+
+int main(int argc, char *argv[])
+{
+	struct sigaction act = { .sa_sigaction = handler, .sa_flags = SA_SIGINFO };
+	sigaction(SIGCHLD, &act, NULL);
+
+	if (fork()) {
+		wait(NULL);
+	} else {
+		struct rusage usage;
+		do {
+			int fd = open("/proc/self/maps", O_RDONLY);
+			char buf[4096];
+
+			read(fd, buf, sizeof buf);
+			close(fd);
+			getrusage(RUSAGE_SELF, &usage);
+		} while (usage.ru_stime.tv_sec < 1);
+		printf("usage.ru_stime %ld ms\n", 
+			1000 * usage.ru_stime.tv_sec + 
+			usage.ru_stime.tv_usec / 1000);
+	}
+	return 0;
+}
+
+--VbJkn9YxBvnuCH5J--

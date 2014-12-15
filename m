@@ -1,37 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 19:14:48 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49917 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008844AbaLOSOrC5K5z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Dec 2014 19:14:47 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBFIEj9q029672;
-        Mon, 15 Dec 2014 19:14:45 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBFIEidg029671;
-        Mon, 15 Dec 2014 19:14:44 +0100
-Date:   Mon, 15 Dec 2014 19:14:44 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Ben Hutchings <ben@decadent.org.uk>
-Cc:     Lino Sanfilippo <LinoSanfilippo@gmx.de>, linux-mips@linux-mips.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ioc3: fix incorrect use of htons/ntohs
-Message-ID: <20141215181444.GD26674@linux-mips.org>
-References: <1417344054-4374-1-git-send-email-LinoSanfilippo@gmx.de>
- <1417406976.7215.126.camel@decadent.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1417406976.7215.126.camel@decadent.org.uk>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 20:31:32 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:52502 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008616AbaLOTb2eJd14 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Dec 2014 20:31:28 +0100
+Received: from c-76-102-4-12.hsd1.ca.comcast.net ([76.102.4.12] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1Y0bIU-0005Je-GS; Mon, 15 Dec 2014 19:27:10 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1Y0bIS-0006js-MA; Mon, 15 Dec 2014 11:27:08 -0800
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, linux-mips@linux-mips.org,
+        Huacai Chen <chenhc@lemote.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>
+Subject: [PATCH 3.13.y-ckt 59/96] MIPS: Loongson: Make platform serial setup always built-in.
+Date:   Mon, 15 Dec 2014 11:26:19 -0800
+Message-Id: <1418671616-25482-60-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1418671616-25482-1-git-send-email-kamal@canonical.com>
+References: <1418671616-25482-1-git-send-email-kamal@canonical.com>
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44697
+X-archive-position: 44698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,43 +47,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 01, 2014 at 04:09:36AM +0000, Ben Hutchings wrote:
+3.13.11-ckt13 -stable review patch.  If anyone has any objections, please let me know.
 
-> >  	/* Same as tx - compute csum of pseudo header  */
-> >  	csum = hwsum +
-> > -	       (ih->tot_len - (ih->ihl << 2)) +
-> > -	       htons((uint16_t)ih->protocol) +
-> > +	       (ih->tot_len - (ih->ihl << 2)) + ih->protocol +
-> >  	       (ih->saddr >> 16) + (ih->saddr & 0xffff) +
-> >  	       (ih->daddr >> 16) + (ih->daddr & 0xffff);
-> >
-> 
-> The pseudo-header is specified as:
-> 
->                      +--------+--------+--------+--------+
->                      |           Source Address          |
->                      +--------+--------+--------+--------+
->                      |         Destination Address       |
->                      +--------+--------+--------+--------+
->                      |  zero  |  PTCL  |    TCP Length   |
->                      +--------+--------+--------+--------+
-> 
-> The current code zero-extends the protocol number to produce the 5th
-> 16-bit word of the pseudo-header, then uses htons() to put it in
-> big-endian order, consistent with the other fields.  (Yes, it's doing
-> addition on big-endian words; this works even on little-endian machines
-> due to the way the checksum is specified.)
-> 
-> The driver should not be doing this at all, though.  It should set
-> skb->csum = hwsum; skb->ip_summed = CHECKSUM_COMPLETE; and let the
-> network stack adjust the hardware checksum.
+------------------
 
-Really?  The IOC3 isn't the exactly the smartest NIC around; it does add up
-everything and the kitchen sink, that is ethernet headers, IP headers and
-on RX the frame's trailing CRC.  All that needs to be subtracted in software
-which is what this does.  I think others NICs are all smarted and don't
-need this particular piece of magic.
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-I agree with your other comment wrt. to htons().
+commit 26927f76499849e095714452b8a4e09350f6a3b9 upstream.
 
-  Ralf
+If SERIAL_8250 is compiled as a module, the platform specific setup
+for Loongson will be a module too, and it will not work very well.
+At least on Loongson 3 it will trigger a build failure,
+since loongson_sysconf is not exported to modules.
+
+Fix by making the platform specific serial code always built-in.
+
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reported-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Markos Chandras <Markos.Chandras@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/8533/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/loongson/common/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+index 9e4484c..9005a8d6 100644
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -11,7 +11,8 @@ obj-$(CONFIG_PCI) += pci.o
+ # Serial port support
+ #
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+-obj-$(CONFIG_SERIAL_8250) += serial.o
++loongson-serial-$(CONFIG_SERIAL_8250) := serial.o
++obj-y += $(loongson-serial-m) $(loongson-serial-y)
+ obj-$(CONFIG_LOONGSON_UART_BASE) += uart_base.o
+ obj-$(CONFIG_LOONGSON_MC146818) += rtc.o
+ 
+-- 
+1.9.1

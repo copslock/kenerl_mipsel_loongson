@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 15:29:24 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:50379 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008810AbaLOO2hmtT6o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Dec 2014 15:28:37 +0100
-Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1Y0WdX-0001Wr-8i; Mon, 15 Dec 2014 14:28:35 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, linux-mips@linux-mips.org,
-        Huacai Chen <chenhc@lemote.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 109/168] MIPS: Loongson: Make platform serial setup always built-in.
-Date:   Mon, 15 Dec 2014 14:26:03 +0000
-Message-Id: <1418653622-21105-110-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.3
-In-Reply-To: <1418653622-21105-1-git-send-email-luis.henriques@canonical.com>
-References: <1418653622-21105-1-git-send-email-luis.henriques@canonical.com>
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 16:44:20 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47358 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008819AbaLOPoSxzh0y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Dec 2014 16:44:18 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBFFiANR026656;
+        Mon, 15 Dec 2014 16:44:10 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBFFi89Z026654;
+        Mon, 15 Dec 2014 16:44:08 +0100
+Date:   Mon, 15 Dec 2014 16:44:08 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Brian Norris <computersforpeace@gmail.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
+Subject: Re: [PATCH] mtd: nand: jz4740: Convert to GPIO descriptor API
+Message-ID: <20141215154408.GD9382@linux-mips.org>
+References: <1417549706-28420-1-git-send-email-lars@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1417549706-28420-1-git-send-email-lars@metafoo.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44677
+X-archive-position: 44678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,46 +44,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.7-ckt3 -stable review patch.  If anyone has any objections, please let me know.
+On Tue, Dec 02, 2014 at 08:48:26PM +0100, Lars-Peter Clausen wrote:
 
-------------------
+> Use the GPIO descriptor API instead of the deprecated legacy GPIO API to
+> manage the busy GPIO.
+> 
+> The patch updates both the jz4740 nand driver and the only user of the driver
+> the qi-lb60 board driver.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> ---
+> This patch should preferably be merged through the MTD tree with Ralf's ack for
+> the MIPS bits.
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-commit 26927f76499849e095714452b8a4e09350f6a3b9 upstream.
+Though in my experience MIPS-specific patches to non-arch/mips code receive
+best testing in the MIPS tree.
 
-If SERIAL_8250 is compiled as a module, the platform specific setup
-for Loongson will be a module too, and it will not work very well.
-At least on Loongson 3 it will trigger a build failure,
-since loongson_sysconf is not exported to modules.
+Cheers,
 
-Fix by making the platform specific serial code always built-in.
-
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reported-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Markos Chandras <Markos.Chandras@imgtec.com>
-Patchwork: https://patchwork.linux-mips.org/patch/8533/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/loongson/common/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
-index 0bb9cc9dc621..d87e03330b29 100644
---- a/arch/mips/loongson/common/Makefile
-+++ b/arch/mips/loongson/common/Makefile
-@@ -11,7 +11,8 @@ obj-$(CONFIG_PCI) += pci.o
- # Serial port support
- #
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
--obj-$(CONFIG_SERIAL_8250) += serial.o
-+loongson-serial-$(CONFIG_SERIAL_8250) := serial.o
-+obj-y += $(loongson-serial-m) $(loongson-serial-y)
- obj-$(CONFIG_LOONGSON_UART_BASE) += uart_base.o
- obj-$(CONFIG_LOONGSON_MC146818) += rtc.o
- 
--- 
-2.1.3
+  Ralf

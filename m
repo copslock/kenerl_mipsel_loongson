@@ -1,33 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 16:44:20 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:47358 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 17:04:47 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47546 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008819AbaLOPoSxzh0y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Dec 2014 16:44:18 +0100
+        id S27008806AbaLOQEpVD3Re (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Dec 2014 17:04:45 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBFFiANR026656;
-        Mon, 15 Dec 2014 16:44:10 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBFG4fNS027053;
+        Mon, 15 Dec 2014 17:04:41 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBFFi89Z026654;
-        Mon, 15 Dec 2014 16:44:08 +0100
-Date:   Mon, 15 Dec 2014 16:44:08 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBFG4exl027052;
+        Mon, 15 Dec 2014 17:04:40 +0100
+Date:   Mon, 15 Dec 2014 17:04:40 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Brian Norris <computersforpeace@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: jz4740: Convert to GPIO descriptor API
-Message-ID: <20141215154408.GD9382@linux-mips.org>
-References: <1417549706-28420-1-git-send-email-lars@metafoo.de>
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Cc:     Greg KH <greg@kroah.com>, Alan Stern <stern@rowland.harvard.edu>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH 1/2 resend] USB: host: Remove hard-coded octeon platform
+ information for ehci/ohci
+Message-ID: <20141215160439.GA26674@linux-mips.org>
+References: <20141215132628.GA20109@alberich>
+ <20141215132841.GB20109@alberich>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1417549706-28420-1-git-send-email-lars@metafoo.de>
+In-Reply-To: <20141215132841.GB20109@alberich>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44678
+X-archive-position: 44679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,24 +49,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Dec 02, 2014 at 08:48:26PM +0100, Lars-Peter Clausen wrote:
+On Mon, Dec 15, 2014 at 02:28:41PM +0100, Andreas Herrmann wrote:
 
-> Use the GPIO descriptor API instead of the deprecated legacy GPIO API to
-> manage the busy GPIO.
+> Instead rely on device tree information for ehci and ohci.
 > 
-> The patch updates both the jz4740 nand driver and the only user of the driver
-> the qi-lb60 board driver.
-> 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> ---
-> This patch should preferably be merged through the MTD tree with Ralf's ack for
-> the MIPS bits.
+> This was suggested with
+> http://www.linux-mips.org/archives/linux-mips/2014-05/msg00307.html
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Please use the permanent link from that page:
 
-Though in my experience MIPS-specific patches to non-arch/mips code receive
-best testing in the MIPS tree.
+  http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=1401358203-60225-4-git-send-email-alex.smith%40imgtec.com
 
-Cheers,
+The non-permanent links might change.
 
   Ralf

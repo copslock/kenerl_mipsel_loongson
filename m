@@ -1,48 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 19:09:59 +0100 (CET)
-Received: from mail-la0-f48.google.com ([209.85.215.48]:53962 "EHLO
-        mail-la0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008844AbaLOSHGCh3S0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Dec 2014 19:07:06 +0100
-Received: by mail-la0-f48.google.com with SMTP id gf13so9700908lab.21
-        for <multiple recipients>; Mon, 15 Dec 2014 10:07:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=hKo13j7PlKsMN49mA+elvbLsaT22alRvyvdKsLkqwCo=;
-        b=D64WFlT7WiViSSHqeoxtmg0jikjgWNKCFZPrzOyGrJDRQMYBcMk/yEWYBCo2GDUr1c
-         UyBIsf0bq1V0UIgRba+cv/fr6ZhJiXg401AoEEbQYW3lSNI3GBSithDyOxXFvEOVXVly
-         +R7ErIA9aILz4bNfZ1VmsnJFIV/xNr2lud8fL9UCSBFkfKMkc1WHvDfsj7S8ZnDDtCra
-         PhcfYztwTvIUXl0YAWWYy2kFvybaG0fKwK7mb8/19JoSY9yryVmOiYCVtVJcIXxeRjaC
-         CiFxYMgaPvOWZomkNYGLxvrZIuAd7lgbMkdyOxEZgLtJjwI3xn0uxEbJTqjyMEh9J4Qa
-         YQhg==
-X-Received: by 10.112.170.7 with SMTP id ai7mr32152132lbc.67.1418666820834;
-        Mon, 15 Dec 2014 10:07:00 -0800 (PST)
-Received: from turnip.localdomain (nivc-213.auriga.ru. [80.240.102.213])
-        by mx.google.com with ESMTPSA id l9sm1238952lae.0.2014.12.15.10.06.59
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 15 Dec 2014 10:07:00 -0800 (PST)
-From:   Aleksey Makarov <feumilieu@gmail.com>
-X-Google-Original-From: Aleksey Makarov <aleksey.makarov@auriga.com>
-To:     linux-mips@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 14/14] MIPS: OCTEON: Handle OCTEON III in csrc-octeon.
-Date:   Mon, 15 Dec 2014 21:03:20 +0300
-Message-Id: <1418666603-15159-15-git-send-email-aleksey.makarov@auriga.com>
-X-Mailer: git-send-email 2.1.3
-In-Reply-To: <1418666603-15159-1-git-send-email-aleksey.makarov@auriga.com>
-References: <1418666603-15159-1-git-send-email-aleksey.makarov@auriga.com>
-Return-Path: <feumilieu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 19:14:48 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:49917 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008844AbaLOSOrC5K5z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Dec 2014 19:14:47 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBFIEj9q029672;
+        Mon, 15 Dec 2014 19:14:45 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBFIEidg029671;
+        Mon, 15 Dec 2014 19:14:44 +0100
+Date:   Mon, 15 Dec 2014 19:14:44 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     Lino Sanfilippo <LinoSanfilippo@gmx.de>, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ioc3: fix incorrect use of htons/ntohs
+Message-ID: <20141215181444.GD26674@linux-mips.org>
+References: <1417344054-4374-1-git-send-email-LinoSanfilippo@gmx.de>
+ <1417406976.7215.126.camel@decadent.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1417406976.7215.126.camel@decadent.org.uk>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44696
+X-archive-position: 44697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: feumilieu@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,48 +44,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On Mon, Dec 01, 2014 at 04:09:36AM +0000, Ben Hutchings wrote:
 
-The clock divisors are kept in different registers on OCTEON III.
+> >  	/* Same as tx - compute csum of pseudo header  */
+> >  	csum = hwsum +
+> > -	       (ih->tot_len - (ih->ihl << 2)) +
+> > -	       htons((uint16_t)ih->protocol) +
+> > +	       (ih->tot_len - (ih->ihl << 2)) + ih->protocol +
+> >  	       (ih->saddr >> 16) + (ih->saddr & 0xffff) +
+> >  	       (ih->daddr >> 16) + (ih->daddr & 0xffff);
+> >
+> 
+> The pseudo-header is specified as:
+> 
+>                      +--------+--------+--------+--------+
+>                      |           Source Address          |
+>                      +--------+--------+--------+--------+
+>                      |         Destination Address       |
+>                      +--------+--------+--------+--------+
+>                      |  zero  |  PTCL  |    TCP Length   |
+>                      +--------+--------+--------+--------+
+> 
+> The current code zero-extends the protocol number to produce the 5th
+> 16-bit word of the pseudo-header, then uses htons() to put it in
+> big-endian order, consistent with the other fields.  (Yes, it's doing
+> addition on big-endian words; this works even on little-endian machines
+> due to the way the checksum is specified.)
+> 
+> The driver should not be doing this at all, though.  It should set
+> skb->csum = hwsum; skb->ip_summed = CHECKSUM_COMPLETE; and let the
+> network stack adjust the hardware checksum.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
----
- arch/mips/cavium-octeon/csrc-octeon.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Really?  The IOC3 isn't the exactly the smartest NIC around; it does add up
+everything and the kitchen sink, that is ethernet headers, IP headers and
+on RX the frame's trailing CRC.  All that needs to be subtracted in software
+which is what this does.  I think others NICs are all smarted and don't
+need this particular piece of magic.
 
-diff --git a/arch/mips/cavium-octeon/csrc-octeon.c b/arch/mips/cavium-octeon/csrc-octeon.c
-index b752c4e..d270082 100644
---- a/arch/mips/cavium-octeon/csrc-octeon.c
-+++ b/arch/mips/cavium-octeon/csrc-octeon.c
-@@ -18,6 +18,7 @@
- #include <asm/octeon/octeon.h>
- #include <asm/octeon/cvmx-ipd-defs.h>
- #include <asm/octeon/cvmx-mio-defs.h>
-+#include <asm/octeon/cvmx-rst-defs.h>
- 
- 
- static u64 f;
-@@ -39,11 +40,20 @@ void __init octeon_setup_delays(void)
- 
- 	if (current_cpu_type() == CPU_CAVIUM_OCTEON2) {
- 		union cvmx_mio_rst_boot rst_boot;
-+
- 		rst_boot.u64 = cvmx_read_csr(CVMX_MIO_RST_BOOT);
- 		rdiv = rst_boot.s.c_mul;	/* CPU clock */
- 		sdiv = rst_boot.s.pnr_mul;	/* I/O clock */
- 		f = (0x8000000000000000ull / sdiv) * 2;
-+	} else if (current_cpu_type() == CPU_CAVIUM_OCTEON3) {
-+		union cvmx_rst_boot rst_boot;
-+
-+		rst_boot.u64 = cvmx_read_csr(CVMX_RST_BOOT);
-+		rdiv = rst_boot.s.c_mul;	/* CPU clock */
-+		sdiv = rst_boot.s.pnr_mul;	/* I/O clock */
-+		f = (0x8000000000000000ull / sdiv) * 2;
- 	}
-+
- }
- 
- /*
--- 
-2.1.3
+I agree with your other comment wrt. to htons().
+
+  Ralf

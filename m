@@ -1,38 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 17:04:47 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:47546 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 17:30:02 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47747 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008806AbaLOQEpVD3Re (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Dec 2014 17:04:45 +0100
+        id S27008804AbaLOQaAhGg88 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Dec 2014 17:30:00 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBFG4fNS027053;
-        Mon, 15 Dec 2014 17:04:41 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBFGTxmS027503;
+        Mon, 15 Dec 2014 17:29:59 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBFG4exl027052;
-        Mon, 15 Dec 2014 17:04:40 +0100
-Date:   Mon, 15 Dec 2014 17:04:40 +0100
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBFGTwQk027502;
+        Mon, 15 Dec 2014 17:29:58 +0100
+Date:   Mon, 15 Dec 2014 17:29:58 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-Cc:     Greg KH <greg@kroah.com>, Alan Stern <stern@rowland.harvard.edu>,
-        David Daney <david.daney@cavium.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-usb <linux-usb@vger.kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: Re: [PATCH 1/2 resend] USB: host: Remove hard-coded octeon platform
- information for ehci/ohci
-Message-ID: <20141215160439.GA26674@linux-mips.org>
-References: <20141215132628.GA20109@alberich>
- <20141215132841.GB20109@alberich>
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>,
+        Linux MIPS List <linux-mips@linux-mips.org>,
+        rtc-linux@googlegroups.com, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 02/02 resend] MIPS: IP32: Add platform data hooks to use
+ DS1685 driver
+Message-ID: <20141215162957.GC26674@linux-mips.org>
+References: <548B689A.1010007@gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20141215132841.GB20109@alberich>
+In-Reply-To: <548B689A.1010007@gentoo.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44679
+X-archive-position: 44680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,17 +45,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 15, 2014 at 02:28:41PM +0100, Andreas Herrmann wrote:
+On Fri, Dec 12, 2014 at 05:13:46PM -0500, Joshua Kinard wrote:
 
-> Instead rely on device tree information for ehci and ohci.
+> This modifies the IP32 (SGI O2) platform and reset code to utilize the new
+> rtc-ds1685 driver.  The old mc146818rtc.h header is removed and ip32_defconfig
+> is updated as well.
 > 
-> This was suggested with
-> http://www.linux-mips.org/archives/linux-mips/2014-05/msg00307.html
+> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+> ---
+>  arch/mips/configs/ip32_defconfig              |    3
+>  arch/mips/include/asm/mach-ip32/mc146818rtc.h |   36 ----
+>  arch/mips/sgi-ip32/ip32-platform.c            |   52 +++++-
+>  arch/mips/sgi-ip32/ip32-reset.c               |  132 ++++------------
+>  4 files changed, 85 insertions(+), 138 deletions(-)
+>  delete mode 100644 arch/mips/include/asm/mach-ip32/mc146818rtc.h
+> 
+> Ralf,
+> 
+>   Similar to Maciej's DEC/RTC patches from a few months ago, this patch
+> requires the rtc-ds1685 driver be added upstream first before this can go into
+> into the LMO tree.  If you can queue this someplace until that makes it in,
+> that would be great.  Thanks!
 
-Please use the permanent link from that page:
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-  http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=1401358203-60225-4-git-send-email-alex.smith%40imgtec.com
+Alessandro,
 
-The non-permanent links might change.
+I don't think there is much of a chance of this patch conflicting with
+others so feel free to funnel this through the RTC tree.  Or I carry
+both patches - I don't care which way.
+
+Cheers,
 
   Ralf

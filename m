@@ -1,40 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 10:59:12 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.130]:60331 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007411AbaLOJ7KJb48d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Dec 2014 10:59:10 +0100
-Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
- (mreue004) with ESMTPSA (Nemesis) id 0LlJ5u-1XPTiW1mNy-00b2EK; Mon, 15 Dec
- 2014 10:58:58 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     ralf@linux-mips.org, f.fainelli@gmail.com, tglx@linutronix.de,
-        jason@lakedaemon.net, jogo@openwrt.org,
-        computersforpeace@gmail.com, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V5 00/23] Generic BMIPS kernel
-Date:   Mon, 15 Dec 2014 10:58:57 +0100
-Message-ID: <3160456.oe6LURFJHs@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
-References: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 14:26:59 +0100 (CET)
+Received: from mail-bn1bon0093.outbound.protection.outlook.com ([157.56.111.93]:14208
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27007135AbaLON06QTeOc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Dec 2014 14:26:58 +0100
+Received: from CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) by
+ CO1PR07MB157.namprd07.prod.outlook.com (10.242.167.13) with Microsoft SMTP
+ Server (TLS) id 15.1.31.17; Mon, 15 Dec 2014 13:26:49 +0000
+Received: from alberich (2.165.246.116) by
+ CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19) with Microsoft SMTP
+ Server (TLS) id 15.1.31.17; Mon, 15 Dec 2014 13:26:45 +0000
+Date:   Mon, 15 Dec 2014 14:26:29 +0100
+From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+To:     Greg KH <greg@kroah.com>
+CC:     Alan Stern <stern@rowland.harvard.edu>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>,
+        "Aaro Koskinen" <aaro.koskinen@iki.fi>
+Subject: [PATCH 0/2 resend] USB: host: Misc patches to remove hard-coded
+ octeon platform information
+Message-ID: <20141215132628.GA20109@alberich>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID:  V03:K0:8yLCd7pcVWC1jdffW4Y5ri8o42Ope7ujtVR/RNdm+YUOwoW0m0Z
- Rl9nPAm55X+dKpApsl8KS6hQjtU+ovrzklQ02yoqsRlUaSSSmKXWz9tj6/28Jbzl/3ostYN
- SkYlrAFNl8nBJhkYeUYo7EyLb4bInkphhHf2SnbEvxLY2eZ9Nn/+nWiqNyMFOpYRxQAmzmz
- paPtcEsexj6xY1oPMWICQ==
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Originating-IP: [2.165.246.116]
+X-ClientProxiedBy: DB4PR07CA040.eurprd07.prod.outlook.com (10.242.229.50) To
+ CO1PR07MB396.namprd07.prod.outlook.com (10.141.74.19)
+X-Microsoft-Antispam: UriScan:;UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CO1PR07MB396;
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601003);SRVR:CO1PR07MB396;
+X-Forefront-PRVS: 04267075BD
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(189002)(164054003)(199003)(68736005)(21056001)(42186005)(97736003)(105586002)(558084003)(62966003)(77156002)(20776003)(64706001)(47776003)(15975445007)(66066001)(87976001)(31966008)(110136001)(77096005)(92566001)(106356001)(229853001)(107046002)(19580405001)(101416001)(19580395003)(46102003)(40100003)(23676002)(99396003)(33656002)(86362001)(50986999)(83506001)(120916001)(4396001)(54356999)(15395725005)(122386002)(50466002)(129325002)(6606295002);DIR:OUT;SFP:1101;SCL:1;SRVR:CO1PR07MB396;H:alberich;FPR:;SPF:None;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:CO1PR07MB396;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CO1PR07MB157;
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <Andreas.Herrmann@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44667
+X-archive-position: 44668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: andreas.herrmann@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,25 +59,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday 12 December 2014 14:06:51 Kevin Cernekee wrote:
-> V4->V5:
-> 
->  - Rebase on top of Linus' head of tree, converting BCM3384 platform code
->    to Generic BMIPS platform code.
-> 
->  - Fix a couple of #include's
-> 
->  - Remove a couple of bogus entries from bmips_be_defconfig
-> 
-> Compile-tested only.  Some BMIPS platforms may require acked-but-unmerged
-> changes in other subsystems (like the native-endian serial8250/DT patches).
-> 
-> For 3.19 you'll want the first patch at the minimum (because the build is
-> currently broken).
-> 
+This is a re-submission of patches 2 and 3 from
+http://marc.info/?i=1415914590-31647-1-git-send-email-andreas.herrmann@caviumnetworks.com
+(Only patch 1/3 made it into usb-next and meanwhile is in mainline.)
 
-Since I commented on some of these patches before, I now took another
-(not very thorough) look at all of them. Looks very nice overall, I
-have no further comments.
+Please apply.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+
+Thanks,
+
+Andreas

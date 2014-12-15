@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 21:53:26 +0100 (CET)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:34765 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008857AbaLOUxYbwrA8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Dec 2014 21:53:24 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2014 22:01:57 +0100 (CET)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:35549 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008857AbaLOVB4Lic27 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Dec 2014 22:01:56 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id CC90921B89D;
-        Mon, 15 Dec 2014 22:53:23 +0200 (EET)
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 663E456F5D0;
+        Mon, 15 Dec 2014 23:01:55 +0200 (EET)
 X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
 Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id KX64RBtHXYZZ; Mon, 15 Dec 2014 22:53:17 +0200 (EET)
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id UIJvd-K2Bz3W; Mon, 15 Dec 2014 23:01:48 +0200 (EET)
 Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id 351D95BC005;
-        Mon, 15 Dec 2014 22:53:17 +0200 (EET)
-Date:   Mon, 15 Dec 2014 22:53:16 +0200
+        by smtp6.welho.com (Postfix) with ESMTP id CA8365BC004;
+        Mon, 15 Dec 2014 23:01:48 +0200 (EET)
+Date:   Mon, 15 Dec 2014 23:01:48 +0200
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Aleksey Makarov <feumilieu@gmail.com>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         David Daney <david.daney@cavium.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
         Aleksey Makarov <aleksey.makarov@auriga.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 09/14] MIPS: OCTEON: Add ability to used an initrd from a
- named memory block.
-Message-ID: <20141215205316.GA10323@fuloong-minipc.musicnaut.iki.fi>
+Subject: Re: [PATCH 12/14] MIPS: OCTEON: Update octeon-model.h code for new
+ SoCs.
+Message-ID: <20141215210148.GB10323@fuloong-minipc.musicnaut.iki.fi>
 References: <1418666603-15159-1-git-send-email-aleksey.makarov@auriga.com>
- <1418666603-15159-10-git-send-email-aleksey.makarov@auriga.com>
+ <1418666603-15159-13-git-send-email-aleksey.makarov@auriga.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1418666603-15159-10-git-send-email-aleksey.makarov@auriga.com>
+In-Reply-To: <1418666603-15159-13-git-send-email-aleksey.makarov@auriga.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44699
+X-archive-position: 44700
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,14 +51,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 15, 2014 at 09:03:15PM +0300, Aleksey Makarov wrote:
+Hi,
+
+On Mon, Dec 15, 2014 at 09:03:18PM +0300, Aleksey Makarov wrote:
 > From: David Daney <david.daney@cavium.com>
 > 
-> If 'rd_name=xxx' is passed to the kernel, the named block with name
-> 'xxx' is used for the initrd.
+> Add coverage for OCTEON III models.
 
-Maybe use "initrd_name" for consistency or even just "initrd"
-(if the xxx is not in form of "address,size" you could assume it to refer
-to a named block).
+[...]
+
+> +#define OCTEON_IS_OCTEON1()	OCTEON_IS_MODEL(OCTEON_CN3XXX)
+> +#define OCTEON_IS_OCTEONPLUS()	OCTEON_IS_MODEL(OCTEON_CN5XXX)
+> +#define OCTEON_IS_OCTEON2()						\
+> +	(OCTEON_IS_MODEL(OCTEON_CN6XXX) || OCTEON_IS_MODEL(OCTEON_CNF71XX))
+> +
+> +#define OCTEON_IS_OCTEON3()	OCTEON_IS_MODEL(OCTEON_CN7XXX)
+> +
+> +#define OCTEON_IS_OCTEON1PLUS()	(OCTEON_IS_OCTEON1() || OCTEON_IS_OCTEONPLUS())
+
+There are no users for these.
 
 A.

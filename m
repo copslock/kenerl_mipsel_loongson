@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Dec 2014 22:30:30 +0100 (CET)
-Received: from mail-qg0-f45.google.com ([209.85.192.45]:37801 "EHLO
-        mail-qg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009036AbaLQVa2TMHcl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Dec 2014 22:30:28 +0100
-Received: by mail-qg0-f45.google.com with SMTP id f51so12538525qge.18
-        for <multiple recipients>; Wed, 17 Dec 2014 13:30:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=3jZB8FtaNNBRVq7CS60/c9kQm354CcLX5zw1MTE3Yy0=;
-        b=BPSwqznyUTbwunBKcTMG8oEWWw5DaevMlu1F0LovfOrKKdtQJUgeE2z+OCSChQbvrf
-         DyiO7XU1/8xTBdT7tAvKK8Z8aEnipEurhDHliSzp9RnE827K3RdwyVup9+A4oApVxSV2
-         N7ubVJ8iFwexQLMrZw4D3vtirlY/AkCWhpiY4u3jJTzCAfdEN5/3utukxOLBwBdbEKhW
-         lhHrB6+WNJ7Ej687ATY1wC3u0AINiOg1LOmKU7GmwYTUjI8MTNLxkzPqF0hEnKPcl838
-         2j3tLBj+9I4CbId7yTvK1J5jipzTYaAF4K8Od1EnzYySpAj4ap7oop/D577YCEEMSvwY
-         HQow==
-X-Received: by 10.140.105.55 with SMTP id b52mr36602659qgf.1.1418851822431;
- Wed, 17 Dec 2014 13:30:22 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.140.82.48 with HTTP; Wed, 17 Dec 2014 13:30:02 -0800 (PST)
-In-Reply-To: <1418849927.28384.1.camel@perches.com>
-References: <1418849927.28384.1.camel@perches.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Wed, 17 Dec 2014 13:30:02 -0800
-Message-ID: <CAJiQ=7DE1ojVRW6LqZg2LiqTQ0cgDY_a0nMGn=_Rs1mkuEgwoA@mail.gmail.com>
-Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k, mips)
-To:     Joe Perches <joe@perches.com>
-Cc:     linux-arch <linux-arch@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Dec 2014 23:30:25 +0100 (CET)
+Received: from unicorn.mansr.com ([81.2.72.234]:38008 "EHLO unicorn.mansr.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008836AbaLQWaXYm2fB convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Dec 2014 23:30:23 +0100
+Received: by unicorn.mansr.com (Postfix, from userid 51770)
+        id 27E121538A; Wed, 17 Dec 2014 22:30:16 +0000 (GMT)
+From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Joe Perches <joe@perches.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Steven Miao <realmz6@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k, mips)
+References: <1418849927.28384.1.camel@perches.com>
+        <CAJiQ=7DE1ojVRW6LqZg2LiqTQ0cgDY_a0nMGn=_Rs1mkuEgwoA@mail.gmail.com>
+Date:   Wed, 17 Dec 2014 22:30:16 +0000
+In-Reply-To: <CAJiQ=7DE1ojVRW6LqZg2LiqTQ0cgDY_a0nMGn=_Rs1mkuEgwoA@mail.gmail.com>
+        (Kevin Cernekee's message of "Wed, 17 Dec 2014 13:30:02 -0800")
+Message-ID: <yw1xk31phptz.fsf@unicorn.mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mru@mansr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44715
+X-archive-position: 44716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: mans@mansr.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,30 +47,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 17, 2014 at 12:58 PM, Joe Perches <joe@perches.com> wrote:
-> It seems like early_printk can be configured into
-> a few architectures but also appear not to be used.
+Kevin Cernekee <cernekee@gmail.com> writes:
+
+> On Wed, Dec 17, 2014 at 12:58 PM, Joe Perches <joe@perches.com> wrote:
+>> It seems like early_printk can be configured into
+>> a few architectures but also appear not to be used.
+>>
+>> $ git grep -w "early_printk"
+> [snip]
+>> arch/mips/kernel/Makefile:obj-$(CONFIG_EARLY_PRINTK)    += early_printk.o
 >
-> $ git grep -w "early_printk"
-[snip]
-> arch/mips/kernel/Makefile:obj-$(CONFIG_EARLY_PRINTK)    += early_printk.o
+> Nowadays I try to use OF_EARLYCON whenever possible, but when that has
+> been unavailable, I have used arch/mips/kernel/early_printk.c to get
+> console output before the serial driver is initialized.  It runs very
+> early in the boot sequence and has very few dependencies, which makes
+> it useful for board bringup.
 
-Nowadays I try to use OF_EARLYCON whenever possible, but when that has
-been unavailable, I have used arch/mips/kernel/early_printk.c to get
-console output before the serial driver is initialized.  It runs very
-early in the boot sequence and has very few dependencies, which makes
-it useful for board bringup.
+EARLY_PRINTK on MIPS is enabled just after prom_init(), well before
+OF_EARLYCON is usable.  I'd prefer if it stayed that way.
 
-At least on MIPS, the EARLY_PRINTK implementation registers itself as
-a console and works with standard printk() calls.  It doesn't rely on
-arch/driver code explicitly calling early_printk().
-
-Side note: looking through kernel/printk/printk.c it looks like
-there's a space missing in the description string:
-
-MODULE_PARM_DESC(ignore_loglevel, "ignore loglevel setting, to"
-        "print all kernel messages to the console.");
-
-But since CONFIG_PRINTK is a bool option, I don't know if the
-description string actually shows up anywhere.  Should it be converted
-into a comment?
+-- 
+Måns Rullgård
+mans@mansr.com

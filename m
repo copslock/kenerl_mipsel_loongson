@@ -1,32 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Dec 2014 02:24:35 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:56099 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008892AbaLQBYdUJvKg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 17 Dec 2014 02:24:33 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBH1OWXn029341;
-        Wed, 17 Dec 2014 02:24:32 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBH1OVHB029340;
-        Wed, 17 Dec 2014 02:24:31 +0100
-Date:   Wed, 17 Dec 2014 02:24:31 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org, Paul Burton <paul.burton@imgtec.com>
-Subject: Current kernels on Qemu
-Message-ID: <20141217012431.GA28093@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Dec 2014 15:49:58 +0100 (CET)
+Received: from nivc-ms1.auriga.com ([80.240.102.146]:36514 "EHLO
+        nivc-ms1.auriga.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007344AbaLQOt5A7hux (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Dec 2014 15:49:57 +0100
+Received: from [80.240.102.213] (80.240.102.213) by NIVC-MS1.auriga.ru
+ (80.240.102.146) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 17 Dec
+ 2014 17:49:50 +0300
+Message-ID: <54919786.7020605@auriga.com>
+Date:   Wed, 17 Dec 2014 17:47:34 +0300
+From:   Aleksey Makarov <aleksey.makarov@auriga.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 09/14] MIPS: OCTEON: Add ability to used an initrd from
+ a named memory block.
+References: <1418666603-15159-1-git-send-email-aleksey.makarov@auriga.com> <1418666603-15159-10-git-send-email-aleksey.makarov@auriga.com> <20141215205316.GA10323@fuloong-minipc.musicnaut.iki.fi>
+In-Reply-To: <20141215205316.GA10323@fuloong-minipc.musicnaut.iki.fi>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [80.240.102.213]
+Return-Path: <aleksey.makarov@auriga.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44711
+X-archive-position: 44713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aleksey.makarov@auriga.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,97 +44,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 4227a2d4efc9c84f35826dc4d1e6dc183f6c1c05 (MIPS: Support for hybrid
-FPRs) changes the kernel to execute read_c0_config5() even on processors
-that don't have a Config5 register.  According to the arch spec the
-behaviour of trying to read or write this register is UNDEFINED where this
-register doesn't exist, that is merely looking at this register is
-already cruel because that might kill a kitten.
 
-In case of Qemu older than v2.2 Qemu has elected to implement this
-UNDEFINED behaviour by taking a RI exception - which then fries the
-kernel:
+On 12/15/2014 11:53 PM, Aaro Koskinen wrote:
+> On Mon, Dec 15, 2014 at 09:03:15PM +0300, Aleksey Makarov wrote:
+>> From: David Daney <david.daney@cavium.com>
+>>
+>> If 'rd_name=xxx' is passed to the kernel, the named block with name
+>> 'xxx' is used for the initrd.
+> 
+> Maybe use "initrd_name" for consistency or even just "initrd"
+> (if the xxx is not in form of "address,size" you could assume it to refer
+> to a named block).
 
-[...]
-Freeing YAMON memory: 956k freed
-Freeing unused kernel memory: 240K (80674000 - 806b0000)
-Reserved instruction in kernel code[#1]:
-CPU: 0 PID: 1 Comm: init Not tainted 3.18.0-rc6-00058-g4227a2d #26
-task: 86047588 ti: 86048000 task.ti: 86048000
-$ 0   : 00000000 77a638cc 00000000 00000000
-[...]
+As far as I can see it is already consistent as MIPS Linux uses "rd_start" and "rd_size" instead of "initrd".
 
-For qemu v2.2.0 commit f31b035a9f10dc9b57f01c426110af845d453ce2
-(target-mips: correctly handle access to unimplemented CP0 register)
-changed the behaviour to returning zero on read and ignoring writes
-which more matches how typical hardware implementations actually behave.
+Aleksey
 
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/include/asm/fpu.h | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
-
-diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-index 994d219..978a2a4 100644
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -64,7 +64,7 @@ static inline int __enable_fpu(enum fpu_mode mode)
- 			return SIGFPE;
- 
- 		/* set FRE */
--		write_c0_config5(read_c0_config5() | MIPS_CONF5_FRE);
-+		set_c0_config5(MIPS_CONF5_FRE);
- 		goto fr_common;
- 
- 	case FPU_64BIT:
-@@ -74,8 +74,10 @@ static inline int __enable_fpu(enum fpu_mode mode)
- #endif
- 		/* fall through */
- 	case FPU_32BIT:
--		/* clear FRE */
--		write_c0_config5(read_c0_config5() & ~MIPS_CONF5_FRE);
-+		if (cpu_has_fre) {
-+			/* clear FRE */
-+			clear_c0_config5(MIPS_CONF5_FRE);
-+		}
- fr_common:
- 		/* set CU1 & change FR appropriately */
- 		fr = (int)mode & FPU_FR_MASK;
-@@ -182,16 +184,20 @@ static inline int init_fpu(void)
- 	int ret = 0;
- 
- 	if (cpu_has_fpu) {
-+		unsigned int config5;
-+
- 		ret = __own_fpu();
--		if (!ret) {
--			unsigned int config5 = read_c0_config5();
-+		if (ret)
-+			return ret;
- 
-+		if (cpu_has_fre) {
- 			/*
- 			 * Ensure FRE is clear whilst running _init_fpu, since
- 			 * single precision FP instructions are used. If FRE
- 			 * was set then we'll just end up initialising all 32
- 			 * 64b registers.
- 			 */
-+			config5 = read_c0_config5();
- 			write_c0_config5(config5 & ~MIPS_CONF5_FRE);
- 			enable_fpu_hazard();
- 
-@@ -200,7 +206,12 @@ static inline int init_fpu(void)
- 			/* Restore FRE */
- 			write_c0_config5(config5);
- 			enable_fpu_hazard();
-+
-+			return 0;
- 		}
-+
-+		_init_fpu();
-+		
- 	} else
- 		fpu_emulator_init_fpu();
- 
+> 
+> A.
+> .
+> 

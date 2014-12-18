@@ -1,43 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 03:39:19 +0100 (CET)
-Received: from mail-pa0-f51.google.com ([209.85.220.51]:56262 "EHLO
-        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008924AbaLRCjSTFKUY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 03:39:18 +0100
-Received: by mail-pa0-f51.google.com with SMTP id ey11so386106pad.38;
-        Wed, 17 Dec 2014 18:39:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=a0FOEhEkK+qF63CnecPj2IRZoFE+tPGA+ukKzx9nlVw=;
-        b=Ni6bwJeF2OfqS8qUaRTE989sKqrbGaomEA5D5fuTMUGrXe8VEVTVHL0KQ0O+Yfp2rb
-         lb9S6axbDHwCFAeXAyNoysP7PNv04PYv9m6oQYJc91rhvwJO3p9Sktw6dSNASX+52kCM
-         PMtBWShdF8vNxw2JtsWiF+Frsmru3oQQc7y5o+4+cR2jlY5YsPaNwfVje6FNRX7dBSWh
-         t+vjrKD3wk9m4ijhoBrOHuQBMV1iBxGZbXwGQ20lN2Nu5DC738z3D1NNNpFYKt5y2G3e
-         zRJ3Q/9n5f566OKtYp9qGR4m+eHMfmlTJv068cnAwR33QDffY9Tdxj7RbnubQt7ojIBU
-         t2Sg==
-X-Received: by 10.70.37.202 with SMTP id a10mr74861558pdk.107.1418870352106;
-        Wed, 17 Dec 2014 18:39:12 -0800 (PST)
-Received: from ld-irv-0074.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id ur2sm5145467pbc.51.2014.12.17.18.39.11
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 17 Dec 2014 18:39:11 -0800 (PST)
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        Brian Norris <computersforpeace@gmail.com>
-Subject: [PATCH] MIPS: JZ4740: fixup #include's (sparse)
-Date:   Wed, 17 Dec 2014 18:39:01 -0800
-Message-Id: <1418870341-16618-1-git-send-email-computersforpeace@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <computersforpeace@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 11:20:35 +0100 (CET)
+Received: from nivc-ms1.auriga.com ([80.240.102.146]:48818 "EHLO
+        nivc-ms1.auriga.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009072AbaLRKUdndAgu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 11:20:33 +0100
+Received: from localhost (80.240.102.213) by NIVC-MS1.auriga.ru
+ (80.240.102.146) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 18 Dec
+ 2014 13:20:27 +0300
+From:   Aleksey Makarov <aleksey.makarov@auriga.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>
+Subject: [PATCH v2 00/12] MIPS: OCTEON: Some partial support for Octeon III
+Date:   Thu, 18 Dec 2014 13:17:52 +0300
+Message-ID: <1418897888-17669-1-git-send-email-aleksey.makarov@auriga.com>
+X-Mailer: git-send-email 2.1.3
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [80.240.102.213]
+Return-Path: <aleksey.makarov@auriga.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44717
+X-archive-position: 44718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: aleksey.makarov@auriga.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,34 +39,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fixes sparse warnings:
+Changes in v2:
 
-  arch/mips/jz4740/irq.c:63:6: warning: symbol 'jz4740_irq_suspend' was not declared. Should it be static?
-  arch/mips/jz4740/irq.c:69:6: warning: symbol 'jz4740_irq_resume' was not declared. Should it be static?
+- Do not introduce cvmx-rst-defs.h. Define all the required
+  symbols in csrc-octeon.c
+- The patch "MIPS: Remove unneeded #ifdef __KERNEL__ from
+  asm/processor.h" will be sent separately as it is not
+  OCTEON specific
 
-Also, I've seen some elusive build errors on my automated build test
-where JZ4740_IRQ_BASE and NR_IRQS are missing, but I can't reproduce
-them manually for some reason. Anyway, mach-jz4740/irq.h should help us
-avoid relying on some implicit include.
+Summary:        
 
-Signed-off-by: Brian Norris <computersforpeace@gmail.com>
----
- arch/mips/jz4740/irq.c | 3 +++
- 1 file changed, 3 insertions(+)
+These patches fix some issues in the Cavium Octeon code and
+introduce some partial support for Octeon III and little-endian.
 
-diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
-index 2531da1d3add..97206b3deb97 100644
---- a/arch/mips/jz4740/irq.c
-+++ b/arch/mips/jz4740/irq.c
-@@ -30,6 +30,9 @@
- #include <asm/irq_cpu.h>
- 
- #include <asm/mach-jz4740/base.h>
-+#include <asm/mach-jz4740/irq.h>
-+
-+#include "irq.h"
- 
- static void __iomem *jz_intc_base;
- 
+Aleksey Makarov (1):
+  MIPS: OCTEON: Delete unused COP2 saving code
+
+Chandrakala Chavva (1):
+  MIPS: OCTEON: Use correct instruction to read 64-bit COP0 register
+
+David Daney (10):
+  MIPS: OCTEON: Save/Restore wider multiply registers in OCTEON III CPUs
+  MIPS: OCTEON: Fix FP context save.
+  MIPS: OCTEON: Save and restore CP2 SHA3 state
+  MIPS: OCTEON: Implement the core-16057 workaround
+  MIPS: OCTEON: Don't do acknowledge operations for level triggered
+    irqs.
+  MIPS: OCTEON: Add ability to used an initrd from a named memory block.
+  MIPS: OCTEON: Add little-endian support to asm/octeon/octeon.h
+  MIPS: OCTEON: Implement DCache errata workaround for all CN6XXX
+  MIPS: OCTEON: Update octeon-model.h code for new SoCs.
+  MIPS: OCTEON: Handle OCTEON III in csrc-octeon.
+
+ arch/mips/cavium-octeon/csrc-octeon.c              |  34 ++++
+ arch/mips/cavium-octeon/octeon-irq.c               |  45 ++++-
+ arch/mips/cavium-octeon/setup.c                    |  81 +++++++-
+ arch/mips/include/asm/bootinfo.h                   |   1 +
+ .../asm/mach-cavium-octeon/kernel-entry-init.h     |  22 +++
+ arch/mips/include/asm/mach-cavium-octeon/war.h     |   3 +
+ arch/mips/include/asm/octeon/octeon-model.h        |  65 +++++-
+ arch/mips/include/asm/octeon/octeon.h              | 148 +++++++++++---
+ arch/mips/include/asm/processor.h                  |   2 +
+ arch/mips/include/asm/ptrace.h                     |   4 +-
+ arch/mips/kernel/asm-offsets.c                     |   1 +
+ arch/mips/kernel/octeon_switch.S                   | 218 +++++++++++++--------
+ arch/mips/kernel/setup.c                           |  19 +-
+ arch/mips/mm/uasm.c                                |   2 +-
+ 14 files changed, 518 insertions(+), 127 deletions(-)
+
 -- 
-1.9.1
+2.1.3

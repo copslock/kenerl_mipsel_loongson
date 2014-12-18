@@ -1,36 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 19:59:13 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:41743 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007366AbaLRS7LISZ3X convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 19:59:11 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id 219D11538A; Thu, 18 Dec 2014 18:59:05 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 20:01:30 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:45989 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008789AbaLRTB1yrcsj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Dec 2014 20:01:27 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBIJ1P1O008381;
+        Thu, 18 Dec 2014 20:01:25 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBIJ1Pc2008380;
+        Thu, 18 Dec 2014 20:01:25 +0100
+Date:   Thu, 18 Dec 2014 20:01:25 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     David Daney <ddaney.cavm@gmail.com>
 Cc:     Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org,
         Matthew Fortune <Matthew.Fortune@imgtec.com>
-Subject: Re: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA constrains for MIPS R6 support
+Subject: Re: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA
+ constrains for MIPS R6 support
+Message-ID: <20141218190125.GA8221@linux-mips.org>
 References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
-        <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com>
-        <549321F3.1090704@gmail.com>
-Date:   Thu, 18 Dec 2014 18:59:05 +0000
-In-Reply-To: <549321F3.1090704@gmail.com> (David Daney's message of "Thu, 18
-        Dec 2014 10:50:27 -0800")
-Message-ID: <yw1xfvcchjie.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+ <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com>
+ <549321F3.1090704@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <549321F3.1090704@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44809
+X-archive-position: 44810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,57 +47,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David Daney <ddaney.cavm@gmail.com> writes:
+On Thu, Dec 18, 2014 at 10:50:27AM -0800, David Daney wrote:
 
 > On 12/18/2014 07:09 AM, Markos Chandras wrote:
->> MIPS R6 changed the opcodes for LL/SC instructions and reduced the
->> offset field to 9-bits. This has some undesired effects with the "m"
->> constrain since it implies a 16-bit immediate. As a result of which,
->> add a register ("r") constrain as well to make sure the entire address
->> is loaded to a register before the LL/SC operations. Also use macro
->> to set the appropriate ISA for the asm blocks
->>
->
+> >MIPS R6 changed the opcodes for LL/SC instructions and reduced the
+> >offset field to 9-bits. This has some undesired effects with the "m"
+> >constrain since it implies a 16-bit immediate. As a result of which,
+> >add a register ("r") constrain as well to make sure the entire address
+> >is loaded to a register before the LL/SC operations. Also use macro
+> >to set the appropriate ISA for the asm blocks
+> >
+> 
 > Has support for MIPS R6 been added to GCC?
->
+> 
 > If so, that should include a proper constraint to be used with the new
-> offset restrictions.  We should probably use that, instead of forcing
-> to a "r" constraint.
->
->> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> ---
->>   arch/mips/include/asm/atomic.h | 50 +++++++++++++++++++++---------------------
->>   1 file changed, 25 insertions(+), 25 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
->> index 6dd6bfc607e9..8669e0ec97e3 100644
->> --- a/arch/mips/include/asm/atomic.h
->> +++ b/arch/mips/include/asm/atomic.h
->> @@ -60,13 +60,13 @@ static __inline__ void atomic_##op(int i, atomic_t * v)				\
->>   										\
->>   		do {								\
->>   			__asm__ __volatile__(					\
->> -			"	.set	arch=r4000			\n"	\
->> -			"	ll	%0, %1		# atomic_" #op "\n"	\
->> +			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"	\
->> +			"	ll	%0, 0(%3)	# atomic_" #op "\n"	\
->>   			"	" #asm_op " %0, %2			\n"	\
->> -			"	sc	%0, %1				\n"	\
->> +			"	sc	%0, 0(%3)			\n"	\
->>   			"	.set	mips0				\n"	\
->>   			: "=&r" (temp), "+m" (v->counter)			\
->> -			: "Ir" (i));						\
->> +			: "Ir" (i), "r" (&v->counter));				\
->
-> You lost the "m" constraint, but are still modifying memory.  There is
-> no "memory" clobber here, so we are no longer correctly describing
-> what is happening.
+> offset restrictions.  We should probably use that, instead of forcing to a
+> "r" constraint.
 
-Rather than add a blanket "memory" clobber, it's better to keep the old
-memory operand even if it is never used.  GCC will still assume it has
-been modified.
+In a non-public earlier discussion I've requested the same but somehow
+that was ignored.
 
--- 
-Måns Rullgård
-mans@mansr.com
+We need suitable constraints or the alternatives will be very, very ugly.
+
+  Ralf

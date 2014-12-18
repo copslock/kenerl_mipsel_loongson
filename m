@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 16:30:28 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:48858 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 16:30:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:14529 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009217AbaLRPNlGsgFN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 16:13:41 +0100
+        with ESMTP id S27009220AbaLRPNnRL0Vv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 16:13:43 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E17C43F068DF6
-        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 15:13:32 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 912B23D9BDB8D
+        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 15:13:34 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 18 Dec 2014 15:13:35 +0000
+ 14.3.195.1; Thu, 18 Dec 2014 15:13:37 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.125) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 18 Dec 2014 15:13:34 +0000
+ 14.3.210.2; Thu, 18 Dec 2014 15:13:36 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH RFC 65/67] MIPS: Malta: malta-int: Set correct asm ISA level
-Date:   Thu, 18 Dec 2014 15:10:14 +0000
-Message-ID: <1418915416-3196-66-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH RFC 66/67] MIPS: Malta: Add support for building MIPS R6 kernel
+Date:   Thu, 18 Dec 2014 15:10:15 +0000
+Message-ID: <1418915416-3196-67-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.2.0
 In-Reply-To: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
 References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44800
+X-archive-position: 44801
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,26 +45,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS R6 changed the opcode for the clz instruction so we need
-to properly instruct the assembler when using inline asm.
+The Malta platform supports MIPS R6 (via QEMU or real bitstreams)
+so add support for it.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/mti-malta/malta-int.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index e4f43baa8f67..eada9eb0d44e 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -207,7 +207,7 @@ static inline int clz(unsigned long x)
- {
- 	__asm__(
- 	"	.set	push					\n"
--	"	.set	mips32					\n"
-+	"	.set	"MIPS_ISA_LEVEL"			\n"
- 	"	clz	%0, %1					\n"
- 	"	.set	pop					\n"
- 	: "=r" (x)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 3fe856572d2e..0e1106c775a5 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -332,8 +332,10 @@ config MIPS_MALTA
+ 	select SYS_HAS_CPU_MIPS32_R1
+ 	select SYS_HAS_CPU_MIPS32_R2
+ 	select SYS_HAS_CPU_MIPS32_R3_5
++	select SYS_HAS_CPU_MIPS32_R6
+ 	select SYS_HAS_CPU_MIPS64_R1
+ 	select SYS_HAS_CPU_MIPS64_R2
++	select SYS_HAS_CPU_MIPS64_R6
+ 	select SYS_HAS_CPU_NEVADA
+ 	select SYS_HAS_CPU_RM7000
+ 	select SYS_SUPPORTS_32BIT_KERNEL
 -- 
 2.2.0

@@ -1,23 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 11:24:13 +0100 (CET)
-Received: from nivc-ms1.auriga.com ([80.240.102.146]:48940 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 12:02:38 +0100 (CET)
+Received: from nivc-ms1.auriga.com ([80.240.102.146]:59084 "EHLO
         nivc-ms1.auriga.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009088AbaLRKWjrisOp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 11:22:39 +0100
+        with ESMTP id S27009089AbaLRLChBa3lg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 12:02:37 +0100
 Received: from localhost (80.240.102.213) by NIVC-MS1.auriga.ru
  (80.240.102.146) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 18 Dec
- 2014 13:22:34 +0300
+ 2014 14:02:31 +0300
 From:   Aleksey Makarov <aleksey.makarov@auriga.com>
 To:     <linux-mips@linux-mips.org>
 CC:     <linux-kernel@vger.kernel.org>,
         David Daney <david.daney@cavium.com>,
         Aleksey Makarov <aleksey.makarov@auriga.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2 12/12] MIPS: OCTEON: Handle OCTEON III in csrc-octeon.
-Date:   Thu, 18 Dec 2014 13:18:04 +0300
-Message-ID: <1418897888-17669-13-git-send-email-aleksey.makarov@auriga.com>
+Subject: [PATCH] MIPS: Remove unneeded #ifdef __KERNEL__ from asm/processor.h
+Date:   Thu, 18 Dec 2014 13:59:53 +0300
+Message-ID: <1418900405-18900-1-git-send-email-aleksey.makarov@auriga.com>
 X-Mailer: git-send-email 2.1.3
-In-Reply-To: <1418897888-17669-1-git-send-email-aleksey.makarov@auriga.com>
-References: <1418897888-17669-1-git-send-email-aleksey.makarov@auriga.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [80.240.102.213]
@@ -25,7 +23,7 @@ Return-Path: <aleksey.makarov@auriga.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44730
+X-archive-position: 44731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,75 +42,37 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-The clock divisors are kept in different registers on OCTEON III.
-
 Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
 ---
- arch/mips/cavium-octeon/csrc-octeon.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ arch/mips/include/asm/processor.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/csrc-octeon.c b/arch/mips/cavium-octeon/csrc-octeon.c
-index b752c4e..a0d5029 100644
---- a/arch/mips/cavium-octeon/csrc-octeon.c
-+++ b/arch/mips/cavium-octeon/csrc-octeon.c
-@@ -14,11 +14,36 @@
- #include <asm/cpu-info.h>
- #include <asm/cpu-type.h>
- #include <asm/time.h>
-+#include <asm/bitfield.h>
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index f1df4cb..6c10e94 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -54,9 +54,7 @@ extern unsigned int vced_count, vcei_count;
+ #define TASK_SIZE	0x7fff8000UL
+ #endif
  
- #include <asm/octeon/octeon.h>
- #include <asm/octeon/cvmx-ipd-defs.h>
- #include <asm/octeon/cvmx-mio-defs.h>
+-#ifdef __KERNEL__
+ #define STACK_TOP_MAX	TASK_SIZE
+-#endif
  
-+#define CVMX_RST_BOOT CVMX_ADD_IO_SEG(0x0001180006001600ull)
-+
-+union cvmx_rst_boot {
-+	uint64_t u64;
-+	struct cvmx_rst_boot_s {
-+		__BITFIELD_FIELD(uint64_t chipkill       : 1,
-+		__BITFIELD_FIELD(uint64_t jtcsrdis       : 1,
-+		__BITFIELD_FIELD(uint64_t ejtagdis       : 1,
-+		__BITFIELD_FIELD(uint64_t romen          : 1,
-+		__BITFIELD_FIELD(uint64_t ckill_ppdis    : 1,
-+		__BITFIELD_FIELD(uint64_t jt_tstmode     : 1,
-+		__BITFIELD_FIELD(uint64_t vrm_err        : 1,
-+		__BITFIELD_FIELD(uint64_t reserved_37_56 : 20,
-+		__BITFIELD_FIELD(uint64_t c_mul          : 7,
-+		__BITFIELD_FIELD(uint64_t pnr_mul        : 6,
-+		__BITFIELD_FIELD(uint64_t reserved_21_23 : 3,
-+		__BITFIELD_FIELD(uint64_t lboot_oci      : 3,
-+		__BITFIELD_FIELD(uint64_t lboot_ext      : 6,
-+		__BITFIELD_FIELD(uint64_t lboot          : 10,
-+		__BITFIELD_FIELD(uint64_t rboot          : 1,
-+		__BITFIELD_FIELD(uint64_t rboot_pin      : 1,
-+		;))))))))))))))))
-+	} s;
-+};
+ #define TASK_IS_32BIT_ADDR 1
  
- static u64 f;
- static u64 rdiv;
-@@ -39,11 +64,20 @@ void __init octeon_setup_delays(void)
+@@ -73,11 +71,7 @@ extern unsigned int vced_count, vcei_count;
+ #define TASK_SIZE32	0x7fff8000UL
+ #define TASK_SIZE64	0x10000000000UL
+ #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
+-
+-#ifdef __KERNEL__
+ #define STACK_TOP_MAX	TASK_SIZE64
+-#endif
+-
  
- 	if (current_cpu_type() == CPU_CAVIUM_OCTEON2) {
- 		union cvmx_mio_rst_boot rst_boot;
-+
- 		rst_boot.u64 = cvmx_read_csr(CVMX_MIO_RST_BOOT);
- 		rdiv = rst_boot.s.c_mul;	/* CPU clock */
- 		sdiv = rst_boot.s.pnr_mul;	/* I/O clock */
- 		f = (0x8000000000000000ull / sdiv) * 2;
-+	} else if (current_cpu_type() == CPU_CAVIUM_OCTEON3) {
-+		union cvmx_rst_boot rst_boot;
-+
-+		rst_boot.u64 = cvmx_read_csr(CVMX_RST_BOOT);
-+		rdiv = rst_boot.s.c_mul;	/* CPU clock */
-+		sdiv = rst_boot.s.pnr_mul;	/* I/O clock */
-+		f = (0x8000000000000000ull / sdiv) * 2;
- 	}
-+
- }
- 
- /*
+ #define TASK_SIZE_OF(tsk)						\
+ 	(test_tsk_thread_flag(tsk, TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
 -- 
 2.1.3

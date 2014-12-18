@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 16:14:25 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41562 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 16:14:41 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16693 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009156AbaLRPLkCfF9M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 16:11:40 +0100
+        with ESMTP id S27009157AbaLRPLmMYWyz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 16:11:42 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D963B1E04B0D2
-        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 15:11:30 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 305894C725892
+        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 15:11:33 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 18 Dec 2014 15:11:34 +0000
+ 14.3.195.1; Thu, 18 Dec 2014 15:11:36 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.125) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 18 Dec 2014 15:11:33 +0000
+ 14.3.210.2; Thu, 18 Dec 2014 15:11:35 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH RFC 13/67] MIPS: Use generic checksum functions for MIPS R6
-Date:   Thu, 18 Dec 2014 15:09:22 +0000
-Message-ID: <1418915416-3196-14-git-send-email-markos.chandras@imgtec.com>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH RFC 14/67] MIPS: asm: cpu: Add MIPSR6 ISA definitions
+Date:   Thu, 18 Dec 2014 15:09:23 +0000
+Message-ID: <1418915416-3196-15-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.2.0
 In-Reply-To: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
 References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
@@ -28,7 +29,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44748
+X-archive-position: 44749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,113 +46,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The following instructions have been removed from MIPS R6
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-ulw, ulh, swl, lwr, lwl, swr.
+Add MIPS R6 to the ISA definitions
 
-However, all of them are used in the MIPS specific checksum implementation.
-As a result of which, we will use the generic checksum on MIPS R6
-
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/Kconfig                | 5 +++++
- arch/mips/include/asm/Kbuild     | 1 +
- arch/mips/include/asm/checksum.h | 6 ++++++
- arch/mips/kernel/mips_ksyms.c    | 2 ++
- arch/mips/lib/Makefile           | 1 +
- 5 files changed, 15 insertions(+)
+ arch/mips/include/asm/cpu-features.h | 14 +++++++++++---
+ arch/mips/include/asm/cpu.h          |  7 +++++--
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 12e831b815b1..544e62369bbc 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -994,6 +994,9 @@ config MIPS_MACHINE
- config NO_IOPORT_MAP
- 	def_bool n
- 
-+config GENERIC_CSUM
-+	bool
-+
- config GENERIC_ISA_DMA
- 	bool
- 	select ZONE_DMA if GENERIC_ISA_DMA_SUPPORT_BROKEN=n
-@@ -1275,6 +1278,7 @@ config CPU_MIPS32_R6
- 	select CPU_SUPPORTS_32BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_MSA
-+	select GENERIC_CSUM
- 	select HAVE_KVM
- 	help
- 	  Choose this option to build a kernel for release 6 or later of the
-@@ -1325,6 +1329,7 @@ config CPU_MIPS64_R6
- 	select CPU_SUPPORTS_64BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_MSA
-+	select GENERIC_CSUM
- 	help
- 	  Choose this option to build a kernel for release 6 or later of the
- 	  MIPS64 architecture.  New MIPS processors, starting with the Warrior
-diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
-index 72e1cf1cab00..c304e093eee3 100644
---- a/arch/mips/include/asm/Kbuild
-+++ b/arch/mips/include/asm/Kbuild
-@@ -1,4 +1,5 @@
- # MIPS headers
-+generic-(CONFIG_GENERIC_CSUM) += checksum.h
- generic-y += cputime.h
- generic-y += current.h
- generic-y += dma-contiguous.h
-diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
-index 3418c51e1151..8464b62443b2 100644
---- a/arch/mips/include/asm/checksum.h
-+++ b/arch/mips/include/asm/checksum.h
-@@ -12,6 +12,10 @@
- #ifndef _ASM_CHECKSUM_H
- #define _ASM_CHECKSUM_H
- 
-+#ifdef CONFIG_GENERIC_CSUM
-+#include <asm-generic/checksum.h>
-+#else
-+
- #include <linux/in6.h>
- 
- #include <asm/uaccess.h>
-@@ -287,4 +291,6 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	return csum_fold(sum);
- }
- 
-+#endif /* CONFIG_GENERIC_CSUM */
-+
- #endif /* _ASM_CHECKSUM_H */
-diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
-index 2607c3a4ff7e..631f6fed6092 100644
---- a/arch/mips/kernel/mips_ksyms.c
-+++ b/arch/mips/kernel/mips_ksyms.c
-@@ -71,11 +71,13 @@ EXPORT_SYMBOL(__strnlen_kernel_asm);
- EXPORT_SYMBOL(__strnlen_user_nocheck_asm);
- EXPORT_SYMBOL(__strnlen_user_asm);
- 
-+#ifndef CONFIG_CPU_MIPSR6
- EXPORT_SYMBOL(csum_partial);
- EXPORT_SYMBOL(csum_partial_copy_nocheck);
- EXPORT_SYMBOL(__csum_partial_copy_kernel);
- EXPORT_SYMBOL(__csum_partial_copy_to_user);
- EXPORT_SYMBOL(__csum_partial_copy_from_user);
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 3325f3eb248c..5830557539c0 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -189,12 +189,18 @@
+ #ifndef cpu_has_mips32r2
+ # define cpu_has_mips32r2	(cpu_data[0].isa_level & MIPS_CPU_ISA_M32R2)
+ #endif
++#ifndef cpu_has_mips32r6
++# define cpu_has_mips32r6	(cpu_data[0].isa_level & MIPS_CPU_ISA_M32R6)
++#endif
+ #ifndef cpu_has_mips64r1
+ # define cpu_has_mips64r1	(cpu_data[0].isa_level & MIPS_CPU_ISA_M64R1)
+ #endif
+ #ifndef cpu_has_mips64r2
+ # define cpu_has_mips64r2	(cpu_data[0].isa_level & MIPS_CPU_ISA_M64R2)
+ #endif
++#ifndef cpu_has_mips64r6
++# define cpu_has_mips64r6	(cpu_data[0].isa_level & MIPS_CPU_ISA_M64R6)
 +#endif
  
- EXPORT_SYMBOL(invalid_pte_table);
- #ifdef CONFIG_FUNCTION_TRACER
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index eeddc58802e1..1e9e900cd3c3 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -8,6 +8,7 @@ lib-y	+= bitops.o csum_partial.o delay.o memcpy.o memset.o \
+ /*
+  * Shortcuts ...
+@@ -210,15 +216,17 @@
  
- obj-y			+= iomap.o
- obj-$(CONFIG_PCI)	+= iomap-pci.o
-+lib-$(CONFIG_GENERIC_CSUM)	:= $(filter-out csum_partial.o, $(lib-y))
+ #define cpu_has_mips_4_5_r2	(cpu_has_mips_4_5 | cpu_has_mips_r2)
  
- obj-$(CONFIG_CPU_GENERIC_DUMP_TLB) += dump_tlb.o
- obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
+-#define cpu_has_mips32	(cpu_has_mips32r1 | cpu_has_mips32r2)
++#define cpu_has_mips32	(cpu_has_mips32r1 | cpu_has_mips32r2 | cpu_has_mips32r6)
+ #define cpu_has_mips64	(cpu_has_mips64r1 | cpu_has_mips64r2)
+ #define cpu_has_mips_r1 (cpu_has_mips32r1 | cpu_has_mips64r1)
+ #define cpu_has_mips_r2 (cpu_has_mips32r2 | cpu_has_mips64r2)
++#define cpu_has_mips_r6	(cpu_has_mips32r6 | cpu_has_mips64r6)
+ #define cpu_has_mips_r	(cpu_has_mips32r1 | cpu_has_mips32r2 | \
+-			 cpu_has_mips64r1 | cpu_has_mips64r2)
++			 cpu_has_mips32r6 | cpu_has_mips64r1 | \
++			 cpu_has_mips64r2 | cpu_has_mips64r6)
+ 
+ #ifndef cpu_has_mips_r2_exec_hazard
+-#define cpu_has_mips_r2_exec_hazard cpu_has_mips_r2
++#define cpu_has_mips_r2_exec_hazard (cpu_has_mips_r2 | cpu_has_mips_r6)
+ #endif
+ 
+ /*
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 23a5dbc0ee06..c525f5060773 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -331,11 +331,14 @@ enum cpu_type_enum {
+ #define MIPS_CPU_ISA_M32R2	0x00000020
+ #define MIPS_CPU_ISA_M64R1	0x00000040
+ #define MIPS_CPU_ISA_M64R2	0x00000080
++#define MIPS_CPU_ISA_M32R6	0x00000100
++#define MIPS_CPU_ISA_M64R6	0x00000200
+ 
+ #define MIPS_CPU_ISA_32BIT (MIPS_CPU_ISA_II | MIPS_CPU_ISA_M32R1 | \
+-	MIPS_CPU_ISA_M32R2)
++	MIPS_CPU_ISA_M32R2 | MIPS_CPU_ISA_M32R6)
+ #define MIPS_CPU_ISA_64BIT (MIPS_CPU_ISA_III | MIPS_CPU_ISA_IV | \
+-	MIPS_CPU_ISA_V | MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)
++	MIPS_CPU_ISA_V | MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2 | \
++	MIPS_CPU_ISA_M64R6)
+ 
+ /*
+  * CPU Option encodings
 -- 
 2.2.0

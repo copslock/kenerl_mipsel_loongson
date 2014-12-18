@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 20:11:03 +0100 (CET)
-Received: from mail-ie0-f174.google.com ([209.85.223.174]:46477 "EHLO
-        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008789AbaLRTLCPC-De (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 20:11:02 +0100
-Received: by mail-ie0-f174.google.com with SMTP id rl12so1676319iec.5
-        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 11:10:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=yV1ukgtofLOvKsOfcgqezlypRAEwWseLm5pRQbGqQ7o=;
-        b=u4wGTUdr9EKvx9jOH+IOfxzvX+SnR5lVczjbkLCxctA12hsSRaTZ6DEItHwhn/tKzI
-         83ApFmi0G76yLRCfZSyDrziOg1d8n/jyJw5fThY4riqcXmE0jDhFzOKihgsuOcuduRFG
-         6EwEhCJ5HJvG7b+cY67jxP7j/R24/IxPdMtXTCrur6shuQbjtOpTuhCCxKvaLoBSYl/a
-         6jj5sm5SSCPlsY4fsV7Lv+TLvZAhJT6Af8XnB1x+dxfQJMP+on4mwHU80PeALMTAFoA9
-         STMNHbOyUy+SjZYwq09jojPFbvZpAnQmkIut1Jjx6IAHyNQq40UR+AXKYVHKSuuAbq72
-         4eUQ==
-X-Received: by 10.42.130.194 with SMTP id w2mr3435805ics.12.1418929856457;
-        Thu, 18 Dec 2014 11:10:56 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id p137sm3520862ioe.29.2014.12.18.11.10.55
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 18 Dec 2014 11:10:56 -0800 (PST)
-Message-ID: <549326BF.7050605@gmail.com>
-Date:   Thu, 18 Dec 2014 11:10:55 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 22:04:54 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24627 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008766AbaLRVExACdM1 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 22:04:53 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 5C893D39D9474;
+        Thu, 18 Dec 2014 21:04:43 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 18 Dec 2014 21:04:46 +0000
+Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
+ LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
+ 14.03.0210.002; Thu, 18 Dec 2014 21:04:46 +0000
+From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>
+CC:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA
+ constrains for MIPS R6 support
+Thread-Topic: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA
+ constrains for MIPS R6 support
+Thread-Index: AQHQGtTxkDb5yATObECe4IHSqw7IUJyVsVCAgAADEICAABwg4A==
+Date:   Thu, 18 Dec 2014 21:04:45 +0000
+Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F8AD08@LEMAIL01.le.imgtec.org>
+References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
+ <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com>
+ <549321F3.1090704@gmail.com> <20141218190125.GA8221@linux-mips.org>
+In-Reply-To: <20141218190125.GA8221@linux-mips.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.159.211]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>
-CC:     linux-mips@linux-mips.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH RFC 01/67] MIPS: Add generic QEMU R6 PRid and cpu type
- identifiers
-References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-2-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1418915416-3196-2-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Return-Path: <Matthew.Fortune@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44815
+X-archive-position: 44816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: Matthew.Fortune@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,42 +57,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/18/2014 07:09 AM, Markos Chandras wrote:
-> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->
-> Latest versions of QEMU added support for mips32r6-generic and
-> mips64r6-generic cpu types so add related definitions in preparation
-> of MIPS R6 support.
->
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
->   arch/mips/include/asm/cpu.h | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-> index dfdc77ed1839..23a5dbc0ee06 100644
-> --- a/arch/mips/include/asm/cpu.h
-> +++ b/arch/mips/include/asm/cpu.h
-> @@ -93,6 +93,7 @@
->    * These are the PRID's for when 23:16 == PRID_COMP_MIPS
->    */
->
-> +#define PRID_IMP_QEMUR6		0x0000
+> On Thu, Dec 18, 2014 at 10:50:27AM -0800, David Daney wrote:
+> 
+> > On 12/18/2014 07:09 AM, Markos Chandras wrote:
+> > >MIPS R6 changed the opcodes for LL/SC instructions and reduced the
+> > >offset field to 9-bits. This has some undesired effects with the "m"
+> > >constrain since it implies a 16-bit immediate. As a result of which,
+> > >add a register ("r") constrain as well to make sure the entire
+> > >address is loaded to a register before the LL/SC operations. Also use
+> > >macro to set the appropriate ISA for the asm blocks
+> > >
+> >
+> > Has support for MIPS R6 been added to GCC?
+> >
+> > If so, that should include a proper constraint to be used with the new
+> > offset restrictions.  We should probably use that, instead of forcing
+> > to a "r" constraint.
+> 
+> In a non-public earlier discussion I've requested the same but somehow
+> that was ignored.
 
-Why not have a value for a real R6 CPU, and then have QEMU emulate that?
+I must have missed that comment or not been on the thread.
 
+> We need suitable constraints or the alternatives will be very, very
+> ugly.
 
->   #define PRID_IMP_4KC		0x8000
->   #define PRID_IMP_5KC		0x8100
->   #define PRID_IMP_20KC		0x8200
-> @@ -311,6 +312,8 @@ enum cpu_type_enum {
->   	CPU_LOONGSON3, CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS,
->   	CPU_CAVIUM_OCTEON2, CPU_CAVIUM_OCTEON3, CPU_XLR, CPU_XLP,
->
-> +	CPU_QEMUR6,
-> +
->   	CPU_LAST
->   };
->
->
+We can certainly discuss and investigate such things but there is a
+general problem of a growing list of different size displacement fields
+in load/store instructions. Obviously you could just opt to keep things
+the way they are for uMIPS today and leave the assembler to expand the
+instruction but my opinion is that magic expanding assembler macros
+are infuriating. We have however had to put support in binutils for many
+of them, simply to keep enough software building to ease the transition.
+
+So, all this patch does is highlight that magic assembler macros have
+been hiding this issue since micromips was added.
+
+From your experiences will people invest the effort to look at the
+size of a displacement field for all the memory operations in an inline
+asm block and then choose an appropriate memory constraint?
+
+I'm obviously wary of putting things into GCC that are either only used
+in a handful of places (or not at all). The alternative to constraints
+is of course to try and reduce the need for inline asm and offer builtins
+for specific instructions or more complex operations.
+
+Thanks,
+Matthew

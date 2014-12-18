@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 16:16:29 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44975 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 16:16:48 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35780 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009163AbaLRPLzyFkGa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 16:11:55 +0100
+        with ESMTP id S27009166AbaLRPL65i3xz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 16:11:58 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D01A7F3BD0BA6
-        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 15:11:46 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 6B11DC59CF3E9
+        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 15:11:49 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 18 Dec 2014 15:11:50 +0000
+ 14.3.195.1; Thu, 18 Dec 2014 15:11:52 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.125) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 18 Dec 2014 15:11:49 +0000
+ 14.3.210.2; Thu, 18 Dec 2014 15:11:52 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>,
         Matthew Fortune <Matthew.Fortune@imgtec.com>
-Subject: [PATCH RFC 20/67] MIPS: asm: cmpxchg: Update asm and ISA constrains for MIPS R6 support
-Date:   Thu, 18 Dec 2014 15:09:29 +0000
-Message-ID: <1418915416-3196-21-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH RFC 22/67] MIPS: asm: futex: Update asm and ISA constrains for MIPS R6 support
+Date:   Thu, 18 Dec 2014 15:09:31 +0000
+Message-ID: <1418915416-3196-23-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.2.0
 In-Reply-To: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
 References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44755
+X-archive-position: 44756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,75 +56,69 @@ to set the appropriate ISA for the asm blocks
 Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/cmpxchg.h | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ arch/mips/include/asm/futex.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
-index eefcaa363a87..86a76f125bc8 100644
---- a/arch/mips/include/asm/cmpxchg.h
-+++ b/arch/mips/include/asm/cmpxchg.h
-@@ -38,15 +38,15 @@ static inline unsigned long __xchg_u32(volatile int * m, unsigned int val)
- 
- 		do {
- 			__asm__ __volatile__(
--			"	.set	arch=r4000			\n"
--			"	ll	%0, %3		# xchg_u32	\n"
-+			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"
-+			"	ll	%0, 0(%3)	# xchg_u32	\n"
- 			"	.set	mips0				\n"
- 			"	move	%2, %z4				\n"
--			"	.set	arch=r4000			\n"
--			"	sc	%2, %1				\n"
-+			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"
-+			"	sc	%2, 0(%3)			\n"
- 			"	.set	mips0				\n"
- 			: "=&r" (retval), "=m" (*m), "=&r" (dummy)
--			: "R" (*m), "Jr" (val)
-+			: "r" (m), "Jr" (val)
- 			: "memory");
- 		} while (unlikely(!dummy));
- 	} else {
-@@ -88,13 +88,13 @@ static inline __u64 __xchg_u64(volatile __u64 * m, __u64 val)
- 
- 		do {
- 			__asm__ __volatile__(
--			"	.set	arch=r4000			\n"
--			"	lld	%0, %3		# xchg_u64	\n"
-+			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"
-+			"	lld	%0, 0(%3)	# xchg_u64	\n"
- 			"	move	%2, %z4				\n"
--			"	scd	%2, %1				\n"
-+			"	scd	%2, 0(%3)			\n"
- 			"	.set	mips0				\n"
- 			: "=&r" (retval), "=m" (*m), "=&r" (dummy)
--			: "R" (*m), "Jr" (val)
-+			: "r" (m), "Jr" (val)
- 			: "memory");
- 		} while (unlikely(!dummy));
- 	} else {
-@@ -162,18 +162,18 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
+diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
+index 194cda0396a3..8867726b85e2 100644
+--- a/arch/mips/include/asm/futex.h
++++ b/arch/mips/include/asm/futex.h
+@@ -49,12 +49,12 @@
  		__asm__ __volatile__(					\
  		"	.set	push				\n"	\
  		"	.set	noat				\n"	\
 -		"	.set	arch=r4000			\n"	\
--		"1:	" ld "	%0, %2		# __cmpxchg_asm \n"	\
+-		"1:	"user_ll("%1", "%4")" # __futex_atomic_op\n"	\
 +		"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"	\
-+		"1:	" ld "	%0, 0(%2)	# __cmpxchg_asm \n"	\
- 		"	bne	%0, %z3, 2f			\n"	\
++		"1:	"user_ll("%1", "0(%4)")" # __futex_atomic_op\n"	\
  		"	.set	mips0				\n"	\
- 		"	move	$1, %z4				\n"	\
+ 		"	" insn	"				\n"	\
 -		"	.set	arch=r4000			\n"	\
--		"	" st "	$1, %1				\n"	\
+-		"2:	"user_sc("$1", "%2")"			\n"	\
 +		"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"	\
-+		"	" st "	$1, 0(%2)			\n"	\
++		"2:	"user_sc("$1", "0(%4)")"		\n"	\
  		"	beqz	$1, 1b				\n"	\
- 		"	.set	pop				\n"	\
- 		"2:						\n"	\
- 		: "=&r" (__ret), "=R" (*m)				\
--		: "R" (*m), "Jr" (old), "Jr" (new)			\
-+		: "r" (m), "Jr" (old), "Jr" (new)			\
+ 		__WEAK_LLSC_MB						\
+ 		"3:						\n"	\
+@@ -68,8 +68,8 @@
+ 		"	"__UA_ADDR "\t1b, 4b			\n"	\
+ 		"	"__UA_ADDR "\t2b, 4b			\n"	\
+ 		"	.previous				\n"	\
+-		: "=r" (ret), "=&r" (oldval), "=R" (*uaddr)		\
+-		: "0" (0), "R" (*uaddr), "Jr" (oparg), "i" (-EFAULT)	\
++		: "=r" (ret), "=&r" (oldval), "+m" (uaddr)		\
++		: "0" (0), "r" (uaddr), "Jr" (oparg), "i" (-EFAULT)	\
  		: "memory");						\
- 	} else {							\
- 		unsigned long __flags;					\
+ 	} else								\
+ 		ret = -ENOSYS;						\
+@@ -174,13 +174,13 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"# futex_atomic_cmpxchg_inatomic			\n"
+ 		"	.set	push					\n"
+ 		"	.set	noat					\n"
+-		"	.set	arch=r4000				\n"
+-		"1:	"user_ll("%1", "%3")"				\n"
++		"	.set	"MIPS_ISA_ARCH_LEVEL"			\n"
++		"1:	"user_ll("%1", "0(%3)")"			\n"
+ 		"	bne	%1, %z4, 3f				\n"
+ 		"	.set	mips0					\n"
+ 		"	move	$1, %z5					\n"
+-		"	.set	arch=r4000				\n"
+-		"2:	"user_sc("$1", "%2")"				\n"
++		"	.set	"MIPS_ISA_ARCH_LEVEL"			\n"
++		"2:	"user_sc("$1", "0(%3)")"			\n"
+ 		"	beqz	$1, 1b					\n"
+ 		__WEAK_LLSC_MB
+ 		"3:							\n"
+@@ -193,8 +193,8 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"	"__UA_ADDR "\t1b, 4b				\n"
+ 		"	"__UA_ADDR "\t2b, 4b				\n"
+ 		"	.previous					\n"
+-		: "+r" (ret), "=&r" (val), "=R" (*uaddr)
+-		: "R" (*uaddr), "Jr" (oldval), "Jr" (newval), "i" (-EFAULT)
++		: "+r" (ret), "=&r" (val), "+m" (uaddr)
++		: "r" (uaddr), "Jr" (oldval), "Jr" (newval), "i" (-EFAULT)
+ 		: "memory");
+ 	} else
+ 		return -ENOSYS;
 -- 
 2.2.0

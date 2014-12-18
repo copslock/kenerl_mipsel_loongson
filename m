@@ -1,52 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 18:23:09 +0100 (CET)
-Received: from mail-pa0-f41.google.com ([209.85.220.41]:59199 "EHLO
-        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008443AbaLRRXIIo00Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 18:23:08 +0100
-Received: by mail-pa0-f41.google.com with SMTP id rd3so1790153pab.28;
-        Thu, 18 Dec 2014 09:23:02 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2014 19:50:38 +0100 (CET)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:44833 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007366AbaLRSufnv0ih (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2014 19:50:35 +0100
+Received: by mail-ig0-f173.google.com with SMTP id r2so1387375igi.12
+        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2014 10:50:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=GywVxlRtsOAIOZ0Ziu7ZgkIapTTbvSD3iwPzsYlx/DY=;
-        b=uiubv9EUM4/mBIKbE3Am0v8VOqeMLtn+bq7c1S8sKx5yGjJmivuLYw+6C/iZbP222g
-         pBaFRbzcFyCv/iDxAfeGaUtT8kduVfzV8Vq6nXI2ZzIwZ15bLTYWK0/bH3cqai8yCNrS
-         VOm8ot/qjs68G4iveZ11Ci5tEUbmPEZY/RDA+yeluRa0Qq72sEoIkUefqBO+ghuU2qOr
-         9CmK67F0UL7Smp303FSSwSIkaGHfWmNOEvUeNefxuqAeRTV8uPVZ2ol0zk2JULjJ9bz6
-         kVMRetUiMOh9MXxrkIk2nN0NN02CGelAl1lEYowTNsfT68iUGgg+EZ1K4ELTwMmdONPB
-         CF9g==
-X-Received: by 10.66.102.41 with SMTP id fl9mr5224127pab.7.1418923381466;
-        Thu, 18 Dec 2014 09:23:01 -0800 (PST)
-Received: from brian-ubuntu (cpe-76-173-170-164.socal.res.rr.com. [76.173.170.164])
-        by mx.google.com with ESMTPSA id bn13sm7385279pdb.4.2014.12.18.09.23.00
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Thu, 18 Dec 2014 09:23:00 -0800 (PST)
-Date:   Thu, 18 Dec 2014 09:22:58 -0800
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: JZ4740: fixup #include's (sparse)
-Message-ID: <20141218172258.GJ7112@brian-ubuntu>
-References: <1418870341-16618-1-git-send-email-computersforpeace@gmail.com>
- <20141218130203.GC25711@linux-mips.org>
- <20141218144424.GA1943@linux-mips.org>
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=EHW+CMO9wyjI6baNy68zJ5YcpgpV8j2t+3E77DcfYAg=;
+        b=Kviyt95SXO6xTzuBsFBtVwS8SIswY9YP+lXMsFYau904zrDnZo5qs2qoL/yg+lQHs5
+         Rxk7DsRLyA1H4BxjcNFA3IBWUKgH88/ZQ6wCzo2xeEa1uCrMaYTNWhe3sDe2hY4hCTp+
+         X8JMz+ZRvB4GovA64Bql5NsXevPaT/ihxItm9TsTPmxzNFovyQKpS8SMFoHRcAjgPUbU
+         IPtJXN+F4S414eUIkYb1YVku4OCkkE6ZvuQsek0iUHeKxOi8esDMrkCHkGYzMznMKhWF
+         hR5rabHNUzxVxHiF7StlAMVILLGYCb/Z4Nyt4mZarDUW6P0PDbIEPR1bnK699BwEG3md
+         LIkg==
+X-Received: by 10.50.67.102 with SMTP id m6mr4049663igt.4.1418928629546;
+        Thu, 18 Dec 2014 10:50:29 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id c204sm3502322ioc.16.2014.12.18.10.50.28
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 18 Dec 2014 10:50:28 -0800 (PST)
+Message-ID: <549321F3.1090704@gmail.com>
+Date:   Thu, 18 Dec 2014 10:50:27 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20141218144424.GA1943@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+CC:     linux-mips@linux-mips.org,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>
+Subject: Re: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA constrains
+ for MIPS R6 support
+References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44805
+X-archive-position: 44806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,64 +57,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 18, 2014 at 03:44:24PM +0100, Ralf Baechle wrote:
-> On Thu, Dec 18, 2014 at 02:02:03PM +0100, Ralf Baechle wrote:
-> 
-> > > 
-> > >   arch/mips/jz4740/irq.c:63:6: warning: symbol 'jz4740_irq_suspend' was not declared. Should it be static?
-> > >   arch/mips/jz4740/irq.c:69:6: warning: symbol 'jz4740_irq_resume' was not declared. Should it be static?
-> > > 
-> > > Also, I've seen some elusive build errors on my automated build test
-> > > where JZ4740_IRQ_BASE and NR_IRQS are missing, but I can't reproduce
-> > > them manually for some reason. Anyway, mach-jz4740/irq.h should help us
-> > > avoid relying on some implicit include.
-> > 
-> > Patch is looking good.
-> > 
-> > There is a known issue building jz in a separate build directory; building
-> > in the source directory itself will succeed.  Could that be why you can't
-> > seem to reproduce the build issue?
-> 
-> With your patch applied I still can reproduce that build issue issue:
+On 12/18/2014 07:09 AM, Markos Chandras wrote:
+> MIPS R6 changed the opcodes for LL/SC instructions and reduced the
+> offset field to 9-bits. This has some undesired effects with the "m"
+> constrain since it implies a 16-bit immediate. As a result of which,
+> add a register ("r") constrain as well to make sure the entire address
+> is loaded to a register before the LL/SC operations. Also use macro
+> to set the appropriate ISA for the asm blocks
+>
 
-Right, I never did straighten this out entirely for myself. And no, I
-don't claim to have fixed all build issues here. I think the same issue
-shows up in several other files which reference irq.h too.
+Has support for MIPS R6 been added to GCC?
 
-> [...]
->   CC      arch/mips/jz4740/irq.o
-> In file included from /home/ralf/src/linux/linux-mips/include/linux/irq.h:392:0,
->                  from /home/ralf/src/linux/linux-mips/include/asm-generic/hardirq.h:12,
->                  from /home/ralf/src/linux/linux-mips/arch/mips/include/asm/hardirq.h:16,
->                  from /home/ralf/src/linux/linux-mips/include/linux/hardirq.h:8,
->                  from /home/ralf/src/linux/linux-mips/include/linux/interrupt.h:12,
->                  from /home/ralf/src/linux/linux-mips/arch/mips/jz4740/irq.c:19:
-> /home/ralf/src/linux/linux-mips/include/linux/irqdesc.h:92:33: error: ‘NR_IRQS’ undeclared here (not in a function)
->  extern struct irq_desc irq_desc[NR_IRQS];
->                                  ^
-> make[4]: *** [arch/mips/jz4740/irq.o] Error 1
-> make[3]: *** [arch/mips/jz4740] Error 2
-> make[2]: *** [arch/mips] Error 2
-> make[1]: *** [sub-make] Error 2
-> make: *** [__sub-make] Error 2
-> make: Leaving directory `/home/ralf/src/linux/obj/qi_lb60-build'
-> 
-> I haven't looked into depth at this but the issue appears to be that the
-> search order for include files is different between building in the source
-> directory and the object directory and that there are multiple include
-> files with the same name, that is irq.h. are involved.
-> 
-> So changing the name of the header file should fix this issue but really
-> this also is a kbuild bug.
+If so, that should include a proper constraint to be used with the new 
+offset restrictions.  We should probably use that, instead of forcing to 
+a "r" constraint.
 
-The directory ordering differences do sound familiar.
 
-Yeah, I would expect that in-tree and out-of-tree builds should keep as
-many things as possible the same, to avoid problems like this.
+> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>   arch/mips/include/asm/atomic.h | 50 +++++++++++++++++++++---------------------
+>   1 file changed, 25 insertions(+), 25 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+> index 6dd6bfc607e9..8669e0ec97e3 100644
+> --- a/arch/mips/include/asm/atomic.h
+> +++ b/arch/mips/include/asm/atomic.h
+> @@ -60,13 +60,13 @@ static __inline__ void atomic_##op(int i, atomic_t * v)				\
+>   										\
+>   		do {								\
+>   			__asm__ __volatile__(					\
+> -			"	.set	arch=r4000			\n"	\
+> -			"	ll	%0, %1		# atomic_" #op "\n"	\
+> +			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"	\
+> +			"	ll	%0, 0(%3)	# atomic_" #op "\n"	\
+>   			"	" #asm_op " %0, %2			\n"	\
+> -			"	sc	%0, %1				\n"	\
+> +			"	sc	%0, 0(%3)			\n"	\
+>   			"	.set	mips0				\n"	\
+>   			: "=&r" (temp), "+m" (v->counter)			\
+> -			: "Ir" (i));						\
+> +			: "Ir" (i), "r" (&v->counter));				\
 
-Anyway, address this how you'd like (or not at all). I'm only
-compile-testing; I don't actually use this build. So I'm not very likely
-to spend the time to fix this one.
-
-Thanks,
-Brian
+You lost the "m" constraint, but are still modifying memory.  There is 
+no "memory" clobber here, so we are no longer correctly describing what 
+is happening.

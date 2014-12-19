@@ -1,51 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 13:10:32 +0100 (CET)
-Received: from mail-la0-f47.google.com ([209.85.215.47]:65142 "EHLO
-        mail-la0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008749AbaLSMKbDGWwG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 13:10:31 +0100
-Received: by mail-la0-f47.google.com with SMTP id hz20so693092lab.20
-        for <linux-mips@linux-mips.org>; Fri, 19 Dec 2014 04:10:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=XAGTTymdIS38n83lO2+CIuolTETeEr/hgSlrLtRd2yw=;
-        b=SNM1wKwKOlM/C+Hk9mdJaj6J4EwUi2Vfl1cf1cPKHpqGe0KnM1Wv+Tjao4Eaus6Fyj
-         Q8UB1w3wHau3JVudjEdBgo4tTfdPihe8v5KSGSbNpdGts5Cf3QgKWacU/kRSODa9STq6
-         g/dkTaQI+PCOgeY13KJgXC7oeLvU31Ri81hsBaf2XnY5zAECrNoDMfNMRkhGoKiXkRyu
-         5kmyBV9F8rlnAXgvOzcdUrK+Hfqptn4fhoARMxG2MdJRRGlijtAXjqtM+ruT3YiHzIHh
-         mAfzPLRPmMs4ArhtFEKTPoOW4d88iBGTE/zb8gv/JztXhR2jA+n56CAuvhxNABGPCAYg
-         QoeA==
-X-Gm-Message-State: ALoCoQkfbNozJyrJXOFfFz1+rIJVUOpmV9LpptrRgPx907peKBLtRWNXzjIeRIz/0HaguXGprUSk
-X-Received: by 10.112.129.228 with SMTP id nz4mr7481198lbb.8.1418991025689;
-        Fri, 19 Dec 2014 04:10:25 -0800 (PST)
-Received: from [192.168.3.154] (ppp83-237-251-130.pppoe.mtu-net.ru. [83.237.251.130])
-        by mx.google.com with ESMTPSA id g7sm2666417lae.15.2014.12.19.04.10.23
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Dec 2014 04:10:24 -0800 (PST)
-Message-ID: <549415B0.1060701@cogentembedded.com>
-Date:   Fri, 19 Dec 2014 15:10:24 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 13:30:03 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52238 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009157AbaLSMaBn8oG5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Dec 2014 13:30:01 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id sBJCU0JA026881;
+        Fri, 19 Dec 2014 13:30:00 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id sBJCTxId026880;
+        Fri, 19 Dec 2014 13:29:59 +0100
+Date:   Fri, 19 Dec 2014 13:29:59 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA
+ constrains for MIPS R6 support
+Message-ID: <20141219122959.GH14160@linux-mips.org>
+References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com>
+ <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com>
+ <549321F3.1090704@gmail.com>
+ <20141218190125.GA8221@linux-mips.org>
+ <6D39441BF12EF246A7ABCE6654B0235320F8AD08@LEMAIL01.le.imgtec.org>
+ <549352E4.7090800@gmail.com>
+ <6D39441BF12EF246A7ABCE6654B0235320F8AF3D@LEMAIL01.le.imgtec.org>
 MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH RFC 60/67] MIPS: math-emu: cp1emu: Move the fpucondbit
- struct to a header
-References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-61-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1418915416-3196-61-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F8AF3D@LEMAIL01.le.imgtec.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44841
+X-archive-position: 44842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,44 +51,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/18/2014 6:10 PM, Markos Chandras wrote:
+On Thu, Dec 18, 2014 at 10:58:02PM +0000, Matthew Fortune wrote:
 
-> The fpucondbit struct will be used later on by the MIPS R2 instruction
+> Yes you are right I thought this particular case only had constraints
+> for the immediate and not the whole memory operand, I'm suffering from
+> too many tasks and too little time. Several of the memory constraints are
+> marked as internal and I'm not sure if that means they are unsafe to use
+> from inline asm or just not deemed important.
+> 
+> The memory constraint that LL and SC need is 'ZC'. I don't believe this
+> is documented so you will have to trust that its meaning will not change
+> but I can give some assurance of that since I will review all MIPS GCC
+> changes.
+> 
+> Obviously to use anything other than the 'm' constraint you are going
+> to need to know when any given constraint was added to GCC.
+> 'ZC' was only added to GCC in March 2013 r196828 which I believe it is a
+> GCC 4.9 feature so you will have to use it conditionally if you use it at
+> all.
+> 
+> BTW thanks for the thread, it seems I missed updating 'ZC' for MIPSR6.
+> Bug fixed!
 
-    It's not *struct*.
+How about the "o" constraint?  The kernel uses it only in a few places
+and not currently with LL/SC though that might allow for some extra
+optimization(?).  Is the a suitable "o"-like constraint for use with
+LL/SC on R6?
 
-> emulator, so in order to access it, we need to move it to a header.
-
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
->   arch/mips/include/asm/fpu_emulator.h | 12 ++++++++++++
->   arch/mips/math-emu/cp1emu.c          | 12 ------------
->   2 files changed, 12 insertions(+), 12 deletions(-)
-
-> diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-> index 3ee347713307..d7670bd80855 100644
-> --- a/arch/mips/include/asm/fpu_emulator.h
-> +++ b/arch/mips/include/asm/fpu_emulator.h
-> @@ -30,6 +30,18 @@
->   #include <asm/local.h>
->   #include <asm/processor.h>
->
-> +/* convert condition code register number to csr bit */
-> +static const unsigned int fpucondbit[8] = {
-
-    Why not *extern* declaration instead? We don't define data in the header 
-files.
-
-> +	FPU_CSR_COND0,
-> +	FPU_CSR_COND1,
-> +	FPU_CSR_COND2,
-> +	FPU_CSR_COND3,
-> +	FPU_CSR_COND4,
-> +	FPU_CSR_COND5,
-> +	FPU_CSR_COND6,
-> +	FPU_CSR_COND7
-> +};
-> +
-[...]
-
-WBR, Sergei
+  Ralf

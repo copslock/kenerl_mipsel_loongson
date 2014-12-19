@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 09:03:23 +0100 (CET)
-Received: from mail-lb0-f182.google.com ([209.85.217.182]:51959 "EHLO
-        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007921AbaLSIDWZbXvF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 09:03:22 +0100
-Received: by mail-lb0-f182.google.com with SMTP id f15so428039lbj.13;
-        Fri, 19 Dec 2014 00:03:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=CiL/07m7geCXb9xW3J9Lj/9yBhcf4H0KR04MHEotvcw=;
-        b=snFk/42l0MTaRrwe/8tdly0b/PjtQNrD8AncghOHEuDxYOup0aqTXVhZF7hLLxzTPu
-         Xp0pA6CmqQUDeOX+TP0A4JlAxMiF4Z0CXDN64dExW3jDmGv7s/pJm9bqs7ON031WpY55
-         pKk7QavYBO/VGQUkaR9qbxkFERJ3fboj2aXhDyQEJ8+WmA7NXpMisThRjb22I2uy0quW
-         WHpL1q/opYTaEJ/CeYkC2aiugN85hY97KbtBwtu06V0df/nXBs4g7sOc55cQaCONOKof
-         IXpItBln0cy9NK52dZ9ExbH/zmepHq0fTEzEn0Np7sGPxzymg37u11gT3xA0xgMzKbqJ
-         oTsQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 09:49:13 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55764 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007864AbaLSItLTIBYh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 09:49:11 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id D3DA554F6AFD8;
+        Fri, 19 Dec 2014 08:49:03 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 19 Dec 2014 08:49:05 +0000
+Received: from [192.168.154.125] (192.168.154.125) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 19 Dec
+ 2014 08:49:04 +0000
+Message-ID: <5493E680.9020505@imgtec.com>
+Date:   Fri, 19 Dec 2014 08:49:04 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
-X-Received: by 10.152.206.1 with SMTP id lk1mr4881634lac.92.1418976197037;
- Fri, 19 Dec 2014 00:03:17 -0800 (PST)
-Received: by 10.152.106.178 with HTTP; Fri, 19 Dec 2014 00:03:16 -0800 (PST)
-In-Reply-To: <1418849927.28384.1.camel@perches.com>
-References: <1418849927.28384.1.camel@perches.com>
-Date:   Fri, 19 Dec 2014 09:03:16 +0100
-X-Google-Sender-Auth: AtGx1oe7xaXa028NVT69VsGu_5U
-Message-ID: <CAMuHMdXGsUeAuV63hknXFkrwFoW+9_SR5wt5tzPJttGnCR_YDQ@mail.gmail.com>
-Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k, mips)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     linux-arch <linux-arch@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Steven Miao <realmz6@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Finn Thain <fthain@telegraphics.com.au>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH RFC 01/67] MIPS: Add generic QEMU R6 PRid and cpu type
+ identifiers
+References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-2-git-send-email-markos.chandras@imgtec.com> <549326BF.7050605@gmail.com>
+In-Reply-To: <549326BF.7050605@gmail.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.125]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44826
+X-archive-position: 44827
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,50 +48,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 17, 2014 at 9:58 PM, Joe Perches <joe@perches.com> wrote:
-> It seems like early_printk can be configured into
-> a few architectures but also appear not to be used.
->
-> $ git grep -w "early_printk"
+On 12/18/2014 07:10 PM, David Daney wrote:
+> On 12/18/2014 07:09 AM, Markos Chandras wrote:
+>> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>>
+>> Latest versions of QEMU added support for mips32r6-generic and
+>> mips64r6-generic cpu types so add related definitions in preparation
+>> of MIPS R6 support.
+>>
+>> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>> ---
+>>   arch/mips/include/asm/cpu.h | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+>> index dfdc77ed1839..23a5dbc0ee06 100644
+>> --- a/arch/mips/include/asm/cpu.h
+>> +++ b/arch/mips/include/asm/cpu.h
+>> @@ -93,6 +93,7 @@
+>>    * These are the PRID's for when 23:16 == PRID_COMP_MIPS
+>>    */
+>>
+>> +#define PRID_IMP_QEMUR6        0x0000
+> 
+> Why not have a value for a real R6 CPU, and then have QEMU emulate that?
 
-[...]
+because qemu does not implement real r6 cores at the moment. It uses
+mips{32,64}r6-generic in order to get a minimal r6 core and that cpu
+uses IMP=0. so that's the only thing we can use at the moment.
 
-> arch/m68k/kernel/Makefile:obj-$(CONFIG_EARLY_PRINTK)    += early_printk.o
-
-[...]
-
-> These seem to the only uses:
->
-> arch/arm/mach-socfpga/socfpga.c:        early_printk("Early printk initialized\n");
-> []
-> arch/microblaze/kernel/cpu/cpuinfo-pvr-full.c:  early_printk("ERROR: Microblaze " x "-different for PVR and DTS\n");
-> arch/microblaze/kernel/cpu/cpuinfo-static.c:    early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
-> []
-> arch/tile/kernel/early_printk.c:        early_printk("Kernel panic - not syncing: %pV", &vaf);
-> []
-> arch/x86/kernel/e820.c: early_printk(msg);
-> arch/x86/kernel/head64.c:               early_printk("Kernel alive\n");
-> arch/x86/kernel/head_64.S:      call early_printk
-> []
-> kernel/events/core.c:           early_printk("perf interrupt took too long (%lld > %lld), lowering "
->
-> So blackfin, m68k, and mips seems to have it possible to enable,
-> but also don't appear at first glance to use it,
->
-> Is early_printk really used by these architectures?
-> Should it be removed?
-
-The m68k "early_printk" match is not about the early_printk()
-function, but about
-the early printk functionality. Hence nothing to remove there.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+markos

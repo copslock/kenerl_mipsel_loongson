@@ -1,29 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 11:02:06 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:43467 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 11:20:26 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39852 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008667AbaLSKCEpp2Wx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 11:02:04 +0100
+        with ESMTP id S27009130AbaLSKUZYiiaf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 11:20:25 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 0D87BA61E29D5;
-        Fri, 19 Dec 2014 10:01:57 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 8A2FA311BFE3;
+        Fri, 19 Dec 2014 10:20:17 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 19 Dec 2014 10:01:58 +0000
+ 14.3.195.1; Fri, 19 Dec 2014 10:20:19 +0000
 Received: from [192.168.154.125] (192.168.154.125) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 19 Dec
- 2014 10:01:56 +0000
-Message-ID: <5493F794.9040200@imgtec.com>
-Date:   Fri, 19 Dec 2014 10:01:56 +0000
+ 2014 10:20:17 +0000
+Message-ID: <5493FBE1.7000602@imgtec.com>
+Date:   Fri, 19 Dec 2014 10:20:17 +0000
 From:   Markos Chandras <Markos.Chandras@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     <linux-mips@linux-mips.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        David Daney <ddaney.cavm@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA constrains
  for MIPS R6 support
-References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com> <549321F3.1090704@gmail.com>
-In-Reply-To: <549321F3.1090704@gmail.com>
+References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com> <549321F3.1090704@gmail.com> <20141218190125.GA8221@linux-mips.org> <6D39441BF12EF246A7ABCE6654B0235320F8AD08@LEMAIL01.le.imgtec.org> <549352E4.7090800@gmail.com> <6D39441BF12EF246A7ABCE6654B0235320F8AF3D@LEMAIL01.le.imgtec.org>
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320F8AF3D@LEMAIL01.le.imgtec.org>
 Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [192.168.154.125]
@@ -31,7 +32,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44832
+X-archive-position: 44833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,61 +49,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/18/2014 06:50 PM, David Daney wrote:
-> On 12/18/2014 07:09 AM, Markos Chandras wrote:
->> MIPS R6 changed the opcodes for LL/SC instructions and reduced the
->> offset field to 9-bits. This has some undesired effects with the "m"
->> constrain since it implies a 16-bit immediate. As a result of which,
->> add a register ("r") constrain as well to make sure the entire address
->> is loaded to a register before the LL/SC operations. Also use macro
->> to set the appropriate ISA for the asm blocks
+On 12/18/2014 10:58 PM, Matthew Fortune wrote:
+> David Daney <ddaney.cavm@gmail.com> writes:
+>> On 12/18/2014 01:04 PM, Matthew Fortune wrote:
+>>>> On Thu, Dec 18, 2014 at 10:50:27AM -0800, David Daney wrote:
+>>>>
+>>>>> On 12/18/2014 07:09 AM, Markos Chandras wrote:
+>>>>>> MIPS R6 changed the opcodes for LL/SC instructions and reduced the
+>>>>>> offset field to 9-bits. This has some undesired effects with the
+>> "m"
+>>>>>> constrain since it implies a 16-bit immediate. As a result of
+>>>>>> which, add a register ("r") constrain as well to make sure the
+>>>>>> entire address is loaded to a register before the LL/SC operations.
+>>>>>> Also use macro to set the appropriate ISA for the asm blocks
+>>>>>>
+>>>>>
+>>>>> Has support for MIPS R6 been added to GCC?
+>>>>>
+>>>>> If so, that should include a proper constraint to be used with the
+>>>>> new offset restrictions.  We should probably use that, instead of
+>>>>> forcing to a "r" constraint.
+>>>>
+>>>> In a non-public earlier discussion I've requested the same but
+>>>> somehow that was ignored.
+>>>
+>>> I must have missed that comment or not been on the thread.
+>>>
+>>>> We need suitable constraints or the alternatives will be very, very
+>>>> ugly.
+>>>
+>>> We can certainly discuss and investigate such things but there is a
+>>> general problem of a growing list of different size displacement
+>>> fields in load/store instructions. Obviously you could just opt to
+>>> keep things the way they are for uMIPS today and leave the assembler
+>>> to expand the instruction but my opinion is that magic expanding
+>>> assembler macros are infuriating. We have however had to put support
+>>> in binutils for many of them, simply to keep enough software building
+>> to ease the transition.
+>>>
+>>> So, all this patch does is highlight that magic assembler macros have
+>>> been hiding this issue since micromips was added.
+>>>
+>>> >From your experiences will people invest the effort to look at the
+>>> size of a displacement field for all the memory operations in an
+>>> inline asm block and then choose an appropriate memory constraint?
+>>>
+>>> I'm obviously wary of putting things into GCC that are either only
+>>> used in a handful of places (or not at all). The alternative to
+>>> constraints is of course to try and reduce the need for inline asm and
+>>> offer builtins for specific instructions or more complex operations.
+>>>
 >>
+>> Well, GCC directly emits LL/SC as part of its built-in support for
+>> atomic operations, so the knowledge of the constraints for the
+>> instructions must be present there.  Since the constraints must be
+>> present in GCC, using them in the kernel shouldn't be a problem.
 > 
-> Has support for MIPS R6 been added to GCC?
+> Yes you are right I thought this particular case only had constraints
+> for the immediate and not the whole memory operand, I'm suffering from
+> too many tasks and too little time. Several of the memory constraints are
+> marked as internal and I'm not sure if that means they are unsafe to use
+> from inline asm or just not deemed important.
 > 
-> If so, that should include a proper constraint to be used with the new
-> offset restrictions.  We should probably use that, instead of forcing to
-> a "r" constraint.
+> The memory constraint that LL and SC need is 'ZC'. I don't believe this
+> is documented so you will have to trust that its meaning will not change
+> but I can give some assurance of that since I will review all MIPS GCC
+> changes.
 > 
-> 
->> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> ---
->>   arch/mips/include/asm/atomic.h | 50
->> +++++++++++++++++++++---------------------
->>   1 file changed, 25 insertions(+), 25 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/atomic.h
->> b/arch/mips/include/asm/atomic.h
->> index 6dd6bfc607e9..8669e0ec97e3 100644
->> --- a/arch/mips/include/asm/atomic.h
->> +++ b/arch/mips/include/asm/atomic.h
->> @@ -60,13 +60,13 @@ static __inline__ void atomic_##op(int i, atomic_t
->> * v)                \
->>                                           \
->>           do {                                \
->>               __asm__ __volatile__(                    \
->> -            "    .set    arch=r4000            \n"    \
->> -            "    ll    %0, %1        # atomic_" #op "\n"    \
->> +            "    .set    "MIPS_ISA_ARCH_LEVEL"        \n"    \
->> +            "    ll    %0, 0(%3)    # atomic_" #op "\n"    \
->>               "    " #asm_op " %0, %2            \n"    \
->> -            "    sc    %0, %1                \n"    \
->> +            "    sc    %0, 0(%3)            \n"    \
->>               "    .set    mips0                \n"    \
->>               : "=&r" (temp), "+m" (v->counter)            \
->> -            : "Ir" (i));                        \
->> +            : "Ir" (i), "r" (&v->counter));                \
-> 
-> You lost the "m" constraint, but are still modifying memory.  There is
-> no "memory" clobber here, so we are no longer correctly describing what
-> is happening.
-> 
+> Obviously to use anything other than the 'm' constraint you are going
+> to need to know when any given constraint was added to GCC.
+> 'ZC' was only added to GCC in March 2013 r196828 which I believe it is a
+> GCC 4.9 feature so you will have to use it conditionally if you use it at
+> all.
 > 
 
-Sorry I don't understand what you mean by  "you lost the "m"
-constraint". +m (v->counter) is still there to denote that v->counter
-memory is being modified no?
+is this something desirable? check the gcc version, initialize a macro
+and then use that macro as a constrain? i haven't thought this through,
+but it could be a bit messy.
 
 -- 
 markos

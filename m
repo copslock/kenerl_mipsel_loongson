@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 03:08:41 +0100 (CET)
-Received: from smtprelay0096.hostedemail.com ([216.40.44.96]:60698 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27008199AbaLSCIjnXcSa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 03:08:39 +0100
-Received: from filter.hostedemail.com (unknown [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 0124B3520B6;
-        Fri, 19 Dec 2014 02:08:37 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: tramp89_8535f8aa9ea24
-X-Filterd-Recvd-Size: 1714
-Received: from joe-X200MA.home (pool-71-103-235-196.lsanca.fios.verizon.net [71.103.235.196])
-        (Authenticated sender: joe@perches.com)
-        by omf10.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 19 Dec 2014 02:08:35 +0000 (UTC)
-Message-ID: <1418954914.25129.1.camel@perches.com>
-Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k,
- mips)
-From:   Joe Perches <joe@perches.com>
-To:     =?ISO-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 09:03:23 +0100 (CET)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:51959 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007921AbaLSIDWZbXvF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 09:03:22 +0100
+Received: by mail-lb0-f182.google.com with SMTP id f15so428039lbj.13;
+        Fri, 19 Dec 2014 00:03:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=CiL/07m7geCXb9xW3J9Lj/9yBhcf4H0KR04MHEotvcw=;
+        b=snFk/42l0MTaRrwe/8tdly0b/PjtQNrD8AncghOHEuDxYOup0aqTXVhZF7hLLxzTPu
+         Xp0pA6CmqQUDeOX+TP0A4JlAxMiF4Z0CXDN64dExW3jDmGv7s/pJm9bqs7ON031WpY55
+         pKk7QavYBO/VGQUkaR9qbxkFERJ3fboj2aXhDyQEJ8+WmA7NXpMisThRjb22I2uy0quW
+         WHpL1q/opYTaEJ/CeYkC2aiugN85hY97KbtBwtu06V0df/nXBs4g7sOc55cQaCONOKof
+         IXpItBln0cy9NK52dZ9ExbH/zmepHq0fTEzEn0Np7sGPxzymg37u11gT3xA0xgMzKbqJ
+         oTsQ==
+MIME-Version: 1.0
+X-Received: by 10.152.206.1 with SMTP id lk1mr4881634lac.92.1418976197037;
+ Fri, 19 Dec 2014 00:03:17 -0800 (PST)
+Received: by 10.152.106.178 with HTTP; Fri, 19 Dec 2014 00:03:16 -0800 (PST)
+In-Reply-To: <1418849927.28384.1.camel@perches.com>
+References: <1418849927.28384.1.camel@perches.com>
+Date:   Fri, 19 Dec 2014 09:03:16 +0100
+X-Google-Sender-Auth: AtGx1oe7xaXa028NVT69VsGu_5U
+Message-ID: <CAMuHMdXGsUeAuV63hknXFkrwFoW+9_SR5wt5tzPJttGnCR_YDQ@mail.gmail.com>
+Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k, mips)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-arch <linux-arch@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Steven Miao <realmz6@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Date:   Thu, 18 Dec 2014 18:08:34 -0800
-In-Reply-To: <yw1x388ch0su.fsf@unicorn.mansr.com>
-References: <1418849927.28384.1.camel@perches.com>
-         <alpine.DEB.2.11.1412190031530.17382@nanos>
-         <1418951658.28384.20.camel@perches.com>
-         <yw1x388ch0su.fsf@unicorn.mansr.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-X-Mailer: Evolution 3.12.7-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <joe@perches.com>
+        linux-mips <linux-mips@linux-mips.org>,
+        Finn Thain <fthain@telegraphics.com.au>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44825
+X-archive-position: 44826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,19 +57,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2014-12-19 at 01:43 +0000, Måns Rullgård wrote:
-> What exactly are you proposing to remove?
+On Wed, Dec 17, 2014 at 9:58 PM, Joe Perches <joe@perches.com> wrote:
+> It seems like early_printk can be configured into
+> a few architectures but also appear not to be used.
+>
+> $ git grep -w "early_printk"
 
-Optionally compile out
-kernel/printk/printk.c:early_printk()
-even if CONFIG_EARLY_PRINTK is enabled.
+[...]
 
-> I see no unused code related
-> to early printk (in any variant) under arch/mips.
+> arch/m68k/kernel/Makefile:obj-$(CONFIG_EARLY_PRINTK)    += early_printk.o
 
-I think there could be yet another CONFIG option
-to specifically enable the early_printk function
-for the arches that use it.
+[...]
 
-The kernel/printk/early_printk() function seems
-used only by arm/microblaze/tile/x86.
+> These seem to the only uses:
+>
+> arch/arm/mach-socfpga/socfpga.c:        early_printk("Early printk initialized\n");
+> []
+> arch/microblaze/kernel/cpu/cpuinfo-pvr-full.c:  early_printk("ERROR: Microblaze " x "-different for PVR and DTS\n");
+> arch/microblaze/kernel/cpu/cpuinfo-static.c:    early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
+> []
+> arch/tile/kernel/early_printk.c:        early_printk("Kernel panic - not syncing: %pV", &vaf);
+> []
+> arch/x86/kernel/e820.c: early_printk(msg);
+> arch/x86/kernel/head64.c:               early_printk("Kernel alive\n");
+> arch/x86/kernel/head_64.S:      call early_printk
+> []
+> kernel/events/core.c:           early_printk("perf interrupt took too long (%lld > %lld), lowering "
+>
+> So blackfin, m68k, and mips seems to have it possible to enable,
+> but also don't appear at first glance to use it,
+>
+> Is early_printk really used by these architectures?
+> Should it be removed?
+
+The m68k "early_printk" match is not about the early_printk()
+function, but about
+the early printk functionality. Hence nothing to remove there.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

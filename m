@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 10:01:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:1928 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 11:02:06 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43467 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009128AbaLSJBwoxana (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 10:01:52 +0100
+        with ESMTP id S27008667AbaLSKCEpp2Wx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 11:02:04 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 96C22BCE3846B;
-        Fri, 19 Dec 2014 09:01:45 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 0D87BA61E29D5;
+        Fri, 19 Dec 2014 10:01:57 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 19 Dec 2014 09:01:47 +0000
+ 14.3.195.1; Fri, 19 Dec 2014 10:01:58 +0000
 Received: from [192.168.154.125] (192.168.154.125) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 19 Dec
- 2014 09:01:46 +0000
-Message-ID: <5493E97A.1070608@imgtec.com>
-Date:   Fri, 19 Dec 2014 09:01:46 +0000
+ 2014 10:01:56 +0000
+Message-ID: <5493F794.9040200@imgtec.com>
+Date:   Fri, 19 Dec 2014 10:01:56 +0000
 From:   Markos Chandras <Markos.Chandras@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH RFC 12/67] MIPS: asm: asmmacro: Replace add instructions
- with "addui"
-References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-13-git-send-email-markos.chandras@imgtec.com> <54932370.605@gmail.com>
-In-Reply-To: <54932370.605@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>
+Subject: Re: [PATCH RFC 19/67] MIPS: asm: atomic: Update asm and ISA constrains
+ for MIPS R6 support
+References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-20-git-send-email-markos.chandras@imgtec.com> <549321F3.1090704@gmail.com>
+In-Reply-To: <549321F3.1090704@gmail.com>
 Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [192.168.154.125]
@@ -31,7 +31,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44831
+X-archive-position: 44832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,26 +48,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/18/2014 06:56 PM, David Daney wrote:
+On 12/18/2014 06:50 PM, David Daney wrote:
 > On 12/18/2014 07:09 AM, Markos Chandras wrote:
->> The use of "add" instruction for immediate operations is wrong and
->> relies to gas being smart enough to notice that and replace it with
->> either addi or addui. However, MIPS R6 removed the addi instruction
->> so, fix this problem properly by using the correct instruction
->> directly.
+>> MIPS R6 changed the opcodes for LL/SC instructions and reduced the
+>> offset field to 9-bits. This has some undesired effects with the "m"
+>> constrain since it implies a 16-bit immediate. As a result of which,
+>> add a register ("r") constrain as well to make sure the entire address
+>> is loaded to a register before the LL/SC operations. Also use macro
+>> to set the appropriate ISA for the asm blocks
 >>
 > 
-> This is another case of the use of "add" being a real bug.  We should
-> never have faulting instructions like this in the kernel.
+> Has support for MIPS R6 been added to GCC?
 > 
-> Can you send all patches in this set that fix this bug as a separate
-> patch?  Since they are obviously correct, and really should be used by
-> all non-R6 processors, we can get them in sooner that the entire R6 thing.
+> If so, that should include a proper constraint to be used with the new
+> offset restrictions.  We should probably use that, instead of forcing to
+> a "r" constraint.
 > 
-> Thanks,
-> David Daney
+> 
+>> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
+>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>> ---
+>>   arch/mips/include/asm/atomic.h | 50
+>> +++++++++++++++++++++---------------------
+>>   1 file changed, 25 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/arch/mips/include/asm/atomic.h
+>> b/arch/mips/include/asm/atomic.h
+>> index 6dd6bfc607e9..8669e0ec97e3 100644
+>> --- a/arch/mips/include/asm/atomic.h
+>> +++ b/arch/mips/include/asm/atomic.h
+>> @@ -60,13 +60,13 @@ static __inline__ void atomic_##op(int i, atomic_t
+>> * v)                \
+>>                                           \
+>>           do {                                \
+>>               __asm__ __volatile__(                    \
+>> -            "    .set    arch=r4000            \n"    \
+>> -            "    ll    %0, %1        # atomic_" #op "\n"    \
+>> +            "    .set    "MIPS_ISA_ARCH_LEVEL"        \n"    \
+>> +            "    ll    %0, 0(%3)    # atomic_" #op "\n"    \
+>>               "    " #asm_op " %0, %2            \n"    \
+>> -            "    sc    %0, %1                \n"    \
+>> +            "    sc    %0, 0(%3)            \n"    \
+>>               "    .set    mips0                \n"    \
+>>               : "=&r" (temp), "+m" (v->counter)            \
+>> -            : "Ir" (i));                        \
+>> +            : "Ir" (i), "r" (&v->counter));                \
+> 
+> You lost the "m" constraint, but are still modifying memory.  There is
+> no "memory" clobber here, so we are no longer correctly describing what
+> is happening.
+> 
+> 
 
-sure i will move these patches away from R6 and post them separately.
+Sorry I don't understand what you mean by  "you lost the "m"
+constraint". +m (v->counter) is still there to denote that v->counter
+memory is being modified no?
 
 -- 
 markos

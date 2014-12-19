@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 00:56:24 +0100 (CET)
-Received: from resqmta-ch2-04v.sys.comcast.net ([69.252.207.36]:48900 "EHLO
-        resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008199AbaLRX4VRu3Gc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 00:56:21 +0100
-Received: from resomta-ch2-12v.sys.comcast.net ([69.252.207.108])
-        by resqmta-ch2-04v.sys.comcast.net with comcast
-        id VBvc1p0032LrikM01BwEQV; Thu, 18 Dec 2014 23:56:14 +0000
-Received: from [192.168.1.13] ([76.100.35.31])
-        by resomta-ch2-12v.sys.comcast.net with comcast
-        id VBwD1p0090gJalY01BwDcm; Thu, 18 Dec 2014 23:56:14 +0000
-Message-ID: <54936992.2070302@gentoo.org>
-Date:   Thu, 18 Dec 2014 18:56:02 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
-MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH RFC 47/67] MIPS: kernel: branch: Prevent BEQL emulation
- for MIPS R6
-References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-48-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1418915416-3196-48-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 02:14:26 +0100 (CET)
+Received: from smtprelay0245.hostedemail.com ([216.40.44.245]:50615 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27008199AbaLSBOXbQWUj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 02:14:23 +0100
+Received: from filter.hostedemail.com (unknown [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id C538123412;
+        Fri, 19 Dec 2014 01:14:21 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: car45_6014dc6a95041
+X-Filterd-Recvd-Size: 1938
+Received: from joe-X200MA.home (pool-71-103-235-196.lsanca.fios.verizon.net [71.103.235.196])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 19 Dec 2014 01:14:20 +0000 (UTC)
+Message-ID: <1418951658.28384.20.camel@perches.com>
+Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k,
+ mips)
+From:   Joe Perches <joe@perches.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-arch <linux-arch@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Steven Miao <realmz6@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Date:   Thu, 18 Dec 2014 17:14:18 -0800
+In-Reply-To: <alpine.DEB.2.11.1412190031530.17382@nanos>
+References: <1418849927.28384.1.camel@perches.com>
+         <alpine.DEB.2.11.1412190031530.17382@nanos>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.12.7-0ubuntu1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1418946974;
-        bh=TULUWwulhwTsko5wjiXY5LEOIin2acry8B8tikyHdGk=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=SAYBhnU2WqF6Plq3mrXgjgH2o6mCUcS5gDUyO0ae+cgEx52O5b1NDE5BZavIi04bT
-         2QQvIsSt6iYx95Qr2nHjv43Ckpbl9D98V3QHHU2kO9qAz5oK+DqJsNISELJHElCcpU
-         xw8V5Fu4eQaajmkI582aVFECFrHA/ISFPm804wKg8j7KsQJ35QqY1TsuRmEmwhLJx2
-         VGg2Y2uFmxcEsXpFHk5iGw6u/wpDErecK04vT3dfd0IIgf2jnPgBoyj0sOLp6uNPar
-         NbPZxUA+Y/bWHgYmV2Xac9A6ZnmM0bf5BOvcQC5voa7gPyYUvvjvnpqTW7zDTID86s
-         XUcbkP4a12sJw==
-Return-Path: <kumba@gentoo.org>
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44822
+X-archive-position: 44823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,35 +54,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/18/2014 10:09, Markos Chandras wrote:
-> MIPS R6 removed the BEQL instruction so do not try to emulate it
-> if the R2-to-R6 emulator is not present.
-
-How does this affect code for the old ISAs, MIPS-II to MIPS-IV?  I.e., the SGIs
-and the R10K CPUs that have to worry about the R10000_LLSC_WAR workaround and
-use branch-likely insns?
-
---J
-
-
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
->  arch/mips/kernel/branch.c | 4 ++++
->  1 file changed, 4 insertions(+)
+On Fri, 2014-12-19 at 00:33 +0100, Thomas Gleixner wrote:
+> On Wed, 17 Dec 2014, Joe Perches wrote:
+> > It seems like early_printk can be configured into
+> > a few architectures but also appear not to be used.
+> > 
+> > $ git grep -w "early_printk"
+> ...
+> > These seem to the only uses:
+> ... 
+> > So blackfin, m68k, and mips seems to have it possible to enable,
+> > but also don't appear at first glance to use it,
 > 
-> diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
-> index 5f2a168c37fd..539d059ba4fb 100644
-> --- a/arch/mips/kernel/branch.c
-> +++ b/arch/mips/kernel/branch.c
-> @@ -572,6 +572,10 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
->  	 */
->  	case beq_op:
->  	case beql_op:
-> +		if (NO_R6EMU && insn.i_format.opcode == beql_op) {
-> +			ret = -SIGILL;
-> +			break;
-> +		}
->  		if (regs->regs[insn.i_format.rs] ==
->  		    regs->regs[insn.i_format.rt]) {
->  			epc = epc + 4 + (insn.i_format.simmediate << 2);
+> Hint: CONFIG_EARLY_PRINTK covers far more than early_printk()
+
+I know this.
+
+Note also I didn't specify CONFIG_EARLY_PRINTK,
+just early_printk.
+ 
+> > Is early_printk really used by these architectures?
+> > Should it be removed?
 > 
+> Sure, if you have a good reason to remove working functionality.
+
+Unused.
+
+Ideally, all direct early_printk() uses would go away.
+This would just be a starting point to minimize code.

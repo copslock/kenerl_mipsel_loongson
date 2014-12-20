@@ -1,40 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:40:01 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25276 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009080AbaLTBkACMSW- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:40:00 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B3B8B841F52A3;
-        Sat, 20 Dec 2014 01:39:53 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 20 Dec
- 2014 01:39:54 +0000
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 19 Dec
- 2014 17:39:50 -0800
-Message-ID: <5494D366.6060400@imgtec.com>
-Date:   Fri, 19 Dec 2014 17:39:50 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: Fix C0_Pagegrain[IEC] support.
-References: <1419038123-30270-1-git-send-email-ddaney.cavm@gmail.com> <5494CF23.1080606@imgtec.com> <5494D04F.4030701@gmail.com>
-In-Reply-To: <5494D04F.4030701@gmail.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:52:52 +0100 (CET)
+Received: from mail-ie0-f181.google.com ([209.85.223.181]:59620 "EHLO
+        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009080AbaLTBwvVYh74 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:52:51 +0100
+Received: by mail-ie0-f181.google.com with SMTP id rl12so27831iec.26;
+        Fri, 19 Dec 2014 17:52:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=McNR9DflkJHUZTJHlVIy323aUxYyB/OUPcbf9GKidr4=;
+        b=D1N+9zJ0y74dHwCc0OeRpeaJ/NECYIRQsWkc1dHxlcCQ4Zu5QQoJaXMG8lSgljGbqJ
+         I0fXi9w4FRvWPUhuyQgBf7VirE999CEnbFSfh4xYAORZCIex96Yo5ekqP2vRoxgNHac6
+         p78oezGJCS65wADbHOWNvdYqicKfIGJ4EoGZs7jeA0RgiHoBSFoipjgXq4P+g6OhLoVI
+         OlLGvESqfzzTQgvf9M576xL2T1LQ+nRIKcTWwG7TJAPNAZVoQezWRNQ3q83ugrv9SX09
+         QVwaFh/S2AlctTBoeAeaEgrLgcY5IxulcjStyq+zxUGbUPMGnNHxEpw4Q8wlzBhrqWpM
+         nnYg==
+X-Received: by 10.50.124.133 with SMTP id mi5mr6302217igb.13.1419040365200;
+        Fri, 19 Dec 2014 17:52:45 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id kt1sm1689481igb.20.2014.12.19.17.52.44
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 19 Dec 2014 17:52:44 -0800 (PST)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sBK1qhF9008541;
+        Fri, 19 Dec 2014 17:52:43 -0800
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sBK1qg9K008540;
+        Fri, 19 Dec 2014 17:52:42 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [RFC PATCH v2 0/5] MIPS: Full ISA emulation for FPU emulation of delay slots
+Date:   Fri, 19 Dec 2014 17:52:35 -0800
+Message-Id: <1419040360-8502-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44864
+X-archive-position: 44865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,52 +55,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/19/2014 05:26 PM, David Daney wrote:
-> On 12/19/2014 05:21 PM, Leonid Yegoshin wrote:
->> On 12/19/2014 05:15 PM, David Daney wrote:
->>> From: David Daney <david.daney@cavium.com>
->>>
->>> If we are generating TLB exception expecting separate vectors, we must
->>> enable the feature.
->>>
->>> Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->>> Signed-off-by: David Daney <david.daney@cavium.com>
->>> ---
->>>
->>> Very lightly tested, but it seems to make my XI and RI tests work on
->>> OCTEON II CPUs, which have the C0_Pagegrain[IEC] bit.
->>>
->>>   arch/mips/mm/tlb-r4k.c | 2 ++
->>>   1 file changed, 2 insertions(+)
->>>
->>> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
->>> index e90b2e8..30639a6 100644
->>> --- a/arch/mips/mm/tlb-r4k.c
->>> +++ b/arch/mips/mm/tlb-r4k.c
->>> @@ -489,6 +489,8 @@ static void r4k_tlb_configure(void)
->>>   #ifdef CONFIG_64BIT
->>>           pg |= PG_ELPA;
->>>   #endif
->>> +        if (cpu_has_rixiex)
->>> +            pg |= PG_IEC;
->>>           write_c0_pagegrain(pg);
->>>       }
->> David, I think it is still better to use set_c0_pagegrain() because
->> PageGrain has a lot of RW bits now and clear all of them may be not 
->> good.
->
-> IMHO all the code that sets PageGrain should be in this function. We 
-> should calculate all the bits here that should be set, and set them.
->
-> The whole reason that we have this mess, is that we were setting the 
-> bits at different code sites, and clobbering them in others.
->
-> If *all* the PageGrain logic is in one place, we won't have this problem.
->
-> If you think this patch is incorrect, then we should revert the other 
-> two and take our time to carefully do something that is correct.
->
-> David Daney
->
-No, I don't see this patch as incorrect. It is just about coding 
-assumptions but I don't think it is serious, so you variant is OK.
+From: David Daney <david.daney@cavium.com>
+
+I have been improving my emulator little by little.  It is still not
+quite complete, but I am on vacation for the next several weeks, so I
+thought I would send it as-is for your comments and general enjoyment.
+
+David Daney (5):
+  MIPS: Add FPU emulator counter for emulated delay slots.
+  MIPS: Add FPU emulator counter for non-FPU instructions emulated.
+  MIPS: Add instruction coding for SYNCI and add trap formats.
+  MIPS: Add full ISA emulator.
+  MIPS: Use full instruction emulation for FPU emulator delay slot
+    emulation.
+
+ arch/mips/include/asm/fpu_emulator.h |    2 +
+ arch/mips/include/uapi/asm/inst.h    |   13 +-
+ arch/mips/kernel/Makefile            |    2 +-
+ arch/mips/kernel/insn-emul.c         | 1543 ++++++++++++++++++++++++++++++++++
+ arch/mips/math-emu/cp1emu.c          |   13 +-
+ arch/mips/math-emu/dsemul.c          |    2 +-
+ arch/mips/math-emu/me-debugfs.c      |    2 +
+ 7 files changed, 1572 insertions(+), 5 deletions(-)
+ create mode 100644 arch/mips/kernel/insn-emul.c
+
+-- 
+1.7.11.7

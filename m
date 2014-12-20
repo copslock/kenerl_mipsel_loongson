@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2014 23:49:12 +0100 (CET)
-Received: from smtprelay0232.hostedemail.com ([216.40.44.232]:59223 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009171AbaLSWtKOnzrH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Dec 2014 23:49:10 +0100
-Received: from filter.hostedemail.com (unknown [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 7E8FA352130;
-        Fri, 19 Dec 2014 22:49:08 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: rail00_327c312fb645a
-X-Filterd-Recvd-Size: 1686
-Received: from joe-X200MA.home (pool-71-103-235-196.lsanca.fios.verizon.net [71.103.235.196])
-        (Authenticated sender: joe@perches.com)
-        by omf12.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 19 Dec 2014 22:49:06 +0000 (UTC)
-Message-ID: <1419029345.25129.16.camel@perches.com>
-Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k,
- mips)
-From:   Joe Perches <joe@perches.com>
-To:     =?ISO-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Steven Miao <realmz6@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Date:   Fri, 19 Dec 2014 14:49:05 -0800
-In-Reply-To: <yw1xy4q4exo9.fsf@unicorn.mansr.com>
-References: <1418849927.28384.1.camel@perches.com>
-         <alpine.DEB.2.11.1412190031530.17382@nanos>
-         <1418951658.28384.20.camel@perches.com>
-         <yw1x388ch0su.fsf@unicorn.mansr.com> <1418954914.25129.1.camel@perches.com>
-         <yw1xy4q4exo9.fsf@unicorn.mansr.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-X-Mailer: Evolution 3.12.7-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 01:33:19 +0100 (CET)
+Received: from mail-ie0-f181.google.com ([209.85.223.181]:51128 "EHLO
+        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009080AbaLTAdRY0xlH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 01:33:17 +0100
+Received: by mail-ie0-f181.google.com with SMTP id tp5so1658880ieb.26;
+        Fri, 19 Dec 2014 16:33:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=fgquaNO8p/fScZRxSmK6yIeUdsCa+1FoZDfoVtW/0tk=;
+        b=P0IP1CsDHazr4ycaqObzjNtt8Tbeg8bMRchBSCmalvYq5am3eIGao8WFE2TBrVVAoz
+         6YEP9pUl/sevtH3f0WVbm4GAm3zozVKteWhI8QfaeR3tTXILBv4wnVNbSvrf+ijTOXVa
+         slkb8VjgF/RnBwAyukXsYugiF2DXsf+QsLCFq8c+rPVO80t8hh70D798Pk5guhXviHg6
+         EZ0dre+ZnOuXh4QcqXAzdrROOqqV9sXoS/sF4fuTlc/vMSFtKQWQmFwyyWRbBe5KyzDB
+         4azYorPKM8b8DtGoaWQsdFTyut2c2W0kGkYCc5Y0zvNAFjkX8PgZD5bgGfI3qqCRNbes
+         EsDQ==
+X-Received: by 10.107.164.213 with SMTP id d82mr10448449ioj.75.1419035591602;
+        Fri, 19 Dec 2014 16:33:11 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id l3sm1616534igj.9.2014.12.19.16.33.10
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 19 Dec 2014 16:33:11 -0800 (PST)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sBK0X9JJ021712;
+        Fri, 19 Dec 2014 16:33:09 -0800
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sBK0X9QE021711;
+        Fri, 19 Dec 2014 16:33:09 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        David Daney <david.daney@cavium.com>, <stable@vger.kernel.org>
+Subject: [PATCH 1/2] Revert "MIPS: Use dedicated exception handler if CPU supports RI/XI exceptions"
+Date:   Fri, 19 Dec 2014 16:33:04 -0800
+Message-Id: <1419035585-21671-2-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+In-Reply-To: <1419035585-21671-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1419035585-21671-1-git-send-email-ddaney.cavm@gmail.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44849
+X-archive-position: 44850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,15 +58,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2014-12-19 at 10:33 +0000, Måns Rullgård wrote:
-> Joe Perches <joe@perches.com> writes:
-> > The kernel/printk/early_printk() function seems
-> > used only by arm/microblaze/tile/x86.
-> 
-> Rather than introduce more config complexity, you could try to remove
-> the 7 remaining uses of early_printk().
+From: David Daney <david.daney@cavium.com>
 
-That's the general idea actually.
-Dunno if that's possible at one go though.
+This reverts commit 5890f70f15c52d0204a578422f8da828a0ba1096.
 
-cheers, Joe
+The patch was not tested, It sets PG_IEC in cpu-probe.  But this value
+is clobbered in tlb_init() so the system is never configured to take
+the RIXI specific exceptions, and we end up in an endless loop in
+handle_tlbl because that code is not expecting the XI condition.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/kernel/traps.c | 7 -------
+ arch/mips/mm/tlbex.c     | 4 ++--
+ 2 files changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index ad3d203..722ed75 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -90,7 +90,6 @@ extern asmlinkage void handle_mt(void);
+ extern asmlinkage void handle_dsp(void);
+ extern asmlinkage void handle_mcheck(void);
+ extern asmlinkage void handle_reserved(void);
+-extern void tlb_do_page_fault_0(void);
+ 
+ void (*board_be_init)(void);
+ int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
+@@ -2205,12 +2204,6 @@ void __init trap_init(void)
+ 		set_except_vector(15, handle_fpe);
+ 
+ 	set_except_vector(16, handle_ftlb);
+-
+-	if (cpu_has_rixiex) {
+-		set_except_vector(19, tlb_do_page_fault_0);
+-		set_except_vector(20, tlb_do_page_fault_0);
+-	}
+-
+ 	set_except_vector(21, handle_msa);
+ 	set_except_vector(22, handle_mdmx);
+ 
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 3978a3d..c9e0150 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1934,7 +1934,7 @@ static void build_r4000_tlb_load_handler(void)
+ 	if (m4kc_tlbp_war())
+ 		build_tlb_probe_entry(&p);
+ 
+-	if (cpu_has_rixi && !cpu_has_rixiex) {
++	if (cpu_has_rixi) {
+ 		/*
+ 		 * If the page is not _PAGE_VALID, RI or XI could not
+ 		 * have triggered it.  Skip the expensive test..
+@@ -2001,7 +2001,7 @@ static void build_r4000_tlb_load_handler(void)
+ 	build_pte_present(&p, &r, wr.r1, wr.r2, wr.r3, label_nopage_tlbl);
+ 	build_tlb_probe_entry(&p);
+ 
+-	if (cpu_has_rixi && !cpu_has_rixiex) {
++	if (cpu_has_rixi) {
+ 		/*
+ 		 * If the page is not _PAGE_VALID, RI or XI could not
+ 		 * have triggered it.  Skip the expensive test..
+-- 
+1.7.11.7

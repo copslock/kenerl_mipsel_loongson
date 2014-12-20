@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:53:43 +0100 (CET)
-Received: from mail-ie0-f171.google.com ([209.85.223.171]:63541 "EHLO
-        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009241AbaLTBwv4A44b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:52:51 +0100
-Received: by mail-ie0-f171.google.com with SMTP id ar1so1761865iec.2;
-        Fri, 19 Dec 2014 17:52:46 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:54:02 +0100 (CET)
+Received: from mail-ig0-f169.google.com ([209.85.213.169]:39924 "EHLO
+        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009320AbaLTBwweuvs6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:52:52 +0100
+Received: by mail-ig0-f169.google.com with SMTP id hl2so2975356igb.2;
+        Fri, 19 Dec 2014 17:52:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=67ctObem/IUxWATF59NDSqlbGNmMbnIxoZtEYpr5E80=;
-        b=Vv//GgTDTjwuojb1CtWEgOcgmD8rXRhj7oza/jJlMB06VaTdcapAWM5kRP+1nWLB2V
-         sXcr8z2qtPnYcWLO318AVGObL3UnjvY6FocjUuuVQCp88KiYLQuqRk786Mck7hUl0Qck
-         y/Hfh+NJlWmkZY1+bjJLECBH4n14BJuO+DZ0bcQeX6EcgcMjSaX5VKgW+Ve8RpatCbsa
-         Eg/Kk+2psLMuG3qo+dsfYZuzelfdUjlN+5HPh+xTCMCZDtuxo/6M3T5qvXQhGf23JQcX
-         NaYP5XnD9t7v1b24Mp8BCYE/NrFLI6v5iwG3D4ODDytvLy9xhl/riHn0rd6LBxGap6sf
-         BUuQ==
-X-Received: by 10.50.50.140 with SMTP id c12mr117563igo.5.1419040366443;
-        Fri, 19 Dec 2014 17:52:46 -0800 (PST)
+        bh=oqW6uKakUR9KhU2nB5hg+BPu/L5YjYZoijky3EGM1GQ=;
+        b=B2tn3TFsO7H9WbQNX9eHrkjXN/vCOzN12HFr44LAM192jz8f4pFgLcD4KqdZ4dVq0q
+         oFi0ZCbOo+E5CVO9MygJD56Y6s1De/u8C+I1D8vAGOjEk6bld5wrKhz+bOsWP36B0mWl
+         CS2pfSuV0vpBI7GzthVNtAWe88Eh0VQkMG+zv4xvuPvhWde0vOfiiWsb8BQ7kTpzevX6
+         LDJ/sz/Vxg0/3W00DO4H3//Y0UuNBzaQ7CDHdr2lzLzc3hrbyZCAe4Kc/mzth5JAqcfo
+         HZy02WrOoFUdFrXo1ykLv2qHIqBdATd9Qys4Sx154pJVcnju5sd/idgyQXdD4nNzQV7s
+         JJow==
+X-Received: by 10.107.30.204 with SMTP id e195mr10479809ioe.28.1419040367075;
+        Fri, 19 Dec 2014 17:52:47 -0800 (PST)
 Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id e33sm5345528ioi.9.2014.12.19.17.52.45
+        by mx.google.com with ESMTPSA id v83sm5340758iov.30.2014.12.19.17.52.45
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
         Fri, 19 Dec 2014 17:52:46 -0800 (PST)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sBK1qixb008554;
-        Fri, 19 Dec 2014 17:52:44 -0800
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sBK1qjxL008562;
+        Fri, 19 Dec 2014 17:52:45 -0800
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sBK1qiG4008553;
-        Fri, 19 Dec 2014 17:52:44 -0800
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sBK1qjZB008561;
+        Fri, 19 Dec 2014 17:52:45 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     David Daney <david.daney@cavium.com>
-Subject: [RFC PATCH v2 3/5] MIPS: Add instruction coding for SYNCI and add trap formats.
-Date:   Fri, 19 Dec 2014 17:52:38 -0800
-Message-Id: <1419040360-8502-4-git-send-email-ddaney.cavm@gmail.com>
+Subject: [RFC PATCH v2 5/5] MIPS: Use full instruction emulation for FPU emulator delay slot emulation.
+Date:   Fri, 19 Dec 2014 17:52:40 -0800
+Message-Id: <1419040360-8502-6-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1419040360-8502-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1419040360-8502-1-git-send-email-ddaney.cavm@gmail.com>
@@ -40,7 +40,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44868
+X-archive-position: 44869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,48 +59,52 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
+Current delay slot handling does eXecute Out of Line (XOL) on the
+stack, which prevents a non-executable stack.  Use the instruction
+emulator instead.
+
+Tested by booting 32-bit Debian on OCTEON.  More than 1700
+instructions emulated to login to command line.
+
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/uapi/asm/inst.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/mips/math-emu/cp1emu.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 89c2243..7cd4107 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -100,7 +100,8 @@ enum rt_op {
- 	bltzal_op, bgezal_op, bltzall_op, bgezall_op,
- 	rt_op_0x14, rt_op_0x15, rt_op_0x16, rt_op_0x17,
- 	rt_op_0x18, rt_op_0x19, rt_op_0x1a, rt_op_0x1b,
--	bposge32_op, rt_op_0x1d, rt_op_0x1e, rt_op_0x1f
-+	bposge32_op, rt_op_0x1d, rt_op_0x1e, rt_op_0x1f,
-+	op_synci = rt_op_0x1f
- };
- 
- /*
-@@ -547,6 +548,15 @@ struct r_format {			/* Register format */
- 	;))))))
- };
- 
-+struct t_format {			/* Trap format */
-+	__BITFIELD_FIELD(unsigned int opcode : 6,
-+	__BITFIELD_FIELD(unsigned int rs : 5,
-+	__BITFIELD_FIELD(unsigned int rt : 5,
-+	__BITFIELD_FIELD(unsigned int code : 10,
-+	__BITFIELD_FIELD(unsigned int func : 6,
-+	;)))))
-+};
-+
- struct p_format {		/* Performance counter format (R10000) */
- 	__BITFIELD_FIELD(unsigned int opcode : 6,
- 	__BITFIELD_FIELD(unsigned int rs : 5,
-@@ -881,6 +891,7 @@ union mips_instruction {
- 	struct u_format u_format;
- 	struct c_format c_format;
- 	struct r_format r_format;
-+	struct t_format t_format;
- 	struct p_format p_format;
- 	struct f_format f_format;
- 	struct ma_format ma_format;
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 9dfcd7f..0611697 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -699,11 +699,12 @@ do {									\
+  * Emulate the single floating point instruction pointed at by EPC.
+  * Two instructions if the instruction is in a branch delay slot.
+  */
+-
++int mips_insn_emul(struct pt_regs *regs, mips_instruction ir, void *__user *fault_addr);
+ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 		struct mm_decoded_insn dec_insn, void *__user *fault_addr)
+ {
+ 	unsigned long contpc = xcp->cp0_epc + dec_insn.pc_inc;
++	unsigned long origpc = xcp->cp0_epc;
+ 	unsigned int cond, cbit;
+ 	mips_instruction ir;
+ 	int likely, pc_inc;
+@@ -1043,7 +1044,15 @@ emul:
+ 				 * Single step the non-cp1
+ 				 * instruction in the dslot
+ 				 */
+-				return mips_dsemul(xcp, ir, contpc);
++				sig = mips_insn_emul(xcp, ir, fault_addr);
++				if (sig == 0) {
++					xcp->cp0_epc = contpc;
++					MIPS_FPU_EMU_INC_STATS(insn_emul);
++				} else {
++					xcp->cp0_epc = origpc;
++					pr_err("mips_insn_emul: %08x ->%d\n", (unsigned)ir, sig);
++				}
++				return sig;
+ 			} else if (likely) {	/* branch not taken */
+ 					/*
+ 					 * branch likely nullifies
 -- 
 1.7.11.7

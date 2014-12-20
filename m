@@ -1,52 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:39:41 +0100 (CET)
-Received: from mail-qg0-f45.google.com ([209.85.192.45]:55528 "EHLO
-        mail-qg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009241AbaLTBjhZ3osU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:39:37 +0100
-Received: by mail-qg0-f45.google.com with SMTP id f51so1424174qge.32;
-        Fri, 19 Dec 2014 17:39:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=/jaWKYwppjodNEJvgE3+MZDYdYwk0YNZryN3VrMHSso=;
-        b=w0BfcEkno2Ppb0rZ8COTpuSLb/HNdyA7nCjtKojzHXkYP4HDHnhVfiK8+9wzi4oGgc
-         0V1NnrsRdMGoJ7DFm3FnCi984Ahlz7xxpOuPZkS6MFnu/IowbMv4Tzl056yC9pjPTEhD
-         mqNYAxWs0IAsKLf7yWKpPz2LsMcLyL8MSW4R/itd9XXzbPokeyDZuRq+wg37IMjX2Rop
-         awwExwmM00e7zu9UFwXi9nnGwFmlj3RwdBQDSSuv7VADpZvETGt2DT0Sszy1jMq+WIoT
-         MXhkullOpO9o2q8ysryoj1g7dWLTJDAdN3YDIhySHnb7RgL/yDbSvDl1RBawiR55pXMd
-         9p2A==
-X-Received: by 10.229.7.199 with SMTP id e7mr3652622qce.26.1419039570662; Fri,
- 19 Dec 2014 17:39:30 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:40:01 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25276 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009080AbaLTBkACMSW- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:40:00 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id B3B8B841F52A3;
+        Sat, 20 Dec 2014 01:39:53 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 20 Dec
+ 2014 01:39:54 +0000
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 19 Dec
+ 2014 17:39:50 -0800
+Message-ID: <5494D366.6060400@imgtec.com>
+Date:   Fri, 19 Dec 2014 17:39:50 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Received: by 10.140.82.48 with HTTP; Fri, 19 Dec 2014 17:39:09 -0800 (PST)
-In-Reply-To: <CAOiHx=nX9jJEFZmkA-1fWj47whq85wj-ZgUxnZBwpAYDUfAO4w@mail.gmail.com>
-References: <1418422034-17099-1-git-send-email-cernekee@gmail.com>
- <1418422034-17099-14-git-send-email-cernekee@gmail.com> <CAOiHx=nX9jJEFZmkA-1fWj47whq85wj-ZgUxnZBwpAYDUfAO4w@mail.gmail.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Fri, 19 Dec 2014 17:39:09 -0800
-Message-ID: <CAJiQ=7AZdwCX6bmLD1B4TzfmKriE3HVEEa5zP3WRnENZjGS-hA@mail.gmail.com>
-Subject: Re: [PATCH V5 13/23] MIPS: BMIPS: Flush the readahead cache after DMA
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Brian Norris <computersforpeace@gmail.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] MIPS: Fix C0_Pagegrain[IEC] support.
+References: <1419038123-30270-1-git-send-email-ddaney.cavm@gmail.com> <5494CF23.1080606@imgtec.com> <5494D04F.4030701@gmail.com>
+In-Reply-To: <5494D04F.4030701@gmail.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44863
+X-archive-position: 44864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,74 +47,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 15, 2014 at 1:43 AM, Jonas Gorski <jogo@openwrt.org> wrote:
-> On Fri, Dec 12, 2014 at 11:07 PM, Kevin Cernekee <cernekee@gmail.com> wrote:
->> BMIPS 3300/435x/438x CPUs have a readahead cache that is separate from
->> the L1/L2.  During a DMA operation, accesses adjacent to a DMA buffer
->> may cause parts of the DMA buffer to be prefetched into the RAC.  To
->> avoid possible coherency problems, flush the RAC upon DMA completion.
+On 12/19/2014 05:26 PM, David Daney wrote:
+> On 12/19/2014 05:21 PM, Leonid Yegoshin wrote:
+>> On 12/19/2014 05:15 PM, David Daney wrote:
+>>> From: David Daney <david.daney@cavium.com>
+>>>
+>>> If we are generating TLB exception expecting separate vectors, we must
+>>> enable the feature.
+>>>
+>>> Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>>> Signed-off-by: David Daney <david.daney@cavium.com>
+>>> ---
+>>>
+>>> Very lightly tested, but it seems to make my XI and RI tests work on
+>>> OCTEON II CPUs, which have the C0_Pagegrain[IEC] bit.
+>>>
+>>>   arch/mips/mm/tlb-r4k.c | 2 ++
+>>>   1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+>>> index e90b2e8..30639a6 100644
+>>> --- a/arch/mips/mm/tlb-r4k.c
+>>> +++ b/arch/mips/mm/tlb-r4k.c
+>>> @@ -489,6 +489,8 @@ static void r4k_tlb_configure(void)
+>>>   #ifdef CONFIG_64BIT
+>>>           pg |= PG_ELPA;
+>>>   #endif
+>>> +        if (cpu_has_rixiex)
+>>> +            pg |= PG_IEC;
+>>>           write_c0_pagegrain(pg);
+>>>       }
+>> David, I think it is still better to use set_c0_pagegrain() because
+>> PageGrain has a lot of RW bits now and clear all of them may be not 
+>> good.
 >
-> According to what I have, any cpu [d-]cache invalidate operation
-> should already flush the full RAC unless explicitly disabled in the
-> RAC configuration - is this intended as an optimization/shortcut?
-
-Correct - performing a RAC flush instead of blasting the entire range
-again via CACHE instructions should be considerably faster in most
-cases.  CACHE instructions are not pipelined on BMIPS3300/43xx.
-
-There may be a couple of old CPU versions (possibly 130nm) that don't
-automatically perform the RAC flush on each CACHE instruction.  Also,
-a fun bit of trivia: MVA based cache flushes on B15 do flush the RAC,
-but index based instructions do not.
-
->>  static inline int cpu_needs_post_dma_flush(struct device *dev)
->>  {
+> IMHO all the code that sets PageGrain should be in this function. We 
+> should calculate all the bits here that should be set, and set them.
 >
-> The place for it seems a bit misplaced; I would not expect
-> cpu_needs_post_dma_flush() to have any side effects.
-
-Maybe we should rename the function?  To just cpu_post_dma_flush()?
-
-(Or call a separate function from each site - but that seems unnecessary.)
-
->> +       if (boot_cpu_type() == CPU_BMIPS3300 ||
->> +           boot_cpu_type() == CPU_BMIPS4350 ||
->> +           boot_cpu_type() == CPU_BMIPS4380) {
->> +               void __iomem *cbr = BMIPS_GET_CBR();
->> +
->> +               /* Flush stale data out of the readahead cache */
->> +               __raw_writel(0x100, cbr + BMIPS_RAC_CONFIG);
+> The whole reason that we have this mess, is that we were setting the 
+> bits at different code sites, and clobbering them in others.
 >
-> Hm, according to what I have, bits [6:0] of RAC_CONFIG are R/W
-> configuration bits, and this will overwrite them:
+> If *all* the PageGrain logic is in one place, we won't have this problem.
 >
-> CFE> dm 0xff400000 4
-> ff400000: 02a07015                                        ..p.
-> CFE> sm 0xff400000 0x100 4
-> ff400000: 02a00000                                        ....
+> If you think this patch is incorrect, then we should revert the other 
+> two and take our time to carefully do something that is correct.
 >
-> (As far as I can tell, RAC was previously enabled for instruction
-> cache misses , and now isn't any more for anything, so effectively
-> disabled?)
+> David Daney
 >
-> Also for BMIPS4350 (and I guess 4380) there seems to be a second
-> RAC_CONFIG register at 0x8, I guess for the second thread? Does it
-> need flushing, too?
-
-I'll defer to Florian for the final word since he has access to the
-documentation, but going from memory:
-
-RAC_CONFIG should probably be a read/modify/write.  I'm pretty sure
-there are important RW configuration bits in there.  I may have
-incorrectly translated the "set bit 8" code from here:
-
-https://github.com/Broadcom/stblinux-3.3/blob/master/linux/arch/mips/mm/c-brcmstb.c#L374
-
-There is only one RAC for all CPUs, and we've never had to flush
-anything via CBR+0x08.
-
-BCM7038 had a different flush register, located out in the regular
-system bus (GISB) space, and it didn't require a R/M/W.  That might
-have been what I was thinking of.
-
-Thanks for catching that.
+No, I don't see this patch as incorrect. It is just about coding 
+assumptions but I don't think it is serious, so you variant is OK.

@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:53:27 +0100 (CET)
-Received: from mail-ig0-f176.google.com ([209.85.213.176]:54608 "EHLO
-        mail-ig0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009219AbaLTBwvjcPPh (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:53:43 +0100 (CET)
+Received: from mail-ie0-f171.google.com ([209.85.223.171]:63541 "EHLO
+        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009241AbaLTBwv4A44b (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:52:51 +0100
-Received: by mail-ig0-f176.google.com with SMTP id l13so1707196iga.3;
+Received: by mail-ie0-f171.google.com with SMTP id ar1so1761865iec.2;
         Fri, 19 Dec 2014 17:52:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ShC3tih2RpPwD5pYfqF2bfA5m5m2NXZHbvtzct7Fp88=;
-        b=CygXQEpr24ksH2KhQtjNpQi/f4mrav/lUWnNsX+LATyZha+68zjKXX5DZ2jAP4xHuQ
-         mcj0xVrEcI+uf30BPDRDt909hrEE5tspMvwcsYbLgk70TB8RncxKN+T+FLgtDRybRlJ+
-         8n0pPBuQ+aewwEZTPLPdZN5swtCZzVy/2Sz9WxoMYcNcQIfutB09h2qXRzx0f3kiAD3T
-         02H21gyfRza2AiSXRln9+84qzHhOgtH9a2khoiaj+2bR/kcrmqjgDFg3Uy6iqpwG7OrB
-         2oO9MqwlwMQ9oKpK42QTNSfETMB6JdoKG29gA6I6QCB77PWrC39xqeQIBuGFXLl5Gk69
-         1y9A==
-X-Received: by 10.43.66.9 with SMTP id xo9mr9318738icb.67.1419040365999;
-        Fri, 19 Dec 2014 17:52:45 -0800 (PST)
+        bh=67ctObem/IUxWATF59NDSqlbGNmMbnIxoZtEYpr5E80=;
+        b=Vv//GgTDTjwuojb1CtWEgOcgmD8rXRhj7oza/jJlMB06VaTdcapAWM5kRP+1nWLB2V
+         sXcr8z2qtPnYcWLO318AVGObL3UnjvY6FocjUuuVQCp88KiYLQuqRk786Mck7hUl0Qck
+         y/Hfh+NJlWmkZY1+bjJLECBH4n14BJuO+DZ0bcQeX6EcgcMjSaX5VKgW+Ve8RpatCbsa
+         Eg/Kk+2psLMuG3qo+dsfYZuzelfdUjlN+5HPh+xTCMCZDtuxo/6M3T5qvXQhGf23JQcX
+         NaYP5XnD9t7v1b24Mp8BCYE/NrFLI6v5iwG3D4ODDytvLy9xhl/riHn0rd6LBxGap6sf
+         BUuQ==
+X-Received: by 10.50.50.140 with SMTP id c12mr117563igo.5.1419040366443;
+        Fri, 19 Dec 2014 17:52:46 -0800 (PST)
 Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id q196sm5346845ioe.5.2014.12.19.17.52.45
+        by mx.google.com with ESMTPSA id e33sm5345528ioi.9.2014.12.19.17.52.45
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 19 Dec 2014 17:52:45 -0800 (PST)
+        Fri, 19 Dec 2014 17:52:46 -0800 (PST)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sBK1qiaU008550;
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sBK1qixb008554;
         Fri, 19 Dec 2014 17:52:44 -0800
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sBK1qiRl008549;
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sBK1qiG4008553;
         Fri, 19 Dec 2014 17:52:44 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     David Daney <david.daney@cavium.com>
-Subject: [RFC PATCH v2 2/5] MIPS: Add FPU emulator counter for non-FPU instructions emulated.
-Date:   Fri, 19 Dec 2014 17:52:37 -0800
-Message-Id: <1419040360-8502-3-git-send-email-ddaney.cavm@gmail.com>
+Subject: [RFC PATCH v2 3/5] MIPS: Add instruction coding for SYNCI and add trap formats.
+Date:   Fri, 19 Dec 2014 17:52:38 -0800
+Message-Id: <1419040360-8502-4-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1419040360-8502-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1419040360-8502-1-git-send-email-ddaney.cavm@gmail.com>
@@ -40,7 +40,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44867
+X-archive-position: 44868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,37 +59,48 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-Used in follow-on patch, the counter is called "insn_emul".
-
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/fpu_emulator.h | 1 +
- arch/mips/math-emu/me-debugfs.c      | 1 +
- 2 files changed, 2 insertions(+)
+ arch/mips/include/uapi/asm/inst.h | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 6370c82..bd5b63f 100644
---- a/arch/mips/include/asm/fpu_emulator.h
-+++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -45,6 +45,7 @@ struct mips_fpu_emulator_stats {
- 	unsigned long ieee754_zerodiv;
- 	unsigned long ieee754_invalidop;
- 	unsigned long ds_emul;
-+	unsigned long insn_emul;
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index 89c2243..7cd4107 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -100,7 +100,8 @@ enum rt_op {
+ 	bltzal_op, bgezal_op, bltzall_op, bgezall_op,
+ 	rt_op_0x14, rt_op_0x15, rt_op_0x16, rt_op_0x17,
+ 	rt_op_0x18, rt_op_0x19, rt_op_0x1a, rt_op_0x1b,
+-	bposge32_op, rt_op_0x1d, rt_op_0x1e, rt_op_0x1f
++	bposge32_op, rt_op_0x1d, rt_op_0x1e, rt_op_0x1f,
++	op_synci = rt_op_0x1f
  };
  
- DECLARE_PER_CPU(struct mips_fpu_emulator_stats, fpuemustats);
-diff --git a/arch/mips/math-emu/me-debugfs.c b/arch/mips/math-emu/me-debugfs.c
-index f308e0f..93fc155 100644
---- a/arch/mips/math-emu/me-debugfs.c
-+++ b/arch/mips/math-emu/me-debugfs.c
-@@ -62,6 +62,7 @@ do {									\
- 	FPU_STAT_CREATE(ieee754_zerodiv);
- 	FPU_STAT_CREATE(ieee754_invalidop);
- 	FPU_STAT_CREATE(ds_emul);
-+	FPU_STAT_CREATE(insn_emul);
+ /*
+@@ -547,6 +548,15 @@ struct r_format {			/* Register format */
+ 	;))))))
+ };
  
- 	return 0;
- }
++struct t_format {			/* Trap format */
++	__BITFIELD_FIELD(unsigned int opcode : 6,
++	__BITFIELD_FIELD(unsigned int rs : 5,
++	__BITFIELD_FIELD(unsigned int rt : 5,
++	__BITFIELD_FIELD(unsigned int code : 10,
++	__BITFIELD_FIELD(unsigned int func : 6,
++	;)))))
++};
++
+ struct p_format {		/* Performance counter format (R10000) */
+ 	__BITFIELD_FIELD(unsigned int opcode : 6,
+ 	__BITFIELD_FIELD(unsigned int rs : 5,
+@@ -881,6 +891,7 @@ union mips_instruction {
+ 	struct u_format u_format;
+ 	struct c_format c_format;
+ 	struct r_format r_format;
++	struct t_format t_format;
+ 	struct p_format p_format;
+ 	struct f_format f_format;
+ 	struct ma_format ma_format;
 -- 
 1.7.11.7

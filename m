@@ -1,49 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:15:35 +0100 (CET)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:55710 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009080AbaLTBPda921o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Dec 2014 02:15:33 +0100
-Received: by mail-ig0-f170.google.com with SMTP id r2so2953050igi.3;
-        Fri, 19 Dec 2014 17:15:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=M970wiYJuzb+iXswHiXjUzKMnfz58arRnXdo5pY8nEs=;
-        b=EbD4/ApkX60hQV3wGWdVZFKtUp5z5dfvxibK7+IYhckH9+aIiFQWIev6+mdRmg/Dwz
-         nu0EE3auE+SIyW/ks1t8td86fx81gncxxMYCj7HS7QOOMD6utef++opEkch/0hJ8gJSV
-         Nn8UfgH7pgIa1MJ0R7UKmnV1ZSi+JwUmxMN7CYaPeGWhtxOoNHZpLddW7wHG3oE7N8K1
-         DRhuPYieL0WWwcMKF3ihkKRgXW/si3HWNMiDqiqx32+CM5XTlyK3ymhveXmMVTKY5uaT
-         BaWHvYSX9VAQjlTo8eDBXoPtv4wJ6h0SJUBwujDTK1gMVzY7lm58f/Po4q+VJuHOZ6V4
-         wWuw==
-X-Received: by 10.50.82.66 with SMTP id g2mr6088967igy.19.1419038127719;
-        Fri, 19 Dec 2014 17:15:27 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id m127sm5303491ioe.32.2014.12.19.17.15.27
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 19 Dec 2014 17:15:27 -0800 (PST)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id sBK1FPnT030304;
-        Fri, 19 Dec 2014 17:15:25 -0800
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id sBK1FP6C030303;
-        Fri, 19 Dec 2014 17:15:25 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2014 02:19:02 +0100 (CET)
+Received: from mail-bn1bon0072.outbound.protection.outlook.com ([157.56.111.72]:39058
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009080AbaLTBS7TsKdu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 20 Dec 2014 02:18:59 +0100
+Received: from dl.caveonetworks.com (64.2.3.194) by
+ BN3PR0701MB1107.namprd07.prod.outlook.com (25.160.114.145) with Microsoft
+ SMTP Server (TLS) id 15.1.36.22; Sat, 20 Dec 2014 01:18:50 +0000
+Message-ID: <5494CE74.308@caviumnetworks.com>
+Date:   Fri, 19 Dec 2014 17:18:44 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     David Daney <ddaney.cavm@gmail.com>, <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, David Daney <david.daney@cavium.com>,
         Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: [PATCH] MIPS: Fix C0_Pagegrain[IEC] support.
-Date:   Fri, 19 Dec 2014 17:15:23 -0800
-Message-Id: <1419038123-30270-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Subject: Re: [PATCH] MIPS: Fix C0_Pagegrain[IEC] support.
+References: <1419038123-30270-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1419038123-30270-1-git-send-email-ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.194]
+X-ClientProxiedBy: BY2PR07CA068.namprd07.prod.outlook.com (10.141.251.43) To
+ BN3PR0701MB1107.namprd07.prod.outlook.com (25.160.114.145)
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=David.Daney@caviumnetworks.com; 
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:BN3PR0701MB1107;
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004);SRVR:BN3PR0701MB1107;
+X-Forefront-PRVS: 0431F981D8
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(189002)(24454002)(164054003)(51704005)(377454003)(199003)(479174004)(2950100001)(42186005)(23756003)(19580405001)(64706001)(20776003)(66066001)(65956001)(65806001)(87976001)(47776003)(4396001)(50466002)(81156004)(105586002)(53416004)(107046002)(76176999)(68736005)(97736003)(31966008)(46102003)(62966003)(120916001)(101416001)(21056001)(19580395003)(83506001)(65816999)(40100003)(69596002)(106356001)(50986999)(36756003)(122386002)(33656002)(77156002)(54356999)(92566001)(99396003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN3PR0701MB1107;H:dl.caveonetworks.com;FPR:;SPF:None;MLV:sfv;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+Received-SPF: None (protection.outlook.com: caviumnetworks.com does not
+ designate permitted sender hosts)
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BN3PR0701MB1107;
+X-OriginatorOrg: caviumnetworks.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2014 01:18:50.0074 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0701MB1107
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44858
+X-archive-position: 44859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,33 +59,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
 
-If we are generating TLB exception expecting separate vectors, we must
-enable the feature.
+Ralf, I forgot to add it to the patch, but if you merge this, can you 
+add a Cc: stable@... for the versions that have the patches that broke 
+the XI feature?
 
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Signed-off-by: David Daney <david.daney@cavium.com>
----
+Thanks,
+David Daney
 
-Very lightly tested, but it seems to make my XI and RI tests work on
-OCTEON II CPUs, which have the C0_Pagegrain[IEC] bit.
-
- arch/mips/mm/tlb-r4k.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index e90b2e8..30639a6 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -489,6 +489,8 @@ static void r4k_tlb_configure(void)
- #ifdef CONFIG_64BIT
- 		pg |= PG_ELPA;
- #endif
-+		if (cpu_has_rixiex)
-+			pg |= PG_IEC;
- 		write_c0_pagegrain(pg);
- 	}
- 
--- 
-1.7.11.7
+On 12/19/2014 05:15 PM, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+>
+> If we are generating TLB exception expecting separate vectors, we must
+> enable the feature.
+>
+> Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> ---
+>
+> Very lightly tested, but it seems to make my XI and RI tests work on
+> OCTEON II CPUs, which have the C0_Pagegrain[IEC] bit.
+>
+>   arch/mips/mm/tlb-r4k.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+> index e90b2e8..30639a6 100644
+> --- a/arch/mips/mm/tlb-r4k.c
+> +++ b/arch/mips/mm/tlb-r4k.c
+> @@ -489,6 +489,8 @@ static void r4k_tlb_configure(void)
+>   #ifdef CONFIG_64BIT
+>   		pg |= PG_ELPA;
+>   #endif
+> +		if (cpu_has_rixiex)
+> +			pg |= PG_IEC;
+>   		write_c0_pagegrain(pg);
+>   	}
+>
+>

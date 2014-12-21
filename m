@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Dec 2014 18:14:12 +0100 (CET)
-Received: from mail-la0-f43.google.com ([209.85.215.43]:51899 "EHLO
-        mail-la0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009433AbaLUROK7hNIe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Dec 2014 18:14:10 +0100
-Received: by mail-la0-f43.google.com with SMTP id s18so3015690lam.30
-        for <linux-mips@linux-mips.org>; Sun, 21 Dec 2014 09:14:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=KDG62rMBmEys41taRujwMfZuH9vLfJBzmN0VoUy+LA4=;
-        b=HYxXHI9QmBdb4pW511SW0dImn67p4iwvLUBTYAhNgetTSK7GYTfNzaFuVzXZGyz/01
-         FkgzXl2BNwCEXzCBRJszNAuBb7jEUbCXYKzRecOOzdr9xiUPEOjJHZ4flsBB1MBr6Wia
-         MkIdGpRVS3pQJ3J9f3+VAzAI3xbk8ZNIuy2GwdlwexOlc/2mTJw6kJAcW1KEgKQ1uejq
-         cG3783LWzpvlSWqB/wZXcuVY55/k5qW5UsVr8nr71sK5E4//DUHM6tavG2vwzo6+8AUN
-         9e6XgMoGultt/r4WDi70aQIPI9+Z3IKteKbpwIhf1KNkDmGWDxvKkY+diRJjU0Mi8pXb
-         29Qw==
-X-Gm-Message-State: ALoCoQnzKCpkKNWquSZDxTwEwwSmZS2KLP61HSukSBpnjU/hPgZZDZHqOOk/q9M69wK0urYHiVpw
-X-Received: by 10.152.5.226 with SMTP id v2mr18068206lav.34.1419182045567;
-        Sun, 21 Dec 2014 09:14:05 -0800 (PST)
-Received: from localhost.localdomain (h-246-111.a218.priv.bahnhof.se. [85.24.246.111])
-        by mx.google.com with ESMTPSA id vr7sm4398345lbb.21.2014.12.21.09.14.04
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 21 Dec 2014 09:14:05 -0800 (PST)
-From:   Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>,
-        John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Dec 2014 21:54:16 +0100 (CET)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:43328 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009368AbaLUUyOe5kT2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Dec 2014 21:54:14 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 0EE8919BD0A;
+        Sun, 21 Dec 2014 22:54:14 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id 88WCimSQ3+xr; Sun, 21 Dec 2014 22:54:07 +0200 (EET)
+Received: from amd-fx-6350.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp6.welho.com (Postfix) with ESMTP id 66BA45BC006;
+        Sun, 21 Dec 2014 22:54:07 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        linux-crypto@vger.kernel.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] arch: mips: fw: arc: file.c:  Remove some unused functions
-Date:   Sun, 21 Dec 2014 18:16:52 +0100
-Message-Id: <1419182212-9529-1-git-send-email-rickard_strandqvist@spectrumdigital.se>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <rickard_strandqvist@spectrumdigital.se>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 0/5] MIPS/crypto: MD5 for OCTEON
+Date:   Sun, 21 Dec 2014 22:53:57 +0200
+Message-Id: <1419195242-546-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.2.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44878
+X-archive-position: 44879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rickard_strandqvist@spectrumdigital.se
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,83 +46,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Removes some functions that are not used anywhere:
-ArcSetFileInformation() ArcGetFileInformation() ArcSeek()
-ArcGetReadStatus() ArcClose() ArcOpen() ArcGetDirectoryEntry()
+Hi,
 
-This was partially found by using a static code analysis program called cppcheck.
+This adds accelerated MD5 cryptoapi module for OCTEON.
 
-Signed-off-by: Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
----
- arch/mips/fw/arc/file.c |   43 -------------------------------------------
- 1 file changed, 43 deletions(-)
+Tested with 3.19-rc1 on EdgeRouter Lite (OCTEON+) and EdgeRouter Pro
+(OCTEON2) by running selftest, tcrypt and also by sending TCP MD5SIG
+traffic between OCTEON <-> X86 box.
 
-diff --git a/arch/mips/fw/arc/file.c b/arch/mips/fw/arc/file.c
-index 49fd3ff..ebd69de 100644
---- a/arch/mips/fw/arc/file.c
-+++ b/arch/mips/fw/arc/file.c
-@@ -13,62 +13,19 @@
- #include <asm/sgialib.h>
- 
- LONG
--ArcGetDirectoryEntry(ULONG FileID, struct linux_vdirent *Buffer,
--		     ULONG N, ULONG *Count)
--{
--	return ARC_CALL4(get_vdirent, FileID, Buffer, N, Count);
--}
--
--LONG
--ArcOpen(CHAR *Path, enum linux_omode OpenMode, ULONG *FileID)
--{
--	return ARC_CALL3(open, Path, OpenMode, FileID);
--}
--
--LONG
--ArcClose(ULONG FileID)
--{
--	return ARC_CALL1(close, FileID);
--}
--
--LONG
- ArcRead(ULONG FileID, VOID *Buffer, ULONG N, ULONG *Count)
- {
- 	return ARC_CALL4(read, FileID, Buffer, N, Count);
- }
- 
- LONG
--ArcGetReadStatus(ULONG FileID)
--{
--	return ARC_CALL1(get_rstatus, FileID);
--}
--
--LONG
- ArcWrite(ULONG FileID, PVOID Buffer, ULONG N, PULONG Count)
- {
- 	return ARC_CALL4(write, FileID, Buffer, N, Count);
- }
- 
- LONG
--ArcSeek(ULONG FileID, struct linux_bigint *Position, enum linux_seekmode SeekMode)
--{
--	return ARC_CALL3(seek, FileID, Position, SeekMode);
--}
--
--LONG
- ArcMount(char *name, enum linux_mountops op)
- {
- 	return ARC_CALL2(mount, name, op);
- }
--
--LONG
--ArcGetFileInformation(ULONG FileID, struct linux_finfo *Information)
--{
--	return ARC_CALL2(get_finfo, FileID, Information);
--}
--
--LONG ArcSetFileInformation(ULONG FileID, ULONG AttributeFlags,
--			   ULONG AttributeMask)
--{
--	return ARC_CALL3(set_finfo, FileID, AttributeFlags, AttributeMask);
--}
+Below figures show the improvement on ER Lite compared to md5-generic
+(calculated from output of tcrypt mode=402).
+
+test  0 (   16 byte blocks,   16 bytes per update,   1 updates): 1.20x faster
+test  1 (   64 byte blocks,   16 bytes per update,   4 updates): 1.17x faster
+test  2 (   64 byte blocks,   64 bytes per update,   1 updates): 1.30x faster
+test  3 (  256 byte blocks,   16 bytes per update,  16 updates): 1.14x faster
+test  4 (  256 byte blocks,   64 bytes per update,   4 updates): 1.29x faster
+test  5 (  256 byte blocks,  256 bytes per update,   1 updates): 1.84x faster
+test  6 ( 1024 byte blocks,   16 bytes per update,  64 updates): 1.13x faster
+test  7 ( 1024 byte blocks,  256 bytes per update,   4 updates): 2.01x faster
+test  8 ( 1024 byte blocks, 1024 bytes per update,   1 updates): 2.49x faster
+test  9 ( 2048 byte blocks,   16 bytes per update, 128 updates): 1.13x faster
+test 10 ( 2048 byte blocks,  256 bytes per update,   8 updates): 2.05x faster
+test 11 ( 2048 byte blocks, 1024 bytes per update,   2 updates): 2.57x faster
+test 12 ( 2048 byte blocks, 2048 bytes per update,   1 updates): 2.71x faster
+test 13 ( 4096 byte blocks,   16 bytes per update, 256 updates): 1.15x faster
+test 14 ( 4096 byte blocks,  256 bytes per update,  16 updates): 2.08x faster
+test 15 ( 4096 byte blocks, 1024 bytes per update,   4 updates): 2.63x faster
+test 16 ( 4096 byte blocks, 4096 bytes per update,   1 updates): 2.83x faster
+test 17 ( 8192 byte blocks,   16 bytes per update, 512 updates): 1.13x faster
+test 18 ( 8192 byte blocks,  256 bytes per update,  32 updates): 2.09x faster
+test 19 ( 8192 byte blocks, 1024 bytes per update,   8 updates): 2.66x faster
+test 20 ( 8192 byte blocks, 4096 bytes per update,   2 updates): 2.87x faster
+test 21 ( 8192 byte blocks, 8192 bytes per update,   1 updates): 2.87x faster
+
+A.
+
+Aaro Koskinen (5):
+  MIPS: OCTEON: add crypto helper functions
+  MIPS: OCTEON: crypto: add instruction definitions for MD5
+  MIPS: OCTEON: reintroduce crypto features check
+  MIPS: OCTEON: crypto: add MD5 module
+  crypto: enable OCTEON MD5 module selection
+
+ arch/mips/cavium-octeon/Makefile                 |   1 +
+ arch/mips/cavium-octeon/crypto/Makefile          |   7 +
+ arch/mips/cavium-octeon/crypto/octeon-crypto.c   |  66 +++++++
+ arch/mips/cavium-octeon/crypto/octeon-crypto.h   |  75 ++++++++
+ arch/mips/cavium-octeon/crypto/octeon-md5.c      | 216 +++++++++++++++++++++++
+ arch/mips/cavium-octeon/executive/octeon-model.c |   6 +
+ arch/mips/include/asm/octeon/octeon-feature.h    |  17 +-
+ arch/mips/include/asm/octeon/octeon.h            |   5 -
+ crypto/Kconfig                                   |   9 +
+ 9 files changed, 395 insertions(+), 7 deletions(-)
+ create mode 100644 arch/mips/cavium-octeon/crypto/Makefile
+ create mode 100644 arch/mips/cavium-octeon/crypto/octeon-crypto.c
+ create mode 100644 arch/mips/cavium-octeon/crypto/octeon-crypto.h
+ create mode 100644 arch/mips/cavium-octeon/crypto/octeon-md5.c
+
 -- 
-1.7.10.4
+2.2.0

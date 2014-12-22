@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Dec 2014 03:33:10 +0100 (CET)
-Received: from mail-pd0-f178.google.com ([209.85.192.178]:46365 "EHLO
-        mail-pd0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009502AbaLVCcyResJF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Dec 2014 03:32:54 +0100
-Received: by mail-pd0-f178.google.com with SMTP id r10so4900397pdi.37;
-        Sun, 21 Dec 2014 18:32:48 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Dec 2014 03:48:05 +0100 (CET)
+Received: from mail-qc0-f181.google.com ([209.85.216.181]:51262 "EHLO
+        mail-qc0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008814AbaLVCsEBxZI0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Dec 2014 03:48:04 +0100
+Received: by mail-qc0-f181.google.com with SMTP id m20so2828639qcx.26;
+        Sun, 21 Dec 2014 18:47:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=M3hksW3VAziDj/DxUcWrl2cX4N9yqxXEFlJ+FiY/vDA=;
-        b=xmH6btpbpUuJP4SUrEnwFODIFJkfCSauxMSzWP4JlHZ18pExOmLalTnc+EnYffWwQk
-         GgN3Xtc6vpl6OG7xuwIDxU2oXNT2rR1IsSGSxOl6Qg3PXXAt26bt/J4mOWX1LM2Bsi6c
-         c4wAD6l4EAO/ildVMNQ5iD+u08ErkGK7JbY7ZudTj+Tz0CHpN9tkykUNm5RF5B5sxDEW
-         KkZzMrHevEW+EteWth9JHNoJHwInuV/7PkuNXXrUhNEzjVbLDMQmkFRYYGX8Cf/ZqLtn
-         5dOTPhYpmAPjHONkvM9syGx3ZRaWhuvQa9kpuulmo0vYK6TYk1FsGubMgKJvdaiDw6qc
-         b6nA==
-X-Received: by 10.70.129.48 with SMTP id nt16mr30596394pdb.113.1419215568324;
-        Sun, 21 Dec 2014 18:32:48 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id sp6sm15735176pac.42.2014.12.21.18.32.46
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sun, 21 Dec 2014 18:32:47 -0800 (PST)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 2/2] MIPS: Hibernate: Restructure files and functions
-Date:   Mon, 22 Dec 2014 10:30:39 +0800
-Message-Id: <1419215439-27900-2-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1419215439-27900-1-git-send-email-chenhc@lemote.com>
-References: <1419215439-27900-1-git-send-email-chenhc@lemote.com>
-Return-Path: <chenhuacai@gmail.com>
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=Mks9noxzfE1AlTn9Ht048F7dpvkqrGLDtdaGv7TQtAo=;
+        b=tPZQI1wXNCdEuGvi2iqIUwjlgcwU6erjbkp/m1Ss28eLme5DaPQLWx25w7g2MILsLj
+         iwvZqUJZhrZXqdqa9lXao2fcNZxMaeNbJhnuGFwSzODVJN5Puv80aN4RerBqDrVgjGQM
+         l5V1kM0RBj9+c/tmMF4VBr1qA/C8T4pcld/YTEpYBkxEY+hwStCFepr6DLd5pGZFWHIc
+         guQ9esdR7vzB51+mmhDQoAM177sfHrlE81dw5LnvlWVr3apNYampC9fTQvlabYg7IjRm
+         ZAJOQHqCv9x2S12nE5q9R2gx3y3RRm5aNc6PGLkKzI9YuhokiW4O+9xyvn7Lmvz6Hgav
+         KW6Q==
+MIME-Version: 1.0
+X-Received: by 10.140.83.169 with SMTP id j38mr30585108qgd.99.1419216478170;
+ Sun, 21 Dec 2014 18:47:58 -0800 (PST)
+Received: by 10.140.22.81 with HTTP; Sun, 21 Dec 2014 18:47:58 -0800 (PST)
+In-Reply-To: <CAJiQ=7AHKaFPe+UXSKphSrsQ6J9Fagaou6FZRE+deigeqwHjxw@mail.gmail.com>
+References: <1418985621-4210-1-git-send-email-jaedon.shin@gmail.com>
+        <CAGVrzcYaKF2M_pZTvB6kGM2czrTQq2KhV1BTKb0VkQivjMsNxg@mail.gmail.com>
+        <CAJiQ=7AHKaFPe+UXSKphSrsQ6J9Fagaou6FZRE+deigeqwHjxw@mail.gmail.com>
+Date:   Mon, 22 Dec 2014 11:47:58 +0900
+Message-ID: <CABHeg8swSW5T5cj2P_3W63CRk2TOVjRmP_YSGiMidDGSMH6XwQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: BMIPS: fix overwriting without setting the bit
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: multipart/alternative; boundary=001a11c131060a791e050ac5167e
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44889
+X-archive-position: 44890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,64 +54,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch has no functional changes, it just to keep the assembler
-code to a minimum. Files and functions naming is borrowed from X86.
+--001a11c131060a791e050ac5167e
+Content-Type: text/plain; charset=UTF-8
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/power/Makefile                         |    2 +-
- arch/mips/power/hibernate.c                      |   10 ++++++++++
- arch/mips/power/{hibernate.S => hibernate_asm.S} |    6 ++----
- 3 files changed, 13 insertions(+), 5 deletions(-)
- create mode 100644 arch/mips/power/hibernate.c
- rename arch/mips/power/{hibernate.S => hibernate_asm.S} (90%)
+2014-12-22 2:02 GMT+09:00 Kevin Cernekee <cernekee@gmail.com>:
 
-diff --git a/arch/mips/power/Makefile b/arch/mips/power/Makefile
-index 73d56b8..70bd788 100644
---- a/arch/mips/power/Makefile
-+++ b/arch/mips/power/Makefile
-@@ -1 +1 @@
--obj-$(CONFIG_HIBERNATION) += cpu.o hibernate.o
-+obj-$(CONFIG_HIBERNATION) += cpu.o hibernate.o hibernate_asm.o
-diff --git a/arch/mips/power/hibernate.c b/arch/mips/power/hibernate.c
-new file mode 100644
-index 0000000..19a9af6
---- /dev/null
-+++ b/arch/mips/power/hibernate.c
-@@ -0,0 +1,10 @@
-+#include <asm/tlbflush.h>
-+
-+extern int restore_image(void);
-+
-+int swsusp_arch_resume(void)
-+{
-+	/* Avoid TLB mismatch during and after kernel resume */
-+	local_flush_tlb_all();
-+	return restore_image();
-+}
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate_asm.S
-similarity index 90%
-rename from arch/mips/power/hibernate.S
-rename to arch/mips/power/hibernate_asm.S
-index e7567c8..b1fab95 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate_asm.S
-@@ -29,9 +29,7 @@ LEAF(swsusp_arch_suspend)
- 	j swsusp_save
- END(swsusp_arch_suspend)
- 
--LEAF(swsusp_arch_resume)
--	/* Avoid TLB mismatch during and after kernel resume */
--	jal local_flush_tlb_all
-+LEAF(restore_image)
- 	PTR_L t0, restore_pblist
- 0:
- 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
-@@ -60,4 +58,4 @@ LEAF(swsusp_arch_resume)
- 	PTR_L s7, PT_R23(t0)
- 	PTR_LI v0, 0x0
- 	jr ra
--END(swsusp_arch_resume)
-+END(restore_image)
--- 
-1.7.7.3
+> On Sun, Dec 21, 2014 at 2:41 AM, Florian Fainelli <f.fainelli@gmail.com>
+> wrote:
+> > 2014-12-19 2:40 GMT-08:00 Jaedon Shin <jaedon.shin@gmail.com>:
+> >> To flush to readahead cache, set 8th bit in the RAC_CONFIG.
+> >>
+> >> The previous commit "MIPS: BMIPS: Flush the readahead cache after DMA"
+> >> has a problem overwriting to the original other configuration values.
+> >
+> > Right, after the the first write we would basically disable the RAC
+> entirely.
+> >
+> >>
+> >> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+> >
+> > Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+>
+> This looks fine to me, but I am not sure if any of Ralf's trees
+> actually contain my buggy commit yet.  Which branch did you use as a
+> baseline?
+>
+> Anyway:
+>
+> Acked-by: Kevin Cernekee <cernekee@gmail.com>
+>
+
+I was mistaken. Not the content in the Ralf's trees.
+I'll wait until the next Cernekee's BMIPS commits.
+
+And, pleases note the following about the BCM7358 and BCM7362
+https://github.com/jaedon/linux/tree/bmips/brcmstb-v1
+
+--001a11c131060a791e050ac5167e
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><span style=3D"font-family:arial,sans-serif">2014-12-22 2:=
+02 GMT+09:00 Kevin Cernekee </span><span dir=3D"ltr">&lt;<a href=3D"mailto:=
+cernekee@gmail.com" target=3D"_blank">cernekee@gmail.com</a>&gt;</span><spa=
+n style=3D"font-family:arial,sans-serif">:</span><br><div class=3D"gmail_ex=
+tra"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"=
+margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-color:rgb(204,20=
+4,204);border-left-style:solid;padding-left:1ex"><span class=3D"">On Sun, D=
+ec 21, 2014 at 2:41 AM, Florian Fainelli &lt;<a href=3D"mailto:f.fainelli@g=
+mail.com">f.fainelli@gmail.com</a>&gt; wrote:<br>
+&gt; 2014-12-19 2:40 GMT-08:00 Jaedon Shin &lt;<a href=3D"mailto:jaedon.shi=
+n@gmail.com">jaedon.shin@gmail.com</a>&gt;:<br>
+&gt;&gt; To flush to readahead cache, set 8th bit in the RAC_CONFIG.<br>
+&gt;&gt;<br>
+&gt;&gt; The previous commit &quot;MIPS: BMIPS: Flush the readahead cache a=
+fter DMA&quot;<br>
+&gt;&gt; has a problem overwriting to the original other configuration valu=
+es.<br>
+&gt;<br>
+&gt; Right, after the the first write we would basically disable the RAC en=
+tirely.<br>
+&gt;<br>
+&gt;&gt;<br>
+&gt;&gt; Signed-off-by: Jaedon Shin &lt;<a href=3D"mailto:jaedon.shin@gmail=
+.com">jaedon.shin@gmail.com</a>&gt;<br>
+&gt;<br>
+&gt; Acked-by: Florian Fainelli &lt;<a href=3D"mailto:f.fainelli@gmail.com"=
+>f.fainelli@gmail.com</a>&gt;<br>
+<br>
+</span>This looks fine to me, but I am not sure if any of Ralf&#39;s trees<=
+br>
+actually contain my buggy commit yet.=C2=A0 Which branch did you use as a<b=
+r>
+baseline?<br>
+<br>
+Anyway:<br>
+<br>
+Acked-by: Kevin Cernekee &lt;<a href=3D"mailto:cernekee@gmail.com">cernekee=
+@gmail.com</a>&gt;<br>
+</blockquote></div><br></div><div class=3D"gmail_extra">I was mistaken. Not=
+ the content in the Ralf&#39;s trees.</div><div class=3D"gmail_extra">I&#39=
+;ll wait until the next=C2=A0Cernekee&#39;s BMIPS commits.</div><div class=
+=3D"gmail_extra"><br></div><div class=3D"gmail_extra">And, pleases note the=
+ following about the BCM7358 and BCM7362</div><div class=3D"gmail_extra"><a=
+ href=3D"https://github.com/jaedon/linux/tree/bmips/brcmstb-v1">https://git=
+hub.com/jaedon/linux/tree/bmips/brcmstb-v1</a></div></div>
+
+--001a11c131060a791e050ac5167e--

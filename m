@@ -1,47 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2014 18:08:53 +0100 (CET)
-Received: from mail-qg0-f48.google.com ([209.85.192.48]:44514 "EHLO
-        mail-qg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009683AbaLWRIvc9AyD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Dec 2014 18:08:51 +0100
-Received: by mail-qg0-f48.google.com with SMTP id f51so4792399qge.21;
-        Tue, 23 Dec 2014 09:08:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2014 18:37:54 +0100 (CET)
+Received: from mail-wi0-f182.google.com ([209.85.212.182]:54498 "EHLO
+        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009087AbaLWRhxah8YH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Dec 2014 18:37:53 +0100
+Received: by mail-wi0-f182.google.com with SMTP id h11so11485527wiw.15;
+        Tue, 23 Dec 2014 09:37:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=Q4Oo5X9tUYqp0OeN/YFttdWek9HXw8DK81xH4UB3fCQ=;
-        b=zPW0GGpL9/byF4Es8+VGnsN+988pY8L3y+emEuhr7lQU+Gi+is9Y7gdH5tcYAOzip7
-         49fGYBTuTu76NWbJgCwt4+9E44ZazITD58/8eXWXl1EJPJaeojzxVSa2Kb3i2zAywfBq
-         cBuW69V+uBVY+npvXKysAqfwMKIaUFkI8ZN3WftzB9MENtOOzkMRzdO7W66k0qkGaIbv
-         j2UC869nhixHrZKbQMBCUxqp+hFwC19l7luMi3uUi3DdJv5yAsk7p0p5B1JhHoHcairs
-         lnogv3k7xIpC9L3nB3gOvNBEvDhfXInN8mTY39vglfT0sya+2xpYN3cJ4281jcF9BOvo
-         80LQ==
-X-Received: by 10.140.38.114 with SMTP id s105mr10025763qgs.106.1419354525774;
- Tue, 23 Dec 2014 09:08:45 -0800 (PST)
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=iOgS/r43ZPe8lRj39q0f5ymr4DDy6AP5n0Hic2STUEA=;
+        b=E6Z6TsrCCVcn1+2kRoOuEhYVC1o6zKujKK1zRC13Zv8r9Ys4x1mFo+qg7pPK3K1g5A
+         RVKJaYXrnC5YAGSZbfnOYwavA7ic5eOXBqVFpVdxnE007Tll3H3aA+zwfrNUuOIFhNQ7
+         9PzOCIE5LQQscdT2NbjGnEB/7ZSex2Wowk5ruwkXCkKRbR1MRf4cEHrqp9UYFaRceb9S
+         Fx4PF1XN3Vkjl5jTgI5DEsMXvf9g8DwKyzrIFhlj/NUj8dLSXyJCMnnycL1xvFIoXSvb
+         ax5g8Z8B5U4jV3LR8bVtc5ovsO2aSGt8lriLBCdMgxH0GAz6hcwlANYIg2Sg4/JQ4NnD
+         r4rg==
 MIME-Version: 1.0
-Received: by 10.140.82.48 with HTTP; Tue, 23 Dec 2014 09:08:25 -0800 (PST)
-In-Reply-To: <1419353032-10340-1-git-send-email-abrestic@chromium.org>
-References: <1419353032-10340-1-git-send-email-abrestic@chromium.org>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Tue, 23 Dec 2014 09:08:25 -0800
-Message-ID: <CAJiQ=7AB46Dz5hPKRjZXkmcanf4KTfcry87Ai503xX6yQOE_VQ@mail.gmail.com>
-Subject: Re: [PATCH V2 1/2] MIPS: Move device-trees into vendor sub-directories
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+X-Received: by 10.181.13.75 with SMTP id ew11mr42614717wid.69.1419356268028;
+ Tue, 23 Dec 2014 09:37:48 -0800 (PST)
+Received: by 10.194.17.34 with HTTP; Tue, 23 Dec 2014 09:37:47 -0800 (PST)
+Date:   Tue, 23 Dec 2014 11:37:47 -0600
+Message-ID: <CACoURw7SaqXtipXQSgp-S0DHognza6W7y=tjUiEskqh8_UB6FA@mail.gmail.com>
+Subject: kconfig problem in 3.19-rc1
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44903
+X-archive-position: 44904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,15 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Dec 23, 2014 at 8:43 AM, Andrew Bresticker
-<abrestic@chromium.org> wrote:
-> Move the MIPS device-trees into the appropriate vendor sub-directories.
->
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> ---
-> Changes from v1:
->  - renamed bcm -> brcm
+When trying to build my .config file in 3.19-rc1, I receive the
+following error message:
 
-Thanks, this works for me.  For both patches in the series:
+$ make menuconfig
+scripts/kconfig/mconf Kconfig
+arch/mips/Kconfig:2681:error: recursive dependency detected!
+arch/mips/Kconfig:2681: symbol MIPS32_N32 depends on MIPS32_COMPAT
+arch/mips/Kconfig:2658: symbol MIPS32_COMPAT is selected by MIPS32_N32
 
-Tested-by: Kevin Cernekee <cernekee@gmail.com>
+  This seems to have been introduced in commit f92b81f,
+MIPS: Compat: Fix build error if CONFIG_MIPS32_COMPAT but no compat ABI.
+
+Shane McDonald

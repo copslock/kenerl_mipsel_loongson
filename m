@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Dec 2014 19:02:45 +0100 (CET)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:64968 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009911AbaLYR5hvkEaB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Dec 2014 18:57:37 +0100
-Received: by mail-pa0-f45.google.com with SMTP id lf10so12055861pab.32;
-        Thu, 25 Dec 2014 09:57:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Dec 2014 19:03:03 +0100 (CET)
+Received: from mail-pa0-f43.google.com ([209.85.220.43]:36025 "EHLO
+        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009910AbaLYR5iAAeDj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Dec 2014 18:57:38 +0100
+Received: by mail-pa0-f43.google.com with SMTP id kx10so12085868pab.30;
+        Thu, 25 Dec 2014 09:57:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=/bHq3DzB/TNL5wfbfg5glvJhJqp0s9ax6XR4orH2hEg=;
-        b=LrhnDEy2X5qooslmU1TrvzUcTmcVF1NmnhJ33FU42XnyrE1ZlRCkMzzS1NaebTliUo
-         OdWK63haZSlr/kdZUr0wLD9LCfyxnJJJN4Xf0E66YBaNSGUpupX7AsBMOPObQ0xyQNRU
-         33L52EbRzXxtKhcvdN8AlFx1j+i9hxJZi/37IBaOmn3G1MWDrEDVayUDUy7JFUzyE3ZM
-         sJ9Cp3CfnFhe1FHmYW+OSsVyf70q7Eoo00K7M7rjgQg7slbpQpfmsJmT4+7OmT/q/5/F
-         RgG2FK0qbjYU4E1MWlAzM8WqEcI2+OBulgY8cTqIkswPCzxMHcIhIrDovVdjOpRGuOOq
-         6KNw==
-X-Received: by 10.66.136.137 with SMTP id qa9mr61665822pab.129.1419530249759;
-        Thu, 25 Dec 2014 09:57:29 -0800 (PST)
+        bh=iYYcx961bm19nwI1nhVK7FUU6+08FxyJJ4wkUJHca4I=;
+        b=EliAfOWN+u6M9cahCwoHDFAemGd9ajytlDNLLt2f64F6bC0DqjZoI6WFuz9JTcTZhr
+         wEw/8PFqr6ARhhdlgUwED+EjdMwgvog/stTdVTqcimpLyHEXjwhBaeZlQMaYCHViAC+D
+         gE6mVrNfH0J9p2rxp86LCN5Sov44guspaBwhrJTTpCyfFMSIPU+TZE2wDhxCeCXBzF/I
+         C2/cVsm0+2S7uiGq84Gj3Q+HQn86OP5QrkX5Gdy4aoFlLedvIUW1/et74w9aSKZWFSR9
+         bPjK9ASa+jOA8M6F/mn3o5rBHLhfiIRro+ss/C3LQzAmB6y7/oB6Q6m7uwO1DQMAPiuq
+         ifJQ==
+X-Received: by 10.66.100.234 with SMTP id fb10mr158586pab.103.1419530251299;
+        Thu, 25 Dec 2014 09:57:31 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id e9sm25964046pdp.59.2014.12.25.09.57.28
+        by mx.google.com with ESMTPSA id e9sm25964046pdp.59.2014.12.25.09.57.29
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 25 Dec 2014 09:57:29 -0800 (PST)
+        Thu, 25 Dec 2014 09:57:30 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, jaedon.shin@gmail.com, abrestic@chromium.org,
@@ -28,9 +28,9 @@ Cc:     f.fainelli@gmail.com, jaedon.shin@gmail.com, abrestic@chromium.org,
         arnd@arndb.de, computersforpeace@gmail.com,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V6 19/25] MIPS: BMIPS: Add quirks for several Broadcom platforms
-Date:   Thu, 25 Dec 2014 09:49:14 -0800
-Message-Id: <1419529760-9520-20-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V6 20/25] MIPS: BMIPS: Delete the irqchip driver from irq.c
+Date:   Thu, 25 Dec 2014 09:49:15 -0800
+Message-Id: <1419529760-9520-21-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
 References: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
@@ -38,7 +38,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44929
+X-archive-position: 44930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,156 +55,232 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A couple of chips require special handling in order to make SMP secondary
-boot and/or exception vectors work correctly.  Take care of these in
-setup.c.
+BCM3384/BCM63xx can use the common drivers/irqchip/irq-bcm7120-l2.c for
+this purpose; BCM7xxx will use drivers/irqchip/irq-bcm7038-l1.c.  We no
+longer need this code under arch/mips.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- arch/mips/bmips/setup.c | 101 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 99 insertions(+), 2 deletions(-)
+ .../devicetree/bindings/mips/brcm/bcm3384-intc.txt |  37 ----
+ arch/mips/bmips/irq.c                              | 189 ++-------------------
+ 2 files changed, 17 insertions(+), 209 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mips/brcm/bcm3384-intc.txt
 
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index ac402ed..fae800e 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -8,9 +8,12 @@
+diff --git a/Documentation/devicetree/bindings/mips/brcm/bcm3384-intc.txt b/Documentation/devicetree/bindings/mips/brcm/bcm3384-intc.txt
+deleted file mode 100644
+index d4e0141..0000000
+diff --git a/arch/mips/bmips/irq.c b/arch/mips/bmips/irq.c
+index fd94fe8..14552e5 100644
+--- a/arch/mips/bmips/irq.c
++++ b/arch/mips/bmips/irq.c
+@@ -3,191 +3,36 @@
+  * under the terms of the GNU General Public License version 2 as published
+  * by the Free Software Foundation.
+  *
+- * Partially based on arch/mips/ralink/irq.c
+- *
+- * Copyright (C) 2009 Gabor Juhos <juhosg@openwrt.org>
+- * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
+- * Copyright (C) 2014 Kevin Cernekee <cernekee@gmail.com>
++ * Copyright (C) 2014 Broadcom Corporation
++ * Author: Kevin Cernekee <cernekee@gmail.com>
   */
  
- #include <linux/init.h>
-+#include <linux/bitops.h>
- #include <linux/bootmem.h>
- #include <linux/clk-provider.h>
- #include <linux/ioport.h>
-+#include <linux/kernel.h>
-+#include <linux/io.h>
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/of_platform.h>
-@@ -18,9 +21,92 @@
- #include <asm/addrspace.h>
+-#include <linux/io.h>
+-#include <linux/bitops.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_address.h>
+-#include <linux/of_irq.h>
+-#include <linux/irqdomain.h>
+-#include <linux/interrupt.h>
+-#include <linux/slab.h>
+-#include <linux/spinlock.h>
++#include <linux/of.h>
++#include <linux/irqchip.h>
+ 
  #include <asm/bmips.h>
- #include <asm/bootinfo.h>
-+#include <asm/cpu-type.h>
-+#include <asm/mipsregs.h>
- #include <asm/prom.h>
- #include <asm/smp-ops.h>
- #include <asm/time.h>
-+#include <asm/traps.h>
-+
-+#define RELO_NORMAL_VEC		BIT(18)
-+
-+#define REG_BCM6328_OTP		((void __iomem *)CKSEG1ADDR(0x1000062c))
-+#define BCM6328_TP1_DISABLED	BIT(9)
-+
-+static const unsigned long kbase = VMLINUX_LOAD_ADDRESS & 0xfff00000;
-+
-+struct bmips_quirk {
-+	const char		*compatible;
-+	void			(*quirk_fn)(void);
-+};
-+
-+static void kbase_setup(void)
-+{
-+	__raw_writel(kbase | RELO_NORMAL_VEC,
-+		     BMIPS_GET_CBR() + BMIPS_RELO_VECTOR_CONTROL_1);
-+	ebase = kbase;
-+}
-+
-+static void bcm3384_viper_quirks(void)
-+{
-+	/*
-+	 * Some experimental CM boxes are set up to let CM own the Viper TP0
-+	 * and let Linux own TP1.  This requires moving the kernel
-+	 * load address to a non-conflicting region (e.g. via
-+	 * CONFIG_PHYSICAL_START) and supplying an alternate DTB.
-+	 * If we detect this condition, we need to move the MIPS exception
-+	 * vectors up to an area that we own.
-+	 *
-+	 * This is distinct from the OTHER special case mentioned in
-+	 * smp-bmips.c (boot on TP1, but enable SMP, then TP0 becomes our
-+	 * logical CPU#1).  For the Viper TP1 case, SMP is off limits.
-+	 *
-+	 * Also note that many BMIPS435x CPUs do not have a
-+	 * BMIPS_RELO_VECTOR_CONTROL_1 register, so it isn't safe to just
-+	 * write VMLINUX_LOAD_ADDRESS into that register on every SoC.
-+	 */
-+	board_ebase_setup = &kbase_setup;
-+	bmips_smp_enabled = 0;
-+}
-+
-+static void bcm63xx_fixup_cpu1(void)
-+{
-+	/*
-+	 * The bootloader has set up the CPU1 reset vector at
-+	 * 0xa000_0200.
-+	 * This conflicts with the special interrupt vector (IV).
-+	 * The bootloader has also set up CPU1 to respond to the wrong
-+	 * IPI interrupt.
-+	 * Here we will start up CPU1 in the background and ask it to
-+	 * reconfigure itself then go back to sleep.
-+	 */
-+	memcpy((void *)0xa0000200, &bmips_smp_movevec, 0x20);
-+	__sync();
-+	set_c0_cause(C_SW0);
-+	cpumask_set_cpu(1, &bmips_booted_mask);
-+}
-+
-+static void bcm6328_quirks(void)
-+{
-+	/* Check CPU1 status in OTP (it is usually disabled) */
-+	if (__raw_readl(REG_BCM6328_OTP) & BCM6328_TP1_DISABLED)
-+		bmips_smp_enabled = 0;
-+	else
-+		bcm63xx_fixup_cpu1();
-+}
-+
-+static void bcm6368_quirks(void)
-+{
-+	bcm63xx_fixup_cpu1();
-+}
-+
-+static const struct bmips_quirk bmips_quirk_list[] = {
-+	{ "brcm,bcm3384-viper",		&bcm3384_viper_quirks		},
-+	{ "brcm,bcm33843-viper",	&bcm3384_viper_quirks		},
-+	{ "brcm,bcm6328",		&bcm6328_quirks			},
-+	{ "brcm,bcm6368",		&bcm6368_quirks			},
-+	{ },
-+};
- 
- void __init prom_init(void)
- {
-@@ -53,7 +139,8 @@ void __init plat_time_init(void)
- 
- void __init plat_mem_setup(void)
- {
--	void *dtb = __dtb_start;
-+	void *dtb;
-+	const struct bmips_quirk *q;
- 
- 	set_io_port_base(0);
- 	ioport_resource.start = 0;
-@@ -62,10 +149,20 @@ void __init plat_mem_setup(void)
- 	/* intended to somewhat resemble ARM; see Documentation/arm/Booting */
- 	if (fw_arg0 == 0 && fw_arg1 == 0xffffffff)
- 		dtb = phys_to_virt(fw_arg2);
-+	else if (__dtb_start != __dtb_end)
-+		dtb = (void *)__dtb_start;
-+	else
-+		panic("no dtb found");
- 
- 	__dt_setup_arch(dtb);
++#include <asm/irq.h>
+ #include <asm/irq_cpu.h>
+-#include <asm/mipsregs.h>
 -
- 	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
-+
-+	for (q = bmips_quirk_list; q->quirk_fn; q++) {
-+		if (of_flat_dt_is_compatible(of_get_flat_dt_root(),
-+					     q->compatible)) {
-+			q->quirk_fn();
-+		}
-+	}
+-/* INTC register offsets */
+-#define INTC_REG_ENABLE		0x00
+-#define INTC_REG_STATUS		0x04
+-
+-#define MAX_WORDS		2
+-#define IRQS_PER_WORD		32
+-
+-struct bcm3384_intc {
+-	int			n_words;
+-	void __iomem		*reg[MAX_WORDS];
+-	u32			enable[MAX_WORDS];
+-	spinlock_t		lock;
+-};
+-
+-static void bcm3384_intc_irq_unmask(struct irq_data *d)
+-{
+-	struct bcm3384_intc *priv = d->domain->host_data;
+-	unsigned long flags;
+-	int idx = d->hwirq / IRQS_PER_WORD;
+-	int bit = d->hwirq % IRQS_PER_WORD;
+-
+-	spin_lock_irqsave(&priv->lock, flags);
+-	priv->enable[idx] |= BIT(bit);
+-	__raw_writel(priv->enable[idx], priv->reg[idx] + INTC_REG_ENABLE);
+-	spin_unlock_irqrestore(&priv->lock, flags);
+-}
+-
+-static void bcm3384_intc_irq_mask(struct irq_data *d)
+-{
+-	struct bcm3384_intc *priv = d->domain->host_data;
+-	unsigned long flags;
+-	int idx = d->hwirq / IRQS_PER_WORD;
+-	int bit = d->hwirq % IRQS_PER_WORD;
+-
+-	spin_lock_irqsave(&priv->lock, flags);
+-	priv->enable[idx] &= ~BIT(bit);
+-	__raw_writel(priv->enable[idx], priv->reg[idx] + INTC_REG_ENABLE);
+-	spin_unlock_irqrestore(&priv->lock, flags);
+-}
+-
+-static struct irq_chip bcm3384_intc_irq_chip = {
+-	.name		= "INTC",
+-	.irq_unmask	= bcm3384_intc_irq_unmask,
+-	.irq_mask	= bcm3384_intc_irq_mask,
+-	.irq_mask_ack	= bcm3384_intc_irq_mask,
+-};
++#include <asm/time.h>
+ 
+ unsigned int get_c0_compare_int(void)
+ {
+ 	return CP0_LEGACY_COMPARE_IRQ;
  }
  
- void __init device_tree_init(void)
+-static void bcm3384_intc_irq_handler(unsigned int irq, struct irq_desc *desc)
+-{
+-	struct irq_domain *domain = irq_get_handler_data(irq);
+-	struct bcm3384_intc *priv = domain->host_data;
+-	unsigned long flags;
+-	unsigned int idx;
+-
+-	for (idx = 0; idx < priv->n_words; idx++) {
+-		unsigned long pending;
+-		int hwirq;
+-
+-		spin_lock_irqsave(&priv->lock, flags);
+-		pending = __raw_readl(priv->reg[idx] + INTC_REG_STATUS) &
+-			  priv->enable[idx];
+-		spin_unlock_irqrestore(&priv->lock, flags);
+-
+-		for_each_set_bit(hwirq, &pending, IRQS_PER_WORD) {
+-			generic_handle_irq(irq_find_mapping(domain,
+-					   hwirq + idx * IRQS_PER_WORD));
+-		}
+-	}
+-}
+-
+-asmlinkage void plat_irq_dispatch(void)
+-{
+-	unsigned long pending =
+-		(read_c0_status() & read_c0_cause() & ST0_IM) >> STATUSB_IP0;
+-	int bit;
+-
+-	for_each_set_bit(bit, &pending, 8)
+-		do_IRQ(MIPS_CPU_IRQ_BASE + bit);
+-}
+-
+-static int intc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+-{
+-	irq_set_chip_and_handler(irq, &bcm3384_intc_irq_chip, handle_level_irq);
+-	return 0;
+-}
+-
+-static const struct irq_domain_ops irq_domain_ops = {
+-	.xlate = irq_domain_xlate_onecell,
+-	.map = intc_map,
+-};
+-
+-static int __init ioremap_one_pair(struct bcm3384_intc *priv,
+-				   struct device_node *node,
+-				   int idx)
+-{
+-	struct resource res;
+-
+-	if (of_address_to_resource(node, idx, &res))
+-		return 0;
+-
+-	if (request_mem_region(res.start, resource_size(&res),
+-			       res.name) < 0)
+-		pr_err("Failed to request INTC register region\n");
+-
+-	priv->reg[idx] = ioremap_nocache(res.start, resource_size(&res));
+-	if (!priv->reg[idx])
+-		panic("Failed to ioremap INTC register range");
+-
+-	/* start up with everything masked before we hook the parent IRQ */
+-	__raw_writel(0, priv->reg[idx] + INTC_REG_ENABLE);
+-	priv->enable[idx] = 0;
+-
+-	return IRQS_PER_WORD;
+-}
+-
+-static int __init intc_of_init(struct device_node *node,
+-			       struct device_node *parent)
++void __init arch_init_irq(void)
+ {
+-	struct irq_domain *domain;
+-	unsigned int parent_irq, n_irqs = 0;
+-	struct bcm3384_intc *priv;
+-
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+-	if (!priv)
+-		panic("Failed to allocate bcm3384_intc struct");
+-
+-	spin_lock_init(&priv->lock);
+-
+-	parent_irq = irq_of_parse_and_map(node, 0);
+-	if (!parent_irq)
+-		panic("Failed to get INTC IRQ");
+-
+-	n_irqs += ioremap_one_pair(priv, node, 0);
+-	n_irqs += ioremap_one_pair(priv, node, 1);
+-
+-	if (!n_irqs)
+-		panic("Failed to map INTC registers");
++	struct device_node *dn;
+ 
+-	priv->n_words = n_irqs / IRQS_PER_WORD;
+-	domain = irq_domain_add_linear(node, n_irqs, &irq_domain_ops, priv);
+-	if (!domain)
+-		panic("Failed to add irqdomain");
++	/* Only the STB (bcm7038) controller supports SMP IRQ affinity */
++	dn = of_find_compatible_node(NULL, NULL, "brcm,bcm7038-l1-intc");
++	if (dn)
++		of_node_put(dn);
++	else
++		bmips_tp1_irqs = 0;
+ 
+-	irq_set_chained_handler(parent_irq, bcm3384_intc_irq_handler);
+-	irq_set_handler_data(parent_irq, domain);
+-
+-	return 0;
++	irqchip_init();
+ }
+ 
+-static struct of_device_id of_irq_ids[] __initdata = {
+-	{ .compatible = "mti,cpu-interrupt-controller",
+-	  .data = mips_cpu_irq_of_init },
+-	{ .compatible = "brcm,bcm3384-intc",
+-	  .data = intc_of_init },
+-	{},
+-};
+-
+-void __init arch_init_irq(void)
+-{
+-	bmips_tp1_irqs = 0;
+-	of_irq_init(of_irq_ids);
+-}
++OF_DECLARE_2(irqchip, mips_cpu_intc, "mti,cpu-interrupt-controller",
++	     mips_cpu_irq_of_init);
 -- 
 2.1.1

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Dec 2014 19:00:04 +0100 (CET)
-Received: from mail-pd0-f175.google.com ([209.85.192.175]:44220 "EHLO
-        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009889AbaLYR5VARCmK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Dec 2014 18:57:21 +0100
-Received: by mail-pd0-f175.google.com with SMTP id g10so11869293pdj.34;
-        Thu, 25 Dec 2014 09:57:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Dec 2014 19:00:20 +0100 (CET)
+Received: from mail-pd0-f169.google.com ([209.85.192.169]:45874 "EHLO
+        mail-pd0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006880AbaLYR5XEyjpK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Dec 2014 18:57:23 +0100
+Received: by mail-pd0-f169.google.com with SMTP id z10so11882420pdj.14;
+        Thu, 25 Dec 2014 09:57:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=yOMVfpk1BclZ1v0Ll0wO+pvqye6H539Z7BAGd1wbdM8=;
-        b=ldZeYjSybWTonm6MTaBxCWeorBHr3Y0ApU8bmiidcPOMb+9nvD9taSFJJcfTO9q0GR
-         fDrbdEwBZbm+RyFR6KJ9VKusPBJnUK6PQdo5UB/etXFeIdyX+um1YoNNbKgf7ZLMeUL+
-         uLIez4S63vzEkDpO+9ZVvzlYGnlGsUVZdVdVMUxKuUEmpWz25bwaB/3K8nWc/Ul3hrqG
-         M2y1CuwgSA96d2wW2aE360e/Tfo7jAFnwaGV4mJTZJQKJmretxFPBM6iTt8VElpnxOTg
-         TUpPg3XH5V8FAL+kZQWCEA7ucS8YEJH5XcPpyf+HuVYS+ZZmtsncU8WQTn0jV/SRrOkW
-         BHgA==
-X-Received: by 10.66.138.72 with SMTP id qo8mr63823975pab.84.1419530235382;
-        Thu, 25 Dec 2014 09:57:15 -0800 (PST)
+        bh=EE101E8cKhO5sjcXd1HD6yKPNP7uKdlbBMKSonxmmXQ=;
+        b=FYfH2HesK4XSYKcBXCUodrLyVwgtZsX2GZQg5a2c1AcAdtV9aTKMySTUBoAj6wubJt
+         DxCjZpZCcrhqYKlL+6y3Jf7I4KZ42eQl5N0c3XyFbNZACWSvvbIodwOlU8VT/MehtcYD
+         c2bObDwoqVAZOaV9F/0+Ru/fcrsuZ69uM2x4L8cuFFPVnIC+uWLHRM5Qz7ITsV3ifuKr
+         KAhKTNVakw4VJADA+D0zclOPMmbzn0aO+YyY7N/lGJXNV88RhsZviSlfz5z7PqfA+kF4
+         UbtD3MjRY02EFJVEbqEb7E9e2wCkYozOzJEYtYdLjvq9dxKw0ATV1enz2wcTifzuiqaN
+         jgXg==
+X-Received: by 10.66.184.175 with SMTP id ev15mr29931135pac.78.1419530237250;
+        Thu, 25 Dec 2014 09:57:17 -0800 (PST)
 Received: from localhost (b32.net. [192.81.132.72])
-        by mx.google.com with ESMTPSA id e9sm25964046pdp.59.2014.12.25.09.57.13
+        by mx.google.com with ESMTPSA id e9sm25964046pdp.59.2014.12.25.09.57.15
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 25 Dec 2014 09:57:14 -0800 (PST)
+        Thu, 25 Dec 2014 09:57:16 -0800 (PST)
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     ralf@linux-mips.org
 Cc:     f.fainelli@gmail.com, jaedon.shin@gmail.com, abrestic@chromium.org,
@@ -28,9 +28,9 @@ Cc:     f.fainelli@gmail.com, jaedon.shin@gmail.com, abrestic@chromium.org,
         arnd@arndb.de, computersforpeace@gmail.com,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH V6 10/25] irqchip: bcm7120-l2: Add support for BCM3380-style controllers
-Date:   Thu, 25 Dec 2014 09:49:05 -0800
-Message-Id: <1419529760-9520-11-git-send-email-cernekee@gmail.com>
+Subject: [PATCH V6 11/25] irqchip: Add new driver for BCM7038-style level 1 interrupt controllers
+Date:   Thu, 25 Dec 2014 09:49:06 -0800
+Message-Id: <1419529760-9520-12-git-send-email-cernekee@gmail.com>
 X-Mailer: git-send-email 2.1.1
 In-Reply-To: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
 References: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
@@ -38,7 +38,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44920
+X-archive-position: 44921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,149 +55,459 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-These controllers support multiple enable/status pairs (64+ IRQs),
-can put the enable/status words at different offsets, and do not
-support multiple parent IRQs.
+This is the main peripheral IRQ controller on the BCM7xxx MIPS chips;
+it has the following characteristics:
+
+ - 64 to 160+ level IRQs
+ - Atomic set/clear registers
+ - Reasonably predictable register layout (N status words, then N
+   mask status words, then N mask set words, then N mask clear words)
+ - SMP affinity supported on most systems
+ - Typically connected to MIPS IRQ 2,3,2,3 on CPUs 0,1,2,3
+
+This driver registers one IRQ domain and one IRQ chip to cover all
+instances of the block.  Up to 4 instances of the block may appear, as
+it supports 4-way IRQ affinity on BCM7435.
+
+The same block exists on the ARM BCM7xxx chips, but typically the ARM GIC
+is used instead.  So this driver is primarily intended for MIPS STB chips.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- .../interrupt-controller/brcm,bcm3380-l2-intc.txt  | 41 ++++++++++++++++
- drivers/irqchip/irq-bcm7120-l2.c                   | 55 ++++++++++++++++++++--
- 2 files changed, 92 insertions(+), 4 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/brcm,bcm3380-l2-intc.txt
+ .../interrupt-controller/brcm,bcm7038-l1-intc.txt  |  52 ++++
+ drivers/irqchip/Kconfig                            |   5 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-bcm7038-l1.c                   | 335 +++++++++++++++++++++
+ 4 files changed, 393 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
+ create mode 100644 drivers/irqchip/irq-bcm7038-l1.c
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm3380-l2-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm3380-l2-intc.txt
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
 new file mode 100644
-index 0000000..8f48aad
+index 0000000..cc217b2
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm3380-l2-intc.txt
-@@ -0,0 +1,41 @@
-+Broadcom BCM3380-style Level 1 / Level 2 interrupt controller
++++ b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
+@@ -0,0 +1,52 @@
++Broadcom BCM7038-style Level 1 interrupt controller
 +
-+This interrupt controller shows up in various forms on many BCM338x/BCM63xx
-+chipsets.  It has the following properties:
++This block is a first level interrupt controller that is typically connected
++directly to one of the HW INT lines on each CPU.  Every BCM7xxx set-top chip
++since BCM7038 has contained this hardware.
 +
-+- outputs a single interrupt signal to its interrupt controller parent
++Key elements of the hardware design include:
 +
-+- contains one or more enable/status word pairs, which often appear at
-+  different offsets in different blocks
++- 64, 96, 128, or 160 incoming level IRQ lines
 +
-+- no atomic set/clear operations
++- Most onchip peripherals are wired directly to an L1 input
++
++- A separate instance of the register set for each CPU, allowing individual
++  peripheral IRQs to be routed to any CPU
++
++- Atomic mask/unmask operations
++
++- No polarity/level/edge settings
++
++- No FIFO or priority encoder logic; software is expected to read all
++  2-5 status words to determine which IRQs are pending
 +
 +Required properties:
 +
-+- compatible: should be "brcm,bcm3380-l2-intc"
-+- reg: specifies one or more enable/status pairs, in the following format:
-+  <enable_reg 0x4 status_reg 0x4>...
++- compatible: should be "brcm,bcm7038-l1-intc"
++- reg: specifies the base physical address and size of the registers;
++  the number of supported IRQs is inferred from the size argument
 +- interrupt-controller: identifies the node as an interrupt controller
 +- #interrupt-cells: specifies the number of cells needed to encode an interrupt
 +  source, should be 1.
-+- interrupt-parent: specifies the phandle to the parent interrupt controller
++- interrupt-parent: specifies the phandle to the parent interrupt controller(s)
 +  this one is cascaded from
-+- interrupts: specifies the interrupt line in the interrupt-parent controller
-+  node, valid values depend on the type of parent interrupt controller
++- interrupts: specifies the interrupt line(s) in the interrupt-parent controller
++  node; valid values depend on the type of parent interrupt controller
 +
-+Optional properties:
-+
-+- brcm,irq-can-wake: if present, this means the L2 controller can be used as a
-+  wakeup source for system suspend/resume.
++If multiple reg ranges and interrupt-parent entries are present on an SMP
++system, the driver will allow IRQ SMP affinity to be set up through the
++/proc/irq/ interface.  In the simplest possible configuration, only one
++reg range and one interrupt-parent is needed.
 +
 +Example:
 +
-+irq0_intc: interrupt-controller@10000020 {
-+	compatible = "brcm,bcm3380-l2-intc";
-+	reg = <0x10000024 0x4 0x1000002c 0x4>,
-+	      <0x10000020 0x4 0x10000028 0x4>;
-+	interrupt-controller;
-+	#interrupt-cells = <1>;
-+	interrupt-parent = <&cpu_intc>;
-+	interrupts = <2>;
++periph_intc: periph_intc@1041a400 {
++        compatible = "brcm,bcm7038-l1-intc";
++        reg = <0x1041a400 0x30 0x1041a600 0x30>;
++
++        interrupt-controller;
++        #interrupt-cells = <1>;
++
++        interrupt-parent = <&cpu_intc>;
++        interrupts = <2>, <3>;
 +};
-diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index 6a62858..3ba5cc7 100644
---- a/drivers/irqchip/irq-bcm7120-l2.c
-+++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -14,6 +14,7 @@
- #include <linux/slab.h>
- #include <linux/module.h>
- #include <linux/kconfig.h>
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index cc79d2a..241a5b2 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -60,6 +60,11 @@ config ATMEL_AIC5_IRQ
+ 	select MULTI_IRQ_HANDLER
+ 	select SPARSE_IRQ
+ 
++config BCM7038_L1_IRQ
++	bool
++	select GENERIC_IRQ_CHIP
++	select IRQ_DOMAIN
++
+ config BCM7120_L2_IRQ
+ 	bool
+ 	select GENERIC_IRQ_CHIP
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index 9516a32..d72020f 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -37,6 +37,7 @@ obj-$(CONFIG_TB10X_IRQC)		+= irq-tb10x.o
+ obj-$(CONFIG_XTENSA)			+= irq-xtensa-pic.o
+ obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
+ obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
++obj-$(CONFIG_BCM7038_L1_IRQ)		+= irq-bcm7038-l1.o
+ obj-$(CONFIG_BCM7120_L2_IRQ)		+= irq-bcm7120-l2.o
+ obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o
+ obj-$(CONFIG_KEYSTONE_IRQ)		+= irq-keystone.o
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+new file mode 100644
+index 0000000..d3b8c8b
+--- /dev/null
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -0,0 +1,335 @@
++/*
++ * Broadcom BCM7038 style Level 1 interrupt controller driver
++ *
++ * Copyright (C) 2014 Broadcom Corporation
++ * Author: Kevin Cernekee
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#define pr_fmt(fmt)	KBUILD_MODNAME	": " fmt
++
++#include <linux/bitops.h>
++#include <linux/kconfig.h>
 +#include <linux/kernel.h>
- #include <linux/platform_device.h>
- #include <linux/of.h>
- #include <linux/of_irq.h>
-@@ -120,10 +121,15 @@ static int bcm7120_l2_intc_init_one(struct device_node *dn,
- 	/* For multiple parent IRQs with multiple words, this looks like:
- 	 * <irq0_w0 irq0_w1 irq1_w0 irq1_w1 ...>
- 	 */
--	for (idx = 0; idx < data->n_words; idx++)
--		data->irq_map_mask[idx] |=
--			be32_to_cpup(data->map_mask_prop +
--				     irq * data->n_words + idx);
-+	for (idx = 0; idx < data->n_words; idx++) {
-+		if (data->map_mask_prop) {
-+			data->irq_map_mask[idx] |=
-+				be32_to_cpup(data->map_mask_prop +
-+					     irq * data->n_words + idx);
-+		} else {
-+			data->irq_map_mask[idx] = 0xffffffff;
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/irq.h>
++#include <linux/irqdomain.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_irq.h>
++#include <linux/of_address.h>
++#include <linux/of_platform.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/smp.h>
++#include <linux/types.h>
++#include <linux/irqchip/chained_irq.h>
++
++#include "irqchip.h"
++
++#define IRQS_PER_WORD		32
++#define REG_BYTES_PER_IRQ_WORD	(sizeof(u32) * 4)
++#define MAX_WORDS		8
++
++struct bcm7038_l1_cpu;
++
++struct bcm7038_l1_chip {
++	raw_spinlock_t		lock;
++	unsigned int		n_words;
++	struct irq_domain	*domain;
++	struct bcm7038_l1_cpu	*cpus[NR_CPUS];
++	u8			affinity[MAX_WORDS * IRQS_PER_WORD];
++};
++
++struct bcm7038_l1_cpu {
++	void __iomem		*map_base;
++	u32			mask_cache[0];
++};
++
++/*
++ * STATUS/MASK_STATUS/MASK_SET/MASK_CLEAR are packed one right after another:
++ *
++ * 7038:
++ *   0x1000_1400: W0_STATUS
++ *   0x1000_1404: W1_STATUS
++ *   0x1000_1408: W0_MASK_STATUS
++ *   0x1000_140c: W1_MASK_STATUS
++ *   0x1000_1410: W0_MASK_SET
++ *   0x1000_1414: W1_MASK_SET
++ *   0x1000_1418: W0_MASK_CLEAR
++ *   0x1000_141c: W1_MASK_CLEAR
++ *
++ * 7445:
++ *   0xf03e_1500: W0_STATUS
++ *   0xf03e_1504: W1_STATUS
++ *   0xf03e_1508: W2_STATUS
++ *   0xf03e_150c: W3_STATUS
++ *   0xf03e_1510: W4_STATUS
++ *   0xf03e_1514: W0_MASK_STATUS
++ *   0xf03e_1518: W1_MASK_STATUS
++ *   [...]
++ */
++
++static inline unsigned int reg_status(struct bcm7038_l1_chip *intc,
++				      unsigned int word)
++{
++	return (0 * intc->n_words + word) * sizeof(u32);
++}
++
++static inline unsigned int reg_mask_status(struct bcm7038_l1_chip *intc,
++					   unsigned int word)
++{
++	return (1 * intc->n_words + word) * sizeof(u32);
++}
++
++static inline unsigned int reg_mask_set(struct bcm7038_l1_chip *intc,
++					unsigned int word)
++{
++	return (2 * intc->n_words + word) * sizeof(u32);
++}
++
++static inline unsigned int reg_mask_clr(struct bcm7038_l1_chip *intc,
++					unsigned int word)
++{
++	return (3 * intc->n_words + word) * sizeof(u32);
++}
++
++static inline u32 l1_readl(void __iomem *reg)
++{
++	if (IS_ENABLED(CONFIG_MIPS) && IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
++		return ioread32be(reg);
++	else
++		return readl(reg);
++}
++
++static inline void l1_writel(u32 val, void __iomem *reg)
++{
++	if (IS_ENABLED(CONFIG_MIPS) && IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
++		iowrite32be(val, reg);
++	else
++		writel(val, reg);
++}
++
++static void bcm7038_l1_irq_handle(unsigned int irq, struct irq_desc *desc)
++{
++	struct bcm7038_l1_chip *intc = irq_desc_get_handler_data(desc);
++	struct bcm7038_l1_cpu *cpu;
++	struct irq_chip *chip = irq_desc_get_chip(desc);
++	unsigned int idx;
++
++#ifdef CONFIG_SMP
++	cpu = intc->cpus[cpu_logical_map(smp_processor_id())];
++#else
++	cpu = intc->cpus[0];
++#endif
++
++	chained_irq_enter(chip, desc);
++
++	for (idx = 0; idx < intc->n_words; idx++) {
++		int base = idx * IRQS_PER_WORD;
++		unsigned long pending, flags;
++		int hwirq;
++
++		raw_spin_lock_irqsave(&intc->lock, flags);
++		pending = l1_readl(cpu->map_base + reg_status(intc, idx)) &
++			  ~cpu->mask_cache[idx];
++		raw_spin_unlock_irqrestore(&intc->lock, flags);
++
++		for_each_set_bit(hwirq, &pending, IRQS_PER_WORD) {
++			generic_handle_irq(irq_find_mapping(intc->domain,
++							    base + hwirq));
 +		}
 +	}
- 
- 	irq_set_handler_data(parent_irq, data);
- 	irq_set_chained_handler(parent_irq, bcm7120_l2_intc_irq_handle);
-@@ -165,6 +171,37 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
- 	return 0;
- }
- 
-+static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
-+					     struct bcm7120_l2_intc_data *data)
++
++	chained_irq_exit(chip, desc);
++}
++
++static void __bcm7038_l1_unmask(struct irq_data *d, unsigned int cpu_idx)
 +{
-+	unsigned int gc_idx;
++	struct bcm7038_l1_chip *intc = irq_data_get_irq_chip_data(d);
++	u32 word = d->hwirq / IRQS_PER_WORD;
++	u32 mask = BIT(d->hwirq % IRQS_PER_WORD);
 +
-+	for (gc_idx = 0; gc_idx < MAX_WORDS; gc_idx++) {
-+		unsigned int map_idx = gc_idx * 2;
-+		void __iomem *en = of_iomap(dn, map_idx + 0);
-+		void __iomem *stat = of_iomap(dn, map_idx + 1);
-+		void __iomem *base = min(en, stat);
++	intc->cpus[cpu_idx]->mask_cache[word] &= ~mask;
++	l1_writel(mask, intc->cpus[cpu_idx]->map_base +
++			reg_mask_clr(intc, word));
++}
 +
-+		data->map_base[map_idx + 0] = en;
-+		data->map_base[map_idx + 1] = stat;
++static void __bcm7038_l1_mask(struct irq_data *d, unsigned int cpu_idx)
++{
++	struct bcm7038_l1_chip *intc = irq_data_get_irq_chip_data(d);
++	u32 word = d->hwirq / IRQS_PER_WORD;
++	u32 mask = BIT(d->hwirq % IRQS_PER_WORD);
 +
-+		if (!base)
-+			break;
++	intc->cpus[cpu_idx]->mask_cache[word] |= mask;
++	l1_writel(mask, intc->cpus[cpu_idx]->map_base +
++			reg_mask_set(intc, word));
++}
 +
-+		data->pair_base[gc_idx] = base;
-+		data->en_offset[gc_idx] = en - base;
-+		data->stat_offset[gc_idx] = stat - base;
-+	}
++static void bcm7038_l1_unmask(struct irq_data *d)
++{
++	struct bcm7038_l1_chip *intc = irq_data_get_irq_chip_data(d);
++	unsigned long flags;
 +
-+	if (!gc_idx) {
-+		pr_err("unable to map registers\n");
-+		return -EINVAL;
-+	}
++	raw_spin_lock_irqsave(&intc->lock, flags);
++	__bcm7038_l1_unmask(d, intc->affinity[d->hwirq]);
++	raw_spin_unlock_irqrestore(&intc->lock, flags);
++}
 +
-+	data->n_words = gc_idx;
++static void bcm7038_l1_mask(struct irq_data *d)
++{
++	struct bcm7038_l1_chip *intc = irq_data_get_irq_chip_data(d);
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&intc->lock, flags);
++	__bcm7038_l1_mask(d, intc->affinity[d->hwirq]);
++	raw_spin_unlock_irqrestore(&intc->lock, flags);
++}
++
++static int bcm7038_l1_set_affinity(struct irq_data *d,
++				   const struct cpumask *dest,
++				   bool force)
++{
++	struct bcm7038_l1_chip *intc = irq_data_get_irq_chip_data(d);
++	unsigned long flags;
++	irq_hw_number_t hw = d->hwirq;
++	u32 word = hw / IRQS_PER_WORD;
++	u32 mask = BIT(hw % IRQS_PER_WORD);
++	unsigned int first_cpu = cpumask_any_and(dest, cpu_online_mask);
++	bool was_disabled;
++
++	raw_spin_lock_irqsave(&intc->lock, flags);
++
++	was_disabled = !!(intc->cpus[intc->affinity[hw]]->mask_cache[word] &
++			  mask);
++	__bcm7038_l1_mask(d, intc->affinity[hw]);
++	intc->affinity[hw] = first_cpu;
++	if (!was_disabled)
++		__bcm7038_l1_unmask(d, first_cpu);
++
++	raw_spin_unlock_irqrestore(&intc->lock, flags);
 +	return 0;
 +}
 +
- int __init bcm7120_l2_intc_probe(struct device_node *dn,
- 				 struct device_node *parent,
- 				 int (*iomap_regs_fn)(struct device_node *,
-@@ -279,5 +316,15 @@ int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
- 				     "BCM7120 L2");
- }
- 
-+int __init bcm7120_l2_intc_probe_3380(struct device_node *dn,
-+				      struct device_node *parent)
++static int __init bcm7038_l1_init_one(struct device_node *dn,
++				      unsigned int idx,
++				      struct bcm7038_l1_chip *intc)
 +{
-+	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_3380,
-+				     "BCM3380 L2");
++	struct resource res;
++	resource_size_t sz;
++	struct bcm7038_l1_cpu *cpu;
++	unsigned int i, n_words, parent_irq;
++
++	if (of_address_to_resource(dn, idx, &res))
++		return -EINVAL;
++	sz = resource_size(&res);
++	n_words = sz / REG_BYTES_PER_IRQ_WORD;
++
++	if (n_words > MAX_WORDS)
++		return -EINVAL;
++	else if (!intc->n_words)
++		intc->n_words = n_words;
++	else if (intc->n_words != n_words)
++		return -EINVAL;
++
++	cpu = intc->cpus[idx] = kzalloc(sizeof(*cpu) + n_words * sizeof(u32),
++					GFP_KERNEL);
++	if (!cpu)
++		return -ENOMEM;
++
++	cpu->map_base = ioremap(res.start, sz);
++	if (!cpu->map_base)
++		return -ENOMEM;
++
++	for (i = 0; i < n_words; i++) {
++		l1_writel(0xffffffff, cpu->map_base + reg_mask_set(intc, i));
++		cpu->mask_cache[i] = 0xffffffff;
++	}
++
++	parent_irq = irq_of_parse_and_map(dn, idx);
++	if (!parent_irq) {
++		pr_err("failed to map parent interrupt %d\n", parent_irq);
++		return -EINVAL;
++	}
++	irq_set_handler_data(parent_irq, intc);
++	irq_set_chained_handler(parent_irq, bcm7038_l1_irq_handle);
++
++	return 0;
 +}
 +
- IRQCHIP_DECLARE(bcm7120_l2_intc, "brcm,bcm7120-l2-intc",
- 		bcm7120_l2_intc_probe_7120);
++static struct irq_chip bcm7038_l1_irq_chip = {
++	.name			= "bcm7038-l1",
++	.irq_mask		= bcm7038_l1_mask,
++	.irq_unmask		= bcm7038_l1_unmask,
++	.irq_set_affinity	= bcm7038_l1_set_affinity,
++};
 +
-+IRQCHIP_DECLARE(bcm3380_l2_intc, "brcm,bcm3380-l2-intc",
-+		bcm7120_l2_intc_probe_3380);
++static int bcm7038_l1_map(struct irq_domain *d, unsigned int virq,
++			  irq_hw_number_t hw_irq)
++{
++	irq_set_chip_and_handler(virq, &bcm7038_l1_irq_chip, handle_level_irq);
++	irq_set_chip_data(virq, d->host_data);
++	return 0;
++}
++
++static const struct irq_domain_ops bcm7038_l1_domain_ops = {
++	.xlate			= irq_domain_xlate_onecell,
++	.map			= bcm7038_l1_map,
++};
++
++int __init bcm7038_l1_of_init(struct device_node *dn,
++			      struct device_node *parent)
++{
++	struct bcm7038_l1_chip *intc;
++	int idx, ret;
++
++	intc = kzalloc(sizeof(*intc), GFP_KERNEL);
++	if (!intc)
++		return -ENOMEM;
++
++	raw_spin_lock_init(&intc->lock);
++	for_each_possible_cpu(idx) {
++		ret = bcm7038_l1_init_one(dn, idx, intc);
++		if (ret < 0) {
++			if (idx)
++				break;
++			pr_err("failed to remap intc L1 registers\n");
++			goto out_free;
++		}
++	}
++
++	intc->domain = irq_domain_add_linear(dn, IRQS_PER_WORD * intc->n_words,
++					     &bcm7038_l1_domain_ops,
++					     intc);
++	if (!intc->domain) {
++		ret = -ENOMEM;
++		goto out_unmap;
++	}
++
++	pr_info("registered BCM7038 L1 intc (mem: 0x%p, IRQs: %d)\n",
++		intc->cpus[0]->map_base, IRQS_PER_WORD * intc->n_words);
++
++	return 0;
++
++out_unmap:
++	for_each_possible_cpu(idx) {
++		struct bcm7038_l1_cpu *cpu = intc->cpus[idx];
++
++		if (cpu) {
++			if (cpu->map_base)
++				iounmap(cpu->map_base);
++			kfree(cpu);
++		}
++	}
++out_free:
++	kfree(intc);
++	return ret;
++}
++
++IRQCHIP_DECLARE(bcm7038_l1, "brcm,bcm7038-l1-intc", bcm7038_l1_of_init);
 -- 
 2.1.1

@@ -1,45 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Dec 2014 00:23:55 +0100 (CET)
-Received: from resqmta-po-11v.sys.comcast.net ([96.114.154.170]:58188 "EHLO
-        resqmta-po-11v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009184AbaLZXXxWswgp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Dec 2014 00:23:53 +0100
-Received: from resomta-po-12v.sys.comcast.net ([96.114.154.236])
-        by resqmta-po-11v.sys.comcast.net with comcast
-        id YPPe1p00456HXL001PPlVt; Fri, 26 Dec 2014 23:23:45 +0000
-Received: from [192.168.1.13] ([76.100.35.31])
-        by resomta-po-12v.sys.comcast.net with comcast
-        id YPPj1p00M0gJalY01PPkvE; Fri, 26 Dec 2014 23:23:45 +0000
-Message-ID: <549DEDF4.7010405@gentoo.org>
-Date:   Fri, 26 Dec 2014 18:23:32 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] arch: mips: fw: arc: file.c:  Remove some unused functions
-References: <1419182212-9529-1-git-send-email-rickard_strandqvist@spectrumdigital.se>
-In-Reply-To: <1419182212-9529-1-git-send-email-rickard_strandqvist@spectrumdigital.se>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1419636225;
-        bh=zNruykocVAlIUH3gPFzYw+MGAA7YS+X8Zqv343ZzFPM=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=DQhaQlckhy9nCvbxoemB4mjOIwF+LRR/oCe3FXpFowim2mTZdZYCOxM1ddX+p1frV
-         wkbux0yALea/IrO0DzF6PYES5vF1iudAyl87quhsC17Fj9Eeaw0g6xOWNMxwV/JvzI
-         zubN9uhhz6KEW2ASE3xCf0cTSeNBbVD3yLXvG03WRxtupLr1ptFv8LwyEM86fhv1G1
-         jfBA4su0jeGpqsKVPMbM6A2qS9ZdtsINJRyW/k+bU/XUdeQol/9ZB1jxn5QV3SZ7El
-         384F+yR/1aO42r1ybncsIqqOQx+qTIpAaZnRFEo0sQlvSeLSNQmGJ60NkEKkPq4Wgq
-         JcAqhDO00V/6Q==
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Dec 2014 05:57:05 +0100 (CET)
+Received: from smtpbguseast2.qq.com ([54.204.34.130]:34366 "EHLO
+        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007866AbaL1E4tY0Ex- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Dec 2014 05:56:49 +0100
+X-QQ-mid: bizesmtp3t1419742587t008t187
+Received: from localhost.localdomain (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Sun, 28 Dec 2014 12:56:20 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FH42B00A0000000
+X-QQ-FEAT: rGijdusqze5kvMcU9gHmT63xjSZwBobIjXRj5/6JPdzUdvM0J2DZ3Orloa+Br
+        ZA5bqf6m/Idd3z39jgPX8KPKWrQR70ixn49hu2VdutbLauBHFK2da9qQmhS+VLUdIzp53Gp
+        /7Gx5eu7rzVwFDWbBxJ4AHoNDPq4OBfsnAyUKVcVNpdnVHzxDONOaTVnclOedo6OTNT8skm
+        ctuXgRIFMxQpzUzRclI5otg3KIqiGStI=
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>
+Subject: [PATCH V6 0/8] MIPS: Loongson-3: Improve kernel functionality
+Date:   Sun, 28 Dec 2014 12:56:16 +0800
+Message-Id: <1419742578-15047-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44936
+X-archive-position: 44938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,104 +48,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/21/2014 12:16, Rickard Strandqvist wrote:
-> Removes some functions that are not used anywhere:
-> ArcSetFileInformation() ArcGetFileInformation() ArcSeek()
-> ArcGetReadStatus() ArcClose() ArcOpen() ArcGetDirectoryEntry()
-> 
-> This was partially found by using a static code analysis program called cppcheck.
+This patchset is prepared for the next 3.20 release for Linux/MIPS. In
+this series we promote Loongson-3's ISA level to MIPS64R1 since it is
+not fully compatible with MIPS64R2. Multi-node DMA and coherent cache
+features are both added here. LEFI firmware interface is improved to
+make the kernel more generic (machtypes can be dropped). Besides, we
+add some basic platform drivers (GPIO, CPU Hwmon, ACPI init, oprofile,
+HPET and CPUFreq) for Loongson-3. 
 
-A lot of these functions are for the ARCS PROM used in SGI systems.  They might
-be unused functionally, but probably provide some kind of documentation on
-known ARCS internals.  Or maybe, one day, they'll have a purpose if we ever try
-to utilize ARCS for other things.
+V1 -> V2:
+1, Add a patch to fix Loongson's CCA setting.
+2, Rework the third patch.
+3, Rebase the code for 3.19.
 
---J
+V2 -> V3:
+1, Remove patches which have merged in upstream.
+2, Moving GPIO driver from arch/mips to drivers/gpio directory.
+3, Optimize cacheflush by moving cpu_has_coherent_cache checking from
+   local version to global version.
 
+V3 -> V4:
+1, Don't build CPU Hwmon driver unconditionally.
+2, Split the 2nd patch (Loongson GPIO driver) to two patches.
 
+V4 -> V5:
+1, Cleanup Loongson-2F's GPIO driver before move to drivers/gpio.
 
-> Signed-off-by: Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
-> ---
->  arch/mips/fw/arc/file.c |   43 -------------------------------------------
->  1 file changed, 43 deletions(-)
-> 
-> diff --git a/arch/mips/fw/arc/file.c b/arch/mips/fw/arc/file.c
-> index 49fd3ff..ebd69de 100644
-> --- a/arch/mips/fw/arc/file.c
-> +++ b/arch/mips/fw/arc/file.c
-> @@ -13,62 +13,19 @@
->  #include <asm/sgialib.h>
->  
->  LONG
-> -ArcGetDirectoryEntry(ULONG FileID, struct linux_vdirent *Buffer,
-> -		     ULONG N, ULONG *Count)
-> -{
-> -	return ARC_CALL4(get_vdirent, FileID, Buffer, N, Count);
-> -}
-> -
-> -LONG
-> -ArcOpen(CHAR *Path, enum linux_omode OpenMode, ULONG *FileID)
-> -{
-> -	return ARC_CALL3(open, Path, OpenMode, FileID);
-> -}
-> -
-> -LONG
-> -ArcClose(ULONG FileID)
-> -{
-> -	return ARC_CALL1(close, FileID);
-> -}
-> -
-> -LONG
->  ArcRead(ULONG FileID, VOID *Buffer, ULONG N, ULONG *Count)
->  {
->  	return ARC_CALL4(read, FileID, Buffer, N, Count);
->  }
->  
->  LONG
-> -ArcGetReadStatus(ULONG FileID)
-> -{
-> -	return ARC_CALL1(get_rstatus, FileID);
-> -}
-> -
-> -LONG
->  ArcWrite(ULONG FileID, PVOID Buffer, ULONG N, PULONG Count)
->  {
->  	return ARC_CALL4(write, FileID, Buffer, N, Count);
->  }
->  
->  LONG
-> -ArcSeek(ULONG FileID, struct linux_bigint *Position, enum linux_seekmode SeekMode)
-> -{
-> -	return ARC_CALL3(seek, FileID, Position, SeekMode);
-> -}
-> -
-> -LONG
->  ArcMount(char *name, enum linux_mountops op)
->  {
->  	return ARC_CALL2(mount, name, op);
->  }
-> -
-> -LONG
-> -ArcGetFileInformation(ULONG FileID, struct linux_finfo *Information)
-> -{
-> -	return ARC_CALL2(get_finfo, FileID, Information);
-> -}
-> -
-> -LONG ArcSetFileInformation(ULONG FileID, ULONG AttributeFlags,
-> -			   ULONG AttributeMask)
-> -{
-> -	return ARC_CALL3(set_finfo, FileID, AttributeFlags, AttributeMask);
-> -}
-> 
+V5 -> V6:
+1, Add perf support for Loongson-3.
+2, Rebase the code for 3.20.
 
+Huacai Chen(8):
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: perf: Add hardware perf events support for Loongson-3.
+ MIPS: Cleanup Loongson-2F's gpio driver.
+ MIPS: Move Loongson GPIO driver to drivers/gpio.
+ GPIO: Add Loongson-3A/3B GPIO driver support.
+ MIPS: Loongson-3: Add CPU Hwmon platform driver.
+ MIPS: Loongson-3: Add chipset ACPI platform driver.
+ MIPS: Loongson: Make CPUFreq usable for Loongson-3.
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+---
+ arch/mips/Kconfig                                  |    6 +-
+ arch/mips/configs/lemote2f_defconfig               |    1 +
+ arch/mips/configs/loongson3_defconfig              |    1 +
+ arch/mips/include/asm/cpu-features.h               |    3 +
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
+ arch/mips/include/asm/mach-loongson/gpio.h         |   15 +-
+ arch/mips/include/asm/mach-loongson/loongson.h     |    5 +
+ arch/mips/kernel/perf_event_mipsxx.c               |   71 ++++++
+ arch/mips/kernel/smp.c                             |    3 +-
+ arch/mips/loongson/Kconfig                         |    1 +
+ arch/mips/loongson/common/Makefile                 |    1 -
+ arch/mips/loongson/common/env.c                    |    9 +
+ arch/mips/loongson/common/gpio.c                   |  139 -----------
+ arch/mips/loongson/common/pci.c                    |    6 +
+ arch/mips/loongson/common/platform.c               |   13 +-
+ arch/mips/loongson/loongson-3/Makefile             |    2 +-
+ arch/mips/loongson/loongson-3/clock.c              |  191 ++++++++++++++++
+ arch/mips/mm/c-r4k.c                               |   21 ++
+ drivers/cpufreq/Kconfig                            |   15 ++
+ drivers/cpufreq/Makefile                           |    1 +
+ drivers/cpufreq/loongson3_cpufreq.c                |  240 ++++++++++++++++++++
+ drivers/gpio/Kconfig                               |    6 +
+ drivers/gpio/Makefile                              |    1 +
+ drivers/gpio/gpio-loongson.c                       |  129 +++++++++++
+ drivers/platform/Kconfig                           |    3 +
+ drivers/platform/Makefile                          |    1 +
+ drivers/platform/mips/Kconfig                      |   26 ++
+ drivers/platform/mips/Makefile                     |    2 +
+ drivers/platform/mips/acpi_init.c                  |  131 +++++++++++
+ drivers/platform/mips/cpu_hwmon.c                  |  206 +++++++++++++++++
+ 30 files changed, 1097 insertions(+), 153 deletions(-)
+ delete mode 100644 arch/mips/loongson/common/gpio.c
+ create mode 100644 arch/mips/loongson/loongson-3/clock.c
+ create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
+ create mode 100644 drivers/gpio/gpio-loongson.c
+ create mode 100644 drivers/platform/mips/Kconfig
+ create mode 100644 drivers/platform/mips/Makefile
+ create mode 100644 drivers/platform/mips/acpi_init.c
+ create mode 100644 drivers/platform/mips/cpu_hwmon.c
+--
+1.7.7.3

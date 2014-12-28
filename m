@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Dec 2014 05:57:30 +0100 (CET)
-Received: from smtpbg299.qq.com ([184.105.67.99]:45591 "EHLO smtpbg299.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Dec 2014 05:57:46 +0100 (CET)
+Received: from smtpbg320.qq.com ([14.17.32.29]:39384 "EHLO smtpbg320.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008662AbaL1E45KeWRw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 28 Dec 2014 05:56:57 +0100
-X-QQ-mid: bizesmtp3t1419742589t381t288
+        id S27007771AbaL1E5GiPbGC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 28 Dec 2014 05:57:06 +0100
+X-QQ-mid: bizesmtp3t1419742591t394t132
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Sun, 28 Dec 2014 12:56:28 +0800 (CST)
+        id ; Sun, 28 Dec 2014 12:56:30 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FH42B00A0000000
-X-QQ-FEAT: FRkVFvYdryUZHSQi04tlZUL+9F5N4xipt3K0en35Vyftw01lzl+EH04p25T94
-        GuQ8wXUz9G1hFYlVRPJpMzXH36Tpz6euyZ+Su0DAytuwIZvCbIfqNBrBYKsk9zlzfBpFPpr
-        CATcCK+H8Wy9DIDGzfVbUG4nemFTaRMD3wfDjOHF8h5cZIXl1XeUQQ4Xm1fuL0c6tkZvo2o
-        0n+n5wailInJZ3SLadeSkol58IFE7vH33g3TDlVHOLg==
+X-QQ-FEAT: bwgMLqpyqeJbn6ZQTZYrT31DKvf497Ki8dfGVA1nOctRp7cCw+Pu5C9klkrvd
+        6XpXCSoDSe/v3dPKO9W70WS9x4EFy0ZV4TCaW28Nih+C6xclJk42jLwoXsNKNJAuGCBD7Yb
+        3m3+Hhn/ZguWdetumGSZpgQR9x+Mf4ZWEGijGswjWqSYcV+qXturKouaNm/wXj1QkvmpRp/
+        trmZ2LgFbwDvu4VYHpxTn5xuM/ywR+SJbbMBmvO134w==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -19,22 +19,20 @@ Cc:     John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>
-Subject: [PATCH V6 1/8] MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature
-Date:   Sun, 28 Dec 2014 12:56:17 +0800
-Message-Id: <1419742578-15047-2-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V6 2/8] MIPS: perf: Add hardware perf events support for Loongson-3
+Date:   Sun, 28 Dec 2014 12:56:18 +0800
+Message-Id: <1419742578-15047-3-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1419742578-15047-1-git-send-email-chenhc@lemote.com>
 References: <1419742578-15047-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
-X-QQ-FName: E802D75E76B7477C80325CD65860812C
-X-QQ-LocalIP: 112.95.241.173
+X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44939
+X-archive-position: 44940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,136 +49,130 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
-feature named cpu_has_coherent_cache and use it to modify MIPS's cache
-flushing functions.
+This patch enable hardware performance counter support for Loongson-3's
+perf events.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Hongliang Tao <taohl@lemote.com>
 ---
- arch/mips/Kconfig                                  |    3 ++
- arch/mips/include/asm/cpu-features.h               |    3 ++
- .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
- arch/mips/mm/c-r4k.c                               |   21 ++++++++++++++++++++
- 4 files changed, 28 insertions(+), 0 deletions(-)
+ arch/mips/Kconfig                    |    2 +-
+ arch/mips/kernel/perf_event_mipsxx.c |   71 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 72 insertions(+), 1 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f4d6616..185d84a 100644
+index 185d84a..b40b9f1 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -1637,6 +1637,7 @@ config CPU_BMIPS5000
- config SYS_HAS_CPU_LOONGSON3
- 	bool
- 	select CPU_SUPPORTS_CPUFREQ
-+	select CPU_SUPPORTS_COHERENT_CACHE
+@@ -2286,7 +2286,7 @@ config NODES_SHIFT
  
- config SYS_HAS_CPU_LOONGSON2E
- 	bool
-@@ -1800,6 +1801,8 @@ config CPU_SUPPORTS_HUGEPAGES
- 	bool
- config CPU_SUPPORTS_UNCACHED_ACCELERATED
- 	bool
-+config CPU_SUPPORTS_COHERENT_CACHE
-+	bool
- config MIPS_PGD_C0_CONTEXT
- 	bool
- 	default y if 64BIT && CPU_MIPSR2 && !CPU_XLP
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 2897cfa..f20bf5a 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -148,6 +148,9 @@
- #ifndef cpu_has_pindexed_dcache
- #define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
- #endif
-+#ifndef cpu_has_coherent_cache
-+#define cpu_has_coherent_cache	0
-+#endif
- #ifndef cpu_has_local_ebase
- #define cpu_has_local_ebase	1
- #endif
-diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-index 6d69332..7efb191 100644
---- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-@@ -58,5 +58,6 @@
- #define cpu_has_local_ebase	0
+ config HW_PERF_EVENTS
+ 	bool "Enable hardware performance counter support for perf events"
+-	depends on PERF_EVENTS && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP)
++	depends on PERF_EVENTS && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP || CPU_LOONGSON3)
+ 	default y
+ 	help
+ 	  Enable hardware performance counter support for perf events. If
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 9466184..9efeb75 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -822,6 +822,13 @@ static const struct mips_perf_event mipsxxcore_event_map2
+ 	[PERF_COUNT_HW_BRANCH_MISSES] = { 0x27, CNTR_ODD, T },
+ };
  
- #define cpu_has_wsbh		IS_ENABLED(CONFIG_CPU_LOONGSON3)
-+#define cpu_has_coherent_cache	IS_ENABLED(CONFIG_CPU_SUPPORTS_COHERENT_CACHE)
- 
- #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index dd261df..5131b4d 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -420,6 +420,9 @@ static void r4k_blast_scache_setup(void)
- 
- static inline void local_r4k___flush_cache_all(void * args)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
++static const struct mips_perf_event loongson3_event_map[PERF_COUNT_HW_MAX] = {
++	[PERF_COUNT_HW_CPU_CYCLES] = { 0x00, CNTR_EVEN },
++	[PERF_COUNT_HW_INSTRUCTIONS] = { 0x00, CNTR_ODD },
++	[PERF_COUNT_HW_BRANCH_INSTRUCTIONS] = { 0x01, CNTR_EVEN },
++	[PERF_COUNT_HW_BRANCH_MISSES] = { 0x01, CNTR_ODD },
++};
 +
- 	switch (current_cpu_type()) {
- 	case CPU_LOONGSON2:
- 	case CPU_LOONGSON3:
-@@ -447,6 +450,9 @@ static inline void local_r4k___flush_cache_all(void * args)
+ static const struct mips_perf_event octeon_event_map[PERF_COUNT_HW_MAX] = {
+ 	[PERF_COUNT_HW_CPU_CYCLES] = { 0x01, CNTR_ALL },
+ 	[PERF_COUNT_HW_INSTRUCTIONS] = { 0x03, CNTR_ALL },
+@@ -1005,6 +1012,61 @@ static const struct mips_perf_event mipsxxcore_cache_map2
+ },
+ };
  
- static void r4k___flush_cache_all(void)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
++static const struct mips_perf_event loongson3_cache_map
++				[PERF_COUNT_HW_CACHE_MAX]
++				[PERF_COUNT_HW_CACHE_OP_MAX]
++				[PERF_COUNT_HW_CACHE_RESULT_MAX] = {
++[C(L1D)] = {
++	/*
++	 * Like some other architectures (e.g. ARM), the performance
++	 * counters don't differentiate between read and write
++	 * accesses/misses, so this isn't strictly correct, but it's the
++	 * best we can do. Writes and reads get combined.
++	 */
++	[C(OP_READ)] = {
++		[C(RESULT_MISS)]        = { 0x04, CNTR_ODD },
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_MISS)]        = { 0x04, CNTR_ODD },
++	},
++},
++[C(L1I)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_MISS)]        = { 0x04, CNTR_EVEN },
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_MISS)]        = { 0x04, CNTR_EVEN },
++	},
++},
++[C(DTLB)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_MISS)]        = { 0x09, CNTR_ODD },
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_MISS)]        = { 0x09, CNTR_ODD },
++	},
++},
++[C(ITLB)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_MISS)]        = { 0x0c, CNTR_ODD },
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_MISS)]        = { 0x0c, CNTR_ODD },
++	},
++},
++[C(BPU)] = {
++	/* Using the same code for *HW_BRANCH* */
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]      = { 0x02, CNTR_EVEN },
++		[C(RESULT_MISS)]        = { 0x02, CNTR_ODD },
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]      = { 0x02, CNTR_EVEN },
++		[C(RESULT_MISS)]        = { 0x02, CNTR_ODD },
++	},
++},
++};
 +
- 	r4k_on_each_cpu(local_r4k___flush_cache_all, NULL);
- }
+ /* BMIPS5000 */
+ static const struct mips_perf_event bmips5000_cache_map
+ 				[PERF_COUNT_HW_CACHE_MAX]
+@@ -1539,6 +1601,10 @@ static const struct mips_perf_event *mipsxx_pmu_map_raw_event(u64 config)
+ 		else
+ 			raw_event.cntr_mask =
+ 				raw_id > 127 ? CNTR_ODD : CNTR_EVEN;
++		break;
++	case CPU_LOONGSON3:
++		raw_event.cntr_mask = raw_id > 127 ? CNTR_ODD : CNTR_EVEN;
++	break;
+ 	}
  
-@@ -493,6 +499,9 @@ static void r4k_flush_cache_range(struct vm_area_struct *vma,
- {
- 	int exec = vma->vm_flags & VM_EXEC;
- 
-+	if (cpu_has_coherent_cache)
-+		return;
-+
- 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
- 		r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
- }
-@@ -616,6 +625,9 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
- {
- 	struct flush_cache_page_args args;
- 
-+	if (cpu_has_coherent_cache)
-+		return;
-+
- 	args.vma = vma;
- 	args.addr = addr;
- 	args.pfn = pfn;
-@@ -625,11 +637,17 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
- 
- static inline void local_r4k_flush_data_cache_page(void * addr)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
-+
- 	r4k_blast_dcache_page((unsigned long) addr);
- }
- 
- static void r4k_flush_data_cache_page(unsigned long addr)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
-+
- 	if (in_atomic())
- 		local_r4k_flush_data_cache_page((void *)addr);
- 	else
-@@ -814,6 +832,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
- 
- static void r4k_flush_cache_sigtramp(unsigned long addr)
- {
-+	if (cpu_has_coherent_cache)
-+		return;
-+
- 	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
- }
- 
+ 	raw_event.event_id = base_id;
+@@ -1669,6 +1735,11 @@ init_hw_perf_events(void)
+ 		mipspmu.general_event_map = &mipsxxcore_event_map;
+ 		mipspmu.cache_event_map = &mipsxxcore_cache_map;
+ 		break;
++	case CPU_LOONGSON3:
++		mipspmu.name = "mips/loongson3";
++		mipspmu.general_event_map = &loongson3_event_map;
++		mipspmu.cache_event_map = &loongson3_cache_map;
++		break;
+ 	case CPU_CAVIUM_OCTEON:
+ 	case CPU_CAVIUM_OCTEON_PLUS:
+ 	case CPU_CAVIUM_OCTEON2:
 -- 
 1.7.7.3

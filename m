@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Dec 2014 05:58:20 +0100 (CET)
-Received: from smtpbgbr2.qq.com ([54.207.22.56]:49051 "EHLO smtpbgbr2.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Dec 2014 05:58:40 +0100 (CET)
+Received: from SMTPBG220.QQ.COM ([183.60.2.223]:47564 "EHLO smtpbg220.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008726AbaL1E6RB0uOx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 28 Dec 2014 05:58:17 +0100
-X-QQ-mid: bizesmtp7t1419742666t807t252
+        id S27009149AbaL1E6ZZ3KGz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 28 Dec 2014 05:58:25 +0100
+X-QQ-mid: bizesmtp7t1419742663t268t012
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Sun, 28 Dec 2014 12:57:46 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FI42B00A0000000
-X-QQ-FEAT: bUTPB8/q2mjtXgueK7Fdv1ZMyTgEvhGPJEpi16GkJzndPzTPI2xvJBQUH2TrF
-        Cvqq71RG9OfW7Zfjj0gUfPZxfGKdLzzYcqgWoVY68s+41vtfMKWErmC1drPaSbM/u/pMGWZ
-        cDCStAFb9zK2YoWadbbTeeBZeSrEgqbXg66k73M/v9YaLLDpoDbBM4MYxnC3ofI3Ur3d3QS
-        pOK6WcBvc/fvr3JmnczOzbkfVN62vNMmGjd50f8JZXw==
+        id ; Sun, 28 Dec 2014 12:57:39 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FH42B00B0000000
+X-QQ-FEAT: wto48VEmSUFDm1qkc5woiPNxbUsXMYLmOR5riGQNnH9uj4EpVKH5vjsDZ6AFC
+        QjJJDPhXNnFFXGO3sNrRGZJnS08llnDTTrsPMSRZf4if8TOAc88rx9zaEx8OjlW4dXex4ll
+        JWUCACcsYt8w3mkZBnQys6/dqrQeFm0iv+iTMmB4bEsfHozEqgICiuNHkMYxsQLs6DEwxhs
+        8Ih2wfnabnXcyQrcABAyAKKAiCShUzFRLCyCq306n4g==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,19 +20,17 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, linux-gpio@vger.kernel.org,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V6 5/8] GPIO: Add Loongson-3A/3B GPIO driver support
-Date:   Sun, 28 Dec 2014 12:57:34 +0800
-Message-Id: <1419742654-15094-3-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V6 3/8] MIPS: Cleanup Loongson-2F's gpio driver
+Date:   Sun, 28 Dec 2014 12:57:32 +0800
+Message-Id: <1419742654-15094-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1419742654-15094-1-git-send-email-chenhc@lemote.com>
-References: <1419742654-15094-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44942
+X-archive-position: 44943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,183 +47,167 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Improve Loongson-2's GPIO driver to support Loongson-3A/3B, and update
-Loongson-3's default config file.
+This cleanup is prepare to move the driver to drivers/gpio. Custom
+definitions of gpio_get_value()/gpio_set_value() are dropped.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/Kconfig                     |    1 +
- arch/mips/configs/loongson3_defconfig |    1 +
- drivers/gpio/Kconfig                  |    6 ++--
- drivers/gpio/gpio-loongson.c          |   52 +++++++++++++++++++-------------
- 4 files changed, 36 insertions(+), 24 deletions(-)
+ arch/mips/include/asm/mach-loongson/gpio.h |   15 +++---
+ arch/mips/loongson/common/gpio.c           |   82 +++++++++++-----------------
+ 2 files changed, 39 insertions(+), 58 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b40b9f1..1600907 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1236,6 +1236,7 @@ config CPU_LOONGSON3
- 	select CPU_SUPPORTS_HUGEPAGES
- 	select WEAK_ORDERING
- 	select WEAK_REORDERING_BEYOND_LLSC
-+	select ARCH_REQUIRE_GPIOLIB
- 	help
- 		The Loongson 3 processor implements the MIPS64R2 instruction
- 		set with many extensions.
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
-index 1c6191e..e7a9bb4 100644
---- a/arch/mips/configs/loongson3_defconfig
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -243,6 +243,7 @@ CONFIG_HW_RANDOM=y
- CONFIG_RAW_DRIVER=m
- CONFIG_I2C_CHARDEV=y
- CONFIG_I2C_PIIX4=y
-+CONFIG_GPIO_LOONGSON=y
- CONFIG_SENSORS_LM75=m
- CONFIG_SENSORS_LM93=m
- CONFIG_SENSORS_W83627HF=m
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 3ac5473..2e19f39 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -476,10 +476,10 @@ config GPIO_GRGPIO
- 	  VHDL IP core library.
- 
- config GPIO_LOONGSON
--	tristate "Loongson-2 GPIO support"
--	depends on CPU_LOONGSON2
-+	tristate "Loongson-2/3 GPIO support"
-+	depends on CPU_LOONGSON2 || CPU_LOONGSON3
- 	help
--	  driver for GPIO functionality on Loongson-2F processors.
-+	  driver for GPIO functionality on Loongson-2F/3A/3B processors.
- 
- config GPIO_TB10X
- 	bool
-diff --git a/drivers/gpio/gpio-loongson.c b/drivers/gpio/gpio-loongson.c
-index 087aac3..dc28354 100644
---- a/drivers/gpio/gpio-loongson.c
-+++ b/drivers/gpio/gpio-loongson.c
-@@ -1,8 +1,10 @@
+diff --git a/arch/mips/include/asm/mach-loongson/gpio.h b/arch/mips/include/asm/mach-loongson/gpio.h
+index 211a7b7..b3b2169 100644
+--- a/arch/mips/include/asm/mach-loongson/gpio.h
++++ b/arch/mips/include/asm/mach-loongson/gpio.h
+@@ -1,8 +1,9 @@
  /*
-- *  STLS2F GPIO Support
-+ *  Loongson-2F/3A/3B GPIO Support
+- * STLS2F GPIO Support
++ * Loongson GPIO Support
   *
-  *  Copyright (c) 2008 Richard Liu,  STMicroelectronics	 <richard.liu@st.com>
-  *  Copyright (c) 2008-2010 Arnaud Patard <apatard@mandriva.com>
-+ *  Copyright (c) 2013 Hongbing Hu <huhb@lemote.com>
-+ *  Copyright (c) 2014 Huacai Chen <chenhc@lemote.com>
+  * Copyright (c) 2008  Richard Liu, STMicroelectronics <richard.liu@st.com>
+  * Copyright (c) 2008-2010  Arnaud Patard <apatard@mandriva.com>
++ * Copyright (c) 2014  Huacai Chen <chenhc@lemote.com>
   *
-  *  This program is free software; you can redistribute it and/or modify
-  *  it under the terms of the GNU General Public License as published by
-@@ -20,16 +22,24 @@
- #include <linux/gpio.h>
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -10,14 +11,14 @@
+  * (at your option) any later version.
+  */
  
- #define STLS2F_N_GPIO		4
--#define STLS2F_GPIO_IN_OFFSET	16
-+#define STLS3A_N_GPIO		16
-+
-+#ifdef CONFIG_CPU_LOONGSON3
-+#define LOONGSON_N_GPIO	STLS3A_N_GPIO
-+#else
-+#define LOONGSON_N_GPIO	STLS2F_N_GPIO
-+#endif
-+
-+#define LOONGSON_GPIO_IN_OFFSET	16
+-#ifndef __STLS2F_GPIO_H
+-#define __STLS2F_GPIO_H
++#ifndef __LOONGSON_GPIO_H
++#define __LOONGSON_GPIO_H
+ 
+ #include <asm-generic/gpio.h>
+ 
+-extern void gpio_set_value(unsigned gpio, int value);
+-extern int gpio_get_value(unsigned gpio);
+-extern int gpio_cansleep(unsigned gpio);
++#define gpio_get_value __gpio_get_value
++#define gpio_set_value __gpio_set_value
++#define gpio_cansleep __gpio_cansleep
+ 
+ /* The chip can do interrupt
+  * but it has not been tested and doc not clear
+@@ -32,4 +33,4 @@ static inline int irq_to_gpio(int gpio)
+ 	return -EINVAL;
+ }
+ 
+-#endif				/* __STLS2F_GPIO_H */
++#endif	/* __LOONGSON_GPIO_H */
+diff --git a/arch/mips/loongson/common/gpio.c b/arch/mips/loongson/common/gpio.c
+index 29dbaa2..087aac3 100644
+--- a/arch/mips/loongson/common/gpio.c
++++ b/arch/mips/loongson/common/gpio.c
+@@ -24,55 +24,6 @@
  
  static DEFINE_SPINLOCK(gpio_lock);
  
--static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
-+static int loongson_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
- {
- 	u32 temp;
- 	u32 mask;
- 
+-int gpio_get_value(unsigned gpio)
+-{
+-	u32 val;
+-	u32 mask;
+-
 -	if (gpio >= STLS2F_N_GPIO)
-+	if (gpio >= LOONGSON_N_GPIO)
- 		return -EINVAL;
- 
- 	spin_lock(&gpio_lock);
-@@ -42,13 +52,13 @@ static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
- 	return 0;
- }
- 
--static int ls2f_gpio_direction_output(struct gpio_chip *chip,
-+static int loongson_gpio_direction_output(struct gpio_chip *chip,
- 		unsigned gpio, int level)
- {
- 	u32 temp;
- 	u32 mask;
- 
--	if (gpio >= STLS2F_N_GPIO)
-+	if (gpio >= LOONGSON_N_GPIO)
- 		return -EINVAL;
- 
- 	gpio_set_value(gpio, level);
-@@ -62,15 +72,15 @@ static int ls2f_gpio_direction_output(struct gpio_chip *chip,
- 	return 0;
- }
- 
--static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-+static int loongson_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
- {
- 	u32 val;
- 	u32 mask;
- 
--	if (gpio >= STLS2F_N_GPIO)
-+	if (gpio >= LOONGSON_N_GPIO)
- 		return __gpio_get_value(gpio);
- 
+-		return __gpio_get_value(gpio);
+-
 -	mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
-+	mask = 1 << (gpio + LOONGSON_GPIO_IN_OFFSET);
- 	spin_lock(&gpio_lock);
- 	val = LOONGSON_GPIODATA;
- 	spin_unlock(&gpio_lock);
-@@ -78,13 +88,13 @@ static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
- 	return (val & mask) != 0;
+-	spin_lock(&gpio_lock);
+-	val = LOONGSON_GPIODATA;
+-	spin_unlock(&gpio_lock);
+-
+-	return (val & mask) != 0;
+-}
+-EXPORT_SYMBOL(gpio_get_value);
+-
+-void gpio_set_value(unsigned gpio, int state)
+-{
+-	u32 val;
+-	u32 mask;
+-
+-	if (gpio >= STLS2F_N_GPIO) {
+-		__gpio_set_value(gpio, state);
+-		return ;
+-	}
+-
+-	mask = 1 << gpio;
+-
+-	spin_lock(&gpio_lock);
+-	val = LOONGSON_GPIODATA;
+-	if (state)
+-		val |= mask;
+-	else
+-		val &= (~mask);
+-	LOONGSON_GPIODATA = val;
+-	spin_unlock(&gpio_lock);
+-}
+-EXPORT_SYMBOL(gpio_set_value);
+-
+-int gpio_cansleep(unsigned gpio)
+-{
+-	if (gpio < STLS2F_N_GPIO)
+-		return 0;
+-	else
+-		return __gpio_cansleep(gpio);
+-}
+-EXPORT_SYMBOL(gpio_cansleep);
+-
+ static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
+ {
+ 	u32 temp;
+@@ -113,13 +64,41 @@ static int ls2f_gpio_direction_output(struct gpio_chip *chip,
+ 
+ static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+ {
+-	return gpio_get_value(gpio);
++	u32 val;
++	u32 mask;
++
++	if (gpio >= STLS2F_N_GPIO)
++		return __gpio_get_value(gpio);
++
++	mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
++	spin_lock(&gpio_lock);
++	val = LOONGSON_GPIODATA;
++	spin_unlock(&gpio_lock);
++
++	return (val & mask) != 0;
  }
  
--static void ls2f_gpio_set_value(struct gpio_chip *chip,
-+static void loongson_gpio_set_value(struct gpio_chip *chip,
+ static void ls2f_gpio_set_value(struct gpio_chip *chip,
  		unsigned gpio, int value)
  {
- 	u32 val;
- 	u32 mask;
- 
--	if (gpio >= STLS2F_N_GPIO) {
-+	if (gpio >= LOONGSON_N_GPIO) {
- 		__gpio_set_value(gpio, value);
- 		return;
- 	}
-@@ -101,19 +111,19 @@ static void ls2f_gpio_set_value(struct gpio_chip *chip,
- 	spin_unlock(&gpio_lock);
+-	gpio_set_value(gpio, value);
++	u32 val;
++	u32 mask;
++
++	if (gpio >= STLS2F_N_GPIO) {
++		__gpio_set_value(gpio, value);
++		return;
++	}
++
++	mask = 1 << gpio;
++
++	spin_lock(&gpio_lock);
++	val = LOONGSON_GPIODATA;
++	if (value)
++		val |= mask;
++	else
++		val &= (~mask);
++	LOONGSON_GPIODATA = val;
++	spin_unlock(&gpio_lock);
  }
  
--static struct gpio_chip ls2f_chip = {
--	.label			= "ls2f",
--	.direction_input	= ls2f_gpio_direction_input,
--	.get			= ls2f_gpio_get_value,
--	.direction_output	= ls2f_gpio_direction_output,
--	.set			= ls2f_gpio_set_value,
-+static struct gpio_chip loongson_chip = {
-+	.label                  = "Loongson-gpio-chip",
-+	.direction_input        = loongson_gpio_direction_input,
-+	.get                    = loongson_gpio_get_value,
-+	.direction_output       = loongson_gpio_direction_output,
-+	.set                    = loongson_gpio_set_value,
+ static struct gpio_chip ls2f_chip = {
+@@ -130,6 +109,7 @@ static struct gpio_chip ls2f_chip = {
+ 	.set			= ls2f_gpio_set_value,
  	.base			= 0,
--	.ngpio			= STLS2F_N_GPIO,
-+	.ngpio                  = LOONGSON_N_GPIO,
- 	.can_sleep		= false,
+ 	.ngpio			= STLS2F_N_GPIO,
++	.can_sleep		= false,
  };
  
--static int __init ls2f_gpio_setup(void)
-+static int __init loongson_gpio_setup(void)
- {
--	return gpiochip_add(&ls2f_chip);
-+	return gpiochip_add(&loongson_chip);
- }
--arch_initcall(ls2f_gpio_setup);
-+postcore_initcall(loongson_gpio_setup);
+ static int __init ls2f_gpio_setup(void)
 -- 
 1.7.7.3

@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Dec 2014 19:36:28 +0100 (CET)
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:34218 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007500AbaL1Sg13hM4I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Dec 2014 19:36:27 +0100
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 2501B81E5E; Sun, 28 Dec 2014 19:36:26 +0100 (CET)
-Date:   Sun, 28 Dec 2014 19:36:25 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-Cc:     Joe Perches <joe@perches.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Steven Miao <realmz6@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: rfc: remove early_printk from a few arches? (blackfin, m68k,
- mips)
-Message-ID: <20141228183625.GE3922@amd>
-References: <1418849927.28384.1.camel@perches.com>
- <alpine.DEB.2.11.1412190031530.17382@nanos>
- <1418951658.28384.20.camel@perches.com>
- <yw1x388ch0su.fsf@unicorn.mansr.com>
- <1418954914.25129.1.camel@perches.com>
- <yw1xy4q4exo9.fsf@unicorn.mansr.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Dec 2014 10:45:35 +0100 (CET)
+Received: from resqmta-po-04v.sys.comcast.net ([96.114.154.163]:32825 "EHLO
+        resqmta-po-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008756AbaLaJpdVrrul (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Dec 2014 10:45:33 +0100
+Received: from resomta-po-17v.sys.comcast.net ([96.114.154.241])
+        by resqmta-po-04v.sys.comcast.net with comcast
+        id a9lS1p0045Clt1L019lVdY; Wed, 31 Dec 2014 09:45:29 +0000
+Received: from [192.168.1.13] ([76.100.35.31])
+        by resomta-po-17v.sys.comcast.net with comcast
+        id a9lT1p0090gJalY019lU1w; Wed, 31 Dec 2014 09:45:29 +0000
+Message-ID: <54A3C5B2.8090501@gentoo.org>
+Date:   Wed, 31 Dec 2014 04:45:22 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <yw1xy4q4exo9.fsf@unicorn.mansr.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <pavel@ucw.cz>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Alessandro Zummo <a.zummo@towertech.it>,
+        Linux MIPS List <linux-mips@linux-mips.org>,
+        rtc-linux@googlegroups.com, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 02/02 resend] MIPS: IP32: Add platform data hooks to use
+ DS1685 driver
+References: <548B689A.1010007@gentoo.org> <20141215162957.GC26674@linux-mips.org>
+In-Reply-To: <20141215162957.GC26674@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1420019129;
+        bh=51CG2m/FeOAcb4f0rK7eUcfQHUjR7KZGIQGrGsPGenY=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=Vhli9dKXQVUorxt9gVppfiF0cmbCrUq6bQtRIrh83O0tDSPC36DkQvsu703z/kc4T
+         QlZpIQk+g6xLUfFCuD5TkY74UBZzVmhWXyS0nyA3PMJ7cAUwDchAAyEFE4Tr8p1Vvj
+         Qv2eMKBtDj+SuPbySTJ3LZzz7wRsv1KFB5jRWH7Ia3pPVxuJbWpAf67Q1sv5QqGelt
+         nTNxhsXpIpTz5NKhJmL6oQLOXSfzDbC7ROkX16uULZdu7AR2RiqJngrJI6dYhlmMX9
+         VuiwA7veWinRBtwK2VoLu9eKk6fMqkQO1F1uukHE01t7RmoSoBjhB4plFXuqURf6s7
+         8ZmVOnuhlz54Q==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44948
+X-archive-position: 44950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pavel@ucw.cz
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,41 +56,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri 2014-12-19 10:33:42, Måns Rullgård wrote:
-> Joe Perches <joe@perches.com> writes:
+On 12/15/2014 11:29, Ralf Baechle wrote:
+> On Fri, Dec 12, 2014 at 05:13:46PM -0500, Joshua Kinard wrote:
 > 
-> > On Fri, 2014-12-19 at 01:43 +0000, Måns Rullgård wrote:
-> >> What exactly are you proposing to remove?
-> >
-> > Optionally compile out
-> > kernel/printk/printk.c:early_printk()
-> > even if CONFIG_EARLY_PRINTK is enabled.
-> >
-> >> I see no unused code related
-> >> to early printk (in any variant) under arch/mips.
-> >
-> > I think there could be yet another CONFIG option
-> > to specifically enable the early_printk function
-> > for the arches that use it.
+>> This modifies the IP32 (SGI O2) platform and reset code to utilize the new
+>> rtc-ds1685 driver.  The old mc146818rtc.h header is removed and ip32_defconfig
+>> is updated as well.
+>>
+>> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+>> ---
+>>  arch/mips/configs/ip32_defconfig              |    3
+>>  arch/mips/include/asm/mach-ip32/mc146818rtc.h |   36 ----
+>>  arch/mips/sgi-ip32/ip32-platform.c            |   52 +++++-
+>>  arch/mips/sgi-ip32/ip32-reset.c               |  132 ++++------------
+>>  4 files changed, 85 insertions(+), 138 deletions(-)
+>>  delete mode 100644 arch/mips/include/asm/mach-ip32/mc146818rtc.h
+>>
+>> Ralf,
+>>
+>>   Similar to Maciej's DEC/RTC patches from a few months ago, this patch
+>> requires the rtc-ds1685 driver be added upstream first before this can go into
+>> into the LMO tree.  If you can queue this someplace until that makes it in,
+>> that would be great.  Thanks!
 > 
-> Why bother?  On MIPS it would save 132 bytes of compiled code.
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 > 
-> > The kernel/printk/early_printk() function seems
-> > used only by arm/microblaze/tile/x86.
+> Alessandro,
 > 
-> Rather than introduce more config complexity, you could try to remove
-> the 7 remaining uses of early_printk().
+> I don't think there is much of a chance of this patch conflicting with
+> others so feel free to funnel this through the RTC tree.  Or I carry
+> both patches - I don't care which way.
 > 
-> - arch/arm/mach-socfpga
->   Single early_printk("Early printk initialized\n") call serving no
->   apparent purpose can probably be safely deleted.  Since there are no
->   other early_printk() calls, this information seems rather useless.
+> Cheers,
+> 
+>   Ralf
 
-Feel free to do that, but please keep early_printk() available...
+I haven't seen any reaction or feedback from Alessandro or the rtc-linux
+upstream yet.  What are the odds these two patches can go in under the MIPS
+tree?  If so, would it be queued for 3.20 or 3.21?
 
-...so that I can debug the socfpga early boot when needed.
+Thanks!,
 
-								Pavel
 -- 
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28

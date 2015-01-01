@@ -1,40 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jan 2015 20:09:11 +0100 (CET)
-Received: from mail-we0-f177.google.com ([74.125.82.177]:51292 "EHLO
-        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009333AbbAATJJr00AN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Jan 2015 20:09:09 +0100
-Received: by mail-we0-f177.google.com with SMTP id q59so3658551wes.22
-        for <linux-mips@linux-mips.org>; Thu, 01 Jan 2015 11:09:04 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jan 2015 20:13:39 +0100 (CET)
+Received: from mail-wg0-f44.google.com ([74.125.82.44]:39718 "EHLO
+        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009693AbbAATNieBEEZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Jan 2015 20:13:38 +0100
+Received: by mail-wg0-f44.google.com with SMTP id b13so23342406wgh.3
+        for <linux-mips@linux-mips.org>; Thu, 01 Jan 2015 11:13:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=xpdeFvvi4fFljDTIoeIOebYiVQjtm+BU6UsEslepRwo=;
-        b=VmOqw48x8p3zM7pmefN7++MSYGbTEsipzAoHn9OjlPwPHK9a249tb9yhMCP3zppGpF
-         XkDPrGTUTEucYTw4qMVBLX1K7ZiGxl524qdOc88ChulAhXAMeM+AF3XYGtDXXrnFC/QQ
-         OxPCbHr8Z2ML20fCxa9MzF6fx5zEn9XA4dfX6H//t9JaXKvkjqoJs9LHjl0TaIKRvrxw
-         6aix5ibtgMiIHUDDZsARc4YbY+JhcXrmv6/37boDXucW4ZjtcBLyY1kKV/KCnaESUG89
-         dUodiULIRAKwzVa8aY8XQqIpKIyohpG6kg7uvkhLl5dV4ju7Gn3Fln7R/Is5KePyTQUy
-         cnLg==
-X-Gm-Message-State: ALoCoQmbUI3a3n4Jj51ATfNc12dL3hokN39fZOuOy+ZP5jx9Euf8mtVLUYlBFG1k2Kcvg8NAyIR6
-X-Received: by 10.180.84.98 with SMTP id x2mr123791471wiy.14.1420139344456;
-        Thu, 01 Jan 2015 11:09:04 -0800 (PST)
+        bh=puEtE4KqJzRiX9VH+rOz1M1iFr4xLiaipNcOY4bWCvg=;
+        b=E98LtxmoMN2vspaqKdYxC+JfGTkn63agQ/iEXtYBCInrkKSGYz78LCF9U5jdQGY6po
+         8MZweD/uxuXexI356jhOicu7FQOVjapDlLRD9Y589aFWMBUCfSRbQqfj092HBQf1i69n
+         N6jcxyhWN2nbCofjvAsYKXkbNvSbXXxgFTU95bGBs1RFgMwszXwf/o5zzzmVXrZsv7JR
+         2kR3JO6V+WIGpyZ5JCgrbhcKKychI2w1hkhRU6tQqdC885ZRXQqbE7vk4tkLnYLTPXas
+         kBgvDP2wQ7P0zAJY1hPwEsXqyAaQsh7qwFpUYUwRLwA3+y6fuB8lAbXh8f4k3qEwGOZY
+         9oFA==
+X-Gm-Message-State: ALoCoQmJTvla4rUxOEYlZgY5YlLdSYE61TpGjzis4VQ0FCXGNSMWvRUXJgCoanUt4t8c1qXUHxjY
+X-Received: by 10.180.12.75 with SMTP id w11mr128770680wib.9.1420139613291;
+        Thu, 01 Jan 2015 11:13:33 -0800 (PST)
 Received: from localhost.localdomain (h-246-111.a218.priv.bahnhof.se. [85.24.246.111])
-        by mx.google.com with ESMTPSA id w3sm11634294wjf.3.2015.01.01.11.09.03
+        by mx.google.com with ESMTPSA id gf6sm62111111wjc.11.2015.01.01.11.13.31
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 01 Jan 2015 11:09:03 -0800 (PST)
+        Thu, 01 Jan 2015 11:13:32 -0800 (PST)
 From:   Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Markos Chandras <markos.chandras@imgtec.com>
 Cc:     Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] arch: mips: ath79: gpio:  Remove some unused functions
-Date:   Thu,  1 Jan 2015 20:12:05 +0100
-Message-Id: <1420139525-2833-1-git-send-email-rickard_strandqvist@spectrumdigital.se>
+        "David S. Miller" <davem@davemloft.net>,
+        Alexei Starovoitov <ast@plumgrid.com>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Hannes Frederic Sowa <hannes@stressinduktion.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] arch: mips: net: bpf_jit:  Remove unused function
+Date:   Thu,  1 Jan 2015 20:16:34 +0100
+Message-Id: <1420139794-3417-1-git-send-email-rickard_strandqvist@spectrumdigital.se>
 X-Mailer: git-send-email 1.7.10.4
 Return-Path: <rickard.strandqvist@spctrm.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44957
+X-archive-position: 44958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,50 +56,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Removes some functions that are not used anywhere:
-ath79_gpio_function_disable() ath79_gpio_function_enable()
+Remove the function emit_daddiu() that is not used anywhere.
 
 This was partially found by using a static code analysis program called cppcheck.
 
 Signed-off-by: Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
 ---
- arch/mips/ath79/common.h |    2 --
- arch/mips/ath79/gpio.c   |   10 ----------
- 2 files changed, 12 deletions(-)
+ arch/mips/net/bpf_jit.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/mips/ath79/common.h b/arch/mips/ath79/common.h
-index a312071..9eb841a 100644
---- a/arch/mips/ath79/common.h
-+++ b/arch/mips/ath79/common.h
-@@ -24,8 +24,6 @@ unsigned long ath79_get_sys_clk_rate(const char *id);
- 
- void ath79_ddr_wb_flush(unsigned int reg);
- 
--void ath79_gpio_function_enable(u32 mask);
--void ath79_gpio_function_disable(u32 mask);
- void ath79_gpio_function_setup(u32 set, u32 clear);
- void ath79_gpio_init(void);
- 
-diff --git a/arch/mips/ath79/gpio.c b/arch/mips/ath79/gpio.c
-index 8d025b0..d0a5d92 100644
---- a/arch/mips/ath79/gpio.c
-+++ b/arch/mips/ath79/gpio.c
-@@ -168,16 +168,6 @@ void ath79_gpio_function_setup(u32 set, u32 clear)
- 	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
+diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+index 9b55143..5b942f8 100644
+--- a/arch/mips/net/bpf_jit.c
++++ b/arch/mips/net/bpf_jit.c
+@@ -231,16 +231,6 @@ static inline void emit_ori(unsigned int dst, unsigned src, u32 imm,
+ 	}
  }
  
--void ath79_gpio_function_enable(u32 mask)
+-static inline void emit_daddiu(unsigned int dst, unsigned int src,
+-			       int imm, struct jit_ctx *ctx)
 -{
--	ath79_gpio_function_setup(mask, 0);
+-	/*
+-	 * Only used for stack, so the imm is relatively small
+-	 * and it fits in 15-bits
+-	 */
+-	emit_instr(ctx, daddiu, dst, src, imm);
 -}
 -
--void ath79_gpio_function_disable(u32 mask)
--{
--	ath79_gpio_function_setup(0, mask);
--}
--
- void __init ath79_gpio_init(void)
+ static inline void emit_addiu(unsigned int dst, unsigned int src,
+ 			      u32 imm, struct jit_ctx *ctx)
  {
- 	int err;
 -- 
 1.7.10.4

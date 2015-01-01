@@ -1,47 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jan 2015 20:15:29 +0100 (CET)
-Received: from mail-we0-f182.google.com ([74.125.82.182]:51565 "EHLO
-        mail-we0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009687AbbAATP1Xk7X8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Jan 2015 20:15:27 +0100
-Received: by mail-we0-f182.google.com with SMTP id w62so3690080wes.41
-        for <linux-mips@linux-mips.org>; Thu, 01 Jan 2015 11:15:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=H+IidVuIKki2Dk+GBkxWEXVqS9MHld2PPF+RPgCEHPQ=;
-        b=BAwHxzmlulsL029SDECq5swiyHo6MZVRr5One361JeoVCY7t0hGiWCjGswV2OOrS1O
-         2DdsB2gTDx+g5HdM5lzYX+AP2sduKBGm7JbZOfvBwTfBy1CGMf5OZKNo46ioLgorcBbQ
-         CFcnFv0u0TJo81Fqaq4ObuJ4k5BmlbhcFmCn39+ATcd1JGvNg93zm105yjehsooYjNwh
-         O0lu/F8it34XUNJoNnQnrtXmhO16aeiOwXdqcfx96hdV2GqoDg352pYpwC93ivMQQr8d
-         3V3FhluoyS5gUPXUOLaUcbWz9bPDIOgWceM47jqGZJZrmmq5ysPaBlZNMFafJnpjIiKs
-         uZgQ==
-X-Gm-Message-State: ALoCoQkjKWDcpohpolMjuM3uUvrbnHUu06Lgk95m2M9FXLNf7CUCwkSuFwBaNyEFuzUukvSuWklm
-X-Received: by 10.194.87.100 with SMTP id w4mr144212566wjz.65.1420139721633;
-        Thu, 01 Jan 2015 11:15:21 -0800 (PST)
-Received: from localhost.localdomain (h-246-111.a218.priv.bahnhof.se. [85.24.246.111])
-        by mx.google.com with ESMTPSA id h8sm51608217wiy.17.2015.01.01.11.15.20
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 01 Jan 2015 11:15:21 -0800 (PST)
-From:   Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>,
-        John Crispin <blogic@openwrt.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] arch: mips: mm: page:  Remove unused function
-Date:   Thu,  1 Jan 2015 20:18:22 +0100
-Message-Id: <1420139902-3776-1-git-send-email-rickard_strandqvist@spectrumdigital.se>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <rickard.strandqvist@spctrm.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jan 2015 20:34:28 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4731 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009333AbbAATe0uKe67 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Jan 2015 20:34:26 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 41AA084AA6171;
+        Thu,  1 Jan 2015 19:34:17 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 1 Jan
+ 2015 19:34:20 +0000
+Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
+ bamail02.ba.imgtec.org ([::1]) with mapi id 14.03.0174.001; Thu, 1 Jan 2015
+ 11:34:17 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        "John Crispin" <blogic@openwrt.org>,
+        James Hogan <James.Hogan@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] arch: mips: kernel: traps:  Remove some unused functions
+Thread-Topic: [PATCH] arch: mips: kernel: traps:  Remove some unused
+ functions
+Thread-Index: AdAl+e3bJBj/Brmew0+e5CVv+GWfig==
+Date:   Thu, 1 Jan 2015 19:34:16 +0000
+Message-ID: <dwx6b40n6g9nofnhskqseq3h.1420140853072@email.android.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <163F68C90CE2D84EB4D28D0851E25839@imgtec.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44959
+X-archive-position: 44960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rickard_strandqvist@spectrumdigital.se
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,40 +56,5 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove the function sb1_dma_init() that is not used anywhere.
-
-This was partially found by using a static code analysis program called cppcheck.
-
-Signed-off-by: Rickard Strandqvist <rickard_strandqvist@spectrumdigital.se>
----
- arch/mips/mm/page.c |   15 ---------------
- 1 file changed, 15 deletions(-)
-
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index b611102..aa43df2 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -592,21 +592,6 @@ struct dmadscr {
- 	u64 pad_b;
- } ____cacheline_aligned_in_smp page_descr[DM_NUM_CHANNELS];
- 
--void sb1_dma_init(void)
--{
--	int i;
--
--	for (i = 0; i < DM_NUM_CHANNELS; i++) {
--		const u64 base_val = CPHYSADDR((unsigned long)&page_descr[i]) |
--				     V_DM_DSCR_BASE_RINGSZ(1);
--		void *base_reg = IOADDR(A_DM_REGISTER(i, R_DM_DSCR_BASE));
--
--		__raw_writeq(base_val, base_reg);
--		__raw_writeq(base_val | M_DM_DSCR_BASE_RESET, base_reg);
--		__raw_writeq(base_val | M_DM_DSCR_BASE_ENABL, base_reg);
--	}
--}
--
- void clear_page(void *page)
- {
- 	u64 to_phys = CPHYSADDR((unsigned long)page);
--- 
-1.7.10.4
+SXMgaXQgYSBOZXcgWWVhciBqb2tlPwoKRGlkIHlvdSB0cnkgdG8gYnVpbGQgdm1saW51eCBNSVBT
+IGJpbmFyeT8KCi0gTGVvbmlkCg==

@@ -1,37 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jan 2015 23:39:44 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.130]:60979 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014769AbbAEWjnDURXN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Jan 2015 23:39:43 +0100
-Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
- (mreue005) with ESMTPSA (Nemesis) id 0M9cAV-1XxaFz2zHj-00Cvhk; Mon, 05 Jan
- 2015 23:39:36 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        dmaengine@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-mmc@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH, RFC] MIPS: jz4740: use dma filter function
-Date:   Mon, 05 Jan 2015 23:39:35 +0100
-Message-ID: <22569458.nE7JkNNnz3@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2015 11:39:41 +0100 (CET)
+Received: from mail-pa0-f54.google.com ([209.85.220.54]:34019 "EHLO
+        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025647AbbAFKjkG799K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jan 2015 11:39:40 +0100
+Received: by mail-pa0-f54.google.com with SMTP id fb1so30788774pad.13;
+        Tue, 06 Jan 2015 02:39:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=bCGqhixga7JEilR2+DPaywj2/cyQ4HaTGfUNejd7oz0=;
+        b=cP2EISkpIWxhOmrS1gIDuGdDlhhihXfRgDrgLoleNlCVM+HxWoqROtKg3q3F7Y88sD
+         wVBC55gMTwZYi8zku7NPaFSmZJflxZZM/ZFSzFK4vxK2gPDKux+vTnj/fqz14pvAiMy0
+         zCkmNpRegthXZc7BFvbFhUdMkT5pDaTTALkgf+Ix+I91Geg/+5eE7zyVogS6tu6KYsdr
+         Bhx9YDrp9Iy6wDDTEBxbVwPheQDhEpidyv9SumqQyadYr6xNK8YxIIQkCej3S9Y6mhal
+         8qmaoOS6Xj5iNIqjvoaFyuplzJ1m4dpB4lPfKnynnQlVIm7RlNQxFHwOSqyJO9QjCbbY
+         qeTg==
+X-Received: by 10.68.233.170 with SMTP id tx10mr69055471pbc.89.1420540773742;
+        Tue, 06 Jan 2015 02:39:33 -0800 (PST)
+Received: from yggdrasil (111-243-150-104.dynamic.hinet.net. [111.243.150.104])
+        by mx.google.com with ESMTPSA id cf4sm56633243pbb.3.2015.01.06.02.39.31
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Jan 2015 02:39:32 -0800 (PST)
+Date:   Tue, 6 Jan 2015 18:39:28 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     ralf@linux-mips.org, macro@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Steven.Hill@imgtec.com,
+        Leonid.Yegoshin@imgtec.com
+Subject: [PATCH] MIPS: 74K/1074K: Fix typo in erratum workaround.
+Message-ID: <20150106183732-tung7970@googlemail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID:  V03:K0:OzkKx3cYm5t0cZsLKUSR+/Rt4LNTNZez6eMYES6w4c1dHi+gLb7
- Jt0J7qfHd6ZmE4vobvf7GfJS8QR8OblodAVByW6hHtujkd7YGh+8zDIFT3ZiBgpVVDqaOV2
- onrFV28Df6ulxrlce/vTeewU5R0OzayjhYEM8SOq7tIg5Hry4GEZLwD1xIB+Vh2SO5XTJiA
- GVlKER/5B4vkG65FW8BQA==
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44966
+X-archive-position: 44967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,181 +54,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-As discussed on the topic of shmobile DMA today, jz4740 is the only
-user of the slave_id field in dma_slave_config besides shmobile. This
-use is really incompatible with the way that other drivers use the
-dmaengine API, so we should get rid of it.
+In commit 9213ad (MIPS: 74K/1074K: Correct erratum workaround.),
+MIPS_CACHE_VTAG should go to icache.flags.
 
-This adds a trivial filter function that uses the filter param to
-pass the dma type, and uses that in both drivers.
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-With this patch and the respective shmobile change, we can remove the
-slave_id field from dma_slave_config.
-
-To make the drivers more generic, another patch would be required
-that passes the filter function and the argument through platform_data,
-but that can be done later.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/include/asm/mach-jz4740/dma.h |  7 +++++++
- drivers/dma/dma-jz4740.c                | 11 +++++++++--
- drivers/mmc/host/jz4740_mmc.c           |  8 ++++----
- sound/soc/jz4740/jz4740-i2s.c           | 18 ++++++++++++------
- 4 files changed, 32 insertions(+), 12 deletions(-)
-
-completely untested
-
-diff --git a/arch/mips/include/asm/mach-jz4740/dma.h b/arch/mips/include/asm/mach-jz4740/dma.h
-index 14ecc5313d2d..ece7e39cdacb 100644
---- a/arch/mips/include/asm/mach-jz4740/dma.h
-+++ b/arch/mips/include/asm/mach-jz4740/dma.h
-@@ -16,6 +16,13 @@
- #ifndef __ASM_MACH_JZ4740_DMA_H__
- #define __ASM_MACH_JZ4740_DMA_H__
- 
-+#include <linux/dmaengine.h>
-+
-+static inline bool jz4740_dma_filter_fn(struct dma_chan *chan, void *filter_param)
-+{
-+	chan->private = filter_param;
-+}
-+
- enum jz4740_dma_request_type {
- 	JZ4740_DMA_TYPE_AUTO_REQUEST	= 8,
- 	JZ4740_DMA_TYPE_UART_TRANSMIT	= 20,
-diff --git a/drivers/dma/dma-jz4740.c b/drivers/dma/dma-jz4740.c
-index bdeafeefa5f6..f02e60e8e5cc 100644
---- a/drivers/dma/dma-jz4740.c
-+++ b/drivers/dma/dma-jz4740.c
-@@ -119,6 +119,7 @@ struct jz4740_dma_desc {
- struct jz4740_dmaengine_chan {
- 	struct virt_dma_chan vchan;
- 	unsigned int id;
-+	unsigned int slave;
- 
- 	dma_addr_t fifo_addr;
- 	unsigned int transfer_shift;
-@@ -220,6 +221,11 @@ static int jz4740_dma_slave_config(struct dma_chan *c,
- 	enum jz4740_dma_flags flags;
- 	uint32_t cmd;
- 
-+	/* deprecated: all drivers should request the channel with
-+	 * the correct slave argument */
-+	if (!chan->slave)
-+		chan->slave = config->slave_id;
-+
- 	switch (config->direction) {
- 	case DMA_MEM_TO_DEV:
- 		flags = JZ4740_DMA_SRC_AUTOINC;
-@@ -265,8 +271,7 @@ static int jz4740_dma_slave_config(struct dma_chan *c,
- 
- 	jz4740_dma_write(dmadev, JZ_REG_DMA_CMD(chan->id), cmd);
- 	jz4740_dma_write(dmadev, JZ_REG_DMA_STATUS_CTRL(chan->id), 0);
--	jz4740_dma_write(dmadev, JZ_REG_DMA_REQ_TYPE(chan->id),
--		config->slave_id);
-+	jz4740_dma_write(dmadev, JZ_REG_DMA_REQ_TYPE(chan->id), chan->slave);
- 
- 	return 0;
- }
-@@ -513,6 +518,8 @@ static enum dma_status jz4740_dma_tx_status(struct dma_chan *c,
- 
- static int jz4740_dma_alloc_chan_resources(struct dma_chan *c)
- {
-+	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
-+	chan->slave = (unsigned long)c->private;
- 	return 0;
- }
- 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 76e8bce6f46e..a6680959ce83 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -178,13 +178,15 @@ static int jz4740_mmc_acquire_dma_channels(struct jz4740_mmc_host *host)
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
- 
--	host->dma_tx = dma_request_channel(mask, NULL, host);
-+	host->dma_tx = dma_request_channel(mask, jz4740_dma_filter_fn,
-+					   (void*)JZ4740_DMA_TYPE_MMC_TRANSMIT);
- 	if (!host->dma_tx) {
- 		dev_err(mmc_dev(host->mmc), "Failed to get dma_tx channel\n");
- 		return -ENODEV;
- 	}
- 
--	host->dma_rx = dma_request_channel(mask, NULL, host);
-+	host->dma_rx = dma_request_channel(mask, jz4740_dma_filter_fn,
-+					   (void*)JZ4740_DMA_TYPE_MMC_RECEIVE);
- 	if (!host->dma_rx) {
- 		dev_err(mmc_dev(host->mmc), "Failed to get dma_rx channel\n");
- 		goto free_master_write;
-@@ -283,12 +285,10 @@ static int jz4740_mmc_start_dma_transfer(struct jz4740_mmc_host *host,
- 	if (data->flags & MMC_DATA_WRITE) {
- 		conf.direction = DMA_MEM_TO_DEV;
- 		conf.dst_addr = host->mem_res->start + JZ_REG_MMC_TXFIFO;
--		conf.slave_id = JZ4740_DMA_TYPE_MMC_TRANSMIT;
- 		chan = host->dma_tx;
- 	} else {
- 		conf.direction = DMA_DEV_TO_MEM;
- 		conf.src_addr = host->mem_res->start + JZ_REG_MMC_RXFIFO;
--		conf.slave_id = JZ4740_DMA_TYPE_MMC_RECEIVE;
- 		chan = host->dma_rx;
- 	}
- 
-diff --git a/sound/soc/jz4740/jz4740-i2s.c b/sound/soc/jz4740/jz4740-i2s.c
-index d3d45c6f064f..7a60c075bd81 100644
---- a/sound/soc/jz4740/jz4740-i2s.c
-+++ b/sound/soc/jz4740/jz4740-i2s.c
-@@ -31,10 +31,12 @@
- #include <sound/initval.h>
- #include <sound/dmaengine_pcm.h>
- 
-+#include <asm/mach-jz4740/dma.h>
-+
- #include "jz4740-i2s.h"
- 
--#define JZ4740_DMA_TYPE_AIC_TRANSMIT 24
--#define JZ4740_DMA_TYPE_AIC_RECEIVE 25
-+#define JZ4740_DMA_TYPE_AIC_TRANSMIT (void *)24ul
-+#define JZ4740_DMA_TYPE_AIC_RECEIVE (void *)25ul
- 
- #define JZ_REG_AIC_CONF		0x00
- #define JZ_REG_AIC_CTRL		0x04
-@@ -337,13 +339,13 @@ static void jz4740_i2c_init_pcm_config(struct jz4740_i2s *i2s)
- 	/* Playback */
- 	dma_data = &i2s->playback_dma_data;
- 	dma_data->maxburst = 16;
--	dma_data->slave_id = JZ4740_DMA_TYPE_AIC_TRANSMIT;
-+	dma_data->filter_data = JZ4740_DMA_TYPE_AIC_TRANSMIT;
- 	dma_data->addr = i2s->phys_base + JZ_REG_AIC_FIFO;
- 
- 	/* Capture */
- 	dma_data = &i2s->capture_dma_data;
- 	dma_data->maxburst = 16;
--	dma_data->slave_id = JZ4740_DMA_TYPE_AIC_RECEIVE;
-+	dma_data->filter_data = JZ4740_DMA_TYPE_AIC_RECEIVE;
- 	dma_data->addr = i2s->phys_base + JZ_REG_AIC_FIFO;
- }
- 
-@@ -415,6 +417,10 @@ static const struct snd_soc_component_driver jz4740_i2s_component = {
- 	.name		= "jz4740-i2s",
- };
- 
-+static struct snd_dmaengine_pcm_config jz4740_i2s_pcm_config = {
-+	.filter_fn = jz4740_dma_filter_fn,
-+};
-+
- static int jz4740_i2s_dev_probe(struct platform_device *pdev)
- {
- 	struct jz4740_i2s *i2s;
-@@ -447,8 +453,8 @@ static int jz4740_i2s_dev_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	return devm_snd_dmaengine_pcm_register(&pdev->dev, NULL,
--		SND_DMAENGINE_PCM_FLAG_COMPAT);
-+	return devm_snd_dmaengine_pcm_register(&pdev->dev,
-+		jz4740_i2s_pcm_config, SND_DMAENGINE_PCM_FLAG_COMPAT);
- }
- 
- static struct platform_driver jz4740_i2s_driver = {
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index dd261df..deebd0b 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -902,13 +902,13 @@ static inline void alias_74k_erratum(struct cpuinfo_mips *c)
+ 	switch (imp) {
+ 	case PRID_IMP_74K:
+ 		if (rev <= PRID_REV_ENCODE_332(2, 4, 0))
+-			c->dcache.flags |= MIPS_CACHE_VTAG;
++			c->icache.flags |= MIPS_CACHE_VTAG;
+ 		if (rev == PRID_REV_ENCODE_332(2, 4, 0))
+ 			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+ 		break;
+ 	case PRID_IMP_1074K:
+ 		if (rev <= PRID_REV_ENCODE_332(1, 1, 0)) {
+-			c->dcache.flags |= MIPS_CACHE_VTAG;
++			c->icache.flags |= MIPS_CACHE_VTAG;
+ 			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+ 		}
+ 		break;

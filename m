@@ -1,59 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2015 13:50:39 +0100 (CET)
-Received: from mail-bn1bon0095.outbound.protection.outlook.com ([157.56.111.95]:11904
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27025950AbbAFMuhuphLS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Jan 2015 13:50:37 +0100
-Received: from alberich (2.164.65.37) by
- DM2PR07MB399.namprd07.prod.outlook.com (10.141.104.27) with Microsoft SMTP
- Server (TLS) id 15.1.49.12; Tue, 6 Jan 2015 12:50:28 +0000
-Date:   Tue, 6 Jan 2015 13:50:15 +0100
-From:   Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-To:     Greg KH <greg@kroah.com>
-CC:     Alan Stern <stern@rowland.harvard.edu>,
-        David Daney <david.daney@cavium.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-usb <linux-usb@vger.kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 2/2 resend v2] USB: host: Introduce flag to enable use of
- 64-bit dma_mask for ehci-platform
-Message-ID: <20150106125015.GC4194@alberich>
-References: <20141215132628.GA20109@alberich>
- <20150106124644.GA4194@alberich>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2015 13:51:55 +0100 (CET)
+Received: from smtp-out-106.synserver.de ([212.40.185.106]:1066 "EHLO
+        smtp-out-099.synserver.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27025953AbbAFMvxxx0il (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jan 2015 13:51:53 +0100
+Received: (qmail 7873 invoked by uid 0); 6 Jan 2015 12:51:53 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 7690
+Received: from ppp-88-217-3-222.dynamic.mnet-online.de (HELO ?192.168.178.23?) [88.217.3.222]
+  by 217.119.54.73 with AES128-SHA encrypted SMTP; 6 Jan 2015 12:51:51 -0000
+Message-ID: <54ABDA66.7040002@metafoo.de>
+Date:   Tue, 06 Jan 2015 13:51:50 +0100
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20150106124644.GA4194@alberich>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Originating-IP: [2.164.65.37]
-X-ClientProxiedBy: AMSPR04CA0039.eurprd04.prod.outlook.com (10.242.87.157) To
- DM2PR07MB399.namprd07.prod.outlook.com (10.141.104.27)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Andreas.Herrmann@caviumnetworks.com; 
-X-DmarcAction: None
-X-Microsoft-Antispam: UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(3005003);SRVR:DM2PR07MB399;
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004);SRVR:DM2PR07MB399;
-X-Forefront-PRVS: 0448A97BF2
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(199003)(189002)(62966003)(86362001)(50466002)(87976001)(101416001)(21056001)(40100003)(122386002)(120916001)(2950100001)(99396003)(50986999)(76176999)(54356999)(23676002)(20776003)(64706001)(47776003)(77156002)(66066001)(33716001)(107046002)(105586002)(31966008)(4396001)(97736003)(92566001)(110136001)(106356001)(33656002)(19580405001)(19580395003)(68736005)(77096005)(83506001)(46102003)(42186005)(229853001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM2PR07MB399;H:alberich;FPR:;SPF:None;MLV:sfv;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (protection.outlook.com: caviumnetworks.com does not
- designate permitted sender hosts)
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:DM2PR07MB399;
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2015 12:50:28.4743 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM2PR07MB399
-Return-Path: <Andreas.Herrmann@caviumnetworks.com>
+To:     =?windows-1252?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+CC:     Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, dmaengine@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-mmc@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH, RFC] MIPS: jz4740: use dma filter function
+References: <22569458.nE7JkNNnz3@wuerfel> <54ABBCE6.8060904@metafoo.de> <yw1xtx04f54r.fsf@unicorn.mansr.com>
+In-Reply-To: <yw1xtx04f54r.fsf@unicorn.mansr.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44973
+X-archive-position: 44974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.herrmann@caviumnetworks.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,78 +45,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ehci-octeon driver used a 64-bit dma_mask. With removal of ehci-octeon
-and usage of ehci-platform ehci dma_mask is now limited to 32 bits
-(coerced in ehci_platform_probe).
+On 01/06/2015 01:47 PM, Måns Rullgård wrote:
+> Lars-Peter Clausen <lars@metafoo.de> writes:
+>
+>> On 01/05/2015 11:39 PM, Arnd Bergmann wrote:
+>>> As discussed on the topic of shmobile DMA today, jz4740 is the only
+>>> user of the slave_id field in dma_slave_config besides shmobile. This
+>>> use is really incompatible with the way that other drivers use the
+>>> dmaengine API, so we should get rid of it.
+>>
+>> Do you have a link to that discussion?
+>>
+>>>
+>>> This adds a trivial filter function that uses the filter param to
+>>> pass the dma type, and uses that in both drivers.
+>>
+>> In my opinion that's just from bad to worse. Using filter functions
+>> isn't that great in the first place. And using them to pass data from
+>> the consumer to the DMA provider is just a horrible abuse of the API.
+>
+> It seems to me the only sane way to use the dmaengine API is in
+> conjunction with DT.
 
-Provide a flag in ehci platform data to allow use of 64 bits for
-dma_mask.
+At the moment yes. For non DT we need something like the gpiod lookup tables 
+that allow you to specify the assignment of the DMA channel in the machine 
+driver.
 
-Cc: David Daney <david.daney@cavium.com>
-Cc: Alex Smith <alex.smith@imgtec.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- arch/mips/cavium-octeon/octeon-platform.c |    4 +---
- drivers/usb/host/ehci-platform.c          |    3 ++-
- include/linux/usb/ehci_pdriver.h          |    1 +
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index eea60b6..12410a2 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -310,6 +310,7 @@ static struct usb_ehci_pdata octeon_ehci_pdata = {
- #ifdef __BIG_ENDIAN
- 	.big_endian_mmio	= 1,
- #endif
-+	.dma_mask_64	= 1,
- 	.power_on	= octeon_ehci_power_on,
- 	.power_off	= octeon_ehci_power_off,
- };
-@@ -331,8 +332,6 @@ static void __init octeon_ehci_hw_start(struct device *dev)
- 	octeon2_usb_clocks_stop();
- }
- 
--static u64 octeon_ehci_dma_mask = DMA_BIT_MASK(64);
--
- static int __init octeon_ehci_device_init(void)
- {
- 	struct platform_device *pd;
-@@ -347,7 +346,6 @@ static int __init octeon_ehci_device_init(void)
- 	if (!pd)
- 		return 0;
- 
--	pd->dev.dma_mask = &octeon_ehci_dma_mask;
- 	pd->dev.platform_data = &octeon_ehci_pdata;
- 	octeon_ehci_hw_start(&pd->dev);
- 
-diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
-index 29b244c..75631b9 100644
---- a/drivers/usb/host/ehci-platform.c
-+++ b/drivers/usb/host/ehci-platform.c
-@@ -155,7 +155,8 @@ static int ehci_platform_probe(struct platform_device *dev)
- 	if (!pdata)
- 		pdata = &ehci_platform_defaults;
- 
--	err = dma_coerce_mask_and_coherent(&dev->dev, DMA_BIT_MASK(32));
-+	err = dma_coerce_mask_and_coherent(&dev->dev,
-+		pdata->dma_mask_64 ? DMA_BIT_MASK(64) : DMA_BIT_MASK(32));
- 	if (err)
- 		return err;
- 
-diff --git a/include/linux/usb/ehci_pdriver.h b/include/linux/usb/ehci_pdriver.h
-index 7eb4dcd..f69529e 100644
---- a/include/linux/usb/ehci_pdriver.h
-+++ b/include/linux/usb/ehci_pdriver.h
-@@ -45,6 +45,7 @@ struct usb_ehci_pdata {
- 	unsigned	big_endian_desc:1;
- 	unsigned	big_endian_mmio:1;
- 	unsigned	no_io_watchdog:1;
-+	unsigned	dma_mask_64:1;
- 
- 	/* Turn on all power and clocks */
- 	int (*power_on)(struct platform_device *pdev);
--- 
-1.7.9.5
+- Lars

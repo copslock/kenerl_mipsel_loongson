@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2015 19:42:37 +0100 (CET)
-Received: from mail-ie0-f181.google.com ([209.85.223.181]:56511 "EHLO
-        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026740AbbAFSmfFR3TI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jan 2015 19:42:35 +0100
-Received: by mail-ie0-f181.google.com with SMTP id rl12so4289303iec.12;
-        Tue, 06 Jan 2015 10:42:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=o4kc4tiBQR0odSpPMHKi+cZb9JtPcYgvg7Cb8rbg88I=;
-        b=Nd4CnpgFMT1DnRMJ0L5RjWjJ5TvImnyZndkkYb8aVj4WfqpXTUdnIn79tkZOghKSqr
-         /aeUSW1no9Tc7sS/3HcQnOI6bn6+iwqy2EvHHGygMeD17PRppBhMzlwbmwpqE2iThi1A
-         kdOAN53GV9Oew/2oLXtg9sZ4mAHAkNHmpDgJx6Hn2IeTN7+dFCEYrxptFKTm3uAiOZRU
-         K1BLDRCxnHJqyfPO3uCJi5vzvteqc7dLkfdqWojhiYBMA6Adif6KjZLU1AxHm29ST74Q
-         AigVWDoHmZGigYeCi5dUYCi63sc+JLLkHxt673dpJ4phoydMsifILDDKnw81L1ZL5eY0
-         8zAw==
-X-Received: by 10.50.67.18 with SMTP id j18mr17659615igt.26.1420569749000;
-        Tue, 06 Jan 2015 10:42:29 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id i8sm5335879igt.2.2015.01.06.10.42.28
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 06 Jan 2015 10:42:28 -0800 (PST)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id t06IgRr8013138;
-        Tue, 6 Jan 2015 10:42:27 -0800
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id t06IgP3F013137;
-        Tue, 6 Jan 2015 10:42:25 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>, <stable@vger.kernel.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: [PATCH] MIPS: Fix C0_Pagegrain[IEC] support.
-Date:   Tue,  6 Jan 2015 10:42:23 -0800
-Message-Id: <1420569743-13104-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2015 21:07:23 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16074 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026946AbbAFUHVPClQc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jan 2015 21:07:21 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8717726387E3A;
+        Tue,  6 Jan 2015 20:07:11 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 6 Jan
+ 2015 20:07:15 +0000
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 6 Jan 2015
+ 12:07:10 -0800
+Message-ID: <54AC406D.4030106@imgtec.com>
+Date:   Tue, 6 Jan 2015 12:07:09 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Tony Wu <tung7970@gmail.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "macro@linux-mips.org" <macro@linux-mips.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: Re: [PATCH] MIPS: 74K/1074K: Fix typo in erratum workaround.
+References: <20150106183732-tung7970@googlemail.com>
+In-Reply-To: <20150106183732-tung7970@googlemail.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44979
+X-archive-position: 44980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,48 +49,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On 01/06/2015 02:39 AM, Tony Wu wrote:
+> In commit 9213ad (MIPS: 74K/1074K: Correct erratum workaround.),
+> MIPS_CACHE_VTAG should go to icache.flags.
+>
+> Signed-off-by: Tony Wu <tung7970@gmail.com>
+> Cc: Maciej W. Rozycki <macro@linux-mips.org>
+> Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+> Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index dd261df..deebd0b 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -902,13 +902,13 @@ static inline void alias_74k_erratum(struct cpuinfo_mips *c)
+>   	switch (imp) {
+>   	case PRID_IMP_74K:
+>   		if (rev <= PRID_REV_ENCODE_332(2, 4, 0))
+> -			c->dcache.flags |= MIPS_CACHE_VTAG;
+> +			c->icache.flags |= MIPS_CACHE_VTAG;
+>   		if (rev == PRID_REV_ENCODE_332(2, 4, 0))
+>   			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+>   		break;
+>   	case PRID_IMP_1074K:
+>   		if (rev <= PRID_REV_ENCODE_332(1, 1, 0)) {
+> -			c->dcache.flags |= MIPS_CACHE_VTAG;
+> +			c->icache.flags |= MIPS_CACHE_VTAG;
+>   			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+>   		}
+>   		break;
+It is not a typo, it is a special case and an original patch should 
+follow the patch
 
-The following commits:
+http://patchwork.linux-mips.org/patch/8459/
 
-  5890f70f15c52d (MIPS: Use dedicated exception handler if CPU supports RI/XI exceptions)
-  6575b1d4173eae (MIPS: kernel: cpu-probe: Detect unique RI/XI exceptions)
+which has a use of 'cpu_has_vtag_dcache'
 
-break the kernel for *all* existing MIPS CPUs that implement the
-CP0_PageGrain[IEC] bit.  They cause the TLB exception handlers to be
-generated without the legacy execute-inhibit handling, but never set
-the CP0_PageGrain[IEC] bit to activate the use of dedicated exception
-vectors for execute-inhibit exceptions.  The result is that upon
-detection of an execute-inhibit violation, we loop forever in the TLB
-exception handlers instead of sending SIGSEGV to the task.
-
-If we are generating TLB exception handlers expecting separate
-vectors, we must also enable the CP0_PageGrain[IEC] feature.
-
-The bug was introduced in kernel version 3.17.
-
-Cc: <stable@vger.kernel.org>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Signed-off-by: David Daney <david.daney@cavium.com>
----
-
-This is the same patch sent 19/12/2014 with an improved changlog and Cc list.
-
- arch/mips/mm/tlb-r4k.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index e90b2e8..30639a6 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -489,6 +489,8 @@ static void r4k_tlb_configure(void)
- #ifdef CONFIG_64BIT
- 		pg |= PG_ELPA;
- #endif
-+		if (cpu_has_rixiex)
-+			pg |= PG_IEC;
- 		write_c0_pagegrain(pg);
- 	}
- 
--- 
-1.7.11.7
+- Leonid.

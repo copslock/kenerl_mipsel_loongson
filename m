@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jan 2015 18:08:14 +0100 (CET)
-Received: from mail-lb0-f173.google.com ([209.85.217.173]:51670 "EHLO
-        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010714AbbAGRII3k0M0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jan 2015 18:08:08 +0100
-Received: by mail-lb0-f173.google.com with SMTP id z12so1450201lbi.18
-        for <linux-mips@linux-mips.org>; Wed, 07 Jan 2015 09:08:03 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jan 2015 18:21:39 +0100 (CET)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:44748 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010732AbbAGRVhnPlcj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jan 2015 18:21:37 +0100
+Received: by mail-lb0-f182.google.com with SMTP id u10so1396081lbd.41
+        for <linux-mips@linux-mips.org>; Wed, 07 Jan 2015 09:21:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:date:from:organization:user-agent
          :mime-version:to:cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=GjnzX2+ifi4/Xq11fIXHSK1pUIdz6N3cOMx5QcYpCSI=;
-        b=HNOglJu6RDsKFhdsMMUpd/1Ns/Eui5mpYzQw7R4z3yMyoNUsBqQUdSEzI5ezt6kIKv
-         oTKmEr6r4jk7g11kuy6gkVZKh72sYV8ba1E73kYXUKqCQ8ZpVcvNQKoLk/BbMn64Q0Np
-         WlT7kTtFjYvCSdim7Way/pRJjmME2Sc+0eTQBW+BlE1xjUCuQ76YhViSDaKH7VgdAk3p
-         kP+biZECRK5EvWvCQ8yzXaL4CE612k61w8wAdGLjcLzzTDJFMykvBOvbSn1oPDGKFdPG
-         dZijQ2Ohrf9jnX8u5CViAZLnP6HtcXrjSBAihAKp677op78Qmv/HTuyoWr0pdYngDzql
-         s11w==
-X-Gm-Message-State: ALoCoQliNMSNZMTFjERvfYb+rfDKXPT0HYT82WHjUGvAwWYUZ6HX8KNi3+1TNWrxsRANC6ytZv8j
-X-Received: by 10.152.205.104 with SMTP id lf8mr895278lac.94.1420650482906;
-        Wed, 07 Jan 2015 09:08:02 -0800 (PST)
+        bh=FzTXbXhrwJSiciA/H+5Uset/z/HN9jJjSHe48F5dKAU=;
+        b=Wue+85XuZ9zjzc/J/I2+6bx/96YfJkNP2d2wJTmZUKwcNZplJ6rdaxVF1DzuRxobEF
+         LlXg/fS0t3Kg/mvXGKKmyQ9UbdCQ4b3Mq+i14xKIdGdWsZm7Q5lkpaJ3Xmsm8Zbljnuq
+         R39ymRMcvFNhH8k6g+79JIw60b3wnm90pMnYL//WPwUSTx0zSZNTXDJAXcUAPFTWYvv0
+         iNffH6WLM/uJZxwzH72IChbegqUmiHsLodce3W8MxmCSQehQk6Lch7AdSAr2ITArHIbV
+         oAvG+Pe2UAXDlVMF2eSjmwkU7u47cMnm2plu/2ZFt9UOez92bQN6yBjuPmdyY+WSnqiX
+         7kCA==
+X-Gm-Message-State: ALoCoQlLF/3f4m9+45rTnDAiBNdIvCu+ZQU25SELKSDI0+BP51z79wwYqpfcRfnKoOAZdby4aXFd
+X-Received: by 10.112.30.71 with SMTP id q7mr6491180lbh.41.1420651292330;
+        Wed, 07 Jan 2015 09:21:32 -0800 (PST)
 Received: from wasted.cogentembedded.com (ppp83-237-253-86.pppoe.mtu-net.ru. [83.237.253.86])
-        by mx.google.com with ESMTPSA id az15sm564283lab.30.2015.01.07.09.08.00
+        by mx.google.com with ESMTPSA id ba19sm573868lab.23.2015.01.07.09.21.30
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 07 Jan 2015 09:08:01 -0800 (PST)
-Message-ID: <54AD67EF.2080406@cogentembedded.com>
-Date:   Wed, 07 Jan 2015 20:07:59 +0300
+        Wed, 07 Jan 2015 09:21:31 -0800 (PST)
+Message-ID: <54AD6B19.3020007@cogentembedded.com>
+Date:   Wed, 07 Jan 2015 20:21:29 +0300
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Organization: Cogent Embedded
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
 To:     Jayachandran C <jchandra@broadcom.com>, linux-mips@linux-mips.org
 CC:     ralf@linux-mips.org
-Subject: Re: [PATCH 04/17] MIPS: Netlogic: Disable writing IRT for disabled
- blocks
-References: <1420630118-17198-1-git-send-email-jchandra@broadcom.com> <1420630118-17198-5-git-send-email-jchandra@broadcom.com>
-In-Reply-To: <1420630118-17198-5-git-send-email-jchandra@broadcom.com>
+Subject: Re: [PATCH 13/17] MIPS: Netlogic: Handle XLP hardware errata
+References: <1420630118-17198-1-git-send-email-jchandra@broadcom.com> <1420630118-17198-14-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1420630118-17198-14-git-send-email-jchandra@broadcom.com>
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45006
+X-archive-position: 45007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,49 +62,49 @@ Hello.
 
 On 01/07/2015 02:28 PM, Jayachandran C wrote:
 
-> If the device header of a block is not present, return invalid IRT
-> value so that we do not program an incorrect offset.
+> Core configuration register IFU_BRUB_RESERVE has to be setup to handle
+> a silicon errata which can result in a CPU hang.
 
 > Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-> ---
->   arch/mips/netlogic/xlp/nlm_hal.c | 25 ++++++++++++++++---------
->   1 file changed, 16 insertions(+), 9 deletions(-)
 
-> diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-> index 7e0d224..de41fb5 100644
-> --- a/arch/mips/netlogic/xlp/nlm_hal.c
-> +++ b/arch/mips/netlogic/xlp/nlm_hal.c
-> @@ -170,16 +170,23 @@ static int xlp_irq_to_irt(int irq)
->   	}
+[...]
+
+> diff --git a/arch/mips/netlogic/common/reset.S b/arch/mips/netlogic/common/reset.S
+> index 701c4bc..ff2673a 100644
+> --- a/arch/mips/netlogic/common/reset.S
+> +++ b/arch/mips/netlogic/common/reset.S
+> @@ -235,6 +235,24 @@ EXPORT(nlm_boot_siblings)
+>   	mfc0	v0, CP0_EBASE, 1
+>   	andi	v0, 0x3ff		/* v0 <- node/core */
 >
->   	if (devoff != 0) {
-> +		uint32_t val;
-> +
->   		pcibase = nlm_pcicfg_base(devoff);
-> -		irt = nlm_read_reg(pcibase, XLP_PCI_IRTINFO_REG) & 0xffff;
-> -		/* HW weirdness, I2C IRT entry has to be fixed up */
-> -		switch (irq) {
-> -		case PIC_I2C_1_IRQ:
-> -			irt = irt + 1; break;
-> -		case PIC_I2C_2_IRQ:
-> -			irt = irt + 2; break;
-> -		case PIC_I2C_3_IRQ:
-> -			irt = irt + 3; break;
-> +		val = nlm_read_reg(pcibase, XLP_PCI_IRTINFO_REG);
-> +		if (val == 0xffffffff) {
-> +			irt = -1;
-> +		} else {
-> +			irt = val & 0xffff;
-> +			/* HW weirdness, I2C IRT entry has to be fixed up */
-> +			switch (irq) {
-> +			case PIC_I2C_1_IRQ:
-> +				irt = irt + 1; break;
-> +			case PIC_I2C_2_IRQ:
-> +				irt = irt + 2; break;
-> +			case PIC_I2C_3_IRQ:
-> +				irt = irt + 3; break;
+> +	/* Errata: to avoid potential live lock, only apply to 4
+> +	 * thread per core mode */
 
-    Why not 'irt += n' in all 3 cases?
-    And don't place *break* on the same line -- this upsets checkpatch.pl IIRC.
+    The preferred multi-line comment style is:
+
+/*
+  * bla
+  * bla
+  */
+
+> +	andi	v1, v0, 0x3             /* v1 <- thread id */
+> +	bnez	v1, 2f
+> +	nop
+
+    If this 'nop' is in a delay slot, there's a tradition to add extra space 
+before the instruction.
+
+> +
+> +	/* thread 0 of each core. */
+> +	li	t0, CKSEG1ADDR(RESET_DATA_PHYS)
+
+    Hm, does this get auto-expanded into several instructions?
+
+> +	lw	t1, BOOT_THREAD_MODE(t0)        /* t1 <- thread mode */
+> +	subu	t1, 0x3				/* 4-thread per core mode? */
+> +	bnez	t1, 2f
+> +	nop
+
+    Same here...
 
 WBR, Sergei

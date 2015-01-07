@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jan 2015 12:22:15 +0100 (CET)
-Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:2763 "EHLO
-        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010208AbbAGLVZbfgOd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jan 2015 12:21:25 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jan 2015 12:22:35 +0100 (CET)
+Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:25072 "EHLO
+        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010211AbbAGLV0EMhIa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jan 2015 12:21:26 +0100
 X-IronPort-AV: E=Sophos;i="5.07,714,1413270000"; 
-   d="scan'208";a="54466604"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw1-out.broadcom.com with ESMTP; 07 Jan 2015 05:25:15 -0800
+   d="scan'208";a="54169585"
+Received: from irvexchcas06.broadcom.com (HELO IRVEXCHCAS06.corp.ad.broadcom.com) ([10.9.208.53])
+  by mail-gw3-out.broadcom.com with ESMTP; 07 Jan 2015 03:35:50 -0800
 Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Wed, 7 Jan 2015 03:21:34 -0800
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP Server
+ (TLS) id 14.3.174.1; Wed, 7 Jan 2015 03:21:18 -0800
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
  IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.174.1; Wed, 7 Jan 2015 03:21:34 -0800
+ 14.3.174.1; Wed, 7 Jan 2015 03:21:32 -0800
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 29A4740FE5;    Wed,  7 Jan 2015 03:20:31 -0800 (PST)
+ 93EAE40FE8;    Wed,  7 Jan 2015 03:20:30 -0800 (PST)
 From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Ganesan Ramalingam <ganesanr@broadcom.com>, <ralf@linux-mips.org>,
+CC:     Qingmin Liu <qingmin@broadcom.com>, <ralf@linux-mips.org>,
         Jayachandran C <jchandra@broadcom.com>
-Subject: [PATCH 03/17] MIPS: Netlogic: Fix cop0 prid check in AHCI init
-Date:   Wed, 7 Jan 2015 16:58:24 +0530
-Message-ID: <1420630118-17198-4-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 02/17] MIPS: Netlogic: Fix nlm_xlp2_get_pic_frequency to use ref_div
+Date:   Wed, 7 Jan 2015 16:58:23 +0530
+Message-ID: <1420630118-17198-3-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1420630118-17198-1-git-send-email-jchandra@broadcom.com>
 References: <1420630118-17198-1-git-send-email-jchandra@broadcom.com>
@@ -32,7 +32,7 @@ Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 44987
+X-archive-position: 44988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,28 +49,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+From: Qingmin Liu <qingmin@broadcom.com>
 
-PRID register should be masked with IMP_MASK to get processor ID.
+The variable ref_div is initialized to the correct divisor but not
+used in the frequency calculation. This caused incorrect frequency
+to be reported when the clock divisor is not 3.
 
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
+Signed-off-by: Qingmin Liu <qingmin@broadcom.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/netlogic/xlp/ahci-init.c | 2 +-
+ arch/mips/netlogic/xlp/nlm_hal.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/netlogic/xlp/ahci-init.c b/arch/mips/netlogic/xlp/ahci-init.c
-index a9d0fae..92be1a3 100644
---- a/arch/mips/netlogic/xlp/ahci-init.c
-+++ b/arch/mips/netlogic/xlp/ahci-init.c
-@@ -151,7 +151,7 @@ static void nlm_sata_firmware_init(int node)
- static int __init nlm_ahci_init(void)
- {
- 	int node = 0;
--	int chip = read_c0_prid() & PRID_REV_MASK;
-+	int chip = read_c0_prid() & PRID_IMP_MASK;
+diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
+index bc24beb..7e0d224 100644
+--- a/arch/mips/netlogic/xlp/nlm_hal.c
++++ b/arch/mips/netlogic/xlp/nlm_hal.c
+@@ -410,7 +410,7 @@ static unsigned int nlm_xlp2_get_pic_frequency(int node)
  
- 	if (chip == PRID_IMP_NETLOGIC_XLP3XX)
- 		nlm_sata_firmware_init(node);
+ 	fdiv = fdiv/(1 << 13);
+ 	pll_out_freq_num = ((ref_clk >> 1) * (6 + mdiv)) + fdiv;
+-	pll_out_freq_den = (1 << vco_post_div) * pll_post_div * 3;
++	pll_out_freq_den = (1 << vco_post_div) * pll_post_div * ref_div;
+ 
+ 	if (pll_out_freq_den > 0)
+ 		do_div(pll_out_freq_num, pll_out_freq_den);
 -- 
 1.9.1

@@ -1,46 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jan 2015 13:55:01 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49606 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jan 2015 16:07:11 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6453 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009610AbbAHMy7rxOU1 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jan 2015 13:54:59 +0100
+        with ESMTP id S27009890AbbAHPHKDXgBr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jan 2015 16:07:10 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A091D265BCA8
-        for <linux-mips@linux-mips.org>; Thu,  8 Jan 2015 12:54:49 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 285686C66FAEB;
+        Thu,  8 Jan 2015 15:07:00 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 8 Jan 2015 12:54:52 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Thu, 8 Jan 2015 12:54:51 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Paul Burton <Paul.Burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     Markos Chandras <Markos.Chandras@imgtec.com>
-Subject: RE: [PATCH] MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS
-Thread-Topic: [PATCH] MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for
- MIPS
-Thread-Index: AQHQKz0aVg8DXyTJm0m129S1G97fJpy2JRwA
-Date:   Thu, 8 Jan 2015 12:54:50 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F99E61@LEMAIL01.le.imgtec.org>
-References: <1420719457-690-1-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1420719457-690-1-git-send-email-paul.burton@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.152.151]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ 14.3.195.1; Thu, 8 Jan 2015 15:07:03 +0000
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Thu, 8 Jan 2015 15:07:02 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        "Thomas Gleixner" <tglx@linutronix.de>
+Subject: [PATCH] MIPS: cevt-r4k: Use Cause.TI for timer pending
+Date:   Thu, 8 Jan 2015 15:06:39 +0000
+Message-ID: <1420729599-22034-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.0.5
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45012
+X-archive-position: 45013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,53 +48,107 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> +	/* Avoid inadvertently triggering emulation */
-> +	if ((value & PR_FP_MODE_FR) && cpu_has_fpu &&
-> +	    !(current_cpu_data.fpu_id & MIPS_FPIR_F64))
-> +		return -EOPNOTSUPP;
-> +	if ((value & PR_FP_MODE_FRE) && !cpu_has_fre)
-> +		return -EOPNOTSUPP;
+The cevt-r4k driver used to call into the GIC driver to find whether the
+timer was pending, but only with External Interrupt Controller (EIC)
+mode, where the Cause.IP bits can't be used as they encode the interrupt
+priority level (Cause.RIPL) instead.
 
-This is perhaps not important immediately but these two cases can
-be seen as inconsistent. I.e. FR1 is emulated if there is no FPU
-but FRE is not emulated if there is no FPU.
+However commit e9de688dac65 ("irqchip: mips-gic: Support local
+interrupts") changed the condition from cpu_has_veic to gic_present.
+This fails on cores such as P5600 which have a GIC but the local
+interrupts aren't routable by the GIC, causing c0_compare_int_usable()
+to consider the interrupt unusable so r4k_clockevent_init() fails.
 
-I believe this would be more consistent:
+The previous behaviour wasn't really correct either though since P5600
+apparently supports EIC mode too, so lets use the Cause.TI bit instead
+which should be present since release 2 of the MIPS32/MIPS64
+architecture. In fact multiple interrupts can be routed to that same CPU
+interrupt line (e.g. performance counter and fast debug channel
+interrupts), so lets use Cause.TI in preference to Cause.IP on all cores
+since release 2.
 
-	if ((value & PR_FP_MODE_FRE) && cpu_has_fpu &&
-	    !cpu_has_fre)
-		return -EOPNOTSUPP;
+Fixes: e9de688dac65 ("irqchip: mips-gic: Support local interrupts")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Andrew Bresticker <abrestic@chromium.org>
+Cc: Qais Yousef <qais.yousef@imgtec.com>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/kernel/cevt-r4k.c      | 20 +++++++++++++++-----
+ drivers/irqchip/irq-mips-gic.c   |  8 --------
+ include/linux/irqchip/mips-gic.h |  1 -
+ 3 files changed, 15 insertions(+), 14 deletions(-)
 
-The kernel then freely emulates any requested mode when there is
-no FPU but sticks to only true hardware modes when there is an FPU.
-
-= More detailed discussion =
-
-There has been debate internally at IMG over the issue of FPU emulation
-so I think it is appropriate to comment on why emulation is not always
-desirable according to the new o32 FP ABI extensions. I'll try to be
-brief...
-
-The simple reason is that it is obviously better to use a true hardware
-FPU mode whenever possible. Most of the o32 hard-float ABI variants
-can execute in multiple hardware modes and the glibc dynamic linker
-will probe to find the best supported hardware mode by trying them:
-
-https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/mips/dl-machine-reject-phdr.h;h=b277450c4d02088acb8f24c74cea6ce04783688f;hb=0bd956720c457ff054325b48f26ac7c91cb060e8#l286
-
-If an FPU exists but an emulated mode is used rather than a
-true hardware mode then the code will run slower than necessary.
-
-The second aspect to avoiding emulated modes is that users may
-have multiple versions of an object available each with different
-ABI extensions. If one fails to load then the next one may succeed
-with a true hardware-supported mode.
-
-With all that in mind I suspect we can find a balance (in a later
-update) that may be able to balance the desire for emulation against
-the desire for using real hardware modes. As it stands there is no
-clear-cut answer or spec for this so I am in agreement with the
-overall behaviour of this patch, perhaps with the tweak applied.
-
-thanks,
-Matthew
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 6acaad0480af..6747a2cbf662 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -11,7 +11,6 @@
+ #include <linux/percpu.h>
+ #include <linux/smp.h>
+ #include <linux/irq.h>
+-#include <linux/irqchip/mips-gic.h>
+ 
+ #include <asm/time.h>
+ #include <asm/cevt-r4k.h>
+@@ -85,10 +84,21 @@ void mips_event_handler(struct clock_event_device *dev)
+  */
+ static int c0_compare_int_pending(void)
+ {
+-#ifdef CONFIG_MIPS_GIC
+-	if (gic_present)
+-		return gic_get_timer_pending();
+-#endif
++	/*
++	 * With External Interrupt Controller (EIC) mode (which may be present
++	 * since release 2 of MIPS32/MIPS64) the interrupt pending bits
++	 * (Cause.IP) are used for the interrupt priority level (Cause.RIPL) so
++	 * we can't use it to determine whether the timer interrupt is pending.
++	 *
++	 * Instead lets use the timer pending bit (Cause.TI) which is present
++	 * since release 2, and lets use it even without EIC mode since it
++	 * unambigously specifies whether the timer interrupt is pending
++	 * regardless of what other internal or external interrupts are wired to
++	 * the same CPU IRQ line.
++	 */
++	if (cpu_has_mips_r2)
++		return read_c0_cause() & CAUSEF_TI;
++
+ 	return (read_c0_cause() >> cp0_compare_irq_shift) & (1ul << CAUSEB_IP);
+ }
+ 
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 2b0468e3df6a..e58600b1de28 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -191,14 +191,6 @@ static bool gic_local_irq_is_routable(int intr)
+ 	}
+ }
+ 
+-unsigned int gic_get_timer_pending(void)
+-{
+-	unsigned int vpe_pending;
+-
+-	vpe_pending = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
+-	return vpe_pending & GIC_VPE_PEND_TIMER_MSK;
+-}
+-
+ static void gic_bind_eic_interrupt(int irq, int set)
+ {
+ 	/* Convert irq vector # to hw int # */
+diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
+index 420f77b34d02..e6a6aac451db 100644
+--- a/include/linux/irqchip/mips-gic.h
++++ b/include/linux/irqchip/mips-gic.h
+@@ -243,7 +243,6 @@ extern void gic_write_cpu_compare(cycle_t cnt, int cpu);
+ extern void gic_send_ipi(unsigned int intr);
+ extern unsigned int plat_ipi_call_int_xlate(unsigned int);
+ extern unsigned int plat_ipi_resched_int_xlate(unsigned int);
+-extern unsigned int gic_get_timer_pending(void);
+ extern int gic_get_c0_compare_int(void);
+ extern int gic_get_c0_perfcount_int(void);
+ #endif /* __LINUX_IRQCHIP_MIPS_GIC_H */
+-- 
+2.0.5

@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 20:35:41 +0100 (CET)
-Received: from mail-lb0-f169.google.com ([209.85.217.169]:65022 "EHLO
-        mail-lb0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010654AbbAITfgpAtL0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 20:35:36 +0100
-Received: by mail-lb0-f169.google.com with SMTP id p9so9744187lbv.0
-        for <linux-mips@linux-mips.org>; Fri, 09 Jan 2015 11:35:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=VScY4SzxDZ43s6/vTU2r6TREDvcjfkUPpAUeb0LrE3s=;
-        b=VmJQuHMViApQJz7YZyaZZ7jwlzlgWQiRcpNFMs54aaCmLvLW8caDdpJAcPD0U/1XvI
-         2Zb4tsX9iwq0rE/npZcl6T9n/4BAEzRYqa+zrRkYBajXXHhYyCuLUs42dZD8SQ2H4plC
-         bvTsoLFQfT9+P3izCaEj7lEnRXrXBqak2j5DGH3scK/IXt8dPN1DXY9k5KtIrTCyqFz5
-         y9T3s29tlJbeJG/MBV+zxjvpVwmKxIDauliAs5V2cmsbfugPSwTIYoiGd7pv+JQfpmbC
-         nT2H+k2igaF3Nc3Tim5yvTzUM31pT/i4IJSowxxPuIs8CvtsHNIMUs+LdBuwoQ8pPm5H
-         Fd3w==
-X-Gm-Message-State: ALoCoQloMyTxSNP2GbNPbHf9DXB7n7+oqfXen98N6R8fqDxHVF7HiJzggy4H/TgOhavDza1vp1Rd
-X-Received: by 10.112.161.35 with SMTP id xp3mr23670439lbb.70.1420832131236;
-        Fri, 09 Jan 2015 11:35:31 -0800 (PST)
-Received: from wasted.cogentembedded.com (ppp20-191.pppoe.mtu-net.ru. [81.195.20.191])
-        by mx.google.com with ESMTPSA id i5sm2055676lae.26.2015.01.09.11.35.29
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Jan 2015 11:35:30 -0800 (PST)
-Message-ID: <54B02D7F.7040501@cogentembedded.com>
-Date:   Fri, 09 Jan 2015 22:35:27 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 21:05:46 +0100 (CET)
+Received: from mail-qg0-f42.google.com ([209.85.192.42]:56696 "EHLO
+        mail-qg0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011023AbbAIUFpH8aOc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 21:05:45 +0100
+Received: by mail-qg0-f42.google.com with SMTP id q108so10611081qgd.1;
+        Fri, 09 Jan 2015 12:05:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=8OHzoNgwGtNUscV+21ewcemY8sBDW4k2XN8tFD22oz8=;
+        b=MUTyE5hEW5amWXer1I7/rQphQ2amGXjl4ChnWWiD3AHl5tRW/74M3dHK/xOv0o73co
+         MAMieLZttuExVuXr2EYrlocG7YDfkDDxGcbDauQVz3iQyiJL038Bxo85ETDM8Wq4kGPW
+         +a0DxkcbdohBTJFHEmHRy50ysaPH20+u1l/UyWR+1CssGWf3U4+5BZ2h2PZk/ooNjJ+4
+         dU5j/w4NeNyRjhZln9pYWimTwsW7kThJwNz27t8i+G5Vmt7iHvGquK+JglgeB6Q/9YXj
+         gQd4UsZtAIiAV02Zkbp42OZNGHRdyOpXIZibMqHN94UFO7bDP/jwrdp/Sx3KG+j40T9u
+         jtFg==
+X-Received: by 10.140.97.7 with SMTP id l7mr28973949qge.66.1420833939289;
+        Fri, 09 Jan 2015 12:05:39 -0800 (PST)
+Received: from ld-irv-0074 (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id f77sm7849400qgd.49.2015.01.09.12.05.37
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Fri, 09 Jan 2015 12:05:38 -0800 (PST)
+Date:   Fri, 9 Jan 2015 12:05:35 -0800
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        linux-mtd@lists.infradead.org
+Subject: Re: [PATCH] mtd: nand: jz4740: Convert to GPIO descriptor API
+Message-ID: <20150109200535.GV9759@ld-irv-0074>
+References: <1417549706-28420-1-git-send-email-lars@metafoo.de>
+ <20141215154408.GD9382@linux-mips.org>
 MIME-Version: 1.0
-To:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org
-CC:     linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ludovic Desroches <ludovic.desroches@atmel.com>,
-        Yingjoe Chen <yingjoe.chen@mediatek.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC 02/11] i2c: add quirk checks to core
-References: <1420824103-24169-1-git-send-email-wsa@the-dreams.de> <1420824103-24169-3-git-send-email-wsa@the-dreams.de>
-In-Reply-To: <1420824103-24169-3-git-send-email-wsa@the-dreams.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20141215154408.GD9382@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45039
+X-archive-position: 45040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,49 +58,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Mon, Dec 15, 2014 at 04:44:08PM +0100, Ralf Baechle wrote:
+> On Tue, Dec 02, 2014 at 08:48:26PM +0100, Lars-Peter Clausen wrote:
+> 
+> > Use the GPIO descriptor API instead of the deprecated legacy GPIO API to
+> > manage the busy GPIO.
+> > 
+> > The patch updates both the jz4740 nand driver and the only user of the driver
+> > the qi-lb60 board driver.
+> > 
+> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> > ---
+> > This patch should preferably be merged through the MTD tree with Ralf's ack for
+> > the MIPS bits.
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-On 01/09/2015 08:21 PM, Wolfram Sang wrote:
+For MTD stuff:
 
-> Let the core do the checks if HW quirks prevent a transfer. Saves code
-> from drivers and adds consistency.
+Acked-by: Brian Norris <computersforpeace@gmail.com>
 
-> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-> ---
->   drivers/i2c/i2c-core.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 53 insertions(+)
->
-> diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
-> index 39d25a8cb1ad..7b10a19abf5b 100644
-> --- a/drivers/i2c/i2c-core.c
-> +++ b/drivers/i2c/i2c-core.c
-> @@ -2063,6 +2063,56 @@ module_exit(i2c_exit);
->    * ----------------------------------------------------
->    */
->
-> +/* Check if val is exceeding the quirk IFF quirk is non 0 */
-> +#define i2c_quirk_exceeded(val, quirk) ((quirk) && ((val) > (quirk)))
-> +
-> +static int i2c_quirk_error(struct i2c_adapter *adap, struct i2c_msg *msg, char *err_msg)
-> +{
-> +	dev_err(&adap->dev, "quirk: %s (addr 0x%04x, size %u)\n", err_msg, msg->addr, msg->len);
-> +	return -EOPNOTSUPP;
-> +}
+> Though in my experience MIPS-specific patches to non-arch/mips code receive
+> best testing in the MIPS tree.
 
-    Always returning the same value doesn't make much sense. Are you trying to 
-save space on the call sites?
+I don't mind this going in the MIPS tree. I doubt this driver will get
+much other activity in MTD soon, and you're likely quite right about
+MIPS testing.
 
-[...]
-> @@ -2080,6 +2130,9 @@ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
->   	unsigned long orig_jiffies;
->   	int ret, try;
->
-> +	if (adap->quirks && i2c_check_for_quirks(adap, msgs, num))
+Let me know if you'd like to take it. If I don't hear back in a week or
+two, I'll take it via MTD.
 
-    So, you only check for non-zero result of this function? Perhaps it makes 
-sense to return true/false instead?
-
-> +		return -EOPNOTSUPP;
-> +
-
-WBR, Sergei
+Brian

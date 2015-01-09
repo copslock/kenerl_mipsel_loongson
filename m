@@ -1,47 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 22:25:21 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25554 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010751AbbAIVZUUKDez convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 22:25:20 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 06C6C3A3CE779
-        for <linux-mips@linux-mips.org>; Fri,  9 Jan 2015 21:25:10 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 9 Jan 2015 21:25:14 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Fri, 9 Jan 2015 21:25:13 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Paul Burton <Paul.Burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     Markos Chandras <Markos.Chandras@imgtec.com>
-Subject: RE: MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS
-Thread-Topic: MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS
-Thread-Index: AQHQLD4qVjIo4nddzEOeqkawpMt9d5y4Lqrw
-Date:   Fri, 9 Jan 2015 21:25:12 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F9CF6F@LEMAIL01.le.imgtec.org>
-References: <1420719457-690-1-git-send-email-paul.burton@imgtec.com>
- <54B024AA.1020400@imgtec.com>
-In-Reply-To: <54B024AA.1020400@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.159.69]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jan 2015 00:29:27 +0100 (CET)
+Received: from mail-ig0-f181.google.com ([209.85.213.181]:35934 "EHLO
+        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008709AbbAIX3ZEFh3Z convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 10 Jan 2015 00:29:25 +0100
+Received: by mail-ig0-f181.google.com with SMTP id a13so4273507igq.2
+        for <linux-mips@linux-mips.org>; Fri, 09 Jan 2015 15:29:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=converseincode.com; s=google;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=wWC329Lrg30ZqcrS2BJ/N6PXTBRtpN47JY4k88EiRwI=;
+        b=hhttEv9uLJPaP19p/r1So1lc3aihKRj80p+DnUYDvuEEBqFSIUrffMdnn6/cERxfJa
+         08yM6/KrEdjq0hkkEuDacMjcDG4o45y1WTgmDqcH3Qr4oHbxvJ3PmOPH1nZqHYe+5WV9
+         +NQMUtVEgGxrlNbGTFICmf+acj6qURHREeZJ4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=wWC329Lrg30ZqcrS2BJ/N6PXTBRtpN47JY4k88EiRwI=;
+        b=BhpMNEN9RKDIm8sW/I8yEkFlJlRp9HBBGttERD1DRlCEqnDHNIiqmZLzonvPnibTWG
+         6uqNSl8w6W5VsydZc2R3OeoSfODL5cbXqSsIeJsStw84YrME/LX7AA0l+ZKu8R6a8Cjt
+         IvDd6yGbz4soiWH8uIuUYdB/EXlZluezlKFTbiSsFdndB047UXRBytILSTpL+QIqmhpH
+         2iTMaPAvH17qCPn0oju5BJZ2Qttu9gYMuwLgAzR8CU0twzHeMigSX5aYp+QyJPUsJwH9
+         /fsA7/jVEEJKy5GuZQwtGQ25zWxvUdy2qtef9D1oElV2SFMoyK94q0FSCzvw6ErPoRLu
+         HAgA==
+X-Gm-Message-State: ALoCoQmECjo07Hv2O6kpVdnr6Vwd7Czp6hmTBtYvHLespw4rZVk83ypOvFX/WgXbFPSd++NzsXmG
+X-Received: by 10.50.35.195 with SMTP id k3mr5136928igj.11.1420846158661;
+        Fri, 09 Jan 2015 15:29:18 -0800 (PST)
+Received: from ?IPv6:2001:470:b26c:0:850:8ed7:4632:1f86? ([2001:470:b26c:0:850:8ed7:4632:1f86])
+        by mx.google.com with ESMTPSA id a126sm4520303ioa.13.2015.01.09.15.29.16
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 09 Jan 2015 15:29:17 -0800 (PST)
+Message-ID: <54B0644A.5070403@converseincode.com>
+Date:   Fri, 09 Jan 2015 15:29:14 -0800
+From:   Behan Webster <behanw@converseincode.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+To:     Daniel Sanders <Daniel.Sanders@imgtec.com>,
+        David Daney <ddaney.cavm@gmail.com>
+CC:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>
+Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent
+ supported by both clang and GCC
+References: <1420805177-9087-1-git-send-email-daniel.sanders@imgtec.com> <54AFC6F3.1020300@cogentembedded.com> <E484D272A3A61B4880CDF2E712E9279F458E68B8@hhmail02.hh.imgtec.org> <54B00F3C.8030903@gmail.com> <E484D272A3A61B4880CDF2E712E9279F458E7DF1@hhmail02.hh.imgtec.org>
+In-Reply-To: <E484D272A3A61B4880CDF2E712E9279F458E7DF1@hhmail02.hh.imgtec.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8BIT
+Return-Path: <behanw@converseincode.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45045
+X-archive-position: 45046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: behanw@converseincode.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,105 +73,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Leonid Yegoshin <Leonid.Yegoshin@imgtec.com> writes:
-> Matthew Fortune - 2015-01-08 12:01:50 
+On 01/09/15 12:06, Daniel Sanders wrote:
+>> -----Original Message-----
+>> From: David Daney [mailto:ddaney.cavm@gmail.com]
+>> Sent: 09 January 2015 17:26
+>> To: Daniel Sanders
+>> Cc: Sergei Shtylyov; linux-mips@linux-mips.org; Ralf Baechle; Paul Burton;
+>> Markos Chandras; James Hogan; Behan Webster
+>> Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent
+>> supported by both clang and GCC
+>>
+>> On 01/09/2015 05:23 AM, Daniel Sanders wrote:
+>>> Hi,
+>>>
+>>> Thanks for the quick reply.
+>>>
+>>>> -----Original Message-----
+>>>> From: Sergei Shtylyov [mailto:sergei.shtylyov@cogentembedded.com]
+>>>> Sent: 09 January 2015 12:18
+>>>> To: Daniel Sanders; linux-mips@linux-mips.org; Ralf Baechle
+>>>> Cc: Paul Burton; Markos Chandras; James Hogan; Behan Webster
+>>>> Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent
+>>>> supported by both clang and GCC
+>>>>
+>>>> Hello.
+>>>>
+>>>> On 1/9/2015 3:06 PM, Daniel Sanders wrote:
+>>>>
+>>>>> Without this, a 'break' instruction is executed very early in the boot and
+>>>>> the boot hangs.
+>>>>> The problem is that clang doesn't honour named registers on local
+>> variables
+>>>>> and silently treats them as normal uninitialized variables. However, it
+>>>>> does honour them on global variables.
+>> Why not fix clang instead?
+> There's some significant implementation difficulties in LLVM that appear to stem from it not being designed to accommodate this extension. There were also some objections based on the future direction of LLVM. The thread can be found at http://lists.cs.uiuc.edu/pipermail/llvmdev/2014-March/071555.html. I've linked to the bit where the issues started to be discussed rather than the start of the thread.
 >
-> > > +	/* Avoid inadvertently triggering emulation */
-> > > +	if ((value & PR_FP_MODE_FR) && cpu_has_fpu &&
-> > > +	    !(current_cpu_data.fpu_id & MIPS_FPIR_F64))
-> > > +		return -EOPNOTSUPP;
-> > > +	if ((value & PR_FP_MODE_FRE) && !cpu_has_fre)
-> > > +		return -EOPNOTSUPP;
-> >
-> > This is perhaps not important immediately but these two cases can
-> > be seen as inconsistent. I.e. FR1 is emulated if there is no FPU
-> > but FRE is not emulated if there is no FPU.
-> >
-> > I believe this would be more consistent:
-> >
-> >	if ((value & PR_FP_MODE_FRE) && cpu_has_fpu &&
-> >	    !cpu_has_fre) 
-> >		return -EOPNOTSUPP;
-> >
-> > The kernel then freely emulates any requested mode when there is
-> > no FPU but sticks to only true hardware modes when there is an FPU.
-> >
-> > = More detailed discussion =
-> >
-> > There has been debate internally at IMG over the issue of FPU emulation
-> > so I think it is appropriate to comment on why emulation is not always
-> > desirable according to the new o32 FP ABI extensions. I'll try to be
-> > brief...
-> >
-> > The simple reason is that it is obviously better to use a true hardware
-> > FPU mode whenever possible. 
+> Difficulty and objections aside, it's also a very large amount of work to support a single (as far as I know) user of named register locals, especially when Linux has already accepted patches to switch named register locals to named register globals elsewhere. On balance, it seems best to change Linux.
 >
-> I would like to point you to fact that the best choice to use the hardware 
-> efficiently is to know which kind of hardware you have. 
+>>>>> Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
+>>>> [...]
+>>>>
+>>>>> diff --git a/arch/mips/include/asm/thread_info.h
+>>>> b/arch/mips/include/asm/thread_info.h
+>>>>> index 99eea59..2a2f3c4 100644
+>>>>> --- a/arch/mips/include/asm/thread_info.h
+>>>>> +++ b/arch/mips/include/asm/thread_info.h
+>>>>> @@ -58,11 +58,11 @@ struct thread_info {
+>>>>>    #define init_stack		(init_thread_union.stack)
+>>>>>
+>>>>>    /* How to get the thread information struct from C.  */
+>>>>> +register struct thread_info *current_gp_register asm("$28");
+>>>>      *static* missing?
+>>>>
+>>>> WBR, Sergei
+>>> Combining 'register' and 'static' is invalid.
+>> Defining global variables in header files is also invalid.
+> I agree with that statement but named register globals are not the same as normal global variables. In particular, they do not take up space in the data section and they do not have an entry in the symbol table. They can therefore be included in multiple objects without causing link errors.
+Daniel's code is in line with the solution already used in both the arm
+and arm64/aarch64 arches which works with both gcc and clang.
 
-From that perspective the PR_SET_FP_MODE does just that except user-mode
-discovers the modes by simply trying to use them in order of most desirable
-to least desirable. I don't deny that the user code may benefit from knowing
-upfront what is available and being able to select an emulated mode if it
-*actively* chooses to do so.
+Just in case that helps.
 
-> So, it would be much better if application (read - GLIBC/bionic library)
-> gets the HW description available in HWCAP and make a choice during library load
-> instead of guessing via syscalls in attempt to use one or another FPU/SIMD mode.
-> Guessing may easily get a non-optimal HW configuration.
+Behan
 
-Guessing cannot get a non-optimal mode if the PR_SET_FP_MODE only succeeds for
-true hardware modes. What can happen is that the user could fail to find a mode
-that it needs even though the kernel could have emulated it. I agree that it may
-be a useful to offer the user the opportunity to select an emulated mode though.
-
-> And kernel can just support an application choice via using a real HW or emulation if
-> application do some choice because there is no variants (example: FPU absence).
-
-Would your concerns be addressed by adding another bit to the new PR_SET_FP_MODE
-option that says the user is willing to accept an emulated mode:
-
-#define PR_FP_MODE_EMU (1<<2)
-
-I do not propose that this is returned from PR_GET_FP_MODE to indicate if
-emulation is in use or not though. PR_GET_FP_MODE should just return the mode
-in use regardless of emulation.
-
-In addition to this extra control bit the updated behaviour of allowing a
-PR_SET_FP_MODE without PR_FP_MODE_EMU should succeed if the current mode
-matches the requested mode.
-
-This gives the user the ability to choose a mode falling back to emulation if
-they desire. Please bear in mind that this prctl call is for use solely in
-dynamic linkers and other similar very low level system code. It is not a
-general end user feature.
-
-To find the best mode PR_SET_FP_MODE should then be used as follows with the
-use of emulated modes carefully controlled to avoid unnecessary use.
-
-1) dynamic linker needs FR0 mode:
-Try PR_FP_MODE_FR0
-Try PR_FP_MODE_FR1|PR_FP_MODE_FRE
-Try PR_FP_MODE_EMU|PR_FP_MODE_FR0
-Try PR_FP_MODE_EMU|PR_FP_MODE_FR1|PR_FP_MODE_FRE
-
-2) dynamic linker needs FR1 mode:
-Try PR_FP_MODE_FR1
-Try PR_FP_MODE_EMU|PR_FP_MODE_FR1
-
-3) dynamic linker needs FRE mode:
-Try PR_FP_MODE_FRE
-Try PR_FP_MODE_EMU|PR_FP_MODE_FRE
-
-This is fully compatible with the dynamic linker implementation which is
-already committed to glibc but allows the implementation to be extended
-in further work to also enable the use of emulated modes. You can go as far
-as to have a request to use an emulated mode actually disable an FPU even
-if the hardware version of the mode is available!
-
-I do not see any need for HWCAPs for these features as it is such a niche
-area. These are fundamental ABI support details that should be hidden as
-deeply as possible from an ordinary user.
-
-Thanks,
-Matthew
+-- 
+Behan Webster
+behanw@converseincode.com

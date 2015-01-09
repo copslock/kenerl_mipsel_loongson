@@ -1,51 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 12:35:34 +0100 (CET)
-Received: from mail-lb0-f174.google.com ([209.85.217.174]:33771 "EHLO
-        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010866AbbAILfcMgLNi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 12:35:32 +0100
-Received: by mail-lb0-f174.google.com with SMTP id 10so8219315lbg.5
-        for <linux-mips@linux-mips.org>; Fri, 09 Jan 2015 03:35:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=1Z/o8RbowAKsKj+bkwl+TO+waCJV0ioyIECAUjUNUZg=;
-        b=nNzOL+6xlsUCVOuLSnPbx84tHJ1b3itvUDDxDjYcEBLg8C7690OGEhFD3BaiTxlgHO
-         VMK9atfKZW09s0MLItWM/HzlEZTT2h0i4XcOYY5Sdh460aviBGtsfgcchb8qGQIeCZ3w
-         QF0zGsR/e23qY50UFe9oixJwcf1xNaSfL+Wd6BNDmcZ/DNSPAu5ryIcBp9l4HH++0but
-         QnayxcxNFTe+kgAwKD94DOmdZKs/68gMyPW8UOm97f8FMumSUCQXFGxBwwQg6Z8QX73H
-         d1bsAkoQMp5lBm1AXVUZwiN71negKmJZJ3lidc+prHVjlMTDuKPveGHRtG6EabramdXQ
-         tNOQ==
-X-Gm-Message-State: ALoCoQndq3LcWtBroUNJD1heypX45vwm/22JxYfminociY5APV/JXmdYPLVq8wMIvKC4vqWUCEp3
-X-Received: by 10.152.43.77 with SMTP id u13mr12687164lal.93.1420803326452;
-        Fri, 09 Jan 2015 03:35:26 -0800 (PST)
-Received: from [192.168.3.68] (ppp18-134.pppoe.mtu-net.ru. [81.195.18.134])
-        by mx.google.com with ESMTPSA id l3sm1815455lbs.13.2015.01.09.03.35.24
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Jan 2015 03:35:25 -0800 (PST)
-Message-ID: <54AFBCFD.2020104@cogentembedded.com>
-Date:   Fri, 09 Jan 2015 14:35:25 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 13:06:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45983 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008950AbbAIMGpDMuMS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 13:06:45 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 89F12ACC90BE4;
+        Fri,  9 Jan 2015 12:06:36 +0000 (GMT)
+Received: from metadesk01.kl.imgtec.org (192.168.14.104) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 9 Jan 2015 12:06:38 +0000
+From:   Daniel Sanders <daniel.sanders@imgtec.com>
+To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Daniel Sanders <daniel.sanders@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Behan Webster <behanw@converseincode.com>
+Subject: [PATCH] MIPS: Changed current_thread_info() to an equivalent supported by both clang and GCC
+Date:   Fri, 9 Jan 2015 12:06:17 +0000
+Message-ID: <1420805177-9087-1-git-send-email-daniel.sanders@imgtec.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-To:     "Jayachandran C." <jchandra@broadcom.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 04/17] MIPS: Netlogic: Disable writing IRT for disabled
- blocks
-References: <1420630118-17198-1-git-send-email-jchandra@broadcom.com> <1420630118-17198-5-git-send-email-jchandra@broadcom.com> <54AD67EF.2080406@cogentembedded.com> <20150109094818.GA18823@jayachandranc.netlogicmicro.com>
-In-Reply-To: <20150109094818.GA18823@jayachandranc.netlogicmicro.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.14.104]
+Return-Path: <Daniel.Sanders@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45021
+X-archive-position: 45022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: daniel.sanders@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,69 +44,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Without this, a 'break' instruction is executed very early in the boot and
+the boot hangs.
 
-On 1/9/2015 12:48 PM, Jayachandran C. wrote:
+The problem is that clang doesn't honour named registers on local variables
+and silently treats them as normal uninitialized variables. However, it
+does honour them on global variables.
 
->>> If the device header of a block is not present, return invalid IRT
->>> value so that we do not program an incorrect offset.
+Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
+---
+ arch/mips/include/asm/thread_info.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
->>> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
->>> ---
->>>   arch/mips/netlogic/xlp/nlm_hal.c | 25 ++++++++++++++++---------
->>>   1 file changed, 16 insertions(+), 9 deletions(-)
+For reference, a similar patch for ARM's stack pointer has already been merged:
+  0abc08b ARM: 8170/1: Add global named register current_stack_pointer for ARM
 
->>> diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
->>> index 7e0d224..de41fb5 100644
->>> --- a/arch/mips/netlogic/xlp/nlm_hal.c
->>> +++ b/arch/mips/netlogic/xlp/nlm_hal.c
->>> @@ -170,16 +170,23 @@ static int xlp_irq_to_irt(int irq)
->>>   	}
->>>
->>>   	if (devoff != 0) {
->>> +		uint32_t val;
->>> +
->>>   		pcibase = nlm_pcicfg_base(devoff);
->>> -		irt = nlm_read_reg(pcibase, XLP_PCI_IRTINFO_REG) & 0xffff;
->>> -		/* HW weirdness, I2C IRT entry has to be fixed up */
->>> -		switch (irq) {
->>> -		case PIC_I2C_1_IRQ:
->>> -			irt = irt + 1; break;
->>> -		case PIC_I2C_2_IRQ:
->>> -			irt = irt + 2; break;
->>> -		case PIC_I2C_3_IRQ:
->>> -			irt = irt + 3; break;
->>> +		val = nlm_read_reg(pcibase, XLP_PCI_IRTINFO_REG);
->>> +		if (val == 0xffffffff) {
->>> +			irt = -1;
->>> +		} else {
->>> +			irt = val & 0xffff;
->>> +			/* HW weirdness, I2C IRT entry has to be fixed up */
->>> +			switch (irq) {
->>> +			case PIC_I2C_1_IRQ:
->>> +				irt = irt + 1; break;
->>> +			case PIC_I2C_2_IRQ:
->>> +				irt = irt + 2; break;
->>> +			case PIC_I2C_3_IRQ:
->>> +				irt = irt + 3; break;
+This is part of a patch series to get Linux for Mips working when compiled with
+clang. I've chosen to submit this patch individually since it's my first kernel
+patch and I'd like to be sure I'm following your processes correctly before I
+submit all of them.
 
->>     Why not 'irt += n' in all 3 cases?
->>     And don't place *break* on the same line -- this upsets checkpatch.pl IIRC.
+Please CC me on replies since I'm not subscribed to the mailing list.
 
-> checkpatch did not complain,
-
-    Hm, perhaps this specific check was removed recently...
-
-> and also I did not want to mix formatting
-> change with actual fix.
-
-    Ah, I didn't realize you were just moving the code.
-
-> But agree that the code can cleaned up a bit.
-> I will sent out a patch for this next cycle.
-
-    TIA. :-)
-
-> JC.
-
-WBR, Sergei
+diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
+index 99eea59..2a2f3c4 100644
+--- a/arch/mips/include/asm/thread_info.h
++++ b/arch/mips/include/asm/thread_info.h
+@@ -58,11 +58,11 @@ struct thread_info {
+ #define init_stack		(init_thread_union.stack)
+ 
+ /* How to get the thread information struct from C.  */
++register struct thread_info *current_gp_register asm("$28");
++
+ static inline struct thread_info *current_thread_info(void)
+ {
+-	register struct thread_info *__current_thread_info __asm__("$28");
+-
+-	return __current_thread_info;
++	return current_gp_register;
+ }
+ 
+ #endif /* !__ASSEMBLY__ */
+-- 
+2.1.3

@@ -1,56 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 22:05:18 +0100 (CET)
-Received: from mail-la0-f52.google.com ([209.85.215.52]:42806 "EHLO
-        mail-la0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010751AbbAIVFQFVEi7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 22:05:16 +0100
-Received: by mail-la0-f52.google.com with SMTP id hs14so17051196lab.11
-        for <linux-mips@linux-mips.org>; Fri, 09 Jan 2015 13:05:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=ecMGYd0JPndrsydtkTkh4ImHNtfJrQkuFC3tHQp4vBE=;
-        b=AWWgzyf4WjcEOzfrXosgcTsl41MxuqLKqRaEGO7GsVkOAql42dXGOb3ehz3B28Nphu
-         1mex4QFUQrq5+Cd086pJEwpboVpuBN5LYThA9iVSL+jBDyMAPrBDv2i00k699vCxa7NC
-         VgHwjFkNuMGB0Ag8jgdbnCthnGhCXzxBZrI0/ZIobRifqq7nXMksEfyVM2Vev3GgBaw0
-         mtGZvayYImqjauCOr/1zU6W12BkEF+r/eioWligB1CcrYzftrAoNjdcwdi0UftsxAC0r
-         KpYQ+VxI/Ss9aYef+DKFrL++sfrqUQTZAUxbP8TqOPqdK7Ei6M2BLvoAZWApLG7pTCUD
-         bV7w==
-X-Gm-Message-State: ALoCoQkyQY2DlceFyDYwU/rfzUauYjophHcNf13EjFSm1Aw9mtI1lZioWK3FLqhfqdrB0dZfXAuB
-X-Received: by 10.152.26.201 with SMTP id n9mr24091032lag.50.1420837510625;
-        Fri, 09 Jan 2015 13:05:10 -0800 (PST)
-Received: from wasted.cogentembedded.com (ppp20-191.pppoe.mtu-net.ru. [81.195.20.191])
-        by mx.google.com with ESMTPSA id r5sm2095015lae.34.2015.01.09.13.05.08
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Jan 2015 13:05:09 -0800 (PST)
-Message-ID: <54B04283.5070705@cogentembedded.com>
-Date:   Sat, 10 Jan 2015 00:05:07 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 22:25:21 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25554 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010751AbbAIVZUUKDez convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 22:25:20 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 06C6C3A3CE779
+        for <linux-mips@linux-mips.org>; Fri,  9 Jan 2015 21:25:10 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 9 Jan 2015 21:25:14 +0000
+Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
+ LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
+ 14.03.0210.002; Fri, 9 Jan 2015 21:25:13 +0000
+From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Markos Chandras <Markos.Chandras@imgtec.com>
+Subject: RE: MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS
+Thread-Topic: MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS
+Thread-Index: AQHQLD4qVjIo4nddzEOeqkawpMt9d5y4Lqrw
+Date:   Fri, 9 Jan 2015 21:25:12 +0000
+Message-ID: <6D39441BF12EF246A7ABCE6654B0235320F9CF6F@LEMAIL01.le.imgtec.org>
+References: <1420719457-690-1-git-send-email-paul.burton@imgtec.com>
+ <54B024AA.1020400@imgtec.com>
+In-Reply-To: <54B024AA.1020400@imgtec.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.159.69]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Wolfram Sang <wsa@the-dreams.de>
-CC:     linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ludovic Desroches <ludovic.desroches@atmel.com>,
-        Yingjoe Chen <yingjoe.chen@mediatek.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC 02/11] i2c: add quirk checks to core
-References: <1420824103-24169-1-git-send-email-wsa@the-dreams.de> <1420824103-24169-3-git-send-email-wsa@the-dreams.de> <54B02D7F.7040501@cogentembedded.com> <20150109204522.GB1904@katana>
-In-Reply-To: <20150109204522.GB1904@katana>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <Matthew.Fortune@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45044
+X-archive-position: 45045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: Matthew.Fortune@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,61 +54,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Leonid Yegoshin <Leonid.Yegoshin@imgtec.com> writes:
+> Matthew Fortune - 2015-01-08 12:01:50 
+>
+> > > +	/* Avoid inadvertently triggering emulation */
+> > > +	if ((value & PR_FP_MODE_FR) && cpu_has_fpu &&
+> > > +	    !(current_cpu_data.fpu_id & MIPS_FPIR_F64))
+> > > +		return -EOPNOTSUPP;
+> > > +	if ((value & PR_FP_MODE_FRE) && !cpu_has_fre)
+> > > +		return -EOPNOTSUPP;
+> >
+> > This is perhaps not important immediately but these two cases can
+> > be seen as inconsistent. I.e. FR1 is emulated if there is no FPU
+> > but FRE is not emulated if there is no FPU.
+> >
+> > I believe this would be more consistent:
+> >
+> >	if ((value & PR_FP_MODE_FRE) && cpu_has_fpu &&
+> >	    !cpu_has_fre) 
+> >		return -EOPNOTSUPP;
+> >
+> > The kernel then freely emulates any requested mode when there is
+> > no FPU but sticks to only true hardware modes when there is an FPU.
+> >
+> > = More detailed discussion =
+> >
+> > There has been debate internally at IMG over the issue of FPU emulation
+> > so I think it is appropriate to comment on why emulation is not always
+> > desirable according to the new o32 FP ABI extensions. I'll try to be
+> > brief...
+> >
+> > The simple reason is that it is obviously better to use a true hardware
+> > FPU mode whenever possible. 
+>
+> I would like to point you to fact that the best choice to use the hardware 
+> efficiently is to know which kind of hardware you have. 
 
-On 01/09/2015 11:45 PM, Wolfram Sang wrote:
+From that perspective the PR_SET_FP_MODE does just that except user-mode
+discovers the modes by simply trying to use them in order of most desirable
+to least desirable. I don't deny that the user code may benefit from knowing
+upfront what is available and being able to select an emulated mode if it
+*actively* chooses to do so.
 
->>> Let the core do the checks if HW quirks prevent a transfer. Saves code
->> >from drivers and adds consistency.
+> So, it would be much better if application (read - GLIBC/bionic library)
+> gets the HW description available in HWCAP and make a choice during library load
+> instead of guessing via syscalls in attempt to use one or another FPU/SIMD mode.
+> Guessing may easily get a non-optimal HW configuration.
 
->>> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
->>> ---
->>>   drivers/i2c/i2c-core.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++++
->>>   1 file changed, 53 insertions(+)
->>>
->>> diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
->>> index 39d25a8cb1ad..7b10a19abf5b 100644
->>> --- a/drivers/i2c/i2c-core.c
->>> +++ b/drivers/i2c/i2c-core.c
->>> @@ -2063,6 +2063,56 @@ module_exit(i2c_exit);
->>>    * ----------------------------------------------------
->>>    */
->>>
->>> +/* Check if val is exceeding the quirk IFF quirk is non 0 */
->>> +#define i2c_quirk_exceeded(val, quirk) ((quirk) && ((val) > (quirk)))
->>> +
->>> +static int i2c_quirk_error(struct i2c_adapter *adap, struct i2c_msg *msg, char *err_msg)
->>> +{
->>> +	dev_err(&adap->dev, "quirk: %s (addr 0x%04x, size %u)\n", err_msg, msg->addr, msg->len);
->>> +	return -EOPNOTSUPP;
->>> +}
+Guessing cannot get a non-optimal mode if the PR_SET_FP_MODE only succeeds for
+true hardware modes. What can happen is that the user could fail to find a mode
+that it needs even though the kernel could have emulated it. I agree that it may
+be a useful to offer the user the opportunity to select an emulated mode though.
 
->>     Always returning the same value doesn't make much sense. Are you trying
->> to save space on the call sites?
+> And kernel can just support an application choice via using a real HW or emulation if
+> application do some choice because there is no variants (example: FPU absence).
 
-> Please elaborate. I think it does. If a quirk matches, we report that we
-> don't support this transfer.
+Would your concerns be addressed by adding another bit to the new PR_SET_FP_MODE
+option that says the user is willing to accept an emulated mode:
 
-    OK, but what's the point of having this function return *int* if it always 
-returns the same value? AFAIU, you're trying to save the code space on the 
-call sites of this function by not having *return* -EOPNOTSUPP there each time?
+#define PR_FP_MODE_EMU (1<<2)
 
->> [...]
->>> @@ -2080,6 +2130,9 @@ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
->>>   	unsigned long orig_jiffies;
->>>   	int ret, try;
->>>
->>> +	if (adap->quirks && i2c_check_for_quirks(adap, msgs, num))
+I do not propose that this is returned from PR_GET_FP_MODE to indicate if
+emulation is in use or not though. PR_GET_FP_MODE should just return the mode
+in use regardless of emulation.
 
->>     So, you only check for non-zero result of this function? Perhaps it makes
->> sense to return true/false instead?
+In addition to this extra control bit the updated behaviour of allowing a
+PR_SET_FP_MODE without PR_FP_MODE_EMU should succeed if the current mode
+matches the requested mode.
 
-> Could be done, but what would be the advantage? A lot of functions
-> return errno or 0.
+This gives the user the ability to choose a mode falling back to emulation if
+they desire. Please bear in mind that this prctl call is for use solely in
+dynamic linkers and other similar very low level system code. It is not a
+general end user feature.
 
-    It would have been OK if you were actually caring about the result, e.g. 
-returning it from __i2c_transfer(). Since you don't, IMO it would make more 
-sense to return true from i2c_check_for_quirks() (making it *bool*) iff it did 
-find/apply a quirk.
+To find the best mode PR_SET_FP_MODE should then be used as follows with the
+use of emulated modes carefully controlled to avoid unnecessary use.
 
-WBR, Sergei
+1) dynamic linker needs FR0 mode:
+Try PR_FP_MODE_FR0
+Try PR_FP_MODE_FR1|PR_FP_MODE_FRE
+Try PR_FP_MODE_EMU|PR_FP_MODE_FR0
+Try PR_FP_MODE_EMU|PR_FP_MODE_FR1|PR_FP_MODE_FRE
+
+2) dynamic linker needs FR1 mode:
+Try PR_FP_MODE_FR1
+Try PR_FP_MODE_EMU|PR_FP_MODE_FR1
+
+3) dynamic linker needs FRE mode:
+Try PR_FP_MODE_FRE
+Try PR_FP_MODE_EMU|PR_FP_MODE_FRE
+
+This is fully compatible with the dynamic linker implementation which is
+already committed to glibc but allows the implementation to be extended
+in further work to also enable the use of emulated modes. You can go as far
+as to have a request to use an emulated mode actually disable an FPU even
+if the hardware version of the mode is available!
+
+I do not see any need for HWCAPs for these features as it is such a niche
+area. These are fundamental ABI support details that should be hidden as
+deeply as possible from an ordinary user.
+
+Thanks,
+Matthew

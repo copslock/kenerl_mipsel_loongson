@@ -1,29 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jan 2015 20:19:18 +0100 (CET)
-Received: from sauhun.de ([89.238.76.85]:49598 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009956AbbAHTTR3Xc8Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Jan 2015 20:19:17 +0100
-Received: from p4fe24cda.dip0.t-ipconnect.de ([79.226.76.218]:53953 helo=localhost)
-        by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <wsa@the-dreams.de>)
-        id 1Y9Ic0-0000pd-FY; Thu, 08 Jan 2015 20:19:16 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     linux-i2c@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, Wolfram Sang <wsa@the-dreams.de>
-Subject: [PATCH] i2c: pmcmsp: remove dead code
-Date:   Thu,  8 Jan 2015 20:19:00 +0100
-Message-Id: <1420744740-26468-1-git-send-email-wsa@the-dreams.de>
-X-Mailer: git-send-email 2.1.3
-Return-Path: <wsa@the-dreams.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 03:26:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49238 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010256AbbAIC0DO8kGR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 03:26:03 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 58260D9369725
+        for <linux-mips@linux-mips.org>; Fri,  9 Jan 2015 02:25:56 +0000 (GMT)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 9 Jan
+ 2015 02:25:57 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 9 Jan
+ 2015 02:25:57 +0000
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 8 Jan 2015
+ 18:25:48 -0800
+Message-ID: <54AF3C2C.7040807@imgtec.com>
+Date:   Thu, 8 Jan 2015 18:25:48 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>
+CC:     Matthew Fortune <matthew.fortune@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS
+References: <1420719457-690-1-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1420719457-690-1-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45015
+X-archive-position: 45016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,32 +50,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-CPPCHECK rightfully says:
+> +	/* Prevent any threads from obtaining live FP context */
+> +	atomic_set(&task->mm->context.fp_mode_switching, 1);
+> +	smp_mb__after_atomic();
+> +
+> +	/*
+> +	 * If there are multiple online CPUs then wait until all threads whose
+> +	 * FP mode is about to change have been context switched. This approach
+> +	 * allows us to only worry about whether an FP mode switch is in
+> +	 * progress when FP is first used in a tasks time slice. Pretty much all
+> +	 * of the mode switch overhead can thus be confined to cases where mode
+> +	 * switches are actually occuring. That is, to here. However for the
+> +	 * thread performing the mode switch it may take a while...
+> +	 */
+> +	if (num_online_cpus() > 1) {
+> +		spin_lock_irq(&task->sighand->siglock);
+> +
+> +		for_each_thread(task, t) {
+> +			if (t == current)
+> +				continue;
+> +
+> +			switch_count = t->nvcsw + t->nivcsw;
+> +
+> +			do {
+> +				spin_unlock_irq(&task->sighand->siglock);
+> +				cond_resched();
+> +				spin_lock_irq(&task->sighand->siglock);
+> +			} while ((t->nvcsw + t->nivcsw) == switch_count);
+> +		}
+> +
+> +		spin_unlock_irq(&task->sighand->siglock);
+> +	}
+>
+This piece of thread walking seems to be not thread safe for newly 
+created thread.
+Thread creation is not locked between points of copy_thread which copies 
+task thread flags
+and makeing thread visible to walking via "for_each_thread".
 
-drivers/i2c/busses/i2c-pmcmsp.c:151: style: The function 'pmcmsptwi_reg_to_clock' is never used.
+So it is possible in environment with two threads - one is creating an 
+another thread,
+another one switching FPU mode and waiting and race condition may causes 
+a newly thread in old mode
+but the rest of thread group is in new mode.
 
-Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
----
- drivers/i2c/busses/i2c-pmcmsp.c | 7 -------
- 1 file changed, 7 deletions(-)
+Besides that, it looks like in kernel with tickless mode a scheduler may 
+no come a long time in idle system,
+in extreme case - forever.
 
-diff --git a/drivers/i2c/busses/i2c-pmcmsp.c b/drivers/i2c/busses/i2c-pmcmsp.c
-index 44f03eed00dd..d37d9db6681e 100644
---- a/drivers/i2c/busses/i2c-pmcmsp.c
-+++ b/drivers/i2c/busses/i2c-pmcmsp.c
-@@ -148,13 +148,6 @@ static inline u32 pmcmsptwi_clock_to_reg(
- 	return ((clock->filter & 0xf) << 12) | (clock->clock & 0x03ff);
- }
- 
--static inline void pmcmsptwi_reg_to_clock(
--			u32 reg, struct pmcmsptwi_clock *clock)
--{
--	clock->filter = (reg >> 12) & 0xf;
--	clock->clock = reg & 0x03ff;
--}
--
- static inline u32 pmcmsptwi_cfg_to_reg(const struct pmcmsptwi_cfg *cfg)
- {
- 	return ((cfg->arbf & 0xf) << 12) |
--- 
-2.1.3
+- Leonid.

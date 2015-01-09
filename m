@@ -1,54 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 21:06:24 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:37838 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011023AbbAIUGWwx03h convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 21:06:22 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 391252B475349;
-        Fri,  9 Jan 2015 20:06:12 +0000 (GMT)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 9 Jan
- 2015 20:06:15 +0000
-Received: from hhmail02.hh.imgtec.org ([::1]) by hhmail02.hh.imgtec.org
- ([::1]) with mapi id 14.03.0224.002; Fri, 9 Jan 2015 20:06:15 +0000
-From:   Daniel Sanders <Daniel.Sanders@imgtec.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <Paul.Burton@imgtec.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        "Behan Webster" <behanw@converseincode.com>
-Subject: RE: [PATCH] MIPS: Changed current_thread_info() to an equivalent
- supported by both clang and GCC
-Thread-Topic: [PATCH] MIPS: Changed current_thread_info() to an equivalent
- supported by both clang and GCC
-Thread-Index: AQHQLAS56YXs0o1g/UiAxsa46wgpHJy3tI6AgAAQGhCAAEYSAIAAA41A
-Date:   Fri, 9 Jan 2015 20:06:14 +0000
-Message-ID: <E484D272A3A61B4880CDF2E712E9279F458E7DF1@hhmail02.hh.imgtec.org>
-References: <1420805177-9087-1-git-send-email-daniel.sanders@imgtec.com>
- <54AFC6F3.1020300@cogentembedded.com>
- <E484D272A3A61B4880CDF2E712E9279F458E68B8@hhmail02.hh.imgtec.org>
- <54B00F3C.8030903@gmail.com>
-In-Reply-To: <54B00F3C.8030903@gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.14.109]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 21:30:37 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:58622 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011023AbbAIUafR0UGm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jan 2015 21:30:35 +0100
+Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3ABBDA59;
+        Fri,  9 Jan 2015 20:30:28 +0000 (UTC)
+Date:   Fri, 9 Jan 2015 12:30:27 -0800
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        David Daney <david.daney@cavium.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb <linux-usb@vger.kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH 2/2 resend v2] USB: host: Introduce flag to enable use of
+ 64-bit dma_mask for ehci-platform
+Message-ID: <20150109203027.GA5772@kroah.com>
+References: <20141215132628.GA20109@alberich>
+ <20150106124644.GA4194@alberich>
+ <20150106125015.GC4194@alberich>
 MIME-Version: 1.0
-Return-Path: <Daniel.Sanders@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150106125015.GC4194@alberich>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45041
+X-archive-position: 45042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Daniel.Sanders@imgtec.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,67 +47,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> -----Original Message-----
-> From: David Daney [mailto:ddaney.cavm@gmail.com]
-> Sent: 09 January 2015 17:26
-> To: Daniel Sanders
-> Cc: Sergei Shtylyov; linux-mips@linux-mips.org; Ralf Baechle; Paul Burton;
-> Markos Chandras; James Hogan; Behan Webster
-> Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent
-> supported by both clang and GCC
+On Tue, Jan 06, 2015 at 01:50:15PM +0100, Andreas Herrmann wrote:
+> ehci-octeon driver used a 64-bit dma_mask. With removal of ehci-octeon
+> and usage of ehci-platform ehci dma_mask is now limited to 32 bits
+> (coerced in ehci_platform_probe).
 > 
-> On 01/09/2015 05:23 AM, Daniel Sanders wrote:
-> > Hi,
-> >
-> > Thanks for the quick reply.
-> >
-> >> -----Original Message-----
-> >> From: Sergei Shtylyov [mailto:sergei.shtylyov@cogentembedded.com]
-> >> Sent: 09 January 2015 12:18
-> >> To: Daniel Sanders; linux-mips@linux-mips.org; Ralf Baechle
-> >> Cc: Paul Burton; Markos Chandras; James Hogan; Behan Webster
-> >> Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent
-> >> supported by both clang and GCC
-> >>
-> >> Hello.
-> >>
-> >> On 1/9/2015 3:06 PM, Daniel Sanders wrote:
-> >>
-> >>> Without this, a 'break' instruction is executed very early in the boot and
-> >>> the boot hangs.
-> >>
-> >>> The problem is that clang doesn't honour named registers on local
-> variables
-> >>> and silently treats them as normal uninitialized variables. However, it
-> >>> does honour them on global variables.
+> Provide a flag in ehci platform data to allow use of 64 bits for
+> dma_mask.
 > 
-> Why not fix clang instead?
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: Alex Smith <alex.smith@imgtec.com>
+> Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Acked-by: Alan Stern <stern@rowland.harvard.edu>
+> ---
+>  arch/mips/cavium-octeon/octeon-platform.c |    4 +---
+>  drivers/usb/host/ehci-platform.c          |    3 ++-
+>  include/linux/usb/ehci_pdriver.h          |    1 +
+>  3 files changed, 4 insertions(+), 4 deletions(-)
 
-There's some significant implementation difficulties in LLVM that appear to stem from it not being designed to accommodate this extension. There were also some objections based on the future direction of LLVM. The thread can be found at http://lists.cs.uiuc.edu/pipermail/llvmdev/2014-March/071555.html. I've linked to the bit where the issues started to be discussed rather than the start of the thread.
+This no longer applies to my usb-testing branch, can you refresh it and
+resend?
 
-Difficulty and objections aside, it's also a very large amount of work to support a single (as far as I know) user of named register locals, especially when Linux has already accepted patches to switch named register locals to named register globals elsewhere. On balance, it seems best to change Linux.
+thanks,
 
-> >>> Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
-> >>
-> >> [...]
-> >>
-> >>> diff --git a/arch/mips/include/asm/thread_info.h
-> >> b/arch/mips/include/asm/thread_info.h
-> >>> index 99eea59..2a2f3c4 100644
-> >>> --- a/arch/mips/include/asm/thread_info.h
-> >>> +++ b/arch/mips/include/asm/thread_info.h
-> >>> @@ -58,11 +58,11 @@ struct thread_info {
-> >>>    #define init_stack		(init_thread_union.stack)
-> >>>
-> >>>    /* How to get the thread information struct from C.  */
-> >>> +register struct thread_info *current_gp_register asm("$28");
-> >>
-> >>      *static* missing?
-> >>
-> >> WBR, Sergei
-> >
-> > Combining 'register' and 'static' is invalid.
-> 
-> Defining global variables in header files is also invalid.
-
-I agree with that statement but named register globals are not the same as normal global variables. In particular, they do not take up space in the data section and they do not have an entry in the symbol table. They can therefore be included in multiple objects without causing link errors.
+greg k-h

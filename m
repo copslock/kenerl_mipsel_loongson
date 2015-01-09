@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 18:25:08 +0100 (CET)
-Received: from sauhun.de ([89.238.76.85]:53173 "EHLO pokefinder.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2015 18:25:25 +0100 (CET)
+Received: from sauhun.de ([89.238.76.85]:53183 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010849AbbAIRWbw8OVI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Jan 2015 18:22:31 +0100
-Received: from p4fe257be.dip0.t-ipconnect.de ([79.226.87.190]:48239 helo=localhost)
+        id S27011011AbbAIRWdQ-y9E (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Jan 2015 18:22:33 +0100
+Received: from p4fe257be.dip0.t-ipconnect.de ([79.226.87.190]:48240 helo=localhost)
         by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
         (Exim 4.80)
         (envelope-from <wsa@the-dreams.de>)
-        id 1Y9dGT-0000NL-Uj; Fri, 09 Jan 2015 18:22:26 +0100
+        id 1Y9dGV-0000Nh-Dj; Fri, 09 Jan 2015 18:22:27 +0100
 From:   Wolfram Sang <wsa@the-dreams.de>
 To:     linux-i2c@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -16,9 +16,9 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Ludovic Desroches <ludovic.desroches@atmel.com>,
         Yingjoe Chen <yingjoe.chen@mediatek.com>,
         Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org
-Subject: [RFC 09/11] i2c: powermac: make use of the new infrastructure for quirks
-Date:   Fri,  9 Jan 2015 18:21:39 +0100
-Message-Id: <1420824103-24169-10-git-send-email-wsa@the-dreams.de>
+Subject: [RFC 10/11] i2c: viperboard: make use of the new infrastructure for quirks
+Date:   Fri,  9 Jan 2015 18:21:40 +0100
+Message-Id: <1420824103-24169-11-git-send-email-wsa@the-dreams.de>
 X-Mailer: git-send-email 2.1.3
 In-Reply-To: <1420824103-24169-1-git-send-email-wsa@the-dreams.de>
 References: <1420824103-24169-1-git-send-email-wsa@the-dreams.de>
@@ -26,7 +26,7 @@ Return-Path: <wsa@the-dreams.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45034
+X-archive-position: 45035
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,43 +45,43 @@ X-list: linux-mips
 
 Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
 ---
- drivers/i2c/busses/i2c-powermac.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/i2c/busses/i2c-viperboard.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-powermac.c b/drivers/i2c/busses/i2c-powermac.c
-index 60a53c169ed2..6abcf696e359 100644
---- a/drivers/i2c/busses/i2c-powermac.c
-+++ b/drivers/i2c/busses/i2c-powermac.c
-@@ -153,12 +153,6 @@ static int i2c_powermac_master_xfer(	struct i2c_adapter *adap,
- 	int			read;
- 	int			addrdir;
+diff --git a/drivers/i2c/busses/i2c-viperboard.c b/drivers/i2c/busses/i2c-viperboard.c
+index 7533fa34d737..47e88adf2011 100644
+--- a/drivers/i2c/busses/i2c-viperboard.c
++++ b/drivers/i2c/busses/i2c-viperboard.c
+@@ -288,10 +288,6 @@ static int vprbrd_i2c_xfer(struct i2c_adapter *i2c, struct i2c_msg *msgs,
+ 			i, pmsg->flags & I2C_M_RD ? "read" : "write",
+ 			pmsg->flags, pmsg->len, pmsg->addr);
  
--	if (num != 1) {
--		dev_err(&adap->dev,
--			"Multi-message I2C transactions not supported\n");
--		return -EOPNOTSUPP;
--	}
+-		/* msgs longer than 2048 bytes are not supported by adapter */
+-		if (pmsg->len > 2048)
+-			return -EINVAL;
 -
- 	if (msgs->flags & I2C_M_TEN)
- 		return -EINVAL;
- 	read = (msgs->flags & I2C_M_RD) != 0;
-@@ -205,6 +199,9 @@ static const struct i2c_algorithm i2c_powermac_algorithm = {
- 	.functionality	= i2c_powermac_func,
+ 		mutex_lock(&vb->lock);
+ 		/* directly send the message */
+ 		if (pmsg->flags & I2C_M_RD) {
+@@ -358,6 +354,11 @@ static const struct i2c_algorithm vprbrd_algorithm = {
+ 	.functionality	= vprbrd_i2c_func,
  };
  
-+static struct i2c_adapter_quirks i2c_powermac_quirks = {
-+	.max_num_msgs = 1,
++static struct i2c_adapter_quirks vprbrd_quirks = {
++	.max_read_len = 2048,
++	.max_write_len = 2048,
 +};
- 
- static int i2c_powermac_remove(struct platform_device *dev)
++
+ static int vprbrd_i2c_probe(struct platform_device *pdev)
  {
-@@ -434,6 +431,7 @@ static int i2c_powermac_probe(struct platform_device *dev)
- 
- 	platform_set_drvdata(dev, adapter);
- 	adapter->algo = &i2c_powermac_algorithm;
-+	adapter->quirks = &i2c_powermac_quirks;
- 	i2c_set_adapdata(adapter, bus);
- 	adapter->dev.parent = &dev->dev;
- 
+ 	struct vprbrd *vb = dev_get_drvdata(pdev->dev.parent);
+@@ -373,6 +374,7 @@ static int vprbrd_i2c_probe(struct platform_device *pdev)
+ 	vb_i2c->i2c.owner = THIS_MODULE;
+ 	vb_i2c->i2c.class = I2C_CLASS_HWMON;
+ 	vb_i2c->i2c.algo = &vprbrd_algorithm;
++	vb_i2c->i2c.quirks = &vprbrd_quirks;
+ 	vb_i2c->i2c.algo_data = vb;
+ 	/* save the param in usb capabable memory */
+ 	vb_i2c->bus_freq_param = i2c_bus_param;
 -- 
 2.1.3

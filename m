@@ -1,29 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jan 2015 06:05:19 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:60815 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009730AbbAKFFRw--ym (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jan 2015 06:05:17 +0100
-Date:   Sun, 11 Jan 2015 05:05:17 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Mans Rullgard <mans@mansr.com>
-cc:     linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH] MIPS: optimise 32-bit do_div() with constant
- divisor
-In-Reply-To: <1415290998-10328-1-git-send-email-mans@mansr.com>
-Message-ID: <alpine.LFD.2.11.1501110448011.22270@eddie.linux-mips.org>
-References: <1415290998-10328-1-git-send-email-mans@mansr.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jan 2015 10:42:05 +0100 (CET)
+Received: from smtp-out-127.synserver.de ([212.40.185.127]:1035 "EHLO
+        smtp-out-127.synserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009634AbbAKJmDnnnA0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jan 2015 10:42:03 +0100
+Received: (qmail 3453 invoked by uid 0); 11 Jan 2015 09:42:02 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 3002
+Received: from ppp-88-217-3-222.dynamic.mnet-online.de (HELO ?192.168.178.23?) [88.217.3.222]
+  by 217.119.54.81 with AES128-SHA encrypted SMTP; 11 Jan 2015 09:42:01 -0000
+Message-ID: <54B24566.5010109@metafoo.de>
+Date:   Sun, 11 Jan 2015 10:41:58 +0100
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.3.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     Maarten ter Huurne <maarten@treewalker.org>,
+        Guenter Roeck <linux@roeck-us.net>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH 3/3] MIPS: jz4740: Move reset code to the watchdog driver
+References: <1420914550-18335-1-git-send-email-lars@metafoo.de> <1420914550-18335-3-git-send-email-lars@metafoo.de> <54B1CF4B.3070503@roeck-us.net> <1766434.QjfqQROysC@hyperion>
+In-Reply-To: <1766434.QjfqQROysC@hyperion>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45062
+X-archive-position: 45063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,75 +47,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 6 Nov 2014, Mans Rullgard wrote:
+On 01/11/2015 02:43 AM, Maarten ter Huurne wrote:
+> On Saturday 10 January 2015 17:18:03 Guenter Roeck wrote:
+>> On 01/10/2015 10:29 AM, Lars-Peter Clausen wrote:
+>>> @@ -186,9 +208,20 @@ static int jz4740_wdt_probe(struct platform_device
+>>> *pdev)>
+>>>    	if (ret < 0)
+>>>    		goto err_disable_clk;
+>>>
+>>> +	drvdata->restart_handler.notifier_call = jz4740_wdt_restart;
+>>> +	drvdata->restart_handler.priority = 128;
+>>> +	ret = register_restart_handler(&drvdata->restart_handler);
+>>> +	if (ret) {
+>>> +		dev_err(&pdev->dev, "cannot register restart handler, %d\n",
+>>> +			ret);
+>>> +		goto err_unregister_watchdog;
+>>
+>> Are you sure you want to abort in this case ?
+>> After all, the watchdog would still work.
+>
+> That raises a similar question: what about the opposite case, where the
+> watchdog registration fails? If the resource acquisition part of the probe
+> fails, neither the watchdog nor the restart functionality is going to work,
+> but if the call to watchdog_register_device() fails, the restart handler
+> would still work.
 
-> This is an adaptation of the optimised do_div() for ARM by
-> Nicolas Pitre implementing division by a constant using a
-> multiplication by the inverse.  Ideally, the compiler would
-> do this internally as it does for 32-bit operands, but it
-> doesn't.
-> 
-> This version of the code requires an assembler with support
-> for the DSP ASE syntax since accessing the hi/lo registers
-> sanely from inline asm is impossible without this.  Building
-> for a CPU without this extension still works, however.
+I think this is fine, if either the watchdog or the restart handler 
+registration fail then the system is probably already in a rather unusable 
+state.
 
- Well it also requires MADDU that is not always there; only added with 
-MIPS32/MIPS64 and scarcely present as a vendor extension beforehand.  
-However...
+But that got me thinking, maybe instead of having each watchdog driver 
+register and implement its own restart handler we should maybe add this as a 
+functionality to the watchdog framework. Something along the lines off.
 
-> +		} else {						\
-> +			__t = __m;					\
-> +			asm (	".set	push		\n"		\
-> +				".set	dsp		\n"		\
-> +				"maddu	%q2, %L3, %L4	\n"             \
-> +                                "mflo	%L0, %q2	\n"             \
-> +                                "mfhi	%M0, %q2	\n"             \
+watchdog_set_timeout(wdt, wdt->min_timeout);
+watchdog_start(wdt);
+mdelay(wdt->min_timeout * 2000);
 
-[Some formatting issue here.]
-
-> +				"sltu	%1,  %L0, %L3	\n"		\
-> +				"addu	%L0, %M0, %1	\n"		\
-> +				"sltu	%M0, %L0, %M3	\n"		\
-> +				".set	pop		\n"		\
-> +				: "=&r"(__res), "=&r"(__c), "+&ka"(__t) \
-> +				: "r"(__m), "r"(__n));			\
-> +		}							\
-> +		if (!(__m & ((1ULL << 63) | (1ULL << 31)))) {		\
-> +			asm (	".set	push		\n"		\
-> +				".set	dsp		\n"		\
-> +				"maddu	%q0, %M2, %L3	\n"		\
-> +				"maddu	%q0, %L2, %M3	\n"		\
-> +				"mfhi	%1,  %q0	\n"		\
-> +				"mthi	$0,  %q0	\n"		\
-> +				"mtlo	%1,  %q0	\n"		\
-> +				"maddu	%q0, %M2, %M3	\n"		\
-> +				".set	pop		\n"		\
-> +				: "+&ka"(__res), "=&r"(__c)		\
-> +				: "r"(__m), "r"(__n));			\
-> +		} else {						\
-> +			asm (	".set	push		\n"		\
-> +				".set	dsp		\n"		\
-> +				"maddu	%q0, %M3, %L4	\n"		\
-> +				"mfhi	%2,  %q0	\n"		\
-> +				"maddu	%q0, %L3, %M4	\n"		\
-> +				"mfhi	%1,  %q0	\n"		\
-> +				"sltu	%2,  %1,  %2	\n"		\
-> +				"mtlo	%1,  %q0	\n"		\
-> +				"mthi	%2,  %q0	\n"		\
-> +				"maddu	%q0, %M3, %M4	\n"		\
-> +				".set	pop		\n"		\
-> +				: "+&ka"(__res), "=&r"(__z), "=&r"(__c) \
-> +				: "r"(__m), "r"(__n));			\
-> +		}							\
-
- ... is there actually a need to implement these blocks as inline assembly 
-code?  It looks to me like these are straightforward operations, GCC 
-should be able to produce reasonable code easily.
-
- Plus using the extra DSP accumulators in the kernel is not allowed with 
-our code structure as it stands, they are not saved/restored on a kernel 
-entry/return and are not call-saved registers in the ABI, so their user 
-values will get clobbered here.
-
-  Maciej
+- Lars

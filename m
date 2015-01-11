@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jan 2015 10:42:05 +0100 (CET)
-Received: from smtp-out-127.synserver.de ([212.40.185.127]:1035 "EHLO
-        smtp-out-127.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009634AbbAKJmDnnnA0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jan 2015 10:42:03 +0100
-Received: (qmail 3453 invoked by uid 0); 11 Jan 2015 09:42:02 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 3002
-Received: from ppp-88-217-3-222.dynamic.mnet-online.de (HELO ?192.168.178.23?) [88.217.3.222]
-  by 217.119.54.81 with AES128-SHA encrypted SMTP; 11 Jan 2015 09:42:01 -0000
-Message-ID: <54B24566.5010109@metafoo.de>
-Date:   Sun, 11 Jan 2015 10:41:58 +0100
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.3.0
-MIME-Version: 1.0
-To:     Maarten ter Huurne <maarten@treewalker.org>,
-        Guenter Roeck <linux@roeck-us.net>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jan 2015 13:15:13 +0100 (CET)
+Received: from unicorn.mansr.com ([81.2.72.234]:43588 "EHLO unicorn.mansr.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010140AbbAKMPKhxBJA convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jan 2015 13:15:10 +0100
+Received: by unicorn.mansr.com (Postfix, from userid 51770)
+        id 8246C1538A; Sun, 11 Jan 2015 12:15:04 +0000 (GMT)
+From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Wim Van Sebroeck <wim@iguana.be>,
         Paul Burton <paul.burton@imgtec.com>,
         Paul Cercueil <paul@crapouillou.net>,
+        Maarten ter Huurne <maarten@treewalker.org>,
         linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 3/3] MIPS: jz4740: Move reset code to the watchdog driver
-References: <1420914550-18335-1-git-send-email-lars@metafoo.de> <1420914550-18335-3-git-send-email-lars@metafoo.de> <54B1CF4B.3070503@roeck-us.net> <1766434.QjfqQROysC@hyperion>
-In-Reply-To: <1766434.QjfqQROysC@hyperion>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <lars@metafoo.de>
+Subject: Re: [PATCH 1/3] MIPS: Use do_kernel_restart() as the default restart handler
+References: <1420914550-18335-1-git-send-email-lars@metafoo.de>
+        <yw1xh9vyflfw.fsf@unicorn.mansr.com> <54B1CF9B.3060606@roeck-us.net>
+Date:   Sun, 11 Jan 2015 12:15:04 +0000
+In-Reply-To: <54B1CF9B.3060606@roeck-us.net> (Guenter Roeck's message of "Sat,
+        10 Jan 2015 17:19:23 -0800")
+Message-ID: <yw1xd26lfr93.fsf@unicorn.mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mru@mansr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45063
+X-archive-position: 45064
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: mans@mansr.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,41 +46,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/11/2015 02:43 AM, Maarten ter Huurne wrote:
-> On Saturday 10 January 2015 17:18:03 Guenter Roeck wrote:
->> On 01/10/2015 10:29 AM, Lars-Peter Clausen wrote:
->>> @@ -186,9 +208,20 @@ static int jz4740_wdt_probe(struct platform_device
->>> *pdev)>
->>>    	if (ret < 0)
->>>    		goto err_disable_clk;
->>>
->>> +	drvdata->restart_handler.notifier_call = jz4740_wdt_restart;
->>> +	drvdata->restart_handler.priority = 128;
->>> +	ret = register_restart_handler(&drvdata->restart_handler);
->>> +	if (ret) {
->>> +		dev_err(&pdev->dev, "cannot register restart handler, %d\n",
->>> +			ret);
->>> +		goto err_unregister_watchdog;
+Guenter Roeck <linux@roeck-us.net> writes:
+
+> On 01/10/2015 12:08 PM, Måns Rullgård wrote:
+>> Lars-Peter Clausen <lars@metafoo.de> writes:
 >>
->> Are you sure you want to abort in this case ?
->> After all, the watchdog would still work.
->
-> That raises a similar question: what about the opposite case, where the
-> watchdog registration fails? If the resource acquisition part of the probe
-> fails, neither the watchdog nor the restart functionality is going to work,
-> but if the call to watchdog_register_device() fails, the restart handler
-> would still work.
+>>> Use the recently introduced do_kernel_restart() function as the default restart
+>>> handler if the platform did not explicitly provide a restart handler. This
+>>> allows use restart handler that have been registered by device drivers to
+>>> restart the machine.
+>>>
+>>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+>>> ---
+>>>   arch/mips/kernel/reset.c |    2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
+>>> index 07fc524..36cd80c 100644
+>>> --- a/arch/mips/kernel/reset.c
+>>> +++ b/arch/mips/kernel/reset.c
+>>> @@ -19,7 +19,7 @@
+>>>    * So handle all using function pointers to machine specific
+>>>    * functions.
+>>>    */
+>>> -void (*_machine_restart)(char *command);
+>>> +void (*_machine_restart)(char *command) = do_kernel_restart;
+>>>   void (*_machine_halt)(void);
+>>>   void (*pm_power_off)(void);
+>>
+>> There is already a similar patch posted by Kevin Cernekee:
+>> http://www.linux-mips.org/archives/linux-mips/2014-12/msg00410.html
+>>
+> Personally I prefer the earlier patch, though I guess that is personal
+> preference.
 
-I think this is fine, if either the watchdog or the restart handler 
-registration fail then the system is probably already in a rather unusable 
-state.
+They both achieve the same thing, though Kevin's is more in line with
+what ARM does.  Missing from both is a fallback while(1) loop in case no
+restart handlers are registered.  With the restart moved to the watchdog
+driver, there's a possibility that this might happen.
 
-But that got me thinking, maybe instead of having each watchdog driver 
-register and implement its own restart handler we should maybe add this as a 
-functionality to the watchdog framework. Something along the lines off.
-
-watchdog_set_timeout(wdt, wdt->min_timeout);
-watchdog_start(wdt);
-mdelay(wdt->min_timeout * 2000);
-
-- Lars
+-- 
+Måns Rullgård
+mans@mansr.com

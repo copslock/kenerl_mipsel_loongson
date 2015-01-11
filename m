@@ -1,41 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jan 2015 13:45:15 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:43692 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010140AbbAKMpNptNDZ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jan 2015 13:45:13 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id 204031538A; Sun, 11 Jan 2015 12:45:08 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 1/3] MIPS: Use do_kernel_restart() as the default restart handler
-References: <1420914550-18335-1-git-send-email-lars@metafoo.de>
-        <yw1xh9vyflfw.fsf@unicorn.mansr.com> <54B1CF9B.3060606@roeck-us.net>
-        <yw1xd26lfr93.fsf@unicorn.mansr.com> <54B26BB4.50707@metafoo.de>
-        <yw1x8uh9fqj1.fsf@unicorn.mansr.com> <54B26F5C.8050202@metafoo.de>
-Date:   Sun, 11 Jan 2015 12:45:08 +0000
-In-Reply-To: <54B26F5C.8050202@metafoo.de> (Lars-Peter Clausen's message of
-        "Sun, 11 Jan 2015 13:41:00 +0100")
-Message-ID: <yw1x4mrxfpuz.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jan 2015 17:05:15 +0100 (CET)
+Received: from smtp-out-127.synserver.de ([212.40.185.127]:1062 "EHLO
+        smtp-out-127.synserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011262AbbAKQFMeiHuU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jan 2015 17:05:12 +0100
+Received: (qmail 11314 invoked by uid 0); 11 Jan 2015 16:05:11 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@laprican.de
+X-SynServer-PPID: 11264
+Received: from ppp-88-217-3-222.dynamic.mnet-online.de (HELO lars-laptop.fritz.box) [88.217.3.222]
+  by 217.119.54.87 with SMTP; 11 Jan 2015 16:05:10 -0000
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@linux-mips.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH] MIPS: ip22-gio: Remove legacy suspend/resume support
+Date:   Sun, 11 Jan 2015 17:06:56 +0100
+Message-Id: <1420992417-21294-1-git-send-email-lars@metafoo.de>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45068
+X-archive-position: 45069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,76 +38,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Lars-Peter Clausen <lars@metafoo.de> writes:
+There are currently no gio device drivers that implement suspend/resume
+and this patch removes the bus specific legacy suspend and resume callbacks.
+This will allow us to eventually remove struct bus_type legacy suspend and
+resume support altogether.
 
-> On 01/11/2015 01:30 PM, Måns Rullgård wrote:
->> Lars-Peter Clausen <lars@metafoo.de> writes:
->>
->>> On 01/11/2015 01:15 PM, Måns Rullgård wrote:
->>>> Guenter Roeck <linux@roeck-us.net> writes:
->>>>
->>>>> On 01/10/2015 12:08 PM, Måns Rullgård wrote:
->>>>>> Lars-Peter Clausen <lars@metafoo.de> writes:
->>>>>>
->>>>>>> Use the recently introduced do_kernel_restart() function as the default restart
->>>>>>> handler if the platform did not explicitly provide a restart handler. This
->>>>>>> allows use restart handler that have been registered by device drivers to
->>>>>>> restart the machine.
->>>>>>>
->>>>>>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
->>>>>>> ---
->>>>>>>     arch/mips/kernel/reset.c |    2 +-
->>>>>>>     1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>
->>>>>>> diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
->>>>>>> index 07fc524..36cd80c 100644
->>>>>>> --- a/arch/mips/kernel/reset.c
->>>>>>> +++ b/arch/mips/kernel/reset.c
->>>>>>> @@ -19,7 +19,7 @@
->>>>>>>      * So handle all using function pointers to machine specific
->>>>>>>      * functions.
->>>>>>>      */
->>>>>>> -void (*_machine_restart)(char *command);
->>>>>>> +void (*_machine_restart)(char *command) = do_kernel_restart;
->>>>>>>     void (*_machine_halt)(void);
->>>>>>>     void (*pm_power_off)(void);
->>>>>>
->>>>>> There is already a similar patch posted by Kevin Cernekee:
->>>>>> http://www.linux-mips.org/archives/linux-mips/2014-12/msg00410.html
->>>>>>
->>>>> Personally I prefer the earlier patch, though I guess that is personal
->>>>> preference.
->>>>
->>>> They both achieve the same thing, though Kevin's is more in line with
->>>> what ARM does.  Missing from both is a fallback while(1) loop in case no
->>>> restart handlers are registered.  With the restart moved to the watchdog
->>>> driver, there's a possibility that this might happen.
->>>>
->>>
->>> In my opinion if such a fallback is needed it should be put into the
->>> kernel core reboot implementation and not into individual restart
->>> handler implementations.
->>>
->>> My first version of this patch was do_kernel_restart() followed by a
->>> machine_halt() (so it goes to sleep instead of busy looping) as a
->>> fallback. But I couldn't find a good reason why that should be done at
->>> the individual restart handler level, so I dropped it.
->>
->> ARM does it its arch machine_restart() function.  MIPS should probably
->> follow suit.
->>
->
-> That's just cargo culting...
+gio device drivers wanting to implement suspend and resume can use dev PM
+ops which will work out of the box without further modifications necessary.
 
-True.
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+ arch/mips/include/asm/gio_device.h |    2 --
+ arch/mips/sgi-ip22/ip22-gio.c      |   24 ------------------------
+ 2 files changed, 26 deletions(-)
 
-> Either it is required, then it should probably be moved into the core
-> kernel, or it is not required in which case it can be removed from the
-> ARM machine_restart() implementation.
-
-The quickest way to find out is probably to send a patch adding such
-code to the end of kernel_restart().
-
+diff --git a/arch/mips/include/asm/gio_device.h b/arch/mips/include/asm/gio_device.h
+index 4be1a57..71a986e 100644
+--- a/arch/mips/include/asm/gio_device.h
++++ b/arch/mips/include/asm/gio_device.h
+@@ -25,8 +25,6 @@ struct gio_driver {
+ 
+ 	int  (*probe)(struct gio_device *, const struct gio_device_id *);
+ 	void (*remove)(struct gio_device *);
+-	int  (*suspend)(struct gio_device *, pm_message_t);
+-	int  (*resume)(struct gio_device *);
+ 	void (*shutdown)(struct gio_device *);
+ 
+ 	struct device_driver driver;
+diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+index 8f1b86d..cdf1876 100644
+--- a/arch/mips/sgi-ip22/ip22-gio.c
++++ b/arch/mips/sgi-ip22/ip22-gio.c
+@@ -152,28 +152,6 @@ static int gio_device_remove(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int gio_device_suspend(struct device *dev, pm_message_t state)
+-{
+-	struct gio_device *gio_dev = to_gio_device(dev);
+-	struct gio_driver *drv = to_gio_driver(dev->driver);
+-	int error = 0;
+-
+-	if (dev->driver && drv->suspend)
+-		error = drv->suspend(gio_dev, state);
+-	return error;
+-}
+-
+-static int gio_device_resume(struct device *dev)
+-{
+-	struct gio_device *gio_dev = to_gio_device(dev);
+-	struct gio_driver *drv = to_gio_driver(dev->driver);
+-	int error = 0;
+-
+-	if (dev->driver && drv->resume)
+-		error = drv->resume(gio_dev);
+-	return error;
+-}
+-
+ static void gio_device_shutdown(struct device *dev)
+ {
+ 	struct gio_device *gio_dev = to_gio_device(dev);
+@@ -400,8 +378,6 @@ static struct bus_type gio_bus_type = {
+ 	.match	   = gio_bus_match,
+ 	.probe	   = gio_device_probe,
+ 	.remove	   = gio_device_remove,
+-	.suspend   = gio_device_suspend,
+-	.resume	   = gio_device_resume,
+ 	.shutdown  = gio_device_shutdown,
+ 	.uevent	   = gio_device_uevent,
+ };
 -- 
-Måns Rullgård
-mans@mansr.com
+1.7.10.4

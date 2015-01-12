@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jan 2015 08:08:04 +0100 (CET)
-Received: from jaguar.aricent.com ([180.151.2.24]:41086 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jan 2015 08:08:20 +0100 (CET)
+Received: from jaguar.aricent.com ([180.151.2.24]:41155 "EHLO
         jaguar.aricent.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006211AbbALHID3lp2B convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Jan 2015 08:08:03 +0100
+        with ESMTP id S27011344AbbALHIImVyxx convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Jan 2015 08:08:08 +0100
 Received: from jaguar.aricent.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D76EC218BB3;
-        Mon, 12 Jan 2015 12:37:54 +0530 (IST)
+        by IMSVA (Postfix) with ESMTP id 3F48B218B95;
+        Mon, 12 Jan 2015 12:38:02 +0530 (IST)
 Received: from GUREXHT01.ASIAN.AD.ARICENT.COM (unknown [10.203.171.136])
-        by jaguar.aricent.com (Postfix) with ESMTPS id CAABF218BAF;
-        Mon, 12 Jan 2015 12:37:54 +0530 (IST)
+        by jaguar.aricent.com (Postfix) with ESMTPS id 2FDCF218B78;
+        Mon, 12 Jan 2015 12:38:02 +0530 (IST)
 Received: from imsseuq.aricent.com (10.203.171.248) by
  GUREXHT01.ASIAN.AD.ARICENT.COM (10.203.171.136) with Microsoft SMTP Server id
- 8.3.342.0; Mon, 12 Jan 2015 12:37:54 +0530
+ 8.3.342.0; Mon, 12 Jan 2015 12:38:00 +0530
 Received: from h2512.localdomain ([172.16.116.228])     by imsseuq.aricent.com
- (8.13.1/8.13.1) with ESMTP id t0C6VBrB019509;  Mon, 12 Jan 2015 12:01:15 +0530
+ (8.13.1/8.13.1) with ESMTP id t0C6VBrF019509;  Mon, 12 Jan 2015 12:01:35 +0530
 From:   Abhishek Paliwal <abhishek.paliwal@aricent.com>
 To:     <kexin.hao@windriver.com>, <bo.liu@windriver.com>
 CC:     Chandrakala.Chavva@caviumnetworks.com, rakesh.garg@aricent.com,
         Abhishek Paliwal <abhishek.paliwal@aricent.com>,
+        David Daney <david.daney@cavium.com>,
         Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        linux-mips@linux-mips.org, David Daney <ddaney.cavm@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>, kvm@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 1/9] MIPS OCTEON Add OCTEON3 to get cpu type
-Date:   Mon, 12 Jan 2015 12:36:17 +0530
-Message-ID: <1421046385-2535-2-git-send-email-abhishek.paliwal@aricent.com>
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
+        kvm@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 5/9] MIPS donot build fast TLB refill handler with 32-bit  kernels.
+Date:   Mon, 12 Jan 2015 12:36:21 +0530
+Message-ID: <1421046385-2535-6-git-send-email-abhishek.paliwal@aricent.com>
 X-Mailer: git-send-email 1.8.1.4
 In-Reply-To: <1421046385-2535-1-git-send-email-abhishek.paliwal@aricent.com>
 References: <1421046385-2535-1-git-send-email-abhishek.paliwal@aricent.com>
@@ -36,7 +36,7 @@ Return-Path: <abhishek.paliwal@aricent.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45075
+X-archive-position: 45076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,33 +53,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-commit cd3f5389489146297eb2c11e4f9d1c4e8aaeb59f upstream
+commit  35d0470668cca234e49ed35342b3f9a0eec8355c upstream
 
-Otherwise __builtin_unreachable might be called.
+The fast handler only supports 64-bit kernels.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 Cc: linux-mips@linux-mips.org
-Cc: David Daney <ddaney.cavm@gmail.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: kvm@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/7014/
+Patchwork: https://patchwork.linux-mips.org/patch/7010/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Abhishek Paliwal <abhishek.paliwal@aricent.com>
 ---
- arch/mips/include/asm/cpu-type.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/mm/tlbex.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index 02f591b..19557ca 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -160,6 +160,7 @@ static inline int __pure __get_cpu_type(const int cpu_type)
-        case CPU_CAVIUM_OCTEON:
-        case CPU_CAVIUM_OCTEON_PLUS:
-        case CPU_CAVIUM_OCTEON2:
-+       case CPU_CAVIUM_OCTEON3:
- #endif
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index aa24119..c05f2fd 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1247,13 +1247,17 @@ static void build_r4000_tlb_refill_handler(void)
+        unsigned int final_len;
+        struct mips_huge_tlb_info htlb_info __maybe_unused;
+        enum vmalloc64_mode vmalloc_mode __maybe_unused;
+-
++#ifdef CONFIG_64BIT
++       bool is64bit = true;
++#else
++       bool is64bit = false;
++#endif
+        memset(tlb_handler, 0, sizeof(tlb_handler));
+        memset(labels, 0, sizeof(labels));
+        memset(relocs, 0, sizeof(relocs));
+        memset(final_handler, 0, sizeof(final_handler));
 
- #if defined(CONFIG_SYS_HAS_CPU_BMIPS32_3300) || \
+-       if ((scratch_reg >= 0 || scratchpad_available()) && use_bbit_insns()) {
++       if (is64bit && (scratch_reg >= 0 || scratchpad_available()) && use_bbit_insns()) {
+                htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
+                                                          scratch_reg);
+                vmalloc_mode = refill_scratch;
 --
 1.8.1.4
 

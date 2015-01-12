@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jan 2015 08:08:20 +0100 (CET)
-Received: from jaguar.aricent.com ([180.151.2.24]:41155 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jan 2015 08:08:36 +0100 (CET)
+Received: from jaguar.aricent.com ([180.151.2.24]:41163 "EHLO
         jaguar.aricent.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011344AbbALHIImVyxx convert rfc822-to-8bit (ORCPT
+        with ESMTP id S27014481AbbALHIIxbMQ3 convert rfc822-to-8bit (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 12 Jan 2015 08:08:08 +0100
 Received: from jaguar.aricent.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3F48B218B95;
+        by IMSVA (Postfix) with ESMTP id 33D33218BAF;
         Mon, 12 Jan 2015 12:38:02 +0530 (IST)
 Received: from GUREXHT01.ASIAN.AD.ARICENT.COM (unknown [10.203.171.136])
-        by jaguar.aricent.com (Postfix) with ESMTPS id 2FDCF218B78;
+        by jaguar.aricent.com (Postfix) with ESMTPS id 19226218B70;
         Mon, 12 Jan 2015 12:38:02 +0530 (IST)
 Received: from imsseuq.aricent.com (10.203.171.248) by
  GUREXHT01.ASIAN.AD.ARICENT.COM (10.203.171.136) with Microsoft SMTP Server id
  8.3.342.0; Mon, 12 Jan 2015 12:38:00 +0530
 Received: from h2512.localdomain ([172.16.116.228])     by imsseuq.aricent.com
- (8.13.1/8.13.1) with ESMTP id t0C6VBrF019509;  Mon, 12 Jan 2015 12:01:35 +0530
+ (8.13.1/8.13.1) with ESMTP id t0C6VBrD019509;  Mon, 12 Jan 2015 12:01:34 +0530
 From:   Abhishek Paliwal <abhishek.paliwal@aricent.com>
 To:     <kexin.hao@windriver.com>, <bo.liu@windriver.com>
 CC:     Chandrakala.Chavva@caviumnetworks.com, rakesh.garg@aricent.com,
@@ -22,9 +22,9 @@ CC:     Chandrakala.Chavva@caviumnetworks.com, rakesh.garg@aricent.com,
         Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
         linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
         kvm@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 5/9] MIPS donot build fast TLB refill handler with 32-bit  kernels.
-Date:   Mon, 12 Jan 2015 12:36:21 +0530
-Message-ID: <1421046385-2535-6-git-send-email-abhishek.paliwal@aricent.com>
+Subject: [PATCH 3/9] MIPS Add function get ebase cpunum
+Date:   Mon, 12 Jan 2015 12:36:19 +0530
+Message-ID: <1421046385-2535-4-git-send-email-abhishek.paliwal@aricent.com>
 X-Mailer: git-send-email 1.8.1.4
 In-Reply-To: <1421046385-2535-1-git-send-email-abhishek.paliwal@aricent.com>
 References: <1421046385-2535-1-git-send-email-abhishek.paliwal@aricent.com>
@@ -36,7 +36,7 @@ Return-Path: <abhishek.paliwal@aricent.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45076
+X-archive-position: 45077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,46 +53,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-commit  35d0470668cca234e49ed35342b3f9a0eec8355c upstream
+commit  45b585c8dcdc469bb40b58cc2801acd7a2332525 upstream
 
-The fast handler only supports 64-bit kernels.
+This returns the CPUNum from the low order Ebase bits.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
 Cc: linux-mips@linux-mips.org
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: kvm@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/7010/
+Patchwork: https://patchwork.linux-mips.org/patch/7012/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Abhishek Paliwal <abhishek.paliwal@aricent.com>
 ---
- arch/mips/mm/tlbex.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/mipsregs.h | 8 ++++++++
+ arch/mips/kernel/cpu-probe.c     | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index aa24119..c05f2fd 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1247,13 +1247,17 @@ static void build_r4000_tlb_refill_handler(void)
-        unsigned int final_len;
-        struct mips_huge_tlb_info htlb_info __maybe_unused;
-        enum vmalloc64_mode vmalloc_mode __maybe_unused;
--
-+#ifdef CONFIG_64BIT
-+       bool is64bit = true;
-+#else
-+       bool is64bit = false;
-+#endif
-        memset(tlb_handler, 0, sizeof(tlb_handler));
-        memset(labels, 0, sizeof(labels));
-        memset(relocs, 0, sizeof(relocs));
-        memset(final_handler, 0, sizeof(final_handler));
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index bbc3dd4..327f989 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1894,6 +1894,14 @@ __BUILD_SET_C0(brcm_cmt_ctrl)
+ __BUILD_SET_C0(brcm_config)
+ __BUILD_SET_C0(brcm_mode)
 
--       if ((scratch_reg >= 0 || scratchpad_available()) && use_bbit_insns()) {
-+       if (is64bit && (scratch_reg >= 0 || scratchpad_available()) && use_bbit_insns()) {
-                htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
-                                                          scratch_reg);
-                vmalloc_mode = refill_scratch;
++/*
++ * Return low 10 bits of ebase.
++ * Note that under KVM (MIPSVZ) this returns vcpu id.
++ */
++static inline unsigned int get_ebase_cpunum(void)
++{
++       return read_c0_ebase() & 0x3ff;
++}
+ #endif /* !__ASSEMBLY__ */
+
+ #endif /* _ASM_MIPSREGS_H */
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 530f832..19432da 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -399,7 +399,7 @@ static void decode_configs(struct cpuinfo_mips *c)
+        mips_probe_watch_registers(c);
+
+        if (cpu_has_mips_r2)
+-               c->core = read_c0_ebase() & 0x3ff;
++               c->core = get_ebase_cpunum();
+ }
+
+ #define R4K_OPTS (MIPS_CPU_TLB | MIPS_CPU_4KEX | MIPS_CPU_4K_CACHE \
 --
 1.8.1.4
 

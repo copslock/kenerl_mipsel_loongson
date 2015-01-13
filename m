@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2015 16:04:24 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40111 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011490AbbAMPEWt2aAL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jan 2015 16:04:22 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C29ECB17C3464;
-        Tue, 13 Jan 2015 15:04:13 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 13 Jan 2015 15:04:16 +0000
-Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 13 Jan
- 2015 15:04:14 +0000
-Message-ID: <54B533EF.1090201@imgtec.com>
-Date:   Tue, 13 Jan 2015 15:04:15 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2015 16:05:16 +0100 (CET)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:62762 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014445AbbAMPFOUtj4L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jan 2015 16:05:14 +0100
+Received: by mail-pa0-f52.google.com with SMTP id eu11so4115661pac.11;
+        Tue, 13 Jan 2015 07:05:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=q6YTE7MxUn/jAQj65VXttxPYaPA+cI4ieCK0LzDnaFE=;
+        b=d7iDxh4k8S5UCxoSYdJ8kQozAlx/GfRtqGRzDToxpO3QhusxcVtRgoy9beEjrAPlEz
+         /rB7hKFxjIdgjeQC5iBEXyK1N+wY3rY7HjDc8I6rzUTjT3WwOyk63WcYP+HFCJb5WL8W
+         ljqH7+E3dERR3YM42y9pi8nTW7NahnCNtw/JXa8gYqsHsvastYuefgaUUBNW2YnsYpq3
+         IBOkEZafhUATr8FY6WIaV+/PribixyB+hQuqd0li1mWramnTG8gqw46UbhsBhK7VXlpS
+         t7x4ELJWXOVQLDNyGX4yzpZch2buVZYAULP0KI8pXKfJZ3i3pRfsMHX3ga8iV4t4x6yE
+         KO+A==
+X-Received: by 10.68.224.6 with SMTP id qy6mr51172458pbc.155.1421161508321;
+        Tue, 13 Jan 2015 07:05:08 -0800 (PST)
+Received: from yggdrasil (114-25-181-102.dynamic.hinet.net. [114.25.181.102])
+        by mx.google.com with ESMTPSA id sl5sm17264617pbc.45.2015.01.13.07.05.06
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 13 Jan 2015 07:05:07 -0800 (PST)
+Date:   Tue, 13 Jan 2015 23:05:02 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: Fix MIPS32_COMPAT recursive dependency
+Message-ID: <20150113230344-tung7970@googlemail.com>
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH RFC 12/67] MIPS: asm: asmmacro: Replace add instructions
- with "addui"
-References: <1418915416-3196-1-git-send-email-markos.chandras@imgtec.com> <1418915416-3196-13-git-send-email-markos.chandras@imgtec.com> <54932370.605@gmail.com> <5493E97A.1070608@imgtec.com> <alpine.LFD.2.11.1501112322130.27458@eddie.linux-mips.org> <54B519DE.4010708@imgtec.com> <alpine.LFD.2.11.1501131455530.23937@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1501131455530.23937@eddie.linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45102
+X-archive-position: 45103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,29 +53,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/13/2015 02:58 PM, Maciej W. Rozycki wrote:
-> On Tue, 13 Jan 2015, Markos Chandras wrote:
-> 
->>>  I think using the ADDU macro is preferred here as it allows arbitrary 
->>> 32-bit values for `off', just like with memory references in MIPS assembly 
->>> instructions.
->>
->> What ADDU macro?
-> 
->  This:
-> 
-> {"addu",		"t,r,I",	0,    (int) M_ADDU_I,	INSN_MACRO,		0,		I1,		0,	0 },
-> 
-> (from opcodes/mips-opc.c).
-> 
->   Maciej
-> 
-I see your point about having 32-bit offsets supported here but it's not
-obvious that addu would simply accept this format without looking at the
-binutils sources.
+Commit f92b81f16 (MIPS: Compat: Fix build error if CONFIG_MIPS32_COMPAT
+but no compat ABI.) introduced a recursive dependency on MIPS32_COMPAT,
+shown as follows:
 
-in any case, it does not make a difference in this particular example,
-so I will fix it. Thanks
+arch/mips/Kconfig:2681:error: recursive dependency detected!
+arch/mips/Kconfig:2681:	symbol MIPS32_N32 depends on MIPS32_COMPAT
+arch/mips/Kconfig:2658:	symbol MIPS32_COMPAT is selected by MIPS32_N32
 
--- 
-markos
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 73983e1..33c0b88 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2680,7 +2680,6 @@ config MIPS32_O32
+ 
+ config MIPS32_N32
+ 	bool "Kernel support for n32 binaries"
+-	depends on MIPS32_COMPAT
+ 	select COMPAT
+ 	select MIPS32_COMPAT
+ 	select SYSVIPC_COMPAT if SYSVIPC

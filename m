@@ -1,39 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2015 19:50:12 +0100 (CET)
-Received: from filtteri5.pp.htv.fi ([213.243.153.188]:41176 "EHLO
-        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014630AbbAOSuCxWa9P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jan 2015 19:50:02 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 5391D5A6EE3;
-        Thu, 15 Jan 2015 20:49:53 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
-        with ESMTP id Hjn-Ez6HmBk1; Thu, 15 Jan 2015 20:49:48 +0200 (EET)
-Received: from amd-fx-6350.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id 6F4485BC00A;
-        Thu, 15 Jan 2015 20:49:57 +0200 (EET)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2015 20:36:22 +0100 (CET)
+Received: from mail-ie0-f170.google.com ([209.85.223.170]:45378 "EHLO
+        mail-ie0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011506AbbAOTgUJRPMy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jan 2015 20:36:20 +0100
+Received: by mail-ie0-f170.google.com with SMTP id rd18so16832864iec.1;
+        Thu, 15 Jan 2015 11:36:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=EUe8uhpsiumDpIIH6SCl+YzH6A/bzwd3ThEDzWN7ruU=;
+        b=P4xLzTwqFG0YmhZfd7mmpfwjw2aXUTClgLz8/rNFcGe6NLRByuaXyzZiNSn7dMzXim
+         x2rze1ZO6GYvWjflxERkUwVKZnOGsgm2r96XUnTcY2rhH2wirkC9LXZ0JN8uWze/Ee4/
+         C77dJALZuDroMiOHbwxblKZKQZxstmsWXGTl5pWbsEn330ILF0X99HXQ2ZYW6kw/FpCj
+         /Gwa+Rl6QAutYbsudxeXSbxM5zNqaFbHsoWQcdlTcxPA+eC+baLATst1CN0Rytq7tc6C
+         aXPdEICWjqXGLYgm6aJac7lmIqeBlGOyR8fpNrhugshLXp7nz/jp1VOvi156czksSrpe
+         kj4g==
+X-Received: by 10.50.25.225 with SMTP id f1mr5938734igg.29.1421350574320;
+        Thu, 15 Jan 2015 11:36:14 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id x124sm1489515iod.38.2015.01.15.11.36.13
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 15 Jan 2015 11:36:13 -0800 (PST)
+Message-ID: <54B816AC.7070902@gmail.com>
+Date:   Thu, 15 Jan 2015 11:36:12 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     Hemmo Nieminen <hemmo.nieminen@iki.fi>, stable@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 2/2] MIPS: fix kernel lockup or crash after CPU offline/online
-Date:   Thu, 15 Jan 2015 20:49:27 +0200
-Message-Id: <1421347767-21740-2-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.2.0
-In-Reply-To: <1421347767-21740-1-git-send-email-aaro.koskinen@iki.fi>
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Hemmo Nieminen <hemmo.nieminen@iki.fi>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] MIPS: OCTEON: fix kernel crash when offlining a CPU
 References: <1421347767-21740-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+In-Reply-To: <1421347767-21740-1-git-send-email-aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45134
+X-archive-position: 45135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,41 +58,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Hemmo Nieminen <hemmo.nieminen@iki.fi>
+On 01/15/2015 10:49 AM, Aaro Koskinen wrote:
+> octeon_cpu_disable() will unconditionally enable interrupts when called
+> with interrupts disabled. Fix that.
 
-As printk() invocation can cause e.g. a TLB miss, printk() cannot be
-called before the exception handlers have been properly initialized.
-This can happen e.g. when netconsole has been loaded as a kernel module
-and the TLB table has been cleared when a CPU was offline.
+interrupts are always disabled here, so...
 
-Call cpu_report() in start_secondary() only after the exception handlers
-have been initialized to fix this.
+[...]
+>
+> Reported-by: Hemmo Nieminen <hemmo.nieminen@iki.fi>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: stable@vger.kernel.org
 
-Without the patch the kernel will randomly either lockup or crash
-after a CPU is onlined and the console driver is a module.
+NACK!
 
-Signed-off-by: Hemmo Nieminen <hemmo.nieminen@iki.fi>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: stable@vger.kernel.org
----
- arch/mips/kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+>   arch/mips/cavium-octeon/smp.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+> index ecd903d..9673c5b 100644
+> --- a/arch/mips/cavium-octeon/smp.c
+> +++ b/arch/mips/cavium-octeon/smp.c
+> @@ -231,6 +231,7 @@ DEFINE_PER_CPU(int, cpu_state);
+>   static int octeon_cpu_disable(void)
+>   {
+>   	unsigned int cpu = smp_processor_id();
+> +	unsigned long flags;
+>
+>   	if (cpu == 0)
+>   		return -EBUSY;
+> @@ -240,9 +241,9 @@ static int octeon_cpu_disable(void)
+>
+>   	set_cpu_online(cpu, false);
+>   	cpu_clear(cpu, cpu_callin_map);
+> -	local_irq_disable();
+> +	local_irq_save(flags);
 
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index c94c4e9..1c0d8c5 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -123,10 +123,10 @@ asmlinkage void start_secondary(void)
- 	unsigned int cpu;
- 
- 	cpu_probe();
--	cpu_report();
- 	per_cpu_trap_init(false);
- 	mips_clockevent_init();
- 	mp_ops->init_secondary();
-+	cpu_report();
- 
- 	/*
- 	 * XXX parity protection should be folded in here when it's converted
--- 
-2.2.0
+Just remove this...
+
+>   	octeon_fixup_irqs();
+> -	local_irq_enable();
+> +	local_irq_restore(flags);
+
+... and this.
+
+>
+>   	flush_cache_all();
+>   	local_flush_tlb_all();
+>
+
+You can add an Acked-by me if you do that.
+
+David Daney.

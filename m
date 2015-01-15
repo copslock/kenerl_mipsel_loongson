@@ -1,29 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2015 15:11:33 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:56251 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011689AbbAOOLbUp0U0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jan 2015 15:11:31 +0100
-Date:   Thu, 15 Jan 2015 14:11:31 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     James Cowgill <James.Cowgill@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: ELF: fix loading o32 binaries on 64-bit kernels
-In-Reply-To: <1421253434-49869-1-git-send-email-James.Cowgill@imgtec.com>
-Message-ID: <alpine.LFD.2.11.1501151349280.28301@eddie.linux-mips.org>
-References: <1421253434-49869-1-git-send-email-James.Cowgill@imgtec.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2015 16:41:58 +0100 (CET)
+Received: from bes.se.axis.com ([195.60.68.10]:45082 "EHLO bes.se.axis.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27014592AbbAOPl53MXES (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 15 Jan 2015 16:41:57 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by bes.se.axis.com (Postfix) with ESMTP id 2F24D2E349;
+        Thu, 15 Jan 2015 16:41:52 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
+Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id BubrqRg9N4K2; Thu, 15 Jan 2015 16:41:51 +0100 (CET)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bes.se.axis.com (Postfix) with ESMTP id 9041F2E126;
+        Thu, 15 Jan 2015 16:41:51 +0100 (CET)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 78A8B1195;
+        Thu, 15 Jan 2015 16:41:51 +0100 (CET)
+Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
+        by boulder.se.axis.com (Postfix) with ESMTP id 6CBA8FD9;
+        Thu, 15 Jan 2015 16:41:51 +0100 (CET)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by thoth.se.axis.com (Postfix) with ESMTP id 6AC613431E;
+        Thu, 15 Jan 2015 16:41:51 +0100 (CET)
+Received: from lnxniklass.se.axis.com (10.94.49.1) by xmail2.se.axis.com
+ (10.0.5.74) with Microsoft SMTP Server (TLS) id 8.3.342.0; Thu, 15 Jan 2015
+ 16:41:51 +0100
+From:   Niklas Cassel <niklas.cassel@axis.com>
+To:     <ralf@linux-mips.org>
+CC:     <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>,
+        Niklas Cassel <niklass@axis.com>
+Subject: [PATCH] MIPS: smp-cps: cpu_set FPU mask if FPU present
+Date:   Thu, 15 Jan 2015 16:41:13 +0100
+Message-ID: <1421336473-5627-1-git-send-email-niklass@axis.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain
+Return-Path: <niklas.cassel@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45125
+X-archive-position: 45126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: niklas.cassel@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,48 +56,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 14 Jan 2015, James Cowgill wrote:
+If we have an FPU, enroll ourselves in the FPU-full mask.
+Matching the MT_SMP and CMP implementations of smp_setup.
 
-> Commit 90cee759f08a ("MIPS: ELF: Set FP mode according to .MIPS.abiflags")
-> introduced checking of the .MIPS.abiflags ELF section but did so through
-> the native sized "elfhdr" and "elf_phdr" structures regardless whether the
-> ELF was actually 32-bit or 64-bit. This produces wrong results when trying
-> to use a 64-bit kernel to load o32 ELF files.
-> 
-> Change the uses of the generic elf structures to their 32-bit versions.
-> Since the code bails out on any 64-bit cases, this is OK until they are
-> implemented.
+Signed-off-by: Niklas Cassel <niklass@axis.com>
+---
+ arch/mips/kernel/smp-cps.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
- I'd say this will never happen as FR=0 with n64/n32 makes no sense.  So 
-the fix itself looks good to me as it stands and hence here's my:
-
-Reviewed-by: Maciej W. Rozycki <macro@linux-mips.org>
-
- I have some concerns about the original change that I think need 
-addressing though:
-
-1. This piece in `arch_check_elf':
-
-	/* Ignore non-O32 binaries */
-	if (config_enabled(CONFIG_64BIT) &&
-	    (ehdr->e_ident[EI_CLASS] != ELFCLASS32))
-		return 0;
-
-   is incomplete, contrary to the comment the check only trips on n64
-   binaries, but lets n32 ones through (as a side note `o32' would IMO 
-   better be spelled with a lowercase `o' as this is the original spelling 
-   of the names of the MIPS ABIs and they only way it was spelled for at 
-   least a decade from its inception BTW; though I realise there's been 
-   confusion about the spelling that happened sometime in the recent 
-   past).  Similarly in `arch_elf_pt_proc'.
-
-2. Code added with 90cee759f08a lacks commentary that would make the use 
-   of `elf32_hdr', etc. obvious and might have prevented the bugs this fix 
-   corrects from happening in the first place.  While not a requirement 
-   for Linux (unlike for some other free software) it's always good to 
-   write a sentence or two above a function definition to say what it is
-   supposed to do.
-
- Paul -- I think the two concerns are action items for you!
-
-  Maciej
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index bed7590..d5589be 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -88,6 +88,12 @@ static void __init cps_smp_setup(void)
+ 
+ 	/* Make core 0 coherent with everything */
+ 	write_gcr_cl_coherence(0xff);
++
++#ifdef CONFIG_MIPS_MT_FPAFF
++	/* If we have an FPU, enroll ourselves in the FPU-full mask */
++	if (cpu_has_fpu)
++		cpu_set(0, mt_fpu_cpumask);
++#endif /* CONFIG_MIPS_MT_FPAFF */
+ }
+ 
+ static void __init cps_prepare_cpus(unsigned int max_cpus)
+-- 
+2.1.4

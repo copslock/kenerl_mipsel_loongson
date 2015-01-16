@@ -1,45 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 06:50:22 +0100 (CET)
-Received: from mailgw02.mediatek.com ([210.61.82.184]:56692 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006154AbbAPFuVCMjPw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 06:50:21 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 09:18:48 +0100 (CET)
+Received: from mailgw01.mediatek.com ([210.61.82.183]:48814 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27008783AbbAPISqpt9Za (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 09:18:46 +0100
 X-Listener-Flag: 11101
-Received: from mtkhts07.mediatek.inc [(172.21.101.69)] by mailgw02.mediatek.com
-        (envelope-from <eddie.huang@mediatek.com>)
+Received: from mtkhts07.mediatek.inc [(172.21.101.69)] by mailgw01.mediatek.com
+        (envelope-from <yingjoe.chen@mediatek.com>)
         (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 816251555; Fri, 16 Jan 2015 13:50:09 +0800
+        with ESMTP id 1009028994; Fri, 16 Jan 2015 16:18:17 +0800
 Received: from [172.21.77.4] (172.21.77.4) by mtkhts07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 14.3.181.6; Fri, 16 Jan 2015
- 13:50:08 +0800
+ 16:18:15 +0800
 Subject: Re: [RFC 01/11] i2c: add quirk structure to describe adapter flaws
-From:   Eddie Huang <eddie.huang@mediatek.com>
+From:   Yingjoe Chen <yingjoe.chen@mediatek.com>
 To:     Wolfram Sang <wsa@the-dreams.de>
 CC:     <linux-i2c@vger.kernel.org>, <linux-mips@linux-mips.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         <linux-kernel@vger.kernel.org>,
         Ludovic Desroches <ludovic.desroches@atmel.com>,
-        Yingjoe Chen <yingjoe.chen@mediatek.com>,
         <linuxppc-dev@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>
+        <linux-arm-kernel@lists.infradead.org>,
+        Eddie Huang <eddie.huang@mediatek.com>,
+        Xudong Chen <xudong.chen@mediatek.com>,
+        Liguo Zhang <Liguo.Zhang@mediatek.com>
 In-Reply-To: <1420824103-24169-2-git-send-email-wsa@the-dreams.de>
 References: <1420824103-24169-1-git-send-email-wsa@the-dreams.de>
          <1420824103-24169-2-git-send-email-wsa@the-dreams.de>
 Content-Type: text/plain; charset="UTF-8"
-Date:   Fri, 16 Jan 2015 13:50:08 +0800
-Message-ID: <1421387408.9323.10.camel@mtksdaap41>
+Date:   Fri, 16 Jan 2015 16:18:15 +0800
+Message-ID: <1421396295.11671.50.camel@mtksdaap41>
 MIME-Version: 1.0
 X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
 X-MTK:  N
-Return-Path: <eddie.huang@mediatek.com>
+Return-Path: <yingjoe.chen@mediatek.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45142
+X-archive-position: 45143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eddie.huang@mediatek.com
+X-original-sender: yingjoe.chen@mediatek.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,39 +54,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Fri, 2015-01-09 at 18:21 +0100, Wolfram Sang wrote:
+> The number of I2C adapters which are not fully I2C compatible is rising,
+> sadly. Drivers usually do handle the flaws, still the user receives only
+> some errno for a transfer which normally can be expected to work. This
+> patch introduces a formal description of flaws. One advantage is that
+> the core can check before the actual transfer if the messages could be
+> transferred at all. This is done in the next patch. Another advantage is
+> that we can pass this information to the user so the restrictions are
+> exactly known and further actions can be based on that. This will be
+> done later after some stabilization period for this description.
+
 Hi Wolfram,
 
-On Fri, 2015-01-09 at 18:21 +0100, Wolfram Sang wrote:
->  
-> + */
-> +struct i2c_adapter_quirks {
-> +	u64 flags;
-> +	int max_num_msgs;
-> +	u16 max_write_len;
-> +	u16 max_read_len;
-> +	u16 max_comb_write_len;
-> +	u16 max_comb_read_len;
-> +};
-> +
-> +#define I2C_ADAPTER_QUIRK_COMB_WRITE_FIRST	BIT(0)
-> +#define I2C_ADAPTER_QUIRK_COMB_READ_SECOND	BIT(1)
-> +#define I2C_ADAPTER_QUIRK_COMB_WRITE_THEN_READ	(I2C_ADAPTER_QUIRK_COMB_WRITE_FIRST | \
-> +						I2C_ADAPTER_QUIRK_COMB_READ_SECOND)
-> +
->  /*
->   * i2c_adapter is the structure used to identify a physical i2c bus along
->   * with the access algorithms necessary to access it.
-> @@ -472,6 +506,7 @@ struct i2c_adapter {
->  	struct list_head userspace_clients;
->  
->  	struct i2c_bus_recovery_info *bus_recovery_info;
-> +	struct i2c_adapter_quirks *quirks;
->  };
->  #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
->  
+This can describe the behavior of our current upstream driver[1], which
+only support combine write-then-read.
 
-I suggest to add const.
-	const struct i2c_adapter_quirks *quirks;
+After checking with Xudong & HW guys, it seems our HW can do more. 
+On MT8135, it can support at most 2 messages, no matter read or write,
+with the limitation that the length of the second message must <=
+31bytes.
 
-also, in i2c-core.c, should modify:
-	const struct i2c_adapter_quirks *q = adap->quirks;
+So this RFC is enough for our driver, but it would be better if we could
+also support other case.
+
+Joe.C
+
+[1]:
+http://lists.infradead.org/pipermail/linux-arm-kernel/2014-November/305468.html

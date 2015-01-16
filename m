@@ -1,38 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:12:01 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:16359 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010992AbbAPLLFbzbBG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 12:11:05 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 7F39D86105CAD;
-        Fri, 16 Jan 2015 11:10:57 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 16 Jan 2015 11:10:59 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 16 Jan 2015 11:10:57 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH v3.19] MIPS: smp-mt,smp-cmp: Enable all HW IRQs on secondary CPUs
-Date:   Fri, 16 Jan 2015 11:10:46 +0000
-Message-ID: <1421406646-28920-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:29:23 +0100 (CET)
+Received: from mail-lb0-f170.google.com ([209.85.217.170]:65087 "EHLO
+        mail-lb0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010623AbbAPL3VUWqNq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 12:29:21 +0100
+Received: by mail-lb0-f170.google.com with SMTP id 10so17983615lbg.1
+        for <linux-mips@linux-mips.org>; Fri, 16 Jan 2015 03:29:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=p6LjVqJVQ+A4rFZ1RNN7TSEOtwb4Ps/BN+2fuSpU/e8=;
+        b=DT0uopQRaf0Vs5kndW/wK3l1+dt1vOghmiV+RtOZbFUx7p6tcdxdBHa0litUjU3Opp
+         LQ/BZ/AP2FcXJsRYQyXaNrqZdBdSP2rGCOJVVePboLXDRDFhv/buSr5F18Xe3Xh54bhL
+         BcIGmH39rRRecdgDojYFXTTqM8Bo+2IPqiyF5CNGl54mtJiqD324X8h9sYNXw+0fTSij
+         xYPITg/awkRBtHM0C2e6Ebde73YbWmVpPrpMFyubf93vfhkng9KPGk5gXLIXsldtlzOa
+         c78/h2VYBCW2VqqeSjx6jvE9qBgys4BdBMRBL7BEHy9Z9fl3m0hRFZ8An3AOCH3NILhe
+         8pkg==
+X-Gm-Message-State: ALoCoQn2KtdlZf8Pwa33v0yntt582UlOD6HnpkKFKcMpbc3qOsrnYBRahp3FJhrILBSxF0T1mKlg
+X-Received: by 10.152.3.100 with SMTP id b4mr14542507lab.68.1421407755619;
+        Fri, 16 Jan 2015 03:29:15 -0800 (PST)
+Received: from [192.168.3.68] (ppp17-235.pppoe.mtu-net.ru. [81.195.17.235])
+        by mx.google.com with ESMTPSA id lh6sm1382170lab.49.2015.01.16.03.29.14
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 16 Jan 2015 03:29:14 -0800 (PST)
+Message-ID: <54B8F609.90509@cogentembedded.com>
+Date:   Fri, 16 Jan 2015 14:29:13 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH RFC v2 05/70] MIPS: mm: uasm: Add signed 9-bit immediate
+ related macros
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-6-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1421405389-15512-6-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45215
+X-archive-position: 45216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,66 +59,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 18743d2781d0 ("irqchip: mips-gic: Stop using per-platform mapping
-tables") in v3.19-rc1 changed the routing of IPIs through the GIC to go
-to the HW0 IRQ pin along with the rest of the GIC interrupts, rather
-than to HW1 and HW2 pins.
+Hello.
 
-This breaks SMP boot using the CMP or MT SMP implementations because HW0
-doesn't get unmasked when secondary CPUs are initialised so the IPIs
-will never interrupt secondary CPUs (nor any other interrupts routed
-through the GIC).
+On 1/16/2015 1:48 PM, Markos Chandras wrote:
 
-Commit ff1e29ade4c6 ("MIPS: smp-cps: Enable all hardware interrupts on
-secondary CPUs") fixed this in advance for the CPS SMP implementation by
-unmasking all hardware interrupt lines for secondary CPUs, so lets do
-the same for the CMP and MT implementations.
+> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-Fixes: 18743d2781d0 ("irqchip: mips-gic: Stop using per-platform mapping tables")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Andrew Bresticker <abrestic@chromium.org>
-Cc: Qais Yousef <qais.yousef@imgtec.com>
-Cc: linux-mips@linux-mips.org
----
-Note that CMP is still broken with Malta since the GIC driver now routes
-the local timer interrupt to a different IRQ pin to that expected by the
-CMP wait loop (see commit e9de688dac65 ("irqchip: mips-gic: Support
-local interrupts")), so the secondary CPU never completes its wait
-instruction to poll the LAUNCH_FGO flag, but that is a different issue.
----
- arch/mips/kernel/smp-cmp.c | 4 ++--
- arch/mips/kernel/smp-mt.c  | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+> MIPS R6 redefines several instructions and reduces the immediate
+> field to 9-bits so add related macros for the microassembler.
 
-diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
-index 1e0a93c5a3e7..e36a859af666 100644
---- a/arch/mips/kernel/smp-cmp.c
-+++ b/arch/mips/kernel/smp-cmp.c
-@@ -44,8 +44,8 @@ static void cmp_init_secondary(void)
- 	struct cpuinfo_mips *c __maybe_unused = &current_cpu_data;
- 
- 	/* Assume GIC is present */
--	change_c0_status(ST0_IM, STATUSF_IP3 | STATUSF_IP4 | STATUSF_IP6 |
--				 STATUSF_IP7);
-+	change_c0_status(ST0_IM, STATUSF_IP2 | STATUSF_IP3 | STATUSF_IP4 |
-+				 STATUSF_IP5 | STATUSF_IP6 | STATUSF_IP7);
- 
- 	/* Enable per-cpu interrupts: platform specific */
- 
-diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
-index ad86951b73bd..17ea705f6c40 100644
---- a/arch/mips/kernel/smp-mt.c
-+++ b/arch/mips/kernel/smp-mt.c
-@@ -161,7 +161,8 @@ static void vsmp_init_secondary(void)
- #ifdef CONFIG_MIPS_GIC
- 	/* This is Malta specific: IPI,performance and timer interrupts */
- 	if (gic_present)
--		change_c0_status(ST0_IM, STATUSF_IP3 | STATUSF_IP4 |
-+		change_c0_status(ST0_IM, STATUSF_IP2 | STATUSF_IP3 |
-+					 STATUSF_IP4 | STATUSF_IP5 |
- 					 STATUSF_IP6 | STATUSF_IP7);
- 	else
- #endif
--- 
-2.0.5
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>   arch/mips/mm/uasm.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+
+> diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+> index 4adf30284813..6596b6898637 100644
+> --- a/arch/mips/mm/uasm.c
+> +++ b/arch/mips/mm/uasm.c
+[...]
+> @@ -41,6 +42,8 @@ enum fields {
+>   #define FUNC_SH		0
+>   #define SET_MASK	0x7
+>   #define SET_SH		0
+> +#define SIMM9_SH	7
+> +#define SIMM9_MASK	0x1ff
+>
+>   enum opcode {
+>   	insn_invalid,
+> @@ -116,6 +119,14 @@ static inline u32 build_scimm(u32 arg)
+>   	return (arg & SCIMM_MASK) << SCIMM_SH;
+>   }
+>
+> +static inline u32 build_scimm9(s32 arg)
+> +{
+> +	WARN((arg > 0x1ff || arg < -0x200),
+
+    Not 0xFF and -0x100? The values above don't fit into 9 bits...
+
+> +	       KERN_WARNING "Micro-assembler field overflow\n");
+> +
+> +	return (arg & SIMM9_MASK) << SIMM9_SH;
+> +}
+> +
+[...]
+
+WBR, Sergei

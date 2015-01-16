@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 13:39:59 +0100 (CET)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:5393 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010562AbbAPMiop9yhz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 13:38:44 +0100
-X-IronPort-AV: E=Sophos;i="5.09,410,1418112000"; 
-   d="scan'208";a="54955732"
-Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
-  by mail-gw2-out.broadcom.com with ESMTP; 16 Jan 2015 05:14:23 -0800
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
- (TLS) id 14.3.174.1; Fri, 16 Jan 2015 04:38:29 -0800
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.3.174.1; Fri, 16 Jan 2015 04:39:30 -0800
-Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
- [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 43AE640FE6;    Fri, 16 Jan 2015 04:37:37 -0800 (PST)
-From:   Jayachandran C <jchandra@broadcom.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-CC:     Jayachandran C <jchandra@broadcom.com>
-Subject: [PATCH 5/5] MIPS: Netlogic: Map kernel with 1G/4G pages on XLPII
-Date:   Fri, 16 Jan 2015 18:08:08 +0530
-Message-ID: <1421411888-3367-6-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1421411888-3367-1-git-send-email-jchandra@broadcom.com>
-References: <1421411888-3367-1-git-send-email-jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 15:37:31 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:45003 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010551AbbAPOh3s0qK4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 16 Jan 2015 15:37:29 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id t0GEbR8I031376;
+        Fri, 16 Jan 2015 15:37:27 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id t0GEbPSB031375;
+        Fri, 16 Jan 2015 15:37:25 +0100
+Date:   Fri, 16 Jan 2015 15:37:25 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Daniel Sanders <Daniel.Sanders@imgtec.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Behan Webster <behanw@converseincode.com>
+Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent
+ supported by both clang and GCC
+Message-ID: <20150116143725.GB22296@linux-mips.org>
+References: <1420805177-9087-1-git-send-email-daniel.sanders@imgtec.com>
+ <54AFC6F3.1020300@cogentembedded.com>
+ <E484D272A3A61B4880CDF2E712E9279F458E68B8@hhmail02.hh.imgtec.org>
+ <54B00F3C.8030903@gmail.com>
+ <E484D272A3A61B4880CDF2E712E9279F458E7DF1@hhmail02.hh.imgtec.org>
+ <54B069D4.4090608@gmail.com>
+ <E484D272A3A61B4880CDF2E712E9279F458E8336@hhmail02.hh.imgtec.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <jchandra@broadcom.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E484D272A3A61B4880CDF2E712E9279F458E8336@hhmail02.hh.imgtec.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45225
+X-archive-position: 45226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,300 +55,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-XLP2XX and XLP9XX support 1G and 4G pages. Use these for mapping
-physical memory in Mapped Kernel support.
+On Sat, Jan 10, 2015 at 12:53:22PM +0000, Daniel Sanders wrote:
 
-Reduces the number of WIRED entries in systems with more RAM.
+> The main reason I renamed it is that identifiers starting with '__' are reserved. It's pretty unlikely but it's possible that the name will conflict with a C implementation in the future.
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
- arch/mips/netlogic/common/memory.c | 237 +++++++++++++++++++++++++------------
- 1 file changed, 159 insertions(+), 78 deletions(-)
+The whole kernel is using identifiers starting with a double underscore
+left and right.  The risk should be acceptable though - also because the
+kernel isn't linked against external libraries.
 
-diff --git a/arch/mips/netlogic/common/memory.c b/arch/mips/netlogic/common/memory.c
-index 6d967ce..74fdcab 100644
---- a/arch/mips/netlogic/common/memory.c
-+++ b/arch/mips/netlogic/common/memory.c
-@@ -34,6 +34,7 @@
- 
- #include <linux/kernel.h>
- #include <linux/types.h>
-+#include <linux/sizes.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/pgtable.h>
-@@ -41,100 +42,187 @@
- #include <asm/tlb.h>
- 
- #include <asm/netlogic/common.h>
-+#include <asm/netlogic/xlp-hal/xlp.h>
- 
--#define TLBSZ		(256 * 1024 * 1024)
--#define PM_TLBSZ	PM_256M
--#define PTE_MAPKERN(pa)	(((pa >> 12) << 6) | 0x2f)
-+#define SZ_4G		(4ull * 1024 * 1024 * 1024)
-+#define PM_4G		0x1ffffe000
-+#define MINPGSZ		SZ_256M
-+
-+#define PTE_MAPKERN(pa)	((((pa) >> 12) << 6) | 0x2f)
- #define TLB_MAXWIRED	28
- 
- static const int prefetch_backup = 512;
- 
- #if defined(CONFIG_MAPPED_KERNEL) && defined(CONFIG_64BIT)
--static void nlm_tlb_align(struct boot_mem_map_entry *map)
-+
-+/* To track the allocated area of a boot_mem_map segment */
-+struct alloc_entry {
-+	/* Start and end of the va mapped */
-+	unsigned long long start;
-+	unsigned long long end;
-+
-+	/* When just one of lo0/lo1 is used, the valid area is half of above */
-+	unsigned long long astart;
-+	unsigned long long aend;
-+} alloc_map[32];
-+
-+static inline int addtlb(phys_addr_t pa, u64 pgsz, u64 pmask,
-+	unsigned int validmask, struct alloc_entry *ae)
- {
--	phys_t astart, aend, start, end;
-+	phys_addr_t endpa;
-+	u64 *t;
-+	u32 *tlbcount;
-+	int ntlb;
-+
-+	tlbcount = (u32 *)nlm_get_boot_data(BOOT_NTLBS);
-+	ntlb = *tlbcount;
-+	endpa = pa + 2 * pgsz;
- 
--	start = map->addr;
--	end = start + map->size;
-+	pr_debug("%2d - pa0 %llx pa1 %llx pgsz %llx valid %x\n",
-+				ntlb, pa, endpa, pgsz, validmask);
-+	if (ntlb == TLB_MAXWIRED) {
-+		pr_err("Ran out of TLB entries pa %llx pgsz %llx\n", pa, pgsz);
-+		return -1;
-+	}
- 
--	/* fudge first entry for now  */
--	if (start < 0x10000000) {
--		start = 0;
--		end = 0x10000000;
-+	t = nlm_get_boot_data(BOOT_TLBS_START);
-+	t += ntlb * (BOOT_TLB_SIZE / sizeof(t[0]));
-+	t[BOOT_TLB_ENTRYHI] = pa + PAGE_OFFSET;
-+	t[BOOT_TLB_ENTRYLO0] = (validmask & 0x1) ? PTE_MAPKERN(pa) : 1;
-+	t[BOOT_TLB_ENTRYLO1] = (validmask & 0x2) ? PTE_MAPKERN(pa + pgsz) : 1;
-+	t[BOOT_TLB_PAGEMASK] = pmask;
-+
-+	if (pa < ae->start) {
-+		ae->astart = ae->start = pa;
-+		if ((validmask & 0x1) == 0)
-+			ae->astart += pgsz;
- 	}
--	astart = round_up(start, TLBSZ);
--	aend = round_down(end, TLBSZ);
--	if (aend <= astart) {
--		pr_info("Boot mem map: discard seg %lx-%lx\n",
--				(unsigned long)start, (unsigned long)end);
--		map->size = 0;
--		return;
-+	if (endpa > ae->end) {
-+		ae->aend = ae->end = endpa;
-+		if ((validmask & 0x2) == 0)
-+			ae->aend -= pgsz;
- 	}
--	if (astart != start || aend != end) {
--		if (start != 0) {
--			map->addr = astart;
--			map->size = aend - astart;
--		}
--		pr_info("Boot mem map: %lx - %lx -> %lx-%lx\n",
--			(unsigned long)start, (unsigned long)end,
--			(unsigned long)astart, (unsigned long)aend);
--	} else
--		pr_info("Boot mem map: added %lx - %lx\n",
--			(unsigned long)astart, (unsigned long)aend);
-+	*tlbcount = ntlb + 1;
-+	return 0;
- }
- 
-+/*
-+ * Calculate the TLB entries needed to wire dowm the memory map
-+ *
-+ * Tries to use the largest pagesizes possible, discards memory which
-+ * cannot be mapped
-+ */
- static void nlm_calc_wired_tlbs(void)
- {
--	u64 *tlbarr;
--	u32 *tlbcount;
--	u64 lo0, lo1, vaddr;
--	phys_addr_t astart, aend, p;
--	unsigned long bootdata = CKSEG1ADDR(RESET_DATA_PHYS);
--	int i, pos;
-+	u64 pgsz, pgmask, p;
-+	phys_addr_t astart, aend, pend, nstart;
-+	phys_addr_t tstart, tend, mstart, mend;
-+	struct boot_mem_map_entry *bmap;
-+	int i, nr_map;
-+
-+	nr_map = boot_mem_map.nr_map;
-+	bmap = boot_mem_map.map;
-+
-+	for (i = 0; i < nr_map; i++) {
-+		alloc_map[i].start = alloc_map[i].astart = ~0ull;
-+		alloc_map[i].end = alloc_map[i].aend = 0;
-+	}
- 
--	tlbarr = (u64 *)(bootdata + BOOT_TLBS_START);
--	tlbcount = (u32 *)(bootdata + BOOT_NTLBS);
-+	/* force the first entry with one 256M lo0 page */
-+	addtlb(0, 0x10000000, PM_256M, 0x1, &alloc_map[0]);
- 
--	pos = 0;
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
--			continue;
--		astart = boot_mem_map.map[i].addr;
--		aend =	astart + boot_mem_map.map[i].size;
-+	/* starting page size and page mask */
-+	if (cpu_is_xlpii()) {
-+		pgsz = SZ_4G;
-+		pgmask = PM_4G;
-+	} else {
-+		pgsz = SZ_256M;
-+		pgmask = PM_256M;
-+	}
- 
--		/* fudge first entry for now  */
--		if (astart < 0x10000000) {
--			astart = 0;
--			aend = 0x10000000;
--		}
--		for (p = round_down(astart, 2 * TLBSZ);
--			p < round_up(aend, 2 * TLBSZ);) {
--				vaddr = PAGE_OFFSET + p;
--				lo0 = (p >= astart) ? PTE_MAPKERN(p) : 1;
--				p += TLBSZ;
--				lo1 = (p < aend) ? PTE_MAPKERN(p) : 1;
--				p += TLBSZ;
--
--				tlbarr[BOOT_TLB_ENTRYHI] = vaddr;
--				tlbarr[BOOT_TLB_ENTRYLO0] = lo0;
--				tlbarr[BOOT_TLB_ENTRYLO1] = lo1;
--				tlbarr[BOOT_TLB_PAGEMASK] = PM_TLBSZ;
--				tlbarr += (BOOT_TLB_SIZE / sizeof(tlbarr[0]));
--
--				if (++pos >= TLB_MAXWIRED) {
--					pr_err("Ran out of TLBs at %llx, ",
--							(unsigned long long)p);
--					pr_err("Discarding rest of memory!\n");
--					boot_mem_map.nr_map = i + 1;
--					boot_mem_map.map[i].size = p -
--						boot_mem_map.map[i].addr;
-+	/* do multiple passes with successively smaller page sizes */
-+	for (; pgsz >= MINPGSZ; pgsz /= 4, pgmask = (pgmask >> 2) ^ 0x1800) {
-+		for (i = 0; i < nr_map; i++) {
-+			if (bmap[i].type != BOOT_MEM_RAM)
-+				continue;
-+
-+			/* previous mapping end and next mapping start */
-+			pend = alloc_map[i - 1].end;
-+			nstart = (i == nr_map - 1) ? ~0ull : bmap[i + 1].addr;
-+
-+			/* mem block start and end */
-+			mstart = round_up(bmap[i].addr, MINPGSZ);
-+			mend = round_down(bmap[i].addr + bmap[i].size, MINPGSZ);
-+
-+			/* allocated area in the memory block, start and end */
-+			astart = alloc_map[i].start;
-+			aend = alloc_map[i].end;
-+
-+			/* skip fully mapped blocks */
-+			if (mstart >= astart && mend <= aend)
-+				continue;
-+
-+			/* boundaries aligned to the current page size */
-+			tstart = round_up(mstart, 2 * pgsz);
-+			tend = round_down(mend, 2 * pgsz);
-+			if (tstart > tend)
-+				continue;
-+
-+			/* use LO1 of a TLB entry */
-+			if (mstart + pgsz == tstart && pend <= mstart - pgsz)
-+				if (addtlb(mstart - pgsz, pgsz,
-+						pgmask, 0x2, &alloc_map[i]))
- 					goto out;
-+
-+			for (p = tstart; p < tend;) {
-+				if (astart < aend && p == astart) {
-+					p = aend;
-+					continue;
- 				}
-+				if (addtlb(p, pgsz, pgmask, 0x3, &alloc_map[i]))
-+					goto out;
-+				p += 2 * pgsz;
-+			}
-+
-+			/* use LO0 of a TLB entry */
-+			if (tend + pgsz == mend && nstart >= mend + pgsz)
-+				if (addtlb(tend, pgsz,
-+						pgmask, 0x1, &alloc_map[i]))
-+					goto out;
- 		}
- 	}
- out:
--	*tlbcount = pos;
--	pr_info("%d TLB entires used for mapped kernel.\n", pos);
-+	for (i = 0; i < nr_map; i++) {
-+		mstart = bmap[i].addr;
-+		mend = bmap[i].addr + bmap[i].size;
-+		astart = alloc_map[i].astart;
-+		aend = alloc_map[i].aend;
-+
-+		if (astart >= aend) {
-+			bmap[i].size = 0;
-+			pr_info("%2d: Discarded %#10llx - %#10llx\n", i,
-+				(unsigned long long)mstart,
-+				(unsigned long long)mend);
-+			continue;
-+		}
-+		if (bmap[i].addr < astart) {
-+			bmap[i].addr = astart;
-+			pr_info("%2d: Discarded %#10llx - %#10llx\n", i,
-+				(unsigned long long)bmap[i].addr,
-+				(unsigned long long)astart);
-+		}
-+		if (mend > aend) {
-+			bmap[i].size = aend - bmap[i].addr;
-+			pr_info("%2d: Discarded %#10llx - %#10llx\n", i,
-+				(unsigned long long)aend,
-+				(unsigned long long)mend);
-+		}
-+		pr_debug("%2d alloc: %10llx %10llx mem %10llx %10llx\n", i,
-+						astart, aend, bmap[i].addr,
-+						bmap[i].addr + bmap[i].size);
-+	}
-+	pr_info("%d TLB entires used for mapped kernel.\n",
-+				*(u32 *)nlm_get_boot_data(BOOT_NTLBS));
- }
- #endif
- 
-@@ -143,13 +231,6 @@ void __init plat_mem_fixup(void)
- 	int i;
- 
- #if defined(CONFIG_MAPPED_KERNEL) && defined(CONFIG_64BIT)
--	/* trim memory regions to PM_TLBSZ boundaries */
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
--			continue;
--		nlm_tlb_align(&boot_mem_map.map[i]);
--	}
--
- 	/* calculate and save wired TLB entries */
- 	nlm_calc_wired_tlbs();
- 
--- 
-1.9.1
+The sole reason why _current_thread_info was a local variable is so nobody
+else can use it - the proper interface to use is current_thread_info().
+
+Other than that, both the current and the proposed variant aren't really
+correct for a variable that really is per thread.  So I'm going to just
+queue this for 3.20.
+
+Thanks!
+
+  Ralf

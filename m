@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 15:47:09 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:45177 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010547AbbAPOrGZEf4S (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 16 Jan 2015 15:47:06 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id t0GEl4v2031554;
-        Fri, 16 Jan 2015 15:47:04 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id t0GEl4uW031553;
-        Fri, 16 Jan 2015 15:47:04 +0100
-Date:   Fri, 16 Jan 2015 15:47:04 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Daniel Sanders <daniel.sanders@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Paul Burton <paul.burton@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Behan Webster <behanw@converseincode.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 16:05:52 +0100 (CET)
+Received: from unicorn.mansr.com ([81.2.72.234]:35690 "EHLO unicorn.mansr.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010525AbbAPPFvMVXu0 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 16:05:51 +0100
+Received: by unicorn.mansr.com (Postfix, from userid 51770)
+        id 64EA71538A; Fri, 16 Jan 2015 15:05:44 +0000 (GMT)
+From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Daniel Sanders <Daniel.Sanders@imgtec.com>,
+        David Daney <ddaney.cavm@gmail.com>,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        David Daney <ddaney.cavm@gmail.com>
-Subject: Re: [PATCH v2] MIPS: Changed current_thread_info() to an equivalent
- supported by both clang and GCC
-Message-ID: <20150116144703.GC22296@linux-mips.org>
-References: <1420894360-13479-1-git-send-email-daniel.sanders@imgtec.com>
+        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Behan Webster <behanw@converseincode.com>
+Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent supported by both clang and GCC
+References: <1420805177-9087-1-git-send-email-daniel.sanders@imgtec.com>
+        <54AFC6F3.1020300@cogentembedded.com>
+        <E484D272A3A61B4880CDF2E712E9279F458E68B8@hhmail02.hh.imgtec.org>
+        <54B00F3C.8030903@gmail.com>
+        <E484D272A3A61B4880CDF2E712E9279F458E7DF1@hhmail02.hh.imgtec.org>
+        <54B069D4.4090608@gmail.com>
+        <E484D272A3A61B4880CDF2E712E9279F458E8336@hhmail02.hh.imgtec.org>
+        <20150116143725.GB22296@linux-mips.org>
+Date:   Fri, 16 Jan 2015 15:05:44 +0000
+In-Reply-To: <20150116143725.GB22296@linux-mips.org> (Ralf Baechle's message
+        of "Fri, 16 Jan 2015 15:37:25 +0100")
+Message-ID: <yw1xvbk6epfb.fsf@unicorn.mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1420894360-13479-1-git-send-email-daniel.sanders@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mru@mansr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45227
+X-archive-position: 45228
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mans@mansr.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,19 +53,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jan 10, 2015 at 12:52:40PM +0000, Daniel Sanders wrote:
+Ralf Baechle <ralf@linux-mips.org> writes:
 
-> The problem is that clang doesn't honour named registers on local variables
-> and silently treats them as normal uninitialized variables. However, it
-> does honour them on global variables.
+> On Sat, Jan 10, 2015 at 12:53:22PM +0000, Daniel Sanders wrote:
+>
+>> The main reason I renamed it is that identifiers starting with '__'
+>> are reserved. It's pretty unlikely but it's possible that the name
+>> will conflict with a C implementation in the future.
+>
+> The whole kernel is using identifiers starting with a double underscore
+> left and right.  The risk should be acceptable though - also because the
+> kernel isn't linked against external libraries.
 
-Older versions of <asm/unistd.h> which have been copied into some userland
-packages are using some local register variables in syscall wrappers.  These
-syscall wrappers have historically been a pain because every once in a
-while they got broken by a new GCC release or other issues.  If you're
-lucky that has been resolved by the maintainers of those external software
-packages - the only way to be certain is the review ...
+The reserved namespace applies to applications built against a standard
+library so as to avoid name clashes with library internals.  The kernel
+doesn't use the standard library, so it can use any identifiers.  This
+should be clear from the fact that the reserved identifiers are listed
+in the "Library" chapter of the C standard.
 
-At least the kernel does no longer do syscalls.
-
-  Ralf
+-- 
+Måns Rullgård
+mans@mansr.com

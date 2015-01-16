@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:03:36 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:03:56 +0100 (CET)
 Received: from mailapp01.imgtec.com ([195.59.15.196]:37123 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010872AbbAPKx3UFi2J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 11:53:29 +0100
+        with ESMTP id S27010877AbbAPKxa30sSp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 11:53:30 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9BE0FF55DD51
-        for <linux-mips@linux-mips.org>; Fri, 16 Jan 2015 10:53:21 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id CAF4D94A938B6
+        for <linux-mips@linux-mips.org>; Fri, 16 Jan 2015 10:53:27 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 16 Jan 2015 10:53:23 +0000
+ 14.3.195.1; Fri, 16 Jan 2015 10:53:29 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.96) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 16 Jan 2015 10:53:23 +0000
+ 14.3.210.2; Fri, 16 Jan 2015 10:53:29 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH RFC v2 43/70] MIPS: mm: scache: Add secondary cache support for MIPS R6 cores
-Date:   Fri, 16 Jan 2015 10:49:22 +0000
-Message-ID: <1421405389-15512-44-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH RFC v2 48/70] MIPS: kernel: branch: Prevent BGEZAL emulation for MIPS R6
+Date:   Fri, 16 Jan 2015 10:49:27 +0000
+Message-ID: <1421405389-15512-49-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.2.1
 In-Reply-To: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
 References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45187
+X-archive-position: 45188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,42 +45,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The secondary cache initialization and configuration code is processor
-specific so we need to handle MIPS R6 cores as well.
+MIPS R6 removed the BGEZAL instruction so do not try to emulate it
+if the R2-to-R6 emulator is not present.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/mm/c-r4k.c   | 3 ++-
- arch/mips/mm/sc-mips.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/kernel/branch.c   | 22 ++++++++++++++++++++++
+ arch/mips/math-emu/cp1emu.c |  4 ++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 7ecee761ae2d..3f8059602765 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1473,7 +1473,8 @@ static void setup_scache(void)
+diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
+index 311a2223da59..2273307f7c51 100644
+--- a/arch/mips/kernel/branch.c
++++ b/arch/mips/kernel/branch.c
+@@ -502,7 +502,29 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
  
- 	default:
- 		if (c->isa_level & (MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 |
--				    MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)) {
-+				    MIPS_CPU_ISA_M32R6 | MIPS_CPU_ISA_M64R1 |
-+				    MIPS_CPU_ISA_M64R2 | MIPS_CPU_ISA_M64R6)) {
- #ifdef CONFIG_MIPS_CPU_SCACHE
- 			if (mips_sc_init ()) {
- 				scache_size = c->scache.ways * c->scache.sets * c->scache.linesz;
-diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-index fd9b5d45e91b..4ceafd13870c 100644
---- a/arch/mips/mm/sc-mips.c
-+++ b/arch/mips/mm/sc-mips.c
-@@ -105,7 +105,8 @@ static inline int __init mips_sc_probe(void)
- 
- 	/* Ignore anything but MIPSxx processors */
- 	if (!(c->isa_level & (MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 |
--			      MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)))
-+			      MIPS_CPU_ISA_M32R6 | MIPS_CPU_ISA_M64R1 |
-+			      MIPS_CPU_ISA_M64R2 | MIPS_CPU_ISA_M64R6)))
- 		return 0;
- 
- 	/* Does this MIPS32/MIPS64 CPU have a config2 register? */
+ 		case bgezal_op:
+ 		case bgezall_op:
++			if (NO_R6EMU && (insn.i_format.rs ||
++			    insn.i_format.rt == bgezall_op)) {
++				ret = -SIGILL;
++				break;
++			}
+ 			regs->regs[31] = epc + 8;
++			/*
++			 * OK we are here either because we hit a BAL
++			 * instruction or because we are emulating an
++			 * old bgezal{,l} one. Lets figure out what the
++			 * case really is.
++			 */
++			if (!insn.i_format.rs) {
++				/*
++				 * BAL or BGEZAL with rs == 0
++				 * Doesn't matter if we are R6 or not. The
++				 * result is the same
++				 */
++				regs->cp0_epc += 4 +
++					(insn.i_format.simmediate << 2);
++				break;
++			}
++			/* Now do the real thing for non-R6 BGEZAL{,L} */
+ 			if ((long)regs->regs[insn.i_format.rs] >= 0) {
+ 				epc = epc + 4 + (insn.i_format.simmediate << 2);
+ 				if (insn.i_format.rt == bgezall_op)
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 5429efe24d5a..8aa6a451104b 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -482,6 +482,10 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+ 			return 1;
+ 		case bgezal_op:
+ 		case bgezall_op:
++			if (NO_R6EMU && (insn.i_format.rs ||
++			    insn.i_format.rt == bgezall_op))
++				break;
++
+ 			regs->regs[31] = regs->cp0_epc +
+ 				dec_insn.pc_inc +
+ 				dec_insn.next_pc_inc;
 -- 
 2.2.1

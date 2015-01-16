@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:02:23 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28454 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:02:44 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57789 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010724AbbAPKxTkIDMy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 11:53:19 +0100
+        with ESMTP id S27010770AbbAPKxXIeAVA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 11:53:23 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C070463F76A24
-        for <linux-mips@linux-mips.org>; Fri, 16 Jan 2015 10:53:11 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 59B4A82E44D79
+        for <linux-mips@linux-mips.org>; Fri, 16 Jan 2015 10:53:15 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 16 Jan 2015 10:53:13 +0000
+ 14.3.195.1; Fri, 16 Jan 2015 10:53:17 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.96) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 16 Jan 2015 10:53:13 +0000
+ 14.3.210.2; Fri, 16 Jan 2015 10:53:16 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH RFC v2 39/70] MIPS: lib: memset: Add MIPS R6 support
-Date:   Fri, 16 Jan 2015 10:49:18 +0000
-Message-ID: <1421405389-15512-40-git-send-email-markos.chandras@imgtec.com>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH RFC v2 40/70] MIPS: mm: page: Add MIPS R6 support
+Date:   Fri, 16 Jan 2015 10:49:19 +0000
+Message-ID: <1421405389-15512-41-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.2.1
 In-Reply-To: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
 References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
@@ -29,7 +28,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45183
+X-archive-position: 45184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,103 +45,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+The MIPS R6 pref instruction only have 9 bits for the immediate
+field so skip the micro-assembler PREF instruction is the offset
+does not fit in 9 bits.
 
-MIPS R6 dropped the unaligned load and store instructions so
-we need to re-write this part of the code for R6 to store
-one byte at a time.
-
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/lib/memset.S | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ arch/mips/mm/page.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
-index c8fe6b1968fb..d542650d4fb7 100644
---- a/arch/mips/lib/memset.S
-+++ b/arch/mips/lib/memset.S
-@@ -111,6 +111,7 @@
- 	.set		at
- #endif
+diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+index b611102e23b5..b84e0b2ce140 100644
+--- a/arch/mips/mm/page.c
++++ b/arch/mips/mm/page.c
+@@ -72,6 +72,20 @@ static struct uasm_reloc relocs[5];
+ #define cpu_is_r4600_v1_x()	((read_c0_prid() & 0xfffffff0) == 0x00002010)
+ #define cpu_is_r4600_v2_x()	((read_c0_prid() & 0xfffffff0) == 0x00002020)
  
-+#ifndef CONFIG_CPU_MIPSR6
- 	R10KCBARRIER(0(ra))
- #ifdef __MIPSEB__
- 	EX(LONG_S_L, a1, (a0), .Lfirst_fixup\@)	/* make word/dword aligned */
-@@ -120,6 +121,30 @@
- 	PTR_SUBU	a0, t0			/* long align ptr */
- 	PTR_ADDU	a2, t0			/* correct size */
- 
-+#else /* CONFIG_CPU_MIPSR6 */
-+#define STORE_BYTE(N)				\
-+	EX(sb, a1, N(a0), .Lbyte_fixup\@);	\
-+	beqz		t0, 0f;			\
-+	PTR_ADDU	t0, 1;
++/*
++ * R6 has a limited offset of the pref instruction.
++ * Skip it if the offset is more than 9 bits.
++ */
++#define _uasm_i_pref(a, b, c, d)		\
++do {						\
++	if (cpu_has_mips_r6) {			\
++	    if ((d > 0xff) || (d < -0x100))	\
++		uasm_i_pref(a, b, c, d);	\
++	} else {				\
++		uasm_i_pref(a, b, c, d);	\
++	}					\
++} while(0)
 +
-+	PTR_ADDU	a2, t0			/* correct size */
-+	PTR_ADDU	t0, 1
-+	STORE_BYTE(0)
-+	STORE_BYTE(1)
-+#if LONGSIZE == 4
-+	EX(sb, a1, 2(a0), .Lbyte_fixup\@)
-+#else
-+	STORE_BYTE(2)
-+	STORE_BYTE(3)
-+	STORE_BYTE(4)
-+	STORE_BYTE(5)
-+	EX(sb, a1, 6(a0), .Lbyte_fixup\@)
-+#endif
-+0:
-+	ori		a0, STORMASK
-+	xori		a0, STORMASK
-+	PTR_ADDIU	a0, STORSIZE
-+#endif /* CONFIG_CPU_MIPS_R6 */
- 1:	ori		t1, a2, 0x3f		/* # of full blocks */
- 	xori		t1, 0x3f
- 	beqz		t1, .Lmemset_partial\@	/* no block to fill */
-@@ -159,6 +184,7 @@
- 	andi		a2, STORMASK		/* At most one long to go */
+ static int pref_bias_clear_store;
+ static int pref_bias_copy_load;
+ static int pref_bias_copy_store;
+@@ -214,7 +228,7 @@ static inline void build_clear_pref(u32 **buf, int off)
+ 		return;
  
- 	beqz		a2, 1f
-+#ifndef CONFIG_CPU_MIPSR6
- 	PTR_ADDU	a0, a2			/* What's left */
- 	R10KCBARRIER(0(ra))
- #ifdef __MIPSEB__
-@@ -166,6 +192,22 @@
- #else
- 	EX(LONG_S_L, a1, -1(a0), .Llast_fixup\@)
- #endif
-+#else
-+	PTR_SUBU	t0, $0, a2
-+	PTR_ADDIU	t0, 1
-+	STORE_BYTE(0)
-+	STORE_BYTE(1)
-+#if LONGSIZE == 4
-+	EX(sb, a1, 2(a0), .Lbyte_fixup\@)
-+#else
-+	STORE_BYTE(2)
-+	STORE_BYTE(3)
-+	STORE_BYTE(4)
-+	STORE_BYTE(5)
-+	EX(sb, a1, 6(a0), .Lbyte_fixup\@)
-+#endif
-+0:
-+#endif
- 1:	jr		ra
- 	move		a2, zero
+ 	if (pref_bias_clear_store) {
+-		uasm_i_pref(buf, pref_dst_mode, pref_bias_clear_store + off,
++		_uasm_i_pref(buf, pref_dst_mode, pref_bias_clear_store + off,
+ 			    A0);
+ 	} else if (cache_line_size == (half_clear_loop_size << 1)) {
+ 		if (cpu_has_cache_cdex_s) {
+@@ -357,7 +371,7 @@ static inline void build_copy_load_pref(u32 **buf, int off)
+ 		return;
  
-@@ -186,6 +228,11 @@
- 	.hidden __memset
- 	.endif
+ 	if (pref_bias_copy_load)
+-		uasm_i_pref(buf, pref_src_mode, pref_bias_copy_load + off, A1);
++		_uasm_i_pref(buf, pref_src_mode, pref_bias_copy_load + off, A1);
+ }
  
-+.Lbyte_fixup\@:
-+	PTR_SUBU	a2, $0, t0
-+	jr		ra
-+	 PTR_ADDIU	a2, 1
-+
- .Lfirst_fixup\@:
- 	jr	ra
- 	nop
+ static inline void build_copy_store_pref(u32 **buf, int off)
+@@ -366,7 +380,7 @@ static inline void build_copy_store_pref(u32 **buf, int off)
+ 		return;
+ 
+ 	if (pref_bias_copy_store) {
+-		uasm_i_pref(buf, pref_dst_mode, pref_bias_copy_store + off,
++		_uasm_i_pref(buf, pref_dst_mode, pref_bias_copy_store + off,
+ 			    A0);
+ 	} else if (cache_line_size == (half_copy_loop_size << 1)) {
+ 		if (cpu_has_cache_cdex_s) {
 -- 
 2.2.1

@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:01:15 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63332 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 12:01:33 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:20493 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010682AbbAPKxJm3fiE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 11:53:09 +0100
+        with ESMTP id S27010095AbbAPKxLdwS30 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 11:53:11 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 4FDC9A28D6939
-        for <linux-mips@linux-mips.org>; Fri, 16 Jan 2015 10:53:01 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 93B12729000F0
+        for <linux-mips@linux-mips.org>; Fri, 16 Jan 2015 10:53:02 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 16 Jan 2015 10:53:03 +0000
+ 14.3.195.1; Fri, 16 Jan 2015 10:53:04 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.96) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 16 Jan 2015 10:53:02 +0000
+ 14.3.210.2; Fri, 16 Jan 2015 10:53:04 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH RFC v2 35/70] MIPS: kernel: cps-vec: Replace addi with addiu
-Date:   Fri, 16 Jan 2015 10:49:14 +0000
-Message-ID: <1421405389-15512-36-git-send-email-markos.chandras@imgtec.com>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH RFC v2 36/70] MIPS: kernel: unaligned: Add support for the MIPS R6
+Date:   Fri, 16 Jan 2015 10:49:15 +0000
+Message-ID: <1421405389-15512-37-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.2.1
 In-Reply-To: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
 References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45179
+X-archive-position: 45180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,81 +46,516 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS R6 removed the addi instruction so we replace it with addiu.
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-Cc: Paul Burton <paul.burton@imgtec.com>
+The load/store unaligned instructions have been removed in MIPS R6
+so we need to re-implement the related macros using the regular
+load/store instructions. Moreover, the load/store from coprocessor 2
+instructions have been reallocated in Release 6 so we will handle them
+in the emulator instead.
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/kernel/cps-vec.S | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/mips/kernel/unaligned.c | 390 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 386 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index 0384b05ab5a0..55b759a0019e 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -99,11 +99,11 @@ not_nmi:
- 	xori	t2, t1, 0x7
- 	beqz	t2, 1f
- 	 li	t3, 32
--	addi	t1, t1, 1
-+	addiu	t1, t1, 1
- 	sllv	t1, t3, t1
- 1:	/* At this point t1 == I-cache sets per way */
- 	_EXT	t2, v0, MIPS_CONF1_IA_SHF, MIPS_CONF1_IA_SZ
--	addi	t2, t2, 1
-+	addiu	t2, t2, 1
- 	mul	t1, t1, t0
- 	mul	t1, t1, t2
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index e11906dff885..c580b8c12f6f 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -129,6 +129,7 @@ extern void show_registers(struct pt_regs *regs);
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
  
-@@ -126,11 +126,11 @@ icache_done:
- 	xori	t2, t1, 0x7
- 	beqz	t2, 1f
- 	 li	t3, 32
--	addi	t1, t1, 1
-+	addiu	t1, t1, 1
- 	sllv	t1, t3, t1
- 1:	/* At this point t1 == D-cache sets per way */
- 	_EXT	t2, v0, MIPS_CONF1_DA_SHF, MIPS_CONF1_DA_SZ
--	addi	t2, t2, 1
-+	addiu	t2, t2, 1
- 	mul	t1, t1, t0
- 	mul	t1, t1, t2
++#ifndef CONFIG_CPU_MIPSR6
+ #define     LoadW(addr, value, res)   \
+ 		__asm__ __volatile__ (                      \
+ 			"1:\t"user_lwl("%0", "(%2)")"\n"    \
+@@ -146,6 +147,39 @@ extern void show_registers(struct pt_regs *regs);
+ 			".previous"                         \
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
++#else
++/* MIPSR6 has no lwl instruction */
++#define     LoadW(addr, value, res) \
++		__asm__ __volatile__ (			    \
++			".set\tpush\n"			    \
++			".set\tnoat\n\t"		    \
++			"1:"user_lb("%0", "0(%2)")"\n\t"    \
++			"2:"user_lbu("$1", "1(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"3:"user_lbu("$1", "2(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"4:"user_lbu("$1", "3(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"li\t%1, 0\n"			    \
++			".set\tpop\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%1, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			".previous"			    \
++			: "=&r" (value), "=r" (res)	    \
++			: "r" (addr), "i" (-EFAULT));
++#endif /* CONFIG_MIPS_R6 */
  
-@@ -250,7 +250,7 @@ LEAF(mips_cps_core_init)
- 	mfc0	t0, CP0_MVPCONF0
- 	srl	t0, t0, MVPCONF0_PVPE_SHIFT
- 	andi	t0, t0, (MVPCONF0_PVPE >> MVPCONF0_PVPE_SHIFT)
--	addi	t7, t0, 1
-+	addiu	t7, t0, 1
+ #define     LoadHWU(addr, value, res) \
+ 		__asm__ __volatile__ (                      \
+@@ -169,6 +203,7 @@ extern void show_registers(struct pt_regs *regs);
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
  
- 	/* If there's only 1, we're done */
- 	beqz	t0, 2f
-@@ -280,7 +280,7 @@ LEAF(mips_cps_core_init)
- 	mttc0	t0, CP0_TCHALT
++#ifndef CONFIG_CPU_MIPSR6
+ #define     LoadWU(addr, value, res)  \
+ 		__asm__ __volatile__ (                      \
+ 			"1:\t"user_lwl("%0", "(%2)")"\n"    \
+@@ -206,6 +241,87 @@ extern void show_registers(struct pt_regs *regs);
+ 			".previous"                         \
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
++#else
++/* MIPSR6 has not lwl and ldl instructions */
++#define	    LoadWU(addr, value, res) \
++		__asm__ __volatile__ (			    \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:"user_lbu("%0", "0(%2)")"\n\t"   \
++			"2:"user_lbu("$1", "1(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"3:"user_lbu("$1", "2(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"4:"user_lbu("$1", "3(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"li\t%1, 0\n"			    \
++			".set\tpop\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%1, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			".previous"			    \
++			: "=&r" (value), "=r" (res)	    \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadDW(addr, value, res)  \
++		__asm__ __volatile__ (			    \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:lb\t%0, 0(%2)\n\t"    	    \
++			"2:lbu\t $1, 1(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"3:lbu\t$1, 2(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"4:lbu\t$1, 3(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"5:lbu\t$1, 4(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"6:lbu\t$1, 5(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"7:lbu\t$1, 6(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"8:lbu\t$1, 7(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"li\t%1, 0\n"			    \
++			".set\tpop\n\t"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%1, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			STR(PTR)"\t5b, 11b\n\t"		    \
++			STR(PTR)"\t6b, 11b\n\t"		    \
++			STR(PTR)"\t7b, 11b\n\t"		    \
++			STR(PTR)"\t8b, 11b\n\t"		    \
++			".previous"			    \
++			: "=&r" (value), "=r" (res)	    \
++			: "r" (addr), "i" (-EFAULT));
++#endif /* CONFIG_CPU_MIPSR6 */
++
  
- 	/* Next VPE */
--	addi	t5, t5, 1
-+	addiu	t5, t5, 1
- 	slt	t0, t5, t7
- 	bnez	t0, 1b
- 	 nop
-@@ -317,7 +317,7 @@ LEAF(mips_cps_boot_vpes)
- 	mfc0	t1, CP0_MVPCONF0
- 	srl	t1, t1, MVPCONF0_PVPE_SHIFT
- 	andi	t1, t1, MVPCONF0_PVPE >> MVPCONF0_PVPE_SHIFT
--	addi	t1, t1, 1
-+	addiu	t1, t1, 1
+ #define     StoreHW(addr, value, res) \
+ 		__asm__ __volatile__ (                      \
+@@ -228,6 +344,7 @@ extern void show_registers(struct pt_regs *regs);
+ 			: "=r" (res)                        \
+ 			: "r" (value), "r" (addr), "i" (-EFAULT));
  
- 	/* Calculate a mask for the VPE ID from EBase.CPUNum */
- 	clz	t1, t1
-@@ -424,7 +424,7 @@ LEAF(mips_cps_boot_vpes)
++#ifndef CONFIG_CPU_MIPSR6
+ #define     StoreW(addr, value, res)  \
+ 		__asm__ __volatile__ (                      \
+ 			"1:\t"user_swl("%1", "(%2)")"\n"    \
+@@ -263,9 +380,82 @@ extern void show_registers(struct pt_regs *regs);
+ 			".previous"                         \
+ 		: "=r" (res)                                \
+ 		: "r" (value), "r" (addr), "i" (-EFAULT));
+-#endif
++#else
++/* MIPSR6 has no swl and sdl instructions */
++#define     StoreW(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:"user_sb("%1", "3(%2)")"\n\t"    \
++			"srl\t$1, %1, 0x8\n\t"		    \
++			"2:"user_sb("$1", "2(%2)")"\n\t"    \
++			"srl\t$1, $1,  0x8\n\t"		    \
++			"3:"user_sb("$1", "1(%2)")"\n\t"    \
++			"srl\t$1, $1, 0x8\n\t"		    \
++			"4:"user_sb("$1", "0(%2)")"\n\t"    \
++			".set\tpop\n\t"			    \
++			"li\t%0, 0\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%0, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			".previous"			    \
++		: "=&r" (res)			    	    \
++		: "r" (value), "r" (addr), "i" (-EFAULT)    \
++		: "memory");
++
++#define     StoreDW(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:sb\t%1, 7(%2)\n\t"    	    \
++			"dsrl\t$1, %1, 0x8\n\t"		    \
++			"2:sb\t$1, 6(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"3:sb\t$1, 5(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"4:sb\t$1, 4(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"5:sb\t$1, 3(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"6:sb\t$1, 2(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"7:sb\t$1, 1(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"8:sb\t$1, 0(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			".set\tpop\n\t"			    \
++			"li\t%0, 0\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%0, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			STR(PTR)"\t5b, 11b\n\t"		    \
++			STR(PTR)"\t6b, 11b\n\t"		    \
++			STR(PTR)"\t7b, 11b\n\t"		    \
++			STR(PTR)"\t8b, 11b\n\t"		    \
++			".previous"			    \
++		: "=&r" (res)			    	    \
++		: "r" (value), "r" (addr), "i" (-EFAULT)    \
++		: "memory");
++#endif /* CONFIG_CPU_MIPSR6 */
++
++#else /* __BIG_ENDIAN */
  
- 	/* Next VPE */
- 2:	srl	t6, t6, 1
--	addi	t5, t5, 1
-+	addiu	t5, t5, 1
- 	bnez	t6, 1b
- 	 nop
+-#ifdef __LITTLE_ENDIAN
+ #define     LoadHW(addr, value, res)  \
+ 		__asm__ __volatile__ (".set\tnoat\n"        \
+ 			"1:\t"user_lb("%0", "1(%2)")"\n"    \
+@@ -286,6 +476,7 @@ extern void show_registers(struct pt_regs *regs);
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
  
++#ifndef CONFIG_CPU_MIPSR6
+ #define     LoadW(addr, value, res)   \
+ 		__asm__ __volatile__ (                      \
+ 			"1:\t"user_lwl("%0", "3(%2)")"\n"   \
+@@ -303,6 +494,40 @@ extern void show_registers(struct pt_regs *regs);
+ 			".previous"                         \
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
++#else
++/* MIPSR6 has no lwl instruction */
++#define     LoadW(addr, value, res) \
++		__asm__ __volatile__ (			    \
++			".set\tpush\n"			    \
++			".set\tnoat\n\t"		    \
++			"1:"user_lb("%0", "3(%2)")"\n\t"    \
++			"2:"user_lbu("$1", "2(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"3:"user_lbu("$1", "1(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"4:"user_lbu("$1", "0(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"li\t%1, 0\n"			    \
++			".set\tpop\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%1, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			".previous"			    \
++			: "=&r" (value), "=r" (res)	    \
++			: "r" (addr), "i" (-EFAULT));
++#endif /* CONFIG_CPU_MIPSR6 */
++
+ 
+ #define     LoadHWU(addr, value, res) \
+ 		__asm__ __volatile__ (                      \
+@@ -326,6 +551,7 @@ extern void show_registers(struct pt_regs *regs);
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
+ 
++#ifndef CONFIG_CPU_MIPSR6
+ #define     LoadWU(addr, value, res)  \
+ 		__asm__ __volatile__ (                      \
+ 			"1:\t"user_lwl("%0", "3(%2)")"\n"   \
+@@ -363,6 +589,86 @@ extern void show_registers(struct pt_regs *regs);
+ 			".previous"                         \
+ 			: "=&r" (value), "=r" (res)         \
+ 			: "r" (addr), "i" (-EFAULT));
++#else
++/* MIPSR6 has not lwl and ldl instructions */
++#define	    LoadWU(addr, value, res) \
++		__asm__ __volatile__ (			    \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:"user_lbu("%0", "3(%2)")"\n\t"   \
++			"2:"user_lbu("$1", "2(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"3:"user_lbu("$1", "1(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"4:"user_lbu("$1", "0(%2)")"\n\t"   \
++			"sll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"li\t%1, 0\n"			    \
++			".set\tpop\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%1, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			".previous"			    \
++			: "=&r" (value), "=r" (res)	    \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadDW(addr, value, res)  \
++		__asm__ __volatile__ (			    \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:lb\t%0, 7(%2)\n\t"    	    \
++			"2:lbu\t$1, 6(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"3:lbu\t$1, 5(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"4:lbu\t$1, 4(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"5:lbu\t$1, 3(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"6:lbu\t$1, 2(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"7:lbu\t$1, 1(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"8:lbu\t$1, 0(%2)\n\t"   	    \
++			"dsll\t%0, 0x8\n\t"		    \
++			"or\t%0, $1\n\t"		    \
++			"li\t%1, 0\n"			    \
++			".set\tpop\n\t"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%1, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			STR(PTR)"\t5b, 11b\n\t"		    \
++			STR(PTR)"\t6b, 11b\n\t"		    \
++			STR(PTR)"\t7b, 11b\n\t"		    \
++			STR(PTR)"\t8b, 11b\n\t"		    \
++			".previous"			    \
++			: "=&r" (value), "=r" (res)	    \
++			: "r" (addr), "i" (-EFAULT));
++#endif /* CONFIG_CPU_MIPSR6 */
+ 
+ #define     StoreHW(addr, value, res) \
+ 		__asm__ __volatile__ (                      \
+@@ -384,7 +690,7 @@ extern void show_registers(struct pt_regs *regs);
+ 			".previous"                         \
+ 			: "=r" (res)                        \
+ 			: "r" (value), "r" (addr), "i" (-EFAULT));
+-
++#ifndef CONFIG_CPU_MIPSR6
+ #define     StoreW(addr, value, res)  \
+ 		__asm__ __volatile__ (                      \
+ 			"1:\t"user_swl("%1", "3(%2)")"\n"   \
+@@ -420,6 +726,79 @@ extern void show_registers(struct pt_regs *regs);
+ 			".previous"                         \
+ 		: "=r" (res)                                \
+ 		: "r" (value), "r" (addr), "i" (-EFAULT));
++#else
++/* MIPSR6 has no swl and sdl instructions */
++#define     StoreW(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:"user_sb("%1", "0(%2)")"\n\t"    \
++			"srl\t$1, %1, 0x8\n\t"		    \
++			"2:"user_sb("$1", "1(%2)")"\n\t"    \
++			"srl\t$1, $1,  0x8\n\t"		    \
++			"3:"user_sb("$1", "2(%2)")"\n\t"    \
++			"srl\t$1, $1, 0x8\n\t"		    \
++			"4:"user_sb("$1", "3(%2)")"\n\t"    \
++			".set\tpop\n\t"			    \
++			"li\t%0, 0\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%0, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			".previous"			    \
++		: "=&r" (res)			    	    \
++		: "r" (value), "r" (addr), "i" (-EFAULT)    \
++		: "memory");
++
++#define     StoreDW(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			".set\tpush\n\t"		    \
++			".set\tnoat\n\t"		    \
++			"1:sb\t%1, 0(%2)\n\t"    	    \
++			"dsrl\t$1, %1, 0x8\n\t"		    \
++			"2:sb\t$1, 1(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"3:sb\t$1, 2(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"4:sb\t$1, 3(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"5:sb\t$1, 4(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"6:sb\t$1, 5(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"7:sb\t$1, 6(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			"8:sb\t$1, 7(%2)\n\t"    	    \
++			"dsrl\t$1, $1, 0x8\n\t"		    \
++			".set\tpop\n\t"			    \
++			"li\t%0, 0\n"			    \
++			"10:\n\t"			    \
++			".insn\n\t"			    \
++			".section\t.fixup,\"ax\"\n\t"	    \
++			"11:\tli\t%0, %3\n\t"		    \
++			"j\t10b\n\t"			    \
++			".previous\n\t"			    \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 11b\n\t"		    \
++			STR(PTR)"\t2b, 11b\n\t"		    \
++			STR(PTR)"\t3b, 11b\n\t"		    \
++			STR(PTR)"\t4b, 11b\n\t"		    \
++			STR(PTR)"\t5b, 11b\n\t"		    \
++			STR(PTR)"\t6b, 11b\n\t"		    \
++			STR(PTR)"\t7b, 11b\n\t"		    \
++			STR(PTR)"\t8b, 11b\n\t"		    \
++			".previous"			    \
++		: "=&r" (res)			    	    \
++		: "r" (value), "r" (addr), "i" (-EFAULT)    \
++		: "memory");
++#endif /* CONFIG_CPU_MIPSR6 */
+ #endif
+ 
+ static void emulate_load_store_insn(struct pt_regs *regs,
+@@ -703,10 +1082,13 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 			break;
+ 		return;
+ 
++#ifndef CONFIG_MIPS_R6
+ 	/*
+ 	 * COP2 is available to implementor for application specific use.
+ 	 * It's up to applications to register a notifier chain and do
+ 	 * whatever they have to do, including possible sending of signals.
++	 *
++	 * This instruction has been reallocated in Release 6
+ 	 */
+ 	case lwc2_op:
+ 		cu2_notifier_call_chain(CU2_LWC2_OP, regs);
+@@ -723,7 +1105,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	case sdc2_op:
+ 		cu2_notifier_call_chain(CU2_SDC2_OP, regs);
+ 		break;
+-
++#endif
+ 	default:
+ 		/*
+ 		 * Pheeee...  We encountered an yet unknown instruction or
 -- 
 2.2.1

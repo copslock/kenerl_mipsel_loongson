@@ -1,50 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2015 21:36:22 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17130 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009839AbbAPUgV0fGLr convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2015 21:36:21 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 17A40A3D840A3;
-        Fri, 16 Jan 2015 20:36:11 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 16 Jan 2015 20:36:14 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Fri, 16 Jan 2015 20:36:14 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-CC:     Paul Burton <Paul.Burton@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: RE: 3.18+: soft-float userland unusable due to .MIPS.abiflags patch
-Thread-Topic: 3.18+: soft-float userland unusable due to .MIPS.abiflags patch
-Thread-Index: AQHQMbZETJL51Hv6jkWZmajb6hjbjpzDCtmAgAARsJCAAA6CgIAAAMIAgAAAiiA=
-Date:   Fri, 16 Jan 2015 20:36:12 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320FA9A04@LEMAIL01.le.imgtec.org>
-References: <CAOLZvyFP6FX3ydFdU7fmDd7GCnBCAPyLnxkmyjYknXP8Wui0kg@mail.gmail.com>
- <CAOLZvyGBOqCARmLx+rQ1CEgFw2TZBYYauGOiD9tF31MFsB-peQ@mail.gmail.com>
- <6D39441BF12EF246A7ABCE6654B0235320FA97DF@LEMAIL01.le.imgtec.org>
- <CAOLZvyGUGr3ubbzNjoFLCEDk29Fbn4qjoT6xmT=F1OZ4L-YhMA@mail.gmail.com>
- <CAOLZvyE7nk4r+gcYTkdbfeDWh6c75RRhijuh-XY=AK98LF81LA@mail.gmail.com>
-In-Reply-To: <CAOLZvyE7nk4r+gcYTkdbfeDWh6c75RRhijuh-XY=AK98LF81LA@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.159.111]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jan 2015 02:57:08 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.11.231]:38292 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007866AbbAQB5GXurTg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Jan 2015 02:57:06 +0100
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 30C80140EF1;
+        Sat, 17 Jan 2015 01:57:03 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 1E1CB140EF5; Sat, 17 Jan 2015 01:57:03 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 832F1140EF1;
+        Sat, 17 Jan 2015 01:57:02 +0000 (UTC)
+Date:   Fri, 16 Jan 2015 17:57:01 -0800
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Mike Turquette <mturquette@linaro.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Alex Elder <elder@linaro.org>,
+        Matt Porter <mporter@linaro.org>,
+        Tim Kryger <tim.kryger@linaro.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Bintian Wang <bintian.wang@huawei.com>,
+        Chao Xie <chao.xie@marvell.com>, linux-doc@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH RESEND v8 2/2] clk: Add floor and ceiling constraints to
+ clock rates
+Message-ID: <20150117015701.GB27202@codeaurora.org>
+References: <1421071809-17402-1-git-send-email-tomeu.vizoso@collabora.com>
+ <1421071809-17402-3-git-send-email-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1421071809-17402-3-git-send-email-tomeu.vizoso@collabora.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45238
+X-archive-position: 45240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,84 +70,184 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Manuel Lauss <manuel.lauss@gmail.com> writes:
-> On Fri, Jan 16, 2015 at 9:01 PM, Manuel Lauss <manuel.lauss@gmail.com>
-> wrote:
-> > On Fri, Jan 16, 2015 at 8:12 PM, Matthew Fortune
-> > <Matthew.Fortune@imgtec.com> wrote:
-> >>> On Fri, Jan 16, 2015 at 6:59 PM, Manuel Lauss
-> >>> <manuel.lauss@gmail.com>
-> >>> wrote:
-> >>> > Hi Paul,
-> >>> >
-> >>> > Your patch commit 90cee759f08a6b7a8daab9977d3e163ebbcac220
-> >>> > ("MIPS: ELF: Set FP mode according to .MIPS.abiflags") completely
-> >>> > breaks my pure soft-float o32 userland:
-> >>> >
-> >>> > [...]
-> >>> > Freeing unused kernel memory: 244K (80993000 - 809d0000) Failed to
-> >>> > execute /usr/lib/systemd/systemd (error -84).  Attempting
-> defaults...
-> >>> > Starting init: /sbin/init exists but couldn't execute it (error
-> >>> > -84)
-> >>> > sh: cannot set terminal process group (-1): Inappropriate ioctl
-> >>> > for device
-> >>> > sh: no job control in this shell
-> >>> > sh-4.3# ls
-> >>> > sh: /bin/ls: Accessing a corrupted shared library sh-4.3#
-> >>> >
-> >>> > I've recently rebuilt bash, ncurses, readline and glibc-2.20 (with
-> >>> > binutils 2.25+) to track down another userland issue, so that may
-> >>> > explain why at least sh is able to run.
-> >>>
-> >>> Although ls and all its dependencies have the following soft-float
-> >>> abi
-> >>> tag:
-> >>> Displaying notes found at file offset 0x00000164 with length
-> 0x00000020:
-> >>>   Owner                 Data size       Description
-> >>>   GNU                  0x00000010       NT_GNU_ABI_TAG (ABI version
-> tag)
-> >>>     OS: Linux, ABI: 2.6.32
-> >>> Attribute Section: gnu
-> >>> File Attributes
-> >>>   Tag_GNU_MIPS_ABI_FP: Soft float
-> >>
-> >> Can you provide the output of readelf -hl for 'ls', 'init' and
-> >> whatever is listed as the interpreter for those executables in the
-> >> header output shown
-> >> like:
-> >>
-> >>   INTERP         0x0000000000000238 0x0000000000400238
-> 0x0000000000400238
-> >>                  0x000000000000001c 0x000000000000001c  R      1
-> >>       [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]
-> 
-> 
-> I noticed that /bin/sh does have a .MIPS.abiflags section while systemd
-> and ls do not.  Maybe that's the issue here?
-> 
->  Section to Segment mapping:
->   Segment Sections...
->    00
->    01     .interp
->    02     .MIPS.abiflags
+On 01/12, Tomeu Vizoso wrote:
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 7eddfd8..2793bd7 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -1013,8 +1015,8 @@ static unsigned long clk_core_round_rate_nolock(struct clk_core *clk,
+>  
+>  	if (clk->ops->determine_rate) {
+>  		parent_hw = parent ? parent->hw : NULL;
+> -		return clk->ops->determine_rate(clk->hw, rate, &parent_rate,
+> -						&parent_hw);
+> +		return clk->ops->determine_rate(clk->hw, rate, 0, ULONG_MAX,
+> +						&parent_rate, &parent_hw);
+>  	} else if (clk->ops->round_rate)
+>  		return clk->ops->round_rate(clk->hw, rate, &parent_rate);
+>  	else if (clk->flags & CLK_SET_RATE_PARENT)
+> @@ -1453,8 +1458,20 @@ static struct clk_core *clk_calc_new_rates(struct clk_core *clk,
+>  
+>  	/* find the closest rate and parent clk/rate */
+>  	if (clk->ops->determine_rate) {
+> +		hlist_for_each_entry(clk_user, &clk->clks, child_node) {
+> +			floor_rate = max(floor_rate,
+> +					 clk_user->floor_constraint);
+> +		}
+> +
+> +		hlist_for_each_entry(clk_user, &clk->clks, child_node) {
+> +			ceiling_rate = min(ceiling_rate,
+> +					   clk_user->ceiling_constraint);
+> +		}
 
-It is the ABIFLAGS program header that I am focussed on but the presence of
-a .MIPS.abiflags section is a strong indicator that there will be an
-ABIFLAGS pheader. The key is in the readelf output for the interpreter i.e.
-/lib/ld.so.1. I would expect it has the ABIFLAGS header too given you
-said that you recently rebuilt glibc.
+I would think we need to do this in the clk_round_rate() path as
+well. We can't just pass 0 and ULONG_MAX there or we'll determine
+one rate here and another rate in round_rate(), violating the
+contract between set_rate() and round_rate().
 
-You are right that it is the .MIPS.abiflags patch that is causing your
-trouble. For a long time I had to put a restriction in the ABI plan that
-soft-float binaries without an ABIFLAGS pheader could not be linked against
-soft-float binaries with an ABIFLAGS pheader. We have since found a way to
-relax that restriction without reducing the effectiveness of the new
-compatibility checks. I would need to check the code in the kernel but I 
-suspect that is the issue. Markos has done a significant update to this
-piece of code which he posted earlier today. That updated version should
-allow the combination of soft-float without ABIFLAGS and soft-float with
-ABIFLAGS.
+> +
+>  		parent_hw = parent ? parent->hw : NULL;
+>  		new_rate = clk->ops->determine_rate(clk->hw, rate,
+> +						    floor_rate,
+> +						    ceiling_rate,
+>  						    &best_parent_rate,
+>  						    &parent_hw);
+>  		parent = parent_hw ? parent_hw->core : NULL;
 
-Matthew
+We should enforce a constraint if the clk is using the
+round_rate() op too. If the .round_rate() op returns some rate
+within range it should be ok.  Otherwise we can fail the rate
+change because it's out of range.
+
+We'll also need to introduce some sort of
+clk_core_determine_rate(core, rate, min, max) so that clock
+providers can ask parent clocks to find a rate within some range
+that they can tolerate. If we update __clk_mux_determine_rate()
+we can see how that would work out.
+
+> @@ -1660,13 +1657,92 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+[...]
+> + */
+> +int clk_set_rate(struct clk *clk, unsigned long rate)
+> +{
+> +	return clk_core_set_rate(clk->core, rate);
+
+clk could be NULL.
+
+> +}
+>  EXPORT_SYMBOL_GPL(clk_set_rate);
+>  
+> +int clk_set_rate_range(struct clk *clk, unsigned long min, unsigned long max)
+> +{
+> +	int ret = 0;
+
+Check for NULL clk.
+
+> +
+> +/**
+> + * clk_set_floor_rate - set a minimum clock rate for a clock source
+> + * @clk: clock source
+> + * @rate: desired minimum clock rate in Hz
+> + *
+> + * Returns success (0) or negative errno.
+> + */
+> +int clk_set_floor_rate(struct clk *clk, unsigned long rate)
+> +{
+> +	return clk_set_rate_range(clk, rate, clk->ceiling_constraint);
+
+clk could be NULL.
+
+> +}
+> +EXPORT_SYMBOL_GPL(clk_set_floor_rate);
+> +
+> +/**
+> + * clk_set_ceiling_rate - set a maximum clock rate for a clock source
+> + * @clk: clock source
+> + * @rate: desired maximum clock rate in Hz
+> + *
+> + * Returns success (0) or negative errno.
+> + */
+> +int clk_set_ceiling_rate(struct clk *clk, unsigned long rate)
+> +{
+> +	return clk_set_rate_range(clk, clk->floor_constraint, rate);
+
+clk could be NULL.
+
+> +}
+> +EXPORT_SYMBOL_GPL(clk_set_ceiling_rate);
+> +
+>  static struct clk_core *clk_core_get_parent(struct clk_core *core)
+>  {
+>  	struct clk_core *parent;
+> diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+> index 2e65419..ae5c800 100644
+> --- a/include/linux/clk-provider.h
+> +++ b/include/linux/clk-provider.h
+> @@ -175,9 +175,12 @@ struct clk_ops {
+>  					unsigned long parent_rate);
+>  	long		(*round_rate)(struct clk_hw *hw, unsigned long rate,
+>  					unsigned long *parent_rate);
+> -	long		(*determine_rate)(struct clk_hw *hw, unsigned long rate,
+> -					unsigned long *best_parent_rate,
+> -					struct clk_hw **best_parent_hw);
+> +	long		(*determine_rate)(struct clk_hw *hw,
+> +					  unsigned long rate,
+> +					  unsigned long floor_rate,
+> +					  unsigned long ceiling_rate,
+
+I wonder if we should call this min_rate and max_rate?
+
+> +					  unsigned long *best_parent_rate,
+> +					  struct clk_hw **best_parent_hw);
+>  	int		(*set_parent)(struct clk_hw *hw, u8 index);
+>  	u8		(*get_parent)(struct clk_hw *hw);
+>  	int		(*set_rate)(struct clk_hw *hw, unsigned long rate,
+> diff --git a/include/linux/clk.h b/include/linux/clk.h
+> index c7f258a..f99ae67 100644
+> --- a/include/linux/clk.h
+> +++ b/include/linux/clk.h
+> @@ -302,6 +302,34 @@ long clk_round_rate(struct clk *clk, unsigned long rate);
+>  int clk_set_rate(struct clk *clk, unsigned long rate);
+>  
+>  /**
+> + * clk_set_rate_range - set a rate range for a clock source
+> + * @clk: clock source
+> + * @min: desired minimum clock rate in Hz
+> + * @max: desired maximum clock rate in Hz
+> + *
+> + * Returns success (0) or negative errno.
+> + */
+> +int clk_set_rate_range(struct clk *clk, unsigned long min, unsigned long max);
+> +
+> +/**
+> + * clk_set_floor_rate - set a minimum clock rate for a clock source
+> + * @clk: clock source
+> + * @rate: desired minimum clock rate in Hz
+> + *
+> + * Returns success (0) or negative errno.
+> + */
+> +int clk_set_floor_rate(struct clk *clk, unsigned long rate);
+
+And this called clk_set_max_rate()?
+
+> +
+> +/**
+> + * clk_set_ceiling_rate - set a maximum clock rate for a clock source
+> + * @clk: clock source
+> + * @rate: desired maximum clock rate in Hz
+> + *
+> + * Returns success (0) or negative errno.
+> + */
+> +int clk_set_ceiling_rate(struct clk *clk, unsigned long rate);
+
+And this called clk_set_min_rate()?
+
+> +
+> +/**
+>   * clk_set_parent - set the parent clock source for this clock
+>   * @clk: clock source
+>   * @parent: parent clock source
+
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

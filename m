@@ -1,58 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jan 2015 17:16:18 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62939 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009651AbbAQQQQkdKlr convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Jan 2015 17:16:16 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id BA93A81132253;
-        Sat, 17 Jan 2015 16:16:07 +0000 (GMT)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 17 Jan
- 2015 16:16:10 +0000
-Received: from hhmail02.hh.imgtec.org ([::1]) by hhmail02.hh.imgtec.org
- ([::1]) with mapi id 14.03.0224.002; Sat, 17 Jan 2015 16:16:09 +0000
-From:   Daniel Sanders <Daniel.Sanders@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jan 2015 17:38:40 +0100 (CET)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:38297 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009651AbbAQQii6G6XG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Jan 2015 17:38:38 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 233C45A6F66;
+        Sat, 17 Jan 2015 18:38:29 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id wT0+3CXdSV-A; Sat, 17 Jan 2015 18:38:24 +0200 (EET)
+Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 4CDD35BC003;
+        Sat, 17 Jan 2015 18:38:33 +0200 (EET)
+Date:   Sat, 17 Jan 2015 18:38:32 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>,
         Paul Burton <Paul.Burton@imgtec.com>,
-        "Markos Chandras" <Markos.Chandras@imgtec.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Behan Webster <behanw@converseincode.com>
-Subject: RE: [PATCH] MIPS: Changed current_thread_info() to an equivalent
- supported by both clang and GCC
-Thread-Topic: [PATCH] MIPS: Changed current_thread_info() to an equivalent
- supported by both clang and GCC
-Thread-Index: AQHQLAS56YXs0o1g/UiAxsa46wgpHJy3tI6AgAAQGhCAAEYSAIAAA41AgABocgCAANawYIAJjnGAgAGqCaA=
-Date:   Sat, 17 Jan 2015 16:16:08 +0000
-Message-ID: <E484D272A3A61B4880CDF2E712E9279F4590386C@hhmail02.hh.imgtec.org>
-References: <1420805177-9087-1-git-send-email-daniel.sanders@imgtec.com>
- <54AFC6F3.1020300@cogentembedded.com>
- <E484D272A3A61B4880CDF2E712E9279F458E68B8@hhmail02.hh.imgtec.org>
- <54B00F3C.8030903@gmail.com>
- <E484D272A3A61B4880CDF2E712E9279F458E7DF1@hhmail02.hh.imgtec.org>
- <54B069D4.4090608@gmail.com>
- <E484D272A3A61B4880CDF2E712E9279F458E8336@hhmail02.hh.imgtec.org>
- <20150116143725.GB22296@linux-mips.org>
-In-Reply-To: <20150116143725.GB22296@linux-mips.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.14.109]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: 3.18+: soft-float userland unusable due to .MIPS.abiflags patch
+Message-ID: <20150117163832.GA12420@fuloong-minipc.musicnaut.iki.fi>
+References: <CAOLZvyFP6FX3ydFdU7fmDd7GCnBCAPyLnxkmyjYknXP8Wui0kg@mail.gmail.com>
+ <CAOLZvyGBOqCARmLx+rQ1CEgFw2TZBYYauGOiD9tF31MFsB-peQ@mail.gmail.com>
+ <6D39441BF12EF246A7ABCE6654B0235320FA97DF@LEMAIL01.le.imgtec.org>
+ <CAOLZvyGUGr3ubbzNjoFLCEDk29Fbn4qjoT6xmT=F1OZ4L-YhMA@mail.gmail.com>
+ <CAOLZvyE7nk4r+gcYTkdbfeDWh6c75RRhijuh-XY=AK98LF81LA@mail.gmail.com>
+ <6D39441BF12EF246A7ABCE6654B0235320FA9A04@LEMAIL01.le.imgtec.org>
 MIME-Version: 1.0
-Return-Path: <Daniel.Sanders@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320FA9A04@LEMAIL01.le.imgtec.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45244
+X-archive-position: 45245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Daniel.Sanders@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,36 +54,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> -----Original Message-----
-> From: Ralf Baechle [mailto:ralf@linux-mips.org]
-> Sent: 16 January 2015 14:37
-> To: Daniel Sanders
-> Cc: David Daney; Sergei Shtylyov; linux-mips@linux-mips.org; Paul Burton;
-> Markos Chandras; James Hogan; Behan Webster
-> Subject: Re: [PATCH] MIPS: Changed current_thread_info() to an equivalent
-> supported by both clang and GCC
-> 
-> On Sat, Jan 10, 2015 at 12:53:22PM +0000, Daniel Sanders wrote:
-> 
-> > The main reason I renamed it is that identifiers starting with '__' are
-> reserved. It's pretty unlikely but it's possible that the name will conflict with
-> a C implementation in the future.
-> 
-> The whole kernel is using identifiers starting with a double underscore
-> left and right.  The risk should be acceptable though - also because the
-> kernel isn't linked against external libraries.
+On Fri, Jan 16, 2015 at 08:36:12PM +0000, Matthew Fortune wrote:
+> You are right that it is the .MIPS.abiflags patch that is causing your
+> trouble. For a long time I had to put a restriction in the ABI plan that
+> soft-float binaries without an ABIFLAGS pheader could not be linked against
+> soft-float binaries with an ABIFLAGS pheader. We have since found a way to
+> relax that restriction without reducing the effectiveness of the new
+> compatibility checks. I would need to check the code in the kernel but I 
+> suspect that is the issue. Markos has done a significant update to this
+> piece of code which he posted earlier today. That updated version should
+> allow the combination of soft-float without ABIFLAGS and soft-float with
+> ABIFLAGS.
 
-Makes sense, I won't worry too much about then. Thanks for explaining.
- 
-> The sole reason why _current_thread_info was a local variable is so nobody
-> else can use it - the proper interface to use is current_thread_info().
->
-> Other than that, both the current and the proposed variant aren't really
-> correct for a variable that really is per thread.  So I'm going to just
-> queue this for 3.20.
-> 
-> Thanks!
-> 
->   Ralf
+Are you referring to the series with 70 patches? I think a fix that passes
+stable kernel rules is needed.
 
-Thanks. I'll finish preparing the other clang-related patches for MIPS and will submit them soon.
+A.

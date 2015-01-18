@@ -1,25 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2015 23:43:28 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:33190 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2015 23:43:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30472 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011785AbbARWmkLJHuP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Jan 2015 23:42:40 +0100
+        with ESMTP id S27011786AbbARWmvNoVw6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Jan 2015 23:42:51 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 98DD9106FE840;
-        Sun, 18 Jan 2015 22:42:30 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 7EB5B873D1E0;
+        Sun, 18 Jan 2015 22:42:41 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Sun, 18 Jan 2015 22:42:34 +0000
+ 14.3.195.1; Sun, 18 Jan 2015 22:42:45 +0000
 Received: from localhost (192.168.159.114) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 18 Jan
- 2015 22:42:27 +0000
+ 2015 22:42:39 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCH 31/36] devicetree: document ingenic,jz4780-intc binding
-Date:   Sun, 18 Jan 2015 14:42:25 -0800
-Message-ID: <1421620945-25502-1-git-send-email-paul.burton@imgtec.com>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 32/36] MIPS: jz4740: add jz4780 interrupt controller support
+Date:   Sun, 18 Jan 2015 14:42:36 -0800
+Message-ID: <1421620956-25578-1-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.2.1
 In-Reply-To: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com>
 References: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com>
@@ -30,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45280
+X-archive-position: 45281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,45 +46,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add binding documentation for the Ingenic jz4780 interrupt controller.
+Allow the jz4780 interrupt controller to be probed from devicetree,
+supporting the 64 interrupts it provides.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: devicetree@vger.kernel.org
 ---
- .../interrupt-controller/ingenic,jz4780-intc.txt   | 24 ++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt
+ arch/mips/jz4740/irq.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt
-new file mode 100644
-index 0000000..c6164d9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt
-@@ -0,0 +1,24 @@
-+Ingenic jz4780 SoC Interrupt Controller
+diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
+index 3e53a32..de1c03e 100644
+--- a/arch/mips/jz4740/irq.c
++++ b/arch/mips/jz4740/irq.c
+@@ -137,6 +137,13 @@ static int __init jz4740_intc_of_init(struct device_node *node,
+ }
+ IRQCHIP_DECLARE(jz4740_intc, "ingenic,jz4740-intc", jz4740_intc_of_init);
+ 
++static int __init jz4780_intc_of_init(struct device_node *node,
++	struct device_node *parent)
++{
++	return jz47xx_intc_of_init(node, 2);
++}
++IRQCHIP_DECLARE(jz4780_intc, "ingenic,jz4780-intc", jz4780_intc_of_init);
 +
-+Required properties:
-+
-+- compatible : should be "ingenic,jz4780-intc"
-+- reg : Specifies base physical address and size of the registers.
-+- interrupt-controller : Identifies the node as an interrupt controller
-+- #interrupt-cells : Specifies the number of cells needed to encode an
-+  interrupt source. The value shall be 1.
-+- interrupt-parent: phandle of the CPU interrupt controller.
-+- interrupts - Specifies the CPU interrupt the controller is connected to.
-+
-+Example:
-+
-+intc: intc@10001000 {
-+	compatible = "ingenic,jz4780-intc";
-+	reg = <0x10001000 0x50>;
-+
-+	interrupt-controller;
-+	#interrupt-cells = <1>;
-+
-+	interrupt-parent = <&cpuintc>;
-+	interrupts = <2>;
-+};
+ #ifdef CONFIG_DEBUG_FS
+ 
+ static inline void intc_seq_reg(struct seq_file *s, const char *name,
 -- 
 2.2.1

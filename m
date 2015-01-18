@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2015 23:41:13 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55713 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2015 23:41:29 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35521 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011773AbbARWlBakKLi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Jan 2015 23:41:01 +0100
+        with ESMTP id S27011723AbbARWlMpdAW4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Jan 2015 23:41:12 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id AFD86D0E85089;
-        Sun, 18 Jan 2015 22:40:51 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 3DD22A443CC1D;
+        Sun, 18 Jan 2015 22:41:03 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Sun, 18 Jan 2015 22:40:55 +0000
+ 14.3.195.1; Sun, 18 Jan 2015 22:41:07 +0000
 Received: from localhost (192.168.159.114) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 18 Jan
- 2015 22:40:50 +0000
+ 2015 22:41:01 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 23/36] MIPS: jz4740: define IRQ numbers based on number of intc IRQs
-Date:   Sun, 18 Jan 2015 14:40:46 -0800
-Message-ID: <1421620846-24917-1-git-send-email-paul.burton@imgtec.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH 24/36] devicetree: document ingenic,jz4740-uart binding
+Date:   Sun, 18 Jan 2015 14:40:59 -0800
+Message-ID: <1421620859-24991-1-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.2.1
 In-Reply-To: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com>
 References: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com>
@@ -29,7 +30,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45272
+X-archive-position: 45273
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,47 +47,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For interrupts numbered after those of the interrupt controller, define
-their numbers based upon the number of interrupts provided by the SoC
-interrupt controller. This is in preparation for supporting later jz47xx
-series SoCs which provide more interrupts.
+Add binding documentation for Ingenic jz4740 UARTs.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: devicetree@vger.kernel.org
 ---
- arch/mips/include/asm/mach-jz4740/irq.h | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ .../bindings/serial/ingenic,jz4740-uart.txt        | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/serial/ingenic,jz4740-uart.txt
 
-diff --git a/arch/mips/include/asm/mach-jz4740/irq.h b/arch/mips/include/asm/mach-jz4740/irq.h
-index df50736..b218f76 100644
---- a/arch/mips/include/asm/mach-jz4740/irq.h
-+++ b/arch/mips/include/asm/mach-jz4740/irq.h
-@@ -19,6 +19,10 @@
- #define MIPS_CPU_IRQ_BASE 0
- #define JZ4740_IRQ_BASE 8
- 
-+#ifdef CONFIG_MACH_JZ4740
-+# define NR_INTC_IRQS	32
-+#endif
+diff --git a/Documentation/devicetree/bindings/serial/ingenic,jz4740-uart.txt b/Documentation/devicetree/bindings/serial/ingenic,jz4740-uart.txt
+new file mode 100644
+index 0000000..cdb21d4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/serial/ingenic,jz4740-uart.txt
+@@ -0,0 +1,22 @@
++* Ingenic jz4740 UART
 +
- /* 1st-level interrupts */
- #define JZ4740_IRQ(x)		(JZ4740_IRQ_BASE + (x))
- #define JZ4740_IRQ_I2C		JZ4740_IRQ(1)
-@@ -45,12 +49,12 @@
- #define JZ4740_IRQ_LCD		JZ4740_IRQ(30)
- 
- /* 2nd-level interrupts */
--#define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(32) + (x))
-+#define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(NR_INTC_IRQS) + (x))
- 
- #define JZ4740_IRQ_INTC_GPIO(x) (JZ4740_IRQ_GPIO0 - (x))
--#define JZ4740_IRQ_GPIO(x)	(JZ4740_IRQ(48) + (x))
-+#define JZ4740_IRQ_GPIO(x)	(JZ4740_IRQ(NR_INTC_IRQS + 16) + (x))
- 
--#define JZ4740_IRQ_ADC_BASE	JZ4740_IRQ(176)
-+#define JZ4740_IRQ_ADC_BASE	JZ4740_IRQ(NR_INTC_IRQS + 144)
- 
- #define NR_IRQS (JZ4740_IRQ_ADC_BASE + 6)
- 
++Required properties:
++- compatible : "ingenic,jz4740-uart"
++- reg : offset and length of the register set for the device.
++- interrupts : should contain uart interrupt.
++- clocks : phandles to the module & baud clocks.
++- clock-names: tuple listing input clock names.
++	Required elements: "baud", "module"
++
++Example:
++
++uart0: serial@10030000 {
++	compatible = "ingenic,jz4740-uart";
++	reg = <0x10030000 0x100>;
++
++	interrupt-parent = <&intc>;
++	interrupts = <9>;
++
++	clocks = <&ext>, <&cgu JZ4740_CLK_UART0>;
++	clock-names = "baud", "module";
++};
 -- 
 2.2.1

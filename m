@@ -1,43 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 02:25:45 +0100 (CET)
-Received: from resqmta-po-09v.sys.comcast.net ([96.114.154.168]:53495 "EHLO
-        resqmta-po-09v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011757AbbASBZab6mjp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 02:25:30 +0100
-Received: from resomta-po-17v.sys.comcast.net ([96.114.154.241])
-        by resqmta-po-09v.sys.comcast.net with comcast
-        id hdRQ1p0015Clt1L01dRQQ8; Mon, 19 Jan 2015 01:25:24 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 02:30:58 +0100 (CET)
+Received: from resqmta-ch2-11v.sys.comcast.net ([69.252.207.43]:52649 "EHLO
+        resqmta-ch2-11v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011100AbbASBayelLzY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 02:30:54 +0100
+Received: from resomta-ch2-03v.sys.comcast.net ([69.252.207.99])
+        by resqmta-ch2-11v.sys.comcast.net with comcast
+        id hdWc1p00129Cfhx01dWmd5; Mon, 19 Jan 2015 01:30:46 +0000
 Received: from [192.168.1.13] ([73.212.71.42])
-        by resomta-po-17v.sys.comcast.net with comcast
-        id hdRP1p0020uk1nt01dRPbJ; Mon, 19 Jan 2015 01:25:24 +0000
-Message-ID: <54BC5D01.3090309@gentoo.org>
-Date:   Sun, 18 Jan 2015 20:25:21 -0500
+        by resomta-ch2-03v.sys.comcast.net with comcast
+        id hdWl1p0070uk1nt01dWl52; Mon, 19 Jan 2015 01:30:46 +0000
+Message-ID: <54BC5E43.8060606@gentoo.org>
+Date:   Sun, 18 Jan 2015 20:30:43 -0500
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Alessandro Zummo <a.zummo@towertech.it>
-CC:     Linux MIPS List <linux-mips@linux-mips.org>,
-        rtc-linux@googlegroups.com, LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH 02/02 resend #2] MIPS: IP32: Add platform data hooks to use
- DS1685 driver
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Add R16000 detection
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1421630724;
-        bh=xcTHmi8gFKGH+4z1H1ro+ZgJ+JBItOvv+KfQIR2Fwg8=;
+        s=q20140121; t=1421631046;
+        bh=oZ7nQiyvxXRI2Zojd7usSoStmVaZMBNFwlaBEjeW0w8=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=D78qnK5j0+ZiIJj4efmi94rxayFNBKKFdpTPtNPUUnMET4y56VaBFFgHBsvu9umb7
-         VzjdH+SnPFv4ZqMOycVBOhU2IZ1vnrXCxqVqdt66l6gHrcTJ3HYhKTvHpfD2DQ2Z5X
-         oNz3wrw9Elv7za4q1BpEOlc0wPOJSxjyTR7DqQkpMto1NhCISeLeopl2SUoJ8VLqW/
-         b13xNkcPT8P+KEnB9P/Kj/D8bzhpQAbN4TmzeiHtT/icqn9WkWkX/w048vBPMhZwUf
-         OKDFaJTJndahMdH50t2UsMySSMA94NXVTqzlIY4uaee6KF17gcjzKBjYw3DwE7zIaF
-         oMRq1Yrj8Oymw==
+        b=OLeqUDiNvr+RIgyWEmgmMdJ4Q7T2y7q1QBXtFf6yRw+fe+5ZXJCJUPAsjg297O6WW
+         ZPleDl2rU4zDA42I8qzo7xOftQd76Qun4ZefJ1dUqgx2hOnQOYVxeFoAkIsFS78yAO
+         5cbSxVr3KGNSYr2Sj50NILNgKEdg/A4GL6qEI65OtGuz8UoaxagQqB3fPflYYhdR8r
+         urjwfo03SMTiRyiQhbN0bbeWKy6ODcBsIziCmid15WZC6kR7Ikb/cLju1nYffK/q56
+         UIg/jw+ZVV9zk+Ec/wUe4+eHSd+hCY/cTrJDn5sTs2i2XZXA8G6PuDU/OYTF0s+zem
+         F2hpCVVXo3fZg==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45287
+X-archive-position: 45288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,358 +53,188 @@ X-list: linux-mips
 
 From: Joshua Kinard <kumba@gentoo.org>
 
-This modifies the IP32 (SGI O2) platform and reset code to utilize the new
-rtc-ds1685 driver.  The old mc146818rtc.h header is removed and ip32_defconfig
-is updated as well.
+This allows the kernel to correctly detect an R16000 MIPS CPU on systems that
+have those.  Otherwise, such systems will detect the CPU as an R14000, due to
+similarities in the CPU PRId value.
 
 Signed-off-by: Joshua Kinard <kumba@gentoo.org>
 ---
- arch/mips/configs/ip32_defconfig              |    3
- arch/mips/include/asm/mach-ip32/mc146818rtc.h |   36 ----
- arch/mips/sgi-ip32/ip32-platform.c            |   52 +++++-
- arch/mips/sgi-ip32/ip32-reset.c               |  132 ++++------------
- 4 files changed, 85 insertions(+), 138 deletions(-)
+ arch/mips/include/asm/cpu-type.h     |    1 +
+ arch/mips/include/asm/cpu.h          |    6 +++---
+ arch/mips/kernel/cpu-probe.c         |    9 +++++++--
+ arch/mips/kernel/perf_event_mipsxx.c |    1 +
+ arch/mips/mm/c-r4k.c                 |    4 ++++
+ arch/mips/mm/page.c                  |    1 +
+ arch/mips/mm/tlb-r4k.c               |    3 ++-
+ arch/mips/mm/tlbex.c                 |    1 +
+ arch/mips/oprofile/common.c          |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c |    1 +
+ 10 files changed, 22 insertions(+), 6 deletions(-)
 
-Ralf,
-
-  Similar to Maciej's DEC/RTC patches from a few months ago, this patch
-requires the rtc-ds1685 driver be added upstream first before this can go into
-into the LMO tree.  If you can queue this someplace until that makes it in,
-that would be great.  Thanks!
-
-linux-mips-ip32-use-rtc-ds1685.patch
-diff --git a/arch/mips/configs/ip32_defconfig b/arch/mips/configs/ip32_defconfig
-index 70ffe9b..fe48220 100644
---- a/arch/mips/configs/ip32_defconfig
-+++ b/arch/mips/configs/ip32_defconfig
-@@ -105,7 +105,8 @@ CONFIG_RTC_CLASS=y
- # CONFIG_RTC_HCTOSYS is not set
- # CONFIG_RTC_INTF_SYSFS is not set
- # CONFIG_RTC_INTF_PROC is not set
--CONFIG_RTC_DRV_CMOS=y
-+CONFIG_RTC_DRV_DS1685_FAMILY=y
-+CONFIG_RTC_DRV_DS1685=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT2_FS_XATTR=y
- CONFIG_EXT2_FS_POSIX_ACL=y
-diff --git a/arch/mips/include/asm/mach-ip32/mc146818rtc.h b/arch/mips/include/asm/mach-ip32/mc146818rtc.h
-deleted file mode 100644
-index 6b6bab4..0000000
---- a/arch/mips/include/asm/mach-ip32/mc146818rtc.h
-+++ /dev/null
-@@ -1,36 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1998, 2001, 03 by Ralf Baechle
-- * Copyright (C) 2000 Harald Koerfgen
-- *
-- * RTC routines for IP32 style attached Dallas chip.
-- */
--#ifndef __ASM_MACH_IP32_MC146818RTC_H
--#define __ASM_MACH_IP32_MC146818RTC_H
--
--#include <asm/ip32/mace.h>
--
--#define RTC_PORT(x)	(0x70 + (x))
--
--static unsigned char CMOS_READ(unsigned long addr)
--{
--	return mace->isa.rtc[addr << 8];
--}
--
--static inline void CMOS_WRITE(unsigned char data, unsigned long addr)
--{
--	mace->isa.rtc[addr << 8] = data;
--}
--
--/*
-- * FIXME: Do it right. For now just assume that no one lives in 20th century
-- * and no O2 user in 22th century ;-)
-- */
--#define mc146818_decode_year(year) ((year) + 2000)
--
--#define RTC_ALWAYS_BCD	0
--
--#endif /* __ASM_MACH_IP32_MC146818RTC_H */
-diff --git a/arch/mips/sgi-ip32/ip32-platform.c b/arch/mips/sgi-ip32/ip32-platform.c
-index 511e9ff..ec9eb7f 100644
---- a/arch/mips/sgi-ip32/ip32-platform.c
-+++ b/arch/mips/sgi-ip32/ip32-platform.c
-@@ -9,10 +9,13 @@
- #include <linux/init.h>
- #include <linux/platform_device.h>
- #include <linux/serial_8250.h>
-+#include <linux/rtc/ds1685.h>
+linux-mips-add-r16000-detection.patch
+diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
+index b4e2bd8..d85fc26 100644
+--- a/arch/mips/include/asm/cpu-type.h
++++ b/arch/mips/include/asm/cpu-type.h
+@@ -150,6 +150,7 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ #endif
+ #ifdef CONFIG_SYS_HAS_CPU_RM7000
+ 	case CPU_RM7000:
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 33866fc..53acfce 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -67,7 +67,7 @@
+ #define PRID_IMP_R4300		0x0b00
+ #define PRID_IMP_VR41XX		0x0c00
+ #define PRID_IMP_R12000		0x0e00
+-#define PRID_IMP_R14000		0x0f00
++#define PRID_IMP_R14000		0x0f00		/* R14K && R16K */
+ #define PRID_IMP_R8000		0x1000
+ #define PRID_IMP_PR4450		0x1200
+ #define PRID_IMP_R4600		0x2000
+@@ -283,8 +283,8 @@ enum cpu_type_enum {
+ 	CPU_R4000PC, CPU_R4000SC, CPU_R4000MC, CPU_R4200, CPU_R4300, CPU_R4310,
+ 	CPU_R4400PC, CPU_R4400SC, CPU_R4400MC, CPU_R4600, CPU_R4640, CPU_R4650,
+ 	CPU_R4700, CPU_R5000, CPU_R5500, CPU_NEVADA, CPU_R5432, CPU_R10000,
+-	CPU_R12000, CPU_R14000, CPU_VR41XX, CPU_VR4111, CPU_VR4121, CPU_VR4122,
+-	CPU_VR4131, CPU_VR4133, CPU_VR4181, CPU_VR4181A, CPU_RM7000,
++	CPU_R12000, CPU_R14000, CPU_R16000, CPU_VR41XX, CPU_VR4111, CPU_VR4121,
++	CPU_VR4122, CPU_VR4131, CPU_VR4133, CPU_VR4181, CPU_VR4181A, CPU_RM7000,
+ 	CPU_SR71000, CPU_TX49XX,
  
- #include <asm/ip32/mace.h>
- #include <asm/ip32/ip32_ints.h>
+ 	/*
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 5342674..3f334a8 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -833,8 +833,13 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->tlbsize = 64;
+ 		break;
+ 	case PRID_IMP_R14000:
+-		c->cputype = CPU_R14000;
+-		__cpu_name[cpu] = "R14000";
++		if (((c->processor_id >> 4) & 0x0f) > 2) {
++			c->cputype = CPU_R16000;
++			__cpu_name[cpu] = "R16000";
++		} else {
++			c->cputype = CPU_R14000;
++			__cpu_name[cpu] = "R14000";
++		}
+ 		set_isa(c, MIPS_CPU_ISA_IV);
+ 		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE | MIPS_CPU_4KEX |
+ 			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 9466184..05dac89 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -775,6 +775,7 @@ static int n_counters(void)
  
-+extern void ip32_prepare_poweroff(void);
-+
- #define MACEISA_SERIAL1_OFFS   offsetof(struct sgi_mace, isa.serial1)
- #define MACEISA_SERIAL2_OFFS   offsetof(struct sgi_mace, isa.serial2)
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 		counters = 4;
+ 		break;
  
-@@ -90,22 +93,53 @@ static __init int sgio2btns_devinit(void)
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index dd261df..76a7eae 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -430,6 +430,7 @@ static inline void local_r4k___flush_cache_all(void * args)
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 		/*
+ 		 * These caches are inclusive caches, that is, if something
+ 		 * is not cached in the S-cache, we know it also won't be
+@@ -1012,6 +1013,7 @@ static void probe_pcache(void)
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 		icache_size = 1 << (12 + ((config & R10K_CONF_IC) >> 29));
+ 		c->icache.linesz = 64;
+ 		c->icache.ways = 2;
+@@ -1240,6 +1242,7 @@ static void probe_pcache(void)
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 		break;
  
- device_initcall(sgio2btns_devinit);
+ 	case CPU_74K:
+@@ -1437,6 +1440,7 @@ static void setup_scache(void)
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 		scache_size = 0x80000 << ((config & R10K_CONF_SS) >> 16);
+ 		c->scache.linesz = 64 << ((config >> 13) & 1);
+ 		c->scache.ways = 2;
+diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+index b611102..6da7fc3 100644
+--- a/arch/mips/mm/page.c
++++ b/arch/mips/mm/page.c
+@@ -143,6 +143,7 @@ static void set_prefetch_parameters(void)
+ 		case CPU_R10000:
+ 		case CPU_R12000:
+ 		case CPU_R14000:
++		case CPU_R16000:
+ 			/*
+ 			 * Those values have been experimentally tuned for an
+ 			 * Origin 200.
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index e90b2e8..2a78321 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -477,7 +477,8 @@ static void r4k_tlb_configure(void)
+ 	write_c0_wired(0);
+ 	if (current_cpu_type() == CPU_R10000 ||
+ 	    current_cpu_type() == CPU_R12000 ||
+-	    current_cpu_type() == CPU_R14000)
++	    current_cpu_type() == CPU_R14000 ||
++	    current_cpu_type() == CPU_R16000)
+ 		write_c0_framemask(0);
  
--static struct resource sgio2_cmos_rsrc[] = {
-+#define MACE_RTC_RES_START (MACE_BASE + offsetof(struct sgi_mace, isa.rtc))
-+#define MACE_RTC_RES_END (MACE_RTC_RES_START + 32767)
-+
-+static struct resource ip32_rtc_resources[] = {
- 	{
--		.start = 0x70,
--		.end   = 0x71,
--		.flags = IORESOURCE_IO
-+		.start	= MACEISA_RTC_IRQ,
-+		.end	= MACEISA_RTC_IRQ,
-+		.flags	= IORESOURCE_IRQ
-+	}, {
-+		.start	= MACE_RTC_RES_START,
-+		.end	= MACE_RTC_RES_END,
-+		.flags	= IORESOURCE_MEM,
- 	}
- };
+ 	if (cpu_has_rixi) {
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 3978a3d..3f9ae67 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -568,6 +568,7 @@ static void build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 	case CPU_4KC:
+ 	case CPU_4KEC:
+ 	case CPU_M14KC:
+diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+index a26cbe3..81f5895 100644
+--- a/arch/mips/oprofile/common.c
++++ b/arch/mips/oprofile/common.c
+@@ -98,6 +98,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 	case CPU_XLR:
+ 		lmodel = &op_model_mipsxx_ops;
+ 		break;
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 01f721a..c79ebff 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -296,6 +296,7 @@ static inline int n_counters(void)
  
--static __init int sgio2_cmos_devinit(void)
-+
-+/* RTC registers on IP32 are each padded by 256 bytes (0x100). */
-+static struct ds1685_rtc_platform_data
-+ip32_rtc_platform_data[] = {
-+	{
-+		.regstep = 0x100,
-+		.bcd_mode = true,
-+		.no_irq = false,
-+		.uie_unsupported = false,
-+		.alloc_io_resources = true,
-+		.plat_prepare_poweroff = ip32_prepare_poweroff,
-+	},
-+};
-+
-+struct platform_device ip32_rtc_device = {
-+	.name			= "rtc-ds1685",
-+	.id			= -1,
-+	.dev			= {
-+		.platform_data	= ip32_rtc_platform_data,
-+	},
-+	.num_resources		= ARRAY_SIZE(ip32_rtc_resources),
-+	.resource		= ip32_rtc_resources,
-+};
-+
-+static int __init sgio2_rtc_devinit(void)
- {
--	return IS_ERR(platform_device_register_simple("rtc_cmos", -1,
--						      sgio2_cmos_rsrc, 1));
-+	return platform_device_register(&ip32_rtc_device);
-+
- }
- 
--device_initcall(sgio2_cmos_devinit);
-+device_initcall(sgio2_rtc_devinit);
- 
- MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
- MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("8250 UART probe driver for SGI IP32 aka O2");
-+MODULE_DESCRIPTION("IP32 platform setup for SGI IP32 aka O2");
-diff --git a/arch/mips/sgi-ip32/ip32-reset.c b/arch/mips/sgi-ip32/ip32-reset.c
-index 1f823da..5e12921 100644
---- a/arch/mips/sgi-ip32/ip32-reset.c
-+++ b/arch/mips/sgi-ip32/ip32-reset.c
-@@ -10,10 +10,11 @@
- 
- #include <linux/init.h>
- #include <linux/kernel.h>
-+#include <linux/module.h>
- #include <linux/sched.h>
- #include <linux/notifier.h>
- #include <linux/delay.h>
--#include <linux/ds17287rtc.h>
-+#include <linux/rtc/ds1685.h>
- #include <linux/interrupt.h>
- #include <linux/pm.h>
- 
-@@ -32,53 +33,41 @@
- #define POWERDOWN_FREQ		(HZ / 4)
- #define PANIC_FREQ		(HZ / 8)
- 
--static struct timer_list power_timer, blink_timer, debounce_timer;
--static int has_panicked, shuting_down;
-+extern struct platform_device ip32_rtc_device;
- 
--static void ip32_machine_restart(char *command) __attribute__((noreturn));
--static void ip32_machine_halt(void) __attribute__((noreturn));
--static void ip32_machine_power_off(void) __attribute__((noreturn));
-+static struct timer_list power_timer, blink_timer;
-+static int has_panicked, shutting_down;
- 
--static void ip32_machine_restart(char *cmd)
-+static __noreturn void ip32_poweroff(void *data)
- {
--	crime->control = CRIME_CONTROL_HARD_RESET;
--	while (1);
--}
-+	void (*poweroff_func)(struct platform_device *) =
-+		symbol_get(ds1685_rtc_poweroff);
-+
-+#ifdef CONFIG_MODULES
-+	/* If the first __symbol_get failed, our module wasn't loaded. */
-+	if (!poweroff_func) {
-+		request_module("rtc-ds1685");
-+		poweroff_func = symbol_get(ds1685_rtc_poweroff);
-+	}
-+#endif
- 
--static inline void ip32_machine_halt(void)
--{
--	ip32_machine_power_off();
--}
-+	if (!poweroff_func)
-+		pr_emerg("RTC not available for power-off.  Spinning forever ...\n");
-+	else {
-+		(*poweroff_func)((struct platform_device *)data);
-+		symbol_put(ds1685_rtc_poweroff);
-+	}
- 
--static void ip32_machine_power_off(void)
--{
--	unsigned char reg_a, xctrl_a, xctrl_b;
--
--	disable_irq(MACEISA_RTC_IRQ);
--	reg_a = CMOS_READ(RTC_REG_A);
--
--	/* setup for kickstart & wake-up (DS12287 Ref. Man. p. 19) */
--	reg_a &= ~DS_REGA_DV2;
--	reg_a |= DS_REGA_DV1;
--
--	CMOS_WRITE(reg_a | DS_REGA_DV0, RTC_REG_A);
--	wbflush();
--	xctrl_b = CMOS_READ(DS_B1_XCTRL4B)
--		   | DS_XCTRL4B_ABE | DS_XCTRL4B_KFE;
--	CMOS_WRITE(xctrl_b, DS_B1_XCTRL4B);
--	xctrl_a = CMOS_READ(DS_B1_XCTRL4A) & ~DS_XCTRL4A_IFS;
--	CMOS_WRITE(xctrl_a, DS_B1_XCTRL4A);
--	wbflush();
--	/* adios amigos... */
--	CMOS_WRITE(xctrl_a | DS_XCTRL4A_PAB, DS_B1_XCTRL4A);
--	CMOS_WRITE(reg_a, RTC_REG_A);
--	wbflush();
--	while (1);
-+	unreachable();
- }
- 
--static void power_timeout(unsigned long data)
-+
-+static void ip32_machine_restart(char *cmd) __noreturn;
-+static void ip32_machine_restart(char *cmd)
- {
--	ip32_machine_power_off();
-+	msleep(20);
-+	crime->control = CRIME_CONTROL_HARD_RESET;
-+	unreachable();
- }
- 
- static void blink_timeout(unsigned long data)
-@@ -88,44 +77,27 @@ static void blink_timeout(unsigned long data)
- 	mod_timer(&blink_timer, jiffies + data);
- }
- 
--static void debounce(unsigned long data)
-+static void ip32_machine_halt(void)
- {
--	unsigned char reg_a, reg_c, xctrl_a;
--
--	reg_c = CMOS_READ(RTC_INTR_FLAGS);
--	reg_a = CMOS_READ(RTC_REG_A);
--	CMOS_WRITE(reg_a | DS_REGA_DV0, RTC_REG_A);
--	wbflush();
--	xctrl_a = CMOS_READ(DS_B1_XCTRL4A);
--	if ((xctrl_a & DS_XCTRL4A_IFS) || (reg_c & RTC_IRQF )) {
--		/* Interrupt still being sent. */
--		debounce_timer.expires = jiffies + 50;
--		add_timer(&debounce_timer);
--
--		/* clear interrupt source */
--		CMOS_WRITE(xctrl_a & ~DS_XCTRL4A_IFS, DS_B1_XCTRL4A);
--		CMOS_WRITE(reg_a & ~DS_REGA_DV0, RTC_REG_A);
--		return;
--	}
--	CMOS_WRITE(reg_a & ~DS_REGA_DV0, RTC_REG_A);
--
--	if (has_panicked)
--		ip32_machine_restart(NULL);
-+	ip32_poweroff(&ip32_rtc_device);
-+}
- 
--	enable_irq(MACEISA_RTC_IRQ);
-+static void power_timeout(unsigned long data)
-+{
-+	ip32_poweroff(&ip32_rtc_device);
- }
- 
--static inline void ip32_power_button(void)
-+void ip32_prepare_poweroff(void)
- {
- 	if (has_panicked)
- 		return;
- 
--	if (shuting_down || kill_cad_pid(SIGINT, 1)) {
-+	if (shutting_down || kill_cad_pid(SIGINT, 1)) {
- 		/* No init process or button pressed twice.  */
--		ip32_machine_power_off();
-+		ip32_poweroff(&ip32_rtc_device);
- 	}
- 
--	shuting_down = 1;
-+	shutting_down = 1;
- 	blink_timer.data = POWERDOWN_FREQ;
- 	blink_timeout(POWERDOWN_FREQ);
- 
-@@ -135,27 +107,6 @@ static inline void ip32_power_button(void)
- 	add_timer(&power_timer);
- }
- 
--static irqreturn_t ip32_rtc_int(int irq, void *dev_id)
--{
--	unsigned char reg_c;
--
--	reg_c = CMOS_READ(RTC_INTR_FLAGS);
--	if (!(reg_c & RTC_IRQF)) {
--		printk(KERN_WARNING
--			"%s: RTC IRQ without RTC_IRQF\n", __func__);
--	}
--	/* Wait until interrupt goes away */
--	disable_irq_nosync(MACEISA_RTC_IRQ);
--	init_timer(&debounce_timer);
--	debounce_timer.function = debounce;
--	debounce_timer.expires = jiffies + 50;
--	add_timer(&debounce_timer);
--
--	printk(KERN_DEBUG "Power button pressed\n");
--	ip32_power_button();
--	return IRQ_HANDLED;
--}
--
- static int panic_event(struct notifier_block *this, unsigned long event,
- 		       void *ptr)
- {
-@@ -189,15 +140,12 @@ static __init int ip32_reboot_setup(void)
- 
- 	_machine_restart = ip32_machine_restart;
- 	_machine_halt = ip32_machine_halt;
--	pm_power_off = ip32_machine_power_off;
-+	pm_power_off = ip32_machine_halt;
- 
- 	init_timer(&blink_timer);
- 	blink_timer.function = blink_timeout;
- 	atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
- 
--	if (request_irq(MACEISA_RTC_IRQ, ip32_rtc_int, 0, "rtc", NULL))
--		panic("Can't allocate MACEISA RTC IRQ");
--
- 	return 0;
- }
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_R16000:
+ 		counters = 4;
+ 		break;
  

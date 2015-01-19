@@ -1,34 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 06:31:46 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:22428 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 06:36:59 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15256 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008709AbbASFbofMdM3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 06:31:44 +0100
+        with ESMTP id S27008709AbbASFg5YdfmU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 06:36:57 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CC7B8733627F5;
-        Mon, 19 Jan 2015 05:31:36 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id C6E45CC62D0F4;
+        Mon, 19 Jan 2015 05:36:49 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 19 Jan 2015 05:31:38 +0000
+ 14.3.195.1; Mon, 19 Jan 2015 05:36:51 +0000
 Received: from localhost (192.168.159.114) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 19 Jan
- 2015 05:31:35 +0000
+ 2015 05:36:49 +0000
+Date:   Sun, 18 Jan 2015 21:36:47 -0800
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>
-Subject: [PATCH] MIPS: bypass FP mode checks when CONFIG_MIPS_O32_FP64_SUPPORT==n
-Date:   Sun, 18 Jan 2015 21:31:16 -0800
-Message-ID: <1421645476-13532-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.2.1
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+CC:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: 3.18+: soft-float userland unusable due to .MIPS.abiflags patch
+Message-ID: <20150119053647.GV28594@NP-P-BURTON>
+References: <CAOLZvyFP6FX3ydFdU7fmDd7GCnBCAPyLnxkmyjYknXP8Wui0kg@mail.gmail.com>
+ <CAOLZvyGBOqCARmLx+rQ1CEgFw2TZBYYauGOiD9tF31MFsB-peQ@mail.gmail.com>
+ <6D39441BF12EF246A7ABCE6654B0235320FA97DF@LEMAIL01.le.imgtec.org>
+ <CAOLZvyGUGr3ubbzNjoFLCEDk29Fbn4qjoT6xmT=F1OZ4L-YhMA@mail.gmail.com>
+ <CAOLZvyE7nk4r+gcYTkdbfeDWh6c75RRhijuh-XY=AK98LF81LA@mail.gmail.com>
+ <6D39441BF12EF246A7ABCE6654B0235320FA9A04@LEMAIL01.le.imgtec.org>
+ <20150117163832.GA12420@fuloong-minipc.musicnaut.iki.fi>
+ <6D39441BF12EF246A7ABCE6654B0235320FAA1B6@LEMAIL01.le.imgtec.org>
+ <CAOLZvyEvXuTYhCgO6=XZCUv5_apqVaz44WswPesSSS3fvoALaw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <CAOLZvyEvXuTYhCgO6=XZCUv5_apqVaz44WswPesSSS3fvoALaw@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Originating-IP: [192.168.159.114]
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45289
+X-archive-position: 45290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,47 +57,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The FP mode checks introduced to support the FP modes indicated by the
-new PT_MIPS_ABIFLAGS program header & .MIPS.abiflags section have been
-found to cause some compatibility issues when mixing binaries with such
-mode information & an ELF interpreter without it, or vice-versa[1]. The
-mode checks serve little purpose unless the kernel actually supports the
-FP64 modes as indicated by CONFIG_MIPS_O32_FP64_SUPPORT, which currently
-defaults to disabled & is marked experimental. Bypass the mode checks
-when the FP64 support is disabled in order to avoid compatibility issues
-with v3.19 until the logic is fixed.
+On Sun, Jan 18, 2015 at 11:35:31AM +0100, Manuel Lauss wrote:
+> On Sat, Jan 17, 2015 at 8:00 PM, Matthew Fortune
+> <Matthew.Fortune@imgtec.com> wrote:
+> > Aaro Koskinen <aaro.koskinen@iki.fi> writes:
+> >> On Fri, Jan 16, 2015 at 08:36:12PM +0000, Matthew Fortune wrote:
+> >> > You are right that it is the .MIPS.abiflags patch that is causing your
+> >> > trouble. For a long time I had to put a restriction in the ABI plan
+> >> > that soft-float binaries without an ABIFLAGS pheader could not be
+> >> > linked against soft-float binaries with an ABIFLAGS pheader. We have
+> >> > since found a way to relax that restriction without reducing the
+> >> > effectiveness of the new compatibility checks. I would need to check
+> >> > the code in the kernel but I suspect that is the issue. Markos has
+> >> > done a significant update to this piece of code which he posted
+> >> > earlier today. That updated version should allow the combination of
+> >> > soft-float without ABIFLAGS and soft-float with ABIFLAGS.
+> >>
+> >> Are you referring to the series with 70 patches? I think a fix that
+> >> passes stable kernel rules is needed.
+> >
+> > Yes it was just one patch though for this issue:
+> > [PATCH RFC v2 68/70] MIPS: kernel: elf: Improve the overall ABI and FPU
+> > mode checks
+> >
+> > I wasn't trying to suggest how to fix the existing code just explaining
+> > how it came to be and what has been done about it for next release.
+> > (I'm not a kernel developer I'm just interested as I did most of the
+> > design work for the new ABI extensions.)
+> >
+> > I guess there are three options:
+> > a) revert the patch - That would remove the new ABI safety measures from
+> >    3.19 which is a shame given it has MSA support in it (I think anyway).
+> >    equally given that the new prctl FPU mode options did not make 3.19
+> >    then I suppose it doesn't lose too much either as the two features
+> >    go hand in hand to some extent.
+> 
+> I favor this one.  I don't know how many systems with MSA are in the wild,
+> and if there are any, I'm sure they're using some mti/imgtec-supplied kernel
+> anyway.  Another thing I noticed last time is that companies shipping MIPS
+> products rarely upgrade their toolchains, so I'm sure the ABI safety measures
+> can wait for another release, but then function with all configurations
+> in the wild.
+> 
+> Manuel
 
-[1]: http://www.linux-mips.org/archives/linux-mips/2015-01/msg00279.html
+An alternative would be the patch I just submitted, which makes the mode
+checks conditional upon CONFIG_MIPS_O32_FP64_SUPPORT:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Manuel Lauss <manuel.lauss@gmail.com>
-Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
----
-Ralf: if people agree with this approach, it would be great to get this
-      in for v3.19.
----
- arch/mips/kernel/elf.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+  http://marc.info/?l=linux-mips&m=142164553017027&w=2
 
-diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
-index c92b15d..bb73c7c 100644
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -68,6 +68,15 @@ int arch_check_elf(void *_ehdr, bool has_interpreter,
- 	struct elfhdr *ehdr = _ehdr;
- 	unsigned fp_abi, interp_fp_abi, abi0, abi1;
- 
-+	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT)) {
-+		/*
-+		 * Temporarily bypass this logic when the o32 FP64 support is
-+		 * not enabled, until all compatibility issues are resolved.
-+		 */
-+		state->overall_abi = MIPS_ABI_FP_DOUBLE;
-+		return 0;
-+	}
-+
- 	/* Ignore non-O32 binaries */
- 	if (config_enabled(CONFIG_64BIT) &&
- 	    (ehdr->e_ident[EI_CLASS] != ELFCLASS32))
--- 
-2.2.1
+Assuming this fixes your problem, and I believe it should, it would
+avoid the churn of reverting the patch & readding the modified logic
+again later.
+
+Thanks,
+    Paul

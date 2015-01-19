@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 06:36:59 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15256 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008709AbbASFg5YdfmU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 06:36:57 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C6E45CC62D0F4;
-        Mon, 19 Jan 2015 05:36:49 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 19 Jan 2015 05:36:51 +0000
-Received: from localhost (192.168.159.114) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 19 Jan
- 2015 05:36:49 +0000
-Date:   Sun, 18 Jan 2015 21:36:47 -0800
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-CC:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: 3.18+: soft-float userland unusable due to .MIPS.abiflags patch
-Message-ID: <20150119053647.GV28594@NP-P-BURTON>
-References: <CAOLZvyFP6FX3ydFdU7fmDd7GCnBCAPyLnxkmyjYknXP8Wui0kg@mail.gmail.com>
- <CAOLZvyGBOqCARmLx+rQ1CEgFw2TZBYYauGOiD9tF31MFsB-peQ@mail.gmail.com>
- <6D39441BF12EF246A7ABCE6654B0235320FA97DF@LEMAIL01.le.imgtec.org>
- <CAOLZvyGUGr3ubbzNjoFLCEDk29Fbn4qjoT6xmT=F1OZ4L-YhMA@mail.gmail.com>
- <CAOLZvyE7nk4r+gcYTkdbfeDWh6c75RRhijuh-XY=AK98LF81LA@mail.gmail.com>
- <6D39441BF12EF246A7ABCE6654B0235320FA9A04@LEMAIL01.le.imgtec.org>
- <20150117163832.GA12420@fuloong-minipc.musicnaut.iki.fi>
- <6D39441BF12EF246A7ABCE6654B0235320FAA1B6@LEMAIL01.le.imgtec.org>
- <CAOLZvyEvXuTYhCgO6=XZCUv5_apqVaz44WswPesSSS3fvoALaw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 07:18:25 +0100 (CET)
+Received: from mail-ie0-f174.google.com ([209.85.223.174]:53974 "EHLO
+        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011199AbbASGSW7CaMe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 07:18:22 +0100
+Received: by mail-ie0-f174.google.com with SMTP id at20so29224422iec.5;
+        Sun, 18 Jan 2015 22:18:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=0VkCjs4s3LNgtoridFJDmrk3cqMuUhvZqJRcJqVe5BA=;
+        b=0vkLDjd+rkUxQXCkz7upB9lo2oE2NGZi3pweViv8XF5U0Jild0twrT/xN23FJP26tl
+         DoT101aR1sd+WQxvxlzbCljM0tjIkr+yKWIFUtR9tt9n1o+JVM82WMKfwCfzWboDky8C
+         zTcReghLGdM/JEfWxv5JqMjz0t/c45gxGiBAGVbqkyPgLm5woD4F7yvKoACMhbgB3rMm
+         4qFWCb92kK/ysht2BV4F+rj+P0MgePv9dL7fRkUPjGqztROamjGaILN7kFLj5RdSbG2z
+         qv+7cIojsqt7HQXrseIZEcnnKPqkvAB0yNW/6tXg4NhyiK5vqQPhN4mhUbRCeyCckMcL
+         FiRg==
+X-Received: by 10.107.41.143 with SMTP id p137mr12759774iop.61.1421648296900;
+ Sun, 18 Jan 2015 22:18:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <CAOLZvyEvXuTYhCgO6=XZCUv5_apqVaz44WswPesSSS3fvoALaw@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.159.114]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: by 10.64.139.99 with HTTP; Sun, 18 Jan 2015 22:17:56 -0800 (PST)
+In-Reply-To: <1419742654-15094-1-git-send-email-chenhc@lemote.com>
+References: <1419742654-15094-1-git-send-email-chenhc@lemote.com>
+From:   Alexandre Courbot <gnurou@gmail.com>
+Date:   Mon, 19 Jan 2015 15:17:56 +0900
+Message-ID: <CAAVeFu+-m98_O1poRaxurDiUFkFu6t93On4ZM6xMWVW0-3Uvzw@mail.gmail.com>
+Subject: Re: [PATCH V6 3/8] MIPS: Cleanup Loongson-2F's gpio driver
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gnurou@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45290
+X-archive-position: 45291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: gnurou@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,58 +56,173 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jan 18, 2015 at 11:35:31AM +0100, Manuel Lauss wrote:
-> On Sat, Jan 17, 2015 at 8:00 PM, Matthew Fortune
-> <Matthew.Fortune@imgtec.com> wrote:
-> > Aaro Koskinen <aaro.koskinen@iki.fi> writes:
-> >> On Fri, Jan 16, 2015 at 08:36:12PM +0000, Matthew Fortune wrote:
-> >> > You are right that it is the .MIPS.abiflags patch that is causing your
-> >> > trouble. For a long time I had to put a restriction in the ABI plan
-> >> > that soft-float binaries without an ABIFLAGS pheader could not be
-> >> > linked against soft-float binaries with an ABIFLAGS pheader. We have
-> >> > since found a way to relax that restriction without reducing the
-> >> > effectiveness of the new compatibility checks. I would need to check
-> >> > the code in the kernel but I suspect that is the issue. Markos has
-> >> > done a significant update to this piece of code which he posted
-> >> > earlier today. That updated version should allow the combination of
-> >> > soft-float without ABIFLAGS and soft-float with ABIFLAGS.
-> >>
-> >> Are you referring to the series with 70 patches? I think a fix that
-> >> passes stable kernel rules is needed.
-> >
-> > Yes it was just one patch though for this issue:
-> > [PATCH RFC v2 68/70] MIPS: kernel: elf: Improve the overall ABI and FPU
-> > mode checks
-> >
-> > I wasn't trying to suggest how to fix the existing code just explaining
-> > how it came to be and what has been done about it for next release.
-> > (I'm not a kernel developer I'm just interested as I did most of the
-> > design work for the new ABI extensions.)
-> >
-> > I guess there are three options:
-> > a) revert the patch - That would remove the new ABI safety measures from
-> >    3.19 which is a shame given it has MSA support in it (I think anyway).
-> >    equally given that the new prctl FPU mode options did not make 3.19
-> >    then I suppose it doesn't lose too much either as the two features
-> >    go hand in hand to some extent.
-> 
-> I favor this one.  I don't know how many systems with MSA are in the wild,
-> and if there are any, I'm sure they're using some mti/imgtec-supplied kernel
-> anyway.  Another thing I noticed last time is that companies shipping MIPS
-> products rarely upgrade their toolchains, so I'm sure the ABI safety measures
-> can wait for another release, but then function with all configurations
-> in the wild.
-> 
-> Manuel
+On Sun, Dec 28, 2014 at 1:57 PM, Huacai Chen <chenhc@lemote.com> wrote:
+> This cleanup is prepare to move the driver to drivers/gpio. Custom
+> definitions of gpio_get_value()/gpio_set_value() are dropped.
+>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/include/asm/mach-loongson/gpio.h |   15 +++---
+>  arch/mips/loongson/common/gpio.c           |   82 +++++++++++-----------------
+>  2 files changed, 39 insertions(+), 58 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/mach-loongson/gpio.h b/arch/mips/include/asm/mach-loongson/gpio.h
+> index 211a7b7..b3b2169 100644
+> --- a/arch/mips/include/asm/mach-loongson/gpio.h
+> +++ b/arch/mips/include/asm/mach-loongson/gpio.h
+> @@ -1,8 +1,9 @@
+>  /*
+> - * STLS2F GPIO Support
+> + * Loongson GPIO Support
+>   *
+>   * Copyright (c) 2008  Richard Liu, STMicroelectronics <richard.liu@st.com>
+>   * Copyright (c) 2008-2010  Arnaud Patard <apatard@mandriva.com>
+> + * Copyright (c) 2014  Huacai Chen <chenhc@lemote.com>
+>   *
+>   * This program is free software; you can redistribute it and/or modify
+>   * it under the terms of the GNU General Public License as published by
+> @@ -10,14 +11,14 @@
+>   * (at your option) any later version.
+>   */
+>
+> -#ifndef __STLS2F_GPIO_H
+> -#define __STLS2F_GPIO_H
+> +#ifndef __LOONGSON_GPIO_H
+> +#define __LOONGSON_GPIO_H
+>
+>  #include <asm-generic/gpio.h>
+>
+> -extern void gpio_set_value(unsigned gpio, int value);
+> -extern int gpio_get_value(unsigned gpio);
+> -extern int gpio_cansleep(unsigned gpio);
+> +#define gpio_get_value __gpio_get_value
+> +#define gpio_set_value __gpio_set_value
+> +#define gpio_cansleep __gpio_cansleep
+>
+>  /* The chip can do interrupt
+>   * but it has not been tested and doc not clear
+> @@ -32,4 +33,4 @@ static inline int irq_to_gpio(int gpio)
+>         return -EINVAL;
+>  }
+>
+> -#endif                         /* __STLS2F_GPIO_H */
+> +#endif /* __LOONGSON_GPIO_H */
+> diff --git a/arch/mips/loongson/common/gpio.c b/arch/mips/loongson/common/gpio.c
+> index 29dbaa2..087aac3 100644
+> --- a/arch/mips/loongson/common/gpio.c
+> +++ b/arch/mips/loongson/common/gpio.c
+> @@ -24,55 +24,6 @@
+>
+>  static DEFINE_SPINLOCK(gpio_lock);
+>
+> -int gpio_get_value(unsigned gpio)
+> -{
+> -       u32 val;
+> -       u32 mask;
+> -
+> -       if (gpio >= STLS2F_N_GPIO)
+> -               return __gpio_get_value(gpio);
+> -
+> -       mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
+> -       spin_lock(&gpio_lock);
+> -       val = LOONGSON_GPIODATA;
+> -       spin_unlock(&gpio_lock);
+> -
+> -       return (val & mask) != 0;
+> -}
+> -EXPORT_SYMBOL(gpio_get_value);
+> -
+> -void gpio_set_value(unsigned gpio, int state)
+> -{
+> -       u32 val;
+> -       u32 mask;
+> -
+> -       if (gpio >= STLS2F_N_GPIO) {
+> -               __gpio_set_value(gpio, state);
+> -               return ;
+> -       }
+> -
+> -       mask = 1 << gpio;
+> -
+> -       spin_lock(&gpio_lock);
+> -       val = LOONGSON_GPIODATA;
+> -       if (state)
+> -               val |= mask;
+> -       else
+> -               val &= (~mask);
+> -       LOONGSON_GPIODATA = val;
+> -       spin_unlock(&gpio_lock);
+> -}
+> -EXPORT_SYMBOL(gpio_set_value);
+> -
+> -int gpio_cansleep(unsigned gpio)
+> -{
+> -       if (gpio < STLS2F_N_GPIO)
+> -               return 0;
+> -       else
+> -               return __gpio_cansleep(gpio);
+> -}
+> -EXPORT_SYMBOL(gpio_cansleep);
+> -
+>  static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
+>  {
+>         u32 temp;
+> @@ -113,13 +64,41 @@ static int ls2f_gpio_direction_output(struct gpio_chip *chip,
+>
+>  static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+>  {
+> -       return gpio_get_value(gpio);
+> +       u32 val;
+> +       u32 mask;
+> +
+> +       if (gpio >= STLS2F_N_GPIO)
+> +               return __gpio_get_value(gpio);
+> +
+> +       mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
+> +       spin_lock(&gpio_lock);
+> +       val = LOONGSON_GPIODATA;
+> +       spin_unlock(&gpio_lock);
 
-An alternative would be the patch I just submitted, which makes the mode
-checks conditional upon CONFIG_MIPS_O32_FP64_SUPPORT:
+Careful, you are not anymore dealing with absolute GPIO numbers like
+your former custom gpio_get_value() function did.
 
-  http://marc.info/?l=linux-mips&m=142164553017027&w=2
+This function will be called by the gpiolib core after it has matched
+the GPIO to your chip. So testing for gpio >= STLS2F_N_GPIO is not
+needed.
 
-Assuming this fixes your problem, and I believe it should, it would
-avoid the churn of reverting the patch & readding the modified logic
-again later.
+Furthermore, the passed GPIO number will be relative to the chip's
+base index. In your case it seems like the base is 0, so this doesn't
+change anything, but be aware of this fact.
 
-Thanks,
-    Paul
+> +
+> +       return (val & mask) != 0;
+>  }
+>
+>  static void ls2f_gpio_set_value(struct gpio_chip *chip,
+>                 unsigned gpio, int value)
+>  {
+> -       gpio_set_value(gpio, value);
+> +       u32 val;
+> +       u32 mask;
+> +
+> +       if (gpio >= STLS2F_N_GPIO) {
+> +               __gpio_set_value(gpio, value);
+> +               return;
+> +       }
+> +
+> +       mask = 1 << gpio;
+> +
+> +       spin_lock(&gpio_lock);
+> +       val = LOONGSON_GPIODATA;
+> +       if (value)
+> +               val |= mask;
+> +       else
+> +               val &= (~mask);
+> +       LOONGSON_GPIODATA = val;
+
+Same thing here.
+
+Since this is a potentially dangerous refactoring of this driver, I'd
+like a statement that confirms it is still working properly after
+patches 3, 4, and 5 of this series. IOW, please test your driver after
+each of these patches to ensure the refactoring is done properly.

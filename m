@@ -1,52 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 21:47:39 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.187]:60324 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011712AbbASUrhkyuY3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 21:47:37 +0100
-Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
- (mreue004) with ESMTPSA (Nemesis) id 0Lpzv9-1XZ2S32DlH-00fkSe; Mon, 19 Jan
- 2015 21:46:55 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Rob Herring <robherring2@gmail.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Anton Vorontsov <avorontsov@ru.mvista.com>,
-        Vinita Gupta <vgupta@caviumnetworks.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <Pawel.Moll@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>, Tejun Heo <tj@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH] SATA: OCTEON: support SATA on OCTEON platform
-Date:   Mon, 19 Jan 2015 21:46:52 +0100
-Message-ID: <1657896.cG5R2xLFfX@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAL_JsqKq22K3kk7m09J1GZn9xXB+0tCUe75u3x+S3oWC0kyDcw@mail.gmail.com>
-References: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com> <54BD580C.6030701@gmail.com> <CAL_JsqKq22K3kk7m09J1GZn9xXB+0tCUe75u3x+S3oWC0kyDcw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 22:20:41 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:46328 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011718AbbASVUjRx3MS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 22:20:39 +0100
+Received: from localhost (unknown [203.117.110.130])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 48C2DA5B;
+        Mon, 19 Jan 2015 21:20:31 +0000 (UTC)
+Date:   Tue, 20 Jan 2015 03:01:42 +0800
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Wolfram Sang <wsa@the-dreams.de>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
+        Jean Delvare <jdelvare@suse.de>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Subject: Re: [PATCH] i2c: drop ancient protection against sysfs refcounting
+ issues
+Message-ID: <20150119190142.GA9451@kroah.com>
+References: <1421693756-12917-1-git-send-email-wsa@the-dreams.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID:  V03:K0:540wG67se4TLuWNRSqikIKpRuD5km1mHJq7AiuoZIGXOELbhKak
- tZBvHs19dh+jh6nRbZe6BBKT4aBlx/CMO6oc1IfQTI30M66nQqTiHiI5N1JYJUNvxUHS0jD
- ru66g788qlVWH1VA90owcaPGUNmpaY+AVuH4j3A7jAzHmPgVpJ9tG5L/oeopcAQw0WyUicG
- p+FEjRhZh/3enC2UCZMIw==
-X-UI-Out-Filterresults: notjunk:1;
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1421693756-12917-1-git-send-email-wsa@the-dreams.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45334
+X-archive-position: 45335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,37 +44,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 19 January 2015 14:30:22 Rob Herring wrote:
-> On Mon, Jan 19, 2015 at 1:16 PM, David Daney <ddaney.cavm@gmail.com> wrote:
-> > On 01/19/2015 07:43 AM, Mark Rutland wrote:
-> >>
-> >> On Mon, Jan 19, 2015 at 03:23:58PM +0000, Aleksey Makarov wrote:
-> >>>
-> >>> The OCTEON SATA controller is currently found on cn71XX devices.
+On Mon, Jan 19, 2015 at 07:55:56PM +0100, Wolfram Sang wrote:
+> Back in the days, sysfs seemed to have refcounting issues and subsystems
+> needed a completion to be safe. This is not the case anymore, so I2C can
+> get rid of this code. There is noone else besides I2C doing something
+> like this currently (checked with the attached coccinelle script which
+> checks if a release function exists and if it contains a completion).
 > 
-> [...]
+> I have been digging through the history of linux.git and
+> linux-history.git and found that e.g. w1 used to have such a mechanism
+> and also simply removed it later.
 > 
-> >>> +
-> >>> +       /* Set a good dma_mask */
-> >>> +       pdev->dev.coherent_dma_mask = DMA_BIT_MASK(64);
-> >>> +       pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
-> >>
-> >>
-> >> I thought a dma-ranges property in the DT could be used to set up the
-> >> DMA mask appropriately?
-> >
-> >
-> > The DT contains no dma-ranges property, and we know a priori, that it should
-> > be 64-bits.
+> Some more info from Greg Kroah-Hartman:
+> "Having that call "wait" for the other release call to happen is really
+> old, as Jean points out, from 2003.  We have "fixed" sysfs since then to
+> detach the files from the devices easier, we used to have some nasy
+> reference count issues in that area."
 > 
-> Neither this code nor dma-ranges should be necessary. The AHCI core
-> code will set the mask to 32 or 64 bits based on the AHCI Capabilities
-> register.
+> And some testing from Jean Delvare which matches my results:
+> "However I just tested unloading an i2c bus driver while its adapter's
+> new_device attribute was opened and rmmod returned immediately. So it
+> doesn't look like accessing sysfs attributes actually takes a reference
+> to the underlying i2c_adapter."
+> 
+> Let's get rid of this code before really nobody knows/understands
+> anymore what this was for and if it has a subtle use.
+> 
+> Reported-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Jean Delvare <jdelvare@suse.de>
+> Cc: Julia Lawall <julia.lawall@lip6.fr>
+> ---
+> 
+> Of course, more testing is appreciated. Here is the coccinelle script:
+> 
+> ===
+> 
+> @has_type@
+> identifier d_type, rel_f;
+> @@
+> 
+> struct device_type d_type = {
+> 	.release = rel_f,
+> };
+> 
+> @has_device@
+> struct device *d;
+> identifier rel_f, p;
+> @@
+> 
+> (
+> 	p->dev.release = &rel_f;
+> |
+> 	d->release = &rel_f;
+> )
+> 
+> @find_type depends on has_type@
+> identifier has_type.rel_f, d;
+> @@
+> 
+> void rel_f(struct device *d)
+> {
+> 	...
+> *	complete(...);
+> 	...
+> }
+> 
+> @find_device depends on has_device@
+> identifier has_device.rel_f, d;
+> @@
+> 
+> void rel_f(struct device *d)
+> {
+> 	...
+> *	complete(...);
+> 	...
+> }
+> 
+> ===
+> 
+>  drivers/i2c/i2c-core.c | 10 +---------
+>  include/linux/i2c.h    |  1 -
+>  2 files changed, 1 insertion(+), 10 deletions(-)
+> 
+> diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+> index 39d25a8cb1ad..15cc5902cf89 100644
+> --- a/drivers/i2c/i2c-core.c
+> +++ b/drivers/i2c/i2c-core.c
+> @@ -41,7 +41,6 @@
+>  #include <linux/of_device.h>
+>  #include <linux/of_irq.h>
+>  #include <linux/clk/clk-conf.h>
+> -#include <linux/completion.h>
+>  #include <linux/hardirq.h>
+>  #include <linux/irqflags.h>
+>  #include <linux/rwsem.h>
+> @@ -1184,8 +1183,7 @@ EXPORT_SYMBOL_GPL(i2c_new_dummy);
+>  
+>  static void i2c_adapter_dev_release(struct device *dev)
+>  {
+> -	struct i2c_adapter *adap = to_i2c_adapter(dev);
+> -	complete(&adap->dev_released);
+> +	/* empty, but the driver core insists we need a release function */
 
-You should however have a dma-ranges property in the parent bus of the
-device that contains the allowed range for DMA. The current dma_set_mask
-function is broken and will accept whatever a device driver asks for,
-and we need to fix this so masks larger than what is specified in dma-ranges
-are rejected.
+Yeah, it does, but I hate to see this in "real" code as something is
+probably wrong with it if it happens.
 
-	Arnd
+Please move the rest of 'i2c_del_adapter' into the release function
+(what was after the wait_for_completion() call), and then all should be
+fine.
+
+thanks,
+
+greg k-h

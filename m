@@ -1,40 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 12:52:02 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:52701 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010943AbbASLwB0mcuT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 12:52:01 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9554BE027F402;
-        Mon, 19 Jan 2015 11:51:52 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 19 Jan 2015 11:51:55 +0000
-Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 19 Jan 2015 11:51:53 +0000
-From:   Qais Yousef <qais.yousef@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Qais Yousef <qais.yousef@imgtec.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        <linux-kernel@vger.kernel.org>,
-        Andrew Bresticker <abrestic@chromium.org>
-Subject: [PATCH] MIPS: irq-mips-gic.c: handle pending interrupts once in __gic_irq_dispatch()
-Date:   Mon, 19 Jan 2015 11:51:29 +0000
-Message-ID: <1421668289-828-1-git-send-email-qais.yousef@imgtec.com>
-X-Mailer: git-send-email 2.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 12:54:22 +0100 (CET)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:54609 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011585AbbASLyUsFLZA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 12:54:20 +0100
+Received: by mail-lb0-f182.google.com with SMTP id l4so2258835lbv.13
+        for <linux-mips@linux-mips.org>; Mon, 19 Jan 2015 03:54:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=1E11RnaDOpIHm67XVI4ocb6k6aKUMULBvNKTiUgsfdE=;
+        b=ccGO09SDVK3A5OqDhNdUZhIcMc6Va+pStHYAxg7sBZd8DL3FAdO/sbRvKpDkPfvV+B
+         8mNBtDIty5wFOMZXVFaW3tsUt9EgvNhDWMsW1vNvRCbLtusZ1DE7u/Ymjd2GIg4bGZIF
+         GrLDdyLG92042ev4lCb1iDDqb0ReM2l5xnllzkcEqT48FpWGWNexHvi/hjELjmyC4l44
+         AnTc01ESCtHlarDrhhzr34C7YQ+oaTAr/8mtPVnsCNH6RqM6oxMuKHzTrrmqOIoKMpEf
+         mLMB0haoAnYYVkIqvnBAYIcabOX7KaDI3h07dZ9ihlA82QYYEr3zZBhN4nsI95f+L6Gg
+         0rAw==
+X-Gm-Message-State: ALoCoQlSTZOSnSYrM/DQAgaCOJi01RyN38/Y7055BD6qSqeqiXWWSBuZdTedfOO1mRyGGPIu4cRZ
+X-Received: by 10.152.7.180 with SMTP id k20mr16689902laa.4.1421668453467;
+        Mon, 19 Jan 2015 03:54:13 -0800 (PST)
+Received: from [192.168.3.68] (ppp28-153.pppoe.mtu-net.ru. [81.195.28.153])
+        by mx.google.com with ESMTPSA id ci9sm3600144lad.21.2015.01.19.03.54.11
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 19 Jan 2015 03:54:12 -0800 (PST)
+Message-ID: <54BCF062.1010009@cogentembedded.com>
+Date:   Mon, 19 Jan 2015 14:54:10 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+CC:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org
+Subject: Re: [PATCH 07/36] devicetree: document ingenic,jz4740-intc binding
+References: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com> <1421620067-23933-8-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1421620067-23933-8-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45302
+X-archive-position: 45303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,108 +57,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When an interrupt occurs __gic_irq_dispatch() continuously reads local and shared pending registers
-until all is serviced before returning. The problem with that is that it could introduce
-a long delay before returning if a piece of hardware keeps triggering while in one of these loops.
+Hello.
 
-To ensure fairness and priority doesn't get skewed a lot, read local and shared pending registers once
-to service each pending IRQ once.
-If another interupt triggers while servicing the current ones, then we shall re-enter the handler after
-we return.
+On 1/19/2015 1:27 AM, Paul Burton wrote:
 
-Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: linux-kernel@vger.kernel.org
-Cc: Andrew Bresticker <abrestic@chromium.org>
----
- drivers/irqchip/irq-mips-gic.c | 44 +++++++++++++++++++++++++-----------------
- 1 file changed, 26 insertions(+), 18 deletions(-)
+> Add binding documentation for the Ingenic jz4740 interrupt controller.
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 2b0468e3df6a..f3f9873dfb68 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -234,9 +234,9 @@ int gic_get_c0_perfcount_int(void)
- 				  GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_PERFCTR));
- }
- 
--static unsigned int gic_get_int(void)
-+static void gic_handle_shared_int(void)
- {
--	unsigned int i;
-+	unsigned int i, intr, virq;
- 	unsigned long *pcpu_mask;
- 	unsigned long pending_reg, intrmask_reg;
- 	DECLARE_BITMAP(pending, GIC_MAX_INTRS);
-@@ -258,7 +258,16 @@ static unsigned int gic_get_int(void)
- 	bitmap_and(pending, pending, intrmask, gic_shared_intrs);
- 	bitmap_and(pending, pending, pcpu_mask, gic_shared_intrs);
- 
--	return find_first_bit(pending, gic_shared_intrs);
-+	intr = find_first_bit(pending, gic_shared_intrs);
-+	while (intr != gic_shared_intrs) {
-+		virq = irq_linear_revmap(gic_irq_domain,
-+					 GIC_SHARED_TO_HWIRQ(intr));
-+		do_IRQ(virq);
-+
-+		/* go to next pending bit */
-+		bitmap_clear(pending, intr, 1);
-+		intr = find_first_bit(pending, gic_shared_intrs);
-+	}
- }
- 
- static void gic_mask_irq(struct irq_data *d)
-@@ -385,16 +394,26 @@ static struct irq_chip gic_edge_irq_controller = {
- #endif
- };
- 
--static unsigned int gic_get_local_int(void)
-+static void gic_handle_local_int(void)
- {
- 	unsigned long pending, masked;
-+	unsigned int intr, virq;
- 
- 	pending = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
- 	masked = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_MASK));
- 
- 	bitmap_and(&pending, &pending, &masked, GIC_NUM_LOCAL_INTRS);
- 
--	return find_first_bit(&pending, GIC_NUM_LOCAL_INTRS);
-+	intr = find_first_bit(&pending, GIC_NUM_LOCAL_INTRS);
-+	while (intr != GIC_NUM_LOCAL_INTRS) {
-+		virq = irq_linear_revmap(gic_irq_domain,
-+					 GIC_LOCAL_TO_HWIRQ(intr));
-+		do_IRQ(virq);
-+
-+		/* go to next pending bit */
-+		bitmap_clear(&pending, intr, 1);
-+		intr = find_first_bit(&pending, GIC_NUM_LOCAL_INTRS);
-+	}
- }
- 
- static void gic_mask_local_irq(struct irq_data *d)
-@@ -453,19 +472,8 @@ static struct irq_chip gic_all_vpes_local_irq_controller = {
- 
- static void __gic_irq_dispatch(void)
- {
--	unsigned int intr, virq;
--
--	while ((intr = gic_get_local_int()) != GIC_NUM_LOCAL_INTRS) {
--		virq = irq_linear_revmap(gic_irq_domain,
--					 GIC_LOCAL_TO_HWIRQ(intr));
--		do_IRQ(virq);
--	}
--
--	while ((intr = gic_get_int()) != gic_shared_intrs) {
--		virq = irq_linear_revmap(gic_irq_domain,
--					 GIC_SHARED_TO_HWIRQ(intr));
--		do_IRQ(virq);
--	}
-+	gic_handle_local_int();
-+	gic_handle_shared_int();
- }
- 
- static void gic_irq_dispatch(unsigned int irq, struct irq_desc *desc)
--- 
-2.1.0
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: devicetree@vger.kernel.org
+> ---
+>   .../interrupt-controller/ingenic,jz4740-intc.txt   | 24 ++++++++++++++++++++++
+>   1 file changed, 24 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt
+
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt
+> new file mode 100644
+> index 0000000..3c06ef1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt
+> @@ -0,0 +1,24 @@
+> +Ingenic jz4740 SoC Interrupt Controller
+> +
+> +Required properties:
+> +
+> +- compatible : should be "ingenic,jz4740-intc"
+> +- reg : Specifies base physical address and size of the registers.
+> +- interrupt-controller : Identifies the node as an interrupt controller
+> +- #interrupt-cells : Specifies the number of cells needed to encode an
+> +  interrupt source. The value shall be 1.
+> +- interrupt-parent: phandle of the CPU interrupt controller.
+> +- interrupts - Specifies the CPU interrupt the controller is connected to.
+> +
+> +Example:
+> +
+> +intc: intc@10001000 {
+
+    The node name should be "interrupt-controller@10001000", according to the 
+ePAPR standard.
+
+WBR, Sergei

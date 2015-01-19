@@ -1,50 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 13:08:26 +0100 (CET)
-Received: from mail-lb0-f182.google.com ([209.85.217.182]:58917 "EHLO
-        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011794AbbASMIXkyjJ5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 13:08:23 +0100
-Received: by mail-lb0-f182.google.com with SMTP id l4so2323252lbv.13
-        for <linux-mips@linux-mips.org>; Mon, 19 Jan 2015 04:08:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=iosw5aKYYpFPJO+8ANszhsXJYx+j4DZhtfQqe+tc3kE=;
-        b=AwDxlHXC2+9SHELNILyM1ZAQ6g9uM/JdUHb7N+zY18ZLG+J550rGr2l2kcCAFxdIAv
-         heg+ze+bKHxftdY0HdEA5nRfNSZWz/ISJXlcwMfxDyrARxsNjLpkp1DWfKaNm/pADd21
-         kvqAqKBK0o8rKAXwohdmmVShK2tBLr74A/XvICNu+QhEv9NccpDHHI/unPYy6sT3Rj3I
-         A2x/W2oE8WEgFA4WRW3lox2QnOQ873IiMPTgmFM4v1tbYNoyyI6YJxt5WgbdJbyHfe5n
-         e8U6Ya5qor+MMuD/qRBDYRZkUdmd/ZemmqL2Ecxj2U0Pdw+Nvkx5+aijTrtlXTjrdtOn
-         hhRg==
-X-Gm-Message-State: ALoCoQlXfFwGGjJbmG2xclTMfL8gBezPqBGHSg232YEOtrg2KfjH91dwoKDR63Le2HpTuFe94i5t
-X-Received: by 10.112.188.201 with SMTP id gc9mr24718675lbc.6.1421669298239;
-        Mon, 19 Jan 2015 04:08:18 -0800 (PST)
-Received: from [192.168.3.68] ([81.195.28.153])
-        by mx.google.com with ESMTPSA id l1sm3613386lag.11.2015.01.19.04.08.16
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Jan 2015 04:08:17 -0800 (PST)
-Message-ID: <54BCF3AE.2080704@cogentembedded.com>
-Date:   Mon, 19 Jan 2015 15:08:14 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 13:17:36 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:50447 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011794AbbASMRf2TE00 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 13:17:35 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 0AFF224154A7B;
+        Mon, 19 Jan 2015 12:17:27 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 19 Jan 2015 12:17:29 +0000
+Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 19 Jan
+ 2015 12:17:27 +0000
+Message-ID: <54BCF5D7.1020907@imgtec.com>
+Date:   Mon, 19 Jan 2015 12:17:27 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-CC:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org
-Subject: Re: [PATCH 31/36] devicetree: document ingenic,jz4780-intc binding
-References: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com> <1421620945-25502-1-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1421620945-25502-1-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Paul Burton <Paul.Burton@imgtec.com>,
+        "Maciej W. Rozycki (macro@linux-mips.org)" <macro@linux-mips.org>
+Subject: Re: [PATCH RFC v2 68/70] MIPS: kernel: elf: Improve the overall ABI
+ and FPU mode checks
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-69-git-send-email-markos.chandras@imgtec.com> <6D39441BF12EF246A7ABCE6654B0235320FAAEED@LEMAIL01.le.imgtec.org>
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320FAAEED@LEMAIL01.le.imgtec.org>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+X-Originating-IP: [192.168.154.96]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45305
+X-archive-position: 45306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,43 +49,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 1/19/2015 1:42 AM, Paul Burton wrote:
+On 01/19/2015 09:29 AM, Matthew Fortune wrote:
+>> The previous implementation did not cover all possible FPU combinations
+>> and it silently allowed ABI incompatible objects to be loaded with the
+>> wrong ABI. For example, the previous logic would set the FP_64 ABI as
+>> the matching ABI for an FP_XX object combined with an FP_64A object.
+>> This was wrong, and the matching ABI should have been FP_64A.
+>> The previous logic is now replaced with a new one which determines
+>> the appropriate FPU mode to be used rather than the FP ABI. This has
+>> the advantage that the entire logic is much simpler since it is the FPU
+>> mode we are interested in rather than the FP ABI resulting to code
+>> simplifications.
+> 
+> Markos,
+> 
+> Can you confirm that the o32 abiflags testsuite has been run on a 64-bit
+> kernel? I know that the o32 testsuite has run on a 32-bit kernel and the
+> n64 testsuite has run on a 64-bit kernel. It is certainly worth checking
+> given the fixes that are being made to 3.19.
 
-> Add binding documentation for the Ingenic jz4780 interrupt controller.
 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: devicetree@vger.kernel.org
-> ---
->   .../interrupt-controller/ingenic,jz4780-intc.txt   | 24 ++++++++++++++++++++++
->   1 file changed, 24 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt
+They all pass with my R6 64-bit kernel + R6 userland + R2 O32 testsuite.
 
-> diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt
-> new file mode 100644
-> index 0000000..c6164d9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4780-intc.txt
-> @@ -0,0 +1,24 @@
-> +Ingenic jz4780 SoC Interrupt Controller
-> +
-> +Required properties:
-> +
-> +- compatible : should be "ingenic,jz4780-intc"
-> +- reg : Specifies base physical address and size of the registers.
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode an
-> +  interrupt source. The value shall be 1.
-> +- interrupt-parent: phandle of the CPU interrupt controller.
+> 
+> Is it worth updating the CONFIG_MIPS_O32_FP64_SUPPORT option to no longer
+> be experimental and also default on? This option could then guard the new
+> logic from this patch as a safety measure. Once the code has been proven
+> I'd suggest removing the option and making the code unconditional.
 
-    This is never a required prop, it can be inherited from an upper level node.
+Paul?
 
-> +- interrupts - Specifies the CPU interrupt the controller is connected to.
-> +
-> +Example:
-> +
-> +intc: intc@10001000 {
+Initially thought of having 32-bit R6 select this symbol but then I
+dropped it. But maybe it make sense now?
 
-    Again, should be "interrupt-controller@10001000".
-
-WBR, Sergei
+-- 
+markos

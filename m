@@ -1,41 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 16:38:53 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44549 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011834AbbASPiwLjH3W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 16:38:52 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id AA5E3FDD6C2EC;
-        Mon, 19 Jan 2015 15:38:42 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 19 Jan 2015 15:38:45 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 19 Jan 2015 15:38:45 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        "Thomas Gleixner" <tglx@linutronix.de>
-Subject: [PATCH] irqchip: mips-gic: Avoid rerouting timer IRQs for smp-cmp
-Date:   Mon, 19 Jan 2015 15:38:24 +0000
-Message-ID: <1421681904-20881-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 16:44:27 +0100 (CET)
+Received: from foss-mx-na.foss.arm.com ([217.140.108.86]:49051 "EHLO
+        foss-mx-na.foss.arm.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011804AbbASPoY4dvQ2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 16:44:24 +0100
+Received: from foss-smtp-na-1.foss.arm.com (unknown [10.80.61.8])
+        by foss-mx-na.foss.arm.com (Postfix) with ESMTP id 0419F217;
+        Mon, 19 Jan 2015 09:44:17 -0600 (CST)
+Received: from collaborate-mta1.arm.com (highbank-bc01-b06.austin.arm.com [10.112.81.134])
+        by foss-smtp-na-1.foss.arm.com (Postfix) with ESMTP id DAE3D5FAD7;
+        Mon, 19 Jan 2015 09:44:14 -0600 (CST)
+Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
+        by collaborate-mta1.arm.com (Postfix) with ESMTPS id B203713F824;
+        Mon, 19 Jan 2015 09:44:12 -0600 (CST)
+Date:   Mon, 19 Jan 2015 15:43:57 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Aleksey Makarov <aleksey.makarov@auriga.com>
+Cc:     "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        Anton Vorontsov <avorontsov@ru.mvista.com>,
+        Vinita Gupta <vgupta@caviumnetworks.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <Pawel.Moll@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>, Tejun Heo <tj@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] SATA: OCTEON: support SATA on OCTEON platform
+Message-ID: <20150119154357.GH21553@leverpostej>
+References: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com>
+Thread-Topic: [PATCH] SATA: OCTEON: support SATA on OCTEON platform
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <mark.rutland@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45316
+X-archive-position: 45317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: mark.rutland@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,92 +60,167 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit e9de688dac65 ("irqchip: mips-gic: Support local interrupts")
-changed the GIC irqchip driver so that all local interrupts were routed
-to the same CPU pin used for external interrupts. Unfortunately this
-causes a regression when smp-cmp is used. The CPUs are started by the
-bootloader and put in a timer based waiting poll loop, but when their
-timer interrupts are rerouted to a different IRQ pin which is not
-unmasked they never wake up.
+On Mon, Jan 19, 2015 at 03:23:58PM +0000, Aleksey Makarov wrote:
+> The OCTEON SATA controller is currently found on cn71XX devices.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Vinita Gupta <vgupta@caviumnetworks.com>
+> [aleksey.makarov@auriga.com: preparing for submission,
+> conflict resolution, fixes for the platform code]
+> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+> ---
+>  .../devicetree/bindings/ata/ahci-platform.txt      |   1 +
+>  .../devicetree/bindings/mips/cavium/sata-uctl.txt  |  31 ++++++
+>  arch/mips/cavium-octeon/octeon-platform.c          |   1 +
+>  drivers/ata/Kconfig                                |   9 ++
+>  drivers/ata/Makefile                               |   1 +
+>  drivers/ata/ahci_platform.c                        |  10 ++
+>  drivers/ata/sata_octeon.c                          | 107 +++++++++++++++++++++
+>  7 files changed, 160 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
+>  create mode 100644 drivers/ata/sata_octeon.c
+> 
+> diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.txt b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+> index 4ab09f2..1a5d3be 100644
+> --- a/Documentation/devicetree/bindings/ata/ahci-platform.txt
+> +++ b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+> @@ -11,6 +11,7 @@ Required properties:
+>  - compatible        : compatible string, one of:
+>    - "allwinner,sun4i-a10-ahci"
+>    - "hisilicon,hisi-ahci"
+> +  - "cavium,octeon-7130-ahci"
+>    - "ibm,476gtr-ahci"
+>    - "marvell,armada-380-ahci"
+>    - "snps,dwc-ahci"
+> diff --git a/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
+> new file mode 100644
+> index 0000000..222e66e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
+> @@ -0,0 +1,31 @@
+> +* UCTL SATA controller glue
 
-Since smp-cmp support is deprecated and everybody who was using it
-should be switching to smp-cps which brings up the secondary CPUs
-without bootloader assistance, I've gone for the simple fix which can be
-easily removed once smp-cmp is removed, rather than a fully generic fix.
+I'm not sure I follow. What does this mean?
 
-In __gic_init() the local GIC_VPE_TIMER_MAP register is read to find the
-boot-time routing of the local timer interrupt, and a chained handler is
-added to that CPU pin as well as the normal one.
+> +
+> +Properties:
+> +- compatible: "cavium,octeon-7130-sata-uctl"
+> +
+> +  Compatibility with the cn7130 SOC.
+> +
+> +- reg: The base address of the UCTL register bank.
+> +
+> +- #address-cells: Must be <2>.
+> +
+> +- #size-cells: Must be <2>.
+> +
+> +- ranges: Empty to signify direct mapping of the children.
 
-Fixes: e9de688dac65 ("irqchip: mips-gic: Support local interrupts")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Andrew Bresticker <abrestic@chromium.org>
-Cc: Qais Yousef <qais.yousef@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mips@linux-mips.org
----
- drivers/irqchip/irq-mips-gic.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+Why can't these be any values which are sufficient to map children?
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 2b0468e3df6a..56b96c63dc4b 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -37,6 +37,7 @@ static struct irq_domain *gic_irq_domain;
- static int gic_shared_intrs;
- static int gic_vpes;
- static unsigned int gic_cpu_pin;
-+static unsigned int timer_cpu_pin;
- static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
- 
- static void __gic_irq_dispatch(void);
-@@ -616,6 +617,8 @@ static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_MAP), val);
- 			break;
- 		case GIC_LOCAL_INT_TIMER:
-+			/* CONFIG_MIPS_CMP workaround (see __gic_init) */
-+			val = GIC_MAP_TO_PIN_MSK | timer_cpu_pin;
- 			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_TIMER_MAP), val);
- 			break;
- 		case GIC_LOCAL_INT_PERFCTR:
-@@ -713,12 +716,36 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 	if (cpu_has_veic) {
- 		/* Always use vector 1 in EIC mode */
- 		gic_cpu_pin = 0;
-+		timer_cpu_pin = gic_cpu_pin;
- 		set_vi_handler(gic_cpu_pin + GIC_PIN_TO_VEC_OFFSET,
- 			       __gic_irq_dispatch);
- 	} else {
- 		gic_cpu_pin = cpu_vec - GIC_CPU_PIN_OFFSET;
- 		irq_set_chained_handler(MIPS_CPU_IRQ_BASE + cpu_vec,
- 					gic_irq_dispatch);
-+		/*
-+		 * With the CMP implementation of SMP (deprecated), other CPUs
-+		 * are started by the bootloader and put into a timer based
-+		 * waiting poll loop. We must not re-route those CPU's local
-+		 * timer interrupts as the wait instruction will never finish,
-+		 * so just handle whatever CPU interrupt it is routed to by
-+		 * default.
-+		 *
-+		 * This workaround should be removed when CMP support is
-+		 * dropped.
-+		 */
-+		if (IS_ENABLED(CONFIG_MIPS_CMP) &&
-+		    gic_local_irq_is_routable(GIC_LOCAL_INT_TIMER)) {
-+			timer_cpu_pin = gic_read(GIC_REG(VPE_LOCAL,
-+							 GIC_VPE_TIMER_MAP)) &
-+					GIC_MAP_MSK;
-+			irq_set_chained_handler(MIPS_CPU_IRQ_BASE +
-+						GIC_CPU_PIN_OFFSET +
-+						timer_cpu_pin,
-+						gic_irq_dispatch);
-+		} else {
-+			timer_cpu_pin = gic_cpu_pin;
-+		}
- 	}
- 
- 	gic_irq_domain = irq_domain_add_simple(node, GIC_NUM_LOCAL_INTRS +
--- 
-2.0.5
+> +
+> +Example:
+> +
+> +	uctl@118006c000000 {
+> +	        compatible = "cavium,octeon-7130-sata-uctl";
+> +	        reg = <0x00011800 0x6c000000 0x00000000 0x00000100>;
+> +	        ranges;
+> +	        #address-cells = <0x00000002>;
+> +	        #size-cells = <0x00000002>;
+
+No need for all the zero-padding on these, they aren't addresses.
+
+> +	        sata@16c00 {
+> +	                compatible = "cavium,octeon-7130-ahci";
+> +	                reg = <0x00016c00 0x00000000 0x00000000 0x00000200>;
+> +	                interrupt-parent = <0x0000000d>;
+> +	                interrupts = <0x00000002 0x00000004>;
+> +	                cavium,qlm-trim-alias = "sata";
+
+What's this property for? It wasn't documented above, and doesn't exist
+in mainline.
+
+[...]
+
+> diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
+> index ae41107..4a0e5e3 100644
+> --- a/drivers/ata/Makefile
+> +++ b/drivers/ata/Makefile
+> @@ -17,6 +17,7 @@ obj-$(CONFIG_AHCI_SUNXI)	+= ahci_sunxi.o libahci.o libahci_platform.o
+>  obj-$(CONFIG_AHCI_ST)		+= ahci_st.o libahci.o libahci_platform.o
+>  obj-$(CONFIG_AHCI_TEGRA)	+= ahci_tegra.o libahci.o libahci_platform.o
+>  obj-$(CONFIG_AHCI_XGENE)	+= ahci_xgene.o libahci.o libahci_platform.o
+> +obj-$(CONFIG_SATA_OCTEON)	+= sata_octeon.o
+>  
+>  # SFF w/ custom DMA
+>  obj-$(CONFIG_PDC_ADMA)		+= pdc_adma.o
+> diff --git a/drivers/ata/ahci_platform.c b/drivers/ata/ahci_platform.c
+> index 18d5398..bb36396 100644
+> --- a/drivers/ata/ahci_platform.c
+> +++ b/drivers/ata/ahci_platform.c
+> @@ -22,6 +22,12 @@
+>  #include <linux/ahci_platform.h>
+>  #include "ahci.h"
+>  
+> +#if IS_ENABLED(CONFIG_SATA_OCTEON)
+> +void ahci_octeon_config(struct platform_device *pdev);
+> +#else
+> +static inline void ahci_octeon_config(struct platform_device *pdev) {}
+> +#endif
+> +
+>  static const struct ata_port_info ahci_port_info = {
+>  	.flags		= AHCI_FLAG_COMMON,
+>  	.pio_mask	= ATA_PIO4,
+> @@ -46,6 +52,9 @@ static int ahci_probe(struct platform_device *pdev)
+>  	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
+>  		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
+>  
+> +	if (of_device_is_compatible(dev->of_node, "cavium,octeon-7130-ahci"))
+> +		ahci_octeon_config(pdev);
+> +
+
+If we really need this kind of thing, make a new struct and associate it
+with of_device_id::data in the table below. Then we make this path free
+from any device-specific code.
+
+>  	rc = ahci_platform_init_host(pdev, hpriv, &ahci_port_info);
+>  	if (rc)
+>  		goto disable_resources;
+> @@ -67,6 +76,7 @@ static const struct of_device_id ahci_of_match[] = {
+>  	{ .compatible = "ibm,476gtr-ahci", },
+>  	{ .compatible = "snps,dwc-ahci", },
+>  	{ .compatible = "hisilicon,hisi-ahci", },
+> +	{ .compatible = "cavium,octeon-7130-ahci", },
+>  	{},
+
+I was under the impression that the strings other than "generic-ahci"
+were only for compatibility with existing DTBs. Why do we need to add
+new platform-specific strings here?
+
+[...]
+
+> +void ahci_octeon_config(struct platform_device *pdev)
+> +{
+> +	union cvmx_sata_uctl_shim_cfg shim_cfg;
+> +
+> +	/* set-up endian mode */
+> +	shim_cfg.u64 = cvmx_read_csr(CVMX_SATA_UCTL_SHIM_CFG);
+> +#ifdef __BIG_ENDIAN
+> +	shim_cfg.s.dma_endian_mode = 1;
+> +	shim_cfg.s.csr_endian_mode = 1;
+> +#else
+> +	shim_cfg.s.dma_endian_mode = 0;
+> +	shim_cfg.s.csr_endian_mode = 0;
+> +#endif
+> +	shim_cfg.s.dma_read_cmd = 1; /* No allocate L2C */
+> +	cvmx_write_csr(CVMX_SATA_UCTL_SHIM_CFG, shim_cfg.u64);
+> +
+> +	/* Set a good dma_mask */
+> +	pdev->dev.coherent_dma_mask = DMA_BIT_MASK(64);
+> +	pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
+
+I thought a dma-ranges property in the DT could be used to set up the
+DMA mask appropriately?
+
+Thanks,
+Mark.

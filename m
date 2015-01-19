@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 08:09:22 +0100 (CET)
-Received: from mail-wg0-f45.google.com ([74.125.82.45]:64111 "EHLO
-        mail-wg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011002AbbASHJVD56lw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 08:09:21 +0100
-Received: by mail-wg0-f45.google.com with SMTP id y19so30059540wgg.4
-        for <linux-mips@linux-mips.org>; Sun, 18 Jan 2015 23:09:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=ojm/ju8grTaFqYVJJ5m1/eguvqrrsdABeNU6OUm4g1g=;
-        b=F5c0yNleqvQja00k3gN0syoRv2rX6CqABuI/N2xN1rDRrnCe65O5tJlELy6Dn+32NU
-         evHJIzBS3lYvy2DdZbmvlVE8zRD31PuWeQbV6EnyKdBYrBo/Fj2Cx4ot+qT1uthUnT8W
-         6VWQAt4vDCP2QPfk79vmpj/sTYVmSEzaBgEmW8JP1MC2RvgkCMHwpuvLOyrQu57vOpHq
-         6t2HhegOCt8dgeWIZJyFJhnB4tsqPEGTe9yPyj03BkyIi+nLOjqeDlto/IA6GA+vagmy
-         Tur58aM3uNnWK/9F7kVRtI2yO7NP4Uey7eXF1msB0VrkZfHoK9FKStSRRTL1vtiRzrTS
-         9ogA==
-X-Received: by 10.194.234.2 with SMTP id ua2mr20951717wjc.40.1421651355883;
- Sun, 18 Jan 2015 23:09:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 09:56:55 +0100 (CET)
+Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:36625 "EHLO
+        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011771AbbASI4x2nD20 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 09:56:53 +0100
+Received: from resomta-ch2-20v.sys.comcast.net ([69.252.207.116])
+        by resqmta-ch2-02v.sys.comcast.net with comcast
+        id hkwm1p0012XD5SV01kwmU5; Mon, 19 Jan 2015 08:56:46 +0000
+Received: from [192.168.1.13] ([73.212.71.42])
+        by resomta-ch2-20v.sys.comcast.net with comcast
+        id hkwl1p00B0uk1nt01kwmjm; Mon, 19 Jan 2015 08:56:46 +0000
+Message-ID: <54BCC6CB.7020804@gentoo.org>
+Date:   Mon, 19 Jan 2015 03:56:43 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Received: by 10.216.105.144 with HTTP; Sun, 18 Jan 2015 23:08:35 -0800 (PST)
-In-Reply-To: <1421645476-13532-1-git-send-email-paul.burton@imgtec.com>
-References: <1421645476-13532-1-git-send-email-paul.burton@imgtec.com>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Mon, 19 Jan 2015 08:08:35 +0100
-Message-ID: <CAOLZvyGqk4cuZTbeqwYAr2aFw69k6xTuRK7R+MGpJX6HDreAhA@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: bypass FP mode checks when CONFIG_MIPS_O32_FP64_SUPPORT==n
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: R10000: Split R10000 definitions from R12000 and up
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1421657806;
+        bh=ohka3SQY5g4oJdgHlAiwj0pLtpgBw0IccfPhoSDgjEQ=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=KWP/K9v1uIjyxx6+PKijRqc3pgSnJWqTrp/fX/SDMbxLOQQXI76suBFE0rjiUQK1k
+         9eaqXyoiuKr9m8EGM6KqkgfMAcYjKb3vi+O2duTmjberiaKukA1e4gh3HqQ4qqKzXW
+         BAx2qwUoZVakW5oLTKnErIrAKAJSVNDhZrO8puWuxLe9rxFxhncmei8v6DnDueJlh3
+         B6+Ctj8nafoxAyjAPKsplt93H/P2A4sZA0FMKXV/tIfVcu+cZFItLaX8SC8l8NR1by
+         gKh4wATou5cEIYJilYbX/fh/lB0N6IBGUk9OhCTRDUNybR2SzX9mvU9q0DImrenT60
+         9m+Dt8+tmBpsw==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45293
+X-archive-position: 45294
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,27 +51,187 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 19, 2015 at 6:31 AM, Paul Burton <paul.burton@imgtec.com> wrote:
-> The FP mode checks introduced to support the FP modes indicated by the
-> new PT_MIPS_ABIFLAGS program header & .MIPS.abiflags section have been
-> found to cause some compatibility issues when mixing binaries with such
-> mode information & an ELF interpreter without it, or vice-versa[1]. The
-> mode checks serve little purpose unless the kernel actually supports the
-> FP64 modes as indicated by CONFIG_MIPS_O32_FP64_SUPPORT, which currently
-> defaults to disabled & is marked experimental. Bypass the mode checks
-> when the FP64 support is disabled in order to avoid compatibility issues
-> with v3.19 until the logic is fixed.
->
-> [1]: http://www.linux-mips.org/archives/linux-mips/2015-01/msg00279.html
->
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Manuel Lauss <manuel.lauss@gmail.com>
-> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
+From: Joshua Kinard <kumba@gentoo.org>
 
-Tested-by: Manuel Lauss <manuel.lauss@gmail.com>
+This patch splits the old R10000 definitions so that the R10000_LLSC_WAR can be
+disabled and -mno-fix-r10000 passed to CFLAGS for systems running R12000 CPUs
+and greater.  This allows the kernel to build without branch-likely
+instructions, which are considered deprecated in current MIPS implementations.
+ Only R10000 systems with R2.6 and lower CPUs require branch-likely to work
+around a known hardware errata item.
 
-Fixes my soft-float userspace issue.
+Verified on both an SGI Onyx2 and an SGI Octane.
 
-Thanks Paul!
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+---
+ arch/mips/Kconfig                     |   18 +++++++++++++++++-
+ arch/mips/Makefile                    |    3 +++
+ arch/mips/include/asm/hazards.h       |    3 ++-
+ arch/mips/include/asm/mach-ip27/war.h |    7 ++++++-
+ arch/mips/include/asm/module.h        |    2 ++
+ arch/mips/sgi-ip27/Platform           |   15 ++++++++-------
+ arch/mips/sgi-ip32/Platform           |    2 ++
+ drivers/video/fbdev/gbefb.c           |    2 +-
+ 8 files changed, 41 insertions(+), 11 deletions(-)
 
-     Manuel
+linux-mips-split-r10k-family.patch
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 73983e1..b526133 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -551,6 +551,7 @@ config SGI_IP27
+ 	select HW_HAS_PCI
+ 	select NR_CPUS_DEFAULT_64
+ 	select SYS_HAS_CPU_R10000
++	select SYS_HAS_CPU_R12K_R14K_R16K
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_NUMA
+@@ -612,6 +613,7 @@ config SGI_IP32
+ 	select RM7000_CPU_SCACHE
+ 	select SYS_HAS_CPU_R5000
+ 	select SYS_HAS_CPU_R10000 if BROKEN
++	select SYS_HAS_CPU_R12K_R14K_R16K if BROKEN
+ 	select SYS_HAS_CPU_RM7000
+ 	select SYS_HAS_CPU_NEVADA
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+@@ -1456,7 +1458,18 @@ config CPU_R10000
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_HUGEPAGES
+ 	help
+-	  MIPS Technologies R10000-series processors.
++	  MIPS Technologies R10000 processor.
++
++config CPU_R12K_R14K_R16K
++	bool "R12k/R14k/R16k"
++	depends on SYS_HAS_CPU_R12K_R14K_R16K
++	select CPU_HAS_PREFETCH
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_64BIT_KERNEL
++	select CPU_SUPPORTS_HIGHMEM
++	select CPU_SUPPORTS_HUGEPAGES
++	help
++	  MIPS Technologies R12k/R14k/R16k-series processors.
+ 
+ config CPU_RM7000
+ 	bool "RM7000"
+@@ -1704,6 +1717,9 @@ config SYS_HAS_CPU_R8000
+ config SYS_HAS_CPU_R10000
+ 	bool
+ 
++config SYS_HAS_CPU_R12K_R14K_R16K
++	bool
++
+ config SYS_HAS_CPU_RM7000
+ 	bool
+ 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 37fce70..abccbb2 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -176,6 +176,9 @@ cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-mno-mips3d)
+ cflags-$(CONFIG_CPU_R8000)	+= -march=r8000 -Wa,--trap
+ cflags-$(CONFIG_CPU_R10000)	+= $(call cc-option,-march=r10000,-march=r8000) \
+ 			-Wa,--trap
++cflags-$(CONFIG_CPU_R12K_R14K_R16K)	+= $(call cc-option,-march=r12000,-march=r8000) \
++			$(call cc-option,-mno-fix-r10000,) \
++			-Wa,--trap
+ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += $(call cc-option,-march=octeon) -Wa,--trap
+ ifeq (,$(findstring march=octeon, $(cflags-$(CONFIG_CPU_CAVIUM_OCTEON))))
+ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
+diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
+index e3ee92d..0b565e5 100644
+--- a/arch/mips/include/asm/hazards.h
++++ b/arch/mips/include/asm/hazards.h
+@@ -138,7 +138,8 @@ do {									\
+ 
+ #elif defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_CPU_CAVIUM_OCTEON) || \
+ 	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_R10000) || \
+-	defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_XLR)
++	defined(CONFIG_CPU_R12K_R14K_R16K) || defined(CONFIG_CPU_R5500) || \
++	defined(CONFIG_CPU_XLR)
+ 
+ /*
+  * R10000 rocks - all hazards handled in hardware, so this becomes a nobrainer.
+diff --git a/arch/mips/include/asm/mach-ip27/war.h b/arch/mips/include/asm/mach-ip27/war.h
+index 4ee0e4b..e901a81 100644
+--- a/arch/mips/include/asm/mach-ip27/war.h
++++ b/arch/mips/include/asm/mach-ip27/war.h
+@@ -18,7 +18,12 @@
+ #define MIPS_CACHE_SYNC_WAR		0
+ #define TX49XX_ICACHE_INDEX_INV_WAR	0
+ #define ICACHE_REFILLS_WORKAROUND_WAR	0
+-#define R10000_LLSC_WAR			1
+ #define MIPS34K_MISSED_ITLB_WAR		0
+ 
++#ifdef CONFIG_CPU_R10000
++#define R10000_LLSC_WAR			1
++#else
++#define R10000_LLSC_WAR			0
++#endif
++
+ #endif /* __ASM_MIPS_MACH_IP27_WAR_H */
+diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
+index 800fe57..394dee4 100644
+--- a/arch/mips/include/asm/module.h
++++ b/arch/mips/include/asm/module.h
+@@ -118,6 +118,8 @@ search_module_dbetables(unsigned long addr)
+ #define MODULE_PROC_FAMILY "R8000 "
+ #elif defined CONFIG_CPU_R10000
+ #define MODULE_PROC_FAMILY "R10000 "
++#elif defined CONFIG_CPU_R12K_R14K_R16K
++#define MODULE_PROC_FAMILY "R12K/R14K/R16K "
+ #elif defined CONFIG_CPU_RM7000
+ #define MODULE_PROC_FAMILY "RM7000 "
+ #elif defined CONFIG_CPU_SB1
+diff --git a/arch/mips/sgi-ip27/Platform b/arch/mips/sgi-ip27/Platform
+index 1fb9c2e..4ad7060 100644
+--- a/arch/mips/sgi-ip27/Platform
++++ b/arch/mips/sgi-ip27/Platform
+@@ -6,14 +6,15 @@
+ # be 16kb aligned or the handling of the current variable will break.
+ #
+ ifdef CONFIG_SGI_IP27
+-platform-$(CONFIG_SGI_IP27)	+= sgi-ip27/
+-cflags-$(CONFIG_SGI_IP27)	+= -I$(srctree)/arch/mips/include/asm/mach-ip27
++platform-$(CONFIG_SGI_IP27)		+= sgi-ip27/
++cflags-$(CONFIG_SGI_IP27)		+= -I$(srctree)/arch/mips/include/asm/mach-ip27
++cflags-$(CONFIG_CPU_R12K_R14K_R16K)	+= -mno-fix-r10000
+ ifdef CONFIG_MAPPED_KERNEL
+-load-$(CONFIG_SGI_IP27)		+= 0xc00000004001c000
+-OBJCOPYFLAGS			:= --change-addresses=0x3fffffff80000000
+-dataoffset-$(CONFIG_SGI_IP27)	+= 0x01000000
++load-$(CONFIG_SGI_IP27)			+= 0xc00000004001c000
++OBJCOPYFLAGS				:= --change-addresses=0x3fffffff80000000
++dataoffset-$(CONFIG_SGI_IP27)		+= 0x01000000
+ else
+-load-$(CONFIG_SGI_IP27)		+= 0xa80000000001c000
+-OBJCOPYFLAGS			:= --change-addresses=0x57ffffff80000000
++load-$(CONFIG_SGI_IP27)			+= 0xa80000000001c000
++OBJCOPYFLAGS				:= --change-addresses=0x57ffffff80000000
+ endif
+ endif
+diff --git a/arch/mips/sgi-ip32/Platform b/arch/mips/sgi-ip32/Platform
+index 0fea556..5899305 100644
+--- a/arch/mips/sgi-ip32/Platform
++++ b/arch/mips/sgi-ip32/Platform
+@@ -8,4 +8,6 @@
+ #
+ platform-$(CONFIG_SGI_IP32)	+= sgi-ip32/
+ cflags-$(CONFIG_SGI_IP32)	+= -I$(srctree)/arch/mips/include/asm/mach-ip32
++cflags-$(CONFIG_CPU_R10000)		+= -mr10k-cache-barrier=load-store
++cflags-$(CONFIG_CPU_R12K_R14K_R16K)	+= -mno-fix-r10000 -mr10k-cache-barrier=load-store
+ load-$(CONFIG_SGI_IP32)		+= 0xffffffff80004000
+diff --git a/drivers/video/fbdev/gbefb.c b/drivers/video/fbdev/gbefb.c
+index 6d9ef39..c5dc991 100644
+--- a/drivers/video/fbdev/gbefb.c
++++ b/drivers/video/fbdev/gbefb.c
+@@ -47,7 +47,7 @@ struct gbefb_par {
+ 
+ /* macro for fastest write-though access to the framebuffer */
+ #ifdef CONFIG_MIPS
+-#ifdef CONFIG_CPU_R10000
++#if defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_R12K_R14K_R16K)
+ #define pgprot_fb(_prot) (((_prot) & (~_CACHE_MASK)) | _CACHE_UNCACHED_ACCELERATED)
+ #else
+ #define pgprot_fb(_prot) (((_prot) & (~_CACHE_MASK)) | _CACHE_CACHABLE_NO_WA)

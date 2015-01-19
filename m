@@ -1,46 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 20:12:22 +0100 (CET)
-Received: from pandora.arm.linux.org.uk ([78.32.30.218]:36730 "EHLO
-        pandora.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011712AbbASTMV14MVJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 20:12:21 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=pandora-2014;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=zKD+egPQ1/i5nlFpukJ2HwfUE9lHw8Cj5V394OQWvCE=;
-        b=HT2YJsWeLyRu08vEPFbfVtLuWPSYM4QsK7tECKB0Gl/sYRjnmmEKfYyjv1zAi1WkzvUyML4LPSrmg2f2AHNr4jIxYQqubIRK2nk8ui0WYQOXm2/lhosLDhrKtSYaoVDDcZrAOueKbDD3pGKJDeRnJSF5UOnVGwtpm/q1in1zOuk=;
-Received: from n2100.arm.linux.org.uk ([fd8f:7570:feb6:1:214:fdff:fe10:4f86]:34586)
-        by pandora.arm.linux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1YDHkE-00081B-V3; Mon, 19 Jan 2015 19:12:15 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1YDHkB-00006F-J4; Mon, 19 Jan 2015 19:12:12 +0000
-Date:   Mon, 19 Jan 2015 19:12:10 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, Jean Delvare <jdelvare@suse.de>
-Subject: Re: [PATCH] i2c: drop ancient protection against sysfs refcounting
- issues
-Message-ID: <20150119191210.GE26493@n2100.arm.linux.org.uk>
-References: <1421693756-12917-1-git-send-email-wsa@the-dreams.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2015 20:13:33 +0100 (CET)
+Received: from mail-la0-f54.google.com ([209.85.215.54]:60208 "EHLO
+        mail-la0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011712AbbASTNbNUFlj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jan 2015 20:13:31 +0100
+Received: by mail-la0-f54.google.com with SMTP id pv20so30477838lab.13;
+        Mon, 19 Jan 2015 11:13:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=MAe22jmegcQi+lV07TkXrcazbNxAWKeXU043U1AUsnE=;
+        b=f/UgoD2B4NrfBR4TdTA79c/1ItKull/G7XYw3aQATpT+mp0CfK2iPQvmXs7oSQDK5T
+         aDeIvkhu/6c+ZQGVJh5BgAujCZS4GzPdIFDaT2eBI7pKFvf4JeCfLhVlfbt5bEg+eISh
+         ENYbr/LFTS/Ixndcj2hZd7ZgWRAhEmSsG20pr+JZua2SaGhRdMRnNrfk+LasK25iM5qt
+         /a6B1+7NZYxYLel7J/o0ZLqu2dXJtseNaUp02J3NH11ZBwLE5LD/65mtHoZj4fdff6zt
+         uBo008poMmEe/+4R8EiMl7zV7IsFZUfJnuov3ysbg5ZjTs321CKWy7BqmG+fa+ZzlNoB
+         V5cA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1421693756-12917-1-git-send-email-wsa@the-dreams.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
+X-Received: by 10.152.8.82 with SMTP id p18mr25219484laa.25.1421694805858;
+ Mon, 19 Jan 2015 11:13:25 -0800 (PST)
+Received: by 10.152.106.178 with HTTP; Mon, 19 Jan 2015 11:13:25 -0800 (PST)
+In-Reply-To: <CAMuHMdXMsxhcD9C079YPc6Toxdo0e23oqM_9KeSG=NrFa4auRQ@mail.gmail.com>
+References: <1415342669-30640-1-git-send-email-cernekee@gmail.com>
+        <1415342669-30640-2-git-send-email-cernekee@gmail.com>
+        <CAMuHMdW+L8YbE8Z8jrtnm8xWk63sRGaFdM7TPM6MmrDg9XwHuQ@mail.gmail.com>
+        <20141114163843.GH29662@linux-mips.org>
+        <20141114170525.GL3698@titan.lakedaemon.net>
+        <CAMuHMdXMsxhcD9C079YPc6Toxdo0e23oqM_9KeSG=NrFa4auRQ@mail.gmail.com>
+Date:   Mon, 19 Jan 2015 20:13:25 +0100
+X-Google-Sender-Auth: juuyVqQ0_k8Qs29_xQE0a7KeXiA
+Message-ID: <CAMuHMdUpxURV4ztpa3x0TORsSWtxiKxe6_EDO5QsO_vhedip0A@mail.gmail.com>
+Subject: Re: [PATCH V4 01/14] sh: Eliminate unused irq_reg_{readl,writel} accessors
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Jason Cooper <jason@lakedaemon.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45326
+X-archive-position: 45327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,15 +67,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 19, 2015 at 07:55:56PM +0100, Wolfram Sang wrote:
-> Back in the days, sysfs seemed to have refcounting issues and subsystems
-> needed a completion to be safe. This is not the case anymore, so I2C can
-> get rid of this code. There is noone else besides I2C doing something
-> like this currently (checked with the attached coccinelle script which
-> checks if a release function exists and if it contains a completion).
+Hi Jason,
 
-Have you validated this with DEBUG_KOBJECT_RELEASE enabled?
+On Sun, Nov 16, 2014 at 10:34 AM, Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> Hi Jason,
+>
+> On Fri, Nov 14, 2014 at 6:05 PM, Jason Cooper <jason@lakedaemon.net> wrote:
+>> On Fri, Nov 14, 2014 at 05:38:44PM +0100, Ralf Baechle wrote:
+>>> On Mon, Nov 10, 2014 at 09:13:49AM +0100, Geert Uytterhoeven wrote:
+>>>
+>>> > On Fri, Nov 7, 2014 at 7:44 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+>>> > > Defining these macros way down in arch/sh/.../irq.c doesn't cause
+>>> > > kernel/irq/generic-chip.c to use them.  As far as I can tell this code
+>>> > > has no effect.
+>>> > >
+>>> > > Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+>>> >
+>>> > Compared preprocessor and asm output before and after, no difference
+>>> > except for line numbers, so
+>>> >
+>>> > Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>>>
+>>> I noticed the remainder of of this series is now in Jason Cooper's irqchip
+>>> tree.  Is anybody still taking care of SH?  If not I can funnel it
+>>> through the MIPS tree.
+>>
+>> Are the SH maintainers active?  I admit I know very little about the
+>> arch.  I'm more than happy to pick it up and keep it with the rest of
+>> the series, I just didn't want to step on toes...
+>
+> SH is orphaned, so it would be great if you could pick it up.
+> Thanks!
 
--- 
-FTTC broadband for 0.8mile line: currently at 10.5Mbps down 400kbps up
-according to speedtest.net.
+I think you forgot to pick it up, as se7343 and se7722 are still broken:
+
+http://kisskb.ellerman.id.au/kisskb/buildresult/12346740/
+http://kisskb.ellerman.id.au/kisskb/buildresult/12346745/
+
+Will you still do so, or shall I forward the patch to Andrew Morton?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

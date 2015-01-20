@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 02:07:52 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:42635 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 02:22:28 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:42761 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011913AbbATBHtuFaTa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 02:07:49 +0100
-Date:   Tue, 20 Jan 2015 01:07:49 +0000 (GMT)
+        by eddie.linux-mips.org with ESMTP id S27011719AbbATBWYtnPAA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 02:22:24 +0100
+Date:   Tue, 20 Jan 2015 01:22:24 +0000 (GMT)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Markos Chandras <markos.chandras@imgtec.com>
-cc:     linux-mips@linux-mips.org,
+cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
         Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH RFC v2 26/70] MIPS: kernel: cpu-bugs64: Do not check R6
- cores for existing 64-bit bugs
-In-Reply-To: <1421405389-15512-27-git-send-email-markos.chandras@imgtec.com>
-Message-ID: <alpine.LFD.2.11.1501200105220.28301@eddie.linux-mips.org>
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-27-git-send-email-markos.chandras@imgtec.com>
+Subject: Re: [PATCH RFC v2 27/70] MIPS: kernel: cevt-r4k: Add MIPS R6 to the
+ c0_compare_interrupt handler
+In-Reply-To: <1421405389-15512-28-git-send-email-markos.chandras@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1501200110040.28301@eddie.linux-mips.org>
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-28-git-send-email-markos.chandras@imgtec.com>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -20,7 +20,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45345
+X-archive-position: 45346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,17 +41,16 @@ On Fri, 16 Jan 2015, Markos Chandras wrote:
 
 > From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 > 
-> The current HW bugs checked in cpu-bugs64, do not apply to R6 cores
-> and they cause compilation problems due to removed <R6 instructions,
-> so do not check for them for the time being.
+> Just like MIPS R2, in MIPS R6 it is possible to determine if a
+> timer interrupt has happened or not.
 > 
 > Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 > ---
 
-Reviewed-by: Maciej W. Rozycki <macro@linux-mips.org>
-
-We might even want to limit these errata checks further, to reduce code 
-size for people who won't ever care.  No need to rush doing that though.
+ While a preexisting bug, this is simply not true, there's CP0.Cause.TI to 
+examine for a timer interrupt pending.  Please fix your change to use 
+`c0_compare_int_pending' instead and synchronise with stuff posted by 
+James (cc-ed) at <http://patchwork.linux-mips.org/patch/8900/>.
 
   Maciej

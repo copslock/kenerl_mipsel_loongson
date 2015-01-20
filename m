@@ -1,41 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 11:12:38 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28524 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011100AbbATKMgb7wsK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 11:12:36 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9B9212E0EA186;
-        Tue, 20 Jan 2015 10:12:28 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 20 Jan 2015 10:12:30 +0000
-Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 20 Jan
- 2015 10:12:26 +0000
-Message-ID: <54BE2A0B.8010500@imgtec.com>
-Date:   Tue, 20 Jan 2015 10:12:27 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 11:18:06 +0100 (CET)
+Received: from pandora.arm.linux.org.uk ([78.32.30.218]:38331 "EHLO
+        pandora.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011100AbbATKSEsPuJe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 11:18:04 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=pandora-2014;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=3O7/Y3iWVx1ioOPkK663hKPcepYmciHRCmut+uYSMXc=;
+        b=FwsvteSVwV1HmTFKZAYEJCSnpNa5rtI3sSyem8opOS+JX4LSoO0fk6qmCA3sObo7ZoOH8rvNFSP4IeB3h44d5LE3TvZZYg5jJyayHrUKQM7ZTpMJTYl0rGuyFErpq4zvWvNs7ahaGvyHRa7DM8xKUqlb6KBUzGz4u0rzrt4Bof0=;
+Received: from n2100.arm.linux.org.uk ([fd8f:7570:feb6:1:214:fdff:fe10:4f86]:36435)
+        by pandora.arm.linux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1YDVsh-0005OK-Kj; Tue, 20 Jan 2015 10:17:55 +0000
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1YDVse-00014D-Kp; Tue, 20 Jan 2015 10:17:52 +0000
+Date:   Tue, 20 Jan 2015 10:17:52 +0000
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-mips@linux-mips.org,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+        linux-kernel@vger.kernel.org, Julia Lawall <julia.lawall@lip6.fr>,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, Jean Delvare <jdelvare@suse.de>
+Subject: Re: [PATCH] i2c: drop ancient protection against sysfs refcounting
+ issues
+Message-ID: <20150120101752.GI26493@n2100.arm.linux.org.uk>
+References: <1421693756-12917-1-git-send-email-wsa@the-dreams.de>
+ <20150119190142.GA9451@kroah.com>
+ <20150119230427.GH26493@n2100.arm.linux.org.uk>
+ <20150120014159.GA3349@kroah.com>
+ <54BDFE30.5090303@metafoo.de>
+ <20150120071256.GA18983@kroah.com>
 MIME-Version: 1.0
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH RFC v2 19/70] MIPS: Use the new "ZC" constraint for MIPS
- R6
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-20-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501200015580.28301@eddie.linux-mips.org> <6D39441BF12EF246A7ABCE6654B0235320FAC20A@LEMAIL01.le.imgtec.org> <54BE217D.3060508@imgtec.com> <6D39441BF12EF246A7ABCE6654B0235320FAC32D@LEMAIL01.le.imgtec.org>
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320FAC32D@LEMAIL01.le.imgtec.org>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150120071256.GA18983@kroah.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45361
+X-archive-position: 45362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,86 +58,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/20/2015 10:08 AM, Matthew Fortune wrote:
-> Markos Chandras <Markos.Chandras@imgtec.com> writes:
->> On 01/20/2015 09:11 AM, Matthew Fortune wrote:
->>> Maciej W. Rozycki <macro@linux-mips.org> writes:
->>>> On Fri, 16 Jan 2015, Markos Chandras wrote:
->>>>
->>>>> GCC versions supporting MIPS R6 use the ZC constraint to enforce a
->>>>> 9-bit offset for MIPS R6. We will use that for all MIPS R6 LL/SC
->>>>> instructions.
->>>>>
->>>>> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
->>>>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->>>>> ---
->>>>>  arch/mips/include/asm/compiler.h | 10 +++++++++-
->>>>>  1 file changed, 9 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/arch/mips/include/asm/compiler.h
->>>> b/arch/mips/include/asm/compiler.h
->>>>> index c73815e0123a..8f8ed0245a09 100644
->>>>> --- a/arch/mips/include/asm/compiler.h
->>>>> +++ b/arch/mips/include/asm/compiler.h
->>>>> @@ -16,12 +16,20 @@
->>>>>  #define GCC_REG_ACCUM "accum"
->>>>>  #endif
->>>>>
->>>>> +#ifdef CONFIG_CPU_MIPSR6
->>>>> +/*
->>>>> + * GCC uses ZC for MIPS R6 to indicate a 9-bit offset although
->>>>> + * the macro name is a bit misleading
->>>>> + */
->>>>> +#define GCC_OFF12_ASM() "ZC"
->>>>> +#else
->>>>>  #ifndef CONFIG_CPU_MICROMIPS
->>>>>  #define GCC_OFF12_ASM() "R"
->>>>>  #elif __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9)
->>>>>  #define GCC_OFF12_ASM() "ZC"
->>>>>  #else
->>>>>  #error "microMIPS compilation unsupported with GCC older than 4.9"
->>>>> -#endif
->>>>> +#endif /* CONFIG_CPU_MICROMIPS */
->>>>> +#endif /* CONFIG_CPU_MIPSR6 */
->>>>>
->>>>>  #endif /* _ASM_COMPILER_H */
->>>>
->>>>  I'd prefer to have a GCC version trap here just like with the
->> microMIPS
->>>> constraint.  What is the first upstream version to support R6?  5.0?
->>>
->>> Correct.
->>
->> We have tools out there based on 4.9. If we make gcc < 5.0 to fail with
->> R6, then nobody will be able to build it until 5.0 is released.
->> Perhaps it makes sense to add some checks in arch/mips/Makefile, see if
->> our gcc supports -mips32r6 or something and then decide what to do.
+On Tue, Jan 20, 2015 at 03:12:56PM +0800, Greg Kroah-Hartman wrote:
+> On Tue, Jan 20, 2015 at 08:05:20AM +0100, Lars-Peter Clausen wrote:
+> > On 01/20/2015 02:41 AM, Greg Kroah-Hartman wrote:
+> > >On Mon, Jan 19, 2015 at 11:04:27PM +0000, Russell King - ARM Linux wrote:
+> > >>On Tue, Jan 20, 2015 at 03:01:42AM +0800, Greg Kroah-Hartman wrote:
+> > >>>On Mon, Jan 19, 2015 at 07:55:56PM +0100, Wolfram Sang wrote:
+> > >>>>diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+> > >>>>index 39d25a8cb1ad..15cc5902cf89 100644
+> > >>>>--- a/drivers/i2c/i2c-core.c
+> > >>>>+++ b/drivers/i2c/i2c-core.c
+> > >>>>@@ -41,7 +41,6 @@
+> > >>>>  #include <linux/of_device.h>
+> > >>>>  #include <linux/of_irq.h>
+> > >>>>  #include <linux/clk/clk-conf.h>
+> > >>>>-#include <linux/completion.h>
+> > >>>>  #include <linux/hardirq.h>
+> > >>>>  #include <linux/irqflags.h>
+> > >>>>  #include <linux/rwsem.h>
+> > >>>>@@ -1184,8 +1183,7 @@ EXPORT_SYMBOL_GPL(i2c_new_dummy);
+> > >>>>
+> > >>>>  static void i2c_adapter_dev_release(struct device *dev)
+> > >>>>  {
+> > >>>>-	struct i2c_adapter *adap = to_i2c_adapter(dev);
+> > >>>>-	complete(&adap->dev_released);
+> > >>>>+	/* empty, but the driver core insists we need a release function */
+> > >>>
+> > >>>Yeah, it does, but I hate to see this in "real" code as something is
+> > >>>probably wrong with it if it happens.
+> > >>>
+> > >>>Please move the rest of 'i2c_del_adapter' into the release function
+> > >>>(what was after the wait_for_completion() call), and then all should be
+> > >>>fine.
+> > >>
+> > >>Are you sure about that?  Some drivers do this, eg,
+> > >>
+> > >>         i2c_del_adapter(&drv_data->adapter);
+> > >>         free_irq(drv_data->irq, drv_data);
+> > >>
+> > >>where drv_data was allocated using devm_kzalloc(), and so will be
+> > >>released when the ->remove callback (which calls the above
+> > >>i2c_del_adapter()) returns... freeing the embedded device struct.
+> > >
+> > >But that will fail today if the memory is freed in i2c_del_adapter(), so
+> > >there shouldn't be any change in logic here.
+> > >
+> > >Or am I missing something obvious?
+> > 
+> > The memory is not freed in i2c_del_adapter().
 > 
-> Indeed, I think it is worthwhile supporting the use of tools which have R6
-> backported to them owing to long lead times for new versions of GCC to be
-> released.
-> 
-> I think you could actually just switch the check around and remove the
-> check for micromips entirely, putting the GCC 4.9 check first:
-> 
-> #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9)
-> #define GCC_OFF12_ASM() "ZC"
-> #else
-> #define GCC_OFF12_ASM() "R"
-> #endif
-> 
-> From what I can see this is safe. It was presumably written with a micromips
-> check out of caution to not change older non-micromips code-gen but that
-> doesn't seem particularly important. It is an improvement to older code if
-> anything.
-> 
-> Matthew
-> 
+> Right, and I'm not saying it should be, just move the existing logic
+> into the release callback, and the code flow should be the same and we
+> don't end up with an "empty" release callback.
 
-For non-micromips kernel, this will start using "ZC" instead of "R",
-whereas before, it only used "ZC" for micromips and "R" for everything
-else. Is that safe? Maciej was the one committed this code, so if that's
-still safe, then I will change it as requested.
+IMHO there are two possibilities here:
+
+1. leave it as-is, where we ensure that the remainder of i2c_del_adapter
+   does not complete until the release callback has been called.
+
+2. fix it properly by taking (eg) the netdev approach to i2c_adapter,
+   or an alternative solution which results in decoupling the lifetime
+   of the struct device from the i2c_adapter.
+
+Either of these would be much better than removing the completion and
+then moving a chunk of code to make it "look" safer than it actually is
+and thereby introducing potential use-after-free bugs.
 
 -- 
-markos
+FTTC broadband for 0.8mile line: currently at 10.5Mbps down 400kbps up
+according to speedtest.net.

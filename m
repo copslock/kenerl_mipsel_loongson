@@ -1,43 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 23:20:32 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:50187 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011955AbbATWUaWqi-w (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Jan 2015 23:20:30 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id t0KMKTXD019352;
-        Tue, 20 Jan 2015 23:20:29 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id t0KMKSEs019351;
-        Tue, 20 Jan 2015 23:20:28 +0100
-Date:   Tue, 20 Jan 2015 23:20:28 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-mips@linux-mips.org,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>
-Subject: Re: [PATCH RFC v2 24/70] MIPS: asm: spinlock: Replace sub
- instruction with addiu
-Message-ID: <20150120222028.GI1205@linux-mips.org>
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
- <1421405389-15512-25-git-send-email-markos.chandras@imgtec.com>
- <alpine.LFD.2.11.1501200028390.28301@eddie.linux-mips.org>
- <54BE3BFD.5070108@imgtec.com>
- <54BE8DC7.4030009@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 00:05:42 +0100 (CET)
+Received: from mail-ig0-f170.google.com ([209.85.213.170]:40716 "EHLO
+        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011713AbbATXFkh0Gg6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 00:05:40 +0100
+Received: by mail-ig0-f170.google.com with SMTP id l13so19083155iga.1;
+        Tue, 20 Jan 2015 15:05:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=laI+Hey3xCrCnY6lQnJI3xB6WVzk6fhL/YS3E74oXrg=;
+        b=Qh//YAQ2irTaMUXouYNWrR/eNYiC6jqLZ5JsHjwIs5DB/glYfupoF92i7zE1r8V61v
+         gZk2mCYh1Vz7D2LOua4vNFfFHmF5idYod4G94n9ucCtETKoYj40R/JMO6KAO+dqb/5K3
+         jQj9kQEJ/YxZ97VeJsjHFVJSQyRWCj/nrmO3Ih724lPMbCL/HbHrSg6k3/uqn+n1Fu/n
+         5doHhaQZVUePclr527kY6O46f/vILy/vO4ceAjmH2QUD0unwaoGG35TvHe5ccvbP/KzD
+         Sp3Fl97qteZkKYcl2hpKl/D58VSCYoMqEn74lL7DUoDsNn2Gzg0xq3/ef8hwfJX0/7op
+         8/LQ==
+X-Received: by 10.50.67.18 with SMTP id j18mr30319917igt.26.1421795134552;
+        Tue, 20 Jan 2015 15:05:34 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id g20sm4007964igt.14.2015.01.20.15.05.33
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 20 Jan 2015 15:05:33 -0800 (PST)
+Message-ID: <54BEDF3C.6040105@gmail.com>
+Date:   Tue, 20 Jan 2015 15:05:32 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54BE8DC7.4030009@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Joshua Kinard <kumba@gentoo.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Display CPU byteorder in /proc/cpuinfo
+References: <54BCC827.3020806@gentoo.org>
+In-Reply-To: <54BCC827.3020806@gentoo.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45376
+X-archive-position: 45377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,53 +56,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 20, 2015 at 09:17:59AM -0800, David Daney wrote:
+On 01/19/2015 01:02 AM, Joshua Kinard wrote:
+> From: Joshua Kinard <kumba@gentoo.org>
+>
+> This is a small patch to display the CPU byteorder that the kernel was compiled
+> with in /proc/cpuinfo.
 
-> >>>sub $reg, imm is not a real MIPS instruction. The assembler replaces
-> >>>that with 'addi $reg, -imm'. However, addi has been removed from R6,
-> >>>so we replace the 'sub' instruction with 'addiu' instead.
-> >>>
-> >>>Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> >>>---
-> >>>  arch/mips/include/asm/spinlock.h | 2 +-
-> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>>diff --git a/arch/mips/include/asm/spinlock.h b/arch/mips/include/asm/spinlock.h
-> >>>index c6d06d383ef9..500050d3bda6 100644
-> >>>--- a/arch/mips/include/asm/spinlock.h
-> >>>+++ b/arch/mips/include/asm/spinlock.h
-> >>>@@ -276,7 +276,7 @@ static inline void arch_read_unlock(arch_rwlock_t *rw)
-> >>>  		do {
-> >>>  			__asm__ __volatile__(
-> >>>  			"1:	ll	%1, %2	# arch_read_unlock	\n"
-> >>>-			"	sub	%1, 1				\n"
-> >>>+			"	addiu	%1, -1				\n"
-> >>>  			"	sc	%1, %0				\n"
-> >>>  			: "=" GCC_OFF12_ASM() (rw->lock), "=&r" (tmp)
-> >>>  			: GCC_OFF12_ASM() (rw->lock)
-> >>
-> >>  This integer overflow trap is deliberate here -- have you seen the note
-> >>just above:
-> >>
-> >>/* Note the use of sub, not subu which will make the kernel die with an
-> >>    overflow exception if we ever try to unlock an rwlock that is already
-> >>    unlocked or is being held by a writer.  */
-> >>
-> 
-> According to a comment on another thread from Ralf, this has been observed
-> in the wild only once.  We can simplify the code and remove that comment.
-> Why not just use the ADDIU and be done with it?
-> 
-> There are many locking and atomic primitives that don't have any such error
-> checking.  What makes the read lock so special that it needs this extra
-> protection?
+What would use this?  Or in other words, why is this needed?
 
-Because I was desparate to find a use for the signed add ;-)
+Userspace C code doesn't need this as it has its own standard ways of 
+determining endianness.
 
-Honestly, it's nice to have such a safeguard if it's available at no
-runtime overhead at all but these days are such nice lock debugging tools
-that the loss won't be missed.  So (cut'n'paste):
+If you need to know as a user you can do:
 
-Why not just use the ADDIU and be done with it?
+    readelf -h /bin/sh | grep Data | cut -d, -f2
 
-  Ralf
+
+>
+> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+> ---
+>   arch/mips/kernel/proc.c |    5 +++++
+>   1 file changed, 5 insertions(+)
+>
+> This patch has been submitted several times prior over the years (I think), but
+> I don't recall what, if any, objections there were to it.
+>
+> linux-mips-proc-cpuinfo-byteorder.patch
+> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+> index 097fc8d..75e6a62 100644
+> --- a/arch/mips/kernel/proc.c
+> +++ b/arch/mips/kernel/proc.c
+> @@ -65,6 +65,11 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+>   	seq_printf(m, "BogoMIPS\t\t: %u.%02u\n",
+>   		      cpu_data[n].udelay_val / (500000/HZ),
+>   		      (cpu_data[n].udelay_val / (5000/HZ)) % 100);
+> +#ifdef __MIPSEB__
+> +	seq_printf(m, "byteorder\t\t: big endian\n");
+> +#else
+> +	seq_printf(m, "byteorder\t\t: little endian\n");
+> +#endif
+>   	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
+>   	seq_printf(m, "microsecond timers\t: %s\n",
+>   		      cpu_has_counter ? "yes" : "no");
+>
+>
+>

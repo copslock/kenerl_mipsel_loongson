@@ -1,31 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 15:46:06 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:48261 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011099AbbATOqAaD7lP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 15:46:00 +0100
-Date:   Tue, 20 Jan 2015 14:46:00 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
-cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH RFC v2 19/70] MIPS: Use the new "ZC" constraint for MIPS
- R6
-In-Reply-To: <alpine.LFD.2.11.1501201433480.28301@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1501201441030.28301@eddie.linux-mips.org>
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-20-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501200015580.28301@eddie.linux-mips.org> <6D39441BF12EF246A7ABCE6654B0235320FAC20A@LEMAIL01.le.imgtec.org>
- <54BE217D.3060508@imgtec.com> <6D39441BF12EF246A7ABCE6654B0235320FAC32D@LEMAIL01.le.imgtec.org> <54BE2A0B.8010500@imgtec.com> <alpine.LFD.2.11.1501201433480.28301@eddie.linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 18:18:10 +0100 (CET)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:54508 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011260AbbATRSHsDqfw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 18:18:07 +0100
+Received: by mail-ig0-f173.google.com with SMTP id a13so18275656igq.0;
+        Tue, 20 Jan 2015 09:18:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=en7MmxQPim1Hrh12oz0T1BiqsmbgptGO6y6Goo3S0pc=;
+        b=Bc3aqLATkhe9ZQVzeOcS4eXp7gxtj/h3gKnrsnMgAiw2WInYH/tiP7HbKvu23BIe+U
+         7RM7xgBq7y5y3zcRBO/sEaUh6BxHHV4/+dh+5E5qZks07SmoXeunxpRVXNmlEGNl83kP
+         1MYiQxJggEdcnwDr+/W2r93D3NYfk6Pn+PL/o0WeHHiF40R43HZPhpL05uCcgsFD7+Nr
+         oN2mMUY5irWpIYqXu462EMn+9xAP5f/mH+cNug8q+l9W8ngVpV1r0eLJV4AGQ9BL8UKs
+         hG+tb0cQWCpMJ9//Gy4Ddekn5NxenWXNGD9nNjmn/fC8d2GEhfuc5qtW+t+dfqvHX28o
+         EDUA==
+X-Received: by 10.50.78.202 with SMTP id d10mr28052847igx.30.1421774281885;
+        Tue, 20 Jan 2015 09:18:01 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id gd4sm3200738igd.11.2015.01.20.09.18.00
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 20 Jan 2015 09:18:00 -0800 (PST)
+Message-ID: <54BE8DC7.4030009@gmail.com>
+Date:   Tue, 20 Jan 2015 09:17:59 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH RFC v2 24/70] MIPS: asm: spinlock: Replace sub instruction
+ with addiu
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-25-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501200028390.28301@eddie.linux-mips.org> <54BE3BFD.5070108@imgtec.com>
+In-Reply-To: <54BE3BFD.5070108@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45373
+X-archive-position: 45374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,43 +59,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 20 Jan 2015, Maciej W. Rozycki wrote:
+On 01/20/2015 03:29 AM, Markos Chandras wrote:
+> On 01/20/2015 01:04 AM, Maciej W. Rozycki wrote:
+>> On Fri, 16 Jan 2015, Markos Chandras wrote:
+>>
+>>> sub $reg, imm is not a real MIPS instruction. The assembler replaces
+>>> that with 'addi $reg, -imm'. However, addi has been removed from R6,
+>>> so we replace the 'sub' instruction with 'addiu' instead.
+>>>
+>>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>>> ---
+>>>   arch/mips/include/asm/spinlock.h | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/mips/include/asm/spinlock.h b/arch/mips/include/asm/spinlock.h
+>>> index c6d06d383ef9..500050d3bda6 100644
+>>> --- a/arch/mips/include/asm/spinlock.h
+>>> +++ b/arch/mips/include/asm/spinlock.h
+>>> @@ -276,7 +276,7 @@ static inline void arch_read_unlock(arch_rwlock_t *rw)
+>>>   		do {
+>>>   			__asm__ __volatile__(
+>>>   			"1:	ll	%1, %2	# arch_read_unlock	\n"
+>>> -			"	sub	%1, 1				\n"
+>>> +			"	addiu	%1, -1				\n"
+>>>   			"	sc	%1, %0				\n"
+>>>   			: "=" GCC_OFF12_ASM() (rw->lock), "=&r" (tmp)
+>>>   			: GCC_OFF12_ASM() (rw->lock)
+>>
+>>   This integer overflow trap is deliberate here -- have you seen the note
+>> just above:
+>>
+>> /* Note the use of sub, not subu which will make the kernel die with an
+>>     overflow exception if we ever try to unlock an rwlock that is already
+>>     unlocked or is being held by a writer.  */
+>>
 
-> > >> We have tools out there based on 4.9. If we make gcc < 5.0 to fail with
-> > >> R6, then nobody will be able to build it until 5.0 is released.
-> > >> Perhaps it makes sense to add some checks in arch/mips/Makefile, see if
-> > >> our gcc supports -mips32r6 or something and then decide what to do.
-> > > 
-> > > Indeed, I think it is worthwhile supporting the use of tools which have R6
-> > > backported to them owing to long lead times for new versions of GCC to be
-> > > released.
-> > > 
-> > > I think you could actually just switch the check around and remove the
-> > > check for micromips entirely, putting the GCC 4.9 check first:
-> > > 
-> > > #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9)
-> > > #define GCC_OFF12_ASM() "ZC"
-> > > #else
-> > > #define GCC_OFF12_ASM() "R"
-> > > #endif
-> > > 
-> > > From what I can see this is safe. It was presumably written with a micromips
-> > > check out of caution to not change older non-micromips code-gen but that
-> > > doesn't seem particularly important. It is an improvement to older code if
-> > > anything.
-> > 
-> > For non-micromips kernel, this will start using "ZC" instead of "R",
-> > whereas before, it only used "ZC" for micromips and "R" for everything
-> > else. Is that safe? Maciej was the one committed this code, so if that's
-> > still safe, then I will change it as requested.
-> 
->  I'm fine with this proposal; a separate Makefile check for 
-> `-march=mips32r6' support would be good too.
+According to a comment on another thread from Ralf, this has been 
+observed in the wild only once.  We can simplify the code and remove 
+that comment.  Why not just use the ADDIU and be done with it?
 
- With such an arrangement there is potential however that it'll break 
-non-microMIPS builds for someone using a 4.9 prerelease that didn't yet 
-have `ZC'.  This is why I arranged the macros like I did in the first 
-place.  So if you are able to keep such an arrangement without 
-complicating the structure too much, then it would be great.
+There are many locking and atomic primitives that don't have any such 
+error checking.  What makes the read lock so special that it needs this 
+extra protection?
 
-  Maciej
+David Daney

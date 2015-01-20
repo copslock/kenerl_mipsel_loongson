@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 03:44:16 +0100 (CET)
-Received: from mail-qc0-f171.google.com ([209.85.216.171]:48140 "EHLO
-        mail-qc0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011181AbbATCoPc0A0k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 03:44:15 +0100
-Received: by mail-qc0-f171.google.com with SMTP id s11so10070799qcv.2;
-        Mon, 19 Jan 2015 18:44:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=b4oHcoVAqOtUTdXnwbVJBRm06cw7faWsHAFm0izyy4I=;
-        b=Zw5DqicO6qugGXWRj6nmvaB+C4u4OqjeYw/bYcHRxPNcBoxeUb/AXvWe/sPNuLLG+l
-         HnZMK9mzhjPpxtIhk/yRthC/phzxB118dxiz/QIi+GRbFIm+gShutZukERMNJuq+33ed
-         f4NnZj8ci+93N2ItJOjX1N4KIFEFew8JCL/vre5VkX8+pk5GPDJ7YN38C/Xdb1/5+Cqq
-         ofKyMTcslAZtXwG6Kf/vv37RlaHc5Zu7UrCLvjSW+5LVEvPThO5xj5OLI7Htknln+AbT
-         GE/WLFfYIBmwcVnx2nNyCoPjL9J+O3fIryIGnVeJ0igt8I76DiSMLO9OgyNfXI25L8YF
-         3i/w==
-X-Received: by 10.140.89.177 with SMTP id v46mr23079926qgd.58.1421721849840;
- Mon, 19 Jan 2015 18:44:09 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2015 03:51:49 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:51140 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011181AbbATCvr57rs0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2015 03:51:47 +0100
+Received: from localhost (unknown [203.117.110.130])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3523C982;
+        Tue, 20 Jan 2015 02:51:40 +0000 (UTC)
+Date:   Tue, 20 Jan 2015 09:41:59 +0800
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
+Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-mips@linux-mips.org,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+        linux-kernel@vger.kernel.org, Julia Lawall <julia.lawall@lip6.fr>,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, Jean Delvare <jdelvare@suse.de>
+Subject: Re: [PATCH] i2c: drop ancient protection against sysfs refcounting
+ issues
+Message-ID: <20150120014159.GA3349@kroah.com>
+References: <1421693756-12917-1-git-send-email-wsa@the-dreams.de>
+ <20150119190142.GA9451@kroah.com>
+ <20150119230427.GH26493@n2100.arm.linux.org.uk>
 MIME-Version: 1.0
-Received: by 10.229.188.138 with HTTP; Mon, 19 Jan 2015 18:43:49 -0800 (PST)
-In-Reply-To: <54BDA7A6.1040506@gentoo.org>
-References: <54BC5E43.8060606@gentoo.org> <CAEdQ38H=bHCYm21LrA=EoENRj8jwKU2jk3u36s+hqfzU0VYQSQ@mail.gmail.com>
- <54BDA7A6.1040506@gentoo.org>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Mon, 19 Jan 2015 18:43:49 -0800
-Message-ID: <CAEdQ38HrwAWmPEFd6V+yxL5pMV-0Wa24Ly_bDPM6qbQD=i5jOQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Add R16000 detection
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <mattst88@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150119230427.GH26493@n2100.arm.linux.org.uk>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45347
+X-archive-position: 45348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,39 +46,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 19, 2015 at 4:56 PM, Joshua Kinard <kumba@gentoo.org> wrote:
-> On 01/19/2015 14:34, Matt Turner wrote:
->> On Sun, Jan 18, 2015 at 5:30 PM, Joshua Kinard <kumba@gentoo.org> wrote:
->>> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
->>> index 5342674..3f334a8 100644
->>> --- a/arch/mips/kernel/cpu-probe.c
->>> +++ b/arch/mips/kernel/cpu-probe.c
->>> @@ -833,8 +833,13 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
->>>                 c->tlbsize = 64;
->>>                 break;
->>>         case PRID_IMP_R14000:
->>> -               c->cputype = CPU_R14000;
->>> -               __cpu_name[cpu] = "R14000";
->>> +               if (((c->processor_id >> 4) & 0x0f) > 2) {
->>> +                       c->cputype = CPU_R16000;
->>> +                       __cpu_name[cpu] = "R16000";
->>> +               } else {
->>> +                       c->cputype = CPU_R14000;
->>> +                       __cpu_name[cpu] = "R14000";
->>> +               }
->>
->> It looks like this is the only hunk that has a functional change, and
->> that is simply setting __cpu_name[cpu] to "R16000"
->>
->> You can do that without adding CPU_R16000 to the enumeration. I don't
->> see that adding it accomplishes anything.
->>
->
-> It mirrors what CPU_R14000 and CPU_R12000 do.  I won't rule out that, down the
-> road, something about the R16K might be different enough from the R14K to
-> require one of these other spots later on, so adding it now isn't going to
-> adversely affect things.
+On Mon, Jan 19, 2015 at 11:04:27PM +0000, Russell King - ARM Linux wrote:
+> On Tue, Jan 20, 2015 at 03:01:42AM +0800, Greg Kroah-Hartman wrote:
+> > On Mon, Jan 19, 2015 at 07:55:56PM +0100, Wolfram Sang wrote:
+> > > diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+> > > index 39d25a8cb1ad..15cc5902cf89 100644
+> > > --- a/drivers/i2c/i2c-core.c
+> > > +++ b/drivers/i2c/i2c-core.c
+> > > @@ -41,7 +41,6 @@
+> > >  #include <linux/of_device.h>
+> > >  #include <linux/of_irq.h>
+> > >  #include <linux/clk/clk-conf.h>
+> > > -#include <linux/completion.h>
+> > >  #include <linux/hardirq.h>
+> > >  #include <linux/irqflags.h>
+> > >  #include <linux/rwsem.h>
+> > > @@ -1184,8 +1183,7 @@ EXPORT_SYMBOL_GPL(i2c_new_dummy);
+> > >  
+> > >  static void i2c_adapter_dev_release(struct device *dev)
+> > >  {
+> > > -	struct i2c_adapter *adap = to_i2c_adapter(dev);
+> > > -	complete(&adap->dev_released);
+> > > +	/* empty, but the driver core insists we need a release function */
+> > 
+> > Yeah, it does, but I hate to see this in "real" code as something is
+> > probably wrong with it if it happens.
+> > 
+> > Please move the rest of 'i2c_del_adapter' into the release function
+> > (what was after the wait_for_completion() call), and then all should be
+> > fine.
+> 
+> Are you sure about that?  Some drivers do this, eg,
+> 
+>         i2c_del_adapter(&drv_data->adapter);
+>         free_irq(drv_data->irq, drv_data);
+> 
+> where drv_data was allocated using devm_kzalloc(), and so will be
+> released when the ->remove callback (which calls the above
+> i2c_del_adapter()) returns... freeing the embedded device struct.
 
-That's justification for removing CPU_R14000 as well, not adding CPU_R16000.
+But that will fail today if the memory is freed in i2c_del_adapter(), so
+there shouldn't be any change in logic here.
 
-Otherwise it's just adding useless code.
+Or am I missing something obvious?
+
+thanks,
+
+greg k-h

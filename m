@@ -1,49 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 00:05:42 +0100 (CET)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:40716 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011713AbbATXFkh0Gg6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 00:05:40 +0100
-Received: by mail-ig0-f170.google.com with SMTP id l13so19083155iga.1;
-        Tue, 20 Jan 2015 15:05:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=laI+Hey3xCrCnY6lQnJI3xB6WVzk6fhL/YS3E74oXrg=;
-        b=Qh//YAQ2irTaMUXouYNWrR/eNYiC6jqLZ5JsHjwIs5DB/glYfupoF92i7zE1r8V61v
-         gZk2mCYh1Vz7D2LOua4vNFfFHmF5idYod4G94n9ucCtETKoYj40R/JMO6KAO+dqb/5K3
-         jQj9kQEJ/YxZ97VeJsjHFVJSQyRWCj/nrmO3Ih724lPMbCL/HbHrSg6k3/uqn+n1Fu/n
-         5doHhaQZVUePclr527kY6O46f/vILy/vO4ceAjmH2QUD0unwaoGG35TvHe5ccvbP/KzD
-         Sp3Fl97qteZkKYcl2hpKl/D58VSCYoMqEn74lL7DUoDsNn2Gzg0xq3/ef8hwfJX0/7op
-         8/LQ==
-X-Received: by 10.50.67.18 with SMTP id j18mr30319917igt.26.1421795134552;
-        Tue, 20 Jan 2015 15:05:34 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id g20sm4007964igt.14.2015.01.20.15.05.33
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 20 Jan 2015 15:05:33 -0800 (PST)
-Message-ID: <54BEDF3C.6040105@gmail.com>
-Date:   Tue, 20 Jan 2015 15:05:32 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 00:32:37 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:50616 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011713AbbATXcf07wE8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 00:32:35 +0100
+Date:   Tue, 20 Jan 2015 23:32:35 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+cc:     linux-mips@linux-mips.org,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH RFC v2 28/70] MIPS: kernel: cpu-probe.c: Add support for
+ MIPS R6
+In-Reply-To: <1421405389-15512-29-git-send-email-markos.chandras@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1501202227140.28301@eddie.linux-mips.org>
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-29-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-To:     Joshua Kinard <kumba@gentoo.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Display CPU byteorder in /proc/cpuinfo
-References: <54BCC827.3020806@gentoo.org>
-In-Reply-To: <54BCC827.3020806@gentoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45377
+X-archive-position: 45378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,48 +37,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/19/2015 01:02 AM, Joshua Kinard wrote:
-> From: Joshua Kinard <kumba@gentoo.org>
->
-> This is a small patch to display the CPU byteorder that the kernel was compiled
-> with in /proc/cpuinfo.
+On Fri, 16 Jan 2015, Markos Chandras wrote:
 
-What would use this?  Or in other words, why is this needed?
+> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> index cc77fdaca0eb..328b61f63430 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -237,6 +237,13 @@ static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
+>  		c->isa_level |= MIPS_CPU_ISA_II | MIPS_CPU_ISA_III;
+>  		break;
+>  
+> +	/* R6 incopatible with everything else */
+> +	case MIPS_CPU_ISA_M64R6:
+> +		c->isa_level |= MIPS_CPU_ISA_M32R6 | MIPS_CPU_ISA_M64R6;
+> +	case MIPS_CPU_ISA_M32R6:
+> +		c->isa_level |= MIPS_CPU_ISA_M32R6;
+> +		/* Break here so we don't add incopatible ISAs */
 
-Userspace C code doesn't need this as it has its own standard ways of 
-determining endianness.
+ Typos here: s/incopatible/incompatible/
 
-If you need to know as a user you can do:
+> @@ -541,7 +554,7 @@ static void decode_configs(struct cpuinfo_mips *c)
+>  	}
+>  
+>  #ifndef CONFIG_MIPS_CPS
+> -	if (cpu_has_mips_r2) {
+> +	if (cpu_has_mips_r2 || cpu_has_mips_r6) {
 
-    readelf -h /bin/sh | grep Data | cut -d, -f2
+ Hmm, maybe define a macro:
 
+#define cpu_has_mips_r2_r6 (cpu_has_mips_r2 | cpu_has_mips_r6)
 
->
-> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-> ---
->   arch/mips/kernel/proc.c |    5 +++++
->   1 file changed, 5 insertions(+)
->
-> This patch has been submitted several times prior over the years (I think), but
-> I don't recall what, if any, objections there were to it.
->
-> linux-mips-proc-cpuinfo-byteorder.patch
-> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-> index 097fc8d..75e6a62 100644
-> --- a/arch/mips/kernel/proc.c
-> +++ b/arch/mips/kernel/proc.c
-> @@ -65,6 +65,11 @@ static int show_cpuinfo(struct seq_file *m, void *v)
->   	seq_printf(m, "BogoMIPS\t\t: %u.%02u\n",
->   		      cpu_data[n].udelay_val / (500000/HZ),
->   		      (cpu_data[n].udelay_val / (5000/HZ)) % 100);
-> +#ifdef __MIPSEB__
-> +	seq_printf(m, "byteorder\t\t: big endian\n");
-> +#else
-> +	seq_printf(m, "byteorder\t\t: little endian\n");
-> +#endif
->   	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
->   	seq_printf(m, "microsecond timers\t: %s\n",
->   		      cpu_has_counter ? "yes" : "no");
->
->
->
+(bitwise OR used to follow our preexisting convention, it often produces 
+shorter and faster code)?  To have it centrally controlled and to shorten 
+source code.  We have precedents already, see the `Shortcuts' section in 
+<asm/cpu-features.h>.
+
+> @@ -1351,7 +1364,8 @@ void cpu_probe(void)
+>  		c->fpu_id = cpu_get_fpu_id();
+>  
+>  		if (c->isa_level & (MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 |
+> -				    MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)) {
+> +				    MIPS_CPU_ISA_M32R6 | MIPS_CPU_ISA_M64R1 |
+> +				    MIPS_CPU_ISA_M64R2 | MIPS_CPU_ISA_M64R6)) {
+
+ Likewise, this could have used `cpu_has_mips_r' as it stands; with the
+R6 update it can be `cpu_has_mips_r1_r2_r6'.
+
+ This uses `c->isa_level' rather than `cpu_data[0].isa_level' that 
+`cpu_has_*' macros use, but that's not a problem as we do not support 
+mixed ISA levels anyway and standardising on these macros makes 
+maintenance easier, e.g. if we decided to actually use 
+`current_cpu_data.isa_level' or suchlike in these macros instead.
+
+ As a side note I can see that as from a96102be, ISA flags are inclusive, 
+so the macros in <asm/cpu-features.h> can and I think should be rearranged 
+and simplified.  E.g. (indentation adjusted, we can afford it now):
+
+#define cpu_has_mips_2_3_4_5	cpu_has_mips_2
+#define cpu_has_mips_3_4_5	cpu_has_mips_3
+
+#define cpu_has_mips_2_3_4_5_r	cpu_has_mips_2
+
+#define cpu_has_mips32		cpu_has_mips32r1
+#define cpu_has_mips64		cpu_has_mips64r1
+
+#define cpu_has_mips_r		cpu_has_mips32r1
+
+etc.  With R6 in the picture I think the `*_r' macros need to go, to avoid 
+confusion; I suggest renaming them to `*_r1_r2' to follow the existing 
+convention.  Then the above macros will look like:
+
+#define cpu_has_mips_2_3_4_5		cpu_has_mips_2
+#define cpu_has_mips_3_4_5		cpu_has_mips_3
+
+#define cpu_has_mips_2_3_4_5_r1_r2	cpu_has_mips_2
+
+#define cpu_has_mips32			(cpu_has_mips32r1 | cpu_has_mips32r6)
+#define cpu_has_mips64			(cpu_has_mips64r1 | cpu_has_mips64r6)
+
+#define cpu_has_mips_r1_r2		cpu_has_mips32r1
+
+etc., plus new ones:
+
+#define cpu_has_mips_r1_r2_r6		(cpu_has_mips32r1 | cpu_has_mips32r6)
+#define cpu_has_mips_r2_r6		(cpu_has_mips32r2 | cpu_has_mips32r6)
+#define cpu_has_mips_r6			cpu_has_mips32r6
+
+etc.
+
+ Thoughts?
+
+  Maciej

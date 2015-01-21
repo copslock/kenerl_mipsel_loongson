@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 12:22:51 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:59541 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011344AbbAULWuOpnyf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 12:22:50 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B807061EE8D93;
-        Wed, 21 Jan 2015 11:22:41 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 21 Jan 2015 11:22:44 +0000
-Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 21 Jan
- 2015 11:22:42 +0000
-Message-ID: <54BF8C02.7020602@imgtec.com>
-Date:   Wed, 21 Jan 2015 11:22:42 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 12:27:04 +0100 (CET)
+Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:60162 "EHLO
+        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011344AbbAUL1DHrxK4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 12:27:03 +0100
+Received: from resomta-ch2-07v.sys.comcast.net ([69.252.207.103])
+        by resqmta-ch2-02v.sys.comcast.net with comcast
+        id ibSw1p0032EPM3101bSwgt; Wed, 21 Jan 2015 11:26:56 +0000
+Received: from [192.168.1.13] ([73.212.71.42])
+        by resomta-ch2-07v.sys.comcast.net with comcast
+        id ibSv1p00E0uk1nt01bSwrL; Wed, 21 Jan 2015 11:26:56 +0000
+Message-ID: <54BF8CF7.407@gentoo.org>
+Date:   Wed, 21 Jan 2015 06:26:47 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH RFC v2 28/70] MIPS: kernel: cpu-probe.c: Add support for
- MIPS R6
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-29-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501202227140.28301@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1501202227140.28301@eddie.linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"
+To:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        David Daney <ddaney.cavm@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Display CPU byteorder in /proc/cpuinfo
+References: <54BCC827.3020806@gentoo.org> <54BEDF3C.6040105@gmail.com> <54BF12B9.8000507@gentoo.org> <54BF14D2.70006@gentoo.org> <54BF7DE6.6050704@imgtec.com>
+In-Reply-To: <54BF7DE6.6050704@imgtec.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1421839616;
+        bh=tfraweSpEeiuAgKV56edAYJeGjThkQBUYRdKhO9JOTg=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=IHXfqa5cCxzvzFpzzHF91dGQdhCjcptSjsPB72S0HXxiJyHSjytrtMqYU6tf4T1Dx
+         2pBBb4u0XRYOsD9CUnhuFTcn+z8JmSBMyauK57JYAWxbU2dfZxLhJUEJuT2xaxI3tv
+         AcqaGUHkA9q+fA3ggVFe1FFbhYd4NtrFfMBjuj/zttOwQISsG8w3S5ithHxlcazA/T
+         AqaEOdRxDJlGHkqs5fZ8F+kSnroDKJ7QOxSWraFAZB5orMjydUqniNau0l6ImTLczF
+         JsOvhFvm15wbaI6L9AT3ANpOmZPin+KLTEk9gOoBOV3dDTmP162FPbK3SOr+j6dCy7
+         a5STkQWI1Ei3A==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45398
+X-archive-position: 45399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,110 +55,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/20/2015 11:32 PM, Maciej W. Rozycki wrote:
-> On Fri, 16 Jan 2015, Markos Chandras wrote:
+On 01/21/2015 05:22, Markos Chandras wrote:
+> On 01/21/2015 02:54 AM, Joshua Kinard wrote:
+>> On 01/20/2015 21:45, Joshua Kinard wrote:
+>>> On 01/20/2015 18:05, David Daney wrote:
+>>>> On 01/19/2015 01:02 AM, Joshua Kinard wrote:
+>>>>> From: Joshua Kinard <kumba@gentoo.org>
+>>>>>
+>>>>> This is a small patch to display the CPU byteorder that the kernel was compiled
+>>>>> with in /proc/cpuinfo.
+>>>>
+>>>> What would use this?  Or in other words, why is this needed?
+>>>
+>>> It was a patch I started including years ago in Gentoo's mips-sources, and just
+>>> never thought much about.  I know it was submitted several times in the past,
+>>> but I can't recall what, if any objection was ever made.  No harm in sending it
+>>> in again...
+>>
+>> Clarification, submitted several times in the past by others.  I think I sent
+>> it in once prior, but never got review or feedback.
+>>
+> I believe this patch is mostly useful for cores that can boot in both LE
+> and BE so being able to tell the byteorder from cpuinfo can be helpful
+> at times. Having readelf and other tools in your userland may not always
+> be the case, but you surely have "cat" :)
 > 
->> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
->> index cc77fdaca0eb..328b61f63430 100644
->> --- a/arch/mips/kernel/cpu-probe.c
->> +++ b/arch/mips/kernel/cpu-probe.c
->> @@ -237,6 +237,13 @@ static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
->>  		c->isa_level |= MIPS_CPU_ISA_II | MIPS_CPU_ISA_III;
->>  		break;
->>  
->> +	/* R6 incopatible with everything else */
->> +	case MIPS_CPU_ISA_M64R6:
->> +		c->isa_level |= MIPS_CPU_ISA_M32R6 | MIPS_CPU_ISA_M64R6;
->> +	case MIPS_CPU_ISA_M32R6:
->> +		c->isa_level |= MIPS_CPU_ISA_M32R6;
->> +		/* Break here so we don't add incopatible ISAs */
+> So that patch looks good to me but i think the #ifdefs can be avoided.
+> Can we use
 > 
->  Typos here: s/incopatible/incompatible/
+> if (config_enabled(CONFIG_CPU_BIG_ENDIAN) {
+> } else {
+> }
+> 
+> stuff instead?
 
-Ok thanks
+Sure, I just tested on the Octane, and it works fine.  I'll send a v2 shortly.
 
-> 
->> @@ -541,7 +554,7 @@ static void decode_configs(struct cpuinfo_mips *c)
->>  	}
->>  
->>  #ifndef CONFIG_MIPS_CPS
->> -	if (cpu_has_mips_r2) {
->> +	if (cpu_has_mips_r2 || cpu_has_mips_r6) {
-> 
->  Hmm, maybe define a macro:
-> 
-> #define cpu_has_mips_r2_r6 (cpu_has_mips_r2 | cpu_has_mips_r6)
-
-Yes will do
-
-> 
-> (bitwise OR used to follow our preexisting convention, it often produces 
-> shorter and faster code)?  To have it centrally controlled and to shorten 
-> source code.  We have precedents already, see the `Shortcuts' section in 
-> <asm/cpu-features.h>.
-> 
->> @@ -1351,7 +1364,8 @@ void cpu_probe(void)
->>  		c->fpu_id = cpu_get_fpu_id();
->>  
->>  		if (c->isa_level & (MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 |
->> -				    MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)) {
->> +				    MIPS_CPU_ISA_M32R6 | MIPS_CPU_ISA_M64R1 |
->> +				    MIPS_CPU_ISA_M64R2 | MIPS_CPU_ISA_M64R6)) {
-> 
->  Likewise, this could have used `cpu_has_mips_r' as it stands; with the
-> R6 update it can be `cpu_has_mips_r1_r2_r6'.
-
-cpu_has_mips_r should be fine thanks.
-
-> 
->  This uses `c->isa_level' rather than `cpu_data[0].isa_level' that 
-> `cpu_has_*' macros use, but that's not a problem as we do not support 
-> mixed ISA levels anyway and standardising on these macros makes 
-> maintenance easier, e.g. if we decided to actually use 
-> `current_cpu_data.isa_level' or suchlike in these macros instead.
-> 
->  As a side note I can see that as from a96102be, ISA flags are inclusive, 
-> so the macros in <asm/cpu-features.h> can and I think should be rearranged 
-> and simplified.  E.g. (indentation adjusted, we can afford it now):
-> 
-> #define cpu_has_mips_2_3_4_5	cpu_has_mips_2
-> #define cpu_has_mips_3_4_5	cpu_has_mips_3
-> 
-> #define cpu_has_mips_2_3_4_5_r	cpu_has_mips_2
-> 
-> #define cpu_has_mips32		cpu_has_mips32r1
-> #define cpu_has_mips64		cpu_has_mips64r1
-> 
-> #define cpu_has_mips_r		cpu_has_mips32r1
-> 
-> etc.  With R6 in the picture I think the `*_r' macros need to go, to avoid 
-> confusion; I suggest renaming them to `*_r1_r2' to follow the existing 
-> convention.  Then the above macros will look like:
-> 
-> #define cpu_has_mips_2_3_4_5		cpu_has_mips_2
-> #define cpu_has_mips_3_4_5		cpu_has_mips_3
-> 
-> #define cpu_has_mips_2_3_4_5_r1_r2	cpu_has_mips_2
-> 
-> #define cpu_has_mips32			(cpu_has_mips32r1 | cpu_has_mips32r6)
-> #define cpu_has_mips64			(cpu_has_mips64r1 | cpu_has_mips64r6)
-> 
-> #define cpu_has_mips_r1_r2		cpu_has_mips32r1
-> 
-> etc., plus new ones:
-> 
-> #define cpu_has_mips_r1_r2_r6		(cpu_has_mips32r1 | cpu_has_mips32r6)
-> #define cpu_has_mips_r2_r6		(cpu_has_mips32r2 | cpu_has_mips32r6)
-> #define cpu_has_mips_r6			cpu_has_mips32r6
-> 
-> etc.
-> 
->  Thoughts?
-> 
->   Maciej
-> 
-
-I like the suggestion but I'd rather do that post-r6 as a separate clean up.
-
--- 
-markos
+--J

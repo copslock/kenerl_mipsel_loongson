@@ -1,41 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 13:52:04 +0100 (CET)
-Received: from resqmta-po-11v.sys.comcast.net ([96.114.154.170]:41896 "EHLO
-        resqmta-po-11v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012016AbbAUMwCHuRsK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 13:52:02 +0100
-Received: from resomta-po-11v.sys.comcast.net ([96.114.154.235])
-        by resqmta-po-11v.sys.comcast.net with comcast
-        id icrd1p00254zqzk01crtPW; Wed, 21 Jan 2015 12:51:53 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 13:56:37 +0100 (CET)
+Received: from resqmta-ch2-08v.sys.comcast.net ([69.252.207.40]:34858 "EHLO
+        resqmta-ch2-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011973AbbAUM4dNun7i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 13:56:33 +0100
+Received: from resomta-ch2-11v.sys.comcast.net ([69.252.207.107])
+        by resqmta-ch2-08v.sys.comcast.net with comcast
+        id icvB1p0082Ka2Q501cwSMa; Wed, 21 Jan 2015 12:56:26 +0000
 Received: from [192.168.1.13] ([73.212.71.42])
-        by resomta-po-11v.sys.comcast.net with comcast
-        id icrr1p00B0uk1nt01crsb0; Wed, 21 Jan 2015 12:51:53 +0000
-Message-ID: <54BFA0DF.8000104@gentoo.org>
-Date:   Wed, 21 Jan 2015 07:51:43 -0500
+        by resomta-ch2-11v.sys.comcast.net with comcast
+        id icwR1p0070uk1nt01cwRRT; Wed, 21 Jan 2015 12:56:26 +0000
+Message-ID: <54BFA1F0.3010601@gentoo.org>
+Date:   Wed, 21 Jan 2015 07:56:16 -0500
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: [PATCH v2] MIPS: R10000: Split R10000 definitions from R12000 and
- up
+Subject: Re: [PATCH] MIPS: Add R16000 detection
+References: <54BC5E43.8060606@gentoo.org>
+In-Reply-To: <54BC5E43.8060606@gentoo.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1421844713;
-        bh=oEblOqOBGvh2Led2TwWE1txkxaDhe50Cpz9oS/tLM/Q=;
+        s=q20140121; t=1421844986;
+        bh=o96LyPZE9VvAkWUoGTkbQwbxs4MZjaU5jqLwGFfMh7w=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=HvZRUPUsIz/XqVPdpi4HCHS7jtuHpTwiQ9s+2U6eoLogMFg1i2u7TRAMriFOMchrk
-         +ZeIX+iC46Vmmvl1H5qDhW4DtRgxpIHSPq7OiADbyrAPWGNGrTVv8LABOlYgqrHeZ4
-         YZEV/ARkWgoIDKjys/8hXpDyJuX29DBnKKep0b0QjlnvDepp8vsl627PQot/bysEek
-         K/vp/FFB3/S0JNB3hqzd8hrk/WTA4BvouehYTDi0NlgFMtIgMCx/rk/tKTvGxithFs
-         EhKjwbgvFlgsUovYNe1zEtMPkL9eq6zrEUC3Wa8wnHwm90BZ3N5H1XcSaztDkaCOZ1
-         slzrVbDoh67qg==
+        b=wsQgnaWg/HcYC8LP4mKgGIHwjvjdVoDVXVtevizEGWERaxWh4bUN3CtCAepB0orP2
+         i7nzEKzLDeDn2eASw6zD1VxOrAPIQAsOcyFJAPh4UzWfq7ESRVxI9tt9XTQaT4HV1i
+         0YyZ+BJHl9AWhLE01Ro+j/86csnoebpTCT67zlqxf3b21YqaYp3QG1LxVPTMs4GFRF
+         PeNzn2LFSB64p4n1EFvxGOb+mn/Wmz7VTnhG+TJzYxYGoXYmFcM2ZvDHiVDKmnQ7+m
+         mQwTD0WScuN22fWDtYcXpgGKoLYSwTfbESIrMFZd92xa8FvRIctAMoVz+DVWKHHabp
+         suXx+RCNgK1EQ==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45405
+X-archive-position: 45406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,249 +53,197 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Joshua Kinard <kumba@gentoo.org>
+On 01/18/2015 20:30, Joshua Kinard wrote:
+> From: Joshua Kinard <kumba@gentoo.org>
+> 
+> This allows the kernel to correctly detect an R16000 MIPS CPU on systems that
+> have those.  Otherwise, such systems will detect the CPU as an R14000, due to
+> similarities in the CPU PRId value.
 
-This patch splits the old R10000 definitions so that the R10000_LLSC_WAR can be
-disabled and -mno-fix-r10000 passed to CFLAGS for systems running R12000 CPUs
-and greater.  This allows the kernel to build without branch-likely
-instructions, which are considered deprecated in current MIPS implementations.
- Only R10000 systems with R2.6 and lower CPUs require branch-likely to work
-around a known hardware errata item.
+Sending a v2 of this one, too.  Fixing up the split-r10k bits, I found an
+additional spot or two for the R16K.
 
-Verified on both an SGI Onyx2 and an SGI Octane.
+--J
 
-Signed-off-by: Joshua Kinard <kumba@gentoo.org>
----
- arch/mips/Kconfig                     |   20 ++++++++++++++++++--
- arch/mips/Makefile                    |    3 +++
- arch/mips/include/asm/cpu-type.h      |    2 ++
- arch/mips/include/asm/hazards.h       |    3 ++-
- arch/mips/include/asm/mach-ip27/war.h |    7 ++++++-
- arch/mips/include/asm/module.h        |    2 ++
- arch/mips/oprofile/Makefile           |    1 +
- arch/mips/oprofile/op_model_mipsxx.c  |    5 ++++-
- arch/mips/sgi-ip27/Platform           |   15 ++++++++-------
- arch/mips/sgi-ip32/Platform           |    2 ++
- drivers/video/fbdev/gbefb.c           |    2 +-
- 11 files changed, 49 insertions(+), 13 deletions(-)
 
-Only changed bit is catching a few missed spots where the R10K needed to be
-differentiated from R12K and up.  I think I got them all this time.
-
-This patch will conflict slightly with the R16000 patch in the
-arch/mips/oprofile/op_model_mipsxx.c file.  Not much I can do about that.
-
-linux-mips-split-r10k-family.patch
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 73983e1..af4b282 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -551,6 +551,7 @@ config SGI_IP27
- 	select HW_HAS_PCI
- 	select NR_CPUS_DEFAULT_64
- 	select SYS_HAS_CPU_R10000
-+	select SYS_HAS_CPU_R12K_R14K_R16K
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_NUMA
-@@ -612,6 +613,7 @@ config SGI_IP32
- 	select RM7000_CPU_SCACHE
- 	select SYS_HAS_CPU_R5000
- 	select SYS_HAS_CPU_R10000 if BROKEN
-+	select SYS_HAS_CPU_R12K_R14K_R16K if BROKEN
- 	select SYS_HAS_CPU_RM7000
- 	select SYS_HAS_CPU_NEVADA
- 	select SYS_SUPPORTS_64BIT_KERNEL
-@@ -1456,7 +1458,18 @@ config CPU_R10000
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_HUGEPAGES
- 	help
--	  MIPS Technologies R10000-series processors.
-+	  MIPS Technologies R10000 processor.
-+
-+config CPU_R12K_R14K_R16K
-+	bool "R12k/R14k/R16k"
-+	depends on SYS_HAS_CPU_R12K_R14K_R16K
-+	select CPU_HAS_PREFETCH
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select CPU_SUPPORTS_64BIT_KERNEL
-+	select CPU_SUPPORTS_HIGHMEM
-+	select CPU_SUPPORTS_HUGEPAGES
-+	help
-+	  MIPS Technologies R12k/R14k/R16k-series processors.
- 
- config CPU_RM7000
- 	bool "RM7000"
-@@ -1704,6 +1717,9 @@ config SYS_HAS_CPU_R8000
- config SYS_HAS_CPU_R10000
- 	bool
- 
-+config SYS_HAS_CPU_R12K_R14K_R16K
-+	bool
-+
- config SYS_HAS_CPU_RM7000
- 	bool
- 
-@@ -2283,7 +2299,7 @@ config NODES_SHIFT
- 
- config HW_PERF_EVENTS
- 	bool "Enable hardware performance counter support for perf events"
--	depends on PERF_EVENTS && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP)
-+	depends on PERF_EVENTS && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_R12K_R14K_R16K || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP)
- 	default y
- 	help
- 	  Enable hardware performance counter support for perf events. If
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 37fce70..abccbb2 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -176,6 +176,9 @@ cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-mno-mips3d)
- cflags-$(CONFIG_CPU_R8000)	+= -march=r8000 -Wa,--trap
- cflags-$(CONFIG_CPU_R10000)	+= $(call cc-option,-march=r10000,-march=r8000) \
- 			-Wa,--trap
-+cflags-$(CONFIG_CPU_R12K_R14K_R16K)	+= $(call cc-option,-march=r12000,-march=r8000) \
-+			$(call cc-option,-mno-fix-r10000,) \
-+			-Wa,--trap
- cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += $(call cc-option,-march=octeon) -Wa,--trap
- ifeq (,$(findstring march=octeon, $(cflags-$(CONFIG_CPU_CAVIUM_OCTEON))))
- cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index b4e2bd8..73c9f51 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -148,6 +148,8 @@ static inline int __pure __get_cpu_type(const int cpu_type)
- 
- #ifdef CONFIG_SYS_HAS_CPU_R10000
- 	case CPU_R10000:
-+#endif
-+#ifdef CONFIG_SYS_HAS_CPU_R12K_R14K_R16K
- 	case CPU_R12000:
- 	case CPU_R14000:
- #endif
-diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
-index e3ee92d..0b565e5 100644
---- a/arch/mips/include/asm/hazards.h
-+++ b/arch/mips/include/asm/hazards.h
-@@ -138,7 +138,8 @@ do {									\
- 
- #elif defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_CPU_CAVIUM_OCTEON) || \
- 	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_R10000) || \
--	defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_XLR)
-+	defined(CONFIG_CPU_R12K_R14K_R16K) || defined(CONFIG_CPU_R5500) || \
-+	defined(CONFIG_CPU_XLR)
- 
- /*
-  * R10000 rocks - all hazards handled in hardware, so this becomes a nobrainer.
-diff --git a/arch/mips/include/asm/mach-ip27/war.h b/arch/mips/include/asm/mach-ip27/war.h
-index 4ee0e4b..e901a81 100644
---- a/arch/mips/include/asm/mach-ip27/war.h
-+++ b/arch/mips/include/asm/mach-ip27/war.h
-@@ -18,7 +18,12 @@
- #define MIPS_CACHE_SYNC_WAR		0
- #define TX49XX_ICACHE_INDEX_INV_WAR	0
- #define ICACHE_REFILLS_WORKAROUND_WAR	0
--#define R10000_LLSC_WAR			1
- #define MIPS34K_MISSED_ITLB_WAR		0
- 
-+#ifdef CONFIG_CPU_R10000
-+#define R10000_LLSC_WAR			1
-+#else
-+#define R10000_LLSC_WAR			0
-+#endif
-+
- #endif /* __ASM_MIPS_MACH_IP27_WAR_H */
-diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
-index 800fe57..394dee4 100644
---- a/arch/mips/include/asm/module.h
-+++ b/arch/mips/include/asm/module.h
-@@ -118,6 +118,8 @@ search_module_dbetables(unsigned long addr)
- #define MODULE_PROC_FAMILY "R8000 "
- #elif defined CONFIG_CPU_R10000
- #define MODULE_PROC_FAMILY "R10000 "
-+#elif defined CONFIG_CPU_R12K_R14K_R16K
-+#define MODULE_PROC_FAMILY "R12K/R14K/R16K "
- #elif defined CONFIG_CPU_RM7000
- #define MODULE_PROC_FAMILY "RM7000 "
- #elif defined CONFIG_CPU_SB1
-diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
-index 070afdb..050a44e 100644
---- a/arch/mips/oprofile/Makefile
-+++ b/arch/mips/oprofile/Makefile
-@@ -11,6 +11,7 @@ oprofile-y				:= $(DRIVER_OBJS) common.o backtrace.o
- oprofile-$(CONFIG_CPU_MIPS32)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_MIPS64)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_R10000)		+= op_model_mipsxx.o
-+oprofile-$(CONFIG_CPU_R12K_R14K_R16K)	+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_SB1)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_XLR)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_LOONGSON2)	+= op_model_loongson2.o
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 01f721a..d3a2b94 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -407,10 +407,13 @@ static int __init mipsxx_init(void)
- 		break;
- 
- 	case CPU_R12000:
--	case CPU_R14000:
- 		op_model_mipsxx_ops.cpu_type = "mips/r12000";
- 		break;
- 
-+	case CPU_R14000:
-+		op_model_mipsxx_ops.cpu_type = "mips/r14000";
-+		break;
-+
- 	case CPU_SB1:
- 	case CPU_SB1A:
- 		op_model_mipsxx_ops.cpu_type = "mips/sb1";
-diff --git a/arch/mips/sgi-ip27/Platform b/arch/mips/sgi-ip27/Platform
-index 1fb9c2e..4ad7060 100644
---- a/arch/mips/sgi-ip27/Platform
-+++ b/arch/mips/sgi-ip27/Platform
-@@ -6,14 +6,15 @@
- # be 16kb aligned or the handling of the current variable will break.
- #
- ifdef CONFIG_SGI_IP27
--platform-$(CONFIG_SGI_IP27)	+= sgi-ip27/
--cflags-$(CONFIG_SGI_IP27)	+= -I$(srctree)/arch/mips/include/asm/mach-ip27
-+platform-$(CONFIG_SGI_IP27)		+= sgi-ip27/
-+cflags-$(CONFIG_SGI_IP27)		+= -I$(srctree)/arch/mips/include/asm/mach-ip27
-+cflags-$(CONFIG_CPU_R12K_R14K_R16K)	+= -mno-fix-r10000
- ifdef CONFIG_MAPPED_KERNEL
--load-$(CONFIG_SGI_IP27)		+= 0xc00000004001c000
--OBJCOPYFLAGS			:= --change-addresses=0x3fffffff80000000
--dataoffset-$(CONFIG_SGI_IP27)	+= 0x01000000
-+load-$(CONFIG_SGI_IP27)			+= 0xc00000004001c000
-+OBJCOPYFLAGS				:= --change-addresses=0x3fffffff80000000
-+dataoffset-$(CONFIG_SGI_IP27)		+= 0x01000000
- else
--load-$(CONFIG_SGI_IP27)		+= 0xa80000000001c000
--OBJCOPYFLAGS			:= --change-addresses=0x57ffffff80000000
-+load-$(CONFIG_SGI_IP27)			+= 0xa80000000001c000
-+OBJCOPYFLAGS				:= --change-addresses=0x57ffffff80000000
- endif
- endif
-diff --git a/arch/mips/sgi-ip32/Platform b/arch/mips/sgi-ip32/Platform
-index 0fea556..5899305 100644
---- a/arch/mips/sgi-ip32/Platform
-+++ b/arch/mips/sgi-ip32/Platform
-@@ -8,4 +8,6 @@
- #
- platform-$(CONFIG_SGI_IP32)	+= sgi-ip32/
- cflags-$(CONFIG_SGI_IP32)	+= -I$(srctree)/arch/mips/include/asm/mach-ip32
-+cflags-$(CONFIG_CPU_R10000)		+= -mr10k-cache-barrier=load-store
-+cflags-$(CONFIG_CPU_R12K_R14K_R16K)	+= -mno-fix-r10000 -mr10k-cache-barrier=load-store
- load-$(CONFIG_SGI_IP32)		+= 0xffffffff80004000
-diff --git a/drivers/video/fbdev/gbefb.c b/drivers/video/fbdev/gbefb.c
-index 6d9ef39..c5dc991 100644
---- a/drivers/video/fbdev/gbefb.c
-+++ b/drivers/video/fbdev/gbefb.c
-@@ -47,7 +47,7 @@ struct gbefb_par {
- 
- /* macro for fastest write-though access to the framebuffer */
- #ifdef CONFIG_MIPS
--#ifdef CONFIG_CPU_R10000
-+#if defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_R12K_R14K_R16K)
- #define pgprot_fb(_prot) (((_prot) & (~_CACHE_MASK)) | _CACHE_UNCACHED_ACCELERATED)
- #else
- #define pgprot_fb(_prot) (((_prot) & (~_CACHE_MASK)) | _CACHE_CACHABLE_NO_WA)
+> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+> ---
+>  arch/mips/include/asm/cpu-type.h     |    1 +
+>  arch/mips/include/asm/cpu.h          |    6 +++---
+>  arch/mips/kernel/cpu-probe.c         |    9 +++++++--
+>  arch/mips/kernel/perf_event_mipsxx.c |    1 +
+>  arch/mips/mm/c-r4k.c                 |    4 ++++
+>  arch/mips/mm/page.c                  |    1 +
+>  arch/mips/mm/tlb-r4k.c               |    3 ++-
+>  arch/mips/mm/tlbex.c                 |    1 +
+>  arch/mips/oprofile/common.c          |    1 +
+>  arch/mips/oprofile/op_model_mipsxx.c |    1 +
+>  10 files changed, 22 insertions(+), 6 deletions(-)
+> 
+> linux-mips-add-r16000-detection.patch
+> diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
+> index b4e2bd8..d85fc26 100644
+> --- a/arch/mips/include/asm/cpu-type.h
+> +++ b/arch/mips/include/asm/cpu-type.h
+> @@ -150,6 +150,7 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+>  	case CPU_R10000:
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  #endif
+>  #ifdef CONFIG_SYS_HAS_CPU_RM7000
+>  	case CPU_RM7000:
+> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+> index 33866fc..53acfce 100644
+> --- a/arch/mips/include/asm/cpu.h
+> +++ b/arch/mips/include/asm/cpu.h
+> @@ -67,7 +67,7 @@
+>  #define PRID_IMP_R4300		0x0b00
+>  #define PRID_IMP_VR41XX		0x0c00
+>  #define PRID_IMP_R12000		0x0e00
+> -#define PRID_IMP_R14000		0x0f00
+> +#define PRID_IMP_R14000		0x0f00		/* R14K && R16K */
+>  #define PRID_IMP_R8000		0x1000
+>  #define PRID_IMP_PR4450		0x1200
+>  #define PRID_IMP_R4600		0x2000
+> @@ -283,8 +283,8 @@ enum cpu_type_enum {
+>  	CPU_R4000PC, CPU_R4000SC, CPU_R4000MC, CPU_R4200, CPU_R4300, CPU_R4310,
+>  	CPU_R4400PC, CPU_R4400SC, CPU_R4400MC, CPU_R4600, CPU_R4640, CPU_R4650,
+>  	CPU_R4700, CPU_R5000, CPU_R5500, CPU_NEVADA, CPU_R5432, CPU_R10000,
+> -	CPU_R12000, CPU_R14000, CPU_VR41XX, CPU_VR4111, CPU_VR4121, CPU_VR4122,
+> -	CPU_VR4131, CPU_VR4133, CPU_VR4181, CPU_VR4181A, CPU_RM7000,
+> +	CPU_R12000, CPU_R14000, CPU_R16000, CPU_VR41XX, CPU_VR4111, CPU_VR4121,
+> +	CPU_VR4122, CPU_VR4131, CPU_VR4133, CPU_VR4181, CPU_VR4181A, CPU_RM7000,
+>  	CPU_SR71000, CPU_TX49XX,
+>  
+>  	/*
+> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> index 5342674..3f334a8 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -833,8 +833,13 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+>  		c->tlbsize = 64;
+>  		break;
+>  	case PRID_IMP_R14000:
+> -		c->cputype = CPU_R14000;
+> -		__cpu_name[cpu] = "R14000";
+> +		if (((c->processor_id >> 4) & 0x0f) > 2) {
+> +			c->cputype = CPU_R16000;
+> +			__cpu_name[cpu] = "R16000";
+> +		} else {
+> +			c->cputype = CPU_R14000;
+> +			__cpu_name[cpu] = "R14000";
+> +		}
+>  		set_isa(c, MIPS_CPU_ISA_IV);
+>  		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE | MIPS_CPU_4KEX |
+>  			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
+> diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+> index 9466184..05dac89 100644
+> --- a/arch/mips/kernel/perf_event_mipsxx.c
+> +++ b/arch/mips/kernel/perf_event_mipsxx.c
+> @@ -775,6 +775,7 @@ static int n_counters(void)
+>  
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  		counters = 4;
+>  		break;
+>  
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index dd261df..76a7eae 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -430,6 +430,7 @@ static inline void local_r4k___flush_cache_all(void * args)
+>  	case CPU_R10000:
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  		/*
+>  		 * These caches are inclusive caches, that is, if something
+>  		 * is not cached in the S-cache, we know it also won't be
+> @@ -1012,6 +1013,7 @@ static void probe_pcache(void)
+>  	case CPU_R10000:
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  		icache_size = 1 << (12 + ((config & R10K_CONF_IC) >> 29));
+>  		c->icache.linesz = 64;
+>  		c->icache.ways = 2;
+> @@ -1240,6 +1242,7 @@ static void probe_pcache(void)
+>  	case CPU_R10000:
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  		break;
+>  
+>  	case CPU_74K:
+> @@ -1437,6 +1440,7 @@ static void setup_scache(void)
+>  	case CPU_R10000:
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  		scache_size = 0x80000 << ((config & R10K_CONF_SS) >> 16);
+>  		c->scache.linesz = 64 << ((config >> 13) & 1);
+>  		c->scache.ways = 2;
+> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+> index b611102..6da7fc3 100644
+> --- a/arch/mips/mm/page.c
+> +++ b/arch/mips/mm/page.c
+> @@ -143,6 +143,7 @@ static void set_prefetch_parameters(void)
+>  		case CPU_R10000:
+>  		case CPU_R12000:
+>  		case CPU_R14000:
+> +		case CPU_R16000:
+>  			/*
+>  			 * Those values have been experimentally tuned for an
+>  			 * Origin 200.
+> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+> index e90b2e8..2a78321 100644
+> --- a/arch/mips/mm/tlb-r4k.c
+> +++ b/arch/mips/mm/tlb-r4k.c
+> @@ -477,7 +477,8 @@ static void r4k_tlb_configure(void)
+>  	write_c0_wired(0);
+>  	if (current_cpu_type() == CPU_R10000 ||
+>  	    current_cpu_type() == CPU_R12000 ||
+> -	    current_cpu_type() == CPU_R14000)
+> +	    current_cpu_type() == CPU_R14000 ||
+> +	    current_cpu_type() == CPU_R16000)
+>  		write_c0_framemask(0);
+>  
+>  	if (cpu_has_rixi) {
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index 3978a3d..3f9ae67 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -568,6 +568,7 @@ static void build_tlb_write_entry(u32 **p, struct uasm_label **l,
+>  	case CPU_R10000:
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  	case CPU_4KC:
+>  	case CPU_4KEC:
+>  	case CPU_M14KC:
+> diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+> index a26cbe3..81f5895 100644
+> --- a/arch/mips/oprofile/common.c
+> +++ b/arch/mips/oprofile/common.c
+> @@ -98,6 +98,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+>  	case CPU_R10000:
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  	case CPU_XLR:
+>  		lmodel = &op_model_mipsxx_ops;
+>  		break;
+> diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+> index 01f721a..c79ebff 100644
+> --- a/arch/mips/oprofile/op_model_mipsxx.c
+> +++ b/arch/mips/oprofile/op_model_mipsxx.c
+> @@ -296,6 +296,7 @@ static inline int n_counters(void)
+>  
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+> +	case CPU_R16000:
+>  		counters = 4;
+>  		break;
+>  

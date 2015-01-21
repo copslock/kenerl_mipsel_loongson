@@ -1,42 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 10:35:11 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12476 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011344AbbAUJfGcko4W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 10:35:06 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 10:44:59 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55682 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27011344AbbAUJo6LJxd3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 10:44:58 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id C173141F8DC6;
+        Wed, 21 Jan 2015 09:44:52 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Wed, 21 Jan 2015 09:44:52 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Wed, 21 Jan 2015 09:44:52 +0000
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id ADBF9A3427D8D;
-        Wed, 21 Jan 2015 09:34:58 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 5552C45B67549;
+        Wed, 21 Jan 2015 09:44:50 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 21 Jan 2015 09:35:00 +0000
-Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
+ 14.3.195.1; Wed, 21 Jan 2015 09:44:52 +0000
+Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 21 Jan
- 2015 09:34:59 +0000
-Message-ID: <54BF72C3.60306@imgtec.com>
-Date:   Wed, 21 Jan 2015 09:34:59 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+ 2015 09:44:50 +0000
+Message-ID: <54BF7512.2090409@imgtec.com>
+Date:   Wed, 21 Jan 2015 09:44:50 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>
-CC:     <linux-mips@linux-mips.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH RFC v2 27/70] MIPS: kernel: cevt-r4k: Add MIPS R6 to the
- c0_compare_interrupt handler
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-28-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501200110040.28301@eddie.linux-mips.org> <20150120091414.GA23188@jhogan-linux.le.imgtec.org> <alpine.LFD.2.11.1501201427370.28301@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1501201427370.28301@eddie.linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 35/36] MIPS: initial MIPS Creator CI20 board support
+References: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com> <1421620987-25796-1-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1421620987-25796-1-git-send-email-paul.burton@imgtec.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature";
+        boundary="NKIC9ADX7OWD81bxG34VwmTfNSiVBS9Ej"
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: b93fcccb
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45393
+X-archive-position: 45394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,29 +56,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/20/2015 02:33 PM, Maciej W. Rozycki wrote:
-> On Tue, 20 Jan 2015, James Hogan wrote:
-> 
->>>  While a preexisting bug, this is simply not true, there's CP0.Cause.TI to 
->>> examine for a timer interrupt pending.  Please fix your change to use 
->>> `c0_compare_int_pending' instead and synchronise with stuff posted by 
->>> James (cc-ed) at <http://patchwork.linux-mips.org/patch/8900/>.
->>
->> I'm not sure I follow what you mean. This change makes it treat r6 like
->> it treats r2 (i.e. there is still a Cause.TI bit), which sounds correct
->> to me. I'm guessing cpu_has_mips_r6 doesn't imply cpu_has_mips_r2.
-> 
->  Correct, R6 is not backwards compatible with R2 so it doesn't set the R2 
-> flag and consequently any compatibility that does exist has to be handled 
-> explicitly; see 28/70 for the details of the flag setup.
-> 
->   Maciej
-> 
-So i guess the original patch is fine then? otherwise, like James said,
-I am not sure what's wrong with it (apart from the fact that it will
-conflict with what James posted on
-http://patchwork.linux-mips.org/patch/8900/). Such conflicts will be
-taken care of when Ralf is ready to merge R6.
+--NKIC9ADX7OWD81bxG34VwmTfNSiVBS9Ej
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
--- 
-markos
+Hi Paul,
+
+On 18/01/15 22:43, Paul Burton wrote:
+> diff --git a/arch/mips/boot/dts/ci20.dts b/arch/mips/boot/dts/ci20.dts
+> new file mode 100644
+> index 0000000..69f7a9a
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/ci20.dts
+> @@ -0,0 +1,21 @@
+> +/dts-v1/;
+> +
+> +#include "jz4780.dtsi"
+> +
+> +/ {
+> +	compatible =3D "imgtec,ci20", "ingenic,jz4780";
+
+The vendor prefix for Imagination Technologies is just img.
+
+> diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_=
+defconfig
+> new file mode 100644
+> index 0000000..927bd43
+> --- /dev/null
+> +++ b/arch/mips/configs/ci20_defconfig
+> @@ -0,0 +1,128 @@
+
+
+> +CONFIG_INITRAMFS_SOURCE=3D"arch/mips/boot/ramdisk.cpio.xz"
+
+don't think you should have this one.
+
+also, I think SERIAL_8250_JZ47XX=3Dy needs adding.
+
+Cheers
+James
+
+
+--NKIC9ADX7OWD81bxG34VwmTfNSiVBS9Ej
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJUv3USAAoJEGwLaZPeOHZ6jIgP/iYqjSdBVyI1oCCOvMVAX5XC
+nEFDVZ6LlfE/un1ElnzlkKQ/6PPgDCMWPoYCgfSqN9hCec2WNWYF2N39Kl4o/z5c
+P2swD8DWocufgseKurliLLYz8G7k3VwGkI3NF2sLkw2+LB1HI/4BA5ksq/KpDwxI
+RyP/SOJZZAhIStqaEMLLCNeA5kj8z/ay2yPUnoYnzYSxUS4j5Vz3ZedcGoV9hTbs
+ydjSQk4cFDXwk+AM1StdAQvlWb70FTvJgTel+DIvv9BJA2D2MpVyJEpbOViRV8WK
+FJWkbKGgfHIe2XQLhlMjqCWifGJD2IEdHWysB/JkzsBUKPmpvsFHSbOghiOkHxG+
+/UYY2xYybgYjrn9aKTS1lXEpOwRWGe1djvZkz8p0I4glO0J0o6cMD6FBEeKTadhF
+MN30ilb1GqdT8djUbmHuqFxo1kQ5RDdD3d3OWqP2+0ScCebwXBG2f+d5CuWULSAK
+BM80gVwzZM/CEWhivOGi7VvEKSj8KvH8obQrQ7VSSbaEruvQxpxz6Fbl5Q4Jn1ZM
+EdcTExxvYzU8I06DbSXgV7YOe5+Iee2IvXN+5gNfzgCn2sR5YX31nI9pl66d62yo
+ZkSBwpDnxdHz1YHVKjjPZI51HXD4B7Akd8gw+TkR1tmPrX2I1IofR0tg5uT5oUaW
+Af5varh5VtMMysSFq3vt
+=1tdS
+-----END PGP SIGNATURE-----
+
+--NKIC9ADX7OWD81bxG34VwmTfNSiVBS9Ej--

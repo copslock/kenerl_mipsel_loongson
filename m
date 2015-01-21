@@ -1,52 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 07:47:42 +0100 (CET)
-Received: from mail-lb0-f179.google.com ([209.85.217.179]:64983 "EHLO
-        mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010042AbbAUGrjvKT0u convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 21 Jan 2015 07:47:39 +0100
-Received: by mail-lb0-f179.google.com with SMTP id z11so37657894lbi.10;
-        Tue, 20 Jan 2015 22:47:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=z2xrB6tevWv2EX/iwB0xrP9xj5TjM7u4bDPKbmbxMgI=;
-        b=l4hmVsg5C4/9VaPr/RptPyfFTsjEfpSH52RU/0x6mmVYZjRCRtUJ+MVtsLpURFNJaH
-         UNbfuqns0umtOHrwVPO8nUaps59ozL65q2YyA5EofZrmlNs3cRn8eDNHScKSYFLon1uY
-         4+FYLmy0bRI8Np0n2M34deQ3g++2MfX+Uu+4O4WFP62P4TgsG5L0ClOvSwDT53QxSzli
-         /eseHl/TQM9g2GKvacv1LwlfHrc52TpHALGE5yihT8nlnx9KVE041youF+QEvWGewq6H
-         E3Zh31lOcKCVpszW8DVbx0Z/gDdCXpI3hzi7ltPKPefoD6cGgMqaoNWwp2dre0X4NOu6
-         IbNw==
-X-Received: by 10.112.156.169 with SMTP id wf9mr42349461lbb.85.1421822854469;
-        Tue, 20 Jan 2015 22:47:34 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by mx.google.com with ESMTPSA id q9sm4640991lbo.29.2015.01.20.22.47.33
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Jan 2015 22:47:33 -0800 (PST)
-Date:   Wed, 21 Jan 2015 10:50:15 +0400
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Joshua Kinard <kumba@gentoo.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Display CPU byteorder in /proc/cpuinfo
-Message-Id: <20150121105015.94e2448a20847aa2eac738db@gmail.com>
-In-Reply-To: <54BEDF3C.6040105@gmail.com>
-References: <54BCC827.3020806@gentoo.org>
-        <54BEDF3C.6040105@gmail.com>
-X-Mailer: Sylpheed 3.4.0beta7 (GTK+ 2.24.22; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 10:06:14 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9517 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010502AbbAUJGM5wLqm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 10:06:12 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id B7FFD5A949788;
+        Wed, 21 Jan 2015 09:06:02 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 21 Jan 2015 09:06:04 +0000
+Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 21 Jan
+ 2015 09:06:03 +0000
+Message-ID: <54BF6BFB.1020908@imgtec.com>
+Date:   Wed, 21 Jan 2015 09:06:03 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+MIME-Version: 1.0
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH RFC v2 19/70] MIPS: Use the new "ZC" constraint for MIPS
+ R6
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-20-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501200015580.28301@eddie.linux-mips.org> <6D39441BF12EF246A7ABCE6654B0235320FAC20A@LEMAIL01.le.imgtec.org> <54BE217D.3060508@imgtec.com> <6D39441BF12EF246A7ABCE6654B0235320FAC32D@LEMAIL01.le.imgtec.org> <54BE2A0B.8010500@imgtec.com> <alpine.LFD.2.11.1501201433480.28301@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1501201433480.28301@eddie.linux-mips.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.96]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45390
+X-archive-position: 45391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,74 +48,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 20 Jan 2015 15:05:32 -0800
-David Daney <ddaney.cavm@gmail.com> wrote:
-
-> On 01/19/2015 01:02 AM, Joshua Kinard wrote:
-> > From: Joshua Kinard <kumba@gentoo.org>
-> >
-> > This is a small patch to display the CPU byteorder that the kernel was compiled
-> > with in /proc/cpuinfo.
+On 01/20/2015 02:37 PM, Maciej W. Rozycki wrote:
+> On Tue, 20 Jan 2015, Markos Chandras wrote:
 > 
-> What would use this?  Or in other words, why is this needed?
-
-If you run some test software (e.g. in particular benchmarking software)
-on a linux system then you are interisting in a log file with system information.
-It's very likely that your log file keeps /proc/cpuinfo content.
-So if your /proc/cpuinfo has byteorder information then your have system
-byteorder information in your log file for free :)
-
-If you write a bugreport and your attach /proc/cpuinfo content to it
-then a bugreport reader have no question on byteorder.
-
+>>>> We have tools out there based on 4.9. If we make gcc < 5.0 to fail with
+>>>> R6, then nobody will be able to build it until 5.0 is released.
+>>>> Perhaps it makes sense to add some checks in arch/mips/Makefile, see if
+>>>> our gcc supports -mips32r6 or something and then decide what to do.
+>>>
+>>> Indeed, I think it is worthwhile supporting the use of tools which have R6
+>>> backported to them owing to long lead times for new versions of GCC to be
+>>> released.
+>>>
+>>> I think you could actually just switch the check around and remove the
+>>> check for micromips entirely, putting the GCC 4.9 check first:
+>>>
+>>> #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9)
+>>> #define GCC_OFF12_ASM() "ZC"
+>>> #else
+>>> #define GCC_OFF12_ASM() "R"
+>>> #endif
+>>>
+>>> From what I can see this is safe. It was presumably written with a micromips
+>>> check out of caution to not change older non-micromips code-gen but that
+>>> doesn't seem particularly important. It is an improvement to older code if
+>>> anything.
+>>
+>> For non-micromips kernel, this will start using "ZC" instead of "R",
+>> whereas before, it only used "ZC" for micromips and "R" for everything
+>> else. Is that safe? Maciej was the one committed this code, so if that's
+>> still safe, then I will change it as requested.
 > 
-> Userspace C code doesn't need this as it has its own standard ways of 
-> determining endianness.
+>  I'm fine with this proposal; a separate Makefile check for 
+> `-march=mips32r6' support would be good too.
 > 
-> If you need to know as a user you can do:
+>   Maciej
 > 
->     readelf -h /bin/sh | grep Data | cut -d, -f2
+I think we are over engineering this. In patch 04/70 you suggested
 
-Does this line really show your current CPU byteorder?
+cflags-$(CONFIG_CPU_MIPS32_R6)	+= -march=mips32r6 -Wa,--trap
+cflags-$(CONFIG_CPU_MIPS64_R6)	+= -march=mips64r6 -Wa,--trap
 
-IMHO this 'readelf' method is not very reliable :)
+that means that you will pass march=mips32r6 if _R6 is selected without
+checking if the toolchain support.
 
-> 
-> 
-> >
-> > Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-> > ---
-> >   arch/mips/kernel/proc.c |    5 +++++
-> >   1 file changed, 5 insertions(+)
-> >
-> > This patch has been submitted several times prior over the years (I think), but
-> > I don't recall what, if any, objections there were to it.
-> >
-> > linux-mips-proc-cpuinfo-byteorder.patch
-> > diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-> > index 097fc8d..75e6a62 100644
-> > --- a/arch/mips/kernel/proc.c
-> > +++ b/arch/mips/kernel/proc.c
-> > @@ -65,6 +65,11 @@ static int show_cpuinfo(struct seq_file *m, void *v)
-> >   	seq_printf(m, "BogoMIPS\t\t: %u.%02u\n",
-> >   		      cpu_data[n].udelay_val / (500000/HZ),
-> >   		      (cpu_data[n].udelay_val / (5000/HZ)) % 100);
-> > +#ifdef __MIPSEB__
-> > +	seq_printf(m, "byteorder\t\t: big endian\n");
-> > +#else
-> > +	seq_printf(m, "byteorder\t\t: little endian\n");
-> > +#endif
-> >   	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
-> >   	seq_printf(m, "microsecond timers\t: %s\n",
-> >   		      cpu_has_counter ? "yes" : "no");
-> >
-> >
-> >
-> 
-> 
+We know that every toolchain that has r6 support will have ZC support as
+well. So my question is, why is the original patch wrong. Do you really
+need to trap here for r6? Like I said, ever R6 toolchain will support
+ZC. If you are trying to build R6 with a non-r6 toolchain you surely
+have broken the build earlier on.
 
+Having said that. I believe the original patch is fine.
 
 -- 
--- 
-Best regards,
-  Antony Pavlov
+markos

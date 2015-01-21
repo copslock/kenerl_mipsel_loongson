@@ -1,61 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 01:47:00 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.11.231]:39853 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011972AbbAUAq62mF0B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 01:46:58 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id D40CB1402C3;
-        Wed, 21 Jan 2015 00:46:55 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id C0FD61402C9; Wed, 21 Jan 2015 00:46:55 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 647771402BD;
-        Wed, 21 Jan 2015 00:46:55 +0000 (UTC)
-Date:   Tue, 20 Jan 2015 16:46:55 -0800
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Mike Turquette <mturquette@linaro.org>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Alex Elder <elder@linaro.org>,
-        Matt Porter <mporter@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Bintian Wang <bintian.wang@huawei.com>,
-        Chao Xie <chao.xie@marvell.com>, linux-doc@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v10 3/3] clk: Add rate constraints to clocks
-Message-ID: <20150121004655.GG27202@codeaurora.org>
-References: <1421760306-6301-1-git-send-email-tomeu.vizoso@collabora.com>
- <1421760306-6301-4-git-send-email-tomeu.vizoso@collabora.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 01:58:50 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:51535 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011961AbbAUA6sJ5l1w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 01:58:48 +0100
+Date:   Wed, 21 Jan 2015 00:58:48 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     David Daney <ddaney.cavm@gmail.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        linux-mips@linux-mips.org,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>
+Subject: Re: [PATCH RFC v2 24/70] MIPS: asm: spinlock: Replace sub instruction
+ with addiu
+In-Reply-To: <20150120222028.GI1205@linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1501210052290.28301@eddie.linux-mips.org>
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-25-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501200028390.28301@eddie.linux-mips.org> <54BE3BFD.5070108@imgtec.com> <54BE8DC7.4030009@gmail.com>
+ <20150120222028.GI1205@linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1421760306-6301-4-git-send-email-tomeu.vizoso@collabora.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45383
+X-archive-position: 45384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,87 +40,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It's looking fairly close. Thanks for keeping up with the review
-comments.
+Ralf,
 
-On 01/20, Tomeu Vizoso wrote:
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index e867d6a..f241e27 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -2143,6 +2280,10 @@ struct clk *__clk_register(struct device *dev, struct clk_hw *hw)
->  	else
->  		clk->owner = NULL;
->  
-> +	INIT_HLIST_HEAD(&clk->clks);
-> +
-> +	hw->clk = __clk_create_clk(hw, NULL, NULL);
-> +
->  	ret = __clk_init(dev, hw->clk);
->  	if (ret)
->  		return ERR_PTR(ret);
+> > According to a comment on another thread from Ralf, this has been observed
+> > in the wild only once.  We can simplify the code and remove that comment.
+> > Why not just use the ADDIU and be done with it?
+> > 
+> > There are many locking and atomic primitives that don't have any such error
+> > checking.  What makes the read lock so special that it needs this extra
+> > protection?
+> 
+> Because I was desparate to find a use for the signed add ;-)
+> 
+> Honestly, it's nice to have such a safeguard if it's available at no
+> runtime overhead at all but these days are such nice lock debugging tools
+> that the loss won't be missed.  So (cut'n'paste):
+> 
+> Why not just use the ADDIU and be done with it?
 
-Don't we need to __clk_free_clk() here too?
+ Given David's comment I meant to defer to you on this as the originator 
+of this bit, but since you have spoken, I think we've come to a conclusion 
+now. :)
 
-> @@ -2151,6 +2292,19 @@ struct clk *__clk_register(struct device *dev, struct clk_hw *hw)
->  }
->  EXPORT_SYMBOL_GPL(__clk_register);
->  
-> +static void __clk_free_clk(struct clk *clk)
-> +{
-> +	struct clk_core *core = clk->core;
-> +
-> +	clk_prepare_lock();
-> +	hlist_del(&clk->child_node);
-> +	clk_prepare_unlock();
-> +
-> +	kfree(clk);
-> +
-> +	clk_core_set_rate(core, core->req_rate);
-
-Is it safe to call this during clock registration? I hope that it
-will just bail out and do nothing because core->rate ==
-core->req_rate. Maybe we can avoid this given my next comment
-below.
-
-> +}
-> +
->  /**
->   * clk_register - allocate a new clock, register it and return an opaque cookie
->   * @dev: device that is registering this clock
-> @@ -2210,12 +2364,14 @@ struct clk *clk_register(struct device *dev, struct clk_hw *hw)
->  		}
->  	}
->  
-> +	INIT_HLIST_HEAD(&clk->clks);
-> +
->  	hw->clk = __clk_create_clk(hw, NULL, NULL);
->  	ret = __clk_init(dev, hw->clk);
->  	if (!ret)
->  		return hw->clk;
->  
-> -	kfree(hw->clk);
-> +	__clk_free_clk(hw->clk);
->  fail_parent_names_copy:
->  	while (--i >= 0)
->  		kfree(clk->parent_names[i]);
-> @@ -2421,7 +2577,7 @@ void __clk_put(struct clk *clk)
->  		return;
->  
->  	clk_core_put(clk->core);
-> -	kfree(clk);
-> +	__clk_free_clk(clk);
-
-This doesn't look right. First we drop the core reference here
-with clk_core_put() and then we call __clk_free_clk() which will
-go and call clk_core_set_rate() on the clk->core which may or may
-not exist anymore. I'd think we want to do these steps:
-
- 1. Unlink clk from clks list
- 2. Recalculate rate and set if changed
- 3. Drop kref on core with clk_core_put()
- 4. kfree the clk
-
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+  Maciej

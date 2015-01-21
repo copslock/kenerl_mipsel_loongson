@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 17:54:59 +0100 (CET)
-Received: from foss-mx-na.foss.arm.com ([217.140.108.86]:51207 "EHLO
-        foss-mx-na.foss.arm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011212AbbAUQy5SriaP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 17:54:57 +0100
-Received: from foss-smtp-na-1.foss.arm.com (unknown [10.80.61.8])
-        by foss-mx-na.foss.arm.com (Postfix) with ESMTP id 434E6279;
-        Wed, 21 Jan 2015 10:54:48 -0600 (CST)
-Received: from collaborate-mta1.arm.com (highbank-bc01-b06.austin.arm.com [10.112.81.134])
-        by foss-smtp-na-1.foss.arm.com (Postfix) with ESMTP id 232B55FAD7;
-        Wed, 21 Jan 2015 10:54:46 -0600 (CST)
-Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
-        by collaborate-mta1.arm.com (Postfix) with ESMTPS id D837913F91B;
-        Wed, 21 Jan 2015 10:54:43 -0600 (CST)
-Date:   Wed, 21 Jan 2015 16:54:27 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Aleksey Makarov <aleksey.makarov@auriga.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 18:17:50 +0100 (CET)
+Received: from mail-bl2on0094.outbound.protection.outlook.com ([65.55.169.94]:63952
+        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009730AbbAURRrbLOk3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Jan 2015 18:17:47 +0100
+Received: from dl.caveonetworks.com (64.2.3.194) by
+ BY1PR0701MB1110.namprd07.prod.outlook.com (25.160.104.20) with Microsoft SMTP
+ Server (TLS) id 15.1.59.20; Wed, 21 Jan 2015 17:17:36 +0000
+Message-ID: <54BFDF2B.80708@caviumnetworks.com>
+Date:   Wed, 21 Jan 2015 09:17:31 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Mark Rutland <mark.rutland@arm.com>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
         "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -30,24 +29,38 @@ Cc:     Aleksey Makarov <aleksey.makarov@auriga.com>,
         Hans de Goede <hdegoede@redhat.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Subject: Re: [PATCH] SATA: OCTEON: support SATA on OCTEON platform
-Message-ID: <20150121165427.GA8722@leverpostej>
-References: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com>
- <20150119154357.GH21553@leverpostej>
- <54BD580C.6030701@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54BD580C.6030701@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <mark.rutland@arm.com>
+References: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com> <20150119154357.GH21553@leverpostej> <54BD580C.6030701@gmail.com> <20150121165427.GA8722@leverpostej>
+In-Reply-To: <20150121165427.GA8722@leverpostej>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.194]
+X-ClientProxiedBy: BLUPR07CA095.namprd07.prod.outlook.com (25.160.24.50) To
+ BY1PR0701MB1110.namprd07.prod.outlook.com (25.160.104.20)
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=David.Daney@caviumnetworks.com; 
+X-DmarcAction-Test: None
+X-Microsoft-Antispam: UriScan:;
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(3005004);SRVR:BY1PR0701MB1110;
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004);SRVR:BY1PR0701MB1110;
+X-Forefront-PRVS: 04631F8F77
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(979002)(6009001)(24454002)(189002)(199003)(51704005)(57704003)(164054003)(479174004)(377454003)(110136001)(2950100001)(36756003)(64126003)(87976001)(23756003)(105586002)(106356001)(50986999)(62966003)(77156002)(76176999)(69596002)(65816999)(81156004)(33656002)(54356999)(68736005)(65806001)(65956001)(66066001)(47776003)(122386002)(64706001)(40100003)(42186005)(92566002)(83506001)(97736003)(93886004)(101416001)(53416004)(50466002)(46102003)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:BY1PR0701MB1110;H:dl.caveonetworks.com;FPR:;SPF:None;MLV:ovrnspm;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+Received-SPF: None (protection.outlook.com: caviumnetworks.com does not
+ designate permitted sender hosts)
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:BY1PR0701MB1110;
+X-OriginatorOrg: caviumnetworks.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2015 17:17:36.1242 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR0701MB1110
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45414
+X-archive-position: 45415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.rutland@arm.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,144 +73,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 19, 2015 at 07:16:28PM +0000, David Daney wrote:
-> On 01/19/2015 07:43 AM, Mark Rutland wrote:
-> > On Mon, Jan 19, 2015 at 03:23:58PM +0000, Aleksey Makarov wrote:
-> >> The OCTEON SATA controller is currently found on cn71XX devices.
-> >>
-> >> Signed-off-by: David Daney <david.daney@cavium.com>
-> >> Signed-off-by: Vinita Gupta <vgupta@caviumnetworks.com>
-> >> [aleksey.makarov@auriga.com: preparing for submission,
-> >> conflict resolution, fixes for the platform code]
-> >> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
-> >> ---
-> >>   .../devicetree/bindings/ata/ahci-platform.txt      |   1 +
-> >>   .../devicetree/bindings/mips/cavium/sata-uctl.txt  |  31 ++++++
-> >>   arch/mips/cavium-octeon/octeon-platform.c          |   1 +
-> >>   drivers/ata/Kconfig                                |   9 ++
-> >>   drivers/ata/Makefile                               |   1 +
-> >>   drivers/ata/ahci_platform.c                        |  10 ++
-> >>   drivers/ata/sata_octeon.c                          | 107 +++++++++++++++++++++
-> >>   7 files changed, 160 insertions(+)
-> >>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
-> >>   create mode 100644 drivers/ata/sata_octeon.c
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.txt b/Documentation/devicetree/bindings/ata/ahci-platform.txt
-> >> index 4ab09f2..1a5d3be 100644
-> >> --- a/Documentation/devicetree/bindings/ata/ahci-platform.txt
-> >> +++ b/Documentation/devicetree/bindings/ata/ahci-platform.txt
-> >> @@ -11,6 +11,7 @@ Required properties:
-> >>   - compatible        : compatible string, one of:
-> >>     - "allwinner,sun4i-a10-ahci"
-> >>     - "hisilicon,hisi-ahci"
-> >> +  - "cavium,octeon-7130-ahci"
-> >>     - "ibm,476gtr-ahci"
-> >>     - "marvell,armada-380-ahci"
-> >>     - "snps,dwc-ahci"
-> >> diff --git a/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
-> >> new file mode 100644
-> >> index 0000000..222e66e
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
-> >> @@ -0,0 +1,31 @@
-> >> +* UCTL SATA controller glue
-> >
-> > I'm not sure I follow. What does this mean?
-> 
-> Well, UCTL is the internal name of the hardware block.  It functions to 
-> connect a standard AHCI controller to the internal busses of the OCTEON SoC.
-> 
-> >
-> >> +
-> >> +Properties:
-> >> +- compatible: "cavium,octeon-7130-sata-uctl"
-> >> +
-> >> +  Compatibility with the cn7130 SOC.
-> >> +
-> >> +- reg: The base address of the UCTL register bank.
-> >> +
-> >> +- #address-cells: Must be <2>.
-> >> +
-> >> +- #size-cells: Must be <2>.
-> >> +
-> >> +- ranges: Empty to signify direct mapping of the children.
-> >
-> > Why can't these be any values which are sufficient to map children?
-> 
-> They can.  It happens to be the case that it is always empty.
-
-Then why does the binding mandate those particular values? Whether or
-not it currently happens to be the case is independent from the contract
-that the binding defines.
-
-Why does it not say something like:
-
-#address-cells, #size-cells, and ranges must be present and hold
-suitable values to map all child nodes.
-
+On 01/21/2015 08:54 AM, Mark Rutland wrote:
+> On Mon, Jan 19, 2015 at 07:16:28PM +0000, David Daney wrote:
 [...]
+>>>> @@ -67,6 +76,7 @@ static const struct of_device_id ahci_of_match[] = {
+>>>>    	{ .compatible = "ibm,476gtr-ahci", },
+>>>>    	{ .compatible = "snps,dwc-ahci", },
+>>>>    	{ .compatible = "hisilicon,hisi-ahci", },
+>>>> +	{ .compatible = "cavium,octeon-7130-ahci", },
+>>>>    	{},
+>>>
+>>> I was under the impression that the strings other than "generic-ahci"
+>>> were only for compatibility with existing DTBs. Why do we need to add
+>>> new platform-specific strings here?
+>>
+>> Because it is an "existing DTB", The device tree doesn't contain the
+>> compatible property of "generic-ahci", only "cavium,octeon-7130-ahci".
+>
+> While the DTB may already exist, the string "cavium,octeon-7130-ahci"
+> isn't in mainline, and as far as I can see has never been supported.
 
-> >> diff --git a/drivers/ata/ahci_platform.c b/drivers/ata/ahci_platform.c
-> >> index 18d5398..bb36396 100644
-> >> --- a/drivers/ata/ahci_platform.c
-> >> +++ b/drivers/ata/ahci_platform.c
-> >> @@ -22,6 +22,12 @@
-> >>   #include <linux/ahci_platform.h>
-> >>   #include "ahci.h"
-> >>
-> >> +#if IS_ENABLED(CONFIG_SATA_OCTEON)
-> >> +void ahci_octeon_config(struct platform_device *pdev);
-> >> +#else
-> >> +static inline void ahci_octeon_config(struct platform_device *pdev) {}
-> >> +#endif
-> >> +
-> >>   static const struct ata_port_info ahci_port_info = {
-> >>   	.flags		= AHCI_FLAG_COMMON,
-> >>   	.pio_mask	= ATA_PIO4,
-> >> @@ -46,6 +52,9 @@ static int ahci_probe(struct platform_device *pdev)
-> >>   	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
-> >>   		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
-> >>
-> >> +	if (of_device_is_compatible(dev->of_node, "cavium,octeon-7130-ahci"))
-> >> +		ahci_octeon_config(pdev);
-> >> +
-> >
-> > If we really need this kind of thing, make a new struct and associate it
-> > with of_device_id::data in the table below. Then we make this path free
-> > from any device-specific code.
-> >
-> 
-> Good idea.
-> 
-> We will attempt to factor this into a separate driver module for the 
-> "cavium,octeon-7130-sata-uctl" block.  If that turns out to be too ugly, 
-> I would like to keep the code in this file, but with the change you suggest.
-> 
-> >>   	rc = ahci_platform_init_host(pdev, hpriv, &ahci_port_info);
-> >>   	if (rc)
-> >>   		goto disable_resources;
-> >> @@ -67,6 +76,7 @@ static const struct of_device_id ahci_of_match[] = {
-> >>   	{ .compatible = "ibm,476gtr-ahci", },
-> >>   	{ .compatible = "snps,dwc-ahci", },
-> >>   	{ .compatible = "hisilicon,hisi-ahci", },
-> >> +	{ .compatible = "cavium,octeon-7130-ahci", },
-> >>   	{},
-> >
-> > I was under the impression that the strings other than "generic-ahci"
-> > were only for compatibility with existing DTBs. Why do we need to add
-> > new platform-specific strings here?
-> 
-> Because it is an "existing DTB", The device tree doesn't contain the 
-> compatible property of "generic-ahci", only "cavium,octeon-7130-ahci".
+There seems to be a disconnect here.  The DTB comes from the hardware 
+boot environment.  The hardware is in some cases already deployed.  It 
+is for all practical purposes, impossible to change the DTB.
 
-While the DTB may already exist, the string "cavium,octeon-7130-ahci"
-isn't in mainline, and as far as I can see has never been supported. We
-_maintain_ support for existing DTBs, we don't just copy what some
-forked kernel happens to do.
+The idea that the kernel source code controls the content of the device 
+tree doesn't apply here.
 
-Trying to push that under the "don't break existing DTBs" rule is
-bending the definition.
+> We
+> _maintain_ support for existing DTBs, we don't just copy what some
+> forked kernel happens to do.
+>
+> Trying to push that under the "don't break existing DTBs" rule is
+> bending the definition.
 
-Thanks,
-Mark.
- 
+The purpose of the kernel is to provide services on top of actual 
+hardware.  In general, for a kernel driver to support any given device, 
+it may have to add device specific identifiers, that correspond to the 
+device, in the probing code.
+
+David Daney
+
+>
+> Thanks,
+> Mark.
+>
+>

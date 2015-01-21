@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 03:32:36 +0100 (CET)
-Received: from szxga01-in.huawei.com ([119.145.14.64]:17799 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012000AbbAUCccxjqir (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 03:32:32 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2015 03:33:12 +0100 (CET)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:10393 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011336AbbAUCdIiFRqv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jan 2015 03:33:08 +0100
 Received: from 172.24.2.119 (EHLO szxeml433-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CIF99702;
-        Wed, 21 Jan 2015 10:32:16 +0800 (CST)
+        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CFZ97788;
+        Wed, 21 Jan 2015 10:32:25 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml433-hub.china.huawei.com (10.82.67.210) with Microsoft SMTP Server id
- 14.3.158.1; Wed, 21 Jan 2015 10:32:01 +0800
+ 14.3.158.1; Wed, 21 Jan 2015 10:32:11 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     Jiang Liu <jiang.liu@linux.intel.com>, <linux-pci@vger.kernel.org>,
@@ -31,20 +31,21 @@ CC:     Jiang Liu <jiang.liu@linux.intel.com>, <linux-pci@vger.kernel.org>,
         Richard Henderson <rth@twiddle.net>,
         "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
-        David Howells <dhowells@redhat.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
         Michal Simek <monstr@monstr.eu>,
         "Ralf Baechle" <ralf@linux-mips.org>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
         Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
         Chris Metcalf <cmetcalf@ezchip.com>,
-        "Chris Zankel" <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, <linux-mips@linux-mips.org>,
-        <linux-am33-list@redhat.com>, <linux-s390@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <linux-xtensa@linux-xtensa.org>
-Subject: [PATCH v2 02/30] PCI: Rip out pci_bus_add_devices() from pci_scan_root_bus()
-Date:   Wed, 21 Jan 2015 08:29:57 +0800
-Message-ID: <1421800225-26230-3-git-send-email-wangyijing@huawei.com>
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        <linux-mips@linux-mips.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, <xen-devel@lists.xenproject.org>
+Subject: [PATCH v2 07/30] PCI: Pass PCI domain number combined with root bus number
+Date:   Wed, 21 Jan 2015 08:30:02 +0800
+Message-ID: <1421800225-26230-8-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1421800225-26230-1-git-send-email-wangyijing@huawei.com>
 References: <1421800225-26230-1-git-send-email-wangyijing@huawei.com>
@@ -56,7 +57,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45386
+X-archive-position: 45387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,260 +74,291 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Just like pci_scan_bus(), we also should rip out
-pci_bus_add_devices() from pci_scan_root_bus().
-Lots platforms first call pci_scan_root_bus(), but
-after that, they call pci_bus_size_bridges() and
-pci_bus_assign_resources(). Place pci_bus_add_devices()
-in pci_scan_root_bus() hurts PCI scan logic.
-For arm hw_pci->scan() functions which call
-pci_scan_root_bus(), it's no need to change anything,
-because pci_bus_add_devices() will be called later
-in pci_common_init_dev().
+Now we could pass PCI domain combined with bus number
+in u32 argu. Because in arm/arm64, PCI domain number
+is assigned by pci_bus_assign_domain_nr(). So we leave
+pci_scan_root_bus() and pci_create_root_bus() in arm/arm64
+unchanged. A new function pci_host_assign_domain_nr()
+will be introduced for arm/arm64 to assign domain number
+in later patch.
 
 Signed-off-by: Yijing Wang <wangyijing@huawei.com>
 CC: Richard Henderson <rth@twiddle.net>
 CC: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
 CC: Matt Turner <mattst88@gmail.com>
-CC: David Howells <dhowells@redhat.com>
 CC: Tony Luck <tony.luck@intel.com>
+CC: Fenghua Yu <fenghua.yu@intel.com>
 CC: Michal Simek <monstr@monstr.eu>
 CC: Ralf Baechle <ralf@linux-mips.org>
-CC: Koichi Yasutake <yasutake.koichi@jp.panasonic.com>
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC: Paul Mackerras <paulus@samba.org>
+CC: Michael Ellerman <mpe@ellerman.id.au>
 CC: Sebastian Ott <sebott@linux.vnet.ibm.com>
+CC: Gerald Schaefer <gerald.schaefer@de.ibm.com>
 CC: "David S. Miller" <davem@davemloft.net>
 CC: Chris Metcalf <cmetcalf@ezchip.com>
-CC: Chris Zankel <chris@zankel.net>
-CC: Max Filippov <jcmvbkbc@gmail.com>
 CC: Thomas Gleixner <tglx@linutronix.de>
+CC: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 CC: linux-alpha@vger.kernel.org
 CC: linux-kernel@vger.kernel.org
+CC: linux-ia64@vger.kernel.org
 CC: linux-mips@linux-mips.org
-CC: linux-am33-list@redhat.com
+CC: linuxppc-dev@lists.ozlabs.org
 CC: linux-s390@vger.kernel.org
 CC: linux-sh@vger.kernel.org
 CC: sparclinux@vger.kernel.org
-CC: linux-xtensa@linux-xtensa.org
+CC: xen-devel@lists.xenproject.org
 ---
- arch/alpha/kernel/pci.c          |    2 ++
- arch/frv/mb93090-mb00/pci-vdk.c  |    6 ++++--
- arch/ia64/sn/kernel/io_init.c    |    1 +
- arch/microblaze/pci/pci-common.c |    1 +
- arch/mips/pci/pci.c              |    1 +
- arch/mn10300/unit-asb2305/pci.c  |    5 ++++-
- arch/s390/pci/pci.c              |    2 +-
- arch/sh/drivers/pci/pci.c        |    1 +
- arch/sparc/kernel/leon_pci.c     |    1 +
- arch/tile/kernel/pci.c           |    2 ++
- arch/tile/kernel/pci_gx.c        |    2 ++
- arch/x86/pci/common.c            |    1 +
- arch/xtensa/kernel/pci.c         |    2 ++
- drivers/pci/probe.c              |    1 -
- 14 files changed, 23 insertions(+), 5 deletions(-)
+ arch/alpha/kernel/pci.c          |    5 +++--
+ arch/alpha/kernel/sys_nautilus.c |    3 ++-
+ arch/ia64/pci/pci.c              |    4 ++--
+ arch/ia64/sn/kernel/io_init.c    |    5 +++--
+ arch/microblaze/pci/pci-common.c |    5 +++--
+ arch/mips/pci/pci.c              |    4 ++--
+ arch/powerpc/kernel/pci-common.c |    5 +++--
+ arch/s390/pci/pci.c              |    5 +++--
+ arch/sh/drivers/pci/pci.c        |    5 +++--
+ arch/sparc/kernel/pci.c          |    5 +++--
+ arch/tile/kernel/pci.c           |    4 ++--
+ arch/tile/kernel/pci_gx.c        |    5 +++--
+ arch/x86/pci/acpi.c              |    6 +++---
+ arch/x86/pci/common.c            |    3 ++-
+ drivers/pci/xen-pcifront.c       |    5 +++--
+ 15 files changed, 40 insertions(+), 29 deletions(-)
 
 diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
-index 076c35c..97f9730 100644
+index 97f9730..b15f9f2 100644
 --- a/arch/alpha/kernel/pci.c
 +++ b/arch/alpha/kernel/pci.c
-@@ -334,6 +334,8 @@ common_init_pci(void)
+@@ -332,8 +332,9 @@ common_init_pci(void)
+ 		pci_add_resource_offset(&resources, hose->mem_space,
+ 					hose->mem_space->start);
  
- 		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
- 					hose, &resources);
-+		if (bus)
-+			pci_bus_add_devices(bus);
+-		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
+-					hose, &resources);
++		bus = pci_scan_root_bus(NULL,
++				PCI_DOMBUS(hose->index, next_busno), alpha_mv.pci_ops,
++				hose, &resources);
+ 		if (bus)
+ 			pci_bus_add_devices(bus);
  		hose->bus = bus;
- 		hose->need_domain_info = need_domain_info;
- 		next_busno = bus->busn_res.end + 1;
-diff --git a/arch/frv/mb93090-mb00/pci-vdk.c b/arch/frv/mb93090-mb00/pci-vdk.c
-index efa5d65..2b36044 100644
---- a/arch/frv/mb93090-mb00/pci-vdk.c
-+++ b/arch/frv/mb93090-mb00/pci-vdk.c
-@@ -316,6 +316,7 @@ void pcibios_fixup_bus(struct pci_bus *bus)
+diff --git a/arch/alpha/kernel/sys_nautilus.c b/arch/alpha/kernel/sys_nautilus.c
+index 2c864bb..f7bfdf3 100644
+--- a/arch/alpha/kernel/sys_nautilus.c
++++ b/arch/alpha/kernel/sys_nautilus.c
+@@ -206,7 +206,8 @@ nautilus_init_pci(void)
+ 	unsigned long memtop = max_low_pfn << PAGE_SHIFT;
  
- int __init pcibios_init(void)
- {
-+	struct pci_bus *bus;
- 	struct pci_ops *dir = NULL;
- 	LIST_HEAD(resources);
+ 	/* Scan our single hose.  */
+-	bus = pci_scan_bus_legacy(0, alpha_mv.pci_ops, hose);
++	bus = pci_scan_bus_legacy(PCI_DOMBUS(hose->index, 0),
++			alpha_mv.pci_ops, hose);
+ 	hose->bus = bus;
+ 	pcibios_claim_one_bus(bus);
  
-@@ -383,12 +384,13 @@ int __init pcibios_init(void)
- 	printk("PCI: Probing PCI hardware\n");
- 	pci_add_resource(&resources, &pci_ioport_resource);
- 	pci_add_resource(&resources, &pci_iomem_resource);
--	pci_scan_root_bus(NULL, 0, pci_root_ops, NULL, &resources);
-+	bus = pci_scan_root_bus(NULL, 0, pci_root_ops, NULL, &resources);
- 
- 	pcibios_irq_init();
- 	pcibios_fixup_irqs();
- 	pcibios_resource_survey();
--
-+	if (bus)
-+		pci_bus_add_devices(bus);
- 	return 0;
- }
- 
+diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
+index 291a582..e457015 100644
+--- a/arch/ia64/pci/pci.c
++++ b/arch/ia64/pci/pci.c
+@@ -465,8 +465,8 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 	 * should handle the case here, but it appears that IA64 hasn't
+ 	 * such quirk. So we just ignore the case now.
+ 	 */
+-	pbus = pci_create_root_bus(NULL, bus, &pci_root_ops, controller,
+-				   &info->resources);
++	pbus = pci_create_root_bus(NULL, PCI_DOMBUS(domain, bus),
++			&pci_root_ops, controller, &info->resources);
+ 	if (!pbus) {
+ 		pci_free_resource_list(&info->resources);
+ 		__release_pci_root_info(info);
 diff --git a/arch/ia64/sn/kernel/io_init.c b/arch/ia64/sn/kernel/io_init.c
-index 0b5ce82..63b43a6 100644
+index 63b43a6..bcdc5b8 100644
 --- a/arch/ia64/sn/kernel/io_init.c
 +++ b/arch/ia64/sn/kernel/io_init.c
-@@ -272,6 +272,7 @@ sn_pci_controller_fixup(int segment, int busnum, struct pci_bus *bus)
+@@ -266,8 +266,9 @@ sn_pci_controller_fixup(int segment, int busnum, struct pci_bus *bus)
+ 	pci_add_resource_offset(&resources,	&res[1],
+ 			prom_bussoft_ptr->bs_legacy_mem);
+ 
+-	bus = pci_scan_root_bus(NULL, busnum, &pci_root_ops, controller,
+-				&resources);
++	bus = pci_scan_root_bus(NULL,
++			PCI_DOMBUS(controller->segment, busnum),
++			&pci_root_ops, controller, &resources);
+  	if (bus == NULL) {
  		kfree(res);
  		kfree(controller);
- 	}
-+	pci_bus_add_devices(bus);
- }
- 
- /*
 diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
-index b30e41c..009b271 100644
+index 009b271..890bd36 100644
 --- a/arch/microblaze/pci/pci-common.c
 +++ b/arch/microblaze/pci/pci-common.c
-@@ -1351,6 +1351,7 @@ static void pcibios_scan_phb(struct pci_controller *hose)
- 	hose->bus = bus;
+@@ -1339,8 +1339,9 @@ static void pcibios_scan_phb(struct pci_controller *hose)
  
- 	hose->last_busno = bus->busn_res.end;
-+	pci_bus_add_devices(bus);
- }
+ 	pcibios_setup_phb_resources(hose, &resources);
  
- static int __init pcibios_init(void)
+-	bus = pci_scan_root_bus(hose->parent, hose->first_busno,
+-				hose->ops, hose, &resources);
++	bus = pci_scan_root_bus(hose->parent,
++			PCI_DOMBUS(hose->global_number, hose->first_busno),
++			hose->ops, hose, &resources);
+ 	if (bus == NULL) {
+ 		pr_err("Failed to create bus for PCI domain %04x\n",
+ 		       hose->global_number);
 diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 1bf60b1..9eb54b5 100644
+index 9eb54b5..980755a 100644
 --- a/arch/mips/pci/pci.c
 +++ b/arch/mips/pci/pci.c
-@@ -114,6 +114,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
- 			pci_bus_size_bridges(bus);
- 			pci_bus_assign_resources(bus);
- 		}
-+		pci_bus_add_devices(bus);
- 	}
- }
+@@ -92,8 +92,8 @@ static void pcibios_scanbus(struct pci_controller *hose)
+ 	pci_add_resource_offset(&resources,
+ 				hose->mem_resource, hose->mem_offset);
+ 	pci_add_resource_offset(&resources, hose->io_resource, hose->io_offset);
+-	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
+-				&resources);
++	bus = pci_scan_root_bus(NULL, PCI_DOMBUS(hose->index, next_busno),
++			hose->pci_ops, hose, &resources);
+ 	if (!bus)
+ 		pci_free_resource_list(&resources);
  
-diff --git a/arch/mn10300/unit-asb2305/pci.c b/arch/mn10300/unit-asb2305/pci.c
-index 6b4339f..860aa35 100644
---- a/arch/mn10300/unit-asb2305/pci.c
-+++ b/arch/mn10300/unit-asb2305/pci.c
-@@ -345,6 +345,7 @@ void pcibios_fixup_bus(struct pci_bus *bus)
-  */
- static int __init pcibios_init(void)
- {
-+	struct pci_bus *bus;
- 	resource_size_t io_offset, mem_offset;
- 	LIST_HEAD(resources);
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index 37d512d..927c3dd 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1602,8 +1602,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
+ 	pci_add_resource(&resources, &hose->busn);
  
-@@ -376,11 +377,13 @@ static int __init pcibios_init(void)
- 
- 	pci_add_resource_offset(&resources, &pci_ioport_resource, io_offset);
- 	pci_add_resource_offset(&resources, &pci_iomem_resource, mem_offset);
--	pci_scan_root_bus(NULL, 0, &pci_direct_ampci, NULL, &resources);
-+	bus = pci_scan_root_bus(NULL, 0, &pci_direct_ampci, NULL, &resources);
- 
- 	pcibios_irq_init();
- 	pcibios_fixup_irqs();
- 	pcibios_resource_survey();
-+	if (bus)
-+		pci_bus_add_devices(bus);
- 	return 0;
- }
- 
+ 	/* Create an empty bus for the toplevel */
+-	bus = pci_create_root_bus(hose->parent, hose->first_busno,
+-				  hose->ops, hose, &resources);
++	bus = pci_create_root_bus(hose->parent,
++			PCI_DOMBUS(hose->global_number, hose->first_busno),
++			hose->ops, hose, &resources);
+ 	if (bus == NULL) {
+ 		pr_err("Failed to create bus for PCI domain %04x\n",
+ 			hose->global_number);
 diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 3290f11..0b32769 100644
+index 0b32769..612decf 100644
 --- a/arch/s390/pci/pci.c
 +++ b/arch/s390/pci/pci.c
-@@ -756,7 +756,7 @@ static int zpci_scan_bus(struct zpci_dev *zdev)
+@@ -750,8 +750,9 @@ static int zpci_scan_bus(struct zpci_dev *zdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	zdev->bus = pci_scan_root_bus(NULL, ZPCI_BUS_NR, &pci_root_ops,
+-				      zdev, &resources);
++	zdev->bus = pci_scan_root_bus(NULL,
++			PCI_DOMBUS(zdev->domain, ZPCI_BUS_NR), &pci_root_ops,
++			zdev, &resources);
+ 	if (!zdev->bus) {
  		zpci_cleanup_bus_resources(zdev);
  		return -EIO;
- 	}
--
-+	pci_bus_add_devices(zdev->bus);
- 	zdev->bus->max_bus_speed = zdev->max_bus_speed;
- 	return 0;
- }
 diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-index 1bc09ee..efc1051 100644
+index efc1051..7ee0772 100644
 --- a/arch/sh/drivers/pci/pci.c
 +++ b/arch/sh/drivers/pci/pci.c
-@@ -69,6 +69,7 @@ static void pcibios_scanbus(struct pci_channel *hose)
- 
- 		pci_bus_size_bridges(bus);
- 		pci_bus_assign_resources(bus);
-+		pci_bus_add_devices(bus);
- 	} else {
- 		pci_free_resource_list(&resources);
+@@ -52,8 +52,9 @@ static void pcibios_scanbus(struct pci_channel *hose)
+ 		pci_add_resource_offset(&resources, res, offset);
  	}
-diff --git a/arch/sparc/kernel/leon_pci.c b/arch/sparc/kernel/leon_pci.c
-index 899b720..2971076 100644
---- a/arch/sparc/kernel/leon_pci.c
-+++ b/arch/sparc/kernel/leon_pci.c
-@@ -40,6 +40,7 @@ void leon_pci_init(struct platform_device *ofdev, struct leon_pci_info *info)
  
- 		/* Assign devices with resources */
- 		pci_assign_unassigned_resources();
-+		pci_bus_add_devices(root_bus);
- 	} else {
- 		pci_free_resource_list(&resources);
- 	}
+-	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
+-				&resources);
++	bus = pci_scan_root_bus(NULL,
++			PCI_DOMBUS(hose->index, next_busno),
++			hose->pci_ops, hose, &resources);
+ 	hose->bus = bus;
+ 
+ 	need_domain_info = need_domain_info || hose->index;
+diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
+index b36365f..d798b42 100644
+--- a/arch/sparc/kernel/pci.c
++++ b/arch/sparc/kernel/pci.c
+@@ -664,8 +664,9 @@ struct pci_bus *pci_scan_one_pbm(struct pci_pbm_info *pbm,
+ 	pbm->busn.end	= pbm->pci_last_busno;
+ 	pbm->busn.flags	= IORESOURCE_BUS;
+ 	pci_add_resource(&resources, &pbm->busn);
+-	bus = pci_create_root_bus(parent, pbm->pci_first_busno, pbm->pci_ops,
+-				  pbm, &resources);
++	bus = pci_create_root_bus(parent,
++			PCI_DOMBUS(pbm->index, pbm->pci_first_busno),
++			pbm->pci_ops, pbm, &resources);
+ 	if (!bus) {
+ 		printk(KERN_ERR "Failed to create bus for %s\n",
+ 		       node->full_name);
 diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
-index f70c789..83d3e30 100644
+index 83d3e30..2603db5 100644
 --- a/arch/tile/kernel/pci.c
 +++ b/arch/tile/kernel/pci.c
-@@ -339,6 +339,8 @@ int __init pcibios_init(void)
- 			struct pci_bus *next_bus;
- 			struct pci_dev *dev;
+@@ -306,8 +306,8 @@ int __init pcibios_init(void)
  
-+			pci_bus_add_devices(root_bus);
-+
- 			list_for_each_entry(dev, &root_bus->devices, bus_list) {
- 				/*
- 				 * Find the PCI host controller, ie. the 1st
+ 			pci_add_resource(&resources, &ioport_resource);
+ 			pci_add_resource(&resources, &iomem_resource);
+-			bus = pci_scan_root_bus(NULL, 0, controller->ops,
+-						controller, &resources);
++			bus = pci_scan_root_bus(NULL, PCI_DOMBUS(controller->index, 0),
++					controller->ops, controller, &resources);
+ 			controller->root_bus = bus;
+ 			controller->last_busno = bus->busn_res.end;
+ 		}
 diff --git a/arch/tile/kernel/pci_gx.c b/arch/tile/kernel/pci_gx.c
-index 2c95f37..d7a0729 100644
+index d7a0729..1e6ff84 100644
 --- a/arch/tile/kernel/pci_gx.c
 +++ b/arch/tile/kernel/pci_gx.c
-@@ -916,6 +916,8 @@ int __init pcibios_init(void)
- 		/* Configure the max_payload_size values for this domain. */
- 		fixup_read_and_payload_sizes(controller);
+@@ -881,8 +881,9 @@ int __init pcibios_init(void)
+ 					controller->mem_offset);
+ 		pci_add_resource(&resources, &controller->io_space);
+ 		controller->first_busno = next_busno;
+-		bus = pci_scan_root_bus(NULL, next_busno, controller->ops,
+-					controller, &resources);
++		bus = pci_scan_root_bus(NULL,
++				PCI_DOMBUS(controller->index, next_busno),
++				controller->ops, controller, &resources);
+ 		controller->root_bus = bus;
+ 		next_busno = bus->busn_res.end + 1;
+ 	}
+diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+index cfd1b13..8edea63 100644
+--- a/arch/x86/pci/acpi.c
++++ b/arch/x86/pci/acpi.c
+@@ -536,9 +536,9 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 		}
  
-+		pci_bus_add_devices(root_bus);
-+
- 		/* Alloc a PIO region for PCI memory access for each RC port. */
- 		ret = gxio_trio_alloc_pio_regions(trio_context, 1, 0, 0);
- 		if (ret < 0) {
+ 		if (!setup_mcfg_map(info, domain, (u8)root->secondary.start,
+-				    (u8)root->secondary.end, root->mcfg_addr))
+-			bus = pci_create_root_bus(NULL, busnum, &pci_root_ops,
+-						  sd, &resources);
++					(u8)root->secondary.end, root->mcfg_addr))
++			bus = pci_create_root_bus(NULL, PCI_DOMBUS(domain, busnum),
++					&pci_root_ops, sd, &resources);
+ 
+ 		if (bus) {
+ 			pci_scan_child_bus(bus);
 diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
-index 7b20bcc..300d39e 100644
+index 300d39e..d6879ee 100644
 --- a/arch/x86/pci/common.c
 +++ b/arch/x86/pci/common.c
-@@ -475,6 +475,7 @@ void pcibios_scan_root(int busnum)
+@@ -470,7 +470,8 @@ void pcibios_scan_root(int busnum)
+ 	sd->node = x86_pci_root_bus_node(busnum);
+ 	x86_pci_root_bus_resources(busnum, &resources);
+ 	printk(KERN_DEBUG "PCI: Probing PCI hardware (bus %02x)\n", busnum);
+-	bus = pci_scan_root_bus(NULL, busnum, &pci_root_ops, sd, &resources);
++	bus = pci_scan_root_bus(NULL, PCI_DOMBUS(0, busnum),
++			&pci_root_ops, sd, &resources);
+ 	if (!bus) {
  		pci_free_resource_list(&resources);
  		kfree(sd);
- 	}
-+	pci_bus_add_devices(bus);
- }
+diff --git a/drivers/pci/xen-pcifront.c b/drivers/pci/xen-pcifront.c
+index 240ddbc..a010dfa 100644
+--- a/drivers/pci/xen-pcifront.c
++++ b/drivers/pci/xen-pcifront.c
+@@ -477,8 +477,9 @@ static int pcifront_scan_root(struct pcifront_device *pdev,
  
- void __init pcibios_set_cache_line_size(void)
-diff --git a/arch/xtensa/kernel/pci.c b/arch/xtensa/kernel/pci.c
-index 5b34033..f2ae64e 100644
---- a/arch/xtensa/kernel/pci.c
-+++ b/arch/xtensa/kernel/pci.c
-@@ -185,6 +185,8 @@ static int __init pcibios_init(void)
- 		pci_controller_apertures(pci_ctrl, &resources);
- 		bus = pci_scan_root_bus(NULL, pci_ctrl->first_busno,
- 					pci_ctrl->ops, pci_ctrl, &resources);
-+		if (bus)
-+			pci_bus_add_devices(bus);
- 		pci_ctrl->bus = bus;
- 		pci_ctrl->last_busno = bus->busn_res.end;
- 		if (next_busno <= pci_ctrl->last_busno)
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 053c0f4..7cf577f 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2087,7 +2087,6 @@ struct pci_bus *pci_scan_root_bus(struct device *parent, int bus,
- 	if (!found)
- 		pci_bus_update_busn_res_end(b, max);
+ 	pci_lock_rescan_remove();
  
--	pci_bus_add_devices(b);
- 	return b;
- }
- EXPORT_SYMBOL(pci_scan_root_bus);
+-	b = pci_scan_root_bus(&pdev->xdev->dev, bus,
+-				  &pcifront_bus_ops, sd, &resources);
++	b = pci_scan_root_bus(&pdev->xdev->dev,
++			PCI_DOMBUS(sd->domain, bus),
++			&pcifront_bus_ops, sd, &resources);
+ 	if (!b) {
+ 		dev_err(&pdev->xdev->dev,
+ 			"Error creating PCI Frontend Bus!\n");
 -- 
 1.7.1

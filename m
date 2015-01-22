@@ -1,47 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 02:47:32 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37088 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011960AbbAVBr3hYQPF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Jan 2015 02:47:29 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 4C9EF2035B;
-        Thu, 22 Jan 2015 01:47:28 +0000 (UTC)
-Received: from mail.kernel.org (unknown [46.165.208.107])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 312CC2034F;
-        Thu, 22 Jan 2015 01:47:26 +0000 (UTC)
-Date:   Thu, 22 Jan 2015 02:47:18 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     dbaryshkov@gmail.com, dwmw2@infradead.org, arnd@arndb.de,
-        linux@prisktech.co.nz, stern@rowland.harvard.edu,
-        gregkh@linuxfoundation.org, f.fainelli@gmail.com,
-        grant.likely@linaro.org, robh+dt@kernel.org,
-        computersforpeace@gmail.com, marc.ceeeee@gmail.com,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/9] power/reset: brcmstb: Add support for old 65nm chips
-Message-ID: <20150122014718.GO13715@earth.universe>
-References: <1416962994-27095-1-git-send-email-cernekee@gmail.com>
- <1416962994-27095-4-git-send-email-cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 09:54:13 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:40225 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010416AbbAVIyL1bgfl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 09:54:11 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id DCB8E5AAED00B;
+        Thu, 22 Jan 2015 08:54:03 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 22 Jan 2015 08:54:05 +0000
+Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 22 Jan
+ 2015 08:54:05 +0000
+Message-ID: <54C0BAAC.8020702@imgtec.com>
+Date:   Thu, 22 Jan 2015 08:54:04 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="B3NBd8mrXZtPJEYR"
-Content-Disposition: inline
-In-Reply-To: <1416962994-27095-4-git-send-email-cernekee@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sre@kernel.org>
+To:     Paul Burton <paul.burton@imgtec.com>,
+        David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: kernel: cps-vec: Replace "addi" with "addiu"
+References: <1421854030-28929-1-git-send-email-markos.chandras@imgtec.com> <54BFE91F.7050906@gmail.com> <20150121180200.GC15278@NP-P-BURTON>
+In-Reply-To: <20150121180200.GC15278@NP-P-BURTON>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.96]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45425
+X-archive-position: 45427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sre@kernel.org
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,41 +49,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 01/21/2015 06:02 PM, Paul Burton wrote:
+> On Wed, Jan 21, 2015 at 09:59:59AM -0800, David Daney wrote:
+>> On 01/21/2015 07:27 AM, Markos Chandras wrote:
+>>> The "addi" instruction will trap on overflows which is not something
+>>> we need in this code, so we replace that with "addiu".
+>>>
+>>> Link: http://www.linux-mips.org/archives/linux-mips/2015-01/msg00430.html
+>>> Cc: Maciej W. Rozycki <macro@linux-mips.org>
+>>> Cc: <stable@vger.kernel.org> # v3.15+
+>>> Cc: Paul Burton <paul.burton@imgtec.com>
+>>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>>
+>> Acked-by: David Daney <david.daney@cavium.com>
+>>
+>> Same comment about the stable thing.  Is it needed for anything other than
+>> follow-on MIPS r6 Patches?
+> 
+> In both this & the MSA asmmacro.h cases, the additions should never
+> cause overflow. So I agree, backporting to stable seems like overkill.
+> 
+> Paul
+> 
 
---B3NBd8mrXZtPJEYR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Maciej suggested to backport it to stable branches. I personally don't mind.
 
-Hi,
 
-On Tue, Nov 25, 2014 at 04:49:48PM -0800, Kevin Cernekee wrote:
-> The register bit fields are a little different, so add an entry and a
-> compatible string to accommodate them.
-
-Thanks, applied.
-
--- Sebastian
-
---B3NBd8mrXZtPJEYR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBCgAGBQJUwFamAAoJENju1/PIO/qabr8P/1ea3h4M0xKnteM9XGvGal8q
-BHAQBk7O083ZW/D4qhdxJyy+X0Wq/9/CiYVNsJb4xqDMDW6lpVp2V7EI0XeljjhU
-Q171ZNF0jr+l3PiTyAL03yacpWzJ/QPZReJFwJCovN+/JUnVrz1mMzWFP4U5RyMY
-TwtXIc5DiAxuwVv7cfc4sst+zGzSZpsRNToNQILUf9MIFozjiNUtXP83Wcn+Oj0I
-lJ3YVtazMKwvpfN5ZAJ7+llZ2ye0rtr8pY6Pi/Okb0O8Lco6N9m3RCdti9nq3nxw
-YuJVgXxj9bj3xzjAXMINx1HV/yMdL3Z02qSzYaEWZJq/5h7Kk8ZadmUcXEi9keZV
-u3j6HJBcF4Mbh7Dbx227btBRmJUXTui57ssze4QTUxJ1gCilX+lsZEuiBeDC/XwB
-G/UxxYVq+2tpwlco97wZrW6DlljmrLyiMIlgSqfwb602ulunuWdJRvr8BzadFraU
-FG+jgYEEfz/w7sSzCuaPoGLlhc9C08CPowzDbn4PK6ubAptem29Uz2mulknEpUbs
-pa7qGDRTyXsoaLnquJJReDc5VkqVerV1aqmQ0rSlhXeMpzJDuhm+/4lrpR1jVRL0
-RwyqVbYUPQddAWU9rtWL7SBBmWqaSqAGbi8rmKSmqDuUsqyeSS+oJpCOkUP5sNGP
-UxmSuEUsuDskeTxzKPYO
-=Ix8s
------END PGP SIGNATURE-----
-
---B3NBd8mrXZtPJEYR--
+-- 
+markos

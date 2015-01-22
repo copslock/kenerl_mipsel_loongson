@@ -1,52 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 15:42:38 +0100 (CET)
-Received: from bhuna.collabora.co.uk ([93.93.135.160]:35457 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010483AbbAVOmgKjEVM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 15:42:36 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: tomeu)
-        with ESMTPSA id 58C25600E93
-Message-ID: <54C10C54.6070500@collabora.com>
-Date:   Thu, 22 Jan 2015 15:42:28 +0100
-From:   Tomeu Vizoso <tomeu.vizoso@collabora.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 15:43:29 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57025 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010483AbbAVOn1noPqW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 15:43:27 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 136C06A2FF3AC;
+        Thu, 22 Jan 2015 14:43:19 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 22 Jan 2015 14:43:21 +0000
+Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 22 Jan
+ 2015 14:43:20 +0000
+Message-ID: <54C10C88.7060106@imgtec.com>
+Date:   Thu, 22 Jan 2015 14:43:20 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-To:     Stephen Boyd <sboyd@codeaurora.org>
-CC:     linux-kernel@vger.kernel.org,
-        Mike Turquette <mturquette@linaro.org>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        =?windows-1252?Q?Emilio_L=F3pez?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Alex Elder <elder@linaro.org>,
-        Matt Porter <mporter@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Bintian Wang <bintian.wang@huawei.com>,
-        Chao Xie <chao.xie@marvell.com>, linux-doc@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v11 3/4] clk: Add rate constraints to clocks
-References: <1421847039-29544-1-git-send-email-tomeu.vizoso@collabora.com> <1421847039-29544-4-git-send-email-tomeu.vizoso@collabora.com> <20150122014635.GI27202@codeaurora.org>
-In-Reply-To: <20150122014635.GI27202@codeaurora.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Return-Path: <tomeu.vizoso@collabora.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH RFC v2 30/70] MIPS: kernel: proc: Add MIPS R6 support
+ to /proc/cpuinfo
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-31-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501202336540.28301@eddie.linux-mips.org> <54BF709B.1080609@imgtec.com> <alpine.LFD.2.11.1501210936410.28301@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1501210936410.28301@eddie.linux-mips.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.96]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45430
+X-archive-position: 45431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tomeu.vizoso@collabora.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,99 +47,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/22/2015 02:46 AM, Stephen Boyd wrote:
-> On 01/21, Tomeu Vizoso wrote:
->> Adds a way for clock consumers to set maximum and minimum rates. This
->> can be used for thermal drivers to set minimum rates, or by misc.
->> drivers to set maximum rates to assure a minimum performance level.
->>
->> Changes the signature of the determine_rate callback by adding the
->> parameters min_rate and max_rate.
->>
->> Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
->>
->> ---
->> v11:	* Recalculate the rate before putting the reference to clk_core
->> 	* Don't recalculate the rate when freeing the per-user clock
->> 	in the initialization error paths
->> 	* Move __clk_create_clk to be next to __clk_free_clk for more
->> 	comfortable reading
+On 01/22/2015 02:08 PM, Maciej W. Rozycki wrote:
+> On Wed, 21 Jan 2015, Markos Chandras wrote:
 > 
-> Can we do this in the previous patch where we introduce the
-> function?
-
-Ok.
-
->> @@ -2143,9 +2314,16 @@ struct clk *__clk_register(struct device *dev, struct clk_hw *hw)
->>  	else
->>  		clk->owner = NULL;
->>  
->> +	INIT_HLIST_HEAD(&clk->clks);
->> +
->> +	hw->clk = __clk_create_clk(hw, NULL, NULL);
->> +
->>  	ret = __clk_init(dev, hw->clk);
->> -	if (ret)
->> +	if (ret) {
->> +		__clk_free_clk(hw->clk);
->> +		hw->clk = NULL;
->>  		return ERR_PTR(ret);
->> +	}
->>  
->>  	return hw->clk;
->>  }
->> @@ -2210,12 +2388,16 @@ struct clk *clk_register(struct device *dev, struct clk_hw *hw)
->>  		}
->>  	}
->>  
->> +	INIT_HLIST_HEAD(&clk->clks);
->> +
->>  	hw->clk = __clk_create_clk(hw, NULL, NULL);
->>  	ret = __clk_init(dev, hw->clk);
->>  	if (!ret)
->>  		return hw->clk;
->>  
->> -	kfree(hw->clk);
->> +	__clk_free_clk(hw->clk);
->> +	hw->clk = NULL;
+>>>> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+>>>> index 097fc8d14e42..a8fdf9685cad 100644
+>>>> --- a/arch/mips/kernel/proc.c
+>>>> +++ b/arch/mips/kernel/proc.c
+>>>> @@ -82,7 +82,9 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+>>>>  		seq_printf(m, "]\n");
+>>>>  	}
+>>>>  
+>>>> -	seq_printf(m, "isa\t\t\t: mips1");
+>>>> +	seq_printf(m, "isa\t\t\t:"); 
+>>>> +	if (!cpu_has_mips_r6)
+>>>> +		seq_printf(m, " mips1");
+>>>
+>>>  I think define `cpu_has_mips_r1' instead and use it here.  It may turn 
+>>> out needed elsewhere too.  We probably don't need a new `MIPS_CPU_ISA_I' 
+>>> bit at this stage so this could be:
 > 
-> Shouldn't we be assigning to NULL in the previous patch (same
-> comment for __clk_register)?
-
-Agreed, though I have gone ahead and removed __clk_register completely
-because AFAICS it has never been used.
-
->>  fail_parent_names_copy:
->>  	while (--i >= 0)
->>  		kfree(clk->parent_names[i]);
->> @@ -2420,7 +2602,14 @@ void __clk_put(struct clk *clk)
->>  	if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
->>  		return;
->>  
->> +	clk_prepare_lock();
->> +	hlist_del(&clk->child_node);
->> +	clk_prepare_unlock();
->> +
->> +	clk_core_set_rate(clk->core, clk->core->req_rate);
->> +
->>  	clk_core_put(clk->core);
->> +
+>  Typo here, I meant `cpu_has_mips_1' actually, sorry about that.
 > 
-> Sad that we take the lock 3 times during __clk_put(). We should
-> be able to do it only once if we have a lockless
-> clk_core_set_rate() function and put the contents of
-> clk_core_put() into this function. Actually we need to do that to
-> be thread safe with clk->core->req_rate changing. We can call the
-> same function in clk_set_rate_range() too so that we don't have
-> to deal with recursive locking there.
-
-Sweet, done.
-
->>  	kfree(clk);
->>  }
->>  
+>> the change is simple enough and I see no reason to define the
+>> cpu_has_mips_r1 at the moment. If we ever need to explicitly handle r1,
+>> we can reconsider that.
 > 
+>  It's a matter of code clarity, good code is self-explanatory.  Here the 
+> intent is to print `mips1' if it is supported.  By avoiding the extra 
+> definition you're detaching the intent from what code says.  Someone 
+> reading this code (who may not necessarily know the architecture documents 
+> by heart) has to scratch their head thinking: "why isn't `mips1' printed 
+> for R6, what the former has to do with the latter, and why is this case 
+> different to `mips2' and other ones that follow?"
+> 
+>  Whereas the intent is clear with this:
+> 
+> #define cpu_has_mips_1 (!cpu_has_mips_r6) // Aha, `mips1' is there if no R6!
+> 
+> 	if (cpu_has_mips_1)
+> 		seq_printf(m, " mips1");  // Well, this is obvious...
 
-Thanks,
+however, someone may wonder then why not have
 
-Tomeu
+if (cpu_has_mips_1)
+print mips1
+if (cpu_has_mips_2)
+print mips2
+if (cpu_has_mips_3)
+print mips3
+
+and only care about mips1.
+
+> 
+> Do you see what I mean?  Do you agree now?
+
+the
+
+if (!cpu_has_mips_r6)
+    seq_printf(m, " mips1");
+
+means exactly the same thing with
+
+#define cpu_has_mips_1 (!cpu_has_mips_r6) // Aha, `mips1' is there if no R6!
+
+especially since this is the only place that is being used.
+
+I don't see how the differ.
+
+In any case, i don't want such details to block the patchset, so I will
+change it.
+
+-- 
+markos

@@ -1,58 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 15:54:04 +0100 (CET)
-Received: from foss-mx-na.foss.arm.com ([217.140.108.86]:51935 "EHLO
-        foss-mx-na.foss.arm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010483AbbAVOyCR7YNo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 15:54:02 +0100
-Received: from foss-smtp-na-1.foss.arm.com (unknown [10.80.61.8])
-        by foss-mx-na.foss.arm.com (Postfix) with ESMTP id DB4F1279;
-        Thu, 22 Jan 2015 08:53:53 -0600 (CST)
-Received: from collaborate-mta1.arm.com (highbank-bc01-b06.austin.arm.com [10.112.81.134])
-        by foss-smtp-na-1.foss.arm.com (Postfix) with ESMTP id BCBF15FAD7;
-        Thu, 22 Jan 2015 08:53:50 -0600 (CST)
-Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
-        by collaborate-mta1.arm.com (Postfix) with ESMTPS id 58E1B13F91D;
-        Thu, 22 Jan 2015 08:53:48 -0600 (CST)
-Date:   Thu, 22 Jan 2015 14:53:32 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Rob Herring <robherring2@gmail.com>
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Anton Vorontsov <avorontsov@ru.mvista.com>,
-        Vinita Gupta <vgupta@caviumnetworks.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <Pawel.Moll@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>, Tejun Heo <tj@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH] SATA: OCTEON: support SATA on OCTEON platform
-Message-ID: <20150122145331.GC12911@leverpostej>
-References: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com>
- <20150119154357.GH21553@leverpostej>
- <54BD580C.6030701@gmail.com>
- <20150121165427.GA8722@leverpostej>
- <54BFDF2B.80708@caviumnetworks.com>
- <CAL_Jsq+Vtp=G6PJZvgksfLSXHBkoTC4TxLymP0ONk9MjaMtMPQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_Jsq+Vtp=G6PJZvgksfLSXHBkoTC4TxLymP0ONk9MjaMtMPQ@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <mark.rutland@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 16:00:05 +0100 (CET)
+Received: from smtpbgbr1.qq.com ([54.207.19.206]:37934 "EHLO smtpbgbr1.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010483AbbAVPACPq2tt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Jan 2015 16:00:02 +0100
+X-QQ-GoodBg: 0
+X-QQ-SSF: 00100000000000F0
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 121.238.27.109
+X-QQ-STYLE: 
+X-QQ-mid: bizmail38t1421938764t9052118
+From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
+To:     "=?utf-8?B?SHVhY2FpIENoZW4=?=" <chenhc@lemote.com>,
+        "=?utf-8?B?UmFsZiBCYWVjaGxl?=" <ralf@linux-mips.org>
+Cc:     "=?utf-8?B?Sm9obiBDcmlzcGlu?=" <john@phrozen.org>,
+        "=?utf-8?B?U3RldmVuIEouIEhpbGw=?=" <Steven.Hill@imgtec.com>,
+        "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
+        "=?utf-8?B?RnV4aW4gWmhhbmc=?=" <zhangfx@lemote.com>,
+        "=?utf-8?B?d3V6aGFuZ2ppbg==?=" <wuzhangjin@gmail.com>,
+        "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Subject: Re:[PATCH 1/2] MIPS: Hibernate: flush TLB entries earlier
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: base64
+Date:   Thu, 22 Jan 2015 22:59:24 +0800
+X-Priority: 3
+Message-ID: <tencent_61CBDDE16BEF4EA42D44A313@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <1419215439-27900-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1419215439-27900-1-git-send-email-chenhc@lemote.com>
+X-QQ-ReplyHash: 3295271689
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45432
+X-archive-position: 45433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.rutland@arm.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,66 +55,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 22, 2015 at 02:19:55PM +0000, Rob Herring wrote:
-> On Wed, Jan 21, 2015 at 11:17 AM, David Daney <ddaney@caviumnetworks.com> wrote:
-> > On 01/21/2015 08:54 AM, Mark Rutland wrote:
-> >>
-> >> On Mon, Jan 19, 2015 at 07:16:28PM +0000, David Daney wrote:
-> >
-> > [...]
-> >>>>>
-> >>>>> @@ -67,6 +76,7 @@ static const struct of_device_id ahci_of_match[] = {
-> >>>>>         { .compatible = "ibm,476gtr-ahci", },
-> >>>>>         { .compatible = "snps,dwc-ahci", },
-> >>>>>         { .compatible = "hisilicon,hisi-ahci", },
-> >>>>> +       { .compatible = "cavium,octeon-7130-ahci", },
-> >>>>>         {},
-> >>>>
-> >>>>
-> >>>> I was under the impression that the strings other than "generic-ahci"
-> >>>> were only for compatibility with existing DTBs. Why do we need to add
-> >>>> new platform-specific strings here?
-> >>>
-> >>>
-> >>> Because it is an "existing DTB", The device tree doesn't contain the
-> >>> compatible property of "generic-ahci", only "cavium,octeon-7130-ahci".
-> >>
-> >>
-> >> While the DTB may already exist, the string "cavium,octeon-7130-ahci"
-> >> isn't in mainline, and as far as I can see has never been supported.
-> >
-> >
-> > There seems to be a disconnect here.  The DTB comes from the hardware boot
-> > environment.  The hardware is in some cases already deployed.  It is for all
-> > practical purposes, impossible to change the DTB.
-> >
-> > The idea that the kernel source code controls the content of the device tree
-> > doesn't apply here.
-> 
-> I have to agree that adding the compatible string here is okay.
-> Allowing/using generic names is the exception, not the rule. We're
-> usually pushing the other way. People often complain about having to
-> add a compatible string when they don't need it (yet).
-
-If people are happy adding the string, then I have no problem with that.
-
-My concern was with the "existing DTB" argument, which you've covered
-below.
-
-Thanks,
-Mark.
-
-> However, the argument that the privately developed DTB has to be
-> accepted as is is complete crap. Maybe you have done a good job and
-> have all straightforward bindings, so having them accepted won't be a
-> big deal. We should be reasonable and not bikeshed things which are
-> already in use and only affect a single device. Many of the bindings
-> in vendor trees I have seen are a complete mess, but I expect better
-> from you.
-> 
-> Rob
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+SGksIFJhbGYsDQogDQpDYW4gdGhlc2UgdHdvIHBhdGNoZXMgYmUgbWVyZ2VkIGluIDMuMTk/
+DQoNCkh1YWNhaQ0KIA0KLS0tLS0tLS0tLS0tLS0tLS0tIE9yaWdpbmFsIC0tLS0tLS0tLS0t
+LS0tLS0tLQ0KRnJvbTogICJIdWFjYWkgQ2hlbiI8Y2hlbmhjQGxlbW90ZS5jb20+Ow0KRGF0
+ZTogIE1vbiwgRGVjIDIyLCAyMDE0IDEwOjMwIEFNDQpUbzogICJSYWxmIEJhZWNobGUiPHJh
+bGZAbGludXgtbWlwcy5vcmc+Ow0KQ2M6ICAiSm9obiBDcmlzcGluIjxqb2huQHBocm96ZW4u
+b3JnPjsgIlN0ZXZlbiBKLiBIaWxsIjxTdGV2ZW4uSGlsbEBpbWd0ZWMuY29tPjsgImxpbnV4
+LW1pcHMiPGxpbnV4LW1pcHNAbGludXgtbWlwcy5vcmc+OyAiRnV4aW4gWmhhbmciPHpoYW5n
+ZnhAbGVtb3RlLmNvbT47ICJ3dXpoYW5namluIjx3dXpoYW5namluQGdtYWlsLmNvbT47ICJI
+dWFjYWkgQ2hlbiI8Y2hlbmhjQGxlbW90ZS5jb20+OyAic3RhYmxlIjxzdGFibGVAdmdlci5r
+ZXJuZWwub3JnPjsNClN1YmplY3Q6ICBbUEFUQ0ggMS8yXSBNSVBTOiBIaWJlcm5hdGU6IGZs
+dXNoIFRMQiBlbnRyaWVzIGVhcmxpZXINCiANCldlIGZvdW5kIHRoYXQgVExCIG1pc21hdGNo
+IG5vdCBvbmx5IGhhcHBlbnMgYWZ0ZXIga2VybmVsIHJlc3VtZSwgYnV0DQphbHNvIGhhcHBl
+bnMgZHVyaW5nIHNuYXBzaG90IHJlc3RvcmUuIFNvIG1vdmUgaXQgdG8gdGhlIGJlZ2lubmlu
+ZyBvZg0Kc3dzdXNwX2FyY2hfc3VzcGVuZCgpLg0KDQpDYzogPHN0YWJsZUB2Z2VyLmtlcm5l
+bC5vcmc+DQpTaWduZWQtb2ZmLWJ5OiBIdWFjYWkgQ2hlbiA8Y2hlbmhjQGxlbW90ZS5jb20+
+DQotLS0NCiBhcmNoL21pcHMvcG93ZXIvaGliZXJuYXRlLlMgfCAgICAzICsrLQ0KIDEgZmls
+ZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0t
+Z2l0IGEvYXJjaC9taXBzL3Bvd2VyL2hpYmVybmF0ZS5TIGIvYXJjaC9taXBzL3Bvd2VyL2hp
+YmVybmF0ZS5TDQppbmRleCAzMmE3YzgyLi5lNzU2N2M4IDEwMDY0NA0KLS0tIGEvYXJjaC9t
+aXBzL3Bvd2VyL2hpYmVybmF0ZS5TDQorKysgYi9hcmNoL21pcHMvcG93ZXIvaGliZXJuYXRl
+LlMNCkBAIC0zMCw2ICszMCw4IEBAIExFQUYoc3dzdXNwX2FyY2hfc3VzcGVuZCkNCiBFTkQo
+c3dzdXNwX2FyY2hfc3VzcGVuZCkNCiANCiBMRUFGKHN3c3VzcF9hcmNoX3Jlc3VtZSkNCisJ
+LyogQXZvaWQgVExCIG1pc21hdGNoIGR1cmluZyBhbmQgYWZ0ZXIga2VybmVsIHJlc3VtZSAq
+Lw0KKwlqYWwgbG9jYWxfZmx1c2hfdGxiX2FsbA0KIAlQVFJfTCB0MCwgcmVzdG9yZV9wYmxp
+c3QNCiAwOg0KIAlQVFJfTCB0MSwgUEJFX0FERFJFU1ModDApICAgLyogc291cmNlICovDQpA
+QCAtNDMsNyArNDUsNiBAQCBMRUFGKHN3c3VzcF9hcmNoX3Jlc3VtZSkNCiAJYm5lIHQxLCB0
+MywgMWINCiAJUFRSX0wgdDAsIFBCRV9ORVhUKHQwKQ0KIAlibmV6IHQwLCAwYg0KLQlqYWwg
+bG9jYWxfZmx1c2hfdGxiX2FsbCAvKiBBdm9pZCBUTEIgbWlzbWF0Y2ggYWZ0ZXIga2VybmVs
+IHJlc3VtZSAqLw0KIAlQVFJfTEEgdDAsIHNhdmVkX3JlZ3MNCiAJUFRSX0wgcmEsIFBUX1Iz
+MSh0MCkNCiAJUFRSX0wgc3AsIFBUX1IyOSh0MCkNCi0tIA0KMS43LjcuMw==

@@ -1,40 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 15:43:29 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:57025 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010483AbbAVOn1noPqW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 15:43:27 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 136C06A2FF3AC;
-        Thu, 22 Jan 2015 14:43:19 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 22 Jan 2015 14:43:21 +0000
-Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 22 Jan
- 2015 14:43:20 +0000
-Message-ID: <54C10C88.7060106@imgtec.com>
-Date:   Thu, 22 Jan 2015 14:43:20 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 15:54:04 +0100 (CET)
+Received: from foss-mx-na.foss.arm.com ([217.140.108.86]:51935 "EHLO
+        foss-mx-na.foss.arm.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010483AbbAVOyCR7YNo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 15:54:02 +0100
+Received: from foss-smtp-na-1.foss.arm.com (unknown [10.80.61.8])
+        by foss-mx-na.foss.arm.com (Postfix) with ESMTP id DB4F1279;
+        Thu, 22 Jan 2015 08:53:53 -0600 (CST)
+Received: from collaborate-mta1.arm.com (highbank-bc01-b06.austin.arm.com [10.112.81.134])
+        by foss-smtp-na-1.foss.arm.com (Postfix) with ESMTP id BCBF15FAD7;
+        Thu, 22 Jan 2015 08:53:50 -0600 (CST)
+Received: from leverpostej (leverpostej.cambridge.arm.com [10.1.205.151])
+        by collaborate-mta1.arm.com (Postfix) with ESMTPS id 58E1B13F91D;
+        Thu, 22 Jan 2015 08:53:48 -0600 (CST)
+Date:   Thu, 22 Jan 2015 14:53:32 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Rob Herring <robherring2@gmail.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        Anton Vorontsov <avorontsov@ru.mvista.com>,
+        Vinita Gupta <vgupta@caviumnetworks.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <Pawel.Moll@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>, Tejun Heo <tj@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] SATA: OCTEON: support SATA on OCTEON platform
+Message-ID: <20150122145331.GC12911@leverpostej>
+References: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com>
+ <20150119154357.GH21553@leverpostej>
+ <54BD580C.6030701@gmail.com>
+ <20150121165427.GA8722@leverpostej>
+ <54BFDF2B.80708@caviumnetworks.com>
+ <CAL_Jsq+Vtp=G6PJZvgksfLSXHBkoTC4TxLymP0ONk9MjaMtMPQ@mail.gmail.com>
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH RFC v2 30/70] MIPS: kernel: proc: Add MIPS R6 support
- to /proc/cpuinfo
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-31-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501202336540.28301@eddie.linux-mips.org> <54BF709B.1080609@imgtec.com> <alpine.LFD.2.11.1501210936410.28301@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1501210936410.28301@eddie.linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_Jsq+Vtp=G6PJZvgksfLSXHBkoTC4TxLymP0ONk9MjaMtMPQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <mark.rutland@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45431
+X-archive-position: 45432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: mark.rutland@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,76 +65,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/22/2015 02:08 PM, Maciej W. Rozycki wrote:
-> On Wed, 21 Jan 2015, Markos Chandras wrote:
+On Thu, Jan 22, 2015 at 02:19:55PM +0000, Rob Herring wrote:
+> On Wed, Jan 21, 2015 at 11:17 AM, David Daney <ddaney@caviumnetworks.com> wrote:
+> > On 01/21/2015 08:54 AM, Mark Rutland wrote:
+> >>
+> >> On Mon, Jan 19, 2015 at 07:16:28PM +0000, David Daney wrote:
+> >
+> > [...]
+> >>>>>
+> >>>>> @@ -67,6 +76,7 @@ static const struct of_device_id ahci_of_match[] = {
+> >>>>>         { .compatible = "ibm,476gtr-ahci", },
+> >>>>>         { .compatible = "snps,dwc-ahci", },
+> >>>>>         { .compatible = "hisilicon,hisi-ahci", },
+> >>>>> +       { .compatible = "cavium,octeon-7130-ahci", },
+> >>>>>         {},
+> >>>>
+> >>>>
+> >>>> I was under the impression that the strings other than "generic-ahci"
+> >>>> were only for compatibility with existing DTBs. Why do we need to add
+> >>>> new platform-specific strings here?
+> >>>
+> >>>
+> >>> Because it is an "existing DTB", The device tree doesn't contain the
+> >>> compatible property of "generic-ahci", only "cavium,octeon-7130-ahci".
+> >>
+> >>
+> >> While the DTB may already exist, the string "cavium,octeon-7130-ahci"
+> >> isn't in mainline, and as far as I can see has never been supported.
+> >
+> >
+> > There seems to be a disconnect here.  The DTB comes from the hardware boot
+> > environment.  The hardware is in some cases already deployed.  It is for all
+> > practical purposes, impossible to change the DTB.
+> >
+> > The idea that the kernel source code controls the content of the device tree
+> > doesn't apply here.
 > 
->>>> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
->>>> index 097fc8d14e42..a8fdf9685cad 100644
->>>> --- a/arch/mips/kernel/proc.c
->>>> +++ b/arch/mips/kernel/proc.c
->>>> @@ -82,7 +82,9 @@ static int show_cpuinfo(struct seq_file *m, void *v)
->>>>  		seq_printf(m, "]\n");
->>>>  	}
->>>>  
->>>> -	seq_printf(m, "isa\t\t\t: mips1");
->>>> +	seq_printf(m, "isa\t\t\t:"); 
->>>> +	if (!cpu_has_mips_r6)
->>>> +		seq_printf(m, " mips1");
->>>
->>>  I think define `cpu_has_mips_r1' instead and use it here.  It may turn 
->>> out needed elsewhere too.  We probably don't need a new `MIPS_CPU_ISA_I' 
->>> bit at this stage so this could be:
+> I have to agree that adding the compatible string here is okay.
+> Allowing/using generic names is the exception, not the rule. We're
+> usually pushing the other way. People often complain about having to
+> add a compatible string when they don't need it (yet).
+
+If people are happy adding the string, then I have no problem with that.
+
+My concern was with the "existing DTB" argument, which you've covered
+below.
+
+Thanks,
+Mark.
+
+> However, the argument that the privately developed DTB has to be
+> accepted as is is complete crap. Maybe you have done a good job and
+> have all straightforward bindings, so having them accepted won't be a
+> big deal. We should be reasonable and not bikeshed things which are
+> already in use and only affect a single device. Many of the bindings
+> in vendor trees I have seen are a complete mess, but I expect better
+> from you.
 > 
->  Typo here, I meant `cpu_has_mips_1' actually, sorry about that.
+> Rob
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 > 
->> the change is simple enough and I see no reason to define the
->> cpu_has_mips_r1 at the moment. If we ever need to explicitly handle r1,
->> we can reconsider that.
-> 
->  It's a matter of code clarity, good code is self-explanatory.  Here the 
-> intent is to print `mips1' if it is supported.  By avoiding the extra 
-> definition you're detaching the intent from what code says.  Someone 
-> reading this code (who may not necessarily know the architecture documents 
-> by heart) has to scratch their head thinking: "why isn't `mips1' printed 
-> for R6, what the former has to do with the latter, and why is this case 
-> different to `mips2' and other ones that follow?"
-> 
->  Whereas the intent is clear with this:
-> 
-> #define cpu_has_mips_1 (!cpu_has_mips_r6) // Aha, `mips1' is there if no R6!
-> 
-> 	if (cpu_has_mips_1)
-> 		seq_printf(m, " mips1");  // Well, this is obvious...
-
-however, someone may wonder then why not have
-
-if (cpu_has_mips_1)
-print mips1
-if (cpu_has_mips_2)
-print mips2
-if (cpu_has_mips_3)
-print mips3
-
-and only care about mips1.
-
-> 
-> Do you see what I mean?  Do you agree now?
-
-the
-
-if (!cpu_has_mips_r6)
-    seq_printf(m, " mips1");
-
-means exactly the same thing with
-
-#define cpu_has_mips_1 (!cpu_has_mips_r6) // Aha, `mips1' is there if no R6!
-
-especially since this is the only place that is being used.
-
-I don't see how the differ.
-
-In any case, i don't want such details to block the patchset, so I will
-change it.
-
--- 
-markos

@@ -1,62 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 02:46:41 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.11.231]:50943 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009707AbbAVBqjHc-aT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 02:46:39 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id EB0B8140EEE;
-        Thu, 22 Jan 2015 01:46:36 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id D840B140F17; Thu, 22 Jan 2015 01:46:36 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 02:46:59 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:36962 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011960AbbAVBqrowW43 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Jan 2015 02:46:47 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 4B0D2202F8;
+        Thu, 22 Jan 2015 01:46:45 +0000 (UTC)
+Received: from mail.kernel.org (unknown [46.165.208.107])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3FC4E140F15;
-        Thu, 22 Jan 2015 01:46:36 +0000 (UTC)
-Date:   Wed, 21 Jan 2015 17:46:35 -0800
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Mike Turquette <mturquette@linaro.org>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Alex Elder <elder@linaro.org>,
-        Matt Porter <mporter@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Bintian Wang <bintian.wang@huawei.com>,
-        Chao Xie <chao.xie@marvell.com>, linux-doc@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        by mail.kernel.org (Postfix) with ESMTPSA id 257422035C;
+        Thu, 22 Jan 2015 01:46:43 +0000 (UTC)
+Date:   Thu, 22 Jan 2015 02:46:35 +0100
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     dbaryshkov@gmail.com, dwmw2@infradead.org, arnd@arndb.de,
+        linux@prisktech.co.nz, stern@rowland.harvard.edu,
+        gregkh@linuxfoundation.org, f.fainelli@gmail.com,
+        grant.likely@linaro.org, robh+dt@kernel.org,
+        computersforpeace@gmail.com, marc.ceeeee@gmail.com,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH v11 3/4] clk: Add rate constraints to clocks
-Message-ID: <20150122014635.GI27202@codeaurora.org>
-References: <1421847039-29544-1-git-send-email-tomeu.vizoso@collabora.com>
- <1421847039-29544-4-git-send-email-tomeu.vizoso@collabora.com>
+Subject: Re: [PATCH 1/9] power/reset: brcmstb: Make the driver buildable on
+ MIPS
+Message-ID: <20150122014635.GM13715@earth.universe>
+References: <1416962994-27095-1-git-send-email-cernekee@gmail.com>
+ <1416962994-27095-2-git-send-email-cernekee@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="hnsKUeImFCk/igEn"
 Content-Disposition: inline
-In-Reply-To: <1421847039-29544-4-git-send-email-tomeu.vizoso@collabora.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <1416962994-27095-2-git-send-email-cernekee@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Return-Path: <sre@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45422
+X-archive-position: 45423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: sre@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,90 +55,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/21, Tomeu Vizoso wrote:
-> Adds a way for clock consumers to set maximum and minimum rates. This
-> can be used for thermal drivers to set minimum rates, or by misc.
-> drivers to set maximum rates to assure a minimum performance level.
-> 
-> Changes the signature of the determine_rate callback by adding the
-> parameters min_rate and max_rate.
-> 
-> Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> 
-> ---
-> v11:	* Recalculate the rate before putting the reference to clk_core
-> 	* Don't recalculate the rate when freeing the per-user clock
-> 	in the initialization error paths
-> 	* Move __clk_create_clk to be next to __clk_free_clk for more
-> 	comfortable reading
 
-Can we do this in the previous patch where we introduce the
-function?
+--hnsKUeImFCk/igEn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> @@ -2143,9 +2314,16 @@ struct clk *__clk_register(struct device *dev, struct clk_hw *hw)
->  	else
->  		clk->owner = NULL;
->  
-> +	INIT_HLIST_HEAD(&clk->clks);
-> +
-> +	hw->clk = __clk_create_clk(hw, NULL, NULL);
-> +
->  	ret = __clk_init(dev, hw->clk);
-> -	if (ret)
-> +	if (ret) {
-> +		__clk_free_clk(hw->clk);
-> +		hw->clk = NULL;
->  		return ERR_PTR(ret);
-> +	}
->  
->  	return hw->clk;
->  }
-> @@ -2210,12 +2388,16 @@ struct clk *clk_register(struct device *dev, struct clk_hw *hw)
->  		}
->  	}
->  
-> +	INIT_HLIST_HEAD(&clk->clks);
-> +
->  	hw->clk = __clk_create_clk(hw, NULL, NULL);
->  	ret = __clk_init(dev, hw->clk);
->  	if (!ret)
->  		return hw->clk;
->  
-> -	kfree(hw->clk);
-> +	__clk_free_clk(hw->clk);
-> +	hw->clk = NULL;
+Hi,
 
-Shouldn't we be assigning to NULL in the previous patch (same
-comment for __clk_register)?
+On Tue, Nov 25, 2014 at 04:49:46PM -0800, Kevin Cernekee wrote:
+> Now that the driver doesn't use any ARM-specific headers, it is safe
+> to build on MIPS or with COMPILE_TEST.
 
->  fail_parent_names_copy:
->  	while (--i >= 0)
->  		kfree(clk->parent_names[i]);
-> @@ -2420,7 +2602,14 @@ void __clk_put(struct clk *clk)
->  	if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
->  		return;
->  
-> +	clk_prepare_lock();
-> +	hlist_del(&clk->child_node);
-> +	clk_prepare_unlock();
-> +
-> +	clk_core_set_rate(clk->core, clk->core->req_rate);
-> +
->  	clk_core_put(clk->core);
-> +
+Thanks, applied.
 
-Sad that we take the lock 3 times during __clk_put(). We should
-be able to do it only once if we have a lockless
-clk_core_set_rate() function and put the contents of
-clk_core_put() into this function. Actually we need to do that to
-be thread safe with clk->core->req_rate changing. We can call the
-same function in clk_set_rate_range() too so that we don't have
-to deal with recursive locking there.
+-- Sebastian
 
->  	kfree(clk);
->  }
->  
+--hnsKUeImFCk/igEn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBCgAGBQJUwFZ4AAoJENju1/PIO/qahrAP/344bCXsWDwe0W4PQHH0n1S6
+xKRvwF2P76dxirhxsZmYBMyNmssgRaCOjDrRyg4lBj5POyW8yV1C5RS/qBDKiJEz
+eHTIG0xml/TEk36Pxa8WsvZCT9gBHNbrf8wbXK95g5h6uotHq11Fu9B+wxivBzkL
+w7dYlSo8q49HxB4HYGJPvAhqxN6n2zCiIzwMiJNrZJrybRdnSiKHFO3xFglE9Awy
+uqrJHS7zpS2VIImANDVQ20tiJiiQDe9xaxoMoVn5fWc4MNBODAoZ8cPVmXZp/uDR
+Q0qn1jfsYGJdlz5fR1kqHa2MsegOlnqDK3xQ6gLu5otg5fUZVYWHjiWYJTpp6Y5I
+qErECSY40QoBqZhBHyQaEcK5eq72AFTC86xmHmr7/yAgyBzqLZQSYeu2Y8tBEHPK
+wMaCBldfC7fxJXND42LGLKbH7lDOyaIisbcQGk583M10/xdPAYBYoQtnuVkMduAb
+4zrUqV4ORUUdf+Ikkr48F/09eTk0oKHKMOg2p9GIDJmLBX8yRg3lSItWYjcWIS/h
+cCJzzCrXirnh99g0tWO8KkKwzEVC7jnjEJ9WSpBBg7SkL9b+DuqHWUkUCkGfDRbB
+XsakBmCHTQxSrAWWYByWmqy3zMLdeJ/PgBGDA8W7PgxKfSr8BZ7h6DLxpIiONRwh
+DAkBpMuQ0NI7nFcYDkbt
+=FhZs
+-----END PGP SIGNATURE-----
+
+--hnsKUeImFCk/igEn--

@@ -1,58 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 22:55:50 +0100 (CET)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:34308 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009484AbbAVVzt309tB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 22:55:49 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 05F1F19BE18;
-        Thu, 22 Jan 2015 23:55:49 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id 5AoA-8Lnzp78; Thu, 22 Jan 2015 23:55:44 +0200 (EET)
-Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id D7DD65BC004;
-        Thu, 22 Jan 2015 23:55:43 +0200 (EET)
-Date:   Thu, 22 Jan 2015 23:55:43 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        David Daney <ddaney.cavm@gmail.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Anton Vorontsov <avorontsov@ru.mvista.com>,
-        Vinita Gupta <vgupta@caviumnetworks.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <Pawel.Moll@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>, Tejun Heo <tj@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH] SATA: OCTEON: support SATA on OCTEON platform
-Message-ID: <20150122215543.GA5048@fuloong-minipc.musicnaut.iki.fi>
-References: <1421681040-3392-1-git-send-email-aleksey.makarov@auriga.com>
- <20150119154357.GH21553@leverpostej>
- <54BD580C.6030701@gmail.com>
- <20150121165427.GA8722@leverpostej>
- <54BFDF2B.80708@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2015 23:48:53 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.11.231]:36563 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010694AbbAVWsvIpxvk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jan 2015 23:48:51 +0100
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 01D91141178;
+        Thu, 22 Jan 2015 22:48:49 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id E11E714119D; Thu, 22 Jan 2015 22:48:48 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5314E141178;
+        Thu, 22 Jan 2015 22:48:48 +0000 (UTC)
+Date:   Thu, 22 Jan 2015 14:48:47 -0800
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Mike Turquette <mturquette@linaro.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Alex Elder <elder@linaro.org>,
+        Matt Porter <mporter@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Bintian Wang <bintian.wang@huawei.com>,
+        Chao Xie <chao.xie@marvell.com>, linux-doc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v12 4/6] clk: Add rate constraints to clocks
+Message-ID: <20150122224847.GQ27202@codeaurora.org>
+References: <1421943207-5180-1-git-send-email-tomeu.vizoso@collabora.com>
+ <1421943207-5180-5-git-send-email-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <54BFDF2B.80708@caviumnetworks.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+In-Reply-To: <1421943207-5180-5-git-send-email-tomeu.vizoso@collabora.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45440
+X-archive-position: 45441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,21 +68,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
-
-On Wed, Jan 21, 2015 at 09:17:31AM -0800, David Daney wrote:
-> On 01/21/2015 08:54 AM, Mark Rutland wrote:
-> >While the DTB may already exist, the string "cavium,octeon-7130-ahci"
-> >isn't in mainline, and as far as I can see has never been supported.
+On 01/22, Tomeu Vizoso wrote:
+> Adds a way for clock consumers to set maximum and minimum rates. This
+> can be used for thermal drivers to set minimum rates, or by misc.
+> drivers to set maximum rates to assure a minimum performance level.
 > 
-> There seems to be a disconnect here.  The DTB comes from the hardware boot
-> environment.  The hardware is in some cases already deployed.  It is for all
-> practical purposes, impossible to change the DTB.
+> Changes the signature of the determine_rate callback by adding the
+> parameters min_rate and max_rate.
+> 
+> Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+> 
 
-It's possible to change/fix the DTB in platform code like currently
-done for the OCTEON in-tree DTBs. But that's ugly.
+Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
 
-I think there should be also a mechanism to override the DTB completely
-with a user supplied one like with kernel APPENDED_DTB on ARM.
-
-A.
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

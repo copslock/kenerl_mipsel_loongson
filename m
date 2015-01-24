@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2015 17:34:49 +0100 (CET)
-Received: from exprod5og122.obsmtp.com ([64.18.0.192]:46239 "EHLO
-        exprod5og122.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012124AbbAXQeRGWLxC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jan 2015 17:34:17 +0100
-Received: from mail-we0-f179.google.com ([74.125.82.179]) (using TLSv1) by exprod5ob122.postini.com ([64.18.4.12]) with SMTP
-        ID DSNKVMPJhq9RKo3LsHxuG+BOf3b6sNoSMvzP@postini.com; Sat, 24 Jan 2015 08:34:15 PST
-Received: by mail-we0-f179.google.com with SMTP id q59so2480830wes.10
-        for <linux-mips@linux-mips.org>; Sat, 24 Jan 2015 08:34:13 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2015 17:35:06 +0100 (CET)
+Received: from exprod5og113.obsmtp.com ([64.18.0.26]:58560 "EHLO
+        exprod5og113.obsmtp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012226AbbAXQeTl2y3q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jan 2015 17:34:19 +0100
+Received: from mail-wi0-f181.google.com ([209.85.212.181]) (using TLSv1) by exprod5ob113.postini.com ([64.18.4.12]) with SMTP
+        ID DSNKVMPJiZOxfdAte2zHzQIfx4UNbs0t5S2X@postini.com; Sat, 24 Jan 2015 08:34:18 PST
+Received: by mail-wi0-f181.google.com with SMTP id fb4so2648462wid.2
+        for <linux-mips@linux-mips.org>; Sat, 24 Jan 2015 08:34:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=globallogic.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=opjgbHSpFk9ZKRlDwE2wshHqX4rcJvMciuE+xZoCwkI=;
-        b=QxY2D54IpYM68O8G3edbJj4rf+QaW30zTaf+g/hSGlrxJVZezcMotKIZLdFMVyw++e
-         //QuvdxuV9sAJ8q+aRdwd7RYKoqLR/df0B0DfHI3SOJQz/17oFY53rpUKseLQhiUS7eY
-         WGDBWsV9IGf5fpUvTk5iJQufap71m4cqPG1ts=
+        bh=26Nndy/iAGl/PB62k/xuEpw/g2dZ2GBsiPA/O+awCUA=;
+        b=IPQDROC1agyNh/PL84/UGc8Xp432472qAbEi3UIknPgiCutYVbCZdiWwpEESFUgigw
+         JrV/0l55l/UbRF4qWTMYmtVFkN74255IuNpKN5E0sHeCV8zK+jakB1XhiZOnHrRa3CDs
+         sFtj5dOFnfwzRUQF0cYyrem0b5lqlCC4z9zPU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=opjgbHSpFk9ZKRlDwE2wshHqX4rcJvMciuE+xZoCwkI=;
-        b=Y+8Mdcl/EOIU4HOsSwcR29t+i2NHQNWQf6H5uJkXb3/w/mpIlZ8IUjMSboTs+UlYh5
-         U1chkyGgT8J/Fg8V6b2s/1TrcyqSWd4osGNiFZPR33m2sXC6fe86see/G+WeiLoAvanW
-         Wk2V/+mQ1hJ1MmvSrwHhT77nFn2OrvpimRXLwGEdAApXsIXKTBiQRDakpB1LlSnEtBks
-         skXd+PSWeoZoeuRMD0/lr7/LY+V2tEXT1E5PvNC6bEoAtVl5rFTQt0r5sJgmo1/pYWZl
-         0RhkugRpWB2bbNuZYGpYtVM2Tv+XGWLnsdZWcBX5h86uHhyWmQv7ahy3J4cnuB/IuQ22
-         zvIg==
-X-Gm-Message-State: ALoCoQnYNDeiDybHqBOqcuQpktyMHAsdewgWyEkfZKEnHXHPJGNDW2QGZiu4sbC9EmJf8C4Scx5xJlfF9lM79T+Mnwm1BXuDo118FFsfpqp7gx6JDXs/v/oWzA3WDZgiMjQ9GtzTEwxVcErVSGfthg73PGAryFVE9w==
-X-Received: by 10.194.77.201 with SMTP id u9mr26338048wjw.41.1422117253060;
-        Sat, 24 Jan 2015 08:34:13 -0800 (PST)
-X-Received: by 10.194.77.201 with SMTP id u9mr26338029wjw.41.1422117252967;
-        Sat, 24 Jan 2015 08:34:12 -0800 (PST)
+        bh=26Nndy/iAGl/PB62k/xuEpw/g2dZ2GBsiPA/O+awCUA=;
+        b=eIxJ2YFUgYLJUXfjI6nCBdK9dctWGnZJX6E/AjAIIDU0bb/zjUaOzkW7E0Vsrn5G/0
+         9AoYDxShH0DGiDoU7b+35PTWW6HI1zEQOzjfE2Rupsuaza9d6MykCX12U6oEMAtc/gcp
+         9iULGQtMydWQeZROv/CYgmXILa2r2Qk+GzGzf7pa4YXZ56qUTiz2sZqHk17tPVgk6+Z3
+         mBrivxcJyy1x9FaKc2d+qZNxzPRbtTo+v5jM21PCoO2gAJYF0LjIsMBjFx8k7DJmbcvG
+         paJ7/HXE/uatdm3pA6kMPWtDToGarcYqGNP7UgCrEZJbMEUdusJexZhtslB5OsTlR6SG
+         enlQ==
+X-Gm-Message-State: ALoCoQkdxE+CDGickBoLNZMJ2WWiTw9l85PvTEq3s/HwAJX19EHnUJKMF/hzqEM2ruOt/16/bCNNBo+v9W1vpBQ08JAfs+Dga3RwUquXrL1SDo4NOj+hsKLdUVMX2hS74qu8XPjrZsZGUo2I+zh+laCz/Ae8v6rIHQ==
+X-Received: by 10.180.37.77 with SMTP id w13mr8022969wij.66.1422117256427;
+        Sat, 24 Jan 2015 08:34:16 -0800 (PST)
+X-Received: by 10.180.37.77 with SMTP id w13mr8022953wij.66.1422117256349;
+        Sat, 24 Jan 2015 08:34:16 -0800 (PST)
 Received: from localhost ([195.238.92.132])
-        by mx.google.com with ESMTPSA id fm10sm6459832wib.7.2015.01.24.08.34.12
+        by mx.google.com with ESMTPSA id ep9sm6466648wid.3.2015.01.24.08.34.15
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Sat, 24 Jan 2015 08:34:12 -0800 (PST)
+        Sat, 24 Jan 2015 08:34:15 -0800 (PST)
 From:   Semen Protsenko <semen.protsenko@globallogic.com>
 To:     Brian Norris <computersforpeace@gmail.com>,
         David Woodhouse <dwmw2@infradead.org>,
@@ -49,9 +49,9 @@ Cc:     adi-buildroot-devel@lists.sourceforge.net,
         linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
         linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Subject: [PATCH 2/4] defconfigs: remove CONFIG_MTD_PARTITIONS
-Date:   Sat, 24 Jan 2015 18:33:31 +0200
-Message-Id: <1422117213-3130-3-git-send-email-semen.protsenko@globallogic.com>
+Subject: [PATCH 4/4] defconfigs: remove CONFIG_MTD_DEBUG*
+Date:   Sat, 24 Jan 2015 18:33:33 +0200
+Message-Id: <1422117213-3130-5-git-send-email-semen.protsenko@globallogic.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1422117213-3130-1-git-send-email-semen.protsenko@globallogic.com>
 References: <1422117213-3130-1-git-send-email-semen.protsenko@globallogic.com>
@@ -59,7 +59,7 @@ Return-Path: <semen.protsenko@globallogic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45458
+X-archive-position: 45459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,1060 +76,139 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-CONFIG_MTD_PARTITIONS was removed from drivers/mtd/Kconfig by commit:
-6a8a98b22b10 "mtd: kill CONFIG_MTD_PARTITIONS".
+CONFIG_MTD_DEBUG and CONFIG_MTD_DEBUG_VERBOSE were removed from
+drivers/mtd/Kconfig by commit:
+87ed114bb22b "mtd: remove CONFIG_MTD_DEBUG"
 
-This patch finishes job by getting rid of CONFIG_MTD_PARTITIONS in all
+This patch finishes job by getting rid of CONFIG_MTD_DEBUG* in all
 defconfig files.
 
-This patch is harmless for all modified defconfig files, because
-MTD_PARTITIONS code is now compiled without checking for
-CONFIG_MTD_PARTITIONS. For details see next commit:
-5fcb033159bc "mtd: always build partitioning support".
+This patch is harmless for all modified defconfig files.
 
 Signed-off-by: Semen Protsenko <semen.protsenko@globallogic.com>
 ---
- arch/arm/configs/acs5k_defconfig           |    1 -
- arch/arm/configs/acs5k_tiny_defconfig      |    1 -
- arch/arm/configs/assabet_defconfig         |    1 -
- arch/arm/configs/badge4_defconfig          |    1 -
- arch/arm/configs/cerfcube_defconfig        |    1 -
- arch/arm/configs/cm_x300_defconfig         |    1 -
- arch/arm/configs/cns3420vb_defconfig       |    1 -
- arch/arm/configs/collie_defconfig          |    1 -
- arch/arm/configs/corgi_defconfig           |    1 -
- arch/arm/configs/davinci_all_defconfig     |    1 -
- arch/arm/configs/h5000_defconfig           |    1 -
- arch/arm/configs/iop13xx_defconfig         |    1 -
- arch/arm/configs/iop32x_defconfig          |    1 -
- arch/arm/configs/iop33x_defconfig          |    1 -
- arch/arm/configs/ixp4xx_defconfig          |    1 -
- arch/arm/configs/ks8695_defconfig          |    1 -
- arch/arm/configs/lart_defconfig            |    1 -
- arch/arm/configs/lpd270_defconfig          |    1 -
- arch/arm/configs/lubbock_defconfig         |    1 -
- arch/arm/configs/mackerel_defconfig        |    1 -
- arch/arm/configs/magician_defconfig        |    1 -
- arch/arm/configs/mainstone_defconfig       |    1 -
- arch/arm/configs/mini2440_defconfig        |    1 -
- arch/arm/configs/mv78xx0_defconfig         |    1 -
- arch/arm/configs/neponset_defconfig        |    1 -
- arch/arm/configs/netx_defconfig            |    1 -
- arch/arm/configs/nuc910_defconfig          |    1 -
- arch/arm/configs/nuc950_defconfig          |    1 -
- arch/arm/configs/nuc960_defconfig          |    1 -
- arch/arm/configs/omap1_defconfig           |    1 -
- arch/arm/configs/pcm027_defconfig          |    1 -
- arch/arm/configs/pleb_defconfig            |    1 -
- arch/arm/configs/pxa255-idp_defconfig      |    1 -
- arch/arm/configs/raumfeld_defconfig        |    1 -
- arch/arm/configs/realview-smp_defconfig    |    1 -
- arch/arm/configs/realview_defconfig        |    1 -
- arch/arm/configs/shannon_defconfig         |    1 -
- arch/arm/configs/simpad_defconfig          |    1 -
- arch/arm/configs/spitz_defconfig           |    1 -
- arch/arm/configs/tct_hammer_defconfig      |    1 -
- arch/m32r/configs/m32700ut.smp_defconfig   |    1 -
- arch/m32r/configs/m32700ut.up_defconfig    |    1 -
- arch/m32r/configs/mappi.smp_defconfig      |    1 -
- arch/m32r/configs/mappi.up_defconfig       |    1 -
- arch/m32r/configs/mappi3.smp_defconfig     |    1 -
- arch/m32r/configs/usrv_defconfig           |    1 -
- arch/mn10300/configs/asb2303_defconfig     |    1 -
- arch/mn10300/configs/asb2364_defconfig     |    1 -
- arch/sh/configs/ap325rxa_defconfig         |    1 -
- arch/sh/configs/apsh4a3a_defconfig         |    1 -
- arch/sh/configs/ecovec24_defconfig         |    1 -
- arch/sh/configs/edosk7760_defconfig        |    1 -
- arch/sh/configs/espt_defconfig             |    1 -
- arch/sh/configs/magicpanelr2_defconfig     |    1 -
- arch/sh/configs/migor_defconfig            |    1 -
- arch/sh/configs/polaris_defconfig          |    1 -
- arch/sh/configs/r7780mp_defconfig          |    1 -
- arch/sh/configs/rsk7201_defconfig          |    1 -
- arch/sh/configs/rsk7203_defconfig          |    1 -
- arch/sh/configs/rts7751r2dplus_defconfig   |    1 -
- arch/sh/configs/sdk7786_defconfig          |    1 -
- arch/sh/configs/se7206_defconfig           |    1 -
- arch/sh/configs/se7343_defconfig           |    1 -
- arch/sh/configs/se7619_defconfig           |    1 -
- arch/sh/configs/se7705_defconfig           |    1 -
- arch/sh/configs/se7712_defconfig           |    1 -
- arch/sh/configs/se7721_defconfig           |    1 -
- arch/sh/configs/se7724_defconfig           |    1 -
- arch/sh/configs/se7750_defconfig           |    1 -
- arch/sh/configs/se7751_defconfig           |    1 -
- arch/sh/configs/se7780_defconfig           |    1 -
- arch/sh/configs/secureedge5410_defconfig   |    1 -
- arch/sh/configs/sh7710voipgw_defconfig     |    1 -
- arch/sh/configs/sh7763rdp_defconfig        |    1 -
- arch/sh/configs/sh7785lcr_32bit_defconfig  |    1 -
- arch/sh/configs/sh7785lcr_defconfig        |    1 -
- arch/sh/configs/shmin_defconfig            |    1 -
- arch/sh/configs/ul2_defconfig              |    1 -
- arch/sh/configs/urquell_defconfig          |    1 -
- arch/unicore32/configs/unicore32_defconfig |    1 -
- 80 files changed, 80 deletions(-)
+ arch/arm/configs/badge4_defconfig       |    1 -
+ arch/arm/configs/hackkit_defconfig      |    2 --
+ arch/arm/configs/lart_defconfig         |    2 --
+ arch/arm/configs/omap1_defconfig        |    2 --
+ arch/blackfin/configs/DNP5370_defconfig |    2 --
+ arch/mn10300/configs/asb2303_defconfig  |    1 -
+ arch/mn10300/configs/asb2364_defconfig  |    1 -
+ arch/sh/configs/edosk7760_defconfig     |    1 -
+ arch/sh/configs/titan_defconfig         |    1 -
+ 9 files changed, 13 deletions(-)
 
-diff --git a/arch/arm/configs/acs5k_defconfig b/arch/arm/configs/acs5k_defconfig
-index b8be0bc..4faff9a 100644
---- a/arch/arm/configs/acs5k_defconfig
-+++ b/arch/arm/configs/acs5k_defconfig
-@@ -34,7 +34,6 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/acs5k_tiny_defconfig b/arch/arm/configs/acs5k_tiny_defconfig
-index 886448a..71c356f 100644
---- a/arch/arm/configs/acs5k_tiny_defconfig
-+++ b/arch/arm/configs/acs5k_tiny_defconfig
-@@ -29,7 +29,6 @@ CONFIG_INET=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/assabet_defconfig b/arch/arm/configs/assabet_defconfig
-index 558ecd8..bdf6f9c 100644
---- a/arch/arm/configs/assabet_defconfig
-+++ b/arch/arm/configs/assabet_defconfig
-@@ -22,7 +22,6 @@ CONFIG_IRDA=m
- CONFIG_IRLAN=m
- CONFIG_SA1100_FIR=m
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
 diff --git a/arch/arm/configs/badge4_defconfig b/arch/arm/configs/badge4_defconfig
-index 0494c8f..853cd3f 100644
+index e8913b0..9d11ff7 100644
 --- a/arch/arm/configs/badge4_defconfig
 +++ b/arch/arm/configs/badge4_defconfig
-@@ -30,7 +30,6 @@ CONFIG_BT_HCIVHCI=m
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
- CONFIG_MTD_DEBUG=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/cerfcube_defconfig b/arch/arm/configs/cerfcube_defconfig
-index dce912d..dcee643 100644
---- a/arch/arm/configs/cerfcube_defconfig
-+++ b/arch/arm/configs/cerfcube_defconfig
-@@ -29,7 +29,6 @@ CONFIG_IP_PNP_BOOTP=y
- CONFIG_IP_PNP_RARP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=m
-diff --git a/arch/arm/configs/cm_x300_defconfig b/arch/arm/configs/cm_x300_defconfig
-index 7df040e..8b3b76d 100644
---- a/arch/arm/configs/cm_x300_defconfig
-+++ b/arch/arm/configs/cm_x300_defconfig
-@@ -51,7 +51,6 @@ CONFIG_BT_HCIBTUSB=m
- CONFIG_LIB80211=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_NAND=y
-diff --git a/arch/arm/configs/cns3420vb_defconfig b/arch/arm/configs/cns3420vb_defconfig
-index b1ff5cd..e5f02de 100644
---- a/arch/arm/configs/cns3420vb_defconfig
-+++ b/arch/arm/configs/cns3420vb_defconfig
-@@ -31,7 +31,6 @@ CONFIG_CMDLINE="console=ttyS0,38400 mem=128M root=/dev/mmcblk0p1 ro rootwait"
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FIRMWARE_IN_KERNEL is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/collie_defconfig b/arch/arm/configs/collie_defconfig
-index 6c56ad0..4fff4ea 100644
---- a/arch/arm/configs/collie_defconfig
-+++ b/arch/arm/configs/collie_defconfig
-@@ -26,7 +26,6 @@ CONFIG_UNIX=y
- CONFIG_INET=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/corgi_defconfig b/arch/arm/configs/corgi_defconfig
-index c1470a0..37b6e0d 100644
---- a/arch/arm/configs/corgi_defconfig
-+++ b/arch/arm/configs/corgi_defconfig
-@@ -90,7 +90,6 @@ CONFIG_BT_HCIBTUART=m
+@@ -29,7 +29,6 @@ CONFIG_BT_HCIUART=m
  CONFIG_BT_HCIVHCI=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/davinci_all_defconfig b/arch/arm/configs/davinci_all_defconfig
-index 235842c..6beeaeb 100644
---- a/arch/arm/configs/davinci_all_defconfig
-+++ b/arch/arm/configs/davinci_all_defconfig
-@@ -63,7 +63,6 @@ CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
  # CONFIG_FW_LOADER is not set
- CONFIG_MTD=m
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=m
- CONFIG_MTD_BLOCK=m
- CONFIG_MTD_CFI=m
-diff --git a/arch/arm/configs/h5000_defconfig b/arch/arm/configs/h5000_defconfig
-index 37903e3..68703a5 100644
---- a/arch/arm/configs/h5000_defconfig
-+++ b/arch/arm/configs/h5000_defconfig
-@@ -36,7 +36,6 @@ CONFIG_IP_PNP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
  CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
+-CONFIG_MTD_DEBUG=y
  CONFIG_MTD_BLOCK=y
  CONFIG_MTD_CFI=y
  CONFIG_MTD_CFI_ADV_OPTIONS=y
-diff --git a/arch/arm/configs/iop13xx_defconfig b/arch/arm/configs/iop13xx_defconfig
-index 4fa94a1..6de6017 100644
---- a/arch/arm/configs/iop13xx_defconfig
-+++ b/arch/arm/configs/iop13xx_defconfig
-@@ -38,7 +38,6 @@ CONFIG_IPV6=y
- # CONFIG_IPV6_SIT is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED=y
- CONFIG_MTD_REDBOOT_PARTS_READONLY=y
-diff --git a/arch/arm/configs/iop32x_defconfig b/arch/arm/configs/iop32x_defconfig
-index 4f2ec3a..c18ee5b 100644
---- a/arch/arm/configs/iop32x_defconfig
-+++ b/arch/arm/configs/iop32x_defconfig
-@@ -34,7 +34,6 @@ CONFIG_IPV6=y
- # CONFIG_IPV6_SIT is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED=y
- CONFIG_MTD_REDBOOT_PARTS_READONLY=y
-diff --git a/arch/arm/configs/iop33x_defconfig b/arch/arm/configs/iop33x_defconfig
-index aa36128..e2304e4 100644
---- a/arch/arm/configs/iop33x_defconfig
-+++ b/arch/arm/configs/iop33x_defconfig
-@@ -32,7 +32,6 @@ CONFIG_IPV6=y
- # CONFIG_IPV6_SIT is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED=y
- CONFIG_MTD_REDBOOT_PARTS_READONLY=y
-diff --git a/arch/arm/configs/ixp4xx_defconfig b/arch/arm/configs/ixp4xx_defconfig
-index 1af665e..1b45fb6 100644
---- a/arch/arm/configs/ixp4xx_defconfig
-+++ b/arch/arm/configs/ixp4xx_defconfig
-@@ -114,7 +114,6 @@ CONFIG_NET_ACT_POLICE=y
- CONFIG_NET_PKTGEN=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/ks8695_defconfig b/arch/arm/configs/ks8695_defconfig
-index 47c4883..c58fc9a 100644
---- a/arch/arm/configs/ks8695_defconfig
-+++ b/arch/arm/configs/ks8695_defconfig
-@@ -32,7 +32,6 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
-diff --git a/arch/arm/configs/lart_defconfig b/arch/arm/configs/lart_defconfig
-index faa2865..3ae0387 100644
---- a/arch/arm/configs/lart_defconfig
-+++ b/arch/arm/configs/lart_defconfig
-@@ -31,7 +31,6 @@ CONFIG_SA1100_FIR=m
- CONFIG_MTD=y
- CONFIG_MTD_DEBUG=y
- CONFIG_MTD_DEBUG_VERBOSE=1
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_LART=y
-diff --git a/arch/arm/configs/lpd270_defconfig b/arch/arm/configs/lpd270_defconfig
-index 1c8c9ee..2e1c520 100644
---- a/arch/arm/configs/lpd270_defconfig
-+++ b/arch/arm/configs/lpd270_defconfig
-@@ -21,7 +21,6 @@ CONFIG_IPV6=y
- # CONFIG_INET6_XFRM_MODE_BEET is not set
- # CONFIG_IPV6_SIT is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/lubbock_defconfig b/arch/arm/configs/lubbock_defconfig
-index c4ba274..198d7c3 100644
---- a/arch/arm/configs/lubbock_defconfig
-+++ b/arch/arm/configs/lubbock_defconfig
-@@ -20,7 +20,6 @@ CONFIG_IP_PNP=y
- CONFIG_IP_PNP_BOOTP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/mackerel_defconfig b/arch/arm/configs/mackerel_defconfig
-index 5c38517..821d4c0 100644
---- a/arch/arm/configs/mackerel_defconfig
-+++ b/arch/arm/configs/mackerel_defconfig
-@@ -45,7 +45,6 @@ CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_FIRMWARE_IN_KERNEL is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/magician_defconfig b/arch/arm/configs/magician_defconfig
-index 557dd29..59f7e6a 100644
---- a/arch/arm/configs/magician_defconfig
-+++ b/arch/arm/configs/magician_defconfig
-@@ -60,7 +60,6 @@ CONFIG_BT_HCIBTUSB=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FIRMWARE_IN_KERNEL is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/mainstone_defconfig b/arch/arm/configs/mainstone_defconfig
-index 04efa1b..289d20a 100644
---- a/arch/arm/configs/mainstone_defconfig
-+++ b/arch/arm/configs/mainstone_defconfig
-@@ -18,7 +18,6 @@ CONFIG_IP_PNP=y
- CONFIG_IP_PNP_BOOTP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-index 26b12e8..ea634d7 100644
---- a/arch/arm/configs/mini2440_defconfig
-+++ b/arch/arm/configs/mini2440_defconfig
-@@ -85,7 +85,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FIRMWARE_IN_KERNEL is not set
- CONFIG_CONNECTOR=m
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/mv78xx0_defconfig b/arch/arm/configs/mv78xx0_defconfig
-index 0dae1c1..eb2f489 100644
---- a/arch/arm/configs/mv78xx0_defconfig
-+++ b/arch/arm/configs/mv78xx0_defconfig
-@@ -37,7 +37,6 @@ CONFIG_NET_PKTGEN=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FIRMWARE_IN_KERNEL is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/neponset_defconfig b/arch/arm/configs/neponset_defconfig
-index 4b77dc3..5c0a754 100644
---- a/arch/arm/configs/neponset_defconfig
-+++ b/arch/arm/configs/neponset_defconfig
-@@ -25,7 +25,6 @@ CONFIG_UNIX=y
- CONFIG_INET=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/netx_defconfig b/arch/arm/configs/netx_defconfig
-index 9c0ad79..81b6225 100644
---- a/arch/arm/configs/netx_defconfig
-+++ b/arch/arm/configs/netx_defconfig
-@@ -37,7 +37,6 @@ CONFIG_NETFILTER=y
- CONFIG_IP_NF_QUEUE=m
- CONFIG_NET_PKTGEN=m
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/nuc910_defconfig b/arch/arm/configs/nuc910_defconfig
-index c178636..6fd91ad 100644
---- a/arch/arm/configs/nuc910_defconfig
-+++ b/arch/arm/configs/nuc910_defconfig
-@@ -16,7 +16,6 @@ CONFIG_KEXEC=y
- CONFIG_FPE_NWFPE=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/nuc950_defconfig b/arch/arm/configs/nuc950_defconfig
-index 10d7cee..f06fe4f 100644
---- a/arch/arm/configs/nuc950_defconfig
-+++ b/arch/arm/configs/nuc950_defconfig
-@@ -22,7 +22,6 @@ CONFIG_BINFMT_AOUT=y
- CONFIG_BINFMT_MISC=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/nuc960_defconfig b/arch/arm/configs/nuc960_defconfig
-index b51afd2..cb45952 100644
---- a/arch/arm/configs/nuc960_defconfig
-+++ b/arch/arm/configs/nuc960_defconfig
-@@ -22,7 +22,6 @@ CONFIG_BINFMT_AOUT=y
- CONFIG_BINFMT_MISC=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
-index a7dce67..0834eb9 100644
---- a/arch/arm/configs/omap1_defconfig
-+++ b/arch/arm/configs/omap1_defconfig
-@@ -94,7 +94,6 @@ CONFIG_CONNECTOR=y
- CONFIG_MTD=y
- CONFIG_MTD_DEBUG=y
- CONFIG_MTD_DEBUG_VERBOSE=3
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/pcm027_defconfig b/arch/arm/configs/pcm027_defconfig
-index 0a847d0..03c4919 100644
---- a/arch/arm/configs/pcm027_defconfig
-+++ b/arch/arm/configs/pcm027_defconfig
-@@ -39,7 +39,6 @@ CONFIG_IP_PNP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/pleb_defconfig b/arch/arm/configs/pleb_defconfig
-index cb08cc5..7ad5c8e 100644
---- a/arch/arm/configs/pleb_defconfig
-+++ b/arch/arm/configs/pleb_defconfig
-@@ -24,7 +24,6 @@ CONFIG_INET=y
+diff --git a/arch/arm/configs/hackkit_defconfig b/arch/arm/configs/hackkit_defconfig
+index ab2acf1..f469536 100644
+--- a/arch/arm/configs/hackkit_defconfig
++++ b/arch/arm/configs/hackkit_defconfig
+@@ -20,8 +20,6 @@ CONFIG_INET=y
  CONFIG_SYN_COOKIES=y
  # CONFIG_IPV6 is not set
  CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED=y
- CONFIG_MTD_CMDLINE_PARTS=y
-diff --git a/arch/arm/configs/pxa255-idp_defconfig b/arch/arm/configs/pxa255-idp_defconfig
-index 917a070..eb35347 100644
---- a/arch/arm/configs/pxa255-idp_defconfig
-+++ b/arch/arm/configs/pxa255-idp_defconfig
-@@ -18,7 +18,6 @@ CONFIG_IP_PNP=y
- CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
+-CONFIG_MTD_DEBUG=y
+-CONFIG_MTD_DEBUG_VERBOSE=3
  CONFIG_MTD_BLOCK=y
  CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/raumfeld_defconfig b/arch/arm/configs/raumfeld_defconfig
-index b7180b9..4eb3237 100644
---- a/arch/arm/configs/raumfeld_defconfig
-+++ b/arch/arm/configs/raumfeld_defconfig
-@@ -31,7 +31,6 @@ CONFIG_CFG80211_REG_DEBUG=y
- CONFIG_MAC80211=y
+ CONFIG_MTD_CFI_INTELEXT=y
+diff --git a/arch/arm/configs/lart_defconfig b/arch/arm/configs/lart_defconfig
+index 191c0b3..ff61d33 100644
+--- a/arch/arm/configs/lart_defconfig
++++ b/arch/arm/configs/lart_defconfig
+@@ -29,8 +29,6 @@ CONFIG_IRDA_CACHE_LAST_LSAP=y
+ CONFIG_IRDA_DEBUG=y
+ CONFIG_SA1100_FIR=m
+ CONFIG_MTD=y
+-CONFIG_MTD_DEBUG=y
+-CONFIG_MTD_DEBUG_VERBOSE=1
+ CONFIG_MTD_BLOCK=y
+ CONFIG_MTD_LART=y
+ CONFIG_BLK_DEV_RAM=y
+diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
+index a234203..f10b269 100644
+--- a/arch/arm/configs/omap1_defconfig
++++ b/arch/arm/configs/omap1_defconfig
+@@ -92,8 +92,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_CONNECTOR=y
+ # CONFIG_PROC_EVENTS is not set
+ CONFIG_MTD=y
+-CONFIG_MTD_DEBUG=y
+-CONFIG_MTD_DEBUG_VERBOSE=3
+ CONFIG_MTD_CMDLINE_PARTS=y
+ CONFIG_MTD_BLOCK=y
+ CONFIG_MTD_CFI=y
+diff --git a/arch/blackfin/configs/DNP5370_defconfig b/arch/blackfin/configs/DNP5370_defconfig
+index 8860059..18e97c1 100644
+--- a/arch/blackfin/configs/DNP5370_defconfig
++++ b/arch/blackfin/configs/DNP5370_defconfig
+@@ -34,8 +34,6 @@ CONFIG_SYN_COOKIES=y
+ CONFIG_LLC2=y
  CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
  CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
+-CONFIG_MTD_DEBUG=y
+-CONFIG_MTD_DEBUG_VERBOSE=1
  CONFIG_MTD_BLOCK=y
  CONFIG_NFTL=y
-diff --git a/arch/arm/configs/realview-smp_defconfig b/arch/arm/configs/realview-smp_defconfig
-index 377253e..f2ebbd9 100644
---- a/arch/arm/configs/realview-smp_defconfig
-+++ b/arch/arm/configs/realview-smp_defconfig
-@@ -30,7 +30,6 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/realview_defconfig b/arch/arm/configs/realview_defconfig
-index 536a3e0..5af8de1 100644
---- a/arch/arm/configs/realview_defconfig
-+++ b/arch/arm/configs/realview_defconfig
-@@ -29,7 +29,6 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/shannon_defconfig b/arch/arm/configs/shannon_defconfig
-index b0b9694..aa8ffd6 100644
---- a/arch/arm/configs/shannon_defconfig
-+++ b/arch/arm/configs/shannon_defconfig
-@@ -17,7 +17,6 @@ CONFIG_UNIX=y
- CONFIG_INET=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/arm/configs/simpad_defconfig b/arch/arm/configs/simpad_defconfig
-index e7aadaa..2232927 100644
---- a/arch/arm/configs/simpad_defconfig
-+++ b/arch/arm/configs/simpad_defconfig
-@@ -41,7 +41,6 @@ CONFIG_BT_BNEP=m
- CONFIG_BT_BNEP_MC_FILTER=y
- CONFIG_BT_BNEP_PROTO_FILTER=y
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/spitz_defconfig b/arch/arm/configs/spitz_defconfig
-index a1ede19..fb617d2 100644
---- a/arch/arm/configs/spitz_defconfig
-+++ b/arch/arm/configs/spitz_defconfig
-@@ -87,7 +87,6 @@ CONFIG_BT_HCIBTUART=m
- CONFIG_BT_HCIVHCI=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/arm/configs/tct_hammer_defconfig b/arch/arm/configs/tct_hammer_defconfig
-index 7209a2c..4829499 100644
---- a/arch/arm/configs/tct_hammer_defconfig
-+++ b/arch/arm/configs/tct_hammer_defconfig
-@@ -26,7 +26,6 @@ CONFIG_UNIX=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/m32r/configs/m32700ut.smp_defconfig b/arch/m32r/configs/m32700ut.smp_defconfig
-index a3d727e..fe09039 100644
---- a/arch/m32r/configs/m32700ut.smp_defconfig
-+++ b/arch/m32r/configs/m32700ut.smp_defconfig
-@@ -30,7 +30,6 @@ CONFIG_IP_PNP=y
- CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=m
-diff --git a/arch/m32r/configs/m32700ut.up_defconfig b/arch/m32r/configs/m32700ut.up_defconfig
-index b833416..18091bf 100644
---- a/arch/m32r/configs/m32700ut.up_defconfig
-+++ b/arch/m32r/configs/m32700ut.up_defconfig
-@@ -29,7 +29,6 @@ CONFIG_IP_PNP=y
- CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=m
-diff --git a/arch/m32r/configs/mappi.smp_defconfig b/arch/m32r/configs/mappi.smp_defconfig
-index 367d07c..109409b 100644
---- a/arch/m32r/configs/mappi.smp_defconfig
-+++ b/arch/m32r/configs/mappi.smp_defconfig
-@@ -31,7 +31,6 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- # CONFIG_STANDALONE is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/m32r/configs/mappi.up_defconfig b/arch/m32r/configs/mappi.up_defconfig
-index cb11384..74d5a23 100644
---- a/arch/m32r/configs/mappi.up_defconfig
-+++ b/arch/m32r/configs/mappi.up_defconfig
-@@ -29,7 +29,6 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- # CONFIG_STANDALONE is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/m32r/configs/mappi3.smp_defconfig b/arch/m32r/configs/mappi3.smp_defconfig
-index 27cefd4..f030ddd 100644
---- a/arch/m32r/configs/mappi3.smp_defconfig
-+++ b/arch/m32r/configs/mappi3.smp_defconfig
-@@ -29,7 +29,6 @@ CONFIG_IP_PNP=y
- CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/m32r/configs/usrv_defconfig b/arch/m32r/configs/usrv_defconfig
-index 818fe33..7f6d680 100644
---- a/arch/m32r/configs/usrv_defconfig
-+++ b/arch/m32r/configs/usrv_defconfig
-@@ -34,7 +34,6 @@ CONFIG_INET_ESP=y
- CONFIG_INET_IPCOMP=y
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
+ CONFIG_NFTL_RW=y
 diff --git a/arch/mn10300/configs/asb2303_defconfig b/arch/mn10300/configs/asb2303_defconfig
-index 1fd41ec..591ab65 100644
+index 4f0f31f..b6364ea 100644
 --- a/arch/mn10300/configs/asb2303_defconfig
 +++ b/arch/mn10300/configs/asb2303_defconfig
-@@ -34,7 +34,6 @@ CONFIG_IP_PNP_BOOTP=y
+@@ -33,7 +33,6 @@ CONFIG_IP_PNP_BOOTP=y
+ # CONFIG_IPV6 is not set
  # CONFIG_WIRELESS is not set
  CONFIG_MTD=y
- CONFIG_MTD_DEBUG=y
--CONFIG_MTD_PARTITIONS=y
+-CONFIG_MTD_DEBUG=y
  CONFIG_MTD_REDBOOT_PARTS=y
  CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED=y
- CONFIG_MTD_CHAR=y
+ CONFIG_MTD_CFI=y
 diff --git a/arch/mn10300/configs/asb2364_defconfig b/arch/mn10300/configs/asb2364_defconfig
-index fbb96ae..fbaac16 100644
+index f5ccb76..b43179f 100644
 --- a/arch/mn10300/configs/asb2364_defconfig
 +++ b/arch/mn10300/configs/asb2364_defconfig
-@@ -51,7 +51,6 @@ CONFIG_IPV6=y
+@@ -50,7 +50,6 @@ CONFIG_IPV6=y
+ # CONFIG_FIRMWARE_IN_KERNEL is not set
  CONFIG_CONNECTOR=y
  CONFIG_MTD=y
- CONFIG_MTD_DEBUG=y
--CONFIG_MTD_PARTITIONS=y
+-CONFIG_MTD_DEBUG=y
  CONFIG_MTD_REDBOOT_PARTS=y
  CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED=y
- CONFIG_MTD_CHAR=y
-diff --git a/arch/sh/configs/ap325rxa_defconfig b/arch/sh/configs/ap325rxa_defconfig
-index 67afc82..667f79b 100644
---- a/arch/sh/configs/ap325rxa_defconfig
-+++ b/arch/sh/configs/ap325rxa_defconfig
-@@ -32,7 +32,6 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/apsh4a3a_defconfig b/arch/sh/configs/apsh4a3a_defconfig
-index 26fb9e9..88da509 100644
---- a/arch/sh/configs/apsh4a3a_defconfig
-+++ b/arch/sh/configs/apsh4a3a_defconfig
-@@ -34,7 +34,6 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
  CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/ecovec24_defconfig b/arch/sh/configs/ecovec24_defconfig
-index ef13931..2baca9b 100644
---- a/arch/sh/configs/ecovec24_defconfig
-+++ b/arch/sh/configs/ecovec24_defconfig
-@@ -35,7 +35,6 @@ CONFIG_IRDA=y
- CONFIG_SH_SIR=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
 diff --git a/arch/sh/configs/edosk7760_defconfig b/arch/sh/configs/edosk7760_defconfig
-index 89defd1..d4a6929 100644
+index e98e847..758b489 100644
 --- a/arch/sh/configs/edosk7760_defconfig
 +++ b/arch/sh/configs/edosk7760_defconfig
-@@ -39,7 +39,6 @@ CONFIG_DEBUG_DRIVER=y
+@@ -38,7 +38,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_DEBUG_DRIVER=y
  CONFIG_DEBUG_DEVRES=y
  CONFIG_MTD=y
- CONFIG_MTD_DEBUG=y
--CONFIG_MTD_PARTITIONS=y
+-CONFIG_MTD_DEBUG=y
  CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
  CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/espt_defconfig b/arch/sh/configs/espt_defconfig
-index 67cb109..1d9d673 100644
---- a/arch/sh/configs/espt_defconfig
-+++ b/arch/sh/configs/espt_defconfig
-@@ -30,7 +30,6 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/magicpanelr2_defconfig b/arch/sh/configs/magicpanelr2_defconfig
-index 9479872..e660804 100644
---- a/arch/sh/configs/magicpanelr2_defconfig
-+++ b/arch/sh/configs/magicpanelr2_defconfig
-@@ -41,7 +41,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_STANDALONE is not set
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
-diff --git a/arch/sh/configs/migor_defconfig b/arch/sh/configs/migor_defconfig
-index c2c4a67..ba1e58d 100644
---- a/arch/sh/configs/migor_defconfig
-+++ b/arch/sh/configs/migor_defconfig
-@@ -31,7 +31,6 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_MTD_CFI=y
+diff --git a/arch/sh/configs/titan_defconfig b/arch/sh/configs/titan_defconfig
+index cbb3166..2417a09 100644
+--- a/arch/sh/configs/titan_defconfig
++++ b/arch/sh/configs/titan_defconfig
+@@ -153,7 +153,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
  CONFIG_FW_LOADER=m
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/polaris_defconfig b/arch/sh/configs/polaris_defconfig
-index f3d5d9f..d2bfd3a 100644
---- a/arch/sh/configs/polaris_defconfig
-+++ b/arch/sh/configs/polaris_defconfig
-@@ -42,7 +42,6 @@ CONFIG_IP_MULTICAST=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FIRMWARE_IN_KERNEL is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/r7780mp_defconfig b/arch/sh/configs/r7780mp_defconfig
-index 920b847..0e7028c 100644
---- a/arch/sh/configs/r7780mp_defconfig
-+++ b/arch/sh/configs/r7780mp_defconfig
-@@ -41,7 +41,6 @@ CONFIG_BRIDGE=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_FW_LOADER=m
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CFI=y
- CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_COMPLEX_MAPPINGS=y
-diff --git a/arch/sh/configs/rsk7201_defconfig b/arch/sh/configs/rsk7201_defconfig
-index 82fca50..b8c30c4 100644
---- a/arch/sh/configs/rsk7201_defconfig
-+++ b/arch/sh/configs/rsk7201_defconfig
-@@ -37,7 +37,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/rsk7203_defconfig b/arch/sh/configs/rsk7203_defconfig
-index 26f7e8c..fe0c85f 100644
---- a/arch/sh/configs/rsk7203_defconfig
-+++ b/arch/sh/configs/rsk7203_defconfig
-@@ -52,7 +52,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/rts7751r2dplus_defconfig b/arch/sh/configs/rts7751r2dplus_defconfig
-index 9f5fd0b..1f909c3 100644
---- a/arch/sh/configs/rts7751r2dplus_defconfig
-+++ b/arch/sh/configs/rts7751r2dplus_defconfig
-@@ -27,7 +27,6 @@ CONFIG_INET=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_FW_LOADER=m
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
-index e7e56a4..c463a8d 100644
---- a/arch/sh/configs/sdk7786_defconfig
-+++ b/arch/sh/configs/sdk7786_defconfig
-@@ -97,7 +97,6 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_FTL=y
-diff --git a/arch/sh/configs/se7206_defconfig b/arch/sh/configs/se7206_defconfig
-index f111e63..d4acb86 100644
---- a/arch/sh/configs/se7206_defconfig
-+++ b/arch/sh/configs/se7206_defconfig
-@@ -66,7 +66,6 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/se7343_defconfig b/arch/sh/configs/se7343_defconfig
-index 89dd658..d2a2763 100644
---- a/arch/sh/configs/se7343_defconfig
-+++ b/arch/sh/configs/se7343_defconfig
-@@ -32,7 +32,6 @@ CONFIG_SYN_COOKIES=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/se7619_defconfig b/arch/sh/configs/se7619_defconfig
-index ebc7e21..6e0fded 100644
---- a/arch/sh/configs/se7619_defconfig
-+++ b/arch/sh/configs/se7619_defconfig
-@@ -24,7 +24,6 @@ CONFIG_BINFMT_ZFLAT=y
- # CONFIG_STANDALONE is not set
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_REDBOOT_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/se7705_defconfig b/arch/sh/configs/se7705_defconfig
-index 044e084..443d111 100644
---- a/arch/sh/configs/se7705_defconfig
-+++ b/arch/sh/configs/se7705_defconfig
-@@ -30,7 +30,6 @@ CONFIG_IP_PNP_RARP=y
- # CONFIG_INET_LRO is not set
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/se7712_defconfig b/arch/sh/configs/se7712_defconfig
-index 53361a9..a5bc506 100644
---- a/arch/sh/configs/se7712_defconfig
-+++ b/arch/sh/configs/se7712_defconfig
-@@ -68,7 +68,6 @@ CONFIG_NET_CLS_FW=y
- CONFIG_NET_CLS_IND=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/se7721_defconfig b/arch/sh/configs/se7721_defconfig
-index 9d293c2..e9bb439 100644
---- a/arch/sh/configs/se7721_defconfig
-+++ b/arch/sh/configs/se7721_defconfig
-@@ -67,7 +67,6 @@ CONFIG_NET_CLS_FW=y
- CONFIG_NET_CLS_IND=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/se7724_defconfig b/arch/sh/configs/se7724_defconfig
-index dded704..470af81 100644
---- a/arch/sh/configs/se7724_defconfig
-+++ b/arch/sh/configs/se7724_defconfig
-@@ -34,7 +34,6 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
-diff --git a/arch/sh/configs/se7750_defconfig b/arch/sh/configs/se7750_defconfig
-index 912c985..56ce93c 100644
---- a/arch/sh/configs/se7750_defconfig
-+++ b/arch/sh/configs/se7750_defconfig
-@@ -28,7 +28,6 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_INET_LRO is not set
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/se7751_defconfig b/arch/sh/configs/se7751_defconfig
-index 75c92fc..1cd2aaf 100644
---- a/arch/sh/configs/se7751_defconfig
-+++ b/arch/sh/configs/se7751_defconfig
-@@ -31,7 +31,6 @@ CONFIG_NETFILTER=y
- CONFIG_NETFILTER_DEBUG=y
- CONFIG_IP_NF_QUEUE=y
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
- CONFIG_MTD_CFI_AMDSTD=y
-diff --git a/arch/sh/configs/se7780_defconfig b/arch/sh/configs/se7780_defconfig
-index b0ef63c..560dc25 100644
---- a/arch/sh/configs/se7780_defconfig
-+++ b/arch/sh/configs/se7780_defconfig
-@@ -32,7 +32,6 @@ CONFIG_IPV6=y
- # CONFIG_IPV6_SIT is not set
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/secureedge5410_defconfig b/arch/sh/configs/secureedge5410_defconfig
-index 7eae4e5..32a30d0 100644
---- a/arch/sh/configs/secureedge5410_defconfig
-+++ b/arch/sh/configs/secureedge5410_defconfig
-@@ -22,7 +22,6 @@ CONFIG_INET=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK_RO=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/sh7710voipgw_defconfig b/arch/sh/configs/sh7710voipgw_defconfig
-index f92ad17..1b48f4e 100644
---- a/arch/sh/configs/sh7710voipgw_defconfig
-+++ b/arch/sh/configs/sh7710voipgw_defconfig
-@@ -36,7 +36,6 @@ CONFIG_NET_CLS_ROUTE4=y
- CONFIG_NET_CLS_U32=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/sh7763rdp_defconfig b/arch/sh/configs/sh7763rdp_defconfig
-index 4795364..93f37ff 100644
---- a/arch/sh/configs/sh7763rdp_defconfig
-+++ b/arch/sh/configs/sh7763rdp_defconfig
-@@ -30,7 +30,6 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLKDEVS=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/sh7785lcr_32bit_defconfig b/arch/sh/configs/sh7785lcr_32bit_defconfig
-index 1f136ac..ac947d4 100644
---- a/arch/sh/configs/sh7785lcr_32bit_defconfig
-+++ b/arch/sh/configs/sh7785lcr_32bit_defconfig
-@@ -48,7 +48,6 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/sh7785lcr_defconfig b/arch/sh/configs/sh7785lcr_defconfig
-index 69b2facb..66f5c96 100644
---- a/arch/sh/configs/sh7785lcr_defconfig
-+++ b/arch/sh/configs/sh7785lcr_defconfig
-@@ -31,7 +31,6 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/shmin_defconfig b/arch/sh/configs/shmin_defconfig
-index 4802e14..339c0e3 100644
---- a/arch/sh/configs/shmin_defconfig
-+++ b/arch/sh/configs/shmin_defconfig
-@@ -31,7 +31,6 @@ CONFIG_IP_PNP=y
- # CONFIG_INET_LRO is not set
- # CONFIG_IPV6 is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/ul2_defconfig b/arch/sh/configs/ul2_defconfig
-index 3893af6..414246d 100644
---- a/arch/sh/configs/ul2_defconfig
-+++ b/arch/sh/configs/ul2_defconfig
-@@ -37,7 +37,6 @@ CONFIG_MAC80211_RC_PID=y
- # CONFIG_MAC80211_RC_MINSTREL is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/sh/configs/urquell_defconfig b/arch/sh/configs/urquell_defconfig
-index 627d65c..01f4b19 100644
---- a/arch/sh/configs/urquell_defconfig
-+++ b/arch/sh/configs/urquell_defconfig
-@@ -52,7 +52,6 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FW_LOADER is not set
- CONFIG_MTD=y
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
-diff --git a/arch/unicore32/configs/unicore32_defconfig b/arch/unicore32/configs/unicore32_defconfig
-index 45f47f8..43399f1 100644
---- a/arch/unicore32/configs/unicore32_defconfig
-+++ b/arch/unicore32/configs/unicore32_defconfig
-@@ -75,7 +75,6 @@ CONFIG_PUV3_UART=n
- #	Memory Technology Device (MTD) support
+ CONFIG_CONNECTOR=m
  CONFIG_MTD=m
- CONFIG_MTD_UBI=m
--CONFIG_MTD_PARTITIONS=y
- CONFIG_MTD_CHAR=m
- CONFIG_MTD_BLKDEVS=m
- #	RAM/ROM/Flash chip drivers
+-CONFIG_MTD_DEBUG=y
+ CONFIG_MTD_BLOCK=m
+ CONFIG_FTL=m
+ CONFIG_NFTL=m
 -- 
 1.7.9.5

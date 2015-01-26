@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jan 2015 14:04:48 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:21556 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011158AbbAZNErBHQF0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Jan 2015 14:04:47 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 54C4B28EF61A7;
-        Mon, 26 Jan 2015 13:04:38 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 26 Jan 2015 13:04:40 +0000
-Received: from mchandras-linux.le.imgtec.org (192.168.154.96) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 26 Jan 2015 13:04:38 +0000
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2 2/3] MIPS: HTW: Prevent accidental HTW start due to nested htw_{start,stop}
-Date:   Mon, 26 Jan 2015 13:04:33 +0000
-Message-ID: <1422277473-27925-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.2.2
-In-Reply-To: <1422265236-29290-3-git-send-email-markos.chandras@imgtec.com>
-References: <1422265236-29290-3-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jan 2015 14:16:27 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52574 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27011445AbbAZNQZHC8VM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 26 Jan 2015 14:16:25 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.8/8.14.8) with ESMTP id t0QDGM4h030733;
+        Mon, 26 Jan 2015 14:16:22 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.8/8.14.8/Submit) id t0QDGMhC030732;
+        Mon, 26 Jan 2015 14:16:22 +0100
+Date:   Mon, 26 Jan 2015 14:16:22 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Joshua Kinard <kumba@gentoo.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Display CPU byteorder in /proc/cpuinfo
+Message-ID: <20150126131621.GB31322@linux-mips.org>
+References: <54BCC827.3020806@gentoo.org>
+ <54BEDF3C.6040105@gmail.com>
+ <54BF12B9.8000507@gentoo.org>
+ <alpine.LFD.2.11.1501210347180.28301@eddie.linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1501210347180.28301@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45483
+X-archive-position: 45484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,164 +47,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-activate_mm() and switch_mm() call get_new_mmu_context() which in turn
-can enable the HTW before the entryhi is changed with the new ASID.
-Since the latter will enable the HTW in local_flush_tlb_all(),
-then there is a small timing window where the HTW is running with the
-new ASID but with an old pgd since the TLBMISS_HANDLER_SETUP_PGD
-hasn't assigned a new one yet. In order to prevent that, we introduce a
-simple htw counter to avoid starting HTW accidentally due to nested
-htw_{start,stop}() sequences. Moreover, since various IPI calls can
-enforce TLB flushing operations on a different core, such an operation
-may interrupt another htw_{stop,start} in progress leading inconsistent
-updates of the htw_seq variable. In order to avoid that, we disable the
-interrupts whenever we update that variable.
+On Mon, Jan 26, 2015 at 08:06:35AM +0000, Maciej W. Rozycki wrote:
 
-Cc: <stable@vger.kernel.org> # 3.17+
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-Changes since v1:
-- Avoid stopping the HTW if it is already stopped.
----
- arch/mips/include/asm/cpu-info.h    |  5 +++++
- arch/mips/include/asm/mmu_context.h |  7 ++++++-
- arch/mips/include/asm/pgtable.h     | 24 ++++++++++++++++++------
- arch/mips/kernel/cpu-probe.c        |  4 +++-
- 4 files changed, 32 insertions(+), 8 deletions(-)
+> On Tue, 20 Jan 2015, Joshua Kinard wrote:
+> 
+> > > Userspace C code doesn't need this as it has its own standard ways of
+> > > determining endianness.
+> > > 
+> > > If you need to know as a user you can do:
+> > > 
+> > >    readelf -h /bin/sh | grep Data | cut -d, -f2
+> 
+>  I tend to use `file /sbin/init' if I need to check it for some reason -- 
+> less typing. ;)
+> 
+> > This would only tell you the endianness of the userland binary, not of the
+> > kernel.  While they should be one and the same (otherwise, you're not going to
+> > get very far anyways), they are, technically, distinctly different properties.
+> 
+>  Well, several MIPS processors can reverse the user-mode endianness via 
+> the CP0.Status.RE bit; though as you may be aware it has never been 
+> implemented for Linux.  Otherwise it would obviously have to be a 
+> per-process property (and execve(2) could flip it back).
 
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index a6c9ccb33c5c..c3f4f2d2e108 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -84,6 +84,11 @@ struct cpuinfo_mips {
- 	 * (shifted by _CACHE_SHIFT)
- 	 */
- 	unsigned int		writecombine;
-+	/*
-+	 * Simple counter to prevent enabling HTW in nested
-+	 * htw_start/htw_stop calls
-+	 */
-+	unsigned int		htw_seq;
- } __attribute__((aligned(SMP_CACHE_BYTES)));
- 
- extern struct cpuinfo_mips cpu_data[];
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index 2f82568a3ee4..bc01579a907a 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -25,7 +25,6 @@ do {									\
- 	if (cpu_has_htw) {						\
- 		write_c0_pwbase(pgd);					\
- 		back_to_back_c0_hazard();				\
--		htw_reset();						\
- 	}								\
- } while (0)
- 
-@@ -142,6 +141,7 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
- 	unsigned long flags;
- 	local_irq_save(flags);
- 
-+	htw_stop();
- 	/* Check if our ASID is of an older version and thus invalid */
- 	if ((cpu_context(cpu, next) ^ asid_cache(cpu)) & ASID_VERSION_MASK)
- 		get_new_mmu_context(next, cpu);
-@@ -154,6 +154,7 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
- 	 */
- 	cpumask_clear_cpu(cpu, mm_cpumask(prev));
- 	cpumask_set_cpu(cpu, mm_cpumask(next));
-+	htw_start();
- 
- 	local_irq_restore(flags);
- }
-@@ -180,6 +181,7 @@ activate_mm(struct mm_struct *prev, struct mm_struct *next)
- 
- 	local_irq_save(flags);
- 
-+	htw_stop();
- 	/* Unconditionally get a new ASID.  */
- 	get_new_mmu_context(next, cpu);
- 
-@@ -189,6 +191,7 @@ activate_mm(struct mm_struct *prev, struct mm_struct *next)
- 	/* mark mmu ownership change */
- 	cpumask_clear_cpu(cpu, mm_cpumask(prev));
- 	cpumask_set_cpu(cpu, mm_cpumask(next));
-+	htw_start();
- 
- 	local_irq_restore(flags);
- }
-@@ -203,6 +206,7 @@ drop_mmu_context(struct mm_struct *mm, unsigned cpu)
- 	unsigned long flags;
- 
- 	local_irq_save(flags);
-+	htw_stop();
- 
- 	if (cpumask_test_cpu(cpu, mm_cpumask(mm)))  {
- 		get_new_mmu_context(mm, cpu);
-@@ -211,6 +215,7 @@ drop_mmu_context(struct mm_struct *mm, unsigned cpu)
- 		/* will get a new context next time */
- 		cpu_context(cpu, mm) = 0;
- 	}
-+	htw_start();
- 	local_irq_restore(flags);
- }
- 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 7f7c558de9fc..eacb022067a6 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -99,19 +99,31 @@ extern void paging_init(void);
- 
- #define htw_stop()							\
- do {									\
-+	unsigned long flags;						\
-+									\
- 	if (cpu_has_htw) {						\
--		write_c0_pwctl(read_c0_pwctl() &			\
--			       ~(1 << MIPS_PWCTL_PWEN_SHIFT));		\
--		back_to_back_c0_hazard();				\
-+		local_irq_save(flags);					\
-+		if(!raw_current_cpu_data.htw_seq++) {			\
-+			write_c0_pwctl(read_c0_pwctl() &		\
-+				       ~(1 << MIPS_PWCTL_PWEN_SHIFT));	\
-+			back_to_back_c0_hazard();			\
-+		}							\
-+		local_irq_restore(flags);				\
- 	}								\
- } while(0)
- 
- #define htw_start()							\
- do {									\
-+	unsigned long flags;						\
-+									\
- 	if (cpu_has_htw) {						\
--		write_c0_pwctl(read_c0_pwctl() |			\
--			       (1 << MIPS_PWCTL_PWEN_SHIFT));		\
--		back_to_back_c0_hazard();				\
-+		local_irq_save(flags);					\
-+		if (!--raw_current_cpu_data.htw_seq) {			\
-+			write_c0_pwctl(read_c0_pwctl() |		\
-+				       (1 << MIPS_PWCTL_PWEN_SHIFT));	\
-+			back_to_back_c0_hazard();			\
-+		}							\
-+		local_irq_restore(flags);				\
- 	}								\
- } while(0)
- 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index dc49cf30c2db..5d6e59f20750 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -367,8 +367,10 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 	if (config3 & MIPS_CONF3_MSA)
- 		c->ases |= MIPS_ASE_MSA;
- 	/* Only tested on 32-bit cores */
--	if ((config3 & MIPS_CONF3_PW) && config_enabled(CONFIG_32BIT))
-+	if ((config3 & MIPS_CONF3_PW) && config_enabled(CONFIG_32BIT)) {
-+		c->htw_seq = 0;
- 		c->options |= MIPS_CPU_HTW;
-+	}
- 
- 	return config3 & MIPS_CONF_M;
- }
--- 
-2.2.2
+As posted previously that was why I removed it from /proc/cpuinfo.  And
+yes, I had a simple prototype to use the RE feature.  Even in the limited
+form I had it was impressively ugly and it became clear it would never
+be upstreamable.
+
+Right now MIPS is not making much use of sysfs.  Endian information and
+other runtime CPU configuration probably should go there.  Detecting the
+size and associativity of cache lines, changing the cache line size, more
+control over VPEs in multithreaded kernels come to mind.
+
+>  What you may find more interesting, we actually used to include this 
+> information in /proc/cpuinfo, long ago, and I believe it was removed for 
+> the very reason of the existence of this reverse-endianness feature.  
+> Which I find sort of weak an argument given that we don't support this 
+> stuff anyway, but given the simple ways to extract this information from 
+> elsewhere (/proc/config.gz is another candidate place) I have doubts if 
+> having it in /proc/cpuinfo adds any value too.  Not that I'd object it 
+> strongly either though.
+> 
+>  See:
+> 
+> commit 874124ebb6309433a2e1acf1deb95baa1c34db0b
+> Author: Ralf Baechle <ralf@linux-mips.org>
+> Date:   Sun Dec 2 11:34:32 2001 +0000
+> 
+>     Merge with Linux 2.4.15.
+> 
+> -- which actually makes me wonder what happened here as Linus's 2.4.15 
+> change does not include any of this stuff.  Only 2.4.19 does, 8 months 
+> later -- a CVS to GIT conversion problem?
+
+In those days I only sent patches upstream very rarely because committing
+to CVS was easy - but extracting patches, breaking the up in useful patches
+and submitting them upstream was so painful.  Honestly, the CVS archive
+only began to be really useful after it was converted to git!
+
+The conversion to git is as accurate as I possibly could do it and includes
+the entire tarball and patch history as well as the linux-2.0 repository.
+Linux 2.0 lived in a separate repository because it was created for
+around 2.1.73 when it became clear that 2.2 was still going to take a
+long time.  The conversion was done custom conversion tools due to the
+limitations of the tools that were available at the time.
+
+  Ralf

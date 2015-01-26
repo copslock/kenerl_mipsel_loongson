@@ -1,39 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jan 2015 10:41:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9658 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011124AbbAZJlWftMas (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Jan 2015 10:41:22 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 1CF829C2F429B;
-        Mon, 26 Jan 2015 09:41:15 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 26 Jan 2015 09:41:16 +0000
-Received: from mchandras-linux.le.imgtec.org (192.168.154.96) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 26 Jan 2015 09:41:16 +0000
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH 3/3] MIPS: asm: pgtable: Prevent HTW race when updating PTEs
-Date:   Mon, 26 Jan 2015 09:40:36 +0000
-Message-ID: <1422265236-29290-4-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.2.2
-In-Reply-To: <1422265236-29290-1-git-send-email-markos.chandras@imgtec.com>
-References: <1422265236-29290-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jan 2015 11:46:03 +0100 (CET)
+Received: from terminus.zytor.com ([198.137.202.10]:58362 "EHLO
+        terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010935AbbAZKqBjxQ1U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Jan 2015 11:46:01 +0100
+Received: from terminus.zytor.com (localhost [127.0.0.1])
+        by terminus.zytor.com (8.14.8/8.14.7) with ESMTP id t0QAjXqZ000983;
+        Mon, 26 Jan 2015 02:45:38 -0800
+Received: (from tipbot@localhost)
+        by terminus.zytor.com (8.14.8/8.14.7/Submit) id t0QAjXYm000980;
+        Mon, 26 Jan 2015 02:45:33 -0800
+Date:   Mon, 26 Jan 2015 02:45:33 -0800
+X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
+From:   tip-bot for Qais Yousef <tipbot@zytor.com>
+Message-ID: <tip-d7eb4f2ecccd71f701bc8873bcf07c2d3b0375f6@git.kernel.org>
+Cc:     linux-mips@linux-mips.org, abrestic@chromium.org,
+        jason@lakedaemon.net, mingo@kernel.org, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, qais.yousef@imgtec.com, hpa@zytor.com
+Reply-To: abrestic@chromium.org, linux-mips@linux-mips.org,
+          jason@lakedaemon.net, linux-kernel@vger.kernel.org,
+          qais.yousef@imgtec.com, tglx@linutronix.de, mingo@kernel.org,
+          hpa@zytor.com
+In-Reply-To: <1421668289-828-1-git-send-email-qais.yousef@imgtec.com>
+References: <1421668289-828-1-git-send-email-qais.yousef@imgtec.com>
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip:irq/core] irqchip: mips-gic:
+  Handle pending interrupts once in __gic_irq_dispatch()
+Git-Commit-ID: d7eb4f2ecccd71f701bc8873bcf07c2d3b0375f6
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot.git.kernel.org>
+Robot-Unsubscribe: Contact <mailto:hpa@kernel.org>
+  to get blacklisted from these emails
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+Precedence: bulk
+Return-Path: <tipbot@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45475
+X-archive-position: 45476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: tipbot@zytor.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,70 +56,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Whenever we modify a page table entry, we need to ensure that the HTW
-will not fetch a stable entry. And for that to happen we need to ensure
-that HTW is stopped before we modify the said entry otherwise the HTW
-may already be in the process of reading that entry and fetching the
-old information. As a result of which, we replace the htw_reset() calls
-with htw_{stop,start} in more appropriate places. This also removes the
-remaining users of htw_reset() and as a result we drop that macro
+Commit-ID:  d7eb4f2ecccd71f701bc8873bcf07c2d3b0375f6
+Gitweb:     http://git.kernel.org/tip/d7eb4f2ecccd71f701bc8873bcf07c2d3b0375f6
+Author:     Qais Yousef <qais.yousef@imgtec.com>
+AuthorDate: Mon, 19 Jan 2015 11:51:29 +0000
+Committer:  Thomas Gleixner <tglx@linutronix.de>
+CommitDate: Mon, 26 Jan 2015 11:38:23 +0100
 
-Cc: <stable@vger.kernel.org> # 3.17+
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+irqchip: mips-gic: Handle pending interrupts once in __gic_irq_dispatch()
+
+When an interrupt occurs __gic_irq_dispatch() continuously reads local
+and shared pending registers until all is serviced before
+returning. The problem with that is that it could introduce a long
+delay before returning if a piece of hardware keeps triggering while
+in one of these loops.
+
+To ensure fairness and priority doesn't get skewed a lot, read local
+and shared pending registers once to service each pending IRQ once.
+If another interupt triggers while servicing the current ones, then we
+shall re-enter the handler after we return.
+
+Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Andrew Bresticker <abrestic@chromium.org>
+Cc: <linux-mips@linux-mips.org>
+Link: http://lkml.kernel.org/r/1421668289-828-1-git-send-email-qais.yousef@imgtec.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/include/asm/pgtable.h | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/irqchip/irq-mips-gic.c | 44 +++++++++++++++++++++++++-----------------
+ 1 file changed, 26 insertions(+), 18 deletions(-)
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index d2c7e9e7447e..4f92607ce36e 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -127,14 +127,6 @@ do {									\
- } while(0)
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 2b0468e..f3f9873 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -234,9 +234,9 @@ int gic_get_c0_perfcount_int(void)
+ 				  GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_PERFCTR));
+ }
  
+-static unsigned int gic_get_int(void)
++static void gic_handle_shared_int(void)
+ {
+-	unsigned int i;
++	unsigned int i, intr, virq;
+ 	unsigned long *pcpu_mask;
+ 	unsigned long pending_reg, intrmask_reg;
+ 	DECLARE_BITMAP(pending, GIC_MAX_INTRS);
+@@ -258,7 +258,16 @@ static unsigned int gic_get_int(void)
+ 	bitmap_and(pending, pending, intrmask, gic_shared_intrs);
+ 	bitmap_and(pending, pending, pcpu_mask, gic_shared_intrs);
  
--#define htw_reset()							\
--do {									\
--	if (cpu_has_htw) {						\
--		htw_stop();						\
--		htw_start();						\
--	}								\
--} while(0)
+-	return find_first_bit(pending, gic_shared_intrs);
++	intr = find_first_bit(pending, gic_shared_intrs);
++	while (intr != gic_shared_intrs) {
++		virq = irq_linear_revmap(gic_irq_domain,
++					 GIC_SHARED_TO_HWIRQ(intr));
++		do_IRQ(virq);
++
++		/* go to next pending bit */
++		bitmap_clear(pending, intr, 1);
++		intr = find_first_bit(pending, gic_shared_intrs);
++	}
+ }
+ 
+ static void gic_mask_irq(struct irq_data *d)
+@@ -385,16 +394,26 @@ static struct irq_chip gic_edge_irq_controller = {
+ #endif
+ };
+ 
+-static unsigned int gic_get_local_int(void)
++static void gic_handle_local_int(void)
+ {
+ 	unsigned long pending, masked;
++	unsigned int intr, virq;
+ 
+ 	pending = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
+ 	masked = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_MASK));
+ 
+ 	bitmap_and(&pending, &pending, &masked, GIC_NUM_LOCAL_INTRS);
+ 
+-	return find_first_bit(&pending, GIC_NUM_LOCAL_INTRS);
++	intr = find_first_bit(&pending, GIC_NUM_LOCAL_INTRS);
++	while (intr != GIC_NUM_LOCAL_INTRS) {
++		virq = irq_linear_revmap(gic_irq_domain,
++					 GIC_LOCAL_TO_HWIRQ(intr));
++		do_IRQ(virq);
++
++		/* go to next pending bit */
++		bitmap_clear(&pending, intr, 1);
++		intr = find_first_bit(&pending, GIC_NUM_LOCAL_INTRS);
++	}
+ }
+ 
+ static void gic_mask_local_irq(struct irq_data *d)
+@@ -453,19 +472,8 @@ static struct irq_chip gic_all_vpes_local_irq_controller = {
+ 
+ static void __gic_irq_dispatch(void)
+ {
+-	unsigned int intr, virq;
 -
- extern void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
- 	pte_t pteval);
- 
-@@ -166,12 +158,13 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *pt
- {
- 	pte_t null = __pte(0);
- 
-+	htw_stop();
- 	/* Preserve global status for the pair */
- 	if (ptep_buddy(ptep)->pte_low & _PAGE_GLOBAL)
- 		null.pte_low = null.pte_high = _PAGE_GLOBAL;
- 
- 	set_pte_at(mm, addr, ptep, null);
--	htw_reset();
-+	htw_start();
+-	while ((intr = gic_get_local_int()) != GIC_NUM_LOCAL_INTRS) {
+-		virq = irq_linear_revmap(gic_irq_domain,
+-					 GIC_LOCAL_TO_HWIRQ(intr));
+-		do_IRQ(virq);
+-	}
+-
+-	while ((intr = gic_get_int()) != gic_shared_intrs) {
+-		virq = irq_linear_revmap(gic_irq_domain,
+-					 GIC_SHARED_TO_HWIRQ(intr));
+-		do_IRQ(virq);
+-	}
++	gic_handle_local_int();
++	gic_handle_shared_int();
  }
- #else
  
-@@ -201,6 +194,7 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 
- static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
- {
-+	htw_stop();
- #if !defined(CONFIG_CPU_R3000) && !defined(CONFIG_CPU_TX39XX)
- 	/* Preserve global status for the pair */
- 	if (pte_val(*ptep_buddy(ptep)) & _PAGE_GLOBAL)
-@@ -208,7 +202,7 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *pt
- 	else
- #endif
- 		set_pte_at(mm, addr, ptep, __pte(0));
--	htw_reset();
-+	htw_start();
- }
- #endif
- 
--- 
-2.2.2
+ static void gic_irq_dispatch(unsigned int irq, struct irq_desc *desc)

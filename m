@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jan 2015 22:47:46 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15424 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jan 2015 22:48:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53432 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011928AbbA0VqWzZLzz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Jan 2015 22:46:22 +0100
+        with ESMTP id S27011931AbbA0VqXQd0e0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Jan 2015 22:46:23 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 8FDC42D1A8A85;
-        Tue, 27 Jan 2015 21:46:13 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 48CBEAFA945B4;
+        Tue, 27 Jan 2015 21:46:14 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
  14.3.195.1; Tue, 27 Jan 2015 21:46:17 +0000
@@ -15,13 +15,10 @@ Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 CC:     <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-Subject: [PATCH 5/9] irqchip: mips-gic: Add missing definitions for FDC IRQ
-Date:   Tue, 27 Jan 2015 21:45:51 +0000
-Message-ID: <1422395155-16511-6-git-send-email-james.hogan@imgtec.com>
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 6/9] MIPS: cevt-r4k: Make interrupt handler shared
+Date:   Tue, 27 Jan 2015 21:45:52 +0000
+Message-ID: <1422395155-16511-7-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.0.5
 In-Reply-To: <1422395155-16511-1-git-send-email-james.hogan@imgtec.com>
 References: <1422395155-16511-1-git-send-email-james.hogan@imgtec.com>
@@ -32,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45501
+X-archive-position: 45502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,52 +46,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add missing VPE_PEND, VPE_RMASK and VPE_SMASK definitions for the local
-FDC interrupt.
+Make the cevt-r4k interrupt handler shared so that other interrupt
+handlers (specifically the performance counter overflow handler and fast
+debug channel interrupt handler) can share the same interrupt line.
 
-These local interrupt definitions aren't directly used, but if they
-exist they should be complete.
+This simply imvolves returning IRQ_NONE when no timer interrupt has been
+handled to allow other handlers to run, and passing IRQF_SHARED when
+setting up the IRQ handler so that other handlers (with compatible
+flags) can be registered.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Andrew Bresticker <abrestic@chromium.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
 Cc: linux-mips@linux-mips.org
 ---
- include/linux/irqchip/mips-gic.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/kernel/cevt-r4k.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
-index 420f77b34d02..ff0e75f40ef5 100644
---- a/include/linux/irqchip/mips-gic.h
-+++ b/include/linux/irqchip/mips-gic.h
-@@ -165,6 +165,8 @@
- #define GIC_VPE_PEND_SWINT0_MSK		(MSK(1) << GIC_VPE_PEND_SWINT0_SHF)
- #define GIC_VPE_PEND_SWINT1_SHF		5
- #define GIC_VPE_PEND_SWINT1_MSK		(MSK(1) << GIC_VPE_PEND_SWINT1_SHF)
-+#define GIC_VPE_PEND_FDC_SHF		6
-+#define GIC_VPE_PEND_FDC_MSK		(MSK(1) << GIC_VPE_PEND_FDC_SHF)
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index d68a678b7e4e..8044981e9399 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -81,6 +81,8 @@ irqreturn_t c0_compare_interrupt(int irq, void *dev_id)
+ 		write_c0_compare(read_c0_compare());
+ 		cd = &per_cpu(mips_clockevent_device, cpu);
+ 		cd->event_handler(cd);
++	} else {
++		return IRQ_NONE;
+ 	}
  
- /* GIC_VPE_RMASK Masks */
- #define GIC_VPE_RMASK_WD_SHF		0
-@@ -179,6 +181,8 @@
- #define GIC_VPE_RMASK_SWINT0_MSK	(MSK(1) << GIC_VPE_RMASK_SWINT0_SHF)
- #define GIC_VPE_RMASK_SWINT1_SHF	5
- #define GIC_VPE_RMASK_SWINT1_MSK	(MSK(1) << GIC_VPE_RMASK_SWINT1_SHF)
-+#define GIC_VPE_RMASK_FDC_SHF		6
-+#define GIC_VPE_RMASK_FDC_MSK		(MSK(1) << GIC_VPE_RMASK_FDC_SHF)
+ out:
+@@ -89,7 +91,11 @@ out:
  
- /* GIC_VPE_SMASK Masks */
- #define GIC_VPE_SMASK_WD_SHF		0
-@@ -193,6 +197,8 @@
- #define GIC_VPE_SMASK_SWINT0_MSK	(MSK(1) << GIC_VPE_SMASK_SWINT0_SHF)
- #define GIC_VPE_SMASK_SWINT1_SHF	5
- #define GIC_VPE_SMASK_SWINT1_MSK	(MSK(1) << GIC_VPE_SMASK_SWINT1_SHF)
-+#define GIC_VPE_SMASK_FDC_SHF		6
-+#define GIC_VPE_SMASK_FDC_MSK		(MSK(1) << GIC_VPE_SMASK_FDC_SHF)
+ struct irqaction c0_compare_irqaction = {
+ 	.handler = c0_compare_interrupt,
+-	.flags = IRQF_PERCPU | IRQF_TIMER,
++	/*
++	 * IRQF_SHARED: The timer interrupt may be shared with other interrupts
++	 * such as perf counter and FDC interrupts.
++	 */
++	.flags = IRQF_PERCPU | IRQF_TIMER | IRQF_SHARED,
+ 	.name = "timer",
+ };
  
- /* GIC nomenclature for Core Interrupt Pins. */
- #define GIC_CPU_INT0		0 /* Core Interrupt 2 */
 -- 
 2.0.5

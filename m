@@ -1,25 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2015 05:19:49 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:38172 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2015 05:20:44 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:38528 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008709AbbA1ETsUgF5u (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jan 2015 05:19:48 +0100
+        id S27008709AbbA1EUnCBcsY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Jan 2015 05:20:43 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 23B4E2034B;
-        Wed, 28 Jan 2015 04:19:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id 7E9372034F;
+        Wed, 28 Jan 2015 04:20:41 +0000 (UTC)
 Received: from localhost.localdomain (unknown [183.247.163.231])
         (using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5D5A02034F;
-        Wed, 28 Jan 2015 04:19:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 644B92034B;
+        Wed, 28 Jan 2015 04:20:37 +0000 (UTC)
 From:   lizf@kernel.org
 To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+Cc:     linux-kernel@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        Binbin Zhou <zhoubb@lemote.com>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Zefan Li <lizefan@huawei.com>
-Subject: [PATCH 3.4 65/91] MIPS: mcount: Adjust stack pointer for static trace in MIPS32
-Date:   Wed, 28 Jan 2015 12:08:16 +0800
-Message-Id: <1422418236-12852-129-git-send-email-lizf@kernel.org>
+Subject: [PATCH 3.4 074/177] MIPS: tlbex: Fix a missing statement for HUGETLB
+Date:   Wed, 28 Jan 2015 12:08:34 +0800
+Message-Id: <1422418236-12852-147-git-send-email-lizf@kernel.org>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1422418050-12581-1-git-send-email-lizf@kernel.org>
 References: <1422418050-12581-1-git-send-email-lizf@kernel.org>
@@ -28,7 +32,7 @@ Return-Path: <lizf@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45508
+X-archive-position: 45509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,77 +49,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-3.4.105-rc1 review patch.  If anyone has any objections, please let me know.
+3.4.106-rc1 review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 
-commit 8a574cfa2652545eb95595d38ac2a0bb501af0ae upstream.
+commit 8393c524a25609a30129e4a8975cf3b91f6c16a5 upstream.
 
-Every mcount() call in the MIPS 32-bit kernel is done as follows:
+In commit 2c8c53e28f1 (MIPS: Optimize TLB handlers for Octeon CPUs)
+build_r4000_tlb_refill_handler() is modified. But it doesn't compatible
+with the original code in HUGETLB case. Because there is a copy & paste
+error and one line of code is missing. It is very easy to produce a bug
+with LTP's hugemmap05 test.
 
-[...]
-move at, ra
-jal _mcount
-addiu sp, sp, -8
-[...]
-
-but upon returning from the mcount() function, the stack pointer
-is not adjusted properly. This is explained in details in 58b69401c797
-(MIPS: Function tracer: Fix broken function tracing).
-
-Commit ad8c396936e3 ("MIPS: Unbreak function tracer for 64-bit kernel.)
-fixed the stack manipulation for 64-bit but it didn't fix it completely
-for MIPS32.
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7792/
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/7496/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Zefan Li <lizefan@huawei.com>
 ---
- arch/mips/kernel/mcount.S | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/mips/mm/tlbex.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 4c968e7..55eca41 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -119,7 +119,11 @@ NESTED(_mcount, PT_SIZE, ra)
- 	 nop
- #endif
- 	b	ftrace_stub
-+#ifdef CONFIG_32BIT
-+	 addiu sp, sp, 8
-+#else
- 	 nop
-+#endif
- 
- static_trace:
- 	MCOUNT_SAVE_REGS
-@@ -129,6 +133,9 @@ static_trace:
- 	 move	a1, AT		/* arg2: parent's return address */
- 
- 	MCOUNT_RESTORE_REGS
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-@@ -177,6 +184,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
- 	jal	prepare_ftrace_return
- 	 nop
- 	MCOUNT_RESTORE_REGS
-+#ifndef CONFIG_DYNAMIC_FTRACE
-+#ifdef CONFIG_32BIT
-+	addiu sp, sp, 8
-+#endif
-+#endif
- 	RETURN_BACK
- 	END(ftrace_graph_caller)
- 
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 0bc485b..f5abdfa 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1283,6 +1283,7 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 	}
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	uasm_l_tlb_huge_update(&l, p);
++	UASM_i_LW(&p, K0, 0, K1);
+ 	build_huge_update_entries(&p, htlb_info.huge_pte, K1);
+ 	build_huge_tlb_write_entry(&p, &l, &r, K0, tlb_random,
+ 				   htlb_info.restore_scratch);
 -- 
 1.9.1

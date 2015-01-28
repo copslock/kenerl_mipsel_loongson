@@ -1,38 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2015 05:26:25 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:40648 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008709AbbA1E0XyJLUw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jan 2015 05:26:23 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 124F2202E9;
-        Wed, 28 Jan 2015 04:26:22 +0000 (UTC)
-Received: from localhost.localdomain (unknown [183.247.163.231])
-        (using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CACAD2035B;
-        Wed, 28 Jan 2015 04:26:16 +0000 (UTC)
-From:   lizf@kernel.org
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@nsn.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Zefan Li <lizefan@huawei.com>
-Subject: [PATCH 3.4 169/177] MIPS: oprofile: Fix backtrace on 64-bit kernel
-Date:   Wed, 28 Jan 2015 12:10:27 +0800
-Message-Id: <1422418236-12852-260-git-send-email-lizf@kernel.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1422418050-12581-1-git-send-email-lizf@kernel.org>
-References: <1422418050-12581-1-git-send-email-lizf@kernel.org>
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <lizf@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2015 11:48:57 +0100 (CET)
+Received: from mail-qc0-f180.google.com ([209.85.216.180]:51893 "EHLO
+        mail-qc0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012059AbbA1Kszz0Ryq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Jan 2015 11:48:55 +0100
+Received: by mail-qc0-f180.google.com with SMTP id r5so15723078qcx.11
+        for <linux-mips@linux-mips.org>; Wed, 28 Jan 2015 02:48:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=/c09z+cXQyphXX7+S5f1jpdOqVHmbjjhKNy5nlZ+bsY=;
+        b=g7S8oc+ZIhmzWZ54KtCELGaPv4Z1LN9Puike7ak3aOhxWd0mC62SVDpGsdTBe0L3yj
+         DjsIwEcCtEESXlWUNjWNz7PP8M1pttvnMZavEU6CXHRVPR7OwSm2hwhuHLnJ6SQ2GjcN
+         QjREN1HRPkXtIudQ5vqls0r7PyLh7cCdgrEiVxRV++zSx4YSRENjWPf8JMn+dY8K7EhM
+         ODBTn9S21Xb2aV0ZxChQ48/K0SIjaN018iIK9ibtBCxAd8fCbLxtRxPX6SLB3tdFzF9X
+         /lCH4FyoP+gCTrI+t2YfL+B6RLLp5PKnUxsER6zN/0JkwCekPm+B21amgMJtWm/jI4NI
+         9TCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=/c09z+cXQyphXX7+S5f1jpdOqVHmbjjhKNy5nlZ+bsY=;
+        b=lu2fF0wTTzCDryJAQtxuDwg2FT8h9qCQrcrSL+2TkSsS+Qgzuo5ZQTZCApB4dXJ4Sn
+         Zoxbb7E6DzN4GQIK8x7GbnJuxaC64E/J6mCJe7vhVF0zGrlqO4mP+EjEpr5b1CpB2e7f
+         hz5BZ15WRLZ306TOnrjBKV2SqpG7UtfmVIK04=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=/c09z+cXQyphXX7+S5f1jpdOqVHmbjjhKNy5nlZ+bsY=;
+        b=VaYdUWLJIfUfCDXSefwLC20MzPMOHCMl5E2g5UaqRwtdm7nCA/i2w9MPJuRZ9qCj/W
+         zuT3NgbOsOdMSiA9jTIifRhPCaswaOopHfpNzzPohEgJ/Zf1orzxr5JDUIsOLETI4WxB
+         11VRc0rVLuRbFg9NZ5Uk2Bt4fdAE6hr1+KT0SDTL/enI2AOnXnPZlIa3Wjt3vgi2pWbe
+         dBv3QQkjRg+qATTlZSM+wq9YoJgth/F7rutZpx9P+xHpddpUFFCVpGRBHtIun77YIcbJ
+         LMCtjSuEJyyXHn3hVbZ2JQgedED+yHS9RMgvnP2rWwI3PyekwTcK8vbOwzGQly6NwEWI
+         IM8w==
+X-Gm-Message-State: ALoCoQns9262raFBlJ0imn3muTFvlR5EApLWIsXeVLTfuB6L/F/MA3hKx6CdWEAeWBvy+b24MKA/
+MIME-Version: 1.0
+X-Received: by 10.224.111.194 with SMTP id t2mr11323101qap.86.1422442129445;
+ Wed, 28 Jan 2015 02:48:49 -0800 (PST)
+Received: by 10.140.19.72 with HTTP; Wed, 28 Jan 2015 02:48:49 -0800 (PST)
+In-Reply-To: <1422395155-16511-5-git-send-email-james.hogan@imgtec.com>
+References: <1422395155-16511-1-git-send-email-james.hogan@imgtec.com>
+        <1422395155-16511-5-git-send-email-james.hogan@imgtec.com>
+Date:   Wed, 28 Jan 2015 10:48:49 +0000
+X-Google-Sender-Auth: M0-J0fZF5O5s8jBucwJxKJ_Z5bA
+Message-ID: <CAL1qeaG542xhS9FdEgMPEezaQJpApNTaLE8p-nUbrj9XPVy=xw@mail.gmail.com>
+Subject: Re: [PATCH 4/9] irqchip: mips-gic: Fix typo in comment
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45511
+X-archive-position: 45512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lizf@kernel.org
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,39 +76,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aaro Koskinen <aaro.koskinen@nsn.com>
+On Tue, Jan 27, 2015 at 9:45 PM, James Hogan <james.hogan@imgtec.com> wrote:
+> Fix typo in comment in gic_get_c0_perfcount_int:
+> "erformance" -> "performance".
+>
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Andrew Bresticker <abrestic@chromium.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: linux-mips@linux-mips.org
 
-3.4.106-rc1 review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-
-commit bbaf113a481b6ce32444c125807ad3618643ce57 upstream.
-
-Fix incorrect cast that always results in wrong address for the new
-frame on 64-bit kernels.
-
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nsn.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8110/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Zefan Li <lizefan@huawei.com>
----
- arch/mips/oprofile/backtrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/oprofile/backtrace.c b/arch/mips/oprofile/backtrace.c
-index 6854ed5..83a1dfd 100644
---- a/arch/mips/oprofile/backtrace.c
-+++ b/arch/mips/oprofile/backtrace.c
-@@ -92,7 +92,7 @@ static inline int unwind_user_frame(struct stackframe *old_frame,
- 				/* This marks the end of the previous function,
- 				   which means we overran. */
- 				break;
--			stack_size = (unsigned) stack_adjustment;
-+			stack_size = (unsigned long) stack_adjustment;
- 		} else if (is_ra_save_ins(&ip)) {
- 			int ra_slot = ip.i_format.simmediate;
- 			if (ra_slot < 0)
--- 
-1.9.1
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>

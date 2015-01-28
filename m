@@ -1,45 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2015 16:39:41 +0100 (CET)
-Received: from mail-ig0-f179.google.com ([209.85.213.179]:39909 "EHLO
-        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012124AbbA1PjjtXIPz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Jan 2015 16:39:39 +0100
-Received: by mail-ig0-f179.google.com with SMTP id l13so11805845iga.0;
-        Wed, 28 Jan 2015 07:39:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=9/7pJaYQ6WzssUdPLEVlzNWJc2gfbakU9khev9u0QKA=;
-        b=T8Ae28RXFsF4T1GoTrMOHTC3mWbJOxgJaxaTsQLTUFCG2sRGQSourGXLVU51kiMD8+
-         I5c8BeAQ5wRYgHzspkajI+tJM7z4CNBDmFsp1it/zgoEJWVqRLRqWWNYHNv55+qRHNZn
-         oSUbSQcCR7tdiuatoGfEpxuFFGRwn2HUAKS9mey7If4SXfb6qSHmPnibrc6JjgEZ9NQe
-         /ses/XRdWq2qpeLAx6B7vUMNNJtnPZWm60137WI55AjlhLRm5JL6ZH/O26VvnK1MeotP
-         +48NXU84gIU5X8Op1TObfhaycINDTiY3nDnFz+LsRjrKiewLkx0zYnSahtBkcmo5yxo6
-         brTQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 00:09:19 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:36926 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011190AbbA1XJRP1FSk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 00:09:17 +0100
+Date:   Wed, 28 Jan 2015 23:09:17 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] MIPS: Add arch CDMM definitions and probing
+In-Reply-To: <1422393401-13543-2-git-send-email-james.hogan@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1501280253280.28301@eddie.linux-mips.org>
+References: <1422393401-13543-1-git-send-email-james.hogan@imgtec.com> <1422393401-13543-2-git-send-email-james.hogan@imgtec.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-X-Received: by 10.42.235.140 with SMTP id kg12mr3753575icb.55.1422459573791;
- Wed, 28 Jan 2015 07:39:33 -0800 (PST)
-Received: by 10.64.9.67 with HTTP; Wed, 28 Jan 2015 07:39:33 -0800 (PST)
-In-Reply-To: <1418904340-13464-1-git-send-email-helmut.schaa@googlemail.com>
-References: <1418904340-13464-1-git-send-email-helmut.schaa@googlemail.com>
-Date:   Wed, 28 Jan 2015 16:39:33 +0100
-Message-ID: <CAGXE3d-xHPfQMq3h=V1TTm1UUc0qq7Hm373c4CdDRCR1Z77zuw@mail.gmail.com>
-Subject: Re: [PATCH] ath79: Increase max memory limit to 256MByte
-From:   Helmut Schaa <helmut.schaa@googlemail.com>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        Helmut Schaa <helmut.schaa@googlemail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <helmut.schaa@googlemail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45514
+X-archive-position: 45515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: helmut.schaa@googlemail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,19 +36,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Tue, 27 Jan 2015, James Hogan wrote:
 
-On Thu, Dec 18, 2014 at 1:05 PM, Helmut Schaa
-<helmut.schaa@googlemail.com> wrote:
-> At least QCA955x can handle up to 256MBytes.
->
-> Signed-off-by: Helmut Schaa <helmut.schaa@googlemail.com>
-> ---
->
-> Only tested on QCA955x, not sure if this would affect older SoCs in some way.
+> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+> index 33866fce4d63..2086372fa72a 100644
+> --- a/arch/mips/include/asm/cpu.h
+> +++ b/arch/mips/include/asm/cpu.h
+> @@ -370,6 +370,7 @@ enum cpu_type_enum {
+>  #define MIPS_CPU_RIXIEX		0x200000000ull /* CPU has unique exception codes for {Read, Execute}-Inhibit exceptions */
+>  #define MIPS_CPU_MAAR		0x400000000ull /* MAAR(I) registers are present */
+>  #define MIPS_CPU_FRE		0x800000000ull /* FRE & UFE bits implemented */
+> +#define MIPS_CPU_CDMM		0x10000000000ll /* CPU has Common Device Memory Map */
 
-Any objections to this? In the meantime I was able to test on AR9344
-as well (with 128MByte of RAM).
+ Is it a typo here: 0x10000000000ll vs 0x1000000000ull?
 
-Thanks,
-Helmut
+  Maciej

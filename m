@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 18:18:06 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:50156 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 18:18:21 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:50158 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012205AbbA2RRqlPhuF (ORCPT
+        with ESMTP id S27012222AbbA2RRqya19L (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 18:17:46 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84)
         (envelope-from <Steven.Hill@imgtec.com>)
-        id 1YGsfG-00015a-Gk; Thu, 29 Jan 2015 11:13:58 -0600
+        id 1YGsfG-00015a-Iq; Thu, 29 Jan 2015 11:13:58 -0600
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org
-Subject: [PATCH V3 1/5] MIPS: Usage and cosmetic cleanups of page table bits.
-Date:   Thu, 29 Jan 2015 11:17:33 -0600
-Message-Id: <1422551857-10981-2-git-send-email-Steven.Hill@imgtec.com>
+Subject: [PATCH V3 2/5] MIPS: Rearrange PTE bits into fixed positions.
+Date:   Thu, 29 Jan 2015 11:17:34 -0600
+Message-Id: <1422551857-10981-3-git-send-email-Steven.Hill@imgtec.com>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1422551857-10981-1-git-send-email-Steven.Hill@imgtec.com>
 References: <1422551857-10981-1-git-send-email-Steven.Hill@imgtec.com>
@@ -20,7 +20,7 @@ Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45544
+X-archive-position: 45545
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,227 +39,165 @@ X-list: linux-mips
 
 From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-   * Clean up white spaces and tabs.
-   * Get rid of remaining hardcoded values for calculating
-     shifts and masks.
-   * Get rid of redundant macro values.
-   * Do not use page table bits directly in #ifdef's.
+This patch rearranges the PTE bits into fixed positions for R2
+and later cores. In the past, the TLB handling code did runtime
+checking of RI/XI and adjusted the shifts and rotates in order
+to fit the largest PFN value into the PTE. The checking now
+occurs when building the TLB handler, thus eliminating those
+checks. These new arrangements also define the largest possible
+PFN value that can fit in the PTE. HUGE page support is only
+available on 64-bit platforms.
+
+The new layouts of the PTE bits are the following:
+
+   64-bit, R1 or earlier:     CCC D V G [S H] M A W R P
+   32-bit, R1 or earler:      CCC D V G M A W R P
+   64-bit, R2 or later:       CCC D V G RI XI [S H] M A W R P
+   32-bit, R2 or later:       CCC D V G RI XI M A W R P
+
+In the case of cores that support the RI/XI bits, the value of
+the R bit is ignored.
 
 Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 ---
- arch/mips/include/asm/pgtable-bits.h |   96 +++++++++++++---------------------
- arch/mips/include/asm/pgtable.h      |    4 +-
- 2 files changed, 38 insertions(+), 62 deletions(-)
+ arch/mips/include/asm/pgtable-bits.h |   79 ++++++++++++++++++++++------------
+ 1 file changed, 51 insertions(+), 28 deletions(-)
 
 diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
-index cb5ae93..9205fd5 100644
+index 9205fd5..e05eba8 100644
 --- a/arch/mips/include/asm/pgtable-bits.h
 +++ b/arch/mips/include/asm/pgtable-bits.h
-@@ -35,9 +35,9 @@
- #if defined(CONFIG_PHYS_ADDR_T_64BIT) && defined(CONFIG_CPU_MIPS32)
+@@ -95,50 +95,73 @@
  
+ #else
  /*
-- * The following bits are directly used by the TLB hardware
-+ * The following bits are implemented by the TLB hardware
+- * When using the RI/XI bit support, we have 13 bits of flags below
+- * the physical address. The RI/XI bits are placed such that a SRL 5
+- * can strip off the software bits, then a ROTR 2 can move the RI/XI
+- * into bits [63:62]. This also limits physical address to 56 bits,
+- * which is more than we need right now.
++ * Below are the "Normal" R4K cases
   */
--#define _PAGE_GLOBAL_SHIFT	0
-+#define _PAGE_GLOBAL_SHIFT	(0)
- #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
- #define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
- #define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
-@@ -48,8 +48,6 @@
- 
+-
++#if defined(CONFIG_64BIT) || !defined(CONFIG_CPU_MIPSR2)
  /*
   * The following bits are implemented in software
-- *
-- * _PAGE_FILE semantics: set:pagecache unset:swap
   */
- #define _PAGE_PRESENT_SHIFT	(_CACHE_SHIFT + 3)
+ #define _PAGE_PRESENT_SHIFT	(0)
  #define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
-@@ -62,48 +60,40 @@
+-#define _PAGE_READ_SHIFT	(cpu_has_rixi ? _PAGE_PRESENT_SHIFT : _PAGE_PRESENT_SHIFT + 1)
+-#define _PAGE_READ ({BUG_ON(cpu_has_rixi); 1 << _PAGE_READ_SHIFT; })
++#define _PAGE_READ_SHIFT        (_PAGE_PRESENT_SHIFT + 1)
++#define _PAGE_READ              (1 << _PAGE_READ_SHIFT)
+ #define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
+ #define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+ #define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
+ #define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
  #define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
  #define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
- 
--#define _PAGE_SILENT_READ	_PAGE_VALID
--#define _PAGE_SILENT_WRITE	_PAGE_DIRTY
--#define _PAGE_FILE		_PAGE_MODIFIED
--
- #define _PFN_SHIFT		(PAGE_SHIFT - 12 + _CACHE_SHIFT + 3)
- 
- #elif defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
- 
- /*
-- * The following are implemented by software
-- *
-- * _PAGE_FILE semantics: set:pagecache unset:swap
-+ * The following bits are implemented in software
-  */
--#define _PAGE_PRESENT_SHIFT	0
--#define _PAGE_PRESENT		(1 <<  _PAGE_PRESENT_SHIFT)
--#define _PAGE_READ_SHIFT	1
--#define _PAGE_READ		(1 <<  _PAGE_READ_SHIFT)
--#define _PAGE_WRITE_SHIFT	2
--#define _PAGE_WRITE		(1 <<  _PAGE_WRITE_SHIFT)
--#define _PAGE_ACCESSED_SHIFT	3
--#define _PAGE_ACCESSED		(1 <<  _PAGE_ACCESSED_SHIFT)
--#define _PAGE_MODIFIED_SHIFT	4
--#define _PAGE_MODIFIED		(1 <<  _PAGE_MODIFIED_SHIFT)
--#define _PAGE_FILE_SHIFT	4
--#define _PAGE_FILE		(1 <<  _PAGE_FILE_SHIFT)
++#else
 +#define _PAGE_PRESENT_SHIFT	(0)
 +#define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
-+#define _PAGE_READ_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
-+#define _PAGE_READ		(1 << _PAGE_READ_SHIFT)
-+#define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
++#define _PAGE_WRITE_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
 +#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
 +#define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
 +#define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
 +#define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
 +#define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
++#endif
  
- /*
-- * And these are the hardware TLB bits
-+ * The following bits are implemented by the TLB hardware
-  */
--#define _PAGE_GLOBAL_SHIFT	8
--#define _PAGE_GLOBAL		(1 <<  _PAGE_GLOBAL_SHIFT)
--#define _PAGE_VALID_SHIFT	9
--#define _PAGE_VALID		(1 <<  _PAGE_VALID_SHIFT)
--#define _PAGE_SILENT_READ	(1 <<  _PAGE_VALID_SHIFT)	/* synonym  */
--#define _PAGE_DIRTY_SHIFT	10
-+#define _PAGE_GLOBAL_SHIFT	(_PAGE_MODIFIED_SHIFT + 4)
-+#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
-+#define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
-+#define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
-+#define _PAGE_DIRTY_SHIFT	(_PAGE_VALID_SHIFT + 1)
- #define _PAGE_DIRTY		(1 << _PAGE_DIRTY_SHIFT)
--#define _PAGE_SILENT_WRITE	(1 << _PAGE_DIRTY_SHIFT)
--#define _CACHE_UNCACHED_SHIFT	11
-+#define _CACHE_UNCACHED_SHIFT	(_PAGE_DIRTY_SHIFT + 1)
- #define _CACHE_UNCACHED		(1 << _CACHE_UNCACHED_SHIFT)
--#define _CACHE_MASK		(1 << _CACHE_UNCACHED_SHIFT)
-+#define _CACHE_MASK		_CACHE_UNCACHED
-+
-+#define _PFN_SHIFT		PAGE_SHIFT
- 
--#else /* 'Normal' r4K case */
-+#else
- /*
-  * When using the RI/XI bit support, we have 13 bits of flags below
-  * the physical address. The RI/XI bits are placed such that a SRL 5
-@@ -114,9 +104,6 @@
- 
- /*
-  * The following bits are implemented in software
-- *
-- * _PAGE_READ / _PAGE_READ_SHIFT should be unused if cpu_has_rixi.
-- * _PAGE_FILE semantics: set:pagecache unset:swap
-  */
- #define _PAGE_PRESENT_SHIFT	(0)
- #define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
-@@ -128,22 +115,16 @@
- #define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
- #define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
- #define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
--#define _PAGE_FILE		(_PAGE_MODIFIED)
- 
- #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+-#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
++#if defined(CONFIG_64BIT) && defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
  /* huge tlb page */
  #define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
  #define _PAGE_HUGE		(1 << _PAGE_HUGE_SHIFT)
+ #define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT + 1)
+ #define _PAGE_SPLITTING		(1 << _PAGE_SPLITTING_SHIFT)
 -#else
 -#define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT)
 -#define _PAGE_HUGE		({BUG(); 1; })	/* Dummy value */
+-#define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT)
+-#define _PAGE_SPLITTING		({BUG(); 1; })	/* Dummy value */
 -#endif
--
--#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
--/* huge tlb page */
- #define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT + 1)
- #define _PAGE_SPLITTING		(1 << _PAGE_SPLITTING_SHIFT)
- #else
-+#define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT)
-+#define _PAGE_HUGE		({BUG(); 1; })	/* Dummy value */
- #define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT)
- #define _PAGE_SPLITTING		({BUG(); 1; })	/* Dummy value */
- #endif
-@@ -158,17 +139,10 @@
+ 
++#ifdef CONFIG_CPU_MIPSR2
+ /* Page cannot be executed */
+-#define _PAGE_NO_EXEC_SHIFT	(cpu_has_rixi ? _PAGE_SPLITTING_SHIFT + 1 : _PAGE_SPLITTING_SHIFT)
+-#define _PAGE_NO_EXEC		({BUG_ON(!cpu_has_rixi); 1 << _PAGE_NO_EXEC_SHIFT; })
++#define _PAGE_NO_EXEC_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
++
++#else	/* !CONFIG_CPU_MIPSR2 */
++#define _PAGE_GLOBAL_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
++#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
++/* not supported */
++#define _PAGE_NO_EXEC		(0)
++#define _PAGE_NO_READ		(0)
++#endif	/* CONFIG_CPU_MIPSR2 */
++
++#endif	/* CONFIG_64BIT && CONFIG_MIPS_HUGE_TLB_SUPPORT */
++
++#ifdef CONFIG_CPU_MIPSR2
++/* if not defined, we are 32BIT */
++#ifndef _PAGE_NO_EXEC_SHIFT
++#define _PAGE_NO_EXEC_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
++#endif
++#define _PAGE_NO_EXEC		(1 << _PAGE_NO_EXEC_SHIFT)
+ 
+ /* Page cannot be read */
+-#define _PAGE_NO_READ_SHIFT	(cpu_has_rixi ? _PAGE_NO_EXEC_SHIFT + 1 : _PAGE_NO_EXEC_SHIFT)
+-#define _PAGE_NO_READ		({BUG_ON(!cpu_has_rixi); 1 << _PAGE_NO_READ_SHIFT; })
++#define _PAGE_NO_READ_SHIFT	(_PAGE_NO_EXEC_SHIFT + 1)
++#define _PAGE_NO_READ		(1 << _PAGE_NO_READ_SHIFT)
++
++/* unused if cpu_has_rixi */
++#define _PAGE_READ_SHIFT	_PAGE_NO_READ_SHIFT
++#define _PAGE_READ		(1 << _PAGE_READ_SHIFT)
  
  #define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
  #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
--
++#endif
++
  #define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
  #define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
--/* synonym		   */
--#define _PAGE_SILENT_READ	(_PAGE_VALID)
--
--/* The MIPS dirty bit	   */
  #define _PAGE_DIRTY_SHIFT	(_PAGE_VALID_SHIFT + 1)
- #define _PAGE_DIRTY		(1 << _PAGE_DIRTY_SHIFT)
--#define _PAGE_SILENT_WRITE	(_PAGE_DIRTY)
--
- #define _CACHE_SHIFT		(_PAGE_DIRTY_SHIFT + 1)
- #define _CACHE_MASK		(7 << _CACHE_SHIFT)
+@@ -148,6 +171,14 @@
  
-@@ -176,9 +150,13 @@
+ #define _PFN_SHIFT		(PAGE_SHIFT - 12 + _CACHE_SHIFT + 3)
  
++/*
++ * Below are the different layouts of the PTE bits:
++ *
++ *   64-bit, R1 or earlier:     CCC D V G [S H] M A W R P
++ *   32-bit, R1 or earler:      CCC D V G M A W R P
++ *   64-bit, R2 or later:       CCC D V G RI XI [S H] M A W R P
++ *   32-bit, R2 or later:       CCC D V G RI XI M A W R P
++ */
  #endif /* defined(CONFIG_PHYS_ADDR_T_64BIT && defined(CONFIG_CPU_MIPS32) */
  
--#ifndef _PFN_SHIFT
--#define _PFN_SHIFT		    PAGE_SHIFT
--#endif
-+/*
-+ * _PAGE_FILE semantics: set:pagecache unset:swap
-+ */
-+#define _PAGE_FILE		_PAGE_MODIFIED
-+#define _PAGE_SILENT_READ	_PAGE_VALID
-+#define _PAGE_SILENT_WRITE	_PAGE_DIRTY
-+
+ /*
+@@ -159,14 +190,6 @@
+ 
  #define _PFN_MASK		(~((1 << (_PFN_SHIFT)) - 1))
  
- #ifndef _PAGE_NO_READ
-@@ -188,9 +166,6 @@
- #ifndef _PAGE_NO_EXEC
- #define _PAGE_NO_EXEC ({BUG(); 0; })
- #endif
--#ifndef _PAGE_GLOBAL_SHIFT
--#define _PAGE_GLOBAL_SHIFT ilog2(_PAGE_GLOBAL)
+-#ifndef _PAGE_NO_READ
+-#define _PAGE_NO_READ ({BUG(); 0; })
+-#define _PAGE_NO_READ_SHIFT ({BUG(); 0; })
 -#endif
- 
+-#ifndef _PAGE_NO_EXEC
+-#define _PAGE_NO_EXEC ({BUG(); 0; })
+-#endif
+-
  
  #ifndef __ASSEMBLY__
-@@ -280,8 +255,9 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ /*
+@@ -254,7 +277,7 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ #define _CACHE_UNCACHED_ACCELERATED	(7<<_CACHE_SHIFT)
  #endif
  
- #define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED | (cpu_has_rixi ? 0 : _PAGE_READ))
--#define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
-+#define __WRITEABLE	(_PAGE_SILENT_WRITE | _PAGE_WRITE | _PAGE_MODIFIED)
+-#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED | (cpu_has_rixi ? 0 : _PAGE_READ))
++#define __READABLE	(_PAGE_SILENT_READ | _PAGE_READ | _PAGE_ACCESSED)
+ #define __WRITEABLE	(_PAGE_SILENT_WRITE | _PAGE_WRITE | _PAGE_MODIFIED)
  
--#define _PAGE_CHG_MASK	(_PFN_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
-+#define _PAGE_CHG_MASK	(_PAGE_ACCESSED | _PAGE_MODIFIED |	\
-+			 _PFN_MASK | _CACHE_MASK)
- 
- #endif /* _ASM_PGTABLE_BITS_H */
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 0a6a944..8d1b259 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -338,7 +338,7 @@ static inline pte_t pte_mkyoung(pte_t pte)
- 	return pte;
- }
- 
--#ifdef _PAGE_HUGE
-+#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
- static inline int pte_huge(pte_t pte)	{ return pte_val(pte) & _PAGE_HUGE; }
- 
- static inline pte_t pte_mkhuge(pte_t pte)
-@@ -346,7 +346,7 @@ static inline pte_t pte_mkhuge(pte_t pte)
- 	pte_val(pte) |= _PAGE_HUGE;
- 	return pte;
- }
--#endif /* _PAGE_HUGE */
-+#endif /* CONFIG_MIPS_HUGE_TLB_SUPPORT */
- #endif
- static inline int pte_special(pte_t pte)	{ return 0; }
- static inline pte_t pte_mkspecial(pte_t pte)	{ return pte; }
+ #define _PAGE_CHG_MASK	(_PAGE_ACCESSED | _PAGE_MODIFIED |	\
 -- 
 1.7.10.4

@@ -1,48 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 00:01:33 +0100 (CET)
-Received: from mail-ie0-f171.google.com ([209.85.223.171]:34079 "EHLO
-        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011579AbbA2XBbcjCPk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 00:01:31 +0100
-Received: by mail-ie0-f171.google.com with SMTP id tr6so972163ieb.2
-        for <linux-mips@linux-mips.org>; Thu, 29 Jan 2015 15:01:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=6GwDS/WgPIsjE/mfNjYRHwIr9EnwNSjpPDofM/aUB/k=;
-        b=MwP1xIfgAegL2bbMq+S7t2DmX1YnHjptrgdV5bSt9sjHJ4VEywmWUhPrAI7MDzgFCG
-         ZiPHz97MOZG+Tc9FuipqWitpFF7Tsmjkq1riR+/Vn8Hq9dyIRMrkgAsGlK6aSUN1KuyW
-         Ul/dtagV/5Pi3fnCK0jSu66vtT3H1nTaeGHGTKY0xhZ0JKXCY8DmtN+47baQj9ECtIKz
-         vWO3Fs/ZX0VxHIt2Qk9Cb/ylLn417pIXA26E3vQOBvE/jR34Nl/ZzBx9ApWYwMARav6H
-         /H1bdrtTuk43LAkotYJffMT7pzxtlK8Ci1tb74XDDE/M2l2Ixn+f/RonZluBT2LN3707
-         hzkA==
-X-Received: by 10.50.79.135 with SMTP id j7mr3383157igx.32.1422572485557;
-        Thu, 29 Jan 2015 15:01:25 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id x64sm176732iod.30.2015.01.29.15.01.24
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 29 Jan 2015 15:01:25 -0800 (PST)
-Message-ID: <54CABBC3.6000006@gmail.com>
-Date:   Thu, 29 Jan 2015 15:01:23 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 00:13:51 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4961 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011579AbbA2XNtTeq5W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 00:13:49 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id E20076B51BEBB
+        for <linux-mips@linux-mips.org>; Thu, 29 Jan 2015 23:13:39 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 29 Jan 2015 23:13:43 +0000
+Received: from localhost (192.168.159.159) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 29 Jan
+ 2015 23:13:41 +0000
+Date:   Thu, 29 Jan 2015 23:13:40 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matthew Fortune <matthew.fortune@imgtec.com>
+Subject: Re: [PATCH RFC v2 67/70] MIPS: kernel: process: Do not allow FR=0 on
+ MIPS R6
+Message-ID: <20150129231340.GI6116@NP-P-BURTON>
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
+ <1421405389-15512-68-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-To:     Bruce Korb <bruce.korb@gmail.com>
-CC:     gdb@sourceware.org, linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Hardware breakpoints on MIPS
-References: <CAKRnqN+Js_zDn==T0+-EGzyTSW4P-dpvB7jKsLmFJEbKhxifJw@mail.gmail.com>
-In-Reply-To: <CAKRnqN+Js_zDn==T0+-EGzyTSW4P-dpvB7jKsLmFJEbKhxifJw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <1421405389-15512-68-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.159.159]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45551
+X-archive-position: 45552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,91 +49,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/29/2015 02:05 PM, Bruce Korb wrote:
->      FSF's Position regarding SCO's attacks on Free Software
->
-> This comes from gdb's GNU.org web page.
-> I think SCO has stopped attacking now. :)
->
-> Anyway, I need to set a hardware breakpoint on a Mips CPU on a "Cavium" platform
-> in a kernel module.  As I read the data sheet, I should need to write
-> to CP0 registers
-> 18 and 19, with 18 containing a kernel virtual address plus three bits
-> for indicating
-> an instruction, write access or read access; then I need to write 0x40000007 to
-> register 19.  Except the interrupt doesn't fire and I've been unable
-> to figure out
-> what I've got wrong.  Code follows, for folks that can follow it and know how it
-> ought to work.  I surely do thank you for any hints you can give:
->
+On Fri, Jan 16, 2015 at 10:49:46AM +0000, Markos Chandras wrote:
+> A prctl() call to set FR=0 for MIPS R6 should not be allowed
+> since FR=1 is the only option for R6 cores.
+> 
+> Cc: Paul Burton <paul.burton@imgtec.com>
+> Cc: Matthew Fortune <matthew.fortune@imgtec.com>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>  arch/mips/include/asm/fpu.h | 3 ++-
+>  arch/mips/kernel/process.c  | 4 ++++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
+> index 994d21939676..b96d9d327626 100644
+> --- a/arch/mips/include/asm/fpu.h
+> +++ b/arch/mips/include/asm/fpu.h
+> @@ -68,7 +68,8 @@ static inline int __enable_fpu(enum fpu_mode mode)
+>  		goto fr_common;
+>  
+>  	case FPU_64BIT:
+> -#if !(defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_64BIT))
+> +#if !(defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS32_R6) \
+> +      || defined(CONFIG_64BIT))
 
-This would appear to be for the most part, completely independent of 
-GDB, and thus perhaps not a good candidate for the gdb@mailing list. 
-What happens inside of the Linux kernel running on a MIPS{,64} CPU is 
-often discussed on linux-mips@linux-mips.org.
+Hi Markos,
 
-Since many years ago, WatchLo and WatchHi have been under the control of 
-the Linux kernel.  If you set these registers and a Watch Exception is 
-triggered, it will cause the registers to be cleared and the exception 
-will be ignored, unless they were configured via ptrace(2) for userspace 
-addresses.
+This change really seems like a separate one, since it has nothing to do
+with the prctl or disallowing FR=1, but rather with allowing FR=1 on r6.
 
-For debugging kernel space with watchpoint registers on OCTEON it is 
-probably best to use the facilities in the EJTAG unit.
+Thanks,
+    Paul
 
-David Daney
-
-
-
->
-> #define WW_W_BIT 0
-> #define WW_R_BIT 1
-> #define WW_I_BIT 2
->
-> #define WW_W_MASK (1UL << WW_W_BIT)
-> #define WW_R_MASK (1UL << WW_R_BIT)
-> #define WW_I_MASK (1UL << WW_I_BIT)
->
-> #define WW_IRW_MASK (WW_I_MASK | WW_R_MASK | WW_W_MASK)
->
-> static inline void watch_word(void * addr, unsigned int mask)
-> {
->      typedef struct {
->          unsigned is_inst_watch : 1; // true --> instruction watch
->          unsigned do_exception  : 1;
->          unsigned unused_29_24  : 6;
->          unsigned asid          : 8; // IFF "do_exception" is false
->          unsigned unused_15_12  : 4;
->          unsigned mask          : 9;
->          unsigned found_ins     : 1;
->          unsigned found_read    : 1;
->          unsigned found_write   : 1;
->      } watch_lo_bits_t;
->
->      U64 watchlo;
->      union {
->          watch_lo_bits_t bits;
->          U32 word;
->      } watchhi;
->
->      watchlo = (U64)addr;
->      watchlo = (watchlo & ~WW_IRW_MASK) | mask;  // watch for write access
->
->      watchhi.bits = (watch_lo_bits_t) {
->          .do_exception  = 1,
->          .found_ins     = 1,
->          .found_read    = 1,
->          .found_write   = 1
->      };
->      assert(watchhi.word == 0x40000007);
->
->      if ((mask & WW_I_MASK) != 0) {
->          write_c0_watchlo0(watchlo);  // macro from asm/mipsregs.h
->          write_c0_watchhi0(watchhi.word);
->      } else {
->          write_c0_watchlo1(watchlo);
->          write_c0_watchhi1(watchhi.word);
->      }
-> }
->
->
+>  		/* we only have a 32-bit FPU */
+>  		return SIGFPE;
+>  #endif
+> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+> index b732c0ce2e56..41ebd5d0ac30 100644
+> --- a/arch/mips/kernel/process.c
+> +++ b/arch/mips/kernel/process.c
+> @@ -581,6 +581,10 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
+>  	if ((value & PR_FP_MODE_FRE) && !cpu_has_fre)
+>  		return -EOPNOTSUPP;
+>  
+> +	/* FR = 0 not supported in MIPS R6 */
+> +	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
+> +		return -EOPNOTSUPP;
+> +
+>  	/* Save FP & vector context, then disable FPU & MSA */
+>  	if (task->signal == current->signal)
+>  		lose_fpu(1);
+> -- 
+> 2.2.1
+> 

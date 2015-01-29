@@ -1,69 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 14:31:20 +0100 (CET)
-Received: from mail-lb0-f171.google.com ([209.85.217.171]:44505 "EHLO
-        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012169AbbA2NbRtxYwz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 14:31:17 +0100
-Received: by mail-lb0-f171.google.com with SMTP id u14so27929616lbd.2;
-        Thu, 29 Jan 2015 05:31:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 16:06:54 +0100 (CET)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:51739 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011576AbbA2PGwpgKHu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 16:06:52 +0100
+Received: by mail-wi0-f177.google.com with SMTP id r20so25787129wiv.4;
+        Thu, 29 Jan 2015 07:06:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=C336SIMl/1MjVqfpTHcLx3sJNydA77Vr3Kleb0bS9rA=;
-        b=0MKTwgkL7YilN2NGK0t2uumneHxN5YJ29C5zlaHx6CMwVaax/KeRq+gW1Y2MgP561L
-         74KijyxFQhUWucH8w3KqSwQeJfc/Hht56P1xF63PJ6dVitdVocQwIqxdfsmVjQuG59UG
-         sJKJxWhyGp2RN74JIJYxqLWErRerbHOHCMcyaIXXYXiAmjx4oGF3JZ2R4PooUrT4VSai
-         hh85EPtOP7wh18NKlLsHTUQUe4fHJk3dqDy5t59f/t9k7fJP/w2i4SXO+2qRRrr8lHS6
-         PQ4NxE0WztlLH7CTz2ux59Lpoc2DHsotqIInctu9X19v6P1YhIYkBYmHcUsIw6qZuNPz
-         UcEg==
-MIME-Version: 1.0
-X-Received: by 10.152.45.65 with SMTP id k1mr838097lam.14.1422538272448; Thu,
- 29 Jan 2015 05:31:12 -0800 (PST)
-Received: by 10.152.29.33 with HTTP; Thu, 29 Jan 2015 05:31:12 -0800 (PST)
-In-Reply-To: <1422011024-32283-5-git-send-email-tomeu.vizoso@collabora.com>
-References: <1422011024-32283-1-git-send-email-tomeu.vizoso@collabora.com>
-        <1422011024-32283-5-git-send-email-tomeu.vizoso@collabora.com>
-Date:   Thu, 29 Jan 2015 14:31:12 +0100
-X-Google-Sender-Auth: fsJXt3B-p_PzKf_aPxLGOQ29APw
-Message-ID: <CAMuHMdUGgA70o2SgdJR3X6AkCcMssHU0POLfzppADT-O=BrYDw@mail.gmail.com>
-Subject: Re: [PATCH v13 4/6] clk: Add rate constraints to clocks
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Mike Turquette <mturquette@linaro.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Alex Elder <elder@linaro.org>,
-        Matt Porter <mporter@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Bintian Wang <bintian.wang@huawei.com>,
-        Chao Xie <chao.xie@marvell.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+        h=from:to:cc:subject:date:message-id;
+        bh=sEF1VSWDPkwhhRHHDGhDmWQ95dq+qhrny78o3tYhaUI=;
+        b=wDUNWWVvoyKGSnnpJ06O1VUgxF55JPVicSMCA5NoZyLUAYtKFCTvkYhhjFUYyjPfK4
+         mFu1of782Trs6vwWcB8b0yDCGU4oaEGB6kbNupTBYfRQboJt5rH3Zo15cCDhzmB3puiL
+         6e1CZPzqRIRrwGFHjCTLH8/28FOCxy/+YMTXclXIzLwVWVFEjTCuSLOpGepw63mcnkK+
+         zHaib14jXuZKVBGV37rEv1OLI0u+Msrp70R+ykvrtP7E47WvrMgZxmupTGgKvEZivakk
+         JioJAD8RHPsxN/RFD0x6oy+mfC6uIFEHp0V8n4q5g6IotuXSBl1xPqzU8bCl0PwjTMHc
+         f18w==
+X-Received: by 10.180.182.8 with SMTP id ea8mr2064317wic.48.1422544007585;
+        Thu, 29 Jan 2015 07:06:47 -0800 (PST)
+Received: from dargo.Speedport_W_724V_01011603_00_005 (p4FCD26FC.dip0.t-ipconnect.de. [79.205.38.252])
+        by mx.google.com with ESMTPSA id lk2sm2828460wic.22.2015.01.29.07.06.46
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 29 Jan 2015 07:06:46 -0800 (PST)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH v2 1/3] MIPS: Alchemy: fix Au1000/Au1500 LRCLK calculation
+Date:   Thu, 29 Jan 2015 16:06:42 +0100
+Message-Id: <1422544004-25254-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 2.2.2
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45533
+X-archive-position: 45534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,128 +50,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Tomeu, Mike,
+The Au1000 and Au1500 calculate the LRCLK a bit differently than
+newer models: a single bit in MEM_STCFG0 selects if pclk is divided
+by 4 or 5.
 
-On Fri, Jan 23, 2015 at 12:03 PM, Tomeu Vizoso
-<tomeu.vizoso@collabora.com> wrote:
-> Adds a way for clock consumers to set maximum and minimum rates. This
-> can be used for thermal drivers to set minimum rates, or by misc.
-> drivers to set maximum rates to assure a minimum performance level.
->
-> Changes the signature of the determine_rate callback by adding the
-> parameters min_rate and max_rate.
->
-> Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+v2: address Sergei's comments.
 
-This is now in clk-next, and causes division by zeroes on all shmobile
-platforms that use renesas,cpg-div6-clock (verified on r8a73a4, r8a7740,
-r8a7791, sh73a0):
+ arch/mips/alchemy/common/clock.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-Division by zero in kernel.
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted
-3.19.0-rc6-koelsch-04360-g48d797d57c5932c8-dirty #792
-Hardware name: Generic R8A7791 (Flattened Device Tree)
-Backtrace:
-[<c001216c>] (dump_backtrace) from [<c001238c>] (show_stack+0x18/0x1c)
- r6:c051b124 r5:00000000 r4:00000000 r3:00200000
-[<c0012374>] (show_stack) from [<c03955d0>] (dump_stack+0x78/0x94)
-[<c0395558>] (dump_stack) from [<c00122f4>] (__div0+0x18/0x20)
- r4:2e7ddb00 r3:c05093c8
-[<c00122dc>] (__div0) from [<c01bdc9c>] (Ldiv0+0x8/0x10)
-[<c02d8efc>] (cpg_div6_clock_round_rate) from [<c02d56a0>]
-(clk_calc_new_rates+0xc8/0x1d4)
- r4:eec14e00 r3:c03cb52c
-[<c02d55d8>] (clk_calc_new_rates) from [<c02d57f4>]
-(clk_core_set_rate_nolock+0x48/0x90)
- r9:eec02f40 r8:00000001 r7:c051b0b8 r6:c051b124 r5:00000000 r4:eec14e00
-[<c02d57ac>] (clk_core_set_rate_nolock) from [<c02d6848>] (__clk_put+0x78/0xdc)
- r7:c051b0b8 r6:c051b124 r5:eec08100 r4:eec029c0
-[<c02d67d0>] (__clk_put) from [<c02d3238>] (clk_put+0x10/0x14)
- r5:eec08100 r4:00000000
-[<c02d3228>] (clk_put) from [<c04db4d0>] (of_clk_init+0x144/0x178)
-[<c04db38c>] (of_clk_init) from [<c04dbd34>] (rcar_gen2_clocks_init+0x1c/0x24)
- r10:c04ed098 r9:c05023c0 r8:ffffffff r7:19432124 r6:c0502404 r5:00989680
- r4:f0006000
-[<c04dbd18>] (rcar_gen2_clocks_init) from [<c04c6a3c>]
-(rcar_gen2_timer_init+0x130/0x14c)
-[<c04c690c>] (rcar_gen2_timer_init) from [<c04c15b4>] (time_init+0x24/0x38)
- r7:00000000 r6:c0520c80 r5:00000000 r4:ef7fcbc0
-[<c04c1590>] (time_init) from [<c04bdb84>] (start_kernel+0x248/0x3bc)
-[<c04bd93c>] (start_kernel) from [<40008084>] (0x40008084)
- r10:00000000 r9:413fc0f2 r8:40007000 r7:c0505870 r6:c04ed094 r5:c0502440
- r4:c0521054
-
-
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-
-> @@ -2391,25 +2543,24 @@ int __clk_get(struct clk *clk)
->         return 1;
->  }
->
-> -static void clk_core_put(struct clk_core *core)
-> +void __clk_put(struct clk *clk)
->  {
->         struct module *owner;
->
-> -       owner = core->owner;
-> +       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> +               return;
->
->         clk_prepare_lock();
-> -       kref_put(&core->ref, __clk_release);
-> +
-> +       hlist_del(&clk->child_node);
-> +       clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
-
-At this point, clk->core->req_rate is still zero, causing
-cpg_div6_clock_round_rate() to be called with a zero "rate" parameter,
-e.g. on r8a7791:
-
-cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
-cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
-cpg_div6_clock_round_rate: clock mmc0 rate 0 parent_rate 780000000 div 1
-cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
-cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
-cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
-cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
-
-and cpg_div6_clock_calc_div() is called to calculate
-
-        div = DIV_ROUND_CLOSEST(parent_rate, rate);
-
-Why was this call to clk_core_set_rate_nolock() in __clk_put() added?
-Before, there was no rate setting done at this point, and
-cpg_div6_clock_round_rate() was not called.
-
-Have the semantics changed? Should .round_rate() be ready to
-accept a "zero" rate, and use e.g. the current rate instead?
-
-> +       owner = clk->core->owner;
-> +       kref_put(&clk->core->ref, __clk_release);
-> +
->         clk_prepare_unlock();
->
->         module_put(owner);
-> -}
-> -
-> -void __clk_put(struct clk *clk)
-> -{
-> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> -               return;
->
-> -       clk_core_put(clk->core);
->         kfree(clk);
->  }
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
+index 48a9dfc..f8f54b8 100644
+--- a/arch/mips/alchemy/common/clock.c
++++ b/arch/mips/alchemy/common/clock.c
+@@ -315,17 +315,26 @@ static struct clk __init *alchemy_clk_setup_mem(const char *pn, int ct)
+ 
+ /* lrclk: external synchronous static bus clock ***********************/
+ 
+-static struct clk __init *alchemy_clk_setup_lrclk(const char *pn)
++static struct clk __init *alchemy_clk_setup_lrclk(const char *pn, int t)
+ {
+-	/* MEM_STCFG0[15:13] = divisor.
++	/* Au1000, Au1500: MEM_STCFG0[11]: If bit is set, lrclk=pclk/5,
++	 * otherwise lrclk=pclk/4.
++	 * All other variants: MEM_STCFG0[15:13] = divisor.
+ 	 * L/RCLK = periph_clk / (divisor + 1)
+ 	 * On Au1000, Au1500, Au1100 it's called LCLK,
+ 	 * on later models it's called RCLK, but it's the same thing.
+ 	 */
+ 	struct clk *c;
+-	unsigned long v = alchemy_rdsmem(AU1000_MEM_STCFG0) >> 13;
++	unsigned long v = alchemy_rdsmem(AU1000_MEM_STCFG0);
+ 
+-	v = (v & 7) + 1;
++	switch (t) {
++	case ALCHEMY_CPU_AU1000:
++	case ALCHEMY_CPU_AU1500:
++		v = 4 + ((v >> 11) & 1);
++		break;
++	default:	/* all other models */
++		v = ((v >> 13) & 7) + 1;
++	}
+ 	c = clk_register_fixed_factor(NULL, ALCHEMY_LR_CLK,
+ 				      pn, 0, 1, v);
+ 	if (!IS_ERR(c))
+@@ -1060,7 +1069,7 @@ static int __init alchemy_clk_init(void)
+ 	ERRCK(c)
+ 
+ 	/* L/RCLK: external static bus clock for synchronous mode */
+-	c = alchemy_clk_setup_lrclk(ALCHEMY_PERIPH_CLK);
++	c = alchemy_clk_setup_lrclk(ALCHEMY_PERIPH_CLK, ctype);
+ 	ERRCK(c)
+ 
+ 	/* Frequency dividers 0-5 */
+-- 
+2.2.2

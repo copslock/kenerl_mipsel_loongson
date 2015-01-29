@@ -1,43 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 12:17:10 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:43115 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012191AbbA2LOnG054C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 12:14:43 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id BC1E083EF9F29;
-        Thu, 29 Jan 2015 11:14:34 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 29 Jan 2015 11:14:36 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 29 Jan 2015 11:14:35 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        <kgdb-bugreport@lists.sourceforge.net>
-Subject: [PATCH 9/9] ttyFDC: Implement KGDB IO operations.
-Date:   Thu, 29 Jan 2015 11:14:14 +0000
-Message-ID: <1422530054-7976-10-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
-In-Reply-To: <1422530054-7976-1-git-send-email-james.hogan@imgtec.com>
-References: <1422530054-7976-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 14:31:20 +0100 (CET)
+Received: from mail-lb0-f171.google.com ([209.85.217.171]:44505 "EHLO
+        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012169AbbA2NbRtxYwz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 14:31:17 +0100
+Received: by mail-lb0-f171.google.com with SMTP id u14so27929616lbd.2;
+        Thu, 29 Jan 2015 05:31:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=C336SIMl/1MjVqfpTHcLx3sJNydA77Vr3Kleb0bS9rA=;
+        b=0MKTwgkL7YilN2NGK0t2uumneHxN5YJ29C5zlaHx6CMwVaax/KeRq+gW1Y2MgP561L
+         74KijyxFQhUWucH8w3KqSwQeJfc/Hht56P1xF63PJ6dVitdVocQwIqxdfsmVjQuG59UG
+         sJKJxWhyGp2RN74JIJYxqLWErRerbHOHCMcyaIXXYXiAmjx4oGF3JZ2R4PooUrT4VSai
+         hh85EPtOP7wh18NKlLsHTUQUe4fHJk3dqDy5t59f/t9k7fJP/w2i4SXO+2qRRrr8lHS6
+         PQ4NxE0WztlLH7CTz2ux59Lpoc2DHsotqIInctu9X19v6P1YhIYkBYmHcUsIw6qZuNPz
+         UcEg==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+X-Received: by 10.152.45.65 with SMTP id k1mr838097lam.14.1422538272448; Thu,
+ 29 Jan 2015 05:31:12 -0800 (PST)
+Received: by 10.152.29.33 with HTTP; Thu, 29 Jan 2015 05:31:12 -0800 (PST)
+In-Reply-To: <1422011024-32283-5-git-send-email-tomeu.vizoso@collabora.com>
+References: <1422011024-32283-1-git-send-email-tomeu.vizoso@collabora.com>
+        <1422011024-32283-5-git-send-email-tomeu.vizoso@collabora.com>
+Date:   Thu, 29 Jan 2015 14:31:12 +0100
+X-Google-Sender-Auth: fsJXt3B-p_PzKf_aPxLGOQ29APw
+Message-ID: <CAMuHMdUGgA70o2SgdJR3X6AkCcMssHU0POLfzppADT-O=BrYDw@mail.gmail.com>
+Subject: Re: [PATCH v13 4/6] clk: Add rate constraints to clocks
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Mike Turquette <mturquette@linaro.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Alex Elder <elder@linaro.org>,
+        Matt Porter <mporter@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Bintian Wang <bintian.wang@huawei.com>,
+        Chao Xie <chao.xie@marvell.com>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45532
+X-archive-position: 45533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,274 +76,128 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Implement KGDB IO operations for MIPS Fast Debug Channel (FDC). This can
-be enabled via Kconfig, which also allows the channel number to be
-chosen.
+Hi Tomeu, Mike,
 
-The magic sysrq hack is implemented in the TTY driver, detecting just ^C
-for the KGDB channel, and ^O followed by a letter for the FDC console
-channel.
+On Fri, Jan 23, 2015 at 12:03 PM, Tomeu Vizoso
+<tomeu.vizoso@collabora.com> wrote:
+> Adds a way for clock consumers to set maximum and minimum rates. This
+> can be used for thermal drivers to set minimum rates, or by misc.
+> drivers to set maximum rates to assure a minimum performance level.
+>
+> Changes the signature of the determine_rate callback by adding the
+> parameters min_rate and max_rate.
+>
+> Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+> Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
 
-The KGDB operations are reasonably efficient thanks to the flush
-callback, with a 4 byte buffer being used in both directions to allow up
-to 4 bytes to be encoded per FDC word. Reading of data for KGDB will
-discard any data received on other channels, which clearly isn't ideal,
-but given that there is a single FIFO shared between channels we can't
-do much better.
+This is now in clk-next, and causes division by zeroes on all shmobile
+platforms that use renesas,cpg-div6-clock (verified on r8a73a4, r8a7740,
+r8a7791, sh73a0):
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jslaby@suse.cz>
-Cc: Jason Wessel <jason.wessel@windriver.com>
-Cc: linux-mips@linux-mips.org
-Cc: kgdb-bugreport@lists.sourceforge.net
----
- drivers/tty/Kconfig          |  16 ++++
- drivers/tty/mips_ejtag_fdc.c | 169 +++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 179 insertions(+), 6 deletions(-)
+Division by zero in kernel.
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted
+3.19.0-rc6-koelsch-04360-g48d797d57c5932c8-dirty #792
+Hardware name: Generic R8A7791 (Flattened Device Tree)
+Backtrace:
+[<c001216c>] (dump_backtrace) from [<c001238c>] (show_stack+0x18/0x1c)
+ r6:c051b124 r5:00000000 r4:00000000 r3:00200000
+[<c0012374>] (show_stack) from [<c03955d0>] (dump_stack+0x78/0x94)
+[<c0395558>] (dump_stack) from [<c00122f4>] (__div0+0x18/0x20)
+ r4:2e7ddb00 r3:c05093c8
+[<c00122dc>] (__div0) from [<c01bdc9c>] (Ldiv0+0x8/0x10)
+[<c02d8efc>] (cpg_div6_clock_round_rate) from [<c02d56a0>]
+(clk_calc_new_rates+0xc8/0x1d4)
+ r4:eec14e00 r3:c03cb52c
+[<c02d55d8>] (clk_calc_new_rates) from [<c02d57f4>]
+(clk_core_set_rate_nolock+0x48/0x90)
+ r9:eec02f40 r8:00000001 r7:c051b0b8 r6:c051b124 r5:00000000 r4:eec14e00
+[<c02d57ac>] (clk_core_set_rate_nolock) from [<c02d6848>] (__clk_put+0x78/0xdc)
+ r7:c051b0b8 r6:c051b124 r5:eec08100 r4:eec029c0
+[<c02d67d0>] (__clk_put) from [<c02d3238>] (clk_put+0x10/0x14)
+ r5:eec08100 r4:00000000
+[<c02d3228>] (clk_put) from [<c04db4d0>] (of_clk_init+0x144/0x178)
+[<c04db38c>] (of_clk_init) from [<c04dbd34>] (rcar_gen2_clocks_init+0x1c/0x24)
+ r10:c04ed098 r9:c05023c0 r8:ffffffff r7:19432124 r6:c0502404 r5:00989680
+ r4:f0006000
+[<c04dbd18>] (rcar_gen2_clocks_init) from [<c04c6a3c>]
+(rcar_gen2_timer_init+0x130/0x14c)
+[<c04c690c>] (rcar_gen2_timer_init) from [<c04c15b4>] (time_init+0x24/0x38)
+ r7:00000000 r6:c0520c80 r5:00000000 r4:ef7fcbc0
+[<c04c1590>] (time_init) from [<c04bdb84>] (start_kernel+0x248/0x3bc)
+[<c04bd93c>] (start_kernel) from [<40008084>] (0x40008084)
+ r10:00000000 r9:413fc0f2 r8:40007000 r7:c0505870 r6:c04ed094 r5:c0502440
+ r4:c0521054
 
-diff --git a/drivers/tty/Kconfig b/drivers/tty/Kconfig
-index e0c18e5b7057..c01f45095877 100644
---- a/drivers/tty/Kconfig
-+++ b/drivers/tty/Kconfig
-@@ -450,4 +450,20 @@ config MIPS_EJTAG_FDC_EARLYCON
- 
- 	  If unsure, say N.
- 
-+config MIPS_EJTAG_FDC_KGDB
-+	bool "Use KGDB over an FDC channel"
-+	depends on MIPS_EJTAG_FDC_TTY && KGDB
-+	default y
-+	help
-+          This enables the use of KGDB over an FDC channel, allowing KGDB to be
-+          used remotely or when a serial port isn't available.
-+
-+config MIPS_EJTAG_FDC_KGDB_CHAN
-+	int "KGDB FDC channel"
-+	depends on MIPS_EJTAG_FDC_KGDB
-+	range 2 15
-+	default 3
-+	help
-+	  FDC channel number to use for KGDB.
-+
- endif # TTY
-diff --git a/drivers/tty/mips_ejtag_fdc.c b/drivers/tty/mips_ejtag_fdc.c
-index 8d9bf6f90110..04d9e23d1ee1 100644
---- a/drivers/tty/mips_ejtag_fdc.c
-+++ b/drivers/tty/mips_ejtag_fdc.c
-@@ -17,9 +17,11 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
-+#include <linux/kgdb.h>
- #include <linux/kthread.h>
- #include <linux/sched.h>
- #include <linux/serial.h>
-+#include <linux/serial_core.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/string.h>
-@@ -136,6 +138,8 @@ struct mips_ejtag_fdc_tty_port {
-  * @removing:		Indicates the device is being removed and @poll_timer
-  *			should not be restarted.
-  * @poll_timer:		Timer for polling for interrupt events when @irq < 0.
-+ * @sysrq_pressed:	Whether the magic sysrq key combination has been
-+ *			detected. See mips_ejtag_fdc_handle().
-  */
- struct mips_ejtag_fdc_tty {
- 	struct device			*dev;
-@@ -159,6 +163,10 @@ struct mips_ejtag_fdc_tty {
- 	int				 irq;
- 	bool				 removing;
- 	struct timer_list		 poll_timer;
-+
-+#ifdef CONFIG_MAGIC_SYSRQ
-+	bool				 sysrq_pressed;
-+#endif
- };
- 
- /* Hardware access */
-@@ -568,21 +576,47 @@ static void mips_ejtag_fdc_handle(struct mips_ejtag_fdc_tty *priv)
- 		raw_spin_lock(&dport->rx_lock);
- 		data = mips_ejtag_fdc_read(priv, REG_FDRX);
- 
--		/* Check the port isn't being shut down */
--		if (!dport->rx_buf)
--			goto unlock;
--
- 		len = mips_ejtag_fdc_decode(data, buf);
- 		dev_dbg(priv->dev, "%s%u: in  %08x: \"%*pE\"\n",
- 			priv->driver_name, channel, data, len, buf);
- 
- 		flipped = 0;
--		for (i = 0; i < len; ++i)
-+		for (i = 0; i < len; ++i) {
-+#ifdef CONFIG_MAGIC_SYSRQ
-+#ifdef CONFIG_MIPS_EJTAG_FDC_KGDB
-+			/* Support just Ctrl+C with KGDB channel */
-+			if (channel == CONFIG_MIPS_EJTAG_FDC_KGDB_CHAN) {
-+				if (buf[i] == '\x03') { /* ^C */
-+					handle_sysrq('g');
-+					continue;
-+				}
-+			}
-+#endif
-+			/* Support Ctrl+O for console channel */
-+			if (channel == mips_ejtag_fdc_con.cons.index) {
-+				if (buf[i] == '\x0f') {	/* ^O */
-+					priv->sysrq_pressed =
-+						!priv->sysrq_pressed;
-+					if (priv->sysrq_pressed)
-+						continue;
-+				} else if (priv->sysrq_pressed) {
-+					handle_sysrq(buf[i]);
-+					priv->sysrq_pressed = false;
-+					continue;
-+				}
-+			}
-+#endif /* CONFIG_MAGIC_SYSRQ */
-+
-+			/* Check the port isn't being shut down */
-+			if (!dport->rx_buf)
-+				continue;
-+
- 			flipped += tty_insert_flip_char(&dport->port, buf[i],
- 							TTY_NORMAL);
-+		}
- 		if (flipped)
- 			tty_flip_buffer_push(&dport->port);
--unlock:
-+
- 		raw_spin_unlock(&dport->rx_lock);
- 	}
- 
-@@ -1144,3 +1178,126 @@ int __init setup_early_fdc_console(void)
- 	return mips_ejtag_fdc_console_init(&mips_ejtag_fdc_earlycon);
- }
- #endif
-+
-+#ifdef CONFIG_MIPS_EJTAG_FDC_KGDB
-+
-+/* read buffer to allow decompaction */
-+static unsigned int kgdbfdc_rbuflen;
-+static unsigned int kgdbfdc_rpos;
-+static char kgdbfdc_rbuf[4];
-+
-+/* write buffer to allow compaction */
-+static unsigned int kgdbfdc_wbuflen;
-+static char kgdbfdc_wbuf[4];
-+
-+static void __iomem *kgdbfdc_setup(void)
-+{
-+	void __iomem *regs;
-+	unsigned int cpu;
-+
-+	/* Find address, piggy backing off console percpu regs */
-+	cpu = smp_processor_id();
-+	regs = mips_ejtag_fdc_con.regs[cpu];
-+	/* First console output on this CPU? */
-+	if (!regs) {
-+		regs = mips_cdmm_early_probe(0xfd);
-+		mips_ejtag_fdc_con.regs[cpu] = regs;
-+	}
-+	/* Already tried and failed to find FDC on this CPU? */
-+	if (IS_ERR(regs))
-+		return regs;
-+
-+	return regs;
-+}
-+
-+/* read a character from the read buffer, filling from FDC RX FIFO */
-+static int kgdbfdc_read_char(void)
-+{
-+	unsigned int stat, channel, data;
-+	void __iomem *regs;
-+
-+	/* No more data, try and read another FDC word from RX FIFO */
-+	if (kgdbfdc_rpos >= kgdbfdc_rbuflen) {
-+		kgdbfdc_rpos = 0;
-+		kgdbfdc_rbuflen = 0;
-+
-+		regs = kgdbfdc_setup();
-+		if (IS_ERR(regs))
-+			return NO_POLL_CHAR;
-+
-+		/* Read next word from KGDB channel */
-+		do {
-+			stat = ioread32(regs + REG_FDSTAT);
-+
-+			/* No data waiting? */
-+			if (stat & REG_FDSTAT_RXE)
-+				return NO_POLL_CHAR;
-+
-+			/* Read next word */
-+			channel = (stat & REG_FDSTAT_RXCHAN) >>
-+					REG_FDSTAT_RXCHAN_SHIFT;
-+			data = ioread32(regs + REG_FDRX);
-+		} while (channel != CONFIG_MIPS_EJTAG_FDC_KGDB_CHAN);
-+
-+		/* Decode into rbuf */
-+		kgdbfdc_rbuflen = mips_ejtag_fdc_decode(data, kgdbfdc_rbuf);
-+	}
-+	pr_devel("kgdbfdc r %c\n", kgdbfdc_rbuf[kgdbfdc_rpos]);
-+	return kgdbfdc_rbuf[kgdbfdc_rpos++];
-+}
-+
-+/* push an FDC word from write buffer to TX FIFO */
-+static void kgdbfdc_push_one(void)
-+{
-+	const char *bufs[1] = { kgdbfdc_wbuf };
-+	struct fdc_word word;
-+	void __iomem *regs;
-+	unsigned int i;
-+
-+	/* Construct a word from any data in buffer */
-+	word = mips_ejtag_fdc_encode(bufs, &kgdbfdc_wbuflen, 1);
-+	/* Relocate any remaining data to beginnning of buffer */
-+	kgdbfdc_wbuflen -= word.bytes;
-+	for (i = 0; i < kgdbfdc_wbuflen; ++i)
-+		kgdbfdc_wbuf[i] = kgdbfdc_wbuf[i + word.bytes];
-+
-+	regs = kgdbfdc_setup();
-+	if (IS_ERR(regs))
-+		return;
-+
-+	/* Busy wait until there's space in fifo */
-+	while (ioread32(regs + REG_FDSTAT) & REG_FDSTAT_TXF)
-+		;
-+	iowrite32(word.word, regs + REG_FDTX(CONFIG_MIPS_EJTAG_FDC_KGDB_CHAN));
-+}
-+
-+/* flush the whole write buffer to the TX FIFO */
-+static void kgdbfdc_flush(void)
-+{
-+	while (kgdbfdc_wbuflen)
-+		kgdbfdc_push_one();
-+}
-+
-+/* write a character into the write buffer, writing out if full */
-+static void kgdbfdc_write_char(u8 chr)
-+{
-+	pr_devel("kgdbfdc w %c\n", chr);
-+	kgdbfdc_wbuf[kgdbfdc_wbuflen++] = chr;
-+	if (kgdbfdc_wbuflen >= sizeof(kgdbfdc_wbuf))
-+		kgdbfdc_push_one();
-+}
-+
-+static struct kgdb_io kgdbfdc_io_ops = {
-+	.name		= "kgdbfdc",
-+	.read_char	= kgdbfdc_read_char,
-+	.write_char	= kgdbfdc_write_char,
-+	.flush		= kgdbfdc_flush,
-+};
-+
-+static int __init kgdbfdc_init(void)
-+{
-+	kgdb_register_io_module(&kgdbfdc_io_ops);
-+	return 0;
-+}
-+early_initcall(kgdbfdc_init);
-+#endif
--- 
-2.0.5
+
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+
+> @@ -2391,25 +2543,24 @@ int __clk_get(struct clk *clk)
+>         return 1;
+>  }
+>
+> -static void clk_core_put(struct clk_core *core)
+> +void __clk_put(struct clk *clk)
+>  {
+>         struct module *owner;
+>
+> -       owner = core->owner;
+> +       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
+> +               return;
+>
+>         clk_prepare_lock();
+> -       kref_put(&core->ref, __clk_release);
+> +
+> +       hlist_del(&clk->child_node);
+> +       clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
+
+At this point, clk->core->req_rate is still zero, causing
+cpg_div6_clock_round_rate() to be called with a zero "rate" parameter,
+e.g. on r8a7791:
+
+cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
+cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
+cpg_div6_clock_round_rate: clock mmc0 rate 0 parent_rate 780000000 div 1
+cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
+cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
+cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
+cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
+
+and cpg_div6_clock_calc_div() is called to calculate
+
+        div = DIV_ROUND_CLOSEST(parent_rate, rate);
+
+Why was this call to clk_core_set_rate_nolock() in __clk_put() added?
+Before, there was no rate setting done at this point, and
+cpg_div6_clock_round_rate() was not called.
+
+Have the semantics changed? Should .round_rate() be ready to
+accept a "zero" rate, and use e.g. the current rate instead?
+
+> +       owner = clk->core->owner;
+> +       kref_put(&clk->core->ref, __clk_release);
+> +
+>         clk_prepare_unlock();
+>
+>         module_put(owner);
+> -}
+> -
+> -void __clk_put(struct clk *clk)
+> -{
+> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
+> -               return;
+>
+> -       clk_core_put(clk->core);
+>         kfree(clk);
+>  }
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,65 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 20:13:45 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.11.231]:40208 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012117AbbA2TNnWgyla (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 20:13:43 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id C68CE141707;
-        Thu, 29 Jan 2015 19:13:40 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id A5D6614170A; Thu, 29 Jan 2015 19:13:40 +0000 (UTC)
-Received: from [10.46.167.8] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D024E141707;
-        Thu, 29 Jan 2015 19:13:38 +0000 (UTC)
-Message-ID: <54CA8662.7040008@codeaurora.org>
-Date:   Thu, 29 Jan 2015 11:13:38 -0800
-From:   Stephen Boyd <sboyd@codeaurora.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2015 22:51:22 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:52785 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012253AbbA2VvUvKQbb convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2015 22:51:20 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 970B037566C4B
+        for <linux-mips@linux-mips.org>; Thu, 29 Jan 2015 21:51:11 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 29 Jan 2015 21:51:14 +0000
+Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
+ LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
+ 14.03.0210.002; Thu, 29 Jan 2015 21:51:14 +0000
+From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Paul Burton <Paul.Burton@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: RE: [PATCH RFC v2 68/70] MIPS: kernel: elf: Improve the overall ABI
+ and FPU mode checks
+Thread-Topic: [PATCH RFC v2 68/70] MIPS: kernel: elf: Improve the overall
+ ABI and FPU mode checks
+Thread-Index: AQHQMXrA9oeMJlZFEEijQwuHHAdWD5zXtjxg
+Date:   Thu, 29 Jan 2015 21:51:13 +0000
+Message-ID: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
+References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com>
+ <1421405389-15512-69-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1421405389-15512-69-git-send-email-markos.chandras@imgtec.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.159.155]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Mike Turquette <mturquette@linaro.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        =?UTF-8?B?RW1pbGlvIEzDs3Bleg==?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Alex Elder <elder@linaro.org>,
-        Matt Porter <mporter@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Bintian Wang <bintian.wang@huawei.com>,
-        Chao Xie <chao.xie@marvell.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Subject: Re: [PATCH v13 4/6] clk: Add rate constraints to clocks
-References: <1422011024-32283-1-git-send-email-tomeu.vizoso@collabora.com>      <1422011024-32283-5-git-send-email-tomeu.vizoso@collabora.com> <CAMuHMdUGgA70o2SgdJR3X6AkCcMssHU0POLfzppADT-O=BrYDw@mail.gmail.com>
-In-Reply-To: <CAMuHMdUGgA70o2SgdJR3X6AkCcMssHU0POLfzppADT-O=BrYDw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Return-Path: <Matthew.Fortune@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45549
+X-archive-position: 45550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: Matthew.Fortune@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,68 +56,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/29/15 05:31, Geert Uytterhoeven wrote:
-> Hi Tomeu, Mike,
->
-> On Fri, Jan 23, 2015 at 12:03 PM, Tomeu Vizoso
-> <tomeu.vizoso@collabora.com> wrote:
->> --- a/drivers/clk/clk.c
->> +++ b/drivers/clk/clk.c
->> @@ -2391,25 +2543,24 @@ int __clk_get(struct clk *clk)
->>         return 1;
->>  }
->>
->> -static void clk_core_put(struct clk_core *core)
->> +void __clk_put(struct clk *clk)
->>  {
->>         struct module *owner;
->>
->> -       owner = core->owner;
->> +       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
->> +               return;
->>
->>         clk_prepare_lock();
->> -       kref_put(&core->ref, __clk_release);
->> +
->> +       hlist_del(&clk->child_node);
->> +       clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
-> At this point, clk->core->req_rate is still zero, causing
-> cpg_div6_clock_round_rate() to be called with a zero "rate" parameter,
-> e.g. on r8a7791:
+> +static inline unsigned get_fp_abi(struct elf32_hdr *ehdr, int in_abi)
+>  {
+>  	/* If the ABI requirement is provided, simply return that */
+> -	if (in_abi != -1)
+> +	if (in_abi != MIPS_ABI_FP_UNKNOWN)
+>  		return in_abi;
+> 
+>  	/* If the EF_MIPS_FP64 flag was set, return MIPS_ABI_FP_64 */
+>  	if (ehdr->e_flags & EF_MIPS_FP64)
+> -		return MIPS_ABI_FP_64;
+> +		return MIPS_ABI_FP_OLD_64;
 
-Hmm.. I wonder if we should assign core->req_rate to be the same as
-core->rate during __clk_init()? That would make this call to
-clk_core_set_rate_nolock() a nop in this case.
+Leonid spotting a bug here, the ehdr given to this function can be either elf32
+or elf64.
 
->
-> cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
-> cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
-> cpg_div6_clock_round_rate: clock mmc0 rate 0 parent_rate 780000000 div 1
-> cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
-> cpg_div6_clock_round_rate: clock sd1 rate 0 parent_rate 780000000 div 1
-> cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
-> cpg_div6_clock_round_rate: clock sd2 rate 0 parent_rate 780000000 div 1
->
-> and cpg_div6_clock_calc_div() is called to calculate
->
->         div = DIV_ROUND_CLOSEST(parent_rate, rate);
->
-> Why was this call to clk_core_set_rate_nolock() in __clk_put() added?
-> Before, there was no rate setting done at this point, and
-> cpg_div6_clock_round_rate() was not called.
+I suggest finding a way to move this check for EF_MIPS_FP64 into arch_elf_pt_proc
+where the elf class is known.  The fpabi can be set to MIPS_ABI_FP_OLD_64 if this
+holds true and then overridden if a MIPS_ABIFLAGS segment is found so would go
+as indicated below:
 
-We need to call clk_core_set_rate_nolock() here to drop any min/max rate
-request that this consumer has.
++	/* Lets see if this is an O32 ELF */
++	if (ehdr32->e_ident[EI_CLASS] == ELFCLASS32) {
++		/* FR = 1 for N32 */
++		if (ehdr32->e_flags & EF_MIPS_ABI2)
++			state->overall_fp_mode = FP_FR1;
++		else
++			/* Set a good default FPU mode for O32*/
++			state->overall_fp_mode = cpu_has_mips_r6 ?
++				FP_FRE : FP_FR0;
 
->
-> Have the semantics changed? Should .round_rate() be ready to
-> accept a "zero" rate, and use e.g. the current rate instead?
+<<here>>
 
-It seems like we've also exposed a bug in cpg_div6_clock_calc_div().
-Technically any driver could have called clk_round_rate() with a zero
-rate before this change and that would have caused the same division by
-zero.
++		if (phdr32->p_type != PT_MIPS_ABIFLAGS)
++			return 0;
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+Thanks,
+Matthew

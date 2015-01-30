@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 13:11:31 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45327 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 13:11:48 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21685 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012309AbbA3ML2aB8dq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 13:11:28 +0100
+        with ESMTP id S27012311AbbA3MLnIMoJE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 13:11:43 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9E34D485465A2
-        for <linux-mips@linux-mips.org>; Fri, 30 Jan 2015 12:11:20 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 4E17D28912731
+        for <linux-mips@linux-mips.org>; Fri, 30 Jan 2015 12:11:35 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 30 Jan 2015 12:11:22 +0000
+ 14.3.195.1; Fri, 30 Jan 2015 12:11:37 +0000
 Received: from localhost (192.168.159.167) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 30 Jan
- 2015 12:11:21 +0000
+ 2015 12:11:36 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 05/10] MIPS: clear MSACSR cause bits when handling MSA FP exception
-Date:   Fri, 30 Jan 2015 12:09:34 +0000
-Message-ID: <1422619779-9940-6-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v2 06/10] MIPS: ensure FCSR cause bits are clear after invoking FPU emulator
+Date:   Fri, 30 Jan 2015 12:09:35 +0000
+Message-ID: <1422619779-9940-7-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.2.2
 In-Reply-To: <1422619779-9940-1-git-send-email-paul.burton@imgtec.com>
 References: <1422619779-9940-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45567
+X-archive-position: 45568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,50 +45,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Much like for traditional scalar FP exceptions, the cause bits in the
-MSACSR register need to be cleared following an MSA FP exception.
-Without doing so the exception will simply be raised again whenever
-the kernel restores MSACSR from a tasks saved context, leading to
-undesirable spurious exceptions. Clear the cause bits from the
-handle_msa_fpe function, mirroring the way handle_fpe clears the
-cause bits in FCSR.
+When running the emulator to handle an instruction that raised an FP
+unimplemented operation exception, the FCSR cause bits were being
+cleared. This is done to ensure that the kernel does not take an FP
+exception when later restoring FP context to registers. However, this
+was not being done when the emulator is invoked in response to a
+coprocessor unusable exception. This happens in 2 cases:
+
+  - There is no FPU present in the system. In this case things were
+    OK, since the FP context is never restored to hardware registers
+    and thus no FP exception may be raised when restoring FCSR.
+
+  - The FPU could not be configured to the mode required by the task.
+    In this case it would be possible for the emulator to set cause
+    bits which are later restored to hardware if the task migrates
+    to a CPU whose associated FPU does support its mode requirements,
+    or if the tasks FP mode requirements change.
+
+Consistently clear the cause bits after invoking the emulator, by moving
+the clearing to process_fpemu_return and ensuring this is always called
+before the tasks FP context is restored. This will make it easier to
+catch further paths invoking the emulator in future, as will be
+introduced in further patches.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 Changes in v2:
   - Rebase atop v3.19-rc6.
 ---
- arch/mips/kernel/genex.S | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/mips/kernel/traps.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index a5e26dd..6c49541 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -368,6 +368,15 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	STI
- 	.endm
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index d5fbfb5..2efb41d 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -700,6 +700,13 @@ asmlinkage void do_ov(struct pt_regs *regs)
  
-+	.macro	__build_clear_msa_fpe
-+	_cfcmsa	a1, MSA_CSR
-+	li	a2, ~(0x3f << 12)
-+	and	a1, a1, a2
-+	_ctcmsa	MSA_CSR, a1
-+	TRACE_IRQS_ON
-+	STI
-+	.endm
+ int process_fpemu_return(int sig, void __user *fault_addr)
+ {
++	/*
++	 * We can't allow the emulated instruction to leave any of the cause
++	 * bits set in FCSR. If they were then the kernel would take an FP
++	 * exception when restoring FP context.
++	 */
++	current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
 +
- 	.macro	__build_clear_ade
- 	MFC0	t0, CP0_BADVADDR
- 	PTR_S	t0, PT_BVADDR(sp)
-@@ -426,7 +435,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	BUILD_HANDLER cpu cpu sti silent		/* #11 */
- 	BUILD_HANDLER ov ov sti silent			/* #12 */
- 	BUILD_HANDLER tr tr sti silent			/* #13 */
--	BUILD_HANDLER msa_fpe msa_fpe sti silent	/* #14 */
-+	BUILD_HANDLER msa_fpe msa_fpe msa_fpe silent	/* #14 */
- 	BUILD_HANDLER fpe fpe fpe silent		/* #15 */
- 	BUILD_HANDLER ftlb ftlb none silent		/* #16 */
- 	BUILD_HANDLER msa msa sti silent		/* #21 */
+ 	if (sig == SIGSEGV || sig == SIGBUS) {
+ 		struct siginfo si = {0};
+ 		si.si_addr = fault_addr;
+@@ -803,18 +810,12 @@ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
+ 		sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
+ 					       &fault_addr);
+ 
+-		/*
+-		 * We can't allow the emulated instruction to leave any of
+-		 * the cause bit set in $fcr31.
+-		 */
+-		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
++		/* If something went wrong, signal */
++		process_fpemu_return(sig, fault_addr);
+ 
+ 		/* Restore the hardware register state */
+ 		own_fpu(1);	/* Using the FPU again.	 */
+ 
+-		/* If something went wrong, signal */
+-		process_fpemu_return(sig, fault_addr);
+-
+ 		goto out;
+ 	} else if (fcr31 & FPU_CSR_INV_X)
+ 		info.si_code = FPE_FLTINV;
 -- 
 2.2.2

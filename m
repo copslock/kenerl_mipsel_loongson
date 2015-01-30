@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 13:11:15 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60836 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 13:11:31 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45327 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012269AbbA3MLOBymKx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 13:11:14 +0100
+        with ESMTP id S27012309AbbA3ML2aB8dq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 13:11:28 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 33F93A749DFC6
-        for <linux-mips@linux-mips.org>; Fri, 30 Jan 2015 12:11:06 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 9E34D485465A2
+        for <linux-mips@linux-mips.org>; Fri, 30 Jan 2015 12:11:20 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 30 Jan 2015 12:11:08 +0000
+ 14.3.195.1; Fri, 30 Jan 2015 12:11:22 +0000
 Received: from localhost (192.168.159.167) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 30 Jan
- 2015 12:11:04 +0000
+ 2015 12:11:21 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 04/10] MIPS: wrap cfcmsa & ctcmsa accesses for toolchains with MSA support
-Date:   Fri, 30 Jan 2015 12:09:33 +0000
-Message-ID: <1422619779-9940-5-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v2 05/10] MIPS: clear MSACSR cause bits when handling MSA FP exception
+Date:   Fri, 30 Jan 2015 12:09:34 +0000
+Message-ID: <1422619779-9940-6-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.2.2
 In-Reply-To: <1422619779-9940-1-git-send-email-paul.burton@imgtec.com>
 References: <1422619779-9940-1-git-send-email-paul.burton@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45566
+X-archive-position: 45567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,91 +45,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Uses of the cfcmsa & ctcmsa instructions were not being wrapped by a
-macro in the case where the toolchain supports MSA, since the arguments
-exactly match a typical use of the instructions. However using current
-toolchains this leads to errors such as:
-
-  arch/mips/kernel/genex.S:437: Error: opcode not supported on this processor: mips32r2 (mips32r2) `cfcmsa $5,1'
-
-Thus uses of the instructions must be in the context of a ".set msa"
-directive, however doing that from the users of the instructions would
-be messy due to the possibility that the toolchain does not support
-MSA. Fix this by renaming the macros (prepending an underscore) in order
-to avoid recursion when attempting to emit the instructions, and provide
-implementations for the TOOLCHAIN_SUPPORTS_MSA case which ".set msa" as
-appropriate.
+Much like for traditional scalar FP exceptions, the cause bits in the
+MSACSR register need to be cleared following an MSA FP exception.
+Without doing so the exception will simply be raised again whenever
+the kernel restores MSACSR from a tasks saved context, leading to
+undesirable spurious exceptions. Clear the cause bits from the
+handle_msa_fpe function, mirroring the way handle_fpe clears the
+cause bits in FCSR.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 Changes in v2:
   - Rebase atop v3.19-rc6.
 ---
- arch/mips/include/asm/asmmacro.h | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ arch/mips/kernel/genex.S | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index d2231d6..65c631d 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -209,6 +209,22 @@
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index a5e26dd..6c49541 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -368,6 +368,15 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	STI
  	.endm
  
- #ifdef TOOLCHAIN_SUPPORTS_MSA
-+	.macro	_cfcmsa	rd, cs
-+	.set	push
-+	.set	mips32r2
-+	.set	msa
-+	cfcmsa	\rd, $\cs
-+	.set	pop
++	.macro	__build_clear_msa_fpe
++	_cfcmsa	a1, MSA_CSR
++	li	a2, ~(0x3f << 12)
++	and	a1, a1, a2
++	_ctcmsa	MSA_CSR, a1
++	TRACE_IRQS_ON
++	STI
 +	.endm
 +
-+	.macro	_ctcmsa	cd, rs
-+	.set	push
-+	.set	mips32r2
-+	.set	msa
-+	ctcmsa	$\cd, \rs
-+	.set	pop
-+	.endm
-+
- 	.macro	ld_d	wd, off, base
- 	.set	push
- 	.set	mips32r2
-@@ -281,7 +297,7 @@
- 	/*
- 	 * Temporary until all toolchains in use include MSA support.
- 	 */
--	.macro	cfcmsa	rd, cs
-+	.macro	_cfcmsa	rd, cs
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
-@@ -291,7 +307,7 @@
- 	.set	pop
- 	.endm
- 
--	.macro	ctcmsa	cd, rs
-+	.macro	_ctcmsa	cd, rs
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
-@@ -389,7 +405,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	cfcmsa	$1, MSA_CSR
-+	_cfcmsa	$1, MSA_CSR
- 	sw	$1, THREAD_MSA_CSR(\thread)
- 	.set	pop
- 	.endm
-@@ -399,7 +415,7 @@
- 	.set	noat
- 	SET_HARDFLOAT
- 	lw	$1, THREAD_MSA_CSR(\thread)
--	ctcmsa	MSA_CSR, $1
-+	_ctcmsa	MSA_CSR, $1
- 	.set	pop
- 	ld_d	0, THREAD_FPR0, \thread
- 	ld_d	1, THREAD_FPR1, \thread
+ 	.macro	__build_clear_ade
+ 	MFC0	t0, CP0_BADVADDR
+ 	PTR_S	t0, PT_BVADDR(sp)
+@@ -426,7 +435,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	BUILD_HANDLER cpu cpu sti silent		/* #11 */
+ 	BUILD_HANDLER ov ov sti silent			/* #12 */
+ 	BUILD_HANDLER tr tr sti silent			/* #13 */
+-	BUILD_HANDLER msa_fpe msa_fpe sti silent	/* #14 */
++	BUILD_HANDLER msa_fpe msa_fpe msa_fpe silent	/* #14 */
+ 	BUILD_HANDLER fpe fpe fpe silent		/* #15 */
+ 	BUILD_HANDLER ftlb ftlb none silent		/* #16 */
+ 	BUILD_HANDLER msa msa sti silent		/* #21 */
 -- 
 2.2.2

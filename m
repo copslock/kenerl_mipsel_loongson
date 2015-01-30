@@ -1,39 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 13:12:59 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31875 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012315AbbA3MMu2zP6g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 13:12:50 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 86510C1CE2635
-        for <linux-mips@linux-mips.org>; Fri, 30 Jan 2015 12:12:41 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 30 Jan 2015 12:12:43 +0000
-Received: from localhost (192.168.159.167) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 30 Jan
- 2015 12:12:42 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 10/10] MIPS: MSA: Fix big-endian FPR_IDX implementation
-Date:   Fri, 30 Jan 2015 12:09:39 +0000
-Message-ID: <1422619779-9940-11-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.2.2
-In-Reply-To: <1422619779-9940-1-git-send-email-paul.burton@imgtec.com>
-References: <1422619779-9940-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 13:47:42 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:51158 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011134AbbA3Mrjosjyd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 13:47:39 +0100
+Date:   Fri, 30 Jan 2015 12:47:39 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Hemmo Nieminen <hemmo.nieminen@iki.fi>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] MIPS: fix kernel lockup or crash after CPU
+ offline/online
+In-Reply-To: <54CB5B59.5050203@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1501301242080.28301@eddie.linux-mips.org>
+References: <1421355719-17576-1-git-send-email-aaro.koskinen@iki.fi> <1421355719-17576-2-git-send-email-aaro.koskinen@iki.fi> <alpine.LFD.2.11.1501300347170.28301@eddie.linux-mips.org> <54CB5B59.5050203@imgtec.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.159.167]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45572
+X-archive-position: 45573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,33 +40,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+On Fri, 30 Jan 2015, James Hogan wrote:
 
-The maximum word size is 64-bits since MSA state is saved using st.d
-which stores two 64-bit words, therefore reimplement FPR_IDX using xor,
-and only within each 64-bit word.
+> >  Hmm, why can a call to `printk' cause a TLB miss, what's so special about 
+> > this function?  Does it use kernel mapped addresses for any purpose such 
+> > as `vmalloc'?
+> 
+> It would be the fact netconsole (or whatever other console is in use) is
+> built as a kernel module, memory for which is allocated from the vmalloc
+> area.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
-Changes in v2:
-  - Rebase atop v3.19-rc6.
----
- arch/mips/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Ah, I see, thanks for enlightening me.  But in that case wouldn't it be 
+possible to postpone console output from `printk' until it is safe to 
+access the device?  In a manner similar to how for example we handle calls 
+to `printk' made from the hardirq context.  That would make things less 
+fragile.
 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 9daa386..9162aa2 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -111,7 +111,7 @@ union fpureg {
- #ifdef CONFIG_CPU_LITTLE_ENDIAN
- # define FPR_IDX(width, idx)	(idx)
- #else
--# define FPR_IDX(width, idx)	((FPU_REG_WIDTH / (width)) - 1 - (idx))
-+# define FPR_IDX(width, idx)	((idx) ^ ((64 / (width)) - 1))
- #endif
- 
- #define BUILD_FPR_ACCESS(width) \
--- 
-2.2.2
+  Maciej

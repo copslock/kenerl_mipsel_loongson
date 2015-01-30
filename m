@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 17:37:06 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:52993 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2015 17:50:51 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:53126 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012309AbbA3QhEczc5c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 17:37:04 +0100
-Date:   Fri, 30 Jan 2015 16:37:04 +0000 (GMT)
+        by eddie.linux-mips.org with ESMTP id S27012309AbbA3QutYDRso (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2015 17:50:49 +0100
+Date:   Fri, 30 Jan 2015 16:50:49 +0000 (GMT)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-cc:     linux-mips@linux-mips.org,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>
-Subject: Re: [PATCH 2/2] MIPS: Makefile: Set default ISA level
-In-Reply-To: <1422629056-27715-2-git-send-email-markos.chandras@imgtec.com>
-Message-ID: <alpine.LFD.2.11.1501301621090.28301@eddie.linux-mips.org>
-References: <1422629056-27715-1-git-send-email-markos.chandras@imgtec.com> <1422629056-27715-2-git-send-email-markos.chandras@imgtec.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: Makefile: Set correct ISA level for MIPS
+ ASEs
+In-Reply-To: <54CBB0D4.1040506@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1501301638050.28301@eddie.linux-mips.org>
+References: <1422629056-27715-1-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501301606470.28301@eddie.linux-mips.org> <54CBB0D4.1040506@imgtec.com>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -19,7 +19,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45583
+X-archive-position: 45584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,44 +38,47 @@ X-list: linux-mips
 
 On Fri, 30 Jan 2015, Markos Chandras wrote:
 
-> When we configure the toolchain, we can set the default
-> ISA level to be used when none is set in the command line.
-> This, however, has some undesired consequences when the parameters
-> used in the command line are incompatible with the built-in ISA
-> level of the toolchain. In order to minimize such problems, we set
-> a good default ISA level if the Makefile hasn't set one for the
-> selected processor.
+> >>  cflags-$(CONFIG_SB1XXX_CORELIS)	+= $(call cc-option,-mno-sched-prolog) \
+> >>  				   -fno-omit-frame-pointer
+> >>  
+> >>  ifeq ($(CONFIG_CPU_HAS_MSA),y)
+> >> -toolchain-msa	:= $(call cc-option-yn,-mhard-float -mfp64
+> -Wa$(comma)-mmsa)
+> >> +toolchain-msa	:= $(call cc-option-yn,-march=mips32r2 -mhard-float
+> -mfp64 -Wa$(comma)-mmsa)
+> >>  cflags-$(toolchain-msa)		+= -DTOOLCHAIN_SUPPORTS_MSA
+> >>  endif
+> > 
+> >  Similarly here, is CPU_HAS_MSA incompatible with `-march=mips64r2'?
+> I am not sure but like I explained above, it does not have to be 100%
+> accurate. Just something to keep your toolchain happy and really enable
+> MSA support even if you happen and old ISA level as the default one for
+> your toolchain.
+> 
+> for example, if your toolchain has -march=mips2 as default then
+> 
+> -mhard-float -mfp64 will fail
+> 
+> but
+> 
+> -march=mips32r2 -mhard-float -mfp64
+> 
+> will pass. Your toolchain does support MSA, but because you combined the
+> check with incompatible flags, then the end result is not what you want.
 
- Agreed, but does it happen for any actual configuration?  If so, then the 
-configuration is broken and your proposal papers over it, an explicit 
-`-march=' option is supposed to be there for all the possible CPU_foo 
-settings.  At first look it seems to be the case in arch/mips/Makefile, 
-but maybe I'm missing something.  Besides, a default of `-march=mips32' or 
-whatever may not really be adequate for the CPU selected.
+ Hmm doesn't `cc-option-yn' pull options accumulated in $(cflags-y) 
+already for the check it makes?  If not, then it's rather less than useful 
+for us and I can see two options here:
 
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 0608ec524d3d..a244fb311a37 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -226,6 +226,15 @@ cflags-y			+= -I$(srctree)/arch/mips/include/asm/mach-generic
->  drivers-$(CONFIG_PCI)		+= arch/mips/pci/
->  
->  #
-> +# Don't trust the toolchain defaults. Use a sensible -march
-> +# option but only if we don't have one already.
-> +#
-> +ifeq (,$(findstring march=, $(cflags-y)))
-> +cflags-$(CONFIG_32BIT)			+= -march=mips32
-> +cflags-$(CONFIG_64BIT)			+= -march=mips64
-> +endif
+1. Find or make a version of the function that does.
 
- So I'd rather see some form of diagnostics instead, e.g.:
+2. Find or make a version of the function that takes extra options used 
+   for the duration of the check only and not propagated to its output.
 
-ifeq (,$(filter -march=% -mips%, $(cflags-y)))
-$(error Configuration bug, no `-march=' option set for the CPU selected!)
-endif
-
-or suchlike (`-mips%' for the legacy stuff; we should probably drop it 
-sometime).  WDYT?
+I think the latter option might be a bit better as we can choose a set of 
+options that guarantees success with a sufficiently modern toolchain so 
+that the option intended is included regardless of any configuration fault 
+elsewhere, that will then likely manifest itself loudly rather than 
+lingering unnoticed and possibly only causing issues at the run time.
 
   Maciej

@@ -1,68 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jan 2015 02:32:05 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.11.231]:49846 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012349AbbAaBcCTYuP9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Jan 2015 02:32:02 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 0669F1406A2;
-        Sat, 31 Jan 2015 01:32:00 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id E69721406B2; Sat, 31 Jan 2015 01:31:59 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5DEED1406A2;
-        Sat, 31 Jan 2015 01:31:59 +0000 (UTC)
-Date:   Fri, 30 Jan 2015 17:31:58 -0800
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Mike Turquette <mturquette@linaro.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Chao Xie <chao.xie@marvell.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Emilio L??pez <emilio@elopez.com.ar>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Alex Elder <elder@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Bintian Wang <bintian.wang@huawei.com>,
-        Matt Porter <mporter@linaro.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Tero Kristo <t-kristo@ti.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: Re: [PATCH v13 4/6] clk: Add rate constraints to clocks
-Message-ID: <20150131013158.GA4323@codeaurora.org>
-References: <1422011024-32283-1-git-send-email-tomeu.vizoso@collabora.com>
- <1422011024-32283-5-git-send-email-tomeu.vizoso@collabora.com>
- <CAMuHMdUGgA70o2SgdJR3X6AkCcMssHU0POLfzppADT-O=BrYDw@mail.gmail.com>
- <54CA8662.7040008@codeaurora.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54CA8662.7040008@codeaurora.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jan 2015 06:23:48 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:39494 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006150AbbAaFXrYfvRQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Jan 2015 06:23:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=Message-Id:Date:Subject:Cc:To:From; bh=Z9aEyZ/H5cvE76Uv10fwgc+FgHdfviLbwKbP0QAWotM=;
+        b=fCjKa0IjCXRBA6w69o+ZNHH4VN5rI7YnBE41Ol+kjRNJTq6S/qeemM3nsXQ18zDv4lQPlCBjif5r56bHy8iiNf1akY+OXywX3z+1440wGeqPaAnCaWKDmFDJZa84/A46GhwbldutZ4IzHU9ckb+RAdOKJI2D4Nm7qXozTNZ2tcQ=;
+Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1YHQWx-001IPJ-Pk
+        for linux-mips@linux-mips.org; Sat, 31 Jan 2015 05:23:40 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54879 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1YHQWp-001ILe-00; Sat, 31 Jan 2015 05:23:31 +0000
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Matthew Wilcox <matthew.r.wilcox@intel.com>
+Subject: [PATCH] mips: Re-introduce copy_user_page
+Date:   Fri, 30 Jan 2015 21:23:27 -0800
+Message-Id: <1422681807-28395-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.1.0
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-CTCH-PVer: 0000001
+X-CTCH-Spam: Unknown
+X-CTCH-VOD: Unknown
+X-CTCH-Flags: 0
+X-CTCH-RefID: str=0001.0A020201.54CC66DC.003C,ss=1,re=0.001,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-Score: 0.001
+X-CTCH-ScoreCust: 0.000
+X-CTCH-Rules: C_4847,
+X-CTCH-SenderID: linux@roeck-us.net
+X-CTCH-SenderID-Flags: 0
+X-CTCH-SenderID-TotalMessages: 2
+X-CTCH-SenderID-TotalSpam: 0
+X-CTCH-SenderID-TotalSuspected: 0
+X-CTCH-SenderID-TotalConfirmed: 0
+X-CTCH-SenderID-TotalBulk: 0
+X-CTCH-SenderID-TotalVirus: 0
+X-CTCH-SenderID-TotalRecipients: 0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45593
+X-archive-position: 45594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,84 +73,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/29, Stephen Boyd wrote:
-> On 01/29/15 05:31, Geert Uytterhoeven wrote:
-> > Hi Tomeu, Mike,
-> >
-> > On Fri, Jan 23, 2015 at 12:03 PM, Tomeu Vizoso
-> > <tomeu.vizoso@collabora.com> wrote:
-> >> --- a/drivers/clk/clk.c
-> >> +++ b/drivers/clk/clk.c
-> >> @@ -2391,25 +2543,24 @@ int __clk_get(struct clk *clk)
-> >>         return 1;
-> >>  }
-> >>
-> >> -static void clk_core_put(struct clk_core *core)
-> >> +void __clk_put(struct clk *clk)
-> >>  {
-> >>         struct module *owner;
-> >>
-> >> -       owner = core->owner;
-> >> +       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> >> +               return;
-> >>
-> >>         clk_prepare_lock();
-> >> -       kref_put(&core->ref, __clk_release);
-> >> +
-> >> +       hlist_del(&clk->child_node);
-> >> +       clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
-> > At this point, clk->core->req_rate is still zero, causing
-> > cpg_div6_clock_round_rate() to be called with a zero "rate" parameter,
-> > e.g. on r8a7791:
-> 
-> Hmm.. I wonder if we should assign core->req_rate to be the same as
-> core->rate during __clk_init()? That would make this call to
-> clk_core_set_rate_nolock() a nop in this case.
-> 
+Commit bcd022801ee5 ("MIPS: Fix COW D-cache aliasing on fork") replaced
+the inline function copy_user_page for mips with an external reference,
+but neglected to introduce the actual non-inline function. Restore it.
 
-Here's a patch to do this
-
----8<----
-From: Stephen Boyd <sboyd@codeaurora.org>
-Subject: [PATCH] clk: Assign a requested rate by default
-
-We need to assign a requested rate here so that we avoid
-requesting a rate of 0 on clocks when we remove clock consumers.
-
-Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+Fixes: bcd022801ee5 ("MIPS: Fix COW D-cache aliasing on fork")
+Fixes: 4927b7d77c00 ("dax,ext2: replace the XIP page fault handler with the DAX page fault handler")
+Cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: Matthew Wilcox <matthew.r.wilcox@intel.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/clk/clk.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+4927b7d77c00 is in -next.
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index a29daf9edea4..8416ed1c40be 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -2142,6 +2142,7 @@ int __clk_init(struct device *dev, struct clk *clk_user)
- 	struct clk_core *orphan;
- 	struct hlist_node *tmp2;
- 	struct clk_core *clk;
-+	unsigned long rate;
+ arch/mips/include/asm/page.h | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index 154b70a..69c2f19 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -105,8 +105,17 @@ static inline void clear_user_page(void *addr, unsigned long vaddr,
+ 		flush_data_cache_page((unsigned long)addr);
+ }
  
- 	if (!clk_user)
- 		return -EINVAL;
-@@ -2266,12 +2267,13 @@ int __clk_init(struct device *dev, struct clk *clk_user)
- 	 * then rate is set to zero.
- 	 */
- 	if (clk->ops->recalc_rate)
--		clk->rate = clk->ops->recalc_rate(clk->hw,
-+		rate = clk->ops->recalc_rate(clk->hw,
- 				clk_core_get_rate_nolock(clk->parent));
- 	else if (clk->parent)
--		clk->rate = clk->parent->rate;
-+		rate = clk->parent->rate;
- 	else
--		clk->rate = 0;
-+		rate = 0;
-+	clk->rate = clk->req_rate = rate;
- 
- 	/*
- 	 * walk the list of orphan clocks and reparent any that are children of
+-extern void copy_user_page(void *vto, void *vfrom, unsigned long vaddr,
+-	struct page *to);
++static inline void copy_user_page(void *vto, void *vfrom, unsigned long vaddr,
++				  struct page *to)
++{
++	extern void (*flush_data_cache_page)(unsigned long addr);
++
++	copy_page(vto, vfrom);
++	if (!cpu_has_ic_fills_f_dc || pages_do_alias((unsigned long)vto,
++						     vaddr & PAGE_MASK))
++		flush_data_cache_page((unsigned long)vto);
++}
++
+ struct vm_area_struct;
+ extern void copy_user_highpage(struct page *to, struct page *from,
+ 	unsigned long vaddr, struct vm_area_struct *vma);
 -- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.1.0

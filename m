@@ -1,47 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Feb 2015 23:46:35 +0100 (CET)
-Received: from mail-la0-f42.google.com ([209.85.215.42]:65473 "EHLO
-        mail-la0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010831AbbBAWqds9vaM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Feb 2015 23:46:33 +0100
-Received: by mail-la0-f42.google.com with SMTP id ms9so35534709lab.1
-        for <linux-mips@linux-mips.org>; Sun, 01 Feb 2015 14:46:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2015 00:56:00 +0100 (CET)
+Received: from mail-qa0-f43.google.com ([209.85.216.43]:41085 "EHLO
+        mail-qa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010831AbbBAXz7CZNIJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Feb 2015 00:55:59 +0100
+Received: by mail-qa0-f43.google.com with SMTP id v10so27074943qac.2
+        for <linux-mips@linux-mips.org>; Sun, 01 Feb 2015 15:55:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:organization:user-agent:mime-version:to
-         :subject:content-type:content-transfer-encoding;
-        bh=gUDTWELGKiF/FX3bwIvXw5iQ42QflplFVN7O5kLl3Bs=;
-        b=MsTpNMk3Z50CP4COZoxVJuYOIaSlfsxS9llNBa0XBWt5cO3INdwWIQpmgv9QqQoD/o
-         W37qZyJZkCBhwGp5xFpGECEr2MemfO0rSu7icUq9CSp/n4wSZ0f0MgU8b/4+lxzYUEg3
-         53r9XA2m56ecEFtWcO9edhPgCq0c/OfyX3TD9PxlvYYW3EbZya0IXDg5SOdmCqEvyMvH
-         GtMet56s+47PqzSdwPSEon240aZVvxNMWyKVdHAK9hWxbMwkf7/pW7FXY/FZxAENhi/7
-         FBMjKyHl92M+/XLFMWv5Ec6xO11J6EWQWetX+Q2ml1fkJYfwFq+MACZPMlFSt6v9WLZn
-         DGcg==
-X-Received: by 10.152.9.170 with SMTP id a10mr16771982lab.1.1422830788386;
-        Sun, 01 Feb 2015 14:46:28 -0800 (PST)
-Received: from [192.168.0.100] ([213.138.85.113])
-        by mx.google.com with ESMTPSA id xv4sm4031577lab.12.2015.02.01.14.46.26
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=FD1At9ajW2t8uf4OzHE5sAlgQjPG8vd1l3mDgUHgAuo=;
+        b=VrwvLMuRFCo519i3eBpDLrbCpbtOJKEaKDHZYrb3lagsl5/lIT+SthYW9AzGFMtyRm
+         hlru8dXVpbReaQQS1HPudje2HlaB9gz4NxFi/YKxayYb7M/ggKeGuRx+5S7KqQ+0x0WK
+         rTw8wk+Jaw0BHcDic/+mVJnkuNry6JoNquJ58=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=FD1At9ajW2t8uf4OzHE5sAlgQjPG8vd1l3mDgUHgAuo=;
+        b=VNx86hlYdYYNtalFkYgzuUWEikf3fzB6c3pOqqtixa8Y4G8FjsZj5WVLamBUR9xqCv
+         nhng+Q34a7VSEAYZ19SYHcw8p8ROhBYxUh7GLhCv2TZVCjIaRhHmBur6rPY4bjOr4dGQ
+         UiI4lCF6gmyaZAkOdP/mzG/Zh+VCyzwRnw7sl3pqRBoZZR6SatlXO24kN2lMTA/GUQbT
+         +7oFxQxLDNz9yS6PBbGhXfDdwM/TCWVSynXnA4Xzxu31cZosQDscc809piLb3tStEUs3
+         7/+LE07v8TvFup1DCU9RGczLMEXUpYFbNgtGtCclDchKgM62dV0iIMrTR1M38s2pbcY3
+         rEQQ==
+X-Gm-Message-State: ALoCoQm0aDXXj6EF9V/tVRbQJ0YqHNt42fhuRLWz4VTPqChyXOw6hhAM0pauwDJ/Bjqm+bE4Coh0
+X-Received: by 10.224.98.196 with SMTP id r4mr35798287qan.27.1422834953129;
+        Sun, 01 Feb 2015 15:55:53 -0800 (PST)
+Received: from mail-qa0-f46.google.com (mail-qa0-f46.google.com. [209.85.216.46])
+        by mx.google.com with ESMTPSA id 107sm16703910qgf.21.2015.02.01.15.55.52
         for <linux-mips@linux-mips.org>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 01 Feb 2015 14:46:27 -0800 (PST)
-Message-ID: <54CEACC1.1040701@gmail.com>
-Date:   Mon, 02 Feb 2015 01:46:25 +0300
-From:   Oleg Kolosov <bazurbat@gmail.com>
-Organization: Art System
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 01 Feb 2015 15:55:52 -0800 (PST)
+Received: by mail-qa0-f46.google.com with SMTP id j7so27108651qaq.5
+        for <linux-mips@linux-mips.org>; Sun, 01 Feb 2015 15:55:52 -0800 (PST)
+X-Received: by 10.140.83.163 with SMTP id j32mr30435360qgd.52.1422834952000;
+ Sun, 01 Feb 2015 15:55:52 -0800 (PST)
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Few questions about porting Linux to SMP86xx boards
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <bazurbat@gmail.com>
+Received: by 10.140.36.210 with HTTP; Sun, 1 Feb 2015 15:55:31 -0800 (PST)
+In-Reply-To: <54CEACC1.1040701@gmail.com>
+References: <54CEACC1.1040701@gmail.com>
+From:   Kevin Cernekee <cernekee@chromium.org>
+Date:   Sun, 1 Feb 2015 15:55:31 -0800
+Message-ID: <CAJiQ=7AQuP1JsiApEs4yAR449w6-pcR_qqhSqKdpqNHL5L1mRQ@mail.gmail.com>
+Subject: Re: Few questions about porting Linux to SMP86xx boards
+To:     Oleg Kolosov <bazurbat@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45598
+X-archive-position: 45599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bazurbat@gmail.com
+X-original-sender: cernekee@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,72 +68,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello MIPS gurus!
+On Sun, Feb 1, 2015 at 2:46 PM, Oleg Kolosov <bazurbat@gmail.com> wrote:
+> Hello MIPS gurus!
+>
+> I'm adding support for Sigma Designs SMP8652/SMP8654 (Tango3 family,
+> MIPS 24kf CPU) to newer kernel. I've selectively adapted patches from
+> 2.6.32.15 (the latest officially available for us) to the latest mips
+> 3.18 stable branch and things seem to work (it boots, runs simple test
+> programs), but there are few questions which I was not able to resolve
+> yet with my limited experience:
+>
+> 1. They (Sigma Designs) have overridden __fast_iob which is identical to
+> the default one except for one line:
+>
+>     : "m" (*(int *)CKSEG1)
+>
+> is replaced with:
+>
+>     : "m" (*(int *)(CKSEG1+CPU_REMAP_SPACE))
+>
+> where CPU_REMAP_SPACE=0x4000000 is a compile time constant for Tango3
+> and also called KERNEL_START_ADDRESS in Makefiles. The same value is
+> also written to ebase:
+>
+> ebase = KSEG0ADDR(CPU_REMAP_SPACE);
+> write_c0_ebase(ebase);
+>
+> in traps.c:per_cpu_trap_init()
+>
+> while writing ebase is really necessary for the kernel to boot, I've not
+> found any negative effects of not applying __fast_iob patch. What is it
+> supposed to do?
 
-I'm adding support for Sigma Designs SMP8652/SMP8654 (Tango3 family,
-MIPS 24kf CPU) to newer kernel. I've selectively adapted patches from
-2.6.32.15 (the latest officially available for us) to the latest mips
-3.18 stable branch and things seem to work (it boots, runs simple test
-programs), but there are few questions which I was not able to resolve
-yet with my limited experience:
+I do not have any direct experience with these SoCs, but you might
+want to look at the memory map to try to figure this one out.  i.e. if
+__fast_iob() normally performs an uncached dummy read from the first
+word of physical memory, does the address need to be adjusted by 64MB
+on the Sigma chips because system memory (or the memory allocated to
+the Linux application processor) starts at PA 0x0400_0000 instead of
+0x0000_0000?
 
-1. They (Sigma Designs) have overridden __fast_iob which is identical to
-the default one except for one line:
+That theory would also explain why the exception vectors were adjusted
+by the same offset.
 
-    : "m" (*(int *)CKSEG1)
+BTW, you can override ebase from the platform code, as was done in
+arch/mips/kernel/smp-bmips.c.  It probably isn't necessary to change
+the common per_cpu_trap_init() code (but it may have been necessary
+way back in 2.6.32).
 
-is replaced with:
+> 2. In io.h they have added explicit __sync() to the end of
+> pfx##write##bwlq and pfx##out##bwlq##p. Is this really necessary? I've
+> not yet found any adverse effects of not doing so. Maybe this was a
+> workaround for some old kernel issue which was fixed since then?
 
-    : "m" (*(int *)(CKSEG1+CPU_REMAP_SPACE))
+Adding a barrier in writel(), as was done on ARM, might have something
+to do with the SoC's busing or peripherals.  Sometimes there are chip
+bugs that cause MMIO transaction ordering to break in unexpected ways.
+Or it could be there to compensate for missing barriers or bad
+assumptions in a driver somewhere.
 
-where CPU_REMAP_SPACE=0x4000000 is a compile time constant for Tango3
-and also called KERNEL_START_ADDRESS in Makefiles. The same value is
-also written to ebase:
+For #2 and #3, it is likely that somebody at Sigma could find a bug
+report or changelog explaining why it was added.  In my experience
+these sorts of changes are usually made to work around subtle problems
+discovered in testing or production.  Figuring out the exact problem
+that inspired the patch can be difficult without insider knowledge,
+unless you happened to run across the same failure.
 
-ebase = KSEG0ADDR(CPU_REMAP_SPACE);
-write_c0_ebase(ebase);
+> 3. In c-r4k.c:r4k_cache_init() they assign:
+>
+> flush_icache_page = r4k_flush_icache_page;
+>
+> where:
+>
+> static void r4k_flush_icache_page(struct vm_area_struct *vma,
+>                                   struct page *page)
+> {
+>     r4k_flush_icache_range((unsigned long)page_address(page),
+>         (unsigned long)page_address(page) + PAGE_SIZE);
+> }
 
-in traps.c:per_cpu_trap_init()
-
-while writing ebase is really necessary for the kernel to boot, I've not
-found any negative effects of not applying __fast_iob patch. What is it
-supposed to do?
-
-2. In io.h they have added explicit __sync() to the end of
-pfx##write##bwlq and pfx##out##bwlq##p. Is this really necessary? I've
-not yet found any adverse effects of not doing so. Maybe this was a
-workaround for some old kernel issue which was fixed since then?
-
-3. In c-r4k.c:r4k_cache_init() they assign:
-
-flush_icache_page = r4k_flush_icache_page;
-
-where:
-
-static void r4k_flush_icache_page(struct vm_area_struct *vma,
-                                  struct page *page)
-{
-    r4k_flush_icache_range((unsigned long)page_address(page),
-        (unsigned long)page_address(page) + PAGE_SIZE);
-}
-
-thus overriding default empty flush_icache_page.
-
-By digging the archives I've found some talks about removing
-flush_icache_page. Various sources says it should not be necessary.
-Maybe this is board-specific workaround?
-
---------------
-
-I would really appreciate some explanations on what these changes
-supposed to solve or pointers to some background info to better
-understand what I'm actually doing. The main concern is that not
-properly applying the changes might break something subtly, and, on the
-contrary, applying everything might conflict with some fixes in newer
-kernel and break something subtly - the sadness.
-
-Thanks a lot!
-
--- 
-Regards, Oleg
-Art System
+Hmm, this might not play nice with HIGHMEM.  If it does, it would be
+helpful to include a comment explaining why.

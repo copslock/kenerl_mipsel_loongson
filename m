@@ -1,69 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2015 17:15:59 +0100 (CET)
-Received: from smtp5.ore.mailhop.org ([54.186.10.118]:48668 "EHLO
-        smtp5.ore.mailhop.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012408AbbBBQP5M-2R9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Feb 2015 17:15:57 +0100
-Received: from [104.193.169.186] (helo=atomide.com)
-        by smtp5.ore.mailhop.org with esmtpsa (TLSv1.2:AES128-GCM-SHA256:128)
-        (Exim 4.82)
-        (envelope-from <tony@atomide.com>)
-        id 1YIJf5-0008WS-D7; Mon, 02 Feb 2015 16:15:43 +0000
-X-Mail-Handler: DuoCircle Outbound SMTP
-X-Originating-IP: 104.193.169.186
-X-Report-Abuse-To: abuse@duocircle.com (see https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information for abuse reporting information)
-X-MHO-User: U2FsdGVkX1/jSFRPvfZUmVZ141sQ+uZ8
-Date:   Mon, 2 Feb 2015 08:12:37 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Mike Turquette <mturquette@linaro.org>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Chao Xie <chao.xie@marvell.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Emilio L??pez <emilio@elopez.com.ar>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Alex Elder <elder@linaro.org>,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Bintian Wang <bintian.wang@huawei.com>,
-        Matt Porter <mporter@linaro.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Tero Kristo <t-kristo@ti.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: Re: [PATCH v13 4/6] clk: Add rate constraints to clocks
-Message-ID: <20150202161237.GG16250@atomide.com>
-References: <1422011024-32283-1-git-send-email-tomeu.vizoso@collabora.com>
- <1422011024-32283-5-git-send-email-tomeu.vizoso@collabora.com>
- <CAMuHMdUGgA70o2SgdJR3X6AkCcMssHU0POLfzppADT-O=BrYDw@mail.gmail.com>
- <54CA8662.7040008@codeaurora.org>
- <20150131013158.GA4323@codeaurora.org>
- <CAAObsKDxhV7Vveq5FizTUp9ur2Rsq1bM+YQa4uPksh5ntMQV3Q@mail.gmail.com>
- <20150201221856.421.6151@quantum>
- <CAMuHMdU4QBVOb4WqmcfHkj2K7v8dt1hKKWXS0qAnTvsJSafdPQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2015 17:29:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29491 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012408AbbBBQ3CueHHx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Feb 2015 17:29:02 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 3E74E50CA4A9F;
+        Mon,  2 Feb 2015 16:28:54 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 2 Feb 2015 16:28:57 +0000
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.89) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Mon, 2 Feb 2015 16:28:55 +0000
+Message-ID: <54CFA5BC.2070103@imgtec.com>
+Date:   Mon, 2 Feb 2015 16:28:44 +0000
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdU4QBVOb4WqmcfHkj2K7v8dt1hKKWXS0qAnTvsJSafdPQ@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <tony@atomide.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-serial@vger.kernel.org>
+Subject: Re: [PATCH 26/36] serial: 8250_jz47xx: support for Ingenic jz47xx
+ UARTs
+References: <1421620067-23933-1-git-send-email-paul.burton@imgtec.com> <1421620881-25136-1-git-send-email-paul.burton@imgtec.com> <20150130233105.GA10564@kroah.com>
+In-Reply-To: <20150130233105.GA10564@kroah.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.89]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45611
+X-archive-position: 45612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tony@atomide.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,105 +49,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-* Geert Uytterhoeven <geert@linux-m68k.org> [150202 00:03]:
-> On Sun, Feb 1, 2015 at 11:18 PM, Mike Turquette <mturquette@linaro.org> wrote:
-> > Quoting Tomeu Vizoso (2015-01-31 10:36:22)
-> >> On 31 January 2015 at 02:31, Stephen Boyd <sboyd@codeaurora.org> wrote:
-> >> > On 01/29, Stephen Boyd wrote:
-> >> >> On 01/29/15 05:31, Geert Uytterhoeven wrote:
-> >> >> > Hi Tomeu, Mike,
-> >> >> >
-> >> >> > On Fri, Jan 23, 2015 at 12:03 PM, Tomeu Vizoso
-> >> >> > <tomeu.vizoso@collabora.com> wrote:
-> >> >> >> --- a/drivers/clk/clk.c
-> >> >> >> +++ b/drivers/clk/clk.c
-> >> >> >> @@ -2391,25 +2543,24 @@ int __clk_get(struct clk *clk)
-> >> >> >>         return 1;
-> >> >> >>  }
-> >> >> >>
-> >> >> >> -static void clk_core_put(struct clk_core *core)
-> >> >> >> +void __clk_put(struct clk *clk)
-> >> >> >>  {
-> >> >> >>         struct module *owner;
-> >> >> >>
-> >> >> >> -       owner = core->owner;
-> >> >> >> +       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> >> >> >> +               return;
-> >> >> >>
-> >> >> >>         clk_prepare_lock();
-> >> >> >> -       kref_put(&core->ref, __clk_release);
-> >> >> >> +
-> >> >> >> +       hlist_del(&clk->child_node);
-> >> >> >> +       clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
-> >> >> > At this point, clk->core->req_rate is still zero, causing
-> >> >> > cpg_div6_clock_round_rate() to be called with a zero "rate" parameter,
-> >> >> > e.g. on r8a7791:
-> >> >>
-> >> >> Hmm.. I wonder if we should assign core->req_rate to be the same as
-> >> >> core->rate during __clk_init()? That would make this call to
-> >> >> clk_core_set_rate_nolock() a nop in this case.
-> >> >>
-> >> >
-> >> > Here's a patch to do this
-> >> >
-> >> > ---8<----
-> >> > From: Stephen Boyd <sboyd@codeaurora.org>
-> >> > Subject: [PATCH] clk: Assign a requested rate by default
-> >> >
-> >> > We need to assign a requested rate here so that we avoid
-> >> > requesting a rate of 0 on clocks when we remove clock consumers.
-> >>
-> >> Hi, this looks good to me.
-> >>
-> >> Reviewed-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> >
-> > It seems to fix the total boot failure on OMAPs, and hopefully does the
-> > same for SH Mobile and others. I've squashed this into Tomeu's rate
-> > constraints patch to maintain bisect.
+Hi Greg,
+
+On 30/01/15 23:31, Greg Kroah-Hartman wrote:
+> On Sun, Jan 18, 2015 at 02:41:21PM -0800, Paul Burton wrote:
+>> Introduce a driver suitable for use with the UARTs present in
+>> Ingenic jz47xx series SoCs. These are described as being ns16550
+>> compatible but aren't quite - they require the setting of an extra bit
+>> in the FCR register to enable the UART module. The serial_out
+>> implementation is the same as that in arch/mips/jz4740/serial.c - which
+>> will shortly be removed.
+>>
+>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: Lars-Peter Clausen <lars@metafoo.de>
+>> Cc: linux-serial@vger.kernel.org
+>> ---
+>>  drivers/tty/serial/8250/8250_jz47xx.c | 228 ++++++++++++++++++++++++++++++++++
+>>  drivers/tty/serial/8250/Kconfig       |   8 ++
+>>  drivers/tty/serial/8250/Makefile      |   1 +
+>>  3 files changed, 237 insertions(+)
+>>  create mode 100644 drivers/tty/serial/8250/8250_jz47xx.c
 > 
-> Yes, it fixes shmobile. .round_rate() is now called with a sane value of rate.
+> This patch blows up on x86 systems, breaking the build :(
 
-Looks like next-20150202 now produces tons of the following errors,
-these from omap4:
+Ouch.
 
-[   10.568206] ------------[ cut here ]------------
-[   10.568206] WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:925 clk_disable+0x28/0x34()
-[   10.568237] Modules linked in:
-[   10.568237] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W       3.19.0-rc6-next-20150202 #2037
-[   10.568237] Hardware name: Generic OMAP4 (Flattened Device Tree)
-[   10.568267] [<c0015bdc>] (unwind_backtrace) from [<c001222c>] (show_stack+0x10/0x14)
-[   10.568267] [<c001222c>] (show_stack) from [<c05d2014>] (dump_stack+0x84/0x9c)
-[   10.568267] [<c05d2014>] (dump_stack) from [<c003ea90>] (warn_slowpath_common+0x7c/0xb8)
-[   10.568298] [<c003ea90>] (warn_slowpath_common) from [<c003eb68>] (warn_slowpath_null+0x1c/0x24)
-[   10.568298] [<c003eb68>] (warn_slowpath_null) from [<c04c1ffc>] (clk_disable+0x28/0x34)
-[   10.568328] [<c04c1ffc>] (clk_disable) from [<c0025b3c>] (_disable_clocks+0x18/0x68)
-[   10.568328] [<c0025b3c>] (_disable_clocks) from [<c0026f14>] (_idle+0x10c/0x214)
-[   10.568328] [<c0026f14>] (_idle) from [<c0855fac>] (_setup+0x338/0x410)
-[   10.568359] [<c0855fac>] (_setup) from [<c0027360>] (omap_hwmod_for_each+0x34/0x60)
-[   10.568359] [<c0027360>] (omap_hwmod_for_each) from [<c08563c4>] (__omap_hwmod_setup_all+0x30/0x40)
-[   10.568389] [<c08563c4>] (__omap_hwmod_setup_all) from [<c0008a04>] (do_one_initcall+0x80/0x1dc)
-[   10.568389] [<c0008a04>] (do_one_initcall) from [<c0848ea0>] (kernel_init_freeable+0x204/0x2d0)
-[   10.568420] [<c0848ea0>] (kernel_init_freeable) from [<c05cdab8>] (kernel_init+0x8/0xec)
-[   10.568420] [<c05cdab8>] (kernel_init) from [<c000e790>] (ret_from_fork+0x14/0x24)
-[   10.568420] ---[ end trace cb88537fdc8fa211 ]---
+Did you compile after all the patches applied? Or after every single patch.
 
+I can't manage to reproduce the build error with all of them applied.
 
-[   10.568450] ------------[ cut here ]------------
-[   10.568450] WARNING: CPU: 0 PID: 1 at arch/arm/mach-omap2/dpll3xxx.c:436 omap3_noncore_dpll_enable+0xdc/0
-x10c()
-[   10.568450] Modules linked in:
-[   10.568481] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W       3.19.0-rc6-next-20150202 #2037
-[   10.568481] Hardware name: Generic OMAP4 (Flattened Device Tree)
-[   10.568481] [<c0015bdc>] (unwind_backtrace) from [<c001222c>] (show_stack+0x10/0x14)
-[   10.568511] [<c001222c>] (show_stack) from [<c05d2014>] (dump_stack+0x84/0x9c)
-[   10.568511] [<c05d2014>] (dump_stack) from [<c003ea90>] (warn_slowpath_common+0x7c/0xb8)
-[   10.568511] [<c003ea90>] (warn_slowpath_common) from [<c003eb68>] (warn_slowpath_null+0x1c/0x24)
-[   10.568542] [<c003eb68>] (warn_slowpath_null) from [<c0035800>] (omap3_noncore_dpll_enable+0xdc/0x10c)
-[   10.568542] [<c0035800>] (omap3_noncore_dpll_enable) from [<c04c0a10>] (clk_core_enable+0x60/0x9c)
-[   10.568572] [<c04c0a10>] (clk_core_enable) from [<c04c09f0>] (clk_core_enable+0x40/0x9c)
-[   10.568572] ---[ end trace cb88537fdc8fa212 ]---
-...
+Used x86_64_defconfig and enabled CONFIG_SERIAL_8250_JZ47XX=y
 
-Regards,
+Thanks,
+ZubairLK
 
-Tony
+> 
+> Sorry, I can't take it.
+> 
+> greg k-h
+> 

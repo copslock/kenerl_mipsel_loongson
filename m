@@ -1,52 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2015 10:05:20 +0100 (CET)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:48300 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010792AbbBBJFSMqAS3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Feb 2015 10:05:18 +0100
-Received: by mail-pa0-f46.google.com with SMTP id lj1so79889642pab.5;
-        Mon, 02 Feb 2015 01:05:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=ZBHsHdyQLisLeEwaMGT6MPZjzikDzkN2plEVZmiDWz0=;
-        b=RgNfKa3x2Su/Smj74zktv0osj7yPqRY4TapY5PB1sWBoUaQElZoMKX9FjO1n0pgBhA
-         ush6xB974UN+bEWPmgeRYPFBhS0YWKzWACWFSyU1/NBup11c12uP2x04QOPnhNIcvKu3
-         NOOouY7Eg1DkwwetbL3Dzv8IPr1D35VmNj1f53WKxbe/48F0Gn2ovBhdqBZu4p8lnPbg
-         nk+hGRCpSXG2ADLY8J2Y57ufGqSooCrMwH8gxthsoMDHVSKS5LmAr/E9YdBm3G8iDtcL
-         VTZaQ+5JdvmI47AWsMQl7UyYPakcnCFyyGx/7MQa1ai2brGHUojfaDCRxPNLqvMP+EwS
-         v/eA==
-X-Received: by 10.67.7.225 with SMTP id df1mr28444147pad.48.1422867912137;
-        Mon, 02 Feb 2015 01:05:12 -0800 (PST)
-Received: from norris-Latitude-E6410 (cpe-45-48-59-37.socal.res.rr.com. [45.48.59.37])
-        by mx.google.com with ESMTPSA id r14sm17425912pdi.67.2015.02.02.01.05.10
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Mon, 02 Feb 2015 01:05:11 -0800 (PST)
-Date:   Mon, 2 Feb 2015 01:05:08 -0800
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        linux-mtd@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: jz4740: Convert to GPIO descriptor API
-Message-ID: <20150202090508.GF3523@norris-Latitude-E6410>
-References: <1417549706-28420-1-git-send-email-lars@metafoo.de>
- <20141215154408.GD9382@linux-mips.org>
- <20150109200535.GV9759@ld-irv-0074>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2015 12:45:49 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63950 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012401AbbBBLpsIy94p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Feb 2015 12:45:48 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id CF9F1E3F8E4DA;
+        Mon,  2 Feb 2015 11:45:35 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 2 Feb 2015 11:45:37 +0000
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Mon, 2 Feb 2015 11:45:36 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v2 0/3] Add MIPS CDMM bus support
+Date:   Mon, 2 Feb 2015 11:45:07 +0000
+Message-ID: <1422877510-29247-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.0.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150109200535.GV9759@ld-irv-0074>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45602
+X-archive-position: 45603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,37 +45,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 09, 2015 at 12:05:35PM -0800, Brian Norris wrote:
-> On Mon, Dec 15, 2014 at 04:44:08PM +0100, Ralf Baechle wrote:
-> > On Tue, Dec 02, 2014 at 08:48:26PM +0100, Lars-Peter Clausen wrote:
-> > 
-> > > Use the GPIO descriptor API instead of the deprecated legacy GPIO API to
-> > > manage the busy GPIO.
-> > > 
-> > > The patch updates both the jz4740 nand driver and the only user of the driver
-> > > the qi-lb60 board driver.
-> > > 
-> > > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> > > ---
-> > > This patch should preferably be merged through the MTD tree with Ralf's ack for
-> > > the MIPS bits.
-> > 
-> > Acked-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> For MTD stuff:
-> 
-> Acked-by: Brian Norris <computersforpeace@gmail.com>
-> 
-> > Though in my experience MIPS-specific patches to non-arch/mips code receive
-> > best testing in the MIPS tree.
-> 
-> I don't mind this going in the MIPS tree. I doubt this driver will get
-> much other activity in MTD soon, and you're likely quite right about
-> MIPS testing.
-> 
-> Let me know if you'd like to take it. If I don't hear back in a week or
-> two, I'll take it via MTD.
+This patchset adds basic support for the MIPS Common Device Memory Map
+Memory (CDMM) region in the form of a bus in the standard Linux device
+model.
 
-OK, applied to l2-mtd.git.
+Since the CDMM region is a feature of the MIPS architecture (since
+around MIPSr2) the first patch adds the necessary definitions and
+probing to arch/mips.
 
-Brian
+The second patch adds the actual bus driver (see that patch for lots
+more info). 
+
+The final patch just enables CDMM to work on Malta.
+
+Futher patches will follow soon to add TTY/Console/KGDB support for the
+EJTAG Fast Debug Channel (FDC) device which is found in the CDMM region.
+
+Changes in v2:
+- Fix typo in definition of MIPS_CPU_CDMM, s/0ll/ull (Maciej).
+- Fix some checkpatch errors.
+- Correct CDMM name in various places. It is "Common Device Memory Map",
+  rather than "Common Device Mapped Memory" (which for some reason had
+  got stuck in my head).
+
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-mips@linux-mips.org
+
+James Hogan (3):
+  MIPS: Add arch CDMM definitions and probing
+  MIPS: Add CDMM bus support
+  MIPS: Malta: Implement mips_cdmm_phys_base()
+
+ arch/mips/include/asm/cdmm.h         |  87 +++++
+ arch/mips/include/asm/cpu-features.h |   4 +
+ arch/mips/include/asm/cpu.h          |   1 +
+ arch/mips/include/asm/mipsregs.h     |  11 +
+ arch/mips/kernel/cpu-probe.c         |   2 +
+ arch/mips/mti-malta/malta-memory.c   |   7 +
+ drivers/bus/Kconfig                  |  13 +
+ drivers/bus/Makefile                 |   1 +
+ drivers/bus/mips_cdmm.c              | 711 +++++++++++++++++++++++++++++++++++
+ include/linux/mod_devicetable.h      |   8 +
+ scripts/mod/devicetable-offsets.c    |   3 +
+ scripts/mod/file2alias.c             |  16 +
+ 12 files changed, 864 insertions(+)
+ create mode 100644 arch/mips/include/asm/cdmm.h
+ create mode 100644 drivers/bus/mips_cdmm.c
+
+-- 
+2.0.5

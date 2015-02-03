@@ -1,43 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2015 14:38:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:61969 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014448AbbBCNiMvm56H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Feb 2015 14:38:12 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2F63D563DDF1A;
-        Tue,  3 Feb 2015 13:38:03 +0000 (GMT)
-Received: from metadesk01.kl.imgtec.org (192.168.14.104) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 3 Feb 2015 13:38:05 +0000
-From:   Daniel Sanders <daniel.sanders@imgtec.com>
-CC:     Toma Tabacu <toma.tabacu@imgtec.com>,
-        Daniel Sanders <daniel.sanders@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Bolle <pebolle@tiscali.nl>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Jim Quinlan <jim2101024@gmail.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 5/5] MIPS: LLVMLinux: Silence unicode warnings when preprocessing assembly.
-Date:   Tue, 3 Feb 2015 13:37:19 +0000
-Message-ID: <1422970639-7922-6-git-send-email-daniel.sanders@imgtec.com>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1422970639-7922-1-git-send-email-daniel.sanders@imgtec.com>
-References: <1422970639-7922-1-git-send-email-daniel.sanders@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2015 15:28:43 +0100 (CET)
+Received: from mail-qg0-f46.google.com ([209.85.192.46]:41249 "EHLO
+        mail-qg0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014613AbbBCO2mVESvD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Feb 2015 15:28:42 +0100
+Received: by mail-qg0-f46.google.com with SMTP id i50so52317315qgf.5
+        for <linux-mips@linux-mips.org>; Tue, 03 Feb 2015 06:28:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=7oPxXvIWHhoPrMijKB29/4hihOA9bfgtBWkBECqOdFk=;
+        b=NbzjTzTKN0UiaDHzGq9Vg7fgbKxMngCDVise0+Wq7DCivSxqJfbXUZTvCSs76OzEqi
+         EPmkYSEUqtJTJJNsK/uTIToqJzha7Nzh/H1uglgwVU0fyAGSOY2hJUOdgL/ETHzYBpzt
+         kv4b+9N94S242kx+x0H9ufLW+GQzOwD6Khskk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=7oPxXvIWHhoPrMijKB29/4hihOA9bfgtBWkBECqOdFk=;
+        b=cqUkMZVGbyGXQRRTUhTC4vZB7/JzZP/XT/dBE1CQwx55fC4OzTiKzlf5hQs/qrcdoy
+         JT510R6dQ/fDwA/7y+xPpi15EmWSlh8Gg6asbOOfr4D4Qyas6BvJpETkr3DCpQwl5+zw
+         NvBOzN+qF8paJHFl9qNXtTVaS3Rj7im8iXSD7mQsrCJ5fsTjCqaPHjrgfjI3wBhD4GUm
+         QYhTrZIMt5qFld9IBdn4TVCsJCS3rCbBXpsWKDdh6qz2AmHEDDFJGmA83gJ3+Xz9Z+Cf
+         Et7bkppr/rnfEJ6f7YaJn5rgLewtV45ivmk7euDdSbBlsf4Ne4Gmr1OCw50VGMqHND1h
+         IvMQ==
+X-Gm-Message-State: ALoCoQkb/Q3LArl90baUTZuZdPezup/OUX6K9xtTC7omMftMK4HgRYceII6j3rvrn+qzkQlRIr9s
+X-Received: by 10.140.82.234 with SMTP id h97mr46789231qgd.75.1422973716486;
+        Tue, 03 Feb 2015 06:28:36 -0800 (PST)
+Received: from mail-qa0-f42.google.com (mail-qa0-f42.google.com. [209.85.216.42])
+        by mx.google.com with ESMTPSA id c8sm21359693qgf.14.2015.02.03.06.28.35
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 03 Feb 2015 06:28:35 -0800 (PST)
+Received: by mail-qa0-f42.google.com with SMTP id dc16so33949634qab.1;
+        Tue, 03 Feb 2015 06:28:34 -0800 (PST)
+X-Received: by 10.140.83.163 with SMTP id j32mr46388183qgd.52.1422973714896;
+ Tue, 03 Feb 2015 06:28:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.14.104]
-To:     unlisted-recipients:; (no To-header on input)
-Return-Path: <Daniel.Sanders@imgtec.com>
+Received: by 10.140.36.210 with HTTP; Tue, 3 Feb 2015 06:28:14 -0800 (PST)
+In-Reply-To: <alpine.LFD.2.11.1502030930000.22715@eddie.linux-mips.org>
+References: <54CEACC1.1040701@gmail.com> <CAJiQ=7AQuP1JsiApEs4yAR449w6-pcR_qqhSqKdpqNHL5L1mRQ@mail.gmail.com>
+ <yw1xwq409odv.fsf@unicorn.mansr.com> <54D017D4.70200@gmail.com> <alpine.LFD.2.11.1502030930000.22715@eddie.linux-mips.org>
+From:   Kevin Cernekee <cernekee@chromium.org>
+Date:   Tue, 3 Feb 2015 06:28:14 -0800
+Message-ID: <CAJiQ=7DWiSEeBUiKCPZKn8fUwxUdOrCqMLDYFTaXSMTGsJCJOA@mail.gmail.com>
+Subject: Re: Few questions about porting Linux to SMP86xx boards
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Oleg Kolosov <bazurbat@gmail.com>,
+        =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45631
+X-archive-position: 45632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.sanders@imgtec.com
+X-original-sender: cernekee@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,51 +70,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Toma Tabacu <toma.tabacu@imgtec.com>
+On Tue, Feb 3, 2015 at 3:39 AM, Maciej W. Rozycki <macro@linux-mips.org> wrote:
+>  For the record -- the exact address `__fast_iob' reads from does not
+> really matter, all it has to guarantee is no side effects on read access.
+> Using the base of KSEG1 was therefore a natural choice for legacy MIPS
+> processors that set the architecture back at the time this code was added,
+> as the presence of exception vectors there guaranteed this area of the
+> address space behaved like RAM so the same location did for any system.
+>
+>  With the introduction of revision 2 of the MIPS architecture the CP0
+> EBase register was added and consequently there is no longer a guarantee
+> that exception vectors reside at the base of KSEG1.  Using the value read
+> from CP0.EBase to determine a usable address might therefore be a better
+> idea, although the current revision of the MIPS architecture specification
+> that includes segmentation control makes it a bit complicated.  Using a
+> dummy page mapped uncached instead might work the best.
 
-Differentiate the 'u' GAS .macro argument from the '\u' C preprocessor unicode
-escape sequence by renaming it to '_u'.
+Would something like this work, assuming __fast_iob() doesn't get
+called before mem_init()?
 
-When the 'u' argument is evaluated, we end up writing '\u', which causes
-clang to emit -Wunicode warnings.
+CKSEG1ADDR((void *)empty_zero_page)
 
-This silences a couple of -Wunicode warnings reported by clang.
-The changed code can be preprocessed without warnings by both gcc and clang.
-
-Signed-off-by: Toma Tabacu <toma.tabacu@imgtec.com>
-Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Paul Bolle <pebolle@tiscali.nl>
-Cc: "Steven J. Hill" <Steven.Hill@imgtec.com>
-Cc: Manuel Lauss <manuel.lauss@gmail.com>
-Cc: Jim Quinlan <jim2101024@gmail.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/mips/include/asm/asmmacro.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 6caf876..c657932 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -200,12 +200,12 @@
- 	.word	0x41600021 | (\reg << 16)
- 	.endm
- 
--	.macro	MFTR	rt=0, rd=0, u=0, sel=0
--	 .word	0x41000000 | (\rt << 16) | (\rd << 11) | (\u << 5) | (\sel)
-+	.macro	MFTR	rt=0, rd=0, _u=0, sel=0
-+	 .word	0x41000000 | (\rt << 16) | (\rd << 11) | (\_u << 5) | (\sel)
- 	.endm
- 
--	.macro	MTTR	rt=0, rd=0, u=0, sel=0
--	 .word	0x41800000 | (\rt << 16) | (\rd << 11) | (\u << 5) | (\sel)
-+	.macro	MTTR	rt=0, rd=0, _u=0, sel=0
-+	 .word	0x41800000 | (\rt << 16) | (\rd << 11) | (\_u << 5) | (\sel)
- 	.endm
- 
- #ifdef TOOLCHAIN_SUPPORTS_MSA
--- 
-2.1.4
+It is currently a GPL export, so maybe that would need to change to
+allow non-GPL drivers to use iob().  But that's still easier than
+allocating another dummy page.

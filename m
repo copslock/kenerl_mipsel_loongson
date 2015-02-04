@@ -1,53 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 17:25:19 +0100 (CET)
-Received: from mga02.intel.com ([134.134.136.20]:41397 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012514AbbBDQZRfz9g9 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 17:25:17 +0100
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP; 04 Feb 2015 08:25:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.09,518,1418112000"; 
-   d="scan'208";a="522505122"
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by orsmga003.jf.intel.com with ESMTP; 04 Feb 2015 08:17:30 -0800
-Received: from fmsmsx154.amr.corp.intel.com (10.18.116.70) by
- ORSMSX103.amr.corp.intel.com (10.22.225.130) with Microsoft SMTP Server (TLS)
- id 14.3.195.1; Wed, 4 Feb 2015 08:25:09 -0800
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.89]) by
- FMSMSX154.amr.corp.intel.com ([169.254.6.103]) with mapi id 14.03.0195.001;
- Wed, 4 Feb 2015 08:25:08 -0800
-From:   "Wilcox, Matthew R" <matthew.r.wilcox@intel.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: RE: mips: Re-introduce copy_user_page
-Thread-Topic: mips: Re-introduce copy_user_page
-Thread-Index: AQHQP+Dc9wfYcGSMQU6+AGJBA2rhxpzfTD2w
-Date:   Wed, 4 Feb 2015 16:25:08 +0000
-Message-ID: <100D68C7BA14664A8938383216E40DE04085641F@FMSMSX114.amr.corp.intel.com>
-References: <1422681807-28395-1-git-send-email-linux@roeck-us.net>
- <54D11608.2070408@imgtec.com>
-In-Reply-To: <54D11608.2070408@imgtec.com>
-Accept-Language: en-CA, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.1.200.107]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 17:27:35 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.17.10]:64786 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012516AbbBDQ1eeWJR3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 17:27:34 +0100
+Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
+ (mreue103) with ESMTPSA (Nemesis) id 0LeAyi-1XrjO50T9Q-00pxuH; Wed, 04 Feb
+ 2015 17:27:25 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Cc:     linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        gregkh@linuxfoundation.org, mturquette@linaro.org,
+        sboyd@codeaurora.org, ralf@linux-mips.org, jslaby@suse.cz,
+        tglx@linutronix.de, jason@lakedaemon.net, lars@metafoo.de,
+        paul.burton@imgtec.com
+Subject: Re: [PATCH_V2 15/34] dt: clk: Add ingenic,jz4740-cgu binding documentation
+Date:   Wed, 04 Feb 2015 17:27:23 +0100
+Message-ID: <33166978.Cd8LolvEG6@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <1423063323-19419-16-git-send-email-Zubair.Kakakhel@imgtec.com>
+References: <1423063323-19419-1-git-send-email-Zubair.Kakakhel@imgtec.com> <1423063323-19419-16-git-send-email-Zubair.Kakakhel@imgtec.com>
 MIME-Version: 1.0
-Return-Path: <matthew.r.wilcox@intel.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID:  V03:K0:5+1f/x6rTTDVNROSBa0kapTj6s3NVRHR0xf4GtNrLeSfXBGi7yo
+ yhQljGT9hue/L6L1zZ8wMW028FDq5xhp2yvG3DmH5UIEW/2hisf9gSMyzXV6XIVQax4N15C
+ 4pZNolb22SkEK0iLm7oOV9zQDgOQFl3SkJD0hDutb/iwunieqo6zXhefkqKbc+lnORWDqGU
+ BR40jfxBcEGRxIEWazp4A==
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45690
+X-archive-position: 45691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matthew.r.wilcox@intel.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,31 +49,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is no 'struct page' for the source of this data.  We have a kernel address for it; that's all.
+On Wednesday 04 February 2015 15:21:44 Zubair Lutfullah Kakakhel wrote:
+> 
+> +/ {
+> +       ext: clock@0 {
+> +               compatible = "fixed-clock";
+> +               #clock-cells = <0>;
+> +               clock-frequency = <12000000>;
+> +       };
+> +
+> +       rtc: clock@1 {
+> +               compatible = "fixed-clock";
+> +               #clock-cells = <0>;
+> +               clock-frequency = <32768>;
+> +       };
+> +
+> +       &cgu {
+> +               clocks = <&ext> <&rtc>;
+> +               clock-names: "ext", "rtc";
+> +       };
+> +};
+> diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings/clock/jz4740-cgu.h
+> new file mode 100644
+> index 0000000..43153d3
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/jz4740-cgu.h
+> @@ -0,0 +1,37 @@
+> +/*
+> + * This header provides clock numbers for the ingenic,jz4740-cgu DT binding.
+> + *
+> + * They are roughly ordered as:
+> + *   - external clocks
+> + *   - PLLs
+> + *   - muxes/dividers in the order they appear in the jz4740 programmers manual
+> + *   - gates in order of their bit in the CLKGR* registers
+> + */
+> +
+> +#ifndef __DT_BINDINGS_CLOCK_JZ4740_CGU_H__
+> +#define __DT_BINDINGS_CLOCK_JZ4740_CGU_H__
+> +
+> +#define JZ4740_CLK_EXT         0
+> +#define JZ4740_CLK_RTC         1
+> +#define JZ4740_CLK_PLL         2
+> +#define JZ4740_CLK_PLL_HALF    3
 
------Original Message-----
-From: Leonid Yegoshin [mailto:Leonid.Yegoshin@imgtec.com] 
-Sent: Tuesday, February 03, 2015 10:40 AM
-To: Guenter Roeck; Ralf Baechle
-Cc: linux-mips@linux-mips.org; linux-kernel@vger.kernel.org; Atsushi Nemoto; Wilcox, Matthew R
-Subject: Re: mips: Re-introduce copy_user_page
+So there are fixed clocks for ext and rtc that are used as inputs
+to the cgu, but also outputs with the same name. How do these relate?
 
-On 01/30/2015 09:23 PM, Guenter Roeck wrote:
-> Commit bcd022801ee5 ("MIPS: Fix COW D-cache aliasing on fork") replaced
-> the inline function copy_user_page for mips with an external reference,
-> but neglected to introduce the actual non-inline function. Restore it.
->
-> Fixes: bcd022801ee5 ("MIPS: Fix COW D-cache aliasing on fork")
-> Fixes: 4927b7d77c00 ("dax,ext2: replace the XIP page fault handler with the DAX page fault handler")
-> Cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> Cc: Matthew Wilcox <matthew.r.wilcox@intel.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->
-
-Why do you use copy_user_page?
-It doesn't work properly in HIGHMEM environment and it is excluded from 
-MIPS because of that, I believe.
-
-You should use copy_user_highpage() for user pages.
-
-- Leonid.
+	Arnd

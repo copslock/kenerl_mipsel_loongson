@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 11:13:37 +0100 (CET)
-Received: from cpsmtpb-ews01.kpnxchange.com ([213.75.39.4]:52177 "EHLO
-        cpsmtpb-ews01.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011464AbbBDKNfesQBZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 11:13:35 +0100
-Received: from cpsps-ews30.kpnxchange.com ([10.94.84.196]) by cpsmtpb-ews01.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 4 Feb 2015 11:13:30 +0100
-Received: from CPSMTPM-TLF103.kpnxchange.com ([195.121.3.6]) by cpsps-ews30.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 4 Feb 2015 11:13:30 +0100
-Received: from [192.168.10.108] ([77.173.140.92]) by CPSMTPM-TLF103.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 4 Feb 2015 11:13:29 +0100
-Message-ID: <1423044809.23894.65.camel@x220>
-Subject: watchdog: SOC_MT7621?
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Wim Van Sebroeck <wim@iguana.be>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 11:19:39 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:59644 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011554AbbBDKThpesu0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Feb 2015 11:19:37 +0100
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 96D84283FEF;
+        Wed,  4 Feb 2015 11:17:03 +0100 (CET)
+Received: from dicker-alter.lan (p548C81C6.dip0.t-ipconnect.de [84.140.129.198])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Wed,  4 Feb 2015 11:17:03 +0100 (CET)
+Message-ID: <54D1F248.4090406@openwrt.org>
+Date:   Wed, 04 Feb 2015 11:19:52 +0100
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+MIME-Version: 1.0
+To:     Paul Bolle <pebolle@tiscali.nl>, Wim Van Sebroeck <wim@iguana.be>,
         Ralf Baechle <ralf@linux-mips.org>
-Cc:     Valentin Rothberg <valentinrothberg@gmail.com>,
+CC:     Valentin Rothberg <valentinrothberg@gmail.com>,
         Guenter Roeck <linux@roeck-us.net>,
         linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Date:   Wed, 04 Feb 2015 11:13:29 +0100
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
-Mime-Version: 1.0
+Subject: Re: watchdog: SOC_MT7621?
+References: <1423044809.23894.65.camel@x220>
+In-Reply-To: <1423044809.23894.65.camel@x220>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 04 Feb 2015 10:13:30.0061 (UTC) FILETIME=[39468FD0:01D04063]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45643
+X-archive-position: 45644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,22 +46,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-John Crispin's commit 576c618cf659 ("watchdog: add MT7621 watchdog
-support") was included in today's linux-next (ie, next 20150204). I
-noticed because a script I use to check linux-next spotted a problem
-with it.
-
-That commit adds an (optional) dependency on the Kconfig symbol
-SOC_MT7621. But there's no symbol SOC_MT7621 in linux-next yet.
-
-(Note that there currently are two checks for CONFIG_SOC_MT7621 in
-arch/mips/ralink/early_printk.c. I mentioned these checks in
-https://lkml.org/lkml/2014/10/27/218 and in
-https://lkml.org/lkml/2015/1/12/302 . John never replied to these
-messages. Since I haven't received replies on other, more serious issues
-in over three months I assume John has disappeared.)
-
-Is SOC_MT7621 still being worked on?
 
 
-Paul Bolle
+On 04/02/2015 11:13, Paul Bolle wrote:
+> messages. Since I haven't received replies on other, more serious
+> issues in over three months I assume John has disappeared.)
+
+into thin air, *pooff*
+
+> Is SOC_MT7621 still being worked on?
+
+yes we dropped the series as it collided with the gic rework that
+chromiun.org was working on. i hope to push it during the next merge
+window. the 1004k support has just been flaky till now as there was
+never any real silicon to test it on. the chromium people really did a
+good job at making the gic code nicer.
+
+quite an impressive Cc list you have there
+
+	John

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 20:56:34 +0100 (CET)
-Received: from mail-ig0-f172.google.com ([209.85.213.172]:56423 "EHLO
-        mail-ig0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012522AbbBDTyTIZnZa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 20:54:19 +0100
-Received: by mail-ig0-f172.google.com with SMTP id l13so37163954iga.5
-        for <linux-mips@linux-mips.org>; Wed, 04 Feb 2015 11:54:13 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 20:56:50 +0100 (CET)
+Received: from mail-ie0-f193.google.com ([209.85.223.193]:43693 "EHLO
+        mail-ie0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012510AbbBDTyVMcrW4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 20:54:21 +0100
+Received: by mail-ie0-f193.google.com with SMTP id tr6so752404ieb.0
+        for <linux-mips@linux-mips.org>; Wed, 04 Feb 2015 11:54:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=A7kfe78Szl6nVsRArE22HanpaDlpmvo7hF05EhFnOEA=;
-        b=hHUpJL8/pC0F7B08vDJ7XhHjkQ2066hpxQAesWotuH97hCuPv0plLrFG7w6b2e0Hug
-         eDZbg6JR5ms7SWT420qEkjc0a0ZBulF1izopK3rw5rGzwgSRCztw4SGa2GavbS8gddON
-         onupB7u++2zMfpvmExTe8R3McZlEuFVJzk4qhEQw5gh3qIJ0Q2ivwKiF+vB/gbEVjsn5
-         ojApLqZtaQk8aA4x6Ggkw5uXF8GbaGS7eJ78qHwYHEI5/ZoJYQxUXarIfo4jn+FmMzSQ
-         +Ox76GIynox42cCPZK1PFIO1Wt0cDEYG91+upaUF580DTskWlfYWaD8cYmy/tRkO7wJY
-         X/dg==
-X-Received: by 10.107.16.32 with SMTP id y32mr3253489ioi.39.1423079653635;
-        Wed, 04 Feb 2015 11:54:13 -0800 (PST)
+        bh=YtLRvAROqb+0aj1Das+Yax9wGFW26NuQkhU1iP8/pIo=;
+        b=sGT7/gM53eapIcqQcDZuDZzCmvBtIYdbsanXfaAwXvHOKYNhszddRHfPVkaq9Py7Uv
+         uVEMXF8KuWW4/4MjGftYyUZ/AjhZ8jtgMMvKCzlph8sLwh0968U9C0BsbVxR0StnsEni
+         7NEhugCZj6pet4rnz4s/aTLrYUeR8tbv3sKMLyBNo1zTLpZ5/hNW+HDfWO/At/gr0boO
+         Lw9Uj62UtqMcAhSKqJdMto+7feo4zFYRxUP+McsKY+SVV5M9Q5b8ailOUp247Q3JJUWC
+         necnHk+LRORwydtkyzzMK0PW14QCpuCX1SMfZkbD7XWJwh9n+397+vcfqdKD7VFADrGe
+         Wlug==
+X-Received: by 10.42.119.3 with SMTP id z3mr3447130icq.85.1423079655275;
+        Wed, 04 Feb 2015 11:54:15 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by mx.google.com with ESMTPSA id e70sm1348825ioe.6.2015.02.04.11.54.11
+        by mx.google.com with ESMTPSA id e70sm1348825ioe.6.2015.02.04.11.54.13
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 04 Feb 2015 11:54:13 -0800 (PST)
+        Wed, 04 Feb 2015 11:54:14 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -42,9 +42,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Robert Love <robert.w.love@intel.com>,
         "James E.J. Bottomley" <JBottomley@parallels.com>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v2 09/17] net: team: use __ethtool_get_ksettings
-Date:   Wed,  4 Feb 2015 11:53:33 -0800
-Message-Id: <1423079621-1374-10-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v2 10/17] net: fcoe: use __ethtool_get_ksettings
+Date:   Wed,  4 Feb 2015 11:53:34 -0800
+Message-Id: <1423079621-1374-11-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1423079621-1374-1-git-send-email-ddecotig@gmail.com>
 References: <1423079621-1374-1-git-send-email-ddecotig@gmail.com>
@@ -52,7 +52,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45707
+X-archive-position: 45708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,29 +73,69 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/net/team/team.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/fcoe/fcoe_transport.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index 0e62274..85196c5 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2770,12 +2770,12 @@ static void __team_port_change_send(struct team_port *port, bool linkup)
- 	port->state.linkup = linkup;
- 	team_refresh_port_linkup(port);
- 	if (linkup) {
--		struct ethtool_cmd ecmd;
-+		struct ethtool_ksettings ecmd;
+diff --git a/drivers/scsi/fcoe/fcoe_transport.c b/drivers/scsi/fcoe/fcoe_transport.c
+index bdc8989..6097f0d 100644
+--- a/drivers/scsi/fcoe/fcoe_transport.c
++++ b/drivers/scsi/fcoe/fcoe_transport.c
+@@ -93,36 +93,40 @@ static struct notifier_block libfcoe_notifier = {
+ int fcoe_link_speed_update(struct fc_lport *lport)
+ {
+ 	struct net_device *netdev = fcoe_get_netdev(lport);
+-	struct ethtool_cmd ecmd;
++	struct ethtool_ksettings ecmd;
  
--		err = __ethtool_get_settings(port->dev, &ecmd);
-+		err = __ethtool_get_ksettings(port->dev, &ecmd);
- 		if (!err) {
--			port->state.speed = ethtool_cmd_speed(&ecmd);
--			port->state.duplex = ecmd.duplex;
-+			port->state.speed = ecmd.parent.speed;
-+			port->state.duplex = ecmd.parent.duplex;
- 			goto send_event;
- 		}
- 	}
+-	if (!__ethtool_get_settings(netdev, &ecmd)) {
++	if (!__ethtool_get_ksettings(netdev, &ecmd)) {
+ 		lport->link_supported_speeds &= ~(FC_PORTSPEED_1GBIT  |
+ 		                                  FC_PORTSPEED_10GBIT |
+ 		                                  FC_PORTSPEED_20GBIT |
+ 		                                  FC_PORTSPEED_40GBIT);
+ 
+-		if (ecmd.supported & (SUPPORTED_1000baseT_Half |
+-		                      SUPPORTED_1000baseT_Full |
+-		                      SUPPORTED_1000baseKX_Full))
++		if (ecmd.link_modes.supported.mask[0] & (
++			    SUPPORTED_1000baseT_Half |
++			    SUPPORTED_1000baseT_Full |
++			    SUPPORTED_1000baseKX_Full))
+ 			lport->link_supported_speeds |= FC_PORTSPEED_1GBIT;
+ 
+-		if (ecmd.supported & (SUPPORTED_10000baseT_Full   |
+-		                      SUPPORTED_10000baseKX4_Full |
+-		                      SUPPORTED_10000baseKR_Full  |
+-		                      SUPPORTED_10000baseR_FEC))
++		if (ecmd.link_modes.supported.mask[0] & (
++			    SUPPORTED_10000baseT_Full   |
++			    SUPPORTED_10000baseKX4_Full |
++			    SUPPORTED_10000baseKR_Full  |
++			    SUPPORTED_10000baseR_FEC))
+ 			lport->link_supported_speeds |= FC_PORTSPEED_10GBIT;
+ 
+-		if (ecmd.supported & (SUPPORTED_20000baseMLD2_Full |
+-		                      SUPPORTED_20000baseKR2_Full))
++		if (ecmd.link_modes.supported.mask[0] & (
++			    SUPPORTED_20000baseMLD2_Full |
++			    SUPPORTED_20000baseKR2_Full))
+ 			lport->link_supported_speeds |= FC_PORTSPEED_20GBIT;
+ 
+-		if (ecmd.supported & (SUPPORTED_40000baseKR4_Full |
+-		                      SUPPORTED_40000baseCR4_Full |
+-		                      SUPPORTED_40000baseSR4_Full |
+-		                      SUPPORTED_40000baseLR4_Full))
++		if (ecmd.link_modes.supported.mask[0] & (
++			    SUPPORTED_40000baseKR4_Full |
++			    SUPPORTED_40000baseCR4_Full |
++			    SUPPORTED_40000baseSR4_Full |
++			    SUPPORTED_40000baseLR4_Full))
+ 			lport->link_supported_speeds |= FC_PORTSPEED_40GBIT;
+ 
+-		switch (ethtool_cmd_speed(&ecmd)) {
++		switch (ecmd.parent.speed) {
+ 		case SPEED_1000:
+ 			lport->link_speed = FC_PORTSPEED_1GBIT;
+ 			break;
 -- 
 2.2.0.rc0.207.ga3a616c

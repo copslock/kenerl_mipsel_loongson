@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 20:55:26 +0100 (CET)
-Received: from mail-ig0-f193.google.com ([209.85.213.193]:46361 "EHLO
-        mail-ig0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012490AbbBDTyM0hlwW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 20:54:12 +0100
-Received: by mail-ig0-f193.google.com with SMTP id h15so1126835igd.0
-        for <linux-mips@linux-mips.org>; Wed, 04 Feb 2015 11:54:07 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 20:55:42 +0100 (CET)
+Received: from mail-ie0-f193.google.com ([209.85.223.193]:36831 "EHLO
+        mail-ie0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012495AbbBDTyOFAjMl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 20:54:14 +0100
+Received: by mail-ie0-f193.google.com with SMTP id tr6so752191ieb.0
+        for <linux-mips@linux-mips.org>; Wed, 04 Feb 2015 11:54:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=LETS+A0fow6hWhA2HV3hQ6xOj47Jn33txvHZ1Z7voPA=;
-        b=f0GldhJY03Uq4Sr15diiFabkMQdzfvd7ckxtpQV++XrQoXrRQicW9HSZWkjSSkuf5s
-         wo2CddSXMXhYffWt/UQxe/t5d5x6HMbS8z3iFtfzTbzdx60ugLTu2UEJ7c6Qi3Pe1k/8
-         LbfB0kG7J7sBjy8KlQ5MGkEzqGRnyw+y9S1gbqrAaYJprgcCJlr+a7QKU+nq8QpyMf92
-         0beBM3faS+X7N5WpwrFQq/TpaTXKBviBCdhSb2c6ABBQt5z/MTkuc+lTc1Rg1nDpBbsk
-         pAZRtjubgzf4LNV5L4nKPcmS4igcHpiFTYSb1kascKbmlOvwA8+uszNSGqtjzXAY1y8O
-         5m0Q==
-X-Received: by 10.50.66.131 with SMTP id f3mr4218158igt.17.1423079647087;
-        Wed, 04 Feb 2015 11:54:07 -0800 (PST)
+        bh=vdm635z5BIZ8baPqZ15MvHu2KHpz60EVvs+bLBDU//k=;
+        b=E5rIn44cPRHuyjRTwi13+C4BY2Gqas29dPp5INLnmjCCXHZbNZF9YtDDvKEcvTL3lH
+         k9ApsdiwrFuI8PhUj4mpFjHq5bya9VqdtfupifIqKTkHs1L2uE2I7Dl3DX4oladahi2h
+         j3nyT+Y6LWrQu9PUjKJiTV9SjXdPF03G6srSp5WPIEhesgVqu04z9Z37ZQb4wyDczGAo
+         +XD0aRlWfOjWsh5togSard31Dc9MvMLU9c00JZBj9mmiypuL2MVVUc2ardV9h7ofrkqX
+         YXjn9oDJ55s8V6CFUTC4xfnTI67JNEx+v5x4vtZfOm7qoRMoaHtcEMZnFo+lF5Yx2Uuw
+         Xeow==
+X-Received: by 10.50.32.71 with SMTP id g7mr26582313igi.4.1423079648672;
+        Wed, 04 Feb 2015 11:54:08 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by mx.google.com with ESMTPSA id e70sm1348825ioe.6.2015.02.04.11.54.05
+        by mx.google.com with ESMTPSA id e70sm1348825ioe.6.2015.02.04.11.54.07
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 04 Feb 2015 11:54:06 -0800 (PST)
+        Wed, 04 Feb 2015 11:54:08 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -42,9 +42,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Robert Love <robert.w.love@intel.com>,
         "James E.J. Bottomley" <JBottomley@parallels.com>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v2 05/17] net: usnic: use __ethtool_get_ksettings
-Date:   Wed,  4 Feb 2015 11:53:29 -0800
-Message-Id: <1423079621-1374-6-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v2 06/17] net: bonding: use __ethtool_get_ksettings
+Date:   Wed,  4 Feb 2015 11:53:30 -0800
+Message-Id: <1423079621-1374-7-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1423079621-1374-1-git-send-email-ddecotig@gmail.com>
 References: <1423079621-1374-1-git-send-email-ddecotig@gmail.com>
@@ -52,7 +52,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45703
+X-archive-position: 45704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,38 +73,50 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/bonding/bond_main.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-index d71ba62..f6f67c9 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-@@ -305,12 +305,12 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
- 				struct ib_port_attr *props)
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index c9e519c..9aba5a8 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -372,22 +372,20 @@ down:
+ static void bond_update_speed_duplex(struct slave *slave)
  {
- 	struct usnic_ib_dev *us_ibdev = to_usdev(ibdev);
--	struct ethtool_cmd cmd;
-+	struct ethtool_ksettings cmd;
+ 	struct net_device *slave_dev = slave->dev;
+-	struct ethtool_cmd ecmd;
+-	u32 slave_speed;
++	struct ethtool_ksettings ecmd;
+ 	int res;
  
- 	usnic_dbg("\n");
+ 	slave->speed = SPEED_UNKNOWN;
+ 	slave->duplex = DUPLEX_UNKNOWN;
  
- 	mutex_lock(&us_ibdev->usdev_lock);
--	__ethtool_get_settings(us_ibdev->netdev, &cmd);
-+	__ethtool_get_ksettings(us_ibdev->netdev, &cmd);
- 	memset(props, 0, sizeof(*props));
+-	res = __ethtool_get_settings(slave_dev, &ecmd);
++	res = __ethtool_get_ksettings(slave_dev, &ecmd);
+ 	if (res < 0)
+ 		return;
  
- 	props->lid = 0;
-@@ -334,8 +334,8 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
- 	props->pkey_tbl_len = 1;
- 	props->bad_pkey_cntr = 0;
- 	props->qkey_viol_cntr = 0;
--	eth_speed_to_ib_speed(cmd.speed, &props->active_speed,
--				&props->active_width);
-+	eth_speed_to_ib_speed(cmd.parent.speed, &props->active_speed,
-+			      &props->active_width);
- 	props->max_mtu = IB_MTU_4096;
- 	props->active_mtu = iboe_get_mtu(us_ibdev->ufdev->mtu);
- 	/* Userspace will adjust for hdrs */
+-	slave_speed = ethtool_cmd_speed(&ecmd);
+-	if (slave_speed == 0 || slave_speed == ((__u32) -1))
++	if (ecmd.parent.speed == 0 || ecmd.parent.speed == ((__u32) -1))
+ 		return;
+ 
+-	switch (ecmd.duplex) {
++	switch (ecmd.parent.duplex) {
+ 	case DUPLEX_FULL:
+ 	case DUPLEX_HALF:
+ 		break;
+@@ -395,8 +393,8 @@ static void bond_update_speed_duplex(struct slave *slave)
+ 		return;
+ 	}
+ 
+-	slave->speed = slave_speed;
+-	slave->duplex = ecmd.duplex;
++	slave->speed = ecmd.parent.speed;
++	slave->duplex = ecmd.parent.duplex;
+ 
+ 	return;
+ }
 -- 
 2.2.0.rc0.207.ga3a616c

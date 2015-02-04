@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 20:55:42 +0100 (CET)
-Received: from mail-ie0-f193.google.com ([209.85.223.193]:36831 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 20:56:00 +0100 (CET)
+Received: from mail-ie0-f193.google.com ([209.85.223.193]:37685 "EHLO
         mail-ie0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012495AbbBDTyOFAjMl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 20:54:14 +0100
-Received: by mail-ie0-f193.google.com with SMTP id tr6so752191ieb.0
-        for <linux-mips@linux-mips.org>; Wed, 04 Feb 2015 11:54:08 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S27012496AbbBDTyQQVPih (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 20:54:16 +0100
+Received: by mail-ie0-f193.google.com with SMTP id tr6so752242ieb.0
+        for <linux-mips@linux-mips.org>; Wed, 04 Feb 2015 11:54:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=vdm635z5BIZ8baPqZ15MvHu2KHpz60EVvs+bLBDU//k=;
-        b=E5rIn44cPRHuyjRTwi13+C4BY2Gqas29dPp5INLnmjCCXHZbNZF9YtDDvKEcvTL3lH
-         k9ApsdiwrFuI8PhUj4mpFjHq5bya9VqdtfupifIqKTkHs1L2uE2I7Dl3DX4oladahi2h
-         j3nyT+Y6LWrQu9PUjKJiTV9SjXdPF03G6srSp5WPIEhesgVqu04z9Z37ZQb4wyDczGAo
-         +XD0aRlWfOjWsh5togSard31Dc9MvMLU9c00JZBj9mmiypuL2MVVUc2ardV9h7ofrkqX
-         YXjn9oDJ55s8V6CFUTC4xfnTI67JNEx+v5x4vtZfOm7qoRMoaHtcEMZnFo+lF5Yx2Uuw
-         Xeow==
-X-Received: by 10.50.32.71 with SMTP id g7mr26582313igi.4.1423079648672;
-        Wed, 04 Feb 2015 11:54:08 -0800 (PST)
+        bh=e5PkdnrZZa9nclcIOWmB71k7kfjbXYbdDRW2b+NVWDw=;
+        b=qYUS0algEQ4szTJELoLo3l2GAQ5fE3/YW76nqj+g7XU02xRVXN8rVvygpc6XxEVr+4
+         YNbuTtmYd220r4KlAX2OuQOMrch4GcN3u6gTT1XB0r4/SUv5UFFjZ6t8LLCnBLBb/klT
+         zPQ+nVEK8IA3i6o1skCcflrmtu3EMxaKnfP1Av1yD+nHGb/MXGcFLGnIPCMSyoo0zrLB
+         +w1DkHt1/MXAIQEZvyo+a3sFxM029t3TrigJwpJaxx+DFUre8l26YFLmNiSneOoEqmgd
+         Kfa7UQ4ZoTGSKTjJlP4DVVUBrBgPQa5+z0ilJj9kYaLM4EsL2w5SgVpdGlcFwNPtECCN
+         pOZA==
+X-Received: by 10.50.109.228 with SMTP id hv4mr26518128igb.45.1423079650263;
+        Wed, 04 Feb 2015 11:54:10 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by mx.google.com with ESMTPSA id e70sm1348825ioe.6.2015.02.04.11.54.07
+        by mx.google.com with ESMTPSA id e70sm1348825ioe.6.2015.02.04.11.54.08
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 04 Feb 2015 11:54:08 -0800 (PST)
+        Wed, 04 Feb 2015 11:54:09 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -42,9 +42,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Robert Love <robert.w.love@intel.com>,
         "James E.J. Bottomley" <JBottomley@parallels.com>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v2 06/17] net: bonding: use __ethtool_get_ksettings
-Date:   Wed,  4 Feb 2015 11:53:30 -0800
-Message-Id: <1423079621-1374-7-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v2 07/17] net: ipvlan: use __ethtool_get_ksettings
+Date:   Wed,  4 Feb 2015 11:53:31 -0800
+Message-Id: <1423079621-1374-8-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1423079621-1374-1-git-send-email-ddecotig@gmail.com>
 References: <1423079621-1374-1-git-send-email-ddecotig@gmail.com>
@@ -52,7 +52,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45704
+X-archive-position: 45705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,50 +73,37 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/net/bonding/bond_main.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/net/ipvlan/ipvlan_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index c9e519c..9aba5a8 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -372,22 +372,20 @@ down:
- static void bond_update_speed_duplex(struct slave *slave)
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index 4f4099d..79e3516 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -342,12 +342,12 @@ static const struct header_ops ipvlan_header_ops = {
+ 	.cache_update	= eth_header_cache_update,
+ };
+ 
+-static int ipvlan_ethtool_get_settings(struct net_device *dev,
+-				       struct ethtool_cmd *cmd)
++static int ipvlan_ethtool_get_ksettings(struct net_device *dev,
++					struct ethtool_ksettings *cmd)
  {
- 	struct net_device *slave_dev = slave->dev;
--	struct ethtool_cmd ecmd;
--	u32 slave_speed;
-+	struct ethtool_ksettings ecmd;
- 	int res;
+ 	const struct ipvl_dev *ipvlan = netdev_priv(dev);
  
- 	slave->speed = SPEED_UNKNOWN;
- 	slave->duplex = DUPLEX_UNKNOWN;
- 
--	res = __ethtool_get_settings(slave_dev, &ecmd);
-+	res = __ethtool_get_ksettings(slave_dev, &ecmd);
- 	if (res < 0)
- 		return;
- 
--	slave_speed = ethtool_cmd_speed(&ecmd);
--	if (slave_speed == 0 || slave_speed == ((__u32) -1))
-+	if (ecmd.parent.speed == 0 || ecmd.parent.speed == ((__u32) -1))
- 		return;
- 
--	switch (ecmd.duplex) {
-+	switch (ecmd.parent.duplex) {
- 	case DUPLEX_FULL:
- 	case DUPLEX_HALF:
- 		break;
-@@ -395,8 +393,8 @@ static void bond_update_speed_duplex(struct slave *slave)
- 		return;
- 	}
- 
--	slave->speed = slave_speed;
--	slave->duplex = ecmd.duplex;
-+	slave->speed = ecmd.parent.speed;
-+	slave->duplex = ecmd.parent.duplex;
- 
- 	return;
+-	return __ethtool_get_settings(ipvlan->phy_dev, cmd);
++	return __ethtool_get_ksettings(ipvlan->phy_dev, cmd);
  }
+ 
+ static void ipvlan_ethtool_get_drvinfo(struct net_device *dev,
+@@ -373,7 +373,7 @@ static void ipvlan_ethtool_set_msglevel(struct net_device *dev, u32 value)
+ 
+ static const struct ethtool_ops ipvlan_ethtool_ops = {
+ 	.get_link	= ethtool_op_get_link,
+-	.get_settings	= ipvlan_ethtool_get_settings,
++	.get_ksettings	= ipvlan_ethtool_get_ksettings,
+ 	.get_drvinfo	= ipvlan_ethtool_get_drvinfo,
+ 	.get_msglevel	= ipvlan_ethtool_get_msglevel,
+ 	.set_msglevel	= ipvlan_ethtool_set_msglevel,
 -- 
 2.2.0.rc0.207.ga3a616c

@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 11:19:39 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:59644 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011554AbbBDKThpesu0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Feb 2015 11:19:37 +0100
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 96D84283FEF;
-        Wed,  4 Feb 2015 11:17:03 +0100 (CET)
-Received: from dicker-alter.lan (p548C81C6.dip0.t-ipconnect.de [84.140.129.198])
-        by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Wed,  4 Feb 2015 11:17:03 +0100 (CET)
-Message-ID: <54D1F248.4090406@openwrt.org>
-Date:   Wed, 04 Feb 2015 11:19:52 +0100
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
-MIME-Version: 1.0
-To:     Paul Bolle <pebolle@tiscali.nl>, Wim Van Sebroeck <wim@iguana.be>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Valentin Rothberg <valentinrothberg@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 11:36:26 +0100 (CET)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27011464AbbBDKgY2p0sZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 11:36:24 +0100
+Date:   Wed, 4 Feb 2015 10:36:24 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Daniel Sanders <daniel.sanders@imgtec.com>
+cc:     Toma Tabacu <toma.tabacu@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Paul Bolle <pebolle@tiscali.nl>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Jim Quinlan <jim2101024@gmail.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: Re: watchdog: SOC_MT7621?
-References: <1423044809.23894.65.camel@x220>
-In-Reply-To: <1423044809.23894.65.camel@x220>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+Subject: Re: [PATCH 5/5] MIPS: LLVMLinux: Silence unicode warnings when
+ preprocessing assembly.
+In-Reply-To: <1422970639-7922-6-git-send-email-daniel.sanders@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1502041022150.22715@eddie.linux-mips.org>
+References: <1422970639-7922-1-git-send-email-daniel.sanders@imgtec.com> <1422970639-7922-6-git-send-email-daniel.sanders@imgtec.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45644
+X-archive-position: 45645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,22 +42,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Tue, 3 Feb 2015, Daniel Sanders wrote:
 
+> From: Toma Tabacu <toma.tabacu@imgtec.com>
+> 
+> Differentiate the 'u' GAS .macro argument from the '\u' C preprocessor unicode
+> escape sequence by renaming it to '_u'.
+> 
+> When the 'u' argument is evaluated, we end up writing '\u', which causes
+> clang to emit -Wunicode warnings.
+> 
+> This silences a couple of -Wunicode warnings reported by clang.
+> The changed code can be preprocessed without warnings by both gcc and clang.
 
-On 04/02/2015 11:13, Paul Bolle wrote:
-> messages. Since I haven't received replies on other, more serious
-> issues in over three months I assume John has disappeared.)
+ I suspect it is a clang preprocessor bug that:
 
-into thin air, *pooff*
+1. It interprets these character pairs as unicode escapes for assembly 
+   sources, I think it should be up to the language translator rather 
+   than the preprocessor, i.e. the assembler in this case (the notion of 
+   unicode escapes for the preprocessor appears to be limited to 
+   stringification, and then it is implementation-defined).
 
-> Is SOC_MT7621 still being worked on?
+2. It considers these character pairs to be unicode escapes in the first 
+   place given that they do not follow the syntax required for such 
+   escapes, that is `\unnnn', where `n' are hex digits.
 
-yes we dropped the series as it collided with the gic rework that
-chromiun.org was working on. i hope to push it during the next merge
-window. the 1004k support has just been flaky till now as there was
-never any real silicon to test it on. the chromium people really did a
-good job at making the gic code nicer.
+Of course it may be reasonable for us to work this bug around as we've 
+been doing for years with GCC, but has the issue been reported back to 
+clang maintainers?  What was their response?
 
-quite an impressive Cc list you have there
-
-	John
+  Maciej

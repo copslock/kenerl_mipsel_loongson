@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 11:52:28 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55261 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011464AbbBDKw0xLGoE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 11:52:26 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 1472B9269C09F;
-        Wed,  4 Feb 2015 10:52:19 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 4 Feb 2015 10:52:20 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 4 Feb 2015 10:52:18 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     James Hogan <james.hogan@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 12:05:01 +0100 (CET)
+Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6]:50818 "EHLO
+        cpsmtpb-ews03.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011464AbbBDLFAEUy2Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 12:05:00 +0100
+Received: from cpsps-ews08.kpnxchange.com ([10.94.84.175]) by cpsmtpb-ews03.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Wed, 4 Feb 2015 12:04:54 +0100
+Received: from CPSMTPM-TLF102.kpnxchange.com ([195.121.3.5]) by cpsps-ews08.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Wed, 4 Feb 2015 12:04:54 +0100
+Received: from [192.168.10.108] ([77.173.140.92]) by CPSMTPM-TLF102.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Wed, 4 Feb 2015 12:04:53 +0100
+Message-ID: <1423047893.23022.13.camel@x220>
+Subject: Re: watchdog: SOC_MT7621?
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Wim Van Sebroeck <wim@iguana.be>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Gleb Natapov <gleb@kernel.org>, <kvm@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
-Subject: [PATCH] KVM: MIPS: Disable HTW while in guest
-Date:   Wed, 4 Feb 2015 10:52:03 +0000
-Message-ID: <1423047123-32212-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+        Valentin Rothberg <valentinrothberg@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Wed, 04 Feb 2015 12:04:53 +0100
+In-Reply-To: <54D1F248.4090406@openwrt.org>
+References: <1423044809.23894.65.camel@x220> <54D1F248.4090406@openwrt.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 04 Feb 2015 11:04:54.0003 (UTC) FILETIME=[6772C430:01D0406A]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45646
+X-archive-position: 45647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,79 +49,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ensure any hardware page table walker (HTW) is disabled while in KVM
-guest mode, as KVM doesn't yet set up hardware page table walking for
-guest mappings so the wrong mappings would get loaded, resulting in the
-guest hanging or crashing once it reaches userland.
+On Wed, 2015-02-04 at 11:19 +0100, John Crispin wrote:
+> On 04/02/2015 11:13, Paul Bolle wrote:
+> > Is SOC_MT7621 still being worked on?
+> 
+> yes we dropped the series as it collided with the gic rework that
+> chromiun.org was working on. i hope to push it during the next merge
+> window. the 1004k support has just been flaky till now as there was
+> never any real silicon to test it on. the chromium people really did a
+> good job at making the gic code nicer.
 
-The HTW is disabled and re-enabled around the call to
-__kvm_mips_vcpu_run() which does the initial switch into guest mode and
-the final switch out of guest context. Additionally it is enabled for
-the duration of guest exits (i.e. kvm_mips_handle_exit()), getting
-disabled again before returning back to guest or host.
+Thanks for explaining this. Unless SOC_MT7621 takes a long time to land
+in linux-next I won't be bothering you again about this. (I think I'll
+use "by the end of the v3.20 series" as a definition of a long time.)
 
-In all cases the HTW is only disabled in normal kernel mode while
-interrupts are disabled, so that the HTW doesn't get left disabled if
-the process is preempted.
+> quite an impressive Cc list you have there
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # v3.17+
----
- arch/mips/kvm/mips.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Yes, that's the way it works with problems that span two (or more)
+subsystems (in this case watchdog and MIPS). Actually, much longer CC
+lists are used regularly on lkml.
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index e3b21e51ff7e..dd133ccecec4 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -18,6 +18,7 @@
- #include <asm/page.h>
- #include <asm/cacheflush.h>
- #include <asm/mmu_context.h>
-+#include <asm/pgtable.h>
- 
- #include <linux/kvm_host.h>
- 
-@@ -385,8 +386,14 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 
- 	kvm_guest_enter();
- 
-+	/* Disable hardware page table walking while in guest */
-+	htw_stop();
-+
- 	r = __kvm_mips_vcpu_run(run, vcpu);
- 
-+	/* Re-enable HTW before enabling interrupts */
-+	htw_start();
-+
- 	kvm_guest_exit();
- 	local_irq_enable();
- 
-@@ -1002,6 +1009,9 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
- 
-+	/* re-enable HTW before enabling interrupts */
-+	htw_start();
-+
- 	/* Set a default exit reason */
- 	run->exit_reason = KVM_EXIT_UNKNOWN;
- 	run->ready_for_interrupt_injection = 1;
-@@ -1136,6 +1146,9 @@ skip_emul:
- 		}
- 	}
- 
-+	/* Disable HTW before returning to guest or host */
-+	htw_stop();
-+
- 	return ret;
- }
- 
--- 
-2.0.5
+Thanks!
+
+
+Paul Bolle

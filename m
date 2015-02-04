@@ -1,40 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 18:06:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:61718 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012549AbbBDRGw4XpFB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 18:06:52 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E9A01FEFD7A9A;
-        Wed,  4 Feb 2015 17:06:43 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 4 Feb 2015 17:06:47 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 4 Feb 2015 17:06:46 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Sanjay Lal <sanjayl@kymasys.com>,
-        Gleb Natapov <gleb@kernel.org>, <kvm@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
-Subject: [PATCH] KVM: MIPS: Don't leak FPU/DSP to guest
-Date:   Wed, 4 Feb 2015 17:06:37 +0000
-Message-ID: <1423069597-8376-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 18:07:53 +0100 (CET)
+Received: from mail-lb0-f176.google.com ([209.85.217.176]:34254 "EHLO
+        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012582AbbBDRHrEZHnn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 18:07:47 +0100
+Received: by mail-lb0-f176.google.com with SMTP id z12so2634806lbi.7
+        for <linux-mips@linux-mips.org>; Wed, 04 Feb 2015 09:07:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=sp9WHrmleYQ/lpQHHEFjY95eYvRAtV1ILwgoAUNToB8=;
+        b=kCd0FjYI78iBqZHyAtQP629oSsh0vPA1mWckNCXnsWpuHuX3WxQ2Wb7iim1xn6qnWO
+         wxkCfA6IZsQMudC78ukPahS4kHTGMLvjCNhSOBxWpVcW1P6bHVe2U0WT6jtXfazMTKxF
+         6QSvkYJH8dvVzC2wgVYGoZSAI7IGYWTGRRkcSIoEPPyEUdMhQ5ckyr7xTiIKHWZ/kwtX
+         5cecY22suhV/N3GSZBWO1u0xcKbFiD1jVc2amFig5kB8/rpakf0CZrRl6qfbjrFfwS5N
+         RjOlB2Dm15qzdsJtFYL1QH3eFdqtOiP9mXUf7E45JkGggFagFAi6TFqBFG2qU5Afk3qG
+         Jb6w==
+X-Gm-Message-State: ALoCoQlljpy9l1orOyzOosLew2r5wvIaKFvzDPI3dtHVh3oOZ0XXYoFTgHLehS97SMzFnZZrra0r
+X-Received: by 10.152.28.37 with SMTP id y5mr10950282lag.55.1423069661808;
+        Wed, 04 Feb 2015 09:07:41 -0800 (PST)
+Received: from wasted.cogentembedded.com (ppp16-217.pppoe.mtu-net.ru. [81.195.16.217])
+        by mx.google.com with ESMTPSA id z15sm462443lbn.48.2015.02.04.09.07.39
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Feb 2015 09:07:40 -0800 (PST)
+Message-ID: <54D251DA.1020807@cogentembedded.com>
+Date:   Wed, 04 Feb 2015 20:07:38 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        linux-mips@linux-mips.org
+CC:     devicetree@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        mturquette@linaro.org, sboyd@codeaurora.org, ralf@linux-mips.org,
+        jslaby@suse.cz, tglx@linutronix.de, jason@lakedaemon.net,
+        lars@metafoo.de, paul.burton@imgtec.com
+Subject: Re: [PATCH_V2 07/34] dt: interrupt-controller: Add ingenic,jz4740-intc
+ binding doc
+References: <1423063323-19419-1-git-send-email-Zubair.Kakakhel@imgtec.com> <1423063323-19419-8-git-send-email-Zubair.Kakakhel@imgtec.com>
+In-Reply-To: <1423063323-19419-8-git-send-email-Zubair.Kakakhel@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45695
+X-archive-position: 45696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,91 +64,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The FPU and DSP are enabled via the CP0 Status CU1 and MX bits by
-kvm_mips_set_c0_status() on a guest exit, presumably in case there is
-active state that needs saving if pre-emption occurs. However neither of
-these bits are cleared again when returning to the guest.
+Hello.
 
-This effectively gives the guest access to the FPU/DSP hardware after
-the first guest exit even though it is not aware of its presence,
-allowing FP instructions in guest user code to intermittently actually
-execute instead of trapping into the guest OS for emulation. It will
-then read & manipulate the hardware FP registers which technically
-belong to the user process (e.g. QEMU), or are stale from another user
-process. It can also crash the guest OS by causing an FP exception, for
-which a guest exception handler won't have been registered.
+On 02/04/2015 06:21 PM, Zubair Lutfullah Kakakhel wrote:
 
-First lets save and disable the FPU (and MSA) state with lose_fpu(1)
-before entering the guest. This simplifies the problem, especially for
-when guest FPU/MSA support is added in the future, and prevents FR=1 FPU
-state being live when the FR bit gets cleared for the guest, which
-according to the architecture causes the contents of the FPU and vector
-registers to become UNPREDICTABLE.
+> From: Paul Burton <paul.burton@imgtec.com>
 
-We can then safely remove the enabling of the FPU in
-kvm_mips_set_c0_status(), since there should never be any active FPU or
-MSA state to save at pre-emption, which should plug the FPU leak.
+> Add binding documentation for the Ingenic jz4740 interrupt controller.
 
-DSP state is always live rather than being lazily restored, so for that
-it is simpler to just clear the MX bit again when re-entering the guest.
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: devicetree@vger.kernel.org
+> ---
+>   .../interrupt-controller/ingenic,jz4740-intc.txt   | 26 ++++++++++++++++++++++
+>   1 file changed, 26 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # v3.10+: 044f0f03eca0: MIPS: KVM: Deliver guest interrupts
-Cc: <stable@vger.kernel.org> # v3.10+
----
- arch/mips/kvm/locore.S | 2 +-
- arch/mips/kvm/mips.c   | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt
+> new file mode 100644
+> index 0000000..5e7f4bb
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt
+> @@ -0,0 +1,26 @@
+> +Ingenic jz4740 SoC Interrupt Controller
 
-diff --git a/arch/mips/kvm/locore.S b/arch/mips/kvm/locore.S
-index d7279c03c517..4a68b176d6e4 100644
---- a/arch/mips/kvm/locore.S
-+++ b/arch/mips/kvm/locore.S
-@@ -434,7 +434,7 @@ __kvm_mips_return_to_guest:
- 	/* Setup status register for running guest in UM */
- 	.set	at
- 	or	v1, v1, (ST0_EXL | KSU_USER | ST0_IE)
--	and	v1, v1, ~ST0_CU0
-+	and	v1, v1, ~(ST0_CU0 | ST0_MX)
- 	.set	noat
- 	mtc0	v1, CP0_STATUS
- 	ehb
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index dd133ccecec4..270bbd41769e 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -15,6 +15,7 @@
- #include <linux/vmalloc.h>
- #include <linux/fs.h>
- #include <linux/bootmem.h>
-+#include <asm/fpu.h>
- #include <asm/page.h>
- #include <asm/cacheflush.h>
- #include <asm/mmu_context.h>
-@@ -379,6 +380,8 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 		vcpu->mmio_needed = 0;
- 	}
- 
-+	lose_fpu(1);
-+
- 	local_irq_disable();
- 	/* Check if we have any exceptions/interrupts pending */
- 	kvm_mips_deliver_interrupts(vcpu,
-@@ -987,9 +990,6 @@ static void kvm_mips_set_c0_status(void)
- {
- 	uint32_t status = read_c0_status();
- 
--	if (cpu_has_fpu)
--		status |= (ST0_CU1);
--
- 	if (cpu_has_dsp)
- 		status |= (ST0_MX);
- 
--- 
-2.0.5
+    JZ4740?
+
+> +
+> +Required properties:
+> +
+> +- compatible : should be "ingenic,jz4740-intc" or "ingenic,jz4780-intc"
+> +- reg : Specifies base physical address and size of the registers.
+> +- interrupt-controller : Identifies the node as an interrupt controller
+> +- #interrupt-cells : Specifies the number of cells needed to encode an
+> +  interrupt source. The value shall be 1.
+> +- interrupts - Specifies the CPU interrupt the controller is connected to.
+> +
+> +Optional properties:
+> +- interrupt-parent: phandle of the CPU interrupt controller.
+> +
+> +Example:
+> +
+> +intc: intc@10001000 {
+
+    Name it "interrupt-controller@10001000", please.
+
+> +	compatible = "ingenic,jz4740-intc";
+> +	reg = <0x10001000 0x14>;
+> +
+> +	interrupt-controller;
+> +	#interrupt-cells = <1>;
+> +
+> +	interrupt-parent = <&cpuintc>;
+> +	interrupts = <2>;
+> +};
+
+WBR, Sergei

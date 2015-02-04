@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 15:54:38 +0100 (CET)
-Received: from bes.se.axis.com ([195.60.68.10]:56041 "EHLO bes.se.axis.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011486AbbBDOygQBdcf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Feb 2015 15:54:36 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id B95DC2E0A8;
-        Wed,  4 Feb 2015 15:54:30 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id SNuAHkkq43KH; Wed,  4 Feb 2015 15:54:29 +0100 (CET)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id 243682E107;
-        Wed,  4 Feb 2015 15:54:29 +0100 (CET)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id 1784BFB0;
-        Wed,  4 Feb 2015 15:54:29 +0100 (CET)
-Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
-        by boulder.se.axis.com (Postfix) with ESMTP id 02410EFB;
-        Wed,  4 Feb 2015 15:54:29 +0100 (CET)
-Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
-        by thoth.se.axis.com (Postfix) with ESMTP id F393A34279;
-        Wed,  4 Feb 2015 15:54:28 +0100 (CET)
-Received: from [10.88.41.1] (10.88.41.1) by xmail2.se.axis.com (10.0.5.74)
- with Microsoft SMTP Server (TLS) id 8.3.342.0; Wed, 4 Feb 2015 15:54:29 +0100
-Message-ID: <1423061663.24303.7.camel@lnxlarper.se.axis.com>
-Subject: Re: [1/3] MIPS: Fix cache flushing for swap pages with non-DMA I/O.
-From:   Lars Persson <lars.persson@axis.com>
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-Date:   Wed, 4 Feb 2015 15:54:23 +0100
-In-Reply-To: <1422549976-10648-2-git-send-email-Steven.Hill@imgtec.com>
-References: <1422549976-10648-2-git-send-email-Steven.Hill@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.4.4-3 
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2015 16:22:35 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15021 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011536AbbBDPWdiDii3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Feb 2015 16:22:33 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 831E24D0640CE;
+        Wed,  4 Feb 2015 15:22:23 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 4 Feb 2015 15:22:26 +0000
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.89) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Wed, 4 Feb 2015 15:22:24 +0000
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <devicetree@vger.kernel.org>, <linux-serial@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <Zubair.Kakakhel@imgtec.com>,
+        <gregkh@linuxfoundation.org>, <mturquette@linaro.org>,
+        <sboyd@codeaurora.org>, <ralf@linux-mips.org>, <jslaby@suse.cz>,
+        <tglx@linutronix.de>, <jason@lakedaemon.net>, <lars@metafoo.de>,
+        <paul.burton@imgtec.com>
+Subject: [PATCH_V2 00/34] jz4780 & CI20 support
+Date:   Wed, 4 Feb 2015 15:21:29 +0000
+Message-ID: <1423063323-19419-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <lars.persson@axis.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.89]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45653
+X-archive-position: 45654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars.persson@axis.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,337 +48,152 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi
+Hi,
 
-I NACK this patch series because AFAICT it re-introduces the race
-condition that I fixed with 2a4a8b1e5d9d343e13ff22e19af7b353f7b52d6f
-MIPS: Remove race window in page fault handling.
+This series introduces initial support for the Ingenic jz4780 SoC & the
+MIPS Creator CI20 board which is based upon it.
 
-You need to address also the case of the file-system layer writing to an
-executable page and calling flush_dcache_page().
+The jz4780 shares aspects with jz4740. But jz4740 is platform only.
 
-With this patch series, the flush will be postponed by this check:
-if (page_mapping(page) && !page_mapped(page)) {
- SetPageDcacheDirty(page);
- return;
-}
+So, the jz4740 & qi_lb60 (Ben NanoNote) are converted to use DT
+for some things in order to ease the process of sharing code.
 
-Another thread can race with __update_cache() and execute garbage code.
+Series is based on 3.19-rc7.
 
-Please consider adding a commit of the postponed cache flush in
-flush_icache_page().
+ACKS from various subsystems are welcome so that the series can
+go via mips if that is OK with everyone.
 
-BR,
- Lars
+Alternative suggestions welcome.
 
-On tor, 2015-01-29 at 10:46 -0600, Steven J. Hill wrote:
-> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> 
-> Flush the D-cache before the page is given to a process
-> as an executable (I-cache) page when the backing store
-> is non-DMA I/O.
-> 
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-> ---
->  arch/mips/include/asm/cacheflush.h   |    3 ++-
->  arch/mips/include/asm/cpu-features.h |    3 +++
->  arch/mips/include/asm/page.h         |    5 +++-
->  arch/mips/include/asm/pgtable.h      |    5 ++++
->  arch/mips/mm/c-r4k.c                 |   19 +++++++++++++-
->  arch/mips/mm/cache.c                 |   46 +++++++++++++++++-----------------
->  arch/mips/mm/init.c                  |   23 +++++++++++------
->  arch/mips/mm/sc-mips.c               |    1 +
->  8 files changed, 72 insertions(+), 33 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/cacheflush.h b/arch/mips/include/asm/cacheflush.h
-> index e08381a..3a4582a 100644
-> --- a/arch/mips/include/asm/cacheflush.h
-> +++ b/arch/mips/include/asm/cacheflush.h
-> @@ -123,7 +123,8 @@ static inline void kunmap_noncoherent(void)
->  #define ARCH_HAS_FLUSH_KERNEL_DCACHE_PAGE
->  static inline void flush_kernel_dcache_page(struct page *page)
->  {
-> -	BUG_ON(cpu_has_dc_aliases && PageHighMem(page));
-> +	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
-> +		__flush_dcache_page(page);
->  }
->  
->  /*
-> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-> index 2897cfa..23db770 100644
-> --- a/arch/mips/include/asm/cpu-features.h
-> +++ b/arch/mips/include/asm/cpu-features.h
-> @@ -139,6 +139,9 @@
->  #ifndef cpu_has_vtag_icache
->  #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
->  #endif
-> +#ifndef cpu_has_vtag_dcache
-> +#define cpu_has_vtag_dcache     (cpu_data[0].dcache.flags & MIPS_CACHE_VTAG)
-> +#endif
->  #ifndef cpu_has_dc_aliases
->  #define cpu_has_dc_aliases	(cpu_data[0].dcache.flags & MIPS_CACHE_ALIASES)
->  #endif
-> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-> index 154b70a..fc7ab98 100644
-> --- a/arch/mips/include/asm/page.h
-> +++ b/arch/mips/include/asm/page.h
-> @@ -95,13 +95,16 @@ static inline unsigned long pages_do_alias(unsigned long addr1,
->  
->  struct page;
->  
-> +#include <asm/cpu-features.h>
-> +
->  static inline void clear_user_page(void *addr, unsigned long vaddr,
->  	struct page *page)
->  {
->  	extern void (*flush_data_cache_page)(unsigned long addr);
->  
->  	clear_page(addr);
-> -	if (pages_do_alias((unsigned long) addr, vaddr & PAGE_MASK))
-> +	if (cpu_has_vtag_dcache || (cpu_has_dc_aliases &&
-> +	     pages_do_alias((unsigned long) addr, vaddr & PAGE_MASK)))
->  		flush_data_cache_page((unsigned long)addr);
->  }
->  
-> diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-> index 62a6ba3..0a6a944 100644
-> --- a/arch/mips/include/asm/pgtable.h
-> +++ b/arch/mips/include/asm/pgtable.h
-> @@ -148,6 +148,7 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
->  		}
->  	}
->  }
-> +#define set_pte_at(mm, addr, ptep, pteval) set_pte(ptep, pteval)
->  
->  static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->  {
-> @@ -185,6 +186,7 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
->  	}
->  #endif
->  }
-> +#define set_pte_at(mm, addr, ptep, pteval) set_pte(ptep, pteval)
->  
->  static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->  {
-> @@ -401,12 +403,15 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
->  
->  extern void __update_tlb(struct vm_area_struct *vma, unsigned long address,
->  	pte_t pte);
-> +extern void __update_cache(struct vm_area_struct *vma, unsigned long address,
-> +	pte_t pte);
->  
->  static inline void update_mmu_cache(struct vm_area_struct *vma,
->  	unsigned long address, pte_t *ptep)
->  {
->  	pte_t pte = *ptep;
->  	__update_tlb(vma, address, pte);
-> +	__update_cache(vma, address, pte);
->  }
->  
->  static inline void update_mmu_cache_pmd(struct vm_area_struct *vma,
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index dd261df..e045116 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -484,8 +484,11 @@ static inline void local_r4k_flush_cache_range(void * args)
->  		return;
->  
->  	r4k_blast_dcache();
-> -	if (exec)
-> +	if (exec) {
-> +		if (!cpu_has_ic_fills_f_dc)
-> +			wmb();
->  		r4k_blast_icache();
-> +	}
->  }
->  
->  static void r4k_flush_cache_range(struct vm_area_struct *vma,
-> @@ -570,6 +573,14 @@ static inline void local_r4k_flush_cache_page(void *args)
->  	if (!(pte_present(*ptep)))
->  		return;
->  
-> +	/*
-> +	 * If this page is not destined to be executable and the
-> +	 * data cache does not have aliases, all of the mapping
-> +	 * below can be skipped.
-> +	 */
-> +	if (!exec && !cpu_has_dc_aliases)
-> +		return;
-> +
->  	if ((mm == current->active_mm) && (pte_val(*ptep) & _PAGE_VALID))
->  		vaddr = NULL;
->  	else {
-> @@ -589,6 +600,8 @@ static inline void local_r4k_flush_cache_page(void *args)
->  	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc)) {
->  		vaddr ? r4k_blast_dcache_page(addr) :
->  			r4k_blast_dcache_user_page(addr);
-> +		if (exec && !cpu_has_ic_fills_f_dc)
-> +			wmb();
->  		if (exec && !cpu_icache_snoops_remote_store)
->  			r4k_blast_scache_page(addr);
->  	}
-> @@ -621,6 +634,8 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
->  	args.pfn = pfn;
->  
->  	r4k_on_each_cpu(local_r4k_flush_cache_page, &args);
-> +	if (cpu_has_dc_aliases)
-> +		ClearPageDcacheDirty(pfn_to_page(pfn));
->  }
->  
->  static inline void local_r4k_flush_data_cache_page(void * addr)
-> @@ -652,6 +667,8 @@ static inline void local_r4k_flush_icache_range(unsigned long start, unsigned lo
->  		}
->  	}
->  
-> +	wmb();
-> +
->  	if (end - start > icache_size)
->  		r4k_blast_icache();
->  	else {
-> diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-> index 7e3ea77..99db9e8 100644
-> --- a/arch/mips/mm/cache.c
-> +++ b/arch/mips/mm/cache.c
-> @@ -19,6 +19,7 @@
->  #include <asm/processor.h>
->  #include <asm/cpu.h>
->  #include <asm/cpu-features.h>
-> +#include <linux/highmem.h>
->  
->  /* Cache operations. */
->  void (*flush_cache_all)(void);
-> @@ -105,48 +106,47 @@ void __flush_anon_page(struct page *page, unsigned long vmaddr)
->  {
->  	unsigned long addr = (unsigned long) page_address(page);
->  
-> -	if (pages_do_alias(addr, vmaddr)) {
-> +	if (pages_do_alias(addr, vmaddr & PAGE_MASK)) {
->  		if (page_mapped(page) && !Page_dcache_dirty(page)) {
->  			void *kaddr;
->  
->  			kaddr = kmap_coherent(page, vmaddr);
->  			flush_data_cache_page((unsigned long)kaddr);
->  			kunmap_coherent();
-> -		} else
-> -			flush_data_cache_page(addr);
-> +		} else {
-> +			void *kaddr;
-> +
-> +			kaddr = kmap_atomic(page);
-> +			flush_data_cache_page((unsigned long)kaddr);
-> +			kunmap_atomic(kaddr);
-> +			ClearPageDcacheDirty(page);
-> +		}
->  	}
->  }
->  
->  EXPORT_SYMBOL(__flush_anon_page);
->  
-> -static void mips_flush_dcache_from_pte(pte_t pteval, unsigned long address)
-> +void __update_cache(struct vm_area_struct *vma, unsigned long address,
-> +	pte_t pte)
->  {
->  	struct page *page;
-> -	unsigned long pfn = pte_pfn(pteval);
-> +	unsigned long pfn = pte_pfn(pte);
-> +	int exec = (vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc;
->  
-> -	if (unlikely(!pfn_valid(pfn)))
-> +	if (unlikely(!pfn_valid(pfn))) {
-> +		wmb();
->  		return;
-> -
-> +	}
->  	page = pfn_to_page(pfn);
-> -	if (page_mapping(page) && Page_dcache_dirty(page)) {
-> +	if (page_mapped(page) && Page_dcache_dirty(page)) {
->  		unsigned long page_addr = (unsigned long) page_address(page);
-> -
-> -		if (!cpu_has_ic_fills_f_dc ||
-> -		    pages_do_alias(page_addr, address & PAGE_MASK))
-> +		if (exec || (cpu_has_dc_aliases &&
-> +		    pages_do_alias(page_addr, address & PAGE_MASK))) {
->  			flush_data_cache_page(page_addr);
-> -		ClearPageDcacheDirty(page);
-> +			ClearPageDcacheDirty(page);
-> +		}
->  	}
-> -}
-> -
-> -void set_pte_at(struct mm_struct *mm, unsigned long addr,
-> -        pte_t *ptep, pte_t pteval)
-> -{
-> -        if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc) {
-> -                if (pte_present(pteval))
-> -                        mips_flush_dcache_from_pte(pteval, addr);
-> -        }
-> -
-> -        set_pte(ptep, pteval);
-> +	wmb();  /* finish any outstanding arch cache flushes before ret to user */
->  }
->  
->  unsigned long _page_cachable_default;
-> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-> index 448cde3..597bf7f 100644
-> --- a/arch/mips/mm/init.c
-> +++ b/arch/mips/mm/init.c
-> @@ -165,9 +165,15 @@ void copy_user_highpage(struct page *to, struct page *from,
->  		copy_page(vto, vfrom);
->  		kunmap_atomic(vfrom);
->  	}
-> -	if ((!cpu_has_ic_fills_f_dc) ||
-> -	    pages_do_alias((unsigned long)vto, vaddr & PAGE_MASK))
-> +	if (cpu_has_dc_aliases)
-> +		SetPageDcacheDirty(to);
-> +	if (((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc) ||
-> +	    cpu_has_vtag_dcache || (cpu_has_dc_aliases &&
-> +	     pages_do_alias((unsigned long)vto, vaddr & PAGE_MASK))) {
->  		flush_data_cache_page((unsigned long)vto);
-> +		if (cpu_has_dc_aliases)
-> +			ClearPageDcacheDirty(to);
-> +	}
->  	kunmap_atomic(vto);
->  	/* Make sure this page is cleared on other CPU's too before using it */
->  	smp_wmb();
-> @@ -187,8 +193,14 @@ void copy_to_user_page(struct vm_area_struct *vma,
->  		if (cpu_has_dc_aliases)
->  			SetPageDcacheDirty(page);
->  	}
-> -	if ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc)
-> +	if (((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc) ||
-> +	    (Page_dcache_dirty(page) &&
-> +	     pages_do_alias((unsigned long)dst & PAGE_MASK,
-> +			    vaddr & PAGE_MASK))) {
->  		flush_cache_page(vma, vaddr, page_to_pfn(page));
-> +		if (cpu_has_dc_aliases)
-> +			ClearPageDcacheDirty(page);
-> +	}
->  }
->  
->  void copy_from_user_page(struct vm_area_struct *vma,
-> @@ -200,11 +212,8 @@ void copy_from_user_page(struct vm_area_struct *vma,
->  		void *vfrom = kmap_coherent(page, vaddr) + (vaddr & ~PAGE_MASK);
->  		memcpy(dst, vfrom, len);
->  		kunmap_coherent();
-> -	} else {
-> +	} else
->  		memcpy(dst, src, len);
-> -		if (cpu_has_dc_aliases)
-> -			SetPageDcacheDirty(page);
-> -	}
->  }
->  EXPORT_SYMBOL_GPL(copy_from_user_page);
->  
-> diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-> index 99eb8fa..e1db410 100644
-> --- a/arch/mips/mm/sc-mips.c
-> +++ b/arch/mips/mm/sc-mips.c
-> @@ -24,6 +24,7 @@
->   */
->  static void mips_sc_wback_inv(unsigned long addr, unsigned long size)
->  {
-> +	__sync();
->  	blast_scache_range(addr, addr + size);
->  }
->  
+Changes in V2
+- Removed FSF addresses. 
+- Removed 2 patches for binding docs that
+  were consolidated in the same binding for jz4740.
+- Bug fix in error handling in cgu
+- Rebase on 3.19-rc7
+- Updated defconfig with jz47xx serial and removed initramfs
+- Renames in binding from intc to interrupt-controller
+- Fix in jz47xx serial for build error on x86 in one config option
+- Removed interupt-parent bindings from required bindings
+- Fixed imgtec prefix to img
+- Added jz47xx config for qi_lb60_defconfig
+
+Regards,
+ZubairLK
+
+
+Paul Burton (34):
+  dt: Add Ingenic Semiconductor vendor prefix
+  MIPS: jz4740: require & include DT
+  MIPS: irq_cpu: declare irqchip table entry
+  MIPS: jz4740: probe CPU interrupt controller via DT
+  MIPS: jz4740: use generic plat_irq_dispatch
+  MIPS: jz4740: move arch_init_irq out of arch/mips/jz4740/irq.c
+  dt: interrupt-controller: Add ingenic,jz4740-intc binding doc
+  MIPS: jz4740: allow interrupt controller probe via DT
+  MIPS: jz4740: probe interrupt controller via DT
+  MIPS: jz4740: remove non-DT interrupt controller init
+  MIPS: jz4740: register an irq_domain for the interrupt controller
+  MIPS: jz4740: call jz4740_clock_init earlier
+  MIPS: jz4740: replace use of jz4740_clock_bdata
+  clk: jz47xx-cgu: add driver for Ingenic jz47xx series CGU clocks
+  dt: clk: Add ingenic,jz4740-cgu binding documentation
+  MIPS: clk: migrate jz4740 to common clock framework
+  MIPS: clk: move jz4740_clock_set_wait_mode to jz4740-cgu
+  MIPS: clk: move jz4740 UDC auto suspend functions to jz4740-cgu
+  MIPS: clk: move jz4740 clock suspend, resume functions to jz4740-cgu
+  MIPS: jz4740: remove clock.h
+  MIPS: jz4740: only detect RAM size if not specified in DT
+  MIPS: jz4740: support >32 interrupts
+  MIPS: jz4740: define IRQ numbers based on number of intc IRQs
+  dt: serial: Add ingenic,jz4740-uart binding
+  serial: 8250_jz47xx: support for Ingenic jz47xx UARTs
+  MIPS: allow mach-provided serial.h
+  MIPS: jz4740: use jz47xx-uart & DT for UART output
+  dt: clk: Add ingenic,jz4780-cgu binding documentation
+  clk: add Ingenic jz4780 CGU driver
+  MIPS: jz4740: add jz4780 interrupt controller support
+  MIPS: add jz4780 Ingenic vendor ID
+  MIPS: initial Ingenic jz4780 support
+  MIPS: initial MIPS Creator CI20 board support
+  MIPS: allow jz4780 to be selected in Kconfig
+
+ .../bindings/clock/ingenic,jz4740-cgu.txt          |  52 ++
+ .../bindings/clock/ingenic,jz4780-cgu.txt          |  52 ++
+ .../interrupt-controller/ingenic,jz4740-intc.txt   |  26 +
+ .../bindings/serial/ingenic,jz4740-uart.txt        |  22 +
+ .../devicetree/bindings/vendor-prefixes.txt        |   1 +
+ arch/mips/Kconfig                                  |  22 +-
+ arch/mips/boot/dts/Makefile                        |   2 +
+ arch/mips/boot/dts/ci20.dts                        |  21 +
+ arch/mips/boot/dts/jz4740.dtsi                     |  68 ++
+ arch/mips/boot/dts/jz4780.dtsi                     | 101 +++
+ arch/mips/boot/dts/qi_lb60.dts                     |  15 +
+ arch/mips/configs/ci20_defconfig                   | 127 +++
+ arch/mips/configs/qi_lb60_defconfig                |   1 +
+ arch/mips/include/asm/Kbuild                       |   1 -
+ arch/mips/include/asm/cpu.h                        |   1 +
+ arch/mips/include/asm/mach-generic/serial.h        |  21 +
+ arch/mips/include/asm/mach-jz4740/clock.h          |   3 +
+ arch/mips/include/asm/mach-jz4740/irq.h            |  15 +-
+ arch/mips/include/asm/mach-jz4740/platform.h       |   2 -
+ arch/mips/include/asm/mach-jz4740/serial.h         |  27 +
+ arch/mips/include/asm/serial.h                     |  21 +
+ arch/mips/jz4740/Kconfig                           |  10 +
+ arch/mips/jz4740/Makefile                          |   6 +-
+ arch/mips/jz4740/Platform                          |   4 +
+ arch/mips/jz4740/board-qi_lb60.c                   |   7 -
+ arch/mips/jz4740/clock-debugfs.c                   | 108 ---
+ arch/mips/jz4740/clock.c                           | 924 ---------------------
+ arch/mips/jz4740/clock.h                           |  76 --
+ arch/mips/jz4740/irq.c                             | 103 ++-
+ arch/mips/jz4740/platform.c                        |  37 +-
+ arch/mips/jz4740/pm.c                              |   2 -
+ arch/mips/jz4740/prom.c                            |  13 -
+ arch/mips/jz4740/reset.c                           |  13 +-
+ arch/mips/jz4740/serial.c                          |  33 -
+ arch/mips/jz4740/serial.h                          |  23 -
+ arch/mips/jz4740/setup.c                           |  33 +-
+ arch/mips/jz4740/time.c                            |  19 +-
+ arch/mips/kernel/cpu-probe.c                       |   1 +
+ arch/mips/kernel/irq_cpu.c                         |   3 +
+ drivers/clk/Makefile                               |   2 +
+ drivers/clk/jz47xx/Makefile                        |   3 +
+ drivers/clk/jz47xx/jz4740-cgu.c                    | 295 +++++++
+ drivers/clk/jz47xx/jz4780-cgu.c                    | 742 +++++++++++++++++
+ drivers/clk/jz47xx/jz47xx-cgu.c                    | 723 ++++++++++++++++
+ drivers/clk/jz47xx/jz47xx-cgu.h                    | 205 +++++
+ drivers/tty/serial/8250/8250_jz47xx.c              | 225 +++++
+ drivers/tty/serial/8250/Kconfig                    |   9 +
+ drivers/tty/serial/8250/Makefile                   |   1 +
+ include/dt-bindings/clock/jz4740-cgu.h             |  37 +
+ include/dt-bindings/clock/jz4780-cgu.h             |  88 ++
+ 50 files changed, 3070 insertions(+), 1276 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/ingenic,jz4740-cgu.txt
+ create mode 100644 Documentation/devicetree/bindings/clock/ingenic,jz4780-cgu.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,jz4740-intc.txt
+ create mode 100644 Documentation/devicetree/bindings/serial/ingenic,jz4740-uart.txt
+ create mode 100644 arch/mips/boot/dts/ci20.dts
+ create mode 100644 arch/mips/boot/dts/jz4740.dtsi
+ create mode 100644 arch/mips/boot/dts/jz4780.dtsi
+ create mode 100644 arch/mips/boot/dts/qi_lb60.dts
+ create mode 100644 arch/mips/configs/ci20_defconfig
+ create mode 100644 arch/mips/include/asm/mach-generic/serial.h
+ create mode 100644 arch/mips/include/asm/mach-jz4740/serial.h
+ create mode 100644 arch/mips/include/asm/serial.h
+ delete mode 100644 arch/mips/jz4740/clock-debugfs.c
+ delete mode 100644 arch/mips/jz4740/clock.c
+ delete mode 100644 arch/mips/jz4740/clock.h
+ delete mode 100644 arch/mips/jz4740/serial.c
+ delete mode 100644 arch/mips/jz4740/serial.h
+ create mode 100644 drivers/clk/jz47xx/Makefile
+ create mode 100644 drivers/clk/jz47xx/jz4740-cgu.c
+ create mode 100644 drivers/clk/jz47xx/jz4780-cgu.c
+ create mode 100644 drivers/clk/jz47xx/jz47xx-cgu.c
+ create mode 100644 drivers/clk/jz47xx/jz47xx-cgu.h
+ create mode 100644 drivers/tty/serial/8250/8250_jz47xx.c
+ create mode 100644 include/dt-bindings/clock/jz4740-cgu.h
+ create mode 100644 include/dt-bindings/clock/jz4780-cgu.h
+
+-- 
+1.9.1

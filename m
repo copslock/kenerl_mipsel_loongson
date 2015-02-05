@@ -1,57 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2015 21:45:50 +0100 (CET)
-Received: from mga02.intel.com ([134.134.136.20]:31939 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012652AbbBEUpszPHjM convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Feb 2015 21:45:48 +0100
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP; 05 Feb 2015 12:45:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.09,525,1418112000"; 
-   d="scan'208";a="681574485"
-Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
-  by orsmga002.jf.intel.com with ESMTP; 05 Feb 2015 12:45:28 -0800
-Received: from fmsmsx119.amr.corp.intel.com (10.18.124.207) by
- ORSMSX108.amr.corp.intel.com (10.22.240.6) with Microsoft SMTP Server (TLS)
- id 14.3.195.1; Thu, 5 Feb 2015 12:45:27 -0800
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.89]) by
- FMSMSX119.amr.corp.intel.com ([169.254.14.146]) with mapi id 14.03.0195.001;
- Thu, 5 Feb 2015 12:45:26 -0800
-From:   "Wilcox, Matthew R" <matthew.r.wilcox@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     "Wu, Fengguang" <fengguang.wu@intel.com>,
-        "kbuild-all@01.org" <kbuild-all@01.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-arm-kernel@lists.arm.linux.org.uk" 
-        <linux-arm-kernel@lists.arm.linux.org.uk>
-Subject: RE: [next:master 4658/4676] undefined reference to `copy_user_page'
-Thread-Topic: [next:master 4658/4676] undefined reference to `copy_user_page'
-Thread-Index: AQHQQYFPWxPjAj38PUadBZCgaalnBJzif8vQgACHLQD//30oMA==
-Date:   Thu, 5 Feb 2015 20:45:26 +0000
-Message-ID: <100D68C7BA14664A8938383216E40DE0408569A1@FMSMSX114.amr.corp.intel.com>
-References: <201501221315.sbz4rdsB%fengguang.wu@intel.com>
-        <100D68C7BA14664A8938383216E40DE040853FB4@FMSMSX114.amr.corp.intel.com>
-        <20150205122115.8fe1037870b76d75afc3fb03@linux-foundation.org>
-        <100D68C7BA14664A8938383216E40DE040856952@FMSMSX114.amr.corp.intel.com>
- <20150205122552.1485c1439ec6c019e9443c51@linux-foundation.org>
-In-Reply-To: <20150205122552.1485c1439ec6c019e9443c51@linux-foundation.org>
-Accept-Language: en-CA, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.1.200.107]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2015 22:02:56 +0100 (CET)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27012657AbbBEVCxjc7Yp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Feb 2015 22:02:53 +0100
+Date:   Thu, 5 Feb 2015 21:02:53 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Joshua Kinard <kumba@gentoo.org>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Display CPU byteorder in /proc/cpuinfo
+In-Reply-To: <54D399F5.5030402@gmail.com>
+Message-ID: <alpine.LFD.2.11.1502051639110.22715@eddie.linux-mips.org>
+References: <54BCC827.3020806@gentoo.org> <54BEDF3C.6040105@gmail.com> <54BF12B9.8000507@gentoo.org> <alpine.LFD.2.11.1501210347180.28301@eddie.linux-mips.org> <20150126131621.GB31322@linux-mips.org> <alpine.LFD.2.11.1501261358540.28301@eddie.linux-mips.org>
+ <54C68429.4030701@gmail.com> <alpine.LFD.2.11.1501261904310.28301@eddie.linux-mips.org> <54C69FCE.80002@gmail.com> <alpine.LFD.2.11.1501262345320.28301@eddie.linux-mips.org> <54C7ED94.6070507@gmail.com> <alpine.LFD.2.11.1501272231190.28301@eddie.linux-mips.org>
+ <54D399F5.5030402@gmail.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Return-Path: <matthew.r.wilcox@intel.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45735
+X-archive-position: 45736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matthew.r.wilcox@intel.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,37 +38,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS: https://lkml.org/lkml/2015/1/31/1
-ARM: https://marc.info/?l=linaro-kernel&m=142253251904005&w=3
+On Thu, 5 Feb 2015, David Daney wrote:
 
------Original Message-----
-From: Andrew Morton [mailto:akpm@linux-foundation.org] 
-Sent: Thursday, February 05, 2015 12:26 PM
-To: Wilcox, Matthew R
-Cc: Wu, Fengguang; kbuild-all@01.org; Linux Memory Management List; linux-mips@linux-mips.org; linux-arm-kernel@lists.arm.linux.org.uk
-Subject: Re: [next:master 4658/4676] undefined reference to `copy_user_page'
+> >   Well, I do actually, I have a working machine driven by an R4000
+> > processor.  It was the original implementation of the Status.RE feature
+> > and therefore it can be used as the reference.  I don't feel tempted to
+> > use my time to actually make any checks though.
+> >
+> >   What I did instead, I checked the R4000 manual  ...
+> 
+> You are still relying on your interpretation of the text, rather than actual
+> behavior of the device.  It is not all surprising that your interpretation of
+> the manual hasn't changed, but it doesn't persuade me.
+> 
+> I am sticking to my belief that OCTEON faithfully implements the specification
+> with respect to the in-memory byte ordering of the various load and store
+> instructions.  Switching the endianess of the processor results in byte arrays
+> being scrambled such that the low-order 3 bits are XOR 7.  This implies that
+> aligned 64-bit loads and stores (LD, SD, LLC, SCD) result in identical
+> in-memory and in-register layout for either endianess.  This is quite handy
+> when writing driver code for devices that have 64-bit registers.
 
-On Thu, 5 Feb 2015 20:22:34 +0000 "Wilcox, Matthew R" <matthew.r.wilcox@intel.com> wrote:
+ Fair enough, this helps interfacing fixed-endian peripherals such as a 
+PCI bus.  Some MIPS-based SOCs map PCI/memory twice in the bus address 
+space for the benefit of big-endian systems, once with a byte lane 
+matching policy and again with a bit lane matching policy.  This results 
+in a swapped memory view between the two mapping spaces as seen by PCI 
+devices doing DMA.
 
-> 
-> -----Original Message-----
-> From: Andrew Morton [mailto:akpm@linux-foundation.org] 
-> Sent: Thursday, February 05, 2015 12:21 PM
-> To: Wilcox, Matthew R
-> Cc: Wu, Fengguang; kbuild-all@01.org; Linux Memory Management List; linux-mips@linux-mips.org; linux-arm-kernel@lists.arm.linux.org.uk
-> Subject: Re: [next:master 4658/4676] undefined reference to `copy_user_page'
-> 
-> On Thu, 22 Jan 2015 15:12:15 +0000 "Wilcox, Matthew R" <matthew.r.wilcox@intel.com> wrote:
-> 
-> > Looks like mips *declares* copy_user_page(), but never *defines* an implementation.
-> > 
-> > It's documented in Documentation/cachetlb.txt, but it's not (currently) called if the architecture defines its own copy_user_highpage(), so some bitrot has occurred.  ARM is currently fixing this, and MIPS will need to do the same.
-> > 
-> > (We can't use copy_user_highpage() in DAX because we don't necessarily have a struct page for 'from'.)
-> 
-> > Has there been any progress on this?  It would be unpleasant to merge
-> > DAX into 3.19 and break MIPS and ARM.
->
-> Yes, both MIPS and ARM have sent patches out for this.
+ What you describe refers to the bit lane matching policy which has 
+benefits for PIO and MMIO as values written to peripheral registers do not 
+change with a host bus endianness change (as long as accesses are as you 
+noted only made using a specific data width intended), in contrast to DMA 
+where the byte lane matching policy makes more sense as it makes byte 
+streams written to memory the same regardless of the host bus endianness.
 
-I'm not seeing either in linux-next.
+ What does it have to do with the user mode though?  Device drivers do not 
+usually run in the user mode and even if they do (such as X11 DDX), then 
+what would be the benefit for them from running in the reverse-endian 
+mode?  They'd have to cope with the rest of the environment being 
+byte-swapped anyway.  Having say a MMIO resource mapped as a region 
+configured in hardware for swapping with the bit lane matching policy 
+would make more sense than having the whole user binary (here the X 
+server) built for and run with the opposite endianness.
+
+ The use of CP0.Status.RE is different and it has to be implemented such 
+as to fulfil its purpose.  That for example may be running little-endian 
+DEC Ultrix/MIPS user binaries under a foreign personality on a big-endian 
+MIPS machine running SGI IRIX or Linux.  Of course with the demise of 
+proprietary *nix systems for the MIPS processor such a feature seems 
+little useful.
+
+  Maciej

@@ -1,48 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2015 20:37:03 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:59050 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012621AbbBEThBB2xfB convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Feb 2015 20:37:01 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id 3E51B1538A; Thu,  5 Feb 2015 19:36:54 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Joshua Kinard <kumba@gentoo.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Display CPU byteorder in /proc/cpuinfo
-References: <54BCC827.3020806@gentoo.org> <54BEDF3C.6040105@gmail.com>
-        <54BF12B9.8000507@gentoo.org>
-        <alpine.LFD.2.11.1501210347180.28301@eddie.linux-mips.org>
-        <20150126131621.GB31322@linux-mips.org>
-        <alpine.LFD.2.11.1501261358540.28301@eddie.linux-mips.org>
-        <54C68429.4030701@gmail.com>
-        <alpine.LFD.2.11.1501261904310.28301@eddie.linux-mips.org>
-        <54C69FCE.80002@gmail.com>
-        <alpine.LFD.2.11.1501262345320.28301@eddie.linux-mips.org>
-        <54C7ED94.6070507@gmail.com>
-        <alpine.LFD.2.11.1501272231190.28301@eddie.linux-mips.org>
-        <yw1xd25o9y3k.fsf@unicorn.mansr.com>
-        <alpine.LFD.2.11.1502051546540.22715@eddie.linux-mips.org>
-Date:   Thu, 05 Feb 2015 19:36:54 +0000
-In-Reply-To: <alpine.LFD.2.11.1502051546540.22715@eddie.linux-mips.org>
-        (Maciej W. Rozycki's message of "Thu, 5 Feb 2015 16:12:36 +0000
-        (GMT)")
-Message-ID: <yw1xzj8s8815.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2015 21:21:24 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41599 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012643AbbBEUVXDZYqi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Feb 2015 21:21:23 +0100
+Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.95])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 61C70ACE;
+        Thu,  5 Feb 2015 20:21:16 +0000 (UTC)
+Date:   Thu, 5 Feb 2015 12:21:15 -0800
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     "Wilcox, Matthew R" <matthew.r.wilcox@intel.com>
+Cc:     "Wu, Fengguang" <fengguang.wu@intel.com>,
+        "kbuild-all@01.org" <kbuild-all@01.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linux-arm-kernel@lists.arm.linux.org.uk
+Subject: Re: [next:master 4658/4676] undefined reference to `copy_user_page'
+Message-Id: <20150205122115.8fe1037870b76d75afc3fb03@linux-foundation.org>
+In-Reply-To: <100D68C7BA14664A8938383216E40DE040853FB4@FMSMSX114.amr.corp.intel.com>
+References: <201501221315.sbz4rdsB%fengguang.wu@intel.com>
+        <100D68C7BA14664A8938383216E40DE040853FB4@FMSMSX114.amr.corp.intel.com>
+X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45731
+X-archive-position: 45732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,27 +44,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-"Maciej W. Rozycki" <macro@linux-mips.org> writes:
+On Thu, 22 Jan 2015 15:12:15 +0000 "Wilcox, Matthew R" <matthew.r.wilcox@intel.com> wrote:
 
-> On Thu, 5 Feb 2015, Måns Rullgård wrote:
->
->> >> If you have access to processors with a working Status[RE] bit, you could
->> >> empirically determine how they work.
->> >
->> >  Well, I do actually, I have a working machine driven by an R4000 
->> > processor.  It was the original implementation of the Status.RE feature 
->> > and therefore it can be used as the reference.  I don't feel tempted to 
->> > use my time to actually make any checks though.
->> 
->> Is it reasonably easy to test this on an R10000 (SGI Octane) running
->> IRIX 6.5?
->
->  I doubt it.  I think the easiest way to experiment with this feature is 
-> to modify Linux so as to run its userland with CP0.Status.CU0 set to one 
+> Looks like mips *declares* copy_user_page(), but never *defines* an implementation.
+> 
+> It's documented in Documentation/cachetlb.txt, but it's not (currently) called if the architecture defines its own copy_user_highpage(), so some bitrot has occurred.  ARM is currently fixing this, and MIPS will need to do the same.
+> 
+> (We can't use copy_user_highpage() in DAX because we don't necessarily have a struct page for 'from'.)
 
-Unfortunately, this machine doesn't have Linux installed, and I can't
-find an easy way to change the status register for userspace under IRIX.
-
--- 
-Måns Rullgård
-mans@mansr.com
+Has there been any progress on this?  It would be unpleasant to merge
+DAX into 3.19 and break MIPS and ARM.

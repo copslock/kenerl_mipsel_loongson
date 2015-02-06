@@ -1,60 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2015 01:09:35 +0100 (CET)
-Received: from mail-lb0-f170.google.com ([209.85.217.170]:47236 "EHLO
-        mail-lb0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012700AbbBFAJcoOLom (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Feb 2015 01:09:32 +0100
-Received: by mail-lb0-f170.google.com with SMTP id w7so13174909lbi.1
-        for <linux-mips@linux-mips.org>; Thu, 05 Feb 2015 16:09:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=z64PWdWIzoGWXJjf7lIO+jm3PijMIOfq2Qt/CkGOkkA=;
-        b=MD3eb6I/JuJ93i0dumKywivi5WE09XA3UCpVIMHDBosHZ2QNxq/kQcT/7hqV6VQZEq
-         tySPh5NDmQ+2bbPXCefxlDB2TUOgyrdE87WAdK95AgGKn0fiUDI+AdCfOWsCwb44rRQJ
-         mWl6LN2fnunUHouHK5jiMgFd+t6Lc1H9S5RRxHzv7qiZjNePTlN6pLSGhNUYelxny8Kq
-         SzyQqAK0e9lmGLD7soeWtGFA1t7yM4okEK7DT2xqa0nsx8a5eDqLrDgTNMyyichD1hWd
-         ax93Kdy2y/80804EapTCNS/GP/djmtz8EJEYaD+S1dcNsmaIB5D1JpV+ShLOWZfpmdjR
-         +clg==
-X-Gm-Message-State: ALoCoQmyb8jOkyhQO6fH3t90sEQIUmAL1Sbx11m1m3i2UR/u7XxRSxPNw8UiE7m5/tGKWnItCYTi
-X-Received: by 10.152.178.197 with SMTP id da5mr504732lac.87.1423181366599;
- Thu, 05 Feb 2015 16:09:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2015 01:10:33 +0100 (CET)
+Received: from mga14.intel.com ([192.55.52.115]:65449 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012700AbbBFAKaY9iun convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Feb 2015 01:10:30 +0100
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP; 05 Feb 2015 16:03:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.97,862,1389772800"; 
+   d="scan'208";a="450497355"
+Received: from kmsmsx151.gar.corp.intel.com ([172.21.73.86])
+  by FMSMGA003.fm.intel.com with ESMTP; 05 Feb 2015 15:56:01 -0800
+Received: from kmsmsx154.gar.corp.intel.com (172.21.73.14) by
+ KMSMSX151.gar.corp.intel.com (172.21.73.86) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Fri, 6 Feb 2015 08:10:17 +0800
+Received: from shsmsx103.ccr.corp.intel.com (10.239.110.14) by
+ KMSMSX154.gar.corp.intel.com (172.21.73.14) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Fri, 6 Feb 2015 08:10:16 +0800
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.62]) by
+ SHSMSX103.ccr.corp.intel.com ([169.254.4.197]) with mapi id 14.03.0195.001;
+ Fri, 6 Feb 2015 08:10:16 +0800
+From:   "Wang, Xiaoming" <xiaoming.wang@intel.com>
+To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
+        "david.vrabel@citrix.com" <david.vrabel@citrix.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "linux@horizon.com" <linux@horizon.com>,
+        "lauraa@codeaurora.org" <lauraa@codeaurora.org>,
+        "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
+        "d.kasatkin@samsung.com" <d.kasatkin@samsung.com>,
+        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>,
+        "chris@chris-wilson.co.uk" <chris@chris-wilson.co.uk>,
+        "pebolle@tiscali.nl" <pebolle@tiscali.nl>,
+        "Liu, Chuansheng" <chuansheng.liu@intel.com>,
+        "Zhang, Dongxing" <dongxing.zhang@intel.com>
+Subject: RE: [PATCH] modify the IO_TLB_SEGSIZE to io_tlb_segsize
+ configurable as flexible requirement about SW-IOMMU.
+Thread-Topic: [PATCH] modify the IO_TLB_SEGSIZE to io_tlb_segsize
+ configurable as flexible requirement about SW-IOMMU.
+Thread-Index: AQHQQRJJKhpis9DUDUadJ41Llkm2a5zh7MKAgADSw2A=
+Date:   Fri, 6 Feb 2015 00:10:15 +0000
+Message-ID: <FA47D36D6EC9FE4CB463299737C09B9901CF8CE6@shsmsx102.ccr.corp.intel.com>
+References: <1423177274-22118-1-git-send-email-xiaoming.wang@intel.com>
+ <20150205193241.GC11646@x230.dumpdata.com>
+In-Reply-To: <20150205193241.GC11646@x230.dumpdata.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 10.152.205.98 with HTTP; Thu, 5 Feb 2015 16:09:06 -0800 (PST)
-In-Reply-To: <CAGXu5jLTH+mUF0JxeR2qA_r=ocWjPHPSK2OPgE0Fu_JKoQyQ9w@mail.gmail.com>
-References: <cover.1409954077.git.luto@amacapital.net> <2df320a600020fda055fccf2b668145729dd0c04.1409954077.git.luto@amacapital.net>
- <20150205211916.GA31367@altlinux.org> <CAGXu5j+aXxt55LsxxbNkfGGF719ubXBZ2JAFwUPNARwKMVFgng@mail.gmail.com>
- <20150205214027.GB31367@altlinux.org> <CALCETrXFzcXngHsX=_72hYZqms32Zf7oFYDBgC3XNw7zOGdDCA@mail.gmail.com>
- <CAGXu5jJtHT9o8WMoynifN13=uZoARt4G9iVcgZsc9xYOBEwWsg@mail.gmail.com>
- <20150205233945.GA31540@altlinux.org> <CAGXu5jLTH+mUF0JxeR2qA_r=ocWjPHPSK2OPgE0Fu_JKoQyQ9w@mail.gmail.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Thu, 5 Feb 2015 16:09:06 -0800
-Message-ID: <CALCETrXsCUje+_V=Ud+TB4A2jH2M7yqyoCFMLEyxOD6pd7Di5w@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] x86: Split syscall_trace_enter into two phases
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Dmitry V. Levin" <ldv@altlinux.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Will Drewry <wad@chromium.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Frederic Weisbecker <fweisbec@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Return-Path: <xiaoming.wang@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45744
+X-archive-position: 45745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: xiaoming.wang@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,93 +76,293 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Feb 5, 2015 at 3:49 PM, Kees Cook <keescook@chromium.org> wrote:
-> On Thu, Feb 5, 2015 at 3:39 PM, Dmitry V. Levin <ldv@altlinux.org> wrote:
->> On Thu, Feb 05, 2015 at 03:12:39PM -0800, Kees Cook wrote:
->>> On Thu, Feb 5, 2015 at 1:52 PM, Andy Lutomirski <luto@amacapital.net> wrote:
->>> > On Thu, Feb 5, 2015 at 1:40 PM, Dmitry V. Levin <ldv@altlinux.org> wrote:
->>> >> On Thu, Feb 05, 2015 at 01:27:16PM -0800, Kees Cook wrote:
->>> >>> On Thu, Feb 5, 2015 at 1:19 PM, Dmitry V. Levin <ldv@altlinux.org> wrote:
->>> >>> > Hi,
->>> >>> >
->>> >>> > On Fri, Sep 05, 2014 at 03:13:54PM -0700, Andy Lutomirski wrote:
->>> >>> >> This splits syscall_trace_enter into syscall_trace_enter_phase1 and
->>> >>> >> syscall_trace_enter_phase2.  Only phase 2 has full pt_regs, and only
->>> >>> >> phase 2 is permitted to modify any of pt_regs except for orig_ax.
->>> >>> >
->>> >>> > This breaks ptrace, see below.
->>> >>> >
->> [...]
->>> >>> >> +             ret = seccomp_phase1(&sd);
->>> >>> >> +             if (ret == SECCOMP_PHASE1_SKIP) {
->>> >>> >> +                     regs->orig_ax = -1;
->>> >>> >
->>> >>> > How the tracer is expected to get the correct syscall number after that?
->>> >>>
->>> >>> There shouldn't be a tracer if a skip is encountered. (A seccomp skip
->>> >>> would skip ptrace.) This behavior hasn't changed, but maybe I don't
->>> >>> see what you mean? (I haven't encountered any problems with syscall
->>> >>> tracing as a result of these changes.)
->>> >>
->>> >> SECCOMP_RET_ERRNO leads to SECCOMP_PHASE1_SKIP, and if there is a tracer,
->>> >> it will get -1 as a syscall number.
->>> >>
->>> >> I've found this while testing a strace parser for
->>> >> SECCOMP_MODE_FILTER/SECCOMP_SET_MODE_FILTER, so the problem is quite real.
->>> >
->>> > Hasn't it always been this way?
->>>
->>> As far as I know, yes, it's always been this way. The point is to the
->>> skip the syscall, which is what the -1 signals. Userspace then reads
->>> back the errno.
->>
->> There is a clear difference: before these changes, SECCOMP_RET_ERRNO used
->> to keep the syscall number unchanged and suppress syscall-exit-stop event,
->> which was awful because userspace cannot distinguish syscall-enter-stop
->> from syscall-exit-stop and therefore relies on the kernel that
->> syscall-enter-stop is followed by syscall-exit-stop (or tracee's death, etc.).
->>
->> After these changes, SECCOMP_RET_ERRNO no longer causes syscall-exit-stop
->> events to be suppressed, but now the syscall number is lost.
->
-> Ah-ha! Okay, thanks, I understand now. I think this means seccomp
-> phase1 should not treat RET_ERRNO as a "skip" event. Andy, what do you
-> think here?
->
 
-I still don't quite see how this change caused this.  I can play with
-it a bit more.  But RET_ERRNO *has* to be some kind of skip event,
-because it needs to skip the syscall.
 
-We could change this by treating RET_ERRNO as an instruction to enter
-phase 2 and then asking for a skip in phase 2 without changing
-orig_ax, but IMO this is pretty ugly.
-
-I think this all kind of sucks.  We're trying to run ptrace after
-seccomp, so ptrace is seeing the syscalls as transformed by seccomp.
-That means that if we use RET_TRAP, then ptrace will see the
-possibly-modified syscall, if we use RET_ERRNO, then ptrace is (IMO
-correctly given the current design) showing syscall -1, and if we use
-RET_KILL, then ptrace just sees the process mysteriously die.
-
-I think it would be more useful and easier to understand if ptrace saw
-syscalls as the traced process saw them, i.e. before seccomp
-modification.  How would this meaningfully increase the attack
-surface?  As far as ptrace is concerned, a syscall is just seven
-numbers, and as long as a process can issue *any* syscall that seccomp
-allows, then it can invoke the ptrace hooks.  I don't think the
-entry/exit hooks care *at all* about the syscall nr or args.
-
-Audit is a different story.  I think we should absolutely continue to
-audit syscalls that actually happen, not syscalls that were requested.
-
-Given this bug, I doubt we'd break anything if we changed it, since it
-appears that it's already rather broken.  Also, changing it would make
-me happy, because I want to add a SECCOMP_RET_MONITOR that freezes the
-process, sends an event to a seccompfd, and then executes syscalls as
-requested by the holder of the seccompfd.  Those syscalls would, in
-turn, be filtered again through inner layers of seccomp.  One sticking
-point would be that the current ptrace behavior is very hard to
-reconcile with this type of feature.
-
---Andy
+> -----Original Message-----
+> From: Konrad Rzeszutek Wilk [mailto:konrad.wilk@oracle.com]
+> Sent: Friday, February 6, 2015 3:33 AM
+> To: Wang, Xiaoming
+> Cc: ralf@linux-mips.org; boris.ostrovsky@oracle.com;
+> david.vrabel@citrix.com; linux-mips@linux-mips.org; linux-
+> kernel@vger.kernel.org; xen-devel@lists.xenproject.org; akpm@linux-
+> foundation.org; linux@horizon.com; lauraa@codeaurora.org;
+> heiko.carstens@de.ibm.com; d.kasatkin@samsung.com;
+> takahiro.akashi@linaro.org; chris@chris-wilson.co.uk; pebolle@tiscali.nl; Liu,
+> Chuansheng; Zhang, Dongxing
+> Subject: Re: [PATCH] modify the IO_TLB_SEGSIZE to io_tlb_segsize
+> configurable as flexible requirement about SW-IOMMU.
+> 
+> On Fri, Feb 06, 2015 at 07:01:14AM +0800, xiaomin1 wrote:
+> > The maximum of SW-IOMMU is limited to 2^11*128 = 256K.
+> > While in different platform and different requirements this seems improper.
+> > So modify the IO_TLB_SEGSIZE to io_tlb_segsize as configurable is make
+> sense.
+> 
+> More details please. What is the issue you are hitting?
+> 
+Example:
+If 1M bytes are requied. There has an error like.
+[   31.474769] dwc3_otg 0000:00:16.0: dwc3_intel_byt_notify_charger_type(): dwc3_intel_byt_notify_charger_type: invalid SDP current!
+[   31.554077] android_work: sent uevent USB_STATE=CONNECTED
+[   31.564244] android_usb gadget: high-speed config #1: android
+[   31.571468] android_work: sent uevent USB_STATE=CONFIGURED
+[   31.942738] DMA: Out of SW-IOMMU space for 1048576 bytes at device gadget
+[   31.950345] Kernel panic - not syncing: DMA: Random memory could be DMA written
+[   31.950345] 
+[   31.960170] CPU: 1 PID: 172 Comm: droidboot Tainted: G        W    3.10.20-x86_64_byt-g1077f87 #2
+[   31.970086] Hardware name: Intel Corp. VALLEYVIEW C0 PLATFORM/BYT-T FFD8, BIOS BLADE_21.X64.0004.R14.1412311144 FFD8_X64_R_2014_12_31_1151 12/31/2014
+[   31.985053]  0000000000100000 ffff880136c2fc98 ffffffff82967d45 ffff880136c2fd10
+[   31.993327]  ffffffff82961761 0000000000000008 ffff880136c2fd20 ffff880136c2fcc0
+[   32.001590]  ffffffff829618fb 0000000000000002 ffffffff820aeff9 0000000000008d8c
+[   32.009871] Call Trace:
+[   32.012610]  [<ffffffff82967d45>] dump_stack+0x19/0x1b
+[   32.018353]  [<ffffffff82961761>] panic+0xc8/0x1d6
+[   32.023707]  [<ffffffff829618fb>] ? printk+0x55/0x57
+[   32.029258]  [<ffffffff820aeff9>] ? console_unlock+0x1f9/0x460
+[   32.035772]  [<ffffffff82347cbe>] swiotlb_map_page+0x12e/0x140
+[   32.042283]  [<ffffffff82599d4d>] usb_gadget_map_request+0x16d/0x220
+[   32.049387]  [<ffffffff8255ce89>] dwc3_gadget_ep_queue+0x229/0x460
+[   32.056297]  [<ffffffff825b4624>] ffs_epfile_io.isra.96+0x3e4/0x520
+[   32.063296]  [<ffffffff820e438d>] ? get_parent_ip+0xd/0x50
+[   32.069427]  [<ffffffff82975a61>] ? sub_preempt_count+0x71/0x100
+[   32.076142]  [<ffffffff825b47b8>] ffs_epfile_read+0x28/0x30
+[   32.082370]  [<ffffffff821b6b8c>] vfs_read+0x9c/0x170
+[   32.088014]  [<ffffffff821b765d>] SyS_read+0x4d/0xa0
+[   32.093562]  [<ffffffff8297b179>] ia32_do_call+0x13/0x13
+> >
+> > Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
+> > Signed-off-by: Zhang Dongxing <dongxing.zhang@intel.com>
+> > Signed-off-by: xiaomin1 <xiaoming.wang@intel.com>
+> > ---
+> >  arch/mips/cavium-octeon/dma-octeon.c |    2 +-
+> >  arch/mips/netlogic/common/nlm-dma.c  |    2 +-
+> >  drivers/xen/swiotlb-xen.c            |    6 +++---
+> >  include/linux/swiotlb.h              |    8 +------
+> >  lib/swiotlb.c                        |   39 ++++++++++++++++++++++++----------
+> >  5 files changed, 34 insertions(+), 23 deletions(-)
+> >
+> > diff --git a/arch/mips/cavium-octeon/dma-octeon.c
+> > b/arch/mips/cavium-octeon/dma-octeon.c
+> > index 3778655..a521af6 100644
+> > --- a/arch/mips/cavium-octeon/dma-octeon.c
+> > +++ b/arch/mips/cavium-octeon/dma-octeon.c
+> > @@ -312,7 +312,7 @@ void __init plat_swiotlb_setup(void)
+> >  		swiotlbsize = 64 * (1<<20);
+> >  #endif
+> >  	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
+> > -	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
+> > +	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
+> >  	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
+> >
+> >  	octeon_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
+> > diff --git a/arch/mips/netlogic/common/nlm-dma.c
+> > b/arch/mips/netlogic/common/nlm-dma.c
+> > index f3d4ae8..eeffa8f 100644
+> > --- a/arch/mips/netlogic/common/nlm-dma.c
+> > +++ b/arch/mips/netlogic/common/nlm-dma.c
+> > @@ -99,7 +99,7 @@ void __init plat_swiotlb_setup(void)
+> >
+> >  	swiotlbsize = 1 << 20; /* 1 MB for now */
+> >  	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
+> > -	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
+> > +	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
+> >  	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
+> >
+> >  	nlm_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
+> > diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+> > index 810ad41..3b3e9fe 100644
+> > --- a/drivers/xen/swiotlb-xen.c
+> > +++ b/drivers/xen/swiotlb-xen.c
+> > @@ -164,11 +164,11 @@ xen_swiotlb_fixup(void *buf, size_t size,
+> unsigned long nslabs)
+> >  	dma_addr_t dma_handle;
+> >  	phys_addr_t p = virt_to_phys(buf);
+> >
+> > -	dma_bits = get_order(IO_TLB_SEGSIZE << IO_TLB_SHIFT) +
+> PAGE_SHIFT;
+> > +	dma_bits = get_order(io_tlb_segsize << IO_TLB_SHIFT) + PAGE_SHIFT;
+> >
+> >  	i = 0;
+> >  	do {
+> > -		int slabs = min(nslabs - i, (unsigned long)IO_TLB_SEGSIZE);
+> > +		int slabs = min(nslabs - i, (unsigned long)io_tlb_segsize);
+> >
+> >  		do {
+> >  			rc = xen_create_contiguous_region( @@ -187,7
+> +187,7 @@ static
+> > unsigned long xen_set_nslabs(unsigned long nr_tbl)  {
+> >  	if (!nr_tbl) {
+> >  		xen_io_tlb_nslabs = (64 * 1024 * 1024 >> IO_TLB_SHIFT);
+> > -		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs,
+> IO_TLB_SEGSIZE);
+> > +		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, io_tlb_segsize);
+> >  	} else
+> >  		xen_io_tlb_nslabs = nr_tbl;
+> >
+> > diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h index
+> > e7a018e..13506db 100644
+> > --- a/include/linux/swiotlb.h
+> > +++ b/include/linux/swiotlb.h
+> > @@ -8,13 +8,7 @@ struct dma_attrs;
+> >  struct scatterlist;
+> >
+> >  extern int swiotlb_force;
+> > -
+> > -/*
+> > - * Maximum allowable number of contiguous slabs to map,
+> > - * must be a power of 2.  What is the appropriate value ?
+> > - * The complexity of {map,unmap}_single is linearly dependent on this
+> value.
+> > - */
+> > -#define IO_TLB_SEGSIZE	128
+> > +extern int io_tlb_segsize;
+> >
+> >  /*
+> >   * log of the size of each IO TLB slab.  The number of slabs is
+> > command line diff --git a/lib/swiotlb.c b/lib/swiotlb.c index
+> > 4abda07..50c415a 100644
+> > --- a/lib/swiotlb.c
+> > +++ b/lib/swiotlb.c
+> > @@ -56,6 +56,15 @@
+> >  int swiotlb_force;
+> >
+> >  /*
+> > + * Maximum allowable number of contiguous slabs to map,
+> > + * must be a power of 2.  What is the appropriate value ?
+> > + * define io_tlb_segsize as a parameter
+> > + * which can be changed dynamically in config file for special usage.
+> > + * The complexity of {map,unmap}_single is linearly dependent on this
+> value.
+> > + */
+> > +int io_tlb_segsize = 128;
+> > +
+> > +/*
+> >   * Used to do a quick range check in swiotlb_tbl_unmap_single and
+> >   * swiotlb_tbl_sync_single_*, to see if the memory was in fact allocated by
+> this
+> >   * API.
+> > @@ -97,12 +106,20 @@ static DEFINE_SPINLOCK(io_tlb_lock);  static int
+> > late_alloc;
+> >
+> >  static int __init
+> > +setup_io_tlb_segsize(char *str)
+> > +{
+> > +	get_option(&str, &io_tlb_segsize);
+> > +	return 0;
+> > +}
+> > +__setup("io_tlb_segsize=", setup_io_tlb_segsize);
+> > +
+> > +static int __init
+> >  setup_io_tlb_npages(char *str)
+> >  {
+> >  	if (isdigit(*str)) {
+> >  		io_tlb_nslabs = simple_strtoul(str, &str, 0);
+> > -		/* avoid tail segment of size < IO_TLB_SEGSIZE */
+> > -		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+> > +		/* avoid tail segment of size < io_tlb_segsize */
+> > +		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
+> >  	}
+> >  	if (*str == ',')
+> >  		++str;
+> > @@ -183,7 +200,7 @@ int __init swiotlb_init_with_tbl(char *tlb,
+> > unsigned long nslabs, int verbose)
+> >
+> >  	/*
+> >  	 * Allocate and initialize the free list array.  This array is used
+> > -	 * to find contiguous free memory regions of size up to
+> IO_TLB_SEGSIZE
+> > +	 * to find contiguous free memory regions of size up to
+> > +io_tlb_segsize
+> >  	 * between io_tlb_start and io_tlb_end.
+> >  	 */
+> >  	io_tlb_list = memblock_virt_alloc(
+> > @@ -193,7 +210,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned
+> long nslabs, int verbose)
+> >  				PAGE_ALIGN(io_tlb_nslabs *
+> sizeof(phys_addr_t)),
+> >  				PAGE_SIZE);
+> >  	for (i = 0; i < io_tlb_nslabs; i++) {
+> > -		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
+> > +		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
+> >  		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
+> >  	}
+> >  	io_tlb_index = 0;
+> > @@ -217,7 +234,7 @@ swiotlb_init(int verbose)
+> >
+> >  	if (!io_tlb_nslabs) {
+> >  		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
+> > -		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+> > +		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
+> >  	}
+> >
+> >  	bytes = io_tlb_nslabs << IO_TLB_SHIFT; @@ -249,7 +266,7 @@
+> > swiotlb_late_init_with_default_size(size_t default_size)
+> >
+> >  	if (!io_tlb_nslabs) {
+> >  		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
+> > -		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+> > +		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
+> >  	}
+> >
+> >  	/*
+> > @@ -308,7 +325,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned
+> > long nslabs)
+> >
+> >  	/*
+> >  	 * Allocate and initialize the free list array.  This array is used
+> > -	 * to find contiguous free memory regions of size up to
+> IO_TLB_SEGSIZE
+> > +	 * to find contiguous free memory regions of size up to
+> > +io_tlb_segsize
+> >  	 * between io_tlb_start and io_tlb_end.
+> >  	 */
+> >  	io_tlb_list = (unsigned int *)__get_free_pages(GFP_KERNEL, @@ -
+> 324,7
+> > +341,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+> >  		goto cleanup4;
+> >
+> >  	for (i = 0; i < io_tlb_nslabs; i++) {
+> > -		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
+> > +		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
+> >  		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
+> >  	}
+> >  	io_tlb_index = 0;
+> > @@ -493,7 +510,7 @@ phys_addr_t swiotlb_tbl_map_single(struct device
+> > *hwdev,
+> >
+> >  			for (i = index; i < (int) (index + nslots); i++)
+> >  				io_tlb_list[i] = 0;
+> > -			for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) !=
+> IO_TLB_SEGSIZE - 1) && io_tlb_list[i]; i--)
+> > +			for (i = index - 1; (OFFSET(i, io_tlb_segsize) !=
+> io_tlb_segsize -
+> > +1) && io_tlb_list[i]; i--)
+> >  				io_tlb_list[i] = ++count;
+> >  			tlb_addr = io_tlb_start + (index << IO_TLB_SHIFT);
+> >
+> > @@ -571,7 +588,7 @@ void swiotlb_tbl_unmap_single(struct device
+> *hwdev, phys_addr_t tlb_addr,
+> >  	 */
+> >  	spin_lock_irqsave(&io_tlb_lock, flags);
+> >  	{
+> > -		count = ((index + nslots) < ALIGN(index + 1, IO_TLB_SEGSIZE) ?
+> > +		count = ((index + nslots) < ALIGN(index + 1, io_tlb_segsize) ?
+> >  			 io_tlb_list[index + nslots] : 0);
+> >  		/*
+> >  		 * Step 1: return the slots to the free list, merging the @@ -
+> 585,7
+> > +602,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev,
+> phys_addr_t tlb_addr,
+> >  		 * Step 2: merge the returned slots with the preceding slots,
+> >  		 * if available (non zero)
+> >  		 */
+> > -		for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) !=
+> IO_TLB_SEGSIZE -1) && io_tlb_list[i]; i--)
+> > +		for (i = index - 1; (OFFSET(i, io_tlb_segsize) != io_tlb_segsize
+> > +-1) && io_tlb_list[i]; i--)
+> >  			io_tlb_list[i] = ++count;
+> >  	}
+> >  	spin_unlock_irqrestore(&io_tlb_lock, flags);
+> > --
+> > 1.7.9.5
+> >

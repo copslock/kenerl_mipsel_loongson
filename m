@@ -1,61 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2015 03:39:18 +0100 (CET)
-Received: from mail-lb0-f171.google.com ([209.85.217.171]:47118 "EHLO
-        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012718AbbBFCjQhhjc0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Feb 2015 03:39:16 +0100
-Received: by mail-lb0-f171.google.com with SMTP id u14so14042189lbd.2
-        for <linux-mips@linux-mips.org>; Thu, 05 Feb 2015 18:39:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=ASc40LRnSCNtf0q+oXPHb0vxBIJIJpGrdfdg5fmExao=;
-        b=fSgzod3HTrFc+Ny1MFv2C9HavngzWXop/i4XIBh3TBxo7Wt+qz+XaRji3F6m5ekKFj
-         xYYEh23Ag/7bNYgF1UI8UPd08B5J1gy0NDEQuC7tuDCW0TO0fDDAtwYL5GFPfbK197Gg
-         QhX/jZgTOWgGAX1iCjxlTYum6Axh82tPs/HI2k64H7Mv+ubtwIs2xdkHXB1/jj5o5QK4
-         2EIUYUdBLLm0wSLeBdBKudirZypqXPkz5rMEyZpXkghY74L8UDTIhygt2AZPdM6MuRd5
-         P449UDvNAdcnMWRTih0YuYQ/aOcR7d4a3C1HZU9Ft6G/QL3RqxDBBx2gmM8FcvFxjRy5
-         0a+w==
-X-Gm-Message-State: ALoCoQn3HgRkdc/NVriim9o2QCgjQx6fgS29cCwK6sm0fHSdqQXsGRtTrVj5I4AiXwFJHlJfk6sb
-X-Received: by 10.112.138.66 with SMTP id qo2mr798476lbb.123.1423190351361;
- Thu, 05 Feb 2015 18:39:11 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2015 11:09:15 +0100 (CET)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27012281AbbBFKJNbOWAG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Feb 2015 11:09:13 +0100
+Date:   Fri, 6 Feb 2015 10:09:13 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Daniel Sanders <Daniel.Sanders@imgtec.com>
+cc:     Toma Tabacu <Toma.Tabacu@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 3/5] MIPS: LLVMLinux: Fix an 'inline asm input/output
+ type mismatch' error.
+In-Reply-To: <E484D272A3A61B4880CDF2E712E9279F4591CDE8@hhmail02.hh.imgtec.org>
+Message-ID: <alpine.LFD.2.11.1502060918480.22715@eddie.linux-mips.org>
+References: <1422970639-7922-1-git-send-email-daniel.sanders@imgtec.com> <1422970639-7922-4-git-send-email-daniel.sanders@imgtec.com> <alpine.LFD.2.11.1502041151300.22715@eddie.linux-mips.org>
+ <E484D272A3A61B4880CDF2E712E9279F4591CDE8@hhmail02.hh.imgtec.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Received: by 10.152.205.98 with HTTP; Thu, 5 Feb 2015 18:38:51 -0800 (PST)
-In-Reply-To: <20150206023249.GB31540@altlinux.org>
-References: <cover.1409954077.git.luto@amacapital.net> <2df320a600020fda055fccf2b668145729dd0c04.1409954077.git.luto@amacapital.net>
- <20150205211916.GA31367@altlinux.org> <CAGXu5j+aXxt55LsxxbNkfGGF719ubXBZ2JAFwUPNARwKMVFgng@mail.gmail.com>
- <20150205214027.GB31367@altlinux.org> <CALCETrXFzcXngHsX=_72hYZqms32Zf7oFYDBgC3XNw7zOGdDCA@mail.gmail.com>
- <CAGXu5jJtHT9o8WMoynifN13=uZoARt4G9iVcgZsc9xYOBEwWsg@mail.gmail.com>
- <20150205233945.GA31540@altlinux.org> <CAGXu5jLTH+mUF0JxeR2qA_r=ocWjPHPSK2OPgE0Fu_JKoQyQ9w@mail.gmail.com>
- <CALCETrXsCUje+_V=Ud+TB4A2jH2M7yqyoCFMLEyxOD6pd7Di5w@mail.gmail.com> <20150206023249.GB31540@altlinux.org>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Thu, 5 Feb 2015 18:38:51 -0800
-Message-ID: <CALCETrWTnqKDoatK+5FN=yYDOeENoW5=r5YMToYKhZ8Zfv5wWA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] x86: Split syscall_trace_enter into two phases
-To:     "Dmitry V. Levin" <ldv@altlinux.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Will Drewry <wad@chromium.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Frederic Weisbecker <fweisbec@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45748
+X-archive-position: 45749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,69 +41,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Feb 5, 2015 at 6:32 PM, Dmitry V. Levin <ldv@altlinux.org> wrote:
-> On Thu, Feb 05, 2015 at 04:09:06PM -0800, Andy Lutomirski wrote:
->> On Thu, Feb 5, 2015 at 3:49 PM, Kees Cook <keescook@chromium.org> wrote:
->> > On Thu, Feb 5, 2015 at 3:39 PM, Dmitry V. Levin <ldv@altlinux.org> wrote:
-> [...]
->> >> There is a clear difference: before these changes, SECCOMP_RET_ERRNO used
->> >> to keep the syscall number unchanged and suppress syscall-exit-stop event,
->> >> which was awful because userspace cannot distinguish syscall-enter-stop
->> >> from syscall-exit-stop and therefore relies on the kernel that
->> >> syscall-enter-stop is followed by syscall-exit-stop (or tracee's death, etc.).
->> >>
->> >> After these changes, SECCOMP_RET_ERRNO no longer causes syscall-exit-stop
->> >> events to be suppressed, but now the syscall number is lost.
->> >
->> > Ah-ha! Okay, thanks, I understand now. I think this means seccomp
->> > phase1 should not treat RET_ERRNO as a "skip" event. Andy, what do you
->> > think here?
->>
->> I still don't quite see how this change caused this.
->
-> I have a test for this at
-> http://sourceforge.net/p/strace/code/ci/HEAD/~/tree/test/seccomp.c
->
->> I can play with
->> it a bit more.  But RET_ERRNO *has* to be some kind of skip event,
->> because it needs to skip the syscall.
->>
->> We could change this by treating RET_ERRNO as an instruction to enter
->> phase 2 and then asking for a skip in phase 2 without changing
->> orig_ax, but IMO this is pretty ugly.
->>
->> I think this all kind of sucks.  We're trying to run ptrace after
->> seccomp, so ptrace is seeing the syscalls as transformed by seccomp.
->> That means that if we use RET_TRAP, then ptrace will see the
->> possibly-modified syscall, if we use RET_ERRNO, then ptrace is (IMO
->> correctly given the current design) showing syscall -1, and if we use
->> RET_KILL, then ptrace just sees the process mysteriously die.
->
-> Userspace is usually not prepared to see syscall -1.
-> For example, strace had to be patched, otherwise it just skipped such
-> syscalls as "not a syscall" events or did other improper things:
-> http://sourceforge.net/p/strace/code/ci/c3948327717c29b10b5e00a436dc138b4ab1a486
-> http://sourceforge.net/p/strace/code/ci/8e398b6c4020fb2d33a5b3e40271ebf63199b891
->
+On Thu, 5 Feb 2015, Daniel Sanders wrote:
 
-The x32 thing is a legit ABI bug, I'd argue.  I'd be happy to submit a
-patch to fix that (clear the x32 bit if we're not x32).
+> Apologies for the slow response. I've had an excessive amount of 
+> meetings in the last couple days.
 
-> A slightly different but related story: userspace is also not prepared
-> to handle large errno values produced by seccomp filters like this:
-> BPF_STMT(BPF_RET, SECCOMP_RET_ERRNO | SECCOMP_RET_DATA)
->
-> For example, glibc assumes that syscalls do not return errno values greater than 0xfff:
-> https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/x86_64/sysdep.h#l55
-> https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/x86_64/syscall.S#l20
->
-> If it isn't too late, I'd recommend changing SECCOMP_RET_DATA mask
-> applied in SECCOMP_RET_ERRNO case from current 0xffff to 0xfff.
+ No worries, if anyone, it's not me in a hurry here. ;)
 
-I think this is solidly in the "don't do that" category.  Seccomp lets
-you tamper with syscalls.  If you tamper wrong, then you lose.
+> >  This definitely looks like a bug in clang to me.  What this construct
+> > means is both input #5 and output #1 live in the same register, and that
+> > an `__u32' value is taken on input (from the result of the `htonl(proto)'
+> > calculation) and an `unsigned short' value produced in the same register
+> > on output, that'll be the value of the `proto' variable from there on.  A
+> > perfectly valid arrangement.  This would be the right arrangement to use
+> > with the MIPS16 SEH instruction for example.  Has this bug been reported
+> > to clang maintainers?
+> 
+> I'm not convinced it's a bug, but I do at least agree that the use case sounds
+> sensible. It makes sense to me that the focus should be on register allocations
+> rather than on types. However, the relevant clang source is being very specific
+> about the cases it is/isn't allowing which suggests it's deliberate. I've started a
+> thread on the clang mailing list to try to find out more about why we currently
+> reject it.
 
-Kees, what do you think about reversing the whole thing so that
-ptracers always see the original syscall?
+ I think it boils down to the register model implemented by a given 
+architecture.  MIPS processors do not have subregisters for integer data 
+quantities narrower than the size of the machine word.  The same GPR will 
+hold a `char', a `short' or an `int', and therefore it is perfectly valid 
+to arrange that it holds say an `int' on input and say a `short' on 
+output.  So given an artificial example like this:
 
---Andy
+short foo(int i)
+{
+	short v;
+
+	asm("frob %0" : "=r" (v) : "0" (i));
+	return v;
+}
+
+the compiler knows it does not have to truncate the result of the 
+calculation made in the asm before returning it to the caller, which it 
+would unnecessarily have with this code:
+
+short foo(int i)
+{
+	asm("frob %0" : "+r" (i));
+	return i;
+}
+
+ This is unlike some other architectures.  On x86 for example you do have 
+subregisters, so for example an `int' will be stored in %eax, a short will 
+be stored in %ax, and a `char' will be stored in %al, or worse yet, %ah.  
+Consequently you may not be able to alias an input operand and an output 
+operand of a different width each to each other.
+
+ Also I think it is important to note that in the (first) example above, 
+`i' and `v' are separate data entities as far as C code is concerned.  
+And that the operands of the asm merely tell the C compiler that the value 
+of `i' must appear in a register (that need not be the variable's original 
+storage location) on entry to the asm and the value to set `v' to will 
+appear in a register (that again need not be the place where the actual 
+variable lives) on exit from the asm, and that the two registers must be 
+physically the same (presumably because of a machine limitation, such as 
+one observed with the MIPS16 SEH instruction mentioned), but that does not 
+mean the input and the output otherwise have anything in common.
+
+ And last but not least, the extended asm feature is a GCC extension, so 
+if clang developers chose to implement it for GCC compatibility, then I am 
+afraid they need to follow the rules set by GCC.  So if GCC accepts it, 
+they need too.
+
+> Yes, that works for me on both GCC and Clang. I'll change the patch to this.
+> Would you like a 'Suggested-By' in the patch description?
+
+ Sure.
+
+  Maciej

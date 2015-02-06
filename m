@@ -1,34 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2015 11:09:15 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27012281AbbBFKJNbOWAG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Feb 2015 11:09:13 +0100
-Date:   Fri, 6 Feb 2015 10:09:13 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Daniel Sanders <Daniel.Sanders@imgtec.com>
-cc:     Toma Tabacu <Toma.Tabacu@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 3/5] MIPS: LLVMLinux: Fix an 'inline asm input/output
- type mismatch' error.
-In-Reply-To: <E484D272A3A61B4880CDF2E712E9279F4591CDE8@hhmail02.hh.imgtec.org>
-Message-ID: <alpine.LFD.2.11.1502060918480.22715@eddie.linux-mips.org>
-References: <1422970639-7922-1-git-send-email-daniel.sanders@imgtec.com> <1422970639-7922-4-git-send-email-daniel.sanders@imgtec.com> <alpine.LFD.2.11.1502041151300.22715@eddie.linux-mips.org>
- <E484D272A3A61B4880CDF2E712E9279F4591CDE8@hhmail02.hh.imgtec.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2015 17:18:43 +0100 (CET)
+Received: from bes.se.axis.com ([195.60.68.10]:54406 "EHLO bes.se.axis.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012752AbbBFQSl7UbtM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 Feb 2015 17:18:41 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by bes.se.axis.com (Postfix) with ESMTP id C986C2E495;
+        Fri,  6 Feb 2015 17:18:36 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
+Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id X1Hqdxa9K9Oj; Fri,  6 Feb 2015 17:18:36 +0100 (CET)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bes.se.axis.com (Postfix) with ESMTP id 3C4F42E494;
+        Fri,  6 Feb 2015 17:18:36 +0100 (CET)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 25305EF2;
+        Fri,  6 Feb 2015 17:18:36 +0100 (CET)
+Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
+        by boulder.se.axis.com (Postfix) with ESMTP id 19FACC31;
+        Fri,  6 Feb 2015 17:18:36 +0100 (CET)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by seth.se.axis.com (Postfix) with ESMTP id 17A9F3E282;
+        Fri,  6 Feb 2015 17:18:36 +0100 (CET)
+Received: from lnxniklass.se.axis.com (10.94.49.1) by xmail2.se.axis.com
+ (10.0.5.74) with Microsoft SMTP Server (TLS) id 8.3.342.0; Fri, 6 Feb 2015
+ 17:18:35 +0100
+From:   Niklas Cassel <niklas.cassel@axis.com>
+To:     <ralf@linux-mips.org>
+CC:     <abrestic@chromium.org>, <linux-mips@linux-mips.org>,
+        Niklas Cassel <niklass@axis.com>
+Subject: [PATCH] MIPS: sead3: Corrected get_c0_perfcount_int
+Date:   Fri, 6 Feb 2015 17:18:29 +0100
+Message-ID: <1423239509-1432-1-git-send-email-niklass@axis.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain
+Return-Path: <niklas.cassel@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45749
+X-archive-position: 45750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: niklas.cassel@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,79 +56,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 5 Feb 2015, Daniel Sanders wrote:
+Commit e9de688dac65 ("irqchip: mips-gic: Support local interrupts")
+updated several platforms. This is a copy paste error.
 
-> Apologies for the slow response. I've had an excessive amount of 
-> meetings in the last couple days.
+Signed-off-by: Niklas Cassel <niklass@axis.com>
+---
+ arch/mips/mti-sead3/sead3-time.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- No worries, if anyone, it's not me in a hurry here. ;)
-
-> >  This definitely looks like a bug in clang to me.  What this construct
-> > means is both input #5 and output #1 live in the same register, and that
-> > an `__u32' value is taken on input (from the result of the `htonl(proto)'
-> > calculation) and an `unsigned short' value produced in the same register
-> > on output, that'll be the value of the `proto' variable from there on.  A
-> > perfectly valid arrangement.  This would be the right arrangement to use
-> > with the MIPS16 SEH instruction for example.  Has this bug been reported
-> > to clang maintainers?
-> 
-> I'm not convinced it's a bug, but I do at least agree that the use case sounds
-> sensible. It makes sense to me that the focus should be on register allocations
-> rather than on types. However, the relevant clang source is being very specific
-> about the cases it is/isn't allowing which suggests it's deliberate. I've started a
-> thread on the clang mailing list to try to find out more about why we currently
-> reject it.
-
- I think it boils down to the register model implemented by a given 
-architecture.  MIPS processors do not have subregisters for integer data 
-quantities narrower than the size of the machine word.  The same GPR will 
-hold a `char', a `short' or an `int', and therefore it is perfectly valid 
-to arrange that it holds say an `int' on input and say a `short' on 
-output.  So given an artificial example like this:
-
-short foo(int i)
-{
-	short v;
-
-	asm("frob %0" : "=r" (v) : "0" (i));
-	return v;
-}
-
-the compiler knows it does not have to truncate the result of the 
-calculation made in the asm before returning it to the caller, which it 
-would unnecessarily have with this code:
-
-short foo(int i)
-{
-	asm("frob %0" : "+r" (i));
-	return i;
-}
-
- This is unlike some other architectures.  On x86 for example you do have 
-subregisters, so for example an `int' will be stored in %eax, a short will 
-be stored in %ax, and a `char' will be stored in %al, or worse yet, %ah.  
-Consequently you may not be able to alias an input operand and an output 
-operand of a different width each to each other.
-
- Also I think it is important to note that in the (first) example above, 
-`i' and `v' are separate data entities as far as C code is concerned.  
-And that the operands of the asm merely tell the C compiler that the value 
-of `i' must appear in a register (that need not be the variable's original 
-storage location) on entry to the asm and the value to set `v' to will 
-appear in a register (that again need not be the place where the actual 
-variable lives) on exit from the asm, and that the two registers must be 
-physically the same (presumably because of a machine limitation, such as 
-one observed with the MIPS16 SEH instruction mentioned), but that does not 
-mean the input and the output otherwise have anything in common.
-
- And last but not least, the extended asm feature is a GCC extension, so 
-if clang developers chose to implement it for GCC compatibility, then I am 
-afraid they need to follow the rules set by GCC.  So if GCC accepts it, 
-they need too.
-
-> Yes, that works for me on both GCC and Clang. I'll change the patch to this.
-> Would you like a 'Suggested-By' in the patch description?
-
- Sure.
-
-  Maciej
+diff --git a/arch/mips/mti-sead3/sead3-time.c b/arch/mips/mti-sead3/sead3-time.c
+index ec1dd24..e1d6989 100644
+--- a/arch/mips/mti-sead3/sead3-time.c
++++ b/arch/mips/mti-sead3/sead3-time.c
+@@ -72,7 +72,7 @@ void read_persistent_clock(struct timespec *ts)
+ int get_c0_perfcount_int(void)
+ {
+ 	if (gic_present)
+-		return gic_get_c0_compare_int();
++		return gic_get_c0_perfcount_int();
+ 	if (cp0_perfcount_irq >= 0)
+ 		return MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
+ 	return -1;
+-- 
+2.1.4

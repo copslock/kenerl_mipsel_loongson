@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2015 09:37:19 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51439 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2015 09:37:37 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:51442 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012968AbbBIIgkWxQdZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Feb 2015 09:36:40 +0100
+        by eddie.linux-mips.org with ESMTP id S27012970AbbBIIgm54HBX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Feb 2015 09:36:42 +0100
 Received: from localhost (unknown [113.28.134.59])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F14F1A6E;
-        Mon,  9 Feb 2015 08:36:33 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A9F96AD2;
+        Mon,  9 Feb 2015 08:36:36 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        stable@vger.kernel.org, Felix Fietkau <nbd@openwrt.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.18 10/39] MIPS: Fix C0_Pagegrain[IEC] support.
-Date:   Mon,  9 Feb 2015 16:33:53 +0800
-Message-Id: <20150209083329.257877001@linuxfoundation.org>
+Subject: [PATCH 3.18 11/39] MIPS: IRQ: Fix disable_irq on CPU IRQs
+Date:   Mon,  9 Feb 2015 16:33:54 +0800
+Message-Id: <20150209083329.302299905@linuxfoundation.org>
 X-Mailer: git-send-email 2.3.0
 In-Reply-To: <20150209083328.753647350@linuxfoundation.org>
 References: <20150209083328.753647350@linuxfoundation.org>
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45772
+X-archive-position: 45773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,47 +45,48 @@ X-list: linux-mips
 
 ------------------
 
-From: David Daney <david.daney@cavium.com>
+From: Felix Fietkau <nbd@openwrt.org>
 
-commit 9ead8632bbf454cfc709b6205dc9cd8582fb0d64 upstream.
+commit a3e6c1eff54878506b2dddcc202df9cc8180facb upstream.
 
-The following commits:
+If the irq_chip does not define .irq_disable, any call to disable_irq
+will defer disabling the IRQ until it fires while marked as disabled.
+This assumes that the handler function checks for this condition, which
+handle_percpu_irq does not. In this case, calling disable_irq leads to
+an IRQ storm, if the interrupt fires while disabled.
 
-  5890f70f15c52d (MIPS: Use dedicated exception handler if CPU supports RI/XI exceptions)
-  6575b1d4173eae (MIPS: kernel: cpu-probe: Detect unique RI/XI exceptions)
+This optimization is only useful when disabling the IRQ is slow, which
+is not true for the MIPS CPU IRQ.
 
-break the kernel for *all* existing MIPS CPUs that implement the
-CP0_PageGrain[IEC] bit.  They cause the TLB exception handlers to be
-generated without the legacy execute-inhibit handling, but never set
-the CP0_PageGrain[IEC] bit to activate the use of dedicated exception
-vectors for execute-inhibit exceptions.  The result is that upon
-detection of an execute-inhibit violation, we loop forever in the TLB
-exception handlers instead of sending SIGSEGV to the task.
+Disable this optimization by implementing .irq_disable and .irq_enable
 
-If we are generating TLB exception handlers expecting separate
-vectors, we must also enable the CP0_PageGrain[IEC] feature.
-
-The bug was introduced in kernel version 3.17.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: http://patchwork.linux-mips.org/patch/8880/
+Patchwork: https://patchwork.linux-mips.org/patch/8949/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/mm/tlb-r4k.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/kernel/irq_cpu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -489,6 +489,8 @@ static void r4k_tlb_configure(void)
- #ifdef CONFIG_64BIT
- 		pg |= PG_ELPA;
- #endif
-+		if (cpu_has_rixiex)
-+			pg |= PG_IEC;
- 		write_c0_pagegrain(pg);
- 	}
+--- a/arch/mips/kernel/irq_cpu.c
++++ b/arch/mips/kernel/irq_cpu.c
+@@ -56,6 +56,8 @@ static struct irq_chip mips_cpu_irq_cont
+ 	.irq_mask_ack	= mask_mips_irq,
+ 	.irq_unmask	= unmask_mips_irq,
+ 	.irq_eoi	= unmask_mips_irq,
++	.irq_disable	= mask_mips_irq,
++	.irq_enable	= unmask_mips_irq,
+ };
  
+ /*
+@@ -92,6 +94,8 @@ static struct irq_chip mips_mt_cpu_irq_c
+ 	.irq_mask_ack	= mips_mt_cpu_irq_ack,
+ 	.irq_unmask	= unmask_mips_irq,
+ 	.irq_eoi	= unmask_mips_irq,
++	.irq_disable	= mask_mips_irq,
++	.irq_enable	= unmask_mips_irq,
+ };
+ 
+ void __init mips_cpu_irq_init(void)

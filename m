@@ -1,35 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2015 09:38:51 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51463 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012982AbbBIIgxnQp6x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Feb 2015 09:36:53 +0100
-Received: from localhost (unknown [113.28.134.59])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 76A06AD2;
-        Mon,  9 Feb 2015 08:36:47 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Subject: [PATCH 3.18 15/39] MIPS: traps: Fix inline asm ctc1 missing .set hardfloat
-Date:   Mon,  9 Feb 2015 16:33:58 +0800
-Message-Id: <20150209083329.490624378@linuxfoundation.org>
-X-Mailer: git-send-email 2.3.0
-In-Reply-To: <20150209083328.753647350@linuxfoundation.org>
-References: <20150209083328.753647350@linuxfoundation.org>
-User-Agent: quilt/0.63-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2015 09:50:21 +0100 (CET)
+Received: from resqmta-ch2-01v.sys.comcast.net ([69.252.207.33]:44710 "EHLO
+        resqmta-ch2-01v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010586AbbBIIuRrwcHx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Feb 2015 09:50:17 +0100
+Received: from resomta-ch2-19v.sys.comcast.net ([69.252.207.115])
+        by resqmta-ch2-01v.sys.comcast.net with comcast
+        id q8qA1p0012VvR6D018qBVH; Mon, 09 Feb 2015 08:50:11 +0000
+Received: from [192.168.1.13] ([69.250.160.75])
+        by resomta-ch2-19v.sys.comcast.net with comcast
+        id q8qA1p0061duFqV018qAr0; Mon, 09 Feb 2015 08:50:11 +0000
+Message-ID: <54D874BF.3040003@gentoo.org>
+Date:   Mon, 09 Feb 2015 03:50:07 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Return-Path: <gregkh@linuxfoundation.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP27: Random hard locks after ~16hrs uptime
+References: <54D6D0D5.8020704@gentoo.org> <alpine.LFD.2.11.1502081003060.22715@eddie.linux-mips.org> <54D80515.3040208@gentoo.org>
+In-Reply-To: <54D80515.3040208@gentoo.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1423471811;
+        bh=S/XxSEzNNncmo1/P1CYOjZMvju8XD7yVqT6QQ5dIU3I=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=XY06SrNDRanvRwLXeY8BU+EAZNUG/aLQ+Ct3JOOvVaRzTX7zkAtnmFVSASAnkEinY
+         K4u0qjHVrMhkLfHULZbSB0l6Wk7JJEr7kC8ozYQSTntYgjBE4u12YW2F7NzT4hmoaq
+         Ml2aNJ2miftNvqUEKS27BL81yQcUFesUH4TgaEdwE8yc8H2FxHnrnYOmWnUaKxJ+WI
+         M9oEh45m/3Ne8B7ylEJ7wpjLqBKeZO021K+zFnMhu/Lk5P8i1nPE7YQ1sqJqhO65LI
+         G4xXCFmx6i5+S1wKxAfH7jysAcEvtK3uAmlbb/WWL5PGKA0VpFLfrBDIbreEq+Fb7Q
+         nzormuYLuLxiA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45777
+X-archive-position: 45778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,49 +53,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+On 02/08/2015 19:53, Joshua Kinard wrote:
+> On 02/08/2015 07:06, Maciej W. Rozycki wrote:
+>> On Sat, 7 Feb 2015, Joshua Kinard wrote:
+>>
+>>> I've had my Onyx2 running quite a bit lately doing compile runs, and it seems
+>>> that after about ~16 hours, there's a random possibility that the machine just
+>>> completely stops.  No errors printed anywhere, serial becomes completely
+>>> unresponsive.  I have to issue a 'rst' from the MSC to bring it back up again.
+>>
+>>  If the time spent up is always similar, then one possibility is a counter 
+>> wraparound or suchlike that is not handled correctly (i.e. the carry from 
+>> the topmost bit is not taken into account), causing a kernel deadlock.
+> 
+> I believe I've pinned the problem down to the block I/O layer and points
+> beneath, such as SCSI core, qla1280, etc.  I am using an out-of-tree patch to
+> add the BFQ I/O scheduler in, so that may also be a cause to consider.
+> 
+> I had a very similar hardlock on the Octane, too, when I upgraded the RAM to
+> 3.5GB the other day, but going back to 2GB solves the problem there.  Octane
+> is, for all intents and purposes, a single-node Origin system w/ graphics
+> options, HEART instead of HUB, and a much more simplified PROM).  Both use the
+> same SCSI chip, a QLogic ISP1040B, and thus the same driver, qla1280.o.  The
+> difference with the Octane is I can reproduce the hardlock on demand by
+> untarring a large tarball (a Gentoo stage3, to be exact).  Compared to the
+> Onyx2, which has 8GB of RAM, and the lock seems more random.
+> 
+> I'll have to reconfigure the Octane later on with 3.5GB of RAM again, but test
+> BFQ, CFQ, and Deadline out to see if the hardlock happens with all three.  I
+> know BFQ is largely derived from the CFQ code, so if the system remains stable
+> with Deadline, but not CFQ or BFQ, then I know the subsystem.  Then, if it only
+> happens on BFQ, I'll go pester their upstream for debugging advice.
 
-------------------
+For the Octane, it looks like it's something with the scheduler.  If I use
+"No-op", the machine can unpack a stage3 just fine.  If I use Deadline or CFQ,
+it dies.  I did get several oopses under both, but they're not specific to
+Octane or MIPS code, and the Oops output doesn't always trigger with each
+attempt.  Several were actually "Reserved instruction in kernel code", but the
+failing instruction was an "sw", which should work fine.  Other weird one was
+"do_cpu invoked from kernel context!" -- new to me.  Saved all of them in case
+anyone is interested in it.
 
-From: James Hogan <james.hogan@imgtec.com>
+I'll have to test this on the Onyx2 later to see if similar results
+happen there.  That way, I'll know that I am chasing the same bug down.
 
-commit d76e9b9fc5de7e8fc4fd0e72a94e8c723929ffea upstream.
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
 
-Commit 842dfc11ea9a ("MIPS: Fix build with binutils 2.24.51+") in v3.18
-enabled -msoft-float and sprinkled ".set hardfloat" where necessary to
-use FP instructions. However it missed enable_restore_fp_context() which
-since v3.17 does a ctc1 with inline assembly, causing the following
-assembler errors on Mentor's 2014.05 toolchain:
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
 
-{standard input}: Assembler messages:
-{standard input}:2913: Error: opcode not supported on this processor: mips32r2 (mips32r2) `ctc1 $2,$31'
-scripts/Makefile.build:257: recipe for target 'arch/mips/kernel/traps.o' failed
-
-Fix that to use the new write_32bit_cp1_register() macro so that ".set
-hardfloat" is automatically added when -msoft-float is in use.
-
-Fixes 842dfc11ea9a ("MIPS: Fix build with binutils 2.24.51+")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9173/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/traps.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1184,7 +1184,8 @@ static int enable_restore_fp_context(int
- 
- 		/* Restore the scalar FP control & status register */
- 		if (!was_fpu_owner)
--			asm volatile("ctc1 %0, $31" : : "r"(current->thread.fpu.fcr31));
-+			write_32bit_cp1_register(CP1_STATUS,
-+						 current->thread.fpu.fcr31);
- 	}
- 
- out:
+--Emperor Turhan, Centauri Republic

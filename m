@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2015 09:38:35 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51458 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2015 09:38:51 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:51463 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012976AbbBIIgw1s-Si (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Feb 2015 09:36:52 +0100
+        by eddie.linux-mips.org with ESMTP id S27012982AbbBIIgxnQp6x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Feb 2015 09:36:53 +0100
 Received: from localhost (unknown [113.28.134.59])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BE3E9A6E;
-        Mon,  9 Feb 2015 08:36:44 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 76A06AD2;
+        Mon,  9 Feb 2015 08:36:47 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 3.18 14/39] MIPS: mipsregs.h: Add write_32bit_cp1_register()
-Date:   Mon,  9 Feb 2015 16:33:57 +0800
-Message-Id: <20150209083329.439292777@linuxfoundation.org>
+        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+Subject: [PATCH 3.18 15/39] MIPS: traps: Fix inline asm ctc1 missing .set hardfloat
+Date:   Mon,  9 Feb 2015 16:33:58 +0800
+Message-Id: <20150209083329.490624378@linuxfoundation.org>
 X-Mailer: git-send-email 2.3.0
 In-Reply-To: <20150209083328.753647350@linuxfoundation.org>
 References: <20150209083328.753647350@linuxfoundation.org>
@@ -27,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45776
+X-archive-position: 45777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,60 +48,43 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 5e32033e14ca9c7f7341cb383f5a05699b0b5382 upstream.
+commit d76e9b9fc5de7e8fc4fd0e72a94e8c723929ffea upstream.
 
-Add a write_32bit_cp1_register() macro to compliment the
-read_32bit_cp1_register() macro. This is to abstract whether .set
-hardfloat needs to be used based on GAS_HAS_SET_HARDFLOAT.
+Commit 842dfc11ea9a ("MIPS: Fix build with binutils 2.24.51+") in v3.18
+enabled -msoft-float and sprinkled ".set hardfloat" where necessary to
+use FP instructions. However it missed enable_restore_fp_context() which
+since v3.17 does a ctc1 with inline assembly, causing the following
+assembler errors on Mentor's 2014.05 toolchain:
 
-The implementation of _read_32bit_cp1_register() .sets mips1 due to
-failure of gas v2.19 to assemble cfc1 for Octeon (see commit
-25c300030016 ("MIPS: Override assembler target architecture for
-octeon.")). I haven't copied this over to _write_32bit_cp1_register() as
-I'm uncertain whether it applies to ctc1 too, or whether anybody cares
-about that version of binutils any longer.
+{standard input}: Assembler messages:
+{standard input}:2913: Error: opcode not supported on this processor: mips32r2 (mips32r2) `ctc1 $2,$31'
+scripts/Makefile.build:257: recipe for target 'arch/mips/kernel/traps.o' failed
 
+Fix that to use the new write_32bit_cp1_register() macro so that ".set
+hardfloat" is automatically added when -msoft-float is in use.
+
+Fixes 842dfc11ea9a ("MIPS: Fix build with binutils 2.24.51+")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: David Daney <david.daney@cavium.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9172/
+Patchwork: https://patchwork.linux-mips.org/patch/9173/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/mipsregs.h |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/mips/kernel/traps.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1343,12 +1343,27 @@ do {									\
- 	__res;								\
- })
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1184,7 +1184,8 @@ static int enable_restore_fp_context(int
  
-+#define _write_32bit_cp1_register(dest, val, gas_hardfloat)		\
-+do {									\
-+	__asm__ __volatile__(						\
-+	"	.set	push					\n"	\
-+	"	.set	reorder					\n"	\
-+	"	"STR(gas_hardfloat)"				\n"	\
-+	"	ctc1	%0,"STR(dest)"				\n"	\
-+	"	.set	pop					\n"	\
-+	: : "r" (val));							\
-+} while (0)
-+
- #ifdef GAS_HAS_SET_HARDFLOAT
- #define read_32bit_cp1_register(source)					\
- 	_read_32bit_cp1_register(source, .set hardfloat)
-+#define write_32bit_cp1_register(dest, val)				\
-+	_write_32bit_cp1_register(dest, val, .set hardfloat)
- #else
- #define read_32bit_cp1_register(source)					\
- 	_read_32bit_cp1_register(source, )
-+#define write_32bit_cp1_register(dest, val)				\
-+	_write_32bit_cp1_register(dest, val, )
- #endif
+ 		/* Restore the scalar FP control & status register */
+ 		if (!was_fpu_owner)
+-			asm volatile("ctc1 %0, $31" : : "r"(current->thread.fpu.fcr31));
++			write_32bit_cp1_register(CP1_STATUS,
++						 current->thread.fpu.fcr31);
+ 	}
  
- #ifdef HAVE_AS_DSP
+ out:

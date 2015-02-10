@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Feb 2015 10:46:23 +0100 (CET)
-Received: from smtp.citrix.com ([66.165.176.89]:20131 "EHLO SMTP.CITRIX.COM"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012464AbbBJJqVI7WcP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 10 Feb 2015 10:46:21 +0100
-X-IronPort-AV: E=Sophos;i="5.09,549,1418083200"; 
-   d="scan'208";a="224314350"
-Message-ID: <54D9D363.5060904@citrix.com>
-Date:   Tue, 10 Feb 2015 09:46:11 +0000
-From:   David Vrabel <david.vrabel@citrix.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Feb 2015 11:03:25 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59519 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012464AbbBJKDYAALMN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Feb 2015 11:03:24 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 328872481C012;
+        Tue, 10 Feb 2015 10:03:16 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 10 Feb 2015 10:03:18 +0000
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Tue, 10 Feb 2015 10:03:17 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Gleb Natapov <gleb@kernel.org>, <kvm@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
+Subject: [PATCH 0/2] MIPS: Export functions used by lose_fpu(1) for KVM
+Date:   Tue, 10 Feb 2015 10:02:58 +0000
+Message-ID: <1423562580-23254-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.0.5
 MIME-Version: 1.0
-To:     "Wang, Xiaoming" <xiaoming.wang@intel.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "pebolle@tiscali.nl" <pebolle@tiscali.nl>,
-        "Zhang, Dongxing" <dongxing.zhang@intel.com>,
-        "lauraa@codeaurora.org" <lauraa@codeaurora.org>,
-        "d.kasatkin@samsung.com" <d.kasatkin@samsung.com>,
-        "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "chris@chris-wilson.co.uk" <chris@chris-wilson.co.uk>,
-        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>,
-        "david.vrabel@citrix.com" <david.vrabel@citrix.com>,
-        "linux@horizon.com" <linux@horizon.com>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        "boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
-        "Liu, Chuansheng" <chuansheng.liu@intel.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>
-Subject: Re: [Xen-devel] [PATCH] modify the IO_TLB_SEGSIZE to io_tlb_segsize
- configurable as flexible requirement about SW-IOMMU.
-References: <1423177274-22118-1-git-send-email-xiaoming.wang@intel.com> <20150205193241.GC11646@x230.dumpdata.com> <FA47D36D6EC9FE4CB463299737C09B9901CF8CE6@shsmsx102.ccr.corp.intel.com>
-In-Reply-To: <FA47D36D6EC9FE4CB463299737C09B9901CF8CE6@shsmsx102.ccr.corp.intel.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-DLP:  MIA2
-Return-Path: <david.vrabel@citrix.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45792
+X-archive-position: 45793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.vrabel@citrix.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,35 +47,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/02/15 00:10, Wang, Xiaoming wrote:
-> 
-> 
->> -----Original Message-----
->> From: Konrad Rzeszutek Wilk [mailto:konrad.wilk@oracle.com]
->> Sent: Friday, February 6, 2015 3:33 AM
->> To: Wang, Xiaoming
->> Cc: ralf@linux-mips.org; boris.ostrovsky@oracle.com;
->> david.vrabel@citrix.com; linux-mips@linux-mips.org; linux-
->> kernel@vger.kernel.org; xen-devel@lists.xenproject.org; akpm@linux-
->> foundation.org; linux@horizon.com; lauraa@codeaurora.org;
->> heiko.carstens@de.ibm.com; d.kasatkin@samsung.com;
->> takahiro.akashi@linaro.org; chris@chris-wilson.co.uk; pebolle@tiscali.nl; Liu,
->> Chuansheng; Zhang, Dongxing
->> Subject: Re: [PATCH] modify the IO_TLB_SEGSIZE to io_tlb_segsize
->> configurable as flexible requirement about SW-IOMMU.
->>
->> On Fri, Feb 06, 2015 at 07:01:14AM +0800, xiaomin1 wrote:
->>> The maximum of SW-IOMMU is limited to 2^11*128 = 256K.
->>> While in different platform and different requirements this seems improper.
->>> So modify the IO_TLB_SEGSIZE to io_tlb_segsize as configurable is make
->> sense.
->>
->> More details please. What is the issue you are hitting?
->>
-> Example:
-> If 1M bytes are requied. There has an error like.
+These two patches export the _save_fp and _save_msa asm function used by
+the lose_fpu(1) macro to GPL modules so that KVM can make use of it when
+it is built as a module.
 
-Instead of allowing the bouncing of such large buffers, could the gadget
-driver be modified to submit the buffers to the hardware in smaller chunks?
+This fixes the following build errors when CONFIG_KVM=m [and
+CONFIG_CPU_HAS_MSA=y] due to commit f798217dfd03 ("KVM: MIPS: Don't leak
+FPU/DSP to guest"):
 
-David
+ERROR: "_save_fp" [arch/mips/kvm/kvm.ko] undefined!
+ERROR: "_save_msa" [arch/mips/kvm/kvm.ko] undefined!
+
+The two parts are separated because the commit they fix is marked for
+stable, and _save_msa only exists since v3.15, so only the first patch
+needs to be applied to stable branches v3.10..v3.14, but both will be
+needed on stable branches v3.15..v3.19.
+
+Ralf: Since the broken commit exists in the KVM tree, it probably makes
+sense to be applied there, so an Ack would be appreciated.
+
+Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: kvm@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org>
+
+James Hogan (2):
+  MIPS: Export FP functions used by lose_fpu(1) for KVM
+  MIPS: Export MSA functions used by lose_fpu(1) for KVM
+
+ arch/mips/kernel/mips_ksyms.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+-- 
+2.0.5

@@ -1,51 +1,65 @@
-From: Felix Fietkau <nbd@openwrt.org>
-Date: Thu, 15 Jan 2015 19:05:28 +0100
-Subject: MIPS: IRQ: Fix disable_irq on CPU IRQs
-Message-ID: <20150115180528.9ih_0XDVaV_qUAN5brrGAN5NFr54CyW7-UlvGvDkp-U@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Feb 2015 15:08:50 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:50189 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013149AbbBJOIsodjJe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Feb 2015 15:08:48 +0100
+Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1YLBUd-0005a2-48; Tue, 10 Feb 2015 14:08:47 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     Hemmo Nieminen <hemmo.nieminen@iki.fi>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.16.y-ckt stable] Patch "MIPS: Fix kernel lockup or crash after CPU offline/online" has been added to staging queue
+Date:   Tue, 10 Feb 2015 14:09:25 +0000
+Message-Id: <1423577365-24613-1-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 2.1.4
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 45799
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit a3e6c1eff54878506b2dddcc202df9cc8180facb upstream.
+This is a note to let you know that I have just added a patch titled
 
-If the irq_chip does not define .irq_disable, any call to disable_irq
-will defer disabling the IRQ until it fires while marked as disabled.
-This assumes that the handler function checks for this condition, which
-handle_percpu_irq does not. In this case, calling disable_irq leads to
-an IRQ storm, if the interrupt fires while disabled.
+    MIPS: Fix kernel lockup or crash after CPU offline/online
 
-This optimization is only useful when disabling the IRQ is slow, which
-is not true for the MIPS CPU IRQ.
+to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
+which can be found at:
 
-Disable this optimization by implementing .irq_disable and .irq_enable
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.16.y-queue
 
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8949/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/kernel/irq_cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This patch is scheduled to be released in version 3.16.7-ckt7.
 
-diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
-index e498f2b3646a..f5598e25e906 100644
---- a/arch/mips/kernel/irq_cpu.c
-+++ b/arch/mips/kernel/irq_cpu.c
-@@ -56,6 +56,8 @@ static struct irq_chip mips_cpu_irq_controller = {
- 	.irq_mask_ack	= mask_mips_irq,
- 	.irq_unmask	= unmask_mips_irq,
- 	.irq_eoi	= unmask_mips_irq,
-+	.irq_disable	= mask_mips_irq,
-+	.irq_enable	= unmask_mips_irq,
- };
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
- /*
-@@ -92,6 +94,8 @@ static struct irq_chip mips_mt_cpu_irq_controller = {
- 	.irq_mask_ack	= mips_mt_cpu_irq_ack,
- 	.irq_unmask	= unmask_mips_irq,
- 	.irq_eoi	= unmask_mips_irq,
-+	.irq_disable	= mask_mips_irq,
-+	.irq_enable	= unmask_mips_irq,
- };
+For more information about the 3.16.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
- void __init mips_cpu_irq_init(void)
---
-2.1.4
+Thanks.
+-Luis
+
+------

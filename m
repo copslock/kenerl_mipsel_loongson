@@ -1,31 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Feb 2015 17:17:04 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27013184AbbBJQRCwXfj5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Feb 2015 17:17:02 +0100
-Date:   Tue, 10 Feb 2015 16:17:02 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        binutils@sourceware.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [PATCH RFC v2 24/70] MIPS: asm: spinlock: Replace sub instruction
- with addiu
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320FAC458@LEMAIL01.le.imgtec.org>
-Message-ID: <alpine.LFD.2.11.1501201535050.28301@eddie.linux-mips.org>
-References: <1421405389-15512-1-git-send-email-markos.chandras@imgtec.com> <1421405389-15512-25-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1501200028390.28301@eddie.linux-mips.org> <54BE3BFD.5070108@imgtec.com>
- <6D39441BF12EF246A7ABCE6654B0235320FAC458@LEMAIL01.le.imgtec.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Feb 2015 09:40:15 +0100 (CET)
+Received: from mga01.intel.com ([192.55.52.88]:12907 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012430AbbBKIkNpkuzd convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Feb 2015 09:40:13 +0100
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP; 11 Feb 2015 00:40:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.09,557,1418112000"; 
+   d="scan'208";a="684101911"
+Received: from kmsmsx152.gar.corp.intel.com ([172.21.73.87])
+  by orsmga002.jf.intel.com with ESMTP; 11 Feb 2015 00:39:54 -0800
+Received: from shsmsx101.ccr.corp.intel.com (10.239.4.153) by
+ KMSMSX152.gar.corp.intel.com (172.21.73.87) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Wed, 11 Feb 2015 16:38:32 +0800
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.62]) by
+ SHSMSX101.ccr.corp.intel.com ([169.254.1.192]) with mapi id 14.03.0195.001;
+ Wed, 11 Feb 2015 16:38:31 +0800
+From:   "Wang, Xiaoming" <xiaoming.wang@intel.com>
+To:     David Vrabel <david.vrabel@citrix.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "pebolle@tiscali.nl" <pebolle@tiscali.nl>,
+        "Zhang, Dongxing" <dongxing.zhang@intel.com>,
+        "lauraa@codeaurora.org" <lauraa@codeaurora.org>,
+        "d.kasatkin@samsung.com" <d.kasatkin@samsung.com>,
+        "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "chris@chris-wilson.co.uk" <chris@chris-wilson.co.uk>,
+        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>,
+        "linux@horizon.com" <linux@horizon.com>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
+        "Liu, Chuansheng" <chuansheng.liu@intel.com>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Subject: RE: [Xen-devel] [PATCH] modify the IO_TLB_SEGSIZE to io_tlb_segsize
+ configurable as flexible requirement about SW-IOMMU.
+Thread-Topic: [Xen-devel] [PATCH] modify the IO_TLB_SEGSIZE to
+ io_tlb_segsize configurable as flexible requirement about SW-IOMMU.
+Thread-Index: AQHQQRJJKhpis9DUDUadJ41Llkm2a5zh7MKAgADSw2CABmUHgIACAXdQ
+Date:   Wed, 11 Feb 2015 08:38:29 +0000
+Message-ID: <FA47D36D6EC9FE4CB463299737C09B9901CFE255@shsmsx102.ccr.corp.intel.com>
+References: <1423177274-22118-1-git-send-email-xiaoming.wang@intel.com>
+        <20150205193241.GC11646@x230.dumpdata.com>
+ <FA47D36D6EC9FE4CB463299737C09B9901CF8CE6@shsmsx102.ccr.corp.intel.com>
+ <54D9D363.5060904@citrix.com>
+In-Reply-To: <54D9D363.5060904@citrix.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Return-Path: <xiaoming.wang@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45800
+X-archive-position: 45801
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: xiaoming.wang@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,132 +75,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 20 Jan 2015, Matthew Fortune wrote:
+Dear David
 
-> > >  What this shows really is a GAS bug fix for the SUB macro is needed
-> > > similar to what I suggested in 12/70 for ADDI (from the situation I
-> > infer
-> > > there is some real work to do in GAS in this area; adding Matthew as a
-> > > recipient to raise his awareness) so that it does not expand to ADDI
-> > where
-> > > the architecture or processor selected do not support it.  Instead a
-> > > longer sequence involving SUB has to be produced.
+> -----Original Message-----
+> From: David Vrabel [mailto:david.vrabel@citrix.com]
+> Sent: Tuesday, February 10, 2015 5:46 PM
+> To: Wang, Xiaoming; Konrad Rzeszutek Wilk
+> Cc: linux-mips@linux-mips.org; pebolle@tiscali.nl; Zhang, Dongxing;
+> lauraa@codeaurora.org; d.kasatkin@samsung.com;
+> heiko.carstens@de.ibm.com; linux-kernel@vger.kernel.org; ralf@linux-
+> mips.org; chris@chris-wilson.co.uk; takahiro.akashi@linaro.org;
+> david.vrabel@citrix.com; linux@horizon.com; xen-
+> devel@lists.xenproject.org; boris.ostrovsky@oracle.com; Liu, Chuansheng;
+> akpm@linux-foundation.org
+> Subject: Re: [Xen-devel] [PATCH] modify the IO_TLB_SEGSIZE to
+> io_tlb_segsize configurable as flexible requirement about SW-IOMMU.
 > 
-> The assembler is at least consistent at the moment as the 'sub' macro is
-> disabled for R6. I am very keen to stop carrying around historic baggage
-> where it is not necessary. R6 is one place we can do that and deal with
-> any code changes that are required.
-
- I have yet to be convinced it is merely historic baggage.  Maybe it's a 
-matter of habits I got into, but I find the presence of these macros a way 
-to make the MIPS assembly language actually usable for handcoding.  There 
-are several reasons for this.
-
- One is the limited range of immediates in machine makes it necessary to 
-use different instruction sequences for different immediate input 
-arguments.  Given this source code instruction:
-
-	li	$2, foo
-
-for different values of `foo' you'll get different machine code:
-
-    foo		code
-    0x1234	addiu $2, $0, 0x1234
-    0x89ab	ori $2, $0, 0x89ab
-0x89ab0000	lui $2, 0x89ab
-0x89ab1234	lui $2, 0x89ab; addiu $2, $2, 0x1234
-
-now if `foo' is some sort of an externally supplied constant (e.g. set 
-with a `configure' script or whatever), then without the macros you'd have 
-to pessimise code, or clutter it with #ifdef's.
-
- Another is to abstract ABI dependencies.  Again, given this source code 
-instruction:
-
-	lw	$2, foo
-
-for different ABIs you'll get different code:
-
-    ABI		code
-o32/non-PIC	lui $2, %hi(foo); lw $2, %lo(foo)($2)
-o32/PIC/extern	lw $2, %got(foo)($28); lw $2, 0($2)
-o32/PIC/local	lw $2, %got(foo)($28); addiu $2, %lo(foo); lw $2, 0($2)
-n64/non-PIC	lui $1, %highest(foo); lui $2, %hi(foo);
-		addiu $1, $1, %higher(foo); dsll32 $1, $1, 0;
-		daddu $1, $1, $2; lw $2, %lo(foo)($1)
-n64/PIC/extern	ld $2, %got_disp(foo)($28); lw $2, 0($2)
-[...]
-
-You'd have to conditionalise it all too.
-
- And there are more cases macros address, e.g. to make the complete set of 
-arithmetic conditions available for branches (with the use of SLT and SLTU 
-instructions), extra operations (e.g. NOT as a shorthand for NOR), 
-three-argument trapping MULOU, DIVU, REMU operations (especially 
-interesting to note in the context of r6; why MODU wasn't consequently 
-called REMU for portability escapes me), etc.
-
- All this makes assembly language programming easier and more like with 
-CISC assembly languages, e.g. this x86 assembly-language instruction:
-
-	addl	$foo, %eax
-
-will do the right thing for any value of `foo' and the assembler will also 
-pick the shortest instruction encoding available.  As a result when 
-writing code you can focus on the problem you're trying to solve rather 
-than getting distracted by ABI peculiarites or the assymetry of the 
-machine instruction set.  It is also easier to follow when studying code 
-written by someone else.
-
- Of course all this does not matter for compiler-generated code.  Which is 
-also the reason why the MIPS16 assembly language has never included a 
-complementing set of these macros -- it was only meant to be used in 
-compiler-generated code and never for handcoding.  And for handcoded 
-assembly if you are concerned about source code instructions expanding 
-into multiple machine instructions, then you can always stick `.set 
-nomacro' at the top of your source code.
-
-> > > 			__asm__ __volatile__(
-> > > 			"1:	ll	%1, %2	# arch_read_unlock	\n"
-> > > 			"	sub	%1, %3				\n"
-> > > 			"	sc	%1, %0				\n"
-> > > 			: "=" GCC_OFF12_ASM() (rw->lock), "=&r" (tmp)
-> > > 			: GCC_OFF12_ASM() (rw->lock), GCC_ADDI_ASM() (1)
-> > > 			: "memory");
-> > >
-> > > (untested, but should work) so that there's still a single instruction
-> > > only in the LL/SC loop and consequently no increased lock contention
-> > risk.
-[...]
+> On 06/02/15 00:10, Wang, Xiaoming wrote:
+> >
+> >
+> >> -----Original Message-----
+> >> From: Konrad Rzeszutek Wilk [mailto:konrad.wilk@oracle.com]
+> >> Sent: Friday, February 6, 2015 3:33 AM
+> >> To: Wang, Xiaoming
+> >> Cc: ralf@linux-mips.org; boris.ostrovsky@oracle.com;
+> >> david.vrabel@citrix.com; linux-mips@linux-mips.org; linux-
+> >> kernel@vger.kernel.org; xen-devel@lists.xenproject.org; akpm@linux-
+> >> foundation.org; linux@horizon.com; lauraa@codeaurora.org;
+> >> heiko.carstens@de.ibm.com; d.kasatkin@samsung.com;
+> >> takahiro.akashi@linaro.org; chris@chris-wilson.co.uk;
+> >> pebolle@tiscali.nl; Liu, Chuansheng; Zhang, Dongxing
+> >> Subject: Re: [PATCH] modify the IO_TLB_SEGSIZE to io_tlb_segsize
+> >> configurable as flexible requirement about SW-IOMMU.
+> >>
+> >> On Fri, Feb 06, 2015 at 07:01:14AM +0800, xiaomin1 wrote:
+> >>> The maximum of SW-IOMMU is limited to 2^11*128 = 256K.
+> >>> While in different platform and different requirements this seems
+> improper.
+> >>> So modify the IO_TLB_SEGSIZE to io_tlb_segsize as configurable is
+> >>> make
+> >> sense.
+> >>
+> >> More details please. What is the issue you are hitting?
+> >>
+> > Example:
+> > If 1M bytes are requied. There has an error like.
 > 
-> (Note this asm block does not appear to need to clobber memory either as
-> the effects on memory are correctly stated in the constraints).
-
- The `memory' clobber serves the purpose of an optimisation barrier here, 
-it's not about the memory accesses happening within the asm itself.
-
-> > >  As a side note, this could be cleaned up to use a "+" input/output
-> > > constraint; such a clean-up will be welcome -- although to be complete,
-> > a
-> > > review of all the asms will be required (this may bump up the GCC
-> > version
-> > > requirement though, ISTR bugs in this area).
+> Instead of allowing the bouncing of such large buffers, could the gadget
+> driver be modified to submit the buffers to the hardware in smaller chunks?
 > 
-> I believe some of these asm blocks using ll/sc already have '+' in the
-> constraints for the memory location so perhaps that is either already
-> a problem or not an issue.
+> David
 
- I just don't remember offhand if the use of `+' was in platform or in 
-shared code.  If the latter, then let's just switch, if the former, we 
-need to be careful.
+Our target is try to make IO_TLB_SEGSIZE configurable.
+Neither 256 bytes  or 1M bytes seems suitable value, I think.
+It's better to use the tactics something like
+kmem_cache_create  in kmalloc function.
+But SW-IOMMU seems more lighter.
+So we choose variable rather than function.
 
- IIRC some versions of GCC complained and failed compilation if the list 
-of constraints associated with `+' did not allow a register alternative, 
-such by including the `r' constraint.  Which of course would be completely 
-pointless here, and actually harmful.  Furthermore IIRC it had been a 
-deliberate decision made by GCC maintainers who were unaware of some use 
-cases for inline asms.  The decision was then discussed and GCC 
-maintainers persuaded to change it; it can likely be tracked down in a 
-mailing list archive somewhere.
-
-  Maciej
+Xiaoming.

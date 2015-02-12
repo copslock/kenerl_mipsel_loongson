@@ -1,47 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Feb 2015 14:43:27 +0100 (CET)
-Received: from mail-wg0-f41.google.com ([74.125.82.41]:55549 "EHLO
-        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013312AbbBLNn0RDY0- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Feb 2015 14:43:26 +0100
-Received: by mail-wg0-f41.google.com with SMTP id b13so10212966wgh.0
-        for <linux-mips@linux-mips.org>; Thu, 12 Feb 2015 05:43:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=mPyeE9NcuAYuwYK2iLeEhV5YrZHAHiB0c5n8Yi9C+YE=;
-        b=dgP94EfoOdV7HXXs22IDCTlCZFYRMB922BFIvspUjxDXR1mm5jTRTZzcMgcf9iYu4P
-         9wZNgsMFlyTM+dSsON6Vg0Nn39nu7gfo2j1oQOqFWcx4UjLEfP4qRrtMR/gT1Ix1gzPB
-         gsbTR3lI1yRACCqz5VfgT7ehdiJqh0JzMUZcTJj2NFHkgkS63MgWHKNt0meiZKO4KkDu
-         ApX7tQ9C47Q6HeGKKKko0smxQL9zZcUnc/qcHw2ZgXZzZFMFduEjtDvy/OzXu5X2xPdF
-         6/ACYNE8mMRoqfjO66zxDowsUbQtmfOWo9LWx2qexb/lvr1MaAsi7J7djxHVp2QB7y6n
-         B9zA==
-X-Gm-Message-State: ALoCoQnTT96mDDo4mC8h+olgZ3KrfW7jbFF5rRJdX5aEOa4xpCW1klJG//lgJ09Bmzo4BXFtPsUG
-X-Received: by 10.180.19.228 with SMTP id i4mr6397060wie.13.1423748599780;
-        Thu, 12 Feb 2015 05:43:19 -0800 (PST)
-Received: from faui49t.informatik.uni-erlangen.de (faui49t.informatik.uni-erlangen.de. [131.188.42.17])
-        by mx.google.com with ESMTPSA id n10sm2621463wic.11.2015.02.12.05.43.18
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 12 Feb 2015 05:43:19 -0800 (PST)
-From:   Andreas Ruprecht <rupran@einserver.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        "Maciej W. Rozycki" <macro@codesourcery.com>,
-        Valentin Rothberg <valentinrothberg@gmail.com>,
-        Paul Bolle <pebolle@tiscali.nl>,
-        Andreas Ruprecht <rupran@einserver.de>
-Subject: [PATCH] MIPS: mm: Remove dead macro definitions
-Date:   Thu, 12 Feb 2015 14:42:52 +0100
-Message-Id: <1423748572-31012-1-git-send-email-rupran@einserver.de>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <rupran@einserver.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Feb 2015 14:45:16 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28141 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013304AbbBLNpPFa9gg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Feb 2015 14:45:15 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id EF557A0EA0E42;
+        Thu, 12 Feb 2015 13:45:06 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 12 Feb 2015 13:45:09 +0000
+Received: from [192.168.154.96] (192.168.154.96) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 12 Feb
+ 2015 13:45:08 +0000
+Message-ID: <54DCAE64.5050901@imgtec.com>
+Date:   Thu, 12 Feb 2015 13:45:08 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+MIME-Version: 1.0
+To:     Tony Wu <tung7970@gmail.com>, <ralf@linux-mips.org>
+CC:     Lars Persson <larper@axis.com>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Fix syscall_trace_enter compilation error
+References: <20150206004026-tung7970@googlemail.com>
+In-Reply-To: <20150206004026-tung7970@googlemail.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.96]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45807
+X-archive-position: 45808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rupran@einserver.de
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,60 +46,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In commit c441d4a54c6e ("MIPS: mm: Only build one microassembler that
-is suitable"), the Makefile at arch/mips/mm was rewritten to only
-build the "right" microassembler file, depending on whether
-CONFIG_CPU_MICROMIPS is set or not.
+On 02/05/2015 04:43 PM, Tony Wu wrote:
+> Commit cf6ce084 (MIPS: Fix syscall_get_nr for the syscall exit
+> tracing.) broke 3.13 and 3.14 stable tree due to the missing syscall
+> argument. So, get the syscall from regs[2] before it's trashed.
+> 
+> This patch should go to the 3.13 and 3.14 stable tree.
+> 
+> Signed-off-by: Tony Wu <tung7970@gmail.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Lars Persson <larper@axis.com>
+> Cc: linux-mips@linux-mips.org
+> 
+> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+> index 64e18f9..01f1413 100644
+> --- a/arch/mips/kernel/ptrace.c
+> +++ b/arch/mips/kernel/ptrace.c
+> @@ -799,7 +799,7 @@ asmlinkage void syscall_trace_enter(struct pt_regs *regs)
+>  	long ret = 0;
+>  	user_exit();
+>  
+> -	current_thread_info()->syscall = syscall;
+> +	current_thread_info()->syscall = regs->regs[2];
+>  
+>  	/* do the secure computing check first */
+>  	secure_computing_strict(regs->regs[2]);
+> 
 
-In the files, however, there are still preprocessor definitions
-depending on CONFIG_CPU_MICROMIPS. The #ifdef around them can now
-never evaluate to true, so let's remove them altogether.
+Hi,
 
-This inconsistency was found using the undertaker-checkpatch tool.
+Commit cf6ce084 (MIPS: Fix syscall_get_nr for the syscall exit..) is not
+in the stable branches. How did it brake the 3.13 and 3.14 build?
 
-Signed-off-by: Andreas Ruprecht <rupran@einserver.de>
----
- arch/mips/mm/uasm-micromips.c | 8 --------
- arch/mips/mm/uasm-mips.c      | 8 --------
- 2 files changed, 16 deletions(-)
-
-diff --git a/arch/mips/mm/uasm-micromips.c b/arch/mips/mm/uasm-micromips.c
-index 8399ddf..d78178d 100644
---- a/arch/mips/mm/uasm-micromips.c
-+++ b/arch/mips/mm/uasm-micromips.c
-@@ -38,14 +38,6 @@
- 	 | (e) << RE_SH						\
- 	 | (f) << FUNC_SH)
- 
--/* Define these when we are not the ISA the kernel is being compiled with. */
--#ifndef CONFIG_CPU_MICROMIPS
--#define MM_uasm_i_b(buf, off) ISAOPC(_beq)(buf, 0, 0, off)
--#define MM_uasm_i_beqz(buf, rs, off) ISAOPC(_beq)(buf, rs, 0, off)
--#define MM_uasm_i_beqzl(buf, rs, off) ISAOPC(_beql)(buf, rs, 0, off)
--#define MM_uasm_i_bnez(buf, rs, off) ISAOPC(_bne)(buf, rs, 0, off)
--#endif
--
- #include "uasm.c"
- 
- static struct insn insn_table_MM[] = {
-diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
-index 8e02291..fc442b2 100644
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -38,14 +38,6 @@
- 	 | (e) << RE_SH						\
- 	 | (f) << FUNC_SH)
- 
--/* Define these when we are not the ISA the kernel is being compiled with. */
--#ifdef CONFIG_CPU_MICROMIPS
--#define CL_uasm_i_b(buf, off) ISAOPC(_beq)(buf, 0, 0, off)
--#define CL_uasm_i_beqz(buf, rs, off) ISAOPC(_beq)(buf, rs, 0, off)
--#define CL_uasm_i_beqzl(buf, rs, off) ISAOPC(_beql)(buf, rs, 0, off)
--#define CL_uasm_i_bnez(buf, rs, off) ISAOPC(_bne)(buf, rs, 0, off)
--#endif
--
- #include "uasm.c"
- 
- static struct insn insn_table[] = {
 -- 
-1.9.1
+markos

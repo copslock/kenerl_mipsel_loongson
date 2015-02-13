@@ -1,46 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Feb 2015 17:39:17 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:49068 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013389AbbBMQjO4np1v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Feb 2015 17:39:14 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id BC2BC140C27;
-        Fri, 13 Feb 2015 16:39:12 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id A349B140C6D; Fri, 13 Feb 2015 16:39:12 +0000 (UTC)
-Received: from [10.134.64.202] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D23D4140C27;
-        Fri, 13 Feb 2015 16:39:11 +0000 (UTC)
-Message-ID: <54DE28AE.8060301@codeaurora.org>
-Date:   Fri, 13 Feb 2015 08:39:10 -0800
-From:   Stephen Boyd <sboyd@codeaurora.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Feb 2015 20:50:21 +0100 (CET)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27013405AbbBMTuSifeZ3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Feb 2015 20:50:18 +0100
+Date:   Fri, 13 Feb 2015 19:50:18 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Andreas Ruprecht <rupran@einserver.de>
+cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Valentin Rothberg <valentinrothberg@gmail.com>,
+        Paul Bolle <pebolle@tiscali.nl>
+Subject: Re: [PATCH] MIPS: mm: Remove dead macro definitions
+In-Reply-To: <1423748572-31012-1-git-send-email-rupran@einserver.de>
+Message-ID: <alpine.LFD.2.11.1502131949190.22715@eddie.linux-mips.org>
+References: <1423748572-31012-1-git-send-email-rupran@einserver.de>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-To:     Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        linux-mips@linux-mips.org
-CC:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Michael Turquette <mturquette@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Alchemy: Remove bogus args from alchemy_clk_fgcs_detr
-References: <1423834499-13674-1-git-send-email-tomeu.vizoso@collabora.com>
-In-Reply-To: <1423834499-13674-1-git-send-email-tomeu.vizoso@collabora.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45812
+X-archive-position: 45813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,16 +37,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/13/15 05:34, Tomeu Vizoso wrote:
-> They were added to this function by mistake when they were added to the
-> clk_ops.determine_rate callback.
->
-> Fixes: 1c8e600440c7 ("clk: Add rate constraints to clocks")
-> Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+On Thu, 12 Feb 2015, Andreas Ruprecht wrote:
 
-Reported-by: kbuild test robot <fengguang.wu@intel.com>
-Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
+> In commit c441d4a54c6e ("MIPS: mm: Only build one microassembler that
+> is suitable"), the Makefile at arch/mips/mm was rewritten to only
+> build the "right" microassembler file, depending on whether
+> CONFIG_CPU_MICROMIPS is set or not.
+> 
+> In the files, however, there are still preprocessor definitions
+> depending on CONFIG_CPU_MICROMIPS. The #ifdef around them can now
+> never evaluate to true, so let's remove them altogether.
+> 
+> This inconsistency was found using the undertaker-checkpatch tool.
+> 
+> Signed-off-by: Andreas Ruprecht <rupran@einserver.de>
+> ---
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+Reviewed-by: Maciej W. Rozycki <macro@linux-mips.org>
+
+ Thanks for catching it!
+
+  Maciej

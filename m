@@ -1,30 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Feb 2015 20:50:21 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27013405AbbBMTuSifeZ3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Feb 2015 20:50:18 +0100
-Date:   Fri, 13 Feb 2015 19:50:18 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Andreas Ruprecht <rupran@einserver.de>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Valentin Rothberg <valentinrothberg@gmail.com>,
-        Paul Bolle <pebolle@tiscali.nl>
-Subject: Re: [PATCH] MIPS: mm: Remove dead macro definitions
-In-Reply-To: <1423748572-31012-1-git-send-email-rupran@einserver.de>
-Message-ID: <alpine.LFD.2.11.1502131949190.22715@eddie.linux-mips.org>
-References: <1423748572-31012-1-git-send-email-rupran@einserver.de>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2015 17:57:11 +0100 (CET)
+Received: from cpsmtpb-ews10.kpnxchange.com ([213.75.39.15]:59730 "EHLO
+        cpsmtpb-ews10.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012573AbbBNQ5JX-zkG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 14 Feb 2015 17:57:09 +0100
+Received: from cpsps-ews16.kpnxchange.com ([10.94.84.197]) by cpsmtpb-ews10.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 14 Feb 2015 17:57:04 +0100
+Received: from CPSMTPM-TLF102.kpnxchange.com ([195.121.3.5]) by cpsps-ews16.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 14 Feb 2015 17:57:03 +0100
+Received: from [192.168.10.104] ([77.173.140.92]) by CPSMTPM-TLF102.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Sat, 14 Feb 2015 17:57:02 +0100
+Message-ID: <1423933022.9418.8.camel@x220>
+Subject: MIPS: FP32XX_HYBRID_FPRS
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     Valentin Rothberg <valentinrothberg@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Sat, 14 Feb 2015 17:57:02 +0100
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 14 Feb 2015 16:57:03.0139 (UTC) FILETIME=[41868F30:01D04877]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45813
+X-archive-position: 45815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,24 +44,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 12 Feb 2015, Andreas Ruprecht wrote:
+Your d8fb6537f1d4 ("MIPS: kernel: elf: Improve the overall ABI and FPU
+mode checks") is included in yesterday's linux-next (ie, next-20150213).
+I noticed because a script I use to check linux-next spotted a minor
+problem with it.
 
-> In commit c441d4a54c6e ("MIPS: mm: Only build one microassembler that
-> is suitable"), the Makefile at arch/mips/mm was rewritten to only
-> build the "right" microassembler file, depending on whether
-> CONFIG_CPU_MICROMIPS is set or not.
-> 
-> In the files, however, there are still preprocessor definitions
-> depending on CONFIG_CPU_MICROMIPS. The #ifdef around them can now
-> never evaluate to true, so let's remove them altogether.
-> 
-> This inconsistency was found using the undertaker-checkpatch tool.
-> 
-> Signed-off-by: Andreas Ruprecht <rupran@einserver.de>
-> ---
+That commit removed the only user of Kconfig symbol FP32XX_HYBRID_FPRS.
+Setting FP32XX_HYBRID_FPRS is now pointless in linux-next. Is the
+trivial commit to its entry form arch/mips/Kconfig.debug queued
+somewhere?
 
-Reviewed-by: Maciej W. Rozycki <macro@linux-mips.org>
 
- Thanks for catching it!
-
-  Maciej
+Paul Bolle

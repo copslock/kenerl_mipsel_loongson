@@ -1,39 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2015 18:34:07 +0100 (CET)
-Received: from cpsmtpb-ews06.kpnxchange.com ([213.75.39.9]:51952 "EHLO
-        cpsmtpb-ews06.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012573AbbBNReFb4XeZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 14 Feb 2015 18:34:05 +0100
-Received: from cpsps-ews04.kpnxchange.com ([10.94.84.171]) by cpsmtpb-ews06.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Sat, 14 Feb 2015 18:34:00 +0100
-Received: from CPSMTPM-TLF102.kpnxchange.com ([195.121.3.5]) by cpsps-ews04.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Sat, 14 Feb 2015 18:34:00 +0100
-Received: from [192.168.10.104] ([77.173.140.92]) by CPSMTPM-TLF102.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Sat, 14 Feb 2015 18:33:59 +0100
-Message-ID: <1423935239.9418.25.camel@x220>
-Subject: Re: MIPS: FP32XX_HYBRID_FPRS
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     Valentin Rothberg <valentinrothberg@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Date:   Sat, 14 Feb 2015 18:33:59 +0100
-In-Reply-To: <1423933022.9418.8.camel@x220>
-References: <1423933022.9418.8.camel@x220>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Feb 2015 02:23:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47491 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012661AbbBOBXDC7UKh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 15 Feb 2015 02:23:03 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 47A16B5155D2A;
+        Sun, 15 Feb 2015 01:22:56 +0000 (GMT)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sun, 15 Feb
+ 2015 01:22:57 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Sun, 15 Feb
+ 2015 01:22:56 +0000
+Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Sat, 14 Feb
+ 2015 17:22:54 -0800
+Message-ID: <54DFF4EE.6010008@imgtec.com>
+Date:   Sat, 14 Feb 2015 17:22:54 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Paul Bolle <pebolle@tiscali.nl>
+CC:     Valentin Rothberg <valentinrothberg@gmail.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: MIPS: CONFIG_MIPS_R6?
+References: <1423934469.9418.18.camel@x220>
+In-Reply-To: <1423934469.9418.18.camel@x220>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Feb 2015 17:33:59.0653 (UTC) FILETIME=[6AABC150:01D0487C]
-X-RcptDomain: linux-mips.org
-Return-Path: <pebolle@tiscali.nl>
+X-Originating-IP: [192.168.65.146]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45818
+X-archive-position: 45819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,18 +53,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 2015-02-14 at 17:57 +0100, Paul Bolle wrote:
-> Your d8fb6537f1d4 ("MIPS: kernel: elf: Improve the overall ABI and FPU
-> mode checks") is included in yesterday's linux-next (ie, next-20150213).
-> I noticed because a script I use to check linux-next spotted a minor
-> problem with it.
-> 
-> That commit removed the only user of Kconfig symbol FP32XX_HYBRID_FPRS.
-> Setting FP32XX_HYBRID_FPRS is now pointless in linux-next. Is the
-> trivial commit to its entry form arch/mips/Kconfig.debug queued
-           [....] to remove its entry from [...] 
+On 02/14/2015 09:21 AM, Paul Bolle wrote:
+> Your commits 430857eae56c ("MIPS: mm: Add MIPS R6 instruction
+> encodings") and 90163242784b ("MIPS: kernel: unaligned: Add support for
+> the MIPS R6") are included in yesterday's linux-next (ie,
+> next-20150213). I noticed because a script I use to check linux-next
+> spotted a problem with it.
+>
+> These commits added three references to CONFIG_MIPS_R6, were probably
+> CONFIG_CPU_MIPSR6 was intended. One reference is in a comment, which
+> should be trivial to get fixed. The other two references are in
+> (negative) preprocessor checks. It's not certain, at least not to me,
+> how these should be fixed.
+>
+>
+> Paul Bolle
 
-> somewhere?
+Yes, please.
 
-
-Paul Bolle
+- Leonid.

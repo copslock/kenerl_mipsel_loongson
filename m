@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2015 03:39:33 +0100 (CET)
-Received: from mga14.intel.com ([192.55.52.115]:2890 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012675AbbBPCjbGBJRd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Feb 2015 03:39:31 +0100
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP; 15 Feb 2015 18:32:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.09,584,1418112000"; 
-   d="scan'208";a="455073223"
-Received: from wxmubuntu.sh.intel.com ([10.239.154.16])
-  by FMSMGA003.fm.intel.com with ESMTP; 15 Feb 2015 18:24:25 -0800
-From:   Wang Xiaoming <xiaoming.wang@intel.com>
-To:     ralf@linux-mips.org, konrad.wilk@oracle.com,
-        boris.ostrovsky@oracle.com, david.vrabel@citrix.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org, akpm@linux-foundation.org,
-        linux@horizon.com, lauraa@codeaurora.org,
-        heiko.carstens@de.ibm.com, d.kasatkin@samsung.com,
-        takahiro.akashi@linaro.org, chris@chris-wilson.co.uk,
-        pebolle@tiscali.nl
-Cc:     Wang Xiaoming <xiaoming.wang@intel.com>,
-        Chuansheng Liu <chuansheng.liu@intel.com>,
-        Zhang Dongxing <dongxing.zhang@intel.com>
-Subject: [PATCH v3] modify the IO_TLB_SEGSIZE and IO_TLB_DEFAULT_SIZE configurable as flexible requirement about SW-IOMMU.
-Date:   Mon, 16 Feb 2015 10:38:18 +0800
-Message-Id: <1424054298-17083-1-git-send-email-xiaoming.wang@intel.com>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <xiaoming.wang@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2015 08:35:30 +0100 (CET)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:59749 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009840AbbBPHf2Xzc9n convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 Feb 2015 08:35:28 +0100
+Received: by mail-lb0-f182.google.com with SMTP id f15so24592245lbj.13
+        for <linux-mips@linux-mips.org>; Sun, 15 Feb 2015 23:35:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=cIq+TLac34/qqn24SfJytreSnVuM7v2GXXzyNqiQ7gs=;
+        b=pzfvt9lN+KdjKtzKhWR6ODX4lDdVcI+bnxZB36N/Q6ECfVjMnefzWZZjcgGclSABP1
+         JR48TZJnDnMgp7VNvGh21v6npQWAybb9RyV/5wmYBP1Vxs7Hhdf1+Tm84hjHkRdBGS7w
+         GAdCNMHNvFkpShYaDnR7yB6LK/2FiKFe8AGMnYok7Z+IDhMMjg+OcNYELE2nz+yWbk5m
+         pPMSdDuvBnwKzAdEnGFuBEKdypdzKzH6CD0IBlHMf2dCkCCr7vFfgulFMqWzyH9z3BC9
+         EYb9svB9fSSZ7/VTAKlmBjkIMqKyfFiwwfMFb5pqKRdReUzgunuBhwlSzGBg3tmsQPBy
+         98uw==
+MIME-Version: 1.0
+X-Received: by 10.152.20.129 with SMTP id n1mr19903603lae.120.1424072123137;
+ Sun, 15 Feb 2015 23:35:23 -0800 (PST)
+Received: by 10.25.145.131 with HTTP; Sun, 15 Feb 2015 23:35:23 -0800 (PST)
+Date:   Mon, 16 Feb 2015 08:35:23 +0100
+Message-ID: <CACna6rx+3TbNfLmT1Br-JjhDnTQLrFFtVzfmid=yOdBfcOwHoA@mail.gmail.com>
+Subject: Looking for an idea/workaround for using MIPS ioremap_nocache
+ (__ioremap) in IRQ
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45822
+X-archive-position: 45823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xiaoming.wang@intel.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,263 +51,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The maximum of SW-IOMMU is limited to 2^11*128 = 256K.
-And the maximum of IO_TLB_DEFAULT_SIZE is limited to (64UL<<20) 64M.
-While in different platform and different requirement this seems improper.
-So modifing the IO_TLB_SEGSIZE to io_tlb_segsize and IO_TLB_DEFAULT_SIZE to 
-io_tlb_default_size which can configure by BOARD_KERNEL_CMDLINE in BoardConfig.mk.
-This can meet different requirement.
+Hi,
 
-Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
-Signed-off-by: Zhang Dongxing <dongxing.zhang@intel.com>
-Signed-off-by: Wang Xiaoming <xiaoming.wang@intel.com>
----
-patch v1 make this change at Kconfig
-which needs to edit the .config manually.
-https://lkml.org/lkml/2015/1/25/571
+Once I've hit
+BUG_ON(in_interrupt());
+when hacking PCI drivers locally on MIPS board. I see the problem but
+don't know the solution.
 
-patch v2 only change IO_TLB_SEGSIZE configurable
-https://lkml.org/lkml/2015/2/5/812
+1) I think "read" and "write" of struct pci_ops should be safe to call
+in IRQ handler
+2) In drivers/bcma/driver_pci_host.c we use ioremap_nocache
 
- arch/mips/cavium-octeon/dma-octeon.c |    2 +-
- arch/mips/netlogic/common/nlm-dma.c  |    2 +-
- drivers/xen/swiotlb-xen.c            |    6 ++--
- include/linux/swiotlb.h              |    8 +----
- lib/swiotlb.c                        |   58 +++++++++++++++++++++++++---------
- 5 files changed, 49 insertions(+), 27 deletions(-)
+This causes a problem for boards with 2 PCI(e) cards. The base address
+for the 2nd card is
+#define BCMA_SOC_PCI1_CFG               0x44000000U
+which doesn't allow MIPS to use KSEG1.
 
-diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
-index 3778655..a521af6 100644
---- a/arch/mips/cavium-octeon/dma-octeon.c
-+++ b/arch/mips/cavium-octeon/dma-octeon.c
-@@ -312,7 +312,7 @@ void __init plat_swiotlb_setup(void)
- 		swiotlbsize = 64 * (1<<20);
- #endif
- 	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
--	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
-+	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
- 	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
- 
- 	octeon_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
-diff --git a/arch/mips/netlogic/common/nlm-dma.c b/arch/mips/netlogic/common/nlm-dma.c
-index f3d4ae8..eeffa8f 100644
---- a/arch/mips/netlogic/common/nlm-dma.c
-+++ b/arch/mips/netlogic/common/nlm-dma.c
-@@ -99,7 +99,7 @@ void __init plat_swiotlb_setup(void)
- 
- 	swiotlbsize = 1 << 20; /* 1 MB for now */
- 	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
--	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
-+	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
- 	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
- 
- 	nlm_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index 810ad41..3b3e9fe 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -164,11 +164,11 @@ xen_swiotlb_fixup(void *buf, size_t size, unsigned long nslabs)
- 	dma_addr_t dma_handle;
- 	phys_addr_t p = virt_to_phys(buf);
- 
--	dma_bits = get_order(IO_TLB_SEGSIZE << IO_TLB_SHIFT) + PAGE_SHIFT;
-+	dma_bits = get_order(io_tlb_segsize << IO_TLB_SHIFT) + PAGE_SHIFT;
- 
- 	i = 0;
- 	do {
--		int slabs = min(nslabs - i, (unsigned long)IO_TLB_SEGSIZE);
-+		int slabs = min(nslabs - i, (unsigned long)io_tlb_segsize);
- 
- 		do {
- 			rc = xen_create_contiguous_region(
-@@ -187,7 +187,7 @@ static unsigned long xen_set_nslabs(unsigned long nr_tbl)
- {
- 	if (!nr_tbl) {
- 		xen_io_tlb_nslabs = (64 * 1024 * 1024 >> IO_TLB_SHIFT);
--		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, IO_TLB_SEGSIZE);
-+		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, io_tlb_segsize);
- 	} else
- 		xen_io_tlb_nslabs = nr_tbl;
- 
-diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-index e7a018e..13506db 100644
---- a/include/linux/swiotlb.h
-+++ b/include/linux/swiotlb.h
-@@ -8,13 +8,7 @@ struct dma_attrs;
- struct scatterlist;
- 
- extern int swiotlb_force;
--
--/*
-- * Maximum allowable number of contiguous slabs to map,
-- * must be a power of 2.  What is the appropriate value ?
-- * The complexity of {map,unmap}_single is linearly dependent on this value.
-- */
--#define IO_TLB_SEGSIZE	128
-+extern int io_tlb_segsize;
- 
- /*
-  * log of the size of each IO TLB slab.  The number of slabs is command line
-diff --git a/lib/swiotlb.c b/lib/swiotlb.c
-index 4abda07..1db5fc8 100644
---- a/lib/swiotlb.c
-+++ b/lib/swiotlb.c
-@@ -56,6 +56,15 @@
- int swiotlb_force;
- 
- /*
-+ * Maximum allowable number of contiguous slabs to map,
-+ * must be a power of 2.  What is the appropriate value ?
-+ * define io_tlb_segsize as a parameter
-+ * which can be changed dynamically in config file for special usage.
-+ * The complexity of {map,unmap}_single is linearly dependent on this value.
-+ */
-+int io_tlb_segsize = 128;
-+
-+/*
-  * Used to do a quick range check in swiotlb_tbl_unmap_single and
-  * swiotlb_tbl_sync_single_*, to see if the memory was in fact allocated by this
-  * API.
-@@ -97,12 +106,20 @@ static DEFINE_SPINLOCK(io_tlb_lock);
- static int late_alloc;
- 
- static int __init
-+setup_io_tlb_segsize(char *str)
-+{
-+	get_option(&str, &io_tlb_segsize);
-+	return 0;
-+}
-+__setup("io_tlb_segsize=", setup_io_tlb_segsize);
-+
-+static int __init
- setup_io_tlb_npages(char *str)
- {
- 	if (isdigit(*str)) {
- 		io_tlb_nslabs = simple_strtoul(str, &str, 0);
--		/* avoid tail segment of size < IO_TLB_SEGSIZE */
--		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
-+		/* avoid tail segment of size < io_tlb_segsize */
-+		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
- 	}
- 	if (*str == ',')
- 		++str;
-@@ -120,15 +137,26 @@ unsigned long swiotlb_nr_tbl(void)
- }
- EXPORT_SYMBOL_GPL(swiotlb_nr_tbl);
- 
--/* default to 64MB */
--#define IO_TLB_DEFAULT_SIZE (64UL<<20)
-+/* default to 64MB 
-+ * define io_tlb_default_size as a parameter
-+ * which can be changed dynamically in config file for special usage.
-+ */
-+unsigned long io_tlb_default_size = (64UL<<20);
-+
-+static int __init
-+	setup_io_tlb_default_size(char *str) {
-+	get_option(&str, &io_tlb_default_size);
-+	return 0;
-+}
-+__setup("io_tlb_default_size=", setup_io_tlb_default_size);
-+
- unsigned long swiotlb_size_or_default(void)
- {
- 	unsigned long size;
- 
- 	size = io_tlb_nslabs << IO_TLB_SHIFT;
- 
--	return size ? size : (IO_TLB_DEFAULT_SIZE);
-+	return size ? size : (io_tlb_default_size);
- }
- 
- /* Note that this doesn't work with highmem page */
-@@ -183,7 +211,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
- 
- 	/*
- 	 * Allocate and initialize the free list array.  This array is used
--	 * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE
-+	 * to find contiguous free memory regions of size up to io_tlb_segsize
- 	 * between io_tlb_start and io_tlb_end.
- 	 */
- 	io_tlb_list = memblock_virt_alloc(
-@@ -193,7 +221,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
- 				PAGE_ALIGN(io_tlb_nslabs * sizeof(phys_addr_t)),
- 				PAGE_SIZE);
- 	for (i = 0; i < io_tlb_nslabs; i++) {
--		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
-+		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
- 		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
- 	}
- 	io_tlb_index = 0;
-@@ -211,13 +239,13 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
- void  __init
- swiotlb_init(int verbose)
- {
--	size_t default_size = IO_TLB_DEFAULT_SIZE;
-+	size_t default_size = io_tlb_default_size;
- 	unsigned char *vstart;
- 	unsigned long bytes;
- 
- 	if (!io_tlb_nslabs) {
- 		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
--		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
-+		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
- 	}
- 
- 	bytes = io_tlb_nslabs << IO_TLB_SHIFT;
-@@ -249,7 +277,7 @@ swiotlb_late_init_with_default_size(size_t default_size)
- 
- 	if (!io_tlb_nslabs) {
- 		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
--		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
-+		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
- 	}
- 
- 	/*
-@@ -308,7 +336,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
- 
- 	/*
- 	 * Allocate and initialize the free list array.  This array is used
--	 * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE
-+	 * to find contiguous free memory regions of size up to io_tlb_segsize
- 	 * between io_tlb_start and io_tlb_end.
- 	 */
- 	io_tlb_list = (unsigned int *)__get_free_pages(GFP_KERNEL,
-@@ -324,7 +352,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
- 		goto cleanup4;
- 
- 	for (i = 0; i < io_tlb_nslabs; i++) {
--		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
-+		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
- 		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
- 	}
- 	io_tlb_index = 0;
-@@ -493,7 +521,7 @@ phys_addr_t swiotlb_tbl_map_single(struct device *hwdev,
- 
- 			for (i = index; i < (int) (index + nslots); i++)
- 				io_tlb_list[i] = 0;
--			for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) != IO_TLB_SEGSIZE - 1) && io_tlb_list[i]; i--)
-+			for (i = index - 1; (OFFSET(i, io_tlb_segsize) != io_tlb_segsize - 1) && io_tlb_list[i]; i--)
- 				io_tlb_list[i] = ++count;
- 			tlb_addr = io_tlb_start + (index << IO_TLB_SHIFT);
- 
-@@ -571,7 +599,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
- 	 */
- 	spin_lock_irqsave(&io_tlb_lock, flags);
- 	{
--		count = ((index + nslots) < ALIGN(index + 1, IO_TLB_SEGSIZE) ?
-+		count = ((index + nslots) < ALIGN(index + 1, io_tlb_segsize) ?
- 			 io_tlb_list[index + nslots] : 0);
- 		/*
- 		 * Step 1: return the slots to the free list, merging the
-@@ -585,7 +613,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
- 		 * Step 2: merge the returned slots with the preceding slots,
- 		 * if available (non zero)
- 		 */
--		for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) != IO_TLB_SEGSIZE -1) && io_tlb_list[i]; i--)
-+		for (i = index - 1; (OFFSET(i, io_tlb_segsize) != io_tlb_segsize -1) && io_tlb_list[i]; i--)
- 			io_tlb_list[i] = ++count;
- 	}
- 	spin_unlock_irqrestore(&io_tlb_lock, flags);
+As the result forwardtrace looks like this:
+1) ioremap_nocache
+2) __ioremap_mode
+3) __ioremap
+4) get_vm_area
+5) __get_vm_area_node
+And then we can hit BUG_ON(in_interrupt());
+
+Can you see any solution for this? Currently there isn't any mainline
+code triggering this problem, but it would be nice to have everything
+working anyway.
+
+
+As one of workarounds I was thinking about mapping whole space early.
+Unfortunately there are many possible registers (0xffff), few PCI
+functions (0x30000), many possible PCI devices (0xf80000). It's way to
+big space I guess to keep it mapped all the time.
+
 -- 
-1.7.9.5
+Rafał

@@ -1,44 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2015 08:35:30 +0100 (CET)
-Received: from mail-lb0-f182.google.com ([209.85.217.182]:59749 "EHLO
-        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009840AbbBPHf2Xzc9n convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Feb 2015 08:35:28 +0100
-Received: by mail-lb0-f182.google.com with SMTP id f15so24592245lbj.13
-        for <linux-mips@linux-mips.org>; Sun, 15 Feb 2015 23:35:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=cIq+TLac34/qqn24SfJytreSnVuM7v2GXXzyNqiQ7gs=;
-        b=pzfvt9lN+KdjKtzKhWR6ODX4lDdVcI+bnxZB36N/Q6ECfVjMnefzWZZjcgGclSABP1
-         JR48TZJnDnMgp7VNvGh21v6npQWAybb9RyV/5wmYBP1Vxs7Hhdf1+Tm84hjHkRdBGS7w
-         GAdCNMHNvFkpShYaDnR7yB6LK/2FiKFe8AGMnYok7Z+IDhMMjg+OcNYELE2nz+yWbk5m
-         pPMSdDuvBnwKzAdEnGFuBEKdypdzKzH6CD0IBlHMf2dCkCCr7vFfgulFMqWzyH9z3BC9
-         EYb9svB9fSSZ7/VTAKlmBjkIMqKyfFiwwfMFb5pqKRdReUzgunuBhwlSzGBg3tmsQPBy
-         98uw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2015 08:47:21 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63456 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009840AbbBPHrT1SCR0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Feb 2015 08:47:19 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id B865623D730D7;
+        Mon, 16 Feb 2015 07:47:12 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 16 Feb 2015 07:47:14 +0000
+Received: from localhost (192.168.154.96) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 16 Feb
+ 2015 07:46:52 +0000
+Date:   Mon, 16 Feb 2015 07:46:52 +0000
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     Paul Bolle <pebolle@tiscali.nl>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Valentin Rothberg <valentinrothberg@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: MIPS: CONFIG_CPU_MIPS_R6?
+Message-ID: <20150216074652.GA25858@mchandras-linux.le.imgtec.org>
+References: <1423934805.9418.23.camel@x220>
 MIME-Version: 1.0
-X-Received: by 10.152.20.129 with SMTP id n1mr19903603lae.120.1424072123137;
- Sun, 15 Feb 2015 23:35:23 -0800 (PST)
-Received: by 10.25.145.131 with HTTP; Sun, 15 Feb 2015 23:35:23 -0800 (PST)
-Date:   Mon, 16 Feb 2015 08:35:23 +0100
-Message-ID: <CACna6rx+3TbNfLmT1Br-JjhDnTQLrFFtVzfmid=yOdBfcOwHoA@mail.gmail.com>
-Subject: Looking for an idea/workaround for using MIPS ioremap_nocache
- (__ioremap) in IRQ
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <1423934805.9418.23.camel@x220>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.96]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45823
+X-archive-position: 45824
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,39 +49,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Sat, Feb 14, 2015 at 06:26:45PM +0100, Paul Bolle wrote:
+> Your commit 33d73a3d4159 ("MIPS: lib: memset: Add MIPS R6 support") is
+> included in yesterday's linux next (ie, next-20150213). I noticed
+> because a script I use to check linux-next spotted a trivial problem
+> with it.
+> 
+> It added a reference to CONFIG_CPU_MIPS_R6 in comment. Should I submit
+> the trivial patch to change that into a reference to CONFIG_CPU_MIPSR6
+> or do you prefer to do that yourself?
+> 
+> 
+> Paul Bolle
+> 
+Hi Paul,
 
-Once I've hit
-BUG_ON(in_interrupt());
-when hacking PCI drivers locally on MIPS board. I see the problem but
-don't know the solution.
-
-1) I think "read" and "write" of struct pci_ops should be safe to call
-in IRQ handler
-2) In drivers/bcma/driver_pci_host.c we use ioremap_nocache
-
-This causes a problem for boards with 2 PCI(e) cards. The base address
-for the 2nd card is
-#define BCMA_SOC_PCI1_CFG               0x44000000U
-which doesn't allow MIPS to use KSEG1.
-
-As the result forwardtrace looks like this:
-1) ioremap_nocache
-2) __ioremap_mode
-3) __ioremap
-4) get_vm_area
-5) __get_vm_area_node
-And then we can hit BUG_ON(in_interrupt());
-
-Can you see any solution for this? Currently there isn't any mainline
-code triggering this problem, but it would be nice to have everything
-working anyway.
-
-
-As one of workarounds I was thinking about mapping whole space early.
-Unfortunately there are many possible registers (0xffff), few PCI
-functions (0x30000), many possible PCI devices (0xf80000). It's way to
-big space I guess to keep it mapped all the time.
+Ok thanks I will fix both.
 
 -- 
-Rafał
+markos

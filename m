@@ -1,72 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2015 21:52:36 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:42967 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012885AbbBPUwfEslnG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Feb 2015 21:52:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Subject:CC:To:MIME-Version:From:Date:Message-ID; bh=DaQfae6MO/5VtjaGb2bAMrwQr5LV7f77NswZtkD0+xQ=;
-        b=InITwdEYZeOOWbqs17Mbzbd+X49Z4naNIo8RSsmJbvsAM/4mPl679IoKP1Dt772baMEf0r487evB/4f7gETkAPoVEf1KcIsQE4z/ra/mj5dgaQ7/TudQ+ZokThRuGwGfbnMLmbFkgXmBTD6C1ooYz3QZ3pH4mEqOoo8HUVeweVs=;
-Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1YNSeb-003XXA-I5
-        for linux-mips@linux-mips.org; Mon, 16 Feb 2015 20:52:29 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:35343 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1YNSeS-003XMo-Lw; Mon, 16 Feb 2015 20:52:21 +0000
-Message-ID: <54E25883.3080704@roeck-us.net>
-Date:   Mon, 16 Feb 2015 12:52:19 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2015 23:13:58 +0100 (CET)
+Received: from userp1040.oracle.com ([156.151.31.81]:31434 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012885AbbBPWN4hlrPK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Feb 2015 23:13:56 +0100
+Received: from acsinet21.oracle.com (acsinet21.oracle.com [141.146.126.237])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id t1GMDUP8004539
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Mon, 16 Feb 2015 22:13:31 GMT
+Received: from aserz7022.oracle.com (aserz7022.oracle.com [141.146.126.231])
+        by acsinet21.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id t1GMDPEk012933
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+        Mon, 16 Feb 2015 22:13:25 GMT
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserz7022.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id t1GMDO4C027450;
+        Mon, 16 Feb 2015 22:13:24 GMT
+Received: from l.oracle.com (/10.137.178.253)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 16 Feb 2015 14:13:24 -0800
+Received: by l.oracle.com (Postfix, from userid 1000)
+        id AE9536A3C92; Mon, 16 Feb 2015 17:13:22 -0500 (EST)
+Date:   Mon, 16 Feb 2015 17:13:22 -0500
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     Wang Xiaoming <xiaoming.wang@intel.com>
+Cc:     ralf@linux-mips.org, boris.ostrovsky@oracle.com,
+        david.vrabel@citrix.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+        akpm@linux-foundation.org, linux@horizon.com,
+        lauraa@codeaurora.org, heiko.carstens@de.ibm.com,
+        d.kasatkin@samsung.com, takahiro.akashi@linaro.org,
+        chris@chris-wilson.co.uk, pebolle@tiscali.nl,
+        Chuansheng Liu <chuansheng.liu@intel.com>,
+        Zhang Dongxing <dongxing.zhang@intel.com>
+Subject: Re: [PATCH v3] modify the IO_TLB_SEGSIZE and IO_TLB_DEFAULT_SIZE
+ configurable as flexible requirement about SW-IOMMU.
+Message-ID: <20150216221322.GA7442@l.oracle.com>
+References: <1424054298-17083-1-git-send-email-xiaoming.wang@intel.com>
 MIME-Version: 1.0
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-CC:     linux-next@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        baspeters93@gmail.com
-Subject: Re: linux-next: Tree for Feb 16
-References: <20120216164144.35e98f5ee8f1b1f545406309@canb.auug.org.au>  <20150216171213.GA2804@roeck-us.net> <20150217073619.4c972211@canb.auug.org.au>
-In-Reply-To: <20150217073619.4c972211@canb.auug.org.au>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-CTCH-PVer: 0000001
-X-CTCH-Spam: Unknown
-X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020201.54E2588D.0173,ss=1,re=0.001,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-X-CTCH-Score: 0.001
-X-CTCH-ScoreCust: 0.000
-X-CTCH-Rules: C_4847,
-X-CTCH-SenderID: linux@roeck-us.net
-X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 4
-X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 0
-X-CTCH-SenderID-TotalConfirmed: 0
-X-CTCH-SenderID-TotalBulk: 0
-X-CTCH-SenderID-TotalVirus: 0
-X-CTCH-SenderID-TotalRecipients: 0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1424054298-17083-1-git-send-email-xiaoming.wang@intel.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Source-IP: acsinet21.oracle.com [141.146.126.237]
+Return-Path: <konrad.wilk@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45831
+X-archive-position: 45832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: konrad.wilk@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,21 +62,277 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/16/2015 12:36 PM, Stephen Rothwell wrote:
-> Hi Guenter,
->
-> On Mon, 16 Feb 2015 09:12:13 -0800 Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> On Thu, Feb 16, 2012 at 04:41:44PM +1100, Stephen Rothwell wrote:
->>>
->>> Changes since 20120215:
->> ---
->> [ Trying again, this time hopefully replying to the correct e-mail.
->>    Sorry for the earlier noise. ]
->
-> Did you really mean to reply to a release from 3 years ago?
->
+On Mon, Feb 16, 2015 at 10:38:18AM +0800, Wang Xiaoming wrote:
+> The maximum of SW-IOMMU is limited to 2^11*128 = 256K.
+> And the maximum of IO_TLB_DEFAULT_SIZE is limited to (64UL<<20) 64M.
+> While in different platform and different requirement this seems improper.
+> So modifing the IO_TLB_SEGSIZE to io_tlb_segsize and IO_TLB_DEFAULT_SIZE to 
+> io_tlb_default_size which can configure by BOARD_KERNEL_CMDLINE in BoardConfig.mk.
 
-Sigh. No, of course not :-(. I think I am giving up for today.
+Thsi patch does not have anything in BoardConfig.mk. Perhaps remove this.
 
-Guenter
+Got a couple of things below:
+> This can meet different requirement.
+> 
+> Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
+> Signed-off-by: Zhang Dongxing <dongxing.zhang@intel.com>
+> Signed-off-by: Wang Xiaoming <xiaoming.wang@intel.com>
+> ---
+> patch v1 make this change at Kconfig
+> which needs to edit the .config manually.
+> https://lkml.org/lkml/2015/1/25/571
+> 
+> patch v2 only change IO_TLB_SEGSIZE configurable
+> https://lkml.org/lkml/2015/2/5/812
+> 
+>  arch/mips/cavium-octeon/dma-octeon.c |    2 +-
+>  arch/mips/netlogic/common/nlm-dma.c  |    2 +-
+>  drivers/xen/swiotlb-xen.c            |    6 ++--
+>  include/linux/swiotlb.h              |    8 +----
+>  lib/swiotlb.c                        |   58 +++++++++++++++++++++++++---------
+>  5 files changed, 49 insertions(+), 27 deletions(-)
+> 
+> diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
+> index 3778655..a521af6 100644
+> --- a/arch/mips/cavium-octeon/dma-octeon.c
+> +++ b/arch/mips/cavium-octeon/dma-octeon.c
+> @@ -312,7 +312,7 @@ void __init plat_swiotlb_setup(void)
+>  		swiotlbsize = 64 * (1<<20);
+>  #endif
+>  	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
+> -	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
+> +	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
+>  	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
+>  
+>  	octeon_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
+> diff --git a/arch/mips/netlogic/common/nlm-dma.c b/arch/mips/netlogic/common/nlm-dma.c
+> index f3d4ae8..eeffa8f 100644
+> --- a/arch/mips/netlogic/common/nlm-dma.c
+> +++ b/arch/mips/netlogic/common/nlm-dma.c
+> @@ -99,7 +99,7 @@ void __init plat_swiotlb_setup(void)
+>  
+>  	swiotlbsize = 1 << 20; /* 1 MB for now */
+>  	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
+> -	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
+> +	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
+>  	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
+>  
+>  	nlm_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
+> diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+> index 810ad41..3b3e9fe 100644
+> --- a/drivers/xen/swiotlb-xen.c
+> +++ b/drivers/xen/swiotlb-xen.c
+> @@ -164,11 +164,11 @@ xen_swiotlb_fixup(void *buf, size_t size, unsigned long nslabs)
+>  	dma_addr_t dma_handle;
+>  	phys_addr_t p = virt_to_phys(buf);
+>  
+> -	dma_bits = get_order(IO_TLB_SEGSIZE << IO_TLB_SHIFT) + PAGE_SHIFT;
+> +	dma_bits = get_order(io_tlb_segsize << IO_TLB_SHIFT) + PAGE_SHIFT;
+>  
+>  	i = 0;
+>  	do {
+> -		int slabs = min(nslabs - i, (unsigned long)IO_TLB_SEGSIZE);
+> +		int slabs = min(nslabs - i, (unsigned long)io_tlb_segsize);
+>  
+>  		do {
+>  			rc = xen_create_contiguous_region(
+> @@ -187,7 +187,7 @@ static unsigned long xen_set_nslabs(unsigned long nr_tbl)
+>  {
+>  	if (!nr_tbl) {
+>  		xen_io_tlb_nslabs = (64 * 1024 * 1024 >> IO_TLB_SHIFT);
+> -		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, IO_TLB_SEGSIZE);
+> +		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, io_tlb_segsize);
+>  	} else
+>  		xen_io_tlb_nslabs = nr_tbl;
+>  
+> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+> index e7a018e..13506db 100644
+> --- a/include/linux/swiotlb.h
+> +++ b/include/linux/swiotlb.h
+> @@ -8,13 +8,7 @@ struct dma_attrs;
+>  struct scatterlist;
+>  
+>  extern int swiotlb_force;
+> -
+> -/*
+> - * Maximum allowable number of contiguous slabs to map,
+> - * must be a power of 2.  What is the appropriate value ?
+> - * The complexity of {map,unmap}_single is linearly dependent on this value.
+> - */
+> -#define IO_TLB_SEGSIZE	128
+> +extern int io_tlb_segsize;
+>  
+>  /*
+>   * log of the size of each IO TLB slab.  The number of slabs is command line
+> diff --git a/lib/swiotlb.c b/lib/swiotlb.c
+> index 4abda07..1db5fc8 100644
+> --- a/lib/swiotlb.c
+> +++ b/lib/swiotlb.c
+> @@ -56,6 +56,15 @@
+>  int swiotlb_force;
+>  
+>  /*
+> + * Maximum allowable number of contiguous slabs to map,
+> + * must be a power of 2.  What is the appropriate value ?
+> + * define io_tlb_segsize as a parameter
+> + * which can be changed dynamically in config file for special usage.
+> + * The complexity of {map,unmap}_single is linearly dependent on this value.
+> + */
+> +int io_tlb_segsize = 128;
+> +
+> +/*
+>   * Used to do a quick range check in swiotlb_tbl_unmap_single and
+>   * swiotlb_tbl_sync_single_*, to see if the memory was in fact allocated by this
+>   * API.
+> @@ -97,12 +106,20 @@ static DEFINE_SPINLOCK(io_tlb_lock);
+>  static int late_alloc;
+>  
+>  static int __init
+> +setup_io_tlb_segsize(char *str)
+> +{
+> +	get_option(&str, &io_tlb_segsize);
+> +	return 0;
+> +}
+> +__setup("io_tlb_segsize=", setup_io_tlb_segsize);
+
+This should be folded in swiotlb=XYZ parsing please. 
+
+Also you will need to update the Documentaiton/kernel-parameters.txt file.
+
+> +
+> +static int __init
+>  setup_io_tlb_npages(char *str)
+>  {
+>  	if (isdigit(*str)) {
+>  		io_tlb_nslabs = simple_strtoul(str, &str, 0);
+> -		/* avoid tail segment of size < IO_TLB_SEGSIZE */
+> -		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+> +		/* avoid tail segment of size < io_tlb_segsize */
+> +		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
+>  	}
+>  	if (*str == ',')
+>  		++str;
+> @@ -120,15 +137,26 @@ unsigned long swiotlb_nr_tbl(void)
+>  }
+>  EXPORT_SYMBOL_GPL(swiotlb_nr_tbl);
+>  
+> -/* default to 64MB */
+> -#define IO_TLB_DEFAULT_SIZE (64UL<<20)
+> +/* default to 64MB 
+> + * define io_tlb_default_size as a parameter
+> + * which can be changed dynamically in config file for special usage.
+> + */
+> +unsigned long io_tlb_default_size = (64UL<<20);
+> +
+> +static int __init
+> +	setup_io_tlb_default_size(char *str) {
+> +	get_option(&str, &io_tlb_default_size);
+> +	return 0;
+> +}
+> +__setup("io_tlb_default_size=", setup_io_tlb_default_size);
+
+Please fold that in swiotlb=XYZ parameter. Make it do all the work.
+
+> +
+>  unsigned long swiotlb_size_or_default(void)
+>  {
+>  	unsigned long size;
+>  
+>  	size = io_tlb_nslabs << IO_TLB_SHIFT;
+>  
+> -	return size ? size : (IO_TLB_DEFAULT_SIZE);
+> +	return size ? size : (io_tlb_default_size);
+>  }
+>  
+>  /* Note that this doesn't work with highmem page */
+> @@ -183,7 +211,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+>  
+>  	/*
+>  	 * Allocate and initialize the free list array.  This array is used
+> -	 * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE
+> +	 * to find contiguous free memory regions of size up to io_tlb_segsize
+>  	 * between io_tlb_start and io_tlb_end.
+>  	 */
+>  	io_tlb_list = memblock_virt_alloc(
+> @@ -193,7 +221,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+>  				PAGE_ALIGN(io_tlb_nslabs * sizeof(phys_addr_t)),
+>  				PAGE_SIZE);
+>  	for (i = 0; i < io_tlb_nslabs; i++) {
+> -		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
+> +		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
+>  		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
+>  	}
+>  	io_tlb_index = 0;
+> @@ -211,13 +239,13 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+>  void  __init
+>  swiotlb_init(int verbose)
+>  {
+> -	size_t default_size = IO_TLB_DEFAULT_SIZE;
+> +	size_t default_size = io_tlb_default_size;
+>  	unsigned char *vstart;
+>  	unsigned long bytes;
+>  
+>  	if (!io_tlb_nslabs) {
+>  		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
+> -		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+> +		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
+>  	}
+>  
+>  	bytes = io_tlb_nslabs << IO_TLB_SHIFT;
+> @@ -249,7 +277,7 @@ swiotlb_late_init_with_default_size(size_t default_size)
+>  
+>  	if (!io_tlb_nslabs) {
+>  		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
+> -		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+> +		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
+>  	}
+>  
+>  	/*
+> @@ -308,7 +336,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+>  
+>  	/*
+>  	 * Allocate and initialize the free list array.  This array is used
+> -	 * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE
+> +	 * to find contiguous free memory regions of size up to io_tlb_segsize
+>  	 * between io_tlb_start and io_tlb_end.
+>  	 */
+>  	io_tlb_list = (unsigned int *)__get_free_pages(GFP_KERNEL,
+> @@ -324,7 +352,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+>  		goto cleanup4;
+>  
+>  	for (i = 0; i < io_tlb_nslabs; i++) {
+> -		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
+> +		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
+>  		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
+>  	}
+>  	io_tlb_index = 0;
+> @@ -493,7 +521,7 @@ phys_addr_t swiotlb_tbl_map_single(struct device *hwdev,
+>  
+>  			for (i = index; i < (int) (index + nslots); i++)
+>  				io_tlb_list[i] = 0;
+> -			for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) != IO_TLB_SEGSIZE - 1) && io_tlb_list[i]; i--)
+> +			for (i = index - 1; (OFFSET(i, io_tlb_segsize) != io_tlb_segsize - 1) && io_tlb_list[i]; i--)
+>  				io_tlb_list[i] = ++count;
+>  			tlb_addr = io_tlb_start + (index << IO_TLB_SHIFT);
+>  
+> @@ -571,7 +599,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
+>  	 */
+>  	spin_lock_irqsave(&io_tlb_lock, flags);
+>  	{
+> -		count = ((index + nslots) < ALIGN(index + 1, IO_TLB_SEGSIZE) ?
+> +		count = ((index + nslots) < ALIGN(index + 1, io_tlb_segsize) ?
+>  			 io_tlb_list[index + nslots] : 0);
+>  		/*
+>  		 * Step 1: return the slots to the free list, merging the
+> @@ -585,7 +613,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
+>  		 * Step 2: merge the returned slots with the preceding slots,
+>  		 * if available (non zero)
+>  		 */
+> -		for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) != IO_TLB_SEGSIZE -1) && io_tlb_list[i]; i--)
+> +		for (i = index - 1; (OFFSET(i, io_tlb_segsize) != io_tlb_segsize -1) && io_tlb_list[i]; i--)
+>  			io_tlb_list[i] = ++count;
+>  	}
+>  	spin_unlock_irqrestore(&io_tlb_lock, flags);
+> -- 
+> 1.7.9.5
+> 

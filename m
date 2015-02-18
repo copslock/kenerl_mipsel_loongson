@@ -1,46 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Feb 2015 11:02:11 +0100 (CET)
-Received: from mail-wi0-f182.google.com ([209.85.212.182]:52230 "EHLO
-        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012930AbbBRKCJREaiT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Feb 2015 11:02:09 +0100
-Received: by mail-wi0-f182.google.com with SMTP id l15so907486wiw.3;
-        Wed, 18 Feb 2015 02:02:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=GFZg5Ycymgz14ccb2d3UMrArDg2CSEh3BJUn1CYytMU=;
-        b=DoNgt/g4rkMRCsEdgwNUeXuhuA93G18xbD3chqbFH4oWwkzwabJuQbAJBj6GkEAE6f
-         /61XUeoWbGsPD4k9UWmIlHnm/YKqf8gkByrQrZe2gZs5JhmkUXI5wDBgbo+0Hn/OhRa4
-         u1Cj+AVYCPuNsSe1FSgJO6eew8Xxb6WWU4htpg8pHsN/vTDB3YGDAGBbikOr94mA2sSV
-         Im6e6xuiy9EDF+XIRtvH7snY9O4Y6SPlW4pzfFMEo29Fz9uB+uWBwI80Sm0Mxnr5/JWk
-         O5+2pYOxd8gsszUKbN0YH40S3u5hs5dOdAj6Ze7mXobQJHCV6/brzu4mvObY0oCzPemG
-         mt6Q==
-X-Received: by 10.194.8.2 with SMTP id n2mr2541333wja.46.1424253723288;
-        Wed, 18 Feb 2015 02:02:03 -0800 (PST)
-Received: from flagship.roarinelk.net (62-47-33-208.adsl.highway.telekom.at. [62.47.33.208])
-        by mx.google.com with ESMTPSA id j9sm31754827wjy.18.2015.02.18.02.01.59
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 18 Feb 2015 02:02:01 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Bruno Randolf <br1@einfach.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        stable@vger.kernel.org  [v3.17+]
-Subject: [PATCH RESEND] MIPS: Alchemy: fix cpu clock calculation
-Date:   Wed, 18 Feb 2015 11:01:56 +0100
-Message-Id: <1424253716-588144-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 2.3.0
-Return-Path: <manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Feb 2015 11:44:52 +0100 (CET)
+Received: from baptiste.telenet-ops.be ([195.130.132.51]:57496 "EHLO
+        baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012967AbbBRKoul5lVz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Feb 2015 11:44:50 +0100
+Received: from ayla.of.borg ([84.193.93.87])
+        by baptiste.telenet-ops.be with bizsmtp
+        id tmkp1p00a1t5w8s01mkp4x; Wed, 18 Feb 2015 11:44:49 +0100
+Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
+        by ayla.of.borg with esmtp (Exim 4.82)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1YO27d-0004qe-8S; Wed, 18 Feb 2015 11:44:49 +0100
+Received: from geert by ramsan with local (Exim 4.82)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1YO27d-0005Lq-Nj; Wed, 18 Feb 2015 11:44:49 +0100
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Joshua Kinard <kumba@gentoo.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] rtc: ds1685: Remove superfluous checks for out-of-range u8 values
+Date:   Wed, 18 Feb 2015 11:44:39 +0100
+Message-Id: <1424256279-20526-1-git-send-email-geert@linux-m68k.org>
+X-Mailer: git-send-email 1.9.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45848
+X-archive-position: 45849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,39 +48,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The current code uses bits 0-6 of the sys_cpupll register to calculate
-core clock speed.  However this is only valid on Au1300, on all earlier
-models the hardware only uses bits 0-5 to generate core clock.
+drivers/rtc/rtc-ds1685.c: In function ‘ds1685_rtc_read_alarm’:
+drivers/rtc/rtc-ds1685.c:402: warning: comparison is always true due to limited range of data type
+drivers/rtc/rtc-ds1685.c:409: warning: comparison is always true due to limited range of data type
+drivers/rtc/rtc-ds1685.c:416: warning: comparison is always true due to limited range of data type
+drivers/rtc/rtc-ds1685.c: In function ‘ds1685_rtc_set_alarm’:
+drivers/rtc/rtc-ds1685.c:475: warning: comparison is always true due to limited range of data type
+drivers/rtc/rtc-ds1685.c:478: warning: comparison is always true due to limited range of data type
+drivers/rtc/rtc-ds1685.c:481: warning: comparison is always true due to limited range of data type
 
-This fixes clock calculation on the MTX1 (Au1500), where bit 6 of cpupll
-is set as well, which ultimately lead the code to calculate a bogus cpu
-core clock and also uart base clock down the line.
+u8 cannot contain a value larger than 0xff, hence drop the checks.
+Wrapping the checks in unlikely() indicated some sense of humor, though ;-)
 
-Reported-by: John Crispin <blogic@openwrt.org>
-Tested-by: Bruno Randolf <br1@einfach.org>
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-Cc: stable@vger.kernel.org	[v3.17+]
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
-John originally noticed that the reported UART baud base differed between 3.14
-and 3.18 on the MTX1,  Bruno tested and confirmed that the fix is correct.
+ drivers/rtc/rtc-ds1685.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Resend with linux mips ml address.
-
- arch/mips/alchemy/common/clock.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
-index d8737a8..546914c 100644
---- a/arch/mips/alchemy/common/clock.c
-+++ b/arch/mips/alchemy/common/clock.c
-@@ -127,6 +127,8 @@ static unsigned long alchemy_clk_cpu_recalc(struct clk_hw *hw,
- 		t = 396000000;
- 	else {
- 		t = alchemy_rdsys(AU1000_SYS_CPUPLL) & 0x7f;
-+		if (alchemy_get_cputype() < ALCHEMY_CPU_AU1300)
-+			t &= 0x3f;
- 		t *= parent_rate;
- 	}
+diff --git a/drivers/rtc/rtc-ds1685.c b/drivers/rtc/rtc-ds1685.c
+index 8c3bfcb115b78731..5077078a9305b9d5 100644
+--- a/drivers/rtc/rtc-ds1685.c
++++ b/drivers/rtc/rtc-ds1685.c
+@@ -399,21 +399,21 @@ ds1685_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
+ 	 * of this RTC chip.  We check for it anyways in case support is
+ 	 * added in the future.
+ 	 */
+-	if (unlikely((seconds >= 0xc0) && (seconds <= 0xff)))
++	if (unlikely(seconds >= 0xc0))
+ 		alrm->time.tm_sec = -1;
+ 	else
+ 		alrm->time.tm_sec = ds1685_rtc_bcd2bin(rtc, seconds,
+ 						       RTC_SECS_BCD_MASK,
+ 						       RTC_SECS_BIN_MASK);
  
+-	if (unlikely((minutes >= 0xc0) && (minutes <= 0xff)))
++	if (unlikely(minutes >= 0xc0))
+ 		alrm->time.tm_min = -1;
+ 	else
+ 		alrm->time.tm_min = ds1685_rtc_bcd2bin(rtc, minutes,
+ 						       RTC_MINS_BCD_MASK,
+ 						       RTC_MINS_BIN_MASK);
+ 
+-	if (unlikely((hours >= 0xc0) && (hours <= 0xff)))
++	if (unlikely(hours >= 0xc0))
+ 		alrm->time.tm_hour = -1;
+ 	else
+ 		alrm->time.tm_hour = ds1685_rtc_bcd2bin(rtc, hours,
+@@ -472,13 +472,13 @@ ds1685_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
+ 	 * field, and we only support four fields.  We put the support
+ 	 * here anyways for the future.
+ 	 */
+-	if (unlikely((seconds >= 0xc0) && (seconds <= 0xff)))
++	if (unlikely(seconds >= 0xc0))
+ 		seconds = 0xff;
+ 
+-	if (unlikely((minutes >= 0xc0) && (minutes <= 0xff)))
++	if (unlikely(minutes >= 0xc0))
+ 		minutes = 0xff;
+ 
+-	if (unlikely((hours >= 0xc0) && (hours <= 0xff)))
++	if (unlikely(hours >= 0xc0))
+ 		hours = 0xff;
+ 
+ 	alrm->time.tm_mon	= -1;
 -- 
-2.3.0
+1.9.1

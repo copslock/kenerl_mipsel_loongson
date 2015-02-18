@@ -1,53 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Feb 2015 12:35:55 +0100 (CET)
-Received: from mail-la0-f41.google.com ([209.85.215.41]:45518 "EHLO
-        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013445AbbBQLf21mF2o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Feb 2015 12:35:28 +0100
-Received: by labge10 with SMTP id ge10so35048958lab.12
-        for <linux-mips@linux-mips.org>; Tue, 17 Feb 2015 03:35:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=fKgC1CIKgg/tRnppl7Q1LsGrLi6QQsDhhu7EEpc8Xws=;
-        b=RlW+QqcNYZ3X8ZzYyYlAnrnUphi96Bxs5ljEVBy8GwHX1sn8TXgcW0kXbO8pwBaCRD
-         aVsrwI/X92Csav5+7mzUbAVKExPhVH8N3T8jZyK+hjFexex9ZWcFMwtHypc6MR/w0gfb
-         4ebPULecBIiq43IzAmInBSdji6F55tpdFCh2GTYmMCJ0wXemFsQjZnXmGmD0ZCVmtesg
-         s1uJK1xOeY1SmrkPB15BHwTJt5sutOd+zI1hL32pdHhvnsaLlOOjs2rOuwrmAWgndyAF
-         P02ORgb5EHFS0T+G9+1IxvGmG+MTTRgRvUGtYY8BBRD8KurDMkw1m5+HfbUGYWT5BXUG
-         eFuA==
-X-Gm-Message-State: ALoCoQk80Ffl9JVCxm7EraccyHRu2TN5lHGtJgdDjOfwDrcNg/uQgACb/vkq2FHqSuBQAm91ggbB
-X-Received: by 10.112.188.165 with SMTP id gb5mr11869454lbc.35.1424172923226;
-        Tue, 17 Feb 2015 03:35:23 -0800 (PST)
-Received: from [192.168.3.154] (ppp31-177.pppoe.mtu-net.ru. [81.195.31.177])
-        by mx.google.com with ESMTPSA id g5sm3507875lag.11.2015.02.17.03.35.20
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 17 Feb 2015 03:35:22 -0800 (PST)
-Message-ID: <54E32778.3060307@cogentembedded.com>
-Date:   Tue, 17 Feb 2015 14:35:20 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Feb 2015 10:10:23 +0100 (CET)
+Received: from mga02.intel.com ([134.134.136.20]:41970 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012939AbbBRJKVZ8nSm convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Feb 2015 10:10:21 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP; 18 Feb 2015 01:10:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.09,595,1418112000"; 
+   d="scan'208";a="667962030"
+Received: from pgsmsx108.gar.corp.intel.com ([10.221.44.103])
+  by fmsmga001.fm.intel.com with ESMTP; 18 Feb 2015 01:10:06 -0800
+Received: from shsmsx103.ccr.corp.intel.com (10.239.4.69) by
+ PGSMSX108.gar.corp.intel.com (10.221.44.103) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Wed, 18 Feb 2015 17:10:05 +0800
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.62]) by
+ SHSMSX103.ccr.corp.intel.com ([169.254.4.197]) with mapi id 14.03.0195.001;
+ Wed, 18 Feb 2015 17:09:58 +0800
+From:   "Wang, Xiaoming" <xiaoming.wang@intel.com>
+To:     Jan Beulich <JBeulich@suse.com>
+CC:     "chris@chris-wilson.co.uk" <chris@chris-wilson.co.uk>,
+        "david.vrabel@citrix.com" <david.vrabel@citrix.com>,
+        "lauraa@codeaurora.org" <lauraa@codeaurora.org>,
+        "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
+        "linux@horizon.com" <linux@horizon.com>,
+        "Liu, Chuansheng" <chuansheng.liu@intel.com>,
+        "Zhang, Dongxing" <dongxing.zhang@intel.com>,
+        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
+        "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>,
+        "d.kasatkin@samsung.com" <d.kasatkin@samsung.com>,
+        "pebolle@tiscali.nl" <pebolle@tiscali.nl>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Xen-devel] [PATCH v4] modify the IO_TLB_SEGSIZE and
+ IO_TLB_DEFAULT_SIZE configurable as flexible requirement about SW-IOMMU.
+Thread-Topic: [Xen-devel] [PATCH v4] modify the IO_TLB_SEGSIZE and
+ IO_TLB_DEFAULT_SIZE configurable as flexible requirement about SW-IOMMU.
+Thread-Index: AQHQSn5MlHyw4zGUu0iv4XBiMSuM7Jz0GFgAgAFLKCA=
+Date:   Wed, 18 Feb 2015 09:09:59 +0000
+Message-ID: <FA47D36D6EC9FE4CB463299737C09B9901D00FBD@shsmsx102.ccr.corp.intel.com>
+References: <1424155903-4262-1-git-send-email-xiaoming.wang@intel.com>
+ <54E321400200007800060865@mail.emea.novell.com>
+In-Reply-To: <54E321400200007800060865@mail.emea.novell.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org
-CC:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mpm@selenic.com, herbert@gondor.apana.org.au, wsa@the-dreams.de,
-        cernekee@gmail.com
-Subject: Re: [PATCH 2/4] hw_random: bcm63xx-rng: move register definitions
- to driver
-References: <1424138956-11563-1-git-send-email-f.fainelli@gmail.com> <1424138956-11563-3-git-send-email-f.fainelli@gmail.com>
-In-Reply-To: <1424138956-11563-3-git-send-email-f.fainelli@gmail.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <xiaoming.wang@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45843
+X-archive-position: 45845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: xiaoming.wang@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,35 +74,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Dear Jan
 
-On 2/17/2015 5:09 AM, Florian Fainelli wrote:
+> -----Original Message-----
+> From: Jan Beulich [mailto:JBeulich@suse.com]
+> Sent: Tuesday, February 17, 2015 6:09 PM
+> To: Wang, Xiaoming
+> Cc: chris@chris-wilson.co.uk; david.vrabel@citrix.com;
+> lauraa@codeaurora.org; heiko.carstens@de.ibm.com; linux@horizon.com;
+> Liu, Chuansheng; Zhang, Dongxing; takahiro.akashi@linaro.org;
+> akpm@linux-foundation.org; linux-mips@linux-mips.org; ralf@linux-
+> mips.org; xen-devel@lists.xenproject.org; boris.ostrovsky@oracle.com;
+> konrad.wilk@oracle.com; d.kasatkin@samsung.com; pebolle@tiscali.nl;
+> linux-kernel@vger.kernel.org
+> Subject: Re: [Xen-devel] [PATCH v4] modify the IO_TLB_SEGSIZE and
+> IO_TLB_DEFAULT_SIZE configurable as flexible requirement about SW-
+> IOMMU.
+> 
+> >>> On 17.02.15 at 07:51, <xiaoming.wang@intel.com> wrote:
+> > --- a/Documentation/kernel-parameters.txt
+> > +++ b/Documentation/kernel-parameters.txt
+> > @@ -3438,10 +3438,12 @@ bytes respectively. Such letter suffixes can
+> > also be entirely omitted.
+> >  			it if 0 is given (See
+> Documentation/cgroups/memory.txt)
+> >
+> >  	swiotlb=	[ARM,IA-64,PPC,MIPS,X86]
+> > -			Format: { <int> | force }
+> > +			Format: { <int> | force | <int> | <int>}
+> >  			<int> -- Number of I/O TLB slabs
+> >  			force -- force using of bounce buffers even if they
+> >  			         wouldn't be automatically used by the kernel
+> > +			<int> -- Maximum allowable number of contiguous
+> slabs to map
+> > +			<int> -- The size of SW-MMU mapped.
+> 
+> This makes no sense - the new numbers added aren't position independent
+> (nor were the previous <int> and "force").
+> 
+Use ","  can separate them one by one.
+We do it at lib/swiotlb.c
+> Also you are (supposedly) removing all uses of IO_TLB_DEFAULT_SIZE, yet
+> you don't seem to remove the definition itself.
+> 
+I have change all uses of IO_TLB_DEFAULT_SIZE to io_tlb_default_size in lib/swiotlb.c
+> Finally - are arbitrary numbers really okay for the newly added command line
+> options? I.e. shouldn't you add some checking of their validity?
+> 
+I have validity these code is OK.
+Example:
+BOARD_KERNEL_CMDLINE += swiotlb=, ,512,268435456
+Io_tlb_segsize has been changed from 128 to 512
+Io_tlb_default_size has been changed from 64M to 268435456  (256M)
 
-> arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h contains the register
-> definitions for this random number generator block, incorporate these
-> register definitions directly into the bcm63xx-rng driver so we do not
-> rely on this header to be provided.
-
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-> ---
->   drivers/char/hw_random/bcm63xx-rng.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
-
-> diff --git a/drivers/char/hw_random/bcm63xx-rng.c b/drivers/char/hw_random/bcm63xx-rng.c
-> index ed9b28b35a39..c7f3af852599 100644
-> --- a/drivers/char/hw_random/bcm63xx-rng.c
-> +++ b/drivers/char/hw_random/bcm63xx-rng.c
-> @@ -13,7 +13,15 @@
->   #include <linux/platform_device.h>
->   #include <linux/hw_random.h>
->
-> -#include <bcm63xx_regs.h>
-> +#define RNG_CTRL			0x00
-> +#define RNG_EN				(1 << 0)
-> +
-> +#define RNG_STAT			0x04
-> +#define RNG_AVAIL_MASK			(0xff000000)
-
-    Parens not needed here.
-
-WBR, Sergei
+> Jan
+Xiaoming.

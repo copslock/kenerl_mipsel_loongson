@@ -1,41 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Feb 2015 14:30:33 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:48594 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012995AbbBRNabAySWF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Feb 2015 14:30:31 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id EC23E2AC88763;
-        Wed, 18 Feb 2015 13:30:22 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 18 Feb 2015 13:30:25 +0000
-Received: from mchandras-linux.le.imgtec.org (192.168.154.96) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 18 Feb 2015 13:30:24 +0000
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        "Matthew Fortune" <Matthew.Fortune@imgtec.com>
-Subject: [PATCH v2 2/2] MIPS: Makefile: Pass -march option on Loongson3A cores
-Date:   Wed, 18 Feb 2015 13:30:18 +0000
-Message-ID: <1424266218-11320-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.3.0
-In-Reply-To: <1422891662-13838-2-git-send-email-markos.chandras@imgtec.com>
-References: <1422891662-13838-2-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Feb 2015 18:26:32 +0100 (CET)
+Received: from mail-ie0-f173.google.com ([209.85.223.173]:40339 "EHLO
+        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013068AbbBRR0aiZBnX convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Feb 2015 18:26:30 +0100
+Received: by iebtr6 with SMTP id tr6so2977058ieb.7
+        for <linux-mips@linux-mips.org>; Wed, 18 Feb 2015 09:26:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:content-type:mime-version
+         :content-transfer-encoding:to:from:in-reply-to:cc:references
+         :message-id:user-agent:subject:date;
+        bh=9G5wQdhtHWs3j/s5aU9Bb3ADOfKJhwLFXwZutI4/xys=;
+        b=ZgCbLxz0uy1S/s8BCch+dbw9Cbedsufac9HkER8Nav2Evo7lK8rOYMY+FXMobO1lIb
+         1qczhpvL2tmG24svkFtrQC407Op3KJNKTSTYGgHQdfjaDPvgSo+sB38scwTFJOLmVZfG
+         5qp3tkhFFurdmyXL/tXc8zYvcesEUY39uXzMn9IIm2IV74qY6I1KueZNhvAldOOG4YkF
+         j+/yaBazOvALYKukhDoPKnEhNJMEEOg+D2oXcp+orALW7m0Bjb2iRVvS1PsKOr2CzC22
+         G0hHzTdL9idK9VMSKH/Z/Gq9CvLHFmblx7nRERfKpsI2YwzUp5zPsMBvU/Iyknstp7eZ
+         U6HQ==
+X-Gm-Message-State: ALoCoQkb02GAn2O65r7B3CKruBfraXpBBoY4ByvBPtLZiU2Zi+Dq6lumgotw9PE76+GYc4+VZCOx
+X-Received: by 10.107.170.8 with SMTP id t8mr505320ioe.7.1424280385222;
+        Wed, 18 Feb 2015 09:26:25 -0800 (PST)
+Received: from localhost (pool-71-119-96-202.lsanca.fios.verizon.net. [71.119.96.202])
+        by mx.google.com with ESMTPSA id m38sm13453050ioi.39.2015.02.18.09.26.23
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Wed, 18 Feb 2015 09:26:24 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.96]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Transfer-Encoding: 8BIT
+To:     Stephen Boyd <sboyd@codeaurora.org>,
+        "Tomeu Vizoso" <tomeu.vizoso@collabora.com>,
+        linux-mips@linux-mips.org
+From:   Mike Turquette <mturquette@linaro.org>
+In-Reply-To: <54DE28AE.8060301@codeaurora.org>
+Cc:     "Javier Martinez Canillas" <javier.martinez@collabora.co.uk>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "Manuel Lauss" <manuel.lauss@gmail.com>,
+        linux-kernel@vger.kernel.org
+References: <1423834499-13674-1-git-send-email-tomeu.vizoso@collabora.com>
+ <54DE28AE.8060301@codeaurora.org>
+Message-ID: <20150218172613.421.46376@quantum>
+User-Agent: alot/0.3.5
+Subject: Re: [PATCH] MIPS: Alchemy: Remove bogus args from alchemy_clk_fgcs_detr
+Date:   Wed, 18 Feb 2015 09:26:13 -0800
+Return-Path: <mturquette@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45851
+X-archive-position: 45852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: mturquette@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,35 +64,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The loongson 3A cores do not select a suitable -march option so the
-build system uses the default one from the toolchain. This may or may
-not be suitable for a loongson 3A build. In order to avoid that, we
-explicitly set a suitable -march option for that core.
+Quoting Stephen Boyd (2015-02-13 08:39:10)
+> On 02/13/15 05:34, Tomeu Vizoso wrote:
+> > They were added to this function by mistake when they were added to the
+> > clk_ops.determine_rate callback.
+> >
+> > Fixes: 1c8e600440c7 ("clk: Add rate constraints to clocks")
+> > Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+> 
+> Reported-by: kbuild test robot <fengguang.wu@intel.com>
+> Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
 
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Maciej W. Rozycki <macro@linux-mips.org>
-Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-Changes since v1:
-- Drop second part of the original patch http://patchwork.linux-mips.org/patch/9181/
-since the $(CONFIG_*) symbols were not evaluated when doing 'make foo_defconfig'
-leading to bogus build failures.
----
- arch/mips/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+Applied to clk-next.
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index aaee9a0b89bf..aaa0426b3867 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -166,6 +166,7 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
- endif
- cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
- cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
-+cflags-$(CONFIG_CPU_LOONGSON3)	+= $(call cc-option,-march=loongson3a,-march=mips64r2) -Wa,--trap
- 
- cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
- cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
--- 
-2.3.0
+Regards,
+Mike
+
+> 
+> -- 
+> Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+> a Linux Foundation Collaborative Project
+> 

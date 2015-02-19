@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Feb 2015 14:52:12 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:50779 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013196AbbBSNwJtJXjC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Feb 2015 14:52:09 +0100
-Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1YORWP-0008Ch-6w; Thu, 19 Feb 2015 13:52:05 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Hemmo Nieminen <hemmo.nieminen@iki.fi>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 11/58] MIPS: Fix kernel lockup or crash after CPU offline/online
-Date:   Thu, 19 Feb 2015 13:51:41 +0000
-Message-Id: <1424353948-31863-12-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1424353948-31863-1-git-send-email-luis.henriques@canonical.com>
-References: <1424353948-31863-1-git-send-email-luis.henriques@canonical.com>
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Feb 2015 17:17:56 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54019 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006532AbbBSQRzL0J0N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Feb 2015 17:17:55 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id BEA73BECBE570
+        for <linux-mips@linux-mips.org>; Thu, 19 Feb 2015 16:17:46 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 19 Feb
+ 2015 16:17:49 +0000
+Received: from solomon.ba.imgtec.org (10.20.78.13) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 19 Feb
+ 2015 08:17:46 -0800
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     <IMG-MIPSLinuxKerneldevelopers@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: [PATCH V2 0/3] HIGHMEM and cache flush fixes.
+Date:   Thu, 19 Feb 2015 10:17:41 -0600
+Message-ID: <1424362664-30303-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.9.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.20.78.13]
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45856
+X-archive-position: 45857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,52 +43,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.7-ckt7 -stable review patch.  If anyone has any objections, please let me know.
+This patchset fixes HIGHMEM and utilizes kmap coloring support. The
+other two patches fix some cache flushing corner cases.
 
-------------------
+Changes from V1:
+ - Rebased against upstream 3.19-rc4 tag.
 
-From: Hemmo Nieminen <hemmo.nieminen@iki.fi>
+Leonid Yegoshin (3):
+  MIPS: Fix cache flushing for swap pages with non-DMA I/O.
+  MIPS: Highmem: Fixes for cache aliasing and color.
+  MIPS: Fix I-cache flushing for kmap'd pages.
 
-commit c7754e75100ed5e3068ac5085747f2bfc386c8d6 upstream.
+ arch/mips/Kconfig                    |    1 +
+ arch/mips/include/asm/cacheflush.h   |    3 +-
+ arch/mips/include/asm/cpu-features.h |    6 ++
+ arch/mips/include/asm/fixmap.h       |   18 +++++-
+ arch/mips/include/asm/highmem.h      |   33 +++++++++++
+ arch/mips/include/asm/page.h         |    5 +-
+ arch/mips/include/asm/pgtable.h      |    5 ++
+ arch/mips/mm/c-r4k.c                 |   44 ++++++++++++--
+ arch/mips/mm/cache.c                 |  108 ++++++++++++++++++++++------------
+ arch/mips/mm/highmem.c               |   43 +++++---------
+ arch/mips/mm/init.c                  |   35 ++++++-----
+ arch/mips/mm/sc-mips.c               |    1 +
+ 12 files changed, 210 insertions(+), 92 deletions(-)
 
-As printk() invocation can cause e.g. a TLB miss, printk() cannot be
-called before the exception handlers have been properly initialized.
-This can happen e.g. when netconsole has been loaded as a kernel module
-and the TLB table has been cleared when a CPU was offline.
-
-Call cpu_report() in start_secondary() only after the exception handlers
-have been initialized to fix this.
-
-Without the patch the kernel will randomly either lockup or crash
-after a CPU is onlined and the console driver is a module.
-
-Signed-off-by: Hemmo Nieminen <hemmo.nieminen@iki.fi>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: David Daney <david.daney@cavium.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/8953/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 9bad52ede903..9bc3561b6901 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -101,10 +101,10 @@ asmlinkage void start_secondary(void)
- 	unsigned int cpu;
- 
- 	cpu_probe();
--	cpu_report();
- 	per_cpu_trap_init(false);
- 	mips_clockevent_init();
- 	mp_ops->init_secondary();
-+	cpu_report();
- 
- 	/*
- 	 * XXX parity protection should be folded in here when it's converted
 -- 
-2.1.4
+1.7.10.4

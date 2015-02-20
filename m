@@ -1,41 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Feb 2015 10:53:50 +0100 (CET)
-Received: from astoria.ccjclearline.com ([64.235.106.9]:36641 "EHLO
-        astoria.ccjclearline.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013134AbbBTJxsb3SVo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Feb 2015 10:53:48 +0100
-Received: from [99.240.204.5] (port=41001 helo=crashcourse.ca)
-        by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.80)
-        (envelope-from <rpjday@crashcourse.ca>)
-        id 1YOkHG-0003Iv-Lm
-        for linux-mips@linux-mips.org; Fri, 20 Feb 2015 04:53:42 -0500
-Date:   Fri, 20 Feb 2015 04:53:42 -0500 (EST)
-From:   "Robert P. J. Day" <rpjday@crashcourse.ca>
-X-X-Sender: rpjday@localhost
-To:     linux-mips@linux-mips.org
-Subject: what is the purpose of the following LE->BE patch to
- arch/mips/include/asm/io.h?
-Message-ID: <alpine.LFD.2.11.1502200445290.26212@localhost>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Feb 2015 20:18:27 +0100 (CET)
+Received: from mail-qa0-f54.google.com ([209.85.216.54]:44275 "EHLO
+        mail-qa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006619AbbBTTSZW59o1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Feb 2015 20:18:25 +0100
+Received: by mail-qa0-f54.google.com with SMTP id x12so13885162qac.13
+        for <linux-mips@linux-mips.org>; Fri, 20 Feb 2015 11:18:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=Pz0CO5ddajunZrIoVi/xVhMMfkSMeyoFl6xYYSmeVBw=;
+        b=YWRBeeYeAEKiV8Q447cql+PsCHdipoXuwHT9xFrb9Xq6NLDXJpKrmW4EZRIMVBwNz/
+         tIQef/5VXrOMSw09nlckroa/SgmsQPzX2XDdQbQ/23E31JegISwHH2Arh+Uv0TYJOBdS
+         i3l2ZWEiGAOxlUXSW52UOItF8hIP3ErniMFVg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=Pz0CO5ddajunZrIoVi/xVhMMfkSMeyoFl6xYYSmeVBw=;
+        b=c13U2tRmQbyoMGVyAa+7PwDTscMjOXc1tpAXJRWfsVEqY4VkjseI1d6WO3QXfeVB9+
+         QuvBDjfVrTf1pRkDQZwpxZ8FP6HKjNPDrSLxJ+9VjIsu9So8lnTVx6Z7rlAi3dBiNAz9
+         ulmALHgMAmoefy2gKL427YyVSHY0qGKsTiX+fWctQTcBHY+cYB2DANcOig7TyHEKfItl
+         j0cBaT7bWtq+2W6AW6+WSQzlvcbR1CgYx33Tpm/IB7LnRx6jS/5KOw+VBmQ1Jf2ZlvT7
+         pWUqqovEROy8AacPc+u+g8OzzBMUqA5LaUc9bq1Gf1jP//MuKbFAxjQeHAm9U/oXsrt4
+         Byww==
+X-Gm-Message-State: ALoCoQn3KD9B7corfMRxMtY2F18VvpqmdHuWnkYflCD7VtCj6i2XAXMA+xO2ZNP1inYE0R+/SBPO
+X-Received: by 10.140.239.136 with SMTP id k130mr27536630qhc.2.1424459899773;
+        Fri, 20 Feb 2015 11:18:19 -0800 (PST)
+Received: from mail-qg0-f43.google.com (mail-qg0-f43.google.com. [209.85.192.43])
+        by mx.google.com with ESMTPSA id 75sm11865990qhy.1.2015.02.20.11.18.18
+        for <linux-mips@linux-mips.org>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 20 Feb 2015 11:18:18 -0800 (PST)
+Received: by mail-qg0-f43.google.com with SMTP id i50so15721289qgf.2
+        for <linux-mips@linux-mips.org>; Fri, 20 Feb 2015 11:18:18 -0800 (PST)
+X-Received: by 10.229.221.197 with SMTP id id5mr8459765qcb.16.1424459898308;
+ Fri, 20 Feb 2015 11:18:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - astoria.ccjclearline.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <rpjday@crashcourse.ca>
+Received: by 10.140.36.210 with HTTP; Fri, 20 Feb 2015 11:17:58 -0800 (PST)
+In-Reply-To: <1424362664-30303-2-git-send-email-Steven.Hill@imgtec.com>
+References: <1424362664-30303-1-git-send-email-Steven.Hill@imgtec.com> <1424362664-30303-2-git-send-email-Steven.Hill@imgtec.com>
+From:   Kevin Cernekee <cernekee@chromium.org>
+Date:   Fri, 20 Feb 2015 11:17:58 -0800
+Message-ID: <CAJiQ=7DMBznB5Ths0sAZORf2hgSQRuBoPF-7HGHhcHn0EajnWg@mail.gmail.com>
+Subject: Re: [PATCH V2 1/3] MIPS: Fix cache flushing for swap pages with
+ non-DMA I/O.
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     IMG-MIPSLinuxKerneldevelopers@imgtec.com,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45868
+X-archive-position: 45869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpjday@crashcourse.ca
+X-original-sender: cernekee@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,52 +70,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, Feb 19, 2015 at 8:17 AM, Steven J. Hill <Steven.Hill@imgtec.com> wrote:
+> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>
+> Flush the D-cache before the page is given to a process
+> as an executable (I-cache) page when the backing store
+> is non-DMA I/O.
+>
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 
-  was recently handed a MIPS-based dev board (can't name the vendor,
-NDA) that *typically* runs in LE mode but, because of a proprietary
-binary that must be run on the board and was compiled as BE, has to be
-run in BE mode.
+This patch seems to make several different changes to the cache
+maintenance code all at once:
 
-  the vendor supplied a yoctoproject layer that seems to work fine
-but, in changing the DEFAULTTUNE to big-endian, the following patch
-had to be applied to the 3.14 kernel tree to the file
-arch/mips/include/asm/io.h in order to get output from the console
-port as the system was booting:
+1) Add logic to handle virtually tagged D$ and perform extra flushes
+on TLB updates
 
-326c326,333
-< 		*__mem = __val;						\
----
-> 	{										\
-> 		if (sizeof(type) == sizeof(u32))		\
-> 		{									\
-> 			*__mem = __cpu_to_le32(__val);	\
-> 		}									\
-> 		else								\
-> 			*__mem = __val;						\
-> 	}											\
-356a364
-> 	{										\
-357a366,368
-> 		if (sizeof(type) == sizeof(u32))	\
-> 			__val = __cpu_to_le32(__val);	\
-> 	}											\
+2) Add new write barriers betwen D$/I$ or D$/L2 flushes
 
-  without that patch, the initial conclusion was that the board was
-just hanging at boot, but i was told, no, it was booting, there was
-just no output at the console port. applied the patch and, voila.
+3) Make __flush_anon_page() play nice with HIGHMEM on systems with cache aliases
 
-  can someone explain *precisely* what the above is doing? i am by no
-means a MIPS expert, but clearly the above is doing some sort of
-explicit BE/LE conversion. can anyone supply more detail? thanks.
+and maybe a few more that I missed.
 
-rday
+Would it be possible to split this out into individual commits, and
+include more comprehensive changelogs for each one describing the
+exact problem being solved?
 
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Also, it would be helpful to clarify how this relates to the use of
+swap (?) with a backing store that is non-DMA I/O.  Do you have an
+example of a situation where the existing code broke?  A play-by-play
+postmortem would make for interesting reading.

@@ -1,24 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2015 09:21:59 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15188 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2015 09:22:16 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26284 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006904AbbBWIV5f0fVj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Feb 2015 09:21:57 +0100
+        with ESMTP id S27006930AbbBWIWDqYAFt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Feb 2015 09:22:03 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A955A2B67CA87
-        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 08:21:50 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 6BAF995FA4831;
+        Mon, 23 Feb 2015 08:21:56 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 23 Feb 2015 08:21:52 +0000
+ 14.3.195.1; Mon, 23 Feb 2015 08:21:57 +0000
 Received: from mchandras-linux.le.imgtec.org (192.168.154.96) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 23 Feb 2015 08:21:51 +0000
+ 14.3.210.2; Mon, 23 Feb 2015 08:21:56 +0000
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 0/2] EVA fixes
-Date:   Mon, 23 Feb 2015 08:21:34 +0000
-Message-ID: <1424679696-19696-1-git-send-email-markos.chandras@imgtec.com>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH 1/2] MIPS: asm: asm-eva: Introduce kernel load/store variants
+Date:   Mon, 23 Feb 2015 08:21:35 +0000
+Message-ID: <1424679696-19696-2-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.3.0
+In-Reply-To: <1424679696-19696-1-git-send-email-markos.chandras@imgtec.com>
+References: <1424679696-19696-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.96]
@@ -26,7 +29,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45887
+X-archive-position: 45888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,19 +46,189 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Introduce new macros for kernel load/store variants which will be
+used to perform regular kernel space load/store operations in EVA
+mode.
 
-These two patches fix unaligned accesses when EVA is enabled. The fixes
-CC stable as well, because they need to be applied all the way back to
-the 3.15 kernels where EVA was originally introduced.
+Cc: <stable@vger.kernel.org> # v3.15+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/include/asm/asm-eva.h | 137 +++++++++++++++++++++++++++-------------
+ 1 file changed, 93 insertions(+), 44 deletions(-)
 
-Markos Chandras (2):
-  MIPS: asm: asm-eva: Introduce kernel load/store variants
-  MIPS: unaligned: Prevent EVA instructions on kernel unaligned accesses
-
- arch/mips/include/asm/asm-eva.h | 137 +++++++++++++++++++++-----------
- arch/mips/kernel/unaligned.c    | 170 ++++++++++++++++++++++------------------
- 2 files changed, 186 insertions(+), 121 deletions(-)
-
+diff --git a/arch/mips/include/asm/asm-eva.h b/arch/mips/include/asm/asm-eva.h
+index e41c56e375b1..1e38f0e1ea3e 100644
+--- a/arch/mips/include/asm/asm-eva.h
++++ b/arch/mips/include/asm/asm-eva.h
+@@ -11,6 +11,36 @@
+ #define __ASM_ASM_EVA_H
+ 
+ #ifndef __ASSEMBLY__
++
++/* Kernel variants */
++
++#define kernel_cache(op, base)		"cache " op ", " base "\n"
++#define kernel_ll(reg, addr)		"ll " reg ", " addr "\n"
++#define kernel_sc(reg, addr)		"sc " reg ", " addr "\n"
++#define kernel_lw(reg, addr)		"lw " reg ", " addr "\n"
++#define kernel_lwl(reg, addr)		"lwl " reg ", " addr "\n"
++#define kernel_lwr(reg, addr)		"lwr " reg ", " addr "\n"
++#define kernel_lh(reg, addr)		"lh " reg ", " addr "\n"
++#define kernel_lb(reg, addr)		"lb " reg ", " addr "\n"
++#define kernel_lbu(reg, addr)		"lbu " reg ", " addr "\n"
++#define kernel_sw(reg, addr)		"sw " reg ", " addr "\n"
++#define kernel_swl(reg, addr)		"swl " reg ", " addr "\n"
++#define kernel_swr(reg, addr)		"swr " reg ", " addr "\n"
++#define kernel_sh(reg, addr)		"sh " reg ", " addr "\n"
++#define kernel_sb(reg, addr)		"sb " reg ", " addr "\n"
++
++#ifdef CONFIG_32BIT
++/*
++ * No 'sd' or 'ld' instructions in 32-bit but the code will
++ * do the correct thing
++ */
++#define kernel_sd(reg, addr)		user_sw(reg, addr)
++#define kernel_ld(reg, addr)		user_lw(reg, addr)
++#else
++#define kernel_sd(reg, addr)		"sd " reg", " addr "\n"
++#define kernel_ld(reg, addr)		"ld " reg", " addr "\n"
++#endif /* CONFIG_32BIT */
++
+ #ifdef CONFIG_EVA
+ 
+ #define __BUILD_EVA_INSN(insn, reg, addr)				\
+@@ -41,37 +71,60 @@
+ 
+ #else
+ 
+-#define user_cache(op, base)		"cache " op ", " base "\n"
+-#define user_ll(reg, addr)		"ll " reg ", " addr "\n"
+-#define user_sc(reg, addr)		"sc " reg ", " addr "\n"
+-#define user_lw(reg, addr)		"lw " reg ", " addr "\n"
+-#define user_lwl(reg, addr)		"lwl " reg ", " addr "\n"
+-#define user_lwr(reg, addr)		"lwr " reg ", " addr "\n"
+-#define user_lh(reg, addr)		"lh " reg ", " addr "\n"
+-#define user_lb(reg, addr)		"lb " reg ", " addr "\n"
+-#define user_lbu(reg, addr)		"lbu " reg ", " addr "\n"
+-#define user_sw(reg, addr)		"sw " reg ", " addr "\n"
+-#define user_swl(reg, addr)		"swl " reg ", " addr "\n"
+-#define user_swr(reg, addr)		"swr " reg ", " addr "\n"
+-#define user_sh(reg, addr)		"sh " reg ", " addr "\n"
+-#define user_sb(reg, addr)		"sb " reg ", " addr "\n"
++#define user_cache(op, base)		kernel_cache(op, base)
++#define user_ll(reg, addr)		kernel_ll(reg, addr)
++#define user_sc(reg, addr)		kernel_sc(reg, addr)
++#define user_lw(reg, addr)		kernel_lw(reg, addr)
++#define user_lwl(reg, addr)		kernel_lwl(reg, addr)
++#define user_lwr(reg, addr)		kernel_lwr(reg, addr)
++#define user_lh(reg, addr)		kernel_lh(reg, addr)
++#define user_lb(reg, addr)		kernel_lb(reg, addr)
++#define user_lbu(reg, addr)		kernel_lbu(reg, addr)
++#define user_sw(reg, addr)		kernel_sw(reg, addr)
++#define user_swl(reg, addr)		kernel_swl(reg, addr)
++#define user_swr(reg, addr)		kernel_swr(reg, addr)
++#define user_sh(reg, addr)		kernel_sh(reg, addr)
++#define user_sb(reg, addr)		kernel_sb(reg, addr)
+ 
+ #ifdef CONFIG_32BIT
+-/*
+- * No 'sd' or 'ld' instructions in 32-bit but the code will
+- * do the correct thing
+- */
+-#define user_sd(reg, addr)		user_sw(reg, addr)
+-#define user_ld(reg, addr)		user_lw(reg, addr)
++#define user_sd(reg, addr)		kernel_sw(reg, addr)
++#define user_ld(reg, addr)		kernel_lw(reg, addr)
+ #else
+-#define user_sd(reg, addr)		"sd " reg", " addr "\n"
+-#define user_ld(reg, addr)		"ld " reg", " addr "\n"
++#define user_sd(reg, addr)		kernel_sd(reg, addr)
++#define user_ld(reg, addr)		kernel_ld(reg, addr)
+ #endif /* CONFIG_32BIT */
+ 
+ #endif /* CONFIG_EVA */
+ 
+ #else /* __ASSEMBLY__ */
+ 
++#define kernel_cache(op, base)		cache op, base
++#define kernel_ll(reg, addr)		ll reg, addr
++#define kernel_sc(reg, addr)		sc reg, addr
++#define kernel_lw(reg, addr)		lw reg, addr
++#define kernel_lwl(reg, addr)		lwl reg, addr
++#define kernel_lwr(reg, addr)		lwr reg, addr
++#define kernel_lh(reg, addr)		lh reg, addr
++#define kernel_lb(reg, addr)		lb reg, addr
++#define kernel_lbu(reg, addr)		lbu reg, addr
++#define kernel_sw(reg, addr)		sw reg, addr
++#define kernel_swl(reg, addr)		swl reg, addr
++#define kernel_swr(reg, addr)		swr reg, addr
++#define kernel_sh(reg, addr)		sh reg, addr
++#define kernel_sb(reg, addr)		sb reg, addr
++
++#ifdef CONFIG_32BIT
++/*
++ * No 'sd' or 'ld' instructions in 32-bit but the code will
++ * do the correct thing
++ */
++#define kernel_sd(reg, addr)		user_sw(reg, addr)
++#define kernel_ld(reg, addr)		user_lw(reg, addr)
++#else
++#define kernel_sd(reg, addr)		sd reg, addr
++#define kernel_ld(reg, addr)		ld reg, addr
++#endif /* CONFIG_32BIT */
++
+ #ifdef CONFIG_EVA
+ 
+ #define __BUILD_EVA_INSN(insn, reg, addr)			\
+@@ -101,31 +154,27 @@
+ #define user_sd(reg, addr)		user_sw(reg, addr)
+ #else
+ 
+-#define user_cache(op, base)		cache op, base
+-#define user_ll(reg, addr)		ll reg, addr
+-#define user_sc(reg, addr)		sc reg, addr
+-#define user_lw(reg, addr)		lw reg, addr
+-#define user_lwl(reg, addr)		lwl reg, addr
+-#define user_lwr(reg, addr)		lwr reg, addr
+-#define user_lh(reg, addr)		lh reg, addr
+-#define user_lb(reg, addr)		lb reg, addr
+-#define user_lbu(reg, addr)		lbu reg, addr
+-#define user_sw(reg, addr)		sw reg, addr
+-#define user_swl(reg, addr)		swl reg, addr
+-#define user_swr(reg, addr)		swr reg, addr
+-#define user_sh(reg, addr)		sh reg, addr
+-#define user_sb(reg, addr)		sb reg, addr
++#define user_cache(op, base)		kernel_cache(op, base)
++#define user_ll(reg, addr)		kernel_ll(reg, addr)
++#define user_sc(reg, addr)		kernel_sc(reg, addr)
++#define user_lw(reg, addr)		kernel_lw(reg, addr)
++#define user_lwl(reg, addr)		kernel_lwl(reg, addr)
++#define user_lwr(reg, addr)		kernel_lwr(reg, addr)
++#define user_lh(reg, addr)		kernel_lh(reg, addr)
++#define user_lb(reg, addr)		kernel_lb(reg, addr)
++#define user_lbu(reg, addr)		kernel_lbu(reg, addr)
++#define user_sw(reg, addr)		kernel_sw(reg, addr)
++#define user_swl(reg, addr)		kernel_swl(reg, addr)
++#define user_swr(reg, addr)		kernel_swr(reg, addr)
++#define user_sh(reg, addr)		kernel_sh(reg, addr)
++#define user_sb(reg, addr)		kernel_sb(reg, addr)
+ 
+ #ifdef CONFIG_32BIT
+-/*
+- * No 'sd' or 'ld' instructions in 32-bit but the code will
+- * do the correct thing
+- */
+-#define user_sd(reg, addr)		user_sw(reg, addr)
+-#define user_ld(reg, addr)		user_lw(reg, addr)
++#define user_sd(reg, addr)		kernel_sw(reg, addr)
++#define user_ld(reg, addr)		kernel_lw(reg, addr)
+ #else
+-#define user_sd(reg, addr)		sd reg, addr
+-#define user_ld(reg, addr)		ld reg, addr
++#define user_sd(reg, addr)		kernel_sd(reg, addr)
++#define user_ld(reg, addr)		kernel_sd(reg, addr)
+ #endif /* CONFIG_32BIT */
+ 
+ #endif /* CONFIG_EVA */
 -- 
 2.3.0

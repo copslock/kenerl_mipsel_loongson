@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2015 17:36:26 +0100 (CET)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:43849
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2015 17:36:45 +0100 (CET)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:43851
         "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27006773AbbBWQgZaJsqe (ORCPT
+        with ESMTP id S27006951AbbBWQgZnjz21 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 23 Feb 2015 17:36:25 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Paul Bolle <pebolle@tiscali.nl>
-Subject: [PATCH 1/2] MIPS: ralink: fix bad config symbol in pci makefile
-Date:   Mon, 23 Feb 2015 06:17:32 +0100
-Message-Id: <1424668653-60990-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 2/2] MIPS: ralink: add missing symbol for RALINK_ILL_ACC
+Date:   Mon, 23 Feb 2015 06:17:33 +0100
+Message-Id: <1424668653-60990-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1424668653-60990-1-git-send-email-blogic@openwrt.org>
+References: <1424668653-60990-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45891
+X-archive-position: 45892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,28 +33,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A wrong symbol is referenced by commit 187c26ddf0b2 ("MIPS: ralink: add rt2880
-pci driver"). Fix this by changing it to the correct symbol.
+A driver was added in commit 5433acd81e87 ("MIPS: ralink: add illegal access
+driver") without the Kconfig section being added. Fix this by adding the symbol
+to the Kconfig file.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Reported-by: Paul Bolle <pebolle@tiscali.nl>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/pci/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ralink/Kconfig |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index 300591c..2eda01e 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -43,7 +43,7 @@ obj-$(CONFIG_SIBYTE_BCM1x80)	+= pci-bcm1480.o pci-bcm1480ht.o
- obj-$(CONFIG_SNI_RM)		+= fixup-sni.o ops-sni.o
- obj-$(CONFIG_LANTIQ)		+= fixup-lantiq.o
- obj-$(CONFIG_PCI_LANTIQ)	+= pci-lantiq.o ops-lantiq.o
--obj-$(CONFIG_SOC_RT2880)	+= pci-rt2880.o
-+obj-$(CONFIG_SOC_RT288X)	+= pci-rt2880.o
- obj-$(CONFIG_SOC_RT3883)	+= pci-rt3883.o
- obj-$(CONFIG_TANBAC_TB0219)	+= fixup-tb0219.o
- obj-$(CONFIG_TANBAC_TB0226)	+= fixup-tb0226.o
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index b1c52ca..e9bc8c9 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -7,6 +7,11 @@ config CLKEVT_RT3352
+ 	select CLKSRC_OF
+ 	select CLKSRC_MMIO
+ 
++config RALINK_ILL_ACC
++	bool
++	depends on SOC_RT305X
++	default y
++
+ choice
+ 	prompt "Ralink SoC selection"
+ 	default SOC_RT305X
 -- 
 1.7.10.4

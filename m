@@ -1,26 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2015 17:36:45 +0100 (CET)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:43851
-        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27006951AbbBWQgZnjz21 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Feb 2015 17:36:25 +0100
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Paul Bolle <pebolle@tiscali.nl>
-Subject: [PATCH 2/2] MIPS: ralink: add missing symbol for RALINK_ILL_ACC
-Date:   Mon, 23 Feb 2015 06:17:33 +0100
-Message-Id: <1424668653-60990-2-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1424668653-60990-1-git-send-email-blogic@openwrt.org>
-References: <1424668653-60990-1-git-send-email-blogic@openwrt.org>
-Return-Path: <blogic@nbd.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2015 19:48:19 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:34009 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007014AbbBWSsSLg0MM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Feb 2015 19:48:18 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id A77E94600E1
+        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 18:48:12 +0000 (GMT)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id aBBzgUe0nATu for <linux-mips@linux-mips.org>;
+        Mon, 23 Feb 2015 18:48:10 +0000 (GMT)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 1581C4603FE
+        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 18:48:10 +0000 (GMT)
+Received: from [::1] (helo=paulmartin.codethink.co.uk)
+        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1YPy37-0006eK-Kp
+        for linux-mips@linux-mips.org; Mon, 23 Feb 2015 18:48:09 +0000
+Date:   Mon, 23 Feb 2015 18:48:09 +0000
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     linux-mips@linux-mips.org
+Subject: Octeon breakage from 77f3ee59ee7cfe19e0ee48d9a990c7967fbfcbed
+Message-ID: <20150223184808.GA25302@paulmartin.codethink.co.uk>
+Mail-Followup-To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45892
+X-archive-position: 45893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,32 +50,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A driver was added in commit 5433acd81e87 ("MIPS: ralink: add illegal access
-driver") without the Kconfig section being added. Fix this by adding the symbol
-to the Kconfig file.
+Commit 77f3ee59ee7cfe19e0ee48d9a990c7967fbfcbed
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
-Reported-by: Paul Bolle <pebolle@tiscali.nl>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/ralink/Kconfig |    5 +++++
- 1 file changed, 5 insertions(+)
+  MIPS: mm: tlbex: Use cpu_has_mips_r2_exec_hazard for the EHB instruction
 
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index b1c52ca..e9bc8c9 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -7,6 +7,11 @@ config CLKEVT_RT3352
- 	select CLKSRC_OF
- 	select CLKSRC_MMIO
- 
-+config RALINK_ILL_ACC
-+	bool
-+	depends on SOC_RT305X
-+	default y
-+
- choice
- 	prompt "Ralink SoC selection"
- 	default SOC_RT305X
+causes problems on Octeon when trying to run a 4.0-rc1 kernel:
+
+  Kernel panic - not syncing: No TLB refill handler yet (CPU type: 79)
+
+as arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+contains
+
+  #define cpu_has_mips64r2        1
+  #define cpu_has_mips_r2_exec_hazard 0
+
+Reverting the patch allows the kernel to boot normally.
+
+I'm not sure which is wrong: the use of cpu_has_mips_r2_exec_hazard to
+detect the EHB instruction, or the Cavium headers.  I suspect the
+override in the latter may be wrong.
+
+I'll just note that 3.19 does not make any use of this value.
+
 -- 
-1.7.10.4
+Paul Martin                                  http://www.codethink.co.uk/
+Senior Software Developer, Codethink Ltd.

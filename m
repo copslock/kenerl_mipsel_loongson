@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 15:10:05 +0100 (CET)
-Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.229]:45622 "EHLO
-        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007119AbbBXOKDk7UCi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 15:10:03 +0100
-Received: from [67.246.153.56] ([67.246.153.56:52912] helo=grimm.local.home)
-        by cdptpa-oedge02 (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
-        id 9F/AA-20562-4368CE45; Tue, 24 Feb 2015 14:09:57 +0000
-Date:   Tue, 24 Feb 2015 09:10:49 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: KVM: Fix trace event to save PC directly
-Message-ID: <20150224091049.0f3d65f6@grimm.local.home>
-In-Reply-To: <1424778380-28036-1-git-send-email-james.hogan@imgtec.com>
-References: <1424778380-28036-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.25; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 15:16:51 +0100 (CET)
+Received: from sauhun.de ([89.238.76.85]:57132 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007119AbbBXOQt5kDMg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 Feb 2015 15:16:49 +0100
+Received: from p4fe25204.dip0.t-ipconnect.de ([79.226.82.4]:43717 helo=katana)
+        by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <wsa@the-dreams.de>)
+        id 1YQGHx-0004fj-IX; Tue, 24 Feb 2015 15:16:41 +0100
+Date:   Tue, 24 Feb 2015 15:16:44 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ludovic Desroches <ludovic.desroches@atmel.com>,
+        Yingjoe Chen <yingjoe.chen@mediatek.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RFC 02/11] i2c: add quirk checks to core
+Message-ID: <20150224141644.GA18301@katana>
+References: <1420824103-24169-1-git-send-email-wsa@the-dreams.de>
+ <1420824103-24169-3-git-send-email-wsa@the-dreams.de>
+ <CABuKBe++yut6ZfhPrsWXGA4fZRvum6WOuRxHucM0gBJCGuou5A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-RR-Connecting-IP: 107.14.168.130:25
-X-Cloudmark-Score: 0
-Return-Path: <rostedt@goodmis.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="FCuugMFkClbJLl1L"
+Content-Disposition: inline
+In-Reply-To: <CABuKBe++yut6ZfhPrsWXGA4fZRvum6WOuRxHucM0gBJCGuou5A@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <wsa@the-dreams.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45922
+X-archive-position: 45923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: wsa@the-dreams.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,31 +51,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 24 Feb 2015 11:46:20 +0000
-James Hogan <james.hogan@imgtec.com> wrote:
+
+--FCuugMFkClbJLl1L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 
-> Lets save the actual PC in the structure so that the correct value is
-> accessible later.
-> 
-> Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Marcelo Tosatti <mtosatti@redhat.com>
-> Cc: Gleb Natapov <gleb@kernel.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
+> > +               if (msgs[i].flags & I2C_M_RD) {
+> > +                       if (i2c_quirk_exceeded(len, max_read))
+> > +                               return i2c_quirk_error(adap, &msgs[i], =
+"msg too long");
+> > +               } else {
+> > +                       if (i2c_quirk_exceeded(len, max_write))
+> > +                               return i2c_quirk_error(adap, &msgs[i], =
+"msg too long");
+> > +               }
+>=20
+> What about being more verbose in the error message, specifying if it
+> was a read or a write message that failed?
 
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Yes, done now. Thanks!
 
--- Steve
 
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: kvm@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v3.10+
-> ---
->  arch/mips/kvm/trace.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
->
+--FCuugMFkClbJLl1L
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJU7IfLAAoJEBQN5MwUoCm2eM4P+wQZaq6QCo0vjXPKuf28kwn7
+pE8alO7Mref/hDPDtJr/f7wFWnZkhQm0frwFxkMjkk7AXU/423Hr+WaynTn2muPU
+JsQCTXbHJ7FRk9I/k0ZlRyxDhOYM5pAX4y/M+L5rA9HvNFWDcchOaiq4ep3BpyDB
+xRRdXwMJHDylJJnbq/HEuXbNBXOex4qvCrAhXemdR9XYLCVenhMnBjztvkB48XDQ
+PXCBuf43NtjY3C0P7fbFnnGUP+t+Zhdzup9JYJKaroJKd8XgrViSCv9qog6xgUO2
+n5QzR5RwQCy4dQ8fhNteNJ5xJpTEQfV0qrTpGqqOBOtyZLtj+hjeEk8tBI4c+DJ2
+24Z4rVc3q0QfyL8o2T4IbIg7kRxlk+8M2RzEVy2tRpNmUlKtW8hLVrRADTJGyLR/
+XntU9Afl+qBnRwaP8IodZDE2xD5wTCwyo8L/4+/+q3Bo6mYxKkpOl43yDbDwJX6S
+c5c9K+ueyWxILGkmJ+dgHMNySI5G0uDq8BG5dLpbx5iDUZfZBZ/TZtrpnrl5PiR5
+kYkWJQ2L/P9CIer+v2Ia0e2XrYu8sVP/Cm38MsDRCiFHYj2qXREPMH6wY5Rf/wpH
+0hvntc8pvr1YkMMD4aOaeQAdsSXe63P/4Q4pjaWbqupdW5cWgzelSUJoLVc3Lhil
+2bx8Bd80/Y1UvyJBIbgi
+=ERJg
+-----END PGP SIGNATURE-----
+
+--FCuugMFkClbJLl1L--

@@ -1,24 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 16:26:02 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12771 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 16:26:18 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16343 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007137AbbBXPZolfASw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 16:25:44 +0100
+        with ESMTP id S27007143AbbBXPZtwruTL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 16:25:49 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3FFF345F21DA8;
-        Tue, 24 Feb 2015 15:25:36 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id CEAA097B9515D;
+        Tue, 24 Feb 2015 15:25:41 +0000 (GMT)
 Received: from metadesk01.kl.imgtec.org (192.168.14.177) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 24 Feb 2015 15:25:39 +0000
+ 14.3.195.1; Tue, 24 Feb 2015 15:25:44 +0000
 From:   Daniel Sanders <daniel.sanders@imgtec.com>
-CC:     Daniel Sanders <daniel.sanders@imgtec.com>,
-        Toma Tabacu <toma.tabacu@imgtec.com>,
+CC:     Toma Tabacu <toma.tabacu@imgtec.com>,
+        Daniel Sanders <daniel.sanders@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 3/4] MIPS: LLVMLinux: Fix an 'inline asm input/output type mismatch' error.
-Date:   Tue, 24 Feb 2015 15:25:10 +0000
-Message-ID: <1424791511-11407-4-git-send-email-daniel.sanders@imgtec.com>
+Subject: [PATCH v2 4/4] MIPS: LLVMLinux: Silence variable self-assignment warnings.
+Date:   Tue, 24 Feb 2015 15:25:11 +0000
+Message-ID: <1424791511-11407-5-git-send-email-daniel.sanders@imgtec.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1424791511-11407-1-git-send-email-daniel.sanders@imgtec.com>
 References: <1424791511-11407-1-git-send-email-daniel.sanders@imgtec.com>
@@ -30,7 +28,7 @@ Return-Path: <Daniel.Sanders@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45929
+X-archive-position: 45930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,60 +45,125 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace incorrect matching constraint that caused the error with an alternative
-that still has the required constraints on the inline assembly.
+From: Toma Tabacu <toma.tabacu@imgtec.com>
 
-This is the error message reported by clang:
-arch/mips/include/asm/checksum.h:285:27: error: unsupported inline asm: input with type '__be32' (aka 'unsigned int') matching output with type 'unsigned short'
-          "0" (htonl(len)), "1" (htonl(proto)), "r" (sum));
-                                 ^~~~~~~~~~~~
+Remove variable self-assignments.
+This silences a bunch of -Wself-assign warnings reported by clang.
+The changed code can be compiled without warnings by both gcc and clang.
 
-The changed code can be compiled successfully by both gcc and clang.
-
-Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
 Signed-off-by: Toma Tabacu <toma.tabacu@imgtec.com>
-Suggested-by: Maciej W. Rozycki <macro@linux-mips.org>
+Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
 ---
-v2 replaced the patch following Maciej's suggestion where he observed that
-the assembly was somewhat strange and suggested correcting the
-constraints and using a local of matching type.
+v2 refreshes the patch.
 
-v3 fixed a small whitespace issue.
+ arch/mips/math-emu/dp_add.c | 5 -----
+ arch/mips/math-emu/dp_sub.c | 5 -----
+ arch/mips/math-emu/sp_add.c | 5 -----
+ arch/mips/math-emu/sp_sub.c | 5 -----
+ 4 files changed, 20 deletions(-)
 
-v4 refreshes the patch.
-
- arch/mips/include/asm/checksum.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
-index 5c585c5..3ceacde 100644
---- a/arch/mips/include/asm/checksum.h
-+++ b/arch/mips/include/asm/checksum.h
-@@ -218,6 +218,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 					  __u32 len, unsigned short proto,
- 					  __wsum sum)
- {
-+	__wsum tmp;
-+
- 	__asm__(
- 	"	.set	push		# csum_ipv6_magic\n"
- 	"	.set	noreorder	\n"
-@@ -270,9 +272,9 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+diff --git a/arch/mips/math-emu/dp_add.c b/arch/mips/math-emu/dp_add.c
+index 7f64577..58b2795 100644
+--- a/arch/mips/math-emu/dp_add.c
++++ b/arch/mips/math-emu/dp_add.c
+@@ -150,8 +150,6 @@ union ieee754dp ieee754dp_add(union ieee754dp x, union ieee754dp y)
+ 		 * leaving result in xm, xs and xe.
+ 		 */
+ 		xm = xm + ym;
+-		xe = xe;
+-		xs = xs;
  
- 	"	addu	%0, $1		# Add final carry\n"
- 	"	.set	pop"
--	: "=r" (sum), "=r" (proto)
-+	: "=&r" (sum), "=&r" (tmp)
- 	: "r" (saddr), "r" (daddr),
--	  "0" (htonl(len)), "1" (htonl(proto)), "r" (sum));
-+	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum));
+ 		if (xm >> (DP_FBITS + 1 + 3)) { /* carry out */
+ 			xm = XDPSRS1(xm);
+@@ -160,11 +158,8 @@ union ieee754dp ieee754dp_add(union ieee754dp x, union ieee754dp y)
+ 	} else {
+ 		if (xm >= ym) {
+ 			xm = xm - ym;
+-			xe = xe;
+-			xs = xs;
+ 		} else {
+ 			xm = ym - xm;
+-			xe = xe;
+ 			xs = ys;
+ 		}
+ 		if (xm == 0)
+diff --git a/arch/mips/math-emu/dp_sub.c b/arch/mips/math-emu/dp_sub.c
+index 7a17402..2eb87cd2 100644
+--- a/arch/mips/math-emu/dp_sub.c
++++ b/arch/mips/math-emu/dp_sub.c
+@@ -153,8 +153,6 @@ union ieee754dp ieee754dp_sub(union ieee754dp x, union ieee754dp y)
+ 		/* generate 28 bit result of adding two 27 bit numbers
+ 		 */
+ 		xm = xm + ym;
+-		xe = xe;
+-		xs = xs;
  
- 	return csum_fold(sum);
- }
+ 		if (xm >> (DP_FBITS + 1 + 3)) { /* carry out */
+ 			xm = XDPSRS1(xm);	/* shift preserving sticky */
+@@ -163,11 +161,8 @@ union ieee754dp ieee754dp_sub(union ieee754dp x, union ieee754dp y)
+ 	} else {
+ 		if (xm >= ym) {
+ 			xm = xm - ym;
+-			xe = xe;
+-			xs = xs;
+ 		} else {
+ 			xm = ym - xm;
+-			xe = xe;
+ 			xs = ys;
+ 		}
+ 		if (xm == 0) {
+diff --git a/arch/mips/math-emu/sp_add.c b/arch/mips/math-emu/sp_add.c
+index 2d84d46..7a33af4 100644
+--- a/arch/mips/math-emu/sp_add.c
++++ b/arch/mips/math-emu/sp_add.c
+@@ -148,8 +148,6 @@ union ieee754sp ieee754sp_add(union ieee754sp x, union ieee754sp y)
+ 		 * leaving result in xm, xs and xe.
+ 		 */
+ 		xm = xm + ym;
+-		xe = xe;
+-		xs = xs;
+ 
+ 		if (xm >> (SP_FBITS + 1 + 3)) { /* carry out */
+ 			SPXSRSX1();
+@@ -157,11 +155,8 @@ union ieee754sp ieee754sp_add(union ieee754sp x, union ieee754sp y)
+ 	} else {
+ 		if (xm >= ym) {
+ 			xm = xm - ym;
+-			xe = xe;
+-			xs = xs;
+ 		} else {
+ 			xm = ym - xm;
+-			xe = xe;
+ 			xs = ys;
+ 		}
+ 		if (xm == 0)
+diff --git a/arch/mips/math-emu/sp_sub.c b/arch/mips/math-emu/sp_sub.c
+index 8592e49..1189bc5 100644
+--- a/arch/mips/math-emu/sp_sub.c
++++ b/arch/mips/math-emu/sp_sub.c
+@@ -148,8 +148,6 @@ union ieee754sp ieee754sp_sub(union ieee754sp x, union ieee754sp y)
+ 		/* generate 28 bit result of adding two 27 bit numbers
+ 		 */
+ 		xm = xm + ym;
+-		xe = xe;
+-		xs = xs;
+ 
+ 		if (xm >> (SP_FBITS + 1 + 3)) { /* carry out */
+ 			SPXSRSX1();	/* shift preserving sticky */
+@@ -157,11 +155,8 @@ union ieee754sp ieee754sp_sub(union ieee754sp x, union ieee754sp y)
+ 	} else {
+ 		if (xm >= ym) {
+ 			xm = xm - ym;
+-			xe = xe;
+-			xs = xs;
+ 		} else {
+ 			xm = ym - xm;
+-			xe = xe;
+ 			xs = ys;
+ 		}
+ 		if (xm == 0) {
 -- 
 2.1.4

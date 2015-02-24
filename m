@@ -1,37 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 15:06:12 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:42318 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007119AbbBXOGKzM5QT convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 15:06:10 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id A5A801538A; Tue, 24 Feb 2015 14:06:05 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     <linux-mips@linux-mips.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: Re: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU mode checks
-References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
-        <1422893593-1291-1-git-send-email-markos.chandras@imgtec.com>
-        <yw1xwq3778k2.fsf@unicorn.mansr.com>
-        <20150224135225.GA23928@mchandras-linux.le.imgtec.org>
-Date:   Tue, 24 Feb 2015 14:06:05 +0000
-In-Reply-To: <20150224135225.GA23928@mchandras-linux.le.imgtec.org> (Markos
-        Chandras's message of "Tue, 24 Feb 2015 13:52:25 +0000")
-Message-ID: <yw1xsidv76b6.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 15:10:05 +0100 (CET)
+Received: from cdptpa-outbound-snat.email.rr.com ([107.14.166.229]:45622 "EHLO
+        cdptpa-oedge-vip.email.rr.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27007119AbbBXOKDk7UCi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 15:10:03 +0100
+Received: from [67.246.153.56] ([67.246.153.56:52912] helo=grimm.local.home)
+        by cdptpa-oedge02 (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 3.5.0.35861 r(Momo-dev:tip)) with ESMTP
+        id 9F/AA-20562-4368CE45; Tue, 24 Feb 2015 14:09:57 +0000
+Date:   Tue, 24 Feb 2015 09:10:49 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: KVM: Fix trace event to save PC directly
+Message-ID: <20150224091049.0f3d65f6@grimm.local.home>
+In-Reply-To: <1424778380-28036-1-git-send-email-james.hogan@imgtec.com>
+References: <1424778380-28036-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.25; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-RR-Connecting-IP: 107.14.168.130:25
+X-Cloudmark-Score: 0
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45921
+X-archive-position: 45922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,51 +47,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Markos Chandras <markos.chandras@imgtec.com> writes:
+On Tue, 24 Feb 2015 11:46:20 +0000
+James Hogan <james.hogan@imgtec.com> wrote:
 
-> Hi,
->
-> On Tue, Feb 24, 2015 at 01:17:33PM +0000, Måns Rullgård wrote:
->> This patch (well, the variant that made it into 4.0-rc1) breaks
->> MIPS_ABI_FP_DOUBLE (the gcc default) apps on MIPS32.
->> 
->
-> Thanks for the report.
->
->> > +void mips_set_personality_fp(struct arch_elf_state *state)
->> > +{
->> > +	/*
->> > +	 * This function is only ever called for O32 ELFs so we should
->> > +	 * not be worried about N32/N64 binaries.
->> > +	 */
->> >
->> > -	case MIPS_ABI_FP_XX:
->> > -	case MIPS_ABI_FP_ANY:
->> > -		if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
->> > -			set_thread_flag(TIF_32BIT_FPREGS);
->> > -		else
->> > -			clear_thread_flag(TIF_32BIT_FPREGS);
->> > +	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
->> > +		return;
->> 
->> The problem is here.  In a 32-bit configuration, MIPS_O32_FP64_SUPPORT
->> is always disabled, so the FP mode doesn't get set.  Simply deleting
->> those two lines makes things work again, but that's probably not the
->> right fix.
->> 
-> I had the impression that the loader would have set the FP mode earlier on.
-> But that only may happen with the latest version of the tools.
->
-> Perhaps instead of dropping these two lines we need a similar check on the
-> arch_elf_pt_proc so we don't mess with the default FPI abi?
->
-> Having said that, dropping these two lines should be fine, it just means you
-> do a little bit of extra work when loading your ELF files to check for ABI
-> compatibility which shouldn't matter in your case.
 
-There's another early return like this in arch_check_elf() which should
-probably go as well, or everything will end up with the default mode.
+> Lets save the actual PC in the structure so that the correct value is
+> accessible later.
+> 
+> Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Marcelo Tosatti <mtosatti@redhat.com>
+> Cc: Gleb Natapov <gleb@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
 
--- 
-Måns Rullgård
-mans@mansr.com
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+
+-- Steve
+
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: kvm@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # v3.10+
+> ---
+>  arch/mips/kvm/trace.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+>

@@ -1,45 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 00:19:25 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63826 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006911AbbBXXTYMRM5C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 00:19:24 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3E4A5FA655EAD;
-        Tue, 24 Feb 2015 23:19:15 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 24 Feb
- 2015 23:19:18 +0000
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 24 Feb
- 2015 15:19:16 -0800
-Message-ID: <54ED06F4.8020607@imgtec.com>
-Date:   Tue, 24 Feb 2015 15:19:16 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Zenon Fortuna <zenon.fortuna@imgtec.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        IMG - MIPS Linux Kernel developers 
-        <IMG-MIPSLinuxKerneldevelopers@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH V2 1/3] MIPS: Fix cache flushing for swap pages with non-DMA
- I/O.
-References: <1424362664-30303-1-git-send-email-Steven.Hill@imgtec.com> <1424362664-30303-2-git-send-email-Steven.Hill@imgtec.com> <CAJiQ=7DMBznB5Ths0sAZORf2hgSQRuBoPF-7HGHhcHn0EajnWg@mail.gmail.com> <54EBCC38.7000702@imgtec.com> <54EBD023.8090706@imgtec.com> <alpine.LFD.2.11.1502240224500.17311@eddie.linux-mips.org> <54ECE7CE.4040407@imgtec.com> <alpine.LFD.2.11.1502242140220.17311@eddie.linux-mips.org> <54ECF3E6.9080606@imgtec.com> <alpine.LFD.2.11.1502242235160.17311@eddie.linux-mips.org> <54ED01F5.8040409@gmail.com>
-In-Reply-To: <54ED01F5.8040409@gmail.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 00:35:52 +0100 (CET)
+Received: from mail-ig0-f180.google.com ([209.85.213.180]:46397 "EHLO
+        mail-ig0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006911AbbBXXfunjjgQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 00:35:50 +0100
+Received: by mail-ig0-f180.google.com with SMTP id b16so1526604igk.1;
+        Tue, 24 Feb 2015 15:35:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=lci4VZr2lE/PFdH76IUMjC7WAG14dLbeIjtGnlNA7FY=;
+        b=FpM8KDFxQFbo1Rxq36DLztgacGqWy8WiT2cMwjXDQGf8RkwBel2VfyhWxyVYsscOYQ
+         K5gCqfVwPpLVSJoWpnlPZEtpcraO+GA+xODgVF/l5VYJF1DKJyRvN9j9zdR12P+jrBu7
+         DQMFArJLC0dq0JqrHRRYSgbU1ldMTyL/hYPNMTa3+3Y5Vxi1q8kJQWZbw4UiUIbUQcRY
+         +AgAoxpxYRM0rJ46HeMHQlFwORvzL5cLDF+iOUY1CsHy8gFABsmInGlyoZwhPf/B5EWn
+         Z75akhu7ABHwpt6LnacGlff9B2OHhTiKxqZzLFwcV2IUzWlcsWNItu47qS1UvV83inJI
+         eU/g==
+X-Received: by 10.107.8.213 with SMTP id h82mr789215ioi.89.1424820945490;
+        Tue, 24 Feb 2015 15:35:45 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id a196sm2065147ioe.41.2015.02.24.15.35.40
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 24 Feb 2015 15:35:44 -0800 (PST)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id t1ONZddt020143;
+        Tue, 24 Feb 2015 15:35:39 -0800
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id t1ONZb1T020142;
+        Tue, 24 Feb 2015 15:35:37 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Expand __swp_offset() to carry 40 significant bits for 64-bit kernel.
+Date:   Tue, 24 Feb 2015 15:35:34 -0800
+Message-Id: <1424820934-20108-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45942
+X-archive-position: 45943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,49 +55,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/24/2015 02:57 PM, David Daney wrote:
-> On 02/24/2015 02:50 PM, Maciej W. Rozycki wrote:
->> On Tue, 24 Feb 2015, Leonid Yegoshin wrote:
->>
->>>>    For simplicity perhaps on SMP we should just always use hit 
->>>> operations
->>>> regardless of the size requested.
->>>
->>> High performance folks may not like doing a lot of stuff for 8MB VMA 
->>> release
->>> instead of flushing 64KB.
->>
->>   What kind of a use case is that, what does it do?
->>
->>> Especially taking into account TLB exceptions and postprocessing in
->>> fixup_exception() for swapped-out/not-yet-loaded-ELF blocks.
->>
->>   The normal use for cacheflush(2) I know of is for self-modifying or 
->> other
->> run-time-generated code, to synchronise caches after a block of machine
->> code has been patched in -- SYNCI can also be used for that purpose 
->> these
->> days,
->
-> SYNCI is only useful in non-SMP kernels.
-Yes, until MIPS R6. I pressed hard on Arch team to change vague words in 
-SYNCI description and now (MIPS R6) it has words requiring execution on 
-all cores:
+From: David Daney <david.daney@cavium.com>
 
-> "SYNCI globalization:
-> Release 6: SYNCI globalization (as described below) is required: 
-> compliant implementations must globalize SYNCI.
-> Portable software can rely on this behavior, and use SYNCI rather than 
-> expensive “instruction cache shootdown”
-> using inter-processor interrupts."
+With CONFIG_MIGRATION, the PFN of the migrating pages is stored in
+__swp_offset(), so we must have enough bits to store the largest
+possible PFN.  OCTEON NUMA systems have 41 bits of physical address
+space, so with 4K pages (12-bits), we need at least 29 bits to store
+the PFN.
 
+The current width of 24-bits is too narrow, so expand it all the way
+out to 40-bits.  This leaves the low order 16 bits as zero which does
+not interfere with any of the PTE bits.
 
-- Leonid.
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/asm/pgtable-64.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
->
-> If a thread is migrated to a different CPU between the SYNCI, and the 
-> attempt to execute the freshly generated code, the new CPU can still 
-> have a dirty ICACHE.  So for Linux userspace, cacheflush(2) is your 
-> only option.
->
-> David Daney
+diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+index 1659bb9..cf661a2 100644
+--- a/arch/mips/include/asm/pgtable-64.h
++++ b/arch/mips/include/asm/pgtable-64.h
+@@ -279,14 +279,14 @@ extern void pgd_init(unsigned long page);
+ extern void pmd_init(unsigned long page, unsigned long pagetable);
+ 
+ /*
+- * Non-present pages:  high 24 bits are offset, next 8 bits type,
+- * low 32 bits zero.
++ * Non-present pages:  high 40 bits are offset, next 8 bits type,
++ * low 16 bits zero.
+  */
+ static inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
+-{ pte_t pte; pte_val(pte) = (type << 32) | (offset << 40); return pte; }
++{ pte_t pte; pte_val(pte) = (type << 16) | (offset << 24); return pte; }
+ 
+-#define __swp_type(x)		(((x).val >> 32) & 0xff)
+-#define __swp_offset(x)		((x).val >> 40)
++#define __swp_type(x)		(((x).val >> 16) & 0xff)
++#define __swp_offset(x)		((x).val >> 24)
+ #define __swp_entry(type, offset) ((swp_entry_t) { pte_val(mk_swap_pte((type), (offset))) })
+ #define __pte_to_swp_entry(pte) ((swp_entry_t) { pte_val(pte) })
+ #define __swp_entry_to_pte(x)	((pte_t) { (x).val })
+-- 
+1.7.11.7

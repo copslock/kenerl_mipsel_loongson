@@ -1,52 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 15:26:12 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41382 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 16:03:19 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12838 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007119AbbBXO0LWWZhe convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 15:26:11 +0100
+        with ESMTP id S27007119AbbBXPDRYb9Ws (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 16:03:17 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id EE52264B2701F;
-        Tue, 24 Feb 2015 14:26:02 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+        by Websense Email Security Gateway with ESMTPS id 47845472DBB5A;
+        Tue, 24 Feb 2015 15:03:09 +0000 (GMT)
+Received: from metadesk01.kl.imgtec.org (192.168.14.177) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 24 Feb 2015 14:26:05 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Tue, 24 Feb 2015 14:26:05 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Paul Burton <Paul.Burton@imgtec.com>
-Subject: RE: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
- mode checks
-Thread-Topic: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
- mode checks
-Thread-Index: AQHQUDsHTpUqzW/P5ESAwcGgwy98jpz/2RXg
-Date:   Tue, 24 Feb 2015 14:26:04 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320FDEE92@LEMAIL01.le.imgtec.org>
-References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
-        <1422893593-1291-1-git-send-email-markos.chandras@imgtec.com>
-        <yw1xwq3778k2.fsf@unicorn.mansr.com>
-        <20150224135225.GA23928@mchandras-linux.le.imgtec.org>
- <yw1xsidv76b6.fsf@unicorn.mansr.com>
-In-Reply-To: <yw1xsidv76b6.fsf@unicorn.mansr.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.152.113]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+ 14.3.195.1; Tue, 24 Feb 2015 15:03:11 +0000
+From:   Daniel Sanders <daniel.sanders@imgtec.com>
+CC:     Daniel Sanders <daniel.sanders@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        <linux-mips@linux-mips.org>,
+        Behan Webster <behanw@converseincode.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        David Daney <ddaney.cavm@gmail.com>
+Subject: [PATCH v3] MIPS: Changed current_thread_info() to an equivalent supported by both clang and GCC
+Date:   Tue, 24 Feb 2015 15:02:57 +0000
+Message-ID: <1424790177-10089-1-git-send-email-daniel.sanders@imgtec.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.14.177]
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <Daniel.Sanders@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45925
+X-archive-position: 45926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: daniel.sanders@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,69 +48,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Måns Rullgård <mans@mansr.com> writes:
-> Markos Chandras <markos.chandras@imgtec.com> writes:
-> 
-> > Hi,
-> >
-> > On Tue, Feb 24, 2015 at 01:17:33PM +0000, Måns Rullgård wrote:
-> >> This patch (well, the variant that made it into 4.0-rc1) breaks
-> >> MIPS_ABI_FP_DOUBLE (the gcc default) apps on MIPS32.
-> >>
-> >
-> > Thanks for the report.
-> >
-> >> > +void mips_set_personality_fp(struct arch_elf_state *state) {
-> >> > +	/*
-> >> > +	 * This function is only ever called for O32 ELFs so we should
-> >> > +	 * not be worried about N32/N64 binaries.
-> >> > +	 */
-> >> >
-> >> > -	case MIPS_ABI_FP_XX:
-> >> > -	case MIPS_ABI_FP_ANY:
-> >> > -		if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
-> >> > -			set_thread_flag(TIF_32BIT_FPREGS);
-> >> > -		else
-> >> > -			clear_thread_flag(TIF_32BIT_FPREGS);
-> >> > +	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
-> >> > +		return;
-> >>
-> >> The problem is here.  In a 32-bit configuration,
-> >> MIPS_O32_FP64_SUPPORT is always disabled, so the FP mode doesn't get
-> >> set.  Simply deleting those two lines makes things work again, but
-> >> that's probably not the right fix.
+Without this, a 'break' instruction is executed very early in the boot and
+the boot hangs.
 
-I don't recall the final decision on default on/off for this option but
-IIRC it is going to be off for everything except R6 in the first kernel
-version and then turned on by default(/option removed) when the code is
-proven for the following kernel version.
+The problem is that clang doesn't honour named registers on local variables
+and silently treats them as normal uninitialized variables. However, it
+does honour them on global variables.
 
-> >>
-> > I had the impression that the loader would have set the FP mode
-> earlier on.
-> > But that only may happen with the latest version of the tools.
-> >
-> > Perhaps instead of dropping these two lines we need a similar check on
-> > the arch_elf_pt_proc so we don't mess with the default FPI abi?
-> >
-> > Having said that, dropping these two lines should be fine, it just
-> > means you do a little bit of extra work when loading your ELF files to
-> > check for ABI compatibility which shouldn't matter in your case.
-> 
-> There's another early return like this in arch_check_elf() which should
-> probably go as well, or everything will end up with the default mode.
+Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: Behan Webster <behanw@converseincode.com>
+Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc: David Daney <ddaney.cavm@gmail.com>
+---
+v2 of this patch has been updated following David Daney's request to preserve
+the name of the original named register local.
 
-Ironically I discussed these changes with Markos in an attempt to make
-all the new changes benign when:
+v3 of this patch just rebases to master and adds some background discussion from
+the previous threads.
 
-!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT)
+For reference, a similar patch for ARM's stack pointer has already been merged:
+  0abc08b ARM: 8170/1: Add global named register current_stack_pointer for ARM
 
-Clearly this has backfired. I will have to re-read the version of the code
-in 4.0-rc1 to see what is the root cause. The intention was that without
-the config option then the kernel would blindly continue to assume that
-all O32 binaries would run in the original TIF_32BIT_FPREGS mode. As I
-recall, the callers to mips_set_personality_fp were setting this mode
-which is why the simple early return was added.
+LLVM is unlikely to support uninitialized reads of named register locals in the
+foreseeable future. There are some significant implementation difficulties and
+there were objections based on the future direction of LLVM. The thread is at
+http://lists.cs.uiuc.edu/pipermail/llvmdev/2014-March/071555.html. I've linked
+to the bit where the issues started to be discussed rather than the start of
+the thread.
 
-Thanks,
-Matthew
+Difficulty and objections aside, it's also a very large amount of work to
+support a single (as far as I know) user of named register locals, especially
+when the kernel has already accepted patches to switch named register locals to
+named register globals in the arm and arm64/aarch64 arches.
+
+ arch/mips/include/asm/thread_info.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
+index 55ed660..2f0dba3 100644
+--- a/arch/mips/include/asm/thread_info.h
++++ b/arch/mips/include/asm/thread_info.h
+@@ -55,10 +55,10 @@ struct thread_info {
+ #define init_stack		(init_thread_union.stack)
+ 
+ /* How to get the thread information struct from C.  */
++register struct thread_info *__current_thread_info __asm__("$28");
++
+ static inline struct thread_info *current_thread_info(void)
+ {
+-	register struct thread_info *__current_thread_info __asm__("$28");
+-
+ 	return __current_thread_info;
+ }
+ 
+-- 
+2.1.4

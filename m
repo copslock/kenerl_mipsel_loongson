@@ -1,43 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 02:13:22 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11521 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006984AbbBXBNUwAoBj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 02:13:20 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 4C3836453DD1B
-        for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 01:13:14 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 24 Feb
- 2015 01:13:15 +0000
-Received: from [10.20.2.35] (10.20.2.35) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 23 Feb
- 2015 17:13:12 -0800
-Message-ID: <54EBD023.8090706@imgtec.com>
-Date:   Mon, 23 Feb 2015 17:13:07 -0800
-From:   Zenon Fortuna <zenon.fortuna@imgtec.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20111109)
-MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "IMG - MIPS Linux Kernel developers" 
-        <IMG-MIPSLinuxKerneldevelopers@imgtec.com>,
-        "Linux MIPS Mailing List" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH V2 1/3] MIPS: Fix cache flushing for swap pages with non-DMA
- I/O.
-References: <1424362664-30303-1-git-send-email-Steven.Hill@imgtec.com> <1424362664-30303-2-git-send-email-Steven.Hill@imgtec.com> <CAJiQ=7DMBznB5Ths0sAZORf2hgSQRuBoPF-7HGHhcHn0EajnWg@mail.gmail.com> <54EBCC38.7000702@imgtec.com>
-In-Reply-To: <54EBCC38.7000702@imgtec.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.2.35]
-Return-Path: <Zenon.Fortuna@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 02:31:57 +0100 (CET)
+Received: from mail-ie0-f201.google.com ([209.85.223.201]:33300 "EHLO
+        mail-ie0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006984AbbBXBb4IaADI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 02:31:56 +0100
+Received: by iecrl12 with SMTP id rl12so7210602iec.0
+        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 17:31:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=CjwsVX7rnqvaVCHOKOJ6pQ2/O3Zu3fpIyEcNjLFPtPQ=;
+        b=VCFN7R+tM6GAxcUM2fZXm8UEbmduFDNRiC3QDcqBCEiFSgePyiXzjBh65TyERYmQ6b
+         3gyv+xqQdKioR7WK2F9s5YdB7OMwkN2YgEw0ra7AwboUr5BG83CfYiqhWvf3YdM8Pw3J
+         py6nkGYjqnKH0uwrHHzsmrXYmUIEhraOHX/lio+64P71JohLrD74E0FzdBuhyuZXxtC/
+         gVqzIr56sbCixdQRoy7JjZqoEqzlUYoh1Fs/1RVjSLtGUGhApOyL456IXs2tIqXgJs3e
+         qXu/AUZ7PSO7nL+eQkT3b0QFAfo/Q2Op9glIHqcfWwI9QpXu2cLEFoKiL5xgb5SNvuZ6
+         cITQ==
+X-Gm-Message-State: ALoCoQlGrFXRy5/jJQORI6c1R0Y+oo0DkaecAPD4f/72+BSQ1lim+ywHly6+e57uL7Ii3ifZPz0l
+X-Received: by 10.182.148.164 with SMTP id tt4mr14028472obb.30.1424741510564;
+        Mon, 23 Feb 2015 17:31:50 -0800 (PST)
+Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
+        by gmr-mx.google.com with ESMTPS id e5si3716714qcg.1.2015.02.23.17.31.49
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 23 Feb 2015 17:31:50 -0800 (PST)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id oSrTEdTi.1; Mon, 23 Feb 2015 17:31:50 -0800
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id 24F51220728; Mon, 23 Feb 2015 17:31:49 -0800 (PST)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 0/5] MIPS: Initial IMG Pistachio SoC support
+Date:   Mon, 23 Feb 2015 17:31:42 -0800
+Message-Id: <1424741507-8882-1-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45903
+X-archive-position: 45904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zenon.fortuna@imgtec.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,106 +59,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A small related chirp-in from the "lowly Linux userland":
+This series adds basic support for the Imagination Technologies Pistachio
+SoC.  Pistachio will boot using device-tree only.  v4.0-rc1 already includes
+support for several of the peripherals on Pistachio, including MMC, SPI,
+I2C, DMA, watchdog timer, PWM, and IR.  Clock and pinctrl support for
+Pistachio is coming soon, as well as an initial device-tree and support
+for USB and ethernet.
 
-Does the current system-call "cacheflush(2)" works with the newer kernels?
-As the "man cacheflush" tells, it was supposed to work only on MIPS 
-based systems.
-In the past I had some problems with it, so used related YAMON functions 
-(which worked
-better).
-Maybe it could be made working for MIPS again?
-(is it supposed to work with current kernels?)
-Cache flushing is a useful feature for some benchmarks (and customers 
-had requested
-related tests in the past).
+Patches 1 and 2 are cleanups in preparation for adding Pistachio support,
+with patch 1 having been posted by Kevin late last year [1].  Patch 3
+documents Pistachio's required device-tree properties/nodes and its boot
+protocol.  Patch 4 adds support for Pistachio itself and finally patch 5
+adds a defconfig for Pistachio.
 
-        -zenon
+Boot tested on an IMG Pistachio BuB ("bring-up board") and build tested
+for all other affected platforms.  Based on v4.0-rc1.  A tree with these
+changes is available at [2].
 
-Leonid Yegoshin wrote:
-> On 02/20/2015 11:17 AM, Kevin Cernekee wrote:
->> On Thu, Feb 19, 2015 at 8:17 AM, Steven J. Hill 
->> <Steven.Hill@imgtec.com> wrote:
->>> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->>>
->>> Flush the D-cache before the page is given to a process
->>> as an executable (I-cache) page when the backing store
->>> is non-DMA I/O.
->>>
->>> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->>> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
->> This patch seems to make several different changes to the cache
->> maintenance code all at once:
->>
->> 1) Add logic to handle virtually tagged D$
-> This is needed for 74K/1074K erratas. It is somehow was split from 
-> 006a851b10a395955c153a145ad8241494d43688 which was accepted upstream 
-> but erratas not go through.
->
-> The HW behaviour is similar to virtually tagged D$ but it is a HW bug.
->
->>   and perform extra flushes
->> on TLB updates
-> As I understand, it is about adding __update_cache() in 
-> update_mmu_cache(), right?
-> If so, then - this code exists from the first git version of kernel 
-> from Mr. Linus.
-> It was deleted by mistake, I think.
->
->>
->> 2) Add new write barriers betwen D$/I$ or D$/L2 flushes
-> It is required. MIPS32/64 R2 specs say:
->
->> "For implementations which implement multiple level of caches without 
->> the inclusion property, the use of a SYNC
->> instruction after the CACHE instruction is still needed whenever 
->> writeback data has to be resident in the next level of
->> memory hierarchy."
->
-> So, if we need to transfer instruction from D$ to L2 then we should 
-> use SYNC after CACHE D$ before operates with this data in L2. In other 
-> case the CACHE for L2 may go ahead of completion of D$ for the same 
-> line and flush a stale data.
->
-> The same is basically for transfer D$ --> I$ because in MIPS it is 
-> done via L2 or memory.
->
->
->>
->> 3) Make __flush_anon_page() play nice with HIGHMEM on systems with 
->> cache aliases
->>
->> and maybe a few more that I missed.
-> 4) It is basically a revert of patch 64f23ab30b1fe which kills a 
-> performance in non Cavium Octeon CPUs, actually - any CPU which has no 
-> D$ cache snooping in I$.
->
-> But just revert is incorrect, the another proper stuff is required for 
-> correct operations.
->>
->> Would it be possible to split this out into individual commits, and
->> include more comprehensive changelogs for each one describing the
->> exact problem being solved?
-> I would ask Steven to do it. The original code dates back to 2.6.32 
-> and it was packed/split in different patches multiple times. After a 
-> lot of split/join following patch acceptance/rejection we have what we 
-> have now.
->
-> In my opinion, the process of splitting into individual commits are 
-> something wrong - some patches are accepted and some - not, and we 
-> have a buggy code now. It should be packed into functional patches but 
-> each patch should be a single workable commit. If multiple patches are 
-> needed to fix a problem then result is sometime wrong.
->
->>
->> Also, it would be helpful to clarify how this relates to the use of
->> swap (?) with a backing store that is non-DMA I/O.  Do you have an
->> example of a situation where the existing code broke?  A play-by-play
->> postmortem would make for interesting reading.
->
-> I guess, it is a little incorrect - this code is REQUIRED for non-DMA 
-> I/O with root FS or swap but it is not enough. Another patch is still 
-> needed to complete, see http://patchwork.linux-mips.org/patch/8635/
->
-> - Leonid.
->
+Cc: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc: James Hartley <james.hartley@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+
+[1] http://patchwork.linux-mips.org/patch/8837/
+[2] https://github.com/abrestic/linux/tree/pistachio-platform-v1
+
+Andrew Bresticker (3):
+  MIPS: Allow platforms to specify the decompressor load address
+  MIPS: Document Pistachio boot protocol and device-tree bindings
+  MIPS: Add support for the IMG Pistachio SoC
+
+Govindraj Raja (1):
+  MIPS: pistachio: Add an initial defconfig
+
+Kevin Cernekee (1):
+  MIPS: Create a common <asm/mach-generic/war.h>
+
+ .../devicetree/bindings/mips/img/pistachio.txt     |  40 +++
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  27 ++
+ arch/mips/boot/compressed/Makefile                 |   6 +-
+ arch/mips/configs/pistachio_defconfig              | 336 +++++++++++++++++++++
+ arch/mips/include/asm/mach-ar7/war.h               |  24 --
+ arch/mips/include/asm/mach-ath25/war.h             |  25 --
+ arch/mips/include/asm/mach-ath79/war.h             |  24 --
+ arch/mips/include/asm/mach-au1x00/war.h            |  24 --
+ arch/mips/include/asm/mach-bcm3384/war.h           |  24 --
+ arch/mips/include/asm/mach-bcm47xx/war.h           |  24 --
+ arch/mips/include/asm/mach-bcm63xx/war.h           |  24 --
+ arch/mips/include/asm/mach-cobalt/war.h            |  24 --
+ arch/mips/include/asm/mach-dec/war.h               |  24 --
+ arch/mips/include/asm/mach-emma2rh/war.h           |  24 --
+ arch/mips/include/asm/mach-generic/war.h           |  24 ++
+ arch/mips/include/asm/mach-jazz/war.h              |  24 --
+ arch/mips/include/asm/mach-jz4740/war.h            |  24 --
+ arch/mips/include/asm/mach-lantiq/war.h            |  23 --
+ arch/mips/include/asm/mach-lasat/war.h             |  24 --
+ arch/mips/include/asm/mach-loongson/war.h          |  24 --
+ arch/mips/include/asm/mach-loongson1/war.h         |  24 --
+ arch/mips/include/asm/mach-netlogic/war.h          |  25 --
+ arch/mips/include/asm/mach-paravirt/war.h          |  25 --
+ arch/mips/include/asm/mach-pistachio/gpio.h        |  21 ++
+ arch/mips/include/asm/mach-pistachio/irq.h         |  18 ++
+ arch/mips/include/asm/mach-pnx833x/war.h           |  24 --
+ arch/mips/include/asm/mach-ralink/war.h            |  24 --
+ arch/mips/include/asm/mach-tx39xx/war.h            |  24 --
+ arch/mips/include/asm/mach-vr41xx/war.h            |  24 --
+ arch/mips/jz4740/Platform                          |   1 +
+ arch/mips/pistachio/Makefile                       |   1 +
+ arch/mips/pistachio/Platform                       |   8 +
+ arch/mips/pistachio/init.c                         | 131 ++++++++
+ arch/mips/pistachio/irq.c                          |  28 ++
+ arch/mips/pistachio/time.c                         |  52 ++++
+ 36 files changed, 692 insertions(+), 532 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mips/img/pistachio.txt
+ create mode 100644 arch/mips/configs/pistachio_defconfig
+ delete mode 100644 arch/mips/include/asm/mach-ar7/war.h
+ delete mode 100644 arch/mips/include/asm/mach-ath25/war.h
+ delete mode 100644 arch/mips/include/asm/mach-ath79/war.h
+ delete mode 100644 arch/mips/include/asm/mach-au1x00/war.h
+ delete mode 100644 arch/mips/include/asm/mach-bcm3384/war.h
+ delete mode 100644 arch/mips/include/asm/mach-bcm47xx/war.h
+ delete mode 100644 arch/mips/include/asm/mach-bcm63xx/war.h
+ delete mode 100644 arch/mips/include/asm/mach-cobalt/war.h
+ delete mode 100644 arch/mips/include/asm/mach-dec/war.h
+ delete mode 100644 arch/mips/include/asm/mach-emma2rh/war.h
+ create mode 100644 arch/mips/include/asm/mach-generic/war.h
+ delete mode 100644 arch/mips/include/asm/mach-jazz/war.h
+ delete mode 100644 arch/mips/include/asm/mach-jz4740/war.h
+ delete mode 100644 arch/mips/include/asm/mach-lantiq/war.h
+ delete mode 100644 arch/mips/include/asm/mach-lasat/war.h
+ delete mode 100644 arch/mips/include/asm/mach-loongson/war.h
+ delete mode 100644 arch/mips/include/asm/mach-loongson1/war.h
+ delete mode 100644 arch/mips/include/asm/mach-netlogic/war.h
+ delete mode 100644 arch/mips/include/asm/mach-paravirt/war.h
+ create mode 100644 arch/mips/include/asm/mach-pistachio/gpio.h
+ create mode 100644 arch/mips/include/asm/mach-pistachio/irq.h
+ delete mode 100644 arch/mips/include/asm/mach-pnx833x/war.h
+ delete mode 100644 arch/mips/include/asm/mach-ralink/war.h
+ delete mode 100644 arch/mips/include/asm/mach-tx39xx/war.h
+ delete mode 100644 arch/mips/include/asm/mach-vr41xx/war.h
+ create mode 100644 arch/mips/pistachio/Makefile
+ create mode 100644 arch/mips/pistachio/Platform
+ create mode 100644 arch/mips/pistachio/init.c
+ create mode 100644 arch/mips/pistachio/irq.c
+ create mode 100644 arch/mips/pistachio/time.c
+
+-- 
+2.2.0.rc0.207.ga3a616c

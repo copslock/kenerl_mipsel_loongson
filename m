@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 02:33:13 +0100 (CET)
-Received: from mail-qg0-f73.google.com ([209.85.192.73]:35992 "EHLO
-        mail-qg0-f73.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007081AbbBXBcAtWe2t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 02:32:00 +0100
-Received: by mail-qg0-f73.google.com with SMTP id z60so4808665qgd.0
-        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 17:31:55 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 02:33:35 +0100 (CET)
+Received: from mail-ie0-f201.google.com ([209.85.223.201]:33310 "EHLO
+        mail-ie0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007099AbbBXBcBiQ832 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 02:32:01 +0100
+Received: by iecrl12 with SMTP id rl12so7210694iec.0
+        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 17:31:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=QEUenn6/3CrGmSQbystZXEm7BGAy3pq2cUlirezRW0k=;
-        b=CcnTak2fQL4iOfB+sJFRs4rX7HP+Wx8SWf/6fkyh06vYWE1FH8/xhbQ/cmpgfuc/z0
-         6RNmUxgkeCVKMW3eaHcZMr7dMfz1ujpcu0jHYP92crdHsabNAzl/3K+vyTNk4goTsuqB
-         1TRpC745nJ97ePHAS00qkUkX7bZ56NuKV89jmgKFMVlyxluIg6gklk++hJBwU2LLXo7r
-         Z3oWy8xNCDtMtesAGn1bKGplWz26bthmWdWNoza5lZJyJh37Dyl5nSedc2cTrnT0rTJ0
-         3lJj6gNGJQIScDLylG0tmhrN9o5RBV4nUpNUjsOb46IzPjsOJoFUbNPAEOxxcrr9Wl7L
-         AFjg==
-X-Gm-Message-State: ALoCoQlQHyubSZH5078bZb3hVsFi8i7TUOL6haqZGPVwADZo6GcvROgvfYf1BoMFjjI8l9xZyOO+
-X-Received: by 10.140.147.82 with SMTP id 79mr14812795qht.8.1424741515277;
-        Mon, 23 Feb 2015 17:31:55 -0800 (PST)
+        bh=zigCw8YAHYpSAZ+4CBJPfZxMvdz79O2nYZ4e7FXt+W4=;
+        b=AYxrp9hpkMwasggx1bIypXuHBjUevZ0tb2NfErzcI7RM7kGr4O67n2ruRmovXzWmrC
+         p1lA52ziARChdTk3nZz3YsrS4pQ8W+KOpjm5B04sghHl1YvTDtdQtLgsiZNbGNv85agY
+         6Yv69kZ99GsxLctuxf2JdKSPgrqN3EcRjbzvD71szFwUOzhmQkhugNN8HHvjXoDiB08g
+         /d+6Nn799zHgJ30XIeZkZlG02npTqXQX0VT8L+zI2PLhs58Up3yX5MJWlTKIVqkbcWPM
+         8BaoYxiLEzD5YwX7n4rhqZtF5xzWAbqL4gDpNWqD9da2UvcLzNB/ffE9EvW8tF4MqPES
+         W37Q==
+X-Gm-Message-State: ALoCoQnxXvgcwgMx3MSIhBsj6UEM3mOws2MvrmwtKs5xtWdHx1wIpDtAypG8LeP8gDyl1VsTDdIn
+X-Received: by 10.182.224.169 with SMTP id rd9mr14111822obc.41.1424741516367;
+        Mon, 23 Feb 2015 17:31:56 -0800 (PST)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id q2si6550983qcn.2.2015.02.23.17.31.54
+        by gmr-mx.google.com with ESMTPS id kt5si6689893qcb.3.2015.02.23.17.31.55
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 23 Feb 2015 17:31:55 -0800 (PST)
+        Mon, 23 Feb 2015 17:31:56 -0800 (PST)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id VbMrIqud.1; Mon, 23 Feb 2015 17:31:55 -0800
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id HOAcD5yo.1; Mon, 23 Feb 2015 17:31:56 -0800
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 34A73220AFE; Mon, 23 Feb 2015 17:31:54 -0800 (PST)
+        id 1C596220F11; Mon, 23 Feb 2015 17:31:55 -0800 (PST)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -34,10 +34,11 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Andrew Bresticker <abrestic@chromium.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4/5] MIPS: Add support for the IMG Pistachio SoC
-Date:   Mon, 23 Feb 2015 17:31:46 -0800
-Message-Id: <1424741507-8882-5-git-send-email-abrestic@chromium.org>
+        James Hogan <james.hogan@imgtec.com>,
+        Govindraj Raja <govindraj.raja@imgtec.com>
+Subject: [PATCH 5/5] MIPS: pistachio: Add an initial defconfig
+Date:   Mon, 23 Feb 2015 17:31:47 -0800
+Message-Id: <1424741507-8882-6-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1424741507-8882-1-git-send-email-abrestic@chromium.org>
 References: <1424741507-8882-1-git-send-email-abrestic@chromium.org>
@@ -45,7 +46,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45908
+X-archive-position: 45909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,380 +63,359 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add initial support for boards based on the Imagination Pistachio SoC.
-Pistachio is based on a dual-core MIPS interAptiv CPU and will boot
-using device-tree.
+From: Govindraj Raja <govindraj.raja@imgtec.com>
 
+Add a defconfig for Pistachio which enables drivers for all the
+currently supported peripherals on the SoC.
+
+Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- arch/mips/Kbuild.platforms                  |   1 +
- arch/mips/Kconfig                           |  27 ++++++
- arch/mips/include/asm/mach-pistachio/gpio.h |  21 +++++
- arch/mips/include/asm/mach-pistachio/irq.h  |  18 ++++
- arch/mips/pistachio/Makefile                |   1 +
- arch/mips/pistachio/Platform                |   8 ++
- arch/mips/pistachio/init.c                  | 131 ++++++++++++++++++++++++++++
- arch/mips/pistachio/irq.c                   |  28 ++++++
- arch/mips/pistachio/time.c                  |  52 +++++++++++
- 9 files changed, 287 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-pistachio/gpio.h
- create mode 100644 arch/mips/include/asm/mach-pistachio/irq.h
- create mode 100644 arch/mips/pistachio/Makefile
- create mode 100644 arch/mips/pistachio/Platform
- create mode 100644 arch/mips/pistachio/init.c
- create mode 100644 arch/mips/pistachio/irq.c
- create mode 100644 arch/mips/pistachio/time.c
+ arch/mips/configs/pistachio_defconfig | 336 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 336 insertions(+)
+ create mode 100644 arch/mips/configs/pistachio_defconfig
 
-diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-index e5fc463..2298baa 100644
---- a/arch/mips/Kbuild.platforms
-+++ b/arch/mips/Kbuild.platforms
-@@ -23,6 +23,7 @@ platforms += netlogic
- platforms += paravirt
- platforms += pmcs-msp71xx
- platforms += pnx833x
-+platforms += pistachio
- platforms += ralink
- platforms += rb532
- platforms += sgi-ip22
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c7a1690..343b238 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -352,6 +352,33 @@ config MACH_LOONGSON1
- 	  the ICT (Institute of Computing Technology) and the Chinese Academy
- 	  of Sciences.
- 
-+config MACH_PISTACHIO
-+	bool "IMG Pistachio SoC based boards"
-+	select ARCH_REQUIRE_GPIOLIB
-+	select BOOT_ELF32
-+	select BOOT_RAW
-+	select CEVT_R4K
-+	select CLKSRC_MIPS_GIC
-+	select COMMON_CLK
-+	select CSRC_R4K
-+	select DMA_MAYBE_COHERENT
-+	select IRQ_CPU
-+	select LIBFDT
-+	select MFD_SYSCON
-+	select MIPS_CPU_SCACHE
-+	select MIPS_GIC
-+	select PINCTRL
-+	select REGULATOR
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_MIPS_CPS
-+	select SYS_SUPPORTS_MULTITHREADING
-+	select SYS_SUPPORTS_ZBOOT
-+	select USE_OF
-+	help
-+	  This enables support for the IMG Pistachio SoC platform.
-+
- config MIPS_MALTA
- 	bool "MIPS Malta board"
- 	select ARCH_MAY_HAVE_PC_FDC
-diff --git a/arch/mips/include/asm/mach-pistachio/gpio.h b/arch/mips/include/asm/mach-pistachio/gpio.h
+diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
 new file mode 100644
-index 0000000..6c1649c
+index 0000000..f22e92e
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-pistachio/gpio.h
-@@ -0,0 +1,21 @@
-+/*
-+ * Pistachio IRQ setup
-+ *
-+ * Copyright (C) 2014 Google, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ */
-+
-+#ifndef __ASM_MACH_PISTACHIO_GPIO_H
-+#define __ASM_MACH_PISTACHIO_GPIO_H
-+
-+#include <asm-generic/gpio.h>
-+
-+#define gpio_get_value	__gpio_get_value
-+#define gpio_set_value	__gpio_set_value
-+#define gpio_cansleep	__gpio_cansleep
-+#define gpio_to_irq	__gpio_to_irq
-+
-+#endif /* __ASM_MACH_PISTACHIO_GPIO_H */
-diff --git a/arch/mips/include/asm/mach-pistachio/irq.h b/arch/mips/include/asm/mach-pistachio/irq.h
-new file mode 100644
-index 0000000..b94a09a
---- /dev/null
-+++ b/arch/mips/include/asm/mach-pistachio/irq.h
-@@ -0,0 +1,18 @@
-+/*
-+ * Pistachio IRQ setup
-+ *
-+ * Copyright (C) 2014 Google, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ */
-+
-+#ifndef __ASM_MACH_PISTACHIO_IRQ_H
-+#define __ASM_MACH_PISTACHIO_IRQ_H
-+
-+#define NR_IRQS 256
-+
-+#include_next <irq.h>
-+
-+#endif /* __ASM_MACH_PISTACHIO_IRQ_H */
-diff --git a/arch/mips/pistachio/Makefile b/arch/mips/pistachio/Makefile
-new file mode 100644
-index 0000000..32189c6
---- /dev/null
-+++ b/arch/mips/pistachio/Makefile
-@@ -0,0 +1 @@
-+obj-y	+= init.o irq.o time.o
-diff --git a/arch/mips/pistachio/Platform b/arch/mips/pistachio/Platform
-new file mode 100644
-index 0000000..d80cd61
---- /dev/null
-+++ b/arch/mips/pistachio/Platform
-@@ -0,0 +1,8 @@
-+#
-+# IMG Pistachio SoC
-+#
-+platform-$(CONFIG_MACH_PISTACHIO)	+= pistachio/
-+cflags-$(CONFIG_MACH_PISTACHIO)		+=				\
-+		-I$(srctree)/arch/mips/include/asm/mach-pistachio
-+load-$(CONFIG_MACH_PISTACHIO)		+= 0xffffffff80400000
-+zload-$(CONFIG_MACH_PISTACHIO)		+= 0xffffffff81000000
-diff --git a/arch/mips/pistachio/init.c b/arch/mips/pistachio/init.c
-new file mode 100644
-index 0000000..0c3bd72
---- /dev/null
-+++ b/arch/mips/pistachio/init.c
-@@ -0,0 +1,131 @@
-+/*
-+ * Pistachio platform setup
-+ *
-+ * Copyright (C) 2014 Google, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/of_address.h>
-+#include <linux/of_fdt.h>
-+#include <linux/of_platform.h>
-+
-+#include <asm/cacheflush.h>
-+#include <asm/dma-coherence.h>
-+#include <asm/fw/fw.h>
-+#include <asm/mips-boards/generic.h>
-+#include <asm/mips-cm.h>
-+#include <asm/mips-cpc.h>
-+#include <asm/prom.h>
-+#include <asm/smp-ops.h>
-+#include <asm/traps.h>
-+
-+const char *get_system_type(void)
-+{
-+	return "IMG Pistachio SoC";
-+}
-+
-+static void __init plat_setup_iocoherency(void)
-+{
-+	/*
-+	 * Kernel has been configured with software coherency
-+	 * but we might choose to turn it off and use hardware
-+	 * coherency instead.
-+	 */
-+	if (mips_cm_numiocu() != 0) {
-+		/* Nothing special needs to be done to enable coherency */
-+		pr_info("CMP IOCU detected\n");
-+		hw_coherentio = 1;
-+		if (coherentio == 0)
-+			pr_info("Hardware DMA cache coherency disabled\n");
-+		else
-+			pr_info("Hardware DMA cache coherency enabled\n");
-+	} else {
-+		if (coherentio == 1)
-+			pr_info("Hardware DMA cache coherency unsupported, but enabled from command line!\n");
-+		else
-+			pr_info("Software DMA cache coherency enabled\n");
-+	}
-+}
-+
-+void __init plat_mem_setup(void)
-+{
-+	if (fw_arg0 != 0 || fw_arg1 != 0xffffffff)
-+		panic("Device-tree not present");
-+
-+	__dt_setup_arch(phys_to_virt(fw_arg2));
-+	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
-+
-+	plat_setup_iocoherency();
-+}
-+
-+#define DEFAULT_CPC_BASE_ADDR 0x1bde0000
-+
-+phys_addr_t mips_cpc_default_phys_base(void)
-+{
-+	return DEFAULT_CPC_BASE_ADDR;
-+}
-+
-+static void __init mips_nmi_setup(void)
-+{
-+	void *base;
-+	extern char except_vec_nmi;
-+
-+	base = cpu_has_veic ?
-+		(void *)(CAC_BASE + 0xa80) :
-+		(void *)(CAC_BASE + 0x380);
-+	memcpy(base, &except_vec_nmi, 0x80);
-+	flush_icache_range((unsigned long)base,
-+			   (unsigned long)base + 0x80);
-+}
-+
-+static void __init mips_ejtag_setup(void)
-+{
-+	void *base;
-+	extern char except_vec_ejtag_debug;
-+
-+	base = cpu_has_veic ?
-+		(void *)(CAC_BASE + 0xa00) :
-+		(void *)(CAC_BASE + 0x300);
-+	memcpy(base, &except_vec_ejtag_debug, 0x80);
-+	flush_icache_range((unsigned long)base,
-+			   (unsigned long)base + 0x80);
-+}
-+
-+void __init prom_init(void)
-+{
-+	board_nmi_handler_setup = mips_nmi_setup;
-+	board_ejtag_handler_setup = mips_ejtag_setup;
-+
-+	mips_cm_probe();
-+	mips_cpc_probe();
-+	register_cps_smp_ops();
-+}
-+
-+void __init prom_free_prom_memory(void)
-+{
-+}
-+
-+void __init device_tree_init(void)
-+{
-+	if (!initial_boot_params)
-+		return;
-+
-+	unflatten_and_copy_device_tree();
-+}
-+
-+static int __init plat_of_setup(void)
-+{
-+	if (!of_have_populated_dt())
-+		panic("Device tree not present");
-+
-+	if (of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL))
-+		panic("Failed to populate DT\n");
-+
-+	return 0;
-+}
-+arch_initcall(plat_of_setup);
-diff --git a/arch/mips/pistachio/irq.c b/arch/mips/pistachio/irq.c
-new file mode 100644
-index 0000000..0a6b24c
---- /dev/null
-+++ b/arch/mips/pistachio/irq.c
-@@ -0,0 +1,28 @@
-+/*
-+ * Pistachio IRQ setup
-+ *
-+ * Copyright (C) 2014 Google, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/irqchip.h>
-+#include <linux/irqchip/mips-gic.h>
-+#include <linux/kernel.h>
-+
-+#include <asm/cpu-features.h>
-+#include <asm/irq_cpu.h>
-+
-+void __init arch_init_irq(void)
-+{
-+	pr_info("EIC is %s\n", cpu_has_veic ? "on" : "off");
-+	pr_info("VINT is %s\n", cpu_has_vint ? "on" : "off");
-+
-+	if (!cpu_has_veic)
-+		mips_cpu_irq_init();
-+
-+	irqchip_init();
-+}
-diff --git a/arch/mips/pistachio/time.c b/arch/mips/pistachio/time.c
-new file mode 100644
-index 0000000..67889fc
---- /dev/null
-+++ b/arch/mips/pistachio/time.c
-@@ -0,0 +1,52 @@
-+/*
-+ * Pistachio clocksource/timer setup
-+ *
-+ * Copyright (C) 2014 Google, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/clk-provider.h>
-+#include <linux/clocksource.h>
-+#include <linux/init.h>
-+#include <linux/irqchip/mips-gic.h>
-+#include <linux/of.h>
-+
-+#include <asm/time.h>
-+
-+unsigned int get_c0_compare_int(void)
-+{
-+	return gic_get_c0_compare_int();
-+}
-+
-+int get_c0_perfcount_int(void)
-+{
-+	return gic_get_c0_perfcount_int();
-+}
-+
-+void __init plat_time_init(void)
-+{
-+	struct device_node *np;
-+	struct clk *clk;
-+
-+	of_clk_init(NULL);
-+	clocksource_of_init();
-+
-+	np = of_get_cpu_node(0, NULL);
-+	if (!np) {
-+		pr_err("Failed to get CPU node\n");
-+		return;
-+	}
-+
-+	clk = of_clk_get(np, 0);
-+	if (IS_ERR(clk)) {
-+		pr_err("Failed to get CPU clock: %ld\n", PTR_ERR(clk));
-+		return;
-+	}
-+
-+	mips_hpt_frequency = clk_get_rate(clk) / 2;
-+	clk_put(clk);
-+}
++++ b/arch/mips/configs/pistachio_defconfig
+@@ -0,0 +1,336 @@
++CONFIG_MACH_PISTACHIO=y
++CONFIG_MIPS_MT_SMP=y
++CONFIG_MIPS_CPS=y
++# CONFIG_COMPACTION is not set
++CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
++CONFIG_ZSMALLOC=y
++CONFIG_NR_CPUS=4
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_DEFAULT_HOSTNAME="localhost"
++CONFIG_SYSVIPC=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_IKCONFIG=m
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=18
++CONFIG_CGROUPS=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_CFS_BANDWIDTH=y
++CONFIG_NAMESPACES=y
++CONFIG_USER_NS=y
++CONFIG_BLK_DEV_INITRD=y
++# CONFIG_RD_BZIP2 is not set
++# CONFIG_RD_LZMA is not set
++# CONFIG_RD_LZO is not set
++# CONFIG_RD_LZ4 is not set
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_EMBEDDED=y
++# CONFIG_COMPAT_BRK is not set
++CONFIG_PROFILING=y
++CONFIG_CC_STACKPROTECTOR_STRONG=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++CONFIG_PARTITION_ADVANCED=y
++CONFIG_PM_DEBUG=y
++CONFIG_PM_ADVANCED_DEBUG=y
++CONFIG_CPU_IDLE=y
++# CONFIG_MIPS_CPS_CPUIDLE is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_NET_KEY=m
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_MROUTE=y
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++CONFIG_INET_XFRM_MODE_TRANSPORT=m
++CONFIG_INET_XFRM_MODE_TUNNEL=m
++CONFIG_INET_XFRM_MODE_BEET=m
++# CONFIG_INET_DIAG is not set
++CONFIG_TCP_CONG_ADVANCED=y
++# CONFIG_TCP_CONG_BIC is not set
++# CONFIG_TCP_CONG_WESTWOOD is not set
++# CONFIG_TCP_CONG_HTCP is not set
++CONFIG_TCP_CONG_LP=m
++CONFIG_TCP_MD5SIG=y
++CONFIG_IPV6=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=m
++CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++CONFIG_IPV6_SIT=m
++CONFIG_NETWORK_SECMARK=y
++CONFIG_NETFILTER=y
++# CONFIG_BRIDGE_NETFILTER is not set
++CONFIG_NF_CONNTRACK=y
++CONFIG_NF_CT_NETLINK=y
++CONFIG_NETFILTER_XT_MARK=m
++CONFIG_NETFILTER_XT_TARGET_CLASSIFY=y
++CONFIG_NETFILTER_XT_TARGET_DSCP=y
++CONFIG_NETFILTER_XT_TARGET_NFLOG=y
++CONFIG_NETFILTER_XT_TARGET_NFQUEUE=y
++CONFIG_NETFILTER_XT_TARGET_SECMARK=y
++CONFIG_NETFILTER_XT_TARGET_TCPMSS=m
++CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
++CONFIG_NETFILTER_XT_MATCH_DSCP=y
++CONFIG_NETFILTER_XT_MATCH_POLICY=y
++CONFIG_NETFILTER_XT_MATCH_STATE=y
++CONFIG_NF_CONNTRACK_IPV4=y
++CONFIG_NF_NAT_IPV4=m
++CONFIG_IP_NF_IPTABLES=y
++CONFIG_IP_NF_FILTER=y
++CONFIG_IP_NF_TARGET_REJECT=y
++CONFIG_IP_NF_MANGLE=y
++CONFIG_NF_CONNTRACK_IPV6=m
++CONFIG_NF_NAT_IPV6=m
++CONFIG_IP6_NF_IPTABLES=m
++CONFIG_IP6_NF_MATCH_IPV6HEADER=m
++CONFIG_IP6_NF_FILTER=m
++CONFIG_IP6_NF_TARGET_REJECT=m
++CONFIG_IP6_NF_MANGLE=m
++CONFIG_BRIDGE=m
++CONFIG_VLAN_8021Q=m
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_CODEL=m
++CONFIG_NET_SCH_FQ_CODEL=m
++CONFIG_NET_CLS_U32=m
++CONFIG_CLS_U32_MARK=y
++CONFIG_BT=m
++CONFIG_BT_RFCOMM=m
++CONFIG_BT_HCIBTUSB=m
++CONFIG_BT_HCIBFUSB=m
++CONFIG_BT_HCIVHCI=m
++CONFIG_CFG80211=m
++CONFIG_NL80211_TESTMODE=y
++CONFIG_CFG80211_DEBUGFS=y
++CONFIG_CFG80211_WEXT=y
++CONFIG_MAC80211=m
++CONFIG_MAC80211_LEDS=y
++CONFIG_MAC80211_DEBUGFS=y
++CONFIG_MAC80211_DEBUG_MENU=y
++CONFIG_MAC80211_VERBOSE_DEBUG=y
++CONFIG_RFKILL=y
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++CONFIG_DEBUG_DEVRES=y
++CONFIG_CONNECTOR=y
++CONFIG_MTD=y
++CONFIG_MTD_BLOCK=y
++CONFIG_MTD_M25P80=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_MTD_UBI=y
++CONFIG_MTD_UBI_BLOCK=y
++CONFIG_ZRAM=m
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_BLK_DEV_SR=m
++CONFIG_SCSI_SPI_ATTRS=y
++CONFIG_MD=y
++CONFIG_BLK_DEV_DM=y
++CONFIG_DM_CRYPT=y
++CONFIG_DM_VERITY=y
++CONFIG_NETDEVICES=y
++CONFIG_TUN=m
++CONFIG_VETH=m
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_MICROCHIP is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++CONFIG_STMMAC_ETH=y
++# CONFIG_NET_VENDOR_VIA is not set
++CONFIG_PPP=m
++CONFIG_PPP_ASYNC=m
++CONFIG_USB_PEGASUS=m
++CONFIG_USB_RTL8150=m
++CONFIG_USB_RTL8152=m
++CONFIG_USB_NET_DM9601=m
++CONFIG_USB_NET_SMSC75XX=m
++CONFIG_USB_NET_SMSC95XX=m
++CONFIG_USB_NET_MCS7830=m
++# CONFIG_USB_NET_CDC_SUBSET is not set
++# CONFIG_USB_NET_ZAURUS is not set
++CONFIG_LIBERTAS_THINFIRM=m
++CONFIG_USB_NET_RNDIS_WLAN=m
++CONFIG_MAC80211_HWSIM=m
++CONFIG_HOSTAP=m
++CONFIG_HOSTAP_FIRMWARE=y
++CONFIG_HOSTAP_FIRMWARE_NVRAM=y
++CONFIG_RT2X00=m
++CONFIG_RT2800USB=m
++# CONFIG_INPUT_MOUSEDEV is not set
++CONFIG_INPUT_EVDEV=y
++# CONFIG_KEYBOARD_ATKBD is not set
++CONFIG_KEYBOARD_GPIO=y
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_SERIO is not set
++# CONFIG_VT is not set
++# CONFIG_LEGACY_PTYS is not set
++# CONFIG_DEVKMEM is not set
++CONFIG_SERIAL_8250=y
++# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_DW=y
++CONFIG_SERIAL_OF_PLATFORM=y
++CONFIG_HW_RANDOM=y
++CONFIG_TCG_TPM=y
++CONFIG_I2C=y
++CONFIG_I2C_CHARDEV=m
++CONFIG_I2C_IMG=y
++CONFIG_I2C_STUB=m
++CONFIG_SPI=y
++CONFIG_SPI_BITBANG=m
++CONFIG_SPI_IMG_SPFI=y
++CONFIG_SPI_SPIDEV=y
++CONFIG_DEBUG_GPIO=y
++CONFIG_GPIO_SYSFS=y
++CONFIG_POWER_SUPPLY=y
++CONFIG_THERMAL=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_CORE=y
++CONFIG_IMGPDC_WDT=y
++CONFIG_REGULATOR_FIXED_VOLTAGE=y
++CONFIG_REGULATOR_GPIO=y
++CONFIG_MEDIA_SUPPORT=y
++CONFIG_MEDIA_RC_SUPPORT=y
++# CONFIG_RC_DECODERS is not set
++CONFIG_RC_DEVICES=y
++CONFIG_IR_IMG=y
++CONFIG_IR_IMG_NEC=y
++CONFIG_IR_IMG_JVC=y
++CONFIG_IR_IMG_SONY=y
++CONFIG_IR_IMG_SHARP=y
++CONFIG_IR_IMG_SANYO=y
++CONFIG_IR_IMG_RC5=y
++CONFIG_IR_IMG_RC6=y
++# CONFIG_DVB_TUNER_DIB0070 is not set
++# CONFIG_DVB_TUNER_DIB0090 is not set
++CONFIG_FB=y
++CONFIG_FB_MODE_HELPERS=y
++CONFIG_BACKLIGHT_LCD_SUPPORT=y
++# CONFIG_LCD_CLASS_DEVICE is not set
++CONFIG_BACKLIGHT_CLASS_DEVICE=y
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_SEQUENCER=m
++CONFIG_SND_SEQ_DUMMY=m
++CONFIG_SND_HRTIMER=m
++CONFIG_SND_DYNAMIC_MINORS=y
++# CONFIG_SND_SPI is not set
++CONFIG_SND_USB_AUDIO=m
++CONFIG_USB=y
++CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
++# CONFIG_USB_DEFAULT_PERSIST is not set
++CONFIG_USB_MON=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_ROOT_HUB_TT=y
++CONFIG_USB_ACM=y
++CONFIG_USB_STORAGE=y
++CONFIG_USB_DWC2=y
++CONFIG_USB_SERIAL=y
++CONFIG_USB_SERIAL_GENERIC=y
++CONFIG_USB_SERIAL_CP210X=m
++CONFIG_USB_SERIAL_FTDI_SIO=m
++CONFIG_USB_SERIAL_KEYSPAN=m
++CONFIG_USB_SERIAL_PL2303=m
++CONFIG_USB_SERIAL_OTI6858=m
++CONFIG_USB_SERIAL_QUALCOMM=m
++CONFIG_USB_SERIAL_SIERRAWIRELESS=m
++CONFIG_USB_SERIAL_OPTION=m
++CONFIG_MMC=y
++CONFIG_MMC_BLOCK_MINORS=16
++CONFIG_MMC_TEST=m
++CONFIG_MMC_DW=y
++CONFIG_MMC_DW_IDMAC=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_RTC_CLASS=y
++CONFIG_DMADEVICES=y
++CONFIG_IMG_MDC_DMA=y
++CONFIG_STAGING=y
++CONFIG_ASHMEM=y
++# CONFIG_ANDROID_TIMED_OUTPUT is not set
++# CONFIG_IOMMU_SUPPORT is not set
++CONFIG_MEMORY=y
++CONFIG_IIO=y
++CONFIG_CC10001_ADC=y
++CONFIG_PWM=y
++CONFIG_PWM_IMG=y
++CONFIG_ANDROID=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_FUSE_FS=m
++CONFIG_ISO9660_FS=m
++CONFIG_JOLIET=y
++CONFIG_ZISOFS=y
++CONFIG_UDF_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++CONFIG_ECRYPT_FS=y
++CONFIG_HFSPLUS_FS=m
++CONFIG_UBIFS_FS=y
++CONFIG_SQUASHFS=y
++CONFIG_SQUASHFS_FILE_DIRECT=y
++CONFIG_SQUASHFS_LZO=y
++CONFIG_PSTORE=y
++CONFIG_PSTORE_CONSOLE=y
++CONFIG_PSTORE_RAM=y
++# CONFIG_NETWORK_FILESYSTEMS is not set
++CONFIG_NLS_DEFAULT="utf8"
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_ASCII=m
++CONFIG_NLS_ISO8859_1=m
++CONFIG_PRINTK_TIME=y
++CONFIG_DEBUG_INFO=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0
++CONFIG_LOCKUP_DETECTOR=y
++CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
++CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
++# CONFIG_SCHED_DEBUG is not set
++CONFIG_SCHEDSTATS=y
++CONFIG_TIMER_STATS=y
++CONFIG_DEBUG_SPINLOCK=y
++CONFIG_DEBUG_CREDENTIALS=y
++CONFIG_FUNCTION_TRACER=y
++CONFIG_BLK_DEV_IO_TRACE=y
++CONFIG_LKDTM=y
++CONFIG_TEST_UDELAY=m
++CONFIG_KEYS=y
++CONFIG_SECURITY=y
++CONFIG_SECURITY_NETWORK=y
++CONFIG_SECURITY_YAMA=y
++CONFIG_SECURITY_YAMA_STACKED=y
++CONFIG_DEFAULT_SECURITY_DAC=y
++CONFIG_CRYPTO_AUTHENC=y
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_SHA1=y
++CONFIG_CRYPTO_SHA256=y
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_ARC4=y
++CONFIG_CRYPTO_DES=y
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++CONFIG_CRC_CCITT=y
++CONFIG_CRC_T10DIF=m
++CONFIG_CRC7=m
++CONFIG_LIBCRC32C=m
++# CONFIG_XZ_DEC_X86 is not set
 -- 
 2.2.0.rc0.207.ga3a616c

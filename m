@@ -1,44 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 22:06:31 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:24788 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007145AbbBXVGaOZxDH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 22:06:30 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id ACFFC3F5B4ADE;
-        Tue, 24 Feb 2015 21:06:21 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 24 Feb
- 2015 21:06:24 +0000
-Received: from [192.168.65.146] (192.168.65.146) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 24 Feb
- 2015 13:06:22 -0800
-Message-ID: <54ECE7CE.4040407@imgtec.com>
-Date:   Tue, 24 Feb 2015 13:06:22 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 22:39:12 +0100 (CET)
+Received: from mail-qg0-f49.google.com ([209.85.192.49]:50991 "EHLO
+        mail-qg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007158AbbBXVjJXWxBe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 22:39:09 +0100
+Received: by mail-qg0-f49.google.com with SMTP id q107so32458960qgd.8
+        for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 13:39:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=7DLe7kw5NYg1iFXEfXTw/weXlusoLnWgAIT0DbeIB5s=;
+        b=mD9xlGdy5aJLiE62x5/oU3foKcPS//DsFncHKxFkotmnGH/wMulY4EXR4NpyrX9+pK
+         MQUcQ1XireThMsJHqB9iVPt2Oz4FekfA0NzS5ey+a6AGwlT5/1pU+pYiMrLRL4zzidmQ
+         6Wgt5P4tix89EkilGOltYkvqAqDy2iVEqpGgXhNRlHjh105Iu7kAI0wyuC2tdkzQBsz2
+         dXneNhhd/53zuANPFdbzsxlirx74f9DEoHUcPXLusftkcxTIzpWOdUviy+0jrFqVuaT2
+         0jcPnlOA7dYSSV2kF1f8PGKj4dSXBzPUf/cp8o/ly/CTc6uN6RQj5PXKP+8jeMeqVerM
+         9KAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=7DLe7kw5NYg1iFXEfXTw/weXlusoLnWgAIT0DbeIB5s=;
+        b=QH9Arw2YPecjEROBewPeukuH83bt56Pwh3wWHhhxwYa55O9Ufokj7VtLnGTS6BJ0Q6
+         vFf7mUiupbdjz+pR8m8h0r5NdHWlGE9HzTI8gLjjM2ZEaVPbt9dTAKWNbcIysjpZ1lAF
+         BcB+OYq5e7FmrHo8VVAyGIc1RpxJd4YYzaBqA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=7DLe7kw5NYg1iFXEfXTw/weXlusoLnWgAIT0DbeIB5s=;
+        b=cvDWCOENS3hJUsxQMmwgPZkvnQZKLGO6KYdS8amVwTtu1e1/61luozjbz0TwVrHOX8
+         TSmz0GASvCXOuO0TUpTXoW04m/tEiHaZLnWDkbBXVI4nopFCH/Y/1OPzrQHsSVTD2sAk
+         2oFZOGH8rWgNPHQ5u+asSzJNcWuD1qYm0IL7wDwF3d0uecqTEEUR25GnuRHcI+XiZUrE
+         xAIT0sJPYhQCP71bLAaT9jQJ9yXxgBLhEe8bpF7Gw7TJLYpFC8eyOxjpXyNPKlxTMUhK
+         XsdeiZ7A787vbKBNL99KbjUUVOdZkUEuLWFQaUzm7uSqeJto7aELEGulaxxL4K4F0GlC
+         RlLg==
+X-Gm-Message-State: ALoCoQmXATvjpXMHe9Wjd8s8Nbce2InymfJ/Zu4tEEJTQTONaR0knQzJV7GJskFhjGThDSghtW60
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Zenon Fortuna <zenon.fortuna@imgtec.com>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "IMG - MIPS Linux Kernel developers" 
-        <IMG-MIPSLinuxKerneldevelopers@imgtec.com>,
-        "Linux MIPS Mailing List" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH V2 1/3] MIPS: Fix cache flushing for swap pages with non-DMA
- I/O.
-References: <1424362664-30303-1-git-send-email-Steven.Hill@imgtec.com> <1424362664-30303-2-git-send-email-Steven.Hill@imgtec.com> <CAJiQ=7DMBznB5Ths0sAZORf2hgSQRuBoPF-7HGHhcHn0EajnWg@mail.gmail.com> <54EBCC38.7000702@imgtec.com> <54EBD023.8090706@imgtec.com> <alpine.LFD.2.11.1502240224500.17311@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1502240224500.17311@eddie.linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+X-Received: by 10.140.31.36 with SMTP id e33mr61569qge.36.1424813943891; Tue,
+ 24 Feb 2015 13:39:03 -0800 (PST)
+Received: by 10.140.19.72 with HTTP; Tue, 24 Feb 2015 13:39:03 -0800 (PST)
+In-Reply-To: <7814815.Q6KYv1fjo1@wuerfel>
+References: <1424741507-8882-1-git-send-email-abrestic@chromium.org>
+        <1424741507-8882-3-git-send-email-abrestic@chromium.org>
+        <7814815.Q6KYv1fjo1@wuerfel>
+Date:   Tue, 24 Feb 2015 13:39:03 -0800
+X-Google-Sender-Auth: cSlJBPLqMtnsnCsZwV6oghJlMdU
+Message-ID: <CAL1qeaHSErgc=W4mGhDAm7cu_J4wrOik27joB0Rd-2P7dk=QuA@mail.gmail.com>
+Subject: Re: [PATCH 2/5] MIPS: Allow platforms to specify the decompressor
+ load address
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45934
+X-archive-position: 45935
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,26 +81,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/23/2015 06:33 PM, Maciej W. Rozycki wrote:
-> On Mon, 23 Feb 2015, Zenon Fortuna wrote:
+On Tue, Feb 24, 2015 at 12:15 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Monday 23 February 2015 17:31:44 Andrew Bresticker wrote:
+>> Platforms which use raw zboot images may need to link the image at
+>> a fixed address if there is no other way to communicate the load
+>> address to the bootloader.  Allow the per-platform Kbuild files
+>> to specify an optional zboot image load address (zload-y) and fall
+>> back to calc_vmlinuz_load_addr if unset.
+>>
+>> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+>> Cc: Lars-Peter Clausen <lars@metafoo.de>
 >
->> Does the current system-call "cacheflush(2)" works with the newer kernels?
->> As the "man cacheflush" tells, it was supposed to work only on MIPS based
->> systems.
->   It absolutely has to work, on the MIPS target GCC emits code invoking it
-> to synchronise trampolines built at the run time on the stack (used for
-> calling nested functions, a C language extension borrowed from Pascal,
-> etc.), before passing execution there.  Verification of this syscall is
-> probably implicitly covered by the GCC test suite already.
+> No objections to the patch, but have you considered doing the
+> same thing as ARM's AUTO_ZRELADDR, where we calculate the
+> address at runtime from the entry point?
 >
->    Maciej
-cacheflush() syscall traps into kernel and it executes I and D caches 
-flushing.
+> I assume this is the same kind of address you are talking
+> about here; if not, nevermind.
 
-However, it's implementation in 'master' branch from Linus tree is 
-wrong: if you call it in multicore environment for size > L1 cache size 
-then it does it incorrectly: doesn't call IPI for index cacheops.
-
-The correct way is ... sorry, can't find it in LMO...
-
-- Leonid.
+It is the same sort of issue, though I think the only way to solve it
+on MIPS would be to copy the image to the address it was linked at,
+which could be problematic if there's overlap.  There's also the cache
+maintenance we'd have to do, which varies from CPU to CPU (and more so
+the ARM I believe).

@@ -1,42 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 12:46:37 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:33661 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006936AbbBXLqfoU7Ip (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 12:46:35 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 578A99ED4A352;
-        Tue, 24 Feb 2015 11:46:28 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 24 Feb 2015 11:46:30 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 24 Feb 2015 11:46:29 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Gleb Natapov <gleb@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: KVM: Fix trace event to save PC directly
-Date:   Tue, 24 Feb 2015 11:46:20 +0000
-Message-ID: <1424778380-28036-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 14:17:41 +0100 (CET)
+Received: from unicorn.mansr.com ([81.2.72.234]:42240 "EHLO unicorn.mansr.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007119AbbBXNRjREHdC convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 14:17:39 +0100
+Received: by unicorn.mansr.com (Postfix, from userid 51770)
+        id D1F1E1538A; Tue, 24 Feb 2015 13:17:33 +0000 (GMT)
+From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     <linux-mips@linux-mips.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU mode checks
+References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
+        <1422893593-1291-1-git-send-email-markos.chandras@imgtec.com>
+Date:   Tue, 24 Feb 2015 13:17:33 +0000
+In-Reply-To: <1422893593-1291-1-git-send-email-markos.chandras@imgtec.com>
+        (Markos Chandras's message of "Mon, 2 Feb 2015 16:13:13 +0000")
+Message-ID: <yw1xwq3778k2.fsf@unicorn.mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mru@mansr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45918
+X-archive-position: 45919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: mans@mansr.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,58 +42,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently the guest exit trace event saves the VCPU pointer to the
-structure, and the guest PC is retrieved by dereferencing it when the
-event is printed rather than directly from the trace record. This isn't
-safe as the printing may occur long afterwards, after the PC has changed
-and potentially after the VCPU has been freed. Usually this results in
-the same (wrong) PC being printed for multiple trace events. It also
-isn't portable as userland has no way to access the VCPU data structure
-when interpreting the trace record itself.
+Markos Chandras <markos.chandras@imgtec.com> writes:
 
-Lets save the actual PC in the structure so that the correct value is
-accessible later.
+> The previous implementation did not cover all possible FPU combinations
+> and it silently allowed ABI incompatible objects to be loaded with the
+> wrong ABI. For example, the previous logic would set the FP_64 ABI as
+> the matching ABI for an FP_XX object combined with an FP_64A object.
+> This was wrong, and the matching ABI should have been FP_64A.
+> The previous logic is now replaced with a new one which determines
+> the appropriate FPU mode to be used rather than the FP ABI. This has
+> the advantage that the entire logic is much simpler since it is the FPU
+> mode we are interested in rather than the FP ABI resulting to code
+> simplifications.
+>
+> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
+> Cc: Paul Burton <paul.burton@imgtec.com>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>  arch/mips/include/asm/elf.h |  10 +-
+>  arch/mips/kernel/elf.c      | 303 +++++++++++++++++++++++++++-----------------
+>  2 files changed, 194 insertions(+), 119 deletions(-)
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v3.10+
----
- arch/mips/kvm/trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This patch (well, the variant that made it into 4.0-rc1) breaks
+MIPS_ABI_FP_DOUBLE (the gcc default) apps on MIPS32.
 
-diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-index c1388d40663b..bd6437f67dc0 100644
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -24,18 +24,18 @@ TRACE_EVENT(kvm_exit,
- 	    TP_PROTO(struct kvm_vcpu *vcpu, unsigned int reason),
- 	    TP_ARGS(vcpu, reason),
- 	    TP_STRUCT__entry(
--			__field(struct kvm_vcpu *, vcpu)
-+			__field(unsigned long, pc)
- 			__field(unsigned int, reason)
- 	    ),
- 
- 	    TP_fast_assign(
--			__entry->vcpu = vcpu;
-+			__entry->pc = vcpu->arch.pc;
- 			__entry->reason = reason;
- 	    ),
- 
- 	    TP_printk("[%s]PC: 0x%08lx",
- 		      kvm_mips_exit_types_str[__entry->reason],
--		      __entry->vcpu->arch.pc)
-+		      __entry->pc)
- );
- 
- #endif /* _TRACE_KVM_H */
+> +void mips_set_personality_fp(struct arch_elf_state *state)
+> +{
+> +	/*
+> +	 * This function is only ever called for O32 ELFs so we should
+> +	 * not be worried about N32/N64 binaries.
+> +	 */
+>
+> -	case MIPS_ABI_FP_XX:
+> -	case MIPS_ABI_FP_ANY:
+> -		if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+> -			set_thread_flag(TIF_32BIT_FPREGS);
+> -		else
+> -			clear_thread_flag(TIF_32BIT_FPREGS);
+> +	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+> +		return;
+
+The problem is here.  In a 32-bit configuration, MIPS_O32_FP64_SUPPORT
+is always disabled, so the FP mode doesn't get set.  Simply deleting
+those two lines makes things work again, but that's probably not the
+right fix.
+
+> -		clear_thread_flag(TIF_HYBRID_FPREGS);
+> +	switch (state->overall_fp_mode) {
+> +	case FP_FRE:
+> +		set_thread_fp_mode(1, 0);
+> +		break;
+> +	case FP_FR0:
+> +		set_thread_fp_mode(0, 1);
+> +		break;
+> +	case FP_FR1:
+> +		set_thread_fp_mode(0, 0);
+>  		break;
+> -
+>  	default:
+> -	case FP_ERROR:
+>  		BUG();
+>  	}
+>  }
+> -- 
+> 2.2.2
+>
+
 -- 
-2.0.5
+Måns Rullgård
+mans@mansr.com

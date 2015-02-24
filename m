@@ -1,42 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 15:25:23 +0100 (CET)
-Received: from sauhun.de ([89.238.76.85]:57174 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007119AbbBXOZVmUK2o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Feb 2015 15:25:21 +0100
-Received: from p4fe25204.dip0.t-ipconnect.de ([79.226.82.4]:43718 helo=katana)
-        by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <wsa@the-dreams.de>)
-        id 1YQGQJ-0004ua-Hs; Tue, 24 Feb 2015 15:25:19 +0100
-Date:   Tue, 24 Feb 2015 15:25:24 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
-Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-kernel@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@atmel.com>,
-        Yingjoe Chen <yingjoe.chen@mediatek.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [RFC 02/11] i2c: add quirk checks to core
-Message-ID: <20150224142524.GB18301@katana>
-References: <1420824103-24169-1-git-send-email-wsa@the-dreams.de>
- <1420824103-24169-3-git-send-email-wsa@the-dreams.de>
- <20150112120814.GE12302@n2100.arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 15:26:12 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:41382 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007119AbbBXO0LWWZhe convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 15:26:11 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id EE52264B2701F;
+        Tue, 24 Feb 2015 14:26:02 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 24 Feb 2015 14:26:05 +0000
+Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
+ LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
+ 14.03.0210.002; Tue, 24 Feb 2015 14:26:05 +0000
+From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Paul Burton <Paul.Burton@imgtec.com>
+Subject: RE: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
+ mode checks
+Thread-Topic: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
+ mode checks
+Thread-Index: AQHQUDsHTpUqzW/P5ESAwcGgwy98jpz/2RXg
+Date:   Tue, 24 Feb 2015 14:26:04 +0000
+Message-ID: <6D39441BF12EF246A7ABCE6654B0235320FDEE92@LEMAIL01.le.imgtec.org>
+References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
+        <1422893593-1291-1-git-send-email-markos.chandras@imgtec.com>
+        <yw1xwq3778k2.fsf@unicorn.mansr.com>
+        <20150224135225.GA23928@mchandras-linux.le.imgtec.org>
+ <yw1xsidv76b6.fsf@unicorn.mansr.com>
+In-Reply-To: <yw1xsidv76b6.fsf@unicorn.mansr.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.152.113]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="7iMSBzlTiPOCCT2k"
-Content-Disposition: inline
-In-Reply-To: <20150112120814.GE12302@n2100.arm.linux.org.uk>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <wsa@the-dreams.de>
+Return-Path: <Matthew.Fortune@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45924
+X-archive-position: 45925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: Matthew.Fortune@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,49 +59,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Måns Rullgård <mans@mansr.com> writes:
+> Markos Chandras <markos.chandras@imgtec.com> writes:
+> 
+> > Hi,
+> >
+> > On Tue, Feb 24, 2015 at 01:17:33PM +0000, Måns Rullgård wrote:
+> >> This patch (well, the variant that made it into 4.0-rc1) breaks
+> >> MIPS_ABI_FP_DOUBLE (the gcc default) apps on MIPS32.
+> >>
+> >
+> > Thanks for the report.
+> >
+> >> > +void mips_set_personality_fp(struct arch_elf_state *state) {
+> >> > +	/*
+> >> > +	 * This function is only ever called for O32 ELFs so we should
+> >> > +	 * not be worried about N32/N64 binaries.
+> >> > +	 */
+> >> >
+> >> > -	case MIPS_ABI_FP_XX:
+> >> > -	case MIPS_ABI_FP_ANY:
+> >> > -		if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+> >> > -			set_thread_flag(TIF_32BIT_FPREGS);
+> >> > -		else
+> >> > -			clear_thread_flag(TIF_32BIT_FPREGS);
+> >> > +	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+> >> > +		return;
+> >>
+> >> The problem is here.  In a 32-bit configuration,
+> >> MIPS_O32_FP64_SUPPORT is always disabled, so the FP mode doesn't get
+> >> set.  Simply deleting those two lines makes things work again, but
+> >> that's probably not the right fix.
 
---7iMSBzlTiPOCCT2k
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't recall the final decision on default on/off for this option but
+IIRC it is going to be off for everything except R6 in the first kernel
+version and then turned on by default(/option removed) when the code is
+proven for the following kernel version.
 
-On Mon, Jan 12, 2015 at 12:08:14PM +0000, Russell King - ARM Linux wrote:
-> On Fri, Jan 09, 2015 at 06:21:32PM +0100, Wolfram Sang wrote:
-> > +static int i2c_quirk_error(struct i2c_adapter *adap, struct i2c_msg *m=
-sg, char *err_msg)
-> > +{
-> > +	dev_err(&adap->dev, "quirk: %s (addr 0x%04x, size %u)\n", err_msg, ms=
-g->addr, msg->len);
-> > +	return -EOPNOTSUPP;
-> > +}
->=20
-> So, what happens if I open an I2C adapter, find a message which causes
-> i2c_quirk_error() to be called, and then spin repeatedly calling that...
-> Shouldn't there be some rate limiting to this?
+> >>
+> > I had the impression that the loader would have set the FP mode
+> earlier on.
+> > But that only may happen with the latest version of the tools.
+> >
+> > Perhaps instead of dropping these two lines we need a similar check on
+> > the arch_elf_pt_proc so we don't mess with the default FPI abi?
+> >
+> > Having said that, dropping these two lines should be fine, it just
+> > means you do a little bit of extra work when loading your ELF files to
+> > check for ABI compatibility which shouldn't matter in your case.
+> 
+> There's another early return like this in arch_check_elf() which should
+> probably go as well, or everything will end up with the default mode.
 
-Can be argued. Changed to dev_err_ratelimited(). Thanks!
+Ironically I discussed these changes with Markos in an attempt to make
+all the new changes benign when:
 
+!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT)
 
---7iMSBzlTiPOCCT2k
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Clearly this has backfired. I will have to re-read the version of the code
+in 4.0-rc1 to see what is the root cause. The intention was that without
+the config option then the kernel would blindly continue to assume that
+all O32 binaries would run in the original TIF_32BIT_FPREGS mode. As I
+recall, the callers to mips_set_personality_fp were setting this mode
+which is why the simple early return was added.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJU7InUAAoJEBQN5MwUoCm2FyMP/396wTJ79mIvC6SMKh0qHIIy
-lfoEi7z+j7FXG1auWe/Jg0Zl8AdNVlmXuwo6XX/BHWyuj2ZUTSU6I0VikqzbyoRQ
-CX9TDFWvPIKxw72LUNSIQjWuflc1xUL57vRHjnamEuASwPp97url6/qMFSQiRZhy
-4REikDaClN3m/HlSH86r+EH/UbXdLA182nOinmuzzt4wED0EMNN8pGlj/kY2Mlgr
-F1EJL71+lWetbWvwGD+OQlJyGwf/spro+5d/pJ9onbg98lKRV72HBkqx3idxfZEM
-t1UDwJVCl3tUwpFY26GTenUBmnGjxjRxgiSJMPBhdaW+L5GqFh1rbmfVfT41o7Yf
-dE32o1O4UO9L8IkRMw/+nKJ0xfQza1Gihskq2Q0n8rkNpg9G8lH+KGqhYK+dzTlT
-W5MzoLnyzv6QvP5RB7LXdUA6g4vciaeoNOynd21r4otmNLAPR00m6OkY2FZTtsqt
-M40if2xDZlY56y9Shy7oXiglC/Dw4PsjmKPuy7gV7F1K99nsXM1gNzhwjnanOyBL
-FDWif4e9gEBrCONre9IRMZ3351GZEtkDGPnTWHAwF8ncgILzA/nGr4gkQDBVt00w
-K5Pdo1CHdZqxzXeh8/S8u4kxOVQYyx81FJ+6mnQFhbn4TtV8Q5qQL2oh3W71eehh
-5BkNrvM/ikWNOgDBUAAi
-=Er7l
------END PGP SIGNATURE-----
-
---7iMSBzlTiPOCCT2k--
+Thanks,
+Matthew

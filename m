@@ -1,25 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 16:25:45 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39857 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 16:26:02 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12771 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007134AbbBXPZjicw6M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 16:25:39 +0100
+        with ESMTP id S27007137AbbBXPZolfASw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 16:25:44 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CB04A16D1E5BE;
-        Tue, 24 Feb 2015 15:25:31 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 3FFF345F21DA8;
+        Tue, 24 Feb 2015 15:25:36 +0000 (GMT)
 Received: from metadesk01.kl.imgtec.org (192.168.14.177) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 24 Feb 2015 15:25:34 +0000
+ 14.3.195.1; Tue, 24 Feb 2015 15:25:39 +0000
 From:   Daniel Sanders <daniel.sanders@imgtec.com>
-CC:     Toma Tabacu <toma.tabacu@imgtec.com>,
-        Daniel Sanders <daniel.sanders@imgtec.com>,
+CC:     Daniel Sanders <daniel.sanders@imgtec.com>,
+        Toma Tabacu <toma.tabacu@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        David Daney <david.daney@cavium.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 2/4] MIPS: LLVMLinux: Fix a 'cast to type not present in union' error.
-Date:   Tue, 24 Feb 2015 15:25:09 +0000
-Message-ID: <1424791511-11407-3-git-send-email-daniel.sanders@imgtec.com>
+Subject: [PATCH v4 3/4] MIPS: LLVMLinux: Fix an 'inline asm input/output type mismatch' error.
+Date:   Tue, 24 Feb 2015 15:25:10 +0000
+Message-ID: <1424791511-11407-4-git-send-email-daniel.sanders@imgtec.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1424791511-11407-1-git-send-email-daniel.sanders@imgtec.com>
 References: <1424791511-11407-1-git-send-email-daniel.sanders@imgtec.com>
@@ -31,7 +30,7 @@ Return-Path: <Daniel.Sanders@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45928
+X-archive-position: 45929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,50 +47,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Toma Tabacu <toma.tabacu@imgtec.com>
-
-Remove a cast to the 'mips16e_instruction' union inside an if
-condition and instead do an assignment to a local
-'union mips16e_instruction' variable's 'full' member before the if
-statement and use this variable in the if condition.
+Replace incorrect matching constraint that caused the error with an alternative
+that still has the required constraints on the inline assembly.
 
 This is the error message reported by clang:
-arch/mips/kernel/branch.c:38:8: error: cast to union type from type 'unsigned short' not present in union
-                if (((union mips16e_instruction)inst).ri.opcode
-                     ^                          ~~~~
+arch/mips/include/asm/checksum.h:285:27: error: unsupported inline asm: input with type '__be32' (aka 'unsigned int') matching output with type 'unsigned short'
+          "0" (htonl(len)), "1" (htonl(proto)), "r" (sum));
+                                 ^~~~~~~~~~~~
 
 The changed code can be compiled successfully by both gcc and clang.
 
-Signed-off-by: Toma Tabacu <toma.tabacu@imgtec.com>
 Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
+Signed-off-by: Toma Tabacu <toma.tabacu@imgtec.com>
+Suggested-by: Maciej W. Rozycki <macro@linux-mips.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Manuel Lauss <manuel.lauss@gmail.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
 ---
-v2 refreshes the patch.
+v2 replaced the patch following Maciej's suggestion where he observed that
+the assembly was somewhat strange and suggested correcting the
+constraints and using a local of matching type.
 
- arch/mips/kernel/branch.c | 6 ++++--
+v3 fixed a small whitespace issue.
+
+v4 refreshes the patch.
+
+ arch/mips/include/asm/checksum.h | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
-index c2e0f45..c0c5e59 100644
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -36,8 +36,10 @@ int __isa_exception_epc(struct pt_regs *regs)
- 		return epc;
- 	}
- 	if (cpu_has_mips16) {
--		if (((union mips16e_instruction)inst).ri.opcode
--				== MIPS16e_jal_op)
-+		union mips16e_instruction inst_mips16e;
+diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
+index 5c585c5..3ceacde 100644
+--- a/arch/mips/include/asm/checksum.h
++++ b/arch/mips/include/asm/checksum.h
+@@ -218,6 +218,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 					  __u32 len, unsigned short proto,
+ 					  __wsum sum)
+ {
++	__wsum tmp;
 +
-+		inst_mips16e.full = inst;
-+		if (inst_mips16e.ri.opcode == MIPS16e_jal_op)
- 			epc += 4;
- 		else
- 			epc += 2;
+ 	__asm__(
+ 	"	.set	push		# csum_ipv6_magic\n"
+ 	"	.set	noreorder	\n"
+@@ -270,9 +272,9 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 
+ 	"	addu	%0, $1		# Add final carry\n"
+ 	"	.set	pop"
+-	: "=r" (sum), "=r" (proto)
++	: "=&r" (sum), "=&r" (tmp)
+ 	: "r" (saddr), "r" (daddr),
+-	  "0" (htonl(len)), "1" (htonl(proto)), "r" (sum));
++	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum));
+ 
+ 	return csum_fold(sum);
+ }
 -- 
 2.1.4

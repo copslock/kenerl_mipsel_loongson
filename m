@@ -1,52 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 02:33:35 +0100 (CET)
-Received: from mail-ie0-f201.google.com ([209.85.223.201]:33310 "EHLO
-        mail-ie0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007099AbbBXBcBiQ832 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 02:32:01 +0100
-Received: by iecrl12 with SMTP id rl12so7210694iec.0
-        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 17:31:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2015 03:15:16 +0100 (CET)
+Received: from mail-qg0-f74.google.com ([209.85.192.74]:47217 "EHLO
+        mail-qg0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006984AbbBXCPNrJU7L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Feb 2015 03:15:13 +0100
+Received: by mail-qg0-f74.google.com with SMTP id h3so4832453qgf.1
+        for <linux-mips@linux-mips.org>; Mon, 23 Feb 2015 18:15:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=zigCw8YAHYpSAZ+4CBJPfZxMvdz79O2nYZ4e7FXt+W4=;
-        b=AYxrp9hpkMwasggx1bIypXuHBjUevZ0tb2NfErzcI7RM7kGr4O67n2ruRmovXzWmrC
-         p1lA52ziARChdTk3nZz3YsrS4pQ8W+KOpjm5B04sghHl1YvTDtdQtLgsiZNbGNv85agY
-         6Yv69kZ99GsxLctuxf2JdKSPgrqN3EcRjbzvD71szFwUOzhmQkhugNN8HHvjXoDiB08g
-         /d+6Nn799zHgJ30XIeZkZlG02npTqXQX0VT8L+zI2PLhs58Up3yX5MJWlTKIVqkbcWPM
-         8BaoYxiLEzD5YwX7n4rhqZtF5xzWAbqL4gDpNWqD9da2UvcLzNB/ffE9EvW8tF4MqPES
-         W37Q==
-X-Gm-Message-State: ALoCoQnxXvgcwgMx3MSIhBsj6UEM3mOws2MvrmwtKs5xtWdHx1wIpDtAypG8LeP8gDyl1VsTDdIn
-X-Received: by 10.182.224.169 with SMTP id rd9mr14111822obc.41.1424741516367;
-        Mon, 23 Feb 2015 17:31:56 -0800 (PST)
-Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id kt5si6689893qcb.3.2015.02.23.17.31.55
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=yd/cqVGKdnQusOA9HEeutC50wBF6UrOebyAd5Uw3gdk=;
+        b=jFu8D6Be0y7zORs6ibX7NpIemrZ5eancFIHAyEA/v4FO4D6puO2c660cL/Gu89sGmq
+         PsGd6DMuCOVJwFCJl0a3lq28JPrtbKl4cc5//xw+8TQeYja0v3UQFQi+2ro2zboQaqXU
+         X1pVE6EnhFgmTLRViFfD2794pWqBiUIJRuxeoHmwPqinp5vUapIbLZo+/ynTzgb+99/3
+         ScpKR7htjGogK5TyEV8h8QCPn5hB/zyuddXufD8LttlssGt1X7bFIm4hd3o+v3cp/JMO
+         bQwkJI625DHOndPyu3LHX+pVWqKwYCPEr/Re2arVMKMBC01loFcbs5jLKPAidSztzW2H
+         6CZA==
+X-Gm-Message-State: ALoCoQk2Se5yWIkXna6WLVTNvazn1muCbcyCAJFLwWXeO2lUXjF/PPG5fRhSPtLTZUcY4DbB5N3L
+X-Received: by 10.52.244.198 with SMTP id xi6mr15050068vdc.0.1424744108274;
+        Mon, 23 Feb 2015 18:15:08 -0800 (PST)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id q2si6563905qcn.2.2015.02.23.18.15.07
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 23 Feb 2015 17:31:56 -0800 (PST)
+        Mon, 23 Feb 2015 18:15:08 -0800 (PST)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id HOAcD5yo.1; Mon, 23 Feb 2015 17:31:56 -0800
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id 26nBzPrk.1; Mon, 23 Feb 2015 18:15:08 -0800
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 1C596220F11; Mon, 23 Feb 2015 17:31:55 -0800 (PST)
+        id C5AD2220728; Mon, 23 Feb 2015 18:15:06 -0800 (PST)
 From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Andrew Bresticker <abrestic@chromium.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Govindraj Raja <govindraj.raja@imgtec.com>
-Subject: [PATCH 5/5] MIPS: pistachio: Add an initial defconfig
-Date:   Mon, 23 Feb 2015 17:31:47 -0800
-Message-Id: <1424741507-8882-6-git-send-email-abrestic@chromium.org>
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 0/2] pinctrl: Support for IMG Pistachio
+Date:   Mon, 23 Feb 2015 18:15:02 -0800
+Message-Id: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
-In-Reply-To: <1424741507-8882-1-git-send-email-abrestic@chromium.org>
-References: <1424741507-8882-1-git-send-email-abrestic@chromium.org>
 Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45909
+X-archive-position: 45910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,359 +61,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Govindraj Raja <govindraj.raja@imgtec.com>
+This series adds support for the pin and GPIO controllers on the IMG
+Pistachio SoC.  Pistachio's pin controller manages 99 pins, 90 of
+which are MFIOs which can be muxed between multiple functions or used
+as GPIOs.  The GPIO control for the 90 MFIOs is broken up into banks
+of 16.  While this driver supports only Pistachio, it should hopefully
+be easy to extend it to support future IMG SoCs.
 
-Add a defconfig for Pistachio which enables drivers for all the
-currently supported peripherals on the SoC.
+Test on an IMG Pistachio BuB.  Based on 4.0-rc1 + my series adding
+Pistachio platform support [1], which introduces the MACH_PISTACHIO
+Kconfig symbol.  A branch with this series and the dependent patches
+is available at [2].  I'd like this to go through the MIPS tree with
+Linus'/Alex's ACKs if possible.
 
-Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
-Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
----
- arch/mips/configs/pistachio_defconfig | 336 ++++++++++++++++++++++++++++++++++
- 1 file changed, 336 insertions(+)
- create mode 100644 arch/mips/configs/pistachio_defconfig
+Cc: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc: James Hartley <james.hartley@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
 
-diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
-new file mode 100644
-index 0000000..f22e92e
---- /dev/null
-+++ b/arch/mips/configs/pistachio_defconfig
-@@ -0,0 +1,336 @@
-+CONFIG_MACH_PISTACHIO=y
-+CONFIG_MIPS_MT_SMP=y
-+CONFIG_MIPS_CPS=y
-+# CONFIG_COMPACTION is not set
-+CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
-+CONFIG_ZSMALLOC=y
-+CONFIG_NR_CPUS=4
-+CONFIG_PREEMPT_VOLUNTARY=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_DEFAULT_HOSTNAME="localhost"
-+CONFIG_SYSVIPC=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=m
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=18
-+CONFIG_CGROUPS=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CGROUP_SCHED=y
-+CONFIG_CFS_BANDWIDTH=y
-+CONFIG_NAMESPACES=y
-+CONFIG_USER_NS=y
-+CONFIG_BLK_DEV_INITRD=y
-+# CONFIG_RD_BZIP2 is not set
-+# CONFIG_RD_LZMA is not set
-+# CONFIG_RD_LZO is not set
-+# CONFIG_RD_LZ4 is not set
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_PROFILING=y
-+CONFIG_CC_STACKPROTECTOR_STRONG=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_PM_DEBUG=y
-+CONFIG_PM_ADVANCED_DEBUG=y
-+CONFIG_CPU_IDLE=y
-+# CONFIG_MIPS_CPS_CPUIDLE is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_NET_KEY=m
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_IP_MROUTE=y
-+CONFIG_IP_PIMSM_V1=y
-+CONFIG_IP_PIMSM_V2=y
-+CONFIG_SYN_COOKIES=y
-+CONFIG_INET_AH=m
-+CONFIG_INET_ESP=m
-+CONFIG_INET_IPCOMP=m
-+CONFIG_INET_XFRM_MODE_TRANSPORT=m
-+CONFIG_INET_XFRM_MODE_TUNNEL=m
-+CONFIG_INET_XFRM_MODE_BEET=m
-+# CONFIG_INET_DIAG is not set
-+CONFIG_TCP_CONG_ADVANCED=y
-+# CONFIG_TCP_CONG_BIC is not set
-+# CONFIG_TCP_CONG_WESTWOOD is not set
-+# CONFIG_TCP_CONG_HTCP is not set
-+CONFIG_TCP_CONG_LP=m
-+CONFIG_TCP_MD5SIG=y
-+CONFIG_IPV6=y
-+CONFIG_INET6_AH=m
-+CONFIG_INET6_ESP=m
-+CONFIG_INET6_XFRM_MODE_TRANSPORT=m
-+CONFIG_INET6_XFRM_MODE_TUNNEL=m
-+CONFIG_INET6_XFRM_MODE_BEET=m
-+CONFIG_IPV6_SIT=m
-+CONFIG_NETWORK_SECMARK=y
-+CONFIG_NETFILTER=y
-+# CONFIG_BRIDGE_NETFILTER is not set
-+CONFIG_NF_CONNTRACK=y
-+CONFIG_NF_CT_NETLINK=y
-+CONFIG_NETFILTER_XT_MARK=m
-+CONFIG_NETFILTER_XT_TARGET_CLASSIFY=y
-+CONFIG_NETFILTER_XT_TARGET_DSCP=y
-+CONFIG_NETFILTER_XT_TARGET_NFLOG=y
-+CONFIG_NETFILTER_XT_TARGET_NFQUEUE=y
-+CONFIG_NETFILTER_XT_TARGET_SECMARK=y
-+CONFIG_NETFILTER_XT_TARGET_TCPMSS=m
-+CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
-+CONFIG_NETFILTER_XT_MATCH_DSCP=y
-+CONFIG_NETFILTER_XT_MATCH_POLICY=y
-+CONFIG_NETFILTER_XT_MATCH_STATE=y
-+CONFIG_NF_CONNTRACK_IPV4=y
-+CONFIG_NF_NAT_IPV4=m
-+CONFIG_IP_NF_IPTABLES=y
-+CONFIG_IP_NF_FILTER=y
-+CONFIG_IP_NF_TARGET_REJECT=y
-+CONFIG_IP_NF_MANGLE=y
-+CONFIG_NF_CONNTRACK_IPV6=m
-+CONFIG_NF_NAT_IPV6=m
-+CONFIG_IP6_NF_IPTABLES=m
-+CONFIG_IP6_NF_MATCH_IPV6HEADER=m
-+CONFIG_IP6_NF_FILTER=m
-+CONFIG_IP6_NF_TARGET_REJECT=m
-+CONFIG_IP6_NF_MANGLE=m
-+CONFIG_BRIDGE=m
-+CONFIG_VLAN_8021Q=m
-+CONFIG_NET_SCHED=y
-+CONFIG_NET_SCH_HTB=m
-+CONFIG_NET_SCH_CODEL=m
-+CONFIG_NET_SCH_FQ_CODEL=m
-+CONFIG_NET_CLS_U32=m
-+CONFIG_CLS_U32_MARK=y
-+CONFIG_BT=m
-+CONFIG_BT_RFCOMM=m
-+CONFIG_BT_HCIBTUSB=m
-+CONFIG_BT_HCIBFUSB=m
-+CONFIG_BT_HCIVHCI=m
-+CONFIG_CFG80211=m
-+CONFIG_NL80211_TESTMODE=y
-+CONFIG_CFG80211_DEBUGFS=y
-+CONFIG_CFG80211_WEXT=y
-+CONFIG_MAC80211=m
-+CONFIG_MAC80211_LEDS=y
-+CONFIG_MAC80211_DEBUGFS=y
-+CONFIG_MAC80211_DEBUG_MENU=y
-+CONFIG_MAC80211_VERBOSE_DEBUG=y
-+CONFIG_RFKILL=y
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_DEBUG_DEVRES=y
-+CONFIG_CONNECTOR=y
-+CONFIG_MTD=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_MTD_SPI_NOR=y
-+CONFIG_MTD_UBI=y
-+CONFIG_MTD_UBI_BLOCK=y
-+CONFIG_ZRAM=m
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_SCSI=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_BLK_DEV_SR=m
-+CONFIG_SCSI_SPI_ATTRS=y
-+CONFIG_MD=y
-+CONFIG_BLK_DEV_DM=y
-+CONFIG_DM_CRYPT=y
-+CONFIG_DM_VERITY=y
-+CONFIG_NETDEVICES=y
-+CONFIG_TUN=m
-+CONFIG_VETH=m
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_MICROCHIP is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+CONFIG_STMMAC_ETH=y
-+# CONFIG_NET_VENDOR_VIA is not set
-+CONFIG_PPP=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_USB_PEGASUS=m
-+CONFIG_USB_RTL8150=m
-+CONFIG_USB_RTL8152=m
-+CONFIG_USB_NET_DM9601=m
-+CONFIG_USB_NET_SMSC75XX=m
-+CONFIG_USB_NET_SMSC95XX=m
-+CONFIG_USB_NET_MCS7830=m
-+# CONFIG_USB_NET_CDC_SUBSET is not set
-+# CONFIG_USB_NET_ZAURUS is not set
-+CONFIG_LIBERTAS_THINFIRM=m
-+CONFIG_USB_NET_RNDIS_WLAN=m
-+CONFIG_MAC80211_HWSIM=m
-+CONFIG_HOSTAP=m
-+CONFIG_HOSTAP_FIRMWARE=y
-+CONFIG_HOSTAP_FIRMWARE_NVRAM=y
-+CONFIG_RT2X00=m
-+CONFIG_RT2800USB=m
-+# CONFIG_INPUT_MOUSEDEV is not set
-+CONFIG_INPUT_EVDEV=y
-+# CONFIG_KEYBOARD_ATKBD is not set
-+CONFIG_KEYBOARD_GPIO=y
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+# CONFIG_VT is not set
-+# CONFIG_LEGACY_PTYS is not set
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_8250=y
-+# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_DW=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_TCG_TPM=y
-+CONFIG_I2C=y
-+CONFIG_I2C_CHARDEV=m
-+CONFIG_I2C_IMG=y
-+CONFIG_I2C_STUB=m
-+CONFIG_SPI=y
-+CONFIG_SPI_BITBANG=m
-+CONFIG_SPI_IMG_SPFI=y
-+CONFIG_SPI_SPIDEV=y
-+CONFIG_DEBUG_GPIO=y
-+CONFIG_GPIO_SYSFS=y
-+CONFIG_POWER_SUPPLY=y
-+CONFIG_THERMAL=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_CORE=y
-+CONFIG_IMGPDC_WDT=y
-+CONFIG_REGULATOR_FIXED_VOLTAGE=y
-+CONFIG_REGULATOR_GPIO=y
-+CONFIG_MEDIA_SUPPORT=y
-+CONFIG_MEDIA_RC_SUPPORT=y
-+# CONFIG_RC_DECODERS is not set
-+CONFIG_RC_DEVICES=y
-+CONFIG_IR_IMG=y
-+CONFIG_IR_IMG_NEC=y
-+CONFIG_IR_IMG_JVC=y
-+CONFIG_IR_IMG_SONY=y
-+CONFIG_IR_IMG_SHARP=y
-+CONFIG_IR_IMG_SANYO=y
-+CONFIG_IR_IMG_RC5=y
-+CONFIG_IR_IMG_RC6=y
-+# CONFIG_DVB_TUNER_DIB0070 is not set
-+# CONFIG_DVB_TUNER_DIB0090 is not set
-+CONFIG_FB=y
-+CONFIG_FB_MODE_HELPERS=y
-+CONFIG_BACKLIGHT_LCD_SUPPORT=y
-+# CONFIG_LCD_CLASS_DEVICE is not set
-+CONFIG_BACKLIGHT_CLASS_DEVICE=y
-+CONFIG_SOUND=y
-+CONFIG_SND=y
-+CONFIG_SND_SEQUENCER=m
-+CONFIG_SND_SEQ_DUMMY=m
-+CONFIG_SND_HRTIMER=m
-+CONFIG_SND_DYNAMIC_MINORS=y
-+# CONFIG_SND_SPI is not set
-+CONFIG_SND_USB_AUDIO=m
-+CONFIG_USB=y
-+CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
-+# CONFIG_USB_DEFAULT_PERSIST is not set
-+CONFIG_USB_MON=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+CONFIG_USB_ACM=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_USB_DWC2=y
-+CONFIG_USB_SERIAL=y
-+CONFIG_USB_SERIAL_GENERIC=y
-+CONFIG_USB_SERIAL_CP210X=m
-+CONFIG_USB_SERIAL_FTDI_SIO=m
-+CONFIG_USB_SERIAL_KEYSPAN=m
-+CONFIG_USB_SERIAL_PL2303=m
-+CONFIG_USB_SERIAL_OTI6858=m
-+CONFIG_USB_SERIAL_QUALCOMM=m
-+CONFIG_USB_SERIAL_SIERRAWIRELESS=m
-+CONFIG_USB_SERIAL_OPTION=m
-+CONFIG_MMC=y
-+CONFIG_MMC_BLOCK_MINORS=16
-+CONFIG_MMC_TEST=m
-+CONFIG_MMC_DW=y
-+CONFIG_MMC_DW_IDMAC=y
-+CONFIG_NEW_LEDS=y
-+CONFIG_LEDS_CLASS=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_DMADEVICES=y
-+CONFIG_IMG_MDC_DMA=y
-+CONFIG_STAGING=y
-+CONFIG_ASHMEM=y
-+# CONFIG_ANDROID_TIMED_OUTPUT is not set
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_MEMORY=y
-+CONFIG_IIO=y
-+CONFIG_CC10001_ADC=y
-+CONFIG_PWM=y
-+CONFIG_PWM_IMG=y
-+CONFIG_ANDROID=y
-+CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_POSIX_ACL=y
-+CONFIG_EXT4_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_FUSE_FS=m
-+CONFIG_ISO9660_FS=m
-+CONFIG_JOLIET=y
-+CONFIG_ZISOFS=y
-+CONFIG_UDF_FS=m
-+CONFIG_VFAT_FS=m
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+CONFIG_ECRYPT_FS=y
-+CONFIG_HFSPLUS_FS=m
-+CONFIG_UBIFS_FS=y
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_FILE_DIRECT=y
-+CONFIG_SQUASHFS_LZO=y
-+CONFIG_PSTORE=y
-+CONFIG_PSTORE_CONSOLE=y
-+CONFIG_PSTORE_RAM=y
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_NLS_DEFAULT="utf8"
-+CONFIG_NLS_CODEPAGE_437=m
-+CONFIG_NLS_ASCII=m
-+CONFIG_NLS_ISO8859_1=m
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0
-+CONFIG_LOCKUP_DETECTOR=y
-+CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
-+CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
-+# CONFIG_SCHED_DEBUG is not set
-+CONFIG_SCHEDSTATS=y
-+CONFIG_TIMER_STATS=y
-+CONFIG_DEBUG_SPINLOCK=y
-+CONFIG_DEBUG_CREDENTIALS=y
-+CONFIG_FUNCTION_TRACER=y
-+CONFIG_BLK_DEV_IO_TRACE=y
-+CONFIG_LKDTM=y
-+CONFIG_TEST_UDELAY=m
-+CONFIG_KEYS=y
-+CONFIG_SECURITY=y
-+CONFIG_SECURITY_NETWORK=y
-+CONFIG_SECURITY_YAMA=y
-+CONFIG_SECURITY_YAMA_STACKED=y
-+CONFIG_DEFAULT_SECURITY_DAC=y
-+CONFIG_CRYPTO_AUTHENC=y
-+CONFIG_CRYPTO_HMAC=y
-+CONFIG_CRYPTO_SHA1=y
-+CONFIG_CRYPTO_SHA256=y
-+CONFIG_CRYPTO_SHA512=m
-+CONFIG_CRYPTO_ARC4=y
-+CONFIG_CRYPTO_DES=y
-+# CONFIG_CRYPTO_ANSI_CPRNG is not set
-+CONFIG_CRC_CCITT=y
-+CONFIG_CRC_T10DIF=m
-+CONFIG_CRC7=m
-+CONFIG_LIBCRC32C=m
-+# CONFIG_XZ_DEC_X86 is not set
+[1] https://lkml.org/lkml/2015/2/23/694
+[2] https://github.com/abrestic/linux/tree/pistachio-pinctrl-v1
+
+Andrew Bresticker (2):
+  pinctrl: Add Pistachio SoC pin control binding document
+  pinctrl: Add Pistachio SoC pin control driver
+
+ .../bindings/pinctrl/img,pistachio-pinctrl.txt     |  217 +++
+ drivers/pinctrl/Kconfig                            |    6 +
+ drivers/pinctrl/Makefile                           |    1 +
+ drivers/pinctrl/pinctrl-pistachio.c                | 1513 ++++++++++++++++++++
+ 4 files changed, 1737 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
+ create mode 100644 drivers/pinctrl/pinctrl-pistachio.c
+
 -- 
 2.2.0.rc0.207.ga3a616c

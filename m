@@ -1,70 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Apr 2015 23:58:05 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:59593 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008039AbbDFV6D5Y7Fk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Apr 2015 23:58:03 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <kamal@canonical.com>)
-        id 1YfF1r-0006j1-6Y; Mon, 06 Apr 2015 21:57:59 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1YfF1o-0003pj-On; Mon, 06 Apr 2015 14:57:56 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.13.y-ckt stable] Patch "KVM: MIPS: Fix trace event to save PC directly" has been added to staging queue
-Date:   Mon,  6 Apr 2015 14:57:56 -0700
-Message-Id: <1428357476-14703-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.13
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46796
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Tue, 24 Feb 2015 11:46:20 +0000
+Subject: KVM: MIPS: Fix trace event to save PC directly
+Message-ID: <20150224114620.ObxupEWbNTkxdpNVU-iqcSQQVN-Vj6aap7npmE6Rf6Q@z>
 
-This is a note to let you know that I have just added a patch titled
+commit b3cffac04eca9af46e1e23560a8ee22b1bd36d43 upstream.
 
-    KVM: MIPS: Fix trace event to save PC directly
+Currently the guest exit trace event saves the VCPU pointer to the
+structure, and the guest PC is retrieved by dereferencing it when the
+event is printed rather than directly from the trace record. This isn't
+safe as the printing may occur long afterwards, after the PC has changed
+and potentially after the VCPU has been freed. Usually this results in
+the same (wrong) PC being printed for multiple trace events. It also
+isn't portable as userland has no way to access the VCPU data structure
+when interpreting the trace record itself.
 
-to the linux-3.13.y-queue branch of the 3.13.y-ckt extended stable tree 
-which can be found at:
+Lets save the actual PC in the structure so that the correct value is
+accessible later.
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
+Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kvm/trace.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-This patch is scheduled to be released in version 3.13.11-ckt19.
+diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
+index bc9e0f4..e51621e 100644
+--- a/arch/mips/kvm/trace.h
++++ b/arch/mips/kvm/trace.h
+@@ -26,18 +26,18 @@ TRACE_EVENT(kvm_exit,
+ 	    TP_PROTO(struct kvm_vcpu *vcpu, unsigned int reason),
+ 	    TP_ARGS(vcpu, reason),
+ 	    TP_STRUCT__entry(
+-			__field(struct kvm_vcpu *, vcpu)
++			__field(unsigned long, pc)
+ 			__field(unsigned int, reason)
+ 	    ),
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+ 	    TP_fast_assign(
+-			__entry->vcpu = vcpu;
++			__entry->pc = vcpu->arch.pc;
+ 			__entry->reason = reason;
+ 	    ),
 
-For more information about the 3.13.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+ 	    TP_printk("[%s]PC: 0x%08lx",
+ 		      kvm_mips_exit_types_str[__entry->reason],
+-		      __entry->vcpu->arch.pc)
++		      __entry->pc)
+ );
 
-Thanks.
--Kamal
-
-------
+ #endif /* _TRACE_KVM_H */
+--
+1.9.1

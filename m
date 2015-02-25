@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 04:56:52 +0100 (CET)
-Received: from mail-ig0-f201.google.com ([209.85.213.201]:59246 "EHLO
-        mail-ig0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007211AbbBYD4SaiR2U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 04:56:18 +0100
-Received: by mail-ig0-f201.google.com with SMTP id b16so719727igk.0
-        for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 19:56:13 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 04:57:08 +0100 (CET)
+Received: from mail-ob0-f201.google.com ([209.85.214.201]:47358 "EHLO
+        mail-ob0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007206AbbBYD4RdCrqX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 04:56:17 +0100
+Received: by mail-ob0-f201.google.com with SMTP id wo20so455389obc.0
+        for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 19:56:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=5lSp/g2f3kQaAI3Blnr1nEuseNfz3bWNMbfVqdIOEts=;
-        b=iKmqVuBhVaoUqDjf+Ozu5joT3Y9uWtIFljmP4rhEptOiDl8qPXwl3NYa0ArgWUXIi2
-         QuuLZIcEX+2sVSXkpfQRiUtqMyTKxcwefaUk/CX4Sw/ynZrIZAb8/KlrMmReVQ23k32v
-         7y3mQ+veqtgZGwIE56PxBm8iYxRAKwAOG5TVYlz1SUdjH/nncbKKsJryBoVxnpvq0Z9v
-         forYORVegTQ7mcWCwyhuh1K6STL/VIi9dT8lhnoZU4yBRcOIGQD+OBXBF/fU0QU/BeTK
-         ep4VOV2EiuLF4mEWIbuqskEC/UcdQEp8xYLMSmimH+6tHUYyxWpg7n0VhzKYD5C+ftvC
-         bp6A==
-X-Gm-Message-State: ALoCoQk73CE0HzGCt7n2YNyGWoNbchpwVhRTzvso+a5Jc0mUABqjI5TSvX2e7czqb1gxuTiGzHro
-X-Received: by 10.182.29.102 with SMTP id j6mr1199055obh.46.1424836573181;
-        Tue, 24 Feb 2015 19:56:13 -0800 (PST)
-Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id 26si416801yhb.6.2015.02.24.19.56.12
+        bh=EW79AifVHrHkP2nMlguaCKwBp8zKgigzGBdMlJAY3e4=;
+        b=KTq1CCsilxyT0PK2KPT9yxVjLVk45Yampvo8IsNFvG8wWgAPqCezuaDiU457g0DGu7
+         HXVXiNSUnkCEPuZqDyci2QAk9KtHYWqET5e111YRuwPsOvR97dtIeqMGqcCkLd4235cw
+         day1ZJM5yB7MITPkA/hnCow/OCjixUyUScYDFZyyCAF06GJ9M5llZnNhIvShPU0UYdQW
+         saUMcaxuQe/KlmSciRLQ4y4BcxQyr7HXVvOBdtUh8DjVgA+G7wBkqObLqdjDxu7c4owZ
+         Zs2R4VzTHGjw8QdRG26x0a7DuLRB1elvXJIoJpYBRVIJl1l9oxvbzgEKdWgEjQyskYJg
+         t9TA==
+X-Gm-Message-State: ALoCoQnUZRCC1S5TnfYmhjXg21XFWIJ3YLkg1OBoRJhj4D5lcX0oYeNXjv2LTquvPWQ234T3Fjsb
+X-Received: by 10.182.210.227 with SMTP id mx3mr1330599obc.27.1424836572051;
+        Tue, 24 Feb 2015 19:56:12 -0800 (PST)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id 3si1459555yhe.0.2015.02.24.19.56.11
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 24 Feb 2015 19:56:13 -0800 (PST)
+        Tue, 24 Feb 2015 19:56:12 -0800 (PST)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id TIESvrwf.1; Tue, 24 Feb 2015 19:56:13 -0800
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id huzMWDQb.1; Tue, 24 Feb 2015 19:56:11 -0800
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 0634F221075; Tue, 24 Feb 2015 19:56:11 -0800 (PST)
+        id D5271221173; Tue, 24 Feb 2015 19:56:10 -0800 (PST)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Mike Turquette <mturquette@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -36,11 +36,10 @@ Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         Andrew Bresticker <abrestic@chromium.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>
-Subject: [PATCH 4/7] clk: pistachio: Register core clocks
-Date:   Tue, 24 Feb 2015 19:56:04 -0800
-Message-Id: <1424836567-7252-5-git-send-email-abrestic@chromium.org>
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 2/7] clk: Add basic infrastructure for Pistachio clocks
+Date:   Tue, 24 Feb 2015 19:56:02 -0800
+Message-Id: <1424836567-7252-3-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1424836567-7252-1-git-send-email-abrestic@chromium.org>
 References: <1424836567-7252-1-git-send-email-abrestic@chromium.org>
@@ -48,7 +47,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45949
+X-archive-position: 45950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,37 +64,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Register the clocks generated by the core clock controller.
-This includes the 7 PLLs and clocks for the CPU, RPU co-processor,
-audio, WiFi, bluetooth, and several other peripherals.
+Add helpers for registering clocks and clock providers on Pistachio.
 
-The MIPS and PERIPH_SYS clocks must remain enabled at all times.
-
-Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- drivers/clk/pistachio/Makefile        |   1 +
- drivers/clk/pistachio/clk-pistachio.c | 199 ++++++++++++++++++++++++++++++++++
- 2 files changed, 200 insertions(+)
- create mode 100644 drivers/clk/pistachio/clk-pistachio.c
+ drivers/clk/Makefile           |   1 +
+ drivers/clk/pistachio/Makefile |   1 +
+ drivers/clk/pistachio/clk.c    | 140 +++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/pistachio/clk.h    | 124 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 266 insertions(+)
+ create mode 100644 drivers/clk/pistachio/Makefile
+ create mode 100644 drivers/clk/pistachio/clk.c
+ create mode 100644 drivers/clk/pistachio/clk.h
 
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index d478ceb..e43ff53 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -54,6 +54,7 @@ obj-$(CONFIG_ARCH_MMP)			+= mmp/
+ endif
+ obj-$(CONFIG_PLAT_ORION)		+= mvebu/
+ obj-$(CONFIG_ARCH_MXS)			+= mxs/
++obj-$(CONFIG_MACH_PISTACHIO)		+= pistachio/
+ obj-$(CONFIG_COMMON_CLK_PXA)		+= pxa/
+ obj-$(CONFIG_COMMON_CLK_QCOM)		+= qcom/
+ obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
 diff --git a/drivers/clk/pistachio/Makefile b/drivers/clk/pistachio/Makefile
-index a93490d..f1e151f 100644
---- a/drivers/clk/pistachio/Makefile
-+++ b/drivers/clk/pistachio/Makefile
-@@ -1,2 +1,3 @@
- obj-y	+= clk.o
- obj-y	+= clk-pll.o
-+obj-y	+= clk-pistachio.o
-diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
 new file mode 100644
-index 0000000..12a45e2
+index 0000000..fc216ad
 --- /dev/null
-+++ b/drivers/clk/pistachio/clk-pistachio.c
-@@ -0,0 +1,199 @@
++++ b/drivers/clk/pistachio/Makefile
+@@ -0,0 +1 @@
++obj-y	+= clk.o
+diff --git a/drivers/clk/pistachio/clk.c b/drivers/clk/pistachio/clk.c
+new file mode 100644
+index 0000000..85faa83
+--- /dev/null
++++ b/drivers/clk/pistachio/clk.c
+@@ -0,0 +1,140 @@
 +/*
-+ * Pistachio SoC clock controllers
-+ *
 + * Copyright (C) 2014 Google, Inc.
 + *
 + * This program is free software; you can redistribute it and/or modify it
@@ -104,193 +111,266 @@ index 0000000..12a45e2
 + */
 +
 +#include <linux/clk-provider.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
 +#include <linux/kernel.h>
 +#include <linux/of.h>
-+
-+#include <dt-bindings/clock/pistachio-clk.h>
++#include <linux/of_address.h>
++#include <linux/slab.h>
 +
 +#include "clk.h"
 +
-+static struct pistachio_gate pistachio_gates[] __initdata = {
-+	GATE(CLK_MIPS, "mips", "mips_div", 0x104, 0),
-+	GATE(CLK_AUDIO_IN, "audio_in", "audio_clk_in_gate", 0x104, 1),
-+	GATE(CLK_AUDIO, "audio", "audio_div", 0x104, 2),
-+	GATE(CLK_I2S, "i2s", "i2s_div", 0x104, 3),
-+	GATE(CLK_SPDIF, "spdif", "spdif_div", 0x104, 4),
-+	GATE(CLK_AUDIO_DAC, "audio_dac", "audio_dac_div", 0x104, 5),
-+	GATE(CLK_RPU_V, "rpu_v", "rpu_v_div", 0x104, 6),
-+	GATE(CLK_RPU_L, "rpu_l", "rpu_l_div", 0x104, 7),
-+	GATE(CLK_RPU_SLEEP, "rpu_sleep", "rpu_sleep_div", 0x104, 8),
-+	GATE(CLK_WIFI_PLL_GATE, "wifi_pll_gate", "wifi_pll_mux", 0x104, 9),
-+	GATE(CLK_RPU_CORE, "rpu_core", "rpu_core_div", 0x104, 10),
-+	GATE(CLK_WIFI_ADC, "wifi_adc", "wifi_div8_mux", 0x104, 11),
-+	GATE(CLK_WIFI_DAC, "wifi_dac", "wifi_div4_mux", 0x104, 12),
-+	GATE(CLK_USB_PHY, "usb_phy", "usb_phy_div", 0x104, 13),
-+	GATE(CLK_ENET_IN, "enet_in", "enet_clk_in_gate", 0x104, 14),
-+	GATE(CLK_ENET, "enet", "enet_div", 0x104, 15),
-+	GATE(CLK_UART0, "uart0", "uart0_div", 0x104, 16),
-+	GATE(CLK_UART1, "uart1", "uart1_div", 0x104, 17),
-+	GATE(CLK_PERIPH_SYS, "periph_sys", "sys_internal_div", 0x104, 18),
-+	GATE(CLK_SPI0, "spi0", "spi0_div", 0x104, 19),
-+	GATE(CLK_SPI1, "spi1", "spi1_div", 0x104, 20),
-+	GATE(CLK_EVENT_TIMER, "event_timer", "event_timer_div", 0x104, 21),
-+	GATE(CLK_AUX_ADC_INTERNAL, "aux_adc_internal", "sys_internal_div",
-+	     0x104, 22),
-+	GATE(CLK_AUX_ADC, "aux_adc", "aux_adc_div", 0x104, 23),
-+	GATE(CLK_SD_HOST, "sd_host", "sd_host_div", 0x104, 24),
-+	GATE(CLK_BT, "bt", "bt_div", 0x104, 25),
-+	GATE(CLK_BT_DIV4, "bt_div4", "bt_div4_div", 0x104, 26),
-+	GATE(CLK_BT_DIV8, "bt_div8", "bt_div8_div", 0x104, 27),
-+	GATE(CLK_BT_1MHZ, "bt_1mhz", "bt_1mhz_div", 0x104, 28),
-+};
-+
-+static struct pistachio_fixed_factor pistachio_ffs[] __initdata = {
-+	FIXED_FACTOR(CLK_WIFI_DIV4, "wifi_div4", "wifi_pll", 4),
-+	FIXED_FACTOR(CLK_WIFI_DIV8, "wifi_div8", "wifi_pll", 8),
-+};
-+
-+static struct pistachio_div pistachio_divs[] __initdata = {
-+	DIV(CLK_MIPS_INTERNAL_DIV, "mips_internal_div", "mips_pll_mux",
-+	    0x204, 2),
-+	DIV(CLK_MIPS_DIV, "mips_div", "mips_internal_div", 0x208, 8),
-+	DIV_F(CLK_AUDIO_DIV, "audio_div", "audio_mux",
-+		0x20c, 8, CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV_F(CLK_I2S_DIV, "i2s_div", "audio_pll_mux",
-+		0x210, 8, CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV_F(CLK_SPDIF_DIV, "spdif_div", "audio_pll_mux",
-+		0x214, 8, CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV_F(CLK_AUDIO_DAC_DIV, "audio_dac_div", "audio_pll_mux",
-+		0x218, 8, CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV(CLK_RPU_V_DIV, "rpu_v_div", "rpu_v_pll_mux", 0x21c, 2),
-+	DIV(CLK_RPU_L_DIV, "rpu_l_div", "rpu_l_mux", 0x220, 2),
-+	DIV(CLK_RPU_SLEEP_DIV, "rpu_sleep_div", "xtal", 0x224, 10),
-+	DIV(CLK_RPU_CORE_DIV, "rpu_core_div", "rpu_core_mux", 0x228, 3),
-+	DIV(CLK_USB_PHY_DIV, "usb_phy_div", "sys_internal_div", 0x22c, 6),
-+	DIV(CLK_ENET_DIV, "enet_div", "enet_mux", 0x230, 6),
-+	DIV_F(CLK_UART0_INTERNAL_DIV, "uart0_internal_div", "sys_pll_mux",
-+	      0x234, 3, CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV_F(CLK_UART0_DIV, "uart0_div", "uart0_internal_div", 0x238, 10,
-+	      CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV_F(CLK_UART1_INTERNAL_DIV, "uart1_internal_div", "sys_pll_mux",
-+	      0x23c, 3, CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV_F(CLK_UART1_DIV, "uart1_div", "uart1_internal_div", 0x240, 10,
-+	      CLK_DIVIDER_ROUND_CLOSEST),
-+	DIV(CLK_SYS_INTERNAL_DIV, "sys_internal_div", "sys_pll_mux", 0x244, 3),
-+	DIV(CLK_SPI0_INTERNAL_DIV, "spi0_internal_div", "sys_pll_mux",
-+	    0x248, 3),
-+	DIV(CLK_SPI0_DIV, "spi0_div", "spi0_internal_div", 0x24c, 7),
-+	DIV(CLK_SPI1_INTERNAL_DIV, "spi1_internal_div", "sys_pll_mux",
-+	    0x250, 3),
-+	DIV(CLK_SPI1_DIV, "spi1_div", "spi1_internal_div", 0x254, 7),
-+	DIV(CLK_EVENT_TIMER_INTERNAL_DIV, "event_timer_internal_div",
-+	    "event_timer_mux", 0x258, 3),
-+	DIV(CLK_EVENT_TIMER_DIV, "event_timer_div", "event_timer_internal_div",
-+	    0x25c, 12),
-+	DIV(CLK_AUX_ADC_INTERNAL_DIV, "aux_adc_internal_div",
-+	    "aux_adc_internal", 0x260, 3),
-+	DIV(CLK_AUX_ADC_DIV, "aux_adc_div", "aux_adc_internal_div", 0x264, 10),
-+	DIV(CLK_SD_HOST_DIV, "sd_host_div", "sd_host_mux", 0x268, 6),
-+	DIV(CLK_BT_DIV, "bt_div", "bt_pll_mux", 0x26c, 6),
-+	DIV(CLK_BT_DIV4_DIV, "bt_div4_div", "bt_pll_mux", 0x270, 6),
-+	DIV(CLK_BT_DIV8_DIV, "bt_div8_div", "bt_pll_mux", 0x274, 6),
-+	DIV(CLK_BT_1MHZ_INTERNAL_DIV, "bt_1mhz_internal_div", "bt_pll_mux",
-+	    0x278, 3),
-+	DIV(CLK_BT_1MHZ_DIV, "bt_1mhz_div", "bt_1mhz_internal_div", 0x27c, 10),
-+};
-+
-+PNAME(mux_xtal_audio_refclk) = { "xtal", "audio_clk_in_gate" };
-+PNAME(mux_xtal_mips) = { "xtal", "mips_pll" };
-+PNAME(mux_xtal_audio) = { "xtal", "audio_pll", "audio_in" };
-+PNAME(mux_audio_debug) = { "audio_pll_mux", "debug_mux" };
-+PNAME(mux_xtal_rpu_v) = { "xtal", "rpu_v_pll" };
-+PNAME(mux_xtal_rpu_l) = { "xtal", "rpu_l_pll" };
-+PNAME(mux_rpu_l_mips) = { "rpu_l_pll_mux", "mips_pll_mux" };
-+PNAME(mux_xtal_wifi) = { "xtal", "wifi_pll" };
-+PNAME(mux_xtal_wifi_div4) = { "xtal", "wifi_div4" };
-+PNAME(mux_xtal_wifi_div8) = { "xtal", "wifi_div8" };
-+PNAME(mux_wifi_div4_rpu_l) = { "wifi_pll_gate", "wifi_div4_mux",
-+			       "rpu_l_pll_mux" };
-+PNAME(mux_xtal_sys) = { "xtal", "sys_pll" };
-+PNAME(mux_sys_enet) = { "sys_internal_div", "enet_in" };
-+PNAME(mux_audio_sys) = { "audio_pll_mux", "sys_internal_div" };
-+PNAME(mux_sys_bt) = { "sys_internal_div", "bt_pll_mux" };
-+PNAME(mux_xtal_bt) = { "xtal", "bt_pll" };
-+
-+static struct pistachio_mux pistachio_muxes[] __initdata = {
-+	MUX(CLK_AUDIO_REF_MUX, "audio_refclk_mux", mux_xtal_audio_refclk,
-+	    0x200, 0),
-+	MUX(CLK_MIPS_PLL_MUX, "mips_pll_mux", mux_xtal_mips, 0x200, 1),
-+	MUX(CLK_AUDIO_PLL_MUX, "audio_pll_mux", mux_xtal_audio, 0x200, 2),
-+	MUX(CLK_AUDIO_MUX, "audio_mux", mux_audio_debug, 0x200, 4),
-+	MUX(CLK_RPU_V_PLL_MUX, "rpu_v_pll_mux", mux_xtal_rpu_v, 0x200, 5),
-+	MUX(CLK_RPU_L_PLL_MUX, "rpu_l_pll_mux", mux_xtal_rpu_l, 0x200, 6),
-+	MUX(CLK_RPU_L_MUX, "rpu_l_mux", mux_rpu_l_mips, 0x200, 7),
-+	MUX(CLK_WIFI_PLL_MUX, "wifi_pll_mux", mux_xtal_wifi, 0x200, 8),
-+	MUX(CLK_WIFI_DIV4_MUX, "wifi_div4_mux", mux_xtal_wifi_div4, 0x200, 9),
-+	MUX(CLK_WIFI_DIV8_MUX, "wifi_div8_mux", mux_xtal_wifi_div8, 0x200, 10),
-+	MUX(CLK_RPU_CORE_MUX, "rpu_core_mux", mux_wifi_div4_rpu_l, 0x200, 11),
-+	MUX(CLK_SYS_PLL_MUX, "sys_pll_mux", mux_xtal_sys, 0x200, 13),
-+	MUX(CLK_ENET_MUX, "enet_mux", mux_sys_enet, 0x200, 14),
-+	MUX(CLK_EVENT_TIMER_MUX, "event_timer_mux", mux_audio_sys, 0x200, 15),
-+	MUX(CLK_SD_HOST_MUX, "sd_host_mux", mux_sys_bt, 0x200, 16),
-+	MUX(CLK_BT_PLL_MUX, "bt_pll_mux", mux_xtal_bt, 0x200, 17),
-+};
-+
-+static struct pistachio_pll pistachio_plls[] __initdata = {
-+	PLL_FIXED(CLK_MIPS_PLL, "mips_pll", "xtal", PLL_GF40LP_LAINT, 0x0),
-+	PLL_FIXED(CLK_AUDIO_PLL, "audio_pll", "audio_refclk_mux",
-+		  PLL_GF40LP_FRAC, 0xc),
-+	PLL_FIXED(CLK_RPU_V_PLL, "rpu_v_pll", "xtal", PLL_GF40LP_LAINT, 0x20),
-+	PLL_FIXED(CLK_RPU_L_PLL, "rpu_l_pll", "xtal", PLL_GF40LP_LAINT, 0x2c),
-+	PLL_FIXED(CLK_SYS_PLL, "sys_pll", "xtal", PLL_GF40LP_FRAC, 0x38),
-+	PLL_FIXED(CLK_WIFI_PLL, "wifi_pll", "xtal", PLL_GF40LP_FRAC, 0x4c),
-+	PLL_FIXED(CLK_BT_PLL, "bt_pll", "xtal", PLL_GF40LP_LAINT, 0x60),
-+};
-+
-+PNAME(mux_debug) = { "mips_pll_mux", "rpu_v_pll_mux",
-+		     "rpu_l_pll_mux", "sys_pll_mux",
-+		     "wifi_pll_mux", "bt_pll_mux" };
-+static u32 mux_debug_idx[] = { 0x0, 0x1, 0x2, 0x4, 0x8, 0x10 };
-+
-+static unsigned int pistachio_critical_clks[] __initdata = {
-+	CLK_MIPS,
-+	CLK_PERIPH_SYS,
-+};
-+
-+static void __init pistachio_clk_init(struct device_node *np)
++struct pistachio_clk_provider *
++pistachio_clk_alloc_provider(struct device_node *node, unsigned int num_clks)
 +{
 +	struct pistachio_clk_provider *p;
-+	struct clk *debug_clk;
 +
-+	p = pistachio_clk_alloc_provider(np, CLK_NR_CLKS);
++	p = kzalloc(sizeof(*p), GFP_KERNEL);
 +	if (!p)
-+		return;
++		return p;
 +
-+	pistachio_clk_register_pll(p, pistachio_plls,
-+				   ARRAY_SIZE(pistachio_plls));
-+	pistachio_clk_register_mux(p, pistachio_muxes,
-+				   ARRAY_SIZE(pistachio_muxes));
-+	pistachio_clk_register_div(p, pistachio_divs,
-+				   ARRAY_SIZE(pistachio_divs));
-+	pistachio_clk_register_fixed_factor(p, pistachio_ffs,
-+					    ARRAY_SIZE(pistachio_ffs));
-+	pistachio_clk_register_gate(p, pistachio_gates,
-+				    ARRAY_SIZE(pistachio_gates));
++	p->clk_data.clks = kcalloc(num_clks, sizeof(struct clk *), GFP_KERNEL);
++	if (!p->clk_data.clks)
++		goto free_provider;
++	p->clk_data.clk_num = num_clks;
++	p->node = node;
++	p->base = of_iomap(node, 0);
++	if (!p->base) {
++		pr_err("Failed to map clock provider registers\n");
++		goto free_clks;
++	}
 +
-+	debug_clk = clk_register_mux_table(NULL, "debug_mux", mux_debug,
-+					   ARRAY_SIZE(mux_debug),
-+					   CLK_SET_RATE_NO_REPARENT,
-+					   p->base + 0x200, 18, 0x1f, 0,
-+					   mux_debug_idx, NULL);
-+	p->clk_data.clks[CLK_DEBUG_MUX] = debug_clk;
++	return p;
 +
-+	pistachio_clk_register_provider(p);
-+
-+	pistachio_clk_force_enable(p, pistachio_critical_clks,
-+				   ARRAY_SIZE(pistachio_critical_clks));
++free_clks:
++	kfree(p->clk_data.clks);
++free_provider:
++	kfree(p);
++	return NULL;
 +}
-+CLK_OF_DECLARE(pistachio_clk, "img,pistachio-clk", pistachio_clk_init);
++
++void pistachio_clk_register_provider(struct pistachio_clk_provider *p)
++{
++	unsigned int i;
++
++	for (i = 0; i < p->clk_data.clk_num; i++) {
++		if (IS_ERR(p->clk_data.clks[i]))
++			pr_warn("Failed to register clock %d: %ld\n", i,
++				PTR_ERR(p->clk_data.clks[i]));
++	}
++
++	of_clk_add_provider(p->node, of_clk_src_onecell_get, &p->clk_data);
++}
++
++void pistachio_clk_register_gate(struct pistachio_clk_provider *p,
++				 struct pistachio_gate *gate,
++				 unsigned int num)
++{
++	struct clk *clk;
++	unsigned int i;
++
++	for (i = 0; i < num; i++) {
++		clk = clk_register_gate(NULL, gate[i].name, gate[i].parent,
++					CLK_SET_RATE_PARENT,
++					p->base + gate[i].reg, gate[i].shift,
++					0, NULL);
++		p->clk_data.clks[gate[i].id] = clk;
++	}
++}
++
++void pistachio_clk_register_mux(struct pistachio_clk_provider *p,
++				struct pistachio_mux *mux,
++				unsigned int num)
++{
++	struct clk *clk;
++	unsigned int i;
++
++	for (i = 0; i < num; i++) {
++		clk = clk_register_mux(NULL, mux[i].name, mux[i].parents,
++				       mux[i].num_parents,
++				       CLK_SET_RATE_NO_REPARENT,
++				       p->base + mux[i].reg, mux[i].shift,
++				       get_count_order(mux[i].num_parents),
++				       0, NULL);
++		p->clk_data.clks[mux[i].id] = clk;
++	}
++}
++
++void pistachio_clk_register_div(struct pistachio_clk_provider *p,
++				struct pistachio_div *div,
++				unsigned int num)
++{
++	struct clk *clk;
++	unsigned int i;
++
++	for (i = 0; i < num; i++) {
++		clk = clk_register_divider(NULL, div[i].name, div[i].parent,
++					   0, p->base + div[i].reg, 0,
++					   div[i].width, div[i].div_flags,
++					   NULL);
++		p->clk_data.clks[div[i].id] = clk;
++	}
++}
++
++void pistachio_clk_register_fixed_factor(struct pistachio_clk_provider *p,
++					 struct pistachio_fixed_factor *ff,
++					 unsigned int num)
++{
++	struct clk *clk;
++	unsigned int i;
++
++	for (i = 0; i < num; i++) {
++		clk = clk_register_fixed_factor(NULL, ff[i].name, ff[i].parent,
++						0, 1, ff[i].div);
++		p->clk_data.clks[ff[i].id] = clk;
++	}
++}
++
++void pistachio_clk_force_enable(struct pistachio_clk_provider *p,
++				unsigned int *clk_ids, unsigned int num)
++{
++	unsigned int i;
++	int err;
++
++	for (i = 0; i < num; i++) {
++		struct clk *clk = p->clk_data.clks[clk_ids[i]];
++
++		if (IS_ERR(clk))
++			continue;
++
++		err = clk_prepare_enable(clk);
++		if (err)
++			pr_err("Failed to enable clock %s: %d\n",
++			       __clk_get_name(clk), err);
++	}
++}
+diff --git a/drivers/clk/pistachio/clk.h b/drivers/clk/pistachio/clk.h
+new file mode 100644
+index 0000000..e735107
+--- /dev/null
++++ b/drivers/clk/pistachio/clk.h
+@@ -0,0 +1,124 @@
++/*
++ * Copyright (C) 2014 Google, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ */
++
++#ifndef __PISTACHIO_CLK_H
++#define __PISTACHIO_CLK_H
++
++#include <linux/clk-provider.h>
++
++struct pistachio_gate {
++	unsigned int id;
++	unsigned long reg;
++	unsigned int shift;
++	const char *name;
++	const char *parent;
++};
++
++#define GATE(_id, _name, _pname, _reg, _shift)	\
++	{					\
++		.id	= _id,			\
++		.reg	= _reg,			\
++		.shift	= _shift,		\
++		.name	= _name,		\
++		.parent = _pname,		\
++	}
++
++struct pistachio_mux {
++	unsigned int id;
++	unsigned long reg;
++	unsigned int shift;
++	unsigned int num_parents;
++	const char *name;
++	const char **parents;
++};
++
++#define PNAME(x) static const char *x[] __initconst
++
++#define MUX(_id, _name, _pnames, _reg, _shift)			\
++	{							\
++		.id		= _id,				\
++		.reg		= _reg,				\
++		.shift		= _shift,			\
++		.name		= _name,			\
++		.parents	= _pnames,			\
++		.num_parents	= ARRAY_SIZE(_pnames)		\
++	}
++
++
++struct pistachio_div {
++	unsigned int id;
++	unsigned long reg;
++	unsigned int width;
++	unsigned int div_flags;
++	const char *name;
++	const char *parent;
++};
++
++#define DIV(_id, _name, _pname, _reg, _width)			\
++	{							\
++		.id		= _id,				\
++		.reg		= _reg,				\
++		.width		= _width,			\
++		.div_flags	= 0,				\
++		.name		= _name,			\
++		.parent		= _pname,			\
++	}
++
++#define DIV_F(_id, _name, _pname, _reg, _width, _div_flags)	\
++	{							\
++		.id		= _id,				\
++		.reg		= _reg,				\
++		.width		= _width,			\
++		.div_flags	= _div_flags,			\
++		.name		= _name,			\
++		.parent		= _pname,			\
++	}
++
++struct pistachio_fixed_factor {
++	unsigned int id;
++	unsigned int div;
++	const char *name;
++	const char *parent;
++};
++
++#define FIXED_FACTOR(_id, _name, _pname, _div)			\
++	{							\
++		.id		= _id,				\
++		.div		= _div,				\
++		.name		= _name,			\
++		.parent		= _pname,			\
++	}
++
++struct pistachio_clk_provider {
++	struct device_node *node;
++	void __iomem *base;
++	struct clk_onecell_data clk_data;
++};
++
++extern struct pistachio_clk_provider *
++pistachio_clk_alloc_provider(struct device_node *node, unsigned int num_clks);
++extern void pistachio_clk_register_provider(struct pistachio_clk_provider *p);
++
++extern void pistachio_clk_register_gate(struct pistachio_clk_provider *p,
++					struct pistachio_gate *gate,
++					unsigned int num);
++extern void pistachio_clk_register_mux(struct pistachio_clk_provider *p,
++				       struct pistachio_mux *mux,
++				       unsigned int num);
++extern void pistachio_clk_register_div(struct pistachio_clk_provider *p,
++				       struct pistachio_div *div,
++				       unsigned int num);
++extern void
++pistachio_clk_register_fixed_factor(struct pistachio_clk_provider *p,
++				    struct pistachio_fixed_factor *ff,
++				    unsigned int num);
++
++extern void pistachio_clk_force_enable(struct pistachio_clk_provider *p,
++				       unsigned int *clk_ids, unsigned int num);
++
++#endif
 -- 
 2.2.0.rc0.207.ga3a616c

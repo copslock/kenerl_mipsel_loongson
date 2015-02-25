@@ -1,34 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 22:48:13 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:46265 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007274AbbBYVsKiyW3V convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 22:48:10 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id 9CFD81538A; Wed, 25 Feb 2015 21:48:04 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Paul Martin <paul.martin@codethink.co.uk>,
-        linux-mips@linux-mips.org
-Subject: Re: 4.0-rc1 breakage in FPE?
-References: <20150225182048.GC31062@paulmartin.codethink.co.uk>
-        <yw1xh9u97k5c.fsf@unicorn.mansr.com> <54EE4134.2050501@gmail.com>
-Date:   Wed, 25 Feb 2015 21:48:04 +0000
-In-Reply-To: <54EE4134.2050501@gmail.com> (David Daney's message of "Wed, 25
-        Feb 2015 13:40:04 -0800")
-Message-ID: <yw1xd24x7je3.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 00:31:13 +0100 (CET)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:60253 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006992AbbBYXbLojb2s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 00:31:11 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id AD8CD56F7C0;
+        Thu, 26 Feb 2015 01:31:11 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id jLlTAoCkgANr; Thu, 26 Feb 2015 01:31:06 +0200 (EET)
+Received: from amd-fx-6350.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id B5CB85BC017;
+        Thu, 26 Feb 2015 01:31:06 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: mark prom_free_prom_memory() everywhere with __init
+Date:   Thu, 26 Feb 2015 01:31:04 +0200
+Message-Id: <1424907064-31621-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.2.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45979
+X-archive-position: 45980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,72 +42,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David Daney <ddaney.cavm@gmail.com> writes:
+Mark prom_free_prom_memory with() everywhere with __init.
 
-> On 02/25/2015 01:31 PM, Måns Rullgård wrote:
->> Paul Martin <paul.martin@codethink.co.uk> writes:
->>
->>> Some change between 3.19 and 4.0-rc1 has broken the FPE such that some
->>> code running on an Octeon II is subtly not working.
->>>
->
-> Can you say where your userspace comes from, so we can try to
-> reproduce the issue?
->
->>> eg.
->>>
->>>    $ echo "1 2" | gawk '{ print $1 }'
->>>    1 2
->>>
->>> which should output (and does output on 3.19)
->>>
->>>    $ echo "1 2" | gawk '{ print $1 }'
->>>    1
->>>
->>> I'm going to try bisecting this over the next few days.
->>
->> Are you running a 32-bit userland?  If so, enabling
->> MIPS_O32_FP64_SUPPORT should fix this.
->
-> ??
->
-> 32-bit userland (Debian for instance) typically shouldn't need special
-> "Exprimental" config options enabled.
+On OCTEON the function is non-trivial and we can potentially even
+save some memory.
 
-Indeed, it should not.  Someone made a mistake.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/cavium-octeon/setup.c  | 2 +-
+ arch/mips/lantiq/prom.c          | 2 +-
+ arch/mips/mti-sead3/sead3-init.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-> If we can identify the offending patch, we should revert it.
-
-The offending patch is 46490b57 "MIPS: kernel: elf: Improve the overall
-ABI and FPU mode checks"
-
-There is no need for a full revert.  This is enough to make things work:
-
-diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
-index d2c09f6..57f0353 100644
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -148,9 +148,6 @@ int arch_check_elf(void *_ehdr, bool has_interpreter,
- 	struct mode_req prog_req, interp_req;
- 	int fp_abi, interp_fp_abi, abi0, abi1, max_abi;
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index a42110e..d0fa0bc 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -1043,7 +1043,7 @@ int prom_putchar(char c)
+ }
+ EXPORT_SYMBOL(prom_putchar);
  
--	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
--		return 0;
--
- 	fp_abi = get_fp_abi(state->fp_abi);
+-void prom_free_prom_memory(void)
++void __init prom_free_prom_memory(void)
+ {
+ 	if (CAVIUM_OCTEON_DCACHE_PREFETCH_WAR) {
+ 		/* Check for presence of Core-14449 fix.  */
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 39ab3e7..0db099e 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -41,7 +41,7 @@ int ltq_soc_type(void)
+ 	return soc_info.type;
+ }
  
- 	if (has_interpreter) {
-@@ -245,9 +242,6 @@ void mips_set_personality_fp(struct arch_elf_state *state)
- 	 * not be worried about N32/N64 binaries.
- 	 */
+-void prom_free_prom_memory(void)
++void __init prom_free_prom_memory(void)
+ {
+ }
  
--	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
--		return;
--
- 	switch (state->overall_fp_mode) {
- 	case FP_FRE:
- 		set_thread_fp_mode(1, 0);
-
+diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
+index bfbd17b..3572ea3 100644
+--- a/arch/mips/mti-sead3/sead3-init.c
++++ b/arch/mips/mti-sead3/sead3-init.c
+@@ -147,6 +147,6 @@ void __init prom_init(void)
+ #endif
+ }
+ 
+-void prom_free_prom_memory(void)
++void __init prom_free_prom_memory(void)
+ {
+ }
 -- 
-Måns Rullgård
-mans@mansr.com
+2.2.0

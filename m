@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 04:57:08 +0100 (CET)
-Received: from mail-ob0-f201.google.com ([209.85.214.201]:47358 "EHLO
-        mail-ob0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007206AbbBYD4RdCrqX (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 04:57:27 +0100 (CET)
+Received: from mail-qg0-f73.google.com ([209.85.192.73]:40960 "EHLO
+        mail-qg0-f73.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007204AbbBYD4R3OjBl (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 04:56:17 +0100
-Received: by mail-ob0-f201.google.com with SMTP id wo20so455389obc.0
+Received: by mail-qg0-f73.google.com with SMTP id z60so218177qgd.0
         for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 19:56:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=EW79AifVHrHkP2nMlguaCKwBp8zKgigzGBdMlJAY3e4=;
-        b=KTq1CCsilxyT0PK2KPT9yxVjLVk45Yampvo8IsNFvG8wWgAPqCezuaDiU457g0DGu7
-         HXVXiNSUnkCEPuZqDyci2QAk9KtHYWqET5e111YRuwPsOvR97dtIeqMGqcCkLd4235cw
-         day1ZJM5yB7MITPkA/hnCow/OCjixUyUScYDFZyyCAF06GJ9M5llZnNhIvShPU0UYdQW
-         saUMcaxuQe/KlmSciRLQ4y4BcxQyr7HXVvOBdtUh8DjVgA+G7wBkqObLqdjDxu7c4owZ
-         Zs2R4VzTHGjw8QdRG26x0a7DuLRB1elvXJIoJpYBRVIJl1l9oxvbzgEKdWgEjQyskYJg
-         t9TA==
-X-Gm-Message-State: ALoCoQnUZRCC1S5TnfYmhjXg21XFWIJ3YLkg1OBoRJhj4D5lcX0oYeNXjv2LTquvPWQ234T3Fjsb
-X-Received: by 10.182.210.227 with SMTP id mx3mr1330599obc.27.1424836572051;
-        Tue, 24 Feb 2015 19:56:12 -0800 (PST)
-Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
-        by gmr-mx.google.com with ESMTPS id 3si1459555yhe.0.2015.02.24.19.56.11
+        bh=KXBm4VNWSjAuOnVNkXSoVeFmWkUX2kiMpw4OkAUSjQo=;
+        b=Fm+mbdAw4CX4d/TrTS3djW+KLJ/My4HZJjn6ggDmZF7IaNJQxvCKCH+aLYJMT/XF4Z
+         PT2Ag9yCY8ZsC6Tmht8Tf7h07sZE8eA4vHm3cdoU/FVjZ3J3zaXs9vQuswaUFHbu7Wdf
+         gQCzFXML6JiWLC391Ya1elurjrr/PgL+DRz89CxaNMyIYNw01l/BvMnvSEilY/eiRw+P
+         tdZf9m4TF0kKscN8+Ln06aY/ORhMOufHVZisaZt1aztegvb8FN7GvgX37vBFn9ha9/qb
+         wPh6inomsTbRXrErKxX1kFRN60pF/t40DZXZImldEELFD1i3tdbehSSH+lzEKgHZlaQI
+         QR9Q==
+X-Gm-Message-State: ALoCoQkGWzCDGn3dxgn3M8mEkDydEi7luJGRvnyHDdP4/U79YuVOeEliELfYhMYsago1qVOQ2l/v
+X-Received: by 10.236.209.33 with SMTP id r21mr1351025yho.6.1424836571814;
+        Tue, 24 Feb 2015 19:56:11 -0800 (PST)
+Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
+        by gmr-mx.google.com with ESMTPS id l42si1139272yhq.1.2015.02.24.19.56.10
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 24 Feb 2015 19:56:12 -0800 (PST)
+        Tue, 24 Feb 2015 19:56:11 -0800 (PST)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id huzMWDQb.1; Tue, 24 Feb 2015 19:56:11 -0800
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id IVGAzGn6.1; Tue, 24 Feb 2015 19:56:11 -0800
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id D5271221173; Tue, 24 Feb 2015 19:56:10 -0800 (PST)
+        id 428D5221075; Tue, 24 Feb 2015 19:56:10 -0800 (PST)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Mike Turquette <mturquette@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -36,10 +36,16 @@ Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         Andrew Bresticker <abrestic@chromium.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 2/7] clk: Add basic infrastructure for Pistachio clocks
-Date:   Tue, 24 Feb 2015 19:56:02 -0800
-Message-Id: <1424836567-7252-3-git-send-email-abrestic@chromium.org>
+        James Hogan <james.hogan@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Subject: [PATCH 1/7] clk: Add binding document for Pistachio clock controllers
+Date:   Tue, 24 Feb 2015 19:56:01 -0800
+Message-Id: <1424836567-7252-2-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1424836567-7252-1-git-send-email-abrestic@chromium.org>
 References: <1424836567-7252-1-git-send-email-abrestic@chromium.org>
@@ -47,7 +53,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45950
+X-archive-position: 45951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,44 +70,158 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add helpers for registering clocks and clock providers on Pistachio.
+Add a device-tree binding document describing the four clock
+controllers present on the IMG Pistachio SoC.
 
+Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Pawel Moll <pawel.moll@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+Cc: Kumar Gala <galak@codeaurora.org>
 ---
- drivers/clk/Makefile           |   1 +
- drivers/clk/pistachio/Makefile |   1 +
- drivers/clk/pistachio/clk.c    | 140 +++++++++++++++++++++++++++++++++++++++++
- drivers/clk/pistachio/clk.h    | 124 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 266 insertions(+)
- create mode 100644 drivers/clk/pistachio/Makefile
- create mode 100644 drivers/clk/pistachio/clk.c
- create mode 100644 drivers/clk/pistachio/clk.h
+ .../devicetree/bindings/clock/pistachio-clock.txt  | 123 ++++++++++++++
+ include/dt-bindings/clock/pistachio-clk.h          | 183 +++++++++++++++++++++
+ 2 files changed, 306 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/pistachio-clock.txt
+ create mode 100644 include/dt-bindings/clock/pistachio-clk.h
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index d478ceb..e43ff53 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -54,6 +54,7 @@ obj-$(CONFIG_ARCH_MMP)			+= mmp/
- endif
- obj-$(CONFIG_PLAT_ORION)		+= mvebu/
- obj-$(CONFIG_ARCH_MXS)			+= mxs/
-+obj-$(CONFIG_MACH_PISTACHIO)		+= pistachio/
- obj-$(CONFIG_COMMON_CLK_PXA)		+= pxa/
- obj-$(CONFIG_COMMON_CLK_QCOM)		+= qcom/
- obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
-diff --git a/drivers/clk/pistachio/Makefile b/drivers/clk/pistachio/Makefile
+diff --git a/Documentation/devicetree/bindings/clock/pistachio-clock.txt b/Documentation/devicetree/bindings/clock/pistachio-clock.txt
 new file mode 100644
-index 0000000..fc216ad
+index 0000000..868db49
 --- /dev/null
-+++ b/drivers/clk/pistachio/Makefile
-@@ -0,0 +1 @@
-+obj-y	+= clk.o
-diff --git a/drivers/clk/pistachio/clk.c b/drivers/clk/pistachio/clk.c
++++ b/Documentation/devicetree/bindings/clock/pistachio-clock.txt
+@@ -0,0 +1,123 @@
++Imagination Technologies Pistachio SoC clock controllers
++========================================================
++
++Pistachio has four clock controllers (core clock, peripheral clock, peripheral
++general control, and top general control) which are instantiated individually
++from the device-tree.
++
++External clocks:
++----------------
++
++There are three external inputs to the clock controllers which should be
++defined with the following clock-output-names:
++- "xtal": External 52Mhz oscillator (required)
++- "audio_clk_in": Alternate audio reference clock (optional)
++- "enet_clk_in": Alternate ethernet PHY clock (optional)
++
++Core clock controller:
++----------------------
++
++The core clock controller generates clocks for the CPU, RPU (WiFi + BT
++co-processor), audio, and several peripherals.
++
++Required properties:
++- compatible: Must be "img,pistachio-clk".
++- reg: Must contain the base address and length of the core clock controller.
++- #clock-cells: Must be 1.  The single cell is the clock identifier.
++  See dt-bindings/clock/pistachio-clk.h for the list of valid identifiers.
++- clocks: Must contain an entry for each clock in clock-names.
++- clock-names: Must include "xtal" (see "External clocks") and
++  "audio_clk_in_gate", "enet_clk_in_gate" which are generated by the
++  top-level general control.
++
++Example:
++	clk_core: clock-controller@18144000 {
++		compatible = "img,pistachio-clk";
++		reg = <0x18144000 0x800>;
++		clocks = <&xtal>, <&cr_top EXT_CLK_AUDIO_IN>,
++			 <&cr_top EXT_CLK_ENET_IN>;
++		clock-names = "xtal", "audio_clk_in_gate", "enet_clk_in_gate";
++
++		#clock-cells = <1>;
++	};
++
++Peripheral clock controller:
++----------------------------
++
++The peripheral clock controller generates clocks for the DDR, ROM, and other
++peripherals.  The peripheral system clock ("periph_sys") generated by the core
++clock controller is the input clock to the peripheral clock controller.
++
++Required properties:
++- compatible: Must be "img,pistachio-periph-clk".
++- reg: Must contain the base address and length of the peripheral clock
++  controller.
++- #clock-cells: Must be 1.  The single cell is the clock identifier.
++  See dt-bindings/clock/pistachio-clk.h for the list of valid identifiers.
++- clocks: Must contain an entry for each clock in clock-names.
++- clock-names: Must include "periph_sys", the peripheral system clock generated
++  by the core clock controller.
++
++Example:
++	clk_periph: clock-controller@18144800 {
++		compatible = "img,pistachio-clk-periph";
++		reg = <0x18144800 0x800>;
++		clocks = <&clk_core CLK_PERIPH_SYS>;
++		clock-names = "periph_sys";
++
++		#clock-cells = <1>;
++	};
++
++Peripheral general control:
++---------------------------
++
++The peripheral general control block generates system interface clocks and
++resets for various peripherals.  It also contains miscellaneous peripheral
++control registers.  The system clock ("sys") generated by the peripheral clock
++controller is the input clock to the system clock controller.
++
++Required properties:
++- compatible: Must include "img,pistachio-periph-cr" and "syscon".
++- reg: Must contain the base address and length of the peripheral general
++  control registers.
++- #clock-cells: Must be 1.  The single cell is the clock identifier.
++  See dt-bindings/clock/pistachio-clk.h for the list of valid identifiers.
++- clocks: Must contain an entry for each clock in clock-names.
++- clock-names: Must include "sys", the system clock generated by the peripheral
++  clock controller.
++
++Example:
++	cr_periph: syscon@18144800 {
++		compatible = "img,pistachio-cr-periph", "syscon";
++		reg = <0x18148000 0x1000>;
++		clocks = <&clock_periph PERIPH_CLK_PERIPH_SYS>;
++		clock-names = "sys";
++
++		#clock-cells = <1>;
++	};
++
++Top-level general control:
++--------------------------
++
++The top-level general control block contains miscellaneous control registers and
++gates for the external clocks "audio_clk_in" and "enet_clk_in".
++
++Required properties:
++- compatible: Must include "img,pistachio-cr-top" and "syscon".
++- reg: Must contain the base address and length of the top-level
++  control registers.
++- clocks: Must contain an entry for each clock in clock-names.
++- clock-names: Two optional clocks, "audio_clk_in" and "enet_clk_in" (see
++  "External clocks").
++- #clock-cells: Must be 1.  The single cell is the clock identifier.
++  See dt-bindings/clock/pistachio-clk.h for the list of valid identifiers.
++
++Example:
++	cr_top: syscon@18144800 {
++		compatible = "img,pistachio-cr-top", "syscon";
++		reg = <0x18149000 0x200>;
++		clocks = <&audio_refclk>, <&ext_enet_in>;
++		clock-names = "audio_clk_in", "enet_clk_in";
++
++		#clock-cells = <1>;
++	};
+diff --git a/include/dt-bindings/clock/pistachio-clk.h b/include/dt-bindings/clock/pistachio-clk.h
 new file mode 100644
-index 0000000..85faa83
+index 0000000..039f83f
 --- /dev/null
-+++ b/drivers/clk/pistachio/clk.c
-@@ -0,0 +1,140 @@
++++ b/include/dt-bindings/clock/pistachio-clk.h
+@@ -0,0 +1,183 @@
 +/*
 + * Copyright (C) 2014 Google, Inc.
 + *
@@ -110,267 +230,180 @@ index 0000000..85faa83
 + * version 2, as published by the Free Software Foundation.
 + */
 +
-+#include <linux/clk-provider.h>
-+#include <linux/kernel.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/slab.h>
++#ifndef _DT_BINDINGS_CLOCK_PISTACHIO_H
++#define _DT_BINDINGS_CLOCK_PISTACHIO_H
 +
-+#include "clk.h"
++/* PLLs */
++#define CLK_MIPS_PLL			0
++#define CLK_AUDIO_PLL			1
++#define CLK_RPU_V_PLL			2
++#define CLK_RPU_L_PLL			3
++#define CLK_SYS_PLL			4
++#define CLK_WIFI_PLL			5
++#define CLK_BT_PLL			6
 +
-+struct pistachio_clk_provider *
-+pistachio_clk_alloc_provider(struct device_node *node, unsigned int num_clks)
-+{
-+	struct pistachio_clk_provider *p;
++/* Fixed-factor clocks */
++#define CLK_WIFI_DIV4			16
++#define CLK_WIFI_DIV8			17
 +
-+	p = kzalloc(sizeof(*p), GFP_KERNEL);
-+	if (!p)
-+		return p;
++/* Gate clocks */
++#define CLK_MIPS			32
++#define CLK_AUDIO_IN			33
++#define CLK_AUDIO			34
++#define CLK_I2S				35
++#define CLK_SPDIF			36
++#define CLK_AUDIO_DAC			37
++#define CLK_RPU_V			38
++#define CLK_RPU_L			39
++#define CLK_RPU_SLEEP			40
++#define CLK_WIFI_PLL_GATE		41
++#define CLK_RPU_CORE			42
++#define CLK_WIFI_ADC			43
++#define CLK_WIFI_DAC			44
++#define CLK_USB_PHY			45
++#define CLK_ENET_IN			46
++#define CLK_ENET			47
++#define CLK_UART0			48
++#define CLK_UART1			49
++#define CLK_PERIPH_SYS			50
++#define CLK_SPI0			51
++#define CLK_SPI1			52
++#define CLK_EVENT_TIMER			53
++#define CLK_AUX_ADC_INTERNAL		54
++#define CLK_AUX_ADC			55
++#define CLK_SD_HOST			56
++#define CLK_BT				57
++#define CLK_BT_DIV4			58
++#define CLK_BT_DIV8			59
++#define CLK_BT_1MHZ			60
 +
-+	p->clk_data.clks = kcalloc(num_clks, sizeof(struct clk *), GFP_KERNEL);
-+	if (!p->clk_data.clks)
-+		goto free_provider;
-+	p->clk_data.clk_num = num_clks;
-+	p->node = node;
-+	p->base = of_iomap(node, 0);
-+	if (!p->base) {
-+		pr_err("Failed to map clock provider registers\n");
-+		goto free_clks;
-+	}
++/* Divider clocks */
++#define CLK_MIPS_INTERNAL_DIV		64
++#define CLK_MIPS_DIV			65
++#define CLK_AUDIO_DIV			66
++#define CLK_I2S_DIV			67
++#define CLK_SPDIF_DIV			68
++#define CLK_AUDIO_DAC_DIV		69
++#define CLK_RPU_V_DIV			70
++#define CLK_RPU_L_DIV			71
++#define CLK_RPU_SLEEP_DIV		72
++#define CLK_RPU_CORE_DIV		73
++#define CLK_USB_PHY_DIV			74
++#define CLK_ENET_DIV			75
++#define CLK_UART0_INTERNAL_DIV		76
++#define CLK_UART0_DIV			77
++#define CLK_UART1_INTERNAL_DIV		78
++#define CLK_UART1_DIV			79
++#define CLK_SYS_INTERNAL_DIV		80
++#define CLK_SPI0_INTERNAL_DIV		81
++#define CLK_SPI0_DIV			82
++#define CLK_SPI1_INTERNAL_DIV		83
++#define CLK_SPI1_DIV			84
++#define CLK_EVENT_TIMER_INTERNAL_DIV	85
++#define CLK_EVENT_TIMER_DIV		86
++#define CLK_AUX_ADC_INTERNAL_DIV	87
++#define CLK_AUX_ADC_DIV			88
++#define CLK_SD_HOST_DIV			89
++#define CLK_BT_DIV			90
++#define CLK_BT_DIV4_DIV			91
++#define CLK_BT_DIV8_DIV			92
++#define CLK_BT_1MHZ_INTERNAL_DIV	93
++#define CLK_BT_1MHZ_DIV			94
 +
-+	return p;
++/* Mux clocks */
++#define CLK_AUDIO_REF_MUX		96
++#define CLK_MIPS_PLL_MUX		97
++#define CLK_AUDIO_PLL_MUX		98
++#define CLK_AUDIO_MUX			99
++#define CLK_RPU_V_PLL_MUX		100
++#define CLK_RPU_L_PLL_MUX		101
++#define CLK_RPU_L_MUX			102
++#define CLK_WIFI_PLL_MUX		103
++#define CLK_WIFI_DIV4_MUX		104
++#define CLK_WIFI_DIV8_MUX		105
++#define CLK_RPU_CORE_MUX		106
++#define CLK_SYS_PLL_MUX			107
++#define CLK_ENET_MUX			108
++#define CLK_EVENT_TIMER_MUX		109
++#define CLK_SD_HOST_MUX			110
++#define CLK_BT_PLL_MUX			111
++#define CLK_DEBUG_MUX			112
 +
-+free_clks:
-+	kfree(p->clk_data.clks);
-+free_provider:
-+	kfree(p);
-+	return NULL;
-+}
++#define CLK_NR_CLKS			113
 +
-+void pistachio_clk_register_provider(struct pistachio_clk_provider *p)
-+{
-+	unsigned int i;
++/* Peripheral gate clocks */
++#define PERIPH_CLK_SYS			0
++#define PERIPH_CLK_SYS_BUS		1
++#define PERIPH_CLK_DDR			2
++#define PERIPH_CLK_ROM			3
++#define PERIPH_CLK_COUNTER_FAST		4
++#define PERIPH_CLK_COUNTER_SLOW		5
++#define PERIPH_CLK_IR			6
++#define PERIPH_CLK_WD			7
++#define PERIPH_CLK_PDM			8
++#define PERIPH_CLK_PWM			9
++#define PERIPH_CLK_I2C0			10
++#define PERIPH_CLK_I2C1			11
++#define PERIPH_CLK_I2C2			12
++#define PERIPH_CLK_I2C3			13
 +
-+	for (i = 0; i < p->clk_data.clk_num; i++) {
-+		if (IS_ERR(p->clk_data.clks[i]))
-+			pr_warn("Failed to register clock %d: %ld\n", i,
-+				PTR_ERR(p->clk_data.clks[i]));
-+	}
++/* Peripheral divider clocks */
++#define PERIPH_CLK_ROM_DIV		32
++#define PERIPH_CLK_COUNTER_FAST_DIV	33
++#define PERIPH_CLK_COUNTER_SLOW_PRE_DIV	34
++#define PERIPH_CLK_COUNTER_SLOW_DIV	35
++#define PERIPH_CLK_IR_PRE_DIV		36
++#define PERIPH_CLK_IR_DIV		37
++#define PERIPH_CLK_WD_PRE_DIV		38
++#define PERIPH_CLK_WD_DIV		39
++#define PERIPH_CLK_PDM_PRE_DIV		40
++#define PERIPH_CLK_PDM_DIV		41
++#define PERIPH_CLK_PWM_PRE_DIV		42
++#define PERIPH_CLK_PWM_DIV		43
++#define PERIPH_CLK_I2C0_PRE_DIV		44
++#define PERIPH_CLK_I2C0_DIV		45
++#define PERIPH_CLK_I2C1_PRE_DIV		46
++#define PERIPH_CLK_I2C1_DIV		47
++#define PERIPH_CLK_I2C2_PRE_DIV		48
++#define PERIPH_CLK_I2C2_DIV		49
++#define PERIPH_CLK_I2C3_PRE_DIV		50
++#define PERIPH_CLK_I2C3_DIV		51
 +
-+	of_clk_add_provider(p->node, of_clk_src_onecell_get, &p->clk_data);
-+}
++#define PERIPH_CLK_NR_CLKS		52
 +
-+void pistachio_clk_register_gate(struct pistachio_clk_provider *p,
-+				 struct pistachio_gate *gate,
-+				 unsigned int num)
-+{
-+	struct clk *clk;
-+	unsigned int i;
++/* System gate clocks */
++#define SYS_CLK_I2C0			0
++#define SYS_CLK_I2C1			1
++#define SYS_CLK_I2C2			2
++#define SYS_CLK_I2C3			3
++#define SYS_CLK_I2S_IN			4
++#define SYS_CLK_PAUD_OUT		5
++#define SYS_CLK_SPDIF_OUT		6
++#define SYS_CLK_SPI0_MASTER		7
++#define SYS_CLK_SPI0_SLAVE		8
++#define SYS_CLK_PWM			9
++#define SYS_CLK_UART0			10
++#define SYS_CLK_UART1			11
++#define SYS_CLK_SPI1			12
++#define SYS_CLK_MDC			13
++#define SYS_CLK_SD_HOST			14
++#define SYS_CLK_ENET			15
++#define SYS_CLK_IR			16
++#define SYS_CLK_WD			17
++#define SYS_CLK_TIMER			18
++#define SYS_CLK_I2S_OUT			24
++#define SYS_CLK_SPDIF_IN		25
++#define SYS_CLK_EVENT_TIMER		26
++#define SYS_CLK_HASH			27
 +
-+	for (i = 0; i < num; i++) {
-+		clk = clk_register_gate(NULL, gate[i].name, gate[i].parent,
-+					CLK_SET_RATE_PARENT,
-+					p->base + gate[i].reg, gate[i].shift,
-+					0, NULL);
-+		p->clk_data.clks[gate[i].id] = clk;
-+	}
-+}
++#define SYS_CLK_NR_CLKS			28
 +
-+void pistachio_clk_register_mux(struct pistachio_clk_provider *p,
-+				struct pistachio_mux *mux,
-+				unsigned int num)
-+{
-+	struct clk *clk;
-+	unsigned int i;
++/* Gates for external input clocks */
++#define EXT_CLK_AUDIO_IN		0
++#define EXT_CLK_ENET_IN			1
 +
-+	for (i = 0; i < num; i++) {
-+		clk = clk_register_mux(NULL, mux[i].name, mux[i].parents,
-+				       mux[i].num_parents,
-+				       CLK_SET_RATE_NO_REPARENT,
-+				       p->base + mux[i].reg, mux[i].shift,
-+				       get_count_order(mux[i].num_parents),
-+				       0, NULL);
-+		p->clk_data.clks[mux[i].id] = clk;
-+	}
-+}
++#define EXT_CLK_NR_CLKS			2
 +
-+void pistachio_clk_register_div(struct pistachio_clk_provider *p,
-+				struct pistachio_div *div,
-+				unsigned int num)
-+{
-+	struct clk *clk;
-+	unsigned int i;
-+
-+	for (i = 0; i < num; i++) {
-+		clk = clk_register_divider(NULL, div[i].name, div[i].parent,
-+					   0, p->base + div[i].reg, 0,
-+					   div[i].width, div[i].div_flags,
-+					   NULL);
-+		p->clk_data.clks[div[i].id] = clk;
-+	}
-+}
-+
-+void pistachio_clk_register_fixed_factor(struct pistachio_clk_provider *p,
-+					 struct pistachio_fixed_factor *ff,
-+					 unsigned int num)
-+{
-+	struct clk *clk;
-+	unsigned int i;
-+
-+	for (i = 0; i < num; i++) {
-+		clk = clk_register_fixed_factor(NULL, ff[i].name, ff[i].parent,
-+						0, 1, ff[i].div);
-+		p->clk_data.clks[ff[i].id] = clk;
-+	}
-+}
-+
-+void pistachio_clk_force_enable(struct pistachio_clk_provider *p,
-+				unsigned int *clk_ids, unsigned int num)
-+{
-+	unsigned int i;
-+	int err;
-+
-+	for (i = 0; i < num; i++) {
-+		struct clk *clk = p->clk_data.clks[clk_ids[i]];
-+
-+		if (IS_ERR(clk))
-+			continue;
-+
-+		err = clk_prepare_enable(clk);
-+		if (err)
-+			pr_err("Failed to enable clock %s: %d\n",
-+			       __clk_get_name(clk), err);
-+	}
-+}
-diff --git a/drivers/clk/pistachio/clk.h b/drivers/clk/pistachio/clk.h
-new file mode 100644
-index 0000000..e735107
---- /dev/null
-+++ b/drivers/clk/pistachio/clk.h
-@@ -0,0 +1,124 @@
-+/*
-+ * Copyright (C) 2014 Google, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ */
-+
-+#ifndef __PISTACHIO_CLK_H
-+#define __PISTACHIO_CLK_H
-+
-+#include <linux/clk-provider.h>
-+
-+struct pistachio_gate {
-+	unsigned int id;
-+	unsigned long reg;
-+	unsigned int shift;
-+	const char *name;
-+	const char *parent;
-+};
-+
-+#define GATE(_id, _name, _pname, _reg, _shift)	\
-+	{					\
-+		.id	= _id,			\
-+		.reg	= _reg,			\
-+		.shift	= _shift,		\
-+		.name	= _name,		\
-+		.parent = _pname,		\
-+	}
-+
-+struct pistachio_mux {
-+	unsigned int id;
-+	unsigned long reg;
-+	unsigned int shift;
-+	unsigned int num_parents;
-+	const char *name;
-+	const char **parents;
-+};
-+
-+#define PNAME(x) static const char *x[] __initconst
-+
-+#define MUX(_id, _name, _pnames, _reg, _shift)			\
-+	{							\
-+		.id		= _id,				\
-+		.reg		= _reg,				\
-+		.shift		= _shift,			\
-+		.name		= _name,			\
-+		.parents	= _pnames,			\
-+		.num_parents	= ARRAY_SIZE(_pnames)		\
-+	}
-+
-+
-+struct pistachio_div {
-+	unsigned int id;
-+	unsigned long reg;
-+	unsigned int width;
-+	unsigned int div_flags;
-+	const char *name;
-+	const char *parent;
-+};
-+
-+#define DIV(_id, _name, _pname, _reg, _width)			\
-+	{							\
-+		.id		= _id,				\
-+		.reg		= _reg,				\
-+		.width		= _width,			\
-+		.div_flags	= 0,				\
-+		.name		= _name,			\
-+		.parent		= _pname,			\
-+	}
-+
-+#define DIV_F(_id, _name, _pname, _reg, _width, _div_flags)	\
-+	{							\
-+		.id		= _id,				\
-+		.reg		= _reg,				\
-+		.width		= _width,			\
-+		.div_flags	= _div_flags,			\
-+		.name		= _name,			\
-+		.parent		= _pname,			\
-+	}
-+
-+struct pistachio_fixed_factor {
-+	unsigned int id;
-+	unsigned int div;
-+	const char *name;
-+	const char *parent;
-+};
-+
-+#define FIXED_FACTOR(_id, _name, _pname, _div)			\
-+	{							\
-+		.id		= _id,				\
-+		.div		= _div,				\
-+		.name		= _name,			\
-+		.parent		= _pname,			\
-+	}
-+
-+struct pistachio_clk_provider {
-+	struct device_node *node;
-+	void __iomem *base;
-+	struct clk_onecell_data clk_data;
-+};
-+
-+extern struct pistachio_clk_provider *
-+pistachio_clk_alloc_provider(struct device_node *node, unsigned int num_clks);
-+extern void pistachio_clk_register_provider(struct pistachio_clk_provider *p);
-+
-+extern void pistachio_clk_register_gate(struct pistachio_clk_provider *p,
-+					struct pistachio_gate *gate,
-+					unsigned int num);
-+extern void pistachio_clk_register_mux(struct pistachio_clk_provider *p,
-+				       struct pistachio_mux *mux,
-+				       unsigned int num);
-+extern void pistachio_clk_register_div(struct pistachio_clk_provider *p,
-+				       struct pistachio_div *div,
-+				       unsigned int num);
-+extern void
-+pistachio_clk_register_fixed_factor(struct pistachio_clk_provider *p,
-+				    struct pistachio_fixed_factor *ff,
-+				    unsigned int num);
-+
-+extern void pistachio_clk_force_enable(struct pistachio_clk_provider *p,
-+				       unsigned int *clk_ids, unsigned int num);
-+
-+#endif
++#endif /* _DT_BINDINGS_CLOCK_PISTACHIO_H */
 -- 
 2.2.0.rc0.207.ga3a616c

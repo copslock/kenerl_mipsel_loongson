@@ -1,52 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 17:09:11 +0100 (CET)
-Received: from mail-bn1on0099.outbound.protection.outlook.com ([157.56.110.99]:42176
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007055AbbBYQJJalW5c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Feb 2015 17:09:09 +0100
-Received: from dl.caveonetworks.com (64.2.3.194) by
- CY1PR0701MB1115.namprd07.prod.outlook.com (25.160.145.22) with Microsoft SMTP
- Server (TLS) id 15.1.93.16; Wed, 25 Feb 2015 16:09:02 +0000
-Message-ID: <54EDF39A.1080002@caviumnetworks.com>
-Date:   Wed, 25 Feb 2015 08:08:58 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 19:20:58 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:50745 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007272AbbBYSU5MydnO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 19:20:57 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 618A6460887
+        for <linux-mips@linux-mips.org>; Wed, 25 Feb 2015 18:20:51 +0000 (GMT)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EyzJ-oYgSsA4 for <linux-mips@linux-mips.org>;
+        Wed, 25 Feb 2015 18:20:49 +0000 (GMT)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 14E5046018F
+        for <linux-mips@linux-mips.org>; Wed, 25 Feb 2015 18:20:49 +0000 (GMT)
+Received: from [::1] (helo=paulmartin.codethink.co.uk)
+        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1YQgZk-0007HC-GN
+        for linux-mips@linux-mips.org; Wed, 25 Feb 2015 18:20:48 +0000
+Date:   Wed, 25 Feb 2015 18:20:48 +0000
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     linux-mips@linux-mips.org
+Subject: 4.0-rc1 breakage in FPE?
+Message-ID: <20150225182048.GC31062@paulmartin.codethink.co.uk>
+Mail-Followup-To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:     <dwalker@fifo99.com>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: octeon disable SWIOTLB
-References: <20150225144128.GB27513@fifo99.com>
-In-Reply-To: <20150225144128.GB27513@fifo99.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.194]
-X-ClientProxiedBy: SN1PR07CA0009.namprd07.prod.outlook.com (25.162.170.147) To
- CY1PR0701MB1115.namprd07.prod.outlook.com (25.160.145.22)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@caviumnetworks.com; 
-X-Microsoft-Antispam: UriScan:;
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:;SRVR:CY1PR0701MB1115;
-X-Microsoft-Antispam-PRVS: <CY1PR0701MB1115595FD0C11A955D63B6E4FE170@CY1PR0701MB1115.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004)(5005004);SRVR:CY1PR0701MB1115;
-X-Forefront-PRVS: 049897979A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(189002)(51704005)(199003)(24454002)(377454003)(479174004)(69596002)(97736003)(36756003)(68736005)(92566002)(64126003)(101416001)(47776003)(65806001)(87976001)(2950100001)(53416004)(77156002)(40100003)(66066001)(2351001)(19580395003)(83506001)(80316001)(46102003)(19580405001)(33656002)(23756003)(50466002)(50986999)(64706001)(65956001)(110136001)(122386002)(54356999)(65816999)(105586002)(76176999)(87266999)(62966003)(81156004)(42186005)(106356001)(59896002);DIR:OUT;SFP:1101;SCL:1;SRVR:CY1PR0701MB1115;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (protection.outlook.com: caviumnetworks.com does not
- designate permitted sender hosts)
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:;SRVR:CY1PR0701MB1115;
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2015 16:09:02.3971 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR0701MB1115
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45973
+X-archive-position: 45974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,22 +50,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/25/2015 06:41 AM, dwalker@fifo99.com wrote:
-> Hi,
->
-> Back in 2010 you made CONFIG_SWIOTLB mandatory (commit b93b2a). This prevents the Continuous
-> memory allocation from being enabled. Would you be willing to accept a patch which allows
-> this option to be disabled if CONFIG_EXPERT is set?
+Some change between 3.19 and 4.0-rc1 has broken the FPE such that some
+code running on an Octeon II is subtly not working.
 
-Ralf has the final say, so it really is not up to me.
+eg.
 
-That said, any patch that improves the flexibility of the kernel without 
-adversely effecting reliability and correctness would be welcome.
+  $ echo "1 2" | gawk '{ print $1 }'
+  1 2
 
+which should output (and does output on 3.19)
 
-> I suspect some users of Octeon can
-> review their hardware to be sure it's save to do.
->
-> Daniel
->
->
+  $ echo "1 2" | gawk '{ print $1 }'
+  1
+
+I'm going to try bisecting this over the next few days.
+
+We've been here before...
+
+cf.  http://www.linux-mips.org/archives/linux-mips/2014-07/msg00431.html
+
+-- 
+Paul Martin                                  http://www.codethink.co.uk/
+Senior Software Developer, Codethink Ltd.

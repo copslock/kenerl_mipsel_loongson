@@ -1,54 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 01:38:46 +0100 (CET)
-Received: from mail-ie0-f180.google.com ([209.85.223.180]:41122 "EHLO
-        mail-ie0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006916AbbBYAipSHliL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 01:38:45 +0100
-Received: by iecrd18 with SMTP id rd18so753172iec.8;
-        Tue, 24 Feb 2015 16:38:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=BwCQxZa8gMfH2c08eEvYMIX4e/y+1cQO7SpzkBUH2hE=;
-        b=qpaJSsLLg8+V5yf3ht+1HPofDbRZgZuBDwYpE+YzK9ZdIuWRWmc7SYaHKzOEKJOqAB
-         8crr+8ccnnxZj6lrWYFoCRSdac+5r/7ZRqaehV6bRmtl7F3LQEcQQNVF/GuEeNcsio9y
-         8qNJNzZUq2EHCVn+jCnlQuByBhcw8V6Ez4MMOZ5NlwhOU6EhCI3J3xgF26vyPBEGQzT2
-         ZbebBjwd/3f1yTr88HJlh4H7VkPVGl08EGtXcP4W+lRr9dMTc6rNSUuRC0YtIuTYbFhl
-         UbKBvXQPEPbKi2hNFn5NlTH4AeSdcFolppYDZh8GgRl5B0mV1H0wgZuQjad+owjUhxlP
-         j7LA==
-X-Received: by 10.43.160.200 with SMTP id md8mr1049120icc.70.1424824719847;
-        Tue, 24 Feb 2015 16:38:39 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id a31sm8929127ioj.42.2015.02.24.16.38.38
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 24 Feb 2015 16:38:39 -0800 (PST)
-Message-ID: <54ED198E.4060906@gmail.com>
-Date:   Tue, 24 Feb 2015 16:38:38 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Zenon Fortuna <zenon.fortuna@imgtec.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        IMG - MIPS Linux Kernel developers 
-        <IMG-MIPSLinuxKerneldevelopers@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH V2 1/3] MIPS: Fix cache flushing for swap pages with non-DMA
- I/O.
-References: <1424362664-30303-1-git-send-email-Steven.Hill@imgtec.com> <1424362664-30303-2-git-send-email-Steven.Hill@imgtec.com> <CAJiQ=7DMBznB5Ths0sAZORf2hgSQRuBoPF-7HGHhcHn0EajnWg@mail.gmail.com> <54EBCC38.7000702@imgtec.com> <54EBD023.8090706@imgtec.com> <alpine.LFD.2.11.1502240224500.17311@eddie.linux-mips.org> <54ECE7CE.4040407@imgtec.com> <alpine.LFD.2.11.1502242140220.17311@eddie.linux-mips.org> <54ECF3E6.9080606@imgtec.com> <alpine.LFD.2.11.1502242235160.17311@eddie.linux-mips.org> <54ED01F5.8040409@gmail.com> <54ED06F4.8020607@imgtec.com> <alpine.LFD.2.11.1502242358170.17311@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1502242358170.17311@eddie.linux-mips.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 04:56:18 +0100 (CET)
+Received: from mail-ie0-f202.google.com ([209.85.223.202]:34752 "EHLO
+        mail-ie0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006566AbbBYD4Qk1xSY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 04:56:16 +0100
+Received: by iecrd18 with SMTP id rd18so450659iec.1
+        for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 19:56:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=bsrE4+KiE7tudJkoVX4majyf3V0+u9izyQIVRy1UxR0=;
+        b=Wo31o6aPgIJeXLWtEe9wsaG8WjFqhA3g9dDLs8tj6BLxakMOnM66RF6KTWrfgV4MAw
+         EXUBemZFYpFdOsKC/JaocldKRirYYxCnSp4UqfdN/HxVFIf0yyMbzHTAumS5lGeJOAbD
+         zM7hTLjq0JB3GLQoRk8A1M3uQAsu9VgDKBMl9PUQ6EEzlvAn/jCkJNR5GWRRM6OqN7dH
+         pZXAoNTq7Ct23uvfUJocrIpaJ6BMEPxRL4gg1A33XnQrxfviNBk6LzWZBpIgWhUzi2Qi
+         TdX/LFXGwCBpUnwa4+Ly3TY3oe5tNSg9UCfENCauuujWpyuRHsfO1zEP23EI96NIri/p
+         jLag==
+X-Gm-Message-State: ALoCoQmhzZnpP65XpGxbD/ajA8C7wAvmn6dfpYOSwj1hJ++BgtdZmhfx5udKGScF1WHIE969S5go
+X-Received: by 10.182.108.193 with SMTP id hm1mr1296422obb.43.1424836571000;
+        Tue, 24 Feb 2015 19:56:11 -0800 (PST)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id 26si416796yhb.6.2015.02.24.19.56.10
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Feb 2015 19:56:10 -0800 (PST)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id 4vvYaXNu.1; Tue, 24 Feb 2015 19:56:10 -0800
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id A39F2220DB2; Tue, 24 Feb 2015 19:56:09 -0800 (PST)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Mike Turquette <mturquette@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 0/7] clk: Common clock support for IMG Pistachio
+Date:   Tue, 24 Feb 2015 19:56:00 -0800
+Message-Id: <1424836567-7252-1-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45946
+X-archive-position: 45947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,46 +61,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/24/2015 04:07 PM, Maciej W. Rozycki wrote:
-> On Tue, 24 Feb 2015, Leonid Yegoshin wrote:
->
->>> SYNCI is only useful in non-SMP kernels.
->> Yes, until MIPS R6. I pressed hard on Arch team to change vague words in SYNCI
->> description and now (MIPS R6) it has words requiring execution on all cores:
->>
->>> "SYNCI globalization:
->>> Release 6: SYNCI globalization (as described below) is required: compliant
->>> implementations must globalize SYNCI.
->>> Portable software can rely on this behavior, and use SYNCI rather than
->>> expensive “instruction cache shootdown”
->>> using inter-processor interrupts."
->
->   Good, thanks for enforcing sanity!
->
->>> If a thread is migrated to a different CPU between the SYNCI, and the
->>> attempt to execute the freshly generated code, the new CPU can still have a
->>> dirty ICACHE.  So for Linux userspace, cacheflush(2) is your only option.
->
->   Is it not a kernel bug then?
+This series adds common clock support for the IMG Pistachio SoC.
+Pistachio has two clock controllers (core and peripheral) and two
+general control blocks (peripheral and top) which also contain
+several clock gates.  Like the recently submitted pinctrl driver [1],
+this driver is written so that it's hopefully easy to add support
+for future IMG SoCs.
 
-I don't think so. cacheflush(2) is the only way for the kernel to know 
-that it needs to do extra work.  The alternative is to not use ASIDs in 
-the TLB and caches, and just invalidate all caches whenever we change 
-contexts.
+Tested on an IMG Pistachio BuB.  Based on 4.0-rc1 + my series adding
+Pistachio platform support [2], which introduces the MACH_PISTACHIO
+Kconfig symbol.  A branch with this series and the dependent patches
+is available at [3].  I'd like this to go through the MIPS tree with
+Mike's or Stephen's ACK if possible.
 
-We carry a lot complexity in the kernel to avoid unnecessary TLB and 
-cache invalidations.  All that goes out the window (with the performance 
-improvements that it brings) if you want to magically make cacheflush(2) 
-unnecessary.
+Cc: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc: James Hartley <james.hartley@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
 
-> Shouldn't migration code enforce cache
-> coherency manually if hardware does not?  User software is supposed to
-> have a consistent view of the system and such details as being run on a
-> multiprocessor should be completely hidden.
+[1] https://lkml.org/lkml/2015/2/23/705
+[2] https://lkml.org/lkml/2015/2/23/694
+[3] https://github.com/abrestic/linux/tree/pistachio-clk-v1
 
-Traditionally on MIPS, the ICache is not coherent, going from non-SMP to 
-SMP doesn't magically make it coherent.  Part of the ABI is that if you 
-have self modifying code, you must call cacheflush(2)  If you violate 
-the ABI, it won't work.
+Andrew Bresticker (7):
+  clk: Add binding document for Pistachio clock controllers
+  clk: Add basic infrastructure for Pistachio clocks
+  clk: pistachio: Add PLL driver
+  clk: pistachio: Register core clocks
+  clk: pistachio: Register peripheral clocks
+  clk: pistachio: Register system interface gate clocks
+  clk: pistachio: Register external clock gates
 
-David Daney
+ .../devicetree/bindings/clock/pistachio-clock.txt  | 123 +++++++
+ drivers/clk/Makefile                               |   1 +
+ drivers/clk/pistachio/Makefile                     |   3 +
+ drivers/clk/pistachio/clk-pistachio.c              | 329 +++++++++++++++++
+ drivers/clk/pistachio/clk-pll.c                    | 401 +++++++++++++++++++++
+ drivers/clk/pistachio/clk.c                        | 140 +++++++
+ drivers/clk/pistachio/clk.h                        | 174 +++++++++
+ include/dt-bindings/clock/pistachio-clk.h          | 183 ++++++++++
+ 8 files changed, 1354 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/pistachio-clock.txt
+ create mode 100644 drivers/clk/pistachio/Makefile
+ create mode 100644 drivers/clk/pistachio/clk-pistachio.c
+ create mode 100644 drivers/clk/pistachio/clk-pll.c
+ create mode 100644 drivers/clk/pistachio/clk.c
+ create mode 100644 drivers/clk/pistachio/clk.h
+ create mode 100644 include/dt-bindings/clock/pistachio-clk.h
+
+-- 
+2.2.0.rc0.207.ga3a616c

@@ -1,38 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 16:20:47 +0100 (CET)
-Received: from demumfd002.nsn-inter.net ([93.183.12.31]:45272 "EHLO
-        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007055AbbBYPUoVdzGF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 16:20:44 +0100
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd002.nsn-inter.net (8.14.3/8.14.3) with ESMTP id t1PFKZRk018689
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 25 Feb 2015 15:20:35 GMT
-Received: from localhost.localdomain ([10.144.34.119])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id t1PFKXkX026315;
-        Wed, 25 Feb 2015 16:20:34 +0100
-From:   Aaro Koskinen <aaro.koskinen@nokia.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@nokia.com>
-Subject: [PATCH] MIPS: malta: pass fw arguments on kexec
-Date:   Wed, 25 Feb 2015 17:21:05 +0200
-Message-Id: <1424877665-4487-1-git-send-email-aaro.koskinen@nokia.com>
-X-Mailer: git-send-email 2.1.2
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 1322
-X-purgate-ID: 151667::1424877635-000067C4-29C24D09/0/0
-Return-Path: <aaro.koskinen@nokia.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 17:02:35 +0100 (CET)
+Received: from sauhun.de ([89.238.76.85]:33442 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007272AbbBYQCe0VQNa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Feb 2015 17:02:34 +0100
+Received: from p4fe256bb.dip0.t-ipconnect.de ([79.226.86.187]:42000 helo=localhost)
+        by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <wsa@the-dreams.de>)
+        id 1YQePc-0001vK-MG; Wed, 25 Feb 2015 17:02:13 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     linux-i2c@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ludovic Desroches <ludovic.desroches@atmel.com>,
+        Yingjoe Chen <yingjoe.chen@mediatek.com>,
+        Eddie Huang <eddie.huang@mediatek.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org
+Subject: [RFC V2 00/12] i2c: describe adapter quirks in a generic way
+Date:   Wed, 25 Feb 2015 17:01:51 +0100
+Message-Id: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <wsa@the-dreams.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45959
+X-archive-position: 45960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nokia.com
+X-original-sender: wsa@the-dreams.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,51 +43,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Pass fw arguments on kexec to the new kernel.
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Tested with MIPS64 QEMU. Without the patch the new kernel will default to
-(likely) incorrect default memory and console setup, making kexec pretty
-much useless.
+Here is the second version of the patch series to describe i2c adapter quirks
+in a generic way. For the motivation, please read description of patch 1. This
+is still RFC because I would like to do some more tests on my own, but I need
+to write a tool for that. However, I'd really like to have the driver authors
+to have a look already. Actual testing is very much appreciated. Thanks to the
+Mediatek guys for rebasing their new driver to this framework. That helps, too!
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
----
- arch/mips/mti-malta/malta-reset.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+The branch is also here:
 
-diff --git a/arch/mips/mti-malta/malta-reset.c b/arch/mips/mti-malta/malta-reset.c
-index 2fd2cc2..f218ba8 100644
---- a/arch/mips/mti-malta/malta-reset.c
-+++ b/arch/mips/mti-malta/malta-reset.c
-@@ -8,8 +8,10 @@
-  */
- #include <linux/io.h>
- #include <linux/pm.h>
-+#include <linux/kexec.h>
- 
- #include <asm/reboot.h>
-+#include <asm/bootinfo.h>
- #include <asm/mach-malta/malta-pm.h>
- 
- #define SOFTRES_REG	0x1f000500
-@@ -36,8 +38,19 @@ static void mips_machine_power_off(void)
- 	mips_machine_restart(NULL);
- }
- 
-+static int mips_kexec_prepare(struct kimage *image)
-+{
-+	kexec_args[0] = fw_arg0;
-+	kexec_args[1] = fw_arg1;
-+	kexec_args[2] = fw_arg2;
-+	kexec_args[3] = fw_arg3;
-+
-+	return 0;
-+}
-+
- static int __init mips_reboot_setup(void)
- {
-+	_machine_kexec_prepare = mips_kexec_prepare;
- 	_machine_restart = mips_machine_restart;
- 	_machine_halt = mips_machine_halt;
- 	pm_power_off = mips_machine_power_off;
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/quirks
+
+Thanks,
+
+   Wolfram
+
+Major changes since V1:
+
+* more fine-grained options to describe modes with combined messages.
+  This should also cover the Mediatek HW now as well as all other
+  permutations I can think of.
+
+* the core code and at91 driver had to be refactored to reflect the
+  above change
+
+* added the bcm-iproc driver which came to mainline recently
+
+Wolfram Sang (12):
+  i2c: add quirk structure to describe adapter flaws
+  i2c: add quirk checks to core
+  i2c: at91: make use of the new infrastructure for quirks
+  i2c: opal: make use of the new infrastructure for quirks
+  i2c: qup: make use of the new infrastructure for quirks
+  i2c: cpm: make use of the new infrastructure for quirks
+  i2c: axxia: make use of the new infrastructure for quirks
+  i2c: dln2: make use of the new infrastructure for quirks
+  i2c: powermac: make use of the new infrastructure for quirks
+  i2c: viperboard: make use of the new infrastructure for quirks
+  i2c: pmcmsp: make use of the new infrastructure for quirks
+  i2c: bcm-iproc: make use of the new infrastructure for quirks
+
+ drivers/i2c/busses/i2c-at91.c       | 32 +++++++------------
+ drivers/i2c/busses/i2c-axxia.c      | 11 ++++---
+ drivers/i2c/busses/i2c-bcm-iproc.c  | 15 +++++----
+ drivers/i2c/busses/i2c-cpm.c        | 20 ++++++------
+ drivers/i2c/busses/i2c-dln2.c       | 12 +++----
+ drivers/i2c/busses/i2c-opal.c       | 22 ++++++-------
+ drivers/i2c/busses/i2c-pmcmsp.c     | 42 ++++++++++---------------
+ drivers/i2c/busses/i2c-powermac.c   | 10 +++---
+ drivers/i2c/busses/i2c-qup.c        | 21 ++++++-------
+ drivers/i2c/busses/i2c-viperboard.c | 10 +++---
+ drivers/i2c/i2c-core.c              | 62 +++++++++++++++++++++++++++++++++++++
+ include/linux/i2c.h                 | 43 +++++++++++++++++++++++++
+ 12 files changed, 191 insertions(+), 109 deletions(-)
+
 -- 
-2.1.2
+2.1.4

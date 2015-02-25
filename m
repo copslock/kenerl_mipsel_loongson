@@ -1,43 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 19:20:58 +0100 (CET)
-Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:50745 "EHLO
-        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007272AbbBYSU5MydnO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 19:20:57 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 618A6460887
-        for <linux-mips@linux-mips.org>; Wed, 25 Feb 2015 18:20:51 +0000 (GMT)
-X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
-Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
-        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id EyzJ-oYgSsA4 for <linux-mips@linux-mips.org>;
-        Wed, 25 Feb 2015 18:20:49 +0000 (GMT)
-Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 14E5046018F
-        for <linux-mips@linux-mips.org>; Wed, 25 Feb 2015 18:20:49 +0000 (GMT)
-Received: from [::1] (helo=paulmartin.codethink.co.uk)
-        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
-        (envelope-from <paul.martin@codethink.co.uk>)
-        id 1YQgZk-0007HC-GN
-        for linux-mips@linux-mips.org; Wed, 25 Feb 2015 18:20:48 +0000
-Date:   Wed, 25 Feb 2015 18:20:48 +0000
-From:   Paul Martin <paul.martin@codethink.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 22:30:34 +0100 (CET)
+Received: from unicorn.mansr.com ([81.2.72.234]:46187 "EHLO unicorn.mansr.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007274AbbBYVacMhmRZ convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 22:30:32 +0100
+Received: by unicorn.mansr.com (Postfix, from userid 51770)
+        id 34DF91538A; Wed, 25 Feb 2015 21:30:26 +0000 (GMT)
+From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
 To:     linux-mips@linux-mips.org
-Subject: 4.0-rc1 breakage in FPE?
-Message-ID: <20150225182048.GC31062@paulmartin.codethink.co.uk>
-Mail-Followup-To: linux-mips@linux-mips.org
+Subject: Re: 4.0-rc1 breakage in FPE?
+References: <20150225182048.GC31062@paulmartin.codethink.co.uk>
+Date:   Wed, 25 Feb 2015 21:30:26 +0000
+In-Reply-To: <20150225182048.GC31062@paulmartin.codethink.co.uk> (Paul
+        Martin's message of "Wed, 25 Feb 2015 18:20:48 +0000")
+Message-ID: <yw1xlhjl7k7h.fsf@unicorn.mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <paul.martin@codethink.co.uk>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mru@mansr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45974
+X-archive-position: 45976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.martin@codethink.co.uk
+X-original-sender: mans@mansr.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,25 +38,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Some change between 3.19 and 4.0-rc1 has broken the FPE such that some
-code running on an Octeon II is subtly not working.
+Paul Martin <paul.martin@codethink.co.uk> writes:
 
-eg.
-
-  $ echo "1 2" | gawk '{ print $1 }'
-  1 2
-
-which should output (and does output on 3.19)
-
-  $ echo "1 2" | gawk '{ print $1 }'
-  1
-
-I'm going to try bisecting this over the next few days.
-
-We've been here before...
-
-cf.  http://www.linux-mips.org/archives/linux-mips/2014-07/msg00431.html
+> Some change between 3.19 and 4.0-rc1 has broken the FPE such that some
+> code running on an Octeon II is subtly not working.
+>
+> eg.
+>
+>   $ echo "1 2" | gawk '{ print $1 }'
+>   1 2
+>
+> which should output (and does output on 3.19)
+>
+>   $ echo "1 2" | gawk '{ print $1 }'
+>   1
+>
+> I'm going to try bisecting this over the next few days.
+>
+> We've been here before...
+>
+> cf.  http://www.linux-mips.org/archives/linux-mips/2014-07/msg00431.html
+>
+> -- 
+> Paul Martin                                  http://www.codethink.co.uk/
+> Senior Software Developer, Codethink Ltd.
+>
 
 -- 
-Paul Martin                                  http://www.codethink.co.uk/
-Senior Software Developer, Codethink Ltd.
+Måns Rullgård
+mans@mansr.com

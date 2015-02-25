@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 17:03:43 +0100 (CET)
-Received: from sauhun.de ([89.238.76.85]:33444 "EHLO pokefinder.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 17:04:00 +0100 (CET)
+Received: from sauhun.de ([89.238.76.85]:33453 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007275AbbBYQCe2AEBC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Feb 2015 17:02:34 +0100
-Received: from p4fe256bb.dip0.t-ipconnect.de ([79.226.86.187]:42003 helo=localhost)
+        id S27007280AbbBYQCh70JdA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Feb 2015 17:02:37 +0100
+Received: from p4fe256bb.dip0.t-ipconnect.de ([79.226.86.187]:42005 helo=localhost)
         by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
         (Exim 4.80)
         (envelope-from <wsa@the-dreams.de>)
-        id 1YQePo-0001vc-Jq; Wed, 25 Feb 2015 17:02:24 +0100
+        id 1YQePv-0001w2-Sm; Wed, 25 Feb 2015 17:02:32 +0100
 From:   Wolfram Sang <wsa@the-dreams.de>
 To:     linux-i2c@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -17,9 +17,9 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Yingjoe Chen <yingjoe.chen@mediatek.com>,
         Eddie Huang <eddie.huang@mediatek.com>,
         Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org
-Subject: [RFC V2 03/12] i2c: at91: make use of the new infrastructure for quirks
-Date:   Wed, 25 Feb 2015 17:01:54 +0100
-Message-Id: <1424880126-15047-4-git-send-email-wsa@the-dreams.de>
+Subject: [RFC V2 05/12] i2c: qup: make use of the new infrastructure for quirks
+Date:   Wed, 25 Feb 2015 17:01:56 +0100
+Message-Id: <1424880126-15047-6-git-send-email-wsa@the-dreams.de>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
 References: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
@@ -27,7 +27,7 @@ Return-Path: <wsa@the-dreams.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45964
+X-archive-position: 45965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,68 +48,54 @@ From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/i2c/busses/i2c-at91.c | 32 +++++++++++---------------------
- 1 file changed, 11 insertions(+), 21 deletions(-)
+ drivers/i2c/busses/i2c-qup.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-at91.c b/drivers/i2c/busses/i2c-at91.c
-index 636fd2efad8850..b3a70e8fc653c5 100644
---- a/drivers/i2c/busses/i2c-at91.c
-+++ b/drivers/i2c/busses/i2c-at91.c
-@@ -487,30 +487,10 @@ static int at91_twi_xfer(struct i2c_adapter *adap, struct i2c_msg *msg, int num)
- 	if (ret < 0)
- 		goto out;
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index 4dad23bdffbe90..fdcbdab808e9fc 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -412,17 +412,6 @@ static int qup_i2c_read_one(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+ 	unsigned long left;
+ 	int ret;
  
 -	/*
--	 * The hardware can handle at most two messages concatenated by a
--	 * repeated start via it's internal address feature.
+-	 * The QUP block will issue a NACK and STOP on the bus when reaching
+-	 * the end of the read, the length of the read is specified as one byte
+-	 * which limits the possible read to 256 (QUP_READ_LIMIT) bytes.
 -	 */
--	if (num > 2) {
--		dev_err(dev->dev,
--			"cannot handle more than two concatenated messages.\n");
--		ret = 0;
--		goto out;
--	} else if (num == 2) {
-+	if (num == 2) {
- 		int internal_address = 0;
- 		int i;
- 
--		if (msg->flags & I2C_M_RD) {
--			dev_err(dev->dev, "first transfer must be write.\n");
--			ret = -EINVAL;
--			goto out;
--		}
--		if (msg->len > 3) {
--			dev_err(dev->dev, "first message size must be <= 3.\n");
--			ret = -EINVAL;
--			goto out;
--		}
+-	if (msg->len > QUP_READ_LIMIT) {
+-		dev_err(qup->dev, "HW not capable of reads over %d bytes\n",
+-			QUP_READ_LIMIT);
+-		return -EINVAL;
+-	}
 -
- 		/* 1st msg is put into the internal address, start with 2nd */
- 		m_start = &msg[1];
- 		for (i = 0; i < msg->len; ++i) {
-@@ -540,6 +520,15 @@ out:
- 	return ret;
- }
+ 	qup->msg = msg;
+ 	qup->pos  = 0;
+ 
+@@ -534,6 +523,15 @@ static const struct i2c_algorithm qup_i2c_algo = {
+ 	.functionality	= qup_i2c_func,
+ };
  
 +/*
-+ * The hardware can handle at most two messages concatenated by a
-+ * repeated start via it's internal address feature.
++ * The QUP block will issue a NACK and STOP on the bus when reaching
++ * the end of the read, the length of the read is specified as one byte
++ * which limits the possible read to 256 (QUP_READ_LIMIT) bytes.
 + */
-+static struct i2c_adapter_quirks at91_twi_quirks = {
-+	.flags = I2C_AQ_COMB | I2C_AQ_COMB_WRITE_FIRST | I2C_AQ_COMB_SAME_ADDR,
-+	.max_comb_1st_msg_len = 3,
++static struct i2c_adapter_quirks qup_i2c_quirks = {
++	.max_read_len = QUP_READ_LIMIT,
 +};
 +
- static u32 at91_twi_func(struct i2c_adapter *adapter)
+ static void qup_i2c_enable_clocks(struct qup_i2c_dev *qup)
  {
- 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
-@@ -777,6 +766,7 @@ static int at91_twi_probe(struct platform_device *pdev)
- 	dev->adapter.owner = THIS_MODULE;
- 	dev->adapter.class = I2C_CLASS_DEPRECATED;
- 	dev->adapter.algo = &at91_twi_algorithm;
-+	dev->adapter.quirks = &at91_twi_quirks;
- 	dev->adapter.dev.parent = dev->dev;
- 	dev->adapter.nr = pdev->id;
- 	dev->adapter.timeout = AT91_I2C_TIMEOUT;
+ 	clk_prepare_enable(qup->clk);
+@@ -670,6 +668,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 
+ 	i2c_set_adapdata(&qup->adap, qup);
+ 	qup->adap.algo = &qup_i2c_algo;
++	qup->adap.quirks = &qup_i2c_quirks;
+ 	qup->adap.dev.parent = qup->dev;
+ 	qup->adap.dev.of_node = pdev->dev.of_node;
+ 	strlcpy(qup->adap.name, "QUP I2C adapter", sizeof(qup->adap.name));
 -- 
 2.1.4

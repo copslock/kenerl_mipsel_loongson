@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 04:56:35 +0100 (CET)
-Received: from mail-yk0-f201.google.com ([209.85.160.201]:34691 "EHLO
-        mail-yk0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007208AbbBYD4SHDbsY (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Feb 2015 04:56:52 +0100 (CET)
+Received: from mail-ig0-f201.google.com ([209.85.213.201]:59246 "EHLO
+        mail-ig0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007211AbbBYD4SaiR2U (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 25 Feb 2015 04:56:18 +0100
-Received: by ykp131 with SMTP id 131so221516ykp.1
-        for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 19:56:12 -0800 (PST)
+Received: by mail-ig0-f201.google.com with SMTP id b16so719727igk.0
+        for <linux-mips@linux-mips.org>; Tue, 24 Feb 2015 19:56:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=kMsC9yEexz5Z8KbFNmiF1vKrUwW1rhNsX/qjfyi1I2I=;
-        b=Jx/dx2YH81yHTNAF4HLvq4LAvxQLKrXQtK4j9aFWO4y8jxCZrpgdSMmz8+N2K5bAfj
-         vScg8bpQFRUyEVXbHz69W/nCfw69J/Nm3lWrCfzMLgqr247p6m815MVHS5LLLk7YSaG7
-         CQHk4wzWLW6TrwhEqzUhXw/P2DYJ6crsC9jIBdSuL58l6bXW5Rcfz5JKMhV1fjl4AJhS
-         w65tjCigJnMfuBKJHB9ZrJGq3py9I2yz8btuOLHZZrS1AZ6Eufc8RxeM1WFQr4MjAjOG
-         iAL9Y46socPbSdz9ESkvrH/FFEspMX85vatedFhUuSisKVzCN+MNGPTpixGzake0sSnv
-         NAmQ==
-X-Gm-Message-State: ALoCoQk46p+/fon6VvHTBwEOcGSYrfGGeJTu3J+sLhdz5YSO0Gk4sZpGkGXOIIKV05gLd/n/tDPI
-X-Received: by 10.236.41.73 with SMTP id g49mr1397292yhb.57.1424836572589;
-        Tue, 24 Feb 2015 19:56:12 -0800 (PST)
+        bh=5lSp/g2f3kQaAI3Blnr1nEuseNfz3bWNMbfVqdIOEts=;
+        b=iKmqVuBhVaoUqDjf+Ozu5joT3Y9uWtIFljmP4rhEptOiDl8qPXwl3NYa0ArgWUXIi2
+         QuuLZIcEX+2sVSXkpfQRiUtqMyTKxcwefaUk/CX4Sw/ynZrIZAb8/KlrMmReVQ23k32v
+         7y3mQ+veqtgZGwIE56PxBm8iYxRAKwAOG5TVYlz1SUdjH/nncbKKsJryBoVxnpvq0Z9v
+         forYORVegTQ7mcWCwyhuh1K6STL/VIi9dT8lhnoZU4yBRcOIGQD+OBXBF/fU0QU/BeTK
+         ep4VOV2EiuLF4mEWIbuqskEC/UcdQEp8xYLMSmimH+6tHUYyxWpg7n0VhzKYD5C+ftvC
+         bp6A==
+X-Gm-Message-State: ALoCoQk73CE0HzGCt7n2YNyGWoNbchpwVhRTzvso+a5Jc0mUABqjI5TSvX2e7czqb1gxuTiGzHro
+X-Received: by 10.182.29.102 with SMTP id j6mr1199055obh.46.1424836573181;
+        Tue, 24 Feb 2015 19:56:13 -0800 (PST)
 Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id 3si1459558yhe.0.2015.02.24.19.56.11
+        by gmr-mx.google.com with ESMTPS id 26si416801yhb.6.2015.02.24.19.56.12
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 24 Feb 2015 19:56:12 -0800 (PST)
+        Tue, 24 Feb 2015 19:56:13 -0800 (PST)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id TzTZaMa2.1; Tue, 24 Feb 2015 19:56:12 -0800
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id TIESvrwf.1; Tue, 24 Feb 2015 19:56:13 -0800
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 6975E220DB2; Tue, 24 Feb 2015 19:56:11 -0800 (PST)
+        id 0634F221075; Tue, 24 Feb 2015 19:56:11 -0800 (PST)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Mike Turquette <mturquette@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -36,10 +36,11 @@ Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         Andrew Bresticker <abrestic@chromium.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 3/7] clk: pistachio: Add PLL driver
-Date:   Tue, 24 Feb 2015 19:56:03 -0800
-Message-Id: <1424836567-7252-4-git-send-email-abrestic@chromium.org>
+        James Hogan <james.hogan@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>
+Subject: [PATCH 4/7] clk: pistachio: Register core clocks
+Date:   Tue, 24 Feb 2015 19:56:04 -0800
+Message-Id: <1424836567-7252-5-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1424836567-7252-1-git-send-email-abrestic@chromium.org>
 References: <1424836567-7252-1-git-send-email-abrestic@chromium.org>
@@ -47,7 +48,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45948
+X-archive-position: 45949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,31 +65,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a driver for the integer (GF40LP_LAINT) and fractional (GF40LP_FRAC)
-PLLs present on Pistachio.
+Register the clocks generated by the core clock controller.
+This includes the 7 PLLs and clocks for the CPU, RPU co-processor,
+audio, WiFi, bluetooth, and several other peripherals.
 
+The MIPS and PERIPH_SYS clocks must remain enabled at all times.
+
+Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- drivers/clk/pistachio/Makefile  |   1 +
- drivers/clk/pistachio/clk-pll.c | 401 ++++++++++++++++++++++++++++++++++++++++
- drivers/clk/pistachio/clk.h     |  50 +++++
- 3 files changed, 452 insertions(+)
- create mode 100644 drivers/clk/pistachio/clk-pll.c
+ drivers/clk/pistachio/Makefile        |   1 +
+ drivers/clk/pistachio/clk-pistachio.c | 199 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 200 insertions(+)
+ create mode 100644 drivers/clk/pistachio/clk-pistachio.c
 
 diff --git a/drivers/clk/pistachio/Makefile b/drivers/clk/pistachio/Makefile
-index fc216ad..a93490d 100644
+index a93490d..f1e151f 100644
 --- a/drivers/clk/pistachio/Makefile
 +++ b/drivers/clk/pistachio/Makefile
-@@ -1 +1,2 @@
+@@ -1,2 +1,3 @@
  obj-y	+= clk.o
-+obj-y	+= clk-pll.o
-diff --git a/drivers/clk/pistachio/clk-pll.c b/drivers/clk/pistachio/clk-pll.c
+ obj-y	+= clk-pll.o
++obj-y	+= clk-pistachio.o
+diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
 new file mode 100644
-index 0000000..de53756
+index 0000000..12a45e2
 --- /dev/null
-+++ b/drivers/clk/pistachio/clk-pll.c
-@@ -0,0 +1,401 @@
++++ b/drivers/clk/pistachio/clk-pistachio.c
+@@ -0,0 +1,199 @@
 +/*
++ * Pistachio SoC clock controllers
++ *
 + * Copyright (C) 2014 Google, Inc.
 + *
 + * This program is free software; you can redistribute it and/or modify it
@@ -97,465 +104,193 @@ index 0000000..de53756
 + */
 +
 +#include <linux/clk-provider.h>
++#include <linux/init.h>
 +#include <linux/io.h>
 +#include <linux/kernel.h>
-+#include <linux/slab.h>
++#include <linux/of.h>
++
++#include <dt-bindings/clock/pistachio-clk.h>
 +
 +#include "clk.h"
 +
-+#define PLL_STATUS			0x0
-+#define PLL_STATUS_LOCK			BIT(0)
-+
-+#define PLL_CTRL1			0x4
-+#define PLL_CTRL1_REFDIV_SHIFT		0
-+#define PLL_CTRL1_REFDIV_MASK		0x3f
-+#define PLL_CTRL1_FBDIV_SHIFT		6
-+#define PLL_CTRL1_FBDIV_MASK		0xfff
-+#define PLL_INT_CTRL1_POSTDIV1_SHIFT	18
-+#define PLL_INT_CTRL1_POSTDIV1_MASK	0x7
-+#define PLL_INT_CTRL1_POSTDIV2_SHIFT	21
-+#define PLL_INT_CTRL1_POSTDIV2_MASK	0x7
-+#define PLL_INT_CTRL1_PD		BIT(24)
-+#define PLL_INT_CTRL1_DSMPD		BIT(25)
-+#define PLL_INT_CTRL1_FOUTPOSTDIVPD	BIT(26)
-+#define PLL_INT_CTRL1_FOUTVCOPD		BIT(27)
-+
-+#define PLL_CTRL2			0x8
-+#define PLL_FRAC_CTRL2_FRAC_SHIFT	0
-+#define PLL_FRAC_CTRL2_FRAC_MASK	0xffffff
-+#define PLL_FRAC_CTRL2_POSTDIV1_SHIFT	24
-+#define PLL_FRAC_CTRL2_POSTDIV1_MASK	0x7
-+#define PLL_FRAC_CTRL2_POSTDIV2_SHIFT	27
-+#define PLL_FRAC_CTRL2_POSTDIV2_MASK	0x7
-+#define PLL_INT_CTRL2_BYPASS		BIT(28)
-+
-+#define PLL_CTRL3			0xc
-+#define PLL_FRAC_CTRL3_PD		BIT(0)
-+#define PLL_FRAC_CTRL3_DACPD		BIT(1)
-+#define PLL_FRAC_CTRL3_DSMPD		BIT(2)
-+#define PLL_FRAC_CTRL3_FOUTPOSTDIVPD	BIT(3)
-+#define PLL_FRAC_CTRL3_FOUT4PHASEPD	BIT(4)
-+#define PLL_FRAC_CTRL3_FOUTVCOPD	BIT(5)
-+
-+#define PLL_CTRL4			0x10
-+#define PLL_FRAC_CTRL4_BYPASS		BIT(28)
-+
-+struct pistachio_clk_pll {
-+	struct clk_hw hw;
-+	void __iomem *base;
-+	struct pistachio_pll_rate_table *rates;
-+	unsigned int nr_rates;
++static struct pistachio_gate pistachio_gates[] __initdata = {
++	GATE(CLK_MIPS, "mips", "mips_div", 0x104, 0),
++	GATE(CLK_AUDIO_IN, "audio_in", "audio_clk_in_gate", 0x104, 1),
++	GATE(CLK_AUDIO, "audio", "audio_div", 0x104, 2),
++	GATE(CLK_I2S, "i2s", "i2s_div", 0x104, 3),
++	GATE(CLK_SPDIF, "spdif", "spdif_div", 0x104, 4),
++	GATE(CLK_AUDIO_DAC, "audio_dac", "audio_dac_div", 0x104, 5),
++	GATE(CLK_RPU_V, "rpu_v", "rpu_v_div", 0x104, 6),
++	GATE(CLK_RPU_L, "rpu_l", "rpu_l_div", 0x104, 7),
++	GATE(CLK_RPU_SLEEP, "rpu_sleep", "rpu_sleep_div", 0x104, 8),
++	GATE(CLK_WIFI_PLL_GATE, "wifi_pll_gate", "wifi_pll_mux", 0x104, 9),
++	GATE(CLK_RPU_CORE, "rpu_core", "rpu_core_div", 0x104, 10),
++	GATE(CLK_WIFI_ADC, "wifi_adc", "wifi_div8_mux", 0x104, 11),
++	GATE(CLK_WIFI_DAC, "wifi_dac", "wifi_div4_mux", 0x104, 12),
++	GATE(CLK_USB_PHY, "usb_phy", "usb_phy_div", 0x104, 13),
++	GATE(CLK_ENET_IN, "enet_in", "enet_clk_in_gate", 0x104, 14),
++	GATE(CLK_ENET, "enet", "enet_div", 0x104, 15),
++	GATE(CLK_UART0, "uart0", "uart0_div", 0x104, 16),
++	GATE(CLK_UART1, "uart1", "uart1_div", 0x104, 17),
++	GATE(CLK_PERIPH_SYS, "periph_sys", "sys_internal_div", 0x104, 18),
++	GATE(CLK_SPI0, "spi0", "spi0_div", 0x104, 19),
++	GATE(CLK_SPI1, "spi1", "spi1_div", 0x104, 20),
++	GATE(CLK_EVENT_TIMER, "event_timer", "event_timer_div", 0x104, 21),
++	GATE(CLK_AUX_ADC_INTERNAL, "aux_adc_internal", "sys_internal_div",
++	     0x104, 22),
++	GATE(CLK_AUX_ADC, "aux_adc", "aux_adc_div", 0x104, 23),
++	GATE(CLK_SD_HOST, "sd_host", "sd_host_div", 0x104, 24),
++	GATE(CLK_BT, "bt", "bt_div", 0x104, 25),
++	GATE(CLK_BT_DIV4, "bt_div4", "bt_div4_div", 0x104, 26),
++	GATE(CLK_BT_DIV8, "bt_div8", "bt_div8_div", 0x104, 27),
++	GATE(CLK_BT_1MHZ, "bt_1mhz", "bt_1mhz_div", 0x104, 28),
 +};
 +
-+static inline u32 pll_readl(struct pistachio_clk_pll *pll, u32 reg)
-+{
-+	return readl(pll->base + reg);
-+}
-+
-+static inline void pll_writel(struct pistachio_clk_pll *pll, u32 val, u32 reg)
-+{
-+	writel(val, pll->base + reg);
-+}
-+
-+static inline u32 do_div_round_closest(u64 dividend, u32 divisor)
-+{
-+	dividend += divisor / 2;
-+	do_div(dividend, divisor);
-+
-+	return dividend;
-+}
-+
-+static inline struct pistachio_clk_pll *to_pistachio_pll(struct clk_hw *hw)
-+{
-+	return container_of(hw, struct pistachio_clk_pll, hw);
-+}
-+
-+static struct pistachio_pll_rate_table *
-+pll_get_params(struct pistachio_clk_pll *pll, unsigned long fref,
-+	       unsigned long fout)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < pll->nr_rates; i++) {
-+		if (pll->rates[i].fref == fref && pll->rates[i].fout == fout)
-+			return &pll->rates[i];
-+	}
-+
-+	return NULL;
-+}
-+
-+static long pll_round_rate(struct clk_hw *hw, unsigned long rate,
-+			   unsigned long *parent_rate)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	unsigned int i;
-+
-+	for (i = 0; i < pll->nr_rates; i++) {
-+		if (i > 0 && pll->rates[i].fref == *parent_rate &&
-+		    pll->rates[i].fout <= rate)
-+			return pll->rates[i - 1].fout;
-+	}
-+
-+	return pll->rates[0].fout;
-+}
-+
-+static int pll_gf40lp_frac_enable(struct clk_hw *hw)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val;
-+
-+	val = pll_readl(pll, PLL_CTRL3);
-+	val &= ~(PLL_FRAC_CTRL3_PD | PLL_FRAC_CTRL3_DACPD |
-+		 PLL_FRAC_CTRL3_DSMPD | PLL_FRAC_CTRL3_FOUTPOSTDIVPD |
-+		 PLL_FRAC_CTRL3_FOUT4PHASEPD | PLL_FRAC_CTRL3_FOUTVCOPD);
-+	pll_writel(pll, val, PLL_CTRL3);
-+
-+	val = pll_readl(pll, PLL_CTRL4);
-+	val &= ~PLL_FRAC_CTRL4_BYPASS;
-+	pll_writel(pll, val, PLL_CTRL4);
-+
-+	return 0;
-+}
-+
-+static void pll_gf40lp_frac_disable(struct clk_hw *hw)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val;
-+
-+	val = pll_readl(pll, PLL_CTRL3);
-+	val |= PLL_FRAC_CTRL3_PD;
-+	pll_writel(pll, val, PLL_CTRL3);
-+}
-+
-+static int pll_gf40lp_frac_is_enabled(struct clk_hw *hw)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+
-+	return !(pll_readl(pll, PLL_CTRL3) & PLL_FRAC_CTRL3_PD);
-+}
-+
-+static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
-+				    unsigned long parent_rate)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	struct pistachio_pll_rate_table *params;
-+	bool was_enabled;
-+	u32 val;
-+
-+	params = pll_get_params(pll, parent_rate, rate);
-+	if (!params)
-+		return -EINVAL;
-+
-+	was_enabled = pll_gf40lp_frac_is_enabled(hw);
-+	if (!was_enabled)
-+		pll_gf40lp_frac_enable(hw);
-+
-+	val = pll_readl(pll, PLL_CTRL1);
-+	val &= ~((PLL_CTRL1_REFDIV_MASK << PLL_CTRL1_REFDIV_SHIFT) |
-+		 (PLL_CTRL1_FBDIV_MASK << PLL_CTRL1_FBDIV_SHIFT));
-+	val |= (params->refdiv << PLL_CTRL1_REFDIV_SHIFT) |
-+		(params->fbdiv << PLL_CTRL1_FBDIV_SHIFT);
-+	pll_writel(pll, val, PLL_CTRL1);
-+
-+	val = pll_readl(pll, PLL_CTRL2);
-+	val &= ~((PLL_FRAC_CTRL2_FRAC_MASK << PLL_FRAC_CTRL2_FRAC_SHIFT) |
-+		 (PLL_FRAC_CTRL2_POSTDIV1_MASK <<
-+		  PLL_FRAC_CTRL2_POSTDIV1_SHIFT) |
-+		 (PLL_FRAC_CTRL2_POSTDIV2_MASK <<
-+		  PLL_FRAC_CTRL2_POSTDIV2_SHIFT));
-+	val |= (params->frac << PLL_FRAC_CTRL2_FRAC_SHIFT) |
-+		(params->postdiv1 << PLL_FRAC_CTRL2_POSTDIV1_SHIFT) |
-+		(params->postdiv2 << PLL_FRAC_CTRL2_POSTDIV2_SHIFT);
-+	pll_writel(pll, val, PLL_CTRL2);
-+
-+	while (!(pll_readl(pll, PLL_STATUS) & PLL_STATUS_LOCK))
-+		cpu_relax();
-+
-+	if (!was_enabled)
-+		pll_gf40lp_frac_disable(hw);
-+
-+	return 0;
-+}
-+
-+static unsigned long pll_gf40lp_frac_recalc_rate(struct clk_hw *hw,
-+						 unsigned long parent_rate)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val, prediv, fbdiv, frac, postdiv1, postdiv2;
-+	u64 rate = parent_rate;
-+
-+	val = pll_readl(pll, PLL_CTRL1);
-+	prediv = (val >> PLL_CTRL1_REFDIV_SHIFT) & PLL_CTRL1_REFDIV_MASK;
-+	fbdiv = (val >> PLL_CTRL1_FBDIV_SHIFT) & PLL_CTRL1_FBDIV_MASK;
-+
-+	val = pll_readl(pll, PLL_CTRL2);
-+	postdiv1 = (val >> PLL_FRAC_CTRL2_POSTDIV1_SHIFT) &
-+		PLL_FRAC_CTRL2_POSTDIV1_MASK;
-+	postdiv2 = (val >> PLL_FRAC_CTRL2_POSTDIV2_SHIFT) &
-+		PLL_FRAC_CTRL2_POSTDIV2_MASK;
-+	frac = (val >> PLL_FRAC_CTRL2_FRAC_SHIFT) & PLL_FRAC_CTRL2_FRAC_MASK;
-+
-+	rate *= (fbdiv << 24) + frac;
-+	rate = do_div_round_closest(rate, (prediv * postdiv1 * postdiv2) << 24);
-+
-+	return rate;
-+}
-+
-+static struct clk_ops pll_gf40lp_frac_ops = {
-+	.enable = pll_gf40lp_frac_enable,
-+	.disable = pll_gf40lp_frac_disable,
-+	.is_enabled = pll_gf40lp_frac_is_enabled,
-+	.recalc_rate = pll_gf40lp_frac_recalc_rate,
-+	.round_rate = pll_round_rate,
-+	.set_rate = pll_gf40lp_frac_set_rate,
++static struct pistachio_fixed_factor pistachio_ffs[] __initdata = {
++	FIXED_FACTOR(CLK_WIFI_DIV4, "wifi_div4", "wifi_pll", 4),
++	FIXED_FACTOR(CLK_WIFI_DIV8, "wifi_div8", "wifi_pll", 8),
 +};
 +
-+static struct clk_ops pll_gf40lp_frac_fixed_ops = {
-+	.enable = pll_gf40lp_frac_enable,
-+	.disable = pll_gf40lp_frac_disable,
-+	.is_enabled = pll_gf40lp_frac_is_enabled,
-+	.recalc_rate = pll_gf40lp_frac_recalc_rate,
++static struct pistachio_div pistachio_divs[] __initdata = {
++	DIV(CLK_MIPS_INTERNAL_DIV, "mips_internal_div", "mips_pll_mux",
++	    0x204, 2),
++	DIV(CLK_MIPS_DIV, "mips_div", "mips_internal_div", 0x208, 8),
++	DIV_F(CLK_AUDIO_DIV, "audio_div", "audio_mux",
++		0x20c, 8, CLK_DIVIDER_ROUND_CLOSEST),
++	DIV_F(CLK_I2S_DIV, "i2s_div", "audio_pll_mux",
++		0x210, 8, CLK_DIVIDER_ROUND_CLOSEST),
++	DIV_F(CLK_SPDIF_DIV, "spdif_div", "audio_pll_mux",
++		0x214, 8, CLK_DIVIDER_ROUND_CLOSEST),
++	DIV_F(CLK_AUDIO_DAC_DIV, "audio_dac_div", "audio_pll_mux",
++		0x218, 8, CLK_DIVIDER_ROUND_CLOSEST),
++	DIV(CLK_RPU_V_DIV, "rpu_v_div", "rpu_v_pll_mux", 0x21c, 2),
++	DIV(CLK_RPU_L_DIV, "rpu_l_div", "rpu_l_mux", 0x220, 2),
++	DIV(CLK_RPU_SLEEP_DIV, "rpu_sleep_div", "xtal", 0x224, 10),
++	DIV(CLK_RPU_CORE_DIV, "rpu_core_div", "rpu_core_mux", 0x228, 3),
++	DIV(CLK_USB_PHY_DIV, "usb_phy_div", "sys_internal_div", 0x22c, 6),
++	DIV(CLK_ENET_DIV, "enet_div", "enet_mux", 0x230, 6),
++	DIV_F(CLK_UART0_INTERNAL_DIV, "uart0_internal_div", "sys_pll_mux",
++	      0x234, 3, CLK_DIVIDER_ROUND_CLOSEST),
++	DIV_F(CLK_UART0_DIV, "uart0_div", "uart0_internal_div", 0x238, 10,
++	      CLK_DIVIDER_ROUND_CLOSEST),
++	DIV_F(CLK_UART1_INTERNAL_DIV, "uart1_internal_div", "sys_pll_mux",
++	      0x23c, 3, CLK_DIVIDER_ROUND_CLOSEST),
++	DIV_F(CLK_UART1_DIV, "uart1_div", "uart1_internal_div", 0x240, 10,
++	      CLK_DIVIDER_ROUND_CLOSEST),
++	DIV(CLK_SYS_INTERNAL_DIV, "sys_internal_div", "sys_pll_mux", 0x244, 3),
++	DIV(CLK_SPI0_INTERNAL_DIV, "spi0_internal_div", "sys_pll_mux",
++	    0x248, 3),
++	DIV(CLK_SPI0_DIV, "spi0_div", "spi0_internal_div", 0x24c, 7),
++	DIV(CLK_SPI1_INTERNAL_DIV, "spi1_internal_div", "sys_pll_mux",
++	    0x250, 3),
++	DIV(CLK_SPI1_DIV, "spi1_div", "spi1_internal_div", 0x254, 7),
++	DIV(CLK_EVENT_TIMER_INTERNAL_DIV, "event_timer_internal_div",
++	    "event_timer_mux", 0x258, 3),
++	DIV(CLK_EVENT_TIMER_DIV, "event_timer_div", "event_timer_internal_div",
++	    0x25c, 12),
++	DIV(CLK_AUX_ADC_INTERNAL_DIV, "aux_adc_internal_div",
++	    "aux_adc_internal", 0x260, 3),
++	DIV(CLK_AUX_ADC_DIV, "aux_adc_div", "aux_adc_internal_div", 0x264, 10),
++	DIV(CLK_SD_HOST_DIV, "sd_host_div", "sd_host_mux", 0x268, 6),
++	DIV(CLK_BT_DIV, "bt_div", "bt_pll_mux", 0x26c, 6),
++	DIV(CLK_BT_DIV4_DIV, "bt_div4_div", "bt_pll_mux", 0x270, 6),
++	DIV(CLK_BT_DIV8_DIV, "bt_div8_div", "bt_pll_mux", 0x274, 6),
++	DIV(CLK_BT_1MHZ_INTERNAL_DIV, "bt_1mhz_internal_div", "bt_pll_mux",
++	    0x278, 3),
++	DIV(CLK_BT_1MHZ_DIV, "bt_1mhz_div", "bt_1mhz_internal_div", 0x27c, 10),
 +};
 +
-+static int pll_gf40lp_laint_enable(struct clk_hw *hw)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val;
++PNAME(mux_xtal_audio_refclk) = { "xtal", "audio_clk_in_gate" };
++PNAME(mux_xtal_mips) = { "xtal", "mips_pll" };
++PNAME(mux_xtal_audio) = { "xtal", "audio_pll", "audio_in" };
++PNAME(mux_audio_debug) = { "audio_pll_mux", "debug_mux" };
++PNAME(mux_xtal_rpu_v) = { "xtal", "rpu_v_pll" };
++PNAME(mux_xtal_rpu_l) = { "xtal", "rpu_l_pll" };
++PNAME(mux_rpu_l_mips) = { "rpu_l_pll_mux", "mips_pll_mux" };
++PNAME(mux_xtal_wifi) = { "xtal", "wifi_pll" };
++PNAME(mux_xtal_wifi_div4) = { "xtal", "wifi_div4" };
++PNAME(mux_xtal_wifi_div8) = { "xtal", "wifi_div8" };
++PNAME(mux_wifi_div4_rpu_l) = { "wifi_pll_gate", "wifi_div4_mux",
++			       "rpu_l_pll_mux" };
++PNAME(mux_xtal_sys) = { "xtal", "sys_pll" };
++PNAME(mux_sys_enet) = { "sys_internal_div", "enet_in" };
++PNAME(mux_audio_sys) = { "audio_pll_mux", "sys_internal_div" };
++PNAME(mux_sys_bt) = { "sys_internal_div", "bt_pll_mux" };
++PNAME(mux_xtal_bt) = { "xtal", "bt_pll" };
 +
-+	val = pll_readl(pll, PLL_CTRL1);
-+	val &= ~(PLL_INT_CTRL1_PD | PLL_INT_CTRL1_DSMPD |
-+		 PLL_INT_CTRL1_FOUTPOSTDIVPD | PLL_INT_CTRL1_FOUTVCOPD);
-+	pll_writel(pll, val, PLL_CTRL1);
-+
-+	val = pll_readl(pll, PLL_CTRL2);
-+	val &= ~PLL_INT_CTRL2_BYPASS;
-+	pll_writel(pll, val, PLL_CTRL2);
-+
-+	return 0;
-+}
-+
-+static void pll_gf40lp_laint_disable(struct clk_hw *hw)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val;
-+
-+	val = pll_readl(pll, PLL_CTRL1);
-+	val |= PLL_INT_CTRL1_PD;
-+	pll_writel(pll, val, PLL_CTRL1);
-+}
-+
-+static int pll_gf40lp_laint_is_enabled(struct clk_hw *hw)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+
-+	return !(pll_readl(pll, PLL_CTRL1) & PLL_INT_CTRL1_PD);
-+}
-+
-+static int pll_gf40lp_laint_set_rate(struct clk_hw *hw, unsigned long rate,
-+				     unsigned long parent_rate)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	struct pistachio_pll_rate_table *params;
-+	bool was_enabled;
-+	u32 val;
-+
-+	params = pll_get_params(pll, parent_rate, rate);
-+	if (!params)
-+		return -EINVAL;
-+
-+	was_enabled = pll_gf40lp_laint_is_enabled(hw);
-+	if (!was_enabled)
-+		pll_gf40lp_laint_enable(hw);
-+
-+	val = pll_readl(pll, PLL_CTRL1);
-+	val &= ~((PLL_CTRL1_REFDIV_MASK << PLL_CTRL1_REFDIV_SHIFT) |
-+		 (PLL_CTRL1_FBDIV_MASK << PLL_CTRL1_FBDIV_SHIFT) |
-+		 (PLL_INT_CTRL1_POSTDIV1_MASK << PLL_INT_CTRL1_POSTDIV1_SHIFT) |
-+		 (PLL_INT_CTRL1_POSTDIV2_MASK << PLL_INT_CTRL1_POSTDIV2_SHIFT));
-+	val |= (params->refdiv << PLL_CTRL1_REFDIV_SHIFT) |
-+		(params->fbdiv << PLL_CTRL1_FBDIV_SHIFT) |
-+		(params->postdiv1 << PLL_INT_CTRL1_POSTDIV1_SHIFT) |
-+		(params->postdiv2 << PLL_INT_CTRL1_POSTDIV2_SHIFT);
-+	pll_writel(pll, val, PLL_CTRL1);
-+
-+	while (!(pll_readl(pll, PLL_STATUS) & PLL_STATUS_LOCK))
-+		cpu_relax();
-+
-+	if (!was_enabled)
-+		pll_gf40lp_laint_disable(hw);
-+
-+	return 0;
-+}
-+
-+static unsigned long pll_gf40lp_laint_recalc_rate(struct clk_hw *hw,
-+						  unsigned long parent_rate)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val, prediv, fbdiv, postdiv1, postdiv2;
-+	u64 rate = parent_rate;
-+
-+	val = pll_readl(pll, PLL_CTRL1);
-+	prediv = (val >> PLL_CTRL1_REFDIV_SHIFT) & PLL_CTRL1_REFDIV_MASK;
-+	fbdiv = (val >> PLL_CTRL1_FBDIV_SHIFT) & PLL_CTRL1_FBDIV_MASK;
-+	postdiv1 = (val >> PLL_INT_CTRL1_POSTDIV1_SHIFT) &
-+		PLL_INT_CTRL1_POSTDIV1_MASK;
-+	postdiv2 = (val >> PLL_INT_CTRL1_POSTDIV2_SHIFT) &
-+		PLL_INT_CTRL1_POSTDIV2_MASK;
-+
-+	rate *= fbdiv;
-+	rate = do_div_round_closest(rate, prediv * postdiv1 * postdiv2);
-+
-+	return rate;
-+}
-+
-+static struct clk_ops pll_gf40lp_laint_ops = {
-+	.enable = pll_gf40lp_laint_enable,
-+	.disable = pll_gf40lp_laint_disable,
-+	.is_enabled = pll_gf40lp_laint_is_enabled,
-+	.recalc_rate = pll_gf40lp_laint_recalc_rate,
-+	.round_rate = pll_round_rate,
-+	.set_rate = pll_gf40lp_laint_set_rate,
++static struct pistachio_mux pistachio_muxes[] __initdata = {
++	MUX(CLK_AUDIO_REF_MUX, "audio_refclk_mux", mux_xtal_audio_refclk,
++	    0x200, 0),
++	MUX(CLK_MIPS_PLL_MUX, "mips_pll_mux", mux_xtal_mips, 0x200, 1),
++	MUX(CLK_AUDIO_PLL_MUX, "audio_pll_mux", mux_xtal_audio, 0x200, 2),
++	MUX(CLK_AUDIO_MUX, "audio_mux", mux_audio_debug, 0x200, 4),
++	MUX(CLK_RPU_V_PLL_MUX, "rpu_v_pll_mux", mux_xtal_rpu_v, 0x200, 5),
++	MUX(CLK_RPU_L_PLL_MUX, "rpu_l_pll_mux", mux_xtal_rpu_l, 0x200, 6),
++	MUX(CLK_RPU_L_MUX, "rpu_l_mux", mux_rpu_l_mips, 0x200, 7),
++	MUX(CLK_WIFI_PLL_MUX, "wifi_pll_mux", mux_xtal_wifi, 0x200, 8),
++	MUX(CLK_WIFI_DIV4_MUX, "wifi_div4_mux", mux_xtal_wifi_div4, 0x200, 9),
++	MUX(CLK_WIFI_DIV8_MUX, "wifi_div8_mux", mux_xtal_wifi_div8, 0x200, 10),
++	MUX(CLK_RPU_CORE_MUX, "rpu_core_mux", mux_wifi_div4_rpu_l, 0x200, 11),
++	MUX(CLK_SYS_PLL_MUX, "sys_pll_mux", mux_xtal_sys, 0x200, 13),
++	MUX(CLK_ENET_MUX, "enet_mux", mux_sys_enet, 0x200, 14),
++	MUX(CLK_EVENT_TIMER_MUX, "event_timer_mux", mux_audio_sys, 0x200, 15),
++	MUX(CLK_SD_HOST_MUX, "sd_host_mux", mux_sys_bt, 0x200, 16),
++	MUX(CLK_BT_PLL_MUX, "bt_pll_mux", mux_xtal_bt, 0x200, 17),
 +};
 +
-+static struct clk_ops pll_gf40lp_laint_fixed_ops = {
-+	.enable = pll_gf40lp_laint_enable,
-+	.disable = pll_gf40lp_laint_disable,
-+	.is_enabled = pll_gf40lp_laint_is_enabled,
-+	.recalc_rate = pll_gf40lp_laint_recalc_rate,
++static struct pistachio_pll pistachio_plls[] __initdata = {
++	PLL_FIXED(CLK_MIPS_PLL, "mips_pll", "xtal", PLL_GF40LP_LAINT, 0x0),
++	PLL_FIXED(CLK_AUDIO_PLL, "audio_pll", "audio_refclk_mux",
++		  PLL_GF40LP_FRAC, 0xc),
++	PLL_FIXED(CLK_RPU_V_PLL, "rpu_v_pll", "xtal", PLL_GF40LP_LAINT, 0x20),
++	PLL_FIXED(CLK_RPU_L_PLL, "rpu_l_pll", "xtal", PLL_GF40LP_LAINT, 0x2c),
++	PLL_FIXED(CLK_SYS_PLL, "sys_pll", "xtal", PLL_GF40LP_FRAC, 0x38),
++	PLL_FIXED(CLK_WIFI_PLL, "wifi_pll", "xtal", PLL_GF40LP_FRAC, 0x4c),
++	PLL_FIXED(CLK_BT_PLL, "bt_pll", "xtal", PLL_GF40LP_LAINT, 0x60),
 +};
 +
-+static struct clk *pll_register(const char *name, const char *parent_name,
-+				unsigned long flags, void __iomem *base,
-+				enum pistachio_pll_type type,
-+				struct pistachio_pll_rate_table *rates,
-+				unsigned int nr_rates)
++PNAME(mux_debug) = { "mips_pll_mux", "rpu_v_pll_mux",
++		     "rpu_l_pll_mux", "sys_pll_mux",
++		     "wifi_pll_mux", "bt_pll_mux" };
++static u32 mux_debug_idx[] = { 0x0, 0x1, 0x2, 0x4, 0x8, 0x10 };
++
++static unsigned int pistachio_critical_clks[] __initdata = {
++	CLK_MIPS,
++	CLK_PERIPH_SYS,
++};
++
++static void __init pistachio_clk_init(struct device_node *np)
 +{
-+	struct pistachio_clk_pll *pll;
-+	struct clk_init_data init;
-+	struct clk *clk;
++	struct pistachio_clk_provider *p;
++	struct clk *debug_clk;
 +
-+	pll = kzalloc(sizeof(*pll), GFP_KERNEL);
-+	if (!pll)
-+		return ERR_PTR(-ENOMEM);
++	p = pistachio_clk_alloc_provider(np, CLK_NR_CLKS);
++	if (!p)
++		return;
 +
-+	init.name = name;
-+	init.flags = flags | CLK_GET_RATE_NOCACHE;
-+	init.parent_names = &parent_name;
-+	init.num_parents = 1;
++	pistachio_clk_register_pll(p, pistachio_plls,
++				   ARRAY_SIZE(pistachio_plls));
++	pistachio_clk_register_mux(p, pistachio_muxes,
++				   ARRAY_SIZE(pistachio_muxes));
++	pistachio_clk_register_div(p, pistachio_divs,
++				   ARRAY_SIZE(pistachio_divs));
++	pistachio_clk_register_fixed_factor(p, pistachio_ffs,
++					    ARRAY_SIZE(pistachio_ffs));
++	pistachio_clk_register_gate(p, pistachio_gates,
++				    ARRAY_SIZE(pistachio_gates));
 +
-+	switch (type) {
-+	case PLL_GF40LP_FRAC:
-+		if (rates)
-+			init.ops = &pll_gf40lp_frac_ops;
-+		else
-+			init.ops = &pll_gf40lp_frac_fixed_ops;
-+		break;
-+	case PLL_GF40LP_LAINT:
-+		if (rates)
-+			init.ops = &pll_gf40lp_laint_ops;
-+		else
-+			init.ops = &pll_gf40lp_laint_fixed_ops;
-+		break;
-+	default:
-+		pr_err("Unrecognized PLL type %u\n", type);
-+		kfree(pll);
-+		return ERR_PTR(-EINVAL);
-+	}
++	debug_clk = clk_register_mux_table(NULL, "debug_mux", mux_debug,
++					   ARRAY_SIZE(mux_debug),
++					   CLK_SET_RATE_NO_REPARENT,
++					   p->base + 0x200, 18, 0x1f, 0,
++					   mux_debug_idx, NULL);
++	p->clk_data.clks[CLK_DEBUG_MUX] = debug_clk;
 +
-+	pll->hw.init = &init;
-+	pll->base = base;
-+	pll->rates = rates;
-+	pll->nr_rates = nr_rates;
++	pistachio_clk_register_provider(p);
 +
-+	clk = clk_register(NULL, &pll->hw);
-+	if (IS_ERR(clk))
-+		kfree(pll);
-+
-+	return clk;
++	pistachio_clk_force_enable(p, pistachio_critical_clks,
++				   ARRAY_SIZE(pistachio_critical_clks));
 +}
-+
-+void pistachio_clk_register_pll(struct pistachio_clk_provider *p,
-+				struct pistachio_pll *pll,
-+				unsigned int num)
-+{
-+	struct clk *clk;
-+	unsigned int i;
-+
-+	for (i = 0; i < num; i++) {
-+		clk = pll_register(pll[i].name, pll[i].parent,
-+				   0, p->base + pll[i].reg_base,
-+				   pll[i].type, pll[i].rates,
-+				   pll[i].nr_rates);
-+		p->clk_data.clks[pll[i].id] = clk;
-+	}
-+}
-diff --git a/drivers/clk/pistachio/clk.h b/drivers/clk/pistachio/clk.h
-index e735107..52fabbc 100644
---- a/drivers/clk/pistachio/clk.h
-+++ b/drivers/clk/pistachio/clk.h
-@@ -94,6 +94,53 @@ struct pistachio_fixed_factor {
- 		.parent		= _pname,			\
- 	}
- 
-+struct pistachio_pll_rate_table {
-+	unsigned long fref;
-+	unsigned long fout;
-+	unsigned int refdiv;
-+	unsigned int fbdiv;
-+	unsigned int postdiv1;
-+	unsigned int postdiv2;
-+	unsigned int frac;
-+};
-+
-+enum pistachio_pll_type {
-+	PLL_GF40LP_LAINT,
-+	PLL_GF40LP_FRAC,
-+};
-+
-+struct pistachio_pll {
-+	unsigned int id;
-+	unsigned long reg_base;
-+	enum pistachio_pll_type type;
-+	struct pistachio_pll_rate_table *rates;
-+	unsigned int nr_rates;
-+	const char *name;
-+	const char *parent;
-+};
-+
-+#define PLL(_id, _name, _pname, _type, _reg, _rates)		\
-+	{							\
-+		.id		= _id,				\
-+		.reg_base	= _reg,				\
-+		.type		= _type,			\
-+		.rates		= _rates,			\
-+		.nr_rates	= ARRAY_SIZE(_rates),		\
-+		.name		= _name,			\
-+		.parent		= _pname,			\
-+	}
-+
-+#define PLL_FIXED(_id, _name, _pname, _type, _reg)		\
-+	{							\
-+		.id		= _id,				\
-+		.reg_base	= _reg,				\
-+		.type		= _type,			\
-+		.rates		= NULL,				\
-+		.nr_rates	= 0,				\
-+		.name		= _name,			\
-+		.parent		= _pname,			\
-+	}
-+
- struct pistachio_clk_provider {
- 	struct device_node *node;
- 	void __iomem *base;
-@@ -117,6 +164,9 @@ extern void
- pistachio_clk_register_fixed_factor(struct pistachio_clk_provider *p,
- 				    struct pistachio_fixed_factor *ff,
- 				    unsigned int num);
-+extern void pistachio_clk_register_pll(struct pistachio_clk_provider *p,
-+				       struct pistachio_pll *pll,
-+				       unsigned int num);
- 
- extern void pistachio_clk_force_enable(struct pistachio_clk_provider *p,
- 				       unsigned int *clk_ids, unsigned int num);
++CLK_OF_DECLARE(pistachio_clk, "img,pistachio-clk", pistachio_clk_init);
 -- 
 2.2.0.rc0.207.ga3a616c

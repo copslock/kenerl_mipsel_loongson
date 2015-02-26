@@ -1,34 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 12:29:56 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:48090 "EHLO unicorn.mansr.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007218AbbBZL3vSOaBc convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 12:29:51 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id 6BBD61538A; Thu, 26 Feb 2015 11:29:46 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Paul Martin <paul.martin@codethink.co.uk>,
-        linux-mips@linux-mips.org
-Subject: Re: 4.0-rc1 breakage in FPE?
-References: <20150225182048.GC31062@paulmartin.codethink.co.uk>
-        <yw1xh9u97k5c.fsf@unicorn.mansr.com> <54EE4134.2050501@gmail.com>
-Date:   Thu, 26 Feb 2015 11:29:46 +0000
-In-Reply-To: <54EE4134.2050501@gmail.com> (David Daney's message of "Wed, 25
-        Feb 2015 13:40:04 -0800")
-Message-ID: <yw1xsids6hcl.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 13:37:35 +0100 (CET)
+Received: from mail-we0-f177.google.com ([74.125.82.177]:42131 "EHLO
+        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007076AbbBZMhdyUtoV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 13:37:33 +0100
+Received: by wesw62 with SMTP id w62so10236324wes.9;
+        Thu, 26 Feb 2015 04:37:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=VRbQR9zXB3q1mVRGkPlFrP7fb2eeMRiQ1Nk9v3aQ8Wc=;
+        b=MOc6kLHd83tyWBUyCgPeW3LfVXFVSjRmA3ZZk2PgL+pgeJKaIFvljK/4p8DOs9G0Cc
+         GD86/ufI20E85wsBmRMM++JqSHeYU9QdTqS8R3AAgP9kaR4hApMuRi0s+GhfbIWf4ihD
+         ASalrg4/RVdU/eU7l9ezmmcPGMfciHE3eQGQp+Ini5u19GVgIExVXaHIBnnkds4yyutU
+         e/B+q0PyNrYTuxh825Dstg07lA4asGfukC55GnPHhmee1l8klQgrQ62iPnTRPSU/KBe3
+         fFLiJzsO0iDYdTcKVtH7KCQ9R/qAM+KMYZOUDJYC02ulqgt8m++2OcYuUrOscC6gidSv
+         H7gQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mru@mansr.com>
+X-Received: by 10.194.109.9 with SMTP id ho9mr16013381wjb.29.1424954249050;
+ Thu, 26 Feb 2015 04:37:29 -0800 (PST)
+Received: by 10.180.89.38 with HTTP; Thu, 26 Feb 2015 04:37:28 -0800 (PST)
+In-Reply-To: <20150226101739.GY17695@NP-P-BURTON>
+References: <6D39441BF12EF246A7ABCE6654B0235320FDC2AC@LEMAIL01.le.imgtec.org>
+        <20150226101739.GY17695@NP-P-BURTON>
+Date:   Thu, 26 Feb 2015 13:37:28 +0100
+Message-ID: <CACUy__Ux6v9O0RmSiUr6vDDJ8JSDPCsCTqm=KOiNM0M=x3hoQQ@mail.gmail.com>
+Subject: Re: [U-Boot] MIPS UHI spec
+From:   Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        "u-boot@lists.denx.de" <u-boot@lists.denx.de>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        John Crispin <blogic@openwrt.org>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <daniel.schwierzeck@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45998
+X-archive-position: 45999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: daniel.schwierzeck@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,43 +59,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David Daney <ddaney.cavm@gmail.com> writes:
-
-> On 02/25/2015 01:31 PM, Måns Rullgård wrote:
->> Paul Martin <paul.martin@codethink.co.uk> writes:
+2015-02-26 11:17 GMT+01:00 Paul Burton <paul.burton@imgtec.com>:
+> On Thu, Feb 19, 2015 at 01:50:23PM +0000, Matthew Fortune wrote:
+>> Hi Daniel,
 >>
->>> Some change between 3.19 and 4.0-rc1 has broken the FPE such that some
->>> code running on an Octeon II is subtly not working.
->>>
->
-> Can you say where your userspace comes from, so we can try to
-> reproduce the issue?
->
->>> eg.
->>>
->>>    $ echo "1 2" | gawk '{ print $1 }'
->>>    1 2
->>>
->>> which should output (and does output on 3.19)
->>>
->>>    $ echo "1 2" | gawk '{ print $1 }'
->>>    1
->>>
->>> I'm going to try bisecting this over the next few days.
+>> The spec for MIPS Unified Hosting Interface is available here:
 >>
->> Are you running a 32-bit userland?  If so, enabling
->> MIPS_O32_FP64_SUPPORT should fix this.
->
-> ??
->
-> 32-bit userland (Debian for instance) typically shouldn't need special
-> "Exprimental" config options enabled.
->
-> If we can identify the offending patch, we should revert it.
+>> http://prplfoundation.org/wiki/MIPS_documentation
+>>
+>> As we have previously discussed, this is an ideal place to
+>> define the handover of device tree data from bootloader to
+>> kernel. Using a0 == -2 and defining which register(s) you
+>> need for the actual data will fit nicely. I'll happily
+>> include whatever is decided into the next version of the spec.
 
-FYI, a fix (MIPS: asm: elf: Set O32 default FPU flags) has been posted
-to linux-mips.
+this originates from an off-list discussion some months ago started by
+John Crispin.
+
+(CC +John, Ralf, Jonas, linux-mips)
+
+>
+> (CC +Andrew, Ezequiel, James, James)
+>
+> On the talk of DT handover, this recent patchset adding support for a
+> system doing so to Linux is relevant:
+>
+>     http://www.linux-mips.org/archives/linux-mips/2015-02/msg00312.html
+>
+> I'm also working on a system for which I'll need to implement DT
+> handover very soon. It would be very nice if we could agree on some
+> standard way of doing so (and eventually if the code on the Linux side
+> can be generic enough to allow a multiplatform kernel).
+>
+
+to be conformant with UHI I propose $a0 == -2 and $a1 == address of DT
+blob. It is a simple extension and should not interfere with the
+various legacy boot interfaces.
+
+U-Boot mainline code is almost ready for DT handover. I have prepared
+a patch [1] which completes it by implementing my proposal.
+
+[1] http://git.denx.de/?p=u-boot/u-boot-mips.git;a=commitdiff;h=3464e8de491c640d14d72853a741cc367ebabc79
 
 -- 
-Måns Rullgård
-mans@mansr.com
+- Daniel

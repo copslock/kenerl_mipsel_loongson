@@ -1,49 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 00:36:55 +0100 (CET)
-Received: from mail-ig0-f177.google.com ([209.85.213.177]:39951 "EHLO
-        mail-ig0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006992AbbBYXgxeNaBh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 00:36:53 +0100
-Received: by mail-ig0-f177.google.com with SMTP id z20so10279347igj.4;
-        Wed, 25 Feb 2015 15:36:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=8XZErQbZPQNZjXCTMdOVb2xcSUCQIq4wFQiT8NxjwwM=;
-        b=iAaogRU2fZrtohCOLR4P7ICDp4yEURxYWHEubuiveHe71HSjJ8RvT2bE8IjJpSOaed
-         edvsyMlQqWXd6ZG7Vb+FBa9gQMZDxzKFOIKOs4X8yhTC+5yNAfQigcQl1maOhUxD5+hu
-         msK3ygdVfJn+2WZMebTSlkJE+b8JgTSIepmE/RwIBP3aa5K50LzR4RoWJQf5G4g66F4s
-         y0YM9ZRxW1ZJLDlbGObCDIqwyWkOi+ZAtJMw0VL+pmlUbz33wH61kVo+KS0KEM93XWIs
-         fTJrMG9r6qy5tstE3MH9SZ+PbMDmMUamtfF3tZu/c0iT6DS3Wk01wge3T296vVCQpvzo
-         r6cg==
-X-Received: by 10.43.111.66 with SMTP id en2mr6850578icc.6.1424907408097;
-        Wed, 25 Feb 2015 15:36:48 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id f1sm6820771iof.30.2015.02.25.15.36.46
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 25 Feb 2015 15:36:47 -0800 (PST)
-Message-ID: <54EE5C8E.7080501@gmail.com>
-Date:   Wed, 25 Feb 2015 15:36:46 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 02:32:21 +0100 (CET)
+Received: from szxga01-in.huawei.com ([119.145.14.64]:47533 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007181AbbBZBcTKNolU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 02:32:19 +0100
+Received: from 172.24.2.119 (EHLO szxeml430-hub.china.huawei.com) ([172.24.2.119])
+        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id CJX56570;
+        Thu, 26 Feb 2015 09:31:57 +0800 (CST)
+Received: from localhost.localdomain (10.175.100.166) by
+ szxeml430-hub.china.huawei.com (10.82.67.185) with Microsoft SMTP Server id
+ 14.3.158.1; Thu, 26 Feb 2015 09:31:39 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+CC:     Jiang Liu <jiang.liu@linux.intel.com>, <linux-pci@vger.kernel.org>,
+        Yinghai Lu <yinghai@kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@arm.linux.org.uk>, <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Rusty Russell <rusty@rustcorp.com.au>,
+        Tony Luck <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Guan Xuetao" <gxt@mprc.pku.edu.cn>, <linux-alpha@vger.kernel.org>,
+        <linux-m68k@lists.linux-m68k.org>, Liviu Dudau <liviu@dudau.co.uk>,
+        "Arnd Bergmann" <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Yijing Wang" <wangyijing@huawei.com>,
+        Richard Henderson <rth@twiddle.net>,
+        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Michal Simek <monstr@monstr.eu>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        "Chris Zankel" <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, <linux-mips@linux-mips.org>,
+        <linux-am33-list@redhat.com>, <linux-s390@vger.kernel.org>,
+        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-xtensa@linux-xtensa.org>
+Subject: [PATCH v3 02/30] PCI: Rip out pci_bus_add_devices() from pci_scan_root_bus()
+Date:   Thu, 26 Feb 2015 09:29:19 +0800
+Message-ID: <1424914187-21027-3-git-send-email-wangyijing@huawei.com>
+X-Mailer: git-send-email 1.7.1
+In-Reply-To: <1424914187-21027-1-git-send-email-wangyijing@huawei.com>
+References: <1424914187-21027-1-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: mark prom_free_prom_memory() everywhere with __init
-References: <1424907064-31621-1-git-send-email-aaro.koskinen@iki.fi>
-In-Reply-To: <1424907064-31621-1-git-send-email-aaro.koskinen@iki.fi>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.175.100.166]
+X-CFilter-Loop: Reflected
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45981
+X-archive-position: 45982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,60 +73,260 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/25/2015 03:31 PM, Aaro Koskinen wrote:
-> Mark prom_free_prom_memory with() everywhere with __init.
->
-> On OCTEON the function is non-trivial and we can potentially even
-> save some memory.
->
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Just like pci_scan_bus(), we also should rip out
+pci_bus_add_devices() from pci_scan_root_bus().
+Lots platforms first call pci_scan_root_bus(), but
+after that, they call pci_bus_size_bridges() and
+pci_bus_assign_resources(). Place pci_bus_add_devices()
+in pci_scan_root_bus() hurts PCI scan logic.
+For arm hw_pci->scan() functions which call
+pci_scan_root_bus(), it's no need to change anything,
+because pci_bus_add_devices() will be called later
+in pci_common_init_dev().
 
-OCTEON part:
+Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+CC: Richard Henderson <rth@twiddle.net>
+CC: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+CC: Matt Turner <mattst88@gmail.com>
+CC: David Howells <dhowells@redhat.com>
+CC: Tony Luck <tony.luck@intel.com>
+CC: Michal Simek <monstr@monstr.eu>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Koichi Yasutake <yasutake.koichi@jp.panasonic.com>
+CC: Sebastian Ott <sebott@linux.vnet.ibm.com>
+CC: "David S. Miller" <davem@davemloft.net>
+CC: Chris Metcalf <cmetcalf@ezchip.com>
+CC: Chris Zankel <chris@zankel.net>
+CC: Max Filippov <jcmvbkbc@gmail.com>
+CC: Thomas Gleixner <tglx@linutronix.de>
+CC: linux-alpha@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+CC: linux-mips@linux-mips.org
+CC: linux-am33-list@redhat.com
+CC: linux-s390@vger.kernel.org
+CC: linux-sh@vger.kernel.org
+CC: sparclinux@vger.kernel.org
+CC: linux-xtensa@linux-xtensa.org
+---
+ arch/alpha/kernel/pci.c          |    2 ++
+ arch/frv/mb93090-mb00/pci-vdk.c  |    6 ++++--
+ arch/ia64/sn/kernel/io_init.c    |    1 +
+ arch/microblaze/pci/pci-common.c |    1 +
+ arch/mips/pci/pci.c              |    1 +
+ arch/mn10300/unit-asb2305/pci.c  |    5 ++++-
+ arch/s390/pci/pci.c              |    2 +-
+ arch/sh/drivers/pci/pci.c        |    1 +
+ arch/sparc/kernel/leon_pci.c     |    1 +
+ arch/tile/kernel/pci.c           |    2 ++
+ arch/tile/kernel/pci_gx.c        |    2 ++
+ arch/x86/pci/common.c            |    1 +
+ arch/xtensa/kernel/pci.c         |    2 ++
+ drivers/pci/probe.c              |    1 -
+ 14 files changed, 23 insertions(+), 5 deletions(-)
 
-Acked-by: David Daney <david.daney@cavium.com>
-
-> ---
->   arch/mips/cavium-octeon/setup.c  | 2 +-
->   arch/mips/lantiq/prom.c          | 2 +-
->   arch/mips/mti-sead3/sead3-init.c | 2 +-
->   3 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-> index a42110e..d0fa0bc 100644
-> --- a/arch/mips/cavium-octeon/setup.c
-> +++ b/arch/mips/cavium-octeon/setup.c
-> @@ -1043,7 +1043,7 @@ int prom_putchar(char c)
->   }
->   EXPORT_SYMBOL(prom_putchar);
->
-> -void prom_free_prom_memory(void)
-> +void __init prom_free_prom_memory(void)
->   {
->   	if (CAVIUM_OCTEON_DCACHE_PREFETCH_WAR) {
->   		/* Check for presence of Core-14449 fix.  */
-> diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-> index 39ab3e7..0db099e 100644
-> --- a/arch/mips/lantiq/prom.c
-> +++ b/arch/mips/lantiq/prom.c
-> @@ -41,7 +41,7 @@ int ltq_soc_type(void)
->   	return soc_info.type;
->   }
->
-> -void prom_free_prom_memory(void)
-> +void __init prom_free_prom_memory(void)
->   {
->   }
->
-> diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
-> index bfbd17b..3572ea3 100644
-> --- a/arch/mips/mti-sead3/sead3-init.c
-> +++ b/arch/mips/mti-sead3/sead3-init.c
-> @@ -147,6 +147,6 @@ void __init prom_init(void)
->   #endif
->   }
->
-> -void prom_free_prom_memory(void)
-> +void __init prom_free_prom_memory(void)
->   {
->   }
->
+diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
+index 98a1525..518b767 100644
+--- a/arch/alpha/kernel/pci.c
++++ b/arch/alpha/kernel/pci.c
+@@ -338,6 +338,8 @@ common_init_pci(void)
+ 
+ 		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
+ 					hose, &resources);
++		if (bus)
++			pci_bus_add_devices(bus);
+ 		hose->bus = bus;
+ 		hose->need_domain_info = need_domain_info;
+ 		next_busno = bus->busn_res.end + 1;
+diff --git a/arch/frv/mb93090-mb00/pci-vdk.c b/arch/frv/mb93090-mb00/pci-vdk.c
+index b073f4d..4b63781 100644
+--- a/arch/frv/mb93090-mb00/pci-vdk.c
++++ b/arch/frv/mb93090-mb00/pci-vdk.c
+@@ -316,6 +316,7 @@ void pcibios_fixup_bus(struct pci_bus *bus)
+ 
+ int __init pcibios_init(void)
+ {
++	struct pci_bus *bus;
+ 	struct pci_ops *dir = NULL;
+ 	LIST_HEAD(resources);
+ 
+@@ -383,12 +384,13 @@ int __init pcibios_init(void)
+ 	printk("PCI: Probing PCI hardware\n");
+ 	pci_add_resource(&resources, &pci_ioport_resource);
+ 	pci_add_resource(&resources, &pci_iomem_resource);
+-	pci_scan_root_bus(NULL, 0, pci_root_ops, NULL, &resources);
++	bus = pci_scan_root_bus(NULL, 0, pci_root_ops, NULL, &resources);
+ 
+ 	pcibios_irq_init();
+ 	pcibios_fixup_irqs();
+ 	pcibios_resource_survey();
+-
++	if (bus)
++		pci_bus_add_devices(bus);
+ 	return 0;
+ }
+ 
+diff --git a/arch/ia64/sn/kernel/io_init.c b/arch/ia64/sn/kernel/io_init.c
+index 0b5ce82..63b43a6 100644
+--- a/arch/ia64/sn/kernel/io_init.c
++++ b/arch/ia64/sn/kernel/io_init.c
+@@ -272,6 +272,7 @@ sn_pci_controller_fixup(int segment, int busnum, struct pci_bus *bus)
+ 		kfree(res);
+ 		kfree(controller);
+ 	}
++	pci_bus_add_devices(bus);
+ }
+ 
+ /*
+diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
+index 48528fb..d8bbad9 100644
+--- a/arch/microblaze/pci/pci-common.c
++++ b/arch/microblaze/pci/pci-common.c
+@@ -1362,6 +1362,7 @@ static void pcibios_scan_phb(struct pci_controller *hose)
+ 	hose->bus = bus;
+ 
+ 	hose->last_busno = bus->busn_res.end;
++	pci_bus_add_devices(bus);
+ }
+ 
+ static int __init pcibios_init(void)
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index 1bf60b1..9eb54b5 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -114,6 +114,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
+ 			pci_bus_size_bridges(bus);
+ 			pci_bus_assign_resources(bus);
+ 		}
++		pci_bus_add_devices(bus);
+ 	}
+ }
+ 
+diff --git a/arch/mn10300/unit-asb2305/pci.c b/arch/mn10300/unit-asb2305/pci.c
+index 613ca1e..2a815c1 100644
+--- a/arch/mn10300/unit-asb2305/pci.c
++++ b/arch/mn10300/unit-asb2305/pci.c
+@@ -340,6 +340,7 @@ void pcibios_fixup_bus(struct pci_bus *bus)
+  */
+ static int __init pcibios_init(void)
+ {
++	struct pci_bus *bus;
+ 	resource_size_t io_offset, mem_offset;
+ 	LIST_HEAD(resources);
+ 
+@@ -371,11 +372,13 @@ static int __init pcibios_init(void)
+ 
+ 	pci_add_resource_offset(&resources, &pci_ioport_resource, io_offset);
+ 	pci_add_resource_offset(&resources, &pci_iomem_resource, mem_offset);
+-	pci_scan_root_bus(NULL, 0, &pci_direct_ampci, NULL, &resources);
++	bus = pci_scan_root_bus(NULL, 0, &pci_direct_ampci, NULL, &resources);
+ 
+ 	pcibios_irq_init();
+ 	pcibios_fixup_irqs();
+ 	pcibios_resource_survey();
++	if (bus)
++		pci_bus_add_devices(bus);
+ 	return 0;
+ }
+ 
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 753a567..1534e5a 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -776,7 +776,7 @@ static int zpci_scan_bus(struct zpci_dev *zdev)
+ 		zpci_cleanup_bus_resources(zdev);
+ 		return -EIO;
+ 	}
+-
++	pci_bus_add_devices(zdev->bus);
+ 	zdev->bus->max_bus_speed = zdev->max_bus_speed;
+ 	return 0;
+ }
+diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
+index 1bc09ee..efc1051 100644
+--- a/arch/sh/drivers/pci/pci.c
++++ b/arch/sh/drivers/pci/pci.c
+@@ -69,6 +69,7 @@ static void pcibios_scanbus(struct pci_channel *hose)
+ 
+ 		pci_bus_size_bridges(bus);
+ 		pci_bus_assign_resources(bus);
++		pci_bus_add_devices(bus);
+ 	} else {
+ 		pci_free_resource_list(&resources);
+ 	}
+diff --git a/arch/sparc/kernel/leon_pci.c b/arch/sparc/kernel/leon_pci.c
+index 899b720..2971076 100644
+--- a/arch/sparc/kernel/leon_pci.c
++++ b/arch/sparc/kernel/leon_pci.c
+@@ -40,6 +40,7 @@ void leon_pci_init(struct platform_device *ofdev, struct leon_pci_info *info)
+ 
+ 		/* Assign devices with resources */
+ 		pci_assign_unassigned_resources();
++		pci_bus_add_devices(root_bus);
+ 	} else {
+ 		pci_free_resource_list(&resources);
+ 	}
+diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
+index 325df47..9475a74 100644
+--- a/arch/tile/kernel/pci.c
++++ b/arch/tile/kernel/pci.c
+@@ -339,6 +339,8 @@ int __init pcibios_init(void)
+ 			struct pci_bus *next_bus;
+ 			struct pci_dev *dev;
+ 
++			pci_bus_add_devices(root_bus);
++
+ 			list_for_each_entry(dev, &root_bus->devices, bus_list) {
+ 				/*
+ 				 * Find the PCI host controller, ie. the 1st
+diff --git a/arch/tile/kernel/pci_gx.c b/arch/tile/kernel/pci_gx.c
+index 2c95f37..d7a0729 100644
+--- a/arch/tile/kernel/pci_gx.c
++++ b/arch/tile/kernel/pci_gx.c
+@@ -916,6 +916,8 @@ int __init pcibios_init(void)
+ 		/* Configure the max_payload_size values for this domain. */
+ 		fixup_read_and_payload_sizes(controller);
+ 
++		pci_bus_add_devices(root_bus);
++
+ 		/* Alloc a PIO region for PCI memory access for each RC port. */
+ 		ret = gxio_trio_alloc_pio_regions(trio_context, 1, 0, 0);
+ 		if (ret < 0) {
+diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
+index 3d2612b..0cbc723 100644
+--- a/arch/x86/pci/common.c
++++ b/arch/x86/pci/common.c
+@@ -491,6 +491,7 @@ void pcibios_scan_root(int busnum)
+ 		pci_free_resource_list(&resources);
+ 		kfree(sd);
+ 	}
++	pci_bus_add_devices(bus);
+ }
+ 
+ void __init pcibios_set_cache_line_size(void)
+diff --git a/arch/xtensa/kernel/pci.c b/arch/xtensa/kernel/pci.c
+index 5b34033..f2ae64e 100644
+--- a/arch/xtensa/kernel/pci.c
++++ b/arch/xtensa/kernel/pci.c
+@@ -185,6 +185,8 @@ static int __init pcibios_init(void)
+ 		pci_controller_apertures(pci_ctrl, &resources);
+ 		bus = pci_scan_root_bus(NULL, pci_ctrl->first_busno,
+ 					pci_ctrl->ops, pci_ctrl, &resources);
++		if (bus)
++			pci_bus_add_devices(bus);
+ 		pci_ctrl->bus = bus;
+ 		pci_ctrl->last_busno = bus->busn_res.end;
+ 		if (next_busno <= pci_ctrl->last_busno)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 88604f2..8ef0375 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2087,7 +2087,6 @@ struct pci_bus *pci_scan_root_bus(struct device *parent, int bus,
+ 	if (!found)
+ 		pci_bus_update_busn_res_end(b, max);
+ 
+-	pci_bus_add_devices(b);
+ 	return b;
+ }
+ EXPORT_SYMBOL(pci_scan_root_bus);
+-- 
+1.7.1

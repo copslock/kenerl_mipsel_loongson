@@ -1,29 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 10:31:45 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11499 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 10:44:53 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:7924 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007403AbbBZJbnx6Ye6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 10:31:43 +0100
+        with ESMTP id S27007349AbbBZJowLouoa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 10:44:52 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A55FE204139CD;
-        Thu, 26 Feb 2015 09:31:36 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 9F66A527A69F9;
+        Thu, 26 Feb 2015 09:44:44 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 26 Feb 2015 09:31:37 +0000
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Thu, 26 Feb 2015 09:31:37 +0000
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        =?utf-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+ 14.3.195.1; Thu, 26 Feb 2015 09:44:46 +0000
+Received: from localhost (192.168.154.96) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 26 Feb
+ 2015 09:44:45 +0000
+Date:   Thu, 26 Feb 2015 09:44:45 +0000
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
+CC:     =?utf-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Paul Burton <Paul.Burton@imgtec.com>
-Subject: RE: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
+Subject: Re: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
  mode checks
-Thread-Topic: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
- mode checks
-Thread-Index: AQHQUaSmTpUqzW/P5ESAwcGgwy98jp0CqKUAgAAAwfA=
-Date:   Thu, 26 Feb 2015 09:31:36 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B0235320FE182B@LEMAIL01.le.imgtec.org>
+Message-ID: <20150226094445.GA18496@mchandras-linux.le.imgtec.org>
 References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
  <1422893593-1291-1-git-send-email-markos.chandras@imgtec.com>
  <yw1xwq3778k2.fsf@unicorn.mansr.com>
@@ -33,24 +30,23 @@ References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
  <20150226085943.GA26793@mchandras-linux.le.imgtec.org>
  <yw1x8ufl6nlq.fsf@unicorn.mansr.com>
  <20150226092406.GA27701@mchandras-linux.le.imgtec.org>
-In-Reply-To: <20150226092406.GA27701@mchandras-linux.le.imgtec.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.159.101]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <6D39441BF12EF246A7ABCE6654B0235320FE182B@LEMAIL01.le.imgtec.org>
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235320FE182B@LEMAIL01.le.imgtec.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.96]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45993
+X-archive-position: 45994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,99 +59,134 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-TWFya29zIENoYW5kcmFzIDxNYXJrb3MuQ2hhbmRyYXNAaW1ndGVjLmNvbT4gIHdyaXRlczoNCj4g
-T24gVGh1LCBGZWIgMjYsIDIwMTUgYXQgMDk6MTQ6NDFBTSArMDAwMCwgTcOlbnMgUnVsbGfDpXJk
-IHdyb3RlOg0KPiA+IE1hcmtvcyBDaGFuZHJhcyA8bWFya29zLmNoYW5kcmFzQGltZ3RlYy5jb20+
-IHdyaXRlczoNCj4gPg0KPiA+ID4gT24gVHVlLCBGZWIgMjQsIDIwMTUgYXQgMDI6MjY6MDRQTSAr
-MDAwMCwgTWF0dGhldyBGb3J0dW5lIHdyb3RlOg0KPiA+ID4+IE3DpW5zIFJ1bGxnw6VyZCA8bWFu
-c0BtYW5zci5jb20+IHdyaXRlczoNCj4gPiA+PiA+IE1hcmtvcyBDaGFuZHJhcyA8bWFya29zLmNo
-YW5kcmFzQGltZ3RlYy5jb20+IHdyaXRlczoNCj4gPiA+PiA+DQo+ID4gPj4gPiA+IEhpLA0KPiA+
-ID4+ID4gPg0KPiA+ID4+ID4gPiBPbiBUdWUsIEZlYiAyNCwgMjAxNSBhdCAwMToxNzozM1BNICsw
-MDAwLCBNw6VucyBSdWxsZ8OlcmQgd3JvdGU6DQo+ID4gPj4gPiA+PiBUaGlzIHBhdGNoICh3ZWxs
-LCB0aGUgdmFyaWFudCB0aGF0IG1hZGUgaXQgaW50byA0LjAtcmMxKQ0KPiA+ID4+ID4gPj4gYnJl
-YWtzIE1JUFNfQUJJX0ZQX0RPVUJMRSAodGhlIGdjYyBkZWZhdWx0KSBhcHBzIG9uIE1JUFMzMi4N
-Cj4gPiA+PiA+ID4+DQo+ID4gPj4gPiA+DQo+ID4gPj4gPiA+IFRoYW5rcyBmb3IgdGhlIHJlcG9y
-dC4NCj4gPiA+PiA+ID4NCj4gPiA+PiA+ID4+ID4gK3ZvaWQgbWlwc19zZXRfcGVyc29uYWxpdHlf
-ZnAoc3RydWN0IGFyY2hfZWxmX3N0YXRlICpzdGF0ZSkNCj4gew0KPiA+ID4+ID4gPj4gPiArCS8q
-DQo+ID4gPj4gPiA+PiA+ICsJICogVGhpcyBmdW5jdGlvbiBpcyBvbmx5IGV2ZXIgY2FsbGVkIGZv
-ciBPMzIgRUxGcyBzbyB3ZQ0KPiBzaG91bGQNCj4gPiA+PiA+ID4+ID4gKwkgKiBub3QgYmUgd29y
-cmllZCBhYm91dCBOMzIvTjY0IGJpbmFyaWVzLg0KPiA+ID4+ID4gPj4gPiArCSAqLw0KPiA+ID4+
-ID4gPj4gPg0KPiA+ID4+ID4gPj4gPiAtCWNhc2UgTUlQU19BQklfRlBfWFg6DQo+ID4gPj4gPiA+
-PiA+IC0JY2FzZSBNSVBTX0FCSV9GUF9BTlk6DQo+ID4gPj4gPiA+PiA+IC0JCWlmICghY29uZmln
-X2VuYWJsZWQoQ09ORklHX01JUFNfTzMyX0ZQNjRfU1VQUE9SVCkpDQo+ID4gPj4gPiA+PiA+IC0J
-CQlzZXRfdGhyZWFkX2ZsYWcoVElGXzMyQklUX0ZQUkVHUyk7DQo+ID4gPj4gPiA+PiA+IC0JCWVs
-c2UNCj4gPiA+PiA+ID4+ID4gLQkJCWNsZWFyX3RocmVhZF9mbGFnKFRJRl8zMkJJVF9GUFJFR1Mp
-Ow0KPiA+ID4+ID4gPj4gPiArCWlmICghY29uZmlnX2VuYWJsZWQoQ09ORklHX01JUFNfTzMyX0ZQ
-NjRfU1VQUE9SVCkpDQo+ID4gPj4gPiA+PiA+ICsJCXJldHVybjsNCj4gPiA+PiA+ID4+DQo+ID4g
-Pj4gPiA+PiBUaGUgcHJvYmxlbSBpcyBoZXJlLiAgSW4gYSAzMi1iaXQgY29uZmlndXJhdGlvbiwN
-Cj4gPiA+PiA+ID4+IE1JUFNfTzMyX0ZQNjRfU1VQUE9SVCBpcyBhbHdheXMgZGlzYWJsZWQsIHNv
-IHRoZSBGUCBtb2RlDQo+ID4gPj4gPiA+PiBkb2Vzbid0IGdldCBzZXQuICBTaW1wbHkgZGVsZXRp
-bmcgdGhvc2UgdHdvIGxpbmVzIG1ha2VzIHRoaW5ncw0KPiA+ID4+ID4gPj4gd29yayBhZ2Fpbiwg
-YnV0IHRoYXQncyBwcm9iYWJseSBub3QgdGhlIHJpZ2h0IGZpeC4NCj4gPiA+Pg0KPiA+ID4+IEkg
-ZG9uJ3QgcmVjYWxsIHRoZSBmaW5hbCBkZWNpc2lvbiBvbiBkZWZhdWx0IG9uL29mZiBmb3IgdGhp
-cyBvcHRpb24NCj4gPiA+PiBidXQgSUlSQyBpdCBpcyBnb2luZyB0byBiZSBvZmYgZm9yIGV2ZXJ5
-dGhpbmcgZXhjZXB0IFI2IGluIHRoZQ0KPiA+ID4+IGZpcnN0IGtlcm5lbCB2ZXJzaW9uIGFuZCB0
-aGVuIHR1cm5lZCBvbiBieSBkZWZhdWx0KC9vcHRpb24gcmVtb3ZlZCkNCj4gPiA+PiB3aGVuIHRo
-ZSBjb2RlIGlzIHByb3ZlbiBmb3IgdGhlIGZvbGxvd2luZyBrZXJuZWwgdmVyc2lvbi4NCj4gPiA+
-Pg0KPiA+ID4+ID4gPj4NCj4gPiA+PiA+ID4gSSBoYWQgdGhlIGltcHJlc3Npb24gdGhhdCB0aGUg
-bG9hZGVyIHdvdWxkIGhhdmUgc2V0IHRoZSBGUCBtb2RlDQo+ID4gPj4gPiA+IGVhcmxpZXIgb24u
-ICBCdXQgdGhhdCBvbmx5IG1heSBoYXBwZW4gd2l0aCB0aGUgbGF0ZXN0IHZlcnNpb24NCj4gPiA+
-PiA+ID4gb2YgdGhlIHRvb2xzLg0KPiA+ID4+ID4gPg0KPiA+ID4+ID4gPiBQZXJoYXBzIGluc3Rl
-YWQgb2YgZHJvcHBpbmcgdGhlc2UgdHdvIGxpbmVzIHdlIG5lZWQgYSBzaW1pbGFyDQo+ID4gPj4g
-PiA+IGNoZWNrIG9uIHRoZSBhcmNoX2VsZl9wdF9wcm9jIHNvIHdlIGRvbid0IG1lc3Mgd2l0aCB0
-aGUgZGVmYXVsdA0KPiBGUEkgYWJpPw0KPiA+ID4+ID4gPg0KPiA+ID4+ID4gPiBIYXZpbmcgc2Fp
-ZCB0aGF0LCBkcm9wcGluZyB0aGVzZSB0d28gbGluZXMgc2hvdWxkIGJlIGZpbmUsIGl0DQo+ID4g
-Pj4gPiA+IGp1c3QgbWVhbnMgeW91IGRvIGEgbGl0dGxlIGJpdCBvZiBleHRyYSB3b3JrIHdoZW4g
-bG9hZGluZyB5b3VyDQo+ID4gPj4gPiA+IEVMRiBmaWxlcyB0byBjaGVjayBmb3IgQUJJIGNvbXBh
-dGliaWxpdHkgd2hpY2ggc2hvdWxkbid0IG1hdHRlcg0KPiBpbiB5b3VyIGNhc2UuDQo+ID4gPj4g
-Pg0KPiA+ID4+ID4gVGhlcmUncyBhbm90aGVyIGVhcmx5IHJldHVybiBsaWtlIHRoaXMgaW4gYXJj
-aF9jaGVja19lbGYoKSB3aGljaA0KPiA+ID4+ID4gc2hvdWxkIHByb2JhYmx5IGdvIGFzIHdlbGws
-IG9yIGV2ZXJ5dGhpbmcgd2lsbCBlbmQgdXAgd2l0aCB0aGUNCj4gZGVmYXVsdCBtb2RlLg0KPiA+
-ID4+DQo+ID4gPj4gSXJvbmljYWxseSBJIGRpc2N1c3NlZCB0aGVzZSBjaGFuZ2VzIHdpdGggTWFy
-a29zIGluIGFuIGF0dGVtcHQgdG8NCj4gPiA+PiBtYWtlIGFsbCB0aGUgbmV3IGNoYW5nZXMgYmVu
-aWduIHdoZW46DQo+ID4gPj4NCj4gPiA+PiAhY29uZmlnX2VuYWJsZWQoQ09ORklHX01JUFNfTzMy
-X0ZQNjRfU1VQUE9SVCkNCj4gPiA+Pg0KPiA+ID4+IENsZWFybHkgdGhpcyBoYXMgYmFja2ZpcmVk
-LiBJIHdpbGwgaGF2ZSB0byByZS1yZWFkIHRoZSB2ZXJzaW9uIG9mDQo+ID4gPj4gdGhlIGNvZGUg
-aW4gNC4wLXJjMSB0byBzZWUgd2hhdCBpcyB0aGUgcm9vdCBjYXVzZS4gVGhlIGludGVudGlvbg0K
-PiA+ID4+IHdhcyB0aGF0IHdpdGhvdXQgdGhlIGNvbmZpZyBvcHRpb24gdGhlbiB0aGUga2VybmVs
-IHdvdWxkIGJsaW5kbHkNCj4gPiA+PiBjb250aW51ZSB0byBhc3N1bWUgdGhhdCBhbGwgTzMyIGJp
-bmFyaWVzIHdvdWxkIHJ1biBpbiB0aGUgb3JpZ2luYWwNCj4gPiA+PiBUSUZfMzJCSVRfRlBSRUdT
-IG1vZGUuIEFzIEkgcmVjYWxsLCB0aGUgY2FsbGVycyB0bw0KPiA+ID4+IG1pcHNfc2V0X3BlcnNv
-bmFsaXR5X2ZwIHdlcmUgc2V0dGluZyB0aGlzIG1vZGUgd2hpY2ggaXMgd2h5IHRoZQ0KPiBzaW1w
-bGUgZWFybHkgcmV0dXJuIHdhcyBhZGRlZC4NCj4gPiA+Pg0KPiA+ID4+IFRoYW5rcywNCj4gPiA+
-PiBNYXR0aGV3DQo+ID4gPg0KPiA+ID4gSSB0aGluayBJIGNhbiBzZWUgd2hhdCBpcyBnb2luZyBv
-bi4gVGhlIHByb2JsZW0gaXMgdGhhdA0KPiA+ID4gbWlwc19zZXRfcGVyc29uYWxpdHlfZnAoKSAo
-YXMgYWxyZWFkeSBtZW50aW9uZWQpIGlzIG5vdCBleGVjdXRlZCBmb3INCj4gPiA+ICFDT05GSUdf
-TUlQU19PMzJfRlA2NF9TVVBQT1JULiBUaGUgcmVhc29uIHRoaXMgaXMgYSBwcm9ibGVtIChpIHRo
-aW5rDQo+ID4gPiB0aGlzIGNvdWxkIG9ubHkgaGFwcGVuIGluIDY0LWJpdCkNCj4gPg0KPiA+IEl0
-J3MgZGVmaW5pdGVseSBjYXVzaW5nIHByb2JsZW1zIG9uIG15IDc0S2Ygc3lzdGVtLg0KPiA+DQo+
-ID4gPiBpcyB0aGF0IFNFVF9QRVJTT05BTElUWTIgY2xlYXJzIGFsbCB0aGUgdGhyZWFkIGZsYWdz
-IHJlbGF0ZWQgdG8NCj4gPiA+IDMyLWJpdCBhbmQgRlBVLiBUaGUgMzItYml0IGZsYWdzIHdpbGwg
-YmUgc2V0IGFnYWluIGJ5IHRoZQ0KPiA+ID4gU0VUX1BFUlNPTkFMSVRZMzJfTzMyIGJ1dCB0aGUg
-RlBVIGZsYWdzIGFyZSBub3Qgc2luY2UgdGhlIGVudGlyZQ0KDQpPSywgc28gdGhpcyBzb3VuZHMg
-bGlrZSB3aGF0IGRpZmZlcnMgZnJvbSB3aGF0IEkgcmVtZW1iZXIgc2VlaW5nLiBJIHRob3VnaHQN
-CnRoZSB2YXJpb3VzIFNFVF9QRVJTT05BTElUWSBtYWNyb3Mgd2VyZSBzZXR0aW5nIHVwIHRoZSBk
-ZWZhdWx0IEZQVSBmbGFncw0KKGRlZmF1bHQgYXMgaW4gdG8gbWF0Y2ggdGhlIGRlZmF1bHQgTzMy
-IEZQIEFCSSkgYW5kIHRoZW4gdGhpcyB3b3VsZCBiZQ0KdXBkYXRlZCBpbiBtaXBzX3NldF9wZXJz
-b25hbGl0eV9mcCgpLiBJaXJjIHRoZW4gbWlwc19zZXRfcGVyc29uYWxpdHlfZnANCmlzIG9ubHkg
-Y2FsbGVkIGZvciB0aGUgTzMyIGNhc2Ugc28gdGhlIEZQVSByZWxhdGVkIGZsYWdzIG11c3QgYmUg
-Y29ycmVjdGx5DQpzZXQgZm9yIG4zMi9uNjQgaW4gdGhlIG1hY3Jvcy4gV2h5IG5vdCBqdXN0IHVw
-ZGF0ZSB0aGUgTzMyIG1hY3JvcyB0bw0Kc2V0IHRoZSBtb2RlPw0KDQo+ID4gPiBtaXBzX3NldF9w
-ZXJzb25hbGl0eV9mcCgpIGlzIHNraXBwZWQuIFdoaWxlIHJlbW92aW5nIHRoZSBpZigpDQo+ID4g
-PiBjb25kaXRpb25hbCBpbiBtaXBzX3NldF9wZXJzb25hbGl0eV9mcCgpIHdpbGwgZml4IHRoZSBw
-cm9ibGVtLCB5b3UNCj4gPiA+IHJlbHkgb24gc3RhdGUtPm92ZXJhbGxfZnBfbW9kZSBoYXZpbmcg
-YSBnb29kIGRlZmF1bHQgdmFsdWUgZm9yIHlvdQ0KPiA+ID4gY2FzZS4gSWYgbm90LCBpdCB3aWxs
-IHNldCB0aGUgd3JvbmcgRlBVIG1vZGUuDQo+ID4NCj4gPiBZZXMsIEkgcmVhbGlzZWQgdGhpcyBh
-ZnRlciBoaXR0aW5nIHRoZSBzZW5kIGJ1dHRvbiBlYXJsaWVyLg0KPiA+DQo+ID4gPiBUaGVyZWZv
-cmUsIEkgYmVsaWV2ZSB0aGUgY29ycmVjdCBmaXggaXMgZWl0aGVyIHRvIGRyb3AgYm90aA0KPiA+
-ID4gQ09ORklHX01JUFNfTzMyX0ZQNjRfU1VQUE9SVCBvciBkcm9wIHRoZSBvbmUgaW4NCj4gPiA+
-IG1pcHNfc2V0X3BlcnNvbmFsaXR5X2ZwKCkgYW5kIGFkZCBhbm90aGVyIG9uZSBpbiBhcmNoX2Vs
-Zl9wdF9wcm9jKCkNCj4gPiA+IHRvIHNldCBhIGdvb2QgZGVmYXVsdCBBQkkganVzdCBmb3IgdGhp
-cyBjYXNlIGFuZCB0aGVuIHJldHVybi4NCj4gPg0KPiA+IFNvdW5kcyBhYm91dCByaWdodC4NCj4g
-Pg0KPiA+IC0tDQo+ID4gTcOlbnMgUnVsbGfDpXJkDQo+ID4gbWFuc0BtYW5zci5jb20NCj4gPg0K
-PiANCj4gYWN0dWFsbHkgdGhlIGN1cnJlbnQgZGVmYXVsdCBvbmUgZm9yIG8zMiAoRlIwKSBpcyBm
-aW5lLiBJIHRoaW5rIHRoZXJlIGlzDQo+IG5vIG5lZWQNCj4gdG8gYWRkIGEgc3BlY2lhbCBPMzJf
-RlA2NF9TVVBQT1JUIGNhc2UgaGVyZSBzaW5jZSBpdCdzIHZlcnkgdW5saWtlbHkgZm9yDQo+IHRo
-ZQ0KPiBkZWZhdWx0IGZwIGFiaSBmb3IgbzMyIHRvIGNoYW5nZS4NCg0KSSBjYW4gZ3VhcmFudGVl
-IHRoYXQgdGhlIGRlZmF1bHQvb3JpZ2luYWwgd2lsbCBub3QgY2hhbmdlLg0KDQpUaGFua3MsDQpN
-YXR0aGV3DQo=
+On Thu, Feb 26, 2015 at 09:31:36AM +0000, Matthew Fortune wrote:
+> Markos Chandras <Markos.Chandras@imgtec.com>  writes:
+> > On Thu, Feb 26, 2015 at 09:14:41AM +0000, Måns Rullgård wrote:
+> > > Markos Chandras <markos.chandras@imgtec.com> writes:
+> > >
+> > > > On Tue, Feb 24, 2015 at 02:26:04PM +0000, Matthew Fortune wrote:
+> > > >> Måns Rullgård <mans@mansr.com> writes:
+> > > >> > Markos Chandras <markos.chandras@imgtec.com> writes:
+> > > >> >
+> > > >> > > Hi,
+> > > >> > >
+> > > >> > > On Tue, Feb 24, 2015 at 01:17:33PM +0000, Måns Rullgård wrote:
+> > > >> > >> This patch (well, the variant that made it into 4.0-rc1)
+> > > >> > >> breaks MIPS_ABI_FP_DOUBLE (the gcc default) apps on MIPS32.
+> > > >> > >>
+> > > >> > >
+> > > >> > > Thanks for the report.
+> > > >> > >
+> > > >> > >> > +void mips_set_personality_fp(struct arch_elf_state *state)
+> > {
+> > > >> > >> > +	/*
+> > > >> > >> > +	 * This function is only ever called for O32 ELFs so we
+> > should
+> > > >> > >> > +	 * not be worried about N32/N64 binaries.
+> > > >> > >> > +	 */
+> > > >> > >> >
+> > > >> > >> > -	case MIPS_ABI_FP_XX:
+> > > >> > >> > -	case MIPS_ABI_FP_ANY:
+> > > >> > >> > -		if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+> > > >> > >> > -			set_thread_flag(TIF_32BIT_FPREGS);
+> > > >> > >> > -		else
+> > > >> > >> > -			clear_thread_flag(TIF_32BIT_FPREGS);
+> > > >> > >> > +	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+> > > >> > >> > +		return;
+> > > >> > >>
+> > > >> > >> The problem is here.  In a 32-bit configuration,
+> > > >> > >> MIPS_O32_FP64_SUPPORT is always disabled, so the FP mode
+> > > >> > >> doesn't get set.  Simply deleting those two lines makes things
+> > > >> > >> work again, but that's probably not the right fix.
+> > > >>
+> > > >> I don't recall the final decision on default on/off for this option
+> > > >> but IIRC it is going to be off for everything except R6 in the
+> > > >> first kernel version and then turned on by default(/option removed)
+> > > >> when the code is proven for the following kernel version.
+> > > >>
+> > > >> > >>
+> > > >> > > I had the impression that the loader would have set the FP mode
+> > > >> > > earlier on.  But that only may happen with the latest version
+> > > >> > > of the tools.
+> > > >> > >
+> > > >> > > Perhaps instead of dropping these two lines we need a similar
+> > > >> > > check on the arch_elf_pt_proc so we don't mess with the default
+> > FPI abi?
+> > > >> > >
+> > > >> > > Having said that, dropping these two lines should be fine, it
+> > > >> > > just means you do a little bit of extra work when loading your
+> > > >> > > ELF files to check for ABI compatibility which shouldn't matter
+> > in your case.
+> > > >> >
+> > > >> > There's another early return like this in arch_check_elf() which
+> > > >> > should probably go as well, or everything will end up with the
+> > default mode.
+> > > >>
+> > > >> Ironically I discussed these changes with Markos in an attempt to
+> > > >> make all the new changes benign when:
+> > > >>
+> > > >> !config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT)
+> > > >>
+> > > >> Clearly this has backfired. I will have to re-read the version of
+> > > >> the code in 4.0-rc1 to see what is the root cause. The intention
+> > > >> was that without the config option then the kernel would blindly
+> > > >> continue to assume that all O32 binaries would run in the original
+> > > >> TIF_32BIT_FPREGS mode. As I recall, the callers to
+> > > >> mips_set_personality_fp were setting this mode which is why the
+> > simple early return was added.
+> > > >>
+> > > >> Thanks,
+> > > >> Matthew
+> > > >
+> > > > I think I can see what is going on. The problem is that
+> > > > mips_set_personality_fp() (as already mentioned) is not executed for
+> > > > !CONFIG_MIPS_O32_FP64_SUPPORT. The reason this is a problem (i think
+> > > > this could only happen in 64-bit)
+> > >
+> > > It's definitely causing problems on my 74Kf system.
+> > >
+> > > > is that SET_PERSONALITY2 clears all the thread flags related to
+> > > > 32-bit and FPU. The 32-bit flags will be set again by the
+> > > > SET_PERSONALITY32_O32 but the FPU flags are not since the entire
+> 
+> OK, so this sounds like what differs from what I remember seeing. I thought
+> the various SET_PERSONALITY macros were setting up the default FPU flags
+> (default as in to match the default O32 FP ABI) and then this would be
+> updated in mips_set_personality_fp(). Iirc then mips_set_personality_fp
+> is only called for the O32 case so the FPU related flags must be correctly
+> set for n32/n64 in the macros. Why not just update the O32 macros to
+> set the mode?
+Yes that should be fine too.
+
+Mans, could you try the following patch please since it seems you already have
+a suitable environment ready to reproduce this problem
+
+diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
+index 535f196ffe02..694925a26924 100644
+--- a/arch/mips/include/asm/elf.h
++++ b/arch/mips/include/asm/elf.h
+@@ -294,6 +294,9 @@ do {									\
+ 	if (personality(current->personality) != PER_LINUX)		\
+ 		set_personality(PER_LINUX);				\
+ 									\
++	clear_thread_flag(TIF_HYBRID_FPREGS);				\
++	set_thread_flag(TIF_32BIT_FPREGS);				\
++									\
+ 	mips_set_personality_fp(state);					\
+ 									\
+ 	current->thread.abi = &mips_abi;				\
+@@ -319,6 +322,8 @@ do {									\
+ 	do {								\
+ 		set_thread_flag(TIF_32BIT_REGS);			\
+ 		set_thread_flag(TIF_32BIT_ADDR);			\
++		clear_thread_flag(TIF_HYBRID_FPREGS);			\
++		set_thread_flag(TIF_32BIT_FPREGS);			\
+ 									\
+ 		mips_set_personality_fp(state);				\
+ 									\
+
+
+If that works, I will submit a format patch asap.
+
+-- 
+markos

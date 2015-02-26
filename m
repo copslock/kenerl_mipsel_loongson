@@ -1,57 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 23:43:32 +0100 (CET)
-Received: from mail-ie0-f181.google.com ([209.85.223.181]:39465 "EHLO
-        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007512AbbBZWn3ns2dZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 23:43:29 +0100
-Received: by iecvy18 with SMTP id vy18so22415143iec.6
-        for <linux-mips@linux-mips.org>; Thu, 26 Feb 2015 14:43:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=qVMJc6H1uZ1GtAMXjzXmnl+/FujOSjqvvy+qIxFrQpw=;
-        b=C4U5yPUw7G+dSqkenxQduFVbO4ohX+uMFjBNk/mE310WT/yulO5gRG72ANFmHX9XqW
-         YaJIYhopQgfcd0jFTkzuak7Xu+17t4k6MuX14S1DHWj43hwqwdmv+kQy4lVZIAnzHBvS
-         TqM1bGBl1EmUSlzppa3dXdjnTVWgdC2KPWteJM2Ea19N8qWmtHmFNUsrMgXz7ThYWhEd
-         qSEURZpH/H0sHwa7clWp5vy9ycu8zhe93qBcSjoZW2k/cLiWJxgBNZ4SocAYf/pqx6WV
-         K36daw2hyGF7aqCUB74YIjltVoP3J7lBm7nda+ZPlwW3Qa1McIjfRh8v3lhf2LFtQcTx
-         mocA==
-X-Received: by 10.107.46.230 with SMTP id u99mr14620558iou.21.1424990604425;
-        Thu, 26 Feb 2015 14:43:24 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id f1sm1174589iof.30.2015.02.26.14.43.22
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 26 Feb 2015 14:43:23 -0800 (PST)
-Message-ID: <54EFA189.3010509@gmail.com>
-Date:   Thu, 26 Feb 2015 14:43:21 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 00:01:08 +0100 (CET)
+Received: from pandora.arm.linux.org.uk ([78.32.30.218]:35584 "EHLO
+        pandora.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007367AbbBZXBHCq1Qh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 00:01:07 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=pandora-2014;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=o/XGHQl70PJvrUzMRL4+N9up6yUDNmM6DWFJp+oiBAg=;
+        b=YUhPOjtlBCVtSEezXURKVnC47LL1wtzpPVjBC4tRApXOTrvElxDfAez22wP9bnsz4kzFZ0Iux4iZ9SenkIj58HhNMCMUYtQtifH2N7SmZhcv+GTZ1EjHUvd4cIjH6od1GPglqFiNKQTp7UTFeMX2sblcumIv0DoZMxBVNQ/SGpk=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:38435)
+        by pandora.arm.linux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1YR7QS-0005Q3-Io; Thu, 26 Feb 2015 23:01:00 +0000
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1YR7QM-0001B0-4w; Thu, 26 Feb 2015 23:00:54 +0000
+Date:   Thu, 26 Feb 2015 23:00:52 +0000
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
 To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     Ingo Molnar <mingo@kernel.org>,
-        Hector Marco Gisbert <hecmargi@upv.es>,
-        Kees Cook <keescook@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ismael Ripoll <iripoll@upv.es>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
+Cc:     Ingo Molnar <mingo@kernel.org>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linuxppc-dev@lists.ozlabs.org
+        Kees Cook <keescook@chromium.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Hector Marco Gisbert <hecmargi@upv.es>,
+        LKML <linux-kernel@vger.kernel.org>,
+        ismael Ripoll <iripoll@upv.es>, linuxppc-dev@lists.ozlabs.org,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
 Subject: Re: [PATCH] Fix offset2lib issue for x86*, ARM*, PowerPC and MIPS
-References: <54EB735F.5030207@upv.es>        <CAGXu5j+SBRcj+BGyxEwUzgKsB2fdzNiPY37Q=JTsf=-QbGwoGA@mail.gmail.com>        <20150223205436.15133mg1kpyojyik@webmail.upv.es>        <20150224073906.GA16422@gmail.com> <20150226143815.09386fe280c7bd8797048bb2@linux-foundation.org>
+Message-ID: <20150226230052.GN8656@n2100.arm.linux.org.uk>
+References: <54EB735F.5030207@upv.es>
+ <CAGXu5j+SBRcj+BGyxEwUzgKsB2fdzNiPY37Q=JTsf=-QbGwoGA@mail.gmail.com>
+ <20150223205436.15133mg1kpyojyik@webmail.upv.es>
+ <20150224073906.GA16422@gmail.com>
+ <20150226143815.09386fe280c7bd8797048bb2@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20150226143815.09386fe280c7bd8797048bb2@linux-foundation.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46012
+X-archive-position: 46013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,42 +59,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/26/2015 02:38 PM, Andrew Morton wrote:
-[...]
->
-> From: Andrew Morton<akpm@linux-foundation.org>
-> Subject: fix-offset2lib-issue-for-x86-arm-powerpc-and-mips-fix
->
-> Consolidate randomize_et_dyn() implementations into fs/binfmt_elf.c.
->
-> There doesn't seem to be a compile-time way of making randomize_et_dyn()
-> go away on architectures which don't need it, so mark it __weak to cause
-> it to be discarded at link time.
->
-> Cc: "H. Peter Anvin"<hpa@zytor.com>
-> Cc: Benjamin Herrenschmidt<benh@kernel.crashing.org>
-> Cc: Catalin Marinas<catalin.marinas@arm.com>
-> Cc: Hector Marco Gisbert<hecmargi@upv.es>
-> Cc: Hector Marco-Gisbert<hecmargi@upv.es>
-> Cc: Ingo Molnar<mingo@kernel.org>
-> Cc: Ismael Ripoll<iripoll@upv.es>
-> Cc: Kees Cook<keescook@chromium.org>
-> Cc: Ralf Baechle<ralf@linux-mips.org>
-> Cc: Russell King<rmk@arm.linux.org.uk>
-> Cc: Thomas Gleixner<tglx@linutronix.de>
-> Cc: Will Deacon<will.deacon@arm.com>
-> Signed-off-by: Andrew Morton<akpm@linux-foundation.org>
-[...]
-> diff -puN arch/arm64/include/asm/elf.h~fix-offset2lib-issue-for-x86-arm-powerpc-and-mips-fix arch/arm64/include/asm/elf.h
-> --- a/arch/arm64/include/asm/elf.h~fix-offset2lib-issue-for-x86-arm-powerpc-and-mips-fix
-> +++ a/arch/arm64/include/asm/elf.h
-> @@ -1,5 +1,5 @@
->   /*
-> - * Copyright (C) 2012 ARM Ltd.
-> + * Copyright (C) 20q12 ARM Ltd.
+On Thu, Feb 26, 2015 at 02:38:15PM -0800, Andrew Morton wrote:
+> diff -puN arch/arm64/Kconfig~fix-offset2lib-issue-for-x86-arm-powerpc-and-mips-fix arch/arm64/Kconfig
+> --- a/arch/arm64/Kconfig~fix-offset2lib-issue-for-x86-arm-powerpc-and-mips-fix
+> +++ a/arch/arm64/Kconfig
+> @@ -1,4 +1,4 @@
+> -config ARM64
+> +qconfig ARM64
 
-This particular change looks like it may be a typo.
+Is this a typo?
 
->    *
->    * This program is free software; you can redistribute it and/or modify
->    * it under the terms of the GNU General Public License version 2 as
+-- 
+FTTC broadband for 0.8mile line: currently at 10.5Mbps down 400kbps up
+according to speedtest.net.

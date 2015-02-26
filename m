@@ -1,67 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 02:32:38 +0100 (CET)
-Received: from szxga01-in.huawei.com ([119.145.14.64]:47905 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007377AbbBZBcbPzNC8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 02:32:31 +0100
-Received: from 172.24.2.119 (EHLO szxeml430-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CJX56588;
-        Thu, 26 Feb 2015 09:32:02 +0800 (CST)
-Received: from localhost.localdomain (10.175.100.166) by
- szxeml430-hub.china.huawei.com (10.82.67.185) with Microsoft SMTP Server id
- 14.3.158.1; Thu, 26 Feb 2015 09:31:47 +0800
-From:   Yijing Wang <wangyijing@huawei.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-CC:     Jiang Liu <jiang.liu@linux.intel.com>, <linux-pci@vger.kernel.org>,
-        Yinghai Lu <yinghai@kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Russell King <linux@arm.linux.org.uk>, <x86@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Tony Luck <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Guan Xuetao" <gxt@mprc.pku.edu.cn>, <linux-alpha@vger.kernel.org>,
-        <linux-m68k@lists.linux-m68k.org>, Liviu Dudau <liviu@dudau.co.uk>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Yijing Wang" <wangyijing@huawei.com>,
-        Richard Henderson <rth@twiddle.net>,
-        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        <linux-mips@linux-mips.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, <xen-devel@lists.xenproject.org>
-Subject: [PATCH v3 07/30] PCI: Pass PCI domain number combined with root bus number
-Date:   Thu, 26 Feb 2015 09:29:24 +0800
-Message-ID: <1424914187-21027-8-git-send-email-wangyijing@huawei.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1424914187-21027-1-git-send-email-wangyijing@huawei.com>
-References: <1424914187-21027-1-git-send-email-wangyijing@huawei.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 08:47:51 +0100 (CET)
+Received: from mail-ig0-f178.google.com ([209.85.213.178]:63810 "EHLO
+        mail-ig0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007218AbbBZHrtt3QAN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 08:47:49 +0100
+Received: by mail-ig0-f178.google.com with SMTP id hl2so12536377igb.5
+        for <linux-mips@linux-mips.org>; Wed, 25 Feb 2015 23:47:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=XzTT1BqGp+KnErwV7YOUAhUnhLbkGYfV647Ya6zz2xY=;
+        b=HK/bb8u/yBuKGDOfHfcY3+J0lHKjZOXe2RsaJbvvivA6WziP9y0W5loGrALGXqG9Q4
+         LJXDP7+PNc0Ab6eKgnoKFUoFg8uDdy+7/5r6MjvIzaOyvflh4L2/MBm3gzV6xsxtA67p
+         QWmluMME5wE+7UTMwT4T/v3YnfoIs07n43n9CyUwOb3Ofs02j6eRI87uipPg6GmCpQhG
+         0UYE1Ju9FAmdRFJ5hi6Cmn8xPBll/2/8v96M//r/pZblAYg6AROnLU75Nech3y9Orc8H
+         DV8Qr3d4sE7la647qYUrpLdYUMEctKdjtFwalcc1U/LBomRtkrgU+NrIAAhW038A/RUu
+         CGIg==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.100.166]
-X-CFilter-Loop: Reflected
-Return-Path: <wangyijing@huawei.com>
+X-Received: by 10.42.29.133 with SMTP id r5mr8128712icc.17.1424936864251; Wed,
+ 25 Feb 2015 23:47:44 -0800 (PST)
+Received: by 10.64.176.238 with HTTP; Wed, 25 Feb 2015 23:47:44 -0800 (PST)
+In-Reply-To: <20150219194617.GT544@vapier>
+References: <20150219194617.GT544@vapier>
+Date:   Thu, 26 Feb 2015 15:47:44 +0800
+Message-ID: <CAAhV-H5+kQm_qAz7DLV4Rk9EqB4xJjmu1NV7kKd46aneKFZO-A@mail.gmail.com>
+Subject: Re: custom kernel on lemote-3a-itx (Loongson-3A) crashes in userspace
+From:   Huacai Chen <chenhuacai@gmail.com>
+To:     Mike Frysinger <vapier@gentoo.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45983
+X-archive-position: 45984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangyijing@huawei.com
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,291 +50,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now we could pass PCI domain combined with bus number
-in u32 argu. Because in arm/arm64, PCI domain number
-is assigned by pci_bus_assign_domain_nr(). So we leave
-pci_scan_root_bus() and pci_create_root_bus() in arm/arm64
-unchanged. A new function pci_host_assign_domain_nr()
-will be introduced for arm/arm64 to assign domain number
-in later patch.
+Please try the toolchain here:
+http://dev.lemote.com/files/resource/toolchain/cross-compile/
 
-Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-CC: Richard Henderson <rth@twiddle.net>
-CC: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-CC: Matt Turner <mattst88@gmail.com>
-CC: Tony Luck <tony.luck@intel.com>
-CC: Fenghua Yu <fenghua.yu@intel.com>
-CC: Michal Simek <monstr@monstr.eu>
-CC: Ralf Baechle <ralf@linux-mips.org>
-CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC: Paul Mackerras <paulus@samba.org>
-CC: Michael Ellerman <mpe@ellerman.id.au>
-CC: Sebastian Ott <sebott@linux.vnet.ibm.com>
-CC: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-CC: "David S. Miller" <davem@davemloft.net>
-CC: Chris Metcalf <cmetcalf@ezchip.com>
-CC: Thomas Gleixner <tglx@linutronix.de>
-CC: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-CC: linux-alpha@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
-CC: linux-ia64@vger.kernel.org
-CC: linux-mips@linux-mips.org
-CC: linuxppc-dev@lists.ozlabs.org
-CC: linux-s390@vger.kernel.org
-CC: linux-sh@vger.kernel.org
-CC: sparclinux@vger.kernel.org
-CC: xen-devel@lists.xenproject.org
----
- arch/alpha/kernel/pci.c          |    5 +++--
- arch/alpha/kernel/sys_nautilus.c |    3 ++-
- arch/ia64/pci/pci.c              |    4 ++--
- arch/ia64/sn/kernel/io_init.c    |    5 +++--
- arch/microblaze/pci/pci-common.c |    5 +++--
- arch/mips/pci/pci.c              |    4 ++--
- arch/powerpc/kernel/pci-common.c |    5 +++--
- arch/s390/pci/pci.c              |    5 +++--
- arch/sh/drivers/pci/pci.c        |    5 +++--
- arch/sparc/kernel/pci.c          |    5 +++--
- arch/tile/kernel/pci.c           |    4 ++--
- arch/tile/kernel/pci_gx.c        |    5 +++--
- arch/x86/pci/acpi.c              |    6 +++---
- arch/x86/pci/common.c            |    3 ++-
- drivers/pci/xen-pcifront.c       |    5 +++--
- 15 files changed, 40 insertions(+), 29 deletions(-)
-
-diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
-index 518b767..b053888 100644
---- a/arch/alpha/kernel/pci.c
-+++ b/arch/alpha/kernel/pci.c
-@@ -336,8 +336,9 @@ common_init_pci(void)
- 		pci_add_resource_offset(&resources, hose->mem_space,
- 					hose->mem_space->start);
- 
--		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
--					hose, &resources);
-+		bus = pci_scan_root_bus(NULL,
-+				PCI_DOMBUS(hose->index, next_busno), alpha_mv.pci_ops,
-+				hose, &resources);
- 		if (bus)
- 			pci_bus_add_devices(bus);
- 		hose->bus = bus;
-diff --git a/arch/alpha/kernel/sys_nautilus.c b/arch/alpha/kernel/sys_nautilus.c
-index 2c864bb..f7bfdf3 100644
---- a/arch/alpha/kernel/sys_nautilus.c
-+++ b/arch/alpha/kernel/sys_nautilus.c
-@@ -206,7 +206,8 @@ nautilus_init_pci(void)
- 	unsigned long memtop = max_low_pfn << PAGE_SHIFT;
- 
- 	/* Scan our single hose.  */
--	bus = pci_scan_bus_legacy(0, alpha_mv.pci_ops, hose);
-+	bus = pci_scan_bus_legacy(PCI_DOMBUS(hose->index, 0),
-+			alpha_mv.pci_ops, hose);
- 	hose->bus = bus;
- 	pcibios_claim_one_bus(bus);
- 
-diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
-index 48cc657..e4cda61 100644
---- a/arch/ia64/pci/pci.c
-+++ b/arch/ia64/pci/pci.c
-@@ -465,8 +465,8 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 	 * should handle the case here, but it appears that IA64 hasn't
- 	 * such quirk. So we just ignore the case now.
- 	 */
--	pbus = pci_create_root_bus(NULL, bus, &pci_root_ops, controller,
--				   &info->resources);
-+	pbus = pci_create_root_bus(NULL, PCI_DOMBUS(domain, bus),
-+			&pci_root_ops, controller, &info->resources);
- 	if (!pbus) {
- 		pci_free_resource_list(&info->resources);
- 		__release_pci_root_info(info);
-diff --git a/arch/ia64/sn/kernel/io_init.c b/arch/ia64/sn/kernel/io_init.c
-index 63b43a6..bcdc5b8 100644
---- a/arch/ia64/sn/kernel/io_init.c
-+++ b/arch/ia64/sn/kernel/io_init.c
-@@ -266,8 +266,9 @@ sn_pci_controller_fixup(int segment, int busnum, struct pci_bus *bus)
- 	pci_add_resource_offset(&resources,	&res[1],
- 			prom_bussoft_ptr->bs_legacy_mem);
- 
--	bus = pci_scan_root_bus(NULL, busnum, &pci_root_ops, controller,
--				&resources);
-+	bus = pci_scan_root_bus(NULL,
-+			PCI_DOMBUS(controller->segment, busnum),
-+			&pci_root_ops, controller, &resources);
-  	if (bus == NULL) {
- 		kfree(res);
- 		kfree(controller);
-diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
-index d8bbad9..5c332c0 100644
---- a/arch/microblaze/pci/pci-common.c
-+++ b/arch/microblaze/pci/pci-common.c
-@@ -1350,8 +1350,9 @@ static void pcibios_scan_phb(struct pci_controller *hose)
- 
- 	pcibios_setup_phb_resources(hose, &resources);
- 
--	bus = pci_scan_root_bus(hose->parent, hose->first_busno,
--				hose->ops, hose, &resources);
-+	bus = pci_scan_root_bus(hose->parent,
-+			PCI_DOMBUS(hose->global_number, hose->first_busno),
-+			hose->ops, hose, &resources);
- 	if (bus == NULL) {
- 		pr_err("Failed to create bus for PCI domain %04x\n",
- 		       hose->global_number);
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 9eb54b5..980755a 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -92,8 +92,8 @@ static void pcibios_scanbus(struct pci_controller *hose)
- 	pci_add_resource_offset(&resources,
- 				hose->mem_resource, hose->mem_offset);
- 	pci_add_resource_offset(&resources, hose->io_resource, hose->io_offset);
--	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
--				&resources);
-+	bus = pci_scan_root_bus(NULL, PCI_DOMBUS(hose->index, next_busno),
-+			hose->pci_ops, hose, &resources);
- 	if (!bus)
- 		pci_free_resource_list(&resources);
- 
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 2a525c9..78cd41b 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -1612,8 +1612,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
- 	pci_add_resource(&resources, &hose->busn);
- 
- 	/* Create an empty bus for the toplevel */
--	bus = pci_create_root_bus(hose->parent, hose->first_busno,
--				  hose->ops, hose, &resources);
-+	bus = pci_create_root_bus(hose->parent,
-+			PCI_DOMBUS(hose->global_number, hose->first_busno),
-+			hose->ops, hose, &resources);
- 	if (bus == NULL) {
- 		pr_err("Failed to create bus for PCI domain %04x\n",
- 			hose->global_number);
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 1534e5a..f9c6800 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -770,8 +770,9 @@ static int zpci_scan_bus(struct zpci_dev *zdev)
- 	if (ret)
- 		return ret;
- 
--	zdev->bus = pci_scan_root_bus(NULL, ZPCI_BUS_NR, &pci_root_ops,
--				      zdev, &resources);
-+	zdev->bus = pci_scan_root_bus(NULL,
-+			PCI_DOMBUS(zdev->domain, ZPCI_BUS_NR), &pci_root_ops,
-+			zdev, &resources);
- 	if (!zdev->bus) {
- 		zpci_cleanup_bus_resources(zdev);
- 		return -EIO;
-diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-index efc1051..7ee0772 100644
---- a/arch/sh/drivers/pci/pci.c
-+++ b/arch/sh/drivers/pci/pci.c
-@@ -52,8 +52,9 @@ static void pcibios_scanbus(struct pci_channel *hose)
- 		pci_add_resource_offset(&resources, res, offset);
- 	}
- 
--	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
--				&resources);
-+	bus = pci_scan_root_bus(NULL,
-+			PCI_DOMBUS(hose->index, next_busno),
-+			hose->pci_ops, hose, &resources);
- 	hose->bus = bus;
- 
- 	need_domain_info = need_domain_info || hose->index;
-diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-index 9ce5afe..0af7c58 100644
---- a/arch/sparc/kernel/pci.c
-+++ b/arch/sparc/kernel/pci.c
-@@ -667,8 +667,9 @@ struct pci_bus *pci_scan_one_pbm(struct pci_pbm_info *pbm,
- 	pbm->busn.end	= pbm->pci_last_busno;
- 	pbm->busn.flags	= IORESOURCE_BUS;
- 	pci_add_resource(&resources, &pbm->busn);
--	bus = pci_create_root_bus(parent, pbm->pci_first_busno, pbm->pci_ops,
--				  pbm, &resources);
-+	bus = pci_create_root_bus(parent,
-+			PCI_DOMBUS(pbm->index, pbm->pci_first_busno),
-+			pbm->pci_ops, pbm, &resources);
- 	if (!bus) {
- 		printk(KERN_ERR "Failed to create bus for %s\n",
- 		       node->full_name);
-diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
-index 9475a74..2111d71 100644
---- a/arch/tile/kernel/pci.c
-+++ b/arch/tile/kernel/pci.c
-@@ -306,8 +306,8 @@ int __init pcibios_init(void)
- 
- 			pci_add_resource(&resources, &ioport_resource);
- 			pci_add_resource(&resources, &iomem_resource);
--			bus = pci_scan_root_bus(NULL, 0, controller->ops,
--						controller, &resources);
-+			bus = pci_scan_root_bus(NULL, PCI_DOMBUS(controller->index, 0),
-+					controller->ops, controller, &resources);
- 			controller->root_bus = bus;
- 			controller->last_busno = bus->busn_res.end;
- 		}
-diff --git a/arch/tile/kernel/pci_gx.c b/arch/tile/kernel/pci_gx.c
-index d7a0729..1e6ff84 100644
---- a/arch/tile/kernel/pci_gx.c
-+++ b/arch/tile/kernel/pci_gx.c
-@@ -881,8 +881,9 @@ int __init pcibios_init(void)
- 					controller->mem_offset);
- 		pci_add_resource(&resources, &controller->io_space);
- 		controller->first_busno = next_busno;
--		bus = pci_scan_root_bus(NULL, next_busno, controller->ops,
--					controller, &resources);
-+		bus = pci_scan_root_bus(NULL,
-+				PCI_DOMBUS(controller->index, next_busno),
-+				controller->ops, controller, &resources);
- 		controller->root_bus = bus;
- 		next_busno = bus->busn_res.end + 1;
- 	}
-diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
-index 6ac2738..5bfe983 100644
---- a/arch/x86/pci/acpi.c
-+++ b/arch/x86/pci/acpi.c
-@@ -424,9 +424,9 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		}
- 
- 		if (!setup_mcfg_map(info, domain, (u8)root->secondary.start,
--				    (u8)root->secondary.end, root->mcfg_addr))
--			bus = pci_create_root_bus(NULL, busnum, &pci_root_ops,
--						  sd, &resources);
-+					(u8)root->secondary.end, root->mcfg_addr))
-+			bus = pci_create_root_bus(NULL, PCI_DOMBUS(domain, busnum),
-+					&pci_root_ops, sd, &resources);
- 
- 		if (bus) {
- 			pci_scan_child_bus(bus);
-diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
-index 0cbc723..56f78bd 100644
---- a/arch/x86/pci/common.c
-+++ b/arch/x86/pci/common.c
-@@ -486,7 +486,8 @@ void pcibios_scan_root(int busnum)
- 	sd->node = x86_pci_root_bus_node(busnum);
- 	x86_pci_root_bus_resources(busnum, &resources);
- 	printk(KERN_DEBUG "PCI: Probing PCI hardware (bus %02x)\n", busnum);
--	bus = pci_scan_root_bus(NULL, busnum, &pci_root_ops, sd, &resources);
-+	bus = pci_scan_root_bus(NULL, PCI_DOMBUS(0, busnum),
-+			&pci_root_ops, sd, &resources);
- 	if (!bus) {
- 		pci_free_resource_list(&resources);
- 		kfree(sd);
-diff --git a/drivers/pci/xen-pcifront.c b/drivers/pci/xen-pcifront.c
-index 240ddbc..a010dfa 100644
---- a/drivers/pci/xen-pcifront.c
-+++ b/drivers/pci/xen-pcifront.c
-@@ -477,8 +477,9 @@ static int pcifront_scan_root(struct pcifront_device *pdev,
- 
- 	pci_lock_rescan_remove();
- 
--	b = pci_scan_root_bus(&pdev->xdev->dev, bus,
--				  &pcifront_bus_ops, sd, &resources);
-+	b = pci_scan_root_bus(&pdev->xdev->dev,
-+			PCI_DOMBUS(sd->domain, bus),
-+			&pcifront_bus_ops, sd, &resources);
- 	if (!b) {
- 		dev_err(&pdev->xdev->dev,
- 			"Error creating PCI Frontend Bus!\n");
--- 
-1.7.1
+On Fri, Feb 20, 2015 at 3:46 AM, Mike Frysinger <vapier@gentoo.org> wrote:
+> i've got a lemote desktop with a quad core Loongson-3A in it:
+> http://www.lemote.com/products/computer/fulong/348.html
+>
+> i'm trying to build my own kernel for it, but userspace just crashes on me :(.
+>
+> the current kernel is a precompiled one from lemote themselves, and things are
+> compiling/running fine with it.  but it's a bit stale and missing features i
+> want (like namespaces & seccomp).
+> $ uname -a
+> Linux lemote 3.5.0-9.lemote #1465 SMP PREEMPT Mon Aug 26 14:23:38 CST 2013 mips64 ICT Loongson-3A V0.5 FPU V0.1 lemote-3a-itx-a1101 GNU/Linux
+>
+> the userland is Gentoo.  it's an o32/n32/n64 multilib with n32 as the default.
+> most (if not all) of userland has been built with gcc-4.8.2 using
+> "-O2 -march=mips64 -mplt -pipe".
+> $ file /bin/bash
+> /bin/bash: ELF 32-bit LSB executable, MIPS, N32 MIPS64 version 1 (SYSV), dynamically linked, interpreter /lib32/ld.so.1, for GNU/Linux 2.6.16, stripped
+> $ /lib/libc.so.6
+> GNU C Library (Gentoo 2.19-r1 p3) stable release version 2.19, by Roland McGrath et al.
+> Copyright (C) 2014 Free Software Foundation, Inc.
+> This is free software; see the source for copying conditions.
+> There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+> PARTICULAR PURPOSE.
+> Compiled by GNU CC version 4.8.2.
+> Compiled on a Linux 3.14.0 system on 2014-09-09.
+> Available extensions:
+>         C stubs add-on version 2.1.2
+>         crypt add-on version 2.1 by Michael Glad and others
+>         GNU Libidn by Simon Josefsson
+>         Native POSIX Threads Library by Ulrich Drepper et al
+>         BIND-8.2.3-T5B
+> libc ABIs: MIPS_PLT UNIQUE
+> For bug reporting instructions, please see:
+> <http://bugs.gentoo.org/>.
+>
+> i first tried lemote's sources, which i grabbed their git tree from
+> dev.lemote.com.  i started at the same git tag (3.5.0-9.lemote) and used the
+> same .config as their precompiled kernel.  once it booted, most userland progs
+> would crash.  some would survive (like simple ones), but most would crash.
+>
+> i moved up to vanilla linux-3.18, starting with the same config, but got the
+> same behavior.
+>
+> i tried booting with the nofpu command line, but that didn't help.  i also
+> tried manually setting cpu_has_fpu to 0 in
+> arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h, but that didn't
+> help.
+>
+> i tried gcc-4.7.4, gcc-4.8.4, and gcc-4.9.2, but none of that helped.
+>
+> i enabled the debugging in arch/mips/mm/fault.c, and you can see the attached
+> dmesg with some of the example crashes.  when i looked at proc maps from other
+> binaries, it looks like those crashing addresses are close to real ones, but
+> slightly off (like a byte shift?).  i'm just guessing since i'm not actually
+> looking at the crashing app itself ... just assuming the maps are largely stable
+> (since they seem to be in other ones).
+>
+> i tried to use strace/gdb to narrow things down, but those both crash early, so
+> couldn't get anywhere :).
+>
+> any pointers ?
+> -mike

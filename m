@@ -1,49 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 10:30:05 +0100 (CET)
-Received: from mail-ie0-f174.google.com ([209.85.223.174]:44714 "EHLO
-        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007403AbbBZJaCP43M6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 10:30:02 +0100
-Received: by iecar1 with SMTP id ar1so12374815iec.11;
-        Thu, 26 Feb 2015 01:29:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=UiLZbRIl9PUT0wbWV13LslV3aEoGueFF+H5Y+RWaI0U=;
-        b=0LKx1FVBFHUhzGtekTzEzDpXv0Kr8coSf8G9NRSmTP6FQKJB4j++b6nvzTWIySe7uu
-         c/CbAc8Gis5XJrArplhJlnE+VBB3Orr2u8854iDSjarq2wfLUwZvvDtPcRPgCsRXyGns
-         Oq6OioXu/ruUiNyXF9rGEYFykfKy0uFa19IZqGI652Zs0UK3feVSeVHLjm62J3wrCTip
-         iUkNzyNUmqHIBQukwqyxgiPWfTY/q8v8GVBLr5Nbm0CNd7GrNsGFzhwR4rx6xmDkCX08
-         gZL4PjhOX5nV+OtLSKufFKpEXJX6WH5inYp218422/AsV0eNEAqMwgfqSDNY+z7n4ooX
-         g6tw==
-X-Received: by 10.107.170.220 with SMTP id g89mr10178004ioj.31.1424942996924;
- Thu, 26 Feb 2015 01:29:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Feb 2015 10:31:45 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:11499 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007403AbbBZJbnx6Ye6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Feb 2015 10:31:43 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id A55FE204139CD;
+        Thu, 26 Feb 2015 09:31:36 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 26 Feb 2015 09:31:37 +0000
+Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
+ LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
+ 14.03.0210.002; Thu, 26 Feb 2015 09:31:37 +0000
+From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        =?utf-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Paul Burton <Paul.Burton@imgtec.com>
+Subject: RE: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
+ mode checks
+Thread-Topic: [PATCH v3] MIPS: kernel: elf: Improve the overall ABI and FPU
+ mode checks
+Thread-Index: AQHQUaSmTpUqzW/P5ESAwcGgwy98jp0CqKUAgAAAwfA=
+Date:   Thu, 26 Feb 2015 09:31:36 +0000
+Message-ID: <6D39441BF12EF246A7ABCE6654B0235320FE182B@LEMAIL01.le.imgtec.org>
+References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
+ <1422893593-1291-1-git-send-email-markos.chandras@imgtec.com>
+ <yw1xwq3778k2.fsf@unicorn.mansr.com>
+ <20150224135225.GA23928@mchandras-linux.le.imgtec.org>
+ <yw1xsidv76b6.fsf@unicorn.mansr.com>
+ <6D39441BF12EF246A7ABCE6654B0235320FDEE92@LEMAIL01.le.imgtec.org>
+ <20150226085943.GA26793@mchandras-linux.le.imgtec.org>
+ <yw1x8ufl6nlq.fsf@unicorn.mansr.com>
+ <20150226092406.GA27701@mchandras-linux.le.imgtec.org>
+In-Reply-To: <20150226092406.GA27701@mchandras-linux.le.imgtec.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.159.101]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Received: by 10.64.252.202 with HTTP; Thu, 26 Feb 2015 01:29:36 -0800 (PST)
-In-Reply-To: <1422003369-3019-2-git-send-email-chenhc@lemote.com>
-References: <1422003369-3019-1-git-send-email-chenhc@lemote.com> <1422003369-3019-2-git-send-email-chenhc@lemote.com>
-From:   Alexandre Courbot <gnurou@gmail.com>
-Date:   Thu, 26 Feb 2015 18:29:36 +0900
-Message-ID: <CAAVeFuLgu8W7EaxbZHR9cnJ=jpycYEXZm=ccEN_e-NHFZq-smw@mail.gmail.com>
-Subject: Re: [PATCH V7 4/8] MIPS: Move Loongson GPIO driver to drivers/gpio
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gnurou@gmail.com>
+Return-Path: <Matthew.Fortune@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 45992
+X-archive-position: 45993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnurou@gmail.com
+X-original-sender: Matthew.Fortune@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,87 +63,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 23, 2015 at 5:56 PM, Huacai Chen <chenhc@lemote.com> wrote:
-> Move Loongson-2's GPIO driver to drivers/gpio and add Kconfig options.
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-
-Same here, this patch places GPIO driver code where it should be, but
-we need to ensure there is no breakage before taking this code.
-
-> ---
->  arch/mips/configs/lemote2f_defconfig               |    1 +
->  arch/mips/loongson/common/Makefile                 |    1 -
->  drivers/gpio/Kconfig                               |    6 ++++++
->  drivers/gpio/Makefile                              |    1 +
->  .../common/gpio.c => drivers/gpio/gpio-loongson.c  |    0
->  5 files changed, 8 insertions(+), 1 deletions(-)
->  rename arch/mips/loongson/common/gpio.c => drivers/gpio/gpio-loongson.c (100%)
->
-> diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-> index e51aad9..0cbc986 100644
-> --- a/arch/mips/configs/lemote2f_defconfig
-> +++ b/arch/mips/configs/lemote2f_defconfig
-> @@ -171,6 +171,7 @@ CONFIG_SERIAL_8250_FOURPORT=y
->  CONFIG_LEGACY_PTY_COUNT=16
->  CONFIG_HW_RANDOM=y
->  CONFIG_RTC=y
-> +CONFIG_GPIO_LOONGSON=y
->  CONFIG_THERMAL=y
->  CONFIG_MEDIA_SUPPORT=m
->  CONFIG_VIDEO_DEV=m
-> diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
-> index d87e033..e70c33f 100644
-> --- a/arch/mips/loongson/common/Makefile
-> +++ b/arch/mips/loongson/common/Makefile
-> @@ -4,7 +4,6 @@
->
->  obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
->      bonito-irq.o mem.o machtype.o platform.o
-> -obj-$(CONFIG_GPIOLIB) += gpio.o
->  obj-$(CONFIG_PCI) += pci.o
->
->  #
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index 633ec21..3ac5473 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -475,6 +475,12 @@ config GPIO_GRGPIO
->           Select this to support Aeroflex Gaisler GRGPIO cores from the GRLIB
->           VHDL IP core library.
->
-> +config GPIO_LOONGSON
-> +       tristate "Loongson-2 GPIO support"
-> +       depends on CPU_LOONGSON2
-> +       help
-> +         driver for GPIO functionality on Loongson-2F processors.
-> +
->  config GPIO_TB10X
->         bool
->         select GENERIC_IRQ_CHIP
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index 81755f1..caccfad 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -41,6 +41,7 @@ obj-$(CONFIG_GPIO_JANZ_TTL)   += gpio-janz-ttl.o
->  obj-$(CONFIG_GPIO_KEMPLD)      += gpio-kempld.o
->  obj-$(CONFIG_ARCH_KS8695)      += gpio-ks8695.o
->  obj-$(CONFIG_GPIO_INTEL_MID)   += gpio-intel-mid.o
-> +obj-$(CONFIG_GPIO_LOONGSON)    += gpio-loongson.o
->  obj-$(CONFIG_GPIO_LP3943)      += gpio-lp3943.o
->  obj-$(CONFIG_ARCH_LPC32XX)     += gpio-lpc32xx.o
->  obj-$(CONFIG_GPIO_LYNXPOINT)   += gpio-lynxpoint.o
-> diff --git a/arch/mips/loongson/common/gpio.c b/drivers/gpio/gpio-loongson.c
-> similarity index 100%
-> rename from arch/mips/loongson/common/gpio.c
-> rename to drivers/gpio/gpio-loongson.c
-> --
-> 1.7.7.3
->
->
->
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-gpio" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+TWFya29zIENoYW5kcmFzIDxNYXJrb3MuQ2hhbmRyYXNAaW1ndGVjLmNvbT4gIHdyaXRlczoNCj4g
+T24gVGh1LCBGZWIgMjYsIDIwMTUgYXQgMDk6MTQ6NDFBTSArMDAwMCwgTcOlbnMgUnVsbGfDpXJk
+IHdyb3RlOg0KPiA+IE1hcmtvcyBDaGFuZHJhcyA8bWFya29zLmNoYW5kcmFzQGltZ3RlYy5jb20+
+IHdyaXRlczoNCj4gPg0KPiA+ID4gT24gVHVlLCBGZWIgMjQsIDIwMTUgYXQgMDI6MjY6MDRQTSAr
+MDAwMCwgTWF0dGhldyBGb3J0dW5lIHdyb3RlOg0KPiA+ID4+IE3DpW5zIFJ1bGxnw6VyZCA8bWFu
+c0BtYW5zci5jb20+IHdyaXRlczoNCj4gPiA+PiA+IE1hcmtvcyBDaGFuZHJhcyA8bWFya29zLmNo
+YW5kcmFzQGltZ3RlYy5jb20+IHdyaXRlczoNCj4gPiA+PiA+DQo+ID4gPj4gPiA+IEhpLA0KPiA+
+ID4+ID4gPg0KPiA+ID4+ID4gPiBPbiBUdWUsIEZlYiAyNCwgMjAxNSBhdCAwMToxNzozM1BNICsw
+MDAwLCBNw6VucyBSdWxsZ8OlcmQgd3JvdGU6DQo+ID4gPj4gPiA+PiBUaGlzIHBhdGNoICh3ZWxs
+LCB0aGUgdmFyaWFudCB0aGF0IG1hZGUgaXQgaW50byA0LjAtcmMxKQ0KPiA+ID4+ID4gPj4gYnJl
+YWtzIE1JUFNfQUJJX0ZQX0RPVUJMRSAodGhlIGdjYyBkZWZhdWx0KSBhcHBzIG9uIE1JUFMzMi4N
+Cj4gPiA+PiA+ID4+DQo+ID4gPj4gPiA+DQo+ID4gPj4gPiA+IFRoYW5rcyBmb3IgdGhlIHJlcG9y
+dC4NCj4gPiA+PiA+ID4NCj4gPiA+PiA+ID4+ID4gK3ZvaWQgbWlwc19zZXRfcGVyc29uYWxpdHlf
+ZnAoc3RydWN0IGFyY2hfZWxmX3N0YXRlICpzdGF0ZSkNCj4gew0KPiA+ID4+ID4gPj4gPiArCS8q
+DQo+ID4gPj4gPiA+PiA+ICsJICogVGhpcyBmdW5jdGlvbiBpcyBvbmx5IGV2ZXIgY2FsbGVkIGZv
+ciBPMzIgRUxGcyBzbyB3ZQ0KPiBzaG91bGQNCj4gPiA+PiA+ID4+ID4gKwkgKiBub3QgYmUgd29y
+cmllZCBhYm91dCBOMzIvTjY0IGJpbmFyaWVzLg0KPiA+ID4+ID4gPj4gPiArCSAqLw0KPiA+ID4+
+ID4gPj4gPg0KPiA+ID4+ID4gPj4gPiAtCWNhc2UgTUlQU19BQklfRlBfWFg6DQo+ID4gPj4gPiA+
+PiA+IC0JY2FzZSBNSVBTX0FCSV9GUF9BTlk6DQo+ID4gPj4gPiA+PiA+IC0JCWlmICghY29uZmln
+X2VuYWJsZWQoQ09ORklHX01JUFNfTzMyX0ZQNjRfU1VQUE9SVCkpDQo+ID4gPj4gPiA+PiA+IC0J
+CQlzZXRfdGhyZWFkX2ZsYWcoVElGXzMyQklUX0ZQUkVHUyk7DQo+ID4gPj4gPiA+PiA+IC0JCWVs
+c2UNCj4gPiA+PiA+ID4+ID4gLQkJCWNsZWFyX3RocmVhZF9mbGFnKFRJRl8zMkJJVF9GUFJFR1Mp
+Ow0KPiA+ID4+ID4gPj4gPiArCWlmICghY29uZmlnX2VuYWJsZWQoQ09ORklHX01JUFNfTzMyX0ZQ
+NjRfU1VQUE9SVCkpDQo+ID4gPj4gPiA+PiA+ICsJCXJldHVybjsNCj4gPiA+PiA+ID4+DQo+ID4g
+Pj4gPiA+PiBUaGUgcHJvYmxlbSBpcyBoZXJlLiAgSW4gYSAzMi1iaXQgY29uZmlndXJhdGlvbiwN
+Cj4gPiA+PiA+ID4+IE1JUFNfTzMyX0ZQNjRfU1VQUE9SVCBpcyBhbHdheXMgZGlzYWJsZWQsIHNv
+IHRoZSBGUCBtb2RlDQo+ID4gPj4gPiA+PiBkb2Vzbid0IGdldCBzZXQuICBTaW1wbHkgZGVsZXRp
+bmcgdGhvc2UgdHdvIGxpbmVzIG1ha2VzIHRoaW5ncw0KPiA+ID4+ID4gPj4gd29yayBhZ2Fpbiwg
+YnV0IHRoYXQncyBwcm9iYWJseSBub3QgdGhlIHJpZ2h0IGZpeC4NCj4gPiA+Pg0KPiA+ID4+IEkg
+ZG9uJ3QgcmVjYWxsIHRoZSBmaW5hbCBkZWNpc2lvbiBvbiBkZWZhdWx0IG9uL29mZiBmb3IgdGhp
+cyBvcHRpb24NCj4gPiA+PiBidXQgSUlSQyBpdCBpcyBnb2luZyB0byBiZSBvZmYgZm9yIGV2ZXJ5
+dGhpbmcgZXhjZXB0IFI2IGluIHRoZQ0KPiA+ID4+IGZpcnN0IGtlcm5lbCB2ZXJzaW9uIGFuZCB0
+aGVuIHR1cm5lZCBvbiBieSBkZWZhdWx0KC9vcHRpb24gcmVtb3ZlZCkNCj4gPiA+PiB3aGVuIHRo
+ZSBjb2RlIGlzIHByb3ZlbiBmb3IgdGhlIGZvbGxvd2luZyBrZXJuZWwgdmVyc2lvbi4NCj4gPiA+
+Pg0KPiA+ID4+ID4gPj4NCj4gPiA+PiA+ID4gSSBoYWQgdGhlIGltcHJlc3Npb24gdGhhdCB0aGUg
+bG9hZGVyIHdvdWxkIGhhdmUgc2V0IHRoZSBGUCBtb2RlDQo+ID4gPj4gPiA+IGVhcmxpZXIgb24u
+ICBCdXQgdGhhdCBvbmx5IG1heSBoYXBwZW4gd2l0aCB0aGUgbGF0ZXN0IHZlcnNpb24NCj4gPiA+
+PiA+ID4gb2YgdGhlIHRvb2xzLg0KPiA+ID4+ID4gPg0KPiA+ID4+ID4gPiBQZXJoYXBzIGluc3Rl
+YWQgb2YgZHJvcHBpbmcgdGhlc2UgdHdvIGxpbmVzIHdlIG5lZWQgYSBzaW1pbGFyDQo+ID4gPj4g
+PiA+IGNoZWNrIG9uIHRoZSBhcmNoX2VsZl9wdF9wcm9jIHNvIHdlIGRvbid0IG1lc3Mgd2l0aCB0
+aGUgZGVmYXVsdA0KPiBGUEkgYWJpPw0KPiA+ID4+ID4gPg0KPiA+ID4+ID4gPiBIYXZpbmcgc2Fp
+ZCB0aGF0LCBkcm9wcGluZyB0aGVzZSB0d28gbGluZXMgc2hvdWxkIGJlIGZpbmUsIGl0DQo+ID4g
+Pj4gPiA+IGp1c3QgbWVhbnMgeW91IGRvIGEgbGl0dGxlIGJpdCBvZiBleHRyYSB3b3JrIHdoZW4g
+bG9hZGluZyB5b3VyDQo+ID4gPj4gPiA+IEVMRiBmaWxlcyB0byBjaGVjayBmb3IgQUJJIGNvbXBh
+dGliaWxpdHkgd2hpY2ggc2hvdWxkbid0IG1hdHRlcg0KPiBpbiB5b3VyIGNhc2UuDQo+ID4gPj4g
+Pg0KPiA+ID4+ID4gVGhlcmUncyBhbm90aGVyIGVhcmx5IHJldHVybiBsaWtlIHRoaXMgaW4gYXJj
+aF9jaGVja19lbGYoKSB3aGljaA0KPiA+ID4+ID4gc2hvdWxkIHByb2JhYmx5IGdvIGFzIHdlbGws
+IG9yIGV2ZXJ5dGhpbmcgd2lsbCBlbmQgdXAgd2l0aCB0aGUNCj4gZGVmYXVsdCBtb2RlLg0KPiA+
+ID4+DQo+ID4gPj4gSXJvbmljYWxseSBJIGRpc2N1c3NlZCB0aGVzZSBjaGFuZ2VzIHdpdGggTWFy
+a29zIGluIGFuIGF0dGVtcHQgdG8NCj4gPiA+PiBtYWtlIGFsbCB0aGUgbmV3IGNoYW5nZXMgYmVu
+aWduIHdoZW46DQo+ID4gPj4NCj4gPiA+PiAhY29uZmlnX2VuYWJsZWQoQ09ORklHX01JUFNfTzMy
+X0ZQNjRfU1VQUE9SVCkNCj4gPiA+Pg0KPiA+ID4+IENsZWFybHkgdGhpcyBoYXMgYmFja2ZpcmVk
+LiBJIHdpbGwgaGF2ZSB0byByZS1yZWFkIHRoZSB2ZXJzaW9uIG9mDQo+ID4gPj4gdGhlIGNvZGUg
+aW4gNC4wLXJjMSB0byBzZWUgd2hhdCBpcyB0aGUgcm9vdCBjYXVzZS4gVGhlIGludGVudGlvbg0K
+PiA+ID4+IHdhcyB0aGF0IHdpdGhvdXQgdGhlIGNvbmZpZyBvcHRpb24gdGhlbiB0aGUga2VybmVs
+IHdvdWxkIGJsaW5kbHkNCj4gPiA+PiBjb250aW51ZSB0byBhc3N1bWUgdGhhdCBhbGwgTzMyIGJp
+bmFyaWVzIHdvdWxkIHJ1biBpbiB0aGUgb3JpZ2luYWwNCj4gPiA+PiBUSUZfMzJCSVRfRlBSRUdT
+IG1vZGUuIEFzIEkgcmVjYWxsLCB0aGUgY2FsbGVycyB0bw0KPiA+ID4+IG1pcHNfc2V0X3BlcnNv
+bmFsaXR5X2ZwIHdlcmUgc2V0dGluZyB0aGlzIG1vZGUgd2hpY2ggaXMgd2h5IHRoZQ0KPiBzaW1w
+bGUgZWFybHkgcmV0dXJuIHdhcyBhZGRlZC4NCj4gPiA+Pg0KPiA+ID4+IFRoYW5rcywNCj4gPiA+
+PiBNYXR0aGV3DQo+ID4gPg0KPiA+ID4gSSB0aGluayBJIGNhbiBzZWUgd2hhdCBpcyBnb2luZyBv
+bi4gVGhlIHByb2JsZW0gaXMgdGhhdA0KPiA+ID4gbWlwc19zZXRfcGVyc29uYWxpdHlfZnAoKSAo
+YXMgYWxyZWFkeSBtZW50aW9uZWQpIGlzIG5vdCBleGVjdXRlZCBmb3INCj4gPiA+ICFDT05GSUdf
+TUlQU19PMzJfRlA2NF9TVVBQT1JULiBUaGUgcmVhc29uIHRoaXMgaXMgYSBwcm9ibGVtIChpIHRo
+aW5rDQo+ID4gPiB0aGlzIGNvdWxkIG9ubHkgaGFwcGVuIGluIDY0LWJpdCkNCj4gPg0KPiA+IEl0
+J3MgZGVmaW5pdGVseSBjYXVzaW5nIHByb2JsZW1zIG9uIG15IDc0S2Ygc3lzdGVtLg0KPiA+DQo+
+ID4gPiBpcyB0aGF0IFNFVF9QRVJTT05BTElUWTIgY2xlYXJzIGFsbCB0aGUgdGhyZWFkIGZsYWdz
+IHJlbGF0ZWQgdG8NCj4gPiA+IDMyLWJpdCBhbmQgRlBVLiBUaGUgMzItYml0IGZsYWdzIHdpbGwg
+YmUgc2V0IGFnYWluIGJ5IHRoZQ0KPiA+ID4gU0VUX1BFUlNPTkFMSVRZMzJfTzMyIGJ1dCB0aGUg
+RlBVIGZsYWdzIGFyZSBub3Qgc2luY2UgdGhlIGVudGlyZQ0KDQpPSywgc28gdGhpcyBzb3VuZHMg
+bGlrZSB3aGF0IGRpZmZlcnMgZnJvbSB3aGF0IEkgcmVtZW1iZXIgc2VlaW5nLiBJIHRob3VnaHQN
+CnRoZSB2YXJpb3VzIFNFVF9QRVJTT05BTElUWSBtYWNyb3Mgd2VyZSBzZXR0aW5nIHVwIHRoZSBk
+ZWZhdWx0IEZQVSBmbGFncw0KKGRlZmF1bHQgYXMgaW4gdG8gbWF0Y2ggdGhlIGRlZmF1bHQgTzMy
+IEZQIEFCSSkgYW5kIHRoZW4gdGhpcyB3b3VsZCBiZQ0KdXBkYXRlZCBpbiBtaXBzX3NldF9wZXJz
+b25hbGl0eV9mcCgpLiBJaXJjIHRoZW4gbWlwc19zZXRfcGVyc29uYWxpdHlfZnANCmlzIG9ubHkg
+Y2FsbGVkIGZvciB0aGUgTzMyIGNhc2Ugc28gdGhlIEZQVSByZWxhdGVkIGZsYWdzIG11c3QgYmUg
+Y29ycmVjdGx5DQpzZXQgZm9yIG4zMi9uNjQgaW4gdGhlIG1hY3Jvcy4gV2h5IG5vdCBqdXN0IHVw
+ZGF0ZSB0aGUgTzMyIG1hY3JvcyB0bw0Kc2V0IHRoZSBtb2RlPw0KDQo+ID4gPiBtaXBzX3NldF9w
+ZXJzb25hbGl0eV9mcCgpIGlzIHNraXBwZWQuIFdoaWxlIHJlbW92aW5nIHRoZSBpZigpDQo+ID4g
+PiBjb25kaXRpb25hbCBpbiBtaXBzX3NldF9wZXJzb25hbGl0eV9mcCgpIHdpbGwgZml4IHRoZSBw
+cm9ibGVtLCB5b3UNCj4gPiA+IHJlbHkgb24gc3RhdGUtPm92ZXJhbGxfZnBfbW9kZSBoYXZpbmcg
+YSBnb29kIGRlZmF1bHQgdmFsdWUgZm9yIHlvdQ0KPiA+ID4gY2FzZS4gSWYgbm90LCBpdCB3aWxs
+IHNldCB0aGUgd3JvbmcgRlBVIG1vZGUuDQo+ID4NCj4gPiBZZXMsIEkgcmVhbGlzZWQgdGhpcyBh
+ZnRlciBoaXR0aW5nIHRoZSBzZW5kIGJ1dHRvbiBlYXJsaWVyLg0KPiA+DQo+ID4gPiBUaGVyZWZv
+cmUsIEkgYmVsaWV2ZSB0aGUgY29ycmVjdCBmaXggaXMgZWl0aGVyIHRvIGRyb3AgYm90aA0KPiA+
+ID4gQ09ORklHX01JUFNfTzMyX0ZQNjRfU1VQUE9SVCBvciBkcm9wIHRoZSBvbmUgaW4NCj4gPiA+
+IG1pcHNfc2V0X3BlcnNvbmFsaXR5X2ZwKCkgYW5kIGFkZCBhbm90aGVyIG9uZSBpbiBhcmNoX2Vs
+Zl9wdF9wcm9jKCkNCj4gPiA+IHRvIHNldCBhIGdvb2QgZGVmYXVsdCBBQkkganVzdCBmb3IgdGhp
+cyBjYXNlIGFuZCB0aGVuIHJldHVybi4NCj4gPg0KPiA+IFNvdW5kcyBhYm91dCByaWdodC4NCj4g
+Pg0KPiA+IC0tDQo+ID4gTcOlbnMgUnVsbGfDpXJkDQo+ID4gbWFuc0BtYW5zci5jb20NCj4gPg0K
+PiANCj4gYWN0dWFsbHkgdGhlIGN1cnJlbnQgZGVmYXVsdCBvbmUgZm9yIG8zMiAoRlIwKSBpcyBm
+aW5lLiBJIHRoaW5rIHRoZXJlIGlzDQo+IG5vIG5lZWQNCj4gdG8gYWRkIGEgc3BlY2lhbCBPMzJf
+RlA2NF9TVVBQT1JUIGNhc2UgaGVyZSBzaW5jZSBpdCdzIHZlcnkgdW5saWtlbHkgZm9yDQo+IHRo
+ZQ0KPiBkZWZhdWx0IGZwIGFiaSBmb3IgbzMyIHRvIGNoYW5nZS4NCg0KSSBjYW4gZ3VhcmFudGVl
+IHRoYXQgdGhlIGRlZmF1bHQvb3JpZ2luYWwgd2lsbCBub3QgY2hhbmdlLg0KDQpUaGFua3MsDQpN
+YXR0aGV3DQo=

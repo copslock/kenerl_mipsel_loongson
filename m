@@ -1,34 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 13:14:37 +0100 (CET)
-Received: from osiris.lip6.fr ([132.227.60.30]:57974 "EHLO osiris.lip6.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007566AbbB0MOfdVwHv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Feb 2015 13:14:35 +0100
-Received: from poleia.lip6.fr (poleia.lip6.fr [132.227.201.8])
-          by osiris.lip6.fr (8.15.1/lip6) with ESMTP id t1RCEQQV010540
-          ; Fri, 27 Feb 2015 13:14:28 +0100 (CET)
-X-pt:   osiris.lip6.fr
-Received: from r2d2.rsr.lip6.fr (hp-valentin.rsr.lip6.fr [132.227.64.74])
-        by poleia.lip6.fr (Postfix) with ESMTPSA id 64B98665350;
-        Fri, 27 Feb 2015 13:14:26 +0100 (CET)
-From:   Valentin Rothberg <Valentin.Rothberg@lip6.fr>
-To:     ralf@linux-mips.org, taohl@lemote.com, chenhc@lemote.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     Valentin Rothberg <Valentin.Rothberg@lip6.fr>
-Subject: [PATCH] loongson-3/hpet.c: remove IRQF_DISABLED flag
-Date:   Fri, 27 Feb 2015 13:14:22 +0100
-Message-Id: <1425039262-20003-1-git-send-email-Valentin.Rothberg@lip6.fr>
-X-Mailer: git-send-email 1.9.1
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.4.3 (osiris.lip6.fr [132.227.60.30]); Fri, 27 Feb 2015 13:14:28 +0100 (CET)
-X-Scanned-By: MIMEDefang 2.75 on 132.227.60.30
-Return-Path: <Valentin.Rothberg@lip6.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 13:34:53 +0100 (CET)
+Received: from mail-la0-f46.google.com ([209.85.215.46]:42484 "EHLO
+        mail-la0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007566AbbB0MevptVHA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 13:34:51 +0100
+Received: by labgf13 with SMTP id gf13so17161267lab.9
+        for <linux-mips@linux-mips.org>; Fri, 27 Feb 2015 04:34:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=c7fAHo+kA8r6h+Wj9ZHZNkMIytiYJcxjrVX0gXRytwU=;
+        b=XAnV0VKZQ5wpnoOZvS4PG4/v0tOBwaKF22e4SuvMYVMRuuulL5y7ZuGxhc6JMmVHtd
+         2kscW2kBLomEHmrWmLzK/wwfNv+E8FPO9CDvl+k4uByzNGprbXiQ4HQiOnK0xJToojrb
+         PDsWlXLmwkQ3iWAii3lkZ5Yoczu5sF9KWHE+yE8tY2AuhQ/691zj9vP4dvggvroDU0ED
+         PAGeB6REyT9JATQFJ8z7Ur88ILcHzlmCizVX4avLKyRRoYAr4mM5RprPIK+XaH/zmTeT
+         Fy3x9otU3w0LtcNPnJKbx9rga/gSQITbg3gGegyQWodLDyuhm+oCExNark0hKQK1VtY2
+         10iQ==
+X-Gm-Message-State: ALoCoQnk4wzwiyvcd7hlujWOZzkgdrU6JXHDSBRECDymfrSCHijGQql2kDDEULR1S/PoS2iYBF+h
+X-Received: by 10.152.28.5 with SMTP id x5mr12018220lag.112.1425040486790;
+        Fri, 27 Feb 2015 04:34:46 -0800 (PST)
+Received: from [192.168.3.154] (ppp85-141-192-100.pppoe.mtu-net.ru. [85.141.192.100])
+        by mx.google.com with ESMTPSA id si4sm805645lac.32.2015.02.27.04.34.44
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 27 Feb 2015 04:34:45 -0800 (PST)
+Message-ID: <54F06464.9040307@cogentembedded.com>
+Date:   Fri, 27 Feb 2015 15:34:44 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+MIME-Version: 1.0
+To:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+CC:     stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Malta: malta-memory: Detect and fix bad memsize
+ values
+References: <1425023492-23248-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1425023492-23248-1-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46043
+X-archive-position: 46044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Valentin.Rothberg@lip6.fr
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,28 +59,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The IRQF_DISABLED is a NOOP and scheduled to be removed.  According to Ingo
-Molnar (e58aa3d2d0cc01ad8d6f7f640a0670433f794922) running IRQ handlers with
-interrupts enabled can cause stack overflows when the interrupt line of the
-issuing device is still active.
+Hello.
 
-Signed-off-by: Valentin Rothberg <Valentin.Rothberg@lip6.fr>
----
- arch/mips/loongson/loongson-3/hpet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 2/27/2015 10:51 AM, Markos Chandras wrote:
 
-diff --git a/arch/mips/loongson/loongson-3/hpet.c b/arch/mips/loongson/loongson-3/hpet.c
-index e898d68..5c21cd3 100644
---- a/arch/mips/loongson/loongson-3/hpet.c
-+++ b/arch/mips/loongson/loongson-3/hpet.c
-@@ -162,7 +162,7 @@ static irqreturn_t hpet_irq_handler(int irq, void *data)
- 
- static struct irqaction hpet_irq = {
- 	.handler = hpet_irq_handler,
--	.flags = IRQF_DISABLED | IRQF_NOBALANCING | IRQF_TIMER,
-+	.flags = IRQF_NOBALANCING | IRQF_TIMER,
- 	.name = "hpet",
- };
- 
--- 
-1.9.1
+> memsize denotes the amount of RAM we can access from kseg{0,1} and
+> that should be up to 256M. In case the bootloader reports a value
+> higher than that (perhaps reporting all the available RAM) it's best
+> if we fix it ourselves and just warn the user about that. This is
+> usually a problem with the bootloader and/or its environment.
+
+> Cc: <stable@vger.kernel.org> # v3.15+
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>   arch/mips/mti-malta/malta-memory.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+
+> diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
+> index 8fddd2cdbff7..3a0a06450ef8 100644
+> --- a/arch/mips/mti-malta/malta-memory.c
+> +++ b/arch/mips/mti-malta/malta-memory.c
+> @@ -53,6 +53,11 @@ fw_memblock_t * __init fw_getmdesc(int eva)
+>   		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
+>   		physical_memsize = 0x02000000;
+>   	} else {
+> +		if (memsize > (256 << 20)) { /* memsize should be capped to 256M */
+> +			pr_warn("Unsupported memsize value (0x%lx) detected! Using 0x10000000 (256M) instead\n",
+> +				memsize);
+> +			memsize = (256 << 20);
+
+    () not needed here.
+
+[...]
+
+WBR, Sergei

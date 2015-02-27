@@ -1,45 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 01:06:50 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39124 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007349AbbB0AGtPe0kf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 01:06:49 +0100
-Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.95])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 38527B0C;
-        Fri, 27 Feb 2015 00:06:42 +0000 (UTC)
-Date:   Thu, 26 Feb 2015 16:06:41 -0800
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Ingo Molnar <mingo@kernel.org>,
-        Hector Marco Gisbert <hecmargi@upv.es>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ismael Ripoll <iripoll@upv.es>,
-        "x86@kernel.org" <x86@kernel.org>,
-        <"linux-arm-kernel@lists.infradead.org\" <linux-arm-kernel@lists.infradead.org>, Linux MIPS Mailing List <linux-mips@linux-mips.org>, linuxppc-dev@lists.ozlabs.org"@localhost.localdomain>
-Subject: Re: [PATCH] Fix offset2lib issue for x86*, ARM*, PowerPC and MIPS
-Message-Id: <20150226160641.547657c397ecfee078779217@linux-foundation.org>
-In-Reply-To: <CAGXu5jK0YbyL+Z=YrCfkfGbYz6=65Rr_MAXLwrF36gJa2Ce4_w@mail.gmail.com>
-References: <54EB735F.5030207@upv.es>
-        <CAGXu5j+SBRcj+BGyxEwUzgKsB2fdzNiPY37Q=JTsf=-QbGwoGA@mail.gmail.com>
-        <20150223205436.15133mg1kpyojyik@webmail.upv.es>
-        <20150224073906.GA16422@gmail.com>
-        <20150226143815.09386fe280c7bd8797048bb2@linux-foundation.org>
-        <20150227102136.17ef1fe6@canb.auug.org.au>
-        <20150226153435.df670671fb10eb9efa0fa845@linux-foundation.org>
-        <CAGXu5jK0YbyL+Z=YrCfkfGbYz6=65Rr_MAXLwrF36gJa2Ce4_w@mail.gmail.com>
-X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 01:16:47 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:39194 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007475AbbB0AQpo5IX7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 01:16:45 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1YR8Y3-00082I-9U; Thu, 26 Feb 2015 18:12:55 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: [PATCH V7 1/3] MIPS: Rearrange PTE bits into fixed positions.
+Date:   Thu, 26 Feb 2015 18:16:37 -0600
+Message-Id: <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1424996199-21366-1-git-send-email-Steven.Hill@imgtec.com>
+References: <1424996199-21366-1-git-send-email-Steven.Hill@imgtec.com>
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46022
+X-archive-position: 46023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,25 +37,278 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 26 Feb 2015 15:37:37 -0800 Kees Cook <keescook@chromium.org> wrote:
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-> Agh, no, please let's avoid the CONFIG addition.
+This patch rearranges the PTE bits into fixed positions for R2
+and later cores. In the past, the TLB handling code did runtime
+checking of RI/XI and adjusted the shifts and rotates in order
+to fit the largest PFN value into the PTE. The checking now
+occurs when building the TLB handler, thus eliminating those
+checks. These new arrangements also define the largest possible
+PFN value that can fit in the PTE. HUGE page support is only
+available for 64-bit cores. Layouts of the PTE bits are now:
 
-That is precisely how we do this.
+   64-bit, R1 or earlier:     CCC D V G [S H] M A W R P
+   32-bit, R1 or earler:      CCC D V G M A W R P
+   64-bit, R2 or later:       CCC D V G RI/R XI [S H] M A W P
+   32-bit, R2 or later:       CCC D V G RI/R XI M A W P
 
-> Hector mentioned in private mail that he was looking at an alternative
-> that adds exec_base to struct mm which would avoid all this insanity.
-> 
-> Can't we do something like:
-> 
-> #ifndef mmap_rnd
-> # define mmap_rnd 0
-> #endif
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/include/asm/pgtable-bits.h |   87 ++++++++++++++++++++++------------
+ arch/mips/include/asm/pgtable.h      |   38 +++++++--------
+ arch/mips/mm/tlbex.c                 |    6 +--
+ 3 files changed, 79 insertions(+), 52 deletions(-)
 
-Sure, and sprinkle
-
-#define mmap_rnd mmap_rnd
-
-in five arch header files where nobody thinks to look.
-
-For better or for worse, we are consolidating such things into arch/*/Kconfig.
+diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
+index 91747c2..f8915b5 100644
+--- a/arch/mips/include/asm/pgtable-bits.h
++++ b/arch/mips/include/asm/pgtable-bits.h
+@@ -37,7 +37,7 @@
+ /*
+  * The following bits are implemented by the TLB hardware
+  */
+-#define _PAGE_GLOBAL_SHIFT	0
++#define _PAGE_GLOBAL_SHIFT	(0)
+ #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+ #define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
+ #define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
+@@ -95,50 +95,67 @@
+ 
+ #else
+ /*
+- * When using the RI/XI bit support, we have 13 bits of flags below
+- * the physical address. The RI/XI bits are placed such that a SRL 5
+- * can strip off the software bits, then a ROTR 2 can move the RI/XI
+- * into bits [63:62]. This also limits physical address to 56 bits,
+- * which is more than we need right now.
++ * Below are the "Normal" R4K cases
+  */
+ 
+ /*
+  * The following bits are implemented in software
+  */
+-#define _PAGE_PRESENT_SHIFT	0
++#define _PAGE_PRESENT_SHIFT	(0)
+ #define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
+-#define _PAGE_READ_SHIFT	(cpu_has_rixi ? _PAGE_PRESENT_SHIFT : _PAGE_PRESENT_SHIFT + 1)
+-#define _PAGE_READ ({BUG_ON(cpu_has_rixi); 1 << _PAGE_READ_SHIFT; })
++/* R2 or later cores check for RI/XI support to determine _PAGE_READ */
++#ifdef CONFIG_CPU_MIPSR2
++#define _PAGE_WRITE_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
++#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
++#else
++#define _PAGE_READ_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
++#define _PAGE_READ		(1 << _PAGE_READ_SHIFT)
+ #define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
+ #define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
++#endif
+ #define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
+ #define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
+ #define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
+ #define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
+ 
+-#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+-/* huge tlb page */
++#if defined(CONFIG_64BIT) && defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
++/* Huge TLB page */
+ #define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
+ #define _PAGE_HUGE		(1 << _PAGE_HUGE_SHIFT)
+ #define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT + 1)
+ #define _PAGE_SPLITTING		(1 << _PAGE_SPLITTING_SHIFT)
++
++/* Only R2 or newer cores have the XI bit */
++#ifdef CONFIG_CPU_MIPSR2
++#define _PAGE_NO_EXEC_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
+ #else
+-#define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT)
+-#define _PAGE_HUGE		({BUG(); 1; })	/* Dummy value */
+-#define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT)
+-#define _PAGE_SPLITTING		({BUG(); 1; })	/* Dummy value */
+-#endif
++#define _PAGE_GLOBAL_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
++#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
++#endif	/* CONFIG_CPU_MIPSR2 */
+ 
+-/* Page cannot be executed */
+-#define _PAGE_NO_EXEC_SHIFT	(cpu_has_rixi ? _PAGE_SPLITTING_SHIFT + 1 : _PAGE_SPLITTING_SHIFT)
+-#define _PAGE_NO_EXEC		({BUG_ON(!cpu_has_rixi); 1 << _PAGE_NO_EXEC_SHIFT; })
++#endif	/* CONFIG_64BIT && CONFIG_MIPS_HUGE_TLB_SUPPORT */
++
++#ifdef CONFIG_CPU_MIPSR2
++/* XI - page cannot be executed */
++#ifndef _PAGE_NO_EXEC_SHIFT
++#define _PAGE_NO_EXEC_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
++#endif
++#define _PAGE_NO_EXEC		(cpu_has_rixi ? (1 << _PAGE_NO_EXEC_SHIFT) : 0)
+ 
+-/* Page cannot be read */
+-#define _PAGE_NO_READ_SHIFT	(cpu_has_rixi ? _PAGE_NO_EXEC_SHIFT + 1 : _PAGE_NO_EXEC_SHIFT)
+-#define _PAGE_NO_READ		({BUG_ON(!cpu_has_rixi); 1 << _PAGE_NO_READ_SHIFT; })
++/* RI - page cannot be read */
++#define _PAGE_READ_SHIFT	(_PAGE_NO_EXEC_SHIFT + 1)
++#define _PAGE_READ		(cpu_has_rixi ? 0 : (1 << _PAGE_READ_SHIFT))
++#define _PAGE_NO_READ_SHIFT	_PAGE_READ_SHIFT
++#define _PAGE_NO_READ		(cpu_has_rixi ? (1 << _PAGE_READ_SHIFT) : 0)
+ 
+ #define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
+ #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
++
++#else	/* !CONFIG_CPU_MIPSR2 */
++#define _PAGE_GLOBAL_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
++#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
++#endif	/* CONFIG_CPU_MIPSR2 */
++
+ #define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
+ #define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
+ #define _PAGE_DIRTY_SHIFT	(_PAGE_VALID_SHIFT + 1)
+@@ -150,18 +167,26 @@
+ 
+ #endif /* defined(CONFIG_PHYS_ADDR_T_64BIT && defined(CONFIG_CPU_MIPS32) */
+ 
++#ifndef _PAGE_NO_EXEC
++#define _PAGE_NO_EXEC		(0)
++#endif
++#ifndef _PAGE_NO_READ
++#define _PAGE_NO_READ		(0)
++#endif
++
+ #define _PAGE_SILENT_READ	_PAGE_VALID
+ #define _PAGE_SILENT_WRITE	_PAGE_DIRTY
+ 
+ #define _PFN_MASK		(~((1 << (_PFN_SHIFT)) - 1))
+ 
+-#ifndef _PAGE_NO_READ
+-#define _PAGE_NO_READ ({BUG(); 0; })
+-#define _PAGE_NO_READ_SHIFT ({BUG(); 0; })
+-#endif
+-#ifndef _PAGE_NO_EXEC
+-#define _PAGE_NO_EXEC ({BUG(); 0; })
+-#endif
++/*
++ * The final layouts of the PTE bits are:
++ *
++ *   64-bit, R1 or earlier:     CCC D V G [S H] M A W R P
++ *   32-bit, R1 or earler:      CCC D V G M A W R P
++ *   64-bit, R2 or later:       CCC D V G RI/R XI [S H] M A W P
++ *   32-bit, R2 or later:       CCC D V G RI/R XI M A W P
++ */
+ 
+ 
+ #ifndef __ASSEMBLY__
+@@ -171,6 +196,7 @@
+  */
+ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ {
++#ifdef CONFIG_CPU_MIPSR2
+ 	if (cpu_has_rixi) {
+ 		int sa;
+ #ifdef CONFIG_32BIT
+@@ -186,6 +212,7 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ 		return (pte_val >> _PAGE_GLOBAL_SHIFT) |
+ 			((pte_val & (_PAGE_NO_EXEC | _PAGE_NO_READ)) << sa);
+ 	}
++#endif
+ 
+ 	return pte_val >> _PAGE_GLOBAL_SHIFT;
+ }
+@@ -245,7 +272,7 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ #define _CACHE_UNCACHED_ACCELERATED	(7<<_CACHE_SHIFT)
+ #endif
+ 
+-#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED | (cpu_has_rixi ? 0 : _PAGE_READ))
++#define __READABLE	(_PAGE_SILENT_READ | _PAGE_READ | _PAGE_ACCESSED)
+ #define __WRITEABLE	(_PAGE_SILENT_WRITE | _PAGE_WRITE | _PAGE_MODIFIED)
+ 
+ #define _PAGE_CHG_MASK	(_PAGE_ACCESSED | _PAGE_MODIFIED |	\
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index bef782c..e1fec02 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -24,17 +24,17 @@ struct mm_struct;
+ struct vm_area_struct;
+ 
+ #define PAGE_NONE	__pgprot(_PAGE_PRESENT | _CACHE_CACHABLE_NONCOHERENT)
+-#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | (cpu_has_rixi ? 0 : _PAGE_READ) | \
++#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | \
+ 				 _page_cachable_default)
+-#define PAGE_COPY	__pgprot(_PAGE_PRESENT | (cpu_has_rixi ? 0 : _PAGE_READ) | \
+-				 (cpu_has_rixi ?  _PAGE_NO_EXEC : 0) | _page_cachable_default)
+-#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | (cpu_has_rixi ? 0 : _PAGE_READ) | \
++#define PAGE_COPY	__pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_NO_EXEC | \
++				 _page_cachable_default)
++#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | _PAGE_READ | \
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
+ 				 _PAGE_GLOBAL | _page_cachable_default)
+ #define PAGE_KERNEL_NC	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
+ 				 _PAGE_GLOBAL | _CACHE_CACHABLE_NONCOHERENT)
+-#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | (cpu_has_rixi ? 0 : _PAGE_READ) | _PAGE_WRITE | \
++#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE | \
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL_UNCACHED __pgprot(_PAGE_PRESENT | __READABLE | \
+ 			__WRITEABLE | _PAGE_GLOBAL | _CACHE_UNCACHED)
+@@ -332,13 +332,13 @@ static inline pte_t pte_mkdirty(pte_t pte)
+ static inline pte_t pte_mkyoung(pte_t pte)
+ {
+ 	pte_val(pte) |= _PAGE_ACCESSED;
+-	if (cpu_has_rixi) {
+-		if (!(pte_val(pte) & _PAGE_NO_READ))
+-			pte_val(pte) |= _PAGE_SILENT_READ;
+-	} else {
+-		if (pte_val(pte) & _PAGE_READ)
+-			pte_val(pte) |= _PAGE_SILENT_READ;
+-	}
++#ifdef CONFIG_CPU_MIPSR2
++	if (!(pte_val(pte) & _PAGE_NO_READ))
++		pte_val(pte) |= _PAGE_SILENT_READ;
++	else
++#endif
++	if (pte_val(pte) & _PAGE_READ)
++		pte_val(pte) |= _PAGE_SILENT_READ;
+ 	return pte;
+ }
+ 
+@@ -534,13 +534,13 @@ static inline pmd_t pmd_mkyoung(pmd_t pmd)
+ {
+ 	pmd_val(pmd) |= _PAGE_ACCESSED;
+ 
+-	if (cpu_has_rixi) {
+-		if (!(pmd_val(pmd) & _PAGE_NO_READ))
+-			pmd_val(pmd) |= _PAGE_SILENT_READ;
+-	} else {
+-		if (pmd_val(pmd) & _PAGE_READ)
+-			pmd_val(pmd) |= _PAGE_SILENT_READ;
+-	}
++#ifdef CONFIG_CPU_MIPSR2
++	if (!(pmd_val(pmd) & _PAGE_NO_READ))
++		pmd_val(pmd) |= _PAGE_SILENT_READ;
++	else
++#endif
++	if (pmd_val(pmd) & _PAGE_READ)
++		pmd_val(pmd) |= _PAGE_SILENT_READ;
+ 
+ 	return pmd;
+ }
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index d75ff73..137d790 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -231,12 +231,12 @@ static void output_pgtable_bits_defines(void)
+ 	pr_define("_PAGE_HUGE_SHIFT %d\n", _PAGE_HUGE_SHIFT);
+ 	pr_define("_PAGE_SPLITTING_SHIFT %d\n", _PAGE_SPLITTING_SHIFT);
+ #endif
++#ifdef CONFIG_CPU_MIPSR2
+ 	if (cpu_has_rixi) {
+-#ifdef _PAGE_NO_EXEC_SHIFT
++# ifdef _PAGE_NO_EXEC_SHIFT
+ 		pr_define("_PAGE_NO_EXEC_SHIFT %d\n", _PAGE_NO_EXEC_SHIFT);
+-#endif
+-#ifdef _PAGE_NO_READ_SHIFT
+ 		pr_define("_PAGE_NO_READ_SHIFT %d\n", _PAGE_NO_READ_SHIFT);
++# endif
+ #endif
+ 	}
+ 	pr_define("_PAGE_GLOBAL_SHIFT %d\n", _PAGE_GLOBAL_SHIFT);
+-- 
+1.7.10.4

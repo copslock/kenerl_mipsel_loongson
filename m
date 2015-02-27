@@ -1,48 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 20:20:18 +0100 (CET)
-Received: from mail-ie0-f179.google.com ([209.85.223.179]:44508 "EHLO
-        mail-ie0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007622AbbB0TUQsvBVu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 20:20:16 +0100
-Received: by iecar1 with SMTP id ar1so33417033iec.11
-        for <linux-mips@linux-mips.org>; Fri, 27 Feb 2015 11:20:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=gBVDLxPii85D7S6Zw0FnxUVEFPpJ2OSEPy4tduJQhIc=;
-        b=fQAbhbejE65eg1fYZnfjqaF7+wMXRsY6116E2BbBobyDS4iJpWtdhffSBkkvzdKPL6
-         6D+WTMLa/mUA+IP76PsMH72uwJv/LnM+tuda2wCVhGixiHiTk+x2mG8LXqU9uJLxz0/J
-         vQyxtF0bJdMrOMxh54jKk7V24G2pVJYlBOpgt35p53kinn9bVLdXkBMFP/01AgtY9pRs
-         meuJDYFmbtIEcUveYsKBMho/jQNSU9saH9XDGdMffMic45kyK34mG0GKw9QPYehBcOO0
-         ++PUX7WQXmlMj1UI1J8lBfXCG2RDig685uUdDRSI8VmWCWENEmCdpCaUKXHOywIFUlWn
-         aloA==
-X-Received: by 10.42.138.199 with SMTP id d7mr17264043icu.3.1425064811336;
-        Fri, 27 Feb 2015 11:20:11 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id o1sm1739052igv.18.2015.02.27.11.20.09
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 27 Feb 2015 11:20:09 -0800 (PST)
-Message-ID: <54F0C368.1040409@gmail.com>
-Date:   Fri, 27 Feb 2015 11:20:08 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 21:32:12 +0100 (CET)
+Received: from smtp.gentoo.org ([140.211.166.183]:42277 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007655AbbB0UcG6gFo5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Feb 2015 21:32:06 +0100
+Received: from vapier (localhost [127.0.0.1])
+        by smtp.gentoo.org (Postfix) with SMTP id 4BC86340AC6;
+        Fri, 27 Feb 2015 20:31:59 +0000 (UTC)
+Date:   Fri, 27 Feb 2015 15:31:59 -0500
+From:   Mike Frysinger <vapier@gentoo.org>
+To:     Huacai Chen <chenhuacai@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: custom kernel on lemote-3a-itx (Loongson-3A) crashes in userspace
+Message-ID: <20150227203159.GS29461@vapier>
+References: <20150219194617.GT544@vapier>
+ <CAAhV-H5+kQm_qAz7DLV4Rk9EqB4xJjmu1NV7kKd46aneKFZO-A@mail.gmail.com>
+ <20150226081425.GR6655@vapier>
+ <CAAhV-H7vm61G1TP53GpskhLxC6LFEUkhiVzTFDRTiXSt9-zuvg@mail.gmail.com>
 MIME-Version: 1.0
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH V7 1/3] MIPS: Rearrange PTE bits into fixed positions.
-References: <1424996199-21366-1-git-send-email-Steven.Hill@imgtec.com> <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com> <54EFBF9D.4020004@gmail.com> <54EFE6B9.1050109@imgtec.com> <54F0AECF.5070501@gmail.com> <54F0BFD0.2050901@imgtec.com>
-In-Reply-To: <54F0BFD0.2050901@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="G9m07da55tKJni3T"
+Content-Disposition: inline
+In-Reply-To: <CAAhV-H7vm61G1TP53GpskhLxC6LFEUkhiVzTFDRTiXSt9-zuvg@mail.gmail.com>
+Return-Path: <vapier@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46051
+X-archive-position: 46052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: vapier@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,18 +42,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/27/2015 11:04 AM, Steven J. Hill wrote:
-> On 02/27/2015 11:52 AM, David Daney wrote:
->>
->> I think there is still misunderstanding.
->>
->> Your patches leave us with definitions for *both* _PAGE_READ *and*
->> _PAGE_NO_READ defined in the source code.  My suggestion was to
->> eliminate all vestiges of _PAGE_READ and _PAGE_READ_SHIFT, and unify
->> all variants to use _PAGE_NO_READ
->>
-> Okay, I see what you are after. I think it is worth doing, but I would
-> really like to get XPA into 4.0 along with this patch as it is. I will
 
-4.0 seems to be long gone with respect to adding new features, although 
-Ralf would obviously make the final decision.
+--G9m07da55tKJni3T
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 27 Feb 2015 21:37, Huacai Chen wrote:
+> We have also built good kernels with native GCC-4.6.4/4.7.2/4.8.3 (o32
+> binaries).
+
+do you have the source for those versions available ?  that way i can see i=
+f=20
+there's any patches we should pick up in Gentoo for mips.
+
+> So maybe this is an N32-related problems.
+
+that would not surprise me :).  we like to push the envelope in Gentoo.
+-mike
+
+--G9m07da55tKJni3T
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJU8NQ/AAoJEEFjO5/oN/WB9hYP/0vpxkLImz9XN389GNuyxGFf
+6nl6nJiGtBnlEPTM2XgEOigBBhsfdHRpf1UXo5QIX7DbNzO9idbBACi72URSDvv2
+1FgRPC3WUXqWzF8rOOPKI+8QSP2D7uTHm5FnBDsrkggxTmOLvq/OLGfYqi5FGsq2
+Aw1RIRL1jtTiGCAJfYzhjzPeX87F1mAt339Z9Q41rWnEWtkF4kaW5cqszFuCxeQY
+9nMcl/E1aySHzSl3A6dgklNr1rIAjzGAPWjN8w6FcDONIr/QjFbyvJ0bAGNhuAvz
+OtfkeWNwYpV4Jt8p1JHfLmtUMq2aNrG6J8yVT97t+cnIfZd5oVoqrZHVwhmO8CrN
+ovts5pe8SYA+7arCBxFzluILO+hJQbATifqANkquR3BVoLWbeJnE2MTq4OwqHBo3
+RLeNcrN5zQeYZ1+SPkymH05JU0Ey7uwMbfK2XSE5s/skZ1BoURc+jHZ4AazZO3TS
+1CaCxavAO4Ph63RrDVG7bssm8os6iD1udcUz6cWSdLnpTldBvrnwbkojhN+CBqCx
+kx5x5bn3011/rDEgVYCV/LioEhNyQ4KaJFyOXxTjONvyNFkqg0eommxe5Rrp5/Rb
+zchpcfY6c+KHSvGeKVJsiWHgCMWnDoz/REPqJN5kfYJcYcLJDQHpuBt154YkLRdL
+RckkWqO6b9BZ2wXQbN+6
+=CiGr
+-----END PGP SIGNATURE-----
+
+--G9m07da55tKJni3T--

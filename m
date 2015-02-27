@@ -1,55 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 11:44:52 +0100 (CET)
-Received: from mail-we0-f180.google.com ([74.125.82.180]:46489 "EHLO
-        mail-we0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007588AbbB0KouhcXP2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 11:44:50 +0100
-Received: by wevm14 with SMTP id m14so19194948wev.13;
-        Fri, 27 Feb 2015 02:44:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=i7M2wf7R4Ozv9QzKbKk6jV4ZuauIe8fTV6WcTI27VrY=;
-        b=PRN0+xYQmgPn6F9JgbJUoCi0JM+BQ/HptpPIQBZcUuKvD80NxXgKTpxh9oYQCfmnkC
-         5Ewpq0CkU5nDo8/Tah4sXkOMy9zidhZuQb5DCczolPM5laWOFFFKwak4/26mtMYsSCqD
-         JQK0jaDzpjGBvCHZpHWh5N56jsEM65CDrDZZ75ikoa6OP6tkKKwFVYSoJAPwP8vgfkyI
-         TtM0cCcX0YHXCWz1iutPyRKyMf80t9xrR/svOvO5smf//q2EXuzBNmDIfPWdnwSu+Q9O
-         +c7N0jCThjIs00JwnHMdFtTGYU5CtxGGpmY2PpFbMNIXmA9dcUzTAmDC42J79a754Br1
-         TXsA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 11:54:10 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:48730 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007566AbbB0KyIxQUv- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 11:54:08 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 6763E46053A
+        for <linux-mips@linux-mips.org>; Fri, 27 Feb 2015 10:54:03 +0000 (GMT)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id kBcWSxFQ3NXj for <linux-mips@linux-mips.org>;
+        Fri, 27 Feb 2015 10:54:00 +0000 (GMT)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 78929460056
+        for <linux-mips@linux-mips.org>; Fri, 27 Feb 2015 10:54:00 +0000 (GMT)
+Received: from [::1] (helo=paulmartin.codethink.co.uk)
+        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1YRIYQ-0001KC-NK
+        for linux-mips@linux-mips.org; Fri, 27 Feb 2015 10:53:58 +0000
+Date:   Fri, 27 Feb 2015 10:53:58 +0000
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     linux-mips@linux-mips.org
+Subject: Re: 4.0-rc1 breakage in FPE?
+Message-ID: <20150227105356.GA21678@paulmartin.codethink.co.uk>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <20150225182048.GC31062@paulmartin.codethink.co.uk>
+ <yw1xh9u97k5c.fsf@unicorn.mansr.com>
+ <54EE4134.2050501@gmail.com>
+ <yw1xsids6hcl.fsf@unicorn.mansr.com>
 MIME-Version: 1.0
-X-Received: by 10.180.19.193 with SMTP id h1mr5246095wie.2.1425033885750; Fri,
- 27 Feb 2015 02:44:45 -0800 (PST)
-Received: by 10.180.89.38 with HTTP; Fri, 27 Feb 2015 02:44:45 -0800 (PST)
-In-Reply-To: <CAL1qeaGT9DGnVN4Lg0McCESxuwphLFuoo1m96H5nauRcyF24xg@mail.gmail.com>
-References: <6D39441BF12EF246A7ABCE6654B0235320FDC2AC@LEMAIL01.le.imgtec.org>
-        <20150226101739.GY17695@NP-P-BURTON>
-        <CACUy__Ux6v9O0RmSiUr6vDDJ8JSDPCsCTqm=KOiNM0M=x3hoQQ@mail.gmail.com>
-        <CAL1qeaGT9DGnVN4Lg0McCESxuwphLFuoo1m96H5nauRcyF24xg@mail.gmail.com>
-Date:   Fri, 27 Feb 2015 11:44:45 +0100
-Message-ID: <CACUy__UdCSMW4cLDKMvu3CLBeaKpSbJ19zCMP29hwT+T_y7q4g@mail.gmail.com>
-Subject: Re: [U-Boot] MIPS UHI spec
-From:   Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        "u-boot@lists.denx.de" <u-boot@lists.denx.de>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        John Crispin <blogic@openwrt.org>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>, cernekee@chromium.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <daniel.schwierzeck@gmail.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <yw1xsids6hcl.fsf@unicorn.mansr.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46041
+X-archive-position: 46042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.schwierzeck@gmail.com
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,69 +56,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2015-02-26 19:23 GMT+01:00 Andrew Bresticker <abrestic@chromium.org>:
-> Hi,
->
-> On Thu, Feb 26, 2015 at 4:37 AM, Daniel Schwierzeck
-> <daniel.schwierzeck@gmail.com> wrote:
->> 2015-02-26 11:17 GMT+01:00 Paul Burton <paul.burton@imgtec.com>:
->>> On Thu, Feb 19, 2015 at 01:50:23PM +0000, Matthew Fortune wrote:
->>>> Hi Daniel,
->>>>
->>>> The spec for MIPS Unified Hosting Interface is available here:
->>>>
->>>> http://prplfoundation.org/wiki/MIPS_documentation
->>>>
->>>> As we have previously discussed, this is an ideal place to
->>>> define the handover of device tree data from bootloader to
->>>> kernel. Using a0 == -2 and defining which register(s) you
->>>> need for the actual data will fit nicely. I'll happily
->>>> include whatever is decided into the next version of the spec.
->>
->> this originates from an off-list discussion some months ago started by
->> John Crispin.
->>
->> (CC +John, Ralf, Jonas, linux-mips)
->>
->>>
->>> (CC +Andrew, Ezequiel, James, James)
->>>
->>> On the talk of DT handover, this recent patchset adding support for a
->>> system doing so to Linux is relevant:
->>>
->>>     http://www.linux-mips.org/archives/linux-mips/2015-02/msg00312.html
->>>
->>> I'm also working on a system for which I'll need to implement DT
->>> handover very soon. It would be very nice if we could agree on some
->>> standard way of doing so (and eventually if the code on the Linux side
->>> can be generic enough to allow a multiplatform kernel).
->
-> +1.  I would like to see this happen as well.
->
->> to be conformant with UHI I propose $a0 == -2 and $a1 == address of DT
->> blob. It is a simple extension and should not interfere with the
->> various legacy boot interfaces.
->>
->> U-Boot mainline code is almost ready for DT handover. I have prepared
->> a patch [1] which completes it by implementing my proposal.
->
-> Hmm... we decided to follow the ARM convention here ($a0 = 0, $a1 =
-> -1, $a2 = physical address of DTB), which is also what the BMIPS
-> platform (submitted by Kevin) is using for DT handover.  Is there
-> already a platform using the protocol you described?
+On Thu, Feb 26, 2015 at 11:29:46AM +0000, Måns Rullgård wrote:
 
-no, but with its publication the MIPS UHI spec is kind of official.
-AFAIK patches to support UHI in gcc, gdb, U-Boot etc. are already
-submitted or prepared. Matthew suggested that new boot protocols
-should be compliant with UHI. I think the ARM convention does not fit
-to UHI.
+> FYI, a fix (MIPS: asm: elf: Set O32 default FPU flags) has been posted
+> to linux-mips.
 
-> It's still early
-> enough that we could change the DT handover for Pistachio, but it
-> would be good to agree on something soon.
->
-> Thanks,
-> Andrew
+I can confirm this fix does tame gawk.
 
 -- 
-- Daniel
+Paul Martin                                  http://www.codethink.co.uk/
+Senior Software Developer, Codethink Ltd.

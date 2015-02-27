@@ -1,48 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 01:51:50 +0100 (CET)
-Received: from mail-ie0-f173.google.com ([209.85.223.173]:44926 "EHLO
-        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007512AbbB0AvsoBgL- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 01:51:48 +0100
-Received: by iecar1 with SMTP id ar1so23602515iec.11;
-        Thu, 26 Feb 2015 16:51:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=Ek0CPCU04vBPStbV+sn+CfyyYBn7X2oxNzCH8B9dSoU=;
-        b=Ha2HdNXCyOQX3Txt/+CYYtZ6lfF5q2Ha/Y6J3rXBiRlh+jsAOSE6+qde+4Rgyw8312
-         fnIrtmoRxHkLJ7K6yroMMwNKEs0/diMWJa3HUVQmNM58KSpbC4I6JrAT3EUSlwy6x81Z
-         1hh9aEqgYydm+wSPHaMMWUslSPQtepkAAlXrH52fhaagZc/qbE38zdXfLvQzh5YxACzd
-         dVw0klKSuv02JuWuwPx1CbzuKTDTLlMhpwyc5bBugcm/egl8s8LeYXgRr/LX1KYhKiLv
-         aEQZNXFdWS8cNdFLvCRE7/xDC1G4k9oixSM/SB13KihJuEq/BKb6a7z4ds3Nze/Fl/6+
-         B4aw==
-X-Received: by 10.43.0.138 with SMTP id nm10mr2899462icb.56.1424998303158;
-        Thu, 26 Feb 2015 16:51:43 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id ig15sm307815igb.10.2015.02.26.16.51.42
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 26 Feb 2015 16:51:42 -0800 (PST)
-Message-ID: <54EFBF9D.4020004@gmail.com>
-Date:   Thu, 26 Feb 2015 16:51:41 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 02:28:24 +0100 (CET)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:53525 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007512AbbB0B2WJ1yu6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 02:28:22 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id D5F8B21B8E0;
+        Fri, 27 Feb 2015 03:28:21 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id XThm-Y34j9Dk; Fri, 27 Feb 2015 03:28:16 +0200 (EET)
+Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id DF7905BC012;
+        Fri, 27 Feb 2015 03:28:16 +0200 (EET)
+Date:   Fri, 27 Feb 2015 03:28:16 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH] MIPS: asm: elf: Set O32 default FPU flags
+Message-ID: <20150227012816.GA590@fuloong-minipc.musicnaut.iki.fi>
+References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
+ <1424949090-20682-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH V7 1/3] MIPS: Rearrange PTE bits into fixed positions.
-References: <1424996199-21366-1-git-send-email-Steven.Hill@imgtec.com> <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com>
-In-Reply-To: <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1424949090-20682-1-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46028
+X-archive-position: 46029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,39 +49,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/26/2015 04:16 PM, Steven J. Hill wrote:
-> From: "Steven J. Hill" <Steven.Hill@imgtec.com>
->
-> This patch rearranges the PTE bits into fixed positions for R2
-> and later cores. In the past, the TLB handling code did runtime
-> checking of RI/XI and adjusted the shifts and rotates in order
-> to fit the largest PFN value into the PTE. The checking now
-> occurs when building the TLB handler, thus eliminating those
-> checks. These new arrangements also define the largest possible
-> PFN value that can fit in the PTE. HUGE page support is only
-> available for 64-bit cores. Layouts of the PTE bits are now:
->
->     64-bit, R1 or earlier:     CCC D V G [S H] M A W R P
->     32-bit, R1 or earler:      CCC D V G M A W R P
->     64-bit, R2 or later:       CCC D V G RI/R XI [S H] M A W P
->     32-bit, R2 or later:       CCC D V G RI/R XI M A W P
->
+Hi,
 
-That's not really what I meant in my previous response on the subject.
-When I said:
+On Thu, Feb 26, 2015 at 11:11:30AM +0000, Markos Chandras wrote:
+> Set good default FPU flags (FR0) for O32 binaries similar to what the
+> kernel does for the N64/N32 ones. This also fixes a regression
+> introduced in commit 46490b572544 ("MIPS: kernel: elf: Improve the
+> overall ABI and FPU mode checks") when MIPS_O32_FP64_SUPPORT is
+> disabled. In that case, the mips_set_personality_fp() did not set the
+> FPU mode at all because it assumed that the FPU mode was already set
+> properly. That led to O32 userland problems.
+> 
+> Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
+> Cc: Paul Burton <paul.burton@imgtec.com>
+> Reported-by: Mans Rullgard <mans@mansr.com>
+> Fixes: 46490b572544 ("MIPS: kernel: elf: Improve the overall ABI and FPU mode checks")
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 
-     Why not just use RI for everything, instead of taking up two bits
-     to represent a single binary concept?
+This seems to fix some strange openssl issues on my Loongson system
+(O32, hard-float) with 4.0-rc1.
 
-     For the case where there is no RI hardware active, it is a purely
-     software bit and you can easily invert the meaning and just have a
-     _PAGE_NO_READ bit.
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-I envisioned something like:
-
-     64-bit, all revisions:    CCC D V G RI XI [S H] M A W P
-     32-bit, all revisions:    CCC D V G RI XI M A W P
-
-Are there enough bits to include XI even if hardware doens't support XI?
-
-David Daney
+A.

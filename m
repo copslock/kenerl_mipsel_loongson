@@ -1,81 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 01:20:08 +0100 (CET)
-Received: from mail-ob0-f175.google.com ([209.85.214.175]:42991 "EHLO
-        mail-ob0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007372AbbB0AUGsDte8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 01:20:06 +0100
-Received: by mail-ob0-f175.google.com with SMTP id va2so15232745obc.6
-        for <linux-mips@linux-mips.org>; Thu, 26 Feb 2015 16:20:01 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 01:51:50 +0100 (CET)
+Received: from mail-ie0-f173.google.com ([209.85.223.173]:44926 "EHLO
+        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007512AbbB0AvsoBgL- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 01:51:48 +0100
+Received: by iecar1 with SMTP id ar1so23602515iec.11;
+        Thu, 26 Feb 2015 16:51:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=buln40DTAaO8glvl2c6Cee+P8uhXmBnT4FArnfWEgLA=;
-        b=XpeK42CgZPqLZ8BVmhFUMmmqETjETah4H71+SpcpjdCWaFRjH0VF+HWDNrP+ChQqPo
-         kd4AAnJNDArueoiM4lbfCC+n8hB8+40exgh2B2QGfkY7JaZHNdKVzjmncA7VdWNvKNQI
-         6M1U5cZLwqBVxmKjPoGdWQSGnBsoCg9ixIE7qqksNvQ2kIuJqYg31aeoQ7TML0+ikwY6
-         xeGFDu6Z5nVHqa3FgNPfWmV+/BUkV552+eFR6e3utl6kl5W5zTceeQKMNAyxlMEO0Umn
-         /G7mVfvoOucTqVrUfXs/DmTn2/yt/ph38lNFWq1zmkmMA6HjZwjNlibUE7CaQZUgHwLm
-         9a6w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=buln40DTAaO8glvl2c6Cee+P8uhXmBnT4FArnfWEgLA=;
-        b=d2Qbba0fUzgq12P/T/GcEszb6NoPvqoXVDjG3w+MNAE4Pbd+zF/ORtuCsKHgAO3656
-         yFl8lmzZZhzH63riWga3Upy/uahRcPZ3scddXs0zR/WPAeZvRnaEQkl1syClYi0xmesd
-         TlEi4hm7DE9XMME+yEttn0m/I/020xrTgcKx8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=buln40DTAaO8glvl2c6Cee+P8uhXmBnT4FArnfWEgLA=;
-        b=ISEd74CxX/6urbTXMlpuSKKOehRpa+EpnhSn9QjQBSx5k+uYbm4Ufe/XHnF4l+zpyC
-         zzqTqu2I5cyzT/mMqIIkV7FAeGv2j7G7dx+ggObbGfd0oBtdBXCB77ydWiphLc1nTrau
-         eAcIbjENUCN53IMgKVvlPIuCAabhHI0EFI2npCEuFwxhfLFjO/pR8eIkxPfB9NAGNRjS
-         84hk9UQjP1KQCq4Tc4KWtVPLburEicFB7Zip7wEtMpei6CEmAmFKjJVxd1qIN9QfYVB1
-         0CtzA3Vbe7LNt2DPbtKvNLfJ29EW0JSvwwA5/YmECFq2Uy4K+un2w091Ax2ERqn7g/+1
-         3kpw==
-X-Gm-Message-State: ALoCoQlBL+BOlSh1ULny6kNLztAdPNEExT2bTuAGOf9hqMKV8Lgxv+5RtTL5X9He4ZuhqMwLs+oO
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=Ek0CPCU04vBPStbV+sn+CfyyYBn7X2oxNzCH8B9dSoU=;
+        b=Ha2HdNXCyOQX3Txt/+CYYtZ6lfF5q2Ha/Y6J3rXBiRlh+jsAOSE6+qde+4Rgyw8312
+         fnIrtmoRxHkLJ7K6yroMMwNKEs0/diMWJa3HUVQmNM58KSpbC4I6JrAT3EUSlwy6x81Z
+         1hh9aEqgYydm+wSPHaMMWUslSPQtepkAAlXrH52fhaagZc/qbE38zdXfLvQzh5YxACzd
+         dVw0klKSuv02JuWuwPx1CbzuKTDTLlMhpwyc5bBugcm/egl8s8LeYXgRr/LX1KYhKiLv
+         aEQZNXFdWS8cNdFLvCRE7/xDC1G4k9oixSM/SB13KihJuEq/BKb6a7z4ds3Nze/Fl/6+
+         B4aw==
+X-Received: by 10.43.0.138 with SMTP id nm10mr2899462icb.56.1424998303158;
+        Thu, 26 Feb 2015 16:51:43 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id ig15sm307815igb.10.2015.02.26.16.51.42
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 26 Feb 2015 16:51:42 -0800 (PST)
+Message-ID: <54EFBF9D.4020004@gmail.com>
+Date:   Thu, 26 Feb 2015 16:51:41 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-X-Received: by 10.202.49.138 with SMTP id x132mr7702386oix.7.1424996401275;
- Thu, 26 Feb 2015 16:20:01 -0800 (PST)
-Received: by 10.182.76.197 with HTTP; Thu, 26 Feb 2015 16:20:01 -0800 (PST)
-In-Reply-To: <CAGXu5j+3D7FrAJNLHTgEuK5wnOmUZG13xxi6eONuWiY2zKCMqQ@mail.gmail.com>
-References: <54EB735F.5030207@upv.es>
-        <CAGXu5j+SBRcj+BGyxEwUzgKsB2fdzNiPY37Q=JTsf=-QbGwoGA@mail.gmail.com>
-        <20150223205436.15133mg1kpyojyik@webmail.upv.es>
-        <20150224073906.GA16422@gmail.com>
-        <20150226143815.09386fe280c7bd8797048bb2@linux-foundation.org>
-        <20150227102136.17ef1fe6@canb.auug.org.au>
-        <20150226153435.df670671fb10eb9efa0fa845@linux-foundation.org>
-        <CAGXu5jK0YbyL+Z=YrCfkfGbYz6=65Rr_MAXLwrF36gJa2Ce4_w@mail.gmail.com>
-        <20150226160641.547657c397ecfee078779217@linux-foundation.org>
-        <CAGXu5j+3D7FrAJNLHTgEuK5wnOmUZG13xxi6eONuWiY2zKCMqQ@mail.gmail.com>
-Date:   Thu, 26 Feb 2015 16:20:01 -0800
-X-Google-Sender-Auth: HSpPumiA1Zzj2Ik5eTXouOWSnv4
-Message-ID: <CAGXu5jLVKzLC8qFr+B2N06PJ0Ap88=8KSphEiYtNH28uOBLp7g@mail.gmail.com>
-Subject: Re: [PATCH] Fix offset2lib issue for x86*, ARM*, PowerPC and MIPS
-From:   Kees Cook <keescook@chromium.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Ingo Molnar <mingo@kernel.org>,
-        Hector Marco Gisbert <hecmargi@upv.es>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ismael Ripoll <iripoll@upv.es>,
-        "x86@kernel.org" <x86@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH V7 1/3] MIPS: Rearrange PTE bits into fixed positions.
+References: <1424996199-21366-1-git-send-email-Steven.Hill@imgtec.com> <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com>
+In-Reply-To: <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46027
+X-archive-position: 46028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,44 +55,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Feb 26, 2015 at 4:11 PM, Kees Cook <keescook@chromium.org> wrote:
-> On Thu, Feb 26, 2015 at 4:06 PM, Andrew Morton
-> <akpm@linux-foundation.org> wrote:
->> On Thu, 26 Feb 2015 15:37:37 -0800 Kees Cook <keescook@chromium.org> wrote:
->>
->>> Agh, no, please let's avoid the CONFIG addition.
->>
->> That is precisely how we do this.
->>
->>> Hector mentioned in private mail that he was looking at an alternative
->>> that adds exec_base to struct mm which would avoid all this insanity.
->>>
->>> Can't we do something like:
->>>
->>> #ifndef mmap_rnd
->>> # define mmap_rnd 0
->>> #endif
->>
->> Sure, and sprinkle
->>
->> #define mmap_rnd mmap_rnd
->>
->> in five arch header files where nobody thinks to look.
->>
->> For better or for worse, we are consolidating such things into arch/*/Kconfig.
+On 02/26/2015 04:16 PM, Steven J. Hill wrote:
+> From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 >
-> Okay, fair enough. Even with your configs (though shouldn't they be
-> ARCH_HAS or just HAVE?) I've now stumbled over the issue that we can't
-> put randomize_et_dyn in binfmt_elf because it conflicts with linking
-> against compat_binfmt_elf.
+> This patch rearranges the PTE bits into fixed positions for R2
+> and later cores. In the past, the TLB handling code did runtime
+> checking of RI/XI and adjusted the shifts and rotates in order
+> to fit the largest PFN value into the PTE. The checking now
+> occurs when building the TLB handler, thus eliminating those
+> checks. These new arrangements also define the largest possible
+> PFN value that can fit in the PTE. HUGE page support is only
+> available for 64-bit cores. Layouts of the PTE bits are now:
+>
+>     64-bit, R1 or earlier:     CCC D V G [S H] M A W R P
+>     32-bit, R1 or earler:      CCC D V G M A W R P
+>     64-bit, R2 or later:       CCC D V G RI/R XI [S H] M A W P
+>     32-bit, R2 or later:       CCC D V G RI/R XI M A W P
+>
 
-Instead of all this, how about we rework the existing CONFIG and just
-change around how s390 does this to match the other architectures and
-remove the ifdef in binfmt_elf.c at the same time? Let me work
-something up...
+That's not really what I meant in my previous response on the subject.
+When I said:
 
--Kees
+     Why not just use RI for everything, instead of taking up two bits
+     to represent a single binary concept?
 
--- 
-Kees Cook
-Chrome OS Security
+     For the case where there is no RI hardware active, it is a purely
+     software bit and you can easily invert the meaning and just have a
+     _PAGE_NO_READ bit.
+
+I envisioned something like:
+
+     64-bit, all revisions:    CCC D V G RI XI [S H] M A W P
+     32-bit, all revisions:    CCC D V G RI XI M A W P
+
+Are there enough bits to include XI even if hardware doens't support XI?
+
+David Daney

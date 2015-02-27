@@ -1,62 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 04:12:41 +0100 (CET)
-Received: from smtp.outflux.net ([198.145.64.163]:45989 "EHLO smtp.outflux.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006155AbbB0DMjhDL5O (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Feb 2015 04:12:39 +0100
-Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t1R37fpE010826;
-        Thu, 26 Feb 2015 19:07:42 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     akpm@linux-foundation.org
-Cc:     Kees Cook <keescook@chromium.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, x86@kernel.org,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        "David A. Long" <dave.long@linaro.org>,
-        Andrey Ryabinin <a.ryabinin@samsung.com>,
-        Arun Chandran <achandran@mvista.com>,
-        Yann Droneaud <ydroneaud@opteya.com>,
-        Min-Hua Chen <orca.chen@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Vineeth Vijayan <vvijayan@mvista.com>,
-        Jeff Bailey <jeffbailey@google.com>,
-        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        Behan Webster <behanw@converseincode.com>,
-        Ismael Ripoll <iripoll@upv.es>,
-        Hector Marco-Gisbert <hecmargi@upv.es>,
-        =?UTF-8?q?Jan-Simon=20M=C3=B6ller?= <dl9pf@gmx.de>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH 0/5] split ET_DYN ASLR from mmap ASLR
-Date:   Thu, 26 Feb 2015 19:07:09 -0800
-Message-Id: <1425006434-3106-1-git-send-email-keescook@chromium.org>
-X-Mailer: git-send-email 1.9.1
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.73
-Return-Path: <keescook@www.outflux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 04:38:51 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:62386 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006150AbbB0Dit7UtKB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 04:38:49 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C3569636B128B;
+        Fri, 27 Feb 2015 03:38:43 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 27 Feb
+ 2015 03:38:44 +0000
+Received: from [10.20.78.174] (10.20.78.174) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 26 Feb
+ 2015 19:38:35 -0800
+Message-ID: <54EFE6B9.1050109@imgtec.com>
+Date:   Thu, 26 Feb 2015 21:38:33 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+MIME-Version: 1.0
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+Subject: Re: [PATCH V7 1/3] MIPS: Rearrange PTE bits into fixed positions.
+References: <1424996199-21366-1-git-send-email-Steven.Hill@imgtec.com> <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com> <54EFBF9D.4020004@gmail.com>
+In-Reply-To: <54EFBF9D.4020004@gmail.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.78.174]
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46037
+X-archive-position: 46038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,15 +46,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This separates ET_DYN ASLR from mmap ASLR, as already done on s390. The
-various architectures that are already randomizing mmap (arm, arm64, mips,
-powerpc, s390, and x86), have their various forms of arch_mmap_rnd()
-made available via the new CONFIG_ARCH_HAS_ELF_RANDOMIZE. For these
-architectures, arch_randomize_brk() is collapsed as well.
+On 02/26/2015 06:51 PM, David Daney wrote:
+> 
+> That's not really what I meant in my previous response on the subject.
+> When I said:
+> 
+>     Why not just use RI for everything, instead of taking up two bits
+>     to represent a single binary concept?
+> 
+>     For the case where there is no RI hardware active, it is a purely
+>     software bit and you can easily invert the meaning and just have a
+>     _PAGE_NO_READ bit.
+> 
+> I envisioned something like:
+> 
+>     64-bit, all revisions:    CCC D V G RI XI [S H] M A W P
+>     32-bit, all revisions:    CCC D V G RI XI M A W P
+> 
+Which is what I implemented. I now only use one bit that functions
+either as _PAGE_READ or _PAGE_READ_ONLY depending on the RI/XI
+functionality present. Did you bother to read the code and understand
+it, or just look at the commit message?
 
-This is an alternative to the solutions in:
-https://lkml.org/lkml/2015/2/23/442
-
-Thanks!
-
--Kees
+Steve

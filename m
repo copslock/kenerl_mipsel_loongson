@@ -1,62 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 11:51:18 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:52243 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27025498AbbEFJvBi7mFY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 11:51:01 +0200
-Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1Ypvyp-0001QB-AO; Wed, 06 May 2015 09:51:03 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: Malta: Detect and fix bad memsize values" has been added to staging queue
-Date:   Wed,  6 May 2015 10:51:02 +0100
-Message-Id: <1430905862-27201-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47257
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Fri, 27 Feb 2015 07:51:32 +0000
+Subject: MIPS: Malta: Detect and fix bad memsize values
+Message-ID: <20150227075132.e0gxTM5db_YiF5Qs7Tfz50bcu3mUuel-1Ik-pHYaFu0@z>
 
-This is a note to let you know that I have just added a patch titled
+commit f7f8aea4b97c4d48e42f02cb37026bee445f239f upstream.
 
-    MIPS: Malta: Detect and fix bad memsize values
+memsize denotes the amount of RAM we can access from kseg{0,1} and
+that should be up to 256M. In case the bootloader reports a value
+higher than that (perhaps reporting all the available RAM) it's best
+if we fix it ourselves and just warn the user about that. This is
+usually a problem with the bootloader and/or its environment.
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+[ralf@linux-mips.org: Remove useless parens as suggested bei Sergei.
+Reformat long pr_warn statement to fit into 80 column limit.]
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9362/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/mti-malta/malta-memory.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-This patch is scheduled to be released in version 3.16.7-ckt11.
-
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Luis
-
-------
+diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
+index fdffc806664f..9b3a07d962ce 100644
+--- a/arch/mips/mti-malta/malta-memory.c
++++ b/arch/mips/mti-malta/malta-memory.c
+@@ -52,6 +52,12 @@ fw_memblock_t * __init fw_getmdesc(int eva)
+ 		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
+ 		physical_memsize = 0x02000000;
+ 	} else {
++		if (memsize > (256 << 20)) { /* memsize should be capped to 256M */
++			pr_warn("Unsupported memsize value (0x%lx) detected! "
++				"Using 0x10000000 (256M) instead\n",
++				memsize);
++			memsize = 256 << 20;
++		}
+ 		/* If ememsize is set, then set physical_memsize to that */
+ 		physical_memsize = ememsize ? : memsize;
+ 	}

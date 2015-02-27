@@ -1,39 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 04:38:51 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62386 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006150AbbB0Dit7UtKB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 04:38:49 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C3569636B128B;
-        Fri, 27 Feb 2015 03:38:43 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 27 Feb
- 2015 03:38:44 +0000
-Received: from [10.20.78.174] (10.20.78.174) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 26 Feb
- 2015 19:38:35 -0800
-Message-ID: <54EFE6B9.1050109@imgtec.com>
-Date:   Thu, 26 Feb 2015 21:38:33 -0600
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Feb 2015 07:20:00 +0100 (CET)
+Received: from mail-we0-f182.google.com ([74.125.82.182]:41559 "EHLO
+        mail-we0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006155AbbB0GT7QUZOT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Feb 2015 07:19:59 +0100
+Received: by wevm14 with SMTP id m14so17520135wev.8;
+        Thu, 26 Feb 2015 22:19:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=1aLQfJbuN6xHhxPcEBptYZQzUBbS3OCl0noG3mDP9PY=;
+        b=qR/swnnl+vcKsZIWRRV/i0wjhbcBRIYlO83Hg68Yte1lYw4xJ0NPYreQ0VNoVledTG
+         EGEsYZGiJYWHKozB7JZ33aytMXHPKus8V6iBFa3lnVpINSgybu5bCe5Coj/H18C6Q6Ph
+         kfmp0bBAXaGMh03Gqz2WS/irBUGw+EEdirn+bGgFRO56zbtQwJy5ndJBSFf92Q6YpwjS
+         MBw7Pgn8RRP59/wWAWYeOFFOZA0Y/eccvfRT2lMx6Ln80OUCnUaRAOL49bEYPFxzg1Lx
+         2AKd1Hg8BANtVagGVKbtg02LzGVibikgkw+5OkcbckqP0XkqwsePHkWD13iOlPfnr6Sc
+         kxHw==
+X-Received: by 10.180.39.203 with SMTP id r11mr3119781wik.67.1425017994464;
+        Thu, 26 Feb 2015 22:19:54 -0800 (PST)
+Received: from gmail.com (540331C6.catv.pool.telekom.hu. [84.3.49.198])
+        by mx.google.com with ESMTPSA id l6sm4449110wjx.33.2015.02.26.22.19.51
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 26 Feb 2015 22:19:53 -0800 (PST)
+Date:   Fri, 27 Feb 2015 07:19:49 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     akpm@linux-foundation.org, Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, x86@kernel.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        "David A. Long" <dave.long@linaro.org>,
+        Andrey Ryabinin <a.ryabinin@samsung.com>,
+        Arun Chandran <achandran@mvista.com>,
+        Yann Droneaud <ydroneaud@opteya.com>,
+        Min-Hua Chen <orca.chen@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Vineeth Vijayan <vvijayan@mvista.com>,
+        Jeff Bailey <jeffbailey@google.com>,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Behan Webster <behanw@converseincode.com>,
+        Ismael Ripoll <iripoll@upv.es>,
+        Hector Marco-Gisbert <hecmargi@upv.es>,
+        Jan-Simon =?iso-8859-1?Q?M=F6ller?= <dl9pf@gmx.de>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/5] split ET_DYN ASLR from mmap ASLR
+Message-ID: <20150227061949.GA25810@gmail.com>
+References: <1425006434-3106-1-git-send-email-keescook@chromium.org>
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-Subject: Re: [PATCH V7 1/3] MIPS: Rearrange PTE bits into fixed positions.
-References: <1424996199-21366-1-git-send-email-Steven.Hill@imgtec.com> <1424996199-21366-2-git-send-email-Steven.Hill@imgtec.com> <54EFBF9D.4020004@gmail.com>
-In-Reply-To: <54EFBF9D.4020004@gmail.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.78.174]
-Return-Path: <Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1425006434-3106-1-git-send-email-keescook@chromium.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <mingo.kernel.org@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46038
+X-archive-position: 46039
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: mingo@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,26 +86,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/26/2015 06:51 PM, David Daney wrote:
-> 
-> That's not really what I meant in my previous response on the subject.
-> When I said:
-> 
->     Why not just use RI for everything, instead of taking up two bits
->     to represent a single binary concept?
-> 
->     For the case where there is no RI hardware active, it is a purely
->     software bit and you can easily invert the meaning and just have a
->     _PAGE_NO_READ bit.
-> 
-> I envisioned something like:
-> 
->     64-bit, all revisions:    CCC D V G RI XI [S H] M A W P
->     32-bit, all revisions:    CCC D V G RI XI M A W P
-> 
-Which is what I implemented. I now only use one bit that functions
-either as _PAGE_READ or _PAGE_READ_ONLY depending on the RI/XI
-functionality present. Did you bother to read the code and understand
-it, or just look at the commit message?
 
-Steve
+* Kees Cook <keescook@chromium.org> wrote:
+
+> This separates ET_DYN ASLR from mmap ASLR, as already 
+> done on s390. The various architectures that are already 
+> randomizing mmap (arm, arm64, mips, powerpc, s390, and 
+> x86), have their various forms of arch_mmap_rnd() made 
+> available via the new CONFIG_ARCH_HAS_ELF_RANDOMIZE. For 
+> these architectures, arch_randomize_brk() is collapsed as 
+> well.
+> 
+> This is an alternative to the solutions in: 
+> https://lkml.org/lkml/2015/2/23/442
+
+Nice!
+
+Acked-by: Ingo Molnar <mingo@kernel.org>
+
+Thanks,
+
+	Ingo

@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Feb 2015 02:29:25 +0100 (CET)
-Received: from mail-ie0-f173.google.com ([209.85.223.173]:45225 "EHLO
-        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007598AbbB1B3Wexms2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Feb 2015 02:29:22 +0100
-Received: by iecat20 with SMTP id at20so35444396iec.12
-        for <linux-mips@linux-mips.org>; Fri, 27 Feb 2015 17:29:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=IzqMcpv6rIRkQsEVKb/ZoE2eOuJcnUwHQn3JvzrgbMo=;
-        b=lHzTcu5PoPjO/WSfao8ujq1S9L7s9XuxpB5MMz25d/JdO5HkeHsOLU5lB5Gxryr3FE
-         Z63k4p1irfL2l1w5QwowrMZ1rnjYMjPfjTY8+Wxc+p6/uEJXKkn/9+Omp05EHs9PC9W2
-         +MeGqsyTMsl/Fbc8j9vafzc60hD1WCJAzxzNxaN8Wo+PwEV+vWF9h+xIiKz/w5193pb0
-         SZzXTgzLPc8p2EdJmspnQQVghgWr/Aof/XfTG8Ryo9FpDAN67/ZfvBw+Xfmu+i/gisSB
-         zKUeGczP+ktot385viOpBmVP0LIAGcXmvHHX6yhn90718URqe3ZNCDi88ObL2WihrFnU
-         oVPA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Feb 2015 02:37:10 +0100 (CET)
+Received: from ozlabs.org ([103.22.144.67]:50804 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007597AbbB1BhIWJMa4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 28 Feb 2015 02:37:08 +0100
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 32054140146;
+        Sat, 28 Feb 2015 12:37:03 +1100 (AEDT)
+Date:   Sat, 28 Feb 2015 12:36:56 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+        linux-s390@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
+        Helge Deller <deller@gmx.de>, x86@kernel.org,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux390@de.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH] seccomp: switch to using asm-generic for seccomp.h
+Message-ID: <20150228123656.538301ef@canb.auug.org.au>
+In-Reply-To: <20150228005228.GA23638@www.outflux.net>
+References: <20150228005228.GA23638@www.outflux.net>
+X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.25; i586-pc-linux-gnu)
 MIME-Version: 1.0
-X-Received: by 10.107.47.216 with SMTP id v85mr22300713iov.86.1425086957098;
- Fri, 27 Feb 2015 17:29:17 -0800 (PST)
-Received: by 10.64.176.238 with HTTP; Fri, 27 Feb 2015 17:29:17 -0800 (PST)
-In-Reply-To: <20150227203159.GS29461@vapier>
-References: <20150219194617.GT544@vapier>
-        <CAAhV-H5+kQm_qAz7DLV4Rk9EqB4xJjmu1NV7kKd46aneKFZO-A@mail.gmail.com>
-        <20150226081425.GR6655@vapier>
-        <CAAhV-H7vm61G1TP53GpskhLxC6LFEUkhiVzTFDRTiXSt9-zuvg@mail.gmail.com>
-        <20150227203159.GS29461@vapier>
-Date:   Sat, 28 Feb 2015 09:29:17 +0800
-Message-ID: <CAAhV-H7fuVu5uVj7K9hTxjr-eFQGRzaqvGYYdqUecn6F4guK8A@mail.gmail.com>
-Subject: Re: custom kernel on lemote-3a-itx (Loongson-3A) crashes in userspace
-From:   Huacai Chen <chenhuacai@gmail.com>
-To:     Mike Frysinger <vapier@gentoo.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/OELWuzD5PC91fjVQFZ1t_+c"; protocol="application/pgp-signature"
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46055
+X-archive-position: 46056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,21 +55,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We also built good kernels on N32 Arch-Linux. You can get the source
-of GCC/Binutils here:
-http://mirror.lemote.com/archls/sources/core/
+--Sig_/OELWuzD5PC91fjVQFZ1t_+c
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Huacai
+Hi Kees,
 
-On Sat, Feb 28, 2015 at 4:31 AM, Mike Frysinger <vapier@gentoo.org> wrote:
-> On 27 Feb 2015 21:37, Huacai Chen wrote:
->> We have also built good kernels with native GCC-4.6.4/4.7.2/4.8.3 (o32
->> binaries).
+On Fri, 27 Feb 2015 16:52:29 -0800 Kees Cook <keescook@chromium.org> wrote:
 >
-> do you have the source for those versions available ?  that way i can see if
-> there's any patches we should pick up in Gentoo for mips.
->
->> So maybe this is an N32-related problems.
->
-> that would not surprise me :).  we like to push the envelope in Gentoo.
-> -mike
+> diff --git a/arch/arm/include/asm/seccomp.h b/arch/arm/include/asm/seccom=
+p.h
+> index 52b156b341f5..66ca6a30bf5c 100644
+> --- a/arch/arm/include/asm/seccomp.h
+> +++ b/arch/arm/include/asm/seccomp.h
+> @@ -1,11 +1 @@
+> -#ifndef _ASM_ARM_SECCOMP_H
+> -#define _ASM_ARM_SECCOMP_H
+> -
+> -#include <linux/unistd.h>
+> -
+> -#define __NR_seccomp_read __NR_read
+> -#define __NR_seccomp_write __NR_write
+> -#define __NR_seccomp_exit __NR_exit
+> -#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+> -
+> -#endif /* _ASM_ARM_SECCOMP_H */
+> +#include <asm-generic/seccomp.h>
+
+I think that these cases (where you replace the file by a stub that
+just include <asm-generic/seccomp.h>) can be replaced by removing the
+file completely and adding
+
+generic-y =3D seccomp.h
+
+to <ARCH>/include/asm/Kbuild
+
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+
+--Sig_/OELWuzD5PC91fjVQFZ1t_+c
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJU8Ru9AAoJEMDTa8Ir7ZwVpvIP/jZNouddKAUOjxkrLO0Cmwgl
+4N0nD+bHWvWZB0ecfKFFbj9Uk1sd9o2JlJVD3gCRXdoqfS6+wTdxttX3RDzW39QB
+0Xo0ivy6naWah73Ux95XN3W8ZH7Wq1oJpV5MNiJj2JbSFnkit6KwmueLV0+ELbIX
+xrsu3ZlgDwXxZAFuj5z05SPUmGEj4PCgnr2/+xfYNYb1Uw3ZKikrlApJTT3oiiBW
+dcpnN2xdDREFTcE6FtroCLPSj7oglx5fONowhxpcdHLIa77Lg/OQD1stfcsnNRiL
+8dCJhe1G/wpv/BeRnJ43Xgdb0B/9W5AlIUi3Z/O0EXaHSwKIxShgd6+7o0f/AmUY
+ohHqjJAfhILz5o/ivI54PGG0Z8QwLKfCYbqicG8mK3iIo1s9WwK/0oP1BJD9Mf/f
+hsMnNdvqABbardBVdoGyjIwn6gds4CQnGVhdViuV2YZA2ZIL8TDqh/vnx1BlLvR1
+FjJti/BF8zjnR1bNPvosMaIQLYGhbRfCc4EqoZHIHSkBcM8LOI/xwLCFtZtl/q/2
+Tv9CUz35WCBNwZZObh/ZCzsJ4FWIPQA4rJyDuAToORVRWwmFXYtZSi113+MwFW31
+cM1fVgakXfIZ04j4qJaKd/EdouMuIggrbhqGhz7GybnD1c5rOV4kZeducuM2ysT6
+cjY2pr0NiBKGphJ3yISb
+=VLZN
+-----END PGP SIGNATURE-----
+
+--Sig_/OELWuzD5PC91fjVQFZ1t_+c--

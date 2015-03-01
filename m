@@ -1,37 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Mar 2015 11:05:18 +0100 (CET)
-Received: from helcar.apana.org.au ([209.40.204.226]:49132 "EHLO
-        helcar.apana.org.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006703AbbCAKFQVgBa6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Mar 2015 11:05:16 +0100
-Received: from gondolin.me.apana.org.au ([192.168.0.6])
-        by norbury.hengli.com.au with esmtp (Exim 4.80 #3 (Debian))
-        id 1YS0k7-0001mY-Ul; Sun, 01 Mar 2015 21:05:00 +1100
-Received: from herbert by gondolin.me.apana.org.au with local (Exim 4.80)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1YS0j7-0004HU-Ch; Sun, 01 Mar 2015 23:03:57 +1300
-Date:   Sun, 1 Mar 2015 23:03:57 +1300
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mpm@selenic.com, wsa@the-dreams.de,
-        cernekee@gmail.com
-Subject: Re: [PATCH 0/4] hw_random: bcm63xx-rng: misc cleanups and reorg
-Message-ID: <20150301100357.GA16444@gondor.apana.org.au>
-References: <1424138956-11563-1-git-send-email-f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Mar 2015 21:05:45 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55064 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007816AbbCAUFlBAT2w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Mar 2015 21:05:41 +0100
+Received: from localhost (c-24-22-230-10.hsd1.wa.comcast.net [24.22.230.10])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7FEBF9E3;
+        Sun,  1 Mar 2015 20:05:35 +0000 (UTC)
+Subject: Patch "MIPS: Alchemy: Fix cpu clock calculation" has been added to the 3.18-stable tree
+To:     manuel.lauss@gmail.com, blogic@openwrt.org, br1@einfach.org,
+        gregkh@linuxfoundation.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+Cc:     <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 01 Mar 2015 12:05:33 -0800
+Message-ID: <1425240333183114@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1424138956-11563-1-git-send-email-f.fainelli@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <herbert@gondor.apana.org.au>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46060
+X-archive-position: 46061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: herbert@gondor.apana.org.au
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,17 +38,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Feb 16, 2015 at 06:09:12PM -0800, Florian Fainelli wrote:
-> Hi,
-> 
-> This patchset prepares the driver to be built on non-MIPS bcm63xx architectures
-> such as the ARM bcm63xx variants, thanks!
-> 
-> Although patch 3 touches a MIPS header file, there should be little to no
-> conflicts there if all patches went through the hw_random tree (is there one?)
 
-All applied.  Thanks!
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+This is a note to let you know that I've just added the patch titled
+
+    MIPS: Alchemy: Fix cpu clock calculation
+
+to the 3.18-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-alchemy-fix-cpu-clock-calculation.patch
+and it can be found in the queue-3.18 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

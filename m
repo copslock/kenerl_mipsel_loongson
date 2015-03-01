@@ -1,45 +1,60 @@
-From: Manuel Lauss <manuel.lauss@gmail.com>
-Date: Wed, 18 Feb 2015 11:01:56 +0100
-Subject: MIPS: Alchemy: Fix cpu clock calculation
-Message-ID: <20150218100156.ClWMxwLd7er6HzJhp_SFi-Q9AJ6PaQvJD_Ldiit4TBg@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Mar 2015 11:05:18 +0100 (CET)
+Received: from helcar.apana.org.au ([209.40.204.226]:49132 "EHLO
+        helcar.apana.org.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006703AbbCAKFQVgBa6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Mar 2015 11:05:16 +0100
+Received: from gondolin.me.apana.org.au ([192.168.0.6])
+        by norbury.hengli.com.au with esmtp (Exim 4.80 #3 (Debian))
+        id 1YS0k7-0001mY-Ul; Sun, 01 Mar 2015 21:05:00 +1100
+Received: from herbert by gondolin.me.apana.org.au with local (Exim 4.80)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1YS0j7-0004HU-Ch; Sun, 01 Mar 2015 23:03:57 +1300
+Date:   Sun, 1 Mar 2015 23:03:57 +1300
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mpm@selenic.com, wsa@the-dreams.de,
+        cernekee@gmail.com
+Subject: Re: [PATCH 0/4] hw_random: bcm63xx-rng: misc cleanups and reorg
+Message-ID: <20150301100357.GA16444@gondor.apana.org.au>
+References: <1424138956-11563-1-git-send-email-f.fainelli@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1424138956-11563-1-git-send-email-f.fainelli@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <herbert@gondor.apana.org.au>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 46060
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: herbert@gondor.apana.org.au
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+On Mon, Feb 16, 2015 at 06:09:12PM -0800, Florian Fainelli wrote:
+> Hi,
+> 
+> This patchset prepares the driver to be built on non-MIPS bcm63xx architectures
+> such as the ARM bcm63xx variants, thanks!
+> 
+> Although patch 3 touches a MIPS header file, there should be little to no
+> conflicts there if all patches went through the hw_random tree (is there one?)
 
-commit 69e4e63ec816a7e22cc3aa14bc7ef4ac734d370c upstream.
-
-The current code uses bits 0-6 of the sys_cpupll register to calculate
-core clock speed.  However this is only valid on Au1300, on all earlier
-models the hardware only uses bits 0-5 to generate core clock.
-
-This fixes clock calculation on the MTX1 (Au1500), where bit 6 of cpupll
-is set as well, which ultimately lead the code to calculate a bogus cpu
-core clock and also uart base clock down the line.
-
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-Reported-by: John Crispin <blogic@openwrt.org>
-Tested-by: Bruno Randolf <br1@einfach.org>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Patchwork: https://patchwork.linux-mips.org/patch/9279/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/alchemy/common/clock.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/arch/mips/alchemy/common/clock.c
-+++ b/arch/mips/alchemy/common/clock.c
-@@ -127,6 +127,8 @@ static unsigned long alchemy_clk_cpu_rec
- 		t = 396000000;
- 	else {
- 		t = alchemy_rdsys(AU1000_SYS_CPUPLL) & 0x7f;
-+		if (alchemy_get_cputype() < ALCHEMY_CPU_AU1300)
-+			t &= 0x3f;
- 		t *= parent_rate;
- 	}
- 
-
-
-Patches currently in stable-queue which might be from manuel.lauss@gmail.com are
-
-queue-3.19/mips-alchemy-fix-cpu-clock-calculation.patch
+All applied.  Thanks!
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

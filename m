@@ -1,95 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Mar 2015 23:22:08 +0100 (CET)
-Received: from mail-vc0-f178.google.com ([209.85.220.178]:52730 "EHLO
-        mail-vc0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007833AbbCBWWHQtGqB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Mar 2015 23:22:07 +0100
-Received: by mail-vc0-f178.google.com with SMTP id hq11so11972781vcb.9
-        for <linux-mips@linux-mips.org>; Mon, 02 Mar 2015 14:22:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=A5XbaW0GAdKpnMKvFCelxvKod79KN9g44pbpXoQcpM8=;
-        b=Jy3qomAjwGW2yGExNKR2Rj9JRdbIcTbeJ3+ViS0fU9C0lQK/mpEdQnRK6dFDdseglV
-         dMXK/Ih0+bs5fM94eWfJ5SK6Jm7NhxyKvl5J4PlkX88XbPpi0VmCdga/c6V9Oqx8tTRI
-         BORwFryJxPW9rhJjLpgxC2g8VRNjfYEoGtvWvJ84uc/IqnbnpwU6GKkS2bsr1Ug4F5kH
-         pd+OSpjV5BVuBcJJ3Jvdf4IgRRwrVnidA2UNhGxZRMMDLjScZootluZzLVVLPukjWNOA
-         kpSsD3s3UHVMONxsCWEoOKOdGINosstV2cW3AS1qKs4t0z4gdVjLhsRFnewkn0Aerfr+
-         0yNA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=A5XbaW0GAdKpnMKvFCelxvKod79KN9g44pbpXoQcpM8=;
-        b=bFJRDJK0kSjlyAG2Pu1N7YzRSsbBgpnTrDAOK7aQ1Z6WJbGf60a7HnmXdU9mTOF33k
-         lcLE/4MTvcreQDSmFG4hz1RjH2iA/SkLXue2hbLVSi/0o6ParZgeOz/sABHh+iWk+OVH
-         SCInghAYV+V7zTfQFI3Pe67zcX0RgNVhi0i+E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=A5XbaW0GAdKpnMKvFCelxvKod79KN9g44pbpXoQcpM8=;
-        b=OdXZhmyZuSSty6J9J3W4vtGsn76USgBX1s4IwHMBeQC3pE7rj+OSqcUfd5xBnLMp+w
-         M24Jo5NS+35tZwaAL6ViMk9dxxGVwsTncgIwDWyAmdPgnShAkX49ciXBXTX+AMMEqaL4
-         sTUjs0pWf1NUtGkNmRs2JJ9amgOx41o3pqwuR+zdN1TviD9MjIG2ualL09KVbMLuSdv0
-         U+38uCrBBIEnYbPRQGV3uqlDQJYijIfotfa5TcCJp8/hJ5h3X/kLpocqm7A2LPw6k3wS
-         m3D2InT8oGd9B1ovAKf64QN/ZpQQCPE8+XNIKWURD2WWixdjeifkYX/4Nl9jRfl2dSF2
-         9tVw==
-X-Gm-Message-State: ALoCoQnbFWlg81S4vCh3EAnczvKiPRChAtsH+IJQkRsnEgfUUt+vYyoYBKUOT9LfGfVGXmV1UbLq
-MIME-Version: 1.0
-X-Received: by 10.53.1.7 with SMTP id bc7mr26461524vdd.40.1425334920656; Mon,
- 02 Mar 2015 14:22:00 -0800 (PST)
-Received: by 10.52.116.135 with HTTP; Mon, 2 Mar 2015 14:22:00 -0800 (PST)
-In-Reply-To: <20150302132657.5507742399620e70dd0a3926@linux-foundation.org>
-References: <1425006434-3106-1-git-send-email-keescook@chromium.org>
-        <20150302132657.5507742399620e70dd0a3926@linux-foundation.org>
-Date:   Mon, 2 Mar 2015 14:22:00 -0800
-X-Google-Sender-Auth: L7q41VOUeIUQkrMH_Ro2AI10mZo
-Message-ID: <CAGXu5j+qOntXiF_zzW-+fGWeU-tBxwSF2UVsLm5D6brNEf-XCw@mail.gmail.com>
-Subject: Re: [PATCH 0/5] split ET_DYN ASLR from mmap ASLR
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2015 00:14:33 +0100 (CET)
+Received: from smtp.outflux.net ([198.145.64.163]:56649 "EHLO smtp.outflux.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006738AbbCBXObuddvf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Mar 2015 00:14:31 +0100
+Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t22NCscM032472;
+        Mon, 2 Mar 2015 15:12:54 -0800
+Date:   Mon, 2 Mar 2015 15:12:54 -0800
 From:   Kees Cook <keescook@chromium.org>
 To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
+Cc:     AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "x86@kernel.org" <x86@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        "David A. Long" <dave.long@linaro.org>,
-        Andrey Ryabinin <a.ryabinin@samsung.com>,
-        Arun Chandran <achandran@mvista.com>,
-        Yann Droneaud <ydroneaud@opteya.com>,
-        Min-Hua Chen <orca.chen@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Vineeth Vijayan <vvijayan@mvista.com>,
-        Jeff Bailey <jeffbailey@google.com>,
-        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        Behan Webster <behanw@converseincode.com>,
-        Ismael Ripoll <iripoll@upv.es>,
-        Hector Marco-Gisbert <hecmargi@upv.es>,
-        =?UTF-8?Q?Jan=2DSimon_M=C3=B6ller?= <dl9pf@gmx.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
+        x86@kernel.org, Frederic Weisbecker <fweisbec@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Laura Abbott <lauraa@codeaurora.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] seccomp: switch to using asm-generic for seccomp.h
+Message-ID: <20150302231254.GA4857@www.outflux.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-MIMEDefang-Filter: outflux$Revision: 1.316 $
+X-HELO: www.outflux.net
+X-Scanned-By: MIMEDefang 2.73
+Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46080
+X-archive-position: 46081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -106,32 +62,373 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 2, 2015 at 1:26 PM, Andrew Morton <akpm@linux-foundation.org> wrote:
-> On Thu, 26 Feb 2015 19:07:09 -0800 Kees Cook <keescook@chromium.org> wrote:
->
->> This separates ET_DYN ASLR from mmap ASLR, as already done on s390. The
->> various architectures that are already randomizing mmap (arm, arm64, mips,
->> powerpc, s390, and x86), have their various forms of arch_mmap_rnd()
->> made available via the new CONFIG_ARCH_HAS_ELF_RANDOMIZE. For these
->> architectures, arch_randomize_brk() is collapsed as well.
->>
->> This is an alternative to the solutions in:
->> https://lkml.org/lkml/2015/2/23/442
->
-> "504 Gateway Time-out"
->
-> Hector's original patch had very useful descriptions of the bug, why it
-> occurred, how it was exploited it and how the patch fixes it.
->
-> Your changelogs contain none of this and can be summarized as "randomly
-> churn code around for no apparent reason".
->
-> Wanna try again?  I guess the [0/5] and [4/5] changelogs are the ones
-> to fix.
+Most architectures don't need to do anything special for the strict
+seccomp syscall entries. Remove the redundant headers and reduce the
+others.
 
-Ah, yes, absolutely. I will resend.
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+v2:
+- use Kbuild "generic-y" instead of explicit #include lines (sfr)
+---
+ arch/arm/include/asm/Kbuild             |  1 +
+ arch/arm/include/asm/seccomp.h          | 11 -----------
+ arch/microblaze/include/asm/Kbuild      |  1 +
+ arch/microblaze/include/asm/seccomp.h   | 16 ----------------
+ arch/mips/include/asm/seccomp.h         |  7 ++-----
+ arch/parisc/include/asm/Kbuild          |  1 +
+ arch/parisc/include/asm/seccomp.h       | 16 ----------------
+ arch/powerpc/include/asm/Kbuild         |  1 +
+ arch/powerpc/include/uapi/asm/Kbuild    |  1 -
+ arch/powerpc/include/uapi/asm/seccomp.h | 16 ----------------
+ arch/s390/include/asm/Kbuild            |  1 +
+ arch/s390/include/asm/seccomp.h         | 16 ----------------
+ arch/sh/include/asm/Kbuild              |  1 +
+ arch/sh/include/asm/seccomp.h           | 10 ----------
+ arch/sparc/include/asm/Kbuild           |  1 +
+ arch/sparc/include/asm/seccomp.h        | 15 ---------------
+ arch/x86/include/asm/seccomp.h          | 21 ++++++++++++++++++---
+ arch/x86/include/asm/seccomp_32.h       | 11 -----------
+ arch/x86/include/asm/seccomp_64.h       | 17 -----------------
+ 19 files changed, 27 insertions(+), 137 deletions(-)
+ delete mode 100644 arch/arm/include/asm/seccomp.h
+ delete mode 100644 arch/microblaze/include/asm/seccomp.h
+ delete mode 100644 arch/parisc/include/asm/seccomp.h
+ delete mode 100644 arch/powerpc/include/uapi/asm/seccomp.h
+ delete mode 100644 arch/s390/include/asm/seccomp.h
+ delete mode 100644 arch/sh/include/asm/seccomp.h
+ delete mode 100644 arch/sparc/include/asm/seccomp.h
+ delete mode 100644 arch/x86/include/asm/seccomp_32.h
+ delete mode 100644 arch/x86/include/asm/seccomp_64.h
 
--Kees
+diff --git a/arch/arm/include/asm/Kbuild b/arch/arm/include/asm/Kbuild
+index fe74c0d1e485..d7be5a9fd171 100644
+--- a/arch/arm/include/asm/Kbuild
++++ b/arch/arm/include/asm/Kbuild
+@@ -22,6 +22,7 @@ generic-y += preempt.h
+ generic-y += resource.h
+ generic-y += rwsem.h
+ generic-y += scatterlist.h
++generic-y += seccomp.h
+ generic-y += sections.h
+ generic-y += segment.h
+ generic-y += sembuf.h
+diff --git a/arch/arm/include/asm/seccomp.h b/arch/arm/include/asm/seccomp.h
+deleted file mode 100644
+index 52b156b341f5..000000000000
+--- a/arch/arm/include/asm/seccomp.h
++++ /dev/null
+@@ -1,11 +0,0 @@
+-#ifndef _ASM_ARM_SECCOMP_H
+-#define _ASM_ARM_SECCOMP_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+-
+-#endif /* _ASM_ARM_SECCOMP_H */
+diff --git a/arch/microblaze/include/asm/Kbuild b/arch/microblaze/include/asm/Kbuild
+index ab564a6db5c3..877e2f610655 100644
+--- a/arch/microblaze/include/asm/Kbuild
++++ b/arch/microblaze/include/asm/Kbuild
+@@ -8,5 +8,6 @@ generic-y += irq_work.h
+ generic-y += mcs_spinlock.h
+ generic-y += preempt.h
+ generic-y += scatterlist.h
++generic-y += seccomp.h
+ generic-y += syscalls.h
+ generic-y += trace_clock.h
+diff --git a/arch/microblaze/include/asm/seccomp.h b/arch/microblaze/include/asm/seccomp.h
+deleted file mode 100644
+index 0d912758a0d7..000000000000
+--- a/arch/microblaze/include/asm/seccomp.h
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#ifndef _ASM_MICROBLAZE_SECCOMP_H
+-#define _ASM_MICROBLAZE_SECCOMP_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read		__NR_read
+-#define __NR_seccomp_write		__NR_write
+-#define __NR_seccomp_exit		__NR_exit
+-#define __NR_seccomp_sigreturn		__NR_sigreturn
+-
+-#define __NR_seccomp_read_32		__NR_read
+-#define __NR_seccomp_write_32		__NR_write
+-#define __NR_seccomp_exit_32		__NR_exit
+-#define __NR_seccomp_sigreturn_32	__NR_sigreturn
+-
+-#endif	/* _ASM_MICROBLAZE_SECCOMP_H */
+diff --git a/arch/mips/include/asm/seccomp.h b/arch/mips/include/asm/seccomp.h
+index f29c75cf83c6..1d8a2e2c75c1 100644
+--- a/arch/mips/include/asm/seccomp.h
++++ b/arch/mips/include/asm/seccomp.h
+@@ -2,11 +2,6 @@
+ 
+ #include <linux/unistd.h>
+ 
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+-
+ /*
+  * Kludge alert:
+  *
+@@ -29,4 +24,6 @@
+ 
+ #endif /* CONFIG_MIPS32_O32 */
+ 
++#include <asm-generic/seccomp.h>
++
+ #endif /* __ASM_SECCOMP_H */
+diff --git a/arch/parisc/include/asm/Kbuild b/arch/parisc/include/asm/Kbuild
+index 8686237a3c3c..12b341d04f88 100644
+--- a/arch/parisc/include/asm/Kbuild
++++ b/arch/parisc/include/asm/Kbuild
+@@ -20,6 +20,7 @@ generic-y += param.h
+ generic-y += percpu.h
+ generic-y += poll.h
+ generic-y += preempt.h
++generic-y += seccomp.h
+ generic-y += segment.h
+ generic-y += topology.h
+ generic-y += trace_clock.h
+diff --git a/arch/parisc/include/asm/seccomp.h b/arch/parisc/include/asm/seccomp.h
+deleted file mode 100644
+index 015f7887aa29..000000000000
+--- a/arch/parisc/include/asm/seccomp.h
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#ifndef _ASM_PARISC_SECCOMP_H
+-#define _ASM_PARISC_SECCOMP_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+-
+-#define __NR_seccomp_read_32 __NR_read
+-#define __NR_seccomp_write_32 __NR_write
+-#define __NR_seccomp_exit_32 __NR_exit
+-#define __NR_seccomp_sigreturn_32 __NR_rt_sigreturn
+-
+-#endif	/* _ASM_PARISC_SECCOMP_H */
+diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
+index 382b28e364dc..c3a772f19dfd 100644
+--- a/arch/powerpc/include/asm/Kbuild
++++ b/arch/powerpc/include/asm/Kbuild
+@@ -5,5 +5,6 @@ generic-y += mcs_spinlock.h
+ generic-y += preempt.h
+ generic-y += rwsem.h
+ generic-y += scatterlist.h
++generic-y += seccomp.h
+ generic-y += trace_clock.h
+ generic-y += vtime.h
+diff --git a/arch/powerpc/include/uapi/asm/Kbuild b/arch/powerpc/include/uapi/asm/Kbuild
+index 7a3f795ac218..79c4068be278 100644
+--- a/arch/powerpc/include/uapi/asm/Kbuild
++++ b/arch/powerpc/include/uapi/asm/Kbuild
+@@ -25,7 +25,6 @@ header-y += posix_types.h
+ header-y += ps3fb.h
+ header-y += ptrace.h
+ header-y += resource.h
+-header-y += seccomp.h
+ header-y += sembuf.h
+ header-y += setup.h
+ header-y += shmbuf.h
+diff --git a/arch/powerpc/include/uapi/asm/seccomp.h b/arch/powerpc/include/uapi/asm/seccomp.h
+deleted file mode 100644
+index 00c1d9133cfe..000000000000
+--- a/arch/powerpc/include/uapi/asm/seccomp.h
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#ifndef _ASM_POWERPC_SECCOMP_H
+-#define _ASM_POWERPC_SECCOMP_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+-
+-#define __NR_seccomp_read_32 __NR_read
+-#define __NR_seccomp_write_32 __NR_write
+-#define __NR_seccomp_exit_32 __NR_exit
+-#define __NR_seccomp_sigreturn_32 __NR_sigreturn
+-
+-#endif	/* _ASM_POWERPC_SECCOMP_H */
+diff --git a/arch/s390/include/asm/Kbuild b/arch/s390/include/asm/Kbuild
+index c631f98fd524..369fbfcd85fc 100644
+--- a/arch/s390/include/asm/Kbuild
++++ b/arch/s390/include/asm/Kbuild
+@@ -5,4 +5,5 @@ generic-y += irq_work.h
+ generic-y += mcs_spinlock.h
+ generic-y += preempt.h
+ generic-y += scatterlist.h
++generic-y += seccomp.h
+ generic-y += trace_clock.h
+diff --git a/arch/s390/include/asm/seccomp.h b/arch/s390/include/asm/seccomp.h
+deleted file mode 100644
+index 781a9cf9b002..000000000000
+--- a/arch/s390/include/asm/seccomp.h
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#ifndef _ASM_S390_SECCOMP_H
+-#define _ASM_S390_SECCOMP_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read	__NR_read
+-#define __NR_seccomp_write	__NR_write
+-#define __NR_seccomp_exit	__NR_exit
+-#define __NR_seccomp_sigreturn	__NR_sigreturn
+-
+-#define __NR_seccomp_read_32	__NR_read
+-#define __NR_seccomp_write_32	__NR_write
+-#define __NR_seccomp_exit_32	__NR_exit
+-#define __NR_seccomp_sigreturn_32 __NR_sigreturn
+-
+-#endif	/* _ASM_S390_SECCOMP_H */
+diff --git a/arch/sh/include/asm/Kbuild b/arch/sh/include/asm/Kbuild
+index 654ebb6bd5d8..457aaa82c30d 100644
+--- a/arch/sh/include/asm/Kbuild
++++ b/arch/sh/include/asm/Kbuild
+@@ -25,6 +25,7 @@ generic-y += poll.h
+ generic-y += preempt.h
+ generic-y += resource.h
+ generic-y += scatterlist.h
++generic-y += seccomp.h
+ generic-y += sembuf.h
+ generic-y += serial.h
+ generic-y += shmbuf.h
+diff --git a/arch/sh/include/asm/seccomp.h b/arch/sh/include/asm/seccomp.h
+deleted file mode 100644
+index 3280ed3802ef..000000000000
+--- a/arch/sh/include/asm/seccomp.h
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#ifndef __ASM_SECCOMP_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+-
+-#endif /* __ASM_SECCOMP_H */
+diff --git a/arch/sparc/include/asm/Kbuild b/arch/sparc/include/asm/Kbuild
+index 94f36e7086a7..41646380db97 100644
+--- a/arch/sparc/include/asm/Kbuild
++++ b/arch/sparc/include/asm/Kbuild
+@@ -16,6 +16,7 @@ generic-y += module.h
+ generic-y += mutex.h
+ generic-y += preempt.h
+ generic-y += scatterlist.h
++generic-y += seccomp.h
+ generic-y += serial.h
+ generic-y += trace_clock.h
+ generic-y += types.h
+diff --git a/arch/sparc/include/asm/seccomp.h b/arch/sparc/include/asm/seccomp.h
+deleted file mode 100644
+index adca1bce41d4..000000000000
+--- a/arch/sparc/include/asm/seccomp.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-#ifndef _ASM_SECCOMP_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+-
+-#define __NR_seccomp_read_32 __NR_read
+-#define __NR_seccomp_write_32 __NR_write
+-#define __NR_seccomp_exit_32 __NR_exit
+-#define __NR_seccomp_sigreturn_32 __NR_sigreturn
+-
+-#endif /* _ASM_SECCOMP_H */
+diff --git a/arch/x86/include/asm/seccomp.h b/arch/x86/include/asm/seccomp.h
+index 0f3d7f099224..b13ac5f63702 100644
+--- a/arch/x86/include/asm/seccomp.h
++++ b/arch/x86/include/asm/seccomp.h
+@@ -1,5 +1,20 @@
++#ifndef _ASM_X86_SECCOMP_H
++#define _ASM_X86_SECCOMP_H
++
++#include <asm/unistd.h>
++
++#ifdef CONFIG_COMPAT
++#include <asm/ia32_unistd.h>
++#define __NR_seccomp_read_32		__NR_ia32_read
++#define __NR_seccomp_write_32		__NR_ia32_write
++#define __NR_seccomp_exit_32		__NR_ia32_exit
++#define __NR_seccomp_sigreturn_32	__NR_ia32_sigreturn
++#endif
++
+ #ifdef CONFIG_X86_32
+-# include <asm/seccomp_32.h>
+-#else
+-# include <asm/seccomp_64.h>
++#define __NR_seccomp_sigreturn		__NR_sigreturn
+ #endif
++
++#include <asm-generic/seccomp.h>
++
++#endif /* _ASM_X86_SECCOMP_H */
+diff --git a/arch/x86/include/asm/seccomp_32.h b/arch/x86/include/asm/seccomp_32.h
+deleted file mode 100644
+index b811d6f5780c..000000000000
+--- a/arch/x86/include/asm/seccomp_32.h
++++ /dev/null
+@@ -1,11 +0,0 @@
+-#ifndef _ASM_X86_SECCOMP_32_H
+-#define _ASM_X86_SECCOMP_32_H
+-
+-#include <linux/unistd.h>
+-
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_sigreturn
+-
+-#endif /* _ASM_X86_SECCOMP_32_H */
+diff --git a/arch/x86/include/asm/seccomp_64.h b/arch/x86/include/asm/seccomp_64.h
+deleted file mode 100644
+index 84ec1bd161a5..000000000000
+--- a/arch/x86/include/asm/seccomp_64.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-#ifndef _ASM_X86_SECCOMP_64_H
+-#define _ASM_X86_SECCOMP_64_H
+-
+-#include <linux/unistd.h>
+-#include <asm/ia32_unistd.h>
+-
+-#define __NR_seccomp_read __NR_read
+-#define __NR_seccomp_write __NR_write
+-#define __NR_seccomp_exit __NR_exit
+-#define __NR_seccomp_sigreturn __NR_rt_sigreturn
+-
+-#define __NR_seccomp_read_32 __NR_ia32_read
+-#define __NR_seccomp_write_32 __NR_ia32_write
+-#define __NR_seccomp_exit_32 __NR_ia32_exit
+-#define __NR_seccomp_sigreturn_32 __NR_ia32_sigreturn
+-
+-#endif /* _ASM_X86_SECCOMP_64_H */
+-- 
+1.9.1
+
 
 -- 
 Kees Cook

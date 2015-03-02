@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Mar 2015 12:12:38 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:29766 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Mar 2015 12:12:54 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:5720 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007861AbbCBLMgPF4D0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Mar 2015 12:12:36 +0100
+        with ESMTP id S27007876AbbCBLMrvUW5W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Mar 2015 12:12:47 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DE173CEF91FBF;
-        Mon,  2 Mar 2015 11:12:27 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id D0FD2D22E9D66;
+        Mon,  2 Mar 2015 11:12:39 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 2 Mar 2015 11:12:29 +0000
+ 14.3.195.1; Mon, 2 Mar 2015 11:12:42 +0000
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 2 Mar 2015 11:12:29 +0000
+ 14.3.210.2; Mon, 2 Mar 2015 11:12:41 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <stable@vger.kernel.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
@@ -20,9 +20,9 @@ CC:     James Hogan <james.hogan@imgtec.com>,
         Sanjay Lal <sanjayl@kymasys.com>,
         "Gleb Natapov" <gleb@kernel.org>, <kvm@vger.kernel.org>,
         <linux-mips@linux-mips.org>
-Subject: [PATCH stable 3.12, 3.14] KVM: MIPS: Don't leak FPU/DSP to guest
-Date:   Mon, 2 Mar 2015 11:11:57 +0000
-Message-ID: <1425294717-6346-1-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH stable 3.10] KVM: MIPS: Don't leak FPU/DSP to guest
+Date:   Mon, 2 Mar 2015 11:12:35 +0000
+Message-ID: <1425294755-6402-1-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.0.5
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -31,7 +31,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46064
+X-archive-position: 46065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -91,31 +91,31 @@ Cc: <stable@vger.kernel.org> # v3.10+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 ---
-This should apply to stable trees 3.12 and 3.14, but not 3.10. The files
-had been renamed since v3.14 so it cherry-picked cleanly but the patch
-didn't apply cleanly. I've also added a reference to the "MIPS: Export
-FP functions used by lose_fpu(1) for KVM" commit which is itself marked
-for stable, but is needed to avoid a build failure when KVM=m.
+This should apply to stable tree 3.10. In addition to the files being
+renamed since v3.14, kvm_locore.S was reformatted slightly between v3.10
+and v3.12. I've also added a reference to the "MIPS: Export FP functions
+used by lose_fpu(1) for KVM" commit which is itself marked for stable,
+but is needed to avoid a build failure when KVM=m.
 ---
  arch/mips/kvm/kvm_locore.S | 2 +-
  arch/mips/kvm/kvm_mips.c   | 6 +++---
  2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
-index bbace092ad0a..03a2db58b22d 100644
+index dca2aa665993..920b63210806 100644
 --- a/arch/mips/kvm/kvm_locore.S
 +++ b/arch/mips/kvm/kvm_locore.S
-@@ -428,7 +428,7 @@ __kvm_mips_return_to_guest:
- 	/* Setup status register for running guest in UM */
- 	.set	at
- 	or	v1, v1, (ST0_EXL | KSU_USER | ST0_IE)
--	and	v1, v1, ~ST0_CU0
-+	and	v1, v1, ~(ST0_CU0 | ST0_MX)
- 	.set	noat
- 	mtc0	v1, CP0_STATUS
- 	ehb
+@@ -431,7 +431,7 @@ __kvm_mips_return_to_guest:
+     /* Setup status register for running guest in UM */
+     .set at
+     or     v1, v1, (ST0_EXL | KSU_USER | ST0_IE)
+-    and     v1, v1, ~ST0_CU0
++    and     v1, v1, ~(ST0_CU0 | ST0_MX)
+     .set noat
+     mtc0    v1, CP0_STATUS
+     ehb
 diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 28838f1a6c1a..897c605263f2 100644
+index f957a8ac979b..843ec38fec7b 100644
 --- a/arch/mips/kvm/kvm_mips.c
 +++ b/arch/mips/kvm/kvm_mips.c
 @@ -15,6 +15,7 @@
@@ -126,7 +126,7 @@ index 28838f1a6c1a..897c605263f2 100644
  #include <asm/page.h>
  #include <asm/cacheflush.h>
  #include <asm/mmu_context.h>
-@@ -418,6 +419,8 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+@@ -413,6 +414,8 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
  		vcpu->mmio_needed = 0;
  	}
  
@@ -135,7 +135,7 @@ index 28838f1a6c1a..897c605263f2 100644
  	local_irq_disable();
  	/* Check if we have any exceptions/interrupts pending */
  	kvm_mips_deliver_interrupts(vcpu,
-@@ -1021,9 +1024,6 @@ void kvm_mips_set_c0_status(void)
+@@ -1017,9 +1020,6 @@ void kvm_mips_set_c0_status(void)
  {
  	uint32_t status = read_c0_status();
  

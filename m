@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2015 01:20:40 +0100 (CET)
-Received: from smtp.outflux.net ([198.145.64.163]:58380 "EHLO smtp.outflux.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2015 01:20:56 +0100 (CET)
+Received: from smtp.outflux.net ([198.145.64.163]:39601 "EHLO smtp.outflux.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007954AbbCCAUjbW94n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27007833AbbCCAUjjwlL4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 3 Mar 2015 01:20:39 +0100
 Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t230JrqE011891;
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t230JrVX011890;
         Mon, 2 Mar 2015 16:19:53 -0800
 From:   Kees Cook <keescook@chromium.org>
 To:     akpm@linux-foundation.org
@@ -40,12 +40,10 @@ Cc:     Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-fsdevel@vger.kernel.org
-Subject: [PATCH 1/5] arm: factor out mmap ASLR into mmap_rnd
-Date:   Mon,  2 Mar 2015 16:19:44 -0800
-Message-Id: <1425341988-1599-2-git-send-email-keescook@chromium.org>
+Subject: [PATCH v2 0/5] split ET_DYN ASLR from mmap ASLR
+Date:   Mon,  2 Mar 2015 16:19:43 -0800
+Message-Id: <1425341988-1599-1-git-send-email-keescook@chromium.org>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1425341988-1599-1-git-send-email-keescook@chromium.org>
-References: <1425341988-1599-1-git-send-email-keescook@chromium.org>
 X-MIMEDefang-Filter: outflux$Revision: 1.316 $
 X-HELO: www.outflux.net
 X-Scanned-By: MIMEDefang 2.73
@@ -53,7 +51,7 @@ Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46082
+X-archive-position: 46083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,42 +68,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In preparation for exporting per-arch mmap randomization functions,
-this moves the ASLR calculations for mmap on ARM into a separate routine.
+To address the "offset2lib" ASLR weakness[1], this separates ET_DYN
+ASLR from mmap ASLR, as already done on s390. The architectures
+that are already randomizing mmap (arm, arm64, mips, powerpc, s390,
+and x86), have their various forms of arch_mmap_rnd() made available
+via the new CONFIG_ARCH_HAS_ELF_RANDOMIZE. For these architectures,
+arch_randomize_brk() is collapsed as well.
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
+This is an alternative to the solutions in:
+https://lkml.org/lkml/2015/2/23/442
+
+Thanks!
+
+-Kees
+
+[1] http://cybersecurity.upv.es/attacks/offset2lib/offset2lib.html
+
 ---
- arch/arm/mm/mmap.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/mm/mmap.c b/arch/arm/mm/mmap.c
-index 5e85ed371364..0f8bc158f2c6 100644
---- a/arch/arm/mm/mmap.c
-+++ b/arch/arm/mm/mmap.c
-@@ -169,14 +169,21 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
- 	return addr;
- }
- 
--void arch_pick_mmap_layout(struct mm_struct *mm)
-+static unsigned long mmap_rnd(void)
- {
--	unsigned long random_factor = 0UL;
-+	unsigned long rnd = 0UL;
- 
- 	/* 8 bits of randomness in 20 address space bits */
- 	if ((current->flags & PF_RANDOMIZE) &&
- 	    !(current->personality & ADDR_NO_RANDOMIZE))
--		random_factor = (get_random_int() % (1 << 8)) << PAGE_SHIFT;
-+		rnd = (get_random_int() % (1 << 8)) << PAGE_SHIFT;
-+
-+	return rnd;
-+}
-+
-+void arch_pick_mmap_layout(struct mm_struct *mm)
-+{
-+	unsigned long random_factor = mmap_rnd();
- 
- 	if (mmap_is_legacy()) {
- 		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
--- 
-1.9.1
+v2:
+- verbosified the commit logs, especially 4/5 (akpm)

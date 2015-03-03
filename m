@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2015 09:36:12 +0100 (CET)
-Received: from mail-ig0-f182.google.com ([209.85.213.182]:43779 "EHLO
-        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006779AbbCCIgLVjLwg convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2015 14:06:32 +0100 (CET)
+Received: from mail-yh0-f50.google.com ([209.85.213.50]:40907 "EHLO
+        mail-yh0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006861AbbCCNGbPefK8 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Mar 2015 09:36:11 +0100
-Received: by igbhn18 with SMTP id hn18so24668858igb.2
-        for <linux-mips@linux-mips.org>; Tue, 03 Mar 2015 00:36:06 -0800 (PST)
+        Tue, 3 Mar 2015 14:06:31 +0100
+Received: by yhot59 with SMTP id t59so18082890yho.7
+        for <linux-mips@linux-mips.org>; Tue, 03 Mar 2015 05:06:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type:content-transfer-encoding;
-        bh=3tGrxSLFLPYICLVTDAdYZI7QAw+Q7djG2IF8UES06ec=;
-        b=K4N9NNGf1k8esqvVjUC0skPOrrW2WeXUtknnS4nHp3dHz3+Z9tvScZJl1gku3F3yuW
-         gyzUcsES/dyjlqJnfSCV3yE1QjpqbH2hBvq3O5Lr/4/e6naMw7AM2HSIGCH3Nn19hL3y
-         0DvNdIS+1bHdbPga8Waip4zXEoqtkxTxzNxJNTibysjZDXrCV7RzSJ9XwpDcTFT4Fg/y
-         CeVMNzI4UNmgpHdeGJ4vSM3/P9Rjpr6wUpCjVSuddGoZ2FgyzKy+Kqiw80KGH5Ve7fqs
-         mD01XcLfZJwApP+rQHxDb4TvRWdsXW1sr7CjG5K5B++27gIhX8+bf6GBKCPAYOyZZ5jv
-         pwZA==
+        bh=TjRanJmaNAF28/YbVilBJgcGHJFOiK9LGLp972Htx7s=;
+        b=Xm3ieU+tf36HM+i9HW24RxQw7//8MKWFftIY1MISB9oLVoEOIeRVtKJCzS8f4sJmYk
+         pFkwSABtj9huONEKI1zGWnADw6gJCjIbVYeFS5ZIscZdwqwt6ZhYMoVbAmll0+uSeQaz
+         dFTcgI8v1GNhrJkDzFsroXbeviO6PapF1IE/U/2JcgrvAYblOOwptUwA7SK9oxsQOg23
+         COkMfGe0gh2IP5CBSMOMQi92yPUWQ6tgwblTRQinkLMs9JnWrD5xLeLsTWYbE8yUYn/R
+         kUuurjKRb/QfqgQryc1Gh9uMhsGPG3+a7HvRndvP63nopHupyViKrrqsVbCKOQdwnlf8
+         /C+A==
+X-Received: by 10.236.96.232 with SMTP id r68mr31263378yhf.73.1425387985997;
+ Tue, 03 Mar 2015 05:06:25 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 10.43.74.201 with SMTP id yx9mr212323icb.96.1425371765934; Tue,
- 03 Mar 2015 00:36:05 -0800 (PST)
-Received: by 10.107.134.207 with HTTP; Tue, 3 Mar 2015 00:36:05 -0800 (PST)
+Received: by 10.170.186.67 with HTTP; Tue, 3 Mar 2015 05:06:05 -0800 (PST)
 In-Reply-To: <CACna6rx+3TbNfLmT1Br-JjhDnTQLrFFtVzfmid=yOdBfcOwHoA@mail.gmail.com>
 References: <CACna6rx+3TbNfLmT1Br-JjhDnTQLrFFtVzfmid=yOdBfcOwHoA@mail.gmail.com>
-Date:   Tue, 3 Mar 2015 09:36:05 +0100
-Message-ID: <CACna6rxYSmuzis9gR6c8nQP9zhafQ10NpSkB1ZAOZQdAOGSgcA@mail.gmail.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Tue, 3 Mar 2015 17:06:05 +0400
+Message-ID: <CAHNKnsRKFSutwKHtOY9QZTqBr_+2q4atuo=mg7QOBj35ipuUYQ@mail.gmail.com>
 Subject: Re: Looking for an idea/workaround for using MIPS ioremap_nocache
  (__ioremap) in IRQ
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>
+To:     =?ISO-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46097
+X-archive-position: 46098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ryazanov.s.a@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,7 +54,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 16 February 2015 at 08:35, Rafał Miłecki <zajec5@gmail.com> wrote:
+Hello Rafał,
+
+2015-02-16 10:35 GMT+03:00 Rafał Miłecki <zajec5@gmail.com>:
+> Hi,
+>
 > Once I've hit
 > BUG_ON(in_interrupt());
 > when hacking PCI drivers locally on MIPS board. I see the problem but
@@ -80,13 +85,21 @@ On 16 February 2015 at 08:35, Rafał Miłecki <zajec5@gmail.com> wrote:
 > code triggering this problem, but it would be nice to have everything
 > working anyway.
 >
+Why do you need to read the PCI configuration space in the interrupt
+handler? As you wrote, it uncommon that driver tries to do that.
+Usually the PCI configuration read/updated during device
+initialization stage (by the PCI core and by a device driver) and then
+you interact with the I/O memory and not with the configuration space.
+
 >
 > As one of workarounds I was thinking about mapping whole space early.
 > Unfortunately there are many possible registers (0xffff), few PCI
 > functions (0x30000), many possible PCI devices (0xf80000). It's way to
 > big space I guess to keep it mapped all the time.
-
-Any idea/help about that?
+>
+Actual number of slots is much less than 0xf80000, so if you know it
+(e.g. from DT) then you could do remapping earlier during the PCI
+controller initialization.
 
 -- 
-Rafał
+Sergey

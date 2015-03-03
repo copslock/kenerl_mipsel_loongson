@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 00:21:37 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:52958 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 00:21:54 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:52978 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007914AbbCCXVfQjpSV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 00:21:35 +0100
+        by eddie.linux-mips.org with ESMTP id S27008081AbbCCXVhzTQE4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 00:21:37 +0100
 Received: from deadeye.wl.decadent.org.uk ([192.168.4.249] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
         (Exim 4.80)
         (envelope-from <ben@decadent.org.uk>)
-        id 1YSw83-0000ea-Lt; Tue, 03 Mar 2015 23:21:31 +0000
+        id 1YSw83-0000ed-ME; Tue, 03 Mar 2015 23:21:31 +0000
 Received: from ben by deadeye with local (Exim 4.84)
         (envelope-from <ben@decadent.org.uk>)
-        id 1YSw7y-0006qU-Cb; Tue, 03 Mar 2015 23:21:26 +0000
+        id 1YSw7y-0006qh-DZ; Tue, 03 Mar 2015 23:21:26 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
@@ -18,15 +18,13 @@ MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        "Hemmo Nieminen" <hemmo.nieminen@iki.fi>,
+        "Leonid Yegoshin" <Leonid.Yegoshin@imgtec.com>,
         "David Daney" <david.daney@cavium.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>
+        "Ralf Baechle" <ralf@linux-mips.org>
 Date:   Tue, 03 Mar 2015 22:11:28 +0000
-Message-ID: <lsq.1425420688.351602696@decadent.org.uk>
+Message-ID: <lsq.1425420688.25339415@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.2 09/24] MIPS: Fix kernel lockup or crash after CPU
- offline/online
+Subject: [PATCH 3.2 12/24] MIPS: Fix C0_Pagegrain[IEC] support.
 In-Reply-To: <lsq.1425420688.806916072@decadent.org.uk>
 X-SA-Exim-Connect-IP: 192.168.4.249
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -35,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46108
+X-archive-position: 46109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,45 +54,46 @@ X-list: linux-mips
 
 ------------------
 
-From: Hemmo Nieminen <hemmo.nieminen@iki.fi>
+From: David Daney <david.daney@cavium.com>
 
-commit c7754e75100ed5e3068ac5085747f2bfc386c8d6 upstream.
+commit 9ead8632bbf454cfc709b6205dc9cd8582fb0d64 upstream.
 
-As printk() invocation can cause e.g. a TLB miss, printk() cannot be
-called before the exception handlers have been properly initialized.
-This can happen e.g. when netconsole has been loaded as a kernel module
-and the TLB table has been cleared when a CPU was offline.
+The following commits:
 
-Call cpu_report() in start_secondary() only after the exception handlers
-have been initialized to fix this.
+  5890f70f15c52d (MIPS: Use dedicated exception handler if CPU supports RI/XI exceptions)
+  6575b1d4173eae (MIPS: kernel: cpu-probe: Detect unique RI/XI exceptions)
 
-Without the patch the kernel will randomly either lockup or crash
-after a CPU is onlined and the console driver is a module.
+break the kernel for *all* existing MIPS CPUs that implement the
+CP0_PageGrain[IEC] bit.  They cause the TLB exception handlers to be
+generated without the legacy execute-inhibit handling, but never set
+the CP0_PageGrain[IEC] bit to activate the use of dedicated exception
+vectors for execute-inhibit exceptions.  The result is that upon
+detection of an execute-inhibit violation, we loop forever in the TLB
+exception handlers instead of sending SIGSEGV to the task.
 
-Signed-off-by: Hemmo Nieminen <hemmo.nieminen@iki.fi>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: David Daney <david.daney@cavium.com>
+If we are generating TLB exception handlers expecting separate
+vectors, we must also enable the CP0_PageGrain[IEC] feature.
+
+The bug was introduced in kernel version 3.17.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/8953/
+Patchwork: http://patchwork.linux-mips.org/patch/8880/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[bwh: Backported to 3.2: adjust context]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mm/tlb-r4k.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -105,10 +105,10 @@ asmlinkage __cpuinit void start_secondar
- 	if ((read_c0_tcbind() & TCBIND_CURTC) == 0)
- #endif /* CONFIG_MIPS_MT_SMTC */
- 	cpu_probe();
--	cpu_report();
- 	per_cpu_trap_init();
- 	mips_clockevent_init();
- 	mp_ops->init_secondary();
-+	cpu_report();
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -447,6 +447,8 @@ void __cpuinit tlb_init(void)
+ #ifdef CONFIG_64BIT
+ 		pg |= PG_ELPA;
+ #endif
++		if (cpu_has_rixiex)
++			pg |= PG_IEC;
+ 		write_c0_pagegrain(pg);
+ 	}
  
- 	/*
- 	 * XXX parity protection should be folded in here when it's converted

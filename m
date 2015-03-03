@@ -1,72 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2015 09:30:14 +0100 (CET)
-Received: from mail-wg0-f47.google.com ([74.125.82.47]:32910 "EHLO
-        mail-wg0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006779AbbCCIaMuz4QM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Mar 2015 09:30:12 +0100
-Received: by wghb13 with SMTP id b13so38403735wgh.0;
-        Tue, 03 Mar 2015 00:30:08 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2015 09:36:12 +0100 (CET)
+Received: from mail-ig0-f182.google.com ([209.85.213.182]:43779 "EHLO
+        mail-ig0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006779AbbCCIgLVjLwg convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Mar 2015 09:36:11 +0100
+Received: by igbhn18 with SMTP id hn18so24668858igb.2
+        for <linux-mips@linux-mips.org>; Tue, 03 Mar 2015 00:36:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=/JrdxPdphzSUhyngAweLNA4mz3FC4rtVZmyP6ugtoJE=;
-        b=nFm+jsSLd/H0vrBd53AHmlh3uVuwXnatzufPuxQ2xjkBpNUa7WkQz6hc5IUoToBPFM
-         lY41VhJQTF2Fahcqnsdih3KmQZn0xlkbb4hJq/8fsPJS0pgzNE9ti4OWDZFCglRO1H7U
-         vmJZm/NHeZ9x3NLiDZqQJoRdMsyyZvEVPytuecozzaS1APEfb+x5VUC9DeiUgU2jAx6z
-         Y0XKoPLFLL1BmejZEBkOtTSEYHUgOfIFqXdR/ylCe543erDWR/7fZ19XJsNdxLzLlLE7
-         PW46Fz50I0qxNnfHQfwK6UC5Z85dKfl+opOSUvf5XOXR1zk/hMgPw7BrRvpgI2/LMmWY
-         HYMg==
-X-Received: by 10.194.236.133 with SMTP id uu5mr5786262wjc.155.1425371407851;
-        Tue, 03 Mar 2015 00:30:07 -0800 (PST)
-Received: from gmail.com (540334ED.catv.pool.telekom.hu. [84.3.52.237])
-        by mx.google.com with ESMTPSA id vv9sm202723wjc.35.2015.03.03.00.30.04
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Mar 2015 00:30:05 -0800 (PST)
-Date:   Tue, 3 Mar 2015 09:30:02 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
-        x86@kernel.org, Frederic Weisbecker <fweisbec@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Laura Abbott <lauraa@codeaurora.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] seccomp: switch to using asm-generic for seccomp.h
-Message-ID: <20150303083002.GA1207@gmail.com>
-References: <20150302231254.GA4857@www.outflux.net>
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=3tGrxSLFLPYICLVTDAdYZI7QAw+Q7djG2IF8UES06ec=;
+        b=K4N9NNGf1k8esqvVjUC0skPOrrW2WeXUtknnS4nHp3dHz3+Z9tvScZJl1gku3F3yuW
+         gyzUcsES/dyjlqJnfSCV3yE1QjpqbH2hBvq3O5Lr/4/e6naMw7AM2HSIGCH3Nn19hL3y
+         0DvNdIS+1bHdbPga8Waip4zXEoqtkxTxzNxJNTibysjZDXrCV7RzSJ9XwpDcTFT4Fg/y
+         CeVMNzI4UNmgpHdeGJ4vSM3/P9Rjpr6wUpCjVSuddGoZ2FgyzKy+Kqiw80KGH5Ve7fqs
+         mD01XcLfZJwApP+rQHxDb4TvRWdsXW1sr7CjG5K5B++27gIhX8+bf6GBKCPAYOyZZ5jv
+         pwZA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150302231254.GA4857@www.outflux.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <mingo.kernel.org@gmail.com>
+X-Received: by 10.43.74.201 with SMTP id yx9mr212323icb.96.1425371765934; Tue,
+ 03 Mar 2015 00:36:05 -0800 (PST)
+Received: by 10.107.134.207 with HTTP; Tue, 3 Mar 2015 00:36:05 -0800 (PST)
+In-Reply-To: <CACna6rx+3TbNfLmT1Br-JjhDnTQLrFFtVzfmid=yOdBfcOwHoA@mail.gmail.com>
+References: <CACna6rx+3TbNfLmT1Br-JjhDnTQLrFFtVzfmid=yOdBfcOwHoA@mail.gmail.com>
+Date:   Tue, 3 Mar 2015 09:36:05 +0100
+Message-ID: <CACna6rxYSmuzis9gR6c8nQP9zhafQ10NpSkB1ZAOZQdAOGSgcA@mail.gmail.com>
+Subject: Re: Looking for an idea/workaround for using MIPS ioremap_nocache
+ (__ioremap) in IRQ
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46096
+X-archive-position: 46097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,97 +53,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 16 February 2015 at 08:35, Rafał Miłecki <zajec5@gmail.com> wrote:
+> Once I've hit
+> BUG_ON(in_interrupt());
+> when hacking PCI drivers locally on MIPS board. I see the problem but
+> don't know the solution.
+>
+> 1) I think "read" and "write" of struct pci_ops should be safe to call
+> in IRQ handler
+> 2) In drivers/bcma/driver_pci_host.c we use ioremap_nocache
+>
+> This causes a problem for boards with 2 PCI(e) cards. The base address
+> for the 2nd card is
+> #define BCMA_SOC_PCI1_CFG               0x44000000U
+> which doesn't allow MIPS to use KSEG1.
+>
+> As the result forwardtrace looks like this:
+> 1) ioremap_nocache
+> 2) __ioremap_mode
+> 3) __ioremap
+> 4) get_vm_area
+> 5) __get_vm_area_node
+> And then we can hit BUG_ON(in_interrupt());
+>
+> Can you see any solution for this? Currently there isn't any mainline
+> code triggering this problem, but it would be nice to have everything
+> working anyway.
+>
+>
+> As one of workarounds I was thinking about mapping whole space early.
+> Unfortunately there are many possible registers (0xffff), few PCI
+> functions (0x30000), many possible PCI devices (0xf80000). It's way to
+> big space I guess to keep it mapped all the time.
 
-* Kees Cook <keescook@chromium.org> wrote:
+Any idea/help about that?
 
-> Most architectures don't need to do anything special for the strict
-> seccomp syscall entries. Remove the redundant headers and reduce the
-> others.
-
->  19 files changed, 27 insertions(+), 137 deletions(-)
-
-Lovely cleanup factor.
-
-Just to make sure, are you sure the 32-bit details are identical 
-across architectures?
-
-For example some architectures did this:
-
-> --- a/arch/microblaze/include/asm/seccomp.h
-> +++ /dev/null
-> @@ -1,16 +0,0 @@
-> -#ifndef _ASM_MICROBLAZE_SECCOMP_H
-> -#define _ASM_MICROBLAZE_SECCOMP_H
-> -
-> -#include <linux/unistd.h>
-> -
-> -#define __NR_seccomp_read		__NR_read
-> -#define __NR_seccomp_write		__NR_write
-> -#define __NR_seccomp_exit		__NR_exit
-> -#define __NR_seccomp_sigreturn		__NR_sigreturn
-> -
-> -#define __NR_seccomp_read_32		__NR_read
-> -#define __NR_seccomp_write_32		__NR_write
-> -#define __NR_seccomp_exit_32		__NR_exit
-> -#define __NR_seccomp_sigreturn_32	__NR_sigreturn
-
-others did this:
-
-> diff --git a/arch/x86/include/asm/seccomp_64.h b/arch/x86/include/asm/seccomp_64.h
-> deleted file mode 100644
-> index 84ec1bd161a5..000000000000
-> --- a/arch/x86/include/asm/seccomp_64.h
-> +++ /dev/null
-> @@ -1,17 +0,0 @@
-> -#ifndef _ASM_X86_SECCOMP_64_H
-> -#define _ASM_X86_SECCOMP_64_H
-> -
-> -#include <linux/unistd.h>
-> -#include <asm/ia32_unistd.h>
-> -
-> -#define __NR_seccomp_read __NR_read
-> -#define __NR_seccomp_write __NR_write
-> -#define __NR_seccomp_exit __NR_exit
-> -#define __NR_seccomp_sigreturn __NR_rt_sigreturn
-> -
-> -#define __NR_seccomp_read_32 __NR_ia32_read
-> -#define __NR_seccomp_write_32 __NR_ia32_write
-> -#define __NR_seccomp_exit_32 __NR_ia32_exit
-> -#define __NR_seccomp_sigreturn_32 __NR_ia32_sigreturn
-> -
-> -#endif /* _ASM_X86_SECCOMP_64_H */
-
-While in yet another case you kept the syscall mappings:
-
-> --- a/arch/x86/include/asm/seccomp.h
-> +++ b/arch/x86/include/asm/seccomp.h
-> @@ -1,5 +1,20 @@
-> +#ifndef _ASM_X86_SECCOMP_H
-> +#define _ASM_X86_SECCOMP_H
-> +
-> +#include <asm/unistd.h>
-> +
-> +#ifdef CONFIG_COMPAT
-> +#include <asm/ia32_unistd.h>
-> +#define __NR_seccomp_read_32		__NR_ia32_read
-> +#define __NR_seccomp_write_32		__NR_ia32_write
-> +#define __NR_seccomp_exit_32		__NR_ia32_exit
-> +#define __NR_seccomp_sigreturn_32	__NR_ia32_sigreturn
-> +#endif
-> +
->  #ifdef CONFIG_X86_32
-> -# include <asm/seccomp_32.h>
-> -#else
-> -# include <asm/seccomp_64.h>
-> +#define __NR_seccomp_sigreturn		__NR_sigreturn
->  #endif
-> +
-> +#include <asm-generic/seccomp.h>
-> +
-> +#endif /* _ASM_X86_SECCOMP_H */
-
-It might all be correct, but it's not obvious to me.
-
-Thanks,
-
-	Ingo
+-- 
+Rafał

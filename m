@@ -1,23 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 07:19:11 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49398 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 07:19:29 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:49488 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006674AbbCDGSSTsqkU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 07:18:18 +0100
+        by eddie.linux-mips.org with ESMTP id S27006895AbbCDGSfzJXTf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 07:18:35 +0100
 Received: from localhost (unknown [166.170.43.162])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8BD09A58;
-        Wed,  4 Mar 2015 06:18:12 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4F6A2990;
+        Wed,  4 Mar 2015 06:18:30 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH 3.18 074/151] MIPS: Export MSA functions used by lose_fpu(1) for KVM
-Date:   Tue,  3 Mar 2015 22:13:28 -0800
-Message-Id: <20150304055509.618122110@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.18 071/151] MIPS: asm: pgtable: Add c0 hazards on HTW start/stop sequences
+Date:   Tue,  3 Mar 2015 22:13:25 -0800
+Message-Id: <20150304055509.131103263@linuxfoundation.org>
 X-Mailer: git-send-email 2.3.1
 In-Reply-To: <20150304055457.084276421@linuxfoundation.org>
 References: <20150304055457.084276421@linuxfoundation.org>
@@ -28,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46135
+X-archive-position: 46136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,52 +46,56 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit ca5d25642e212f73492d332d95dc90ef46a0e8dc upstream.
+commit 461d1597ffad7a826f8aaa63ab0727c37b632e34 upstream.
 
-Export the _save_msa asm function used by the lose_fpu(1) macro to GPL
-modules so that KVM can make use of it when it is built as a module.
+When we use htw_{start,stop}() outside of htw_reset(), we need
+to ensure that c0 changes have been propagated properly before
+we attempt to continue with subsequence memory operations.
 
-This fixes the following build error when CONFIG_KVM=m and
-CONFIG_CPU_HAS_MSA=y due to commit f798217dfd03 ("KVM: MIPS: Don't leak
-FPU/DSP to guest"):
-
-ERROR: "_save_msa" [arch/mips/kvm/kvm.ko] undefined!
-
-Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9261/
+Patchwork: https://patchwork.linux-mips.org/patch/9114/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/mips_ksyms.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/include/asm/pgtable.h |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/mips_ksyms.c
-+++ b/arch/mips/kernel/mips_ksyms.c
-@@ -15,6 +15,7 @@
- #include <asm/uaccess.h>
- #include <asm/ftrace.h>
- #include <asm/fpu.h>
-+#include <asm/msa.h>
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -99,16 +99,20 @@ extern void paging_init(void);
  
- extern void *__bzero(void *__s, size_t __count);
- extern long __strncpy_from_kernel_nocheck_asm(char *__to,
-@@ -38,6 +39,9 @@ extern long __strnlen_user_asm(const cha
-  * Core architecture code
-  */
- EXPORT_SYMBOL_GPL(_save_fp);
-+#ifdef CONFIG_CPU_HAS_MSA
-+EXPORT_SYMBOL_GPL(_save_msa);
-+#endif
+ #define htw_stop()							\
+ do {									\
+-	if (cpu_has_htw)						\
++	if (cpu_has_htw) {						\
+ 		write_c0_pwctl(read_c0_pwctl() &			\
+ 			       ~(1 << MIPS_PWCTL_PWEN_SHIFT));		\
++		back_to_back_c0_hazard();				\
++	}								\
+ } while(0)
  
- /*
-  * String functions
+ #define htw_start()							\
+ do {									\
+-	if (cpu_has_htw)						\
++	if (cpu_has_htw) {						\
+ 		write_c0_pwctl(read_c0_pwctl() |			\
+ 			       (1 << MIPS_PWCTL_PWEN_SHIFT));		\
++		back_to_back_c0_hazard();				\
++	}								\
+ } while(0)
+ 
+ 
+@@ -116,9 +120,7 @@ do {									\
+ do {									\
+ 	if (cpu_has_htw) {						\
+ 		htw_stop();						\
+-		back_to_back_c0_hazard();				\
+ 		htw_start();						\
+-		back_to_back_c0_hazard();				\
+ 	}								\
+ } while(0)
+ 

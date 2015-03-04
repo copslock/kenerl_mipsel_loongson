@@ -1,17 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 22:13:13 +0100 (CET)
-Received: from smtp.outflux.net ([198.145.64.163]:42145 "EHLO smtp.outflux.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008122AbbCDVMEPBp6f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Mar 2015 22:12:04 +0100
-Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t24LAuCh020851;
-        Wed, 4 Mar 2015 13:10:56 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 22:13:32 +0100 (CET)
+Received: from mail-vc0-f181.google.com ([209.85.220.181]:58345 "EHLO
+        mail-vc0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011567AbbCDVNUuWArW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 22:13:20 +0100
+Received: by mail-vc0-f181.google.com with SMTP id le20so10008588vcb.12
+        for <linux-mips@linux-mips.org>; Wed, 04 Mar 2015 13:13:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=95R31/UjCYfur6bjUOCV8CAM13GSvETyjVuPT3Jwjq4=;
+        b=DZe1sze4JIygQpra4HQ6CHmqIJz1avW6s2hpghcwQPv/vqDMT98VDn4whvzwDWFIPz
+         uWjwn7sVQAQaj6tkHn1ONaVe61G4/fcZZCyQsW0NmYSs6WGAq2yL/nYZUgTtipcMkLh1
+         61cf1AeLhSFZzhbeX2c8LS/S+UGhr91DzO2RggzJQfbn1J76CXEy/TFiqUMNSwKEhtWr
+         pibbT9pTuk/ziVaVfgqdxjWH9y0CtjbJyjoSXJiLlIzOHQC67rCDDm1UmfQAoGO8UWF3
+         6PEGNOYpueV0ng4SnpYHq2skuRAf3EncnxaW71yY0pjsmbuOvF0mLcg2GjU1TjmvFGEn
+         mndA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=95R31/UjCYfur6bjUOCV8CAM13GSvETyjVuPT3Jwjq4=;
+        b=nuY74kV4vNaJFjIglnCpt1dYM5ALtLAYsXm2WIXuuHiOx9A+BGHfV/GeLapunFC/3E
+         4WbAv9w/oQD6etqOzk0uofzYZuGfu2vhosNAk5Om6K1ywfzN40SYY1I+w7J/u1ylWf8A
+         h24Aa2TbbjMc24mieX3FEK9L8CjPSoijg952s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=95R31/UjCYfur6bjUOCV8CAM13GSvETyjVuPT3Jwjq4=;
+        b=EP5pNE/fD20Ki31auG9bV7tQttQ4DpGhX5HGtZTy1cc9RajSmLYtZUZX0XKFX4zm4R
+         t+GY4EqLvPU5l76/lgDFQ7liEZ4TNef8uQ6VbzbjXHCTtJOOANExa+ZuStAa/ykDFoqe
+         Zg/HLvkwlc4+CKK6osmh7H3h2evtxl2pTiTd/SK0rgGsK5NpNe735eGu3JuVnv6RmrqG
+         rvjap2SEddMQxjWhzLXA8g1IGmk5wzYXEbLXY9dcqn8L6aAqOQe+1YJaVbPb0L0oZM77
+         UjWx+5+0GjlM1dfpyJR72TadXlbU870eaH/4fHVru4ERJWHKIJtZmMiRfuyEFMVaNy3l
+         4bHw==
+X-Gm-Message-State: ALoCoQmdmx96nzAZSKWkgftNxE/fHWgYPytKF2+qLEK1szIdC3eKy6m/Gh8tlBzwJGmTP2qDKTj4
+MIME-Version: 1.0
+X-Received: by 10.52.12.169 with SMTP id z9mr9315390vdb.69.1425503595490; Wed,
+ 04 Mar 2015 13:13:15 -0800 (PST)
+Received: by 10.52.172.35 with HTTP; Wed, 4 Mar 2015 13:13:15 -0800 (PST)
+In-Reply-To: <1425442601.9084.9.camel@ellerman.id.au>
+References: <1425341988-1599-1-git-send-email-keescook@chromium.org>
+        <1425341988-1599-5-git-send-email-keescook@chromium.org>
+        <1425442601.9084.9.camel@ellerman.id.au>
+Date:   Wed, 4 Mar 2015 13:13:15 -0800
+X-Google-Sender-Auth: OJaRnlxc4eb8Zhqhzobq6mDFlc8
+Message-ID: <CAGXu5j+Pu-xeCBcMZZqTgLfKss7Er0pfCxp04a4eWDWhuDryTQ@mail.gmail.com>
+Subject: Re: [PATCH 4/5] mm: split ET_DYN ASLR from mmap ASLR
 From:   Kees Cook <keescook@chromium.org>
-To:     akpm@linux-foundation.org
-Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Hector Marco-Gisbert <hecmargi@upv.es>,
-        Ismael Ripoll <iripoll@upv.es>,
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Russell King <linux@arm.linux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -20,10 +60,10 @@ Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@redhat.com>,
         Paul Mackerras <paulus@samba.org>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, x86@kernel.org,
+        linux390@de.ibm.com, "x86@kernel.org" <x86@kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andy Lutomirski <luto@amacapital.net>,
         Oleg Nesterov <oleg@redhat.com>,
+        Andy Lutomirski <luto@amacapital.net>,
         "David A. Long" <dave.long@linaro.org>,
         Andrey Ryabinin <a.ryabinin@samsung.com>,
         Arun Chandran <achandran@mvista.com>,
@@ -32,29 +72,24 @@ Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@redhat.com>,
         Paul Burton <paul.burton@imgtec.com>,
         Alex Smith <alex@alex-smith.me.uk>,
         Markos Chandras <markos.chandras@imgtec.com>,
-        Vineeth Vijayan <vvijayan@mvista.com>,
         Jeff Bailey <jeffbailey@google.com>,
+        Vineeth Vijayan <vvijayan@mvista.com>,
         Michael Holzheu <holzheu@linux.vnet.ibm.com>,
         Ben Hutchings <ben@decadent.org.uk>,
+        Hector Marco-Gisbert <hecmargi@upv.es>,
         Borislav Petkov <bp@suse.de>,
-        =?UTF-8?q?Jan-Simon=20M=C3=B6ller?= <dl9pf@gmx.de>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4 02/10] x86: standardize mmap_rnd() usage
-Date:   Wed,  4 Mar 2015 13:10:46 -0800
-Message-Id: <1425503454-7531-3-git-send-email-keescook@chromium.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1425503454-7531-1-git-send-email-keescook@chromium.org>
-References: <1425503454-7531-1-git-send-email-keescook@chromium.org>
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.73
-Return-Path: <keescook@www.outflux.net>
+        =?UTF-8?Q?Jan=2DSimon_M=C3=B6ller?= <dl9pf@gmx.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46154
+X-archive-position: 46155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,95 +106,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In preparation for splitting out ET_DYN ASLR, this refactors the use of
-mmap_rnd() to be used similarly to arm, and extracts the checking of
-PF_RANDOMIZE.
+On Tue, Mar 3, 2015 at 8:16 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> On Mon, 2015-03-02 at 16:19 -0800, Kees Cook wrote:
+>> This fixes the "offset2lib" weakness in ASLR for arm, arm64, mips,
+>> powerpc, and x86. The problem is that if there is a leak of ASLR from
+>> the executable (ET_DYN), it means a leak of shared library offset as
+>> well (mmap), and vice versa. Further details and a PoC of this attack
+>> are available here:
+>> http://cybersecurity.upv.es/attacks/offset2lib/offset2lib.html
+>>
+>> With this patch, a PIE linked executable (ET_DYN) has its own ASLR region:
+>>
+>> $ ./show_mmaps_pie
+>> 54859ccd6000-54859ccd7000 r-xp  ...  /tmp/show_mmaps_pie
+>> 54859ced6000-54859ced7000 r--p  ...  /tmp/show_mmaps_pie
+>> 54859ced7000-54859ced8000 rw-p  ...  /tmp/show_mmaps_pie
+>
+> Just to be clear, it's the fact that the above vmas are in a different
+> address range to those below that shows the patch is working, right?
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/x86/mm/mmap.c | 36 ++++++++++++++++++++----------------
- 1 file changed, 20 insertions(+), 16 deletions(-)
+That's correct, yes. I've called this out explicitly now in the 9/10
+patch in v4.
 
-diff --git a/arch/x86/mm/mmap.c b/arch/x86/mm/mmap.c
-index df4552bd239e..ebfa52030d5c 100644
---- a/arch/x86/mm/mmap.c
-+++ b/arch/x86/mm/mmap.c
-@@ -67,22 +67,21 @@ static int mmap_is_legacy(void)
- 
- static unsigned long mmap_rnd(void)
- {
--	unsigned long rnd = 0;
-+	unsigned long rnd;
- 
- 	/*
--	*  8 bits of randomness in 32bit mmaps, 20 address space bits
--	* 28 bits of randomness in 64bit mmaps, 40 address space bits
--	*/
--	if (current->flags & PF_RANDOMIZE) {
--		if (mmap_is_ia32())
--			rnd = get_random_int() % (1<<8);
--		else
--			rnd = get_random_int() % (1<<28);
--	}
-+	 *  8 bits of randomness in 32bit mmaps, 20 address space bits
-+	 * 28 bits of randomness in 64bit mmaps, 40 address space bits
-+	 */
-+	if (mmap_is_ia32())
-+		rnd = (unsigned long)get_random_int() % (1<<8);
-+	else
-+		rnd = (unsigned long)get_random_int() % (1<<28);
-+
- 	return rnd << PAGE_SHIFT;
- }
- 
--static unsigned long mmap_base(void)
-+static unsigned long mmap_base(unsigned long rnd)
- {
- 	unsigned long gap = rlimit(RLIMIT_STACK);
- 
-@@ -91,19 +90,19 @@ static unsigned long mmap_base(void)
- 	else if (gap > MAX_GAP)
- 		gap = MAX_GAP;
- 
--	return PAGE_ALIGN(TASK_SIZE - gap - mmap_rnd());
-+	return PAGE_ALIGN(TASK_SIZE - gap - rnd);
- }
- 
- /*
-  * Bottom-up (legacy) layout on X86_32 did not support randomization, X86_64
-  * does, but not when emulating X86_32
-  */
--static unsigned long mmap_legacy_base(void)
-+static unsigned long mmap_legacy_base(unsigned long rnd)
- {
- 	if (mmap_is_ia32())
- 		return TASK_UNMAPPED_BASE;
- 	else
--		return TASK_UNMAPPED_BASE + mmap_rnd();
-+		return TASK_UNMAPPED_BASE + rnd;
- }
- 
- /*
-@@ -112,13 +111,18 @@ static unsigned long mmap_legacy_base(void)
-  */
- void arch_pick_mmap_layout(struct mm_struct *mm)
- {
--	mm->mmap_legacy_base = mmap_legacy_base();
--	mm->mmap_base = mmap_base();
-+	unsigned long random_factor = 0UL;
-+
-+	if (current->flags & PF_RANDOMIZE)
-+		random_factor = mmap_rnd();
-+
-+	mm->mmap_legacy_base = mmap_legacy_base(random_factor);
- 
- 	if (mmap_is_legacy()) {
- 		mm->mmap_base = mm->mmap_legacy_base;
- 		mm->get_unmapped_area = arch_get_unmapped_area;
- 	} else {
-+		mm->mmap_base = mmap_base(random_factor);
- 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
- 	}
- }
+>
+>> 7f75be764000-7f75be91f000 r-xp  ...  /lib/x86_64-linux-gnu/libc.so.6
+>> 7f75be91f000-7f75beb1f000 ---p  ...  /lib/x86_64-linux-gnu/libc.so.6
+>
+>
+> On powerpc I'm seeing:
+>
+> # /bin/dash
+> # cat /proc/$$/maps
+> 524e0000-52510000 r-xp 00000000 08:03 129814                             /bin/dash
+> 52510000-52520000 rw-p 00020000 08:03 129814                             /bin/dash
+> 10034f20000-10034f50000 rw-p 00000000 00:00 0                            [heap]
+> 3fffaeaf0000-3fffaeca0000 r-xp 00000000 08:03 13529                      /lib/powerpc64le-linux-gnu/libc-2.19.so
+> 3fffaeca0000-3fffaecb0000 rw-p 001a0000 08:03 13529                      /lib/powerpc64le-linux-gnu/libc-2.19.so
+> 3fffaecc0000-3fffaecd0000 rw-p 00000000 00:00 0
+> 3fffaecd0000-3fffaecf0000 r-xp 00000000 00:00 0                          [vdso]
+> 3fffaecf0000-3fffaed20000 r-xp 00000000 08:03 13539                      /lib/powerpc64le-linux-gnu/ld-2.19.so
+> 3fffaed20000-3fffaed30000 rw-p 00020000 08:03 13539                      /lib/powerpc64le-linux-gnu/ld-2.19.so
+> 3fffc7070000-3fffc70a0000 rw-p 00000000 00:00 0                          [stack]
+>
+>
+> Whereas previously the /bin/dash vmas were up at 3fff..
+
+Fantastic! Thanks very much for testing!
+
+>
+> So looks good to me for powerpc.
+>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+
+I had a question in the powerpc-specific change that may have gone unnoticed:
+
+Can mmap ASLR be safely enabled in the legacy mmap case here? Other archs
+use "mm->mmap_base = TASK_UNMAPPED_BASE + random_factor".
+
+Separate from this series, do you happen to know if this improvement
+can be made, or if the legacy mmap on powerpc can't handle this?
+
+Thanks!
+
+-Kees
+
 -- 
-1.9.1
+Kees Cook
+Chrome OS Security

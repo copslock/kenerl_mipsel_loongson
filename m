@@ -1,14 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 22:16:12 +0100 (CET)
-Received: from smtp.outflux.net ([198.145.64.163]:59891 "EHLO smtp.outflux.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007049AbbCDVPyINLwX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Mar 2015 22:15:54 +0100
-Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t24LBBn8020983;
-        Wed, 4 Mar 2015 13:11:12 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     akpm@linux-foundation.org
-Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@redhat.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 22:54:48 +0100 (CET)
+Received: from mail-wg0-f49.google.com ([74.125.82.49]:33679 "EHLO
+        mail-wg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007079AbbCDVyr3m1-6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 22:54:47 +0100
+Received: by wghb13 with SMTP id b13so49564029wgh.0;
+        Wed, 04 Mar 2015 13:54:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=lUpf/gaW9Ca3Z5n2UaICOdnfr/DcEUzrSkWlnYj51hg=;
+        b=Cjem9B31G6Yu0BPF7YwTLPTScUAOfJNgjIhh7R7TIIFPeXf787UC89z6gOPjUiNllE
+         4E7H+IVbmgo1mG+LSacw0Sv6U8cmllWvEvHClGVCilERcx5lghcOje/urEIBfSpJFeDe
+         wSOtlv7J907Cu/DDfn9x6bhYuiSjtFjn792O4XMxuInYl6W4GF/Qa5pMZhp5Tg5TMYAf
+         tj1yHseCfrwteC25prR4ETh8LbMZJ0/34E/tWNI9FcKCXex3qcfoIpGSVAtLh0cUTM7/
+         5cpc4j5uf56tRoxWVVeRkH20RRpT1nwgoI2DwwmlXD4CdmcicUJsEp4qyfaupi30fw0I
+         czXQ==
+X-Received: by 10.180.90.145 with SMTP id bw17mr4877243wib.80.1425506082788;
+        Wed, 04 Mar 2015 13:54:42 -0800 (PST)
+Received: from gmail.com (540334ED.catv.pool.telekom.hu. [84.3.52.237])
+        by mx.google.com with ESMTPSA id a13sm7691493wjx.30.2015.03.04.13.54.39
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Mar 2015 13:54:40 -0800 (PST)
+Date:   Wed, 4 Mar 2015 22:54:37 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     akpm@linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Hector Marco-Gisbert <hecmargi@upv.es>,
         Ismael Ripoll <iripoll@upv.es>,
@@ -37,28 +54,27 @@ Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@redhat.com>,
         Michael Holzheu <holzheu@linux.vnet.ibm.com>,
         Ben Hutchings <ben@decadent.org.uk>,
         Borislav Petkov <bp@suse.de>,
-        =?UTF-8?q?Jan-Simon=20M=C3=B6ller?= <dl9pf@gmx.de>,
+        Jan-Simon =?iso-8859-1?Q?M=F6ller?= <dl9pf@gmx.de>,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4 07/10] mm: expose arch_mmap_rnd when available
-Date:   Wed,  4 Mar 2015 13:10:51 -0800
-Message-Id: <1425503454-7531-8-git-send-email-keescook@chromium.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1425503454-7531-1-git-send-email-keescook@chromium.org>
+Subject: Re: [PATCH v4 0/10] split ET_DYN ASLR from mmap ASLR
+Message-ID: <20150304215437.GA22254@gmail.com>
 References: <1425503454-7531-1-git-send-email-keescook@chromium.org>
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.73
-Return-Path: <keescook@www.outflux.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1425503454-7531-1-git-send-email-keescook@chromium.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <mingo.kernel.org@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46159
+X-archive-position: 46160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: mingo@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,290 +87,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When an architecture fully supports randomizing the ELF load location,
-a per-arch mmap_rnd() function is used to find a randomized mmap base.
-In preparation for randomizing the location of ET_DYN binaries
-separately from mmap, this renames and exports these functions as
-arch_mmap_rnd(). Additionally introduces CONFIG_ARCH_HAS_ELF_RANDOMIZE
-for describing this feature on architectures that support it
-(which is a superset of ARCH_BINFMT_ELF_RANDOMIZE_PIE, since s390
-already supports a separated ET_DYN ASLR from mmap ASLR without the
-ARCH_BINFMT_ELF_RANDOMIZE_PIE logic).
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/Kconfig                  |  7 +++++++
- arch/arm/Kconfig              |  1 +
- arch/arm/mm/mmap.c            |  4 ++--
- arch/arm64/Kconfig            |  1 +
- arch/arm64/mm/mmap.c          |  4 ++--
- arch/mips/Kconfig             |  1 +
- arch/mips/mm/mmap.c           |  4 ++--
- arch/powerpc/Kconfig          |  1 +
- arch/powerpc/mm/mmap.c        |  4 ++--
- arch/s390/Kconfig             |  1 +
- arch/s390/mm/mmap.c           |  8 ++++----
- arch/x86/Kconfig              |  1 +
- arch/x86/mm/mmap.c            |  4 ++--
- include/linux/elf-randomize.h | 10 ++++++++++
- 14 files changed, 37 insertions(+), 14 deletions(-)
- create mode 100644 include/linux/elf-randomize.h
+* Kees Cook <keescook@chromium.org> wrote:
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 05d7a8a458d5..9ff5aa8fa2c1 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -484,6 +484,13 @@ config HAVE_IRQ_EXIT_ON_IRQ_STACK
- 	  This spares a stack switch and improves cache usage on softirq
- 	  processing.
- 
-+config ARCH_HAS_ELF_RANDOMIZE
-+	bool
-+	help
-+	  An architecture supports choosing randomized locations for
-+	  stack, mmap, brk, and ET_DYN. Defined functions:
-+	  - arch_mmap_rnd()
-+
- #
- # ABI hall of shame
- #
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 9f1f09a2bc9b..248d99cabaa8 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -3,6 +3,7 @@ config ARM
- 	default y
- 	select ARCH_BINFMT_ELF_RANDOMIZE_PIE
- 	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
-+	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAVE_CUSTOM_GPIO_H
- 	select ARCH_HAS_GCOV_PROFILE_ALL
-diff --git a/arch/arm/mm/mmap.c b/arch/arm/mm/mmap.c
-index 15a8160096b3..407dc786583a 100644
---- a/arch/arm/mm/mmap.c
-+++ b/arch/arm/mm/mmap.c
-@@ -169,7 +169,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
- 	return addr;
- }
- 
--static unsigned long mmap_rnd(void)
-+unsigned long arch_mmap_rnd(void)
- {
- 	unsigned long rnd;
- 
-@@ -184,7 +184,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 	unsigned long random_factor = 0UL;
- 
- 	if (current->flags & PF_RANDOMIZE)
--		random_factor = mmap_rnd();
-+		random_factor = arch_mmap_rnd();
- 
- 	if (mmap_is_legacy()) {
- 		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1b8e97331ffb..5f469095e0e2 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -2,6 +2,7 @@ config ARM64
- 	def_bool y
- 	select ARCH_BINFMT_ELF_RANDOMIZE_PIE
- 	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
-+	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_SG_CHAIN
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
-diff --git a/arch/arm64/mm/mmap.c b/arch/arm64/mm/mmap.c
-index ba776c01b552..ed177475dd8c 100644
---- a/arch/arm64/mm/mmap.c
-+++ b/arch/arm64/mm/mmap.c
-@@ -47,7 +47,7 @@ static int mmap_is_legacy(void)
- 	return sysctl_legacy_va_layout;
- }
- 
--static unsigned long mmap_rnd(void)
-+unsigned long arch_mmap_rnd(void)
- {
- 	unsigned long rnd;
- 
-@@ -77,7 +77,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 	unsigned long random_factor = 0UL;
- 
- 	if (current->flags & PF_RANDOMIZE)
--		random_factor = mmap_rnd();
-+		random_factor = arch_mmap_rnd();
- 
- 	/*
- 	 * Fall back to the standard layout if the personality bit is set, or
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c7a16904cd03..72ce5cece768 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -24,6 +24,7 @@ config MIPS
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select ARCH_BINFMT_ELF_RANDOMIZE_PIE
-+	select ARCH_HAS_ELF_RANDOMIZE
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES && 64BIT
- 	select RTC_LIB if !MACH_LOONGSON
- 	select GENERIC_ATOMIC64 if !64BIT
-diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-index 9a4f1f5c1f0e..5c81fdd032c3 100644
---- a/arch/mips/mm/mmap.c
-+++ b/arch/mips/mm/mmap.c
-@@ -142,7 +142,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
- 			addr0, len, pgoff, flags, DOWN);
- }
- 
--static unsigned long mmap_rnd(void)
-+unsigned long arch_mmap_rnd(void)
- {
- 	unsigned long rnd;
- 
-@@ -161,7 +161,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 	unsigned long random_factor = 0UL;
- 
- 	if (current->flags & PF_RANDOMIZE)
--		random_factor = mmap_rnd();
-+		random_factor = arch_mmap_rnd();
- 
- 	if (mmap_is_legacy()) {
- 		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 22b0940494bb..14fe1c411489 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -89,6 +89,7 @@ config PPC
- 	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select BINFMT_ELF
- 	select ARCH_BINFMT_ELF_RANDOMIZE_PIE
-+	select ARCH_HAS_ELF_RANDOMIZE
- 	select OF
- 	select OF_EARLY_FLATTREE
- 	select OF_RESERVED_MEM
-diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
-index 1ad2299d795d..0f0502e12f6c 100644
---- a/arch/powerpc/mm/mmap.c
-+++ b/arch/powerpc/mm/mmap.c
-@@ -53,7 +53,7 @@ static inline int mmap_is_legacy(void)
- 	return sysctl_legacy_va_layout;
- }
- 
--static unsigned long mmap_rnd(void)
-+unsigned long arch_mmap_rnd(void)
- {
- 	unsigned long rnd;
- 
-@@ -87,7 +87,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 	unsigned long random_factor = 0UL;
- 
- 	if (current->flags & PF_RANDOMIZE)
--		random_factor = mmap_rnd();
-+		random_factor = arch_mmap_rnd();
- 
- 	/*
- 	 * Fall back to the standard layout if the personality
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 373cd5badf1c..4d707bb3e8dd 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -65,6 +65,7 @@ config S390
- 	def_bool y
- 	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
- 	select ARCH_HAS_DEBUG_STRICT_USER_COPY_CHECKS
-+	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_SG_CHAIN
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
-index db57078075c5..a94504d99c47 100644
---- a/arch/s390/mm/mmap.c
-+++ b/arch/s390/mm/mmap.c
-@@ -60,7 +60,7 @@ static inline int mmap_is_legacy(void)
- 	return sysctl_legacy_va_layout;
- }
- 
--static unsigned long mmap_rnd(void)
-+unsigned long arch_mmap_rnd(void)
- {
- 	if (is_32bit_task())
- 		return (get_random_int() & 0x7ff) << PAGE_SHIFT;
-@@ -187,7 +187,7 @@ unsigned long randomize_et_dyn(void)
- 		base &= ~((1UL << 32) - 1);
- 
- 	if (current->flags & PF_RANDOMIZE)
--		base += mmap_rnd();
-+		base += arch_mmap_rnd();
- 
- 	return base;
- }
-@@ -203,7 +203,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 	unsigned long random_factor = 0UL;
- 
- 	if (current->flags & PF_RANDOMIZE)
--		random_factor = mmap_rnd();
-+		random_factor = arch_mmap_rnd();
- 
- 	/*
- 	 * Fall back to the standard layout if the personality
-@@ -283,7 +283,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 	unsigned long random_factor = 0UL;
- 
- 	if (current->flags & PF_RANDOMIZE)
--		random_factor = mmap_rnd();
-+		random_factor = arch_mmap_rnd();
- 
- 	/*
- 	 * Fall back to the standard layout if the personality
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index c2fb8a87dccb..9aa91727fbf8 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -88,6 +88,7 @@ config X86
- 	select HAVE_ARCH_KASAN if X86_64 && SPARSEMEM_VMEMMAP
- 	select HAVE_USER_RETURN_NOTIFIER
- 	select ARCH_BINFMT_ELF_RANDOMIZE_PIE
-+	select ARCH_HAS_ELF_RANDOMIZE
- 	select HAVE_ARCH_JUMP_LABEL
- 	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
- 	select SPARSE_IRQ
-diff --git a/arch/x86/mm/mmap.c b/arch/x86/mm/mmap.c
-index ebfa52030d5c..9d518d693b4b 100644
---- a/arch/x86/mm/mmap.c
-+++ b/arch/x86/mm/mmap.c
-@@ -65,7 +65,7 @@ static int mmap_is_legacy(void)
- 	return sysctl_legacy_va_layout;
- }
- 
--static unsigned long mmap_rnd(void)
-+unsigned long arch_mmap_rnd(void)
- {
- 	unsigned long rnd;
- 
-@@ -114,7 +114,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 	unsigned long random_factor = 0UL;
- 
- 	if (current->flags & PF_RANDOMIZE)
--		random_factor = mmap_rnd();
-+		random_factor = arch_mmap_rnd();
- 
- 	mm->mmap_legacy_base = mmap_legacy_base(random_factor);
- 
-diff --git a/include/linux/elf-randomize.h b/include/linux/elf-randomize.h
-new file mode 100644
-index 000000000000..7a4eda02d2b1
---- /dev/null
-+++ b/include/linux/elf-randomize.h
-@@ -0,0 +1,10 @@
-+#ifndef _ELF_RANDOMIZE_H
-+#define _ELF_RANDOMIZE_H
-+
-+#ifndef CONFIG_ARCH_HAS_ELF_RANDOMIZE
-+static inline unsigned long arch_mmap_rnd(void) { return 0; }
-+#else
-+extern unsigned long arch_mmap_rnd(void);
-+#endif
-+
-+#endif
--- 
-1.9.1
+> To address the "offset2lib" ASLR weakness[1], this separates ET_DYN
+> ASLR from mmap ASLR, as already done on s390. The architectures
+> that are already randomizing mmap (arm, arm64, mips, powerpc, s390,
+> and x86), have their various forms of arch_mmap_rnd() made available
+> via the new CONFIG_ARCH_HAS_ELF_RANDOMIZE. For these architectures,
+> arch_randomize_brk() is collapsed as well.
+> 
+> This is an alternative to the solutions in:
+> https://lkml.org/lkml/2015/2/23/442
+> 
+> I've been able to test x86 and arm, and the buildbot (so far) seems
+> happy with building the rest.
+
+Ok, this looks really good - for all patches:
+
+   Reviewed-by: Ingo Molnar <mingo@kernel.org>
+
+Thanks,
+
+	Ingo

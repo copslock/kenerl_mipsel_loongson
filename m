@@ -1,23 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 07:22:31 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50061 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 07:22:48 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50538 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006966AbbCDGUuSCXRv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 07:20:50 +0100
+        by eddie.linux-mips.org with ESMTP id S27006674AbbCDGW1sUnuh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 07:22:27 +0100
 Received: from localhost (unknown [166.170.43.162])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id ACCB0A73;
-        Wed,  4 Mar 2015 06:20:44 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DA2B5990;
+        Wed,  4 Mar 2015 06:22:21 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH 3.19 084/175] MIPS: Export MSA functions used by lose_fpu(1) for KVM
-Date:   Tue,  3 Mar 2015 22:14:22 -0800
-Message-Id: <20150304061040.188488069@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.19 141/175] MIPS: HTW: Prevent accidental HTW start due to nested htw_{start, stop}
+Date:   Tue,  3 Mar 2015 22:15:19 -0800
+Message-Id: <20150304061049.271382858@linuxfoundation.org>
 X-Mailer: git-send-email 2.3.1
 In-Reply-To: <20150304061026.134125919@linuxfoundation.org>
 References: <20150304061026.134125919@linuxfoundation.org>
@@ -28,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46144
+X-archive-position: 46145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,52 +46,159 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit ca5d25642e212f73492d332d95dc90ef46a0e8dc upstream.
+commit ed4cbc81addbc076b016c5b979fd1a02f0897f0a upstream.
 
-Export the _save_msa asm function used by the lose_fpu(1) macro to GPL
-modules so that KVM can make use of it when it is built as a module.
+activate_mm() and switch_mm() call get_new_mmu_context() which in turn
+can enable the HTW before the entryhi is changed with the new ASID.
+Since the latter will enable the HTW in local_flush_tlb_all(),
+then there is a small timing window where the HTW is running with the
+new ASID but with an old pgd since the TLBMISS_HANDLER_SETUP_PGD
+hasn't assigned a new one yet. In order to prevent that, we introduce a
+simple htw counter to avoid starting HTW accidentally due to nested
+htw_{start,stop}() sequences. Moreover, since various IPI calls can
+enforce TLB flushing operations on a different core, such an operation
+may interrupt another htw_{stop,start} in progress leading inconsistent
+updates of the htw_seq variable. In order to avoid that, we disable the
+interrupts whenever we update that variable.
 
-This fixes the following build error when CONFIG_KVM=m and
-CONFIG_CPU_HAS_MSA=y due to commit f798217dfd03 ("KVM: MIPS: Don't leak
-FPU/DSP to guest"):
-
-ERROR: "_save_msa" [arch/mips/kvm/kvm.ko] undefined!
-
-Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9261/
+Patchwork: https://patchwork.linux-mips.org/patch/9118/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/mips_ksyms.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/include/asm/cpu-info.h    |    5 +++++
+ arch/mips/include/asm/mmu_context.h |    7 ++++++-
+ arch/mips/include/asm/pgtable.h     |   24 ++++++++++++++++++------
+ arch/mips/kernel/cpu-probe.c        |    4 +++-
+ 4 files changed, 32 insertions(+), 8 deletions(-)
 
---- a/arch/mips/kernel/mips_ksyms.c
-+++ b/arch/mips/kernel/mips_ksyms.c
-@@ -15,6 +15,7 @@
- #include <asm/uaccess.h>
- #include <asm/ftrace.h>
- #include <asm/fpu.h>
-+#include <asm/msa.h>
+--- a/arch/mips/include/asm/cpu-info.h
++++ b/arch/mips/include/asm/cpu-info.h
+@@ -84,6 +84,11 @@ struct cpuinfo_mips {
+ 	 * (shifted by _CACHE_SHIFT)
+ 	 */
+ 	unsigned int		writecombine;
++	/*
++	 * Simple counter to prevent enabling HTW in nested
++	 * htw_start/htw_stop calls
++	 */
++	unsigned int		htw_seq;
+ } __attribute__((aligned(SMP_CACHE_BYTES)));
  
- extern void *__bzero(void *__s, size_t __count);
- extern long __strncpy_from_kernel_nocheck_asm(char *__to,
-@@ -36,6 +37,9 @@ extern long __strnlen_user_asm(const cha
-  * Core architecture code
-  */
- EXPORT_SYMBOL_GPL(_save_fp);
-+#ifdef CONFIG_CPU_HAS_MSA
-+EXPORT_SYMBOL_GPL(_save_msa);
-+#endif
+ extern struct cpuinfo_mips cpu_data[];
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -25,7 +25,6 @@ do {									\
+ 	if (cpu_has_htw) {						\
+ 		write_c0_pwbase(pgd);					\
+ 		back_to_back_c0_hazard();				\
+-		htw_reset();						\
+ 	}								\
+ } while (0)
  
- /*
-  * String functions
+@@ -142,6 +141,7 @@ static inline void switch_mm(struct mm_s
+ 	unsigned long flags;
+ 	local_irq_save(flags);
+ 
++	htw_stop();
+ 	/* Check if our ASID is of an older version and thus invalid */
+ 	if ((cpu_context(cpu, next) ^ asid_cache(cpu)) & ASID_VERSION_MASK)
+ 		get_new_mmu_context(next, cpu);
+@@ -154,6 +154,7 @@ static inline void switch_mm(struct mm_s
+ 	 */
+ 	cpumask_clear_cpu(cpu, mm_cpumask(prev));
+ 	cpumask_set_cpu(cpu, mm_cpumask(next));
++	htw_start();
+ 
+ 	local_irq_restore(flags);
+ }
+@@ -180,6 +181,7 @@ activate_mm(struct mm_struct *prev, stru
+ 
+ 	local_irq_save(flags);
+ 
++	htw_stop();
+ 	/* Unconditionally get a new ASID.  */
+ 	get_new_mmu_context(next, cpu);
+ 
+@@ -189,6 +191,7 @@ activate_mm(struct mm_struct *prev, stru
+ 	/* mark mmu ownership change */
+ 	cpumask_clear_cpu(cpu, mm_cpumask(prev));
+ 	cpumask_set_cpu(cpu, mm_cpumask(next));
++	htw_start();
+ 
+ 	local_irq_restore(flags);
+ }
+@@ -203,6 +206,7 @@ drop_mmu_context(struct mm_struct *mm, u
+ 	unsigned long flags;
+ 
+ 	local_irq_save(flags);
++	htw_stop();
+ 
+ 	if (cpumask_test_cpu(cpu, mm_cpumask(mm)))  {
+ 		get_new_mmu_context(mm, cpu);
+@@ -211,6 +215,7 @@ drop_mmu_context(struct mm_struct *mm, u
+ 		/* will get a new context next time */
+ 		cpu_context(cpu, mm) = 0;
+ 	}
++	htw_start();
+ 	local_irq_restore(flags);
+ }
+ 
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -99,19 +99,31 @@ extern void paging_init(void);
+ 
+ #define htw_stop()							\
+ do {									\
++	unsigned long flags;						\
++									\
+ 	if (cpu_has_htw) {						\
+-		write_c0_pwctl(read_c0_pwctl() &			\
+-			       ~(1 << MIPS_PWCTL_PWEN_SHIFT));		\
+-		back_to_back_c0_hazard();				\
++		local_irq_save(flags);					\
++		if(!raw_current_cpu_data.htw_seq++) {			\
++			write_c0_pwctl(read_c0_pwctl() &		\
++				       ~(1 << MIPS_PWCTL_PWEN_SHIFT));	\
++			back_to_back_c0_hazard();			\
++		}							\
++		local_irq_restore(flags);				\
+ 	}								\
+ } while(0)
+ 
+ #define htw_start()							\
+ do {									\
++	unsigned long flags;						\
++									\
+ 	if (cpu_has_htw) {						\
+-		write_c0_pwctl(read_c0_pwctl() |			\
+-			       (1 << MIPS_PWCTL_PWEN_SHIFT));		\
+-		back_to_back_c0_hazard();				\
++		local_irq_save(flags);					\
++		if (!--raw_current_cpu_data.htw_seq) {			\
++			write_c0_pwctl(read_c0_pwctl() |		\
++				       (1 << MIPS_PWCTL_PWEN_SHIFT));	\
++			back_to_back_c0_hazard();			\
++		}							\
++		local_irq_restore(flags);				\
+ 	}								\
+ } while(0)
+ 
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -424,8 +424,10 @@ static inline unsigned int decode_config
+ 	if (config3 & MIPS_CONF3_MSA)
+ 		c->ases |= MIPS_ASE_MSA;
+ 	/* Only tested on 32-bit cores */
+-	if ((config3 & MIPS_CONF3_PW) && config_enabled(CONFIG_32BIT))
++	if ((config3 & MIPS_CONF3_PW) && config_enabled(CONFIG_32BIT)) {
++		c->htw_seq = 0;
+ 		c->options |= MIPS_CPU_HTW;
++	}
+ 
+ 	return config3 & MIPS_CONF_M;
+ }

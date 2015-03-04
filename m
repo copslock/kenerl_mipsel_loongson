@@ -1,70 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 00:56:26 +0100 (CET)
-Received: from ozlabs.org ([103.22.144.67]:42633 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007079AbbCDX4YGyXIM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Mar 2015 00:56:24 +0100
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 4B1C114007F;
-        Thu,  5 Mar 2015 10:56:20 +1100 (AEDT)
-Message-ID: <1425513380.32154.13.camel@ellerman.id.au>
-Subject: Re: [PATCH 4/5] mm: split ET_DYN ASLR from mmap ASLR
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "x86@kernel.org" <x86@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        "David A. Long" <dave.long@linaro.org>,
-        Andrey Ryabinin <a.ryabinin@samsung.com>,
-        Arun Chandran <achandran@mvista.com>,
-        Yann Droneaud <ydroneaud@opteya.com>,
-        Min-Hua Chen <orca.chen@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Jeff Bailey <jeffbailey@google.com>,
-        Vineeth Vijayan <vvijayan@mvista.com>,
-        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        Hector Marco-Gisbert <hecmargi@upv.es>,
-        Borislav Petkov <bp@suse.de>,
-        Jan-Simon =?ISO-8859-1?Q?M=F6ller?= <dl9pf@gmx.de>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-Date:   Thu, 05 Mar 2015 10:56:20 +1100
-In-Reply-To: <CAGXu5j+Pu-xeCBcMZZqTgLfKss7Er0pfCxp04a4eWDWhuDryTQ@mail.gmail.com>
-References: <1425341988-1599-1-git-send-email-keescook@chromium.org>
-         <1425341988-1599-5-git-send-email-keescook@chromium.org>
-         <1425442601.9084.9.camel@ellerman.id.au>
-         <CAGXu5j+Pu-xeCBcMZZqTgLfKss7Er0pfCxp04a4eWDWhuDryTQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.10-0ubuntu1~14.10.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <mpe@ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 00:59:32 +0100 (CET)
+Received: from mail-yh0-f74.google.com ([209.85.213.74]:33848 "EHLO
+        mail-yh0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007079AbbCDX7bisnr3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2015 00:59:31 +0100
+Received: by yhab6 with SMTP id b6so6949463yha.1
+        for <linux-mips@linux-mips.org>; Wed, 04 Mar 2015 15:59:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=I0lPuRNhF3+Glrj1Ad/Ic3T8XCL+ZCcioPx1OJKtO+I=;
+        b=iUWIgvAY7Cs2BpdYkm2bryxgOLrRvybrRDX96Hr/mSfRlADX2OnjYqFlT8uJoAoFH+
+         0qLggFZtmL15Um458GVFXh0/hkCtjiG/cca3r6qC2hW6CuTQDxz6TdiMaC1AtRv8Ro5X
+         7NBdD8+70VWmF1tyYcjhP8/JR54DdhKYhr4bAOxDKz/fj+vIWpxkGkJ5p/pyqllPiN7n
+         +OxbUtPlHx2S8yHcD49SVm9g7/3BKKqxxiyNclqJvT0/RWGfR25ogANZ+rv8/R3iemp1
+         XqtGf8d0hHS5b2++3qhVQKjgQt4XygD8Twyt7aBS5PQ42egNrxD+Edty1r1O9yrzprkP
+         HAKw==
+X-Gm-Message-State: ALoCoQljpLywNnYpDfdCP6cG1//gDTrYA07+4ldfbMnKACFIpgBJqgZobpCYMjT2GGIJ7oYbfowE
+X-Received: by 10.236.140.199 with SMTP id e47mr7238670yhj.50.1425513566319;
+        Wed, 04 Mar 2015 15:59:26 -0800 (PST)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id z16si326913yhz.5.2015.03.04.15.59.25
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Mar 2015 15:59:26 -0800 (PST)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id bMOHL6lj.1; Wed, 04 Mar 2015 15:59:26 -0800
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id 685CB220874; Wed,  4 Mar 2015 15:59:25 -0800 (PST)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Andrew Bresticker <abrestic@chromium.org>
+Subject: [PATCH] MIPS: Provide fallback reboot/poweroff/halt implementations
+Date:   Wed,  4 Mar 2015 15:59:23 -0800
+Message-Id: <1425513563-9897-1-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46164
+X-archive-position: 46165
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,19 +55,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2015-03-04 at 13:13 -0800, Kees Cook wrote:
-> 
-> I had a question in the powerpc-specific change that may have gone unnoticed:
-> 
-> Can mmap ASLR be safely enabled in the legacy mmap case here? Other archs
-> use "mm->mmap_base = TASK_UNMAPPED_BASE + random_factor".
-> 
-> Separate from this series, do you happen to know if this improvement
-> can be made, or if the legacy mmap on powerpc can't handle this?
+If a machine-specific hook is not implemented for restart, poweroff,
+or halt, fall back to halting secondary CPUs, disabling interrupts,
+and spinning.  In the case of restart, attempt to restart the system
+via do_kernel_restart() (which will call any registered restart
+handlers) before halting.
 
-Yeah I saw that. The short answer is I'm not sure.
+Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+---
+ arch/mips/kernel/reset.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-I assume we have that distinction for some good reason, but whether we still
-need it I don't know. I'll dig a bit and see if anyone can remember the details.
-
-cheers
+diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
+index 07fc524..87b1f08 100644
+--- a/arch/mips/kernel/reset.c
++++ b/arch/mips/kernel/reset.c
+@@ -29,16 +29,36 @@ void machine_restart(char *command)
+ {
+ 	if (_machine_restart)
+ 		_machine_restart(command);
++
++#ifdef CONFIG_SMP
++	smp_send_stop();
++#endif
++	do_kernel_restart(command);
++	pr_emerg("Reboot failed -- System halted\n");
++	local_irq_disable();
++	while (1);
+ }
+ 
+ void machine_halt(void)
+ {
+ 	if (_machine_halt)
+ 		_machine_halt();
++
++#ifdef CONFIG_SMP
++	smp_send_stop();
++#endif
++	local_irq_disable();
++	while (1);
+ }
+ 
+ void machine_power_off(void)
+ {
+ 	if (pm_power_off)
+ 		pm_power_off();
++
++#ifdef CONFIG_SMP
++	smp_send_stop();
++#endif
++	local_irq_disable();
++	while (1);
+ }
+-- 
+2.2.0.rc0.207.ga3a616c

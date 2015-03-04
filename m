@@ -1,45 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 01:26:04 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53236 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007914AbbCDA0DIAEF0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 01:26:03 +0100
-Received: from deadeye.wl.decadent.org.uk ([192.168.4.249] helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1YSx8P-0004Vk-Ik; Wed, 04 Mar 2015 00:25:57 +0000
-Received: from ben by deadeye with local (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1YSx8K-0008Vo-AL; Wed, 04 Mar 2015 00:25:52 +0000
-Message-ID: <1425428747.4190.48.camel@decadent.org.uk>
-Subject: Re: [PATCH 3.2 12/24] MIPS: Fix C0_Pagegrain[IEC] support.
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Date:   Wed, 04 Mar 2015 00:25:47 +0000
-In-Reply-To: <54F642AE.1020802@gmail.com>
-References: <lsq.1425420688.25339415@decadent.org.uk>
-         <54F642AE.1020802@gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-S3jPPtm7mpRQuQA0yRaD"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 192.168.4.249
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 03:11:47 +0100 (CET)
+Received: from smtp.outflux.net ([198.145.64.163]:35243 "EHLO smtp.outflux.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008083AbbCDCLqNWBjo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Mar 2015 03:11:46 +0100
+Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t242AblW002302;
+        Tue, 3 Mar 2015 18:10:37 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     akpm@linux-foundation.org
+Cc:     Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org,
+        Hector Marco-Gisbert <hecmargi@upv.es>,
+        Ismael Ripoll <iripoll@upv.es>,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, x86@kernel.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        "David A. Long" <dave.long@linaro.org>,
+        Andrey Ryabinin <a.ryabinin@samsung.com>,
+        Arun Chandran <achandran@mvista.com>,
+        Min-Hua Chen <orca.chen@gmail.com>,
+        Dan McGee <dpmcgee@gmail.com>,
+        Yann Droneaud <ydroneaud@opteya.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Vineeth Vijayan <vvijayan@mvista.com>,
+        Jeff Bailey <jeffbailey@google.com>,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Behan Webster <behanw@converseincode.com>,
+        =?UTF-8?q?Jan-Simon=20M=C3=B6ller?= <dl9pf@gmx.de>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Subject: [PATCH v3 05/10] powerpc: standardize mmap_rnd() usage
+Date:   Tue,  3 Mar 2015 18:10:20 -0800
+Message-Id: <1425435025-30284-6-git-send-email-keescook@chromium.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1425435025-30284-1-git-send-email-keescook@chromium.org>
+References: <1425435025-30284-1-git-send-email-keescook@chromium.org>
+X-MIMEDefang-Filter: outflux$Revision: 1.316 $
+X-HELO: www.outflux.net
+X-Scanned-By: MIMEDefang 2.73
+Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46112
+X-archive-position: 46113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,81 +72,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+In preparation for splitting out ET_DYN ASLR, this refactors the use of
+mmap_rnd() to be used similarly to arm and x86.
 
---=-S3jPPtm7mpRQuQA0yRaD
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+Can mmap ASLR be safely enabled in the legacy mmap case here? Other archs
+use "mm->mmap_base = TASK_UNMAPPED_BASE + random_factor".
+---
+ arch/powerpc/mm/mmap.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-On Tue, 2015-03-03 at 15:24 -0800, David Daney wrote:
-> On 03/03/2015 02:11 PM, Ben Hutchings wrote:
-> > 3.2.68-rc1 review patch.  If anyone has any objections, please let me k=
-now.
-> >
->=20
-> I object!
->=20
-> Because ...
->=20
-> > ------------------
-> >
-> > From: David Daney <david.daney@cavium.com>
-> >
-> > commit 9ead8632bbf454cfc709b6205dc9cd8582fb0d64 upstream.
-> >
-> > The following commits:
-> >
-> >    5890f70f15c52d (MIPS: Use dedicated exception handler if CPU support=
-s RI/XI exceptions)
-> >    6575b1d4173eae (MIPS: kernel: cpu-probe: Detect unique RI/XI excepti=
-ons)
-> >
-> > break the kernel for *all* existing MIPS CPUs that implement the
-> > CP0_PageGrain[IEC] bit.  They cause the TLB exception handlers to be
-> > generated without the legacy execute-inhibit handling, but never set
-> > the CP0_PageGrain[IEC] bit to activate the use of dedicated exception
-> > vectors for execute-inhibit exceptions.  The result is that upon
-> > detection of an execute-inhibit violation, we loop forever in the TLB
-> > exception handlers instead of sending SIGSEGV to the task.
-> >
-> > If we are generating TLB exception handlers expecting separate
-> > vectors, we must also enable the CP0_PageGrain[IEC] feature.
-> >
-> > The bug was introduced in kernel version 3.17.
->=20
-> ... I don't think the patch should be applied to versions prior to 3.17
-[...]
-
-Sorry about that - I dropped this one just before sending, but didn't
-regenerate the mailbox.
-
-Ben.
-
---=20
-Ben Hutchings
-Horngren's Observation:
-                   Among economists, the real world is often a special case=
-.
-
---=-S3jPPtm7mpRQuQA0yRaD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIVAwUAVPZREOe/yOyVhhEJAQpzrxAAuAiDBDhCtDFHu57mSJ0Zh8yPGGNxVd/P
-hxGiInDIbKUtqlkvn0bEXtsoXNUMUV3GSq186v70wy99bCUgvXswtzhAv9jBbMrX
-HrgiiEPc2dDqk5Jt879buUAp6HHxQF+hPY1++h9nVgeavzrxiRnTKP7nTyJoiyeu
-jgASBOWNhQiJOAcBClycDwbTnyw3nhJY+X+UBBmb8g5UbEDpITtKKwOoJw2AJlJg
-m1rXMtgEMH2NLnujyN+J6SGdobAsLbLL6blJsyermImyEE8mA/eTcGvtinmRiwis
-ciZOYx9fVnXRwZnttYmD30qNHbcZ/9I+AP2q7GD98yadDloyYouUS4HiaZDPc2lj
-dJ4ijIDR84GuE3TjJhNpKH+j7PHJ89SmePKK3NrviNYKwmTqotLcD+8jqnu03PX1
-Cinxoxn0tCZEdrnntSkMTgP1bE/Bhi21k6NTa1Ybu34dYCEXAP4Zs3W6ZiYMEvyW
-xFM6z8iaPRJYCTc2aa/PCA1hxXuj+I/ZSzb26XK3TIxzwT7crOE2jJiRQ5rLy72L
-7hMQqRrePA/j2cwbJnXTN/WpZ/flifUOK8tPSfpPq9uIvKDKCqLAJwp3LA8gH1j5
-5VnhxmQJt+LrrgqtbHMmuFY+tWfhC2BDO7cdiy5GWx8/AH0MmcVgxGAZSCKQd+eX
-qVdJxuhJczA=
-=mSMM
------END PGP SIGNATURE-----
-
---=-S3jPPtm7mpRQuQA0yRaD--
+diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
+index cb8bdbe4972f..3d7088bfe93c 100644
+--- a/arch/powerpc/mm/mmap.c
++++ b/arch/powerpc/mm/mmap.c
+@@ -55,19 +55,18 @@ static inline int mmap_is_legacy(void)
+ 
+ static unsigned long mmap_rnd(void)
+ {
+-	unsigned long rnd = 0;
++	unsigned long rnd;
++
++	/* 8MB for 32bit, 1GB for 64bit */
++	if (is_32bit_task())
++		rnd = (unsigned long)get_random_int() % (1<<(23-PAGE_SHIFT));
++	else
++		rnd = (unsigned long)get_random_int() % (1<<(30-PAGE_SHIFT));
+ 
+-	if (current->flags & PF_RANDOMIZE) {
+-		/* 8MB for 32bit, 1GB for 64bit */
+-		if (is_32bit_task())
+-			rnd = (long)(get_random_int() % (1<<(23-PAGE_SHIFT)));
+-		else
+-			rnd = (long)(get_random_int() % (1<<(30-PAGE_SHIFT)));
+-	}
+ 	return rnd << PAGE_SHIFT;
+ }
+ 
+-static inline unsigned long mmap_base(void)
++static inline unsigned long mmap_base(unsigned long base)
+ {
+ 	unsigned long gap = rlimit(RLIMIT_STACK);
+ 
+@@ -76,7 +75,7 @@ static inline unsigned long mmap_base(void)
+ 	else if (gap > MAX_GAP)
+ 		gap = MAX_GAP;
+ 
+-	return PAGE_ALIGN(TASK_SIZE - gap - mmap_rnd());
++	return PAGE_ALIGN(TASK_SIZE - gap - base);
+ }
+ 
+ /*
+@@ -85,6 +84,11 @@ static inline unsigned long mmap_base(void)
+  */
+ void arch_pick_mmap_layout(struct mm_struct *mm)
+ {
++	unsigned long random_factor = 0UL;
++
++	if (current->flags & PF_RANDOMIZE)
++		random_factor = mmap_rnd();
++
+ 	/*
+ 	 * Fall back to the standard layout if the personality
+ 	 * bit is set, or if the expected stack growth is unlimited:
+@@ -93,7 +97,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
+ 		mm->mmap_base = TASK_UNMAPPED_BASE;
+ 		mm->get_unmapped_area = arch_get_unmapped_area;
+ 	} else {
+-		mm->mmap_base = mmap_base();
++		mm->mmap_base = mmap_base(random_factor);
+ 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
+ 	}
+ }
+-- 
+1.9.1

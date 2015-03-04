@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 22:12:22 +0100 (CET)
-Received: from smtp.outflux.net ([198.145.64.163]:59345 "EHLO smtp.outflux.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 22:12:38 +0100 (CET)
+Received: from smtp.outflux.net ([198.145.64.163]:36407 "EHLO smtp.outflux.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008111AbbCDVMDYUzw7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27007049AbbCDVMDXMZPm (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 4 Mar 2015 22:12:03 +0100
 Received: from www.outflux.net (serenity.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t24LAuDS020852;
+        by vinyl.outflux.net (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id t24LAuwq020853;
         Wed, 4 Mar 2015 13:10:56 -0800
 From:   Kees Cook <keescook@chromium.org>
 To:     akpm@linux-foundation.org
@@ -41,9 +41,9 @@ Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@redhat.com>,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4 03/10] arm64: standardize mmap_rnd() usage
-Date:   Wed,  4 Mar 2015 13:10:47 -0800
-Message-Id: <1425503454-7531-4-git-send-email-keescook@chromium.org>
+Subject: [PATCH v4 04/10] mips: extract logic for mmap_rnd()
+Date:   Wed,  4 Mar 2015 13:10:48 -0800
+Message-Id: <1425503454-7531-5-git-send-email-keescook@chromium.org>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1425503454-7531-1-git-send-email-keescook@chromium.org>
 References: <1425503454-7531-1-git-send-email-keescook@chromium.org>
@@ -54,7 +54,7 @@ Return-Path: <keescook@www.outflux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46151
+X-archive-position: 46152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,84 +71,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In preparation for splitting out ET_DYN ASLR, this refactors the use of
-mmap_rnd() to be used similarly to arm and x86. This additionally enables
-mmap ASLR on legacy mmap layouts, which appeared to be missing on arm64,
-and was already supported on arm. Additionally removes a copy/pasted
-declaration of an unused function.
+In preparation for splitting out ET_DYN ASLR, extract the mmap ASLR
+selection into a separate function.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/arm64/include/asm/elf.h |  1 -
- arch/arm64/mm/mmap.c         | 18 +++++++++++-------
- 2 files changed, 11 insertions(+), 8 deletions(-)
+It seems the entropy gets smaller as the PAGE_SIZE increases. Is this
+intentional?
+---
+ arch/mips/mm/mmap.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/include/asm/elf.h b/arch/arm64/include/asm/elf.h
-index 1f65be393139..f724db00b235 100644
---- a/arch/arm64/include/asm/elf.h
-+++ b/arch/arm64/include/asm/elf.h
-@@ -125,7 +125,6 @@ typedef struct user_fpsimd_state elf_fpregset_t;
-  * the loader.  We need to make sure that it is out of the way of the program
-  * that it will "exec", and that there is sufficient room for the brk.
-  */
--extern unsigned long randomize_et_dyn(unsigned long base);
- #define ELF_ET_DYN_BASE	(2 * TASK_SIZE_64 / 3)
+diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+index f1baadd56e82..9a4f1f5c1f0e 100644
+--- a/arch/mips/mm/mmap.c
++++ b/arch/mips/mm/mmap.c
+@@ -142,18 +142,26 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+ 			addr0, len, pgoff, flags, DOWN);
+ }
  
- /*
-diff --git a/arch/arm64/mm/mmap.c b/arch/arm64/mm/mmap.c
-index 54922d1275b8..ba776c01b552 100644
---- a/arch/arm64/mm/mmap.c
-+++ b/arch/arm64/mm/mmap.c
-@@ -49,15 +49,14 @@ static int mmap_is_legacy(void)
- 
- static unsigned long mmap_rnd(void)
- {
--	unsigned long rnd = 0;
++static unsigned long mmap_rnd(void)
++{
 +	unsigned long rnd;
- 
--	if (current->flags & PF_RANDOMIZE)
--		rnd = (long)get_random_int() & STACK_RND_MASK;
-+	rnd = (unsigned long)get_random_int() & STACK_RND_MASK;
- 
- 	return rnd << PAGE_SHIFT;
- }
- 
--static unsigned long mmap_base(void)
-+static unsigned long mmap_base(unsigned long rnd)
- {
- 	unsigned long gap = rlimit(RLIMIT_STACK);
- 
-@@ -66,7 +65,7 @@ static unsigned long mmap_base(void)
- 	else if (gap > MAX_GAP)
- 		gap = MAX_GAP;
- 
--	return PAGE_ALIGN(STACK_TOP - gap - mmap_rnd());
-+	return PAGE_ALIGN(STACK_TOP - gap - rnd);
- }
- 
- /*
-@@ -75,15 +74,20 @@ static unsigned long mmap_base(void)
-  */
++
++	rnd = (unsigned long)get_random_int();
++	rnd <<= PAGE_SHIFT;
++	if (TASK_IS_32BIT_ADDR)
++		rnd &= 0xfffffful;
++	else
++		rnd &= 0xffffffful;
++
++	return rnd;
++}
++
  void arch_pick_mmap_layout(struct mm_struct *mm)
  {
-+	unsigned long random_factor = 0UL;
-+
+ 	unsigned long random_factor = 0UL;
+ 
+-	if (current->flags & PF_RANDOMIZE) {
+-		random_factor = get_random_int();
+-		random_factor = random_factor << PAGE_SHIFT;
+-		if (TASK_IS_32BIT_ADDR)
+-			random_factor &= 0xfffffful;
+-		else
+-			random_factor &= 0xffffffful;
+-	}
 +	if (current->flags & PF_RANDOMIZE)
 +		random_factor = mmap_rnd();
-+
- 	/*
- 	 * Fall back to the standard layout if the personality bit is set, or
- 	 * if the expected stack growth is unlimited:
- 	 */
+ 
  	if (mmap_is_legacy()) {
--		mm->mmap_base = TASK_UNMAPPED_BASE;
-+		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
- 		mm->get_unmapped_area = arch_get_unmapped_area;
- 	} else {
--		mm->mmap_base = mmap_base();
-+		mm->mmap_base = mmap_base(random_factor);
- 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
- 	}
- }
+ 		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
 -- 
 1.9.1

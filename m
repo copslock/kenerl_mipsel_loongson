@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 07:18:19 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49243 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Mar 2015 07:18:36 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:49283 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006910AbbCDGRnBYh3W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 07:17:43 +0100
+        by eddie.linux-mips.org with ESMTP id S27006923AbbCDGRxiBx9C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Mar 2015 07:17:53 +0100
 Received: from localhost (unknown [166.170.43.162])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 60C85B0A;
-        Wed,  4 Mar 2015 06:17:37 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1227EB13;
+        Wed,  4 Mar 2015 06:17:48 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>,
-        John Crispin <blogic@openwrt.org>,
-        Bruno Randolf <br1@einfach.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.18 068/151] MIPS: Alchemy: Fix cpu clock calculation
-Date:   Tue,  3 Mar 2015 22:13:22 -0800
-Message-Id: <20150304055508.567741091@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.18 072/151] MIPS: asm: pgtable: Prevent HTW race when updating PTEs
+Date:   Tue,  3 Mar 2015 22:13:26 -0800
+Message-Id: <20150304055509.284368213@linuxfoundation.org>
 X-Mailer: git-send-email 2.3.1
 In-Reply-To: <20150304055457.084276421@linuxfoundation.org>
 References: <20150304055457.084276421@linuxfoundation.org>
@@ -27,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46132
+X-archive-position: 46133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,38 +46,74 @@ X-list: linux-mips
 
 ------------------
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit 69e4e63ec816a7e22cc3aa14bc7ef4ac734d370c upstream.
+commit fde3538a8a711aedf1173ecb2d45aed868f51c97 upstream.
 
-The current code uses bits 0-6 of the sys_cpupll register to calculate
-core clock speed.  However this is only valid on Au1300, on all earlier
-models the hardware only uses bits 0-5 to generate core clock.
+Whenever we modify a page table entry, we need to ensure that the HTW
+will not fetch a stable entry. And for that to happen we need to ensure
+that HTW is stopped before we modify the said entry otherwise the HTW
+may already be in the process of reading that entry and fetching the
+old information. As a result of which, we replace the htw_reset() calls
+with htw_{stop,start} in more appropriate places. This also removes the
+remaining users of htw_reset() and as a result we drop that macro
 
-This fixes clock calculation on the MTX1 (Au1500), where bit 6 of cpupll
-is set as well, which ultimately lead the code to calculate a bogus cpu
-core clock and also uart base clock down the line.
-
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-Reported-by: John Crispin <blogic@openwrt.org>
-Tested-by: Bruno Randolf <br1@einfach.org>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Patchwork: https://patchwork.linux-mips.org/patch/9279/
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9116/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/alchemy/common/clock.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/include/asm/pgtable.h |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
---- a/arch/mips/alchemy/common/clock.c
-+++ b/arch/mips/alchemy/common/clock.c
-@@ -128,6 +128,8 @@ static unsigned long alchemy_clk_cpu_rec
- 		t = 396000000;
- 	else {
- 		t = alchemy_rdsys(AU1000_SYS_CPUPLL) & 0x7f;
-+		if (alchemy_get_cputype() < ALCHEMY_CPU_AU1300)
-+			t &= 0x3f;
- 		t *= parent_rate;
- 	}
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -116,14 +116,6 @@ do {									\
+ } while(0)
+ 
+ 
+-#define htw_reset()							\
+-do {									\
+-	if (cpu_has_htw) {						\
+-		htw_stop();						\
+-		htw_start();						\
+-	}								\
+-} while(0)
+-
+ extern void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+ 	pte_t pteval);
+ 
+@@ -155,12 +147,13 @@ static inline void pte_clear(struct mm_s
+ {
+ 	pte_t null = __pte(0);
+ 
++	htw_stop();
+ 	/* Preserve global status for the pair */
+ 	if (ptep_buddy(ptep)->pte_low & _PAGE_GLOBAL)
+ 		null.pte_low = null.pte_high = _PAGE_GLOBAL;
+ 
+ 	set_pte_at(mm, addr, ptep, null);
+-	htw_reset();
++	htw_start();
+ }
+ #else
+ 
+@@ -190,6 +183,7 @@ static inline void set_pte(pte_t *ptep,
+ 
+ static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+ {
++	htw_stop();
+ #if !defined(CONFIG_CPU_R3000) && !defined(CONFIG_CPU_TX39XX)
+ 	/* Preserve global status for the pair */
+ 	if (pte_val(*ptep_buddy(ptep)) & _PAGE_GLOBAL)
+@@ -197,7 +191,7 @@ static inline void pte_clear(struct mm_s
+ 	else
+ #endif
+ 		set_pte_at(mm, addr, ptep, __pte(0));
+-	htw_reset();
++	htw_start();
+ }
+ #endif
  

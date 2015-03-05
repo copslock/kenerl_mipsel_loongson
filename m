@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 02:02:22 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:16169 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 02:02:38 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57719 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012176AbbCEA7pBlREA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2015 01:59:45 +0100
+        with ESMTP id S27012189AbbCEA7reIFp8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2015 01:59:47 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 4C9BD22F2ADB;
-        Thu,  5 Mar 2015 00:59:35 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 388EB2A3E58D9;
+        Thu,  5 Mar 2015 00:59:38 +0000 (GMT)
 Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 5 Mar
- 2015 00:59:39 +0000
+ 2015 00:59:42 +0000
 Received: from fun-lab.mips.com (10.20.2.221) by bamail02.ba.imgtec.org
  (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 4 Mar 2015
- 16:59:37 -0800
+ 16:59:40 -0800
 From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
 CC:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-Subject: [PATCH 11/15] MIPS: cevt-txx9: Implement read_sched_clock
-Date:   Wed, 4 Mar 2015 16:58:53 -0800
-Message-ID: <1425517137-26463-12-git-send-email-dengcheng.zhu@imgtec.com>
+Subject: [PATCH 12/15] MIPS: jz4740: Implement read_sched_clock
+Date:   Wed, 4 Mar 2015 16:58:54 -0800
+Message-ID: <1425517137-26463-13-git-send-email-dengcheng.zhu@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1425517137-26463-1-git-send-email-dengcheng.zhu@imgtec.com>
 References: <1425517137-26463-1-git-send-email-dengcheng.zhu@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46177
+X-archive-position: 46178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,47 +45,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use txx9 up-counter for sched_clock source. This implementation will give
-high resolution cputime accounting.
+Use jz4740 timer counter for sched_clock source. This implementation will
+give high resolution cputime accounting.
 
 Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 ---
- arch/mips/kernel/cevt-txx9.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/mips/jz4740/time.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/kernel/cevt-txx9.c b/arch/mips/kernel/cevt-txx9.c
-index 2ae0846..7239324 100644
---- a/arch/mips/kernel/cevt-txx9.c
-+++ b/arch/mips/kernel/cevt-txx9.c
-@@ -14,6 +14,7 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
-+#include <linux/sched_clock.h>
- #include <asm/time.h>
- #include <asm/txx9tmr.h>
+diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+index 5e430ce..72b0cecb 100644
+--- a/arch/mips/jz4740/time.c
++++ b/arch/mips/jz4740/time.c
+@@ -18,6 +18,7 @@
+ #include <linux/time.h>
  
-@@ -46,6 +47,11 @@ static struct txx9_clocksource txx9_clocksource = {
- 	},
+ #include <linux/clockchips.h>
++#include <linux/sched_clock.h>
+ 
+ #include <asm/mach-jz4740/irq.h>
+ #include <asm/mach-jz4740/timer.h>
+@@ -43,6 +44,11 @@ static struct clocksource jz4740_clocksource = {
+ 	.flags = CLOCK_SOURCE_IS_CONTINUOUS,
  };
  
-+static u64 notrace txx9_read_sched_clock(void)
++static u64 notrace jz4740_read_sched_clock(void)
 +{
-+	return __raw_readl(&txx9_clocksource.tmrptr->trr);
++	return jz4740_timer_get_count(TIMER_CLOCKSOURCE);
 +}
 +
- void __init txx9_clocksource_init(unsigned long baseaddr,
- 				  unsigned int imbusclk)
+ static irqreturn_t jz4740_clockevent_irq(int irq, void *devid)
  {
-@@ -61,6 +67,9 @@ void __init txx9_clocksource_init(unsigned long baseaddr,
- 	__raw_writel(1 << TXX9_CLOCKSOURCE_BITS, &tmrptr->cpra);
- 	__raw_writel(TCR_BASE | TXx9_TMTCR_TCE, &tmrptr->tcr);
- 	txx9_clocksource.tmrptr = tmrptr;
-+
-+	sched_clock_register(txx9_read_sched_clock, TXX9_CLOCKSOURCE_BITS,
-+			     TIMER_CLK(imbusclk));
- }
+ 	struct clock_event_device *cd = devid;
+@@ -126,6 +132,8 @@ void __init plat_time_init(void)
+ 	if (ret)
+ 		printk(KERN_ERR "Failed to register clocksource: %d\n", ret);
  
- struct txx9_clock_event_device {
++	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate);
++
+ 	setup_irq(JZ4740_IRQ_TCU0, &timer_irqaction);
+ 
+ 	ctrl = JZ_TIMER_CTRL_PRESCALE_16 | JZ_TIMER_CTRL_SRC_EXT;
 -- 
 1.8.5.3

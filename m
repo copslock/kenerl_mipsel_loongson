@@ -1,63 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 14:11:07 +0100 (CET)
-Received: from cantor2.suse.de ([195.135.220.15]:37784 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 14:27:14 +0100 (CET)
+Received: from ns.mm-sol.com ([37.157.136.199]:44301 "EHLO extserv.mm-sol.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007189AbbCENLFalUy2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Mar 2015 14:11:05 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id E8FE3AC2B;
-        Thu,  5 Mar 2015 13:11:02 +0000 (UTC)
-Message-ID: <54F855E4.9030106@suse.de>
-Date:   Thu, 05 Mar 2015 14:11:00 +0100
-From:   Hannes Reinecke <hare@suse.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     Valentin Rothberg <valentinrothberg@gmail.com>,
-        akpm@linux-foundation.org
-CC:     Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Paul Bolle <pebolle@tiscali.nl>, Jiri Kosina <jkosina@suse.cz>,
-        Ewan Milne <emilne@redhat.com>, Christoph Hellwig <hch@lst.de>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Nishanth Menon <nm@ti.com>,
-        Santosh Shilimkar <santosh.shilimkar@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rajendra Nayak <rnayak@ti.com>,
-        Sricharan R <r.sricharan@ti.com>,
-        Afzal Mohammed <afzal@ti.com>, Keerthy <j-keerthy@ti.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Felipe Balbi <balbi@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Quentin Lambert <lambert.quentin@gmail.com>,
-        Eyal Perry <eyalpe@mellanox.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, iss_storagedev@hp.com,
-        linux-mtd@lists.infradead.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] Remove deprecated IRQF_DISABLED flag entirely
-References: <1425560442-13367-1-git-send-email-valentinrothberg@gmail.com>
-In-Reply-To: <1425560442-13367-1-git-send-email-valentinrothberg@gmail.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Return-Path: <hare@suse.de>
+        id S27007189AbbCEN1MrHbBf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Mar 2015 14:27:12 +0100
+Received: from [192.168.25.131] (unknown [37.157.136.206])
+        by extserv.mm-sol.com (Postfix) with ESMTPSA id 85F6FC8A6;
+        Thu,  5 Mar 2015 15:27:07 +0200 (EET)
+Message-ID: <1425562025.5705.24.camel@mm-sol.com>
+Subject: Re: [RFC V2 00/12] i2c: describe adapter quirks in a generic way
+From:   "Ivan T. Ivanov" <iivanov@mm-sol.com>
+To:     Wolfram Sang <wsa@the-dreams.de>
+Cc:     linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ludovic Desroches <ludovic.desroches@atmel.com>,
+        Yingjoe Chen <yingjoe.chen@mediatek.com>,
+        Eddie Huang <eddie.huang@mediatek.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org
+Date:   Thu, 05 Mar 2015 15:27:05 +0200
+In-Reply-To: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
+References: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.13.7-fta1.2~trusty 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <iivanov@mm-sol.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46201
+X-archive-position: 46202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hare@suse.de
+X-original-sender: iivanov@mm-sol.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,50 +45,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/05/2015 01:59 PM, Valentin Rothberg wrote:
-> The IRQF_DISABLED is a NOOP and has been scheduled for removal since
-> Linux v2.6.36 by commit 6932bf37bed4 ("genirq: Remove IRQF_DISABLED from
-> core code").
+
+On Wed, 2015-02-25 at 17:01 +0100, Wolfram Sang wrote:
+> From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 > 
-> According to commit e58aa3d2d0cc ("genirq: Run irq handlers with
-> interrupts disabled") running IRQ handlers with interrupts enabled can
-> cause stack overflows when the interrupt line of the issuing device is
-> still active.
+> Here is the second version of the patch series to describe i2c adapter quirks
+> in a generic way. For the motivation, please read description of patch 1. This
+> is still RFC because I would like to do some more tests on my own, but I need
+> to write a tool for that. However, I'd really like to have the driver authors
+> to have a look already. Actual testing is very much appreciated. Thanks to the
+> Mediatek guys for rebasing their new driver to this framework. That helps, too!
 > 
-> This patch ends the grace period for IRQF_DISABLED (i.e., SA_INTERRUPT
-> in older versions of Linux) and removes the definition and all remaining
-> usages of this flag.
+> The branch is also here:
 > 
-> Signed-off-by: Valentin Rothberg <valentinrothberg@gmail.com>
-> ---
-> The bigger hunk in Documentation/scsi/ncr53c8xx.txt is removed entirely
-> as IRQF_DISABLED is gone now; the usage in older kernel versions
-> (including the old SA_INTERRUPT flag) should be discouraged.  The
-> trouble of using IRQF_SHARED is a general problem and not specific to
-> any driver.
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/quirks
 > 
-> I left the reference in Documentation/PCI/MSI-HOWTO.txt untouched since
-> it has already been removed in linux-next by commit b0e1ee8e1405
-> ("MSI-HOWTO.txt: remove reference on IRQF_DISABLED").
+> Thanks,
 > 
-> All remaining references are changelogs that I suggest to keep.
+>    Wolfram
+> 
+> Major changes since V1:
+> 
+> * more fine-grained options to describe modes with combined messages.
+>   This should also cover the Mediatek HW now as well as all other
+>   permutations I can think of.
+> 
+> * the core code and at91 driver had to be refactored to reflect the
+>   above change
+> 
+> * added the bcm-iproc driver which came to mainline recently
+> 
+> Wolfram Sang (12):
+>   i2c: add quirk structure to describe adapter flaws
+>   i2c: add quirk checks to core
+>   i2c: at91: make use of the new infrastructure for quirks
+>   i2c: opal: make use of the new infrastructure for quirks
+>   i2c: qup: make use of the new infrastructure for quirks
+> 
 
-While you're at it: having '0x0' as a value for the irq flags looks
-a bit silly, and makes you wonder what the parameter is for.
+For QUP driver. 
 
-I would rather like to have
+Reviewed-by: Ivan T. Ivanov <iivanov@mm-sol.com>
+Tested-by: Ivan T. Ivanov <iivanov@mm-sol.com>
 
-#define IRQF_NONE 0x0
-
-and use it for these cases.
-That way the scope of that parameter is clear.
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke		               zSeries & Storage
-hare@suse.de			               +49 911 74053 688
-SUSE LINUX GmbH, Maxfeldstr. 5, 90409 Nürnberg
-GF: F. Imendörffer, J. Smithard, J. Guild, D. Upmanyu, G. Norton
-HRB 21284 (AG Nürnberg)
+Thanks,
+Ivan

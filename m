@@ -1,69 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 07:31:54 +0100 (CET)
-Received: from mail-wg0-f54.google.com ([74.125.82.54]:40306 "EHLO
-        mail-wg0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007117AbbCEGbwRDtlQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2015 07:31:52 +0100
-Received: by wghk14 with SMTP id k14so7450078wgh.7;
-        Wed, 04 Mar 2015 22:31:47 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 07:40:30 +0100 (CET)
+Received: from mail-ie0-f182.google.com ([209.85.223.182]:38940 "EHLO
+        mail-ie0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006918AbbCEGk3H3qZZ convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Mar 2015 07:40:29 +0100
+Received: by iecat20 with SMTP id at20so20495317iec.6
+        for <linux-mips@linux-mips.org>; Wed, 04 Mar 2015 22:40:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=0P5GYZX6WZrlr2fwo0kBeRfNdoXf2n9UPFqeu/fWkxA=;
-        b=1KAyGlgy6dQFRMDoJI4PVlJOW4j4MiqLF76LkxygKsalVmkf2Ab8FKBfbGtGhqs20I
-         BS7NQdUx6Abg0ReHHPejyIcLE0t3+OABAt/4VNr0fCEK6PQUO2wU/ZbGcgUbgTal6BcC
-         oSxnW/Dr9MHih1jmLoGcczJUiqBg4k0sI5gcnsvDPEhlsNJy1/7TTvY9VI2I6tZMUcUs
-         Fp5PxcLmMDvWSIJRgMPfd81PjF8Oa0FeR99g4NUrYDkH99K0XvHuLOkMvwBgQTEkaLal
-         qhI70Wvb1czeFISlKrMVStWTW67A90VzH25F/QBF0n93whWeahqYiuzuUGbyRao5YVQR
-         lOvw==
-X-Received: by 10.180.75.243 with SMTP id f19mr19323133wiw.94.1425537107565;
-        Wed, 04 Mar 2015 22:31:47 -0800 (PST)
-Received: from gmail.com (540334ED.catv.pool.telekom.hu. [84.3.52.237])
-        by mx.google.com with ESMTPSA id vq9sm7423954wjc.6.2015.03.04.22.31.44
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Mar 2015 22:31:46 -0800 (PST)
-Date:   Thu, 5 Mar 2015 07:31:43 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     akpm@linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "David S. Miller" <davem@davemloft.net>, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Laura Abbott <lauraa@codeaurora.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH v3 8/8] x86: switch to using asm-generic for seccomp.h
-Message-ID: <20150305063143.GA23023@gmail.com>
-References: <1425518828-16017-1-git-send-email-keescook@chromium.org>
- <1425518828-16017-9-git-send-email-keescook@chromium.org>
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=bpQFtqzd4NZIbO6iFHNEhcXEAOo6msSIMnB7m+n97ek=;
+        b=DIVjOOPIST9fH6qPQn0EELuxBFCiEurEKmzBAnFBmb+GcuQUMixjnCZHU/ydKKQlxi
+         SDJPeo/RitNpacpiOa+7KQY9cE1b1oqsdDxNUMYFlgFo7BVy0kucv72N1ATUkjEIqW7S
+         wI2J3Zg5VpqFncTkLakJxFfdzA1/8NXgCu63kSwUPtGueCFrLvj2wb+mtrRWWhlENyTK
+         h35TTXLPVH+NRtNUS3dPdQFb/D8T78B2KM861H++coVjsQOPh6OVa4oHnz6g8gUALEOQ
+         X6DCREF8QbNBJyWQAsWpQ2avQiTja1jZsPd89GQvHC+krxjfhOxNPIfyFmpwPK0Bn4VJ
+         /0Fw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1425518828-16017-9-git-send-email-keescook@chromium.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <mingo.kernel.org@gmail.com>
+X-Received: by 10.107.170.33 with SMTP id t33mr3809417ioe.7.1425537624075;
+ Wed, 04 Mar 2015 22:40:24 -0800 (PST)
+Received: by 10.107.16.139 with HTTP; Wed, 4 Mar 2015 22:40:23 -0800 (PST)
+In-Reply-To: <CAHNKnsRKFSutwKHtOY9QZTqBr_+2q4atuo=mg7QOBj35ipuUYQ@mail.gmail.com>
+References: <CACna6rx+3TbNfLmT1Br-JjhDnTQLrFFtVzfmid=yOdBfcOwHoA@mail.gmail.com>
+        <CAHNKnsRKFSutwKHtOY9QZTqBr_+2q4atuo=mg7QOBj35ipuUYQ@mail.gmail.com>
+Date:   Thu, 5 Mar 2015 07:40:23 +0100
+Message-ID: <CACna6ryM+iX-z+3rttp2psrX=-8nqq0S8cLvONrNHeG7DDFmGg@mail.gmail.com>
+Subject: Re: Looking for an idea/workaround for using MIPS ioremap_nocache
+ (__ioremap) in IRQ
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46192
+X-archive-position: 46193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,19 +55,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 3 March 2015 at 14:06, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
+> 2015-02-16 10:35 GMT+03:00 Rafał Miłecki <zajec5@gmail.com>:
+>> Once I've hit
+>> BUG_ON(in_interrupt());
+>> when hacking PCI drivers locally on MIPS board. I see the problem but
+>> don't know the solution.
+>>
+>> 1) I think "read" and "write" of struct pci_ops should be safe to call
+>> in IRQ handler
+>> 2) In drivers/bcma/driver_pci_host.c we use ioremap_nocache
+>>
+>> This causes a problem for boards with 2 PCI(e) cards. The base address
+>> for the 2nd card is
+>> #define BCMA_SOC_PCI1_CFG               0x44000000U
+>> which doesn't allow MIPS to use KSEG1.
+>>
+>> As the result forwardtrace looks like this:
+>> 1) ioremap_nocache
+>> 2) __ioremap_mode
+>> 3) __ioremap
+>> 4) get_vm_area
+>> 5) __get_vm_area_node
+>> And then we can hit BUG_ON(in_interrupt());
+>>
+>> Can you see any solution for this? Currently there isn't any mainline
+>> code triggering this problem, but it would be nice to have everything
+>> working anyway.
+>>
+> Why do you need to read the PCI configuration space in the interrupt
+> handler? As you wrote, it uncommon that driver tries to do that.
+> Usually the PCI configuration read/updated during device
+> initialization stage (by the PCI core and by a device driver) and then
+> you interact with the I/O memory and not with the configuration space.
 
-* Kees Cook <keescook@chromium.org> wrote:
+This is what brcmsmac does. I copied this behavior locally to b43 when
+debugging some DMA controller problem.
 
-> Switch to using the newly created asm-generic/seccomp.h for the 
-> seccomp strict mode syscall definitions. The obsolete sigreturn 
-> syscall override is retained in 32-bit mode, and the ia32 syscall 
-> overrides are used in the compat case. Remaining definitions were 
-> identical.
-> 
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+They do:
+request_irq(pdev->irq, brcms_isr, IRQF_SHARED, KBUILD_MODNAME, wl)
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
+And then the forwardtrace looks like this:
+brcms_isr
+brcms_c_isr
+wlc_intstatus
+brcms_deviceremoved
+ai_deviceremoved
+pci_read_config_dword(sii->pcibus, PCI_VENDOR_ID, &w);
 
-Thanks,
-
-	Ingo
+-- 
+Rafał
